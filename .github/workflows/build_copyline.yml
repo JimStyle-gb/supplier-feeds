@@ -1,0 +1,40 @@
+name: build_copyline
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 19 * * *'  # 01:30 Asia/Almaty
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
+      OUT_FILE: "docs/copyline.yml"
+      OUTPUT_ENCODING: "windows-1251"
+      CATEGORIES_FILE: "docs/categories_copyline.txt"
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Build copyline.yml (XLSX)
+        run: |
+          mkdir -p docs
+          echo > docs/.nojekyll
+          python scripts/build_copyline.py
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "build: copyline.yml"
+          file_pattern: |
+            docs/copyline.yml
+            docs/categories_copyline.txt
+            docs/.nojekyll
