@@ -18,17 +18,30 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # важно для rebase/pull
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: Build alstyle.yml
         run: |
           mkdir -p docs
           echo > docs/.nojekyll
           python scripts/build_alstyle.py
+
+      - name: Sync with remote main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git pull --rebase origin main
+
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
+          branch: main
           commit_message: "build: alstyle.yml"
           file_pattern: |
             docs/alstyle.yml
