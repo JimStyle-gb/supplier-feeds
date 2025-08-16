@@ -19,7 +19,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # важно для rebase/pull
+          fetch-depth: 0  # нужно для pull --rebase
+
+      # Сначала подтягиваем main (рабочее дерево чистое - всё ок)
+      - name: Sync with remote main (before build)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          # на всякий случай переключимся на main и подтянем историю
+          git checkout -B main
+          git pull --rebase origin main
 
       - uses: actions/setup-python@v5
         with:
@@ -33,15 +43,8 @@ jobs:
       - name: Build copyline.yml (XLSX)
         run: |
           mkdir -p docs
-          echo > docs/.nojekyll
+          touch docs/.nojekyll
           python scripts/build_copyline.py
-
-      - name: Sync with remote main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git pull --rebase origin main
 
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -52,3 +55,4 @@ jobs:
             docs/copyline.yml
             docs/categories_copyline.txt
             docs/.nojekyll
+          push_options: --force-with-lease
