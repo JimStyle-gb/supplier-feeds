@@ -1,0 +1,4 @@
+# подстроки для фильтра по категории в прайсе Copyline (регистр не важен)
+toner
+drum
+laser-cartridges
