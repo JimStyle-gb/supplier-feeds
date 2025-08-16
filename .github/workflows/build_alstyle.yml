@@ -1,0 +1,36 @@
+name: build_alstyle
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 19 * * *'  # 01:00 Asia/Almaty
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_URL: "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
+      OUT_FILE: "docs/alstyle.yml"
+      OUTPUT_ENCODING: "windows-1251"
+      CATEGORIES_FILE: "docs/categories_alstyle.txt"
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build alstyle.yml
+        run: |
+          mkdir -p docs
+          echo > docs/.nojekyll
+          python scripts/build_alstyle.py
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "build: alstyle.yml"
+          file_pattern: |
+            docs/alstyle.yml
+            docs/categories_alstyle.txt
+            docs/.nojekyll
