@@ -18,21 +18,35 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # важно для rebase/pull
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Build copyline.yml (XLSX)
         run: |
           mkdir -p docs
           echo > docs/.nojekyll
           python scripts/build_copyline.py
+
+      - name: Sync with remote main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git pull --rebase origin main
+
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
+          branch: main
           commit_message: "build: copyline.yml"
           file_pattern: |
             docs/copyline.yml
