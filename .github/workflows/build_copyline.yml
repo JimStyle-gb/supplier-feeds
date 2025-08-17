@@ -15,14 +15,17 @@ jobs:
       OUT_FILE: "docs/copyline.yml"
       OUTPUT_ENCODING: "windows-1251"
       CATEGORIES_FILE: "docs/categories_copyline.txt"
+      URLS_FILE: "docs/categories_copyline_urls.txt"
       SEEN_FILE: "docs/copyline_seen.txt"
+      AUTO_DISCOVER: "1"     # авто-поиск категорий/страниц
+      MAX_PAGES: "400"       # безопасность, чтобы не уползло далеко
+      CRAWL_DELAY: "0.5"     # пауза между запросами
 
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # нужно для pull --rebase
+          fetch-depth: 0
 
-      # Сначала подтягиваем main
       - name: Sync with remote main (before build)
         run: |
           git config user.name  "github-actions[bot]"
@@ -40,7 +43,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build copyline.yml (XLSX)
+      - name: Build copyline.yml (auto-discovery)
         run: |
           mkdir -p docs
           touch docs/.nojekyll
@@ -50,10 +53,11 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
-          commit_message: "build: copyline.yml + seen"
+          commit_message: "build: copyline.yml (auto-discovery)"
           file_pattern: |
             docs/copyline.yml
             docs/categories_copyline.txt
+            docs/categories_copyline_urls.txt
             docs/copyline_seen.txt
             docs/.nojekyll
           push_options: --force-with-lease
