@@ -16,7 +16,6 @@ jobs:
       OUTPUT_ENCODING: "windows-1251"
       CATEGORIES_FILE: "docs/categories_copyline.txt"
       SEEN_FILE: "docs/copyline_seen.txt"
-      # автосбор фото: категории → карточки → строгая проверка артикула → поиск по артикулу
       AUTO_DISCOVER: "1"
       FOLLOW_PRODUCT_PAGES: "1"
       STRICT_IMAGE_MATCH: "1"
@@ -58,7 +57,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
-          commit_message: "build: copyline.yml (auto photos)"
+          commit_message: "build: copyline.yml (auto photos) + seen"
           file_pattern: |
             docs/copyline.yml
             docs/categories_copyline.txt
