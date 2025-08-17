@@ -2,15 +2,20 @@
 from __future__ import annotations
 import os, re, io, sys, hashlib, requests
 from collections import Counter
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 from xml.etree.ElementTree import Element, SubElement, ElementTree
 
-XLSX_URL   = os.getenv("XLSX_URL", "https://copyline.kz/files/price-CLA.xlsx")
-OUT_FILE   = os.getenv("OUT_FILE",  "docs/copyline.yml")
-ENC        = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
-CATS_FILE  = os.getenv("CATEGORIES_FILE", "docs/categories_copyline.txt")
-SEEN_FILE  = os.getenv("SEEN_FILE", "docs/copyline_seen.txt")
-UA_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+XLSX_URL    = os.getenv("XLSX_URL", "https://copyline.kz/files/price-CLA.xlsx")
+OUT_FILE    = os.getenv("OUT_FILE",  "docs/copyline.yml")
+ENC         = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+CATS_FILE   = os.getenv("CATEGORIES_FILE", "docs/categories_copyline.txt")
+URLS_FILE   = os.getenv("URLS_FILE", "docs/categories_copyline_urls.txt")
+SEEN_FILE   = os.getenv("SEEN_FILE", "docs/copyline_seen.txt")
+
+UA_HEADERS  = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+SITE_ORIGIN = "https://copyline.kz"
 
 def norm(s): return re.sub(r"\s+"," ", (s or "").strip())
 
@@ -26,8 +31,10 @@ HEADER_HINTS = {
 def ensure_files():
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     if not os.path.exists(CATS_FILE):
-        with open(CATS_FILE, "w", encoding="utf-8") as f:
-            f.write("# Паттерны-ВКЛЮЧЕНИЯ (если пусто — берём всё)\n")
+        with open(CATS_FILE, "w", encoding="utf-8") as f: f.write("# Паттерны включения (если пусто — берём всё)\n")
+    if not os.path.exists(URLS_FILE):
+        with open(URLS_FILE, "w", encoding="utf-8") as f:
+            f.write("# URL категорий Copyline (по одному в строке). По ним тянем фото.\n")
 
 def load_patterns(path):
     subs, regs = [], []
@@ -42,6 +49,16 @@ def load_patterns(path):
                 subs.append(s.lower())
     return subs, regs
 
+def load_urls(path):
+    urls=[]
+    if not os.path.exists(path): return urls
+    with open(path,"r",encoding="utf-8") as f:
+        for line in f:
+            s=line.strip()
+            if not s or s.startswith("#"): continue
+            urls.append(s)
+    return urls
+
 def fetch_xlsx(url: str) -> bytes:
     r = requests.get(url, timeout=180, headers=UA_HEADERS)
     r.raise_for_status()
@@ -50,9 +67,9 @@ def fetch_xlsx(url: str) -> bytes:
 def best_header(ws):
     def score(row_vals):
         low = [norm(x).lower() for x in row_vals]
-        matched = set()
-        for key, hints in HEADER_HINTS.items():
-            for i, cell in enumerate(low):
+        matched=set()
+        for key,hints in HEADER_HINTS.items():
+            for cell in low:
                 if any(h in cell for h in hints):
                     matched.add(key); break
         return len(matched)
@@ -73,8 +90,7 @@ def best_header(ws):
         for j in range(m):
             x=a[j] if j<len(a) else ""
             y=b[j] if j<len(b) else ""
-            cell=" ".join(t for t in (x,y) if t).strip()
-            merged.append(cell)
+            merged.append(" ".join(t for t in (x,y) if t).strip())
         sc=score(merged)
         if sc>best[2]: best=(merged, i+2, sc)
     return best[0], best[1]+1
@@ -119,9 +135,8 @@ def hash_int(s: str) -> int:
     return int(hashlib.md5(s.encode("utf-8")).hexdigest()[:6],16)
 
 def slug(s: str, maxlen: int = 40) -> str:
-    s = re.sub(r"[^a-z0-9]+","-", s.lower())
-    s = s.strip("-")
-    return s[:maxlen] if len(s)>maxlen else s
+    s = re.sub(r"[^a-z0-9]+","-", s.lower()).strip("-")
+    return s[:maxlen]
 
 ROOT_CAT_ID = "9300000"
 def cat_id_for(name: str) -> str:
@@ -129,13 +144,75 @@ def cat_id_for(name: str) -> str:
 
 def make_offer_id(it: dict) -> str:
     art = (it.get("article") or "").strip()
-    if art:
-        return f"copyline:{art}"
+    if art: return f"copyline:{art}"
     base = slug(it.get("name",""))
     h = hashlib.md5((it.get("name","").lower()+"|"+(it.get("category") or "").lower()).encode("utf-8")).hexdigest()[:8]
     return f"copyline:{base}:{h}"
 
-def build_yml(items: list[dict]) -> bytes:
+# --------- SCRAPE IMAGES FROM CATEGORY PAGES ----------
+ARTICLE_RE = re.compile(r"(?:артикул|код|sku|модель|pn|p/n)\s*[:#\-]?\s*([A-Za-z0-9\-\._/]+)", re.I)
+DIGITS_RE  = re.compile(r"\b\d{4,}\b")
+
+def extract_article_candidates(text: str):
+    out=set()
+    for m in ARTICLE_RE.finditer(text): out.add(m.group(1))
+    for m in DIGITS_RE.finditer(text):  out.add(m.group(0))
+    return out
+
+def pick_img_src(img):
+    for attr in ("data-src","data-original","src"):
+        val = img.get(attr)
+        if val: return val
+    return None
+
+def scrape_images(urls: list[str], target_articles: set[str]) -> dict[str, list[str]]:
+    images_by_article = {}
+    if not urls or not target_articles: return images_by_article
+
+    for url in urls:
+        try:
+            r = requests.get(url, headers=UA_HEADERS, timeout=60)
+            if r.status_code != 200: continue
+            soup = BeautifulSoup(r.text, "lxml")
+
+            # кандидаты карточек: любые элементы, где есть ссылка на /goods/
+            for a in soup.select('a[href*="/goods/"]'):
+                # контейнер карточки (поднимемся чуть вверх)
+                card = a
+                for _ in range(3):
+                    if card.parent: card = card.parent
+                text = card.get_text(" ", strip=True)
+                cands = extract_article_candidates(text)
+                # собираем картинки
+                imgs=[]
+                for img in card.find_all("img"):
+                    src = pick_img_src(img)
+                    if not src: continue
+                    src = urljoin(SITE_ORIGIN, src)
+                    imgs.append(src)
+                if not imgs:  # иногда картинка вне "card"; попробуем рядом с ссылкой
+                    if a.find("img"):
+                        src = pick_img_src(a.find("img"))
+                        if src:
+                            imgs=[urljoin(SITE_ORIGIN, src)]
+
+                if not imgs: 
+                    continue
+
+                # связываем со встреченными артикулами
+                for cand in cands:
+                    if cand in target_articles:
+                        images_by_article.setdefault(cand, [])
+                        # добавим до 6 фоток на товар, без дублей
+                        for s in imgs:
+                            if s not in images_by_article[cand] and len(images_by_article[cand])<6:
+                                images_by_article[cand].append(s)
+        except Exception:
+            continue
+    return images_by_article
+# ------------------------------------------------------
+
+def build_yml(items):
     cats={}
     for it in items:
         cn = it.get("category") or "Copyline"
@@ -155,13 +232,11 @@ def build_yml(items: list[dict]) -> bytes:
     for it in items:
         oid = make_offer_id(it)
         if oid in used_ids:
-            # если всё равно совпало — добавим счётчик (стабильно по содержимому)
             extra = hashlib.md5((it.get("name","")+str(it.get("price"))+(it.get("qty") or "")).encode("utf-8")).hexdigest()[:6]
             oid = f"{oid}-{extra}"
-            i = 2
+            i=2
             while oid in used_ids:
-                oid = f"{oid}-{i}"
-                i += 1
+                oid=f"{oid}-{i}"; i+=1
         used_ids.add(oid)
 
         cid = cats.get(it.get("category") or "Copyline", ROOT_CAT_ID)
@@ -177,14 +252,17 @@ def build_yml(items: list[dict]) -> bytes:
         if it.get("brand"): SubElement(o,"vendor").text=it["brand"]
         if it.get("article"): SubElement(o,"vendorCode").text=it["article"]
         q = it.get("qty") or ("1" if it["available"] else "0")
-        for tag in ("quantity_in_stock","stock_quantity","quantity"):
-            SubElement(o,tag).text=q
+        for tag in ("quantity_in_stock","stock_quantity","quantity"): SubElement(o,tag).text=q
+        # добавляем картинки
+        for p in it.get("images", []):
+            SubElement(o, "picture").text = p
 
     buf=io.BytesIO(); ElementTree(root).write(buf, encoding=ENC, xml_declaration=True); return buf.getvalue()
 
 def main():
     ensure_files()
     subs, regs = load_patterns(CATS_FILE)
+    cat_urls     = load_urls(URLS_FILE)
 
     data = fetch_xlsx(XLSX_URL)
     wb = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
@@ -192,12 +270,16 @@ def main():
     raw_items=[]
     seen_cats=Counter(); seen_sheets=Counter()
 
-    for ws in wb.worksheets:
+    def best_header_and_cols(ws):
         headers, data_start = best_header(ws)
-        if not headers:
-            seen_sheets[ws.title]+=0; continue
+        if not headers: return None, None, None
         cols = map_columns(headers)
-        if cols.get("name") is None:
+        if cols.get("name") is None: return None, None, None
+        return headers, data_start, cols
+
+    for ws in wb.worksheets:
+        headers, data_start, cols = best_header_and_cols(ws)
+        if not headers:
             seen_sheets[ws.title]+=0; continue
 
         current_cat=None
@@ -211,7 +293,7 @@ def main():
             avail, qty = is_available(getc(cols.get("availability")))
             raw_cat = norm(getc(cols.get("category"))) if cols.get("category") is not None else ""
 
-            # Заголовок секции (категория): есть имя, нет артикула и нет цены
+            # заголовок секции (категории)
             if name and not article and price is None:
                 if len(name)>3 and not re.search(r"^(цены|прайс|тенге|лист|итог)", name.lower()):
                     current_cat=name; seen_cats[current_cat]+=0
@@ -234,18 +316,25 @@ def main():
                 "qty": qty,
             })
 
-    # ДЕДУП: оставляем одно предложение на ключ
+    # дедупликация
     dedup={}
     for it in raw_items:
         key = ("a", it["article"]) if it["article"] else ("n", it["name"].lower(), (it["category"] or "").lower())
         if key in dedup:
             old = dedup[key]
-            # предпочтём тот, где есть цена, или который в наличии
             better = it if (it["price"] and not old["price"]) or (it["available"] and not old["available"]) else old
             dedup[key] = better
         else:
             dedup[key] = it
     items = list(dedup.values())
+
+    # ---------- ПОДТЯГИВАЕМ ФОТО ----------
+    target_articles = {it["article"] for it in items if it.get("article")}
+    img_map = scrape_images(cat_urls, target_articles)
+    for it in items:
+        art = it.get("article")
+        it["images"] = img_map.get(art, []) if art else []
+    # --------------------------------------
 
     # отчёт
     with open(SEEN_FILE,"w",encoding="utf-8") as f:
@@ -255,7 +344,7 @@ def main():
         f.write("\n=== CATEGORIES (inferred) ===\n")
         for k,v in seen_cats.most_common(500):
             f.write(f"{k}\t{v}\n")
-        f.write(f"\nRaw items: {len(raw_items)} | After dedup: {len(items)}\n")
+        f.write(f"\nRaw items: {len(raw_items)} | After dedup: {len(items)} | With photos: {sum(1 for it in items if it.get('images'))}\n")
 
     yml = build_yml(items)
     with open(OUT_FILE,"wb") as f: f.write(yml)
