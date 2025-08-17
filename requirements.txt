@@ -1,2 +1,4 @@
 requests
 openpyxl
+beautifulsoup4
+lxml
