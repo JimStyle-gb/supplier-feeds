@@ -15,13 +15,14 @@ jobs:
       OUT_FILE: "docs/copyline.yml"
       OUTPUT_ENCODING: "windows-1251"
       CATEGORIES_FILE: "docs/categories_copyline.txt"
+      SEEN_FILE: "docs/copyline_seen.txt"
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # нужно для pull --rebase
 
-      # Сначала подтягиваем main (чистое дерево → не ругается)
+      # Сначала подтягиваем main
       - name: Sync with remote main (before build)
         run: |
           git config user.name  "github-actions[bot]"
@@ -49,9 +50,10 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
-          commit_message: "build: copyline.yml"
+          commit_message: "build: copyline.yml + seen"
           file_pattern: |
             docs/copyline.yml
             docs/categories_copyline.txt
+            docs/copyline_seen.txt
             docs/.nojekyll
           push_options: --force-with-lease
