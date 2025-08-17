@@ -14,10 +14,11 @@ ENC          = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
 CATS_FILE    = os.getenv("CATEGORIES_FILE", "docs/categories_copyline.txt")
 SEEN_FILE    = os.getenv("SEEN_FILE", "docs/copyline_seen.txt")
 
-AUTO_DISCOVER       = (os.getenv("AUTO_DISCOVER") or "1").strip().lower() in {"1","true","yes","on"}
-FOLLOW_PRODUCT_PAGES= (os.getenv("FOLLOW_PRODUCT_PAGES") or "1").strip().lower() in {"1","true","yes","on"}
-STRICT_IMAGE_MATCH  = (os.getenv("STRICT_IMAGE_MATCH") or "1").strip().lower() in {"1","true","yes","on"}
-SEARCH_FALLBACK     = (os.getenv("SEARCH_FALLBACK") or "1").strip().lower() in {"1","true","yes","on"}
+# авто-поиск категорий/товаров и сбор фото
+AUTO_DISCOVER        = (os.getenv("AUTO_DISCOVER") or "1").strip().lower() in {"1","true","yes","on"}
+FOLLOW_PRODUCT_PAGES = (os.getenv("FOLLOW_PRODUCT_PAGES") or "1").strip().lower() in {"1","true","yes","on"}
+STRICT_IMAGE_MATCH   = (os.getenv("STRICT_IMAGE_MATCH") or "1").strip().lower() in {"1","true","yes","on"}
+SEARCH_FALLBACK      = (os.getenv("SEARCH_FALLBACK") or "1").strip().lower() in {"1","true","yes","on"}
 
 MAX_PAGES     = int(os.getenv("MAX_PAGES", "600"))       # максимум страниц категорий
 MAX_PRODUCTS  = int(os.getenv("MAX_PRODUCTS", "3000"))   # максимум карточек для захода внутрь
@@ -48,6 +49,7 @@ HEADER_HINTS = {
 
 def ensure_files():
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+    # фильтр категорий (может быть пустым)
     if not os.path.exists(CATS_FILE):
         with open(CATS_FILE, "w", encoding="utf-8") as f:
             f.write("# Паттерны-ВКЛЮЧЕНИЯ (если пусто — берём всё)\n")
@@ -176,11 +178,10 @@ def pick_img_src(img):
     return None
 
 def extract_article_from_product_page(soup: BeautifulSoup) -> str|None:
-    # 1) itemprop=sku
+    # 1) itemprop=sku, или явный текст "Артикул"
     sku = soup.select_one('[itemprop="sku"]')
     if sku and sku.get_text(strip=True):
         return normalize_article(sku.get_text(strip=True))
-    # 2) Любая подпись "Артикул/Код/SKU"
     txt = soup.get_text(" ", strip=True)
     cands = extract_article_candidates(txt)
     for c in cands:
@@ -189,7 +190,6 @@ def extract_article_from_product_page(soup: BeautifulSoup) -> str|None:
 
 def extract_images_from_product_page(soup: BeautifulSoup, base_url: str) -> list[str]:
     urls=[]
-    # Популярные места: галерея, карточка, любые img с нормальным src
     for img in soup.find_all("img"):
         src = pick_img_src(img)
         if not src: continue
@@ -227,8 +227,8 @@ def discover_category_urls() -> list[str]:
     return sorted(urls)
 
 def crawl_categories_and_products(seed_urls: list[str], max_pages=400, delay=0.6, max_products=2000):
-    """Возвращает список ссылок на продуктовые страницы и текст карточек с категорий."""
-    seen=set(); q=deque(); product_links=set(); pages=0; tiles=0
+    """Собираем ссылки на товарные страницы из листингов."""
+    seen=set(); q=deque(); product_links=set(); pages=0
     for u in seed_urls:
         if "/goods/" in u and domain(u) == domain(SITE_ORIGIN):
             q.append(u)
@@ -244,18 +244,15 @@ def crawl_categories_and_products(seed_urls: list[str], max_pages=400, delay=0.6
         time.sleep(delay)
         soup = BeautifulSoup(r.text, "lxml")
 
-        # карточки на листингах → ссылки на товары
+        # товарные ссылки (заканчиваются .html)
         for a in soup.select('a[href*="/goods/"]'):
             href = a.get("href") or ""
             if not href: continue
             u = urljoin(url, href)
             if domain(u) != domain(SITE_ORIGIN): continue
-            # эвристика: товарная страница чаще глубже (исключаем чисто страницы категорий/пагинации)
             if re.search(r"/goods/.+\.html?$", u, re.I):
                 product_links.add(u)
-                tiles += 1
-                if len(product_links) >= max_products:
-                    break
+                if len(product_links) >= max_products: break
 
         # пагинация
         for link in soup.find_all("a", href=True):
@@ -269,7 +266,7 @@ def crawl_categories_and_products(seed_urls: list[str], max_pages=400, delay=0.6
     return sorted(product_links)
 
 def search_product_urls_by_articles(articles: list[str], limit=1000, delay=0.6) -> dict[str,str]:
-    """Ищем страницы товара по артикулу (поиском). Возвращает map: article_norm -> product_url."""
+    """Ищем страницы товара по артикулу (поиск сайта). Возвращает map: article_norm -> product_url."""
     found={}
     cnt=0
     for art in articles:
@@ -283,7 +280,6 @@ def search_product_urls_by_articles(articles: list[str], limit=1000, delay=0.6) 
                 continue
             time.sleep(delay)
             soup = BeautifulSoup(r.text, "lxml")
-            # любая ссылка на /goods/....html
             a = soup.select_one('a[href*="/goods/"][href$=".html"]')
             if a and a.get("href"):
                 u = urljoin(qurl, a.get("href"))
@@ -345,7 +341,7 @@ def main():
     ensure_files()
     subs, regs = load_patterns(CATS_FILE)
 
-    # 1) Прайс XLSX → items
+    # 1) XLSX → items
     data = fetch_xlsx(XLSX_URL)
     wb = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
 
@@ -405,22 +401,18 @@ def main():
             dedup[key] = it
     items = list(dedup.values())
 
-    # 3) Сбор фото
+    # 3) Сбор фото (строго по артикулу)
     target_articles = [normalize_article(it["article"]) for it in items if it.get("article")]
     target_set = set(target_articles)
 
     images_by_article: dict[str, list[str]] = {}
 
     if AUTO_DISCOVER:
-        # 3.1 Категории → ссылки на товары
         seeds = discover_category_urls()
         product_links = []
         if FOLLOW_PRODUCT_PAGES and seeds:
             product_links = crawl_categories_and_products(seeds, max_pages=MAX_PAGES, delay=CRAWL_DELAY, max_products=MAX_PRODUCTS)
-        else:
-            product_links = []
-
-        # 3.2 Обход товарных страниц
+        # обходим страницы товаров
         visited=0
         for purl in product_links:
             if visited >= MAX_PRODUCTS: break
@@ -432,7 +424,7 @@ def main():
             visited += 1
             soup = BeautifulSoup(r.text, "lxml")
             art = extract_article_from_product_page(soup)
-            if not art: 
+            if not art:
                 continue
             if art not in target_set and STRICT_IMAGE_MATCH:
                 continue
@@ -443,9 +435,8 @@ def main():
                     if s not in images_by_article[art] and len(images_by_article[art]) < 8:
                         images_by_article[art].append(s)
 
-    # 3.3 Поиск по артикулу (fallback)
+    # Поиск по сайту для тех, у кого ещё нет фото
     if SEARCH_FALLBACK and target_set:
-        # Возьмём только те, у кого ещё нет фото
         need = [a for a in target_articles if a not in images_by_article]
         need = need[:MAX_SEARCH]
         url_by_art = search_product_urls_by_articles(need, limit=MAX_SEARCH, delay=CRAWL_DELAY)
@@ -456,7 +447,6 @@ def main():
                 continue
             time.sleep(CRAWL_DELAY)
             soup = BeautifulSoup(r.text, "lxml")
-            # Проверим ещё раз артикул на странице
             art2 = extract_article_from_product_page(soup) or art
             if STRICT_IMAGE_MATCH and art2 != art:
                 continue
