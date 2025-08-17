@@ -15,11 +15,16 @@ jobs:
       OUT_FILE: "docs/copyline.yml"
       OUTPUT_ENCODING: "windows-1251"
       CATEGORIES_FILE: "docs/categories_copyline.txt"
-      URLS_FILE: "docs/categories_copyline_urls.txt"
       SEEN_FILE: "docs/copyline_seen.txt"
-      AUTO_DISCOVER: "1"     # авто-поиск категорий/страниц
-      MAX_PAGES: "400"       # безопасность, чтобы не уползло далеко
-      CRAWL_DELAY: "0.5"     # пауза между запросами
+      # автосбор фото: категории → карточки → строгая проверка артикула → поиск по артикулу
+      AUTO_DISCOVER: "1"
+      FOLLOW_PRODUCT_PAGES: "1"
+      STRICT_IMAGE_MATCH: "1"
+      SEARCH_FALLBACK: "1"
+      MAX_PAGES: "600"
+      MAX_PRODUCTS: "3000"
+      MAX_SEARCH: "2000"
+      CRAWL_DELAY: "0.6"
 
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +48,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build copyline.yml (auto-discovery)
+      - name: Build copyline.yml (auto photos, strict match)
         run: |
           mkdir -p docs
           touch docs/.nojekyll
@@ -53,11 +58,10 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
-          commit_message: "build: copyline.yml (auto-discovery)"
+          commit_message: "build: copyline.yml (auto photos)"
           file_pattern: |
             docs/copyline.yml
             docs/categories_copyline.txt
-            docs/categories_copyline_urls.txt
             docs/copyline_seen.txt
             docs/.nojekyll
           push_options: --force-with-lease
