@@ -14,21 +14,22 @@ jobs:
       XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
       OUT_FILE: "docs/copyline.yml"
       OUTPUT_ENCODING: "windows-1251"
-      CATEGORIES_FILE: "docs/categories_copyline.txt"
+      IMG_DIR: "docs/copyline_img"
+      CACHE_FILE: "data/copyline_cache.json"
       SEEN_FILE: "docs/copyline_seen.txt"
-      AUTO_DISCOVER: "1"
-      FOLLOW_PRODUCT_PAGES: "1"
-      STRICT_IMAGE_MATCH: "1"
-      SEARCH_FALLBACK: "1"
-      MAX_PAGES: "600"
-      MAX_PRODUCTS: "3000"
-      MAX_SEARCH: "2000"
-      CRAWL_DELAY: "0.6"
+      RATE_DELAY: "0.35"
+      MAX_IMG_PER_ITEM: "6"
+      MAX_SEARCH: "4000"
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Compute PAGES_BASE for GH Pages
+        run: |
+          echo "PAGES_BASE=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+          echo "Using PAGES_BASE=$PAGES_BASE"
 
       - name: Sync with remote main (before build)
         run: |
@@ -47,34 +48,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build copyline.yml (auto photos, strict match)
+      - name: Build copyline.yml (delta + search + mirror)
         run: |
-          mkdir -p docs
+          mkdir -p docs data
           touch docs/.nojekyll
-          # заранее создаём пустой seen, чтобы точно был в репо
-          : > "$SEEN_FILE"
           python scripts/build_copyline.py
 
-      - name: Verify outputs
+      - name: List outputs
         run: |
-          ls -lah docs || true
-          echo "---- first lines of seen ----"
-          sed -n '1,50p' docs/copyline_seen.txt || true
+          ls -lah docs | sed -n '1,200p'
+          echo "---- SEEN ----"
+          sed -n '1,80p' docs/copyline_seen.txt || true
 
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
-          commit_message: "build: copyline.yml (auto photos) + seen"
+          commit_message: "build: copyline.yml (delta+mirror) + cache + seen"
           file_pattern: |
             docs/copyline.yml
-            docs/categories_copyline.txt
+            docs/copyline_img/**
             docs/copyline_seen.txt
             docs/.nojekyll
+            data/copyline_cache.json
           push_options: --force-with-lease
-
-      - name: Upload seen as artifact (backup)
-        uses: actions/upload-artifact@v4
-        with:
-          name: copyline-seen
-          path: docs/copyline_seen.txt
