@@ -2,8 +2,7 @@
 from __future__ import annotations
 import os, re, io, sys, time, json, hashlib, pathlib, mimetypes, requests
 from collections import Counter
-from urllib.parse import urljoin, urlparse, urlencode
-from bs4 import BeautifulSoup
+from urllib.parse import urljoin, urlparse
 from openpyxl import load_workbook
 from xml.etree.ElementTree import Element, SubElement, ElementTree
 
@@ -20,21 +19,19 @@ MIRROR_DIR   = os.getenv("MIRROR_DIR", "docs/img_copyline")
 MIRROR_IMAGES= (os.getenv("MIRROR_IMAGES") or "0").strip().lower() in {"1","true","yes","on"}
 MAX_MIRROR_PER_ITEM = int(os.getenv("MAX_MIRROR_PER_ITEM","1"))
 
-# СИНТЕТИЧЕСКИЕ ФОТО ПО АРТИКУЛУ (КАК ТЫ ПРОСИЛ)
+# ФОТО ПО АРТИКУЛУ (шаблон, как ты просил)
 USE_SYNTH_IMAGE     = (os.getenv("USE_SYNTH_IMAGE") or "1").strip().lower() in {"1","true","yes","on"}
 PICTURE_BASE        = (os.getenv("PICTURE_BASE") or "https://copyline.kz/components/com_jshopping/files/img_products/").rstrip("/") + "/"
 
-# быстрый режим (дельта)
-STRICT_IMAGE_MATCH   = (os.getenv("STRICT_IMAGE_MATCH") or "1").strip().lower() in {"1","true","yes","on"}
+# дельта
 MAX_SEARCH    = int(os.getenv("MAX_SEARCH", "2000"))
 CRAWL_DELAY   = float(os.getenv("CRAWL_DELAY", "0.4"))
 
-# качество фото (мягко)
+# проверка картинки (мягко)
 CHECK_IMAGE_BYTES      = (os.getenv("CHECK_IMAGE_BYTES") or "0").strip().lower() in {"1","true","yes","on"}
 MIN_IMAGE_BYTES        = int(os.getenv("MIN_IMAGE_BYTES", "7000"))
 
 UA_HEADERS    = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-SITE_ORIGIN   = "https://copyline.kz"
 
 def pages_base() -> str:
     repo = os.getenv("GITHUB_REPOSITORY", "").strip()
@@ -46,6 +43,7 @@ PAGES_BASE = pages_base()
 
 # ===== UTILS =====
 def norm(s): return re.sub(r"\s+"," ", (s or "").strip())
+
 def normalize_article(s: str) -> str:
     s = (s or "").strip()
     s = s.replace("—","-").replace("–","-")
@@ -164,7 +162,7 @@ def slug(s: str, maxlen: int = 60) -> str:
     s = re.sub(r"[^a-z0-9]+","-", s.lower()).strip("-")
     return s[:maxlen] if len(s)>maxlen else s
 
-# ===== IMAGE & URL (минимум) =====
+# ===== IMAGES =====
 def ok_by_head(url: str) -> bool:
     if not CHECK_IMAGE_BYTES: return True
     try:
@@ -180,9 +178,8 @@ def ok_by_head(url: str) -> bool:
 
 def make_img_candidates(article: str) -> list[str]:
     """
-    Формируем возможные имена файла по артикулу:
-      TN-2075 → [TN-2075, TN_2075, TN2075, tn-2075, tn_2075, tn2075]
-      + расширения: .jpg .jpeg .png .webp (в приоритете JPG/JPEG)
+    TN-2075 → варианты имён и расширений.
+    Берём первое валидное.
     """
     a = normalize_article(article)
     bases = {
@@ -212,33 +209,12 @@ def find_synthetic_image(article: str) -> str|None:
     for u in make_img_candidates(article):
         try:
             if ok_by_head(u):
-                # Дополнительно сделаем лёгкий GET первых байтов, чтобы отсеять 404/редиректы на HTML
                 r = requests.get(u, headers=UA_HEADERS, timeout=25, stream=True)
                 if r.status_code == 200 and "image" in (r.headers.get("Content-Type","").lower()):
                     return u
         except Exception:
             pass
     return None
-
-# ===== CACHE =====
-def load_cache() -> dict:
-    if os.path.exists(CACHE_FILE):
-        try:
-            with open(CACHE_FILE,"r",encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            return {}
-    return {}
-
-def save_cache(cache: dict):
-    tmp = CACHE_FILE + ".tmp"
-    with open(tmp,"w",encoding="utf-8") as f:
-        json.dump(cache, f, ensure_ascii=False, indent=2)
-    os.replace(tmp, CACHE_FILE)
-
-def row_signature(name, price, qty, category) -> str:
-    base = f"{norm(name)}|{price or ''}|{qty or ''}|{norm(category)}"
-    return hashlib.sha1(base.encode("utf-8")).hexdigest()
 
 def mirror_one(url: str, art: str, idx: int) -> str|None:
     if not MIRROR_IMAGES or not PAGES_BASE:
@@ -314,7 +290,7 @@ def build_yml(items):
         q = it.get("qty") or ("1" if it["available"] else "0")
         for tag in ("quantity_in_stock","stock_quantity","quantity"): SubElement(o,tag).text=q
 
-        # РОВНО ОДНО ФОТО
+        # одно фото
         pic = None
         if it.get("mirrored_images"):
             pic = it["mirrored_images"][0]
@@ -326,26 +302,25 @@ def build_yml(items):
     buf=io.BytesIO(); ElementTree(root).write(buf, encoding=ENC, xml_declaration=True); return buf.getvalue()
 
 # ===== MAIN =====
+def best_header_map(ws):
+    headers, data_start = best_header(ws)
+    if not headers: return None, None
+    cols = map_columns(headers)
+    if cols.get("name") is None: return None, None
+    return cols, data_start
+
 def main():
     ensure_files()
     subs, regs = load_patterns(CATS_FILE)
 
-    # 1) XLSX → items
     data = fetch_xlsx(XLSX_URL)
     wb = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
 
     raw_items=[]
     seen_cats=Counter(); seen_sheets=Counter()
 
-    def map_cols(ws):
-        headers, data_start = best_header(ws)
-        if not headers: return None, None
-        cols = map_columns(headers)
-        if cols.get("name") is None: return None, None
-        return cols, data_start
-
     for ws in wb.worksheets:
-        cols, data_start = map_cols(ws)
+        cols, data_start = best_header_map(ws)
         if not cols:
             seen_sheets[ws.title]+=0; continue
         current_cat=None
@@ -358,12 +333,11 @@ def main():
             avail, qty = is_available(getc(cols.get("availability")))
             raw_cat = norm(getc(cols.get("category"))) if cols.get("category") is not None else ""
 
-            # Заголовок секции
+            # заголовки секций
             if name and not article and price is None:
                 if len(name)>3 and not re.search(r"^(цены|прайс|тенге|лист|итог)", name.lower()):
                     current_cat=name; seen_cats[current_cat]+=0
                     continue
-
             if not name and not article: continue
 
             cat = raw_cat or current_cat or norm(ws.title)
@@ -381,7 +355,7 @@ def main():
             })
             seen_cats[cat]+=1; seen_sheets[ws.title]+=1
 
-    # 2) Дедуп
+    # дедуп
     dedup={}
     for it in raw_items:
         key = ("a", it["article"]) if it["article"] else ("n", it["name"].lower(), (it["category"] or "").lower())
@@ -393,57 +367,50 @@ def main():
             dedup[key] = it
     items = list(dedup.values())
 
-    # 3) КЭШ
+    # кэш
     cache = load_cache()
     if "items" not in cache: cache["items"] = {}
     cache_changed = False
 
-    # 4) Дельта для фото
+    # дельта для фото по шаблону
     to_fetch = []
     for it in items:
         art = normalize_article(it.get("article") or "")
         if not art: continue
-        sig = row_signature(it.get("name"), it.get("price"), it.get("qty"), it.get("category"))
+        sig = f"{norm(it.get('name'))}|{it.get('price') or ''}|{it.get('qty') or ''}|{norm(it.get('category'))}"
+        sig = hashlib.sha1(sig.encode("utf-8")).hexdigest()
         entry = cache["items"].get(art)
-        need = False
-        if not entry or entry.get("row_sig") != sig or not entry.get("images"):
-            need = True
-        if need:
+        if (not entry) or (entry.get("row_sig") != sig) or (not entry.get("images")):
             to_fetch.append((art, it))
         else:
             it["images"] = entry.get("images", [])
             it["mirrored_images"] = entry.get("mirrored_images", [])
             it["url"] = entry.get("source_url", "")
 
-    # 5) Фото по шаблону (БЕЗ поиска по сайту)
     fetched_count = 0
     for art, it in to_fetch[:MAX_SEARCH]:
-        img_url, mirrored, prod_url = None, [], ""
-
+        img_url, mirrored = None, []
         if USE_SYNTH_IMAGE:
-            img_url = find_synthetic_image(art)  # ← главное: строим URL из артикула
-
-        # зеркалим 1 фото (если нужно)
+            img_url = find_synthetic_image(art)
         if img_url and MIRROR_IMAGES and PAGES_BASE:
             m = mirror_one(img_url, art, 1)
             if m: mirrored = [m]
 
-        # обновляем кэш
-        sig = row_signature(it.get("name"), it.get("price"), it.get("qty"), it.get("category"))
+        sig = f"{norm(it.get('name'))}|{it.get('price') or ''}|{it.get('qty') or ''}|{norm(it.get('category'))}"
+        sig = hashlib.sha1(sig.encode("utf-8")).hexdigest()
         cache["items"][art] = {
             "row_sig": sig,
             "images": [img_url] if img_url else [],
             "mirrored_images": mirrored,
-            "source_url": prod_url,
+            "source_url": "",
             "updated_at": int(time.time())
         }
         it["images"] = [img_url] if img_url else []
         it["mirrored_images"] = mirrored
-        it["url"] = prod_url
         cache_changed = True
         fetched_count += 1
+        time.sleep(CRAWL_DELAY)
 
-    # 6) Отчёт
     with open(SEEN_FILE,"w",encoding="utf-8") as f:
         with_pic = sum(1 for it in items if (it.get('mirrored_images') or it.get('images')))
         f.write("=== CATEGORIES (from XLSX) ===\n")
@@ -453,9 +420,11 @@ def main():
         f.write(f"PICTURE_BASE={PICTURE_BASE} | USE_SYNTH_IMAGE={USE_SYNTH_IMAGE}\n")
 
     if cache_changed:
-        save_cache(cache)
+        tmp = CACHE_FILE + ".tmp"
+        with open(tmp,"w",encoding="utf-8") as f:
+            json.dump(cache, f, ensure_ascii=False, indent=2)
+        os.replace(tmp, CACHE_FILE)
 
-    # 7) YML
     yml = build_yml(items)
     with open(OUT_FILE,"wb") as f: f.write(yml)
     print(f"{OUT_FILE}: {len(items)} items | fetched_delta={fetched_count}")
