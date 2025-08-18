@@ -2,7 +2,7 @@
 from __future__ import annotations
 import os, re, io, sys, time, json, hashlib, pathlib, mimetypes, requests
 from collections import Counter
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 from openpyxl import load_workbook
 from xml.etree.ElementTree import Element, SubElement, ElementTree
 
@@ -19,13 +19,13 @@ MIRROR_DIR   = os.getenv("MIRROR_DIR", "docs/img_copyline")
 MIRROR_IMAGES= (os.getenv("MIRROR_IMAGES") or "0").strip().lower() in {"1","true","yes","on"}
 MAX_MIRROR_PER_ITEM = int(os.getenv("MAX_MIRROR_PER_ITEM","1"))
 
-# ФОТО ПО АРТИКУЛУ (шаблон, как ты просил)
+# ФОТО ПО АРТИКУЛУ (шаблон)
 USE_SYNTH_IMAGE     = (os.getenv("USE_SYNTH_IMAGE") or "1").strip().lower() in {"1","true","yes","on"}
 PICTURE_BASE        = (os.getenv("PICTURE_BASE") or "https://copyline.kz/components/com_jshopping/files/img_products/").rstrip("/") + "/"
 
 # дельта
 MAX_SEARCH    = int(os.getenv("MAX_SEARCH", "2000"))
-CRAWL_DELAY   = float(os.getenv("CRAWL_DELAY", "0.4"))
+CRAWL_DELAY   = float(os.getenv("CRAWL_DELAY", "0.25"))
 
 # проверка картинки (мягко)
 CHECK_IMAGE_BYTES      = (os.getenv("CHECK_IMAGE_BYTES") or "0").strip().lower() in {"1","true","yes","on"}
@@ -68,15 +68,18 @@ def ensure_files():
 
 def load_patterns(path):
     subs, regs = [], []
-    with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            s=line.strip()
-            if not s or s.startswith("#"): continue
-            if s.lower().startswith("re:"):
-                try: regs.append(re.compile(s[3:], re.I))
-                except Exception: pass
-            else:
-                subs.append(s.lower())
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                s=line.strip()
+                if not s or s.startswith("#"): continue
+                if s.lower().startswith("re:"):
+                    try: regs.append(re.compile(s[3:], re.I))
+                    except Exception: pass
+                else:
+                    subs.append(s.lower())
+    except FileNotFoundError:
+        pass
     return subs, regs
 
 def fetch(url: str) -> requests.Response:
@@ -162,6 +165,22 @@ def slug(s: str, maxlen: int = 60) -> str:
     s = re.sub(r"[^a-z0-9]+","-", s.lower()).strip("-")
     return s[:maxlen] if len(s)>maxlen else s
 
+# ===== CACHE =====
+def load_cache() -> dict:
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE,"r",encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+def save_cache(cache: dict):
+    tmp = CACHE_FILE + ".tmp"
+    with open(tmp,"w",encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, CACHE_FILE)
+
 # ===== IMAGES =====
 def ok_by_head(url: str) -> bool:
     if not CHECK_IMAGE_BYTES: return True
@@ -198,7 +217,6 @@ def make_img_candidates(article: str) -> list[str]:
     for b in bases:
         for ext in exts:
             cands.append(PICTURE_BASE + b + ext)
-    # уникализация порядка
     seen=set(); uniq=[]
     for u in cands:
         if u not in seen:
@@ -420,10 +438,7 @@ def main():
         f.write(f"PICTURE_BASE={PICTURE_BASE} | USE_SYNTH_IMAGE={USE_SYNTH_IMAGE}\n")
 
     if cache_changed:
-        tmp = CACHE_FILE + ".tmp"
-        with open(tmp,"w",encoding="utf-8") as f:
-            json.dump(cache, f, ensure_ascii=False, indent=2)
-        os.replace(tmp, CACHE_FILE)
+        save_cache(cache)
 
     yml = build_yml(items)
     with open(OUT_FILE,"wb") as f: f.write(yml)
