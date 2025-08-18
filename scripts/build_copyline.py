@@ -1,107 +1,97 @@
 # scripts/build_copyline.py
 from __future__ import annotations
-import os, re, io, sys, time, hashlib, requests
-from collections import Counter, deque
-from urllib.parse import urljoin, urlparse, urlencode
+import os, re, io, sys, json, time, hashlib, mimetypes, pathlib
+import requests
+from urllib.parse import urljoin, urlencode, urlparse
+from collections import Counter
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 from xml.etree.ElementTree import Element, SubElement, ElementTree
 
-# ====== ENV ======
-XLSX_URL     = os.getenv("XLSX_URL", "https://copyline.kz/files/price-CLA.xlsx")
-OUT_FILE     = os.getenv("OUT_FILE",  "docs/copyline.yml")
-ENC          = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
-CATS_FILE    = os.getenv("CATEGORIES_FILE", "docs/categories_copyline.txt")
-SEEN_FILE    = os.getenv("SEEN_FILE", "docs/copyline_seen.txt")
+# ========= ENV =========
+XLSX_URL   = os.getenv("XLSX_URL", "https://copyline.kz/files/price-CLA.xlsx")
+OUT_FILE   = os.getenv("OUT_FILE",  "docs/copyline.yml")
+ENC        = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
 
-# авто-поиск категорий/товаров и сбор фото
-AUTO_DISCOVER        = (os.getenv("AUTO_DISCOVER") or "1").strip().lower() in {"1","true","yes","on"}
-FOLLOW_PRODUCT_PAGES = (os.getenv("FOLLOW_PRODUCT_PAGES") or "1").strip().lower() in {"1","true","yes","on"}
-STRICT_IMAGE_MATCH   = (os.getenv("STRICT_IMAGE_MATCH") or "1").strip().lower() in {"1","true","yes","on"}
-SEARCH_FALLBACK      = (os.getenv("SEARCH_FALLBACK") or "1").strip().lower() in {"1","true","yes","on"}
+# База для ссылок на картинки в фиде (GitHub Pages)
+# Воркфлоу её устанавливает автоматически (см. build_copyline.yml)
+PAGES_BASE = os.getenv("PAGES_BASE", "https://example.github.io/supplier-feeds")
 
-MAX_PAGES     = int(os.getenv("MAX_PAGES", "600"))       # максимум страниц категорий
-MAX_PRODUCTS  = int(os.getenv("MAX_PRODUCTS", "3000"))   # максимум карточек для захода внутрь
-MAX_SEARCH    = int(os.getenv("MAX_SEARCH", "2000"))     # максимум артикулов для поиска
-CRAWL_DELAY   = float(os.getenv("CRAWL_DELAY", "0.6"))   # пауза между запросами
+IMG_DIR    = os.getenv("IMG_DIR", "docs/copyline_img")
+CACHE_FILE = os.getenv("CACHE_FILE", "data/copyline_cache.json")
+SEEN_FILE  = os.getenv("SEEN_FILE",  "docs/copyline_seen.txt")
 
-UA_HEADERS    = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-SITE_ORIGIN   = "https://copyline.kz"
+# Троттлинг и лимиты
+RATE_DELAY = float(os.getenv("RATE_DELAY", "0.35"))  # пауза между сетевыми запросами
+MAX_IMG_PER_ITEM = int(os.getenv("MAX_IMG_PER_ITEM", "6"))
+MAX_SEARCH = int(os.getenv("MAX_SEARCH", "4000"))    # артикулов на поиск за прогон
 
-# ====== UTILS ======
+SITE = "https://copyline.kz"
+UA   = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+
+# ========= УТИЛЫ =========
 def norm(s): return re.sub(r"\s+"," ", (s or "").strip())
-def domain(u): return urlparse(u).netloc
+def md5(s: str) -> str: return hashlib.md5(s.encode("utf-8")).hexdigest()
+def ensure_dirs():
+    pathlib.Path(os.path.dirname(OUT_FILE)).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(os.path.dirname(CACHE_FILE)).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(IMG_DIR).mkdir(parents=True, exist_ok=True)
+    pathlib.Path("docs/.nojekyll").write_text("", encoding="utf-8")
 
 def normalize_article(s: str) -> str:
     s = (s or "").strip()
-    s = re.sub(r"[\s\-_]+","", s)             # убрать пробелы/дефисы/подчёркивания
+    s = re.sub(r"[\s\-_]+","", s)
     s = s.replace("—","").replace("–","")
     return s.upper()
+
+def fetch(session: requests.Session, url: str) -> requests.Response:
+    r = session.get(url, headers=UA, timeout=60)
+    r.raise_for_status()
+    return r
+
+def parse_price(v) -> int|None:
+    if v is None: return None
+    t = norm(str(v)).replace("₸","").replace("тг","")
+    digits = re.sub(r"[^\d]","", t)
+    return int(digits) if digits else None
+
+def is_available(v) -> tuple[bool,str]:
+    s = norm(str(v)).lower()
+    if not s or s in {"-","—","н/д","нет"}: return False, "0"
+    if s.isdigit(): q=int(s); return (q>0), str(q)
+    if re.search(r">\s*\d+", s): return True, "10"
+    if "есть" in s or "в наличии" in s or "да" in s: return True, "1"
+    return True, "1"
 
 HEADER_HINTS = {
     "name":        ["номенклатура","наименование","название","товар","описание"],
     "article":     ["артикул","номенклатура.артикул","sku","код товара","код","модель","part number","pn","p/n"],
     "availability":["остаток","наличие","кол-во","количество","qty","stock","остатки"],
-    "price":       ["цена","опт цена","опт. цена","розница","стоимость","цена, тг","цена тг","retail","опт"],
+    "price":       ["цена","опт","розница","стоимость","цена, тг","цена тг"],
     "unit":        ["ед.","ед","единица"],
     "category":    ["категория","раздел","группа","тип"],
 }
 
-def ensure_files():
-    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    # фильтр категорий (может быть пустым)
-    if not os.path.exists(CATS_FILE):
-        with open(CATS_FILE, "w", encoding="utf-8") as f:
-            f.write("# Паттерны-ВКЛЮЧЕНИЯ (если пусто — берём всё)\n")
-
-def load_patterns(path):
-    subs, regs = [], []
-    with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            s=line.strip()
-            if not s or s.startswith("#"): continue
-            if s.lower().startswith("re:"):
-                try: regs.append(re.compile(s[3:], re.I))
-                except Exception: pass
-            else:
-                subs.append(s.lower())
-    return subs, regs
-
-def fetch(url: str) -> requests.Response:
-    r = requests.get(url, headers=UA_HEADERS, timeout=60)
-    r.raise_for_status()
-    return r
-
-def fetch_xlsx(url: str) -> bytes:
-    return fetch(url).content
-
-# ====== HEADER PARSING (двухстрочная шапка) ======
 def best_header(ws):
     def score(row_vals):
-        low = [norm(x).lower() for x in row_vals]
+        low=[norm(x).lower() for x in row_vals]
         matched=set()
         for key,hints in HEADER_HINTS.items():
             for cell in low:
-                if any(h in cell for h in hints):
-                    matched.add(key); break
+                if any(h in cell for h in hints): matched.add(key); break
         return len(matched)
-
     rows=[]
     for row in ws.iter_rows(min_row=1, max_row=40, values_only=True):
         rows.append([norm("" if v is None else str(v)) for v in row])
-
     best=([], None, -1)
     for i,r in enumerate(rows):
         sc=score(r)
         if sc>best[2]: best=(r, i+1, sc)
-
     for i in range(len(rows)-1):
         a,b=rows[i],rows[i+1]
-        m=max(len(a),len(b))
-        merged=[]
+        m=max(len(a),len(b)); merged=[]
         for j in range(m):
-            x=a[j] if j<len(a) else ""
-            y=b[j] if j<len(b) else ""
+            x=a[j] if j<len(a) else ""; y=b[j] if j<len(b) else ""
             merged.append(" ".join(t for t in (x,y) if t).strip())
         sc=score(merged)
         if sc>best[2]: best=(merged, i+2, sc)
@@ -122,174 +112,94 @@ def map_columns(headers):
     cols["category"]    = find_any(HEADER_HINTS["category"])
     return cols
 
-def parse_price(v) -> int|None:
-    if v is None: return None
-    t = norm(str(v)).replace("₸","").replace("тг","")
-    digits = re.sub(r"[^\d]","", t)
-    return int(digits) if digits else None
+# ========= КЭШ =========
+def load_cache() -> dict:
+    if not os.path.exists(CACHE_FILE): return {}
+    try:
+        return json.loads(pathlib.Path(CACHE_FILE).read_text(encoding="utf-8"))
+    except Exception:
+        return {}
 
-def is_available(v) -> tuple[bool,str]:
-    s = norm(str(v)).lower()
-    if not s or s in {"-","—","н/д","нет"}: return False, "0"
-    if s.isdigit(): q=int(s); return (q>0), str(q)
-    if re.search(r">\s*\d+", s): return True, "10"
-    if "есть" in s or "в наличии" in s or "да" in s: return True, "1"
-    return True, "1"
+def save_cache(cache: dict):
+    pathlib.Path(CACHE_FILE).write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
 
-def pass_filters(cat: str, sheet: str, name: str, subs, regs) -> bool:
-    if not subs and not regs: return True
-    hay = (cat.lower(), sheet.lower(), name.lower())
-    if any(sub in h for sub in subs for h in hay): return True
-    if any(r.search(h) for r in regs for h in hay): return True
-    return False
+def row_hash(it: dict) -> str:
+    key = f"{it.get('name','')}|{it.get('price','')}|{it.get('available','')}|{it.get('qty','')}|{it.get('category','')}"
+    return md5(key)
 
-def hash_int(s: str) -> int:
-    return int(hashlib.md5(s.encode("utf-8")).hexdigest()[:6],16)
+# ========= ПОИСК ССЫЛКИ НА ТОВАР И ВЫТАСКИВАНИЕ КАРТИНОК =========
+ARTICLE_RE = re.compile(r"(?:артикул|sku|код|pn|p/n)\s*[:#\-]?\s*([A-Za-z0-9\-\._/]+)", re.I)
 
-def slug(s: str, maxlen: int = 40) -> str:
-    s = re.sub(r"[^a-z0-9]+","-", s.lower()).strip("-")
-    return s[:maxlen]
-
-ROOT_CAT_ID = "9300000"
-def cat_id_for(name: str) -> str:
-    return str(9300001 + (hash_int(name.lower()) % 400000))
-
-def make_offer_id(it: dict) -> str:
-    art = (it.get("article") or "").strip()
-    if art: return f"copyline:{art}"
-    base = slug(it.get("name",""))
-    h = hashlib.md5((it.get("name","").lower()+"|"+(it.get("category") or "").lower()).encode("utf-8")).hexdigest()[:8]
-    return f"copyline:{base}:{h}"
-
-# ====== IMAGE SCRAPING (ТОЛЬКО ПРИ ТОЧНОМ СОВПАДЕНИИ АРТИКУЛА) ======
-ARTICLE_RE = re.compile(r"(?:артикул|код|sku|модель|pn|p/n)\s*[:#\-]?\s*([A-Za-z0-9\-\._/]+)", re.I)
-DIGITS_RE  = re.compile(r"\b\d{4,}\b")
-
-def extract_article_candidates(text: str):
-    out=set()
-    for m in ARTICLE_RE.finditer(text): out.add(m.group(1))
-    for m in DIGITS_RE.finditer(text):  out.add(m.group(0))
-    return out
-
-def pick_img_src(img):
-    for attr in ("data-src","data-original","src"):
-        val = img.get(attr)
-        if val: return val
-    return None
-
-def extract_article_from_product_page(soup: BeautifulSoup) -> str|None:
-    # 1) itemprop=sku, или явный текст "Артикул"
+def extract_article_from_page(soup: BeautifulSoup) -> str|None:
     sku = soup.select_one('[itemprop="sku"]')
     if sku and sku.get_text(strip=True):
         return normalize_article(sku.get_text(strip=True))
     txt = soup.get_text(" ", strip=True)
-    cands = extract_article_candidates(txt)
-    for c in cands:
-        return normalize_article(c)
+    m = ARTICLE_RE.search(txt)
+    if m: return normalize_article(m.group(1))
     return None
 
-def extract_images_from_product_page(soup: BeautifulSoup, base_url: str) -> list[str]:
-    urls=[]
+def extract_images_from_page(soup: BeautifulSoup, base_url: str, limit=8) -> list[str]:
+    out=[]
+    def pick(img):
+        for a in ("data-src","data-original","src"):
+            v=img.get(a)
+            if v: return v
+        return None
     for img in soup.find_all("img"):
-        src = pick_img_src(img)
+        src = pick(img)
         if not src: continue
         u = urljoin(base_url, src)
-        if u not in urls:
-            urls.append(u)
-        if len(urls) >= 8: break
-    return urls
+        if u not in out:
+            out.append(u)
+            if len(out)>=limit: break
+    return out
 
-def discover_category_urls() -> list[str]:
-    urls=set()
-    # sitemap
-    for sm in (f"{SITE_ORIGIN}/sitemap.xml", f"{SITE_ORIGIN}/sitemap_index.xml"):
+def search_product_url_by_article(session: requests.Session, art: str) -> str|None:
+    for qurl in [f"{SITE}/search/?{urlencode({'q': art})}",
+                 f"{SITE}/?s={art}"]:
         try:
-            r = fetch(sm)
-            soup = BeautifulSoup(r.text, "xml")
-            for loc in soup.find_all("loc"):
-                u = (loc.text or "").strip()
-                if "/goods/" in u and domain(u) == domain(SITE_ORIGIN):
-                    urls.add(u)
-        except Exception:
-            pass
-    # стартовая /goods/
-    try:
-        r = fetch(f"{SITE_ORIGIN}/goods/")
-        soup = BeautifulSoup(r.text, "lxml")
-        for a in soup.select('a[href*="/goods/"]'):
-            href = a.get("href") or ""
-            if not href: continue
-            u = urljoin(SITE_ORIGIN, href)
-            if domain(u) != domain(SITE_ORIGIN): continue
-            if "/goods/" in u: urls.add(u)
-    except Exception:
-        pass
-    return sorted(urls)
-
-def crawl_categories_and_products(seed_urls: list[str], max_pages=400, delay=0.6, max_products=2000):
-    """Собираем ссылки на товарные страницы из листингов."""
-    seen=set(); q=deque(); product_links=set(); pages=0
-    for u in seed_urls:
-        if "/goods/" in u and domain(u) == domain(SITE_ORIGIN):
-            q.append(u)
-
-    while q and pages < max_pages and len(product_links) < max_products:
-        url = q.popleft()
-        if url in seen: continue
-        seen.add(url); pages += 1
-        try:
-            r = fetch(url)
+            r = fetch(session, qurl)
         except Exception:
             continue
-        time.sleep(delay)
+        time.sleep(RATE_DELAY)
         soup = BeautifulSoup(r.text, "lxml")
+        a = soup.select_one('a[href*="/goods/"][href$=".html"]')
+        if a and a.get("href"):
+            u = urljoin(qurl, a.get("href"))
+            if urlparse(u).netloc == urlparse(SITE).netloc:
+                return u
+    return None
 
-        # товарные ссылки (заканчиваются .html)
-        for a in soup.select('a[href*="/goods/"]'):
-            href = a.get("href") or ""
-            if not href: continue
-            u = urljoin(url, href)
-            if domain(u) != domain(SITE_ORIGIN): continue
-            if re.search(r"/goods/.+\.html?$", u, re.I):
-                product_links.add(u)
-                if len(product_links) >= max_products: break
+def mirror_image(session: requests.Session, url: str, save_to: pathlib.Path) -> str|None:
+    try:
+        r = session.get(url, headers=UA, timeout=60, stream=True)
+        r.raise_for_status()
+    except Exception:
+        return None
+    # Определяем расширение
+    ext = None
+    ct = r.headers.get("Content-Type","").lower()
+    if "image/" in ct:
+        ext = mimetypes.guess_extension(ct.split(";")[0].strip()) or ".jpg"
+    if not ext:
+        p = urlparse(url).path
+        ext = os.path.splitext(p)[1] or ".jpg"
+    save_to = save_to.with_suffix(ext)
+    save_to.parent.mkdir(parents=True, exist_ok=True)
+    with open(save_to, "wb") as f:
+        for chunk in r.iter_content(chunk_size=8192):
+            if chunk: f.write(chunk)
+    # Вернём публичный URL на GH Pages
+    repo_path = str(save_to).replace("\\","/").split("docs/",1)[1]
+    return f"{PAGES_BASE}/{repo_path}"
 
-        # пагинация
-        for link in soup.find_all("a", href=True):
-            href = link["href"]
-            u = urljoin(url, href)
-            if domain(u) != domain(SITE_ORIGIN): continue
-            if "/goods/" not in u: continue
-            if u not in seen and (re.search(r"page|PAGEN|PAGEN_1|\d", u, re.I) or any(x in (link.get_text() or "").lower() for x in ("след", "далее", "next"))):
-                q.append(u)
+# ========= СБОР ДАННЫХ И ВЫГРУЗКА =========
+ROOT_CAT_ID = "9300000"
+def cat_id_for(name: str) -> str:
+    h=int(hashlib.md5(name.lower().encode("utf-8")).hexdigest()[:6],16)
+    return str(9300001 + (h % 400000))
 
-    return sorted(product_links)
-
-def search_product_urls_by_articles(articles: list[str], limit=1000, delay=0.6) -> dict[str,str]:
-    """Ищем страницы товара по артикулу (поиск сайта). Возвращает map: article_norm -> product_url."""
-    found={}
-    cnt=0
-    for art in articles:
-        if cnt >= limit: break
-        q1 = f"{SITE_ORIGIN}/search/?{urlencode({'q': art})}"
-        q2 = f"{SITE_ORIGIN}/?s={art}"
-        for qurl in (q1, q2):
-            try:
-                r = fetch(qurl)
-            except Exception:
-                continue
-            time.sleep(delay)
-            soup = BeautifulSoup(r.text, "lxml")
-            a = soup.select_one('a[href*="/goods/"][href$=".html"]')
-            if a and a.get("href"):
-                u = urljoin(qurl, a.get("href"))
-                if domain(u) == domain(SITE_ORIGIN):
-                    found[normalize_article(art)] = u
-                    break
-        cnt += 1
-    return found
-
-# ====== BUILD YML ======
 def build_yml(items):
     cats={}
     for it in items:
@@ -306,16 +216,15 @@ def build_yml(items):
         SubElement(xml_cats,"category",{"id":cid,"parentId":ROOT_CAT_ID}).text=nm
 
     offers=SubElement(shop,"offers")
-    used_ids=set()
+    used=set()
     for it in items:
-        oid = make_offer_id(it)
-        if oid in used_ids:
-            extra = hashlib.md5((it.get("name","")+str(it.get("price"))+(it.get("qty") or "")).encode("utf-8")).hexdigest()[:6]
-            oid = f"{oid}-{extra}"
+        art = (it.get("article") or "").strip()
+        oid = f"copyline:{art}" if art else f"copyline:{hashlib.md5((it.get('name','')+it.get('category','')).encode()).hexdigest()[:8]}"
+        if oid in used:
             i=2
-            while oid in used_ids:
-                oid=f"{oid}-{i}"; i+=1
-        used_ids.add(oid)
+            while f"{oid}-{i}" in used: i+=1
+            oid=f"{oid}-{i}"
+        used.add(oid)
 
         cid = cats.get(it.get("category") or "Copyline", ROOT_CAT_ID)
         o = SubElement(offers,"offer",{
@@ -328,7 +237,7 @@ def build_yml(items):
         SubElement(o,"currencyId").text="KZT"
         SubElement(o,"categoryId").text=cid
         if it.get("brand"): SubElement(o,"vendor").text=it["brand"]
-        if it.get("article"): SubElement(o,"vendorCode").text=it["article"]
+        if art: SubElement(o,"vendorCode").text=art
         q = it.get("qty") or ("1" if it["available"] else "0")
         for tag in ("quantity_in_stock","stock_quantity","quantity"): SubElement(o,tag).text=q
         for p in it.get("images", []):
@@ -336,28 +245,24 @@ def build_yml(items):
 
     buf=io.BytesIO(); ElementTree(root).write(buf, encoding=ENC, xml_declaration=True); return buf.getvalue()
 
-# ====== MAIN ======
 def main():
-    ensure_files()
-    subs, regs = load_patterns(CATS_FILE)
+    ensure_dirs()
+    cache = load_cache()
+    session = requests.Session()
 
-    # 1) XLSX → items
-    data = fetch_xlsx(XLSX_URL)
-    wb = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
+    # 1) XLSX -> items (быстро)
+    x = fetch(session, XLSX_URL).content
+    wb = load_workbook(io.BytesIO(x), read_only=True, data_only=True)
 
-    raw_items=[]
-    seen_cats=Counter(); seen_sheets=Counter()
-
+    raw=[]; seen_sheets=Counter()
     for ws in wb.worksheets:
-        headers, data_start = best_header(ws)
-        if not headers:
-            seen_sheets[ws.title]+=0; continue
+        headers, start = best_header(ws)
+        if not headers: continue
         cols = map_columns(headers)
-        if cols.get("name") is None:
-            seen_sheets[ws.title]+=0; continue
+        if cols.get("name") is None: continue
 
         current_cat=None
-        for row in ws.iter_rows(min_row=data_start, values_only=True):
+        for row in ws.iter_rows(min_row=start, values_only=True):
             row=list(row)
             def getc(idx): return None if idx is None or idx>=len(row) else row[idx]
             name    = norm(getc(cols.get("name")))
@@ -367,19 +272,14 @@ def main():
             raw_cat = norm(getc(cols.get("category"))) if cols.get("category") is not None else ""
 
             # Заголовок секции
-            if name and not article and price is None:
-                if len(name)>3 and not re.search(r"^(цены|прайс|тенге|лист|итог)", name.lower()):
-                    current_cat=name; seen_cats[current_cat]+=0
-                    continue
-
+            if name and not article and price is None and len(name)>3 and not re.search(r"^(цены|прайс|тенге|лист|итог)", name.lower()):
+                current_cat=name; continue
             if not name and not article: continue
 
             cat = raw_cat or current_cat or norm(ws.title)
-            seen_cats[cat]+=1; seen_sheets[ws.title]+=1
+            seen_sheets[ws.title]+=1
 
-            if not pass_filters(cat, ws.title, name or article, subs, regs): continue
-
-            raw_items.append({
+            item = {
                 "article": article,
                 "name": name or article,
                 "brand": "",
@@ -387,94 +287,89 @@ def main():
                 "price": price,
                 "available": avail,
                 "qty": qty,
-            })
+            }
+            raw.append(item)
 
-    # 2) Дедуп по артикулу/имени+категории
+    # 2) Дедуп: по артикулу, иначе по (name+category)
     dedup={}
-    for it in raw_items:
+    for it in raw:
         key = ("a", it["article"]) if it["article"] else ("n", it["name"].lower(), (it["category"] or "").lower())
-        if key in dedup:
-            old = dedup[key]
-            better = it if (it["price"] and not old["price"]) or (it["available"] and not old["available"]) else old
-            dedup[key] = better
+        if key not in dedup: dedup[key]=it
         else:
-            dedup[key] = it
-    items = list(dedup.values())
+            old=dedup[key]
+            better = it if (it["price"] and not old["price"]) or (it["available"] and not old["available"]) else old
+            dedup[key]=better
+    items=list(dedup.values())
 
-    # 3) Сбор фото (строго по артикулу)
-    target_articles = [normalize_article(it["article"]) for it in items if it.get("article")]
-    target_set = set(target_articles)
-
-    images_by_article: dict[str, list[str]] = {}
-
-    if AUTO_DISCOVER:
-        seeds = discover_category_urls()
-        product_links = []
-        if FOLLOW_PRODUCT_PAGES and seeds:
-            product_links = crawl_categories_and_products(seeds, max_pages=MAX_PAGES, delay=CRAWL_DELAY, max_products=MAX_PRODUCTS)
-        # обходим страницы товаров
-        visited=0
-        for purl in product_links:
-            if visited >= MAX_PRODUCTS: break
-            try:
-                r = fetch(purl)
-            except Exception:
-                continue
-            time.sleep(CRAWL_DELAY)
-            visited += 1
-            soup = BeautifulSoup(r.text, "lxml")
-            art = extract_article_from_product_page(soup)
-            if not art:
-                continue
-            if art not in target_set and STRICT_IMAGE_MATCH:
-                continue
-            imgs = extract_images_from_product_page(soup, purl)
-            if imgs:
-                images_by_article.setdefault(art, [])
-                for s in imgs:
-                    if s not in images_by_article[art] and len(images_by_article[art]) < 8:
-                        images_by_article[art].append(s)
-
-    # Поиск по сайту для тех, у кого ещё нет фото
-    if SEARCH_FALLBACK and target_set:
-        need = [a for a in target_articles if a not in images_by_article]
-        need = need[:MAX_SEARCH]
-        url_by_art = search_product_urls_by_articles(need, limit=MAX_SEARCH, delay=CRAWL_DELAY)
-        for art, purl in url_by_art.items():
-            try:
-                r = fetch(purl)
-            except Exception:
-                continue
-            time.sleep(CRAWL_DELAY)
-            soup = BeautifulSoup(r.text, "lxml")
-            art2 = extract_article_from_product_page(soup) or art
-            if STRICT_IMAGE_MATCH and art2 != art:
-                continue
-            imgs = extract_images_from_product_page(soup, purl)
-            if imgs:
-                images_by_article.setdefault(art, [])
-                for s in imgs:
-                    if s not in images_by_article[art] and len(images_by_article[art]) < 8:
-                        images_by_article[art].append(s)
-
-    # Присвоим фото к items
+    # 3) ДЕЛЬТА: решаем, кому искать фото (только новые/изменённые и без фото в кэше)
+    todo=[]; keep=0
     for it in items:
         art = normalize_article(it.get("article") or "")
-        it["images"] = images_by_article.get(art, [])
+        h = row_hash(it)
+        c = cache.get(art)
+        if c and c.get("row_hash")==h and c.get("images"):
+            # ничего не делаем, берём из кэша
+            it["images"]=c["images"]
+            keep+=1
+        else:
+            todo.append(it)
 
-    # 4) Отчёт
+    # 4) Поиск ссылок и зеркалирование фото (ТОЛЬКО по артикулу, без обхода категорий)
+    searched=0; added=0
+    for it in todo:
+        if searched>=MAX_SEARCH: break
+        art_raw = it.get("article") or ""
+        art = normalize_article(art_raw)
+        if not art:
+            cache[art_raw] = {"row_hash": row_hash(it), "images": []}
+            continue
+
+        # Поиск страницы
+        url = search_product_url_by_article(session, art)
+        searched += 1
+        time.sleep(RATE_DELAY)
+        imgs_final=[]
+
+        if url:
+            # Открываем карточку, подтверждаем артикул, тянем картинки
+            try:
+                r = fetch(session, url); time.sleep(RATE_DELAY)
+                soup = BeautifulSoup(r.text, "lxml")
+                art_page = extract_article_from_page(soup)
+                if art_page == art:
+                    imgs = extract_images_from_page(soup, url, limit=MAX_IMG_PER_ITEM)
+                    # Зеркалим
+                    out_dir = pathlib.Path(IMG_DIR) / art
+                    i=1
+                    for src in imgs:
+                        murl = mirror_image(session, src, out_dir / f"{i}")
+                        if murl:
+                            imgs_final.append(murl); i+=1
+                            if len(imgs_final)>=MAX_IMG_PER_ITEM: break
+            except Exception:
+                pass
+
+        it["images"] = imgs_final
+        cache[art] = {
+            "row_hash": row_hash(it),
+            "images": imgs_final,
+            "product_url": url or "",
+            "updated_at": int(time.time())
+        }
+        if imgs_final: added+=1
+
+    # 5) Запись кэша, отчёт
+    save_cache(cache)
     with open(SEEN_FILE,"w",encoding="utf-8") as f:
-        f.write("=== CATEGORIES (inferred from XLSX) ===\n")
-        for k,v in seen_cats.most_common(500):
-            f.write(f"{k}\t{v}\n")
-        got_photos = sum(1 for it in items if it.get('images'))
-        f.write(f"\nRaw items: {len(raw_items)} | After dedup: {len(items)} | With photos: {got_photos}\n")
-        f.write(f"AUTO_DISCOVER={AUTO_DISCOVER} FOLLOW_PRODUCT_PAGES={FOLLOW_PRODUCT_PAGES} STRICT_IMAGE_MATCH={STRICT_IMAGE_MATCH} SEARCH_FALLBACK={SEARCH_FALLBACK}\n")
+        f.write(f"Sheets: {sum(seen_sheets.values())} rows read across {len(seen_sheets)} sheets\n")
+        f.write(f"Items total: {len(items)} | From cache (images): {keep} | Newly imaged: {added} | Searched: {searched}\n")
+        f.write(f"Images dir: {IMG_DIR}\n")
+        f.write(f"Pages base: {PAGES_BASE}\n")
 
-    # 5) Выгрузка
+    # 6) YML → GH Pages
     yml = build_yml(items)
     with open(OUT_FILE,"wb") as f: f.write(yml)
-    print(f"{OUT_FILE}: {len(items)} items")
+    print(f"{OUT_FILE}: {len(items)} items; cache={CACHE_FILE}; images in {IMG_DIR}")
     print(f"Seen → {SEEN_FILE}")
 
 if __name__=="__main__":
