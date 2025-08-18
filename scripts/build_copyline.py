@@ -14,20 +14,24 @@ ENC          = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
 CATS_FILE    = os.getenv("CATEGORIES_FILE", "docs/categories_copyline.txt")
 SEEN_FILE    = os.getenv("SEEN_FILE", "docs/copyline_seen.txt")
 CACHE_FILE   = os.getenv("CACHE_FILE", "docs/copyline_cache.json")
+
+# КАРТИНКИ
 MIRROR_DIR   = os.getenv("MIRROR_DIR", "docs/img_copyline")
-MIRROR_IMAGES= (os.getenv("MIRROR_IMAGES") or "1").strip().lower() in {"1","true","yes","on"}
-MAX_MIRROR_PER_ITEM = int(os.getenv("MAX_MIRROR_PER_ITEM","1"))  # оставляем 1, т.к. берём ровно одно фото
+MIRROR_IMAGES= (os.getenv("MIRROR_IMAGES") or "0").strip().lower() in {"1","true","yes","on"}
+MAX_MIRROR_PER_ITEM = int(os.getenv("MAX_MIRROR_PER_ITEM","1"))
+
+# СИНТЕТИЧЕСКИЕ ФОТО ПО АРТИКУЛУ (КАК ТЫ ПРОСИЛ)
+USE_SYNTH_IMAGE     = (os.getenv("USE_SYNTH_IMAGE") or "1").strip().lower() in {"1","true","yes","on"}
+PICTURE_BASE        = (os.getenv("PICTURE_BASE") or "https://copyline.kz/components/com_jshopping/files/img_products/").rstrip("/") + "/"
 
 # быстрый режим (дельта)
 STRICT_IMAGE_MATCH   = (os.getenv("STRICT_IMAGE_MATCH") or "1").strip().lower() in {"1","true","yes","on"}
-SEARCH_FALLBACK      = (os.getenv("SEARCH_FALLBACK") or "1").strip().lower() in {"1","true","yes","on"}
 MAX_SEARCH    = int(os.getenv("MAX_SEARCH", "2000"))
 CRAWL_DELAY   = float(os.getenv("CRAWL_DELAY", "0.4"))
 
-# усиление качества фото
-FORCE_REFETCH_NO_PHOTO = (os.getenv("FORCE_REFETCH_NO_PHOTO") or "1").strip().lower() in {"1","true","yes","on"}
-CHECK_IMAGE_BYTES      = (os.getenv("CHECK_IMAGE_BYTES") or "1").strip().lower() in {"1","true","yes","on"}
-MIN_IMAGE_BYTES        = int(os.getenv("MIN_IMAGE_BYTES", "7000"))  # <7 KB считаем мусором
+# качество фото (мягко)
+CHECK_IMAGE_BYTES      = (os.getenv("CHECK_IMAGE_BYTES") or "0").strip().lower() in {"1","true","yes","on"}
+MIN_IMAGE_BYTES        = int(os.getenv("MIN_IMAGE_BYTES", "7000"))
 
 UA_HEADERS    = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 SITE_ORIGIN   = "https://copyline.kz"
@@ -44,9 +48,9 @@ PAGES_BASE = pages_base()
 def norm(s): return re.sub(r"\s+"," ", (s or "").strip())
 def normalize_article(s: str) -> str:
     s = (s or "").strip()
-    s = re.sub(r"[\s\-_]+","", s)
-    s = s.replace("—","").replace("–","")
-    return s.upper()
+    s = s.replace("—","-").replace("–","-")
+    s = re.sub(r"[ \t]+","", s)
+    return s
 
 HEADER_HINTS = {
     "name":        ["номенклатура","наименование","название","товар","описание"],
@@ -160,83 +164,60 @@ def slug(s: str, maxlen: int = 60) -> str:
     s = re.sub(r"[^a-z0-9]+","-", s.lower()).strip("-")
     return s[:maxlen] if len(s)>maxlen else s
 
-# ===== IMAGE & URL EXTRACTION =====
-ARTICLE_RE = re.compile(r"(?:артикул|код|sku|модель|pn|p/n)\s*[:#\-]?\s*([A-Za-z0-9\-\._/]+)", re.I)
-DIGITS_RE  = re.compile(r"\b\d{4,}\b")
-BAD_IMG_PAT = re.compile(r"(no[-_ ]?photo|placeholder|spacer|logo|blank|stub|1x1|pixel)", re.I)
-
-def extract_article_from_product_page(soup: BeautifulSoup) -> str|None:
-    sku = soup.select_one('[itemprop="sku"]')
-    if sku and sku.get_text(strip=True):
-        return normalize_article(sku.get_text(strip=True))
-    txt = soup.get_text(" ", strip=True)
-    for m in ARTICLE_RE.finditer(txt):
-        return normalize_article(m.group(1))
-    for m in DIGITS_RE.finditer(txt):
-        return normalize_article(m.group(0))
-    return None
-
-def looks_bad_image(url: str) -> bool:
-    if BAD_IMG_PAT.search(url): return True
-    if url.lower().startswith("data:"): return True
-    return False
-
+# ===== IMAGE & URL (минимум) =====
 def ok_by_head(url: str) -> bool:
     if not CHECK_IMAGE_BYTES: return True
     try:
         h = requests.head(url, headers=UA_HEADERS, timeout=20, allow_redirects=True)
         ct = (h.headers.get("Content-Type") or "").lower()
-        if "image" not in ct: return False
+        if "image" not in ct:
+            return True
         cl = h.headers.get("Content-Length")
         if cl is None: return True
         return int(cl) >= MIN_IMAGE_BYTES
     except Exception:
-        return True  # не блокируем, если HEAD не дался
+        return True
 
-def extract_main_image_url(soup: BeautifulSoup, base_url: str) -> str|None:
+def make_img_candidates(article: str) -> list[str]:
     """
-    БЕРЁМ РОВНО ОДНО ФОТО:
-    1) <img itemprop="image"> или id="main_image_*"
-    2) если нет — <meta property="og:image">
-    Фильтр: путь должен содержать 'img_products' (как в твоём образце).
+    Формируем возможные имена файла по артикулу:
+      TN-2075 → [TN-2075, TN_2075, TN2075, tn-2075, tn_2075, tn2075]
+      + расширения: .jpg .jpeg .png .webp (в приоритете JPG/JPEG)
     """
-    # 1) itemprop="image"
-    img = soup.select_one('img[itemprop="image"]')
-    if not img:
-        img = soup.select_one('img[id^="main_image_"]')
-    if img:
-        src = img.get("data-src") or img.get("data-original") or img.get("src")
-        if src:
-            u = urljoin(base_url, src)
-            if "img_products" in u and not looks_bad_image(u) and ok_by_head(u):
-                return u
+    a = normalize_article(article)
+    bases = {
+        a,
+        a.upper(),
+        a.lower(),
+        a.replace("-", "_"),
+        a.replace("-", ""),
+        a.replace("_", "-"),
+        a.replace("_", ""),
+        a.replace("/", "-"),
+        a.replace("/", ""),
+    }
+    exts = [".jpg",".jpeg",".JPG",".JPEG",".png",".webp"]
+    cands=[]
+    for b in bases:
+        for ext in exts:
+            cands.append(PICTURE_BASE + b + ext)
+    # уникализация порядка
+    seen=set(); uniq=[]
+    for u in cands:
+        if u not in seen:
+            uniq.append(u); seen.add(u)
+    return uniq
 
-    # 2) og:image
-    meta = soup.select_one('meta[property="og:image"], meta[name="og:image"]')
-    if meta:
-        u = (meta.get("content") or "").strip()
-        if u:
-            u = urljoin(base_url, u)
-            if "img_products" in u and not looks_bad_image(u) and ok_by_head(u):
-                return u
-
-    return None
-
-def search_product_url_by_article(article: str) -> str|None:
-    q1 = f"{SITE_ORIGIN}/search/?{urlencode({'q': article})}"
-    q2 = f"{SITE_ORIGIN}/?s={article}"
-    for qurl in (q1, q2):
+def find_synthetic_image(article: str) -> str|None:
+    for u in make_img_candidates(article):
         try:
-            r = fetch(qurl)
+            if ok_by_head(u):
+                # Дополнительно сделаем лёгкий GET первых байтов, чтобы отсеять 404/редиректы на HTML
+                r = requests.get(u, headers=UA_HEADERS, timeout=25, stream=True)
+                if r.status_code == 200 and "image" in (r.headers.get("Content-Type","").lower()):
+                    return u
         except Exception:
-            continue
-        time.sleep(CRAWL_DELAY)
-        soup = BeautifulSoup(r.text, "lxml")
-        a = soup.select_one('a[href*="/goods/"][href$=".html"]')
-        if a and a.get("href"):
-            u = urljoin(qurl, a.get("href"))
-            if urlparse(u).netloc == urlparse(SITE_ORIGIN).netloc:
-                return u
+            pass
     return None
 
 # ===== CACHE =====
@@ -265,9 +246,7 @@ def mirror_one(url: str, art: str, idx: int) -> str|None:
     try:
         r = requests.get(url, headers=UA_HEADERS, timeout=60, stream=True)
         r.raise_for_status()
-        ext = pathlib.Path(urlparse(url).path).suffix.lower()
-        if not ext:
-            ext = mimetypes.guess_extension(r.headers.get("Content-Type","").split(";")[0].strip() or "") or ".jpg"
+        ext = pathlib.Path(urlparse(url).path).suffix.lower() or ".jpg"
         safe_art = slug(art.lower(), maxlen=80)
         d = pathlib.Path(MIRROR_DIR) / safe_art
         d.mkdir(parents=True, exist_ok=True)
@@ -334,6 +313,7 @@ def build_yml(items):
         if it.get("article"): SubElement(o,"vendorCode").text=it["article"]
         q = it.get("qty") or ("1" if it["available"] else "0")
         for tag in ("quantity_in_stock","stock_quantity","quantity"): SubElement(o,tag).text=q
+
         # РОВНО ОДНО ФОТО
         pic = None
         if it.get("mirrored_images"):
@@ -418,7 +398,7 @@ def main():
     if "items" not in cache: cache["items"] = {}
     cache_changed = False
 
-    # 4) Дельта для поиска
+    # 4) Дельта для фото
     to_fetch = []
     for it in items:
         art = normalize_article(it.get("article") or "")
@@ -426,15 +406,8 @@ def main():
         sig = row_signature(it.get("name"), it.get("price"), it.get("qty"), it.get("category"))
         entry = cache["items"].get(art)
         need = False
-        if not entry:
+        if not entry or entry.get("row_sig") != sig or not entry.get("images"):
             need = True
-        else:
-            if entry.get("row_sig") != sig:
-                need = True
-            if FORCE_REFETCH_NO_PHOTO and not entry.get("images"):
-                need = True
-            if not entry.get("source_url"):
-                need = True
         if need:
             to_fetch.append((art, it))
         else:
@@ -442,24 +415,15 @@ def main():
             it["mirrored_images"] = entry.get("mirrored_images", [])
             it["url"] = entry.get("source_url", "")
 
-    # 5) Поиск карточки + РОВНО одно фото
+    # 5) Фото по шаблону (БЕЗ поиска по сайту)
     fetched_count = 0
     for art, it in to_fetch[:MAX_SEARCH]:
-        prod_url = search_product_url_by_article(art)
-        img_url, mirrored = None, []
-        if prod_url:
-            try:
-                r = fetch(prod_url)
-                time.sleep(CRAWL_DELAY)
-                soup = BeautifulSoup(r.text, "lxml")
-                art2 = extract_article_from_product_page(soup)
-                if not STRICT_IMAGE_MATCH or (art2 == art):
-                    img_url = extract_main_image_url(soup, prod_url)  # ← берём 1 фото
-                    it["url"] = prod_url
-            except Exception:
-                pass
+        img_url, mirrored, prod_url = None, [], ""
 
-        # зеркалим 1 фото (если есть)
+        if USE_SYNTH_IMAGE:
+            img_url = find_synthetic_image(art)  # ← главное: строим URL из артикула
+
+        # зеркалим 1 фото (если нужно)
         if img_url and MIRROR_IMAGES and PAGES_BASE:
             m = mirror_one(img_url, art, 1)
             if m: mirrored = [m]
@@ -470,23 +434,23 @@ def main():
             "row_sig": sig,
             "images": [img_url] if img_url else [],
             "mirrored_images": mirrored,
-            "source_url": it.get("url","") or (prod_url or ""),
+            "source_url": prod_url,
             "updated_at": int(time.time())
         }
         it["images"] = [img_url] if img_url else []
         it["mirrored_images"] = mirrored
+        it["url"] = prod_url
         cache_changed = True
         fetched_count += 1
 
     # 6) Отчёт
     with open(SEEN_FILE,"w",encoding="utf-8") as f:
         with_pic = sum(1 for it in items if (it.get('mirrored_images') or it.get('images')))
-        with_urls = sum(1 for it in items if it.get('url'))
         f.write("=== CATEGORIES (from XLSX) ===\n")
         for k,v in seen_cats.most_common(300):
             f.write(f"{k}\t{v}\n")
-        f.write(f"\nTotal items: {len(items)} | Fetched this run: {fetched_count} | With 1 photo now: {with_pic} | With URL: {with_urls}\n")
-        f.write(f"Delta: MAX_SEARCH={MAX_SEARCH}, delay={CRAWL_DELAY}s | CHECK_IMAGE_BYTES={CHECK_IMAGE_BYTES} MIN_IMAGE_BYTES={MIN_IMAGE_BYTES}\n")
+        f.write(f"\nTotal items: {len(items)} | Fetched this run: {fetched_count} | With 1 photo now: {with_pic}\n")
+        f.write(f"PICTURE_BASE={PICTURE_BASE} | USE_SYNTH_IMAGE={USE_SYNTH_IMAGE}\n")
 
     if cache_changed:
         save_cache(cache)
