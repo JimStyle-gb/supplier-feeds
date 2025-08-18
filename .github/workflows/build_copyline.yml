@@ -51,7 +51,15 @@ jobs:
         run: |
           mkdir -p docs
           touch docs/.nojekyll
+          # заранее создаём пустой seen, чтобы точно был в репо
+          : > "$SEEN_FILE"
           python scripts/build_copyline.py
+
+      - name: Verify outputs
+        run: |
+          ls -lah docs || true
+          echo "---- first lines of seen ----"
+          sed -n '1,50p' docs/copyline_seen.txt || true
 
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -64,3 +72,9 @@ jobs:
             docs/copyline_seen.txt
             docs/.nojekyll
           push_options: --force-with-lease
+
+      - name: Upload seen as artifact (backup)
+        uses: actions/upload-artifact@v4
+        with:
+          name: copyline-seen
+          path: docs/copyline_seen.txt
