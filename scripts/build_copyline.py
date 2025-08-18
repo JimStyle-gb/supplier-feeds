@@ -1,97 +1,117 @@
 # scripts/build_copyline.py
 from __future__ import annotations
-import os, re, io, sys, json, time, hashlib, mimetypes, pathlib
-import requests
-from urllib.parse import urljoin, urlencode, urlparse
+import os, re, io, sys, time, json, hashlib, pathlib, mimetypes, requests
 from collections import Counter
+from urllib.parse import urljoin, urlparse, urlencode
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 from xml.etree.ElementTree import Element, SubElement, ElementTree
 
-# ========= ENV =========
-XLSX_URL   = os.getenv("XLSX_URL", "https://copyline.kz/files/price-CLA.xlsx")
-OUT_FILE   = os.getenv("OUT_FILE",  "docs/copyline.yml")
-ENC        = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+# ===== ENV =====
+XLSX_URL     = os.getenv("XLSX_URL", "https://copyline.kz/files/price-CLA.xlsx")
+OUT_FILE     = os.getenv("OUT_FILE",  "docs/copyline.yml")
+ENC          = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+CATS_FILE    = os.getenv("CATEGORIES_FILE", "docs/categories_copyline.txt")
+SEEN_FILE    = os.getenv("SEEN_FILE", "docs/copyline_seen.txt")
+CACHE_FILE   = os.getenv("CACHE_FILE", "docs/copyline_cache.json")
+MIRROR_DIR   = os.getenv("MIRROR_DIR", "docs/img_copyline")
+MIRROR_IMAGES= (os.getenv("MIRROR_IMAGES") or "1").strip().lower() in {"1","true","yes","on"}
+MAX_MIRROR_PER_ITEM = int(os.getenv("MAX_MIRROR_PER_ITEM","1"))  # оставляем 1, т.к. берём ровно одно фото
 
-# База для ссылок на картинки в фиде (GitHub Pages)
-# Воркфлоу её устанавливает автоматически (см. build_copyline.yml)
-PAGES_BASE = os.getenv("PAGES_BASE", "https://example.github.io/supplier-feeds")
+# быстрый режим (дельта)
+STRICT_IMAGE_MATCH   = (os.getenv("STRICT_IMAGE_MATCH") or "1").strip().lower() in {"1","true","yes","on"}
+SEARCH_FALLBACK      = (os.getenv("SEARCH_FALLBACK") or "1").strip().lower() in {"1","true","yes","on"}
+MAX_SEARCH    = int(os.getenv("MAX_SEARCH", "2000"))
+CRAWL_DELAY   = float(os.getenv("CRAWL_DELAY", "0.4"))
 
-IMG_DIR    = os.getenv("IMG_DIR", "docs/copyline_img")
-CACHE_FILE = os.getenv("CACHE_FILE", "data/copyline_cache.json")
-SEEN_FILE  = os.getenv("SEEN_FILE",  "docs/copyline_seen.txt")
+# усиление качества фото
+FORCE_REFETCH_NO_PHOTO = (os.getenv("FORCE_REFETCH_NO_PHOTO") or "1").strip().lower() in {"1","true","yes","on"}
+CHECK_IMAGE_BYTES      = (os.getenv("CHECK_IMAGE_BYTES") or "1").strip().lower() in {"1","true","yes","on"}
+MIN_IMAGE_BYTES        = int(os.getenv("MIN_IMAGE_BYTES", "7000"))  # <7 KB считаем мусором
 
-# Троттлинг и лимиты
-RATE_DELAY = float(os.getenv("RATE_DELAY", "0.35"))  # пауза между сетевыми запросами
-MAX_IMG_PER_ITEM = int(os.getenv("MAX_IMG_PER_ITEM", "6"))
-MAX_SEARCH = int(os.getenv("MAX_SEARCH", "4000"))    # артикулов на поиск за прогон
+UA_HEADERS    = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+SITE_ORIGIN   = "https://copyline.kz"
 
-SITE = "https://copyline.kz"
-UA   = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+def pages_base() -> str:
+    repo = os.getenv("GITHUB_REPOSITORY", "").strip()
+    if "/" in repo:
+        owner, name = repo.split("/", 1)
+        return f"https://{owner}.github.io/{name}"
+    return (os.getenv("PAGES_BASE","").strip().rstrip("/"))
+PAGES_BASE = pages_base()
 
-# ========= УТИЛЫ =========
+# ===== UTILS =====
 def norm(s): return re.sub(r"\s+"," ", (s or "").strip())
-def md5(s: str) -> str: return hashlib.md5(s.encode("utf-8")).hexdigest()
-def ensure_dirs():
-    pathlib.Path(os.path.dirname(OUT_FILE)).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(os.path.dirname(CACHE_FILE)).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(IMG_DIR).mkdir(parents=True, exist_ok=True)
-    pathlib.Path("docs/.nojekyll").write_text("", encoding="utf-8")
-
 def normalize_article(s: str) -> str:
     s = (s or "").strip()
     s = re.sub(r"[\s\-_]+","", s)
     s = s.replace("—","").replace("–","")
     return s.upper()
 
-def fetch(session: requests.Session, url: str) -> requests.Response:
-    r = session.get(url, headers=UA, timeout=60)
-    r.raise_for_status()
-    return r
-
-def parse_price(v) -> int|None:
-    if v is None: return None
-    t = norm(str(v)).replace("₸","").replace("тг","")
-    digits = re.sub(r"[^\d]","", t)
-    return int(digits) if digits else None
-
-def is_available(v) -> tuple[bool,str]:
-    s = norm(str(v)).lower()
-    if not s or s in {"-","—","н/д","нет"}: return False, "0"
-    if s.isdigit(): q=int(s); return (q>0), str(q)
-    if re.search(r">\s*\d+", s): return True, "10"
-    if "есть" in s or "в наличии" in s or "да" in s: return True, "1"
-    return True, "1"
-
 HEADER_HINTS = {
     "name":        ["номенклатура","наименование","название","товар","описание"],
     "article":     ["артикул","номенклатура.артикул","sku","код товара","код","модель","part number","pn","p/n"],
     "availability":["остаток","наличие","кол-во","количество","qty","stock","остатки"],
-    "price":       ["цена","опт","розница","стоимость","цена, тг","цена тг"],
+    "price":       ["цена","опт цена","опт. цена","розница","стоимость","цена, тг","цена тг","retail","опт"],
     "unit":        ["ед.","ед","единица"],
     "category":    ["категория","раздел","группа","тип"],
 }
 
+def ensure_files():
+    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+    if not os.path.exists(CATS_FILE):
+        with open(CATS_FILE, "w", encoding="utf-8") as f:
+            f.write("# Паттерны-ВКЛЮЧЕНИЯ (если пусто — берём всё)\n")
+    os.makedirs(MIRROR_DIR, exist_ok=True)
+
+def load_patterns(path):
+    subs, regs = [], []
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            s=line.strip()
+            if not s or s.startswith("#"): continue
+            if s.lower().startswith("re:"):
+                try: regs.append(re.compile(s[3:], re.I))
+                except Exception: pass
+            else:
+                subs.append(s.lower())
+    return subs, regs
+
+def fetch(url: str) -> requests.Response:
+    r = requests.get(url, headers=UA_HEADERS, timeout=60)
+    r.raise_for_status()
+    return r
+
+def fetch_xlsx(url: str) -> bytes:
+    return fetch(url).content
+
+# ===== HEADER PARSING =====
 def best_header(ws):
     def score(row_vals):
-        low=[norm(x).lower() for x in row_vals]
+        low = [norm(x).lower() for x in row_vals]
         matched=set()
         for key,hints in HEADER_HINTS.items():
             for cell in low:
-                if any(h in cell for h in hints): matched.add(key); break
+                if any(h in cell for h in hints):
+                    matched.add(key); break
         return len(matched)
+
     rows=[]
     for row in ws.iter_rows(min_row=1, max_row=40, values_only=True):
         rows.append([norm("" if v is None else str(v)) for v in row])
+
     best=([], None, -1)
     for i,r in enumerate(rows):
         sc=score(r)
         if sc>best[2]: best=(r, i+1, sc)
+
     for i in range(len(rows)-1):
         a,b=rows[i],rows[i+1]
-        m=max(len(a),len(b)); merged=[]
+        m=max(len(a),len(b))
+        merged=[]
         for j in range(m):
-            x=a[j] if j<len(a) else ""; y=b[j] if j<len(b) else ""
+            x=a[j] if j<len(a) else ""
+            y=b[j] if j<len(b) else ""
             merged.append(" ".join(t for t in (x,y) if t).strip())
         sc=score(merged)
         if sc>best[2]: best=(merged, i+2, sc)
@@ -112,93 +132,165 @@ def map_columns(headers):
     cols["category"]    = find_any(HEADER_HINTS["category"])
     return cols
 
-# ========= КЭШ =========
-def load_cache() -> dict:
-    if not os.path.exists(CACHE_FILE): return {}
-    try:
-        return json.loads(pathlib.Path(CACHE_FILE).read_text(encoding="utf-8"))
-    except Exception:
-        return {}
+def parse_price(v) -> int|None:
+    if v is None: return None
+    t = norm(str(v)).replace("₸","").replace("тг","")
+    digits = re.sub(r"[^\d]","", t)
+    return int(digits) if digits else None
 
-def save_cache(cache: dict):
-    pathlib.Path(CACHE_FILE).write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
+def is_available(v) -> tuple[bool,str]:
+    s = norm(str(v)).lower()
+    if not s or s in {"-","—","н/д","нет"}: return False, "0"
+    if s.isdigit(): q=int(s); return (q>0), str(q)
+    if re.search(r">\s*\d+", s): return True, "10"
+    if "есть" in s or "в наличии" in s or "да" in s: return True, "1"
+    return True, "1"
 
-def row_hash(it: dict) -> str:
-    key = f"{it.get('name','')}|{it.get('price','')}|{it.get('available','')}|{it.get('qty','')}|{it.get('category','')}"
-    return md5(key)
+def pass_filters(cat: str, sheet: str, name: str, subs, regs) -> bool:
+    if not subs and not regs: return True
+    hay = (cat.lower(), sheet.lower(), name.lower())
+    if any(sub in h for sub in subs for h in hay): return True
+    if any(r.search(h) for r in regs for h in hay): return True
+    return False
 
-# ========= ПОИСК ССЫЛКИ НА ТОВАР И ВЫТАСКИВАНИЕ КАРТИНОК =========
-ARTICLE_RE = re.compile(r"(?:артикул|sku|код|pn|p/n)\s*[:#\-]?\s*([A-Za-z0-9\-\._/]+)", re.I)
+def hash_int(s: str) -> int:
+    return int(hashlib.md5(s.encode("utf-8")).hexdigest()[:6],16)
 
-def extract_article_from_page(soup: BeautifulSoup) -> str|None:
+def slug(s: str, maxlen: int = 60) -> str:
+    s = re.sub(r"[^a-z0-9]+","-", s.lower()).strip("-")
+    return s[:maxlen] if len(s)>maxlen else s
+
+# ===== IMAGE & URL EXTRACTION =====
+ARTICLE_RE = re.compile(r"(?:артикул|код|sku|модель|pn|p/n)\s*[:#\-]?\s*([A-Za-z0-9\-\._/]+)", re.I)
+DIGITS_RE  = re.compile(r"\b\d{4,}\b")
+BAD_IMG_PAT = re.compile(r"(no[-_ ]?photo|placeholder|spacer|logo|blank|stub|1x1|pixel)", re.I)
+
+def extract_article_from_product_page(soup: BeautifulSoup) -> str|None:
     sku = soup.select_one('[itemprop="sku"]')
     if sku and sku.get_text(strip=True):
         return normalize_article(sku.get_text(strip=True))
     txt = soup.get_text(" ", strip=True)
-    m = ARTICLE_RE.search(txt)
-    if m: return normalize_article(m.group(1))
+    for m in ARTICLE_RE.finditer(txt):
+        return normalize_article(m.group(1))
+    for m in DIGITS_RE.finditer(txt):
+        return normalize_article(m.group(0))
     return None
 
-def extract_images_from_page(soup: BeautifulSoup, base_url: str, limit=8) -> list[str]:
-    out=[]
-    def pick(img):
-        for a in ("data-src","data-original","src"):
-            v=img.get(a)
-            if v: return v
-        return None
-    for img in soup.find_all("img"):
-        src = pick(img)
-        if not src: continue
-        u = urljoin(base_url, src)
-        if u not in out:
-            out.append(u)
-            if len(out)>=limit: break
-    return out
+def looks_bad_image(url: str) -> bool:
+    if BAD_IMG_PAT.search(url): return True
+    if url.lower().startswith("data:"): return True
+    return False
 
-def search_product_url_by_article(session: requests.Session, art: str) -> str|None:
-    for qurl in [f"{SITE}/search/?{urlencode({'q': art})}",
-                 f"{SITE}/?s={art}"]:
+def ok_by_head(url: str) -> bool:
+    if not CHECK_IMAGE_BYTES: return True
+    try:
+        h = requests.head(url, headers=UA_HEADERS, timeout=20, allow_redirects=True)
+        ct = (h.headers.get("Content-Type") or "").lower()
+        if "image" not in ct: return False
+        cl = h.headers.get("Content-Length")
+        if cl is None: return True
+        return int(cl) >= MIN_IMAGE_BYTES
+    except Exception:
+        return True  # не блокируем, если HEAD не дался
+
+def extract_main_image_url(soup: BeautifulSoup, base_url: str) -> str|None:
+    """
+    БЕРЁМ РОВНО ОДНО ФОТО:
+    1) <img itemprop="image"> или id="main_image_*"
+    2) если нет — <meta property="og:image">
+    Фильтр: путь должен содержать 'img_products' (как в твоём образце).
+    """
+    # 1) itemprop="image"
+    img = soup.select_one('img[itemprop="image"]')
+    if not img:
+        img = soup.select_one('img[id^="main_image_"]')
+    if img:
+        src = img.get("data-src") or img.get("data-original") or img.get("src")
+        if src:
+            u = urljoin(base_url, src)
+            if "img_products" in u and not looks_bad_image(u) and ok_by_head(u):
+                return u
+
+    # 2) og:image
+    meta = soup.select_one('meta[property="og:image"], meta[name="og:image"]')
+    if meta:
+        u = (meta.get("content") or "").strip()
+        if u:
+            u = urljoin(base_url, u)
+            if "img_products" in u and not looks_bad_image(u) and ok_by_head(u):
+                return u
+
+    return None
+
+def search_product_url_by_article(article: str) -> str|None:
+    q1 = f"{SITE_ORIGIN}/search/?{urlencode({'q': article})}"
+    q2 = f"{SITE_ORIGIN}/?s={article}"
+    for qurl in (q1, q2):
         try:
-            r = fetch(session, qurl)
+            r = fetch(qurl)
         except Exception:
             continue
-        time.sleep(RATE_DELAY)
+        time.sleep(CRAWL_DELAY)
         soup = BeautifulSoup(r.text, "lxml")
         a = soup.select_one('a[href*="/goods/"][href$=".html"]')
         if a and a.get("href"):
             u = urljoin(qurl, a.get("href"))
-            if urlparse(u).netloc == urlparse(SITE).netloc:
+            if urlparse(u).netloc == urlparse(SITE_ORIGIN).netloc:
                 return u
     return None
 
-def mirror_image(session: requests.Session, url: str, save_to: pathlib.Path) -> str|None:
+# ===== CACHE =====
+def load_cache() -> dict:
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE,"r",encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+def save_cache(cache: dict):
+    tmp = CACHE_FILE + ".tmp"
+    with open(tmp,"w",encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, CACHE_FILE)
+
+def row_signature(name, price, qty, category) -> str:
+    base = f"{norm(name)}|{price or ''}|{qty or ''}|{norm(category)}"
+    return hashlib.sha1(base.encode("utf-8")).hexdigest()
+
+def mirror_one(url: str, art: str, idx: int) -> str|None:
+    if not MIRROR_IMAGES or not PAGES_BASE:
+        return None
     try:
-        r = session.get(url, headers=UA, timeout=60, stream=True)
+        r = requests.get(url, headers=UA_HEADERS, timeout=60, stream=True)
         r.raise_for_status()
+        ext = pathlib.Path(urlparse(url).path).suffix.lower()
+        if not ext:
+            ext = mimetypes.guess_extension(r.headers.get("Content-Type","").split(";")[0].strip() or "") or ".jpg"
+        safe_art = slug(art.lower(), maxlen=80)
+        d = pathlib.Path(MIRROR_DIR) / safe_art
+        d.mkdir(parents=True, exist_ok=True)
+        out = d / f"{idx}{ext}"
+        with open(out, "wb") as f:
+            for chunk in r.iter_content(65536):
+                if chunk: f.write(chunk)
+        rel = str(out).replace("docs/","").lstrip("/")
+        return f"{PAGES_BASE}/{rel}"
     except Exception:
         return None
-    # Определяем расширение
-    ext = None
-    ct = r.headers.get("Content-Type","").lower()
-    if "image/" in ct:
-        ext = mimetypes.guess_extension(ct.split(";")[0].strip()) or ".jpg"
-    if not ext:
-        p = urlparse(url).path
-        ext = os.path.splitext(p)[1] or ".jpg"
-    save_to = save_to.with_suffix(ext)
-    save_to.parent.mkdir(parents=True, exist_ok=True)
-    with open(save_to, "wb") as f:
-        for chunk in r.iter_content(chunk_size=8192):
-            if chunk: f.write(chunk)
-    # Вернём публичный URL на GH Pages
-    repo_path = str(save_to).replace("\\","/").split("docs/",1)[1]
-    return f"{PAGES_BASE}/{repo_path}"
 
-# ========= СБОР ДАННЫХ И ВЫГРУЗКА =========
+# ===== YML =====
 ROOT_CAT_ID = "9300000"
 def cat_id_for(name: str) -> str:
-    h=int(hashlib.md5(name.lower().encode("utf-8")).hexdigest()[:6],16)
-    return str(9300001 + (h % 400000))
+    return str(9300001 + (hash_int(name.lower()) % 400000))
+
+def make_offer_id(it: dict) -> str:
+    art = (it.get("article") or "").strip()
+    if art: return f"copyline:{art}"
+    base = slug(it.get("name",""))
+    h = hashlib.md5((it.get("name","").lower()+"|"+(it.get("category") or "").lower()).encode("utf-8")).hexdigest()[:8]
+    return f"copyline:{base}:{h}"
 
 def build_yml(items):
     cats={}
@@ -216,15 +308,16 @@ def build_yml(items):
         SubElement(xml_cats,"category",{"id":cid,"parentId":ROOT_CAT_ID}).text=nm
 
     offers=SubElement(shop,"offers")
-    used=set()
+    used_ids=set()
     for it in items:
-        art = (it.get("article") or "").strip()
-        oid = f"copyline:{art}" if art else f"copyline:{hashlib.md5((it.get('name','')+it.get('category','')).encode()).hexdigest()[:8]}"
-        if oid in used:
+        oid = make_offer_id(it)
+        if oid in used_ids:
+            extra = hashlib.md5((it.get("name","")+str(it.get("price"))+(it.get("qty") or "")).encode("utf-8")).hexdigest()[:6]
+            oid = f"{oid}-{extra}"
             i=2
-            while f"{oid}-{i}" in used: i+=1
-            oid=f"{oid}-{i}"
-        used.add(oid)
+            while oid in used_ids:
+                oid=f"{oid}-{i}"; i+=1
+        used_ids.add(oid)
 
         cid = cats.get(it.get("category") or "Copyline", ROOT_CAT_ID)
         o = SubElement(offers,"offer",{
@@ -236,33 +329,47 @@ def build_yml(items):
         if it.get("price") is not None: SubElement(o,"price").text=str(it["price"])
         SubElement(o,"currencyId").text="KZT"
         SubElement(o,"categoryId").text=cid
+        if it.get("url"): SubElement(o,"url").text = it["url"]
         if it.get("brand"): SubElement(o,"vendor").text=it["brand"]
-        if art: SubElement(o,"vendorCode").text=art
+        if it.get("article"): SubElement(o,"vendorCode").text=it["article"]
         q = it.get("qty") or ("1" if it["available"] else "0")
         for tag in ("quantity_in_stock","stock_quantity","quantity"): SubElement(o,tag).text=q
-        for p in it.get("images", []):
-            SubElement(o,"picture").text = p
+        # РОВНО ОДНО ФОТО
+        pic = None
+        if it.get("mirrored_images"):
+            pic = it["mirrored_images"][0]
+        elif it.get("images"):
+            pic = it["images"][0]
+        if pic:
+            SubElement(o,"picture").text = pic
 
     buf=io.BytesIO(); ElementTree(root).write(buf, encoding=ENC, xml_declaration=True); return buf.getvalue()
 
+# ===== MAIN =====
 def main():
-    ensure_dirs()
-    cache = load_cache()
-    session = requests.Session()
+    ensure_files()
+    subs, regs = load_patterns(CATS_FILE)
 
-    # 1) XLSX -> items (быстро)
-    x = fetch(session, XLSX_URL).content
-    wb = load_workbook(io.BytesIO(x), read_only=True, data_only=True)
+    # 1) XLSX → items
+    data = fetch_xlsx(XLSX_URL)
+    wb = load_workbook(io.BytesIO(data), read_only=True, data_only=True)
 
-    raw=[]; seen_sheets=Counter()
-    for ws in wb.worksheets:
-        headers, start = best_header(ws)
-        if not headers: continue
+    raw_items=[]
+    seen_cats=Counter(); seen_sheets=Counter()
+
+    def map_cols(ws):
+        headers, data_start = best_header(ws)
+        if not headers: return None, None
         cols = map_columns(headers)
-        if cols.get("name") is None: continue
+        if cols.get("name") is None: return None, None
+        return cols, data_start
 
+    for ws in wb.worksheets:
+        cols, data_start = map_cols(ws)
+        if not cols:
+            seen_sheets[ws.title]+=0; continue
         current_cat=None
-        for row in ws.iter_rows(min_row=start, values_only=True):
+        for row in ws.iter_rows(min_row=data_start, values_only=True):
             row=list(row)
             def getc(idx): return None if idx is None or idx>=len(row) else row[idx]
             name    = norm(getc(cols.get("name")))
@@ -272,14 +379,17 @@ def main():
             raw_cat = norm(getc(cols.get("category"))) if cols.get("category") is not None else ""
 
             # Заголовок секции
-            if name and not article and price is None and len(name)>3 and not re.search(r"^(цены|прайс|тенге|лист|итог)", name.lower()):
-                current_cat=name; continue
+            if name and not article and price is None:
+                if len(name)>3 and not re.search(r"^(цены|прайс|тенге|лист|итог)", name.lower()):
+                    current_cat=name; seen_cats[current_cat]+=0
+                    continue
+
             if not name and not article: continue
 
             cat = raw_cat or current_cat or norm(ws.title)
-            seen_sheets[ws.title]+=1
+            if not pass_filters(cat, ws.title, name or article, subs, regs): continue
 
-            item = {
+            raw_items.append({
                 "article": article,
                 "name": name or article,
                 "brand": "",
@@ -287,90 +397,105 @@ def main():
                 "price": price,
                 "available": avail,
                 "qty": qty,
-            }
-            raw.append(item)
+                "url": "",
+            })
+            seen_cats[cat]+=1; seen_sheets[ws.title]+=1
 
-    # 2) Дедуп: по артикулу, иначе по (name+category)
+    # 2) Дедуп
     dedup={}
-    for it in raw:
+    for it in raw_items:
         key = ("a", it["article"]) if it["article"] else ("n", it["name"].lower(), (it["category"] or "").lower())
-        if key not in dedup: dedup[key]=it
-        else:
-            old=dedup[key]
+        if key in dedup:
+            old = dedup[key]
             better = it if (it["price"] and not old["price"]) or (it["available"] and not old["available"]) else old
-            dedup[key]=better
-    items=list(dedup.values())
+            dedup[key] = better
+        else:
+            dedup[key] = it
+    items = list(dedup.values())
 
-    # 3) ДЕЛЬТА: решаем, кому искать фото (только новые/изменённые и без фото в кэше)
-    todo=[]; keep=0
+    # 3) КЭШ
+    cache = load_cache()
+    if "items" not in cache: cache["items"] = {}
+    cache_changed = False
+
+    # 4) Дельта для поиска
+    to_fetch = []
     for it in items:
         art = normalize_article(it.get("article") or "")
-        h = row_hash(it)
-        c = cache.get(art)
-        if c and c.get("row_hash")==h and c.get("images"):
-            # ничего не делаем, берём из кэша
-            it["images"]=c["images"]
-            keep+=1
+        if not art: continue
+        sig = row_signature(it.get("name"), it.get("price"), it.get("qty"), it.get("category"))
+        entry = cache["items"].get(art)
+        need = False
+        if not entry:
+            need = True
         else:
-            todo.append(it)
+            if entry.get("row_sig") != sig:
+                need = True
+            if FORCE_REFETCH_NO_PHOTO and not entry.get("images"):
+                need = True
+            if not entry.get("source_url"):
+                need = True
+        if need:
+            to_fetch.append((art, it))
+        else:
+            it["images"] = entry.get("images", [])
+            it["mirrored_images"] = entry.get("mirrored_images", [])
+            it["url"] = entry.get("source_url", "")
 
-    # 4) Поиск ссылок и зеркалирование фото (ТОЛЬКО по артикулу, без обхода категорий)
-    searched=0; added=0
-    for it in todo:
-        if searched>=MAX_SEARCH: break
-        art_raw = it.get("article") or ""
-        art = normalize_article(art_raw)
-        if not art:
-            cache[art_raw] = {"row_hash": row_hash(it), "images": []}
-            continue
-
-        # Поиск страницы
-        url = search_product_url_by_article(session, art)
-        searched += 1
-        time.sleep(RATE_DELAY)
-        imgs_final=[]
-
-        if url:
-            # Открываем карточку, подтверждаем артикул, тянем картинки
+    # 5) Поиск карточки + РОВНО одно фото
+    fetched_count = 0
+    for art, it in to_fetch[:MAX_SEARCH]:
+        prod_url = search_product_url_by_article(art)
+        img_url, mirrored = None, []
+        if prod_url:
             try:
-                r = fetch(session, url); time.sleep(RATE_DELAY)
+                r = fetch(prod_url)
+                time.sleep(CRAWL_DELAY)
                 soup = BeautifulSoup(r.text, "lxml")
-                art_page = extract_article_from_page(soup)
-                if art_page == art:
-                    imgs = extract_images_from_page(soup, url, limit=MAX_IMG_PER_ITEM)
-                    # Зеркалим
-                    out_dir = pathlib.Path(IMG_DIR) / art
-                    i=1
-                    for src in imgs:
-                        murl = mirror_image(session, src, out_dir / f"{i}")
-                        if murl:
-                            imgs_final.append(murl); i+=1
-                            if len(imgs_final)>=MAX_IMG_PER_ITEM: break
+                art2 = extract_article_from_product_page(soup)
+                if not STRICT_IMAGE_MATCH or (art2 == art):
+                    img_url = extract_main_image_url(soup, prod_url)  # ← берём 1 фото
+                    it["url"] = prod_url
             except Exception:
                 pass
 
-        it["images"] = imgs_final
-        cache[art] = {
-            "row_hash": row_hash(it),
-            "images": imgs_final,
-            "product_url": url or "",
+        # зеркалим 1 фото (если есть)
+        if img_url and MIRROR_IMAGES and PAGES_BASE:
+            m = mirror_one(img_url, art, 1)
+            if m: mirrored = [m]
+
+        # обновляем кэш
+        sig = row_signature(it.get("name"), it.get("price"), it.get("qty"), it.get("category"))
+        cache["items"][art] = {
+            "row_sig": sig,
+            "images": [img_url] if img_url else [],
+            "mirrored_images": mirrored,
+            "source_url": it.get("url","") or (prod_url or ""),
             "updated_at": int(time.time())
         }
-        if imgs_final: added+=1
+        it["images"] = [img_url] if img_url else []
+        it["mirrored_images"] = mirrored
+        cache_changed = True
+        fetched_count += 1
 
-    # 5) Запись кэша, отчёт
-    save_cache(cache)
+    # 6) Отчёт
     with open(SEEN_FILE,"w",encoding="utf-8") as f:
-        f.write(f"Sheets: {sum(seen_sheets.values())} rows read across {len(seen_sheets)} sheets\n")
-        f.write(f"Items total: {len(items)} | From cache (images): {keep} | Newly imaged: {added} | Searched: {searched}\n")
-        f.write(f"Images dir: {IMG_DIR}\n")
-        f.write(f"Pages base: {PAGES_BASE}\n")
+        with_pic = sum(1 for it in items if (it.get('mirrored_images') or it.get('images')))
+        with_urls = sum(1 for it in items if it.get('url'))
+        f.write("=== CATEGORIES (from XLSX) ===\n")
+        for k,v in seen_cats.most_common(300):
+            f.write(f"{k}\t{v}\n")
+        f.write(f"\nTotal items: {len(items)} | Fetched this run: {fetched_count} | With 1 photo now: {with_pic} | With URL: {with_urls}\n")
+        f.write(f"Delta: MAX_SEARCH={MAX_SEARCH}, delay={CRAWL_DELAY}s | CHECK_IMAGE_BYTES={CHECK_IMAGE_BYTES} MIN_IMAGE_BYTES={MIN_IMAGE_BYTES}\n")
 
-    # 6) YML → GH Pages
+    if cache_changed:
+        save_cache(cache)
+
+    # 7) YML
     yml = build_yml(items)
     with open(OUT_FILE,"wb") as f: f.write(yml)
-    print(f"{OUT_FILE}: {len(items)} items; cache={CACHE_FILE}; images in {IMG_DIR}")
-    print(f"Seen → {SEEN_FILE}")
+    print(f"{OUT_FILE}: {len(items)} items | fetched_delta={fetched_count}")
+    print(f"Seen → {SEEN_FILE} | Cache → {CACHE_FILE}")
 
 if __name__=="__main__":
     try: main()
