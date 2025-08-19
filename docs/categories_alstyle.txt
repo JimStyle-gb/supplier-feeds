@@ -1,58 +1,115 @@
-3540
-3541
-3542
-3543
-3544
-3545
-3566
-3567
-3569
-3570
-3580
-3688
-3708
-3721
-3722
-4889
-4890
-4895
-5017
-5075
-5649
-5710
-5711
-5712
-5713
-21279
-21281
-21291
-21356
-21367
-21368
-21369
-21370
-21371
-21372
-21451
-21498
-21500
-21501
-21572
-21573
-21574
-21575
-21576
-21578
-21580
-21581
-21583
-21584
-21585
-21586
-21588
-21591
-21640
-21664
-21665
-21666
-21698
+<categories>
+  <!-- РОДИТЕЛИ (без них рушится дерево) -->
+  <category id="5751">Компьютеры и комплектующие</category>
+  <category id="3659" parentId="5751">Ноутбуки и аксессуары</category>
+  <category id="5648" parentId="5751">Мониторы и аксессуары</category>
+
+  <category id="3571">Расходные материалы</category>
+  <category id="5010" parentId="3571">Лазерные картриджи</category>
+  <category id="3565" parentId="5010">Лазерные Canon</category>
+  <category id="5020" parentId="3571">Струйные картриджи</category>
+  <category id="5002" parentId="3571">ЗИП и узлы печати</category>
+
+  <category id="3539">ИБП</category>
+
+  <category id="3706">Сетевое оборудование</category>
+
+  <category id="21497">Панели отображения</category>
+
+  <category id="3720">Экраны настенные</category>
+  <category id="5742">Проекционные экраны</category>
+  <category id="3723">Экраны потолочные</category>
+  <category id="3506">Проекционное оборудование</category>
+
+  <category id="3686">Офисная техника</category>
+
+  <category id="21582">Принтеры лазерные</category>
+  <category id="21571">МФУ лазерные</category>
+  <category id="21587">Принтеры струйные</category>
+  <category id="21577">МФУ струйные</category>
+
+  <category id="5058">ПО и опции печати</category>
+
+  <category id="21579">Широкоформатная техника</category>
+
+  <category id="5074">Р/М</category>
+  <category id="5060">ЗИП (линейки)</category>
+
+  <!-- ТВОИ КАТЕГОРИИ (листовые) -->
+  <category id="21356" parentId="5751">Системные блоки</category>
+  <category id="21291" parentId="3659">Ноутбуки</category>
+  <category id="21451" parentId="5751">Моноблоки</category>
+  <category id="21281" parentId="5751">Мини ПК</category>
+  <category id="5649" parentId="5648">Мониторы</category>
+
+  <category id="3542" parentId="3539">Линейно-интерактивные</category>
+  <category id="3544" parentId="3539">Напольные</category>
+  <category id="3545" parentId="3539">Стоечные 19"</category>
+  <category id="3541" parentId="3539">Трёхфазные </category>
+  <category id="3543" parentId="3539">Модульные</category>
+  <category id="3540" parentId="3539">Батарейные блоки</category>
+
+  <category id="3708" parentId="3706">Кабели витая пара</category>
+
+  <category id="21498" parentId="21497">Интерактивные панели</category>
+  <category id="21500" parentId="21497">Профессиональные панели</category>
+  <category id="21501" parentId="21497">Панели для видеостен</category>
+
+  <category id="5710" parentId="3720">С квадратной областью</category>
+  <category id="5711" parentId="3720">С прямоугольной областью</category>
+  <category id="3721" parentId="5742">Экраны на треноге</category>
+  <category id="5713" parentId="3723">С квадратной областью</category>
+  <category id="5712" parentId="3723">С прямоугольной областью</category>
+  <category id="3722" parentId="3506">Проекторы</category>
+
+  <category id="3688" parentId="3686">Уничтожители бумаги (Шредеры)</category>
+  <category id="4889" parentId="3686">Ламинаторы</category>
+  <category id="4890" parentId="3686">Переплётные машины</category>
+
+  <category id="21583" parentId="21582">Монохромные лазерные принтеры А4</category>
+  <category id="21584" parentId="21582">Цветные лазерные принтеры А3</category>
+  <category id="21585" parentId="21582">Цветные лазерные принтеры А4</category>
+
+  <category id="21572" parentId="21571">Монохромные лазерные МФУ А3</category>
+  <category id="21573" parentId="21571">Монохромные лазерные МФУ А4</category>
+  <category id="21575" parentId="21571">Цветные лазерные МФУ А3</category>
+  <category id="21576" parentId="21571">Цветные лазерные МФУ А4</category>
+
+  <category id="21588" parentId="21587">Цветные струйные принтеры А4</category>
+
+  <category id="21578" parentId="21577">Цветные струйные МФУ А4</category>
+  <category id="21640" parentId="21577">Цветные струйные МФУ А3</category>
+
+  <category id="21574" parentId="5058">Опции для печатной техники</category>
+  <category id="21586" parentId="5058">Программное обеспечение для печатной техники</category>
+
+  <category id="21591" parentId="3686">Сканеры</category>
+
+  <category id="21580" parentId="21579">Плоттеры</category>
+  <category id="21581" parentId="21579">Широкоформатные сканеры</category>
+
+  <category id="21371" parentId="5074">Р/М (HVD)</category>
+  <category id="21370" parentId="5074">Р/М (GMO)</category>
+  <category id="21372" parentId="5074">Р/М (PSG)</category>
+
+  <category id="5075" parentId="3571">Совместимые Xerox</category>
+  <category id="3566" parentId="5010">Лазерные HP</category>
+  <category id="21665" parentId="3565">Оригинальные Canon</category>
+  <category id="21664" parentId="3565">Совместимые Canon</category>
+  <category id="3570" parentId="5010">Лазерные Samsung</category>
+  <category id="3569" parentId="5010">Лазерные Ricoh</category>
+  <category id="4895" parentId="5010">Лазерные Lexmark</category>
+  <category id="3567" parentId="5010">Лазерные Kyocera</category>
+  <category id="21666" parentId="5010">Лазерные Pantum</category>
+  <category id="5017" parentId="5010">Лазерные Toshiba</category>
+
+  <category id="21279" parentId="5020">Струйные Canon</category>
+
+  <category id="21698" parentId="5002">ЗИП Canon</category>
+
+  <category id="21368" parentId="5060">ЗИП (HVD)</category>
+  <category id="21367" parentId="5060">ЗИП (GMO)</category>
+  <category id="21369" parentId="5060">ЗИП (PSG)</category>
+
+  <category id="3580" parentId="5002">Термоблоки</category>
+</categories>
