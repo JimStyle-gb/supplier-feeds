@@ -1,0 +1,57 @@
+name: build_copyline
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 19 * * *"   # ежедневно ~01:00 по Алматы (UTC+6)
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests openpyxl beautifulsoup4 lxml
+
+      - name: Ensure Pages artifacts
+        run: |
+          mkdir -p docs
+          echo > docs/.nojekyll
+
+      - name: Build copyline.yml
+        env:
+          XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
+          OUT_FILE: "docs/copyline.yml"
+          OUTPUT_ENCODING: "windows-1251"
+          CATEGORIES_FILE: "docs/categories_copyline.txt"
+          URLS_FILE: "docs/categories_copyline_urls.txt"
+          PHOTO_INDEX_FILE: "docs/copyline_photo_index.json"
+          MAX_PAGES_PER_CAT: "200"
+          REQUEST_DELAY: "0.4"
+        run: |
+          python scripts/build_copyline.py
+
+      - name: Commit & push YML
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "build: copyline.yml"
+          add_options: -A
+          file_pattern: |
+            docs/copyline.yml
+            docs/categories_copyline.txt
+            docs/categories_copyline_urls.txt
+            docs/copyline_photo_index.json
+            docs/.nojekyll
+          push_options: --force
