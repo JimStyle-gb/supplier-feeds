@@ -1,215 +1,238 @@
-# scripts/build_copyline.py
 # -*- coding: utf-8 -*-
-import os, re, io, sys
+import os, re, json, sys, time
+from urllib.parse import urljoin
+import requests
+from bs4 import BeautifulSoup
 import pandas as pd
-from xml.etree import ElementTree as ET
+import xml.etree.ElementTree as ET
 
-XLSX_PATH = os.path.join("docs", "copyline.xlsx")
-KEEP_PATH = os.path.join("docs", "categories_copyline.txt")
-OUT_PATH  = os.path.join("docs", "copyline.yml")
-CURRENCY = "KZT"
+HOST = "https://copyline.kz"
 
-BRAND_BUCKETS = {
-    "CANON": "CANON", "HP": "HP", "HEWLETT": "HP",
-    "SAMSUNG": "SAMSUNG", "XEROX": "XEROX", "BROTHER": "BROTHER",
-    "EPSON": "EPSON", "RICOH": "RICOH", "KYOCERA": "KYOCERA",
-    "LEXMARK": "LEXMARK", "PANTUM": "PANTUM", "TOSHIBA": "TOSHIBA",
-}
+XLSX_PATH = "docs/copyline.xlsx"           # прайс (если есть)
+URLS_FILE = "docs/copyline_urls.txt"       # список URL-ов категорий для обхода
+KEEP_FILE = "docs/categories_copyline.txt" # бренды/ключи для фильтра (каждый с новой строки)
+CACHE_JSON = "docs/cache_copyline.json"    # кеш { token -> {image,url} }
+OUT_YML    = "docs/copyline.yml"
 
-def log(*a): print(*a, file=sys.stderr)
+ROOT_CAT_ID = "9300000"    # корневая «Copyline»
+SHOP_NAME   = "copyline-xlsx"
 
-def nrm(x:str) -> str:
-    x = "" if x is None else str(x)
-    x = x.replace("\u00A0"," ").strip()
-    x = re.sub(r"\s+"," ",x)
-    return x
+UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
+TIMEOUT = 15
 
-def nrm_lc(x:str) -> str: return nrm(x).lower()
+def log(*a): print("[build_copyline]", *a, file=sys.stderr)
 
-def find_header_row_and_build_headers(raw: pd.DataFrame):
-    """
-    Ищем 1-ю строку шапки, допускаем 2-строчную шапку (склейка через пробел).
-    """
-    # ищем первую строку, где есть что-то из ключевых слов
-    key_hits = []
-    for i in range(min(200, len(raw))):
-        row = [nrm_lc(v) for v in raw.iloc[i].tolist()]
-        joined = " | ".join(row)
-        score = 0
-        score += 1 if "номенклатура" in joined or "наименование" in joined or "товары" in joined else 0
-        score += 1 if "артикул" in joined else 0
-        score += 1 if "цена" in joined or "опт" in joined else 0
-        if score >= 2:
-            key_hits.append((i, score))
-    if not key_hits:
-        raise RuntimeError("Не нашёл строку шапки (жду 'Номенклатура/Артикул/Цена/ОПТ').")
-    h0 = min(key_hits, key=lambda t: t[0])[0]
+def read_lines(path):
+    if not os.path.exists(path): return []
+    with open(path, "r", encoding="utf-8") as f:
+        return [x.strip() for x in f if x.strip() and not x.strip().startswith("#")]
 
-    # формируем заголовки: склеиваем строку h0 и (если есть) h0+1
-    base = [nrm(raw.iloc[h0, j]) for j in range(raw.shape[1])]
-    add  = [nrm(raw.iloc[h0+1, j]) if h0+1 < len(raw) else "" for j in range(raw.shape[1])]
-
-    headers = []
-    for a,b in zip(base, add):
-        cell = " ".join([t for t in (a,b) if t]).strip()
-        headers.append(nrm_lc(cell))
-    # нормализации
-    headers = [h.replace("  "," ") for h in headers]
-    return h0, headers
-
-def pick_column(headers, contains_list):
-    for idx, h in enumerate(headers):
-        for key in contains_list:
-            if key in h:
-                return idx
-    return None
-
-def parse_price(x):
-    s = nrm(x).replace(" ", "").replace(",", ".")
-    m = re.search(r"(\d+(\.\d{1,2})?)", s)
-    if not m: return None
-    try: return round(float(m.group(1)), 2)
-    except: return None
-
-def parse_stock(x):
-    s = nrm_lc(x)
-    if s in ("", "-", "нет", "nan"): return 0
-    m = re.search(r"(\d+)", s)
-    return int(m.group(1)) if m else 0
-
-def load_copyline_xlsx(path: str) -> pd.DataFrame:
-    if not os.path.exists(path):
-        raise FileNotFoundError(f"XLSX не найден: {path}")
-    raw = pd.read_excel(path, header=None, dtype=str, engine="openpyxl")
-    log(f"[build_copyline] XLSX: {os.path.abspath(path)}")
-
-    h0, headers = find_header_row_and_build_headers(raw)
-    data = raw.iloc[h0+2:].reset_index(drop=True).copy()
-
-    # ровняем кол-во столбцов
-    data = data.iloc[:, :len(headers)]
-    data.columns = headers
-
-    i_name  = pick_column(headers, ["номенклатура", "наименование", "товары", "название"])
-    i_art   = pick_column(headers, ["номенклатура.артикул", "артикул", "код"])
-    i_price = pick_column(headers, ["цена", "опт"])
-    i_stock = pick_column(headers, ["остаток", "наличие", "кол-во", "количество", "склад"])
-
-    if i_name is None or i_art is None or i_price is None:
-        raise RuntimeError(f"Не хватает колонок. name={i_name}, article={i_art}, price={i_price}, stock={i_stock}")
-
-    df = pd.DataFrame({
-        "name":   data.iloc[:, i_name].astype(str).map(nrm),
-        "article":data.iloc[:, i_art].astype(str).map(nrm),
-        "price_raw": data.iloc[:, i_price].astype(str),
-        "stock_raw": data.iloc[:, i_stock].astype(str) if i_stock is not None else "",
-    })
-
-    # фильтр пустых
-    df = df[(df["name"]!="") & (df["article"]!="")]
-
-    df["price"] = df["price_raw"].map(parse_price)
-    df["stock_qty"] = df["stock_raw"].map(parse_stock) if "stock_raw" in df else 0
-    df["in_stock"] = df["stock_qty"] > 0
-
-    # нужна цена
-    df = df[df["price"].notna()].reset_index(drop=True)
-    log(f"[build_copyline] rows after parse: {len(df)}")
-    return df
-
-def load_keywords(path: str):
-    if not os.path.exists(path):
-        log("[build_copyline] KEEP отсутствует → берём все позиции")
-        return []
-    # читаем и в UTF-8, и fallback CP1251
-    content = None
-    for enc in ("utf-8", "cp1251"):
+def load_cache():
+    if os.path.exists(CACHE_JSON):
         try:
-            with io.open(path, "r", encoding=enc) as f:
-                content = f.read()
-            break
+            return json.load(open(CACHE_JSON, "r", encoding="utf-8"))
         except Exception:
-            continue
-    if content is None:
-        log("[build_copyline] Не удалось прочитать KEEP (utf-8/cp1251). Игнорирую фильтр.")
-        return []
-    kws = [ln.strip().lower() for ln in content.splitlines() if ln.strip()]
-    log(f"[build_copyline] KEEP keywords: {kws}")
-    return kws
+            return {}
+    return {}
 
-def filter_by_keywords(df: pd.DataFrame, kws):
-    if not kws: return df
-    names = df["name"].str.lower().fillna("")
-    mask = False
-    for kw in kws:
-        mask = mask | names.str.contains(re.escape(kw), na=False)
-    out = df[mask].reset_index(drop=True)
-    log(f"[build_copyline] after KEEP filter: {len(out)}")
+def save_cache(obj):
+    os.makedirs(os.path.dirname(CACHE_JSON), exist_ok=True)
+    json.dump(obj, open(CACHE_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+
+def req(url):
+    r = requests.get(url, headers={"User-Agent": UA}, timeout=TIMEOUT)
+    r.raise_for_status()
+    return r.text
+
+TOKEN_RE = re.compile(
+    r"(?:[A-Z]{1,6}-?\d{2,6}[A-Z0-9]{0,2}|\d{2,6}[A-Z]{1,6}\d{0,3}|106R\d{5}|CE\d{3}\w?)"
+)
+
+def extract_tokens(text):
+    if not text: return []
+    up = re.sub(r"\s+", " ", str(text)).upper()
+    toks = TOKEN_RE.findall(up)
+    # уникальные, по порядку
+    seen, out = set(), []
+    for t in toks:
+        if t not in seen:
+            seen.add(t); out.append(t)
     return out
 
-def detect_brand_bucket(name: str) -> str:
-    up = (name or "").upper()
-    for key,bucket in BRAND_BUCKETS.items():
-        if key in up: return bucket
-    return "OTHER"
+def find_product_links(html):
+    soup = BeautifulSoup(html, "lxml")
+    links = set()
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        if href.startswith("/"): href = urljoin(HOST, href)
+        if ("/goods/" in href) and href.endswith(".html"):
+            links.add(href)
+    return list(links)
 
-def guess_image_url(name: str) -> str | None:
-    tokens = re.findall(r"[A-Z0-9][A-Z0-9\-_/]{2,}", (name or "").upper())
-    tokens = [t for t in tokens if re.search(r"\d", t)]
-    if not tokens: return None
-    model = max(tokens, key=len)
-    return f"https://copyline.kz/components/com_jshopping/files/img_products/{model}.jpg"
+def parse_product_page(url):
+    """Вернёт (name, main_image_url) либо (None, None)"""
+    try:
+        html = req(url)
+    except Exception:
+        return None, None
+    soup = BeautifulSoup(html, "lxml")
+    img = soup.find("img", id=re.compile(r"^main_image"))
+    if not img or not img.get("src"): 
+        return None, None
+    img_url = urljoin(HOST, img["src"])
+    h1 = soup.find("h1")
+    name = h1.get_text(strip=True) if h1 else img.get("alt") or ""
+    return name, img_url
 
-def to_yml(df: pd.DataFrame) -> bytes:
+def crawl_and_fill_tokenmap(category_urls, tokenmap):
+    visited = set()
+    for cu in category_urls:
+        try:
+            html = req(cu)
+        except Exception:
+            continue
+        for prod_url in find_product_links(html):
+            if prod_url in visited: 
+                continue
+            visited.add(prod_url)
+            name, image = parse_product_page(prod_url)
+            if not image: 
+                continue
+            tokens = extract_tokens(name)
+            if not tokens:
+                tokens = extract_tokens(image)
+            for t in tokens:
+                # Не трогаем уже известные (кеш побеждает)
+                if t not in tokenmap:
+                    tokenmap[t] = {"image": image, "url": prod_url}
+    return tokenmap
+
+def load_xlsx_table(xlsx_path):
+    if not os.path.exists(xlsx_path):
+        log("XLSX отсутствует, будем работать только по парсингу категорий.")
+        return pd.DataFrame(columns=["name","article","price","stock"])
+
+    df = pd.read_excel(xlsx_path, engine="openpyxl")
+    cols = list(df.columns)
+
+    def pick(*need):
+        for c in cols:
+            lc = str(c).lower().replace("ё", "е")
+            for n in need:
+                if n in lc:
+                    return c
+        return None
+
+    c_name  = pick("номенклатура") or pick("наименование") or pick("товар")
+    c_art   = pick("артикул")
+    c_price = pick("цена") or pick("опт")
+    c_stock = pick("остаток") or pick("наличие")
+
+    if not c_name or not c_price:
+        raise RuntimeError(f"Не хватает колонок. Нашёл: name={c_name}, article={c_art}, price={c_price}, stock={c_stock}")
+
+    out = pd.DataFrame()
+    out["name"]    = df[c_name].astype(str)
+    out["article"] = df[c_art].astype(str) if c_art else ""
+    out["price"]   = pd.to_numeric(df[c_price], errors="coerce").fillna(0).astype(int)
+    out["stock"]   = df[c_stock].astype(str) if c_stock else "1"
+    return out
+
+def stock_to_flags(s):
+    txt = str(s).strip()
+    # примеры: "<50", ">100", "10", "-", ""
+    if txt in ("-", ""): return False, 0
+    # вытащим число
+    num = 0
+    m = re.search(r"\d+", txt)
+    if m:
+        num = int(m.group(0))
+    avail = num > 0 or txt.startswith(">")
+    return avail, num if num>0 else (50 if txt.startswith(">") else 0)
+
+def write_yml(rows, tokenmap):
     root = ET.Element("yml_catalog")
     shop = ET.SubElement(root, "shop")
-    ET.SubElement(shop, "name").text = "copyline-xlsx"
-
+    ET.SubElement(shop, "name").text = SHOP_NAME
     currencies = ET.SubElement(shop, "currencies")
-    ET.SubElement(currencies, "currency", id=CURRENCY, rate="1")
-
+    ET.SubElement(currencies, "currency", id="KZT", rate="1")
     cats = ET.SubElement(shop, "categories")
-    ROOT_ID = 9300000
-    ET.SubElement(cats, "category", id=str(ROOT_ID)).text = "Copyline"
-    brand_ids, next_id = {}, 9500000
-    for b in sorted(set(detect_brand_bucket(n) for n in df["name"])):
-        bid = next_id; next_id += 1
-        brand_ids[b] = bid
-        ET.SubElement(cats, "category", id=str(bid), parentId=str(ROOT_ID)).text = b
+    ET.SubElement(cats, "category", id=ROOT_CAT_ID).text = "Copyline"
 
     offers = ET.SubElement(shop, "offers")
-    for _, r in df.iterrows():
-        oid = f"copyline:{r['article']}"
-        o = ET.SubElement(offers, "offer", id=oid,
-                          available="true" if r["in_stock"] else "false",
-                          in_stock="true" if r["in_stock"] else "false")
-        ET.SubElement(o, "name").text = str(r["name"])
-        ET.SubElement(o, "price").text = str(int(round(float(r["price"]))))
-        ET.SubElement(o, "currencyId").text = CURRENCY
-        ET.SubElement(o, "categoryId").text = str(brand_ids.get(detect_brand_bucket(str(r["name"])), ROOT_ID))
-        ET.SubElement(o, "vendorCode").text = str(r["article"])
-        ET.SubElement(o, "quantity_in_stock").text = str(int(r["stock_qty"]))
-        ET.SubElement(o, "stock_quantity").text = str(int(r["stock_qty"]))
-        ET.SubElement(o, "quantity").text = str(int(r["stock_qty"]))
-        pic = guess_image_url(str(r["name"]))
-        if pic: ET.SubElement(o, "picture").text = pic
 
-    return ET.tostring(root, encoding="windows-1251", xml_declaration=True)
+    for idx, r in rows.iterrows():
+        name = str(r.get("name","")).strip()
+        if not name: 
+            continue
+
+        # фильтрация по KEEP_FILE (бренды/ключи)
+        keep_words = [x.lower() for x in read_lines(KEEP_FILE)]
+        if keep_words:
+            nm = name.lower()
+            if not any(k in nm for k in keep_words):
+                continue
+
+        price = int(r.get("price", 0) or 0)
+        art   = str(r.get("article","")).strip()
+        st    = r.get("stock","")
+        available, qty = stock_to_flags(st)
+
+        offer_id = f"copyline:{art or idx}"
+
+        o = ET.SubElement(offers, "offer", id=offer_id, available="true" if available else "false", in_stock="true" if available else "false")
+        ET.SubElement(o, "name").text = name
+        if price>0:
+            ET.SubElement(o, "price").text = str(price)
+        ET.SubElement(o, "currencyId").text = "KZT"
+        ET.SubElement(o, "categoryId").text = ROOT_CAT_ID
+        if art:
+            ET.SubElement(o, "vendorCode").text = art
+
+        # КАРТИНКИ: 1 основная — из tokenmap, ничего не скачиваем
+        pic = None; purl=None
+        tokens = extract_tokens(name)
+        for t in tokens:
+            hit = tokenmap.get(t)
+            if hit:
+                pic  = hit.get("image")
+                purl = hit.get("url")
+                break
+        if pic: 
+            ET.SubElement(o, "picture").text = pic
+        if purl:
+            ET.SubElement(o, "url").text = purl
+
+        # Кол-во (несколько полей — как просил ранее)
+        ET.SubElement(o, "quantity_in_stock").text = str(qty)
+        ET.SubElement(o, "stock_quantity").text    = str(qty)
+        ET.SubElement(o, "quantity").text          = str(qty)
+
+    tree = ET.ElementTree(root)
+    os.makedirs(os.path.dirname(OUT_YML), exist_ok=True)
+    tree.write(OUT_YML, encoding="windows-1251", xml_declaration=True)
+    log(f"YML готов: {OUT_YML}")
 
 def main():
-    if not os.path.exists(XLSX_PATH):
-        raise SystemExit(f"ERROR: {XLSX_PATH} не найден.")
-    df = load_copyline_xlsx(XLSX_PATH)
-    kws = load_keywords(KEEP_PATH)
-    df_keep = filter_by_keywords(df, kws) if kws else df
-    if kws and len(df_keep) == 0:
-        log("[build_copyline] KEEP дал 0 записей → отключаю фильтр (беру всё, чтобы не был пустой YML).")
-        df_keep = df
-    xml_bytes = to_yml(df_keep)
-    os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
-    with open(OUT_PATH, "wb") as f:
-        f.write(xml_bytes)
-    log(f"[build_copyline] DONE → {os.path.abspath(OUT_PATH)} items={len(df_keep)}")
+    print(f"[build_copyline] XLSX: {os.path.abspath(XLSX_PATH)}", file=sys.stderr)
+
+    # 1) грузим/обновляем кеш по категориям — для картинок
+    tokenmap = load_cache().get("tokenmap", {})
+    urls = read_lines(URLS_FILE)
+    if urls:
+        log(f"Обход категорий (для картинок): {len(urls)} URL")
+        tokenmap = crawl_and_fill_tokenmap(urls, tokenmap)
+        cache = {"tokenmap": tokenmap}
+        save_cache(cache)
+        log(f"В кеш добавлено токенов: {len(tokenmap)}")
+    else:
+        log("docs/copyline_urls.txt не найден — картинки будут, только если токены уже есть в кеше.")
+
+    # 2) читаем прайс (если есть)
+    df = load_xlsx_table(XLSX_PATH)
+
+    # 3) строим YML
+    write_yml(df, tokenmap)
 
 if __name__ == "__main__":
     main()
