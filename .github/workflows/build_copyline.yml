@@ -3,8 +3,7 @@ name: build_copyline
 on:
   workflow_dispatch:
   schedule:
-    # 01:00 Asia/Almaty (UTC+6) = 19:00 UTC
-    - cron: "0 19 * * *"
+    - cron: "0 21 * * *"  # ежедневно 03:00 Алматы (UTC+6)
 
 permissions:
   contents: write
@@ -12,30 +11,35 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      COPYLINE_XLSX_URL: ${{ secrets.COPYLINE_XLSX_URL }}
+      COPYLINE_BASIC_USER: ${{ secrets.COPYLINE_BASIC_USER }}
+      COPYLINE_BASIC_PASS: ${{ secrets.COPYLINE_BASIC_PASS }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Ensure docs dir
+      - name: Ensure docs folder & nojekyll
         run: |
           mkdir -p docs
-          touch docs/.nojekyll
+          printf "" > docs/.nojekyll
 
-      - name: Download Copyline XLSX (optional)
-        env:
-          COPYLINE_XLSX_URL: ${{ secrets.COPYLINE_XLSX_URL }}
+      - name: Download Copyline price (copyline.xlsx)
+        shell: bash
         run: |
           set -eo pipefail
-          if [ -n "$COPYLINE_XLSX_URL" ]; then
-            echo "Download XLSX from $COPYLINE_XLSX_URL"
-            curl -L "$COPYLINE_XLSX_URL" -o docs/copyline.xlsx
-          else
-            echo "COPYLINE_XLSX_URL не задан — используем локальный docs/copyline.xlsx (если есть)"
+          if [ -z "$COPYLINE_XLSX_URL" ]; then
+            echo "ERROR: secrets.COPYLINE_XLSX_URL не задан." >&2
+            exit 1
           fi
+          if [ -n "$COPYLINE_BASIC_USER" ] && [ -n "$COPYLINE_BASIC_PASS" ]; then
+            curl -L --fail --retry 5 -u "$COPYLINE_BASIC_USER:$COPYLINE_BASIC_PASS" "$COPYLINE_XLSX_URL" -o docs/copyline.xlsx
+          else
+            curl -L --fail --retry 5 "$COPYLINE_XLSX_URL" -o docs/copyline.xlsx
+          fi
+          ls -lh docs/copyline.xlsx
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -43,25 +47,18 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install pandas openpyxl requests beautifulsoup4 lxml
+          pip install -r requirements.txt
 
       - name: Build copyline.yml
         run: |
           set -eo pipefail
           python scripts/build_copyline.py
+          test -s docs/copyline.yml || (echo "ERROR: docs/copyline.yml пустой" >&2; exit 1)
 
-      - name: Pull latest (avoid non-fast-forward)
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull --rebase || true
-
-      - name: Commit & push
+      - name: Commit copyline.yml
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
+          commit_message: "build: copyline.yml"
           file_pattern: |
             docs/copyline.yml
-            docs/cache_copyline.json
             docs/.nojekyll
-          commit_message: "build: copyline.yml"
-          token: ${{ secrets.GITHUB_TOKEN }}
