@@ -1,4 +1,6 @@
 # scripts/build_alstyle.py
+# Надёжная сборка alstyle.yml из их YML: категории строятся ПО ФАКТУ офферов + предки.
+# Кодировка выхода — CP1251. Фильтр категорий (не обязателен) — docs/categories_alstyle.txt.
 from __future__ import annotations
 import os, sys, re
 import requests
@@ -30,8 +32,7 @@ def load_filters(path: str):
     return ids, subs, regs
 
 def cat_matches(name: str, cid: str, ids_filter:set[str], subs, regs) -> bool:
-    if not ids_filter and not subs and not regs:
-        return True
+    if not ids_filter and not subs and not regs: return True
     if cid in ids_filter: return True
     nm = (name or "").lower()
     if any(sub in nm for sub in subs): return True
@@ -54,34 +55,26 @@ def write_empty(path: str):
     ET.SubElement(shop, "offers")
     ET.ElementTree(root).write(path, encoding=ENC, xml_declaration=True)
 
+def build_parent_map(cats):
+    return {c.get("id"): c.get("parentId") for c in cats}
+
 def main():
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
 
-    # 1) читаем исходный YML
     root_in = fetch_xml(SUPPLIER_URL)
-
-    # ищем узлы максимально широко
     cats_in = root_in.findall(".//categories/category")
     offers_in = root_in.findall(".//offers/offer")
 
     if not offers_in:
         sys.stderr.write("WARN: у источника нет <offers/offer>\n")
         write_empty(OUT_FILE); print(f"{OUT_FILE}: offers=0, cats=0"); return
-    if not cats_in:
-        sys.stderr.write("WARN: у источника нет <categories/category>\n")
-        # даже если нет категорий — всё равно выпишем офферы
-        id2name = {}
-        parent = {}
-    else:
-        id2name = { c.get("id"): (c.text or "").strip() for c in cats_in }
-        parent  = { c.get("id"): c.get("parentId") for c in cats_in }
 
-    # 2) Фильтр категорий (по списку/словам). ВНИМАНИЕ:
-    # Теперь мы ВСЕГДА вычисляем итоговые категории ИЗ ОФФЕРОВ,
-    # чтобы не получить пустой <categories>.
+    id2name = { c.get("id"): (c.text or "").strip() for c in cats_in } if cats_in else {}
+    parent  = build_parent_map(cats_in) if cats_in else {}
+
     ids_filter, subs, regs = load_filters(CATS_FILE)
 
-    # какие офферы берём
+    # фильтрация офферов (если нужен фильтр)
     if not ids_filter and not subs and not regs:
         used_offers = offers_in
     else:
@@ -96,34 +89,27 @@ def main():
             if not keep_cat_ids or cid in keep_cat_ids:
                 used_offers.append(o)
 
-    # 3) Собираем множество категорий по факту офферов + всех предков
+    # набор категорий из фактических офферов + предки
     used_cat_ids = set()
     for o in used_offers:
         cid = (o.findtext("categoryId") or "").strip()
-        if not cid: continue
-        used_cat_ids.add(cid)
-
-    # добавляем предков (если известны)
-    def add_ancestors(cid: str):
-        seen=set()
-        cur = parent.get(cid) if parent else None
-        while cur and cur not in seen:
-            used_cat_ids.add(cur)
-            seen.add(cur)
-            cur = parent.get(cur) if parent else None
+        if cid: used_cat_ids.add(cid)
 
     if parent:
+        def add_ancestors(cid: str):
+            seen=set(); cur=parent.get(cid)
+            while cur and cur not in seen:
+                used_cat_ids.add(cur); seen.add(cur); cur=parent.get(cur)
         for cid in list(used_cat_ids):
             add_ancestors(cid)
 
-    # 4) Пишем выходной YML
+    # пишем выходной YML
     out_root = ET.Element("yml_catalog")
     out_shop = ET.SubElement(out_root, "shop")
     ET.SubElement(out_shop, "name").text = "al-style.kz"
     curr = ET.SubElement(out_shop, "currencies")
     ET.SubElement(curr, "currency", {"id":"KZT","rate":"1"})
 
-    # категории: родители → дети
     cats_out = ET.SubElement(out_shop, "categories")
     if used_cat_ids and id2name:
         def level_of(x:str)->int:
@@ -132,15 +118,14 @@ def main():
                 lv+=1; cur=parent.get(cur)
             return lv
         for cid in sorted(used_cat_ids, key=level_of):
-            if cid not in id2name:  # на всякий
+            if cid not in id2name: 
                 continue
-            attrs = {"id": cid}
+            attrs={"id":cid}
             pid = parent.get(cid)
-            if pid: attrs["parentId"] = pid
+            if pid: attrs["parentId"]=pid
             el = ET.SubElement(cats_out, "category", attrs)
             el.text = id2name[cid]
 
-    # офферы — копируем всё «как есть»
     offers_out = ET.SubElement(out_shop, "offers")
     for o in used_offers:
         new = ET.SubElement(offers_out, "offer", dict(o.attrib))
