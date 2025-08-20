@@ -3,20 +3,18 @@ name: build_copyline
 on:
   workflow_dispatch: {}
   schedule:
-    # ежедневно в 01:00 по Алматы (UTC+6 => 19:00 UTC предыдущего дня)
+    # 01:00 по Алматы (UTC+6) = 19:00 UTC предыдущего дня
     - cron: "0 19 * * *"
-
-permissions:
-  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -24,24 +22,37 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt || pip install pandas openpyxl lxml requests beautifulsoup4
 
-      - name: Prepare docs
+      - name: Download copyline.xlsx
         run: |
+          set -euo pipefail
           mkdir -p docs
-          : > docs/.nojekyll
+          curl -fL "https://copyline.kz/files/price-CLA.xlsx" -o docs/copyline.xlsx
+
+      - name: Ensure categories list exists
+        run: |
+          test -f docs/categories_copyline.txt || printf "Canon\nHP\nSamsung\nXerox\nKyocera\nLexmark\nRicoh\nPantum\nToshiba\n" > docs/categories_copyline.txt
 
       - name: Build copyline.yml
         run: |
-          set -eo pipefail
           python scripts/build_copyline.py
 
-      - name: Commit copyline.yml
+      - name: Prepare GitHub Pages bits
+        run: |
+          echo > docs/.nojekyll
+
+      - name: Pull latest (rebase)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase
+
+      - name: Commit and push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "build: copyline.yml"
           file_pattern: |
             docs/copyline.yml
-            docs/.nojekyll
             docs/categories_copyline.txt
-            docs/copyline_cache.json
+            docs/.nojekyll
