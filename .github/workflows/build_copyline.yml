@@ -3,7 +3,7 @@ name: build_copyline
 on:
   workflow_dispatch:
   schedule:
-    # 01:00 Азия/Алматы (UTC+6) = 19:00 UTC предыдущего дня
+    # 01:00 Asia/Almaty (UTC+6) = 19:00 UTC предыдущего дня
     - cron: "0 19 * * *"
 
 permissions:
