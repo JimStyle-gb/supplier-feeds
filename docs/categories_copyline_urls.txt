@@ -1,4 +1,3 @@
-# Список категорий сайта, с которых тянуть карточки и картинки
 https://copyline.kz/goods/developers.html
 https://copyline.kz/goods/drum-unit-brother.html
 https://copyline.kz/goods/drum-unit-canon.html
