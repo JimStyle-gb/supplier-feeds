@@ -1,162 +1,270 @@
-# scripts/build_alstyle.py
-from __future__ import annotations
-import os, io, sys, re
-import xml.etree.ElementTree as ET
-import requests
-from collections import defaultdict
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-SUPPLIER_URL   = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php")
-OUT_FILE       = os.getenv("OUT_FILE", "docs/alstyle.yml")
-ENC            = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
-CATS_FILE      = os.getenv("CATEGORIES_FILE", "docs/categories_alstyle.txt")
-BASIC_USER     = os.getenv("BASIC_USER", "").strip()
-BASIC_PASS     = os.getenv("BASIC_PASS", "").strip()
+import os, sys, re, csv, json, html, time, pathlib
+from pathlib import Path
+import pandas as pd
 
-def load_filters(path: str):
-    ids=set(); subs=[]; regs=[]
+# ---------------------------
+# Константы путей
+# ---------------------------
+ROOT = Path(__file__).resolve().parents[1]
+XLSX_PATH = ROOT / "docs" / "copyline.xlsx"
+KEEP_FILE = ROOT / "docs" / "categories_copyline.txt"
+OUT_YML = ROOT / "docs" / "copyline.yml"
+
+# ---------------------------
+# Утилиты
+# ---------------------------
+def read_text_safely(p: Path) -> str:
+    if not p.exists():
+        return ""
+    data = p.read_bytes()
+    for enc in ("utf-8-sig", "utf-8", "cp1251", "windows-1251"):
+        try:
+            return data.decode(enc)
+        except Exception:
+            continue
+    # как fallback
+    return data.decode(errors="ignore")
+
+def load_keep_keywords(p: Path):
+    raw = read_text_safely(p)
+    words = []
+    for line in raw.splitlines():
+        s = line.strip()
+        if not s or s.startswith("#"):
+            continue
+        words.append(s)
+    return words
+
+def norm_price(x):
+    if pd.isna(x):
+        return None
+    s = str(x).strip()
+    # "249 370,00" -> "249370.00" -> int
+    s = s.replace(" ", "").replace("\u00A0","").replace(",", ".")
     try:
-        with open(path,"r",encoding="utf-8") as f:
-            for line in f:
-                s=line.strip()
-                if not s or s.startswith("#"): continue
-                if s.isdigit():
-                    ids.add(s)
-                elif s.lower().startswith("re:"):
-                    try: regs.append(re.compile(s[3:], re.I))
-                    except: pass
-                else:
-                    subs.append(s.lower())
-    except FileNotFoundError:
-        pass
-    return ids, subs, regs
+        val = float(s)
+        return int(round(val))
+    except Exception:
+        return None
 
-def match_cat(name: str, ids_filter: set[str], subs, regs, cid: str):
-    if not ids_filter and not subs and not regs:
-        return True
-    if cid in ids_filter: return True
-    nm = (name or "").lower()
-    if any(sub in nm for sub in subs): return True
-    if any(r.search(nm) for r in regs): return True
-    return False
+def parse_stock(x):
+    # ">50", "<10", "1", "-", "Нет", ">" и т.д.
+    if x is None or (isinstance(x,float) and pd.isna(x)):
+        return 0
+    s = str(x).strip()
+    if not s or s == "-" or s.lower() in ("нет", "no", "none"):
+        return 0
+    s = s.replace(" ", "").replace("\u00A0","")
+    # отрежем все нецифры
+    m = re.search(r"(\d+)", s)
+    if m:
+        try:
+            return int(m.group(1))
+        except:
+            return 0
+    return 0
 
-def read_supplier_xml(url: str) -> ET.Element:
-    auth = (BASIC_USER, BASIC_PASS) if BASIC_USER and BASIC_PASS else None
-    r = requests.get(url, auth=auth, timeout=120)
-    r.raise_for_status()
-    content = r.content  # оставляем байты – парсер сам поймёт исходную кодировку
-    return ET.fromstring(content)
+def as_cp1251(s: str) -> str:
+    # В yml мы пишем bytes cp1251 — но текст готовим как str
+    # (github pages отдаст в windows-1251)
+    return s
 
-def build_parent_map(cats: list[ET.Element]) -> dict[str,str|None]:
-    # <category id="..." parentId="...">Name</category>
-    parent = {}
-    for c in cats:
-        cid = c.get("id")
-        parent[cid] = c.get("parentId")
-    return parent
+# ---------------------------
+# Роутинг в Satu
+# ---------------------------
+SATU = {
+    # Samsung
+    "laser_samsung": 9457454,
+    # Canon
+    "canon_oem":    9457491,  # Оригинальные Canon
+    "canon_compat": 9457505,  # Совместимые Canon
+}
 
-def collect_needed_categories(cats, parent, ids_keep: set[str]) -> set[str]:
-    # добавляем всех предков
-    need=set(ids_keep)
-    for cid in list(ids_keep):
-        cur = parent.get(cid)
-        seen=set()
-        while cur and cur not in seen:
-            need.add(cur)
-            seen.add(cur)
-            cur = parent.get(cur)
-    return need
+OEM_MARKERS = re.compile(r"\b(OEM|Original|Оригинал|оригинал)\b", re.IGNORECASE)
 
+def pick_category_id(name: str) -> int | None:
+    n = name or ""
+    n_low = n.lower()
+
+    # Canon
+    if "canon" in n_low:
+        if OEM_MARKERS.search(n):
+            return SATU["canon_oem"]
+        return SATU["canon_compat"]
+
+    # Samsung
+    if "samsung" in n_low or "mlt-" in n_low or "scx-" in n_low:
+        return SATU["laser_samsung"]
+
+    # если бренд не распознан — можно вернуть None (товар пропустим)
+    return None
+
+# ---------------------------
+# Фильтрация по списку keywords
+# ---------------------------
+def compile_keep_regex(words):
+    if not words:
+        return None
+    parts = []
+    for w in words:
+        w = w.strip()
+        if not w:
+            continue
+        parts.append(re.escape(w))
+    if not parts:
+        return None
+    # ищем вхождение любого ключа (без учёта регистра)
+    return re.compile("|".join(parts), re.IGNORECASE)
+
+# ---------------------------
+# Чтение XLSX (Copyline)
+# ---------------------------
+def load_copyline_xlsx(xlsx_path: Path) -> pd.DataFrame:
+    # Прочтём первый лист, нормализуем имена колонок
+    df = pd.read_excel(xlsx_path, header=None, dtype=str)
+    # найдём строку заголовка
+    header_row_idx = None
+    for i in range(min(40, len(df))):
+        row = " ".join([str(x) for x in df.iloc[i].tolist()])
+        if "Номенклатура" in row and "Артикул" in row:
+            header_row_idx = i
+            break
+    if header_row_idx is None:
+        raise RuntimeError("Не нашёл строку заголовка с колонками 'Номенклатура' и 'Артикул'.")
+
+    df = pd.read_excel(xlsx_path, header=header_row_idx)
+    # нормализуем имена
+    cols = {c: str(c).strip() for c in df.columns}
+    df.rename(columns=cols, inplace=True)
+
+    # Переименуем ключевые поля в стандарт
+    # Возможные варианты: 'Номенклатура', 'Номенклатура.Артикул', 'Артикул', 'Остаток', 'Цена'
+    def pick(colnames):
+        for c in colnames:
+            if c in df.columns:
+                return c
+        return None
+
+    c_name   = pick(["Номенклатура", "Название", "Наименование"])
+    c_art    = pick(["Номенклатура.Артикул", "Артикул", "Код"])
+    c_stock  = pick(["Остаток", "Наличие"])
+    c_price  = pick(["Цена", "ОПТ", "Цена, тг", "Цена тнг"])
+    if not c_name or not c_art or not c_price:
+        raise RuntimeError(f"Не хватает колонок. Нашёл: name={c_name}, article={c_art}, price={c_price}, stock={c_stock}")
+
+    out = pd.DataFrame({
+        "name":   df[c_name].astype(str).fillna(""),
+        "article":df[c_art].astype(str).fillna(""),
+        "stock":  df[c_stock] if c_stock in df else 0,
+        "price":  df[c_price],
+    })
+    return out
+
+# ---------------------------
+# Генерация YML
+# ---------------------------
+def y(s):  # xml-escape
+    return html.escape(str(s), quote=True)
+
+def build_yml(rows: list[dict]) -> bytes:
+    # Категории не публикуем (пусто), чтобы Satu не создавал группы
+    parts = []
+    parts.append("<?xml version='1.0' encoding='windows-1251'?>")
+    parts.append("<yml_catalog><shop><name>al-style.kz</name><currencies><currency id=\"KZT\" rate=\"1\" /></currencies>")
+    parts.append("<categories />")
+    parts.append("<offers>")
+    for r in rows:
+        attrs = []
+        attrs.append(f'id="copyline:{y(r["article"])}"')
+        attrs.append(f'available="{str(r["available"]).lower()}"')
+        attrs.append(f'in_stock="{str(r["in_stock"]).lower()}"')
+        parts.append(f"<offer {' '.join(attrs)}>")
+        parts.append(f"<name>{y(r['name'])}</name>")
+        parts.append(f"<price>{y(r['price'])}</price>")
+        parts.append("<currencyId>KZT</currencyId>")
+        parts.append(f"<categoryId>{y(r['category_id'])}</categoryId>")
+        parts.append(f"<vendorCode>{y(r['article'])}</vendorCode>")
+        if r.get("picture"):
+            parts.append(f"<picture>{y(r['picture'])}</picture>")
+        parts.append(f"<quantity_in_stock>{y(r['qty'])}</quantity_in_stock>")
+        parts.append(f"<stock_quantity>{y(r['qty'])}</stock_quantity>")
+        parts.append(f"<quantity>{y(r['qty'])}</quantity>")
+        parts.append("</offer>")
+    parts.append("</offers></shop></yml_catalog>")
+    text = "\n".join(parts)
+    return text.encode("cp1251", errors="replace")
+
+# ---------------------------
+# main
+# ---------------------------
 def main():
-    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+    print(f"[build_copyline] XLSX: {XLSX_PATH}")
+    if not XLSX_PATH.exists():
+        print("ERROR: docs/copyline.xlsx не найден.", file=sys.stderr)
+        sys.exit(1)
 
-    # 1) грузим исходный YML
-    root_in = read_supplier_xml(SUPPLIER_URL)
-    shop_in = root_in.find("./shop")
-    if shop_in is None:
-        print("ERROR: нет <shop> в источнике", file=sys.stderr); sys.exit(1)
+    # 1) ключи фильтра
+    keep_words = load_keep_keywords(KEEP_FILE)
+    print(f"[build_copyline] KEEP file: {KEEP_FILE}")
+    print(f"[build_copyline] Loaded {len(keep_words)} keywords: {keep_words}")
+    keep_re = compile_keep_regex(keep_words)
 
-    cats_in = list(shop_in.findall("./categories/category"))
-    offs_in = list(shop_in.findall("./offers/offer"))
+    # 2) загрузка прайса
+    df = load_copyline_xlsx(XLSX_PATH)
+    print(f"[build_copyline] Rows total: {len(df)}")
 
-    if not cats_in or not offs_in:
-        # даже если пусто — отдадим пустую шапку, как есть
-        out_root = ET.Element("yml_catalog")
-        out_shop = ET.SubElement(out_root, "shop")
-        ET.SubElement(out_shop, "name").text = "al-style.kz"
-        curr = ET.SubElement(out_shop, "currencies")
-        ET.SubElement(curr, "currency", {"id":"KZT","rate":"1"})
-        ET.SubElement(out_shop, "categories")
-        ET.SubElement(out_shop, "offers")
-        ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
-        print(f"{OUT_FILE}: пусто (в источнике нет категорий/офферов)"); return
+    kept = []
+    kept_by_brand = {"canon":0, "samsung":0, "other":0}
 
-    # 2) фильтры категорий
-    id_filter, subs, regs = load_filters(CATS_FILE)
+    for _, row in df.iterrows():
+        name = (row.get("name") or "").strip()
+        article = (row.get("article") or "").strip()
+        price = norm_price(row.get("price"))
+        stock = parse_stock(row.get("stock"))
 
-    # карта категорий
-    id2cat = {c.get("id"): c for c in cats_in}
-    parent = build_parent_map(cats_in)
+        if not name or not article or price is None:
+            continue
 
-    # если фильтров нет – берём всё
-    if not id_filter and not subs and not regs:
-        used_cat_ids = set(id2cat.keys())
-        used_offers  = offs_in
-    else:
-        # выберем категории по имени/ID
-        keep_by_rule=set()
-        for c in cats_in:
-            cid = c.get("id")
-            name = (c.text or "").strip()
-            if match_cat(name, id_filter, subs, regs, cid):
-                keep_by_rule.add(cid)
+        # 3) фильтр по KEEP
+        hay = f"{name} {article}"
+        if keep_re and not keep_re.search(hay):
+            continue
 
-        # офферы, у которых categoryId ∈ keep_by_rule
-        used_offers=[]
-        used_cat_ids=set()
-        for o in offs_in:
-            cid = (o.findtext("categoryId") or "").strip()
-            if cid in keep_by_rule:
-                used_offers.append(o)
-                used_cat_ids.add(cid)
+        # 4) категоризация
+        cat_id = pick_category_id(name)
+        if cat_id is None:
+            # нет правил под бренд — пропускаем
+            continue
 
-        # добавим всех предков
-        used_cat_ids = collect_needed_categories(cats_in, parent, used_cat_ids)
+        # счётчики для отладки
+        nl = name.lower()
+        if "canon" in nl:
+            kept_by_brand["canon"] += 1
+        elif "samsung" in nl or "mlt-" in nl or "scx-" in nl:
+            kept_by_brand["samsung"] += 1
+        else:
+            kept_by_brand["other"] += 1
 
-    # 3) строим выходной YML c правильным деревом
-    out_root = ET.Element("yml_catalog")
-    out_shop = ET.SubElement(out_root, "shop")
-    ET.SubElement(out_shop, "name").text = "al-style.kz"
-    curr = ET.SubElement(out_shop, "currencies")
-    ET.SubElement(curr, "currency", {"id":"KZT","rate":"1"})
+        kept.append({
+            "name": name,
+            "article": article,
+            "price": price,
+            "qty": max(stock, 0),
+            "available": stock > 0,
+            "in_stock": stock > 0,
+            "category_id": cat_id,
+            "picture": None,  # (пока без картинок — вопрос был в фильтре)
+        })
 
-    cats_out = ET.SubElement(out_shop, "categories")
-    # вывод категорий в топологическом порядке: сначала без parentId, потом с родителями
-    def level_of(cid: str) -> int:
-        lv=0; cur=parent.get(cid)
-        while cur:
-            lv+=1; cur=parent.get(cur)
-        return lv
-    for cid in sorted(used_cat_ids, key=lambda x: level_of(x)):
-        c = id2cat.get(cid)
-        if c is None: continue
-        attrs = {"id": c.get("id")}
-        if c.get("parentId"): attrs["parentId"]=c.get("parentId")
-        el = ET.SubElement(cats_out, "category", attrs)
-        el.text = (c.text or "").strip()
+    print(f"[build_copyline] Kept rows: {len(kept)} (brand split: {kept_by_brand})")
 
-    offers_out = ET.SubElement(out_shop, "offers")
-    for o in used_offers:
-        # копируем offer как есть (ID, name, price, currencyId, categoryId, vendor, vendorCode, picture, description, и т.д.)
-        new = ET.SubElement(offers_out, "offer", dict(o.attrib))
-        for child in list(o):
-            # переносим все поля без изменений
-            ET.SubElement(new, child.tag).text = (child.text or "").strip()
-
-    ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
-    print(f"Wrote {OUT_FILE}: offers={len(used_offers)}, cats={len(used_cat_ids)} (encoding={ENC})")
+    # 5) yml
+    OUT_YML.parent.mkdir(parents=True, exist_ok=True)
+    OUT_YML.write_bytes(build_yml(kept))
+    print(f"[build_copyline] Wrote: {OUT_YML} ({OUT_YML.stat().st_size} bytes)")
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print("ERROR:", e, file=sys.stderr); sys.exit(1)
+    main()
