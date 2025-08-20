@@ -3,7 +3,8 @@ name: build_copyline
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 19 * * *"   # ежедневно ~01:00 по Алматы (UTC+6)
+    # 01:00 Азия/Алматы (UTC+6) = 19:00 UTC предыдущего дня
+    - cron: "0 19 * * *"
 
 permissions:
   contents: write
@@ -23,35 +24,39 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install requests openpyxl beautifulsoup4 lxml
+          pip install requests beautifulsoup4 lxml openpyxl
 
-      - name: Ensure Pages artifacts
+      - name: Ensure docs
         run: |
           mkdir -p docs
           echo > docs/.nojekyll
 
       - name: Build copyline.yml
         env:
-          XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
-          OUT_FILE: "docs/copyline.yml"
-          OUTPUT_ENCODING: "windows-1251"
-          CATEGORIES_FILE: "docs/categories_copyline.txt"
-          URLS_FILE: "docs/categories_copyline_urls.txt"
-          PHOTO_INDEX_FILE: "docs/copyline_photo_index.json"
-          MAX_PAGES_PER_CAT: "200"
-          REQUEST_DELAY: "0.4"
+          OUTPUT_ENCODING: windows-1251
         run: |
           python scripts/build_copyline.py
 
-      - name: Commit & push YML
+      - name: Route categories (smart)
+        env:
+          OUTPUT_ENCODING: windows-1251
+          COPYLINE_YML: docs/copyline.yml
+          SATU_MAP_CSV: docs/satu_map.csv
+        run: |
+          python scripts/route_copyline_smart.py
+
+      - name: Sync branch (rebase if needed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase || true
+
+      - name: Commit & push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "build: copyline.yml"
+          commit_message: "build: copyline.yml (smart routed)"
           add_options: -A
           file_pattern: |
             docs/copyline.yml
-            docs/categories_copyline.txt
-            docs/categories_copyline_urls.txt
-            docs/copyline_photo_index.json
+            docs/satu_map.csv
             docs/.nojekyll
-          push_options: --force
