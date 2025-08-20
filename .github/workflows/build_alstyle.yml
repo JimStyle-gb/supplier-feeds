@@ -3,7 +3,8 @@ name: build_alstyle
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 19 * * *"   # каждый день ~01:00 по Алматы (UTC+6)
+    # 01:00 Asia/Almaty (UTC+6) = 19:00 UTC предыдущего дня
+    - cron: "0 19 * * *"
 
 permissions:
   contents: write
@@ -32,22 +33,27 @@ jobs:
 
       - name: Build alstyle.yml
         env:
-          SUPPLIER_URL: "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
-          OUT_FILE: "docs/alstyle.yml"
-          OUTPUT_ENCODING: "windows-1251"
-          CATEGORIES_FILE: "docs/categories_alstyle.txt"
-          # Если на URL стоит базовая авторизация — раскомментируй и заполни:
+          OUTPUT_ENCODING: windows-1251
+          SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
+          # Если нужна Basic-авторизация:
           # BASIC_USER: ${{ secrets.ALSTYLE_USER }}
           # BASIC_PASS: ${{ secrets.ALSTYLE_PASS }}
+          # Необязательный фильтр категорий:
+          # CATEGORIES_FILE: docs/categories_alstyle.txt
         run: |
           python scripts/build_alstyle.py
+
+      - name: Sync branch (rebase if needed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase || true
 
       - name: Commit & push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "build: alstyle.yml (from supplier yml)"
+          commit_message: "build: alstyle.yml"
           add_options: -A
           file_pattern: |
             docs/alstyle.yml
-            docs/categories_alstyle.txt
             docs/.nojekyll
