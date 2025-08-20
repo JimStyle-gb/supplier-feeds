@@ -3,11 +3,8 @@ name: build_copyline
 on:
   workflow_dispatch:
   schedule:
-    # Каждый день в 01:00 по Алматы (UTC+6) = 19:00 UTC предыдущего дня
-    - cron: '0 19 * * *'
-
-permissions:
-  contents: write
+    # 01:00 по Алматы (UTC+6) → 19:00 UTC предыдущего дня
+    - cron: "0 19 * * *"
 
 jobs:
   build:
@@ -19,47 +16,50 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
+      - name: Ensure docs dir
+        run: |
+          mkdir -p docs
+          touch docs/.nojekyll
+
+      - name: Download Copyline XLSX
+        env:
+          COPYLINE_XLSX_URL: ${{ secrets.COPYLINE_XLSX_URL }}
+        run: |
+          set -eo pipefail
+          if [ -n "$COPYLINE_XLSX_URL" ]; then
+            echo "Download from $COPYLINE_XLSX_URL"
+            curl -L "$COPYLINE_XLSX_URL" -o docs/copyline.xlsx
+          elif [ -f docs/copyline.xlsx ]; then
+            echo "Using existing docs/copyline.xlsx"
+          else
+            echo "ERROR: Не задан секрет COPYLINE_XLSX_URL и нет docs/copyline.xlsx"; exit 1
+          fi
+
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install pandas openpyxl lxml requests beautifulsoup4
-
-      - name: Download Copyline XLSX
-        env:
-          XLSX_URL: ${{ secrets.COPYLINE_XLSX_URL }}
-        run: |
-          set -eo pipefail
-          mkdir -p docs
-          curl -L "$XLSX_URL" -o docs/copyline.xlsx
-          echo "Saved XLSX to docs/copyline.xlsx"
+          pip install pandas openpyxl
 
       - name: Build copyline.yml
         run: |
           set -eo pipefail
           python scripts/build_copyline.py
 
-      - name: Prepare GH Pages artifacts
+      - name: Pull latest (avoid non-fast-forward)
         run: |
-          set -eo pipefail
-          mkdir -p docs
-          touch docs/.nojekyll
-
-      - name: Commit and push result
-        run: |
-          set -eo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase || true
 
-          # Защита от разъехавшихся историй
-          git stash push -u -m "tmp-stash" || true
-          git pull --rebase origin main || true
-          git stash pop || true
-
-          git add docs/copyline.yml docs/.nojekyll
-          git commit -m "build: copyline.yml" || echo "No changes to commit."
-          git push origin HEAD:main
+      - name: Commit & push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: |
+            docs/copyline.yml
+            docs/.nojekyll
+          commit_message: "build: copyline.yml"
