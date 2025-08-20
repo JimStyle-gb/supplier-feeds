@@ -1,4 +1,6 @@
 # scripts/route_copyline_smart.py
+# «Умная» раскладка Copyline по группам Satu через docs/satu_map.csv.
+# Определяет бренд/тип по названию и выставляет <categoryId>=актуальный ID из CSV.
 from __future__ import annotations
 import os, sys, re, csv
 import xml.etree.ElementTree as ET
@@ -7,9 +9,7 @@ INPUT   = os.getenv("COPYLINE_YML", "docs/copyline.yml")
 ENC     = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
 MAP_CSV = os.getenv("SATU_MAP_CSV", "docs/satu_map.csv")
 
-# ---- правила распознавания ----
 RE_ORIG  = re.compile(r"\b(oem|original|genuine|оригинал\w*)\b", re.I)
-
 RE_LASER = re.compile(r"(картридж|тонер|laser|лазерн)", re.I)
 RE_DRUM  = re.compile(r"(drum|драм|фото?барабан)", re.I)
 RE_DEV   = re.compile(r"(developer|прояв|девелоп)", re.I)
@@ -63,7 +63,6 @@ def detect_brand(name_l: str, vendor_l: str) -> str | None:
     return None
 
 def detect_key(name: str, vendor: str) -> str | None:
-    """Возвращает ключ satu_key или None, если не распознано."""
     name_l   = (name   or "").lower()
     vendor_l = (vendor or "").lower()
 
@@ -75,30 +74,21 @@ def detect_key(name: str, vendor: str) -> str | None:
     is_lam      = bool(RE_LAM.search(name_l))
     is_utp      = bool(RE_UTP.search(name_l))
 
-    # Безбрендовые сервисные ветки
-    if is_fuser:
-        return "fusers"
-    if is_lam:
-        return "laminators"
-    if is_utp:
-        return "utp_cables"
+    if is_fuser: return "fusers"
+    if is_lam:   return "laminators"
+    if is_utp:   return "utp_cables"
 
-    # Брендовые правила
     if brand == "canon":
-        if is_ink:
-            return "canon_ink"
-        if is_laserish:
-            return "canon_oem" if (RE_ORIG.search(name or "") or RE_ORIG.search(vendor or "")) else "canon_compat"
+        if is_ink:      return "canon_ink"
+        if is_laserish: return "canon_oem" if (RE_ORIG.search(name or "") or RE_ORIG.search(vendor or "")) else "canon_compat"
         return None
 
     if brand == "xerox":
-        if is_laserish:
-            return "xerox_oem" if (RE_ORIG.search(name or "") or RE_ORIG.search(vendor or "")) else "xerox_compat"
+        if is_laserish: return "xerox_oem" if (RE_ORIG.search(name or "") or RE_ORIG.search(vendor or "")) else "xerox_compat"
         return None
 
     if brand in {"hp","kyocera","ricoh","lexmark","pantum","toshiba"}:
-        if is_laserish:
-            return f"{brand}_laser"
+        if is_laserish: return f"{brand}_laser"
         return None
 
     return None
