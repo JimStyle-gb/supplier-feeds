@@ -6,6 +6,9 @@ on:
     # 01:00 по Алматы (UTC+6) → 19:00 UTC предыдущего дня
     - cron: "0 19 * * *"
 
+permissions:
+  contents: write   # ← важно: даёт GITHUB_TOKEN права на push
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -63,3 +66,4 @@ jobs:
             docs/copyline.yml
             docs/.nojekyll
           commit_message: "build: copyline.yml"
+          token: ${{ secrets.GITHUB_TOKEN }}   # ← используй токен с правами
