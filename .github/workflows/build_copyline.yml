@@ -1,4 +1,4 @@
-name: build-copyline
+name: build_copyline
 
 on:
   workflow_dispatch: {}
