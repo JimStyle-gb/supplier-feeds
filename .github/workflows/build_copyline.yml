@@ -1,28 +1,31 @@
+# .github/workflows/build_copyline.yml
 name: build_copyline
 
 on:
-  workflow_dispatch: {}         # кнопка "Run workflow"
+  workflow_dispatch: {}
   push:
-    branches:
-      - main
-      - master
-      - '**'                    # на всякий случай — любые ветки
-    paths-ignore:               # не реагировать на мелочи (можно убрать)
-      - README.md
-      - LICENSE
+    branches: [ main ]            # поменяй на master, если нужно
+    paths:
+      - 'scripts/build_copyline.py'
+      - '.github/workflows/build_copyline.yml'
+      - 'docs/**'
   schedule:
-    - cron: "0 0 * * *"         # 00:00 UTC (06:00 Almaty)
+    - cron: "0 0 * * *"           # 00:00 UTC = 06:00 Asia/Almaty
 
 permissions:
   contents: write
 
+# >>> фикс «ожидания из-за concurrency»
+# Группируем по названию workflow + ветке, и отменяем предыдущие запуски.
 concurrency:
-  group: build_copyline
+  group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,6 +49,7 @@ jobs:
           IMG_LOOKUPS_PER_RUN: "300"
           IMG_WORKERS: "6"
         run: |
+          echo "Concurrency group: ${{ github.workflow }}-${{ github.ref_name }}"
           python scripts/build_copyline.py
           ls -l docs || true
           test -f docs/copyline.yml
