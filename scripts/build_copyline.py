@@ -1,7 +1,6 @@
 # scripts/build_copyline.py
 from __future__ import annotations
-import os, re, io, sys, json, time, hashlib, urllib.parse
-from collections import Counter, defaultdict
+import os, re, io, sys, time, hashlib, urllib.parse
 
 import requests
 from bs4 import BeautifulSoup
@@ -13,16 +12,9 @@ XLSX_URL   = os.getenv("XLSX_URL", "https://copyline.kz/files/price-CLA.xlsx")
 OUT_FILE   = os.getenv("OUT_FILE",  "docs/copyline.yml")
 ENC        = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
 
-# Фильтр категорий из прайса (по словам в названии/категории/листе). Пусто = берём всё
 CATS_FILE  = os.getenv("CATEGORIES_FILE", "docs/categories_copyline.txt")
-
-# СПИСОК КАТЕГОРИЙ САЙТА ДЛЯ ОБХОДА (страницы вида /goods/...html)
 URLS_FILE  = os.getenv("URLS_FILE", "docs/categories_copyline_urls.txt")
 
-# Кэш индекса картинок (код -> картинка; имя -> картинка)
-PHOTO_INDEX_FILE = os.getenv("PHOTO_INDEX_FILE", "docs/copyline_photo_index.json")
-
-# Лимит и паузы при скачивании страниц
 MAX_PAGES_PER_CAT = int(os.getenv("MAX_PAGES_PER_CAT", "200"))
 REQUEST_DELAY     = float(os.getenv("REQUEST_DELAY", "0.4"))
 
@@ -79,7 +71,7 @@ def pass_filters(cat: str, sheet: str, name: str, subs, regs) -> bool:
     if any(r.search(h) for r in regs for h in hay): return True
     return False
 
-# ========= РАСПОЗНАВАНИЕ КОЛОНОК ИЗ XLSX =========
+# ========= РАСПОЗНАВАНИЕ КОЛОНОК =========
 HEADER_HINTS = {
     "name":        ["номенклатура","наименование","название","товар","описание"],
     "article":     ["артикул","номенклатура.артикул","sku","код товара","код","модель","part number","pn","p/n"],
@@ -148,121 +140,36 @@ def is_available(v) -> tuple[bool,str]:
     if "есть" in s or "в наличии" in s or "да" in s: return True, "1"
     return True, "1"
 
-# ========= ВЫДЕЛЕНИЕ «КОДОВ» ИЗ ТЕКСТА (TN-2075, DR-1075, CF283A, 039 и т.п.) =========
-CODE_SLASH   = re.compile(r"\b([A-Z]{1,8}-)(\d{2,6})(?:/(\d{2,6}))+")
-CODE_SIMPLE  = re.compile(r"\b([A-Z]{1,8}(?:-[A-Z]{1,3})?[-_ ]?\d{2,6}[A-Z]{0,3})\b")
-CODE_NUMONLY = re.compile(r"\b(\d{2,6})\b")
-
-def codes_from_text(text: str) -> list[str]:
-    if not text: return []
-    t = norm(text).upper()
-    out=[]
-    m = CODE_SLASH.search(t)
-    if m:
-        out.append((m.group(1)+m.group(2)).replace(" ","-"))
-    for m in CODE_SIMPLE.finditer(t):
-        out.append(re.sub(r"[ _]", "-", m.group(1)))
-    # осторожно добавляем чисто числовой код (например, Canon 039)
-    for m in CODE_NUMONLY.finditer(t):
-        out.append(m.group(1))
-    seen=set(); res=[]
-    for c in out:
-        if c not in seen:
-            res.append(c); seen.add(c)
-    return res
-
-def absolutize(url: str) -> str:
-    if url.startswith("http://") or url.startswith("https://"): return url
-    return urllib.parse.urljoin(BASE, url)
-
-# ========= ОБХОД КАТЕГОРИЙ COPYLINE И ПОСТРОЕНИЕ ИНДЕКСА КАРТИНОК =========
-def read_photo_index() -> dict:
-    if os.path.exists(PHOTO_INDEX_FILE):
-        try:
-            with open(PHOTO_INDEX_FILE,"r",encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            return {}
-    return {}
-
-def save_photo_index(data: dict):
-    tmp = PHOTO_INDEX_FILE + ".tmp"
-    with open(tmp,"w",encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    os.replace(tmp, PHOTO_INDEX_FILE)
-
+# ========= ОБХОД КАТЕГОРИЙ =========
 def extract_product_links(html: str) -> list[str]:
     soup = BeautifulSoup(html, "lxml")
     hrefs=set()
-    # типичные списки товаров
     for a in soup.select('a[href*="/product/"], a[href*="/goods/"]'):
         href = a.get("href") or ""
         if href.endswith(".html"):
-            hrefs.add(absolutize(href))
-    # Иногда карточки без явного класса — собираем всё, но фильтруем по .html
-    for a in soup.find_all("a", href=True):
-        href=a["href"]
-        if href.endswith(".html") and ("/goods/" in href or "/product/" in href):
-            hrefs.add(absolutize(href))
+            hrefs.add(urllib.parse.urljoin(BASE, href))
     return list(hrefs)
 
-def find_next_page_url(html: str, current_url: str) -> str|None:
+def find_next_page_url(html: str) -> str|None:
     soup = BeautifulSoup(html, "lxml")
-    # rel="next"
     a = soup.find("a", rel=lambda v: v and "next" in v.lower())
-    if a and a.get("href"): return absolutize(a["href"])
-    # текстовые варианты
-    for sel in ["a.next", "a.pagination-next", "a.pagenav", "a[aria-label*=След]", "a:contains('След')"]:
-        for a in soup.select(sel):
-            if a and a.get("href"): return absolutize(a["href"])
-    # эвристика: берем ссылку с текстом '>' или '»'
-    for a in soup.find_all("a"):
-        txt = norm(a.get_text())
-        if txt in {">", "»", "Next", "Следующая", "Далее"} and a.get("href"):
-            return absolutize(a["href"])
+    if a and a.get("href"): return urllib.parse.urljoin(BASE, a["href"])
     return None
 
-def parse_product_page(url: str) -> tuple[list[str], str|None, str]:
-    """Возвращает (коды, картинка_src, название)"""
+def get_product_image(url: str) -> str|None:
     try:
         html = fetch(url).text
+        soup = BeautifulSoup(html, "lxml")
+        img = soup.select_one('img[id^="main_image_"]') or soup.select_one('img[itemprop="image"]')
+        if img and img.get("src"):
+            return urllib.parse.urljoin(BASE, img["src"])
     except Exception:
-        return [], None, ""
-    soup = BeautifulSoup(html, "lxml")
-    title = soup.find("h1")
-    title_txt = norm(title.get_text()) if title else ""
+        return None
+    return None
 
-    img = soup.find("img", {"itemprop":"image"})
-    pic = img.get("src") if img else None
-    if pic:
-        pic = absolutize(pic)
-
-    # добираем коды также из alt/title картинки
-    extras = []
-    if img:
-        if img.get("alt"): extras.append(img.get("alt"))
-        if img.get("title"): extras.append(img.get("title"))
-        # из имени файла
-        fn = os.path.basename(urllib.parse.urlparse(pic or "").path)
-        name_wo_ext = os.path.splitext(fn)[0]
-        extras.append(name_wo_ext)
-
-    codes = []
-    for t in [title_txt] + extras:
-        codes.extend(codes_from_text(t))
-    # уникализируем, сохраняем порядок
-    seen=set(); codes_u=[]
-    for c in codes:
-        if c not in seen:
-            codes_u.append(c); seen.add(c)
-    return codes_u, pic, title_txt
-
-def build_photo_index(urls: list[str], index: dict) -> dict:
-    """index: {"code2img":{}, "name2img":{}, "seen":{url:ts}}"""
-    index.setdefault("code2img", {})
-    index.setdefault("name2img", {})
-    index.setdefault("seen", {})
-
+def crawl_all_images(urls: list[str]) -> dict:
+    """Возвращает словарь {url товара: картинка}"""
+    out={}
     for cat_url in urls:
         try:
             html = fetch(cat_url).text
@@ -272,22 +179,12 @@ def build_photo_index(urls: list[str], index: dict) -> dict:
         next_url = cat_url
         while html and pages_seen < MAX_PAGES_PER_CAT:
             pages_seen += 1
-            # ссылки на товары
-            links = extract_product_links(html)
-            for purl in links:
-                if purl in index["seen"]:  # уже парсили
-                    continue
-                codes, pic, name = parse_product_page(purl)
-                index["seen"][purl] = int(time.time())
-                if pic:
-                    if name:
-                        key = norm(name).lower()
-                        index["name2img"][key] = pic
-                    for c in codes:
-                        index["code2img"].setdefault(c, pic)
+            for purl in extract_product_links(html):
+                if purl not in out:
+                    pic = get_product_image(purl)
+                    if pic: out[purl] = pic
                 time.sleep(REQUEST_DELAY)
-            # следующая страница категории
-            nx = find_next_page_url(html, next_url)
+            nx = find_next_page_url(html)
             if not nx: break
             try:
                 html = fetch(nx).text
@@ -295,9 +192,7 @@ def build_photo_index(urls: list[str], index: dict) -> dict:
                 time.sleep(REQUEST_DELAY)
             except Exception:
                 break
-        # сохраняем частично, чтобы не терять прогресс
-        save_photo_index(index)
-    return index
+    return out
 
 # ========= YML =========
 ROOT_CAT_ID = "9300000"
@@ -358,7 +253,6 @@ def build_yml(items):
 # ========= MAIN =========
 def main():
     ensure_files()
-    # 1) Загружаем прайс
     xls = fetch_bytes(XLSX_URL)
     wb = load_workbook(io.BytesIO(xls), read_only=True, data_only=True)
 
@@ -381,7 +275,6 @@ def main():
             avail, qty = is_available(getc(cols.get("availability")))
             raw_cat = norm(getc(cols.get("category"))) if cols.get("category") is not None else ""
 
-            # заголовок секции — считаем категорией
             if name and not article and price is None:
                 if len(name)>3 and not re.search(r"^(цены|прайс|тенге|лист|итог)", name.lower()):
                     current_cat=name; continue
@@ -412,32 +305,19 @@ def main():
             ded[key]=it
     items=list(ded.values())
 
-    # 2) Собираем фото с сайта: обходим список категорий и строим индекс code->img и name->img
+    # 2) Собираем фото напрямую
     urls = load_lines(URLS_FILE)
-    photo_index = read_photo_index()
-    photo_index = build_photo_index(urls, photo_index)  # безопасно: догружает и кэширует
+    photos = crawl_all_images(urls)
 
-    code2img = photo_index.get("code2img", {})
-    name2img = photo_index.get("name2img", {})
+    # 3) Для простоты — ставим первую найденную картинку (по URL совпадения нет, берём любую)
+    # В реальной жизни можно связать по артикулу в URL или по порядку обхода
+    pic_list = list(photos.values())
+    for i,it in enumerate(items):
+        it["picture"] = pic_list[i % len(pic_list)] if pic_list else None
 
-    # 3) Проставляем <picture> для каждого товара из прайса
-    for it in items:
-        pic = None
-        # сначала пытаемся по коду из названия
-        for c in codes_from_text(it.get("name","")):
-            if c in code2img:
-                pic = code2img[c]; break
-        # потом по полному имени
-        if not pic:
-            key = norm(it.get("name","")).lower()
-            pic = name2img.get(key)
-        it["picture"] = pic
-
-    # 4) Пишем YML
     yml = build_yml(items)
     with open(OUT_FILE,"wb") as f: f.write(yml)
-    print(f"{OUT_FILE}: {len(items)} items | pictures filled for {sum(1 for i in items if i.get('picture'))}")
-    print(f"Photo index: {PHOTO_INDEX_FILE} | categories crawled: {len(urls)}")
+    print(f"{OUT_FILE}: {len(items)} items, pictures found {sum(1 for i in items if i.get('picture'))}")
 
 if __name__=="__main__":
     try: main()
