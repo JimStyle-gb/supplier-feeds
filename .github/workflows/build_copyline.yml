@@ -15,10 +15,9 @@ on:
 permissions:
   contents: write
 
-# >>> фикс «ожидания из-за concurrency»
-# Группируем по названию workflow + ветке, и отменяем предыдущие запуски.
+# Делаем уникальную группу для каждого запуска, чтобы НЕ ждать предыдущие ранние.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -49,7 +48,6 @@ jobs:
           IMG_LOOKUPS_PER_RUN: "300"
           IMG_WORKERS: "6"
         run: |
-          echo "Concurrency group: ${{ github.workflow }}-${{ github.ref_name }}"
           python scripts/build_copyline.py
           ls -l docs || true
           test -f docs/copyline.yml
