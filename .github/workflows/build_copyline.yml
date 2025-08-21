@@ -1,16 +1,17 @@
-# .github/workflows/build_copyline.yml
 name: build_copyline
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch: {}         # кнопка "Run workflow"
   push:
-    branches: [ main ]          # поменяй на master, если у тебя дефолтная ветка master
-    paths:
-      - 'scripts/build_copyline.py'
-      - '.github/workflows/build_copyline.yml'
-      - 'docs/**'
+    branches:
+      - main
+      - master
+      - '**'                    # на всякий случай — любые ветки
+    paths-ignore:               # не реагировать на мелочи (можно убрать)
+      - README.md
+      - LICENSE
   schedule:
-    - cron: "0 0 * * *"         # 00:00 UTC = 06:00 Asia/Almaty
+    - cron: "0 0 * * *"         # 00:00 UTC (06:00 Almaty)
 
 permissions:
   contents: write
