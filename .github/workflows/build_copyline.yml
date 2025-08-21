@@ -1,3 +1,4 @@
+# .github/workflows/build_copyline.yml
 name: build_copyline
 
 on:
@@ -6,7 +7,7 @@ on:
     - cron: "0 0 * * *"   # ежедневно в 00:00 UTC
 
 permissions:
-  contents: write  # чтобы коммитить файл в репозиторий
+  contents: write
 
 jobs:
   build:
@@ -22,8 +23,6 @@ jobs:
 
       - name: Check XLSX URL reachable
         run: |
-          set -euo pipefail
-          echo "HEAD https://copyline.kz/files/price-CLA.xlsx"
           curl -I --retry 3 --retry-delay 3 https://copyline.kz/files/price-CLA.xlsx
 
       - name: Install deps
@@ -37,12 +36,9 @@ jobs:
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
         run: |
-          set -euo pipefail
           python scripts/build_copyline.py
-          echo "== ls -l docs =="
           ls -l docs || true
-          echo "== file size =="
-          test -f docs/copyline.yml && wc -c docs/copyline.yml || (echo 'ERROR: docs/copyline.yml not created' && exit 1)
+          test -f docs/copyline.yml
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -52,12 +48,14 @@ jobs:
           if-no-files-found: error
 
       - name: Commit & push if changed
+        shell: bash
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/copyline.yml || true
-          if ! git diff --cached --quiet; then
-            git commit -m "Update Copyline YML ($(date -u +'%Y-%m-%d %H:%M:%S') UTC)"
+          git add -A
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Update Copyline YML"
             git push
           else
             echo "No changes to commit."
+          fi
