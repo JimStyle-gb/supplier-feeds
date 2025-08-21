@@ -1,10 +1,9 @@
-# .github/workflows/build_copyline.yml
 name: build_copyline
 
 on:
   workflow_dispatch: {}
   push:
-    branches: [ main ]            # поменяй на master, если нужно
+    branches: [ main ]            # поменяй на master, если у тебя master
     paths:
       - 'scripts/build_copyline.py'
       - '.github/workflows/build_copyline.yml'
@@ -14,11 +13,6 @@ on:
 
 permissions:
   contents: write
-
-# Делаем уникальную группу для каждого запуска, чтобы НЕ ждать предыдущие ранние.
-concurrency:
-  group: ${{ github.workflow }}-${{ github.run_id }}
-  cancel-in-progress: true
 
 jobs:
   build:
