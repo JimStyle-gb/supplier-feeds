@@ -4,7 +4,7 @@ name: build_copyline
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "0 0 * * *"   # ежедневно в 00:00 UTC
+    - cron: "0 0 * * *"
 
 permissions:
   contents: write
