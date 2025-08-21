@@ -20,6 +20,12 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Check XLSX URL reachable
+        run: |
+          set -euo pipefail
+          echo "HEAD https://copyline.kz/files/price-CLA.xlsx"
+          curl -I --retry 3 --retry-delay 3 https://copyline.kz/files/price-CLA.xlsx
+
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
@@ -31,14 +37,19 @@ jobs:
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
         run: |
+          set -euo pipefail
           python scripts/build_copyline.py
-          ls -l docs/ || true
+          echo "== ls -l docs =="
+          ls -l docs || true
+          echo "== file size =="
+          test -f docs/copyline.yml && wc -c docs/copyline.yml || (echo 'ERROR: docs/copyline.yml not created' && exit 1)
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: copyline-yml
           path: docs/copyline.yml
+          if-no-files-found: error
 
       - name: Commit & push if changed
         run: |
