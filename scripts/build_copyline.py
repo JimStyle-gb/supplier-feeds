@@ -1,29 +1,44 @@
 # scripts/build_copyline.py
 from __future__ import annotations
-import os, re, io, sys, hashlib
+import os, re, io, sys, json, time, hashlib, urllib.parse
+from typing import Optional, Dict, Any, List
 import requests
+from bs4 import BeautifulSoup
 from xml.etree.ElementTree import Element, SubElement, ElementTree
 from openpyxl import load_workbook
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# ====== НАСТРОЙКИ ======
-XLSX_URL   = os.getenv("XLSX_URL", "https://copyline.kz/files/price-CLA.xlsx")
-OUT_FILE   = os.getenv("OUT_FILE",  "docs/copyline.yml")
-ENC        = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+# ========= НАСТРОЙКИ =========
+BASE_URL    = "https://copyline.kz"
+XLSX_URL    = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
+OUT_FILE    = os.getenv("OUT_FILE",  "docs/copyline.yml")
+ENC         = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+
+# кэш для картинок (метод 2: поиск «на лету» с хешем/артикулом/именем)
+IMG_CACHE_FILE       = os.getenv("IMG_CACHE_FILE", "docs/copyline_photos.json")
+IMG_LOOKUPS_PER_RUN  = int(os.getenv("IMG_LOOKUPS_PER_RUN", "300"))  # ограничиваем, чтобы ран не тянулся
+IMG_WORKERS          = int(os.getenv("IMG_WORKERS", "6"))            # параллельность запросов
+REQ_TIMEOUT          = float(os.getenv("REQ_TIMEOUT", "30"))
+
 UA_HEADERS = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
-# ====== УТИЛЫ ======
-def norm(s):
-    return re.sub(r"\s+"," ", ("" if s is None else str(s)).strip())
+# ========= УТИЛЫ =========
+def norm(s: Optional[str]) -> str:
+    return re.sub(r"\s+"," ", (s or "").strip())
 
 def fetch_xlsx(url_or_path: str) -> bytes:
     if re.match(r"^https?://", url_or_path, re.I):
-        r = requests.get(url_or_path, headers=UA_HEADERS, timeout=60)
-        r.raise_for_status()
-        return r.content
+        with requests.get(url_or_path, headers=UA_HEADERS, timeout=REQ_TIMEOUT) as r:
+            r.raise_for_status()
+            return r.content
     with open(url_or_path, "rb") as f:
         return f.read()
 
-# ====== ШАПКА/КОЛОНКИ ======
+def absolutize(url: str) -> str:
+    if url.startswith("http://") or url.startswith("https://"): return url
+    return urllib.parse.urljoin(BASE_URL, url)
+
+# ========= ШАПКА/КОЛОНКИ =========
 HEADER_HINTS = {
     "name":     ["номенклатура","наименование","наименование товара","название","товар","описание","product name","item"],
     "article":  ["артикул","номенклатура.артикул","sku","код товара","код","модель","part number","pn","p/n"],
@@ -91,16 +106,180 @@ def map_cols(headers):
         "category": find(HEADER_HINTS["category"]),
     }
 
-def parse_price(v):
+def parse_price(v) -> Optional[int]:
     if v is None: return None
-    t = norm(v).replace("₸","").replace("тг","")
+    t = norm(str(v)).replace("₸","").replace("тг","")
     digits = re.sub(r"[^\d]", "", t)
     return int(digits) if digits else None
 
-# ====== YML ======
+# ========= ПОИСК ФОТО (метод 2 с кэшем) =========
+def read_img_cache() -> Dict[str, Any]:
+    try:
+        with open(IMG_CACHE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {"by_article":{}, "by_name":{}, "ts": int(time.time())}
+    except Exception:
+        return {"by_article":{}, "by_name":{}, "ts": int(time.time())}
+
+def save_img_cache(cache: Dict[str, Any]):
+    os.makedirs(os.path.dirname(IMG_CACHE_FILE), exist_ok=True)
+    tmp = IMG_CACHE_FILE + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, IMG_CACHE_FILE)
+
+def _fetch(url: str) -> Optional[str]:
+    try:
+        with requests.get(url, headers=UA_HEADERS, timeout=REQ_TIMEOUT) as r:
+            if r.status_code == 200:
+                return r.text
+            return None
+    except Exception:
+        return None
+
+def _extract_product_links(html: str) -> List[str]:
+    soup = BeautifulSoup(html, "lxml")
+    hrefs=set()
+    for a in soup.select('a[href*="/product/"], a[href*="/goods/"]'):
+        href = a.get("href") or ""
+        if href.endswith(".html"):
+            hrefs.add(absolutize(href))
+    # подстраховка
+    for a in soup.find_all("a", href=True):
+        href=a["href"]
+        if href.endswith(".html") and ("/goods/" in href or "/product/" in href):
+            hrefs.add(absolutize(href))
+    return list(hrefs)
+
+def _title_text(soup: BeautifulSoup) -> str:
+    h1 = soup.find("h1")
+    return norm(h1.get_text()) if h1 else ""
+
+def _first_main_img_src(soup: BeautifulSoup) -> Optional[str]:
+    img = soup.find("img", {"itemprop":"image"})
+    if img and img.get("src"):
+        return absolutize(img.get("src"))
+    # fallback: часто лежит в компонентах jshopping
+    for im in soup.find_all("img", src=True):
+        src = im.get("src") or ""
+        if "components/com_jshopping/files/img_products/" in src:
+            return absolutize(src)
+    # как крайний случай — первый img
+    im = soup.find("img", src=True)
+    return absolutize(im["src"]) if im else None
+
+def _build_search_urls(query: str) -> List[str]:
+    q = urllib.parse.quote(query)
+    return [
+        f"{BASE_URL}/search?searchword={q}",
+        f"{BASE_URL}/?searchword={q}&searchphrase=all&option=com_search",
+        f"{BASE_URL}/index.php?option=com_jshopping&controller=search&task=result&search={q}",
+        f"{BASE_URL}/?option=com_jshopping&controller=search&task=result&search={q}",
+        f"{BASE_URL}/?controller=search&task=result&search={q}",
+    ]
+
+def _confidence(title: str, article: str, name: str) -> bool:
+    t = title.lower()
+    if article and article.lower() in t:
+        return True
+    # проверяем по токенам названия (минимум 2 совпадения)
+    tokens = [w for w in re.split(r"[^a-zа-я0-9]+", name.lower()) if len(w) >= 3]
+    hit = sum(1 for w in tokens if w in t)
+    return hit >= 2
+
+def find_image_for_item(article: str, name: str) -> Optional[str]:
+    """Поиск страницы товара через поиск сайта и возврат src первой главной картинки."""
+    # запрос сначала по артикулу (если есть), иначе по названию
+    queries = []
+    if article: queries.append(article)
+    # иногда артикул встречается внутри названия — но добавим и само имя
+    if name and name not in queries:
+        queries.append(name)
+
+    for q in queries:
+        for url in _build_search_urls(q):
+            html = _fetch(url)
+            if not html: 
+                continue
+            links = _extract_product_links(html)
+            # перебираем первые 3-5 карточек
+            for purl in links[:5]:
+                phtml = _fetch(purl)
+                if not phtml:
+                    continue
+                soup = BeautifulSoup(phtml, "lxml")
+                title = _title_text(soup)
+                if not _confidence(title, article, name):
+                    continue
+                pic = _first_main_img_src(soup)
+                if pic:
+                    return pic
+    return None
+
+def resolve_images_for_items(items: List[Dict[str, Any]]) -> Dict[int, Optional[str]]:
+    """Возвращает dict: индекс -> url картинки (или None). Использует кэш и ограничение по количеству."""
+    cache = read_img_cache()
+    by_article: Dict[str,str] = cache.get("by_article", {})
+    by_name: Dict[str,str] = cache.get("by_name", {})
+    results: Dict[int, Optional[str]] = {}
+    to_fetch: List[int] = []
+
+    # сначала заполним из кэша
+    for idx, it in enumerate(items):
+        article = norm(it.get("article"))
+        name    = norm(it.get("name"))
+        url = None
+        if article and article in by_article:
+            url = by_article.get(article) or None
+        elif name and name in by_name:
+            url = by_name.get(name) or None
+
+        if url:
+            results[idx] = url
+        else:
+            to_fetch.append(idx)
+
+    # ограничиваем число запросов за один прогон
+    to_fetch = to_fetch[:max(0, IMG_LOOKUPS_PER_RUN)]
+
+    # параллельный поиск
+    def worker(idx: int) -> (int, Optional[str]):
+        it = items[idx]
+        return idx, find_image_for_item(norm(it.get("article")), norm(it.get("name")))
+
+    if to_fetch:
+        with ThreadPoolExecutor(max_workers=max(1, IMG_WORKERS)) as ex:
+            futs = [ex.submit(worker, idx) for idx in to_fetch]
+            for fu in as_completed(futs):
+                idx, pic = fu.result()
+                it = items[idx]
+                article = norm(it.get("article"))
+                name    = norm(it.get("name"))
+                results[idx] = pic
+                # обновляем кэш
+                if article:
+                    by_article[article] = pic or ""
+                if name:
+                    by_name[name] = pic or ""
+
+        cache["by_article"] = by_article
+        cache["by_name"] = by_name
+        cache["ts"] = int(time.time())
+        save_img_cache(cache)
+
+    # для остальных (вышедших за лимит) оставим None — дособерётся в следующий раз
+    for idx in range(len(items)):
+        if idx not in results:
+            results[idx] = None
+
+    return results
+
+# ========= YML =========
 ROOT_CAT_ID = "9300000"
 def hash_int(s): return int(hashlib.md5(s.encode("utf-8")).hexdigest()[:6], 16)
 def cat_id_for(name): return str(9300001 + (hash_int(name.lower()) % 400000))
+
 def offer_id(it):
     art = norm(it.get("article"))
     if art: return f"copyline:{art}"
@@ -108,7 +287,7 @@ def offer_id(it):
     h = hashlib.md5((norm(it.get('name','')).lower()+"|"+norm(it.get('category','')).lower()).encode('utf-8')).hexdigest()[:8]
     return f"copyline:{base}:{h}"
 
-def build_yml(items):
+def build_yml(items: List[Dict[str,Any]], pictures: Dict[int, Optional[str]]) -> bytes:
     # не создаём дочернюю категорию "Copyline", чтобы не дублировать корень
     cats = {}
     for it in items:
@@ -127,7 +306,7 @@ def build_yml(items):
 
     offers = SubElement(shop, "offers")
     used = set()
-    for it in items:
+    for idx, it in enumerate(items):
         oid = offer_id(it)
         if oid in used:
             extra = hashlib.md5((it.get("name","") + str(it.get("price"))).encode("utf-8")).hexdigest()[:6]
@@ -141,7 +320,7 @@ def build_yml(items):
 
         o = SubElement(offers, "offer", {
             "id": oid,
-            "available": "true",   # ВСЕГДА в наличии
+            "available": "true",
             "in_stock": "true",
         })
         SubElement(o, "name").text = it.get("name","")
@@ -149,6 +328,11 @@ def build_yml(items):
         SubElement(o, "currencyId").text = "KZT"
         SubElement(o, "categoryId").text = cid
         if it.get("article"): SubElement(o, "vendorCode").text = it["article"]
+
+        pic = pictures.get(idx)
+        if pic:
+            SubElement(o, "picture").text = pic
+
         for tag in ("quantity_in_stock", "stock_quantity", "quantity"):
             SubElement(o, tag).text = "1"
 
@@ -156,34 +340,32 @@ def build_yml(items):
     ElementTree(root).write(buf, encoding=ENC, xml_declaration=True)
     return buf.getvalue()
 
-# ====== MAIN ======
+# ========= MAIN =========
 def main():
     d = os.path.dirname(OUT_FILE)
     if d: os.makedirs(d, exist_ok=True)
 
+    # 1) читаем XLSX
     xls = fetch_xlsx(XLSX_URL)
     wb = load_workbook(io.BytesIO(xls), read_only=True, data_only=True)
 
-    items = []
+    # 2) собираем позиции
+    items: List[Dict[str,Any]] = []
     found_name_sheet = False
 
     for ws in wb.worksheets:
         headers, start = best_header(ws)
         cols = map_cols(headers)
-
         if cols.get("name") is None:
             continue
-
         found_name_sheet = True
 
         for row in ws.iter_rows(min_row=start, values_only=True):
             row = list(row)
             def getc(i): return None if i is None or i >= len(row) else row[i]
-
             name     = norm(getc(cols["name"]))
             if not name:
                 continue
-
             article  = norm(getc(cols.get("article")))
             price    = parse_price(getc(cols.get("price")))
             category = norm(getc(cols.get("category"))) or "Copyline"
@@ -196,13 +378,20 @@ def main():
             })
 
     if not found_name_sheet:
-        print("ERROR: Не найден лист с колонкой наименования (name). Обнови HEADER_HINTS['name'] под шапку прайса.", file=sys.stderr)
+        print("ERROR: Не найден лист с колонкой наименования (name).", file=sys.stderr)
         sys.exit(1)
 
-    yml = build_yml(items)
+    # 3) ищем фото (метод 2, «на лету», с кэшем и лимитом за прогон)
+    pictures = resolve_images_for_items(items)
+
+    # 4) пишем YML
+    yml = build_yml(items, pictures)
     with open(OUT_FILE, "wb") as f:
         f.write(yml)
-    print(f"{OUT_FILE}: {len(items)} items")
+
+    # статистика
+    filled = sum(1 for v in pictures.values() if v)
+    print(f"[OK] {OUT_FILE}: items={len(items)} | pictures_set={filled} | looked_up_this_run<= {IMG_LOOKUPS_PER_RUN} | workers={IMG_WORKERS}")
 
 if __name__ == "__main__":
     try:
