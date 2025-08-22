@@ -6,27 +6,26 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'scripts/build_copyline.py'
-      - 'scripts/enrich_copyline_photos.py'
-      - '.github/workflows/build_copyline.yml'
-      - 'docs/**'
+      - 'scripts/**'                 # изменения в скриптах
+      - '.github/workflows/**'       # изменения в workflow
+      # ВАЖНО: нет 'docs/**' — пуш YML/кэшей НЕ запускает новый ран
   schedule:
-    - cron: "0 0 * * *"    # 00:00 UTC = 06:00 Asia/Almaty
+    - cron: "0 0 * * *"              # 00:00 UTC = 06:00 Asia/Almaty
 
 permissions:
   contents: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
-      - name: Checkout
+      - name: Checkout (full history)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -51,16 +50,16 @@ jobs:
           python scripts/build_copyline.py
           test -f docs/copyline.yml
 
-      - name: Enrich pictures (Copyline) — minimal, via itemprop=image
+      - name: Enrich pictures (Copyline) — itemprop=image minimal
         env:
           YML_PATH: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
           PHOTO_INDEX_PATH: docs/copyline_photo_index.json
           PHOTO_OVERRIDES: docs/copyline_photo_overrides.json
           PHOTO_BLACKLIST: docs/copyline_photo_blacklist.json
-          PHOTO_FETCH_LIMIT: "80"        # сколько товаров обогащаем за запуск
-          REQUEST_DELAY_MS: "600"        # пауза между сетевыми запросами
-          BACKOFF_MAX_MS: "8000"         # максимальный backoff при 429/403
+          PHOTO_FETCH_LIMIT: "80"        # при необходимости уменьшай до 40–60
+          REQUEST_DELAY_MS: "600"
+          BACKOFF_MAX_MS: "8000"
         run: |
           python scripts/enrich_copyline_photos.py
 
@@ -81,6 +80,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Copyline: add <picture> via itemprop=image (minimal A)"
+          git commit -m "Copyline: update YML + photo index"
           git pull --rebase origin "$BRANCH" || { git rebase --abort || true; exit 1; }
           git push origin HEAD:"$BRANCH"
