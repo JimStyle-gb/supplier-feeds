@@ -1,6 +1,6 @@
 # scripts/build_copyline.py
 from __future__ import annotations
-import os, re, io, sys, json, hashlib
+import os, re, io, sys, hashlib
 from typing import Optional, Dict, Any, List
 import requests
 from openpyxl import load_workbook
@@ -17,6 +17,9 @@ UA_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 # ===== утилы =====
 def norm(s: Optional[str]) -> str:
     return re.sub(r"\s+"," ", (s or "").strip())
+
+def norm_ru(s: str) -> str:
+    return norm(s).lower().replace("ё","е")
 
 def ensure_dir_for(path: str):
     d = os.path.dirname(path)
@@ -55,13 +58,11 @@ def best_header(ws):
         rows.append([norm("" if v is None else str(v)) for v in row])
 
     best_row, best_idx, best_sc = [], None, -1
-    # одиночные строки
     for i,r in enumerate(rows):
         sc=score(r)
         if sc>best_sc:
             best_row, best_idx, best_sc = r, i+1, sc
 
-    # склейка соседних строк
     for i in range(len(rows)-1):
         a,b=rows[i],rows[i+1]
         m=max(len(a),len(b)); merged=[]
@@ -79,7 +80,6 @@ def map_cols(headers):
     low=[h.lower() for h in headers]
     def find(keys, avoid=None):
         avoid = avoid or []
-        # сначала избегаем артикульные названия для колонки name
         for i,cell in enumerate(low):
             if any(k in cell for k in keys) and not any(a in cell for a in avoid):
                 return i
@@ -101,6 +101,44 @@ def parse_price(v) -> Optional[int]:
     t = norm(str(v)).replace("₸","").replace("тг","")
     digits = re.sub(r"[^\d]", "", t)
     return int(digits) if digits else None
+
+# ===== фильтр по словам (без окончаний) =====
+# Группы стемов: хотя бы ОДНА группа должна «сработать».
+# Для группы из нескольких стемов (напр. "кабель"+"сетев") — все стемы должны встретиться.
+KEYWORD_GROUPS = [
+    ("drum",),
+    ("девелопер",),
+    ("драм",),
+    ("кабель","сетев"),   # захватывает: "кабель сетевой", "сетевой кабель", "кабеля сетевого" и т.п.
+    ("картридж",),
+    ("термоблок",),
+    ("термоэлемент",),    # сработает и для "термо-элемент" за счёт compact-поиска
+]
+
+TOKEN_RE = re.compile(r"[a-zа-я0-9]+", re.IGNORECASE)
+
+def name_matches_filter(name: str) -> bool:
+    txt = norm_ru(name)
+    if not txt:
+        return False
+    # токены для prefix-совпадений, и «компактный» текст (без пробелов/дефисов) для склейки составных слов
+    tokens = TOKEN_RE.findall(txt)
+    compact = re.sub(r"[\s\-_\/]+", "", txt)
+
+    def stem_hit(stem: str) -> bool:
+        s = stem.lower()
+        # префикс любого токена (чтобы «без окончаний»)
+        if any(t.startswith(s) for t in tokens):
+            return True
+        # в слитной записи (ловит «термо-элемент» -> «термоэлемент»)
+        if s in compact:
+            return True
+        return False
+
+    for group in KEYWORD_GROUPS:
+        if all(stem_hit(st) for st in group):
+            return True
+    return False
 
 # ===== сборка YML =====
 ROOT_CAT_ID = "9300000"
@@ -178,8 +216,13 @@ def main():
             row = list(row)
             def getc(i): return None if i is None or i>=len(row) else row[i]
             name = norm(getc(cols["name"]))
-            if not name:              # без имени не добавляем (чтобы в <name> не попал артикул)
+            if not name:
                 continue
+
+            # === ФИЛЬТР ПО СЛОВАМ (без окончаний) ===
+            if not name_matches_filter(name):
+                continue
+
             article  = norm(getc(cols.get("article")))
             price    = parse_price(getc(cols.get("price")))
             category = norm(getc(cols.get("category"))) or "Copyline"
@@ -199,7 +242,7 @@ def main():
     with open(OUT_FILE, "wb") as f:
         f.write(yml)
 
-    print(f"[OK] {OUT_FILE}: items={len(items)} | pictures_set=0 (картинки отключены)")
+    print(f"[OK] {OUT_FILE}: items={len(items)} (filtered)")
 
 if __name__ == "__main__":
     try:
