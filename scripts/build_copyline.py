@@ -32,7 +32,7 @@ def fetch_xlsx(url_or_path: str) -> bytes:
         return f.read()
 
 # ===== префикс поставщика для артикула (Copyline -> 'c') =====
-SUPPLIER_PREFIX = "c"
+SUPPLIER_PREFIX = "C"
 
 def apply_supplier_prefix(article_raw: Optional[str]) -> str:
     """
