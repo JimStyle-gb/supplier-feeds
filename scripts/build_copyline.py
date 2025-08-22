@@ -18,9 +18,6 @@ UA_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 def norm(s: Optional[str]) -> str:
     return re.sub(r"\s+"," ", (s or "").strip())
 
-def norm_ru(s: str) -> str:
-    return norm(s).lower().replace("ё","е")
-
 def ensure_dir_for(path: str):
     d = os.path.dirname(path)
     if d:
@@ -33,6 +30,23 @@ def fetch_xlsx(url_or_path: str) -> bytes:
         return r.content
     with open(url_or_path, "rb") as f:
         return f.read()
+
+# ===== префикс поставщика для артикула (Copyline -> 'c') =====
+SUPPLIER_PREFIX = "c"
+
+def apply_supplier_prefix(article_raw: Optional[str]) -> str:
+    """
+    Если артикул только из цифр — добавляем префикс поставщика (например, 41212 -> c41212).
+    Иначе возвращаем как есть (CF283A, DR-1075 и т.п. не трогаем).
+    """
+    art = (article_raw or "").strip()
+    compact = re.sub(r"\s+", "", art)
+    if compact.isdigit() and compact != "":
+        # защита от двойного префикса вида "c12345"
+        if compact.startswith(SUPPLIER_PREFIX) and compact[1:].isdigit():
+            return compact
+        return f"{SUPPLIER_PREFIX}{compact}"
+    return art
 
 # ===== определение шапки и колонок =====
 HEADER_HINTS = {
@@ -58,11 +72,12 @@ def best_header(ws):
         rows.append([norm("" if v is None else str(v)) for v in row])
 
     best_row, best_idx, best_sc = [], None, -1
+    # одиночные строки
     for i,r in enumerate(rows):
         sc=score(r)
         if sc>best_sc:
             best_row, best_idx, best_sc = r, i+1, sc
-
+    # склейка соседних строк
     for i in range(len(rows)-1):
         a,b=rows[i],rows[i+1]
         m=max(len(a),len(b)); merged=[]
@@ -73,13 +88,13 @@ def best_header(ws):
         sc=score(merged)
         if sc>best_sc or (sc==best_sc and sc>0):
             best_row, best_idx, best_sc = merged, i+2, sc
-
     return best_row, (best_idx or 1)+1
 
 def map_cols(headers):
     low=[h.lower() for h in headers]
     def find(keys, avoid=None):
         avoid = avoid or []
+        # сначала избегаем артикульные колонки для name
         for i,cell in enumerate(low):
             if any(k in cell for k in keys) and not any(a in cell for a in avoid):
                 return i
@@ -102,42 +117,52 @@ def parse_price(v) -> Optional[int]:
     digits = re.sub(r"[^\d]", "", t)
     return int(digits) if digits else None
 
-# ===== фильтр по словам (без окончаний) =====
-# Группы стемов: хотя бы ОДНА группа должна «сработать».
-# Для группы из нескольких стемов (напр. "кабель"+"сетев") — все стемы должны встретиться.
-KEYWORD_GROUPS = [
-    ("drum",),
-    ("девелопер",),
-    ("драм",),
-    ("кабель","сетев"),   # захватывает: "кабель сетевой", "сетевой кабель", "кабеля сетевого" и т.п.
-    ("картридж",),
-    ("термоблок",),
-    ("термоэлемент",),    # сработает и для "термо-элемент" за счёт compact-поиска
+# ===== СТРОГИЙ ФИЛЬТР: ключевые слова/фразы ТОЛЬКО В НАЧАЛЕ НАЗВАНИЯ =====
+# Разрешённые одиночные слова (точная форма)
+ALLOW_SINGLE = {
+    "drum",
+    "девелопер",
+    "драм",
+    "картридж",
+    "термоблок",
+    "термоэлемент",
+}
+
+# Разрешённые фразы (только такое написание, ТОЛЬКО в начале)
+ALLOW_PHRASES = [
+    ["кабель", "сетевой"],
+    ["сетевой", "кабель"],  # оба порядка
 ]
 
-TOKEN_RE = re.compile(r"[a-zа-я0-9]+", re.IGNORECASE)
+# Стоп-слова — если встречаются где угодно в названии, товар исключаем
+DISALLOW_TOKENS = {"chip", "чип", "reset", "ресет"}
+
+TOKEN_RE = re.compile(r"[A-Za-zА-Яа-я0-9]+", re.IGNORECASE)
+
+def _tokenize_ru(text: str) -> list[str]:
+    """Нормализуем и разбиваем на токены: буквы/цифры, ё -> е."""
+    s = norm(text).lower().replace("ё", "е")
+    return TOKEN_RE.findall(s)
 
 def name_matches_filter(name: str) -> bool:
-    txt = norm_ru(name)
-    if not txt:
-        return False
-    # токены для prefix-совпадений, и «компактный» текст (без пробелов/дефисов) для склейки составных слов
-    tokens = TOKEN_RE.findall(txt)
-    compact = re.sub(r"[\s\-_\/]+", "", txt)
-
-    def stem_hit(stem: str) -> bool:
-        s = stem.lower()
-        # префикс любого токена (чтобы «без окончаний»)
-        if any(t.startswith(s) for t in tokens):
-            return True
-        # в слитной записи (ловит «термо-элемент» -> «термоэлемент»)
-        if s in compact:
-            return True
+    tokens = _tokenize_ru(name)
+    if not tokens:
         return False
 
-    for group in KEYWORD_GROUPS:
-        if all(stem_hit(st) for st in group):
+    # 1) отбрасываем чипы/ресеты сразу
+    if any(t in DISALLOW_TOKENS for t in tokens):
+        return False
+
+    # 2) фразы: ДОЛЖНЫ стоять в самом начале (anchored)
+    for phrase in ALLOW_PHRASES:
+        m = len(phrase)
+        if len(tokens) >= m and tokens[:m] == phrase:
             return True
+
+    # 3) одиночные слова: первый токен должен быть из разрешённых
+    if tokens[0] in ALLOW_SINGLE:
+        return True
+
     return False
 
 # ===== сборка YML =====
@@ -146,8 +171,14 @@ def hash_int(s): return int(hashlib.md5(s.encode("utf-8")).hexdigest()[:6], 16)
 def cat_id_for(name): return str(9300001 + (hash_int(name.lower()) % 400000))
 
 def offer_id(it):
-    art = norm(it.get("article"))
-    if art: return f"copyline:{art}"
+    """
+    Для стабильности ID привяжем к ИТОГОВОМУ (с префиксом) артикулу, если он есть.
+    Иначе — от имени+категории (как резерв).
+    """
+    raw_article = norm(it.get("article"))
+    final_article = apply_supplier_prefix(raw_article) if raw_article else ""
+    if final_article:
+        return f"copyline:{final_article}"
     base = re.sub(r"[^a-z0-9]+", "-", norm(it.get("name","")).lower())
     h = hashlib.md5((norm(it.get('name','')).lower()+"|"+norm(it.get('category','')).lower()).encode('utf-8')).hexdigest()[:8]
     return f"copyline:{base}:{h}"
@@ -187,7 +218,13 @@ def build_yml(items: List[Dict[str,Any]]) -> bytes:
         if it.get("price") is not None: SubElement(o, "price").text = str(it["price"])
         SubElement(o, "currencyId").text = "KZT"
         SubElement(o, "categoryId").text = cid
-        if it.get("article"): SubElement(o, "vendorCode").text = it["article"]
+
+        # vendorCode: применяем префикс только к чисто цифровым артикулам
+        raw_article = norm(it.get("article"))
+        final_article = apply_supplier_prefix(raw_article) if raw_article else ""
+        if final_article:
+            SubElement(o, "vendorCode").text = final_article
+
         for tag in ("quantity_in_stock","stock_quantity","quantity"):
             SubElement(o, tag).text = "1"
 
@@ -219,7 +256,7 @@ def main():
             if not name:
                 continue
 
-            # === ФИЛЬТР ПО СЛОВАМ (без окончаний) ===
+            # === ЖЁСТКИЙ ФИЛЬТР: нужное слово/фраза ДОЛЖНЫ быть в начале названия ===
             if not name_matches_filter(name):
                 continue
 
@@ -242,7 +279,7 @@ def main():
     with open(OUT_FILE, "wb") as f:
         f.write(yml)
 
-    print(f"[OK] {OUT_FILE}: items={len(items)} (filtered)")
+    print(f"[OK] {OUT_FILE}: items={len(items)} | strict-name filter + supplier prefix (c...)")
 
 if __name__ == "__main__":
     try:
