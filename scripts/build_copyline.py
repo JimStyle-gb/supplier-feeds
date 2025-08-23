@@ -1,267 +1,253 @@
-# scripts/build_copyline.py
+# scripts/enrich_copyline_photos.py
+# Вариант A (минимальный):
+# - идём по офферам без <picture>
+# - ищем карточку по исходному артикулу (vendorCode) на copyline.kz
+# - в карточке берём <img itemprop="image" ... src="..."> и пишем в <picture>
+# - кэшируем найденные ссылки, чтобы не дёргать сайт повторно
+
 from __future__ import annotations
-import os, re, io, sys, hashlib
-from typing import Optional, Dict, Any, List
+import os, re, sys, time, json, urllib.parse
+from datetime import datetime, timezone
+from typing import Optional
 import requests
-from openpyxl import load_workbook
-from xml.etree.ElementTree import Element, SubElement, ElementTree
+from bs4 import BeautifulSoup
+from xml.etree.ElementTree import ElementTree, Element
 
-# ===== настройки =====
-BASE_URL = "https://copyline.kz"
-XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
-OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
-ENC      = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+BASE = "https://copyline.kz"
+UA_HEADERS = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
-UA_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+# -------- настройки через ENV --------
+YML_PATH           = os.getenv("YML_PATH", "docs/copyline.yml")
+OUT_ENCODING       = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+PHOTO_INDEX_PATH   = os.getenv("PHOTO_INDEX_PATH", "docs/copyline_photo_index.json")
+PHOTO_OVERRIDES    = os.getenv("PHOTO_OVERRIDES", "docs/copyline_photo_overrides.json")
+PHOTO_BLACKLIST    = os.getenv("PHOTO_BLACKLIST", "docs/copyline_photo_blacklist.json")
+PHOTO_FETCH_LIMIT  = int(os.getenv("PHOTO_FETCH_LIMIT", "80"))
+REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "600"))
+BACKOFF_MAX_MS     = int(os.getenv("BACKOFF_MAX_MS", "8000"))
 
-# ===== утилы =====
+SEARCH_ENDPOINTS = [
+    "/index.php?option=com_jshopping&controller=search&task=result&search={q}",
+    "/index.php?option=com_search&searchword={q}",
+]
+
+# -------- утилы --------
 def norm(s: Optional[str]) -> str:
     return re.sub(r"\s+"," ", (s or "").strip())
 
-def ensure_dir_for(path: str):
-    d = os.path.dirname(path)
-    if d:
-        os.makedirs(d, exist_ok=True)
+def load_json(path: str) -> dict:
+    try:
+        with open(path,"r",encoding="utf-8") as f: return json.load(f)
+    except FileNotFoundError:
+        return {}
+    except Exception:
+        return {}
 
-def fetch_xlsx(url_or_path: str) -> bytes:
-    if re.match(r"^https?://", url_or_path, re.I):
-        r = requests.get(url_or_path, headers=UA_HEADERS, timeout=60)
-        r.raise_for_status()
-        return r.content
-    with open(url_or_path, "rb") as f:
-        return f.read()
+def save_json(path: str, data: dict):
+    tmp = path + ".tmp"
+    with open(tmp,"w",encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
 
-# ===== определение шапки и колонок =====
-HEADER_HINTS = {
-    "name":     ["номенклатура","наименование","наименование товара","название","товар","описание","product name","item"],
-    "article":  ["артикул","номенклатура.артикул","sku","код товара","код","модель","part number","pn","p/n"],
-    "price":    ["цена","опт","опт. цена","розница","стоимость","цена, тг","цена тг","retail","price"],
-    "unit":     ["ед.","ед","единица","unit"],
-    "category": ["категория","раздел","группа","тип","category"],
-}
+def absolutize(url: str) -> str:
+    if url.startswith("http://") or url.startswith("https://"): return url
+    return urllib.parse.urljoin(BASE, url)
 
-def best_header(ws):
-    def score(arr):
-        low=[norm(x).lower() for x in arr]
-        got=set()
-        for k,hints in HEADER_HINTS.items():
-            for cell in low:
-                if any(h in cell for h in hints):
-                    got.add(k); break
-        return len(got)
+def sleep_ms(ms: int):
+    time.sleep(max(ms,0)/1000.0)
 
-    rows=[]
-    for row in ws.iter_rows(min_row=1, max_row=40, values_only=True):
-        rows.append([norm("" if v is None else str(v)) for v in row])
+def now_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    best_row, best_idx, best_sc = [], None, -1
-    # одиночные строки
-    for i,r in enumerate(rows):
-        sc=score(r)
-        if sc>best_sc:
-            best_row, best_idx, best_sc = r, i+1, sc
-    # склейка соседних строк
-    for i in range(len(rows)-1):
-        a,b=rows[i],rows[i+1]
-        m=max(len(a),len(b)); merged=[]
-        for j in range(m):
-            x=a[j] if j<len(a) else ""
-            y=b[j] if j<len(b) else ""
-            merged.append((" ".join([x,y])).strip())
-        sc=score(merged)
-        if sc>best_sc or (sc==best_sc and sc>0):
-            best_row, best_idx, best_sc = merged, i+2, sc
-    return best_row, (best_idx or 1)+1
+def fetch(url: str) -> requests.Response:
+    r = requests.get(url, headers=UA_HEADERS, timeout=60)
+    if r.status_code in (403, 429):
+        raise RuntimeError(f"rate_limited:{r.status_code}")
+    r.raise_for_status()
+    return r
 
-def map_cols(headers):
-    low=[h.lower() for h in headers]
-    def find(keys, avoid=None):
-        avoid = avoid or []
-        # сначала пытаемся избегать артикульных подписи у name
-        for i,cell in enumerate(low):
-            if any(k in cell for k in keys) and not any(a in cell for a in avoid):
-                return i
-        for i,cell in enumerate(low):
-            if any(k in cell for k in keys):
-                return i
-        return None
-    name_idx = find(HEADER_HINTS["name"], avoid=["артикул","sku","код товара","p/n","part number"])
-    return {
-        "name":     name_idx,
-        "article":  find(HEADER_HINTS["article"]),
-        "price":    find(HEADER_HINTS["price"]),
-        "unit":     find(HEADER_HINTS["unit"]),
-        "category": find(HEADER_HINTS["category"]),
-    }
+# -------- XML helpers --------
+def read_xml(path: str) -> ElementTree:
+    return ElementTree(file=path)
 
-def parse_price(v) -> Optional[int]:
-    if v is None: return None
-    t = norm(str(v)).replace("₸","").replace("тг","")
-    digits = re.sub(r"[^\d]", "", t)
-    return int(digits) if digits else None
+def write_xml(tree: ElementTree, path: str, enc: str):
+    tree.write(path, encoding=enc, xml_declaration=True)
 
-# ===== СТРОГИЙ ФИЛЬТР: ключевые слова/фразы ТОЛЬКО В НАЧАЛЕ НАЗВАНИЯ =====
-# одиночные слова — по стему (без окончаний), ТОЛЬКО для первого токена
-ALLOW_SINGLE_STEMS = {
-    "drum",
-    "девелопер",
-    "драм",
-    "картридж",
-    "термоблок",
-    "термоэлемент",
-}
+def iter_offers(root: Element):
+    shop = root.find("shop")
+    if shop is None: return
+    offers = shop.find("offers")
+    if offers is None: return
+    for o in offers.findall("offer"):
+        yield o
 
-# фразы в начале — тоже по стемам (без окончаний)
-# покрываем: "кабель сетевой", "сетевой кабель", "тонер картридж/картриджи/картриджа..."
-ALLOW_PHRASE_STEMS = [
-    ["кабель", "сетев"],
-    ["сетев", "кабель"],
-    ["тонер", "картридж"],
-]
+def offer_has_picture(offer: Element) -> bool:
+    return offer.find("picture") is not None and (offer.findtext("picture") or "").strip() != ""
 
-# стоп-слова, исключающие позиции (чтобы не брать drum-чип и т.п.)
-DISALLOW_TOKENS = {"chip", "чип", "reset", "ресет"}
+def get_article(offer: Element) -> Optional[str]:
+    # используем vendorCode как исходный артикул
+    vc = offer.findtext("vendorCode")
+    return (vc or "").strip() or None
 
-TOKEN_RE = re.compile(r"[A-Za-zА-Яа-я0-9]+", re.IGNORECASE)
+def set_offer_picture(offer: Element, url: str):
+    pic = offer.find("picture")
+    if pic is None:
+        pic = Element("picture")
+        offer.append(pic)
+    pic.text = url
 
-def _tokenize_ru(text: str) -> list[str]:
-    s = norm(text).lower().replace("ё", "е")
-    return TOKEN_RE.findall(s)
-
-def name_matches_filter(name: str) -> bool:
-    tokens = _tokenize_ru(name)
-    if not tokens:
-        return False
-
-    # 1) стоп-слова — сразу исключаем
-    if any(t in DISALLOW_TOKENS for t in tokens):
-        return False
-
-    # 2) фразы в НАЧАЛЕ по стемам (anchored)
-    for stems in ALLOW_PHRASE_STEMS:
-        m = len(stems)
-        if len(tokens) >= m and all(tokens[i].startswith(stems[i]) for i in range(m)):
-            return True
-
-    # 3) одиночные слова — первый токен начинается на один из стемов
-    if any(tokens[0].startswith(st) for st in ALLOW_SINGLE_STEMS):
-        return True
-
-    return False
-
-# ===== сборка YML =====
-ROOT_CAT_ID = "9300000"
-def hash_int(s): return int(hashlib.md5(s.encode("utf-8")).hexdigest()[:6], 16)
-def cat_id_for(name): return str(9300001 + (hash_int(name.lower()) % 400000))
-
-def offer_id(it):
-    """
-    Стабильный ID: если есть артикул — используем его как есть (БЕЗ префикса).
-    Иначе — хэш по имени+категории.
-    """
-    raw_article = norm(it.get("article"))
-    if raw_article:
-        return f"copyline:{raw_article}"
-    base = re.sub(r"[^a-z0-9]+", "-", norm(it.get("name","")).lower())
-    h = hashlib.md5((norm(it.get('name','')).lower()+"|"+norm(it.get('category','')).lower()).encode('utf-8')).hexdigest()[:8]
-    return f"copyline:{base}:{h}"
-
-def build_yml(items: List[Dict[str,Any]]) -> bytes:
-    cats={}
-    for it in items:
-        nm = it.get("category") or "Copyline"
-        if nm.strip().lower() != "copyline":
-            cats.setdefault(nm, cat_id_for(nm))
-
-    root = Element("yml_catalog"); shop = SubElement(root, "shop")
-    SubElement(shop, "name").text = "copyline"
-    curr = SubElement(shop, "currencies"); SubElement(curr, "currency", {"id":"KZT", "rate":"1"})
-
-    xml_cats = SubElement(shop, "categories")
-    SubElement(xml_cats, "category", {"id": ROOT_CAT_ID}).text = "Copyline"
-    for nm, cid in cats.items():
-        SubElement(xml_cats, "category", {"id": cid, "parentId": ROOT_CAT_ID}).text = nm
-
-    offers = SubElement(shop, "offers")
-    used=set()
-    for it in items:
-        oid = offer_id(it)
-        if oid in used:
-            extra = hashlib.md5((it.get("name","")+str(it.get("price"))).encode("utf-8")).hexdigest()[:6]
-            i=2
-            while f"{oid}-{extra}-{i}" in used: i+=1
-            oid = f"{oid}-{extra}-{i}"
-        used.add(oid)
-
-        nm = it.get("category") or "Copyline"
-        cid = ROOT_CAT_ID if nm.strip().lower()=="copyline" else cats.get(nm, ROOT_CAT_ID)
-
-        o = SubElement(offers, "offer", {"id": oid, "available":"true", "in_stock":"true"})
-        SubElement(o, "name").text = it.get("name","")
-        if it.get("price") is not None: SubElement(o, "price").text = str(it["price"])
-        SubElement(o, "currencyId").text = "KZT"
-        SubElement(o, "categoryId").text = cid
-
-        # vendorCode: записываем исходный артикул БЕЗ префикса
-        raw_article = norm(it.get("article"))
-        if raw_article:
-            SubElement(o, "vendorCode").text = raw_article
-
-        for tag in ("quantity_in_stock","stock_quantity","quantity"):
-            SubElement(o, tag).text = "1"
-
-    buf = io.BytesIO()
-    ElementTree(root).write(buf, encoding=ENC, xml_declaration=True)
-    return buf.getvalue()
-
-# ===== MAIN =====
-def main():
-    ensure_dir_for(OUT_FILE)
-
-    xls = fetch_xlsx(XLSX_URL)
-    wb = load_workbook(io.BytesIO(xls), read_only=True, data_only=True)
-
-    items: List[Dict[str,Any]] = []
-    found_name = False
-
-    for ws in wb.worksheets:
-        headers, start = best_header(ws)
-        cols = map_cols(headers)
-        if cols.get("name") is None:
+# -------- Поиск карточки по артикулу --------
+def search_product_page_by_article(article: str) -> Optional[str]:
+    q = urllib.parse.quote_plus(article)
+    for tmpl in SEARCH_ENDPOINTS:
+        url = absolutize(tmpl.format(q=q))
+        try:
+            r = fetch(url)
+        except RuntimeError as e:
+            # получили 429/403 — отдадим наверх, чтобы сработал backoff
+            raise
+        except Exception:
             continue
-        found_name = True
 
-        for row in ws.iter_rows(min_row=start, values_only=True):
-            row = list(row)
-            def getc(i): return None if i is None or i>=len(row) else row[i]
-            name = norm(getc(cols["name"]))
-            if not name:
+        soup = BeautifulSoup(r.text, "lxml")
+
+        # собрать ссылки на карточки
+        links=set()
+        for a in soup.select('a[href*="/product/"], a[href*="/goods/"]'):
+            href = a.get("href") or ""
+            if href.endswith(".html"):
+                links.add(absolutize(href))
+        if not links:
+            for a in soup.find_all("a", href=True):
+                href=a["href"]
+                if href.endswith(".html") and ("/goods/" in href or "/product/" in href):
+                    links.add(absolutize(href))
+
+        # пройти по нескольким карточкам и проверить, что H1 содержит article
+        for link in list(links)[:5]:
+            sleep_ms(REQUEST_DELAY_MS)
+            try:
+                pr = fetch(link)
+            except RuntimeError as e:
+                raise
+            except Exception:
                 continue
+            psoup = BeautifulSoup(pr.text, "lxml")
+            h1 = psoup.find("h1")
+            h1txt = norm(h1.get_text()) if h1 else ""
+            if article.upper() in h1txt.upper():
+                return link
+    return None
 
-            # === ЖЁСТКИЙ ФИЛЬТР: нужное слово/фраза ДОЛЖНЫ быть в начале названия ===
-            if not name_matches_filter(name):
-                continue
+def extract_first_itemprop_image(page_html: str) -> Optional[str]:
+    soup = BeautifulSoup(page_html, "lxml")
+    img = soup.find("img", {"itemprop":"image"})
+    if img and img.get("src"):
+        return absolutize(img.get("src"))
+    return None
 
-            article  = norm(getc(cols.get("article")))
-            price    = parse_price(getc(cols.get("price")))
-            category = norm(getc(cols.get("category"))) or "Copyline"
+# -------- основной процесс --------
+def main():
+    index = load_json(PHOTO_INDEX_PATH)
+    overrides = load_json(PHOTO_OVERRIDES) or {}
+    blacklist = set((load_json(PHOTO_BLACKLIST) or {}).keys())
 
-            items.append({
-                "name": name,
-                "article": article,
-                "category": category,
-                "price": price,
-            })
-
-    if not found_name:
-        print("ERROR: Не найдена колонка Наименование/Номенклатура.", file=sys.stderr)
+    try:
+        tree = read_xml(YML_PATH)
+    except Exception as e:
+        print(f"ERROR: cannot read YML: {e}", file=sys.stderr)
         sys.exit(1)
+    root = tree.getroot()
 
-    yml = build_yml(items)
-    with open(OUT_FILE, "wb") as f:
-        f.write(yml)
+    # собрать кандидатов
+    todo = []
+    total = 0
+    for offer in iter_offers(root):
+        total += 1
+        if offer_has_picture(offer):
+            continue
+        art = get_article(offer)
+        if not art:
+            continue
+        todo.append((offer, art))
 
-    print(f"[OK] {OUT_FILE}: items={len(items)} | strict-name filter | NO prefix")
+    # стабильный порядок
+    todo.sort(key=lambda x: x[1])
+
+    updated = 0
+    skipped = 0
+    processed = 0
+    backoff_ms = 0
+
+    for offer, article in todo:
+        if processed >= PHOTO_FETCH_LIMIT:
+            break
+        processed += 1
+
+        # 0) ручной override
+        if article in overrides:
+            url = overrides[article]
+            if url and url not in blacklist:
+                set_offer_picture(offer, url)
+                index[article] = {"img_url": url, "page_url": "", "locked": True, "checked_at": now_iso(), "source": "override"}
+                updated += 1
+                continue
+
+        # 1) кэш (locked)
+        info = index.get(article)
+        if info and info.get("locked") and info.get("img_url") and info["img_url"] not in blacklist:
+            set_offer_picture(offer, info["img_url"])
+            updated += 1
+            continue
+
+        # 2) поиск карточки по артикулу
+        try:
+            if backoff_ms:
+                sleep_ms(backoff_ms)
+            page_url = search_product_page_by_article(article)
+            backoff_ms = 0
+        except RuntimeError as e:
+            # rate limit — прекращаем текущую пачку, дадим воркфлоу запуститься позже
+            print(f"RATE_LIMIT: {e}", file=sys.stderr)
+            backoff_ms = min(max(REQUEST_DELAY_MS*4, 2000), BACKOFF_MAX_MS)
+            break
+
+        if not page_url:
+            skipped += 1
+            continue
+
+        sleep_ms(REQUEST_DELAY_MS)
+        try:
+            pr = fetch(page_url)
+        except RuntimeError as e:
+            print(f"RATE_LIMIT fetching page: {page_url}", file=sys.stderr)
+            break
+        except Exception:
+            skipped += 1
+            continue
+
+        img_url = extract_first_itemprop_image(pr.text)
+        if not img_url or img_url in blacklist:
+            skipped += 1
+            continue
+
+        set_offer_picture(offer, img_url)
+        index[article] = {
+            "img_url": img_url,
+            "page_url": page_url,
+            "locked": True,
+            "checked_at": now_iso(),
+            "source": "itemprop-image",
+        }
+        updated += 1
+        sleep_ms(REQUEST_DELAY_MS)
+
+    if updated > 0:
+        write_xml(tree, YML_PATH, OUT_ENCODING)
+        os.makedirs(os.path.dirname(PHOTO_INDEX_PATH) or ".", exist_ok=True)
+        save_json(PHOTO_INDEX_PATH, index)
+
+    print(f"[PHOTO A] total_offers={total} | candidates={len(todo)} | updated={updated} | skipped={skipped} | processed={processed}")
 
 if __name__ == "__main__":
     try:
