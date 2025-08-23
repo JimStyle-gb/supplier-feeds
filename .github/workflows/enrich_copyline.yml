@@ -1,3 +1,58 @@
+# .github/workflows/enrich_copyline.yml
+name: enrich_copyline_photos
+
+# Новый запуск отменяет предыдущий на той же ветке
+concurrency:
+  group: enrich-copyline-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [ main ]
+    paths:
+      - 'scripts/enrich_copyline_photos.py'
+      - 'docs/copyline.yml'
+      - '.github/workflows/enrich_copyline.yml'
+  schedule:
+    - cron: "15 0 * * *"   # ежедневно в 00:15 UTC (~06:15 Asia/Almaty)
+
+permissions:
+  contents: write
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 lxml
+
+      - name: Enrich pictures (Copyline) - Variant A
+        env:
+          YML_PATH: docs/copyline.yml
+          OUTPUT_ENCODING: windows-1251
+          PHOTO_INDEX_PATH: docs/copyline_photo_index.json
+          PHOTO_OVERRIDES: docs/copyline_photo_overrides.json
+          PHOTO_BLACKLIST: docs/copyline_photo_blacklist.json
+          PHOTO_FETCH_LIMIT: 60
+          REQUEST_DELAY_MS: 600
+          BACKOFF_MAX_MS: 12000
+          FLUSH_EVERY_N: 10
+        run: |
+          python scripts/enrich_copyline_photos.py
+
       - name: Commit & push changes (YML + photo index)
         if: always()
         shell: bash
@@ -19,7 +74,6 @@
             echo "No changes to commit."
           else
             git commit -m "Enrich Copyline pictures (Variant A)"
-            # На случай расхождения с origin — подтянуть и переиграть патчи
             git pull --rebase
             git push
           fi
