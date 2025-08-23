@@ -1,23 +1,24 @@
-name: enrich_copyline_photos
+# .github/workflows/build_copyline.yml
+name: build_copyline
 
 on:
   workflow_dispatch: {}
   push:
-    branches: [ main ]
+    branches: [ main ]            # замени на master, если нужно
     paths:
-      - 'scripts/enrich_copyline_photos.py'
-      - 'docs/copyline.yml'
-      - '.github/workflows/enrich_copyline.yml'
+      - 'scripts/build_copyline.py'
+      - '.github/workflows/build_copyline.yml'
+      - 'docs/**'
   schedule:
-    - cron: "15 0 * * *"   # ежедневно в 00:15 UTC (~06:15 Asia/Almaty)
+    - cron: "0 0 * * *"           # 00:00 UTC = 06:00 Asia/Almaty
 
 permissions:
   contents: write
 
 jobs:
-  enrich:
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout
@@ -31,29 +32,33 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml
+          pip install requests openpyxl
 
-      - name: Enrich pictures (Copyline) - itemprop=image (Variant A)
+      - name: Build YML (Copyline)
         env:
-          YML_PATH: docs/copyline.yml
+          XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
+          OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
-          PHOTO_INDEX_PATH: docs/copyline_photo_index.json
-          PHOTO_OVERRIDES: docs/copyline_photo_overrides.json
-          PHOTO_BLACKLIST: docs/copyline_photo_blacklist.json
-          PHOTO_FETCH_LIMIT: 80
-          REQUEST_DELAY_MS: 600
-          BACKOFF_MAX_MS: 8000
         run: |
-          python scripts/enrich_copyline_photos.py
+          python scripts/build_copyline.py
+          ls -l docs || true
+          test -f docs/copyline.yml
 
-      - name: Commit & push changes (YML + photo index) if any
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: copyline-yml
+          path: docs/copyline.yml
+          if-no-files-found: error
+
+      - name: Commit & push YML if changed
         shell: bash
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A docs/copyline.yml docs/copyline_photo_index.json
+          git add -A docs/copyline.yml
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Enrich Copyline pictures (Variant A)"
+            git commit -m "Update Copyline YML (no images)"
             git push
           else
             echo "No changes to commit."
