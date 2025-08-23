@@ -1,0 +1,30 @@
+{
+  "100016": {
+    "img_url": "https://copyline.kz/components/com_jshopping/files/img_products/CF281X.jpg",
+    "page_url": "https://copyline.kz/goods/cartridge-hp-cf281x-euro-print.html",
+    "locked": true,
+    "checked_at": "2025-08-23T10:03:36Z",
+    "source": "itemprop-image"
+  },
+  "100048": {
+    "img_url": "https://copyline.kz/components/com_jshopping/files/img_products/278_728_TOP.jpg",
+    "page_url": "https://copyline.kz/goods/cartridge-hp-ce278a-canon-728-top-print.html",
+    "locked": true,
+    "checked_at": "2025-08-23T10:10:18Z",
+    "source": "itemprop-image"
+  },
+  "100061": {
+    "img_url": "https://copyline.kz/components/com_jshopping/files/img_products/tk-100.jpg",
+    "page_url": "https://copyline.kz/goods/toner-cartridge-kyocera-tk-100.html",
+    "locked": true,
+    "checked_at": "2025-08-23T10:10:30Z",
+    "source": "itemprop-image"
+  },
+  "100066": {
+    "img_url": "https://copyline.kz/components/com_jshopping/files/img_products/TK825C.jpg",
+    "page_url": "https://copyline.kz/goods/toner-cartridge-kyocera-tk-825c.html",
+    "locked": true,
+    "checked_at": "2025-08-23T10:11:41Z",
+    "source": "itemprop-image"
+  }
+}
