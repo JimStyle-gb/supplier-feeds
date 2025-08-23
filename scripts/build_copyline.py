@@ -31,22 +31,6 @@ def fetch_xlsx(url_or_path: str) -> bytes:
     with open(url_or_path, "rb") as f:
         return f.read()
 
-# ===== префикс поставщика для артикула (Copyline -> 'c') =====
-SUPPLIER_PREFIX = "C"
-
-def apply_supplier_prefix(article_raw: Optional[str]) -> str:
-    """
-    Если артикул состоит только из цифр — добавляем префикс поставщика: 41212 -> c41212.
-    Буквенно-цифровые коды (CF283A, DR-1075) не трогаем.
-    """
-    art = (article_raw or "").strip()
-    compact = re.sub(r"\s+", "", art)
-    if compact.isdigit() and compact != "":
-        if compact.startswith(SUPPLIER_PREFIX) and compact[1:].isdigit():
-            return compact
-        return f"{SUPPLIER_PREFIX}{compact}"
-    return art
-
 # ===== определение шапки и колонок =====
 HEADER_HINTS = {
     "name":     ["номенклатура","наименование","наименование товара","название","товар","описание","product name","item"],
@@ -172,13 +156,12 @@ def cat_id_for(name): return str(9300001 + (hash_int(name.lower()) % 400000))
 
 def offer_id(it):
     """
-    Стабильный ID: если есть артикул (с префиксом для числовых) — используем его.
+    Стабильный ID: если есть артикул — используем его как есть (БЕЗ префикса).
     Иначе — хэш по имени+категории.
     """
     raw_article = norm(it.get("article"))
-    final_article = apply_supplier_prefix(raw_article) if raw_article else ""
-    if final_article:
-        return f"copyline:{final_article}"
+    if raw_article:
+        return f"copyline:{raw_article}"
     base = re.sub(r"[^a-z0-9]+", "-", norm(it.get("name","")).lower())
     h = hashlib.md5((norm(it.get('name','')).lower()+"|"+norm(it.get('category','')).lower()).encode('utf-8')).hexdigest()[:8]
     return f"copyline:{base}:{h}"
@@ -219,11 +202,10 @@ def build_yml(items: List[Dict[str,Any]]) -> bytes:
         SubElement(o, "currencyId").text = "KZT"
         SubElement(o, "categoryId").text = cid
 
-        # vendorCode: применяем префикс только к чисто цифровым артикулам
+        # vendorCode: записываем исходный артикул БЕЗ префикса
         raw_article = norm(it.get("article"))
-        final_article = apply_supplier_prefix(raw_article) if raw_article else ""
-        if final_article:
-            SubElement(o, "vendorCode").text = final_article
+        if raw_article:
+            SubElement(o, "vendorCode").text = raw_article
 
         for tag in ("quantity_in_stock","stock_quantity","quantity"):
             SubElement(o, tag).text = "1"
@@ -279,7 +261,7 @@ def main():
     with open(OUT_FILE, "wb") as f:
         f.write(yml)
 
-    print(f"[OK] {OUT_FILE}: items={len(items)} | strict-name filter + supplier prefix (c...)")
+    print(f"[OK] {OUT_FILE}: items={len(items)} | strict-name filter | NO prefix")
 
 if __name__ == "__main__":
     try:
