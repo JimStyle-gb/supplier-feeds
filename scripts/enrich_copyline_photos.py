@@ -1,10 +1,4 @@
 # scripts/enrich_copyline_photos.py
-# Вариант A (минимальный):
-# - идём по офферам без <picture>
-# - ищем карточку по исходному артикулу (vendorCode) на copyline.kz
-# - в карточке берём <img itemprop="image" ... src="..."> и пишем в <picture>
-# - кэшируем найденные ссылки, чтобы не дёргать сайт повторно
-
 from __future__ import annotations
 import os, re, sys, time, json, urllib.parse
 from datetime import datetime, timezone
@@ -25,6 +19,7 @@ PHOTO_BLACKLIST    = os.getenv("PHOTO_BLACKLIST", "docs/copyline_photo_blacklist
 PHOTO_FETCH_LIMIT  = int(os.getenv("PHOTO_FETCH_LIMIT", "80"))
 REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "600"))
 BACKOFF_MAX_MS     = int(os.getenv("BACKOFF_MAX_MS", "8000"))
+FLUSH_EVERY_N      = int(os.getenv("FLUSH_EVERY_N", "0"))  # 0 = писать один раз в конце
 
 SEARCH_ENDPOINTS = [
     "/index.php?option=com_jshopping&controller=search&task=result&search={q}",
@@ -172,6 +167,12 @@ def main():
     processed = 0
     backoff_ms = 0
 
+    def flush_progress():
+        # сохраняем XML и индекс, если что-то менялось
+        write_xml(tree, YML_PATH, OUT_ENCODING)
+        os.makedirs(os.path.dirname(PHOTO_INDEX_PATH) or ".", exist_ok=True)
+        save_json(PHOTO_INDEX_PATH, index)
+
     for offer, article in todo:
         if processed >= PHOTO_FETCH_LIMIT:
             break
@@ -184,6 +185,8 @@ def main():
                 set_offer_picture(offer, url)
                 index[article] = {"img_url": url, "page_url": "", "locked": True, "checked_at": now_iso(), "source": "override"}
                 updated += 1
+                if FLUSH_EVERY_N and updated % FLUSH_EVERY_N == 0:
+                    flush_progress()
                 continue
 
         # cache
@@ -191,6 +194,8 @@ def main():
         if info and info.get("locked") and info.get("img_url") and info["img_url"] not in blacklist:
             set_offer_picture(offer, info["img_url"])
             updated += 1
+            if FLUSH_EVERY_N and updated % FLUSH_EVERY_N == 0:
+                flush_progress()
             continue
 
         # search
@@ -201,7 +206,6 @@ def main():
             backoff_ms = 0
         except RuntimeError as e:
             print(f"RATE_LIMIT: {e}", file=sys.stderr)
-            backoff_ms = min(max(REQUEST_DELAY_MS*4, 2000), BACKOFF_MAX_MS)
             break
 
         if not page_url:
@@ -211,7 +215,7 @@ def main():
         sleep_ms(REQUEST_DELAY_MS)
         try:
             pr = fetch(page_url)
-        except RuntimeError:
+        except RuntimeError as e:
             print(f"RATE_LIMIT fetching page: {page_url}", file=sys.stderr)
             break
         except Exception:
@@ -232,12 +236,14 @@ def main():
             "source": "itemprop-image",
         }
         updated += 1
+
+        if FLUSH_EVERY_N and updated % FLUSH_EVERY_N == 0:
+            flush_progress()
+
         sleep_ms(REQUEST_DELAY_MS)
 
-    if updated > 0:
-        write_xml(tree, YML_PATH, OUT_ENCODING)
-        os.makedirs(os.path.dirname(PHOTO_INDEX_PATH) or ".", exist_ok=True)
-        save_json(PHOTO_INDEX_PATH, index)
+    if updated > 0 and (not FLUSH_EVERY_N or updated % FLUSH_EVERY_N != 0):
+        flush_progress()
 
     print(f"[PHOTO A] total_offers={total} | candidates={len(todo)} | updated={updated} | skipped={skipped} | processed={processed}")
 
