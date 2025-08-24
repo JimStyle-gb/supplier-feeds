@@ -1,254 +1,265 @@
-# scripts/enrich_copyline_photos.py
 from __future__ import annotations
-import os, re, sys, time, json, urllib.parse
-from datetime import datetime, timezone
-from typing import Optional
+import os, re, io, sys, time, json, urllib.parse
+from typing import Optional, Dict, Any
 import requests
 from bs4 import BeautifulSoup
-from xml.etree.ElementTree import ElementTree, Element
+from xml.etree.ElementTree import ElementTree
 
 BASE = "https://copyline.kz"
-UA_HEADERS = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+UA_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
-# -------- ENV --------
 YML_PATH           = os.getenv("YML_PATH", "docs/copyline.yml")
-OUT_ENCODING       = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+ENC                = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
 PHOTO_INDEX_PATH   = os.getenv("PHOTO_INDEX_PATH", "docs/copyline_photo_index.json")
 PHOTO_OVERRIDES    = os.getenv("PHOTO_OVERRIDES", "docs/copyline_photo_overrides.json")
 PHOTO_BLACKLIST    = os.getenv("PHOTO_BLACKLIST", "docs/copyline_photo_blacklist.json")
-PHOTO_FETCH_LIMIT  = int(os.getenv("PHOTO_FETCH_LIMIT", "80"))
+FETCH_LIMIT        = int(os.getenv("PHOTO_FETCH_LIMIT", "200"))
 REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "600"))
-BACKOFF_MAX_MS     = int(os.getenv("BACKOFF_MAX_MS", "8000"))
-FLUSH_EVERY_N      = int(os.getenv("FLUSH_EVERY_N", "0"))  # 0 = писать один раз в конце
+BACKOFF_MAX_MS     = int(os.getenv("BACKOFF_MAX_MS", "12000"))
+FLUSH_EVERY_N      = int(os.getenv("FLUSH_EVERY_N", "20"))
 
-SEARCH_ENDPOINTS = [
-    "/index.php?option=com_jshopping&controller=search&task=result&search={q}",
-    "/index.php?option=com_search&searchword={q}",
-]
-
+# ---------- utils ----------
 def norm(s: Optional[str]) -> str:
     return re.sub(r"\s+"," ", (s or "").strip())
-
-def load_json(path: str) -> dict:
-    try:
-        with open(path,"r",encoding="utf-8") as f: return json.load(f)
-    except FileNotFoundError:
-        return {}
-    except Exception:
-        return {}
-
-def save_json(path: str, data: dict):
-    tmp = path + ".tmp"
-    with open(tmp,"w",encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    os.replace(tmp, path)
 
 def absolutize(url: str) -> str:
     if url.startswith("http://") or url.startswith("https://"): return url
     return urllib.parse.urljoin(BASE, url)
 
-def sleep_ms(ms: int):
-    time.sleep(max(ms,0)/1000.0)
+def fetch(url: str) -> str:
+    """GET с простым экспоненциальным бэкоффом на 429/503."""
+    delay = REQUEST_DELAY_MS / 1000.0
+    while True:
+        r = requests.get(url, headers=UA_HEADERS, timeout=45)
+        if r.status_code in (429, 503):
+            time.sleep(min(BACKOFF_MAX_MS/1000.0, delay))
+            delay = min(delay * 2, BACKOFF_MAX_MS/1000.0)
+            continue
+        r.raise_for_status()
+        return r.text
 
-def now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+def looks_like_placeholder(url: str) -> bool:
+    u = url.lower()
+    return ("noimage" in u) or u.endswith("/placeholder.png")
 
-def fetch(url: str) -> requests.Response:
-    r = requests.get(url, headers=UA_HEADERS, timeout=60)
-    if r.status_code in (403, 429):
-        raise RuntimeError(f"rate_limited:{r.status_code}")
-    r.raise_for_status()
-    return r
+def load_json(path: str, default):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return default
 
-# -------- XML --------
-def read_xml(path: str) -> ElementTree:
-    return ElementTree(file=path)
+def save_json(path: str, obj):
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(obj, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
 
-def write_xml(tree: ElementTree, path: str, enc: str):
-    tree.write(path, encoding=enc, xml_declaration=True)
+# ---------- поиск товара и извлечение картинки ----------
+def search_first_product_link_by_query(query: str) -> Optional[str]:
+    q = urllib.parse.urlencode({"search": query})
+    url = f"{BASE}/?{q}"
+    html = fetch(url)
+    soup = BeautifulSoup(html, "lxml")
 
-def iter_offers(root: Element):
-    shop = root.find("shop")
-    if shop is None: return
-    offers = shop.find("offers")
-    if offers is None: return
-    for o in offers.findall("offer"):
-        yield o
+    # приоритетные ссылки на карточки
+    for a in soup.select('a[href*="/goods/"], a[href*="/product/"]'):
+        href = a.get("href") or ""
+        if href.endswith(".html"):
+            return absolutize(href)
+    # общий фолбэк
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        if ("/goods/" in href or "/product/" in href) and href.endswith(".html"):
+            return absolutize(href)
+    return None
 
-def offer_has_picture(offer: Element) -> bool:
-    return offer.find("picture") is not None and (offer.findtext("picture") or "").strip() != ""
+def extract_main_image(product_url: str) -> Optional[str]:
+    html = fetch(product_url)
+    soup = BeautifulSoup(html, "lxml")
 
-def get_article(offer: Element) -> Optional[str]:
-    vc = offer.findtext("vendorCode")
-    return (vc or "").strip() or None
+    # 1) как просил: берём первую главную картинку <img itemprop="image" ... src="...">
+    img = soup.find("img", attrs={"itemprop": "image"})
+    if img and img.get("src"):
+        src = absolutize(img["src"])
+        if not looks_like_placeholder(src):
+            return src
 
-def set_offer_picture(offer: Element, url: str):
-    pic = offer.find("picture")
+    # 2) og:image
+    og = soup.find("meta", attrs={"property": "og:image"})
+    if og and og.get("content"):
+        src = absolutize(og["content"])
+        if not looks_like_placeholder(src):
+            return src
+
+    # 3) первое изображение в карточке
+    any_img = soup.select_one("img[src]")
+    if any_img:
+        src = absolutize(any_img["src"])
+        if not looks_like_placeholder(src):
+            return src
+
+    return None
+
+# ---------- токены из названия (фолбэк) ----------
+CODE_SLASH   = re.compile(r"\b([A-Z]{1,8}-)(\d{2,6})(?:/(\d{2,6}))+\b", re.I)
+CODE_SIMPLE  = re.compile(r"\b([A-Z]{1,8}(?:-[A-Z]{1,3})?[-_ ]?\d{2,6}[A-Z]{0,3})\b", re.I)
+CODE_NUMONLY = re.compile(r"\b(\d{2,6})\b")
+
+def tokens_from_name(name: str) -> list[str]:
+    t = norm(name)
+    out = []
+    m = CODE_SLASH.search(t)
+    if m:
+        out.append((m.group(1)+m.group(2)).replace(" ","-"))
+    for m in CODE_SIMPLE.finditer(t):
+        out.append(re.sub(r"[ _]", "-", m.group(1)))
+    for m in CODE_NUMONLY.finditer(t):
+        out.append(m.group(1))
+    # уникализация
+    seen=set(); res=[]
+    for c in out:
+        c = c.upper()
+        if c not in seen:
+            seen.add(c); res.append(c)
+    return res
+
+# ---------- YML helpers ----------
+def _ensure_picture(offer_el, url: str):
+    pic = offer_el.find("picture")
     if pic is None:
-        pic = Element("picture")
-        offer.append(pic)
+        from xml.etree.ElementTree import SubElement
+        pic = SubElement(offer_el, "picture")
     pic.text = url
 
-# -------- поиск карточки --------
-def search_product_page_by_article(article: str) -> Optional[str]:
-    q = urllib.parse.quote_plus(article)
-    for tmpl in SEARCH_ENDPOINTS:
-        url = absolutize(tmpl.format(q=q))
-        try:
-            r = fetch(url)
-        except RuntimeError:
-            raise
-        except Exception:
-            continue
+def _flush(tree: ElementTree, root, photo_idx: dict):
+    # сохранить YML
+    buf = io.BytesIO()
+    ElementTree(element=root).write(buf, encoding=ENC, xml_declaration=True)
+    with open(YML_PATH, "wb") as f:
+        f.write(buf.getvalue())
+    # сохранить индекс
+    os.makedirs(os.path.dirname(PHOTO_INDEX_PATH) or ".", exist_ok=True)
+    save_json(PHOTO_INDEX_PATH, photo_idx)
 
-        soup = BeautifulSoup(r.text, "lxml")
-
-        links=set()
-        for a in soup.select('a[href*="/product/"], a[href*="/goods/"]'):
-            href = a.get("href") or ""
-            if href.endswith(".html"):
-                links.add(absolutize(href))
-        if not links:
-            for a in soup.find_all("a", href=True):
-                href=a["href"]
-                if href.endswith(".html") and ("/goods/" in href or "/product/" in href):
-                    links.add(absolutize(href))
-
-        for link in list(links)[:5]:
-            sleep_ms(REQUEST_DELAY_MS)
-            try:
-                pr = fetch(link)
-            except RuntimeError:
-                raise
-            except Exception:
-                continue
-            psoup = BeautifulSoup(pr.text, "lxml")
-            h1 = psoup.find("h1")
-            h1txt = norm(h1.get_text()) if h1 else ""
-            if article.upper() in h1txt.upper():
-                return link
-    return None
-
-def extract_first_itemprop_image(page_html: str) -> Optional[str]:
-    soup = BeautifulSoup(page_html, "lxml")
-    img = soup.find("img", {"itemprop":"image"})
-    if img and img.get("src"):
-        return absolutize(img.get("src"))
-    return None
-
-# -------- main --------
+# ---------- main ----------
 def main():
-    index = load_json(PHOTO_INDEX_PATH)
-    overrides = load_json(PHOTO_OVERRIDES) or {}
-    blacklist = set((load_json(PHOTO_BLACKLIST) or {}).keys())
+    # загрузка YML
+    with open(YML_PATH, "rb") as f:
+        raw = f.read()
+    tree = ElementTree()
+    root = tree.fromstring(raw)
 
-    try:
-        tree = read_xml(YML_PATH)
-    except Exception as e:
-        print(f"ERROR: cannot read YML: {e}", file=sys.stderr)
-        sys.exit(1)
-    root = tree.getroot()
+    # словари управления
+    overrides  = load_json(PHOTO_OVERRIDES, {})       # ключ: "code:12345" или "name:...lower"
+    blacklist  = set(load_json(PHOTO_BLACKLIST, []))  # те же ключи
+    photo_idx  = load_json(PHOTO_INDEX_PATH, {})      # кэш по тем же ключам
 
-    todo = []
-    total = 0
-    for offer in iter_offers(root):
-        total += 1
-        if offer_has_picture(offer):
-            continue
-        art = get_article(offer)
-        if not art:
-            continue
-        todo.append((offer, art))
-
-    todo.sort(key=lambda x: x[1])
-
+    offers = root.findall(".//offer")
     updated = 0
-    skipped = 0
-    processed = 0
-    backoff_ms = 0
+    scanned = 0
 
-    def flush_progress():
-        # сохраняем XML и индекс, если что-то менялось
-        write_xml(tree, YML_PATH, OUT_ENCODING)
-        os.makedirs(os.path.dirname(PHOTO_INDEX_PATH) or ".", exist_ok=True)
-        save_json(PHOTO_INDEX_PATH, index)
-
-    for offer, article in todo:
-        if processed >= PHOTO_FETCH_LIMIT:
+    for o in offers:
+        if scanned >= FETCH_LIMIT:
             break
-        processed += 1
 
-        # override
-        if article in overrides:
-            url = overrides[article]
-            if url and url not in blacklist:
-                set_offer_picture(offer, url)
-                index[article] = {"img_url": url, "page_url": "", "locked": True, "checked_at": now_iso(), "source": "override"}
-                updated += 1
-                if FLUSH_EVERY_N and updated % FLUSH_EVERY_N == 0:
-                    flush_progress()
-                continue
+        # имеем ли уже картинку?
+        have_pic = False
+        p = o.find("picture")
+        if p is not None and norm(p.text):
+            have_pic = True
+        if have_pic:
+            continue
 
-        # cache
-        info = index.get(article)
-        if info and info.get("locked") and info.get("img_url") and info["img_url"] not in blacklist:
-            set_offer_picture(offer, info["img_url"])
+        # ключи: сначала по коду, иначе по имени
+        name_el = o.find("name")
+        name = norm(name_el.text) if name_el is not None else ""
+
+        vcode_el = o.find("vendorCode")
+        vendor_code = norm(vcode_el.text) if vcode_el is not None else ""
+
+        key_code = f"code:{vendor_code}" if vendor_code else None
+        key_name = f"name:{name.lower()}" if name else None
+
+        # чёрный список
+        if (key_code and key_code in blacklist) or (key_name and key_name in blacklist):
+            continue
+
+        # overrides
+        if key_code and key_code in overrides:
+            _ensure_picture(o, overrides[key_code])
+            photo_idx[key_code] = overrides[key_code]
+            updated += 1; scanned += 1
+            if updated % FLUSH_EVERY_N == 0: _flush(tree, root, photo_idx)
+            continue
+        if key_name and key_name in overrides:
+            _ensure_picture(o, overrides[key_name])
+            photo_idx[key_name] = overrides[key_name]
+            updated += 1; scanned += 1
+            if updated % FLUSH_EVERY_N == 0: _flush(tree, root, photo_idx)
+            continue
+
+        # кэш
+        if key_code and key_code in photo_idx:
+            _ensure_picture(o, photo_idx[key_code])
+            updated += 1; scanned += 1
+            if updated % FLUSH_EVERY_N == 0: _flush(tree, root, photo_idx)
+            continue
+        if key_name and key_name in photo_idx:
+            _ensure_picture(o, photo_idx[key_name])
+            updated += 1; scanned += 1
+            if updated % FLUSH_EVERY_N == 0: _flush(tree, root, photo_idx)
+            continue
+
+        pic_url: Optional[str] = None
+
+        # === ВАРИАНТ А (как ты просил): ПОИСК СНАЧАЛА ПО КОДУ ТОВАРА ===
+        if vendor_code:
+            try:
+                product_url = search_first_product_link_by_query(vendor_code)
+                if product_url:
+                    pic = extract_main_image(product_url)
+                    if pic:
+                        pic_url = pic
+            except Exception:
+                pass
+            finally:
+                time.sleep(REQUEST_DELAY_MS / 1000.0)
+
+        # === ФОЛБЭК: если по коду не нашли — пробуем по модельным токенам из названия ===
+        if not pic_url and name:
+            for t in tokens_from_name(name):
+                try:
+                    product_url = search_first_product_link_by_query(t)
+                    if not product_url:
+                        continue
+                    pic = extract_main_image(product_url)
+                    if pic:
+                        pic_url = pic
+                        break
+                except Exception:
+                    pass
+                finally:
+                    time.sleep(REQUEST_DELAY_MS / 1000.0)
+
+        if pic_url:
+            _ensure_picture(o, pic_url)
+            if key_code:
+                photo_idx[key_code] = pic_url
+            elif key_name:
+                photo_idx[key_name] = pic_url
             updated += 1
-            if FLUSH_EVERY_N and updated % FLUSH_EVERY_N == 0:
-                flush_progress()
-            continue
 
-        # search
-        try:
-            if backoff_ms:
-                sleep_ms(backoff_ms)
-            page_url = search_product_page_by_article(article)
-            backoff_ms = 0
-        except RuntimeError as e:
-            print(f"RATE_LIMIT: {e}", file=sys.stderr)
-            break
+        scanned += 1
+        if updated and updated % FLUSH_EVERY_N == 0:
+            _flush(tree, root, photo_idx)
 
-        if not page_url:
-            skipped += 1
-            continue
-
-        sleep_ms(REQUEST_DELAY_MS)
-        try:
-            pr = fetch(page_url)
-        except RuntimeError as e:
-            print(f"RATE_LIMIT fetching page: {page_url}", file=sys.stderr)
-            break
-        except Exception:
-            skipped += 1
-            continue
-
-        img_url = extract_first_itemprop_image(pr.text)
-        if not img_url or img_url in blacklist:
-            skipped += 1
-            continue
-
-        set_offer_picture(offer, img_url)
-        index[article] = {
-            "img_url": img_url,
-            "page_url": page_url,
-            "locked": True,
-            "checked_at": now_iso(),
-            "source": "itemprop-image",
-        }
-        updated += 1
-
-        if FLUSH_EVERY_N and updated % FLUSH_EVERY_N == 0:
-            flush_progress()
-
-        sleep_ms(REQUEST_DELAY_MS)
-
-    if updated > 0 and (not FLUSH_EVERY_N or updated % FLUSH_EVERY_N != 0):
-        flush_progress()
-
-    print(f"[PHOTO A] total_offers={total} | candidates={len(todo)} | updated={updated} | skipped={skipped} | processed={processed}")
+    _flush(tree, root, photo_idx)
+    print(f"[OK] enriched: {updated} | scanned: {scanned} | limit={FETCH_LIMIT}")
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        print("ERROR:", e, file=sys.stderr); sys.exit(1)
+        print("ERROR:", e, file=sys.stderr)
+        sys.exit(1)
