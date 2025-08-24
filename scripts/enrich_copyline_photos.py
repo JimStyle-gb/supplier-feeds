@@ -3,7 +3,7 @@ import os, re, io, sys, time, json, urllib.parse
 from typing import Optional, Dict, Any
 import requests
 from bs4 import BeautifulSoup
-from xml.etree.ElementTree import ElementTree
+import xml.etree.ElementTree as ET
 
 BASE = "https://copyline.kz"
 UA_HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -50,6 +50,7 @@ def load_json(path: str, default):
         return default
 
 def save_json(path: str, obj):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(obj, f, ensure_ascii=False, indent=2)
@@ -62,12 +63,11 @@ def search_first_product_link_by_query(query: str) -> Optional[str]:
     html = fetch(url)
     soup = BeautifulSoup(html, "lxml")
 
-    # приоритетные ссылки на карточки
     for a in soup.select('a[href*="/goods/"], a[href*="/product/"]'):
         href = a.get("href") or ""
         if href.endswith(".html"):
             return absolutize(href)
-    # общий фолбэк
+
     for a in soup.find_all("a", href=True):
         href = a["href"]
         if ("/goods/" in href or "/product/" in href) and href.endswith(".html"):
@@ -78,21 +78,18 @@ def extract_main_image(product_url: str) -> Optional[str]:
     html = fetch(product_url)
     soup = BeautifulSoup(html, "lxml")
 
-    # 1) как просил: берём первую главную картинку <img itemprop="image" ... src="...">
     img = soup.find("img", attrs={"itemprop": "image"})
     if img and img.get("src"):
         src = absolutize(img["src"])
         if not looks_like_placeholder(src):
             return src
 
-    # 2) og:image
     og = soup.find("meta", attrs={"property": "og:image"})
     if og and og.get("content"):
         src = absolutize(og["content"])
         if not looks_like_placeholder(src):
             return src
 
-    # 3) первое изображение в карточке
     any_img = soup.select_one("img[src]")
     if any_img:
         src = absolutize(any_img["src"])
@@ -116,7 +113,6 @@ def tokens_from_name(name: str) -> list[str]:
         out.append(re.sub(r"[ _]", "-", m.group(1)))
     for m in CODE_NUMONLY.finditer(t):
         out.append(m.group(1))
-    # уникализация
     seen=set(); res=[]
     for c in out:
         c = c.upper()
@@ -128,18 +124,13 @@ def tokens_from_name(name: str) -> list[str]:
 def _ensure_picture(offer_el, url: str):
     pic = offer_el.find("picture")
     if pic is None:
-        from xml.etree.ElementTree import SubElement
-        pic = SubElement(offer_el, "picture")
+        pic = ET.SubElement(offer_el, "picture")
     pic.text = url
 
-def _flush(tree: ElementTree, root, photo_idx: dict):
+def _flush(tree: ET.ElementTree, photo_idx: dict):
     # сохранить YML
-    buf = io.BytesIO()
-    ElementTree(element=root).write(buf, encoding=ENC, xml_declaration=True)
-    with open(YML_PATH, "wb") as f:
-        f.write(buf.getvalue())
+    tree.write(YML_PATH, encoding=ENC, xml_declaration=True)
     # сохранить индекс
-    os.makedirs(os.path.dirname(PHOTO_INDEX_PATH) or ".", exist_ok=True)
     save_json(PHOTO_INDEX_PATH, photo_idx)
 
 # ---------- main ----------
@@ -147,8 +138,8 @@ def main():
     # загрузка YML
     with open(YML_PATH, "rb") as f:
         raw = f.read()
-    tree = ElementTree()
-    root = tree.fromstring(raw)
+    root = ET.fromstring(raw)             # <-- фикс: используем ET.fromstring
+    tree = ET.ElementTree(root)
 
     # словари управления
     overrides  = load_json(PHOTO_OVERRIDES, {})       # ключ: "code:12345" или "name:...lower"
@@ -163,15 +154,11 @@ def main():
         if scanned >= FETCH_LIMIT:
             break
 
-        # имеем ли уже картинку?
-        have_pic = False
+        # уже есть картинка?
         p = o.find("picture")
         if p is not None and norm(p.text):
-            have_pic = True
-        if have_pic:
             continue
 
-        # ключи: сначала по коду, иначе по имени
         name_el = o.find("name")
         name = norm(name_el.text) if name_el is not None else ""
 
@@ -190,30 +177,30 @@ def main():
             _ensure_picture(o, overrides[key_code])
             photo_idx[key_code] = overrides[key_code]
             updated += 1; scanned += 1
-            if updated % FLUSH_EVERY_N == 0: _flush(tree, root, photo_idx)
+            if updated % FLUSH_EVERY_N == 0: _flush(tree, photo_idx)
             continue
         if key_name and key_name in overrides:
             _ensure_picture(o, overrides[key_name])
             photo_idx[key_name] = overrides[key_name]
             updated += 1; scanned += 1
-            if updated % FLUSH_EVERY_N == 0: _flush(tree, root, photo_idx)
+            if updated % FLUSH_EVERY_N == 0: _flush(tree, photo_idx)
             continue
 
         # кэш
         if key_code and key_code in photo_idx:
             _ensure_picture(o, photo_idx[key_code])
             updated += 1; scanned += 1
-            if updated % FLUSH_EVERY_N == 0: _flush(tree, root, photo_idx)
+            if updated % FLUSH_EVERY_N == 0: _flush(tree, photo_idx)
             continue
         if key_name and key_name in photo_idx:
             _ensure_picture(o, photo_idx[key_name])
             updated += 1; scanned += 1
-            if updated % FLUSH_EVERY_N == 0: _flush(tree, root, photo_idx)
+            if updated % FLUSH_EVERY_N == 0: _flush(tree, photo_idx)
             continue
 
         pic_url: Optional[str] = None
 
-        # === ВАРИАНТ А (как ты просил): ПОИСК СНАЧАЛА ПО КОДУ ТОВАРА ===
+        # === ВАРИАНТ А: ищем по коду товара (vendorCode) через поиск сайта ===
         if vendor_code:
             try:
                 product_url = search_first_product_link_by_query(vendor_code)
@@ -226,7 +213,7 @@ def main():
             finally:
                 time.sleep(REQUEST_DELAY_MS / 1000.0)
 
-        # === ФОЛБЭК: если по коду не нашли — пробуем по модельным токенам из названия ===
+        # === Фолбэк по токенам из названия ===
         if not pic_url and name:
             for t in tokens_from_name(name):
                 try:
@@ -252,9 +239,9 @@ def main():
 
         scanned += 1
         if updated and updated % FLUSH_EVERY_N == 0:
-            _flush(tree, root, photo_idx)
+            _flush(tree, photo_idx)
 
-    _flush(tree, root, photo_idx)
+    _flush(tree, photo_idx)
     print(f"[OK] enriched: {updated} | scanned: {scanned} | limit={FETCH_LIMIT}")
 
 if __name__ == "__main__":
