@@ -1,7 +1,6 @@
 # .github/workflows/enrich_copyline.yml
 name: enrich_copyline_photos
 
-# Новый запуск отменяет предыдущий на той же ветке
 concurrency:
   group: enrich-copyline-${{ github.ref }}
   cancel-in-progress: true
@@ -15,7 +14,7 @@ on:
       - 'docs/copyline.yml'
       - '.github/workflows/enrich_copyline.yml'
   schedule:
-    - cron: "15 0 * * *"   # ежедневно в 00:15 UTC (~06:15 Asia/Almaty)
+    - cron: "15 0 * * *"
 
 permissions:
   contents: write
@@ -61,19 +60,28 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Добавляем только существующие файлы
-          if [ -f docs/copyline.yml ]; then
-            git add docs/copyline.yml
-          fi
-          if [ -f docs/copyline_photo_index.json ]; then
-            git add docs/copyline_photo_index.json
-          fi
+          add_if_exists() { [ -f "$1" ] && git add "$1" || true; }
+          add_if_exists docs/copyline.yml
+          add_if_exists docs/copyline_photo_index.json
 
-          # Есть ли что коммитить?
           if git diff --cached --quiet; then
             echo "No changes to commit."
-          else
-            git commit -m "Enrich Copyline pictures (Variant A)"
-            git pull --rebase
-            git push
+            exit 0
           fi
+
+          git commit -m "Enrich Copyline pictures (Variant A)"
+
+          # подтянуть origin/main и смержить, предпочитая наши артефакты
+          git fetch origin main
+          git pull --no-rebase -X ours --no-edit origin main || true
+
+          # если остались конфликты — оставить наши файлы и завершить мерж
+          if git ls-files -u | grep -q .; then
+            git checkout --ours -- docs/copyline.yml || true
+            git checkout --ours -- docs/copyline_photo_index.json || true
+            git add docs/copyline.yml || true
+            git add docs/copyline_photo_index.json || true
+            git commit -m "Resolve conflicts preferring generated artifacts"
+          fi
+
+          git push
