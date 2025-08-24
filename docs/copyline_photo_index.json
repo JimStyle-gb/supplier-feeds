@@ -33,5 +33,33 @@
     "locked": true,
     "checked_at": "2025-08-23T11:06:06Z",
     "source": "itemprop-image"
+  },
+  "100035": {
+    "img_url": "https://copyline.kz/components/com_jshopping/files/img_products/cf360a.jpg",
+    "page_url": "https://copyline.kz/goods/cartridge-hp-cf360a-euro-print.html",
+    "locked": true,
+    "checked_at": "2025-08-24T06:27:49Z",
+    "source": "itemprop-image"
+  },
+  "100063": {
+    "img_url": "https://copyline.kz/components/com_jshopping/files/img_products/TK-410.jpg",
+    "page_url": "https://copyline.kz/goods/toner-cartridge-kyocera-tk-410.html",
+    "locked": true,
+    "checked_at": "2025-08-24T06:32:37Z",
+    "source": "itemprop-image"
+  },
+  "100067": {
+    "img_url": "https://copyline.kz/components/com_jshopping/files/img_products/TK825M.jpg",
+    "page_url": "https://copyline.kz/goods/toner-cartridge-kyocera-tk-825m.html",
+    "locked": true,
+    "checked_at": "2025-08-24T06:33:08Z",
+    "source": "itemprop-image"
+  },
+  "100120": {
+    "img_url": "https://copyline.kz/components/com_jshopping/files/img_products/kx-fa411-ep1.jpg",
+    "page_url": "https://copyline.kz/goods/toner-cartridge-panasonic-kx-fat411a-ep.html",
+    "locked": true,
+    "checked_at": "2025-08-24T06:39:06Z",
+    "source": "itemprop-image"
   }
 }
