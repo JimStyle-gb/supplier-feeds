@@ -1,9 +1,4 @@
-# .github/workflows/enrich_copyline.yml
 name: enrich_copyline_photos
-
-concurrency:
-  group: enrich-copyline-${{ github.ref }}
-  cancel-in-progress: true
 
 on:
   workflow_dispatch: {}
@@ -11,18 +6,22 @@ on:
     branches: [ main ]
     paths:
       - 'scripts/enrich_copyline_photos.py'
+      - '.github/workflows/enrich_copyline_photos.yml'
       - 'docs/copyline.yml'
-      - '.github/workflows/enrich_copyline.yml'
   schedule:
-    - cron: "15 0 * * *"
+    - cron: "20 0 * * *"   # ежедневно после основной сборки
 
 permissions:
   contents: write
 
+concurrency:
+  group: enrich-copyline
+  cancel-in-progress: true
+
 jobs:
   enrich:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -38,50 +37,44 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4 lxml
 
-      - name: Enrich pictures (Copyline) - Variant A
+      - name: Enrich pictures (Copyline) - via site search
         env:
           YML_PATH: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
           PHOTO_INDEX_PATH: docs/copyline_photo_index.json
           PHOTO_OVERRIDES: docs/copyline_photo_overrides.json
           PHOTO_BLACKLIST: docs/copyline_photo_blacklist.json
-          PHOTO_FETCH_LIMIT: 60
+          PHOTO_FETCH_LIMIT: 120      # при необходимости увеличить
           REQUEST_DELAY_MS: 600
           BACKOFF_MAX_MS: 12000
-          FLUSH_EVERY_N: 10
+          FLUSH_EVERY_N: 20
         run: |
           python scripts/enrich_copyline_photos.py
 
-      - name: Commit & push changes (YML + photo index)
-        if: always()
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: copyline-yml-with-pictures
+          path: |
+            docs/copyline.yml
+            docs/copyline_photo_index.json
+          if-no-files-found: error
+
+      - name: Commit & push if changed
         shell: bash
         run: |
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          add_if_exists() { [ -f "$1" ] && git add "$1" || true; }
-          add_if_exists docs/copyline.yml
-          add_if_exists docs/copyline_photo_index.json
+          # добавляем только существующие
+          [ -f docs/copyline.yml ] && git add docs/copyline.yml
+          [ -f docs/copyline_photo_index.json ] && git add docs/copyline_photo_index.json
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
-            exit 0
+          else
+            git commit -m "Copyline: add picture links via site search"
+            git pull --rebase
+            git push
           fi
-
-          git commit -m "Enrich Copyline pictures (Variant A)"
-
-          # подтянуть origin/main и смержить, предпочитая наши артефакты
-          git fetch origin main
-          git pull --no-rebase -X ours --no-edit origin main || true
-
-          # если остались конфликты — оставить наши файлы и завершить мерж
-          if git ls-files -u | grep -q .; then
-            git checkout --ours -- docs/copyline.yml || true
-            git checkout --ours -- docs/copyline_photo_index.json || true
-            git add docs/copyline.yml || true
-            git add docs/copyline_photo_index.json || true
-            git commit -m "Resolve conflicts preferring generated artifacts"
-          fi
-
-          git push
