@@ -10,12 +10,12 @@ UA_HEADERS = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
 # ===== ENV / параметры =====
 ARTICLES_FILE = os.getenv("ARTICLES_FILE", "docs/copyline_articles.txt")
-OUT_FILE      = os.getenv("OUT_FILE",      "docs/copyline_photos_list.yml")
+# Пишем прямо в docs/copyline.yml, чтобы отдавалось GitHub Pages
+OUT_FILE      = os.getenv("OUT_FILE",      "docs/copyline.yml")
 ENC           = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
 REQUEST_DELAY = int(os.getenv("REQUEST_DELAY_MS", "600")) / 1000.0
 
 SEARCH_URLS = [
-    # Joomla com_search варианты
     "?searchword={q}&option=com_search&searchphrase=all",
     "search?searchword={q}",
     "index.php?option=com_search&searchword={q}",
@@ -41,7 +41,6 @@ def read_articles(path: str) -> List[str]:
             for line in f:
                 s = norm(line)
                 if not s or s.startswith("#"): continue
-                # допускаем разделители
                 for tok in re.split(r"[,;\s]+", s):
                     t = tok.strip()
                     if t:
@@ -51,7 +50,6 @@ def read_articles(path: str) -> List[str]:
 def extract_product_links(html: str) -> List[str]:
     soup = BeautifulSoup(html, "lxml")
     hrefs=set()
-    # карточки товаров обычно /goods/... .html или /product/... .html
     for a in soup.find_all("a", href=True):
         href = a["href"]
         if href.endswith(".html") and ("/goods/" in href or "/product/" in href):
@@ -59,7 +57,6 @@ def extract_product_links(html: str) -> List[str]:
     return list(hrefs)
 
 def search_product_urls(article: str) -> List[str]:
-    """Пробуем несколько вариантов поисковой страницы Joomla, собираем ссылки на товары."""
     urls=[]
     for tpl in SEARCH_URLS:
         url = abs_url(tpl.format(q=urllib.parse.quote(article)))
@@ -70,17 +67,14 @@ def search_product_urls(article: str) -> List[str]:
         except Exception:
             pass
         time.sleep(REQUEST_DELAY)
-    # уникализируем, приоритезируем те, где встречается артикул в ссылке/тексте
     seen=set(); uniq=[]
     for u in urls:
         if u not in seen:
             uniq.append(u); seen.add(u)
-    # лучше сначала те, где артикул есть в url
     uniq.sort(key=lambda u: (article not in u, len(u)))
     return uniq
 
 def parse_main_image_from_product(url: str) -> Tuple[Optional[str], Optional[str]]:
-    """Возвращает (picture_src, title). Берём строго <img itemprop="image" ... src="...">"""
     try:
         html = fetch(url)
     except Exception:
@@ -112,10 +106,8 @@ def build_yml(rows: List[dict]) -> bytes:
         SubElement(o, "currencyId").text = "KZT"
         SubElement(o, "categoryId").text = "9300000"
         SubElement(o, "vendorCode").text = it["article"]
-        # только если нашли
         if it.get("picture"):
             SubElement(o, "picture").text = it["picture"]
-        # фиктивные остатки как просили
         for tag in ("quantity_in_stock","stock_quantity","quantity"):
             SubElement(o, tag).text = "1"
 
@@ -126,7 +118,6 @@ def build_yml(rows: List[dict]) -> bytes:
 def main():
     arts = read_articles(ARTICLES_FILE)
     if not arts:
-        # fallback: читаем из ENV ARTICLES (через запятую/пробел)
         env_list = os.getenv("ARTICLES", "")
         arts = [a for a in re.split(r"[,;\s]+", env_list) if a.strip()]
     if not arts:
@@ -139,7 +130,6 @@ def main():
         links = search_product_urls(art)
         pic=None; name=None
         if links:
-            # берём первый подходящий
             for link in links:
                 pic, name = parse_main_image_from_product(link)
                 if pic: break
