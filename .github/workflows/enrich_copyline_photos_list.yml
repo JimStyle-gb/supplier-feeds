@@ -31,21 +31,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4 lxml
 
-      - name: Run scraper (by list)
+      - name: Run scraper (by list) -> docs/copyline.yml (для GitHub Pages)
         env:
           ARTICLES_FILE: docs/copyline_articles.txt
-          OUT_FILE: docs/copyline_photos_list.yml
+          OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
           REQUEST_DELAY_MS: 600
         run: |
           python scripts/scrape_copyline_photos_by_list.py
-          test -f docs/copyline_photos_list.yml
+          test -f docs/copyline.yml
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: copyline-photos-list
-          path: docs/copyline_photos_list.yml
+          name: copyline-yml
+          path: docs/copyline.yml
           if-no-files-found: error
 
       - name: Commit & push if changed
@@ -54,11 +54,11 @@ jobs:
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/copyline_photos_list.yml
+          git add docs/copyline.yml
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Update: copyline photos (by list)"
+            git commit -m "Update: copyline photos (by list) -> docs/copyline.yml"
             git pull --rebase
             git push
           fi
