@@ -1,114 +1,149 @@
 # scripts/test_copyline_photo_lookup.py
-# Тест: ищем фото по списку артикулов через поиск на copyline.kz и вытаскиваем <img itemprop="image" ... src="...">
-
-import time
-import re
-import sys
-import html
-import urllib.parse
+from __future__ import annotations
+import os, re, io, sys, urllib.parse
 import requests
 from bs4 import BeautifulSoup
+from xml.etree.ElementTree import Element, SubElement, ElementTree
 
-BASE = "https://copyline.kz"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+BASE_URL = os.getenv("COPYLINE_BASE", "https://copyline.kz")
+OUTPUT_YML = os.getenv("OUTPUT_YML", "docs/copyline_photo_test.yml")
+INPUT_YML = os.getenv("INPUT_YML", "docs/copyline.yml")  # опционально: взять name/price/category из основного YML
+ENC = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+UA = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
-ARTICLES = [
-    "105140",
-    "103826",
-    "103824",
-    "104151",
-    "104152",
-    "104153",
-    "104154",
-]
+def norm(s: str | None) -> str:
+    return re.sub(r"\s+", " ", (s or "").strip())
 
-def norm(s: str) -> str:
-    return re.sub(r"\s+"," ", (s or "").strip())
+def absolutize(url: str) -> str:
+    if not url:
+        return url
+    return url if url.startswith("http") else urllib.parse.urljoin(BASE_URL, url)
 
-def abs_url(u: str) -> str:
-    if not u:
-        return ""
-    if u.startswith("http://") or u.startswith("https://"):
-        return u
-    return urllib.parse.urljoin(BASE, u)
-
-def fetch(url: str) -> str:
-    r = SESSION.get(url, headers=HEADERS, timeout=30)
+def fetch_html(url: str) -> str:
+    r = requests.get(url, headers=UA, timeout=30)
     r.raise_for_status()
     return r.text
 
-def find_product_link_in_search(html_text: str, code: str) -> str | None:
-    soup = BeautifulSoup(html_text, "lxml")
-
-    # Правило: берем первую ссылку на карточку товара (/goods/...html или /product/...html),
-    # у которой либо в href, либо в тексте/атрибутах встречается код.
-    cand = []
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-        if ".html" in href and ("/goods/" in href or "/product/" in href):
-            txt = " ".join([a.get_text(" "), a.get("title",""), a.get("alt","")])
-            blob = (href + " " + txt).upper()
-            if code.upper() in blob:
-                cand.append(abs_url(href))
-    if cand:
-        return cand[0]
-
-    # Фолбэк: если ничего не нашли по коду — возьмём первую карточку в выдаче.
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-        if ".html" in href and ("/goods/" in href or "/product/" in href):
-            return abs_url(href)
-    return None
-
-def extract_main_image(product_html: str) -> str | None:
-    soup = BeautifulSoup(product_html, "lxml")
-    # Строго: только главный тег <img itemprop="image" ... src="...">
-    img = soup.find("img", attrs={"itemprop": "image"})
-    if img and img.get("src"):
-        return abs_url(img["src"])
-    return None
-
-def search_endpoints_for(code: str) -> list[str]:
-    q = urllib.parse.quote_plus(code)
-    return [
-        f"{BASE}/search?searchword={q}",  # com_search
-        f"{BASE}/?option=com_search&searchword={q}",
-        # Варианты jshopping-поиска:
-        f"{BASE}/index.php?option=com_jshopping&controller=search&task=result&setsearchdata=1&search=name&category_id=0&text={q}",
-        f"{BASE}/index.php?option=com_jshopping&controller=search&task=result&search=name&category_id=0&text={q}",
+def search_product_url(query: str) -> str | None:
+    qs = urllib.parse.quote_plus(query)
+    candidates = [
+        f"{BASE_URL}/?search={qs}",
+        f"{BASE_URL}/?searchword={qs}",
+        f"{BASE_URL}/search?searchword={qs}",
     ]
-
-def find_product_page_by_code(code: str) -> str | None:
-    # Пробуем несколько эндпоинтов поиска
-    for url in search_endpoints_for(code):
+    for su in candidates:
         try:
-            html_text = fetch(url)
+            html = fetch_html(su)
         except Exception:
             continue
-        link = find_product_link_in_search(html_text, code)
-        if link:
-            return link
-        time.sleep(0.4)
+        soup = BeautifulSoup(html, "lxml")
+        # Явные карточки
+        for a in soup.select('a[href*="/goods/"], a[href*="/product/"]'):
+            href = a.get("href") or ""
+            if href.endswith(".html"):
+                return absolutize(href)
+        # Запасной вариант
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            if ("/goods/" in href or "/product/" in href) and href.endswith(".html"):
+                return absolutize(href)
     return None
 
-def main():
-    print("article\tproduct_url\timage_url")
-    for code in ARTICLES:
-        try:
-            product_url = find_product_page_by_code(code)
-            if not product_url:
-                print(f"{code}\t\t", flush=True)
-                time.sleep(0.6)
-                continue
+def extract_name_and_main_image(product_url: str) -> tuple[str | None, str | None]:
+    try:
+        html = fetch_html(product_url)
+    except Exception:
+        return None, None
+    soup = BeautifulSoup(html, "lxml")
+    title = soup.find("h1")
+    name = norm(title.get_text()) if title else None
+    img = soup.find("img", {"itemprop": "image"})
+    pic = absolutize(img.get("src")) if img and img.get("src") else None
+    return name, pic
 
-            html_text = fetch(product_url)
-            img = extract_main_image(html_text) or ""
-            print(f"{code}\t{product_url}\t{img}", flush=True)
-            time.sleep(0.6)  # бережно к сайту
-        except Exception as e:
-            print(f"{code}\t\t\tERROR: {e}", flush=True)
-            time.sleep(0.8)
+def load_input_yml(path: str) -> dict[str, dict]:
+    """Минимальный парс исходного YML: vendorCode -> {name, price, categoryId, picture}."""
+    if not path or not os.path.exists(path):
+        return {}
+    import xml.etree.ElementTree as ET
+    try:
+        tree = ET.parse(path)
+        root = tree.getroot()
+        out: dict[str, dict] = {}
+        for offer in root.findall(".//offer"):
+            vc = norm(offer.findtext("vendorCode"))
+            if not vc:
+                continue
+            out[vc] = {
+                "name": offer.findtext("name") or "",
+                "price": offer.findtext("price") or "",
+                "categoryId": offer.findtext("categoryId") or "9300000",
+                "picture": offer.findtext("picture") or "",
+            }
+        return out
+    except Exception:
+        return {}
+
+def build_yml(records: dict[str, dict], base_map: dict[str, dict]) -> bytes:
+    root = Element("yml_catalog"); shop = SubElement(root, "shop")
+    SubElement(shop, "name").text = "copyline-photo-test"
+    curr = SubElement(shop, "currencies"); SubElement(curr, "currency", {"id": "KZT", "rate": "1"})
+    cats = SubElement(shop, "categories"); SubElement(cats, "category", {"id": "9300000"}).text = "Copyline"
+    offers = SubElement(shop, "offers")
+
+    for art, info in records.items():
+        base = base_map.get(art, {})
+        name = info.get("name") or base.get("name") or art
+        price = base.get("price")
+        cat = base.get("categoryId") or "9300000"
+        pic = info.get("picture") or ""
+
+        o = SubElement(offers, "offer", {"id": f"copyline:{art}", "available": "true", "in_stock": "true"})
+        SubElement(o, "name").text = name
+        if price:
+            SubElement(o, "price").text = str(price)
+        SubElement(o, "currencyId").text = "KZT"
+        SubElement(o, "categoryId").text = cat
+        SubElement(o, "vendorCode").text = art
+        if pic:
+            SubElement(o, "picture").text = pic
+        for tag in ("quantity_in_stock", "stock_quantity", "quantity"):
+            SubElement(o, tag).text = "1"
+
+    buf = io.BytesIO()
+    ElementTree(root).write(buf, encoding=ENC, xml_declaration=True)
+    return buf.getvalue()
+
+def main():
+    arts_env = os.getenv("ARTICLES", "").strip()
+    if not arts_env:
+        print("ERROR: set ARTICLES env var with codes (comma/space/newline separated).", file=sys.stderr)
+        sys.exit(1)
+
+    # парсим список артикулов
+    articles = [a for a in re.split(r"[,\s]+", arts_env) if a]
+    base_map = load_input_yml(INPUT_YML)
+
+    results: dict[str, dict] = {}
+    for art in articles:
+        url = search_product_url(art)
+        if not url:
+            results[art] = {"name": base_map.get(art, {}).get("name") or "", "picture": ""}
+            print(f"{art}\tNOT_FOUND\t", flush=True)
+            continue
+        name, pic = extract_name_and_main_image(url)
+        results[art] = {"name": name or base_map.get(art, {}).get("name") or "", "picture": pic or ""}
+        print(f"{art}\t{url}\t{pic or ''}", flush=True)
+
+    os.makedirs(os.path.dirname(OUTPUT_YML), exist_ok=True)
+    yml_bytes = build_yml(results, base_map)
+    with open(OUTPUT_YML, "wb") as f:
+        f.write(yml_bytes)
+    print(f"Wrote YML: {OUTPUT_YML} (records: {len(results)})")
 
 if __name__ == "__main__":
-    SESSION = requests.Session()
-    main()
+    try:
+        main()
+    except Exception as e:
+        print("ERROR:", e, file=sys.stderr)
+        sys.exit(1)
