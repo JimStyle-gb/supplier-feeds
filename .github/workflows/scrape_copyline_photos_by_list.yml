@@ -1,15 +1,7 @@
-# .github/workflows/scrape_copyline_photos_by_list.yml
-# -----------------------------------------------------------------------------
-# Обновляет <picture> для товаров из списка артикулов.
-# Ищет товар на copyline.kz по артикулу → заходит в карточку → берёт src из
-# <img itemprop="image" ...> → подставляет в docs/copyline.yml.
-# -----------------------------------------------------------------------------
 name: scrape_copyline_photos_by_list
 
 on:
-  # Запуск вручную из вкладки Actions
   workflow_dispatch: {}
-  # Автозапуск при изменении скрипта/списка/конфига
   push:
     branches: [ main ]
     paths:
@@ -20,17 +12,13 @@ on:
 permissions:
   contents: write
 
-# ВАЖНО: собственная группа concurrency, чтобы этот workflow
-# не ждал/не отменял build_copyline и наоборот.
 concurrency:
-  group: scrape-copyline-photos-by-list-${{ github.ref }}
+  group: scrape_copyline_photos_by_list
   cancel-in-progress: false
 
 jobs:
-  build:
+  scrape:
     runs-on: ubuntu-latest
-
-    # Для неторопливого и стабильного парсинга даём больше времени.
     timeout-minutes: 60
 
     steps:
@@ -40,54 +28,48 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4 lxml
 
-      - name: Run scraper (update pictures in docs/copyline.yml)
+      - name: Run scraper
         env:
-          # Путь к существующему YML (сгенерированному build_copyline)
           YML_PATH: docs/copyline.yml
-          # Список артикулов (по одному на строку)
           ARTICLES_FILE: docs/copyline_articles.txt
-          # Кодировка вывода YML
           OUTPUT_ENCODING: windows-1251
-          # Настройки вежливости и ретраев
-          REQUEST_DELAY_MS: "700"
-          MAX_RETRIES: "3"
-          BACKOFF_MAX_MS: "12000"
+          REQUEST_DELAY_MS: 700
+          MAX_RETRIES: 3
+          BACKOFF_MAX_MS: 12000
         run: |
           python scripts/scrape_copyline_photos_by_list.py
           test -f docs/copyline.yml
 
-      - name: Upload artifact (updated yml)
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: copyline-yml-with-pictures
+          name: copyline-yml-after-scrape
           path: docs/copyline.yml
           if-no-files-found: error
 
-      - name: Commit & push if changed
+      - name: Commit & push if changed (rebase-safe)
         shell: bash
         run: |
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Добавляем только существующие файлы
-          if [ -f docs/copyline.yml ]; then
-            git add docs/copyline.yml
-          fi
+          # Добавляем только если существует
+          [ -f docs/copyline.yml ] && git add docs/copyline.yml
 
-          # Есть ли что коммитить?
           if git diff --cached --quiet; then
             echo "No changes to commit."
-          else
-            git commit -m "Update pictures in copyline.yml (by article list)"
-            # На случай гонки с пушами — аккуратный rebase
-            git pull --rebase
-            git push
+            exit 0
           fi
+
+          git commit -m "Copyline: update <picture> via article-list scraper"
+          # Rebase-пул, чтобы избежать 'fetch first'
+          git pull --rebase
+          git push
