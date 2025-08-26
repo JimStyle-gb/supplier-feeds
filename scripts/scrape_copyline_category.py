@@ -1,293 +1,507 @@
-#!/usr/bin/env python3
+# scripts/scrape_copyline_category.py
 # -*- coding: utf-8 -*-
+"""
+ГЛАВНЫЙ СКРИПТ СБОРА ТОВАРОВ ИЗ СПИСКА КАТЕГОРИЙ COPYLINE.KZ
+
+Что делает:
+  1) Берёт список категорий из docs/copyline_categories.txt
+     (если файла нет — создаёт его с дефолтной категорией Brother).
+  2) Для каждой категории:
+     - скачивает страницу категории;
+     - извлекает КАНДИДАТЫ-ссылки (/goods/*.html), как правило это карточки;
+     - по каждой ссылке заходит ВНУТРЬ карточки товара и парсит:
+         * Название товара
+         * Артикул (строго: должен быть; иначе товар просто пропускаем)
+         * Цена (берём из карточки; парсим число)
+         * Картинка: переводим в "full_" (full_<basename>.jpg)
+         * Описание (если есть)
+     - определяет название категории (H1) и генерирует ей стабильный id
+  3) Пишет единый YML в docs/copyline.yml в кодировке windows-1251.
+
+Конфиг через env-переменные (необязательно):
+  BASE_URL        — базовый хост (по умолчанию https://copyline.kz)
+  CATS_FILE       — путь к списку категорий (по умолчанию docs/copyline_categories.txt)
+  OUT_FILE        — путь к YML (по умолчанию docs/copyline.yml)
+  REQUEST_DELAY_MS— задержка между HTTP (по умолчанию 700)
+  TIMEOUT_S       — таймаут одного запроса (по умолчанию 30)
+  MIN_BYTES       — минимальный размер ответа, чтобы считать страницу валидной (по умолчанию 1500)
+
+Зависимости:
+  requests, beautifulsoup4
+
+Пример запуска:
+  python scripts/scrape_copyline_category.py
+"""
 
 import os
 import re
 import time
+import hashlib
 import html
-from typing import List, Dict, Optional
-from urllib.parse import urljoin, urlparse, urlsplit, urlunsplit
-import posixpath
-
+import pathlib
+import random
+from typing import List, Dict, Tuple, Optional
 import requests
 from bs4 import BeautifulSoup
 
-# ======================= ENV / НАСТРОЙКИ =======================
-# Этот блок читает настройки из ENV, но имеет ДЕФОЛТЫ.
-# ВАЖНО: Если задать переменную окружения (например, CATEGORY_URL),
-# она переопределит значение по умолчанию.
+# ------------------------------ Константы и дефолты ------------------------------
 
-BASE_URL         = os.getenv("BASE_URL", "https://copyline.kz").strip()
+BASE_URL = os.environ.get("BASE_URL", "https://copyline.kz").rstrip("/")
+CATS_FILE = os.environ.get("CATS_FILE", "docs/copyline_categories.txt")
+OUT_FILE = os.environ.get("OUT_FILE", "docs/copyline.yml")
 
-# ✅ ДЕФОЛТНАЯ КАТЕГОРИЯ: Brother тонер-картриджи
-# Теперь можно вовсе не задавать CATEGORY_URL — скрипт возьмёт эту страницу.
-CATEGORY_URL     = os.getenv(
-    "CATEGORY_URL",
-    "https://copyline.kz/goods/toner-cartridges-brother.html"
-).strip()
+REQUEST_DELAY_MS = int(os.environ.get("REQUEST_DELAY_MS", "700"))
+TIMEOUT_S = int(os.environ.get("TIMEOUT_S", "30"))
+MIN_BYTES = int(os.environ.get("MIN_BYTES", "1500"))
 
-OUT_FILE         = os.getenv("OUT_FILE", "docs/copyline.yml").strip()
-OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "windows-1251").strip()
-REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "700"))
-PAGE_TIMEOUT_S   = int(os.getenv("PAGE_TIMEOUT_S", "30"))
-MIN_BYTES        = int(os.getenv("MIN_BYTES", "1500"))
+USER_AGENT = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+)
 
-# Заголовок — чтобы нас не банили как бота
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; copyline-scraper/1.1; +https://example.org)",
-}
-# ===============================================================
+# Корневая категория магазина в YML
+ROOT_CAT_ID = 9300000
+ROOT_CAT_NAME = "Copyline"
 
-def make_soup(html_text: str) -> BeautifulSoup:
-    # Используем встроенный парсер, чтобы не зависеть от lxml
-    return BeautifulSoup(html_text, "html.parser")
+# ------------------------------ Вспомогательные функции ------------------------------
 
-def get(url: str) -> Optional[str]:
-    # Обёртка над GET с таймаутом и минимальным размером ответа
+def ensure_dirs():
+    """Создаёт папку docs при необходимости и дефолтный файл категорий, если его нет."""
+    pathlib.Path("docs").mkdir(parents=True, exist_ok=True)
+    if not os.path.exists(CATS_FILE):
+        # Если файла со списком категорий нет — создаём с дефолтной категорией Brother
+        with open(CATS_FILE, "w", encoding="utf-8") as f:
+            f.write("# Список категорий Copyline.kz (по одной ссылке на строку)\n")
+            f.write("# Строки, начинающиеся с #, игнорируются\n")
+            f.write("https://copyline.kz/goods/toner-cartridges-brother.html\n")
+        print(f"[init] создан {CATS_FILE} с дефолтной категорией")
+
+def read_categories() -> List[str]:
+    """Читает список категорий из файла, игнорируя пустые и закомментированные строки."""
+    cats = []
+    with open(CATS_FILE, "r", encoding="utf-8") as f:
+        for line in f:
+            s = line.strip()
+            if not s or s.startswith("#"):
+                continue
+            # Нормализуем относительные ссылки в абсолютные
+            if s.startswith("/"):
+                s = BASE_URL + s
+            cats.append(s)
+    if not cats:
+        # На всякий случай подстрахуемся дефолтом, если файл пуст
+        cats = [f"{BASE_URL}/goods/toner-cartridges-brother.html"]
+    return cats
+
+def sleep_jitter(ms: int):
+    """Пауза между запросами с небольшим джиттером, чтобы быть похожими на человека."""
+    base = ms / 1000.0
+    jitter = random.uniform(-0.15, 0.15) * base
+    time.sleep(max(0.0, base + jitter))
+
+def http_get(url: str) -> Optional[bytes]:
+    """
+    Аккуратно скачивает страницу с таймаутом и базовыми заголовками.
+    Возвращает bytes либо None при неудаче/маленьком ответе.
+    """
     try:
-        r = requests.get(url, headers=HEADERS, timeout=PAGE_TIMEOUT_S)
-        if r.status_code == 200 and len(r.content) >= MIN_BYTES:
-            return r.text
+        resp = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=TIMEOUT_S)
+        if resp.status_code != 200:
+            print(f"[warn] GET {url} -> {resp.status_code}")
+            return None
+        content = resp.content
+        if len(content) < MIN_BYTES:
+            print(f"[warn] слишком мало данных ({len(content)} байт): {url}")
+            return None
+        return content
+    except Exception as e:
+        print(f"[err] GET {url} -> {e}")
         return None
-    finally:
-        time.sleep(REQUEST_DELAY_MS / 1000.0)
 
-def absolutize(url_or_path: str, base: str = BASE_URL) -> str:
-    # Превращаем относительные в абсолютные
-    return urljoin(base, url_or_path)
+def make_soup(html_bytes: bytes) -> BeautifulSoup:
+    """
+    Создаёт объект BeautifulSoup. Используем встроенный парсер 'html.parser',
+    чтобы не требовать 'lxml' (уменьшаем риски на CI).
+    """
+    return BeautifulSoup(html_bytes, "html.parser")
 
-# ---------------- изображения: принудительно full_ ----------------
-# Блок отвечает за нормализацию ссылок на фото: ставим префикс full_
-# (или меняем thumb_ -> full_) только для каталога img_products.
-def force_full_image(url: str) -> str:
-    if not url:
-        return url
-    parts = urlsplit(url)
-    if "/components/com_jshopping/files/img_products/" not in parts.path:
-        return url
-    dirname, filename = posixpath.split(parts.path)
-    if not filename:
-        return url
-    if filename.startswith("full_"):
-        new_filename = filename
-    elif filename.startswith("thumb_"):
-        new_filename = "full_" + filename[len("thumb_"):]
-    else:
-        new_filename = "full_" + filename
-    new_path = posixpath.join(dirname, new_filename)
-    return urlunsplit((parts.scheme, parts.netloc, new_path, parts.query, parts.fragment))
-# ------------------------------------------------------------------
+def slugify(text: str) -> str:
+    """Делает дружелюбный slug из названия для offer id."""
+    text = text.strip().lower()
+    text = re.sub(r"[^\w\s-]+", "", text, flags=re.UNICODE)
+    text = re.sub(r"\s+", "-", text, flags=re.UNICODE)
+    text = re.sub(r"-{2,}", "-", text, flags=re.UNICODE)
+    return text.strip("-")[:80] or "item"
 
-PRICE_CLEAN_RE = re.compile(r"[^\d,\.]+", re.ASCII)
-COMMA_RE       = re.compile(r",")
+def stable_id(seed: str, prefix: int = 9400000) -> int:
+    """
+    Стабильный числовой id из строки (для категорий).
+    Берём md5, первые 6 hex-символов -> int, плюс смещение prefix.
+    """
+    h = hashlib.md5(seed.encode("utf-8")).hexdigest()[:6]
+    return prefix + int(h, 16)
 
-def parse_price(raw: str) -> Optional[int]:
-    # Преобразуем строку с ценой в int KZT
-    if not raw:
-        return None
-    s = PRICE_CLEAN_RE.sub("", raw).strip()
-    if not s:
-        return None
-    s = COMMA_RE.sub(".", s)
+def normalize_img_to_full(url: str) -> str:
+    """
+    Переводит ссылку на изображение к формату full_<basename>.*
+    Логика:
+      - если уже есть 'full_' — оставляем как есть;
+      - если есть 'thumb_' — заменяем на 'full_';
+      - если просто basename — добавляем 'full_' перед именем файла;
+      - если относительная ссылка — превращаем в абсолютную.
+    """
+    if url.startswith("//"):
+        url = "https:" + url
+    elif url.startswith("/"):
+        url = BASE_URL + url
+
     try:
-        return int(round(float(s)))
-    except ValueError:
-        return None
+        m = re.match(r"^(https?://[^/]+)(/.*/)([^/]+)$", url)
+        if not m:
+            return url
+        host, path, fname = m.groups()
+        if fname.startswith("full_"):
+            return url
+        if fname.startswith("thumb_"):
+            fname = "full_" + fname[len("thumb_"):]
+        else:
+            fname = "full_" + fname
+        return f"{host}{path}{fname}"
+    except Exception:
+        return url
 
-def extract_sku_from_product(soup: BeautifulSoup) -> Optional[str]:
-    # Жёсткий поиск артикула в карточке
-    text = soup.get_text(" ", strip=True)
-    m = re.search(r"Артикул\s*[:\-]?\s*([A-Za-z0-9\-_]+)", text, flags=re.IGNORECASE)
-    if m:
-        return m.group(1)
-    # Попытка найти в таблицах параметров
-    for tr in soup.select("table tr"):
-        cells = [c.get_text(" ", strip=True) for c in tr.select("td,th")]
-        if any("артикул" in c.lower() for c in cells):
-            for c in cells:
-                if "артикул" not in c.lower():
-                    mm = re.search(r"([A-Za-z0-9\-_]+)", c)
-                    if mm:
-                        return mm.group(1)
+def extract_price_text(soup: BeautifulSoup) -> Optional[str]:
+    """
+    Пытаемся достать цену в текстовом виде с карточки.
+    Ищем элементы с классами, содержащими 'price', или знак '₸', 'тг', 'тенге'.
+    Возвращаем строку с цифрами/разделителями, либо None.
+    """
+    # 1) Популярные классы
+    for css in ["jshop_price", "price", "prod_price", "product_price"]:
+        el = soup.find(True, class_=lambda c: c and css in c)
+        if el and el.get_text(strip=True):
+            return el.get_text(" ", strip=True)
+
+    # 2) Любой текст с символом валюты/названием
+    texts = soup.find_all(text=True)
+    for t in texts:
+        s = t.strip()
+        if not s:
+            continue
+        if "₸" in s or "тг" in s.lower() or "тенге" in s.lower() or "kzt" in s.lower():
+            return s
     return None
 
-def extract_description_from_product(soup: BeautifulSoup) -> str:
-    # Пытаемся вытащить описание из типичных блоков/мета
-    candidates = [
-        ".jshop_prod_description",
-        ".prod_description",
-        "[itemprop='description']",
-        "#description",
-        ".product_description",
-        ".tab-content #description",
-        ".descr",
-    ]
-    for sel in candidates:
-        node = soup.select_one(sel)
-        if node:
-            txt = node.get_text(" ", strip=True)
-            if len(txt) >= 10:
-                return txt
-    meta = soup.select_one("meta[name='description']")
-    if meta and meta.get("content"):
-        txt = meta["content"].strip()
-        if len(txt) >= 10:
-            return txt
-    return ""
+def parse_price_to_number(price_text: Optional[str]) -> Optional[float]:
+    """Из строки с ценой вынимает число (float) или возвращает None."""
+    if not price_text:
+        return None
+    # Заменяем запятые на точки, убираем пробелы неразрывные, оставляем цифры и точку/запятую
+    s = price_text.replace("\xa0", " ").strip()
+    # Выцепляем первое похожее на цену число
+    m = re.search(r"(\d[\d\s.,]*)", s)
+    if not m:
+        return None
+    num = m.group(1).replace(" ", "").replace(",", ".")
+    try:
+        return float(num)
+    except Exception:
+        return None
 
-def extract_product_cards(html_cat: str, base_url: str) -> List[Dict]:
-    # Парсим карточки на странице категории (только реальные /goods/*.html)
-    soup = make_soup(html_cat)
-    list_container = soup.select_one(".jshop_list_product") or soup.select_one(".jshop_products")
-    if not list_container:
-        list_container = soup
+def clean_text(s: str) -> str:
+    """Подчистка текстов: схлопываем пробелы, убираем HTML-артефакты."""
+    s = html.unescape(s or "")
+    s = re.sub(r"\s+", " ", s, flags=re.UNICODE).strip()
+    return s
 
-    cards = []
-    for card in list_container.select(".product, .jshop_product"):
-        a = card.select_one(".name a[href], a[href*='/goods/']")
-        if not a:
-            continue
-        url = absolutize(a.get("href", ""), base_url)
-        name = a.get_text(" ", strip=True)
+def find_sku_on_product_page(soup: BeautifulSoup) -> Optional[str]:
+    """
+    Ищем Артикул в карточке.
+    Стратегии (по порядку):
+      1) Текстовые метки 'Артикул' / 'SKU' / 'Код товара' рядом со значением.
+      2) Элементы с itemprop='sku'.
+      3) Прямое совпадение шаблона 'Артикул: XXXXX' в тексте страницы.
+    """
+    # 1) По соседству с лейблами
+    labels = ["артикул", "sku", "код товара", "код товара:", "код:"]
+    for lab in labels:
+        lab_el = soup.find(string=lambda t: t and lab in t.lower())
+        if lab_el:
+            # Пытаемся вытащить значение в том же контейнере/рядом
+            parent = lab_el.parent
+            # варианты: <td>Артикул</td><td>12345</td> или <span>Артикул:</span> 12345
+            # попробуем ближайший next_sibling с текстом
+            sibs = []
+            if parent:
+                sibs.extend(parent.find_all_next(string=True, limit=3))
+            else:
+                sibs.extend([lab_el.next_sibling])
+            for s in sibs:
+                if not s:
+                    continue
+                val = clean_text(str(s))
+                # пропускаем повтор метки
+                if any(x in val.lower() for x in labels):
+                    continue
+                # берём первые 32 алфанумерика/дефиса
+                m = re.search(r"([A-Za-z0-9\-]{2,})", val)
+                if m:
+                    return m.group(1)
 
-        price_node = None
-        for node in card.select("[class*='price']"):
-            if node.get_text(strip=True):
-                price_node = node
-                break
-        price_str = price_node.get_text(" ", strip=True) if price_node else ""
+    # 2) itemprop=sku
+    sku_el = soup.find(attrs={"itemprop": "sku"})
+    if sku_el:
+        val = clean_text(sku_el.get_text(" ", strip=True))
+        if val:
+            return val
 
-        img = None
-        img_node = card.select_one("img[src]")
-        if img_node and img_node.get("src"):
-            img = force_full_image(absolutize(img_node["src"], base_url))
+    # 3) Грубый шаблон 'Артикул: X...'
+    m = re.search(r"Артикул\W+([A-Za-z0-9\-]{2,})", soup.get_text(" ", strip=True), flags=re.IGNORECASE)
+    if m:
+        return m.group(1)
 
-        cards.append({"name": name, "url": url, "img": img, "price_str": price_str})
+    return None
 
-    # Фильтр: берём только реальную карточку товара /goods/*.html и убираем дубли
-    seen = set()
-    clean = []
-    for c in cards:
-        u = c["url"]
-        if "/goods/" not in u or not u.endswith(".html"):
-            continue
-        if u in seen:
-            continue
-        seen.add(u)
-        clean.append(c)
-    return clean
+def find_name_on_product_page(soup: BeautifulSoup) -> Optional[str]:
+    """Пытаемся достать название товара (обычно в H1)."""
+    h1 = soup.find("h1")
+    if h1 and h1.get_text(strip=True):
+        return clean_text(h1.get_text(" ", strip=True))
+    # fallback — title
+    if soup.title and soup.title.get_text(strip=True):
+        return clean_text(soup.title.get_text(" ", strip=True))
+    return None
 
-def enrich_with_product_page(card: Dict) -> Dict:
-    # Догружаем карточку товара: артикул, описание, цена, фото
-    html_prod = get(card["url"])
-    if not html_prod:
-        card["vendorCode"] = None
-        card["description"] = ""
-        return card
+def find_desc_on_product_page(soup: BeautifulSoup) -> Optional[str]:
+    """
+    Пытаемся вытащить описание: блоки с классами, содержащими 'description'.
+    Берём короткий чистый текст.
+    """
+    for css in ["jshop_prod_description", "description", "product_description", "prod_description"]:
+        el = soup.find(True, class_=lambda c: c and css in c)
+        if el:
+            txt = clean_text(el.get_text(" ", strip=True))
+            if txt:
+                return txt[:2000]  # ограничим разумно
+    # fallback: ничего
+    return None
 
-    soup = make_soup(html_prod)
-    card["vendorCode"]  = extract_sku_from_product(soup)
-    card["description"] = extract_description_from_product(soup)
+def find_picture_on_product_page(soup: BeautifulSoup) -> Optional[str]:
+    """
+    Ищем основное изображение:
+      - <img id="main_image_..."> или itemprop="image"
+      - либо <img> в блоке карточки
+    Приводим к 'full_' ссылке.
+    """
+    # По конкретным признакам
+    img = soup.find("img", attrs={"id": re.compile(r"^main_image_")})
+    if not img:
+        img = soup.find("img", attrs={"itemprop": "image"})
+    if not img:
+        # Любое крупное изображение в карточке товара
+        candidates = soup.find_all("img")
+        if candidates:
+            # Выберем первый, у кого src указывает на папку img_products
+            for c in candidates:
+                src = c.get("src") or c.get("data-src") or ""
+                if "img_products" in src:
+                    img = c
+                    break
+            if not img:
+                img = candidates[0]
 
-    if not card.get("img"):
-        main_img = soup.select_one("img#main_image, img#main_image_*, img[itemprop='image'], .image img, .productfull img[src]")
-        if main_img and main_img.get("src"):
-            card["img"] = force_full_image(absolutize(main_img["src"]))
+    if not img:
+        return None
 
-    price_node = soup.select_one(".prod_price, .price, [class*='price']")
-    if price_node:
-        p = parse_price(price_node.get_text(" ", strip=True))
-        if p:
-            card["price"] = p
+    src = img.get("src") or img.get("data-src") or ""
+    if not src:
+        return None
+    return normalize_img_to_full(src)
 
-    return card
+def collect_product_links_from_category(cat_html: bytes) -> List[str]:
+    """
+    Извлекаем кандидаты-ссылки на товары из HTML категории.
+    Стратегия:
+      - берём ВСЕ <a> с href вида /goods/*.html или https://copyline.kz/goods/*.html
+      - нормализуем в абсолютные
+      - де-дублим
+    Фильтрация по типу страницы происходит уже ПОСЛЕ — на уровне карточки (там ищем Артикул).
+    Это гарантирует, что лишние меню/категории будут отброшены автоматически.
+    """
+    soup = make_soup(cat_html)
+    anchors = soup.find_all("a", href=True)
+    urls = []
+    for a in anchors:
+        href = a["href"].strip()
+        # нормализуем
+        if href.startswith("//"):
+            href = "https:" + href
+        elif href.startswith("/"):
+            href = BASE_URL + href
+        # отбор только /goods/*.html
+        if re.search(r"https?://[^/]+/goods/[^?#]+\.html$", href):
+            urls.append(href)
 
-def cdata(text: str) -> str:
-    # Оборачиваем текст в CDATA, экранируя закрывающую последовательность
-    if not text:
-        return ""
-    safe = text.replace("]]>", "]]&gt;")
-    return f"<![CDATA[{safe}]]>"
+    # де-дубль
+    uniq = list(dict.fromkeys(urls))
+    return uniq
 
-def xml(text: str) -> str:
-    # Экранируем для XML
-    return html.escape(text or "", quote=True)
+def category_title(cat_html: bytes) -> str:
+    """Название категории (обычно H1). Если не нашли — берём <title>."""
+    soup = make_soup(cat_html)
+    h1 = soup.find("h1")
+    if h1 and h1.get_text(strip=True):
+        return clean_text(h1.get_text(" ", strip=True))
+    if soup.title and soup.title.get_text(strip=True):
+        return clean_text(soup.title.get_text(" ", strip=True))
+    return "Категория"
 
-def write_yml(category_name: str, items: List[Dict], out_path: str, encoding: str = "windows-1251") -> None:
-    # Запись YML (минимальный валидный набор для импорта в Satu)
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    with open(out_path, "w", encoding=encoding, newline="") as f:
-        f.write(f"<?xml version='1.0' encoding='{encoding}'?>\n")
-        f.write("<yml_catalog><shop>")
-        f.write("<name>copyline</name>")
-        f.write("<currencies><currency id=\"KZT\" rate=\"1\" /></currencies>")
-        f.write("<categories>")
-        f.write("<category id=\"9300000\">Copyline</category>")
-        f.write(f"<category id=\"9402524\" parentId=\"9300000\">{xml(category_name)}</category>")
-        f.write("</categories>")
-        f.write("<offers>")
+# ------------------------------ Главная логика ------------------------------
 
-        for it in items:
-            path = urlparse(it["url"]).path.strip("/").replace("/", "-").replace(".html", "")
-            h = hex(abs(hash(it["url"])) & 0xFFFFFFFF)[2:]
-            offer_id = f"copyline:{path}:{h}"
+def crawl_product(url: str) -> Optional[Dict]:
+    """
+    Полный разбор карточки товара.
+    Возвращает словарь данных или None, если это не товар (нет артикула/названия/цены).
+    """
+    sleep_jitter(REQUEST_DELAY_MS)
+    html_bytes = http_get(url)
+    if not html_bytes:
+        return None
+    soup = make_soup(html_bytes)
 
-            name = it.get("name") or ""
-            price = it.get("price")
-            if price is None:
-                price = parse_price(it.get("price_str", "")) or 0
+    sku = find_sku_on_product_page(soup)
+    if not sku:
+        # Строго: без артикула не считаем товаром
+        return None
 
-            f.write(f"<offer id=\"{xml(offer_id)}\" available=\"true\" in_stock=\"true\">")
-            f.write(f"<name>{xml(name)}</name>")
-            f.write(f"<price>{price}</price>")
-            f.write("<currencyId>KZT</currencyId>")
-            f.write("<categoryId>9402524</categoryId>")
-            f.write(f"<url>{xml(it['url'])}</url>")
-            if it.get("img"):
-                f.write(f"<picture>{xml(it['img'])}</picture>")
-            if it.get("vendorCode"):
-                f.write(f"<vendorCode>{xml(it['vendorCode'])}</vendorCode>")
-            desc = it.get("description", "").strip()
-            if desc:
-                f.write(f"<description>{cdata(desc)}</description>")
-            f.write("<quantity_in_stock>1</quantity_in_stock>")
-            f.write("<stock_quantity>1</stock_quantity>")
-            f.write("<quantity>1</quantity>")
-            f.write("</offer>")
+    name = find_name_on_product_page(soup) or ""
+    name = clean_text(name)
+    if not name:
+        return None
 
-        f.write("</offers></shop></yml_catalog>")
+    price_text = extract_price_text(soup)
+    price = parse_price_to_number(price_text)
+    if not price or price <= 0:
+        # На Сату нужна >0, если не нашли — отбрасываем
+        return None
+
+    picture = find_picture_on_product_page(soup)
+    desc = find_desc_on_product_page(soup)
+
+    return {
+        "url": url,
+        "name": name,
+        "price": max(0.01, round(price, 2)),
+        "vendorCode": sku,
+        "picture": picture,
+        "description": desc or "",
+    }
+
+def build_yml(categories: List[Tuple[int, str]], offers: List[Tuple[int, Dict]]) -> str:
+    """
+    Собирает финальный YML как строку.
+      categories: список (categoryId, categoryName)
+      offers:     список (categoryId, offer_data)
+    """
+    # Заголовок
+    out = []
+    out.append("<?xml version='1.0' encoding='windows-1251'?>")
+    out.append("<yml_catalog><shop>")
+    out.append(f"<name>copyline</name>")
+    out.append("<currencies><currency id=\"KZT\" rate=\"1\" /></currencies>")
+
+    # Категории
+    out.append("<categories>")
+    out.append(f"<category id=\"{ROOT_CAT_ID}\">{html.escape(ROOT_CAT_NAME)}</category>")
+    for cid, cname in categories:
+        cname_xml = html.escape(cname)
+        out.append(f"<category id=\"{cid}\" parentId=\"{ROOT_CAT_ID}\">{cname_xml}</category>")
+    out.append("</categories>")
+
+    # Офферы
+    out.append("<offers>")
+    for cid, o in offers:
+        # Генерируем стабильный offer id
+        raw_id = f"copyline:{slugify(o['name'])}:{hashlib.md5((o['url']+o['vendorCode']).encode('utf-8')).hexdigest()[:8]}"
+        name_xml = html.escape(o["name"])
+        url_xml = html.escape(o["url"])
+        pic_xml = html.escape(o["picture"] or "")
+        sku_xml = html.escape(o["vendorCode"])
+        desc_xml = html.escape(o.get("description", ""))
+
+        out.append(f"<offer id=\"{raw_id}\" available=\"true\" in_stock=\"true\">")
+        out.append(f"<name>{name_xml}</name>")
+        out.append(f"<price>{int(o['price']) if o['price'].is_integer() else o['price']}</price>")
+        out.append(f"<currencyId>KZT</currencyId>")
+        out.append(f"<categoryId>{cid}</categoryId>")
+        out.append(f"<url>{url_xml}</url>")
+        if pic_xml:
+            out.append(f"<picture>{pic_xml}</picture>")
+        out.append(f"<vendorCode>{sku_xml}</vendorCode>")
+        if desc_xml:
+            out.append(f"<description>{desc_xml}</description>")
+        # минимальные складские поля
+        out.append(f"<quantity_in_stock>1</quantity_in_stock>")
+        out.append(f"<stock_quantity>1</stock_quantity>")
+        out.append(f"<quantity>1</quantity>")
+        out.append("</offer>")
+    out.append("</offers>")
+
+    out.append("</shop></yml_catalog>")
+    # Склеиваем
+    xml_text = "\n".join(out)
+    return xml_text
 
 def main():
-    # Главная функция: качаем категорию, собираем карточки, обогащаем и пишем YML
-    if not CATEGORY_URL:
-        raise SystemExit("ERROR: CATEGORY_URL не задан")
-    html_cat = get(CATEGORY_URL)
-    if not html_cat:
-        raise SystemExit(f"ERROR: не удалось загрузить CATEGORY_URL: {CATEGORY_URL}")
+    ensure_dirs()
+    cats = read_categories()
+    print(f"[info] категорий в списке: {len(cats)}")
 
-    cards = extract_product_cards(html_cat, BASE_URL)
-    if not cards:
-        raise SystemExit("ERROR: не удалось найти товары на странице категории")
+    all_categories: List[Tuple[int, str]] = []
+    all_offers: List[Tuple[int, Dict]] = []
 
-    enriched: List[Dict] = []
-    for idx, c in enumerate(cards, start=1):
-        try:
-            c2 = enrich_with_product_page(c)
-            enriched.append(c2)
-            print(f"[ok] {idx:03d}/{len(cards)} | SKU={c2.get('vendorCode') or '-'} | {c2['url']}")
-        except Exception as e:
-            print(f"[err] {idx:03d}/{len(cards)} | {c['url']} | {e}")
+    for idx, cat_url in enumerate(cats, 1):
+        print(f"[cat] {idx:03d}/{len(cats)} -> {cat_url}")
+        sleep_jitter(REQUEST_DELAY_MS)
 
-    soup_cat = make_soup(html_cat)
-    cat_name = ""
-    h1 = soup_cat.select_one("h1, .jshop h1, .content h1")
-    if h1:
-        cat_name = h1.get_text(" ", strip=True)
-    if not cat_name:
-        cat_name = "Категория"
+        cat_html = http_get(cat_url)
+        if not cat_html:
+            print(f"[warn] пропускаю категорию (нет HTML): {cat_url}")
+            continue
 
-    write_yml(cat_name, enriched, OUT_FILE, OUTPUT_ENCODING)
-    print(f"[done] Сохранено: {OUT_FILE} (товаров: {len(enriched)})")
+        cat_name = category_title(cat_html)
+        cat_id = stable_id(cat_name)
+        all_categories.append((cat_id, cat_name))
+
+        # собираем кандидаты и затем фильтруем по факту наличия артикула
+        candidates = collect_product_links_from_category(cat_html)
+        print(f"[cat] найдено кандидат-ссылок: {len(candidates)}")
+
+        added = 0
+        skipped = 0
+        for i, purl in enumerate(candidates, 1):
+            data = crawl_product(purl)
+            if data:
+                all_offers.append((cat_id, data))
+                added += 1
+                print(f"[ok] {i:03d}/{len(candidates)} | SKU={data['vendorCode']} | {purl}")
+            else:
+                skipped += 1
+                print(f"[skip] {i:03d}/{len(candidates)} | не товар/нет данных | {purl}")
+
+        print(f"[cat] итог: добавлено {added}, пропущено {skipped}")
+
+    if not all_offers:
+        print("[error] не удалось собрать ни одной карточки (нет офферов).")
+        # даже в этом случае создадим формальный пустой YML, чтобы было что смотреть
+    xml_text = build_yml(all_categories, all_offers)
+
+    # Пишем в windows-1251 (как просил)
+    with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        f.write(xml_text)
+
+    print(f"[done] записано: {OUT_FILE}")
+    print(f"[stat] категорий: {len(all_categories)}, офферов: {len(all_offers)}")
 
 if __name__ == "__main__":
     main()
