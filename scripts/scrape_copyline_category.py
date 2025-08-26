@@ -12,24 +12,38 @@ import posixpath
 import requests
 from bs4 import BeautifulSoup
 
-# ----------------------- ENV -----------------------
+# ======================= ENV / НАСТРОЙКИ =======================
+# Этот блок читает настройки из ENV, но имеет ДЕФОЛТЫ.
+# ВАЖНО: Если задать переменную окружения (например, CATEGORY_URL),
+# она переопределит значение по умолчанию.
+
 BASE_URL         = os.getenv("BASE_URL", "https://copyline.kz").strip()
-CATEGORY_URL     = os.getenv("CATEGORY_URL", "").strip()
+
+# ✅ ДЕФОЛТНАЯ КАТЕГОРИЯ: Brother тонер-картриджи
+# Теперь можно вовсе не задавать CATEGORY_URL — скрипт возьмёт эту страницу.
+CATEGORY_URL     = os.getenv(
+    "CATEGORY_URL",
+    "https://copyline.kz/goods/toner-cartridges-brother.html"
+).strip()
+
 OUT_FILE         = os.getenv("OUT_FILE", "docs/copyline.yml").strip()
 OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "windows-1251").strip()
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "700"))
 PAGE_TIMEOUT_S   = int(os.getenv("PAGE_TIMEOUT_S", "30"))
 MIN_BYTES        = int(os.getenv("MIN_BYTES", "1500"))
 
+# Заголовок — чтобы нас не банили как бота
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; copyline-scraper/1.1; +https://example.org)",
 }
-# ---------------------------------------------------
+# ===============================================================
 
 def make_soup(html_text: str) -> BeautifulSoup:
+    # Используем встроенный парсер, чтобы не зависеть от lxml
     return BeautifulSoup(html_text, "html.parser")
 
 def get(url: str) -> Optional[str]:
+    # Обёртка над GET с таймаутом и минимальным размером ответа
     try:
         r = requests.get(url, headers=HEADERS, timeout=PAGE_TIMEOUT_S)
         if r.status_code == 200 and len(r.content) >= MIN_BYTES:
@@ -39,18 +53,16 @@ def get(url: str) -> Optional[str]:
         time.sleep(REQUEST_DELAY_MS / 1000.0)
 
 def absolutize(url_or_path: str, base: str = BASE_URL) -> str:
+    # Превращаем относительные в абсолютные
     return urljoin(base, url_or_path)
 
-# -------- изображения: принудительно full_ ----------
+# ---------------- изображения: принудительно full_ ----------------
+# Блок отвечает за нормализацию ссылок на фото: ставим префикс full_
+# (или меняем thumb_ -> full_) только для каталога img_products.
 def force_full_image(url: str) -> str:
-    """
-    Превращаем .../img_products/NAME.jpg → .../img_products/full_NAME.jpg
-    И thumb_NAME.jpg → full_NAME.jpg. Остальное не трогаем.
-    """
     if not url:
         return url
     parts = urlsplit(url)
-    # применяем только к каталогу картинок copyline jshopping
     if "/components/com_jshopping/files/img_products/" not in parts.path:
         return url
     dirname, filename = posixpath.split(parts.path)
@@ -64,12 +76,13 @@ def force_full_image(url: str) -> str:
         new_filename = "full_" + filename
     new_path = posixpath.join(dirname, new_filename)
     return urlunsplit((parts.scheme, parts.netloc, new_path, parts.query, parts.fragment))
-# ----------------------------------------------------
+# ------------------------------------------------------------------
 
 PRICE_CLEAN_RE = re.compile(r"[^\d,\.]+", re.ASCII)
 COMMA_RE       = re.compile(r",")
 
 def parse_price(raw: str) -> Optional[int]:
+    # Преобразуем строку с ценой в int KZT
     if not raw:
         return None
     s = PRICE_CLEAN_RE.sub("", raw).strip()
@@ -82,10 +95,12 @@ def parse_price(raw: str) -> Optional[int]:
         return None
 
 def extract_sku_from_product(soup: BeautifulSoup) -> Optional[str]:
+    # Жёсткий поиск артикула в карточке
     text = soup.get_text(" ", strip=True)
     m = re.search(r"Артикул\s*[:\-]?\s*([A-Za-z0-9\-_]+)", text, flags=re.IGNORECASE)
     if m:
         return m.group(1)
+    # Попытка найти в таблицах параметров
     for tr in soup.select("table tr"):
         cells = [c.get_text(" ", strip=True) for c in tr.select("td,th")]
         if any("артикул" in c.lower() for c in cells):
@@ -97,6 +112,7 @@ def extract_sku_from_product(soup: BeautifulSoup) -> Optional[str]:
     return None
 
 def extract_description_from_product(soup: BeautifulSoup) -> str:
+    # Пытаемся вытащить описание из типичных блоков/мета
     candidates = [
         ".jshop_prod_description",
         ".prod_description",
@@ -120,6 +136,7 @@ def extract_description_from_product(soup: BeautifulSoup) -> str:
     return ""
 
 def extract_product_cards(html_cat: str, base_url: str) -> List[Dict]:
+    # Парсим карточки на странице категории (только реальные /goods/*.html)
     soup = make_soup(html_cat)
     list_container = soup.select_one(".jshop_list_product") or soup.select_one(".jshop_products")
     if not list_container:
@@ -147,6 +164,7 @@ def extract_product_cards(html_cat: str, base_url: str) -> List[Dict]:
 
         cards.append({"name": name, "url": url, "img": img, "price_str": price_str})
 
+    # Фильтр: берём только реальную карточку товара /goods/*.html и убираем дубли
     seen = set()
     clean = []
     for c in cards:
@@ -160,6 +178,7 @@ def extract_product_cards(html_cat: str, base_url: str) -> List[Dict]:
     return clean
 
 def enrich_with_product_page(card: Dict) -> Dict:
+    # Догружаем карточку товара: артикул, описание, цена, фото
     html_prod = get(card["url"])
     if not html_prod:
         card["vendorCode"] = None
@@ -184,15 +203,18 @@ def enrich_with_product_page(card: Dict) -> Dict:
     return card
 
 def cdata(text: str) -> str:
+    # Оборачиваем текст в CDATA, экранируя закрывающую последовательность
     if not text:
         return ""
     safe = text.replace("]]>", "]]&gt;")
     return f"<![CDATA[{safe}]]>"
 
 def xml(text: str) -> str:
+    # Экранируем для XML
     return html.escape(text or "", quote=True)
 
 def write_yml(category_name: str, items: List[Dict], out_path: str, encoding: str = "windows-1251") -> None:
+    # Запись YML (минимальный валидный набор для импорта в Satu)
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, "w", encoding=encoding, newline="") as f:
         f.write(f"<?xml version='1.0' encoding='{encoding}'?>\n")
@@ -236,6 +258,7 @@ def write_yml(category_name: str, items: List[Dict], out_path: str, encoding: st
         f.write("</offers></shop></yml_catalog>")
 
 def main():
+    # Главная функция: качаем категорию, собираем карточки, обогащаем и пишем YML
     if not CATEGORY_URL:
         raise SystemExit("ERROR: CATEGORY_URL не задан")
     html_cat = get(CATEGORY_URL)
