@@ -1,0 +1,79 @@
+name: build_and_deploy_copyline
+
+on:
+  # Ручной запуск — можно подставить любой URL категории
+  workflow_dispatch:
+    inputs:
+      category_url:
+        description: "URL категории на copyline.kz (если пусто — возьмём Brother)"
+        required: false
+        default: "https://copyline.kz/goods/toner-cartridges-brother.html"
+  # Автозапуск при коммитах в main
+  push:
+    branches: [ main ]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/build_and_deploy_copyline.yml"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 lxml
+
+      - name: Ensure docs/
+        run: mkdir -p docs
+
+      - name: Scrape category → docs/copyline.yml
+        env:
+          CATEGORY_URL: ${{ inputs.category_url }}
+          OUT_FILE: docs/copyline.yml
+          OUTPUT_ENCODING: windows-1251
+          REQUEST_DELAY_MS: "600"
+          PAGE_TIMEOUT_S: "25"
+          MAX_PAGES: "40"
+          MIN_BYTES: "2500"
+        run: |
+          python scripts/scrape_copyline_category.py
+          ls -l docs
+          test -f docs/copyline.yml
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact (docs/)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
