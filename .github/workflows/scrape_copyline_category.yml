@@ -3,18 +3,21 @@ name: scrape_copyline_category
 on:
   workflow_dispatch:
     inputs:
-      CATEGORY_URL:
-        description: "URL категории Copyline"
+      category_url:
+        description: "URL категории copyline.kz (например https://copyline.kz/goods/toner-cartridges-brother.html)"
         required: true
-        default: "https://copyline.kz/goods/toner-cartridges-brother.html"
-  schedule:
-    - cron: "0 2 * * *"   # ежедневно 02:00 UTC
+        type: string
+  push:
+    branches: [ main ]
+    paths:
+      - "scripts/scrape_copyline_category.py"
+      - ".github/workflows/scrape_copyline_category.yml"
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  run:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -34,33 +37,34 @@ jobs:
 
       - name: Scrape category → YML
         env:
-          CATEGORY_URL: ${{ github.event.inputs.CATEGORY_URL }}
+          CATEGORY_URL: ${{ inputs.category_url }}
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
-          REQUEST_DELAY_MS: 700
-          PAGE_TIMEOUT_S: 30
-          MAX_PAGES: 50
-          MIN_BYTES: 2500
+          REQUEST_DELAY_MS: "700"
+          PAGE_TIMEOUT_S: "30"
+          MAX_PAGES: "200"
+          MIN_BYTES: "1500"
         run: |
           python scripts/scrape_copyline_category.py
+          echo "---- docs/ ----"
           ls -l docs || true
           test -f docs/copyline.yml
 
-      - name: Upload artifact
+      - name: Upload artifact (yml)
         uses: actions/upload-artifact@v4
         with:
           name: copyline-yml
           path: docs/copyline.yml
           if-no-files-found: error
 
-      - name: Commit & push YML if changed
+      - name: Commit & push docs/copyline.yml if changed
         shell: bash
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A docs/copyline.yml
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Update Copyline YML (category scrape)"
+            git commit -m "Update Copyline category feed"
             git push
           else
             echo "No changes to commit."
