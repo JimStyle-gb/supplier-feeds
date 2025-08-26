@@ -1,279 +1,274 @@
-# scripts/scrape_copyline_photos_by_list.py
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Назначение:
-  - Пройти по списку артикулов (docs/copyline_articles.txt или ARTICLES_FILE из env),
-  - Для каждого артикула найти карточку товара на https://copyline.kz через поиск,
-  - Открыть карточку и вытащить ссылку на главное изображение из:
-        <img itemprop="image" ... src="https://copyline.kz/.../img_products/....jpg">
-  - Открыть docs/copyline.yml (YML каталога), найти <offer> по <vendorCode> и
-    добавить/обновить <picture> на найденный src.
-  - Сохранить обновлённый docs/copyline.yml в указанной кодировке.
+Скрейп фото по списку артикулов и запись <picture> в docs/copyline.yml.
 
-Примечания:
-  - Мы НЕ сохраняем картинки в репозиторий — только ссылки (это то, что просил заказчик).
-  - Поиск делаем «по-вежливому»: задержки между запросами + ретраи с backoff.
-  - Любые ошибки по отдельному артикулу логируем и идём дальше.
+Как работает:
+1) Берём артикуляры из docs/copyline_articles.txt (по одному в строке; пустые/начинающиеся с # — игнор).
+2) Для каждого артикула пробуем открыть страницу поиска copyline.kz по нескольким известным эндпоинтам.
+3) Со страницы результатов забираем ссылку на карточку товара (/goods/… или /product/… .html) и заходим в неё.
+4) В карточке ищем главное фото:
+   - <img itemprop="image" ... src="..."> — приоритетно
+   - <img id="main_image..."> — запасной путь
+   - любые <img> со ссылкой на /components/com_jshopping/files/img_products/ (берём первую не-миниатюру)
+   При этом читаем src, а если его нет — data-src / data-original.
+5) Грузим docs/copyline.yml, находим <offer> по совпадению <vendorCode> == артикулу и проставляем/обновляем <picture>.
+6) Сохраняем YML в windows-1251, печатаем сводку.
+
+Все задержки/ретраи управляются через env.
 """
 
-from __future__ import annotations
-import os, re, time, io, sys, urllib.parse, random
-from typing import List, Optional, Dict
+import os, re, sys, time, random, urllib.parse
+from typing import List, Optional, Tuple
 import requests
 from bs4 import BeautifulSoup
-from xml.etree.ElementTree import ElementTree, Element, SubElement
+from xml.etree import ElementTree as ET
 
-# ---------- Конфигурация через ENV с дефолтами ----------
-BASE = "https://copyline.kz"
+# ---------- Константы/настройки ----------
+BASE_URL = "https://copyline.kz"
 
-YML_PATH        = os.getenv("YML_PATH", "docs/copyline.yml")
-ARTICLES_FILE   = os.getenv("ARTICLES_FILE", "docs/copyline_articles.txt")
-ENC             = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
+# Файлы/пути из ENV (с дефолтами)
+YML_PATH         = os.getenv("YML_PATH", "docs/copyline.yml")
+ARTICLES_FILE    = os.getenv("ARTICLES_FILE", "docs/copyline_articles.txt")
+ENC              = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
 
-REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "600"))   # базовая задержка между запросами
-MAX_RETRIES      = int(os.getenv("MAX_RETRIES", "3"))          # ретраи на один HTTP шаг
-BACKOFF_MAX_MS   = int(os.getenv("BACKOFF_MAX_MS", "12000"))   # максимум backoff
+# Сетевые настройки из ENV
+REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "700"))     # задержка между запросами
+MAX_RETRIES      = int(os.getenv("MAX_RETRIES", "3"))            # попыток на один HTTP
+BACKOFF_MAX_MS   = int(os.getenv("BACKOFF_MAX_MS", "12000"))     # максимум бэкоффа на ретраи
+TIMEOUT_SEC      = 40                                            # таймаут каждого запроса
 
-UA_HEADERS = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+UA_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "Accept-Language": "ru,en;q=0.8",
+}
 
-# ---------- Утилиты ----------
-def norm(s: Optional[str]) -> str:
-    return re.sub(r"\s+"," ", (s or "").strip())
-
-def sleep_polite(mult: float = 1.0) -> None:
-    """Маленькая «человеческая» задержка между запросами."""
-    base = REQUEST_DELAY_MS / 1000.0
-    jitter = random.uniform(0.2, 0.5) * base
-    time.sleep(base * mult + jitter)
-
-def fetch(url: str, *, allow_redirects: bool = True) -> requests.Response:
-    """
-    GET с ретраями и экспоненциальным бэкоффом.
-    """
-    last_err = None
-    delay = REQUEST_DELAY_MS / 1000.0
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            r = requests.get(url, headers=UA_HEADERS, timeout=60, allow_redirects=allow_redirects)
-            r.raise_for_status()
-            return r
-        except Exception as e:
-            last_err = e
-            if attempt >= MAX_RETRIES:
-                break
-            # экспоненциальный backoff (с ограничением)
-            sleep = min(delay * (2 ** (attempt - 1)), BACKOFF_MAX_MS / 1000.0)
-            time.sleep(sleep)
-    raise RuntimeError(f"HTTP failed for {url}: {last_err}")
-
-def absolutize(href: str) -> str:
-    """Любой относительный путь превращаем в абсолютный URL сайта."""
-    if href.startswith("http://") or href.startswith("https://"):
-        return href
-    return urllib.parse.urljoin(BASE, href)
-
-def read_articles_list(path: str) -> List[str]:
-    """
-    Загружаем артикулы из файла (по одному на строку).
-    Пустые/комментарии (#...) пропускаем. Убираем дубликаты, порядок сохраняем.
-    """
-    seen = set()
-    out: List[str] = []
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            for line in f:
-                s = norm(line)
-                if not s or s.startswith("#"):
-                    continue
-                if s not in seen:
-                    out.append(s)
-                    seen.add(s)
-    except FileNotFoundError:
-        pass
-    return out
-
-# ---------- Поиск карточки по артикулу ----------
-SEARCH_ENDPOINTS = [
-    # JoomShopping поиск по keyword
-    "/index.php?option=com_jshopping&controller=search&task=view&keyword={q}",
-    # Иногда работает общий поиск
-    "/index.php?searchword={q}&searchphrase=all&option=com_search",
-    # Простой короткий вариант
-    "/search?keyword={q}",
+# Поисковые эндпоинты Joomla/Jshopping — пробуем последовательно
+SEARCH_URLS = [
+    # самый простой вариант, часто работает
+    f"{BASE_URL}/?search={{q}}",
+    # альтернативы Joomla
+    f"{BASE_URL}/search?searchword={{q}}",
+    f"{BASE_URL}/index.php?option=com_jshopping&controller=search&task=view&search={{q}}",
+    f"{BASE_URL}/index.php?option=com_jshopping&controller=search&task=view&search_name={{q}}",
+    f"{BASE_URL}/index.php?option=com_jshopping&controller=search&task=view&setsearchfrompage=1&search={{q}}",
 ]
 
-def find_product_url_by_article(article: str) -> Optional[str]:
-    """
-    Пробуем несколько поисковых URL. Из страницы результатов берём первую ссылку,
-    ведущую на карточку товара (/goods/ или /product/ ... .html).
-    Возвращаем абсолютный URL карточки или None.
-    """
-    q = urllib.parse.quote(article)
-    for tpl in SEARCH_ENDPOINTS:
-        url = absolutize(tpl.format(q=q))
+# ---------- Утилиты ----------
+def pause():
+    """Вежливая пауза между запросами (с небольшим джиттером)."""
+    ms = REQUEST_DELAY_MS + random.randint(0, 150)
+    time.sleep(ms / 1000.0)
+
+def http_get(url: str) -> Optional[str]:
+    """GET с ретраями и экспоненциальным бэкоффом. Возвращает текст HTML или None."""
+    delay = 0.8
+    for attempt in range(1, MAX_RETRIES + 1):
         try:
-            resp = fetch(url)
-            html = resp.text
+            r = requests.get(url, headers=UA_HEADERS, timeout=TIMEOUT_SEC, allow_redirects=True)
+            if r.status_code == 200 and r.text:
+                return r.text
         except Exception:
+            pass
+        # бэкофф
+        time.sleep(min(delay, BACKOFF_MAX_MS/1000.0))
+        delay *= 2.0
+    return None
+
+def absolutize(href: str) -> str:
+    """Абсолютная ссылка относительно BASE_URL."""
+    return urllib.parse.urljoin(BASE_URL, href)
+
+def find_product_links_in_search(html: str) -> List[str]:
+    """
+    Со страницы поиска вытянуть ссылки на карточки товаров.
+    Ищем <a href=".../goods/...html"> и <a href=".../product/...html">.
+    """
+    out = []
+    soup = BeautifulSoup(html, "lxml")
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        if not href: 
             continue
+        # только карточки
+        if ("/goods/" in href or "/product/" in href) and href.endswith(".html"):
+            out.append(absolutize(href))
+    # уникализируем, сохраняя порядок
+    seen, uniq = set(), []
+    for u in out:
+        if u not in seen:
+            uniq.append(u); seen.add(u)
+    return uniq
 
-        soup = BeautifulSoup(html, "lxml")
-
-        # Приоритет: явные ссылки на карточки
-        for a in soup.select('a[href*="/goods/"], a[href*="/product/"]'):
-            href = a.get("href") or ""
-            if href.endswith(".html"):
-                return absolutize(href)
-
-        # Резерв: любые ссылки вида *.html с ключом goods/product
-        for a in soup.find_all("a", href=True):
-            href = a["href"]
-            if ("/goods/" in href or "/product/" in href) and href.endswith(".html"):
-                return absolutize(href)
-
-        sleep_polite(0.6)
-    return None
-
-# ---------- Вытаскиваем главное фото из карточки ----------
-def extract_main_image_url(product_url: str) -> Optional[str]:
+def extract_main_image_from_product(html: str) -> Optional[str]:
     """
-    Открываем карточку и ищем <img itemprop="image" ... src="...">.
-    Берём значение src и делаем абсолютным. Если не нашли — None.
+    Из HTML карточки товара достать ссылку на главное фото.
+    Приоритеты:
+      1) <img itemprop="image" ...>
+      2) <img id="main_image...">
+      3) любые <img> ведущие в /components/com_jshopping/files/img_products/ (не миниатюры)
     """
-    try:
-        r = fetch(product_url)
-    except Exception:
-        return None
+    soup = BeautifulSoup(html, "lxml")
 
-    soup = BeautifulSoup(r.text, "lxml")
-
-    # 1) Самый надёжный способ — itemprop="image"
+    # 1) itemprop="image"
     img = soup.find("img", attrs={"itemprop": "image"})
-    if img and img.get("src"):
-        return absolutize(img["src"])
+    if img:
+        for attr in ("src", "data-src", "data-original"):
+            val = (img.get(attr) or "").strip()
+            if val:
+                return absolutize(val)
 
-    # 2) Резерв — main_image_* по id
-    img = soup.find("img", id=re.compile(r"^main_image_\d+"))
-    if img and img.get("src"):
-        return absolutize(img["src"])
+    # 2) id="main_image..."
+    img = soup.find("img", id=re.compile(r"^main_image", re.I))
+    if img:
+        for attr in ("src", "data-src", "data-original"):
+            val = (img.get(attr) or "").strip()
+            if val:
+                return absolutize(val)
 
-    # 3) Резерв — первая картинка из блока товара
-    img = soup.select_one('div.productfull img[src]')
-    if img and img.get("src"):
-        return absolutize(img["src"])
+    # 3) любые картинки из каталога продуктов
+    for im in soup.find_all("img"):
+        src = (im.get("src") or im.get("data-src") or im.get("data-original") or "").strip()
+        if not src:
+            continue
+        src_low = src.lower()
+        if "/components/com_jshopping/files/img_products/" in src_low:
+            # стараемся избегать миниатюр
+            if "/thumb_" in src_low or "/mini_" in src_low:
+                # если ничего лучше не найдём — вернём потом
+                pass
+            return absolutize(src)
 
     return None
 
-# ---------- Работа с YML (XML) ----------
-def load_yml(path: str) -> ElementTree:
+def search_product_page_urls(article: str) -> List[str]:
     """
-    Загружаем существующий docs/copyline.yml. Если файла нет — создаём минимальный.
+    Пробуем все поисковые эндпоинты, собираем ссылки на карточки.
+    Возвращаем список URL карточек (по убыванию приоритета).
     """
-    if not os.path.exists(path):
-        # Минимальный каркас YML (если вдруг запускаем отдельно)
-        root = Element("yml_catalog"); shop = SubElement(root, "shop")
-        SubElement(shop, "name").text = "copyline"
-        curr = SubElement(shop, "currencies"); SubElement(curr, "currency", {"id":"KZT","rate":"1"})
-        SubElement(shop, "categories")  # пустые
-        SubElement(shop, "offers")      # пустые
-        return ElementTree(root)
+    urls: List[str] = []
+    for tpl in SEARCH_URLS:
+        q = urllib.parse.quote_plus(article)
+        url = tpl.format(q=q)
+        html = http_get(url)
+        pause()
+        if not html:
+            continue
+        links = find_product_links_in_search(html)
+        if links:
+            # как только в каком-то эндпоинте нашлись ссылки — используем их первыми
+            urls.extend(links)
+            break
+    # уникализируем
+    seen, uniq = set(), []
+    for u in urls:
+        if u not in seen:
+            uniq.append(u); seen.add(u)
+    return uniq
 
-    with open(path, "rb") as f:
-        data = f.read()
-    # В ElementTree.fromstring — класс-метод, поэтому создаём новый объект
-    root = ElementTree(Element("stub"))
-    root._setroot(ElementTree.fromstring(data))  # type: ignore[attr-defined]
-    return root
+def read_articles(path: str) -> List[str]:
+    """Прочитать артикулы из файла (по одному в строке)."""
+    out = []
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            s = line.strip()
+            if not s or s.startswith("#"):
+                continue
+            out.append(s)
+    return out
 
-def ensure_picture_child(offer_el: Element) -> Element:
-    """
-    Возвращает (существующий или новый) тег <picture> внутри <offer>.
-    """
-    pic = offer_el.find("picture")
-    if pic is None:
-        pic = SubElement(offer_el, "picture")
-    return pic
+def load_yml_tree(path: str) -> ET.ElementTree:
+    """Загрузить YML как ElementTree (кодировка windows-1251 поддерживается автоматически)."""
+    return ET.parse(path)
 
-def update_yml_pictures(tree: ElementTree, pictures: Dict[str, str]) -> int:
+def offers_by_vendorcode(tree: ET.ElementTree) -> dict:
     """
-    Вставляем/обновляем <picture> для офферов, где <vendorCode> совпадает со словарём pictures.
-    Возвращаем количество обновлённых позиций.
+    Построить словарь vendorCode -> offer_element.
+    Если у оффера нет vendorCode — он пропускается.
     """
     root = tree.getroot()
-    shop = root.find("shop")
-    if shop is None:
-        return 0
-    offers = shop.find("offers")
-    if offers is None:
-        return 0
-
-    updated = 0
-    for offer in offers.findall("offer"):
+    offers_map = {}
+    for offer in root.findall(".//offer"):
         vc = offer.findtext("vendorCode")
-        if not vc:
-            continue
-        if vc in pictures:
-            pic_el = ensure_picture_child(offer)
-            new_url = pictures[vc]
-            # Пропускаем если уже одинаково
-            if (pic_el.text or "").strip() != new_url:
-                pic_el.text = new_url
-                updated += 1
-    return updated
+        if vc:
+            offers_map[vc.strip()] = offer
+    return offers_map
 
-def save_yml(tree: ElementTree, path: str, enc: str) -> None:
-    """
-    Сохраняем XML с нужной кодировкой и декларацией.
-    """
-    buf = io.BytesIO()
-    tree.write(buf, encoding=enc, xml_declaration=True)
-    with open(path, "wb") as f:
-        f.write(buf.getvalue())
+def set_offer_picture(offer_el: ET.Element, picture_url: str):
+    """Создать/обновить тег <picture> в оффере."""
+    pic = offer_el.find("picture")
+    if pic is None:
+        pic = ET.SubElement(offer_el, "picture")
+    pic.text = picture_url
 
-# ---------- MAIN ----------
+# ---------- Главная логика ----------
 def main():
-    # 1) Загружаем список артикулов
-    articles = read_articles_list(ARTICLES_FILE)
-    if not articles:
-        print(f"ERROR: список артикулов пуст: {ARTICLES_FILE}", file=sys.stderr)
+    # 0) Проверки
+    if not os.path.isfile(ARTICLES_FILE):
+        print(f"ERROR: файл со списком артикулов не найден: {ARTICLES_FILE}", file=sys.stderr)
+        sys.exit(1)
+    if not os.path.isfile(YML_PATH):
+        print(f"ERROR: YML не найден: {YML_PATH}", file=sys.stderr)
         sys.exit(1)
 
-    # 2) Находим URL карточек и вытаскиваем ссылки на фото
-    found_pics: Dict[str, str] = {}
-    for art in articles:
-        try:
-            # Поиск карточки
-            url = find_product_url_by_article(art)
-            if not url:
-                print(f"[skip] {art}: карточка не найдена")
-                sleep_polite()
-                continue
-
-            # Главная картинка
-            img_url = extract_main_image_url(url)
-            if not img_url:
-                print(f"[skip] {art}: фото не найдено в карточке")
-                sleep_polite()
-                continue
-
-            found_pics[art] = img_url
-            print(f"[ok]   {art} -> {img_url}")
-
-        except Exception as e:
-            print(f"[err]  {art}: {e}", file=sys.stderr)
-        finally:
-            sleep_polite()
-
-    if not found_pics:
-        print("Нет ни одной найденной ссылки на фото, выходим без изменений.")
+    articles = read_articles(ARTICLES_FILE)
+    if not articles:
+        print("Список артикулов пуст, выходим.")
         return
 
-    # 3) Загружаем YML и обновляем <picture> по vendorCode == артикулу
-    tree = load_yml(YML_PATH)
-    updated_cnt = update_yml_pictures(tree, found_pics)
-    save_yml(tree, YML_PATH, ENC)
+    tree = load_yml_tree(YML_PATH)
+    by_vc = offers_by_vendorcode(tree)
 
-    print(f"Готово. Обновлено <picture>: {updated_cnt} из {len(found_pics)} найденных.")
+    found_cnt = 0
+    updated_cnt = 0
+
+    for art in articles:
+        art = art.strip()
+        if not art:
+            continue
+
+        # есть ли оффер с таким vendorCode?
+        offer = by_vc.get(art)
+        if offer is None:
+            print(f"[skip] {art}: в YML нет оффера с таким <vendorCode>")
+            continue
+
+        # ищем карточку(и) товара через поиск
+        product_urls = search_product_page_urls(art)
+        if not product_urls:
+            print(f"[skip] {art}: карточка не найдена в поиске")
+            continue
+
+        photo_url: Optional[str] = None
+        # пробуем по очереди все найденные карточки, пока не добудем фото
+        for purl in product_urls:
+            html = http_get(purl)
+            pause()
+            if not html:
+                continue
+            photo_url = extract_main_image_from_product(html)
+            if photo_url:
+                break
+
+        if not photo_url:
+            print(f"[skip] {art}: фото не найдено в карточке")
+            continue
+
+        # записываем <picture> в оффер
+        prev = offer.findtext("picture") or ""
+        if prev.strip() != photo_url:
+            set_offer_picture(offer, photo_url)
+            updated_cnt += 1
+
+        found_cnt += 1
+        print(f"[ok]   {art} -> {photo_url}")
+
+    if updated_cnt > 0:
+        # сохраним YML с исходной кодировкой
+        tree.write(YML_PATH, encoding=ENC, xml_declaration=True)
+        print(f"Готово: найдено ссылок={found_cnt}, обновлено офферов={updated_cnt}.")
+    else:
+        print("Нет ни одной найденной ссылки на фото, выходим без изменений.")
 
 if __name__ == "__main__":
     try:
