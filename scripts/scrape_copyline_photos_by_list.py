@@ -13,7 +13,7 @@ ARTICLES_FILE = os.getenv("ARTICLES_FILE", "docs/copyline_articles.txt")
 # Пишем прямо в docs/copyline.yml, чтобы отдавалось GitHub Pages
 OUT_FILE      = os.getenv("OUT_FILE",      "docs/copyline.yml")
 ENC           = (os.getenv("OUTPUT_ENCODING") or "windows-1251").lower()
-REQUEST_DELAY = int(os.getenv("REQUEST_DELAY_MS", "600")) / 1000.0
+REQUEST_DELAY = int(os.getenv("REQUEST_DELAY_MS", "1200")) / 1000.0
 
 SEARCH_URLS = [
     "?searchword={q}&option=com_search&searchphrase=all",
