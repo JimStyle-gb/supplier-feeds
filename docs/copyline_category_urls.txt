@@ -1,0 +1,6 @@
+# Сюда добавляй URL категорий, которые нужно обойти для индекса.
+# Примеры (можешь дополнять/изменять под свои разделы):
+https://copyline.kz/goods/laser-cartridges-canon.html
+https://copyline.kz/goods/drum-units.html
+https://copyline.kz/goods/developers.html
+# Можно добавлять сколько угодно строк. Пустые и начинающиеся с # игнорируются.
