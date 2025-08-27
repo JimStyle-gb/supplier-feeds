@@ -4,644 +4,257 @@
 <currencies><currency id="KZT" rate="1" /></currencies>
 <categories>
 <category id="9300000">Copyline</category>
-<category id="12161001" parentId="9300000">Тонер-картриджи Brother</category>
-<category id="18354031" parentId="9300000">Тонер-картриджи Canon</category>
-<category id="13737084" parentId="9300000">Тонер-картриджи Epson</category>
+<category id="20452899" parentId="9300000">Тонер-картриджи</category>
 </categories>
 <offers>
-<offer id="copyline:тонер-картридж-brother-tn-1075-1k-euro-print-артикул-100884:60140ae0" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-1075 (1K) Euro Print (Артикул: 100884 )</name>
-<price>5167</price>
+<offer id="C101902" available="true" in_stock="true">
+<name>Картридж HP CB435A/CB436A/CE285A/Canon 712/713/725 (2K) ON</name>
+<vendor>Copyline</vendor>
+<vendorCode>C101902</vendorCode>
+<price>2602</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
+<url>https://copyline.kz/goods/cartridge-hp-cb435a-cb436a-ce285a-on.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON.jpg</picture>
+<description>Картридж HP CB435A/CB436A/CE285A/Canon 712/713/725 (2K) ON</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C103727" available="true" in_stock="true">
+<name>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214 (1,6K) ON</name>
+<vendor>Copyline</vendor>
+<vendorCode>C103727</vendorCode>
+<price>2602</price>
+<currencyId>KZT</currencyId>
+<categoryId>20452899</categoryId>
+<url>https://copyline.kz/goods/cartridge-hp-ce285a-canon-725-on.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_ON.jpg</picture>
+<description>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214 (1,6K) ON</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C103001" available="true" in_stock="true">
+<name>Картридж HP CE285X for Hewlett Packard LaserJet P1102, P1102W,A4,(2,3К) Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>C103001</vendorCode>
+<price>3029</price>
+<currencyId>KZT</currencyId>
+<categoryId>20452899</categoryId>
+<url>https://copyline.kz/goods/cartridge-hp-ce285x-epp.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285X_euro.jpg</picture>
+<description>Картридж HP CE285X for Hewlett Packard LaserJet P1102, P1102W,A4,(2,3К) Euro Print</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C104892" available="true" in_stock="true">
+<name>Картридж HP CF259X/Canon 057H (без чипа) Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>C104892</vendorCode>
+<price>5595</price>
+<currencyId>KZT</currencyId>
+<categoryId>20452899</categoryId>
+<url>https://copyline.kz/goods/cartridge-hp-cf259x-canon-057h-ep.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-CF259X-Canon-057H.jpg</picture>
+<description>Картридж HP CF259X/Canon 057H (без чипа) Euro Print</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C104563" available="true" in_stock="true">
+<name>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>C104563</vendorCode>
+<price>2947</price>
+<currencyId>KZT</currencyId>
+<categoryId>20452899</categoryId>
+<url>https://copyline.kz/goods/cartridge-hp-w1106a-ep.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1106A-no-chip.jpg</picture>
+<description>Картридж HP W1106A ( 106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C104325" available="true" in_stock="true">
+<name>Картридж SAMSUNG MLT-D111 (без чипа) for ProXpress M2020/2021/2022/2070/2071 (1,5K) Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>C104325</vendorCode>
+<price>3260</price>
+<currencyId>KZT</currencyId>
+<categoryId>20452899</categoryId>
+<url>https://copyline.kz/goods/cartridge-samsung-mlt-d111s-ep-no-chip.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_D111S_euro1_no-chip.jpg</picture>
+<description>Картридж SAMSUNG MLT-D111 (без чипа) for ProXpress M2020/2021/2022/2070/2071 (1,5K) Euro Print</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C103180" available="true" in_stock="true">
+<name>Картридж (106R02773) Xerox Phaser 3020/WC3025 (1,5K) Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>C103180</vendorCode>
+<price>3679</price>
+<currencyId>KZT</currencyId>
+<categoryId>20452899</categoryId>
+<url>https://copyline.kz/goods/cartridge-xerox-phaser-3020-wc3025-106r02773-ep.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106r02773.jpg</picture>
+<description>Картридж (106R02773) Xerox Phaser 3020/WC3025 (1,5K) Euro Print</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C104150" available="true" in_stock="true">
+<name>Рабочее место заправщика картриджей. Вертикального типа. Модель TX850</name>
+<vendor>Copyline</vendor>
+<vendorCode>C104150</vendorCode>
+<price>2201800</price>
+<currencyId>KZT</currencyId>
+<categoryId>20452899</categoryId>
+<url>https://copyline.kz/goods/tx850.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_WQ-TX850.jpg</picture>
+<description>Рабочее место заправщика картриджей. Вертикального типа. Модель  TX850</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C100884" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-1075 for DCP-1510/DCP-1512/DCP-1610/DCP-1612/HL-1110/HL-1112/HL-1210/HL-1212/MFC-181</name>
+<vendor>Copyline</vendor>
+<vendorCode>C100884</vendorCode>
+<price>2083</price>
+<currencyId>KZT</currencyId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-1075.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-1075.jpg</picture>
-<vendorCode>100884</vendorCode>
-<description>Картридж с тонером Euro Print TN-1075 используется в принтерах серий Brother DCP-1510, DCP-1512, DCP-1610, DCP-1612, HL-1110, HL-1112, HL-1210, HL-1212, MFC-1810, MFC-1815, MFC-1912. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 1000</description>
+<description>Тонер-картридж Brother TN-1075 for DCP-1510/DCP-1512/DCP-1610/DCP-1612/HL-1110/HL-1112/HL-1210/HL-1212/MFC-181</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-brother-tn-2075-25k-euro-print-артикул-102808:b03ea94a" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-2075 (2,5K) Euro Print (Артикул: 102808 )</name>
-<price>5167</price>
+<offer id="C102808" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-2075 for HL-2030/2040/2045/2050/2070/2075N/DCP-7020/FAX-2820/2920/7225/7420 (2,5K) E</name>
+<vendor>Copyline</vendor>
+<vendorCode>C102808</vendorCode>
+<price>3790</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-2075.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2075-ep.jpg</picture>
-<vendorCode>102808</vendorCode>
-<description>Картридж с тонером Euro Print TN-2075 используется в принтерах серий Brother HL-2030, HL-2040, HL-2045, HL-2050, HL-2070, HL-2075N, DCP-7020, FAX-2820, FAX-2920, MFC-7225, MFC-7420. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 2500</description>
+<description>Тонер-картридж Brother TN-2075 for HL-2030/2040/2045/2050/2070/2075N/DCP-7020/FAX-2820/2920/7225/7420 (2,5K) E</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-brother-tn-2075-25k-oem-артикул-105257:85d20fef" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-2075 (2,5K) OEM (Артикул: 105257 )</name>
-<price>5167</price>
+<offer id="C102879" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-2090 for DCP-7057R/DCP-7057WR/HL-2132R (1K)</name>
+<vendor>Copyline</vendor>
+<vendorCode>C102879</vendorCode>
+<price>4427</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-brother-tn-2075-oem.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2075.jpg</picture>
-<vendorCode>105257</vendorCode>
-<description>Картридж с тонером OEM TN-2075 используется в принтерах серий Brother HL-2030, HL-2040, HL-2045, HL-2050, HL-2070, HL-2075N, DCP-7020, FAX-2820, FAX-2920, MFC-7225, MFC-7420. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 2500</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-brother-tn-2090-1k-артикул-102879:3b5d526a" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-2090 (1K) (Артикул: 102879 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-2090.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2090.jpg</picture>
-<vendorCode>102879</vendorCode>
-<description>Картридж с тонером TN-2090 используется в принтерах серий Brother HL-2132R, DCP-7057R, DCP-7057WR. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 1000</description>
+<description>Тонер-картридж Brother TN-2090 for DCP-7057R/DCP-7057WR/HL-2132R (1K)</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-brother-tn-2175-26k-euro-print-артикул-103710:a6a7517b" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-2175 (2,6K) Euro Print (Артикул: 103710 )</name>
-<price>5167</price>
+<offer id="C103710" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-2175 for DCP-7045NR/7030R/7032R/MFC-7440NR/7840WR/7320R/HL-2142R/2170W/2150NR/2140R</name>
+<vendor>Copyline</vendor>
+<vendorCode>C103710</vendorCode>
+<price>3667</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-2175.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2175.jpg</picture>
-<vendorCode>103710</vendorCode>
-<description>Картридж с тонером Euro Print TN-2175 используется в принтерах серий Brother DCP-7045NR, DCP-7030R, DCP-7032R, MFC-7440NR, MFC-7840WR, MFC-7320R, HL-2142R, HL-2170W, HL-2150NR, HL-2140R. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 2600</description>
+<description>Тонер-картридж Brother TN-2175 for DCP-7045NR/7030R/7032R/MFC-7440NR/7840WR/7320R/HL-2142R/2170W/2150NR/2140R</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-brother-tn-2275-26k-euro-print-артикул-103998:7e9e5caf" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-2275 (2,6K) Euro Print (Артикул: 103998 )</name>
-<price>5167</price>
+<offer id="C103998" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-2275 for HL-2200/2230/2240/2250/2270 Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>C103998</vendorCode>
+<price>2799</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-2275.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2275.jpg</picture>
-<vendorCode>103998</vendorCode>
-<description>Картридж с тонером Euro Print TN-2275 используется в принтерах серий Brother HL-2230, HL-2240, HL-2250, HL-2270, DCP-7057, DCP-7060, DCP-7065, DCP-7070, MFC-7360, MFC-7860. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 2600</description>
+<description>Тонер-картридж Brother TN-2275 for HL-2200/2230/2240/2250/2270 Euro Print</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-brother-tn-2280-артикул-102222:592e57e5" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-2280 (Артикул: 102222 )</name>
-<price>5167</price>
+<offer id="C102222" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-2280</name>
+<vendor>Copyline</vendor>
+<vendorCode>C102222</vendorCode>
+<price>10905</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-2280.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2280.jpg</picture>
-<vendorCode>102222</vendorCode>
-<description>Картридж с тонером TN-2280 используется в принтерах серий Brother DCP-7060D, MFC-7360, MFC-7470D, MFC-7860DW, HL-2240D, HL-2250DN, HL-2270DW, FAX2840. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 2600</description>
+<description>Тонер-картридж Brother TN-2280</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-brother-tn-2335-12k-euro-print-артикул-105145:366d03d3" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-2335 (1,2K) Euro Print (Артикул: 105145 )</name>
-<price>5167</price>
+<offer id="C105145" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-2335 for HL-L2300/40/60/65/DCP-L2500/20/40/60/MFC-L2700/20/40 (1,2K) Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>C105145</vendorCode>
+<price>2749</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-2335-ep.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2375-oem.jpg</picture>
-<vendorCode>105145</vendorCode>
-<description>Картридж с тонером Euro Print TN-2335 используется в принтерах серий Brother HL-L2300DR, HL-L2340DWR, HL-L2360DNR, HL-L2365DWR, DCP-L2500DR, DCP-L2520DWR, DCP-L2540DNR, DCP-L2560DWR, MFC-L2700DNR, MFC-L2700DWR, MFC-L2720DWR, MFC-L2740DWR. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 1200</description>
+<description>Тонер-картридж Brother TN-2335 for HL-L2300/40/60/65/DCP-L2500/20/40/60/MFC-L2700/20/40 (1,2K) Euro Print</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-brother-tn-2375-26k-euro-print-артикул-105144:ccb19416" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-2375 (2,6K) Euro Print (Артикул: 105144 )</name>
-<price>5167</price>
+<offer id="C105144" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-2375 for HL-L2300D/HL-L2340DW/HL-L2360DN/HL-L2365DW/DCP-L2500D/DCP-L2520DW/DCP-L2540</name>
+<vendor>Copyline</vendor>
+<vendorCode>C105144</vendorCode>
+<price>2411</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-2375.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-2375-oem.jpg</picture>
-<vendorCode>105144</vendorCode>
-<description>Картридж с тонером Euro Print TN-2375 используется в принтерах серий Brother HL-L2300, HL-L2340, HL-L2360, HL-L2365, HL-L2380, DCP-L2500, DCP-L2520, DCP-L2540, DCP-L2560, MFC-L2700, MFC-L2720, MFC-L2740. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 2600</description>
+<description>Тонер-картридж Brother TN-2375 for HL-L2300D/HL-L2340DW/HL-L2360DN/HL-L2365DW/DCP-L2500D/DCP-L2520DW/DCP-L2540</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-brother-tn-3230-3k-euro-print-артикул-104160:526c9003" available="true" in_stock="true">
-<name>Тонер-картридж Brother TN-3230 (3K) Euro Print (Артикул: 104160 )</name>
-<price>5167</price>
+<offer id="C104160" available="true" in_stock="true">
+<name>Тонер-картридж Brother TN-3230 for HL-5340D/5350DN/5370DW/5380DN/DCP8085/8070/MFC8370/8880 (3K) Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>C104160</vendorCode>
+<price>4934</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/toner-cartridge-brother-tn-3230.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-3230-ep.jpg</picture>
-<vendorCode>104160</vendorCode>
-<description>Картридж с тонером Euro Print TN-3230 используется в принтерах серий Brother HL-5340D, HL-5350DN, HL-5370DW, HL-5380DN, DCP-8085, DCP-8070, MFC-8370, MFC-8880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 3000</description>
+<description>Тонер-картридж Brother TN-3230 for HL-5340D/5350DN/5370DW/5380DN/DCP8085/8070/MFC8370/8880 (3K) Euro Print</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
-<offer id="copyline:тонер-картридж-canon-c-exv33-oem-артикул-100605:aa624aa5" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV33 OEM (Артикул: 100605 )</name>
-<price>17674</price>
-<currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv33-oem.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv33.jpg</picture>
-<vendorCode>100605</vendorCode>
-<description>Картридж с тонером OEM C-EXV33 используется в копировальных аппаратах серий Canon iR 2520, 2525, 2530. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 14600</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:средство-для-очистки-и-восстановления-магнитных-валов-в-картриджах-hi-black-арти:ee783d28" available="true" in_stock="true">
-<name>Средство для очистки и восстановления магнитных валов в картриджах Hi-Black (Артикул: 105851 )</name>
+<offer id="C105851" available="true" in_stock="true">
+<name>Hi-BLACK Средство для чистки и востановления магнитных валов в картриджах, аэрозоль, 520 мл</name>
+<vendor>Copyline</vendor>
+<vendorCode>C105851</vendorCode>
 <price>5167</price>
 <currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
+<categoryId>20452899</categoryId>
 <url>https://copyline.kz/goods/sredstvo-ochistki-magnitnykh-520-ml-hi-black.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Sredstvo-dlya-chistki-magnitnyh-valov-520ml-Hi-Black.jpg</picture>
-<vendorCode>105851</vendorCode>
-<description>Очищает и восстанавливает магнитные ролики в картриджах лазерных принтеров. Аэрозольный баллон с распылителем, объем 520 мл.</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:смазка-для-пластиковых-деталей-20мл-hi-black-артикул-105850:f23b96e9" available="true" in_stock="true">
-<name>Смазка для пластиковых деталей 20мл Hi-Black (Артикул: 105850 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
-<url>https://copyline.kz/goods/smazka-plastik-20ml-hi-black.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_smazka-20ml-hb.jpg</picture>
-<vendorCode>105850</vendorCode>
-<description>Смазка для пластиковых деталей, водостойкая. Эффективно поглощает шум и вибрацию, совместима с большинством пластмасс и эластомеров. Состав: Смазка синтетическая, на основе полиальфаолефинового масла и литиевого мыла. Применение: Предназначена для работы в узлах с парами трения — металл-пластик, металл-эластомер, пластик-пластик, пластик-эластомер.</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:флешка-32gb-usb-30-nt03u352n-032g-30pn-netac-артикул-105845:23d3812c" available="true" in_stock="true">
-<name>Флешка 32GB USB 3.0 NT03U352N-032G-30PN Netac (Артикул: 105845 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>12161001</categoryId>
-<url>https://copyline.kz/goods/flash-drive-nt03u352n-032g-30pn.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_NT03U352N-032G.jpg</picture>
-<vendorCode>105845</vendorCode>
-<description>Флэш-накопитель NT03U352N-032G-30PN от компании Netac. Память USB Flash 32 ГБ Netac U352 [NT03U352N-032G-30PN] позволит хранить и передавать на другие устройства фото, видео и другие важные данные. Объема 32 ГБ достаточно для выполнения рабочих задач и достижения личных целей. Металлический монолитный корпус исключает повреждения накопителя даже при падении с высоты. Флешка Netac U352 подключается к ПК и другим устройствам по USB-порту Type-A. Накопитель безотказно работает на устройствах под управлением разных ОС. Для удобства имеется плотный колпачок и отверстие для подвеса. Технические характеристики: Объем памяти 32 ГБ Интерфейс USB 3.0 Материал корпуса Металл, пластик Цвет Серебристый</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-034-12k-black-euro-print-артикул-103984:c4bd9732" available="true" in_stock="true">
-<name>Тонер-картридж Canon 034 (12K) Black Euro Print (Артикул: 103984 )</name>
-<price>19326</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-034-black-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_034-bk.jpg</picture>
-<vendorCode>103984</vendorCode>
-<description>Картридж с тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 12000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-034-73k-cyan-euro-print-артикул-103985:1da0e9aa" available="true" in_stock="true">
-<name>Тонер-картридж Canon 034 (7.3K) Cyan Euro Print (Артикул: 103985 )</name>
-<price>20274</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-034-cyan-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_034-c.jpg</picture>
-<vendorCode>103985</vendorCode>
-<description>Картридж с голубым тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Голубой Количество страниц (6% заполнение) 7300</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-034-73k-magenta-euro-print-артикул-103986:efdd4a73" available="true" in_stock="true">
-<name>Тонер-картридж Canon 034 (7.3K) Magenta Euro Print (Артикул: 103986 )</name>
-<price>20274</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-034-magenta-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_034-m.jpg</picture>
-<vendorCode>103986</vendorCode>
-<description>Картридж с пурпурным тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Пурпурный Количество страниц (6% заполнение) 7300</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-034-73k-yellow-euro-print-артикул-103987:46b036ef" available="true" in_stock="true">
-<name>Тонер-картридж Canon 034 (7.3K) Yellow Euro Print (Артикул: 103987 )</name>
-<price>20274</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-034-yellow-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_034-y.jpg</picture>
-<vendorCode>103987</vendorCode>
-<description>Картридж с желтым тонером Euro Print Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Желтый Количество страниц (6% заполнение) 7300</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-034-73k-yellow-oem-артикул-105355:2538ed97" available="true" in_stock="true">
-<name>Тонер-картридж Canon 034 (7.3K) Yellow OEM (Артикул: 105355 )</name>
-<price>1036</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-034-yellow-oem.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_034-y.jpg</picture>
-<vendorCode>105355</vendorCode>
-<description>Картридж с желтым тонером OEM Canon 034 используется в многофункциональных аппаратах серий Canon imageRUNNER C1225, C1225iF, imageCLASS MF810C, MF820C. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Желтый Количество страниц (6% заполнение) 7300</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv11-артикул-101504:d4342eaa" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV11 (Артикул: 101504 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv11.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV11.jpg</picture>
-<vendorCode>101504</vendorCode>
-<description>Картридж с тонером C-EXV11 используется в многофункциональных аппаратах серий Canon iR-2230, iR-2270, iR-2830, iR-2870, iR-3025, iR-3225, iR-3230, iR-3235, iR-3245. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 21000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv14npg-28-83k-11500077-460-гр-integral-артикул-101789:664946e3" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV14/NPG-28 (8,3K) (11500077) 460 гр INTEGRAL (Артикул: 101789 )</name>
-<price>12066</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-canon-c-exv14-integral.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500077foruse_IR2016_WEB.jpg</picture>
-<vendorCode>101789</vendorCode>
-<description>Картридж с тонером INTEGRAL C-EXV14/NPG-28 используется в копировальных аппаратах серий Canon iR 2016, 2018, 2022, 2025, 2030. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 8300</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv14npg-28-euro-print-артикул-101994:6f1f2d42" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV14/NPG-28 Euro Print (Артикул: 101994 )</name>
-<price>12066</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv14-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-npg28-ep.jpg</picture>
-<vendorCode>101994</vendorCode>
-<description>Картридж с тонером Euro Print C-EXV14/NPG-28 используется в копировальных аппаратах серий Canon iR 2016, 2018, 2022, 2025, 2030. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 8300</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv14npg-28-euro-print-new-артикул-104541:e5d7241e" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV14/NPG-28 Euro Print NEW (Артикул: 104541 )</name>
-<price>12066</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv14-ep-new.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV14-NPG-28.jpg</picture>
-<vendorCode>104541</vendorCode>
-<description>Картридж с тонером Euro Print NEW C-EXV14/NPG-28 используется в копировальных аппаратах серий Canon iR 2016, 2018, 2022, 2025, 2030. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 8300</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv21-black-артикул-101812:9e548ef0" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV21 Black (Артикул: 101812 )</name>
-<price>36346</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv21-black.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV21-black.jpg</picture>
-<vendorCode>101812</vendorCode>
-<description>Картридж с тонером C-EXV21BK используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 26000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv21-cyan-артикул-101813:c2e67b59" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV21 Cyan (Артикул: 101813 )</name>
-<price>36346</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv21-cyan.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV21-cyan.jpg</picture>
-<vendorCode>101813</vendorCode>
-<description>Картридж с голубым тонером C-EXV21C используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Голубой Количество страниц (6% заполнение) 14000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv21-magenta-артикул-101814:4b1a5c1e" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV21 Magenta (Артикул: 101814 )</name>
-<price>36346</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv21-magenta.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV21-magenta.jpg</picture>
-<vendorCode>101814</vendorCode>
-<description>Картридж с пурпурным тонером C-EXV21M используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Пурпурный Количество страниц (6% заполнение) 14000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv21-yellow-артикул-101815:ae0aade6" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV21 Yellow (Артикул: 101815 )</name>
-<price>36346</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv21-yellow.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV21-yellow.jpg</picture>
-<vendorCode>101815</vendorCode>
-<description>Картридж с желтым тонером C-EXV21Y используется в многофункциональных аппаратах серий Canon iR-C2380, iR-C2880, iR-C3080, iR-C3580, iR-C3880. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Желтый Количество страниц (6% заполнение) 14000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv28-38k-cyan-euro-print-артикул-103452:c5ad712f" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV28 (38k) Cyan Euro Print (Артикул: 103452 )</name>
-<price>33027</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv28-cyan-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv28-c.jpg</picture>
-<vendorCode>103452</vendorCode>
-<description>Картридж с тонером Euro Print C-EXV28 используется в многофункциональных аппаратах серий Canon imageRUNNER 525i, 525, 525iz, 615i 615, 615iz, 715i 715, 715iz III, C5045, C5051, C5250i C5250, C5255. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Голубой Количество страниц (6% заполнение) 38000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv28-38k-magenta-euro-print-артикул-103453:d9935838" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV28 (38k) Magenta Euro Print (Артикул: 103453 )</name>
-<price>33027</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv28-magenta-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv28-m.jpg</picture>
-<vendorCode>103453</vendorCode>
-<description>Картридж с тонером Euro Print C-EXV28 используется в многофункциональных аппаратах серий Canon imageRUNNER 525i, 525, 525iz, 615i 615, 615iz, 715i 715, 715iz III, C5045, C5051, C5250i C5250, C5255. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Пурпурный Количество страниц (6% заполнение) 38000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv28-38k-yellow-euro-print-артикул-103454:9551b42c" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV28 (38k) Yellow Euro Print (Артикул: 103454 )</name>
-<price>33027</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv28-yellow-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv28-y.jpg</picture>
-<vendorCode>103454</vendorCode>
-<description>Картридж с тонером Euro Print C-EXV28 используется в многофункциональных аппаратах серий Canon imageRUNNER 525i, 525, 525iz, 615i 615, 615iz, 715i 715, 715iz III, C5045, C5051, C5250i C5250, C5255. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Желтый Количество страниц (6% заполнение) 38000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv28-44k-black-euro-print-артикул-103451:4f628aa7" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV28 (44k) Black Euro Print (Артикул: 103451 )</name>
-<price>33027</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv28-black-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv28BK.jpg</picture>
-<vendorCode>103451</vendorCode>
-<description>Картридж с тонером Euro Print C-EXV28 используется в многофункциональных аппаратах серий Canon imageRUNNER 525i, 525, 525iz, 615i 615, 615iz, 715i 715, 715iz III, C5045, C5051, C5250i C5250, C5255. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Черный Количество страниц (6% заполнение) 44000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv29bk-for-ir-c-50005030503552355240-black-36k-11500111-:67afcb0b" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV29BK for IR C-5000/5030/5035/5235/5240 BLACK (36K) (11500111) 740 гр INTEGRAL (Артикул: 102964 )</name>
-<price>22786</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-canon-c-exv29bk-integral.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500111black_WEB.jpg</picture>
-<vendorCode>102964</vendorCode>
-<description>Картридж с тонером INTEGRAL C-EXV29BK используется в многофункциональных аппаратах серий Canon iR-C5000, iR-C5030, iR-C5035, iR-C5235, iR-C5240. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 36000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv29c-for-ir-c-50005030503552355240-cyan-36k-11500112-48:a37b01f2" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV29C for IR C-5000/5030/5035/5235/5240 CYAN (36K) (11500112) 484 гр INTEGRAL (Артикул: 102965 )</name>
-<price>21059</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-canon-c-exv29c-integral.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500114cyan_WEB.jpg</picture>
-<vendorCode>102965</vendorCode>
-<description>Картридж с голубым тонером INTEGRAL C-EXV29C используется в многофункциональных аппаратах серий Canon iR-C5000, iR-C5030, iR-C5035, iR-C5235, iR-C5240. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Голубой Количество страниц (6% заполнение) 36000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv29m-for-ir-c-50005030503552355240-magenta-36k-11500113:1d6b8827" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV29M for IR C-5000/5030/5035/5235/5240 MAGENTA (36K) (11500113) 484 гр INTEGRAL (Артикул: 102966 )</name>
-<price>21059</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-canon-c-exv29m-integral.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500113magenta_WEB.jpg</picture>
-<vendorCode>102966</vendorCode>
-<description>Картридж с пурпурным тонером INTEGRAL C-EXV29M используется в многофункциональных аппаратах серий Canon iR-C5000, iR-C5030, iR-C5035, iR-C5235, iR-C5240. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Пурпурный Количество страниц (6% заполнение) 36000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv29y-for-ir-c-50005030503552355240-yellow-36k-11500114-:617e8ea1" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV29Y for IR C-5000/5030/5035/5235/5240 YELLOW (36K) (11500114) 484 гр INTEGRAL (Артикул: 102967 )</name>
-<price>21059</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-canon-c-exv29y-integral.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500112yellow_WEB.jpg</picture>
-<vendorCode>102967</vendorCode>
-<description>Картридж с желтым тонером INTEGRAL C-EXV29Y используется в многофункциональных аппаратах серий Canon iR-C5000, iR-C5030, iR-C5035, iR-C5235, iR-C5240. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Желтый Количество страниц (6% заполнение) 36000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv32-for-ir-25352535i25452545i-194k-euro-print-артикул-1:52568bc4" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV32 for IR 2535/2535i/2545/2545i (19,4K) Euro Print (Артикул: 105148 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-canon-c-exv32-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV32-ep.jpg</picture>
-<vendorCode>105148</vendorCode>
-<description>Картридж с тонером Euro Print C-EXV32 используется в многофункциональных аппаратах серий Canon iR-2535, 2535i, 2545, 2545i. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 19400</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv33-146k-11500099-integral-артикул-101778:ad043548" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV33 (14,6K) (11500099) INTEGRAL (Артикул: 101778 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-canon-c-exv33-integral.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1544_WEB.jpg</picture>
-<vendorCode>101778</vendorCode>
-<description>Картридж с тонером INTEGRAL C-EXV33 используется в многофункциональных аппаратах серий Canon iR-2520, iR-2525, iR-2530. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (6% заполнение) 14600</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv33-146k-euro-print-артикул-103068:b2bf23e4" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV33 (14,6K) Euro Print (Артикул: 103068 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv33-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv33.jpg</picture>
-<vendorCode>103068</vendorCode>
-<description>Картридж с тонером Euro Print C-EXV33 используется в копировальных аппаратах серий Canon iR 2520, 2525, 2530. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 14600</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv33-oem-артикул-100605:aa624aa5" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV33 OEM (Артикул: 100605 )</name>
-<price>17674</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv33-oem.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv33.jpg</picture>
-<vendorCode>100605</vendorCode>
-<description>Картридж с тонером OEM C-EXV33 используется в копировальных аппаратах серий Canon iR 2520, 2525, 2530. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 14600</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:средство-для-очистки-и-восстановления-магнитных-валов-в-картриджах-hi-black-арти:ee783d28" available="true" in_stock="true">
-<name>Средство для очистки и восстановления магнитных валов в картриджах Hi-Black (Артикул: 105851 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/sredstvo-ochistki-magnitnykh-520-ml-hi-black.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Sredstvo-dlya-chistki-magnitnyh-valov-520ml-Hi-Black.jpg</picture>
-<vendorCode>105851</vendorCode>
-<description>Очищает и восстанавливает магнитные ролики в картриджах лазерных принтеров. Аэрозольный баллон с распылителем, объем 520 мл.</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:смазка-для-пластиковых-деталей-20мл-hi-black-артикул-105850:f23b96e9" available="true" in_stock="true">
-<name>Смазка для пластиковых деталей 20мл Hi-Black (Артикул: 105850 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/smazka-plastik-20ml-hi-black.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_smazka-20ml-hb.jpg</picture>
-<vendorCode>105850</vendorCode>
-<description>Смазка для пластиковых деталей, водостойкая. Эффективно поглощает шум и вибрацию, совместима с большинством пластмасс и эластомеров. Состав: Смазка синтетическая, на основе полиальфаолефинового масла и литиевого мыла. Применение: Предназначена для работы в узлах с парами трения — металл-пластик, металл-эластомер, пластик-пластик, пластик-эластомер.</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:флешка-32gb-usb-30-nt03u352n-032g-30pn-netac-артикул-105845:23d3812c" available="true" in_stock="true">
-<name>Флешка 32GB USB 3.0 NT03U352N-032G-30PN Netac (Артикул: 105845 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>18354031</categoryId>
-<url>https://copyline.kz/goods/flash-drive-nt03u352n-032g-30pn.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_NT03U352N-032G.jpg</picture>
-<vendorCode>105845</vendorCode>
-<description>Флэш-накопитель NT03U352N-032G-30PN от компании Netac. Память USB Flash 32 ГБ Netac U352 [NT03U352N-032G-30PN] позволит хранить и передавать на другие устройства фото, видео и другие важные данные. Объема 32 ГБ достаточно для выполнения рабочих задач и достижения личных целей. Металлический монолитный корпус исключает повреждения накопителя даже при падении с высоты. Флешка Netac U352 подключается к ПК и другим устройствам по USB-порту Type-A. Накопитель безотказно работает на устройствах под управлением разных ОС. Для удобства имеется плотный колпачок и отверстие для подвеса. Технические характеристики: Объем памяти 32 ГБ Интерфейс USB 3.0 Материал корпуса Металл, пластик Цвет Серебристый</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-epson-aculaser-m2400dm2300mx20-c13s050582-3k-16700006-integral-ар:1115ffba" available="true" in_stock="true">
-<name>Тонер-картридж Epson AcuLaser- M2400D/M2300/mx20 (C13S050582) (3K) (16700006) INTEGRAL (Артикул: 101797 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>13737084</categoryId>
-<url>https://copyline.kz/goods/toner-epson-m2400-integral.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_m2400d.jpg</picture>
-<vendorCode>101797</vendorCode>
-<description>Картридж с тонером INTEGRAL C13S050582 используется в принтерах серий Epson AcuLaser M2400D, M2300, MX20. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 8000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-epson-for-m1400mx14-c13s050652-артикул-100957:185809dc" available="true" in_stock="true">
-<name>Тонер-картридж Epson for M1400/MX14 (C13S050652) (Артикул: 100957 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>13737084</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-epson-m1400.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_M1400.jpg</picture>
-<vendorCode>100957</vendorCode>
-<description>Картридж с тонером C13S050652 используется в принтерах серий Epson AcuLaser M1400, MX14. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 1000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-epson-for-m2400dm2300mx20-c13s050582-euro-print-артикул-104436:d53a75cd" available="true" in_stock="true">
-<name>Тонер-картридж Epson for M2400D/M2300/mx20 (C13S050582) Euro Print (Артикул: 104436 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>13737084</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-epson-m2400-ep.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-m2400d.jpg</picture>
-<vendorCode>104436</vendorCode>
-<description>Картридж с тонером Euro Print C13S050582 используется в принтерах серий Epson AcuLaser M2400D, M2300, MX20. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 8000</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:тонер-картридж-canon-c-exv33-oem-артикул-100605:aa624aa5" available="true" in_stock="true">
-<name>Тонер-картридж Canon C-EXV33 OEM (Артикул: 100605 )</name>
-<price>17674</price>
-<currencyId>KZT</currencyId>
-<categoryId>13737084</categoryId>
-<url>https://copyline.kz/goods/toner-cartridge-canon-c-exv33-oem.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv33.jpg</picture>
-<vendorCode>100605</vendorCode>
-<description>Картридж с тонером OEM C-EXV33 используется в копировальных аппаратах серий Canon iR 2520, 2525, 2530. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Чёрный Количество страниц (5% заполнение) 14600</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:средство-для-очистки-и-восстановления-магнитных-валов-в-картриджах-hi-black-арти:ee783d28" available="true" in_stock="true">
-<name>Средство для очистки и восстановления магнитных валов в картриджах Hi-Black (Артикул: 105851 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>13737084</categoryId>
-<url>https://copyline.kz/goods/sredstvo-ochistki-magnitnykh-520-ml-hi-black.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Sredstvo-dlya-chistki-magnitnyh-valov-520ml-Hi-Black.jpg</picture>
-<vendorCode>105851</vendorCode>
-<description>Очищает и восстанавливает магнитные ролики в картриджах лазерных принтеров. Аэрозольный баллон с распылителем, объем 520 мл.</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:смазка-для-пластиковых-деталей-20мл-hi-black-артикул-105850:f23b96e9" available="true" in_stock="true">
-<name>Смазка для пластиковых деталей 20мл Hi-Black (Артикул: 105850 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>13737084</categoryId>
-<url>https://copyline.kz/goods/smazka-plastik-20ml-hi-black.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_smazka-20ml-hb.jpg</picture>
-<vendorCode>105850</vendorCode>
-<description>Смазка для пластиковых деталей, водостойкая. Эффективно поглощает шум и вибрацию, совместима с большинством пластмасс и эластомеров. Состав: Смазка синтетическая, на основе полиальфаолефинового масла и литиевого мыла. Применение: Предназначена для работы в узлах с парами трения — металл-пластик, металл-эластомер, пластик-пластик, пластик-эластомер.</description>
-<quantity_in_stock>1</quantity_in_stock>
-<stock_quantity>1</stock_quantity>
-<quantity>1</quantity>
-</offer>
-<offer id="copyline:флешка-32gb-usb-30-nt03u352n-032g-30pn-netac-артикул-105845:23d3812c" available="true" in_stock="true">
-<name>Флешка 32GB USB 3.0 NT03U352N-032G-30PN Netac (Артикул: 105845 )</name>
-<price>5167</price>
-<currencyId>KZT</currencyId>
-<categoryId>13737084</categoryId>
-<url>https://copyline.kz/goods/flash-drive-nt03u352n-032g-30pn.html</url>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_NT03U352N-032G.jpg</picture>
-<vendorCode>105845</vendorCode>
-<description>Флэш-накопитель NT03U352N-032G-30PN от компании Netac. Память USB Flash 32 ГБ Netac U352 [NT03U352N-032G-30PN] позволит хранить и передавать на другие устройства фото, видео и другие важные данные. Объема 32 ГБ достаточно для выполнения рабочих задач и достижения личных целей. Металлический монолитный корпус исключает повреждения накопителя даже при падении с высоты. Флешка Netac U352 подключается к ПК и другим устройствам по USB-порту Type-A. Накопитель безотказно работает на устройствах под управлением разных ОС. Для удобства имеется плотный колпачок и отверстие для подвеса. Технические характеристики: Объем памяти 32 ГБ Интерфейс USB 3.0 Материал корпуса Металл, пластик Цвет Серебристый</description>
+<description>Hi-BLACK Средство для чистки и востановления магнитных валов в картриджах, аэрозоль, 520 мл</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
