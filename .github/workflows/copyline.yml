@@ -1,65 +1,59 @@
 name: Build Copyline feed
 
 on:
-  # Ручной запуск без инпутов — НИЧЕГО не спрашивает
+  # Запуск вручную без инпутов (ничего не спрашивает)
   workflow_dispatch: {}
-  # (Опционально) Ночной автозапуск. Уберите блок schedule, если не нужно.
-  schedule:
-    - cron: '0 3 * * *' # каждый день в 03:00 UTC
+
+permissions:
+  contents: write  # нужно, чтобы коммитить изменения обратно в репозиторий
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Берём репозиторий
+      # 1) Клонируем репозиторий
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2) Ставим Python 3.11
+      # 2) Ставим Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3) Ставим зависимости (только нужное)
+      # 3) Ставим зависимости для скрипта (requests + bs4)
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
       # 4) Гарантируем наличие файла со списком категорий.
-      #    Даже если файл отсутствует — создаём его и ПИШЕМ ТУДА дефолтную категорию.
-      #    ВАЖНО: далее скрапер ВСЕГДА читает категории ТОЛЬКО из ЭТОГО файла.
-      - name: Ensure categories file exists
+      #    Если файла нет — создаём с дефолтной категорией Brother.
+      - name: Ensure category file exists
         run: |
           mkdir -p docs
           if [ ! -f docs/copyline_categories.txt ]; then
-            cat > docs/copyline_categories.txt << 'EOF'
-https://copyline.kz/goods/toner-cartridges-brother.html
-EOF
+            echo "https://copyline.kz/goods/toner-cartridges-brother.html" > docs/copyline_categories.txt
           fi
-          echo "Categories source:"
-          nl -ba docs/copyline_categories.txt
+          echo "Using categories:"
+          cat docs/copyline_categories.txt
 
-      # 5) Запускаем скрапер. Он читает категории строго из файла CATEGORIES_FILE.
-      #    Результат пишет в docs/copyline.yml (это и есть файл, который отдаёт GitHub Pages).
+      # 5) Запускаем скрейпер. В env передаём пути и настройки.
+      #    CATEGORY_FILE — строго указывает скрипту читать категории из файла.
       - name: Run scraper
         env:
           BASE_URL: https://copyline.kz
-          CATEGORIES_FILE: docs/copyline_categories.txt
+          CATEGORY_FILE: docs/copyline_categories.txt
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
           REQUEST_DELAY_MS: '700'
           TIMEOUT_S: '30'
           MIN_BYTES: '1500'
-          FORCE_FULL_PREFIX: '1'   # если в скрипте поддерживается префикс full_ для фото
-          STRICT_SKU: '1'          # строгий режим: требовать артикул из карточки
         run: |
           python scripts/scrape_copyline_category.py
 
-      # 6) Коммитим и пушим результат. GitHub Pages отдаёт docs/copyline.yml как:
-      #    https://jimstyle-gb.github.io/supplier-feeds/copyline.yml
+      # 6) Коммитим и пушим только если есть изменения (чтобы не плодить пустые коммиты)
       - name: Commit & push feed
         run: |
           git config user.name  "github-actions[bot]"
