@@ -1,40 +1,33 @@
 name: build_copyline
 
 on:
-  # Ручной запуск без инпутов — ничего не спрашивает
-  workflow_dispatch: {}
-  # Если нужен автозапуск — раскомментируй:
+  workflow_dispatch: {}   # ручной запуск из вкладки Actions
   # schedule:
-  #   - cron: "15 1 * * *"   # ежедневно 06:15 Asia/Almaty (UTC+5)
+  #   - cron: "15 1 * * *"   # ежедневно 06:15 Asia/Almaty (UTC+5), если нужно — раскомментируй
 
 permissions:
-  contents: write  # нужно, чтобы коммитить изменения обратно в репозиторий
+  contents: write         # чтобы коммитить docs/copyline.yml обратно
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1) Клонируем репозиторий
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2) Ставим Python
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 3) Ставим зависимости
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      # 4) Гарантируем наличие файлов настроек
       - name: Ensure config files
         run: |
           mkdir -p docs
-          # Ключевые слова — по одному на строку (регистронезависимо)
           if [ ! -f docs/copyline_keywords.txt ]; then
             cat > docs/copyline_keywords.txt <<'EOF'
 drum
@@ -50,7 +43,6 @@ EOF
           echo "Using keywords:"
           cat docs/copyline_keywords.txt
 
-      # 5) Скрейпим сайт и собираем YML
       - name: Scrape site & build YML
         env:
           BASE_URL: https://copyline.kz
@@ -65,7 +57,6 @@ EOF
         run: |
           python scripts/build_copyline.py
 
-      # 6) Коммитим и пушим только если есть изменения
       - name: Commit & push feed
         run: |
           git config user.name  "github-actions[bot]"
@@ -76,4 +67,3 @@ EOF
           else
             git commit -m "Update copyline.yml (site-wide monitor by keywords)"
             git push
-          fi
