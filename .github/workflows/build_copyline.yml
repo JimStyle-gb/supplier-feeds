@@ -7,12 +7,13 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0     # важно для pull --rebase
+          fetch-depth: 0   # нужно для pull --rebase перед push
 
       - uses: actions/setup-python@v5
         with:
@@ -31,7 +32,7 @@ jobs:
           fi
           echo "Using keywords:" && cat docs/copyline_keywords.txt
 
-      - name: Build feed from XLSX + crawl site (photos, full descriptions, site categories)
+      - name: Build feed (XLSX + crawl site for photos, full descriptions, breadcrumbs)
         env:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
@@ -60,7 +61,6 @@ jobs:
 
           git commit -m "Update copyline.yml (XLSX + photos + full descriptions + site categories)"
 
-          # подтянуть свежий main и перепроиграть наш коммит сверху
           git pull --rebase origin "$BRANCH_NAME" || \
           (echo "Rebase failed, trying merge with ours preference" && git pull --no-rebase -X ours origin "$BRANCH_NAME")
 
