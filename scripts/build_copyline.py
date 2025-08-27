@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Satu YML для Copyline (turbo + cache):
-- Фильтр: название ДОЛЖНО НАЧИНАТЬСЯ одним из ключевых слов (строго, без склонений/вариантов).
-- Фото обязательно; описание ПОЛНОЕ с карточки; категории по хлебным крошкам (структура как на сайте).
-- Кэш индекса сайта (JSON) + параллельный таргет-краул по нужным SKU + лимит времени.
-
-Зависимости: requests, beautifulsoup4, openpyxl
+Satu YML для Copyline (fast + cache + BFS fallback):
+- Фильтр: НАЗВАНИЕ ДОЛЖНО НАЧИНАТЬСЯ одной из фраз из списка (строго, без склонений).
+- Матч по артикулу с карточками сайта; фото ОБЯЗАТЕЛЬНО.
+- Описание: ПОЛНОЕ с карточки; категории: по хлебным крошкам (структура как на сайте).
+- Turbo: таргет-краул только нужных SKU, параллельно; кэш индекса (JSON); лимит времени.
 """
 
 from __future__ import annotations
@@ -19,7 +18,7 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 
-# ---------- ENV / конфиг ----------
+# ---------- ENV ----------
 BASE_URL           = "https://copyline.kz"
 XLSX_URL           = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 KEYWORDS_FILE      = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
@@ -40,9 +39,9 @@ CURRENCY           = "KZT"
 ROOT_CAT_ID        = 9300000
 ROOT_CAT_NAME      = "Copyline"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/1.4)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/1.5)"}
 
-# ---------- утилиты ----------
+# ---------- utils ----------
 def http_get(url: str) -> Optional[bytes]:
     try:
         r = requests.get(url, headers=UA, timeout=HTTP_TIMEOUT)
@@ -55,15 +54,11 @@ def http_get(url: str) -> Optional[bytes]:
     except Exception:
         return None
 
-def soup_of(b: bytes) -> BeautifulSoup:
-    return BeautifulSoup(b, "html.parser")
-
-def yml_escape(s: str) -> str:
-    return html.escape(s or "")
+def soup_of(b: bytes) -> BeautifulSoup: return BeautifulSoup(b, "html.parser")
+def yml_escape(s: str) -> str: return html.escape(s or "")
 
 def sanitize_title(s: str) -> str:
-    if not s:
-        return ""
+    if not s: return ""
     s = re.sub(r"\s*\((?:Артикул|SKU|Код)\s*[:#]?\s*[^)]+\)\s*$", "", s, flags=re.I)
     s = re.sub(r"\s{2,}", " ", s).strip()
     return s[:200].rstrip()
@@ -87,7 +82,7 @@ def key_norm(v: str) -> str:
 def sha1(s: str) -> str:
     return hashlib.sha1(s.encode("utf-8")).hexdigest()
 
-# ---------- ключевые слова: СТРОГО и С НАЧАЛА ----------
+# ---------- keywords (STRICT startswith) ----------
 def load_keywords(path: str) -> List[str]:
     kws: List[str] = []
     if os.path.isfile(path):
@@ -101,26 +96,18 @@ def load_keywords(path: str) -> List[str]:
     return kws
 
 def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
-    """
-    Название должно НАЧИНАТЬСЯ фразой из списка, строго (без склонений).
-    Пример: '^\\s*картридж(?!\\w)' — подойдёт 'картридж …', но не 'картриджа …' и не 'тонер картридж …'.
-    """
+    # '^\\s*картридж(?!\\w)' — "картридж ..." (но не "картриджа ...", не "тонер картридж ...")
     pats: List[re.Pattern] = []
     for kw in kws:
-        esc = re.escape(kw).replace(r"\ ", " ")  # пробелы оставляем как есть
-        patt = rf"^\s*{esc}(?!\w)"
-        pats.append(re.compile(patt, flags=re.IGNORECASE))
+        esc = re.escape(kw).replace(r"\ ", " ")
+        pats.append(re.compile(rf"^\s*{esc}(?!\w)", flags=re.IGNORECASE))
     return pats
 
 def title_startswith_strict(title: str, patterns: List[re.Pattern]) -> bool:
-    if not title:
-        return False
-    for p in patterns:
-        if p.search(title):
-            return True
-    return False
+    if not title: return False
+    return any(p.search(title) for p in patterns)
 
-# ---------- XLSX (двухстрочная шапка) ----------
+# ---------- XLSX (2-row header) ----------
 def fetch_xlsx_bytes(url: str) -> bytes:
     r = requests.get(url, headers=UA, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
@@ -147,7 +134,7 @@ def extract_sku_from_name(name: str) -> Optional[str]:
             return tok.replace("–","-").replace("/","-")
     return None
 
-# ---------- сайт: карточки, фото, описание, крошки ----------
+# ---------- site parsing: product, picture, description, breadcrumbs ----------
 PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
 
 def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
@@ -200,17 +187,28 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str]]]:
     if not b: return None
     s = soup_of(b)
 
+    # SKU: расширенный поиск (itemprop, "Артикул", "Код товара", "SKU")
     sku = None
     skuel = s.find(attrs={"itemprop": "sku"})
     if skuel:
         val = (skuel.get_text(" ", strip=True) or "").strip()
         if val: sku = val
     if not sku:
+        labels = ["артикул", "sku", "код товара", "код"]
+        for lab in labels:
+            node = s.find(string=lambda t: t and lab in t.lower())
+            if node:
+                val = (node.parent.get_text(" ", strip=True) if node.parent else str(node)).strip()
+                m = re.search(r"([A-Za-z0-9\-\._/]{2,})", val)
+                if m:
+                    sku = m.group(1); break
+    if not sku:
         txt = s.get_text(" ", strip=True)
-        m = re.search(r"(?:Артикул|SKU|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", txt, flags=re.I)
+        m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", txt, flags=re.I)
         if m: sku = m.group(1)
     if not sku: return None
 
+    # picture (main_image / og:image / fallback)
     src = None
     imgel = s.find("img", id=re.compile(r"^main_image_", re.I))
     if imgel and (imgel.get("src") or imgel.get("data-src")):
@@ -219,6 +217,12 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str]]]:
         ogi = s.find("meta", attrs={"property": "og:image"})
         if ogi and ogi.get("content"):
             src = ogi["content"].strip()
+    if not src:
+        # мягкий фоллбэк: первое большое изображение из каталожных путей
+        for img in s.find_all("img"):
+            src_try = img.get("src") or img.get("data-src") or ""
+            if any(k in src_try for k in ["img_products", "/products/", "/img/"]):
+                src = src_try; break
     if not src: return None
     pic = normalize_img_to_full(urljoin(url, src))
 
@@ -264,13 +268,51 @@ def fetch_sitemap_product_urls() -> List[str]:
             else:
                 if loc not in seen:
                     seen.add(loc); urls.append(loc)
-    prods = [u for u in urls if re.search(r"/goods/[^/]+\.html$", u)]
+    prods = [u for u in urls if PRODUCT_RE.search(u)]
     prods = list(dict.fromkeys(prods))
     if len(prods) > MAX_SITEMAP_URLS:
         prods = prods[:MAX_SITEMAP_URLS]
     return prods
 
-# ---------- кэш индекса ----------
+def bfs_collect_product_urls(limit_pages: int) -> List[str]:
+    """Обход каталога, чтобы собрать /goods/*.html (если sitemap пустой)."""
+    seeds = [
+        f"{BASE_URL}/",
+        f"{BASE_URL}/goods.html",
+        f"{BASE_URL}/goods/toner-cartridges-brother.html",
+    ]
+    queue: List[str] = list(dict.fromkeys(seeds))
+    visited: Set[str] = set()
+    found: List[str] = []
+
+    while queue and len(visited) < limit_pages:
+        page = queue.pop(0)
+        if page in visited: continue
+        visited.add(page)
+
+        b = http_get(page)
+        if not b: continue
+        s = soup_of(b)
+
+        # rel=next
+        ln = s.find("link", attrs={"rel": "next"})
+        if ln and ln.get("href"):
+            queue.append(urljoin(page, ln["href"]))
+
+        for a in s.find_all("a", href=True):
+            href = a["href"].strip()
+            absu = urljoin(page, href)
+            if "copyline.kz" not in absu: 
+                continue
+            if PRODUCT_RE.search(absu) and not absu.endswith("/goods.html"):
+                found.append(absu)
+            if ("/goods/" in href or "page=" in href or "PAGEN_" in href or "/page/" in href or "limit=" in href):
+                if absu not in visited and absu not in queue:
+                    queue.append(absu)
+
+    return list(dict.fromkeys(found))
+
+# ---------- cache ----------
 def load_cache(path: str) -> Dict[str, Dict[str, Any]]:
     if os.path.isfile(path):
         try:
@@ -287,7 +329,7 @@ def save_cache(path: str, data: Dict[str, Dict[str, Any]]) -> None:
         json.dump(data, f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
 
-# ---------- категории по крошкам ----------
+# ---------- categories from breadcrumbs ----------
 def stable_cat_id(text: str, prefix: int = 9400000) -> int:
     h = hashlib.md5(text.encode("utf-8")).hexdigest()[:6]
     return prefix + int(h, 16)
@@ -369,7 +411,7 @@ def main() -> int:
     data_start = row1 + 1
     name_col, vendor_col, price_col = idx["name"], idx["vendor_code"], idx["price"]
 
-    # 2) строгие ключи — ТОЛЬКО ЕСЛИ НАЗВАНИЕ НАЧИНАЕТСЯ С ФРАЗЫ
+    # 2) строгий startswith
     kw_list = load_keywords(KEYWORDS_FILE)
     start_patterns = compile_startswith_patterns(kw_list)
 
@@ -381,7 +423,6 @@ def main() -> int:
         if not name_raw: continue
         title = sanitize_title(str(name_raw).strip())
 
-        # НОВОЕ: начинаются строго с ключа
         if not title_startswith_strict(title, start_patterns):
             continue
 
@@ -412,137 +453,47 @@ def main() -> int:
     # 4) кэш индекса
     cache = load_cache(SITE_INDEX_CACHE)
     cache_keys = set(cache.keys())
-
     missing_keys = [k for k in want_keys if k not in cache_keys]
     print(f"[cache] hit={len(cache_keys & want_keys)}, miss={len(missing_keys)}")
 
-    site_index: Dict[str, Dict[str, Any]] = {}
+    # 5) таргет-краул (sitemap -> BFS fallback), параллельно, с тайм-лимитом
+    def time_left() -> bool: return datetime.utcnow() < deadline
 
-    # 5) целевой параллельный краул при нехватке кэша
-    if missing_keys and datetime.utcnow() < deadline:
+    if missing_keys and time_left():
         urls = fetch_sitemap_product_urls()
         if not urls:
-            urls = []
+            print("[crawl] sitemap empty → BFS fallback…")
+            urls = bfs_collect_product_urls(MAX_VISIT_PAGES)
+        else:
+            print(f"[crawl] sitemap urls: {len(urls)}")
 
-        def time_left() -> bool:
-            return datetime.utcnow() < deadline
+        if not urls:
+            print("[crawl] no urls to crawl.")
+        else:
+            def worker(u: str):
+                if not time_left(): return None
+                res = parse_product_page(u)
+                if not res: return None
+                sku, pic, desc, crumbs = res
+                raw = sku.strip()
+                keys = { key_norm(raw), key_norm(raw.replace("-", "")) }
+                if re.match(r"^[Cc]\d+$", raw): keys.add(key_norm(raw[1:]))
+                if re.match(r"^\d+$",  raw):    keys.add(key_norm("C"+raw))
+                # индексируем только то, что нам нужно (экономия времени/кэша)
+                targ_keys = [k for k in keys if k in missing_keys]
+                if not targ_keys: 
+                    return None
+                payload = {"url": u, "pic": pic, "desc": desc, "crumbs": crumbs}
+                return targ_keys, payload
 
-        def worker(u: str):
-            if not time_left():
-                return None
-            res = parse_product_page(u)
-            if not res:
-                return None
-            sku, pic, desc, crumbs = res
-            raw = sku.strip()
-            keys = { key_norm(raw), key_norm(raw.replace("-", "")) }
-            if re.match(r"^[Cc]\d+$", raw): keys.add(key_norm(raw[1:]))
-            if re.match(r"^\d+$",  raw):    keys.add(key_norm("C"+raw))
-            return keys, {"url": u, "pic": pic, "desc": desc, "crumbs": crumbs}
-
-        found = 0
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-            futures = { ex.submit(worker, u): u for u in urls[:MAX_SITEMAP_URLS] }
-            for fut in as_completed(futures):
-                if not time_left():
-                    break
-                out = fut.result()
-                if not out:
-                    continue
-                keys, payload = out
-                for k in keys:
-                    cache[k] = payload
-                    if k in missing_keys:
-                        found += 1
-                if found and found % 50 == 0:
-                    print(f"[crawl] matched keys (incremental): {found}")
-                if all(k in cache for k in missing_keys):
-                    print("[crawl] all missing keys resolved.")
-                    break
-
-        save_cache(SITE_INDEX_CACHE, cache)
-    else:
-        print("[crawl] skip crawl (cache sufficient or time over).")
-
-    # 6) индекс только по нужным ключам
-    for k in want_keys:
-        if k in cache:
-            site_index[k] = cache[k]
-
-    # 7) категории по крошкам
-    all_paths = [rec.get("crumbs") for rec in site_index.values() if rec.get("crumbs")]
-    cat_list, path_id_map = build_categories_from_paths(all_paths)
-
-    # 8) мёрдж
-    offers: List[Tuple[int,Dict[str,Any]]] = []
-    seen_ids: Set[str] = set()
-
-    for it in xlsx_items:
-        raw_v = it["vendorCode_raw"]
-        candidates = { raw_v, raw_v.replace("-", "") }
-        if re.match(r"^[Cc]\d+$", raw_v): candidates.add(raw_v[1:])
-        if re.match(r"^\d+$", raw_v):     candidates.add("C"+raw_v)
-
-        found = None
-        for v in candidates:
-            kn = key_norm(v)
-            if kn in site_index:
-                found = site_index[kn]; break
-        if not found: 
-            continue
-        if not found.get("pic"):
-            continue
-
-        url, pic = found["url"], found["pic"]
-        desc = found.get("desc") or it["title"]
-        crumbs = found.get("crumbs") or []
-
-        cid = ROOT_CAT_ID
-        if crumbs:
-            clean = [p.strip() for p in crumbs if p and p.strip()]
-            clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
-            key = tuple(clean)
-            while key and key not in path_id_map:
-                key = key[:-1]
-            if key and key in path_id_map:
-                cid = path_id_map[key]
-
-        offer_id = raw_v
-        if offer_id in seen_ids:
-            offer_id = f"{raw_v}-{sha1(it['title'])[:6]}"
-        seen_ids.add(offer_id)
-
-        offers.append((cid, {
-            "offer_id":   offer_id,
-            "title":      it["title"],
-            "price":      it["price"],
-            "vendorCode": raw_v,
-            "brand":      SUPPLIER_NAME,
-            "url":        url,
-            "picture":    pic,
-            "description": desc,
-        }))
-
-    if not offers:
-        print("[error] No matched items with photos (after startswith filter).")
-        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
-            f.write(build_yml([], []))
-        return 2
-
-    # 9) YML
-    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    xml = build_yml(cat_list, offers)
-    with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
-        f.write(xml)
-
-    print(f"[done] items: {len(offers)}, categories: {len(cat_list)} → {OUT_FILE}")
-    return 0
-
-if __name__ == "__main__":
-    import sys
-    try:
-        sys.exit(main())
-    except Exception as e:
-        print("[fatal]", e)
-        sys.exit(2)
+            found = 0
+            with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
+                futures = { ex.submit(worker, u): u for u in urls[:MAX_SITEMAP_URLS] }
+                for fut in as_completed(futures):
+                    if not time_left(): break
+                    out = fut.result()
+                    if not out: continue
+                    keys, payload = out
+                    for k in keys:
+                        cache[k] = payload
+                        found
