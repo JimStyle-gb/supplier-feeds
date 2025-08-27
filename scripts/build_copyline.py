@@ -281,4 +281,263 @@ def bfs_collect_product_urls(limit_pages: int) -> List[str]:
         f"{BASE_URL}/goods.html",
         f"{BASE_URL}/goods/toner-cartridges-brother.html",
     ]
-    queue: List[str] = list(dict.from
+    queue: List[str] = list(dict.fromkeys(seeds))
+    visited: Set[str] = set()
+    found: List[str] = []
+
+    while queue and len(visited) < limit_pages:
+        page = queue.pop(0)
+        if page in visited: continue
+        visited.add(page)
+
+        jitter_sleep(REQUEST_DELAY_MS)
+        b = http_get(page)
+        if not b: continue
+        s = soup_of(b)
+
+        ln = s.find("link", attrs={"rel": "next"})
+        if ln and ln.get("href"):
+            queue.append(urljoin(page, ln["href"]))
+
+        for a in s.find_all("a", href=True):
+            href = a["href"].strip()
+            absu = urljoin(page, href)
+            if "copyline.kz" not in absu: 
+                continue
+            if PRODUCT_RE.search(absu) and not absu.endswith("/goods.html"):
+                found.append(absu)
+            if ("/goods/" in href or "page=" in href or "PAGEN_" in href or "/page/" in href or "limit=" in href):
+                if absu not in visited and absu not in queue:
+                    queue.append(absu)
+
+    return list(dict.fromkeys(found))
+
+def build_site_index(target_keys: Set[str]) -> Dict[str, Dict[str, Any]]:
+    """
+    Возвращает map: norm_key(SKU) -> {url, pic, desc, crumbs}
+    Останавливаемся, когда нашли все нужные ключи (если они есть).
+    """
+    urls = fetch_sitemap_product_urls()
+    if not urls:
+        urls = bfs_collect_product_urls(MAX_VISIT_PAGES)
+
+    index: Dict[str, Dict[str, Any]] = {}
+    target_left = set(target_keys)
+
+    for i, u in enumerate(urls, 1):
+        parsed = parse_product_page(u)
+        if not parsed: continue
+        sku, pic, desc, crumbs = parsed
+        raw = sku.strip()
+
+        keys = { key_norm(raw), key_norm(raw.replace("-", "")) }
+        if re.match(r"^[Cc]\d+$", raw): keys.add(key_norm(raw[1:]))
+        if re.match(r"^\d+$",  raw):    keys.add(key_norm("C"+raw))
+
+        for k in keys:
+            if not target_keys or k in target_keys:
+                index[k] = {"url": u, "pic": pic, "desc": desc, "crumbs": crumbs}
+                if k in target_left:
+                    target_left.remove(k)
+
+        if target_keys and not target_left:
+            break
+
+    return index
+
+# ---------- категории по крошкам ----------
+def stable_cat_id(text: str, prefix: int = 9400000) -> int:
+    h = hashlib.md5(text.encode("utf-8")).hexdigest()[:6]
+    return prefix + int(h, 16)
+
+def build_categories_from_paths(paths: List[List[str]]) -> Tuple[List[Tuple[int,str,Optional[int]]], Dict[Tuple[str,...], int]]:
+    cat_map: Dict[Tuple[str,...], int] = {}
+    out_list: List[Tuple[int,str,Optional[int]]] = []
+    for path in paths:
+        clean = [p.strip() for p in path if p and p.strip()]
+        clean = [p for p in clean if p.lower() not in ("главная", "home", "каталог")]
+        if not clean: continue
+        parent_id = ROOT_CAT_ID
+        prefix: List[str] = []
+        for name in clean:
+            prefix.append(name)
+            key = tuple(prefix)
+            if key in cat_map:
+                parent_id = cat_map[key]; continue
+            cid = stable_cat_id(" / ".join(prefix))
+            cat_map[key] = cid
+            out_list.append((cid, name, parent_id))
+            parent_id = cid
+    return out_list, cat_map
+
+# ---------- YML ----------
+def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple[int,Dict[str,Any]]]) -> str:
+    out: List[str] = []
+    out.append("<?xml version='1.0' encoding='windows-1251'?>")
+    out.append("<yml_catalog><shop>")
+    out.append(f"<name>{yml_escape(SUPPLIER_NAME.lower())}</name>")
+    out.append('<currencies><currency id="KZT" rate="1" /></currencies>')
+
+    out.append("<categories>")
+    out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
+    for cid, name, parent in categories:
+        parent = parent if parent else ROOT_CAT_ID
+        out.append(f"<category id=\"{cid}\" parentId=\"{parent}\">{yml_escape(name)}</category>")
+    out.append("</categories>")
+
+    out.append("<offers>")
+    for cid, it in offers:
+        price = it["price"]
+        price_txt = str(int(price)) if float(price).is_integer() else f"{price}"
+        out += [
+            f"<offer id=\"{yml_escape(it['offer_id'])}\" available=\"true\" in_stock=\"true\">",
+            f"<name>{yml_escape(it['title'])}</name>",
+            f"<vendor>{yml_escape(it.get('brand') or SUPPLIER_NAME)}</vendor>",
+            f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>",
+            f"<price>{price_txt}</price>",
+            "<currencyId>KZT</currencyId>",
+            f"<categoryId>{cid}</categoryId>",
+        ]
+        if it.get("url"): out.append(f"<url>{yml_escape(it['url'])}</url>")
+        if it.get("picture"): out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
+        desc = it.get("description") or it["title"]
+        out.append(f"<description>{yml_escape(desc)}</description>")
+        out += ["<quantity_in_stock>1</quantity_in_stock>", "<stock_quantity>1</stock_quantity>", "<quantity>1</quantity>", "</offer>"]
+    out.append("</offers>")
+
+    out.append("</shop></yml_catalog>")
+    return "\n".join(out)
+
+# ---------- MAIN ----------
+def main() -> int:
+    # 1) XLSX
+    xlsx_bytes = fetch_xlsx_bytes(XLSX_URL)
+    wb = load_workbook(io.BytesIO(xlsx_bytes), read_only=True, data_only=True)
+    sheet = max(wb.sheetnames, key=lambda n: wb[n].max_row * max(1, wb[n].max_column))
+    ws = wb[sheet]
+    rows = [ [c for c in r] for r in ws.iter_rows(values_only=True) ]
+
+    row0, row1, idx = detect_header_two_row(rows)
+    if row0 < 0:
+        print("[error] Не удалось распознать шапку.")
+        return 2
+    data_start = row1 + 1
+    name_col, vendor_col, price_col = idx["name"], idx["vendor_code"], idx["price"]
+
+    # 2) строгие ключи — НАЗВАНИЕ ДОЛЖНО НАЧИНАТЬСЯ
+    kw_list = load_keywords(KEYWORDS_FILE)
+    kw_patterns = compile_startswith_patterns(kw_list)
+
+    # 3) кандидаты из XLSX + ключи матчей
+    xlsx_items: List[Dict[str,Any]] = []
+    want_keys: Set[str] = set()
+    for r in rows[data_start:]:
+        name_raw = r[name_col]
+        if not name_raw: continue
+        title = sanitize_title(str(name_raw).strip())
+        if not title_startswith_strict(title, kw_patterns):
+            continue
+
+        price = to_number(r[price_col])
+        if price is None or price <= 0: continue
+
+        v_raw = r[vendor_col]
+        vcode = (str(v_raw).strip() if v_raw is not None else "") or extract_sku_from_name(title) or ""
+        if not vcode: continue
+
+        variants = { vcode, vcode.replace("-", "") }
+        if re.match(r"^[Cc]\d+$", vcode): variants.add(vcode[1:])
+        if re.match(r"^\d+$", vcode):     variants.add("C"+vcode)
+        for v in variants:
+            want_keys.add(key_norm(v))
+
+        xlsx_items.append({
+            "title": title,
+            "price": float(f"{price:.2f}"),
+            "vendorCode_raw": vcode,
+        })
+
+    if not xlsx_items:
+        print("[error] После фильтра по startswith/цене нет позиций.")
+        return 2
+    print(f"[xls] candidates (startswith): {len(xlsx_items)}, distinct match-keys: {len(want_keys)}")
+
+    # 4) индекс сайта (sitemap → BFS fallback)
+    site_index = build_site_index(want_keys)
+
+    # 5) категории по крошкам
+    all_paths = [rec.get("crumbs") for rec in site_index.values() if rec.get("crumbs")]
+    cat_list, path_id_map = build_categories_from_paths(all_paths)
+
+    # 6) мёрдж (строго с фото)
+    offers: List[Tuple[int,Dict[str,Any]]] = []
+    seen_offer_ids: Set[str] = set()
+
+    for it in xlsx_items:
+        raw_v = it["vendorCode_raw"]
+        candidates = { raw_v, raw_v.replace("-", "") }
+        if re.match(r"^[Cc]\d+$", raw_v): candidates.add(raw_v[1:])
+        if re.match(r"^\d+$", raw_v):     candidates.add("C"+raw_v)
+
+        found = None
+        for v in candidates:
+            kn = key_norm(v)
+            if kn in site_index:
+                found = site_index[kn]; break
+        if not found or not found.get("pic"):
+            continue
+
+        url, pic = found["url"], found["pic"]
+        desc = found.get("desc") or it["title"]
+        crumbs = found.get("crumbs") or []
+
+        cid = ROOT_CAT_ID
+        if crumbs:
+            clean = [p.strip() for p in crumbs if p and p.strip()]
+            clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
+            key = tuple(clean)
+            while key and key not in path_id_map:
+                key = key[:-1]
+            if key and key in path_id_map:
+                cid = path_id_map[key]
+
+        offer_id = raw_v
+        if offer_id in seen_offer_ids:
+            offer_id = f"{raw_v}-{sha1(it['title'])[:6]}"
+        seen_offer_ids.add(offer_id)
+
+        offers.append((cid, {
+            "offer_id":   offer_id,
+            "title":      it["title"],
+            "price":      it["price"],
+            "vendorCode": raw_v,
+            "brand":      SUPPLIER_NAME,
+            "url":        url,
+            "picture":    pic,
+            "description": desc,
+        }))
+
+    if not offers:
+        print("[error] Ни одной позиции не сопоставили с фото (после startswith).")
+        # запишем пустой YML, чтобы был артефакт
+        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+        with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+            f.write(build_yml([], []))
+        return 2
+
+    # 7) YML
+    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+    xml = build_yml(cat_list, offers)
+    with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        f.write(xml)
+
+    print(f"[done] items: {len(offers)}, categories: {len(cat_list)} -> {OUT_FILE}")
+    return 0
+
+if __name__ == "__main__":
+    import sys
+    try:
+        sys.exit(main())
+    except Exception as e:
+        print("[fatal]", e)
+        sys.exit(2)
