@@ -26,7 +26,7 @@ jobs:
           fi
           echo "Using keywords:" && cat docs/copyline_keywords.txt
 
-      - name: Build feed from XLSX + crawl site for photos
+      - name: Build feed from XLSX + crawl site for photos & categories
         env:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
@@ -48,6 +48,5 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Update copyline.yml from XLSX + site photos (expanded matching)"
+            git commit -m "Update copyline.yml (full descriptions + site category tree + exact keywords)"
             git push
-          fi
