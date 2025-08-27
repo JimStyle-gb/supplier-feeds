@@ -1,4 +1,4 @@
-name: Build Copyline feed
+name: build_copyline
 
 on:
   # Ручной запуск без инпутов — ничего не спрашивает
