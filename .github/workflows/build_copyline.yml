@@ -32,12 +32,11 @@ jobs:
           KEYWORDS_FILE: docs/copyline_keywords.txt
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
-          # Скан сайта:
           HTTP_TIMEOUT: "25"
-          REQUEST_DELAY_MS: "150"        # пауза между запросами (регулируй при необходимости)
-          MIN_BYTES: "1200"
-          MAX_SITEMAP_URLS: "8000"       # сколько URL взять из sitemap (если есть)
-          MAX_VISIT_PAGES: "2000"        # ограничение при обходе сайта (fallback)
+          REQUEST_DELAY_MS: "150"
+          MIN_BYTES: "1000"
+          MAX_SITEMAP_URLS: "20000"
+          MAX_VISIT_PAGES: "6000"
         run: |
           python scripts/build_copyline.py
 
@@ -49,6 +48,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Update copyline.yml from XLSX + site photos (filtered by keywords)"
+            git commit -m "Update copyline.yml from XLSX + site photos (expanded matching)"
             git push
           fi
