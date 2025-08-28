@@ -27,17 +27,17 @@ jobs:
       - name: Ensure keywords file exists
         run: |
           mkdir -p docs
-          if [ ! -f docs/copyline_keywords.txt ]; then
-            cat > docs/copyline_keywords.txt << 'EOF'
-            drum
-            девелопер
-            драм
-            кабель сетевой
-            картридж
-            термоблок
-            термоэлемент
-            тонер-картридж
-            EOF
+          if [ ! -s docs/copyline_keywords.txt ]; then
+            printf '%s\n' \
+              'drum' \
+              'девелопер' \
+              'драм' \
+              'кабель сетевой' \
+              'картридж' \
+              'термоблок' \
+              'термоэлемент' \
+              'тонер-картридж' \
+              > docs/copyline_keywords.txt
           fi
           echo "Using keywords:"
           cat docs/copyline_keywords.txt
@@ -51,11 +51,8 @@ jobs:
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "120"
           MIN_BYTES: "900"
-          # Бренды, которые допускаются перед ключевым словом в названии (например: "Ripo Кабель сетевой ...")
           ALLOW_PREFIX_BRANDS: "ripo,hp,canon,samsung,xerox,brother,pantum,lexmark,kyocera,konica,minolta,ricoh,panasonic"
-          # Ограничения для работы через sitemap (ускоряет)
           MAX_SITEMAP_URLS: "12000"
-          # Сколько подходящих url реально посещать (хватает для матчей по XLSX)
           MAX_VISIT_PAGES: "3500"
         run: |
           python scripts/build_copyline.py
@@ -69,7 +66,6 @@ jobs:
             echo "No changes to commit."
           else
             BRANCH="${GITHUB_REF_NAME:-main}"
-            # Подтягиваем возможные изменения и пушим
             git pull --rebase origin "$BRANCH" || true
             git commit -m "Update copyline.yml (XLSX + photos + full descriptions + site categories)"
             git push
