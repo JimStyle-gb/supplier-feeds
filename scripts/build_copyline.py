@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Copyline → Satu YML (быстро и стабильно):
-- Фильтр XLSX: НАЗВАНИЕ ДОЛЖНО НАЧИНАТЬСЯ одной из фраз из списка (строго, без склонений/вариантов).
-- Краул: только релевантные КАТЕГОРИИ (по тексту ссылок), пагинация внутри; карточки парсятся в небольшой пул потоков.
+Copyline → Satu YML (startswith + targeted category crawl, FIXED):
+- XLSX: НАЗВАНИЕ ДОЛЖНО НАЧИНАТЬСЯ одним из ключей (строго, без склонений/вариантов).
+- Краул: только релевантные КАТЕГОРИИ (по тексту ссылок, ключ как ОТДЕЛЬНОЕ слово), пагинация; карточки в пуле.
 - Фото обязательно. Описание — ПОЛНОЕ с карточки. Категории — по хлебным крошкам.
-- Никаких префиксов к артикулу и offer_id.
-
-Зависимости: requests, beautifulsoup4, openpyxl
+- Без префиксов в артикулах и offer_id.
 """
 
 from __future__ import annotations
-import os, re, io, time, html, hashlib, xml.etree.ElementTree as ET
+import os, re, io, time, html, hashlib
 from typing import Any, Dict, List, Optional, Tuple, Set
 from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -41,9 +39,9 @@ CURRENCY           = "KZT"
 ROOT_CAT_ID        = 9300000
 ROOT_CAT_NAME      = "Copyline"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/1.7-targeted)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/1.7.1-targeted-fixed)"}
 
-# ---------- утилиты ----------
+# ---------- utils ----------
 def jitter_sleep(ms: int) -> None:
     time.sleep(max(0.0, ms/1000.0))
 
@@ -77,7 +75,7 @@ def to_number(x: Any) -> Optional[float]:
         m = re.search(r"[\d.]+", s)
         return float(m.group(0)) if m else None
 
-# ---------- ключевые слова (СТРОГО С НАЧАЛА) ----------
+# ---------- keywords ----------
 def load_keywords(path: str) -> List[str]:
     kws: List[str] = []
     if os.path.isfile(path):
@@ -91,29 +89,30 @@ def load_keywords(path: str) -> List[str]:
     return kws
 
 def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
-    pats: List[re.Pattern] = []
-    for kw in kws:
-        esc = re.escape(kw).replace(r"\ ", " ")
-        pats.append(re.compile(rf"^\s*{esc}(?!\w)", flags=re.IGNORECASE))
-    return pats
+    # ^\s*kw(?!\w) — начинается строго словом kw
+    return [re.compile(rf"^\s*{re.escape(kw).replace(r'\ ', ' ')}(?!\w)", re.I) for kw in kws]
+
+def compile_word_patterns(kws: List[str]) -> List[re.Pattern]:
+    # (?<!\w)kw(?!\w) — kw как отдельное слово где угодно
+    return [re.compile(rf"(?<!\w){re.escape(kw).replace(r'\ ', ' ')}(?!\w)", re.I) for kw in kws]
 
 def title_startswith_strict(title: str, patterns: List[re.Pattern]) -> bool:
     if not title: return False
     return any(p.search(title) for p in patterns)
 
-# ---------- XLSX (двухстрочная шапка) ----------
+# ---------- XLSX (2-row header) ----------
 def fetch_xlsx_bytes(url: str) -> bytes:
     r = requests.get(url, headers=UA, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
     return r.content
 
-def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60) -> Tuple[int,int,Dict[str,int]]:
+def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60):
     def low(x): return str(x or "").strip().lower()
     for i in range(min(scan_rows, len(rows)-1)):
         row0 = [low(c) for c in rows[i]]
         row1 = [low(c) for c in rows[i+1]]
         if any("номенклатура" in c for c in row0):
-            name_col = next((j for j,c in enumerate(row0) if "номенклатура" in c), None)
+            name_col   = next((j for j,c in enumerate(row0) if "номенклатура" in c), None)
             vendor_col = next((j for j,c in enumerate(row1) if "артикул" in c), None)
             price_col  = next((j for j,c in enumerate(row1) if "цена" in c or "опт" in c), None)
             if name_col is not None and vendor_col is not None and price_col is not None:
@@ -128,7 +127,7 @@ def extract_sku_from_name(name: str) -> Optional[str]:
             return tok.replace("–","-").replace("/","-")
     return None
 
-# ---------- страница карточки ----------
+# ---------- product page ----------
 PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
 
 def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
@@ -167,7 +166,7 @@ def extract_breadcrumbs(s: BeautifulSoup) -> List[str]:
     for bc in containers:
         links = bc.find_all("a")
         for a in links:
-            t = a.get_text(strip=True)
+            t = a.get_text(" ", strip=True)
             if not t: continue
             tl = t.lower()
             if tl in ("главная","home"): continue
@@ -181,7 +180,6 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str]]]:
     if not b: return None
     s = soup_of(b)
 
-    # SKU
     sku = None
     skuel = s.find(attrs={"itemprop": "sku"})
     if skuel:
@@ -202,7 +200,6 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str]]]:
         if m: sku = m.group(1)
     if not sku: return None
 
-    # picture
     src = None
     imgel = s.find("img", id=re.compile(r"^main_image_", re.I))
     if imgel and (imgel.get("src") or imgel.get("data-src")):
@@ -223,23 +220,15 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str]]]:
     crumbs = extract_breadcrumbs(s)
     return sku, pic, desc, crumbs
 
-# ---------- целевые категории ----------
-def anchor_text_matches(text: str, start_patterns: List[re.Pattern]) -> bool:
-    """Проверяем текст ссылки: если он СОДЕРЖИТ ключ как отдельное слово либо совпадает с ключом/его базовой формой."""
+# ---------- targeted categories (FIXED) ----------
+def anchor_text_matches(text: str, word_patterns: List[re.Pattern]) -> bool:
+    """Ключ как отдельное слово в тексте ссылки на категорию (без манипуляций с шаблонами)."""
     if not text: return False
     t = text.strip().lower()
-    # разрешим нахождение ключа как отдельного слова в тексте категории
-    for p in start_patterns:
-        # превращаем шаблон '^\\s*kw(?!\\w)' в r'(?<!\w)kw(?!\w)'
-        body = p.pattern
-        kw = re.sub(r"^\^\s*|\(?!\\w\)$", "", body, flags=re.I)
-        rx = re.compile(rf"(?<!\w){kw}(?!\w)", flags=re.I)
-        if rx.search(t):
-            return True
-    return False
+    return any(p.search(t) for p in word_patterns)
 
 def discover_relevant_category_urls() -> List[str]:
-    """Сканируем только стартовые страницы (главная, каталог), забираем ссылки на категории по их ТЕКСТУ."""
+    """Смотрим главную/каталог, берём ссылки на категории, где текст содержит ключ как отдельное слово."""
     seeds = [f"{BASE_URL}/", f"{BASE_URL}/goods.html"]
     pages = []
     for u in seeds:
@@ -248,9 +237,8 @@ def discover_relevant_category_urls() -> List[str]:
     if not pages:
         return []
 
-    # Подготовим паттерны из ключей
     kws = load_keywords(KEYWORDS_FILE)
-    start_patterns = compile_startswith_patterns(kws)
+    word_patterns = compile_word_patterns(kws)  # отдельные слова, а не 'startswith'
 
     urls: List[str] = []
     seen: Set[str] = set()
@@ -258,26 +246,20 @@ def discover_relevant_category_urls() -> List[str]:
         for a in s.find_all("a", href=True):
             txt = a.get_text(" ", strip=True)
             if not txt: continue
-            if anchor_text_matches(txt, start_patterns):
+            if anchor_text_matches(txt, word_patterns):
                 absu = urljoin(base, a["href"])
                 if "copyline.kz" in absu and "/goods/" in absu and absu not in seen:
                     seen.add(absu); urls.append(absu)
 
-    # на всякий случай добавим 1-2 известные ветки
+    # на всякий случай добавим известную ветку
     urls.append(f"{BASE_URL}/goods/toner-cartridges-brother.html")
-    urls = list(dict.fromkeys(urls))
-    return urls
+    return list(dict.fromkeys(urls))
 
 def category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
-    # rel=next
     ln = s.find("link", attrs={"rel": "next"})
-    if ln and ln.get("href"):
-        return urljoin(page_url, ln["href"])
-    # class contains 'next'
+    if ln and ln.get("href"): return urljoin(page_url, ln["href"])
     a = s.find("a", class_=lambda c: c and "next" in c.lower())
-    if a and a.get("href"):
-        return urljoin(page_url, a["href"])
-    # текст похож на «Следующая»
+    if a and a.get("href"): return urljoin(page_url, a["href"])
     for a in s.find_all("a", href=True):
         txt = (a.get_text(" ", strip=True) or "").lower()
         if txt in ("следующая", "вперед", "вперёд", "next", ">"):
@@ -285,12 +267,10 @@ def category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
     return None
 
 def collect_product_urls_from_category(cat_url: str, limit_pages: int) -> List[str]:
-    """Обходим только конкретную категорию и её страницы; собираем /goods/*.html"""
     urls: List[str] = []
     seen_pages: Set[str] = set()
     page = cat_url
     pages_done = 0
-
     while page and pages_done < limit_pages:
         if page in seen_pages: break
         seen_pages.add(page)
@@ -298,18 +278,15 @@ def collect_product_urls_from_category(cat_url: str, limit_pages: int) -> List[s
         b = http_get(page)
         if not b: break
         s = soup_of(b)
-        # все ссылки на карточки
         for a in s.find_all("a", href=True):
             absu = urljoin(page, a["href"])
             if PRODUCT_RE.search(absu):
                 urls.append(absu)
-        # пагинация «следующая»
         page = category_next_url(s, page)
         pages_done += 1
-
     return list(dict.fromkeys(urls))
 
-# ---------- категории по крошкам ----------
+# ---------- categories from breadcrumbs ----------
 def stable_cat_id(text: str, prefix: int = 9400000) -> int:
     h = hashlib.md5(text.encode("utf-8")).hexdigest()[:6]
     return prefix + int(h, 16)
@@ -435,16 +412,16 @@ def main() -> int:
         return 2
     print(f"[cats] relevant categories: {len(cats)}")
 
-    # 4) собираем URL карточек из этих категорий (с пагинацией)
+    # 4) URL карточек по категориям
     product_urls: List[str] = []
-    pages_budget = MAX_CATEGORY_PAGES // max(1, len(cats))
+    pages_budget = max(1, MAX_CATEGORY_PAGES // max(1, len(cats)))
     for cu in cats:
         urls = collect_product_urls_from_category(cu, pages_budget)
         product_urls.extend(urls)
     product_urls = list(dict.fromkeys(product_urls))
     print(f"[crawl] product urls from categories: {len(product_urls)}")
 
-    # 5) парсим карточки в потоках (мелкий пул)
+    # 5) карточки в потоках
     def worker(u: str):
         if datetime.utcnow() > deadline: return None
         try:
@@ -470,7 +447,6 @@ def main() -> int:
             out = fut.result()
             if not out: continue
             keys, payload = out
-            # индексируем только то, что нам нужно
             useful = [k for k in keys if k in want_keys and k not in matched_keys]
             if not useful: 
                 continue
@@ -485,12 +461,12 @@ def main() -> int:
 
     print(f"[index] matched keys total: {len(matched_keys)}")
 
-    # 6) категории (по крошкам)
+    # 6) категории из крошек
     all_paths = [rec.get("crumbs") for rec in site_index.values() if rec.get("crumbs")]
     cat_list, path_id_map = build_categories_from_paths(all_paths)
     print(f"[cats] built: {len(cat_list)}")
 
-    # 7) мёрдж (только с фото)
+    # 7) мёрдж (с фото)
     offers: List[Tuple[int,Dict[str,Any]]] = []
     seen_offer_ids: Set[str] = set()
 
@@ -555,7 +531,7 @@ def main() -> int:
     return 0
 
 if __name__ == "__main__":
-    import sys
+    import sys, xml.etree.ElementTree as ET  # ET нужен для типизации в некоторых средах
     try:
         sys.exit(main())
     except Exception as e:
