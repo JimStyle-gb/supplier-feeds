@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # нужно для pull --rebase перед push
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -32,17 +32,21 @@ jobs:
           fi
           echo "Using keywords:" && cat docs/copyline_keywords.txt
 
-      - name: Build feed (XLSX + crawl site for photos, full descriptions, breadcrumbs)
+      - name: Build feed (XLSX + targeted category crawl)
         env:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
+
           HTTP_TIMEOUT: "25"
-          REQUEST_DELAY_MS: "150"
-          MIN_BYTES: "1000"
-          MAX_SITEMAP_URLS: "20000"
-          MAX_VISIT_PAGES: "6000"
+          REQUEST_DELAY_MS: "120"
+          MIN_BYTES: "900"
+
+          # Ограничители, чтобы укладываться по времени
+          MAX_CRAWL_MINUTES: "60"     # мягкий лимит краулера
+          MAX_CATEGORY_PAGES: "1200"  # максимум страниц категорий
+          MAX_WORKERS: "6"            # потоки для карточек
         run: |
           python scripts/build_copyline.py
 
@@ -59,9 +63,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update copyline.yml (XLSX + photos + full descriptions + site categories)"
-
-          git pull --rebase origin "$BRANCH_NAME" || \
-          (echo "Rebase failed, trying merge with ours preference" && git pull --no-rebase -X ours origin "$BRANCH_NAME")
-
+          git commit -m "Update copyline.yml (startswith keywords + targeted category crawl)"
+          git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
