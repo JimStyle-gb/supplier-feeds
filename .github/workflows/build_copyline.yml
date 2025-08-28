@@ -1,33 +1,31 @@
 name: build_copyline
 
 on:
-  workflow_dispatch: {}
-
-permissions:
-  contents: write
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install pandas openpyxl requests beautifulsoup4 lxml
+          pip install pandas openpyxl beautifulsoup4 requests lxml html5lib
 
       - name: Ensure keywords file exists
         run: |
           mkdir -p docs
-          if [ ! -s docs/copyline_keywords.txt ]; then
+          if [ ! -f docs/copyline_keywords.txt ]; then
             printf '%s\n' \
               'drum' \
               'девелопер' \
@@ -39,8 +37,7 @@ jobs:
               'тонер-картридж' \
               > docs/copyline_keywords.txt
           fi
-          echo "Using keywords:"
-          cat docs/copyline_keywords.txt
+          echo "Using keywords:" && cat docs/copyline_keywords.txt
 
       - name: Build feed
         env:
@@ -48,16 +45,17 @@ jobs:
           KEYWORDS_FILE: docs/copyline_keywords.txt
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
-          HTTP_TIMEOUT: "25"
-          REQUEST_DELAY_MS: "120"
-          MIN_BYTES: "900"
-          ALLOW_PREFIX_BRANDS: "ripo,hp,canon,samsung,xerox,brother,pantum,lexmark,kyocera,konica,minolta,ricoh,panasonic"
-          MAX_SITEMAP_URLS: "12000"
-          MAX_VISIT_PAGES: "3500"
+          HTTP_TIMEOUT: 25
+          REQUEST_DELAY_MS: 120
+          MIN_BYTES: 900
+          # разрешаем бренд перед ключевым словом
+          ALLOW_PREFIX_BRANDS: ripo,hp,canon,samsung,xerox,brother,pantum,lexmark,kyocera,konica,minolta,ricoh,panasonic
+          MAX_SITEMAP_URLS: 12000
+          MAX_VISIT_PAGES: 2500
         run: |
           python scripts/build_copyline.py
 
-      - name: Commit & push feed
+      - name: Commit & push changes
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -65,8 +63,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            BRANCH="${GITHUB_REF_NAME:-main}"
-            git pull --rebase origin "$BRANCH" || true
-            git commit -m "Update copyline.yml (XLSX + photos + full descriptions + site categories)"
+            git pull --rebase
+            git commit -m "Update copyline.yml"
             git push
           fi
