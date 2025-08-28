@@ -1,66 +1,141 @@
 # -*- coding: utf-8 -*-
 """
-Copyline feed builder:
-- Read XLSX (auto-detect header row on each sheet; find Name/Price/SKU)
-- Keep only items whose NAME starts with a keyword (allow leading brand like 'ripo ')
-- Crawl product pages for picture, full description, breadcrumbs
-- Emit YML for Satu
+Copyline → Satu YML (строго по началу названия + широкий охват категорий):
+- Из XLSX берём только те строки, где НАЗВАНИЕ НАЧИНАЕТСЯ с одного из ключевых слов:
+  ["drum","девелопер","драм","кабель сетевой","картридж","термоблок","термоэлемент","тонер-картридж"].
+- Фото и ПОЛНОЕ описание тянем из карточек сайта; категории — по хлебным крошкам.
+- Поиск категорий расширен: морфологии/синонимы ТОЛЬКО для ссылок категорий (на товары не влияет).
+
+Зависимости: requests, beautifulsoup4, openpyxl
 """
 
-import os, re, io, time, html, hashlib, random
-from typing import List, Dict, Tuple, Optional
-import requests, pandas as pd
+from __future__ import annotations
+import os, re, io, time, html, hashlib
+from typing import Any, Dict, List, Optional, Tuple, Set
+from urllib.parse import urljoin
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timedelta
+
+import requests
 from bs4 import BeautifulSoup
+from openpyxl import load_workbook
 
-BASE = "https://copyline.kz"
-XLSX_URL = os.environ.get("XLSX_URL", f"{BASE}/files/price-CLA.xlsx")
-KEYWORDS_FILE = os.environ.get("KEYWORDS_FILE", "docs/copyline_keywords.txt")
-OUT_FILE = os.environ.get("OUT_FILE", "docs/copyline.yml")
-OUTPUT_ENCODING = os.environ.get("OUTPUT_ENCODING", "windows-1251")
-HTTP_TIMEOUT = int(os.environ.get("HTTP_TIMEOUT", "25"))
-REQUEST_DELAY_MS = int(os.environ.get("REQUEST_DELAY_MS", "120"))
-MIN_BYTES = int(os.environ.get("MIN_BYTES", "900"))
-ALLOW_PREFIX_BRANDS = [w.strip().lower() for w in os.environ.get(
-    "ALLOW_PREFIX_BRANDS",
-    "ripo,hp,canon,samsung,xerox,brother,pantum,lexmark,kyocera,konica,minolta,ricoh,panasonic"
-).split(",") if w.strip()]
-MAX_SITEMAP_URLS = int(os.environ.get("MAX_SITEMAP_URLS", "12000"))
-MAX_VISIT_PAGES = int(os.environ.get("MAX_VISIT_PAGES", "2500"))
+# ---------- ENV ----------
+BASE_URL           = "https://copyline.kz"
+XLSX_URL           = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
+KEYWORDS_FILE      = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
+OUT_FILE           = os.getenv("OUT_FILE", "docs/copyline.yml")
+OUTPUT_ENCODING    = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-ROOT_CAT_ID = 9300000
-ROOT_CAT_NAME = "Copyline"
-UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+HTTP_TIMEOUT       = float(os.getenv("HTTP_TIMEOUT", "25"))
+REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "120"))
+MIN_BYTES          = int(os.getenv("MIN_BYTES", "900"))
 
-# ---------- utils ----------
-def sleep_jitter(ms: int):
-    base = ms / 1000.0
-    time.sleep(max(0.0, base + random.uniform(-0.12, 0.12)*base))
+MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
+MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "1200"))
+MAX_WORKERS        = int(os.getenv("MAX_WORKERS", "6"))
+
+SUPPLIER_NAME      = "Copyline"
+CURRENCY           = "KZT"
+
+ROOT_CAT_ID        = 9300000
+ROOT_CAT_NAME      = "Copyline"
+
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/1.8-targeted)"}
+
+# ---------- утилиты ----------
+def jitter_sleep(ms: int) -> None:
+    time.sleep(max(0.0, ms/1000.0))
 
 def http_get(url: str) -> Optional[bytes]:
     try:
-        r = requests.get(url, headers={"User-Agent": UA}, timeout=HTTP_TIMEOUT)
-        if r.status_code != 200:
-            print(f"[warn] {r.status_code} {url}")
-            return None
-        if len(r.content) < MIN_BYTES:
-            print(f"[warn] too small {len(r.content)}B {url}")
-            return None
-        return r.content
-    except Exception as e:
-        print(f"[err] GET {url} -> {e}")
+        r = requests.get(url, headers=UA, timeout=HTTP_TIMEOUT)
+        if r.status_code != 200: return None
+        b = r.content
+        if len(b) < MIN_BYTES:   return None
+        return b
+    except Exception:
         return None
 
-def soup(html_bytes: bytes) -> BeautifulSoup:
-    return BeautifulSoup(html_bytes, "html.parser")
+def soup_of(b: bytes) -> BeautifulSoup: return BeautifulSoup(b, "html.parser")
+def yml_escape(s: str) -> str: return html.escape(s or "")
+def sha1(s: str) -> str: return hashlib.sha1(s.encode("utf-8")).hexdigest()
+def key_norm(v: str) -> str: return re.sub(r"[^A-Za-z0-9]+", "", v or "").upper()
 
-def clean(s: str) -> str:
-    s = html.unescape(s or "")
-    return re.sub(r"\s+", " ", s).strip()
+def sanitize_title(s: str) -> str:
+    if not s: return ""
+    s = re.sub(r"\s*\((?:Артикул|SKU|Код)\s*[:#]?\s*[^)]+\)\s*$", "", s, flags=re.I)
+    s = re.sub(r"\s{2,}", " ", s).strip()
+    return s[:200].rstrip()
 
-def normalize_img_to_full(u: str) -> str:
-    if not u: return ""
+def to_number(x: Any) -> Optional[float]:
+    if x is None: return None
+    s = str(x).replace("\xa0"," ").strip().replace(" ","").replace(",",".")
+    if not re.search(r"\d", s): return None
+    try: return float(s)
+    except Exception:
+        m = re.search(r"[\d.]+", s)
+        return float(m.group(0)) if m else None
+
+# ---------- ключевые слова ----------
+def load_keywords(path: str) -> List[str]:
+    kws: List[str] = []
+    if os.path.isfile(path):
+        with io.open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                s = line.strip()
+                if s and not s.startswith("#"):
+                    kws.append(s)
+    if not kws:
+        kws = ["drum","девелопер","драм","кабель сетевой","картридж","термоблок","термоэлемент","тонер-картридж"]
+    return kws
+
+def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
+    pats: List[re.Pattern] = []
+    for kw in kws:
+        esc = re.escape(kw).replace(r"\ ", " ")
+        pats.append(re.compile(r"^\s*" + esc + r"(?!\w)", re.I))
+    return pats
+
+def title_startswith_strict(title: str, patterns: List[re.Pattern]) -> bool:
+    if not title: return False
+    return any(p.search(title) for p in patterns)
+
+# ---------- XLSX (двухстрочная шапка) ----------
+def fetch_xlsx_bytes(url: str) -> bytes:
+    r = requests.get(url, headers=UA, timeout=HTTP_TIMEOUT)
+    r.raise_for_status()
+    return r.content
+
+def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60):
+    def low(x): return str(x or "").strip().lower()
+    for i in range(min(scan_rows, len(rows)-1)):
+        row0 = [low(c) for c in rows[i]]
+        row1 = [low(c) for c in rows[i+1]]
+        if any("номенклатура" in c for c in row0):
+            name_col = next((j for j,c in enumerate(row0) if "номенклатура" in c), None)
+            vendor_col = next((j for j,c in enumerate(row1) if "артикул" in c), None)
+            price_col  = next((j for j,c in enumerate(row1) if "цена" in c or "опт" in c), None)
+            if name_col is not None and vendor_col is not None and price_col is not None:
+                return i, i+1, {"name": name_col, "vendor_code": vendor_col, "price": price_col}
+    return -1, -1, {}
+
+def extract_sku_from_name(name: str) -> Optional[str]:
+    t = name.upper()
+    tokens = re.findall(r"[A-ZА-Я0-9]{2,}(?:[-/–][A-ZА-Я0-9]{2,})?", t)
+    for tok in tokens:
+        if re.search(r"[A-ZА-Я]", tok) and re.search(r"\d", tok):
+            return tok.replace("–","-").replace("/","-")
+    return None
+
+# ---------- карточка ----------
+PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
+
+def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
+    if not url: return None
+    u = url.strip()
     if u.startswith("//"): u = "https:" + u
-    if u.startswith("/"): u = BASE + u
+    if u.startswith("/"):  u = BASE_URL + u
     m = re.match(r"^(https?://[^/]+)(/.*/)([^/]+)$", u)
     if not m: return u
     host, path, fname = m.groups()
@@ -69,380 +144,448 @@ def normalize_img_to_full(u: str) -> str:
     else: fname = "full_" + fname
     return f"{host}{path}{fname}"
 
-# ---------- XLSX ----------
-NAME_ALIASES = ["наименование товара","наименование","название","товар","продукт","номенклатура","позиция","описание","модель","item","product","name"]
-PRICE_ALIASES = ["цена","цена, тг","цена тг","цена (тг)","цена, тг., с ндс","цена с ндс","розничная цена","стоимость","price","цена kzt","цена в тенге"]
-SKU_ALIASES   = ["артикул","код","код товара","vendorcode","sku","part","партномер","pn"]
-
-def _norm_head(x)->str:
-    s = str(x or "").strip().lower()
-    s = re.sub(r"\s+"," ", s).replace("ё","е")
-    return s
-
-def _num_series(sr: pd.Series) -> pd.Series:
-    if pd.api.types.is_numeric_dtype(sr):
-        return pd.to_numeric(sr, errors="coerce")
-    s = sr.astype(str).str.strip()
-    s = s.str.replace(r"[^\d,.\- ]", "", regex=True).str.replace(" ","", regex=False)
-    def _fix(x):
-        return x.replace(",", "") if ("," in x and "." in x) else x.replace(",", ".")
-    s = s.apply(_fix)
-    return pd.to_numeric(s, errors="coerce")
-
-def _pick_alias(df: pd.DataFrame, aliases: List[str]) -> Optional[str]:
-    low = {_norm_head(c): c for c in df.columns}
-    for a in aliases:
-        an = _norm_head(a)
-        for lc, real in low.items():
-            if lc == an or lc.startswith(an):
-                return real
+def extract_full_description(s: BeautifulSoup) -> Optional[str]:
+    selectors = [
+        '[itemprop="description"]',
+        '.jshop_prod_description', '.product_description', '.prod_description',
+        '.productfull', '#description', '.tab-content .description', '.tabs .description',
+    ]
+    for sel in selectors:
+        el = s.select_one(sel)
+        if el and el.get_text(strip=True):
+            return el.get_text(" ", strip=True)
+    for c in s.select('.product, .productpage, .product-info, #content, .content'):
+        txt = c.get_text(" ", strip=True)
+        if txt and len(txt) > 60:
+            return txt
     return None
 
-def _guess_price(df: pd.DataFrame)->Optional[str]:
-    best,score=None,-1.0
-    for c in df.columns:
-        serie = _num_series(df[c])
-        pos = (serie>0).sum()
-        sc = pos/max(1,len(serie))
-        if sc>score:
-            best,score=c,sc
-    return best
+def extract_breadcrumbs(s: BeautifulSoup) -> List[str]:
+    names: List[str] = []
+    for bc in s.select('ul.breadcrumb, .breadcrumbs, .breadcrumb, .pathway, [class*="breadcrumb"], [class*="pathway"]'):
+        for a in bc.find_all("a"):
+            t = a.get_text(" ", strip=True)
+            if not t: continue
+            tl = t.lower()
+            if tl in ("главная","home"): continue
+            names.append(t.strip())
+        if names: break
+    return [n for n in names if n]
 
-def _guess_name(df: pd.DataFrame)->Optional[str]:
-    best,score=None,-1.0
-    for c in df.columns:
-        s=df[c].astype(str)
-        nonnum=(s.str.contains(r"[A-Za-zА-Яа-я]", regex=True)).mean()
-        avg=s.str.len().mean()
-        sc=nonnum*avg
-        if sc>score:
-            best,score=c,sc
-    return best
+def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str]]]:
+    jitter_sleep(REQUEST_DELAY_MS)
+    b = http_get(url)
+    if not b: return None
+    s = soup_of(b)
 
-def _reheader(raw: pd.DataFrame)->pd.DataFrame:
-    """Try to find a header row within first ~10 rows; else return as-is with current header."""
-    df=raw.copy()
-    # if it already looks good -> return
-    if _pick_alias(df, NAME_ALIASES) or _pick_alias(df, PRICE_ALIASES):
-        return df
-    scan=min(10,len(df))
-    for i in range(scan):
-        row = [str(x).strip() for x in df.iloc[i].tolist()]
-        if any(_norm_head(x) for x in row):
-            new = df.iloc[i+1:].copy()
-            new.columns = row
-            if _pick_alias(new, NAME_ALIASES) or _pick_alias(new, PRICE_ALIASES):
-                return new
-    return df
+    # SKU
+    sku = None
+    skuel = s.find(attrs={"itemprop": "sku"})
+    if skuel:
+        val = (skuel.get_text(" ", strip=True) or "").strip()
+        if val: sku = val
+    if not sku:
+        for lab in ["артикул", "sku", "код товара", "код"]:
+            node = s.find(string=lambda t: t and lab in t.lower())
+            if node:
+                val = (node.parent.get_text(" ", strip=True) if node.parent else str(node)).strip()
+                m = re.search(r"([A-Za-z0-9\-\._/]{2,})", val)
+                if m:
+                    sku = m.group(1); break
+    if not sku:
+        txt = s.get_text(" ", strip=True)
+        m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", txt, flags=re.I)
+        if m: sku = m.group(1)
+    if not sku: return None
 
-def read_xlsx(url:str)->pd.DataFrame:
-    b=http_get(url)
-    if not b: raise RuntimeError("Не удалось скачать XLSX.")
-    x=pd.ExcelFile(io.BytesIO(b), engine="openpyxl")
-    best=None; picked=None
-    for sh in x.sheet_names:
-        try:
-            raw=x.parse(sheet_name=sh, header=0, dtype=object)
-        except:
-            raw=x.parse(sheet_name=sh, header=None, dtype=object)
-        if raw is None or raw.empty: continue
-        df=_reheader(raw).dropna(how="all",axis=0).dropna(how="all",axis=1)
-        if df.empty: continue
-        name_col=_pick_alias(df,NAME_ALIASES) or _guess_name(df)
-        price_col=_pick_alias(df,PRICE_ALIASES) or _guess_price(df)
-        sku_col=_pick_alias(df,SKU_ALIASES)
-        if not name_col or not price_col:  # sheet not suitable
-            continue
-        tmp=pd.DataFrame({
-            "name": df[name_col].astype(str).str.strip(),
-            "price": _num_series(df[price_col]),
-            "sku": (df[sku_col].astype(str) if sku_col else "")
-        })
-        tmp=tmp[(tmp["name"]!="") & (tmp["price"].fillna(0)>0)]
-        if tmp.empty: continue
-        if best is None or len(tmp)>len(best):
-            best=tmp.reset_index(drop=True); picked=sh
-    if best is None:
-        raise RuntimeError("Нет обязательных столбцов 'Название'/'Цена' (ни на одном листе).")
-    print(f"[xls] sheet: {picked}, rows: {len(best)}")
-    return best
+    # picture
+    src = None
+    imgel = s.find("img", id=re.compile(r"^main_image_", re.I))
+    if imgel and (imgel.get("src") or imgel.get("data-src")):
+        src = imgel.get("src") or imgel.get("data-src")
+    if not src:
+        ogi = s.find("meta", attrs={"property": "og:image"})
+        if ogi and ogi.get("content"):
+            src = ogi["content"].strip()
+    if not src:
+        for img in s.find_all("img"):
+            src_try = img.get("src") or img.get("data-src") or ""
+            if any(k in src_try for k in ["img_products", "/products/", "/img/"]):
+                src = src_try; break
+    if not src: return None
+    pic = normalize_img_to_full(urljoin(url, src))
 
-# ---------- keywords: startswith (+brand prefix allowed) ----------
-def load_keywords(path:str)->List[str]:
-    try:
-        return [ln.strip() for ln in open(path,"r",encoding="utf-8") if ln.strip() and not ln.strip().startswith("#")]
-    except FileNotFoundError:
-        return []
+    desc = extract_full_description(s) or ""
+    crumbs = extract_breadcrumbs(s)
+    return sku, pic, desc, crumbs
 
-def build_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
-    brand = ""
-    if ALLOW_PREFIX_BRANDS:
-        brand = r"(?:\s*(?:%s)\s+)?" % "|".join(re.escape(b) for b in ALLOW_PREFIX_BRANDS)
-    pats=[]
-    for kw in kws:
-        kw=re.escape(kw.strip())
-        # ^(optional brand) + keyword + word boundary or non-word breaker
-        pats.append(re.compile(r"^\s*"+brand+kw+r"(?:\b|[^0-9A-Za-zА-Яа-я])", re.I))
-    return pats
+# ---------- категории: расширенный отбор ----------
+# Доп. подсказки ТОЛЬКО для поиска категорий (морфологии/синонимы):
+CATEGORY_HINTS = [
+    # рус/eng базовые
+    "драм", "drum", "картридж", "тонер", "тонер-картридж", "девелопер",
+    "фьюзер", "узел закрепления", "термоблок", "термоэлемент",
+    "кабель", "сетевой", "cable", "developer", "fuser",
+]
 
-def startswith_keyword(name:str, pats:List[re.Pattern])->bool:
-    s=name.strip()
-    for p in pats:
-        m=p.search(s)
-        if m and m.start()==0:
+def text_contains_hint(t: str) -> bool:
+    tl = t.lower()
+    return any(h in tl for h in CATEGORY_HINTS)
+
+def anchor_text_matches_for_category(text: str, user_keywords: List[str]) -> bool:
+    """
+    Для КАТЕГОРИЙ допускаем морфологии/синонимы, чтобы дойти до нужных карточек.
+    Для ТОВАРОВ по-прежнему действует строгий startswith.
+    """
+    if not text: return False
+    t = text.strip().lower()
+
+    # 1) точное слово-основа + допускаем окончание (только для категорий)
+    for kw in user_keywords:
+        esc = re.escape(kw).replace(r"\ ", " ")
+        # начало слова + возможные окончания (пару букв)
+        rx = re.compile(r"(?<!\w)" + esc + r"(?:[a-zа-я\-]{0,6})?(?!\w)", re.IGNORECASE)
+        if rx.search(t):
             return True
+
+    # 2) общие подсказки/синонимы
+    if text_contains_hint(t):
+        return True
+
     return False
 
-# ---------- tokens / mapping ----------
-def extract_tokens(text:str)->List[str]:
-    t=str(text or "").upper()
-    out=set()
-    for m in re.findall(r"\b[A-ZА-Я0-9]{1,6}(?:-[A-ZА-Я0-9]{1,6}){0,3}\b", t):
-        if any(ch.isdigit() for ch in m) and len(m)>=3:
-            out.add(m)
-    for m in re.findall(r"\bC-EXV\d{1,3}\b", t):
-        out.add(m)
-    return list(out)
+def discover_relevant_category_urls() -> List[str]:
+    """Сканируем стартовые страницы и собираем ссылки на категории по тексту/слугам."""
+    seeds = [f"{BASE_URL}/", f"{BASE_URL}/goods.html"]
+    pages = []
+    for u in seeds:
+        b = http_get(u)
+        if b: pages.append((u, soup_of(b)))
+    if not pages:
+        return []
 
-def nrm(s:str)->str:
-    return re.sub(r"[^0-9a-zа-я]", "", s.lower())
+    kws = load_keywords(KEYWORDS_FILE)
 
-# ---------- site crawl ----------
-def fetch_sitemap_urls()->List[str]:
-    seen=set(); out=[]
-    def grab(u:str):
-        if u in seen or len(out)>=MAX_SITEMAP_URLS: return
-        seen.add(u)
-        b=http_get(u); 
-        if not b: return
-        sp=BeautifulSoup(b,"xml")
-        for loc in sp.find_all("loc"):
-            s=loc.get_text(strip=True)
-            if not s: continue
-            if s.endswith(".xml"): grab(s)
-            else: out.append(s)
-    grab(f"{BASE}/sitemap.xml")
-    return list(dict.fromkeys(out))
+    urls: List[str] = []
+    seen: Set[str] = set()
+    for base, s in pages:
+        for a in s.find_all("a", href=True):
+            txt = a.get_text(" ", strip=True) or ""
+            href = a["href"]
+            absu = urljoin(base, href)
+            if "copyline.kz" not in absu: 
+                continue
+            # фильтруем только каталог
+            if "/goods/" not in absu and not absu.endswith("/goods.html"):
+                continue
 
-def parse_product(url:str)->Optional[Dict]:
-    sleep_jitter(REQUEST_DELAY_MS)
-    b=http_get(url); 
-    if not b: return None
-    sp=soup(b)
-    h1=sp.find("h1")
-    name=clean(h1.get_text(" ",strip=True)) if h1 else clean(sp.title.get_text(" ",strip=True)) if sp.title else ""
-    if not name: return None
-    img = sp.find("img", attrs={"id": re.compile(r"^main_image_")}) or sp.find("img", attrs={"itemprop": "image"})
-    if not img:
-        for c in sp.find_all("img"):
-            src=c.get("src") or c.get("data-src") or ""
-            if "img_products" in src:
-                img=c; break
-        if not img:
-            imgs=sp.find_all("img"); img=imgs[0] if imgs else None
-    pic=""
-    if img:
-        src=img.get("src") or img.get("data-src") or ""
-        pic=normalize_img_to_full(src)
-    desc=""
-    for cls in ["jshop_prod_description","product_description","prod_description","description"]:
-        el=sp.find(True, class_=lambda c: c and cls in c)
-        if el: 
-            desc=clean(el.get_text(" ",strip=True)); 
-            if desc: break
-    if not desc:
-        main=sp.find("div", {"id":"content"}) or sp.find("div", {"class": re.compile("content|product", re.I)})
-        if main: desc=clean(main.get_text(" ",strip=True))[:4000]
-    cats=[]
-    bc=sp.find("ul", class_=re.compile("breadcrumb"))
-    if bc:
-        for a in bc.find_all("a"):
-            t=clean(a.get_text(" ",strip=True))
-            if t and t.lower() not in ("главная","home","наш каталог","наши товары"):
-                cats.append(t)
-    cats=[c for c in cats if len(c)>=2][:5]
-    return {"url":url,"name":name,"picture":pic,"description":desc,"categories":cats}
+            ok = False
+            if anchor_text_matches_for_category(txt, kws):
+                ok = True
+            else:
+                # проверим слаг ссылки
+                slug = absu.lower()
+                if any(h in slug for h in ["drum", "developer", "fuser", "toner", "cartridge", "cable",
+                                           "драм", "девелопер", "фьюзер", "термоблок", "термоэлемент", "кабель"]):
+                    ok = True
 
-def fetch_pages_for_tokens(tokens_norm:set)->Dict[str,Dict]:
-    urls=[u for u in fetch_sitemap_urls() if "/goods/" in u][:MAX_SITEMAP_URLS]
-    def ok(u:str)->bool:
-        path=u.lower()
-        pn=nrm(path)
-        if any(t in pn for t in tokens_norm): return True
-        for hint in ["drum","dr-","drunit","toner","cartridge","tn-","developer","cable","kabel","kab","patch","fuser","termoblock","termo","heater"]:
-            if hint in path: return True
-        return False
-    cand=[u for u in urls if ok(u)][:MAX_VISIT_PAGES]
-    print(f"[site] goods in sitemap: {len(urls)}, to visit: {len(cand)}")
-    data={}
-    for i,u in enumerate(cand,1):
-        p=parse_product(u)
-        if p and p.get("name"): data[u]=p
-        if i%50==0: print(f"[site] parsed {i}/{len(cand)}")
-    return data
+            if ok and absu not in seen:
+                seen.add(absu); urls.append(absu)
+
+    # на всякий случай — несколько известных веток
+    urls.extend([
+        f"{BASE_URL}/goods/toner-cartridges-brother.html",
+        f"{BASE_URL}/goods/drum-units.html",
+        f"{BASE_URL}/goods/developer.html",
+        f"{BASE_URL}/goods/fuser.html",
+        f"{BASE_URL}/goods/cables.html",
+    ])
+    # уникализируем
+    return list(dict.fromkeys(urls))
+
+def category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
+    ln = s.find("link", attrs={"rel": "next"})
+    if ln and ln.get("href"):
+        return urljoin(page_url, ln["href"])
+    a = s.find("a", class_=lambda c: c and "next" in c.lower())
+    if a and a.get("href"):
+        return urljoin(page_url, a["href"])
+    for a in s.find_all("a", href=True):
+        txt = (a.get_text(" ", strip=True) or "").lower()
+        if txt in ("следующая", "вперед", "вперёд", "next", ">"):
+            return urljoin(page_url, a["href"])
+    return None
+
+def collect_product_urls_from_category(cat_url: str, limit_pages: int) -> List[str]:
+    urls: List[str] = []
+    seen_pages: Set[str] = set()
+    page = cat_url
+    pages_done = 0
+
+    while page and pages_done < limit_pages:
+        if page in seen_pages: break
+        seen_pages.add(page)
+        jitter_sleep(REQUEST_DELAY_MS)
+        b = http_get(page)
+        if not b: break
+        s = soup_of(b)
+        for a in s.find_all("a", href=True):
+            absu = urljoin(page, a["href"])
+            if PRODUCT_RE.search(absu):
+                urls.append(absu)
+        page = category_next_url(s, page)
+        pages_done += 1
+
+    return list(dict.fromkeys(urls))
+
+# ---------- категории по крошкам ----------
+def stable_cat_id(text: str, prefix: int = 9400000) -> int:
+    h = hashlib.md5(text.encode("utf-8")).hexdigest()[:6]
+    return prefix + int(h, 16)
+
+def build_categories_from_paths(paths: List[List[str]]) -> Tuple[List[Tuple[int,str,Optional[int]]], Dict[Tuple[str,...], int]]:
+    cat_map: Dict[Tuple[str,...], int] = {}
+    out_list: List[Tuple[int,str,Optional[int]]] = []
+    for path in paths:
+        clean = [p.strip() for p in path if p and p.strip()]
+        clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
+        if not clean: continue
+        parent_id = ROOT_CAT_ID
+        prefix: List[str] = []
+        for name in clean:
+            prefix.append(name)
+            key = tuple(prefix)
+            if key in cat_map:
+                parent_id = cat_map[key]; continue
+            cid = stable_cat_id(" / ".join(prefix))
+            cat_map[key] = cid
+            out_list.append((cid, name, parent_id))
+            parent_id = cid
+    return out_list, cat_map
 
 # ---------- YML ----------
-def slug(text:str)->str:
-    t=text.strip().lower()
-    t=re.sub(r"[^\w\s-]+","",t); t=re.sub(r"\s+","-",t); t=re.sub(r"-{2,}","-",t)
-    return (t.strip("-")[:80] or "item")
-
-def stable_id(seed:str, prefix:int=9400000)->int:
-    h=hashlib.md5(seed.encode("utf-8")).hexdigest()[:6]
-    return prefix+int(h,16)
-
-def price_str(x:float)->str:
-    return str(int(x)) if float(x).is_integer() else f"{x:.2f}".rstrip("0").rstrip(".")
-
-def yml(categories: List[Tuple[int,str,int]], offers: List[Dict])->str:
-    out=[]
+def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple[int,Dict[str,Any]]]) -> str:
+    out: List[str] = []
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
     out.append("<yml_catalog><shop>")
-    out.append("<name>copyline</name>")
-    out.append("<currencies><currency id=\"KZT\" rate=\"1\" /></currencies>")
+    out.append(f"<name>{yml_escape(SUPPLIER_NAME.lower())}</name>")
+    out.append('<currencies><currency id="KZT" rate="1" /></currencies>')
+
     out.append("<categories>")
-    out.append(f"<category id=\"{ROOT_CAT_ID}\">{html.escape(ROOT_CAT_NAME)}</category>")
-    for cid,cname,parent in categories:
-        out.append(f"<category id=\"{cid}\" parentId=\"{parent}\">{html.escape(cname)}</category>")
+    out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
+    for cid, name, parent in categories:
+        parent = parent if parent else ROOT_CAT_ID
+        out.append(f"<category id=\"{cid}\" parentId=\"{parent}\">{yml_escape(name)}</category>")
     out.append("</categories>")
+
     out.append("<offers>")
-    for o in offers:
-        oid=f"copyline:{slug(o['name'])}:{hashlib.md5((o['url']+o.get('sku','')).encode()).hexdigest()[:8]}"
-        out.append(f"<offer id=\"{oid}\" available=\"true\" in_stock=\"true\">")
-        out.append(f"<name>{html.escape(o['name'])}</name>")
-        out.append("<vendor>Copyline</vendor>")
-        if o.get("sku"): out.append(f"<vendorCode>{html.escape(o['sku'])}</vendorCode>")
-        out.append(f"<price>{price_str(o['price'])}</price>")
-        out.append("<currencyId>KZT</currencyId>")
-        out.append(f"<categoryId>{o['categoryId']}</categoryId>")
-        out.append(f"<url>{html.escape(o['url'])}</url>")
-        if o.get("picture"): out.append(f"<picture>{html.escape(o['picture'])}</picture>")
-        if o.get("description"): out.append(f"<description>{html.escape(o['description'])}</description>")
-        out.append("<quantity_in_stock>1</quantity_in_stock><stock_quantity>1</stock_quantity><quantity>1</quantity>")
-        out.append("</offer>")
-    out.append("</offers></shop></yml_catalog>")
+    for cid, it in offers:
+        price = it["price"]
+        price_txt = str(int(price)) if float(price).is_integer() else f"{price}"
+        out += [
+            f"<offer id=\"{yml_escape(it['offer_id'])}\" available=\"true\" in_stock=\"true\">",
+            f"<name>{yml_escape(it['title'])}</name>",
+            f"<vendor>{yml_escape(it.get('brand') or SUPPLIER_NAME)}</vendor>",
+            f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>",
+            f"<price>{price_txt}</price>",
+            "<currencyId>KZT</currencyId>",
+            f"<categoryId>{cid}</categoryId>",
+        ]
+        if it.get("url"): out.append(f"<url>{yml_escape(it['url'])}</url>")
+        if it.get("picture"): out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
+        desc = it.get("description") or it["title"]
+        out.append(f"<description>{yml_escape(desc)}</description>")
+        out += ["<quantity_in_stock>1</quantity_in_stock>", "<stock_quantity>1</stock_quantity>", "<quantity>1</quantity>", "</offer>"]
+    out.append("</offers>")
+
+    out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
-# ---------- main ----------
-def extract_tokens(text:str)->List[str]:
-    t=str(text or "").upper()
-    out=set()
-    for m in re.findall(r"\b[A-ZА-Я0-9]{1,6}(?:-[A-ZА-Я0-9]{1,6}){0,3}\b", t):
-        if any(ch.isdigit() for ch in m) and len(m)>=3:
-            out.add(m)
-    for m in re.findall(r"\bC-EXV\d{1,3}\b", t):
-        out.add(m)
-    return list(out)
+# ---------- MAIN ----------
+def main() -> int:
+    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
 
-def nrm(s:str)->str:
-    return re.sub(r"[^0-9a-zа-я]", "", s.lower())
-
-def main():
     # 1) XLSX
-    df = read_xlsx(XLSX_URL)
+    xlsx_bytes = fetch_xlsx_bytes(XLSX_URL)
+    wb = load_workbook(io.BytesIO(xlsx_bytes), read_only=True, data_only=True)
+    sheet = max(wb.sheetnames, key=lambda n: wb[n].max_row * max(1, wb[n].max_column))
+    ws = wb[sheet]
+    rows = [[c for c in r] for r in ws.iter_rows(values_only=True)]
 
-    # 2) keywords
-    kws = load_keywords(KEYWORDS_FILE)
-    if not kws:
-        raise RuntimeError("Файл ключей пуст. Заполни docs/copyline_keywords.txt")
-    pats = build_startswith_patterns(kws)
+    row0, row1, idx = detect_header_two_row(rows)
+    if row0 < 0:
+        print("[error] Не удалось распознать шапку.")
+        return 2
+    data_start = row1 + 1
+    name_col, vendor_col, price_col = idx["name"], idx["vendor_code"], idx["price"]
 
-    df["__n"]=df["name"].astype(str).str.strip()
-    fdf=df[df["__n"].apply(lambda s: startswith_keyword(s, pats))].copy().drop(columns="__n")
-    if fdf.empty:
-        raise RuntimeError("После фильтрации по ключам не осталось товаров из XLSX.")
+    # 2) startswith-ключи (СТРОГО для товаров)
+    kw_list = load_keywords(KEYWORDS_FILE)
+    start_patterns = compile_startswith_patterns(kw_list)
 
-    # 3) collect tokens, crawl site
-    tokens=set()
-    for s in (fdf["name"].tolist()+fdf["sku"].tolist()):
-        for t in extract_tokens(s): tokens.add(t)
-    norm_tokens={nrm(t) for t in tokens if t.strip()}
+    xlsx_items: List[Dict[str,Any]] = []
+    want_keys: Set[str] = set()
 
-    pages=fetch_pages_for_tokens(norm_tokens)
-    if not pages:
-        raise RuntimeError("Не нашли ни одной карточки на сайте.")
+    for r in rows[data_start:]:
+        name_raw = r[name_col]
+        if not name_raw: continue
+        title = sanitize_title(str(name_raw).strip())
+        if not title_startswith_strict(title, start_patterns):
+            continue
 
-    token2urls={}
-    for u,p in pages.items():
-        for t in extract_tokens(p["name"]):
-            token2urls.setdefault(nrm(t), []).append(u)
+        price = to_number(r[price_col])
+        if price is None or price <= 0: continue
 
-    # 4) categories
-    cat_by_parent_name={}
-    categories_list=[]  # tuples (cid, name, parent_id)
+        v_raw = r[vendor_col]
+        vcode = (str(v_raw).strip() if v_raw is not None else "") or extract_sku_from_name(title) or ""
+        if not vcode: continue
 
-    def ensure_cat_path(path:List[str])->int:
-        parent_id=ROOT_CAT_ID
-        parent_name=ROOT_CAT_NAME
-        for cname in path:
-            key=(parent_id, cname)
-            if key not in cat_by_parent_name:
-                cid=stable_id(f"{parent_id}>{cname}", prefix=9400000)
-                cat_by_parent_name[key]=cid
-                categories_list.append((cid, cname, parent_id))
-            parent_id = cat_by_parent_name[key]
-            parent_name = cname
-        return parent_id
+        variants = { vcode, vcode.replace("-", "") }
+        if re.match(r"^[Cc]\d+$", vcode): variants.add(vcode[1:])
+        if re.match(r"^\d+$", vcode):     variants.add("C"+vcode)
+        for v in variants:
+            want_keys.add(key_norm(v))
 
-    # 5) match rows to pages
-    used=set()
-    def pick_url(row: pd.Series)->Optional[str]:
-        toks=extract_tokens(str(row.get("name",""))+" "+str(row.get("sku","")))
-        cand=[]
-        for t in toks:
-            for u in token2urls.get(nrm(t), []): cand.append(u)
-        if not cand:
-            rn=str(row["name"]).lower()
-            base=[kw.lower() for kw in kws if kw.lower() in rn][:2]
-            for u,p in pages.items():
-                h1=p["name"].lower()
-                if all(k in h1 for k in base): cand.append(u)
-        if not cand: return None
-        name_low=str(row["name"]).lower()
-        brand_hits=[b for b in ALLOW_PREFIX_BRANDS if b in name_low]
-        def score(u:str)->int:
-            sc=0
-            for t in toks:
-                if nrm(t) in nrm(u): sc+=len(t)
-            for b in brand_hits:
-                if b in u.lower(): sc+=3
-            return sc
-        cand=sorted(set(cand), key=lambda x:(-score(x), len(x)))
-        for u in cand:
-            if u not in used: return u
-        return cand[0]
-
-    offers=[]
-    for _,row in fdf.iterrows():
-        u=pick_url(row)
-        if not u: continue
-        p=pages.get(u); 
-        if not p: continue
-        # Check site title also starts with a keyword (+brand allowed)
-        if not startswith_keyword(p["name"], pats): continue
-        if not p.get("picture"): continue
-        cat_path=p.get("categories") or ["Наши товары"]
-        cat_id=ensure_cat_path(cat_path)
-        offers.append({
-            "name": p["name"],
-            "price": float(row["price"]),
-            "sku": str(row.get("sku","") or ""),
-            "url": u,
-            "picture": p["picture"],
-            "description": p.get("description",""),
-            "categoryId": cat_id
+        xlsx_items.append({
+            "title": title,
+            "price": float(f"{price:.2f}"),
+            "vendorCode_raw": vcode,
         })
-        used.add(u)
+
+    if not xlsx_items:
+        print("[error] После фильтра по startswith/цене нет позиций.")
+        return 2
+    print(f"[xls] candidates (startswith): {len(xlsx_items)}, distinct keys: {len(want_keys)}")
+
+    # 3) расширенный поиск категорий
+    cats = discover_relevant_category_urls()
+    if not cats:
+        print("[error] Не нашли релевантных категорий.")
+        return 2
+    print(f"[cats] relevant categories: {len(cats)}")
+
+    # 4) собираем URL карточек из этих категорий (с пагинацией)
+    product_urls: List[str] = []
+    pages_budget = max(1, MAX_CATEGORY_PAGES // max(1, len(cats)))
+    for cu in cats:
+        urls = collect_product_urls_from_category(cu, pages_budget)
+        product_urls.extend(urls)
+    product_urls = list(dict.fromkeys(product_urls))
+    print(f"[crawl] product urls from categories: {len(product_urls)}")
+
+    # 5) парсим карточки
+    def worker(u: str):
+        if datetime.utcnow() > deadline: return None
+        try:
+            parsed = parse_product_page(u)
+            if not parsed: return None
+            sku, pic, desc, crumbs = parsed
+            raw = sku.strip()
+            keys = { key_norm(raw), key_norm(raw.replace("-", "")) }
+            if re.match(r"^[Cc]\d+$", raw): keys.add(key_norm(raw[1:]))
+            if re.match(r"^\d+$",  raw):    keys.add(key_norm("C"+raw))
+            return keys, {"url": u, "pic": pic, "desc": desc, "crumbs": crumbs}
+        except Exception:
+            return None
+
+    site_index: Dict[str, Dict[str, Any]] = {}
+    matched_keys: Set[str] = set()
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
+        futures = { ex.submit(worker, u): u for u in product_urls }
+        for fut in as_completed(futures):
+            if datetime.utcnow() > deadline:
+                break
+            out = fut.result()
+            if not out: continue
+            keys, payload = out
+            useful = [k for k in keys if k in want_keys and k not in matched_keys]
+            if not useful: 
+                continue
+            for k in useful:
+                site_index[k] = payload
+                matched_keys.add(k)
+            if len(matched_keys) % 50 == 0:
+                print(f"[match] keys matched: {len(matched_keys)} / {len(want_keys)}")
+            if matched_keys >= want_keys:
+                print("[match] all wanted keys found.")
+                break
+
+    print(f"[index] matched keys total: {len(matched_keys)}")
+
+    # 6) категории (по крошкам)
+    all_paths = [rec.get("crumbs") for rec in site_index.values() if rec.get("crumbs")]
+    cat_list, path_id_map = build_categories_from_paths(all_paths)
+    print(f"[cats] built: {len(cat_list)}")
+
+    # 7) мёрдж (только с фото)
+    offers: List[Tuple[int,Dict[str,Any]]] = []
+    seen_offer_ids: Set[str] = set()
+
+    for it in xlsx_items:
+        raw_v = it["vendorCode_raw"]
+        candidates = { raw_v, raw_v.replace("-", "") }
+        if re.match(r"^[Cc]\d+$", raw_v): candidates.add(raw_v[1:])
+        if re.match(r"^\d+$", raw_v):     candidates.add("C"+raw_v)
+
+        found = None
+        for v in candidates:
+            kn = key_norm(v)
+            if kn in site_index:
+                found = site_index[kn]; break
+        if not found or not found.get("pic"):
+            continue
+
+        url, pic = found["url"], found["pic"]
+        desc = found.get("desc") or it["title"]
+        crumbs = found.get("crumbs") or []
+
+        cid = ROOT_CAT_ID
+        if crumbs:
+            clean = [p.strip() for p in crumbs if p and p.strip()]
+            clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
+            key = tuple(clean)
+            while key and key not in path_id_map:
+                key = key[:-1]
+            if key and key in path_id_map:
+                cid = path_id_map[key]
+
+        offer_id = raw_v
+        if offer_id in seen_offer_ids:
+            offer_id = f"{raw_v}-{sha1(it['title'])[:6]}"
+        seen_offer_ids.add(offer_id)
+
+        offers.append((cid, {
+            "offer_id":   offer_id,
+            "title":      it["title"],
+            "price":      it["price"],
+            "vendorCode": raw_v,
+            "brand":      SUPPLIER_NAME,
+            "url":        url,
+            "picture":    pic,
+            "description": desc,
+        }))
 
     if not offers:
-        raise RuntimeError("No matched items with photos after filtering.")
+        print("[error] Ни одной позиции не сопоставили с фото (после startswith).")
+        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+        with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+            f.write(build_yml([], []))
+        return 2
 
-    # 6) write YML
-    xml=yml(categories_list, offers)
+    # 8) YML
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    with open(OUT_FILE,"w",encoding="cp1251",errors="ignore") as f:
+    xml = build_yml(cat_list, offers)
+    with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
         f.write(xml)
-    print(f"[done] offers: {len(offers)} -> {OUT_FILE}")
 
-if __name__=="__main__":
-    main()
+    print(f"[done] items: {len(offers)}, categories: {len(cat_list)} -> {OUT_FILE}")
+    return 0
+
+if __name__ == "__main__":
+    import sys
+    try:
+        sys.exit(main())
+    except Exception as e:
+        print("[fatal]", e)
+        sys.exit(2)
