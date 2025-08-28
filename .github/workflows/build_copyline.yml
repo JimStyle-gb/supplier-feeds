@@ -13,51 +13,50 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 pandas openpyxl
+          pip install pandas openpyxl requests beautifulsoup4 lxml
 
       - name: Ensure keywords file exists
         run: |
           mkdir -p docs
           if [ ! -f docs/copyline_keywords.txt ]; then
             cat > docs/copyline_keywords.txt << 'EOF'
-drum
-девелопер
-драм
-кабель сетевой
-картридж
-термоблок
-термоэлемент
-тонер-картридж
-EOF
+            drum
+            девелопер
+            драм
+            кабель сетевой
+            картридж
+            термоблок
+            термоэлемент
+            тонер-картридж
+            EOF
           fi
-          echo "Keywords:"
+          echo "Using keywords:"
           cat docs/copyline_keywords.txt
 
-      - name: Build feed (XLSX + targeted category crawl)
+      - name: Build feed
         env:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
-          HTTP_TIMEOUT: '25'
-          REQUEST_DELAY_MS: '120'
-          MIN_BYTES: '900'
-          MAX_CRAWL_MINUTES: '60'
-          MAX_CATEGORY_PAGES: '800'
-          MAX_WORKERS: '6'
-          # Разрешённые бренд-префиксы перед ключом:
-          BRAND_PREFIXES: "RIPO,EURO PRINT,EUROPRINT,OEM,БУЛАТ,BULAT,INTEGRAL,RETECH,КАТЮША,KATYUSHA,PANTUM"
+          HTTP_TIMEOUT: "25"
+          REQUEST_DELAY_MS: "120"
+          MIN_BYTES: "900"
+          # Бренды, которые допускаются перед ключевым словом в названии (например: "Ripo Кабель сетевой ...")
+          ALLOW_PREFIX_BRANDS: "ripo,hp,canon,samsung,xerox,brother,pantum,lexmark,kyocera,konica,minolta,ricoh,panasonic"
+          # Ограничения для работы через sitemap (ускоряет)
+          MAX_SITEMAP_URLS: "12000"
+          # Сколько подходящих url реально посещать (хватает для матчей по XLSX)
+          MAX_VISIT_PAGES: "3500"
         run: |
           python scripts/build_copyline.py
 
@@ -69,7 +68,9 @@ EOF
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git pull --rebase origin main || true
+            BRANCH="${GITHUB_REF_NAME:-main}"
+            # Подтягиваем возможные изменения и пушим
+            git pull --rebase origin "$BRANCH" || true
             git commit -m "Update copyline.yml (XLSX + photos + full descriptions + site categories)"
             git push
           fi
