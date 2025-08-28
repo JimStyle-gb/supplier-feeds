@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-Рабочая версия (strict startswith):
-- XLSX -> берём позиции ТОЛЬКО если название НАЧИНАЕТСЯ одним из ключевых слов (строго, без склонений/вариантов).
-- Матч по артикулу с карточками сайта (нормализация с/без 'C', с/без дефисов). Фото ОБЯЗАТЕЛЬНО.
-- Описание: ПОЛНОЕ с карточки.
-- Категории: по хлебным крошкам (дерево как на сайте).
-- Без префиксов в vendorCode и offer_id (из прайса как есть).
+Copyline → Satu YML (быстро и стабильно):
+- Фильтр XLSX: НАЗВАНИЕ ДОЛЖНО НАЧИНАТЬСЯ одной из фраз из списка (строго, без склонений/вариантов).
+- Краул: только релевантные КАТЕГОРИИ (по тексту ссылок), пагинация внутри; карточки парсятся в небольшой пул потоков.
+- Фото обязательно. Описание — ПОЛНОЕ с карточки. Категории — по хлебным крошкам.
+- Никаких префиксов к артикулу и offer_id.
+
+Зависимости: requests, beautifulsoup4, openpyxl
 """
 
 from __future__ import annotations
 import os, re, io, time, html, hashlib, xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional, Tuple, Set
 from urllib.parse import urljoin
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timedelta
+
 import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 
-# ---------- ENV / конфиг ----------
+# ---------- ENV ----------
 BASE_URL           = "https://copyline.kz"
 XLSX_URL           = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 KEYWORDS_FILE      = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
@@ -24,10 +28,12 @@ OUT_FILE           = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING    = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
 HTTP_TIMEOUT       = float(os.getenv("HTTP_TIMEOUT", "25"))
-REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "150"))
-MIN_BYTES          = int(os.getenv("MIN_BYTES", "1000"))
-MAX_SITEMAP_URLS   = int(os.getenv("MAX_SITEMAP_URLS", "20000"))
-MAX_VISIT_PAGES    = int(os.getenv("MAX_VISIT_PAGES", "6000"))
+REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "120"))
+MIN_BYTES          = int(os.getenv("MIN_BYTES", "900"))
+
+MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
+MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "1200"))
+MAX_WORKERS        = int(os.getenv("MAX_WORKERS", "6"))
 
 SUPPLIER_NAME      = "Copyline"
 CURRENCY           = "KZT"
@@ -35,11 +41,11 @@ CURRENCY           = "KZT"
 ROOT_CAT_ID        = 9300000
 ROOT_CAT_NAME      = "Copyline"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/1.2-startswith)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/1.7-targeted)"}
 
 # ---------- утилиты ----------
 def jitter_sleep(ms: int) -> None:
-    time.sleep(max(0.0, (ms/1000.0)))
+    time.sleep(max(0.0, ms/1000.0))
 
 def http_get(url: str) -> Optional[bytes]:
     try:
@@ -51,11 +57,10 @@ def http_get(url: str) -> Optional[bytes]:
     except Exception:
         return None
 
-def soup_of(b: bytes) -> BeautifulSoup:
-    return BeautifulSoup(b, "html.parser")
-
-def yml_escape(s: str) -> str:
-    return html.escape(s or "")
+def soup_of(b: bytes) -> BeautifulSoup: return BeautifulSoup(b, "html.parser")
+def yml_escape(s: str) -> str: return html.escape(s or "")
+def sha1(s: str) -> str: return hashlib.sha1(s.encode("utf-8")).hexdigest()
+def key_norm(v: str) -> str: return re.sub(r"[^A-Za-z0-9]+", "", v or "").upper()
 
 def sanitize_title(s: str) -> str:
     if not s: return ""
@@ -65,24 +70,14 @@ def sanitize_title(s: str) -> str:
 
 def to_number(x: Any) -> Optional[float]:
     if x is None: return None
-    s = str(x).replace("\xa0", " ").strip().replace(" ", "").replace(",", ".")
+    s = str(x).replace("\xa0"," ").strip().replace(" ","").replace(",",".")
     if not re.search(r"\d", s): return None
-    try:
-        return float(s)
+    try: return float(s)
     except Exception:
         m = re.search(r"[\d.]+", s)
-        if m:
-            try: return float(m.group(0))
-            except: return None
-        return None
+        return float(m.group(0)) if m else None
 
-def key_norm(v: str) -> str:
-    return re.sub(r"[^A-Za-z0-9]+", "", v or "").upper()
-
-def sha1(s: str) -> str:
-    return hashlib.sha1(s.encode("utf-8")).hexdigest()
-
-# ---------- ключевые слова: СТРОГОЕ совпадение В НАЧАЛЕ ----------
+# ---------- ключевые слова (СТРОГО С НАЧАЛА) ----------
 def load_keywords(path: str) -> List[str]:
     kws: List[str] = []
     if os.path.isfile(path):
@@ -96,15 +91,10 @@ def load_keywords(path: str) -> List[str]:
     return kws
 
 def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
-    """
-    Название должно НАЧИНАТЬСЯ фразой из списка (строго):
-      ^\\s*картридж(?!\\w)  — подойдёт 'картридж ...', но не 'картриджа ...' и не 'тонер картридж ...'
-    """
     pats: List[re.Pattern] = []
     for kw in kws:
-        esc = re.escape(kw).replace(r"\ ", " ")  # пробелы остаются пробелами
-        patt = rf"^\s*{esc}(?!\w)"
-        pats.append(re.compile(patt, flags=re.IGNORECASE))
+        esc = re.escape(kw).replace(r"\ ", " ")
+        pats.append(re.compile(rf"^\s*{esc}(?!\w)", flags=re.IGNORECASE))
     return pats
 
 def title_startswith_strict(title: str, patterns: List[re.Pattern]) -> bool:
@@ -138,7 +128,7 @@ def extract_sku_from_name(name: str) -> Optional[str]:
             return tok.replace("–","-").replace("/","-")
     return None
 
-# ---------- сайт: карточки (SKU, фото, описание, хлебные крошки) ----------
+# ---------- страница карточки ----------
 PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
 
 def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
@@ -180,7 +170,7 @@ def extract_breadcrumbs(s: BeautifulSoup) -> List[str]:
             t = a.get_text(strip=True)
             if not t: continue
             tl = t.lower()
-            if tl in ("главная", "home"): continue
+            if tl in ("главная","home"): continue
             names.append(t.strip())
         if names: break
     return [n for n in names if n]
@@ -215,7 +205,7 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str]]]:
     # picture
     src = None
     imgel = s.find("img", id=re.compile(r"^main_image_", re.I))
-    if imgel and (imgel.get("src")or imgel.get("data-src")):
+    if imgel and (imgel.get("src") or imgel.get("data-src")):
         src = imgel.get("src") or imgel.get("data-src")
     if not src:
         ogi = s.find("meta", attrs={"property": "og:image"})
@@ -231,119 +221,93 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str]]]:
 
     desc = extract_full_description(s) or ""
     crumbs = extract_breadcrumbs(s)
-
     return sku, pic, desc, crumbs
 
-def parse_sitemap_xml(xml_bytes: bytes) -> List[str]:
-    try:
-        root = ET.fromstring(xml_bytes)
-    except Exception:
-        return []
-    locs = []
-    for el in root.iter():
-        t = (el.tag or "").lower()
-        if t.endswith("loc") and el.text:
-            locs.append(el.text.strip())
-    return locs
+# ---------- целевые категории ----------
+def anchor_text_matches(text: str, start_patterns: List[re.Pattern]) -> bool:
+    """Проверяем текст ссылки: если он СОДЕРЖИТ ключ как отдельное слово либо совпадает с ключом/его базовой формой."""
+    if not text: return False
+    t = text.strip().lower()
+    # разрешим нахождение ключа как отдельного слова в тексте категории
+    for p in start_patterns:
+        # превращаем шаблон '^\\s*kw(?!\\w)' в r'(?<!\w)kw(?!\w)'
+        body = p.pattern
+        kw = re.sub(r"^\^\s*|\(?!\\w\)$", "", body, flags=re.I)
+        rx = re.compile(rf"(?<!\w){kw}(?!\w)", flags=re.I)
+        if rx.search(t):
+            return True
+    return False
 
-def fetch_sitemap_product_urls() -> List[str]:
-    candidates = [
-        f"{BASE_URL}/sitemap.xml",
-        f"{BASE_URL}/sitemap_index.xml",
-        f"{BASE_URL}/sitemap-index.xml",
-        f"{BASE_URL}/sitemap-products.xml",
-        f"{BASE_URL}/sitemap1.xml",
-        f"{BASE_URL}/sitemap2.xml",
-        f"{BASE_URL}/sitemap3.xml",
-    ]
+def discover_relevant_category_urls() -> List[str]:
+    """Сканируем только стартовые страницы (главная, каталог), забираем ссылки на категории по их ТЕКСТУ."""
+    seeds = [f"{BASE_URL}/", f"{BASE_URL}/goods.html"]
+    pages = []
+    for u in seeds:
+        b = http_get(u)
+        if b: pages.append((u, soup_of(b)))
+    if not pages:
+        return []
+
+    # Подготовим паттерны из ключей
+    kws = load_keywords(KEYWORDS_FILE)
+    start_patterns = compile_startswith_patterns(kws)
+
     urls: List[str] = []
     seen: Set[str] = set()
-    for u in candidates:
-        b = http_get(u)
-        if not b: continue
-        for loc in parse_sitemap_xml(b):
-            if loc.lower().endswith(".xml"):
-                bx = http_get(loc)
-                if bx:
-                    for loc2 in parse_sitemap_xml(bx):
-                        if loc2 not in seen:
-                            seen.add(loc2); urls.append(loc2)
-            else:
-                if loc not in seen:
-                    seen.add(loc); urls.append(loc)
-    prods = [u for u in urls if PRODUCT_RE.search(u)]
-    prods = list(dict.fromkeys(prods))
-    return prods[:MAX_SITEMAP_URLS]
+    for base, s in pages:
+        for a in s.find_all("a", href=True):
+            txt = a.get_text(" ", strip=True)
+            if not txt: continue
+            if anchor_text_matches(txt, start_patterns):
+                absu = urljoin(base, a["href"])
+                if "copyline.kz" in absu and "/goods/" in absu and absu not in seen:
+                    seen.add(absu); urls.append(absu)
 
-def bfs_collect_product_urls(limit_pages: int) -> List[str]:
-    seeds = [
-        f"{BASE_URL}/",
-        f"{BASE_URL}/goods.html",
-        f"{BASE_URL}/goods/toner-cartridges-brother.html",
-    ]
-    queue: List[str] = list(dict.fromkeys(seeds))
-    visited: Set[str] = set()
-    found: List[str] = []
+    # на всякий случай добавим 1-2 известные ветки
+    urls.append(f"{BASE_URL}/goods/toner-cartridges-brother.html")
+    urls = list(dict.fromkeys(urls))
+    return urls
 
-    while queue and len(visited) < limit_pages:
-        page = queue.pop(0)
-        if page in visited: continue
-        visited.add(page)
+def category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
+    # rel=next
+    ln = s.find("link", attrs={"rel": "next"})
+    if ln and ln.get("href"):
+        return urljoin(page_url, ln["href"])
+    # class contains 'next'
+    a = s.find("a", class_=lambda c: c and "next" in c.lower())
+    if a and a.get("href"):
+        return urljoin(page_url, a["href"])
+    # текст похож на «Следующая»
+    for a in s.find_all("a", href=True):
+        txt = (a.get_text(" ", strip=True) or "").lower()
+        if txt in ("следующая", "вперед", "вперёд", "next", ">"):
+            return urljoin(page_url, a["href"])
+    return None
 
+def collect_product_urls_from_category(cat_url: str, limit_pages: int) -> List[str]:
+    """Обходим только конкретную категорию и её страницы; собираем /goods/*.html"""
+    urls: List[str] = []
+    seen_pages: Set[str] = set()
+    page = cat_url
+    pages_done = 0
+
+    while page and pages_done < limit_pages:
+        if page in seen_pages: break
+        seen_pages.add(page)
         jitter_sleep(REQUEST_DELAY_MS)
         b = http_get(page)
-        if not b: continue
+        if not b: break
         s = soup_of(b)
-
-        ln = s.find("link", attrs={"rel": "next"})
-        if ln and ln.get("href"):
-            queue.append(urljoin(page, ln["href"]))
-
+        # все ссылки на карточки
         for a in s.find_all("a", href=True):
-            href = a["href"].strip()
-            absu = urljoin(page, href)
-            if "copyline.kz" not in absu: 
-                continue
-            if PRODUCT_RE.search(absu) and not absu.endswith("/goods.html"):
-                found.append(absu)
-            if ("/goods/" in href or "page=" in href or "PAGEN_" in href or "/page/" in href or "limit=" in href):
-                if absu not in visited and absu not in queue:
-                    queue.append(absu)
+            absu = urljoin(page, a["href"])
+            if PRODUCT_RE.search(absu):
+                urls.append(absu)
+        # пагинация «следующая»
+        page = category_next_url(s, page)
+        pages_done += 1
 
-    return list(dict.fromkeys(found))
-
-def build_site_index(target_keys: Set[str]) -> Dict[str, Dict[str, Any]]:
-    """
-    Возвращает map: norm_key(SKU) -> {url, pic, desc, crumbs}
-    Останавливаемся, когда нашли все нужные ключи (если они есть).
-    """
-    urls = fetch_sitemap_product_urls()
-    if not urls:
-        urls = bfs_collect_product_urls(MAX_VISIT_PAGES)
-
-    index: Dict[str, Dict[str, Any]] = {}
-    target_left = set(target_keys)
-
-    for i, u in enumerate(urls, 1):
-        parsed = parse_product_page(u)
-        if not parsed: continue
-        sku, pic, desc, crumbs = parsed
-        raw = sku.strip()
-
-        keys = { key_norm(raw), key_norm(raw.replace("-", "")) }
-        if re.match(r"^[Cc]\d+$", raw): keys.add(key_norm(raw[1:]))
-        if re.match(r"^\d+$",  raw):    keys.add(key_norm("C"+raw))
-
-        for k in keys:
-            if not target_keys or k in target_keys:
-                index[k] = {"url": u, "pic": pic, "desc": desc, "crumbs": crumbs}
-                if k in target_left:
-                    target_left.remove(k)
-
-        if target_keys and not target_left:
-            break
-
-    return index
+    return list(dict.fromkeys(urls))
 
 # ---------- категории по крошкам ----------
 def stable_cat_id(text: str, prefix: int = 9400000) -> int:
@@ -355,7 +319,7 @@ def build_categories_from_paths(paths: List[List[str]]) -> Tuple[List[Tuple[int,
     out_list: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
         clean = [p.strip() for p in path if p and p.strip()]
-        clean = [p for p in clean if p.lower() not in ("главная", "home", "каталог")]
+        clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
         if not clean: continue
         parent_id = ROOT_CAT_ID
         prefix: List[str] = []
@@ -410,12 +374,14 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
 
 # ---------- MAIN ----------
 def main() -> int:
+    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
+
     # 1) XLSX
     xlsx_bytes = fetch_xlsx_bytes(XLSX_URL)
     wb = load_workbook(io.BytesIO(xlsx_bytes), read_only=True, data_only=True)
     sheet = max(wb.sheetnames, key=lambda n: wb[n].max_row * max(1, wb[n].max_column))
     ws = wb[sheet]
-    rows = [ [c for c in r] for r in ws.iter_rows(values_only=True) ]
+    rows = [[c for c in r] for r in ws.iter_rows(values_only=True)]
 
     row0, row1, idx = detect_header_two_row(rows)
     if row0 < 0:
@@ -424,18 +390,18 @@ def main() -> int:
     data_start = row1 + 1
     name_col, vendor_col, price_col = idx["name"], idx["vendor_code"], idx["price"]
 
-    # 2) строгие ключи — НАЗВАНИЕ ДОЛЖНО НАЧИНАТЬСЯ
+    # 2) startswith-ключи
     kw_list = load_keywords(KEYWORDS_FILE)
-    kw_patterns = compile_startswith_patterns(kw_list)
+    start_patterns = compile_startswith_patterns(kw_list)
 
-    # 3) кандидаты из XLSX + ключи матчей
     xlsx_items: List[Dict[str,Any]] = []
     want_keys: Set[str] = set()
+
     for r in rows[data_start:]:
         name_raw = r[name_col]
         if not name_raw: continue
         title = sanitize_title(str(name_raw).strip())
-        if not title_startswith_strict(title, kw_patterns):
+        if not title_startswith_strict(title, start_patterns):
             continue
 
         price = to_number(r[price_col])
@@ -460,16 +426,71 @@ def main() -> int:
     if not xlsx_items:
         print("[error] После фильтра по startswith/цене нет позиций.")
         return 2
-    print(f"[xls] candidates (startswith): {len(xlsx_items)}, distinct match-keys: {len(want_keys)}")
+    print(f"[xls] candidates (startswith): {len(xlsx_items)}, distinct keys: {len(want_keys)}")
 
-    # 4) индекс сайта (sitemap → BFS fallback)
-    site_index = build_site_index(want_keys)
+    # 3) только релевантные категории
+    cats = discover_relevant_category_urls()
+    if not cats:
+        print("[error] Не нашли релевантных категорий.")
+        return 2
+    print(f"[cats] relevant categories: {len(cats)}")
 
-    # 5) категории по крошкам
+    # 4) собираем URL карточек из этих категорий (с пагинацией)
+    product_urls: List[str] = []
+    pages_budget = MAX_CATEGORY_PAGES // max(1, len(cats))
+    for cu in cats:
+        urls = collect_product_urls_from_category(cu, pages_budget)
+        product_urls.extend(urls)
+    product_urls = list(dict.fromkeys(product_urls))
+    print(f"[crawl] product urls from categories: {len(product_urls)}")
+
+    # 5) парсим карточки в потоках (мелкий пул)
+    def worker(u: str):
+        if datetime.utcnow() > deadline: return None
+        try:
+            parsed = parse_product_page(u)
+            if not parsed: return None
+            sku, pic, desc, crumbs = parsed
+            raw = sku.strip()
+            keys = { key_norm(raw), key_norm(raw.replace("-", "")) }
+            if re.match(r"^[Cc]\d+$", raw): keys.add(key_norm(raw[1:]))
+            if re.match(r"^\d+$",  raw):    keys.add(key_norm("C"+raw))
+            return keys, {"url": u, "pic": pic, "desc": desc, "crumbs": crumbs}
+        except Exception:
+            return None
+
+    site_index: Dict[str, Dict[str, Any]] = {}
+    matched_keys: Set[str] = set()
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
+        futures = { ex.submit(worker, u): u for u in product_urls }
+        for fut in as_completed(futures):
+            if datetime.utcnow() > deadline:
+                break
+            out = fut.result()
+            if not out: continue
+            keys, payload = out
+            # индексируем только то, что нам нужно
+            useful = [k for k in keys if k in want_keys and k not in matched_keys]
+            if not useful: 
+                continue
+            for k in useful:
+                site_index[k] = payload
+                matched_keys.add(k)
+            if len(matched_keys) % 50 == 0:
+                print(f"[match] keys matched: {len(matched_keys)} / {len(want_keys)}")
+            if matched_keys >= want_keys:
+                print("[match] all wanted keys found.")
+                break
+
+    print(f"[index] matched keys total: {len(matched_keys)}")
+
+    # 6) категории (по крошкам)
     all_paths = [rec.get("crumbs") for rec in site_index.values() if rec.get("crumbs")]
     cat_list, path_id_map = build_categories_from_paths(all_paths)
+    print(f"[cats] built: {len(cat_list)}")
 
-    # 6) мёрдж (строго с фото)
+    # 7) мёрдж (только с фото)
     offers: List[Tuple[int,Dict[str,Any]]] = []
     seen_offer_ids: Set[str] = set()
 
@@ -519,13 +540,12 @@ def main() -> int:
 
     if not offers:
         print("[error] Ни одной позиции не сопоставили с фото (после startswith).")
-        # запишем пустой YML, чтобы был артефакт
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
         with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
             f.write(build_yml([], []))
         return 2
 
-    # 7) YML
+    # 8) YML
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     xml = build_yml(cat_list, offers)
     with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
