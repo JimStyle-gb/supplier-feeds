@@ -19,8 +19,8 @@
 <category id="24195168" parentId="17390673">Драм-юниты Kyocera</category>
 <category id="11141041" parentId="17390673">Драм-юниты Lexmark</category>
 <category id="25468741" parentId="17390673">Драм-юниты Panasonic</category>
-<category id="25980904" parentId="17390673">Драм-юниты Ricoh</category>
 <category id="23869557" parentId="17390673">Драм-юниты Samsung</category>
+<category id="25980904" parentId="17390673">Драм-юниты Ricoh</category>
 <category id="21395743" parentId="17390673">Драм-юниты Xerox</category>
 <category id="25630662" parentId="14962885">Запасные части</category>
 <category id="9685301" parentId="25630662">Термоблоки, термоэлементы</category>
@@ -15280,6 +15280,20 @@
 <url>https://copyline.kz/goods/toner-cartridge-006r01519.html</url>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-Xerox-WC-7525-M.jpg</picture>
 <description>Картридж с пурпурным тонером Euro Print 006R01518 используется в принтерах серий Xerox WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Пурпурный Количество страниц (5% заполнение) 9000</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="100847" available="true" in_stock="true">
+<name>Тонер-картридж 006R01520 Xerox WC 7500ser/WC7525 /WC7530/WC7535/WC7545/WC7556 /WC7800ser/WC7830 /WC7835/WC7845/WC7855 /WC7970 (9K) Cyan Euro Print</name>
+<vendor>Copyline</vendor>
+<vendorCode>100847</vendorCode>
+<price>10686</price>
+<currencyId>KZT</currencyId>
+<categoryId>16619349</categoryId>
+<url>https://copyline.kz/goods/toner-cartridge-006r01520.html</url>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-Xerox-WC-7525-C.jpg</picture>
+<description>Картридж с голубым тонером Euro Print 006R01518 используется в принтерах серий Xerox WorkCentre 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970. Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя. Технические характеристики: Технология печати Лазерная Цвет печати Голубой Количество страниц (5% заполнение) 9000</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
