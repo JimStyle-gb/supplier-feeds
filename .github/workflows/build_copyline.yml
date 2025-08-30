@@ -1,15 +1,18 @@
 name: build_copyline
 on:
   workflow_dispatch:
+
 concurrency:
   group: build_copyline_${{ github.ref_name }}
   cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,7 +31,8 @@ jobs:
         run: |
           mkdir -p docs
           if [ ! -f docs/copyline_keywords.txt ]; then
-            printf "drum\nдевелопер\nдрам\nкабель сетевой\nкартридж\nтермоблок\nтермоэлемент\nтонер-картридж\n" > docs/copyline_keywords.txt
+            # Без "кабель сетевой"
+            printf "drum\nдевелопер\nдрам\nкартридж\nтермоблок\nтермоэлемент\nтонер-картридж\n" > docs/copyline_keywords.txt
           fi
           echo "Using keywords:" && cat docs/copyline_keywords.txt
 
@@ -37,6 +41,7 @@ jobs:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
           OUT_FILE: docs/copyline.yml
+          # Единый параметр кодировки — теперь он реально используется и в прологе XML, и при записи файла
           OUTPUT_ENCODING: windows-1251
 
           HTTP_TIMEOUT: "25"
@@ -63,6 +68,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update copyline.yml (startswith keywords + targeted category crawl)"
+          git commit -m "Update copyline.yml (idealized: unified encoding + date + retries)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
