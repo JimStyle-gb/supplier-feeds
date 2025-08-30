@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog><shop>
+<yml_catalog date='2025-08-30 05:58'><shop>
 <name>copyline</name>
 <currencies><currency id="KZT" rate="1" /></currencies>
 <categories>
@@ -19,8 +19,8 @@
 <category id="24195168" parentId="17390673">Драм-юниты Kyocera</category>
 <category id="11141041" parentId="17390673">Драм-юниты Lexmark</category>
 <category id="25468741" parentId="17390673">Драм-юниты Panasonic</category>
-<category id="25980904" parentId="17390673">Драм-юниты Ricoh</category>
 <category id="23869557" parentId="17390673">Драм-юниты Samsung</category>
+<category id="25980904" parentId="17390673">Драм-юниты Ricoh</category>
 <category id="21395743" parentId="17390673">Драм-юниты Xerox</category>
 <category id="25630662" parentId="14962885">Запасные части</category>
 <category id="9685301" parentId="25630662">Термоблоки, термоэлементы</category>
