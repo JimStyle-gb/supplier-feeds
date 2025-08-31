@@ -24,7 +24,7 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml certifi
+          pip install requests beautifulsoup4 lxml
 
       - name: Ensure keywords file
         run: |
@@ -42,7 +42,7 @@ jobs:
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # cookies — одной строкой, без кавычек
+          # авторизация: передай строку cookies одной строкой (секрет репозитория)
           VTT_COOKIES: ${{ secrets.VTT_COOKIES }}
 
           # сетевые настройки
@@ -55,11 +55,12 @@ jobs:
           MAX_CRAWL_MINUTES: "90"
           MAX_CATEGORY_PAGES: "1500"
 
-          # допускаем бренд перед ключом
+          # Разрешаем бренд перед ключом
           ALLOW_PREFIX_BRANDS: "hp,canon,samsung,xerox,brother,pantum,lexmark,kyocera,konica,minolta,ricoh,panasonic,ripo"
 
-          # <<< фикс SSL-ошибки на раннере >>>
-          DISABLE_SSL_VERIFY: "1"
+          # <<< главное изменение: отключаем проверку TLS из-за корпоративного сертификата
+          VERIFY_TLS: "0"
+
         run: |
           python scripts/build_vtt.py
 
@@ -69,11 +70,13 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add docs/vtt.yml docs/vtt_keywords.txt || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update vtt.yml (cookies auth, SSL verify off on CI)"
+
+          git commit -m "Update vtt.yml (skip TLS verify; cookies auth)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
