@@ -42,20 +42,21 @@ jobs:
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # авторизация через cookie
+          # авторизация: одна строка cookies (секрет)
           VTT_COOKIES: ${{ secrets.VTT_COOKIES }}
 
           # сетевые настройки
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "150"
-          MIN_BYTES: "900"
+          # делаем порог маленьким — страница может быть «тонкой»
+          MIN_BYTES: "100"
 
           # лимиты
           MAX_WORKERS: "6"
           MAX_CRAWL_MINUTES: "90"
           MAX_CATEGORY_PAGES: "1500"
 
-          # Допуск бренда перед ключевым словом (например "HP картридж ...")
+          # Допуск бренда перед ключевым словом
           ALLOW_PREFIX_BRANDS: "hp,canon,samsung,xerox,brother,pantum,lexmark,kyocera,konica,minolta,ricoh,panasonic,ripo"
 
         run: |
@@ -74,6 +75,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update vtt.yml (cookies auth + keywords startswith + imgs + full descriptions)"
+          git commit -m "Update vtt.yml (cookies auth, login-wall detect, tolerant MIN_BYTES)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
