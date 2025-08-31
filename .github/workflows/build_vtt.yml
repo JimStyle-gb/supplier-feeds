@@ -9,7 +9,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 120
     permissions:
       contents: write
 
@@ -20,67 +20,47 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      - name: Ensure keywords file
-        run: |
-          mkdir -p docs
-          if [ ! -f docs/vtt_keywords.txt ]; then
-            printf '%s\n' \
-              '# один ключ на строку (если файл пустой — берём все товары)' \
-              '# примеры:' \
-              '# drum' \
-              '# девелопер' \
-              '# драм' \
-              '# картридж' \
-              '# термоблок' \
-              '# термоэлемент' \
-              '# тонер-картридж' \
-              > docs/vtt_keywords.txt
-          fi
-          echo "Using keywords:"
-          cat docs/vtt_keywords.txt || true
-
-      - name: Build feed (b2b.vtt.ru via cookies)
+      - name: Build VTT (login+parse cartridges)
         env:
           BASE_URL: https://b2b.vtt.ru
           START_URL: https://b2b.vtt.ru/catalog/
-          KEYWORDS_FILE: docs/vtt_keywords.txt
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # обязательный секрет с куками одной строкой
-          VTT_COOKIES: ${{ secrets.VTT_COOKIES }}
+          VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+          VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-          # настройки краулера
+          # если вдруг на раннере ругается на сертификат — поставьте 1
+          DISABLE_SSL_VERIFY: "0"
+
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "150"
-          MIN_BYTES: "900"
+          MIN_BYTES: "800"
           MAX_WORKERS: "6"
-          MAX_CRAWL_MINUTES: "90"
-          MAX_CATEGORY_PAGES: "1500"
-          DISABLE_SSL_VERIFY: "0"   # при проблемах с SSL установи "1"
+          MAX_CRAWL_MINUTES: "45"
+          MAX_PAGES: "800"
         run: |
           python scripts/build_vtt.py
 
-      - name: Commit & push feed (rebase-safe)
+      - name: Commit & push feed
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add docs/vtt.yml docs/vtt_keywords.txt || true
+          mkdir -p docs
+          git add docs/vtt.yml || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-
-          git commit -m "Update vtt.yml (cookies, auto-login, smart crawl)"
+          git commit -m "Update vtt.yml"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
