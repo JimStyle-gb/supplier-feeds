@@ -12,6 +12,7 @@ jobs:
     timeout-minutes: 180
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,54 +20,53 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml
+          pip install requests beautifulsoup4
 
       - name: Ensure keywords file
         run: |
           mkdir -p docs
-          # Если файла нет — положим один символ '*' = брать все товары
           if [ ! -f docs/vtt_keywords.txt ]; then
-            echo "*" > docs/vtt_keywords.txt
+            cat > docs/vtt_keywords.txt << 'EOF'
+# один ключ на строку (если файл пустой — берём все товары)
+# примеры:
+# drum
+# девелопер
+# драм
+# картридж
+# термоблок
+# термоэлемент
+# тонер-картридж
+EOF
           fi
           echo "Using keywords:"
-          cat docs/vtt_keywords.txt
+          cat docs/vtt_keywords.txt || true
 
-      - name: Build VTT feed
+      - name: Build feed (b2b.vtt.ru via cookies)
         env:
           BASE_URL: https://b2b.vtt.ru
-          START_URL: https://b2b.vtt.ru/catalog
+          START_URL: https://b2b.vtt.ru/catalog/
           KEYWORDS_FILE: docs/vtt_keywords.txt
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # Авторизация: вставь cookies в Secrets (VTT_COOKIES)
+          # обязательный секрет с куками одной строкой
           VTT_COOKIES: ${{ secrets.VTT_COOKIES }}
 
+          # настройки краулера
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "150"
-          MIN_BYTES: "400"
-
+          MIN_BYTES: "900"
           MAX_WORKERS: "6"
           MAX_CRAWL_MINUTES: "90"
           MAX_CATEGORY_PAGES: "1500"
-
-          # если сайт капризничает с сертификатами
-          DISABLE_SSL_VERIFY: "0"
+          DISABLE_SSL_VERIFY: "0"   # при проблемах с SSL установи "1"
         run: |
           python scripts/build_vtt.py
-
-      - name: Upload vtt.yml as artifact (even on failure)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: vtt-feed
-          path: docs/vtt.yml
-          if-no-files-found: ignore
 
       - name: Commit & push feed (rebase-safe)
         env:
@@ -81,6 +81,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update vtt.yml (fallback * = all products)"
+          git commit -m "Update vtt.yml (cookies, auto-login, smart crawl)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
