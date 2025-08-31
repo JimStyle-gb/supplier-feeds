@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='windows-1251'?>
+<yml_catalog><shop>
+<name>vtt</name>
+<currencies><currency id="RUB" rate="1" /></currencies>
+<categories>
+<category id="9600000">VTT</category>
+</categories>
+<offers>
+</offers>
+</shop></yml_catalog>
