@@ -13,7 +13,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -27,7 +28,6 @@ jobs:
       - name: Ensure VTT keywords file
         run: |
           mkdir -p docs
-          # Строгое начало названия; список можно редактировать без правки кода.
           if [ ! -f docs/vtt_keywords.txt ]; then
             printf "drum\nдевелопер\nдрам\nкартридж\nтермоблок\nтермоэлемент\nтонер-картридж\n" > docs/vtt_keywords.txt
           fi
@@ -35,16 +35,16 @@ jobs:
 
       - name: Build VTT feed (auth + crawl)
         env:
-          BASE_URL: https://b2bold.vtt.ru
-          START_URL: https://b2bold.vtt.ru/catalog/
-          KEYWORDS_FILE: docs/vtt_keywords.txt
-          OUT_FILE: docs/vtt.yml
-          OUTPUT_ENCODING: windows-1251
+          BASE_URL: "https://b2bold.vtt.ru"
+          START_URL: "https://b2bold.vtt.ru/catalog/"
+          KEYWORDS_FILE: "docs/vtt_keywords.txt"
+          OUT_FILE: "docs/vtt.yml"
+          OUTPUT_ENCODING: "windows-1251"
 
-          # Secrets (добавьте в репо → Settings → Secrets → Actions)
-          VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
-          VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-          VTT_COOKIES: ${{ secrets.VTT_COOKIES }}
+          # Secrets → Settings → Secrets → Actions
+          VTT_LOGIN: "${{ secrets.VTT_LOGIN }}"
+          VTT_PASSWORD: "${{ secrets.VTT_PASSWORD }}"
+          VTT_COOKIES: "${{ secrets.VTT_COOKIES }}"
 
           # HTTP
           HTTP_TIMEOUT: "25"
@@ -56,14 +56,14 @@ jobs:
           MAX_CRAWL_MINUTES: "90"
           MAX_CATEGORY_PAGES: "1500"
 
-          # Фильтр названий (строгое начало; при необходимости разрешите бренды-префиксы)
-          ALLOW_PREFIX_BRANDS: ""  # например: "hp,canon,samsung"
-
+          # Если бренд стоит перед ключом: перечислите через запятую, иначе оставьте пустым
+          ALLOW_PREFIX_BRANDS: ""
         run: |
           python scripts/build_vtt.py
 
       - name: Commit & push feed (rebase-safe)
-        env: { BRANCH_NAME: ${{ github.ref_name }} }
+        env:
+          BRANCH_NAME: "${{ github.ref_name }}"
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
