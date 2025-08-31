@@ -37,8 +37,10 @@ jobs:
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-          # если вдруг на раннере ругается на сертификат — поставьте 1
-          DISABLE_SSL_VERIFY: "0"
+          # Ключевой флаг для обхода ошибки SSL на раннере
+          DISABLE_SSL_VERIFY: "1"
+          # Доп. флаг: если вдруг включите SSL обратно, код сам попробует 1 раз упасть в no-verify
+          ALLOW_SSL_FALLBACK: "1"
 
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "150"
