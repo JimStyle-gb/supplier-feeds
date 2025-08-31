@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 VTT (b2bold.vtt.ru) → Satu YML
-- Авторизация через cookies (секрет VTT_COOKIES), Cookie header + cookie-jar.
-- Терпим маленькие ответы (MIN_BYTES снижен), логируем статусы/редиректы.
-- Детектим login-wall и подсказываем обновить cookies.
-- Фильтрация: title ДОЛЖЕН начинаться с ключа (после опц. бренда из ALLOW_PREFIX_BRANDS).
+- Авторизация через cookies (VTT_COOKIES).
+- Переключатель проверки SSL по env: DISABLE_SSL_VERIFY=1 (для CI с кривой цепочкой).
+- Детект login-wall, терпим маленькие ответы, подробные логи.
+- Фильтрация: название начинается с ключа (допускается бренд из ALLOW_PREFIX_BRANDS спереди).
 """
 
 from __future__ import annotations
@@ -25,6 +25,7 @@ OUT_FILE           = os.getenv("OUT_FILE", "docs/vtt.yml")
 OUTPUT_ENCODING    = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
 VTT_COOKIES        = os.getenv("VTT_COOKIES", "").strip()
+DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "").strip() in ("1", "true", "yes", "y")
 
 HTTP_TIMEOUT       = float(os.getenv("HTTP_TIMEOUT", "25"))
 REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "150"))
@@ -57,37 +58,48 @@ def parse_cookie_string(cookie_str: str) -> Dict[str, str]:
     jar: Dict[str, str] = {}
     for part in cookie_str.split(";"):
         part = part.strip()
-        if not part or "=" not in part: 
+        if not part or "=" not in part:
             continue
         k, v = part.split("=", 1)
         k = k.strip(); v = v.strip()
-        if k and v: jar[k] = v
+        if k and v:
+            jar[k] = v
     return jar
 
 def make_session() -> requests.Session:
     s = requests.Session()
     s.headers.update(UA_HEADERS)
-    # 1) cookie-jar
+    # SSL verify toggle (для CI)
+    if DISABLE_SSL_VERIFY:
+        s.verify = False
+        try:
+            import urllib3
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        except Exception:
+            pass
+        print("[ssl] Verification disabled (DISABLE_SSL_VERIFY=1).")
+    # cookies
     if VTT_COOKIES:
         jar = parse_cookie_string(VTT_COOKIES)
         host = urlparse(BASE_URL).hostname
         for k, v in jar.items():
             s.cookies.set(k, v, domain=host)
-        # 2) raw Cookie header (некоторые прокси любят именно его)
         s.headers["Cookie"] = VTT_COOKIES
     return s
 
 def http_get(session: requests.Session, url: str) -> Optional[bytes]:
     try:
         r = session.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True, headers={"Referer": BASE_URL})
-        status = r.status_code
-        if status != 200:
-            print(f"[http] {status} {url}")
+        if r.status_code != 200:
+            print(f"[http] {r.status_code} {url}")
             return None
         b = r.content or b""
         if len(b) < MIN_BYTES:
             print(f"[http] small body {len(b)} bytes: {url}")
         return b
+    except requests.exceptions.SSLError as e:
+        print(f"[http] SSL error {url}: {e}")
+        return None
     except Exception as e:
         print(f"[http] fail {url}: {e}")
         return None
@@ -352,10 +364,11 @@ def parse_product_page(session: requests.Session, url: str) -> Optional[Dict[str
         return None
     s = soup_of(b)
 
-    title = sanitize_spaces((lambda: (s.select_one("h1") or s.select_one("[itemprop='name']") or {}).get_text(" ", strip=True) if s.select_one("h1") or s.select_one("[itemprop='name']") else None)() or "")
+    t1 = s.select_one("h1") or s.select_one("[itemprop='name']")
+    title = sanitize_spaces(t1.get_text(" ", strip=True) if t1 else "") or None
     if not title:
         return None
-    # сбор полей
+
     price = extract_price(s)
     sku   = extract_sku(s) or ""
     pic   = extract_image(s, url) or ""
@@ -437,7 +450,7 @@ def main() -> int:
     # стартовая страница
     root_bytes = http_get(session, START_URL)
     if not root_bytes:
-        raise RuntimeError("Стартовая страница недоступна (проверьте VTT_COOKIES и URL).")
+        raise RuntimeError("Стартовая страница недоступна (проверьте URL/cookies или включите DISABLE_SSL_VERIFY=1).")
     if looks_like_login_wall(root_bytes):
         raise RuntimeError("Похоже, попадаем на страницу входа. Обновите секрет VTT_COOKIES (актуальные cookies).")
 
@@ -484,7 +497,7 @@ def main() -> int:
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
         with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
             f.write(build_yml([], []))
-        print("[warn] Нет карточек (часто из-за невалидных cookies).")
+        print("[warn] Нет карточек (часто из-за невалидных cookies/доступа).")
         return 2
 
     # 4) фильтрация startswith (+бренд)
@@ -502,30 +515,6 @@ def main() -> int:
         return 2
 
     # 5) категории по крошкам
-    def stable_cat_id(text: str, prefix: int = 9610000) -> int:
-        h = hashlib.md5(text.encode("utf-8")).hexdigest()[:6]
-        return prefix + int(h, 16)
-
-    def build_categories_from_paths(paths: List[List[str]]):
-        cat_map: Dict[Tuple[str,...], int] = {}
-        out_list: List[Tuple[int,str,Optional[int]]] = []
-        for path in paths:
-            clean = [p.strip() for p in path if p and p.strip()]
-            clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
-            if not clean: continue
-            parent_id = ROOT_CAT_ID
-            prefix: List[str] = []
-            for name in clean:
-                prefix.append(name)
-                key = tuple(prefix)
-                if key in cat_map:
-                    parent_id = cat_map[key]; continue
-                cid = stable_cat_id(" / ".join(prefix))
-                cat_map[key] = cid
-                out_list.append((cid, name, parent_id))
-                parent_id = cid
-        return out_list, cat_map
-
     all_paths = [r.get("crumbs") for r in filtered if r.get("crumbs")]
     cat_list, path_id_map = build_categories_from_paths(all_paths)
     print(f"[cats] built: {len(cat_list)}")
