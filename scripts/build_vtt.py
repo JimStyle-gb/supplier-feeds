@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-b2b.vtt.ru → YML (только «картриджи», логин по логину/паролю, без ручных куки).
+b2b.vtt.ru → YML (картриджи; логин/пароль; без ручных куки).
+Добавлен авто-фолбэк при SSL ошибке (ALLOW_SSL_FALLBACK=1).
 
-ENV (см. workflow):
+ENV:
   BASE_URL, START_URL, OUT_FILE, OUTPUT_ENCODING
   VTT_LOGIN, VTT_PASSWORD
-  DISABLE_SSL_VERIFY, HTTP_TIMEOUT, REQUEST_DELAY_MS, MIN_BYTES
+  DISABLE_SSL_VERIFY, ALLOW_SSL_FALLBACK
+  HTTP_TIMEOUT, REQUEST_DELAY_MS, MIN_BYTES
   MAX_WORKERS, MAX_CRAWL_MINUTES, MAX_PAGES
 """
 
@@ -17,6 +19,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 
 import requests
+from requests.exceptions import SSLError, RequestException
 from bs4 import BeautifulSoup
 
 # ---------- ENV ----------
@@ -29,6 +32,8 @@ VTT_LOGIN       = os.getenv("VTT_LOGIN", "").strip()
 VTT_PASSWORD    = os.getenv("VTT_PASSWORD", "").strip()
 
 DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "0").lower() in ("1","true","yes")
+ALLOW_SSL_FALLBACK = os.getenv("ALLOW_SSL_FALLBACK", "1").lower() in ("1","true","yes")
+
 HTTP_TIMEOUT    = float(os.getenv("HTTP_TIMEOUT", "25"))
 REQUEST_DELAY_MS= int(os.getenv("REQUEST_DELAY_MS", "150"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "800"))
@@ -42,7 +47,7 @@ ROOT_CAT_ID     = 9600000
 ROOT_CAT_NAME   = "VTT"
 
 UA = {
-    "User-Agent": "Mozilla/5.0 (compatible; VTT-B2B-Login/1.0)",
+    "User-Agent": "Mozilla/5.0 (compatible; VTT-B2B-Login/1.1)",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "ru,en;q=0.8",
 }
@@ -53,9 +58,16 @@ session.verify = not DISABLE_SSL_VERIFY
 if DISABLE_SSL_VERIFY:
     import urllib3
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    print("[ssl] verification disabled")
+    print("[ssl] verification disabled by env")
 
 # ---------- UTILS ----------
+def _ssl_retry_toggle():
+    """Отключает verify и предупреждения для повторной попытки."""
+    import urllib3
+    session.verify = False
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    print("[ssl] fallback: retrying with verify=False")
+
 def jitter_sleep(ms: int) -> None:
     time.sleep(max(0.0, ms/1000.0))
 
@@ -65,7 +77,20 @@ def http_get(url: str) -> Optional[requests.Response]:
         if r.status_code != 200: return None
         if r.content is None or len(r.content) < MIN_BYTES: return None
         return r
-    except Exception as e:
+    except SSLError as e:
+        print(f"[http] GET SSL fail {url}: {e}")
+        if session.verify and ALLOW_SSL_FALLBACK:
+            _ssl_retry_toggle()
+            try:
+                r = session.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True)
+                if r.status_code != 200: return None
+                if r.content is None or len(r.content) < MIN_BYTES: return None
+                return r
+            except Exception as e2:
+                print(f"[http] GET fail after fallback {url}: {e2}")
+                return None
+        return None
+    except RequestException as e:
         print(f"[http] GET fail {url}: {e}")
         return None
 
@@ -74,7 +99,19 @@ def http_post(url: str, data: Dict[str, Any], headers: Dict[str,str]|None=None) 
         r = session.post(url, data=data, headers=headers or {}, timeout=HTTP_TIMEOUT, allow_redirects=True)
         if r.status_code not in (200, 302): return None
         return r
-    except Exception as e:
+    except SSLError as e:
+        print(f"[http] POST SSL fail {url}: {e}")
+        if session.verify and ALLOW_SSL_FALLBACK:
+            _ssl_retry_toggle()
+            try:
+                r = session.post(url, data=data, headers=headers or {}, timeout=HTTP_TIMEOUT, allow_redirects=True)
+                if r.status_code not in (200, 302): return None
+                return r
+            except Exception as e2:
+                print(f"[http] POST fail after fallback {url}: {e2}")
+                return None
+        return None
+    except RequestException as e:
         print(f"[http] POST fail {url}: {e}")
         return None
 
@@ -98,9 +135,7 @@ def to_number(x: Any) -> Optional[float]:
         return float(m.group(0)) if m else None
 
 # ---------- LOGIN ----------
-LOGIN_PATHS = [
-    "/login", "/auth/login", "/signin", "/account/login", "/user/login",
-]
+LOGIN_PATHS = ["/login", "/auth/login", "/signin", "/account/login", "/user/login"]
 
 def is_login_page(s: BeautifulSoup) -> bool:
     if s.find("input", {"type": "password"}): return True
@@ -108,30 +143,22 @@ def is_login_page(s: BeautifulSoup) -> bool:
     return ("вход" in txt and "пароль" in txt) or "логин" in txt
 
 def detect_login_form(s: BeautifulSoup) -> Optional[Tuple[str, Dict[str,str]]]:
-    """
-    Возвращает (action_url, field_names) где field_names = {'user': 'email', 'pass': 'password', 'csrf': '_token' or None}
-    """
     for form in s.find_all("form"):
         if not form.find("input", {"type": "password"}):
             continue
         action = form.get("action") or ""
         fields = {"user": None, "pass": None, "csrf": None}
-        # найти имена
         names = [inp.get("name") for inp in form.find_all("input") if inp.get("name")]
-        # user
         for cand in ["email", "login", "username", "user", "phone"]:
             if cand in names:
                 fields["user"] = cand; break
-        # pass
         for cand in ["password", "passwd", "pass"]:
             if cand in names:
                 fields["pass"] = cand; break
-        # csrf
         for inp in form.find_all("input", {"type": "hidden"}):
             n = (inp.get("name") or "").lower()
             if "csrf" in n or n in ("_token", "csrf_token", "csrfmiddlewaretoken"):
-                fields["csrf"] = inp.get("name")
-                break
+                fields["csrf"] = inp.get("name"); break
         return action, fields
     return None
 
@@ -142,7 +169,6 @@ def find_csrf_meta(s: BeautifulSoup) -> Optional[str]:
     return None
 
 def login_vtt() -> bool:
-    # 1) открыть /catalog — вдруг уже пускает
     r = http_get(START_URL)
     if r:
         s = soup_of(r)
@@ -151,7 +177,6 @@ def login_vtt() -> bool:
             return True
         login_page = r
     else:
-        # 2) попробовать явные login-страницы
         login_page = None
         for p in LOGIN_PATHS:
             rr = http_get(urljoin(BASE_URL, p))
@@ -165,7 +190,7 @@ def login_vtt() -> bool:
     s = soup_of(login_page)
     form = detect_login_form(s)
     if not form:
-        print("[login] form not found on login page")
+        print("[login] form not found")
         return False
 
     action_rel, fields = form
@@ -175,11 +200,7 @@ def login_vtt() -> bool:
         print("[login] username/password fields not detected")
         return False
 
-    payload = {
-        user_field: VTT_LOGIN,
-        pass_field: VTT_PASSWORD,
-    }
-
+    payload = {user_field: VTT_LOGIN, pass_field: VTT_PASSWORD}
     token = None
     if csrf_field:
         hidden = s.find("input", {"name": csrf_field})
@@ -198,7 +219,6 @@ def login_vtt() -> bool:
         print("[login] POST failed")
         return False
 
-    # проверить доступ к каталогу
     test = http_get(START_URL)
     if not test:
         print("[login] after POST, catalog not accessible")
@@ -214,55 +234,38 @@ def login_vtt() -> bool:
 CAT_HINTS = ["картридж", "тонер", "cartridge", "toner"]
 
 def same_host(u: str) -> bool:
-    try:
-        return urlparse(u).hostname == urlparse(BASE_URL).hostname
-    except Exception:
-        return False
+    try: return urlparse(u).hostname == urlparse(BASE_URL).hostname
+    except Exception: return False
 
 def looks_like_catalog(u: str) -> bool:
     return "/catalog" in u
 
 def is_cartridge_anchor(text: str, href: str) -> bool:
-    t = (text or "").lower()
-    h = (href or "").lower()
+    t = (text or "").lower(); h = (href or "").lower()
     return any(k in t for k in CAT_HINTS) or any(k in h for k in CAT_HINTS)
 
 def discover_cartridge_pages(start_url: str, deadline: datetime) -> List[str]:
-    seen: Set[str] = set()
-    queue: List[str] = [start_url]
-    out: List[str] = []
-    pages = 0
-
+    seen: Set[str] = set(); queue: List[str] = [start_url]; out: List[str] = []; pages = 0
     while queue and pages < MAX_PAGES and datetime.utcnow() < deadline:
         u = queue.pop(0)
         if u in seen: continue
         seen.add(u)
-
         jitter_sleep(REQUEST_DELAY_MS)
         r = http_get(u)
         if not r: continue
         s = soup_of(r)
-        if is_login_page(s):
-            break
-
-        # если текущая страница похожа на «картриджи», добавим в out
+        if is_login_page(s): break
         if is_cartridge_anchor(s.title.string if s.title else "", u):
             out.append(u)
-
-        # собираем ссылки дальше по каталогу
         for a in s.find_all("a", href=True):
             absu = urljoin(u, a["href"])
             if not same_host(absu): continue
             if not looks_like_catalog(absu): continue
-            # только релевантные ветки
             if is_cartridge_anchor(a.get_text(" ", strip=True), absu):
                 if "#" in absu: absu = absu.split("#", 1)[0]
                 if absu not in seen and absu not in queue:
                     queue.append(absu)
-
         pages += 1
-
-    # уникализировать
     return list(dict.fromkeys(out))
 
 # ---------- PRODUCT PARSING ----------
@@ -342,12 +345,10 @@ def extract_breadcrumbs(s: BeautifulSoup) -> List[str]:
     return out
 
 def collect_product_links(cat_url: str, deadline: datetime) -> List[str]:
-    """Собираем ссылки на карточки с категорийной страницы (простые эвристики)."""
     urls: List[str] = []
     page = cat_url
     pages = 0
     seen: Set[str] = set()
-
     while page and pages < 30 and datetime.utcnow() < deadline:
         if page in seen: break
         seen.add(page)
@@ -355,15 +356,11 @@ def collect_product_links(cat_url: str, deadline: datetime) -> List[str]:
         r = http_get(page)
         if not r: break
         s = soup_of(r)
-
         for a in s.find_all("a", href=True):
             href = a["href"]
             absu = urljoin(page, href)
-            # эвристика: ссылки на товары часто длиннее и без "catalog" в середине
             if "/product" in absu or re.search(r"/catalog/.+/.+\.html?$", absu) or re.search(r"/\d{5,}", absu):
                 urls.append(absu)
-
-        # пагинация: rel=next / кнопка "следующая"
         nxt = s.find("link", rel=lambda v: v and "next" in v.lower())
         if nxt and nxt.get("href"):
             page = urljoin(page, nxt["href"])
@@ -374,9 +371,7 @@ def collect_product_links(cat_url: str, deadline: datetime) -> List[str]:
                 if t in ("следующая","вперёд","вперед","next",">"):
                     a_next = a; break
             page = urljoin(page, a_next["href"]) if a_next else None
-
         pages += 1
-
     return list(dict.fromkeys(urls))
 
 # ---------- YML ----------
@@ -410,14 +405,12 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
     out.append("<yml_catalog><shop>")
     out.append(f"<name>{yml_escape(SUPPLIER_NAME)}</name>")
     out.append('<currencies><currency id="RUB" rate="1" /></currencies>')
-
     out.append("<categories>")
     out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
     for cid, name, parent in categories:
         parent = parent if parent else ROOT_CAT_ID
         out.append(f"<category id=\"{cid}\" parentId=\"{parent}\">{yml_escape(name)}</category>")
     out.append("</categories>")
-
     out.append("<offers>")
     for cid, it in offers:
         price = it["price"]
@@ -437,7 +430,6 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
         out.append(f"<description>{yml_escape(desc)}</description>")
         out += ["<quantity_in_stock>1</quantity_in_stock>", "<stock_quantity>1</stock_quantity>", "<quantity>1</quantity>", "</offer>"]
     out.append("</offers>")
-
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
@@ -453,26 +445,23 @@ def main() -> int:
 
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MIN)
 
-    # 1) находим страниц(ы) раздела «картриджи»
     cat_pages = discover_cartridge_pages(START_URL, deadline)
     if not cat_pages:
         print("Error: cartridge sections not found")
-        # создадим пустой yml, чтобы пайплайн не падал
         os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
-        with open(OUT_FILE, "w", encoding=("cp1251" if OUTPUT_ENCODING.lower() in ("windows-1251","cp1251") else OUTPUT_ENCODING)) as f:
+        enc = "cp1251" if OUTPUT_ENCODING.lower() in ("windows-1251","cp1251") else OUTPUT_ENCODING
+        with open(OUT_FILE, "w", encoding=enc, errors="ignore") as f:
             f.write(build_yml([], []))
         return 0
 
     print(f"[discover] cartridge pages: {len(cat_pages)}")
 
-    # 2) собираем ссылки на товары
     product_urls: List[str] = []
     for cu in cat_pages:
         product_urls.extend(collect_product_links(cu, deadline))
     product_urls = list(dict.fromkeys(product_urls))
     print(f"[collect] product urls: {len(product_urls)}")
 
-    # 3) парсим карточки
     def worker(u: str):
         if datetime.utcnow() > deadline: return None
         jitter_sleep(REQUEST_DELAY_MS)
@@ -488,7 +477,7 @@ def main() -> int:
         desc  = extract_description(s) or ""
         crumbs= extract_breadcrumbs(s)
 
-        if not title or not price or not sku:
+        if not title or price is None or not sku:
             return None
 
         return {
@@ -513,11 +502,9 @@ def main() -> int:
 
     print(f"[parse] total: {len(items)}")
 
-    # 4) категории из крошек
     paths = [p["crumbs"] for p in items if p.get("crumbs")]
     cat_list, path_id_map = build_categories_from_paths(paths)
 
-    # 5) offers
     offers: List[Tuple[int,Dict[str,Any]]] = []
     seen_ids: Set[str] = set()
     for it in items:
@@ -548,7 +535,6 @@ def main() -> int:
             "description": it.get("description") or it["title"],
         }))
 
-    # 6) YML
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     enc = "cp1251" if OUTPUT_ENCODING.lower() in ("windows-1251","cp1251") else OUTPUT_ENCODING
     with open(OUT_FILE, "w", encoding=enc, errors="ignore") as f:
