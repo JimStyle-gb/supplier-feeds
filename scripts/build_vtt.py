@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-VTT (b2bold.vtt.ru) → Satu YML
-- Cookie-авторизация (секрет VTT_COOKIES).
-- Опция VERIFY_TLS: 1/true (по умолчанию) — проверять сертификаты; 0/false — игнорировать.
-- Детект login-wall, подробные логи, терпимость к «тонким» страницам.
-- Фильтр: заголовок ДОЛЖЕН начинаться с ключа (допустим бренд из ALLOW_PREFIX_BRANDS перед ним).
+VTT B2B → Satu YML
+- Авто-логин через Playwright (логин/пароль из env), cookies переиспользуются.
+- Краул категорий и карточек через requests; если видим страницу входа/пусто — фолбэк в Playwright.
+- Фильтр по KEYWORDS_FILE (по началу названия). Если файл пуст — берём все позиции.
+- Сбор: title, vendorCode (sku), price, url, картинка, описание, хлебные крошки → yml.
+
+Требования: requests, beautifulsoup4, lxml, playwright (и chromium установлен через `playwright install`).
 """
 
 from __future__ import annotations
-import os, re, io, time, html, hashlib
+import os, re, io, time, html, json, hashlib, traceback
 from typing import Any, Dict, List, Optional, Tuple, Set
 from urllib.parse import urljoin, urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -16,135 +18,78 @@ from datetime import datetime, timedelta
 
 import requests
 from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright
 
-# ---------- ENV ----------
-BASE_URL           = os.getenv("BASE_URL", "https://b2bold.vtt.ru").rstrip("/")
-START_URL          = os.getenv("START_URL", f"{BASE_URL}/catalog/")
+# ---------------- ENV ----------------
+BASE_URL           = os.getenv("BASE_URL", "https://b2b.vtt.ru").rstrip("/")
+START_URL          = os.getenv("START_URL", f"{BASE_URL}/catalog")
 KEYWORDS_FILE      = os.getenv("KEYWORDS_FILE", "docs/vtt_keywords.txt")
 OUT_FILE           = os.getenv("OUT_FILE", "docs/vtt.yml")
 OUTPUT_ENCODING    = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-VTT_COOKIES        = os.getenv("VTT_COOKIES", "").strip()
+LOGIN              = os.getenv("B2B_VTT_LOGIN", "")
+PASSWORD           = os.getenv("B2B_VTT_PASSWORD", "")
 
 HTTP_TIMEOUT       = float(os.getenv("HTTP_TIMEOUT", "25"))
 REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "150"))
-MIN_BYTES          = int(os.getenv("MIN_BYTES", "100"))
+MIN_BYTES          = int(os.getenv("MIN_BYTES", "900"))
 
 MAX_WORKERS        = int(os.getenv("MAX_WORKERS", "6"))
-MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "90"))
-MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "1500"))
+MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "120"))
+MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "2000"))
 
-ALLOW_PREFIX_BRANDS = [b.strip().lower() for b in os.getenv("ALLOW_PREFIX_BRANDS","").split(",") if b.strip()]
-
-def _str2bool(v: str) -> bool:
-    return str(v).strip().lower() in ("1","true","yes","y","on")
-VERIFY_TLS         = _str2bool(os.getenv("VERIFY_TLS", "1"))
+DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "0") == "1"
+CURRENCY           = os.getenv("CURRENCY", "RUB").strip() or "RUB"
 
 SUPPLIER_NAME      = "VTT"
-CURRENCY           = "RUB"
+
 ROOT_CAT_ID        = 9600000
 ROOT_CAT_NAME      = "VTT"
 
-UA_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.8",
-    "Cache-Control": "no-cache",
-    "Pragma": "no-cache",
-}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; VTT-B2B-Scraper/1.0)"}
 
-# ---------- helpers ----------
+# ---------------- Utils ----------------
 def jitter_sleep(ms: int) -> None:
     time.sleep(max(0.0, ms/1000.0))
-
-def parse_cookie_string(cookie_str: str) -> Dict[str, str]:
-    jar: Dict[str, str] = {}
-    for part in cookie_str.split(";"):
-        part = part.strip()
-        if not part or "=" not in part:
-            continue
-        k, v = part.split("=", 1)
-        k = k.strip(); v = v.strip()
-        if k and v:
-            jar[k] = v
-    return jar
-
-def make_session() -> requests.Session:
-    s = requests.Session()
-    s.headers.update(UA_HEADERS)
-
-    # TLS verify control
-    s.verify = VERIFY_TLS
-    if not VERIFY_TLS:
-        try:
-            from requests.packages.urllib3.exceptions import InsecureRequestWarning
-            requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
-            print("[tls] VERIFY_TLS=0 — проверка сертификатов отключена.")
-        except Exception:
-            pass
-
-    # cookies: и jar, и «сырым» заголовком
-    if VTT_COOKIES:
-        jar = parse_cookie_string(VTT_COOKIES)
-        host = urlparse(BASE_URL).hostname
-        for k, v in jar.items():
-            s.cookies.set(k, v, domain=host)
-        s.headers["Cookie"] = VTT_COOKIES
-    return s
-
-def http_get(session: requests.Session, url: str) -> Optional[bytes]:
-    try:
-        r = session.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True, headers={"Referer": BASE_URL})
-        status = r.status_code
-        if status != 200:
-            print(f"[http] {status} {url}")
-            return None
-        b = r.content or b""
-        if len(b) < MIN_BYTES:
-            print(f"[http] small body {len(b)} bytes: {url}")
-        return b
-    except requests.exceptions.SSLError as e:
-        print(f"[http] SSL error for {url}: {e}")
-        if VERIFY_TLS:
-            print("[hint] Установи VERIFY_TLS=0 в env (workflow), если это корпоративный сертификат.")
-        return None
-    except Exception as e:
-        print(f"[http] fail {url}: {e}")
-        return None
-
-def soup_of(b: bytes) -> BeautifulSoup:
-    return BeautifulSoup(b, "lxml")
 
 def yml_escape(s: str) -> str:
     return html.escape(s or "")
 
-def sha1(s: str) -> str:
-    import hashlib as _h
-    return _h.sha1(s.encode("utf-8")).hexdigest()
-
-def sanitize_spaces(s: str) -> str:
-    return re.sub(r"\s{2,}", " ", (s or "").strip())
-
-def to_number(txt: Any) -> Optional[float]:
-    if txt is None: return None
-    s = sanitize_spaces(str(txt)).replace("\xa0"," ").replace(" ", "")
-    s = s.replace(",", ".")
-    if not re.search(r"\d", s): return None
-    try:
-        return float(re.findall(r"[0-9]+(?:\.[0-9]+)?", s)[0])
-    except Exception:
+def to_number(x: Any) -> Optional[float]:
+    if x is None:
         return None
+    s = str(x).replace("\xa0", " ").strip()
+    s = s.replace(" ", "").replace(",", ".")
+    if not re.search(r"\d", s):
+        return None
+    try:
+        return float(s)
+    except Exception:
+        m = re.search(r"[\d.]+", s)
+        return float(m.group(0)) if m else None
 
-def looks_like_login_wall(b: bytes) -> bool:
-    t = (b.decode("utf-8", "ignore") or "").lower()
-    needles = [
-        "вход", "авторизация", "войдите", "личный кабинет",
-        'name="user_login"', 'name="user_password"',
-        "action=\"/auth", "action=\"/login", "bitrix_sessid"
-    ]
-    return any(n in t for n in needles)
+def abs_url(base: str, href: str) -> str:
+    if not href:
+        return base
+    if href.startswith("//"):
+        return "https:" + href
+    if href.startswith("/"):
+        return BASE_URL + href
+    return urljoin(base, href)
 
-# ---------- keywords ----------
+def key_norm(v: str) -> str:
+    return re.sub(r"[^A-Za-z0-9]+", "", v or "").upper()
+
+def sha1(s: str) -> str:
+    import hashlib
+    return hashlib.sha1((s or "").encode("utf-8")).hexdigest()
+
+def sanitize_title(s: str) -> str:
+    if not s:
+        return ""
+    s = re.sub(r"\s{2,}", " ", s).strip()
+    return s[:200].rstrip()
+
 def load_keywords(path: str) -> List[str]:
     kws: List[str] = []
     if os.path.isfile(path):
@@ -153,240 +98,349 @@ def load_keywords(path: str) -> List[str]:
                 s = line.strip()
                 if s and not s.startswith("#"):
                     kws.append(s)
-    if not kws:
-        kws = ["drum","девелопер","драм","картридж","термоблок","термоэлемент","тонер-картридж"]
     return kws
 
 def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
-    return [re.compile(r"^\s*" + re.escape(kw).replace(r"\ ", " ") + r"(?!\w)", re.I) for kw in kws]
+    pats: List[re.Pattern] = []
+    for kw in kws:
+        esc = re.escape(kw).replace(r"\ ", " ")
+        pats.append(re.compile(r"^\s*" + esc + r"(?!\w)", re.I))
+    return pats
 
-def title_startswith_strict(title: str, pats: List[re.Pattern]) -> bool:
-    return any(p.search(title) for p in pats)
+def title_startswith(title: str, patterns: List[re.Pattern]) -> bool:
+    if not patterns:
+        return True  # нет ключей = берем все
+    if not title:
+        return False
+    return any(p.search(title) for p in patterns)
 
-def title_startswith_with_brand_allow(title: str, pats: List[re.Pattern]) -> bool:
-    t = title.strip()
-    if title_startswith_strict(t, pats):
-        return True
-    tl = t.lower()
-    for b in ALLOW_PREFIX_BRANDS:
-        pref = b + " "
-        if tl.startswith(pref):
-            rest = t[len(pref):].lstrip()
-            return title_startswith_strict(rest, pats)
-    return False
+# ---------------- Playwright login ----------------
+class BrowserCtx:
+    def __init__(self, context, page):
+        self.context = context
+        self.page = page
 
-# ---------- site parsing ----------
-def looks_like_product_url(u: str) -> bool:
-    lu = u.lower()
-    return ("/product" in lu or "/p/" in lu or "/item/" in lu or "/goods/" in lu)
+def playwright_login() -> Tuple[Optional[BrowserCtx], Optional[str]]:
+    """
+    Открываем Chromium, идем на START_URL, логинимся, возвращаем cookie header.
+    """
+    if not LOGIN or not PASSWORD:
+        print("[auth] LOGIN/PASSWORD не заданы — логин пропущен.")
+        return None, None
 
-def looks_like_category_url(u: str) -> bool:
-    lu = u.lower()
-    return ("/catalog" in lu or "/catalogue" in lu or "/category" in lu or "/sections" in lu)
+    try:
+        pw = sync_playwright().start()
+        browser = pw.chromium.launch(headless=True)
+        context = browser.new_context(user_agent=UA["User-Agent"], ignore_https_errors=DISABLE_SSL_VERIFY)
+        page = context.new_page()
 
-def is_valid_internal(u: str) -> bool:
-    if not u.startswith("http"):
-        return True
-    host = urlparse(u).hostname or ""
-    return host.endswith(urlparse(BASE_URL).hostname or "")
+        # 1) на каталог
+        page.goto(START_URL, wait_until="domcontentloaded", timeout=60000)
 
-def extract_price(s: BeautifulSoup) -> Optional[float]:
-    cand = []
-    for sel in [
-        ".price", ".product-price", ".product__price", ".sku-price",
-        "[class*='price']", "[itemprop='price']", "meta[itemprop='price']",
-    ]:
-        for el in s.select(sel):
-            if el.name == "meta" and el.get("content"):
-                cand.append(el["content"])
-            else:
-                txt = el.get_text(" ", strip=True)
-                if txt: cand.append(txt)
+        # 2) если есть форма — логинимся
+        def has_login_form() -> bool:
+            sel_any = [
+                'input[type="password"]',
+                'form[action*="login"]',
+                'form[action*="signin"]',
+                'form[action*="auth"]',
+                'text="Вход"', 'text="Авторизация"', 'text="Логин"',
+            ]
+            for s in sel_any:
+                if page.locator(s).first.count() > 0:
+                    return True
+            # урл явно про логин?
+            u = page.url.lower()
+            return any(x in u for x in ("/login", "/signin", "/auth"))
+        if has_login_form():
+            # попытки найти поля
+            login_selectors = [
+                'input[name="login"]', 'input[name="email"]', 'input[name="username"]',
+                'input[type="email"]', 'input[type="text"]'
+            ]
+            pass_selectors = ['input[name="password"]', 'input[type="password"]']
+
+            filled_login = False
+            for s in login_selectors:
+                el = page.locator(s).first
+                if el.count() > 0:
+                    el.fill(LOGIN, timeout=10000)
+                    filled_login = True
+                    break
+            if not filled_login:
+                # попробуем просто первый input[type=text]
+                el = page.locator('input[type="text"]').first
+                if el.count() > 0:
+                    el.fill(LOGIN, timeout=10000)
+
+            filled_pass = False
+            for s in pass_selectors:
+                el = page.locator(s).first
+                if el.count() > 0:
+                    el.fill(PASSWORD, timeout=10000)
+                    filled_pass = True
+                    break
+
+            # кнопки «Войти»
+            submit_selectors = [
+                'button[type="submit"]',
+                'button:has-text("Войти")', 'button:has-text("Login")',
+                'input[type="submit"]'
+            ]
+            clicked = False
+            for s in submit_selectors:
+                el = page.locator(s).first
+                if el.count() > 0:
+                    el.click(timeout=10000)
+                    clicked = True
+                    break
+            if not clicked:
+                # энтер в пасс
+                page.keyboard.press("Enter")
+
+            # ждем навигацию / прогруз
+            page.wait_for_timeout(1500)
+            page.wait_for_load_state("networkidle", timeout=30000)
+
+            # если остались на логине — пробуем альтернативную кнопку
+            if has_login_form():
+                alt = page.get_by_role("button", name=re.compile("Войти|Login|Sign in", re.I)).first
+                if alt.count() > 0:
+                    alt.click(timeout=8000)
+                    page.wait_for_load_state("networkidle", timeout=30000)
+
+        # 3) проверка, что мы в каталоге
+        # если редиректит на логин — считаем неуспех
+        cur = page.url.lower()
+        if any(x in cur for x in ("/login", "/signin", "/auth")):
+            print("[auth] Похоже, остались на странице входа.")
+            context.close(); browser.close(); pw.stop()
+            return None, None
+
+        # 4) собираем cookie header
+        cookies = context.cookies()
+        cookie_header = "; ".join([f"{c['name']}={c['value']}" for c in cookies if 'name' in c and 'value' in c])
+        print(f"[auth] cookies count: {len(cookies)}")
+
+        return BrowserCtx(context=context, page=page), cookie_header
+    except Exception as e:
+        print("[auth] Ошибка логина:", e)
+        traceback.print_exc()
+        try:
+            pw.stop()
+        except Exception:
+            pass
+        return None, None
+
+# ---------------- HTTP fetching (requests + fallback to Playwright) ----------------
+class Fetcher:
+    def __init__(self, cookie_header: Optional[str], browser: Optional[BrowserCtx]):
+        self.sess = requests.Session()
+        self.sess.headers.update(UA)
+        if cookie_header:
+            self.sess.headers["Cookie"] = cookie_header
+        self.verify = not DISABLE_SSL_VERIFY
+        self.browser = browser
+
+    def get(self, url: str) -> Optional[bytes]:
+        """Пытаемся requests; если неудачно — Playwright page.content()."""
+        try:
+            r = self.sess.get(url, timeout=HTTP_TIMEOUT, verify=self.verify, allow_redirects=True)
+            if r.status_code == 200 and len(r.content) >= MIN_BYTES:
+                # простая эвристика «на странице входа есть password»
+                if b"type=\"password\"" not in r.content and b"type='password'" not in r.content:
+                    return r.content
+        except Exception as e:
+            print(f"[http] fail {url}: {e}")
+
+        # fallback -> Playwright
+        if self.browser:
+            try:
+                self.browser.page.goto(url, wait_until="domcontentloaded", timeout=60000)
+                self.browser.page.wait_for_timeout(300)
+                html = self.browser.page.content()
+                if html and len(html.encode("utf-8", "ignore")) >= MIN_BYTES:
+                    # если снова логин — не отдаём
+                    u = self.browser.page.url.lower()
+                    if not any(x in u for x in ("/login", "/signin", "/auth")):
+                        return html.encode("utf-8", "ignore")
+            except Exception as e:
+                print(f"[playwright] fail {url}: {e}")
+        return None
+
+# ---------------- Parsers ----------------
+PRODUCT_RE = re.compile(r"/(product|goods|item|sku|catalog/[^/]+/[^/]+)\.?\w*$", re.I)
+
+def soup_of(b: bytes) -> BeautifulSoup:
+    return BeautifulSoup(b, "lxml")
+
+def find_category_links(base_url: str, s: BeautifulSoup) -> List[str]:
+    out: List[str] = []
+    for a in s.find_all("a", href=True):
+        href = a["href"]
+        u = abs_url(base_url, href)
+        if not u.startswith(BASE_URL):
+            continue
+        # ссылки на разделы каталога
+        if "/catalog" in u and not PRODUCT_RE.search(u):
+            out.append(u.split("#")[0])
+    # Уникализируем, оставляем только того же хоста
+    uniq = []
     seen = set()
-    for x in cand:
-        x = x.strip()
-        if not x or x in seen: continue
-        seen.add(x)
-        val = to_number(x)
-        if val and val > 0:
-            return val
-    return None
+    for u in out:
+        key = (urlparse(u).path, urlparse(u).query)
+        if key in seen:
+            continue
+        seen.add(key)
+        uniq.append(u)
+    return uniq
 
-def extract_sku(s: BeautifulSoup) -> Optional[str]:
-    texts = s.get_text(" ", strip=True)
-    m = re.search(r"(?:Артикул|SKU|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", texts, flags=re.I)
-    if m: return m.group(1).strip()
-    el = s.find(attrs={"itemprop": "sku"})
-    if el:
-        v = el.get_text(" ", strip=True) or el.get("content") or ""
-        if v.strip(): return v.strip()
-    for th in s.find_all(["th","td"]):
-        t = (th.get_text(" ", strip=True) or "").lower()
-        if t in ("артикул", "sku", "код"):
-            td = th.find_next("td")
-            if td:
-                v = td.get_text(" ", strip=True)
-                if v: return v
-    return None
-
-def extract_title(s: BeautifulSoup) -> Optional[str]:
-    for sel in ["h1", "h1[itemprop='name']", "[itemprop='name']"]:
-        el = s.select_one(sel)
-        if el:
-            t = el.get_text(" ", strip=True)
-            if t: return t
-    og = s.find("meta", attrs={"property": "og:title"})
-    if og and og.get("content"):
-        return og["content"].strip()
-    return None
-
-def extract_description(s: BeautifulSoup) -> Optional[str]:
-    for sel in [
-        "[itemprop='description']",
-        ".product-description", ".desc", ".tab-content .description", "#description",
-        ".tabs .description", ".product__description", ".content"
-    ]:
-        el = s.select_one(sel)
-        if el and el.get_text(strip=True):
-            return el.get_text(" ", strip=True)
-    for box in s.select(".product, .product-page, .product__wrapper, #content"):
-        t = box.get_text(" ", strip=True)
-        if t and len(t) > 60:
-            return t
-    return None
-
-def extract_image(s: BeautifulSoup, base: str) -> Optional[str]:
-    og = s.find("meta", attrs={"property": "og:image"})
-    if og and og.get("content"):
-        return urljoin(base, og["content"].strip())
-    for sel in ["img.product-image", ".product-gallery img", "img[data-src]", "img[src]"]:
-        for img in s.select(sel):
-            u = img.get("src") or img.get("data-src") or ""
-            if u and any(k in u.lower() for k in ["/upload", "/images", "/img", "/media"]):
-                return urljoin(base, u)
-    return None
-
-def extract_breadcrumbs(s: BeautifulSoup) -> List[str]:
-    names: List[str] = []
-    for bc in s.select("ul.breadcrumbs, .breadcrumbs, .breadcrumb, nav.breadcrumbs, [class*='breadcrumb']"):
-        for a in bc.find_all("a"):
-            t = a.get_text(" ", strip=True)
-            if t and t.lower() not in ("главная", "home"):
-                names.append(t)
-        if names:
-            break
-    return [sanitize_spaces(x) for x in names if x]
+def find_product_links(base_url: str, s: BeautifulSoup) -> List[str]:
+    out: Set[str] = set()
+    for a in s.find_all("a", href=True):
+        href = a["href"].strip()
+        u = abs_url(base_url, href)
+        if not u.startswith(BASE_URL):
+            continue
+        if PRODUCT_RE.search(u):
+            out.add(u.split("#")[0])
+    # эвристика на карточки через data-атрибуты
+    for a in s.select('a[href][data-product-id], .product a[href], .card a[href]'):
+        u = abs_url(base_url, a.get("href"))
+        if u.startswith(BASE_URL):
+            out.add(u.split("#")[0])
+    return list(out)
 
 def category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
     ln = s.find("link", attrs={"rel": "next"})
     if ln and ln.get("href"):
-        return urljoin(page_url, ln["href"])
-    a = s.find("a", class_=lambda c: c and "next" in c.lower())
-    if a and a.get("href"):
-        return urljoin(page_url, a["href"])
+        return abs_url(page_url, ln["href"])
+    # текстовые кнопки
     for a in s.find_all("a", href=True):
-        tt = (a.get_text(" ", strip=True) or "").lower()
-        if tt in ("следующая", "вперед", "вперёд", "next", "»", ">"):
-            return urljoin(page_url, a["href"])
+        txt = (a.get_text(" ", strip=True) or "").lower()
+        if txt in ("следующая", "вперед", "вперёд", "next", "далее", ">"):
+            return abs_url(page_url, a["href"])
+    # param page=
+    if "page=" in page_url:
+        try:
+            import urllib.parse as up
+            pr = urlparse(page_url)
+            q = dict([kv.split("=") for kv in pr.query.split("&") if "=" in kv])
+            p = int(q.get("page", "1")) + 1
+            q["page"] = str(p)
+            newq = "&".join([f"{k}={v}" for k, v in q.items()])
+            return pr._replace(query=newq).geturl()
+        except Exception:
+            pass
     return None
 
-def collect_categories(session: requests.Session, start_url: str, limit_pages: int) -> List[str]:
-    q = [start_url]
-    seen: Set[str] = set()
-    cats: List[str] = []
-    pages = 0
+def parse_price_block(s: BeautifulSoup) -> Optional[float]:
+    # Common price selectors
+    cand = s.select_one('[itemprop="price"], .price, .product-price, .card-price, [class*="price__value"]')
+    if cand:
+        p = to_number(cand.get("content") or cand.get_text(" ", strip=True))
+        if p is not None:
+            return p
+    # search any money-like number
+    txt = s.get_text(" ", strip=True)
+    m = re.search(r"(\d[\d\s.,]{2,})\s*(?:₽|руб|руб\.|RUB)?", txt, flags=re.I)
+    if m:
+        return to_number(m.group(1))
+    return None
 
-    while q and pages < limit_pages:
-        u = q.pop(0)
-        if u in seen: continue
-        seen.add(u)
-        jitter_sleep(REQUEST_DELAY_MS)
-        b = http_get(session, u)
-        if not b:
+def parse_sku(s: BeautifulSoup) -> Optional[str]:
+    # microdata
+    skuel = s.find(attrs={"itemprop": "sku"})
+    if skuel:
+        t = (skuel.get_text(" ", strip=True) or "").strip()
+        if t:
+            return t
+    # labels
+    labels = ["артикул", "sku", "код", "модель", "part", "pn", "p/n"]
+    for lab in labels:
+        node = s.find(string=lambda t: t and lab in t.lower())
+        if node:
+            val = (node.parent.get_text(" ", strip=True) if node.parent else str(node)).strip()
+            m = re.search(r"([A-Za-z0-9\-_.\/]{2,})", val)
+            if m:
+                return m.group(1)
+    # JSON-LD
+    for script in s.find_all("script", type=lambda v: v and "ld+json" in v):
+        try:
+            data = json.loads(script.string)
+            if isinstance(data, dict):
+                if data.get("@type") == "Product":
+                    sku = data.get("sku") or data.get("mpn")
+                    if sku:
+                        return str(sku)
+        except Exception:
+            pass
+    # fallback: any token like model
+    txt = s.get_text(" ", strip=True)
+    m = re.search(r"(?:Артикул|SKU|Код)\s*[:#]?\s*([A-Za-z0-9\-_.\/]{2,})", txt, flags=re.I)
+    if m:
+        return m.group(1)
+    return None
+
+def parse_title(s: BeautifulSoup) -> Optional[str]:
+    for sel in ['h1', 'h1[itemprop="name"]', '[itemprop="name"]', '.product-title', '.card-title']:
+        el = s.select_one(sel)
+        if el and el.get_text(strip=True):
+            return sanitize_title(el.get_text(" ", strip=True))
+    title = s.title.string if s.title else None
+    if title:
+        return sanitize_title(title)
+    return None
+
+def parse_description(s: BeautifulSoup) -> Optional[str]:
+    sels = [
+        '[itemprop="description"]', '.product-description', '.desc', '#description',
+        '.tab-content .description', '.tabs .description', '.product__description'
+    ]
+    for sel in sels:
+        el = s.select_one(sel)
+        if el and el.get_text(strip=True):
+            return el.get_text(" ", strip=True)
+    # JSON-LD
+    for script in s.find_all("script", type=lambda v: v and "ld+json" in v):
+        try:
+            data = json.loads(script.string)
+            if isinstance(data, dict) and data.get("@type") == "Product":
+                d = data.get("description")
+                if d:
+                    return str(d)
+        except Exception:
+            pass
+    return None
+
+def parse_picture(s: BeautifulSoup, page_url: str) -> Optional[str]:
+    cand = s.find("img", {"id": re.compile(r"^main", re.I)})
+    if cand and (cand.get("src") or cand.get("data-src")):
+        return abs_url(page_url, cand.get("src") or cand.get("data-src"))
+    og = s.find("meta", attrs={"property": "og:image"})
+    if og and og.get("content"):
+        return abs_url(page_url, og["content"])
+    for img in s.find_all("img"):
+        src = img.get("src") or img.get("data-src")
+        if not src:
             continue
-        if looks_like_login_wall(b):
-            print("[auth] login page detected while listing categories.")
-            return []
-        s = soup_of(b)
-        pages += 1
-        cats.append(u)
+        if any(k in src for k in ("product", "goods", "catalog", "/img/", "/images/")):
+            return abs_url(page_url, src)
+    return None
 
-        nxt = category_next_url(s, u)
-        if nxt and nxt not in seen:
-            q.append(nxt)
-
-        for a in s.find_all("a", href=True):
-            href = a["href"].strip()
-            absu = urljoin(u, href)
-            if not is_valid_internal(absu):
-                continue
-            if looks_like_category_url(absu) and not looks_like_product_url(absu):
-                if absu not in seen and absu not in q and absu.startswith(f"{BASE_URL}/"):
-                    q.append(absu)
-
-        if pages >= limit_pages:
+def parse_breadcrumbs(s: BeautifulSoup) -> List[str]:
+    names: List[str] = []
+    for bc in s.select('ul.breadcrumb, .breadcrumbs, .breadcrumb, .pathway, [class*="breadcrumb"], [class*="pathway"]'):
+        for a in bc.find_all("a"):
+            t = a.get_text(" ", strip=True)
+            if t and t.lower() not in ("главная","home","каталог"):
+                names.append(t.strip())
+        if names:
             break
+    return names
 
-    return list(dict.fromkeys(cats))
-
-def collect_product_urls_from_category(session: requests.Session, cat_url: str, limit_pages: int) -> List[str]:
-    urls: List[str] = []
-    page = cat_url
-    pages_done = 0
-    seen_pages: Set[str] = set()
-
-    while page and pages_done < limit_pages:
-        if page in seen_pages:
-            break
-        seen_pages.add(page)
-
-        jitter_sleep(REQUEST_DELAY_MS)
-        b = http_get(session, page)
-        if not b:
-            break
-        if looks_like_login_wall(b):
-            print("[auth] login page detected while paging category.")
-            break
-        s = soup_of(b)
-
-        for a in s.find_all("a", href=True):
-            absu = urljoin(page, a["href"].strip())
-            if not is_valid_internal(absu):
-                continue
-            if looks_like_product_url(absu):
-                urls.append(absu)
-            else:
-                txt = a.get_text(" ", strip=True) or ""
-                if txt and len(txt) > 5 and any(w in txt.lower() for w in ["купить","подробнее","товар","описание"]):
-                    urls.append(absu)
-
-        page = category_next_url(s, page)
-        pages_done += 1
-
-    return list(dict.fromkeys(urls))
-
-def parse_product_page(session: requests.Session, url: str) -> Optional[Dict[str, Any]]:
-    jitter_sleep(REQUEST_DELAY_MS)
-    b = http_get(session, url)
-    if not b or looks_like_login_wall(b):
-        return None
-    s = soup_of(b)
-
-    h1 = s.select_one("h1") or s.select_one("[itemprop='name']")
-    title = sanitize_spaces(h1.get_text(" ", strip=True) if h1 else "")
-    if not title:
-        return None
-
-    price = extract_price(s)
-    sku   = extract_sku(s) or ""
-    pic   = extract_image(s, url) or ""
-    desc  = sanitize_spaces(extract_description(s) or title)
-    crumbs = extract_breadcrumbs(s)
-
-    return {"url": url, "title": title, "price": price, "vendorCode": sku, "picture": pic, "description": desc, "crumbs": crumbs}
-
-# ---------- categories build ----------
-def stable_cat_id(text: str, prefix: int = 9610000) -> int:
+# ---------------- YML ----------------
+def stable_cat_id(text: str, prefix: int = 9700000) -> int:
     h = hashlib.md5(text.encode("utf-8")).hexdigest()[:6]
     return prefix + int(h, 16)
 
@@ -396,7 +450,8 @@ def build_categories_from_paths(paths: List[List[str]]) -> Tuple[List[Tuple[int,
     for path in paths:
         clean = [p.strip() for p in path if p and p.strip()]
         clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
-        if not clean: continue
+        if not clean: 
+            continue
         parent_id = ROOT_CAT_ID
         prefix: List[str] = []
         for name in clean:
@@ -410,13 +465,12 @@ def build_categories_from_paths(paths: List[List[str]]) -> Tuple[List[Tuple[int,
             parent_id = cid
     return out_list, cat_map
 
-# ---------- YML ----------
 def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple[int,Dict[str,Any]]]) -> str:
     out: List[str] = []
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
     out.append("<yml_catalog><shop>")
     out.append(f"<name>{yml_escape(SUPPLIER_NAME.lower())}</name>")
-    out.append(f"<currencies><currency id=\"{CURRENCY}\" rate=\"1\" /></currencies>")
+    out.append(f'<currencies><currency id="{CURRENCY}" rate="1" /></currencies>')
 
     out.append("<categories>")
     out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
@@ -427,20 +481,18 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
 
     out.append("<offers>")
     for cid, it in offers:
-        price = it.get("price")
-        if price is None:
-            continue
+        price = it["price"]
         price_txt = str(int(price)) if float(price).is_integer() else f"{price}"
         out += [
             f"<offer id=\"{yml_escape(it['offer_id'])}\" available=\"true\" in_stock=\"true\">",
             f"<name>{yml_escape(it['title'])}</name>",
             f"<vendor>{yml_escape(it.get('brand') or SUPPLIER_NAME)}</vendor>",
-            f"<vendorCode>{yml_escape(it.get('vendorCode') or '')}</vendorCode>",
+            f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>",
             f"<price>{price_txt}</price>",
             f"<currencyId>{CURRENCY}</currencyId>",
             f"<categoryId>{cid}</categoryId>",
         ]
-        if it.get("url"):     out.append(f"<url>{yml_escape(it['url'])}</url>")
+        if it.get("url"): out.append(f"<url>{yml_escape(it['url'])}</url>")
         if it.get("picture"): out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
         desc = it.get("description") or it["title"]
         out.append(f"<description>{yml_escape(desc)}</description>")
@@ -450,111 +502,164 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
-# ---------- MAIN ----------
+# ---------------- Crawl logic ----------------
 def main() -> int:
-    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
-    session = make_session()
+    started = datetime.utcnow()
+    deadline = started + timedelta(minutes=MAX_CRAWL_MINUTES)
 
-    # стартовая страница
-    root_bytes = http_get(session, START_URL)
-    if not root_bytes:
-        raise RuntimeError("Стартовая страница недоступна (проверьте URL / cookies / TLS).")
-    if looks_like_login_wall(root_bytes):
-        raise RuntimeError("Похоже, попадаем на страницу входа. Обновите секрет VTT_COOKIES (актуальные cookies).")
+    # 0) логин
+    browser_ctx, cookie_header = playwright_login()
+    fetcher = Fetcher(cookie_header=cookie_header, browser=browser_ctx)
 
-    # ключи
-    keywords = load_keywords(KEYWORDS_FILE)
-    pats = compile_startswith_patterns(keywords)
+    # 1) стартовая
+    b = fetcher.get(START_URL)
+    if not b:
+        raise RuntimeError("Стартовая страница недоступна после логина.")
+    s = soup_of(b)
 
-    # 1) разделы
-    cats = collect_categories(session, START_URL, limit_pages=MAX_CATEGORY_PAGES)
-    if not cats:
-        raise RuntimeError("Не нашли разделов каталога (cookies устарели / доступ закрыт).")
-    print(f"[cats] discovered: {len(cats)}")
+    # собираем верхние разделы
+    cats_lvl1 = find_category_links(START_URL, s)
+    if not cats_lvl1:
+        print("[warn] Не нашли верхних разделов, попробуем всё же пройтись по странице как по листингу.")
+        cats_lvl1 = [START_URL]
 
-    # 2) ссылки карточек
-    per_cat_budget = max(1, MAX_CATEGORY_PAGES // max(1, len(cats)))
-    prod_urls: List[str] = []
-    for cu in cats:
-        urls = collect_product_urls_from_category(session, cu, per_cat_budget)
-        prod_urls.extend(urls)
-    prod_urls = list(dict.fromkeys(prod_urls))
-    print(f"[crawl] product URLs: {len(prod_urls)}")
+    print(f"[cats] top-level: {len(cats_lvl1)}")
 
-    # 3) парсинг карточек
-    def worker(u: str) -> Optional[Dict[str, Any]]:
+    # 2) BFS по категориям + сбор product urls
+    product_urls: Set[str] = set()
+    seen_cats: Set[str] = set()
+    queue: List[str] = list(dict.fromkeys(cats_lvl1))
+    pages_scanned = 0
+
+    while queue and datetime.utcnow() < deadline and pages_scanned < MAX_CATEGORY_PAGES:
+        cat = queue.pop(0)
+        if cat in seen_cats:
+            continue
+        seen_cats.add(cat)
+
+        jitter_sleep(REQUEST_DELAY_MS)
+        b = fetcher.get(cat)
+        if not b:
+            continue
+        s = soup_of(b)
+
+        # подкатегории
+        subcats = find_category_links(cat, s)
+        for sc in subcats:
+            if sc not in seen_cats:
+                queue.append(sc)
+
+        # товары на странице + пагинация
+        urls_here = find_product_links(cat, s)
+        product_urls.update(urls_here)
+
+        nxt = category_next_url(s, cat)
+        if nxt and nxt not in seen_cats:
+            queue.append(nxt)
+
+        pages_scanned += 1
+        if pages_scanned % 50 == 0:
+            print(f"[scan] categories/pages visited: {pages_scanned}, products seen: {len(product_urls)}")
+
+    print(f"[crawl] products collected: {len(product_urls)}")
+
+    # 3) ключи (startswith)
+    kws = load_keywords(KEYWORDS_FILE)
+    patterns = compile_startswith_patterns(kws) if kws else []
+
+    # 4) парсим карточки
+    def parse_product(u: str) -> Optional[Dict[str, Any]]:
         if datetime.utcnow() > deadline:
             return None
         try:
-            return parse_product_page(session, u)
-        except Exception:
+            jitter_sleep(REQUEST_DELAY_MS)
+            b = fetcher.get(u)
+            if not b:
+                return None
+            ss = soup_of(b)
+
+            title = parse_title(ss)
+            if not title:
+                return None
+            title = sanitize_title(title)
+            if not title_startswith(title, patterns):
+                return None
+
+            price = parse_price_block(ss)
+            if price is None or price <= 0:
+                return None
+
+            sku = parse_sku(ss)
+            if not sku:
+                # без SKU сату не любит — сгенерируем, но лучше иметь реальный
+                sku = "SKU-" + sha1(u)[:10]
+
+            pic = parse_picture(ss, u)
+            desc = parse_description(ss) or title
+            crumbs = parse_breadcrumbs(ss)
+
+            brand = None
+            m = re.search(r"(?:Бренд|Производитель)\s*[:#]?\s*([A-Za-zА-Яа-я0-9\- ]+)", ss.get_text(" ", strip=True), flags=re.I)
+            if m:
+                brand = m.group(1).strip()
+
+            return {
+                "url": u,
+                "title": title,
+                "price": float(f"{price:.2f}"),
+                "vendorCode": sku,
+                "picture": pic,
+                "description": desc,
+                "crumbs": crumbs,
+                "brand": brand or SUPPLIER_NAME
+            }
+        except Exception as e:
+            print(f"[product] fail {u}: {e}")
             return None
 
-    parsed: List[Dict[str, Any]] = []
+    items: List[Dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-        futures = { ex.submit(worker, u): u for u in prod_urls }
+        futures = { ex.submit(parse_product, u): u for u in list(product_urls) }
         for fut in as_completed(futures):
-            if datetime.utcnow() > deadline:
-                break
-            rec = fut.result()
-            if rec:
-                parsed.append(rec)
-    print(f"[parsed] products parsed: {len(parsed)}")
+            it = fut.result()
+            if it:
+                items.append(it)
+            if len(items) % 50 == 0 and len(items) > 0:
+                print(f"[prod] parsed: {len(items)} / {len(product_urls)}")
 
-    if not parsed:
-        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
-            f.write(build_yml([], []))
-        print("[warn] Нет карточек — проверьте cookies / доступ.")
-        return 2
+    print(f"[prod] total parsed: {len(items)}")
 
-    # 4) фильтрация startswith (+ бренд)
-    filtered: List[Dict[str, Any]] = []
-    for it in parsed:
-        if title_startswith_with_brand_allow(it["title"], pats):
-            filtered.append(it)
-    print(f"[filter] passed by startswith: {len(filtered)} / {len(parsed)}")
+    # 5) категории из крошек
+    paths = [it.get("crumbs") for it in items if it.get("crumbs")]
+    cat_list, path_id_map = build_categories_from_paths(paths)
 
-    if not filtered:
-        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
-            f.write(build_yml([], []))
-        print("[warn] После фильтрации нет позиций — проверьте docs/vtt_keywords.txt.")
-        return 2
-
-    # 5) категории по крошкам
-    all_paths = [r.get("crumbs") for r in filtered if r.get("crumbs")]
-    cat_list, path_id_map = build_categories_from_paths(all_paths)
-    print(f"[cats] built: {len(cat_list)}")
-
-    # 6) офферы
+    # 6) маппинг items → cat id
     offers: List[Tuple[int, Dict[str, Any]]] = []
-    used_ids: Set[str] = set()
-    for it in filtered:
-        if it.get("price") is None:
-            continue
+    seen_offer_ids: Set[str] = set()
+    for it in items:
         cid = ROOT_CAT_ID
         crumbs = it.get("crumbs") or []
         clean = [p.strip() for p in crumbs if p and p.strip()]
-        if clean:
-            key = tuple([p for p in clean if p.lower() not in ("главная","home","каталог")])
-            while key and key not in path_id_map:
-                key = key[:-1]
-            if key and key in path_id_map:
-                cid = path_id_map[key]
+        clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
+        key = tuple(clean)
+        while key and key not in path_id_map:
+            key = key[:-1]
+        if key and key in path_id_map:
+            cid = path_id_map[key]
 
-        base_id = it.get("vendorCode") or sha1(it["url"])[:10]
-        offer_id = base_id if base_id not in used_ids else f"{base_id}-{sha1(it['title'])[:6]}"
-        used_ids.add(offer_id)
+        offer_id = it["vendorCode"]
+        if offer_id in seen_offer_ids:
+            offer_id = f"{offer_id}-{sha1(it['title'])[:6]}"
+        seen_offer_ids.add(offer_id)
 
         offers.append((cid, {
-            "offer_id": offer_id,
-            "title": it["title"][:200].rstrip(),
-            "price": it["price"],
-            "vendorCode": it.get("vendorCode") or "",
-            "brand": SUPPLIER_NAME,
-            "url": it.get("url") or "",
-            "picture": it.get("picture") or "",
+            "offer_id":   offer_id,
+            "title":      it["title"],
+            "price":      it["price"],
+            "vendorCode": it["vendorCode"],
+            "brand":      it.get("brand") or SUPPLIER_NAME,
+            "url":        it.get("url"),
+            "picture":    it.get("picture"),
             "description": it.get("description") or it["title"],
         }))
 
@@ -564,6 +669,14 @@ def main() -> int:
     with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
         f.write(xml)
 
+    # 8) закрываем браузер
+    try:
+        if browser_ctx:
+            browser_ctx.context.close()
+            browser_ctx.page.context.browser.close()
+    except Exception:
+        pass
+
     print(f"[done] items: {len(offers)}, categories: {len(cat_list)} -> {OUT_FILE}")
     return 0
 
@@ -572,5 +685,5 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as e:
-        print("Error:", e)
+        print("[fatal]", e)
         sys.exit(2)
