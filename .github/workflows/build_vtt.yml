@@ -12,6 +12,7 @@ jobs:
     timeout-minutes: 180
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,46 +22,44 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install deps
+      - name: Install deps (requests + bs4 + playwright)
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml
+          pip install requests beautifulsoup4 lxml playwright
+          python -m playwright install --with-deps chromium
 
-      - name: Ensure keywords file
+      - name: Ensure keywords file (optional, можно редактировать позже)
         run: |
           mkdir -p docs
           if [ ! -f docs/vtt_keywords.txt ]; then
-            printf "drum\nдевелопер\nдрам\nкартридж\nтермоблок\nтермоэлемент\nтонер-картридж\n" > docs/vtt_keywords.txt
+            # Пустой список = брать все позиции; добавишь ключи позже
+            printf "" > docs/vtt_keywords.txt
           fi
-          echo "Using keywords:" && cat docs/vtt_keywords.txt
+          echo "Using keywords:" && (cat docs/vtt_keywords.txt || true)
 
-      - name: Build feed
+      - name: Build feed (auto-login + crawl)
         env:
-          BASE_URL: https://b2bold.vtt.ru
-          START_URL: https://b2bold.vtt.ru/catalog/
+          BASE_URL: https://b2b.vtt.ru
+          START_URL: https://b2b.vtt.ru/catalog
           KEYWORDS_FILE: docs/vtt_keywords.txt
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # авторизация: передай строку cookies одной строкой (секрет репозитория)
-          VTT_COOKIES: ${{ secrets.VTT_COOKIES }}
+          # логин/пароль положи в Secrets репозитория
+          B2B_VTT_LOGIN: ${{ secrets.B2B_VTT_LOGIN }}
+          B2B_VTT_PASSWORD: ${{ secrets.B2B_VTT_PASSWORD }}
 
-          # сетевые настройки
+          # настройки сети/краула
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "150"
-          MIN_BYTES: "100"
-
-          # лимиты
+          MIN_BYTES: "900"
           MAX_WORKERS: "6"
-          MAX_CRAWL_MINUTES: "90"
-          MAX_CATEGORY_PAGES: "1500"
+          MAX_CRAWL_MINUTES: "120"
+          MAX_CATEGORY_PAGES: "2000"
+          DISABLE_SSL_VERIFY: "0"     # при проблемах с SSL можно поставить "1"
 
-          # Разрешаем бренд перед ключом
-          ALLOW_PREFIX_BRANDS: "hp,canon,samsung,xerox,brother,pantum,lexmark,kyocera,konica,minolta,ricoh,panasonic,ripo"
-
-          # <<< главное изменение: отключаем проверку TLS из-за корпоративного сертификата
-          VERIFY_TLS: "0"
-
+          # валюта витрины (если иначе — поменяй)
+          CURRENCY: "RUB"
         run: |
           python scripts/build_vtt.py
 
@@ -77,6 +76,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update vtt.yml (skip TLS verify; cookies auth)"
+          git commit -m "Update vtt.yml (auto-login + hybrid crawl)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
