@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 VTT (b2bold.vtt.ru) → Satu YML
-- Авторизация через cookies (VTT_COOKIES).
-- Переключатель проверки SSL по env: DISABLE_SSL_VERIFY=1 (для CI с кривой цепочкой).
-- Детект login-wall, терпим маленькие ответы, подробные логи.
-- Фильтрация: название начинается с ключа (допускается бренд из ALLOW_PREFIX_BRANDS спереди).
+- Cookie-авторизация (секрет VTT_COOKIES).
+- Опция VERIFY_TLS: 1/true (по умолчанию) — проверять сертификаты; 0/false — игнорировать.
+- Детект login-wall, подробные логи, терпимость к «тонким» страницам.
+- Фильтр: заголовок ДОЛЖЕН начинаться с ключа (допустим бренд из ALLOW_PREFIX_BRANDS перед ним).
 """
 
 from __future__ import annotations
@@ -25,7 +25,6 @@ OUT_FILE           = os.getenv("OUT_FILE", "docs/vtt.yml")
 OUTPUT_ENCODING    = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
 VTT_COOKIES        = os.getenv("VTT_COOKIES", "").strip()
-DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "").strip() in ("1", "true", "yes", "y")
 
 HTTP_TIMEOUT       = float(os.getenv("HTTP_TIMEOUT", "25"))
 REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "150"))
@@ -36,6 +35,10 @@ MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "90"))
 MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "1500"))
 
 ALLOW_PREFIX_BRANDS = [b.strip().lower() for b in os.getenv("ALLOW_PREFIX_BRANDS","").split(",") if b.strip()]
+
+def _str2bool(v: str) -> bool:
+    return str(v).strip().lower() in ("1","true","yes","y","on")
+VERIFY_TLS         = _str2bool(os.getenv("VERIFY_TLS", "1"))
 
 SUPPLIER_NAME      = "VTT"
 CURRENCY           = "RUB"
@@ -69,16 +72,18 @@ def parse_cookie_string(cookie_str: str) -> Dict[str, str]:
 def make_session() -> requests.Session:
     s = requests.Session()
     s.headers.update(UA_HEADERS)
-    # SSL verify toggle (для CI)
-    if DISABLE_SSL_VERIFY:
-        s.verify = False
+
+    # TLS verify control
+    s.verify = VERIFY_TLS
+    if not VERIFY_TLS:
         try:
-            import urllib3
-            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            from requests.packages.urllib3.exceptions import InsecureRequestWarning
+            requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+            print("[tls] VERIFY_TLS=0 — проверка сертификатов отключена.")
         except Exception:
             pass
-        print("[ssl] Verification disabled (DISABLE_SSL_VERIFY=1).")
-    # cookies
+
+    # cookies: и jar, и «сырым» заголовком
     if VTT_COOKIES:
         jar = parse_cookie_string(VTT_COOKIES)
         host = urlparse(BASE_URL).hostname
@@ -90,15 +95,18 @@ def make_session() -> requests.Session:
 def http_get(session: requests.Session, url: str) -> Optional[bytes]:
     try:
         r = session.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True, headers={"Referer": BASE_URL})
-        if r.status_code != 200:
-            print(f"[http] {r.status_code} {url}")
+        status = r.status_code
+        if status != 200:
+            print(f"[http] {status} {url}")
             return None
         b = r.content or b""
         if len(b) < MIN_BYTES:
             print(f"[http] small body {len(b)} bytes: {url}")
         return b
     except requests.exceptions.SSLError as e:
-        print(f"[http] SSL error {url}: {e}")
+        print(f"[http] SSL error for {url}: {e}")
+        if VERIFY_TLS:
+            print("[hint] Установи VERIFY_TLS=0 в env (workflow), если это корпоративный сертификат.")
         return None
     except Exception as e:
         print(f"[http] fail {url}: {e}")
@@ -364,8 +372,8 @@ def parse_product_page(session: requests.Session, url: str) -> Optional[Dict[str
         return None
     s = soup_of(b)
 
-    t1 = s.select_one("h1") or s.select_one("[itemprop='name']")
-    title = sanitize_spaces(t1.get_text(" ", strip=True) if t1 else "") or None
+    h1 = s.select_one("h1") or s.select_one("[itemprop='name']")
+    title = sanitize_spaces(h1.get_text(" ", strip=True) if h1 else "")
     if not title:
         return None
 
@@ -450,7 +458,7 @@ def main() -> int:
     # стартовая страница
     root_bytes = http_get(session, START_URL)
     if not root_bytes:
-        raise RuntimeError("Стартовая страница недоступна (проверьте URL/cookies или включите DISABLE_SSL_VERIFY=1).")
+        raise RuntimeError("Стартовая страница недоступна (проверьте URL / cookies / TLS).")
     if looks_like_login_wall(root_bytes):
         raise RuntimeError("Похоже, попадаем на страницу входа. Обновите секрет VTT_COOKIES (актуальные cookies).")
 
@@ -461,7 +469,7 @@ def main() -> int:
     # 1) разделы
     cats = collect_categories(session, START_URL, limit_pages=MAX_CATEGORY_PAGES)
     if not cats:
-        raise RuntimeError("Не нашли разделов каталога (скорее всего, cookies устарели или доступа нет).")
+        raise RuntimeError("Не нашли разделов каталога (cookies устарели / доступ закрыт).")
     print(f"[cats] discovered: {len(cats)}")
 
     # 2) ссылки карточек
@@ -497,10 +505,10 @@ def main() -> int:
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
         with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
             f.write(build_yml([], []))
-        print("[warn] Нет карточек (часто из-за невалидных cookies/доступа).")
+        print("[warn] Нет карточек — проверьте cookies / доступ.")
         return 2
 
-    # 4) фильтрация startswith (+бренд)
+    # 4) фильтрация startswith (+ бренд)
     filtered: List[Dict[str, Any]] = []
     for it in parsed:
         if title_startswith_with_brand_allow(it["title"], pats):
