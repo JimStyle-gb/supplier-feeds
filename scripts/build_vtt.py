@@ -1,19 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-VTT (b2b.vtt.ru) → YML для Satu.
+VTT (b2b.vtt.ru) → YML
+
 Особенности:
-- Если файл ключей пустой или содержит '*' — берём ВСЕ товары (без фильтра по названиям).
-- Если ключи заданы — фильтруем по НАЧАЛУ названия (startswith) и, при нуле результатов,
-  автоматически ослабляем до 'contains' (с логом-предупреждением).
-- Авторизация: через cookie-строку (env VTT_COOKIES). Если нет — пробуем публично.
-- Категории: собираем с /catalog, затем пагинация; карточки ищем по общим селекторам.
-- Описание/фото/sku: несколько надёжных стратегий (og:image, itemprop, очевидные классы).
+- Авторизация через готовые куки (секрет VTT_COOKIES). Поддержка XSRF-TOKEN.
+- Устойчивый краулер каталога (категории → товары → карточки).
+- Фильтр startswith по KEYWORDS_FILE (если пуст — берём все товары).
+- Широкий набор селекторов для имени/цены/SKU/картинки/крошек.
+- Бережный rate-limit и бюджет по времени/страницам.
+
+ENV:
+  BASE_URL, START_URL, KEYWORDS_FILE, OUT_FILE, OUTPUT_ENCODING
+  VTT_COOKIES
+  HTTP_TIMEOUT, REQUEST_DELAY_MS, MIN_BYTES
+  MAX_WORKERS, MAX_CRAWL_MINUTES, MAX_CATEGORY_PAGES
+  DISABLE_SSL_VERIFY (0/1)
 """
 
 from __future__ import annotations
 import os, re, io, time, html, hashlib
 from typing import Any, Dict, List, Optional, Tuple, Set
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, unquote
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 
@@ -21,465 +28,506 @@ import requests
 from bs4 import BeautifulSoup
 
 # ---------- ENV ----------
-BASE_URL        = os.getenv("BASE_URL", "https://b2b.vtt.ru").rstrip("/")
-START_URL       = os.getenv("START_URL", f"{BASE_URL}/catalog").rstrip("/")
-KEYWORDS_FILE   = os.getenv("KEYWORDS_FILE", "docs/vtt_keywords.txt")
-OUT_FILE        = os.getenv("OUT_FILE", "docs/vtt.yml")
-OUTPUT_ENCODING = os.getenv("OUTPUT_ENCODING", "windows-1251")
+BASE_URL         = os.getenv("BASE_URL", "https://b2b.vtt.ru").rstrip("/")
+START_URL        = os.getenv("START_URL", f"{BASE_URL}/catalog/")
+KEYWORDS_FILE    = os.getenv("KEYWORDS_FILE", "docs/vtt_keywords.txt")
+OUT_FILE         = os.getenv("OUT_FILE", "docs/vtt.yml")
+OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-VTT_COOKIES     = os.getenv("VTT_COOKIES", "").strip()
+VTT_COOKIES      = os.getenv("VTT_COOKIES", "").strip()
 
 HTTP_TIMEOUT     = float(os.getenv("HTTP_TIMEOUT", "25"))
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "150"))
-MIN_BYTES        = int(os.getenv("MIN_BYTES", "400"))
+MIN_BYTES        = int(os.getenv("MIN_BYTES", "900"))
 
-MAX_WORKERS       = int(os.getenv("MAX_WORKERS", "6"))
-MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "90"))
-MAX_CATEGORY_PAGES= int(os.getenv("MAX_CATEGORY_PAGES", "1500"))
+MAX_WORKERS        = int(os.getenv("MAX_WORKERS", "6"))
+MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "90"))
+MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "1500"))
 
-DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "0") == "1"
+DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "0").strip() == "1"
 
-SUPPLIER_NAME = "vtt"
+SUPPLIER_NAME = "VTT"
 CURRENCY      = "RUB"
+
 ROOT_CAT_ID   = 9600000
 ROOT_CAT_NAME = "VTT"
 
-UA_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; VTT-FeedBot/2.0; +https://github.com/JimStyle-gb/supplier-feeds)"
+UA = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) VTTFeedBot/1.2",
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
 }
 
-if DISABLE_SSL_VERIFY:
-    print("[ssl] Verification disabled (DISABLE_SSL_VERIFY=1).")
-
-# ---------- utils ----------
+# ---------- helpers ----------
 def jitter_sleep(ms: int) -> None:
-    time.sleep(max(0.0, ms/1000.0))
+    time.sleep(max(0.0, ms / 1000.0))
 
-def normalize_url(u: str, base: str) -> str:
-    if not u: return ""
-    if u.startswith("//"): u = ("https:" if base.startswith("https") else "http:") + u
-    if u.startswith("/"):  u = urljoin(base, u)
-    return u
-
-def yml_escape(s: str) -> str: return html.escape(s or "")
+def yml_escape(s: str) -> str:
+    return html.escape((s or "").strip())
 
 def sha1(s: str) -> str:
     import hashlib
-    return hashlib.sha1((s or "").encode("utf-8")).hexdigest()
+    return hashlib.sha1(s.encode("utf-8")).hexdigest()
 
-def to_number(x: Any) -> Optional[float]:
-    if x is None: return None
-    s = str(x).replace("\xa0"," ").replace(" ", "").replace(",", ".").strip()
-    if not re.search(r"\d", s): return None
-    try: return float(s)
+def to_number(s: Any) -> Optional[float]:
+    if s is None: return None
+    t = str(s).replace("\xa0", " ").strip()
+    t = t.replace(" ", "").replace(",", ".")
+    if not re.search(r"\d", t): return None
+    try:
+        return float(t)
     except Exception:
-        m = re.search(r"[\d.]+", s)
-        return float(m.group(0)) if m else None
+        m = re.search(r"([\d.]+)", t)
+        return float(m.group(1)) if m else None
 
 def sanitize_title(s: str) -> str:
-    if not s: return ""
-    s = re.sub(r"\s{2,}", " ", s).strip()
+    s = re.sub(r"\s{2,}", " ", (s or "").strip())
     return s[:200].rstrip()
 
-def stable_cat_id(text: str, prefix: int = 9700000) -> int:
-    import hashlib
-    h = hashlib.md5((text or "").encode("utf-8")).hexdigest()[:6]
-    return prefix + int(h, 16)
+def key_norm(v: str) -> str:
+    return re.sub(r"[^A-Za-z0-9]+", "", v or "").upper()
 
-# ---------- keywords ----------
+# ---------- session ----------
+def build_session() -> requests.Session:
+    sess = requests.Session()
+    sess.headers.update(UA)
+    if VTT_COOKIES:
+        sess.headers["Cookie"] = VTT_COOKIES
+        m = re.search(r"XSRF-TOKEN=([^;]+)", VTT_COOKIES)
+        if m:
+            try:
+                sess.headers["X-XSRF-TOKEN"] = unquote(m.group(1))
+            except Exception:
+                sess.headers["X-XSRF-TOKEN"] = m.group(1)
+        print("[auth] cookies injected.")
+    else:
+        print("[warn] VTT_COOKIES is empty.")
+    if DISABLE_SSL_VERIFY:
+        sess.verify = False
+        print("[ssl] Verification disabled (DISABLE_SSL_VERIFY=1).")
+    return sess
+
+def http_get(sess: requests.Session, url: str) -> Optional[bytes]:
+    for attempt in range(3):
+        try:
+            r = sess.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True)
+            if r.status_code != 200:
+                jitter_sleep(200)
+                continue
+            b = r.content
+            if len(b) < MIN_BYTES:
+                jitter_sleep(200)
+                continue
+            # простая проверка на страницу логина
+            txt = b.decode(errors="ignore").lower()
+            if ("type=\"password\"" in txt or "name=\"password\"" in txt) and "/login" in txt:
+                print("[auth] login page detected while GET", url)
+                return None
+            return b
+        except Exception as e:
+            if attempt == 2:
+                print(f"[http] fail {url}: {e}")
+                return None
+            jitter_sleep(300)
+    return None
+
+def soup_of(b: bytes) -> BeautifulSoup:
+    return BeautifulSoup(b, "html.parser")
+
+# ---------- keywords (startswith) ----------
 def load_keywords(path: str) -> List[str]:
     kws: List[str] = []
-    try:
+    if os.path.isfile(path):
         with io.open(path, "r", encoding="utf-8") as f:
             for line in f:
                 s = line.strip()
                 if s and not s.startswith("#"):
                     kws.append(s)
-    except Exception:
-        pass
-    # '*' означает "без фильтра, взять всё"
-    if not kws or any(k.strip() == "*" for k in kws):
-        print("[kws] empty or '*' → mode=ALL (no title filter).")
-        return []
-    print(f"[kws] {len(kws)} keyword(s) loaded.")
     return kws
 
-def compile_patterns_startswith(kws: List[str]) -> List[re.Pattern]:
-    return [re.compile(r"^\s*" + re.escape(kw).replace(r"\ ", " ") + r"(?!\w)", re.I) for kw in kws]
+def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
+    out = []
+    for kw in kws:
+        esc = re.escape(kw).replace(r"\ ", " ")
+        out.append(re.compile(r"^\s*" + esc + r"(?!\w)", re.IGNORECASE))
+    return out
 
-def compile_patterns_contains(kws: List[str]) -> List[re.Pattern]:
-    return [re.compile(re.escape(kw).replace(r"\ ", " "), re.I) for kw in kws]
+def title_startswith(title: str, patterns: List[re.Pattern]) -> bool:
+    if not patterns:
+        return True  # нет ключей — берём всё
+    return any(p.search(title or "") for p in patterns)
 
-# ---------- HTTP/session ----------
-def build_session() -> requests.Session:
-    s = requests.Session()
-    s.headers.update(UA_HEADERS)
+# ---------- category & product discovery ----------
+CAT_ALLOW = ("/catalog/", )
 
-    if VTT_COOKIES:
-        # Примем строку "key=value; key2=value2; ..."
-        for pair in re.split(r";\s*", VTT_COOKIES):
-            if not pair or "=" not in pair: continue
-            k, v = pair.split("=", 1)
-            s.cookies.set(k.strip(), v.strip(), domain=urlparse(BASE_URL).hostname)
-        print("[auth] cookies injected from VTT_COOKIES.")
-    return s
+def is_catalog_link(href: str) -> bool:
+    if not href: return False
+    u = href.strip()
+    if u.startswith("//"): u = "https:" + u
+    if u.startswith("/"):  u = BASE_URL + u
+    if not u.startswith(BASE_URL): return False
+    return any(p in u for p in CAT_ALLOW)
 
-def http_get(session: requests.Session, url: str) -> Optional[bytes]:
-    try:
-        r = session.get(url, timeout=HTTP_TIMEOUT, verify=not DISABLE_SSL_VERIFY)
-        if r.status_code != 200:
-            print(f"[http] {r.status_code} {url}")
-            return None
-        b = r.content
-        if len(b) < MIN_BYTES:
-            print(f"[http] too small ({len(b)} bytes) {url}")
-            return None
-        return b
-    except Exception as e:
-        print(f"[http] fail {url}: {e}")
-        return None
+PRODUCT_PATTERNS = [
+    re.compile(r"/catalog/[^/]+/[^/?#]+/?$"),           # /catalog/<group>/<slug>
+    re.compile(r"/product/[^/?#]+/?$"),                 # /product/<slug>
+    re.compile(r"/catalog/[^/?#]+\.html$"),             # иногда .html
+]
 
-def soup_of(b: bytes) -> BeautifulSoup:
-    return BeautifulSoup(b, "lxml")
+def looks_like_product_url(u: str) -> bool:
+    for rx in PRODUCT_PATTERNS:
+        if rx.search(u):
+            return True
+    return False
 
-# ---------- catalog discovery ----------
-def discover_category_links(session: requests.Session, start_url: str) -> List[str]:
-    b = http_get(session, start_url)
+def find_next_page(s: BeautifulSoup, base_url: str) -> Optional[str]:
+    ln = s.find("link", href=True, rel=lambda v: v and "next" in (v if isinstance(v, list) else [v]))
+    if ln:
+        return urljoin(base_url, ln["href"])
+    for a in s.find_all("a", href=True):
+        t = (a.get_text(" ", strip=True) or "").lower()
+        if t in ("следующая", "вперед", "вперёд", "next", ">"):
+            return urljoin(base_url, a["href"])
+    return None
+
+def collect_category_urls(sess: requests.Session, start_url: str) -> List[str]:
+    b = http_get(sess, start_url)
     if not b:
-        print("Error: Стартовая страница недоступна (проверьте VTT_COOKIES и URL).")
-        return []
-
+        raise RuntimeError("Стартовая страница недоступна (проверьте VTT_COOKIES и START_URL).")
     s = soup_of(b)
 
-    # На закрытых порталах часто отдают страницу входа
-    if s.find(string=re.compile(r"вход|логин|login", re.I)) and not VTT_COOKIES:
-        print("[auth] login page detected while listing categories (no cookies).")
-        return []
-
-    links: List[str] = []
-    for a in s.select('a[href]'):
-        href = a.get("href") or ""
-        text = (a.get_text(" ", strip=True) or "").lower()
-        u = normalize_url(href, start_url)
-        # Берём только то, что выглядит как разделы каталога
-        if urlparse(u).netloc != urlparse(BASE_URL).netloc:
-            continue
-        if "/catalog" not in u:
-            continue
-        if any(x in u for x in ["?PAGEN_", "sort=", "#"]):
-            # не фильтруем слишком сильно — пагинацию будем брать на уровне категорий
-            pass
-        links.append(u)
-
-    # Уникализируем и оставляем только «корневые/подразделы», а не карточки
-    uniq = []
-    seen = set()
-    for u in links:
-        if u in seen: continue
-        seen.add(u)
-        uniq.append(u)
-
-    print(f"[cats] found on start: {len(uniq)}")
-    return uniq
-
-PRODUCT_HINTS = ("add-to-cart", "buy", "В корзину", "product", "товар", "артикул", "sku")
-
-def detect_product_links(session: requests.Session, cat_url: str, limit_pages: int) -> List[str]:
     urls: List[str] = []
-    seen_pages: Set[str] = set()
+    seen: Set[str] = set()
+
+    # базовая выборка ссылок каталога
+    for a in s.find_all("a", href=True):
+        absu = urljoin(start_url, a["href"])
+        if is_catalog_link(absu):
+            if absu not in seen:
+                seen.add(absu); urls.append(absu)
+
+    # подстраховка: иногда корень каталога = собственная страница
+    if start_url not in seen:
+        urls.append(start_url)
+
+    urls = list(dict.fromkeys(urls))
+    if not urls:
+        raise RuntimeError("Не нашли разделов каталога (скорее всего, cookies устарели или доступа нет).")
+
+    print(f"[cats] found on start: {len(urls)}")
+    return urls
+
+def collect_product_urls_from_category(sess: requests.Session, cat_url: str, limit_pages: int) -> List[str]:
     page = cat_url
-    pages = 0
+    seen_pages: Set[str] = set()
+    urls: List[str] = []
+    pages_done = 0
 
-    def next_link(s: BeautifulSoup, base: str) -> Optional[str]:
-        # rel=next, «следующая», пагинация по классам
-        el = s.find("link", rel="next")
-        if el and el.get("href"):
-            return normalize_url(el["href"], base)
-        for a in s.select("a[href]"):
-            t = (a.get_text(" ", strip=True) or "").lower()
-            if t in ("следующая", "вперёд", "next", ">") and a.get("href"):
-                return normalize_url(a["href"], base)
-        return None
-
-    while page and pages < limit_pages and page not in seen_pages:
+    while page and pages_done < limit_pages:
+        if page in seen_pages: break
         seen_pages.add(page)
+
         jitter_sleep(REQUEST_DELAY_MS)
-        b = http_get(session, page)
+        b = http_get(sess, page)
         if not b: break
         s = soup_of(b)
 
-        # эвристика: карточки чаще всего ведут глубже, а в ссылке/окружении есть «товарные» признаки
-        for a in s.select("a[href]"):
-            href = a.get("href") or ""
-            u = normalize_url(href, page)
-            if urlparse(u).netloc != urlparse(BASE_URL).netloc:
-                continue
-            # отфильтруем явные не карточки
-            if "/catalog" not in u:
-                continue
-            # часто товары заканчиваются на /<slug>/, а категории — длинные списки, но точной границы нет
-            text = a.get_text(" ", strip=True) or ""
-            near = (a.parent.get_text(" ", strip=True) if a.parent else "") or ""
-            blob = (text + " " + near).lower()
-            looks_like_product = any(h.lower() in blob for h in PRODUCT_HINTS)
-            # ещё подсказка: короткие пути часто — детальные страницы
-            path = urlparse(u).path.rstrip("/")
-            depth = len([p for p in path.split("/") if p])
-            if looks_like_product or depth >= 3:
+        # 1) карточки по типичным контейнерам
+        for card in s.select('[data-product-id], .product, .catalog__item, .product-card, .product_item, .product-card__info'):
+            a = card.find("a", href=True)
+            if not a: continue
+            u = urljoin(page, a["href"])
+            if looks_like_product_url(u):
                 urls.append(u)
 
-        page = next_link(s, page)
-        pages += 1
+        # 2) все ссылки /catalog/... как запасной вариант
+        for a in s.find_all("a", href=True):
+            u = urljoin(page, a["href"])
+            if looks_like_product_url(u):
+                urls.append(u)
 
-    urls = list(dict.fromkeys(urls))
-    print(f"[crawl] {cat_url} → product urls: {len(urls)} (pages walked: {pages})")
-    return urls
+        # пагинация
+        page = find_next_page(s, page)
+        pages_done += 1
 
-# ---------- product parsing ----------
-def extract_text(s: BeautifulSoup, selectors: List[str]) -> Optional[str]:
-    for sel in selectors:
-        el = s.select_one(sel)
-        if el:
-            t = el.get_text(" ", strip=True)
-            if t: return t
-    return None
+    return list(dict.fromkeys(urls))
 
-def extract_picture(s: BeautifulSoup, base: str) -> Optional[str]:
-    # 1) og:image
-    og = s.find("meta", property="og:image")
-    if og and og.get("content"):
-        return normalize_url(og["content"], base)
-    # 2) любые img в «галлерее»
-    for sel in ["img.product__image", ".product-gallery img", ".swiper img", "img"]:
-        for im in s.select(sel):
-            src = im.get("src") or im.get("data-src") or ""
-            if src:
-                return normalize_url(src, base)
-    return None
+# ---------- product parse ----------
+def extract_breadcrumbs(s: BeautifulSoup) -> List[str]:
+    names: List[str] = []
+    for bc in s.select('nav.breadcrumbs, ul.breadcrumb, .breadcrumbs, .breadcrumb, [class*="breadcrumb"]'):
+        for a in bc.find_all("a"):
+            t = a.get_text(" ", strip=True)
+            if not t: continue
+            tl = t.lower()
+            if tl in ("главная", "home", "каталог"): continue
+            names.append(t.strip())
+        if names: break
+    return names
 
-def parse_product(session: requests.Session, url: str) -> Optional[Dict[str, Any]]:
+def extract_text_by_labels(s: BeautifulSoup, labels: List[str]) -> Optional[str]:
+    txt = s.get_text(" ", strip=True)
+    m = re.search(r"(?:%s)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})" %
+                  "|".join(labels), txt, flags=re.IGNORECASE)
+    return m.group(1) if m else None
+
+def parse_product_page(sess: requests.Session, url: str) -> Optional[Dict[str, Any]]:
     jitter_sleep(REQUEST_DELAY_MS)
-    b = http_get(session, url)
+    b = http_get(sess, url)
     if not b: return None
     s = soup_of(b)
 
-    title = extract_text(s, ["h1", "[itemprop='name']", ".product-title", ".product__title"]) or ""
-    title = sanitize_title(title)
+    # title
+    title = None
+    for sel in [
+        "h1[itemprop=name]", "h1.product-title", "h1.title", "h1",
+        ".product__title", ".card__title", "[itemprop='name']",
+        'meta[property="og:title"]',
+    ]:
+        el = s.select_one(sel)
+        if el:
+            title = (el.get("content") or el.get_text(" ", strip=True) if hasattr(el, "get_text") else None) or el.get("content")
+            if title: break
+    title = sanitize_title(title or "")
 
     # price
-    price: Optional[float] = None
-    # JSON-LD ловим, если есть
-    for el in s.find_all("script", type="application/ld+json"):
-        try:
-            import json
-            data = json.loads(el.string or "")
-            if isinstance(data, dict):
-                offers = data.get("offers")
-                if isinstance(offers, dict) and offers.get("price"):
-                    price = to_number(offers["price"])
-                    break
-        except Exception:
-            pass
-    if price is None:
-        # явные селекторы
-        t = extract_text(s, [".price", ".product-price", "[itemprop='price']", ".card-price"])
-        price = to_number(t)
+    price = None
+    candidates = []
+    for sel in [
+        '[itemprop="price"]', '.price__current', '.product-price__current', '.product-price', '.price', 'meta[itemprop="price"]',
+        'meta[property="product:price:amount"]', 'meta[property="og:price:amount"]'
+    ]:
+        for el in s.select(sel):
+            v = el.get("content") if el.has_attr("content") else el.get_text(" ", strip=True)
+            if v: candidates.append(v)
+    for v in candidates:
+        p = to_number(v)
+        if p and p > 0:
+            price = p; break
 
-    # sku / vendor code
-    sku = extract_text(s, [".sku", ".product-article", "[itemprop='sku']", ".product__sku", ".vendor-code"])
+    # sku
+    sku = None
+    # частые варианты
+    for lab in ["Артикул", "SKU", "Код товара", "Код", "Модель"]:
+        node = s.find(string=lambda t: t and lab.lower() in t.lower())
+        if node:
+            val = (node.parent.get_text(" ", strip=True) if node.parent else str(node)).strip()
+            m = re.search(r"([A-Za-z0-9\-\._/]{2,})", val)
+            if m: sku = m.group(1); break
     if not sku:
-        m = re.search(r"(?:Артикул|SKU|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", s.get_text(" ", strip=True), re.I)
-        if m: sku = m.group(1)
+        sku = extract_text_by_labels(s, ["Артикул", "SKU", "Код товара", "Код", "Модель"])
 
-    picture = extract_picture(s, url)
-    desc = extract_text(s, ["[itemprop='description']", ".product-description", ".product__description", "#description"]) or ""
+    # image
+    picture = None
+    og = s.find("meta", attrs={"property": "og:image"})
+    if og and og.get("content"):
+        picture = urljoin(url, og["content"])
+    if not picture:
+        imgel = s.find("img", attrs={"itemprop": "image"}) or s.find("img", class_=re.compile(r"product", re.I))
+        if imgel and (imgel.get("src") or imgel.get("data-src")):
+            picture = urljoin(url, imgel.get("src") or imgel.get("data-src"))
 
-    if not title or not price or not picture:
+    # description
+    desc = None
+    for sel in [
+        '[itemprop="description"]', ".product-description", ".description", "#description",
+        ".product__description", ".tabs__content .description"
+    ]:
+        el = s.select_one(sel)
+        if el and el.get_text(strip=True):
+            desc = el.get_text(" ", strip=True); break
+    if not desc:
+        txt = s.get_text(" ", strip=True)
+        desc = txt if len(txt) > 80 else title
+
+    # breadcrumbs
+    crumbs = extract_breadcrumbs(s)
+
+    # sanity
+    if not title or not sku or not price or not picture:
         return None
-
-    # хлебные крошки для категорий
-    crumbs: List[str] = []
-    for bc in s.select(".breadcrumbs, .breadcrumb, nav[aria-label*='breadcrumb']"):
-        for a in bc.select("a"):
-            t = a.get_text(" ", strip=True)
-            if t and t.lower() not in ("главная","home","каталог"):
-                crumbs.append(t)
-        if crumbs:
-            break
 
     return {
         "url": url,
         "title": title,
-        "price": float(f"{price:.2f}"),
-        "vendorCode": sku or "",
+        "price": float(price),
+        "sku": sku,
         "picture": picture,
         "description": desc or title,
         "crumbs": crumbs,
     }
 
-# ---------- YML ----------
-def build_categories(paths: List[List[str]]) -> Tuple[List[Tuple[int,str,Optional[int]]], Dict[Tuple[str,...], int]]:
+# ---------- categories build ----------
+def stable_cat_id(text: str, prefix: int = 9700000) -> int:
+    h = hashlib.md5(text.encode("utf-8")).hexdigest()[:6]
+    return prefix + int(h, 16)
+
+def build_categories_from_paths(paths: List[List[str]]) -> Tuple[List[Tuple[int,str,Optional[int]]], Dict[Tuple[str,...], int]]:
     cat_map: Dict[Tuple[str,...], int] = {}
-    out: List[Tuple[int,str,Optional[int]]] = []
+    out_list: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
         clean = [p.strip() for p in path if p and p.strip()]
         clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
         if not clean: continue
-        parent = ROOT_CAT_ID
+        parent_id = ROOT_CAT_ID
         prefix: List[str] = []
         for name in clean:
             prefix.append(name)
             key = tuple(prefix)
             if key in cat_map:
-                parent = cat_map[key]; continue
+                parent_id = cat_map[key]; continue
             cid = stable_cat_id(" / ".join(prefix))
             cat_map[key] = cid
-            out.append((cid, name, parent))
-            parent = cid
-    return out, cat_map
+            out_list.append((cid, name, parent_id))
+            parent_id = cid
+    return out_list, cat_map
 
+# ---------- YML ----------
 def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple[int,Dict[str,Any]]]) -> str:
     out: List[str] = []
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
     out.append("<yml_catalog><shop>")
-    out.append(f"<name>{yml_escape(SUPPLIER_NAME)}</name>")
-    out.append('<currencies><currency id="RUB" rate="1" /></currencies>')
+    out.append(f"<name>{yml_escape(SUPPLIER_NAME.lower())}</name>")
+    out.append(f'<currencies><currency id="{CURRENCY}" rate="1" /></currencies>')
+
     out.append("<categories>")
-    out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
+    out.append(f'<category id="{ROOT_CAT_ID}">{yml_escape(ROOT_CAT_NAME)}</category>')
     for cid, name, parent in categories:
-        out.append(f"<category id=\"{cid}\" parentId=\"{parent or ROOT_CAT_ID}\">{yml_escape(name)}</category>")
+        parent = parent if parent else ROOT_CAT_ID
+        out.append(f'<category id="{cid}" parentId="{parent}">{yml_escape(name)}</category>')
     out.append("</categories>")
+
     out.append("<offers>")
     for cid, it in offers:
-        price_txt = str(int(it["price"])) if float(it["price"]).is_integer() else f"{it['price']}"
+        price_txt = str(int(it["price"])) if float(it["price"]).is_integer() else f'{it["price"]}'
         out += [
-            f"<offer id=\"{yml_escape(it.get('vendorCode') or sha1(it['title']))}\" available=\"true\" in_stock=\"true\">",
-            f"<name>{yml_escape(it['title'])}</name>",
-            f"<vendor>{yml_escape(SUPPLIER_NAME)}</vendor>",
-            f"<vendorCode>{yml_escape(it.get('vendorCode') or '')}</vendorCode>",
+            f'<offer id="{yml_escape(it["offer_id"])}" available="true" in_stock="true">',
+            f'<name>{yml_escape(it["title"])}</name>',
+            f'<vendor>{yml_escape(SUPPLIER_NAME)}</vendor>',
+            f'<vendorCode>{yml_escape(it["vendorCode"])}</vendorCode>',
             f"<price>{price_txt}</price>",
-            "<currencyId>RUB</currencyId>",
+            f"<currencyId>{CURRENCY}</currencyId>",
             f"<categoryId>{cid}</categoryId>",
-            f"<url>{yml_escape(it['url'])}</url>",
-            f"<picture>{yml_escape(it['picture'])}</picture>",
-            f"<description>{yml_escape(it.get('description') or it['title'])}</description>",
-            "<quantity_in_stock>1</quantity_in_stock>",
-            "<stock_quantity>1</stock_quantity>",
-            "<quantity>1</quantity>",
-            "</offer>",
         ]
+        if it.get("url"): out.append(f"<url>{yml_escape(it['url'])}</url>")
+        if it.get("picture"): out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
+        desc = it.get("description") or it["title"]
+        out.append(f"<description>{yml_escape(desc)}</description>")
+        out += ["<quantity_in_stock>1</quantity_in_stock>", "<stock_quantity>1</stock_quantity>", "<quantity>1</quantity>", "</offer>"]
     out.append("</offers>")
+
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
 # ---------- MAIN ----------
 def main() -> int:
-    session = build_session()
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
+    sess = build_session()
 
-    # 0) ключи
-    kws = load_keywords(KEYWORDS_FILE)
-    filter_mode = "ALL" if not kws else "STARTSWITH"
-    pats_sw = compile_patterns_startswith(kws) if kws else []
-    pats_ct = compile_patterns_contains(kws) if kws else []
-
-    # 1) категории
-    cats = discover_category_links(session, START_URL)
-    if not cats:
-        print("Error: Не нашли разделов каталога.")
-        write_empty_yml()
+    # 1) собираем категории со стартовой
+    try:
+        categories_roots = collect_category_urls(sess, START_URL)
+    except Exception as e:
+        print("Error:", e)
         return 2
 
-    # 2) собираем ссылки карточек
+    # 2) из категорий собираем ссылки на товары (с пагинацией)
+    total_cat_pages_budget = MAX_CATEGORY_PAGES
+    per_cat_budget = max(1, total_cat_pages_budget // max(1, len(categories_roots)))
+
     product_urls: List[str] = []
-    per_cat = max(1, MAX_CATEGORY_PAGES // max(1, len(cats)))
-    for cu in cats:
-        product_urls += detect_product_links(session, cu, per_cat)
+    for cu in categories_roots:
+        if datetime.utcnow() > deadline: break
+        urls = collect_product_urls_from_category(sess, cu, per_cat_budget)
+        product_urls.extend(urls)
+
     product_urls = list(dict.fromkeys(product_urls))
     print(f"[crawl] total product urls: {len(product_urls)}")
-
     if not product_urls:
-        print("Error: Ноль карточек после обхода категорий.")
+        print("[error] Не нашли карточек товаров. Возможно, куки устарели или селекторы отличаются.")
         write_empty_yml()
         return 2
 
     # 3) парсим карточки
-    items: List[Dict[str,Any]] = []
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-        futures = {ex.submit(parse_product, session, u): u for u in product_urls}
-        for fut in as_completed(futures):
-            if datetime.utcnow() > deadline:
-                print("[time] crawl budget exceeded.")
-                break
-            rec = fut.result()
-            if rec: items.append(rec)
+    items: List[Dict[str, Any]] = []
+    def worker(u: str):
+        if datetime.utcnow() > deadline: return None
+        try:
+            return parse_product_page(sess, u)
+        except Exception:
+            return None
 
-    print(f"[parse] parsed items: {len(items)}")
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
+        futures = {ex.submit(worker, u): u for u in product_urls}
+        for fut in as_completed(futures):
+            if datetime.utcnow() > deadline: break
+            rec = fut.result()
+            if not rec: continue
+            items.append(rec)
+            if len(items) % 50 == 0:
+                print(f"[parse] items parsed: {len(items)}")
 
     if not items:
-        print("Error: Не удалось распарсить ни одной карточки (возможно, нужна авторизация/cookies).")
+        print("[error] Парсинг карточек не дал результатов.")
         write_empty_yml()
         return 2
 
-    # 4) фильтрация по ключам (если заданы)
-    def ok_title(title: str) -> bool:
-        if filter_mode == "ALL": return True
-        if any(p.search(title) for p in pats_sw): return True
-        return False
-
-    filtered = [it for it in items if ok_title(it["title"])]
-    print(f"[filter:{filter_mode}] kept: {len(filtered)} / {len(items)}")
-
-    # fallback: если по startswith получился 0 — попробуем contains
-    if kws and not filtered:
-        print("[filter] startswith=0 → fallback to CONTAINS.")
-        filtered = [it for it in items if any(p.search(it["title"]) for p in pats_ct)]
-        print(f"[filter:CONTAINS] kept: {len(filtered)} / {len(items)}")
-
+    # 4) фильтр по ключам (startswith)
+    kw_list = load_keywords(KEYWORDS_FILE)
+    pats = compile_startswith_patterns(kw_list)
+    filtered = [x for x in items if title_startswith(x["title"], pats)]
     if not filtered:
-        print("[warn] после фильтра нет товаров → выгружаем пустой YML с категориями.")
+        print("[warn] После фильтра по startswith нет позиций — сохраняем пустой YML (проверь KEYWORDS_FILE).")
         write_empty_yml()
-        return 2
+        return 0
 
-    # 5) категории по крошкам
-    paths = [it["crumbs"] for it in filtered if it.get("crumbs")]
-    cat_list, path_id_map = build_categories(paths)
+    # 5) строим категории из крошек
+    all_paths = [x.get("crumbs") for x in filtered if x.get("crumbs")]
+    cat_list, path_id_map = build_categories_from_paths(all_paths)
     print(f"[cats] built: {len(cat_list)}")
 
-    # 6) назначение categoryId
-    offers: List[Tuple[int, Dict[str,Any]]] = []
+    # 6) готовим офферы
+    offers: List[Tuple[int, Dict[str, Any]]] = []
+    seen_offer_ids: Set[str] = set()
+
     for it in filtered:
         cid = ROOT_CAT_ID
-        if it.get("crumbs"):
-            clean = [p for p in it["crumbs"] if p and p.strip() and p.lower() not in ("главная","home","каталог")]
+        crumbs = it.get("crumbs") or []
+        if crumbs:
+            clean = [p.strip() for p in crumbs if p and p.strip()]
+            clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
             key = tuple(clean)
             while key and key not in path_id_map:
                 key = key[:-1]
-            if key:
+            if key and key in path_id_map:
                 cid = path_id_map[key]
-        offers.append((cid, it))
 
-    # 7) YML
+        offer_id = it["sku"]
+        if offer_id in seen_offer_ids:
+            offer_id = f'{it["sku"]}-{sha1(it["title"])[:6]}'
+        seen_offer_ids.add(offer_id)
+
+        offers.append((cid, {
+            "offer_id":   offer_id,
+            "title":      it["title"],
+            "price":      it["price"],
+            "vendorCode": it["sku"],
+            "url":        it["url"],
+            "picture":    it["picture"],
+            "description": it["description"],
+        }))
+
+    # 7) сохраняем YML
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     xml = build_yml(cat_list, offers)
     with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
         f.write(xml)
+
     print(f"[done] items: {len(offers)}, categories: {len(cat_list)} -> {OUT_FILE}")
     return 0
 
 def write_empty_yml():
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    empty = """<?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog><shop>
-<name>vtt</name>
-<currencies><currency id="RUB" rate="1" /></currencies>
-<categories>
-<category id="9600000">VTT</category>
-</categories>
-<offers>
-</offers>
-</shop></yml_catalog>
-"""
+    empty = build_yml([], [])
     with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
         f.write(empty)
 
