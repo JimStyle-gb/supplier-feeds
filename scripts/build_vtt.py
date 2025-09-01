@@ -2,10 +2,11 @@
 """
 b2b.vtt.ru → YML
 - Логин по форме (user/pass).
-- BFS обход каталога /catalog/... (wide по умолчанию).
+- Обход каталога /catalog/... (BFS).
+- Сбор ссылок на карточки: расширенные селекторы + парсинг onclick/data-href.
 - Парсинг карточек: JSON-LD + расширенные селекторы.
-- Отладка: docs/vtt_debug_root.html, docs/vtt_debug_links.txt, docs/vtt_debug_log.txt,
-           docs/vtt_fail_001.html..docs/vtt_fail_010.html (первые 10 нераспознанных).
+- Отладка: docs/vtt_debug_root.html, docs/vtt_debug_links.txt, docs/vtt_cat_001..006.html,
+           docs/vtt_fail_001..010.html
 """
 
 from __future__ import annotations
@@ -26,7 +27,7 @@ warnings.filterwarnings("ignore", message="Some characters could not be decoded"
 
 # ---------- ENV ----------
 BASE_URL        = os.getenv("BASE_URL", "https://b2b.vtt.ru").rstrip("/")
-START_URL       = os.getenv("START_URL", f"{BASE_URL}/catalog/")
+START_URL       = os.getenv("START_URL", f"{BASE_URL}/catalog/").strip()
 OUT_FILE        = os.getenv("OUT_FILE", "docs/vtt.yml")
 OUTPUT_ENCODING = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
@@ -50,7 +51,7 @@ ROOT_CAT_ID     = 9600000
 ROOT_CAT_NAME   = "VTT"
 
 UA = {
-    "User-Agent": "Mozilla/5.0 (compatible; VTT-B2B/1.4)",
+    "User-Agent": "Mozilla/5.0 (compatible; VTT-B2B/1.6)",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "ru,en;q=0.8",
 }
@@ -284,6 +285,7 @@ def is_cartridge_anchor(text: str, href: str) -> bool:
 def discover_pages(start_url: str, deadline: datetime) -> List[str]:
     seen: Set[str] = set(); queue: List[str] = [start_url]; out: List[str] = []; pages = 0
     links_dump: List[str] = []
+    saved = 0
     while queue and pages < MAX_PAGES and datetime.utcnow() < deadline:
         u = queue.pop(0)
         if u in seen: continue
@@ -295,6 +297,11 @@ def discover_pages(start_url: str, deadline: datetime) -> List[str]:
         s = soup_of(r)
         title_txt = (s.title.string.strip() if s.title and s.title.string else "")
         links_dump.append(f"[{pages}] {u} :: {title_txt}")
+
+        # сохраняем несколько первых страниц для диагностики
+        if saved < 6:
+            save_file(f"vtt_cat_{saved+1:03d}.html", r.content)
+            saved += 1
 
         # сохраняем страницу в обход
         if CRAWL_MODE == "cartridges":
@@ -319,6 +326,43 @@ def discover_pages(start_url: str, deadline: datetime) -> List[str]:
     save_file("vtt_debug_links.txt", "\n".join(links_dump))
     return list(dict.fromkeys(out))
 
+# -- helpers for link extraction on list pages
+CARD_SELECTORS = [
+    "article", "li", "div", "section"
+]
+CARD_CLASS_HINTS = [
+    "product", "card", "catalog", "goods", "item", "tile", "listing", "grid"
+]
+ANCHOR_PREF_SELECTORS = [
+    "a.product", "a.product__link", "a.card", "a.card__link", "a.title", "a.name",
+]
+def looks_like_card(el) -> bool:
+    cls = " ".join(el.get("class", [])).lower()
+    return any(h in cls for h in CARD_CLASS_HINTS)
+
+HREF_BAD = ("#", "javascript:", "tel:", "mailto:")
+def good_href(h: str) -> bool:
+    if not h: return False
+    h = h.strip()
+    if any(h.startswith(x) for x in HREF_BAD): return False
+    return True
+
+# regex на любые глубины внутренних ссылок каталога
+RE_PROD_PATH = re.compile(r"/catalog/(?:[A-Za-z0-9\-_]+/){1,6}[A-Za-z0-9\-_]+/?$")
+
+def extract_urls_from_onclick_attr(val: str, base: str) -> List[str]:
+    out = []
+    # location.href='...'
+    m = re.findall(r"location\.href\s*=\s*['\"]([^'\"]+)['\"]", val)
+    out += [urljoin(base, x) for x in m]
+    # window.location='...'
+    m = re.findall(r"window\.location\s*=\s*['\"]([^'\"]+)['\"]", val)
+    out += [urljoin(base, x) for x in m]
+    # goTo('...')
+    m = re.findall(r"goTo\s*\(\s*['\"]([^'\"]+)['\"]\s*\)", val)
+    out += [urljoin(base, x) for x in m]
+    return out
+
 def collect_product_links(page_url: str, deadline: datetime) -> List[str]:
     urls: List[str] = []; seen: Set[str] = set()
     if datetime.utcnow() > deadline: return urls
@@ -326,32 +370,74 @@ def collect_product_links(page_url: str, deadline: datetime) -> List[str]:
     if not r: return urls
     s = soup_of(r)
 
-    # Пытаемся попасть в карточки: разные паттерны
-    for a in s.find_all("a", href=True):
-        href = a["href"]; absu = urljoin(page_url, href)
-        if absu in seen: continue
-        if re.search(r"/product", absu) \
-           or re.search(r"/catalog/[^/?#]+/[^/?#]+/?$", absu) \
-           or re.search(r"/catalog/.+/\d{4,}/?$", absu):
-            urls.append(absu); seen.add(absu)
+    # 1) приоритетные якоря
+    for sel in ANCHOR_PREF_SELECTORS:
+        for a in s.select(sel):
+            href = a.get("href"); 
+            if not good_href(href): continue
+            absu = urljoin(page_url, href)
+            if not same_host(absu): continue
+            if "/catalog" not in absu: continue
+            if absu in seen: continue
+            # разрешаем любые глубины, а принадлежность карточке проверим ниже
+            seen.add(absu); urls.append(absu)
 
-    # Простейшая пагинация
+    # 2) карточки товаров (контейнеры)
+    for tagname in CARD_SELECTORS:
+        for el in s.find_all(tagname):
+            if not looks_like_card(el): 
+                continue
+            # (a) прямые ссылки внутри карточки
+            for a in el.find_all("a", href=True):
+                href = a["href"]
+                if not good_href(href): continue
+                absu = urljoin(page_url, href)
+                if not same_host(absu): continue
+                if "/catalog" not in absu: continue
+                if absu in seen: continue
+                seen.add(absu); urls.append(absu)
+            # (b) data-href на контейнере
+            dh = el.get("data-href")
+            if dh and good_href(dh):
+                absu = urljoin(page_url, dh)
+                if same_host(absu) and "/catalog" in absu and absu not in seen:
+                    seen.add(absu); urls.append(absu)
+            # (c) onclick редиректы
+            oc = el.get("onclick")
+            if oc:
+                for absu in extract_urls_from_onclick_attr(oc, page_url):
+                    if same_host(absu) and "/catalog" in absu and absu not in seen:
+                        seen.add(absu); urls.append(absu)
+
+    # 3) любые a[href] по общему правилу + фильтр по шаблону пути
+    for a in s.find_all("a", href=True):
+        href = a["href"]
+        if not good_href(href): continue
+        absu = urljoin(page_url, href)
+        if not same_host(absu): continue
+        if not RE_PROD_PATH.search(absu): 
+            continue
+        if absu in seen: continue
+        seen.add(absu); urls.append(absu)
+
+    # 4) пагинация (link rel=next) — рекурсивно
     nxt = s.find("link", rel=lambda v: v and "next" in v.lower())
     if nxt and nxt.get("href"):
         urls.extend(collect_product_links(urljoin(page_url, nxt["href"]), deadline))
 
-    return urls
+    # уникализируем при сохранении порядка
+    return list(dict.fromkeys(urls))
 
 # ---------- Product parsing ----------
 def is_product_page(s: BeautifulSoup) -> bool:
     if s.find(attrs={"itemprop": "sku"}): return True
     if s.find("meta", attrs={"property": "og:type", "content": "product"}): return True
     if s.find("script", attrs={"type": "application/ld+json"}): return True
+    # часто на карточке есть кнопка купить / корзина
     txt = s.get_text(" ", strip=True).lower()
     return any(x in txt for x in ["артикул", "sku", "код товара", "в корзину", "купить"])
 
 def jsonld_product(s: BeautifulSoup) -> Optional[Dict[str, Any]]:
-    # берём первый Product в JSON-LD
     for tag in s.find_all("script", attrs={"type": "application/ld+json"}):
         try:
             data = json.loads(tag.get_text(strip=True))
@@ -384,26 +470,21 @@ def extract_title(s: BeautifulSoup) -> Optional[str]:
     return (s.title.string.strip() if s.title and s.title.string else None)
 
 def extract_sku(s: BeautifulSoup) -> Optional[str]:
-    # JSON-LD
     prod = jsonld_product(s)
     if prod:
         sku = prod.get("sku") or prod.get("mpn") or prod.get("productID")
         if isinstance(sku, (int, float)): sku = str(sku)
         if sku: return str(sku).strip()
-
     sk = s.find(attrs={"itemprop": "sku"})
     if sk:
         val = sk.get_text(" ", strip=True) or sk.get("content")
         if val: return val
-
-    # частые подписи
     for lab in ["артикул", "код товара", "код", "sku", "mpn"]:
         node = s.find(string=lambda t: t and lab in t.lower())
         if node:
             txt = node.parent.get_text(" ", strip=True) if node.parent else str(node)
             m = re.search(r"([A-Za-zА-Яа-я0-9\-\._/]{2,})", txt)
             if m: return m.group(1)
-
     txt = s.get_text(" ", strip=True)
     m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-zА-Яа-я0-9\-\._/]{2,})", txt, flags=re.I)
     if m: return m.group(1)
@@ -412,33 +493,26 @@ def extract_sku(s: BeautifulSoup) -> Optional[str]:
     return None
 
 def to_price_from_soup(s: BeautifulSoup) -> Optional[float]:
-    # JSON-LD
     prod = jsonld_product(s)
     if prod:
         offers = prod.get("offers")
-        if isinstance(offers, list):
-            offers = offers[0] if offers else None
+        if isinstance(offers, list): offers = offers[0] if offers else None
         if isinstance(offers, dict):
             p = offers.get("price") or offers.get("lowPrice") or offers.get("highPrice")
             if p is not None:
                 pp = to_number(p)
                 if pp is not None: return pp
-
     pe = s.find(attrs={"itemprop": "price"})
     if pe:
         raw = pe.get("content") or pe.get_text(" ", strip=True)
         p = to_number(raw)
         if p is not None: return p
-
-    # разные классы цены
     for cls in ["price", "current-price", "product-price", "price-value",
                 "product__price", "price__current", "card-price", "c-price"]:
         for el in s.select(f".{cls}"):
             val = el.get("content") or el.get_text(" ", strip=True)
             p = to_number(val)
             if p is not None: return p
-
-    # по всему тексту
     txt = s.get_text(" ", strip=True)
     m = re.search(r"(\d[\d\s\.,]{2,})\s*(?:₽|руб)\b", txt, flags=re.I)
     if m: return to_number(m.group(1))
@@ -447,14 +521,12 @@ def to_price_from_soup(s: BeautifulSoup) -> Optional[float]:
     return None
 
 def extract_picture(s: BeautifulSoup, base: str) -> Optional[str]:
-    # JSON-LD
     prod = jsonld_product(s)
     if prod:
         img = prod.get("image")
         if isinstance(img, list) and img: img = img[0]
         if isinstance(img, str) and img.strip():
             return urljoin(base, img.strip())
-
     og = s.find("meta", attrs={"property": "og:image"})
     if og and og.get("content"): return urljoin(base, og["content"].strip())
     im = s.find("img", attrs={"id": re.compile(r"(main|product)", re.I)})
@@ -467,13 +539,11 @@ def extract_picture(s: BeautifulSoup, base: str) -> Optional[str]:
     return None
 
 def extract_description(s: BeautifulSoup) -> Optional[str]:
-    # JSON-LD
     prod = jsonld_product(s)
     if prod:
         desc = prod.get("description")
         if isinstance(desc, str) and desc.strip():
             return desc.strip()
-
     for sel in ['[itemprop="description"]', ".product-description", ".description", "#description", ".product__description"]:
         el = s.select_one(sel)
         if el and el.get_text(strip=True): return el.get_text(" ", strip=True)
@@ -609,7 +679,7 @@ def main() -> int:
         desc  = extract_description(s) or ""
         crumbs= extract_breadcrumbs(s)
 
-        # если JSON-LD дал только часть — дособираем
+        # добираем из JSON-LD если есть
         if not title:
             prod = jsonld_product(s)
             if prod:
