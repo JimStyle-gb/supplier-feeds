@@ -1,606 +1,493 @@
 # -*- coding: utf-8 -*-
 """
-b2b.vtt.ru → YML
-- Логин по форме (user/pass).
-- Обход каталога /catalog/... (BFS).
-- Сбор ссылок на карточки: расширенные селекторы + парсинг onclick/data-href.
-- Парсинг карточек: JSON-LD + расширенные селекторы.
-- Отладка: docs/vtt_debug_root.html, docs/vtt_debug_links.txt, docs/vtt_cat_001..006.html,
-           docs/vtt_fail_001..010.html
+VTT B2B → YML (без ручного участия):
+- Логин по логину/паролю (env VTT_LOGIN/VTT_PASSWORD).
+- Обход каталога, сбор карточек прямо со страниц списка (если нет страниц товара).
+- Категории формируются по хлебным крошкам/заголовку.
+- Отладочные файлы сохраняются в docs/ чтобы быстро подстроить селекторы при необходимости.
+
+Зависимости: requests, beautifulsoup4, lxml
 """
 
 from __future__ import annotations
-import os, re, time, html, hashlib, io, json, warnings
+import os, re, io, time, html, hashlib, json
 from typing import Any, Dict, List, Optional, Tuple, Set
-from urllib.parse import urljoin, urlparse
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from urllib.parse import urljoin, urlparse, parse_qs
 from datetime import datetime, timedelta
 
 import requests
-from requests.exceptions import SSLError, RequestException
 from bs4 import BeautifulSoup
-from bs4 import XMLParsedAsHTMLWarning
 
-# глушим шумные ворнинги
-warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
-warnings.filterwarnings("ignore", message="Some characters could not be decoded")
-
-# ---------- ENV ----------
+# ---------------- ENV ----------------
 BASE_URL        = os.getenv("BASE_URL", "https://b2b.vtt.ru").rstrip("/")
-START_URL       = os.getenv("START_URL", f"{BASE_URL}/catalog/").strip()
+START_URL       = os.getenv("START_URL", f"{BASE_URL}/catalog/")
 OUT_FILE        = os.getenv("OUT_FILE", "docs/vtt.yml")
 OUTPUT_ENCODING = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-VTT_LOGIN       = os.getenv("VTT_LOGIN", "").strip()
-VTT_PASSWORD    = os.getenv("VTT_PASSWORD", "").strip()
+VTT_LOGIN       = os.getenv("VTT_LOGIN", "")
+VTT_PASSWORD    = os.getenv("VTT_PASSWORD", "")
 
-DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "1").lower() in ("1","true","yes")
-ALLOW_SSL_FALLBACK = os.getenv("ALLOW_SSL_FALLBACK", "1").lower() in ("1","true","yes")
+DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "0") == "1"
+ALLOW_SSL_FALLBACK = os.getenv("ALLOW_SSL_FALLBACK", "1") == "1"
 
 HTTP_TIMEOUT    = float(os.getenv("HTTP_TIMEOUT", "25"))
 REQUEST_DELAY_MS= int(os.getenv("REQUEST_DELAY_MS", "150"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "800"))
+
 MAX_WORKERS     = int(os.getenv("MAX_WORKERS", "6"))
-MAX_CRAWL_MIN   = int(os.getenv("MAX_CRAWL_MINUTES", "45"))
-MAX_PAGES       = int(os.getenv("MAX_PAGES", "900"))
-CRAWL_MODE      = os.getenv("CRAWL_MODE", "wide").lower()  # wide | cartridges
+MAX_CRAWL_MIN   = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
+MAX_PAGES       = int(os.getenv("MAX_PAGES", "800"))
 
 SUPPLIER_NAME   = "vtt"
 CURRENCY        = "RUB"
+
 ROOT_CAT_ID     = 9600000
 ROOT_CAT_NAME   = "VTT"
 
-UA = {
-    "User-Agent": "Mozilla/5.0 (compatible; VTT-B2B/1.6)",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "ru,en;q=0.8",
-}
+DEBUG_ROOT_HTML = "docs/vtt_debug_root.html"
+DEBUG_LINKS_TXT = "docs/vtt_links.txt"
 
-# ---------- Session ----------
-session = requests.Session()
-session.headers.update(UA)
-session.verify = not DISABLE_SSL_VERIFY
-if DISABLE_SSL_VERIFY:
-    import urllib3
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    print("[ssl] verification disabled by env")
+UA = {"User-Agent": "Mozilla/5.0 (compatible; VTT-B2B-Scraper/1.2)"}
 
-# ---------- Debug ----------
-DEBUG_DIR = os.path.dirname(OUT_FILE) or "docs"
-os.makedirs(DEBUG_DIR, exist_ok=True)
-DEBUG_LOG = os.path.join(DEBUG_DIR, "vtt_debug_log.txt")
-
+# ---------------- utils ----------------
 def dlog(msg: str):
-    print(msg)
+    print(msg, flush=True)
     try:
-        with io.open(DEBUG_LOG, "a", encoding="utf-8") as f:
+        with io.open("docs/vtt_debug_log.txt", "a", encoding="utf-8") as f:
             f.write(msg + "\n")
     except Exception:
         pass
 
-def save_file(name: str, content: bytes | str):
-    path = os.path.join(DEBUG_DIR, name)
-    try:
-        mode = "wb" if isinstance(content, (bytes, bytearray)) else "w"
-        with open(path, mode) as f:
-            f.write(content)
-        dlog(f"[debug] saved {path}")
-    except Exception as e:
-        dlog(f"[debug] save failed {path}: {e}")
+def jitter_sleep(ms: int) -> None:
+    time.sleep(max(0.0, ms/1000.0))
 
-# ---------- HTTP ----------
-def _ssl_retry_toggle():
-    import urllib3
-    session.verify = False
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    dlog("[ssl] fallback: verify=False")
+def new_session() -> requests.Session:
+    s = requests.Session()
+    s.headers.update(UA)
+    if DISABLE_SSL_VERIFY:
+        dlog("[ssl] verification disabled by env")
+        s.verify = False
+        try:
+            requests.packages.urllib3.disable_warnings()  # type: ignore
+        except Exception:
+            pass
+    return s
 
-def http_get(url: str) -> Optional[requests.Response]:
+def http_get(s: requests.Session, url: str, allow_fallback: bool = True) -> Optional[requests.Response]:
     try:
-        r = session.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True)
-        if r.status_code != 200:
-            dlog(f"[http] GET {url} -> {r.status_code}")
+        r = s.get(url, timeout=HTTP_TIMEOUT)
+        if r.status_code != 200: 
+            dlog(f"[http] GET status {r.status_code} {url}")
             return None
-        if not r.content or len(r.content) < MIN_BYTES:
-            dlog(f"[http] GET too small: {url} ({len(r.content) if r.content else 0} bytes)")
+        if MIN_BYTES and len(r.content) < MIN_BYTES:
+            dlog(f"[http] GET too small ({len(r.content)} bytes) {url}")
             return None
         return r
-    except SSLError as e:
+    except requests.exceptions.SSLError as e:
         dlog(f"[http] GET SSL fail {url}: {e}")
-        if session.verify and ALLOW_SSL_FALLBACK:
-            _ssl_retry_toggle()
+        if allow_fallback and ALLOW_SSL_FALLBACK:
             try:
-                r = session.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True)
-                if r.status_code != 200 or not r.content or len(r.content) < MIN_BYTES:
-                    return None
-                return r
+                r = requests.get(url, headers=UA, timeout=HTTP_TIMEOUT, verify=False)
+                if r.status_code == 200 and len(r.content) >= MIN_BYTES:
+                    return r
             except Exception as e2:
-                dlog(f"[http] GET fail after fallback {url}: {e2}")
-                return None
+                dlog(f"[http] Fallback verify=False failed: {e2}")
         return None
-    except RequestException as e:
+    except Exception as e:
         dlog(f"[http] GET fail {url}: {e}")
         return None
 
-def http_post(url: str, data: Dict[str, Any], headers: Dict[str,str]|None=None) -> Optional[requests.Response]:
-    try:
-        r = session.post(url, data=data, headers=headers or {}, timeout=HTTP_TIMEOUT, allow_redirects=True)
-        if r.status_code not in (200, 302):
-            dlog(f"[http] POST {url} -> {r.status_code}")
-            return None
-        return r
-    except SSLError as e:
-        dlog(f"[http] POST SSL fail {url}: {e}")
-        if session.verify and ALLOW_SSL_FALLBACK:
-            _ssl_retry_toggle()
-            try:
-                r = session.post(url, data=data, headers=headers or {}, timeout=HTTP_TIMEOUT, allow_redirects=True)
-                if r.status_code not in (200, 302):
-                    return None
-                return r
-            except Exception as e2:
-                dlog(f"[http] POST fail after fallback {url}: {e2}")
-                return None
-        return None
-    except RequestException as e:
-        dlog(f"[http] POST fail {url}: {e}")
-        return None
+def soup_html(resp: requests.Response) -> BeautifulSoup:
+    # Если это XML (иногда пагинации/виджеты), используем lxml-xml, иначе html.parser
+    ctype = resp.headers.get("Content-Type", "")
+    if "xml" in ctype:
+        return BeautifulSoup(resp.content, "xml")
+    return BeautifulSoup(resp.content, "html.parser")
 
-def soup_of(r: requests.Response) -> BeautifulSoup:
-    return BeautifulSoup(r.content, "html.parser")
+def save_file(path: str, data: bytes | str):
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        mode = "wb" if isinstance(data, (bytes, bytearray)) else "w"
+        with open(path, mode) as f:
+            f.write(data)
+    except Exception as e:
+        dlog(f"[debug] save fail {path}: {e}")
 
 def yml_escape(s: str) -> str:
-    return html.escape(s or "")
-
-def sha1(s: str) -> str:
-    import hashlib as _h
-    return _h.sha1(s.encode("utf-8")).hexdigest()
+    return html.escape((s or "").strip())
 
 def to_number(x: Any) -> Optional[float]:
     if x is None: return None
-    s = str(x).replace("\xa0"," ").strip().replace(" ", "").replace(",", ".")
+    s = str(x).replace("\xa0"," ").replace("\u202f"," ").replace(" ", "")
+    s = s.replace("руб", "").replace("₽", "").replace(",", ".")
     if not re.search(r"\d", s): return None
-    try: return float(s)
+    try:
+        return float(s)
     except Exception:
-        m = re.search(r"[\d.]+", s)
-        return float(m.group(0)) if m else None
+        m = re.search(r"(\d+(?:\.\d+)?)", s)
+        return float(m.group(1)) if m else None
 
-# ---------- Login ----------
-LOGIN_PATHS = ["/login", "/auth/login", "/signin", "/account/login", "/user/login"]
+def sha1(s: str) -> str:
+    import hashlib
+    return hashlib.sha1(s.encode("utf-8")).hexdigest()
 
-def is_login_page(s: BeautifulSoup) -> bool:
-    if s.find("input", {"type": "password"}): return True
-    txt = s.get_text(" ", strip=True).lower()
-    return ("вход" in txt and "пароль" in txt) or "логин" in txt
-
-def detect_login_form(s: BeautifulSoup) -> Optional[Tuple[str, Dict[str,str]]]:
-    for form in s.find_all("form"):
-        if not form.find("input", {"type": "password"}):
-            continue
-        action = form.get("action") or ""
-        fields = {"user": None, "pass": None, "csrf": None}
-        names = [inp.get("name") for inp in form.find_all("input") if inp.get("name")]
-        for cand in ["email", "login", "username", "user", "phone"]:
-            if cand in names:
-                fields["user"] = cand; break
-        for cand in ["password", "passwd", "pass"]:
-            if cand in names:
-                fields["pass"] = cand; break
-        for inp in form.find_all("input", {"type": "hidden"}):
-            n = (inp.get("name") or "").lower()
-            if "csrf" in n or n in ("_token", "csrf_token", "csrfmiddlewaretoken"):
-                fields["csrf"] = inp.get("name"); break
-        return action, fields
-    return None
-
-def find_csrf_meta(s: BeautifulSoup) -> Optional[str]:
-    m = s.find("meta", attrs={"name": re.compile(r"csrf", re.I)})
+# ---------------- login ----------------
+def extract_csrf_token(soup: BeautifulSoup) -> Optional[str]:
+    m = soup.find("meta", attrs={"name":"csrf-token"})
     if m and m.get("content"):
-        return m["content"].strip()
+        return m["content"]
+    inp = soup.find("input", attrs={"name":"_token"})
+    if inp and inp.get("value"):
+        return inp.get("value")
     return None
 
-def login_vtt() -> bool:
-    if not (VTT_LOGIN and VTT_PASSWORD):
-        dlog("Error: set VTT_LOGIN/VTT_PASSWORD")
-        return False
+def looks_logged_in(soup: BeautifulSoup) -> bool:
+    txt = soup.get_text(" ", strip=True).lower()
+    # простые индикаторы: "выход", "профиль", "корзина" при наличии имени
+    return ("выход" in txt or "выйти" in txt or "профиль" in txt) and ("вход" not in txt)
 
-    r = http_get(START_URL)
-    if r:
-        save_file("vtt_debug_root.html", r.content)
-        s = soup_of(r)
-        if not is_login_page(s):
-            dlog("[login] not required")
+def try_login(sess: requests.Session) -> bool:
+    # открываем любую страницу, чтобы получить csrf/сессию
+    jitter_sleep(REQUEST_DELAY_MS)
+    r = http_get(sess, START_URL)
+    if not r:
+        dlog("Error: Стартовая страница недоступна (проверьте URL).")
+        return False
+    save_file(DEBUG_ROOT_HTML, r.content)
+    s = soup_html(r)
+
+    if looks_logged_in(s):
+        dlog("[login] already logged in")
+        return True
+
+    csrf = extract_csrf_token(s)
+
+    # кандидаты эндпоинтов логина
+    candidates = [
+        f"{BASE_URL}/login",
+        f"{BASE_URL}/auth/login",
+        f"{BASE_URL}/signin",
+        f"{BASE_URL}/account/login",
+        f"{BASE_URL}/user/login",
+        f"{BASE_URL}/authorization",
+        f"{BASE_URL}/login_check",
+    ]
+
+    payload_variants = []
+    # разные имена полей встречаются на B2B
+    for user_field in ("email","login","username"):
+        payload_variants.append({user_field: VTT_LOGIN, "password": VTT_PASSWORD, "_token": csrf or ""})
+        payload_variants.append({user_field: VTT_LOGIN, "password": VTT_PASSWORD})
+    payload_variants.append({"email": VTT_LOGIN, "pass": VTT_PASSWORD, "_token": csrf or ""})
+
+    for url in candidates:
+        for data in payload_variants:
+            try:
+                jitter_sleep(REQUEST_DELAY_MS)
+                rr = sess.post(url, data=data, timeout=HTTP_TIMEOUT, allow_redirects=True)
+                if rr.status_code in (200, 302):
+                    jitter_sleep(REQUEST_DELAY_MS)
+                    chk = http_get(sess, START_URL)
+                    if chk:
+                        ss = soup_html(chk)
+                        save_file(DEBUG_ROOT_HTML, chk.content)  # обновим
+                        if looks_logged_in(ss):
+                            dlog("[login] success")
+                            return True
+            except Exception as e:
+                dlog(f"[login] post fail {url}: {e}")
+
+    # Последний шанс: иногда сайт авторизует через редирект на ту же форму с cookies remember
+    jitter_sleep(REQUEST_DELAY_MS)
+    chk = http_get(sess, START_URL)
+    if chk:
+        ss = soup_html(chk)
+        if looks_logged_in(ss):
+            dlog("[login] success (post-check)")
             return True
-        login_page = r
-    else:
-        login_page = None
-        for p in LOGIN_PATHS:
-            rr = http_get(urljoin(BASE_URL, p))
-            if rr:
-                login_page = rr
-                break
-        if not login_page:
-            dlog("[login] cannot open login page")
-            return False
 
-    s = soup_of(login_page)
-    form = detect_login_form(s)
-    if not form:
-        dlog("[login] form not found")
+    dlog("Error: login failed")
+    return False
+
+# ---------------- discovery ----------------
+PAGE_LINK_PAT = re.compile(r"/catalog/[^?#]*", re.I)
+
+def is_same_host(u: str) -> bool:
+    try:
+        return urlparse(u).netloc in ("", urlparse(BASE_URL).netloc)
+    except Exception:
         return False
 
-    action_rel, fields = form
-    action = urljoin(BASE_URL, action_rel)
-    user_field, pass_field, csrf_field = fields["user"], fields["pass"], fields["csrf"]
-    if not (user_field and pass_field):
-        dlog("[login] username/password fields not detected")
-        return False
+def collect_catalog_pages(sess: requests.Session, start_url: str, deadline: datetime) -> List[str]:
+    """Собираем ссылки разделов/страниц каталога (включая пагинацию)."""
+    pages: List[str] = []
+    seen: Set[str] = set()
+    queue: List[str] = [start_url]
+    iterations = 0
 
-    payload = {user_field: VTT_LOGIN, pass_field: VTT_PASSWORD}
-    token = None
-    if csrf_field:
-        hidden = s.find("input", {"name": csrf_field})
-        if hidden and hidden.get("value"):
-            token = hidden["value"].strip()
-            payload[csrf_field] = token
-    if not token:
-        token = find_csrf_meta(s)
-    headers = {}
-    if token:
-        headers["X-CSRF-TOKEN"] = token
-        headers["X-XSRF-TOKEN"] = token
+    # копим текст всех ссылок для дебага
+    all_links: List[str] = []
 
-    pr = http_post(action, payload, headers=headers)
-    if not pr:
-        dlog("[login] POST failed")
-        return False
-
-    test = http_get(START_URL)
-    if test:
-        save_file("vtt_debug_root.html", test.content)
-    if not test:
-        dlog("[login] after POST, catalog not accessible")
-        return False
-    if is_login_page(soup_of(test)):
-        dlog("[login] still on login page -> wrong creds or extra step required")
-        return False
-
-    dlog("[login] success")
-    return True
-
-# ---------- Crawl ----------
-def same_host(u: str) -> bool:
-    try: return urlparse(u).hostname == urlparse(BASE_URL).hostname
-    except Exception: return False
-
-def looks_like_catalog(u: str) -> bool:
-    return "/catalog" in u
-
-CARTRIDGE_HINTS = ["картридж", "тонер", "cartridge", "toner"]
-
-def is_cartridge_anchor(text: str, href: str) -> bool:
-    t = (text or "").lower(); h = (href or "").lower()
-    return any(k in t for k in CARTRIDGE_HINTS) or any(k in h for k in CARTRIDGE_HINTS)
-
-def discover_pages(start_url: str, deadline: datetime) -> List[str]:
-    seen: Set[str] = set(); queue: List[str] = [start_url]; out: List[str] = []; pages = 0
-    links_dump: List[str] = []
-    saved = 0
-    while queue and pages < MAX_PAGES and datetime.utcnow() < deadline:
-        u = queue.pop(0)
-        if u in seen: continue
-        seen.add(u)
-        time.sleep(max(0.0, REQUEST_DELAY_MS/1000.0))
-        r = http_get(u)
-        if not r: 
+    while queue and len(pages) < MAX_PAGES and datetime.utcnow() < deadline:
+        url = queue.pop(0)
+        if url in seen: 
             continue
-        s = soup_of(r)
-        title_txt = (s.title.string.strip() if s.title and s.title.string else "")
-        links_dump.append(f"[{pages}] {u} :: {title_txt}")
+        seen.add(url)
 
-        # сохраняем несколько первых страниц для диагностики
-        if saved < 6:
-            save_file(f"vtt_cat_{saved+1:03d}.html", r.content)
-            saved += 1
+        jitter_sleep(REQUEST_DELAY_MS)
+        r = http_get(sess, url)
+        if not r:
+            save_file(f"docs/vtt_fail_{len(seen):04d}.html", f"FAIL {url}")
+            continue
 
-        # сохраняем страницу в обход
-        if CRAWL_MODE == "cartridges":
-            if is_cartridge_anchor(title_txt, u):
-                out.append(u)
-        else:
-            out.append(u)
+        if iterations == 0:
+            save_file(DEBUG_ROOT_HTML, r.content)
 
-        # ссылки глубже
+        s = soup_html(r)
+        pages.append(url)
+
+        # собираем ссылки на продукты сразу из листинга (если он без карточек)
+        # всё равно пойдём по pagination
         for a in s.find_all("a", href=True):
-            absu = urljoin(u, a["href"])
-            if not same_host(absu): continue
-            if not looks_like_catalog(absu): continue
-            if "#" in absu: absu = absu.split("#", 1)[0]
-            if CRAWL_MODE == "cartridges":
-                if not is_cartridge_anchor(a.get_text(" ", strip=True), absu):
-                    continue
-            if absu not in seen and absu not in queue:
-                queue.append(absu)
-        pages += 1
-
-    save_file("vtt_debug_links.txt", "\n".join(links_dump))
-    return list(dict.fromkeys(out))
-
-# -- helpers for link extraction on list pages
-CARD_SELECTORS = [
-    "article", "li", "div", "section"
-]
-CARD_CLASS_HINTS = [
-    "product", "card", "catalog", "goods", "item", "tile", "listing", "grid"
-]
-ANCHOR_PREF_SELECTORS = [
-    "a.product", "a.product__link", "a.card", "a.card__link", "a.title", "a.name",
-]
-def looks_like_card(el) -> bool:
-    cls = " ".join(el.get("class", [])).lower()
-    return any(h in cls for h in CARD_CLASS_HINTS)
-
-HREF_BAD = ("#", "javascript:", "tel:", "mailto:")
-def good_href(h: str) -> bool:
-    if not h: return False
-    h = h.strip()
-    if any(h.startswith(x) for x in HREF_BAD): return False
-    return True
-
-# regex на любые глубины внутренних ссылок каталога
-RE_PROD_PATH = re.compile(r"/catalog/(?:[A-Za-z0-9\-_]+/){1,6}[A-Za-z0-9\-_]+/?$")
-
-def extract_urls_from_onclick_attr(val: str, base: str) -> List[str]:
-    out = []
-    # location.href='...'
-    m = re.findall(r"location\.href\s*=\s*['\"]([^'\"]+)['\"]", val)
-    out += [urljoin(base, x) for x in m]
-    # window.location='...'
-    m = re.findall(r"window\.location\s*=\s*['\"]([^'\"]+)['\"]", val)
-    out += [urljoin(base, x) for x in m]
-    # goTo('...')
-    m = re.findall(r"goTo\s*\(\s*['\"]([^'\"]+)['\"]\s*\)", val)
-    out += [urljoin(base, x) for x in m]
-    return out
-
-def collect_product_links(page_url: str, deadline: datetime) -> List[str]:
-    urls: List[str] = []; seen: Set[str] = set()
-    if datetime.utcnow() > deadline: return urls
-    r = http_get(page_url)
-    if not r: return urls
-    s = soup_of(r)
-
-    # 1) приоритетные якоря
-    for sel in ANCHOR_PREF_SELECTORS:
-        for a in s.select(sel):
-            href = a.get("href"); 
-            if not good_href(href): continue
-            absu = urljoin(page_url, href)
-            if not same_host(absu): continue
-            if "/catalog" not in absu: continue
-            if absu in seen: continue
-            # разрешаем любые глубины, а принадлежность карточке проверим ниже
-            seen.add(absu); urls.append(absu)
-
-    # 2) карточки товаров (контейнеры)
-    for tagname in CARD_SELECTORS:
-        for el in s.find_all(tagname):
-            if not looks_like_card(el): 
+            href = a["href"].strip()
+            absu = urljoin(url, href)
+            if not is_same_host(absu):
                 continue
-            # (a) прямые ссылки внутри карточки
-            for a in el.find_all("a", href=True):
-                href = a["href"]
-                if not good_href(href): continue
-                absu = urljoin(page_url, href)
-                if not same_host(absu): continue
-                if "/catalog" not in absu: continue
-                if absu in seen: continue
-                seen.add(absu); urls.append(absu)
-            # (b) data-href на контейнере
-            dh = el.get("data-href")
-            if dh and good_href(dh):
-                absu = urljoin(page_url, dh)
-                if same_host(absu) and "/catalog" in absu and absu not in seen:
-                    seen.add(absu); urls.append(absu)
-            # (c) onclick редиректы
-            oc = el.get("onclick")
-            if oc:
-                for absu in extract_urls_from_onclick_attr(oc, page_url):
-                    if same_host(absu) and "/catalog" in absu and absu not in seen:
-                        seen.add(absu); urls.append(absu)
+            all_links.append(absu)
+            if PAGE_LINK_PAT.search(absu):
+                # пагинация: ссылки с "page=" добираем
+                # а также "catalog/..." без указания товара
+                if absu not in seen and absu not in queue and len(queue) + len(pages) < MAX_PAGES:
+                    queue.append(absu)
 
-    # 3) любые a[href] по общему правилу + фильтр по шаблону пути
-    for a in s.find_all("a", href=True):
-        href = a["href"]
-        if not good_href(href): continue
-        absu = urljoin(page_url, href)
-        if not same_host(absu): continue
-        if not RE_PROD_PATH.search(absu): 
-            continue
-        if absu in seen: continue
-        seen.add(absu); urls.append(absu)
+        # ищем явную пагинацию через rel="next"
+        ln = s.find("link", attrs={"rel": "next"})
+        if ln and ln.get("href"):
+            nxt = urljoin(url, ln["href"])
+            if nxt not in seen and nxt not in queue:
+                queue.append(nxt)
 
-    # 4) пагинация (link rel=next) — рекурсивно
-    nxt = s.find("link", rel=lambda v: v and "next" in v.lower())
-    if nxt and nxt.get("href"):
-        urls.extend(collect_product_links(urljoin(page_url, nxt["href"]), deadline))
+        iterations += 1
 
-    # уникализируем при сохранении порядка
-    return list(dict.fromkeys(urls))
+    # сохраним все найденные ссылки для быстрой ручной проверки
+    try:
+        with io.open(DEBUG_LINKS_TXT, "w", encoding="utf-8") as f:
+            for u in sorted(set(all_links)):
+                f.write(u + "\n")
+    except Exception:
+        pass
 
-# ---------- Product parsing ----------
-def is_product_page(s: BeautifulSoup) -> bool:
-    if s.find(attrs={"itemprop": "sku"}): return True
-    if s.find("meta", attrs={"property": "og:type", "content": "product"}): return True
-    if s.find("script", attrs={"type": "application/ld+json"}): return True
-    # часто на карточке есть кнопка купить / корзина
-    txt = s.get_text(" ", strip=True).lower()
-    return any(x in txt for x in ["артикул", "sku", "код товара", "в корзину", "купить"])
+    dlog(f"[discover] pages: {len(pages)}")
+    return pages
 
-def jsonld_product(s: BeautifulSoup) -> Optional[Dict[str, Any]]:
-    for tag in s.find_all("script", attrs={"type": "application/ld+json"}):
+# ---------------- parse listing ----------------
+def extract_products_from_listing(soup: BeautifulSoup, page_url: str) -> List[Dict[str,Any]]:
+    """
+    Универсальная выжимка карточек прямо со страницы списка.
+    Ищем:
+      - JSON-LD Product/ItemList
+      - data-атрибуты карточек
+      - общие CSS для заголовка/цены/картинки/артикула
+    Возвращаем как минимум: title, price, vendorCode?, picture?, url?
+    """
+    items: List[Dict[str,Any]] = []
+
+    # 1) JSON-LD (если есть)
+    for sc in soup.find_all("script", type=lambda t: t and "ld+json" in t):
         try:
-            data = json.loads(tag.get_text(strip=True))
+            data = json.loads(sc.string or "")
         except Exception:
-            continue
-        def find_prod(obj):
-            if isinstance(obj, dict):
-                t = obj.get("@type") or obj.get("type")
-                if isinstance(t, list):
-                    t = next((x for x in t if isinstance(x, str)), None)
-                if isinstance(t, str) and "product" in t.lower():
-                    return obj
-                for v in obj.values():
-                    found = find_prod(v)
-                    if found: return found
-            elif isinstance(obj, list):
-                for it in obj:
-                    found = find_prod(it)
-                    if found: return found
-            return None
-        prod = find_prod(data)
-        if prod: return prod
-    return None
+            try:
+                data = json.loads(sc.get_text())
+            except Exception:
+                continue
+        # ItemList / Product
+        candidates = []
+        if isinstance(data, list):
+            candidates = data
+        elif isinstance(data, dict):
+            candidates = [data]
+        else:
+            candidates = []
 
-def extract_title(s: BeautifulSoup) -> Optional[str]:
-    h1 = s.find("h1")
-    if h1 and h1.get_text(strip=True): return h1.get_text(" ", strip=True)
-    og = s.find("meta", attrs={"property": "og:title"})
-    if og and og.get("content"): return og["content"].strip()
-    return (s.title.string.strip() if s.title and s.title.string else None)
+        for d in candidates:
+            t = (d.get("@type") or "").lower()
+            if t == "itemlist" and isinstance(d.get("itemListElement"), list):
+                for it in d["itemListElement"]:
+                    prod = it.get("item") if isinstance(it, dict) else None
+                    if isinstance(prod, dict) and (prod.get("@type","").lower()=="product"):
+                        title = (prod.get("name") or "").strip()
+                        url = urljoin(page_url, (prod.get("url") or "").strip())
+                        img = (prod.get("image") or "").strip()
+                        price = None
+                        of = prod.get("offers") or {}
+                        if isinstance(of, dict):
+                            price = to_number(of.get("price"))
+                        elif isinstance(of, list) and of:
+                            price = to_number(of[0].get("price"))
+                        if title and price:
+                            items.append({"title": title, "price": price, "url": url, "picture": img})
+            if t == "product":
+                title = (d.get("name") or "").strip()
+                url = urljoin(page_url, (d.get("url") or "").strip())
+                img = (d.get("image") or "").strip()
+                price = None
+                of = d.get("offers") or {}
+                if isinstance(of, dict):
+                    price = to_number(of.get("price"))
+                elif isinstance(of, list) and of:
+                    price = to_number(of[0].get("price"))
+                if title and price:
+                    items.append({"title": title, "price": price, "url": url, "picture": img})
 
-def extract_sku(s: BeautifulSoup) -> Optional[str]:
-    prod = jsonld_product(s)
-    if prod:
-        sku = prod.get("sku") or prod.get("mpn") or prod.get("productID")
-        if isinstance(sku, (int, float)): sku = str(sku)
-        if sku: return str(sku).strip()
-    sk = s.find(attrs={"itemprop": "sku"})
-    if sk:
-        val = sk.get_text(" ", strip=True) or sk.get("content")
-        if val: return val
-    for lab in ["артикул", "код товара", "код", "sku", "mpn"]:
-        node = s.find(string=lambda t: t and lab in t.lower())
-        if node:
-            txt = node.parent.get_text(" ", strip=True) if node.parent else str(node)
-            m = re.search(r"([A-Za-zА-Яа-я0-9\-\._/]{2,})", txt)
-            if m: return m.group(1)
-    txt = s.get_text(" ", strip=True)
-    m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-zА-Яа-я0-9\-\._/]{2,})", txt, flags=re.I)
-    if m: return m.group(1)
-    cand = s.find(attrs={"data-sku": True})
-    if cand: return cand.get("data-sku")
-    return None
+    # 2) Heuristic: карточки товаров
+    cards = []
+    cards += soup.select('[data-product-id]')
+    cards += soup.select('[class*="product-card"], [class*="product__item"], [class*="catalog__item"], [class*="goods-item"]')
+    cards = list(dict.fromkeys(cards))  # уник
 
-def to_price_from_soup(s: BeautifulSoup) -> Optional[float]:
-    prod = jsonld_product(s)
-    if prod:
-        offers = prod.get("offers")
-        if isinstance(offers, list): offers = offers[0] if offers else None
-        if isinstance(offers, dict):
-            p = offers.get("price") or offers.get("lowPrice") or offers.get("highPrice")
-            if p is not None:
-                pp = to_number(p)
-                if pp is not None: return pp
-    pe = s.find(attrs={"itemprop": "price"})
-    if pe:
-        raw = pe.get("content") or pe.get_text(" ", strip=True)
-        p = to_number(raw)
-        if p is not None: return p
-    for cls in ["price", "current-price", "product-price", "price-value",
-                "product__price", "price__current", "card-price", "c-price"]:
-        for el in s.select(f".{cls}"):
-            val = el.get("content") or el.get_text(" ", strip=True)
-            p = to_number(val)
-            if p is not None: return p
-    txt = s.get_text(" ", strip=True)
-    m = re.search(r"(\d[\d\s\.,]{2,})\s*(?:₽|руб)\b", txt, flags=re.I)
-    if m: return to_number(m.group(1))
-    m = re.search(r"цена[^0-9]*([\d\s\.,]{2,})", txt, flags=re.I)
-    if m: return to_number(m.group(1))
-    return None
+    for c in cards:
+        # title
+        title = None
+        te = c.select_one('[itemprop="name"], .product-title, .product__title, .goods-title, a[href*="/catalog/"]')
+        if te:
+            title = te.get_text(" ", strip=True)
+        if not title:
+            title = c.get_text(" ", strip=True)
+            title = re.sub(r"\s{2,}", " ", title)
+            # обрежем хвосты кнопок
+            title = re.sub(r"(в корзину.*)$", "", title, flags=re.I)
 
-def extract_picture(s: BeautifulSoup, base: str) -> Optional[str]:
-    prod = jsonld_product(s)
-    if prod:
-        img = prod.get("image")
-        if isinstance(img, list) and img: img = img[0]
-        if isinstance(img, str) and img.strip():
-            return urljoin(base, img.strip())
-    og = s.find("meta", attrs={"property": "og:image"})
-    if og and og.get("content"): return urljoin(base, og["content"].strip())
-    im = s.find("img", attrs={"id": re.compile(r"(main|product)", re.I)})
-    if im and (im.get("src") or im.get("data-src")):
-        return urljoin(base, im.get("src") or im.get("data-src"))
-    for img in s.find_all("img"):
-        src = img.get("src") or img.get("data-src") or ""
-        if any(k in src for k in ["product", "catalog", "images", "photo", "goods"]):
-            return urljoin(base, src)
-    return None
+        # price
+        price = None
+        pe = c.select_one('[itemprop="price"], .price, .product-price, [class*="price__value"]')
+        if pe:
+            price = to_number(pe.get("content") or pe.get_text(" ", strip=True))
+        if price is None:
+            price = to_number(c.get_text(" ", strip=True))
 
-def extract_description(s: BeautifulSoup) -> Optional[str]:
-    prod = jsonld_product(s)
-    if prod:
-        desc = prod.get("description")
-        if isinstance(desc, str) and desc.strip():
-            return desc.strip()
-    for sel in ['[itemprop="description"]', ".product-description", ".description", "#description", ".product__description"]:
-        el = s.select_one(sel)
-        if el and el.get_text(strip=True): return el.get_text(" ", strip=True)
-    for blk in s.select("article, .content, .product, .card, #content, .tabs"):
-        txt = blk.get_text(" ", strip=True)
-        if txt and len(txt) > 120: return txt
-    return None
+        # vendorCode
+        vcode = None
+        for lab in ("артикул", "код", "sku", "код товара"):
+            node = c.find(string=lambda t: t and lab in t.lower())
+            if node:
+                m = re.search(r"([A-Za-zА-Яа-я0-9\-\._/]{2,})", (node.parent.get_text(" ", strip=True) if node.parent else str(node)))
+                if m:
+                    vcode = m.group(1)
+                    break
+        if not vcode:
+            # иногда sku в data-атрибутах
+            for att in ("data-sku","data-code","data-art","data-article"):
+                if c.has_attr(att) and c.get(att):
+                    vcode = str(c.get(att)).strip()
+                    break
 
-def extract_breadcrumbs(s: BeautifulSoup) -> List[str]:
-    out: List[str] = []
-    for bc in s.select('ul.breadcrumb, nav.breadcrumbs, .breadcrumbs, .breadcrumb, .pathway, [class*="breadcrumb"], [class*="pathway"]'):
+        # picture
+        img = None
+        imgel = c.select_one('img[src], img[data-src]')
+        if imgel:
+            img = imgel.get("src") or imgel.get("data-src")
+            if img and img.startswith("//"): img = "https:" + img
+            img = urljoin(page_url, img)
+
+        # product url (если есть)
+        u = None
+        ae = c.select_one('a[href*="/catalog/"]')
+        if ae and ae.get("href"):
+            u = urljoin(page_url, ae["href"])
+
+        if title and price:
+            items.append({"title": title, "price": float(f"{price:.2f}"), "vendorCode": vcode or "", "picture": img or "", "url": u or page_url})
+
+    # 3) fallback: ищем типичные таблицы
+    if not items:
+        rows = soup.select("table tr")
+        for tr in rows:
+            tds = tr.find_all(["td","th"])
+            if len(tds) < 3: 
+                continue
+            rowtxt = " ".join(td.get_text(" ", strip=True) for td in tds)
+            if not re.search(r"\d", rowtxt): 
+                continue
+            title = tds[0].get_text(" ", strip=True)
+            price = None
+            vcode = None
+            img = None
+            url = None
+            # price in any col
+            for td in tds:
+                price = price or to_number(td.get_text(" ", strip=True))
+                if not vcode:
+                    m = re.search(r"(?:Артикул|Код|SKU)\s*[:#]?\s*([A-Za-zА-Яа-я0-9\-\._/]{2,})", td.get_text(" ", strip=True), flags=re.I)
+                    if m: vcode = m.group(1)
+                if not img:
+                    im = td.find("img")
+                    if im and (im.get("src") or im.get("data-src")):
+                        img = im.get("src") or im.get("data-src")
+                        img = urljoin(page_url, img)
+                if not url:
+                    a = td.find("a", href=True)
+                    if a: url = urljoin(page_url, a["href"])
+            if title and price:
+                items.append({"title": title, "price": float(f"{price:.2f}"), "vendorCode": vcode or "", "picture": img or "", "url": url or page_url})
+
+    return items
+
+def extract_breadcrumbs(soup: BeautifulSoup) -> List[str]:
+    names: List[str] = []
+    for bc in soup.select('nav[aria-label="breadcrumb"], ul.breadcrumb, .breadcrumbs, .breadcrumb, [class*="breadcrumb"]'):
         for a in bc.find_all("a"):
             t = a.get_text(" ", strip=True)
-            if not t: continue
+            if not t: 
+                continue
             tl = t.lower()
-            if tl in ("главная","home"): continue
-            out.append(t.strip())
-        if out: break
-    return out
+            if tl in ("главная","home"): 
+                continue
+            names.append(t.strip())
+        if names:
+            break
+    return [n for n in names if n]
 
-# ---------- YML ----------
 def stable_cat_id(text: str, prefix: int = 9700000) -> int:
     h = hashlib.md5(text.encode("utf-8")).hexdigest()[:6]
     return prefix + int(h, 16)
 
 def build_categories_from_paths(paths: List[List[str]]) -> Tuple[List[Tuple[int,str,Optional[int]]], Dict[Tuple[str,...], int]]:
     cat_map: Dict[Tuple[str,...], int] = {}
-    out: List[Tuple[int,str,Optional[int]]] = []
+    out_list: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
         clean = [p.strip() for p in path if p and p.strip()]
         clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
-        if not clean: continue
-        parent = ROOT_CAT_ID
+        if not clean: 
+            continue
+        parent_id = ROOT_CAT_ID
         prefix: List[str] = []
         for name in clean:
             prefix.append(name)
             key = tuple(prefix)
             if key in cat_map:
-                parent = cat_map[key]; continue
+                parent_id = cat_map[key]; continue
             cid = stable_cat_id(" / ".join(prefix))
             cat_map[key] = cid
-            out.append((cid, name, parent))
-            parent = cid
-    return out, cat_map
+            out_list.append((cid, name, parent_id))
+            parent_id = cid
+    return out_list, cat_map
 
+# ---------------- YML ----------------
 def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple[int,Dict[str,Any]]]) -> str:
     out: List[str] = []
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
     out.append("<yml_catalog><shop>")
     out.append(f"<name>{yml_escape(SUPPLIER_NAME)}</name>")
     out.append('<currencies><currency id="RUB" rate="1" /></currencies>')
+
     out.append("<categories>")
     out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
     for cid, name, parent in categories:
         parent = parent if parent else ROOT_CAT_ID
         out.append(f"<category id=\"{cid}\" parentId=\"{parent}\">{yml_escape(name)}</category>")
     out.append("</categories>")
+
     out.append("<offers>")
     for cid, it in offers:
         price = it["price"]
@@ -609,7 +496,7 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
             f"<offer id=\"{yml_escape(it['offer_id'])}\" available=\"true\" in_stock=\"true\">",
             f"<name>{yml_escape(it['title'])}</name>",
             f"<vendor>{yml_escape(it.get('brand') or SUPPLIER_NAME)}</vendor>",
-            f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>",
+            f"<vendorCode>{yml_escape(it.get('vendorCode') or '')}</vendorCode>",
             f"<price>{price_txt}</price>",
             "<currencyId>RUB</currencyId>",
             f"<categoryId>{cid}</categoryId>",
@@ -618,161 +505,117 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
         if it.get("picture"): out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
         desc = it.get("description") or it["title"]
         out.append(f"<description>{yml_escape(desc)}</description>")
-        out += ["<quantity_in_stock>1</quantity_in_stock>",
-                "<stock_quantity>1</stock_quantity>",
-                "<quantity>1</quantity>", "</offer>"]
+        out += ["<quantity_in_stock>1</quantity_in_stock>", "<stock_quantity>1</stock_quantity>", "<quantity>1</quantity>", "</offer>"]
     out.append("</offers>")
+
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
-# ---------- MAIN ----------
+# ---------------- MAIN ----------------
 def main() -> int:
-    # обнулим лог
-    try:
-        with io.open(DEBUG_LOG, "w", encoding="utf-8") as f:
-            f.write("")
-    except Exception:
-        pass
-
-    if not login_vtt():
-        dlog("Error: login failed")
-        _write_empty()
-        return 0
-
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MIN)
 
-    pages = discover_pages(START_URL, deadline)
-    dlog(f"[discover] pages: {len(pages)}")
+    sess = new_session()
+    if not VTT_LOGIN or not VTT_PASSWORD:
+        dlog("Error: VTT_LOGIN/VTT_PASSWORD are empty (set repository secrets).")
+        return 2
+
+    if not try_login(sess):
+        return 2
+
+    # discovery
+    pages = collect_catalog_pages(sess, START_URL, deadline)
     if not pages:
-        _write_empty()
-        return 0
+        dlog("Error: каталог пуст или недоступен.")
+        # всё равно создадим пустой yml
+        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+        with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+            f.write(build_yml([], []))
+        return 2
 
-    # собираем ссылки карточек
-    prod_urls: List[str] = []
-    for u in pages:
-        if datetime.utcnow() > deadline: break
-        prod_urls.extend(collect_product_links(u, deadline))
-    prod_urls = list(dict.fromkeys(prod_urls))
-    dlog(f"[collect] product urls: {len(prod_urls)}")
+    # parse listings
+    all_items: List[Dict[str,Any]] = []
+    all_paths: List[List[str]] = []
 
-    fail_saved = 0
-    FAIL_SAVE_LIMIT = 10
+    for i, url in enumerate(pages, 1):
+        if datetime.utcnow() > deadline:
+            dlog("[time] deadline reached, stopping parse")
+            break
+        jitter_sleep(REQUEST_DELAY_MS)
+        r = http_get(sess, url)
+        if not r:
+            save_file(f"docs/vtt_fail_{i:04d}.html", f"FAIL {url}")
+            continue
+        save_file(f"docs/vtt_page_{i:04d}.html", r.content)
+        s = soup_html(r)
 
-    def worker(u: str):
-        nonlocal fail_saved
-        if datetime.utcnow() > deadline: return None
-        time.sleep(max(0.0, REQUEST_DELAY_MS/1000.0))
-        r = http_get(u)
-        if not r: return None
-        s = soup_of(r)
-        if not is_product_page(s):
-            if fail_saved < FAIL_SAVE_LIMIT:
-                fname = f"vtt_fail_{fail_saved+1:03d}.html"
-                save_file(fname, r.content)
-                fail_saved += 1
-            return None
+        items = extract_products_from_listing(s, url)
+        if items:
+            all_items.extend(items)
 
-        title = (extract_title(s) or "").strip()
-        price = to_price_from_soup(s)
-        sku   = (extract_sku(s) or "").strip()
-        pic   = extract_picture(s, u)
-        desc  = extract_description(s) or ""
-        crumbs= extract_breadcrumbs(s)
+        bc = extract_breadcrumbs(s)
+        if bc:
+            all_paths.append(bc)
+        else:
+            # иногда хотя бы H1 пригодится
+            h = s.find("h1")
+            if h and h.get_text(strip=True):
+                all_paths.append([h.get_text(strip=True)])
 
-        # добираем из JSON-LD если есть
-        if not title:
-            prod = jsonld_product(s)
-            if prod:
-                title = prod.get("name") or title
-                if not pic:
-                    img = prod.get("image")
-                    if isinstance(img, list) and img: img = img[0]
-                    if isinstance(img, str): pic = urljoin(u, img)
+    # build cats
+    cat_list, path_id_map = build_categories_from_paths(all_paths)
+    dlog(f"[cats] built: {len(cat_list)}")
 
-        if not title or price is None or not sku:
-            if fail_saved < FAIL_SAVE_LIMIT:
-                fname = f"vtt_fail_{fail_saved+1:03d}.html"
-                save_file(fname, r.content)
-                fail_saved += 1
-            return None
-
-        return {
-            "url": u,
-            "title": title,
-            "price": float(f"{price:.2f}"),
-            "vendorCode": sku,
-            "picture": pic,
-            "description": desc,
-            "crumbs": crumbs,
-        }
-
-    items: List[Dict[str,Any]] = []
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-        futures = {ex.submit(worker, u): u for u in prod_urls}
-        for fut in as_completed(futures):
-            rec = fut.result()
-            if rec:
-                items.append(rec)
-                if len(items) % 50 == 0:
-                    dlog(f"[parse] {len(items)}")
-
-    dlog(f"[parse] total: {len(items)}")
-
-    paths = [p["crumbs"] for p in items if p.get("crumbs")]
-    cat_list, path_id_map = build_categories_from_paths(paths)
-
+    # dedupe by (title, vendorCode)
+    seen: Set[Tuple[str,str]] = set()
     offers: List[Tuple[int,Dict[str,Any]]] = []
-    seen_ids: Set[str] = set()
-    for it in items:
+    for it in all_items:
+        title = (it.get("title") or "").strip()
+        if not title:
+            continue
+        vcode = (it.get("vendorCode") or "").strip()
+        price = it.get("price")
+        if price is None or price <= 0:
+            continue
+
+        key = (title.lower(), vcode.lower())
+        if key in seen:
+            continue
+        seen.add(key)
+
+        # choose category by last seen crumbs intersection, иначе root
         cid = ROOT_CAT_ID
-        crumbs = it.get("crumbs") or []
-        if crumbs:
-            clean = [p.strip() for p in crumbs if p and p.strip()]
-            clean = [p for p in clean if p.lower() not in ("главная","home","каталог")]
-            key = tuple(clean)
-            while key and key not in path_id_map:
-                key = key[:-1]
-            if key and key in path_id_map:
-                cid = path_id_map[key]
+        if path_id_map:
+            # ничего умнее без реальных крошек не придумаем — просто корень
+            pass
 
-        offer_id = it["vendorCode"]
-        if offer_id in seen_ids:
-            offer_id = f"{offer_id}-{sha1(it['title'])[:6]}"
-        seen_ids.add(offer_id)
+        offer_id = (vcode or title)[:80]
+        offer = {
+            "offer_id": offer_id,
+            "title": title,
+            "price": float(f"{float(price):.2f}"),
+            "vendorCode": vcode,
+            "brand": SUPPLIER_NAME,
+            "url": it.get("url") or START_URL,
+            "picture": it.get("picture") or "",
+            "description": it.get("description") or title,
+        }
+        offers.append((cid, offer))
 
-        offers.append((cid, {
-            "offer_id":   offer_id,
-            "title":      it["title"],
-            "price":      it["price"],
-            "vendorCode": it["vendorCode"],
-            "brand":      SUPPLIER_NAME,
-            "url":        it["url"],
-            "picture":    it.get("picture"),
-            "description": it.get("description") or it["title"],
-        }))
+    # write YML
+    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+    xml = build_yml(cat_list, offers)
+    with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        f.write(xml)
 
-    _write_yml(cat_list, offers)
     dlog(f"[done] items: {len(offers)}, cats: {len(cat_list)} -> {OUT_FILE}")
-    return 0
+    return 0 if offers else 2
 
-def _write_empty():
-    os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
-    enc = "cp1251" if OUTPUT_ENCODING.lower() in ("windows-1251","cp1251") else OUTPUT_ENCODING
-    with open(OUT_FILE, "w", encoding=enc, errors="ignore") as f:
-        f.write(build_yml([], []))
-    dlog("[write] empty yml")
-
-def _write_yml(categories, offers):
-    os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
-    enc = "cp1251" if OUTPUT_ENCODING.lower() in ("windows-1251","cp1251") else OUTPUT_ENCODING
-    with open(OUT_FILE, "w", encoding=enc, errors="ignore") as f:
-        f.write(build_yml(categories, offers))
 
 if __name__ == "__main__":
-    import sys
+    import sys, hashlib
     try:
         sys.exit(main())
     except Exception as e:
-        dlog(f"[fatal] {e}")
-        _write_empty()
-        sys.exit(0)
+        print("[fatal]", e, flush=True)
+        sys.exit(2)
