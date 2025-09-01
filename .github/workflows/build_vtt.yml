@@ -36,16 +36,15 @@ jobs:
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-          # чаще всего на этом домене нужен инсекьюрный режим
           DISABLE_SSL_VERIFY: "1"
           ALLOW_SSL_FALLBACK: "1"
 
-          # аккуратные лимиты
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "180"
-          MIN_BYTES: "700"
-          MAX_PAGES: "800"
-          MAX_CRAWL_MINUTES: "50"
+          MIN_BYTES: "200"
+          MAX_PAGES: "900"
+          MAX_CRAWL_MINUTES: "60"
+          MAX_PLANB_PAGES: "60"     # сколько страниц пробовать в «плане Б»
         run: |
           set -euo pipefail
           mkdir -p docs
@@ -58,12 +57,12 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add docs/vtt.yml docs/vtt_*.html docs/vtt_debug_log.txt || true
+          git add docs/vtt.yml docs/vtt_*.html docs/vtt_debug_* || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          git commit -m "VTT: names-only YML"
+          git commit -m "VTT: names-only YML (enhanced discovery + plan B)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
