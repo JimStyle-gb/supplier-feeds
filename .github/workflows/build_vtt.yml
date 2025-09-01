@@ -34,24 +34,26 @@ jobs:
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # учётка
+          # логин/пароль держите в Secrets репозитория
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-          # сети/тайминги
+          # у них есть проблемы с SSL-цепочкой на GitHub Runner — отключаем проверку
+          DISABLE_SSL_VERIFY: "1"
+
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "160"
           MIN_BYTES: "700"
-          MAX_PAGES: "800"
-          MAX_CRAWL_MINUTES: "50"
 
-          # если у них цепочка SSL косая — отключаем verify
-          DISABLE_SSL_VERIFY: "1"
+          # лимиты
+          MAX_PAGES: "800"
+          MAX_CRAWL_MINUTES: "60"
+          MAX_WORKERS: "6"
         run: |
           mkdir -p docs
           python scripts/build_vtt.py
 
-      - name: Commit & push feed (rebase-safe)
+      - name: Commit & push feed
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
@@ -64,6 +66,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update vtt.yml (b2b)"
+          git commit -m "Update vtt.yml (full fields: price, vendorCode, image, desc, categories)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
