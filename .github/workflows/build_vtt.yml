@@ -19,21 +19,16 @@ jobs:
       OUT_FILE: docs/vtt.yml
       OUTPUT_ENCODING: windows-1251
 
-      # УКАЖИТЕ в Secrets (Settings → Secrets → Actions)
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-
-      # Опционально: если дадите строку cookie — авторизация пройдёт через них
       VTT_COOKIES: ${{ secrets.VTT_COOKIES }}
 
-      # Сеть/SSL
       DISABLE_SSL_VERIFY: "1"
       ALLOW_SSL_FALLBACK: "1"
       HTTP_TIMEOUT: "25"
       REQUEST_DELAY_MS: "150"
       MIN_BYTES: "800"
 
-      # Ограничители
       MAX_WORKERS: "6"
       MAX_CRAWL_MINUTES: "60"
       MAX_PAGES: "600"
@@ -63,10 +58,8 @@ jobs:
           set -euo pipefail
           ( while sleep 60; do echo "::notice::keepalive $(date -u +%H:%M:%S)"; done ) &
           KA_PID=$!
-
           EXIT=0
           python scripts/build_vtt.py || EXIT=$?
-
           kill $KA_PID || true
           exit $EXIT
 
@@ -83,6 +76,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update vtt.yml (login rework + debug)"
+          git commit -m "Update vtt.yml (login+crawl+debug)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
