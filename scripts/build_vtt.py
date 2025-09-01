@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-B2B VTT → YML (names-only):
-- Логинимся (или сразу в каталог, если уже в сессии).
-- BFS по всем страницам /catalog/ c ограничениями.
-- С листингов вытаскиваем ИМЕНА товаров (из карточек и JSON-LD).
-- Пишем минимальный YML: только <name>, без цены/фото/sku/описаний.
+B2B VTT → YML (names-only, enhanced):
+- Логин.
+- BFS по /catalog/ — ссылки из href, data-href/data-url, onclick, JSON-LD и даже из <script>.
+- Если BFS ничего не дал, пробуем прямую пагинацию: /catalog/?onPage=120&view=tile&page=N (Plan B).
+- Собираем только названия с листингов. Пишем минимальный YML.
+
+env:
+  BASE_URL, START_URL, OUT_FILE, OUTPUT_ENCODING
+  VTT_LOGIN, VTT_PASSWORD
+  DISABLE_SSL_VERIFY=1, ALLOW_SSL_FALLBACK=1
+  HTTP_TIMEOUT, REQUEST_DELAY_MS, MIN_BYTES, MAX_PAGES, MAX_CRAWL_MINUTES, MAX_PLANB_PAGES
 """
 
 from __future__ import annotations
@@ -29,9 +35,10 @@ DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "0") == "1"
 ALLOW_SSL_FALLBACK = os.getenv("ALLOW_SSL_FALLBACK", "1") == "1"
 HTTP_TIMEOUT       = float(os.getenv("HTTP_TIMEOUT", "25"))
 REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "180"))
-MIN_BYTES          = int(os.getenv("MIN_BYTES", "700"))
-MAX_PAGES          = int(os.getenv("MAX_PAGES", "800"))
-MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "50"))
+MIN_BYTES          = int(os.getenv("MIN_BYTES", "200"))
+MAX_PAGES          = int(os.getenv("MAX_PAGES", "900"))
+MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
+MAX_PLANB_PAGES    = int(os.getenv("MAX_PLANB_PAGES", "60"))
 
 DEBUG_DIR = "docs"
 LOG_FILE  = os.path.join(DEBUG_DIR, "vtt_debug_log.txt")
@@ -106,7 +113,6 @@ def http_get(sess: requests.Session, url: str) -> Optional[bytes]:
         return None
 
 def get_soup(b: bytes) -> BeautifulSoup:
-    # lxml — чтобы не было предупреждений
     return BeautifulSoup(b, "lxml")
 
 def inject_cookie_string(sess: requests.Session, cookie_string: str):
@@ -139,6 +145,7 @@ def guess_login_form(soup: BeautifulSoup) -> Tuple[str, Dict[str, str]]:
     return "/login", {}
 
 def login(sess: requests.Session) -> bool:
+    # 1) руками заданные cookies
     if VTT_COOKIES:
         inject_cookie_string(sess, VTT_COOKIES)
         jitter_sleep(REQUEST_DELAY_MS)
@@ -147,6 +154,7 @@ def login(sess: requests.Session) -> bool:
             save_debug("vtt_debug_root_cookie.html", b)
             return True
 
+    # 2) найти страницу логина и залогиниться
     candidates = [
         f"{BASE_URL}/login",
         f"{BASE_URL}/signin",
@@ -163,7 +171,7 @@ def login(sess: requests.Session) -> bool:
         if not b:
             continue
         sp = get_soup(b)
-        if sp.find("input", attrs={"type":"password"}) or sp.find(string=re.compile("пароль", re.I)):
+        if sp.find("input", attrs={"type":"password"}) or sp.find(string=re.compile("парол", re.I)):
             first_html, first_url = b, u
             break
         if first_html is None:
@@ -191,7 +199,7 @@ def login(sess: requests.Session) -> bool:
 
     payload = {}
     if csrf: payload["_token"] = csrf
-    # самые популярные имена полей
+
     for lk in ["email", "login", "username"]:
         for pk in ["password", "passwd", "pass"]:
             pl = dict(payload)
@@ -201,8 +209,7 @@ def login(sess: requests.Session) -> bool:
             try:
                 jitter_sleep(REQUEST_DELAY_MS)
                 r = sess.post(action, data=pl, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True)
-            except requests.exceptions.SSLError as e:
-                dlog(f"[login] SSL post {e}")
+            except requests.exceptions.SSLError:
                 if not ALLOW_SSL_FALLBACK:
                     continue
                 r = sess.post(action, data=pl, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True, verify=False)
@@ -219,17 +226,19 @@ def login(sess: requests.Session) -> bool:
     dlog("Error: login failed")
     return False
 
-# ------------ crawl (листинг → только названия) ------------
-DROP_QS = {"sort", "view", "onPage", "limit", "per_page", "order", "utm_source", "utm_medium", "utm_campaign"}
+# ------------ crawl ------------
+CANON_KEEP_KEYS = {
+    "page", "onPage", "view", "sort",
+    "category", "section", "slug", "cat", "cid", "id",
+}
+DROP_EXTS = re.compile(r"\.(jpg|jpeg|png|gif|svg|webp|pdf|docx?|xlsx?)$", re.I)
 
 def canonicalize(u: str) -> str:
     parts = urlsplit(u)
     q = parse_qsl(parts.query, keep_blank_values=True)
     keep = []
     for k, v in q:
-        if k in DROP_QS:
-            continue
-        if k == "page" or re.search(r"(id|slug|cat)", k, re.I):
+        if k in CANON_KEEP_KEYS or re.search(r"(cat|slug|id)", k, re.I):
             keep.append((k, v))
     return urlunsplit((parts.scheme, parts.netloc, parts.path.rstrip("/"), urlencode(keep, doseq=True), ""))
 
@@ -251,33 +260,80 @@ def normalize_link(base: str, href: str) -> Optional[str]:
         return None
     if "/catalog" not in urlparse(absu).path:
         return None
-    if re.search(r"\.(jpg|jpeg|png|gif|svg|webp|pdf|docx?|xlsx?)$", absu, re.I):
+    if DROP_EXTS.search(absu):
         return None
     return canonicalize(absu)
 
-# извлечение имён товаров с листингов
+def extract_links_generic(soup: BeautifulSoup, base: str) -> List[str]:
+    urls: List[str] = []
+
+    # обычные ссылки
+    for a in soup.find_all("a", href=True):
+        nu = normalize_link(base, a["href"])
+        if nu: urls.append(nu)
+
+    # data-* ссылки
+    for attr in ["data-href", "data-url", "data-link", "data-target", "data-path"]:
+        for el in soup.find_all(attrs={attr: True}):
+            nu = normalize_link(base, el.get(attr))
+            if nu: urls.append(nu)
+
+    # onclick: location.href='...'
+    for el in soup.find_all(attrs={"onclick": True}):
+        oc = el.get("onclick") or ""
+        m = re.search(r"location\.(?:href|assign)\(['\"]([^'\"]+)['\"]\)", oc)
+        if m:
+            nu = normalize_link(base, m.group(1))
+            if nu: urls.append(nu)
+
+    # rel=next
+    ln = soup.find("link", rel=re.compile(r"next", re.I))
+    if ln and ln.get("href"):
+        nu = normalize_link(base, ln["href"])
+        if nu: urls.append(nu)
+
+    # из JSON-LD
+    for sc in soup.find_all("script", attrs={"type": re.compile(r"ld\+json", re.I)}):
+        try:
+            data = json.loads(sc.string or sc.get_text() or "{}")
+        except Exception:
+            continue
+        def walk(x):
+            if isinstance(x, dict):
+                if "url" in x:
+                    nu = normalize_link(base, x["url"])
+                    if nu: urls.append(nu)
+                for v in x.values(): walk(v)
+            elif isinstance(x, list):
+                for v in x: walk(v)
+        walk(data)
+
+    # из обычных <script> — выдёргиваем "/catalog/...."
+    for sc in soup.find_all("script"):
+        txt = sc.string or sc.get_text() or ""
+        for m in re.finditer(r"['\"](/catalog[^'\"\s<>]+)['\"]", txt):
+            nu = normalize_link(base, m.group(1))
+            if nu: urls.append(nu)
+
+    # уникализация
+    return list(dict.fromkeys(urls))
+
+# имена товаров
 def extract_names_from_listing(soup: BeautifulSoup) -> List[str]:
     names: List[str] = []
-
-    # 1) Частые селекторы заголовков в плитках
     css_candidates = [
         ".product-card a", ".product-card__title", ".product-title a", ".catalog-item__title a",
         ".catalog-item .title a", ".product-item__title a", "a.product-card__title",
-        ".products-list a", ".product a", "a[href*='/catalog/']"
+        ".products-list a", ".product a", "[itemprop=name]", "a[href*='/catalog/']",
+        "[data-product-name]"
     ]
     for sel in css_candidates:
-        for a in soup.select(sel):
-            t = (a.get_text(" ", strip=True) or "").strip()
-            if t and len(t) >= 4:
-                names.append(t)
+        for el in soup.select(sel):
+            t = (el.get_text(" ", strip=True) or "").strip()
+            if t and len(t) >= 4 and t.lower() not in ("в корзину","купить","подробнее"):
+                names.append(re.sub(r"\s{2,}", " ", t))
 
-    # 2) Микроразметка
-    for el in soup.select("[itemprop=name]"):
-        t = (el.get_text(" ", strip=True) or "").strip()
-        if t and len(t) >= 4:
-            names.append(t)
-
-    # 3) JSON-LD (Product) в листингах
+    # JSON-LD Product
     for sc in soup.find_all("script", attrs={"type": re.compile(r"ld\+json", re.I)}):
         try:
             data = json.loads(sc.string or sc.get_text() or "{}")
@@ -296,22 +352,20 @@ def extract_names_from_listing(soup: BeautifulSoup) -> List[str]:
                 for v in x: walk(v)
         walk(data)
 
-    # нормализация и уникализация
-    clean = []
-    seen = set()
-    for n in names:
-        n2 = re.sub(r"\s{2,}", " ", n).strip()
-        if not n2 or len(n2) < 4:
-            continue
-        if n2.lower() in ("в корзину", "купить", "подробнее"):
-            continue
-        if n2 not in seen:
-            seen.add(n2)
-            clean.append(n2)
-    return clean
+    # fallback: из скриптов "name":"..."
+    for sc in soup.find_all("script"):
+        txt = sc.string or sc.get_text() or ""
+        for m in re.finditer(r'["\']name["\']\s*:\s*["\']([^"\']{4,})["\']', txt):
+            nm = m.group(1).strip()
+            if nm and nm.lower() not in ("в корзину","купить","подробнее"):
+                names.append(nm)
+
+    # дедуп
+    uniq = list(dict.fromkeys(names))
+    return uniq
 
 def crawl_collect_names(sess: requests.Session, start_url: str) -> List[str]:
-    queue: List[str] = [canonicalize(start_url)]
+    queue: List[str] = [start_url]
     seen: Set[str] = set()
     names_all: List[str] = []
 
@@ -320,6 +374,7 @@ def crawl_collect_names(sess: requests.Session, start_url: str) -> List[str]:
 
     while queue and pages < MAX_PAGES and (time.time() - t0) < MAX_CRAWL_MINUTES * 60:
         url = queue.pop(0)
+        url = canonicalize(url)
         if url in seen:
             continue
         seen.add(url)
@@ -332,30 +387,48 @@ def crawl_collect_names(sess: requests.Session, start_url: str) -> List[str]:
 
         if pages == 0:
             save_debug("vtt_debug_root.html", b)
-        if pages < 5:
+        if pages < 10:
             save_debug(f"vtt_page_listing_{pages+1}.html", b)
 
-        # имена с листинга
+        # имена
         names = extract_names_from_listing(soup)
         if names:
             names_all.extend(names)
 
-        # ссылки глубже — всё в рамках /catalog/
-        for a in soup.find_all("a", href=True):
-            nu = normalize_link(url, a["href"])
-            if not nu:
-                continue
-            if "/logout" in nu or "/login" in nu:
-                continue
+        # ссылки глубже
+        for nu in extract_links_generic(soup, url):
             if nu not in seen and nu not in queue:
                 queue.append(nu)
 
         pages += 1
 
-    dlog(f"[discover] pages: {pages}, names_collected: {len(names_all)}")
-    # дедуп
+    dlog(f"[discover] BFS pages: {pages}, names_collected: {len(names_all)}")
     uniq = list(dict.fromkeys(names_all))
     dlog(f"[discover] unique names: {len(uniq)}")
+    return uniq
+
+def plan_b_collect(sess: requests.Session) -> List[str]:
+    """Прямая пагинация общего каталога: /catalog/?onPage=120&view=tile&page=N"""
+    names_all: List[str] = []
+    base = f"{BASE_URL}/catalog/?onPage=120&view=tile"
+    for n in range(1, MAX_PLANB_PAGES + 1):
+        url = f"{base}&page={n}"
+        jitter_sleep(REQUEST_DELAY_MS)
+        b = http_get(sess, url)
+        if not b:
+            continue
+        save_debug(f"vtt_planb_{n}.html", b if n <= 5 else b"")  # первые 5 страниц сохраним
+        soup = get_soup(b)
+        names = extract_names_from_listing(soup)
+        if not names:
+            # если подряд пусто — вероятно, пагинация закончилась
+            if n > 2:
+                break
+            else:
+                continue
+        names_all.extend(names)
+    uniq = list(dict.fromkeys(names_all))
+    dlog(f"[planB] pages tried: {MAX_PLANB_PAGES}, names: {len(uniq)}")
     return uniq
 
 # ------------ YML (минимальный) ------------
@@ -376,7 +449,6 @@ def write_yml_with_names(names: List[str]):
         oid = hashlib.md5(n.encode("utf-8")).hexdigest()[:12]
         lines.append(f'<offer id="{oid}" available="true" in_stock="true">')
         lines.append(f"<name>{yml_escape(n)}</name>")
-        # минимально необходимое (цена/валюта/категория) — заглушки
         lines.append("<price>0</price>")
         lines.append("<currencyId>RUB</currencyId>")
         lines.append("<categoryId>9600000</categoryId>")
@@ -392,12 +464,21 @@ def write_yml_with_names(names: List[str]):
 def main() -> int:
     ensure_dirs()
     sess = make_session()
+    # логин
+    # (даже если вернётся False — всё равно запишем пустой YML)
     if not login(sess):
         dlog("Error: login failed")
         write_yml_with_names([])
         return 2
 
+    # BFS
     names = crawl_collect_names(sess, START_URL)
+
+    # если пусто — Plan B
+    if not names:
+        dlog("[info] BFS yielded 0 names, trying Plan B pagination…")
+        names = plan_b_collect(sess)
+
     write_yml_with_names(names)
     return 0
 
