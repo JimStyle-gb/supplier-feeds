@@ -8,3 +8,18 @@
 [discover] pages: 1, names_collected: 0
 [discover] unique names: 0
 [done] items: 0 -> docs/vtt.yml
+[ssl] verification disabled by env
+[debug] saved docs/vtt_debug_login_get.html
+[debug] saved docs/vtt_debug_login_post.html
+[debug] saved docs/vtt_debug_root_after_login.html
+[login] success (catalog reachable)
+[debug] saved docs/vtt_debug_root.html
+[debug] saved docs/vtt_page_listing_1.html
+[discover] BFS pages: 1, names_collected: 0
+[discover] unique names: 0
+[info] BFS yielded 0 names, trying Plan B pagination…
+[debug] saved docs/vtt_planb_1.html
+[debug] saved docs/vtt_planb_2.html
+[debug] saved docs/vtt_planb_3.html
+[planB] pages tried: 60, names: 0
+[done] items: 0 -> docs/vtt.yml
