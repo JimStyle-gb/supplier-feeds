@@ -9,31 +9,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 120
     permissions:
       contents: write
-
-    env:
-      BASE_URL: https://b2b.vtt.ru
-      START_URL: https://b2b.vtt.ru/catalog/
-      OUT_FILE: docs/vtt.yml
-      OUTPUT_ENCODING: windows-1251
-
-      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
-      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-      VTT_COOKIES: ${{ secrets.VTT_COOKIES }}
-
-      DISABLE_SSL_VERIFY: "1"
-      ALLOW_SSL_FALLBACK: "1"
-      HTTP_TIMEOUT: "25"
-      REQUEST_DELAY_MS: "150"
-      MIN_BYTES: "800"
-
-      MAX_WORKERS: "6"
-      MAX_CRAWL_MINUTES: "60"
-      MAX_PAGES: "600"
-
-      PYTHONUNBUFFERED: "1"
 
     steps:
       - uses: actions/checkout@v4
@@ -42,40 +20,50 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4 lxml
 
-      - name: Ensure docs folder
-        run: mkdir -p docs
+      - name: Build VTT names-only YML
+        env:
+          BASE_URL: https://b2b.vtt.ru
+          START_URL: https://b2b.vtt.ru/catalog/
+          OUT_FILE: docs/vtt.yml
+          OUTPUT_ENCODING: windows-1251
+          VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+          VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-      - name: Build VTT feed (with keepalive)
-        shell: bash
+          # чаще всего на этом домене нужен инсекьюрный режим
+          DISABLE_SSL_VERIFY: "1"
+          ALLOW_SSL_FALLBACK: "1"
+
+          # аккуратные лимиты
+          HTTP_TIMEOUT: "25"
+          REQUEST_DELAY_MS: "180"
+          MIN_BYTES: "700"
+          MAX_PAGES: "800"
+          MAX_CRAWL_MINUTES: "50"
         run: |
           set -euo pipefail
-          ( while sleep 60; do echo "::notice::keepalive $(date -u +%H:%M:%S)"; done ) &
-          KA_PID=$!
-          EXIT=0
-          python scripts/build_vtt.py || EXIT=$?
-          kill $KA_PID || true
-          exit $EXIT
+          mkdir -p docs
+          python scripts/build_vtt.py
 
-      - name: Commit & push feed + debug
+      - name: Commit & push feed (rebase-safe)
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add docs/vtt.yml docs/vtt_debug_* docs/vtt_page_*.html docs/vtt_fail_*.html 2>/dev/null || true
+          git add docs/vtt.yml docs/vtt_*.html docs/vtt_debug_log.txt || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          git commit -m "Update vtt.yml (login+crawl+debug)"
+          git commit -m "VTT: names-only YML"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
