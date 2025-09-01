@@ -44,7 +44,7 @@ jobs:
           MIN_BYTES: "200"
           MAX_PAGES: "900"
           MAX_CRAWL_MINUTES: "60"
-          MAX_PLANB_PAGES: "60"     # сколько страниц пробовать в «плане Б»
+          MAX_PLANB_PAGES: "60"
         run: |
           set -euo pipefail
           mkdir -p docs
@@ -56,13 +56,11 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add docs/vtt.yml docs/vtt_*.html docs/vtt_debug_* || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-
-          git commit -m "VTT: names-only YML (enhanced discovery + plan B)"
+          git commit -m "VTT: names-only (cutoff-off selector + planB)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
