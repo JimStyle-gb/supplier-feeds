@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-B2B VTT → YML (names-only, enhanced):
-- Логин.
-- BFS по /catalog/ — ссылки из href, data-href/data-url, onclick, JSON-LD и даже из <script>.
-- Если BFS ничего не дал, пробуем прямую пагинацию: /catalog/?onPage=120&view=tile&page=N (Plan B).
-- Собираем только названия с листингов. Пишем минимальный YML.
+B2B VTT → YML (names-only):
+- Логин и проверка каталога.
+- Извлечение названий с листингов по селектору div.cutoff-off > a[href] (+ доп. селекторы).
+- Если BFS не дал результатов — план B: /catalog/?onPage=120&view=tile&page=N
+- Формируем минимальный YML: только <name>, без цен и фото.
 
 env:
   BASE_URL, START_URL, OUT_FILE, OUTPUT_ENCODING
-  VTT_LOGIN, VTT_PASSWORD
+  VTT_LOGIN, VTT_PASSWORD, (опц.) VTT_COOKIES
   DISABLE_SSL_VERIFY=1, ALLOW_SSL_FALLBACK=1
   HTTP_TIMEOUT, REQUEST_DELAY_MS, MIN_BYTES, MAX_PAGES, MAX_CRAWL_MINUTES, MAX_PLANB_PAGES
 """
@@ -113,6 +113,7 @@ def http_get(sess: requests.Session, url: str) -> Optional[bytes]:
         return None
 
 def get_soup(b: bytes) -> BeautifulSoup:
+    # lxml надёжнее для «грязного» HTML
     return BeautifulSoup(b, "lxml")
 
 def inject_cookie_string(sess: requests.Session, cookie_string: str):
@@ -145,7 +146,7 @@ def guess_login_form(soup: BeautifulSoup) -> Tuple[str, Dict[str, str]]:
     return "/login", {}
 
 def login(sess: requests.Session) -> bool:
-    # 1) руками заданные cookies
+    # 1) cookies (если заданы)
     if VTT_COOKIES:
         inject_cookie_string(sess, VTT_COOKIES)
         jitter_sleep(REQUEST_DELAY_MS)
@@ -154,7 +155,7 @@ def login(sess: requests.Session) -> bool:
             save_debug("vtt_debug_root_cookie.html", b)
             return True
 
-    # 2) найти страницу логина и залогиниться
+    # 2) логин формой
     candidates = [
         f"{BASE_URL}/login",
         f"{BASE_URL}/signin",
@@ -215,7 +216,6 @@ def login(sess: requests.Session) -> bool:
                 r = sess.post(action, data=pl, headers=headers, timeout=HTTP_TIMEOUT, allow_redirects=True, verify=False)
 
             save_debug("vtt_debug_login_post.html", r.content)
-
             jitter_sleep(REQUEST_DELAY_MS)
             b2 = http_get(sess, START_URL)
             if b2:
@@ -292,73 +292,42 @@ def extract_links_generic(soup: BeautifulSoup, base: str) -> List[str]:
         nu = normalize_link(base, ln["href"])
         if nu: urls.append(nu)
 
-    # из JSON-LD
-    for sc in soup.find_all("script", attrs={"type": re.compile(r"ld\+json", re.I)}):
-        try:
-            data = json.loads(sc.string or sc.get_text() or "{}")
-        except Exception:
-            continue
-        def walk(x):
-            if isinstance(x, dict):
-                if "url" in x:
-                    nu = normalize_link(base, x["url"])
-                    if nu: urls.append(nu)
-                for v in x.values(): walk(v)
-            elif isinstance(x, list):
-                for v in x: walk(v)
-        walk(data)
-
-    # из обычных <script> — выдёргиваем "/catalog/...."
-    for sc in soup.find_all("script"):
-        txt = sc.string or sc.get_text() or ""
-        for m in re.finditer(r"['\"](/catalog[^'\"\s<>]+)['\"]", txt):
-            nu = normalize_link(base, m.group(1))
-            if nu: urls.append(nu)
-
     # уникализация
     return list(dict.fromkeys(urls))
 
-# имена товаров
+def clean_text(t: str) -> str:
+    t = re.sub(r"\s{2,}", " ", t or "").strip()
+    return t
+
+# ИМЕНА ТОЛЬКО ИЗ БЛОКОВ div.cutoff-off > a[href]
 def extract_names_from_listing(soup: BeautifulSoup) -> List[str]:
     names: List[str] = []
-    css_candidates = [
-        ".product-card a", ".product-card__title", ".product-title a", ".catalog-item__title a",
-        ".catalog-item .title a", ".product-item__title a", "a.product-card__title",
-        ".products-list a", ".product a", "[itemprop=name]", "a[href*='/catalog/']",
-        "[data-product-name]"
-    ]
-    for sel in css_candidates:
-        for el in soup.select(sel):
-            t = (el.get_text(" ", strip=True) or "").strip()
-            if t and len(t) >= 4 and t.lower() not in ("в корзину","купить","подробнее"):
-                names.append(re.sub(r"\s{2,}", " ", t))
 
-    # JSON-LD Product
-    for sc in soup.find_all("script", attrs={"type": re.compile(r"ld\+json", re.I)}):
-        try:
-            data = json.loads(sc.string or sc.get_text() or "{}")
-        except Exception:
+    # 1) Точный блок из вашего примера:
+    for a in soup.select("div.cutoff-off a[href]"):
+        # первый <a> обычно без href (камера), а мы берём только с href
+        txt = clean_text(a.get_text(" ", strip=True))
+        href = a.get("href") or ""
+        if not txt or len(txt) < 3:
             continue
-        def walk(x):
-            if isinstance(x, dict):
-                typ = x.get("@type") or x.get("type")
-                if isinstance(typ, list): typ = ",".join(typ)
-                if typ and "Product" in str(typ) and x.get("name"):
-                    nm = str(x["name"]).strip()
-                    if nm and len(nm) >= 4:
-                        names.append(nm)
-                for v in x.values(): walk(v)
-            elif isinstance(x, list):
-                for v in x: walk(v)
-        walk(data)
+        if "/catalog/" not in href:
+            continue
+        names.append(txt)
 
-    # fallback: из скриптов "name":"..."
-    for sc in soup.find_all("script"):
-        txt = sc.string or sc.get_text() or ""
-        for m in re.finditer(r'["\']name["\']\s*:\s*["\']([^"\']{4,})["\']', txt):
-            nm = m.group(1).strip()
-            if nm and nm.lower() not in ("в корзину","купить","подробнее"):
-                names.append(nm)
+    # 2) Доп. подстраховка: похожие классы с пробелами/модификаторами
+    if not names:
+        for a in soup.select("[class*='cutoff-off'] a[href]"):
+            txt = clean_text(a.get_text(" ", strip=True))
+            href = a.get("href") or ""
+            if txt and "/catalog/" in href and txt.lower() not in ("в корзину","купить","подробнее"):
+                names.append(txt)
+
+    # 3) Ещё один резерв (некоторые листинги могут иметь title в атрибуте)
+    if not names:
+        for a in soup.select("a[href*='/catalog/']"):
+            title_attr = (a.get("title") or "").strip()
+            if title_attr and len(title_attr) > 3:
+                names.append(title_attr)
 
     # дедуп
     uniq = list(dict.fromkeys(names))
@@ -395,12 +364,16 @@ def crawl_collect_names(sess: requests.Session, start_url: str) -> List[str]:
         if names:
             names_all.extend(names)
 
-        # ссылки глубже
+        # ссылки глубже (категории/пагинация)
         for nu in extract_links_generic(soup, url):
             if nu not in seen and nu not in queue:
                 queue.append(nu)
 
         pages += 1
+
+        # если уже нашли много — можно остановиться по времени
+        if len(names_all) > 5000:
+            break
 
     dlog(f"[discover] BFS pages: {pages}, names_collected: {len(names_all)}")
     uniq = list(dict.fromkeys(names_all))
@@ -411,17 +384,23 @@ def plan_b_collect(sess: requests.Session) -> List[str]:
     """Прямая пагинация общего каталога: /catalog/?onPage=120&view=tile&page=N"""
     names_all: List[str] = []
     base = f"{BASE_URL}/catalog/?onPage=120&view=tile"
+    empty_in_row = 0
     for n in range(1, MAX_PLANB_PAGES + 1):
         url = f"{base}&page={n}"
         jitter_sleep(REQUEST_DELAY_MS)
         b = http_get(sess, url)
         if not b:
+            empty_in_row += 1
+            if empty_in_row >= 3:
+                break
             continue
-        save_debug(f"vtt_planb_{n}.html", b if n <= 5 else b"")  # первые 5 страниц сохраним
+        empty_in_row = 0
+        if n <= 5:
+            save_debug(f"vtt_planb_{n}.html", b)
         soup = get_soup(b)
         names = extract_names_from_listing(soup)
         if not names:
-            # если подряд пусто — вероятно, пагинация закончилась
+            # вероятно, пагинация закончилась
             if n > 2:
                 break
             else:
@@ -464,17 +443,12 @@ def write_yml_with_names(names: List[str]):
 def main() -> int:
     ensure_dirs()
     sess = make_session()
-    # логин
-    # (даже если вернётся False — всё равно запишем пустой YML)
     if not login(sess):
         dlog("Error: login failed")
         write_yml_with_names([])
         return 2
 
-    # BFS
     names = crawl_collect_names(sess, START_URL)
-
-    # если пусто — Plan B
     if not names:
         dlog("[info] BFS yielded 0 names, trying Plan B pagination…")
         names = plan_b_collect(sess)
