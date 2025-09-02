@@ -27,6 +27,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
+      - name: Ensure keywords file
+        run: |
+          mkdir -p docs
+          if [ ! -f docs/vtt_keywords.txt ]; then
+            cat > docs/vtt_keywords.txt << 'EOF'
+Девелопер
+Драм-картриджи
+Драм-юниты
+Картридж
+Копи-картридж
+Принт-картриджи
+Термоблок
+Термоэлемент
+Тонер-картридж
+EOF
+          fi
+          echo "Using keywords:"
+          cat docs/vtt_keywords.txt
+
       - name: Build VTT feed
         env:
           BASE_URL: https://b2b.vtt.ru
@@ -34,11 +53,13 @@ jobs:
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # логин/пароль держите в Secrets репозитория
+          # логин/пароль держите в Secrets репо
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
-          # у них есть проблемы с SSL-цепочкой на GitHub Runner — отключаем проверку
+          KEYWORDS_FILE: docs/vtt_keywords.txt
+
+          # у них дергается SSL-цепочка на GitHub Runner — отключаем проверку
           DISABLE_SSL_VERIFY: "1"
 
           HTTP_TIMEOUT: "25"
@@ -50,7 +71,6 @@ jobs:
           MAX_CRAWL_MINUTES: "60"
           MAX_WORKERS: "6"
         run: |
-          mkdir -p docs
           python scripts/build_vtt.py
 
       - name: Commit & push feed
@@ -59,13 +79,11 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add docs/vtt.yml || true
+          git add docs/vtt.yml docs/vtt_keywords.txt || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-
-          git commit -m "Update vtt.yml (full fields: price, vendorCode, image, desc, categories)"
+          git commit -m "Update vtt.yml (filtered by vtt_keywords.txt; full fields)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
