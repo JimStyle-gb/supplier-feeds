@@ -1,85 +1,45 @@
-name: build_vtt
-on:
-  workflow_dispatch:
+import re
+from bs4 import BeautifulSoup
 
-concurrency:
-  group: build_vtt_${{ github.ref_name }}
-  cancel-in-progress: false
+def _txt(el):
+    return (el.get_text(" ", strip=True) if el else "").strip()
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    permissions:
-      contents: write
+def extract_sku(soup: BeautifulSoup) -> str | None:
+    # <dt>Артикул:</dt><dd>XXXX</dd>
+    for dt in soup.select("dt"):
+        if "артикул" in _txt(dt).lower():
+            dd = dt.find_next_sibling("dd")
+            val = _txt(dd)
+            if val:
+                return val
+    # запасной вариант: взять из спана списка (если он есть в карточке)
+    art = soup.select_one("span.artnum")
+    if art and _txt(art):
+        return _txt(art)
+    return None
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+def extract_price_currency(soup: BeautifulSoup) -> tuple[float | None, str | None]:
+    # основной блок цены на карточке
+    price_wrap = soup.select_one("span.price_main") or soup.select_one("span.price")
+    if not price_wrap:
+        return None, None
+    val_el = price_wrap.find("b") or price_wrap
+    cur_el = price_wrap.find("ins")
+    raw = _txt(val_el)
+    cur = _txt(cur_el).replace(".", "").strip() if cur_el else ""
+    # нормализуем валюту
+    if cur in ("₸", "Т", "T"): currency = "KZT"
+    elif cur in ("₽", "руб", "руб.", "RUB"): currency = "RUB"
+    else: currency = None
+    # число
+    num = None
+    if raw:
+        raw = raw.replace("\xa0", " ").replace(" ", "").replace(",", ".")
+        m = re.search(r"\d+(?:\.\d+)?", raw)
+        if m:
+            num = float(m.group(0))
+    return num, currency
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
-
-      - name: Ensure keywords file
-        run: |
-          mkdir -p docs
-          if [ ! -f docs/vtt_keywords.txt ]; then
-            printf '%s\n' \
-              'Девелопер' \
-              'Драм-картриджи' \
-              'Драм-юниты' \
-              'Картридж' \
-              'Копи-картридж' \
-              'Принт-картриджи' \
-              'Термоблок' \
-              'Термоэлемент' \
-              'Тонер-картридж' \
-              > docs/vtt_keywords.txt
-          fi
-          echo "Using keywords:"
-          cat docs/vtt_keywords.txt
-
-      - name: Build VTT feed
-        env:
-          BASE_URL: https://b2b.vtt.ru
-          START_URL: https://b2b.vtt.ru/catalog/
-          OUT_FILE: docs/vtt.yml
-          OUTPUT_ENCODING: windows-1251
-
-          VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
-          VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-
-          KEYWORDS_FILE: docs/vtt_keywords.txt
-          DISABLE_SSL_VERIFY: "1"
-
-          HTTP_TIMEOUT: "25"
-          REQUEST_DELAY_MS: "160"
-          MIN_BYTES: "700"
-
-          MAX_PAGES: "800"
-          MAX_CRAWL_MINUTES: "60"
-          MAX_WORKERS: "6"
-        run: |
-          python scripts/build_vtt.py
-
-      - name: Commit & push feed
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/vtt.yml docs/vtt_keywords.txt || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "Update vtt.yml (filtered by vtt_keywords.txt; full fields)"
-          git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
-          git push origin "$BRANCH_NAME"
+def extract_title(soup: BeautifulSoup) -> str:
+    h1 = soup.select_one("h1")
+    return _txt(h1)
