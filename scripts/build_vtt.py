@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-VTT b2b → полный YML:
+VTT b2b → YML (фильтр по KEYWORDS_FILE):
 - Логин через /validateLogin (CSRF из <meta name="csrf-token">)
-- Пагинация каталога /catalog/?page=N
-- С листинга собираем: название, URL, data-img (картинка), цена (если есть)
-- С карточки дополняем: артикул (vendorCode), цена (если не было), картинка, описание, крошки
-- Категории строим из хлебных крошек; валюта RUB
+- Пагинация /catalog/?page=N
+- С листинга: title, url, картинка (data-img), цена (если видна)
+- С карточки: vendorCode, price (если не было), picture, description, breadcrumbs
+- Фильтрация по ключам: заголовок ДОЛЖЕН НАЧИНАТЬСЯ с одного из ключей из vtt_keywords.txt
+  (гибко: пробел/дефис равнозначны; регистр игнорируем; допускаем 0–6 символов окончания).
 
 ENV:
-  BASE_URL (https://b2b.vtt.ru)
-  START_URL (https://b2b.vtt.ru/catalog/)
+  BASE_URL, START_URL
   VTT_LOGIN, VTT_PASSWORD
+  KEYWORDS_FILE (docs/vtt_keywords.txt)
   DISABLE_SSL_VERIFY ("1"|"0")
   HTTP_TIMEOUT, REQUEST_DELAY_MS, MIN_BYTES, MAX_PAGES, MAX_CRAWL_MINUTES, MAX_WORKERS
   OUT_FILE, OUTPUT_ENCODING
@@ -35,6 +36,8 @@ OUTPUT_ENCODING     = os.getenv("OUTPUT_ENCODING", "windows-1251")
 VTT_LOGIN           = os.getenv("VTT_LOGIN", "")
 VTT_PASSWORD        = os.getenv("VTT_PASSWORD", "")
 
+KEYWORDS_FILE       = os.getenv("KEYWORDS_FILE", "docs/vtt_keywords.txt")
+
 DISABLE_SSL_VERIFY  = os.getenv("DISABLE_SSL_VERIFY", "0") == "1"
 HTTP_TIMEOUT        = float(os.getenv("HTTP_TIMEOUT", "25"))
 REQUEST_DELAY_MS    = int(os.getenv("REQUEST_DELAY_MS", "160"))
@@ -45,7 +48,7 @@ MAX_CRAWL_MINUTES   = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
 MAX_WORKERS         = int(os.getenv("MAX_WORKERS", "6"))
 
 UA = {
-    "User-Agent": "Mozilla/5.0 (compatible; VTT-FullFeed/2.0; +https://github.com/)",
+    "User-Agent": "Mozilla/5.0 (compatible; VTT-FullFeed/2.1; +https://github.com/)",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 }
 
@@ -66,7 +69,6 @@ def good(resp: requests.Response) -> bool:
     return (resp is not None) and (resp.status_code == 200) and (len(resp.content) >= MIN_BYTES)
 
 def is_login_page_bytes(b: bytes) -> bool:
-    s = ""
     try:
         s = b.decode("utf-8", errors="ignore").lower()
     except Exception:
@@ -102,6 +104,51 @@ def normalize_url(u: Optional[str]) -> Optional[str]:
         return BASE_URL + u
     return u
 
+# ---------- KEYWORDS ----------
+def load_keywords(path: str) -> List[str]:
+    vals: List[str] = []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                s = line.strip()
+                if s and not s.startswith("#"):
+                    vals.append(s)
+    except FileNotFoundError:
+        vals = [
+            "Девелопер",
+            "Драм-картриджи",
+            "Драм-юниты",
+            "Картридж",
+            "Копи-картридж",
+            "Принт-картриджи",
+            "Термоблок",
+            "Термоэлемент",
+            "Тонер-картридж",
+        ]
+    return vals
+
+def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
+    """
+    Для каждого ключа разрешаем пробел/дефис как эквивалент, регистр игнорируем,
+    допускаем окончания до 6 символов (мн./падежи), но СТРОГО в начале строки.
+    """
+    pats: List[re.Pattern] = []
+    for kw in kws:
+        base = kw.strip()
+        if not base:
+            continue
+        # пробелы/дефисы в ключе -> [\\s-]+ в паттерне
+        esc = re.escape(base)
+        esc = esc.replace(r"\ ", r"[\s-]+").replace(r"\-", r"[\s-]+")
+        rx = re.compile(r"^\s*(?:" + esc + r")(?:[a-zа-я-]{0,6})?(?!\w)", re.IGNORECASE)
+        pats.append(rx)
+    return pats
+
+def title_matches_keywords(title: str, pats: List[re.Pattern]) -> bool:
+    if not title:
+        return False
+    return any(p.search(title) for p in pats)
+
 # ---------- YML ----------
 def build_yml(categories: List[Tuple[int,str,Optional[int]]],
               offers: List[Tuple[int,Dict[str,Any]]]) -> str:
@@ -114,10 +161,9 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
     out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
     for cid, name, parent in categories:
         pid = parent if parent else ROOT_CAT_ID
-        out.append(f"<category id=\"{cid}\" parentId=\"{pid}\">{yml_escape(name)}</category>")
+        out.append(f"<category id=\"{pid if cid==pid else cid}\" parentId=\"{pid}\">{yml_escape(name)}</category>")
     out.append("</categories>")
     out.append("<offers>")
-
     for cid, it in offers:
         price = it.get("price", 0.0) or 0.0
         price_txt = str(int(price)) if float(price).is_integer() else f"{price}"
@@ -210,16 +256,15 @@ def login(s: requests.Session) -> bool:
     print("[login] success")
     return True
 
-# ---------- LISTING PARSE ----------
+# ---------- SELECTORS ----------
 TITLE_LINK_SEL = 'div.catalog_list_row div.cl_name .cutoff-off a[href*="/catalog/"]:not(.btn_naked)'
 CAM_SEL        = 'div.catalog_list_row div.cl_name .cutoff-off a.btn_naked[data-img], .cutoff-off a[data-img]'
 PRICE_CANDIDATES = ['.cl_price', '.price', '.product_price', '.price_value', '.price-current', '.cl_cost']
 
 def extract_vendor_from_title(title: str) -> Optional[str]:
     t = (title or "").strip()
-    # ищем «похожее на артикул» — буквы/цифры/дефисы длиной 5+
+    # «артикулоподобное»: буквы/цифры/дефисы, чаще в конце
     tokens = re.findall(r"[A-Za-zА-Яа-я0-9]{2,}(?:[-/][A-Za-zА-Яа-я0-9]{2,})*", t)
-    # чаще всего артикул в конце, пройдёмся с конца
     for tok in reversed(tokens):
         if re.search(r"\d", tok) and re.search(r"[A-Za-zА-Яа-я]", tok):
             return tok
@@ -227,22 +272,23 @@ def extract_vendor_from_title(title: str) -> Optional[str]:
             return tok
     return None
 
-def extract_entries_from_list_page(b: bytes) -> List[Dict[str,Any]]:
+def extract_entries_from_list_page(b: bytes, start_pats: List[re.Pattern]) -> List[Dict[str,Any]]:
     s = soup_of(b)
     out: List[Dict[str,Any]] = []
     for a in s.select(TITLE_LINK_SEL):
         href = a.get("href") or ""
         url  = urljoin(BASE_URL, href)
         title = (a.get("title") or a.get_text(" ", strip=True) or "").strip()
+        if not title_matches_keywords(title, start_pats):
+            continue
+
         pic = None
         cam = a.find_previous("a", attrs={"data-img": True})
         if not cam:
-            # пробуем общий селектор
             cam = s.select_one(CAM_SEL)
         if cam and cam.get("data-img"):
             pic = normalize_url(cam.get("data-img"))
 
-        # попробуем цену из строки товара
         price = None
         row = a.find_parent("div", class_="catalog_list_row")
         if row:
@@ -276,10 +322,11 @@ def extract_breadcrumbs(s: BeautifulSoup) -> List[str]:
         if names: break
     return names
 
-def parse_product_page(s: requests.Session, url: str,
-                       list_hint: Dict[str,Any]) -> Optional[Dict[str,Any]]:
+def parse_product_page(ses: requests.Session, url: str,
+                       list_hint: Dict[str,Any],
+                       start_pats: List[re.Pattern]) -> Optional[Dict[str,Any]]:
     jitter_sleep(REQUEST_DELAY_MS)
-    r = request_get(s, url)
+    r = request_get(ses, url)
     if not (r and good(r)) or is_login_page_bytes(r.content):
         return None
     doc = soup_of(r.content)
@@ -296,6 +343,9 @@ def parse_product_page(s: requests.Session, url: str,
             title = og["content"].strip()
     if not title:
         title = list_hint.get("title")
+    # re-check by keywords
+    if not title_matches_keywords(title, start_pats):
+        return None
 
     # цена
     price = list_hint.get("price")
@@ -310,7 +360,6 @@ def parse_product_page(s: requests.Session, url: str,
     # артикул
     vcode = list_hint.get("vendorCode")
     if not vcode:
-        # itemprop=sku или подписи «Артикул / Код товара»
         skun = doc.find(attrs={"itemprop": "sku"})
         if skun and skun.get_text(strip=True):
             vcode = skun.get_text(" ", strip=True)
@@ -379,7 +428,7 @@ def build_categories_from_paths(paths: List[List[str]]) -> Tuple[List[Tuple[int,
     return out_list, cat_map
 
 # ---------- CRAWL ----------
-def crawl_listing(s: requests.Session) -> List[Dict[str,Any]]:
+def crawl_listing(s: requests.Session, start_pats: List[re.Pattern]) -> List[Dict[str,Any]]:
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
     all_entries: List[Dict[str,Any]] = []
     empty_streak = 0
@@ -399,7 +448,7 @@ def crawl_listing(s: requests.Session) -> List[Dict[str,Any]]:
             print("[crawl] session expired")
             break
 
-        found = extract_entries_from_list_page(r.content)
+        found = extract_entries_from_list_page(r.content, start_pats)
         if found:
             all_entries.extend(found)
             empty_streak = 0
@@ -417,19 +466,16 @@ def crawl_listing(s: requests.Session) -> List[Dict[str,Any]]:
         if u not in uniq:
             uniq[u] = e
     entries = list(uniq.values())
-    print(f"[discover] listing entries: {len(entries)}")
+    print(f"[discover] listing entries (matched by keywords): {len(entries)}")
     return entries
 
-def enrich_products(s: requests.Session, entries: List[Dict[str,Any]]) -> List[Dict[str,Any]]:
+def enrich_products(s: requests.Session, entries: List[Dict[str,Any]], start_pats: List[re.Pattern]) -> List[Dict[str,Any]]:
     out: List[Dict[str,Any]] = []
-
     def worker(e: Dict[str,Any]) -> Optional[Dict[str,Any]]:
         try:
-            parsed = parse_product_page(s, e["url"], e)
-            return parsed
+            return parse_product_page(s, e["url"], e, start_pats)
         except Exception:
             return None
-
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
         futs = {ex.submit(worker, e): e["url"] for e in entries}
         for fut in as_completed(futs):
@@ -446,6 +492,10 @@ def main() -> int:
 
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
 
+    # compile keywords
+    kw_list = load_keywords(KEYWORDS_FILE)
+    start_pats = compile_startswith_patterns(kw_list)
+
     s = make_session()
     if not login(s):
         xml = build_yml([], [])
@@ -453,7 +503,7 @@ def main() -> int:
             f.write(xml)
         return 2
 
-    entries = crawl_listing(s)
+    entries = crawl_listing(s, start_pats)
     if not entries:
         xml = build_yml([], [])
         with open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
@@ -461,7 +511,7 @@ def main() -> int:
         print(f"[done] items: 0, cats: 0 -> {OUT_FILE}")
         return 1
 
-    products = enrich_products(s, entries)
+    products = enrich_products(s, entries, start_pats)
 
     # категории по крошкам
     cat_paths = [p.get("crumbs") for p in products if p.get("crumbs")]
@@ -471,7 +521,6 @@ def main() -> int:
     offers: List[Tuple[int,Dict[str,Any]]] = []
     seen_offer_ids = set()
     for p in products:
-        # категория — ближайшая собранная цепочка
         cid = ROOT_CAT_ID
         if p.get("crumbs"):
             key = tuple([x for x in p["crumbs"] if x and x.strip()])
