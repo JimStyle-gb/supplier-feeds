@@ -31,17 +31,17 @@ jobs:
         run: |
           mkdir -p docs
           if [ ! -f docs/vtt_keywords.txt ]; then
-            cat > docs/vtt_keywords.txt << 'EOF'
-Девелопер
-Драм-картриджи
-Драм-юниты
-Картридж
-Копи-картридж
-Принт-картриджи
-Термоблок
-Термоэлемент
-Тонер-картридж
-EOF
+            printf '%s\n' \
+              'Девелопер' \
+              'Драм-картриджи' \
+              'Драм-юниты' \
+              'Картридж' \
+              'Копи-картридж' \
+              'Принт-картриджи' \
+              'Термоблок' \
+              'Термоэлемент' \
+              'Тонер-картридж' \
+              > docs/vtt_keywords.txt
           fi
           echo "Using keywords:"
           cat docs/vtt_keywords.txt
@@ -53,20 +53,16 @@ EOF
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # логин/пароль держите в Secrets репо
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
 
           KEYWORDS_FILE: docs/vtt_keywords.txt
-
-          # у них дергается SSL-цепочка на GitHub Runner — отключаем проверку
           DISABLE_SSL_VERIFY: "1"
 
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "160"
           MIN_BYTES: "700"
 
-          # лимиты
           MAX_PAGES: "800"
           MAX_CRAWL_MINUTES: "60"
           MAX_WORKERS: "6"
