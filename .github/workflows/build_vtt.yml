@@ -29,24 +29,25 @@ jobs:
 
       - name: Ensure categories file
         run: |
+          set -euo pipefail
           mkdir -p docs
           if [ ! -f docs/categories_vtt.txt ]; then
-cat > docs/categories_vtt.txt << 'EOF'
-https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT
-https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG
-https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD
-https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT
-https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY
-https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG
-https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT
-https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR
-https://b2b.vtt.ru/catalog/?category=CARTMAT_CART
-https://b2b.vtt.ru/catalog/?category=DEV_DEV
-https://b2b.vtt.ru/catalog/?category=DRM_CRT
-https://b2b.vtt.ru/catalog/?category=DRM_UNIT
-https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC
-https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT
-EOF
+            printf '%s\n' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR' \
+              'https://b2b.vtt.ru/catalog/?category=CARTMAT_CART' \
+              'https://b2b.vtt.ru/catalog/?category=DEV_DEV' \
+              'https://b2b.vtt.ru/catalog/?category=DRM_CRT' \
+              'https://b2b.vtt.ru/catalog/?category=DRM_UNIT' \
+              'https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC' \
+              'https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT' \
+              > docs/categories_vtt.txt
           fi
           echo "Using categories:" && cat docs/categories_vtt.txt
 
@@ -81,6 +82,7 @@ EOF
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
+          set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/vtt.yml docs/categories_vtt.txt || true
