@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: build_vtt_${{ github.ref_name }}
+  group: "build_vtt_${{ github.ref_name }}"
   cancel-in-progress: false
 
 jobs:
@@ -32,21 +32,21 @@ jobs:
           mkdir -p docs
           if [ ! -f docs/categories_vtt.txt ]; then
             cat > docs/categories_vtt.txt << 'EOF'
-https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT
-https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG
-https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD
-https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT
-https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY
-https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG
-https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT
-https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR
-https://b2b.vtt.ru/catalog/?category=CARTMAT_CART
-https://b2b.vtt.ru/catalog/?category=DEV_DEV
-https://b2b.vtt.ru/catalog/?category=DRM_CRT
-https://b2b.vtt.ru/catalog/?category=DRM_UNIT
-https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC
-https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT
-EOF
+            https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT
+            https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG
+            https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD
+            https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT
+            https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY
+            https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG
+            https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT
+            https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR
+            https://b2b.vtt.ru/catalog/?category=CARTMAT_CART
+            https://b2b.vtt.ru/catalog/?category=DEV_DEV
+            https://b2b.vtt.ru/catalog/?category=DRM_CRT
+            https://b2b.vtt.ru/catalog/?category=DRM_UNIT
+            https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC
+            https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT
+            EOF
           fi
           echo "Using categories:" && cat docs/categories_vtt.txt
 
