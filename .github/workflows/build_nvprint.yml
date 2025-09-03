@@ -9,7 +9,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 45
     permissions:
       contents: write
 
@@ -28,18 +28,11 @@ jobs:
       - name: Ensure docs dir
         run: mkdir -p docs
 
-      - name: Build NVPrint feed (API)
+      - name: Build NVPrint feed (XML Basic Auth)
         env:
-          NVPRINT_API_BASE: https://api.b2b.nvprint.ru
-          NVPRINT_API_KEY: ${{ secrets.NVPRINT_API_KEY }}
-
-          # Если заранее известны — можно задать, иначе возьмём первые из /v2/company:
-          NVPRINT_COMPANY_ID: ${{ secrets.NVPRINT_COMPANY_ID }}
-          NVPRINT_DOGOVOR_ID: ${{ secrets.NVPRINT_DOGOVOR_ID }}
-
-          # Опционально фильтрануть по разделу:
-          NVPRINT_SECTION_ID: ""
-
+          NVPRINT_XML_URL:  https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml
+          NVPRINT_XML_USER: ${{ secrets.NVPRINT_XML_USER }}
+          NVPRINT_XML_PASS: ${{ secrets.NVPRINT_XML_PASS }}
           OUT_FILE: docs/nvprint.yml
           OUTPUT_ENCODING: utf-8
           HTTP_TIMEOUT: "60"
@@ -59,6 +52,6 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update nvprint.yml (API build)"
+          git commit -m "Update nvprint.yml (XML build)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
