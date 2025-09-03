@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 NVPrint (XML с Basic Auth) → YML (Satu-совместимый)
-- Берём XML по URL из NVPRINT_XML_URL (Basic Auth: NVPRINT_XML_USER/NVPRINT_XML_PASS).
-- Пагинации нет — вычитываем целиком.
-- Гибкий парсер: пытается найти типовые поля по нескольким вариантам имён (ru/en).
-- Цена: если есть явная KZT — берём её; иначе price → считаем KZT.
-- Остатки: quantity/stock/остаток → считаем суммой (или числом) и выставляем available/in_stock.
-- Категории: берём category/subcategory → строим дерево под корнем "NVPrint".
+- URL берём из NVPRINT_XML_URL (пример: https://api.nvprint.ru/api/hs/getprice/.../?format=xml)
+- Basic Auth: NVPRINT_LOGIN / NVPRINT_PASSWORD (храним в Secrets)
+- Без пагинации — читаем целиком.
+- Поля ищем гибко (рус/англ варианты), цена — KZT если есть явное поле; иначе просто <price>.
+- Остатки считаем по quantity/stock/остаток, выставляем available/in_stock и *_quantity.
 """
 
 from __future__ import annotations
@@ -16,22 +15,22 @@ import requests
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
-# --- ENV ---
-XML_URL      = os.getenv("NVPRINT_XML_URL", "").strip()   # ← твоя ссылка вида https://api.nvprint.ru/api/hs/getprice/.../?format=xml
-XML_USER     = os.getenv("NVPRINT_XML_USER", "").strip()   # логин (в Secrets)
-XML_PASS     = os.getenv("NVPRINT_XML_PASS", "").strip()   # пароль (в Secrets)
+# -------- ENV --------
+XML_URL       = os.getenv("NVPRINT_XML_URL", "").strip()
+NV_LOGIN      = os.getenv("NVPRINT_LOGIN", "").strip()
+NV_PASSWORD   = os.getenv("NVPRINT_PASSWORD", "").strip()
 
-OUT_FILE     = os.getenv("OUT_FILE", "docs/nvprint.yml")
-ENCODING     = (os.getenv("OUTPUT_ENCODING") or "utf-8").lower()
-HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "60"))
-MAX_PICTURES = int(os.getenv("MAX_PICTURES", "10"))
+OUT_FILE      = os.getenv("OUT_FILE", "docs/nvprint.yml")
+ENCODING      = (os.getenv("OUTPUT_ENCODING") or "utf-8").lower()
+HTTP_TIMEOUT  = float(os.getenv("HTTP_TIMEOUT", "60"))
+MAX_PICTURES  = int(os.getenv("MAX_PICTURES", "10"))
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
 
 UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/1.0)"}
 
-# --- helpers ---
+# -------- helpers --------
 def x(s: str) -> str:
     return html.escape((s or "").strip())
 
@@ -42,23 +41,16 @@ def stable_cat_id(text: str, prefix: int = 9420000) -> int:
 def fetch_xml_bytes(url: str) -> bytes:
     if not url:
         raise RuntimeError("NVPRINT_XML_URL пуст. Укажи ссылку на XML.")
-    auth = (XML_USER, XML_PASS) if XML_USER or XML_PASS else None
+    auth = (NV_LOGIN, NV_PASSWORD) if (NV_LOGIN or NV_PASSWORD) else None
     r = requests.get(url, auth=auth, headers=UA, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
     return r.content
 
 def strip_ns(tag: str) -> str:
-    # '{ns}tag' → 'tag'
-    if "}" in tag:
-        return tag.split("}", 1)[1]
-    return tag
-
-def to_lc(s: str) -> str:
-    return (s or "").strip().lower()
+    return tag.split("}", 1)[1] if "}" in tag else tag
 
 def first_text(item: ET.Element, name_candidates: List[str]) -> Optional[str]:
-    # Возвращает .text первого совпавшего дочернего тега
-    want = set(n.lower() for n in name_candidates)
+    want = {n.lower() for n in name_candidates}
     for ch in list(item):
         nm = strip_ns(ch.tag).lower()
         if nm in want:
@@ -79,44 +71,32 @@ def all_texts_like(item: ET.Element, substr_candidates: List[str]) -> List[str]:
     return out
 
 def parse_number(s: Optional[str]) -> Optional[float]:
-    if not s:
-        return None
+    if not s: return None
     t = s.replace("\xa0"," ").replace(" ","").replace(",",".")
     m = re.search(r"-?\d+(?:\.\d+)?", t)
     if not m: return None
-    try:
-        return float(m.group(0))
-    except Exception:
-        return None
+    try: return float(m.group(0))
+    except: return None
 
 def guess_items(root: ET.Element) -> List[ET.Element]:
-    """
-    Пытаемся найти список товаров. Часто это //item или //row.
-    Если не нашли — берём всех прямых детей, у кого есть хоть name+price.
-    """
-    candidates = root.findall(".//item") + root.findall(".//row") + root.findall(".//product")
-    if candidates:
-        return candidates
-    # fallback: все узлы, у которых внутри есть похожие поля
-    all_nodes = list(root.iter())
+    cands = root.findall(".//item") + root.findall(".//row") + root.findall(".//product")
+    if cands: return cands
     out = []
-    for node in all_nodes:
-        children = list(node)
-        if not children: continue
-        # есть ли у узла дочерние поля, похожие на name/price
-        has_name = any(strip_ns(c.tag).lower() in {"name","наименование","full_name","fullname","title"} for c in children)
-        has_price = any("price" in strip_ns(c.tag).lower() or "цена" in strip_ns(c.tag).lower() for c in children)
+    for node in root.iter():
+        ch = list(node)
+        if not ch: continue
+        has_name = any(strip_ns(c.tag).lower() in {"name","наименование","full_name","fullname","title"} for c in ch)
+        has_price = any("price" in strip_ns(c.tag).lower() or "цена" in strip_ns(c.tag).lower() for c in ch)
         if has_name and has_price:
             out.append(node)
     return out
 
-# --- mapping ---
+# -------- mapping --------
 NAME_TAGS       = ["full_name","fullname","name","наименование","title"]
 VENDOR_TAGS     = ["brand","бренд","вендор","producer","manufacturer","производитель"]
 SKU_TAGS        = ["articul","артикул","sku","code","код","vendorcode","кодтовара"]
 PRICE_KZT_TAGS  = ["price_kzt","ценатенге","цена_kzt","kzt","pricekzt","price_kz","price_kaz"]
 PRICE_ANY_TAGS  = ["price","цена","amount","value"]
-CURR_TAGS       = ["currency","валюта"]
 URL_TAGS        = ["url","link","ссылка"]
 DESC_TAGS       = ["description","описание","descr","short_description"]
 CAT_TAGS        = ["category","категория","group","группа","section","раздел"]
@@ -125,86 +105,63 @@ PIC_LIKE        = ["image","img","picture","photo","фото","imageurl","image_
 QTY_TAGS        = ["quantity","qty","остаток","stock","amount","наличие","на_складе","store_amount"]
 BARCODE_TAGS    = ["barcode","ean","штрихкод","ean13","ean-13"]
 
-ROOT_CAT_ID   = 9400000
-ROOT_CAT_NAME = "NVPrint"
-
 def parse_item(item: ET.Element) -> Optional[Dict[str, Any]]:
-    # name
     name = first_text(item, NAME_TAGS)
-    if not name:
-        return None
+    if not name: return None
 
-    # vendor
     vendor = first_text(item, VENDOR_TAGS) or "NV Print"
-
-    # vendorCode (SKU)
     vendor_code = first_text(item, SKU_TAGS)
 
-    # price KZT
     price = None
-    # сначала явные KZT
     for t in PRICE_KZT_TAGS:
         v = first_text(item, [t])
         price = parse_number(v)
-        if price is not None:
-            break
+        if price is not None: break
     if price is None:
-        # любое поле price
         for t in PRICE_ANY_TAGS:
             v = first_text(item, [t])
             price = parse_number(v)
-            if price is not None:
-                break
-    if price is None or price <= 0:
-        return None
+            if price is not None: break
+    if price is None or price <= 0: return None
 
-    # url
-    url = first_text(item, URL_TAGS)
+    url = first_text(item, URL_TAGS) or ""
 
-    # pictures
     pics = all_texts_like(item, PIC_LIKE)
     pics = [p for p in pics if re.search(r"\.(jpg|jpeg|png|webp)(\?|$)", p, re.I)]
-    pics = list(dict.fromkeys(pics))  # uniq, preserve order
+    pics = list(dict.fromkeys(pics))
 
-    # description
     desc = first_text(item, DESC_TAGS)
     if not desc:
-        # автоописание (минимально, без «воды»)
         bits = [name]
         if vendor_code: bits.append(f"Артикул: {vendor_code}")
         bc = first_text(item, BARCODE_TAGS)
         if bc: bits.append(f"Штрихкод: {bc}")
         desc = "; ".join(bits)
 
-    # qty
     qty = 0.0
     for t in QTY_TAGS:
         v = first_text(item, [t])
-        num = parse_number(v)
-        if num is not None:
-            qty = max(qty, num)
+        n = parse_number(v)
+        if n is not None:
+            qty = max(qty, n)
     available = qty > 0
     in_stock = available
     qty_int = int(round(qty)) if qty and qty > 0 else 0
 
-    # categories (path)
     cat  = first_text(item, CAT_TAGS) or ""
     scat = first_text(item, SUBCAT_TAGS) or ""
     path = [p for p in [cat, scat] if p]
 
-    # collect params (simple text children not already mapped)
+    # собрать оставшиеся простые поля в param
     mapped = set([*NAME_TAGS, *VENDOR_TAGS, *SKU_TAGS, *PRICE_KZT_TAGS, *PRICE_ANY_TAGS,
-                  *CURR_TAGS, *URL_TAGS, *DESC_TAGS, *CAT_TAGS, *SUBCAT_TAGS, *BARCODE_TAGS])
+                  *URL_TAGS, *DESC_TAGS, *CAT_TAGS, *SUBCAT_TAGS, *BARCODE_TAGS])
     params: Dict[str,str] = {}
     for ch in list(item):
         key = strip_ns(ch.tag)
         lkey = key.lower()
         if lkey in mapped: continue
         txt = (ch.text or "").strip()
-        if not txt: continue
-        # не берём огромные куски
-        if len(txt) > 500: continue
-        # не берём вложенные complex
+        if not txt or len(txt) > 500: continue
         if list(ch): continue
         params[key] = txt
 
@@ -213,7 +170,7 @@ def parse_item(item: ET.Element) -> Optional[Dict[str, Any]]:
         "vendor": vendor,
         "vendorCode": vendor_code or "",
         "price": price,
-        "url": url or "",
+        "url": url,
         "pictures": pics[:MAX_PICTURES],
         "description": desc,
         "qty": qty_int,
@@ -251,12 +208,10 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
             out.append(f"<picture>{x(u)}</picture>")
         if it.get("description"):
             out.append(f"<description>{x(it['description'])}</description>")
-        # остатки
         qty = int(it.get("qty") or 0)
         out.append(f"<quantity_in_stock>{qty}</quantity_in_stock>")
         out.append(f"<stock_quantity>{qty}</stock_quantity>")
         out.append(f"<quantity>{qty if qty>0 else 1}</quantity>")
-        # параметры
         for k, v in (it.get("params") or {}).items():
             out.append(f"<param name=\"{x(k)}\">{x(v)}</param>")
         out.append("</offer>")
@@ -269,31 +224,23 @@ def main() -> int:
     xml_bytes = fetch_xml_bytes(XML_URL)
     # 2) парсим
     root = ET.fromstring(xml_bytes)
-    # 3) ищем элементы-товары
+    # 3) находим элементы-товары
     items = guess_items(root)
     if not items:
         print("WARN: не нашли товарных элементов в XML (проверь структуру/логин/пароль)", file=sys.stderr)
 
+    # 4) собираем офферы
     parsed: List[Dict[str,Any]] = []
     for el in items:
         data = parse_item(el)
-        if data:
-            parsed.append(data)
+        if data: parsed.append(data)
 
-    # 4) готовим офферы и категории
     offers: List[Tuple[int, Dict[str,Any]]] = []
     paths: List[List[str]] = []
     for i, it in enumerate(parsed):
-        # сделаем id: приоритет vendorCode → name hash
-        offer_id = it.get("vendorCode") or it.get("url") or it.get("name")
-        if not offer_id:
-            offer_id = f"nv-{i+1}"
-        # нормализуем
-        oid = re.sub(r"[^\w\-]+", "-", offer_id)
-        oid = oid.strip("-") or f"nv-{i+1}"
-        # наличие
+        offer_id_src = it.get("vendorCode") or it.get("url") or it.get("name") or f"nv-{i+1}"
+        oid = re.sub(r"[^\w\-]+", "-", offer_id_src).strip("-") or f"nv-{i+1}"
         available = (it.get("qty", 0) or 0) > 0
-        # путь категорий
         paths.append(it.get("path") or [])
         offers.append((ROOT_CAT_ID, {
             "id": oid,
@@ -310,7 +257,7 @@ def main() -> int:
             "params": it.get("params") or {},
         }))
 
-    # дерево категорий
+    # 5) дерево категорий
     cat_map: Dict[Tuple[str,...], int] = {}
     categories: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
@@ -326,16 +273,15 @@ def main() -> int:
             categories.append((cid, name.strip(), parent))
             parent = cid
 
-    # присвоим categoryId по пути
     def path_to_id(path: List[str]) -> int:
         key = tuple([p.strip() for p in (path or []) if p and p.strip()])
         return cat_map.get(key, ROOT_CAT_ID)
 
     offers_final: List[Tuple[int, Dict[str,Any]]] = []
-    for i, (cid, it) in enumerate(offers):
+    for i, (_, it) in enumerate(offers):
         offers_final.append((path_to_id(paths[i] if i < len(paths) else []), it))
 
-    # 5) запись
+    # 6) запись
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     xml = build_yml(categories, offers_final)
     with open(OUT_FILE, "w", encoding=("utf-8" if ENCODING.startswith("utf") else "cp1251"), errors="ignore") as f:
