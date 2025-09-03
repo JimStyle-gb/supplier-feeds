@@ -27,26 +27,40 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
-      - name: Ensure keywords file
+      - name: Ensure categories file
         run: |
           mkdir -p docs
-          if [ ! -f docs/vtt_keywords.txt ]; then
-            printf "Девелопер\nДрам-картридж\nДрам-юнит\nКартридж\nКопи-картридж\nПринт-картридж\nТермоблок\nТермоэлемент\nТонер-картридж\n" > docs/vtt_keywords.txt
+          if [ ! -f docs/categories_vtt.txt ]; then
+            cat > docs/categories_vtt.txt << 'EOF'
+https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT
+https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG
+https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD
+https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT
+https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY
+https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG
+https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT
+https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR
+https://b2b.vtt.ru/catalog/?category=CARTMAT_CART
+https://b2b.vtt.ru/catalog/?category=DEV_DEV
+https://b2b.vtt.ru/catalog/?category=DRM_CRT
+https://b2b.vtt.ru/catalog/?category=DRM_UNIT
+https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC
+https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT
+EOF
           fi
-          echo "Using keywords:" && cat docs/vtt_keywords.txt
+          echo "Using categories:" && cat docs/categories_vtt.txt
 
       - name: Build VTT feed
         env:
           BASE_URL: https://b2b.vtt.ru
           START_URL: https://b2b.vtt.ru/catalog/
+          CATEGORIES_FILE: docs/categories_vtt.txt
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
 
-          # логин/пароль задайте в Secrets репозитория (Settings → Secrets → Actions)
+          # Добавьте логин/пароль в репозиторные Secrets:
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-
-          KEYWORDS_FILE: docs/vtt_keywords.txt
 
           # сеть/ограничители
           DISABLE_SSL_VERIFY: "1"
@@ -69,11 +83,11 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/vtt.yml docs/vtt_keywords.txt || true
+          git add docs/vtt.yml docs/categories_vtt.txt || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update vtt.yml"
+          git commit -m "Update vtt.yml (categories crawl)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
