@@ -1,0 +1,64 @@
+name: build_nvprint
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: build_nvprint_${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Ensure docs dir
+        run: mkdir -p docs
+
+      - name: Build NVPrint feed (API)
+        env:
+          NVPRINT_API_BASE: https://api.b2b.nvprint.ru
+          NVPRINT_API_KEY: ${{ secrets.NVPRINT_API_KEY }}
+
+          # Если заранее известны — можно задать, иначе возьмём первые из /v2/company:
+          NVPRINT_COMPANY_ID: ${{ secrets.NVPRINT_COMPANY_ID }}
+          NVPRINT_DOGOVOR_ID: ${{ secrets.NVPRINT_DOGOVOR_ID }}
+
+          # Опционально фильтрануть по разделу:
+          NVPRINT_SECTION_ID: ""
+
+          OUT_FILE: docs/nvprint.yml
+          OUTPUT_ENCODING: utf-8
+          HTTP_TIMEOUT: "60"
+          MAX_PICTURES: "10"
+        run: |
+          set -euo pipefail
+          python scripts/build_nvprint.py
+
+      - name: Commit & push
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/nvprint.yml || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Update nvprint.yml (API build)"
+          git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
