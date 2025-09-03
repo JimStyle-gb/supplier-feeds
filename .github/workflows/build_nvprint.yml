@@ -31,8 +31,8 @@ jobs:
       - name: Build NVPrint feed (XML Basic Auth)
         env:
           NVPRINT_XML_URL:  https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml
-          NVPRINT_XML_USER: ${{ secrets.NVPRINT_XML_USER }}
-          NVPRINT_XML_PASS: ${{ secrets.NVPRINT_XML_PASS }}
+          NVPRINT_LOGIN:    ${{ secrets.NVPRINT_LOGIN }}
+          NVPRINT_PASSWORD: ${{ secrets.NVPRINT_PASSWORD }}
           OUT_FILE: docs/nvprint.yml
           OUTPUT_ENCODING: utf-8
           HTTP_TIMEOUT: "60"
