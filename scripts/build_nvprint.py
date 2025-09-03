@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-NVPrint (XML с Basic Auth) → YML (Satu-совместимый)
-- URL берём из NVPRINT_XML_URL (пример: https://api.nvprint.ru/api/hs/getprice/.../?format=xml)
-- Basic Auth: NVPRINT_LOGIN / NVPRINT_PASSWORD (храним в Secrets)
-- Без пагинации — читаем целиком.
-- Поля ищем гибко (рус/англ варианты), цена — KZT если есть явное поле; иначе просто <price>.
-- Остатки считаем по quantity/stock/остаток, выставляем available/in_stock и *_quantity.
+NVPrint (XML Basic Auth) → YML (Satu-совместимый)
+- URL: NVPRINT_XML_URL (пример: https://api.nvprint.ru/api/hs/getprice/.../?format=xml)
+- Basic Auth: NVPRINT_LOGIN / NVPRINT_PASSWORD (есть обратная совместимость с NVPRINT_XML_USER/PASS)
+- Без пагинации. Цена берем KZT, если есть явное поле; иначе любой <price> как KZT.
+- Остатки: quantity/stock/остаток → available/in_stock и *_quantity.
+- Категории: category/subcategory → дерево под корнем "NVPrint".
 """
 
 from __future__ import annotations
@@ -16,19 +16,20 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 
 # -------- ENV --------
-XML_URL       = os.getenv("NVPRINT_XML_URL", "").strip()
-NV_LOGIN      = os.getenv("NVPRINT_LOGIN", "").strip()
-NV_PASSWORD   = os.getenv("NVPRINT_PASSWORD", "").strip()
+XML_URL      = os.getenv("NVPRINT_XML_URL", "").strip()
+# поддерживаем оба варианта имен:
+NV_LOGIN     = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
+NV_PASSWORD  = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
 
-OUT_FILE      = os.getenv("OUT_FILE", "docs/nvprint.yml")
-ENCODING      = (os.getenv("OUTPUT_ENCODING") or "utf-8").lower()
-HTTP_TIMEOUT  = float(os.getenv("HTTP_TIMEOUT", "60"))
-MAX_PICTURES  = int(os.getenv("MAX_PICTURES", "10"))
+OUT_FILE     = os.getenv("OUT_FILE", "docs/nvprint.yml")
+ENCODING     = (os.getenv("OUTPUT_ENCODING") or "utf-8").lower()
+HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "60"))
+MAX_PICTURES = int(os.getenv("MAX_PICTURES", "10"))
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/1.0)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/1.1)"}
 
 # -------- helpers --------
 def x(s: str) -> str:
@@ -152,7 +153,7 @@ def parse_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     scat = first_text(item, SUBCAT_TAGS) or ""
     path = [p for p in [cat, scat] if p]
 
-    # собрать оставшиеся простые поля в param
+    # собрать остальные простые поля в <param>
     mapped = set([*NAME_TAGS, *VENDOR_TAGS, *SKU_TAGS, *PRICE_KZT_TAGS, *PRICE_ANY_TAGS,
                   *URL_TAGS, *DESC_TAGS, *CAT_TAGS, *SUBCAT_TAGS, *BARCODE_TAGS])
     params: Dict[str,str] = {}
@@ -224,7 +225,7 @@ def main() -> int:
     xml_bytes = fetch_xml_bytes(XML_URL)
     # 2) парсим
     root = ET.fromstring(xml_bytes)
-    # 3) находим элементы-товары
+    # 3) находим товарные элементы
     items = guess_items(root)
     if not items:
         print("WARN: не нашли товарных элементов в XML (проверь структуру/логин/пароль)", file=sys.stderr)
