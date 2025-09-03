@@ -1,16 +1,6 @@
 # -*- coding: utf-8 -*-
-"""
-NVPrint API → YML (Satu-совместимый)
-- Авторизация: заголовок apikey: <ключ> (из Secrets).
-- company_id / dogovor_id: можно передать через ENV; если не задать — возьмём первый из /v2/company.
-- Продукты: /v2/product?company_id=...&dogovor_id=... (без пагинации).
-- Цена: берём KZT из блока price (без конвертации).
-- Наличие: сумма stock[].store_amount → quantity/quantity_in_stock/stock_quantity; available/in_stock по сумме > 0.
-- Категории: строим дерево от названия раздела; корень = 9400000 "NVPrint".
-"""
-
 from __future__ import annotations
-import os, sys, re, html, hashlib
+import os, sys, re, html, hashlib, json
 from typing import Any, Dict, List, Optional, Tuple
 from datetime import datetime
 import requests
@@ -26,11 +16,12 @@ ENCODING            = (os.getenv("OUTPUT_ENCODING") or "utf-8").lower()
 HTTP_TIMEOUT        = float(os.getenv("HTTP_TIMEOUT", "60"))
 SECTION_ID          = (os.getenv("NVPRINT_SECTION_ID") or "").strip()
 MAX_PICTURES        = int(os.getenv("MAX_PICTURES", "10"))
+DEBUG_DUMP          = True  # сохраняем служебный дамп /v2/company
 
 ROOT_CAT_ID         = 9400000
 ROOT_CAT_NAME       = "NVPrint"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-Feed/1.1)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-Feed/1.2)"}
 
 def x(s: str) -> str: return html.escape(s or "")
 
@@ -46,59 +37,93 @@ def get_json(session: requests.Session, path: str, params: Dict[str, Any] | None
     try:
         return r.json()
     except Exception:
-        # Вернули не-JSON: бросим понятную ошибку
         raise RuntimeError(f"NVPrint API returned non-JSON at {path}: {r.text[:200]}")
 
-def _as_list(payload: Any) -> List[Any]:
-    """Аккуратно достаём список из разных форм JSON-ответов."""
+def _dump_company_payload(payload: Any):
+    try:
+        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+        with open("docs/nvprint_company.json", "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+def _iter_company_items(payload: Any):
+    """Итерируем любые возможные места, где могут лежать компании/договоры."""
     if isinstance(payload, list):
-        return payload
+        for it in payload:
+            if isinstance(it, dict):
+                yield it
+        return
     if isinstance(payload, dict):
-        # самые частые формы
-        for k in ("data", "items", "result", "rows", "companies"):
-            v = payload.get(k)
+        # прямые ключи
+        if any(k in payload for k in ("company_id", "dogovor_id", "id", "contracts", "dogovor")):
+            yield payload
+        # типовые обёртки
+        for key in ("data", "companies", "items", "result", "rows"):
+            v = payload.get(key)
             if isinstance(v, list):
-                return v
-            if isinstance(v, dict):
-                # вложенный словарь с items/list
-                for kk in ("items", "list", "rows"):
+                for it in v:
+                    if isinstance(it, dict):
+                        yield it
+            elif isinstance(v, dict):
+                # внутри может быть companies/items/list/rows
+                for kk in ("companies", "items", "list", "rows"):
                     vv = v.get(kk)
                     if isinstance(vv, list):
-                        return vv
-        # одиночный объект — оборачиваем
-        return [payload]
-    # пришла строка (обычно текст ошибки доступа)
-    if isinstance(payload, str):
-        raise RuntimeError(f"NVPrint API returned string instead of JSON object/list: {payload[:200]}")
-    return []
+                        for it in vv:
+                            if isinstance(it, dict):
+                                yield it
+                # или сам объект с id
+                if any(k in v for k in ("company_id","dogovor_id","id","contracts","dogovor")):
+                    yield v
 
 def choose_company_and_dogovor(session: requests.Session) -> Tuple[str, str]:
     if NVPRINT_COMPANY_ID and NVPRINT_DOGOVOR_ID:
         return NVPRINT_COMPANY_ID, NVPRINT_DOGOVOR_ID
-    data = get_json(session, "/v2/company")
-    items = _as_list(data)
-    for comp in items:
-        if not isinstance(comp, dict):
-            continue
+
+    payload = get_json(session, "/v2/company")
+    if DEBUG_DUMP:
+        _dump_company_payload(payload)
+
+    for comp in _iter_company_items(payload):
+        # company id
         cid = str(comp.get("company_id") or comp.get("id") or "").strip()
+
+        # договоры в массиве
         dogovors = comp.get("dogovor") or comp.get("contracts") or []
         if isinstance(dogovors, list) and dogovors:
             did = str(dogovors[0].get("dogovor_id") or dogovors[0].get("id") or "").strip()
             if cid and did:
                 return cid, did
-        did2 = str(comp.get("dogovor_id") or "").strip()
+
+        # договор одним полем
+        did2 = str(comp.get("dogovor_id") or comp.get("contract_id") or "").strip()
         if cid and did2:
             return cid, did2
-    raise RuntimeError("Cannot resolve company_id/dogovor_id from /v2/company. "
-                       "Check NVPRINT_API_KEY and access rights (the endpoint may have returned an error message).")
+
+    raise RuntimeError(
+        "Cannot resolve company_id/dogovor_id from /v2/company. "
+        "Либо ключ API не даёт доступа, либо ответ в нестандартном формате. "
+        "См. дамп: docs/nvprint_company.json. "
+        "Либо задайте NVPRINT_COMPANY_ID и NVPRINT_DOGOVOR_ID в Secrets."
+    )
 
 def fetch_products(session: requests.Session, company_id: str, dogovor_id: str, section_id: str | None = None) -> List[Dict[str, Any]]:
     params = {"company_id": company_id, "dogovor_id": dogovor_id}
     if section_id:
         params["section_id"] = section_id
     data = get_json(session, "/v2/product", params)
-    items = _as_list(data)
-    # фильтруем только словари
+    # допускаем, что data может быть dict с ключом data/items, или сразу list
+    items = []
+    if isinstance(data, list):
+        items = data
+    elif isinstance(data, dict):
+        for k in ("data","items","result","rows"):
+            v = data.get(k)
+            if isinstance(v, list):
+                items = v; break
+        if not items:
+            items = [data]  # fallback
     return [it for it in items if isinstance(it, dict)]
 
 def pick_price_kzt(p: Dict[str, Any]) -> Optional[float]:
@@ -106,18 +131,18 @@ def pick_price_kzt(p: Dict[str, Any]) -> Optional[float]:
     if price is None:
         return None
     if isinstance(price, dict):
-        for key in ("price_kzt", "kzt", "KZT", "priceKZT", "PriceKZT"):
+        for key in ("price_kzt","kzt","KZT","priceKZT","PriceKZT","price_kz","price_kaz"):
             if key in price:
                 try: return float(price[key])
                 except: pass
         cur = str(price.get("currency") or "").upper()
         if cur == "KZT":
-            for key in ("price", "amount", "value"):
+            for key in ("price","amount","value"):
                 if key in price:
                     try: return float(price[key])
                     except: pass
     try:
-        return float(price)  # «голое» число — считаем KZT
+        return float(price)  # голое число — считаем KZT
     except: return None
 
 def sum_stock(p: Dict[str, Any]) -> float:
@@ -133,15 +158,12 @@ def sum_stock(p: Dict[str, Any]) -> float:
 
 def build_category_path(p: Dict[str, Any]) -> List[str]:
     sec = p.get("section") or {}
-    names: List[str] = []
     fp = sec.get("full_path") or sec.get("path") or ""
     if isinstance(fp, str) and ">" in fp:
         parts = [a.strip() for a in fp.split(">") if a.strip()]
         if parts: return parts
     nm = sec.get("name") or sec.get("section_name") or ""
-    if isinstance(nm, str) and nm.strip():
-        names.append(nm.strip())
-    return names
+    return [nm.strip()] if isinstance(nm, str) and nm.strip() else []
 
 def make_description(p: Dict[str, Any]) -> str:
     prop = p.get("property") or {}
@@ -149,8 +171,8 @@ def make_description(p: Dict[str, Any]) -> str:
     full_name = prop.get("full_name") or ""
     if isinstance(full_name, str) and full_name.strip():
         bits.append(full_name.strip())
-    for label, key in (("Модель","model"), ("Ресурс","resurs"), ("Цвет","color"),
-                       ("Вес","weight"), ("Объем","volume"), ("Штрихкод","barcode")):
+    for label, key in (("Модель","model"),("Ресурс","resurs"),("Цвет","color"),
+                       ("Вес","weight"),("Объем","volume"),("Штрихкод","barcode")):
         v = prop.get(key)
         if v is not None and str(v).strip():
             bits.append(f"{label}: {v}")
@@ -161,8 +183,7 @@ def make_description(p: Dict[str, Any]) -> str:
     text = re.sub(r"\s+", " ", "; ".join(bits)).strip()
     return text[:3800]
 
-def build_yml(categories: List[Tuple[int,str,Optional[int]]],
-              offers: List[Tuple[int,Dict[str,Any]]]) -> str:
+def build_yml(categories, offers) -> str:
     enc_label = "utf-8" if ENCODING.startswith("utf") else "windows-1251"
     out: List[str] = []
     out.append(f"<?xml version='1.0' encoding='{enc_label}'?>")
@@ -235,13 +256,10 @@ def main() -> int:
         in_stock = available
 
         photos = p.get("photo") or []
-        if isinstance(photos, str): pictures = [photos]
-        elif isinstance(photos, list): pictures = [str(u) for u in photos if u]
-        else: pictures = []
+        pictures = [photos] if isinstance(photos, str) else [str(u) for u in photos if u] if isinstance(photos, list) else []
 
         url = p.get("url") or prop.get("url") or ""
         vendor_code = prop.get("articul") or p.get("articul") or p.get("code") or ""
-
         descr = make_description(p)
         path = build_category_path(p)
         all_paths.append(path)
@@ -255,17 +273,11 @@ def main() -> int:
                 params[k_dst] = str(v).strip()
 
         offers.append((ROOT_CAT_ID, {
-            "id": pid,
-            "name": name,
-            "vendor": "NV Print",
+            "id": pid, "name": name, "vendor": "NV Print",
             "vendorCode": str(vendor_code).strip() if vendor_code else "",
-            "price": float(price_kzt),
-            "url": str(url).strip() if url else "",
-            "pictures": pictures,
-            "description": descr,
-            "stock": total_stock,
-            "available": available,
-            "in_stock": in_stock,
+            "price": float(price_kzt), "url": str(url).strip() if url else "",
+            "pictures": pictures, "description": descr,
+            "stock": total_stock, "available": available, "in_stock": in_stock,
             "params": params,
         }))
 
