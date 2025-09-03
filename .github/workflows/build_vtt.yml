@@ -32,20 +32,20 @@ jobs:
           mkdir -p docs
           if [ ! -f docs/categories_vtt.txt ]; then
             printf '%s\n' \
-'https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT' \
-'https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG' \
-'https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD' \
-'https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT' \
-'https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY' \
-'https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG' \
-'https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT' \
-'https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR' \
-'https://b2b.vtt.ru/catalog/?category=CARTMAT_CART' \
-'https://b2b.vtt.ru/catalog/?category=DEV_DEV' \
-'https://b2b.vtt.ru/catalog/?category=DRM_CRT' \
-'https://b2b.vtt.ru/catalog/?category=DRM_UNIT' \
-'https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC' \
-'https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR' \
+              'https://b2b.vtt.ru/catalog/?category=CARTMAT_CART' \
+              'https://b2b.vtt.ru/catalog/?category=DEV_DEV' \
+              'https://b2b.vtt.ru/catalog/?category=DRM_CRT' \
+              'https://b2b.vtt.ru/catalog/?category=DRM_UNIT' \
+              'https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC' \
+              'https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT' \
             > docs/categories_vtt.txt
           fi
           echo "Using categories:" && cat docs/categories_vtt.txt
