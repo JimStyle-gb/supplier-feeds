@@ -178,50 +178,65 @@ def extract_category_path(item: ET.Element) -> List[str]:
         val = first_desc_text(item, [t])
         if val:
             parts = [p.strip() for p in SEP_RE.split(val) if p.strip()]
-            if parts: return parts[:4]
+            if parts:
+                return parts[:4]
     cat  = first_desc_text(item, CAT_TAGS) or ""
     scat = first_desc_text(item, SUBCAT_TAGS) or ""
     path = [p for p in [cat, scat] if p]
-    if path: return path
+    if path:
+        return path
     # fallback: любые поля, похожие на "категория"
     cand = all_desc_texts_like(item, ["category","категор","group","раздел"])
     seen = set(); clean = []
     for v in cand:
         vv = v.strip()
-        if not vv or vv.lower() in seen: continue
+        if not vv or vv.lower() in seen:
+            continue
         seen.add(vv.lower())
-        if len(vv) < 2: continue
+        if len(vv) < 2:
+            continue
         clean.append(vv)
-        if len(clean) >= 2: break
+        if len(clean) >= 2:
+            break
     return clean
 
 # ---------- parse XML item ----------
 def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     name = first_desc_text(item, ["НоменклатураКратко"]) or first_desc_text(item, NAME_TAGS)
-    if not name: return None
+    if not name:
+        return None
     vendor_code = first_desc_text(item, ["Артикул"]) or first_desc_text(item, SKU_TAGS) or ""
     vendor = first_desc_text(item, VENDOR_TAGS) or "NV Print"
 
     price = None
     for t in PRICE_KZT_TAGS:
-        price = parse_number(first_desc_text(item, [t]));  if price is not None: break
+        price = parse_number(first_desc_text(item, [t]))
+        if price is not None:
+            break
+
     if price is None:
         for t in PRICE_ANY_TAGS:
-            price = parse_number(first_desc_text(item, [t]));  if price is not None: break
-    if price is None or price <= 0: return None
+            price = parse_number(first_desc_text(item, [t]))
+            if price is not None:
+                break
+
+    if price is None or price <= 0:
+        return None
 
     url = first_desc_text(item, URL_TAGS) or ""
     desc = first_desc_text(item, DESC_TAGS)
     if not desc:
         base = first_desc_text(item, ["Номенклатура"]) or name
         bits = [base]
-        if vendor_code: bits.append(f"Артикул: {vendor_code}")
+        if vendor_code:
+            bits.append(f"Артикул: {vendor_code}")
         desc = "; ".join(bits)
 
     qty = 0.0
     for t in QTY_TAGS:
         n = parse_number(first_desc_text(item, [t]))
-        if n is not None: qty = max(qty, n)
+        if n is not None:
+            qty = max(qty, n)
     qty_int = int(round(qty)) if qty and qty > 0 else 0
     available = qty_int > 0
 
@@ -253,7 +268,8 @@ def parse_specs_params(s: BeautifulSoup) -> Dict[str, str]:
         for dt, dd in zip(dts, dds):
             k = (dt.get_text(" ", strip=True) or "").strip(": ")
             v = (dd.get_text(" ", strip=True) or "").strip()
-            if k and v: params.setdefault(k, v)
+            if k and v:
+                params.setdefault(k, v)
     # таблицы 2-колоночные
     for table in s.select("table"):
         for tr in table.find_all("tr"):
@@ -261,17 +277,20 @@ def parse_specs_params(s: BeautifulSoup) -> Dict[str, str]:
             if len(tds) == 2:
                 k = (tds[0].get_text(" ", strip=True) or "").strip(": ")
                 v = (tds[1].get_text(" ", strip=True) or "").strip()
-                if k and v: params.setdefault(k, v)
+                if k and v:
+                    params.setdefault(k, v)
     return params
 
 def enrich_from_nv_site(art: str) -> Dict[str, Any]:
     out: Dict[str, Any] = {}
-    if not art: return out
+    if not art:
+        return out
     for tmpl in SITE_SEARCH_TEMPLATES:
         url = tmpl.format(art=art)
         time.sleep(max(0.0, ENRICH_DELAY_MS/1000.0))
         b = http_get(url)
-        if not b: continue
+        if not b:
+            continue
         s = soup_of(b)
 
         # если страница уже карточка
@@ -289,15 +308,18 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
         hrefs: List[str] = []
         for a in links:
             href = (a.get("href") or "").strip()
-            if not href: continue
-            if href.startswith("//"): href = "https:" + href
+            if not href:
+                continue
+            if href.startswith("//"):
+                href = "https:" + href
             hrefs.append(href)
 
         # пройдём по нескольким кандидатам
         for href in hrefs[:5]:
             time.sleep(max(0.0, ENRICH_DELAY_MS/1000.0))
             pb = http_get(href)
-            if not pb: continue
+            if not pb:
+                continue
             ps = soup_of(pb)
 
             # заголовок
@@ -319,7 +341,8 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
                 out.setdefault("pictures", []).append(og.get("content").strip())
             for img in ps.select(SEL_GALLERY) or []:
                 u = (img.get("src") or img.get("data-src") or img.get("data-image") or "").strip()
-                if u.startswith("//"): u = "https:" + u
+                if u.startswith("//"):
+                    u = "https:" + u
                 if IMG_RE.search(u):
                     out.setdefault("pictures", []).append(u)
 
@@ -327,7 +350,8 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
             bnames: List[str] = []
             for bc in ps.select(SEL_BREADCRUMBS) or []:
                 t = (bc.get_text(" ", strip=True) or "").strip()
-                if t: bnames.append(t)
+                if t:
+                    bnames.append(t)
             if len(bnames) >= 2:
                 bnames = [t for t in bnames if t.lower() not in ("главная", "каталог", "home", "catalog")]
             if bnames:
@@ -366,11 +390,13 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
         out.append(f"<offer id=\"{x(it['id'])}\" {attrs}>")
         out.append(f"<name>{x(it['name'])}</name>")
         out.append(f"<vendor>{x(it.get("vendor") or "NV Print")}</vendor>")
-        if it.get("vendorCode"): out.append(f"<vendorCode>{x(it['vendorCode'])}</vendorCode>")
+        if it.get("vendorCode"):
+            out.append(f"<vendorCode>{x(it['vendorCode'])}</vendorCode>")
         out.append(f"<price>{int(round(float(it['price'])))}</price>")
         out.append("<currencyId>KZT</currencyId>")
         out.append(f"<categoryId>{cid}</categoryId>")
-        if it.get("url"): out.append(f"<url>{x(it['url'])}</url>")
+        if it.get("url"):
+            out.append(f"<url>{x(it['url'])}</url>")
         for u in (it.get("pictures") or [])[:MAX_PICTURES]:
             out.append(f"<picture>{x(u)}</picture>")
         if it.get("description"):
@@ -397,7 +423,8 @@ def main() -> int:
     parsed: List[Dict[str,Any]] = []
     for el in items:
         it = parse_xml_item(el)
-        if it: parsed.append(it)
+        if it:
+            parsed.append(it)
 
     # 2) первичные офферы и пути
     offers: List[Tuple[int, Dict[str,Any]]] = []
@@ -420,12 +447,14 @@ def main() -> int:
     categories: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
         clean = [p for p in (path or []) if isinstance(p, str) and p.strip()]
-        if not clean: continue
+        if not clean:
+            continue
         parent = ROOT_CAT_ID; acc: List[str] = []
         for name in clean:
             acc.append(name.strip()); key = tuple(acc)
             if key in cat_map:
-                parent = cat_map[key]; continue
+                parent = cat_map[key]
+                continue
             cid = stable_cat_id(" / ".join(acc))
             cat_map[key] = cid
             categories.append((cid, name.strip(), parent))
@@ -444,14 +473,16 @@ def main() -> int:
         for idx in range(total):
             cid, it = offers[idx]
             art = it.get("vendorCode") or ""
-            if not art: continue
+            if not art:
+                continue
             add = {}
             try:
                 add = enrich_from_nv_site(art)
             except Exception:
                 add = {}
             # применяем только то, чего нет
-            if add.get("url") and not it.get("url"): it["url"] = add["url"]
+            if add.get("url") and not it.get("url"):
+                it["url"] = add["url"]
             if add.get("pictures"):
                 pics = list(dict.fromkeys((it.get("pictures") or []) + add["pictures"]))
                 it["pictures"] = pics[:MAX_PICTURES]
@@ -463,7 +494,6 @@ def main() -> int:
                 if len(add["title"]) <= len(it["name"]) + 10:
                     it["name"] = add["title"]
             if add.get("params"):
-                # не перезатираем, а дополняем
                 for k, v in add["params"].items():
                     it.setdefault("params", {}).setdefault(k, v)
             # хлебные крошки → категория точнее
