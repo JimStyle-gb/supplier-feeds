@@ -1,10 +1,27 @@
 <?xml version='1.0' encoding='utf-8'?>
-<yml_catalog date="2025-09-04 06:44">
+<yml_catalog date="2025-09-04 06:54">
 <shop>
 <name>nvprint</name>
 <currencies><currency id="KZT" rate="1" /></currencies>
 <categories>
 <category id="9400000">NVPrint</category>
+<category id="25984825" parentId="9400000">NV-Office</category>
+<category id="11689757" parentId="25984825">Тонер NV PRINT TYPE RUS</category>
+<category id="14247514" parentId="9400000">3D NV PRINT</category>
+<category id="24161437" parentId="9400000">Brother</category>
+<category id="17184708" parentId="9400000">Canon</category>
+<category id="17146349" parentId="9400000">Epson</category>
+<category id="19001648" parentId="9400000">Hewlett-Packard</category>
+<category id="12143799" parentId="9400000">Hewlett-Packard/Canon</category>
+<category id="21164035" parentId="9400000">Kyocera</category>
+<category id="15234845" parentId="9400000">Lexmark</category>
+<category id="9609427" parentId="9400000">NV PRINT</category>
+<category id="14512075" parentId="9400000">Panasonic</category>
+<category id="14938387" parentId="9400000">Pantum</category>
+<category id="23147085" parentId="9400000">Ricoh</category>
+<category id="13159825" parentId="9400000">Samsung</category>
+<category id="24767884" parentId="9400000">Xerox</category>
+<category id="22427195" parentId="9400000">Сanon, Epson, НР, Lexmark</category>
 </categories>
 <offers>
 <offer id="C4892"  available="false" in_stock="false">
@@ -13,7 +30,7 @@
 <vendorCode>C4892</vendorCode>
 <price>44490</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>11689757</categoryId>
 <description>Казахстан; Артикул: C4892</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -25,7 +42,7 @@
 <vendorCode>C4892</vendorCode>
 <price>44490</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>11689757</categoryId>
 <description>Казахстан; Артикул: C4892</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -37,7 +54,7 @@
 <vendorCode>E0030</vendorCode>
 <price>8198</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: E0030</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -82,7 +99,7 @@
 <vendorCode>E0031</vendorCode>
 <price>8198</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: E0031</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -127,7 +144,7 @@
 <vendorCode>D4839</vendorCode>
 <price>7893</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4839</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -172,7 +189,7 @@
 <vendorCode>D4838</vendorCode>
 <price>7893</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4838</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -217,7 +234,7 @@
 <vendorCode>D4791</vendorCode>
 <price>10286</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4791</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -262,7 +279,7 @@
 <vendorCode>D4795</vendorCode>
 <price>10286</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4795</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -307,7 +324,7 @@
 <vendorCode>D4899</vendorCode>
 <price>8519</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4899</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -352,7 +369,7 @@
 <vendorCode>D4904</vendorCode>
 <price>9837</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4904</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -397,7 +414,7 @@
 <vendorCode>D4792</vendorCode>
 <price>10286</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4792</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -442,7 +459,7 @@
 <vendorCode>D4808</vendorCode>
 <price>10923</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4808</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -487,7 +504,7 @@
 <vendorCode>D4871</vendorCode>
 <price>12031</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4871</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -532,7 +549,7 @@
 <vendorCode>D7867</vendorCode>
 <price>15928</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D7867</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -577,7 +594,7 @@
 <vendorCode>D4907</vendorCode>
 <price>15928</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4907</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -622,7 +639,7 @@
 <vendorCode>D4908</vendorCode>
 <price>15179</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14247514</categoryId>
 <description>Казахстан; Артикул: D4908</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -667,7 +684,7 @@
 <vendorCode>44720</vendorCode>
 <price>2360</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24161437</categoryId>
 <description>Казахстан; Артикул: 44720</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -712,7 +729,7 @@
 <vendorCode>51097</vendorCode>
 <price>9555</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 51097</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -757,7 +774,7 @@
 <vendorCode>76286</vendorCode>
 <price>5417</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 76286</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -802,7 +819,7 @@
 <vendorCode>76287</vendorCode>
 <price>5417</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 76287</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -847,7 +864,7 @@
 <vendorCode>76421</vendorCode>
 <price>5417</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 76421</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -892,7 +909,7 @@
 <vendorCode>76422</vendorCode>
 <price>5417</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 76422</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -937,7 +954,7 @@
 <vendorCode>A3492</vendorCode>
 <price>7644</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A3492</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -982,7 +999,7 @@
 <vendorCode>A3494</vendorCode>
 <price>7007</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A3494</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1027,7 +1044,7 @@
 <vendorCode>A3495</vendorCode>
 <price>7007</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A3495</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1072,7 +1089,7 @@
 <vendorCode>A3496</vendorCode>
 <price>7007</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A3496</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1117,7 +1134,7 @@
 <vendorCode>A6330</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A6330</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1162,7 +1179,7 @@
 <vendorCode>B0008</vendorCode>
 <price>2803</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B0008</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1207,7 +1224,7 @@
 <vendorCode>A3557</vendorCode>
 <price>4459</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A3557</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1252,7 +1269,7 @@
 <vendorCode>A3558</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A3558</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1297,7 +1314,7 @@
 <vendorCode>A8016</vendorCode>
 <price>4459</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A8016</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1342,7 +1359,7 @@
 <vendorCode>A8017</vendorCode>
 <price>4204</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A8017</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1387,7 +1404,7 @@
 <vendorCode>A8018</vendorCode>
 <price>4204</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A8018</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1432,7 +1449,7 @@
 <vendorCode>A8019</vendorCode>
 <price>4204</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A8019</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1477,7 +1494,7 @@
 <vendorCode>A7647</vendorCode>
 <price>4525</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A7647</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1522,7 +1539,7 @@
 <vendorCode>A7648</vendorCode>
 <price>4398</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A7648</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1567,7 +1584,7 @@
 <vendorCode>A7649</vendorCode>
 <price>4398</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A7649</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1612,7 +1629,7 @@
 <vendorCode>A7650</vendorCode>
 <price>4398</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: A7650</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1657,7 +1674,7 @@
 <vendorCode>D3394</vendorCode>
 <price>14651</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3394</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1702,7 +1719,7 @@
 <vendorCode>D3366</vendorCode>
 <price>16562</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3366</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1747,7 +1764,7 @@
 <vendorCode>B0968</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B0968</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1792,7 +1809,7 @@
 <vendorCode>B0967</vendorCode>
 <price>4143</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B0967</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1837,7 +1854,7 @@
 <vendorCode>D5089</vendorCode>
 <price>11466</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D5089</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1882,7 +1899,7 @@
 <vendorCode>D5090</vendorCode>
 <price>10131</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D5090</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1927,7 +1944,7 @@
 <vendorCode>D5091</vendorCode>
 <price>10131</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D5091</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -1972,7 +1989,7 @@
 <vendorCode>D5092</vendorCode>
 <price>10131</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D5092</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2017,7 +2034,7 @@
 <vendorCode>D6744</vendorCode>
 <price>16883</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D6744</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2062,7 +2079,7 @@
 <vendorCode>D6745</vendorCode>
 <price>16246</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D6745</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2107,7 +2124,7 @@
 <vendorCode>D6748</vendorCode>
 <price>16246</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D6748</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2152,7 +2169,7 @@
 <vendorCode>D6749</vendorCode>
 <price>16246</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D6749</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2197,7 +2214,7 @@
 <vendorCode>18803</vendorCode>
 <price>2614</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 18803</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2242,7 +2259,7 @@
 <vendorCode>23562</vendorCode>
 <price>5035</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 23562</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2287,7 +2304,7 @@
 <vendorCode>19886</vendorCode>
 <price>2487</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 19886</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2332,7 +2349,7 @@
 <vendorCode>19230</vendorCode>
 <price>2487</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 19230</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2377,7 +2394,7 @@
 <vendorCode>36494</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 36494</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2422,7 +2439,7 @@
 <vendorCode>B2303</vendorCode>
 <price>7644</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B2303</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2467,7 +2484,7 @@
 <vendorCode>18648</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 18648</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2512,7 +2529,7 @@
 <vendorCode>18650</vendorCode>
 <price>4780</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 18650</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2557,7 +2574,7 @@
 <vendorCode>18848</vendorCode>
 <price>2614</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 18848</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2602,7 +2619,7 @@
 <vendorCode>D3773</vendorCode>
 <price>720</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3773</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2647,7 +2664,7 @@
 <vendorCode>D3776</vendorCode>
 <price>720</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3776</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2692,7 +2709,7 @@
 <vendorCode>D3774</vendorCode>
 <price>720</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3774</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2737,7 +2754,7 @@
 <vendorCode>D3772</vendorCode>
 <price>720</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3772</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2782,7 +2799,7 @@
 <vendorCode>D3775</vendorCode>
 <price>720</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3775</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2827,7 +2844,7 @@
 <vendorCode>D3766</vendorCode>
 <price>14972</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3766</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2872,7 +2889,7 @@
 <vendorCode>D3768</vendorCode>
 <price>14972</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3768</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2917,7 +2934,7 @@
 <vendorCode>D3769</vendorCode>
 <price>14972</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3769</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -2962,7 +2979,7 @@
 <vendorCode>D3767</vendorCode>
 <price>17199</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3767</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3007,7 +3024,7 @@
 <vendorCode>D3770</vendorCode>
 <price>14972</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3770</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3052,7 +3069,7 @@
 <vendorCode>D6246</vendorCode>
 <price>27645</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D6246</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3097,7 +3114,7 @@
 <vendorCode>D6247</vendorCode>
 <price>27645</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D6247</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3142,7 +3159,7 @@
 <vendorCode>D6248</vendorCode>
 <price>27645</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D6248</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3187,7 +3204,7 @@
 <vendorCode>D6249</vendorCode>
 <price>27645</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D6249</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3232,7 +3249,7 @@
 <vendorCode>D3771</vendorCode>
 <price>798</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D3771</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3277,7 +3294,7 @@
 <vendorCode>B5110</vendorCode>
 <price>4332</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B5110</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3322,7 +3339,7 @@
 <vendorCode>B5111</vendorCode>
 <price>4143</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B5111</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3367,7 +3384,7 @@
 <vendorCode>B5112</vendorCode>
 <price>4143</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B5112</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3412,7 +3429,7 @@
 <vendorCode>B2434</vendorCode>
 <price>15925</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B2434</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3457,7 +3474,7 @@
 <vendorCode>B2435</vendorCode>
 <price>16562</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B2435</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3502,7 +3519,7 @@
 <vendorCode>B2436</vendorCode>
 <price>16562</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B2436</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3547,7 +3564,7 @@
 <vendorCode>B2437</vendorCode>
 <price>16562</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: B2437</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3592,7 +3609,7 @@
 <vendorCode>18746</vendorCode>
 <price>3506</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 18746</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3637,7 +3654,7 @@
 <vendorCode>34196</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 34196</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3682,7 +3699,7 @@
 <vendorCode>40398</vendorCode>
 <price>3312</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: 40398</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3727,7 +3744,7 @@
 <vendorCode>E0006</vendorCode>
 <price>720</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: E0006</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3772,7 +3789,7 @@
 <vendorCode>E0008</vendorCode>
 <price>720</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: E0008</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3817,7 +3834,7 @@
 <vendorCode>E0004</vendorCode>
 <price>2155</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: E0004</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3862,7 +3879,7 @@
 <vendorCode>E0009</vendorCode>
 <price>720</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: E0009</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3907,7 +3924,7 @@
 <vendorCode>D7342</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D7342</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3952,7 +3969,7 @@
 <vendorCode>D7343</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D7343</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -3997,7 +4014,7 @@
 <vendorCode>D7344</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17184708</categoryId>
 <description>Казахстан; Артикул: D7344</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4042,7 +4059,7 @@
 <vendorCode>D3790</vendorCode>
 <price>2997</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D3790</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4087,7 +4104,7 @@
 <vendorCode>D8187</vendorCode>
 <price>8309</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D8187</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4121,7 +4138,7 @@
 <vendorCode>D1257</vendorCode>
 <price>4808</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D1257</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4166,7 +4183,7 @@
 <vendorCode>C6092</vendorCode>
 <price>22644</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: C6092</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4211,7 +4228,7 @@
 <vendorCode>C3455</vendorCode>
 <price>2232</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: C3455</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4256,7 +4273,7 @@
 <vendorCode>D7334</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7334</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4301,7 +4318,7 @@
 <vendorCode>D7335</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7335</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4346,7 +4363,7 @@
 <vendorCode>D7336</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7336</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4391,7 +4408,7 @@
 <vendorCode>D7337</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7337</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4436,7 +4453,7 @@
 <vendorCode>D7339</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7339</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4481,7 +4498,7 @@
 <vendorCode>D7340</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7340</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4526,7 +4543,7 @@
 <vendorCode>D7341</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7341</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4571,7 +4588,7 @@
 <vendorCode>E0003</vendorCode>
 <price>2498</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: E0003</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4616,7 +4633,7 @@
 <vendorCode>D7347</vendorCode>
 <price>1850</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7347</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4661,7 +4678,7 @@
 <vendorCode>D7330</vendorCode>
 <price>510</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7330</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4706,7 +4723,7 @@
 <vendorCode>D7331</vendorCode>
 <price>510</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7331</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4751,7 +4768,7 @@
 <vendorCode>D7332</vendorCode>
 <price>510</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7332</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4796,7 +4813,7 @@
 <vendorCode>D7333</vendorCode>
 <price>510</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7333</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4841,7 +4858,7 @@
 <vendorCode>D7346</vendorCode>
 <price>2742</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7346</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4886,7 +4903,7 @@
 <vendorCode>D7323</vendorCode>
 <price>449</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7323</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4931,7 +4948,7 @@
 <vendorCode>D7324</vendorCode>
 <price>449</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7324</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -4976,7 +4993,7 @@
 <vendorCode>D7326</vendorCode>
 <price>449</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7326</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5021,7 +5038,7 @@
 <vendorCode>D7327</vendorCode>
 <price>449</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7327</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5066,7 +5083,7 @@
 <vendorCode>D7328</vendorCode>
 <price>449</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7328</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5111,7 +5128,7 @@
 <vendorCode>D7329</vendorCode>
 <price>449</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>17146349</categoryId>
 <description>Казахстан; Артикул: D7329</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5156,7 +5173,7 @@
 <vendorCode>44943</vendorCode>
 <price>2675</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 44943</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5201,7 +5218,7 @@
 <vendorCode>18667</vendorCode>
 <price>4841</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18667</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5246,7 +5263,7 @@
 <vendorCode>18673</vendorCode>
 <price>5035</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18673</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5291,7 +5308,7 @@
 <vendorCode>18776</vendorCode>
 <price>2614</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18776</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5336,7 +5353,7 @@
 <vendorCode>18856</vendorCode>
 <price>2614</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18856</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5381,7 +5398,7 @@
 <vendorCode>18714</vendorCode>
 <price>7328</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18714</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5426,7 +5443,7 @@
 <vendorCode>18601</vendorCode>
 <price>8857</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18601</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5471,7 +5488,7 @@
 <vendorCode>18738</vendorCode>
 <price>2487</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18738</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5516,7 +5533,7 @@
 <vendorCode>39737</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 39737</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5561,7 +5578,7 @@
 <vendorCode>39738</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 39738</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5606,7 +5623,7 @@
 <vendorCode>39739</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 39739</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5651,7 +5668,7 @@
 <vendorCode>39740</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 39740</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5696,7 +5713,7 @@
 <vendorCode>23533</vendorCode>
 <price>5799</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 23533</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5741,7 +5758,7 @@
 <vendorCode>23535</vendorCode>
 <price>5799</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 23535</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5786,7 +5803,7 @@
 <vendorCode>23536</vendorCode>
 <price>5799</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 23536</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5831,7 +5848,7 @@
 <vendorCode>23537</vendorCode>
 <price>5799</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 23537</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5876,7 +5893,7 @@
 <vendorCode>34006</vendorCode>
 <price>26117</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 34006</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5921,7 +5938,7 @@
 <vendorCode>34005</vendorCode>
 <price>26117</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 34005</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -5966,7 +5983,7 @@
 <vendorCode>34007</vendorCode>
 <price>26117</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 34007</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6011,7 +6028,7 @@
 <vendorCode>34008</vendorCode>
 <price>26117</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 34008</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6056,7 +6073,7 @@
 <vendorCode>29162</vendorCode>
 <price>8602</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29162</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6101,7 +6118,7 @@
 <vendorCode>29890</vendorCode>
 <price>12424</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29890</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6146,7 +6163,7 @@
 <vendorCode>29892</vendorCode>
 <price>12679</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29892</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6191,7 +6208,7 @@
 <vendorCode>29893</vendorCode>
 <price>12679</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29893</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6236,7 +6253,7 @@
 <vendorCode>29894</vendorCode>
 <price>12679</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29894</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6281,7 +6298,7 @@
 <vendorCode>29771</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29771</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6326,7 +6343,7 @@
 <vendorCode>29770</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29770</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6371,7 +6388,7 @@
 <vendorCode>29769</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29769</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6416,7 +6433,7 @@
 <vendorCode>18623</vendorCode>
 <price>3822</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18623</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6461,7 +6478,7 @@
 <vendorCode>18836</vendorCode>
 <price>5035</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18836</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6506,7 +6523,7 @@
 <vendorCode>27655</vendorCode>
 <price>26117</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 27655</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6551,7 +6568,7 @@
 <vendorCode>27656</vendorCode>
 <price>26117</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 27656</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6596,7 +6613,7 @@
 <vendorCode>27657</vendorCode>
 <price>26117</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 27657</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6641,7 +6658,7 @@
 <vendorCode>27658</vendorCode>
 <price>26117</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 27658</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6686,7 +6703,7 @@
 <vendorCode>34644</vendorCode>
 <price>13504</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 34644</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6731,7 +6748,7 @@
 <vendorCode>34643</vendorCode>
 <price>14906</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 34643</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6776,7 +6793,7 @@
 <vendorCode>B8996</vendorCode>
 <price>2675</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B8996</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6821,7 +6838,7 @@
 <vendorCode>A9997</vendorCode>
 <price>2387</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: A9997</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6866,7 +6883,7 @@
 <vendorCode>B0002</vendorCode>
 <price>2642</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B0002</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6911,7 +6928,7 @@
 <vendorCode>B0006</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B0006</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -6956,7 +6973,7 @@
 <vendorCode>45437</vendorCode>
 <price>1911</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 45437</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7001,7 +7018,7 @@
 <vendorCode>50046</vendorCode>
 <price>14335</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 50046</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7046,7 +7063,7 @@
 <vendorCode>A3869</vendorCode>
 <price>17836</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: A3869</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7091,7 +7108,7 @@
 <vendorCode>A3833</vendorCode>
 <price>3058</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: A3833</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7136,7 +7153,7 @@
 <vendorCode>47696</vendorCode>
 <price>6370</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 47696</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7181,7 +7198,7 @@
 <vendorCode>A7973</vendorCode>
 <price>4332</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: A7973</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7226,7 +7243,7 @@
 <vendorCode>C2823</vendorCode>
 <price>8281</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: C2823</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7271,7 +7288,7 @@
 <vendorCode>A7996</vendorCode>
 <price>5672</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: A7996</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7316,7 +7333,7 @@
 <vendorCode>B7853</vendorCode>
 <price>11787</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B7853</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7361,7 +7378,7 @@
 <vendorCode>49172</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49172</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7406,7 +7423,7 @@
 <vendorCode>29293</vendorCode>
 <price>3949</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29293</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7451,7 +7468,7 @@
 <vendorCode>35589</vendorCode>
 <price>3949</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 35589</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7496,7 +7513,7 @@
 <vendorCode>29294</vendorCode>
 <price>4969</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 29294</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7541,7 +7558,7 @@
 <vendorCode>35590</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 35590</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7586,7 +7603,7 @@
 <vendorCode>35657</vendorCode>
 <price>2487</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 35657</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7631,7 +7648,7 @@
 <vendorCode>41743</vendorCode>
 <price>25480</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 41743</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7676,7 +7693,7 @@
 <vendorCode>35862</vendorCode>
 <price>3506</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 35862</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7721,7 +7738,7 @@
 <vendorCode>35863</vendorCode>
 <price>3312</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 35863</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7766,7 +7783,7 @@
 <vendorCode>35864</vendorCode>
 <price>3312</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 35864</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7811,7 +7828,7 @@
 <vendorCode>35865</vendorCode>
 <price>3312</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 35865</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7856,7 +7873,7 @@
 <vendorCode>36133</vendorCode>
 <price>6054</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 36133</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7901,7 +7918,7 @@
 <vendorCode>36135</vendorCode>
 <price>6054</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 36135</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7946,7 +7963,7 @@
 <vendorCode>36136</vendorCode>
 <price>6054</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 36136</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -7991,7 +8008,7 @@
 <vendorCode>36137</vendorCode>
 <price>6054</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 36137</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8036,7 +8053,7 @@
 <vendorCode>37546</vendorCode>
 <price>5162</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 37546</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8081,7 +8098,7 @@
 <vendorCode>37547</vendorCode>
 <price>5162</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 37547</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8126,7 +8143,7 @@
 <vendorCode>37548</vendorCode>
 <price>5162</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 37548</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8171,7 +8188,7 @@
 <vendorCode>37549</vendorCode>
 <price>5162</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 37549</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8216,7 +8233,7 @@
 <vendorCode>40462</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 40462</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8261,7 +8278,7 @@
 <vendorCode>40463</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 40463</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8306,7 +8323,7 @@
 <vendorCode>40464</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 40464</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8351,7 +8368,7 @@
 <vendorCode>40465</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 40465</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8396,7 +8413,7 @@
 <vendorCode>49160</vendorCode>
 <price>5351</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49160</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8441,7 +8458,7 @@
 <vendorCode>49161</vendorCode>
 <price>5223</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49161</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8486,7 +8503,7 @@
 <vendorCode>49162</vendorCode>
 <price>5223</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49162</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8531,7 +8548,7 @@
 <vendorCode>49163</vendorCode>
 <price>5223</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49163</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8576,7 +8593,7 @@
 <vendorCode>49164</vendorCode>
 <price>5035</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49164</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8621,7 +8638,7 @@
 <vendorCode>49168</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49168</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8666,7 +8683,7 @@
 <vendorCode>49165</vendorCode>
 <price>5035</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49165</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8711,7 +8728,7 @@
 <vendorCode>49166</vendorCode>
 <price>5035</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49166</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8756,7 +8773,7 @@
 <vendorCode>49167</vendorCode>
 <price>5035</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 49167</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8801,7 +8818,7 @@
 <vendorCode>18683</vendorCode>
 <price>2421</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18683</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8846,7 +8863,7 @@
 <vendorCode>18685</vendorCode>
 <price>3185</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18685</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8891,7 +8908,7 @@
 <vendorCode>31564</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 31564</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8936,7 +8953,7 @@
 <vendorCode>18693</vendorCode>
 <price>5799</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18693</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -8981,7 +8998,7 @@
 <vendorCode>18782</vendorCode>
 <price>15288</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18782</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9026,7 +9043,7 @@
 <vendorCode>18897</vendorCode>
 <price>10192</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18897</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9071,7 +9088,7 @@
 <vendorCode>18888</vendorCode>
 <price>5351</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: 18888</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9116,7 +9133,7 @@
 <vendorCode>D7229</vendorCode>
 <price>15925</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D7229</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9161,7 +9178,7 @@
 <vendorCode>D4344</vendorCode>
 <price>5417</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4344</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9206,7 +9223,7 @@
 <vendorCode>C5621</vendorCode>
 <price>3634</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: C5621</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9251,7 +9268,7 @@
 <vendorCode>D4205</vendorCode>
 <price>7516</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4205</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9296,7 +9313,7 @@
 <vendorCode>D4206</vendorCode>
 <price>12740</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4206</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9341,7 +9358,7 @@
 <vendorCode>C5363</vendorCode>
 <price>10192</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: C5363</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9386,7 +9403,7 @@
 <vendorCode>C5364</vendorCode>
 <price>10192</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: C5364</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9431,7 +9448,7 @@
 <vendorCode>C5365</vendorCode>
 <price>10192</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: C5365</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9476,7 +9493,7 @@
 <vendorCode>C5366</vendorCode>
 <price>5733</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: C5366</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9521,7 +9538,7 @@
 <vendorCode>B5086</vendorCode>
 <price>4332</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B5086</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9566,7 +9583,7 @@
 <vendorCode>B5087</vendorCode>
 <price>3888</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B5087</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9611,7 +9628,7 @@
 <vendorCode>B5094</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B5094</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9656,7 +9673,7 @@
 <vendorCode>B5095</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B5095</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9701,7 +9718,7 @@
 <vendorCode>B5096</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B5096</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9746,7 +9763,7 @@
 <vendorCode>D4273</vendorCode>
 <price>1435</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4273</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9791,7 +9808,7 @@
 <vendorCode>D4283</vendorCode>
 <price>1878</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4283</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9836,7 +9853,7 @@
 <vendorCode>D4284</vendorCode>
 <price>1878</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4284</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9881,7 +9898,7 @@
 <vendorCode>D4285</vendorCode>
 <price>1878</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4285</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9926,7 +9943,7 @@
 <vendorCode>D4282</vendorCode>
 <price>2232</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4282</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -9971,7 +9988,7 @@
 <vendorCode>D5598</vendorCode>
 <price>13443</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D5598</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10016,7 +10033,7 @@
 <vendorCode>D5599</vendorCode>
 <price>13443</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D5599</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10061,7 +10078,7 @@
 <vendorCode>D5600</vendorCode>
 <price>13443</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D5600</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10106,7 +10123,7 @@
 <vendorCode>D5597</vendorCode>
 <price>16772</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D5597</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10151,7 +10168,7 @@
 <vendorCode>D0684</vendorCode>
 <price>5927</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0684</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10196,7 +10213,7 @@
 <vendorCode>D0686</vendorCode>
 <price>5927</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0686</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10241,7 +10258,7 @@
 <vendorCode>D0687</vendorCode>
 <price>5927</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0687</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10286,7 +10303,7 @@
 <vendorCode>D0688</vendorCode>
 <price>5927</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0688</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10331,7 +10348,7 @@
 <vendorCode>D0689</vendorCode>
 <price>5927</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0689</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10376,7 +10393,7 @@
 <vendorCode>D3792</vendorCode>
 <price>7838</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D3792</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10421,7 +10438,7 @@
 <vendorCode>D3760</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D3760</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10466,7 +10483,7 @@
 <vendorCode>D3761</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D3761</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10511,7 +10528,7 @@
 <vendorCode>D3762</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D3762</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10556,7 +10573,7 @@
 <vendorCode>D3757</vendorCode>
 <price>14739</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D3757</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10601,7 +10618,7 @@
 <vendorCode>D3758</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D3758</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10646,7 +10663,7 @@
 <vendorCode>D3764</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D3764</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10691,7 +10708,7 @@
 <vendorCode>D4291</vendorCode>
 <price>33124</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4291</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10736,7 +10753,7 @@
 <vendorCode>D4292</vendorCode>
 <price>33124</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4292</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10781,7 +10798,7 @@
 <vendorCode>D4293</vendorCode>
 <price>33124</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4293</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10826,7 +10843,7 @@
 <vendorCode>D4294</vendorCode>
 <price>33124</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4294</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10871,7 +10888,7 @@
 <vendorCode>D4295</vendorCode>
 <price>33124</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4295</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10916,7 +10933,7 @@
 <vendorCode>D4290</vendorCode>
 <price>33124</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4290</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10961,7 +10978,7 @@
 <vendorCode>D4274</vendorCode>
 <price>1435</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4274</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11006,7 +11023,7 @@
 <vendorCode>D4277</vendorCode>
 <price>1435</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4277</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11051,7 +11068,7 @@
 <vendorCode>D4278</vendorCode>
 <price>1435</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D4278</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11096,7 +11113,7 @@
 <vendorCode>D0680</vendorCode>
 <price>2133</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0680</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11141,7 +11158,7 @@
 <vendorCode>D0681</vendorCode>
 <price>1911</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0681</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11186,7 +11203,7 @@
 <vendorCode>D0682</vendorCode>
 <price>1911</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0682</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11231,7 +11248,7 @@
 <vendorCode>D0683</vendorCode>
 <price>1911</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D0683</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11276,7 +11293,7 @@
 <vendorCode>D1259</vendorCode>
 <price>3949</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D1259</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11321,7 +11338,7 @@
 <vendorCode>D1260</vendorCode>
 <price>3695</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D1260</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11366,7 +11383,7 @@
 <vendorCode>D1261</vendorCode>
 <price>3695</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D1261</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11411,7 +11428,7 @@
 <vendorCode>D1262</vendorCode>
 <price>3695</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D1262</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11456,7 +11473,7 @@
 <vendorCode>D8113</vendorCode>
 <price>4298</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D8113</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11501,7 +11518,7 @@
 <vendorCode>D8157</vendorCode>
 <price>4813</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: D8157</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11546,7 +11563,7 @@
 <vendorCode>B2291</vendorCode>
 <price>3634</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: B2291</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11591,7 +11608,7 @@
 <vendorCode>A7974</vendorCode>
 <price>3944</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: A7974</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11636,7 +11653,7 @@
 <vendorCode>C2419</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: C2419</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11681,7 +11698,7 @@
 <vendorCode>C2420</vendorCode>
 <price>9555</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>19001648</categoryId>
 <description>Казахстан; Артикул: C2420</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11726,7 +11743,7 @@
 <vendorCode>A7643</vendorCode>
 <price>3761</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: A7643</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11771,7 +11788,7 @@
 <vendorCode>B0971</vendorCode>
 <price>2548</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: B0971</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11816,7 +11833,7 @@
 <vendorCode>36376</vendorCode>
 <price>2548</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36376</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11861,7 +11878,7 @@
 <vendorCode>36380</vendorCode>
 <price>5290</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36380</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11906,7 +11923,7 @@
 <vendorCode>36381</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36381</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11951,7 +11968,7 @@
 <vendorCode>36382</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36382</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -11996,7 +12013,7 @@
 <vendorCode>36383</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36383</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12041,7 +12058,7 @@
 <vendorCode>34183</vendorCode>
 <price>2548</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 34183</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12086,7 +12103,7 @@
 <vendorCode>43744</vendorCode>
 <price>3058</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 43744</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12131,7 +12148,7 @@
 <vendorCode>43749</vendorCode>
 <price>3058</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 43749</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12176,7 +12193,7 @@
 <vendorCode>41209</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 41209</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12221,7 +12238,7 @@
 <vendorCode>41211</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 41211</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12266,7 +12283,7 @@
 <vendorCode>41212</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 41212</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12311,7 +12328,7 @@
 <vendorCode>41213</vendorCode>
 <price>5223</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 41213</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12356,7 +12373,7 @@
 <vendorCode>A3559</vendorCode>
 <price>4525</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: A3559</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12401,7 +12418,7 @@
 <vendorCode>A3560</vendorCode>
 <price>5035</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: A3560</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12446,7 +12463,7 @@
 <vendorCode>B0969</vendorCode>
 <price>4143</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: B0969</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12491,7 +12508,7 @@
 <vendorCode>B0970</vendorCode>
 <price>5096</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: B0970</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12536,7 +12553,7 @@
 <vendorCode>36375</vendorCode>
 <price>3251</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36375</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12581,7 +12598,7 @@
 <vendorCode>36131</vendorCode>
 <price>2614</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36131</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12626,7 +12643,7 @@
 <vendorCode>36384</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36384</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12671,7 +12688,7 @@
 <vendorCode>36385</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36385</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12716,7 +12733,7 @@
 <vendorCode>36386</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36386</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12761,7 +12778,7 @@
 <vendorCode>36387</vendorCode>
 <price>13377</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: 36387</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12806,7 +12823,7 @@
 <vendorCode>D7230</vendorCode>
 <price>8153</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>12143799</categoryId>
 <description>Казахстан; Артикул: D7230</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12851,7 +12868,7 @@
 <vendorCode>33093</vendorCode>
 <price>2038</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>21164035</categoryId>
 <description>Казахстан; Артикул: 33093</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12896,7 +12913,7 @@
 <vendorCode>47993</vendorCode>
 <price>2675</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>21164035</categoryId>
 <description>Казахстан; Артикул: 47993</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12941,7 +12958,7 @@
 <vendorCode>45997</vendorCode>
 <price>2869</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>21164035</categoryId>
 <description>Казахстан; Артикул: 45997</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -12986,7 +13003,7 @@
 <vendorCode>48030</vendorCode>
 <price>2675</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>21164035</categoryId>
 <description>Казахстан; Артикул: 48030</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13031,7 +13048,7 @@
 <vendorCode>48022</vendorCode>
 <price>6115</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>21164035</categoryId>
 <description>Казахстан; Артикул: 48022</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13076,7 +13093,7 @@
 <vendorCode>A5215</vendorCode>
 <price>5351</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>15234845</categoryId>
 <description>Казахстан; Артикул: A5215</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13121,7 +13138,7 @@
 <vendorCode>B5407</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>9609427</categoryId>
 <description>Казахстан; Артикул: B5407</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13166,7 +13183,7 @@
 <vendorCode>18768</vendorCode>
 <price>1784</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14512075</categoryId>
 <description>Казахстан; Артикул: 18768</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13211,7 +13228,7 @@
 <vendorCode>C7753</vendorCode>
 <price>4398</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14938387</categoryId>
 <description>Казахстан; Артикул: C7753</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13256,7 +13273,7 @@
 <vendorCode>B3900</vendorCode>
 <price>3888</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14938387</categoryId>
 <description>Казахстан; Артикул: B3900</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13301,7 +13318,7 @@
 <vendorCode>B3902</vendorCode>
 <price>3761</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14938387</categoryId>
 <description>Казахстан; Артикул: B3902</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13346,7 +13363,7 @@
 <vendorCode>B3901</vendorCode>
 <price>4271</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14938387</categoryId>
 <description>Казахстан; Артикул: B3901</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13391,7 +13408,7 @@
 <vendorCode>C2401</vendorCode>
 <price>4016</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14938387</categoryId>
 <description>Казахстан; Артикул: C2401</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13436,7 +13453,7 @@
 <vendorCode>C2402</vendorCode>
 <price>4525</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14938387</categoryId>
 <description>Казахстан; Артикул: C2402</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13481,7 +13498,7 @@
 <vendorCode>C2403</vendorCode>
 <price>5417</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>14938387</categoryId>
 <description>Казахстан; Артикул: C2403</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13526,7 +13543,7 @@
 <vendorCode>A6326</vendorCode>
 <price>7007</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>23147085</categoryId>
 <description>Казахстан; Артикул: A6326</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13571,7 +13588,7 @@
 <vendorCode>A8008</vendorCode>
 <price>12103</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>23147085</categoryId>
 <description>Казахстан; Артикул: A8008</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13616,7 +13633,7 @@
 <vendorCode>A8009</vendorCode>
 <price>14080</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>23147085</categoryId>
 <description>Казахстан; Артикул: A8009</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13661,7 +13678,7 @@
 <vendorCode>42920</vendorCode>
 <price>9239</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 42920</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13706,7 +13723,7 @@
 <vendorCode>42921</vendorCode>
 <price>9239</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 42921</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13751,7 +13768,7 @@
 <vendorCode>42922</vendorCode>
 <price>9239</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 42922</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13796,7 +13813,7 @@
 <vendorCode>30986</vendorCode>
 <price>3440</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 30986</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13841,7 +13858,7 @@
 <vendorCode>21555</vendorCode>
 <price>4016</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 21555</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13886,7 +13903,7 @@
 <vendorCode>25558</vendorCode>
 <price>5733</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 25558</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13931,7 +13948,7 @@
 <vendorCode>18867</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 18867</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -13976,7 +13993,7 @@
 <vendorCode>36138</vendorCode>
 <price>3789</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 36138</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14021,7 +14038,7 @@
 <vendorCode>35803</vendorCode>
 <price>8281</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 35803</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14066,7 +14083,7 @@
 <vendorCode>28419</vendorCode>
 <price>7073</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 28419</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14111,7 +14128,7 @@
 <vendorCode>18847</vendorCode>
 <price>5733</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>13159825</categoryId>
 <description>Казахстан; Артикул: 18847</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14156,7 +14173,7 @@
 <vendorCode>D7523</vendorCode>
 <price>9555</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: D7523</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14201,7 +14218,7 @@
 <vendorCode>40402</vendorCode>
 <price>4016</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 40402</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14246,7 +14263,7 @@
 <vendorCode>48689</vendorCode>
 <price>4653</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 48689</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14291,7 +14308,7 @@
 <vendorCode>B6484</vendorCode>
 <price>3789</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: B6484</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14336,7 +14353,7 @@
 <vendorCode>C5393</vendorCode>
 <price>15288</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: C5393</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14381,7 +14398,7 @@
 <vendorCode>23067</vendorCode>
 <price>8918</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 23067</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14426,7 +14443,7 @@
 <vendorCode>18597</vendorCode>
 <price>6309</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 18597</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14471,7 +14488,7 @@
 <vendorCode>21800</vendorCode>
 <price>6243</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 21800</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14516,7 +14533,7 @@
 <vendorCode>32322</vendorCode>
 <price>8918</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 32322</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14561,7 +14578,7 @@
 <vendorCode>43044</vendorCode>
 <price>1911</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 43044</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14606,7 +14623,7 @@
 <vendorCode>43045</vendorCode>
 <price>1911</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 43045</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14651,7 +14668,7 @@
 <vendorCode>43046</vendorCode>
 <price>1911</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 43046</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14696,7 +14713,7 @@
 <vendorCode>43047</vendorCode>
 <price>1911</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 43047</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14741,7 +14758,7 @@
 <vendorCode>B2301</vendorCode>
 <price>6054</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: B2301</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14786,7 +14803,7 @@
 <vendorCode>B2302</vendorCode>
 <price>18473</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: B2302</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14831,7 +14848,7 @@
 <vendorCode>20431</vendorCode>
 <price>5545</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 20431</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14876,7 +14893,7 @@
 <vendorCode>A4404</vendorCode>
 <price>3888</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: A4404</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14921,7 +14938,7 @@
 <vendorCode>44657</vendorCode>
 <price>7134</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>24767884</categoryId>
 <description>Казахстан; Артикул: 44657</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -14966,7 +14983,7 @@
 <vendorCode>49731</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>22427195</categoryId>
 <description>Казахстан; Артикул: 49731</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -15011,7 +15028,7 @@
 <vendorCode>A6328</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>22427195</categoryId>
 <description>Казахстан; Артикул: A6328</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -15056,7 +15073,7 @@
 <vendorCode>A6329</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>22427195</categoryId>
 <description>Казахстан; Артикул: A6329</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -15101,7 +15118,7 @@
 <vendorCode>49733</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>22427195</categoryId>
 <description>Казахстан; Артикул: 49733</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -15146,7 +15163,7 @@
 <vendorCode>49732</vendorCode>
 <price>637</price>
 <currencyId>KZT</currencyId>
-<categoryId>9400000</categoryId>
+<categoryId>22427195</categoryId>
 <description>Казахстан; Артикул: 49732</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
