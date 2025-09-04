@@ -24,14 +24,16 @@ jobs:
 
       - name: Install deps
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
           pip install requests
 
       - name: Ensure keywords file
         run: |
+          set -euo pipefail
           mkdir -p docs
           if [ ! -f docs/nvprint_keywords.txt ]; then
-            cat > docs/nvprint_keywords.txt << 'EOF'
+cat > docs/nvprint_keywords.txt <<'EOF'
 Блок фотобарабана
 Картридж
 Печатающая головка
@@ -40,12 +42,13 @@ jobs:
 Тонер-туба
 EOF
           fi
-          echo "Using keywords:" && cat docs/nvprint_keywords.txt
+          echo "Using keywords:"
+          cat docs/nvprint_keywords.txt
 
       - name: Build NVPrint feed
         env:
-          # --- обязательные ---
-          NVPRINT_XML_URL: https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true
+          # --- источник XML ---
+          NVPRINT_XML_URL: "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
           NVPRINT_LOGIN: ${{ secrets.NVPRINT_LOGIN }}
           NVPRINT_PASSWORD: ${{ secrets.NVPRINT_PASSWORD }}
 
@@ -54,13 +57,11 @@ EOF
           HTTP_TIMEOUT: "60"
           MAX_PICTURES: "10"
 
+          # --- наличие: всё в наличии ---
+          NVPRINT_FORCE_AVAILABLE: "1"
+
           # --- фильтр по ключевым словам ---
           NVPRINT_KEYWORDS_FILE: docs/nvprint_keywords.txt
-          NVPRINT_DEBUG_FILTER: "0"
-
-          # --- наличие ---
-          NVPRINT_FORCE_AVAILABLE: "1"
-          NVPRINT_DEBUG_AVAIL: "0"
 
           # --- маппинг (опционально) ---
           NVPRINT_MAP_FILE: docs/nvprint_map.csv
@@ -70,7 +71,6 @@ EOF
           NVPRINT_REQUIRE_MAP: "0"
           NVPRINT_OUR_SKU_PREFIX: ""
           NVPRINT_PARAM_SUPPLIER_CODE: "SupplierCode"
-
         run: |
           set -euo pipefail
           python scripts/build_nvprint.py
@@ -79,6 +79,7 @@ EOF
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
+          set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/nvprint.yml docs/nvprint_source.xml docs/nvprint_keywords.txt || true
@@ -86,6 +87,6 @@ EOF
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update nvprint.yml (keywords filter + availability)"
+          git commit -m "Update nvprint.yml (keywords + force available)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
