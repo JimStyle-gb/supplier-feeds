@@ -37,9 +37,33 @@ jobs:
           OUTPUT_ENCODING: utf-8
           HTTP_TIMEOUT: "60"
           MAX_PICTURES: "10"
+
+          # ↓↓↓ опционально, если структура другая — раскомментируй и подставь
+          # NVPRINT_ITEM_XPATH: ".//Product"
+          # NVPRINT_NAME_TAGS: "Name,full_name,Наименование"
+          # NVPRINT_PRICE_KZT_TAGS: "price_kzt,ЦенаТенге"
+          # NVPRINT_PRICE_TAGS: "Price,Цена,amount"
+          # NVPRINT_SKU_TAGS: "articul,Артикул,sku,code,Код"
+          # NVPRINT_VENDOR_TAGS: "brand,Производитель,Бренд"
+          # NVPRINT_QTY_TAGS: "quantity,Остаток,stock,Amount"
+          # NVPRINT_DESC_TAGS: "Description,Описание"
+          # NVPRINT_URL_TAGS: "url,Link,Ссылка"
+          # NVPRINT_CAT_TAGS: "Category,Категория,Group"
+          # NVPRINT_SUBCAT_TAGS: "Subcategory,Подкатегория,Subgroup"
+          # NVPRINT_PIC_TAGS: "Image,Picture,Photo,Фото"
         run: |
           set -euo pipefail
           python scripts/build_nvprint.py
+
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nvprint-xml-debug
+          path: |
+            docs/nvprint_source.xml
+            docs/nvprint.yml
+          if-no-files-found: ignore
 
       - name: Commit & push
         env:
