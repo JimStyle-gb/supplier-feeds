@@ -9,12 +9,14 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     permissions:
       contents: write
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -25,57 +27,43 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Ensure docs dir
-        run: mkdir -p docs
-
-      - name: Build NVPrint feed (XML Basic Auth)
+      - name: Build NVPrint feed
         env:
-          NVPRINT_XML_URL:  https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml
-          NVPRINT_LOGIN:    ${{ secrets.NVPRINT_LOGIN }}
+          NVPRINT_XML_URL: https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true
+          NVPRINT_LOGIN: ${{ secrets.NVPRINT_LOGIN }}      # если API под BasicAuth
           NVPRINT_PASSWORD: ${{ secrets.NVPRINT_PASSWORD }}
           OUT_FILE: docs/nvprint.yml
           OUTPUT_ENCODING: utf-8
-          HTTP_TIMEOUT: "60"
-          MAX_PICTURES: "10"
+          HTTP_TIMEOUT: '60'
+          MAX_PICTURES: '10'
 
-          # ↓↓↓ опционально, если структура другая — раскомментируй и подставь
-          # NVPRINT_ITEM_XPATH: ".//Product"
-          # NVPRINT_NAME_TAGS: "Name,full_name,Наименование"
-          # NVPRINT_PRICE_KZT_TAGS: "price_kzt,ЦенаТенге"
-          # NVPRINT_PRICE_TAGS: "Price,Цена,amount"
-          # NVPRINT_SKU_TAGS: "articul,Артикул,sku,code,Код"
-          # NVPRINT_VENDOR_TAGS: "brand,Производитель,Бренд"
-          # NVPRINT_QTY_TAGS: "quantity,Остаток,stock,Amount"
-          # NVPRINT_DESC_TAGS: "Description,Описание"
-          # NVPRINT_URL_TAGS: "url,Link,Ссылка"
-          # NVPRINT_CAT_TAGS: "Category,Категория,Group"
-          # NVPRINT_SUBCAT_TAGS: "Subcategory,Подкатегория,Subgroup"
-          # NVPRINT_PIC_TAGS: "Image,Picture,Photo,Фото"
+          # --- опционально: если в XML другие имена тегов, раскомментируй и укажи свои ---
+          # NVPRINT_PICS_TAGS: 'Images,Pictures,Photos,Картинки,Изображения'
+          # NVPRINT_PIC_TAGS:  'Image,ImageURL,Photo,Picture,Картинка,Изображение'
+          # NVPRINT_DESC_TAGS: 'Описание,ПолноеОписание,Description,FullDescription'
+          # NVPRINT_PARAMS_BLOCK_TAGS: 'Характеристики,Specs,Attributes'
+          # NVPRINT_PARAM_NAME_TAGS:   'Имя,Name,Параметр'
+          # NVPRINT_PARAM_VALUE_TAGS:  'Значение,Value'
+          # NVPRINT_ITEM_XPATH: './/Товар'   # если нужно явно указать путь к товару
+
+          # --- обогащение сайтом (обычно не нужно при getallinfo=true) ---
+          # NVPRINT_ENRICH_FROM_SITE: '0'
         run: |
           set -euo pipefail
           python scripts/build_nvprint.py
 
-      - name: Upload debug artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: nvprint-xml-debug
-          path: |
-            docs/nvprint_source.xml
-            docs/nvprint.yml
-          if-no-files-found: ignore
-
-      - name: Commit & push
+      - name: Commit & push feed
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
+          set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/nvprint.yml || true
+          git add docs/nvprint.yml docs/nvprint_source.xml || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update nvprint.yml (XML build)"
+          git commit -m "Update nvprint.yml (XML getallinfo)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
