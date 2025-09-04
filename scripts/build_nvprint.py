@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 NVPrint: XML API (getallinfo=true) -> YML (KZT)
-— Тянем все товары (без цены → price=1).
+— Тянем все товары.
 — Фото/описание/характеристики — из XML.
-— Наличие: учитываем <Наличие Количество="905"> — если атрибут есть и непустой, считаем available="true";
-           число из атрибута идёт в qty (если 0 или не число — ставим qty=1 при available=true).
+— НАЛИЧИЕ: приоритетно по <Наличие Количество="...">:
+    * если атрибут 'Количество' (или похожий) присутствует — available=True
+    * qty берём из атрибута (если не число/0 — позже qty=1 при available=True)
+— Резервные правила (qty/status в других тегах) — только если <Наличие ...> не найден.
 — Маппинг артикулов (их код → наш) через CSV (опционально).
 — UTF-8 с BOM (utf-8-sig) для корректной кириллицы на GitHub Pages.
 """
@@ -16,7 +18,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import requests, xml.etree.ElementTree as ET
 from datetime import datetime
 
-# ---------- ENV: XML ----------
+# ---------- ENV ----------
 XML_URL      = os.getenv("NVPRINT_XML_URL", "").strip()
 NV_LOGIN     = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
 NV_PASSWORD  = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
@@ -24,8 +26,9 @@ NV_PASSWORD  = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") o
 OUT_FILE     = os.getenv("OUT_FILE", "docs/nvprint.yml")
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "60"))
 MAX_PICTURES = int(os.getenv("MAX_PICTURES", "10"))
+DEBUG_AVAIL  = os.getenv("NVPRINT_DEBUG_AVAIL", "0") == "1"
 
-# ---------- ENV: mapping ----------
+# mapping (опционально)
 MAP_FILE       = os.getenv("NVPRINT_MAP_FILE", "docs/nvprint_map.csv")
 MAP_DELIM      = os.getenv("NVPRINT_MAP_DELIM", ",")
 MAP_SUPPL_COL  = int(os.getenv("NVPRINT_MAP_SUPPLIER_COL", "0"))
@@ -34,7 +37,7 @@ REQUIRE_MAP    = os.getenv("NVPRINT_REQUIRE_MAP", "0") == "1"
 OUR_SKU_PREFIX = os.getenv("NVPRINT_OUR_SKU_PREFIX", "")
 SUPPL_PARAM    = os.getenv("NVPRINT_PARAM_SUPPLIER_CODE", "SupplierCode")
 
-# ---------- ENV: парсинг XML (опциональные кастом-теги) ----------
+# кастом-теги (опционально)
 ITEM_XPATH   = (os.getenv("NVPRINT_ITEM_XPATH") or "").strip()
 NAME_OVR     = os.getenv("NVPRINT_NAME_TAGS")
 PRICEKZT_OVR = os.getenv("NVPRINT_PRICE_KZT_TAGS")
@@ -55,7 +58,7 @@ PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.8)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.9)"}
 
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
@@ -166,7 +169,7 @@ PARAM_VALUE_TAGS  = split_tags(PARAM_VALUE_OVR,  ["Значение","Value","В
 IMG_RE = re.compile(r"https?://[^\s'\"<>]+?\.(?:jpg|jpeg|png|webp|gif)(?:\?[^\s'\"<>]*)?$", re.I)
 SEP_RE = re.compile(r"\s*(?:>|/|\\|\||→|»|›|—|-)\s*")
 
-# слова для статусов
+# статусы (резервное правило)
 POS_WORDS = ["есть","в наличии","вналичии","true","yes","да","available","instock","in stock","много","на складе","есть на складе","доступно","готов к отгрузке","положительный"]
 NEG_WORDS = ["нет","отсутств","false","no","нет в наличии","нет на складе","под заказ","preorder","ожидается","ожид","out of stock","законч","0 шт","0шт","отсутствует","недоступно"]
 
@@ -179,14 +182,32 @@ def parse_availability_text(s: Optional[str]) -> Optional[bool]:
         if w in t: return False
     return None
 
-def best_qty_and_availability(item: ET.Element) -> Tuple[int, Optional[bool]]:
+# ----- 1) приоритет: <Наличие Количество="..."> -----
+def nalichie_attr_qty(item: ET.Element) -> Tuple[Optional[float], bool]:
     """
-    Сканирует ВСЕ узлы и атрибуты.
-    Специальное правило: тег 'Наличие' с атрибутом 'Количество' —
-      если атрибут присутствует и НЕ пустой → available=True.
-      Число из атрибута идёт в qty (если не число/0 — потом qty=1 при available=True).
-    Плюс общий поиск по ключам QTY_KEYS/AVAIL_KEYS.
+    Возвращает (qty_numeric_or_None, has_attr)
+    has_attr=True, если найден ХОТЯ БЫ ОДИН тег Наличие (или похожий),
+    у которого есть атрибут 'Количество' / 'Кол-во' / 'К-во' / 'qty' / 'quantity' / 'count' / 'amount'
+    (без учёта регистра/дефисов/пробелов). В этом случае ТОВАР СЧИТАЕТСЯ В НАЛИЧИИ.
     """
+    best_qty: Optional[float] = None
+    found_attr = False
+    for ch in item.iter():
+        nm = strip_ns(ch.tag).lower()
+        if nm not in ("наличие","nalichie","availability"):
+            continue
+        for k, v in (ch.attrib or {}).items():
+            kl = re.sub(r"[\s\-_]+", "", k.lower())
+            if kl in ("количество","колво","кво","qty","quantity","count","amount") or "кол" in kl:
+                found_attr = True
+                val = (str(v) or "").strip()
+                n = parse_number(val)
+                if n is not None:
+                    best_qty = max(best_qty or 0.0, n)
+    return best_qty, found_attr
+
+# ----- 2) резерв: ищем qty/status в любых тегах/атрибутах -----
+def fallback_qty_and_avail(item: ET.Element) -> Tuple[int, Optional[bool]]:
     qty = 0.0
     avail_flag: Optional[bool] = None
     qkeys = tuple(QTY_KEYS)
@@ -195,60 +216,36 @@ def best_qty_and_availability(item: ET.Element) -> Tuple[int, Optional[bool]]:
     for ch in item.iter():
         nm = strip_ns(ch.tag).lower()
 
-        # --- Спец: <Наличие Количество="...">
-        if nm == "наличие" or nm == "nalichie" or nm == "availability":
-            # если любой атрибут 'Количество'/похожие есть и не пустой — считаем, что есть в наличии
-            for k, v in (ch.attrib or {}).items():
-                kl = k.lower()
-                val = (str(v) or "").strip()
-                if ("кол" in kl or kl in ("количество","кол-во","к-во","qty","quantity","count","amount")) and val != "":
-                    # есть значение → available=True
-                    avail_flag = True
-                    n = parse_number(val)
-                    if n is not None:
-                        qty = max(qty, n)
-
-        # --- ЧИСЛО: в тексте и атрибутах по ключам количества
         if any(k in nm for k in qkeys):
             if ch.text:
                 n = parse_number(ch.text)
-                if n is not None:
-                    qty = max(qty, n)
+                if n is not None: qty = max(qty, n)
             for v in (ch.attrib or {}).values():
                 n = parse_number(str(v))
-                if n is not None:
-                    qty = max(qty, n)
+                if n is not None: qty = max(qty, n)
 
-        # --- СТАТУС: по тексту/атрибутам по ключам наличия
         if any(k in nm for k in akeys):
             flag = parse_availability_text(ch.text or "")
-            if flag is True:
-                avail_flag = True
-            elif flag is False and avail_flag is None:
-                avail_flag = False
+            if flag is True: avail_flag = True
+            elif flag is False and avail_flag is None: avail_flag = False
             for v in (ch.attrib or {}).values():
                 flag = parse_availability_text(str(v))
-                if flag is True:
-                    avail_flag = True
-                elif flag is False and avail_flag is None:
-                    avail_flag = False
+                if flag is True: avail_flag = True
+                elif flag is False and avail_flag is None: avail_flag = False
 
-    qty_int = int(round(qty)) if qty and qty > 0 else 0
-    return qty_int, avail_flag
+    return (int(round(qty)) if qty and qty > 0 else 0), avail_flag
 
 # ---------- extract helpers ----------
 def extract_category_path(item: ET.Element) -> List[str]:
-    for t in CATPATH_TAGS:
+    for t in split_tags(CATPATH_OVR, ["category_path","full_path","path","путь"]):
         val = first_desc_text(item, [t])
         if val:
             parts = [p.strip() for p in SEP_RE.split(val) if p.strip()]
-            if parts:
-                return parts[:4]
-    cat  = first_desc_text(item, CAT_TAGS) or ""
-    scat = first_desc_text(item, SUBCAT_TAGS) or ""
+            if parts: return parts[:4]
+    cat  = first_desc_text(item, split_tags(CAT_OVR, ["РазделПрайса","category","категория","group","раздел"])) or ""
+    scat = first_desc_text(item, split_tags(SUBCAT_OVR, ["subcategory","подкатегория","subgroup","подраздел"])) or ""
     path = [p for p in [cat, scat] if p]
-    if path:
-        return path
+    if path: return path
     cand_texts = all_desc_texts_like(item, ["category","категор","group","раздел"])
     seen = set(); clean = []
     for v in cand_texts:
@@ -262,14 +259,14 @@ def extract_category_path(item: ET.Element) -> List[str]:
 
 def extract_pictures(item: ET.Element) -> List[str]:
     pics: List[str] = []
-    for t in PIC_SINGLE_TAGS:
+    for t in split_tags(PIC_OVR, ["Image","ImageURL","Photo","Picture","Картинка","Изображение"]):
         txt = first_desc_text(item, [t])
         if txt:
             for m in IMG_RE.findall(txt):
                 pics.append(m)
     def walk_and_collect(el: ET.Element):
         nm = strip_ns(el.tag).lower()
-        if any(k in nm for k in PIC_LIKE):
+        if any(k in nm for k in ["image","img","photo","picture","картин","изобр","фото"]):
             if el.text:
                 for m in IMG_RE.findall(el.text.strip()):
                     pics.append(m)
@@ -280,7 +277,7 @@ def extract_pictures(item: ET.Element) -> List[str]:
             walk_and_collect(ch)
     for node in item:
         nn = strip_ns(node.tag).lower()
-        if nn in [n.lower() for n in PICS_LIST_TAGS] or any(k in nn for k in PIC_LIKE):
+        if nn in [n.lower() for n in split_tags(PICS_OVR, ["Images","Pictures","Photos","Галерея","Картинки","Изображения"])] or any(k in nn for k in ["image","img","photo","picture","картин","изобр","фото"]):
             walk_and_collect(node)
     for ch in item.iter():
         if ch.text:
@@ -294,7 +291,7 @@ def extract_pictures(item: ET.Element) -> List[str]:
     return uniq[:MAX_PICTURES]
 
 def extract_description(item: ET.Element) -> Optional[str]:
-    txt = first_desc_text(item, DESC_TAGS)
+    txt = first_desc_text(item, split_tags(DESC_OVR, ["Описание","ПолноеОписание","Description","FullDescription","descr","short_description"]))
     if txt and len(txt.strip()) >= 10:
         return txt.strip()
     return None
@@ -304,7 +301,7 @@ def extract_params(item: ET.Element) -> Dict[str, str]:
     blocks: List[ET.Element] = []
     for node in item.iter():
         nm = strip_ns(node.tag).lower()
-        if nm in [b.lower() for b in PARAMS_BLOCK_TAGS] or "характер" in nm or "spec" in nm or "attrib" in nm:
+        if nm in [b.lower() for b in split_tags(PARAMS_BLOCK_OVR, ["Характеристики","Specs","Attributes","Параметры","ПараметрыТовара"])] or "характер" in nm or "spec" in nm or "attrib" in nm:
             blocks.append(node)
     def add_pair(k: str, v: str):
         k = (k or "").strip(": ")
@@ -316,12 +313,10 @@ def extract_params(item: ET.Element) -> Dict[str, str]:
         values: List[str] = []
         for ch in b.iter():
             nm = strip_ns(ch.tag).lower()
-            if nm in [p.lower() for p in PARAM_NAME_TAGS]:
-                if ch.text:
-                    names.append(ch.text.strip())
-            if nm in [p.lower() for p in PARAM_VALUE_TAGS]:
-                if ch.text:
-                    values.append(ch.text.strip())
+            if nm in [p.lower() for p in split_tags(PARAM_NAME_OVR, ["Имя","Name","Параметр","Показатель","Характеристика"])]:
+                if ch.text: names.append(ch.text.strip())
+            if nm in [p.lower() for p in split_tags(PARAM_VALUE_OVR, ["Значение","Value","Величина","ПараметрЗначение"])]:
+                if ch.text: values.append(ch.text.strip())
         for k, v in zip(names, values):
             add_pair(k, v)
         for ch in b.iter():
@@ -332,6 +327,13 @@ def extract_params(item: ET.Element) -> Dict[str, str]:
 
 # ---------- parse XML item ----------
 def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
+    NAME_TAGS = split_tags(NAME_OVR, ["НоменклатураКратко","Номенклатура","full_name","name","title","наименование"])
+    VENDOR_TAGS = split_tags(VENDOR_OVR, ["brand","бренд","вендор","producer","manufacturer","производитель"])
+    SKU_TAGS = split_tags(SKU_OVR, ["Артикул","articul","sku","vendorcode","кодтовара","code","код"])
+    PRICE_KZT_TAGS = split_tags(PRICEKZT_OVR, ["ЦенаТенге","price_kzt","ценатенге","цена_kzt","kzt"])
+    PRICE_ANY_TAGS = split_tags(PRICEANY_OVR, ["Цена","price","amount","value","цена"])
+    URL_TAGS = split_tags(URL_OVR, ["url","link","ссылка"])
+
     name = first_desc_text(item, ["НоменклатураКратко"]) or first_desc_text(item, NAME_TAGS)
     if not name:
         return None
@@ -343,35 +345,32 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     price = None
     for t in PRICE_KZT_TAGS:
         price = parse_number(first_desc_text(item, [t]))
-        if price is not None:
-            break
+        if price is not None: break
     if price is None:
         for t in PRICE_ANY_TAGS:
             price = parse_number(first_desc_text(item, [t]))
-            if price is not None:
-                break
+            if price is not None: break
     if price is None or price <= 0:
         price = 1.0
 
-    # наличие/количество — УМНЫЙ СКАН + спец-правило для <Наличие Количество="...">
-    qty_int, avail_flag = best_qty_and_availability(item)
-    if avail_flag is None:
-        available = qty_int > 0
+    # наличие/количество
+    qty_from_nal, has_nalichie = nalichie_attr_qty(item)
+    if has_nalichie:
+        available = True
+        qty_int = int(round(qty_from_nal)) if (qty_from_nal is not None and qty_from_nal > 0) else 1
+        source = "nalichie-attr"
     else:
-        available = avail_flag
-    if available and qty_int == 0:
-        qty_int = 1
+        qty_int, avail_flag = fallback_qty_and_avail(item)
+        available = (qty_int > 0) if (avail_flag is None) else bool(avail_flag)
+        if available and qty_int == 0:
+            qty_int = 1
+        source = "fallback"
+
+    if DEBUG_AVAIL:
+        print(f"[avail] {source} -> available={available}, qty={qty_int}")
 
     path = extract_category_path(item)
-
-    desc = extract_description(item)
-    if not desc:
-        base = first_desc_text(item, ["Номенклатура"]) or name
-        bits = [base]
-        if supplier_code:
-            bits.append(f"Артикул: {supplier_code}")
-        desc = "; ".join(bits)
-
+    desc = extract_description(item) or "; ".join([first_desc_text(item, ["Номенклатура"]) or name] + ([f"Артикул: {supplier_code}"] if supplier_code else []))
     pictures = extract_pictures(item)
     params = extract_params(item)
     url = first_desc_text(item, URL_TAGS) or ""
@@ -413,17 +412,14 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
         out.append(f"<offer id=\"{x(it['id'])}\" {attrs}>")
         out.append(f"<name>{x(it['name'])}</name>")
         out.append(f"<vendor>{x(it.get('vendor') or 'NV Print')}</vendor>")
-        if it.get("vendorCode"):
-            out.append(f"<vendorCode>{x(it['vendorCode'])}</vendorCode>")
+        if it.get("vendorCode"): out.append(f"<vendorCode>{x(it['vendorCode'])}</vendorCode>")
         out.append(f"<price>{int(round(float(it['price'])))}</price>")
         out.append("<currencyId>KZT</currencyId>")
         out.append(f"<categoryId>{cid}</categoryId>")
-        if it.get("url"):
-            out.append(f"<url>{x(it['url'])}</url>")
+        if it.get("url"): out.append(f"<url>{x(it['url'])}</url>")
         for u in (it.get("pictures") or [])[:MAX_PICTURES]:
             out.append(f"<picture>{x(u)}</picture>")
-        if it.get("description"):
-            out.append(f"<description>{x(it['description'])}</description>")
+        if it.get("description"): out.append(f"<description>{x(it['description'])}</description>")
         qty = int(it.get("qty") or 0)
         out.append(f"<quantity_in_stock>{qty}</quantity_in_stock>")
         out.append(f"<stock_quantity>{qty}</stock_quantity>")
@@ -441,7 +437,6 @@ def load_code_map(path: str, delim: str, c_sup: int, c_our: int) -> Dict[str, st
     if not path or not os.path.isfile(path):
         return m
     def norm(s: str) -> str: return (s or "").strip()
-    # пробуем обычный CSV, потом авто-детект
     try:
         with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
             reader = csv.reader(f, delimiter=delim)
@@ -453,13 +448,14 @@ def load_code_map(path: str, delim: str, c_sup: int, c_our: int) -> Dict[str, st
     except Exception:
         pass
     with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
-        sniffer = csv.Sniffer()
+        import csv as _csv
+        sniffer = _csv.Sniffer()
         sample = f.read(4096); f.seek(0)
         try:
             dialect = sniffer.sniff(sample, delimiters=",;\t|")
         except Exception:
-            dialect = csv.excel
-        reader = csv.reader(f, dialect)
+            dialect = _csv.excel
+        reader = _csv.reader(f, dialect)
         for row in reader:
             if not row or len(row) <= max(c_sup, c_our): continue
             sup = norm(row[c_sup]); our = norm(row[c_our])
@@ -468,10 +464,8 @@ def load_code_map(path: str, delim: str, c_sup: int, c_our: int) -> Dict[str, st
 
 # ---------- main ----------
 def main() -> int:
-    # 0) маппинг
     code_map = load_code_map(MAP_FILE, MAP_DELIM, MAP_SUPPL_COL, MAP_OUR_COL)
 
-    # 1) XML -> товары
     xml_bytes = fetch_xml_bytes(XML_URL)
     root = ET.fromstring(xml_bytes)
     items = guess_items(root)
@@ -480,10 +474,8 @@ def main() -> int:
     parsed: List[Dict[str,Any]] = []
     for el in items:
         it = parse_xml_item(el)
-        if not it:
-            continue
+        if not it: continue
 
-        # применяем маппинг: ИХ код → НАШ артикул
         supplier_code = (it.get("supplierCode") or "").strip()
         our_code = code_map.get(supplier_code, "").strip() if supplier_code else ""
         if our_code:
@@ -493,11 +485,10 @@ def main() -> int:
             it["vendorCode"] = our_full
         else:
             if REQUIRE_MAP:
-                continue  # строгий режим: только замапленные
+                continue
 
         parsed.append(it)
 
-    # 2) офферы/пути
     offers: List[Tuple[int, Dict[str,Any]]] = []
     paths: List[List[str]] = []
     for i, it in enumerate(parsed):
@@ -513,7 +504,7 @@ def main() -> int:
             "params": it.get("params") or {},
         }))
 
-    # 3) категории
+    # категории
     cat_map: Dict[Tuple[str,...], int] = {}
     categories: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
@@ -535,11 +526,16 @@ def main() -> int:
 
     offers = [(path_to_id(paths[i] if i < len(paths) else []), it) for i, (_, it) in enumerate(offers)]
 
-    # 4) запись
     xml = build_yml(categories, offers)
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8-sig", errors="ignore") as f:
         f.write(xml)
+
+    # сводка по наличию для самопроверки
+    if DEBUG_AVAIL:
+        total = len(offers)
+        av_cnt = sum(1 for _, it in offers if it.get("available"))
+        print(f"[nvprint] available TRUE in yml: {av_cnt}/{total}")
 
     print(f"[nvprint] done: {len(offers)} offers, {len(categories)} categories -> {OUT_FILE}")
     return 0
