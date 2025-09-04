@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 NVPrint (XML Basic Auth) → YML (Satu-совместимый)
-- URL: NVPRINT_XML_URL (пример: https://api.nvprint.ru/api/hs/getprice/.../?format=xml)
-- Basic Auth: NVPRINT_LOGIN / NVPRINT_PASSWORD (есть обратная совместимость с NVPRINT_XML_USER/PASS)
-- Без пагинации. Цена берем KZT, если есть явное поле; иначе любой <price> как KZT.
-- Остатки: quantity/stock/остаток → available/in_stock и *_quantity.
-- Категории: category/subcategory → дерево под корнем "NVPrint".
+- URL: NVPRINT_XML_URL
+- Basic Auth: NVPRINT_LOGIN / NVPRINT_PASSWORD  (поддерживаются также NVPRINT_XML_USER/PASS)
+- Сохраняет сырой ответ в docs/nvprint_source.xml.
+- Ищет товары на любой вложенности; можно задать свой XPath через NVPRINT_ITEM_XPATH (например: ".//Product").
+- Имена полей можно задать через ENV (см. ниже), иначе используются разумные наборы синонимов (ru/en).
 """
 
 from __future__ import annotations
 import os, re, sys, html, hashlib
 from typing import Any, Dict, List, Optional, Tuple
-import requests
-import xml.etree.ElementTree as ET
+import requests, xml.etree.ElementTree as ET
 from datetime import datetime
 
 # -------- ENV --------
 XML_URL      = os.getenv("NVPRINT_XML_URL", "").strip()
-# поддерживаем оба варианта имен:
 NV_LOGIN     = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
 NV_PASSWORD  = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
 
@@ -26,22 +24,34 @@ ENCODING     = (os.getenv("OUTPUT_ENCODING") or "utf-8").lower()
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "60"))
 MAX_PICTURES = int(os.getenv("MAX_PICTURES", "10"))
 
+# КАСТОМНЫЕ ПЕРЕОПРЕДЕЛЕНИЯ (через запятую)
+ITEM_XPATH   = (os.getenv("NVPRINT_ITEM_XPATH") or "").strip()  # пример: ".//Product" или ".//item"
+NAME_OVR     = os.getenv("NVPRINT_NAME_TAGS")      # "Name,full_name,Наименование"
+PRICEKZT_OVR = os.getenv("NVPRINT_PRICE_KZT_TAGS") # "price_kzt,ЦенаТенге"
+PRICEANY_OVR = os.getenv("NVPRINT_PRICE_TAGS")     # "price,Цена,amount"
+SKU_OVR      = os.getenv("NVPRINT_SKU_TAGS")
+VENDOR_OVR   = os.getenv("NVPRINT_VENDOR_TAGS")
+QTY_OVR      = os.getenv("NVPRINT_QTY_TAGS")
+DESC_OVR     = os.getenv("NVPRINT_DESC_TAGS")
+URL_OVR      = os.getenv("NVPRINT_URL_TAGS")
+CAT_OVR      = os.getenv("NVPRINT_CAT_TAGS")
+SUBCAT_OVR   = os.getenv("NVPRINT_SUBCAT_TAGS")
+PIC_OVR      = os.getenv("NVPRINT_PIC_TAGS")
+BARCODE_OVR  = os.getenv("NVPRINT_BARCODE_TAGS")
+
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/1.1)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/1.3)"}
 
 # -------- helpers --------
-def x(s: str) -> str:
-    return html.escape((s or "").strip())
-
+def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
     h = hashlib.md5((text or "").encode("utf-8", errors="ignore")).hexdigest()[:6]
     return prefix + int(h, 16)
 
 def fetch_xml_bytes(url: str) -> bytes:
-    if not url:
-        raise RuntimeError("NVPRINT_XML_URL пуст. Укажи ссылку на XML.")
+    if not url: raise RuntimeError("NVPRINT_XML_URL пуст.")
     auth = (NV_LOGIN, NV_PASSWORD) if (NV_LOGIN or NV_PASSWORD) else None
     r = requests.get(url, auth=auth, headers=UA, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
@@ -50,26 +60,10 @@ def fetch_xml_bytes(url: str) -> bytes:
 def strip_ns(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
 
-def first_text(item: ET.Element, name_candidates: List[str]) -> Optional[str]:
-    want = {n.lower() for n in name_candidates}
-    for ch in list(item):
-        nm = strip_ns(ch.tag).lower()
-        if nm in want:
-            txt = (ch.text or "").strip()
-            if txt:
-                return txt
-    return None
-
-def all_texts_like(item: ET.Element, substr_candidates: List[str]) -> List[str]:
-    out = []
-    subs = [s.lower() for s in substr_candidates]
-    for ch in list(item):
-        nm = strip_ns(ch.tag).lower()
-        if any(s in nm for s in subs):
-            val = (ch.text or "").strip()
-            if val:
-                out.append(val)
-    return out
+def split_tags(s: Optional[str], defaults: List[str]) -> List[str]:
+    if not s: return defaults
+    parts = [p.strip() for p in re.split(r"[,|;]+", s) if p.strip()]
+    return parts or defaults
 
 def parse_number(s: Optional[str]) -> Optional[float]:
     if not s: return None
@@ -79,92 +73,108 @@ def parse_number(s: Optional[str]) -> Optional[float]:
     try: return float(m.group(0))
     except: return None
 
+# поиск ТЕКСТА по ПОДПОБОРУ ИМЁН ТЕГОВ среди ВСЕХ потомков item
+def first_desc_text(item: ET.Element, names: List[str]) -> Optional[str]:
+    names_l = {n.lower() for n in names}
+    for ch in item.iter():
+        nm = strip_ns(ch.tag).lower()
+        if nm in names_l:
+            txt = (ch.text or "").strip() if ch.text else ""
+            if txt:
+                return txt
+    return None
+
+def all_desc_texts_like(item: ET.Element, substrs: List[str]) -> List[str]:
+    subs = [s.lower() for s in substrs]
+    out: List[str] = []
+    for ch in item.iter():
+        nm = strip_ns(ch.tag).lower()
+        if any(s in nm for s in subs):
+            txt = (ch.text or "").strip() if ch.text else ""
+            if txt:
+                out.append(txt)
+    return out
+
 def guess_items(root: ET.Element) -> List[ET.Element]:
+    # 1) Явный XPath из ENV
+    if ITEM_XPATH:
+        items = root.findall(ITEM_XPATH)
+        if items: return items
+    # 2) типовые узлы
     cands = root.findall(".//item") + root.findall(".//row") + root.findall(".//product")
     if cands: return cands
-    out = []
+    # 3) эвристика: узлы, у которых где-то в потомках есть name и price
+    NAME_TAGS = split_tags(NAME_OVR, ["full_name","fullname","name","наименование","title"])
+    PRICE_ANY_TAGS = split_tags(PRICEANY_OVR, ["price","цена","amount","value"])
+    out: List[ET.Element] = []
     for node in root.iter():
-        ch = list(node)
-        if not ch: continue
-        has_name = any(strip_ns(c.tag).lower() in {"name","наименование","full_name","fullname","title"} for c in ch)
-        has_price = any("price" in strip_ns(c.tag).lower() or "цена" in strip_ns(c.tag).lower() for c in ch)
-        if has_name and has_price:
+        # пропустим слишком верхние узлы, чтобы не взять корень
+        has_name = first_desc_text(node, NAME_TAGS) is not None
+        if not has_name: continue
+        has_price = first_desc_text(node, PRICE_ANY_TAGS) is not None
+        if has_price:
             out.append(node)
     return out
 
-# -------- mapping --------
-NAME_TAGS       = ["full_name","fullname","name","наименование","title"]
-VENDOR_TAGS     = ["brand","бренд","вендор","producer","manufacturer","производитель"]
-SKU_TAGS        = ["articul","артикул","sku","code","код","vendorcode","кодтовара"]
-PRICE_KZT_TAGS  = ["price_kzt","ценатенге","цена_kzt","kzt","pricekzt","price_kz","price_kaz"]
-PRICE_ANY_TAGS  = ["price","цена","amount","value"]
-URL_TAGS        = ["url","link","ссылка"]
-DESC_TAGS       = ["description","описание","descr","short_description"]
-CAT_TAGS        = ["category","категория","group","группа","section","раздел"]
-SUBCAT_TAGS     = ["subcategory","подкатегория","subgroup","subsection","подраздел"]
-PIC_LIKE        = ["image","img","picture","photo","фото","imageurl","image_url","photourl"]
-QTY_TAGS        = ["quantity","qty","остаток","stock","amount","наличие","на_складе","store_amount"]
-BARCODE_TAGS    = ["barcode","ean","штрихкод","ean13","ean-13"]
+# -------- default tag sets (перекрываются ENV) --------
+NAME_TAGS       = split_tags(NAME_OVR,      ["full_name","fullname","name","наименование","title"])
+VENDOR_TAGS     = split_tags(VENDOR_OVR,    ["brand","бренд","вендор","producer","manufacturer","производитель"])
+SKU_TAGS        = split_tags(SKU_OVR,       ["articul","артикул","sku","code","код","vendorcode","кодтовара"])
+PRICE_KZT_TAGS  = split_tags(PRICEKZT_OVR,  ["price_kzt","ценатенге","цена_kzt","kzt","pricekzt","price_kz","price_kaz"])
+PRICE_ANY_TAGS  = split_tags(PRICEANY_OVR,  ["price","цена","amount","value"])
+URL_TAGS        = split_tags(URL_OVR,       ["url","link","ссылка"])
+DESC_TAGS       = split_tags(DESC_OVR,      ["description","описание","descr","short_description"])
+CAT_TAGS        = split_tags(CAT_OVR,       ["category","категория","group","группа","section","раздел"])
+SUBCAT_TAGS     = split_tags(SUBCAT_OVR,    ["subcategory","подкатегория","subgroup","subsection","подраздел"])
+PIC_LIKE        = split_tags(PIC_OVR,       ["image","img","picture","photo","фото","imageurl","image_url","photourl"])
+QTY_TAGS        = split_tags(QTY_OVR,       ["quantity","qty","остаток","stock","amount","наличие","на_складе","store_amount"])
+BARCODE_TAGS    = split_tags(BARCODE_OVR,   ["barcode","ean","штрихкод","ean13","ean-13"])
 
 def parse_item(item: ET.Element) -> Optional[Dict[str, Any]]:
-    name = first_text(item, NAME_TAGS)
+    name = first_desc_text(item, NAME_TAGS)
     if not name: return None
 
-    vendor = first_text(item, VENDOR_TAGS) or "NV Print"
-    vendor_code = first_text(item, SKU_TAGS)
+    vendor = first_desc_text(item, VENDOR_TAGS) or "NV Print"
+    vendor_code = first_desc_text(item, SKU_TAGS)
 
     price = None
     for t in PRICE_KZT_TAGS:
-        v = first_text(item, [t])
-        price = parse_number(v)
+        price = parse_number(first_desc_text(item, [t]))
         if price is not None: break
     if price is None:
         for t in PRICE_ANY_TAGS:
-            v = first_text(item, [t])
-            price = parse_number(v)
+            price = parse_number(first_desc_text(item, [t]))
             if price is not None: break
     if price is None or price <= 0: return None
 
-    url = first_text(item, URL_TAGS) or ""
+    url = first_desc_text(item, URL_TAGS) or ""
 
-    pics = all_texts_like(item, PIC_LIKE)
+    pics = all_desc_texts_like(item, PIC_LIKE)
     pics = [p for p in pics if re.search(r"\.(jpg|jpeg|png|webp)(\?|$)", p, re.I)]
-    pics = list(dict.fromkeys(pics))
+    pics = list(dict.fromkeys(pics))[:MAX_PICTURES]
 
-    desc = first_text(item, DESC_TAGS)
+    desc = first_desc_text(item, DESC_TAGS)
     if not desc:
         bits = [name]
         if vendor_code: bits.append(f"Артикул: {vendor_code}")
-        bc = first_text(item, BARCODE_TAGS)
+        bc = first_desc_text(item, BARCODE_TAGS)
         if bc: bits.append(f"Штрихкод: {bc}")
         desc = "; ".join(bits)
 
     qty = 0.0
     for t in QTY_TAGS:
-        v = first_text(item, [t])
-        n = parse_number(v)
-        if n is not None:
-            qty = max(qty, n)
+        n = parse_number(first_desc_text(item, [t]))
+        if n is not None: qty = max(qty, n)
     available = qty > 0
     in_stock = available
     qty_int = int(round(qty)) if qty and qty > 0 else 0
 
-    cat  = first_text(item, CAT_TAGS) or ""
-    scat = first_text(item, SUBCAT_TAGS) or ""
+    cat  = first_desc_text(item, CAT_TAGS) or ""
+    scat = first_desc_text(item, SUBCAT_TAGS) or ""
     path = [p for p in [cat, scat] if p]
 
-    # собрать остальные простые поля в <param>
-    mapped = set([*NAME_TAGS, *VENDOR_TAGS, *SKU_TAGS, *PRICE_KZT_TAGS, *PRICE_ANY_TAGS,
-                  *URL_TAGS, *DESC_TAGS, *CAT_TAGS, *SUBCAT_TAGS, *BARCODE_TAGS])
+    # простые <param> из ПЛОСКИХ текстовых узлов не тянем, т.к. структура неизвестна
     params: Dict[str,str] = {}
-    for ch in list(item):
-        key = strip_ns(ch.tag)
-        lkey = key.lower()
-        if lkey in mapped: continue
-        txt = (ch.text or "").strip()
-        if not txt or len(txt) > 500: continue
-        if list(ch): continue
-        params[key] = txt
 
     return {
         "name": name,
@@ -172,7 +182,7 @@ def parse_item(item: ET.Element) -> Optional[Dict[str, Any]]:
         "vendorCode": vendor_code or "",
         "price": price,
         "url": url,
-        "pictures": pics[:MAX_PICTURES],
+        "pictures": pics,
         "description": desc,
         "qty": qty_int,
         "path": path,
@@ -205,7 +215,7 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
         out.append("<currencyId>KZT</currencyId>")
         out.append(f"<categoryId>{cid}</categoryId>")
         if it.get("url"): out.append(f"<url>{x(it['url'])}</url>")
-        for u in (it.get("pictures") or [])[:MAX_PICTURES]:
+        for u in (it.get("pictures") or []):
             out.append(f"<picture>{x(u)}</picture>")
         if it.get("description"):
             out.append(f"<description>{x(it['description'])}</description>")
@@ -221,14 +231,21 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
     return "\n".join(out)
 
 def main() -> int:
-    # 1) тянем XML
+    # 1) тянем XML и сохраняем для дебага
     xml_bytes = fetch_xml_bytes(XML_URL)
+    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+    try:
+        with open("docs/nvprint_source.xml","wb") as f:
+            f.write(xml_bytes[:10_000_000])  # до 10 МБ
+    except Exception:
+        pass
+
     # 2) парсим
     root = ET.fromstring(xml_bytes)
-    # 3) находим товарные элементы
+
+    # 3) ищем "товары"
     items = guess_items(root)
-    if not items:
-        print("WARN: не нашли товарных элементов в XML (проверь структуру/логин/пароль)", file=sys.stderr)
+    print(f"[nvprint] guessed items: {len(items)}")
 
     # 4) собираем офферы
     parsed: List[Dict[str,Any]] = []
@@ -283,12 +300,13 @@ def main() -> int:
         offers_final.append((path_to_id(paths[i] if i < len(paths) else []), it))
 
     # 6) запись
-    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     xml = build_yml(categories, offers_final)
     with open(OUT_FILE, "w", encoding=("utf-8" if ENCODING.startswith("utf") else "cp1251"), errors="ignore") as f:
         f.write(xml)
 
     print(f"[nvprint-xml] done: {len(offers_final)} offers, {len(categories)} categories -> {OUT_FILE} (encoding={ENCODING})")
+    if not offers_final:
+        print("WARN: товаров не собрано. Проверь docs/nvprint_source.xml и при необходимости задайте NVPRINT_ITEM_XPATH/…_TAGS.", file=sys.stderr)
     return 0
 
 if __name__ == "__main__":
