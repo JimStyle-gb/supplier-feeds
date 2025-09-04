@@ -4,10 +4,10 @@
 NVPrint: XML API (getallinfo=true) -> YML (KZT)
 — Тянем все товары.
 — Фото/описание/характеристики — из XML.
-— НАЛИЧИЕ: приоритетно по <Наличие Количество="...">:
-    * если атрибут 'Количество' (или похожий) присутствует — available=True
-    * qty берём из атрибута (если не число/0 — позже qty=1 при available=True)
-— Резервные правила (qty/status в других тегах) — только если <Наличие ...> не найден.
+— НАЛИЧИЕ:
+    * по умолчанию: <Наличие Количество="..."> => available=True; qty из атрибута.
+    * fallback: ищем qty/status в других тегах/атрибутах.
+    * ПРИНУДИТЕЛЬНО: если NVPRINT_FORCE_AVAILABLE="1" => все товары available=True, qty>=1.
 — Маппинг артикулов (их код → наш) через CSV (опционально).
 — UTF-8 с BOM (utf-8-sig) для корректной кириллицы на GitHub Pages.
 """
@@ -27,6 +27,7 @@ OUT_FILE     = os.getenv("OUT_FILE", "docs/nvprint.yml")
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "60"))
 MAX_PICTURES = int(os.getenv("MAX_PICTURES", "10"))
 DEBUG_AVAIL  = os.getenv("NVPRINT_DEBUG_AVAIL", "0") == "1"
+FORCE_AVAIL  = os.getenv("NVPRINT_FORCE_AVAILABLE", "0") == "1"   # <<< НОВОЕ
 
 # mapping (опционально)
 MAP_FILE       = os.getenv("NVPRINT_MAP_FILE", "docs/nvprint_map.csv")
@@ -58,7 +59,7 @@ PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.9)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/3.0)"}
 
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
@@ -169,7 +170,6 @@ PARAM_VALUE_TAGS  = split_tags(PARAM_VALUE_OVR,  ["Значение","Value","В
 IMG_RE = re.compile(r"https?://[^\s'\"<>]+?\.(?:jpg|jpeg|png|webp|gif)(?:\?[^\s'\"<>]*)?$", re.I)
 SEP_RE = re.compile(r"\s*(?:>|/|\\|\||→|»|›|—|-)\s*")
 
-# статусы (резервное правило)
 POS_WORDS = ["есть","в наличии","вналичии","true","yes","да","available","instock","in stock","много","на складе","есть на складе","доступно","готов к отгрузке","положительный"]
 NEG_WORDS = ["нет","отсутств","false","no","нет в наличии","нет на складе","под заказ","preorder","ожидается","ожид","out of stock","законч","0 шт","0шт","отсутствует","недоступно"]
 
@@ -184,12 +184,6 @@ def parse_availability_text(s: Optional[str]) -> Optional[bool]:
 
 # ----- 1) приоритет: <Наличие Количество="..."> -----
 def nalichie_attr_qty(item: ET.Element) -> Tuple[Optional[float], bool]:
-    """
-    Возвращает (qty_numeric_or_None, has_attr)
-    has_attr=True, если найден ХОТЯ БЫ ОДИН тег Наличие (или похожий),
-    у которого есть атрибут 'Количество' / 'Кол-во' / 'К-во' / 'qty' / 'quantity' / 'count' / 'amount'
-    (без учёта регистра/дефисов/пробелов). В этом случае ТОВАР СЧИТАЕТСЯ В НАЛИЧИИ.
-    """
     best_qty: Optional[float] = None
     found_attr = False
     for ch in item.iter():
@@ -212,10 +206,8 @@ def fallback_qty_and_avail(item: ET.Element) -> Tuple[int, Optional[bool]]:
     avail_flag: Optional[bool] = None
     qkeys = tuple(QTY_KEYS)
     akeys = tuple(AVAIL_KEYS)
-
     for ch in item.iter():
         nm = strip_ns(ch.tag).lower()
-
         if any(k in nm for k in qkeys):
             if ch.text:
                 n = parse_number(ch.text)
@@ -223,7 +215,6 @@ def fallback_qty_and_avail(item: ET.Element) -> Tuple[int, Optional[bool]]:
             for v in (ch.attrib or {}).values():
                 n = parse_number(str(v))
                 if n is not None: qty = max(qty, n)
-
         if any(k in nm for k in akeys):
             flag = parse_availability_text(ch.text or "")
             if flag is True: avail_flag = True
@@ -232,7 +223,6 @@ def fallback_qty_and_avail(item: ET.Element) -> Tuple[int, Optional[bool]]:
                 flag = parse_availability_text(str(v))
                 if flag is True: avail_flag = True
                 elif flag is False and avail_flag is None: avail_flag = False
-
     return (int(round(qty)) if qty and qty > 0 else 0), avail_flag
 
 # ---------- extract helpers ----------
@@ -365,6 +355,13 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
         if available and qty_int == 0:
             qty_int = 1
         source = "fallback"
+
+    # ПРИНУДИТЕЛЬНЫЙ РЕЖИМ: все товары в наличии
+    if FORCE_AVAIL:
+        available = True
+        if qty_int <= 0:
+            qty_int = 1
+        source = "forced"
 
     if DEBUG_AVAIL:
         print(f"[avail] {source} -> available={available}, qty={qty_int}")
@@ -531,7 +528,6 @@ def main() -> int:
     with open(OUT_FILE, "w", encoding="utf-8-sig", errors="ignore") as f:
         f.write(xml)
 
-    # сводка по наличию для самопроверки
     if DEBUG_AVAIL:
         total = len(offers)
         av_cnt = sum(1 for _, it in offers if it.get("available"))
