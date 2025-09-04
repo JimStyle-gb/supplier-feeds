@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<yml_catalog date="2025-09-04 10:07">
+<yml_catalog date="2025-09-04 10:32">
 <shop>
 <name>nvprint</name>
 <currencies><currency id="KZT" rate="1" /></currencies>
@@ -2334,6 +2334,45 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-725-X10-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-725-X10-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-725-X10-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-725-X10-VRT для Canon i-Sensys 6000/ 6000B/ 6020/ 6020B/ 6030 / 6030B/ 6030w/ MF 3010 (1600k) (10 шт); Артикул: NV-725-X10-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-725-X2-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-725-X2-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-725-X2-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-725-X2-VRT для Canon i-Sensys 6000/ 6000B/ 6020/ 6020B/ 6030 / 6030B/ 6030w/ MF 3010 (1600k) (2 шт); Артикул: NV-725-X2-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-725-X6-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-725-X6-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-725-X6-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-725-X6-VRT для Canon i-Sensys 6000/ 6000B/ 6020/ 6020B/ 6030 / 6030B/ 6030w/ MF 3010 (1600k) (6 шт); Артикул: NV-725-X6-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-728-SET3"  available="false" in_stock="false">
 <name>Картридж NVP совместимый NV-728-SET3</name>
 <vendor>NV Print</vendor>
@@ -2919,6 +2958,45 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-CF259XNC-X10-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-CF259X-X10-VRT (БЕЗ ЧИПА)</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-CF259XNC-X10-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-CF259X-X10-VRT (БЕЗ ЧИПА) для HP Laser Jet Pro M304/M404/M428 (10000k) (10 шт); Артикул: NV-CF259XNC-X10-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-CF259XNC-X2-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-CF259X-X2-VRT (БЕЗ ЧИПА)</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-CF259XNC-X2-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-CF259X-X2-VRT (БЕЗ ЧИПА) для HP Laser Jet Pro M304/M404/M428 (10000k) (2 шт); Артикул: NV-CF259XNC-X2-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-CF259XNC-X6-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-CF259X-X6-VRT (БЕЗ ЧИПА)</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-CF259XNC-X6-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-CF259X-X6-VRT (БЕЗ ЧИПА) для HP Laser Jet Pro M304/M404/M428 (10000k) (6 шт); Артикул: NV-CF259XNC-X6-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-CF280A-SET2"  available="false" in_stock="false">
 <name>Картридж NVP совместимый NV-CF280A-SET2</name>
 <vendor>NV Print</vendor>
@@ -3058,6 +3136,58 @@
 <categoryId>9400000</categoryId>
 <picture>http://nvprint.ru/promo/photo/NV-CF283X-737-SET2.jpg</picture>
 <description>Картридж NVP совместимый NV-CF283X/NV-737-SET2 универсальные для HP/Canon LaserJet Pro M201dw/ M201n/ M225dn/ M225dw/ M225rdn/ LBP 151dw i-Sensys/ MF210/ 211/ 212/ 212w/ 216/ 216n/ 217/ 217w/ 220/ 226/ 226dn/ 229 / 229dw/ 231/ 232w/ 237w/ 244dw/ 247dw/ 249dw (2200k) (2 шт); Артикул: NV-CF283X/737-SET2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-CLT-C809SC"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-CLT-C809S Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-CLT-C809SC</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-CLT-C809S Cyan для Samsung CLX-9201/9251/9301 (15000к); Артикул: NV-CLT-C809SC</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-CLT-K809SBk"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-CLT-K809S Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-CLT-K809SBk</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-CLT-K809S Black для Samsung CLX-9201/9251/9301 (20000к); Артикул: NV-CLT-K809SBk</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-CLT-M809SM"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-CLT-M809S Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-CLT-M809SM</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-CLT-M809S Magenta для Samsung CLX-9201/9251/9301 (15000к); Артикул: NV-CLT-M809SM</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-CLT-Y809SY"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-CLT-Y809S Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-CLT-Y809SY</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-CLT-Y809S Yellow для Samsung CLX-9201/9251/9301 (15000к); Артикул: NV-CLT-Y809SY</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -3240,6 +3370,45 @@
 <categoryId>9400000</categoryId>
 <picture>http://nvprint.ru/promo/photo/NV-MLTD115L-SET2.jpg</picture>
 <description>Картридж NVP совместимый NV-MLT-D115L-SET2 для Samsung Xpress M2620/ M2620D/ M2820/ M2820DW/ M2820ND/ M2830/ M2830DW/ M2870/ M2870FD/ M2870FW/ M2880FW (3000k) (2 шт); Артикул: NV-MLTD115L-SET2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-PC211EV-X10-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-PC211EV-X10-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-PC211EV-X10-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-PC211EV-X10-VRT для Pantum M6500W/P2200/P2207/P2507/P2500W/M6500/M6550/M6607 (1600k) (10 шт); Артикул: NV-PC211EV-X10-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-PC211EV-X2-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-PC211EV-X2-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-PC211EV-X2-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-PC211EV-X2-VRT для Pantum M6500W/P2200/P2207/P2507/P2500W/M6500/M6550/M6607 (1600k) (2 шт); Артикул: NV-PC211EV-X2-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-PC211EV-X6-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-PC211EV-X6-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-PC211EV-X6-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-PC211EV-X6-VRT для Pantum M6500W/P2200/P2207/P2507/P2500W/M6500/M6550/M6607 (1600k) (6 шт); Артикул: NV-PC211EV-X6-VRT</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -3608,6 +3777,45 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-TL-5120X-X10-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-TL-5120X-X10-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-TL-5120X-X10-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-TL-5120X-X10-VRT для Pantum BP5100DN/BP5100DW/BM5100ADN/BM5100ADW/BM5100FDN/BM5100FDW (15000k) (10 шт); Артикул: NV-TL-5120X-X10-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-TL-5120X-X2-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-TL-5120X-X2-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-TL-5120X-X2-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-TL-5120X-X2-VRT для Pantum BP5100DN/BP5100DW/BM5100ADN/BM5100ADW/BM5100FDN/BM5100FDW (15000k) (2 шт); Артикул: NV-TL-5120X-X2-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-TL-5120X-X6-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-TL-5120X-X6-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-TL-5120X-X6-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVP совместимый NV-TL-5120X-X6-VRT для Pantum BP5100DN/BP5100DW/BM5100ADN/BM5100ADW/BM5100FDN/BM5100FDW (15000k) (6 шт); Артикул: NV-TL-5120X-X6-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-TN-1075T-SET10"  available="false" in_stock="false">
 <name>Картридж NVP совместимый NV-TN-1075T-SET10</name>
 <vendor>NV Print</vendor>
@@ -3802,6 +4010,45 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-W1106A-X10-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-W1106A-X10-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-W1106A-X10-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер-картридж NVP совместимый NV-W1106A-X10-VRT для HP 107a/107w/135w/135a/137fnw (1000k) (10 шт); Артикул: NV-W1106A-X10-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-W1106A-X2-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-W1106A-X2-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-W1106A-X2-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер-картридж NVP совместимый NV-W1106A-X2-VRT для HP 107a/107w/135w/135a/137fnw (1000k) (2 шт); Артикул: NV-W1106A-X2-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-W1106A-X6-VRT"  available="false" in_stock="false">
+<name>Картридж NVP совместимый NV-W1106A-X6-VRT</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-W1106A-X6-VRT</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер-картридж NVP совместимый NV-W1106A-X6-VRT для HP 107a/107w/135w/135a/137fnw (1000k) (6 шт); Артикул: NV-W1106A-X6-VRT</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-CEXV40X-SET2"  available="false" in_stock="false">
 <name>Картридж NVР совместимый NV-C-EXV40X-SET2</name>
 <vendor>NV Print</vendor>
@@ -3902,6 +4149,19 @@
 <categoryId>9400000</categoryId>
 <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
 <description>Комплект 2 шт.  Струйных картриджей NVP CLI-426PBk (NV-4556B001) Black для Canon Pixma iP4840, MG5140, MG6140, MG8140 (10.5 мл); Артикул: NV-4556B001/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-FLUID250Sb-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Промывочная жидкость для сублимационных чернил (250ml)</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-FLUID250Sb/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Промывочная жидкость для сублимационных чернил (250ml); Артикул: NV-FLUID250Sb/2</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -4088,6 +4348,279 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-C13T03V14A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 101 (NV-C13T03V14A)  для Epson L4150  (70 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V14A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 101 (NV-C13T03V14A)  для Epson L4150  (70 мл) Black; Артикул: NV-C13T03V14A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03V24A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 101 (NV-C13T03V24A)  для Epson L4150  (70 мл) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V24A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 101 (NV-C13T03V24A)  для Epson L4150  (70 мл) Cyan; Артикул: NV-C13T03V24A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03V34A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 101 (NV-C13T03V34A)  для Epson L4150  (70 мл) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V34A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 101 (NV-C13T03V34A)  для Epson L4150  (70 мл) Magenta; Артикул: NV-C13T03V34A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03V44A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 101 (NV-C13T03V44A)  для Epson L4150  (70 мл) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V44A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 101 (NV-C13T03V44A)  для Epson L4150  (70 мл) Yellow; Артикул: NV-C13T03V44A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S14A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 103 (NV-C13T00S14A) для Epson L1110, L3100 (70 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S14A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 103 (NV-C13T00S14A) для Epson L1110, L3100 (70 мл) Black; Артикул: NV-C13T00S14A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S24A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 103 (NV-C13T00S24A) для Epson L1110, L3100 (70 мл) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S24A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 103 (NV-C13T00S24A) для Epson L1110, L3100 (70 мл) Cyan; Артикул: NV-C13T00S24A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S34A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 103 (NV-C13T00S34A) для Epson L1110, L3100 (70 мл) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S34A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 103 (NV-C13T00S34A) для Epson L1110, L3100 (70 мл) Magenta; Артикул: NV-C13T00S34A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S44A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 103 (NV-C13T00S44A) для Epson L1110, L3100 (70 мл) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S44A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 103 (NV-C13T00S44A) для Epson L1110, L3100 (70 мл) Yellow; Артикул: NV-C13T00S44A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03P14A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила 110 (NV-C13T03P14A)  для Epson  (140 мл) Black пигментные</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03P14A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила 110 (NV-C13T03P14A)  для Epson  (140 мл) Black пигментные; Артикул: NV-C13T03P14A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4543C001-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила GI-41 C (NV-4543C001) для Canon Pixma G1420, G2420 (70 мл) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4543C001/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила GI-41 C (NV-4543C001) для Canon Pixma G1420, G2420 (70 мл) Cyan; Артикул: NV-4543C001/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4544C001-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила GI-41 M (NV-4544C001) для Canon Pixma G1420, G2420 (70 мл) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4544C001/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила GI-41 M (NV-4544C001) для Canon Pixma G1420, G2420 (70 мл) Magenta; Артикул: NV-4544C001/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4528C001-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила GI-41 PGBK (NV-4528C001) для Canon Pixma G1420, G2420 (135 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4528C001/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила GI-41 PGBK (NV-4528C001) для Canon Pixma G1420, G2420 (135 мл) Black; Артикул: NV-4528C001/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4545C001-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила GI-41 Y (NV-4545C001) для Canon Pixma G1420, G2420 (70 мл) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4545C001/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила GI-41 Y (NV-4545C001) для Canon Pixma G1420, G2420 (70 мл) Yellow; Артикул: NV-4545C001/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0663C001D-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила GI-490BK (NV-0663C001) для Canon Pixma G1400/G2400 (135 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0663C001D/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила GI-490BK (NV-0663C001) для Canon Pixma G1400/G2400 (135 мл) Black; Артикул: NV-0663C001D/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0664C001-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила GI-490C (NV-0664C001) для Canon Pixma G1400/G2400 (70 мл) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0664C001/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила GI-490C (NV-0664C001) для Canon Pixma G1400/G2400 (70 мл) Cyan; Артикул: NV-0664C001/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0665C001-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила GI-490M (NV-0665C001) для Canon Pixma G1400/G2400 (70 мл) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0665C001/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила GI-490M (NV-0665C001) для Canon Pixma G1400/G2400 (70 мл) Magenta; Артикул: NV-0665C001/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0666C001-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила GI-490Y (NV-0666C001) для Canon Pixma G1400/G2400 (70 мл) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0666C001/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила GI-490Y (NV-0666C001) для Canon Pixma G1400/G2400 (70 мл) Yellow; Артикул: NV-0666C001/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66414A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила T6641 (NV-C13T66414A) для аппаратов Epson (70 ml) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66414A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила T6641 (NV-C13T66414A) для аппаратов Epson (70 ml) Black; Артикул: NV-C13T66414A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66424A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила T6642 (NV-C13T66424A) для аппаратов Epson (70 ml) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66424A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила T6642 (NV-C13T66424A) для аппаратов Epson (70 ml) Cyan; Артикул: NV-C13T66424A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66434A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила T6643 (NV-C13T66434A) для аппаратов Epson (70 ml) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66434A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила T6643 (NV-C13T66434A) для аппаратов Epson (70 ml) Magenta; Артикул: NV-C13T66434A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66444A-2"  available="false" in_stock="false">
+<name>Комплект 2 шт. Чернила T6644 (NV-C13T66444A) для аппаратов Epson (70 ml) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66444A/2</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 2 шт. Чернила T6644 (NV-C13T66444A) для аппаратов Epson (70 ml) Yellow; Артикул: NV-C13T66444A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-C13T67314A-2"  available="false" in_stock="false">
 <name>Комплект 2 шт. Чернила T6731 (NV-C13T67314A) для аппаратов Epson (70 ml) Black</name>
 <vendor>NV Print</vendor>
@@ -4162,6 +4695,19 @@
 <categoryId>9400000</categoryId>
 <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
 <description>Комплект 2 шт. Чернила T6736 (NV-C13T67364A) для аппаратов Epson (70 ml) Light Magenta; Артикул: NV-C13T67364A/2</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-FLUID250Sb-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Промывочная жидкость для сублимационных чернил (250ml)</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-FLUID250Sb/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Промывочная жидкость для сублимационных чернил (250ml); Артикул: NV-FLUID250Sb/3</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -4370,6 +4916,279 @@
 <categoryId>9400000</categoryId>
 <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
 <description>Комплект 3 шт. Тонер NVP для Samsung/Xerox Universal ML1710 Premium (50г) совместимый; Артикул: NV-S/X-UNIV-PR-50G/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03V14A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 101 (NV-C13T03V14A)  для Epson L4150  (70 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V14A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 101 (NV-C13T03V14A)  для Epson L4150  (70 мл) Black; Артикул: NV-C13T03V14A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03V24A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 101 (NV-C13T03V24A)  для Epson L4150  (70 мл) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V24A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 101 (NV-C13T03V24A)  для Epson L4150  (70 мл) Cyan; Артикул: NV-C13T03V24A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03V34A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 101 (NV-C13T03V34A)  для Epson L4150  (70 мл) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V34A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 101 (NV-C13T03V34A)  для Epson L4150  (70 мл) Magenta; Артикул: NV-C13T03V34A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03V44A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 101 (NV-C13T03V44A)  для Epson L4150  (70 мл) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V44A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 101 (NV-C13T03V44A)  для Epson L4150  (70 мл) Yellow; Артикул: NV-C13T03V44A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S14A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 103 (NV-C13T00S14A) для Epson L1110, L3100 (70 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S14A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 103 (NV-C13T00S14A) для Epson L1110, L3100 (70 мл) Black; Артикул: NV-C13T00S14A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S24A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 103 (NV-C13T00S24A) для Epson L1110, L3100 (70 мл) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S24A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 103 (NV-C13T00S24A) для Epson L1110, L3100 (70 мл) Cyan; Артикул: NV-C13T00S24A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S34A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 103 (NV-C13T00S34A) для Epson L1110, L3100 (70 мл) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S34A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 103 (NV-C13T00S34A) для Epson L1110, L3100 (70 мл) Magenta; Артикул: NV-C13T00S34A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S44A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 103 (NV-C13T00S44A) для Epson L1110, L3100 (70 мл) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S44A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 103 (NV-C13T00S44A) для Epson L1110, L3100 (70 мл) Yellow; Артикул: NV-C13T00S44A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03P14A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила 110 (NV-C13T03P14A)  для Epson  (140 мл) Black пигментные</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03P14A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила 110 (NV-C13T03P14A)  для Epson  (140 мл) Black пигментные; Артикул: NV-C13T03P14A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4543C001-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила GI-41 C (NV-4543C001) для Canon Pixma G1420, G2420 (70 мл) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4543C001/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила GI-41 C (NV-4543C001) для Canon Pixma G1420, G2420 (70 мл) Cyan; Артикул: NV-4543C001/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4544C001-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила GI-41 M (NV-4544C001) для Canon Pixma G1420, G2420 (70 мл) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4544C001/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила GI-41 M (NV-4544C001) для Canon Pixma G1420, G2420 (70 мл) Magenta; Артикул: NV-4544C001/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4528C001-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила GI-41 PGBK (NV-4528C001) для Canon Pixma G1420, G2420 (135 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4528C001/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила GI-41 PGBK (NV-4528C001) для Canon Pixma G1420, G2420 (135 мл) Black; Артикул: NV-4528C001/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4545C001-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила GI-41 Y (NV-4545C001) для Canon Pixma G1420, G2420 (70 мл) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4545C001/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила GI-41 Y (NV-4545C001) для Canon Pixma G1420, G2420 (70 мл) Yellow; Артикул: NV-4545C001/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0663C001D-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила GI-490BK (NV-0663C001) для Canon Pixma G1400/G2400 (135 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0663C001D/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила GI-490BK (NV-0663C001) для Canon Pixma G1400/G2400 (135 мл) Black; Артикул: NV-0663C001D/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0664C001-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила GI-490C (NV-0664C001) для Canon Pixma G1400/G2400 (70 мл) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0664C001/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила GI-490C (NV-0664C001) для Canon Pixma G1400/G2400 (70 мл) Cyan; Артикул: NV-0664C001/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0665C001-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила GI-490M (NV-0665C001) для Canon Pixma G1400/G2400 (70 мл) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0665C001/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила GI-490M (NV-0665C001) для Canon Pixma G1400/G2400 (70 мл) Magenta; Артикул: NV-0665C001/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0666C001-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила GI-490Y (NV-0666C001) для Canon Pixma G1400/G2400 (70 мл) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0666C001/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила GI-490Y (NV-0666C001) для Canon Pixma G1400/G2400 (70 мл) Yellow; Артикул: NV-0666C001/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66414A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила T6641 (NV-C13T66414A) для аппаратов Epson (70 ml) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66414A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила T6641 (NV-C13T66414A) для аппаратов Epson (70 ml) Black; Артикул: NV-C13T66414A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66424A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила T6642 (NV-C13T66424A) для аппаратов Epson (70 ml) Cyan</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66424A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила T6642 (NV-C13T66424A) для аппаратов Epson (70 ml) Cyan; Артикул: NV-C13T66424A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66434A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила T6643 (NV-C13T66434A) для аппаратов Epson (70 ml) Magenta</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66434A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила T6643 (NV-C13T66434A) для аппаратов Epson (70 ml) Magenta; Артикул: NV-C13T66434A/3</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66444A-3"  available="false" in_stock="false">
+<name>Комплект 3 шт. Чернила T6644 (NV-C13T66444A) для аппаратов Epson (70 ml) Yellow</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66444A/3</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 3 шт. Чернила T6644 (NV-C13T66444A) для аппаратов Epson (70 ml) Yellow; Артикул: NV-C13T66444A/3</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -4643,6 +5462,84 @@
 <categoryId>9400000</categoryId>
 <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
 <description>Комплект 5 шт. Тонер NVP для Samsung/Xerox Universal ML1710 Premium (50г) совместимый; Артикул: NV-S/X-UNIV-PR-50G/5</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03V14A-5"  available="false" in_stock="false">
+<name>Комплект 5 шт. Чернила 101 (NV-C13T03V14A)  для Epson L4150  (70 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03V14A/5</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 5 шт. Чернила 101 (NV-C13T03V14A)  для Epson L4150  (70 мл) Black; Артикул: NV-C13T03V14A/5</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T00S14A-5"  available="false" in_stock="false">
+<name>Комплект 5 шт. Чернила 103 (NV-C13T00S14A) для Epson L1110, L3100 (70 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T00S14A/5</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 5 шт. Чернила 103 (NV-C13T00S14A) для Epson L1110, L3100 (70 мл) Black; Артикул: NV-C13T00S14A/5</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T03P14A-5"  available="false" in_stock="false">
+<name>Комплект 5 шт. Чернила 110 (NV-C13T03P14A)  для Epson  (140 мл) Black пигментные</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T03P14A/5</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 5 шт. Чернила 110 (NV-C13T03P14A)  для Epson  (140 мл) Black пигментные; Артикул: NV-C13T03P14A/5</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-4528C001-5"  available="false" in_stock="false">
+<name>Комплект 5 шт. Чернила GI-41 PGBK (NV-4528C001) для Canon Pixma G1420, G2420 (135 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-4528C001/5</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 5 шт. Чернила GI-41 PGBK (NV-4528C001) для Canon Pixma G1420, G2420 (135 мл) Black; Артикул: NV-4528C001/5</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-0663C001D-5"  available="false" in_stock="false">
+<name>Комплект 5 шт. Чернила GI-490BK (NV-0663C001) для Canon Pixma G1400/G2400 (135 мл) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-0663C001D/5</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 5 шт. Чернила GI-490BK (NV-0663C001) для Canon Pixma G1400/G2400 (135 мл) Black; Артикул: NV-0663C001D/5</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-C13T66414A-5"  available="false" in_stock="false">
+<name>Комплект 5 шт. Чернила T6641 (NV-C13T66414A) для аппаратов Epson (70 ml) Black</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C13T66414A/5</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект 5 шт. Чернила T6641 (NV-C13T66414A) для аппаратов Epson (70 ml) Black; Артикул: NV-C13T66414A/5</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -5180,6 +6077,71 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-GI-41-SET4"  available="false" in_stock="false">
+<name>Комплект чернил NVP  GI-41 для принтеров Canon ( 4 цвета 135 мл + 3*70 мл) совместимые</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-GI-41-SET4</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект чернил NVP  GI-41 для принтеров Canon ( 4 цвета 135 мл + 3*70 мл) совместимые; Артикул: NV-GI-41-SET4</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-INK101-470"  available="false" in_stock="false">
+<name>Комплект чернил NVP 101  для Epson L4150  (4 цвета по 70 мл) (в коробках) совместимые</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-INK101-470</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект чернил NVP 101  для Epson L4150  (4 цвета по 70 мл) (в коробках) совместимые; Артикул: NV-INK101-470</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-INK103-470"  available="false" in_stock="false">
+<name>Комплект чернил NVP 103 (4 цвета)  по 70 мл совместимые</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-INK103-470</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект чернил NVP 103 (4 цвета)  по 70 мл совместимые; Артикул: NV-INK103-470</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV--GI490set4"  available="false" in_stock="false">
+<name>Комплект чернил NVP GI-490 для Canon Pixma G1400/G2400 (4 цвета 135 мл+3*70мл) (в коробках) совместимые</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV- GI490set4</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект чернил NVP GI-490 для Canon Pixma G1400/G2400 (4 цвета 135 мл+3*70мл) (в коробках) совместимые; Артикул: NV- GI490set4</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-T664set4"  available="false" in_stock="false">
+<name>Комплект чернил NVP T664 для аппаратов Epson (4 цвета по 70 мл) (в коробках) совместимые</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-T664set4</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект чернил NVP T664 для аппаратов Epson (4 цвета по 70 мл) (в коробках) совместимые; Артикул: NV-T664set4</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-T673set6"  available="false" in_stock="false">
 <name>Комплект чернил NVP T673 для аппаратов Epson (6 цветов по 70 мл) (в коробках) совместимые</name>
 <vendor>NV Print</vendor>
@@ -5189,6 +6151,32 @@
 <categoryId>9400000</categoryId>
 <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
 <description>Комплект чернил NVP T673 для аппаратов Epson (6 цветов по 70 мл) (в коробках) совместимые; Артикул: NV-T673set6</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-INK-BT6000-5000set4"  available="false" in_stock="false">
+<name>Комплект чернил NVP для Brother BT6000BKPG/BT5000C/BT5000M/BT5000Y для Brother DCP-T300/T500W/T700W, MFC-T800W</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-INK-BT6000/5000set4</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект чернил NVP для Brother BT6000BKPG/BT5000C/BT5000M/BT5000Y для Brother DCP-T300/T500W/T700W, MFC-T800W; Артикул: NV-INK-BT6000/5000set4</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-INK-BTD60BK-5000set4"  available="false" in_stock="false">
+<name>Комплект чернил NVP для Brother BTD60BK/BT5000C/BT5000M/BT5000Y совместимые</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-INK-BTD60BK/5000set4</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Комплект чернил NVP для Brother BTD60BK/BT5000C/BT5000M/BT5000Y совместимые; Артикул: NV-INK-BTD60BK/5000set4</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -5267,6 +6255,19 @@
 <categoryId>9400000</categoryId>
 <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
 <description>Лента переноса изображения NVP для XEROX Phaser 7800, WC 7525/7530/7535/7545/7556/7830/7835/7845/7855/7970 Lexmark C950/952 (совместимая) (064K93621/064K93622); Артикул: NV-064K93623-NC</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-M0C32505-RE"  available="false" in_stock="false">
+<name>Лоток подачи бумаги NVP для Ricoh M320 320FB 320F (восстановленный) (M0C32505)</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-M0C32505-RE</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Лоток подачи бумаги   NVP для Ricoh  M 320/320FB/320F/SP 330DN /SP 3710DN  (восстанов) (M0C32505); Артикул: NV-M0C32505-RE</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -8534,6 +9535,58 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-3D-ABS-CARBON-FIBER-BLACK"  available="false" in_stock="false">
+<name>Филамент NV PRINT ABS Carbon Fiber Black с карбоновыми волокнами, черный, для 3D печати диаметр 1.75мм  длина 330 метров  масса 1 кг</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-3D-ABS-CARBON-FIBER-BLACK</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Филамент NV PRINT ABS Carbon Fiber Black с карбоновыми волокнами, черный, для 3D печати диаметр 1.75мм  длина 330 метров  масса 1 кг; Артикул: NV-3D-ABS-CARBON-FIBER-BLACK</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-3D-ABS-GREY-eco"  available="false" in_stock="false">
+<name>Филамент NV PRINT ABS Серый для 3D печати диаметр 1.75мм    масса 1 кг (эконом. упаковка)</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-3D-ABS-GREY-eco</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Филамент NV PRINT ABS Серый для 3D печати диаметр 1.75мм    масса 1 кг (эконом. упаковка); Артикул: NV-3D-ABS-GREY-eco</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-3D-ABS-BLACK-eco"  available="false" in_stock="false">
+<name>Филамент NV PRINT ABS Черный для 3D печати диаметр 1.75мм   масса 1 кг (эконом. упаковка)</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-3D-ABS-BLACK-eco</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Филамент NV PRINT ABS Черный для 3D печати диаметр 1.75мм   масса 1 кг (эконом. упаковка); Артикул: NV-3D-ABS-BLACK-eco</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-3D-PETG-CARBON-FIBER-BLACK"  available="false" in_stock="false">
+<name>Филамент NV PRINT PETG Carbon Fiber Black c карбоновыми волокнами, черный, для 3D печати диаметр 1.75мм  длина 330 метров  масса 1 кг</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-3D-PETG-CARBON-FIBER-BLACK</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Филамент NV PRINT PETG Carbon Fiber Black c карбоновыми волокнами, черный, для 3D печати диаметр 1.75мм  длина 330 метров  масса 1 кг; Артикул: NV-3D-PETG-CARBON-FIBER-BLACK</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-3D-PETG-MATTE-GREEN"  available="false" in_stock="false">
 <name>Филамент NV PRINT PETG Matte Green для 3D печати диаметр 1.75мм  длина 330 метров  масса 1 кг</name>
 <vendor>NV Print</vendor>
@@ -8586,6 +9639,19 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-3D-SILK-PLA-P-GOLD-PURPLE"  available="false" in_stock="false">
+<name>Филамент NVPRINT Silk PLA+  Gold/Purple  для 3D печати диаметр 1.75мм  длина 330 метров  масса 1 кг</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-3D-SILK-PLA-P-GOLD-PURPLE</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Филамент NVPRINT Silk PLA+  Gold/Purple  для 3D печати диаметр 1.75мм  длина 330 метров  масса 1 кг; Артикул: NV-3D-SILK-PLA-P-GOLD-PURPLE</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-3D-SILK-PLA-P-GOLDEN"  available="false" in_stock="false">
 <name>Филамент NVPRINT Silk PLA+ GOLDEN для 3D печати диаметр 1.75мм    масса 1 кг</name>
 <vendor>NV Print</vendor>
@@ -8595,6 +9661,32 @@
 <categoryId>15881235</categoryId>
 <picture>http://nvprint.ru/promo/photo/NV-3D-SILK-PLA-P-GOLDEN.jpg</picture>
 <description>Филамент NVPRINT Silk PLA+ GOLDEN для 3D печати диаметр 1.75мм    масса 1 кг; Артикул: NV-3D-SILK-PLA-P-GOLDEN</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-3D-TPU-BLACK-1"  available="false" in_stock="false">
+<name>Филамент NVPRINT TPU Black для 3D печати диаметр 1.75мм  330m   масса 1 кг</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-3D-TPU-BLACK-1</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Филамент NVPRINT TPU Black для 3D печати диаметр 1.75мм 330m   масса 1 кг; Артикул: NV-3D-TPU-BLACK-1</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-3D-TPU-WHITE-1"  available="false" in_stock="false">
+<name>Филамент NVPRINT TPU White для 3D печати диаметр 1.75мм,  330м,  масса 1,0 кг</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-3D-TPU-WHITE-1</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9400000</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Филамент NVPRINT TPU White 1 для 3D печати диаметр 1.75мм,  330м,  масса 1,0 кг; Артикул: NV-3D-TPU-WHITE-1</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -17309,6 +18401,19 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-C-EXV36"  available="false" in_stock="false">
+<name>Картридж NVР совместимый NV-C-EXV36</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-C-EXV36</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>17184708</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Картридж NVР совместимый NV-C-EXV36 для Canon IR ADVANCE 6055/ 6065/ 6075/ 6255/ 6265/ 6275/6555/6565/6575 (56000k); Артикул: NV-C-EXV36</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-C-EXV40X"  available="false" in_stock="false">
 <name>Картридж NVР совместимый NV-C-EXV40X</name>
 <vendor>NV Print</vendor>
@@ -20919,6 +22024,19 @@
 <categoryId>17146349</categoryId>
 <picture>http://nvprint.ru/promo/photo/NV-C13T09C64A.jpg</picture>
 <description>Чернила NVP 108 (NV-C13T09C64A) для Epson L8050, L18050 (70 мл) Light Magenta (в коробке) совместимые; Артикул: NV-C13T09C64A</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-INK108-6100"  available="false" in_stock="false">
+<name>Чернила NVP 108 для принтеров Epson L8050, L18050, набор 6 цветов по 100 мл совместимые</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-INK108-6100</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>17146349</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Чернила NVP 108 для принтеров Epson L8050, L18050, набор 6 цветов по 100 мл совместимые; Артикул: NV-INK108-6100</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
