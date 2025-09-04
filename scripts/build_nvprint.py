@@ -1,15 +1,15 @@
+# scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
 """
 NVPrint: XML API (getallinfo=true) -> YML (KZT)
-- База: цены, остатки, разделы из XML.
-- Фото/описание/характеристики: ПРЯМО из XML (если выданы с getallinfo=true).
-- Обогащение сайтом отключено (не нужно при getallinfo=true).
+— Тянем все товары из XML (даже без цены → price=1).
+— Фото/описание/характеристики берём из XML.
+— Пишем файл в UTF-8 с BOM (utf-8-sig), чтобы кириллица корректно показывалась на GitHub Pages.
 
 ENV:
   NVPRINT_XML_URL            — полный URL XML (c getallinfo=true)
-  NVPRINT_LOGIN/PASSWORD     — если API под BasicAuth
+  NVPRINT_LOGIN/PASSWORD     — если API под Basic Auth
   OUT_FILE                   — путь для YML (по умолчанию docs/nvprint.yml)
-  OUTPUT_ENCODING            — utf-8 (по умолчанию) или windows-1251
 
 Кастомные имена тегов (через запятую):
   NVPRINT_NAME_TAGS, NVPRINT_PRICE_KZT_TAGS, NVPRINT_PRICE_TAGS,
@@ -32,7 +32,6 @@ NV_LOGIN     = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "
 NV_PASSWORD  = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
 
 OUT_FILE     = os.getenv("OUT_FILE", "docs/nvprint.yml")
-ENCODING     = (os.getenv("OUTPUT_ENCODING") or "utf-8").lower()
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "60"))
 MAX_PICTURES = int(os.getenv("MAX_PICTURES", "10"))
 
@@ -60,7 +59,7 @@ PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")      # "Значени�
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.2)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.3)"}
 
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
@@ -112,13 +111,13 @@ def first_desc_text(item: ET.Element, names: List[str]) -> Optional[str]:
 
 def all_desc_texts_like(item: ET.Element, substrs: List[str]) -> List[str]:
     subs = [s.lower() for s in substrs]
-    out: List[ET.Element] = []
+    out_nodes: List[ET.Element] = []
     for ch in item.iter():
         nm = strip_ns(ch.tag).lower()
         if any(s in nm for s in subs):
-            out.append(ch)
+            out_nodes.append(ch)
     texts: List[str] = []
-    for node in out:
+    for node in out_nodes:
         if node.text:
             t = node.text.strip()
             if t:
@@ -135,12 +134,12 @@ def guess_items(root: ET.Element) -> List[ET.Element]:
     cands = root.findall(".//Товар") + root.findall(".//item") + root.findall(".//product") + root.findall(".//row")
     if cands: return cands
     # 3) Fallback: считаем «товаром» узлы, где есть имя ИЛИ артикул (цена не обязательна!)
-    NAME_TAGS = split_tags(NAME_OVR, ["НоменклатураКратко","Номенклатура","full_name","name","title","наименование"])
-    SKU_TAGS_ = split_tags(SKU_OVR,  ["Артикул","articul","sku","vendorcode","кодтовара","code","код"])
+    NAME_DEF = split_tags(NAME_OVR, ["НоменклатураКратко","Номенклатура","full_name","name","title","наименование"])
+    SKU_DEF  = split_tags(SKU_OVR,  ["Артикул","articul","sku","vendorcode","кодтовара","code","код"])
     out: List[ET.Element] = []
     for node in root.iter():
-        has_name = first_desc_text(node, NAME_TAGS)
-        has_sku  = first_desc_text(node, SKU_TAGS_)
+        has_name = first_desc_text(node, NAME_DEF)
+        has_sku  = first_desc_text(node, SKU_DEF)
         if has_name or has_sku:
             out.append(node)
     return out
@@ -291,7 +290,7 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
             price = parse_number(first_desc_text(item, [t]))
             if price is not None:
                 break
-    # <<< ВАЖНО: не отбрасываем товары без цены — подставляем 1.0 >>>
+    # Не отбрасываем товары без цены — подставляем 1.0
     if price is None or price <= 0:
         price = 1.0
 
@@ -336,9 +335,9 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
 # ---------- YML ----------
 def build_yml(categories: List[Tuple[int,str,Optional[int]]],
               offers: List[Tuple[int,Dict[str,Any]]]) -> str:
-    enc_label = "utf-8" if ENCODING.startswith("utf") else "windows-1251"
+    # Всегда utf-8 для корректного отображения в браузере/GitHub Pages
     out: List[str] = []
-    out.append(f"<?xml version='1.0' encoding='{enc_label}'?>")
+    out.append("<?xml version='1.0' encoding='utf-8'?>")
     out.append(f"<yml_catalog date=\"{datetime.now().strftime('%Y-%m-%d %H:%M')}\">")
     out.append("<shop>")
     out.append("<name>nvprint</name>")
@@ -431,10 +430,10 @@ def main() -> int:
 
     offers = [(path_to_id(paths[i] if i < len(paths) else []), it) for i, (_, it) in enumerate(offers)]
 
-    # 4) запись YML
+    # 4) запись YML — UTF-8 c BOM
     xml = build_yml(categories, offers)
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    with open(OUT_FILE, "w", encoding=("utf-8" if ENCODING.startswith("utf") else "cp1251"), errors="ignore") as f:
+    with open(OUT_FILE, "w", encoding="utf-8-sig", errors="ignore") as f:
         f.write(xml)
 
     print(f"[nvprint] done: {len(offers)} offers, {len(categories)} categories -> {OUT_FILE}")
@@ -447,8 +446,12 @@ if __name__ == "__main__":
         print("[fatal]", e, file=sys.stderr)
         try:
             os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-            with open(OUT_FILE, "w", encoding=("utf-8" if ENCODING.startswith("utf") else "cp1251"), errors="ignore") as f:
-                f.write("<?xml version='1.0' encoding='utf-8'?>\n<yml_catalog><shop><name>nvprint</name><currencies><currency id=\"KZT\" rate=\"1\" /></currencies><categories><category id=\"9400000\">NVPrint</category></categories><offers></offers></shop></yml_catalog>")
+            with open(OUT_FILE, "w", encoding="utf-8-sig", errors="ignore") as f:
+                f.write("<?xml version='1.0' encoding='utf-8'?>\n"
+                        "<yml_catalog><shop><name>nvprint</name>"
+                        "<currencies><currency id=\"KZT\" rate=\"1\" /></currencies>"
+                        "<categories><category id=\"9400000\">NVPrint</category></categories>"
+                        "<offers></offers></shop></yml_catalog>")
         except Exception:
             pass
         sys.exit(0)
