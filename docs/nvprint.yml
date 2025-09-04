@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<yml_catalog date="2025-09-04 11:17">
+<yml_catalog date="2025-09-04 12:35">
 <shop>
 <name>nvprint</name>
 <currencies><currency id="KZT" rate="1" /></currencies>
@@ -10439,8 +10439,8 @@
 <price>133768</price>
 <currencyId>KZT</currencyId>
 <categoryId>9400000</categoryId>
-<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
-<description>Фьюзер NVP для HP LJ M880 M855 (восстановленный) (C1N58A); Артикул: NV-C1N58A-RE</description>
+<picture>http://nvprint.ru/promo/photo/NV-C1N58A-RE.jpg</picture>
+<description>Фьюзер NVP для HP LJ M880 M855 (восстановленный) (C1N58A/C1N58-67901/RM2-5028/RM2-5013); Артикул: NV-C1N58A-RE</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -10452,7 +10452,7 @@
 <price>143606</price>
 <currencyId>KZT</currencyId>
 <categoryId>9400000</categoryId>
-<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<picture>http://nvprint.ru/promo/photo/NV-JC82-00483C-RE.jpg</picture>
 <description>Фьюзер NVP для HP LJ MFP E82540/E82550/E82560/E87640/E87660 220v (восстановленный) (JC82-00483C); Артикул: NV-JC82-00483C-RE</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -10465,7 +10465,7 @@
 <price>40795</price>
 <currencyId>KZT</currencyId>
 <categoryId>9400000</categoryId>
-<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<picture>http://nvprint.ru/promo/photo/NV-RM1-7547-NC.jpg</picture>
 <description>Фьюзер NVP для HP P1566/1606/1506/M1536/M201/M202/M225/M226,Canon 4450/4412/4750/4710/4712 (совметимый) (RM1-7547, RU5-8934, RM1-7547-010, RM1-7547-010CN); Артикул: NV-RM1-7547-NC</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
@@ -28566,6 +28566,19 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-HP1005-Type3--85G"  available="false" in_stock="false">
+<name>Тонер NVP 1005 для HP LJ 1005 Type3 (85г) совместимый</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-HP1005-Type3-(85G)</vendorCode>
+<price>637</price>
+<currencyId>KZT</currencyId>
+<categoryId>19001648</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер NVP 1005 для HP LJ 1005 (CB435A,CB436A,CE278X, CE285A,CE390A/X) Type3 (85г) совместимый; Артикул: NV-HP1005-Type3-(85G)</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-HG220-1KG"  available="false" in_stock="false">
 <name>Тонер NVP HANDAN для HP HG220 (1кг) совместимый</name>
 <vendor>NV Print</vendor>
@@ -28605,6 +28618,19 @@
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="NV-HG242-1KG"  available="false" in_stock="false">
+<name>Тонер NVP HANDAN для HP HG242 (1кг) M104 совместимый</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-HG242-1KG</vendorCode>
+<price>7201</price>
+<currencyId>KZT</currencyId>
+<categoryId>19001648</categoryId>
+<picture>http://nvprint.ru/promo/photo/NV-HG242-1KG.jpg</picture>
+<description>Тонер NVP HANDAN для HP HG242 (1кг) HP LJ M102/M130/M104a Pro/M132/M203/M227/M206dn/M230sdn/M106/M134 совместимый; Артикул: NV-HG242-1KG</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="NV-HG260-1KG"  available="false" in_stock="false">
 <name>Тонер NVP HANDAN для HP HG260 (1кг) M402 совместимый</name>
 <vendor>NV Print</vendor>
@@ -28614,6 +28640,19 @@
 <categoryId>19001648</categoryId>
 <picture>http://nvprint.ru/promo/photo/NV-HG260-1KG.jpg</picture>
 <description>Тонер NVP HANDAN для HP HG260 (1кг) для M402, M426, M403, M427, M506, M527 совместимый; Артикул: NV-HG260-1KG</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-HG604-1KG"  available="false" in_stock="false">
+<name>Тонер NVP HANDAN для HP HG604 (1кг) для OEM картриджей CF237/CF259/CF289 совместимый</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-HG604-1KG</vendorCode>
+<price>7228</price>
+<currencyId>KZT</currencyId>
+<categoryId>19001648</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер NVP HANDAN для HP HG604 (1кг) для OEM картриджей CF237/CF259/CF289/W1360/W1470 совместимый; Артикул: NV-HG604-1KG</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
@@ -40275,6 +40314,58 @@
 <categoryId>24767884</categoryId>
 <picture>http://nvprint.ru/promo/photo/NV-XR7425-PR-500gBk.jpg</picture>
 <description>Тонер + девелопер NVP для Xerox WorkCenter 7425, 7525, 7220, 7830 Premium (500г) Black. WC 7425, 7428, 7435; WC 7220, 7225; WC 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970; Color C60, С70; Color 550, 560, 570; Phaser 7800; Phaser 6700; 700, 700i, 770 Digital Color Press; 700 Pro, 700i Pro; Color J75, C75 Press, PrimeLink C9065/C9070 совместимый; Артикул: NV-XR7425-PR-500gBk</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-XR7425-Type3-250gC"  available="false" in_stock="false">
+<name>Тонер + девелопер NV PRINT для Xerox WorkCenter 7425, 7525, 7220, 7830 Type3 (250г) Cyan совместимый</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-XR7425-Type3-250gC</vendorCode>
+<price>7633</price>
+<currencyId>KZT</currencyId>
+<categoryId>24767884</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер + девелопер NVP для Xerox WorkCenter 7425, 7525, 7220, 7830 Type3 (250г) Cyan. WC 7425, 7428, 7435; WC 7220, 7225; WC 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970; Color C60, С70; Color 550, 560, 570; Phaser 7800; Phaser 6700; 700, 700i, 770 Digital Color Press; 700 Pro, 700i Pro; Color J75, C75 Press, PrimeLink C9065/C9070 совместимый; Артикул: NV-XR7425-Type3-250gC</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-XR7425-Type3-250gM"  available="false" in_stock="false">
+<name>Тонер + девелопер NV PRINT для Xerox WorkCenter 7425, 7525, 7220, 7830 Type3 (250г) Magenta совместимый</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-XR7425-Type3-250gM</vendorCode>
+<price>7633</price>
+<currencyId>KZT</currencyId>
+<categoryId>24767884</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер + девелопер NVP для Xerox WorkCenter 7425, 7525, 7220, 7830 Type3 (250г) Magenta. WC 7425, 7428, 7435; WC 7220, 7225; WC 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970; Color C60, С70; Color 550, 560, 570; Phaser 7800; Phaser 6700; 700, 700i, 770 Digital Color Press; 700 Pro, 700i Pro; Color J75, C75 Press, PrimeLink C9065/C9070 совместимый; Артикул: NV-XR7425-Type3-250gM</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-XR7425-Type3-250gY"  available="false" in_stock="false">
+<name>Тонер + девелопер NV PRINT для Xerox WorkCenter 7425, 7525, 7220, 7830 Type3 (250г) Yellow совместимый</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-XR7425-Type3-250gY</vendorCode>
+<price>7633</price>
+<currencyId>KZT</currencyId>
+<categoryId>24767884</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер + девелопер NVP для Xerox WorkCenter 7425, 7525, 7220, 7830 Type3 (250г) Yellow. WC 7425, 7428, 7435; WC 7220, 7225; WC 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970; Color C60, С70; Color 550, 560, 570; Phaser 7800; Phaser 6700; 700, 700i, 770 Digital Color Press; 700 Pro, 700i Pro; Color J75, C75 Press, PrimeLink C9065/C9070 совместимый; Артикул: NV-XR7425-Type3-250gY</description>
+<quantity_in_stock>0</quantity_in_stock>
+<stock_quantity>0</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="NV-XR7425-Type3-500gBk"  available="false" in_stock="false">
+<name>Тонер + девелопер NV PRINT для Xerox WorkCenter 7425, 7525, 7220, 7830 Type3 (500г) Black совместимый</name>
+<vendor>NV Print</vendor>
+<vendorCode>NV-XR7425-Type3-500gBk</vendorCode>
+<price>11787</price>
+<currencyId>KZT</currencyId>
+<categoryId>24767884</categoryId>
+<picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+<description>Тонер + девелопер NVP для Xerox WorkCenter 7425, 7525, 7220, 7830 Type3 (500г) Black. WC 7425, 7428, 7435; WC 7220, 7225; WC 7525, 7530, 7535, 7545, 7556, 7830, 7835, 7845, 7855, 7970; Color C60, С70; Color 550, 560, 570; Phaser 7800; Phaser 6700; 700, 700i, 770 Digital Color Press; 700 Pro, 700i Pro; Color J75, C75 Press, PrimeLink C9065/C9070 совместимый; Артикул: NV-XR7425-Type3-500gBk</description>
 <quantity_in_stock>0</quantity_in_stock>
 <stock_quantity>0</stock_quantity>
 <quantity>1</quantity>
