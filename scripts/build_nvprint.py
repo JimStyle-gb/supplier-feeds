@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-NVPrint: XML API -> YML (KZT) + обогащение с nvprint.ru по артикулу.
+NVPrint: XML API (getallinfo=true) -> YML (KZT)
+- База: цены, остатки, разделы из XML.
+- Фото/описание/характеристики: ПРЯМО из XML (если выданы с getallinfo=true).
+- Обогащение с сайта nvprint.ru оставлено опциональным (по умолчанию выключено).
+
+Настройки через ENV (важные):
+  NVPRINT_XML_URL            — полный URL XML (включая getallinfo=true).
+  NVPRINT_LOGIN/PASSWORD     — если API под BasicAuth.
+
+  Кастом тэгов (через запятую): NVPRINT_PICS_TAGS, NVPRINT_DESC_TAGS, NVPRINT_PARAMS_BLOCK_TAGS,
+  NVPRINT_PARAM_NAME_TAGS, NVPRINT_PARAM_VALUE_TAGS и т.д. (см. ниже).
 """
 
 from __future__ import annotations
@@ -8,7 +18,6 @@ import os, re, sys, html, hashlib, time
 from typing import Any, Dict, List, Optional, Tuple
 import requests, xml.etree.ElementTree as ET
 from datetime import datetime
-from bs4 import BeautifulSoup
 
 # ---------- ENV: XML ----------
 XML_URL      = os.getenv("NVPRINT_XML_URL", "").strip()
@@ -32,33 +41,24 @@ DESC_OVR     = os.getenv("NVPRINT_DESC_TAGS")
 URL_OVR      = os.getenv("NVPRINT_URL_TAGS")
 CAT_OVR      = os.getenv("NVPRINT_CAT_TAGS")
 SUBCAT_OVR   = os.getenv("NVPRINT_SUBCAT_TAGS")
-PIC_OVR      = os.getenv("NVPRINT_PIC_TAGS")
+PIC_OVR      = os.getenv("NVPRINT_PIC_TAGS")              # одиночные поля вида ImageURL
+PICS_OVR     = os.getenv("NVPRINT_PICS_TAGS")             # множественные поля (галерея)
 BARCODE_OVR  = os.getenv("NVPRINT_BARCODE_TAGS")
 CATPATH_OVR  = os.getenv("NVPRINT_CAT_PATH_TAGS")
 
-# ---------- ENV: обогащение с nvprint.ru ----------
+# Характеристики (если XML отдаёт пары имя/значение)
+PARAMS_BLOCK_OVR = os.getenv("NVPRINT_PARAMS_BLOCK_TAGS")     # контейнеры, например "Характеристики,Specs,Attributes"
+PARAM_NAME_OVR   = os.getenv("NVPRINT_PARAM_NAME_TAGS")       # "Имя,Name,Параметр"
+PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")      # "Значение,Value,Знач"
+
+# ---------- ENV: (опц.) обогащение с nvprint.ru — отключено по умолчанию ----------
 ENRICH_SITE       = os.getenv("NVPRINT_ENRICH_FROM_SITE", "0") == "1"
-ENRICH_LIMIT      = int(os.getenv("NVPRINT_ENRICH_LIMIT", "300"))
+ENRICH_LIMIT      = int(os.getenv("NVPRINT_ENRICH_LIMIT", "0"))      # 0 = выключено / все
 ENRICH_DELAY_MS   = int(os.getenv("NVPRINT_ENRICH_DELAY_MS", "250"))
-
-SITE_SEARCH_TPL   = (os.getenv("NVPRINT_SITE_SEARCH_TEMPLATES")
-                     or "https://nvprint.ru/?s={art},https://nvprint.ru/search/?q={art}")
-SITE_SEARCH_TEMPLATES = [t.strip() for t in SITE_SEARCH_TPL.split(",") if "{art}" in t]
-
-B2B_TIMEOUT       = float(os.getenv("NVPRINT_SITE_TIMEOUT", "25"))
-
-# CSS селекторы для карточки nvprint.ru (можно переопределить ENV)
-SEL_PRODUCT_LINKS   = os.getenv("NVPRINT_SITE_SEL_SEARCH_LINKS", "a[href*='/product/']").strip()
-SEL_TITLE           = os.getenv("NVPRINT_SITE_SEL_TITLE", ".page-title,h1,.product-title").strip()
-SEL_DESC            = os.getenv("NVPRINT_SITE_SEL_DESC", ".product-description,meta[name='description']").strip()
-SEL_OGIMG           = os.getenv("NVPRINT_SITE_SEL_OGIMG", "meta[property='og:image'],meta[name='og:image']").strip()
-SEL_GALLERY         = os.getenv("NVPRINT_SITE_SEL_GALLERY", ".product-gallery img, img").strip()
-SEL_BREADCRUMBS     = os.getenv("NVPRINT_SITE_SEL_BC", ".breadcrumbs li, nav.breadcrumbs li, .breadcrumb li").strip()
-SEL_SPECS_BLOCKS    = os.getenv("NVPRINT_SITE_SEL_SPECS", "dl, .specs, .characteristics, table").strip()
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.0)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.1)"}
 
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
@@ -72,24 +72,14 @@ def fetch_xml_bytes(url: str) -> bytes:
     r = requests.get(url, auth=auth, headers=UA, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
     b = r.content
+    # лог для дебага
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     try:
         with open("docs/nvprint_source.xml", "wb") as f:
-            f.write(b[:10_000_000])
+            f.write(b[:15_000_000])
     except Exception:
         pass
     return b
-
-def http_get(url: str) -> Optional[bytes]:
-    try:
-        r = requests.get(url, headers=UA, timeout=B2B_TIMEOUT, allow_redirects=True)
-        if r.status_code != 200: return None
-        return r.content
-    except Exception:
-        return None
-
-def soup_of(b: Optional[bytes]) -> BeautifulSoup:
-    return BeautifulSoup(b or b"", "html.parser")
 
 # ---------- XML helpers ----------
 def strip_ns(tag: str) -> str:
@@ -149,16 +139,29 @@ SKU_TAGS        = split_tags(SKU_OVR,       ["Артикул","articul","sku","v
 PRICE_KZT_TAGS  = split_tags(PRICEKZT_OVR,  ["ЦенаТенге","price_kzt","ценатенге","цена_kzt","kzt"])
 PRICE_ANY_TAGS  = split_tags(PRICEANY_OVR,  ["Цена","price","amount","value","цена"])
 URL_TAGS        = split_tags(URL_OVR,       ["url","link","ссылка"])
-DESC_TAGS       = split_tags(DESC_OVR,      ["Описание","description","descr","short_description"])
+DESC_TAGS       = split_tags(DESC_OVR,      ["Описание","ПолноеОписание","Description","FullDescription","descr","short_description"])
 CAT_TAGS        = split_tags(CAT_OVR,       ["РазделПрайса","category","категория","group","раздел"])
 SUBCAT_TAGS     = split_tags(SUBCAT_OVR,    ["subcategory","подкатегория","subgroup","подраздел"])
-PIC_LIKE        = split_tags(PIC_OVR,       ["image","img","picture","photo","фото"])
+
+# картинки: одиночные имена полей (типа ImageURL) + "подобные" имена
+PIC_SINGLE_TAGS  = split_tags(PIC_OVR,      ["Image","ImageURL","Photo","Picture","Картинка","Изображение"])
+PIC_LIKE         = ["image","img","photo","picture","картин","изобр","фото"]
+PICS_LIST_TAGS   = split_tags(PICS_OVR,     ["Images","Pictures","Photos","Галерея","Картинки","Изображения"])
+
 QTY_TAGS        = split_tags(QTY_OVR,       ["Наличие","quantity","qty","stock","остаток"])
-BARCODE_TAGS    = split_tags(BARCODE_OVR,   ["barcode","ean","штрихкод","ean13"])
+BARCODE_TAGS    = split_tags(BARCODE_OVR,   ["Штрихкод","barcode","ean","ean13"])
 CATPATH_TAGS    = split_tags(CATPATH_OVR,   ["category_path","full_path","path","путь"])
 
-# ---------- категории ----------
+# характеристики
+PARAMS_BLOCK_TAGS = split_tags(PARAMS_BLOCK_OVR, ["Характеристики","Specs","Attributes","Параметры","ПараметрыТовара"])
+PARAM_NAME_TAGS   = split_tags(PARAM_NAME_OVR,   ["Имя","Name","Параметр","Показатель","Характеристика"])
+PARAM_VALUE_TAGS  = split_tags(PARAM_VALUE_OVR,  ["Значение","Value","Величина","ПараметрЗначение"])
+
+# общие регексы
+IMG_RE = re.compile(r"https?://[^\s'\"<>]+?\.(?:jpg|jpeg|png|webp|gif)(?:\?[^\s'\"<>]*)?$", re.I)
 SEP_RE = re.compile(r"\s*(?:>|/|\\|\||→|»|›|—|-)\s*")
+
+# ---------- extract helpers ----------
 def extract_category_path(item: ET.Element) -> List[str]:
     for t in CATPATH_TAGS:
         val = first_desc_text(item, [t])
@@ -185,11 +188,89 @@ def extract_category_path(item: ET.Element) -> List[str]:
             break
     return clean
 
+def extract_pictures(item: ET.Element) -> List[str]:
+    pics: List[str] = []
+    # 1) явные одиночные поля
+    for t in PIC_SINGLE_TAGS:
+        txt = first_desc_text(item, [t])
+        if txt:
+            for m in IMG_RE.findall(txt):
+                pics.append(m)
+    # 2) контейнеры-галереи: пройдём по потомкам
+    def walk_and_collect(el: ET.Element):
+        nm = strip_ns(el.tag).lower()
+        # если имя тега "похоже" на картинку — берём текст
+        if any(k in nm for k in PIC_LIKE):
+            if el.text:
+                for m in IMG_RE.findall(el.text.strip()):
+                    pics.append(m)
+        # проверим атрибуты (на всякий)
+        for _, v in (el.attrib or {}).items():
+            for m in IMG_RE.findall(str(v)):
+                pics.append(m)
+        for ch in el:
+            walk_and_collect(ch)
+    for node in item:
+        nn = strip_ns(node.tag).lower()
+        if nn in [n.lower() for n in PICS_LIST_TAGS] or any(k in nn for k in PIC_LIKE):
+            walk_and_collect(node)
+    # 3) общий проход по всем узлам — вдруг где-то просто текстом лежат ссылки
+    for ch in item.iter():
+        if ch.text:
+            for m in IMG_RE.findall(ch.text.strip()):
+                pics.append(m)
+    # уникализируем и ограничим
+    uniq = []
+    seen = set()
+    for u in pics:
+        if u not in seen:
+            seen.add(u); uniq.append(u)
+    return uniq[:MAX_PICTURES]
+
+def extract_description(item: ET.Element) -> Optional[str]:
+    txt = first_desc_text(item, DESC_TAGS)
+    if txt and len(txt.strip()) >= 10:
+        return txt.strip()
+    return None
+
+def extract_params(item: ET.Element) -> Dict[str, str]:
+    params: Dict[str, str] = {}
+    # Вариант 1: найти блоки-хранилища характеристик и внутри пары Имя/Значение
+    blocks: List[ET.Element] = []
+    for node in item.iter():
+        nm = strip_ns(node.tag).lower()
+        if nm in [b.lower() for b in PARAMS_BLOCK_TAGS] or "характер" in nm or "spec" in nm or "attrib" in nm:
+            blocks.append(node)
+    def add_pair(k: str, v: str):
+        k = (k or "").strip(": ")
+        v = (v or "").strip()
+        if k and v and k not in params:
+            params[k] = v
+    for b in blocks:
+        # пары Имя/Значение
+        names: List[str]  = []
+        values: List[str] = []
+        for ch in b.iter():
+            nm = strip_ns(ch.tag).lower()
+            if nm in [p.lower() for p in PARAM_NAME_TAGS]:
+                if ch.text: names.append(ch.text.strip())
+            if nm in [p.lower() for p in PARAM_VALUE_TAGS]:
+                if ch.text: values.append(ch.text.strip())
+        for k, v in zip(names, values):
+            add_pair(k, v)
+        # на случай иного формата: "Параметр: Значение" одним тегом
+        for ch in b.iter():
+            if ch.text and ":" in ch.text and len(ch.text) < 200:
+                k, v = ch.text.split(":", 1)
+                add_pair(k, v)
+    return params
+
 # ---------- parse XML item ----------
 def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     name = first_desc_text(item, ["НоменклатураКратко"]) or first_desc_text(item, NAME_TAGS)
     if not name:
         return None
+
     vendor_code = first_desc_text(item, ["Артикул"]) or first_desc_text(item, SKU_TAGS) or ""
     vendor = first_desc_text(item, VENDOR_TAGS) or "NV Print"
 
@@ -198,25 +279,15 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
         price = parse_number(first_desc_text(item, [t]))
         if price is not None:
             break
-
     if price is None:
         for t in PRICE_ANY_TAGS:
             price = parse_number(first_desc_text(item, [t]))
             if price is not None:
                 break
-
     if price is None or price <= 0:
         return None
 
-    url = first_desc_text(item, URL_TAGS) or ""
-    desc = first_desc_text(item, DESC_TAGS)
-    if not desc:
-        base = first_desc_text(item, ["Номенклатура"]) or name
-        bits = [base]
-        if vendor_code:
-            bits.append(f"Артикул: {vendor_code}")
-        desc = "; ".join(bits)
-
+    # Кол-во/наличие
     qty = 0.0
     for t in QTY_TAGS:
         n = parse_number(first_desc_text(item, [t]))
@@ -225,7 +296,22 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     qty_int = int(round(qty)) if qty and qty > 0 else 0
     available = qty_int > 0
 
+    # Категории
     path = extract_category_path(item)
+
+    # Описание/картинки/параметры из XML
+    desc = extract_description(item)
+    if not desc:
+        base = first_desc_text(item, ["Номенклатура"]) or name
+        bits = [base]
+        if vendor_code:
+            bits.append(f"Артикул: {vendor_code}")
+        desc = "; ".join(bits)
+
+    pictures = extract_pictures(item)
+    params = extract_params(item)
+
+    url = first_desc_text(item, URL_TAGS) or ""  # если в XML есть
 
     return {
         "name": name,
@@ -233,113 +319,14 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
         "vendorCode": vendor_code,
         "price": price,
         "url": url,
-        "pictures": [],
+        "pictures": pictures,
         "description": desc,
         "qty": qty_int,
         "path": path,
-        "params": {},
+        "params": params,
         "available": available,
         "in_stock": available,
     }
-
-# ---------- nvprint.ru enrichment ----------
-IMG_RE = re.compile(r"\.(?:jpg|jpeg|png|webp|gif)(?:\?.*)?$", re.I)
-
-def parse_specs_params(s: BeautifulSoup) -> Dict[str, str]:
-    params: Dict[str, str] = {}
-    for dl in s.select("dl"):
-        dts = dl.find_all("dt"); dds = dl.find_all("dd")
-        for dt, dd in zip(dts, dds):
-            k = (dt.get_text(" ", strip=True) or "").strip(": ")
-            v = (dd.get_text(" ", strip=True) or "").strip()
-            if k and v:
-                params.setdefault(k, v)
-    for table in s.select("table"):
-        for tr in table.find_all("tr"):
-            tds = tr.find_all(["td","th"])
-            if len(tds) == 2:
-                k = (tds[0].get_text(" ", strip=True) or "").strip(": ")
-                v = (tds[1].get_text(" ", strip=True) or "").strip()
-                if k and v:
-                    params.setdefault(k, v)
-    return params
-
-def enrich_from_nv_site(art: str) -> Dict[str, Any]:
-    out: Dict[str, Any] = {}
-    if not art:
-        return out
-    for tmpl in SITE_SEARCH_TEMPLATES:
-        url = tmpl.format(art=art)
-        time.sleep(max(0.0, ENRICH_DELAY_MS/1000.0))
-        b = http_get(url)
-        if not b:
-            continue
-        s = soup_of(b)
-
-        og_url = s.select_one("meta[property='og:url']")
-        if og_url and og_url.get("content"):
-            out.setdefault("url", og_url["content"].strip())
-
-        og_img = s.select_one(SEL_OGIMG)
-        if og_img and og_img.get("content"):
-            out.setdefault("pictures", []).append(og_img["content"].strip())
-
-        links = s.select(SEL_PRODUCT_LINKS) if SEL_PRODUCT_LINKS else []
-        hrefs: List[str] = []
-        for a in links:
-            href = (a.get("href") or "").strip()
-            if not href:
-                continue
-            if href.startswith("//"):
-                href = "https:" + href
-            hrefs.append(href)
-
-        for href in hrefs[:5]:
-            time.sleep(max(0.0, ENRICH_DELAY_MS/1000.0))
-            pb = http_get(href)
-            if not pb:
-                continue
-            ps = soup_of(pb)
-
-            t_el = ps.select_one(SEL_TITLE)
-            if t_el:
-                out["title"] = (t_el.get_text(" ", strip=True) or "").strip()
-
-            d_el = ps.select_one(SEL_DESC)
-            if d_el:
-                if d_el.name == "meta":
-                    out["description"] = (d_el.get("content") or "").strip()
-                else:
-                    out["description"] = (d_el.get_text(" ", strip=True) or "").strip()
-
-            og = ps.select_one(SEL_OGIMG)
-            if og and og.get("content"):
-                out.setdefault("pictures", []).append(og.get("content").strip())
-            for img in ps.select(SEL_GALLERY) or []:
-                u = (img.get("src") or img.get("data-src") or img.get("data-image") or "").strip()
-                if u.startswith("//"):
-                    u = "https:" + u
-                if IMG_RE.search(u):
-                    out.setdefault("pictures", []).append(u)
-
-            bnames: List[str] = []
-            for bc in ps.select(SEL_BREADCRUMBS) or []:
-                t = (bc.get_text(" ", strip=True) or "").strip()
-                if t:
-                    bnames.append(t)
-            if len(bnames) >= 2:
-                bnames = [t for t in bnames if t.lower() not in ("главная", "каталог", "home", "catalog")]
-            if bnames:
-                out["breadcrumbs"] = bnames[:4]
-
-            params = parse_specs_params(ps)
-            if params:
-                out["params"] = params
-
-            out.setdefault("url", href)
-            if out.get("title") or out.get("pictures") or out.get("description") or out.get("params"):
-                return out
-    return out
 
 # ---------- YML ----------
 def build_yml(categories: List[Tuple[int,str,Optional[int]]],
@@ -362,7 +349,6 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
         attrs = f' available="{"true" if it.get("available") else "false"}" in_stock="{"true" if it.get("in_stock") else "false"}"'
         out.append(f"<offer id=\"{x(it['id'])}\" {attrs}>")
         out.append(f"<name>{x(it['name'])}</name>")
-        # ↓↓↓ фикс кавычек внутри f-string
         out.append(f"<vendor>{x(it.get('vendor') or 'NV Print')}</vendor>")
         if it.get("vendorCode"):
             out.append(f"<vendorCode>{x(it['vendorCode'])}</vendorCode>")
@@ -388,6 +374,7 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
 
 # ---------- main ----------
 def main() -> int:
+    # 1) XML -> товары
     xml_bytes = fetch_xml_bytes(XML_URL)
     root = ET.fromstring(xml_bytes)
     items = guess_items(root)
@@ -399,6 +386,7 @@ def main() -> int:
         if it:
             parsed.append(it)
 
+    # 2) первичные офферы и пути
     offers: List[Tuple[int, Dict[str,Any]]] = []
     paths: List[List[str]] = []
     for i, it in enumerate(parsed):
@@ -414,6 +402,7 @@ def main() -> int:
             "params": it.get("params") or {},
         }))
 
+    # 3) дерево категорий из путей
     cat_map: Dict[Tuple[str,...], int] = {}
     categories: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
@@ -437,49 +426,11 @@ def main() -> int:
 
     offers = [(path_to_id(paths[i] if i < len(paths) else []), it) for i, (_, it) in enumerate(offers)]
 
-    if ENRICH_SITE and SITE_SEARCH_TEMPLATES:
-        total = len(offers) if ENRICH_LIMIT <= 0 else min(ENRICH_LIMIT, len(offers))
-        print(f"[nvprint.ru] enrich: {total} items (limit={ENRICH_LIMIT})")
-        for idx in range(total):
-            cid, it = offers[idx]
-            art = it.get("vendorCode") or ""
-            if not art:
-                continue
-            add = {}
-            try:
-                add = enrich_from_nv_site(art)
-            except Exception:
-                add = {}
-            if add.get("url") and not it.get("url"):
-                it["url"] = add["url"]
-            if add.get("pictures"):
-                pics = list(dict.fromkeys((it.get("pictures") or []) + add["pictures"]))
-                it["pictures"] = pics[:MAX_PICTURES]
-            if add.get("description"):
-                if not it.get("description") or len(it["description"]) < 40:
-                    it["description"] = add["description"]
-            if add.get("title"):
-                if len(add["title"]) <= len(it["name"]) + 10:
-                    it["name"] = add["title"]
-            if add.get("params"):
-                for k, v in add["params"].items():
-                    it.setdefault("params", {}).setdefault(k, v)
-            bc = add.get("breadcrumbs") or []
-            if bc:
-                parent = ROOT_CAT_ID; acc: List[str] = []
-                for name in bc:
-                    acc.append(name.strip()); key = tuple(acc)
-                    if key not in cat_map:
-                        cid_new = stable_cat_id(" / ".join(acc))
-                        cat_map[key] = cid_new
-                        categories.append((cid_new, name.strip(), parent))
-                        parent = cid_new
-                    else:
-                        parent = cat_map[key]
-                it_cid = cat_map[tuple(acc)]
-                offers[idx] = (it_cid, it)
-            time.sleep(max(0.0, ENRICH_DELAY_MS/1000.0))
+    # 4) (опц.) обогащение сайтом — по умолчанию выключено
+    if ENRICH_SITE and ENRICH_LIMIT != 0:
+        print("[nvprint.ru] enrichment is enabled, but для getallinfo=true обычно не требуется.")
 
+    # 5) запись YML
     xml = build_yml(categories, offers)
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding=("utf-8" if ENCODING.startswith("utf") else "cp1251"), errors="ignore") as f:
