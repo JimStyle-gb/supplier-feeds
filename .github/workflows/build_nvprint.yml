@@ -27,6 +27,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
+      - name: Ensure keywords file
+        run: |
+          mkdir -p docs
+          if [ ! -f docs/nvprint_keywords.txt ]; then
+            cat > docs/nvprint_keywords.txt << 'EOF'
+Блок фотобарабана
+Картридж
+Печатающая головка
+Струйный картридж
+Тонер-картридж
+Тонер-туба
+EOF
+          fi
+          echo "Using keywords:" && cat docs/nvprint_keywords.txt
+
       - name: Build NVPrint feed
         env:
           # --- обязательные ---
@@ -39,8 +54,13 @@ jobs:
           HTTP_TIMEOUT: "60"
           MAX_PICTURES: "10"
 
-          # --- ВСЁ В НАЛИЧИИ ---
+          # --- фильтр по ключевым словам ---
+          NVPRINT_KEYWORDS_FILE: docs/nvprint_keywords.txt
+          NVPRINT_DEBUG_FILTER: "0"
+
+          # --- наличие ---
           NVPRINT_FORCE_AVAILABLE: "1"
+          NVPRINT_DEBUG_AVAIL: "0"
 
           # --- маппинг (опционально) ---
           NVPRINT_MAP_FILE: docs/nvprint_map.csv
@@ -53,7 +73,6 @@ jobs:
 
         run: |
           set -euo pipefail
-          mkdir -p docs
           python scripts/build_nvprint.py
 
       - name: Commit & push feed
@@ -62,11 +81,11 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/nvprint.yml docs/nvprint_source.xml || true
+          git add docs/nvprint.yml docs/nvprint_source.xml docs/nvprint_keywords.txt || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update nvprint.yml (force available)"
+          git commit -m "Update nvprint.yml (keywords filter + availability)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
