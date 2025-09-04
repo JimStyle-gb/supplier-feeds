@@ -1,24 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-NVPrint (XML Basic Auth) → YML (Satu-совместимый)
-- URL: NVPRINT_XML_URL
-- Basic Auth: NVPRINT_LOGIN / NVPRINT_PASSWORD  (поддерживаются NVPRINT_XML_USER/PASS)
-- Сохраняет сырой ответ в docs/nvprint_source.xml.
-- Ищет товары на любой вложенности; можно задать XPath через NVPRINT_ITEM_XPATH (например: ".//Product").
-- КАТЕГОРИИ:
-    1) Если есть поле-путь (CategoryPath / full_path / КатегорияПуть) — разбираем разделителями ">", "/", "|", "→", "-".
-    2) Если есть парные поля Category/Subcategory — берём их.
-    3) Если ничего не найдено — эвристика: берём первые 1–2 поля, где имя тега содержит "category|категор|group|группа|section|раздел".
-- Имена полей можно задать через ENV (см. переменные ниже).
+NVPrint (XML Basic Auth) → YML (Satu-совместимый) + обогащение из B2B по артикулам.
+- База: NVPRINT_XML_URL (Basic Auth NVPRINT_LOGIN/NVPRINT_PASSWORD; поддерживаются NVPRINT_XML_USER/PASS).
+- Категории: из путей/парных тегов в XML (как в предыдущей версии).
+- Обогащение (опционально): NVPRINT_ENRICH_FROM_B2B=1 — поиск по артикулу на B2B, подтягиваем url/picture/description/brand/breadcrumbs.
+  * URL поиска задаются через NVPRINT_B2B_SEARCH_TEMPLATES (через запятую, шаблон {art} обязателен).
+  * Селекторы можно переопределить через ENV (см. ниже).
 """
 
 from __future__ import annotations
-import os, re, sys, html, hashlib
+import os, re, sys, html, hashlib, time
 from typing import Any, Dict, List, Optional, Tuple
 import requests, xml.etree.ElementTree as ET
 from datetime import datetime
+from bs4 import BeautifulSoup
 
-# -------- ENV --------
+# -------- ENV (источник XML) --------
 XML_URL      = os.getenv("NVPRINT_XML_URL", "").strip()
 NV_LOGIN     = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
 NV_PASSWORD  = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
@@ -28,8 +25,8 @@ ENCODING     = (os.getenv("OUTPUT_ENCODING") or "utf-8").lower()
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "60"))
 MAX_PICTURES = int(os.getenv("MAX_PICTURES", "10"))
 
-# КАСТОМНЫЕ ПЕРЕОПРЕДЕЛЕНИЯ (через запятую)
-ITEM_XPATH   = (os.getenv("NVPRINT_ITEM_XPATH") or "").strip()  # пример: ".//Product"
+# -------- ENV (категории/теги в XML) --------
+ITEM_XPATH   = (os.getenv("NVPRINT_ITEM_XPATH") or "").strip()
 NAME_OVR     = os.getenv("NVPRINT_NAME_TAGS")
 PRICEKZT_OVR = os.getenv("NVPRINT_PRICE_KZT_TAGS")
 PRICEANY_OVR = os.getenv("NVPRINT_PRICE_TAGS")
@@ -42,14 +39,36 @@ CAT_OVR      = os.getenv("NVPRINT_CAT_TAGS")
 SUBCAT_OVR   = os.getenv("NVPRINT_SUBCAT_TAGS")
 PIC_OVR      = os.getenv("NVPRINT_PIC_TAGS")
 BARCODE_OVR  = os.getenv("NVPRINT_BARCODE_TAGS")
-CATPATH_OVR  = os.getenv("NVPRINT_CAT_PATH_TAGS")  # поле, где уже хранится полный путь категории
+CATPATH_OVR  = os.getenv("NVPRINT_CAT_PATH_TAGS")
+
+# -------- ENV (обогащение из B2B) --------
+ENRICH       = os.getenv("NVPRINT_ENRICH_FROM_B2B", "0") == "1"
+ENRICH_LIMIT = int(os.getenv("NVPRINT_ENRICH_LIMIT", "200"))
+ENRICH_DELAY = int(os.getenv("NVPRINT_ENRICH_DELAY_MS", "250"))  # мс
+B2B_TIMEOUT  = float(os.getenv("NVPRINT_B2B_TIMEOUT", "25"))
+
+# шаблоны поиска; через запятую; каждый должен содержать {art}
+B2B_SEARCH_TEMPLATES = [t.strip() for t in (os.getenv("NVPRINT_B2B_SEARCH_TEMPLATES") or "").split(",") if "{art}" in t]
+
+# опционально — если требуется логин на B2B
+B2B_LOGIN    = os.getenv("NVPRINT_B2B_LOGIN", "").strip()
+B2B_PASSWORD = os.getenv("NVPRINT_B2B_PASSWORD", "").strip()
+
+# CSS-селекторы можно переопределить через ENV
+SEL_LINKS         = os.getenv("NVPRINT_B2B_SEL_SEARCH_LINKS", "a[href*='/product'],a[href*='/catalog/'],a.product-link").strip()
+SEL_TITLE         = os.getenv("NVPRINT_B2B_SEL_TITLE", ".page-title,h1,.product-title").strip()
+SEL_CODE          = os.getenv("NVPRINT_B2B_SEL_CODE", "[data-code], .sku, .articul, .product-code").strip()
+SEL_DESC          = os.getenv("NVPRINT_B2B_SEL_DESC", ".description,.product-description,meta[name='description']").strip()
+SEL_OG_IMAGE_META = os.getenv("NVPRINT_B2B_SEL_OGIMG", "meta[property='og:image'], meta[name='og:image']").strip()
+SEL_GALLERY       = os.getenv("NVPRINT_B2B_SEL_GALLERY", "img, [data-img], [data-image], .product-gallery img").strip()
+SEL_BREADCRUMBS   = os.getenv("NVPRINT_B2B_SEL_BC", ".breadcrumbs li, nav.breadcrumbs li, .breadcrumb li").strip()
+SEL_VENDOR        = os.getenv("NVPRINT_B2B_SEL_VENDOR", ".vendor,.brand,.producer,.manufacturer").strip()
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/1.4)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/1.5)"}
 
-# -------- helpers --------
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
     h = hashlib.md5((text or "").encode("utf-8", errors="ignore")).hexdigest()[:6]
@@ -59,8 +78,13 @@ def fetch_xml_bytes(url: str) -> bytes:
     if not url: raise RuntimeError("NVPRINT_XML_URL пуст.")
     auth = (NV_LOGIN, NV_PASSWORD) if (NV_LOGIN or NV_PASSWORD) else None
     r = requests.get(url, auth=auth, headers=UA, timeout=HTTP_TIMEOUT)
-    r.raise_for_status()
-    return r.content
+    r.raise_for_status(); b = r.content
+    # сохраним сырой источник
+    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+    try:
+        with open("docs/nvprint_source.xml","wb") as f: f.write(b[:10_000_000])
+    except Exception: pass
+    return b
 
 def strip_ns(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
@@ -101,10 +125,10 @@ def guess_items(root: ET.Element) -> List[ET.Element]:
     if ITEM_XPATH:
         items = root.findall(ITEM_XPATH)
         if items: return items
-    cands = root.findall(".//item") + root.findall(".//row") + root.findall(".//product")
+    cands = root.findall(".//item") + root.findall(".//row") + root.findall(".//product") + root.findall(".//Товар")
     if cands: return cands
-    NAME_TAGS = split_tags(NAME_OVR, ["full_name","fullname","name","наименование","title"])
-    PRICE_ANY_TAGS = split_tags(PRICEANY_OVR, ["price","цена","amount","value"])
+    NAME_TAGS = split_tags(NAME_OVR, ["full_name","fullname","name","наименование","title","НоменклатураКратко","Номенклатура"])
+    PRICE_ANY_TAGS = split_tags(PRICEANY_OVR, ["price","цена","amount","value","Цена"])
     out: List[ET.Element] = []
     for node in root.iter():
         if first_desc_text(node, NAME_TAGS) and first_desc_text(node, PRICE_ANY_TAGS):
@@ -112,17 +136,17 @@ def guess_items(root: ET.Element) -> List[ET.Element]:
     return out
 
 # -------- default tag sets (перекрываются ENV) --------
-NAME_TAGS       = split_tags(NAME_OVR,      ["full_name","fullname","name","наименование","title"])
+NAME_TAGS       = split_tags(NAME_OVR,      ["full_name","fullname","name","наименование","title","НоменклатураКратко","Номенклатура"])
 VENDOR_TAGS     = split_tags(VENDOR_OVR,    ["brand","бренд","вендор","producer","manufacturer","производитель"])
-SKU_TAGS        = split_tags(SKU_OVR,       ["articul","артикул","sku","code","код","vendorcode","кодтовара"])
+SKU_TAGS        = split_tags(SKU_OVR,       ["articul","артикул","sku","code","код","vendorcode","кодтовара","Артикул"])
 PRICE_KZT_TAGS  = split_tags(PRICEKZT_OVR,  ["price_kzt","ценатенге","цена_kzt","kzt","pricekzt","price_kz","price_kaz"])
-PRICE_ANY_TAGS  = split_tags(PRICEANY_OVR,  ["price","цена","amount","value"])
+PRICE_ANY_TAGS  = split_tags(PRICEANY_OVR,  ["price","цена","amount","value","Цена"])
 URL_TAGS        = split_tags(URL_OVR,       ["url","link","ссылка"])
-DESC_TAGS       = split_tags(DESC_OVR,      ["description","описание","descr","short_description"])
-CAT_TAGS        = split_tags(CAT_OVR,       ["category","категория","group","группа","section","раздел"])
+DESC_TAGS       = split_tags(DESC_OVR,      ["description","описание","descr","short_description","Описание"])
+CAT_TAGS        = split_tags(CAT_OVR,       ["category","категория","group","группа","section","раздел","РазделПрайса"])
 SUBCAT_TAGS     = split_tags(SUBCAT_OVR,    ["subcategory","подкатегория","subgroup","subsection","подраздел"])
 PIC_LIKE        = split_tags(PIC_OVR,       ["image","img","picture","photo","фото","imageurl","image_url","photourl"])
-QTY_TAGS        = split_tags(QTY_OVR,       ["quantity","qty","остаток","stock","amount","наличие","на_складе","store_amount"])
+QTY_TAGS        = split_tags(QTY_OVR,       ["quantity","qty","остаток","stock","amount","наличие","на_складе","store_amount","Наличие"])
 BARCODE_TAGS    = split_tags(BARCODE_OVR,   ["barcode","ean","штрихкод","ean13","ean-13"])
 CATPATH_TAGS    = split_tags(CATPATH_OVR,   ["category_path","full_path","path","категорияпуть","путь","раздел_путь"])
 
@@ -130,62 +154,49 @@ CATPATH_TAGS    = split_tags(CATPATH_OVR,   ["category_path","full_path","path",
 SEP_RE = re.compile(r"\s*(?:>|/|\\|\||→|»|›|—|-)\s*")
 
 def extract_category_path(item: ET.Element) -> List[str]:
-    # 1) Поле-путь (разбиваем на части)
     for t in CATPATH_TAGS:
         val = first_desc_text(item, [t])
         if val:
             parts = [p.strip() for p in SEP_RE.split(val) if p.strip()]
-            if parts: return parts[:4]  # ограничим глубину
-
-    # 2) Раздельные поля
+            if parts: return parts[:4]
     cat  = first_desc_text(item, CAT_TAGS) or ""
     scat = first_desc_text(item, SUBCAT_TAGS) or ""
     path = [p for p in [cat, scat] if p]
     if path: return path
-
-    # 3) Эвристика по совпадению имен тегов
     cand = all_desc_texts_like(item, ["category","категор","group","группа","section","раздел"])
-    # чистим
     seen = set(); clean = []
     for v in cand:
         vv = v.strip()
         if not vv or vv.lower() in seen: continue
         seen.add(vv.lower())
-        # отсечем слишком короткие (типа "A")
         if len(vv) < 2: continue
         clean.append(vv)
         if len(clean) >= 2: break
     return clean
 
-# -------- parsing --------
+# -------- parsing XML item --------
 def parse_item(item: ET.Element) -> Optional[Dict[str, Any]]:
-    name = first_desc_text(item, NAME_TAGS)
+    # name: предпочитаем короткое
+    name = first_desc_text(item, ["НоменклатураКратко"]) or first_desc_text(item, NAME_TAGS)
     if not name: return None
-
     vendor = first_desc_text(item, VENDOR_TAGS) or "NV Print"
-    vendor_code = first_desc_text(item, SKU_TAGS)
+    vendor_code = first_desc_text(item, ["Артикул"]) or first_desc_text(item, SKU_TAGS)
 
     price = None
     for t in PRICE_KZT_TAGS:
-        price = parse_number(first_desc_text(item, [t]))
-        if price is not None: break
+        price = parse_number(first_desc_text(item, [t]));  if price is not None: break
     if price is None:
         for t in PRICE_ANY_TAGS:
-            price = parse_number(first_desc_text(item, [t]))
-            if price is not None: break
+            price = parse_number(first_desc_text(item, [t]));  if price is not None: break
     if price is None or price <= 0: return None
 
     url = first_desc_text(item, URL_TAGS) or ""
-    pics = all_desc_texts_like(item, PIC_LIKE)
-    pics = [p for p in pics if re.search(r"\.(jpg|jpeg|png|webp)(\?|$)", p, re.I)]
-    pics = list(dict.fromkeys(pics))[:MAX_PICTURES]
-
+    pics = []  # из XML обычно нет
     desc = first_desc_text(item, DESC_TAGS)
     if not desc:
-        bits = [name]
+        base = first_desc_text(item, ["Номенклатура"]) or name
+        bits = [base]
         if vendor_code: bits.append(f"Артикул: {vendor_code}")
-        bc = first_desc_text(item, BARCODE_TAGS)
-        if bc: bits.append(f"Штрихкод: {bc}")
         desc = "; ".join(bits)
 
     qty = 0.0
@@ -193,7 +204,6 @@ def parse_item(item: ET.Element) -> Optional[Dict[str, Any]]:
         n = parse_number(first_desc_text(item, [t]))
         if n is not None: qty = max(qty, n)
     available = qty > 0
-    in_stock = available
     qty_int = int(round(qty)) if qty and qty > 0 else 0
 
     path = extract_category_path(item)
@@ -208,8 +218,138 @@ def parse_item(item: ET.Element) -> Optional[Dict[str, Any]]:
         "description": desc,
         "qty": qty_int,
         "path": path,
-        "params": {},  # можно расширить при необходимости
+        "params": {},
     }
+
+# -------- B2B enrichment --------
+def b2b_login_if_needed(session: requests.Session) -> None:
+    """
+    Заглушка под возможный логин. Если портал требует логин — реализуй здесь.
+    Примеры:
+      - Basic Auth уже в домене — тогда не нужно.
+      - Форма логина: session.post(LOGIN_URL, data={...}, headers=..., timeout=B2B_TIMEOUT)
+      - CSRF: сначала GET, вытащить meta[name=csrf-token], затем POST.
+    Сейчас ничего не делаем.
+    """
+    return
+
+def soup_of(resp_bytes: bytes) -> BeautifulSoup:
+    return BeautifulSoup(resp_bytes or b"", "html.parser")
+
+def http_get(session: requests.Session, url: str) -> Optional[bytes]:
+    try:
+        r = session.get(url, timeout=B2B_TIMEOUT, allow_redirects=True)
+        if r.status_code != 200: return None
+        return r.content
+    except Exception:
+        return None
+
+IMG_RE = re.compile(r"\.(?:jpg|jpeg|png|webp)(?:\?.*)?$", re.I)
+
+def enrich_one(session: requests.Session, art: str) -> Dict[str, Any]:
+    """Возвращает dict с возможными полями: url, pictures(list), title, description, vendor, breadcrumbs(list)."""
+    out: Dict[str, Any] = {}
+    if not art: return out
+    # последовательно пробуем шаблоны
+    for tmpl in B2B_SEARCH_TEMPLATES or []:
+        search_url = tmpl.format(art=art)
+        time.sleep(max(0.0, ENRICH_DELAY/1000.0))
+        b = http_get(session, search_url)
+        if not b: continue
+        s = soup_of(b)
+
+        # 1) если есть og:url/og:image — иногда уже страница товара
+        og_url = s.select_one("meta[property='og:url']")
+        if og_url and og_url.get("content"): out.setdefault("url", og_url["content"].strip())
+        og_img = s.select_one(SEL_OG_IMAGE_META)
+        if og_img and og_img.get("content"):
+            out.setdefault("pictures", []).append(og_img["content"].strip())
+
+        # 2) собрать ссылки-кандидаты
+        links = s.select(SEL_LINKS) if SEL_LINKS else []
+        cand_hrefs: List[str] = []
+        for a in links:
+            href = a.get("href") or ""
+            href = href.strip()
+            if not href: continue
+            if href.startswith("//"): href = "https:" + href
+            if href.startswith("/"):  # попытка восстановить абсолютную (если домен совпадает)
+                # домен берём из search_url
+                m = re.match(r"^(https?://[^/]+)", search_url)
+                if m: href = m.group(1) + href
+            cand_hrefs.append(href)
+
+        # 3) проходим по кандидатам и ищем карточку с совпадающим артикулом
+        for url in cand_hrefs[:5]:  # не больше 5 кликов на результат
+            time.sleep(max(0.0, ENRICH_DELAY/1000.0))
+            pb = http_get(session, url)
+            if not pb: continue
+            ps = soup_of(pb)
+
+            # сверяем артикул, если удаётся извлечь
+            code_ok = False
+            if SEL_CODE:
+                code_el = ps.select_one(SEL_CODE)
+                code_txt = ""
+                if code_el:
+                    code_txt = (code_el.get("content") or code_el.get_text(" ", strip=True) or "").strip()
+                if code_txt:
+                    norm = re.sub(r"\W+", "", code_txt).lower()
+                    norm_art = re.sub(r"\W+", "", art).lower()
+                    if norm and norm == norm_art:
+                        code_ok = True
+            # если не смогли проверить — допустим
+            if not code_ok and SEL_CODE:
+                pass
+
+            # собираем данные
+            title_el = ps.select_one(SEL_TITLE) if SEL_TITLE else None
+            if title_el:
+                out["title"] = (title_el.get_text(" ", strip=True) or "").strip()
+
+            if SEL_DESC:
+                d_el = ps.select_one(SEL_DESC)
+                if d_el:
+                    if d_el.name == "meta":
+                        out["description"] = (d_el.get("content") or "").strip()
+                    else:
+                        out["description"] = (d_el.get_text(" ", strip=True) or "").strip()
+
+            if SEL_VENDOR:
+                v_el = ps.select_one(SEL_VENDOR)
+                if v_el:
+                    out["vendor"] = (v_el.get_text(" ", strip=True) or "").strip()
+
+            # картинки: og:image + галерея
+            og = ps.select_one(SEL_OG_IMAGE_META)
+            if og and og.get("content"):
+                out.setdefault("pictures", []).append(og["content"].strip())
+            for img in ps.select(SEL_GALLERY) or []:
+                u = img.get("src") or img.get("data-src") or img.get("data-image") or ""
+                u = u.strip()
+                if not u: continue
+                if u.startswith("//"): u = "https:" + u
+                if IMG_RE.search(u):
+                    out.setdefault("pictures", []).append(u)
+
+            # хлебные крошки → категории
+            bnames: List[str] = []
+            for bc in ps.select(SEL_BREADCRUMBS) or []:
+                t = (bc.get_text(" ", strip=True) or "").strip()
+                if t: bnames.append(t)
+            # часто первые элементы — Домой/Каталог → обрежем их
+            if len(bnames) >= 2:
+                # эвристика: убрать "Главная" и "Каталог"
+                bnames = [t for t in bnames if t and t.lower() not in ("главная","каталог","home","catalog")]
+            if bnames:
+                out["breadcrumbs"] = bnames[:4]
+
+            out.setdefault("url", url)  # если не было og:url
+            # если есть что-то осмысленное — хватит
+            if out.get("title") or out.get("pictures") or out.get("description"):
+                return out
+
+    return out
 
 # -------- YML build --------
 def build_yml(categories: List[Tuple[int,str,Optional[int]]],
@@ -238,7 +378,7 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
         out.append("<currencyId>KZT</currencyId>")
         out.append(f"<categoryId>{cid}</categoryId>")
         if it.get("url"): out.append(f"<url>{x(it['url'])}</url>")
-        for u in (it.get("pictures") or []):
+        for u in (it.get("pictures") or [])[:MAX_PICTURES]:
             out.append(f"<picture>{x(u)}</picture>")
         if it.get("description"):
             out.append(f"<description>{x(it['description'])}</description>")
@@ -255,26 +395,21 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
 
 # -------- main --------
 def main() -> int:
-    # XML → файл-дамп
+    # 1) XML → парс
     xml_bytes = fetch_xml_bytes(XML_URL)
-    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    try:
-        with open("docs/nvprint_source.xml","wb") as f:
-            f.write(xml_bytes[:10_000_000])
-    except Exception:
-        pass
-
     root = ET.fromstring(xml_bytes)
     items = guess_items(root)
     print(f"[nvprint] guessed items: {len(items)}")
 
+    # 2) baseline товары
     parsed: List[Dict[str,Any]] = []
     for el in items:
         it = parse_item(el)
         if it: parsed.append(it)
 
-    offers: List[Tuple[int, Dict[str,Any]]] = []
+    # 3) Категории из XML
     paths: List[List[str]] = []
+    offers: List[Tuple[int, Dict[str,Any]]] = []
     for i, it in enumerate(parsed):
         offer_id_src = it.get("vendorCode") or it.get("url") or it.get("name") or f"nv-{i+1}"
         oid = re.sub(r"[^\w\-]+", "-", offer_id_src).strip("-") or f"nv-{i+1}"
@@ -289,7 +424,7 @@ def main() -> int:
             "available": available, "in_stock": available, "params": it.get("params") or {},
         }))
 
-    # дерево категорий
+    # 4) дерево категорий (из XML путей)
     cat_map: Dict[Tuple[str,...], int] = {}
     categories: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
@@ -309,18 +444,61 @@ def main() -> int:
         key = tuple([p.strip() for p in (path or []) if p and p.strip()])
         return cat_map.get(key, ROOT_CAT_ID)
 
-    offers_final: List[Tuple[int, Dict[str,Any]]] = []
-    for i, (_, it) in enumerate(offers):
-        offers_final.append((path_to_id(paths[i] if i < len(paths) else []), it))
+    offers = [(path_to_id(paths[i] if i < len(paths) else []), it) for i, (_, it) in enumerate(offers)]
 
-    xml = build_yml(categories, offers_final)
+    # 5) ОБОГАЩЕНИЕ из B2B (опционально)
+    if ENRICH and (B2B_SEARCH_TEMPLATES or B2B_LOGIN or B2B_PASSWORD):
+        s = requests.Session(); s.headers.update(UA)
+        try:
+            b2b_login_if_needed(s)
+        except Exception:
+            pass
+        total = len(offers) if ENRICH_LIMIT <= 0 else min(ENRICH_LIMIT, len(offers))
+        print(f"[b2b] enrich enabled: {total} items (limit={ENRICH_LIMIT})")
+        for idx in range(total):
+            cid, it = offers[idx]
+            art = it.get("vendorCode") or ""
+            if not art: continue
+            try:
+                add = enrich_one(s, art)
+            except Exception:
+                add = {}
+            # применяем только то, чего нет
+            if add.get("url") and not it.get("url"): it["url"] = add["url"]
+            if add.get("pictures"):
+                pics = list(dict.fromkeys((it.get("pictures") or []) + add["pictures"]))
+                it["pictures"] = pics[:MAX_PICTURES]
+            if add.get("description"):
+                # если базовое описание короткое/синтетическое — заменим
+                if not it.get("description") or len(it["description"]) < 40:
+                    it["description"] = add["description"]
+            if add.get("vendor") and (not it.get("vendor") or it["vendor"] == "NV Print"):
+                it["vendor"] = add["vendor"]
+            # хлебные крошки → категория точнее
+            bc = add.get("breadcrumbs") or []
+            if bc:
+                # построим/зарегистрируем путь
+                parent = ROOT_CAT_ID; acc: List[str] = []
+                for name in bc:
+                    acc.append(name.strip()); key = tuple(acc)
+                    if key not in cat_map:
+                        cid_new = stable_cat_id(" / ".join(acc))
+                        cat_map[key] = cid_new
+                        categories.append((cid_new, name.strip(), parent))
+                        parent = cid_new
+                    else:
+                        parent = cat_map[key]
+                # присвоим самый глубокий
+                it_cid = cat_map[tuple(acc)]
+                offers[idx] = (it_cid, it)
+
+    # 6) запись
+    xml = build_yml(categories, offers)
+    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding=("utf-8" if ENCODING.startswith("utf") else "cp1251"), errors="ignore") as f:
         f.write(xml)
 
-    print(f"[nvprint-xml] done: {len(offers_final)} offers, {len(categories)} categories -> {OUT_FILE} (encoding={ENCODING})")
-    if not categories:
-        print("INFO: категории не найдены в XML — товары отправлены в корень. "
-              "Если нужны рубрики, укажи NVPRINT_CAT_PATH_TAGS или NVPRINT_CAT_TAGS/NVPRINT_SUBCAT_TAGS.", file=sys.stderr)
+    print(f"[nvprint-xml] done: {len(offers)} offers, {len(categories)} categories -> {OUT_FILE} (encoding={ENCODING})")
     return 0
 
 if __name__ == "__main__":
