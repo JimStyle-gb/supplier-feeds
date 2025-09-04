@@ -1,16 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 NVPrint: XML API -> YML (KZT) + обогащение с nvprint.ru по артикулу.
-
-База (обязательная):
-- NVPRINT_XML_URL: https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml
-- BasicAuth: NVPRINT_LOGIN / NVPRINT_PASSWORD (если требуется поставщиком; для этой ссылки тоже BasicAuth)
-
-Обогащение (опционально):
-- NVPRINT_ENRICH_FROM_SITE=1 — включить поиск на https://nvprint.ru по артикулу
-- NVPRINT_SITE_SEARCH_TEMPLATES — список шаблонов поиска (по умолчанию пробуем популярные варианты WP):
-    "https://nvprint.ru/?s={art},https://nvprint.ru/search/?q={art}"
-- Селекторы можно переопределить через ENV (см. ниже).
 """
 
 from __future__ import annotations
@@ -48,8 +38,8 @@ CATPATH_OVR  = os.getenv("NVPRINT_CAT_PATH_TAGS")
 
 # ---------- ENV: обогащение с nvprint.ru ----------
 ENRICH_SITE       = os.getenv("NVPRINT_ENRICH_FROM_SITE", "0") == "1"
-ENRICH_LIMIT      = int(os.getenv("NVPRINT_ENRICH_LIMIT", "300"))         # лимит на один запуск (0 = все)
-ENRICH_DELAY_MS   = int(os.getenv("NVPRINT_ENRICH_DELAY_MS", "250"))      # задержка между запросами
+ENRICH_LIMIT      = int(os.getenv("NVPRINT_ENRICH_LIMIT", "300"))
+ENRICH_DELAY_MS   = int(os.getenv("NVPRINT_ENRICH_DELAY_MS", "250"))
 
 SITE_SEARCH_TPL   = (os.getenv("NVPRINT_SITE_SEARCH_TEMPLATES")
                      or "https://nvprint.ru/?s={art},https://nvprint.ru/search/?q={art}")
@@ -57,14 +47,13 @@ SITE_SEARCH_TEMPLATES = [t.strip() for t in SITE_SEARCH_TPL.split(",") if "{art}
 
 B2B_TIMEOUT       = float(os.getenv("NVPRINT_SITE_TIMEOUT", "25"))
 
-# CSS селекторы для карточки nvprint.ru (можно переопределить ENV при необходимости)
+# CSS селекторы для карточки nvprint.ru (можно переопределить ENV)
 SEL_PRODUCT_LINKS   = os.getenv("NVPRINT_SITE_SEL_SEARCH_LINKS", "a[href*='/product/']").strip()
 SEL_TITLE           = os.getenv("NVPRINT_SITE_SEL_TITLE", ".page-title,h1,.product-title").strip()
 SEL_DESC            = os.getenv("NVPRINT_SITE_SEL_DESC", ".product-description,meta[name='description']").strip()
 SEL_OGIMG           = os.getenv("NVPRINT_SITE_SEL_OGIMG", "meta[property='og:image'],meta[name='og:image']").strip()
 SEL_GALLERY         = os.getenv("NVPRINT_SITE_SEL_GALLERY", ".product-gallery img, img").strip()
 SEL_BREADCRUMBS     = os.getenv("NVPRINT_SITE_SEL_BC", ".breadcrumbs li, nav.breadcrumbs li, .breadcrumb li").strip()
-# пары характеристик (dt -> dd) или таблицы
 SEL_SPECS_BLOCKS    = os.getenv("NVPRINT_SITE_SEL_SPECS", "dl, .specs, .characteristics, table").strip()
 
 ROOT_CAT_ID   = 9400000
@@ -83,7 +72,6 @@ def fetch_xml_bytes(url: str) -> bytes:
     r = requests.get(url, auth=auth, headers=UA, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
     b = r.content
-    # сохраним исходник для дебага
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     try:
         with open("docs/nvprint_source.xml", "wb") as f:
@@ -144,10 +132,8 @@ def guess_items(root: ET.Element) -> List[ET.Element]:
     if ITEM_XPATH:
         items = root.findall(ITEM_XPATH)
         if items: return items
-    # типовые пути
     cands = root.findall(".//Товар") + root.findall(".//item") + root.findall(".//product") + root.findall(".//row")
     if cands: return cands
-    # эвристика: есть имя и цена
     NAME_TAGS = split_tags(NAME_OVR, ["НоменклатураКратко","Номенклатура","full_name","name","title","наименование"])
     PRICE_ANY = split_tags(PRICEANY_OVR, ["Цена","price","amount","value","цена"])
     out: List[ET.Element] = []
@@ -185,7 +171,6 @@ def extract_category_path(item: ET.Element) -> List[str]:
     path = [p for p in [cat, scat] if p]
     if path:
         return path
-    # fallback: любые поля, похожие на "категория"
     cand = all_desc_texts_like(item, ["category","категор","group","раздел"])
     seen = set(); clean = []
     for v in cand:
@@ -262,7 +247,6 @@ IMG_RE = re.compile(r"\.(?:jpg|jpeg|png|webp|gif)(?:\?.*)?$", re.I)
 
 def parse_specs_params(s: BeautifulSoup) -> Dict[str, str]:
     params: Dict[str, str] = {}
-    # dt/dd пары
     for dl in s.select("dl"):
         dts = dl.find_all("dt"); dds = dl.find_all("dd")
         for dt, dd in zip(dts, dds):
@@ -270,7 +254,6 @@ def parse_specs_params(s: BeautifulSoup) -> Dict[str, str]:
             v = (dd.get_text(" ", strip=True) or "").strip()
             if k and v:
                 params.setdefault(k, v)
-    # таблицы 2-колоночные
     for table in s.select("table"):
         for tr in table.find_all("tr"):
             tds = tr.find_all(["td","th"])
@@ -293,17 +276,14 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
             continue
         s = soup_of(b)
 
-        # если страница уже карточка
         og_url = s.select_one("meta[property='og:url']")
         if og_url and og_url.get("content"):
             out.setdefault("url", og_url["content"].strip())
 
-        # подхватим og:image
         og_img = s.select_one(SEL_OGIMG)
         if og_img and og_img.get("content"):
             out.setdefault("pictures", []).append(og_img["content"].strip())
 
-        # соберём ссылки на /product/
         links = s.select(SEL_PRODUCT_LINKS) if SEL_PRODUCT_LINKS else []
         hrefs: List[str] = []
         for a in links:
@@ -314,7 +294,6 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
                 href = "https:" + href
             hrefs.append(href)
 
-        # пройдём по нескольким кандидатам
         for href in hrefs[:5]:
             time.sleep(max(0.0, ENRICH_DELAY_MS/1000.0))
             pb = http_get(href)
@@ -322,12 +301,10 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
                 continue
             ps = soup_of(pb)
 
-            # заголовок
             t_el = ps.select_one(SEL_TITLE)
             if t_el:
                 out["title"] = (t_el.get_text(" ", strip=True) or "").strip()
 
-            # описание (meta или блок)
             d_el = ps.select_one(SEL_DESC)
             if d_el:
                 if d_el.name == "meta":
@@ -335,7 +312,6 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
                 else:
                     out["description"] = (d_el.get_text(" ", strip=True) or "").strip()
 
-            # фото: og:image + галерея
             og = ps.select_one(SEL_OGIMG)
             if og and og.get("content"):
                 out.setdefault("pictures", []).append(og.get("content").strip())
@@ -346,7 +322,6 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
                 if IMG_RE.search(u):
                     out.setdefault("pictures", []).append(u)
 
-            # хлебные крошки → категории
             bnames: List[str] = []
             for bc in ps.select(SEL_BREADCRUMBS) or []:
                 t = (bc.get_text(" ", strip=True) or "").strip()
@@ -357,14 +332,12 @@ def enrich_from_nv_site(art: str) -> Dict[str, Any]:
             if bnames:
                 out["breadcrumbs"] = bnames[:4]
 
-            # характеристики → params
             params = parse_specs_params(ps)
             if params:
                 out["params"] = params
 
             out.setdefault("url", href)
             if out.get("title") or out.get("pictures") or out.get("description") or out.get("params"):
-                # достаточно данных — выходим
                 return out
     return out
 
@@ -389,7 +362,8 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
         attrs = f' available="{"true" if it.get("available") else "false"}" in_stock="{"true" if it.get("in_stock") else "false"}"'
         out.append(f"<offer id=\"{x(it['id'])}\" {attrs}>")
         out.append(f"<name>{x(it['name'])}</name>")
-        out.append(f"<vendor>{x(it.get("vendor") or "NV Print")}</vendor>")
+        # ↓↓↓ фикс кавычек внутри f-string
+        out.append(f"<vendor>{x(it.get('vendor') or 'NV Print')}</vendor>")
         if it.get("vendorCode"):
             out.append(f"<vendorCode>{x(it['vendorCode'])}</vendorCode>")
         out.append(f"<price>{int(round(float(it['price'])))}</price>")
@@ -414,7 +388,6 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
 
 # ---------- main ----------
 def main() -> int:
-    # 1) XML -> товары
     xml_bytes = fetch_xml_bytes(XML_URL)
     root = ET.fromstring(xml_bytes)
     items = guess_items(root)
@@ -426,7 +399,6 @@ def main() -> int:
         if it:
             parsed.append(it)
 
-    # 2) первичные офферы и пути
     offers: List[Tuple[int, Dict[str,Any]]] = []
     paths: List[List[str]] = []
     for i, it in enumerate(parsed):
@@ -442,7 +414,6 @@ def main() -> int:
             "params": it.get("params") or {},
         }))
 
-    # 3) дерево категорий из XML-путей
     cat_map: Dict[Tuple[str,...], int] = {}
     categories: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
@@ -466,7 +437,6 @@ def main() -> int:
 
     offers = [(path_to_id(paths[i] if i < len(paths) else []), it) for i, (_, it) in enumerate(offers)]
 
-    # 4) обогащение nvprint.ru
     if ENRICH_SITE and SITE_SEARCH_TEMPLATES:
         total = len(offers) if ENRICH_LIMIT <= 0 else min(ENRICH_LIMIT, len(offers))
         print(f"[nvprint.ru] enrich: {total} items (limit={ENRICH_LIMIT})")
@@ -480,7 +450,6 @@ def main() -> int:
                 add = enrich_from_nv_site(art)
             except Exception:
                 add = {}
-            # применяем только то, чего нет
             if add.get("url") and not it.get("url"):
                 it["url"] = add["url"]
             if add.get("pictures"):
@@ -490,13 +459,11 @@ def main() -> int:
                 if not it.get("description") or len(it["description"]) < 40:
                     it["description"] = add["description"]
             if add.get("title"):
-                # иногда на сайте название аккуратнее — можно заменить, если оно короче/чище
                 if len(add["title"]) <= len(it["name"]) + 10:
                     it["name"] = add["title"]
             if add.get("params"):
                 for k, v in add["params"].items():
                     it.setdefault("params", {}).setdefault(k, v)
-            # хлебные крошки → категория точнее
             bc = add.get("breadcrumbs") or []
             if bc:
                 parent = ROOT_CAT_ID; acc: List[str] = []
@@ -511,10 +478,8 @@ def main() -> int:
                         parent = cat_map[key]
                 it_cid = cat_map[tuple(acc)]
                 offers[idx] = (it_cid, it)
-            # задержка между товарами
             time.sleep(max(0.0, ENRICH_DELAY_MS/1000.0))
 
-    # 5) запись YML
     xml = build_yml(categories, offers)
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding=("utf-8" if ENCODING.startswith("utf") else "cp1251"), errors="ignore") as f:
