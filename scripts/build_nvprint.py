@@ -3,18 +3,25 @@
 NVPrint: XML API (getallinfo=true) -> YML (KZT)
 - База: цены, остатки, разделы из XML.
 - Фото/описание/характеристики: ПРЯМО из XML (если выданы с getallinfo=true).
-- Обогащение с сайта nvprint.ru оставлено опциональным (по умолчанию выключено).
+- Обогащение сайтом отключено (не нужно при getallinfo=true).
 
-Настройки через ENV (важные):
-  NVPRINT_XML_URL            — полный URL XML (включая getallinfo=true).
-  NVPRINT_LOGIN/PASSWORD     — если API под BasicAuth.
+ENV:
+  NVPRINT_XML_URL            — полный URL XML (c getallinfo=true)
+  NVPRINT_LOGIN/PASSWORD     — если API под BasicAuth
+  OUT_FILE                   — путь для YML (по умолчанию docs/nvprint.yml)
+  OUTPUT_ENCODING            — utf-8 (по умолчанию) или windows-1251
 
-  Кастом тэгов (через запятую): NVPRINT_PICS_TAGS, NVPRINT_DESC_TAGS, NVPRINT_PARAMS_BLOCK_TAGS,
-  NVPRINT_PARAM_NAME_TAGS, NVPRINT_PARAM_VALUE_TAGS и т.д. (см. ниже).
+Кастомные имена тегов (через запятую):
+  NVPRINT_NAME_TAGS, NVPRINT_PRICE_KZT_TAGS, NVPRINT_PRICE_TAGS,
+  NVPRINT_SKU_TAGS,  NVPRINT_VENDOR_TAGS,    NVPRINT_QTY_TAGS,
+  NVPRINT_DESC_TAGS, NVPRINT_URL_TAGS,
+  NVPRINT_CAT_TAGS,  NVPRINT_SUBCAT_TAGS,    NVPRINT_CAT_PATH_TAGS
+  NVPRINT_PIC_TAGS   (single), NVPRINT_PICS_TAGS (gallery)
+  NVPRINT_PARAMS_BLOCK_TAGS, NVPRINT_PARAM_NAME_TAGS, NVPRINT_PARAM_VALUE_TAGS
 """
 
 from __future__ import annotations
-import os, re, sys, html, hashlib, time
+import os, re, sys, html, hashlib
 from typing import Any, Dict, List, Optional, Tuple
 import requests, xml.etree.ElementTree as ET
 from datetime import datetime
@@ -41,24 +48,19 @@ DESC_OVR     = os.getenv("NVPRINT_DESC_TAGS")
 URL_OVR      = os.getenv("NVPRINT_URL_TAGS")
 CAT_OVR      = os.getenv("NVPRINT_CAT_TAGS")
 SUBCAT_OVR   = os.getenv("NVPRINT_SUBCAT_TAGS")
-PIC_OVR      = os.getenv("NVPRINT_PIC_TAGS")              # одиночные поля вида ImageURL
-PICS_OVR     = os.getenv("NVPRINT_PICS_TAGS")             # множественные поля (галерея)
+PIC_OVR      = os.getenv("NVPRINT_PIC_TAGS")     # одиночные поля (ImageURL и т.п.)
+PICS_OVR     = os.getenv("NVPRINT_PICS_TAGS")    # контейнеры/списки (галерея)
 BARCODE_OVR  = os.getenv("NVPRINT_BARCODE_TAGS")
 CATPATH_OVR  = os.getenv("NVPRINT_CAT_PATH_TAGS")
 
 # Характеристики (если XML отдаёт пары имя/значение)
-PARAMS_BLOCK_OVR = os.getenv("NVPRINT_PARAMS_BLOCK_TAGS")     # контейнеры, например "Характеристики,Specs,Attributes"
+PARAMS_BLOCK_OVR = os.getenv("NVPRINT_PARAMS_BLOCK_TAGS")     # "Характеристики,Specs,Attributes"
 PARAM_NAME_OVR   = os.getenv("NVPRINT_PARAM_NAME_TAGS")       # "Имя,Name,Параметр"
-PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")      # "Значение,Value,Знач"
-
-# ---------- ENV: (опц.) обогащение с nvprint.ru — отключено по умолчанию ----------
-ENRICH_SITE       = os.getenv("NVPRINT_ENRICH_FROM_SITE", "0") == "1"
-ENRICH_LIMIT      = int(os.getenv("NVPRINT_ENRICH_LIMIT", "0"))      # 0 = выключено / все
-ENRICH_DELAY_MS   = int(os.getenv("NVPRINT_ENRICH_DELAY_MS", "250"))
+PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")      # "Значение,Value,Величина"
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.1)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.2)"}
 
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
@@ -67,12 +69,13 @@ def stable_cat_id(text: str, prefix: int = 9420000) -> int:
 
 # ---------- HTTP ----------
 def fetch_xml_bytes(url: str) -> bytes:
-    if not url: raise RuntimeError("NVPRINT_XML_URL пуст.")
+    if not url:
+        raise RuntimeError("NVPRINT_XML_URL пуст.")
     auth = (NV_LOGIN, NV_PASSWORD) if (NV_LOGIN or NV_PASSWORD) else None
     r = requests.get(url, auth=auth, headers=UA, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
     b = r.content
-    # лог для дебага
+    # сохраняем исходник для дебага
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     try:
         with open("docs/nvprint_source.xml", "wb") as f:
@@ -109,26 +112,36 @@ def first_desc_text(item: ET.Element, names: List[str]) -> Optional[str]:
 
 def all_desc_texts_like(item: ET.Element, substrs: List[str]) -> List[str]:
     subs = [s.lower() for s in substrs]
-    out: List[str] = []
+    out: List[ET.Element] = []
     for ch in item.iter():
         nm = strip_ns(ch.tag).lower()
         if any(s in nm for s in subs):
-            txt = (ch.text or "").strip() if ch.text else ""
-            if txt: out.append(txt)
-    return out
+            out.append(ch)
+    texts: List[str] = []
+    for node in out:
+        if node.text:
+            t = node.text.strip()
+            if t:
+                texts.append(t)
+    return texts
 
 # ---------- items guess ----------
 def guess_items(root: ET.Element) -> List[ET.Element]:
+    # 1) Явный путь, если задан
     if ITEM_XPATH:
         items = root.findall(ITEM_XPATH)
         if items: return items
+    # 2) Типовые контейнеры
     cands = root.findall(".//Товар") + root.findall(".//item") + root.findall(".//product") + root.findall(".//row")
     if cands: return cands
+    # 3) Fallback: считаем «товаром» узлы, где есть имя ИЛИ артикул (цена не обязательна!)
     NAME_TAGS = split_tags(NAME_OVR, ["НоменклатураКратко","Номенклатура","full_name","name","title","наименование"])
-    PRICE_ANY = split_tags(PRICEANY_OVR, ["Цена","price","amount","value","цена"])
+    SKU_TAGS_ = split_tags(SKU_OVR,  ["Артикул","articul","sku","vendorcode","кодтовара","code","код"])
     out: List[ET.Element] = []
     for node in root.iter():
-        if first_desc_text(node, NAME_TAGS) and first_desc_text(node, PRICE_ANY):
+        has_name = first_desc_text(node, NAME_TAGS)
+        has_sku  = first_desc_text(node, SKU_TAGS_)
+        if has_name or has_sku:
             out.append(node)
     return out
 
@@ -143,7 +156,7 @@ DESC_TAGS       = split_tags(DESC_OVR,      ["Описание","ПолноеО�
 CAT_TAGS        = split_tags(CAT_OVR,       ["РазделПрайса","category","категория","group","раздел"])
 SUBCAT_TAGS     = split_tags(SUBCAT_OVR,    ["subcategory","подкатегория","subgroup","подраздел"])
 
-# картинки: одиночные имена полей (типа ImageURL) + "подобные" имена
+# картинки
 PIC_SINGLE_TAGS  = split_tags(PIC_OVR,      ["Image","ImageURL","Photo","Picture","Картинка","Изображение"])
 PIC_LIKE         = ["image","img","photo","picture","картин","изобр","фото"]
 PICS_LIST_TAGS   = split_tags(PICS_OVR,     ["Images","Pictures","Photos","Галерея","Картинки","Изображения"])
@@ -174,37 +187,32 @@ def extract_category_path(item: ET.Element) -> List[str]:
     path = [p for p in [cat, scat] if p]
     if path:
         return path
-    cand = all_desc_texts_like(item, ["category","категор","group","раздел"])
+    cand_texts = all_desc_texts_like(item, ["category","категор","group","раздел"])
     seen = set(); clean = []
-    for v in cand:
+    for v in cand_texts:
         vv = v.strip()
-        if not vv or vv.lower() in seen:
-            continue
+        if not vv or vv.lower() in seen: continue
         seen.add(vv.lower())
-        if len(vv) < 2:
-            continue
+        if len(vv) < 2: continue
         clean.append(vv)
-        if len(clean) >= 2:
-            break
+        if len(clean) >= 2: break
     return clean
 
 def extract_pictures(item: ET.Element) -> List[str]:
     pics: List[str] = []
-    # 1) явные одиночные поля
+    # 1) одиночные поля
     for t in PIC_SINGLE_TAGS:
         txt = first_desc_text(item, [t])
         if txt:
             for m in IMG_RE.findall(txt):
                 pics.append(m)
-    # 2) контейнеры-галереи: пройдём по потомкам
+    # 2) контейнеры-галереи: обходим потомков
     def walk_and_collect(el: ET.Element):
         nm = strip_ns(el.tag).lower()
-        # если имя тега "похоже" на картинку — берём текст
         if any(k in nm for k in PIC_LIKE):
             if el.text:
                 for m in IMG_RE.findall(el.text.strip()):
                     pics.append(m)
-        # проверим атрибуты (на всякий)
         for _, v in (el.attrib or {}).items():
             for m in IMG_RE.findall(str(v)):
                 pics.append(m)
@@ -214,7 +222,7 @@ def extract_pictures(item: ET.Element) -> List[str]:
         nn = strip_ns(node.tag).lower()
         if nn in [n.lower() for n in PICS_LIST_TAGS] or any(k in nn for k in PIC_LIKE):
             walk_and_collect(node)
-    # 3) общий проход по всем узлам — вдруг где-то просто текстом лежат ссылки
+    # 3) общий проход — вдруг ссылки лежат просто текстом
     for ch in item.iter():
         if ch.text:
             for m in IMG_RE.findall(ch.text.strip()):
@@ -235,19 +243,19 @@ def extract_description(item: ET.Element) -> Optional[str]:
 
 def extract_params(item: ET.Element) -> Dict[str, str]:
     params: Dict[str, str] = {}
-    # Вариант 1: найти блоки-хранилища характеристик и внутри пары Имя/Значение
     blocks: List[ET.Element] = []
     for node in item.iter():
         nm = strip_ns(node.tag).lower()
         if nm in [b.lower() for b in PARAMS_BLOCK_TAGS] or "характер" in nm or "spec" in nm or "attrib" in nm:
             blocks.append(node)
+
     def add_pair(k: str, v: str):
         k = (k or "").strip(": ")
         v = (v or "").strip()
         if k and v and k not in params:
             params[k] = v
+
     for b in blocks:
-        # пары Имя/Значение
         names: List[str]  = []
         values: List[str] = []
         for ch in b.iter():
@@ -258,7 +266,6 @@ def extract_params(item: ET.Element) -> Dict[str, str]:
                 if ch.text: values.append(ch.text.strip())
         for k, v in zip(names, values):
             add_pair(k, v)
-        # на случай иного формата: "Параметр: Значение" одним тегом
         for ch in b.iter():
             if ch.text and ":" in ch.text and len(ch.text) < 200:
                 k, v = ch.text.split(":", 1)
@@ -284,10 +291,10 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
             price = parse_number(first_desc_text(item, [t]))
             if price is not None:
                 break
+    # <<< ВАЖНО: не отбрасываем товары без цены — подставляем 1.0 >>>
     if price is None or price <= 0:
-        return None
+        price = 1.0
 
-    # Кол-во/наличие
     qty = 0.0
     for t in QTY_TAGS:
         n = parse_number(first_desc_text(item, [t]))
@@ -296,10 +303,8 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     qty_int = int(round(qty)) if qty and qty > 0 else 0
     available = qty_int > 0
 
-    # Категории
     path = extract_category_path(item)
 
-    # Описание/картинки/параметры из XML
     desc = extract_description(item)
     if not desc:
         base = first_desc_text(item, ["Номенклатура"]) or name
@@ -426,11 +431,7 @@ def main() -> int:
 
     offers = [(path_to_id(paths[i] if i < len(paths) else []), it) for i, (_, it) in enumerate(offers)]
 
-    # 4) (опц.) обогащение сайтом — по умолчанию выключено
-    if ENRICH_SITE and ENRICH_LIMIT != 0:
-        print("[nvprint.ru] enrichment is enabled, but для getallinfo=true обычно не требуется.")
-
-    # 5) запись YML
+    # 4) запись YML
     xml = build_yml(categories, offers)
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding=("utf-8" if ENCODING.startswith("utf") else "cp1251"), errors="ignore") as f:
