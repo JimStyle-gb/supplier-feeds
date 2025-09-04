@@ -4,6 +4,7 @@
 NVPrint: XML API (getallinfo=true) -> YML (KZT)
 — Тянем все товары из XML (даже без цены → price=1).
 — Фото/описание/характеристики берём из XML.
+— Корректно определяем наличие: по числовым остаткам И/ИЛИ по текстовым статусам ("есть", "в наличии", "под заказ", ...).
 — Пишем файл в UTF-8 с BOM (utf-8-sig), чтобы кириллица корректно показывалась на GitHub Pages.
 
 ENV:
@@ -13,9 +14,10 @@ ENV:
 
 Кастомные имена тегов (через запятую):
   NVPRINT_NAME_TAGS, NVPRINT_PRICE_KZT_TAGS, NVPRINT_PRICE_TAGS,
-  NVPRINT_SKU_TAGS,  NVPRINT_VENDOR_TAGS,    NVPRINT_QTY_TAGS,
+  NVPRINT_SKU_TAGS,  NVPRINT_VENDOR_TAGS,
+  NVPRINT_QTY_TAGS,  NVPRINT_AVAIL_TAGS,
   NVPRINT_DESC_TAGS, NVPRINT_URL_TAGS,
-  NVPRINT_CAT_TAGS,  NVPRINT_SUBCAT_TAGS,    NVPRINT_CAT_PATH_TAGS
+  NVPRINT_CAT_TAGS,  NVPRINT_SUBCAT_TAGS, NVPRINT_CAT_PATH_TAGS
   NVPRINT_PIC_TAGS   (single), NVPRINT_PICS_TAGS (gallery)
   NVPRINT_PARAMS_BLOCK_TAGS, NVPRINT_PARAM_NAME_TAGS, NVPRINT_PARAM_VALUE_TAGS
 """
@@ -43,6 +45,7 @@ PRICEANY_OVR = os.getenv("NVPRINT_PRICE_TAGS")
 SKU_OVR      = os.getenv("NVPRINT_SKU_TAGS")
 VENDOR_OVR   = os.getenv("NVPRINT_VENDOR_TAGS")
 QTY_OVR      = os.getenv("NVPRINT_QTY_TAGS")
+AVAIL_OVR    = os.getenv("NVPRINT_AVAIL_TAGS")
 DESC_OVR     = os.getenv("NVPRINT_DESC_TAGS")
 URL_OVR      = os.getenv("NVPRINT_URL_TAGS")
 CAT_OVR      = os.getenv("NVPRINT_CAT_TAGS")
@@ -59,7 +62,7 @@ PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")      # "Значени�
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.3)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.4)"}
 
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
@@ -155,12 +158,15 @@ DESC_TAGS       = split_tags(DESC_OVR,      ["Описание","ПолноеО�
 CAT_TAGS        = split_tags(CAT_OVR,       ["РазделПрайса","category","категория","group","раздел"])
 SUBCAT_TAGS     = split_tags(SUBCAT_OVR,    ["subcategory","подкатегория","subgroup","подраздел"])
 
+# наличие/остаток
+QTY_TAGS        = split_tags(QTY_OVR,       ["Наличие","quantity","qty","stock","остаток","остатокфакт","свободныйостаток","freebalance"])
+AVAIL_TAGS      = split_tags(AVAIL_OVR,     ["availability","available","instock","status","наличие","статусналичия","статус","доступность"])
+
 # картинки
 PIC_SINGLE_TAGS  = split_tags(PIC_OVR,      ["Image","ImageURL","Photo","Picture","Картинка","Изображение"])
 PIC_LIKE         = ["image","img","photo","picture","картин","изобр","фото"]
 PICS_LIST_TAGS   = split_tags(PICS_OVR,     ["Images","Pictures","Photos","Галерея","Картинки","Изображения"])
 
-QTY_TAGS        = split_tags(QTY_OVR,       ["Наличие","quantity","qty","stock","остаток"])
 BARCODE_TAGS    = split_tags(BARCODE_OVR,   ["Штрихкод","barcode","ean","ean13"])
 CATPATH_TAGS    = split_tags(CATPATH_OVR,   ["category_path","full_path","path","путь"])
 
@@ -172,6 +178,27 @@ PARAM_VALUE_TAGS  = split_tags(PARAM_VALUE_OVR,  ["Значение","Value","В
 # общие регексы
 IMG_RE = re.compile(r"https?://[^\s'\"<>]+?\.(?:jpg|jpeg|png|webp|gif)(?:\?[^\s'\"<>]*)?$", re.I)
 SEP_RE = re.compile(r"\s*(?:>|/|\\|\||→|»|›|—|-)\s*")
+
+# ---------- availability helpers ----------
+POS_WORDS = [
+    "есть", "в наличии", "вналичии", "true", "yes", "да", "available", "instock", "in stock",
+    "много", "на складе", "есть на складе", "доступно", "готов к отгрузке"
+]
+NEG_WORDS = [
+    "нет", "отсутств", "false", "no", "нет в наличии", "нет на складе",
+    "под заказ", "preorder", "ожидается", "ожид", "out of stock", "законч", "0 шт", "0шт"
+]
+
+def parse_availability_text(s: Optional[str]) -> Optional[bool]:
+    if not s: return None
+    t = re.sub(r"\s+", " ", s.strip().lower())
+    for w in POS_WORDS:
+        if w in t:
+            return True
+    for w in NEG_WORDS:
+        if w in t:
+            return False
+    return None
 
 # ---------- extract helpers ----------
 def extract_category_path(item: ET.Element) -> List[str]:
@@ -280,6 +307,7 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     vendor_code = first_desc_text(item, ["Артикул"]) or first_desc_text(item, SKU_TAGS) or ""
     vendor = first_desc_text(item, VENDOR_TAGS) or "NV Print"
 
+    # цена
     price = None
     for t in PRICE_KZT_TAGS:
         price = parse_number(first_desc_text(item, [t]))
@@ -290,17 +318,40 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
             price = parse_number(first_desc_text(item, [t]))
             if price is not None:
                 break
-    # Не отбрасываем товары без цены — подставляем 1.0
     if price is None or price <= 0:
         price = 1.0
 
+    # количество / наличие
     qty = 0.0
+    # 1) числовые остатки
     for t in QTY_TAGS:
-        n = parse_number(first_desc_text(item, [t]))
+        txt = first_desc_text(item, [t])
+        n = parse_number(txt)
         if n is not None:
             qty = max(qty, n)
     qty_int = int(round(qty)) if qty and qty > 0 else 0
-    available = qty_int > 0
+
+    # 2) текстовые статусы (availability/status или сами теги наличия с текстом)
+    avail_flag: Optional[bool] = None
+    for taglist in (AVAIL_TAGS, QTY_TAGS):
+        for t in taglist:
+            txt = first_desc_text(item, [t])
+            flag = parse_availability_text(txt)
+            if flag is True:
+                avail_flag = True
+                break
+            if flag is False and avail_flag is None:
+                avail_flag = False
+        if avail_flag is True:
+            break
+
+    # 3) итоговая логика
+    if avail_flag is None:
+        available = qty_int > 0
+    else:
+        available = avail_flag
+    if available and qty_int == 0:
+        qty_int = 1  # минимальный запас, если статус «есть», но числа нет
 
     path = extract_category_path(item)
 
