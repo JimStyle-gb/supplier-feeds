@@ -2,33 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 NVPrint: XML API (getallinfo=true) -> YML (KZT)
-— Все товары из XML (без цены → price=1).
+— Тянем все товары (без цены → price=1).
 — Фото/описание/характеристики — из XML.
-— Наличие по числовым остаткам и/или текстовым статусам.
+— Наличие: учитываем <Наличие Количество="905"> — если атрибут есть и непустой, считаем available="true";
+           число из атрибута идёт в qty (если 0 или не число — ставим qty=1 при available=true).
+— Маппинг артикулов (их код → наш) через CSV (опционально).
 — UTF-8 с BOM (utf-8-sig) для корректной кириллицы на GitHub Pages.
-— Маппинг артикулов: по CSV сопоставляем ИХ код → НАШ артикул.
-
-ENV (основные):
-  NVPRINT_XML_URL, NVPRINT_LOGIN, NVPRINT_PASSWORD
-  OUT_FILE (docs/nvprint.yml), HTTP_TIMEOUT (60), MAX_PICTURES (10)
-
-Маппинг (опционально):
-  NVPRINT_MAP_FILE            — путь к CSV (по умолчанию docs/nvprint_map.csv)
-  NVPRINT_MAP_DELIM           — разделитель ("," по умолчанию)
-  NVPRINT_MAP_SUPPLIER_COL    — индекс колонки с кодом поставщика (0)
-  NVPRINT_MAP_OUR_COL         — индекс колонки с нашим артикулом (1)
-  NVPRINT_REQUIRE_MAP         — "1" = исключать товары без маппинга (по умолчанию "0")
-  NVPRINT_OUR_SKU_PREFIX      — префикс к нашему артикулу (по умолчанию пусто)
-  NVPRINT_PARAM_SUPPLIER_CODE — имя param для исходного кода (по умолчанию "SupplierCode")
-
-Кастомные теги (через запятую):
-  NVPRINT_NAME_TAGS, NVPRINT_PRICE_KZT_TAGS, NVPRINT_PRICE_TAGS,
-  NVPRINT_SKU_TAGS,  NVPRINT_VENDOR_TAGS,
-  NVPRINT_QTY_TAGS,  NVPRINT_AVAIL_TAGS,
-  NVPRINT_DESC_TAGS, NVPRINT_URL_TAGS,
-  NVPRINT_CAT_TAGS,  NVPRINT_SUBCAT_TAGS, NVPRINT_CAT_PATH_TAGS
-  NVPRINT_PIC_TAGS (single), NVPRINT_PICS_TAGS (gallery)
-  NVPRINT_PARAMS_BLOCK_TAGS, NVPRINT_PARAM_NAME_TAGS, NVPRINT_PARAM_VALUE_TAGS
 """
 
 from __future__ import annotations
@@ -55,15 +34,13 @@ REQUIRE_MAP    = os.getenv("NVPRINT_REQUIRE_MAP", "0") == "1"
 OUR_SKU_PREFIX = os.getenv("NVPRINT_OUR_SKU_PREFIX", "")
 SUPPL_PARAM    = os.getenv("NVPRINT_PARAM_SUPPLIER_CODE", "SupplierCode")
 
-# ---------- ENV: парсинг XML ----------
+# ---------- ENV: парсинг XML (опциональные кастом-теги) ----------
 ITEM_XPATH   = (os.getenv("NVPRINT_ITEM_XPATH") or "").strip()
 NAME_OVR     = os.getenv("NVPRINT_NAME_TAGS")
 PRICEKZT_OVR = os.getenv("NVPRINT_PRICE_KZT_TAGS")
 PRICEANY_OVR = os.getenv("NVPRINT_PRICE_TAGS")
 SKU_OVR      = os.getenv("NVPRINT_SKU_TAGS")
 VENDOR_OVR   = os.getenv("NVPRINT_VENDOR_TAGS")
-QTY_OVR      = os.getenv("NVPRINT_QTY_TAGS")
-AVAIL_OVR    = os.getenv("NVPRINT_AVAIL_TAGS")
 DESC_OVR     = os.getenv("NVPRINT_DESC_TAGS")
 URL_OVR      = os.getenv("NVPRINT_URL_TAGS")
 CAT_OVR      = os.getenv("NVPRINT_CAT_TAGS")
@@ -72,14 +49,13 @@ PIC_OVR      = os.getenv("NVPRINT_PIC_TAGS")
 PICS_OVR     = os.getenv("NVPRINT_PICS_TAGS")
 BARCODE_OVR  = os.getenv("NVPRINT_BARCODE_TAGS")
 CATPATH_OVR  = os.getenv("NVPRINT_CAT_PATH_TAGS")
-
 PARAMS_BLOCK_OVR = os.getenv("NVPRINT_PARAMS_BLOCK_TAGS")
 PARAM_NAME_OVR   = os.getenv("NVPRINT_PARAM_NAME_TAGS")
 PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.6)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/2.8)"}
 
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
@@ -171,9 +147,11 @@ DESC_TAGS       = split_tags(DESC_OVR,      ["Описание","ПолноеО�
 CAT_TAGS        = split_tags(CAT_OVR,       ["РазделПрайса","category","категория","group","раздел"])
 SUBCAT_TAGS     = split_tags(SUBCAT_OVR,    ["subcategory","подкатегория","subgroup","подраздел"])
 
-QTY_TAGS        = split_tags(QTY_OVR,       ["Наличие","quantity","qty","stock","остаток","остатокфакт","свободныйостаток","freebalance"])
-AVAIL_TAGS      = split_tags(AVAIL_OVR,     ["availability","available","instock","status","наличие","статусналичия","статус","доступность"])
+# ключи для распознавания количества/наличия
+QTY_KEYS   = ["колич", "кол-во", "к-во", "налич", "остат", "qty", "quantity", "stock", "free", "balance", "count", "amount"]
+AVAIL_KEYS = ["налич", "avail", "stock", "status", "доступ", "статус"]
 
+# картинки
 PIC_SINGLE_TAGS  = split_tags(PIC_OVR,      ["Image","ImageURL","Photo","Picture","Картинка","Изображение"])
 PIC_LIKE         = ["image","img","photo","picture","картин","изобр","фото"]
 PICS_LIST_TAGS   = split_tags(PICS_OVR,     ["Images","Pictures","Photos","Галерея","Картинки","Изображения"])
@@ -188,61 +166,75 @@ PARAM_VALUE_TAGS  = split_tags(PARAM_VALUE_OVR,  ["Значение","Value","В
 IMG_RE = re.compile(r"https?://[^\s'\"<>]+?\.(?:jpg|jpeg|png|webp|gif)(?:\?[^\s'\"<>]*)?$", re.I)
 SEP_RE = re.compile(r"\s*(?:>|/|\\|\||→|»|›|—|-)\s*")
 
-POS_WORDS = [
-    "есть", "в наличии", "вналичии", "true", "yes", "да", "available", "instock", "in stock",
-    "много", "на складе", "есть на складе", "доступно", "готов к отгрузке"
-]
-NEG_WORDS = [
-    "нет", "отсутств", "false", "no", "нет в наличии", "нет на складе",
-    "под заказ", "preorder", "ожидается", "ожид", "out of stock", "законч", "0 шт", "0шт"
-]
+# слова для статусов
+POS_WORDS = ["есть","в наличии","вналичии","true","yes","да","available","instock","in stock","много","на складе","есть на складе","доступно","готов к отгрузке","положительный"]
+NEG_WORDS = ["нет","отсутств","false","no","нет в наличии","нет на складе","под заказ","preorder","ожидается","ожид","out of stock","законч","0 шт","0шт","отсутствует","недоступно"]
 
 def parse_availability_text(s: Optional[str]) -> Optional[bool]:
     if not s: return None
     t = re.sub(r"\s+", " ", s.strip().lower())
     for w in POS_WORDS:
-        if w in t:
-            return True
+        if w in t: return True
     for w in NEG_WORDS:
-        if w in t:
-            return False
+        if w in t: return False
     return None
 
-# ---------- mapping ----------
-def load_code_map(path: str, delim: str, c_sup: int, c_our: int) -> Dict[str, str]:
-    m: Dict[str, str] = {}
-    if not path or not os.path.isfile(path):
-        return m
-    def norm(s: str) -> str:
-        return (s or "").strip()
-    try:
-        with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
-            reader = csv.reader(f, delimiter=delim)
-            for row in reader:
-                if not row or len(row) <= max(c_sup, c_our):
-                    continue
-                sup = norm(row[c_sup])
-                our = norm(row[c_our])
-                if sup and our:
-                    m[sup] = our
-    except Exception:
-        with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
-            sniffer = csv.Sniffer()
-            sample = f.read(4096)
-            f.seek(0)
-            try:
-                dialect = sniffer.sniff(sample, delimiters=",;\t|")
-            except Exception:
-                dialect = csv.excel
-            reader = csv.reader(f, dialect)
-            for row in reader:
-                if not row or len(row) <= max(c_sup, c_our):
-                    continue
-                sup = (row[c_sup] or "").strip()
-                our = (row[c_our] or "").strip()
-                if sup and our:
-                    m[sup] = our
-    return m
+def best_qty_and_availability(item: ET.Element) -> Tuple[int, Optional[bool]]:
+    """
+    Сканирует ВСЕ узлы и атрибуты.
+    Специальное правило: тег 'Наличие' с атрибутом 'Количество' —
+      если атрибут присутствует и НЕ пустой → available=True.
+      Число из атрибута идёт в qty (если не число/0 — потом qty=1 при available=True).
+    Плюс общий поиск по ключам QTY_KEYS/AVAIL_KEYS.
+    """
+    qty = 0.0
+    avail_flag: Optional[bool] = None
+    qkeys = tuple(QTY_KEYS)
+    akeys = tuple(AVAIL_KEYS)
+
+    for ch in item.iter():
+        nm = strip_ns(ch.tag).lower()
+
+        # --- Спец: <Наличие Количество="...">
+        if nm == "наличие" or nm == "nalichie" or nm == "availability":
+            # если любой атрибут 'Количество'/похожие есть и не пустой — считаем, что есть в наличии
+            for k, v in (ch.attrib or {}).items():
+                kl = k.lower()
+                val = (str(v) or "").strip()
+                if ("кол" in kl or kl in ("количество","кол-во","к-во","qty","quantity","count","amount")) and val != "":
+                    # есть значение → available=True
+                    avail_flag = True
+                    n = parse_number(val)
+                    if n is not None:
+                        qty = max(qty, n)
+
+        # --- ЧИСЛО: в тексте и атрибутах по ключам количества
+        if any(k in nm for k in qkeys):
+            if ch.text:
+                n = parse_number(ch.text)
+                if n is not None:
+                    qty = max(qty, n)
+            for v in (ch.attrib or {}).values():
+                n = parse_number(str(v))
+                if n is not None:
+                    qty = max(qty, n)
+
+        # --- СТАТУС: по тексту/атрибутам по ключам наличия
+        if any(k in nm for k in akeys):
+            flag = parse_availability_text(ch.text or "")
+            if flag is True:
+                avail_flag = True
+            elif flag is False and avail_flag is None:
+                avail_flag = False
+            for v in (ch.attrib or {}).values():
+                flag = parse_availability_text(str(v))
+                if flag is True:
+                    avail_flag = True
+                elif flag is False and avail_flag is None:
+                    avail_flag = False
+
+    qty_int = int(round(qty)) if qty and qty > 0 else 0
+    return qty_int, avail_flag
 
 # ---------- extract helpers ----------
 def extract_category_path(item: ET.Element) -> List[str]:
@@ -261,14 +253,11 @@ def extract_category_path(item: ET.Element) -> List[str]:
     seen = set(); clean = []
     for v in cand_texts:
         vv = v.strip()
-        if not vv or vv.lower() in seen:
-            continue
+        if not vv or vv.lower() in seen: continue
         seen.add(vv.lower())
-        if len(vv) < 2:
-            continue
+        if len(vv) < 2: continue
         clean.append(vv)
-        if len(clean) >= 2:
-            break
+        if len(clean) >= 2: break
     return clean
 
 def extract_pictures(item: ET.Element) -> List[str]:
@@ -364,29 +353,12 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     if price is None or price <= 0:
         price = 1.0
 
-    # количество / наличие
-    qty = 0.0
-    for t in QTY_TAGS:
-        txt = first_desc_text(item, [t])
-        n = parse_number(txt)
-        if n is not None:
-            qty = max(qty, n)
-    qty_int = int(round(qty)) if qty and qty > 0 else 0
-
-    avail_flag: Optional[bool] = None
-    for taglist in (AVAIL_TAGS, QTY_TAGS):
-        for t in taglist:
-            txt = first_desc_text(item, [t])
-            flag = parse_availability_text(txt)
-            if flag is True:
-                avail_flag = True
-                break
-            if flag is False and avail_flag is None:
-                avail_flag = False
-        if avail_flag is True:
-            break
-
-    available = (qty_int > 0) if (avail_flag is None) else avail_flag
+    # наличие/количество — УМНЫЙ СКАН + спец-правило для <Наличие Количество="...">
+    qty_int, avail_flag = best_qty_and_availability(item)
+    if avail_flag is None:
+        available = qty_int > 0
+    else:
+        available = avail_flag
     if available and qty_int == 0:
         qty_int = 1
 
@@ -407,8 +379,8 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     return {
         "name": name,
         "vendor": vendor,
-        "supplierCode": supplier_code,   # исходный код поставщика
-        "vendorCode": supplier_code,     # будет заменён на наш при наличии маппинга
+        "supplierCode": supplier_code,
+        "vendorCode": supplier_code,     # заменим на наш при наличии маппинга
         "price": price,
         "url": url,
         "pictures": pictures,
@@ -463,9 +435,40 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]],
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
+# ---------- mapping ----------
+def load_code_map(path: str, delim: str, c_sup: int, c_our: int) -> Dict[str, str]:
+    m: Dict[str, str] = {}
+    if not path or not os.path.isfile(path):
+        return m
+    def norm(s: str) -> str: return (s or "").strip()
+    # пробуем обычный CSV, потом авто-детект
+    try:
+        with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
+            reader = csv.reader(f, delimiter=delim)
+            for row in reader:
+                if not row or len(row) <= max(c_sup, c_our): continue
+                sup = norm(row[c_sup]); our = norm(row[c_our])
+                if sup and our: m[sup] = our
+        return m
+    except Exception:
+        pass
+    with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
+        sniffer = csv.Sniffer()
+        sample = f.read(4096); f.seek(0)
+        try:
+            dialect = sniffer.sniff(sample, delimiters=",;\t|")
+        except Exception:
+            dialect = csv.excel
+        reader = csv.reader(f, dialect)
+        for row in reader:
+            if not row or len(row) <= max(c_sup, c_our): continue
+            sup = norm(row[c_sup]); our = norm(row[c_our])
+            if sup and our: m[sup] = our
+    return m
+
 # ---------- main ----------
 def main() -> int:
-    # 0) загрузка маппинга
+    # 0) маппинг
     code_map = load_code_map(MAP_FILE, MAP_DELIM, MAP_SUPPL_COL, MAP_OUR_COL)
 
     # 1) XML -> товары
@@ -490,12 +493,11 @@ def main() -> int:
             it["vendorCode"] = our_full
         else:
             if REQUIRE_MAP:
-                continue  # пропускаем, если требуем только замапленные
-            # если маппинга нет — vendorCode остаётся кодом поставщика
+                continue  # строгий режим: только замапленные
 
         parsed.append(it)
 
-    # 2) первичные офферы и пути
+    # 2) офферы/пути
     offers: List[Tuple[int, Dict[str,Any]]] = []
     paths: List[List[str]] = []
     for i, it in enumerate(parsed):
@@ -504,26 +506,24 @@ def main() -> int:
         paths.append(it.get("path") or [])
         offers.append((ROOT_CAT_ID, {
             "id": oid, "name": it["name"], "vendor": it.get("vendor") or "NV Print",
-            "vendorCode": it.get("vendorCode") or "",
-            "price": it["price"], "url": it.get("url") or "",
-            "pictures": it.get("pictures") or [], "description": it.get("description") or "",
-            "qty": int(it.get("qty") or 0), "available": it.get("available", False),
-            "in_stock": it.get("in_stock", False), "params": it.get("params") or {},
+            "vendorCode": it.get("vendorCode") or "", "price": it["price"],
+            "url": it.get("url") or "", "pictures": it.get("pictures") or [],
+            "description": it.get("description") or "", "qty": int(it.get("qty") or 0),
+            "available": it.get("available", False), "in_stock": it.get("in_stock", False),
+            "params": it.get("params") or {},
         }))
 
-    # 3) дерево категорий из путей
+    # 3) категории
     cat_map: Dict[Tuple[str,...], int] = {}
     categories: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
         clean = [p for p in (path or []) if isinstance(p, str) and p.strip()]
-        if not clean:
-            continue
+        if not clean: continue
         parent = ROOT_CAT_ID; acc: List[str] = []
         for name in clean:
             acc.append(name.strip()); key = tuple(acc)
             if key in cat_map:
-                parent = cat_map[key]
-                continue
+                parent = cat_map[key]; continue
             cid = stable_cat_id(" / ".join(acc))
             cat_map[key] = cid
             categories.append((cid, name.strip(), parent))
@@ -535,7 +535,7 @@ def main() -> int:
 
     offers = [(path_to_id(paths[i] if i < len(paths) else []), it) for i, (_, it) in enumerate(offers)]
 
-    # 4) запись YML — UTF-8 c BOM
+    # 4) запись
     xml = build_yml(categories, offers)
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8-sig", errors="ignore") as f:
