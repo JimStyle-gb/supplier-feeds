@@ -1,3 +1,4 @@
+# .github/workflows/build_nvprint.yml
 name: build_nvprint
 on:
   workflow_dispatch:
@@ -9,7 +10,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     permissions:
       contents: write
 
@@ -29,25 +30,13 @@ jobs:
 
       - name: Build NVPrint feed
         env:
-          NVPRINT_XML_URL: https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true
-          NVPRINT_LOGIN: ${{ secrets.NVPRINT_LOGIN }}      # если API под BasicAuth
-          NVPRINT_PASSWORD: ${{ secrets.NVPRINT_PASSWORD }}
+          NVPRINT_XML_URL: "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
+          NVPRINT_LOGIN: ${{ secrets.NVPRINT_LOGIN }}        # если требуется
+          NVPRINT_PASSWORD: ${{ secrets.NVPRINT_PASSWORD }}  # если требуется
+
           OUT_FILE: docs/nvprint.yml
-          OUTPUT_ENCODING: utf-8
-          HTTP_TIMEOUT: '60'
-          MAX_PICTURES: '10'
-
-          # --- опционально: если в XML другие имена тегов, раскомментируй и укажи свои ---
-          # NVPRINT_PICS_TAGS: 'Images,Pictures,Photos,Картинки,Изображения'
-          # NVPRINT_PIC_TAGS:  'Image,ImageURL,Photo,Picture,Картинка,Изображение'
-          # NVPRINT_DESC_TAGS: 'Описание,ПолноеОписание,Description,FullDescription'
-          # NVPRINT_PARAMS_BLOCK_TAGS: 'Характеристики,Specs,Attributes'
-          # NVPRINT_PARAM_NAME_TAGS:   'Имя,Name,Параметр'
-          # NVPRINT_PARAM_VALUE_TAGS:  'Значение,Value'
-          # NVPRINT_ITEM_XPATH: './/Товар'   # если нужно явно указать путь к товару
-
-          # --- обогащение сайтом (обычно не нужно при getallinfo=true) ---
-          # NVPRINT_ENRICH_FROM_SITE: '0'
+          HTTP_TIMEOUT: "60"
+          MAX_PICTURES: "10"
         run: |
           set -euo pipefail
           python scripts/build_nvprint.py
@@ -64,6 +53,6 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update nvprint.yml (XML getallinfo)"
+          git commit -m "Update nvprint.yml (XML getallinfo=true)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
