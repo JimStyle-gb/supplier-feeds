@@ -1,18 +1,17 @@
-# scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
 """
 NVPrint: XML API (getallinfo=true) -> YML (KZT)
-— Тянем все товары.
-— Фото/описание/характеристики — из XML.
-— НАЛИЧИЕ:
-    * по умолчанию: <Наличие Количество="..."> => available=True; qty из атрибута.
-    * fallback: ищем qty/status в других тегах/атрибутах.
-    * ПРИНУДИТЕЛЬНО: если NVPRINT_FORCE_AVAILABLE="1" => все товары available=True, qty>=1.
-— ФИЛЬТР ПО КЛЮЧЕВЫМ СЛОВАМ:
-    * если NVPRINT_KEYWORDS_FILE задан и содержит строки → оставляем товары,
-      где ЛЮБОЕ ключевое слово встречается (без регистра) в name / description / category-path / vendor / vendorCode / supplierCode.
-— Маппинг артикулов (их код → наш) через CSV (опционально).
-— UTF-8 с BOM (utf-8-sig) для корректной кириллицы на GitHub Pages.
+
+Изменение: строгий фильтр по ключевым словам — имя товара ДОЛЖНО начинаться
+с одного из слов из docs/nvprint_keywords.txt (регистр игнорируется).
+По умолчанию включён режим 'prefix'. Старый режим можно вернуть через
+NVPRINT_KEYWORDS_MODE=any.
+
+Остальное:
+— Наличие: приоритет <Наличие Количество="...">; fallback по другим полям;
+  NVPRINT_FORCE_AVAILABLE="1" → все товары в наличии.
+— Маппинг артикулов (их→наш) через CSV (опционально).
+— UTF-8 с BOM (utf-8-sig) для корректной кириллицы.
 """
 
 from __future__ import annotations
@@ -32,9 +31,9 @@ MAX_PICTURES = int(os.getenv("MAX_PICTURES", "10"))
 DEBUG_AVAIL  = os.getenv("NVPRINT_DEBUG_AVAIL", "0") == "1"
 FORCE_AVAIL  = os.getenv("NVPRINT_FORCE_AVAILABLE", "0") == "1"
 
-# фильтр ключевых слов
-KW_FILE      = os.getenv("NVPRINT_KEYWORDS_FILE", "docs/nvprint_keywords.txt")
-DEBUG_FILTER = os.getenv("NVPRINT_DEBUG_FILTER", "0") == "1"
+# --- фильтр по ключевым словам ---
+KEYWORDS_FILE = os.getenv("NVPRINT_KEYWORDS_FILE", "docs/nvprint_keywords.txt")
+KEYWORDS_MODE = (os.getenv("NVPRINT_KEYWORDS_MODE", "prefix") or "prefix").lower()  # 'prefix' | 'any'
 
 # mapping (опционально)
 MAP_FILE       = os.getenv("NVPRINT_MAP_FILE", "docs/nvprint_map.csv")
@@ -66,7 +65,7 @@ PARAM_VALUE_OVR  = os.getenv("NVPRINT_PARAM_VALUE_TAGS")
 
 ROOT_CAT_ID   = 9400000
 ROOT_CAT_NAME = "NVPrint"
-UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/3.1)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; NVPrint-XML-Feed/3.2)"}
 
 def x(s: str) -> str: return html.escape((s or "").strip())
 def stable_cat_id(text: str, prefix: int = 9420000) -> int:
@@ -189,7 +188,7 @@ def parse_availability_text(s: Optional[str]) -> Optional[bool]:
         if w in t: return False
     return None
 
-# ----- 1) приоритет: <Наличие Количество="..."> -----
+# ----- приоритет: <Наличие Количество="..."> -----
 def nalichie_attr_qty(item: ET.Element) -> Tuple[Optional[float], bool]:
     best_qty: Optional[float] = None
     found_attr = False
@@ -207,7 +206,7 @@ def nalichie_attr_qty(item: ET.Element) -> Tuple[Optional[float], bool]:
                     best_qty = max(best_qty or 0.0, n)
     return best_qty, found_attr
 
-# ----- 2) резерв: ищем qty/status в любых тегах/атрибутах -----
+# ----- резерв: ищем qty/status -----
 def fallback_qty_and_avail(item: ET.Element) -> Tuple[int, Optional[bool]]:
     qty = 0.0
     avail_flag: Optional[bool] = None
@@ -322,6 +321,50 @@ def extract_params(item: ET.Element) -> Dict[str, str]:
                 add_pair(k, v)
     return params
 
+# ---------- keywords ----------
+def load_keywords(path: str) -> List[str]:
+    kws: List[str] = []
+    try:
+        if os.path.isfile(path):
+            with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
+                for line in f:
+                    t = (line or "").strip()
+                    if t and not t.startswith("#"):
+                        kws.append(t)
+    except Exception:
+        pass
+    return kws
+
+def _normalize_for_prefix(s: str) -> str:
+    s = (s or "").lower()
+    s = s.replace("\xa0", " ")
+    s = re.sub(r"[–—−―]", "-", s)      # разные тире в обычный дефис
+    s = re.sub(r"\s+", " ", s).strip(" .,_-")
+    return s
+
+def matches_keywords(it: Dict[str, Any], kws: List[str]) -> bool:
+    if not kws:
+        return True
+    mode = KEYWORDS_MODE  # 'prefix' (по умолчанию) или 'any'
+    if mode == "any":
+        # старая логика: искать в name/vendor/desc/категориях (без якоря)
+        parts: List[str] = []
+        parts.append(str(it.get("name") or ""))
+        parts.append(str(it.get("vendor") or ""))
+        parts.append(str(it.get("description") or ""))
+        for p in (it.get("path") or []):
+            parts.append(str(p))
+        hay = " ".join(parts).lower()
+        kw_norms = [ _normalize_for_prefix(k) for k in kws ]
+        return any(k in hay for k in kw_norms)
+    else:
+        # НОВОЕ: только если ИМЯ начинается с любого ключевого слова
+        name = _normalize_for_prefix(it.get("name") or "")
+        if not name:
+            return False
+        kw_norms = [ _normalize_for_prefix(k) for k in kws ]
+        return any(name.startswith(k) for k in kw_norms)
+
 # ---------- parse XML item ----------
 def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     NAME_TAGS = split_tags(NAME_OVR, ["НоменклатураКратко","Номенклатура","full_name","name","title","наименование"])
@@ -355,23 +398,15 @@ def parse_xml_item(item: ET.Element) -> Optional[Dict[str, Any]]:
     if has_nalichie:
         available = True
         qty_int = int(round(qty_from_nal)) if (qty_from_nal is not None and qty_from_nal > 0) else 1
-        source = "nalichie-attr"
     else:
         qty_int, avail_flag = fallback_qty_and_avail(item)
         available = (qty_int > 0) if (avail_flag is None) else bool(avail_flag)
         if available and qty_int == 0:
             qty_int = 1
-        source = "fallback"
-
-    # ПРИНУДИТЕЛЬНЫЙ РЕЖИМ: все товары в наличии
     if FORCE_AVAIL:
         available = True
         if qty_int <= 0:
             qty_int = 1
-        source = "forced"
-
-    if DEBUG_AVAIL:
-        print(f"[avail] {source} -> available={available}, qty={qty_int}")
 
     path = extract_category_path(item)
     desc = extract_description(item) or "; ".join([first_desc_text(item, ["Номенклатура"]) or name] + ([f"Артикул: {supplier_code}"] if supplier_code else []))
@@ -452,53 +487,28 @@ def load_code_map(path: str, delim: str, c_sup: int, c_our: int) -> Dict[str, st
     except Exception:
         pass
     with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
-        import csv as _csv
-        sniffer = _csv.Sniffer()
+        sniffer = csv.Sniffer()
         sample = f.read(4096); f.seek(0)
         try:
             dialect = sniffer.sniff(sample, delimiters=",;\t|")
         except Exception:
-            dialect = _csv.excel
-        reader = _csv.reader(f, dialect)
+            dialect = csv.excel
+        reader = csv.reader(f, dialect)
         for row in reader:
             if not row or len(row) <= max(c_sup, c_our): continue
             sup = norm(row[c_sup]); our = norm(row[c_our])
             if sup and our: m[sup] = our
     return m
 
-# ---------- keywords ----------
-def load_keywords(path: str) -> List[str]:
-    kws: List[str] = []
-    try:
-        with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
-            for line in f:
-                t = (line or "").strip()
-                if not t or t.startswith("#"):
-                    continue
-                kws.append(t.lower())
-    except Exception:
-        return []
-    return kws
-
-def item_matches_keywords(it: Dict[str, Any], kws: List[str]) -> bool:
-    if not kws:
-        return True
-    hay = [
-        it.get("name") or "",
-        it.get("description") or "",
-        " ".join(it.get("path") or []),
-        it.get("vendor") or "",
-        it.get("vendorCode") or "",
-        it.get("supplierCode") or "",
-    ]
-    blob = " ".join(hay).lower()
-    return any(k in blob for k in kws)
-
 # ---------- main ----------
 def main() -> int:
-    code_map = load_code_map(MAP_FILE, MAP_DELIM, MAP_SUPPL_COL, MAP_OUR_COL)
-    keywords = load_keywords(KW_FILE)
+    # 0) ключевые слова
+    keywords = load_keywords(KEYWORDS_FILE)
 
+    # 1) маппинг
+    code_map = load_code_map(MAP_FILE, MAP_DELIM, MAP_SUPPL_COL, MAP_OUR_COL)
+
+    # 2) XML -> товары
     xml_bytes = fetch_xml_bytes(XML_URL)
     root = ET.fromstring(xml_bytes)
     items = guess_items(root)
@@ -510,7 +520,11 @@ def main() -> int:
         if not it:
             continue
 
-        # применяем маппинг: ИХ код → НАШ артикул
+        # фильтр: имя товара должно НАЧИНАТЬСЯ с любого ключевого слова
+        if keywords and not matches_keywords(it, keywords):
+            continue
+
+        # маппинг кода
         supplier_code = (it.get("supplierCode") or "").strip()
         our_code = code_map.get(supplier_code, "").strip() if supplier_code else ""
         if our_code:
@@ -522,15 +536,9 @@ def main() -> int:
             if REQUIRE_MAP:
                 continue
 
-        # фильтр по ключевым словам
-        if not item_matches_keywords(it, keywords):
-            if DEBUG_FILTER:
-                print(f"[filter] drop: {it.get('name')}")
-            continue
-
         parsed.append(it)
 
-    # офферы/пути
+    # 3) офферы/пути
     offers: List[Tuple[int, Dict[str,Any]]] = []
     paths: List[List[str]] = []
     for i, it in enumerate(parsed):
@@ -546,7 +554,7 @@ def main() -> int:
             "params": it.get("params") or {},
         }))
 
-    # категории
+    # 4) категории
     cat_map: Dict[Tuple[str,...], int] = {}
     categories: List[Tuple[int,str,Optional[int]]] = []
     for path in paths:
@@ -568,6 +576,7 @@ def main() -> int:
 
     offers = [(path_to_id(paths[i] if i < len(paths) else []), it) for i, (_, it) in enumerate(offers)]
 
+    # 5) запись
     xml = build_yml(categories, offers)
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with open(OUT_FILE, "w", encoding="utf-8-sig", errors="ignore") as f:
@@ -577,9 +586,6 @@ def main() -> int:
         total = len(offers)
         av_cnt = sum(1 for _, it in offers if it.get("available"))
         print(f"[nvprint] available TRUE in yml: {av_cnt}/{total}")
-
-    if DEBUG_FILTER and keywords:
-        print(f"[nvprint] keywords used: {len(keywords)}")
 
     print(f"[nvprint] done: {len(offers)} offers, {len(categories)} categories -> {OUT_FILE}")
     return 0
