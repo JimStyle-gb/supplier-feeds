@@ -29,19 +29,18 @@ jobs:
 
       - name: Build AK-Cent feed
         env:
-          # ссылка хранится в Secrets
           AKCENT_XML_URL: ${{ secrets.AKCENT_XML_URL }}
-          # локальная копия исходника (скрипт сам сохранит для отладки)
           AKCENT_XML_PATH: docs/akcent_source.xml
 
           OUT_FILE: docs/akcent.yml
           OUTPUT_ENCODING: utf-8-sig
           HTTP_TIMEOUT: '60'
 
-          # ФИЛЬТР: используем УЖЕ СУЩЕСТВУЮЩИЙ файл с ключевыми словами
+          # ФИЛЬТР: читаем ГОТОВЫЙ файл ключей из репозитория
           AKCENT_KEYWORDS_FILE: docs/akcent_keywords.txt
-          # режим совпадения: any — слово встречается в ЛЮБОМ месте названия (можно сменить на "prefix")
-          AKCENT_KEYWORDS_MODE: "any"
+          AKCENT_KEYWORDS_MODE: "prefix"      # <-- только если НАЗВАНИЕ начинается с ключа
+          # (опц.) файл исключений — строки, при наличии которых товар отбрасывается
+          AKCENT_EXCLUDE_FILE: docs/akcent_exclude.txt
         run: |
           set -euo pipefail
           python scripts/build_akcent.py
@@ -58,6 +57,6 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update akcent.yml (filtered by existing akcent_keywords.txt)"
+          git commit -m "Update akcent.yml (prefix filter by akcent_keywords.txt)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
