@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-AK-Cent -> normalized YML (UTF-8)
+AK-Cent -> normalized YML (UTF-8 with BOM)
 
 Вход:
-- AKCENT_XML_URL (опц.)  — URL выгрузки (без авторизации)
+- AKCENT_XML_URL (опц.)  — URL выгрузки (берём из GitHub Secrets)
 - AKCENT_XML_PATH (опц.) — путь к локальному файлу XML (fallback: docs/akcent_source.xml)
 
 Выход:
-- OUT_FILE (default: docs/akcent.yml), UTF-8
+- OUT_FILE (default: docs/akcent.yml), UTF-8 with BOM (utf-8-sig)
 
 Правила:
 - price: <prices>/<price type="Цена дилерского портала KZT"> (fallback: первый <price currencyId="KZT">)
 - vendor: <vendor> или Param[@name="Производитель"]
 - vendorCode: @article → <Offer_ID> → @id
-- available: из <Stock> (любая цифра >0, либо наличие символа '>' трактуем как есть в наличии)
-- categoryId: <categoryId> (если пусто — матчим по offer/@type на справочник категорий по имени)
+- available: из <Stock> (число >0 или знак '>' / '<' трактуем как есть в наличии)
+- categoryId: <categoryId> (если не сопоставилось — по offer/@type создаем категорию)
 - picture/url/description — как есть
 - категории из <categories>/<category>; пустые id генерим стабильно
 """
@@ -29,7 +29,7 @@ from xml.etree import ElementTree as ET
 AKCENT_XML_URL   = os.getenv("AKCENT_XML_URL", "").strip()
 AKCENT_XML_PATH  = os.getenv("AKCENT_XML_PATH", "docs/akcent_source.xml")
 OUT_FILE         = os.getenv("OUT_FILE", "docs/akcent.yml")
-OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8")
+OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8-sig")  # BOM для корректной кириллицы на GH Pages
 HTTP_TIMEOUT     = float(os.getenv("HTTP_TIMEOUT", "60"))
 
 ROOT_CAT_ID      = 9800000
@@ -64,7 +64,15 @@ def read_xml_bytes() -> bytes:
     if AKCENT_XML_URL:
         r = requests.get(AKCENT_XML_URL, timeout=HTTP_TIMEOUT)
         r.raise_for_status()
-        return r.content
+        b = r.content
+        # сохраняем для отладки
+        try:
+            os.makedirs(os.path.dirname(AKCENT_XML_PATH), exist_ok=True)
+            with io.open(AKCENT_XML_PATH, "wb") as f:
+                f.write(b)
+        except Exception:
+            pass
+        return b
     # fallback к локальному файлу
     if os.path.isfile(AKCENT_XML_PATH):
         with io.open(AKCENT_XML_PATH, "rb") as f:
@@ -77,11 +85,6 @@ def load_root() -> ET.Element:
     return ET.fromstring(data)
 
 def build_categories_map(root: ET.Element) -> Tuple[Dict[str, int], List[Tuple[int, str, int]]]:
-    """
-    Возвращает:
-    - map: исходный id (строка) -> целочисленный id в нашем YML
-    - cats_list: список (id, name, parentId)
-    """
     map_src_to_out: Dict[str, int] = {}
     cats_out: List[Tuple[int, str, int]] = []
 
@@ -103,7 +106,6 @@ def build_categories_map(root: ET.Element) -> Tuple[Dict[str, int], List[Tuple[i
             out_id = stable_id_for_name(name)
         if raw_id:
             map_src_to_out[raw_id] = out_id
-        # все напрямую подвешиваем к ROOT
         cats_out.append((out_id, name, ROOT_CAT_ID))
     return map_src_to_out, cats_out
 
@@ -119,7 +121,6 @@ def resolve_vendor(offer: ET.Element) -> str:
     return ""
 
 def resolve_vendor_code(offer: ET.Element) -> str:
-    # приоритет: @article -> <Offer_ID> -> @id
     vc = (offer.get("article") or "").strip()
     if vc:
         return vc
@@ -132,12 +133,10 @@ def resolve_price_kzt(offer: ET.Element) -> Optional[int]:
     prices = offer.find("./prices")
     chosen = None
     if prices is not None:
-        # 1) искать цену дилерского портала KZT
         for p in prices.findall("./price"):
             if (p.get("currencyId") or "").strip().upper() == "KZT" and (p.get("type") or "").strip().lower().startswith("цена дилерского портала"):
                 chosen = p
                 break
-        # 2) fallback: первый ценник с currencyId=KZT
         if chosen is None:
             for p in prices.findall("./price"):
                 if (p.get("currencyId") or "").strip().upper() == "KZT":
@@ -152,19 +151,12 @@ def resolve_price_kzt(offer: ET.Element) -> Optional[int]:
 def resolve_available(offer: ET.Element) -> bool:
     st = get_text(first(offer, "./Stock")).lower()
     if not st:
-        # нет инфы — считаем доступным (как у других поставщиков)
         return True
-    # '>' явно доступно
-    if ">" in st:
+    if ">" in st or "<" in st:
         return True
-    # вытаскиваем число
     num = parse_number(st)
     if num is not None:
         return num > 0
-    # кейсы вроде "<5" — трактуем как есть в наличии
-    if "<" in st:
-        return True
-    # ключевые слова отсутствия
     if "нет" in st or "out of stock" in st:
         return False
     return True
@@ -174,21 +166,17 @@ def resolve_category_id(offer: ET.Element, cats_map: Dict[str, int], name_to_id:
     if c is not None:
         raw = get_text(c)
         if raw:
-            # иногда значение — строка исходного id
             if raw in cats_map:
                 return cats_map[raw]
-            # иногда это уже число, попробуем
             try:
                 val = int(raw)
                 return cats_map.get(raw, val)
             except Exception:
                 pass
-    # fallback по атрибуту type у offer (это имя категории)
     t = (offer.get("type") or "").strip()
     if t:
         if t in name_to_id:
             return name_to_id[t]
-        # создаем на лету
         nid = stable_id_for_name(t)
         name_to_id[t] = nid
         return nid
@@ -228,7 +216,6 @@ def build_yml(categories: List[Tuple[int, str, int]], offers: List[Dict[str, Any
         if it.get("url"):     out.append(f'<url>{x(it["url"])}</url>')
         if it.get("picture"): out.append(f'<picture>{x(it["picture"])}</picture>')
         if it.get("description"): out.append(f'<description>{x(it["description"])}</description>')
-        # как у остальных поставщиков — минимальные обязательные
         out.append("<quantity_in_stock>1</quantity_in_stock>")
         out.append("<stock_quantity>1</stock_quantity>")
         out.append("<quantity>1</quantity>")
@@ -243,7 +230,6 @@ def main() -> int:
 
     # категории
     cats_map_raw_to_out, cats_list = build_categories_map(root)
-    # сопоставление по имени (для offer/@type)
     name_to_id = { name: cid for (cid, name, parent) in cats_list }
 
     # офферы
@@ -259,7 +245,6 @@ def main() -> int:
         vendor_code = resolve_vendor_code(o)
         price = resolve_price_kzt(o)
         if price is None or price <= 0:
-            # пропускаем бесплатное/битое
             continue
         available = resolve_available(o)
         url = get_text(first(o, "./url"))
@@ -294,11 +279,14 @@ if __name__ == "__main__":
         sys.exit(main())
     except Exception as e:
         print("[fatal]", e)
-        # минимальный пустой YML, чтобы job не падал
         try:
             os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
             with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-                f.write("<?xml version='1.0' encoding='utf-8'?>\n<yml_catalog><shop><name>akcent</name><currencies><currency id=\"KZT\" rate=\"1\" /></currencies><categories><category id=\"9800000\">AKCENT</category></categories><offers></offers></shop></yml_catalog>")
+                f.write("<?xml version='1.0' encoding='utf-8'?>\n"
+                        "<yml_catalog><shop><name>akcent</name>"
+                        "<currencies><currency id=\"KZT\" rate=\"1\" /></currencies>"
+                        f"<categories><category id=\"{ROOT_CAT_ID}\">{ROOT_CAT_NAME}</category></categories>"
+                        "<offers></offers></shop></yml_catalog>")
         except Exception:
             pass
         sys.exit(0)
