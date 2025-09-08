@@ -284,7 +284,6 @@
 <offers>
 <offer id="C13T55K200" available="true" in_stock="true">
 <name>C13T55K200 Singlepack (Голубой) T55K200 UltraChrome HDX/HD 700ml</name>
-<vendor></vendor>
 <vendorCode>C13T55K200</vendorCode>
 <price>160734</price>
 <currencyId>KZT</currencyId>
@@ -320,7 +319,6 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 </offer>
 <offer id="C13T55K30N" available="true" in_stock="true">
 <name>C13T55K30N Singlepack (Пурпурный) T55K30N UltraChrome HDX/HD 700ml</name>
-<vendor></vendor>
 <vendorCode>C13T55K30N</vendorCode>
 <price>160734</price>
 <currencyId>KZT</currencyId>
@@ -356,7 +354,6 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 </offer>
 <offer id="C13T55K400" available="true" in_stock="true">
 <name>C13T55K400 Singlepack (Желтый) T55K400 UltraChrome HDX/HD 700ml</name>
-<vendor></vendor>
 <vendorCode>C13T55K400</vendorCode>
 <price>160734</price>
 <currencyId>KZT</currencyId>
@@ -392,7 +389,6 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 </offer>
 <offer id="C13T55K700" available="true" in_stock="true">
 <name>C13T55K700 Singlepack (Серый) T55K700 UltraChrome HDX/HD 700ml</name>
-<vendor></vendor>
 <vendorCode>C13T55K700</vendorCode>
 <price>160734</price>
 <currencyId>KZT</currencyId>
@@ -428,7 +424,6 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 </offer>
 <offer id="C13T55KA00" available="true" in_stock="true">
 <name>C13T55KA00 Singlepack (Оранжевый) T55KA00 UltraChrome HDX/HD 700ml</name>
-<vendor></vendor>
 <vendorCode>C13T55KA00</vendorCode>
 <price>160734</price>
 <currencyId>KZT</currencyId>
@@ -464,7 +459,6 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 </offer>
 <offer id="C13T55KB00" available="true" in_stock="true">
 <name>C13T55KB00 Singlepack (Зеленый) T55KB00UltraChrome HDX/HD 700ml</name>
-<vendor></vendor>
 <vendorCode>C13T55KB00</vendorCode>
 <price>160734</price>
 <currencyId>KZT</currencyId>
@@ -500,7 +494,6 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 </offer>
 <offer id="C13T55KD00" available="true" in_stock="true">
 <name>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</name>
-<vendor></vendor>
 <vendorCode>C13T55KD00</vendorCode>
 <price>160734</price>
 <currencyId>KZT</currencyId>
@@ -1344,7 +1337,6 @@ USB 3.0
 </offer>
 <offer id="DTXS/128GB" available="true" in_stock="true">
 <name>USB Флеш 128GB 3.2 Kingston DTXS/128GB черный/бирюзовый</name>
-<vendor></vendor>
 <vendorCode>DTXS/128GB</vendorCode>
 <price>3306</price>
 <currencyId>KZT</currencyId>
@@ -1695,7 +1687,6 @@ USB коннектор спрятан в корпусе и легко выдви
 </offer>
 <offer id="TS256GJF730" available="true" in_stock="true">
 <name>USB Флеш 256GB 3.0 Transcend TS256GJF730 белый</name>
-<vendor></vendor>
 <vendorCode>TS256GJF730</vendorCode>
 <price>8568</price>
 <currencyId>KZT</currencyId>
@@ -1788,7 +1779,6 @@ DataTraveler® Micro — миниатюрный форм-фактор, легк�
 </offer>
 <offer id="DTXS/256GB" available="true" in_stock="true">
 <name>USB Флеш 256GB 3.2 Kingston DTXS/256GB черный/оранжевый</name>
-<vendor></vendor>
 <vendorCode>DTXS/256GB</vendorCode>
 <price>8172</price>
 <currencyId>KZT</currencyId>
@@ -2126,7 +2116,6 @@ USB 3.0
 </offer>
 <offer id="NT03U785C-032G-32PN" available="true" in_stock="true">
 <name>USB Флеш 32GB 3.2 Netac U785C OTG NT03U785C-032G-32PN серебристый</name>
-<vendor></vendor>
 <vendorCode>NT03U785C-032G-32PN</vendorCode>
 <price>1619</price>
 <currencyId>KZT</currencyId>
@@ -2181,7 +2170,6 @@ USB 3.0
 </offer>
 <offer id="DTXS/512GB" available="true" in_stock="true">
 <name>USB Флеш 512B 3.2 Kingston DTXS/512GB черный/желтый</name>
-<vendor></vendor>
 <vendorCode>DTXS/512GB</vendorCode>
 <price>15938</price>
 <currencyId>KZT</currencyId>
@@ -2399,7 +2387,6 @@ USB 3.0
 </offer>
 <offer id="TS64GJF780" available="true" in_stock="true">
 <name>USB Флеш 64GB 3.0 Transcend TS64GJF780 черный</name>
-<vendor></vendor>
 <vendorCode>TS64GJF780</vendorCode>
 <price>18923</price>
 <currencyId>KZT</currencyId>
@@ -2551,7 +2538,6 @@ DataTraveler® Micro — миниатюрный форм-фактор, легк�
 </offer>
 <offer id="DTXS/64GB" available="true" in_stock="true">
 <name>USB Флеш 64GB 3.2 Kingston DTXS/64GB черный</name>
-<vendor></vendor>
 <vendorCode>DTXS/64GB</vendorCode>
 <price>1940</price>
 <currencyId>KZT</currencyId>
@@ -2565,7 +2551,6 @@ DataTraveler® Micro — миниатюрный форм-фактор, легк�
 </offer>
 <offer id="NT03U785C-064G-32PN" available="true" in_stock="true">
 <name>USB Флеш 64GB 3.2 Netac U785C OTG NT03U785C-064G-32PN серебристый</name>
-<vendor></vendor>
 <vendorCode>NT03U785C-064G-32PN</vendorCode>
 <price>1877</price>
 <currencyId>KZT</currencyId>
@@ -3264,7 +3249,6 @@ oauth.kramerav.com
 </offer>
 <offer id="WNP-UA-017" available="true" in_stock="true">
 <name>Адаптер USB  Gembird WNP-UA-017 Wi-Fi+Bluetooth 150 Мбит, мини, USB, 802.11b/a/g/n/ac, RTL87</name>
-<vendor></vendor>
 <vendorCode>WNP-UA-017</vendorCode>
 <price>3264</price>
 <currencyId>KZT</currencyId>
@@ -3288,7 +3272,6 @@ Bluetooth: 4.2
 </offer>
 <offer id="WNP-UA-019" available="true" in_stock="true">
 <name>Адаптер USB  Gembird WNP-UA-019 Wi-Fi+Bluetooth 600Мбит, двухдиапазонный с антенной, MU-MIMO, USB</name>
-<vendor></vendor>
 <vendorCode>WNP-UA-019</vendorCode>
 <price>6290</price>
 <currencyId>KZT</currencyId>
@@ -3311,7 +3294,6 @@ Bluetooth: 4.2
 </offer>
 <offer id="WNP-UA-008" available="true" in_stock="true">
 <name>Адаптер USB Gembird WNP-UA-008 Wi-Fi 600 Мбит, двухдиапазонный мини, USB, 802.11b/g/n/ac/а, RTL8</name>
-<vendor></vendor>
 <vendorCode>WNP-UA-008</vendorCode>
 <price>6459</price>
 <currencyId>KZT</currencyId>
@@ -3334,7 +3316,6 @@ Bluetooth: 4.2
 </offer>
 <offer id="WNP-UA-009" available="true" in_stock="true">
 <name>Адаптер USB Gembird WNP-UA-009 Wi-Fi 600 Мбит, двухдиапазонный с антенной, USB, 802.11b/g/n/ac/а</name>
-<vendor></vendor>
 <vendorCode>WNP-UA-009</vendorCode>
 <price>6264</price>
 <currencyId>KZT</currencyId>
@@ -3384,7 +3365,6 @@ Bluetooth: 4.2
 </offer>
 <offer id="AEBAT-001" available="true" in_stock="true">
 <name>Аккумулятор GoPro AEBAT-001 Enduro для Hero 13</name>
-<vendor></vendor>
 <vendorCode>AEBAT-001</vendorCode>
 <price>20984</price>
 <currencyId>KZT</currencyId>
@@ -3856,7 +3836,6 @@ Bluetooth	V5.0, поддержка кодеков AAC, aptX, aptX HD
 </offer>
 <offer id="38643" available="true" in_stock="true">
 <name>Аудиокабель AUX 3.5(m)-3.5(m), 1.8м, Olmio, черный</name>
-<vendor></vendor>
 <vendorCode>38643</vendorCode>
 <price>1144</price>
 <currencyId>KZT</currencyId>
@@ -3892,7 +3871,6 @@ Bluetooth	V5.0, поддержка кодеков AAC, aptX, aptX HD
 </offer>
 <offer id="73C12AA" available="true" in_stock="true">
 <name>Аудиомикшер HyperX 73C12AA черный</name>
-<vendor></vendor>
 <vendorCode>73C12AA</vendorCode>
 <price>78596</price>
 <currencyId>KZT</currencyId>
@@ -5421,7 +5399,6 @@ Linux Kernel 2.6.31 или более поздней весии</description>
 </offer>
 <offer id="TS4TSJ25M3S" available="true" in_stock="true">
 <name>Внешний жесткий диск 2,5 4TB Transcend TS4TSJ25M3S серый</name>
-<vendor></vendor>
 <vendorCode>TS4TSJ25M3S</vendorCode>
 <price>75643</price>
 <currencyId>KZT</currencyId>
@@ -5519,6 +5496,21 @@ USB 3.1 Gen 1 (USB 5Gbps)
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="262048" available="true" in_stock="true">
+<name>Встраиваемая акустика Dali phantom H-80 R</name>
+<vendorCode>262048</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565312</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/akusticheskie_sistemy_hi_fi_high_end/vstraivaemaya_akustika/vstraivaemaya_akustika_dali_phantom_h_80_r/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/9a7/cwxtal6odukgdshut1ll8rjuhfi1anfs.png</picture>
+<description>Особенности и назначение акустики встраивается в стены, двухполосная
+Вес	4,0 кг
+Защитный гриль	магнитная фиксация</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="262033" available="true" in_stock="true">
 <name>Встраиваемая акустика Dali phantom M-375</name>
 <vendor>Dali</vendor>
@@ -5537,6 +5529,33 @@ USB 3.1 Gen 1 (USB 5Gbps)
 Мощность, Вт	30 - 180
 Габариты, мм	775 x 250 x 106
 Вес, кг	8.7</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="262082" available="true" in_stock="true">
+<name>Встраиваемая акустика Dali phantom S-280</name>
+<vendor>Dali</vendor>
+<vendorCode>262082</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565312</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/akusticheskie_sistemy_hi_fi_high_end/vstraivaemaya_akustika/vstraivaemaya_akustika_dali_phantom_s_280/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/d46/76nmbs64aj0vbhr6zm4oaka4lwi9u5cn.png</picture>
+<description>DALI PHANTOM S-280 — это полноразмерный встраиваемый в стену динамик. Объединяя 8-дюймовый динамик из древесного волокна, 10-дюймовый пассивный излучатель из углеродного волокна и вращающийся гибридный модуль твитера, PHANTOM S-280 обеспечивает когерентный, чистый и детальный звук в корпусе, который вписывается практически в любую стандартную стену.</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="300174-0-0" available="true" in_stock="true">
+<name>ВЧ динамик DALI 810506</name>
+<vendorCode>300174-0-0</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565318</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/zapchasti_hi_fi_high_end/dali/vch_dinamik_dali_810506/</url>
+<picture>https://b2b.ak-cent.kz</picture>
+<description>Высокочастотный динамик 810506 Ø110мм</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
@@ -6414,7 +6433,6 @@ Qi-мощность: 	до 15 Вт в целом
 </offer>
 <offer id="AGRTM-001" available="true" in_stock="true">
 <name>Гибкое универсальное крепление GoPro AGRTM-001 (Gumby)</name>
-<vendor></vendor>
 <vendorCode>AGRTM-001</vendorCode>
 <price>19909</price>
 <currencyId>KZT</currencyId>
@@ -7056,7 +7074,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="43863" available="true" in_stock="true">
 <name>Держатель автомобильный Olmio Magnet Safe QI, 15W черный</name>
-<vendor></vendor>
 <vendorCode>43863</vendorCode>
 <price>10645</price>
 <currencyId>KZT</currencyId>
@@ -7109,7 +7126,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="15119853" available="true" in_stock="true">
 <name>Диктофон Ritmix RR-120 4GB</name>
-<vendor></vendor>
 <vendorCode>15119853</vendorCode>
 <price>15538</price>
 <currencyId>KZT</currencyId>
@@ -7146,7 +7162,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="691710" available="true" in_stock="true">
 <name>Доска разделочная Arcos Tablas 691710 377x227мм черный</name>
-<vendor></vendor>
 <vendorCode>691710</vendorCode>
 <price>16803</price>
 <currencyId>KZT</currencyId>
@@ -7163,7 +7178,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="692310" available="true" in_stock="true">
 <name>Доска разделочная Arcos Tablas 692310 427x327мм черный</name>
-<vendor></vendor>
 <vendorCode>692310</vendorCode>
 <price>26668</price>
 <currencyId>KZT</currencyId>
@@ -7180,7 +7194,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="708300" available="true" in_stock="true">
 <name>Доска разделочная Arcos Tablas 708300 427x327мм дерево</name>
-<vendor></vendor>
 <vendorCode>708300</vendorCode>
 <price>23747</price>
 <currencyId>KZT</currencyId>
@@ -7198,7 +7211,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="709300" available="true" in_stock="true">
 <name>Доска разделочная Arcos Tablas 709300 427x327мм дерево</name>
-<vendor></vendor>
 <vendorCode>709300</vendorCode>
 <price>27691</price>
 <currencyId>KZT</currencyId>
@@ -7301,7 +7313,6 @@ L15150</description>
 </offer>
 <offer id="C13T619000" available="true" in_stock="true">
 <name>Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN</name>
-<vendor></vendor>
 <vendorCode>C13T619000</vendorCode>
 <price>22260</price>
 <currencyId>KZT</currencyId>
@@ -7373,7 +7384,6 @@ SC-B6000</description>
 </offer>
 <offer id="C33S021601" available="true" in_stock="true">
 <name>Ёмкость для отработанных чернил Epson C33S021601	SJMB4000 C4000e Maintenance box</name>
-<vendor></vendor>
 <vendorCode>C33S021601</vendorCode>
 <price>20784</price>
 <currencyId>KZT</currencyId>
@@ -7467,7 +7477,6 @@ M.2 SSD MTS970T от Transcend оснащен интерфейсом SATA III 6 
 </offer>
 <offer id="SNV3S/1000G" available="true" in_stock="true">
 <name>Жесткий диск SSD 1000GB Kingston SNV3S/1000G</name>
-<vendor></vendor>
 <vendorCode>SNV3S/1000G</vendorCode>
 <price>32884</price>
 <currencyId>KZT</currencyId>
@@ -7836,7 +7845,6 @@ SSD470P от Transcend оснащен интерфейсом SATA III 6 Гбит
 </offer>
 <offer id="TS1TMTE250H" available="true" in_stock="true">
 <name>Жесткий диск SSD 1TB Transcend TS1TMTE250H</name>
-<vendor></vendor>
 <vendorCode>TS1TMTE250H</vendorCode>
 <price>67856</price>
 <currencyId>KZT</currencyId>
@@ -7930,7 +7938,6 @@ Transcend PCIe M.2 SSD MTE310S имеет компактный форм-факт
 </offer>
 <offer id="TS1TMTE730P" available="true" in_stock="true">
 <name>Жесткий диск SSD 1TB Transcend TS1TMTE730P</name>
-<vendor></vendor>
 <vendorCode>TS1TMTE730P</vendorCode>
 <price>110963</price>
 <currencyId>KZT</currencyId>
@@ -8076,7 +8083,6 @@ Kingston FURY™ Renegade PCIe 4.0 NVMe M.2 SSD обеспечивает иск�
 </offer>
 <offer id="SNV3S/2000G" available="true" in_stock="true">
 <name>Жесткий диск SSD 2000GB Kingston SNV3S/2000G</name>
-<vendor></vendor>
 <vendorCode>SNV3S/2000G</vendorCode>
 <price>63901</price>
 <currencyId>KZT</currencyId>
@@ -8090,7 +8096,6 @@ Kingston FURY™ Renegade PCIe 4.0 NVMe M.2 SSD обеспечивает иск�
 </offer>
 <offer id="SKC600/2048G" available="true" in_stock="true">
 <name>Жесткий диск SSD 2048GB Kingston SKC600/2048G</name>
-<vendor></vendor>
 <vendorCode>SKC600/2048G</vendorCode>
 <price>107162</price>
 <currencyId>KZT</currencyId>
@@ -8489,7 +8494,6 @@ LDPC кодирование</description>
 </offer>
 <offer id="TS2TESD310C" available="true" in_stock="true">
 <name>Жесткий диск SSD 2TB Transcend TS2TESD310C</name>
-<vendor></vendor>
 <vendorCode>TS2TESD310C</vendorCode>
 <price>101689</price>
 <currencyId>KZT</currencyId>
@@ -8508,7 +8512,6 @@ LDPC кодирование</description>
 </offer>
 <offer id="TS2TMTE250H" available="true" in_stock="true">
 <name>Жесткий диск SSD 2TB Transcend TS2TMTE250H</name>
-<vendor></vendor>
 <vendorCode>TS2TMTE250H</vendorCode>
 <price>90559</price>
 <currencyId>KZT</currencyId>
@@ -8690,7 +8693,6 @@ DDR3 DRAM Cache
 </offer>
 <offer id="TS2TSSD230S" available="true" in_stock="true">
 <name>Жесткий диск SSD 2TB Transcend TS2TSSD230S</name>
-<vendor></vendor>
 <vendorCode>TS2TSSD230S</vendorCode>
 <price>86615</price>
 <currencyId>KZT</currencyId>
@@ -8760,7 +8762,6 @@ DOS</description>
 </offer>
 <offer id="SNV2S/500G" available="true" in_stock="true">
 <name>Жесткий диск SSD 500G Kingston SNV2S/500G</name>
-<vendor></vendor>
 <vendorCode>SNV2S/500G</vendorCode>
 <price>21938</price>
 <currencyId>KZT</currencyId>
@@ -8790,7 +8791,6 @@ DOS</description>
 </offer>
 <offer id="SNV3S/500G" available="true" in_stock="true">
 <name>Жесткий диск SSD 500G Kingston SNV3S/500G</name>
-<vendor></vendor>
 <vendorCode>SNV3S/500G</vendorCode>
 <price>22371</price>
 <currencyId>KZT</currencyId>
@@ -8804,7 +8804,6 @@ DOS</description>
 </offer>
 <offer id="SFYRS/500G" available="true" in_stock="true">
 <name>Жесткий диск SSD 500GB Kingston Fury SFYRS/500G M2</name>
-<vendor></vendor>
 <vendorCode>SFYRS/500G</vendorCode>
 <price>39411</price>
 <currencyId>KZT</currencyId>
@@ -9165,7 +9164,6 @@ SATAIII
 </offer>
 <offer id="TS512GMTS430S" available="true" in_stock="true">
 <name>Жесткий диск SSD 512GB Transcend TS512GMTS430S M2</name>
-<vendor></vendor>
 <vendorCode>TS512GMTS430S</vendorCode>
 <price>22740</price>
 <currencyId>KZT</currencyId>
@@ -9195,7 +9193,6 @@ LDPC кодирование</description>
 </offer>
 <offer id="TS512GMTS830S" available="true" in_stock="true">
 <name>Жесткий диск SSD 512GB Transcend TS512GMTS830S</name>
-<vendor></vendor>
 <vendorCode>TS512GMTS830S</vendorCode>
 <price>27211</price>
 <currencyId>KZT</currencyId>
@@ -9319,7 +9316,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="SXS1000/1000GA" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 1000GB Kingston SXS1000/1000GA черный</name>
-<vendor></vendor>
 <vendorCode>SXS1000/1000GA</vendorCode>
 <price>43524</price>
 <currencyId>KZT</currencyId>
@@ -9333,7 +9329,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="SXS1000R/1000GA" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 1000GB Kingston SXS1000R/1000GA красный</name>
-<vendor></vendor>
 <vendorCode>SXS1000R/1000GA</vendorCode>
 <price>43524</price>
 <currencyId>KZT</currencyId>
@@ -9496,7 +9491,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS1TESD420C" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 1TB Transcend TS1TESD420C серый</name>
-<vendor></vendor>
 <vendorCode>TS1TESD420C</vendorCode>
 <price>53025</price>
 <currencyId>KZT</currencyId>
@@ -9511,7 +9505,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS1TESD420G" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 1TB Transcend TS1TESD420G золотистый</name>
-<vendor></vendor>
 <vendorCode>TS1TESD420G</vendorCode>
 <price>53025</price>
 <currencyId>KZT</currencyId>
@@ -9540,7 +9533,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="SXS1000/2000GA" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 2000GB Kingston SXS1000/2000GA черный</name>
-<vendor></vendor>
 <vendorCode>SXS1000/2000GA</vendorCode>
 <price>72633</price>
 <currencyId>KZT</currencyId>
@@ -9569,7 +9561,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="SXS1000R/2000GA" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 2000GB Kingston SXS1000R/2000GA красный</name>
-<vendor></vendor>
 <vendorCode>SXS1000R/2000GA</vendorCode>
 <price>72633</price>
 <currencyId>KZT</currencyId>
@@ -9619,7 +9610,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS2TESD300S" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 2TB Transcend TS2TESD300S</name>
-<vendor></vendor>
 <vendorCode>TS2TESD300S</vendorCode>
 <price>95641</price>
 <currencyId>KZT</currencyId>
@@ -9638,7 +9628,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS2TESD320A" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 2TB Transcend TS2TESD320A</name>
-<vendor></vendor>
 <vendorCode>TS2TESD320A</vendorCode>
 <price>92051</price>
 <currencyId>KZT</currencyId>
@@ -9657,7 +9646,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS2TESD330C" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 2TB Transcend TS2TESD330C</name>
-<vendor></vendor>
 <vendorCode>TS2TESD330C</vendorCode>
 <price>97856</price>
 <currencyId>KZT</currencyId>
@@ -9676,7 +9664,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS2TESD360C" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 2TB Transcend TS2TESD360C</name>
-<vendor></vendor>
 <vendorCode>TS2TESD360C</vendorCode>
 <price>89989</price>
 <currencyId>KZT</currencyId>
@@ -9695,7 +9682,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS2TESD420C" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 2TB Transcend TS2TESD420C серый</name>
-<vendor></vendor>
 <vendorCode>TS2TESD420C</vendorCode>
 <price>93464</price>
 <currencyId>KZT</currencyId>
@@ -9710,7 +9696,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS2TESD420G" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 2TB Transcend TS2TESD420G золотистый</name>
-<vendor></vendor>
 <vendorCode>TS2TESD420G</vendorCode>
 <price>93464</price>
 <currencyId>KZT</currencyId>
@@ -9725,7 +9710,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS4TESD420C" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 4TB Transcend TS4TESD420C серый</name>
-<vendor></vendor>
 <vendorCode>TS4TESD420C</vendorCode>
 <price>173752</price>
 <currencyId>KZT</currencyId>
@@ -9740,7 +9724,6 @@ SSD550I тщательно протестирован внутри компан�
 </offer>
 <offer id="TS4TESD420G" available="true" in_stock="true">
 <name>Жесткий диск SSD внешний 4TB Transcend TS4TESD420G золотистый</name>
-<vendor></vendor>
 <vendorCode>TS4TESD420G</vendorCode>
 <price>173752</price>
 <currencyId>KZT</currencyId>
@@ -10079,7 +10062,6 @@ LED дисплей - Да
 </offer>
 <offer id="38630" available="true" in_stock="true">
 <name>Зарядное устройство Power bank Olmio QS-10, 10000mAh, белый</name>
-<vendor></vendor>
 <vendorCode>38630</vendorCode>
 <price>10434</price>
 <currencyId>KZT</currencyId>
@@ -10104,7 +10086,6 @@ LED дисплей - Да
 </offer>
 <offer id="44458" available="true" in_stock="true">
 <name>Зарядное устройство Power bank Olmio QX-20, 20000mAh, зеленый</name>
-<vendor></vendor>
 <vendorCode>44458</vendorCode>
 <price>10598</price>
 <currencyId>KZT</currencyId>
@@ -10334,7 +10315,6 @@ USB выход: 18 Вт QuickCharge 3.0</description>
 </offer>
 <offer id="44550" available="true" in_stock="true">
 <name>Зарядное устройство сетевое Olmio USB+Type-Cx3 PowerDelivery QC GaN 100W белый</name>
-<vendor></vendor>
 <vendorCode>44550</vendorCode>
 <price>16334</price>
 <currencyId>KZT</currencyId>
@@ -10356,7 +10336,6 @@ USB-A: 30W
 </offer>
 <offer id="44860" available="true" in_stock="true">
 <name>Зарядное устройство сетевое Olmio ЗУ 25W PowerDelivery белый</name>
-<vendor></vendor>
 <vendorCode>44860</vendorCode>
 <price>4392</price>
 <currencyId>KZT</currencyId>
@@ -10499,7 +10478,6 @@ USB-A: 30W
 </offer>
 <offer id="64042" available="true" in_stock="true">
 <name>Игровое кресло Defender Irifi (M) подставка под ноги, розовый</name>
-<vendor></vendor>
 <vendorCode>64042</vendorCode>
 <price>58740</price>
 <currencyId>KZT</currencyId>
@@ -10589,7 +10567,6 @@ EAN - 4745090826630</description>
 </offer>
 <offer id="64325" available="true" in_stock="true">
 <name>Игровое кресло Defender Minion (M) подставка под ноги, красный</name>
-<vendor></vendor>
 <vendorCode>64325</vendorCode>
 <price>43919</price>
 <currencyId>KZT</currencyId>
@@ -10782,7 +10759,6 @@ EAN - 4745090826630</description>
 </offer>
 <offer id="64336" available="true" in_stock="true">
 <name>Игровое кресло Defender Watcher (M) RGB, подставка под ноги, белый</name>
-<vendor></vendor>
 <vendorCode>64336</vendorCode>
 <price>74114</price>
 <currencyId>KZT</currencyId>
@@ -10806,7 +10782,6 @@ EAN - 4745090826630</description>
 </offer>
 <offer id="64334" available="true" in_stock="true">
 <name>Игровое кресло Defender Watcher (M) RGB, подставка под ноги, черный</name>
-<vendor></vendor>
 <vendorCode>64334</vendorCode>
 <price>74114</price>
 <currencyId>KZT</currencyId>
@@ -10830,7 +10805,6 @@ EAN - 4745090826630</description>
 </offer>
 <offer id="64337" available="true" in_stock="true">
 <name>Игровое кресло Defender Xcom (M) красный</name>
-<vendor></vendor>
 <vendorCode>64337</vendorCode>
 <price>46866</price>
 <currencyId>KZT</currencyId>
@@ -11390,7 +11364,6 @@ RGB многоцветная подсветка: обеспечивает про
 </offer>
 <offer id="64630" available="true" in_stock="true">
 <name>Игровой стрим микрофон Defender Forte GMC 300 черный</name>
-<vendor></vendor>
 <vendorCode>64630</vendorCode>
 <price>5984</price>
 <currencyId>KZT</currencyId>
@@ -11431,7 +11404,6 @@ ROHS / CE
 </offer>
 <offer id="64625" available="true" in_stock="true">
 <name>Игровой стрим микрофон Defender Galactar GMC 250 USB, LED, черный</name>
-<vendor></vendor>
 <vendorCode>64625</vendorCode>
 <price>6754</price>
 <currencyId>KZT</currencyId>
@@ -11492,7 +11464,6 @@ ROHS / CE	Нет
 </offer>
 <offer id="BGMP-6107" available="true" in_stock="true">
 <name>Измельчитель специй Masterpro Foodies MP BGMP-6107</name>
-<vendor></vendor>
 <vendorCode>BGMP-6107</vendorCode>
 <price>4930</price>
 <currencyId>KZT</currencyId>
@@ -11570,7 +11541,6 @@ ROHS / CE	Нет
 </offer>
 <offer id="T-568R" available="true" in_stock="true">
 <name>Инструмент Cablexpert T-568R, обжимной универсальный с фиксатором (8p8c,6p6c,6p4c,6p2c), для витой п</name>
-<vendor></vendor>
 <vendorCode>T-568R</vendorCode>
 <price>4339</price>
 <currencyId>KZT</currencyId>
@@ -11732,6 +11702,27 @@ ROHS / CE	Нет
 Отделка: черная/серебристая
 Габариты (В х Ш х Г): 115 x 430 x 341 мм
 Масса: 8,3 кг</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C11268K" available="true" in_stock="true">
+<name>Интегральный усилитель Cambridge Audio EXA100 серый</name>
+<vendor>Cambridge Audio</vendor>
+<vendorCode>C11268K</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565253</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/usiliteli_i_resivery/integralnye_stereousiliteli/integralnyy_usilitel_cambridge_audio_exa100_seryy/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/f98/bxqht9ycbp3vf5uj5qhnqr9d1di63iab.png</picture>
+<description>Лучший в своем классе звук: технология усилителя, вдохновленная нашим флагманским моноблоком Edge M, обеспечивает невероятно широкую, детализированную звуковую сцену. Наслаждайтесь музыкой, как никогда раньше.
+Мощность и контроль: 100 Вт на канал идеально настроенного усиления класса AB с легкостью раскачают даже самые требовательные динамики.
+Цифровое подключение: подключайте телевизор, CD, USB-накопители и многое другое через HDMI eARC, TOSLINK, коаксиальный и USB-аудио цифровые входы
+Сбалансированные входы XLR: наслаждайтесь наилучшим качеством аналогового звука с этими первоклассными аналоговыми соединениями.
+ЦАП ESS ES9018K2M SABRE32: для исключительного цифро-аналогового преобразования; настроен в Лондоне как никакой другой для максимальной производительности.
+Bluetooth aptX HD: беспроводное подключение таких устройств, как проигрыватель Alva TT V2, и потоковая передача в великолепном качестве высокой четкости.
+Режим усилителя мощности: для использования со специальным предусилителем или как часть многоканальной системы.
+Зоны с двумя динамиками: Зачем ограничивать веселье только одной комнатой? Два набора выходов динамиков предлагают возможность второй зоны.</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
@@ -11910,7 +11901,6 @@ ROHS / CE	Нет
 </offer>
 <offer id="SBID-QX275-P" available="true" in_stock="true">
 <name>Интерактивная панель SBID-QX275-P</name>
-<vendor></vendor>
 <vendorCode>SBID-QX275-P</vendorCode>
 <price>3237122</price>
 <currencyId>KZT</currencyId>
@@ -11957,7 +11947,6 @@ HDMI вход с поддержкой HDCP 2.3</description>
 </offer>
 <offer id="SBID-6265S-V3-P" available="true" in_stock="true">
 <name>Интерактивный дисплей SMART SBID-6265S-V3-P</name>
-<vendor></vendor>
 <vendorCode>SBID-6265S-V3-P</vendorCode>
 <price>1861052</price>
 <currencyId>KZT</currencyId>
@@ -12044,6 +12033,60 @@ USB-B 3.0
 HDMI 2.0 вход с поддержкой HDCP 2.2
 РАЗЪЁМЫ (снизу)	AC power OUT
 AC power IN</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="SBID-MX265-V4" available="true" in_stock="true">
+<name>Интерактивный дисплей SMART SBID-MX265-V4</name>
+<vendor>Smart</vendor>
+<vendorCode>SBID-MX265-V4</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9800000</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/prezentatsionnoe_oborudovanie/interaktivnye_paneli/interaktivnaya_panel/interaktivnyy_displey_smart_sbid_mx265_v4/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/ab1/ad3k0f074bg9yi9tbpkkqcl6vnje1jr4.jpg</picture>
+<description>Обновленная серия имеет все необходимое, что нужно преподавателям для работы даже с учениками, находящимися на дистанционном обучении. Дисплеи с диагоналями от 55” до 86” и разрешением 4K Ultra HD включают программное обеспечение SMART Notebook и стандартную трехлетнюю гарантию. Запатентованная оболочка IQ позволяет студентам использовать свои любимые девайсы в любой учебной среде, а также предоставляет быстрый доступ к инструментам для совместной работы, такие как цифровая доска, веб-браузер и беспроводная трансляция экрана. Функции персонализации делают дисплеи незаменимым помощником. Простой пользовательский интерфейс сокращает время обучения и затраты на техническую поддержку.
+Специально созданная SMART и простая в использовании ОС на базе Android 11 наполнена ресурсами и инструментами, предназначенными для образования. Благодаря iQ на базе Android 11 вы можете получить мгновенный доступ к настройкам учителей. Одним кликом преподаватели имеют возможность пользоваться приложениями, файлами, инструментами и облачными хранилищами, которые они знают и используют ежедневно, и которые надежно защищены с помощью настраиваемых профилей пользователей.
+
+Тип дисплея	LED
+Покрытие экрана	Спец стекло (антитрение, антиблик)
+Диагональ	65&quot;
+Яркость (maximum)	≥ 400 cd/m²
+Соотношение сторон	16:9
+Разрешение	4K UHD (3840 × 2160)
+Число касаний	20 (Win, Mac)
+Технология распознавания	HyPr Touch with Advanced IR
+Жесты	Мультитач
+Стилус	Два пассивных
+Гарантия	3 года
+Габариты, см	150,7 x 92,8 x 8,9
+Вес, кг	40
+Размер упаковки, см	162 × 116.5 × 16
+Вес брутто, кг	56
+Панель управления	да
+Звук	20 Вт динамик (2 шт.)
+Микрофоны	массив из 6 микрофонов с эхоподавлением
+Индикатор состояния	есть
+Встроенный NFC считыватель	есть
+Время отклика	≤ 5 мс
+Минимальный размер объекта	2 мм
+Подключение	USB/HDMI
+Энергопотребление	124 Вт (0.5 Вт в режиме ожидания)
+Входы (на задней стороне)	OPS-слот (поддержка OPS-C)
+MicroSD slot
+USB-A 2.0
+USB-A 3.2*2
+USB-B 3.2 (x2)
+USB-C (4K@60Гц), 65W
+RS-232 (DB-9 connector)
+HDMI вход с поддержкой HDCP 2.3 (x2)
+RJ45 (LAN In)
+Входы (на передней стороне)	USB-A 3.0 (x2)
+USB 3.2 Gen 1 Type-B
+USB-C (4K@60Гц), 15W
+HDMI вход с поддержкой HDCP 2.3
+Выход</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
@@ -12664,7 +12707,6 @@ Gembird/Cablexpert CC-HDMI4L-10 – интерфейсный кабель циф
 </offer>
 <offer id="CC-HDMI8K-1M" available="true" in_stock="true">
 <name>Кабель HDMI Cablexpert CC-HDMI8K-1M, 1м, v2.1, 8K, 19M/19M, черный, пакет</name>
-<vendor></vendor>
 <vendorCode>CC-HDMI8K-1M</vendorCode>
 <price>1661</price>
 <currencyId>KZT</currencyId>
@@ -12685,7 +12727,6 @@ Gembird/Cablexpert CC-HDMI4L-10 – интерфейсный кабель циф
 </offer>
 <offer id="CC-HDMI8K-2M" available="true" in_stock="true">
 <name>Кабель HDMI Cablexpert CC-HDMI8K-2M, 2м, v2.1, 8K, 19M/19M, черный, пакет</name>
-<vendor></vendor>
 <vendorCode>CC-HDMI8K-2M</vendorCode>
 <price>2209</price>
 <currencyId>KZT</currencyId>
@@ -12909,7 +12950,6 @@ HDMI используется в видеокартах, мониторах, т�
 </offer>
 <offer id="41650" available="true" in_stock="true">
 <name>Кабель Olmio BASIC, USB 2.0 - lightning, 1.2м, 2.1A, текстильная оплетка, серый</name>
-<vendor></vendor>
 <vendorCode>41650</vendorCode>
 <price>1418</price>
 <currencyId>KZT</currencyId>
@@ -12972,7 +13012,6 @@ HDMI используется в видеокартах, мониторах, т�
 </offer>
 <offer id="41665" available="true" in_stock="true">
 <name>Кабель Olmio PD, Type-C - Type-C  1м, 3А, белый</name>
-<vendor></vendor>
 <vendorCode>41665</vendorCode>
 <price>975</price>
 <currencyId>KZT</currencyId>
@@ -13931,7 +13970,6 @@ Cablexpert CC-mUSB2pe1m</description>
 </offer>
 <offer id="PC-184-VDE-1M" available="true" in_stock="true">
 <name>Кабель питания аудио/видео Cablexpert PC-184-VDE-1M, 1м, CEE 7/16 - C7, VDE, 2-pin, 2х0,75, черный,</name>
-<vendor></vendor>
 <vendorCode>PC-184-VDE-1M</vendorCode>
 <price>585</price>
 <currencyId>KZT</currencyId>
@@ -14874,7 +14912,6 @@ EAN: 4971850090465
 </offer>
 <offer id="WK13GYCN" available="true" in_stock="true">
 <name>Кардридер Netac WK13GYCN USB3.0+Type-C SD/microSD серый</name>
-<vendor></vendor>
 <vendorCode>WK13GYCN</vendorCode>
 <price>1866</price>
 <currencyId>KZT</currencyId>
@@ -15568,7 +15605,6 @@ SD Speed Class	A1, V30, UHS-I Class 3 (U3), Class 10
 </offer>
 <offer id="SDCG3/512GB" available="true" in_stock="true">
 <name>Карта памяти microSD 512GB Kingston SDCG3/512GB</name>
-<vendor></vendor>
 <vendorCode>SDCG3/512GB</vendorCode>
 <price>26673</price>
 <currencyId>KZT</currencyId>
@@ -15796,7 +15832,6 @@ A2
 </offer>
 <offer id="SDCS3/64GB" available="true" in_stock="true">
 <name>Карта памяти MicroSD 64GB Class 10 UHS-I Kingston SDCS3/64GB</name>
-<vendor></vendor>
 <vendorCode>SDCS3/64GB</vendorCode>
 <price>2467</price>
 <currencyId>KZT</currencyId>
@@ -15809,7 +15844,6 @@ A2
 </offer>
 <offer id="SDCS3/64GBSP" available="true" in_stock="true">
 <name>Карта памяти MicroSD 64GB Class 10 UHS-I Kingston SDCS3/64GB</name>
-<vendor></vendor>
 <vendorCode>SDCS3/64GBSP</vendorCode>
 <price>2399</price>
 <currencyId>KZT</currencyId>
@@ -15957,7 +15991,6 @@ A1
 </offer>
 <offer id="TS16GSDC500S" available="true" in_stock="true">
 <name>Карта памяти SD 16GB Class 10 V30 U1 Transcend TS16GSDC500S</name>
-<vendor></vendor>
 <vendorCode>TS16GSDC500S</vendorCode>
 <price>4772</price>
 <currencyId>KZT</currencyId>
@@ -16051,7 +16084,6 @@ A1
 </offer>
 <offer id="SDR2/64GB" available="true" in_stock="true">
 <name>Карта памяти SD 64GB Class 10 U1 Kingston SDR2/64GB</name>
-<vendor></vendor>
 <vendorCode>SDR2/64GB</vendorCode>
 <price>22550</price>
 <currencyId>KZT</currencyId>
@@ -16575,7 +16607,6 @@ Epson Stylus Pro 4880</description>
 </offer>
 <offer id="C13T606B00" available="true" in_stock="true">
 <name>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</name>
-<vendor></vendor>
 <vendorCode>C13T606B00</vendorCode>
 <price>83742</price>
 <currencyId>KZT</currencyId>
@@ -17115,7 +17146,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="BG-34745-CR" available="true" in_stock="true">
 <name>Кастрюля Bergner Naturally BG-34745-CR</name>
-<vendor></vendor>
 <vendorCode>BG-34745-CR</vendorCode>
 <price>10576</price>
 <currencyId>KZT</currencyId>
@@ -17227,7 +17257,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="BGMP-3830" available="true" in_stock="true">
 <name>Кастрюля Masterpro Unique MP BGMP-3830 1,8 л</name>
-<vendor></vendor>
 <vendorCode>BGMP-3830</vendorCode>
 <price>19392</price>
 <currencyId>KZT</currencyId>
@@ -17247,7 +17276,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="BGMP-3832" available="true" in_stock="true">
 <name>Кастрюля Masterpro Unique MP BGMP-3832</name>
-<vendor></vendor>
 <vendorCode>BGMP-3832</vendorCode>
 <price>24685</price>
 <currencyId>KZT</currencyId>
@@ -17878,7 +17906,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="45585" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Amox GK-585 RU белый</name>
-<vendor></vendor>
 <vendorCode>45585</vendorCode>
 <price>13988</price>
 <currencyId>KZT</currencyId>
@@ -17910,7 +17937,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="45002" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Apex GK-002 RU серый</name>
-<vendor></vendor>
 <vendorCode>45002</vendorCode>
 <price>9053</price>
 <currencyId>KZT</currencyId>
@@ -17935,7 +17961,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="45004" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Armada GK-004 RU,RGB черный</name>
-<vendor></vendor>
 <vendorCode>45004</vendorCode>
 <price>20378</price>
 <currencyId>KZT</currencyId>
@@ -17968,7 +17993,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="45410" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Avenger GK-412 RU,RGB черный</name>
-<vendor></vendor>
 <vendorCode>45410</vendorCode>
 <price>11742</price>
 <currencyId>KZT</currencyId>
@@ -17997,7 +18021,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="45413" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Black Raven GK-417 RU,Rainbow,63кн серый</name>
-<vendor></vendor>
 <vendorCode>45413</vendorCode>
 <price>9691</price>
 <currencyId>KZT</currencyId>
@@ -18023,7 +18046,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="45414" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Black Raven GK-417 RU,Rainbow,63кн черный</name>
-<vendor></vendor>
 <vendorCode>45414</vendorCode>
 <price>9691</price>
 <currencyId>KZT</currencyId>
@@ -18049,7 +18071,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="45081" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Cairon GK-081 RU черный</name>
-<vendor></vendor>
 <vendorCode>45081</vendorCode>
 <price>11578</price>
 <currencyId>KZT</currencyId>
@@ -18081,7 +18102,6 @@ Epson SureColor SC-T3000</description>
 </offer>
 <offer id="45135" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Cleikos GK-135 RU,RGB черный</name>
-<vendor></vendor>
 <vendorCode>45135</vendorCode>
 <price>23019</price>
 <currencyId>KZT</currencyId>
@@ -18118,7 +18138,6 @@ Bluetooth-спецификация - Bluetooth 5.0
 </offer>
 <offer id="45220" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Consul GK-220 RU,Rainbow,61кн,крас.свитчи черный</name>
-<vendor></vendor>
 <vendorCode>45220</vendorCode>
 <price>11594</price>
 <currencyId>KZT</currencyId>
@@ -18145,7 +18164,6 @@ Bluetooth-спецификация - Bluetooth 5.0
 </offer>
 <offer id="45303" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Deimos GK-303 RU,RGB черный</name>
-<vendor></vendor>
 <vendorCode>45303</vendorCode>
 <price>12105</price>
 <currencyId>KZT</currencyId>
@@ -18172,7 +18190,6 @@ Bluetooth-спецификация - Bluetooth 5.0
 </offer>
 <offer id="45352" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Mirax GK-352 RU черный</name>
-<vendor></vendor>
 <vendorCode>45352</vendorCode>
 <price>17489</price>
 <currencyId>KZT</currencyId>
@@ -18199,7 +18216,6 @@ Bluetooth-спецификация - Bluetooth 5.0
 </offer>
 <offer id="45084" available="true" in_stock="true">
 <name>Клавиатура игровая механическая Defender Vexx Pro GK-084 RU,RGB белый+зеленый</name>
-<vendor></vendor>
 <vendorCode>45084</vendorCode>
 <price>14557</price>
 <currencyId>KZT</currencyId>
@@ -18376,7 +18392,6 @@ Bluetooth-спецификация - Bluetooth 5.0
 </offer>
 <offer id="45720" available="true" in_stock="true">
 <name>Клавиатура проводная Defender Accent SB-720 RU черный</name>
-<vendor></vendor>
 <vendorCode>45720</vendorCode>
 <price>1982</price>
 <currencyId>KZT</currencyId>
@@ -18457,7 +18472,6 @@ EAN
 </offer>
 <offer id="45547" available="true" in_stock="true">
 <name>Клавиатура проводная Defender Atom HB-546 USB RU, белый</name>
-<vendor></vendor>
 <vendorCode>45547</vendorCode>
 <price>3559</price>
 <currencyId>KZT</currencyId>
@@ -19342,7 +19356,6 @@ EAN
 </offer>
 <offer id="50563" available="true" in_stock="true">
 <name>Коврик для мышки игровой Defender Warrior 820х300х3м</name>
-<vendor></vendor>
 <vendorCode>50563</vendorCode>
 <price>2220</price>
 <currencyId>KZT</currencyId>
@@ -19589,7 +19602,6 @@ USB 3 тип A
 </offer>
 <offer id="65419" available="true" in_stock="true">
 <name>Компактная акустика 2.0 Defender Aurora S20, черный</name>
-<vendor></vendor>
 <vendorCode>65419</vendorCode>
 <price>17077</price>
 <currencyId>KZT</currencyId>
@@ -19620,7 +19632,6 @@ ROHS / CE	Нет
 </offer>
 <offer id="65240" available="true" in_stock="true">
 <name>Компактная акустика 2.0 Defender Aurora S40 BT черный</name>
-<vendor></vendor>
 <vendorCode>65240</vendorCode>
 <price>27865</price>
 <currencyId>KZT</currencyId>
@@ -19681,7 +19692,6 @@ ROHS / CE	Да
 </offer>
 <offer id="65087" available="true" in_stock="true">
 <name>Компактная акустика 2.0 Defender Futuro черный</name>
-<vendor></vendor>
 <vendorCode>65087</vendorCode>
 <price>19893</price>
 <currencyId>KZT</currencyId>
@@ -20592,7 +20602,6 @@ True Wireless Stereo (TWS) - есть
 </offer>
 <offer id="65603" available="true" in_stock="true">
 <name>Компактная акустика Defender Enjoy S600 Черный</name>
-<vendor></vendor>
 <vendorCode>65603</vendorCode>
 <price>8668</price>
 <currencyId>KZT</currencyId>
@@ -20655,7 +20664,6 @@ True Wireless Stereo (TWS) - нет
 </offer>
 <offer id="65053" available="true" in_stock="true">
 <name>Компактная акустика Defender Funky Черный</name>
-<vendor></vendor>
 <vendorCode>65053</vendorCode>
 <price>5378</price>
 <currencyId>KZT</currencyId>
@@ -20842,6 +20850,42 @@ True Wireless Stereo (TWS) - есть
 Материал корпуса - пластик + металл
 Цвет - чёрный
 Совместимые ОС - без ограничений</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="110150-0-0" available="true" in_stock="true">
+<name>Комплект амбушюров для наушников DALI IO-4 / IO-6 / IO-8 железный черный</name>
+<vendor>Defunc</vendor>
+<vendorCode>110150-0-0</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565305</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/zapchasti_hi_fi_high_end/dali/komplekt_ambushyurov_dlya_naushnikov_dali_io_4_io_6_io_8_zheleznyy_chernyy/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/395/2h8qisxud3bgvf2penikgcdk31x7bxk2.png</picture>
+<description>Амбушюр для наушников 
+Съёмная часть наушников, которая соприкасается с ушами.
+У полноразмерных наушников амбушюры — это мягкие накладки из кожи, бархата, велюра, накладывающиеся на ушные раковины и полностью их закрывающие.
+Материал: велюр, бархат, и искусственная кожа. Наполнителем выступают различные пеноматериалы, иногда с эффектом памяти.
+Размер:  диаметр 9 см высота 2,5см вес 0,1 кг.</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="110151-0-0" available="true" in_stock="true">
+<name>Комплект амбушюров для наушников DALI IO-4 / IO-6 / IO-8 карамельно-белый</name>
+<vendor>Defunc</vendor>
+<vendorCode>110151-0-0</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565305</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/zapchasti_hi_fi_high_end/dali/komplekt_ambushyurov_dlya_naushnikov_dali_io_4_io_6_io_8_karamelno_belyy/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/94a/sb8xavn3pe856onka9vrgf92do5x53ph.png</picture>
+<description>Амбушюр для наушников 
+Съёмная часть наушников, которая соприкасается с ушами.
+У полноразмерных наушников амбушюры — это мягкие накладки из кожи, бархата, велюра, накладывающиеся на ушные раковины и полностью их закрывающие.
+Материал: велюр, бархат, и искусственная кожа. Наполнителем выступают различные пеноматериалы, иногда с эффектом памяти.
+Размер:  диаметр 9 см высота 2,5см вес 0,1 кг.</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
@@ -21252,7 +21296,6 @@ Ultimate
 </offer>
 <offer id="XG320U+64355" available="true" in_stock="true">
 <name>Комплект Монитор ViewSonic XG320U + Игровое кресло Defender Ultimate</name>
-<vendor></vendor>
 <vendorCode>XG320U+64355</vendorCode>
 <price>409990</price>
 <currencyId>KZT</currencyId>
@@ -21429,7 +21472,6 @@ ROHS / CE 	Нет
 </offer>
 <offer id="45779" available="true" in_stock="true">
 <name>Комплект проводной клавиатура+мышь Defender York C-777 RU черный</name>
-<vendor></vendor>
 <vendorCode>45779</vendorCode>
 <price>3206</price>
 <currencyId>KZT</currencyId>
@@ -21464,7 +21506,6 @@ ROHS / CE 	Нет
 </offer>
 <offer id="S062VI3R8" available="true" in_stock="true">
 <name>Компьютер OPC JWIPC S062</name>
-<vendor></vendor>
 <vendorCode>S062VI3R8</vendorCode>
 <price>221968</price>
 <currencyId>KZT</currencyId>
@@ -21499,7 +21540,6 @@ MS Windows - Windows 10 IoT</description>
 </offer>
 <offer id="64331" available="true" in_stock="true">
 <name>Компьютерный стол Defender Assassin чёрный + красный</name>
-<vendor></vendor>
 <vendorCode>64331</vendorCode>
 <price>31893</price>
 <currencyId>KZT</currencyId>
@@ -21522,7 +21562,6 @@ MS Windows - Windows 10 IoT</description>
 </offer>
 <offer id="64072" available="true" in_stock="true">
 <name>Компьютерный стол Defender Ferox RGB подвес кружки+гарнитуры</name>
-<vendor></vendor>
 <vendorCode>64072</vendorCode>
 <price>41826</price>
 <currencyId>KZT</currencyId>
@@ -21548,7 +21587,6 @@ MS Windows - Windows 10 IoT</description>
 </offer>
 <offer id="64308" available="true" in_stock="true">
 <name>Компьютерный стол Defender Foton RGB подвес кружки+гарнитуры</name>
-<vendor></vendor>
 <vendorCode>64308</vendorCode>
 <price>50193</price>
 <currencyId>KZT</currencyId>
@@ -21576,7 +21614,6 @@ MS Windows - Windows 10 IoT</description>
 </offer>
 <offer id="64074" available="true" in_stock="true">
 <name>Компьютерный стол Defender Ino RGB подвес кружки+гарнитуры</name>
-<vendor></vendor>
 <vendorCode>64074</vendorCode>
 <price>50193</price>
 <currencyId>KZT</currencyId>
@@ -21602,7 +21639,6 @@ MS Windows - Windows 10 IoT</description>
 </offer>
 <offer id="64309" available="true" in_stock="true">
 <name>Компьютерный стол Defender Jupiter RGB подвес кружки+гарнитуры</name>
-<vendor></vendor>
 <vendorCode>64309</vendorCode>
 <price>56193</price>
 <currencyId>KZT</currencyId>
@@ -21738,7 +21774,6 @@ MS Windows - Windows 10 IoT</description>
 </offer>
 <offer id="ELI09ONF" available="true" in_stock="true">
 <name>Кондиционер сплит-система TCL Elite On/Off ELI09ONF + инст. комплект</name>
-<vendor></vendor>
 <vendorCode>ELI09ONF</vendorCode>
 <price>96485</price>
 <currencyId>KZT</currencyId>
@@ -21768,7 +21803,6 @@ Smart Air Flow: В режиме охлаждения воздушный пото
 </offer>
 <offer id="ELI12ONF" available="true" in_stock="true">
 <name>Кондиционер сплит-система TCL Elite On/Off ELI12ONF + инст. комплект</name>
-<vendor></vendor>
 <vendorCode>ELI12ONF</vendorCode>
 <price>105975</price>
 <currencyId>KZT</currencyId>
@@ -22178,7 +22212,6 @@ SPUMATORE (для капучино и т.п.)
 </offer>
 <offer id="ACHOM-002" available="true" in_stock="true">
 <name>Крепление GoPro ACHOM-002 Headstrap 2.0</name>
-<vendor></vendor>
 <vendorCode>ACHOM-002</vendorCode>
 <price>14251</price>
 <currencyId>KZT</currencyId>
@@ -22230,7 +22263,6 @@ SPUMATORE (для капучино и т.п.)
 </offer>
 <offer id="AGRTM-002" available="true" in_stock="true">
 <name>Крепление гибкое универсальное GoPro Featuring Gear Ties (AGRTM-002)</name>
-<vendor></vendor>
 <vendorCode>AGRTM-002</vendorCode>
 <price>18290</price>
 <currencyId>KZT</currencyId>
@@ -22440,7 +22472,6 @@ VESA 75 мм и 100 мм
 </offer>
 <offer id="AEMAG-001" available="true" in_stock="true">
 <name>Крепление магнитное GoPro AEMAG-001 для Hero 13 Magnetic Latch Mount</name>
-<vendor></vendor>
 <vendorCode>AEMAG-001</vendorCode>
 <price>16039</price>
 <currencyId>KZT</currencyId>
@@ -22454,7 +22485,6 @@ VESA 75 мм и 100 мм
 </offer>
 <offer id="AEMAG-002" available="true" in_stock="true">
 <name>Крепление магнитное GoPro AEMAG-002 для Hero 13 на шарнирах Magnetic Latch Ball Joint Mount</name>
-<vendor></vendor>
 <vendorCode>AEMAG-002</vendorCode>
 <price>20984</price>
 <currencyId>KZT</currencyId>
@@ -22704,6 +22734,33 @@ GoPro Hand + Wrist Strap можно использовать на суше и в
 •герметичная крышка к чаше
 •4 интеллектуальные программы Auto-iQ
 •долговечные лезвия</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="8058201" available="true" in_stock="true">
+<name>Ламинатор Fellowes AMARIS A3 LAMINATOR 230V EU</name>
+<vendorCode>8058201</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>5448</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/ofisnoe_oborudovanie/laminatory/laminatory_a3/laminator_fellowes_amaris_a3_laminator_230v_eu/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/443/ix8nlr5t210ddl6rcalu4aotxehdk1i1.jpg</picture>
+<description>Минимальная толщина плёнки: 75 мкм
+Автоматический режим ожидания: Да
+Цвет продукта Белый, Серый
+Время предварительного нагрева: 1 мин
+Индикатор готовности: Да
+Количество роликов: 6
+Скорость ламинирования: 780 мм/мин
+Формат: A3
+Максимальная ширина ламинирования: 32 см
+Автоматическое обнаружение замятия: Да
+Максимальная толщина пакета: 175 мкм
+Максимальная толщина документа: 0,6 мм
+Автоматическое отключение питания: Да
+Тип: Холодный ламинатор
+Функция реверса двигателя: Да</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
@@ -22964,7 +23021,6 @@ Fellowes гарантирует непревзойденное качество 
 </offer>
 <offer id="V13H010L76" available="true" in_stock="true">
 <name>Лампа для проектора Epson ELPLP76  для Epson EB-G6xxx Series</name>
-<vendor></vendor>
 <vendorCode>V13H010L76</vendorCode>
 <price>140773</price>
 <currencyId>KZT</currencyId>
@@ -23007,7 +23063,6 @@ Epson EB-G6970WU</description>
 </offer>
 <offer id="V13H010L77" available="true" in_stock="true">
 <name>Лампа для проектора Lamp - ELPLP77 - EB-4xxx Series</name>
-<vendor></vendor>
 <vendorCode>V13H010L77</vendorCode>
 <price>129901</price>
 <currencyId>KZT</currencyId>
@@ -23062,7 +23117,6 @@ Epson LabelWorks LW-900P</description>
 </offer>
 <offer id="BG-38794-BK" available="true" in_stock="true">
 <name>Ложка сервировочная Bergner BG-38794-BK</name>
-<vendor></vendor>
 <vendorCode>BG-38794-BK</vendorCode>
 <price>960</price>
 <currencyId>KZT</currencyId>
@@ -23081,7 +23135,6 @@ Epson LabelWorks LW-900P</description>
 </offer>
 <offer id="BG-38796-BK" available="true" in_stock="true">
 <name>Лопатка Bergner BG-38796-BK</name>
-<vendor></vendor>
 <vendorCode>BG-38796-BK</vendorCode>
 <price>960</price>
 <currencyId>KZT</currencyId>
@@ -23119,7 +23172,6 @@ Epson LabelWorks LW-900P</description>
 </offer>
 <offer id="BG-38797-BK" available="true" in_stock="true">
 <name>Лопатка с прорезями Bergner BG-38797-BK</name>
-<vendor></vendor>
 <vendorCode>BG-38797-BK</vendorCode>
 <price>960</price>
 <currencyId>KZT</currencyId>
@@ -23678,7 +23730,6 @@ LED индикация
 </offer>
 <offer id="20107.0460 + 05546-216" available="true" in_stock="true">
 <name>Машинка для стрижки волос Wahl Baldfader черный + Wahl Nose trimmer</name>
-<vendor></vendor>
 <vendorCode>20107.0460 + 05546-216</vendorCode>
 <price>24986</price>
 <currencyId>KZT</currencyId>
@@ -23716,7 +23767,6 @@ LED индикация
 </offer>
 <offer id="20105.0465 + 05546-216" available="true" in_stock="true">
 <name>Машинка для стрижки волос Wahl Close Cut Pro красный + Wahl Nose trimmer</name>
-<vendor></vendor>
 <vendorCode>20105.0465 + 05546-216</vendorCode>
 <price>22692</price>
 <currencyId>KZT</currencyId>
@@ -23929,7 +23979,6 @@ Wahl ColorPro Cordless поддерживает 11 установок длины
 </offer>
 <offer id="79600-3116 + 05546-216" available="true" in_stock="true">
 <name>Машинка для стрижки волос Wahl Lithium-Ion Cordless + Wahl Nose trimmer серебро-черный</name>
-<vendor></vendor>
 <vendorCode>79600-3116 + 05546-216</vendorCode>
 <price>39780</price>
 <currencyId>KZT</currencyId>
@@ -24138,7 +24187,6 @@ HDMI-выход
 </offer>
 <offer id="80001015" available="true" in_stock="true">
 <name>Метеостанция с термометром и гигрометром Ritmix CAT-044 черный</name>
-<vendor></vendor>
 <vendorCode>80001015</vendorCode>
 <price>3005</price>
 <currencyId>KZT</currencyId>
@@ -24414,6 +24462,23 @@ cъемные антенны (2 шт.)</description>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="300406-0-0" available="true" in_stock="true">
+<name>Модуль ВЧ динамика для DALI Opticon 6 MK2 и Opticon 8 MK2</name>
+<vendorCode>300406-0-0</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565318</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/zapchasti_hi_fi_high_end/dali/modul_vch_dinamika_dlya_dali_opticon_6_mk2_i_opticon_8_mk2/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/6b6/8ptvycyhza4y11gwc70gfx72drlbg0lw.png</picture>
+<description>Динамическая головка для воспроизведения ВЧ диапазона в акустической системе 
+Dali OPTICON 6 AND 8 MK2
+Конструктивно представляет собой основу из алюминиевого сплава на которой расположены два динамических излучателя( динамика) –купольный и плёночный. Динамические  головки служат для преобразования электрических сигналов в механические колебания  высокочастотного диапазона. Излучатели изготовлены из синтетического шёлка и алюминиевого сплава. 
+Магнитные системы выполнены из сплава неодима.
+Размеры 10 х19.5 х 5 см  вес около 1.3 кг</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="AEWAL-021" available="true" in_stock="true">
 <name>Модуль объектива GoPro Macro Lens Mod AEWAL-021</name>
 <vendor>GoPro</vendor>
@@ -24511,7 +24576,6 @@ Quad HD (1440p) VESA DisplayHDR™ 400.
 </offer>
 <offer id="XG320U" available="true" in_stock="true">
 <name>Монитор ViewSonic XG320U</name>
-<vendor></vendor>
 <vendorCode>XG320U</vendorCode>
 <price>369068</price>
 <currencyId>KZT</currencyId>
@@ -25274,7 +25338,6 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 </offer>
 <offer id="C11CJ66411" available="true" in_stock="true">
 <name>МФУ Epson L3266 фабрика печати, Wi-Fi</name>
-<vendor></vendor>
 <vendorCode>C11CJ66411</vendorCode>
 <price>133961</price>
 <currencyId>KZT</currencyId>
@@ -25370,7 +25433,6 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 </offer>
 <offer id="C11CK59404" available="true" in_stock="true">
 <name>МФУ Epson L3550 фабрика печати, Wi-Fi</name>
-<vendor></vendor>
 <vendorCode>C11CK59404</vendorCode>
 <price>131810</price>
 <currencyId>KZT</currencyId>
@@ -25482,7 +25544,6 @@ Black
 </offer>
 <offer id="C11CK58404" available="true" in_stock="true">
 <name>МФУ Epson L3560 фабрика печати, Wi-Fi</name>
-<vendor></vendor>
 <vendorCode>C11CK58404</vendorCode>
 <price>147949</price>
 <currencyId>KZT</currencyId>
@@ -25595,7 +25656,6 @@ Apple AirPrint, Epson Smart Panel App, Epson Connect (Email Print, Remote Print 
 </offer>
 <offer id="C11CJ63412" available="true" in_stock="true">
 <name>МФУ Epson L4260 фабрика печати</name>
-<vendor></vendor>
 <vendorCode>C11CJ63412</vendorCode>
 <price>209051</price>
 <currencyId>KZT</currencyId>
@@ -25691,7 +25751,6 @@ Black
 </offer>
 <offer id="C11CJ63413" available="true" in_stock="true">
 <name>МФУ Epson L4267 фабрика печати</name>
-<vendor></vendor>
 <vendorCode>C11CJ63413</vendorCode>
 <price>209030</price>
 <currencyId>KZT</currencyId>
@@ -25796,7 +25855,6 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 </offer>
 <offer id="C11CJ65407" available="true" in_stock="true">
 <name>МФУ Epson L5290  фабрика печати, факс,Wi-Fi</name>
-<vendor></vendor>
 <vendorCode>C11CJ65407</vendorCode>
 <price>272689</price>
 <currencyId>KZT</currencyId>
@@ -25945,7 +26003,6 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 </offer>
 <offer id="C11CJ61405" available="true" in_stock="true">
 <name>МФУ Epson L6270 фабрика печати, Wi-Fi</name>
-<vendor></vendor>
 <vendorCode>C11CJ61405</vendorCode>
 <price>342996</price>
 <currencyId>KZT</currencyId>
@@ -26054,7 +26111,6 @@ Black
 </offer>
 <offer id="C11CJ60406" available="true" in_stock="true">
 <name>МФУ Epson L6290 фабрика печати, факс.Wi-Fi</name>
-<vendor></vendor>
 <vendorCode>C11CJ60406</vendorCode>
 <price>354400</price>
 <currencyId>KZT</currencyId>
@@ -28203,7 +28259,6 @@ ROHS / CE 	Да
 </offer>
 <offer id="52069" available="true" in_stock="true">
 <name>Мышь игровая Defender Overmatch GM-069</name>
-<vendor></vendor>
 <vendorCode>52069</vendorCode>
 <price>1729</price>
 <currencyId>KZT</currencyId>
@@ -28229,7 +28284,6 @@ ROHS / CE 	Да
 </offer>
 <offer id="52620" available="true" in_stock="true">
 <name>Мышь игровая Defender Shepard GM-620L RGB черный</name>
-<vendor></vendor>
 <vendorCode>52620</vendorCode>
 <price>4866</price>
 <currencyId>KZT</currencyId>
@@ -28853,7 +28907,6 @@ USB-приемник можно хранить Да
 </offer>
 <offer id="52282" available="true" in_stock="true">
 <name>Мышь игровая беспроводная Defender Dila MM-282 белый + синий</name>
-<vendor></vendor>
 <vendorCode>52282</vendorCode>
 <price>3822</price>
 <currencyId>KZT</currencyId>
@@ -28922,7 +28975,6 @@ USB-приемник можно хранить Да
 </offer>
 <offer id="52514" available="true" in_stock="true">
 <name>Мышь игровая беспроводная Defender Glory GM-514, LED,7D,400 мАч,3200dpi черный</name>
-<vendor></vendor>
 <vendorCode>52514</vendorCode>
 <price>4729</price>
 <currencyId>KZT</currencyId>
@@ -28969,7 +29021,6 @@ Windows 2000/XP/Vista/7/8/10 и выше, Mac OS X10</description>
 </offer>
 <offer id="8R2E7AA" available="true" in_stock="true">
 <name>Мышь игровая беспроводная HyperX Pulsefire Haste 2 Core Wireless 8R2E7AA белый</name>
-<vendor></vendor>
 <vendorCode>8R2E7AA</vendorCode>
 <price>26431</price>
 <currencyId>KZT</currencyId>
@@ -28988,7 +29039,6 @@ Windows 2000/XP/Vista/7/8/10 и выше, Mac OS X10</description>
 </offer>
 <offer id="7D388AA" available="true" in_stock="true">
 <name>Мышь игровая беспроводная HyperX Pulsefire Haste 2 Mini Wireless 7D388AA черный</name>
-<vendor></vendor>
 <vendorCode>7D388AA</vendorCode>
 <price>40619</price>
 <currencyId>KZT</currencyId>
@@ -29023,7 +29073,6 @@ DPI: 400/800/1600/3200 точек на дюйм
 </offer>
 <offer id="7D389AA" available="true" in_stock="true">
 <name>Мышь игровая беспроводная HyperX Pulsefire Haste 2 Mini Wireless 7D389AA белый</name>
-<vendor></vendor>
 <vendorCode>7D389AA</vendorCode>
 <price>40619</price>
 <currencyId>KZT</currencyId>
@@ -29058,7 +29107,6 @@ DPI: 400/800/1600/3200 точек на дюйм
 </offer>
 <offer id="A1KY5AA" available="true" in_stock="true">
 <name>Мышь игровая беспроводная HyperX Pulsefire Haste 2 Pro 4K Wireless A1KY5AA черный</name>
-<vendor></vendor>
 <vendorCode>A1KY5AA</vendorCode>
 <price>52281</price>
 <currencyId>KZT</currencyId>
@@ -29082,7 +29130,6 @@ DPI: 400/800/1600/3200 точек на дюйм
 </offer>
 <offer id="6N0A9AA" available="true" in_stock="true">
 <name>Мышь игровая беспроводная HyperX Pulsefire Haste 2 Wireless 6N0A9AA белый</name>
-<vendor></vendor>
 <vendorCode>6N0A9AA</vendorCode>
 <price>43339</price>
 <currencyId>KZT</currencyId>
@@ -29101,7 +29148,6 @@ DPI: 400/800/1600/3200 точек на дюйм
 </offer>
 <offer id="6N0B0AA" available="true" in_stock="true">
 <name>Мышь игровая беспроводная HyperX Pulsefire Haste 2 Wireless 6N0B0AA черный</name>
-<vendor></vendor>
 <vendorCode>6N0B0AA</vendorCode>
 <price>43339</price>
 <currencyId>KZT</currencyId>
@@ -29846,7 +29892,6 @@ DPI 600, 1400, 2800, 5000
 </offer>
 <offer id="AEBAT-201" available="true" in_stock="true">
 <name>Набор аккумуляторов GoPro AEBAT-201 Enduro 2шт для Hero 13</name>
-<vendor></vendor>
 <vendorCode>AEBAT-201</vendorCode>
 <price>28518</price>
 <currencyId>KZT</currencyId>
@@ -30073,7 +30118,6 @@ USB-зарядка (USB-кабель входит в комплект)
 </offer>
 <offer id="TK-ELEC" available="true" in_stock="true">
 <name>Набор инструментов Cablexpert TK-ELEC (63 пр. )</name>
-<vendor></vendor>
 <vendorCode>TK-ELEC</vendorCode>
 <price>41742</price>
 <currencyId>KZT</currencyId>
@@ -30165,7 +30209,6 @@ USB-зарядка (USB-кабель входит в комплект)
 </offer>
 <offer id="TK-SOLDER" available="true" in_stock="true">
 <name>Набор инструментов Cablexpert TK-SOLDER (28 пр.)</name>
-<vendor></vendor>
 <vendorCode>TK-SOLDER</vendorCode>
 <price>36564</price>
 <currencyId>KZT</currencyId>
@@ -30206,7 +30249,6 @@ PH0 х 75, PH1 x 100, PH2 х 150 мм
 </offer>
 <offer id="TK-OP-02R" available="true" in_stock="true">
 <name>Набор инструментов для вскрытия корпуса мобильной техники Cablexpert TK-OP-02R (13 предметов)</name>
-<vendor></vendor>
 <vendorCode>TK-OP-02R</vendorCode>
 <price>2805</price>
 <currencyId>KZT</currencyId>
@@ -30289,7 +30331,6 @@ J-образная защелка</description>
 </offer>
 <offer id="152000" available="true" in_stock="true">
 <name>Набор ножей Arcos Maitre 152000 5 пр</name>
-<vendor></vendor>
 <vendorCode>152000</vendorCode>
 <price>53125</price>
 <currencyId>KZT</currencyId>
@@ -30306,7 +30347,6 @@ J-образная защелка</description>
 </offer>
 <offer id="167100" available="true" in_stock="true">
 <name>Набор ножей Arcos Nordika 167100 3 пр</name>
-<vendor></vendor>
 <vendorCode>167100</vendorCode>
 <price>58460</price>
 <currencyId>KZT</currencyId>
@@ -30325,7 +30365,6 @@ J-образная защелка</description>
 </offer>
 <offer id="859800" available="true" in_stock="true">
 <name>Набор ножей Arcos Nova 859800 3 пр</name>
-<vendor></vendor>
 <vendorCode>859800</vendorCode>
 <price>5325</price>
 <currencyId>KZT</currencyId>
@@ -30343,7 +30382,6 @@ J-образная защелка</description>
 </offer>
 <offer id="834200" available="true" in_stock="true">
 <name>Набор ножей Arcos Riviera 834200 3 пр</name>
-<vendor></vendor>
 <vendorCode>834200</vendorCode>
 <price>57142</price>
 <currencyId>KZT</currencyId>
@@ -30402,7 +30440,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-10231-GR" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-10231-GR (2 кружки) зеленый</name>
-<vendor></vendor>
 <vendorCode>BG-10231-GR</vendorCode>
 <price>3517</price>
 <currencyId>KZT</currencyId>
@@ -30416,7 +30453,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-10231-RD" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-10231-RD (2 кружки) красный</name>
-<vendor></vendor>
 <vendorCode>BG-10231-RD</vendorCode>
 <price>3659</price>
 <currencyId>KZT</currencyId>
@@ -30430,7 +30466,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-10232-GR" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-10232-GR (2 чаши) зеленый</name>
-<vendor></vendor>
 <vendorCode>BG-10232-GR</vendorCode>
 <price>4402</price>
 <currencyId>KZT</currencyId>
@@ -30444,7 +30479,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-10232-RD" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-10232-RD (2 чаши) красный</name>
-<vendor></vendor>
 <vendorCode>BG-10232-RD</vendorCode>
 <price>5283</price>
 <currencyId>KZT</currencyId>
@@ -30458,7 +30492,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-10233-GR" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-10233-GR (12 тарелок) зеленый</name>
-<vendor></vendor>
 <vendorCode>BG-10233-GR</vendorCode>
 <price>19392</price>
 <currencyId>KZT</currencyId>
@@ -30476,7 +30509,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-10233-RD" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-10233-RD (12 тарелок) красный</name>
-<vendor></vendor>
 <vendorCode>BG-10233-RD</vendorCode>
 <price>19392</price>
 <currencyId>KZT</currencyId>
@@ -30494,7 +30526,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-13351-GR" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-13351-GR (2 чашки) зеленый</name>
-<vendor></vendor>
 <vendorCode>BG-13351-GR</vendorCode>
 <price>2636</price>
 <currencyId>KZT</currencyId>
@@ -30508,7 +30539,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-13351-RD" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-13351-RD (2 чаши) красный</name>
-<vendor></vendor>
 <vendorCode>BG-13351-RD</vendorCode>
 <price>2636</price>
 <currencyId>KZT</currencyId>
@@ -30522,7 +30552,6 @@ J-образная защелка</description>
 </offer>
 <offer id="BG-13353-GR" available="true" in_stock="true">
 <name>Набор посуды Bergner Classique BG BG-13353-GR (2 чаши) зеленый</name>
-<vendor></vendor>
 <vendorCode>BG-13353-GR</vendorCode>
 <price>5283</price>
 <currencyId>KZT</currencyId>
@@ -30616,7 +30645,6 @@ J-образная защелка</description>
 </offer>
 <offer id="NIMA 330" available="true" in_stock="true">
 <name>Набор трубок для молока Nivona NIMA 330</name>
-<vendor></vendor>
 <vendorCode>NIMA 330</vendorCode>
 <price>7497</price>
 <currencyId>KZT</currencyId>
@@ -31404,7 +31432,6 @@ Bluetooth да
 </offer>
 <offer id="80002745" available="true" in_stock="true">
 <name>Настольная лампа Ritmix LED-1080CQi черный</name>
-<vendor></vendor>
 <vendorCode>80002745</vendorCode>
 <price>13065</price>
 <currencyId>KZT</currencyId>
@@ -32752,7 +32779,6 @@ ROHS / CE 	Да</description>
 </offer>
 <offer id="63400" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender FreeMotion B400 черный</name>
-<vendor></vendor>
 <vendorCode>63400</vendorCode>
 <price>8895</price>
 <currencyId>KZT</currencyId>
@@ -32784,7 +32810,6 @@ Bluetooth-спецификация - V5.3 + EDR, A2DP, AVRCP, HFP, HSP
 </offer>
 <offer id="63445" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender FreeMotion B445 черный</name>
-<vendor></vendor>
 <vendorCode>63445</vendorCode>
 <price>5699</price>
 <currencyId>KZT</currencyId>
@@ -32945,7 +32970,6 @@ ROHS / CE 	Да</description>
 </offer>
 <offer id="63535" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender FreeMotion B535 черный</name>
-<vendor></vendor>
 <vendorCode>63535</vendorCode>
 <price>10033</price>
 <currencyId>KZT</currencyId>
@@ -33101,7 +33125,6 @@ ROHS / CE	Да
 </offer>
 <offer id="63597" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender FreeMotion B595 граффити</name>
-<vendor></vendor>
 <vendorCode>63597</vendorCode>
 <price>5810</price>
 <currencyId>KZT</currencyId>
@@ -33197,7 +33220,6 @@ Bluetooth-спецификация - V5.3 + EDR, A2DP, AVRCP, HFP, HSP
 </offer>
 <offer id="63640" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender FreeMotion B640 черный</name>
-<vendor></vendor>
 <vendorCode>63640</vendorCode>
 <price>5098</price>
 <currencyId>KZT</currencyId>
@@ -33259,7 +33281,6 @@ Bluetooth-спецификация - V5.3 + EDR, A2DP, AVRCP, HFP, HSP
 </offer>
 <offer id="63645" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender FreeMotion B645 черный</name>
-<vendor></vendor>
 <vendorCode>63645</vendorCode>
 <price>6786</price>
 <currencyId>KZT</currencyId>
@@ -33388,7 +33409,6 @@ Bluetooth-спецификация - V5.4 + EDR, A2DP, AVRCP, HFP, HSP
 </offer>
 <offer id="64690" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender Orion черный</name>
-<vendor></vendor>
 <vendorCode>64690</vendorCode>
 <price>18000</price>
 <currencyId>KZT</currencyId>
@@ -33426,7 +33446,6 @@ ITF-14 - 14745090826118
 </offer>
 <offer id="64580" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender Phantom PRO белый</name>
-<vendor></vendor>
 <vendorCode>64580</vendorCode>
 <price>18190</price>
 <currencyId>KZT</currencyId>
@@ -33466,7 +33485,6 @@ ITF-14 - 14745090825913
 </offer>
 <offer id="64685" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender Triple BT/2.4G черный</name>
-<vendor></vendor>
 <vendorCode>64685</vendorCode>
 <price>19603</price>
 <currencyId>KZT</currencyId>
@@ -33504,7 +33522,6 @@ ITF-14 - 14745090828945
 </offer>
 <offer id="64686" available="true" in_stock="true">
 <name>Наушники-гарнитура беспроводные Defender Triple белый</name>
-<vendor></vendor>
 <vendorCode>64686</vendorCode>
 <price>19982</price>
 <currencyId>KZT</currencyId>
@@ -33655,7 +33672,6 @@ Bluetooth Нет</description>
 </offer>
 <offer id="64536" available="true" in_stock="true">
 <name>Наушники-гарнитура игровые Defender Cosmo PRO объемный звук 7.1, RGB, черный</name>
-<vendor></vendor>
 <vendorCode>64536</vendorCode>
 <price>13529</price>
 <currencyId>KZT</currencyId>
@@ -33865,7 +33881,6 @@ ITF-14 - 14714033641187
 </offer>
 <offer id="64505" available="true" in_stock="true">
 <name>Наушники-гарнитура игровые Defender Сujo черный+красный</name>
-<vendor></vendor>
 <vendorCode>64505</vendorCode>
 <price>6923</price>
 <currencyId>KZT</currencyId>
@@ -36077,7 +36092,6 @@ Arcos предлагает вам услугу заточки , чтобы по�
 </offer>
 <offer id="TK-SD-08R" available="true" in_stock="true">
 <name>Отвертка с набором бит Cablexpert TK-SD-08R (49 предметов)</name>
-<vendor></vendor>
 <vendorCode>TK-SD-08R</vendorCode>
 <price>7650</price>
 <currencyId>KZT</currencyId>
@@ -36101,7 +36115,6 @@ Arcos предлагает вам услугу заточки , чтобы по�
 </offer>
 <offer id="TK-SD-09R" available="true" in_stock="true">
 <name>Отвертка с набором бит Cablexpert TK-SD-09R (21 предмет)</name>
-<vendor></vendor>
 <vendorCode>TK-SD-09R</vendorCode>
 <price>6865</price>
 <currencyId>KZT</currencyId>
@@ -36372,7 +36385,6 @@ SIHOO - это воплощение десятилетий исследован�
 </offer>
 <offer id="HP150EU" available="true" in_stock="true">
 <name>Очиститель воздуха Shark HP150EU белый</name>
-<vendor></vendor>
 <vendorCode>HP150EU</vendorCode>
 <price>119046</price>
 <currencyId>KZT</currencyId>
@@ -36459,7 +36471,6 @@ DRAM	2Gx8
 </offer>
 <offer id="TS4GHR72V2C-SAM" available="true" in_stock="true">
 <name>Память оперативная DDR4 Desktop Transcend TS4GHR72V2C-SAM</name>
-<vendor></vendor>
 <vendorCode>TS4GHR72V2C-SAM</vendorCode>
 <price>63411</price>
 <currencyId>KZT</currencyId>
@@ -36489,7 +36500,6 @@ DRAM	2Gx8
 </offer>
 <offer id="JM3200HSE-32G" available="true" in_stock="true">
 <name>Память оперативная DDR4 Notebook Transcend  JM3200HSE-32G</name>
-<vendor></vendor>
 <vendorCode>JM3200HSE-32G</vendorCode>
 <price>79576</price>
 <currencyId>KZT</currencyId>
@@ -36517,7 +36527,6 @@ DRAM	2Gx8
 </offer>
 <offer id="JM4800ALE-16G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Desktop Transcend  JM4800ALE-16G</name>
-<vendor></vendor>
 <vendorCode>JM4800ALE-16G</vendorCode>
 <price>23278</price>
 <currencyId>KZT</currencyId>
@@ -36531,7 +36540,6 @@ DRAM	2Gx8
 </offer>
 <offer id="JM4800ALE-32G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Desktop Transcend  JM4800ALE-32G</name>
-<vendor></vendor>
 <vendorCode>JM4800ALE-32G</vendorCode>
 <price>38051</price>
 <currencyId>KZT</currencyId>
@@ -36545,7 +36553,6 @@ DRAM	2Gx8
 </offer>
 <offer id="JM5600ALE-16G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Desktop Transcend  JM5600ALE-16G</name>
-<vendor></vendor>
 <vendorCode>JM5600ALE-16G</vendorCode>
 <price>24506</price>
 <currencyId>KZT</currencyId>
@@ -36561,7 +36568,6 @@ DRAM	2Gx8
 </offer>
 <offer id="JM5600ALE-32G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Desktop Transcend JM5600ALE-32G</name>
-<vendor></vendor>
 <vendorCode>JM5600ALE-32G</vendorCode>
 <price>45954</price>
 <currencyId>KZT</currencyId>
@@ -36575,7 +36581,6 @@ DRAM	2Gx8
 </offer>
 <offer id="JM6400ALE-16G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Desktop Transcend JM6400ALE-16G</name>
-<vendor></vendor>
 <vendorCode>JM6400ALE-16G</vendorCode>
 <price>26104</price>
 <currencyId>KZT</currencyId>
@@ -36597,7 +36602,6 @@ DRAM:	(2Gx8)x8
 </offer>
 <offer id="TS2GLA72V6E" available="true" in_stock="true">
 <name>Память оперативная DDR5 Desktop Transcend TS2GLA72V6E</name>
-<vendor></vendor>
 <vendorCode>TS2GLA72V6E</vendorCode>
 <price>55692</price>
 <currencyId>KZT</currencyId>
@@ -36624,7 +36628,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="JM4800ASE-16G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Notebook Transcend  JM4800ASE-16G</name>
-<vendor></vendor>
 <vendorCode>JM4800ASE-16G</vendorCode>
 <price>24469</price>
 <currencyId>KZT</currencyId>
@@ -36638,7 +36641,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="JM4800ASE-32G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Notebook Transcend  JM4800ASE-32G</name>
-<vendor></vendor>
 <vendorCode>JM4800ASE-32G</vendorCode>
 <price>42300</price>
 <currencyId>KZT</currencyId>
@@ -36652,7 +36654,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="JM5600ASE-16G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Notebook Transcend  JM5600ASE-16G</name>
-<vendor></vendor>
 <vendorCode>JM5600ASE-16G</vendorCode>
 <price>27522</price>
 <currencyId>KZT</currencyId>
@@ -36666,7 +36667,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="JM5600ASE-32G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Notebook Transcend JM5600ASE-32G</name>
-<vendor></vendor>
 <vendorCode>JM5600ASE-32G</vendorCode>
 <price>52060</price>
 <currencyId>KZT</currencyId>
@@ -36680,7 +36680,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="JM5600ASG-8G" available="true" in_stock="true">
 <name>Память оперативная DDR5 Notebook Transcend JM5600ASG-8G</name>
-<vendor></vendor>
 <vendorCode>JM5600ASG-8G</vendorCode>
 <price>13197</price>
 <currencyId>KZT</currencyId>
@@ -36694,7 +36693,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="TS1GLH72V2B-I" available="true" in_stock="true">
 <name>Память оперативная промышленная Transcend TS1GLH72V2B-I</name>
-<vendor></vendor>
 <vendorCode>TS1GLH72V2B-I</vendorCode>
 <price>19819</price>
 <currencyId>KZT</currencyId>
@@ -36765,6 +36763,25 @@ DRAM:	(2Gx8)x10
 Варианты глажки:  паровая или сухая
 Подошва:  Керамика
 Кабель:  Удобное хранение</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="PP31-5M" available="true" in_stock="true">
+<name>Патч-корд 5м UTP Cablexpert PP31-5M кат5e серый</name>
+<vendorCode>PP31-5M</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9800000</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/aksessuary_1/kabelnoe_oborudovanie/kabel_dlya_pc/kabel_patch_kord_utp/patch_kord_5m_utp_cablexpert_pp31_5m_kat5e_seryy/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/c1b/uhkk4f7cud1jyejo8o1g7qwe06iykw21.jpg</picture>
+<description>Тип: UTP
+Категория: 5E
+Разъёмы: RJ-45 (8p8c)
+Диаметр проводника: 24AWG
+Материал проводника: CCA
+Материал оболочки: LSZH (Low Smoke Zero Halogen - низкое дымовыделение, нулевое содержание галогенов)
+Длина: 5 м</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
@@ -36854,7 +36871,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="PP22-7.5M" available="true" in_stock="true">
 <name>Патч-корд FTP Cablexpert PP22-7.5m кат.5e, 7.5м, литой, многожильный (серый)</name>
-<vendor></vendor>
 <vendorCode>PP22-7.5M</vendorCode>
 <price>960</price>
 <currencyId>KZT</currencyId>
@@ -37902,7 +37918,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="PP12-30M/BK" available="true" in_stock="true">
 <name>Патч-корд UTP Cablexpert PP12-30M/BK кат.5e, 30м, литой, многожильный (чёрный)</name>
-<vendor></vendor>
 <vendorCode>PP12-30M/BK</vendorCode>
 <price>2199</price>
 <currencyId>KZT</currencyId>
@@ -38134,7 +38149,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="PP6U-15M" available="true" in_stock="true">
 <name>Патч-корд UTP Cablexpert PP6U-15M кат.6, 15м, литой, многожильный (серый)</name>
-<vendor></vendor>
 <vendorCode>PP6U-15M</vendorCode>
 <price>2278</price>
 <currencyId>KZT</currencyId>
@@ -38216,7 +38230,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="PP6U-20M" available="true" in_stock="true">
 <name>Патч-корд UTP Cablexpert PP6U-20M  кат.6, 20 м, литой, многожильный (серый)</name>
-<vendor></vendor>
 <vendorCode>PP6U-20M</vendorCode>
 <price>3311</price>
 <currencyId>KZT</currencyId>
@@ -38943,7 +38956,6 @@ DRAM:	(2Gx8)x10
 </offer>
 <offer id="5627501" available="true" in_stock="true">
 <name>Переплетчик Fellowes STAR+ 150 COMB BINDER</name>
-<vendor></vendor>
 <vendorCode>5627501</vendorCode>
 <price>47293</price>
 <currencyId>KZT</currencyId>
@@ -39348,7 +39360,6 @@ USB 3.1 Gen 2 до 10 Гбит/с
 </offer>
 <offer id="FS-53061" available="true" in_stock="true">
 <name>Пленка для ламинирования  А4 Fellowes, 80мкм, 100 шт.</name>
-<vendor></vendor>
 <vendorCode>FS-53061</vendorCode>
 <price>5014</price>
 <currencyId>KZT</currencyId>
@@ -40050,7 +40061,6 @@ Bluetooth 5.2
 </offer>
 <offer id="BG-38793-BK" available="true" in_stock="true">
 <name>Половник Bergner BG-38793-BK</name>
-<vendor></vendor>
 <vendorCode>BG-38793-BK</vendorCode>
 <price>960</price>
 <currencyId>KZT</currencyId>
@@ -40849,7 +40859,6 @@ Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]</description>
 </offer>
 <offer id="C11CJ71404" available="true" in_stock="true">
 <name>Принтер Epson L1250 фабрика печати</name>
-<vendor></vendor>
 <vendorCode>C11CJ71404</vendorCode>
 <price>96300</price>
 <currencyId>KZT</currencyId>
@@ -41110,7 +41119,6 @@ ESC/P-R
 </offer>
 <offer id="C11CK37403" available="true" in_stock="true">
 <name>Принтер Epson L8050 фабрика печати, Wi-Fi</name>
-<vendor></vendor>
 <vendorCode>C11CK37403</vendorCode>
 <price>190028</price>
 <currencyId>KZT</currencyId>
@@ -42332,7 +42340,6 @@ Warranty
 </offer>
 <offer id="DX273" available="true" in_stock="true">
 <name>Проектор универсальный Vivitek DX273</name>
-<vendor></vendor>
 <vendorCode>DX273</vendorCode>
 <price>215789</price>
 <currencyId>KZT</currencyId>
@@ -43322,7 +43329,6 @@ ROHS / CE - Да</description>
 </offer>
 <offer id="WF13GYCN" available="true" in_stock="true">
 <name>Разветвитель Netac WF13 HUB Type-C to USB3.0+USB2.0x2+100W PD+HDMI серый</name>
-<vendor></vendor>
 <vendorCode>WF13GYCN</vendorCode>
 <price>2958</price>
 <currencyId>KZT</currencyId>
@@ -43462,6 +43468,48 @@ USB-хаб Transcend 6-в-1 HUB5C с симметричным разъемом �
 <url>https://b2b.ak-cent.kz/orders/blank_zakaza/aksessuary_1/kabelnoe_oborudovanie/kabel_dlya_pc/kabel_vga/razvetvitel_vga_cablexpert_cc_vgax2_20cm_hd15m_2x15f_1_kompyuter_2_monitora/</url>
 <picture>https://b2b.ak-cent.kz/upload/iblock/9b7/homkkojyhvp15azryxdd4gjucuelo4hg.jpg</picture>
 <description>Пассивный разветвительный кабель VGA VGA, 2xHD15F - HD15M для раздвоения сигнала от одного источника.  Разъёмы: 2 x HD15F, 1 x HD15M</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="AGXTM-001" available="true" in_stock="true">
+<name>Раздвижной монопод GoPro MAX AGXTM-001 черный</name>
+<vendorCode>AGXTM-001</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9800000</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/aksessuary_1/aksessuary_personalnoy_elektroniki/aks_dlya_ekshn_kamer/monopody_i_shtativy/razdvizhnoy_monopod_gopro_max_agxtm_001_chernyy/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/d44/7vg381bgp4ihbj0c5765gg3h4otahce3.jpg</picture>
+<description>Растягивается до 122 см и складывается до 25 см — идеален для съёмки селфи, съёмки с высоты или приближения к действию. При использовании с 360°-камерами полностью исчезает из кадра, создавая эффект съёмки от третьего лица. В комплект входят: удлиняющий монопод, адаптер-крепление (mounting finger), страховочный ремешок на запястье и винт с головкой.
+
+Растягивается до 122 см для захвата динамичных сцен, складывается до 25 см — удобно брать с собой
+Крепление 1/4-20 совместимо с 360°-камерами, такими как GoPro MAX — позволяет получать невидимые в кадре селфи-снимки.
+Лёгкие, но прочные алюминиевые секции — быстро и удобно раздвигаются.
+Премиум-рукоятка с антискользящим покрытием и ремешок на запястье — для надёжной фиксации.
+Резьбовая вставка 1/4-20 делает монопод совместимым с большинством стандартных креплений в индустрии.</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="AGXTM-002" available="true" in_stock="true">
+<name>Раздвижной монопод GoPro MAX AGXTM-002 черный</name>
+<vendorCode>AGXTM-002</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>9800000</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/aksessuary_1/aksessuary_personalnoy_elektroniki/aks_dlya_ekshn_kamer/monopody_i_shtativy/razdvizhnoy_monopod_gopro_max_agxtm_002_chernyy/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/e03/xg4dyo0fuxqkyejoa0eztu1h8b00zaf9.png</picture>
+<description>Открывайте новые ракурсы съёмки — от впечатляющих воздушных кадров в стиле дрона до эффектных планов сверху, при которых штанга полностью исчезает из 360°-видео. Этот премиальный монопод из карбона растягивается до 2,7 м и складывается до всего 39 см, обеспечивая максимальную универсальность — будь вы на сноуборде или снимаете концерт с высоты.
+В комплекте: карбоновый удлиняющий монопод, адаптер-крепление GoPro (mounting finger), страховочный ремешок на запястье, винт с головкой.
+
+Удлиняется до 2,7 м — для захвата уникальных ракурсов, включая съёмку &quot;с высоты птичьего полёта&quot;, как с дрона.
+Крепление 1/4-20 совместимо с 360°-камерами, например GoPro MAX — позволяет снимать «невидимую штангу».
+Прочная, но лёгкая карбоновая конструкция — обеспечивает надёжность и минимальный вес.
+Складывается до 39 см — легко помещается в рюкзак или сумку с оборудованием.
+Удобная система фиксации — раздвигается и складывается без поворота секций и лишних движений.
+Жёсткая конструкция предотвращает прогиб даже при полной длине.
+Эргономичная рукоятка с антискользящим покрытием и текстурой — для уверенного хвата.
+В комплекте адаптер GoPro — позволяет устанавливать любые камеры GoPro для классических видеосъёмок.</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
@@ -43902,7 +43950,6 @@ Steam Genie 2 в 1 оснащен технологией One Temperature, кот
 </offer>
 <offer id="26090" available="true" in_stock="true">
 <name>Рюкзак Defender City 15.6 черный</name>
-<vendor></vendor>
 <vendorCode>26090</vendorCode>
 <price>5125</price>
 <currencyId>KZT</currencyId>
@@ -44229,6 +44276,27 @@ WI-FI: IEEE 802.11 переменного тока (2,4 ГГц/5 ГГц).
 Потребление энергии в резервном режиме: &lt;0,5 Вт (эко), &lt;2 Вт (режим сети).
 Размеры (Ш х В х Г): 430 х 85 х 305 мм.
 Масса: 3,55 кг.</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
+<offer id="C11313K" available="true" in_stock="true">
+<name>Сетевой проигрыватель Cambridge Audio EXN100 серый</name>
+<vendor>Cambridge Audio</vendor>
+<vendorCode>C11313K</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565256</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/istochniki_v_muzykalnykh_sistemakh/setevye_proigryvateli_strimery/setevoy_proigryvatel_cambridge_audio_exn100_seryy/</url>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a5e/2ge0ufbhbdf7p4gvphjkqyfsjqnlr04a.png</picture>
+<description>Профессиональная настройка для исключительного звука: тщательно изготовлено в Лондоне, чтобы раскрыть весь потенциал ESS DAC и нашей потоковой платформы StreamMagic.
+Слушайте музыку в потоковом режиме: наслаждайтесь любимыми сервисами, такими как Spotify, TIDAL, Deezer, Qobuz, интернет-радио и другими, без лишних усилий.
+Улучшите звук вашего телевизора: расширьте возможности домашних развлечений с помощью простого подключения HDMI eARC для получения захватывающего звука.
+Универсальные возможности подключения: подключение через USB-аудио, коаксиальный кабель и TOSLINK или беспроводное подключение с помощью встроенного Chromecast, AirPlay 2 и Bluetooth aptX HD.
+Roon Ready: легко просматривайте всю свою цифровую музыкальную библиотеку с помощью интуитивно понятного интерфейса Roon.
+Режим предусилителя: работает как цифровой предусилитель, обеспечивая переключение входов и регулировку громкости для любой системы.
+Возможность использования нескольких комнат: наполните свой дом звуком благодаря совместимости с Google Home, Apple AirPlay и Roon.
+Увеличенный цветной экран высокого разрешения: визуально погрузитесь в мир обложки альбома, индикаторов уровня громкости и многого другого.</description>
 <quantity_in_stock>1</quantity_in_stock>
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
@@ -45420,7 +45488,6 @@ USB тип A
 </offer>
 <offer id="30808" available="true" in_stock="true">
 <name>Сжатый воздух Defender CLN 30805 Gaming 400 мл.</name>
-<vendor></vendor>
 <vendorCode>30808</vendorCode>
 <price>1176</price>
 <currencyId>KZT</currencyId>
@@ -45463,7 +45530,6 @@ USB тип A
 </offer>
 <offer id="30855" available="true" in_stock="true">
 <name>Сжатый воздух Defender CLN 30805 Optima 720 мл.</name>
-<vendor></vendor>
 <vendorCode>30855</vendorCode>
 <price>1524</price>
 <currencyId>KZT</currencyId>
@@ -45477,7 +45543,6 @@ USB тип A
 </offer>
 <offer id="B11B265401" available="true" in_stock="true">
 <name>Сканер Epson WorkForce DS-790WN</name>
-<vendor></vendor>
 <vendorCode>B11B265401</vendorCode>
 <price>574085</price>
 <currencyId>KZT</currencyId>
@@ -45590,7 +45655,6 @@ USB тип A
 </offer>
 <offer id="BG-34744-CR" available="true" in_stock="true">
 <name>Сковорода Bergner Naturally BG BG-34744-CR 28 см.</name>
-<vendor></vendor>
 <vendorCode>BG-34744-CR</vendorCode>
 <price>11457</price>
 <currencyId>KZT</currencyId>
@@ -45784,7 +45848,6 @@ USB тип A
 </offer>
 <offer id="BGMP-3550" available="true" in_stock="true">
 <name>Сковорода Masterpro Foodies MP BGMP-3550 20*4.2 cm</name>
-<vendor></vendor>
 <vendorCode>BGMP-3550</vendorCode>
 <price>6163</price>
 <currencyId>KZT</currencyId>
@@ -45800,7 +45863,6 @@ USB тип A
 </offer>
 <offer id="BGMP-3551" available="true" in_stock="true">
 <name>Сковорода Masterpro Foodies MP BGMP-3551 24*5 cm</name>
-<vendor></vendor>
 <vendorCode>BGMP-3551</vendorCode>
 <price>7930</price>
 <currencyId>KZT</currencyId>
@@ -46025,7 +46087,6 @@ USB тип A
 </offer>
 <offer id="BGMP-3558" available="true" in_stock="true">
 <name>Сковорода Masterpro WOK Foodies M BGMP-3558 28*7,2 cm</name>
-<vendor></vendor>
 <vendorCode>BGMP-3558</vendorCode>
 <price>10576</price>
 <currencyId>KZT</currencyId>
@@ -46115,7 +46176,6 @@ USB тип A
 </offer>
 <offer id="BG-34742-CR" available="true" in_stock="true">
 <name>Сковорода WOK Bergner Naturally BG BG-34742-CR</name>
-<vendor></vendor>
 <vendorCode>BG-34742-CR</vendorCode>
 <price>8810</price>
 <currencyId>KZT</currencyId>
@@ -46180,7 +46240,6 @@ USB тип A
 </offer>
 <offer id="BG-34743-CR" available="true" in_stock="true">
 <name>Сковорода-гриль Bergner Naturally BG BG-34743-CR 28*28см</name>
-<vendor></vendor>
 <vendorCode>BG-34743-CR</vendorCode>
 <price>8810</price>
 <currencyId>KZT</currencyId>
@@ -46884,6 +46943,20 @@ ROM: 32 Мб
 <stock_quantity>1</stock_quantity>
 <quantity>1</quantity>
 </offer>
+<offer id="V760149-00" available="true" in_stock="true">
+<name>Сменный гриль для DALI  SUB E-9 F черный</name>
+<vendor>Defunc</vendor>
+<vendorCode>V760149-00</vendorCode>
+<price>1</price>
+<currencyId>KZT</currencyId>
+<categoryId>565305</categoryId>
+<url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/hi_fi_high_end/aksessuary_hi_fi_high_end/tsvetnye_grili_dlya_akustiki/smennyy_gril_dlya_dali_sub_e_9_f_chernyy/</url>
+<picture>https://b2b.ak-cent.kz</picture>
+<description>Декоративная гриль-решетка для сабвуфера SUB E-9 F. Предназначена для замены штатной защитной сетки на наиболее подходящую по цвету для вашего интерьера.</description>
+<quantity_in_stock>1</quantity_in_stock>
+<stock_quantity>1</stock_quantity>
+<quantity>1</quantity>
+</offer>
 <offer id="71104550" available="true" in_stock="true">
 <name>Соковыжималка центробежная Ufesa LC5750 Delux 71104550</name>
 <vendor>Ufeca</vendor>
@@ -46906,7 +46979,6 @@ ROM: 32 Мб
 </offer>
 <offer id="99034" available="true" in_stock="true">
 <name>Стабилизатор напряжения Defender ASF 500D напольный 300Вт 1 розетка</name>
-<vendor></vendor>
 <vendorCode>99034</vendorCode>
 <price>12021</price>
 <currencyId>KZT</currencyId>
@@ -46936,7 +47008,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="99018" available="true" in_stock="true">
 <name>Стабилизатор напряжения Defender AVR Initial 1000 320 ВТ, 2 розетки</name>
-<vendor></vendor>
 <vendorCode>99018</vendorCode>
 <price>9011</price>
 <currencyId>KZT</currencyId>
@@ -46962,7 +47033,6 @@ Defender AVR Initial автоматически увеличивает пони�
 </offer>
 <offer id="99030" available="true" in_stock="true">
 <name>Стабилизатор напряжения Defender AVR PX 1500 600 Вт, 4 розетки</name>
-<vendor></vendor>
 <vendorCode>99030</vendorCode>
 <price>11562</price>
 <currencyId>KZT</currencyId>
@@ -46986,7 +47056,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="99031" available="true" in_stock="true">
 <name>Стабилизатор напряжения Defender AVR PX 2000 напольный 1000Вт</name>
-<vendor></vendor>
 <vendorCode>99031</vendorCode>
 <price>11895</price>
 <currencyId>KZT</currencyId>
@@ -47010,7 +47079,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="99032" available="true" in_stock="true">
 <name>Стабилизатор напряжения Defender AVR Typhoon 600 200 Вт, 2 розетки</name>
-<vendor></vendor>
 <vendorCode>99032</vendorCode>
 <price>8283</price>
 <currencyId>KZT</currencyId>
@@ -47104,7 +47172,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="HD446EU" available="true" in_stock="true">
 <name>Стайлер Shark HD446EU черный/розовое золото</name>
-<vendor></vendor>
 <vendorCode>HD446EU</vendorCode>
 <price>136054</price>
 <currencyId>KZT</currencyId>
@@ -47379,7 +47446,6 @@ ROHS / CE - Нет
 </offer>
 <offer id="64235" available="true" in_stock="true">
 <name>Стол регулируемый Defender Prizma черный</name>
-<vendor></vendor>
 <vendorCode>64235</vendorCode>
 <price>132801</price>
 <currencyId>KZT</currencyId>
@@ -48121,7 +48187,6 @@ ROHS / CE - Да
 </offer>
 <offer id="26086" available="true" in_stock="true">
 <name>Сумка для ноутбука Defender Lite 15.6&quot; черный + серый</name>
-<vendor></vendor>
 <vendorCode>26086</vendorCode>
 <price>3116</price>
 <currencyId>KZT</currencyId>
@@ -48230,7 +48295,6 @@ ROHS / CE - Да
 </offer>
 <offer id="26088" available="true" in_stock="true">
 <name>Сумка для ноутбука Defender Solid 15&quot;-16&#x27;&#x27; серый</name>
-<vendor></vendor>
 <vendorCode>26088</vendorCode>
 <price>7692</price>
 <currencyId>KZT</currencyId>
@@ -49195,7 +49259,6 @@ LED-индикация
 </offer>
 <offer id="05537-3016 + 05546-216" available="true" in_stock="true">
 <name>Триммер для усов и бороды Wahl Groomsman All in 1 Trimmer черный + Wahl Nose trimmer</name>
-<vendor></vendor>
 <vendorCode>05537-3016 + 05546-216</vendorCode>
 <price>6960</price>
 <currencyId>KZT</currencyId>
@@ -51559,7 +51622,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICB20" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC Barbie светло-розовый</name>
-<vendor></vendor>
 <vendorCode>RODOMATICB20</vendorCode>
 <price>45480</price>
 <currencyId>KZT</currencyId>
@@ -51582,7 +51644,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICB10" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC Barbie темно-розовый</name>
-<vendor></vendor>
 <vendorCode>RODOMATICB10</vendorCode>
 <price>45480</price>
 <currencyId>KZT</currencyId>
@@ -51605,7 +51666,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICBL" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC голубой</name>
-<vendor></vendor>
 <vendorCode>RODOMATICBL</vendorCode>
 <price>36991</price>
 <currencyId>KZT</currencyId>
@@ -51624,7 +51684,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICBL+RODZ2X320" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC голубой+Фотобумага 2х3 Kodak ZINK 20 шт</name>
-<vendor></vendor>
 <vendorCode>RODOMATICBL+RODZ2X320</vendorCode>
 <price>42179</price>
 <currencyId>KZT</currencyId>
@@ -51643,7 +51702,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICYL" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC желтый</name>
-<vendor></vendor>
 <vendorCode>RODOMATICYL</vendorCode>
 <price>36991</price>
 <currencyId>KZT</currencyId>
@@ -51662,7 +51720,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICGN" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC зеленый</name>
-<vendor></vendor>
 <vendorCode>RODOMATICGN</vendorCode>
 <price>36991</price>
 <currencyId>KZT</currencyId>
@@ -51681,7 +51738,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICPK" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC розовый</name>
-<vendor></vendor>
 <vendorCode>RODOMATICPK</vendorCode>
 <price>36991</price>
 <currencyId>KZT</currencyId>
@@ -51700,7 +51756,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICPK+RODZ2X320" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC розовый+Фотобумага 2х3 Kodak ZINK 20 шт</name>
-<vendor></vendor>
 <vendorCode>RODOMATICPK+RODZ2X320</vendorCode>
 <price>42179</price>
 <currencyId>KZT</currencyId>
@@ -51719,7 +51774,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICGR" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC серый</name>
-<vendor></vendor>
 <vendorCode>RODOMATICGR</vendorCode>
 <price>36991</price>
 <currencyId>KZT</currencyId>
@@ -51738,7 +51792,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICBK" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC черный</name>
-<vendor></vendor>
 <vendorCode>RODOMATICBK</vendorCode>
 <price>36991</price>
 <currencyId>KZT</currencyId>
@@ -51757,7 +51810,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODOMATICBK+RODZ2X320" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak PRINTOMATIC черный+Фотобумага 2х3 Kodak ZINK 20 шт</name>
-<vendor></vendor>
 <vendorCode>RODOMATICBK+RODZ2X320</vendorCode>
 <price>42179</price>
 <currencyId>KZT</currencyId>
@@ -51776,7 +51828,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODSMPCAMW" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak Smile+ белый</name>
-<vendor></vendor>
 <vendorCode>RODSMPCAMW</vendorCode>
 <price>63685</price>
 <currencyId>KZT</currencyId>
@@ -51790,7 +51841,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODSMPCAMBL" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak Smile+ голубой</name>
-<vendor></vendor>
 <vendorCode>RODSMPCAMBL</vendorCode>
 <price>63685</price>
 <currencyId>KZT</currencyId>
@@ -51804,7 +51854,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODSMPCAMGN" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak Smile+ зеленый</name>
-<vendor></vendor>
 <vendorCode>RODSMPCAMGN</vendorCode>
 <price>63685</price>
 <currencyId>KZT</currencyId>
@@ -51818,7 +51867,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODSMPCAMPK" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak Smile+ розовый</name>
-<vendor></vendor>
 <vendorCode>RODSMPCAMPK</vendorCode>
 <price>63685</price>
 <currencyId>KZT</currencyId>
@@ -51832,7 +51880,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODSMPCAMFS" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak Smile+ фуксия</name>
-<vendor></vendor>
 <vendorCode>RODSMPCAMFS</vendorCode>
 <price>63685</price>
 <currencyId>KZT</currencyId>
@@ -51846,7 +51893,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODSMPCAMBK" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak Smile+ черный</name>
-<vendor></vendor>
 <vendorCode>RODSMPCAMBK</vendorCode>
 <price>63685</price>
 <currencyId>KZT</currencyId>
@@ -51860,7 +51906,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODITC20W" available="true" in_stock="true">
 <name>Фотоаппарат моментальной печати Kodak Step Touch белый</name>
-<vendor></vendor>
 <vendorCode>RODITC20W</vendorCode>
 <price>89884</price>
 <currencyId>KZT</currencyId>
@@ -51915,7 +51960,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODZ2X3100" available="true" in_stock="true">
 <name>Фотобумага 2х3 Kodak ZINK 100 шт</name>
-<vendor></vendor>
 <vendorCode>RODZ2X3100</vendorCode>
 <price>24527</price>
 <currencyId>KZT</currencyId>
@@ -51934,7 +51978,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODZ2X320" available="true" in_stock="true">
 <name>Фотобумага 2х3 Kodak ZINK 20 шт</name>
-<vendor></vendor>
 <vendorCode>RODZ2X320</vendorCode>
 <price>6517</price>
 <currencyId>KZT</currencyId>
@@ -51953,7 +51996,6 @@ DC фен 2100Вт и мощным воздушным потоком 100км/ч 
 </offer>
 <offer id="RODZ2X350" available="true" in_stock="true">
 <name>Фотобумага 2х3 Kodak ZINK 50 шт</name>
-<vendor></vendor>
 <vendorCode>RODZ2X350</vendorCode>
 <price>11937</price>
 <currencyId>KZT</currencyId>
@@ -52858,7 +52900,6 @@ Colour: Black, Blue, Orange
 </offer>
 <offer id="HN-FP-PU-700-BE-CIS" available="true" in_stock="true">
 <name>Чехол для электронной книги PocketBook 700 editionFlip series бежевый</name>
-<vendor></vendor>
 <vendorCode>HN-FP-PU-700-BE-CIS</vendorCode>
 <price>9786</price>
 <currencyId>KZT</currencyId>
@@ -52878,7 +52919,6 @@ Colour: Black, Blue, Orange
 </offer>
 <offer id="HN-SL-PU-700-NB-CIS" available="true" in_stock="true">
 <name>Чехол для электронной книги PocketBook 700 editionFlip series синий</name>
-<vendor></vendor>
 <vendorCode>HN-SL-PU-700-NB-CIS</vendorCode>
 <price>9786</price>
 <currencyId>KZT</currencyId>
@@ -53207,7 +53247,6 @@ Safe</description>
 </offer>
 <offer id="4653601" available="true" in_stock="true">
 <name>Шредер Fellowes® AutoMax® 200C, автоподача, DIN P-4, 4х38мм, 200 лст. авто, 10 ручн., 32 лт</name>
-<vendor></vendor>
 <vendorCode>4653601</vendorCode>
 <price>181371</price>
 <currencyId>KZT</currencyId>
@@ -53335,7 +53374,6 @@ P-4 уровень секретности
 </offer>
 <offer id="5502201" available="true" in_stock="true">
 <name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</name>
-<vendor></vendor>
 <vendorCode>5502201</vendorCode>
 <price>157755</price>
 <currencyId>KZT</currencyId>
@@ -53374,7 +53412,6 @@ P-4 уровень секретности
 </offer>
 <offer id="5050301" available="true" in_stock="true">
 <name>Шредер Fellowes® Powershred® LX211 WHITE   SHREDDER EU/UK</name>
-<vendor></vendor>
 <vendorCode>5050301</vendorCode>
 <price>194789</price>
 <currencyId>KZT</currencyId>
@@ -53590,7 +53627,6 @@ SafeSense® Технолог</description>
 </offer>
 <offer id="4170601" available="true" in_stock="true">
 <name>Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</name>
-<vendor></vendor>
 <vendorCode>4170601</vendorCode>
 <price>41889</price>
 <currencyId>KZT</currencyId>
@@ -53609,7 +53645,6 @@ SafeSense® Технолог</description>
 </offer>
 <offer id="4400501" available="true" in_stock="true">
 <name>Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU</name>
-<vendor></vendor>
 <vendorCode>4400501</vendorCode>
 <price>48875</price>
 <currencyId>KZT</currencyId>
@@ -53684,7 +53719,6 @@ Auto-Oil™	нет
 </offer>
 <offer id="4400701" available="true" in_stock="true">
 <name>Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</name>
-<vendor></vendor>
 <vendorCode>4400701</vendorCode>
 <price>64323</price>
 <currencyId>KZT</currencyId>
@@ -53758,7 +53792,6 @@ Auto-Oil™	нет
 </offer>
 <offer id="6008101" available="true" in_stock="true">
 <name>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.,</name>
-<vendor></vendor>
 <vendorCode>6008101</vendorCode>
 <price>25202</price>
 <currencyId>KZT</currencyId>
@@ -53800,7 +53833,6 @@ P-4 уровень секретности
 </offer>
 <offer id="AEXTM-001" available="true" in_stock="true">
 <name>Штатив с клейким креплением GoPro Base Boom + Adhesive Mounts (AEXTM-001)</name>
-<vendor></vendor>
 <vendorCode>AEXTM-001</vendorCode>
 <price>35647</price>
 <currencyId>KZT</currencyId>
@@ -53838,7 +53870,6 @@ P-4 уровень секретности
 </offer>
 <offer id="AEXTM-011" available="true" in_stock="true">
 <name>Штатив с креплением на штангу GoPro Bike Boom + Bar Mount (AEXTM-011)</name>
-<vendor></vendor>
 <vendorCode>AEXTM-011</vendorCode>
 <price>41425</price>
 <currencyId>KZT</currencyId>
@@ -53858,7 +53889,6 @@ Tube Mount для объемов от 3,5 до 6,35 см</description>
 </offer>
 <offer id="BG-38795-BK" available="true" in_stock="true">
 <name>Шумовка Bergner BG-38795-BK</name>
-<vendor></vendor>
 <vendorCode>BG-38795-BK</vendorCode>
 <price>960</price>
 <currencyId>KZT</currencyId>
@@ -53936,7 +53966,6 @@ Tube Mount для объемов от 3,5 до 6,35 см</description>
 </offer>
 <offer id="C13T66464A" available="true" in_stock="true">
 <name>Экономичный набор из четырех контейнеров с чернилами, серия 664</name>
-<vendor></vendor>
 <vendorCode>C13T66464A</vendorCode>
 <price>16476</price>
 <currencyId>KZT</currencyId>
@@ -54204,7 +54233,6 @@ HERO13 Black Creator Edition для создателей контента — э
 </offer>
 <offer id="CHDHF-131-EU" available="true" in_stock="true">
 <name>Экшн-камера GoPro CHDHF-131-EU Hero</name>
-<vendor></vendor>
 <vendorCode>CHDHF-131-EU</vendorCode>
 <price>120227</price>
 <currencyId>KZT</currencyId>
@@ -54221,7 +54249,6 @@ HERO13 Black Creator Edition для создателей контента — э
 </offer>
 <offer id="CHDHX-112-RW" available="true" in_stock="true">
 <name>Экшн-камера GoPro CHDHX-112-RW HERO 11 Black</name>
-<vendor></vendor>
 <vendorCode>CHDHX-112-RW</vendorCode>
 <price>183796</price>
 <currencyId>KZT</currencyId>
@@ -54237,7 +54264,6 @@ HERO13 Black Creator Edition для создателей контента — э
 </offer>
 <offer id="CHDHX-121-RW" available="true" in_stock="true">
 <name>Экшн-камера GoPro CHDHX-121-RW HERO 12 Black</name>
-<vendor></vendor>
 <vendorCode>CHDHX-121-RW</vendorCode>
 <price>180806</price>
 <currencyId>KZT</currencyId>
@@ -54355,7 +54381,6 @@ GPS для записи телеметрии
 </offer>
 <offer id="CHDRB-131-RW" available="true" in_stock="true">
 <name>Экшн-камера GoPro CHDRB-131-RW HERO 13 Black Accessory Bundle</name>
-<vendor></vendor>
 <vendorCode>CHDRB-131-RW</vendorCode>
 <price>255711</price>
 <currencyId>KZT</currencyId>
@@ -54557,7 +54582,6 @@ Ninja Woodfire OO101EU! Она получила 8 функций с широки
 </offer>
 <offer id="23211-70" available="true" in_stock="true">
 <name>Электрический чайник Russell Hobbs 23211-70 металл</name>
-<vendor></vendor>
 <vendorCode>23211-70</vendorCode>
 <price>51548</price>
 <currencyId>KZT</currencyId>
@@ -54602,7 +54626,6 @@ Ninja Woodfire OO101EU! Она получила 8 функций с широки
 </offer>
 <offer id="24991-70" available="true" in_stock="true">
 <name>Электрический чайник Russell Hobbs 24991-70 металл</name>
-<vendor></vendor>
 <vendorCode>24991-70</vendorCode>
 <price>29926</price>
 <currencyId>KZT</currencyId>
@@ -54617,7 +54640,6 @@ Ninja Woodfire OO101EU! Она получила 8 функций с широки
 </offer>
 <offer id="25070-70" available="true" in_stock="true">
 <name>Электрический чайник Russell Hobbs 25070-70 белый</name>
-<vendor></vendor>
 <vendorCode>25070-70</vendorCode>
 <price>20114</price>
 <currencyId>KZT</currencyId>
@@ -54631,7 +54653,6 @@ Ninja Woodfire OO101EU! Она получила 8 функций с широки
 </offer>
 <offer id="26051-70" available="true" in_stock="true">
 <name>Электрический чайник Russell Hobbs 26051-70 черный</name>
-<vendor></vendor>
 <vendorCode>26051-70</vendorCode>
 <price>20457</price>
 <currencyId>KZT</currencyId>
@@ -54646,7 +54667,6 @@ Ninja Woodfire OO101EU! Она получила 8 функций с широки
 </offer>
 <offer id="26080-70" available="true" in_stock="true">
 <name>Электрический чайник Russell Hobbs 26080-70 стекло</name>
-<vendor></vendor>
 <vendorCode>26080-70</vendorCode>
 <price>31745</price>
 <currencyId>KZT</currencyId>
@@ -54820,7 +54840,6 @@ Ultimate Series F8 — это ответ на ваш вопрос чистого
 </offer>
 <offer id="ONYX NOTE AIR 4 C" available="true" in_stock="true">
 <name>Электронная книга ONYX BOOX NOTE AIR 4 C черный</name>
-<vendor></vendor>
 <vendorCode>ONYX NOTE AIR 4 C</vendorCode>
 <price>239103</price>
 <currencyId>KZT</currencyId>
@@ -54862,7 +54881,6 @@ Ultimate Series F8 — это ответ на ваш вопрос чистого
 </offer>
 <offer id="ONYX Go 7 BLACK" available="true" in_stock="true">
 <name>Электронная книга ONYX Go 7 черный</name>
-<vendor></vendor>
 <vendorCode>ONYX Go 7 BLACK</vendorCode>
 <price>107979</price>
 <currencyId>KZT</currencyId>
@@ -54876,7 +54894,6 @@ Ultimate Series F8 — это ответ на ваш вопрос чистого
 </offer>
 <offer id="ONYX Go Color 7 Gen II BLACK" available="true" in_stock="true">
 <name>Электронная книга ONYX Go Color 7 черный</name>
-<vendor></vendor>
 <vendorCode>ONYX Go Color 7 Gen II BLACK</vendorCode>
 <price>123406</price>
 <currencyId>KZT</currencyId>
@@ -54906,7 +54923,6 @@ Ultimate Series F8 — это ответ на ваш вопрос чистого
 </offer>
 <offer id="PB619-T-CIS" available="true" in_stock="true">
 <name>Электронная книга Pocketbook PB619-T-CIS серый</name>
-<vendor></vendor>
 <vendorCode>PB619-T-CIS</vendorCode>
 <price>64566</price>
 <currencyId>KZT</currencyId>
@@ -55206,7 +55222,6 @@ Wi-Fi - есть
 </offer>
 <offer id="ONYX VOLTA 6 Black" available="true" in_stock="true">
 <name>Электронная книга ОНИКС БУКС ВОЛЬТА 6 черный</name>
-<vendor></vendor>
 <vendorCode>ONYX VOLTA 6 Black</vendorCode>
 <price>80525</price>
 <currencyId>KZT</currencyId>
@@ -55241,7 +55256,6 @@ USB-кабель
 </offer>
 <offer id="ONYX GALILEO 2 BLACK" available="true" in_stock="true">
 <name>Электронная книга ОНИКС БУКС ГАЛИЛЕО 2 черный</name>
-<vendor></vendor>
 <vendorCode>ONYX GALILEO 2 BLACK</vendorCode>
 <price>127149</price>
 <currencyId>KZT</currencyId>
@@ -55349,7 +55363,6 @@ USB-кабель
 </offer>
 <offer id="ONYX RAPHAEL 2 BLACK" available="true" in_stock="true">
 <name>Электронная книга ОНИКС БУКС РАФАЭЛЬ 2 черный</name>
-<vendor></vendor>
 <vendorCode>ONYX RAPHAEL 2 BLACK</vendorCode>
 <price>116293</price>
 <currencyId>KZT</currencyId>
@@ -55364,7 +55377,6 @@ USB-кабель
 </offer>
 <offer id="ONYX FARADAY 2 BLACK" available="true" in_stock="true">
 <name>Электронная книга ОНИКС БУКС ФАРАДЕЙ 2 черный</name>
-<vendor></vendor>
 <vendorCode>ONYX FARADAY 2 BLACK</vendorCode>
 <price>153511</price>
 <currencyId>KZT</currencyId>
@@ -55456,7 +55468,6 @@ USB-кабель
 </offer>
 <offer id="42882" available="true" in_stock="true">
 <name>Элемент питания LR6 AA Olmio Alkaline LR6 - 4штуки в упаковке</name>
-<vendor></vendor>
 <vendorCode>42882</vendorCode>
 <price>422</price>
 <currencyId>KZT</currencyId>
