@@ -2,17 +2,11 @@
 """
 AK-Cent -> normalized YML (UTF-8 with BOM)
 
-Фильтрация:
-— Берём товары ТОЛЬКО если имя содержит одно из ключевых слов из docs/akcent_keywords.txt.
-— Режим совпадения управляется AKCENT_KEYWORDS_MODE:
-    * "any" (по умолчанию) — ключ может встречаться в ЛЮБОМ месте названия
-    * "prefix" — название ДОЛЖНО НАЧИНАТЬСЯ с ключа
-Нормализация: нижний регистр, ё->е, схлопывание пробелов, унификация тире.
-
-Остальное:
-— Цена: ищем KZT/«тенге», иначе любая цена; если не нашли — price=1.
+— Фильтр товаров по docs/akcent_keywords.txt (ENV: AKCENT_KEYWORDS_FILE, AKCENT_KEYWORDS_MODE=any|prefix).
+— Цена: ищем KZT/«тенге», иначе любая; если нет — price=1.
 — Название: если пусто — собираем из vendor/vendorCode.
-— Категории: из <categories>/<category>; пустые id генерим стабильно.
+— КАТЕГОРИИ: в выходной YML попадают ТОЛЬКО те категории, у которых есть хотя бы один товар.
+  Плюс корневая "AKCENT". Категории, созданные по offer/@type, тоже добавляются при использовании.
 """
 
 from __future__ import annotations
@@ -110,31 +104,38 @@ def matches_keywords(title: str, kws: List[str]) -> bool:
     nm = normalize(title)
     if KEYWORDS_MODE == "prefix":
         return any(nm.startswith(k) for k in kws)
-    # any
     return any(k in nm for k in kws)
 
-# ---------- parsing helpers ----------
-def build_categories_map(root: ET.Element) -> Tuple[Dict[str, int], List[Tuple[int, str, int]]]:
+# ---------- categories helpers ----------
+def build_categories_map(root: ET.Element) -> Tuple[Dict[str, int], Dict[int, str]]:
+    """
+    Возвращает:
+      - map_src_to_out: исходный id (строка) -> целочисленный id
+      - cats_all: { our_id: name } — полный словарь всех категорий из источника (parent всегда ROOT)
+    """
     map_src_to_out: Dict[str, int] = {}
-    cats_out: List[Tuple[int, str, int]] = []
+    cats_all: Dict[int, str] = {}
     cats_node = root.find(".//categories")
     if not cats_node:
-        return map_src_to_out, cats_out
+        return map_src_to_out, cats_all
     for c in cats_node.findall("./category"):
         raw_id = (c.get("id") or "").strip()
         name = get_text(c)
         if not name:
             continue
         if raw_id:
-            try: out_id = int(raw_id)
-            except Exception: out_id = stable_id_for_name(name)
+            try:
+                out_id = int(raw_id)
+            except Exception:
+                out_id = stable_id_for_name(name)
         else:
             out_id = stable_id_for_name(name)
         if raw_id:
             map_src_to_out[raw_id] = out_id
-        cats_out.append((out_id, name, ROOT_CAT_ID))
-    return map_src_to_out, cats_out
+        cats_all[out_id] = name
+    return map_src_to_out, cats_all
 
+# ---------- offer helpers ----------
 def resolve_vendor(offer: ET.Element) -> str:
     v = get_text(first(offer, "./vendor"))
     if v: return v
@@ -197,18 +198,32 @@ def resolve_available(offer: ET.Element) -> bool:
     if "нет" in st or "out of stock" in st: return False
     return True
 
-def resolve_category_id(offer: ET.Element, cats_map: Dict[str, int], name_to_id: Dict[str, int]) -> int:
+def resolve_category_id(
+    offer: ET.Element,
+    cats_map_src_to_out: Dict[str, int],
+    name_to_id: Dict[str, int],
+    extra_cats: Dict[int, str],
+) -> int:
     c = first(offer, "./categoryId")
     if c is not None:
         raw = get_text(c)
         if raw:
-            if raw in cats_map: return cats_map[raw]
-            try: return cats_map.get(raw, int(raw))
-            except Exception: pass
+            if raw in cats_map_src_to_out:
+                return cats_map_src_to_out[raw]
+            try:
+                val = int(raw)
+                return cats_map_src_to_out.get(raw, val)
+            except Exception:
+                pass
+    # fallback по атрибуту type у offer (это имя категории)
     t = (offer.get("type") or "").strip()
     if t:
-        if t in name_to_id: return name_to_id[t]
-        nid = stable_id_for_name(t); name_to_id[t] = nid; return nid
+        if t in name_to_id:
+            return name_to_id[t]
+        nid = stable_id_for_name(t)
+        name_to_id[t] = nid
+        extra_cats[nid] = t  # учтём новую категорию в выдаче, если она будет использована
+        return nid
     return ROOT_CAT_ID
 
 def first_picture(offer: ET.Element) -> Optional[str]:
@@ -254,19 +269,20 @@ def build_yml(categories: List[Tuple[int, str, int]], offers: List[Dict[str, Any
 
 # ---------- MAIN ----------
 def main() -> int:
-    root = read_xml_bytes()
-    root = ET.fromstring(root)
+    root = ET.fromstring(read_xml_bytes())
 
-    # категории
-    cats_map_raw_to_out, cats_list = build_categories_map(root)
-    name_to_id = { name: cid for (cid, name, parent) in cats_list }
+    # 1) справочник категорий из источника
+    cats_map_src_to_out, cats_all = build_categories_map(root)   # cats_all: {our_id: name}
+    name_to_id: Dict[str, int] = { name: cid for cid, name in cats_all.items() }  # по имени -> id
+    extra_cats: Dict[int, str] = {}  # категории, созданные по offer/@type (имя -> id)
 
-    # ключевые слова (фильтр)
+    # 2) ключевые слова (фильтр)
     keywords = load_keywords(KEYWORDS_FILE)
 
-    # офферы
+    # 3) офферы (с фильтром)
     offers_src = root.findall(".//offer")
     offers_out: List[Dict[str, Any]] = []
+    used_cat_ids: set[int] = set()
     total = 0
     matched = 0
 
@@ -280,7 +296,7 @@ def main() -> int:
             base = vendor or "Товар"
             title = f"{base} {vendor_code}" if vendor_code else base
 
-        # фильтр по ключевым словам — только по НАЗВАНИЮ
+        # фильтр по названию
         if not matches_keywords(title, keywords):
             continue
         matched += 1
@@ -293,7 +309,9 @@ def main() -> int:
         url = get_text(first(o, "./url"))
         picture = first_picture(o)
         descr = description_text(o)
-        cat_id = resolve_category_id(o, cats_map_raw_to_out, name_to_id)
+        cat_id = resolve_category_id(o, cats_map_src_to_out, name_to_id, extra_cats)
+
+        used_cat_ids.add(cat_id)
 
         offers_out.append({
             "title": title,
@@ -309,13 +327,24 @@ def main() -> int:
 
     print(f"[akcent] filter matched: {matched}/{total}")
 
-    # запись
+    # 4) СОБИРАЕМ КАТЕГОРИИ ТОЛЬКО ИСПОЛЬЗУЕМЫЕ
+    categories_out: List[Tuple[int, str, int]] = []
+    # из исходного справочника — только те, что реально используются
+    for cid, name in cats_all.items():
+        if cid in used_cat_ids:
+            categories_out.append((cid, name, ROOT_CAT_ID))
+    # категории, созданные по type (extra_cats), если использовались
+    for cid, name in extra_cats.items():
+        if cid in used_cat_ids and cid not in cats_all:
+            categories_out.append((cid, name, ROOT_CAT_ID))
+
+    # 5) запись
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    xml = build_yml(cats_list, offers_out)
+    xml = build_yml(categories_out, offers_out)
     with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
         f.write(xml)
 
-    print(f"[akcent] done: {len(offers_out)} offers, {len(cats_list)} categories -> {OUT_FILE} (encoding={OUTPUT_ENCODING})")
+    print(f"[akcent] done: {len(offers_out)} offers, {len(categories_out)} categories -> {OUT_FILE} (encoding={OUTPUT_ENCODING})")
     return 0
 
 if __name__ == "__main__":
