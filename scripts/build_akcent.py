@@ -2,11 +2,12 @@
 """
 AK-Cent -> normalized YML (UTF-8 with BOM)
 
-— Фильтр товаров по docs/akcent_keywords.txt (ENV: AKCENT_KEYWORDS_FILE, AKCENT_KEYWORDS_MODE=any|prefix).
-— Цена: ищем KZT/«тенге», иначе любая; если нет — price=1.
-— Название: если пусто — собираем из vendor/vendorCode.
-— КАТЕГОРИИ: в выходной YML попадают ТОЛЬКО те категории, у которых есть хотя бы один товар.
-  Плюс корневая "AKCENT". Категории, созданные по offer/@type, тоже добавляются при использовании.
+Изменения:
+- ФИЛЬТР ТОЛЬКО ПО ПРЕФИКСУ имени (AKCENT_KEYWORDS_MODE=prefix по умолчанию):
+  включаем товар только если название НАЧИНАЕТСЯ с одного из ключей.
+- (опц.) Исключения по файлу AKCENT_EXCLUDE_FILE (если строка встречается в названии — товар отбрасывается).
+- В <categories> попадают только категории, к которым реально привязаны отфильтрованные товары.
+- Цена: ищем KZT/«тенге», иначе любая; если нет — price=1. Название автособираем из vendor/vendorCode при пустом.
 """
 
 from __future__ import annotations
@@ -19,12 +20,12 @@ from xml.etree import ElementTree as ET
 AKCENT_XML_URL   = os.getenv("AKCENT_XML_URL", "").strip()
 AKCENT_XML_PATH  = os.getenv("AKCENT_XML_PATH", "docs/akcent_source.xml")
 OUT_FILE         = os.getenv("OUT_FILE", "docs/akcent.yml")
-OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8-sig")  # BOM для кириллицы
+OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8-sig")
 HTTP_TIMEOUT     = float(os.getenv("HTTP_TIMEOUT", "60"))
 
-# фильтр по ключевым словам
 KEYWORDS_FILE    = os.getenv("AKCENT_KEYWORDS_FILE", "docs/akcent_keywords.txt")
-KEYWORDS_MODE    = (os.getenv("AKCENT_KEYWORDS_MODE", "any") or "any").lower()  # 'any' | 'prefix'
+KEYWORDS_MODE    = (os.getenv("AKCENT_KEYWORDS_MODE", "prefix") or "prefix").lower()  # 'prefix' | 'any'
+EXCLUDE_FILE     = os.getenv("AKCENT_EXCLUDE_FILE", "").strip()
 
 ROOT_CAT_ID      = 9800000
 ROOT_CAT_NAME    = "AKCENT"
@@ -38,8 +39,7 @@ def unhtml(s: str) -> str:
 
 def parse_number(s: str) -> Optional[float]:
     if not s: return None
-    t = unhtml(s)
-    t = t.replace("\xa0", " ").replace(" ", "").replace(",", ".")
+    t = unhtml(s).replace("\xa0", " ").replace(" ", "").replace(",", ".")
     m = re.search(r"(-?\d+(?:\.\d+)?)", t)
     return float(m.group(1)) if m else None
 
@@ -56,10 +56,8 @@ def first(node: ET.Element, path: str) -> Optional[ET.Element]:
 def strip_ns(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
 
-def normalize(s: str) -> str:
-    s = (s or "").lower()
-    s = s.replace("ё", "е")
-    s = s.replace("\xa0", " ")
+def norm(s: str) -> str:
+    s = (s or "").lower().replace("ё", "е").replace("\xa0", " ")
     s = re.sub(r"[–—−―]", "-", s)
     s = re.sub(r"\s+", " ", s).strip(" .,_-")
     s = s.replace("…", "...")
@@ -71,29 +69,25 @@ def read_xml_bytes() -> bytes:
         r = requests.get(AKCENT_XML_URL, timeout=HTTP_TIMEOUT)
         r.raise_for_status()
         b = r.content
-        # сохраняем исходник для отладки
         try:
             os.makedirs(os.path.dirname(AKCENT_XML_PATH), exist_ok=True)
-            with io.open(AKCENT_XML_PATH, "wb") as f:
-                f.write(b)
-        except Exception:
-            pass
+            with io.open(AKCENT_XML_PATH, "wb") as f: f.write(b)
+        except Exception: pass
         return b
     if os.path.isfile(AKCENT_XML_PATH):
-        with io.open(AKCENT_XML_PATH, "rb") as f:
-            return f.read()
+        with io.open(AKCENT_XML_PATH, "rb") as f: return f.read()
     raise RuntimeError("No AKCENT_XML_URL and file not found: %s" % AKCENT_XML_PATH)
 
-# ---------- keywords filter ----------
-def load_keywords(path: str) -> List[str]:
+# ---------- keywords / excludes ----------
+def load_lines(path: str) -> List[str]:
     arr: List[str] = []
     try:
-        if os.path.isfile(path):
+        if path and os.path.isfile(path):
             with io.open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
                 for line in f:
                     t = (line or "").strip()
                     if t and not t.startswith("#"):
-                        arr.append(normalize(t))
+                        arr.append(norm(t))
     except Exception:
         pass
     return arr
@@ -101,37 +95,34 @@ def load_keywords(path: str) -> List[str]:
 def matches_keywords(title: str, kws: List[str]) -> bool:
     if not kws:
         return True
-    nm = normalize(title)
+    nm = norm(title)
     if KEYWORDS_MODE == "prefix":
         return any(nm.startswith(k) for k in kws)
     return any(k in nm for k in kws)
 
-# ---------- categories helpers ----------
+def matches_excludes(title: str, ex: List[str]) -> bool:
+    if not ex:
+        return False
+    nm = norm(title)
+    return any(e in nm for e in ex)
+
+# ---------- categories ----------
 def build_categories_map(root: ET.Element) -> Tuple[Dict[str, int], Dict[int, str]]:
-    """
-    Возвращает:
-      - map_src_to_out: исходный id (строка) -> целочисленный id
-      - cats_all: { our_id: name } — полный словарь всех категорий из источника (parent всегда ROOT)
-    """
     map_src_to_out: Dict[str, int] = {}
     cats_all: Dict[int, str] = {}
     cats_node = root.find(".//categories")
-    if not cats_node:
+    if cats_node is None:
         return map_src_to_out, cats_all
     for c in cats_node.findall("./category"):
         raw_id = (c.get("id") or "").strip()
         name = get_text(c)
-        if not name:
-            continue
+        if not name: continue
         if raw_id:
-            try:
-                out_id = int(raw_id)
-            except Exception:
-                out_id = stable_id_for_name(name)
+            try: out_id = int(raw_id)
+            except Exception: out_id = stable_id_for_name(name)
         else:
             out_id = stable_id_for_name(name)
-        if raw_id:
-            map_src_to_out[raw_id] = out_id
+        if raw_id: map_src_to_out[raw_id] = out_id
         cats_all[out_id] = name
     return map_src_to_out, cats_all
 
@@ -156,10 +147,7 @@ def _looks_kzt(node: ET.Element) -> bool:
     cur = (node.get("currencyId") or node.get("currency") or "").strip().upper()
     typ = (node.get("type") or "").strip().lower()
     txt = (get_text(node) or "").lower()
-    if "kzt" in cur: return True
-    if "тенге" in cur or "тенге" in typ or "тенге" in txt: return True
-    if "kzt" in typ: return True
-    return False
+    return ("kzt" in cur) or ("тенге" in cur or "тенге" in typ or "тенге" in txt) or ("kzt" in typ)
 
 def resolve_price_any(offer: ET.Element) -> Optional[float]:
     prices = offer.find("./prices")
@@ -184,7 +172,7 @@ def resolve_price_any(offer: ET.Element) -> Optional[float]:
         if val is not None: return val
     for ch in offer.iter():
         nm = strip_ns(ch.tag).lower()
-        if any(k in nm for k in ["price", "цена", "стоим", "amount", "value"]):
+        if any(k in nm for k in ["price","цена","стоим","amount","value"]):
             val = parse_number(get_text(ch))
             if val is not None: return val
     return None
@@ -208,22 +196,14 @@ def resolve_category_id(
     if c is not None:
         raw = get_text(c)
         if raw:
-            if raw in cats_map_src_to_out:
-                return cats_map_src_to_out[raw]
+            if raw in cats_map_src_to_out: return cats_map_src_to_out[raw]
             try:
-                val = int(raw)
-                return cats_map_src_to_out.get(raw, val)
-            except Exception:
-                pass
-    # fallback по атрибуту type у offer (это имя категории)
+                val = int(raw); return cats_map_src_to_out.get(raw, val)
+            except Exception: pass
     t = (offer.get("type") or "").strip()
     if t:
-        if t in name_to_id:
-            return name_to_id[t]
-        nid = stable_id_for_name(t)
-        name_to_id[t] = nid
-        extra_cats[nid] = t  # учтём новую категорию в выдаче, если она будет использована
-        return nid
+        if t in name_to_id: return name_to_id[t]
+        nid = stable_id_for_name(t); name_to_id[t] = nid; extra_cats[nid] = t; return nid
     return ROOT_CAT_ID
 
 def first_picture(offer: ET.Element) -> Optional[str]:
@@ -234,7 +214,7 @@ def description_text(offer: ET.Element) -> str:
     return get_text(first(offer, "./description"))
 
 # ---------- YML build ----------
-def build_yml(categories: List[Tuple[int, str, int]], offers: List[Dict[str, Any]]) -> str:
+def build_yml(categories: List[Tuple[int,str,int]], offers: List[Dict[str,Any]]) -> str:
     out: List[str] = []
     out.append("<?xml version='1.0' encoding='utf-8'?>")
     out.append("<yml_catalog><shop>")
@@ -271,15 +251,15 @@ def build_yml(categories: List[Tuple[int, str, int]], offers: List[Dict[str, Any
 def main() -> int:
     root = ET.fromstring(read_xml_bytes())
 
-    # 1) справочник категорий из источника
-    cats_map_src_to_out, cats_all = build_categories_map(root)   # cats_all: {our_id: name}
-    name_to_id: Dict[str, int] = { name: cid for cid, name in cats_all.items() }  # по имени -> id
-    extra_cats: Dict[int, str] = {}  # категории, созданные по offer/@type (имя -> id)
+    # категории словарь
+    cats_map_src_to_out, cats_all = build_categories_map(root)
+    name_to_id = { name: cid for cid, name in cats_all.items() }
+    extra_cats: Dict[int, str] = {}
 
-    # 2) ключевые слова (фильтр)
-    keywords = load_keywords(KEYWORDS_FILE)
+    # ключи и исключения
+    keywords = load_lines(KEYWORDS_FILE)
+    excludes = load_lines(EXCLUDE_FILE)
 
-    # 3) офферы (с фильтром)
     offers_src = root.findall(".//offer")
     offers_out: List[Dict[str, Any]] = []
     used_cat_ids: set[int] = set()
@@ -291,20 +271,19 @@ def main() -> int:
         title = get_text(first(o, "./name"))
         vendor = resolve_vendor(o)
         vendor_code = resolve_vendor_code(o)
-
         if not title:
             base = vendor or "Товар"
             title = f"{base} {vendor_code}" if vendor_code else base
 
-        # фильтр по названию
+        # фильтр по НАЗВАНИЮ
         if not matches_keywords(title, keywords):
+            continue
+        if matches_excludes(title, excludes):
             continue
         matched += 1
 
         price = resolve_price_any(o)
-        if price is None or price <= 0:
-            price = 1.0
-
+        if price is None or price <= 0: price = 1.0
         available = resolve_available(o)
         url = get_text(first(o, "./url"))
         picture = first_picture(o)
@@ -312,7 +291,6 @@ def main() -> int:
         cat_id = resolve_category_id(o, cats_map_src_to_out, name_to_id, extra_cats)
 
         used_cat_ids.add(cat_id)
-
         offers_out.append({
             "title": title,
             "vendor": vendor,
@@ -327,18 +305,15 @@ def main() -> int:
 
     print(f"[akcent] filter matched: {matched}/{total}")
 
-    # 4) СОБИРАЕМ КАТЕГОРИИ ТОЛЬКО ИСПОЛЬЗУЕМЫЕ
-    categories_out: List[Tuple[int, str, int]] = []
-    # из исходного справочника — только те, что реально используются
+    # только используемые категории
+    categories_out: List[Tuple[int,str,int]] = []
     for cid, name in cats_all.items():
         if cid in used_cat_ids:
             categories_out.append((cid, name, ROOT_CAT_ID))
-    # категории, созданные по type (extra_cats), если использовались
     for cid, name in extra_cats.items():
         if cid in used_cat_ids and cid not in cats_all:
             categories_out.append((cid, name, ROOT_CAT_ID))
 
-    # 5) запись
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     xml = build_yml(categories_out, offers_out)
     with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
