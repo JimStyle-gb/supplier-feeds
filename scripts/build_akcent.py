@@ -2,16 +2,17 @@
 """
 AK-Cent -> normalized YML (UTF-8 with BOM)
 
-— Берём XML из AKCENT_XML_URL (Secret) или из AKCENT_XML_PATH.
-— Не фильтруем, только сортируем офферы по порядку ключевых слов из docs/akcent_keywords.txt.
-  Приоритет если ИМЯ товара НАЧИНАЕТСЯ с ключа (по умолчанию). Остальные — ниже, по алфавиту.
-— Цена: ищем KZT/«тенге», иначе любая цена; если нет — price=1.
-— Название: если пусто — собираем из vendor/vendorCode.
-— Категории: из <categories>/<category>, пустые id стабильно генерим.
+Фильтрация:
+— Берём товары ТОЛЬКО если имя содержит одно из ключевых слов из docs/akcent_keywords.txt.
+— Режим совпадения управляется AKCENT_KEYWORDS_MODE:
+    * "any" (по умолчанию) — ключ может встречаться в ЛЮБОМ месте названия
+    * "prefix" — название ДОЛЖНО НАЧИНАТЬСЯ с ключа
+Нормализация: нижний регистр, ё->е, схлопывание пробелов, унификация тире.
 
-ENV:
-  AKCENT_XML_URL, AKCENT_XML_PATH, OUT_FILE, OUTPUT_ENCODING, HTTP_TIMEOUT
-  AKCENT_SORT_KEYWORDS_FILE, AKCENT_SORT_MATCH ('prefix' | 'any')
+Остальное:
+— Цена: ищем KZT/«тенге», иначе любая цена; если не нашли — price=1.
+— Название: если пусто — собираем из vendor/vendorCode.
+— Категории: из <categories>/<category>; пустые id генерим стабильно.
 """
 
 from __future__ import annotations
@@ -24,12 +25,12 @@ from xml.etree import ElementTree as ET
 AKCENT_XML_URL   = os.getenv("AKCENT_XML_URL", "").strip()
 AKCENT_XML_PATH  = os.getenv("AKCENT_XML_PATH", "docs/akcent_source.xml")
 OUT_FILE         = os.getenv("OUT_FILE", "docs/akcent.yml")
-OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8-sig")  # BOM для кириллицы на GH Pages
+OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8-sig")  # BOM для кириллицы
 HTTP_TIMEOUT     = float(os.getenv("HTTP_TIMEOUT", "60"))
 
-# сортировка
-SORT_FILE        = os.getenv("AKCENT_SORT_KEYWORDS_FILE", "docs/akcent_keywords.txt")
-SORT_MATCH       = (os.getenv("AKCENT_SORT_MATCH", "prefix") or "prefix").lower()
+# фильтр по ключевым словам
+KEYWORDS_FILE    = os.getenv("AKCENT_KEYWORDS_FILE", "docs/akcent_keywords.txt")
+KEYWORDS_MODE    = (os.getenv("AKCENT_KEYWORDS_MODE", "any") or "any").lower()  # 'any' | 'prefix'
 
 ROOT_CAT_ID      = 9800000
 ROOT_CAT_NAME    = "AKCENT"
@@ -63,9 +64,11 @@ def strip_ns(tag: str) -> str:
 
 def normalize(s: str) -> str:
     s = (s or "").lower()
+    s = s.replace("ё", "е")
     s = s.replace("\xa0", " ")
     s = re.sub(r"[–—−―]", "-", s)
     s = re.sub(r"\s+", " ", s).strip(" .,_-")
+    s = s.replace("…", "...")
     return s
 
 # ---------- IO ----------
@@ -74,7 +77,7 @@ def read_xml_bytes() -> bytes:
         r = requests.get(AKCENT_XML_URL, timeout=HTTP_TIMEOUT)
         r.raise_for_status()
         b = r.content
-        # сохраняем для отладки
+        # сохраняем исходник для отладки
         try:
             os.makedirs(os.path.dirname(AKCENT_XML_PATH), exist_ok=True)
             with io.open(AKCENT_XML_PATH, "wb") as f:
@@ -87,8 +90,8 @@ def read_xml_bytes() -> bytes:
             return f.read()
     raise RuntimeError("No AKCENT_XML_URL and file not found: %s" % AKCENT_XML_PATH)
 
-# ---------- sort keywords ----------
-def load_sort_keywords(path: str) -> List[str]:
+# ---------- keywords filter ----------
+def load_keywords(path: str) -> List[str]:
     arr: List[str] = []
     try:
         if os.path.isfile(path):
@@ -101,24 +104,16 @@ def load_sort_keywords(path: str) -> List[str]:
         pass
     return arr
 
-def rank_name(name: str, kws: List[str]) -> int:
-    nm = normalize(name)
-    for i, kw in enumerate(kws):
-        if not kw: 
-            continue
-        if SORT_MATCH == "prefix":
-            if nm.startswith(kw):
-                return i
-        else:  # any
-            if kw in nm:
-                return i
-    return len(kws)  # без совпадений — в хвост
+def matches_keywords(title: str, kws: List[str]) -> bool:
+    if not kws:
+        return True
+    nm = normalize(title)
+    if KEYWORDS_MODE == "prefix":
+        return any(nm.startswith(k) for k in kws)
+    # any
+    return any(k in nm for k in kws)
 
-# ---------- parsing ----------
-def load_root() -> ET.Element:
-    data = read_xml_bytes()
-    return ET.fromstring(data)
-
+# ---------- parsing helpers ----------
 def build_categories_map(root: ET.Element) -> Tuple[Dict[str, int], List[Tuple[int, str, int]]]:
     map_src_to_out: Dict[str, int] = {}
     cats_out: List[Tuple[int, str, int]] = []
@@ -259,17 +254,24 @@ def build_yml(categories: List[Tuple[int, str, int]], offers: List[Dict[str, Any
 
 # ---------- MAIN ----------
 def main() -> int:
-    root = load_root()
+    root = read_xml_bytes()
+    root = ET.fromstring(root)
 
     # категории
     cats_map_raw_to_out, cats_list = build_categories_map(root)
     name_to_id = { name: cid for (cid, name, parent) in cats_list }
 
+    # ключевые слова (фильтр)
+    keywords = load_keywords(KEYWORDS_FILE)
+
     # офферы
     offers_src = root.findall(".//offer")
     offers_out: List[Dict[str, Any]] = []
+    total = 0
+    matched = 0
 
     for o in offers_src:
+        total += 1
         title = get_text(first(o, "./name"))
         vendor = resolve_vendor(o)
         vendor_code = resolve_vendor_code(o)
@@ -277,6 +279,11 @@ def main() -> int:
         if not title:
             base = vendor or "Товар"
             title = f"{base} {vendor_code}" if vendor_code else base
+
+        # фильтр по ключевым словам — только по НАЗВАНИЮ
+        if not matches_keywords(title, keywords):
+            continue
+        matched += 1
 
         price = resolve_price_any(o)
         if price is None or price <= 0:
@@ -300,10 +307,7 @@ def main() -> int:
             "categoryId": int(cat_id),
         })
 
-    # --- СОРТИРОВКА по docs/akcent_keywords.txt ---
-    sort_kws = load_sort_keywords(SORT_FILE)
-    offers_out.sort(key=lambda it: (rank_name(it.get("title") or "", sort_kws),
-                                    normalize(it.get("title") or "")))
+    print(f"[akcent] filter matched: {matched}/{total}")
 
     # запись
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
