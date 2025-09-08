@@ -27,14 +27,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      # Если XML берёте по URL — положите его в GitHub Actions Variables/Secrets и раскомментируйте AKCENT_XML_URL
-      # Если файл кладёте в репо — коммитните его в docs/akcent_source.xml и оставьте AKCENT_XML_URL пустым
-      - name: Build AKCENT feed
+      - name: Build AK-Cent feed
         env:
-          AKCENT_XML_URL: ${{ vars.AKCENT_XML_URL }} # или ${{ secrets.AKCENT_XML_URL }} при необходимости
+          # ссылка берётся из GitHub Secrets -> AKCENT_XML_URL
+          AKCENT_XML_URL: ${{ secrets.AKCENT_XML_URL }}
+          # локальная копия для отладки (скрипт сохранит сюда загруженный XML)
           AKCENT_XML_PATH: docs/akcent_source.xml
+
           OUT_FILE: docs/akcent.yml
-          OUTPUT_ENCODING: utf-8
+          OUTPUT_ENCODING: utf-8-sig
           HTTP_TIMEOUT: '60'
         run: |
           set -euo pipefail
@@ -47,11 +48,11 @@ jobs:
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/akcent.yml || true
+          git add docs/akcent.yml docs/akcent_source.xml || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update akcent.yml (AK-Cent normalization)"
+          git commit -m "Update akcent.yml (via AKCENT_XML_URL secret)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
