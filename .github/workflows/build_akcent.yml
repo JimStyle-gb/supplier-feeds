@@ -27,52 +27,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Ensure akcent_keywords.txt (order for sorting)
-        run: |
-          python - <<'PY'
-          import os, io
-          os.makedirs("docs", exist_ok=True)
-          path = "docs/akcent_keywords.txt"
-          if not os.path.isfile(path):
-              data = "\n".join([
-                  "C13T55",
-                  "Ёмкость для отработанных чернил",
-                  "Интерактивная доска",
-                  "Интерактивная панель",
-                  "Картридж",
-                  "Ламинатор",
-                  "Монитор",
-                  "МФУ",
-                  "Переплетчик",
-                  "Пленка для ламинирования",
-                  "Плоттер",
-                  "Принтер",
-                  "Проектор",
-                  "Сканер",
-                  "Чернила",
-                  "Шредер",
-                  "Экономичный набор",
-                  "Экран",
-              ]) + "\n"
-              with io.open(path, "w", encoding="utf-8") as f:
-                  f.write(data)
-          with io.open(path, "r", encoding="utf-8") as f:
-              print("Using AKCENT sort keywords:\n" + f.read())
-          PY
-
       - name: Build AK-Cent feed
         env:
           # ссылка хранится в Secrets
           AKCENT_XML_URL: ${{ secrets.AKCENT_XML_URL }}
+          # локальная копия исходника (скрипт сам сохранит для отладки)
           AKCENT_XML_PATH: docs/akcent_source.xml
 
           OUT_FILE: docs/akcent.yml
           OUTPUT_ENCODING: utf-8-sig
           HTTP_TIMEOUT: '60'
 
-          # сортировка по списку (prefix = имя начинается с ключа)
-          AKCENT_SORT_KEYWORDS_FILE: docs/akcent_keywords.txt
-          AKCENT_SORT_MATCH: "prefix"
+          # ФИЛЬТР: используем УЖЕ СУЩЕСТВУЮЩИЙ файл с ключевыми словами
+          AKCENT_KEYWORDS_FILE: docs/akcent_keywords.txt
+          # режим совпадения: any — слово встречается в ЛЮБОМ месте названия (можно сменить на "prefix")
+          AKCENT_KEYWORDS_MODE: "any"
         run: |
           set -euo pipefail
           python scripts/build_akcent.py
@@ -84,11 +53,11 @@ jobs:
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/akcent.yml docs/akcent_source.xml docs/akcent_keywords.txt || true
+          git add docs/akcent.yml docs/akcent_source.xml || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update akcent.yml (sorted by akcent_keywords.txt)"
+          git commit -m "Update akcent.yml (filtered by existing akcent_keywords.txt)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
