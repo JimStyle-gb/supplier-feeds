@@ -4,207 +4,32 @@
 <currencies><currency id="KZT" rate="1" /></currencies>
 <categories>
 <category id="9800000">AKCENT</category>
-<category id="565254" parentId="9800000">CD проигрыватели</category>
-<category id="565257" parentId="9800000">CD транспорты</category>
-<category id="565252" parentId="9800000">Музыкальные системы All-In-One</category>
-<category id="2617" parentId="9800000">USB Флеш</category>
-<category id="10157" parentId="9800000">CompactFlash</category>
-<category id="2627" parentId="9800000">Память оперативная</category>
-<category id="21897666" parentId="9800000">4G LTE</category>
-<category id="26215067" parentId="9800000">Wi-Fi</category>
-<category id="11868265" parentId="9800000">Home Mesh</category>
-<category id="4530" parentId="9800000">Адаптер</category>
-<category id="12282898" parentId="9800000">USB adapter</category>
-<category id="565265" parentId="9800000">Закрытые наушники</category>
-<category id="565316" parentId="9800000">Сабвуферы</category>
-<category id="565317" parentId="9800000">Центральный канал</category>
-<category id="2699" parentId="9800000">Кабель 3.5 мм</category>
-<category id="2564" parentId="9800000">Аэрогриль</category>
-<category id="565266" parentId="9800000">Радиоприемники</category>
-<category id="13780" parentId="9800000">З/устр-во</category>
-<category id="14759" parentId="9800000">Беспроводное З/У</category>
-<category id="565227" parentId="9800000">Беспроводной игровой контроллер</category>
-<category id="2567" parentId="9800000">Блендер погружной</category>
-<category id="9303" parentId="9800000">Фитнес-блендер</category>
-<category id="2568" parentId="9800000">Блендер стационарный</category>
-<category id="564724" parentId="9800000">Бокс</category>
-<category id="2621" parentId="9800000">Крепление для SSD</category>
-<category id="2570" parentId="9800000">Бритва мужская сеточная</category>
-<category id="13981" parentId="9800000">Бутылка для воды</category>
-<category id="2725" parentId="9800000">Web камера</category>
-<category id="565219" parentId="9800000">Веб-камера</category>
 <category id="4531" parentId="9800000">Кабель</category>
-<category id="2574" parentId="9800000">Видеокамера</category>
-<category id="8793" parentId="9800000">Столовый набор</category>
-<category id="4931" parentId="9800000">Шумовки, лопатки, венчики и половники</category>
-<category id="565260" parentId="9800000">Виниловые проигрыватели Hi-Fi &amp; High End</category>
-<category id="2622" parentId="9800000">Накопитель HDD 2,5</category>
-<category id="9034" parentId="9800000">Водонепроницаемый бокс</category>
-<category id="565312" parentId="9800000">Встраиваемая акустика</category>
-<category id="565318" parentId="9800000">Dali</category>
-<category id="13989" parentId="9800000">Выпрямитель</category>
-<category id="2575" parentId="9800000">Выпрямители</category>
-<category id="2722" parentId="9800000">Геймпад беспроводной</category>
-<category id="565224" parentId="9800000">Геймпад</category>
-<category id="4717" parentId="9800000">Геймпад проводной</category>
-<category id="5084" parentId="9800000">Графический планшет</category>
-<category id="2589" parentId="9800000">Настольный гриль</category>
-<category id="9401" parentId="9800000">Гриль-барбекю и аэрогриль</category>
-<category id="5428" parentId="9800000">Видеонаблюдение</category>
-<category id="5370" parentId="9800000">Держатель моб. Тел.</category>
-<category id="2712" parentId="9800000">Диктофон</category>
-<category id="11081" parentId="9800000">Дрель и шуроповерт</category>
 <category id="2672" parentId="9800000">Ёмкость для отработанных чернил</category>
 <category id="2673" parentId="9800000">Картридж EPSON</category>
-<category id="2624" parentId="9800000">Накопитель SSD</category>
-<category id="9033" parentId="9800000">Зарядное устройство</category>
-<category id="2707" parentId="9800000">Мобильное зарядное устройство</category>
-<category id="2685" parentId="9800000">З/устр-во автомобильное</category>
-<category id="2686" parentId="9800000">З/устр-во сетевое</category>
-<category id="6547" parentId="9800000">Игровое кресло</category>
-<category id="5332" parentId="9800000">Микрофон</category>
-<category id="10569" parentId="9800000">Измельчитель специй</category>
-<category id="9213" parentId="9800000">Инструмент</category>
-<category id="565253" parentId="9800000">Интегральные стереоусилители</category>
 <category id="2643" parentId="9800000">Интерактивная доска</category>
-<category id="565242" parentId="9800000">Интерактивный дисплей</category>
 <category id="6021" parentId="9800000">Кабель USB A/B</category>
 <category id="13778" parentId="9800000">Кабель DisplayPort</category>
 <category id="2700" parentId="9800000">Кабель HDMI</category>
 <category id="6228" parentId="9800000">Кабель DVI</category>
-<category id="21397044" parentId="9800000">Кабели Ethernet для Hi-Fi стриминга</category>
-<category id="565319" parentId="9800000">Кабель HDMI Hi-Fi &amp; High End</category>
-<category id="2697" parentId="9800000">Кабель Apple</category>
-<category id="14236" parentId="9800000">Кабель USB Type-C</category>
-<category id="2698" parentId="9800000">Кабель USB micro</category>
-<category id="4715" parentId="9800000">Кабель USB</category>
-<category id="9677" parentId="9800000">Витая пара</category>
 <category id="5166" parentId="9800000">Фонарь NITECORE</category>
 <category id="6229" parentId="9800000">Кабель RCA</category>
-<category id="565320" parentId="9800000">Акустические кабели</category>
-<category id="565277" parentId="9800000">Кабели для сабвуфера</category>
-<category id="565321" parentId="9800000">Межблочные кабели</category>
-<category id="6016" parentId="9800000">Кабель питания</category>
-<category id="565280" parentId="9800000">Калькулятор инженерный</category>
-<category id="565281" parentId="9800000">Калькулятор карманный</category>
-<category id="5359" parentId="9800000">Настольный калькулятор</category>
-<category id="4396" parentId="9800000">Печатающий калькулятор</category>
-<category id="564813" parentId="9800000">Камера для видеоконференций</category>
-<category id="2726" parentId="9800000">Кардридер</category>
-<category id="564798" parentId="9800000">Карта памяти MicroSD</category>
-<category id="2619" parentId="9800000">MicroSD</category>
-<category id="2620" parentId="9800000">Карта памяти SD</category>
 <category id="9542" parentId="9800000">Фильтр для воды</category>
 <category id="9544" parentId="9800000">Картридж для фильтра</category>
-<category id="4921" parentId="9800000">Кастрюля</category>
-<category id="4925" parentId="9800000">Сковорода</category>
-<category id="12074" parentId="9800000">Кейс</category>
-<category id="2728" parentId="9800000">Клавиатура проводная</category>
-<category id="2727" parentId="9800000">Клавиатура беспроводная</category>
-<category id="4722" parentId="9800000">Клавиатура игровая</category>
-<category id="2730" parentId="9800000">Коврик для мышки</category>
-<category id="4723" parentId="9800000">Игровой коврик для мышки</category>
-<category id="4928" parentId="9800000">Сотейник</category>
-<category id="2639" parentId="9800000">Лампа</category>
-<category id="22955841" parentId="9800000">Коммутатор</category>
-<category id="13072" parentId="9800000">2.0 Комп. Акустика</category>
-<category id="565220" parentId="9800000">Акустика</category>
-<category id="2714" parentId="9800000">2.1 Комп. Акустика</category>
-<category id="2715" parentId="9800000">Компактная  Акустика</category>
-<category id="565305" parentId="9800000">Цветные грили для акустики</category>
-<category id="2729" parentId="9800000">Комплект клавиатура+мышь</category>
 <category id="565204" parentId="9800000">Монитор</category>
-<category id="565226" parentId="9800000">Комплект офисный</category>
-<category id="565245" parentId="9800000">Компьютер</category>
-<category id="565283" parentId="9800000">Игровой стол</category>
-<category id="564675" parentId="9800000">Компьютерный стол</category>
-<category id="19084147" parentId="9800000">Сплит-системы</category>
-<category id="2578" parentId="9800000">Кофеварка капельная</category>
-<category id="2579" parentId="9800000">Кофеварка рожковая (эспрессо)</category>
-<category id="2580" parentId="9800000">Кофемашина</category>
-<category id="2690" parentId="9800000">Акс. для экшн.камеры</category>
-<category id="565236" parentId="9800000">Крепление мобильное</category>
-<category id="565235" parentId="9800000">Крепление настенное</category>
 <category id="564811" parentId="9800000">Крепление</category>
 <category id="2637" parentId="9800000">Крепление на потолок</category>
 <category id="2638" parentId="9800000">Крепление на стену</category>
-<category id="565308" parentId="9800000">Настенные кронштейны</category>
-<category id="4923" parentId="9800000">Крышка стеклянная</category>
-<category id="2582" parentId="9800000">Кухонная машина</category>
-<category id="2583" parentId="9800000">Кухонный комбайн</category>
 <category id="5448" parentId="9800000">Ламинатор А3</category>
 <category id="5450" parentId="9800000">Ламинатор А4</category>
 <category id="6186" parentId="9800000">Лампа для проектора</category>
-<category id="2676" parentId="9800000">Термотрансферная лента EPSON</category>
-<category id="2584" parentId="9800000">Машинка для стрижки волос</category>
-<category id="565250" parentId="9800000">Медиаматериалы</category>
-<category id="10240" parentId="9800000">Медиамодуль</category>
-<category id="564648" parentId="9800000">метеостанция</category>
-<category id="2716" parentId="9800000">Вокальные</category>
-<category id="2585" parentId="9800000">Миксер</category>
-<category id="2586" parentId="9800000">Миксер с чашей</category>
-<category id="6870" parentId="9800000">Монопод</category>
-<category id="2587" parentId="9800000">Мультиварка</category>
-<category id="564909" parentId="9800000">Сендвичница</category>
-<category id="565267" parentId="9800000">Беспроводная акустика</category>
-<category id="5364" parentId="9800000">Мультистайлер</category>
-<category id="564931" parentId="9800000">Точилка для ножей</category>
 <category id="2653" parentId="9800000">МФУ  Офис</category>
 <category id="2652" parentId="9800000">МФУ  Дом</category>
-<category id="5426" parentId="9800000">Мышеловка</category>
-<category id="2731" parentId="9800000">Мышь беспроводная игровая</category>
-<category id="14097" parentId="9800000">Мышь беспроводная офисная</category>
-<category id="2732" parentId="9800000">Мышь проводная офисная</category>
-<category id="564860" parentId="9800000">Мышь беспроводная</category>
-<category id="5087" parentId="9800000">Мышь проводная игровая</category>
-<category id="564861" parentId="9800000">Мышь игровая</category>
-<category id="565215" parentId="9800000">Игровая мышь</category>
-<category id="564862" parentId="9800000">Мышь проводная</category>
-<category id="5396" parentId="9800000">Аккумулятор</category>
-<category id="14293" parentId="9800000">Набор аксессуаров Travel GoPro</category>
-<category id="14468" parentId="9800000">Инструменты</category>
-<category id="5167" parentId="9800000">Акс.для экшн.камеры</category>
-<category id="8773" parentId="9800000">Наборы ножей</category>
-<category id="4924" parentId="9800000">Набор посуды</category>
-<category id="8779" parentId="9800000">Сковороды</category>
-<category id="4944" parentId="9800000">Аксессуары к кофеваркам</category>
-<category id="2604" parentId="9800000">Фен</category>
-<category id="565297" parentId="9800000">Напольная акустика</category>
-<category id="565313" parentId="9800000">Настенная акустика</category>
-<category id="565234" parentId="9800000">Настенное крепление</category>
-<category id="8307" parentId="9800000">Крепление для ТВ</category>
-<category id="565222" parentId="9800000">Настольный микрофон</category>
-<category id="565216" parentId="9800000">Гарнитура</category>
-<category id="2718" parentId="9800000">Вкладыши</category>
-<category id="565284" parentId="9800000">Вкладыши беспроводные</category>
-<category id="565285" parentId="9800000">Вкладыши проводные</category>
-<category id="565286" parentId="9800000">Гарнитура беспроводные</category>
-<category id="2721" parentId="9800000">Накладные</category>
-<category id="565287" parentId="9800000">Гарнитура игровые</category>
-<category id="4716" parentId="9800000">Гарнитура игровая</category>
-<category id="8643" parentId="9800000">Наушники</category>
-<category id="565288" parentId="9800000">Гарнитура проводные</category>
-<category id="4920" parentId="9800000">Нож</category>
-<category id="23386142" parentId="9800000">Ножницы кухонные</category>
-<category id="5492" parentId="9800000">Органайзер</category>
-<category id="4940" parentId="9800000">Пароварка</category>
-<category id="564902" parentId="9800000">Парогенератор</category>
-<category id="9490" parentId="9800000">Патч-корд FTP</category>
-<category id="9315" parentId="9800000">Патч-корд UTP</category>
-<category id="4532" parentId="9800000">Передатчик</category>
 <category id="5452" parentId="9800000">переплетные машины на пластиковую пружину</category>
 <category id="6031" parentId="9800000">Переходник</category>
-<category id="11088" parentId="9800000">Перфоратор и отбойный молоток</category>
 <category id="5454" parentId="9800000">пленка для ламинирования</category>
-<category id="2591" parentId="9800000">Плойка</category>
 <category id="2654" parentId="9800000">CAD</category>
-<category id="565217" parentId="9800000">Система охлаждения/Подставка</category>
-<category id="5464" parentId="9800000">Подставка под ноутбук</category>
-<category id="565296" parentId="9800000">Полочная акустика</category>
-<category id="14064" parentId="9800000">Поплавок</category>
 <category id="565233" parentId="9800000">Портативная интерактивная доска</category>
-<category id="2733" parentId="9800000">Привод оптический</category>
-<category id="4533" parentId="9800000">Приемник</category>
 <category id="2656" parentId="9800000">Принтер для цветной печати</category>
 <category id="7816" parentId="9800000">Принтер для черно-белой печати</category>
 <category id="5101" parentId="9800000">ленточный</category>
@@ -215,71 +40,13 @@
 <category id="565238" parentId="9800000">Проектор короткофокусный</category>
 <category id="565214" parentId="9800000">Проектор универсальный</category>
 <category id="2648" parentId="9800000">Универсальный</category>
-<category id="13060" parentId="9800000">Виниловый проигрыватель</category>
-<category id="14056" parentId="9800000">Пульт дистанционного управления</category>
-<category id="13997" parentId="9800000">Пылесос беспроводной</category>
-<category id="2734" parentId="9800000">Разветвитель USB (HUB)</category>
 <category id="564916" parentId="9800000">Разветвитель</category>
-<category id="565278" parentId="9800000">Разъемы и аксессуары</category>
-<category id="5360" parentId="9800000">Робот конструктор</category>
-<category id="6159" parentId="9800000">Ролики подачи бумаги</category>
-<category id="2668" parentId="9800000">Рулоны 24&quot;</category>
-<category id="2669" parentId="9800000">Рулоны 36&quot;</category>
-<category id="2724" parentId="9800000">Руль</category>
-<category id="13993" parentId="9800000">Отпариватель ручной</category>
-<category id="9160" parentId="9800000">Рюкзак</category>
-<category id="565314" parentId="9800000">Портативные</category>
-<category id="565248" parentId="9800000">Сенсорный блок</category>
-<category id="13073" parentId="9800000">Адаптер питания</category>
-<category id="565256" parentId="9800000">Сетевые проигрыватели (стримеры)</category>
-<category id="2681" parentId="9800000">Сетевой фильтр</category>
-<category id="2694" parentId="9800000">Сжатый воздух</category>
 <category id="2660" parentId="9800000">Потоковые для бизнеса</category>
-<category id="8893" parentId="9800000">Сковорода-гриль</category>
-<category id="10445" parentId="9800000">Смарт часы</category>
-<category id="2597" parentId="9800000">Соковыжималка центробежная</category>
-<category id="2682" parentId="9800000">Стабилизатор электропитания</category>
-<category id="6370" parentId="9800000">Стайлер</category>
-<category id="565255" parentId="9800000">Стереоресиверы</category>
-<category id="565264" parentId="9800000">Подставки для наушников</category>
-<category id="6207" parentId="9800000">Стойка напольная</category>
-<category id="565309" parentId="9800000">Стойки для акустики</category>
-<category id="565289" parentId="9800000">Стол регулируемый</category>
-<category id="565218" parentId="9800000">Студийный микрофон</category>
-<category id="9900" parentId="9800000">Стяжка</category>
-<category id="2679" parentId="9800000">Сумка для ноутбука</category>
-<category id="2631" parentId="9800000">Телефон беспроводной</category>
-<category id="2632" parentId="9800000">Телефон шнуровой</category>
-<category id="6793" parentId="9800000">Тестер</category>
-<category id="2601" parentId="9800000">Тостер</category>
-<category id="6372" parentId="9800000">Триммер для носа и ушей</category>
-<category id="4942" parentId="9800000">Триммер для усов и бороды</category>
-<category id="5164" parentId="9800000">Удлинитель</category>
-<category id="9863" parentId="9800000">Умная кнопка</category>
-<category id="9845" parentId="9800000">Умный датчик</category>
-<category id="9255" parentId="9800000">Умный пульт</category>
-<category id="2602" parentId="9800000">Утюг</category>
-<category id="4943" parentId="9800000">Фен-щётка</category>
-<category id="2662" parentId="9800000">Бумага 10х15</category>
-<category id="2663" parentId="9800000">Бумага 13х18</category>
-<category id="2666" parentId="9800000">Бумага A4</category>
-<category id="9298" parentId="9800000">Заварник</category>
-<category id="565258" parentId="9800000">Цифро-аналоговые преобразователи (ЦАП)</category>
 <category id="2677" parentId="9800000">Фабрика печати  (чернила EPSON)</category>
-<category id="2689" parentId="9800000">Чехол</category>
-<category id="10554" parentId="9800000">Чехол для электронной книги</category>
-<category id="2695" parentId="9800000">Чист. ср-во для техники IT</category>
 <category id="5456" parentId="9800000">шредеры офисные</category>
 <category id="565239" parentId="9800000">Экран моторизированный</category>
 <category id="565241" parentId="9800000">Экран на треноге</category>
 <category id="565240" parentId="9800000">Экран настенный</category>
-<category id="2710" parentId="9800000">Экшн-камера</category>
-<category id="14003" parentId="9800000">Элекропечь</category>
-<category id="2613" parentId="9800000">Электрический чайник</category>
-<category id="2569" parentId="9800000">Бритва мужская роторная</category>
-<category id="2628" parentId="9800000">Электронная книга</category>
-<category id="6815" parentId="9800000">Элемент питания дисковый</category>
-<category id="2705" parentId="9800000">Элемент питания LR06-AA</category>
 </categories>
 <offers>
 <offer id="C13T55K200" available="true" in_stock="true">
