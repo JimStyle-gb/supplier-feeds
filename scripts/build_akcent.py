@@ -2,10 +2,16 @@
 """
 AK-Cent -> normalized YML (UTF-8 with BOM)
 
-Изменения:
-- Цена: расширенный поиск (KZT по currency/type/«тенге», прямые <price>, любые «ценовые» поля),
-  если не нашли или <=0 — fallback price=1 (товар не отбрасываем).
-- Имя: если пусто — собираем из vendor/vendorCode.
+— Берём XML из AKCENT_XML_URL (Secret) или из AKCENT_XML_PATH.
+— Не фильтруем, только сортируем офферы по порядку ключевых слов из docs/akcent_keywords.txt.
+  Приоритет если ИМЯ товара НАЧИНАЕТСЯ с ключа (по умолчанию). Остальные — ниже, по алфавиту.
+— Цена: ищем KZT/«тенге», иначе любая цена; если нет — price=1.
+— Название: если пусто — собираем из vendor/vendorCode.
+— Категории: из <categories>/<category>, пустые id стабильно генерим.
+
+ENV:
+  AKCENT_XML_URL, AKCENT_XML_PATH, OUT_FILE, OUTPUT_ENCODING, HTTP_TIMEOUT
+  AKCENT_SORT_KEYWORDS_FILE, AKCENT_SORT_MATCH ('prefix' | 'any')
 """
 
 from __future__ import annotations
@@ -20,6 +26,10 @@ AKCENT_XML_PATH  = os.getenv("AKCENT_XML_PATH", "docs/akcent_source.xml")
 OUT_FILE         = os.getenv("OUT_FILE", "docs/akcent.yml")
 OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8-sig")  # BOM для кириллицы на GH Pages
 HTTP_TIMEOUT     = float(os.getenv("HTTP_TIMEOUT", "60"))
+
+# сортировка
+SORT_FILE        = os.getenv("AKCENT_SORT_KEYWORDS_FILE", "docs/akcent_keywords.txt")
+SORT_MATCH       = (os.getenv("AKCENT_SORT_MATCH", "prefix") or "prefix").lower()
 
 ROOT_CAT_ID      = 9800000
 ROOT_CAT_NAME    = "AKCENT"
@@ -51,12 +61,20 @@ def first(node: ET.Element, path: str) -> Optional[ET.Element]:
 def strip_ns(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
 
+def normalize(s: str) -> str:
+    s = (s or "").lower()
+    s = s.replace("\xa0", " ")
+    s = re.sub(r"[–—−―]", "-", s)
+    s = re.sub(r"\s+", " ", s).strip(" .,_-")
+    return s
+
 # ---------- IO ----------
 def read_xml_bytes() -> bytes:
     if AKCENT_XML_URL:
         r = requests.get(AKCENT_XML_URL, timeout=HTTP_TIMEOUT)
         r.raise_for_status()
         b = r.content
+        # сохраняем для отладки
         try:
             os.makedirs(os.path.dirname(AKCENT_XML_PATH), exist_ok=True)
             with io.open(AKCENT_XML_PATH, "wb") as f:
@@ -68,6 +86,33 @@ def read_xml_bytes() -> bytes:
         with io.open(AKCENT_XML_PATH, "rb") as f:
             return f.read()
     raise RuntimeError("No AKCENT_XML_URL and file not found: %s" % AKCENT_XML_PATH)
+
+# ---------- sort keywords ----------
+def load_sort_keywords(path: str) -> List[str]:
+    arr: List[str] = []
+    try:
+        if os.path.isfile(path):
+            with io.open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
+                for line in f:
+                    t = (line or "").strip()
+                    if t and not t.startswith("#"):
+                        arr.append(normalize(t))
+    except Exception:
+        pass
+    return arr
+
+def rank_name(name: str, kws: List[str]) -> int:
+    nm = normalize(name)
+    for i, kw in enumerate(kws):
+        if not kw: 
+            continue
+        if SORT_MATCH == "prefix":
+            if nm.startswith(kw):
+                return i
+        else:  # any
+            if kw in nm:
+                return i
+    return len(kws)  # без совпадений — в хвост
 
 # ---------- parsing ----------
 def load_root() -> ET.Element:
@@ -121,24 +166,19 @@ def _looks_kzt(node: ET.Element) -> bool:
     return False
 
 def resolve_price_any(offer: ET.Element) -> Optional[float]:
-    # 1) Блок <prices><price ...>
     prices = offer.find("./prices")
     if prices is not None:
-        # 1.1 спецтип «Цена дилерского портала ...» + KZT
         for p in prices.findall("./price"):
             if _looks_kzt(p) and (p.get("type") or "").lower().startswith("цена дилерского портала"):
                 val = parse_number(get_text(p))
                 if val is not None: return val
-        # 1.2 любой KZT
         for p in prices.findall("./price"):
             if _looks_kzt(p):
                 val = parse_number(get_text(p))
                 if val is not None: return val
-        # 1.3 любая числовая цена
         for p in prices.findall("./price"):
             val = parse_number(get_text(p))
             if val is not None: return val
-    # 2) Прямые <price ...> в оффере
     for p in offer.findall("./price"):
         if _looks_kzt(p):
             val = parse_number(get_text(p))
@@ -146,7 +186,6 @@ def resolve_price_any(offer: ET.Element) -> Optional[float]:
     for p in offer.findall("./price"):
         val = parse_number(get_text(p))
         if val is not None: return val
-    # 3) Любые «ценовые» теги внутри offer
     for ch in offer.iter():
         nm = strip_ns(ch.tag).lower()
         if any(k in nm for k in ["price", "цена", "стоим", "amount", "value"]):
@@ -236,16 +275,12 @@ def main() -> int:
         vendor_code = resolve_vendor_code(o)
 
         if not title:
-            # не теряем товар — собираем название
             base = vendor or "Товар"
-            if vendor_code:
-                title = f"{base} {vendor_code}"
-            else:
-                title = base
+            title = f"{base} {vendor_code}" if vendor_code else base
 
         price = resolve_price_any(o)
         if price is None or price <= 0:
-            price = 1.0  # включаем товар с fallback-ценой
+            price = 1.0
 
         available = resolve_available(o)
         url = get_text(first(o, "./url"))
@@ -264,6 +299,11 @@ def main() -> int:
             "description": descr or "",
             "categoryId": int(cat_id),
         })
+
+    # --- СОРТИРОВКА по docs/akcent_keywords.txt ---
+    sort_kws = load_sort_keywords(SORT_FILE)
+    offers_out.sort(key=lambda it: (rank_name(it.get("title") or "", sort_kws),
+                                    normalize(it.get("title") or "")))
 
     # запись
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
