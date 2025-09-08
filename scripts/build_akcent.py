@@ -2,21 +2,10 @@
 """
 AK-Cent -> normalized YML (UTF-8 with BOM)
 
-Вход:
-- AKCENT_XML_URL (опц.)  — URL выгрузки (берём из GitHub Secrets)
-- AKCENT_XML_PATH (опц.) — путь к локальному файлу XML (fallback: docs/akcent_source.xml)
-
-Выход:
-- OUT_FILE (default: docs/akcent.yml), UTF-8 with BOM (utf-8-sig)
-
-Правила:
-- price: <prices>/<price type="Цена дилерского портала KZT"> (fallback: первый <price currencyId="KZT">)
-- vendor: <vendor> или Param[@name="Производитель"]
-- vendorCode: @article → <Offer_ID> → @id
-- available: из <Stock> (число >0 или знак '>' / '<' трактуем как есть в наличии)
-- categoryId: <categoryId> (если не сопоставилось — по offer/@type создаем категорию)
-- picture/url/description — как есть
-- категории из <categories>/<category>; пустые id генерим стабильно
+Изменения:
+- Цена: расширенный поиск (KZT по currency/type/«тенге», прямые <price>, любые «ценовые» поля),
+  если не нашли или <=0 — fallback price=1 (товар не отбрасываем).
+- Имя: если пусто — собираем из vendor/vendorCode.
 """
 
 from __future__ import annotations
@@ -29,7 +18,7 @@ from xml.etree import ElementTree as ET
 AKCENT_XML_URL   = os.getenv("AKCENT_XML_URL", "").strip()
 AKCENT_XML_PATH  = os.getenv("AKCENT_XML_PATH", "docs/akcent_source.xml")
 OUT_FILE         = os.getenv("OUT_FILE", "docs/akcent.yml")
-OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8-sig")  # BOM для корректной кириллицы на GH Pages
+OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "utf-8-sig")  # BOM для кириллицы на GH Pages
 HTTP_TIMEOUT     = float(os.getenv("HTTP_TIMEOUT", "60"))
 
 ROOT_CAT_ID      = 9800000
@@ -59,13 +48,15 @@ def get_text(node: Optional[ET.Element]) -> str:
 def first(node: ET.Element, path: str) -> Optional[ET.Element]:
     return node.find(path) if node is not None else None
 
+def strip_ns(tag: str) -> str:
+    return tag.split("}", 1)[1] if "}" in tag else tag
+
 # ---------- IO ----------
 def read_xml_bytes() -> bytes:
     if AKCENT_XML_URL:
         r = requests.get(AKCENT_XML_URL, timeout=HTTP_TIMEOUT)
         r.raise_for_status()
         b = r.content
-        # сохраняем для отладки
         try:
             os.makedirs(os.path.dirname(AKCENT_XML_PATH), exist_ok=True)
             with io.open(AKCENT_XML_PATH, "wb") as f:
@@ -73,7 +64,6 @@ def read_xml_bytes() -> bytes:
         except Exception:
             pass
         return b
-    # fallback к локальному файлу
     if os.path.isfile(AKCENT_XML_PATH):
         with io.open(AKCENT_XML_PATH, "rb") as f:
             return f.read()
@@ -87,21 +77,17 @@ def load_root() -> ET.Element:
 def build_categories_map(root: ET.Element) -> Tuple[Dict[str, int], List[Tuple[int, str, int]]]:
     map_src_to_out: Dict[str, int] = {}
     cats_out: List[Tuple[int, str, int]] = []
-
     cats_node = root.find(".//categories")
-    if cats_node is None:
+    if not cats_node:
         return map_src_to_out, cats_out
-
     for c in cats_node.findall("./category"):
         raw_id = (c.get("id") or "").strip()
         name = get_text(c)
         if not name:
             continue
         if raw_id:
-            try:
-                out_id = int(raw_id)
-            except Exception:
-                out_id = stable_id_for_name(name)
+            try: out_id = int(raw_id)
+            except Exception: out_id = stable_id_for_name(name)
         else:
             out_id = stable_id_for_name(name)
         if raw_id:
@@ -111,54 +97,70 @@ def build_categories_map(root: ET.Element) -> Tuple[Dict[str, int], List[Tuple[i
 
 def resolve_vendor(offer: ET.Element) -> str:
     v = get_text(first(offer, "./vendor"))
-    if v:
-        return v
+    if v: return v
     for p in offer.findall("./Param"):
         if (p.get("name") or "").strip().lower() == "производитель":
             t = get_text(p)
-            if t:
-                return t
+            if t: return t
     return ""
 
 def resolve_vendor_code(offer: ET.Element) -> str:
     vc = (offer.get("article") or "").strip()
-    if vc:
-        return vc
+    if vc: return vc
     oid = get_text(first(offer, "./Offer_ID"))
-    if oid:
-        return oid
+    if oid: return oid
     return (offer.get("id") or "").strip() or hashlib.md5(ET.tostring(offer)).hexdigest()[:10]
 
-def resolve_price_kzt(offer: ET.Element) -> Optional[int]:
+def _looks_kzt(node: ET.Element) -> bool:
+    cur = (node.get("currencyId") or node.get("currency") or "").strip().upper()
+    typ = (node.get("type") or "").strip().lower()
+    txt = (get_text(node) or "").lower()
+    if "kzt" in cur: return True
+    if "тенге" in cur or "тенге" in typ or "тенге" in txt: return True
+    if "kzt" in typ: return True
+    return False
+
+def resolve_price_any(offer: ET.Element) -> Optional[float]:
+    # 1) Блок <prices><price ...>
     prices = offer.find("./prices")
-    chosen = None
     if prices is not None:
+        # 1.1 спецтип «Цена дилерского портала ...» + KZT
         for p in prices.findall("./price"):
-            if (p.get("currencyId") or "").strip().upper() == "KZT" and (p.get("type") or "").strip().lower().startswith("цена дилерского портала"):
-                chosen = p
-                break
-        if chosen is None:
-            for p in prices.findall("./price"):
-                if (p.get("currencyId") or "").strip().upper() == "KZT":
-                    chosen = p
-                    break
-    if chosen is not None:
-        val = parse_number(get_text(chosen))
-        if val is not None:
-            return int(round(val))
+            if _looks_kzt(p) and (p.get("type") or "").lower().startswith("цена дилерского портала"):
+                val = parse_number(get_text(p))
+                if val is not None: return val
+        # 1.2 любой KZT
+        for p in prices.findall("./price"):
+            if _looks_kzt(p):
+                val = parse_number(get_text(p))
+                if val is not None: return val
+        # 1.3 любая числовая цена
+        for p in prices.findall("./price"):
+            val = parse_number(get_text(p))
+            if val is not None: return val
+    # 2) Прямые <price ...> в оффере
+    for p in offer.findall("./price"):
+        if _looks_kzt(p):
+            val = parse_number(get_text(p))
+            if val is not None: return val
+    for p in offer.findall("./price"):
+        val = parse_number(get_text(p))
+        if val is not None: return val
+    # 3) Любые «ценовые» теги внутри offer
+    for ch in offer.iter():
+        nm = strip_ns(ch.tag).lower()
+        if any(k in nm for k in ["price", "цена", "стоим", "amount", "value"]):
+            val = parse_number(get_text(ch))
+            if val is not None: return val
     return None
 
 def resolve_available(offer: ET.Element) -> bool:
     st = get_text(first(offer, "./Stock")).lower()
-    if not st:
-        return True
-    if ">" in st or "<" in st:
-        return True
+    if not st: return True
+    if ">" in st or "<" in st: return True
     num = parse_number(st)
-    if num is not None:
-        return num > 0
-    if "нет" in st or "out of stock" in st:
-        return False
+    if num is not None: return num > 0
+    if "нет" in st or "out of stock" in st: return False
     return True
 
 def resolve_category_id(offer: ET.Element, cats_map: Dict[str, int], name_to_id: Dict[str, int]) -> int:
@@ -166,25 +168,17 @@ def resolve_category_id(offer: ET.Element, cats_map: Dict[str, int], name_to_id:
     if c is not None:
         raw = get_text(c)
         if raw:
-            if raw in cats_map:
-                return cats_map[raw]
-            try:
-                val = int(raw)
-                return cats_map.get(raw, val)
-            except Exception:
-                pass
+            if raw in cats_map: return cats_map[raw]
+            try: return cats_map.get(raw, int(raw))
+            except Exception: pass
     t = (offer.get("type") or "").strip()
     if t:
-        if t in name_to_id:
-            return name_to_id[t]
-        nid = stable_id_for_name(t)
-        name_to_id[t] = nid
-        return nid
+        if t in name_to_id: return name_to_id[t]
+        nid = stable_id_for_name(t); name_to_id[t] = nid; return nid
     return ROOT_CAT_ID
 
 def first_picture(offer: ET.Element) -> Optional[str]:
-    p = first(offer, "./picture")
-    u = get_text(p)
+    u = get_text(first(offer, "./picture"))
     return u or None
 
 def description_text(offer: ET.Element) -> str:
@@ -208,10 +202,10 @@ def build_yml(categories: List[Tuple[int, str, int]], offers: List[Dict[str, Any
         avail = "true" if it.get("available") else "false"
         out.append(f'<offer id="{x(it["vendorCode"])}" available="{avail}" in_stock="{avail}">')
         out.append(f'<name>{x(it["title"])}</name>')
-        out.append(f'<vendor>{x(it.get("vendor") or "")}</vendor>')
+        if it.get("vendor"): out.append(f'<vendor>{x(it["vendor"])}</vendor>')
         out.append(f'<vendorCode>{x(it["vendorCode"])}</vendorCode>')
         out.append(f'<price>{int(it["price"])}</price>')
-        out.append(f'<currencyId>KZT</currencyId>')
+        out.append('<currencyId>KZT</currencyId>')
         out.append(f'<categoryId>{int(it["categoryId"])}</categoryId>')
         if it.get("url"):     out.append(f'<url>{x(it["url"])}</url>')
         if it.get("picture"): out.append(f'<picture>{x(it["picture"])}</picture>')
@@ -238,14 +232,21 @@ def main() -> int:
 
     for o in offers_src:
         title = get_text(first(o, "./name"))
-        if not title:
-            continue
-
         vendor = resolve_vendor(o)
         vendor_code = resolve_vendor_code(o)
-        price = resolve_price_kzt(o)
+
+        if not title:
+            # не теряем товар — собираем название
+            base = vendor or "Товар"
+            if vendor_code:
+                title = f"{base} {vendor_code}"
+            else:
+                title = base
+
+        price = resolve_price_any(o)
         if price is None or price <= 0:
-            continue
+            price = 1.0  # включаем товар с fallback-ценой
+
         available = resolve_available(o)
         url = get_text(first(o, "./url"))
         picture = first_picture(o)
@@ -256,7 +257,7 @@ def main() -> int:
             "title": title,
             "vendor": vendor,
             "vendorCode": vendor_code,
-            "price": int(price),
+            "price": int(round(price)),
             "available": available,
             "url": url or None,
             "picture": picture,
