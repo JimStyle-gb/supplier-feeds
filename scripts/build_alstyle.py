@@ -5,7 +5,7 @@
 - Фильтрует офферы по списку категорий из docs/categories_alstyle.txt.
 - Сохраняет ПОЛНУЮ структуру offer (deepcopy: все атрибуты и вложенные теги).
 - Собирает дерево <categories> только по используемым категориям + их предкам.
-- ДОПОЛНИТЕЛЬНО: в конце всегда добавляет префикс к <vendorCode> (AS- по умолчанию).
+- ДОПОЛНИТЕЛЬНО: в конце всегда добавляет префикс к <vendorCode> (по умолчанию AS без дефиса).
 - Пишет результат в docs/alstyle.yml с кодировкой из ENV (по умолчанию windows-1251).
 """
 
@@ -34,7 +34,7 @@ RETRY_BACKOFF   = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
 # Префикс для <vendorCode> (всегда добавляется, даже если уже есть похожий).
-VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS-")
+VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")  # без дефиса по умолчанию
 # Создавать <vendorCode>, если он отсутствует (по умолчанию — нет).
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lower() in {"1","true","yes"}
 
@@ -303,7 +303,7 @@ def main() -> None:
         create_if_missing=VENDORCODE_CREATE_IF_MISSING,
     )
 
-    # Красивый вывод (Python 3.11+)
+    # Красивый вывод
     try:
         ET.indent(out_root, space="  ")
     except Exception:
