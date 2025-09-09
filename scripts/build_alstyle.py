@@ -5,16 +5,21 @@
 - Фильтрует офферы по списку категорий из docs/categories_alstyle.txt.
 - Сохраняет ПОЛНУЮ структуру offer (deepcopy: все атрибуты и вложенные теги).
 - Собирает дерево <categories> только по используемым категориям + их предкам.
-- Нормализует/дозаполняет <vendor> (убирает «Неизвестный производитель» и НИКОГДА не подставляет названия поставщиков alstyle/copyline/vtt/akcent; NV Print разрешён).
+- Нормализует/дозаполняет <vendor>:
+    • никогда не ставит названия твоих поставщиков: alstyle, copyline, vtt, akcent
+    • NV Print разрешён
+    • В «строгом режиме» добавляет <vendor> только если бренд в ALLOWLIST (эмуляция базы Satu)
 - Форсированно добавляет префикс к <vendorCode> (по умолчанию AS, без дефиса).
-- ВСТАВЛЯЕТ КОММЕНТАРИЙ FEED_META: supplier, source_date из исходника, built_utc и built_Asia/Almaty.
+- ВСЕГДА пересчитывает <price> по “дилерской” цене (минимум из ценовых полей) и правилам наценки (зашиты в коде).
+- Удаляет <oldprice>.
+- ВСТАВЛЯЕТ КОММЕНТАРИЙ FEED_META: supplier, source, source_date, built_utc и built_Asia/Almaty.
 """
 
 from __future__ import annotations
 
 import os, sys, re, time
 from copy import deepcopy
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Set, Tuple, Optional
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone
 try:
@@ -26,7 +31,7 @@ import requests
 
 
 # ===================== ПАРАМЕТРЫ =====================
-SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "alstyle")  # имя поставщика для FEED_META
+SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "alstyle")  # только для FEED_META
 SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php")
 OUT_FILE        = os.getenv("OUT_FILE", "docs/alstyle.yml")
 ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
@@ -42,8 +47,16 @@ MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
 # Префикс для <vendorCode> (всегда добавляется, даже если уже есть похожий).
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")  # без дефиса по умолчанию
-# Создавать <vendorCode>, если он отсутствует (по умолчанию — нет).
+# Создавать <vendorCode>, если он отсутствует.
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lower() in {"1","true","yes"}
+
+# ====== РЕЖИМ СТРОГОГО КОНТРОЛЯ БРЕНДОВ (эмуляция базы Satu) ======
+# Если STRICT_VENDOR_ALLOWLIST=1, <vendor> сохраняем ТОЛЬКО если бренд в ALLOWLIST.
+STRICT_VENDOR_ALLOWLIST = os.getenv("STRICT_VENDOR_ALLOWLIST", "1").lower() in {"1", "true", "yes"}
+
+# Доп. бренды можно добавить без правки кода:
+#   BRANDS_ALLOWLIST_EXTRA="Colorfix, SomeBrand|Another Brand"
+BRANDS_ALLOWLIST_EXTRA = os.getenv("BRANDS_ALLOWLIST_EXTRA", "")
 
 
 # ===================== УТИЛИТЫ =====================
@@ -60,10 +73,7 @@ def err(msg: str, code: int = 1) -> None:
 
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> bytes:
     """
-    Надёжное скачивание XML:
-    - RETRY с экспоненциальной задержкой
-    - Проверка статуса и минимального размера
-    - Базовая проверка типа содержимого
+    Надёжное скачивание XML с ретраями и проверками.
     """
     sess = requests.Session()
     headers = {"User-Agent": "alstyle-feed-bot/1.0 (+github-actions)"}
@@ -77,13 +87,10 @@ def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -
             data = resp.content
             if len(data) < MIN_BYTES:
                 raise RuntimeError(f"too small ({len(data)} bytes)")
-
-            # Разрешаем xml/text/plain/octet-stream; если метка странная — проверим "похоже ли на XML".
             if not any(t in ctype for t in ("xml", "text/plain", "application/octet-stream")):
                 head = data[:64].lstrip()
                 if not head.startswith(b"<"):
                     raise RuntimeError(f"unexpected content-type: {ctype!r}")
-
             return data
         except Exception as e:
             last_exc = e
@@ -109,8 +116,7 @@ def now_utc_str() -> str:
 def now_almaty_str() -> str:
     if ZoneInfo:
         return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    # запасной вариант (без TZ, если вдруг нет zoneinfo)
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    return time.strftime("%Y-%m-%d %H:%М:%S", time.localtime())
 
 
 # ===================== РАБОТА С КАТЕГОРИЯМИ =====================
@@ -212,20 +218,20 @@ def _norm_key(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
-# Блок-лист: названия поставщиков, которых нельзя записывать в <vendor>
+# Названия поставщиков, которые НЕЛЬЗЯ использовать как бренд
 SUPPLIER_BLOCKLIST = {
     _norm_key(x) for x in [
         "alstyle", "al-style",
         "copyline",
         "vtt",
         "akcent", "ak-cent",
-        # NV Print НЕ в блок-листе — бренд допускается
+        # NV Print НЕ в блок-листе — бренд разрешён
     ]
 }
 
 UNKNOWN_VENDOR_MARKERS = ("неизвест", "unknown", "без бренда", "no brand", "noname", "no-name", "n/a")
 
-# OEM-бренды и NV Print, которые можно нормализовать
+# OEM-бренды + NV Print (разрешён)
 _BRAND_MAP = {
     "hp": "HP", "hewlett packard": "HP", "hewlett packard inc": "HP", "hp inc": "HP",
     "canon": "Canon", "canon inc": "Canon",
@@ -236,7 +242,7 @@ _BRAND_MAP = {
     "epson": "Epson",
     "samsung": "Samsung",
     "panasonic": "Panasonic",
-    "konica minolta": "Konica Minolta", "konica": "Конica Minolta",
+    "konica minolta": "Konica Minolta", "konica": "Konica Minolta",
     "sharp": "Sharp",
     "lexmark": "Lexmark",
     "pantum": "Pantum",
@@ -265,56 +271,105 @@ def _looks_unknown(txt: str) -> bool:
     return any(mark in t for mark in UNKNOWN_VENDOR_MARKERS)
 
 def normalize_brand(raw: str) -> str:
-    """Нормализует бренд: OEM + NV Print. Поставщиков (alstyle/copyline/vtt/akcent) отбрасываем."""
+    """Канонизирует бренд: OEM + NV Print, прочие — Title Case; поставщиков отбрасываем."""
     k = _norm_key(raw)
-    if not k:
+    if not k or k in SUPPLIER_BLOCKLIST:
         return ""
-    if k in SUPPLIER_BLOCKLIST:
-        return ""  # поставщика как бренд не используем
     if k in _BRAND_MAP:
         return _BRAND_MAP[k]
     for pat, val in _BRAND_PATTERNS:
         if pat.search(raw or ""):
             return val
-    # Автокапитализация для «прочих» брендов (если это не поставщик)
+    # Прочие — аккуратный Title Case (если это не поставщик)
     return " ".join(w.capitalize() for w in k.split())
 
-def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
+def _split_extra_brands(raw: str) -> List[str]:
+    if not raw:
+        return []
+    parts = re.split(r"[|,]+", raw)
+    out = []
+    for p in parts:
+        p = p.strip()
+        if p:
+            out.append(p)
+    return out
+
+# БЕЛЫЙ СПИСОК «известных» брендов (эмуляция базы Satu) — КАНОНИЧЕСКИЕ имена:
+ALLOWED_BRANDS_BASE = {
+    "HP", "Canon", "Brother", "Kyocera", "Xerox", "Ricoh", "Epson", "Samsung",
+    "Panasonic", "Konica Minolta", "Sharp", "Lexmark", "Pantum", "NV Print",
+}
+
+# Дополняем allowlist из переменной окружения
+ALLOWED_BRANDS: Set[str] = set(ALLOWED_BRANDS_BASE)
+for extra in _split_extra_brands(BRANDS_ALLOWLIST_EXTRA):
+    can = normalize_brand(extra)
+    if can:
+        ALLOWED_BRANDS.add(can)
+
+def brand_allowed(canon: str) -> bool:
+    if not STRICT_VENDOR_ALLOWLIST:
+        return True
+    return canon in ALLOWED_BRANDS
+
+
+def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int]:
     """
     Нормализуем vendor:
     - удаляем «неизвестный» и названия поставщиков (alstyle/copyline/vtt/akcent);
-    - заполняем из param/name/description только если это НЕ поставщик;
-    - NV Print разрешён и нормализуется.
+    - заполняем из param/name/description; NV Print разрешён;
+    - если STRICT_VENDOR_ALLOWLIST=1 — сохраняем только бренды из ALLOWED_BRANDS.
+    Возврат: (normalized, filled_param, filled_name, dropped_supplier, dropped_not_allowed)
     """
     offers_el = shop_el.find("offers")
     if offers_el is None:
-        return (0, 0, 0)
+        return (0, 0, 0, 0, 0)
 
     normalized = 0
     filled_param = 0
     filled_name = 0
+    dropped_supplier = 0
+    dropped_not_allowed = 0
+
+    def _set_vendor(offer: ET.Element, value: str, src: str) -> bool:
+        """Устанавливает vendor если разрешён; возвращает True если установлен."""
+        canon = normalize_brand(value)
+        if not canon:
+            return False
+        if not brand_allowed(canon):
+            return False
+        ven = offer.find("vendor")
+        if ven is None:
+            ven = ET.SubElement(offer, "vendor")
+        ven.text = canon
+        return True
 
     for offer in offers_el.findall("offer"):
         ven = offer.find("vendor")
-        txt = (ven.text or "").strip() if ven is not None and ven.text else ""
+        txt_raw = (ven.text or "").strip() if ven is not None and ven.text else ""
 
-        # если уже задан «неизвестный» или поставщик — очищаем
-        if txt and (_looks_unknown(txt) or _norm_key(txt) in SUPPLIER_BLOCKLIST):
-            if ven is not None:
-                offer.remove(ven)
-            txt = ""
+        # уже задан — проверка на «неизвестный» и поставщика
+        if txt_raw:
+            if _looks_unknown(txt_raw) or _norm_key(txt_raw) in SUPPLIER_BLOCKLIST:
+                if ven is not None:
+                    offer.remove(ven)
+                if _norm_key(txt_raw) in SUPPLIER_BLOCKLIST:
+                    dropped_supplier += 1
+            else:
+                # нормализация + allowlist
+                canon = normalize_brand(txt_raw)
+                if not canon or not brand_allowed(canon):
+                    if ven is not None:
+                        offer.remove(ven)
+                    if canon:  # был нормальный бренд, но не в allowlist
+                        dropped_not_allowed += 1
+                else:
+                    if canon != txt_raw:
+                        ven.text = canon
+                        normalized += 1
+                    continue  # vendor принят, идём к следующему офферу
 
-        if txt:
-            norm = normalize_brand(txt)
-            if not norm:
-                # если нормализация дала пусто (например, это поставщик) — удаляем vendor
-                offer.remove(ven)
-            elif norm != txt:
-                ven.text = norm
-                normalized += 1
-            continue
-
-        # Пытаемся взять бренд из param (только не-поставщик)
+        # из param
         candidate = ""
         for p in offer.findall("param"):
             nm = (p.attrib.get("name") or "").strip().lower()
@@ -322,50 +377,37 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
                 candidate = (p.text or "").strip()
                 if candidate:
                     break
-        if candidate:
-            val = normalize_brand(candidate)
-            if val:
-                ven = ET.SubElement(offer, "vendor")
-                ven.text = val
-                filled_param += 1
-                continue
+        if candidate and _set_vendor(offer, candidate, "param"):
+            filled_param += 1
+            continue
 
-        # Из name — если распознали бренд (OEM/NV Print) или «другой» не из блок-листа
+        # из name (по паттернам) / description
         name_val = get_text(offer, "name")
         placed = False
         if name_val:
             for pat, brand in _BRAND_PATTERNS:
-                if pat.search(name_val):
-                    ven = ET.SubElement(offer, "vendor")
-                    ven.text = brand
+                if pat.search(name_val) and _set_vendor(offer, brand, "name"):
                     filled_name += 1
                     placed = True
                     break
-        if placed:
-            continue
-
-        # Доп. попытка: из description (если есть)
         if not placed:
             descr = get_text(offer, "description")
             if descr:
                 for pat, brand in _BRAND_PATTERNS:
-                    if pat.search(descr):
-                        ven = ET.SubElement(offer, "vendor")
-                        ven.text = brand
+                    if pat.search(descr) and _set_vendor(offer, brand, "description"):
                         filled_name += 1
                         placed = True
                         break
 
-        # Если всё ещё нет — пытаемся извлечь из начала name «непоставщикообразное» слово
         if not placed and name_val:
+            # аккуратная эвристика — первое слово до разделителя
             head = re.split(r"[–—\-:\(\)\[\],;|/]{1,}", name_val, maxsplit=1)[0]
-            guess = normalize_brand(head)
-            if guess and _norm_key(guess) not in SUPPLIER_BLOCKLIST:
-                ven = ET.SubElement(offer, "vendor")
-                ven.text = guess
+            if _set_vendor(offer, head, "guess"):
                 filled_name += 1
+            else:
+                dropped_not_allowed += 1  # был кандидат, но не прошёл allowlist
 
-    return (normalized, filled_param, filled_name)
+    return (normalized, filled_param, filled_name, dropped_supplier, dropped_not_allowed)
 
 
 # ===================== ПОСТ-ОБРАБОТКА <vendorCode> =====================
@@ -392,6 +434,122 @@ def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing:
     return total, created
 
 
+# ===================== ПРАВИЛА ЦЕНООБРАЗОВАНИЯ (ЗАШИТЫ В КОДЕ) =====================
+
+PriceRule = Tuple[int, int, float, int]  # (min_incl, max_incl, percent, add_abs)
+
+PRICING_RULES: List[PriceRule] = [
+    (   101,    10000, 3.0,  3000),
+    ( 10001,    25000, 3.0,  4000),
+    ( 25001,    50000, 3.0,  5000),
+    ( 50001,    75000, 3.0,  7000),
+    ( 75001,   100000, 3.0, 10000),
+    (100001,   150000, 3.0, 12000),
+    (150001,   200000, 3.0, 15000),
+    (200001,   300000, 3.0, 20000),
+    (300001,   400000, 3.0, 25000),
+    (400001,   500000, 3.0, 30000),
+    (500001,   750000, 3.0, 40000),
+    (750001,  1000000, 3.0, 50000),
+    (1000001, 1500000, 3.0, 70000),
+    (1500001, 2000000, 3.0, 90000),
+    (2000001,100000000,3.0,100000),
+]
+
+def parse_price_number(raw: str) -> Optional[float]:
+    if raw is None:
+        return None
+    s = raw.strip()
+    if not s:
+        return None
+    s = s.replace("\xa0", " ").replace(" ", "")
+    s = s.replace("KZT", "").replace("kzt", "").replace("₸", "")
+    s = s.replace(",", ".")
+    try:
+        val = float(s)
+        return val if val > 0 else None
+    except Exception:
+        return None
+
+PRICE_FIELDS = [
+    "purchasePrice", "purchase_price",
+    "wholesalePrice", "wholesale_price", "opt_price",
+    "b2bPrice", "b2b_price",
+    "price", "oldprice",
+]
+
+def get_dealer_price(offer: ET.Element) -> Optional[float]:
+    vals: List[float] = []
+    for tag in PRICE_FIELDS:
+        el = offer.find(tag)
+        if el is not None and el.text:
+            v = parse_price_number(el.text)
+            if v is not None:
+                vals.append(v)
+    if not vals:
+        return None
+    return min(vals)
+
+def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
+    """
+    Находит диапазон (включительно) и считает: dealer * (1 + pct/100) + add.
+    Округляет до целых KZT.
+    """
+    for lo, hi, pct, add in rules:
+        if lo <= dealer <= hi:
+            val = dealer * (1.0 + pct / 100.0) + add
+            return int(round(val))
+    return None  # если не попали ни в один диапазон
+
+
+# ===================== ОБРАБОТКА ЦЕН В ОФФЕРАХ =====================
+
+def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int, int, int]:
+    """
+    Пересчитывает <price> у каждого оффера по правилам.
+    Удаляет <oldprice>.
+    Возвращает (updated, skipped_low_or_missing, total)
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return (0, 0, 0)
+
+    updated = 0
+    skipped = 0
+    total = 0
+
+    for offer in offers_el.findall("offer"):
+        total += 1
+        dealer = get_dealer_price(offer)
+        if dealer is None or dealer <= 100:
+            skipped += 1
+            oldp = offer.find("oldprice")
+            if oldp is not None:
+                offer.remove(oldp)
+            continue
+
+        new_price = compute_retail(dealer, rules)
+        if new_price is None:
+            skipped += 1
+            oldp = offer.find("oldprice")
+            if oldp is not None:
+                offer.remove(oldp)
+            continue
+
+        p = offer.find("price")
+        if p is None:
+            p = ET.SubElement(offer, "price")
+        p.text = str(int(new_price))
+
+        oldp = offer.find("oldprice")
+        if oldp is not None:
+            offer.remove(oldp)
+
+        updated += 1
+
+    return updated, skipped, total
+
+
 # ===================== ОСНОВНАЯ ЛОГИКА =====================
 
 def main() -> None:
@@ -402,10 +560,9 @@ def main() -> None:
     data = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
     root = parse_xml_bytes(data)
 
-    # Дата из исходного фида (обычно атрибут <yml_catalog date="...">)
+    # Дата из исходного фида
     source_date = root.attrib.get("date") or ""
     if not source_date:
-        # альтернативные места (реже встречаются)
         source_date = (root.findtext("shop/generation-date") or
                        root.findtext("shop/date") or "")
 
@@ -446,7 +603,7 @@ def main() -> None:
     out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
 
-    # === FEED_META КОММЕНТАРИЙ (в самом верху под корневым тегом) ===
+    # FEED_META
     meta = (
         f"FEED_META supplier={SUPPLIER_NAME} "
         f"source={SUPPLIER_URL} "
@@ -482,8 +639,8 @@ def main() -> None:
     for o in used_offers:
         out_offers.append(deepcopy(o))
 
-    # Пост-обработка: производитель
-    norm_cnt, fill_param_cnt, fill_name_cnt = ensure_vendor(out_shop)
+    # Пост-обработка: производитель (c allowlist-контролем)
+    norm_cnt, fill_param_cnt, fill_name_cnt, drop_sup, drop_na = ensure_vendor(out_shop)
 
     # Пост-обработка: префикс к <vendorCode>
     total_prefixed, created_nodes = force_prefix_vendorcode(
@@ -491,6 +648,9 @@ def main() -> None:
         prefix=VENDORCODE_PREFIX,
         create_if_missing=VENDORCODE_CREATE_IF_MISSING,
     )
+
+    # === ЦЕНООБРАЗОВАНИЕ (зашитые правила) ===
+    upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
     # Красивый вывод
     try:
@@ -503,8 +663,10 @@ def main() -> None:
 
     # Логи
     log(f"Selectors: ids={len(ids_filter)}, subs={len(subs)}, regs={len(regs)} (present={have_selectors})")
-    log(f"Vendor fixed: normalized={norm_cnt}, filled_from_param={fill_param_cnt}, filled_from_name={fill_name_cnt}")
-    log(f"Prefixed vendorCode: total={total_prefixed}, created={created_nodes}, prefix='{VENDORCODE_PREFIX}', create_if_missing={VENDORCODE_CREATE_IF_MISSING}")
+    log(f"Vendor fixed: normalized={norm_cnt}, filled_from_param={fill_param_cnt}, filled_from_name={fill_name_cnt}, dropped_supplier={drop_sup}, dropped_not_allowed={drop_na}, strict_allowlist={STRICT_VENDOR_ALLOWLIST}")
+    log(f"Vendor allowlist size: base={len(ALLOWED_BRANDS_BASE)} (+ extra={len(ALLOWED_BRANDS)-len(ALLOWED_BRANDS_BASE)})")
+    log(f"VendorCode: total_prefixed={total_prefixed}, created_nodes={created_nodes}, prefix='{VENDORCODE_PREFIX}', create_if_missing={VENDORCODE_CREATE_IF_MISSING}")
+    log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
     log(f"Source date: {source_date or 'n/a'}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
