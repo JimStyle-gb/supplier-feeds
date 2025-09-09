@@ -50,7 +50,6 @@ jobs:
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
-          # BASIC_USER/BASIC_PASS можно оставить пустыми; если поставщик требует — добавь их как secrets
           BASIC_USER: ${{ secrets.AKCENT_USER }}
           BASIC_PASS: ${{ secrets.AKCENT_PASS }}
           VENDORCODE_PREFIX: "AC"
