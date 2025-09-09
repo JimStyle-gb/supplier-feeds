@@ -4,21 +4,23 @@
 - Забирает исходный XML у поставщика (с ретраями и проверкой ответа).
 - Фильтрует офферы по списку категорий из docs/categories_alstyle.txt.
 - Сохраняет ПОЛНУЮ структуру offer (deepcopy: все атрибуты и вложенные теги).
-- Собирает дерево <categories> только по используемым категориям + их предкам.
 - Нормализует/дозаполняет <vendor> (убирает «Неизвестный производитель»).
 - Форсированно добавляет префикс к <vendorCode> (по умолчанию AS, без дефиса).
-- ВСТАВЛЯЕТ КОММЕНТАРИЙ FEED_META: supplier, source_date из исходника, built_utc и built_Asia/Almaty.
+- ВСТАВЛЯЕТ КОММЕНТАРИЙ FEED_META со «временем у поставщика»:
+  supplier_feed_date (из исходного XML), http_last_modified (заголовок),
+  offers_max_update (макс. «дата обновления» в офферах, если найдена).
 """
 
 from __future__ import annotations
 
 import os, sys, re, time
 from copy import deepcopy
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Set, Tuple, Optional
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone
+
 try:
-    from zoneinfo import ZoneInfo
+    from zoneinfo import ZoneInfo  # не используем в комментарии, оставлено на будущее
 except Exception:
     ZoneInfo = None
 
@@ -26,7 +28,7 @@ import requests
 
 
 # ===================== ПАРАМЕТРЫ =====================
-SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "alstyle")  # имя поставщика для FEED_META
+SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "alstyle")
 SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php")
 OUT_FILE        = os.getenv("OUT_FILE", "docs/alstyle.yml")
 ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
@@ -58,12 +60,13 @@ def err(msg: str, code: int = 1) -> None:
     print(f"ERROR: {msg}", flush=True, file=sys.stderr)
     sys.exit(code)
 
-def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> bytes:
+def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> Tuple[bytes, Dict[str, str]]:
     """
     Надёжное скачивание XML:
     - RETRY с экспоненциальной задержкой
     - Проверка статуса и минимального размера
     - Базовая проверка типа содержимого
+    Возвращает (bytes, headers)
     """
     sess = requests.Session()
     headers = {"User-Agent": "alstyle-feed-bot/1.0 (+github-actions)"}
@@ -84,7 +87,7 @@ def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -
                 if not head.startswith(b"<"):
                     raise RuntimeError(f"unexpected content-type: {ctype!r}")
 
-            return data
+            return data, dict(resp.headers)
         except Exception as e:
             last_exc = e
             warn(f"fetch attempt {attempt}/{retries} failed: {e}")
@@ -103,15 +106,32 @@ def iter_local(elem: ET.Element, name: str):
     for child in elem.findall(name):
         yield child
 
-def now_utc_str() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
+# === Вспомогательная нормализация дат (пытаемся привести к ISO, если распознаётся) ===
+_DT_PATTERNS = [
+    "%Y-%m-%d %H:%M:%S",
+    "%Y-%m-%d %H:%M",
+    "%Y-%m-%dT%H:%M:%S%z",
+    "%Y-%m-%dT%H:%M:%S",
+    "%d.%m.%Y %H:%M:%S",
+    "%d.%m.%Y %H:%M",
+    "%d.%m.%Y",
+    "%Y-%m-%d",
+]
 
-def now_almaty_str() -> str:
-    if ZoneInfo:
-        return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    # запасной вариант (без TZ, если вдруг нет zoneinfo)
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-
+def normalize_dt(s: str) -> Optional[str]:
+    s = (s or "").strip()
+    if not s:
+        return None
+    # Убираем Z
+    s_try = s.replace("Z", "+00:00")
+    for fmt in _DT_PATTERNS:
+        try:
+            dt = datetime.strptime(s_try, fmt)
+            # Если без TZ — считаем naive, выводим ISO без TZ
+            return dt.strftime("%Y-%m-%d %H:%M:%S")
+        except Exception:
+            continue
+    return s  # вернуть как есть, если не распознали
 
 # ===================== РАБОТА С КАТЕГОРИЯМИ =====================
 
@@ -333,6 +353,67 @@ def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing:
     return total, created
 
 
+# ===================== ИЗВЛЕЧЕНИЕ ДАТ У ПОСТАВЩИКА =====================
+
+def extract_supplier_feed_date(root: ET.Element) -> str:
+    # 1) yml_catalog@date
+    val = (root.attrib.get("date") or "").strip()
+    if val:
+        return normalize_dt(val) or val
+    # 2) shop/generation-date | shop/generation_date | shop/generationDate | shop/date
+    for path in ("shop/generation-date", "shop/generation_date", "shop/generationDate", "shop/date"):
+        s = (root.findtext(path) or "").strip()
+        if s:
+            return normalize_dt(s) or s
+    # 3) yml_catalog/date (редко)
+    s = (root.findtext("date") or "").strip()
+    if s:
+        return normalize_dt(s) or s
+    return ""
+
+def extract_offers_max_update(offers_el: ET.Element) -> Tuple[str, int]:
+    """
+    Ищем «дату обновления» внутри офферов в распространённых местах:
+      — теги: updated_at, update_date, modified, modified_time, last_update, lastmod, last_modified, date_modify, date_update
+      — <param name="..."> с подстроками: обнов, update, modified
+    Возвращаем (максимальная дата raw/нормализованная если смогли, сколько значений найдено).
+    """
+    TAGS = {
+        "updated_at", "update_date", "modified", "modified_time",
+        "last_update", "lastmod", "last_modified", "date_modify", "date_update"
+    }
+    found: List[str] = []
+    for offer in offers_el.findall("offer"):
+        # Теги
+        for tag in TAGS:
+            t = offer.find(tag)
+            if t is not None and (t.text or "").strip():
+                found.append((t.text or "").strip())
+        # Параметры
+        for p in offer.findall("param"):
+            nm = (p.attrib.get("name") or "").strip().lower()
+            if any(k in nm for k in ("обнов", "update", "modified", "измени")):
+                if (p.text or "").strip():
+                    found.append((p.text or "").strip())
+    if not found:
+        return ("", 0)
+    # Нормализуем для сравнения
+    def ts(s: str) -> Tuple[int, str]:
+        norm = normalize_dt(s) or s
+        # пытаться сравнить по «YYYY-MM-DD HH:MM:SS» -> в число
+        m = re.match(r"(\d{4})[-.](\d{2})[-.](\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?", norm)
+        if m:
+            y, mo, d, h, mi, se = m.group(1,2,3,4,5,6 if m.group(6) else 0)
+            try:
+                return (int(f"{y}{mo}{d}{h}{mi}{se or 0}"), norm)
+            except Exception:
+                pass
+        return (0, norm)
+    best = max(found, key=lambda s: ts(s)[0])
+    best_norm = normalize_dt(best) or best
+    return (best_norm, len(found))
+
+
 # ===================== ОСНОВНАЯ ЛОГИКА =====================
 
 def main() -> None:
@@ -340,15 +421,12 @@ def main() -> None:
 
     log(f"Source: {SUPPLIER_URL}")
     log(f"Categories file: {CATEGORIES_FILE}")
-    data = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
+    data, headers = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
     root = parse_xml_bytes(data)
 
-    # Дата из исходного фида (обычно атрибут <yml_catalog date="...">)
-    source_date = root.attrib.get("date") or ""
-    if not source_date:
-        # альтернативные места (реже встречаются)
-        source_date = (root.findtext("shop/generation-date") or
-                       root.findtext("shop/date") or "")
+    http_last_modified = headers.get("Last-Modified", "").strip()
+
+    supplier_feed_date = extract_supplier_feed_date(root)
 
     shop = root.find("shop")
     if shop is None:
@@ -358,6 +436,9 @@ def main() -> None:
     offers_el = shop.find("offers")
     if cats_el is None or offers_el is None:
         err("XML: <categories> or <offers> not found")
+
+    # Дата по офферам (если внутри есть поля «обновления»)
+    offers_max_update, offers_updates_detected = extract_offers_max_update(offers_el)
 
     id2name, id2parent, parent2children = build_category_graph(cats_el)
 
@@ -387,13 +468,13 @@ def main() -> None:
     out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
 
-    # === FEED_META КОММЕНТАРИЙ (в самом верху под корневым тегом) ===
+    # === FEED_META КОММЕНТАРИЙ С «ДАТОЙ У ПОСТАВЩИКА» ===
     meta = (
         f"FEED_META supplier={SUPPLIER_NAME} "
-        f"source={SUPPLIER_URL} "
-        f"source_date={source_date or 'n/a'} "
-        f"built_utc={now_utc_str()} "
-        f"built_Asia/Almaty={now_almaty_str()} "
+        f"supplier_feed_date={supplier_feed_date or 'n/a'} "
+        f"http_last_modified={http_last_modified or 'n/a'} "
+        f"offers_max_update={offers_max_update or 'n/a'} "
+        f"offers_updates_detected={offers_updates_detected}"
     )
     out_root.insert(0, ET.Comment(meta))
 
@@ -443,10 +524,12 @@ def main() -> None:
     ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
 
     # Логи
+    log(f"Supplier feed date: {supplier_feed_date or 'n/a'}")
+    log(f"HTTP Last-Modified: {http_last_modified or 'n/a'}")
+    log(f"Offers max update: {offers_max_update or 'n/a'} (hits={offers_updates_detected})")
     log(f"Selectors: ids={len(ids_filter)}, subs={len(subs)}, regs={len(regs)} (present={have_selectors})")
     log(f"Vendor fixed: normalized={norm_cnt}, filled_from_param={fill_param_cnt}, filled_from_name={fill_name_cnt}")
     log(f"Prefixed vendorCode: total={total_prefixed}, created={created_nodes}, prefix='{VENDORCODE_PREFIX}', create_if_missing={VENDORCODE_CREATE_IF_MISSING}")
-    log(f"Source date: {source_date or 'n/a'}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
 if __name__ == "__main__":
