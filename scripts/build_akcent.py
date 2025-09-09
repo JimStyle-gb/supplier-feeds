@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-Генератор YML (Yandex Market Language) для Akcent — как у alstyle, только отбор по ключам:
-- Тянем исходный XML у поставщика (ретраи, валидация ответа).
-- Фильтруем офферы по файлу docs/akcent_keywords.txt:
-    * обычные строки — строгий префикс (название начинается со строки),
-    * строки с префиксом "re:" — регулярные выражения (опционально).
-    * если файл отсутствует или пуст — берём ВСЁ, как в alstyle.
-- Сохраняем ПОЛНУЮ структуру <offer> (deepcopy), чтобы не потерять вложенные теги.
-- Категории: собираем только используемые + их предков (как у alstyle).
+Генератор YML (Yandex Market Language) для Akcent — в стиле alstyle:
+- Забираем исходный XML у поставщика (ретраи, проверки типа/размера).
+- Фильтруем офферы по docs/akcent_keywords.txt:
+    • обычные строки — строгий префикс (название начинается с ключа),
+    • строки с префиксом "re:" — регулярные выражения (опционально),
+    • пустой/отсутствующий файл — берём всё (как у alstyle при пустом фильтре).
+- Сохраняем ПОЛНУЮ структуру <offer> (deepcopy).
+- Категории: в выходной файл попадают только используемые + их предки (стабильная сортировка).
 - Нормализуем/дозаполняем <vendor> (убираем «Неизвестный производитель»).
 - ВСЕГДА добавляем префикс к <vendorCode> (по умолчанию "AC", без дефиса; дубли допускаются).
-- Вставляем FEED_META-комментарий вверху:
-    supplier_feed_date (из их фида), http_last_modified (HTTP), offers_max_update (если нашли),
-    built_utc и built_Asia/Almaty (для наглядности, как просил).
+- Вставляем вверху FEED_META-комментарий:
+    supplier_feed_date (из XML), http_last_modified (HTTP), offers_max_update (если нашли),
+    built_utc и built_Asia/Almaty (для наглядности).
 - Пишем результат в docs/akcent.yml (кодировка по ENV, по умолчанию windows-1251).
 """
 
@@ -35,12 +35,12 @@ import requests
 # ===================== ПАРАМЕТРЫ =====================
 
 SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "akcent")
-SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "").strip()              # URL исходного XML Akcent (секрет в workflow)
-OUT_FILE        = os.getenv("OUT_FILE", "docs/akcent.yml")           # куда пишем готовый файл
-ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")       # кодировка файла (Satu любит windows-1251)
-KEYWORDS_FILE   = os.getenv("CATEGORIES_FILE", "docs/akcent_keywords.txt")  # файл с ключами (строгий префикс/regex)
+SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "").strip()
+OUT_FILE        = os.getenv("OUT_FILE", "docs/akcent.yml")
+ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
+KEYWORDS_FILE   = os.getenv("CATEGORIES_FILE", "docs/akcent_keywords.txt")
 
-BASIC_USER      = os.getenv("BASIC_USER") or None                    # если у поставщика basic-auth
+BASIC_USER      = os.getenv("BASIC_USER") or None
 BASIC_PASS      = os.getenv("BASIC_PASS") or None
 
 TIMEOUT_S       = int(os.getenv("TIMEOUT_S", "30"))
@@ -48,13 +48,13 @@ RETRIES         = int(os.getenv("RETRIES", "4"))
 RETRY_BACKOFF   = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
-# Префикс для <vendorCode> — ВСЕГДА добавляется (как договорились).
+# Префикс для <vendorCode> (всегда добавляется).
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AC")
-# Создавать <vendorCode>, если он отсутствует (по умолчанию — нет; включается через ENV).
+# Создавать <vendorCode>, если отсутствует (по умолчанию — нет).
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lower() in {"1","true","yes"}
 
 
-# ===================== УТИЛИТЫ (логирование, сетевые, парсинг) =====================
+# ===================== УТИЛИТЫ =====================
 
 def log(msg: str) -> None:
     print(msg, flush=True)
@@ -69,17 +69,16 @@ def err(msg: str, code: int = 1) -> None:
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> Tuple[bytes, Dict[str, str]]:
     """
     Надёжное скачивание XML:
-    - RETRY с небольшой экспоненциальной задержкой,
-    - проверка HTTP-кода, размера и того, что это похоже на XML.
-    Возвращает (bytes, headers), чтобы можно было взять Last-Modified.
+    - RETRY с экспоненциальной задержкой,
+    - проверка статуса/размера,
+    - проверка, что тело похоже на XML.
+    Возвращает (bytes, headers).
     """
     if not url:
         err("SUPPLIER_URL is empty — укажи URL фида Akcent в секретах/ENV.")
-
     sess = requests.Session()
     headers = {"User-Agent": "akcent-feed-bot/1.0 (+github-actions)"}
     last_exc = None
-
     for attempt in range(1, retries + 1):
         try:
             resp = sess.get(url, headers=headers, timeout=timeout, auth=auth, stream=True)
@@ -89,19 +88,16 @@ def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -
             data = resp.content
             if len(data) < MIN_BYTES:
                 raise RuntimeError(f"too small ({len(data)} bytes)")
-            # Если Content-Type «странный», проверим, что тело начинается с "<"
             if not any(t in ctype for t in ("xml", "text/plain", "application/octet-stream")):
                 head = data[:64].lstrip()
                 if not head.startswith(b"<"):
                     raise RuntimeError(f"unexpected content-type: {ctype!r}")
-
             return data, dict(resp.headers)
         except Exception as e:
             last_exc = e
             warn(f"fetch attempt {attempt}/{retries} failed: {e}")
             if attempt < retries:
                 time.sleep(backoff * attempt)
-
     raise RuntimeError(f"fetch failed after {retries} attempts: {last_exc}")
 
 def parse_xml_bytes(data: bytes) -> ET.Element:
@@ -112,12 +108,11 @@ def get_text(el: ET.Element, tag: str) -> str:
     return (node.text or "").strip() if node is not None else ""
 
 def iter_local(elem: ET.Element, name: str):
-    # Без пространств имён — простой findall по имени.
     for child in elem.findall(name):
         yield child
 
 
-# ===================== ДАТЫ У ПОСТАВЩИКА (для FEED_META) =====================
+# ===================== ДАТЫ У ПОСТАВЩИКА =====================
 
 _DT_PATTERNS = [
     "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M",
@@ -130,21 +125,19 @@ def normalize_dt(s: str) -> Optional[str]:
     s = (s or "").strip()
     if not s:
         return None
-    s_try = s.replace("Z", "+00:00")  # ISO с Z
+    s_try = s.replace("Z", "+00:00")
     for fmt in _DT_PATTERNS:
         try:
             dt = datetime.strptime(s_try, fmt)
             return dt.strftime("%Y-%m-%d %H:%M:%S")
         except Exception:
             continue
-    return s  # вернуть как есть, если формат не распознали
+    return s
 
 def extract_supplier_feed_date(root: ET.Element) -> str:
-    # Приоритет: атрибут <yml_catalog date="...">
     val = (root.attrib.get("date") or "").strip()
     if val:
         return normalize_dt(val) or val
-    # Альтернативы: <shop/generation-date|generation_date|generationDate|date> или <date>
     for path in ("shop/generation-date", "shop/generation_date", "shop/generationDate", "shop/date", "date"):
         s = (root.findtext(path) or "").strip()
         if s:
@@ -152,33 +145,23 @@ def extract_supplier_feed_date(root: ET.Element) -> str:
     return ""
 
 def extract_offers_max_update(offers_el: ET.Element) -> Tuple[str, int]:
-    """
-    Ищем «дату обновления» внутри офферов:
-    - теги: updated_at, update_date, modified, modified_time, last_update, lastmod, last_modified, date_modify, date_update
-    - <param name="..."> с подстроками: обнов, update, modified, измени
-    Возвращаем (максимальная дата, сколько значений вообще нашли).
-    """
     TAGS = {
         "updated_at", "update_date", "modified", "modified_time",
         "last_update", "lastmod", "last_modified", "date_modify", "date_update",
     }
     found: List[str] = []
-
     for offer in offers_el.findall("offer"):
         for tag in TAGS:
             t = offer.find(tag)
             if t is not None and (t.text or "").strip():
                 found.append((t.text or "").strip())
-        # параметры — возможны варианты 'param' / 'Param'
         for p in offer.findall("param") + offer.findall("Param"):
             nm = (p.attrib.get("name") or "").strip().lower()
             if any(k in nm for k in ("обнов", "update", "modified", "измени")):
                 if (p.text or "").strip():
                     found.append((p.text or "").strip())
-
     if not found:
         return ("", 0)
-
     def key(s: str) -> int:
         norm = normalize_dt(s) or s
         m = re.match(r"(\d{4})[-.](\d{2})[-.](\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?", norm)
@@ -189,7 +172,6 @@ def extract_offers_max_update(offers_el: ET.Element) -> Tuple[str, int]:
             except Exception:
                 return 0
         return 0
-
     best = max(found, key=key)
     return (normalize_dt(best) or best, len(found))
 
@@ -202,12 +184,6 @@ def _norm(s: str) -> str:
     return s
 
 def load_keywords(path: str) -> Tuple[List[str], List[re.Pattern]]:
-    """
-    Загружаем ключи:
-      - обычные строки -> строгие префиксы (нормализуем как и имя товара),
-      - строки с префиксом 're:' -> регулярные выражения (без нормализации).
-    Пустой или отсутствующий файл = фильтр отключён (берём всё).
-    """
     prefixes: List[str] = []
     regexps: List[re.Pattern] = []
     try:
@@ -231,9 +207,8 @@ def load_keywords(path: str) -> Tuple[List[str], List[re.Pattern]]:
     return prefixes, regexps
 
 def matches_keywords(title: str, prefixes: List[str], regexps: List[re.Pattern]) -> bool:
-    """True, если название удовлетворяет строгим правилам."""
     if not prefixes and not regexps:
-        return True  # пустой файл = как у alstyle, берём всё
+        return True  # пустой файл = берём всё
     nm = _norm(title)
     if any(nm.startswith(p) for p in prefixes):
         return True
@@ -294,33 +269,22 @@ def normalize_brand(raw: str) -> str:
     for pat, val in _BRAND_PATTERNS:
         if pat.search(raw or ""):
             return val
-    # fallback: аккуратно капитализуем слова
     return " ".join(w.capitalize() for w in k.split())
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
-    """
-    Нормализует/дозаполняет <vendor>.
-    Возвращает: (normalized, filled_from_param, filled_from_name)
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return (0, 0, 0)
-
     normalized = filled_param = filled_name = 0
-
     for offer in offers_el.findall("offer"):
         ven = offer.find("vendor")
         txt = (ven.text or "").strip() if ven is not None and ven.text else ""
-
-        # 1) есть <vendor> -> нормализуем
         if txt:
             norm = normalize_brand(txt)
             if norm and norm != txt:
                 ven.text = norm
                 normalized += 1
             continue
-
-        # 2) пробуем из <param name="Бренд/Производитель">
         candidate = ""
         for p in offer.findall("param") + offer.findall("Param"):
             nm = (p.attrib.get("name") or "").strip().lower()
@@ -335,8 +299,6 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
             ven.text = val
             filled_param += 1
             continue
-
-        # 3) эвристика из <name>
         name_val = get_text(offer, "name")
         if name_val:
             for pat, brand in _BRAND_PATTERNS:
@@ -346,7 +308,6 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
                     ven.text = brand
                     filled_name += 1
                     break
-
     return (normalized, filled_param, filled_name)
 
 
@@ -354,8 +315,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
 
 def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool = False) -> Tuple[int, int]:
     """
-    ВСЕГДА добавляет 'prefix' к <vendorCode>.
-    Ничего не вырезает; дубли префикса допускаются по твоему требованию.
+    ВСЕГДА добавляет 'prefix' к <vendorCode>. Ничего не вырезаем; дубли префикса допускаются.
     """
     offers_el = shop_el.find("offers")
     if offers_el is None:
@@ -377,7 +337,7 @@ def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing:
     return total, created
 
 
-# ===================== РАБОТА С КАТЕГОРИЯМИ (как у alstyle) =====================
+# ===================== КАТЕГОРИИ (как у alstyle) =====================
 
 def build_category_graph(cats_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
     id2name: Dict[str, str] = {}
@@ -396,18 +356,6 @@ def build_category_graph(cats_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,s
         else:
             id2parent.setdefault(cid, "")
     return id2name, id2parent, parent2children
-
-def collect_descendants(start_ids: Set[str], parent2children: Dict[str,Set[str]]) -> Set[str]:
-    out: Set[str] = set()
-    stack = list(start_ids)
-    while stack:
-        x = stack.pop()
-        if x in out:
-            continue
-        out.add(x)
-        for ch in parent2children.get(x, ()):
-            stack.append(ch)
-    return out
 
 def collect_ancestors(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
     out: Set[str] = set()
@@ -430,51 +378,47 @@ def main() -> None:
     log(f"[akcent] Source: {SUPPLIER_URL}")
     log(f"[akcent] Keywords file: {KEYWORDS_FILE}")
 
-    # Скачали и распарсили XML от поставщика
+    # 1) Получаем и парсим XML поставщика
     data, headers = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
     root = parse_xml_bytes(data)
 
-    # Даты для FEED_META
     http_last_modified = headers.get("Last-Modified", "").strip()
     supplier_feed_date = extract_supplier_feed_date(root)
 
-    # Базовые узлы
     shop = root.find("shop")
     cats_el = shop.find("categories") if shop is not None else None
     offers_el = shop.find("offers") if shop is not None else None
     if shop is None or cats_el is None or offers_el is None:
         err("XML: <shop>/<categories>/<offers> not found")
 
-    # Дата по офферам (если внутри есть поля «обновления»)
     offers_max_update, offers_updates_detected = extract_offers_max_update(offers_el)
 
-    # Категории (граф) — для построения «используемых»
-    id2name, id2parent, parent2children = build_category_graph(cats_el)
+    # 2) Граф категорий
+    id2name, id2parent, _ = build_category_graph(cats_el)
 
-    # Загружаем ключи и определяем, включён ли фильтр
+    # 3) Ключи отбора
     prefixes, regexps = load_keywords(KEYWORDS_FILE)
     have_filter = bool(prefixes or regexps)
 
-    # Выбираем офферы по ключам (как в alstyle, fail-closed при наличии селекторов)
     offers_in = list(iter_local(offers_el, "offer"))
     if have_filter:
         used_offers = [o for o in offers_in if matches_keywords(get_text(o, "name"), prefixes, regexps)]
         if not used_offers:
             warn("ключи заданы, но офферов не найдено — проверь docs/akcent_keywords.txt")
     else:
-        used_offers = offers_in  # ключей нет — берём всё
+        used_offers = offers_in
 
-    # Вычисляем множество категорий, реально используемых в отобранных офферах + предки
-    used_cat_ids = {get_text(o, "categoryId") for o in used_offers if get_text(o, "categoryId")}
+    # 4) Набор используемых категорий (по отобранным офферам) + их предки
+    used_cat_ids: Set[str] = {get_text(o, "categoryId") for o in used_offers if get_text(o, "categoryId")}
     used_cat_ids = {cid for cid in used_cat_ids if cid}
     used_cat_ids |= collect_ancestors(used_cat_ids, id2parent)
 
-    # Собираем новый XML (как у alstyle): только нужные категории/офферы
+    # 5) Сборка выходного XML
     out_root = ET.Element("yml_catalog")
     out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
 
-    # === FEED_META КОММЕНТАРИЙ (в самом верху под корнем) ===
+    # FEED_META
     built_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     if ZoneInfo:
         built_local = datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
@@ -491,7 +435,7 @@ def main() -> None:
     )
     out_root.insert(0, ET.Comment(meta))
 
-    # Категории — только используемые (стабильная сортировка: по глубине, имени, id)
+    # Категории — только используемые
     out_cats = ET.SubElement(out_shop, "categories")
 
     def depth(cid: str) -> int:
@@ -512,12 +456,12 @@ def main() -> None:
         c_el = ET.SubElement(out_cats, "category", attrs)
         c_el.text = id2name.get(cid, "")
 
-    # Офферы — глубокая копия исходных узлов (и правки, как у alstyle)
+    # Офферы — глубокая копия + правки vendor/vendorCode
     out_offers = ET.SubElement(out_shop, "offers")
     for o in used_offers:
         o2 = deepcopy(o)
 
-        # Нормализуем/заполняем <vendor>
+        # Нормализуем/дополняем <vendor>
         ven = o2.find("vendor")
         ven_txt = (ven.text or "").strip() if ven is not None and ven.text else ""
         if ven_txt:
@@ -525,7 +469,6 @@ def main() -> None:
             if norm and norm != ven_txt:
                 ven.text = norm
         else:
-            # из param Производитель/Бренд
             candidate = ""
             for p in o2.findall("param") + o2.findall("Param"):
                 nm = (p.attrib.get("name") or "").strip().lower()
@@ -538,7 +481,6 @@ def main() -> None:
                     ven = ET.SubElement(o2, "vendor")
                 ven.text = normalize_brand(candidate)
             else:
-                # эвристика из name
                 name_val = get_text(o2, "name")
                 for pat, brand in _BRAND_PATTERNS:
                     if name_val and pat.search(name_val):
@@ -547,7 +489,7 @@ def main() -> None:
                         ven.text = brand
                         break
 
-        # ВСЕГДА добавляем префикс к <vendorCode>
+        # ВСЕГДА префиксуем <vendorCode>
         vc = o2.find("vendorCode")
         if vc is None:
             if VENDORCODE_CREATE_IF_MISSING:
@@ -558,21 +500,21 @@ def main() -> None:
 
         out_offers.append(o2)
 
-    # Красивное форматирование (Python 3.9+)
+    # Красивный вывод (Python 3.9+)
     try:
         ET.indent(out_root, space="  ")
     except Exception:
         pass
 
-    # Запись на диск
+    # Запись файла
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
 
-    # Итого
+    # Итоги
     log(f"Supplier feed date: {supplier_feed_date or 'n/a'}")
     log(f"HTTP Last-Modified: {http_last_modified or 'n/a'}")
     log(f"Offers max update: {offers_max_update or 'n/a'} (hits={offers_updates_detected})")
-    log(f"Keywords: prefixes={len(prefixes)}, regexps={len(regexps)} (present={have_filter})")
+    log(f"Keywords present: {bool(prefixes or regexps)} | prefixes={len(prefixes)} regexps={len(regexps)}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
 if __name__ == "__main__":
