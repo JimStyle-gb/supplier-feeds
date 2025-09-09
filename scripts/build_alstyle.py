@@ -6,9 +6,10 @@
 - Сохраняет ПОЛНУЮ структуру offer (deepcopy: все атрибуты и вложенные теги).
 - Собирает дерево <categories> только по используемым категориям + их предкам.
 - Нормализует/дозаполняет <vendor>:
-    • никогда не ставит названия твоих поставщиков: alstyle, copyline, vtt, akcent
+    • никогда не ставит названия поставщиков: alstyle, copyline, vtt, akcent
     • NV Print разрешён
-    • В «строгом режиме» добавляет <vendor> только если бренд в ALLOWLIST (эмуляция базы Satu)
+    • ищет бренд в param → name → description (эвристики)
+    • (опционально) сохраняет только бренды из ALLOWLIST (эмуляция базы Satu)
 - Форсированно добавляет префикс к <vendorCode> (по умолчанию AS, без дефиса).
 - ВСЕГДА пересчитывает <price> по “дилерской” цене (минимум из ценовых полей) и правилам наценки (зашиты в коде).
 - Удаляет <oldprice>.
@@ -45,17 +46,14 @@ RETRIES         = int(os.getenv("RETRIES", "4"))
 RETRY_BACKOFF   = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
-# Префикс для <vendorCode> (всегда добавляется, даже если уже есть похожий).
-VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")  # без дефиса по умолчанию
+# Префикс для <vendorCode> (всегда добавляется).
+VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")  # без дефиса
 # Создавать <vendorCode>, если он отсутствует.
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lower() in {"1","true","yes"}
 
 # ====== РЕЖИМ СТРОГОГО КОНТРОЛЯ БРЕНДОВ (эмуляция базы Satu) ======
-# Если STRICT_VENDOR_ALLOWLIST=1, <vendor> сохраняем ТОЛЬКО если бренд в ALLOWLIST.
-STRICT_VENDOR_ALLOWLIST = os.getenv("STRICT_VENDOR_ALLOWLIST", "1").lower() in {"1", "true", "yes"}
-
-# Доп. бренды можно добавить без правки кода:
-#   BRANDS_ALLOWLIST_EXTRA="Colorfix, SomeBrand|Another Brand"
+# По умолчанию ВЫКЛЮЧЕНО (чтобы заполнить максимум позиций).
+STRICT_VENDOR_ALLOWLIST = os.getenv("STRICT_VENDOR_ALLOWLIST", "0").lower() in {"1", "true", "yes"}
 BRANDS_ALLOWLIST_EXTRA = os.getenv("BRANDS_ALLOWLIST_EXTRA", "")
 
 
@@ -72,9 +70,6 @@ def err(msg: str, code: int = 1) -> None:
     sys.exit(code)
 
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> bytes:
-    """
-    Надёжное скачивание XML с ретраями и проверками.
-    """
     sess = requests.Session()
     headers = {"User-Agent": "alstyle-feed-bot/1.0 (+github-actions)"}
     last_exc = None
@@ -116,7 +111,7 @@ def now_utc_str() -> str:
 def now_almaty_str() -> str:
     if ZoneInfo:
         return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    return time.strftime("%Y-%m-%d %H:%М:%S", time.localtime())
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 
 # ===================== РАБОТА С КАТЕГОРИЯМИ =====================
@@ -266,6 +261,13 @@ _BRAND_PATTERNS = [
     (re.compile(r"^\s*nv\s*-?\s*print\b", re.I), "NV Print"),
 ]
 
+# Часто встречающиеся "не-брендовые" слова в начале имени — не считаем их брендом
+HEAD_STOPWORDS = {
+    "картридж","картриджи","чернила","тонер","порошок","бумага","фотобумага","пленка","плівка",
+    "сумка","пакет","папка","ручка","кабель","переходник","адаптер","лентa","лента","скотч",
+    "матова","глянцевая","глянцева","матовая","для","совместим","совместимый","универсальный",
+}
+
 def _looks_unknown(txt: str) -> bool:
     t = (txt or "").strip().lower()
     return any(mark in t for mark in UNKNOWN_VENDOR_MARKERS)
@@ -280,27 +282,18 @@ def normalize_brand(raw: str) -> str:
     for pat, val in _BRAND_PATTERNS:
         if pat.search(raw or ""):
             return val
-    # Прочие — аккуратный Title Case (если это не поставщик)
     return " ".join(w.capitalize() for w in k.split())
 
 def _split_extra_brands(raw: str) -> List[str]:
     if not raw:
         return []
     parts = re.split(r"[|,]+", raw)
-    out = []
-    for p in parts:
-        p = p.strip()
-        if p:
-            out.append(p)
-    return out
+    return [p.strip() for p in parts if p.strip()]
 
-# БЕЛЫЙ СПИСОК «известных» брендов (эмуляция базы Satu) — КАНОНИЧЕСКИЕ имена:
 ALLOWED_BRANDS_BASE = {
     "HP", "Canon", "Brother", "Kyocera", "Xerox", "Ricoh", "Epson", "Samsung",
     "Panasonic", "Konica Minolta", "Sharp", "Lexmark", "Pantum", "NV Print",
 }
-
-# Дополняем allowlist из переменной окружения
 ALLOWED_BRANDS: Set[str] = set(ALLOWED_BRANDS_BASE)
 for extra in _split_extra_brands(BRANDS_ALLOWLIST_EXTRA):
     can = normalize_brand(extra)
@@ -308,16 +301,73 @@ for extra in _split_extra_brands(BRANDS_ALLOWLIST_EXTRA):
         ALLOWED_BRANDS.add(can)
 
 def brand_allowed(canon: str) -> bool:
-    if not STRICT_VENDOR_ALLOWLIST:
-        return True
-    return canon in ALLOWED_BRANDS
+    return True if not STRICT_VENDOR_ALLOWLIST else (canon in ALLOWED_BRANDS)
+
+# -------- Извлечение бренда из name/description --------
+
+# Явные маркеры в описании
+DESC_BRAND_PATTERNS = [
+    re.compile(r"(?:^|\b)(?:производитель|бренд)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
+    re.compile(r"(?:^|\b)(?:manufacturer|brand)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
+]
+
+# Бренд в начале имени: [Brand] ..., (Brand) ..., Brand — Model ...
+NAME_BRAND_PATTERNS = [
+    re.compile(r"^\s*\[([^\]]{2,30})\]\s+", re.U),
+    re.compile(r"^\s*\(([^\)]{2,30})\)\s+", re.U),
+    re.compile(r"^\s*([A-Za-zА-ЯЁЇІЄҐ][A-Za-z0-9А-ЯЁЇІЄҐ\-\.\s]{1,20})\s+[-–—]\s+", re.U),
+]
+
+def extract_brand_from_text(name: str, descr: str) -> str:
+    """Возвращает кандидата бренда из name/description (или пусто)."""
+    # 1) OEM по паттернам — самое надёжное
+    if name:
+        for pat, brand in _BRAND_PATTERNS:
+            if pat.search(name):
+                return brand
+    if descr:
+        for pat, brand in _BRAND_PATTERNS:
+            if pat.search(descr):
+                return brand
+
+    # 2) Явные "Производитель: XXX" в описании
+    if descr:
+        for rg in DESC_BRAND_PATTERNS:
+            m = rg.search(descr)
+            if m:
+                cand = normalize_brand(m.group(1))
+                if cand:
+                    return cand
+
+    # 3) Префикс-бренд в имени
+    if name:
+        for rg in NAME_BRAND_PATTERNS:
+            m = rg.search(name)
+            if m:
+                head = m.group(1).strip()
+                # отсекаем стоп-слова типа "Картридж", "Бумага"…
+                if _norm_key(head) in HEAD_STOPWORDS:
+                    continue
+                cand = normalize_brand(head)
+                if cand:
+                    return cand
+
+        # 4) Первое слово до разделителя как эвристика
+        head = re.split(r"[–—\-:\(\)\[\],;|/]{1,}", name, maxsplit=1)[0].strip()
+        if head and _norm_key(head) not in HEAD_STOPWORDS:
+            cand = normalize_brand(head)
+            if cand:
+                return cand
+
+    return ""
 
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int]:
     """
     Нормализуем vendor:
     - удаляем «неизвестный» и названия поставщиков (alstyle/copyline/vtt/akcent);
-    - заполняем из param/name/description; NV Print разрешён;
+    - пытаемся заполнить из param → name → description (с эвристиками);
+    - NV Print разрешён;
     - если STRICT_VENDOR_ALLOWLIST=1 — сохраняем только бренды из ALLOWED_BRANDS.
     Возврат: (normalized, filled_param, filled_name, dropped_supplier, dropped_not_allowed)
     """
@@ -331,12 +381,9 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int]:
     dropped_supplier = 0
     dropped_not_allowed = 0
 
-    def _set_vendor(offer: ET.Element, value: str, src: str) -> bool:
-        """Устанавливает vendor если разрешён; возвращает True если установлен."""
+    def _set_vendor(offer: ET.Element, value: str) -> bool:
         canon = normalize_brand(value)
-        if not canon:
-            return False
-        if not brand_allowed(canon):
+        if not canon or not brand_allowed(canon):
             return False
         ven = offer.find("vendor")
         if ven is None:
@@ -348,7 +395,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int]:
         ven = offer.find("vendor")
         txt_raw = (ven.text or "").strip() if ven is not None and ven.text else ""
 
-        # уже задан — проверка на «неизвестный» и поставщика
+        # если уже был vendor
         if txt_raw:
             if _looks_unknown(txt_raw) or _norm_key(txt_raw) in SUPPLIER_BLOCKLIST:
                 if ven is not None:
@@ -356,20 +403,19 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int]:
                 if _norm_key(txt_raw) in SUPPLIER_BLOCKLIST:
                     dropped_supplier += 1
             else:
-                # нормализация + allowlist
                 canon = normalize_brand(txt_raw)
                 if not canon or not brand_allowed(canon):
                     if ven is not None:
                         offer.remove(ven)
-                    if canon:  # был нормальный бренд, но не в allowlist
+                    if canon:
                         dropped_not_allowed += 1
                 else:
                     if canon != txt_raw:
                         ven.text = canon
                         normalized += 1
-                    continue  # vendor принят, идём к следующему офферу
+                    continue  # ок, идём к следующему офферу
 
-        # из param
+        # 1) param «Бренд/Производитель»
         candidate = ""
         for p in offer.findall("param"):
             nm = (p.attrib.get("name") or "").strip().lower()
@@ -377,35 +423,18 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int]:
                 candidate = (p.text or "").strip()
                 if candidate:
                     break
-        if candidate and _set_vendor(offer, candidate, "param"):
+        if candidate and _set_vendor(offer, candidate):
             filled_param += 1
             continue
 
-        # из name (по паттернам) / description
+        # 2) Эвристики по name/description
         name_val = get_text(offer, "name")
-        placed = False
-        if name_val:
-            for pat, brand in _BRAND_PATTERNS:
-                if pat.search(name_val) and _set_vendor(offer, brand, "name"):
-                    filled_name += 1
-                    placed = True
-                    break
-        if not placed:
-            descr = get_text(offer, "description")
-            if descr:
-                for pat, brand in _BRAND_PATTERNS:
-                    if pat.search(descr) and _set_vendor(offer, brand, "description"):
-                        filled_name += 1
-                        placed = True
-                        break
+        descr_val = get_text(offer, "description")
 
-        if not placed and name_val:
-            # аккуратная эвристика — первое слово до разделителя
-            head = re.split(r"[–—\-:\(\)\[\],;|/]{1,}", name_val, maxsplit=1)[0]
-            if _set_vendor(offer, head, "guess"):
-                filled_name += 1
-            else:
-                dropped_not_allowed += 1  # был кандидат, но не прошёл allowlist
+        cand = extract_brand_from_text(name_val, descr_val)
+        if cand and _set_vendor(offer, cand):
+            filled_name += 1
+            continue
 
     return (normalized, filled_param, filled_name, dropped_supplier, dropped_not_allowed)
 
@@ -491,25 +520,16 @@ def get_dealer_price(offer: ET.Element) -> Optional[float]:
     return min(vals)
 
 def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
-    """
-    Находит диапазон (включительно) и считает: dealer * (1 + pct/100) + add.
-    Округляет до целых KZT.
-    """
     for lo, hi, pct, add in rules:
         if lo <= dealer <= hi:
             val = dealer * (1.0 + pct / 100.0) + add
             return int(round(val))
-    return None  # если не попали ни в один диапазон
+    return None
 
 
 # ===================== ОБРАБОТКА ЦЕН В ОФФЕРАХ =====================
 
 def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int, int, int]:
-    """
-    Пересчитывает <price> у каждого оффера по правилам.
-    Удаляет <oldprice>.
-    Возвращает (updated, skipped_low_or_missing, total)
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return (0, 0, 0)
@@ -585,7 +605,7 @@ def main() -> None:
     matched_cat_ids = {cid for cid, nm in id2name.items() if cat_matches(nm, cid, ids_filter, subs, regs)}
     keep_cat_ids = collect_descendants(matched_cat_ids, parent2children) if matched_cat_ids else set()
 
-    # Фильтрация офферов (fail-closed при наличии селекторов)
+    # Фильтрация офферов
     offers_in = list(iter_local(offers_el, "offer"))
     if have_selectors:
         used_offers = [o for o in offers_in if get_text(o, "categoryId") in keep_cat_ids]
@@ -639,7 +659,7 @@ def main() -> None:
     for o in used_offers:
         out_offers.append(deepcopy(o))
 
-    # Пост-обработка: производитель (c allowlist-контролем)
+    # Пост-обработка: производитель (эвристики + optional allowlist)
     norm_cnt, fill_param_cnt, fill_name_cnt, drop_sup, drop_na = ensure_vendor(out_shop)
 
     # Пост-обработка: префикс к <vendorCode>
@@ -663,7 +683,7 @@ def main() -> None:
 
     # Логи
     log(f"Selectors: ids={len(ids_filter)}, subs={len(subs)}, regs={len(regs)} (present={have_selectors})")
-    log(f"Vendor fixed: normalized={norm_cnt}, filled_from_param={fill_param_cnt}, filled_from_name={fill_name_cnt}, dropped_supplier={drop_sup}, dropped_not_allowed={drop_na}, strict_allowlist={STRICT_VENDOR_ALLOWLIST}")
+    log(f"Vendor fixed: normalized={norm_cnt}, filled_from_param={fill_param_cnt}, filled_from_text={fill_name_cnt}, dropped_supplier={drop_sup}, dropped_not_allowed={drop_na}, strict_allowlist={STRICT_VENDOR_ALLOWLIST}")
     log(f"Vendor allowlist size: base={len(ALLOWED_BRANDS_BASE)} (+ extra={len(ALLOWED_BRANDS)-len(ALLOWED_BRANDS_BASE)})")
     log(f"VendorCode: total_prefixed={total_prefixed}, created_nodes={created_nodes}, prefix='{VENDORCODE_PREFIX}', create_if_missing={VENDORCODE_CREATE_IF_MISSING}")
     log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
