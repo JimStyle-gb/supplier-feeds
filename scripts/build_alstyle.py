@@ -5,6 +5,7 @@
 - Фильтрует офферы по списку категорий из docs/categories_alstyle.txt.
 - Сохраняет ПОЛНУЮ структуру offer (deepcopy: все атрибуты и вложенные теги).
 - Собирает дерево <categories> только по используемым категориям + их предкам.
+- ДОПОЛНИТЕЛЬНО: в конце всегда добавляет префикс к <vendorCode> (AS- по умолчанию).
 - Пишет результат в docs/alstyle.yml с кодировкой из ENV (по умолчанию windows-1251).
 """
 
@@ -19,18 +20,24 @@ import requests
 
 
 # ===================== ПАРАМЕТРЫ =====================
-SUPPLIER_URL   = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php")
-OUT_FILE       = os.getenv("OUT_FILE", "docs/alstyle.yml")
-ENC            = os.getenv("OUTPUT_ENCODING", "windows-1251")
-CATEGORIES_FILE= os.getenv("CATEGORIES_FILE", "docs/categories_alstyle.txt")
+SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php")
+OUT_FILE        = os.getenv("OUT_FILE", "docs/alstyle.yml")
+ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
+CATEGORIES_FILE = os.getenv("CATEGORIES_FILE", "docs/categories_alstyle.txt")
 
-BASIC_USER     = os.getenv("BASIC_USER") or None
-BASIC_PASS     = os.getenv("BASIC_PASS") or None
+BASIC_USER      = os.getenv("BASIC_USER") or None
+BASIC_PASS      = os.getenv("BASIC_PASS") or None
 
-TIMEOUT_S      = int(os.getenv("TIMEOUT_S", "30"))
-RETRIES        = int(os.getenv("RETRIES", "4"))
-RETRY_BACKOFF  = float(os.getenv("RETRY_BACKOFF_S", "2"))
-MIN_BYTES      = int(os.getenv("MIN_BYTES", "1500"))
+TIMEOUT_S       = int(os.getenv("TIMEOUT_S", "30"))
+RETRIES         = int(os.getenv("RETRIES", "4"))
+RETRY_BACKOFF   = float(os.getenv("RETRY_BACKOFF_S", "2"))
+MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
+
+# Префикс для <vendorCode> (всегда добавляется, даже если уже есть похожий).
+VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS-")
+# Создавать <vendorCode>, если он отсутствует (по умолчанию — нет).
+VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lower() in {"1","true","yes"}
+
 
 # ===================== УТИЛИТЫ =====================
 
@@ -64,9 +71,8 @@ def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -
             if len(data) < MIN_BYTES:
                 raise RuntimeError(f"too small ({len(data)} bytes)")
 
-            # Разрешаем типы xml; некоторые сервера ставят text/plain — тоже ок
+            # Разрешаем xml/text/plain/octet-stream; если метка странная — проверим "похоже ли на XML".
             if not any(t in ctype for t in ("xml", "text/plain", "application/octet-stream")):
-                # Если метка странная, но контент похож на XML — пропускаем
                 head = data[:64].lstrip()
                 if not head.startswith(b"<"):
                     raise RuntimeError(f"unexpected content-type: {ctype!r}")
@@ -91,6 +97,7 @@ def iter_local(elem: ET.Element, name: str):
     for child in elem.findall(name):
         yield child
 
+
 # ===================== РАБОТА С КАТЕГОРИЯМИ =====================
 
 def build_category_graph(cats_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
@@ -102,14 +109,12 @@ def build_category_graph(cats_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,s
         pid = (c.attrib.get("parentId") or "").strip()
         name = (c.text or "").strip()
         if not cid:
-            # пропускаем некорректные категории
             continue
         id2name[cid] = name
         if pid:
             id2parent[cid] = pid
             parent2children.setdefault(pid, set()).add(cid)
         else:
-            # root
             id2parent.setdefault(cid, "")
     return id2name, id2parent, parent2children
 
@@ -137,6 +142,7 @@ def collect_ancestors(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
             cur = pid
     return out
 
+
 # ===================== ПАРСИНГ ФАЙЛА ФИЛЬТРОВ =====================
 
 def parse_selectors(path: str) -> Tuple[Set[str], List[str], List[re.Pattern]]:
@@ -163,12 +169,9 @@ def parse_selectors(path: str) -> Tuple[Set[str], List[str], List[re.Pattern]]:
                         except re.error as e:
                             warn(f"bad regex in {path!r}: {pat!r} ({e})")
                     continue
-                # Если строка выглядит как ID (часто числовой), трактуем как ID.
-                # Но оставляем строкой (в исходном XML id может быть не только цифрами).
                 if line.isdigit() or ":" not in line:
                     ids_filter.add(line)
                 else:
-                    # Подстрочное правило (например: 'монитор')
                     substrings.append(line.lower())
     except FileNotFoundError:
         warn(f"{path} not found — фильтр категорий НЕ будет применён")
@@ -188,6 +191,36 @@ def cat_matches(name: str, cid: str, ids_filter: Set[str], subs: List[str], regs
         except Exception:
             continue
     return False
+
+
+# ===================== ПОСТ-ОБРАБОТКА VENDORCODE =====================
+
+def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool = False) -> Tuple[int, int]:
+    """
+    ВСЕГДА добавляет 'prefix' к тексту <vendorCode>.
+    НИЧЕГО не вырезает и не нормализует; дубли префиксов допускаются.
+    Возвращает (total_prefixed, created_nodes).
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0, 0
+    total = 0
+    created = 0
+    for offer in offers_el.findall("offer"):
+        vc = offer.find("vendorCode")
+        if vc is None:
+            if create_if_missing:
+                vc = ET.SubElement(offer, "vendorCode")
+                created += 1
+                old = ""
+            else:
+                continue
+        else:
+            old = vc.text or ""
+        vc.text = f"{prefix}{old}"
+        total += 1
+    return total, created
+
 
 # ===================== ОСНОВНАЯ ЛОГИКА =====================
 
@@ -263,6 +296,13 @@ def main() -> None:
     for o in used_offers:
         out_offers.append(deepcopy(o))
 
+    # === НОВОЕ: форсированное добавление префикса к <vendorCode> ===
+    total_prefixed, created_nodes = force_prefix_vendorcode(
+        out_shop,
+        prefix=VENDORCODE_PREFIX,
+        create_if_missing=VENDORCODE_CREATE_IF_MISSING,
+    )
+
     # Красивый вывод (Python 3.11+)
     try:
         ET.indent(out_root, space="  ")
@@ -274,6 +314,7 @@ def main() -> None:
 
     # Логи-итоги
     log(f"Selectors: ids={len(ids_filter)}, subs={len(subs)}, regs={len(regs)} (present={have_selectors})")
+    log(f"Prefixed vendorCode: total={total_prefixed}, created={created_nodes}, prefix='{VENDORCODE_PREFIX}', create_if_missing={VENDORCODE_CREATE_IF_MISSING}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
 if __name__ == "__main__":
