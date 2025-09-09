@@ -35,7 +35,12 @@ import requests
 # ===================== ПАРАМЕТРЫ =====================
 
 SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "akcent")
-SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "").strip()
+SUPPLIER_URL    = (
+    os.getenv("SUPPLIER_URL")
+    or os.getenv("AKCENT_URL")
+    or os.getenv("AKCENT_XML_URL")
+    or ""
+).strip()
 OUT_FILE        = os.getenv("OUT_FILE", "docs/akcent.yml")
 ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
 KEYWORDS_FILE   = os.getenv("CATEGORIES_FILE", "docs/akcent_keywords.txt")
@@ -374,6 +379,15 @@ def collect_ancestors(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
 
 def main() -> None:
     auth = (BASIC_USER, BASIC_PASS) if BASIC_USER and BASIC_PASS else None
+
+    # Показать источник значения URL (для отладки конфигурации)
+    url_src_env = (
+        "SUPPLIER_URL" if os.getenv("SUPPLIER_URL") else
+        "AKCENT_URL" if os.getenv("AKCENT_URL") else
+        "AKCENT_XML_URL" if os.getenv("AKCENT_XML_URL") else
+        "N/A"
+    )
+    log(f"[akcent] URL source env: {url_src_env}")
 
     log(f"[akcent] Source: {SUPPLIER_URL}")
     log(f"[akcent] Keywords file: {KEYWORDS_FILE}")
