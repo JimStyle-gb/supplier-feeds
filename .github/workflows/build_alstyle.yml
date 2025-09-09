@@ -1,4 +1,4 @@
-name: Build Al-Style feed
+name: build_alstyle
 
 on:
   workflow_dispatch:
@@ -50,7 +50,6 @@ jobs:
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
-          # Если включат BasicAuth на источнике — раскомментируй и добавь секреты в репо:
           BASIC_USER: ${{ secrets.ALS_USER }}
           BASIC_PASS: ${{ secrets.ALS_PASS }}
         run: |
