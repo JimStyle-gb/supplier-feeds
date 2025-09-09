@@ -35,12 +35,20 @@ import requests
 # ===================== ПАРАМЕТРЫ =====================
 
 SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "akcent")
-SUPPLIER_URL    = (
-    os.getenv("SUPPLIER_URL")
-    or os.getenv("AKCENT_URL")
-    or os.getenv("AKCENT_XML_URL")
-    or ""
-).strip()
+
+# 1) Можно переопределить через ENV: SUPPLIER_URL / AKCENT_URL / AKCENT_XML_URL
+# 2) Если ENV не задан — используем один из зашитых URL ниже (первый доступный).
+ENV_URL = (os.getenv("SUPPLIER_URL")
+           or os.getenv("AKCENT_URL")
+           or os.getenv("AKCENT_XML_URL")
+           or "").strip()
+HARDCODE_URLS = [
+    # ЗАМЕНИ при необходимости на точный адрес фида Akcent.
+    "https://akcent.kz/upload/catalog_export/akcent_catalog.php",
+    "https://akcent.kz/upload/catalog_export/akcent.xml",
+    "https://akcent.kz/upload/catalog_export/akcent.yml",
+]
+
 OUT_FILE        = os.getenv("OUT_FILE", "docs/akcent.yml")
 ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
 KEYWORDS_FILE   = os.getenv("CATEGORIES_FILE", "docs/akcent_keywords.txt")
@@ -72,15 +80,7 @@ def err(msg: str, code: int = 1) -> None:
     sys.exit(code)
 
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> Tuple[bytes, Dict[str, str]]:
-    """
-    Надёжное скачивание XML:
-    - RETRY с экспоненциальной задержкой,
-    - проверка статуса/размера,
-    - проверка, что тело похоже на XML.
-    Возвращает (bytes, headers).
-    """
-    if not url:
-        err("SUPPLIER_URL is empty — укажи URL фида Akcent в секретах/ENV.")
+    """Скачивание XML с ретраями и базовой валидацией. Возвращает (bytes, headers)."""
     sess = requests.Session()
     headers = {"User-Agent": "akcent-feed-bot/1.0 (+github-actions)"}
     last_exc = None
@@ -100,10 +100,25 @@ def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -
             return data, dict(resp.headers)
         except Exception as e:
             last_exc = e
-            warn(f"fetch attempt {attempt}/{retries} failed: {e}")
+            warn(f"fetch attempt {attempt}/{retries} failed for {url}: {e}")
             if attempt < retries:
                 time.sleep(backoff * attempt)
     raise RuntimeError(f"fetch failed after {retries} attempts: {last_exc}")
+
+def fetch_first_available(urls: List[str], timeout: int, retries: int, backoff: float, auth=None) -> Tuple[bytes, Dict[str,str], str]:
+    """Перебирает список URL, возвращает первый успешно скачанный."""
+    last_error = None
+    for u in urls:
+        u = (u or "").strip()
+        if not u:
+            continue
+        try:
+            data, headers = fetch_xml(u, timeout, retries, backoff, auth=auth)
+            return data, headers, u
+        except Exception as e:
+            last_error = e
+            continue
+    raise RuntimeError(f"no working supplier URL among candidates; last error: {last_error}")
 
 def parse_xml_bytes(data: bytes) -> ET.Element:
     return ET.fromstring(data)
@@ -319,9 +334,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
 # ===================== ПОСТ-ОБРАБОТКА <vendorCode> =====================
 
 def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool = False) -> Tuple[int, int]:
-    """
-    ВСЕГДА добавляет 'prefix' к <vendorCode>. Ничего не вырезаем; дубли префикса допускаются.
-    """
+    """ВСЕГДА добавляет 'prefix' к <vendorCode>. Ничего не вырезаем; дубли префикса допускаются."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0, 0
@@ -380,20 +393,16 @@ def collect_ancestors(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
 def main() -> None:
     auth = (BASIC_USER, BASIC_PASS) if BASIC_USER and BASIC_PASS else None
 
-    # Показать источник значения URL (для отладки конфигурации)
-    url_src_env = (
-        "SUPPLIER_URL" if os.getenv("SUPPLIER_URL") else
-        "AKCENT_URL" if os.getenv("AKCENT_URL") else
-        "AKCENT_XML_URL" if os.getenv("AKCENT_XML_URL") else
-        "N/A"
-    )
-    log(f"[akcent] URL source env: {url_src_env}")
-
-    log(f"[akcent] Source: {SUPPLIER_URL}")
-    log(f"[akcent] Keywords file: {KEYWORDS_FILE}")
+    # Список кандидатов URL: сначала ENV, затем зашитые
+    candidates = []
+    if ENV_URL:
+        candidates.append(ENV_URL)
+    candidates.extend(HARDCODE_URLS)
+    log(f"[akcent] URL candidates: {', '.join([u for u in candidates if u])}")
 
     # 1) Получаем и парсим XML поставщика
-    data, headers = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
+    data, headers, used_url = fetch_first_available(candidates, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
+    log(f"[akcent] Using URL: {used_url}")
     root = parse_xml_bytes(data)
 
     http_last_modified = headers.get("Last-Modified", "").strip()
@@ -479,9 +488,9 @@ def main() -> None:
         ven = o2.find("vendor")
         ven_txt = (ven.text or "").strip() if ven is not None and ven.text else ""
         if ven_txt:
-            norm = normalize_brand(ven_txt)
-            if norm and norm != ven_txt:
-                ven.text = norm
+            normv = normalize_brand(ven_txt)
+            if normv and normv != ven_txt:
+                ven.text = normv
         else:
             candidate = ""
             for p in o2.findall("param") + o2.findall("Param"):
