@@ -52,6 +52,7 @@ jobs:
           MIN_BYTES: "1500"
           BASIC_USER: ${{ secrets.ALS_USER }}
           BASIC_PASS: ${{ secrets.ALS_PASS }}
+          VENDORCODE_PREFIX: "AS"   # префикс без дефиса
         run: |
           python scripts/build_alstyle.py
 
