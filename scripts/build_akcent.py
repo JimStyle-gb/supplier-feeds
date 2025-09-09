@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Генератор YML (Yandex Market Language) для Akcent — в стиле alstyle:
-- Забираем исходный XML у поставщика (ретраи, проверки типа/размера).
+Генератор YML (Yandex Market Language) для Akcent — в стиле alstyle.
+Ключевые моменты:
+- Скачиваем исходный XML у поставщика (ретраи, проверки типа/размера).
 - Фильтруем офферы по docs/akcent_keywords.txt:
     • обычные строки — строгий префикс (название начинается с ключа),
     • строки с префиксом "re:" — регулярные выражения (опционально),
@@ -10,10 +11,9 @@
 - Категории: в выходной файл попадают только используемые + их предки (стабильная сортировка).
 - Нормализуем/дозаполняем <vendor> (убираем «Неизвестный производитель»).
 - ВСЕГДА добавляем префикс к <vendorCode> (по умолчанию "AC", без дефиса; дубли допускаются).
-- Вставляем вверху FEED_META-комментарий:
-    supplier_feed_date (из XML), http_last_modified (HTTP), offers_max_update (если нашли),
-    built_utc и built_Asia/Almaty (для наглядности).
-- Пишем результат в docs/akcent.yml (кодировка по ENV, по умолчанию windows-1251).
+- FEED_META вверху В ТОЧНОМ формате как у alstyle:
+    <!--FEED_META supplier=akcent source=<URL> source_date=<DATE> built_utc=<UTC> built_Asia/Almaty=<LOCAL> -->
+- Пишем результат в docs/akcent.yml (по умолчанию windows-1251).
 """
 
 from __future__ import annotations
@@ -122,7 +122,7 @@ def iter_local(elem: ET.Element, name: str):
 _DT_PATTERNS = [
     "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M",
     "%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%S",
-    "%d.%m.%Y %H:%M:%S", "%d.%m.%Y %H:%M", "%d.%m.%Y",
+    "%d.%m.%Y %H:%M:%S", "%d.%m.%Y %H:%М", "%d.%m.%Y",
     "%Y-%m-%d",
 ]
 
@@ -139,7 +139,12 @@ def normalize_dt(s: str) -> Optional[str]:
             continue
     return s
 
-def extract_supplier_feed_date(root: ET.Element) -> str:
+def extract_source_date(root: ET.Element) -> str:
+    """
+    Унифицированная «дата у поставщика» как у alstyle:
+      - <yml_catalog date="..."> или
+      - <shop/generation-date|generation_date|generationDate|date> или <date>
+    """
     val = (root.attrib.get("date") or "").strip()
     if val:
         return normalize_dt(val) or val
@@ -148,37 +153,6 @@ def extract_supplier_feed_date(root: ET.Element) -> str:
         if s:
             return normalize_dt(s) or s
     return ""
-
-def extract_offers_max_update(offers_el: ET.Element) -> Tuple[str, int]:
-    TAGS = {
-        "updated_at", "update_date", "modified", "modified_time",
-        "last_update", "lastmod", "last_modified", "date_modify", "date_update",
-    }
-    found: List[str] = []
-    for offer in offers_el.findall("offer"):
-        for tag in TAGS:
-            t = offer.find(tag)
-            if t is not None and (t.text or "").strip():
-                found.append((t.text or "").strip())
-        for p in offer.findall("param") + offer.findall("Param"):
-            nm = (p.attrib.get("name") or "").strip().lower()
-            if any(k in nm for k in ("обнов", "update", "modified", "измени")):
-                if (p.text or "").strip():
-                    found.append((p.text or "").strip())
-    if not found:
-        return ("", 0)
-    def key(s: str) -> int:
-        norm = normalize_dt(s) or s
-        m = re.match(r"(\d{4})[-.](\d{2})[-.](\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?", norm)
-        if m:
-            y, mo, d, h, mi, se = m.group(1), m.group(2), m.group(3), m.group(4), m.group(5), m.group(6) or "00"
-            try:
-                return int(f"{y}{mo}{d}{h}{mi}{se}")
-            except Exception:
-                return 0
-        return 0
-    best = max(found, key=key)
-    return (normalize_dt(best) or best, len(found))
 
 
 # ===================== ФИЛЬТР ПО КЛЮЧАМ =====================
@@ -238,7 +212,7 @@ _BRAND_MAP = {
     "epson": "Epson",
     "samsung": "Samsung",
     "panasonic": "Panasonic",
-    "konica minolta": "Konica Minolta", "konica": "Konica Minolta",
+    "konica minolta": "Konica Minolta", "konica": "Конica Minolta",
     "sharp": "Sharp",
     "lexmark": "Lexmark",
     "pantum": "Pantum",
@@ -395,16 +369,14 @@ def main() -> None:
     data, headers = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
     root = parse_xml_bytes(data)
 
-    http_last_modified = headers.get("Last-Modified", "").strip()
-    supplier_feed_date = extract_supplier_feed_date(root)
+    http_last_modified = headers.get("Last-Modified", "").strip()  # для логов (в FEED_META не пишем)
+    source_date = extract_source_date(root)  # унифицированное поле
 
     shop = root.find("shop")
     cats_el = shop.find("categories") if shop is not None else None
     offers_el = shop.find("offers") if shop is not None else None
     if shop is None or cats_el is None or offers_el is None:
         err("XML: <shop>/<categories>/<offers> not found")
-
-    offers_max_update, offers_updates_detected = extract_offers_max_update(offers_el)
 
     # 2) Граф категорий
     id2name, id2parent, _ = build_category_graph(cats_el)
@@ -431,7 +403,7 @@ def main() -> None:
     out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
 
-    # FEED_META
+    # FEED_META — как у alstyle
     built_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     if ZoneInfo:
         built_local = datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
@@ -439,10 +411,8 @@ def main() -> None:
         built_local = time.strftime("%Y-%m-%d %H:%M:%S")
     meta = (
         f"FEED_META supplier={SUPPLIER_NAME} "
-        f"supplier_feed_date={supplier_feed_date or 'n/a'} "
-        f"http_last_modified={http_last_modified or 'n/a'} "
-        f"offers_max_update={offers_max_update or 'n/a'} "
-        f"offers_updates_detected={offers_updates_detected} "
+        f"source={SUPPLIER_URL} "
+        f"source_date={source_date or 'n/a'} "
         f"built_utc={built_utc} "
         f"built_Asia/Almaty={built_local}"
     )
@@ -523,10 +493,9 @@ def main() -> None:
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
 
-    # Итоги
-    log(f"Supplier feed date: {supplier_feed_date or 'n/a'}")
+    # Итоги (для логов CI; в сам файл эти поля не пишем)
+    log(f"Source date: {source_date or 'n/a'}")
     log(f"HTTP Last-Modified: {http_last_modified or 'n/a'}")
-    log(f"Offers max update: {offers_max_update or 'n/a'} (hits={offers_updates_detected})")
     log(f"Keywords present: {bool(prefixes or regexps)} | prefixes={len(prefixes)} regexps={len(regexps)}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
