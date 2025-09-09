@@ -5,7 +5,7 @@
 - Фильтрует офферы по списку категорий из docs/categories_alstyle.txt.
 - Сохраняет ПОЛНУЮ структуру offer (deepcopy: все атрибуты и вложенные теги).
 - Собирает дерево <categories> только по используемым категориям + их предкам.
-- Нормализует/дозаполняет <vendor> (убирает «Неизвестный производитель»).
+- Нормализует/дозаполняет <vendor> (убирает «Неизвестный производитель» и НИКОГДА не подставляет названия поставщиков alstyle/copyline/vtt/akcent; NV Print разрешён).
 - Форсированно добавляет префикс к <vendorCode> (по умолчанию AS, без дефиса).
 - ВСТАВЛЯЕТ КОММЕНТАРИЙ FEED_META: supplier, source_date из исходника, built_utc и built_Asia/Almaty.
 """
@@ -204,6 +204,28 @@ def cat_matches(name: str, cid: str, ids_filter: Set[str], subs: List[str], regs
 
 # ===================== НОРМАЛИЗАЦИЯ/ЗАПОЛНЕНИЕ <vendor> =====================
 
+def _norm_key(s: str) -> str:
+    if not s:
+        return ""
+    s = s.strip().lower()
+    s = re.sub(r"[-_/]+", " ", s)
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+# Блок-лист: названия поставщиков, которых нельзя записывать в <vendor>
+SUPPLIER_BLOCKLIST = {
+    _norm_key(x) for x in [
+        "alstyle", "al-style",
+        "copyline",
+        "vtt",
+        "akcent", "ak-cent",
+        # NV Print НЕ в блок-листе — бренд допускается
+    ]
+}
+
+UNKNOWN_VENDOR_MARKERS = ("неизвест", "unknown", "без бренда", "no brand", "noname", "no-name", "n/a")
+
+# OEM-бренды и NV Print, которые можно нормализовать
 _BRAND_MAP = {
     "hp": "HP", "hewlett packard": "HP", "hewlett packard inc": "HP", "hp inc": "HP",
     "canon": "Canon", "canon inc": "Canon",
@@ -214,13 +236,11 @@ _BRAND_MAP = {
     "epson": "Epson",
     "samsung": "Samsung",
     "panasonic": "Panasonic",
-    "konica minolta": "Konica Minolta", "konica": "Konica Minolta",
+    "konica minolta": "Konica Minolta", "konica": "Конica Minolta",
     "sharp": "Sharp",
     "lexmark": "Lexmark",
     "pantum": "Pantum",
     "nv print": "NV Print", "nvprint": "NV Print", "nv  print": "NV Print",
-    "akcent": "AKCENT",
-    "vtt": "VTT",
 }
 
 _BRAND_PATTERNS = [
@@ -238,30 +258,34 @@ _BRAND_PATTERNS = [
     (re.compile(r"^\s*lexmark\b", re.I), "Lexmark"),
     (re.compile(r"^\s*pantum\b", re.I), "Pantum"),
     (re.compile(r"^\s*nv\s*-?\s*print\b", re.I), "NV Print"),
-    (re.compile(r"^\s*akcent\b", re.I), "AKCENT"),
-    (re.compile(r"^\s*vtt\b", re.I), "VTT"),
 ]
 
-def _norm_key(s: str) -> str:
-    if not s:
-        return ""
-    s = s.strip().lower()
-    s = re.sub(r"[-_/]+", " ", s)
-    s = re.sub(r"\s+", " ", s)
-    return s
+def _looks_unknown(txt: str) -> bool:
+    t = (txt or "").strip().lower()
+    return any(mark in t for mark in UNKNOWN_VENDOR_MARKERS)
 
 def normalize_brand(raw: str) -> str:
+    """Нормализует бренд: OEM + NV Print. Поставщиков (alstyle/copyline/vtt/akcent) отбрасываем."""
     k = _norm_key(raw)
     if not k:
         return ""
+    if k in SUPPLIER_BLOCKLIST:
+        return ""  # поставщика как бренд не используем
     if k in _BRAND_MAP:
         return _BRAND_MAP[k]
     for pat, val in _BRAND_PATTERNS:
         if pat.search(raw or ""):
             return val
+    # Автокапитализация для «прочих» брендов (если это не поставщик)
     return " ".join(w.capitalize() for w in k.split())
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
+    """
+    Нормализуем vendor:
+    - удаляем «неизвестный» и названия поставщиков (alstyle/copyline/vtt/akcent);
+    - заполняем из param/name/description только если это НЕ поставщик;
+    - NV Print разрешён и нормализуется.
+    """
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return (0, 0, 0)
@@ -274,13 +298,23 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
         ven = offer.find("vendor")
         txt = (ven.text or "").strip() if ven is not None and ven.text else ""
 
+        # если уже задан «неизвестный» или поставщик — очищаем
+        if txt and (_looks_unknown(txt) or _norm_key(txt) in SUPPLIER_BLOCKLIST):
+            if ven is not None:
+                offer.remove(ven)
+            txt = ""
+
         if txt:
             norm = normalize_brand(txt)
-            if norm and norm != txt:
+            if not norm:
+                # если нормализация дала пусто (например, это поставщик) — удаляем vendor
+                offer.remove(ven)
+            elif norm != txt:
                 ven.text = norm
                 normalized += 1
             continue
 
+        # Пытаемся взять бренд из param (только не-поставщик)
         candidate = ""
         for p in offer.findall("param"):
             nm = (p.attrib.get("name") or "").strip().lower()
@@ -290,21 +324,46 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
                     break
         if candidate:
             val = normalize_brand(candidate)
-            if ven is None:
+            if val:
                 ven = ET.SubElement(offer, "vendor")
-            ven.text = val
-            filled_param += 1
-            continue
+                ven.text = val
+                filled_param += 1
+                continue
 
+        # Из name — если распознали бренд (OEM/NV Print) или «другой» не из блок-листа
         name_val = get_text(offer, "name")
+        placed = False
         if name_val:
             for pat, brand in _BRAND_PATTERNS:
                 if pat.search(name_val):
-                    if ven is None:
-                        ven = ET.SubElement(offer, "vendor")
+                    ven = ET.SubElement(offer, "vendor")
                     ven.text = brand
                     filled_name += 1
+                    placed = True
                     break
+        if placed:
+            continue
+
+        # Доп. попытка: из description (если есть)
+        if not placed:
+            descr = get_text(offer, "description")
+            if descr:
+                for pat, brand in _BRAND_PATTERNS:
+                    if pat.search(descr):
+                        ven = ET.SubElement(offer, "vendor")
+                        ven.text = brand
+                        filled_name += 1
+                        placed = True
+                        break
+
+        # Если всё ещё нет — пытаемся извлечь из начала name «непоставщикообразное» слово
+        if not placed and name_val:
+            head = re.split(r"[–—\-:\(\)\[\],;|/]{1,}", name_val, maxsplit=1)[0]
+            guess = normalize_brand(head)
+            if guess and _norm_key(guess) not in SUPPLIER_BLOCKLIST:
+                ven = ET.SubElement(offer, "vendor")
+                ven.text = guess
+                filled_name += 1
 
     return (normalized, filled_param, filled_name)
 
