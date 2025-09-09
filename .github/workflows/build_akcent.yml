@@ -43,7 +43,8 @@ jobs:
       - name: Build feed
         env:
           SUPPLIER_NAME: akcent
-          SUPPLIER_URL: ${{ secrets.AKCENT_URL }}   # Укажи URL исходного XML Akcent в секретах
+          # Берём URL из любого из указанных секретов/переменных
+          SUPPLIER_URL: ${{ secrets.AKCENT_URL || secrets.AKCENT_XML_URL || vars.AKCENT_URL || vars.AKCENT_XML_URL }}
           OUT_FILE: docs/akcent.yml
           OUTPUT_ENCODING: windows-1251
           CATEGORIES_FILE: docs/akcent_keywords.txt
@@ -53,8 +54,13 @@ jobs:
           MIN_BYTES: "1500"
           BASIC_USER: ${{ secrets.AKCENT_USER }}
           BASIC_PASS: ${{ secrets.AKCENT_PASS }}
-          VENDORCODE_PREFIX: "AC"   # префикс без дефиса
+          VENDORCODE_PREFIX: "AC"
         run: |
+          set -e
+          if [ -z "${SUPPLIER_URL}" ]; then
+            echo "::error::SUPPLIER_URL is empty. Set secrets.AKCENT_XML_URL (или AKCENT_URL / repo vars)."
+            exit 1
+          fi
           python scripts/build_akcent.py
 
       - name: Duplicate YML as XML (for picky importers)
