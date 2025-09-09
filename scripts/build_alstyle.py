@@ -5,7 +5,10 @@
 - Фильтрует офферы по списку категорий из docs/categories_alstyle.txt.
 - Сохраняет ПОЛНУЮ структуру offer (deepcopy: все атрибуты и вложенные теги).
 - Собирает дерево <categories> только по используемым категориям + их предкам.
-- ДОПОЛНИТЕЛЬНО: в конце всегда добавляет префикс к <vendorCode> (по умолчанию AS без дефиса).
+- Пост-обработка:
+  • Всегда добавляет префикс к <vendorCode> (по умолчанию AS, без дефиса).
+  • Нормализует и ДОзаполняет <vendor> (производитель) из <param name="..."> или по шаблону из <name>.
+    Помогает убрать ошибку «Неизвестный производитель» у импортёра.
 - Пишет результат в docs/alstyle.yml с кодировкой из ENV (по умолчанию windows-1251).
 """
 
@@ -193,7 +196,124 @@ def cat_matches(name: str, cid: str, ids_filter: Set[str], subs: List[str], regs
     return False
 
 
-# ===================== ПОСТ-ОБРАБОТКА VENDORCODE =====================
+# ===================== НОРМАЛИЗАЦИЯ/ЗАПОЛНЕНИЕ <vendor> =====================
+
+_BRAND_MAP = {
+    # ключи — нижний регистр, с приведением дефисов к пробелам и схлопыванием пробелов
+    "hp": "HP", "hewlett packard": "HP", "hewlett packard inc": "HP", "hp inc": "HP",
+    "canon": "Canon", "canon inc": "Canon",
+    "brother": "Brother",
+    "kyocera": "Kyocera", "kyocera mita": "Kyocera",
+    "xerox": "Xerox",
+    "ricoh": "Ricoh", "ricoh company": "Ricoh",
+    "epson": "Epson", "seiko epson": "Epson",
+    "samsung": "Samsung", "samsung electronics": "Samsung",
+    "panasonic": "Panasonic",
+    "konica minolta": "Konica Minolta", "konica": "Konica Minolta",
+    "sharp": "Sharp",
+    "lexmark": "Lexmark",
+    "pantum": "Pantum",
+    "nv print": "NV Print", "nvprint": "NV Print", "nv  print": "NV Print",
+    "akcent": "AKCENT",
+    "vtt": "VTT",
+}
+
+_BRAND_PATTERNS = [
+    (re.compile(r"^\s*hp\b", re.I), "HP"),
+    (re.compile(r"^\s*canon\b", re.I), "Canon"),
+    (re.compile(r"^\s*brother\b", re.I), "Brother"),
+    (re.compile(r"^\s*kyocera\b", re.I), "Kyocera"),
+    (re.compile(r"^\s*xerox\b", re.I), "Xerox"),
+    (re.compile(r"^\s*ricoh\b", re.I), "Ricoh"),
+    (re.compile(r"^\s*epson\b", re.I), "Epson"),
+    (re.compile(r"^\s*samsung\b", re.I), "Samsung"),
+    (re.compile(r"^\s*panasonic\b", re.I), "Panasonic"),
+    (re.compile(r"^\s*konica\s*-?\s*minolta\b", re.I), "Konica Minolta"),
+    (re.compile(r"^\s*sharp\b", re.I), "Sharp"),
+    (re.compile(r"^\s*lexmark\b", re.I), "Lexmark"),
+    (re.compile(r"^\s*pantum\b", re.I), "Pantum"),
+    (re.compile(r"^\s*nv\s*-?\s*print\b", re.I), "NV Print"),
+    (re.compile(r"^\s*akcent\b", re.I), "AKCENT"),
+    (re.compile(r"^\s*vtt\b", re.I), "VTT"),
+]
+
+def _norm_key(s: str) -> str:
+    if not s:
+        return ""
+    s = s.strip().lower()
+    s = re.sub(r"[-_/]+", " ", s)
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+def normalize_brand(raw: str) -> str:
+    k = _norm_key(raw)
+    if not k:
+        return ""
+    if k in _BRAND_MAP:
+        return _BRAND_MAP[k]
+    # Пробуем по шаблону в начале названия
+    for pat, val in _BRAND_PATTERNS:
+        if pat.search(raw or ""):
+            return val
+    # Если не распознали — капитализуем по словам (аккуратно)
+    return " ".join(w.capitalize() for w in k.split())
+
+def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
+    """
+    Нормализует/дозаполняет <vendor>.
+    Возвращает кортеж счётчиков: (normalized, filled_from_param, filled_from_name).
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return (0, 0, 0)
+
+    normalized = 0
+    filled_param = 0
+    filled_name = 0
+
+    for offer in offers_el.findall("offer"):
+        ven = offer.find("vendor")
+        txt = (ven.text or "").strip() if ven is not None and ven.text else ""
+
+        # 1) если <vendor> есть — нормализуем
+        if txt:
+            norm = normalize_brand(txt)
+            if norm and norm != txt:
+                ven.text = norm
+                normalized += 1
+            continue
+
+        # 2) ищем в <param name="...">
+        candidate = ""
+        for p in offer.findall("param"):
+            nm = (p.attrib.get("name") or "").strip().lower()
+            if "бренд" in nm or "производ" in nm:  # «Бренд», «Производитель»
+                candidate = (p.text or "").strip()
+                if candidate:
+                    break
+        if candidate:
+            val = normalize_brand(candidate)
+            if ven is None:
+                ven = ET.SubElement(offer, "vendor")
+            ven.text = val
+            filled_param += 1
+            continue
+
+        # 3) эвристика по <name>
+        name_val = get_text(offer, "name")
+        if name_val:
+            for pat, brand in _BRAND_PATTERNS:
+                if pat.search(name_val):
+                    if ven is None:
+                        ven = ET.SubElement(offer, "vendor")
+                    ven.text = brand
+                    filled_name += 1
+                    break
+
+    return (normalized, filled_param, filled_name)
+
+
+# ===================== ПОСТ-ОБРАБОТКА <vendorCode> =====================
 
 def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool = False) -> Tuple[int, int]:
     """
@@ -296,7 +416,10 @@ def main() -> None:
     for o in used_offers:
         out_offers.append(deepcopy(o))
 
-    # === НОВОЕ: форсированное добавление префикса к <vendorCode> ===
+    # === Пост-обработка: производитель ===
+    norm_cnt, fill_param_cnt, fill_name_cnt = ensure_vendor(out_shop)
+
+    # === Пост-обработка: префикс к <vendorCode> ===
     total_prefixed, created_nodes = force_prefix_vendorcode(
         out_shop,
         prefix=VENDORCODE_PREFIX,
@@ -314,6 +437,7 @@ def main() -> None:
 
     # Логи-итоги
     log(f"Selectors: ids={len(ids_filter)}, subs={len(subs)}, regs={len(regs)} (present={have_selectors})")
+    log(f"Vendor fixed: normalized={norm_cnt}, filled_from_param={fill_param_cnt}, filled_from_name={fill_name_cnt}")
     log(f"Prefixed vendorCode: total={total_prefixed}, created={created_nodes}, prefix='{VENDORCODE_PREFIX}', create_if_missing={VENDORCODE_CREATE_IF_MISSING}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
