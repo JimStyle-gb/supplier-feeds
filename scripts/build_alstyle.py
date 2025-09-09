@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-Генератор YML (Yandex Market Language) для al-style:
-- Забирает исходный XML у поставщика (с ретраями и проверкой ответа).
-- Фильтрует офферы по списку категорий из docs/categories_alstyle.txt.
-- Сохраняет ПОЛНУЮ структуру offer (deepcopy: все атрибуты и вложенные теги).
-- Собирает дерево <categories> только по используемым категориям + их предкам.
-- Нормализует/дозаполняет <vendor> (убирает «Неизвестный производитель»).
-- Форсированно добавляет префикс к <vendorCode> (по умолчанию AS, без дефиса).
-- ВСТАВЛЯЕТ КОММЕНТАРИЙ FEED_META: supplier, source_date из исходника, built_utc и built_Asia/Almaty.
+Alstyle → YML (единый шаблон)
+- FEED_META: supplier, source, source_date, built_utc, built_Asia/Almaty
+- Обязательный <vendorCode> у каждого оффера (если нет — создаём), префикс "AS" (без дефиса)
+- Нормализация <vendor> ТОЛЬКО по OEM-брендам; названия ПОСТАВЩИКОВ никогда не подставляем
+- Фильтр по docs/categories_alstyle.txt (аналогично akcent)
+- Категории: только используемые + их предки
+- Канонический порядок тегов в <offer>
+- Вывод: docs/alstyle.yml (по умолчанию windows-1251)
 """
 
 from __future__ import annotations
 
-import os, sys, re, time
+import os, sys, re, time, hashlib
 from copy import deepcopy
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Set, Tuple, Optional
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone
+
 try:
     from zoneinfo import ZoneInfo
 except Exception:
@@ -26,24 +27,29 @@ import requests
 
 
 # ===================== ПАРАМЕТРЫ =====================
-SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "alstyle")  # имя поставщика для FEED_META
-SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php")
+
+SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "alstyle")
+SUPPLIER_URL    = (
+    os.getenv("SUPPLIER_URL")
+    or os.getenv("ALSTYLE_URL")
+    or "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
+).strip()
 OUT_FILE        = os.getenv("OUT_FILE", "docs/alstyle.yml")
 ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
-CATEGORIES_FILE = os.getenv("CATEGORIES_FILE", "docs/categories_alstyle.txt")
-
-BASIC_USER      = os.getenv("BASIC_USER") or None
-BASIC_PASS      = os.getenv("BASIC_PASS") or None
+KEYWORDS_FILE   = os.getenv("CATEGORIES_FILE", "docs/categories_alstyle.txt")
 
 TIMEOUT_S       = int(os.getenv("TIMEOUT_S", "30"))
 RETRIES         = int(os.getenv("RETRIES", "4"))
 RETRY_BACKOFF   = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
-# Префикс для <vendorCode> (всегда добавляется, даже если уже есть похожий).
-VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")  # без дефиса по умолчанию
-# Создавать <vendorCode>, если он отсутствует (по умолчанию — нет).
-VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lower() in {"1","true","yes"}
+# Префикс для <vendorCode> (всегда добавляется).
+VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")
+
+# Поставщики, которые НЕЛЬЗЯ подставлять в <vendor>
+SUPPLIER_BLOCKLIST = {
+    "akcent", "vtt", "alstyle", "copyline", "nv print", "nvprint", "nv  print"
+}
 
 
 # ===================== УТИЛИТЫ =====================
@@ -58,33 +64,26 @@ def err(msg: str, code: int = 1) -> None:
     print(f"ERROR: {msg}", flush=True, file=sys.stderr)
     sys.exit(code)
 
-def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> bytes:
-    """
-    Надёжное скачивание XML:
-    - RETRY с экспоненциальной задержкой
-    - Проверка статуса и минимального размера
-    - Базовая проверка типа содержимого
-    """
+def fetch_xml(url: str, timeout: int, retries: int, backoff: float) -> Tuple[bytes, Dict[str, str]]:
+    if not url:
+        err("SUPPLIER_URL is empty — укажи URL фида.")
     sess = requests.Session()
-    headers = {"User-Agent": "alstyle-feed-bot/1.0 (+github-actions)"}
+    headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
     last_exc = None
     for attempt in range(1, retries + 1):
         try:
-            resp = sess.get(url, headers=headers, timeout=timeout, auth=auth, stream=True)
+            resp = sess.get(url, headers=headers, timeout=timeout, stream=True)
             ctype = (resp.headers.get("Content-Type") or "").lower()
             if resp.status_code != 200:
                 raise RuntimeError(f"HTTP {resp.status_code}")
             data = resp.content
             if len(data) < MIN_BYTES:
                 raise RuntimeError(f"too small ({len(data)} bytes)")
-
-            # Разрешаем xml/text/plain/octet-stream; если метка странная — проверим "похоже ли на XML".
             if not any(t in ctype for t in ("xml", "text/plain", "application/octet-stream")):
                 head = data[:64].lstrip()
                 if not head.startswith(b"<"):
                     raise RuntimeError(f"unexpected content-type: {ctype!r}")
-
-            return data
+            return data, dict(resp.headers)
         except Exception as e:
             last_exc = e
             warn(f"fetch attempt {attempt}/{retries} failed: {e}")
@@ -103,17 +102,203 @@ def iter_local(elem: ET.Element, name: str):
     for child in elem.findall(name):
         yield child
 
-def now_utc_str() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 
-def now_almaty_str() -> str:
-    if ZoneInfo:
-        return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    # запасной вариант (без TZ, если вдруг нет zoneinfo)
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+# ===================== ДАТЫ/МЕТА =====================
+
+_DT_PATTERNS = [
+    "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M",
+    "%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%S",
+    "%d.%m.%Y %H:%M:%S", "%d.%m.%Y %H:%M", "%d.%m.%Y",
+    "%Y-%m-%d",
+]
+
+def normalize_dt(s: str) -> Optional[str]:
+    s = (s or "").strip()
+    if not s:
+        return None
+    s_try = s.replace("Z", "+00:00")
+    for fmt in _DT_PATTERNS:
+        try:
+            dt = datetime.strptime(s_try, fmt)
+            return dt.strftime("%Y-%m-%d %H:%M:%S")
+        except Exception:
+            continue
+    return s
+
+def extract_source_date(root: ET.Element) -> str:
+    val = (root.attrib.get("date") or "").strip()
+    if val:
+        return normalize_dt(val) or val
+    for path in ("shop/generation-date", "shop/generation_date", "shop/generationDate", "shop/date", "date"):
+        s = (root.findtext(path) or "").strip()
+        if s:
+            return normalize_dt(s) or s
+    return ""
 
 
-# ===================== РАБОТА С КАТЕГОРИЯМИ =====================
+# ===================== ФИЛЬТР ПО КЛЮЧАМ =====================
+
+def _norm(s: str) -> str:
+    s = (s or "").lower().replace("ё", "е").replace("\xa0", " ")
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+def load_keywords(path: str) -> Tuple[List[str], List[re.Pattern]]:
+    prefixes: List[str] = []
+    regexps: List[re.Pattern] = []
+    try:
+        with open(path, "r", encoding="utf-8-sig", errors="ignore") as f:
+            for raw in f:
+                line = (raw or "").strip()
+                if not line or line.startswith("#"):
+                    continue
+                if line.lower().startswith("re:"):
+                    pat = line[3:].strip()
+                    if not pat:
+                        continue
+                    try:
+                        regexps.append(re.compile(pat, re.I))
+                    except re.error as e:
+                        warn(f"bad regex in {path!r}: {pat!r} ({e})")
+                else:
+                    prefixes.append(_norm(line))
+    except FileNotFoundError:
+        warn(f"{path} not found — фильтр ключей НЕ будет применён")
+    return prefixes, regexps
+
+def matches_keywords(title: str, prefixes: List[str], regexps: List[re.Pattern]) -> bool:
+    if not prefixes and not regexps:
+        return True
+    nm = _norm(title)
+    if any(nm.startswith(p) for p in prefixes):
+        return True
+    for r in regexps:
+        try:
+            if r.search(title or ""):
+                return True
+        except Exception:
+            continue
+    return False
+
+
+# ===================== НОРМАЛИЗАЦИЯ <vendor> =====================
+
+_BRAND_MAP = {
+    "hp": "HP", "hewlett packard": "HP", "hewlett packard inc": "HP", "hp inc": "HP",
+    "canon": "Canon", "canon inc": "Canon",
+    "brother": "Brother",
+    "kyocera": "Kyocera", "kyocera mita": "Kyocera",
+    "xerox": "Xerox",
+    "ricoh": "Ricoh",
+    "epson": "Epson",
+    "samsung": "Samsung",
+    "panasonic": "Panasonic",
+    "konica minolta": "Konica Minolta", "konica": "Konica Minolta",
+    "sharp": "Sharp",
+    "lexmark": "Lexmark",
+    "pantum": "Pantum",
+}
+_BRAND_PATTERNS = [
+    (re.compile(r"^\s*hp\b", re.I), "HP"),
+    (re.compile(r"^\s*canon\b", re.I), "Canon"),
+    (re.compile(r"^\s*brother\b", re.I), "Brother"),
+    (re.compile(r"^\s*kyocera\b", re.I), "Kyocera"),
+    (re.compile(r"^\s*xerox\b", re.I), "Xerox"),
+    (re.compile(r"^\s*ricoh\b", re.I), "Ricoh"),
+    (re.compile(r"^\s*epson\b", re.I), "Epson"),
+    (re.compile(r"^\s*samsung\b", re.I), "Samsung"),
+    (re.compile(r"^\s*panasonic\b", re.I), "Panasonic"),
+    (re.compile(r"^\s*konica\s*-?\s*minolta\b", re.I), "Konica Minolta"),
+    (re.compile(r"^\s*sharp\b", re.I), "Sharp"),
+    (re.compile(r"^\s*lexmark\b", re.I), "Lexmark"),
+    (re.compile(r"^\s*pantum\b", re.I), "Pantum"),
+]
+SUPPLIER_BLOCKLIST = {
+    "akcent", "vtt", "alstyle", "copyline", "nv print", "nvprint", "nv  print"
+}
+def normalize_brand(raw: str) -> str:
+    k = _norm(raw)
+    if not k:
+        return ""
+    if k in SUPPLIER_BLOCKLIST:
+        return ""
+    if k in _BRAND_MAP:
+        return _BRAND_MAP[k]
+    for pat, val in _BRAND_PATTERNS:
+        if pat.search(raw or ""):
+            return val
+    return "" if k in SUPPLIER_BLOCKLIST else " ".join(w.capitalize() for w in k.split())
+
+def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return (0, 0, 0)
+    normalized = filled_param = filled_name = 0
+    for offer in offers_el.findall("offer"):
+        ven = offer.find("vendor")
+        txt = (ven.text or "").strip() if ven is not None and ven.text else ""
+        if txt:
+            norm = normalize_brand(txt)
+            if norm and norm != txt:
+                ven.text = norm
+            continue
+        candidate = ""
+        for p in offer.findall("param") + offer.findall("Param"):
+            nm = (p.attrib.get("name") or "").strip().lower()
+            if "бренд" in nm or "производ" in nm:
+                candidate = (p.text or "").strip()
+                if candidate:
+                    break
+        if candidate:
+            val = normalize_brand(candidate)
+            if val:
+                if ven is None:
+                    ven = ET.SubElement(offer, "vendor")
+                ven.text = val
+                filled_param += 1
+                continue
+        name_val = get_text(offer, "name")
+        if name_val:
+            for pat, brand in _BRAND_PATTERNS:
+                if pat.search(name_val):
+                    if ven is None:
+                        ven = ET.SubElement(offer, "vendor")
+                    ven.text = brand
+                    filled_name += 1
+                    break
+    return (normalized, filled_param, filled_name)
+
+
+# ===================== ОБЯЗАТЕЛЬНЫЙ <vendorCode> =====================
+
+def derive_vendorcode_base(offer: ET.Element) -> str:
+    base = (offer.attrib.get("article") or "").strip()
+    if base:
+        return base
+    for tag in ("Offer_ID", "OfferID", "offer_id"):
+        t = get_text(offer, tag)
+        if t:
+            return t
+    base = (offer.attrib.get("id") or "").strip()
+    if base:
+        return base
+    t = get_text(offer, "vendorCode")
+    if t:
+        return t
+    name_val = get_text(offer, "name") or "UNK"
+    return hashlib.md5(name_val.encode("utf-8", errors="ignore")).hexdigest()[:10].upper()
+
+def ensure_vendorcode_with_prefix(offer: ET.Element, prefix: str) -> None:
+    vc = offer.find("vendorCode")
+    if vc is None:
+        vc = ET.SubElement(offer, "vendorCode")
+        base = derive_vendorcode_base(offer)
+        vc.text = f"{prefix}{base}"
+    else:
+        vc.text = f"{prefix}{(vc.text or '')}"
+
+
+# ===================== КАТЕГОРИИ =====================
 
 def build_category_graph(cats_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
     id2name: Dict[str, str] = {}
@@ -133,18 +318,6 @@ def build_category_graph(cats_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,s
             id2parent.setdefault(cid, "")
     return id2name, id2parent, parent2children
 
-def collect_descendants(start_ids: Set[str], parent2children: Dict[str,Set[str]]) -> Set[str]:
-    out: Set[str] = set()
-    stack = list(start_ids)
-    while stack:
-        x = stack.pop()
-        if x in out:
-            continue
-        out.add(x)
-        for ch in parent2children.get(x, ()):
-            stack.append(ch)
-    return out
-
 def collect_ancestors(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
     out: Set[str] = set()
     for cid in ids:
@@ -158,246 +331,90 @@ def collect_ancestors(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
     return out
 
 
-# ===================== ПАРСИНГ ФАЙЛА ФИЛЬТРОВ =====================
+# ===================== КАНОНИЗАЦИЯ ПОРЯДКА ТЕГОВ В <offer> =====================
 
-def parse_selectors(path: str) -> Tuple[Set[str], List[str], List[re.Pattern]]:
-    ids_filter: Set[str] = set()
-    substrings: List[str] = []
-    regexps: List[re.Pattern] = []
-    try:
-        with open(path, "r", encoding="utf-8-sig") as f:
-            for raw in f:
-                line = raw.strip()
-                if not line or line.startswith("#"):
-                    continue
-                if line.lower().startswith("re:"):
-                    pat = line[3:].strip()
-                    if pat:
-                        try:
-                            regexps.append(re.compile(pat, re.I))
-                        except re.error as e:
-                            warn(f"bad regex in {path!r}: {pat!r} ({e})")
-                    continue
-                if line.isdigit() or ":" not in line:
-                    ids_filter.add(line)
-                else:
-                    substrings.append(line.lower())
-    except FileNotFoundError:
-        warn(f"{path} not found — фильтр категорий НЕ будет применён")
-    return ids_filter, substrings, regexps
-
-def cat_matches(name: str, cid: str, ids_filter: Set[str], subs: List[str], regs: List[re.Pattern]) -> bool:
-    if cid in ids_filter:
-        return True
-    lname = (name or "").lower()
-    for s in subs:
-        if s and s in lname:
-            return True
-    for r in regs:
-        try:
-            if r.search(name or ""):
-                return True
-        except Exception:
-            continue
-    return False
-
-
-# ===================== НОРМАЛИЗАЦИЯ/ЗАПОЛНЕНИЕ <vendor> =====================
-
-_BRAND_MAP = {
-    "hp": "HP", "hewlett packard": "HP", "hewlett packard inc": "HP", "hp inc": "HP",
-    "canon": "Canon", "canon inc": "Canon",
-    "brother": "Brother",
-    "kyocera": "Kyocera", "kyocera mita": "Kyocera",
-    "xerox": "Xerox",
-    "ricoh": "Ricoh",
-    "epson": "Epson",
-    "samsung": "Samsung",
-    "panasonic": "Panasonic",
-    "konica minolta": "Konica Minolta", "konica": "Konica Minolta",
-    "sharp": "Sharp",
-    "lexmark": "Lexmark",
-    "pantum": "Pantum",
-    "nv print": "NV Print", "nvprint": "NV Print", "nv  print": "NV Print",
-    "akcent": "AKCENT",
-    "vtt": "VTT",
-}
-
-_BRAND_PATTERNS = [
-    (re.compile(r"^\s*hp\b", re.I), "HP"),
-    (re.compile(r"^\s*canon\b", re.I), "Canon"),
-    (re.compile(r"^\s*brother\b", re.I), "Brother"),
-    (re.compile(r"^\s*kyocera\b", re.I), "Kyocera"),
-    (re.compile(r"^\s*xerox\b", re.I), "Xerox"),
-    (re.compile(r"^\s*ricoh\b", re.I), "Ricoh"),
-    (re.compile(r"^\s*epson\b", re.I), "Epson"),
-    (re.compile(r"^\s*samsung\b", re.I), "Samsung"),
-    (re.compile(r"^\s*panasonic\b", re.I), "Panasonic"),
-    (re.compile(r"^\s*konica\s*-?\s*minolta\b", re.I), "Konica Minolta"),
-    (re.compile(r"^\s*sharp\b", re.I), "Sharp"),
-    (re.compile(r"^\s*lexmark\b", re.I), "Lexmark"),
-    (re.compile(r"^\s*pantum\b", re.I), "Pantum"),
-    (re.compile(r"^\s*nv\s*-?\s*print\b", re.I), "NV Print"),
-    (re.compile(r"^\s*akcent\b", re.I), "AKCENT"),
-    (re.compile(r"^\s*vtt\b", re.I), "VTT"),
+PRIMARY_ORDER = [
+    "name",
+    "vendor",
+    "vendorCode",
+    "categoryId",
+    "price",
+    "currencyId",
+    "oldprice",
+    "url",
 ]
-
-def _norm_key(s: str) -> str:
-    if not s:
-        return ""
-    s = s.strip().lower()
-    s = re.sub(r"[-_/]+", " ", s)
-    s = re.sub(r"\s+", " ", s)
-    return s
-
-def normalize_brand(raw: str) -> str:
-    k = _norm_key(raw)
-    if not k:
-        return ""
-    if k in _BRAND_MAP:
-        return _BRAND_MAP[k]
-    for pat, val in _BRAND_PATTERNS:
-        if pat.search(raw or ""):
-            return val
-    return " ".join(w.capitalize() for w in k.split())
-
-def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return (0, 0, 0)
-
-    normalized = 0
-    filled_param = 0
-    filled_name = 0
-
-    for offer in offers_el.findall("offer"):
-        ven = offer.find("vendor")
-        txt = (ven.text or "").strip() if ven is not None and ven.text else ""
-
-        if txt:
-            norm = normalize_brand(txt)
-            if norm and norm != txt:
-                ven.text = norm
-                normalized += 1
-            continue
-
-        candidate = ""
-        for p in offer.findall("param"):
-            nm = (p.attrib.get("name") or "").strip().lower()
-            if "бренд" in nm or "производ" in nm:
-                candidate = (p.text or "").strip()
-                if candidate:
-                    break
-        if candidate:
-            val = normalize_brand(candidate)
-            if ven is None:
-                ven = ET.SubElement(offer, "vendor")
-            ven.text = val
-            filled_param += 1
-            continue
-
-        name_val = get_text(offer, "name")
-        if name_val:
-            for pat, brand in _BRAND_PATTERNS:
-                if pat.search(name_val):
-                    if ven is None:
-                        ven = ET.SubElement(offer, "vendor")
-                    ven.text = brand
-                    filled_name += 1
-                    break
-
-    return (normalized, filled_param, filled_name)
-
-
-# ===================== ПОСТ-ОБРАБОТКА <vendorCode> =====================
-
-def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool = False) -> Tuple[int, int]:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0, 0
-    total = 0
-    created = 0
-    for offer in offers_el.findall("offer"):
-        vc = offer.find("vendorCode")
-        if vc is None:
-            if create_if_missing:
-                vc = ET.SubElement(offer, "vendorCode")
-                created += 1
-                old = ""
-            else:
-                continue
-        else:
-            old = vc.text or ""
-        vc.text = f"{prefix}{old}"
-        total += 1
-    return total, created
+def canonicalize_offer_children(offer: ET.Element) -> None:
+    children = list(offer)
+    if not children:
+        return
+    by_tag: Dict[str, List[ET.Element]] = {}
+    for ch in children:
+        by_tag.setdefault(ch.tag, []).append(ch)
+    for ch in children:
+        offer.remove(ch)
+    for tag in PRIMARY_ORDER:
+        for el in by_tag.pop(tag, []):
+            offer.append(el)
+    for el in by_tag.pop("picture", []):
+        offer.append(el)
+    rest_tags = [t for t in list(by_tag.keys()) if t.lower() not in {"param"}]
+    for tag in sorted(rest_tags):
+        for el in by_tag.pop(tag, []):
+            offer.append(el)
+    for tag in ["param", "Param"]:
+        for el in by_tag.pop(tag, []):
+            offer.append(el)
 
 
 # ===================== ОСНОВНАЯ ЛОГИКА =====================
 
 def main() -> None:
-    auth = (BASIC_USER, BASIC_PASS) if BASIC_USER and BASIC_PASS else None
-
-    log(f"Source: {SUPPLIER_URL}")
-    log(f"Categories file: {CATEGORIES_FILE}")
-    data = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
+    data, headers = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF)
     root = parse_xml_bytes(data)
 
-    # Дата из исходного фида (обычно атрибут <yml_catalog date="...">)
-    source_date = root.attrib.get("date") or ""
-    if not source_date:
-        # альтернативные места (реже встречаются)
-        source_date = (root.findtext("shop/generation-date") or
-                       root.findtext("shop/date") or "")
+    source_date = extract_source_date(root)
 
     shop = root.find("shop")
-    if shop is None:
-        err("XML: <shop> not found")
+    cats_el = shop.find("categories") if shop is not None else None
+    offers_el = shop.find("offers") if shop is not None else None
+    if shop is None or cats_el is None or offers_el is None:
+        err("XML: <shop>/<categories>/<offers> not found")
 
-    cats_el = shop.find("categories")
-    offers_el = shop.find("offers")
-    if cats_el is None or offers_el is None:
-        err("XML: <categories> or <offers> not found")
+    id2name, id2parent, _ = build_category_graph(cats_el)
 
-    id2name, id2parent, parent2children = build_category_graph(cats_el)
+    prefixes, regexps = load_keywords(KEYWORDS_FILE)
+    have_filter = bool(prefixes or regexps)
 
-    # Читаем фильтры
-    ids_filter, subs, regs = parse_selectors(CATEGORIES_FILE)
-    have_selectors = bool(ids_filter or subs or regs)
-
-    # Определяем сохраняемые категории
-    matched_cat_ids = {cid for cid, nm in id2name.items() if cat_matches(nm, cid, ids_filter, subs, regs)}
-    keep_cat_ids = collect_descendants(matched_cat_ids, parent2children) if matched_cat_ids else set()
-
-    # Фильтрация офферов (fail-closed при наличии селекторов)
     offers_in = list(iter_local(offers_el, "offer"))
-    if have_selectors:
-        used_offers = [o for o in offers_in if get_text(o, "categoryId") in keep_cat_ids]
+    if have_filter:
+        used_offers = [o for o in offers_in if matches_keywords(get_text(o, "name"), prefixes, regexps)]
         if not used_offers:
-            warn("фильтры заданы, но офферов не найдено — проверь docs/categories_alstyle.txt")
+            warn("ключи заданы, но офферов не найдено — проверь docs/categories_alstyle.txt")
     else:
         used_offers = offers_in
 
-    # Фактические категории по найденным офферам + их предки
-    used_cat_ids = {get_text(o, "categoryId") for o in used_offers if get_text(o, "categoryId")}
+    used_cat_ids: Set[str] = {get_text(o, "categoryId") for o in used_offers if get_text(o, "categoryId")}
+    used_cat_ids = {cid for cid in used_cat_ids if cid}
     used_cat_ids |= collect_ancestors(used_cat_ids, id2parent)
 
-    # Сборка выходного XML
     out_root = ET.Element("yml_catalog")
     out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
 
-    # === FEED_META КОММЕНТАРИЙ (в самом верху под корневым тегом) ===
+    built_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    if ZoneInfo:
+        built_local = datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
+    else:
+        built_local = time.strftime("%Y-%m-%d %H:%M:%S")
     meta = (
         f"FEED_META supplier={SUPPLIER_NAME} "
         f"source={SUPPLIER_URL} "
         f"source_date={source_date or 'n/a'} "
-        f"built_utc={now_utc_str()} "
-        f"built_Asia/Almaty={now_almaty_str()} "
+        f"built_utc={built_utc} "
+        f"built_Asia/Almaty={built_local}"
     )
     out_root.insert(0, ET.Comment(meta))
 
-    # Категории — только используемые
     out_cats = ET.SubElement(out_shop, "categories")
 
     def depth(cid: str) -> int:
@@ -418,22 +435,45 @@ def main() -> None:
         c_el = ET.SubElement(out_cats, "category", attrs)
         c_el.text = id2name.get(cid, "")
 
-    # Офферы — глубокая копия исходных узлов
     out_offers = ET.SubElement(out_shop, "offers")
     for o in used_offers:
-        out_offers.append(deepcopy(o))
+        o2 = deepcopy(o)
 
-    # Пост-обработка: производитель
-    norm_cnt, fill_param_cnt, fill_name_cnt = ensure_vendor(out_shop)
+        # vendor: нормализуем только OEM-бренды, поставщиков не подставляем
+        ven = o2.find("vendor")
+        ven_txt = (ven.text or "").strip() if ven is not None and ven.text else ""
+        if ven_txt:
+            norm = normalize_brand(ven_txt)
+            if norm and norm != ven_txt:
+                ven.text = norm
+        else:
+            candidate = ""
+            for p in o2.findall("param") + o2.findall("Param"):
+                nm = (p.attrib.get("name") or "").strip().lower()
+                if "бренд" in nm or "производ" in nm:
+                    candidate = (p.text or "").strip()
+                    if candidate:
+                        break
+            if candidate:
+                val = normalize_brand(candidate)
+                if val:
+                    if ven is None:
+                        ven = ET.SubElement(o2, "vendor")
+                    ven.text = val
+            else:
+                name_val = get_text(o2, "name")
+                if name_val:
+                    for pat, brand in _BRAND_PATTERNS:
+                        if pat.search(name_val):
+                            if ven is None:
+                                ven = ET.SubElement(o2, "vendor")
+                            ven.text = brand
+                            break
 
-    # Пост-обработка: префикс к <vendorCode>
-    total_prefixed, created_nodes = force_prefix_vendorcode(
-        out_shop,
-        prefix=VENDORCODE_PREFIX,
-        create_if_missing=VENDORCODE_CREATE_IF_MISSING,
-    )
+        ensure_vendorcode_with_prefix(o2, VENDORCODE_PREFIX)
+        canonicalize_offer_children(o2)
+        out_offers.append(o2)
 
-    # Красивый вывод
     try:
         ET.indent(out_root, space="  ")
     except Exception:
@@ -442,11 +482,8 @@ def main() -> None:
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
 
-    # Логи
-    log(f"Selectors: ids={len(ids_filter)}, subs={len(subs)}, regs={len(regs)} (present={have_selectors})")
-    log(f"Vendor fixed: normalized={norm_cnt}, filled_from_param={fill_param_cnt}, filled_from_name={fill_name_cnt}")
-    log(f"Prefixed vendorCode: total={total_prefixed}, created={created_nodes}, prefix='{VENDORCODE_PREFIX}', create_if_missing={VENDORCODE_CREATE_IF_MISSING}")
     log(f"Source date: {source_date or 'n/a'}")
+    log(f"Keywords present: {bool(prefixes or regexps)} | prefixes={len(prefixes)} regexps={len(regexps)}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
 if __name__ == "__main__":
