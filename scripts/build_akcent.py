@@ -1,24 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-Генератор YML (Yandex Market Language) для Akcent — в стиле alstyle.
-Ключевые моменты:
-- Скачиваем исходный XML у поставщика (ретраи, проверки типа/размера).
-- Фильтруем офферы по docs/akcent_keywords.txt:
-    • обычные строки — строгий префикс (название начинается с ключа),
-    • строки с префиксом "re:" — регулярные выражения (опционально),
-    • пустой/отсутствующий файл — берём всё (как у alstyle при пустом фильтре).
-- Сохраняем ПОЛНУЮ структуру <offer> (deepcopy).
-- Категории: в выходной файл попадают только используемые + их предки (стабильная сортировка).
-- Нормализуем/дозаполняем <vendor> (убираем «Неизвестный производитель»).
-- ВСЕГДА добавляем префикс к <vendorCode> (по умолчанию "AC", без дефиса; дубли допускаются).
-- FEED_META вверху В ТОЧНОМ формате как у alstyle:
-    <!--FEED_META supplier=akcent source=<URL> source_date=<DATE> built_utc=<UTC> built_Asia/Almaty=<LOCAL> -->
-- Пишем результат в docs/akcent.yml (по умолчанию windows-1251).
+Akcent → YML (единый шаблон как у alstyle)
+- FEED_META: supplier, source, source_date, built_utc, built_Asia/Almaty
+- Обязательный <vendorCode> у каждого оффера (если нет — создаём), префикс "AC" (без дефиса)
+- Нормализация <vendor> ТОЛЬКО по OEM-брендам; названия ПОСТАВЩИКОВ никогда не подставляем
+- Фильтр по docs/akcent_keywords.txt:
+    • обычные строки — строгий префикс (name начинается с ключа)
+    • "re:<regex>" — регулярка
+    • пустой/отсутствующий файл — берём всё
+- Категории: только используемые + их предки
+- Канонический порядок тегов в <offer> (как в alstyle)
+- Вывод: docs/akcent.yml (по умолчанию windows-1251)
 """
 
 from __future__ import annotations
 
-import os, sys, re, time
+import os, sys, re, time, hashlib
 from copy import deepcopy
 from typing import Dict, List, Set, Tuple, Optional
 from xml.etree import ElementTree as ET
@@ -55,8 +52,11 @@ MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
 # Префикс для <vendorCode> (всегда добавляется).
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AC")
-# Создавать <vendorCode>, если отсутствует (по умолчанию — нет).
-VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lower() in {"1","true","yes"}
+
+# Поставщики, которые НЕЛЬЗЯ подставлять в <vendor>
+SUPPLIER_BLOCKLIST = {
+    "akcent", "vtt", "alstyle", "copyline", "nv print", "nvprint", "nv  print"
+}
 
 
 # ===================== УТИЛИТЫ =====================
@@ -72,17 +72,11 @@ def err(msg: str, code: int = 1) -> None:
     sys.exit(code)
 
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> Tuple[bytes, Dict[str, str]]:
-    """
-    Надёжное скачивание XML:
-    - RETRY с экспоненциальной задержкой,
-    - проверка статуса/размера,
-    - проверка, что тело похоже на XML.
-    Возвращает (bytes, headers).
-    """
+    """Надёжное скачивание XML с ретраями и проверками."""
     if not url:
-        err("SUPPLIER_URL is empty — укажи URL фида Akcent в секретах/ENV.")
+        err("SUPPLIER_URL is empty — укажи URL фида.")
     sess = requests.Session()
-    headers = {"User-Agent": "akcent-feed-bot/1.0 (+github-actions)"}
+    headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
     last_exc = None
     for attempt in range(1, retries + 1):
         try:
@@ -117,12 +111,12 @@ def iter_local(elem: ET.Element, name: str):
         yield child
 
 
-# ===================== ДАТЫ У ПОСТАВЩИКА =====================
+# ===================== ДАТЫ/МЕТА =====================
 
 _DT_PATTERNS = [
     "%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M",
     "%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%S",
-    "%d.%m.%Y %H:%M:%S", "%d.%m.%Y %H:%М", "%d.%m.%Y",
+    "%d.%m.%Y %H:%M:%S", "%d.%m.%Y %H:%M", "%d.%m.%Y",
     "%Y-%m-%d",
 ]
 
@@ -140,11 +134,7 @@ def normalize_dt(s: str) -> Optional[str]:
     return s
 
 def extract_source_date(root: ET.Element) -> str:
-    """
-    Унифицированная «дата у поставщика» как у alstyle:
-      - <yml_catalog date="..."> или
-      - <shop/generation-date|generation_date|generationDate|date> или <date>
-    """
+    """Дата у поставщика (как у alstyle)."""
     val = (root.attrib.get("date") or "").strip()
     if val:
         return normalize_dt(val) or val
@@ -187,7 +177,7 @@ def load_keywords(path: str) -> Tuple[List[str], List[re.Pattern]]:
 
 def matches_keywords(title: str, prefixes: List[str], regexps: List[re.Pattern]) -> bool:
     if not prefixes and not regexps:
-        return True  # пустой файл = берём всё
+        return True
     nm = _norm(title)
     if any(nm.startswith(p) for p in prefixes):
         return True
@@ -200,8 +190,9 @@ def matches_keywords(title: str, prefixes: List[str], regexps: List[re.Pattern])
     return False
 
 
-# ===================== НОРМАЛИЗАЦИЯ/ЗАПОЛНЕНИЕ <vendor> =====================
+# ===================== НОРМАЛИЗАЦИЯ <vendor> =====================
 
+# OEM-бренды, которые можно нормализовать
 _BRAND_MAP = {
     "hp": "HP", "hewlett packard": "HP", "hewlett packard inc": "HP", "hp inc": "HP",
     "canon": "Canon", "canon inc": "Canon",
@@ -212,13 +203,10 @@ _BRAND_MAP = {
     "epson": "Epson",
     "samsung": "Samsung",
     "panasonic": "Panasonic",
-    "konica minolta": "Konica Minolta", "konica": "Конica Minolta",
+    "konica minolta": "Konica Minolta", "konica": "Konica Minolta",
     "sharp": "Sharp",
     "lexmark": "Lexmark",
     "pantum": "Pantum",
-    "nv print": "NV Print", "nvprint": "NV Print", "nv  print": "NV Print",
-    "akcent": "AKCENT",
-    "vtt": "VTT",
 }
 _BRAND_PATTERNS = [
     (re.compile(r"^\s*hp\b", re.I), "HP"),
@@ -234,23 +222,24 @@ _BRAND_PATTERNS = [
     (re.compile(r"^\s*sharp\b", re.I), "Sharp"),
     (re.compile(r"^\s*lexmark\b", re.I), "Lexmark"),
     (re.compile(r"^\s*pantum\b", re.I), "Pantum"),
-    (re.compile(r"^\s*nv\s*-?\s*print\b", re.I), "NV Print"),
-    (re.compile(r"^\s*akcent\b", re.I), "AKCENT"),
-    (re.compile(r"^\s*vtt\b", re.I), "VTT"),
 ]
-
 def normalize_brand(raw: str) -> str:
     k = _norm(raw)
     if not k:
+        return ""
+    # Если это поставщик — возвращаем пусто (не подставляем)
+    if k in SUPPLIER_BLOCKLIST:
         return ""
     if k in _BRAND_MAP:
         return _BRAND_MAP[k]
     for pat, val in _BRAND_PATTERNS:
         if pat.search(raw or ""):
             return val
-    return " ".join(w.capitalize() for w in k.split())
+    # Автокапитализация НЕ для поставщиков
+    return "" if k in SUPPLIER_BLOCKLIST else " ".join(w.capitalize() for w in k.split())
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
+    """Нормализуем существующий vendor; НЕ подставляем названия поставщиков."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return (0, 0, 0)
@@ -263,7 +252,10 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
             if norm and norm != txt:
                 ven.text = norm
                 normalized += 1
+            # если нормализация вернула пусто (поставщик) — просто оставляем исходное (или пусто), ничего не подставляем
             continue
+
+        # Пытаемся аккуратно заполнить из param (если это не поставщик)
         candidate = ""
         for p in offer.findall("param") + offer.findall("Param"):
             nm = (p.attrib.get("name") or "").strip().lower()
@@ -273,11 +265,14 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
                     break
         if candidate:
             val = normalize_brand(candidate)
-            if ven is None:
-                ven = ET.SubElement(offer, "vendor")
-            ven.text = val
-            filled_param += 1
-            continue
+            if val:  # пусто = поставщик/невалидно — не подставляем
+                if ven is None:
+                    ven = ET.SubElement(offer, "vendor")
+                ven.text = val
+                filled_param += 1
+                continue
+
+        # Из name заполняем ТОЛЬКО если распознали OEM-бренд (а не поставщика)
         name_val = get_text(offer, "name")
         if name_val:
             for pat, brand in _BRAND_PATTERNS:
@@ -290,33 +285,37 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int]:
     return (normalized, filled_param, filled_name)
 
 
-# ===================== ПОСТ-ОБРАБОТКА <vendorCode> =====================
+# ===================== ОБЯЗАТЕЛЬНЫЙ <vendorCode> =====================
 
-def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool = False) -> Tuple[int, int]:
-    """
-    ВСЕГДА добавляет 'prefix' к <vendorCode>. Ничего не вырезаем; дубли префикса допускаются.
-    """
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0, 0
-    total = created = 0
-    for offer in offers_el.findall("offer"):
-        vc = offer.find("vendorCode")
-        if vc is None:
-            if create_if_missing:
-                vc = ET.SubElement(offer, "vendorCode")
-                created += 1
-                old = ""
-            else:
-                continue
-        else:
-            old = vc.text or ""
-        vc.text = f"{prefix}{old}"
-        total += 1
-    return total, created
+def derive_vendorcode_base(offer: ET.Element) -> str:
+    for tag_attr in ("article",):
+        base = (offer.attrib.get(tag_attr) or "").strip()
+        if base:
+            return base
+    for tag in ("Offer_ID", "OfferID", "offer_id"):
+        t = get_text(offer, tag)
+        if t:
+            return t
+    base = (offer.attrib.get("id") or "").strip()
+    if base:
+        return base
+    t = get_text(offer, "vendorCode")
+    if t:
+        return t
+    name_val = get_text(offer, "name") or "UNK"
+    return hashlib.md5(name_val.encode("utf-8", errors="ignore")).hexdigest()[:10].upper()
+
+def ensure_vendorcode_with_prefix(offer: ET.Element, prefix: str) -> None:
+    vc = offer.find("vendorCode")
+    if vc is None:
+        vc = ET.SubElement(offer, "vendorCode")
+        base = derive_vendorcode_base(offer)
+        vc.text = f"{prefix}{base}"
+    else:
+        vc.text = f"{prefix}{(vc.text or '')}"
 
 
-# ===================== КАТЕГОРИИ (как у alstyle) =====================
+# ===================== КАТЕГОРИИ =====================
 
 def build_category_graph(cats_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
     id2name: Dict[str, str] = {}
@@ -349,28 +348,50 @@ def collect_ancestors(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
     return out
 
 
+# ===================== КАНОНИЗАЦИЯ ПОРЯДКА ТЕГОВ В <offer> =====================
+
+PRIMARY_ORDER = [
+    "name",
+    "vendor",
+    "vendorCode",
+    "categoryId",
+    "price",
+    "currencyId",
+    "oldprice",
+    "url",
+]
+def canonicalize_offer_children(offer: ET.Element) -> None:
+    children = list(offer)
+    if not children:
+        return
+    by_tag: Dict[str, List[ET.Element]] = {}
+    for ch in children:
+        by_tag.setdefault(ch.tag, []).append(ch)
+    for ch in children:
+        offer.remove(ch)
+    for tag in PRIMARY_ORDER:
+        for el in by_tag.pop(tag, []):
+            offer.append(el)
+    for el in by_tag.pop("picture", []):
+        offer.append(el)
+    rest_tags = [t for t in list(by_tag.keys()) if t.lower() not in {"param"}]
+    for tag in sorted(rest_tags):
+        for el in by_tag.pop(tag, []):
+            offer.append(el)
+    for tag in ["param", "Param"]:
+        for el in by_tag.pop(tag, []):
+            offer.append(el)
+
+
 # ===================== ОСНОВНАЯ ЛОГИКА =====================
 
 def main() -> None:
     auth = (BASIC_USER, BASIC_PASS) if BASIC_USER and BASIC_PASS else None
 
-    # Показать источник значения URL (для отладки конфигурации)
-    url_src_env = (
-        "SUPPLIER_URL" if os.getenv("SUPPLIER_URL") else
-        "AKCENT_URL" if os.getenv("AKCENT_URL") else
-        "AKCENT_XML_URL" if os.getenv("AKCENT_XML_URL") else
-        "DEFAULT"
-    )
-    log(f"[akcent] URL source: {url_src_env}")
-    log(f"[akcent] Source: {SUPPLIER_URL}")
-    log(f"[akcent] Keywords file: {KEYWORDS_FILE}")
-
-    # 1) Получаем и парсим XML поставщика
     data, headers = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
     root = parse_xml_bytes(data)
 
-    http_last_modified = headers.get("Last-Modified", "").strip()  # для логов (в FEED_META не пишем)
-    source_date = extract_source_date(root)  # унифицированное поле
+    source_date = extract_source_date(root)
 
     shop = root.find("shop")
     cats_el = shop.find("categories") if shop is not None else None
@@ -378,10 +399,8 @@ def main() -> None:
     if shop is None or cats_el is None or offers_el is None:
         err("XML: <shop>/<categories>/<offers> not found")
 
-    # 2) Граф категорий
     id2name, id2parent, _ = build_category_graph(cats_el)
 
-    # 3) Ключи отбора
     prefixes, regexps = load_keywords(KEYWORDS_FILE)
     have_filter = bool(prefixes or regexps)
 
@@ -393,17 +412,14 @@ def main() -> None:
     else:
         used_offers = offers_in
 
-    # 4) Набор используемых категорий (по отобранным офферам) + их предки
     used_cat_ids: Set[str] = {get_text(o, "categoryId") for o in used_offers if get_text(o, "categoryId")}
     used_cat_ids = {cid for cid in used_cat_ids if cid}
     used_cat_ids |= collect_ancestors(used_cat_ids, id2parent)
 
-    # 5) Сборка выходного XML
     out_root = ET.Element("yml_catalog")
     out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
 
-    # FEED_META — как у alstyle
     built_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     if ZoneInfo:
         built_local = datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
@@ -418,7 +434,6 @@ def main() -> None:
     )
     out_root.insert(0, ET.Comment(meta))
 
-    # Категории — только используемые
     out_cats = ET.SubElement(out_shop, "categories")
 
     def depth(cid: str) -> int:
@@ -439,12 +454,11 @@ def main() -> None:
         c_el = ET.SubElement(out_cats, "category", attrs)
         c_el.text = id2name.get(cid, "")
 
-    # Офферы — глубокая копия + правки vendor/vendorCode
     out_offers = ET.SubElement(out_shop, "offers")
     for o in used_offers:
         o2 = deepcopy(o)
 
-        # Нормализуем/дополняем <vendor>
+        # vendor: нормализуем только OEM-бренды, поставщиков не подставляем
         ven = o2.find("vendor")
         ven_txt = (ven.text or "").strip() if ven is not None and ven.text else ""
         if ven_txt:
@@ -460,42 +474,34 @@ def main() -> None:
                     if candidate:
                         break
             if candidate:
-                if ven is None:
-                    ven = ET.SubElement(o2, "vendor")
-                ven.text = normalize_brand(candidate)
+                val = normalize_brand(candidate)
+                if val:
+                    if ven is None:
+                        ven = ET.SubElement(o2, "vendor")
+                    ven.text = val
             else:
                 name_val = get_text(o2, "name")
-                for pat, brand in _BRAND_PATTERNS:
-                    if name_val and pat.search(name_val):
-                        if ven is None:
-                            ven = ET.SubElement(o2, "vendor")
-                        ven.text = brand
-                        break
+                if name_val:
+                    for pat, brand in _BRAND_PATTERNS:
+                        if pat.search(name_val):
+                            if ven is None:
+                                ven = ET.SubElement(o2, "vendor")
+                            ven.text = brand
+                            break
 
-        # ВСЕГДА префиксуем <vendorCode>
-        vc = o2.find("vendorCode")
-        if vc is None:
-            if VENDORCODE_CREATE_IF_MISSING:
-                vc = ET.SubElement(o2, "vendorCode")
-                vc.text = f"{VENDORCODE_PREFIX}"
-        if vc is not None:
-            vc.text = f"{VENDORCODE_PREFIX}{vc.text or ''}"
-
+        ensure_vendorcode_with_prefix(o2, VENDORCODE_PREFIX)
+        canonicalize_offer_children(o2)
         out_offers.append(o2)
 
-    # Красивный вывод (Python 3.9+)
     try:
         ET.indent(out_root, space="  ")
     except Exception:
         pass
 
-    # Запись файла
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
 
-    # Итоги (для логов CI; в сам файл эти поля не пишем)
     log(f"Source date: {source_date or 'n/a'}")
-    log(f"HTTP Last-Modified: {http_last_modified or 'n/a'}")
     log(f"Keywords present: {bool(prefixes or regexps)} | prefixes={len(prefixes)} regexps={len(regexps)}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
