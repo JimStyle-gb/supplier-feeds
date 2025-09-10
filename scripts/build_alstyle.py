@@ -2,18 +2,21 @@
 """
 Генератор YML (Yandex Market Language) для al-style:
 - Скачивает исходный XML, фильтрует категории, копирует офферы (deepcopy).
-- <vendor>:
+- Производитель (<vendor>):
     • Не ставит имена поставщиков (alstyle/copyline/vtt/akcent), NV Print разрешён.
     • Сверка по allowlist (OEM+NV Print), попытка восстановления из карточки; иначе пусто.
-- <vendorCode>: принудительный префикс (AS без дефиса), опц. создание, если нет.
-- Цены:
-    • Берётся минимальная дилерская, наценка 4% + фикс. надбавка по диапазонам.
-    • Итог: меняем последние 3 цифры на 900 (напр. 4898→4900, 99089→99900).
-    • <oldprice> удаляется. Служебные ценовые теги вычищаются (по умолчанию).
-- Характеристики в <description>:
-    • Встраиваем текстовый блок [SPECS_BEGIN]/[SPECS_END] из <param>.
-    • Авто-удаление лишних параметров ПЕРЕД встраиванием:
-      Артикул / Штрихкод / Код ТН ВЭД / Код (+ тег <barcode>).
+- Артикул (<vendorCode>): форс-префикс (AS, без дефиса), опц. создание при отсутствии.
+- Цена:
+    • Берём минимальную дилерскую, наценка 4% + фикс. надбавка по диапазонам.
+    • Итог: меняем последние 3 цифры на 900 (4898→4900, 99089→99900).
+    • <oldprice> удаляется. Служебные ценовые теги очищаются (по умолчанию).
+- Описание:
+    • Встраиваем в конец текстовый блок «Характеристики» из <param> (идемпотентно).
+- Параметры:
+    • Удаляем «Артикул», «Штрихкод», «Код ТН ВЭД», «Код» и тег <barcode>.
+    • (НОВОЕ) После встраивания характеристик удаляем ВСЕ <param> (по умолчанию),
+      чтобы они не мешали и не раздували фид. Список исключений можно задать
+      через ALLOWED_PARAM_NAMES.
 - FEED_META-комментарий с датами.
 """
 
@@ -66,9 +69,7 @@ INTERNAL_PRICE_TAGS = (
 EMBED_SPECS_IN_DESCRIPTION = os.getenv("EMBED_SPECS_IN_DESCRIPTION", "1").lower() in {"1","true","yes"}
 SPECS_BEGIN_MARK = "[SPECS_BEGIN]"
 SPECS_END_MARK   = "[SPECS_END]"
-# Параметры, которые показываем в описании (после удаления лишних)
 SPECS_INCLUDE = {
-    # намеренно НЕТ: артикул/штрихкод/код тн вэд/код
     "вес", "габариты (шхгхв)", "ёмкость батареи", "емкость батареи",
     "назначение", "время полной зарядки", "рабочий диапазон температур",
     "напряжение батарейного блока", "тип подключения батарейного блока",
@@ -76,10 +77,12 @@ SPECS_INCLUDE = {
 }
 SPECS_EXCLUDE_EMPTY = True
 
-# Параметры, которые УДАЛЯЕМ из фида целиком
-UNWANTED_PARAM_KEYS = {
-    "артикул", "штрихкод", "код тн вэд", "код",
-}
+# Параметры, которые УДАЛЯЕМ целиком
+UNWANTED_PARAM_KEYS = {"артикул","штрихкод","код тн вэд","код"}
+
+# (НОВОЕ) Удалять все <param> после встраивания «Характеристик»
+STRIP_ALL_PARAMS_AFTER_EMBED = os.getenv("STRIP_ALL_PARAMS_AFTER_EMBED", "1").lower() in {"1","true","yes"}
+ALLOWED_PARAM_NAMES_RAW = os.getenv("ALLOWED_PARAM_NAMES", "")  # напр.: "Цвет|Материал" или "Цвет,Материал"
 
 # ===================== УТИЛИТЫ =====================
 def log(msg: str) -> None:
@@ -272,11 +275,9 @@ for extra in _split_extra_brands(BRANDS_ALLOWLIST_EXTRA):
     can = _BRAND_MAP.get(key) or " ".join(w.capitalize() for w in key.split())
     if can: ALLOWED_BRANDS.add(can)
 
-HEAD_STOPWORDS = {
-    "картридж","картриджи","чернила","тонер","порошок","бумага","фотобумага","пленка","плівка",
-    "сумка","пакет","папка","ручка","кабель","переходник","адаптер","лента","лентa","скотч",
-    "матова","глянцевая","глянцева","матовая","для","совместим","совместимый","универсальный",
-}
+HEAD_STOPWORDS = {"картридж","картриджи","чернила","тонер","порошок","бумага","фотобумага","пленка","плівка",
+                  "сумка","пакет","папка","ручка","кабель","переходник","адаптер","лента","лентa","скотч",
+                  "матова","глянцевая","глянцева","матовая","для","совместим","совместимый","универсальный",}
 
 def _looks_unknown(txt: str) -> bool:
     t = (txt or "").strip().lower()
@@ -284,13 +285,10 @@ def _looks_unknown(txt: str) -> bool:
 
 def normalize_brand(raw: str) -> str:
     k = _norm_key(raw)
-    if (not k) or (k in SUPPLIER_BLOCKLIST):
-        return ""
-    if k in _BRAND_MAP:
-        return _BRAND_MAP[k]
+    if (not k) or (k in SUPPLIER_BLOCKLIST): return ""
+    if k in _BRAND_MAP: return _BRAND_MAP[k]
     for rg, val in _BRAND_PATTERNS:
-        if rg.search(raw or ""):
-            return val
+        if rg.search(raw or ""): return val
     return " ".join(w.capitalize() for w in k.split())
 
 def brand_allowed(canon: str) -> bool:
@@ -309,41 +307,31 @@ NAME_BRAND_PATTERNS = [
 def scan_text_for_allowed_brand(text: str) -> str:
     if not text: return ""
     for rg, val in _BRAND_PATTERNS:
-        if rg.search(text):
-            if brand_allowed(val):
-                return val
+        if rg.search(text) and brand_allowed(val): return val
     for rg in DESC_BRAND_PATTERNS:
         m = rg.search(text)
         if m:
             cand = normalize_brand(m.group(1))
-            if cand and brand_allowed(cand):
-                return cand
+            if cand and brand_allowed(cand): return cand
     for allowed in ALLOWED_BRANDS:
-        pat = re.compile(rf"\b{re.escape(allowed)}\b", re.I)
-        if pat.search(text):
-            return allowed
+        if re.search(rf"\b{re.escape(allowed)}\b", text, re.I): return allowed
     return ""
 
 def extract_brand_from_name(name: str) -> str:
     if not name: return ""
     for rg, val in _BRAND_PATTERNS:
-        if rg.search(name):
-            if brand_allowed(val):
-                return val
+        if rg.search(name) and brand_allowed(val): return val
     for rg in NAME_BRAND_PATTERNS:
         m = rg.search(name)
         if m:
             head = m.group(1).strip()
-            if _norm_key(head) in HEAD_STOPWORDS:
-                return ""
+            if _norm_key(head) in HEAD_STOPWORDS: return ""
             cand = normalize_brand(head)
-            if cand and brand_allowed(cand):
-                return cand
+            if cand and brand_allowed(cand): return cand
     head = re.split(r"[–—\-:\(\)\[\],;|/]{1,}", name, maxsplit=1)[0].strip()
     if head and _norm_key(head) not in HEAD_STOPWORDS:
         cand = normalize_brand(head)
-        if cand and brand_allowed(cand):
-            return cand
+        if cand and brand_allowed(cand): return cand
     return ""
 
 def extract_brand_from_params(offer: ET.Element) -> str:
@@ -351,13 +339,11 @@ def extract_brand_from_params(offer: ET.Element) -> str:
         nm = (p.attrib.get("name") or "").strip().lower()
         if "бренд" in nm or "производ" in nm or "manufacturer" in nm or "brand" in nm:
             cand = normalize_brand((p.text or "").strip())
-            if cand and brand_allowed(cand):
-                return cand
+            if cand and brand_allowed(cand): return cand
     for p in offer.findall("param"):
         txt = (p.text or "").strip()
         cand = scan_text_for_allowed_brand(txt)
-        if cand:
-            return cand
+        if cand: return cand
     return ""
 
 def extract_brand_any(offer: ET.Element) -> str:
@@ -365,10 +351,9 @@ def extract_brand_any(offer: ET.Element) -> str:
             or extract_brand_from_name(get_text(offer, "name"))
             or scan_text_for_allowed_brand(get_text(offer, "description")))
 
-def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int, int]:
+def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,int,int,int]:
     offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return (0,0,0,0,0,0)
+    if offers_el is None: return (0,0,0,0,0,0)
     normalized=filled_param=filled_text=dropped_supplier=dropped_not_allowed=recovered=0
     for offer in offers_el.findall("offer"):
         ven = offer.find("vendor")
@@ -386,25 +371,22 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int, int]:
                 if (not canon) or (not brand_allowed(canon)):
                     clear_vendor("not_allowed"); ven=None; txt_raw=""
                 else:
-                    if canon != txt_raw:
-                        ven.text = canon; normalized+=1
+                    if canon != txt_raw: ven.text = canon; normalized+=1
                     continue
-        # param
         candp = extract_brand_from_params(offer)
         if candp:
-            ven_new = ET.SubElement(offer, "vendor"); ven_new.text = candp
+            ET.SubElement(offer, "vendor").text = candp
             filled_param += 1; recovered += 1; continue
-        # name/desc
         candt = extract_brand_any(offer)
         if candt:
-            ven_new = ET.SubElement(offer, "vendor"); ven_new.text = candt
+            ET.SubElement(offer, "vendor").text = candt
             filled_text += 1; recovered += 1; continue
     return (normalized,filled_param,filled_text,dropped_supplier,dropped_not_allowed,recovered)
 
 # ===================== VENDORCODE =====================
 def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool=False) -> Tuple[int,int]:
     offers_el = shop_el.find("offers")
-    if offers_el is None: return 0,0
+    if offers_el is None: return (0,0)
     total=created=0
     for offer in offers_el.findall("offer"):
         vc = offer.find("vendorCode")
@@ -419,7 +401,7 @@ def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing:
     return total,created
 
 # ===================== ЦЕНООБРАЗОВАНИЕ (4% + …900) =====================
-PriceRule = Tuple[int,int,float,int]  # (min_incl, max_incl, percent, add_abs)
+PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
     ( 10001,    25000, 4.0,  4000),
@@ -437,21 +419,20 @@ PRICING_RULES: List[PriceRule] = [
     (1500001, 2000000, 4.0, 90000),
     (2000001,100000000,4.0,100000),
 ]
-
 def parse_price_number(raw: str) -> Optional[float]:
     if raw is None: return None
     s = raw.strip()
     if not s: return None
-    s = s.replace("\xa0"," ").replace(" ","").replace("KZT","").replace("kzt","").replace("₸","").replace(",",".")
+    s = (s.replace("\xa0"," ").replace(" ","")
+           .replace("KZT","").replace("kzt","").replace("₸","")
+           .replace(",","."))
     try:
         val = float(s); return val if val > 0 else None
     except Exception:
         return None
 
-PRICE_FIELDS = [
-    "purchasePrice","purchase_price","wholesalePrice","wholesale_price","opt_price",
-    "b2bPrice","b2b_price","price","oldprice",
-]
+PRICE_FIELDS = ["purchasePrice","purchase_price","wholesalePrice","wholesale_price",
+                "opt_price","b2bPrice","b2b_price","price","oldprice"]
 
 def get_dealer_price(offer: ET.Element) -> Optional[float]:
     vals: List[float] = []
@@ -463,8 +444,7 @@ def get_dealer_price(offer: ET.Element) -> Optional[float]:
     return min(vals) if vals else None
 
 def _force_tail_900(n: float) -> int:
-    i = int(n)
-    k = max(i // 1000, 0)
+    i = int(n); k = max(i // 1000, 0)
     out = k * 1000 + 900
     return out if out >= 900 else 900
 
@@ -498,41 +478,42 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
         updated += 1
     return updated, skipped, total
 
-# ===================== ЧИСТКА НЕНУЖНЫХ ПАРАМЕТРОВ =====================
+# ===================== ЧИСТКА ПАРАМЕТРОВ =====================
 def _key(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
 def strip_unwanted_params(shop_el: ET.Element) -> Tuple[int,int]:
-    """Удаляет <param name in UNWANTED_PARAM_KEYS> и тег <barcode>."""
+    """Удаляет <param> по UNWANTED_PARAM_KEYS и тег <barcode>."""
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0)
-    removed_params = 0
-    removed_barcode = 0
+    removed_params = 0; removed_barcode = 0
     for offer in offers_el.findall("offer"):
-        # remove params
         for p in list(offer.findall("param")):
             name = _key(p.attrib.get("name") or "")
             if name in UNWANTED_PARAM_KEYS:
                 offer.remove(p); removed_params += 1
-        # remove <barcode>
-        bc = offer.find("barcode")
-        if bc is not None:
+        if (bc := offer.find("barcode")) is not None:
             offer.remove(bc); removed_barcode += 1
     return removed_params, removed_barcode
 
-# ===================== СТРИП СЛУЖЕБНЫХ ЦЕН =====================
-def strip_internal_prices(shop_el: ET.Element, tags: tuple) -> int:
+def _parse_allowed_names(raw: str) -> Set[str]:
+    if not raw: return set()
+    parts = [x.strip() for x in re.split(r"[|,]", raw) if x.strip()]
+    return {_key(x) for x in parts}
+
+def strip_all_params_except(shop_el: ET.Element, allowed_names: Set[str]) -> int:
+    """Удаляет все <param>, кроме перечисленных в allowed_names (по имени)."""
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     removed = 0
     for offer in offers_el.findall("offer"):
-        for tag in tags:
-            node = offer.find(tag)
-            if node is not None:
-                offer.remove(node); removed += 1
+        for p in list(offer.findall("param")):
+            name = _key(p.attrib.get("name") or "")
+            if name not in allowed_names:
+                offer.remove(p); removed += 1
     return removed
 
-# ===================== СПЕЦИФИКАЦИИ → ОПИСАНИЕ =====================
+# ===================== ХАРАКТЕРИСТИКИ → ОПИСАНИЕ =====================
 def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
 
@@ -558,15 +539,12 @@ def _format_weight(val: str) -> str:
 def build_specs_lines(offer: ET.Element) -> List[str]:
     lines: List[str] = []
     for p in offer.findall("param"):
-        name = _norm(p.attrib.get("name") or "")
-        val = _norm(p.text or "")
+        name = _norm(p.attrib.get("name") or ""); val = _norm(p.text or "")
         if not name: continue
-        if _key(name) not in SPECS_INCLUDE:  # удалённые + лишние не попадают
-            continue
-        if SPECS_EXCLUDE_EMPTY and not val:
-            continue
+        if _key(name) not in SPECS_INCLUDE: continue
+        if SPECS_EXCLUDE_EMPTY and not val: continue
         if _key(name).startswith("габариты"):
-            normv = _parse_dims(val)
+            normv = _parse_dims(val); 
             if normv: val = normv
         elif _key(name) == "вес":
             val = _format_weight(val)
@@ -594,6 +572,7 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
 # ===================== ОСНОВНАЯ ЛОГИКА =====================
 def main() -> None:
     auth = (BASIC_USER, BASIC_PASS) if BASIC_USER and BASIC_PASS else None
+
     log(f"Source: {SUPPLIER_URL}")
     log(f"Categories file: {CATEGORIES_FILE}")
     data = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
@@ -655,11 +634,16 @@ def main() -> None:
     # Чистка внутренних цен
     removed_internal = strip_internal_prices(out_shop, INTERNAL_PRICE_TAGS) if STRIP_INTERNAL_PRICE_TAGS else 0
     # Удаление ненужных параметров (и <barcode>)
-    removed_params, removed_barcode = strip_unwanted_params(out_shop)
+    removed_params_unwanted, removed_barcode = strip_unwanted_params(out_shop)
     # Встраивание характеристик в описание
     specs_offers = specs_lines = 0
     if EMBED_SPECS_IN_DESCRIPTION:
         specs_offers, specs_lines = inject_specs_block(out_shop)
+    # Полная чистка param после встраивания
+    removed_params_total = 0
+    if STRIP_ALL_PARAMS_AFTER_EMBED:
+        allowed = _parse_allowed_names(ALLOWED_PARAM_NAMES_RAW)
+        removed_params_total = strip_all_params_except(out_shop, allowed)
 
     try: ET.indent(out_root, space="  ")
     except Exception: pass
@@ -672,7 +656,7 @@ def main() -> None:
     log(f"VendorCode: prefixed={total_prefixed}, created_nodes={created_nodes}, prefix='{VENDORCODE_PREFIX}'")
     log(f"Pricing (4% + tail=…900): updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
     log(f"Stripped internal price tags: enabled={STRIP_INTERNAL_PRICE_TAGS}, removed_nodes={removed_internal}")
-    log(f"Removed params: unwanted_params={removed_params}, barcode_tags={removed_barcode}")
+    log(f"Removed params: unwanted={removed_params_unwanted}, barcode_tags={removed_barcode}, total_after_embed={removed_params_total}")
     log(f"Specs in description: enabled={EMBED_SPECS_IN_DESCRIPTION}, offers={specs_offers}, lines_total={specs_lines}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
