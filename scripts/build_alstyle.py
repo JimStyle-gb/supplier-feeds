@@ -14,8 +14,13 @@
         4) description (маркеры)
       Нашёл разрешённый — подставляет; иначе vendor очищается.
 - <vendorCode>: форс-префикс (по умолчанию AS без дефиса), опционально создаёт, если отсутствует.
-- ВСЕГДА пересчитывает <price> от минимальной дилерской цены по зашитым правилам; <oldprice> удаляет.
-- (НОВОЕ) По умолчанию вычищает служебные ценовые теги (<purchase_price> и др.) из публичного YML:
+- Цены:
+    • ВСЕГДА пересчитывает <price> от минимальной дилерской цены по зашитым правилам
+    • Процент наценки: 4.0% (было 3.0%)
+    • <oldprice> удаляет
+    • Итоговую цену ОКРУГЛЯЕТ ВНИЗ до вида …900 (психологическое ценообразование),
+      напр. 104423 → 103900; 219980 → 219900.
+- (по умолчанию) вычищает служебные ценовые теги (<purchase_price> и др.) из публичного YML:
     STRIP_INTERNAL_PRICE_TAGS=1 (можно выключить =0)
 - Добавляет комментарий FEED_META (supplier/source/source_date/built_*).
 """
@@ -60,8 +65,7 @@ VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lo
 STRICT_VENDOR_ALLOWLIST = os.getenv("STRICT_VENDOR_ALLOWLIST", "1").lower() in {"1","true","yes"}
 BRANDS_ALLOWLIST_EXTRA = os.getenv("BRANDS_ALLOWLIST_EXTRA", "")
 
-# ====== Стриппинг внутренних цен (НОВОЕ) ======
-# Если 1 — удаляем служебные ценовые теги (закупка/опт/внутренние) из офферов перед записью YML.
+# ====== Стриппинг внутренних цен (по умолчанию включён) ======
 STRIP_INTERNAL_PRICE_TAGS = os.getenv("STRIP_INTERNAL_PRICE_TAGS", "1").lower() in {"1","true","yes"}
 INTERNAL_PRICE_TAGS = (
     "purchase_price", "purchasePrice",
@@ -71,7 +75,7 @@ INTERNAL_PRICE_TAGS = (
     "supplier_price", "supplierPrice",
     "min_price", "minPrice",
     "max_price", "maxPrice",
-    # <oldprice> мы удаляем отдельно в логике ценообразования
+    # <oldprice> удаляем отдельно в логике ценообразования
 )
 
 
@@ -231,12 +235,9 @@ def _norm_key(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
-# Поставщики, которых НЕЛЬЗЯ использовать как бренд
 SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent"]}
-
 UNKNOWN_VENDOR_MARKERS = ("неизвест", "unknown", "без бренда", "no brand", "noname", "no-name", "n/a")
 
-# Канонизация известных брендов (OEM + NV Print)
 _BRAND_MAP = {
     "hp": "HP", "hewlett packard": "HP", "hewlett packard inc": "HP", "hp inc": "HP",
     "canon": "Canon", "canon inc": "Canon",
@@ -253,7 +254,6 @@ _BRAND_MAP = {
     "pantum": "Pantum",
     "nv print": "NV Print", "nvprint": "NV Print", "nv  print": "NV Print",
 }
-# Регексы для OEM в тексте
 _BRAND_PATTERNS = [
     (re.compile(r"\bhp\b", re.I), "HP"),
     (re.compile(r"\bcanon\b", re.I), "Canon"),
@@ -271,7 +271,6 @@ _BRAND_PATTERNS = [
     (re.compile(r"\bnv\s*-?\s*print\b", re.I), "NV Print"),
 ]
 
-# База Satu (allowlist)
 ALLOWED_BRANDS_BASE = {
     "HP", "Canon", "Brother", "Kyocera", "Xerox", "Ricoh", "Epson", "Samsung",
     "Panasonic", "Konica Minolta", "Sharp", "Lexmark", "Pantum", "NV Print",
@@ -285,7 +284,6 @@ for extra in _split_extra_brands(BRANDS_ALLOWLIST_EXTRA):
     can = _BRAND_MAP.get(key) or " ".join(w.capitalize() for w in key.split())
     if can: ALLOWED_BRANDS.add(can)
 
-# Частые "не-брендовые" слова в начале
 HEAD_STOPWORDS = {
     "картридж","картриджи","чернила","тонер","порошок","бумага","фотобумага","пленка","плівка",
     "сумка","пакет","папка","ручка","кабель","переходник","адаптер","лента","лентa","скотч",
@@ -298,7 +296,7 @@ def _looks_unknown(txt: str) -> bool:
 
 def normalize_brand(raw: str) -> str:
     k = _norm_key(raw)
-    if (not k) or (k in SUPPLIER_BLOCKLIST):  # не ставим поставщиков
+    if (not k) or (k in SUPPLIER_BLOCKLIST):
         return ""
     if k in _BRAND_MAP:
         return _BRAND_MAP[k]
@@ -310,7 +308,6 @@ def normalize_brand(raw: str) -> str:
 def brand_allowed(canon: str) -> bool:
     return True if not STRICT_VENDOR_ALLOWLIST else (canon in ALLOWED_BRANDS)
 
-# Поиск бренда в тексте/параметрах
 DESC_BRAND_PATTERNS = [
     re.compile(r"(?:^|\b)(?:производитель|бренд)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
     re.compile(r"(?:^|\b)(?:manufacturer|brand)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
@@ -384,12 +381,6 @@ def extract_brand_any(offer: ET.Element) -> str:
     return scan_text_for_allowed_brand(get_text(offer, "description"))
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int, int]:
-    """
-    Нормализуем/подставляем vendor:
-    - убираем 'неизвестный' и названия поставщиков (alstyle/copyline/vtt/akcent)
-    - если текущий vendor не из allowlist → ищем допустимый бренд в карточке и подставляем
-    Возврат: (normalized, filled_param, filled_text, dropped_supplier, dropped_not_allowed, recovered)
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return (0, 0, 0, 0, 0, 0)
@@ -426,7 +417,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int, int]:
                     if canon != txt_raw:
                         ven.text = canon
                         normalized += 1
-                    continue  # валиден
+                    continue
 
         # 1) param=бренд
         params = offer.findall("param")
@@ -445,7 +436,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int, int]:
                 recovered += 1
                 continue
 
-        # 2) широкая эвристика: любые param → name → description
+        # 2) любые param → name → description
         cand2 = extract_brand_any(offer)
         if cand2:
             ven_new = ET.SubElement(offer, "vendor")
@@ -453,7 +444,6 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, int, int, int]:
             filled_text += 1
             recovered += 1
             continue
-        # иначе оставляем пустым
 
     return (normalized, filled_param, filled_text, dropped_supplier, dropped_not_allowed, recovered)
 
@@ -482,26 +472,26 @@ def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing:
     return total, created
 
 
-# ===================== ЦЕНООБРАЗОВАНИЕ (зашито) =====================
+# ===================== ЦЕНООБРАЗОВАНИЕ (4%) =====================
 
 PriceRule = Tuple[int, int, float, int]  # (min_incl, max_incl, percent, add_abs)
 
 PRICING_RULES: List[PriceRule] = [
-    (   101,    10000, 3.0,  3000),
-    ( 10001,    25000, 3.0,  4000),
-    ( 25001,    50000, 3.0,  5000),
-    ( 50001,    75000, 3.0,  7000),
-    ( 75001,   100000, 3.0, 10000),
-    (100001,   150000, 3.0, 12000),
-    (150001,   200000, 3.0, 15000),
-    (200001,   300000, 3.0, 20000),
-    (300001,   400000, 3.0, 25000),
-    (400001,   500000, 3.0, 30000),
-    (500001,   750000, 3.0, 40000),
-    (750001,  1000000, 3.0, 50000),
-    (1000001, 1500000, 3.0, 70000),
-    (1500001, 2000000, 3.0, 90000),
-    (2000001,100000000,3.0,100000),
+    (   101,    10000, 4.0,  3000),
+    ( 10001,    25000, 4.0,  4000),
+    ( 25001,    50000, 4.0,  5000),
+    ( 50001,    75000, 4.0,  7000),
+    ( 75001,   100000, 4.0, 10000),
+    (100001,   150000, 4.0, 12000),
+    (150001,   200000, 4.0, 15000),
+    (200001,   300000, 4.0, 20000),
+    (300001,   400000, 4.0, 25000),
+    (400001,   500000, 4.0, 30000),
+    (500001,   750000, 4.0, 40000),
+    (750001,  1000000, 4.0, 50000),
+    (1000001, 1500000, 4.0, 70000),
+    (1500001, 2000000, 4.0, 90000),
+    (2000001,100000000,4.0,100000),
 ]
 
 def parse_price_number(raw: str) -> Optional[float]:
@@ -538,11 +528,25 @@ def get_dealer_price(offer: ET.Element) -> Optional[float]:
         return None
     return min(vals)
 
+def _align_price_psych_900(n: float) -> int:
+    """
+    Психологическое округление ВНИЗ до цены, оканчивающейся на …900.
+    Примеры: 104423 → 103900; 219980 → 219900; 100100 → 99_900.
+    """
+    base = (int(n) // 1000) * 1000 + 900
+    if base > n:
+        base -= 1000
+    return max(base, 900)  # на всякий случай нижний предел
+
 def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
+    """
+    Находит диапазон (включительно) и считает: dealer * (1 + pct/100) + add,
+    затем ОКРУГЛЯЕТ ВНИЗ до формата …900.
+    """
     for lo, hi, pct, add in rules:
         if lo <= dealer <= hi:
             val = dealer * (1.0 + pct / 100.0) + add
-            return int(round(val))
+            return _align_price_psych_900(val)
     return None
 
 def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int, int, int]:
@@ -582,11 +586,6 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int, in
 # ===================== СТРИП СЛУЖЕБНЫХ ЦЕН =====================
 
 def strip_internal_prices(shop_el: ET.Element, tags: tuple) -> int:
-    """
-    Удаляет из каждого offer служебные ценовые теги (закупка/опт/внутренние).
-    НЕ трогает <price> и <prices>.
-    Возвращает количество удалённых узлов.
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -690,7 +689,7 @@ def main() -> None:
         out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING
     )
 
-    # Ценообразование
+    # Ценообразование (4% + …900)
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
     # Стрип внутренних цен (если включено)
@@ -711,7 +710,7 @@ def main() -> None:
     log(f"Vendor allowlist: strict={STRICT_VENDOR_ALLOWLIST} | base={len(ALLOWED_BRANDS_BASE)} | total={len(ALLOWED_BRANDS)}")
     log(f"Vendor stats: normalized={norm_cnt}, filled_param={fill_param_cnt}, filled_text={fill_text_cnt}, recovered={recovered}, dropped_supplier={drop_sup}, dropped_not_allowed={drop_na}")
     log(f"VendorCode: prefixed={total_prefixed}, created_nodes={created_nodes}, prefix='{VENDORCODE_PREFIX}'")
-    log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
+    log(f"Pricing (4% + …900): updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
     log(f"Stripped internal price tags: enabled={STRIP_INTERNAL_PRICE_TAGS}, removed_nodes={removed_internal}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
