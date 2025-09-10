@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-09 20:32">
-  <!--FEED_META supplier=akcent source=https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml source_date=2025-09-09 22:00:00 built_utc=2025-09-09 20:32:54 UTC built_Asia/Almaty=2025-09-10 01:32:54 +05-->
+<yml_catalog date="2025-09-10 20:11">
+  <!--FEED_META supplier=akcent source=https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml source_date=2025-09-10 22:00:00 built_utc=2025-09-10 20:11:26 UTC built_Asia/Almaty=2025-09-11 01:11:26 +05-->
   <shop>
     <categories>
       <category id="000002654">CAD</category>
@@ -69,7 +69,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>C13T55K200 Singlepack (Голубой) T55K200 UltraChrome HDX/HD 700ml</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">160734</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">161332</price>
           <price type="RRP" currencyId="KZT">180990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -111,7 +111,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>C13T55K30N Singlepack (Пурпурный) T55K30N UltraChrome HDX/HD 700ml</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">160734</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">161332</price>
           <price type="RRP" currencyId="KZT">180990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -153,7 +153,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>C13T55K400 Singlepack (Желтый) T55K400 UltraChrome HDX/HD 700ml</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">160734</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">161332</price>
           <price type="RRP" currencyId="KZT">180990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -195,7 +195,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>C13T55K700 Singlepack (Серый) T55K700 UltraChrome HDX/HD 700ml</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">160734</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">161332</price>
           <price type="RRP" currencyId="KZT">180990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -237,7 +237,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>C13T55KA00 Singlepack (Оранжевый) T55KA00UltraChrome HDX/HD 700ml</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">160734</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">161332</price>
           <price type="RRP" currencyId="KZT">180990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -279,7 +279,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>C13T55KB00 Singlepack (Зеленый) T55KB00UltraChrome HDX/HD 700ml</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">160734</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">161332</price>
           <price type="RRP" currencyId="KZT">180990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -321,7 +321,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">160734</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">161332</price>
           <price type="RRP" currencyId="KZT">180990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -346,7 +346,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">22666</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">22750</price>
           <price type="RRP" currencyId="KZT">27990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -365,7 +365,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
         <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/raskhodnye_materialy_dlya_pechatayushchikh_ustroystv/kartridzh/yemkost_dlya_otrabotannykh_chernil/yemkost_dlya_otrabotannykh_chernil_epson_c12c934591_wf_78xx_et_166xx_maintenance_box/</url>
         <picture>https://b2b.ak-cent.kz/upload/iblock/245/g5dm2vx8ypcll0npk4ae89s9od8448oo.jpg</picture>
         <Offer_ID>Н0000024889</Offer_ID>
-        <Stock>&lt;25</Stock>
+        <Stock>&lt;5</Stock>
         <delivery>true</delivery>
         <description>Емкость для отработанных чернил
 L15150</description>
@@ -373,7 +373,7 @@ L15150</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">18047</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">18115</price>
           <price type="RRP" currencyId="KZT">20990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -400,7 +400,7 @@ L15150</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7608</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7636</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -413,39 +413,6 @@ L15150</description>
         <Param name="Вид">Ёмкость для отработанных чернил</Param>
         <Param name="Для бренда">Epson</Param>
         <Param name="Страна происхождения">Япония,Индонезия,Филиппины</Param>
-      </offer>
-      <offer id="Н0000019434" article="C13T04D100" type="Ёмкость для отработанных чернил" available="true">
-        <name>Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</name>
-        <vendor>Epson</vendor>
-        <vendorCode>ACC13T04D100</vendorCode>
-        <categoryId type="own">000002672</categoryId>
-        <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/raskhodnye_materialy_dlya_pechatayushchikh_ustroystv/kartridzh/yemkost_dlya_otrabotannykh_chernil/yemkost_dlya_otrabotannykh_chernil_epson_c13t04d100_ecotank_maintenance_box_4clr/</url>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/f31/oszqwery6i95bz8l7jfzvpibl2260obe.jpg</picture>
-        <Offer_ID>Н0000019434</Offer_ID>
-        <Stock>&lt;25</Stock>
-        <delivery>true</delivery>
-        <description>Емкость для отработанных чернил</description>
-        <local_delivery_cost>500</local_delivery_cost>
-        <manufacturer_warranty>3</manufacturer_warranty>
-        <model>Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</model>
-        <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7608</price>
-          <price type="RRP" currencyId="KZT">8990</price>
-        </prices>
-        <Param name="Страна происхождения">Япония</Param>
-        <Param name="Производитель">Epson</Param>
-        <Param name="Сопутствующие товары">МФУ Epson L6160 фабрика печати, Wi-Fi</Param>
-        <Param name="Сопутствующие товары">МФУ Epson L6170 фабрика печати, Wi-Fi</Param>
-        <Param name="Сопутствующие товары">МФУ Epson L6190 фабрика печати, факс.Wi-Fi</Param>
-        <Param name="Сопутствующие товары">Принтер Epson M1100 фабрика печати</Param>
-        <Param name="Сопутствующие товары">МФУ Epson M2140 (CIS) фабрика печати</Param>
-        <Param name="Наименование производителя">Epson Ёмкость для отработанных чернил C13T04D100</Param>
-        <Param name="Совместимые продукты">C11CG21404,C11CG20404,C11CG19404,C11CH96404,C11CH43404,C11CG92405,</Param>
-        <Param name="Гарантия">3</Param>
-        <Param name="Тип">Ёмкость для отработанных чернил</Param>
-        <Param name="Тип печати">струйная</Param>
-        <Param name="Вид">Ёмкость для отработанных чернил</Param>
-        <Param name="Для бренда">Epson</Param>
       </offer>
       <offer id="00004072" article="C13T619000" type="Ёмкость для отработанных чернил" available="true">
         <name>Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN</name>
@@ -469,7 +436,7 @@ Epson WorkForce Pro WP-4535DWF</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">22260</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">22343</price>
           <price type="RRP" currencyId="KZT">24990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -500,7 +467,7 @@ SC-B6000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">51068</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">51258</price>
           <price type="RRP" currencyId="KZT">57990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -530,7 +497,7 @@ SC-B6000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">36606</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">36742</price>
           <price type="RRP" currencyId="KZT">61990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -561,7 +528,7 @@ SC-B6000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">25476</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">25571</price>
           <price type="RRP" currencyId="KZT">28990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -591,7 +558,7 @@ SC-B6000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson C33S021601	SJMB4000 C4000e Maintenance box</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">20784</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">20861</price>
           <price type="RRP" currencyId="KZT">23990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -613,7 +580,7 @@ SC-B6000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Ёмкость для отработанных чернил Epson Maintenance Box for AM-C400/550</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">52961</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">53158</price>
           <price type="RRP" currencyId="KZT">57990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -669,7 +636,7 @@ SC-B6000</description>
         <manufacturer_warranty>1 год</manufacturer_warranty>
         <model>Интерактивная доска Mr.Pixel S102 BLACK</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">221441</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">222264</price>
           <price type="RRP" currencyId="KZT">272990</price>
         </prices>
         <Param name="Гарантия">1 год</Param>
@@ -742,7 +709,7 @@ SC-B6000</description>
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Интерактивная доска Mr.Pixel S82 BLACK</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">126538</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">127008</price>
           <price type="RRP" currencyId="KZT">160990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -814,7 +781,7 @@ HDMI вход с поддержкой HDCP 2.3</description>
         <manufacturer_warranty />
         <model>Интерактивная панель SBID-QX275-P</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">3237122</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">3249156</price>
           <price type="RRP" currencyId="KZT">3735990</price>
         </prices>
       </offer>
@@ -835,7 +802,7 @@ Epson WorkForce WF-7110DTW</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T27914022 для WF-7620DTWF черный new</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">30501</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">30614</price>
           <price type="RRP" currencyId="KZT">34990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -869,7 +836,7 @@ Epson SureColor SC-T3100	C11CF11302A0	-
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T40D140 UltraChrome XD2 Black T40D140(80ml)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">57728</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">57942</price>
           <price type="RRP" currencyId="KZT">70990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -901,7 +868,7 @@ Epson SureColor SC-T3100	C11CF11302A0	-
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T40D240 UltraChrome XD2 Cyan T40D240(50ml)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">40619</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">40770</price>
           <price type="RRP" currencyId="KZT">49990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -933,7 +900,7 @@ Epson SureColor SC-T3100	C11CF11302A0	-
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T40D34N UltraChrome XD2 Magenta T40D340(50ml)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">40597</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">40748</price>
           <price type="RRP" currencyId="KZT">49990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -965,7 +932,7 @@ Epson SureColor SC-T3100	C11CF11302A0
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">40619</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">40770</price>
           <price type="RRP" currencyId="KZT">49990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -993,7 +960,7 @@ Epson SureColor SC-T3100	C11CF11302A0
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T41E240 UltraChrome 700 ml голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">199687</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">200429</price>
           <price type="RRP" currencyId="KZT">223990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1021,7 +988,7 @@ Epson SureColor SC-T3100	C11CF11302A0
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T41E34N UltraChrome XD2 T41E340 M 350 ml пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">199666</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">200408</price>
           <price type="RRP" currencyId="KZT">223990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1049,7 +1016,7 @@ Epson SureColor SC-T3100	C11CF11302A0
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T41E440 700ml жёлтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">199687</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">200429</price>
           <price type="RRP" currencyId="KZT">223990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1077,7 +1044,7 @@ Epson SureColor SC-T3100	C11CF11302A0
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T41E540 UltraChrome 700ml черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">199687</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">200429</price>
           <price type="RRP" currencyId="KZT">223990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1109,7 +1076,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T41F240 UltraChrome XD2 T41F240 C 350 ml голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">102147</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">102527</price>
           <price type="RRP" currencyId="KZT">125990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1139,7 +1106,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">111775</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">112190</price>
           <price type="RRP" currencyId="KZT">125990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1170,7 +1137,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T41F440  UltraChrome XD2 T41F440 Y 350ml жёлтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">102147</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">102527</price>
           <price type="RRP" currencyId="KZT">125990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1201,7 +1168,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T41F540 UltraChrome XD2 T41F540 B 350ml черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">102147</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">102527</price>
           <price type="RRP" currencyId="KZT">125990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1231,7 +1198,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T49H20N Контейнер с голубыми чернилами для SC-T3100x</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">18295</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">18363</price>
           <price type="RRP" currencyId="KZT">22990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1260,7 +1227,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T49H300 Контейнер с пурпурными чернилами для SC-T3100x</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">18290</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">18358</price>
           <price type="RRP" currencyId="KZT">22990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1289,7 +1256,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T49H400  Контейнер с желтыми чернилами для SC-T3100x</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">18290</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">18358</price>
           <price type="RRP" currencyId="KZT">22990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1323,7 +1290,7 @@ Epson SC-T7700DM</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T50M400 T3000/5000/7000, Т3700/5700/7700 жёлтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">191161</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">191872</price>
           <price type="RRP" currencyId="KZT">214990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1358,7 +1325,7 @@ Epson SC-T7700DM</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T50MF00 T3000/5000/7000, Т3700/5700/7700 красный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">191161</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">191872</price>
           <price type="RRP" currencyId="KZT">214990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1389,7 +1356,7 @@ Epson Stylus Pro 4880</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T606400 SP-4880 желтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">83736</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">84048</price>
           <price type="RRP" currencyId="KZT">93990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -1418,7 +1385,7 @@ Epson Stylus Pro 4880</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T606600 SP-4880 светло-пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">83742</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">84053</price>
           <price type="RRP" currencyId="KZT">93990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -1448,7 +1415,7 @@ Epson Stylus Pro 4880</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T606900 SP-4880 светло-серый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">83736</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">84048</price>
           <price type="RRP" currencyId="KZT">93990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -1477,7 +1444,7 @@ Epson Stylus Pro 4800</description>
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">83742</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">84053</price>
           <price type="RRP" currencyId="KZT">93990</price>
         </prices>
         <Param name="Гарантия">12 мес</Param>
@@ -1498,7 +1465,7 @@ Epson Stylus Pro 4800</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T606C00 SP-4800 пурпурный светлый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">83742</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">84053</price>
           <price type="RRP" currencyId="KZT">93990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -1528,7 +1495,7 @@ Epson Stylus Pro 4450</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T614200 SP-4450 голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">83726</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">84037</price>
           <price type="RRP" currencyId="KZT">93990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -1559,7 +1526,7 @@ Epson Stylus Pro 4450</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T614400 SP-4450 желтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">83726</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">84037</price>
           <price type="RRP" currencyId="KZT">93990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -1591,7 +1558,7 @@ Epson Stylus Pro 4450</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T61480N SP-4450  220ml черный матовый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">83726</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">84037</price>
           <price type="RRP" currencyId="KZT">93990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -1623,7 +1590,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T692100 T3000/5000/7000, Т3200/5200/7200  фото черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">43128</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">43289</price>
           <price type="RRP" currencyId="KZT">52990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1655,7 +1622,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T69230N T3000/5000/7000, Т3200/5200/7200 пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">43128</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">43289</price>
           <price type="RRP" currencyId="KZT">52990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1687,7 +1654,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">43128</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">43289</price>
           <price type="RRP" currencyId="KZT">52990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1719,7 +1686,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">43128</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">43289</price>
           <price type="RRP" currencyId="KZT">52990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1751,7 +1718,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">191161</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">191872</price>
           <price type="RRP" currencyId="KZT">214990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1783,7 +1750,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T69420N T3000/5000/7000, Т3200/5200/7200 голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">191161</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">191872</price>
           <price type="RRP" currencyId="KZT">214990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1815,7 +1782,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">191161</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">191872</price>
           <price type="RRP" currencyId="KZT">214990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1847,7 +1814,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">191161</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">191872</price>
           <price type="RRP" currencyId="KZT">214990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -1880,7 +1847,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T838140 WF-R5190DTW (RIPS)/WF-R5690DTWF (RIPS) черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">102084</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">102464</price>
           <price type="RRP" currencyId="KZT">114990</price>
         </prices>
         <Param name="Страна происхождения">Япония</Param>
@@ -1915,7 +1882,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">163492</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">164100</price>
           <price type="RRP" currencyId="KZT">183990</price>
         </prices>
         <Param name="Гарантия">нет</Param>
@@ -1943,7 +1910,7 @@ Epson SureColor T-7000</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Картридж Epson C13T966140 WF-M52/57xx Series Ink Cartridge XXL BK.</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">299351</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">300464</price>
           <price type="RRP" currencyId="KZT">335990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -1996,7 +1963,7 @@ Epson SureColor SC-T3000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson Singlepack UltraChrome XD CyanT69220N (110ml)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">43128</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">43289</price>
           <price type="RRP" currencyId="KZT">52990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -2025,7 +1992,7 @@ Epson SureColor SC-T3000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson WorkForce Enterprise AM-C400 Black Ink</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">267116</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">268109</price>
           <price type="RRP" currencyId="KZT">299990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -2054,7 +2021,7 @@ Epson SureColor SC-T3000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson WorkForce Enterprise AM-C400 Cyan Ink</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">336964</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">338217</price>
           <price type="RRP" currencyId="KZT">377990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -2083,7 +2050,7 @@ Epson SureColor SC-T3000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson WorkForce Enterprise AM-C400 Magenta Ink</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">336964</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">338217</price>
           <price type="RRP" currencyId="KZT">377990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -2112,7 +2079,7 @@ Epson SureColor SC-T3000</description>
         <manufacturer_warranty>нет</manufacturer_warranty>
         <model>Картридж Epson WorkForce Enterprise AM-C400 Yellow Ink</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">336964</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">338217</price>
           <price type="RRP" currencyId="KZT">377990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -2144,7 +2111,7 @@ Epson SureColor SC-T3000</description>
         <manufacturer_warranty>Без гарантии</manufacturer_warranty>
         <model>Картридж для бутылки Philips AWP286/10</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">1044</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">1048</price>
           <price type="RRP" currencyId="KZT">1090</price>
         </prices>
         <Param name="Сопутствующие товары">Нет</Param>
@@ -2189,7 +2156,7 @@ Epson SureColor SC-T3000</description>
         <manufacturer_warranty>Без гарантии</manufacturer_warranty>
         <model>Картридж для фильтра Philips AWP201/10</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">1903</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">1910</price>
           <price type="RRP" currencyId="KZT">1990</price>
         </prices>
         <Param name="Сопутствующие товары">Нет</Param>
@@ -2295,7 +2262,7 @@ Auto Shut Off (Автоотключение)	да (после 30 минут простоя)
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">20931</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">21009</price>
           <price type="RRP" currencyId="KZT">22990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -2358,7 +2325,7 @@ Auto Shut Off (Автоотключение)	да (после 30 минут простоя)
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Ламинатор Fellowes Arc A4, 75/80 мкм, 30 см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">16281</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">16342</price>
           <price type="RRP" currencyId="KZT">18990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -2421,7 +2388,7 @@ Auto Shut Off (Автоотключение)	да (30 мин после включения)
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Ламинатор Fellowes Ion A4, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">18981</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">19051</price>
           <price type="RRP" currencyId="KZT">21990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -2468,7 +2435,7 @@ Auto Shut Off (Автоотключение)	да (30 мин после включения)
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">31218</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">31334</price>
           <price type="RRP" currencyId="KZT">34990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -2511,7 +2478,7 @@ Auto Shut Off (Автоотключение)	да (30 мин после включения)
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Ламинатор Fellowes Lunar A4, 2х80 мкм, 30 см/мин</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">21617</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">21697</price>
           <price type="RRP" currencyId="KZT">26990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -2545,7 +2512,7 @@ Fellowes гарантирует непревзойденное качество товаров и сервисного обслуживания.
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Ламинатор Fellowes Lunar+ A4, Blue, 75/80,125 мкм, 30 см/мин</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">28998</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">29106</price>
           <price type="RRP" currencyId="KZT">36990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -2585,7 +2552,7 @@ Full HD (1080p).
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Монитор Hyperx MNTR HX Armada 25 FHD Gaming</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">207606</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">208378</price>
           <price type="RRP" currencyId="KZT">189879</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -2613,7 +2580,7 @@ Quad HD (1440p) VESA DisplayHDR™ 400.
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Монитор Hyperx MNTR HX Armada 27 QHD Gaming</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">236942</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">237822</price>
           <price type="RRP" currencyId="KZT">233779</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -2729,7 +2696,7 @@ Power in: 3-pin Socket (IEC C14 / CEE22)
         <manufacturer_warranty>36</manufacturer_warranty>
         <model>Монитор ViewSonic XG320U</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">369068</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">370440</price>
           <price type="RRP" currencyId="KZT">409990</price>
         </prices>
         <Param name="Тип">Монитор</Param>
@@ -2857,7 +2824,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L14150 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">460813</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">462526</price>
           <price type="RRP" currencyId="KZT">516990</price>
         </prices>
         <Param name="Страна происхождения">Филиппины</Param>
@@ -2938,7 +2905,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L15150 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">839914</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">843037</price>
           <price type="RRP" currencyId="KZT">942990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -2967,6 +2934,108 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
         <Param name="Тип расходных материалов">чернила</Param>
         <Param name="Наименование производителя">Epson L15150</Param>
         <Param name="Вид">МФУ  Офис</Param>
+      </offer>
+      <offer id="Н0000028240" article="C11CJ67413" type="МФУ  Дом" available="true">
+        <name>МФУ Epson L3251 фабрика печати</name>
+        <vendor />
+        <vendorCode>ACC11CJ67413</vendorCode>
+        <categoryId type="own">000002652</categoryId>
+        <url />
+        <picture />
+        <Offer_ID>Н0000028240</Offer_ID>
+        <Stock>&lt;25</Stock>
+        <delivery>true</delivery>
+        <description>Домашний струйный принтер
+Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct
+Печать, сканирование и копирование
+Wi-Fi Direct
+Черный с синей панелью
+Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct и эксклюзивной синей панелью подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту&#185; вы с легкостью сможете выполнять различные задачи.
+Попрощайтесь с дорогостоящими картриджами
+EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета.
+Постоянная экономия
+Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет&#178;, обеспечивает значительную экономию средств при печати. Сменный набор чернильных флаконов может использоваться для печати до 4500 страниц в черном цвете и до 7500 страниц в цвете&#179;.
+Приложение Epson Smart Panel
+Приложение позволяет управлять принтером с мобильного устройства&#8308;. Вы можете быстро и легко настроить Wi-Fi, распечатать документы и фотографии, контролировать и устранять неисправности принтера.
+Гибкость, отвечающая современным требованиям
+Благодаря компактному дизайну, возможностям подключения Wi-Fi и Wi-Fi Direct этот принтер можно легко интегрировать в существующую домашнюю систему для печати с мобильных устройств, планшетов и ноутбуков&#8308;.
+Метод печати
+Epson Micro Piezo™ print head
+Конфигурация сопла
+180 Сопла (черный), 59 Сопла (цвет)
+Минимальный размер капли
+3 капли(ей), Технология капель с переменным размером
+Технология чернил
+Чернила на красителях
+Разрешение при печати
+5.760 x 1.440 DPI (точек на дюйм)
+Выработка
+Для дома, Для домашнего офиса
+Многофункциональный
+Печать, сканирование, Копия
+Количество цветов
+4 colour
+Скорость печати ISO/IEC 24734
+10 Стр./мин. Монохромная печать, 5 Стр./мин. Colour
+Максимальная скорость печати
+33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 15 Стр./мин. Colour (plain paper 75 g/m&#178;), 69 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper)
+Цвета
+Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]
+Скорость одностороннего сканирования (A4, черный)
+200 DPI (точек на дюйм); , 11 sec. with flatbed scan
+Single-sided scan speed (A4 colour)
+200 DPI (точек на дюйм); , 28 sec. with flatbed scan
+Разрешение сканирования
+1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный)
+Формат выводимых данных
+BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG
+Тип сканера
+Контактный датчик изображения (CIS)
+Optical Resolution
+1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный)
+Количество бумажных ящиков
+1
+Формат бумаги
+A4 (21,0x29,7 см) , A6 (10,5x14,8 см)  , A5 (14,8x21,0 см)  , B5  , 10 x 15 см  , 13 x 18 см  , 16:9  , DL (Конверт), No. 10 (Конверт)  , C6 (Конверт)  , Letter  , Выбрать формат, Legal
+Дуплекс
+Вручную
+Емкость отделения подачи бумаги
+30 Листы
+Paper Tray Capacity
+100 Листы Стандарт, 20 Листы фотобумаги
+Подходящий вес бумаги
+64 - 300г/м2
+Обработка мультимедиа
+Печать без полей
+Энергопотребление
+12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,7 Ватт (sleep mode), 4,5 Ватт Готов, 0,2 Ватт (выключать), TEC 0,15 kWh/week
+Напряжение питания
+AC 100 V - 240 V, 50 Hz - 60 Hz
+Габариты
+375 x 347 x 179 мм (Ширина x Глубина x Высота)
+Вес
+3,9 кг
+Совместимые операционные системы
+Mac OS X 10.6.8 or later, Windows 10, Windows 7, Windows 8, Windows 8.1, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later
+Интерфейсы
+USB, WiFi, Wi-Fi Direct
+Услуги мобильной и облачной печати
+Epson Smart Panel App
+Комплект поставки
+4 x 65ml individual ink bottles (Bk, C,Y,M), Драйвер и вспомогательная программа (CD), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы
+Цвет
+Black</description>
+        <local_delivery_cost>500</local_delivery_cost>
+        <manufacturer_warranty>12 мес</manufacturer_warranty>
+        <model>МФУ Epson L3251 фабрика печати</model>
+        <prices>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">99902</price>
+          <price type="RRP" currencyId="KZT">117990</price>
+        </prices>
+        <Param name="Страна происхождения">Филипины</Param>
+        <Param name="Гарантия">12 мес</Param>
+        <Param name="Тип">МФУ  Дом</Param>
+        <Param name="Вид">МФУ  Дом</Param>
       </offer>
       <offer id="00-00000333" article="C11CK59404" type="МФУ  Дом" available="true">
         <name>МФУ Epson L3550 фабрика печати, Wi-Fi</name>
@@ -3081,7 +3150,7 @@ Black
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L3550 фабрика печати, Wi-Fi</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">131810</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">132300</price>
           <price type="RRP" currencyId="KZT">152990</price>
         </prices>
         <Param name="Гарантия">12 мес</Param>
@@ -3202,7 +3271,7 @@ Apple AirPrint, Epson Smart Panel App, Epson Connect (Email Print, Remote Print 
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L3560 фабрика печати, Wi-Fi</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">147949</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">148499</price>
           <price type="RRP" currencyId="KZT">171990</price>
         </prices>
         <Param name="Гарантия">12 мес</Param>
@@ -3306,7 +3375,7 @@ Black
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L4260 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">209051</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">209828</price>
           <price type="RRP" currencyId="KZT">234990</price>
         </prices>
         <Param name="Гарантия">12 мес</Param>
@@ -3419,7 +3488,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L4267 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">209030</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">209807</price>
           <price type="RRP" currencyId="KZT">234990</price>
         </prices>
         <Param name="Гарантия">12 мес</Param>
@@ -3468,7 +3537,7 @@ CD с программным обеспечением и драйверами для Windows и OS X
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L5290  фабрика печати, факс,Wi-Fi</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">272689</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">273702</price>
           <price type="RRP" currencyId="KZT">305990</price>
         </prices>
         <Param name="Страна происхождения">Филипины</Param>
@@ -3585,7 +3654,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L6160 фабрика печати, Wi-Fi</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">319244</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">320431</price>
           <price type="RRP" currencyId="KZT">358990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -3732,7 +3801,7 @@ Black
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L6270 фабрика печати, Wi-Fi</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">342996</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">344271</price>
           <price type="RRP" currencyId="KZT">384990</price>
         </prices>
         <Param name="Гарантия">12 мес</Param>
@@ -3862,7 +3931,7 @@ Black
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L6290 фабрика печати, факс.Wi-Fi</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">354400</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">355718</price>
           <price type="RRP" currencyId="KZT">397990</price>
         </prices>
         <Param name="Страна происхождения">Филипины</Param>
@@ -3907,7 +3976,7 @@ CD с программным обеспечением и драйверами для Windows и macOS
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L6550 фабрика печати, факс,Wi-Fi</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">681242</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">683774</price>
           <price type="RRP" currencyId="KZT">764990</price>
         </prices>
         <Param name="Страна происхождения">Филиппины</Param>
@@ -4032,7 +4101,7 @@ ESC/P-R
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L8100 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">320193</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">321383</price>
           <price type="RRP" currencyId="KZT">359990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -4200,7 +4269,7 @@ SD
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L8160  фабрика печати, Wi-Fi</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">408558</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">410077</price>
           <price type="RRP" currencyId="KZT">458990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -4345,7 +4414,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson L8180  фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">468416</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">470157</price>
           <price type="RRP" currencyId="KZT">525990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -4416,7 +4485,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson M2110 (CIS) фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">171021</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">171657</price>
           <price type="RRP" currencyId="KZT">191990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -4486,7 +4555,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson M2120 (CIS) фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">171021</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">171657</price>
           <price type="RRP" currencyId="KZT">191990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -4555,7 +4624,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>МФУ Epson M2140 (CIS) фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">193824</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">194545</price>
           <price type="RRP" currencyId="KZT">217990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -4633,7 +4702,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Переплетчик Fellowes STAR+ 150 COMB BINDER</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">47293</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">47469</price>
           <price type="RRP" currencyId="KZT">54990</price>
         </prices>
         <Param name="Тип">переплетные машины на пластиковую пружину</Param>
@@ -4666,7 +4735,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
         <manufacturer_warranty>0</manufacturer_warranty>
         <model>Пленка для ламинирования  А4 Fellowes, 80мкм, 100 шт.</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">5014</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">5033</price>
           <price type="RRP" currencyId="KZT">4990</price>
         </prices>
         <Param name="Тип">пленка для ламинирования</Param>
@@ -4692,61 +4761,13 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Плоттер Epson SureColor SC-T3405</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">1375569</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">1380683</price>
           <price type="RRP" currencyId="KZT">1688990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
         <Param name="Производитель">Epson</Param>
         <Param name="Тип чернил">пигментные (K), водорастворимые (CMY)</Param>
         <Param name="Вид">CAD</Param>
-        <Param name="Разрешение печати,dpi">2400x1200</Param>
-        <Param name="Интерфейс">USB 3.0* Gigabit ethernet interface* Wireless LAN IEEE 802.11b/g/n* Wi-Fi Direct</Param>
-        <Param name="Гарантия">12 мес</Param>
-        <Param name="Тип">CAD</Param>
-        <Param name="Тип печати">струйная</Param>
-        <Param name="Формат">A1+</Param>
-        <Param name="Цветность">4 цвета</Param>
-        <Param name="Ширина печати, мм">610</Param>
-        <Param name="Ширина печати, дюймы">24</Param>
-        <Param name="Количество слотов для картриджей">4</Param>
-        <Param name="Тип расходных материалов">чернила</Param>
-        <Param name="Область применения">CAD</Param>
-        <Param name="Наименование производителя">Epson SureColor SC-T3100X</Param>
-      </offer>
-      <offer id="00-00001521" article="C11CH79301A0" type="CAD" available="true">
-        <name>Плоттер Epson SureColor SC-T3700E</name>
-        <vendor>Epson</vendor>
-        <vendorCode>ACC11CH79301A0</vendorCode>
-        <categoryId type="own">000002654</categoryId>
-        <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/pechatayushchie_skaniruyushchie_ustroystva/plotter/printery_dlya_sapr_i_gis/plotter_epson_surecolor_sc_t3700e/</url>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/86e/g6fr716hqictr8dfcbvci0l9nbueeo3s.jpg</picture>
-        <Offer_ID>00-00001521</Offer_ID>
-        <Stock>&lt;5</Stock>
-        <delivery>true</delivery>
-        <description>Инженерный принтер с шириной печати 24 дюйма
- Высокая производительность Быстрая, удобная и безопасная печать с ПК, мобильных устройств, USB-носителей
- Расширенные функции защиты конфиденциальности печати Обеспечьте защиту важных документов
- Универсальность Автоматическая подача носителя и функция сохранения
- Превосходное качество изображения 2,64-дюймовая печатающая головка PrecisionCore Micro TFP с каплями размером 3,5 пл
- Ценные функции SSD-накопитель емкостью 960 ГБ и укладчик отпечатков (опциональный)</description>
-        <local_delivery_cost>500</local_delivery_cost>
-        <manufacturer_warranty>12 мес</manufacturer_warranty>
-        <model>Плоттер Epson SureColor SC-T3700E</model>
-        <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">2314183</price>
-          <price type="RRP" currencyId="KZT">2595990</price>
-        </prices>
-        <Param name="Страна происхождения">Индонезия</Param>
-        <Param name="Производитель">Epson</Param>
-        <Param name="Сопутствующие товары">Рулон 36" GIANT IMAGE RC INKJET PAPER 240g Glossy</Param>
-        <Param name="Сопутствующие товары">Рулон 36" GIANT IMAGE RC INKJET PAPER 240g Satin</Param>
-        <Param name="Сопутствующие товары">Картридж Epson C13T49H100  Контейнер с черными чернилами для SC-T3100x</Param>
-        <Param name="Сопутствующие товары">Картридж Epson C13T49H200 Контейнер с голубыми чернилами для SC-T3100x</Param>
-        <Param name="Сопутствующие товары">Картридж Epson C13T49H300 Контейнер с пурпурными чернилами для SC-T3100x</Param>
-        <Param name="Сопутствующие товары">Картридж Epson C13T49H400  Контейнер с желтыми чернилами для SC-T3100x</Param>
-        <Param name="Тип чернил">пигментные (K), водорастворимые (CMY)</Param>
-        <Param name="Вид">CAD</Param>
-        <Param name="Сопутствующие товары">Рулон 24" GIANT IMAGE RC INKJET PHOTO PAPER 240g Glossy</Param>
         <Param name="Разрешение печати,dpi">2400x1200</Param>
         <Param name="Интерфейс">USB 3.0* Gigabit ethernet interface* Wireless LAN IEEE 802.11b/g/n* Wi-Fi Direct</Param>
         <Param name="Гарантия">12 мес</Param>
@@ -4817,7 +4838,7 @@ b
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Плоттер Epson SureColor SC-T5405</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">1807569</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">1814288</price>
           <price type="RRP" currencyId="KZT">2027990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -4890,7 +4911,7 @@ SC-T7700DL обеспечивает высокую производительность при низкой совокупной стоимос
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Плоттер Epson SureColor SC-T7700D</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">3975390</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">3990168</price>
           <price type="RRP" currencyId="KZT">4878990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -4962,7 +4983,7 @@ CD с программным обеспечением и драйверами для Windows и OS X.
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер Epson L11050 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">435184</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">436802</price>
           <price type="RRP" currencyId="KZT">488990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -4997,85 +5018,6 @@ CD с программным обеспечением и драйверами для Windows и OS X.
         <Param name="Тип расходных материалов">чернила</Param>
         <Param name="Наименование производителя">Epson L1300</Param>
         <Param name="Вид">Принтер для цветной печати</Param>
-      </offer>
-      <offer id="Н0000026057" article="C11CD76414" type="Принтер для цветной печати" available="true">
-        <name>Принтер Epson L121 фабрика печати</name>
-        <vendor>Epson</vendor>
-        <vendorCode>ACC11CD76414</vendorCode>
-        <categoryId type="own">000002656</categoryId>
-        <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/pechatayushchie_skaniruyushchie_ustroystva/printer/printer_dlya_tsvetnoy_pechati/printer_epson_l121_fabrika_pechati/</url>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/e06/8gfkg0cuubb94uz0ve0pzzss2vf0pqj7.jpg</picture>
-        <Offer_ID>Н0000026057</Offer_ID>
-        <Stock>&lt;5</Stock>
-        <delivery>true</delivery>
-        <description>Печать без картриджей
-Принтер нового поколения без картриджей прост в использовании, надежен и компактен, а чернил в комплекте достаточно для трех лет печати.
-Принтер нового поколения
-Запас чернил на три года
-Рекордно низкая стоимость печати
-Ищете экономичное решение для печати? Чернил в комплекте L121 хватит на три года использования, благодаря чему экономия на чернилах составит до 90%&#178;. Это прекрасное решение для дома: надежная и простая в использовании модель оснащена усовершенствованной системой заправки чернил.
-Рекордно низкая стоимость печати
-Три года печати — столько проработает принтер L121 без покупки чернил. Вы можете сэкономить до 90% стоимости чернил. Эта рекордно экономичная модель позволит напечатать до 2000 черно-белых и до 3500 цветных страниц с чернилами в комплекте&#178;.
-Метод печати
-Epson Micro Piezo™ print head
-Конфигурация сопла
-180 Сопла (черный), 59 Сопла (цвет)
-Минимальный размер капли
-3 капли(ей)
-Технология чернил
-Чернила на красителях
-Разрешение при печати
-720 x 720 DPI (точек на дюйм)
-Выработка
-Для дома, Настольные устройства для офиса
-Печать без картриджей
-Принтер EcoTank поставляется с чернилами, объем которых эквивалентен 82 картриджам&#178;, что позволяет заправлять чернила значительно реже. Благодаря емкости для чернил большого объема эта модель позволяет полностью отказаться от картриджей.
-Контейнеры для чернил нового поколения
-Усовершенствованная система заправки чернил сводит к минимуму опасность разлить их. Новые контейнеры используют механизм, благодаря которому перепутать цвета чернил во время заправки невозможно.
-Качественный результат
-Печатающая головка Micro Piezo делает принтер EcoTank надежным решением. Доступна стандартная годичная гарантия, а также дополнительные расширенные гарантии. Актуальную информацию о гарантиях можно найти в характеристиках устройства.
-Количество цветов
-4 colour
-Скорость печати ISO/IEC 24734
-9 Стр./мин. Монохромная печать, 4,8 Стр./мин. Colour
-Цвета
-Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]</description>
-        <local_delivery_cost>500</local_delivery_cost>
-        <manufacturer_warranty>12 мес</manufacturer_warranty>
-        <model>Принтер Epson L121 фабрика печати</model>
-        <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">71014</price>
-          <price type="RRP" currencyId="KZT">84990</price>
-        </prices>
-        <Param name="Автоподатчик">нет</Param>
-        <Param name="Двусторонняя печать">нет</Param>
-        <Param name="ЖК дисплей">нет</Param>
-        <Param name="Страна происхождения">Филиппины</Param>
-        <Param name="Сопутствующие товары">Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 ч</Param>
-        <Param name="Сопутствующие товары">Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 г</Param>
-        <Param name="Сопутствующие товары">Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 п</Param>
-        <Param name="Сопутствующие товары">Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 ж</Param>
-        <Param name="Сопутствующие товары">Кабель DEFENDER USB04-10 USB2.0 AM-BM, 3.0м (ДЛЯ ПРИНТЕРА)</Param>
-        <Param name="Сопутствующие товары">Кабель DEFENDER USB04-17 USB2.0 AM-BM, 5.0м (ДЛЯ ПРИНТЕРА)</Param>
-        <Param name="Производитель">Epson</Param>
-        <Param name="Сопутствующие товары">Кабель DEFENDER USB04-10 USB2.0 AM-BM, 3.0м (ДЛЯ ПРИНТЕРА)</Param>
-        <Param name="Совместимые продукты">C13T66414A,C13T66424A,C13T66434A,C13T66444A</Param>
-        <Param name="Гарантия">12 мес</Param>
-        <Param name="Тип">Принтер для цветной печати</Param>
-        <Param name="Тип печати">струйная</Param>
-        <Param name="Формат">A4</Param>
-        <Param name="Интерфейс">USB</Param>
-        <Param name="Цветность">4 цвета</Param>
-        <Param name="Разрешение печати,dpi">720 x 720</Param>
-        <Param name="Тип чернил">водорастворимые</Param>
-        <Param name="Максимальная плотность бумаги, г/м2">95</Param>
-        <Param name="Тип расходных материалов">чернила</Param>
-        <Param name="Максимальная скорость печати А4 стр/мин">9</Param>
-        <Param name="Наименование производителя">Epson L121</Param>
-        <Param name="Вид">Принтер для цветной печати</Param>
-        <Param name="Сопутствующие товары">Фотобумага 13х18 GIANT IMAGE GI-5R20050G 50 Л. 200 Г/М2 глянц.</Param>
-        <Param name="Сопутствующие товары">Фотобумага А4 GIANT IMAGE GI-A418050G 50 Л. 180 Г/М2 глянц.</Param>
-        <Param name="Сопутствующие товары">Фотобумага А4 GIANT IMAGE GI-A426020W 20 Л. 260 Г/М2 ткань</Param>
       </offer>
       <offer id="Н0000028836" article="C11CJ71404" type="МФУ  Дом" available="true">
         <name>Принтер Epson L1250 фабрика печати</name>
@@ -5170,7 +5112,7 @@ ESC/P-R
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер Epson L1250 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">96300</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">96658</price>
           <price type="RRP" currencyId="KZT">111990</price>
         </prices>
         <Param name="Гарантия">12 мес</Param>
@@ -5276,7 +5218,7 @@ ESC/P-R
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер Epson L18050 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">475043</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">476809</price>
           <price type="RRP" currencyId="KZT">532990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -5401,7 +5343,7 @@ ESC/P, ESC/P-R
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер Epson M1100 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">118766</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">119208</price>
           <price type="RRP" currencyId="KZT">133990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -5522,7 +5464,7 @@ ESC/P, ESC/P-R, GDI
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер Epson M1120 фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">129216</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">129696</price>
           <price type="RRP" currencyId="KZT">144990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -5653,7 +5595,7 @@ GDI
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер Epson M1140 (CIS) фабрика печати</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">164372</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">164983</price>
           <price type="RRP" currencyId="KZT">184990</price>
         </prices>
         <Param name="Автоподатчик">нет</Param>
@@ -5710,7 +5652,7 @@ CD с программным обеспечением и драйверами
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер Epson SureColor SC-P700</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">639626</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">642004</price>
           <price type="RRP" currencyId="KZT">717990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -5758,7 +5700,7 @@ Tехнология печати	Термотрансферная
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер ленточный Epson LW400</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">44905</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">45072</price>
           <price type="RRP" currencyId="KZT">50990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -5831,7 +5773,7 @@ Tехнология печати	Термотрансферная
         <manufacturer_warranty>1 год</manufacturer_warranty>
         <model>Принтер ленточный Epson LW700</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">69132</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">69389</price>
           <price type="RRP" currencyId="KZT">77990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -5880,7 +5822,7 @@ ZD421 — единственный термальный принтер с ленточным картриджем, который можно пр
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер этикеток Zebra ZD421-30EE чёрный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">285358</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">286419</price>
           <price type="RRP" currencyId="KZT">332990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -5896,7 +5838,7 @@ ZD421 — единственный термальный принтер с ленточным картриджем, который можно пр
         <url>https://b2b.ak-cent.kz/orders/blank_zakaza/torgovo_kassovoe_oborudovanie/oborudovanie_i_materialy_dlya_shtrikh_kodirovaniya/printery_dlya_etiketok/printery_dlya_etiketok_1/printer_etiketok_zebra_zd421_30em_chyernyy/</url>
         <picture>https://b2b.ak-cent.kz/upload/iblock/073/v31m7e9dlijzdmukj01tib83et4rb8tz.jpg</picture>
         <Offer_ID>00-00001685</Offer_ID>
-        <Stock>&lt;50</Stock>
+        <Stock>&lt;25</Stock>
         <delivery>true</delivery>
         <description>Термотрансферный принтер штрих-кода Zebra ZD421, разрешение 203 точки на дюйм, ширина печати 104 мм, скорость печати 152 мм/сек, интерфейсы подключения USB, USB Host.
 
@@ -5905,7 +5847,7 @@ Zebra ZD421 обладает расширенным функционалом, включает новый более интуитивный 
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер этикеток Zebra ZD421-30EM чёрный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">225959</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">226799</price>
           <price type="RRP" currencyId="KZT">262990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -5938,7 +5880,7 @@ ZD421 — единственный термальный принтер с ленточным картриджем, который можно пр
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер этикеток Zebra ZD421-D0EE чёрный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">258031</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">258990</price>
           <price type="RRP" currencyId="KZT">299990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -5961,7 +5903,7 @@ ZD421 — единственный термальный принтер с ленточным картриджем, который можно пр
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Принтер этикеток Zebra ZT231-T0E0 чёрный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">382634</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">384056</price>
           <price type="RRP" currencyId="KZT">415990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -6043,7 +5985,7 @@ RS232:1
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Проектор ViewSonic LS550WH</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">405975</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">407484</price>
           <price type="RRP" currencyId="KZT">504990</price>
         </prices>
         <Param name="Производитель">ViewSonic proj</Param>
@@ -6102,7 +6044,7 @@ ViewSonic PX701-4K — идеальный выбор для тех, кто ищет качество 4K и удобство ис
         <manufacturer_warranty>2 года</manufacturer_warranty>
         <model>Проектор для дом. кино ViewSonic PX701-4K</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">571660</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">573785</price>
           <price type="RRP" currencyId="KZT">773990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -6149,7 +6091,7 @@ ViewSonic PX701-4K — идеальный выбор для тех, кто ищет качество 4K и удобство ис
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Проектор для дома  Epson EH-LS300W, лазерный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">1345527</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">1350529</price>
           <price type="RRP" currencyId="KZT">1617990</price>
         </prices>
         <Param name="Производитель">Epson Proj</Param>
@@ -6208,7 +6150,7 @@ ________________________________________
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Проектор короткофокусный ViewSonic M2</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">465026</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">466754</price>
           <price type="RRP" currencyId="KZT">650990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -6246,7 +6188,7 @@ ________________________________________
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Проектор универсальный Epson CO-W01</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">231121</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">231980</price>
           <price type="RRP" currencyId="KZT">258990</price>
         </prices>
         <Param name="Производитель">Epson Proj</Param>
@@ -6330,7 +6272,7 @@ PJLink</description>
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Проектор универсальный Epson EB-992F</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">687115</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">689669</price>
           <price type="RRP" currencyId="KZT">843990</price>
         </prices>
         <Param name="Производитель">Epson Proj</Param>
@@ -6388,7 +6330,7 @@ USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB каб
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Проектор универсальный Epson EB-FH06</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">611229</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">613502</price>
           <price type="RRP" currencyId="KZT">685990</price>
         </prices>
         <Param name="Контрастность">16 000 : 1</Param>
@@ -6483,7 +6425,7 @@ USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB каб
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Проектор универсальный Epson EB-W06</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">329314</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">330538</price>
           <price type="RRP" currencyId="KZT">367990</price>
         </prices>
         <Param name="Контрастность">16 000 : 1</Param>
@@ -6566,7 +6508,7 @@ USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB каб
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Проектор универсальный Epson EB-W51</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">446256</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">447915</price>
           <price type="RRP" currencyId="KZT">500990</price>
         </prices>
         <Param name="Контрастность">16 000 : 1</Param>
@@ -6708,13 +6650,130 @@ Warranty
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Проектор универсальный Epson EF-22B</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">642916</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">645306</price>
           <price type="RRP" currencyId="KZT">745990</price>
         </prices>
         <Param name="Производитель">Epson Proj</Param>
         <Param name="Тип">Проектор универсальный</Param>
         <Param name="Вид">Проектор</Param>
         <Param name="Гарантия">24</Param>
+      </offer>
+      <offer id="Н0000018365" article="PA503S" type="Проектор универсальный" available="true">
+        <name>Проектор универсальный ViewSonic PA503S</name>
+        <vendor>Viewsonic Proj</vendor>
+        <vendorCode>ACPA503S</vendorCode>
+        <categoryId type="own">565214</categoryId>
+        <url />
+        <picture />
+        <Offer_ID>Н0000018365</Offer_ID>
+        <Stock>&lt;5</Stock>
+        <delivery>true</delivery>
+        <description>ViewSonic PA503S — это доступный и высококачественный проектор для образовательных учреждений и малого бизнеса, который обеспечивает яркое изображение в любых условиях. Благодаря технологии SuperColor™ и высокой яркости, он отлично подходит для использования в помещениях с естественным освещением.
+
+ Основные характеристики:
+Тип проектора: DLP
+
+Разрешение: SVGA (800 &#215; 600)
+
+Яркость: 3600 ANSI люмен
+
+Контрастность: 22 000:1
+
+Формат изображения: 4:3
+
+Размер проекции: от 30" до 300"
+
+Коэффициент проекции: 1.96–2.15
+
+Оптический зум: 1.1x
+
+Поддержка 3D: да (с DLP-Link очками)
+
+Срок службы лампы: до 15 000 часов в режиме SuperEco
+
+Уровень шума: до 27 дБ
+
+ Интерфейсы и подключения:
+HDMI 1.4: 1&#215;
+
+VGA вход: 2&#215;
+
+VGA выход: 1&#215;
+
+Композитный видео вход (RCA): 1&#215;
+
+Аудио вход/выход (3.5 мм): 1&#215;
+
+RS-232: 1&#215;
+
+USB (только для обслуживания): 1&#215;
+
+&#9881;&#65039; Особенности:
+Технология SuperColor™: для ярких и насыщенных цветов.
+
+Режим SuperEco™: снижение потребления энергии и увеличение срока службы лампы.
+
+Функция быстрого выключения: мгновенное выключение без необходимости ожидания охлаждения.
+
+Поддержка 3D: возможность воспроизведения 3D-контента с совместимыми очками.
+
+Низкая задержка ввода: для плавного воспроизведения видео и игр.
+
+ Габариты и вес:
+Размеры: 294 &#215; 218 &#215; 110 мм
+
+Вес: 2.2 кг
+
+ Применение:
+ViewSonic PA503S идеален для:
+
+Презентаций в учебных заведениях и классах.
+
+Демонстраций в конференц-залах и переговорных комнатах.
+
+Показов в помещениях с умеренным освещением.</description>
+        <local_delivery_cost>500</local_delivery_cost>
+        <manufacturer_warranty>24</manufacturer_warranty>
+        <model>Проектор универсальный ViewSonic PA503S</model>
+        <prices>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">189983</price>
+          <price type="RRP" currencyId="KZT">235990</price>
+        </prices>
+        <Param name="Страна происхождения">Китай</Param>
+        <Param name="Сопутствующие товары">Крепление для проектора на потолок Mr. Pixel PRB-2</Param>
+        <Param name="Производитель">ViewSonic proj</Param>
+        <Param name="Яркость (ANSI) лмн">3600</Param>
+        <Param name="Тип">Проектор универсальный</Param>
+        <Param name="Цвет">Белый</Param>
+        <Param name="Сопутствующие товары">Крепление для проектора на потолок Mr. Pixel PRB-2G</Param>
+        <Param name="Сопутствующие товары">Крепление для проектора на потолок PROJECTOR BRACKET PRB-2S</Param>
+        <Param name="Сопутствующие товары">Презентер Trust Puntero Wlss Lasr Prsntr</Param>
+        <Param name="Сопутствующие товары">Презентер Trust Taia Wless Laser Presntr</Param>
+        <Param name="Сопутствующие товары">Презентер Trust Wireless Touchpad Presenter</Param>
+        <Param name="Сопутствующие товары">Кабель HDMI Cablexpert CC-HDMI4-20M, 20м, v1.4, 19M/19M, черный, позол.разъемы, экран, пакет</Param>
+        <Param name="Сопутствующие товары">Кабель HDMI Cablexpert CC-HDMI4-15M, 15м, v1.4, 19M/19M, черный, позол.разъемы, экран, пакет</Param>
+        <Param name="Сопутствующие товары">Экран на треноге Mr.Pixel 70" X 70" (1,78 X 1,78)</Param>
+        <Param name="Сопутствующие товары">Экран настенный Mr.Pixel 96" X 96" (2.44 X 2.44)</Param>
+        <Param name="Видео вход HDMI">1</Param>
+        <Param name="Видео вход VGA">1</Param>
+        <Param name="Интерфейс HDBaseT/DIGITAL LINK">Нет</Param>
+        <Param name="Видео вход DVI-D">Нет</Param>
+        <Param name="USB">Тип B</Param>
+        <Param name="Видео вход DisplayPort">Нет</Param>
+        <Param name="Тип источника света">UHE</Param>
+        <Param name="Видео вход S-video">Нет</Param>
+        <Param name="Вид">Проектор</Param>
+        <Param name="Уровень шума (норм./эконом.) Дб">29</Param>
+        <Param name="Проекционный коэффицент (Throw ratio)">1.96 - 2.15</Param>
+        <Param name="Контрастность">22 000 : 1</Param>
+        <Param name="Гарантия">24</Param>
+        <Param name="Разрешение">800x600</Param>
+        <Param name="Технология">DLP</Param>
+        <Param name="Wi-Fi">Нет</Param>
+        <Param name="Интерактивный">Нет</Param>
+        <Param name="Ethernet (RJ-45)">Нет</Param>
+        <Param name="3D">Нет</Param>
+        <Param name="Срок службы лампы (норм./ эконом.) ч.">5000/15000</Param>
       </offer>
       <offer id="Н0000018367" article="PA503W" type="Проектор универсальный" available="true">
         <name>Проектор универсальный ViewSonic PA503W</name>
@@ -6786,7 +6845,7 @@ Warranty
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Проектор универсальный ViewSonic PA503W</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">219780</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">220597</price>
           <price type="RRP" currencyId="KZT">289990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -6873,7 +6932,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество портов HDMI (x2), S-Video, Ком
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Проектор универсальный Vivitek DX273</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">215789</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">216591</price>
           <price type="RRP" currencyId="KZT">279990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -6931,7 +6990,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество портов HDMI (x2), S-Video, Ком
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Сканер Epson WorkForce DS-790WN</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">574085</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">576219</price>
           <price type="RRP" currencyId="KZT">643990</price>
         </prices>
         <Param name="Гарантия">12 мес</Param>
@@ -6953,7 +7012,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество портов HDMI (x2), S-Video, Ком
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Сканер штрих-кода Zebra LI4278 чёрный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">99875</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">100246</price>
           <price type="RRP" currencyId="KZT">115990</price>
         </prices>
         <Param name="Вид">Сканер</Param>
@@ -6978,7 +7037,7 @@ Epson L7160	C11CG15404
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">13513</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">13563</price>
           <price type="RRP" currencyId="KZT">15990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L7180  фабрика печати</Param>
@@ -7011,7 +7070,7 @@ Epson L7160	C11CG15404
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00R140  для L7160/L7180 чёрный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">8974</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">9007</price>
           <price type="RRP" currencyId="KZT">10990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L7180  фабрика печати</Param>
@@ -7044,7 +7103,7 @@ Epson L7160	C11CG15404
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00R240 для L7160/L7180 голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">8974</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">9007</price>
           <price type="RRP" currencyId="KZT">10990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L7180  фабрика печати</Param>
@@ -7077,7 +7136,7 @@ Epson L7160	C11CG15404
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00R340  для L7160/L7180 пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">8974</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">9007</price>
           <price type="RRP" currencyId="KZT">10990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L7180  фабрика печати</Param>
@@ -7110,7 +7169,7 @@ Epson L7160	C11CG15404
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00R440  для L7160/L7180 жёлтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">8974</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">9007</price>
           <price type="RRP" currencyId="KZT">10990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L7180  фабрика печати</Param>
@@ -7148,7 +7207,7 @@ Epson L1110	C11CG89403</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00S14A 103 EcoTank для L3100/L3101/L3110/L3150 черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">3459</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">3472</price>
           <price type="RRP" currencyId="KZT">3990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L3100 фабрика печати</Param>
@@ -7190,7 +7249,7 @@ Epson L3100	C11CG88401
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">4334</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">4350</price>
           <price type="RRP" currencyId="KZT">4990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L3100 фабрика печати</Param>
@@ -7232,7 +7291,7 @@ Epson L3100	C11CG88401
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">4334</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">4350</price>
           <price type="RRP" currencyId="KZT">4990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L3100 фабрика печати</Param>
@@ -7274,7 +7333,7 @@ Epson L3100	C11CG88401
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150  жёлтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">4334</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">4350</price>
           <price type="RRP" currencyId="KZT">4990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L3100 фабрика печати</Param>
@@ -7313,7 +7372,7 @@ Epson L3100	C11CG88401
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T03P14A  EcoTank MX1XX Series Black Bottle XL</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10134</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10171</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Сопутствующие товары">Принтер Epson M1120 фабрика печати</Param>
@@ -7350,7 +7409,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">5067</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">5086</price>
           <price type="RRP" currencyId="KZT">5990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7383,7 +7442,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">3469</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">3482</price>
           <price type="RRP" currencyId="KZT">3990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7416,7 +7475,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">3469</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">3482</price>
           <price type="RRP" currencyId="KZT">3990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7449,7 +7508,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T03V44A 101 EcoTank 70ml для L4150/L4160 жёлтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">3469</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">3482</price>
           <price type="RRP" currencyId="KZT">3990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7481,7 +7540,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T06C14A для L15150 чёрный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">12670</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">12717</price>
           <price type="RRP" currencyId="KZT">14990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7511,7 +7570,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T06C24A  для L15150 голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10134</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10171</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7541,7 +7600,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T06C34A для L15150 пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10134</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10171</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7571,7 +7630,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T06C44A  для L15150 жёлтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10134</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10171</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7601,7 +7660,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T07C14A для L8160/L8180 черный пигмент</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10550</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10589</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7631,7 +7690,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T07D14A для L8160/L8180 водорастворимые фото черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10550</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10589</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7661,7 +7720,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T07D24A для L8160/L8180 голубые</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10550</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10589</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7691,7 +7750,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T07D34A для L8160/L8180 пурпурные</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10550</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10589</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7721,7 +7780,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T07D44A для L8160/L8180 жёлтые</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10550</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10589</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7751,7 +7810,7 @@ L4150/L4160</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T07D54A для L8160/L8180 серые</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10550</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10589</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -7774,7 +7833,7 @@ L4150/L4160</description>
         <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/raskhodnye_materialy_dlya_pechatayushchikh_ustroystv/kartridzh/fabrika_pechati_chernila_epson/chernila_epson_c13t09c14a_108_ecotank_dlya_l8050_18050_chyernyy/</url>
         <picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
         <Offer_ID>00-00000177</Offer_ID>
-        <Stock>&lt;50</Stock>
+        <Stock>&lt;5</Stock>
         <delivery>true</delivery>
         <description>Совместимые продукты:
 
@@ -7784,7 +7843,7 @@ Epson L18050</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T09C14A 108 EcoTank для L8050/18050 чёрный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7698</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7726</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Сопутствующие товары">МФУ Epson L3100 фабрика печати</Param>
@@ -7824,7 +7883,7 @@ Epson L18050</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T09C24A 108 EcoTank для L8050/18050 голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7698</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7726</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -7855,7 +7914,7 @@ Epson L18050</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7698</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7726</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -7886,7 +7945,7 @@ Epson L18050</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T09C44A 108 EcoTank для L8050/18050 жёлтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7698</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7726</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -7917,7 +7976,7 @@ Epson L18050</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T09C54A 108 EcoTank для L8050/18050 светло-голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7698</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7726</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -7948,7 +8007,7 @@ Epson L18050</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7698</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7726</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Производитель">Epson</Param>
@@ -7983,7 +8042,7 @@ Epson L550</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 ч</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">3459</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">3472</price>
           <price type="RRP" currencyId="KZT">3990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8027,7 +8086,7 @@ Epson L550</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 г</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">4334</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">4350</price>
           <price type="RRP" currencyId="KZT">4990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8071,7 +8130,7 @@ Epson L550</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 п</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">4334</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">4350</price>
           <price type="RRP" currencyId="KZT">4990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8115,7 +8174,7 @@ Epson L550</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 ж</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">4334</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">4350</price>
           <price type="RRP" currencyId="KZT">4990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8153,7 +8212,7 @@ Epson L800</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T67314A L800/1800/810/850 черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7624</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7652</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8192,7 +8251,7 @@ Epson L800</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T67324A L800/1800/810/850 голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7624</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7652</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8231,7 +8290,7 @@ Epson L800</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T67334A L800/1800/810/850 пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7624</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7652</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8270,7 +8329,7 @@ Epson L800</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T67344A L800/1800/810/850 желтый</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7624</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7652</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8309,7 +8368,7 @@ Epson L800</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T67354A L800/1800/810/850 светло-голубой</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7624</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7652</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8348,7 +8407,7 @@ Epson L800</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">7624</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">7652</price>
           <price type="RRP" currencyId="KZT">8990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8389,7 +8448,7 @@ M200</description>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Чернила Epson C13T77414A M100/M105/M200 черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">10134</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">10171</price>
           <price type="RRP" currencyId="KZT">11990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
@@ -8428,7 +8487,7 @@ M200</description>
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Шредер Fellowes Powershred LX201 черный</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">165643</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">166259</price>
           <price type="RRP" currencyId="KZT">186990</price>
         </prices>
         <Param name="Производитель">Fellowes</Param>
@@ -8477,7 +8536,7 @@ Safe</description>
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">161979</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">162581</price>
           <price type="RRP" currencyId="KZT">182990</price>
         </prices>
         <Param name="Производительность уничтожителя">150 (8 вручную)</Param>
@@ -8533,7 +8592,7 @@ P-4 уровень секретности
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Шредер Fellowes® AutoMax® 200C, автоподача, DIN P-4, 4х38мм, 200 лст. авто, 10 ручн., 32 лт</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">181371</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">182045</price>
           <price type="RRP" currencyId="KZT">244990</price>
         </prices>
         <Param name="Тип">шредеры офисные</Param>
@@ -8566,7 +8625,7 @@ Sleep Mode	Sleep Mode™. автоматическое отключение питания шредера</description>
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Шредер Fellowes® AutoMax® 80M, минирезка, DIN P-4, 4х12 мм,автоподача 80 лст., 17 лтр., автореверc</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">89082</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">89414</price>
           <price type="RRP" currencyId="KZT">104990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -8623,7 +8682,7 @@ P-4 уровень секретности
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Шредер Fellowes® Powershred® 12C, DIN P-4, 4х40мм, 12лст., 18лтр., Safety Lock</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">81532</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">81835</price>
           <price type="RRP" currencyId="KZT">89990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -8660,7 +8719,7 @@ P-4 уровень секретности
         <manufacturer_warranty>1 год</manufacturer_warranty>
         <model>Шредер Fellowes® Powershred® 53C, DIN P-4</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">47452</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">47628</price>
           <price type="RRP" currencyId="KZT">54990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -8712,42 +8771,41 @@ P-4 уровень секретности
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">157755</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">158342</price>
           <price type="RRP" currencyId="KZT">169990</price>
         </prices>
         <Param name="Тип">шредеры офисные</Param>
         <Param name="Вид">шредеры офисные</Param>
         <Param name="Гарантия">24</Param>
       </offer>
-      <offer id="Н0000029250" article="5050301" type="шредеры офисные" available="true">
-        <name>Шредер Fellowes® Powershred® LX211 WHITE   SHREDDER EU/UK</name>
+      <offer id="Н0000029252" article="5502501" type="шредеры офисные" available="true">
+        <name>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</name>
         <vendor />
-        <vendorCode>AC5050301</vendorCode>
+        <vendorCode>AC5502501</vendorCode>
         <categoryId type="own">000005456</categoryId>
-        <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/ofisnoe_oborudovanie/shredery/shredery_ofisnye/shreder_fellowes_powershred_lx211_white_shredder_eu_uk/</url>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/908/r9amxpsr3a5jm1phivf68vgyfd0kh9bv.jpg</picture>
-        <Offer_ID>Н0000029250</Offer_ID>
-        <Stock>&lt;25</Stock>
+        <url />
+        <picture />
+        <Offer_ID>Н0000029252</Offer_ID>
+        <Stock>&lt;5</Stock>
         <delivery>true</delivery>
-        <description>Шредер Powershred® LX211 белый
+        <description>Шредер Powershred® LX210
 Шредер нового поколения с непревзойденным удобством и эффективностью
-P-5 уровень секретности, резка листа А4 на 2200+ фрагментов
-Уничтожает до 15 листов одновременно
-Перекрестная резка - 2х12 мм
-Вместительная корзина 23 литров &#8776; 425 листов А4
+Уничтожает до 16 листов одновременно
+Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов
+Вместительная корзина 23 литра &#8776; 425 листов А4
 Гарантия 2 года на устройство и 5 лет на ножи
 Возможности уничтожения - скобы, карты, скрепки
-Артикул	fs-50503
+Артикул	fs-55025
 Количество пользователей	1-3 Пользователя
 Рекомендуемое количество листов в день	1000
 Рекомендуемое количество кредитных карт в день	25
 Рекомендуемое количество CD дисков в день	нет
-Загрузка, листов (A4, 70гр/м&#178;)	15
+Загрузка, листов (A4, 70гр/м&#178;)	16
 Тип Резки	Перекрест.
-Размер резки, мм	2 x 12
-Уровень секретности, DIN 66399	P-5
-Количество фрагментов при резке листа А4, шт.	&gt;2200
-Уровень секретности для кредитных карт, DIN 66399	T-5
+Размер резки, мм	4 x 12
+Уровень секретности, DIN 66399	P-4
+Количество фрагментов при резке листа А4, шт.	&gt;1300
+Уровень секретности для кредитных карт, DIN 66399	T-4
 Уровень секретности для CD дисков, DIN 66399	нет
 Ширина входа, мм	230
 Скорость резки, м/мин	2
@@ -8773,25 +8831,25 @@ Sleep Mode (автоотключение)	да
 Индикатор перегрева	да
 Автоотключение при снятой корзине	да
 Тип электродвигателя	постоянного тока
-Сила тока, А	2,5
-Мощность, Вт	600
+Сила тока, А	3
+Мощность, Вт	650
 Уровень шума без загрузки, дБ	65
 Уровень шума под нагрузкой, дБ	70
 Гарантия, лет	2
 Гарантия на ножи, лет	5
-Габаритные размеры, мм (ВxШxГ)	533 x 362 x 296
-Вес, кг	12,7
-Размеры розничной упаковки, мм (ВxШxГ)	588 x 387 x 315
-Вес розничной упаковки, кг	15,4
-Размеры транспортной упаковки, мм (ВxШxГ)	600 x 392 x 320
-Вес транспортной упаковки, кг	16,4
+Габаритные размеры, мм (ВxШxГ)	535 x 358 x 297
+Вес, кг	12,2
+Размеры розничной упаковки, мм (ВxШxГ)	590 x 405 x 335
+Вес розничной упаковки, кг	14,1
+Размеры транспортной упаковки, мм (ВxШxГ)	620 x 430 x 350
+Вес транспортной упаковки, кг	15,2
 Количество в транспортной упаковке	1</description>
         <local_delivery_cost>500</local_delivery_cost>
         <manufacturer_warranty>24</manufacturer_warranty>
-        <model>Шредер Fellowes® Powershred® LX211 WHITE   SHREDDER EU/UK</model>
+        <model>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">194789</price>
-          <price type="RRP" currencyId="KZT">219890</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">163475</price>
+          <price type="RRP" currencyId="KZT">183890</price>
         </prices>
         <Param name="Тип">шредеры офисные</Param>
         <Param name="Вид">шредеры офисные</Param>
@@ -8838,7 +8896,7 @@ SafeSense® Техноло</description>
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Шредер Fellowes® Powershred® LX41, DIN P-4,  4х12мм, 8 лст., 17 лтр.,  уничт.: скрепки,скобы,карты</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">49239</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">49422</price>
           <price type="RRP" currencyId="KZT">54990</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -8893,7 +8951,7 @@ SafeSense® Технолог</description>
         <manufacturer_warranty>2 года на устройство и 3 года на ножи</manufacturer_warranty>
         <model>Шредер Fellowes® Powershred® LX70, DIN P-4, 4х37мм, 11 лст., 18 лтр., уничт.: скрепки,скобы,карты</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">77578</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">77866</price>
           <price type="RRP" currencyId="KZT">84590</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -8906,87 +8964,6 @@ SafeSense® Технолог</description>
         <Param name="Производитель">Fellowes</Param>
         <Param name="Тип">шредеры офисные</Param>
         <Param name="Вид">шредеры офисные</Param>
-      </offer>
-      <offer id="Н0000018316" article="4701001" type="шредеры офисные" available="true">
-        <name>Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр.,</name>
-        <vendor>Fellowes</vendor>
-        <vendorCode>AC4701001</vendorCode>
-        <categoryId type="own">000005456</categoryId>
-        <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/ofisnoe_oborudovanie/shredery/shredery_ofisnye/shreder_fellowes_powershred_p_25s_din_p_1_7_mm_5lst_11_ltr_/</url>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/8a0/dsso4l1oo3q3lle8xlz6d1ritsjf0b36.jpg</picture>
-        <Offer_ID>Н0000018316</Offer_ID>
-        <Stock>&lt;25</Stock>
-        <delivery>true</delivery>
-        <description>Fellowes P-25S - Шредер предназначен для персонального использования и уничтожения общих несекретных документов. Модель P-25S приходит на замену шредера P-20. 
-
-Новый уничтожитель получил современный корпус, время рабочего цикла было увеличено на 50 %. При этом была сохранена непревзойденная скорость резки для компактных моделей – 5 м/мин. Производительность шредера – 5 листов. Лист формата A4 разрезается на продольные полосы шириной 7 мм. Процесс уничтожения запускается автоматически при подаче бумаги в слот. Функция реверса может ликвидировать образование бумажных заторов. Режущий блок легко снимается и позволяет быстро удалять отходы из корзины. 
-
-Технические характеристики Параметр/
-Значение  
-
-1. Общие 
-
-1.01 Английское название Shredder P-25S Strip Cut 
-1.02 Страна - изготовитель Китай 
-1.03 Retail BarCode (EU) 43859690695 
-1.04 CRC (EU) 47010 
-1.05 Дата ввода в ассортимент 3 квартал 2015 
-1.06 Дата вывода из ассортимента  
-1.07 Наличие модели-заменителя  
-
-2. Технические характеристики
- 
-2.01 Тип резки продольная 
-2.02 Размер резки (мм) 7 
-2.03 Уровень секретности (DIN 32757) 1 
-2.04 Ширина входного отверстия (мм) 220 
-2.05 Уровень секретности (DIN 66399) P-1 
-2.06 Тип корзины стандартная 
-2.07 Производительность (А4/70гр/кв.м.) 5 
-2.08 Рекомендуемое количество листов в день  20 
-2.09 Рекомендуемое количество кредитных карт в день  - 
-2.10 Рекомендуемое количество CD дисков в день  - 
-2.11 Механизм Safety Lock (блокировка) - 
-2.12 Объем корзины (лтр/лист) 11 
-2.13 Средняя скорость (м/мин) 5 
-2.14 Рабочий цикл (мин) 3 / 25  
-2.15 Уровень шума (дБ) 70 
-2.16 Авто Старт/Стоп + 
-2.17 Реверс + 
-2.18 Легкоснимающийся режущий блок + 
-2.19 Технология SafeSense™ - 
-2.20 Автостоп при изъятой корзине - 
-2.21 Возможности уничтожения бумага 
-2.22 Мощность мотора (Вт) 138 
-2.23 Гарантия (г.) 1 
-2.24 Гарантия на ножи (г.) 1 
-
-3. Логистика
- 
-3.01 Габаритные размеры ВxШxД (мм) 299x286x153 
-3.02 Вес (кг) 1,624 
-3.03 Размер/Объем розничной упаковки (мм/лтр) 276x300x162 
-3.04 Вес единицы (включая розничную упаковку) (кг) 1,968 
-3.05 Кол-во в транспортной упаковке (шт) 4 
-3.06 Размер/Объем транспортной упаковки (мм/лтр) 300x344x610 
-3.07 Вес транспортной упаковки (кг) 8,634</description>
-        <local_delivery_cost>500</local_delivery_cost>
-        <manufacturer_warranty>12 мес</manufacturer_warranty>
-        <model>Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр.,</model>
-        <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">16851</price>
-          <price type="RRP" currencyId="KZT">19990</price>
-        </prices>
-        <Param name="Страна происхождения">Китай</Param>
-        <Param name="Тип резки">продольная</Param>
-        <Param name="Уровень секретности">P-1</Param>
-        <Param name="Производительность уничтожителя">5</Param>
-        <Param name="Уничтожение">бумага</Param>
-        <Param name="Емкость корзины, литров">11 л</Param>
-        <Param name="Производитель">Fellowes</Param>
-        <Param name="Тип">шредеры офисные</Param>
-        <Param name="Вид">шредеры офисные</Param>
-        <Param name="Гарантия">12 мес</Param>
       </offer>
       <offer id="00-00003832" article="4170601" type="шредеры офисные" available="true">
         <name>Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</name>
@@ -9008,7 +8985,7 @@ SafeSense® Технолог</description>
         <manufacturer_warranty>24 мес</manufacturer_warranty>
         <model>Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">41889</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">42045</price>
           <price type="RRP" currencyId="KZT">47490</price>
         </prices>
         <Param name="Тип">шредеры офисные</Param>
@@ -9091,7 +9068,7 @@ Auto-Oil™	нет
         <manufacturer_warranty />
         <model>Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">48875</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">49057</price>
           <price type="RRP" currencyId="KZT">54990</price>
         </prices>
         <Param name="Тип">шредеры офисные</Param>
@@ -9172,7 +9149,7 @@ Auto-Oil™	нет
         <manufacturer_warranty>24</manufacturer_warranty>
         <model>Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">64323</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">64562</price>
           <price type="RRP" currencyId="KZT">69990</price>
         </prices>
         <Param name="Тип">шредеры офисные</Param>
@@ -9222,7 +9199,7 @@ P-4 уровень секретности
         <manufacturer_warranty>12 месяцев</manufacturer_warranty>
         <model>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.,</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">25202</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">25296</price>
           <price type="RRP" currencyId="KZT">27990</price>
         </prices>
         <Param name="Гарантия">12 месяцев</Param>
@@ -9235,40 +9212,18 @@ P-4 уровень секретности
         <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/raskhodnye_materialy_dlya_pechatayushchikh_ustroystv/kartridzh/fabrika_pechati_chernila_epson/ekonomichnyy_nabor_iz_chetyrekh_konteynerov_s_chernilami_seriya_101/</url>
         <picture>https://b2b.ak-cent.kz/upload/iblock/7c2/0l2thxbkhhc5kc45gz2mrxqjz7q83tas.jpg</picture>
         <Offer_ID>Н0000028243</Offer_ID>
-        <Stock>&lt;50</Stock>
+        <Stock>&lt;25</Stock>
         <delivery>true</delivery>
         <description>Экономичный комплект из четырех контейнеров с оригинальными чернилами Epson 101 объемом 127 мл (черные пигментные) и 70 мл (цветные водорастворимые) для струйных принтеров и МФУ Epson L4150, L4160, L4167 Подробнее:</description>
         <local_delivery_cost>500</local_delivery_cost>
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Экономичный набор из четырех контейнеров с чернилами, серия 101</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">15490</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">15548</price>
           <price type="RRP" currencyId="KZT">17990</price>
         </prices>
         <Param name="Страна происхождения">Индонезия</Param>
         <Param name="Производитель">Epson</Param>
-        <Param name="Гарантия">3</Param>
-        <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
-        <Param name="Вид">чернила</Param>
-      </offer>
-      <offer id="Н0000028242" article="C13T00S64A" type="Фабрика печати  (чернила EPSON)" available="true">
-        <name>Экономичный набор из четырех контейнеров с чернилами, серия 103</name>
-        <vendor />
-        <vendorCode>ACC13T00S64A</vendorCode>
-        <categoryId type="own">000002677</categoryId>
-        <url />
-        <picture />
-        <Offer_ID>Н0000028242</Offer_ID>
-        <Stock>&lt;25</Stock>
-        <delivery>true</delivery>
-        <description>Экономичный набор из четырех контейнеров с чернилами, серия 103</description>
-        <local_delivery_cost>500</local_delivery_cost>
-        <manufacturer_warranty>3</manufacturer_warranty>
-        <model>Экономичный набор из четырех контейнеров с чернилами, серия 103</model>
-        <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">16476</price>
-          <price type="RRP" currencyId="KZT">18990</price>
-        </prices>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Вид">чернила</Param>
@@ -9281,7 +9236,7 @@ P-4 уровень секретности
         <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/raskhodnye_materialy_dlya_pechatayushchikh_ustroystv/kartridzh/fabrika_pechati_chernila_epson/ekonomichnyy_nabor_iz_chetyrekh_konteynerov_s_chernilami_seriya_664/</url>
         <picture>https://b2b.ak-cent.kz/upload/iblock/ac1/n0qqf3iwn8mynu6hkm97h7soqkislcwf.jpg</picture>
         <Offer_ID>Н0000028241</Offer_ID>
-        <Stock>&gt;100</Stock>
+        <Stock>&lt;100</Stock>
         <delivery>true</delivery>
         <description>Чернила Epson серии 664
 Сведите затраты на печать к минимуму с чернилами EcoTank. Ресурса комплекта чернил хватит на печать 4 500 черно-белых и 7 500 цветных страниц&#185; – отличное решение для тех, кто привык много печатать. Четырехцветные водорастворимые чернила обеспечивают качественный результат и рекордно низкую себестоимость печати.
@@ -9295,7 +9250,7 @@ P-4 уровень секретности
         <manufacturer_warranty>3</manufacturer_warranty>
         <model>Экономичный набор из четырех контейнеров с чернилами, серия 664</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">16476</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">16538</price>
           <price type="RRP" currencyId="KZT">18990</price>
         </prices>
         <Param name="Гарантия">3</Param>
@@ -9330,7 +9285,7 @@ P-4 уровень секретности
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Экран на треноге Mr.Pixel ECO 70" X 70" (1,78 X 1,78)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">20657</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">20734</price>
           <price type="RRP" currencyId="KZT">28090</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -9378,7 +9333,7 @@ P-4 уровень секретности
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Экран настенный Mr.Pixel 120' X 120" (3,05 X 3,05)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">66111</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">66356</price>
           <price type="RRP" currencyId="KZT">85890</price>
         </prices>
         <Param name="Производитель">Mr.Pixel</Param>
@@ -9424,7 +9379,7 @@ P-4 уровень секретности
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Экран настенный Mr.Pixel 70" X 70" (1,78 X 1,78)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">18996</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">19067</price>
           <price type="RRP" currencyId="KZT">25890</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -9472,7 +9427,7 @@ P-4 уровень секретности
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Экран настенный Mr.Pixel ECO 70" X 70" (1,78 X 1,78)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">12564</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">12611</price>
           <price type="RRP" currencyId="KZT">17890</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
@@ -9520,7 +9475,7 @@ P-4 уровень секретности
         <manufacturer_warranty>12 мес</manufacturer_warranty>
         <model>Экран настенный Mr.Pixel ECO 80" X 80" (2,03 X 2,03)</model>
         <prices>
-          <price type="Цена дилерского портала KZT" currencyId="KZT">22302</price>
+          <price type="Цена дилерского портала KZT" currencyId="KZT">22385</price>
           <price type="RRP" currencyId="KZT">30390</price>
         </prices>
         <Param name="Страна происхождения">Китай</Param>
