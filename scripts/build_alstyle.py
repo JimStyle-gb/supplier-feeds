@@ -16,10 +16,10 @@
 - <vendorCode>: форс-префикс (по умолчанию AS без дефиса), опционально создаёт, если отсутствует.
 - Цены:
     • ВСЕГДА пересчитывает <price> от минимальной дилерской цены по зашитым правилам
-    • Процент наценки: 4.0% (было 3.0%)
+    • Процент наценки: 4.0%
     • <oldprice> удаляет
-    • Итоговую цену ОКРУГЛЯЕТ ВНИЗ до вида …900 (психологическое ценообразование),
-      напр. 104423 → 103900; 219980 → 219900.
+    • Итоговую цену форматирует: просто меняет последние три цифры на 900,
+      напр. 4898 → 4900, 99089 → 99900 (без «вниз/вверх», строго …900).
 - (по умолчанию) вычищает служебные ценовые теги (<purchase_price> и др.) из публичного YML:
     STRIP_INTERNAL_PRICE_TAGS=1 (можно выключить =0)
 - Добавляет комментарий FEED_META (supplier/source/source_date/built_*).
@@ -472,7 +472,7 @@ def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing:
     return total, created
 
 
-# ===================== ЦЕНООБРАЗОВАНИЕ (4%) =====================
+# ===================== ЦЕНООБРАЗОВАНИЕ (4% + заменяем хвост на …900) =====================
 
 PriceRule = Tuple[int, int, float, int]  # (min_incl, max_incl, percent, add_abs)
 
@@ -528,25 +528,26 @@ def get_dealer_price(offer: ET.Element) -> Optional[float]:
         return None
     return min(vals)
 
-def _align_price_psych_900(n: float) -> int:
+def _force_tail_900(n: float) -> int:
     """
-    Психологическое округление ВНИЗ до цены, оканчивающейся на …900.
-    Примеры: 104423 → 103900; 219980 → 219900; 100100 → 99_900.
+    Заменяет последние 3 цифры целой части на 900.
+    Примеры: 4898 → 4900; 99089 → 99900; 104423 → 104900.
+    Минимум 900.
     """
-    base = (int(n) // 1000) * 1000 + 900
-    if base > n:
-        base -= 1000
-    return max(base, 900)  # на всякий случай нижний предел
+    i = int(n)
+    k = max(i // 1000, 0)
+    out = k * 1000 + 900
+    return out if out >= 900 else 900
 
 def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
     """
     Находит диапазон (включительно) и считает: dealer * (1 + pct/100) + add,
-    затем ОКРУГЛЯЕТ ВНИЗ до формата …900.
+    затем ЗАМЕНЯЕТ последние 3 цифры на …900.
     """
     for lo, hi, pct, add in rules:
         if lo <= dealer <= hi:
             val = dealer * (1.0 + pct / 100.0) + add
-            return _align_price_psych_900(val)
+            return _force_tail_900(val)
     return None
 
 def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int, int, int]:
@@ -689,7 +690,7 @@ def main() -> None:
         out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING
     )
 
-    # Ценообразование (4% + …900)
+    # Ценообразование (4% + хвост …900)
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
     # Стрип внутренних цен (если включено)
@@ -710,7 +711,7 @@ def main() -> None:
     log(f"Vendor allowlist: strict={STRICT_VENDOR_ALLOWLIST} | base={len(ALLOWED_BRANDS_BASE)} | total={len(ALLOWED_BRANDS)}")
     log(f"Vendor stats: normalized={norm_cnt}, filled_param={fill_param_cnt}, filled_text={fill_text_cnt}, recovered={recovered}, dropped_supplier={drop_sup}, dropped_not_allowed={drop_na}")
     log(f"VendorCode: prefixed={total_prefixed}, created_nodes={created_nodes}, prefix='{VENDORCODE_PREFIX}'")
-    log(f"Pricing (4% + …900): updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
+    log(f"Pricing (4% + tail=…900): updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
     log(f"Stripped internal price tags: enabled={STRIP_INTERNAL_PRICE_TAGS}, removed_nodes={removed_internal}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
