@@ -14,9 +14,8 @@
     • Встраиваем в конец текстовый блок «Характеристики» из <param> (идемпотентно).
 - Параметры:
     • Удаляем «Артикул», «Штрихкод», «Код ТН ВЭД», «Код» и тег <barcode>.
-    • (НОВОЕ) После встраивания характеристик удаляем ВСЕ <param> (по умолчанию),
-      чтобы они не мешали и не раздували фид. Список исключений можно задать
-      через ALLOWED_PARAM_NAMES.
+    • После встраивания характеристик удаляем ВСЕ <param> (по умолчанию),
+      кроме явно разрешённых через ALLOWED_PARAM_NAMES.
 - FEED_META-комментарий с датами.
 """
 
@@ -80,7 +79,7 @@ SPECS_EXCLUDE_EMPTY = True
 # Параметры, которые УДАЛЯЕМ целиком
 UNWANTED_PARAM_KEYS = {"артикул","штрихкод","код тн вэд","код"}
 
-# (НОВОЕ) Удалять все <param> после встраивания «Характеристик»
+# Удалять все <param> после встраивания «Характеристик»
 STRIP_ALL_PARAMS_AFTER_EMBED = os.getenv("STRIP_ALL_PARAMS_AFTER_EMBED", "1").lower() in {"1","true","yes"}
 ALLOWED_PARAM_NAMES_RAW = os.getenv("ALLOWED_PARAM_NAMES", "")  # напр.: "Цвет|Материал" или "Цвет,Материал"
 
@@ -478,7 +477,7 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
         updated += 1
     return updated, skipped, total
 
-# ===================== ЧИСТКА ПАРАМЕТРОВ =====================
+# ===================== ЧИСТКА НЕНУЖНЫХ ПАРАМЕТРОВ =====================
 def _key(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
@@ -513,6 +512,19 @@ def strip_all_params_except(shop_el: ET.Element, allowed_names: Set[str]) -> int
                 offer.remove(p); removed += 1
     return removed
 
+# ===================== СТРИП СЛУЖЕБНЫХ ЦЕН =====================
+def strip_internal_prices(shop_el: ET.Element, tags: tuple) -> int:
+    """Удаляет служебные ценовые теги (purchase/wholesale/b2b и т.п.) из офферов."""
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return 0
+    removed = 0
+    for offer in offers_el.findall("offer"):
+        for tag in tags:
+            node = offer.find(tag)
+            if node is not None:
+                offer.remove(node); removed += 1
+    return removed
+
 # ===================== ХАРАКТЕРИСТИКИ → ОПИСАНИЕ =====================
 def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
@@ -541,12 +553,13 @@ def build_specs_lines(offer: ET.Element) -> List[str]:
     for p in offer.findall("param"):
         name = _norm(p.attrib.get("name") or ""); val = _norm(p.text or "")
         if not name: continue
-        if _key(name) not in SPECS_INCLUDE: continue
+        key = _key(name)
+        if key not in SPECS_INCLUDE: continue
         if SPECS_EXCLUDE_EMPTY and not val: continue
-        if _key(name).startswith("габариты"):
-            normv = _parse_dims(val); 
+        if key.startswith("габариты"):
+            normv = _parse_dims(val)
             if normv: val = normv
-        elif _key(name) == "вес":
+        elif key == "вес":
             val = _format_weight(val)
         lines.append(f"- {name}: {val}")
     return lines
