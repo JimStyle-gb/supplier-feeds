@@ -1,4 +1,4 @@
-name: build_alstyle
+name: build_akcent
 
 on:
   workflow_dispatch:
@@ -7,9 +7,9 @@ on:
     - cron: "0 20 * * *"
   push:
     paths:
-      - ".github/workflows/build_alstyle.yml"
-      - "scripts/build_alstyle.py"
-      - "docs/categories_alstyle.txt"
+      - ".github/workflows/build_akcent.yml"
+      - "scripts/build_akcent.py"
+      - "docs/akcent_keywords.txt"
 
 permissions:
   contents: write
@@ -31,41 +31,44 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install "requests>=2.31,<3"
 
-      - name: Verify categories file exists and not empty
+      - name: Verify keywords file exists and not empty
         run: |
-          if [ ! -s docs/categories_alstyle.txt ]; then
-            echo "::error file=docs/categories_alstyle.txt::Файл docs/categories_alstyle.txt отсутствует или пуст."
+          if [ ! -s docs/akcent_keywords.txt ]; then
+            echo "::error file=docs/akcent_keywords.txt::Файл docs/akcent_keywords.txt отсутствует или пуст."
             exit 1
           fi
-          echo "---- docs/categories_alstyle.txt (первые строки) ----"
-          nl -ba docs/categories_alstyle.txt | sed -n '1,40p'
+          echo "---- docs/akcent_keywords.txt (первые строки) ----"
+          nl -ba docs/akcent_keywords.txt | sed -n '1,40p'
 
       - name: Build feed
         env:
-          SUPPLIER_NAME: alstyle
-          OUT_FILE: docs/alstyle.yml
+          SUPPLIER_NAME: akcent
+          OUT_FILE: docs/akcent.yml
           OUTPUT_ENCODING: windows-1251
-          CATEGORIES_FILE: docs/categories_alstyle.txt
+          CATEGORIES_FILE: docs/akcent_keywords.txt
           TIMEOUT_S: "30"
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
-          VENDORCODE_PREFIX: "AS"
+          # Если нужен basic auth — раскомментируй и добавь секреты
+          # BASIC_USER: ${{ secrets.AKCENT_USER }}
+          # BASIC_PASS: ${{ secrets.AKCENT_PASS }}
+          VENDORCODE_PREFIX: "AC"
           VENDORCODE_CREATE_IF_MISSING: "0"
           # ВАЖНО: строгий фильтр брендов выключен
           STRICT_VENDOR_ALLOWLIST: "0"
-          # Остальные политики — как договаривались
+          # Политики — как у alstyle
           STRIP_INTERNAL_PRICE_TAGS: "1"
           EMBED_SPECS_IN_DESCRIPTION: "1"
           STRIP_ALL_PARAMS_AFTER_EMBED: "1"
           NORMALIZE_STOCK: "1"
           PICTURE_HEAD_SAMPLE: "0"
         run: |
-          python scripts/build_alstyle.py
+          python scripts/build_akcent.py
 
       - name: Duplicate YML as XML (for picky importers)
         run: |
-          cp docs/alstyle.yml docs/alstyle.xml
+          cp docs/akcent.yml docs/akcent.xml
 
       - name: Ensure GitHub Pages compatibility
         run: |
@@ -77,9 +80,9 @@ jobs:
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain -- docs/alstyle.yml docs/alstyle.xml docs/.nojekyll)" ]; then
-            git add docs/alstyle.yml docs/alstyle.xml docs/.nojekyll
-            git commit -m "build: update alstyle.{yml,xml}"
+          if [ -n "$(git.status --porcelain -- docs/akcent.yml docs/akcent.xml docs/.nojekyll)" ]; then
+            git add docs/akcent.yml docs/akcent.xml docs/.nojekyll
+            git commit -m "build: update akcent.{yml,xml}"
             git push
           else
             echo "No changes to commit."
