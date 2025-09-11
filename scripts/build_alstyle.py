@@ -2,27 +2,13 @@
 """
 Универсальный генератор YML (шаблон на базе al-style).
 
-Содержимое:
-- Надёжный fetch исходного XML с ретраями, джиттером, условными заголовками (If-Modified-Since / If-None-Match).
-- Фильтрация категорий (по файлу), копирование офферов (deepcopy), дерево категорий (только используемые + предки).
-- Бренд <vendor>: запрет имён поставщиков, allowlist OEM + NV Print, восстановление из param/name/description.
-- <vendorCode>: форс-префикс без дефиса, опц. создание.
-- Цена: мин. дилерская -> 4% + фикс. надбавка по диапазонам -> хвост ...900 -> <price>; чистка служебных цен.
-- Описание: блок [SPECS_BEGIN]/[SPECS_END] из <param>, затем полная чистка <param> (если не разрешены).
-- Авто-удаление "Артикул/Штрихкод/Код ТН ВЭД/Код" и <barcode>.
-- Нормализация наличия/остатков (опц.).
-- FEED_META: source/source_date/http_last_modified/etag/not_modified + счётчики.
-- Защита от пустых выборок и режим DRY-RUN. Стабильная сортировка офферов. (Опц.) HEAD-проверка картинок.
+Изменение: блок «Характеристики» теперь формируется по принципу
+«включать всё полезное» — из всех <param>, КРОМЕ явного чёрного списка:
+Артикул/Штрихкод/Код ТН ВЭД/Код и тех, что выглядят как коды/штрихкоды/URL/служебные.
+Эти 4 параметра удаляются ДО вставки, в описание не попадают.
 
-Параметры через ENV (все имеют дефолты):
-- SUPPLIER_NAME, SUPPLIER_URL, OUT_FILE, OUTPUT_ENCODING, CATEGORIES_FILE
-- VENDORCODE_PREFIX, VENDORCODE_CREATE_IF_MISSING
-- STRICT_VENDOR_ALLOWLIST, BRANDS_ALLOWLIST_EXTRA
-- STRIP_INTERNAL_PRICE_TAGS
-- EMBED_SPECS_IN_DESCRIPTION, STRIP_ALL_PARAMS_AFTER_EMBED, ALLOWED_PARAM_NAMES
-- TIMEOUT_S, RETRIES, RETRY_BACKOFF_S, MIN_BYTES
-- SKIP_WRITE_IF_EMPTY (0/1), DRY_RUN (0/1)
-- NORMALIZE_STOCK (0/1), PICTURE_HEAD_SAMPLE (0..N)
+Остальное (цены 4%+надбавки+хвост …900, вендор-allowlist, префикс vendorCode,
+чистка служебных цен, удаление <param> после вставки, FEED_META и т. п.) — как раньше.
 """
 
 from __future__ import annotations
@@ -73,24 +59,27 @@ INTERNAL_PRICE_TAGS = (
     "min_price","minPrice","max_price","maxPrice",
 )
 
-# Характеристики → описание
+# === Характеристики → описание (новая логика: почти всё, кроме чёрного списка) ===
 EMBED_SPECS_IN_DESCRIPTION = os.getenv("EMBED_SPECS_IN_DESCRIPTION", "1").lower() in {"1","true","yes"}
 SPECS_BEGIN_MARK = "[SPECS_BEGIN]"
 SPECS_END_MARK   = "[SPECS_END]"
-SPECS_INCLUDE = {
-    "вес", "габариты (шхгхв)", "ёмкость батареи", "емкость батареи",
-    "назначение", "время полной зарядки", "рабочий диапазон температур",
-    "напряжение батарейного блока", "тип подключения батарейного блока",
-    "рабочая влажность", "цвет", "объём", "обьем",
-}
 SPECS_EXCLUDE_EMPTY = True
 
-# Параметры, которые УДАЛЯЕМ целиком
+# В блок описания НЕ включать (чёрный список по имени параметра, регистронезависимо)
+SPECS_BLOCK_EXCLUDE_KEYS: Set[str] = {
+    "артикул", "штрихкод", "код тн вэд", "код",          # твои жёсткие требования
+    "barcode", "ean", "upc", "jan", "qr", "sku",         # штрих/идентификаторы
+    "код товара", "код производителя",                    # любые «коды»
+    "ссылка", "url", "link",                              # ссылки
+    "благотворительность",                                # внутреннее поле у поставщика
+}
+
+# Параметры, которые УДАЛЯЕМ из оффера до сборки описания (и точно не хотим хранить)
 UNWANTED_PARAM_KEYS = {"артикул","штрихкод","код тн вэд","код"}
 
-# После встраивания «Характеристик» чистим все <param>, кроме разрешённых
+# После встраивания «Характеристик» чистим ВСЕ <param>, кроме явно разрешённых
 STRIP_ALL_PARAMS_AFTER_EMBED = os.getenv("STRIP_ALL_PARAMS_AFTER_EMBED", "1").lower() in {"1","true","yes"}
-ALLOWED_PARAM_NAMES_RAW = os.getenv("ALLOWED_PARAM_NAMES", "")
+ALLOWED_PARAM_NAMES_RAW = os.getenv("ALLOWED_PARAM_NAMES", "")  # "Цвет|Материал" или "Цвет,Материал"
 
 # Нормализация остатков
 NORMALIZE_STOCK = os.getenv("NORMALIZE_STOCK", "1").lower() in {"1","true","yes"}
@@ -118,7 +107,6 @@ def now_almaty_str() -> str:
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 def read_prev_http_meta(path: str) -> Tuple[Optional[str], Optional[str]]:
-    """Парсит предыдущий OUT_FILE и вытаскивает http_last_modified и etag из FEED_META."""
     try:
         with open(path, "r", encoding=ENC, errors="ignore") as f:
             head = f.read(2048)
@@ -130,13 +118,6 @@ def read_prev_http_meta(path: str) -> Tuple[Optional[str], Optional[str]]:
 
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None,
               if_modified_since: Optional[str]=None, etag: Optional[str]=None) -> Tuple[Optional[bytes], dict, int]:
-    """
-    Скачивание XML:
-    - RETRY с джиттером
-    - Проверка статуса/размера/типа
-    - Поддержка 304 Not Modified
-    Возврат: (data|None, headers, status_code)
-    """
     sess = requests.Session()
     headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
     if if_modified_since:
@@ -531,6 +512,7 @@ def _key(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
 def strip_unwanted_params(shop_el: ET.Element) -> Tuple[int,int]:
+    """Удаляет <param> по UNWANTED_PARAM_KEYS и тег <barcode>."""
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0)
     removed_params = 0; removed_barcode = 0
@@ -549,6 +531,7 @@ def _parse_allowed_names(raw: str) -> Set[str]:
     return {_key(x) for x in parts}
 
 def strip_all_params_except(shop_el: ET.Element, allowed_names: Set[str]) -> int:
+    """Удаляет все <param>, кроме перечисленных в allowed_names (по имени)."""
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     removed = 0
@@ -593,20 +576,45 @@ def _format_weight(val: str) -> str:
         s += " кг"
     return s
 
+def _looks_like_code_value(v: str) -> bool:
+    """Отсекаем значения, похожие на чистые коды: >70% цифр/символов -_/."""
+    s = (v or "").strip()
+    if not s: return True
+    if re.search(r"https?://", s, re.I): return True
+    clean = re.sub(r"[0-9\-\_/ ]", "", s)
+    ratio = len(clean) / max(len(s), 1)
+    return ratio < 0.3  # мало букв => скорее код
+
 def build_specs_lines(offer: ET.Element) -> List[str]:
+    """
+    Собираем почти все параметры в блок «Характеристики», исключая:
+    - ключи из SPECS_BLOCK_EXCLUDE_KEYS,
+    - пустые значения,
+    - значения, похожие на коды/URL.
+    Частично нормализуем Вес/Габариты.
+    """
     lines: List[str] = []
+    seen_keys: Set[str] = set()
     for p in offer.findall("param"):
-        name = _norm(p.attrib.get("name") or ""); val = _norm(p.text or "")
-        if not name: continue
-        k = _key(name)
-        if k not in SPECS_INCLUDE: continue
-        if SPECS_EXCLUDE_EMPTY and not val: continue
+        raw_name = (p.attrib.get("name") or "").strip()
+        raw_val  = (p.text or "").strip()
+        if not raw_name or not raw_val:
+            continue
+        k = _key(raw_name)
+        if k in SPECS_BLOCK_EXCLUDE_KEYS:
+            continue
+        if _looks_like_code_value(raw_val):
+            continue
+        # Нормализация некоторых полей
         if k.startswith("габариты"):
-            normv = _parse_dims(val); 
-            if normv: val = normv
+            raw_val = _parse_dims(raw_val) or raw_val
         elif k == "вес":
-            val = _format_weight(val)
-        lines.append(f"- {name}: {val}")
+            raw_val = _format_weight(raw_val)
+        # Дедуп по имени
+        if k in seen_keys:
+            continue
+        seen_keys.add(k)
+        lines.append(f"- {raw_name}: {raw_val}")
     return lines
 
 def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
@@ -628,7 +636,6 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
     return offers_touched, lines_total
 
 def normalize_stock(shop_el: ET.Element) -> Tuple[int,int]:
-    """Делает available=true/false и приводит quantity_in_stock к числу, если возможно."""
     if not NORMALIZE_STOCK: return (0,0)
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0)
@@ -643,22 +650,18 @@ def normalize_stock(shop_el: ET.Element) -> Tuple[int,int]:
         avail_el = offer.find("available")
         if qty_num is not None:
             with_qty += 1
-            # обновим/создадим quantity_in_stock числом
             qnode = offer.find("quantity_in_stock") or ET.SubElement(offer, "quantity_in_stock")
             qnode.text = str(qty_num)
-            # available=true если qty_num>0
             if avail_el is None: avail_el = ET.SubElement(offer, "available")
             avail_el.text = "true" if qty_num > 0 else "false"
             touched += 1
         else:
-            # если нет qty — оставим available как было, но нормализуем true/false
             if avail_el is not None:
                 avail_el.text = "true" if (avail_el.text or "").strip().lower() in {"1","true","yes","да","есть"} else "false"
                 touched += 1
     return touched, with_qty
 
 def sample_check_pictures(shop_el: ET.Element, n: int) -> int:
-    """HEAD/GET проверка картинок на первых n офферах (для диагностики). Возвращает число 404/ошибок."""
     if n <= 0: return 0
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
@@ -700,17 +703,14 @@ def main() -> None:
 
     root = parse_xml_bytes(data) if data is not None else None
     if root is None and not_modified:
-        # если 304 и нет данных — читаем прошлый файл и просто обновим FEED_META
         try:
             with open(OUT_FILE, "rb") as f:
-                prev_content = f.read()
+                _ = f.read()
         except Exception:
             err("304 получен, но предыдущий OUT_FILE не найден — нечего публиковать.")
-        # ничего не меняем, только допишем новый FEED_META внизу? Лучше выйти явно:
         log("304: Публикацию пропускаем, т.к. данных нет и файл не пересобираем.")
         return
 
-    # Дата из исходного фида
     source_date = root.attrib.get("date") or ""
     if not source_date:
         source_date = (root.findtext("shop/generation-date") or root.findtext("shop/date") or "")
@@ -722,7 +722,6 @@ def main() -> None:
 
     id2name, id2parent, parent2children = build_category_graph(cats_el)
 
-    # Фильтр категорий
     ids_filter, subs, regs = parse_selectors(CATEGORIES_FILE)
     have_selectors = bool(ids_filter or subs or regs)
 
@@ -736,7 +735,6 @@ def main() -> None:
     else:
         used_offers = offers_in
 
-    # Стабильная сортировка офферов: categoryId, vendorCode, name
     def key_offer(o: ET.Element) -> Tuple[str,str,str]:
         return (get_text(o,"categoryId"), get_text(o,"vendorCode"), get_text(o,"name"))
     used_offers = sorted(used_offers, key=key_offer)
@@ -744,11 +742,9 @@ def main() -> None:
     used_cat_ids = {get_text(o, "categoryId") for o in used_offers if get_text(o, "categoryId")}
     used_cat_ids |= collect_ancestors(used_cat_ids, id2parent)
 
-    # Сборка выходного XML
     out_root = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
 
-    # Категории
     out_cats = ET.SubElement(out_shop, "categories")
     def depth(cid: str) -> int:
         d, cur = 0, cid
@@ -760,7 +756,6 @@ def main() -> None:
         if pid and pid in used_cat_ids: attrs["parentId"] = pid
         c_el = ET.SubElement(out_cats, "category", attrs); c_el.text = id2name.get(cid, "")
 
-    # Офферы — глубокая копия исходных узлов
     out_offers = ET.SubElement(out_shop, "offers")
     for o in used_offers:
         out_offers.append(deepcopy(o))
@@ -777,10 +772,10 @@ def main() -> None:
     # Чистка внутренних цен
     removed_internal = strip_internal_prices(out_shop, INTERNAL_PRICE_TAGS) if STRIP_INTERNAL_PRICE_TAGS else 0
 
-    # Удаление ненужных параметров (и <barcode>)
+    # Удаление нежелательных параметров (и <barcode>) до сборки описания
     removed_params_unwanted, removed_barcode = strip_unwanted_params(out_shop)
 
-    # Встраивание характеристик в описание
+    # Встраивание характеристик в описание (почти всё, кроме чёрного списка)
     specs_offers = specs_lines = 0
     if EMBED_SPECS_IN_DESCRIPTION:
         specs_offers, specs_lines = inject_specs_block(out_shop)
@@ -797,7 +792,6 @@ def main() -> None:
     # Проверка картинок (первые N)
     bad_pics = sample_check_pictures(out_shop, PICTURE_HEAD_SAMPLE) if PICTURE_HEAD_SAMPLE > 0 else 0
 
-    # Красивый вывод
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
@@ -805,7 +799,6 @@ def main() -> None:
         log("offers=0 -> запись файла пропущена (SKIP_WRITE_IF_EMPTY=1)")
         return
 
-    # FEED_META (вставка перед <shop>)
     def top_dropped(d: Dict[str,int], n: int=10) -> str:
         items = sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
         return ",".join(f"{k}:{v}" for k,v in items) if items else "n/a"
@@ -831,7 +824,6 @@ def main() -> None:
     )
     out_root.insert(0, ET.Comment(meta))
 
-    # Запись
     if DRY_RUN:
         log("[DRY_RUN=1] Файл НЕ записан. Все расчёты выполнены.")
         return
@@ -839,13 +831,12 @@ def main() -> None:
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
 
-    # Логи
     log(f"Vendor stats: normalized={norm_cnt}, filled_param={fill_param_cnt}, filled_text={fill_text_cnt}, recovered={recovered}, dropped_supplier={drop_sup}, dropped_not_allowed={drop_na}")
     log(f"VendorCode: prefixed={total_prefixed}, created_nodes={created_nodes}, prefix='{VENDORCODE_PREFIX}'")
     log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
     log(f"Stripped internal price tags: enabled={STRIP_INTERNAL_PRICE_TAGS}, removed_nodes={removed_internal}")
     log(f"Removed params: unwanted={removed_params_unwanted}, barcode_tags={removed_barcode}, total_after_embed={removed_params_total}")
-    log(f"Specs block: offers={specs_offers}, lines_total={specs_lines}")
+    log(f"Specs block (new policy): offers={specs_offers}, lines_total={specs_lines}")
     log(f"Stock normalized: touched={stock_touched}, with_qty={stock_with_qty}")
     log(f"Pictures sample checked={PICTURE_HEAD_SAMPLE}, bad={bad_pics}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
