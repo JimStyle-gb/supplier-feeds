@@ -2,13 +2,12 @@
 """
 Универсальный генератор YML (шаблон на базе al-style).
 
-Изменение: блок «Характеристики» теперь формируется по принципу
-«включать всё полезное» — из всех <param>, КРОМЕ явного чёрного списка:
-Артикул/Штрихкод/Код ТН ВЭД/Код и тех, что выглядят как коды/штрихкоды/URL/служебные.
-Эти 4 параметра удаляются ДО вставки, в описание не попадают.
-
-Остальное (цены 4%+надбавки+хвост …900, вендор-allowlist, префикс vendorCode,
-чистка служебных цен, удаление <param> после вставки, FEED_META и т. п.) — как раньше.
+Изменение: из блока «Характеристики» исключаем все неинформативные/маркетинговые
+и служебные параметры (Новинка, Снижена цена, Акция, Хит/Топ/Лидер продаж,
+Скидка/Распродажа, Рекомендуем, Подарок, Кэшбэк/Кешбек, Предзаказ, Статус,
+Базовая единица/Единица измерения, НДС/VAT, Ссылка/URL, штрих/коды и т.п.).
+Остальное — как прежде (цены 4%+надбавки+хвост …900, allowlist брендов, префикс
+vendorCode, чистка служебных цен, перенос характеристик в описание и т.д.).
 """
 
 from __future__ import annotations
@@ -59,22 +58,31 @@ INTERNAL_PRICE_TAGS = (
     "min_price","minPrice","max_price","maxPrice",
 )
 
-# === Характеристики → описание (новая логика: почти всё, кроме чёрного списка) ===
+# === Характеристики → описание (политика: почти всё, кроме чёрного списка) ===
 EMBED_SPECS_IN_DESCRIPTION = os.getenv("EMBED_SPECS_IN_DESCRIPTION", "1").lower() in {"1","true","yes"}
 SPECS_BEGIN_MARK = "[SPECS_BEGIN]"
 SPECS_END_MARK   = "[SPECS_END]"
 SPECS_EXCLUDE_EMPTY = True
 
-# В блок описания НЕ включать (чёрный список по имени параметра, регистронезависимо)
+# НЕ включать в блок описания (ключи по имени param, регистронезависимо)
 SPECS_BLOCK_EXCLUDE_KEYS: Set[str] = {
-    "артикул", "штрихкод", "код тн вэд", "код",          # твои жёсткие требования
-    "barcode", "ean", "upc", "jan", "qr", "sku",         # штрих/идентификаторы
-    "код товара", "код производителя",                    # любые «коды»
-    "ссылка", "url", "link",                              # ссылки
-    "благотворительность",                                # внутреннее поле у поставщика
+    # явные твои требования
+    "артикул", "штрихкод", "код тн вэд", "код",
+    # любые штрих/ID коды и ссылки
+    "barcode", "ean", "upc", "jan", "qr", "sku",
+    "код товара", "код производителя",
+    "ссылка", "url", "link",
+    # маркетинговые ярлыки / служебное
+    "новинка", "снижена цена", "скидка", "акция", "распродажа",
+    "топ продаж", "хит продаж", "лидер продаж", "лучшая цена",
+    "рекомендуем", "подарок", "кэшбэк", "кешбэк", "кешбек",
+    "предзаказ", "статус", "статус товара",
+    "благотворительность",
+    "базовая единица", "единица измерения", "ед. изм.",
+    "ндс", "ставка ндс", "vat", "налог", "tax",
 }
 
-# Параметры, которые УДАЛЯЕМ из оффера до сборки описания (и точно не хотим хранить)
+# параметра, которые удаляем из оффера до сборки описания (жёстко)
 UNWANTED_PARAM_KEYS = {"артикул","штрихкод","код тн вэд","код"}
 
 # После встраивания «Характеристик» чистим ВСЕ <param>, кроме явно разрешённых
@@ -576,8 +584,8 @@ def _format_weight(val: str) -> str:
         s += " кг"
     return s
 
+# отбрасываем значения, похожие на коды/URL/чистые ID (неинформативно)
 def _looks_like_code_value(v: str) -> bool:
-    """Отсекаем значения, похожие на чистые коды: >70% цифр/символов -_/."""
     s = (v or "").strip()
     if not s: return True
     if re.search(r"https?://", s, re.I): return True
@@ -585,10 +593,19 @@ def _looks_like_code_value(v: str) -> bool:
     ratio = len(clean) / max(len(s), 1)
     return ratio < 0.3  # мало букв => скорее код
 
+# опциональный «маркетинговый» паттерн на имя параметра
+EXCLUDE_NAME_RE = re.compile(
+    r"(новинк|акци|скидк|распродаж|хит продаж|топ продаж|лидер продаж|лучшая цена|"
+    r"рекомендуем|подарок|к[еэ]шб[еэ]к|предзаказ|статус|ед(иница)?\s*измерени|базовая единиц|"
+    r"vat|ндс|налог|tax)",
+    re.I
+)
+
 def build_specs_lines(offer: ET.Element) -> List[str]:
     """
     Собираем почти все параметры в блок «Характеристики», исключая:
     - ключи из SPECS_BLOCK_EXCLUDE_KEYS,
+    - имена, совпавшие с EXCLUDE_NAME_RE (маркетинг/служебное),
     - пустые значения,
     - значения, похожие на коды/URL.
     Частично нормализуем Вес/Габариты.
@@ -602,6 +619,8 @@ def build_specs_lines(offer: ET.Element) -> List[str]:
             continue
         k = _key(raw_name)
         if k in SPECS_BLOCK_EXCLUDE_KEYS:
+            continue
+        if EXCLUDE_NAME_RE.search(raw_name):
             continue
         if _looks_like_code_value(raw_val):
             continue
@@ -775,7 +794,7 @@ def main() -> None:
     # Удаление нежелательных параметров (и <barcode>) до сборки описания
     removed_params_unwanted, removed_barcode = strip_unwanted_params(out_shop)
 
-    # Встраивание характеристик в описание (почти всё, кроме чёрного списка)
+    # Встраивание характеристик в описание (почти всё, кроме чёрного списка/маркетинга)
     specs_offers = specs_lines = 0
     if EMBED_SPECS_IN_DESCRIPTION:
         specs_offers, specs_lines = inject_specs_block(out_shop)
@@ -836,7 +855,7 @@ def main() -> None:
     log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
     log(f"Stripped internal price tags: enabled={STRIP_INTERNAL_PRICE_TAGS}, removed_nodes={removed_internal}")
     log(f"Removed params: unwanted={removed_params_unwanted}, barcode_tags={removed_barcode}, total_after_embed={removed_params_total}")
-    log(f"Specs block (new policy): offers={specs_offers}, lines_total={specs_lines}")
+    log(f"Specs block (filtered): offers={specs_offers}, lines_total={specs_lines}")
     log(f"Stock normalized: touched={stock_touched}, with_qty={stock_with_qty}")
     log(f"Pictures sample checked={PICTURE_HEAD_SAMPLE}, bad={bad_pics}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
