@@ -2,12 +2,12 @@
 """
 Универсальный генератор YML (шаблон на базе al-style).
 
-Изменение: из блока «Характеристики» исключаем все неинформативные/маркетинговые
-и служебные параметры (Новинка, Снижена цена, Акция, Хит/Топ/Лидер продаж,
-Скидка/Распродажа, Рекомендуем, Подарок, Кэшбэк/Кешбек, Предзаказ, Статус,
-Базовая единица/Единица измерения, НДС/VAT, Ссылка/URL, штрих/коды и т.п.).
-Остальное — как прежде (цены 4%+надбавки+хвост …900, allowlist брендов, префикс
-vendorCode, чистка служебных цен, перенос характеристик в описание и т.д.).
+Изменение: FEED_META теперь многострочный — каждый параметр на новой строке
+с пояснением справа. Это XML-комментарий и никак не влияет на парсинг САТУ.
+
+Остальное: цены 4%+надбавки+хвост …900, allowlist брендов (запрет имён поставщиков),
+префикс vendorCode, перенос характеристик в описание (почти всё, кроме «мусора»),
+чистка <param> и служебных цен, защита от пустых выборок, DRY_RUN, и т. д.
 """
 
 from __future__ import annotations
@@ -66,7 +66,7 @@ SPECS_EXCLUDE_EMPTY = True
 
 # НЕ включать в блок описания (ключи по имени param, регистронезависимо)
 SPECS_BLOCK_EXCLUDE_KEYS: Set[str] = {
-    # явные твои требования
+    # твои жёсткие требования
     "артикул", "штрихкод", "код тн вэд", "код",
     # любые штрих/ID коды и ссылки
     "barcode", "ean", "upc", "jan", "qr", "sku",
@@ -115,9 +115,10 @@ def now_almaty_str() -> str:
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 def read_prev_http_meta(path: str) -> Tuple[Optional[str], Optional[str]]:
+    """Извлекает http_last_modified / etag из прошлого файла (работает и с многострочным комментарием)."""
     try:
         with open(path, "r", encoding=ENC, errors="ignore") as f:
-            head = f.read(2048)
+            head = f.read(4096)
         m1 = re.search(r"http_last_modified=([^\s>]+)", head)
         m2 = re.search(r'etag="([^"]+)"', head)
         return (m1.group(1) if m1 else None, m2.group(1) if m2 else None)
@@ -126,6 +127,7 @@ def read_prev_http_meta(path: str) -> Tuple[Optional[str], Optional[str]]:
 
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None,
               if_modified_since: Optional[str]=None, etag: Optional[str]=None) -> Tuple[Optional[bytes], dict, int]:
+    """GET с ретраями, джиттером и условными заголовками (If-Modified-Since / If-None-Match)."""
     sess = requests.Session()
     headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
     if if_modified_since:
@@ -593,7 +595,6 @@ def _looks_like_code_value(v: str) -> bool:
     ratio = len(clean) / max(len(s), 1)
     return ratio < 0.3  # мало букв => скорее код
 
-# опциональный «маркетинговый» паттерн на имя параметра
 EXCLUDE_NAME_RE = re.compile(
     r"(новинк|акци|скидк|распродаж|хит продаж|топ продаж|лидер продаж|лучшая цена|"
     r"рекомендуем|подарок|к[еэ]шб[еэ]к|предзаказ|статус|ед(иница)?\s*измерени|базовая единиц|"
@@ -602,14 +603,7 @@ EXCLUDE_NAME_RE = re.compile(
 )
 
 def build_specs_lines(offer: ET.Element) -> List[str]:
-    """
-    Собираем почти все параметры в блок «Характеристики», исключая:
-    - ключи из SPECS_BLOCK_EXCLUDE_KEYS,
-    - имена, совпавшие с EXCLUDE_NAME_RE (маркетинг/служебное),
-    - пустые значения,
-    - значения, похожие на коды/URL.
-    Частично нормализуем Вес/Габариты.
-    """
+    """Собираем почти все параметры в блок «Характеристики», фильтруя мусор и нормализуя часть значений."""
     lines: List[str] = []
     seen_keys: Set[str] = set()
     for p in offer.findall("param"):
@@ -624,12 +618,10 @@ def build_specs_lines(offer: ET.Element) -> List[str]:
             continue
         if _looks_like_code_value(raw_val):
             continue
-        # Нормализация некоторых полей
         if k.startswith("габариты"):
             raw_val = _parse_dims(raw_val) or raw_val
         elif k == "вес":
             raw_val = _format_weight(raw_val)
-        # Дедуп по имени
         if k in seen_keys:
             continue
         seen_keys.add(k)
@@ -655,6 +647,7 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
     return offers_touched, lines_total
 
 def normalize_stock(shop_el: ET.Element) -> Tuple[int,int]:
+    """Делает available=true/false и приводит quantity_in_stock к числу, если возможно."""
     if not NORMALIZE_STOCK: return (0,0)
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0)
@@ -681,6 +674,7 @@ def normalize_stock(shop_el: ET.Element) -> Tuple[int,int]:
     return touched, with_qty
 
 def sample_check_pictures(shop_el: ET.Element, n: int) -> int:
+    """HEAD проверка первых N картинок (диагностика)."""
     if n <= 0: return 0
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
@@ -701,6 +695,47 @@ def sample_check_pictures(shop_el: ET.Element, n: int) -> int:
                 bad += 1; checked += 1
                 break
     return bad
+
+# ===================== РЕНДЕР FEED_META =====================
+def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
+    """Многострочный комментарий с колонками: ключ = значение  | пояснение."""
+    order = [
+        "supplier","source","source_date","http_last_modified","etag","not_modified",
+        "offers_total","offers_written","prices_updated","params_removed",
+        "vendors_recovered","vendors_dropped","dropped_top",
+        "bad_pictures_sample","stock_normalized","built_utc","built_Asia/Almaty",
+    ]
+    comments = {
+        "supplier": "Метка поставщика",
+        "source": "URL исходного XML",
+        "source_date": "Дата/время из фида поставщика",
+        "http_last_modified": "Заголовок Last-Modified от сервера",
+        "etag": "Заголовок ETag от сервера",
+        "not_modified": "1=HTTP 304 (не изменился), 0=есть изменения",
+        "offers_total": "Офферов у поставщика до фильтра",
+        "offers_written": "Офферов записано в итоговый YML",
+        "prices_updated": "Скольким товарам пересчитали price",
+        "params_removed": "Сколько <param> удалено",
+        "vendors_recovered": "Скольким товарам восстановлен vendor",
+        "vendors_dropped": "Скольким товарам vendor отброшен",
+        "dropped_top": "ТОП часто отброшенных названий",
+        "bad_pictures_sample": "Ошибок при выборочной проверке картинок",
+        "stock_normalized": "Скольким товарам нормализован остаток/наличие",
+        "built_utc": "Время сборки (UTC)",
+        "built_Asia/Almaty": "Время сборки (Алматы)",
+    }
+    maxk = max(len(k) for k in order)
+    # ширина для значения — чтобы пояснения ровно шли
+    maxv = 0
+    for k in order:
+        v = str(pairs.get(k, "n/a"))
+        if len(v) > maxv: maxv = len(v)
+    lines = ["FEED_META"]
+    for k in order:
+        v = str(pairs.get(k, "n/a"))
+        c = comments.get(k, "")
+        lines.append(f"{k.ljust(maxk)} = {v.ljust(maxv)}  | {c}")
+    return "\n".join(lines)
 
 # ===================== ОСНОВНАЯ ЛОГИКА =====================
 def main() -> None:
@@ -822,26 +857,27 @@ def main() -> None:
         items = sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
         return ",".join(f"{k}:{v}" for k,v in items) if items else "n/a"
 
-    meta = (
-        f"FEED_META supplier={SUPPLIER_NAME} "
-        f"source={SUPPLIER_URL} "
-        f"source_date={source_date or 'n/a'} "
-        f"http_last_modified={http_last_modified or 'n/a'} "
-        f'etag="{http_etag or ""}" '
-        f"not_modified={1 if not_modified else 0} "
-        f"offers_total={len(offers_in)} "
-        f"offers_written={len(used_offers)} "
-        f"prices_updated={upd} "
-        f"params_removed={removed_params_unwanted + removed_params_total} "
-        f"vendors_recovered={recovered} "
-        f"vendors_dropped={drop_sup + drop_na} "
-        f"dropped_top={top_dropped(dropped_names)} "
-        f"bad_pictures_sample={bad_pics} "
-        f"stock_normalized={stock_touched} "
-        f"built_utc={now_utc_str()} "
-        f"built_Asia/Almaty={now_almaty_str()} "
-    )
-    out_root.insert(0, ET.Comment(meta))
+    meta_pairs = {
+        "supplier": SUPPLIER_NAME,
+        "source": SUPPLIER_URL,
+        "source_date": source_date or "n/a",
+        "http_last_modified": http_last_modified or "n/a",
+        "etag": f'"{http_etag or ""}"',
+        "not_modified": 1 if not_modified else 0,
+        "offers_total": len(offers_in),
+        "offers_written": len(used_offers),
+        "prices_updated": upd,
+        "params_removed": removed_params_unwanted + removed_params_total,
+        "vendors_recovered": recovered,
+        "vendors_dropped": drop_sup + drop_na,
+        "dropped_top": top_dropped(dropped_names),
+        "bad_pictures_sample": bad_pics,
+        "stock_normalized": stock_touched,
+        "built_utc": now_utc_str(),
+        "built_Asia/Almaty": now_almaty_str(),
+    }
+    meta_block = render_feed_meta_comment(meta_pairs)
+    out_root.insert(0, ET.Comment(meta_block))
 
     if DRY_RUN:
         log("[DRY_RUN=1] Файл НЕ записан. Все расчёты выполнены.")
