@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-11 15:31">
+<yml_catalog date="2025-09-11 15:32">
   <!--FEED_META
 supplier            = akcent                                                        | Метка поставщика
 source              = https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml  | URL исходного XML
@@ -13,8 +13,8 @@ vendors_dropped     = 0                                                         
 dropped_top         = mr.pixel:6,viewsonic proj:3,hyperx:1,viewsonic:1              | ТОП часто отброшенных названий
 bad_pictures_sample = 0                                                             | Ошибок при выборочной проверке картинок
 stock_normalized    = 0                                                             | Скольким товарам нормализован остаток/наличие
-built_utc           = 2025-09-11 15:31:09 UTC                                       | Время сборки (UTC)
-built_Asia/Almaty   = 2025-09-11 20:31:09 +05                                       | Время сборки (Алматы)-->
+built_utc           = 2025-09-11 15:32:49 UTC                                       | Время сборки (UTC)
+built_Asia/Almaty   = 2025-09-11 20:32:49 +05                                       | Время сборки (Алматы)-->
   <shop>
     <categories>
       <category id="000002654">CAD</category>
