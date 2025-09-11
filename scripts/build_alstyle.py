@@ -1,27 +1,33 @@
 # -*- coding: utf-8 -*-
 """
-Генератор YML (Yandex Market Language) для al-style:
-- Скачивает исходный XML, фильтрует категории, копирует офферы (deepcopy).
-- Производитель (<vendor>):
-    • Не ставит имена поставщиков (alstyle/copyline/vtt/akcent), NV Print разрешён.
-    • Сверка по allowlist (OEM+NV Print), попытка восстановления из карточки; иначе пусто.
-- Артикул (<vendorCode>): форс-префикс (AS, без дефиса), опц. создание при отсутствии.
-- Цена:
-    • Берём минимальную дилерскую, наценка 4% + фикс. надбавка по диапазонам.
-    • Итог: меняем последние 3 цифры на 900 (4898→4900, 99089→99900).
-    • <oldprice> удаляется. Служебные ценовые теги очищаются (по умолчанию).
-- Описание:
-    • Встраиваем в конец текстовый блок «Характеристики» из <param> (идемпотентно).
-- Параметры:
-    • Удаляем «Артикул», «Штрихкод», «Код ТН ВЭД», «Код» и тег <barcode>.
-    • После встраивания характеристик удаляем ВСЕ <param> (по умолчанию),
-      кроме явно разрешённых через ALLOWED_PARAM_NAMES.
-- FEED_META-комментарий с датами.
+Универсальный генератор YML (шаблон на базе al-style).
+
+Содержимое:
+- Надёжный fetch исходного XML с ретраями, джиттером, условными заголовками (If-Modified-Since / If-None-Match).
+- Фильтрация категорий (по файлу), копирование офферов (deepcopy), дерево категорий (только используемые + предки).
+- Бренд <vendor>: запрет имён поставщиков, allowlist OEM + NV Print, восстановление из param/name/description.
+- <vendorCode>: форс-префикс без дефиса, опц. создание.
+- Цена: мин. дилерская -> 4% + фикс. надбавка по диапазонам -> хвост ...900 -> <price>; чистка служебных цен.
+- Описание: блок [SPECS_BEGIN]/[SPECS_END] из <param>, затем полная чистка <param> (если не разрешены).
+- Авто-удаление "Артикул/Штрихкод/Код ТН ВЭД/Код" и <barcode>.
+- Нормализация наличия/остатков (опц.).
+- FEED_META: source/source_date/http_last_modified/etag/not_modified + счётчики.
+- Защита от пустых выборок и режим DRY-RUN. Стабильная сортировка офферов. (Опц.) HEAD-проверка картинок.
+
+Параметры через ENV (все имеют дефолты):
+- SUPPLIER_NAME, SUPPLIER_URL, OUT_FILE, OUTPUT_ENCODING, CATEGORIES_FILE
+- VENDORCODE_PREFIX, VENDORCODE_CREATE_IF_MISSING
+- STRICT_VENDOR_ALLOWLIST, BRANDS_ALLOWLIST_EXTRA
+- STRIP_INTERNAL_PRICE_TAGS
+- EMBED_SPECS_IN_DESCRIPTION, STRIP_ALL_PARAMS_AFTER_EMBED, ALLOWED_PARAM_NAMES
+- TIMEOUT_S, RETRIES, RETRY_BACKOFF_S, MIN_BYTES
+- SKIP_WRITE_IF_EMPTY (0/1), DRY_RUN (0/1)
+- NORMALIZE_STOCK (0/1), PICTURE_HEAD_SAMPLE (0..N)
 """
 
 from __future__ import annotations
 
-import os, sys, re, time
+import os, sys, re, time, random
 from copy import deepcopy
 from typing import Dict, List, Set, Tuple, Optional
 from xml.etree import ElementTree as ET
@@ -34,7 +40,7 @@ except Exception:
 import requests
 
 # ===================== ПАРАМЕТРЫ =====================
-SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "alstyle")  # только для FEED_META
+SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "alstyle")  # для FEED_META
 SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php")
 OUT_FILE        = os.getenv("OUT_FILE", "docs/alstyle.yml")
 ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
@@ -47,6 +53,9 @@ TIMEOUT_S       = int(os.getenv("TIMEOUT_S", "30"))
 RETRIES         = int(os.getenv("RETRIES", "4"))
 RETRY_BACKOFF   = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
+
+SKIP_WRITE_IF_EMPTY = os.getenv("SKIP_WRITE_IF_EMPTY", "1").lower() in {"1","true","yes"}
+DRY_RUN              = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
 # Префикс для <vendorCode>
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")
@@ -79,9 +88,15 @@ SPECS_EXCLUDE_EMPTY = True
 # Параметры, которые УДАЛЯЕМ целиком
 UNWANTED_PARAM_KEYS = {"артикул","штрихкод","код тн вэд","код"}
 
-# Удалять все <param> после встраивания «Характеристик»
+# После встраивания «Характеристик» чистим все <param>, кроме разрешённых
 STRIP_ALL_PARAMS_AFTER_EMBED = os.getenv("STRIP_ALL_PARAMS_AFTER_EMBED", "1").lower() in {"1","true","yes"}
-ALLOWED_PARAM_NAMES_RAW = os.getenv("ALLOWED_PARAM_NAMES", "")  # напр.: "Цвет|Материал" или "Цвет,Материал"
+ALLOWED_PARAM_NAMES_RAW = os.getenv("ALLOWED_PARAM_NAMES", "")
+
+# Нормализация остатков
+NORMALIZE_STOCK = os.getenv("NORMALIZE_STOCK", "1").lower() in {"1","true","yes"}
+
+# Проверка картинок (первые N офферов)
+PICTURE_HEAD_SAMPLE = int(os.getenv("PICTURE_HEAD_SAMPLE", "0"))
 
 # ===================== УТИЛИТЫ =====================
 def log(msg: str) -> None:
@@ -94,29 +109,64 @@ def err(msg: str, code: int = 1) -> None:
     print(f"ERROR: {msg}", flush=True, file=sys.stderr)
     sys.exit(code)
 
-def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None) -> bytes:
+def now_utc_str() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
+
+def now_almaty_str() -> str:
+    if ZoneInfo:
+        return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+def read_prev_http_meta(path: str) -> Tuple[Optional[str], Optional[str]]:
+    """Парсит предыдущий OUT_FILE и вытаскивает http_last_modified и etag из FEED_META."""
+    try:
+        with open(path, "r", encoding=ENC, errors="ignore") as f:
+            head = f.read(2048)
+        m1 = re.search(r"http_last_modified=([^\s>]+)", head)
+        m2 = re.search(r'etag="([^"]+)"', head)
+        return (m1.group(1) if m1 else None, m2.group(1) if m2 else None)
+    except Exception:
+        return (None, None)
+
+def fetch_xml(url: str, timeout: int, retries: int, backoff: float, auth=None,
+              if_modified_since: Optional[str]=None, etag: Optional[str]=None) -> Tuple[Optional[bytes], dict, int]:
+    """
+    Скачивание XML:
+    - RETRY с джиттером
+    - Проверка статуса/размера/типа
+    - Поддержка 304 Not Modified
+    Возврат: (data|None, headers, status_code)
+    """
     sess = requests.Session()
-    headers = {"User-Agent": "alstyle-feed-bot/1.0 (+github-actions)"}
+    headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
+    if if_modified_since:
+        headers["If-Modified-Since"] = if_modified_since
+    if etag:
+        headers["If-None-Match"] = etag
+
     last_exc = None
     for attempt in range(1, retries + 1):
         try:
             resp = sess.get(url, headers=headers, timeout=timeout, auth=auth, stream=True)
-            ctype = (resp.headers.get("Content-Type") or "").lower()
+            if resp.status_code == 304:
+                return (None, resp.headers, 304)
             if resp.status_code != 200:
                 raise RuntimeError(f"HTTP {resp.status_code}")
             data = resp.content
             if len(data) < MIN_BYTES:
                 raise RuntimeError(f"too small ({len(data)} bytes)")
+            ctype = (resp.headers.get("Content-Type") or "").lower()
             if not any(t in ctype for t in ("xml","text/plain","application/octet-stream")):
                 head = data[:64].lstrip()
                 if not head.startswith(b"<"):
                     raise RuntimeError(f"unexpected content-type: {ctype!r}")
-            return data
+            return (data, resp.headers, resp.status_code)
         except Exception as e:
             last_exc = e
-            warn(f"fetch attempt {attempt}/{retries} failed: {e}")
+            jitter = backoff * attempt * max(0.5, 1.0 + random.uniform(-0.2, 0.2))
+            warn(f"fetch attempt {attempt}/{retries} failed: {e}; sleep {jitter:.2f}s")
             if attempt < retries:
-                time.sleep(backoff * attempt)
+                time.sleep(jitter)
     raise RuntimeError(f"fetch failed after {retries} attempts: {last_exc}")
 
 def parse_xml_bytes(data: bytes) -> ET.Element:
@@ -132,14 +182,6 @@ def set_text(el: ET.Element, text: str) -> None:
 def iter_local(elem: ET.Element, name: str):
     for child in elem.findall(name):
         yield child
-
-def now_utc_str() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
-
-def now_almaty_str() -> str:
-    if ZoneInfo:
-        return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 # ===================== КАТЕГОРИИ =====================
 def build_category_graph(cats_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
@@ -235,7 +277,7 @@ def _norm_key(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
-SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent"]}
+SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent","nvprint","nv print"]} - {"nv print"}  # NV Print разрешён
 UNKNOWN_VENDOR_MARKERS = ("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
 
 _BRAND_MAP = {
@@ -350,20 +392,27 @@ def extract_brand_any(offer: ET.Element) -> str:
             or extract_brand_from_name(get_text(offer, "name"))
             or scan_text_for_allowed_brand(get_text(offer, "description")))
 
-def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,int,int,int]:
+def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,int,int,int,Dict[str,int]]:
     offers_el = shop_el.find("offers")
-    if offers_el is None: return (0,0,0,0,0,0)
+    if offers_el is None: return (0,0,0,0,0,0,{})
     normalized=filled_param=filled_text=dropped_supplier=dropped_not_allowed=recovered=0
+    dropped_names: Dict[str,int] = {}
     for offer in offers_el.findall("offer"):
         ven = offer.find("vendor")
         txt_raw = (ven.text or "").strip() if ven is not None and ven.text else ""
+        def drop_name(nm: str):
+            if not nm: return
+            key = _norm_key(nm)
+            dropped_names[key] = dropped_names.get(key, 0) + 1
         def clear_vendor(reason: str):
             nonlocal dropped_supplier, dropped_not_allowed
-            if ven is not None: offer.remove(ven)
+            if ven is not None:
+                drop_name(ven.text or "")
+                offer.remove(ven)
             if reason=="supplier": dropped_supplier+=1
             elif reason=="not_allowed": dropped_not_allowed+=1
         if txt_raw:
-            if _looks_unknown(txt_raw) or _norm_key(txt_raw) in SUPPLIER_BLOCKLIST:
+            if _looks_unknown(txt_raw) or _norm_key(txt_raw) in (SUPPLIER_BLOCKLIST):
                 clear_vendor("supplier"); ven=None; txt_raw=""
             else:
                 canon = normalize_brand(txt_raw)
@@ -380,7 +429,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,int,int,int]:
         if candt:
             ET.SubElement(offer, "vendor").text = candt
             filled_text += 1; recovered += 1; continue
-    return (normalized,filled_param,filled_text,dropped_supplier,dropped_not_allowed,recovered)
+    return (normalized,filled_param,filled_text,dropped_supplier,dropped_not_allowed,recovered,dropped_names)
 
 # ===================== VENDORCODE =====================
 def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool=False) -> Tuple[int,int]:
@@ -477,12 +526,11 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
         updated += 1
     return updated, skipped, total
 
-# ===================== ЧИСТКА НЕНУЖНЫХ ПАРАМЕТРОВ =====================
+# ===================== ЧИСТКА ПАРАМОВ/ЦЕН =====================
 def _key(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
 def strip_unwanted_params(shop_el: ET.Element) -> Tuple[int,int]:
-    """Удаляет <param> по UNWANTED_PARAM_KEYS и тег <barcode>."""
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0)
     removed_params = 0; removed_barcode = 0
@@ -501,7 +549,6 @@ def _parse_allowed_names(raw: str) -> Set[str]:
     return {_key(x) for x in parts}
 
 def strip_all_params_except(shop_el: ET.Element, allowed_names: Set[str]) -> int:
-    """Удаляет все <param>, кроме перечисленных в allowed_names (по имени)."""
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     removed = 0
@@ -512,9 +559,7 @@ def strip_all_params_except(shop_el: ET.Element, allowed_names: Set[str]) -> int
                 offer.remove(p); removed += 1
     return removed
 
-# ===================== СТРИП СЛУЖЕБНЫХ ЦЕН =====================
 def strip_internal_prices(shop_el: ET.Element, tags: tuple) -> int:
-    """Удаляет служебные ценовые теги (purchase/wholesale/b2b и т.п.) из офферов."""
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     removed = 0
@@ -525,7 +570,7 @@ def strip_internal_prices(shop_el: ET.Element, tags: tuple) -> int:
                 offer.remove(node); removed += 1
     return removed
 
-# ===================== ХАРАКТЕРИСТИКИ → ОПИСАНИЕ =====================
+# ===================== СПЕЦИФИКАЦИИ / НАЛИЧИЕ / КАРТИНКИ =====================
 def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
 
@@ -553,13 +598,13 @@ def build_specs_lines(offer: ET.Element) -> List[str]:
     for p in offer.findall("param"):
         name = _norm(p.attrib.get("name") or ""); val = _norm(p.text or "")
         if not name: continue
-        key = _key(name)
-        if key not in SPECS_INCLUDE: continue
+        k = _key(name)
+        if k not in SPECS_INCLUDE: continue
         if SPECS_EXCLUDE_EMPTY and not val: continue
-        if key.startswith("габариты"):
-            normv = _parse_dims(val)
+        if k.startswith("габариты"):
+            normv = _parse_dims(val); 
             if normv: val = normv
-        elif key == "вес":
+        elif k == "вес":
             val = _format_weight(val)
         lines.append(f"- {name}: {val}")
     return lines
@@ -582,15 +627,90 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
         offers_touched += 1; lines_total += len(lines)
     return offers_touched, lines_total
 
+def normalize_stock(shop_el: ET.Element) -> Tuple[int,int]:
+    """Делает available=true/false и приводит quantity_in_stock к числу, если возможно."""
+    if not NORMALIZE_STOCK: return (0,0)
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return (0,0)
+    touched=with_qty=0
+    for offer in offers_el.findall("offer"):
+        qty_txt = get_text(offer, "quantity_in_stock") or get_text(offer, "quantity")
+        qty_num = None
+        if qty_txt:
+            m = re.search(r"\d+", qty_txt.replace(">", ""))
+            if m:
+                qty_num = int(m.group(0))
+        avail_el = offer.find("available")
+        if qty_num is not None:
+            with_qty += 1
+            # обновим/создадим quantity_in_stock числом
+            qnode = offer.find("quantity_in_stock") or ET.SubElement(offer, "quantity_in_stock")
+            qnode.text = str(qty_num)
+            # available=true если qty_num>0
+            if avail_el is None: avail_el = ET.SubElement(offer, "available")
+            avail_el.text = "true" if qty_num > 0 else "false"
+            touched += 1
+        else:
+            # если нет qty — оставим available как было, но нормализуем true/false
+            if avail_el is not None:
+                avail_el.text = "true" if (avail_el.text or "").strip().lower() in {"1","true","yes","да","есть"} else "false"
+                touched += 1
+    return touched, with_qty
+
+def sample_check_pictures(shop_el: ET.Element, n: int) -> int:
+    """HEAD/GET проверка картинок на первых n офферах (для диагностики). Возвращает число 404/ошибок."""
+    if n <= 0: return 0
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return 0
+    sess = requests.Session()
+    bad = 0; checked = 0
+    for offer in offers_el.findall("offer"):
+        if checked >= n: break
+        for pic in offer.findall("picture"):
+            url = (pic.text or "").strip()
+            if not url: continue
+            try:
+                r = sess.head(url, timeout=5, allow_redirects=True)
+                if r.status_code >= 400:
+                    bad += 1
+                checked += 1
+                break
+            except Exception:
+                bad += 1; checked += 1
+                break
+    return bad
+
 # ===================== ОСНОВНАЯ ЛОГИКА =====================
 def main() -> None:
+    prev_lm, prev_etag = read_prev_http_meta(OUT_FILE)
     auth = (BASIC_USER, BASIC_PASS) if BASIC_USER and BASIC_PASS else None
 
     log(f"Source: {SUPPLIER_URL}")
     log(f"Categories file: {CATEGORIES_FILE}")
-    data = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth)
-    root = parse_xml_bytes(data)
+    data, resp_headers, status = fetch_xml(
+        SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF, auth=auth,
+        if_modified_since=prev_lm, etag=prev_etag
+    )
+    http_last_modified = resp_headers.get("Last-Modified") or ""
+    http_etag = resp_headers.get("ETag") or ""
+    not_modified = (status == 304)
 
+    if not_modified:
+        log("HTTP 304 Not Modified — исходный фид не изменился.")
+
+    root = parse_xml_bytes(data) if data is not None else None
+    if root is None and not_modified:
+        # если 304 и нет данных — читаем прошлый файл и просто обновим FEED_META
+        try:
+            with open(OUT_FILE, "rb") as f:
+                prev_content = f.read()
+        except Exception:
+            err("304 получен, но предыдущий OUT_FILE не найден — нечего публиковать.")
+        # ничего не меняем, только допишем новый FEED_META внизу? Лучше выйти явно:
+        log("304: Публикацию пропускаем, т.к. данных нет и файл не пересобираем.")
+        return
+
+    # Дата из исходного фида
     source_date = root.attrib.get("date") or ""
     if not source_date:
         source_date = (root.findtext("shop/generation-date") or root.findtext("shop/date") or "")
@@ -602,6 +722,7 @@ def main() -> None:
 
     id2name, id2parent, parent2children = build_category_graph(cats_el)
 
+    # Фильтр категорий
     ids_filter, subs, regs = parse_selectors(CATEGORIES_FILE)
     have_selectors = bool(ids_filter or subs or regs)
 
@@ -610,20 +731,24 @@ def main() -> None:
         keep_cat_ids = {cid for cid, nm in id2name.items() if cat_matches(nm, cid, ids_filter, subs, regs)}
         keep_cat_ids = collect_descendants(keep_cat_ids, parent2children) if keep_cat_ids else set()
         used_offers = [o for o in offers_in if get_text(o, "categoryId") in keep_cat_ids]
-        if not used_offers: warn("фильтры заданы, но офферов не найдено — проверь docs/categories_alstyle.txt")
+        if not used_offers:
+            warn("фильтры заданы, но офферов не найдено — проверь файл категорий")
     else:
         used_offers = offers_in
+
+    # Стабильная сортировка офферов: categoryId, vendorCode, name
+    def key_offer(o: ET.Element) -> Tuple[str,str,str]:
+        return (get_text(o,"categoryId"), get_text(o,"vendorCode"), get_text(o,"name"))
+    used_offers = sorted(used_offers, key=key_offer)
 
     used_cat_ids = {get_text(o, "categoryId") for o in used_offers if get_text(o, "categoryId")}
     used_cat_ids |= collect_ancestors(used_cat_ids, id2parent)
 
+    # Сборка выходного XML
     out_root = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
 
-    meta = (f"FEED_META supplier={SUPPLIER_NAME} source={SUPPLIER_URL} "
-            f"source_date={source_date or 'n/a'} built_utc={now_utc_str()} built_Asia/Almaty={now_almaty_str()} ")
-    out_root.insert(0, ET.Comment(meta))
-
+    # Категории
     out_cats = ET.SubElement(out_shop, "categories")
     def depth(cid: str) -> int:
         d, cur = 0, cid
@@ -635,42 +760,94 @@ def main() -> None:
         if pid and pid in used_cat_ids: attrs["parentId"] = pid
         c_el = ET.SubElement(out_cats, "category", attrs); c_el.text = id2name.get(cid, "")
 
+    # Офферы — глубокая копия исходных узлов
     out_offers = ET.SubElement(out_shop, "offers")
-    for o in used_offers: out_offers.append(deepcopy(o))
+    for o in used_offers:
+        out_offers.append(deepcopy(o))
 
     # Производитель
-    norm_cnt, fill_param_cnt, fill_text_cnt, drop_sup, drop_na, recovered = ensure_vendor(out_shop)
+    norm_cnt, fill_param_cnt, fill_text_cnt, drop_sup, drop_na, recovered, dropped_names = ensure_vendor(out_shop)
+
     # Префикс vendorCode
     total_prefixed, created_nodes = force_prefix_vendorcode(out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING)
+
     # Пересчёт цен
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
+
     # Чистка внутренних цен
     removed_internal = strip_internal_prices(out_shop, INTERNAL_PRICE_TAGS) if STRIP_INTERNAL_PRICE_TAGS else 0
+
     # Удаление ненужных параметров (и <barcode>)
     removed_params_unwanted, removed_barcode = strip_unwanted_params(out_shop)
+
     # Встраивание характеристик в описание
     specs_offers = specs_lines = 0
     if EMBED_SPECS_IN_DESCRIPTION:
         specs_offers, specs_lines = inject_specs_block(out_shop)
+
     # Полная чистка param после встраивания
     removed_params_total = 0
     if STRIP_ALL_PARAMS_AFTER_EMBED:
         allowed = _parse_allowed_names(ALLOWED_PARAM_NAMES_RAW)
         removed_params_total = strip_all_params_except(out_shop, allowed)
 
+    # Нормализация остатков
+    stock_touched, stock_with_qty = normalize_stock(out_shop)
+
+    # Проверка картинок (первые N)
+    bad_pics = sample_check_pictures(out_shop, PICTURE_HEAD_SAMPLE) if PICTURE_HEAD_SAMPLE > 0 else 0
+
+    # Красивый вывод
     try: ET.indent(out_root, space="  ")
     except Exception: pass
+
+    if SKIP_WRITE_IF_EMPTY and len(used_offers) == 0:
+        log("offers=0 -> запись файла пропущена (SKIP_WRITE_IF_EMPTY=1)")
+        return
+
+    # FEED_META (вставка перед <shop>)
+    def top_dropped(d: Dict[str,int], n: int=10) -> str:
+        items = sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
+        return ",".join(f"{k}:{v}" for k,v in items) if items else "n/a"
+
+    meta = (
+        f"FEED_META supplier={SUPPLIER_NAME} "
+        f"source={SUPPLIER_URL} "
+        f"source_date={source_date or 'n/a'} "
+        f"http_last_modified={http_last_modified or 'n/a'} "
+        f'etag="{http_etag or ""}" '
+        f"not_modified={1 if not_modified else 0} "
+        f"offers_total={len(offers_in)} "
+        f"offers_written={len(used_offers)} "
+        f"prices_updated={upd} "
+        f"params_removed={removed_params_unwanted + removed_params_total} "
+        f"vendors_recovered={recovered} "
+        f"vendors_dropped={drop_sup + drop_na} "
+        f"dropped_top={top_dropped(dropped_names)} "
+        f"bad_pictures_sample={bad_pics} "
+        f"stock_normalized={stock_touched} "
+        f"built_utc={now_utc_str()} "
+        f"built_Asia/Almaty={now_almaty_str()} "
+    )
+    out_root.insert(0, ET.Comment(meta))
+
+    # Запись
+    if DRY_RUN:
+        log("[DRY_RUN=1] Файл НЕ записан. Все расчёты выполнены.")
+        return
 
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
 
-    log(f"Vendor allowlist: strict={STRICT_VENDOR_ALLOWLIST} | base={len(ALLOWED_BRANDS_BASE)} | total={len(ALLOWED_BRANDS)}")
+    # Логи
     log(f"Vendor stats: normalized={norm_cnt}, filled_param={fill_param_cnt}, filled_text={fill_text_cnt}, recovered={recovered}, dropped_supplier={drop_sup}, dropped_not_allowed={drop_na}")
     log(f"VendorCode: prefixed={total_prefixed}, created_nodes={created_nodes}, prefix='{VENDORCODE_PREFIX}'")
-    log(f"Pricing (4% + tail=…900): updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
+    log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
     log(f"Stripped internal price tags: enabled={STRIP_INTERNAL_PRICE_TAGS}, removed_nodes={removed_internal}")
     log(f"Removed params: unwanted={removed_params_unwanted}, barcode_tags={removed_barcode}, total_after_embed={removed_params_total}")
-    log(f"Specs in description: enabled={EMBED_SPECS_IN_DESCRIPTION}, offers={specs_offers}, lines_total={specs_lines}")
+    log(f"Specs block: offers={specs_offers}, lines_total={specs_lines}")
+    log(f"Stock normalized: touched={stock_touched}, with_qty={stock_with_qty}")
+    log(f"Pictures sample checked={PICTURE_HEAD_SAMPLE}, bad={bad_pics}")
     log(f"Wrote: {OUT_FILE} | offers={len(used_offers)} | cats={len(used_cat_ids)} | encoding={ENC}")
 
 if __name__ == "__main__":
