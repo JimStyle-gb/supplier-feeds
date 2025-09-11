@@ -2,12 +2,15 @@
 """
 Универсальный генератор YML (шаблон на базе al-style).
 
-Изменение: FEED_META теперь многострочный — каждый параметр на новой строке
-с пояснением справа. Это XML-комментарий и никак не влияет на парсинг САТУ.
+Новое:
+- В блок «Характеристики» вес теперь попадает всегда: сначала нормализуем единицы
+  (добавляем «кг», при необходимости конвертируем граммы → килограммы), и только
+  потом применяем анти-спам фильтры. Вес больше не «теряется».
+- FEED_META многострочный (ключ = значение  | пояснение) — удобно читать глазами.
 
-Остальное: цены 4%+надбавки+хвост …900, allowlist брендов (запрет имён поставщиков),
-префикс vendorCode, перенос характеристик в описание (почти всё, кроме «мусора»),
-чистка <param> и служебных цен, защита от пустых выборок, DRY_RUN, и т. д.
+Остальное: цены 4% + надбавка + хвост …900, allowlist брендов (запрет имён поставщиков,
+NV Print разрешён), префикс vendorCode, перенос характеристик в описание (почти всё,
+кроме «мусора»), чистка <param> и служебных цен, защита от пустых выборок, DRY_RUN и т. д.
 """
 
 from __future__ import annotations
@@ -66,7 +69,7 @@ SPECS_EXCLUDE_EMPTY = True
 
 # НЕ включать в блок описания (ключи по имени param, регистронезависимо)
 SPECS_BLOCK_EXCLUDE_KEYS: Set[str] = {
-    # твои жёсткие требования
+    # жёстко по твоему требованию
     "артикул", "штрихкод", "код тн вэд", "код",
     # любые штрих/ID коды и ссылки
     "barcode", "ean", "upc", "jan", "qr", "sku",
@@ -82,7 +85,7 @@ SPECS_BLOCK_EXCLUDE_KEYS: Set[str] = {
     "ндс", "ставка ндс", "vat", "налог", "tax",
 }
 
-# параметра, которые удаляем из оффера до сборки описания (жёстко)
+# Параметры, которые удаляем из оффера до сборки описания (жёстко)
 UNWANTED_PARAM_KEYS = {"артикул","штрихкод","код тн вэд","код"}
 
 # После встраивания «Характеристик» чистим ВСЕ <param>, кроме явно разрешённых
@@ -268,7 +271,10 @@ def _norm_key(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
-SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent","nvprint","nv print"]} - {"nv print"}  # NV Print разрешён
+# Блокируем названия поставщиков (исключение: NV Print — разрешить во всех видах написания)
+SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent","nvprint","nv print"]}
+SUPPLIER_BLOCKLIST -= {"nv print", "nvprint"}
+
 UNKNOWN_VENDOR_MARKERS = ("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
 
 _BRAND_MAP = {
@@ -331,7 +337,7 @@ DESC_BRAND_PATTERNS = [
     re.compile(r"(?:^|\b)(?:manufacturer|brand)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
 ]
 NAME_BRAND_PATTERNS = [
-    re.compile(r"^\s*\[([^\]]{2,30})\]\s+", re.U),
+    re.compile(r"^\s*\[([^\]]]{2,30})\]\s+", re.U),
     re.compile(r"^\s*\(([^\)]{2,30})\)\s+", re.U),
     re.compile(r"^\s*([A-Za-zА-ЯЁЇІЄҐ][A-Za-z0-9А-ЯЁЇІЄҐ\-\.\s]{1,20})\s+[-–—]\s+", re.U),
 ]
@@ -579,12 +585,43 @@ def _parse_dims(val: str) -> str:
             pass
     return "x".join(str(n) for n in nums if n != "")
 
-def _format_weight(val: str) -> str:
-    s = _norm(val)
-    if not s: return s
-    if not re.search(r"(кг|kg|гр|g)\b", s, re.I):
-        s += " кг"
+def _normalize_weight_value(raw_val: str) -> str:
+    """
+    Нормализует вес:
+    - "18" -> "18 кг" (если нет единиц, считаем кг);
+    - "18000 г" -> "18 кг" (если >= 1000 г → переводим в кг);
+    - "18kg" -> "18 кг", "18.5 kg" -> "18.5 кг";
+    - оставляет как есть, если уже есть 'кг'/'g' и конвертация не требуется.
+    """
+    s = _norm(raw_val)
+    if not s:
+        return s
+    # если явные кг
+    if re.search(r"\b(кг|kg)\b", s, re.I):
+        s = re.sub(r"\s*kg\b", " кг", s, flags=re.I)
+        return s
+    # если граммы
+    m = re.search(r"([0-9]+(?:[.,][0-9]+)?)\s*(?:г|g)\b", s, re.I)
+    if m:
+        val = float(m.group(1).replace(",", "."))
+        if val >= 1000:
+            kg = val / 1000.0
+            if abs(kg - int(kg)) < 1e-6:
+                return f"{int(kg)} кг"
+            return f"{kg:.3g} кг"
+        else:
+            # маленькие веса — оставим в граммах
+            return re.sub(r"\bg\b", "г", f"{val:g} г", flags=re.I)
+    # чистое число — считаем кг
+    if re.fullmatch(r"[0-9]+(?:[.,][0-9]+)?", s):
+        s = s.replace(",", ".")
+        if abs(float(s) - int(float(s))) < 1e-6:
+            return f"{int(float(s))} кг"
+        return f"{float(s):.3g} кг"
     return s
+
+def _format_weight(val: str) -> str:
+    return _normalize_weight_value(val)
 
 # отбрасываем значения, похожие на коды/URL/чистые ID (неинформативно)
 def _looks_like_code_value(v: str) -> bool:
@@ -595,6 +632,7 @@ def _looks_like_code_value(v: str) -> bool:
     ratio = len(clean) / max(len(s), 1)
     return ratio < 0.3  # мало букв => скорее код
 
+# опциональный «маркетинговый» паттерн на имя параметра
 EXCLUDE_NAME_RE = re.compile(
     r"(новинк|акци|скидк|распродаж|хит продаж|топ продаж|лидер продаж|лучшая цена|"
     r"рекомендуем|подарок|к[еэ]шб[еэ]к|предзаказ|статус|ед(иница)?\s*измерени|базовая единиц|"
@@ -603,29 +641,51 @@ EXCLUDE_NAME_RE = re.compile(
 )
 
 def build_specs_lines(offer: ET.Element) -> List[str]:
-    """Собираем почти все параметры в блок «Характеристики», фильтруя мусор и нормализуя часть значений."""
+    """
+    Собираем почти все параметры в блок «Характеристики», исключая:
+    - ключи из SPECS_BLOCK_EXCLUDE_KEYS,
+    - имена, совпавшие с EXCLUDE_NAME_RE (маркетинг/служебное),
+    - пустые значения,
+    - значения, похожие на коды/URL (НО вес пропускаем мимо этого фильтра).
+    Нормализуем Габариты и Вес (единицы, конвертация грамм→кг).
+    """
     lines: List[str] = []
     seen_keys: Set[str] = set()
+
+    WEIGHT_KEYS = {"вес", "масса", "weight", "net weight", "gross weight"}
+
     for p in offer.findall("param"):
         raw_name = (p.attrib.get("name") or "").strip()
         raw_val  = (p.text or "").strip()
         if not raw_name or not raw_val:
             continue
+
         k = _key(raw_name)
+
+        # Базовые исключения по имени
         if k in SPECS_BLOCK_EXCLUDE_KEYS:
             continue
         if EXCLUDE_NAME_RE.search(raw_name):
             continue
-        if _looks_like_code_value(raw_val):
-            continue
+
+        # Нормализация значений
+        is_weight = k in WEIGHT_KEYS
         if k.startswith("габариты"):
             raw_val = _parse_dims(raw_val) or raw_val
-        elif k == "вес":
+        elif is_weight:
             raw_val = _format_weight(raw_val)
+
+        # Фильтр «похоже на код/URL» — ДЛЯ ВЕСА НЕ ПРИМЕНЯЕМ
+        if not is_weight and _looks_like_code_value(raw_val):
+            continue
+
+        # Дедуп по имени
         if k in seen_keys:
             continue
         seen_keys.add(k)
+
         lines.append(f"- {raw_name}: {raw_val}")
+
     return lines
 
 def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
@@ -725,7 +785,6 @@ def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
         "built_Asia/Almaty": "Время сборки (Алматы)",
     }
     maxk = max(len(k) for k in order)
-    # ширина для значения — чтобы пояснения ровно шли
     maxv = 0
     for k in order:
         v = str(pairs.get(k, "n/a"))
