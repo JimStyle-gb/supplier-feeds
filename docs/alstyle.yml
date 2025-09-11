@@ -1,6 +1,23 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-11 05:04">
-  <!--FEED_META supplier=alstyle source=https://al-style.kz/upload/catalog_export/al_style_catalog.php source_date=2025-09-11 09:50 http_last_modified=n/a etag="" not_modified=0 offers_total=15801 offers_written=1981 prices_updated=1981 params_removed=25617 vendors_recovered=370 vendors_dropped=958 dropped_top=europrint:317,svc:95,cyberpower:74,apc:66,xg:49,cet:43,legrand:38,eaton:32,ship:28,dahua:24 bad_pictures_sample=0 stock_normalized=1981 built_utc=2025-09-11 05:04:01 UTC built_Asia/Almaty=2025-09-11 10:04:01 +05 --><shop>
+<yml_catalog date="2025-09-11 05:47">
+  <!--FEED_META
+supplier            = alstyle                                                                                      | Метка поставщика
+source              = https://al-style.kz/upload/catalog_export/al_style_catalog.php                               | URL исходного XML
+source_date         = 2025-09-11 09:50                                                                             | Дата/время из фида поставщика
+http_last_modified  = n/a                                                                                          | Заголовок Last-Modified от сервера
+etag                = ""                                                                                           | Заголовок ETag от сервера
+not_modified        = 0                                                                                            | 1=HTTP 304 (не изменился), 0=есть изменения
+offers_total        = 15801                                                                                        | Офферов у поставщика до фильтра
+offers_written      = 1981                                                                                         | Офферов записано в итоговый YML
+prices_updated      = 1981                                                                                         | Скольким товарам пересчитали price
+params_removed      = 25617                                                                                        | Сколько <param> удалено
+vendors_recovered   = 370                                                                                          | Скольким товарам восстановлен vendor
+vendors_dropped     = 958                                                                                          | Скольким товарам vendor отброшен
+dropped_top         = europrint:317,svc:95,cyberpower:74,apc:66,xg:49,cet:43,legrand:38,eaton:32,ship:28,dahua:24  | ТОП часто отброшенных названий
+bad_pictures_sample = 0                                                                                            | Ошибок при выборочной проверке картинок
+stock_normalized    = 1981                                                                                         | Скольким товарам нормализован остаток/наличие
+built_utc           = 2025-09-11 05:47:23 UTC                                                                      | Время сборки (UTC)
+built_Asia/Almaty   = 2025-09-11 10:47:23 +05                                                                      | Время сборки (Алматы)--><shop>
     <categories>
       <category id="3506">Демонстрационное оборудование и аксессуары</category>
       <category id="21516">Кабельные системы</category>
