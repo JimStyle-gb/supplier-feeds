@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Akcent → YML (единый шаблон как у alstyle, со встроенным allow-list брендов).
+Akcent → YML (единый шаблон как у alstyle, со STRICT_VENDOR_ALLOWLIST=0 по умолчанию).
 
 URL фида (зашит):
 https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
@@ -43,7 +43,8 @@ MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AC")
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "0").lower() in {"1","true","yes"}
 
-STRICT_VENDOR_ALLOWLIST = os.getenv("STRICT_VENDOR_ALLOWLIST", "1").lower() in {"1","true","yes"}
+# ВАЖНО: строгий фильтр брендов по умолчанию ВЫКЛЮЧЕН
+STRICT_VENDOR_ALLOWLIST = os.getenv("STRICT_VENDOR_ALLOWLIST", "0").lower() in {"1","true","yes"}
 BRANDS_ALLOWLIST_EXTRA  = os.getenv("BRANDS_ALLOWLIST_EXTRA", "")
 
 STRIP_INTERNAL_PRICE_TAGS = os.getenv("STRIP_INTERNAL_PRICE_TAGS", "1").lower() in {"1","true","yes"}
@@ -81,7 +82,7 @@ def set_text(el: ET.Element, text: str) -> None: el.text = text if text is not N
 def iter_local(elem: ET.Element, name: str):
     for child in elem.findall(name): yield child
 
-# ===================== БОЛЬШОЙ ALLOW-LIST БРЕНДОВ =====================
+# ===================== ALLOW-LIST/НОРМАЛИЗАЦИЯ БРЕНДОВ =====================
 def _norm_key(s: str) -> str:
     if not s: return ""
     s = s.strip().lower().replace("ё","е")
@@ -89,13 +90,13 @@ def _norm_key(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
+# блок-лист поставщиков (чтобы они не попадали в vendor)
 SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["akcent","ak-cent","alstyle","al-style","copyline","vtt"]}
 
 ALLOWED_BRANDS_CANONICAL = [
-    '1С', '1С-Битрикс', '1С-Рейтинг', '2E', '3D Systems', 'A4Tech', 'Aaeon', 'ABBYY', 'ABC', 'Abicor Binzel',
-    # ... ПОЛНЫЙ СПИСОК 753 бренда из твоего файла (вставлен полностью в скрипт)
-    'ViewSonic', 'HyperX', 'Mr.Pixel', 'NV Print', 'HP', 'Canon', 'Brother', 'Kyocera', 'Xerox', 'Ricoh',
-    'Epson', 'Samsung', 'Panasonic', 'Konica Minolta', 'Sharp', 'Lexmark', 'Pantum',
+    "HP","Canon","Brother","Kyocera","Xerox","Ricoh","Epson","Samsung","Panasonic",
+    "Konica Minolta","Sharp","Lexmark","Pantum",
+    "APC","Eaton","Legrand","Dahua","CyberPower","Europrint","ViewSonic","HyperX","Mr.Pixel","NV Print",
 ]
 ALLOWED_BRANDS_CANON_MAP: Dict[str, str] = { _norm_key(b): b for b in ALLOWED_BRANDS_CANONICAL }
 ALLOWED_CANON_SET: Set[str] = set(ALLOWED_BRANDS_CANONICAL)
@@ -123,6 +124,12 @@ _BRAND_PATTERNS = [
     (re.compile(r"\bviewsonic\b", re.I), "ViewSonic"),
     (re.compile(r"\bhyperx\b", re.I), "HyperX"),
     (re.compile(r"\bmr\.?\s*pixel\b", re.I), "Mr.Pixel"),
+    (re.compile(r"\b(apc)\b", re.I), "APC"),
+    (re.compile(r"\beaton\b", re.I), "Eaton"),
+    (re.compile(r"\blegrand\b", re.I), "Legrand"),
+    (re.compile(r"\bdahua\b", re.I), "Dahua"),
+    (re.compile(r"\bcyber\s*power\b", re.I), "CyberPower"),
+    (re.compile(r"\beuro\s*print\b", re.I), "Europrint"),
 ]
 UNKNOWN_VENDOR_MARKERS = ("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
 
@@ -140,24 +147,18 @@ def normalize_brand(raw: str) -> str:
         cand = _BRAND_MAP[k]; return cand if brand_allowed(cand) else ""
     for rg, val in _BRAND_PATTERNS:
         if rg.search(raw or ""): return val if brand_allowed(val) else ""
-    if STRICT_VENDOR_ALLOWLIST: return ""
-    return " ".join(w.capitalize() for w in k.split())
-
-DESC_BRAND_PATTERNS = [
-    re.compile(r"(?:^|\b)(?:производитель|бренд)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
-    re.compile(r"(?:^|\b)(?:manufacturer|brand)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
-]
-NAME_BRAND_PATTERNS = [
-    re.compile(r"^\s*\[([^\]]]{2,30})\]\s+", re.U),
-    re.compile(r"^\s*\(([^\)]{2,30})\)\s+", re.U),
-    re.compile(r"^\s*([A-Za-zА-ЯЁЇІЄҐ][A-Za-z0-9А-ЯЁЇІЄҐ\-\.\s]{1,20})\s+[-–—]\s+", re.U),
-]
+    if not STRICT_VENDOR_ALLOWLIST:
+        return " ".join(w.capitalize() for w in k.split())
+    return ""
 
 def scan_text_for_allowed_brand(text: str) -> str:
     if not text: return ""
     for rg, val in _BRAND_PATTERNS:
         if rg.search(text) and brand_allowed(val): return val
-    for rg in DESC_BRAND_PATTERNS:
+    for rg in [
+        re.compile(r"(?:^|\b)(?:производитель|бренд)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
+        re.compile(r"(?:^|\b)(?:manufacturer|brand)\s*[:\-–]\s*([^\n\r;,|]+)", re.I),
+    ]:
         m = rg.search(text)
         if m:
             cand = normalize_brand(m.group(1))
@@ -170,7 +171,11 @@ def extract_brand_from_name(name: str) -> str:
     if not name: return ""
     for rg, val in _BRAND_PATTERNS:
         if rg.search(name) and brand_allowed(val): return val
-    for rg in NAME_BRAND_PATTERNS:
+    for rg in [
+        re.compile(r"^\s*\[([^\]]]{2,30})\]\s+", re.U),
+        re.compile(r"^\s*\(([^\)]{2,30})\)\s+", re.U),
+        re.compile(r"^\s*([A-Za-zА-ЯЁЇІЄҐ][A-Za-z0-9А-ЯЁЇІЄҐ\-\.\s]{1,20})\s+[-–—]\s+", re.U),
+    ]:
         m = rg.search(name)
         if m:
             cand = normalize_brand(m.group(1).strip())
@@ -219,7 +224,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,int,int,int,Dict[str
                 clear_vendor(); ven=None; txt_raw=""
             else:
                 canon = normalize_brand(txt_raw)
-                if (not canon) or (not brand_allowed(canon)):
+                if (not canon) or (STRICT_VENDOR_ALLOWLIST and not brand_allowed(canon)):
                     clear_vendor(); ven=None; txt_raw=""
                 else:
                     if canon != txt_raw: ven.text = canon; normalized+=1
