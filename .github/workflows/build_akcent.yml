@@ -50,19 +50,9 @@ jobs:
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
-          # Если нужен basic auth — раскомментируй и добавь секреты
-          # BASIC_USER: ${{ secrets.AKCENT_USER }}
-          # BASIC_PASS: ${{ secrets.AKCENT_PASS }}
+          BASIC_USER: ${{ secrets.AKCENT_USER }}
+          BASIC_PASS: ${{ secrets.AKCENT_PASS }}
           VENDORCODE_PREFIX: "AC"
-          VENDORCODE_CREATE_IF_MISSING: "0"
-          # ВАЖНО: строгий фильтр брендов выключен
-          STRICT_VENDOR_ALLOWLIST: "0"
-          # Политики — как у alstyle
-          STRIP_INTERNAL_PRICE_TAGS: "1"
-          EMBED_SPECS_IN_DESCRIPTION: "1"
-          STRIP_ALL_PARAMS_AFTER_EMBED: "1"
-          NORMALIZE_STOCK: "1"
-          PICTURE_HEAD_SAMPLE: "0"
         run: |
           python scripts/build_akcent.py
 
@@ -80,7 +70,7 @@ jobs:
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git.status --porcelain -- docs/akcent.yml docs/akcent.xml docs/.nojekyll)" ]; then
+          if [ -n "$(git status --porcelain -- docs/akcent.yml docs/akcent.xml docs/.nojekyll)" ]; then
             git add docs/akcent.yml docs/akcent.xml docs/.nojekyll
             git commit -m "build: update akcent.{yml,xml}"
             git push
