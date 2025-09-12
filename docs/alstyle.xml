@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-12 12:32">
+<yml_catalog date="2025-09-12 13:19">
   <!--FEED_META
 supplier            = alstyle                                                         | Метка поставщика
 source              = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-source_date         = 2025-09-12 16:50                                                | Дата/время из фида поставщика
+source_date         = 2025-09-12 17:50                                                | Дата/время из фида поставщика
 http_last_modified  = n/a                                                             | Заголовок Last-Modified от сервера
 etag                = ""                                                              | Заголовок ETag от сервера
 not_modified        = 0                                                               | 1=HTTP 304 (не изменился), 0=есть изменения
@@ -16,8 +16,8 @@ vendors_dropped     = 0                                                         
 dropped_top         = n/a                                                             | ТОП часто отброшенных названий
 bad_pictures_sample = 0                                                               | Ошибок при выборочной проверке картинок
 stock_normalized    = 1984                                                            | Скольким товарам нормализован остаток/наличие
-built_utc           = 2025-09-12 12:32:53 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty   = 2025-09-12 17:32:53 +05                                         | Время сборки (Алматы)--><shop>
+built_utc           = 2025-09-12 13:19:20 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty   = 2025-09-12 18:19:20 +05                                         | Время сборки (Алматы)--><shop>
     <categories>
       <category id="3506">Демонстрационное оборудование и аксессуары</category>
       <category id="21516">Кабельные системы</category>
@@ -7655,8 +7655,8 @@ USB 3.2 Gen1 Type-C
         <picture>https://img.al-style.kz/59506_2.jpg</picture>
         <picture>https://img.al-style.kz/59506_3.jpg</picture>
         <available>true</available>
-        <quantity>3</quantity>
-        <quantity_in_stock>3</quantity_in_stock>
+        <quantity>2</quantity>
+        <quantity_in_stock>2</quantity_in_stock>
         <vendor>Huawei</vendor>
         <name>Ноутбук Huawei MateBook D 14 14" i5-12450H 16GB 512GB Win 11 MDF-X (53013XFP)</name>
         <description>Ноутбук Huawei MateBook D 14 MendelF-W5651D / i5&#8209;12450H / 16&#8239;ГБ / SSD 512&#8239;ГБ / Win 11 Home
@@ -7737,7 +7737,7 @@ USB 3.2 Gen1 Type-C
 - Операционная система: Windows 11 Home
 - Процессор: Intel Core i5-12450H
 [SPECS_END]</description>
-        <quantity_in_stock>3</quantity_in_stock>
+        <quantity_in_stock>2</quantity_in_stock>
       </offer>
       <offer id="404087">
         <price>483900</price>
@@ -10387,9 +10387,9 @@ Microsoft Windows 11 Pro
         <url>https://al-style.kz/catalog/zip_gmo/fyuzernyy_modul_xerox_126k29401_126k29402_126k29403_126k29404/</url>
         <vendorCode>AS34190</vendorCode>
         <picture>https://img.al-style.kz/34190_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>1</quantity>
+        <quantity_in_stock>1</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Фьюзерный модуль Xerox 126K29404 / 126K29401 / 126K29402 / 126K29403</name>
         <description>Фьюзер (так же термоблок или печка) – Основной компонент финишной обработки отпечатанных документов. Служит для закрепления тонера на листе бумаги, посредством нагрева с помощью термоэлементов и прижимного вала. 
@@ -10410,7 +10410,7 @@ Microsoft Windows 11 Pro
 - Вес: 3 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>1</quantity_in_stock>
       </offer>
       <offer id="200574">
         <price>10499900</price>
@@ -10612,9 +10612,9 @@ Microsoft Windows 11 Pro
         <url>https://al-style.kz/catalog/zip_gmo/remkomplekt_avtopodatchika_xerox_607k25440_607k25441/</url>
         <vendorCode>AS35335</vendorCode>
         <picture>https://img.al-style.kz/35335_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>1</quantity>
+        <quantity_in_stock>1</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Ремкомплект автоподатчика Xerox 607K25440 / 607K25441</name>
         <description>Ремкомплект автоподатчика Xerox, предназначен для восстановления работоспособности автоподатчика (ADF) в МФУ Xerox. 
@@ -10629,7 +10629,7 @@ Microsoft Windows 11 Pro
 - Вес: 0.699 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>1</quantity_in_stock>
       </offer>
       <offer id="164832">
         <price>10499900</price>
@@ -10638,9 +10638,9 @@ Microsoft Windows 11 Pro
         <url>https://al-style.kz/catalog/zip_gmo/fyuzernyy_modul_xerox_126k34674_126k34673_126k34675_126k34679/</url>
         <vendorCode>AS35425</vendorCode>
         <picture>https://img.al-style.kz/35425_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>1</quantity>
+        <quantity_in_stock>1</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Фьюзерный модуль Xerox 126K34679 / 126K39590 / 126K34673 / 126K34675</name>
         <description>Фьюзер (так же термоблок или печка) – Основной компонент финишной обработки отпечатанных документов. Служит для закрепления тонера на листе бумаги, посредством нагрева с помощью термоэлементов и прижимного вала. 
@@ -10661,7 +10661,7 @@ Microsoft Windows 11 Pro
 - Вес: 3.8 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>1</quantity_in_stock>
       </offer>
       <offer id="61098">
         <price>10499900</price>
@@ -11574,8 +11574,8 @@ AltaLink C8170
         <vendorCode>AS39239</vendorCode>
         <picture>https://img.al-style.kz/39239_1.jpg</picture>
         <available>true</available>
-        <quantity>11</quantity>
-        <quantity_in_stock>11</quantity_in_stock>
+        <quantity>12</quantity>
+        <quantity_in_stock>12</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Проявитель Xerox 676K36000 (малиновый)</name>
         <description>Проявитель (так же девелопер) – расходный материал, состоящий из мелких шариков ферромагнитного материала (порошка). Каждая частичка девелопера имеет специальное покрытие, благодаря которому в процессе перемешивания девелопера его частички электризуются, что делает их способными удерживать наэлектризованные частички тонера. Таким образом осуществляется перенос тонера на фотобарабан (путем воздействия электростатических сил). Сам же порошок-проявитель (девелопер) в силу своих магнитных свойств, остается на поверхности барабана блока проявки.
@@ -11600,7 +11600,7 @@ AltaLink C8170
 - Вес: 1.5 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>11</quantity_in_stock>
+        <quantity_in_stock>12</quantity_in_stock>
       </offer>
       <offer id="164904">
         <price>10499900</price>
@@ -11610,8 +11610,8 @@ AltaLink C8170
         <vendorCode>AS39240</vendorCode>
         <picture>https://img.al-style.kz/39240_1.jpg</picture>
         <available>true</available>
-        <quantity>8</quantity>
-        <quantity_in_stock>8</quantity_in_stock>
+        <quantity>9</quantity>
+        <quantity_in_stock>9</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Проявитель Xerox 676K36010 (жёлтый)</name>
         <description>Проявитель (так же девелопер) – расходный материал, состоящий из мелких шариков ферромагнитного материала (порошка). Каждая частичка девелопера имеет специальное покрытие, благодаря которому в процессе перемешивания девелопера его частички электризуются, что делает их способными удерживать наэлектризованные частички тонера. Таким образом осуществляется перенос тонера на фотобарабан (путем воздействия электростатических сил). Сам же порошок-проявитель (девелопер) в силу своих магнитных свойств, остается на поверхности барабана блока проявки.
@@ -11636,7 +11636,7 @@ AltaLink C8170
 - Вес: 1.5 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>8</quantity_in_stock>
+        <quantity_in_stock>9</quantity_in_stock>
       </offer>
       <offer id="169920">
         <price>10499900</price>
@@ -17636,8 +17636,8 @@ Versant 80/180 Press
         <vendorCode>AS32443</vendorCode>
         <picture>https://img.al-style.kz/32443_1.jpg</picture>
         <available>true</available>
-        <quantity>37</quantity>
-        <quantity_in_stock>37</quantity_in_stock>
+        <quantity>33</quantity>
+        <quantity_in_stock>33</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R01520 (голубой)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -17664,7 +17664,7 @@ Versant 80/180 Press
 - Вес: 0.829 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>37</quantity_in_stock>
+        <quantity_in_stock>33</quantity_in_stock>
       </offer>
       <offer id="31834">
         <price>104900</price>
@@ -17674,8 +17674,8 @@ Versant 80/180 Press
         <vendorCode>AS32444</vendorCode>
         <picture>https://img.al-style.kz/32444_1.jpg</picture>
         <available>true</available>
-        <quantity>33</quantity>
-        <quantity_in_stock>33</quantity_in_stock>
+        <quantity>28</quantity>
+        <quantity_in_stock>28</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R01519 (малиновый)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -17702,7 +17702,7 @@ Versant 80/180 Press
 - Вес: 0.854 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>33</quantity_in_stock>
+        <quantity_in_stock>28</quantity_in_stock>
       </offer>
       <offer id="31835">
         <price>104900</price>
@@ -17712,8 +17712,8 @@ Versant 80/180 Press
         <vendorCode>AS32445</vendorCode>
         <picture>https://img.al-style.kz/32445_1.jpg</picture>
         <available>true</available>
-        <quantity>28</quantity>
-        <quantity_in_stock>28</quantity_in_stock>
+        <quantity>26</quantity>
+        <quantity_in_stock>26</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R01518 (жёлтый)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -17740,7 +17740,7 @@ Versant 80/180 Press
 - Вес: 0.854 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>28</quantity_in_stock>
+        <quantity_in_stock>26</quantity_in_stock>
       </offer>
       <offer id="31738">
         <price>90900</price>
@@ -17750,8 +17750,8 @@ Versant 80/180 Press
         <vendorCode>AS32457</vendorCode>
         <picture>https://img.al-style.kz/32457_1.jpg</picture>
         <available>true</available>
-        <quantity>26</quantity>
-        <quantity_in_stock>26</quantity_in_stock>
+        <quantity>25</quantity>
+        <quantity_in_stock>25</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R01160</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -17778,7 +17778,7 @@ Versant 80/180 Press
 - Вес: 1.04 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>26</quantity_in_stock>
+        <quantity_in_stock>25</quantity_in_stock>
       </offer>
       <offer id="31749">
         <price>235900</price>
@@ -18195,8 +18195,8 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <vendorCode>AS34258</vendorCode>
         <picture>https://img.al-style.kz/34258_1.jpg</picture>
         <available>true</available>
-        <quantity>2</quantity>
-        <quantity_in_stock>2</quantity_in_stock>
+        <quantity>3</quantity>
+        <quantity_in_stock>3</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Фьюзерный модуль Xerox 607K22320 / 126K39311</name>
         <description>Фьюзер (так же термоблок или печка) – Основной компонент финишной обработки отпечатанных документов. Служит для закрепления тонера на листе бумаги, посредством нагрева с помощью термоэлементов и прижимного вала. 
@@ -18217,7 +18217,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 5.44 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>2</quantity_in_stock>
+        <quantity_in_stock>3</quantity_in_stock>
       </offer>
       <offer id="164825">
         <price>305900</price>
@@ -18919,9 +18919,9 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <url>https://al-style.kz/catalog/r_m_gmo/kartridzh_fotoretseptora_xerox_013r00687/</url>
         <vendorCode>AS42434</vendorCode>
         <picture>https://img.al-style.kz/42434_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>15</quantity>
+        <quantity_in_stock>15</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Картридж фоторецептора Xerox 013R00687</name>
         <description>Принт-картридж – расходный материал, используемый принтером или МФУ. Представляет собой блок, в который входит фотобарабан, система его очистки и бункер для отработанного тонера. Главным компонентом является светочувствительный барабан, который служит для формирования электростатического изображения с последующим нанесением на него тонера
@@ -18944,7 +18944,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 2.07 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>15</quantity_in_stock>
       </offer>
       <offer id="266928">
         <price>65900</price>
@@ -19450,8 +19450,8 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <vendorCode>AS32322</vendorCode>
         <picture>https://img.al-style.kz/32322_1.jpg</picture>
         <available>true</available>
-        <quantity>2</quantity>
-        <quantity_in_stock>2</quantity_in_stock>
+        <quantity>31</quantity>
+        <quantity_in_stock>31</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Принт-картридж Xerox 101R00474</name>
         <description>Принт-картридж – расходный материал, используемый принтером или МФУ. Представляет собой блок, в который входит фотобарабан, система его очистки и бункер для отработанного тонера. Главным компонентом является светочувствительный барабан, который служит для формирования электростатического изображения с последующим нанесением на него тонера
@@ -19480,7 +19480,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Тип печати: Лазерная
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>2</quantity_in_stock>
+        <quantity_in_stock>31</quantity_in_stock>
       </offer>
       <offer id="31859">
         <price>43900</price>
@@ -19490,8 +19490,8 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <vendorCode>AS32323</vendorCode>
         <picture>https://img.al-style.kz/32323_1.jpg</picture>
         <available>true</available>
-        <quantity>76</quantity>
-        <quantity_in_stock>76</quantity_in_stock>
+        <quantity>81</quantity>
+        <quantity_in_stock>81</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 106R04348</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -19518,7 +19518,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 0.929 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>76</quantity_in_stock>
+        <quantity_in_stock>81</quantity_in_stock>
       </offer>
       <offer id="31860">
         <price>73900</price>
@@ -19527,9 +19527,9 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <url>https://al-style.kz/catalog/r_m_hvd/toner_kartridzh_dvoynaya_upakovka_xerox_106r04349/</url>
         <vendorCode>AS32324</vendorCode>
         <picture>https://img.al-style.kz/32324_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>2</quantity>
+        <quantity_in_stock>2</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж (двойная упаковка) Xerox 106R04349</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -19556,7 +19556,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 1.59 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>2</quantity_in_stock>
       </offer>
       <offer id="31861">
         <price>45900</price>
@@ -20677,9 +20677,9 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <url>https://al-style.kz/catalog/r_m_hvd/konteyner_dlya_otrabotannogo_tonera_xerox_108r01416/</url>
         <vendorCode>AS32475</vendorCode>
         <picture>https://img.al-style.kz/32475_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>5</quantity>
+        <quantity_in_stock>5</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Контейнер для отработанного тонера Xerox 108R01416</name>
         <description>Контейнер используется для хранения отработанного тонера в принтере. Надежно защищает аппарат от нежелательного попадания изношенного тонера в электронные и механические узлы устройства. После заполнения контейнер необходимо заменить 
@@ -20703,7 +20703,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 0.2 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>5</quantity_in_stock>
       </offer>
       <offer id="32439">
         <price>117900</price>
@@ -22775,9 +22775,9 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <url>https://al-style.kz/catalog/r_m_hvd/toner_kartridzh_xerox_106r02310/</url>
         <vendorCode>AS34349</vendorCode>
         <picture>https://img.al-style.kz/34349_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>7</quantity>
+        <quantity_in_stock>7</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 106R02310</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -22804,7 +22804,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 2.56 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>7</quantity_in_stock>
       </offer>
       <offer id="147085">
         <price>233900</price>
@@ -22997,9 +22997,9 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <url>https://al-style.kz/catalog/r_m_hvd/fyuzernyy_modul_xerox_126n00411/</url>
         <vendorCode>AS35325</vendorCode>
         <picture>https://img.al-style.kz/35325_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>1</quantity>
+        <quantity_in_stock>1</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Фьюзерный модуль Xerox 126N00411</name>
         <description>Фьюзер (так же термоблок или печка) – Основной компонент финишной обработки отпечатанных документов. Служит для закрепления тонера на листе бумаги, посредством нагрева с помощью термоэлементов и прижимного вала. 
@@ -23020,7 +23020,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 4 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>1</quantity_in_stock>
       </offer>
       <offer id="114413">
         <price>45900</price>
@@ -24333,9 +24333,9 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <url>https://al-style.kz/catalog/r_m_hvd/toner_kartridzh_xerox_106r02306/</url>
         <vendorCode>AS39245</vendorCode>
         <picture>https://img.al-style.kz/39245_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>12</quantity>
+        <quantity_in_stock>12</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж повышенной емкости Xerox 106R02306</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -24362,7 +24362,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 1.66 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>12</quantity_in_stock>
       </offer>
       <offer id="192368">
         <price>76900</price>
@@ -25055,8 +25055,8 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <vendorCode>AS41682</vendorCode>
         <picture>https://img.al-style.kz/41682_1.jpg</picture>
         <available>true</available>
-        <quantity>1</quantity>
-        <quantity_in_stock>1</quantity_in_stock>
+        <quantity>3</quantity>
+        <quantity_in_stock>3</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Емкость для отработанного тонера Xerox 008R13325</name>
         <description>Емкость используется для хранения отработанного тонера в принтере. Отработанный тонер представляет собой те частицы красящего вещества, которые по различным причинам не попали на поверхность листа бумаги, а также пыль, поступающую в процесс печати вместе с бумагой и воздухом. Надежно защищает аппарат от нежелательного попадания изношенного тонера в электронные и механические узлы устройства. После заполнения контейнер необходимо заменить 
@@ -25079,7 +25079,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 1 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>1</quantity_in_stock>
+        <quantity_in_stock>3</quantity_in_stock>
       </offer>
       <offer id="266713">
         <price>51900</price>
@@ -25237,9 +25237,9 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <url>https://al-style.kz/catalog/r_m_hvd/toner_kartridzh_standartnoy_emkosti_chyernyy_006r04360/</url>
         <vendorCode>AS42269</vendorCode>
         <picture>https://img.al-style.kz/42269_1.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>6</quantity>
+        <quantity_in_stock>6</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж стандартной емкости Xerox 006R04360 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -25266,7 +25266,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 0.2 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>6</quantity_in_stock>
       </offer>
       <offer id="266718">
         <price>66900</price>
@@ -27216,8 +27216,8 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <vendorCode>AS32413</vendorCode>
         <picture>https://img.al-style.kz/32413_1.jpg</picture>
         <available>true</available>
-        <quantity>31</quantity>
-        <quantity_in_stock>31</quantity_in_stock>
+        <quantity>29</quantity>
+        <quantity_in_stock>29</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Контейнер для отработанного тонера Xerox 008R12990</name>
         <description>Контейнер используется для хранения отработанного тонера в принтере. Отработанный тонер представляет собой те частицы красящего вещества, которые по различным причинам не попали на поверхность листа бумаги, а также пыль, поступающую в процесс печати вместе с бумагой и воздухом. Надежно защищает аппарат от нежелательного попадания изношенного тонера в электронные и механические узлы устройства. После заполнения контейнер необходимо заменить 
@@ -27240,7 +27240,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 0.241 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>31</quantity_in_stock>
+        <quantity_in_stock>29</quantity_in_stock>
       </offer>
       <offer id="360728">
         <price>60900</price>
@@ -31417,9 +31417,9 @@ XG 98TDFMAX148128- это современная интерактивная панель, разработанная для приме
         <picture>https://img.al-style.kz/76321_1.jpg</picture>
         <picture>https://img.al-style.kz/76321_2.jpg</picture>
         <picture>https://img.al-style.kz/76321_3.jpg</picture>
-        <available>true</available>
-        <quantity>5</quantity>
-        <quantity_in_stock>5</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Xg</vendor>
         <name>Интерактивная панель XG 86AIVTBTM1416256</name>
         <description>Интерактивная панель XG 86AIVTBTM1416256
@@ -31530,7 +31530,7 @@ XG 86AIVTBTM1416256 — это интерактивная панель нового поколения, предназначенная
 - Объем встроенной памяти: 256 Гб
 - Операционная система: Android 14
 [SPECS_END]</description>
-        <quantity_in_stock>5</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="410354">
         <price>2700900</price>
@@ -32914,8 +32914,8 @@ Dahua DHI-LDW43-LWI200T (K-shape)   это современный 43-дюймовый интерактивный ки
         <picture>https://img.al-style.kz/32312_2.jpg</picture>
         <picture>https://img.al-style.kz/32312_3.jpg</picture>
         <available>true</available>
-        <quantity>28</quantity>
-        <quantity_in_stock>28</quantity_in_stock>
+        <quantity>24</quantity>
+        <quantity_in_stock>24</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Монохромное МФУ Xerox WorkCentre 3025BI</name>
         <description>МФУ WorkCentre 3025BI
@@ -32962,7 +32962,7 @@ Dahua DHI-LDW43-LWI200T (K-shape)   это современный 43-дюймовый интерактивный ки
 - Емкость выходных лотков: 100 листов
 - Скорость выхода первой страницы: 8.5 сек. (моно)
 [SPECS_END]</description>
-        <quantity_in_stock>28</quantity_in_stock>
+        <quantity_in_stock>24</quantity_in_stock>
       </offer>
       <offer id="31849">
         <price>114900</price>
@@ -35815,8 +35815,8 @@ Canon imagePRESS C165Canon imagePRESS C265
         <vendorCode>AS42479</vendorCode>
         <picture>https://img.al-style.kz/42479_1.jpg</picture>
         <available>true</available>
-        <quantity>20</quantity>
-        <quantity_in_stock>20</quantity_in_stock>
+        <quantity>19</quantity>
+        <quantity_in_stock>19</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Базовый модуль МФУ Xerox VersaLink C7120/25/30 (C7101V_D) Настольная конфигурация</name>
         <description>Базовый модуль МФУ Xerox VersaLink C7120/25/30 (C7101V_D) Настольная конфигурация
@@ -35874,7 +35874,7 @@ Canon imagePRESS C165Canon imagePRESS C265
 - Скорость сканирования: до 80 изобр./мин.
 - Скорость выхода первой страницы: 6.9 / 6.7 / 5.4 сек. (моно) / 8.8 / 8.8 / 7 сек. (цвет)
 [SPECS_END]</description>
-        <quantity_in_stock>20</quantity_in_stock>
+        <quantity_in_stock>19</quantity_in_stock>
       </offer>
       <offer id="266921">
         <price>3249900</price>
@@ -40954,9 +40954,9 @@ Canon i-SENSYS LBP361dw   это однофункциональный монохромный принтер формата A4,
         <picture>https://img.al-style.kz/32371_1.jpg</picture>
         <picture>https://img.al-style.kz/32371_2.jpg</picture>
         <picture>https://img.al-style.kz/32371_3.jpg</picture>
-        <available>true</available>
-        <quantity>1</quantity>
-        <quantity_in_stock>1</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Цветной принтер Xerox VersaLink C7000N</name>
         <description>Принтер VersaLink C7000 
@@ -41083,7 +41083,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 - Рекомендованный ежемесячный объем печати: 10 000 страниц
 - Частота процессора: 1.05 ГГц
 [SPECS_END]</description>
-        <quantity_in_stock>1</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="360680">
         <price>1262900</price>
@@ -43163,9 +43163,9 @@ USB-кабель
         <picture>https://img.al-style.kz/28402_1.jpg</picture>
         <picture>https://img.al-style.kz/28402_2.jpg</picture>
         <picture>https://img.al-style.kz/28402_3.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>1</quantity>
+        <quantity_in_stock>1</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-051</name>
         <description>Данный картридж обеспечивает высокое качество печати и совместим с лазерными принтерами Canon.
@@ -43204,7 +43204,7 @@ USB-кабель
 - Тип печати: Лазерная
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>1</quantity_in_stock>
       </offer>
       <offer id="365968">
         <price>5900</price>
@@ -44597,8 +44597,8 @@ USB-кабель
         <picture>https://img.al-style.kz/64667_1.jpg</picture>
         <picture>https://img.al-style.kz/64667_2.jpg</picture>
         <available>true</available>
-        <quantity>10</quantity>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity>11</quantity>
+        <quantity_in_stock>11</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-069C</name>
         <description>Данный картридж обеспечивает высокое качество печати и совместим с лазерными принтерами Canon.
@@ -44634,7 +44634,7 @@ USB-кабель
 - Вес: 0.59 кг
 - Гарантия: 2 года
 [SPECS_END]</description>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity_in_stock>11</quantity_in_stock>
       </offer>
       <offer id="400349">
         <price>10900</price>
@@ -44645,8 +44645,8 @@ USB-кабель
         <picture>https://img.al-style.kz/64669_1.jpg</picture>
         <picture>https://img.al-style.kz/64669_2.jpg</picture>
         <available>true</available>
-        <quantity>10</quantity>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity>11</quantity>
+        <quantity_in_stock>11</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-069M</name>
         <description>Данный картридж обеспечивает высокое качество печати и совместим с лазерными принтерами Canon.
@@ -44682,7 +44682,7 @@ USB-кабель
 - Вес: 0.59 кг
 - Гарантия: 2 года
 [SPECS_END]</description>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity_in_stock>11</quantity_in_stock>
       </offer>
       <offer id="400350">
         <price>10900</price>
@@ -44693,8 +44693,8 @@ USB-кабель
         <picture>https://img.al-style.kz/64670_1.jpg</picture>
         <picture>https://img.al-style.kz/64670_2.jpg</picture>
         <available>true</available>
-        <quantity>10</quantity>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity>11</quantity>
+        <quantity_in_stock>11</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-069Y</name>
         <description>Данный картридж обеспечивает высокое качество печати и совместим с лазерными принтерами Canon.
@@ -44730,7 +44730,7 @@ USB-кабель
 - Вес: 0.59 кг
 - Гарантия: 2 года
 [SPECS_END]</description>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity_in_stock>11</quantity_in_stock>
       </offer>
       <offer id="400352">
         <price>9900</price>
@@ -57411,9 +57411,9 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <picture>https://img.al-style.kz/23983_1.jpg</picture>
         <picture>https://img.al-style.kz/23983_2.jpg</picture>
         <picture>https://img.al-style.kz/23983_3.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>&gt;50</quantity>
+        <quantity_in_stock>50</quantity_in_stock>
         <vendor>Svc</vendor>
         <name>Источник бесперебойного питания SVC V-500-L-LCD</name>
         <description>Линейно-Интерактивный ИБП SVC V-500-L-LCD Устройство, позволяющее подключенному оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. Кроме того, оно способно корректировать параметры (напряжение, частоту) электропитания. Часто применяется для обеспечения бесперебойной работы компьютеров. Информативный LCD-дисплей отображает все необходимые параметры в работе ИБП, что значительно облегчает использование ИБП.
@@ -57440,7 +57440,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
 - Рабочая влажность: 10-90% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>50</quantity_in_stock>
       </offer>
       <offer id="21384">
         <price>23900</price>
@@ -59610,8 +59610,8 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61379_1.jpg</picture>
         <picture>https://img.al-style.kz/61379_2.jpg</picture>
         <available>true</available>
-        <quantity>17</quantity>
-        <quantity_in_stock>17</quantity_in_stock>
+        <quantity>15</quantity>
+        <quantity_in_stock>15</quantity_in_stock>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS BVX2200LI-GR</name>
         <description>Источник бесперебойного питания APC Easy UPS BVX2200LI-GR
@@ -59635,7 +59635,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>17</quantity_in_stock>
+        <quantity_in_stock>15</quantity_in_stock>
       </offer>
       <offer id="396802">
         <price>122900</price>
@@ -59647,7 +59647,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61380_2.jpg</picture>
         <picture>https://img.al-style.kz/61380_3.jpg</picture>
         <available>true</available>
-        <quantity>&gt;50</quantity>
+        <quantity>50</quantity>
         <quantity_in_stock>50</quantity_in_stock>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS BVX1600LI-GR</name>
@@ -59684,8 +59684,8 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61381_1.jpg</picture>
         <picture>https://img.al-style.kz/61381_2.jpg</picture>
         <available>true</available>
-        <quantity>37</quantity>
-        <quantity_in_stock>37</quantity_in_stock>
+        <quantity>34</quantity>
+        <quantity_in_stock>34</quantity_in_stock>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS BVX1200LI-GR</name>
         <description>Источник бесперебойного питания APC Back-UPS Pro BVX1200LI-GR
@@ -59708,7 +59708,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>37</quantity_in_stock>
+        <quantity_in_stock>34</quantity_in_stock>
       </offer>
       <offer id="396804">
         <price>53900</price>
@@ -61499,8 +61499,8 @@ RGB-подсветка: Настраиваемая подсветка под ваш стиль и игровой сетап. Возможност
         <picture>https://img.al-style.kz/21162_2.jpg</picture>
         <picture>https://img.al-style.kz/21162_3.jpg</picture>
         <available>true</available>
-        <quantity>32</quantity>
-        <quantity_in_stock>32</quantity_in_stock>
+        <quantity>35</quantity>
+        <quantity_in_stock>35</quantity_in_stock>
         <vendor>Svc</vendor>
         <name>Источник бесперебойного питания SVC PTS-3KL-LCD</name>
         <description>Онлайн ИБП SVC PTS-3KL-LCD Используется для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю.
@@ -61531,7 +61531,7 @@ RGB-подсветка: Настраиваемая подсветка под ваш стиль и игровой сетап. Возможност
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>32</quantity_in_stock>
+        <quantity_in_stock>35</quantity_in_stock>
       </offer>
       <offer id="12573">
         <price>491900</price>
@@ -61860,8 +61860,8 @@ RGB-подсветка: Настраиваемая подсветка под ваш стиль и игровой сетап. Возможност
         <picture>https://img.al-style.kz/26787_2.jpg</picture>
         <picture>https://img.al-style.kz/26787_3.jpg</picture>
         <available>true</available>
-        <quantity>27</quantity>
-        <quantity_in_stock>27</quantity_in_stock>
+        <quantity>25</quantity>
+        <quantity_in_stock>25</quantity_in_stock>
         <vendor>Svc</vendor>
         <name>Источник бесперебойного питания SVC PTL-5K-LCD</name>
         <description>Линейно-интерактивный ИБП SVC PTL-5K-LCD Линейно-интерактивные ИБП с синусоидальной формой выходного сигнала. Устройство позволяющее подключённому оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. Кроме того, оно способно корректировать параметры(напряжения, частоту) электропитания. Часто применяется для обеспечения бесперебойной работы компьютеров, насосов, двигателей и тех устройства которым необходима синусоидальная форма выходного сигнала.
@@ -61889,7 +61889,7 @@ RGB-подсветка: Настраиваемая подсветка под ваш стиль и игровой сетап. Возможност
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>27</quantity_in_stock>
+        <quantity_in_stock>25</quantity_in_stock>
       </offer>
       <offer id="28839">
         <price>114900</price>
@@ -65676,8 +65676,8 @@ Keor PDU- данные ИБП предназначены для установки в 19-дюймовые шкафы и стойки.
         <picture>https://img.al-style.kz/52071_2.jpg</picture>
         <picture>https://img.al-style.kz/52071_3.jpg</picture>
         <available>true</available>
-        <quantity>8</quantity>
-        <quantity_in_stock>8</quantity_in_stock>
+        <quantity>9</quantity>
+        <quantity_in_stock>9</quantity_in_stock>
         <vendor>Legrand</vendor>
         <name>Источник бесперебойного питания Legrand Keor PDU 800ВА 8 GR/IT</name>
         <description>Источник бесперебойного питания Legrand Keor PDU 800ВА 8 GR/IT
@@ -65708,7 +65708,7 @@ Keor PDU- данные ИБП предназначены для установки в 19-дюймовые шкафы и стойки.
 - Высота в монтажной стойке: 2U
 - Рабочая влажность: 0-95% (без конденсации)
 [SPECS_END]</description>
-        <quantity_in_stock>8</quantity_in_stock>
+        <quantity_in_stock>9</quantity_in_stock>
       </offer>
       <offer id="386328">
         <price>1418900</price>
@@ -66464,9 +66464,9 @@ APC Smart-UPS SRT5KRMXLI обеспечивает чистое синусоидальное питание и увеличенно
         <picture>https://img.al-style.kz/61355_1.jpg</picture>
         <picture>https://img.al-style.kz/61355_2.jpg</picture>
         <picture>https://img.al-style.kz/61355_3.jpg</picture>
-        <available>false</available>
-        <quantity>0</quantity>
-        <quantity_in_stock>0</quantity_in_stock>
+        <available>true</available>
+        <quantity>1</quantity>
+        <quantity_in_stock>1</quantity_in_stock>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Smart-UPS SRT3000RMXLI</name>
         <description>Источник бесперебойного питания APC Smart-UPS SRT3000RMXLI
@@ -66500,7 +66500,7 @@ USB кабель
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>0</quantity_in_stock>
+        <quantity_in_stock>1</quantity_in_stock>
       </offer>
       <offer id="396742">
         <price>1306900</price>
@@ -66511,9 +66511,9 @@ USB кабель
         <picture>https://img.al-style.kz/61356_1.jpg</picture>
         <picture>https://img.al-style.kz/61356_2.jpg</picture>
         <picture>https://img.al-style.kz/61356_3.jpg</picture>
-        <available>true</available>
-        <quantity>1</quantity>
-        <quantity_in_stock>1</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Smart-UPS SRT2200RMXLI</name>
         <description>Источник бесперебойного питания APC Smart-UPS SRT2200RMXLI
@@ -66550,7 +66550,7 @@ USB кабель
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>1</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="396743">
         <price>1653900</price>
@@ -77180,8 +77180,8 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
         <picture>https://img.al-style.kz/71936_1.jpg</picture>
         <picture>https://img.al-style.kz/71936_2.jpg</picture>
         <available>true</available>
-        <quantity>16</quantity>
-        <quantity_in_stock>16</quantity_in_stock>
+        <quantity>15</quantity>
+        <quantity_in_stock>15</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF540A/054K</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -77213,7 +77213,7 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
 - Вес: 0.755 кг
 - Гарантия: 2 года
 [SPECS_END]</description>
-        <quantity_in_stock>16</quantity_in_stock>
+        <quantity_in_stock>15</quantity_in_stock>
       </offer>
       <offer id="406494">
         <price>6900</price>
@@ -79076,8 +79076,8 @@ COMIX S340   это высококачественный шредер, который обеспечит надежную защиту ва
         <picture>https://img.al-style.kz/26781_2.jpg</picture>
         <picture>https://img.al-style.kz/26781_3.jpg</picture>
         <available>true</available>
-        <quantity>46</quantity>
-        <quantity_in_stock>46</quantity_in_stock>
+        <quantity>45</quantity>
+        <quantity_in_stock>45</quantity_in_stock>
         <vendor>Comix</vendor>
         <name>Уничтожитель бумаг (Шредер) COMIX S3306</name>
         <description>Уничтожитель бумаг (Шредер) COMIX S3306
@@ -79105,7 +79105,7 @@ COMIX S340   это высококачественный шредер, который обеспечит надежную защиту ва
 - Гарантия: 1 год
 - Состав: Пластик, Металл
 [SPECS_END]</description>
-        <quantity_in_stock>46</quantity_in_stock>
+        <quantity_in_stock>45</quantity_in_stock>
       </offer>
       <offer id="27890">
         <price>419900</price>
@@ -79116,8 +79116,8 @@ COMIX S340   это высококачественный шредер, который обеспечит надежную защиту ва
         <picture>https://img.al-style.kz/28408_1.jpg</picture>
         <picture>https://img.al-style.kz/28408_2.jpg</picture>
         <available>true</available>
-        <quantity>10</quantity>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity>9</quantity>
+        <quantity_in_stock>9</quantity_in_stock>
         <vendor>Comix</vendor>
         <name>Уничтожитель бумаг (Шредер) COMIX S623</name>
         <description>Уничтожитель бумаг (Шредер) COMIX S623
@@ -79144,7 +79144,7 @@ COMIX S340   это высококачественный шредер, который обеспечит надежную защиту ва
 - Вес: 59.8 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity_in_stock>9</quantity_in_stock>
       </offer>
       <offer id="27860">
         <price>161900</price>
@@ -79156,8 +79156,8 @@ COMIX S340   это высококачественный шредер, который обеспечит надежную защиту ва
         <picture>https://img.al-style.kz/28409_2.jpg</picture>
         <picture>https://img.al-style.kz/28409_3.jpg</picture>
         <available>true</available>
-        <quantity>29</quantity>
-        <quantity_in_stock>29</quantity_in_stock>
+        <quantity>27</quantity>
+        <quantity_in_stock>27</quantity_in_stock>
         <vendor>Comix</vendor>
         <name>Уничтожитель бумаг (Шредер) COMIX S6610</name>
         <description>Уничтожитель бумаг (Шредер) COMIX S6610
@@ -79187,7 +79187,7 @@ COMIX S340   это высококачественный шредер, который обеспечит надежную защиту ва
 - Гарантия: 1 год
 - Состав: Пластик, Металл
 [SPECS_END]</description>
-        <quantity_in_stock>29</quantity_in_stock>
+        <quantity_in_stock>27</quantity_in_stock>
       </offer>
       <offer id="28956">
         <price>181900</price>
@@ -80580,8 +80580,8 @@ PoE
         <picture>https://img.al-style.kz/591_2.jpg</picture>
         <picture>https://img.al-style.kz/591_3.jpg</picture>
         <available>true</available>
-        <quantity>44</quantity>
-        <quantity_in_stock>44</quantity_in_stock>
+        <quantity>42</quantity>
+        <quantity_in_stock>42</quantity_in_stock>
         <vendor>Ship</vendor>
         <name>Кабель сетевой SHIP D145-P Cat.5e FTP 30В PVC</name>
         <description>Кабель сетевой SHIP D145-P Это экранированный (FTP) 4 - х парный кабель 5e категории.   Защищён одним общим экраном в виде фольги. Экран снижает уровень электромагнитного излучения кабеля и повышает защищённость от внешних помех. Используется при значительном уровне внешних наводок (производственные помещения) или при повышенных требованиях к информационной безопасности. Имеет стандартную PVC оболочку, применяется при прокладке внутри помещений.   
@@ -80603,7 +80603,7 @@ PoE
 - Стандарты: Категория 5е
 - Цвет: Серый
 [SPECS_END]</description>
-        <quantity_in_stock>44</quantity_in_stock>
+        <quantity_in_stock>42</quantity_in_stock>
       </offer>
       <offer id="18936">
         <price>91900</price>
@@ -80815,8 +80815,8 @@ PoE
         <picture>https://img.al-style.kz/6281_2.jpg</picture>
         <picture>https://img.al-style.kz/6281_3.jpg</picture>
         <available>true</available>
-        <quantity>41</quantity>
-        <quantity_in_stock>41</quantity_in_stock>
+        <quantity>42</quantity>
+        <quantity_in_stock>42</quantity_in_stock>
         <vendor>Ship</vendor>
         <name>Кабель сетевой SHIP D225-P Cat.5e UTP 30В РЕ</name>
         <description>Кабель сетевой самонесущий SHIP D225-P  Это не экранированный (UTP) 4 - х парный кабель 5e категории, со стальным тросом. Благодаря PE оболочке применяется при прокладке вне помещений. Отличается повышенной термостойкостью и не восприимчивостью к воздействию прямых солнечных лучей. Используется для создания компьютерных сетей стандарта 100 Мегабит/сек или 1 Гигабит/сек. 100 метровый сегмент успешно прошёл тестирование на сертифицированном приборе Fluke.
@@ -80834,7 +80834,7 @@ PoE
 - Стандарты: Категория 5е
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>41</quantity_in_stock>
+        <quantity_in_stock>42</quantity_in_stock>
       </offer>
       <offer id="399644">
         <price>3900</price>
@@ -81551,8 +81551,8 @@ PoE
         <picture>https://img.al-style.kz/8782_2.jpg</picture>
         <picture>https://img.al-style.kz/8782_3.jpg</picture>
         <available>true</available>
-        <quantity>42</quantity>
-        <quantity_in_stock>42</quantity_in_stock>
+        <quantity>44</quantity>
+        <quantity_in_stock>44</quantity_in_stock>
         <vendor>Ship</vendor>
         <name>Кабель сетевой SHIP D186-P Cat.6 FTP 30В PE</name>
         <description>Кабель сетевой SHIP D186-P  Это экранированный (FTP) 4 - х парный кабель 6 категории. Защищён одним общим экраном в виде фольги. Экран снижает уровень электромагнитного излучения кабеля и повышает защищённость от внешних помех. Используется при значительном уровне внешних наводок (производственные помещения) или при повышенных требованиях к информационной безопасности. В отличии от кабеля 5e категории имеет жилу 0,574 мм., что позволяет работать на частоте 250 Мгц. В центре кабеля проходит разделительный канал, препятствующий переплетению пар между собой. Также по стандарту 6 категории, каждая пара имеет свой шаг скрутки. Кабель имеет стандартную PE оболочку, применяется при прокладке вне помещений.   
@@ -81573,7 +81573,7 @@ PoE
 - Стандарты: Категория 6
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>42</quantity_in_stock>
+        <quantity_in_stock>44</quantity_in_stock>
       </offer>
       <offer id="16827">
         <price>90900</price>
@@ -88507,8 +88507,8 @@ GMX24C144 также оснащен предустановками многовходовых разъемов GameMax, которые 
         <picture>https://img.al-style.kz/44476_2.jpg</picture>
         <picture>https://img.al-style.kz/44476_3.jpg</picture>
         <available>true</available>
-        <quantity>18</quantity>
-        <quantity_in_stock>18</quantity_in_stock>
+        <quantity>19</quantity>
+        <quantity_in_stock>19</quantity_in_stock>
         <vendor>Gigabyte</vendor>
         <name>Монитор 31,5" Gigabyte M32QC-EK</name>
         <description>Монитор 31,5" Gigabyte M32QC-EK
@@ -88609,7 +88609,7 @@ GMX24C144 также оснащен предустановками многовходовых разъемов GameMax, которые 
 - Время отклика: 1 мс
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>18</quantity_in_stock>
+        <quantity_in_stock>19</quantity_in_stock>
       </offer>
       <offer id="357679">
         <price>287900</price>
@@ -89911,8 +89911,8 @@ USB  1
         <picture>https://img.al-style.kz/56104_2.jpg</picture>
         <picture>https://img.al-style.kz/56104_3.jpg</picture>
         <available>true</available>
-        <quantity>3</quantity>
-        <quantity_in_stock>3</quantity_in_stock>
+        <quantity>5</quantity>
+        <quantity_in_stock>5</quantity_in_stock>
         <vendor>Xg</vendor>
         <name>Монитор 23.8'' X-game 1T238IPS</name>
         <description>Монитор 23.8'' X-game 1T238IPS
@@ -89996,7 +89996,7 @@ HDMI x1
 - Состав: Металл, пластик
 - Время отклика: 5 мс
 [SPECS_END]</description>
-        <quantity_in_stock>3</quantity_in_stock>
+        <quantity_in_stock>5</quantity_in_stock>
       </offer>
       <offer id="392069">
         <price>295900</price>
@@ -90764,9 +90764,9 @@ DP-кабель x1
         <picture>https://img.al-style.kz/60613_1.jpg</picture>
         <picture>https://img.al-style.kz/60613_2.jpg</picture>
         <picture>https://img.al-style.kz/60613_3.jpg</picture>
-        <available>true</available>
-        <quantity>1</quantity>
-        <quantity_in_stock>1</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Xiaomi</vendor>
         <name>Монитор Xiaomi Monitor A24i EU</name>
         <description>Монитор Xiaomi Monitor A24i EU
@@ -90830,7 +90830,7 @@ DP-кабель x1
 - Состав: Металл, пластик
 - Время отклика: 6 мс
 [SPECS_END]</description>
-        <quantity_in_stock>1</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="396961">
         <price>210900</price>
@@ -92393,8 +92393,8 @@ HDCP
         <picture>https://img.al-style.kz/70291_2.jpg</picture>
         <picture>https://img.al-style.kz/70291_3.jpg</picture>
         <available>true</available>
-        <quantity>4</quantity>
-        <quantity_in_stock>4</quantity_in_stock>
+        <quantity>9</quantity>
+        <quantity_in_stock>9</quantity_in_stock>
         <vendor>Asrock</vendor>
         <name>Монитор 27" ASRock PG27QFT2A</name>
         <description>Монитор 27" ASRock PG27QFT2A
@@ -92464,7 +92464,7 @@ Low Blue Light. Монитор Phantom Gaming с технологией "Low Blue Light" от ASRock 
 - Видеовыход: HDMI / DP
 - Время отклика: 1 мс
 [SPECS_END]</description>
-        <quantity_in_stock>4</quantity_in_stock>
+        <quantity_in_stock>9</quantity_in_stock>
       </offer>
       <offer id="405358">
         <price>154900</price>
@@ -93443,8 +93443,8 @@ DisplayPort x1
         <picture>https://img.al-style.kz/73514_2.jpg</picture>
         <picture>https://img.al-style.kz/73514_3.jpg</picture>
         <available>true</available>
-        <quantity>10</quantity>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity>9</quantity>
+        <quantity_in_stock>9</quantity_in_stock>
         <vendor>Dahua</vendor>
         <name>Монитор 27" Dahua DHI-LM27-B200S</name>
         <description>Монитор 27" Dahua DHI-LM27-B200S
@@ -93506,7 +93506,7 @@ DisplayPort x1
 - Видеовыход: HDMI / VGA
 - Время отклика: 5 мс
 [SPECS_END]</description>
-        <quantity_in_stock>10</quantity_in_stock>
+        <quantity_in_stock>9</quantity_in_stock>
       </offer>
       <offer id="407966">
         <price>51900</price>
