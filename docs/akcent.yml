@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-12 17:23">
+<yml_catalog date="2025-09-12 17:28">
   <!--FEED_META
 supplier           = akcent                                                                                                                    | Метка поставщика
 source             = https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml                                                              | URL исходного XML
@@ -11,8 +11,8 @@ vendors_recovered  = 148                                                        
 dropped_top        = defender:295,cablexpert:169,transcend:144,китай:134,remington:122,bergner:62,russell hobbs:51,dali:50,netac:44,ritmix:42  | ТОП часто отброшенных названий
 available_forced   = 2157                                                                                                                      | Сколько офферов получили available=true
 categoryId_dropped = 2157                                                                                                                      | Сколько тегов categoryId удалено
-built_utc          = 2025-09-12 17:23:45 UTC                                                                                                   | Время сборки (UTC)
-built_Asia/Almaty  = 2025-09-12 22:23:45 +05                                                                                                   | Время сборки (Алматы)--><shop>
+built_utc          = 2025-09-12 17:28:54 UTC                                                                                                   | Время сборки (UTC)
+built_Asia/Almaty  = 2025-09-12 22:28:54 +05                                                                                                   | Время сборки (Алматы)--><shop>
     <offers>
       <offer id="Н0000026901" article="V13H134A46" type="Фильтр" available="true">
         <name>Air Filter - ELPAF46</name>
