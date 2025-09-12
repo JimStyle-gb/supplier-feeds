@@ -3,7 +3,10 @@
 YML generator for alstyle (ASCII-safe header).
 
 Key points:
-- Vendor names: block supplier names (alstyle, copyline, vtt, akcent) except NV Print; try to recover brand from name/params/description.
+- Vendor names: block supplier names (alstyle, copyline, vtt, akcent) except NV Print; recover brand from name/params/description.
+- Added extended brand allow-list (APC, ASRock, BenQ, BYINTEK, Canon, CET, Colorfix, Comix, CyberPower, Dahua, Deluxe,
+  Eaton, Europrint, Fellowes, GAMEMAX, Gigabyte, Hikvision, HSM, Huawei, HyperX, iiyama, Katun, Legrand, LG, Mi, MSI,
+  Rowe, Samsung, Schneider Electric, SHIP, SVC, Tecno, Wanbo, Xerox, XG, XGIMI, Xiaomi, Zowie, ДКС).
 - Pricing: take minimal dealer price, apply 4% markup + tier additive, then round to ...900.
 - Specs: move product characteristics into description as a [SPECS_BEGIN] block; keep meaningful fields like weight; drop service/marketing params.
 - Cleanup: remove internal price fields and unwanted <param> (Артикул/Штрихкод/Код ТН ВЭД/Код, promo/status, etc).
@@ -220,19 +223,62 @@ def _norm_key(s: str) -> str:
 SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent","nvprint","nv print"]}
 SUPPLIER_BLOCKLIST -= {"nv print", "nvprint"}
 
+# --- UPDATED allow-list (canonical names) ---
 ALLOWED_BRANDS_CANONICAL = [
+    # existing
     "HP","Canon","Brother","Kyocera","Xerox","Ricoh","Epson","Samsung","Panasonic",
-    "Konica Minolta","Sharp","Lexmark","Pantum",
-    "APC","Eaton","Legrand","Dahua","CyberPower","Europrint","ViewSonic","HyperX","Mr.Pixel","NV Print",
+    "Konica Minolta","Sharp","Lexmark","Pantum","NV Print",
+    "APC","Eaton","Legrand","Dahua","CyberPower","Europrint","ViewSonic","HyperX","Mr.Pixel",
+    # added per request
+    "ASRock","BenQ","BYINTEK","CET","Colorfix","Comix","Deluxe","Fellowes","GAMEMAX","Gigabyte",
+    "Hikvision","HSM","Huawei","iiyama","Katun","LG","Mi","MSI","Rowe",
+    "Schneider Electric","SHIP","SVC","Tecno","Wanbo","XG","XGIMI","Xiaomi","Zowie","ДКС",
 ]
 ALLOWED_BRANDS_CANON_MAP: Dict[str, str] = { _norm_key(b): b for b in ALLOWED_BRANDS_CANONICAL }
 ALLOWED_CANON_SET: Set[str] = set(ALLOWED_BRANDS_CANONICAL)
 
+# normalization map for common variants -> canonical
 _BRAND_MAP = {
+    # core
     "hewlett packard": "HP", "hp inc": "HP",
-    "nvprint": "NV Print", "nv  print": "NV Print",
+    "nvprint": "NV Print", "nv  print": "NV Print", "nv print": "NV Print",
     "konica": "Konica Minolta", "kyocera mita": "Kyocera",
+    "viewsonic": "ViewSonic", "mr pixel": "Mr.Pixel",
+    # added/new
+    "asrock": "ASRock",
+    "benq": "BenQ",
+    "byintek": "BYINTEK",
+    "cet": "CET",
+    "colorfix": "Colorfix",
+    "comix": "Comix",
+    "cyber power": "CyberPower", "cyberpower": "CyberPower",
+    "deluxe": "Deluxe",
+    "fellowes": "Fellowes",
+    "gamemax": "GAMEMAX",
+    "gigabyte": "Gigabyte",
+    "hikvision": "Hikvision",
+    "hsm": "HSM",
+    "huawei": "Huawei",
+    "iiyama": "iiyama",
+    "katun": "Katun",
+    "lg": "LG",
+    "mi": "Mi",
+    "msi": "MSI",
+    "rowe": "Rowe",
+    "schneiderelectric": "Schneider Electric", "schneider electric": "Schneider Electric",
+    "ship": "SHIP",
+    "svc": "SVC",
+    "tecno": "Tecno",
+    "wanbo": "Wanbo",
+    "xg": "XG",
+    "xgimi": "XGIMI",
+    "xiaomi": "Xiaomi",
+    "zowie": "Zowie",
+    "дкс": "ДКС",
+    "europrint": "Europrint",
 }
+
+# patterns to detect brands in names/desc quickly
 _BRAND_PATTERNS = [
     (re.compile(r"\bhp\b", re.I), "HP"),
     (re.compile(r"\bcanon\b", re.I), "Canon"),
@@ -251,13 +297,44 @@ _BRAND_PATTERNS = [
     (re.compile(r"\bviewsonic\b", re.I), "ViewSonic"),
     (re.compile(r"\bhyperx\b", re.I), "HyperX"),
     (re.compile(r"\bmr\.?\s*pixel\b", re.I), "Mr.Pixel"),
-    (re.compile(r"\b(apc)\b", re.I), "APC"),
+
+    # added patterns
+    (re.compile(r"\basrock\b", re.I), "ASRock"),
+    (re.compile(r"\bbenq\b", re.I), "BenQ"),
+    (re.compile(r"\bbyintek\b", re.I), "BYINTEK"),
+    (re.compile(r"\bcet\b", re.I), "CET"),
+    (re.compile(r"\bcolorfix\b", re.I), "Colorfix"),
+    (re.compile(r"\bcomix\b", re.I), "Comix"),
+    (re.compile(r"\bdeluxe\b", re.I), "Deluxe"),
+    (re.compile(r"\bfellowes\b", re.I), "Fellowes"),
+    (re.compile(r"\bgamemax\b", re.I), "GAMEMAX"),
+    (re.compile(r"\bgigabyte\b", re.I), "Gigabyte"),
+    (re.compile(r"\bhikvision\b", re.I), "Hikvision"),
+    (re.compile(r"\bhsm\b", re.I), "HSM"),
+    (re.compile(r"\bhuawei\b", re.I), "Huawei"),
+    (re.compile(r"\biiyama\b", re.I), "iiyama"),
+    (re.compile(r"\bkatun\b", re.I), "Katun"),
+    (re.compile(r"\blg\b", re.I), "LG"),
+    # "Mi" is too generic in text; normalized via _BRAND_MAP when present in param/vendor
+    (re.compile(r"\bmsi\b", re.I), "MSI"),
+    (re.compile(r"\browe\b", re.I), "Rowe"),
+    (re.compile(r"\bschneider\s*electric\b", re.I), "Schneider Electric"),
+    (re.compile(r"\bship\b", re.I), "SHIP"),
+    (re.compile(r"\bsvc\b", re.I), "SVC"),
+    (re.compile(r"\btecno\b", re.I), "Tecno"),
+    (re.compile(r"\bwanbo\b", re.I), "Wanbo"),
+    (re.compile(r"\bxgimi\b", re.I), "XGIMI"),
+    (re.compile(r"\bxg\b", re.I), "XG"),
+    (re.compile(r"\bxiaomi\b", re.I), "Xiaomi"),
+    (re.compile(r"\bzowie\b", re.I), "Zowie"),
+    (re.compile(r"\bдкс\b", re.I), "ДКС"),
+    (re.compile(r"\beuro\s*print\b", re.I), "Europrint"),
+    (re.compile(r"\bcyber\s*power\b", re.I), "CyberPower"),
+    (re.compile(r"\bdahua\b", re.I), "Dahua"),
     (re.compile(r"\beaton\b", re.I), "Eaton"),
     (re.compile(r"\blegrand\b", re.I), "Legrand"),
-    (re.compile(r"\bdahua\b", re.I), "Dahua"),
-    (re.compile(r"\bcyber\s*power\b", re.I), "CyberPower"),
-    (re.compile(r"\beuro\s*print\b", re.I), "Europrint"),
 ]
+
 UNKNOWN_VENDOR_MARKERS = ("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
 
 def brand_allowed(canon: str) -> bool:
