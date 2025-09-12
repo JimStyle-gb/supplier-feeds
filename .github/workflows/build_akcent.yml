@@ -1,4 +1,4 @@
-name: Build Akcent feed
+name: build_akcent
 
 on:
   workflow_dispatch:
