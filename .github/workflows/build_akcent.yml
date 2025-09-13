@@ -1,9 +1,9 @@
-name: Build Akcent feed
+name: build_akcent
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 18 * * *"  # ежедневный автозапуск (по UTC)
+    - cron: "17 18 * * *"  # ежедневный автозапуск (UTC)
 
 jobs:
   build:
@@ -49,7 +49,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/akcent.yml docs/akcent.xml docs/.nojekyll || true
           if ! git diff --cached --quiet; then
-            git commit -m "Build Akcent feed: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git commit -m "build_akcent: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
             git push
           else
             echo "No changes."
