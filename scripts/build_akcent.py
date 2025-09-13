@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Build Akcent YML/XML (flat <offers>) with FEED_META.
+Build Akcent YML/XML (flat <offers>) with FEED_META — версия для Satu.
 
-Главное:
-- Без <categories>; любые <categoryId> внутри офферов удаляем.
-- <available>true</available> принудительно; складские/quantity-теги чистим.
-- Цена: минимальная дилерская -> +4% + фикс по диапазону -> хвост ...900; <currencyId>KZT</currencyId>.
-- Внутренние ценовые теги (<prices>, purchase/wholesale/b2b/oldprice и т.п.) вычищаем.
-- vendor: никогда не ставим имена поставщиков (alstyle, copyline, vtt, akcent); NV Print — можно; остальные бренды — из allow-list.
-- vendorCode: всегда с префиксом "AC". Если пусто/только префикс — достаём артикул (offer@article -> из <name> -> из <url> -> offer@id).
-- Параметры фильтруем и вплавляем в <description> между [SPECS_BEGIN]/[SPECS_END], после чего <param> удаляем.
-- FEED_META: подробный многострочный комментарий вверху; добавлены счётчики по vendorCode.
-- Выход: docs/akcent.yml (Windows-1251) + копия docs/akcent.xml; создаём docs/.nojekyll.
+Что делает:
+- Сохраняет только <offers> (любые <categoryId> внутри офферов удаляются).
+- Ставит <available>true</available> для каждого оффера и чистит складские quantity/stock теги.
+- Пересчитывает цену: берёт минимальную дилерскую -> +4% + фикс по диапазону -> форсирует хвост ...900; <currencyId>KZT</currencyId>.
+- Очищает служебные ценовые узлы (<prices>, purchase/wholesale/b2b/oldprice и т.п.).
+- Восстанавливает/нормализует vendor только из allow-list (имена поставщиков исключаются).
+- Заполняет vendorCode: если пусто/равен префиксу — достаём артикул (offer@article -> из <name> -> из <url> -> offer@id), затем префиксуем AC.
+- Вставляет характеристики в <description> без служебных меток (только "Характеристики:\n- ..."), затем удаляет все <param>/<Param>.
+- Удаляет ненужные теги: Offer_ID, delivery, local_delivery_cost, manufacturer_warranty, model.
+- Удаляет у <offer> атрибуты: type, available, article (после извлечения артикула).
+- Вставляет в начало комментарий FEED_META с метриками сборки.
+- Пишет: docs/akcent.yml (Windows-1251) + копию docs/akcent.xml; создаёт docs/.nojekyll.
 """
 
 from __future__ import annotations
@@ -32,7 +34,7 @@ import requests
 SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "akcent")
 SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml")
 
-OUT_FILE_YML    = os.getenv("OUT_FILE", "docs/akcent.yml")  # публичный файл (XML/YML)
+OUT_FILE_YML    = os.getenv("OUT_FILE", "docs/akcent.yml")  # публичный файл
 OUT_FILE_XML    = "docs/akcent.xml"                         # копия
 ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
@@ -60,13 +62,13 @@ INTERNAL_PRICE_TAGS = (
     "min_price","minPrice","max_price","maxPrice",
 )
 
+# Характеристики -> описание (без служебных меток)
 EMBED_SPECS_IN_DESCRIPTION = True
-SPECS_BEGIN_MARK = "[SPECS_BEGIN]"
-SPECS_END_MARK   = "[SPECS_END]"
 STRIP_ALL_PARAMS_AFTER_EMBED = True   # после вплавления характеристик удаляем все <param>/<Param>
 
+# Что чистим в конце
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model")
-PURGE_OFFER_ATTRS_AFTER = ("type",)  # ВАЖНО: article НЕ трогаем до извлечения артикула!
+PURGE_OFFER_ATTRS_AFTER = ("type","available","article")  # после извлечения артикула
 
 # ===================== UTILS =====================
 def log(msg: str) -> None: print(msg, flush=True)
@@ -479,17 +481,21 @@ def build_specs_lines(offer: ET.Element) -> List[str]:
     return lines
 
 def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
+    """Вплавляет список характеристик в конец description БЕЗ служебных меток."""
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0)
     offers_touched=0; lines_total=0
-    spec_re = re.compile(re.escape(SPECS_BEGIN_MARK) + r".*?" + re.escape(SPECS_END_MARK), re.S)
+
+    # На всякий случай вырезаем существующие служебные метки, если они пришли из исходника
+    spec_re = re.compile(r"\[SPECS_BEGIN\].*?\[SPECS_END\]", re.S)
+
     for offer in offers_el.findall("offer"):
         lines = build_specs_lines(offer)
         if not lines: continue
         desc_el = offer.find("description")
         curr = get_text(offer, "description")
-        if curr: curr = spec_re.sub("", curr).strip()  # вырезаем старый блок SPECS, если был
-        block = f"{SPECS_BEGIN_MARK}\nХарактеристики:\n" + "\n".join(lines) + f"\n{SPECS_END_MARK}"
+        if curr: curr = spec_re.sub("", curr).strip()  # удалить любые старые SPECS-метки
+        block = "Характеристики:\n" + "\n".join(lines)
         new_text = (curr + "\n\n" + block).strip() if curr else block
         if desc_el is None: desc_el = ET.SubElement(offer, "description")
         set_text(desc_el, new_text)
@@ -572,7 +578,7 @@ def ensure_vendorcode_with_article(shop_el: ET.Element, prefix: str, create_if_m
         old = (vc.text or "").strip()
 
         if (old == "") or (old.upper() == prefix.upper()):
-            # 1) из атрибута article (не удаляем его до этой точки)
+            # 1) из атрибута article (НЕ удаляем его до этой точки!)
             art = _normalize_code(offer.attrib.get("article") or "")
             # 2) из <name>
             if not art:
@@ -683,7 +689,7 @@ def main() -> None:
                 mod.remove(node)
         mod_offers.append(mod)
 
-    # Стабильная сортировка
+    # Стабильная сортировка (по vendor, vendorCode, name)
     def key_offer(o: ET.Element) -> Tuple[str,str,str]:
         return (get_text(o,"vendor"), get_text(o,"vendorCode"), get_text(o,"name"))
     mod_offers.sort(key=key_offer)
@@ -702,7 +708,7 @@ def main() -> None:
     # Пересчёт цен
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
-    # Характеристики -> description
+    # Характеристики -> description (без SPECS-меток)
     specs_offers = specs_lines = 0
     if EMBED_SPECS_IN_DESCRIPTION:
         specs_offers, specs_lines = inject_specs_block(out_shop)
@@ -712,7 +718,7 @@ def main() -> None:
     # Наличие и очистка складских тегов
     available_forced = normalize_stock_always_true(out_shop)
 
-    # Финальная под-очистка мусорных тегов и offer/@type (article пока остаётся в исходном XML; в публичном можно убрать, если потребуется)
+    # Финальная под-очистка мусорных тегов и атрибутов <offer>
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
