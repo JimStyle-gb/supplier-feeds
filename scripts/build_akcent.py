@@ -2,6 +2,7 @@
 """
 Build Akcent YML/XML (flat <offers>) with FEED_META — версия для Satu.
 
+- Фильтр по ключевым словам: filters/akcent_keywords.txt (режим include/exclude).
 - <categoryId> удаляем.
 - <available>true</available> ставим как элемент; складские теги чистим.
 - Цена: мин дилерская -> +4% + фикс по диапазону -> хвост ...900; currency=KZT.
@@ -12,7 +13,7 @@ Build Akcent YML/XML (flat <offers>) with FEED_META — версия для Satu
 - Характеристики переносим в <description> без SPECS-меток ("Характеристики:\n- ..."); затем удаляем <param>/<Param>.
 - Удаляем у <offer> атрибуты type/available/article.
 - В финальном файле также удаляем тег <url> (после извлечения артикула).
-- Вставляем в начало комментарий FEED_META с метриками сборки.
+- Вставляем в начало комментарий FEED_META (включая статистику фильтра).
 - Выход: docs/akcent.yml (Windows-1251) + копия docs/akcent.xml; создаём docs/.nojekyll.
 """
 
@@ -66,10 +67,14 @@ STRIP_ALL_PARAMS_AFTER_EMBED = True   # после вплавления хара
 # Что чистим в конце (теги)
 PURGE_TAGS_AFTER = (
     "Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model",
-    "url"  # НОВОЕ: <url> удаляем из финального файла
+    "url"  # удаляем <url> из финального файла
 )
 # Что чистим в конце (атрибуты у <offer>)
 PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
+
+# ===== Keywords filter (optional) =====
+AKCENT_KEYWORDS_PATH = os.getenv("AKCENT_KEYWORDS_PATH", "filters/akcent_keywords.txt")
+AKCENT_KEYWORDS_MODE = os.getenv("AKCENT_KEYWORDS_MODE", "exclude").lower()  # "exclude" или "include"
 
 # ===================== UTILS =====================
 def log(msg: str) -> None: print(msg, flush=True)
@@ -121,6 +126,47 @@ def fetch_xml(url: str, timeout: int, retries: int, backoff: float) -> bytes:
             if attempt < retries:
                 time.sleep(sleep_s)
     raise RuntimeError(f"fetch failed after {retries} attempts: {last_exc}")
+
+# ===================== Keywords filter =====================
+def load_keywords(path: str) -> List[str]:
+    if not path or not os.path.exists(path):
+        return []
+    encodings = ("windows-1251", "utf-8", "utf-8-sig")
+    for enc in encodings:
+        try:
+            with open(path, "r", encoding=enc, errors="ignore") as f:
+                words = []
+                for line in f:
+                    s = line.strip()
+                    if (not s) or s.startswith("#"):
+                        continue
+                    words.append(s.lower())
+            return words
+        except Exception:
+            continue
+    return []
+
+def offer_text_blob(offer: ET.Element) -> str:
+    parts = []
+    def add(x):
+        x = (x or "").strip()
+        if x: parts.append(x)
+    add(offer.attrib.get("id"))
+    add(offer.attrib.get("article"))
+    add(offer.findtext("name"))
+    add(offer.findtext("description"))
+    add(offer.findtext("vendor"))
+    add(offer.findtext("vendorCode"))
+    add(offer.findtext("url"))  # используем для отбора, позже <url> будет удалён
+    blob = " ".join(parts).lower()
+    blob = blob.replace("ё","е")
+    blob = re.sub(r"\s+", " ", blob)
+    return blob
+
+def match_keywords(blob: str, keywords: List[str]) -> bool:
+    if not keywords:
+        return False
+    return any(k in blob for k in keywords)
 
 # ===================== Brands & Vendor =====================
 def _norm_key(s: str) -> str:
@@ -487,7 +533,6 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
     if offers_el is None: return (0,0)
     offers_touched=0; lines_total=0
 
-    # Вырезаем любые SPECS-метки из исходника
     spec_re = re.compile(r"\[SPECS_BEGIN\].*?\[SPECS_END\]", re.S)
 
     for offer in offers_el.findall("offer"):
@@ -610,7 +655,7 @@ def count_category_ids(offer_el: ET.Element) -> int:
 # ===================== FEED_META =====================
 def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
     order = [
-        "supplier","source","offers_total","offers_written","prices_updated",
+        "supplier","source","offers_total","offers_written","filtered_by_keywords","prices_updated",
         "params_removed","vendors_recovered","dropped_top","available_forced",
         "categoryId_dropped","vendorcodes_filled_from_article","vendorcodes_created",
         "built_utc","built_Asia/Almaty",
@@ -620,6 +665,7 @@ def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
         "source": "URL исходного XML",
         "offers_total": "Офферов у поставщика до очистки",
         "offers_written": "Офферов записано (после очистки)",
+        "filtered_by_keywords": "Сколько офферов отфильтровано по keywords",
         "prices_updated": "Скольким товарам пересчитали price",
         "params_removed": "Сколько <param>/<Param> удалено",
         "vendors_recovered": "Скольким товарам восстановлен vendor",
@@ -660,6 +706,10 @@ def main() -> None:
     if offers_in is None:
         err("XML: <offers> not found")
 
+    # Ключевые слова
+    keywords = load_keywords(AKCENT_KEYWORDS_PATH)
+    use_filter = AKCENT_KEYWORDS_MODE in {"include","exclude"} and len(keywords) > 0
+
     # Предсчёт: сколько categoryId удалим (для FEED_META)
     catid_to_drop_total = 0
     src_offers = list(iter_local(offers_in, "offer")) or list(_children_ci(offers_in, "offer"))
@@ -671,13 +721,25 @@ def main() -> None:
     out_shop = ET.SubElement(out_root, "shop")
     out_offers = ET.SubElement(out_shop, "offers")
 
-    # Копируем офферы и удаляем categoryId
+    # Копируем офферы, удаляем categoryId и применяем фильтр ключевых слов
+    filtered_out = 0
     mod_offers: List[ET.Element] = []
     for o in src_offers:
         mod = deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
             for node in list(mod.findall("categoryId")) + list(mod.findall("CategoryId")):
                 mod.remove(node)
+
+        if use_filter:
+            blob = offer_text_blob(mod)
+            hit = match_keywords(blob, keywords)
+            if AKCENT_KEYWORDS_MODE == "exclude" and hit:
+                filtered_out += 1
+                continue
+            if AKCENT_KEYWORDS_MODE == "include" and (not hit):
+                filtered_out += 1
+                continue
+
         mod_offers.append(mod)
 
     # Стабильная сортировка (по vendor, vendorCode, name)
@@ -723,6 +785,7 @@ def main() -> None:
         "source": SUPPLIER_URL,
         "offers_total": len(src_offers),
         "offers_written": len(mod_offers),
+        "filtered_by_keywords": filtered_out,
         "prices_updated": upd,
         "params_removed": specs_lines,  # сколько строк характеристик перенесли в description
         "vendors_recovered": (fill_param_cnt + fill_text_cnt),
