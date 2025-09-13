@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-13 09:02">
+<yml_catalog date="2025-09-13 09:19">
   <!--FEED_META
 supplier                        = akcent                                                                                                                    | Метка поставщика
 source                          = https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml                                                              | URL исходного XML
-offers_total                    = 2157                                                                                                                      | Офферов у поставщика до очистки
-offers_written                  = 2157                                                                                                                      | Офферов записано (после очистки)
-prices_updated                  = 2152                                                                                                                      | Скольким товарам пересчитали price
-params_removed                  = 13783                                                                                                                     | Сколько <param>/<Param> удалено
+offers_total                    = 2155                                                                                                                      | Офферов у поставщика до очистки
+offers_written                  = 2155                                                                                                                      | Офферов записано (после очистки)
+prices_updated                  = 2150                                                                                                                      | Скольким товарам пересчитали price
+params_removed                  = 13762                                                                                                                     | Сколько <param>/<Param> удалено
 vendors_recovered               = 148                                                                                                                       | Скольким товарам восстановлен vendor
 dropped_top                     = defender:295,cablexpert:169,transcend:144,китай:134,remington:122,bergner:62,russell hobbs:51,dali:50,netac:44,ritmix:42  | ТОП часто отброшенных названий
-available_forced                = 2157                                                                                                                      | Сколько офферов получили available=true
-categoryId_dropped              = 2157                                                                                                                      | Сколько тегов categoryId удалено
-vendorcodes_filled_from_article = 2157                                                                                                                      | Скольким офферам проставили vendorCode из артикула
-vendorcodes_created             = 2157                                                                                                                      | Сколько vendorCode было создано (узлов)
-built_utc                       = 2025-09-13 09:02:45 UTC                                                                                                   | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-13 14:02:45 +05                                                                                                   | Время сборки (Алматы)--><shop>
+available_forced                = 2155                                                                                                                      | Сколько офферов получили available=true
+categoryId_dropped              = 2155                                                                                                                      | Сколько тегов categoryId удалено
+vendorcodes_filled_from_article = 2155                                                                                                                      | Скольким офферам проставили vendorCode из артикула
+vendorcodes_created             = 2155                                                                                                                      | Сколько vendorCode было создано (узлов)
+built_utc                       = 2025-09-13 09:19:07 UTC                                                                                                   | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-13 14:19:07 +05                                                                                                   | Время сборки (Алматы)--><shop>
     <offers>
       <offer id="Н0000026901" article="V13H134A46" available="true">
         <name>Air Filter - ELPAF46</name>
@@ -34373,122 +34373,6 @@ CD с программным обеспечением и драйверами для Windows и macOS
         <currencyId>KZT</currencyId>
         <available>true</available>
       </offer>
-      <offer id="00-00002545" article="C11CK94401" available="true">
-        <name>МФУ Epson L8100 фабрика печати</name>
-        <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/pechatayushchie_skaniruyushchie_ustroystva/mfu/mfu_dom_struynoe/mfu_epson_l8100_fabrika_pechati/</url>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/815/gwksx955vglncgtfd9kf25cnkw54cggz.jpg</picture>
-        <vendor>Epson</vendor>
-        <description>Техника
-Метод печати
-Epson Micro Piezo™ print head
-Конфигурация сопла
-180 Сопла (черный), 180 Сопла (цвет)
-Минимальный размер капли
-1,5 капли(ей), Технология капель с переменным размером
-Технология чернил
-Чернила на красителях
-Разрешение при печати
-5.760 x 1.440 DPI (точек на дюйм)
-Выработка
-Фото
-Многофункциональный
-Печать, сканирование, Копия
-Печать
-Количество цветов
-6 colour
-Скорость печати ISO/IEC 24734
-8 Стр./мин. Монохромная печать, 8 Стр./мин. Colour, 25 секунд per 10 x 15 cm photo
-Максимальная скорость печати
-22 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 22 Стр./мин. Colour (plain paper 75 g/m&#178;), 12 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper)
-Время до первой страницы
-Монохромная печать 13,2 секунд, Colour 13,3 секунд
-Цвета
-Black [Dye], Cyan [Dye], Light Cyan [Dye], Yellow [Dye], Magenta [Dye], Light Magenta [Dye]
-Colours Capacity
-Black [70ml], Cyan [70ml], Light Cyan [70ml], Yellow [70ml], Magenta [70ml], Light Magenta [70ml]
-Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing.
-сканирование
-Разрешение сканирования
-1.200 DPI (точек на дюйм) x 4.800 DPI (точек на дюйм) (горизонтальный x вертикальный)
-Maximum scan size
-216 мм x 297 мм
-Тип сканера
-Контактный датчик изображения (CIS)
-Optical Resolution
-1.200 DPI (точек на дюйм) x 4.800 DPI (точек на дюйм) (горизонтальный x вертикальный)
-Спецификации бумаги и датчики
-Количество бумажных ящиков
-1
-Формат бумаги
-A4 (21,0x29,7 см) , A5 (14,8x21,0 см)  , A6 (10,5x14,8 см)  , B5  , C6 (Конверт)  , DL (Конверт), No. 10 (Конверт)  , Letter  , Пластиковые карточки
-Дуплекс
-Вручную
-Paper Tray Capacity
-100 Листы Стандарт, 100 Листы максимальный, 20 Листы фотобумаги
-Rear paper path (special media)
-Да
-Обработка мультимедиа
-Печать без полей, Печать на CD/DVD
-Общее
-Энергопотребление
-0,6 Ватт (sleep mode), 19 Ватт (Printing), 4,4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,11 kWh/week
-Напряжение питания
-AC 100 V - 240 V
-Габариты
-404 x 410 x 162 мм (Ширина x Глубина x Высота)
-Вес
-7,6 кг
-Уровень шума
-5,1 B (A) Согласно ISO 7779 образец печати на Epson Premium Glossy Photo Paper / Photo RPM Modus
-Совместимые операционные системы
-Mac OS X 10.9.5 or later, Windows 10, Windows 11, Windows 7, Windows 8, Windows 8.1, Windows Server 2003 R2 x64, Windows Server 2003 SP2, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP SP3 or later (32-bit), XP Professional x64 Edition SP2
-Интерфейсы
-Wireless LAN IEEE 802.11a/b/g/n, Wi-Fi Direct
-Мощность звука
-Функционирование: 5,1 B (A)
-Звуковое давление
-Функционирование: 37 dB (A)
-Безопасность WLAN
-WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA2 PSK (AES), WPA3-SAE(AES)
-Услуги мобильной и облачной печати
-Epson iPrint App, Epson Smart Panel App
-Комплект поставки
-6 x 70ml individual ink bottles (Bk,C,Y,M,Lc,LM), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы
-Другие функции
-ЖК-дисплей
-Тип: Цветной режим, Сенсорный экран, Диагональ: 6,1 см
-Эмуляции
-ESC/P-R
-Другие
-Гарантия
-12 месяца(ев) Мобильная (гарантия), 50.000 Страницы
-
-[SPECS_BEGIN]
-Характеристики:
-- Автоподатчик: нет
-- Двусторонняя печать: нет
-- Страна происхождения: Индонезия
-- ЖК дисплей: да
-- Сопутствующие товары: Чернила Epson C13T67324A L800/1800/810/850 голубой
-- Производитель: Epson
-- Печать фото: да
-- Гарантия: 12 мес
-- Тип: МФУ  Дом
-- Тип печати: струйная
-- Формат: A4
-- Интерфейс: USB
-- Цветность: 6 цветов
-- Тип чернил: водорастворимые
-- Область применения: Для дома
-- Тип расходных материалов: чернила
-- Наименование производителя: Epson L850
-- Вид: МФУ  Дом
-[SPECS_END]</description>
-        <vendorCode>ACC11CK94401</vendorCode>
-        <price>361900</price>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
       <offer id="Н0000026534" article="C11CJ20404" available="true">
         <name>МФУ Epson L8160  фабрика печати, Wi-Fi</name>
         <url>https://b2b.ak-cent.kz/orders/blank_zakaza/kompyuternaya_i_ofisnaya_tekhnika/pechatayushchie_skaniruyushchie_ustroystva/mfu/mfu_ofis_struynoe/mfu_epson_l8160_fabrika_pechati_wi_fi/</url>
@@ -37071,85 +36955,6 @@ M200
 [SPECS_END]</description>
         <vendorCode>ACV11HA86040</vendorCode>
         <price>263900</price>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-      <offer id="Н0000025504" article="V11H988040" available="true">
-        <name>Проектор универсальный Epson EB-992F</name>
-        <url>https://b2b.ak-cent.kz/orders/blank_zakaza/audio_video_tekhnika/proektsionnoe_oborudovanie/proektor/universalnyy/proektor_universalnyy_epson_eb_992f/</url>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/bec/irm3hf7je0ol5t1vifru12u0tlu04vzm.png</picture>
-        <vendor>Epson</vendor>
-        <description>Проектор для совместной работы с возможностью беспроводного подключения
- Функции для совместной работы Приложение iProjection1, функция разделения экрана, функция модератора
-Техника
-Projection System
-3LCD Technology, RGB liquid crystal shutter
-LCD Panel
-0,61 inch with C2 Fine
-Image
-Насыщенность цвета
-4.000 Люмен- 2.400 Люмен (экономичный) In accordance with IDMS15.4
-Насыщенность белого
-4.000 Люмен - 2.400 Люмен (экономичный) In accordance with ISO 21118:2020
-Разрешение
-1080p  
-Высокая четкость (HD)
-Full HD
-Aspect Ratio
-16:9
-On-Screen Pixel Count
-2,073,600
-Коэффициент контрастности
-16.000 : 1
-Light source
-Lamp
-Лампа
-UHE, 230 Вт, 6.500 в Срок службы, 17.000 в Срок службы (в экономном режиме)
-Коррекция трапеции
-Авто vertical: ± 30 °, Вручную horizontal ± 30 °
-Обработка видеоизображения
-10 биты
-2D Vertical Refresh Rate
-100 Гц - 120 Гц
-Colour Reproduction
-Upto 1.07 billion colours
-Оптика
-Соотношение сторон проецируемого изображения
-1,32 - 2,14:1
-Изменение фокусного расстояния
-Manual, Factor: 1 - 1,6
-Объектив
-Оптика
-Размер проекции
-30 inches - 300 inches
-Projection Distance Wide/Tele
-1,76 м - 2,86 м ( 60 inch screen
-Projection Lens F Number
-1,51 - 1,99
-Фокусное расстояние
-18,2 мм - 29,2 мм
-Фокус
-Вручную
-Offset
-10 : 1
-Connectivity
-Функция USB-дисплея
-2 in 1: Image/ Sound
-Интерфейсы
-USB 2.0 типа А, USB 2.0 типа B, RS-232C, Сетевой интерфейс Ethernet (100 Base-TX / 10 Base-T), VGA (вход) (2x), VGA (выход), HDMI-вход (2x), Компонентный вход  , Аудиовыход (стереофонический мини-разъем), Аудиовход (стереофонический мини-разъем) (2x), Аудиовход RCA, Вход для микрофона, Wireless LAN IEEE 802.11b/g/n, Miracast  
-Epson iProjection App
-Ad-Hoc / Infrastructure
-Network Protocol
-PJLink
-
-[SPECS_BEGIN]
-Характеристики:
-- Производитель: Epson Proj
-- Вид: Проектор
-- Тип: Универсальный
-[SPECS_END]</description>
-        <vendorCode>ACV11H988040</vendorCode>
-        <price>762900</price>
         <currencyId>KZT</currencyId>
         <available>true</available>
       </offer>
