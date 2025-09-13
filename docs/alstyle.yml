@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-12 20:20">
+<yml_catalog date="2025-09-13 20:18">
   <!--FEED_META
 supplier            = alstyle                                                         | Метка поставщика
 source              = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-source_date         = 2025-09-12 21:50                                                | Дата/время из фида поставщика
+source_date         = 2025-09-13 21:50                                                | Дата/время из фида поставщика
 http_last_modified  = n/a                                                             | Заголовок Last-Modified от сервера
 etag                = ""                                                              | Заголовок ETag от сервера
 not_modified        = 0                                                               | 1=HTTP 304 (не изменился), 0=есть изменения
@@ -16,8 +16,8 @@ vendors_dropped     = 0                                                         
 dropped_top         = n/a                                                             | ТОП часто отброшенных названий
 bad_pictures_sample = 0                                                               | Ошибок при выборочной проверке картинок
 stock_normalized    = 1984                                                            | Скольким товарам нормализован остаток/наличие
-built_utc           = 2025-09-12 20:20:24 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty   = 2025-09-13 01:20:24 +05                                         | Время сборки (Алматы)--><shop>
+built_utc           = 2025-09-13 20:18:28 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty   = 2025-09-14 01:18:28 +05                                         | Время сборки (Алматы)--><shop>
     <categories>
       <category id="3506">Демонстрационное оборудование и аксессуары</category>
       <category id="21516">Кабельные системы</category>
@@ -4773,8 +4773,8 @@ Canon PIXMA PRO-200
         <picture>https://img.al-style.kz/65710_1.jpg</picture>
         <picture>https://img.al-style.kz/65710_2.jpg</picture>
         <available>true</available>
-        <quantity>14</quantity>
-        <quantity_in_stock>14</quantity_in_stock>
+        <quantity>13</quantity>
+        <quantity_in_stock>13</quantity_in_stock>
         <vendor>Canon</vendor>
         <name>Струйный картридж Canon CL-446XL</name>
         <description>Струйный картридж Canon CL-446XL
@@ -4831,7 +4831,7 @@ Canon PIXMA iP2840Canon PIXMA MG2440Canon PIXMA MG2540Canon PIXMA MG2940Canon PI
 - Гарантия: Нет
 - Состав: Пластик
 [SPECS_END]</description>
-        <quantity_in_stock>14</quantity_in_stock>
+        <quantity_in_stock>13</quantity_in_stock>
       </offer>
       <offer id="402517">
         <price>16900</price>
@@ -6158,8 +6158,8 @@ Canon PIXMA TS9540Canon PIXMA TS6340
         <vendorCode>AS73802</vendorCode>
         <picture>https://img.al-style.kz/73802_1.jpg</picture>
         <available>true</available>
-        <quantity>40</quantity>
-        <quantity_in_stock>40</quantity_in_stock>
+        <quantity>39</quantity>
+        <quantity_in_stock>39</quantity_in_stock>
         <vendor>Canon</vendor>
         <name>Струйный картридж Canon PG-485</name>
         <description>Струйный картридж Canon PG-485
@@ -6216,7 +6216,7 @@ Canon PIXMA TS7640iCanon PIXMA TS7740i
 - Вес: 0.105 кг
 - Гарантия: Нет
 [SPECS_END]</description>
-        <quantity_in_stock>40</quantity_in_stock>
+        <quantity_in_stock>39</quantity_in_stock>
       </offer>
       <offer id="408278">
         <price>21900</price>
@@ -6294,8 +6294,8 @@ Canon PIXMA TS7640iCanon PIXMA TS7740i
         <vendorCode>AS73805</vendorCode>
         <picture>https://img.al-style.kz/73805_1.jpg</picture>
         <available>true</available>
-        <quantity>19</quantity>
-        <quantity_in_stock>19</quantity_in_stock>
+        <quantity>18</quantity>
+        <quantity_in_stock>18</quantity_in_stock>
         <vendor>Canon</vendor>
         <name>Струйный картридж Canon CL-486XL</name>
         <description>Струйный картридж Canon CL-486XL
@@ -6352,7 +6352,7 @@ Canon PIXMA TS7640iCanon PIXMA TS7740i
 - Вес: 0.125 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>19</quantity_in_stock>
+        <quantity_in_stock>18</quantity_in_stock>
       </offer>
       <offer id="408357">
         <price>12900</price>
@@ -8094,8 +8094,8 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
         <picture>https://img.al-style.kz/75889_2.jpg</picture>
         <picture>https://img.al-style.kz/75889_3.jpg</picture>
         <available>true</available>
-        <quantity>22</quantity>
-        <quantity_in_stock>22</quantity_in_stock>
+        <quantity>20</quantity>
+        <quantity_in_stock>20</quantity_in_stock>
         <vendor>Huawei</vendor>
         <name>Ноутбук Huawei MateBook D 14 14" i5-12450H 16GB 512GB DOS (53013XET)</name>
         <description>Ноутбук Huawei MateBook D 14 14" i5-12450H 16GB 512GB DOS (53013XET)
@@ -8273,7 +8273,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
 - Операционная система: DOS
 - Процессор: Intel Core i5-12450H
 [SPECS_END]</description>
-        <quantity_in_stock>22</quantity_in_stock>
+        <quantity_in_stock>20</quantity_in_stock>
       </offer>
       <offer id="410140">
         <price>1829900</price>
@@ -13685,9 +13685,9 @@ AltaLink C8170
         <url>https://al-style.kz/catalog/zip_hvd/val_perenosa_zaryada_xerox_022n02871/</url>
         <vendorCode>AS39724</vendorCode>
         <picture>https://img.al-style.kz/39724_1.jpg</picture>
-        <available>true</available>
-        <quantity>1</quantity>
-        <quantity_in_stock>1</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Вал переноса заряда Xerox 022N02871</name>
         <description>Представляет собой металлическую ось, заключенную в резиновую оболочку. Основная задача этой детали - зарядка бумаги однородным отрицательным зарядом.
@@ -13706,7 +13706,7 @@ AltaLink C8170
 - Вес: 1 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>1</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="283517">
         <price>10499900</price>
@@ -19527,9 +19527,9 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
         <url>https://al-style.kz/catalog/r_m_hvd/toner_kartridzh_dvoynaya_upakovka_xerox_106r04349/</url>
         <vendorCode>AS32324</vendorCode>
         <picture>https://img.al-style.kz/32324_1.jpg</picture>
-        <available>true</available>
-        <quantity>2</quantity>
-        <quantity_in_stock>2</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж (двойная упаковка) Xerox 106R04349</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -19556,7 +19556,7 @@ CopyCentre C165/C175/245/255/C35/C45/C55, AltaLink B8045/B8055/B8065/B8075/B8090
 - Вес: 1.59 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>2</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="31861">
         <price>45900</price>
@@ -32209,8 +32209,8 @@ Dahua DHI-LDW43-LWI200T (K-shape)   это современный 43-дюймовый интерактивный ки
         <picture>https://img.al-style.kz/59343_2.jpg</picture>
         <picture>https://img.al-style.kz/59343_3.jpg</picture>
         <available>true</available>
-        <quantity>28</quantity>
-        <quantity_in_stock>28</quantity_in_stock>
+        <quantity>25</quantity>
+        <quantity_in_stock>25</quantity_in_stock>
         <vendor>Canon</vendor>
         <name>Монохромное лазерное МФУ Canon imageRUNNER 2224</name>
         <description>Монохромное лазерное МФУ Canon imageRUNNER 2224
@@ -32249,7 +32249,7 @@ Dahua DHI-LDW43-LWI200T (K-shape)   это современный 43-дюймовый интерактивный ки
 - Емкость лотков подачи: 350 листов
 - Емкость выходных лотков: 250 листов
 [SPECS_END]</description>
-        <quantity_in_stock>28</quantity_in_stock>
+        <quantity_in_stock>25</quantity_in_stock>
       </offer>
       <offer id="392899">
         <price>621900</price>
@@ -32913,9 +32913,9 @@ Dahua DHI-LDW43-LWI200T (K-shape)   это современный 43-дюймовый интерактивный ки
         <picture>https://img.al-style.kz/32312_1.jpg</picture>
         <picture>https://img.al-style.kz/32312_2.jpg</picture>
         <picture>https://img.al-style.kz/32312_3.jpg</picture>
-        <available>true</available>
-        <quantity>22</quantity>
-        <quantity_in_stock>22</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Xerox</vendor>
         <name>Монохромное МФУ Xerox WorkCentre 3025BI</name>
         <description>МФУ WorkCentre 3025BI
@@ -32962,7 +32962,7 @@ Dahua DHI-LDW43-LWI200T (K-shape)   это современный 43-дюймовый интерактивный ки
 - Емкость выходных лотков: 100 листов
 - Скорость выхода первой страницы: 8.5 сек. (моно)
 [SPECS_END]</description>
-        <quantity_in_stock>22</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="31849">
         <price>114900</price>
@@ -38868,9 +38868,9 @@ Wi-Fi, печать, копирование, сканирование, факс и облако
         <picture>https://img.al-style.kz/65087_1.jpg</picture>
         <picture>https://img.al-style.kz/65087_2.jpg</picture>
         <picture>https://img.al-style.kz/65087_3.jpg</picture>
-        <available>true</available>
-        <quantity>5</quantity>
-        <quantity_in_stock>5</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma TS7740i</name>
         <description>Цветное МФУ Canon Pixma TS7740i
@@ -39018,7 +39018,7 @@ A4, B5, LTR, 10 x 15 см, 13 x 18 см, 20 x 25 см, формат карточки (91 x 55 мм), к
 - Гарантия: 1 год
 - Состав: Металл, пластик
 [SPECS_END]</description>
-        <quantity_in_stock>5</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="406429">
         <price>61900</price>
@@ -39348,9 +39348,9 @@ OLED (1,44 дюйма)
         <picture>https://img.al-style.kz/77357_1.jpg</picture>
         <picture>https://img.al-style.kz/77357_2.jpg</picture>
         <picture>https://img.al-style.kz/77357_3.jpg</picture>
-        <available>true</available>
-        <quantity>22</quantity>
-        <quantity_in_stock>22</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma G3480</name>
         <description>Цветное МФУ Canon Pixma G3480
@@ -39397,7 +39397,7 @@ OLED (1,44 дюйма)
 - Вес: 9.73 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>22</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="392767">
         <price>415900</price>
@@ -52920,8 +52920,8 @@ Canon imagePROGRAF TM-200Canon imagePROGRAF TM-205Canon imagePROGRAF TM-300Canon
         <vendorCode>AS60183</vendorCode>
         <picture>https://img.al-style.kz/60183_1.jpg</picture>
         <available>true</available>
-        <quantity>14</quantity>
-        <quantity_in_stock>14</quantity_in_stock>
+        <quantity>13</quantity>
+        <quantity_in_stock>13</quantity_in_stock>
         <vendor>Canon</vendor>
         <name>Зап. часть Печатающая головка Canon PRINTHEAD PF-10 (0861C001AA)</name>
         <description>Печатающая головка Canon PRINTHEAD PF-10 (0861C001AA)
@@ -52986,7 +52986,7 @@ Canon imagePROGRAF PRO-2000Canon imagePROGRAF PRO-2100Canon imagePROGRAF PRO-400
 - Гарантия: 1 год
 - Состав: Пластик
 [SPECS_END]</description>
-        <quantity_in_stock>14</quantity_in_stock>
+        <quantity_in_stock>13</quantity_in_stock>
       </offer>
       <offer id="394242">
         <price>6900</price>
@@ -55366,8 +55366,8 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <picture>https://img.al-style.kz/19140_2.jpg</picture>
         <picture>https://img.al-style.kz/19140_3.jpg</picture>
         <available>true</available>
-        <quantity>20</quantity>
-        <quantity_in_stock>20</quantity_in_stock>
+        <quantity>14</quantity>
+        <quantity_in_stock>14</quantity_in_stock>
         <vendor>SVC</vendor>
         <name>Батарейный блок для ИБП RT-3KL-LCD</name>
         <description>Батарейный блок для ИБП RT-3KL-LCD Дополнительная батарея для источника бесперебойного питания позволяет увеличить время автономной работы ИБП, кроме того, использование дополнительных батарей особенно необходимо, если в вашей электрической сети возможны длительные перебои, в то время как подключенные устройства не могут оставаться без питания. Герметичный свинцово-кислотный батарейный блок имеет встроенное зарядное устройство. Возможна горячая замена батареи. Заряжается блок в течение 8 часов, и может служить как для домашнего использования, так и для профессионального.
@@ -55384,7 +55384,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>20</quantity_in_stock>
+        <quantity_in_stock>14</quantity_in_stock>
       </offer>
       <offer id="255056">
         <price>234900</price>
@@ -55396,8 +55396,8 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <picture>https://img.al-style.kz/19141_2.jpg</picture>
         <picture>https://img.al-style.kz/19141_3.jpg</picture>
         <available>true</available>
-        <quantity>3</quantity>
-        <quantity_in_stock>3</quantity_in_stock>
+        <quantity>1</quantity>
+        <quantity_in_stock>1</quantity_in_stock>
         <vendor>SVC</vendor>
         <name>Батарейный блок для ИБП RT-6KL-LCD</name>
         <description>Батарейный блок для ИБП RT-6KL-LCD Дополнительная батарея для источника бесперебойного питания позволяет увеличить время автономной работы ИБП, кроме того, использование дополнительных батарей особенно необходимо, если в вашей электрической сети возможны длительные перебои, в то время как подключенные устройства не могут оставаться без питания. Герметичный свинцово-кислотный батарейный блок имеет встроенное зарядное устройство. Возможна горячая замена батареи. Заряжается блок в течение 8 часов, и может служить как для домашнего использования, так и для профессионального.
@@ -55414,7 +55414,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>3</quantity_in_stock>
+        <quantity_in_stock>1</quantity_in_stock>
       </offer>
       <offer id="17719">
         <price>266900</price>
@@ -68058,8 +68058,8 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
         <picture>https://img.al-style.kz/8581_2.jpg</picture>
         <picture>https://img.al-style.kz/8581_3.jpg</picture>
         <available>true</available>
-        <quantity>28</quantity>
-        <quantity_in_stock>28</quantity_in_stock>
+        <quantity>26</quantity>
+        <quantity_in_stock>26</quantity_in_stock>
         <vendor>SVC</vendor>
         <name>Источник бесперебойного питания SVC RT-6KL-LCD</name>
         <description>Онлайн ИБП SVC RT-6KL-LCD Используется для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю.
@@ -68091,7 +68091,7 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>28</quantity_in_stock>
+        <quantity_in_stock>26</quantity_in_stock>
       </offer>
       <offer id="18316">
         <price>643900</price>
@@ -70363,8 +70363,8 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
         <picture>https://img.al-style.kz/24284_2.jpg</picture>
         <picture>https://img.al-style.kz/24284_3.jpg</picture>
         <available>true</available>
-        <quantity>31</quantity>
-        <quantity_in_stock>31</quantity_in_stock>
+        <quantity>30</quantity>
+        <quantity_in_stock>30</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF530A</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -70404,7 +70404,7 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
 - Тип печати: Лазерная
 - Цвет: Чёрный
 [SPECS_END]</description>
-        <quantity_in_stock>31</quantity_in_stock>
+        <quantity_in_stock>30</quantity_in_stock>
       </offer>
       <offer id="22497">
         <price>6900</price>
@@ -70416,8 +70416,8 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
         <picture>https://img.al-style.kz/24285_2.jpg</picture>
         <picture>https://img.al-style.kz/24285_3.jpg</picture>
         <available>true</available>
-        <quantity>21</quantity>
-        <quantity_in_stock>21</quantity_in_stock>
+        <quantity>19</quantity>
+        <quantity_in_stock>19</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF531A</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -70457,7 +70457,7 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
 - Тип печати: Лазерная
 - Цвет: Синий
 [SPECS_END]</description>
-        <quantity_in_stock>21</quantity_in_stock>
+        <quantity_in_stock>19</quantity_in_stock>
       </offer>
       <offer id="22498">
         <price>6900</price>
@@ -70469,8 +70469,8 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
         <picture>https://img.al-style.kz/24286_2.jpg</picture>
         <picture>https://img.al-style.kz/24286_3.jpg</picture>
         <available>true</available>
-        <quantity>25</quantity>
-        <quantity_in_stock>25</quantity_in_stock>
+        <quantity>24</quantity>
+        <quantity_in_stock>24</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF532A</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -70510,7 +70510,7 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
 - Тип печати: Лазерная
 - Цвет: Жёлтый
 [SPECS_END]</description>
-        <quantity_in_stock>25</quantity_in_stock>
+        <quantity_in_stock>24</quantity_in_stock>
       </offer>
       <offer id="22499">
         <price>6900</price>
@@ -70522,8 +70522,8 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
         <picture>https://img.al-style.kz/24287_2.jpg</picture>
         <picture>https://img.al-style.kz/24287_3.jpg</picture>
         <available>true</available>
-        <quantity>25</quantity>
-        <quantity_in_stock>25</quantity_in_stock>
+        <quantity>24</quantity>
+        <quantity_in_stock>24</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF533A</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -70563,7 +70563,7 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
 - Тип печати: Лазерная
 - Цвет: Пурпурный
 [SPECS_END]</description>
-        <quantity_in_stock>25</quantity_in_stock>
+        <quantity_in_stock>24</quantity_in_stock>
       </offer>
       <offer id="115816">
         <price>12900</price>
@@ -77563,8 +77563,8 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
         <picture>https://img.al-style.kz/7687_2.jpg</picture>
         <picture>https://img.al-style.kz/7687_3.jpg</picture>
         <available>true</available>
-        <quantity>6</quantity>
-        <quantity_in_stock>6</quantity_in_stock>
+        <quantity>5</quantity>
+        <quantity_in_stock>5</quantity_in_stock>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CE313A/CF353A</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -77604,7 +77604,7 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
 - Тип печати: Лазерная
 - Цвет: Пурпурный
 [SPECS_END]</description>
-        <quantity_in_stock>6</quantity_in_stock>
+        <quantity_in_stock>5</quantity_in_stock>
       </offer>
       <offer id="13740">
         <price>6900</price>
@@ -78861,8 +78861,8 @@ OEM №: L0H25-67901, L0H25A
         <picture>https://img.al-style.kz/20707_2.jpg</picture>
         <picture>https://img.al-style.kz/20707_3.jpg</picture>
         <available>true</available>
-        <quantity>47</quantity>
-        <quantity_in_stock>47</quantity_in_stock>
+        <quantity>46</quantity>
+        <quantity_in_stock>46</quantity_in_stock>
         <vendor>Comix</vendor>
         <name>Уничтожитель бумаг (Шредер) COMIX S2710A</name>
         <description>Уничтожитель бумаг (Шредер) COMIX S2710A
@@ -78894,7 +78894,7 @@ OEM №: L0H25-67901, L0H25A
 - Отдельный слот: для Credit Cart/ CD
 - Состав: Металл, пластик
 [SPECS_END]</description>
-        <quantity_in_stock>47</quantity_in_stock>
+        <quantity_in_stock>46</quantity_in_stock>
       </offer>
       <offer id="12710">
         <price>82900</price>
@@ -81641,8 +81641,8 @@ PoE
         <vendorCode>AS19666</vendorCode>
         <picture>https://img.al-style.kz/19666_1.jpg</picture>
         <available>true</available>
-        <quantity>17</quantity>
-        <quantity_in_stock>17</quantity_in_stock>
+        <quantity>16</quantity>
+        <quantity_in_stock>16</quantity_in_stock>
         <vendor>Deluxe</vendor>
         <name>Экран на треноге Deluxe DLS-T203xW (80"х80"), &#216; - 113", Раб. поверхность 195х195 см., 1:1</name>
         <description>Проекционный экран Deluxe на штативе DLS-T203xW
@@ -81655,7 +81655,7 @@ PoE
 - Соотношение сторон экрана: 1:1
 - Цвет: Белый
 [SPECS_END]</description>
-        <quantity_in_stock>17</quantity_in_stock>
+        <quantity_in_stock>16</quantity_in_stock>
       </offer>
       <offer id="25346">
         <price>39900</price>
@@ -81665,8 +81665,8 @@ PoE
         <vendorCode>AS26499</vendorCode>
         <picture>https://img.al-style.kz/26499_1.jpg</picture>
         <available>true</available>
-        <quantity>49</quantity>
-        <quantity_in_stock>49</quantity_in_stock>
+        <quantity>48</quantity>
+        <quantity_in_stock>48</quantity_in_stock>
         <vendor>Deluxe</vendor>
         <name>Экран на треноге Deluxe DLS-T244W (96"х96"), &#216; - 136", Раб. поверхность 236х236 см., 1:1</name>
         <description>Проекционный экран Deluxe на штативе DLS-T244
@@ -81677,7 +81677,7 @@ PoE
 - Вес: 11.3 кг
 - Гарантия: 1 год
 [SPECS_END]</description>
-        <quantity_in_stock>49</quantity_in_stock>
+        <quantity_in_stock>48</quantity_in_stock>
       </offer>
       <offer id="407284">
         <price>26900</price>
@@ -95479,9 +95479,9 @@ ZOWIE XL2586X+   новый быстрый игровой монитор TN 600 Гц DyAc 2 для киберспорта.
         <url>https://al-style.kz/catalog/s_pryamougolnoy_oblastyu_1/ekran_s_pultom_d_u_dlya_proektorov_deluxe_dls_erc274_206w/</url>
         <vendorCode>AS19669</vendorCode>
         <picture>https://img.al-style.kz/19669_1.jpg</picture>
-        <available>true</available>
-        <quantity>1</quantity>
-        <quantity_in_stock>1</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Deluxe</vendor>
         <name>Экран моторизированный (с пультом Д/У) Deluxe DLS-ERC274х206W (108"х81"), &#216; - 135", 4:3</name>
         <description>Экран моторизированный (с пультом Д/У) Deluxe DLS-ERC274х206W (108"х81"), &#216; - 135", 4:3
@@ -95507,7 +95507,7 @@ ZOWIE XL2586X+   новый быстрый игровой монитор TN 600 Гц DyAc 2 для киберспорта.
 - Соотношение сторон экрана: 4:3
 - Цвет: Белый
 [SPECS_END]</description>
-        <quantity_in_stock>1</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="21374">
         <price>42900</price>
@@ -95797,9 +95797,9 @@ ZOWIE XL2586X+   новый быстрый игровой монитор TN 600 Гц DyAc 2 для киберспорта.
         <url>https://al-style.kz/catalog/s_pryamougolnoy_oblastyu_1/ekran_dlya_proektorov_deluxe_dls_e229_185/</url>
         <vendorCode>AS9020</vendorCode>
         <picture>https://img.al-style.kz/9020_1.jpg</picture>
-        <available>true</available>
-        <quantity>1</quantity>
-        <quantity_in_stock>1</quantity_in_stock>
+        <available>false</available>
+        <quantity>0</quantity>
+        <quantity_in_stock>0</quantity_in_stock>
         <vendor>Deluxe</vendor>
         <name>Экран моторизированный Deluxe DLS-E229х185 (90"х73"), &#216; - 116", Раб. поверхность 221х125 см., 16:9</name>
         <description>Экран для проекторв Deluxe, моторизированный DLS-E229-185
@@ -95811,7 +95811,7 @@ ZOWIE XL2586X+   новый быстрый игровой монитор TN 600 Гц DyAc 2 для киберспорта.
 - Гарантия: 1 год
 - Цвет: Белый
 [SPECS_END]</description>
-        <quantity_in_stock>1</quantity_in_stock>
+        <quantity_in_stock>0</quantity_in_stock>
       </offer>
       <offer id="407286">
         <price>52900</price>
