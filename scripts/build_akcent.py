@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-YML generator for AKCENT (flat offers only).
+Build Akcent YML/XML (flat <offers>) with FEED_META.
 
-Differences vs alstyle:
-- No categories at all: we output only <offers> (and drop any <categoryId> in offers).
-- Availability: force <available>true</available> for every offer and drop quantity/stock tags.
-- Output path: docs/akcent.yml (Windows-1251) — ready for GitHub Pages.
-- Pricing: take minimal dealer price, apply 4% + tier additive, then force tail ...900; set <currencyId>KZT</currencyId>.
-- Cleanup: remove <prices> and any internal price tags after pricing; embed filtered specs into description; drop unwanted params.
-- Vendor: never use supplier names (akcent/alstyle/copyline/vtt); NV Print allowed. Fill/normalize vendor from name/params/description
-  only if it matches allow-list; otherwise leave vendor empty to avoid Satu "Unknown manufacturer".
-- FEED_META: multi-line, human-readable.
+Ключевые правила:
+- Категории не выводим вовсе: никакого <categories>; теги <categoryId> внутри офферов — удаляем.
+- Наличие: принудительно <available>true</available>; stock/quantity теги вычищаем.
+- Цена: берём минимальную «дилерскую» из известных полей → 4% + диапазонный фикс → принудительно хвост ...900; <currencyId>KZT</currencyId>.
+- Служебные ценовые теги (<prices>, purchase/wholesale/b2b/oldprice и т. п.) — удаляем из публичного YML.
+- Vendor: никогда не ставим имена поставщиков (alstyle, copyline, vtt, akcent); NV Print разрешён; остальное — из allow-list/распознавания.
+- VendorCode: всегда добавляем префикс "AC" (без дефиса); если тега нет — создаём.
+- Очищаем «мусорные» теги: Offer_ID, delivery, local_delivery_cost, manufacturer_warranty, model и т. п.; а также атрибуты offer/@article, offer/@type.
+- FEED_META: многострочный комментарий вверху; считаем реальное количество удалённых categoryId.
+- Выход: docs/akcent.yml (Windows-1251) + копия docs/akcent.xml; создаём docs/.nojekyll для GitHub Pages.
+
+Основано на предыдущей версии скрипта пользователя, аккуратно обновлено/поправлено. 
 """
 
 from __future__ import annotations
@@ -30,7 +33,9 @@ import requests
 # ===================== SETTINGS =====================
 SUPPLIER_NAME   = os.getenv("SUPPLIER_NAME", "akcent")
 SUPPLIER_URL    = os.getenv("SUPPLIER_URL", "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml")
-OUT_FILE        = os.getenv("OUT_FILE", "docs/akcent.yml")
+
+OUT_FILE_YML    = os.getenv("OUT_FILE", "docs/akcent.yml")         # основной публичный файл (YML по сути XML)
+OUT_FILE_XML    = "docs/akcent.xml"                                # дополнительная копия
 ENC             = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
 TIMEOUT_S       = int(os.getenv("TIMEOUT_S", "30"))
@@ -44,18 +49,18 @@ DRY_RUN         = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AC")
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "1").lower() in {"1","true","yes"}
 
-# Brand policy: strict allow-list (unknown brands -> do not set vendor)
+# Brand policy
 STRICT_VENDOR_ALLOWLIST = True
 
-# Always available, and drop any quantity/stock fields
+# Availability/stock
 ALWAYS_AVAILABLE_TRUE = True
 DROP_STOCK_TAGS       = True  # remove quantity/quantity_in_stock/stock/Stock
 
-# Remove category structure entirely
+# Categories
 DROP_CATEGORY_TREE    = True
 DROP_CATEGORY_ID_TAG  = True
 
-# Strip internal price tags after pricing
+# Internal price tags to strip
 STRIP_INTERNAL_PRICE_TAGS = True
 INTERNAL_PRICE_TAGS = (
     "purchase_price","purchasePrice","wholesale_price","wholesalePrice",
@@ -63,23 +68,20 @@ INTERNAL_PRICE_TAGS = (
     "min_price","minPrice","max_price","maxPrice",
 )
 
-# Specs -> description
+# Specs → description
 EMBED_SPECS_IN_DESCRIPTION = True
 SPECS_BEGIN_MARK = "[SPECS_BEGIN]"
 SPECS_END_MARK   = "[SPECS_END]"
 
-# Unwanted params (always remove)
-UNWANTED_PARAM_KEYS = {
-    "артикул","штрихкод","код тн вэд","код",
-    "снижена цена","скидка","акция","уценка","новинка","хит продаж","топ продаж","лидер продаж","лучшая цена",
-    "рекомендуем","подарок","кэшбэк","кешбэк","предзаказ","статус",
-    "доставка","самовывоз","срок поставки","наличие","кредит","рассрочка",
-    "единица измерения","базовая единица","vat","ндс","налог","сертификат","сертификация",
-    "благотворительность",
-}
-
-# After embedding specs, drop all <param>/<Param> (keep none by default)
+# Remove all params after embedding
 STRIP_ALL_PARAMS_AFTER_EMBED = True
+
+# Tags to purge from each offer (fully remove if present)
+PURGE_TAGS = (
+    "Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model",
+)
+# Attributes to purge from <offer ...>
+PURGE_OFFER_ATTRS = ("article","type")
 
 # ===================== UTILS =====================
 def log(msg: str) -> None: print(msg, flush=True)
@@ -92,12 +94,13 @@ def now_almaty_str() -> str:
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 def get_text(el: ET.Element, tag: str) -> str:
-    node = el.find(tag); return (node.text or "").strip() if node is not None else ""
+    node = el.find(tag); return (node.text or "").strip() if node is not None and node.text else ""
 def set_text(el: ET.Element, text: str) -> None: el.text = text if text is not None else ""
-def iter_local(elem: ET.Element, name: str):
-    for child in elem.findall(name): yield child
 
-# case-insensitive helpers for uncommon tag names
+def iter_local(elem: ET.Element, name: str):
+    for child in elem.findall(name):
+        yield child
+
 def _children_ci(el: ET.Element, name_lc: str):
     for ch in list(el):
         if ch.tag.lower() == name_lc:
@@ -111,22 +114,26 @@ def fetch_xml(url: str, timeout: int, retries: int, backoff: float) -> bytes:
     for attempt in range(1, retries + 1):
         try:
             resp = sess.get(url, headers=headers, timeout=timeout, stream=True)
-            if resp.status_code != 200: raise RuntimeError(f"HTTP {resp.status_code}")
+            if resp.status_code != 200:
+                raise RuntimeError(f"HTTP {resp.status_code}")
             data = resp.content
-            if len(data) < MIN_BYTES: raise RuntimeError(f"too small ({len(data)} bytes)")
+            if len(data) < MIN_BYTES:
+                raise RuntimeError(f"too small ({len(data)} bytes)")
             ctype = (resp.headers.get("Content-Type") or "").lower()
             if not any(t in ctype for t in ("xml","text/plain","application/octet-stream")):
                 head = data[:64].lstrip()
-                if not head.startswith(b"<"): raise RuntimeError(f"unexpected content-type: {ctype!r}")
+                if not head.startswith(b"<"):
+                    raise RuntimeError(f"unexpected content-type: {ctype!r}")
             return data
         except Exception as e:
             last_exc = e
             sleep_s = backoff * attempt * max(0.5, 1.0 + random.uniform(-0.2, 0.2))
             warn(f"fetch attempt {attempt}/{retries} failed: {e}; sleep {sleep_s:.2f}s")
-            if attempt < retries: time.sleep(sleep_s)
+            if attempt < retries:
+                time.sleep(sleep_s)
     raise RuntimeError(f"fetch failed after {retries} attempts: {last_exc}")
 
-# ===================== Brands =====================
+# ===================== Brands & Vendor =====================
 def _norm_key(s: str) -> str:
     if not s: return ""
     s = s.strip().lower().replace("ё","е")
@@ -135,10 +142,9 @@ def _norm_key(s: str) -> str:
     return s
 
 SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent","nvprint","nv print"]}
-SUPPLIER_BLOCKLIST -= {"nv print", "nvprint"}  # allow NV Print
+SUPPLIER_BLOCKLIST -= {"nv print", "nvprint"}  # NV Print разрешён
 
 ALLOWED_BRANDS_CANONICAL = [
-    # core + from your list
     "HP","Canon","Brother","Kyocera","Xerox","Ricoh","Epson","Samsung","Panasonic",
     "Konica Minolta","Sharp","Lexmark","Pantum","NV Print",
     "APC","ASRock","BenQ","BYINTEK","CET","Colorfix","Comix","CyberPower","Dahua","Deluxe",
@@ -154,7 +160,6 @@ _BRAND_MAP = {
     "nvprint": "NV Print", "nv  print": "NV Print", "nv print": "NV Print",
     "konica": "Konica Minolta", "kyocera mita": "Kyocera",
     "viewsonic": "ViewSonic", "mr pixel": "Mr.Pixel",
-    # user-added
     "asrock": "ASRock","benq":"BenQ","byintek":"BYINTEK","cet":"CET","colorfix":"Colorfix","comix":"Comix",
     "cyber power":"CyberPower","cyberpower":"CyberPower","deluxe":"Deluxe","fellowes":"Fellowes","gamemax":"GAMEMAX",
     "gigabyte":"Gigabyte","hikvision":"Hikvision","hsm":"HSM","huawei":"Huawei","hyperx":"HyperX",
@@ -181,7 +186,6 @@ _BRAND_PATTERNS = [
     (re.compile(r"\bviewsonic\b", re.I), "ViewSonic"),
     (re.compile(r"\bhyperx\b", re.I), "HyperX"),
     (re.compile(r"\bmr\.?\s*pixel\b", re.I), "Mr.Pixel"),
-    # user-added
     (re.compile(r"\basrock\b", re.I), "ASRock"),
     (re.compile(r"\bbenq\b", re.I), "BenQ"),
     (re.compile(r"\bbyintek\b", re.I), "BYINTEK"),
@@ -289,6 +293,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,Dict[str,int]]:
                 drop_name(ven.text or "")
                 offer.remove(ven)
 
+        # 1) Явное значение в <vendor>
         if txt_raw:
             if any(m in txt_raw.lower() for m in UNKNOWN_VENDOR_MARKERS) or (_norm_key(txt_raw) in SUPPLIER_BLOCKLIST):
                 clear_vendor(); ven=None; txt_raw=""
@@ -300,11 +305,13 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,Dict[str,int]]:
                     if canon != txt_raw: ven.text = canon; normalized += 1
                     continue
 
+        # 2) По параметрам
         candp = extract_brand_from_params(offer)
         if candp:
             ET.SubElement(offer, "vendor").text = candp
             filled_param += 1; continue
 
+        # 3) По имени/описанию
         candt = extract_brand_any(offer)
         if candt:
             ET.SubElement(offer, "vendor").text = candt
@@ -312,7 +319,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,Dict[str,int]]:
 
     return (normalized,filled_param,filled_text,dropped_names)
 
-# ===================== Pricing (4% + tier add, then ...900) =====================
+# ===================== Pricing =====================
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -338,7 +345,7 @@ def parse_price_number(raw: str) -> Optional[float]:
     if not s: return None
     s = (s.replace("\xa0"," ").replace(" ","")
            .replace("KZT","").replace("kzt","").replace("₸","")
-           .replace(",","."))
+           .replace(",","."))  # запятая → точка
     try:
         val = float(s); return val if val > 0 else None
     except Exception:
@@ -349,13 +356,13 @@ PRICE_FIELDS = ["purchasePrice","purchase_price","wholesalePrice","wholesale_pri
 
 def get_dealer_price(offer: ET.Element) -> Optional[float]:
     vals: List[float] = []
-    # known price tags
+    # 1) Из известных плоских полей
     for tag in PRICE_FIELDS:
         el = offer.find(tag)
         if el is not None and el.text:
             v = parse_price_number(el.text)
             if v is not None: vals.append(v)
-    # nested <prices><price type="...">
+    # 2) Из <prices><price type="...">
     for prices in list(offer.findall("prices")) + list(offer.findall("Prices")):
         for p in list(prices.findall("price")) + list(prices.findall("Price")):
             v = parse_price_number(p.text or "")
@@ -363,7 +370,9 @@ def get_dealer_price(offer: ET.Element) -> Optional[float]:
     return min(vals) if vals else None
 
 def _force_tail_900(n: float) -> int:
-    i = int(n); k = max(i // 1000, 0)
+    """Округляем вниз до тысяч и прибиваем хвост к 900 (минимум 900)."""
+    i = int(n)
+    k = max(i // 1000, 0)
     out = k * 1000 + 900
     return out if out >= 900 else 900
 
@@ -383,6 +392,7 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
         dealer = get_dealer_price(offer)
         if dealer is None or dealer <= 100:
             skipped += 1
+            # Чистим потенциальный <oldprice>
             if (oldp := offer.find("oldprice")) is not None: offer.remove(oldp)
             continue
         new_price = compute_retail(dealer, rules)
@@ -390,12 +400,11 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
             skipped += 1
             if (oldp := offer.find("oldprice")) is not None: offer.remove(oldp)
             continue
-        p = offer.find("price")
-        if p is None: p = ET.SubElement(offer, "price")
+        p = offer.find("price") or ET.SubElement(offer, "price")
         p.text = str(int(new_price))
         cur = offer.find("currencyId") or ET.SubElement(offer, "currencyId")
         cur.text = "KZT"
-        # strip nested prices/internal tags
+        # Удаляем вложенные <prices> и внутренние ценовые теги
         for node in list(offer.findall("prices")) + list(offer.findall("Prices")):
             offer.remove(node)
         for tag in INTERNAL_PRICE_TAGS:
@@ -405,7 +414,7 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
         updated += 1
     return updated, skipped, total
 
-# ===================== Param/specs/stock cleanup =====================
+# ===================== Specs / Params / Stock =====================
 def _key(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
@@ -419,21 +428,22 @@ EXCLUDE_NAME_RE = re.compile(
 def _parse_dims(val: str) -> str:
     s = re.sub(r"\s+", " ", (val or "").strip()).replace("х", "x").replace("Х", "x").replace("*", "x")
     parts = re.split(r"[x×X]", s)
-    nums = []
+    nums: List[str] = []
     for p in parts:
         p = re.sub(r"[^\d.,]", "", p).replace(",", ".")
+        if not p: continue
         try:
-            n = float(p); nums.append(int(n) if abs(n-int(n))<1e-6 else n)
+            n = float(p)
+            nums.append(str(int(n)) if abs(n-int(n))<1e-6 else f"{n:g}")
         except Exception:
             pass
-    return "x".join(str(n) for n in nums if n != "")
+    return "x".join(nums)
 
 def _normalize_weight_value(raw_val: str) -> str:
     s = re.sub(r"\s+", " ", (raw_val or "").strip())
     if not s: return s
     if re.search(r"\b(кг|kg)\b", s, re.I):
-        s = re.sub(r"\s*kg\b", " кг", s, flags=re.I)
-        return s
+        return re.sub(r"\s*kg\b", " кг", s, flags=re.I)
     m = re.search(r"([0-9]+(?:[.,][0-9]+)?)\s*(?:г|g)\b", s, re.I)
     if m:
         val = float(m.group(1).replace(",", "."))
@@ -443,8 +453,8 @@ def _normalize_weight_value(raw_val: str) -> str:
         else:
             return re.sub(r"\bg\b", "г", f"{val:g} г", flags=re.I)
     if re.fullmatch(r"[0-9]+(?:[.,][0-9]+)?", s):
-        s = s.replace(",", ".")
-        return f"{int(float(s))} кг" if abs(float(s)-int(float(s)))<1e-6 else f"{float(s):.3g} кг"
+        v = float(s.replace(",", "."))
+        return f"{int(v)} кг" if abs(v-int(v))<1e-6 else f"{v:.3g} кг"
     return s
 
 def _looks_like_code_value(v: str) -> bool:
@@ -463,7 +473,12 @@ def build_specs_lines(offer: ET.Element) -> List[str]:
         raw_val  = (p.text or "").strip()
         if not raw_name or not raw_val: continue
         k = _key(raw_name)
-        if k in UNWANTED_PARAM_KEYS: continue
+        if k in {
+            "артикул","штрихкод","код тн вэд","код","снижена цена","скидка","акция","уценка","новинка","хит продаж","топ продаж",
+            "лидер продаж","лучшая цена","рекомендуем","подарок","кэшбэк","кешбэк","предзаказ","статус","доставка","самовывоз",
+            "срок поставки","наличие","кредит","рассрочка","единица измерения","базовая единица","vat","ндс","налог","сертификат",
+            "сертификация","благотворительность",
+        }: continue
         if EXCLUDE_NAME_RE.search(raw_name): continue
         is_weight = k in WEIGHT_KEYS
         if k.startswith("габариты"):
@@ -489,7 +504,7 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
         if not lines: continue
         desc_el = offer.find("description")
         curr = get_text(offer, "description")
-        if curr: curr = spec_re.sub("", curr).strip()
+        if curr: curr = spec_re.sub("", curr).strip()  # вырежем старый блок SPECS, если был
         block = f"{SPECS_BEGIN_MARK}\nХарактеристики:\n" + "\n".join(lines) + f"\n{SPECS_END_MARK}"
         new_text = (curr + "\n\n" + block).strip() if curr else block
         if desc_el is None: desc_el = ET.SubElement(offer, "description")
@@ -497,15 +512,13 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
         offers_touched += 1; lines_total += len(lines)
     return offers_touched, lines_total
 
-def strip_unwanted_params_and_all(shop_el: ET.Element) -> int:
+def strip_all_params(shop_el: ET.Element) -> int:
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     removed = 0
     for offer in offers_el.findall("offer"):
         for p in list(offer.findall("param")) + list(offer.findall("Param")):
-            name = _key(p.attrib.get("name") or "")
-            if name in UNWANTED_PARAM_KEYS or STRIP_ALL_PARAMS_AFTER_EMBED:
-                offer.remove(p); removed += 1
+            offer.remove(p); removed += 1
     return removed
 
 def normalize_stock_always_true(shop_el: ET.Element) -> int:
@@ -513,25 +526,31 @@ def normalize_stock_always_true(shop_el: ET.Element) -> int:
     if offers_el is None: return 0
     touched = 0
     for offer in offers_el.findall("offer"):
-        # force available=true
+        # Принудительно создаём/ставим <available>true</available>
         avail = offer.find("available") or ET.SubElement(offer, "available")
         avail.text = "true"
         touched += 1
         if DROP_STOCK_TAGS:
-            # remove quantity/quantity_in_stock/stock/Stock
             for tag in ["quantity_in_stock","quantity","stock","Stock"]:
                 for node in list(offer.findall(tag)):
                     offer.remove(node)
     return touched
 
-def strip_category_id(shop_el: ET.Element) -> int:
-    offers_el = shop_el.find("offers")
-    if offers_el is None: return 0
-    n=0
-    for offer in offers_el.findall("offer"):
-        for node in list(offer.findall("categoryId")) + list(offer.findall("CategoryId")):
-            offer.remove(node); n+=1
-    return n
+# ===================== Offer cleanup helpers =====================
+def purge_offer_tags_and_attrs(offer: ET.Element) -> Tuple[int,int]:
+    """Удаляем явно мусорные под-теги и атрибуты у <offer>."""
+    removed_tags = 0
+    for t in PURGE_TAGS:
+        for node in list(offer.findall(t)):
+            offer.remove(node); removed_tags += 1
+    removed_attrs = 0
+    for a in PURGE_OFFER_ATTRS:
+        if a in offer.attrib:
+            offer.attrib.pop(a, None); removed_attrs += 1
+    return removed_tags, removed_attrs
+
+def count_category_ids(offer_el: ET.Element) -> int:
+    return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
 # ===================== VendorCode =====================
 def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing: bool=False) -> Tuple[int,int]:
@@ -547,7 +566,9 @@ def force_prefix_vendorcode(shop_el: ET.Element, prefix: str, create_if_missing:
                 continue
         else:
             old = vc.text or ""
-        vc.text = f"{prefix}{old}"; total+=1
+        # По политике — всегда добавляем префикс, даже если похожий уже есть
+        vc.text = f"{prefix}{old}"
+        total+=1
     return total,created
 
 # ===================== FEED_META =====================
@@ -588,106 +609,123 @@ def top_dropped(d: Dict[str,int], n: int=10) -> str:
 def main() -> None:
     log(f"Source: {SUPPLIER_URL}")
     data = fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF)
-    root = ET.fromstring(data)
+    src_root = ET.fromstring(data)
 
-    shop = root.find("shop")
-    if shop is None:
-        # sometimes root is already <shop>
-        if root.tag.lower() == "shop":
-            shop = root
-        else:
-            err("XML: <shop> not found")
+    # В ряде прайсов корень может быть <yml_catalog> или сразу <shop>
+    shop_in = src_root.find("shop")
+    if shop_in is None and src_root.tag.lower() == "shop":
+        shop_in = src_root
+    if shop_in is None:
+        err("XML: <shop> not found")
 
-    offers_el = shop.find("offers") or shop.find("Offers")
-    if offers_el is None:
+    offers_in = shop_in.find("offers") or shop_in.find("Offers")
+    if offers_in is None:
         err("XML: <offers> not found")
 
-    # collect offers (deepcopy to avoid source mutation issues)
-    offers_in = list(iter_local(offers_el, "offer"))
-    if not offers_in:
-        # case-insensitive fallback
-        offers_in = list(_children_ci(offers_el, "offer"))
+    # Считаем, сколько categoryId будет удалено (для FEED_META)
+    catid_to_drop_total = 0
+    for o in list(iter_local(offers_in, "offer")) or list(_children_ci(offers_in, "offer")):
+        catid_to_drop_total += count_category_ids(o)
 
+    # Готовим новый выходной документ (без категорий)
     out_root = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
     out_offers = ET.SubElement(out_shop, "offers")
 
-    # copy & clean offers
+    # Копируем и чистим офферы
     mod_offers: List[ET.Element] = []
-    for o in offers_in:
+    src_offers = list(iter_local(offers_in, "offer")) or list(_children_ci(offers_in, "offer"))
+    for o in src_offers:
         mod = deepcopy(o)
 
-        # drop categoryId if requested
+        # Чистим ненужные атрибуты у <offer>
+        for a in PURGE_OFFER_ATTRS:
+            if a in mod.attrib:
+                mod.attrib.pop(a, None)
+
+        # Удаляем categoryId
         if DROP_CATEGORY_ID_TAG:
             for node in list(mod.findall("categoryId")) + list(mod.findall("CategoryId")):
                 mod.remove(node)
 
+        # Чистим мусорные под-теги
+        purge_offer_tags_and_attrs(mod)
+
         mod_offers.append(mod)
 
-    # sort for stable output (by vendor -> vendorCode -> name)
+    # Стабильная сортировка (vendor → vendorCode → name)
     def key_offer(o: ET.Element) -> Tuple[str,str,str]:
-        v = get_text(o,"vendor"); vc = get_text(o,"vendorCode"); n = get_text(o,"name")
-        return (v, vc, n)
+        return (get_text(o,"vendor"), get_text(o,"vendorCode"), get_text(o,"name"))
     mod_offers.sort(key=key_offer)
 
-    # append to out
+    # Добавляем в выход
     for m in mod_offers:
         out_offers.append(m)
 
-    # vendor normalize/fill
+    # Нормализуем/восстанавливаем vendor
     norm_cnt, fill_param_cnt, fill_text_cnt, dropped_names = ensure_vendor(out_shop)
 
-    # vendorCode prefix/create
+    # Префиксуем/создаём vendorCode
     total_prefixed, created_nodes = force_prefix_vendorcode(out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING)
 
-    # pricing
+    # Пересчёт цен
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
-    # specs to description
+    # Вплавляем характеристики в описание
     specs_offers = specs_lines = 0
     if EMBED_SPECS_IN_DESCRIPTION:
         specs_offers, specs_lines = inject_specs_block(out_shop)
+        if STRIP_ALL_PARAMS_AFTER_EMBED:
+            strip_all_params(out_shop)
 
-    # remove params
-    removed_params_total = strip_unwanted_params_and_all(out_shop)
-
-    # available=true and drop stock fields
+    # Наличие/склад
     available_forced = normalize_stock_always_true(out_shop)
 
-    # final pretty print
+    # Красивый отступ в XML (Python 3.9+)
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    # FEED_META
+    # FEED_META (верхний комментарий)
     meta_pairs = {
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL,
-        "offers_total": len(offers_in),
+        "offers_total": len(src_offers),
         "offers_written": len(mod_offers),
         "prices_updated": upd,
-        "params_removed": removed_params_total,
+        "params_removed": specs_lines,  # кол-во строк характеристик ≈ сколько «полезных» параметров отфильтровали и перенесли
         "vendors_recovered": (fill_param_cnt + fill_text_cnt),
         "dropped_top": top_dropped(dropped_names),
         "available_forced": available_forced,
-        "categoryId_dropped": len(offers_in) - sum(1 for _ in []),  # just informational; precise count computed earlier via strip_category_id if needed
+        "categoryId_dropped": catid_to_drop_total,
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
     if DRY_RUN:
-        log("[DRY_RUN=1] File not written.")
+        log("[DRY_RUN=1] Files not written.")
         return
 
-    os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
-    ET.ElementTree(out_root).write(OUT_FILE, encoding=ENC, xml_declaration=True)
+    # Выводим YML/XML и .nojekyll для Pages
+    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
+    ET.ElementTree(out_root).write(OUT_FILE_YML, encoding=ENC, xml_declaration=True)
+    ET.ElementTree(out_root).write(OUT_FILE_XML, encoding=ENC, xml_declaration=True)
 
+    # .nojekyll
+    docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
+    try:
+        os.makedirs(docs_dir, exist_ok=True)
+        open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+    except Exception as e:
+        warn(f".nojekyll create warn: {e}")
+
+    # Итоговая телеметрия в лог
     log(f"Vendor stats: normalized={norm_cnt}, filled_param={fill_param_cnt}, filled_text={fill_text_cnt}")
     log(f"VendorCode: prefixed={total_prefixed}, created_nodes={created_nodes}, prefix='{VENDORCODE_PREFIX}'")
     log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
     log(f"Specs block: offers={specs_offers}, lines_total={specs_lines}")
     log(f"Available forced: {available_forced}")
-    log(f"Wrote: {OUT_FILE} | offers={len(mod_offers)} | encoding={ENC}")
+    log(f"Wrote: {OUT_FILE_YML} & {OUT_FILE_XML} | offers={len(mod_offers)} | encoding={ENC}")
 
 if __name__ == "__main__":
     try:
