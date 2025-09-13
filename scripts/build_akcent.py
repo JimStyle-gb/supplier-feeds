@@ -2,18 +2,18 @@
 """
 Build Akcent YML/XML (flat <offers>) with FEED_META — версия для Satu.
 
-Что делает:
-- Сохраняет только <offers> (любые <categoryId> внутри офферов удаляются).
-- Ставит <available>true</available> для каждого оффера и чистит складские quantity/stock теги.
-- Пересчитывает цену: берёт минимальную дилерскую -> +4% + фикс по диапазону -> форсирует хвост ...900; <currencyId>KZT</currencyId>.
-- Очищает служебные ценовые узлы (<prices>, purchase/wholesale/b2b/oldprice и т.п.).
-- Восстанавливает/нормализует vendor только из allow-list (имена поставщиков исключаются).
-- Заполняет vendorCode: если пусто/равен префиксу — достаём артикул (offer@article -> из <name> -> из <url> -> offer@id), затем префиксуем AC.
-- Вставляет характеристики в <description> без служебных меток (только "Характеристики:\n- ..."), затем удаляет все <param>/<Param>.
-- Удаляет ненужные теги: Offer_ID, delivery, local_delivery_cost, manufacturer_warranty, model.
-- Удаляет у <offer> атрибуты: type, available, article (после извлечения артикула).
-- Вставляет в начало комментарий FEED_META с метриками сборки.
-- Пишет: docs/akcent.yml (Windows-1251) + копию docs/akcent.xml; создаёт docs/.nojekyll.
+- <categoryId> удаляем.
+- <available>true</available> ставим как элемент; складские теги чистим.
+- Цена: мин дилерская -> +4% + фикс по диапазону -> хвост ...900; currency=KZT.
+- Внутренние ценовые теги (<prices>, purchase/wholesale/b2b/oldprice и т.п.) удаляем.
+- vendor: заполняем только разрешёнными брендами; поставщиков/мусор вычищаем.
+- vendorCode: если пуст/равен префиксу — берём артикул (offer@article -> из <name> -> из <url> -> offer@id),
+  затем всегда добавляем префикс "AC" (без дефиса).
+- Характеристики переносим в <description> без SPECS-меток ("Характеристики:\n- ..."); затем удаляем <param>/<Param>.
+- Удаляем у <offer> атрибуты type/available/article.
+- В финальном файле также удаляем тег <url> (после извлечения артикула).
+- Вставляем в начало комментарий FEED_META с метриками сборки.
+- Выход: docs/akcent.yml (Windows-1251) + копия docs/akcent.xml; создаём docs/.nojekyll.
 """
 
 from __future__ import annotations
@@ -48,10 +48,8 @@ DRY_RUN         = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AC")
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "1").lower() in {"1","true","yes"}
 
-STRICT_VENDOR_ALLOWLIST = True        # строгий allow-list брендов
-ALWAYS_AVAILABLE_TRUE   = True        # всегда <available>true</available>
-DROP_STOCK_TAGS         = True        # чистим quantity/stock
-
+STRICT_VENDOR_ALLOWLIST = True
+DROP_STOCK_TAGS         = True
 DROP_CATEGORY_TREE      = True
 DROP_CATEGORY_ID_TAG    = True
 
@@ -62,13 +60,16 @@ INTERNAL_PRICE_TAGS = (
     "min_price","minPrice","max_price","maxPrice",
 )
 
-# Характеристики -> описание (без служебных меток)
 EMBED_SPECS_IN_DESCRIPTION = True
 STRIP_ALL_PARAMS_AFTER_EMBED = True   # после вплавления характеристик удаляем все <param>/<Param>
 
-# Что чистим в конце
-PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model")
-PURGE_OFFER_ATTRS_AFTER = ("type","available","article")  # после извлечения артикула
+# Что чистим в конце (теги)
+PURGE_TAGS_AFTER = (
+    "Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model",
+    "url"  # НОВОЕ: <url> удаляем из финального файла
+)
+# Что чистим в конце (атрибуты у <offer>)
+PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
 
 # ===================== UTILS =====================
 def log(msg: str) -> None: print(msg, flush=True)
@@ -281,7 +282,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int,Dict[str,int]]:
                 drop_name(ven.text or "")
                 offer.remove(ven)
 
-        # 1) Есть бренд в vendor
+        # 1) Явное значение
         if txt_raw:
             if any(m in txt_raw.lower() for m in UNKNOWN_VENDOR_MARKERS) or (_norm_key(txt_raw) in SUPPLIER_BLOCKLIST):
                 clear_vendor(); ven=None; txt_raw=""
@@ -486,7 +487,7 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
     if offers_el is None: return (0,0)
     offers_touched=0; lines_total=0
 
-    # На всякий случай вырезаем существующие служебные метки, если они пришли из исходника
+    # Вырезаем любые SPECS-метки из исходника
     spec_re = re.compile(r"\[SPECS_BEGIN\].*?\[SPECS_END\]", re.S)
 
     for offer in offers_el.findall("offer"):
@@ -494,7 +495,7 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int,int]:
         if not lines: continue
         desc_el = offer.find("description")
         curr = get_text(offer, "description")
-        if curr: curr = spec_re.sub("", curr).strip()  # удалить любые старые SPECS-метки
+        if curr: curr = spec_re.sub("", curr).strip()
         block = "Характеристики:\n" + "\n".join(lines)
         new_text = (curr + "\n\n" + block).strip() if curr else block
         if desc_el is None: desc_el = ET.SubElement(offer, "description")
@@ -555,11 +556,10 @@ def _normalize_code(s: str) -> str:
 def ensure_vendorcode_with_article(shop_el: ET.Element, prefix: str, create_if_missing: bool=False) -> Tuple[int,int,int,int]:
     """
     Возвращает: (prefixed_total, created_nodes, filled_from_article, fixed_bare_prefix)
-    Логика:
     - Если <vendorCode> нет и create_if_missing=True — создаём пустой.
-    - Если <vendorCode> пуст/равен только префиксу — берём артикул по приоритету:
+    - Если <vendorCode> пуст/равен префиксу — берём артикул:
       offer@article -> из <name> -> из <url> -> offer@id.
-    - После этого всегда добавляем префикс (без дефиса).
+    - После этого всегда приписываем префикс (без дефиса).
     """
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0,0,0)
@@ -578,25 +578,16 @@ def ensure_vendorcode_with_article(shop_el: ET.Element, prefix: str, create_if_m
         old = (vc.text or "").strip()
 
         if (old == "") or (old.upper() == prefix.upper()):
-            # 1) из атрибута article (НЕ удаляем его до этой точки!)
-            art = _normalize_code(offer.attrib.get("article") or "")
-            # 2) из <name>
-            if not art:
-                art = _normalize_code(_extract_article_from_name(get_text(offer, "name")))
-            # 3) из <url>
-            if not art:
-                art = _normalize_code(_extract_article_from_url(get_text(offer, "url")))
-            # 4) из offer@id
-            if not art:
-                art = _normalize_code(offer.attrib.get("id") or "")
-
+            art = _normalize_code(offer.attrib.get("article") or "") \
+               or _normalize_code(_extract_article_from_name(get_text(offer, "name"))) \
+               or _normalize_code(_extract_article_from_url(get_text(offer, "url"))) \
+               or _normalize_code(offer.attrib.get("id") or "")
             if art:
                 vc.text = art
                 filled_from_art += 1
             else:
                 fixed_bare += 1  # останется только префикс
 
-        # всегда добавляем префикс (политика проекта)
         vc.text = f"{prefix}{(vc.text or '')}"
         total_prefixed += 1
 
@@ -680,7 +671,7 @@ def main() -> None:
     out_shop = ET.SubElement(out_root, "shop")
     out_offers = ET.SubElement(out_shop, "offers")
 
-    # Копируем и базово чистим офферы (categoryId)
+    # Копируем офферы и удаляем categoryId
     mod_offers: List[ET.Element] = []
     for o in src_offers:
         mod = deepcopy(o)
@@ -715,10 +706,10 @@ def main() -> None:
         if STRIP_ALL_PARAMS_AFTER_EMBED:
             strip_all_params(out_shop)
 
-    # Наличие и очистка складских тегов
+    # Наличие
     available_forced = normalize_stock_always_true(out_shop)
 
-    # Финальная под-очистка мусорных тегов и атрибутов <offer>
+    # Финальная под-очистка мусорных тегов и атрибутов у <offer> (в т.ч. удаляем <url>)
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
