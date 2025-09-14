@@ -3,22 +3,19 @@ name: build_alstyle
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "15 */6 * * *"   # каждые 6 часов, со сдвигом в 15 минут чтобы не совпадать с akcent
+    - cron: "15 */6 * * *"   # каждые 6 часов со сдвигом
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Репозиторий
       - uses: actions/checkout@v4
 
-      # 2) Python 3.11
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 3) Зависимости
       - name: Install deps
         shell: bash
         run: |
@@ -26,38 +23,32 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      # 4) Сборка Alstyle (YML only, наличие берём у поставщика)
       - name: Build Alstyle feed (YML only, real availability)
         shell: bash
         env:
           SUPPLIER_NAME: alstyle
-          # Укажи реальный источник: http/https URL или file://<path> или относительный путь в репо
-          SUPPLIER_URL: https://example.com/alstyle.xml
+          # ✅ официальный экспорт Alstyle — уже зашит в сам скрипт, но дублируем в env для явности:
+          SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
           OUT_FILE: docs/alstyle.yml
           OUTPUT_ENCODING: windows-1251
 
-          # Сетевые тайминги
           TIMEOUT_S: "30"
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
 
-          # vendorCode
           VENDORCODE_PREFIX: AS
           VENDORCODE_CREATE_IF_MISSING: "1"
 
-          # Ключевой фильтр по <name> (опционально; по умолчанию off)
+          # Ключевой фильтр по <name> (если нужно — включай)
           ALSTYLE_KEYWORDS_PATH: docs/alstyle_keywords.txt
-          ALSTYLE_KEYWORDS_MODE: off      # off|include|exclude
-          # ALSTYLE_KEYWORDS_DEBUG: "1"
-          # ALSTYLE_DEBUG_MAX_HITS: "50"
+          ALSTYLE_KEYWORDS_MODE: off   # off|include|exclude
         run: |
           set -euo pipefail
           python scripts/build_alstyle.py
           mkdir -p docs
           : > docs/.nojekyll
 
-      # 5) Коммитим только YML
       - name: Commit & Push
         shell: bash
         run: |
@@ -68,6 +59,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "build: alstyle YML (real availability)"
+            git commit -m "build: alstyle YML (real availability, official source)"
             git push
           fi
