@@ -14,8 +14,8 @@ available_forced                = 2155                                          
 categoryId_dropped              = 2155                                                                                                                      | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 2155                                                                                                                      | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 2155                                                                                                                      | Сколько vendorCode-узлов было создано
-built_utc                       = 2025-09-14 08:13:16 UTC                                                                                                   | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-14 13:13:16 +05                                                                                                   | Время сборки (Алматы)--><shop>
+built_utc                       = 2025-09-14 08:13:41 UTC                                                                                                   | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-14 13:13:41 +05                                                                                                   | Время сборки (Алматы)--><shop>
     <offers>
       <offer id="Н0000026901">
         <name>Air Filter - ELPAF46</name>
