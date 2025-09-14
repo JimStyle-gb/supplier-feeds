@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Build Alstyle feed (YML only, categories filter only)
+      - name: Build Alstyle feed (YML only, categories filter)
         shell: bash
         env:
           SUPPLIER_NAME: alstyle
@@ -39,7 +39,7 @@ jobs:
           VENDORCODE_PREFIX: AS
           VENDORCODE_CREATE_IF_MISSING: "1"
 
-          # ✅ ТОЛЬКО фильтр по категориям:
+          # ✅ Фильтр только по категориям (IDs + названия):
           ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
           ALSTYLE_CATEGORIES_MODE: include   # include|exclude|off
         run: |
@@ -58,6 +58,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "build: alstyle YML (categories filter only)"
+            git commit -m "build: alstyle YML (categories filter by IDs + descendants)"
             git push
           fi
