@@ -2,24 +2,20 @@
 """
 Build Akcent YML/XML (flat <offers>) for Satu.
 
-Главное:
-- Фильтр по списку docs/akcent_keywords.txt работает в режиме INCLUDE по умолчанию:
-  оставляем ТОЛЬКО те офферы, у которых <name> совпал хотя бы с одним ключом.
-- Фильтр запускается САМЫМ ПЕРВЫМ (после удаления categoryId), чтобы сразу отсечь лишнее.
-- Совпадения ищем только по <name>. Форматы ключей:
-    * обычная строка      -> регистронезависимая подстрока
-    * строка, начинающаяся с '~=' -> совпадение по слову с границами (\bслово\b)
-    * строка в слэшах '/.../'     -> regex (re.I)
-- FEED_META на русском.
+Key points:
+- Keywords filter: INCLUDE mode by default, matches ONLY <name>.
+- Keywords file encoding is auto-detected in this order:
+  utf-8-sig, utf-8, utf-16, utf-16-le, utf-16-be, windows-1251.
+  Also strips stray NULs (\x00) if present.
+- Filter runs first to drop useless items ASAP.
+- FEED_META in Russian.
 
-Дополнительно:
-- Нормализуем/восстанавливаем <vendor> по белому списку.
-- vendorCode из article -> name -> url -> id; префикс 'AC'.
-- Пересчёт цен по правилам; хвост ...900; currencyId=KZT.
-- Параметры переносим в блок "Характеристики:" в <description>, затем <param> удаляем.
-- Ставим <available>true</available>.
-- В конце удаляем служебные теги (включая <url>) и лишние атрибуты у <offer>.
-- Страховка: при INCLUDE и пустом списке ключей — бросаем ошибку, чтобы билд не прошёл тихо.
+Other:
+- Brand normalization via allowlist.
+- vendorCode filled from article/name/url/id, prefix from env.
+- Prices recalculated by rules; currency KZT; strip internal price tags.
+- Specs embedded into description; then <param> removed.
+- available=true for all; purge service tags (including <url>).
 """
 
 from __future__ import annotations
@@ -164,18 +160,37 @@ class KeySpec:
         self.pattern = pattern
 
 def load_keywords(path: str) -> List[KeySpec]:
+    """
+    Load keywords (one per line).
+    Supported formats:
+      - plain text         -> case-insensitive substring on <name>
+      - line starting with '~=' -> whole word match (\b...\b) on <name>
+      - regex delimited with /.../ -> compiled as re.I and matched on <name>
+
+    Encoding auto-detect order:
+      utf-8-sig -> utf-8 -> utf-16 -> utf-16-le -> utf-16-be -> windows-1251
+    Also strips BOM and NULs if present.
+    """
     if not path or not os.path.exists(path):
         return []
+
     data = None
-    for enc in ("windows-1251","utf-8","utf-8-sig"):
+    for enc in ("utf-8-sig", "utf-8", "utf-16", "utf-16-le", "utf-16-be", "windows-1251"):
         try:
-            with open(path, "r", encoding=enc, errors="ignore") as f:
-                data = f.read()
+            with open(path, "r", encoding=enc) as f:
+                txt = f.read()
+            txt = txt.replace("\ufeff", "").replace("\x00", "")
+            data = txt
             break
         except Exception:
             continue
     if data is None:
-        return []
+        try:
+            with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                data = f.read().replace("\x00", "")
+        except Exception:
+            return []
+
     keys: List[KeySpec] = []
     for ln in data.splitlines():
         s = ln.strip()
@@ -187,13 +202,17 @@ def load_keywords(path: str) -> List[KeySpec]:
                 keys.append(KeySpec(s, "regex", rg))
                 continue
             except Exception:
-                pass
+                continue
         if s.startswith("~="):
             w = _norm_name(s[2:])
+            if not w:
+                continue
             rg = re.compile(r"\b" + re.escape(w) + r"\b", re.I)
             keys.append(KeySpec(s, "word", rg))
             continue
-        keys.append(KeySpec(_norm_name(s), "substr", None))
+        norm = _norm_name(s)
+        if norm:
+            keys.append(KeySpec(norm, "substr", None))
     return keys
 
 def name_matches(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[str]]:
@@ -665,7 +684,7 @@ def _normalize_code(s: str) -> str:
     if not s:
         return ""
     s = re.sub(r"[\s_]+", "", s)
-    s = s.replace("--", "-").replace("—", "-").replace("–", "-")
+    s = s.replace("--", "-").replace("-", "-")
     s = re.sub(r"[^A-Za-z0-9\-]+", "", s)
     return s.upper()
 
