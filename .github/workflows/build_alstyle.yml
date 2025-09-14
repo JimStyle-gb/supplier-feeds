@@ -3,7 +3,7 @@ name: build_alstyle
 on:
   workflow_dispatch: {}
   schedule:
-    - cron: "15 */6 * * *"   # каждые 6 часов со сдвигом
+    - cron: "15 */6 * * *"
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Build Alstyle feed (YML only, real availability + category filter)
+      - name: Build Alstyle feed (YML only, categories filter only)
         shell: bash
         env:
           SUPPLIER_NAME: alstyle
@@ -39,11 +39,7 @@ jobs:
           VENDORCODE_PREFIX: AS
           VENDORCODE_CREATE_IF_MISSING: "1"
 
-          # КЛЮЧИ по <name> (если нужно — включи include/exclude)
-          ALSTYLE_KEYWORDS_PATH: docs/alstyle_keywords.txt
-          ALSTYLE_KEYWORDS_MODE: off    # off|include|exclude
-
-          # ✅ КАТЕГОРИИ: берём из файла, режим include — оставляем только нужные
+          # ✅ ТОЛЬКО фильтр по категориям:
           ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
           ALSTYLE_CATEGORIES_MODE: include   # include|exclude|off
         run: |
@@ -62,5 +58,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "build: alstyle YML (real availability + category filter)"
+            git commit -m "build: alstyle YML (categories filter only)"
             git push
+          fi
