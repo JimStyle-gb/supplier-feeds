@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-Build Akcent YML/XML (flat <offers>) with FEED_META - version for Satu.
+Build Akcent YML/XML (flat <offers>) with FEED_META - версия для Satu.
 
-Key changes:
-- Keyword filter is applied AFTER ensure_vendor(), so matching sees normalized <vendor>.
-- <url> is kept until filtering, then removed in the final cleanup.
-- FEED_META includes filtered_by_keywords; offers_written is counted after filtering.
+Что изменено в этой ревизии:
+- Фильтр по ключевым словам теперь учитывает и исходный бренд vendor_raw (сырой <vendor> из поставщика),
+  а также нормализованный <vendor>, name, description, vendorCode, url, id/article.
+- FEED_META полностью на русском.
+- vendor_raw автоматически удаляется в финальной чистке.
 
-Other behavior:
-- Reads keyword list from docs/akcent_keywords.txt (mode include or exclude).
-- Removes <categoryId>, internal price tags, service tags, and offer attributes type/available/article.
-- Moves useful <param> lines into description without any SPECS markers.
-- Derives vendorCode from article (offer@article -> from <name> -> from <url> -> offer@id) and prefixes with "AC".
-- Normalizes stock by writing <available>true</available>.
-- Reprices using rules and forces ...900 tail. currencyId=KZT.
+Остальное (как и раньше):
+- Ключевые слова читаются из docs/akcent_keywords.txt (режим include/exclude).
+- Удаляем <categoryId>, внутренние ценовые теги, служебные теги, атрибуты type/available/article.
+- Полезные <param> переносим в description (без SPECS-маркеров), затем сами <param> удаляем.
+- vendorCode получаем из артикула (offer@article -> из <name> -> из <url> -> offer@id), префиксуем "AC".
+- <available>true</available> ставим всегда.
+- Пересчёт цен по правилам с хвостом ...900, currencyId=KZT.
 """
 
 from __future__ import annotations
@@ -68,19 +69,19 @@ INTERNAL_PRICE_TAGS = (
 EMBED_SPECS_IN_DESCRIPTION = True
 STRIP_ALL_PARAMS_AFTER_EMBED = True
 
-# Service tags removed at the end (keep url until filtering step)
+# Служебные теги, которые удаляем в самом конце (url держим до фильтра)
 PURGE_TAGS_AFTER = (
     "Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model",
-    "url"
+    "url","vendor_raw"
 )
-# Offer attributes to remove at the end
+# Атрибуты у <offer>, которые чистим в самом конце
 PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
 
-# ===== Keywords filter =====
+# ===== Фильтр по ключевым словам =====
 AKCENT_KEYWORDS_PATH = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
 AKCENT_KEYWORDS_MODE = os.getenv("AKCENT_KEYWORDS_MODE", "exclude").lower()  # "exclude" | "include"
 
-# ===================== UTILS =====================
+# ===================== УТИЛИТЫ =====================
 def log(msg: str) -> None:
     print(msg, flush=True)
 
@@ -115,7 +116,7 @@ def _children_ci(el: ET.Element, name_lc: str):
         if ch.tag.lower() == name_lc:
             yield ch
 
-# ===================== HTTP fetch =====================
+# ===================== HTTP =====================
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float) -> bytes:
     sess = requests.Session()
     headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
@@ -142,7 +143,7 @@ def fetch_xml(url: str, timeout: int, retries: int, backoff: float) -> bytes:
                 time.sleep(sleep_s)
     raise RuntimeError(f"fetch failed after {retries} attempts: {last_exc}")
 
-# ===================== Keywords filter =====================
+# ===================== ФИЛЬТР КЛЮЧЕВЫХ СЛОВ =====================
 def load_keywords(path: str) -> List[str]:
     if not path or not os.path.exists(path):
         return []
@@ -165,16 +166,16 @@ def offer_text_blob(offer: ET.Element) -> str:
     add(offer.findtext("name"))
     add(offer.findtext("description"))
     add(offer.findtext("vendor"))
+    add(offer.findtext("vendor_raw"))  # сырой бренд из исходника
     add(offer.findtext("vendorCode"))
-    add(offer.findtext("url"))  # used only for filtering step
+    add(offer.findtext("url"))
     blob = " ".join(parts).lower().replace("ё", "е")
-    blob = re.sub(r"\s+", " ", blob)
-    return blob
+    return re.sub(r"\s+", " ", blob)
 
 def match_keywords(blob: str, keywords: List[str]) -> bool:
     return bool(keywords) and any(k in blob for k in keywords)
 
-# ===================== Brands & Vendor =====================
+# ===================== БРЕНДЫ =====================
 def _norm_key(s: str) -> str:
     if not s:
         return ""
@@ -184,7 +185,7 @@ def _norm_key(s: str) -> str:
     return s
 
 SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent","nvprint","nv print"]}
-SUPPLIER_BLOCKLIST -= {"nv print", "nvprint"}  # NV Print is allowed
+SUPPLIER_BLOCKLIST -= {"nv print", "nvprint"}  # NV Print допускаем
 
 ALLOWED_BRANDS_CANONICAL = [
     "HP","Canon","Brother","Kyocera","Xerox","Ricoh","Epson","Samsung","Panasonic",
@@ -337,21 +338,16 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, Dict[str, int]]:
                 offer.remove(ven)
 
         if txt_raw:
-            if any(m in txt_raw.lower() for m in UNKNOWN_VENDOR_MARKERS) or (_norm_key(txt_raw) in SUPPLIER_BLOCKLIST):
+            canon = normalize_brand(txt_raw)
+            if any(m in txt_raw.lower() for m in UNKNOWN_VENDOR_MARKERS) or (_norm_key(txt_raw) in SUPPLIER_BLOCKLIST) or (not canon):
                 clear_vendor()
                 ven = None
                 txt_raw = ""
             else:
-                canon = normalize_brand(txt_raw)
-                if not canon:
-                    clear_vendor()
-                    ven = None
-                    txt_raw = ""
-                else:
-                    if canon != txt_raw:
-                        ven.text = canon
-                        normalized += 1
-                    continue
+                if canon != txt_raw:
+                    ven.text = canon
+                    normalized += 1
+                continue
 
         candp = extract_brand_from_params(offer)
         if candp:
@@ -367,7 +363,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, int, int, Dict[str, int]]:
 
     return (normalized, filled_param, filled_text, dropped_names)
 
-# ===================== Pricing =====================
+# ===================== ЦЕНЫ =====================
 PriceRule = Tuple[int, int, float, int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -471,7 +467,7 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int, in
         updated += 1
     return updated, skipped, total
 
-# ===================== Specs / Params / Stock =====================
+# ===================== ПАРАМЕТРЫ / НАЛИЧИЕ =====================
 def _key(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
@@ -612,7 +608,7 @@ def normalize_stock_always_true(shop_el: ET.Element) -> int:
                     offer.remove(node)
     return touched
 
-# ===================== Offer helpers =====================
+# ===================== КОДЫ / АРТИКУЛ =====================
 ARTICUL_RE = re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
 
 def _extract_article_from_name(name: str) -> str:
@@ -696,21 +692,21 @@ def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
         "built_utc","built_Asia/Almaty",
     ]
     comments = {
-        "supplier": "Supplier label",
-        "source": "Source XML URL",
-        "offers_total": "Offers before cleanup",
-        "offers_written": "Offers written after cleanup",
-        "filtered_by_keywords": "Offers filtered by keywords",
-        "prices_updated": "Offers with recalculated price",
-        "params_removed": "Param lines moved into description",
-        "vendors_recovered": "Offers with vendor recovered",
-        "dropped_top": "Top dropped raw vendor names",
-        "available_forced": "Offers set available=true",
-        "categoryId_dropped": "categoryId tags removed",
-        "vendorcodes_filled_from_article": "vendorCode filled from article",
-        "vendorcodes_created": "vendorCode nodes created",
-        "built_utc": "Build time UTC",
-        "built_Asia/Almaty": "Build time Asia/Almaty",
+        "supplier": "Метка поставщика",
+        "source": "URL исходного XML",
+        "offers_total": "Офферов у поставщика до очистки",
+        "offers_written": "Офферов записано (после очистки)",
+        "filtered_by_keywords": "Сколько офферов отфильтровано по keywords",
+        "prices_updated": "Скольким товарам пересчитали price",
+        "params_removed": "Сколько строк параметров добавлено в описание",
+        "vendors_recovered": "Скольким товарам восстановлен/нормализован vendor",
+        "dropped_top": "ТОП часто отброшенных названий бренда",
+        "available_forced": "Сколько офферов получили available=true",
+        "categoryId_dropped": "Сколько тегов categoryId удалено",
+        "vendorcodes_filled_from_article": "Скольким офферам проставили vendorCode из артикула",
+        "vendorcodes_created": "Сколько узлов vendorCode было создано",
+        "built_utc": "Время сборки (UTC)",
+        "built_Asia/Almaty": "Время сборки (Алматы)",
     }
     maxk = max(len(k) for k in order)
     maxv = max(len(str(pairs.get(k, "n/a"))) for k in order)
@@ -741,32 +737,41 @@ def main() -> None:
     if offers_in is None:
         err("XML: <offers> not found")
 
-    # Precount categoryId for meta
+    # Считаем categoryId заранее для меты
     catid_to_drop_total = 0
     src_offers = list(iter_local(offers_in, "offer")) or list(_children_ci(offers_in, "offer"))
     for o in src_offers:
         catid_to_drop_total += count_category_ids(o)
 
-    # Base output doc
+    # Выходной документ
     out_root = ET.Element("yml_catalog")
     out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
     out_offers = ET.SubElement(out_shop, "offers")
 
-    # Copy offers, drop categoryId (no filtering here)
+    # Копируем офферы, удаляем categoryId, и сохраняем сырой бренд vendor_raw
     for o in src_offers:
         mod = deepcopy(o)
+        # сохранить сырой бренд до нормализации, чтобы фильтр мог по нему отработать
+        v = mod.find("vendor")
+        if v is not None and v.text and v.text.strip():
+            ET.SubElement(mod, "vendor_raw").text = v.text.strip()
         if DROP_CATEGORY_ID_TAG:
             for node in list(mod.findall("categoryId")) + list(mod.findall("CategoryId")):
                 mod.remove(node)
         out_offers.append(mod)
 
-    # 1) Normalize/recover vendor
+    # 1) Восстанавливаем/нормализуем vendor
     norm_cnt, fill_param_cnt, fill_text_cnt, dropped_names = ensure_vendor(out_shop)
 
-    # 2) Keyword filter (vendor now present)
+    # 2) Фильтр по ключевым словам (учитывает vendor_raw + vendor + остальные поля)
     keywords = load_keywords(AKCENT_KEYWORDS_PATH)
     use_filter = AKCENT_KEYWORDS_MODE in {"include", "exclude"} and len(keywords) > 0
+    if use_filter:
+        log(f"Keywords loaded: {len(keywords)} | mode={AKCENT_KEYWORDS_MODE}")
+    else:
+        log("Keywords filter disabled (file пустой или режим не задан).")
+
     filtered_out = 0
     if use_filter:
         for off in list(out_offers.findall("offer")):
@@ -776,7 +781,7 @@ def main() -> None:
                 out_offers.remove(off)
                 filtered_out += 1
 
-    # 3) Rest of pipeline: vendorCode, pricing, specs, stock, final purge
+    # 3) Остальной пайплайн: vendorCode, цены, спеки, наличие, финальная чистка
     total_prefixed, created_nodes, filled_from_art, fixed_bare = ensure_vendorcode_with_article(
         out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING
     )
@@ -791,11 +796,11 @@ def main() -> None:
 
     available_forced = normalize_stock_always_true(out_shop)
 
-    # Final purge (including <url> and offer attributes)
+    # Финальная чистка (включая url и vendor_raw) и атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
-    # Pretty print (Python 3.9+)
+    # Красиво отформатируем (3.9+)
     try:
         ET.indent(out_root, space="  ")
     except Exception:
@@ -826,7 +831,7 @@ def main() -> None:
         log("[DRY_RUN=1] Files not written.")
         return
 
-    # Write files
+    # Записываем файлы
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
     ET.ElementTree(out_root).write(OUT_FILE_YML, encoding=ENC, xml_declaration=True)
     ET.ElementTree(out_root).write(OUT_FILE_XML, encoding=ENC, xml_declaration=True)
@@ -839,7 +844,7 @@ def main() -> None:
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    # Logs
+    # Логи
     log(f"Vendor stats: normalized={norm_cnt}, filled_param={fill_param_cnt}, filled_text={fill_text_cnt}")
     log(f"VendorCode: prefixed_total={total_prefixed}, created_nodes={created_nodes}, filled_from_article={filled_from_art}, fixed_bare={fixed_bare}, prefix='{VENDORCODE_PREFIX}'")
     log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
