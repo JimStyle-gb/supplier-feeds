@@ -1,26 +1,25 @@
-# scripts/build_akcent.py
 # -*- coding: utf-8 -*-
 """
-Build Akcent YML/XML (flat <offers>) with FEED_META - versiia dlia Satu.
+Build Akcent YML/XML (flat <offers>) for Satu.
 
-Klyuchevye izmeneniia v etoi versii:
-- Filtr po spisku docs/akcent_keywords.txt rabotaet v rezhime INCLUDE PO UMOLCHANIU:
-  OSTAVLYAEM tolko te ofwery, chii <name> sovpal hotia by s odnim kluchem.
-- Filtr zapuskaietsia SAMYM PERVYM posle kopirovaniia offerov (i udaleniia categoryId),
-  chtoby srazu otsest ne nuzhnoe, a uzhe potom delat vendor, tseny, vendorCode i t.d.
-- Sovpadenie tolko po <name>; formati kluchei:
-    * prostaya stroka  -> registronezavisimaya podstroka v <name>
-    * stroka '~=slovo' -> sovpadenie po tselomu slovu s granitsami (\bslovo\b)
-    * stroka '/.../'    -> regex (re.I) po <name>
-- FEED_META na russkom, s poliamy keywords_mode, keywords_total, filtered_by_keywords.
+Главное:
+- Фильтр по списку docs/akcent_keywords.txt работает в режиме INCLUDE по умолчанию:
+  оставляем ТОЛЬКО те офферы, у которых <name> совпал хотя бы с одним ключом.
+- Фильтр запускается САМЫМ ПЕРВЫМ (после удаления categoryId), чтобы сразу отсечь лишнее.
+- Совпадения ищем только по <name>. Форматы ключей:
+    * обычная строка      -> регистронезависимая подстрока
+    * строка, начинающаяся с '~=' -> совпадение по слову с границами (\bслово\b)
+    * строка в слэшах '/.../'     -> regex (re.I)
+- FEED_META на русском.
 
-Prochee:
-- Udalyaem categoryId, sluzhebnye tegi (vkliuchaya <url>) posle obrabotok.
-- Vosstanavlivaem/normalizuems vendor iz belogo spiska.
-- vendorCode iz article -> name -> url -> id, s prefixom 'AC'.
-- Perechet tsen po pravilam, hvost ...900, currencyId=KZT.
-- <param> perenosim v "Harakteristiki:" v description, potom <param> udaliaem.
-- <available>true</available> dlia vseh.
+Дополнительно:
+- Нормализуем/восстанавливаем <vendor> по белому списку.
+- vendorCode из article -> name -> url -> id; префикс 'AC'.
+- Пересчёт цен по правилам; хвост ...900; currencyId=KZT.
+- Параметры переносим в блок "Характеристики:" в <description>, затем <param> удаляем.
+- Ставим <available>true</available>.
+- В конце удаляем служебные теги (включая <url>) и лишние атрибуты у <offer>.
+- Страховка: при INCLUDE и пустом списке ключей — бросаем ошибку, чтобы билд не прошёл тихо.
 """
 
 from __future__ import annotations
@@ -75,18 +74,17 @@ INTERNAL_PRICE_TAGS = (
 EMBED_SPECS_IN_DESCRIPTION = True
 STRIP_ALL_PARAMS_AFTER_EMBED = True
 
-# Sluzhebnye tegi, kotorye udaliaem v samom kontse (url derzhim do filtrovaniya i polucheniya artikula)
+# Служебные теги, которые удаляем в самом конце (url держим до артикул-логики)
 PURGE_TAGS_AFTER = (
     "Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model",
     "url"
 )
-# Atributy u <offer>, kotorye chistim v samom kontse
+# Лишние атрибуты у <offer>, которые убираем в самом конце
 PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
 
-# ===== Filtr po klyuchevym slovam TOLKO <name> =====
+# ===== Фильтр по ключевым словам (ТОЛЬКО <name>) =====
 AKCENT_KEYWORDS_PATH  = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
-# Po umolchaniiu include: ostavlyaem tolko sovpavshie po <name>
-AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # "exclude" | "include"
+AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # "include" | "exclude"
 AKCENT_KEYWORDS_DEBUG = os.getenv("AKCENT_KEYWORDS_DEBUG", "0").lower() in {"1","true","yes"}
 AKCENT_DEBUG_MAX_HITS = int(os.getenv("AKCENT_DEBUG_MAX_HITS", "30"))
 
@@ -209,7 +207,7 @@ def name_matches(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[str]]:
                 return True, ks.raw
     return False, None
 
-# ===================== BRANDS / VENDOR =====================
+# ===================== VENDOR (white-list normalize) =====================
 def _norm_key(s: str) -> str:
     if not s:
         return ""
@@ -219,7 +217,7 @@ def _norm_key(s: str) -> str:
     return s
 
 SUPPLIER_BLOCKLIST = {_norm_key(x) for x in ["alstyle","al-style","copyline","vtt","akcent","ak-cent","nvprint","nv print"]}
-SUPPLIER_BLOCKLIST -= {"nv print", "nvprint"}  # NV Print dopuskaem
+SUPPLIER_BLOCKLIST -= {"nv print", "nvprint"}  # NV Print допускаем
 
 ALLOWED_BRANDS_CANONICAL = [
     "HP","Canon","Brother","Kyocera","Xerox","Ricoh","Epson","Samsung","Panasonic",
@@ -227,7 +225,7 @@ ALLOWED_BRANDS_CANONICAL = [
     "APC","ASRock","BenQ","BYINTEK","CET","Colorfix","Comix","CyberPower","Dahua","Deluxe",
     "Eaton","Europrint","Fellowes","GAMEMAX","Gigabyte","Hikvision","HSM","Huawei","HyperX",
     "iiyama","Katun","Legrand","LG","Mi","MSI","Rowe","Schneider Electric","SHIP","SVC",
-    "Tecno","Wanbo","XG","XGIMI","Xiaomi","Zowie","DKS","ViewSonic","Mr.Pixel",
+    "Tecno","Wanbo","XG","XGIMI","Xiaomi","Zowie","ДКС","ViewSonic","Mr.Pixel",
 ]
 ALLOWED_BRANDS_CANON_MAP: Dict[str, str] = {_norm_key(b): b for b in ALLOWED_BRANDS_CANONICAL}
 ALLOWED_CANON_SET: Set[str] = set(ALLOWED_BRANDS_CANONICAL)
@@ -242,7 +240,7 @@ _BRAND_MAP = {
     "gigabyte":"Gigabyte","hikvision":"Hikvision","hsm":"HSM","huawei":"Huawei","hyperx":"HyperX",
     "iiyama":"iiyama","katun":"Katun","lg":"LG","mi":"Mi","msi":"MSI","rowe":"Rowe","schneiderelectric":"Schneider Electric",
     "schneider electric":"Schneider Electric","ship":"SHIP","svc":"SVC","tecno":"Tecno","wanbo":"Wanbo","xg":"XG",
-    "xgimi":"XGIMI","xiaomi":"Xiaomi","zowie":"Zowie","dks":"DKS","europrint":"Europrint",
+    "xgimi":"XGIMI","xiaomi":"Xiaomi","zowie":"Zowie","дкс":"ДКС","europrint":"Europrint",
 }
 
 _BRAND_PATTERNS = [
@@ -291,13 +289,13 @@ _BRAND_PATTERNS = [
     (re.compile(r"\bxg\b", re.I), "XG"),
     (re.compile(r"\bxiaomi\b", re.I), "Xiaomi"),
     (re.compile(r"\bzowie\b", re.I), "Zowie"),
-    (re.compile(r"\bdks\b", re.I), "DKS"),
+    (re.compile(r"\bдкс\b", re.I), "ДКС"),
     (re.compile(r"\beuro\s*print\b", re.I), "Europrint"),
     (re.compile(r"\beaton\b", re.I), "Eaton"),
     (re.compile(r"\blegrand\b", re.I), "Legrand"),
 ]
 
-UNKNOWN_VENDOR_MARKERS = ("neizvest", "unknown", "bez brenda", "no brand", "noname", "no-name", "n/a")
+UNKNOWN_VENDOR_MARKERS = ("неизвест", "unknown", "без бренда", "no brand", "noname", "no-name", "n/a")
 
 def brand_allowed(canon: str) -> bool:
     if not STRICT_VENDOR_ALLOWLIST:
@@ -505,9 +503,9 @@ def _key(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
 EXCLUDE_NAME_RE = re.compile(
-    r"(novink|akci|skidk|utsenk|snizhena\s*tsena|hit prodazh|top prodazh|lider prodazh|luchshaya tsena|"
-    r"rekomenduem|podarok|keshbek|predzakaz|status|ed(?:initsa)?\s*izmeren|bazovaya edin|"
-    r"vat|nds|nalog|dostavk|samovyvoz|srok postavki|kredit|rassrochk|nalichie\b)",
+    r"(новинк|акци|скидк|уценк|снижена\s*цена|хит продаж|топ продаж|лидер продаж|лучшая цена|"
+    r"рекомендуем|подарок|к[еэ]шб[еэ]к|предзаказ|статус|ед(иница)?\s*измерени|базовая единиц|"
+    r"vat|ндс|налог|доставк|самовывоз|срок поставки|кредит|рассрочк|наличие\b)",
     re.I
 )
 
@@ -530,9 +528,9 @@ def _normalize_weight_value(raw_val: str) -> str:
     s = re.sub(r"\s+", " ", (raw_val or "").strip())
     if not s:
         return s
-    if re.search(r"\b(kg|кг)\b", s, re.I):
+    if re.search(r"\b(кг|kg)\b", s, re.I):
         return re.sub(r"\s*kg\b", " кг", s, flags=re.I)
-    m = re.search(r"([0-9]+(?:[.,][0-9]+)?)\s*(?:g|г)\b", s, re.I)
+    m = re.search(r"([0-9]+(?:[.,][0-9]+)?)\s*(?:г|g)\b", s, re.I)
     if m:
         val = float(m.group(1).replace(",", "."))
         if val >= 1000:
@@ -558,7 +556,7 @@ def _looks_like_code_value(v: str) -> bool:
 def build_specs_lines(offer: ET.Element) -> List[str]:
     lines: List[str] = []
     seen: Set[str] = set()
-    WEIGHT_KEYS = {"ves", "massa", "weight", "net weight", "gross weight", "вес", "масса"}
+    WEIGHT_KEYS = {"вес", "масса", "weight", "net weight", "gross weight"}
     for p in list(offer.findall("param")) + list(offer.findall("Param")):
         raw_name = (p.attrib.get("name") or "").strip()
         raw_val  = (p.text or "").strip()
@@ -566,23 +564,23 @@ def build_specs_lines(offer: ET.Element) -> List[str]:
             continue
         k = _key(raw_name)
         if k in {
-            "artikul","shtrihkod","kod tn ved","kod","snizhena tsena","skidka","aktsiya","utsenka","novinka","hit prodazh","top prodazh",
-            "lider prodazh","luchshaya tsena","rekomenduem","podarok","keshbek","predzakaz","status","dostavka","samovyvoz",
-            "srok postavki","nalichie","kredit","rassrochka","edinitsa izmereniya","bazovaya edinitsa","vat","nds","nalog","sertifikat",
-            "sertifikatsiya","blagotvoritelnost",
+            "артикул","штрихкод","код тн вэд","код","снижена цена","скидка","акция","уценка","новинка","хит продаж","топ продаж",
+            "лидер продаж","лучшая цена","рекомендуем","подарок","кэшбэк","кешбэк","предзаказ","статус","доставка","самовывоз",
+            "срок поставки","наличие","кредит","рассрочка","единица измерения","базовая единица","vat","ндс","налог","сертификат",
+            "сертификация","благотворительность",
         }:
             continue
         if EXCLUDE_NAME_RE.search(raw_name):
             continue
         is_weight = k in WEIGHT_KEYS
-        if k.startswith("gabarity") or k.startswith("габариты"):
+        if k.startswith("габариты"):
             raw_val = _parse_dims(raw_val) or raw_val
         elif is_weight:
             raw_val = _normalize_weight_value(raw_val)
         if (not is_weight) and _looks_like_code_value(raw_val):
             continue
-        if re.fullmatch(r"(da|net|y|n)", raw_val.strip(), re.I) and k in {
-            "naznachenie","skidka","aktsiya","snizhena tsena","blagotvoritelnost","nalichie","status"
+        if re.fullmatch(r"(да|нет|y|n)", raw_val.strip(), re.I) and k in {
+            "назначение","скидка","акция","снижена цена","благотворительность","наличие","статус"
         }:
             continue
         if k in seen:
@@ -606,7 +604,7 @@ def inject_specs_block(shop_el: ET.Element) -> Tuple[int, int]:
         curr = get_text(offer, "description")
         if curr:
             curr = spec_re.sub("", curr).strip()
-        block = "Harakteristiki:\n" + "\n".join(lines)
+        block = "Характеристики:\n" + "\n".join(lines)
         new_text = (curr + "\n\n" + block).strip() if curr else block
         if desc_el is None:
             desc_el = ET.SubElement(offer, "description")
@@ -725,23 +723,23 @@ def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
         "built_utc","built_Asia/Almaty",
     ]
     comments = {
-        "supplier": "Metka postavschika",
-        "source": "URL iskhodnogo XML",
-        "offers_total": "Offerov u postavschika do ochistki",
-        "offers_written": "Offerov zapisano (posle ochistki)",
-        "keywords_mode": "Rezhim filtra (include/exclude)",
-        "keywords_total": "Skolko klyuchei zagruzheno",
-        "filtered_by_keywords": "Skolko offerov otfiltruyetsya po keywords",
-        "prices_updated": "Skolkim tovaram pereschitali price",
-        "params_removed": "Skolko strok parametrov dobavleno v opisanie",
-        "vendors_recovered": "Skolkim tovaram vosstanovlen/normalizovan vendor",
-        "dropped_top": "TOP chasto otbroshennykh nazvanii brenda",
-        "available_forced": "Skolko offerov poluchili available=true",
-        "categoryId_dropped": "Skolko tegov categoryId udaleno",
-        "vendorcodes_filled_from_article": "Skolkim offeram postavili vendorCode iz artikula",
-        "vendorcodes_created": "Skolko uzlov vendorCode bylo sozdanо",
-        "built_utc": "Vremya sborki (UTC)",
-        "built_Asia/Almaty": "Vremya sborki (Almaty)",
+        "supplier": "Метка поставщика",
+        "source": "URL исходного XML",
+        "offers_total": "Офферов у поставщика до очистки",
+        "offers_written": "Офферов записано (после очистки)",
+        "keywords_mode": "Режим фильтра (include/exclude)",
+        "keywords_total": "Сколько ключей загружено",
+        "filtered_by_keywords": "Сколько офферов отфильтровано по keywords",
+        "prices_updated": "Скольким товарам пересчитали price",
+        "params_removed": "Сколько строк параметров добавлено в описание",
+        "vendors_recovered": "Скольким товарам восстановлен/нормализован vendor",
+        "dropped_top": "ТОП часто отброшенных названий бренда",
+        "available_forced": "Сколько офферов получили available=true",
+        "categoryId_dropped": "Сколько тегов categoryId удалено",
+        "vendorcodes_filled_from_article": "Скольким офферам проставили vendorCode из артикула",
+        "vendorcodes_created": "Сколько узлов vendorCode было создано",
+        "built_utc": "Время сборки (UTC)",
+        "built_Asia/Almaty": "Время сборки (Алматы)",
     }
     maxk = max(len(k) for k in order)
     maxv = max(len(str(pairs.get(k, "n/a"))) for k in order)
@@ -772,19 +770,19 @@ def main() -> None:
     if offers_in is None:
         err("XML: <offers> not found")
 
-    # Schitaem categoryId dlya mety
+    # Подсчёт categoryId для меты
     catid_to_drop_total = 0
     src_offers = list(iter_local(offers_in, "offer")) or list(_children_ci(offers_in, "offer"))
     for o in src_offers:
         catid_to_drop_total += count_category_ids(o)
 
-    # Vyhodnoi dokument
+    # Выходной документ
     out_root = ET.Element("yml_catalog")
     out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop = ET.SubElement(out_root, "shop")
     out_offers = ET.SubElement(out_shop, "offers")
 
-    # 0) Kopiruem ofwery, snymaem categoryId
+    # 0) Копируем офферы, снимаем categoryId
     for o in src_offers:
         mod = deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
@@ -792,41 +790,48 @@ def main() -> None:
                 mod.remove(node)
         out_offers.append(mod)
 
-    # 1) FILTR VKLYUCHENIM PO UMOLCHANIU: include po <name>, srazu otsaem vse ostalnoe
+    # 1) Фильтр include/exclude по <name> — САМЫЙ ПЕРВЫЙ
     keys = load_keywords(AKCENT_KEYWORDS_PATH)
+    if AKCENT_KEYWORDS_MODE == "include" and len(keys) == 0:
+        err("AKCENT_KEYWORDS_MODE=include, но ключей не найдено/не прочитаны. Проверь docs/akcent_keywords.txt или AKCENT_KEYWORDS_PATH.", 2)
+
     use_filter = AKCENT_KEYWORDS_MODE in {"include","exclude"} and len(keys) > 0
     filtered_out = 0
     if use_filter:
+        if AKCENT_KEYWORDS_DEBUG:
+            log(f"[FILTER] mode={AKCENT_KEYWORDS_MODE} keys={len(keys)} name-only")
         for off in list(out_offers.findall("offer")):
             nm = get_text(off, "name")
-            hit, _ = name_matches(nm, keys)
+            hit, kraw = name_matches(nm, keys)
             drop_this = (AKCENT_KEYWORDS_MODE == "exclude" and hit) or (AKCENT_KEYWORDS_MODE == "include" and not hit)
             if drop_this:
+                if AKCENT_KEYWORDS_DEBUG and filtered_out < AKCENT_DEBUG_MAX_HITS:
+                    log(f"[HIT] drop id={off.attrib.get('id')} name_match={kraw if hit else 'NO_MATCH'} name='{nm}'")
                 out_offers.remove(off)
                 filtered_out += 1
 
-    # 2) Vendor: vosstanovlenie/normalizatsiya (na uzhatoy viborke)
+    # 2) Vendor
     norm_cnt, fill_param_cnt, fill_text_cnt, dropped_names = ensure_vendor(out_shop)
 
-    # 3) VendorCode iz artikula, prefix 'AC'
+    # 3) VendorCode
     total_prefixed, created_nodes, filled_from_art, fixed_bare = ensure_vendorcode_with_article(
         out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING
     )
 
-    # 4) Perechet tsen
+    # 4) Pricing
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
-    # 5) Harakteristiki iz <param> v description
-    specs_offers = specs_lines = 0
+    # 5) Specs
+    specs_offers, specs_lines = 0, 0
     if EMBED_SPECS_IN_DESCRIPTION:
         specs_offers, specs_lines = inject_specs_block(out_shop)
         if STRIP_ALL_PARAMS_AFTER_EMBED:
             strip_all_params(out_shop)
 
-    # 6) Nalicie
+    # 6) Stock
     available_forced = normalize_stock_always_true(out_shop)
 
-    # 7) Finalnaya chistka (vkl. url) + udal. atributov
+    # 7) Финальная чистка
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
@@ -843,13 +848,13 @@ def main() -> None:
         "source": SUPPLIER_URL,
         "offers_total": len(src_offers),
         "offers_written": offers_written,
-        "keywords_mode": AKCENT_KEYWORDS_MODE if use_filter else "off",
+        "keywords_mode": AKCENT_KEYWORDS_MODE if use_filter else ("off" if len(keys) == 0 else AKCENT_KEYWORDS_MODE),
         "keywords_total": len(keys),
         "filtered_by_keywords": filtered_out,
         "prices_updated": upd,
         "params_removed": specs_lines,
         "vendors_recovered": (fill_param_cnt + fill_text_cnt),
-        "dropped_top": top_dropped(dropped_names),
+        "dropped_top": ",".join(sorted((k for k in dropped_names.keys()))) if dropped_names else "n/a",
         "available_forced": available_forced,
         "categoryId_dropped": catid_to_drop_total,
         "vendorcodes_filled_from_article": filled_from_art,
@@ -863,6 +868,7 @@ def main() -> None:
         log("[DRY_RUN=1] Files not written.")
         return
 
+    # Запись файлов
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
     ET.ElementTree(out_root).write(OUT_FILE_YML, encoding=ENC, xml_declaration=True)
     ET.ElementTree(out_root).write(OUT_FILE_XML, encoding=ENC, xml_declaration=True)
