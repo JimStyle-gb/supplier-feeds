@@ -2,7 +2,7 @@
 """
 Build Akcent YML/XML (flat <offers>) with FEED_META — версия для Satu.
 
-- Фильтр по ключевым словам: filters/akcent_keywords.txt (режим include/exclude).
+- Фильтр по ключевым словам: docs/akcent_keywords.txt (режим include/exclude).
 - <categoryId> удаляем.
 - <available>true</available> ставим как элемент; складские теги чистим.
 - Цена: мин дилерская -> +4% + фикс по диапазону -> хвост ...900; currency=KZT.
@@ -73,7 +73,7 @@ PURGE_TAGS_AFTER = (
 PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
 
 # ===== Keywords filter (optional) =====
-AKCENT_KEYWORDS_PATH = os.getenv("AKCENT_KEYWORDS_PATH", "filters/akcent_keywords.txt")
+AKCENT_KEYWORDS_PATH = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
 AKCENT_KEYWORDS_MODE = os.getenv("AKCENT_KEYWORDS_MODE", "exclude").lower()  # "exclude" или "include"
 
 # ===================== UTILS =====================
