@@ -1,19 +1,16 @@
 name: build_akcent
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
   schedule:
-    - cron: "0 */6 * * *"  # каждые 6 часов
+    - cron: "0 */6 * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -36,7 +33,7 @@ jobs:
           VENDORCODE_CREATE_IF_MISSING: "1"
           AKCENT_KEYWORDS_PATH: docs/akcent_keywords.txt
           AKCENT_KEYWORDS_MODE: include
-          # Отладка совпадений (по желанию):
+          # Диагностика (по желанию):
           # AKCENT_KEYWORDS_DEBUG: "1"
           # AKCENT_DEBUG_MAX_HITS: "50"
         run: |
@@ -49,8 +46,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git add docs/akcent.yml docs/akcent.xml docs/.nojekyll
           if ! git diff --cached --quiet; then
-            git commit -m "build: akcent feed"
+            git commit -m "build: akcent feed (script_version=$SCRIPT_VERSION)"
             git push
           else
             echo "No changes to commit."
-          fi
