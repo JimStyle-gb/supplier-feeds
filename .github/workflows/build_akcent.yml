@@ -34,11 +34,11 @@ jobs:
           MIN_BYTES: "1500"
           VENDORCODE_PREFIX: AC
           VENDORCODE_CREATE_IF_MISSING: "1"
-          # Ключевой момент: включаем include-режим и путь к файлу с ключами
           AKCENT_KEYWORDS_PATH: docs/akcent_keywords.txt
           AKCENT_KEYWORDS_MODE: include
-          # Включи на время отладки:
+          # Отладка совпадений (по желанию):
           # AKCENT_KEYWORDS_DEBUG: "1"
+          # AKCENT_DEBUG_MAX_HITS: "50"
         run: |
           python scripts/build_akcent.py
 
