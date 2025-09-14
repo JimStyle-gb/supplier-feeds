@@ -1,86 +1,73 @@
 name: build_alstyle
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
   schedule:
-    # 01:00 Asia/Almaty (UTC+5) = 20:00 UTC предыдущего дня
-    - cron: "0 20 * * *"
-  push:
-    paths:
-      - ".github/workflows/build_alstyle.yml"
-      - "scripts/build_alstyle.py"
-      - "docs/categories_alstyle.txt"
-
-permissions:
-  contents: write
+    - cron: "15 */6 * * *"   # каждые 6 часов, со сдвигом в 15 минут чтобы не совпадать с akcent
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+    steps:
+      # 1) Репозиторий
+      - uses: actions/checkout@v4
+
+      # 2) Python 3.11
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # 3) Зависимости
       - name: Install deps
+        shell: bash
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
-          python -m pip install "requests>=2.31,<3"
+          pip install requests
 
-      - name: Verify categories file exists and not empty
-        run: |
-          if [ ! -s docs/categories_alstyle.txt ]; then
-            echo "::error file=docs/categories_alstyle.txt::Файл docs/categories_alstyle.txt отсутствует или пуст."
-            exit 1
-          fi
-          echo "---- docs/categories_alstyle.txt (первые строки) ----"
-          nl -ba docs/categories_alstyle.txt | sed -n '1,40p'
-
-      - name: Build feed
+      # 4) Сборка Alstyle (YML only, наличие берём у поставщика)
+      - name: Build Alstyle feed (YML only, real availability)
+        shell: bash
         env:
           SUPPLIER_NAME: alstyle
+          # Укажи реальный источник: http/https URL или file://<path> или относительный путь в репо
+          SUPPLIER_URL: https://example.com/alstyle.xml
           OUT_FILE: docs/alstyle.yml
           OUTPUT_ENCODING: windows-1251
-          CATEGORIES_FILE: docs/categories_alstyle.txt
+
+          # Сетевые тайминги
           TIMEOUT_S: "30"
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
-          VENDORCODE_PREFIX: "AS"
-          VENDORCODE_CREATE_IF_MISSING: "0"
-          # ВАЖНО: строгий фильтр брендов выключен
-          STRICT_VENDOR_ALLOWLIST: "0"
-          # Остальные политики — как договаривались
-          STRIP_INTERNAL_PRICE_TAGS: "1"
-          EMBED_SPECS_IN_DESCRIPTION: "1"
-          STRIP_ALL_PARAMS_AFTER_EMBED: "1"
-          NORMALIZE_STOCK: "1"
-          PICTURE_HEAD_SAMPLE: "0"
+
+          # vendorCode
+          VENDORCODE_PREFIX: AS
+          VENDORCODE_CREATE_IF_MISSING: "1"
+
+          # Ключевой фильтр по <name> (опционально; по умолчанию off)
+          ALSTYLE_KEYWORDS_PATH: docs/alstyle_keywords.txt
+          ALSTYLE_KEYWORDS_MODE: off      # off|include|exclude
+          # ALSTYLE_KEYWORDS_DEBUG: "1"
+          # ALSTYLE_DEBUG_MAX_HITS: "50"
         run: |
+          set -euo pipefail
           python scripts/build_alstyle.py
-
-      - name: Duplicate YML as XML (for picky importers)
-        run: |
-          cp docs/alstyle.yml docs/alstyle.xml
-
-      - name: Ensure GitHub Pages compatibility
-        run: |
           mkdir -p docs
-          touch docs/.nojekyll
+          : > docs/.nojekyll
 
-      - name: Commit & push changes
+      # 5) Коммитим только YML
+      - name: Commit & Push
+        shell: bash
         run: |
-          set -e
+          set -euo pipefail
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain -- docs/alstyle.yml docs/alstyle.xml docs/.nojekyll)" ]; then
-            git add docs/alstyle.yml docs/alstyle.xml docs/.nojekyll
-            git commit -m "build: update alstyle.{yml,xml}"
-            git push
-          else
+          git add docs/alstyle.yml docs/.nojekyll || true
+          if git diff --cached --quiet; then
             echo "No changes to commit."
+          else
+            git commit -m "build: alstyle YML (real availability)"
+            git push
           fi
