@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-14 18:21">
+<yml_catalog date="2025-09-14 18:34">
   <!--FEED_META
 script_version                  = alstyle-2025-09-14.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
@@ -20,8 +20,8 @@ available_from_status           = 0                                             
 categoryId_dropped              = 15908                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-14 18:21:17 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-14 23:21:17 +05                                         | Время сборки (Алматы)--><shop>
+built_utc                       = 2025-09-14 18:34:04 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-14 23:34:04 +05                                         | Время сборки (Алматы)--><shop>
     <offers>
       <offer id="12568">
         <price>29880</price>
