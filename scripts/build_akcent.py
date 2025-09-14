@@ -1,20 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Build Akcent YML/XML (flat <offers>) for Satu — script_version=akcent-2025-09-14.4
+Build Akcent YML/XML (flat <offers>) for Satu — script_version=akcent-2025-09-14.6
 
-Ключевые моменты:
-- Фильтр include по <name> из docs/akcent_keywords.txt (авто-кодировка: utf-8-sig, utf-8, utf-16/le/be, cp1251).
-- Бренды сохраняем ВСЕ, кроме имён поставщиков (alstyle, vtt, copyline, akcent — и варианты).
-- vendorCode = AC + артикул (из article/name/url/id).
-- Чистка: удаляем url/Offer_ID/delivery/local_delivery_cost/manufacturer_warranty/model, все Param/param, все prices/внутренние ценовые теги.
-- available — всегда <available>true</available> (атрибуты type/available/article у <offer> удаляются).
-- Описание: «Характеристики: …» из параметров; затем чистка лишних пробелов/переносов, &nbsp;/\u00A0.
-- FEED_META выровнен; в конце ЛОГ выводит текущую версию скрипта.
-- Дополнительно: после сериализации добавляется пустая строка между <offer> (регексп на готовом тексте).
+Изменения в этой версии:
+- <description> всегда в одну строку: любые переводы строк/много пробелов схлопываются в один пробел.
+- <!--FEED_META--> выровнен в две колонки: "ключ = значение" и "комментарий" (колонка комментариев строго под '|').
+- Остальное как договаривались: include-фильтр по <name>, бренды не режем (кроме имён поставщиков),
+  vendorCode = AC + артикул, чистка url/Param/prices/Stock и атрибутов offer, <available>true</available>,
+  пустая строка между <offer> (через OFFSEP-маркеры).
 """
 
 from __future__ import annotations
-import os, sys, re, time, random, urllib.parse, io, codecs
+import os, sys, re, time, random, urllib.parse
 from copy import deepcopy
 from typing import Dict, List, Set, Tuple, Optional
 from xml.etree import ElementTree as ET
@@ -27,7 +24,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "akcent-2025-09-14.4"
+SCRIPT_VERSION = "akcent-2025-09-14.6"
 
 # -------- ENV --------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "akcent")
@@ -53,7 +50,6 @@ AKCENT_DEBUG_MAX_HITS = int(os.getenv("AKCENT_DEBUG_MAX_HITS", "40"))
 
 DROP_CATEGORY_ID_TAG     = True
 DROP_STOCK_TAGS          = True
-STRIP_INTERNAL_PRICE_TAGS= True
 
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url")
 PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
@@ -70,9 +66,7 @@ def warn(msg: str) -> None: print(f"WARN: {msg}", file=sys.stderr, flush=True)
 def err(msg: str, code: int = 1) -> None:
     print(f"ERROR: {msg}", file=sys.stderr, flush=True); sys.exit(code)
 
-def now_utc_str() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
-
+def now_utc_str() -> str: return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 def now_almaty_str() -> str:
     if ZoneInfo: return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -80,9 +74,6 @@ def now_almaty_str() -> str:
 def get_text(el: ET.Element, tag: str) -> str:
     node = el.find(tag)
     return (node.text or "").strip() if node is not None and node.text else ""
-
-def set_text(el: ET.Element, text: str) -> None:
-    el.text = text if text is not None else ""
 
 def _norm_name(s: str) -> str:
     s = (s or "").replace("\u00A0"," ").lower().replace("ё","е")
@@ -154,6 +145,7 @@ def _norm_key(s: str) -> str:
     s=re.sub(r"\s+"," ",s)
     return s
 
+# Блокируем только имена поставщиков; остальные бренды не трогаем
 SUPPLIER_BLOCKLIST={_norm_key(x) for x in["alstyle","al-style","copyline","akcent","ak-cent","vtt"]}
 UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
 
@@ -320,29 +312,25 @@ def strip_all_params(shop_el:ET.Element)->int:
             offer.remove(p); removed+=1
     return removed
 
-# очистка описаний: пробелы, nbps, схлопывание пустых строк
-_WS_RE           = re.compile(r"[ \t]+")
-_MULTI_NL_RE     = re.compile(r"\n{3,}")
-_LINE_END_WS_RE  = re.compile(r"[ \t]+\n")
+# --- Очистка описаний: делаем ОДНУ строку ---
 _HTML_NBSP_RE    = re.compile(r"&nbsp;", re.I)
 
-def _clean_description_text(s:str)->str:
+def _clean_description_text_one_line(s:str)->str:
     if not s: return s
     s = s.replace("\r\n","\n").replace("\r","\n").replace("\u00A0"," ")
     s = _HTML_NBSP_RE.sub(" ", s)
-    s = _LINE_END_WS_RE.sub("\n", s)
-    s = _WS_RE.sub(" ", s)
-    s = _MULTI_NL_RE.sub("\n\n", s)
+    # любая последовательность пробельных символов (включая \n, \t) -> один пробел
+    s = re.sub(r"\s+", " ", s)
     return s.strip()
 
-def clean_all_descriptions(shop_el:ET.Element)->int:
+def clean_all_descriptions_one_line(shop_el:ET.Element)->int:
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
     touched=0
     for offer in offers_el.findall("offer"):
         d=offer.find("description")
         if d is not None and d.text:
-            cleaned=_clean_description_text(d.text)
+            cleaned=_clean_description_text_one_line(d.text)
             if cleaned!=d.text:
                 d.text=cleaned; touched+=1
     return touched
@@ -452,11 +440,14 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
         "built_utc":"Время сборки (UTC)",
         "built_Asia/Almaty":"Время сборки (Алматы)",
     }
+    # Первая колонка: "ключ = значение" (с выравниванием по максимальной длине ключа)
     max_key = max(len(k) for k in order)
+    left_parts = [f"{k.ljust(max_key)} = {pairs.get(k,'n/a')}" for k in order]
+    max_left = max(len(s) for s in left_parts)  # чтобы '|' стоял строго в одном столбце
     lines=["FEED_META"]
-    for k in order:
-        v=str(pairs.get(k,"n/a")); c=comments.get(k,"")
-        lines.append(f"{k.ljust(max_key)} = {v}  | {c}")
+    for left, k in zip(left_parts, order):
+        comment = comments.get(k, "")
+        lines.append(f"{left.ljust(max_left)}  | {comment}")
     return "\n".join(lines)
 
 def top_dropped(d:Dict[str,int], n:int=10)->str:
@@ -480,44 +471,52 @@ def main()->None:
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
+    # 0) перенос офферов (убираем categoryId)
     for o in src_offers:
         mod=deepcopy(o)
-        if DROP_CATEGORY_ID_TAG:
-            for node in list(mod.findall("categoryId")) + list(mod.findall("CategoryId")):
-                mod.remove(node)
+        for node in list(mod.findall("categoryId")) + list(mod.findall("CategoryId")):
+            mod.remove(node)
         out_offers.append(mod)
 
+    # 1) include/exclude по <name>
     keys=load_keywords(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но ключей не найдено. Проверь docs/akcent_keywords.txt.", 2)
 
-    use_filter = AKCENT_KEYWORDS_MODE in {"include","exclude"} and len(keys)>0
     filtered_out=0
-    if use_filter:
-        if AKCENT_KEYWORDS_DEBUG: log(f"[FILTER] mode={AKCENT_KEYWORDS_MODE} keys={len(keys)} name-only")
+    if (AKCENT_KEYWORDS_MODE in {"include","exclude"}) and len(keys)>0:
         for off in list(out_offers.findall("offer")):
             nm=get_text(off,"name")
-            hit,kraw=name_matches(nm,keys)
+            hit,_=name_matches(nm,keys)
             drop_this=(AKCENT_KEYWORDS_MODE=="exclude" and hit) or (AKCENT_KEYWORDS_MODE=="include" and not hit)
             if drop_this:
-                if AKCENT_KEYWORDS_DEBUG and filtered_out<AKCENT_DEBUG_MAX_HITS:
-                    log(f"[HIT] drop id={off.attrib.get('id')} match={kraw if hit else 'NO_MATCH'} name='{nm}'")
                 out_offers.remove(off); filtered_out+=1
 
+    # 2) vendor, 3) vendorCode, 4) цены
     norm_cnt, dropped_names = ensure_vendor(out_shop)
     total_prefixed, created_nodes, filled_from_art, fixed_bare = ensure_vendorcode_with_article(
         out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING
     )
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
+
+    # 5) specs -> description (а затем description в ОДНУ строку) + чистка Param
     specs_offers, specs_lines = inject_specs_block(out_shop)
     removed_params = strip_all_params(out_shop)
-    cleaned_desc = clean_all_descriptions(out_shop)
+    cleaned_desc = clean_all_descriptions_one_line(out_shop)
+
+    # 6) наличие
     available_forced = normalize_stock_always_true(out_shop)
 
+    # 7) чистка тегов/атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
-    # Базовое pretty
+    # --- маркеры OFFSEP для пустой строки между офферами ---
+    children = list(out_offers)
+    for i in range(len(children)-1, 0, -1):
+        out_offers.insert(i, ET.Comment("OFFSEP"))
+
+    # pretty
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
@@ -529,7 +528,7 @@ def main()->None:
         "source": SUPPLIER_URL,
         "offers_total": len(src_offers),
         "offers_written": offers_written,
-        "keywords_mode": AKCENT_KEYWORDS_MODE if use_filter else ("off" if len(keys)==0 else AKCENT_KEYWORDS_MODE),
+        "keywords_mode": AKCENT_KEYWORDS_MODE if len(keys)>0 else "off",
         "keywords_total": len(keys),
         "filtered_by_keywords": filtered_out,
         "prices_updated": upd,
@@ -545,28 +544,22 @@ def main()->None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # ---------- СЕРИАЛИЗАЦИЯ С ПОСТОБРАБОТКОЙ ----------
-    # 1) Собираем XML в текст
+    # сериализация
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
-    # windows-1251 -> str (для регекспа), unsafe символы заменяем
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
-    # 2) Пустая строка между офферами (на читабельность)
-    xml_text = re.sub(r"</offer>\s*(?=<offer\b)", "</offer>\n\n  ", xml_text)
+    # OFFSEP -> пустая строка между офферами
+    xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n  ", xml_text)
 
-    # 3) Ещё раз подчистим множественные пустые строки внутри описаний (если вдруг остались)
+    # страховка от троекратных переносов (вдруг образуются)
     xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
 
     if DRY_RUN:
-        log("[DRY_RUN=1] Files not written.")
-        return
+        log("[DRY_RUN=1] Files not written."); return
 
-    # 4) Пишем файлы
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
-        f.write(xml_text)
-    with open(OUT_FILE_XML, "w", encoding=ENC, newline="\n") as f:
-        f.write(xml_text)
+    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f: f.write(xml_text)
+    with open(OUT_FILE_XML, "w", encoding=ENC, newline="\n") as f: f.write(xml_text)
 
     # .nojekyll
     docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
