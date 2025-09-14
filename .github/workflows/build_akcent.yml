@@ -1,20 +1,24 @@
-name: build_akcent
+name: build_akcent  # Имя workflow — видно в списке Actions
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch: {}  # Возможность запустить вручную из UI GitHub
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */6 * * *"  # Автозапуск каждые 6 часов (UTC)
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Среда выполнения
+
     steps:
+      # Шаг 1: клонируем репозиторий в рабочую директорию раннера
       - uses: actions/checkout@v4
 
+      # Шаг 2: устанавливаем Python нужной версии
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # Шаг 3: ставим зависимости для скрипта
       - name: Install deps
         shell: bash
         run: |
@@ -22,37 +26,53 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
+      # Шаг 4: запускаем сборку фида с нужными переменными окружения
       - name: Build Akcent feed
         shell: bash
         env:
+          # Метка поставщика (в FEED_META и логах)
           SUPPLIER_NAME: akcent
+          # URL исходного XML поставщика
           SUPPLIER_URL: https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
+          # Путь к итоговому YML-файлу (для GitHub Pages)
           OUT_FILE: docs/akcent.yml
+          # Кодировка записи (CP1251 как у поставщика/Satu)
           OUTPUT_ENCODING: windows-1251
+          # Настройки сетевых таймаутов/повторов
           TIMEOUT_S: "30"
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
+          # Префикс для vendorCode (AC) и создание узла при отсутствии
           VENDORCODE_PREFIX: AC
           VENDORCODE_CREATE_IF_MISSING: "1"
+          # Файл ключей и режим фильтрации по <name>
           AKCENT_KEYWORDS_PATH: docs/akcent_keywords.txt
           AKCENT_KEYWORDS_MODE: include
+          # Включаем при отладке, чтобы видеть, что именно фильтруется
+          # AKCENT_KEYWORDS_DEBUG: "1"
+          # AKCENT_DEBUG_MAX_HITS: "50"
         run: |
           set -euo pipefail
           python scripts/build_akcent.py
+          # Создаём файл-маркер, чтобы GitHub Pages не пытался обработать как Jekyll
           mkdir -p docs
           : > docs/.nojekyll
 
+      # Шаг 5: коммитим и пушим изменения, если они есть
       - name: Commit & Push
         shell: bash
         run: |
           set -euo pipefail
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name  "github-actions[bot]"
+          # Добавляем артефакты сборки
           git add docs/akcent.yml docs/akcent.xml docs/.nojekyll || true
+          # Если изменений нет — тихо выходим
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
+            # Простой и безопасный commit-message без переменных
             git commit -m "build: akcent feed"
             git push
           fi
