@@ -2,15 +2,15 @@
 """
 Build Akcent YML/XML (flat <offers>) with FEED_META - version for Satu.
 
-Changes in this revision:
+Key changes:
 - Keyword filter is applied AFTER ensure_vendor(), so matching sees normalized <vendor>.
 - <url> is kept until filtering, then removed in the final cleanup.
-- FEED_META includes filtered_by_keywords and offers_written is counted after filtering.
+- FEED_META includes filtered_by_keywords; offers_written is counted after filtering.
 
 Other behavior:
 - Reads keyword list from docs/akcent_keywords.txt (mode include or exclude).
 - Removes <categoryId>, internal price tags, service tags, and offer attributes type/available/article.
-- Moves useful <param> lines into description without SPECS markers.
+- Moves useful <param> lines into description without any SPECS markers.
 - Derives vendorCode from article (offer@article -> from <name> -> from <url> -> offer@id) and prefixes with "AC".
 - Normalizes stock by writing <available>true</available>.
 - Reprices using rules and forces ...900 tail. currencyId=KZT.
@@ -49,10 +49,10 @@ RETRIES         = int(os.getenv("RETRIES", "4"))
 RETRY_BACKOFF   = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
-DRY_RUN         = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
+DRY_RUN         = os.getenv("DRY_RUN", "0").lower() in {"1", "true", "yes"}
 
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AC")
-VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "1").lower() in {"1","true","yes"}
+VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "1").lower() in {"1", "true", "yes"}
 
 STRICT_VENDOR_ALLOWLIST = True
 DROP_STOCK_TAGS         = True
@@ -795,7 +795,7 @@ def main() -> None:
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
-    # Pretty print
+    # Pretty print (Python 3.9+)
     try:
         ET.indent(out_root, space="  ")
     except Exception:
@@ -843,12 +843,12 @@ def main() -> None:
     log(f"Vendor stats: normalized={norm_cnt}, filled_param={fill_param_cnt}, filled_text={fill_text_cnt}")
     log(f"VendorCode: prefixed_total={total_prefixed}, created_nodes={created_nodes}, filled_from_article={filled_from_art}, fixed_bare={fixed_bare}, prefix='{VENDORCODE_PREFIX}'")
     log(f"Pricing: updated={upd}, skipped_low_or_missing={skipped}, total_offers={total}")
-    log(f"Specs block: offers={specs_offers}, lines_total={specs_total}")
-log(f"Available forced: {available_forced}")
-log(f"Wrote: {OUT_FILE_YML} & {OUT_FILE_XML} | offers={offers_written} | encoding={ENC}")
+    log(f"Specs block: offers={specs_offers}, lines_total={specs_lines}")
+    log(f"Available forced: {available_forced}")
+    log(f"Wrote: {OUT_FILE_YML} & {OUT_FILE_XML} | offers={offers_written} | encoding={ENC}")
 
-if name == "main":
-try:
-main()
-except Exception as e:
-err(str(e))
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        err(str(e))
