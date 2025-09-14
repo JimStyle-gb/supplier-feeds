@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Build Akcent YML/XML (flat <offers>) for Satu — script_version=akcent-2025-09-14.2
+Build Akcent YML/XML (flat <offers>) for Satu — script_version=akcent-2025-09-14.3
 
-Что делает:
-- Фильтр по ключам (docs/akcent_keywords.txt), режим include, матч только по <name>.
-  Поддержка кодировок: utf-8-sig, utf-8, utf-16, utf-16-le, utf-16-be, windows-1251; чистим NUL.
-- Бренды: сохраняем все, КРОМЕ названий поставщиков (alstyle, vtt, copyline, akcent — и варианты).
-- vendorCode: из артикула (article/name/url/id), нормализуем и добавляем префикс AC.
-- Цены: считаем price по правилам, ставим currencyId=KZT, удаляем <prices> и внутренние ценовые теги.
-- Параметры: переносятся в описание («Характеристики:…»), затем все <param>/<Param> удаляются.
-- Наличие: <available>true</available> как тег; атрибуты type/available/article у <offer> удаляются.
-- Чистка: Offer_ID, delivery, local_delivery_cost, manufacturer_warranty, model, url — удаляются.
-- FEED_META на русском + script_version для контроля правильной версии в CI.
+Изменения в этой версии:
+- <!--FEED_META--> красиво выровнен по колонкам.
+- Чистка описаний: убираем лишние пробелы/табуляции, тройные и более переносы, хвостовые пробелы.
+- Читаемость: добавляем пустую строку между <offer> элементами.
+- Всё остальное как договорено (фильтр include по <name>, бренды не удаляем кроме имён поставщиков,
+  vendorCode из артикула с префиксом AC, цены, чистка служебных тегов и пр.)
 """
 
 from __future__ import annotations
@@ -29,7 +25,7 @@ except Exception:
 import requests
 
 # ===================== ENV / SETTINGS =====================
-SCRIPT_VERSION   = "akcent-2025-09-14.2"
+SCRIPT_VERSION   = "akcent-2025-09-14.3"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "akcent")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml")
@@ -95,6 +91,9 @@ def now_almaty_str() -> str:
 def get_text(el: ET.Element, tag: str) -> str:
     node = el.find(tag)
     return (node.text or "").strip() if node is not None and node.text else ""
+
+def set_text(el: ET.Element, text: str) -> None:
+    el.text = text if text is not None else ""
 
 def _norm_name(s: str) -> str:
     s = (s or "").replace("\u00A0"," ").lower().replace("ё","е")
@@ -301,7 +300,6 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
         dealer = get_dealer_price(offer)
         if dealer is None or dealer <= 100:
             skipped += 1
-            # чистим oldprice, если есть
             node = offer.find("oldprice")
             if node is not None:
                 offer.remove(node)
@@ -327,7 +325,7 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
         updated += 1
     return updated, skipped, total
 
-# ===================== PARAMS / SPECS =====================
+# ===================== PARAMS / DESCRIPTIONS =====================
 def _key(s: str) -> str:
     return re.sub(r"\s+"," ", (s or "").strip()).lower()
 
@@ -432,6 +430,37 @@ def strip_all_params(shop_el: ET.Element) -> int:
             removed += 1
     return removed
 
+# --- Дополнительная чистка описаний ---
+_WS_RE = re.compile(r"[ \t]+")
+_MULTI_NL_RE = re.compile(r"\n{3,}")
+_LINE_END_WS_RE = re.compile(r"[ \t]+\n")
+def _clean_description_text(s: str) -> str:
+    if not s:
+        return s
+    s = s.replace("\r\n", "\n").replace("\r", "\n")
+    # убираем хвостовые пробелы на концах строк
+    s = _LINE_END_WS_RE.sub("\n", s)
+    # схлопываем подряд идущие пробелы/табуляции
+    s = _WS_RE.sub(" ", s)
+    # схлопываем три и более переносов в два
+    s = _MULTI_NL_RE.sub("\n\n", s)
+    # финальный общий trim
+    return s.strip()
+
+def clean_all_descriptions(shop_el: ET.Element) -> int:
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        d = offer.find("description")
+        if d is not None and d.text:
+            cleaned = _clean_description_text(d.text)
+            if cleaned != d.text:
+                d.text = cleaned
+                touched += 1
+    return touched
+
 # ===================== STOCK =====================
 def normalize_stock_always_true(shop_el: ET.Element) -> int:
     offers_el = shop_el.find("offers")
@@ -526,6 +555,7 @@ def count_category_ids(offer_el: ET.Element) -> int:
 
 # ===================== FEED_META =====================
 def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
+    # порядок ключей в мета-комментарии
     order = [
         "script_version","supplier","source","offers_total","offers_written",
         "keywords_mode","keywords_total","filtered_by_keywords",
@@ -553,12 +583,14 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
         "built_utc": "Время сборки (UTC)",
         "built_Asia/Almaty": "Время сборки (Алматы)",
     }
-    maxk = max(len(k) for k in order)
+    # аккуратное выравнивание колонок
+    max_key = max(len(k) for k in order)
+    # строим строки с выравниванием ключей и равенства
     lines = ["FEED_META"]
     for k in order:
         v = str(pairs.get(k, "n/a"))
         c = comments.get(k, "")
-        lines.append(f"{k.ljust(maxk)} = {v}  | {c}")
+        lines.append(f"{k.ljust(max_key)} = {v}  | {c}")
     return "\n".join(lines)
 
 def top_dropped(d: Dict[str,int], n: int = 10) -> str:
@@ -628,9 +660,10 @@ def main() -> None:
     # 4) Pricing
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
-    # 5) Specs
+    # 5) Specs -> Description, потом чистка описаний
     specs_offers, specs_lines = inject_specs_block(out_shop)
     removed_params = strip_all_params(out_shop)
+    cleaned_desc = clean_all_descriptions(out_shop)
 
     # 6) Stock
     available_forced = normalize_stock_always_true(out_shop)
@@ -644,6 +677,14 @@ def main() -> None:
         ET.indent(out_root, space="  ")
     except Exception:
         pass
+
+    # Добавляем пустые строки между <offer> для читабельности
+    offers_list = out_offers.findall("offer")
+    for i, off in enumerate(offers_list):
+        if i < len(offers_list) - 1:
+            off.tail = "\n\n  "   # пустая строка между офферами + базовая индентация
+        else:
+            off.tail = "\n"       # последний оффер заканчиваем переводом строки
 
     # FEED_META
     offers_written = len(list(out_offers.findall("offer")))
@@ -686,7 +727,10 @@ def main() -> None:
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} & {OUT_FILE_XML} | offers={offers_written} | encoding={ENC} | script={SCRIPT_VERSION}")
+    log(
+        "Wrote: %s & %s | offers=%s | encoding=%s | script=%s | desc_cleaned=%s" %
+        (OUT_FILE_YML, OUT_FILE_XML, offers_written, ENC, SCRIPT_VERSION, cleaned_desc)
+    )
 
 if __name__ == "__main__":
     try:
