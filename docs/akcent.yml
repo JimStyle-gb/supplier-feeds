@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-14 15:01">
+<yml_catalog date="2025-09-14 15:35">
   <!--FEED_META
-script_version                  = akcent-2025-09-14.7                                           | Версия скрипта (для контроля в CI)
+script_version                  = akcent-2025-09-14.9                                           | Версия скрипта (для контроля в CI)
 supplier                        = akcent                                                        | Метка поставщика
 source                          = https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml  | URL исходного XML
 offers_total                    = 2155                                                          | Офферов у поставщика до очистки
@@ -17,8 +17,8 @@ available_forced                = 224                                           
 categoryId_dropped              = 2155                                                          | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 224                                                           | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 224                                                           | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-14 15:01:07 UTC                                       | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-14 20:01:07 +05                                       | Время сборки (Алматы)--><shop>
+built_utc                       = 2025-09-14 15:35:14 UTC                                       | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-14 20:35:14 +05                                       | Время сборки (Алматы)--><shop>
     <offers>
       <offer id="00-00000525">
         <name>C13T55K200 Singlepack (Голубой) T55K200 UltraChrome HDX/HD 700ml</name>
