@@ -10,16 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install deps
+        shell: bash
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
           pip install requests
 
       - name: Build Akcent feed
+        shell: bash
         env:
           SUPPLIER_NAME: akcent
           SUPPLIER_URL: https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
@@ -33,20 +37,22 @@ jobs:
           VENDORCODE_CREATE_IF_MISSING: "1"
           AKCENT_KEYWORDS_PATH: docs/akcent_keywords.txt
           AKCENT_KEYWORDS_MODE: include
-          # Диагностика (по желанию):
-          # AKCENT_KEYWORDS_DEBUG: "1"
-          # AKCENT_DEBUG_MAX_HITS: "50"
         run: |
+          set -euo pipefail
           python scripts/build_akcent.py
+          mkdir -p docs
+          : > docs/.nojekyll
 
       - name: Commit & Push
-        if: success()
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name  "github-actions[bot]"
-          git add docs/akcent.yml docs/akcent.xml docs/.nojekyll
-          if ! git diff --cached --quiet; then
-            git commit -m "build: akcent feed (script_version=$SCRIPT_VERSION)"
-            git push
-          else
+          git add docs/akcent.yml docs/akcent.xml docs/.nojekyll || true
+          if git diff --cached --quiet; then
             echo "No changes to commit."
+          else
+            git commit -m "build: akcent feed"
+            git push
+          fi
