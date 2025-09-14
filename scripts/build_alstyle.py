@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-Build Alstyle YML (flat <offers>) for Satu — script_version=alstyle-2025-09-14.3
+Build Alstyle YML (flat <offers>) for Satu — script_version=alstyle-2025-09-14.4
 
-Особенности Alstyle:
-- <available> берём у поставщика: явный тег → остатки → текстовый статус → по умолчанию false.
+Главные моменты:
+- <available> считаем по данным поставщика (не форсим true).
+- Фильтр по КАТЕГОРИЯМ из docs/alstyle_categories.txt (режимы: include|exclude|off).
+- Фильтр по КЛЮЧЕВЫМ словам в <name> (как раньше).
 - После расчёта оставляем единый тег <available>, складские/служебные теги удаляем.
 - Генерируем ТОЛЬКО docs/alstyle.yml; описания сжимаем в одну строку; FEED_META на русском с выровненными колонками.
+- Источник по умолчанию (если не задан env): https://al-style.kz/upload/catalog_export/al_style_catalog.php
 """
 
 from __future__ import annotations
 import os, sys, re, time, random, urllib.parse
 from copy import deepcopy
-from typing import Dict, List, Set, Tuple, Optional
+from typing import Dict, List, Tuple, Optional
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone
 
@@ -24,14 +27,14 @@ import requests
 
 # ========================== ГЛОБАЛЬНЫЕ НАСТРОЙКИ ===========================
 
-SCRIPT_VERSION = "alstyle-2025-09-14.3"  # для FEED_META/логов
+SCRIPT_VERSION = "alstyle-2025-09-14.4"  # для FEED_META/логов
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "alstyle")
-# ✅ Дефолт — официальный экспорт Alstyle
 SUPPLIER_URL     = os.getenv(
     "SUPPLIER_URL",
     "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 ).strip()
+
 OUT_FILE_YML     = os.getenv("OUT_FILE", "docs/alstyle.yml")
 ENC              = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
@@ -42,14 +45,21 @@ MIN_BYTES        = int(os.getenv("MIN_BYTES", "1500"))
 
 DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
+# vendorCode
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "1").lower() in {"1","true","yes"}
 
+# Фильтр по NAME
 ALSTYLE_KEYWORDS_PATH  = os.getenv("ALSTYLE_KEYWORDS_PATH", "docs/alstyle_keywords.txt")
 ALSTYLE_KEYWORDS_MODE  = os.getenv("ALSTYLE_KEYWORDS_MODE", "off").lower()  # off|include|exclude
 ALSTYLE_KEYWORDS_DEBUG = os.getenv("ALSTYLE_KEYWORDS_DEBUG", "0").lower() in {"1","true","yes"}
 ALSTYLE_DEBUG_MAX_HITS = int(os.getenv("ALSTYLE_DEBUG_MAX_HITS", "40"))
 
+# Фильтр по КАТЕГОРИЯМ
+ALSTYLE_CATEGORIES_PATH = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
+ALSTYLE_CATEGORIES_MODE = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # include|exclude|off
+
+# Чистки/удаления
 DROP_CATEGORY_ID_TAG     = True
 DROP_STOCK_TAGS          = True
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
@@ -81,11 +91,19 @@ def now_almaty_str() -> str:
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 def get_text(el: ET.Element, tag: str) -> str:
-    node = el.find(tag); return (node.text or "").strip() if node is not None and node.text else ""
+    node = el.find(tag)
+    return (node.text or "").strip() if node is not None and node.text else ""
 
 def _norm_name(s: str) -> str:
     s = (s or "").replace("\u00A0"," ").lower().replace("ё","е")
     return re.sub(r"\s+"," ",s).strip()
+
+def _norm_key(s: str) -> str:
+    if not s: return ""
+    s=s.strip().lower().replace("ё","е")
+    s=re.sub(r"[-_/]+"," ",s)
+    s=re.sub(r"\s+"," ",s)
+    return s
 
 # ====================== ЗАГРУЗКА ИСХОДНОГО XML ============================
 
@@ -118,7 +136,7 @@ def load_source_bytes(src: str) -> bytes:
             if attempt < RETRIES: time.sleep(sleep)
     raise RuntimeError(f"fetch failed after {RETRIES} attempts: {last_exc}")
 
-# ==================== КЛЮЧИ ДЛЯ ФИЛЬТРА ПО НАЗВАНИЮ =======================
+# ==================== ФИЛЬТР ПО КЛЮЧАМ (NAME) =============================
 
 class KeySpec:
     __slots__=("raw","kind","pattern")
@@ -142,8 +160,8 @@ def load_keywords(path: str) -> List[KeySpec]:
             try: keys.append(KeySpec(s,"regex",re.compile(s[1:-1],re.I))); continue
             except Exception: continue
         if s.startswith("~="):
-            w=_norm_name(s[2:]); 
-            if w: keys.append(KeySpec(s,"word",re.compile(r"\b"+re.escape(w)+r"\b",re.I))); 
+            w=_norm_name(s[2:])
+            if w: keys.append(KeySpec(s,"word",re.compile(r"\b"+re.escape(w)+r"\b",re.I)))
             continue
         keys.append(KeySpec(_norm_name(s),"substr",None))
     return keys
@@ -157,11 +175,87 @@ def name_matches(name:str, keys:List[KeySpec]) -> Tuple[bool, Optional[str]]:
             if ks.pattern and ks.pattern.search(name or ""): return True,ks.raw
     return False,None
 
-# ============================ НОРМАЛИЗАЦИЯ БРЕНДА ==========================
+# ===================== ФИЛЬТР ПО КАТЕГОРИЯМ ===============================
 
-def _norm_key(s: str) -> str:
-    if not s: return ""
-    s=s.strip().lower().replace("ё","е"); s=re.sub(r"[-_/]+"," ",s); s=re.sub(r"\s+"," ",s); return s
+class CatSpec:
+    __slots__=("raw","kind","pattern","cat_id")
+    def __init__(self, raw: str, kind: str, pattern=None, cat_id: Optional[str]=None):
+        self.raw, self.kind, self.pattern, self.cat_id = raw, kind, pattern, cat_id
+
+def load_category_rules(path: str) -> List[CatSpec]:
+    """Читает правила категорий:
+       - чисто цифры → ID категории (точное совпадение)
+       - /regex/ → regex по названию категории
+       - ~=Name → word-boundary по названию
+       - любая другая строка → подстрока в названии (нормализованная)
+    """
+    if not path or not os.path.exists(path): return []
+    data=None
+    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
+        try:
+            with open(path,"r",encoding=enc) as f: txt=f.read()
+            data=txt.replace("\ufeff","").replace("\x00",""); break
+        except Exception: continue
+    if data is None:
+        with open(path,"r",encoding="utf-8",errors="ignore") as f: data=f.read().replace("\x00","")
+    rules: List[CatSpec]=[]
+    for ln in data.splitlines():
+        s=ln.strip()
+        if not s or s.lstrip().startswith("#"): continue
+        if re.fullmatch(r"\d+", s):
+            rules.append(CatSpec(raw=s, kind="id", cat_id=s))
+            continue
+        if len(s)>=2 and s[0]=="/" and s[-1]=="/":
+            try:
+                rules.append(CatSpec(raw=s, kind="regex", pattern=re.compile(s[1:-1], re.I)))
+                continue
+            except Exception:
+                continue
+        if s.startswith("~="):
+            w=_norm_name(s[2:])
+            if w:
+                rules.append(CatSpec(raw=s, kind="word", pattern=re.compile(r"\b"+re.escape(w)+r"\b", re.I)))
+            continue
+        rules.append(CatSpec(raw=_norm_name(s), kind="substr"))
+    return rules
+
+def category_matches(cat_id: Optional[str], cat_name: str, rules: List[CatSpec]) -> Tuple[bool, Optional[str]]:
+    nname=_norm_name(cat_name or "")
+    for r in rules:
+        if r.kind=="id":
+            if (cat_id or "")==r.cat_id:
+                return True, r.raw
+        elif r.kind=="substr":
+            if r.raw and r.raw in nname:
+                return True, r.raw
+        else:
+            if r.pattern and r.pattern.search(cat_name or ""):
+                return True, r.raw
+    return False, None
+
+def build_categories_map(shop_root: ET.Element) -> Dict[str, str]:
+    """Собирает словарь id→name из <categories>/<category>."""
+    m: Dict[str,str]={}
+    cats = shop_root.find("categories") or shop_root.find("Categories")
+    if cats is None: return m
+    for c in list(cats.findall("category")) + list(cats.findall("Category")):
+        cid = (c.attrib.get("id") or "").strip()
+        name = (c.text or "").strip()
+        if cid and name:
+            m[cid]=name
+    return m
+
+def get_offer_category(offer: ET.Element) -> Tuple[Optional[str], Optional[str]]:
+    """Возвращает (categoryId, raw_text) если есть (берём первый)."""
+    node = offer.find("categoryId") or offer.find("CategoryId")
+    if node is not None and (node.text or "").strip():
+        return (node.text.strip(), node.text.strip())
+    # иногда categoryId как атрибут
+    cid = offer.attrib.get("categoryId")
+    if cid: return (cid.strip(), cid.strip())
+    return (None, None)
+
+# ============================ НОРМАЛИЗАЦИЯ БРЕНДА ==========================
 
 SUPPLIER_BLOCKLIST={_norm_key(x) for x in["alstyle","al-style","copyline","akcent","ak-cent","vtt"]}
 UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
@@ -428,7 +522,8 @@ def _extract_article_from_url(url:str)->str:
 def _normalize_code(s:str)->str:
     s=(s or "").strip()
     if not s: return ""
-    s=re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
+    s=re.sub(r"[\s_]+","",s)
+    s=s.replace("—","-").replace("–","-")
     s=re.sub(r"[^A-Za-z0-9\-]+","",s)
     return s.upper()
 
@@ -474,6 +569,7 @@ def count_category_ids(offer_el:ET.Element)->int:
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
     order=[
         "script_version","supplier","source","offers_total","offers_written",
+        "categories_mode","categories_total","filtered_by_categories",
         "keywords_mode","keywords_total","filtered_by_keywords",
         "prices_updated","params_removed","vendors_recovered","dropped_top",
         "available_true","available_false","available_from_stock","available_from_status",
@@ -486,7 +582,10 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
         "source":"URL/файл исходного XML",
         "offers_total":"Офферов у поставщика до очистки",
         "offers_written":"Офферов записано (после очистки)",
-        "keywords_mode":"Режим фильтра (off/include/exclude)",
+        "categories_mode":"Режим фильтра категорий (off/include/exclude)",
+        "categories_total":"Сколько правил категорий загружено",
+        "filtered_by_categories":"Сколько офферов отфильтровано по категориям",
+        "keywords_mode":"Режим фильтра по <name> (off/include/exclude)",
         "keywords_total":"Сколько ключей загружено",
         "filtered_by_keywords":"Сколько офферов отфильтровано по keywords",
         "prices_updated":"Скольким товарам пересчитали price",
@@ -528,18 +627,45 @@ def main()->None:
     offers_in=shop_in.find("offers") or shop_in.find("Offers")
     if offers_in is None: err("XML: <offers> not found")
 
+    # --- категории поставщика
+    cat_map = build_categories_map(shop_in)   # id -> name
+    cat_rules = []
+    if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
+        cat_rules = load_category_rules(ALSTYLE_CATEGORIES_PATH)
+        if ALSTYLE_CATEGORIES_MODE=="include" and len(cat_rules)==0:
+            err("ALSTYLE_CATEGORIES_MODE=include, но правила категорий не найдены. Проверь docs/alstyle_categories.txt.", 2)
+
+    # --- собираем список исходных офферов
     src_offers=list(offers_in.findall("offer"))
     catid_to_drop_total=sum(count_category_ids(o) for o in src_offers)
 
+    # --- фильтрация по КАТЕГОРИЯМ (до копирования)
+    filtered_by_categories = 0
+    if (ALSTYLE_CATEGORIES_MODE in {"include","exclude"}) and len(cat_rules)>0:
+        kept=[]
+        for off in src_offers:
+            cid, _ = get_offer_category(off)
+            cname = cat_map.get(cid or "", "")
+            hit,_m = category_matches(cid, cname, cat_rules)
+            drop = (ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
+            if drop:
+                filtered_by_categories += 1
+            else:
+                kept.append(off)
+        src_offers = kept
+
+    # --- создаём выходное дерево и копируем отфильтрованные офферы
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
     for o in src_offers:
         mod=deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
-            for node in list(mod.findall("categoryId")) + list(mod.findall("CategoryId")): mod.remove(node)
+            for node in list(mod.findall("categoryId")) + list(mod.findall("CategoryId")):
+                mod.remove(node)
         out_offers.append(mod)
 
+    # --- фильтр по NAME
     keys=[]
     if ALSTYLE_KEYWORDS_MODE in {"include","exclude"}:
         keys=load_keywords(ALSTYLE_KEYWORDS_PATH)
@@ -552,23 +678,29 @@ def main()->None:
             nm=get_text(off,"name")
             hit,_=name_matches(nm,keys)
             drop_this=(ALSTYLE_KEYWORDS_MODE=="exclude" and hit) or (ALSTYLE_KEYWORDS_MODE=="include" and not hit)
-            if drop_this: out_offers.remove(off); filtered_out+=1
+            if drop_this:
+                out_offers.remove(off); filtered_out+=1
 
+    # --- бренды → vendorCode → цены
     norm_cnt, dropped_names = ensure_vendor(out_shop)
     total_prefixed, created_nodes, filled_from_art, fixed_bare = ensure_vendorcode_with_article(
         out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING
     )
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
+    # --- наличие (реальное по данным поставщика)
     av_true, av_false, av_from_stock, av_from_status = normalize_available_field(out_shop)
 
+    # --- параметры → описание; описание сжать; удалить <param>
     specs_offers, specs_lines = inject_specs_block(out_shop)
     removed_params = strip_all_params(out_shop)
     cleaned_desc = clean_all_descriptions_one_line(out_shop)
 
+    # --- финальная чистка
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
+    # --- пустая строка между офферами
     children=list(out_offers)
     for i in range(len(children)-1, 0, -1):
         out_offers.insert(i, ET.Comment("OFFSEP"))
@@ -581,8 +713,11 @@ def main()->None:
         "script_version": SCRIPT_VERSION,
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL or "file",
-        "offers_total": len(src_offers),
+        "offers_total": len(list(offers_in.findall("offer"))),  # до фильтра
         "offers_written": offers_written,
+        "categories_mode": ALSTYLE_CATEGORIES_MODE if len(cat_rules)>0 else "off",
+        "categories_total": len(cat_rules),
+        "filtered_by_categories": filtered_by_categories,
         "keywords_mode": ALSTYLE_KEYWORDS_MODE if len(keys)>0 else "off",
         "keywords_total": len(keys),
         "filtered_by_keywords": filtered_out,
@@ -602,6 +737,7 @@ def main()->None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
+    # сериализация
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
     xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n  ", xml_text)
