@@ -23,11 +23,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Build Alstyle feed (YML only, real availability)
+      - name: Build Alstyle feed (YML only, real availability + category filter)
         shell: bash
         env:
           SUPPLIER_NAME: alstyle
-          # ✅ официальный экспорт Alstyle — уже зашит в сам скрипт, но дублируем в env для явности:
           SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
           OUT_FILE: docs/alstyle.yml
           OUTPUT_ENCODING: windows-1251
@@ -40,9 +39,13 @@ jobs:
           VENDORCODE_PREFIX: AS
           VENDORCODE_CREATE_IF_MISSING: "1"
 
-          # Ключевой фильтр по <name> (если нужно — включай)
+          # КЛЮЧИ по <name> (если нужно — включи include/exclude)
           ALSTYLE_KEYWORDS_PATH: docs/alstyle_keywords.txt
-          ALSTYLE_KEYWORDS_MODE: off   # off|include|exclude
+          ALSTYLE_KEYWORDS_MODE: off    # off|include|exclude
+
+          # ✅ КАТЕГОРИИ: берём из файла, режим include — оставляем только нужные
+          ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
+          ALSTYLE_CATEGORIES_MODE: include   # include|exclude|off
         run: |
           set -euo pipefail
           python scripts/build_alstyle.py
@@ -59,6 +62,5 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "build: alstyle YML (real availability, official source)"
+            git commit -m "build: alstyle YML (real availability + category filter)"
             git push
-          fi
