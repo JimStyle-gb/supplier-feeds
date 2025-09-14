@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-13 11:35">
+<yml_catalog date="2025-09-14 08:13">
   <!--FEED_META
 supplier                        = akcent                                                                                                                    | Метка поставщика
 source                          = https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml                                                              | URL исходного XML
 offers_total                    = 2155                                                                                                                      | Офферов у поставщика до очистки
 offers_written                  = 2155                                                                                                                      | Офферов записано (после очистки)
+filtered_by_keywords            = 0                                                                                                                         | Сколько офферов отфильтровано по keywords
 prices_updated                  = 2150                                                                                                                      | Скольким товарам пересчитали price
 params_removed                  = 13762                                                                                                                     | Сколько <param>/<Param> удалено
 vendors_recovered               = 148                                                                                                                       | Скольким товарам восстановлен vendor
@@ -13,8 +14,8 @@ available_forced                = 2155                                          
 categoryId_dropped              = 2155                                                                                                                      | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 2155                                                                                                                      | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 2155                                                                                                                      | Сколько vendorCode-узлов было создано
-built_utc                       = 2025-09-13 11:35:12 UTC                                                                                                   | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-13 16:35:13 +05                                                                                                   | Время сборки (Алматы)--><shop>
+built_utc                       = 2025-09-14 08:13:16 UTC                                                                                                   | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-14 13:13:16 +05                                                                                                   | Время сборки (Алматы)--><shop>
     <offers>
       <offer id="Н0000026901">
         <name>Air Filter - ELPAF46</name>
