@@ -1,21 +1,21 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-14 09:28">
+<yml_catalog date="2025-09-14 09:55">
   <!--FEED_META
-supplier                        = akcent                                                                                                                    | Supplier label
-source                          = https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml                                                              | Source XML URL
-offers_total                    = 2155                                                                                                                      | Offers before cleanup
-offers_written                  = 2148                                                                                                                      | Offers written after cleanup
-filtered_by_keywords            = 7                                                                                                                         | Offers filtered by keywords
-prices_updated                  = 2143                                                                                                                      | Offers with recalculated price
-params_removed                  = 13762                                                                                                                     | Param lines moved into description
-vendors_recovered               = 148                                                                                                                       | Offers with vendor recovered
-dropped_top                     = defender:295,cablexpert:169,transcend:144,китай:134,remington:122,bergner:62,russell hobbs:51,dali:50,netac:44,ritmix:42  | Top dropped raw vendor names
-available_forced                = 2148                                                                                                                      | Offers set available=true
-categoryId_dropped              = 2155                                                                                                                      | categoryId tags removed
-vendorcodes_filled_from_article = 2148                                                                                                                      | vendorCode filled from article
-vendorcodes_created             = 2148                                                                                                                      | vendorCode nodes created
-built_utc                       = 2025-09-14 09:28:26 UTC                                                                                                   | Build time UTC
-built_Asia/Almaty               = 2025-09-14 14:28:26 +05                                                                                                   | Build time Asia/Almaty--><shop>
+supplier                        = akcent                                                                                                                    | Метка поставщика
+source                          = https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml                                                              | URL исходного XML
+offers_total                    = 2155                                                                                                                      | Офферов у поставщика до очистки
+offers_written                  = 2148                                                                                                                      | Офферов записано (после очистки)
+filtered_by_keywords            = 7                                                                                                                         | Сколько офферов отфильтровано по keywords
+prices_updated                  = 2143                                                                                                                      | Скольким товарам пересчитали price
+params_removed                  = 13762                                                                                                                     | Сколько строк параметров добавлено в описание
+vendors_recovered               = 148                                                                                                                       | Скольким товарам восстановлен/нормализован vendor
+dropped_top                     = defender:295,cablexpert:169,transcend:144,китай:134,remington:122,bergner:62,russell hobbs:51,dali:50,netac:44,ritmix:42  | ТОП часто отброшенных названий бренда
+available_forced                = 2148                                                                                                                      | Сколько офферов получили available=true
+categoryId_dropped              = 2155                                                                                                                      | Сколько тегов categoryId удалено
+vendorcodes_filled_from_article = 2148                                                                                                                      | Скольким офферам проставили vendorCode из артикула
+vendorcodes_created             = 2148                                                                                                                      | Сколько узлов vendorCode было создано
+built_utc                       = 2025-09-14 09:55:55 UTC                                                                                                   | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-14 14:55:55 +05                                                                                                   | Время сборки (Алматы)--><shop>
     <offers>
       <offer id="Н0000026901">
         <name>Air Filter - ELPAF46</name>
