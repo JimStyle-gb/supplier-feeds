@@ -3,40 +3,61 @@ name: build_akcent
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 18 * * *"  # ежедневный автозапуск (UTC)
+    # Ежедневно в 18:17 UTC (01:17 по Алматы +05)
+    - cron: "17 18 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build_akcent
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Build feeds (akcent)
+      - name: Build feed (akcent)
         env:
+          # === Основные настройки сборки ===
           SUPPLIER_NAME: "akcent"
           SUPPLIER_URL: "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml"
           OUT_FILE: "docs/akcent.yml"
           OUTPUT_ENCODING: "windows-1251"
+
+          # Таймауты/ретраи загрузки исходного XML
           TIMEOUT_S: "30"
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
+
+          # Префикс и создание vendorCode
           VENDORCODE_PREFIX: "AC"
           VENDORCODE_CREATE_IF_MISSING: "1"
-          # --- КЛЮЧЕВЫЕ СЛОВА ---
-          AKCENT_KEYWORDS_PATH: "filters/akcent_keywords.txt"
-          AKCENT_KEYWORDS_MODE: "exclude"   # или "include"
+
+          # === Фильтр по ключевым словам ===
+          # Файл со словами для фильтра лежит в docs/akcent_keywords.txt
+          AKCENT_KEYWORDS_PATH: "docs/akcent_keywords.txt"
+          # Режимы:
+          #   exclude — отбрасываем офферы, в тексте которых встречается ЛЮБОЕ ключевое слово
+          #   include — оставляем ТОЛЬКО офферы, где есть хотя бы одно ключевое слово
+          AKCENT_KEYWORDS_MODE: "exclude"
         run: |
           python scripts/build_akcent.py
 
@@ -51,8 +72,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/akcent.yml docs/akcent.xml docs/.nojekyll || true
           if ! git diff --cached --quiet; then
-            git commit -m "build_akcent: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git commit -m "build_akcent: $(date -u +'%Y-%m-%d %H:%M:%S') UTC"
             git push
           else
-            echo "No changes."
+            echo "No changes to commit."
           fi
