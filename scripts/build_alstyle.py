@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-09-15.2
+script_version = alstyle-2025-09-15.3
 
 Что делает:
-- Берёт исходный XML (SUPPLIER_URL по умолчанию — официальный экспорт Alstyle).
-- Фильтрует ТОЛЬКО по категориям из docs/alstyle_categories.txt (ID + их потомки, и/или правила по названию).
+- Берёт исходный XML Alstyle (SUPPLIER_URL по умолчанию — официальный экспорт).
+- Фильтрует ТОЛЬКО по категориям из docs/alstyle_categories.txt (ID + потомки, и/или правила по названию).
 - Нормализует brand (<vendor>), формирует <vendorCode> из артикула (article/name/url/id) с префиксом AS.
 - Считает цену по правилам, ставит currencyId=KZT, «хвост» ...900.
 - Определяет доступность (available) по складу/статусу.
-- Переносит параметры в «Характеристики:» и затем удаляет <param>; ОДНАКО
-  ❌ НЕ добавляет в «Характеристики» параметры с именами «Артикул» и «Благотворительность».
+- Переносит параметры в «Характеристики:» и затем удаляет <param>, НО:
+  ❌ не добавляет параметры с именами «Артикул» и «Благотворительность»;
+  ❌ дополнительно удаляет из итогового <description> любые строки «Артикул: …» и «Благотворительность: …»
+     (включая те, что пришли в описании от поставщика).
 - Приводит description к одной строке.
 - На выход пишет ТОЛЬКО docs/alstyle.yml (Windows-1251) с выровненным FEED_META (RU).
 """
@@ -29,9 +31,9 @@ except Exception:
 
 import requests
 
-# ========================== КОНФИГ ПО УМОЛЧАНИЮ ===========================
+# ========================== КОНФИГ ===========================
 
-SCRIPT_VERSION = "alstyle-2025-09-15.2"
+SCRIPT_VERSION = "alstyle-2025-09-15.3"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "alstyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
@@ -52,9 +54,7 @@ ALSTYLE_CATEGORIES_DEBUG = os.getenv("ALSTYLE_CATEGORIES_DEBUG", "0").lower() in
 # Чистки
 DROP_CATEGORY_ID_TAG     = True
 DROP_STOCK_TAGS          = True
-PURGE_TAGS_AFTER = (
-    "Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status",
-)
+PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
 PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
 
 INTERNAL_PRICE_TAGS = (
@@ -65,25 +65,18 @@ INTERNAL_PRICE_TAGS = (
 
 # =============================== УТИЛИТЫ ===============================
 
-def log(msg: str) -> None:
-    print(msg, flush=True)
+def log(msg: str) -> None: print(msg, flush=True)
+def warn(msg: str) -> None: print(f"WARN: {msg}", file=sys.stderr, flush=True)
+def err(msg: str, code: int = 1) -> None: print(f"ERROR: {msg}", file=sys.stderr, flush=True); sys.exit(code)
 
-def warn(msg: str) -> None:
-    print(f"WARN: {msg}", file=sys.stderr, flush=True)
-
-def err(msg: str, code: int = 1) -> None:
-    print(f"ERROR: {msg}", file=sys.stderr, flush=True); sys.exit(code)
-
-def now_utc_str() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
-
+def now_utc_str() -> str: return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 def now_almaty_str() -> str:
-    if ZoneInfo:
-        return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
+    if ZoneInfo: return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 def get_text(el: ET.Element, tag: str) -> str:
-    node = el.find(tag); return (node.text or "").strip() if node is not None and node.text else ""
+    node = el.find(tag)
+    return (node.text or "").strip() if node is not None and node.text else ""
 
 def _norm_text(s: str) -> str:
     s = (s or "").replace("\u00A0"," ").lower().replace("ё","е")
@@ -92,8 +85,7 @@ def _norm_text(s: str) -> str:
 # ============================= ЗАГРУЗКА ИСТОЧНИКА =========================
 
 def load_source_bytes(src: str) -> bytes:
-    if not src:
-        raise RuntimeError("SUPPLIER_URL не задан")
+    if not src: raise RuntimeError("SUPPLIER_URL не задан")
     if src.startswith("file://"):
         with open(src[7:], "rb") as f: data=f.read()
         if len(data) < MIN_BYTES: raise RuntimeError(f"file too small: {len(data)} bytes")
@@ -167,7 +159,7 @@ def category_matches_name(path_str: str, rules: List[CatRule]) -> bool:
             if cr.pattern and cr.pattern.search(path_str or ""): return True
     return False
 
-# ==================== ДЕРЕВО КАТЕГОРИЙ: ID↔родители/дети ==================
+# ==================== ДЕРЕВО КАТЕГОРИЙ ==================
 
 def parse_categories_tree(shop_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
     id2name: Dict[str,str]={}; id2parent: Dict[str,str]={}; parent2children: Dict[str,Set[str]]={}
@@ -200,7 +192,7 @@ def build_category_path_from_id(cat_id: str, id2name: Dict[str,str], id2parent: 
     names=[n for n in names if n]
     return " / ".join(reversed(names)) if names else ""
 
-# ====================== БРЕНДЫ (vendor) / чистка названий ==================
+# ====================== БРЕНДЫ ======================
 
 def _norm_key(s: str) -> str:
     if not s: return ""
@@ -234,7 +226,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
                 ven.text=canon; normalized+=1
     return normalized,dropped
 
-# ============================== ЦЕНООБРАЗОВАНИЕ ===========================
+# ============================== ЦЕНЫ ===========================
 
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
@@ -314,11 +306,10 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int]
         updated+=1
     return updated,skipped,total
 
-# ============= ПАРАМЕТРЫ → «ХАРАКТЕРИСТИКИ» (без Артикул/Благотворительность) ================
+# ============= ПАРАМЕТРЫ → «Характеристики» (без Артикул/Благотворительность) ================
 
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
-# Исключаем: рекламно-логистические и ровно два названия параметров «Артикул», «Благотворительность»
 EXCLUDE_NAME_RE=re.compile(
     r"(новинк|акци|скидк|уценк|снижена\s*цена|хит продаж|топ продаж|лидер продаж|лучшая цена|"
     r"рекомендуем|подарок|к[еэ]шб[еэ]к|предзаказ|статус|ед(иница)?\s*измерени|базовая единиц|"
@@ -339,7 +330,7 @@ def build_specs_lines(offer:ET.Element)->List[str]:
         raw_name=(p.attrib.get("name") or "").strip()
         raw_val =(p.text or "").strip()
         if not raw_name or not raw_val: continue
-        if EXCLUDE_NAME_RE.search(raw_name): continue  # <-- здесь режем «Артикул» и «Благотворительность»
+        if EXCLUDE_NAME_RE.search(raw_name): continue  # <- режем «Артикул» и «Благотворительность»
         if _looks_like_code_value(raw_val): continue
         k=_key(raw_name)
         if k in seen: continue
@@ -372,6 +363,63 @@ def strip_all_params(shop_el:ET.Element)->int:
         for p in list(offer.findall("param")) + list(offer.findall("Param")):
             offer.remove(p); removed+=1
     return removed
+
+# ====== ДОП. ЧИСТКА ОПИСАНИЙ: убрать «Артикул: …» и «Благотворительность: …» ======
+
+# Регексы для вырезания строк из описания (до «склейки в одну строку»)
+RE_KV_LINE = re.compile(
+    r"(^|\n)\s*[-–—]?\s*(Артикул|Благотворительн\w*)\s*:\s*.*?(?=\n|$)",
+    re.I
+)
+
+def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
+    """
+    Удаляет из <description> строки ключ-значение с ключами:
+      - «Артикул»
+      - «Благотворительность» (и производные: «Благотворительная …»)
+    Работает ДО конвертации описания в одну строку.
+    Если после вырезания подзаголовок «Характеристики:» остался без пунктов — удаляем его.
+    Возвращает: сколько описаний было изменено.
+    """
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0
+    changed=0
+    for offer in offers_el.findall("offer"):
+        d=offer.find("description")
+        if d is None or not d.text: continue
+        text=d.text
+        # 1) вырежем сами строки «Артикул: … / Благотворительность: …»
+        new_text = RE_KV_LINE.sub(lambda m: ("" if m.group(1)=="" else m.group(1)), text)
+        # 2) если «Характеристики:» остался без пунктов — убрать заголовок
+        # Считаем «пунктом» строку, начинающуюся с дефиса/маркером списка после заголовка
+        lines = [ln for ln in new_text.splitlines()]
+        out_lines=[]
+        i=0
+        while i < len(lines):
+            ln = lines[i]
+            if re.match(r"^\s*Характеристики\s*:\s*$", ln, re.I):
+                # соберём блок после заголовка до пустой строки/конца/следующего заголовка
+                j=i+1
+                kept_block=[]
+                while j < len(lines) and not re.match(r"^\s*\S.*:$", lines[j]):  # грубо: новая «шапка:»
+                    if lines[j].strip()!="":
+                        kept_block.append(lines[j])
+                    j+=1
+                # оставляем заголовок только если есть пункты
+                if any(re.match(r"^\s*[-–—]\s*\S", x) for x in kept_block):
+                    out_lines.append(ln)
+                    out_lines.extend(kept_block)
+                # пропускаем до j и продолжаем
+                i=j
+                continue
+            else:
+                out_lines.append(ln)
+                i+=1
+        rebuilt = "\n".join(out_lines).strip()
+        if rebuilt != d.text:
+            d.text = rebuilt
+            changed += 1
+    return changed
 
 # ==================== ОПИСАНИЯ: СЖАТЬ В ОДНУ СТРОКУ =======================
 
@@ -454,7 +502,7 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
                 for node in list(offer.findall(tag)): offer.remove(node)
     return true_cnt, false_cnt, from_stock_cnt, from_status_cnt
 
-# ===================== vendorCode / артикул (оставляем как раньше) =====================
+# ===================== vendorCode / артикул =====================
 
 ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
 
@@ -518,7 +566,7 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
 def count_category_ids(offer_el:ET.Element)->int:
     return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
-# ========================== FEED_META (комментарий) ========================
+# ========================== FEED_META ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
     order=[
@@ -573,8 +621,6 @@ def main()->None:
 
     shop_in=src_root.find("shop") if src_root.tag.lower()!="shop" else src_root
     if shop_in is None: err("XML: <shop> not found")
-
-    cats_el = shop_in.find("categories") or shop_in.find("Categories")
     offers_in_el = shop_in.find("offers") or shop_in.find("Offers")
     if offers_in_el is None: err("XML: <offers> not found")
     src_offers=list(offers_in_el.findall("offer"))
@@ -598,7 +644,7 @@ def main()->None:
     if (ALSTYLE_CATEGORIES_MODE in {"include","exclude"}) and (rules_ids or rules_names):
         keep_ids: Set[str] = set(rules_ids)
         if rules_names and id2name:
-            for cid, nm in id2name.items():
+            for cid in id2name.keys():
                 path = build_category_path_from_id(cid, id2name, id2parent)
                 if category_matches_name(path, rules_names):
                     keep_ids.add(cid)
@@ -620,9 +666,10 @@ def main()->None:
     # бренды
     norm_cnt, dropped_names = ensure_vendor(out_shop)
 
-    # vendorCode (как раньше)
+    # vendorCode
     total_prefixed, created_nodes, filled_from_art, fixed_bare = ensure_vendorcode_with_article(
-        out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AS"), create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
+        out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AS"),
+        create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
     )
 
     # цены
@@ -635,11 +682,14 @@ def main()->None:
     specs_offers, specs_lines = inject_specs_block(out_shop)
     removed_params = strip_all_params(out_shop)
 
-    # финальная чистка
+    # ДОП. чистка описаний — убрать строки Артикул/Благотворительность из description
+    removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
+
+    # финальная чистка тегов/атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
-    # разделители между офферами (для читабельности)
+    # разделители между офферами (читабельность)
     children=list(out_offers)
     for i in range(len(children)-1, 0, -1):
         out_offers.insert(i, ET.Comment("OFFSEP"))
