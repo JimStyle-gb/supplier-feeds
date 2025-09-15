@@ -1,66 +1,62 @@
-name: build_akcent  # Название workflow
+name: build_alstyle
 
 on:
-  workflow_dispatch: {}     # Ручной запуск из вкладки Actions
+  workflow_dispatch: {}       # ручной запуск
   schedule:
-    - cron: "0 */6 * * *"   # Автозапуск каждые 6 часов (UTC)
+    - cron: "15 */6 * * *"    # каждые 6 часов
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Хост GitHub
+    runs-on: ubuntu-latest
 
     steps:
-      # 1) Получаем код репозитория
       - uses: actions/checkout@v4
 
-      # 2) Ставим нужный Python
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 3) Минимальные зависимости
       - name: Install deps
         shell: bash
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
-          pip install requests   # скрипт использует только requests
+          pip install requests
 
-      # 4) Запуск сборки фида (создаём ТОЛЬКО docs/akcent.yml)
-      - name: Build Akcent feed (YML only)
+      - name: Build Alstyle feed (YML only)
         shell: bash
         env:
-          SUPPLIER_NAME: akcent                                        # метка в FEED_META
-          SUPPLIER_URL: https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-          OUT_FILE: docs/akcent.yml                                     # КУДА записываем выход
-          OUTPUT_ENCODING: windows-1251                                 # кодировка файла
-          TIMEOUT_S: "30"                                               # сетевой таймаут
-          RETRIES: "4"                                                  # число повторов скачивания
-          RETRY_BACKOFF_S: "2"                                          # задержка между повторами
-          MIN_BYTES: "1500"                                             # защита от пустых ответов
-          VENDORCODE_PREFIX: AC                                         # префикс для vendorCode
-          VENDORCODE_CREATE_IF_MISSING: "1"                             # создавать узел, если нет
-          AKCENT_KEYWORDS_PATH: docs/akcent_keywords.txt                # файл с ключами
-          AKCENT_KEYWORDS_MODE: include                                 # include|exclude
-          # AKCENT_KEYWORDS_DEBUG: "1"                                  # включить отладочный вывод
-          # AKCENT_DEBUG_MAX_HITS: "50"
+          SUPPLIER_NAME: alstyle
+          SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
+          OUT_FILE: docs/alstyle.yml
+          OUTPUT_ENCODING: windows-1251
+
+          TIMEOUT_S: "30"
+          RETRIES: "4"
+          RETRY_BACKOFF_S: "2"
+          MIN_BYTES: "1500"
+
+          # vendorCode = AS + артикул
+          VENDORCODE_PREFIX: AS
+          VENDORCODE_CREATE_IF_MISSING: "1"
+
+          # Фильтр ТОЛЬКО по категориям (docs/alstyle_categories.txt)
+          ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
+          ALSTYLE_CATEGORIES_MODE: include   # include|exclude|off
         run: |
           set -euo pipefail
-          python scripts/build_akcent.py
+          python scripts/build_alstyle.py
           mkdir -p docs
           : > docs/.nojekyll
 
-      # 5) Коммитим изменения (если они есть)
       - name: Commit & Push
         shell: bash
         run: |
           set -euo pipefail
-          git config user.email "github-actions[bot]@users.noreply.github.com"   # подпись коммита
-          git config user.name  "github-actions[bot]"
-          git add docs/akcent.yml docs/.nojekyll || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "build: akcent YML only"
-            git push
-          fi
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name  "github-actions[bot]"
+          git add docs/alstyle.yml docs/.nojekyll || true
+          # Без if/fi: если нет изменений — выходим нулём.
+          git diff --cached --quiet && echo "No changes to commit." && exit 0
+          git commit -m 'build: alstyle YML (more comments; FEED_META newline after -->)'
+          git push
