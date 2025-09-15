@@ -1,27 +1,27 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-15 02:07">
+<yml_catalog date="2025-09-15 06:44">
   <!--FEED_META
 script_version                  = alstyle-2025-09-14.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15908                                                           | Офферов у поставщика до очистки
-offers_written                  = 1984                                                            | Офферов записано (после очистки)
+offers_total                    = 15878                                                           | Офферов у поставщика до очистки
+offers_written                  = 1980                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13924                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1984                                                            | Скольким товарам пересчитали price
-params_removed                  = 12658                                                           | Сколько строк параметров добавлено в описание
+filtered_by_categories          = 13898                                                           | Сколько офферов отфильтровано по категориям
+prices_updated                  = 1980                                                            | Скольким товарам пересчитали price
+params_removed                  = 12624                                                           | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1383                                                            | Сколько офферов доступны (true)
-available_false                 = 601                                                             | Сколько офферов недоступны (false)
+available_true                  = 1386                                                            | Сколько офферов доступны (true)
+available_false                 = 594                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15908                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15878                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-15 02:07:29 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-15 07:07:29 +05                                         | Время сборки (Алматы)--><shop>
+built_utc                       = 2025-09-15 06:44:07 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-15 11:44:07 +05                                         | Время сборки (Алматы)--><shop>
     <offers>
       <offer id="12568">
         <price>29880</price>
@@ -2044,7 +2044,7 @@ built_Asia/Almaty               = 2025-09-15 07:07:29 +05                       
         <picture>https://img.al-style.kz/6281_1.jpg</picture>
         <picture>https://img.al-style.kz/6281_2.jpg</picture>
         <picture>https://img.al-style.kz/6281_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Ship</vendor>
         <name>Кабель сетевой SHIP D225-P Cat.5e UTP 30В РЕ</name>
         <description>Кабель сетевой самонесущий SHIP D225-P  Это не экранированный (UTP) 4 - х парный кабель 5e категории, со стальным тросом. Благодаря PE оболочке применяется при прокладке вне помещений. Отличается повышенной термостойкостью и не восприимчивостью к воздействию прямых солнечных лучей. Используется для создания компьютерных сетей стандарта 100 Мегабит/сек или 1 Гигабит/сек. 100 метровый сегмент успешно прошёл тестирование на сертифицированном приборе Fluke.
@@ -2063,7 +2063,7 @@ built_Asia/Almaty               = 2025-09-15 07:07:29 +05                       
 - Цвет: Чёрный</description>
         <price>77900</price>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="16826">
@@ -7298,7 +7298,7 @@ built_Asia/Almaty               = 2025-09-15 07:07:29 +05                       
         <picture>https://img.al-style.kz/23574_1.jpg</picture>
         <picture>https://img.al-style.kz/23574_2.jpg</picture>
         <picture>https://img.al-style.kz/23574_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF233A</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -7336,7 +7336,7 @@ built_Asia/Almaty               = 2025-09-15 07:07:29 +05                       
 - Цвет: Чёрный</description>
         <price>4900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="20649">
@@ -13181,7 +13181,7 @@ built_Asia/Almaty               = 2025-09-15 07:07:29 +05                       
         <picture>https://img.al-style.kz/32312_1.jpg</picture>
         <picture>https://img.al-style.kz/32312_2.jpg</picture>
         <picture>https://img.al-style.kz/32312_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Монохромное МФУ Xerox WorkCentre 3025BI</name>
         <description>МФУ WorkCentre 3025BI
@@ -13221,7 +13221,7 @@ built_Asia/Almaty               = 2025-09-15 07:07:29 +05                       
 - Скорость выхода первой страницы: 8.5 сек. (моно)</description>
         <price>78900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="31849">
@@ -17124,47 +17124,6 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
         <price>10499900</price>
         <currencyId>KZT</currencyId>
         <available>true</available>
-      </offer>
-
-  <offer id="72134">
-        <price>3977</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS36898</vendorCode>
-        <picture>https://img.al-style.kz/36898_1.jpg</picture>
-        <picture>https://img.al-style.kz/36898_2.jpg</picture>
-        <picture>https://img.al-style.kz/36898_3.jpg</picture>
-        <available>false</available>
-        <vendor>Europrint</vendor>
-        <name>Картридж Colorfix CLF-CF259X (Без чипа)</name>
-        <description>Картридж — расходный материал, используемый принтером или МФУ.
-Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
-Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
-
-Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
-
-Характеристики:
-Модель: CF259X (Без чипа)
-Совместимость: Для принтеров HP LaserJet Pro M404n/M404dn/M404dw/MFP M428dw/M428fdn/M428fdw
-Ресурс: 10 000 страниц (А4)
-Наличие чипа: Нет
-
-Картриджи Colorfix:
-
- Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
- Упакованы в непрозрачный пакет, снабжены защитными вкладками, маркированы:
-• Наклейкой с датой производства на коробке
-• Наклейкой с моделью картриджа на корпусе
-
-Условия гарантии:
-В случае обнаружения брака в продукции, необходимо предъявить медиа файлы (фото или видео): распечатки с просматриваемым дефектом печати, либо ошибки возникшей в ходе работы на устройстве пользователя.
-
-Характеристики:
-- Артикул: CLF-CF259X (Без чипа)
-- Гарантия: 1 год
-- Благотворительность: N</description>
-        <price>6900</price>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
       </offer>
 
   <offer id="78255">
@@ -24432,50 +24391,6 @@ Comix F9052   ламинатор начального уровня для дома офиса.
         <available>true</available>
       </offer>
 
-  <offer id="257306">
-        <price>10247</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS37489</vendorCode>
-        <picture>https://img.al-style.kz/37489_1.jpg</picture>
-        <picture>https://img.al-style.kz/37489_3.jpg</picture>
-        <available>false</available>
-        <vendor>Europrint</vendor>
-        <name>Картридж Europrint EPC-106R04349 (B210/215)</name>
-        <description>Картридж — расходный материал, используемый принтером или МФУ.
-Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
-Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
-
-Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером. 
-
-Характеристики
-Модель: EPC-106R04349
-Аналог модели:  106R04349
-Совместимость: Для принтеров Xerox B210/B205/B215
-Ресурс: 2*3000 страниц (А4)
-Количество: 2 штуки в упаковке
-Наличие чипа: Да 
-
-Картриджи EUROPRINT:
-
-Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам. 
- Вся информация по совместимости к моделям принтеров и МФУ указана на коробке картриджей. 
- Упакованы в непрозрачный пакет, снабжены защитными вкладками, маркированы:
-• Номером серии производства - на корпусе и на упаковке картриджа
-• Голографической пломбой на корпусе и упаковке
-• Наклейкой с моделью картриджа на корпусе
-
-Условия гарантии:
-Картриджи Europrint маркированы номером серии производства: на корпусе, а также на коробке картриджа. В случае обнаружения брака в продукции, необходимо предъявить медиа файлы (фото или видео): маркировки серии картриджа на корпусе и коробке, голографической пломбы на корпусе, распечатки с просматриваемым дефектом печати, либо ошибки возникшей в ходе работы на устройстве пользователя.  
-Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
-
-Характеристики:
-- Гарантия: 2 года
-- Благотворительность: N</description>
-        <price>11900</price>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="257313">
         <price>9999999</price>
         <currencyId>KZT</currencyId>
@@ -27875,7 +27790,7 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS42269</vendorCode>
         <picture>https://img.al-style.kz/42269_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж стандартной емкости Xerox 006R04360 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -27898,7 +27813,7 @@ USB
 - Благотворительность: N</description>
         <price>84900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="266718">
@@ -30021,7 +29936,7 @@ XL Setting to Share . Поделитесь своими настройками с товарищем по команде, друг
         <picture>https://img.al-style.kz/42739_1.jpg</picture>
         <picture>https://img.al-style.kz/42739_2.jpg</picture>
         <picture>https://img.al-style.kz/42739_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Zowie</vendor>
         <name>Монитор 27" ZOWIE XL2731K Dark Grey</name>
         <description>Монитор 27" ZOWIE XL2731K Dark Grey
@@ -30073,7 +29988,7 @@ XL Setting to Share . Поделитесь своими настройками с товарищем по команде, друг
 - Цвет: Чёрный</description>
         <price>177900</price>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="267500">
@@ -33758,7 +33673,7 @@ Microsoft Windows 11
         <currencyId>KZT</currencyId>
         <vendorCode>AS46502</vendorCode>
         <picture>https://img.al-style.kz/46502_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Цветной принтер Xerox VersaLink C7000DN</name>
         <description>Принтер VersaLink C7000 
@@ -33851,7 +33766,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 - Частота процессора: 1.05 ГГц</description>
         <price>1262900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="360690">
@@ -51003,7 +50918,7 @@ USB кабель
         <picture>https://img.al-style.kz/61356_1.jpg</picture>
         <picture>https://img.al-style.kz/61356_2.jpg</picture>
         <picture>https://img.al-style.kz/61356_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Smart-UPS SRT2200RMXLI</name>
         <description>Источник бесперебойного питания APC Smart-UPS SRT2200RMXLI
@@ -51041,7 +50956,7 @@ USB кабель
 - Цвет: Чёрный</description>
         <price>1306900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396743">
@@ -55680,68 +55595,6 @@ Eaton 5E Gen2 обеспечивает эффективную и доступную защиту электропитания для кри
         <available>true</available>
       </offer>
 
-  <offer id="398027">
-        <price>1451479</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS62617</vendorCode>
-        <picture>https://img.al-style.kz/62617_1.jpg</picture>
-        <picture>https://img.al-style.kz/62617_2.jpg</picture>
-        <picture>https://img.al-style.kz/62617_3.jpg</picture>
-        <available>false</available>
-        <vendor>EATON</vendor>
-        <name>Источник бесперебойного питания Eaton 9SX5KiRT</name>
-        <description>EATON 9SX5KIRT
-
-Высокопроизводительный онлайн-ИБП с двойным преобразованием
-
-Производительность и доступность
-• Топология двойного преобразования. Eaton 9SX постоянно контролирует состояние электропитания и регулирует напряжение и частоту.
-• Благодаря эффективности до 95 % в онлайн-режиме двойного преобразования 9SX обеспечивает самый высокий уровень эффективности в своем классе, что позволяет снизить затраты на электроэнергию и охлаждение.
-• Благодаря коэффициенту мощности 0,9, 9SX обеспечивает на 28 % больше мощности, чем другие ИБП в своем классе. Он питает больше серверов, чем другие ИБП с эквивалентной номинальной мощностью и более низким коэффициентом мощности.
-
-Доступность и гибкость
-• Внутренний байпас обеспечивает непрерывность работы в случае внутренней неисправности. Батареи можно заменять в горячем режиме с передней панели без отключения питания критически важных систем.
-• Благодаря универсальному форм-фактору «башня» или «стойка/башня», 9SX может быть установлен в любой среде.
-• Более мощный и длительный срок службы батареи: технология управления батареями Eaton ABM® использует инновационную трехэтапную технику зарядки, которая продлевает срок службы батареи до 50%.
-• Время автономной работы можно увеличить за счет внешних аккумуляторных модулей с возможностью горячей замены, которые при необходимости способны обеспечивать работу системы в течение нескольких часов. Дополнительные аккумуляторные модули распознаются ИБП автоматически.
-
-Управляемость
-• Новый графический ЖК-дисплей предоставляет четкую информацию о состоянии ИБП и измерениях на одном экране. Положение ЖК-дисплея можно отрегулировать, чтобы обеспечить наилучший угол обзора при использовании башни и стойки.
-• 9SX может измерять потребление энергии. Значения кВтч можно отслеживать с помощью ЖК-дисплея или программного обеспечения Eaton Intelligent Power Software Suite.
-• Управление сегментами нагрузки позволяет осуществлять приоритетное отключение второстепенного оборудования, чтобы максимально увеличить время работы батарей критически важных устройств. Его также можно использовать для удаленной перезагрузки заблокированного оборудования или для управления запланированными отключениями и последовательными запусками.
-• 9SX предлагает последовательное, USB- и релейное (сухие контакты) подключение, а также дополнительный слот для дополнительной карты (Modbus, Network или Relay). 9SX также обеспечивает функцию удаленного отключения питания. Программное обеспечение Eaton Intelligent Power Software включено в каждый ИБП.
-
-Характеристики:
-- Артикул: 9SX5KiRT
-- Гарантия: 2 года
-- Благотворительность: N
-- Безопасность: Есть
-- Время полной зарядки: 6 ч
-- Габариты (ШхГхВ): 44х68,5х13
-- Ёмкость батареи: 12В/5Ач x 15
-- Тип ИБП: Онлайн
-- Назначение: Да
-- Время переключения режимов: 0 мс
-- Интерфейс для связи с ПК: USB/RS-232
-- Форма выходного сигнала: Чистая синусоида
-- Автоматическое включение: Есть
-- Комплектация: 2 кабеля питания IEC + кабель RS232 + кабель USB + 2 подставки для вертикального положения
-- Рабочий диапазон температур: от 0 до 40 °С
-- Защита от полного разряда батареи: Есть
-- Бесшумный режим: Есть
-- Состав: Металл, пластик
-- Выходная частота: 50/60 ±0.5Гц
-- Количество и тип выходных разъёмов: 8 х C13 + 2 х С19 + Клемная колодка
-- Лицевая панель: LCD-дисплей
-- Высота в монтажной стойке: 3U
-- Установка аккумуляторов: Внутренняя
-- Рабочая влажность: 0-95% (без конденсации)
-- Цвет: Чёрный</description>
-        <price>1327900</price>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="398030">
         <price>3070781</price>
         <currencyId>KZT</currencyId>
@@ -56510,7 +56363,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
         <vendorCode>AS62952</vendorCode>
         <picture>https://img.al-style.kz/62952_1.jpg</picture>
         <picture>https://img.al-style.kz/62952_2.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Картридж Canon CARTRIDGE 054 Magenta</name>
         <description>Картридж Canon CARTRIDGE 054 Magenta
@@ -56547,7 +56400,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
 - Благотворительность: N</description>
         <price>40900</price>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="398358">
@@ -59545,7 +59398,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
         <vendorCode>AS64533</vendorCode>
         <picture>https://img.al-style.kz/64533_1.jpg</picture>
         <picture>https://img.al-style.kz/64533_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-W1510X</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -59580,7 +59433,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
 - Благотворительность: N</description>
         <price>12900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="400238">
@@ -69200,27 +69053,6 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <price>4900</price>
         <currencyId>KZT</currencyId>
         <available>true</available>
-      </offer>
-
-  <offer id="405632">
-        <price>68423</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS71029</vendorCode>
-        <picture>https://img.al-style.kz/71029_1.jpg</picture>
-        <picture>https://img.al-style.kz/71029_2.jpg</picture>
-        <available>false</available>
-        <vendor>APC</vendor>
-        <name>Источник бесперебойного питания APC Back-UPS BX500MI</name>
-        <description>Источник бесперебойного питания APC Back-UPS BX500MI
-
-Характеристики:
-- Артикул: BX500MI
-- Вес: 4.5
-- Гарантия: 2 года
-- Благотворительность: N</description>
-        <price>66900</price>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
       </offer>
 
   <offer id="405684">
