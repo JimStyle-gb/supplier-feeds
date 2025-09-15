@@ -1,9 +1,7 @@
 name: build_alstyle
 
 on:
-  # Ручной запуск из вкладки Actions
   workflow_dispatch: {}
-  # Периодический запуск: каждые 6 часов со сдвигом 15 минут
   schedule:
     - cron: "15 */6 * * *"
 
@@ -12,15 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Забираем репозиторий
       - uses: actions/checkout@v4
 
-      # 2) Ставит Python 3.11
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 3) Минимальные зависимости (requests)
       - name: Install deps
         shell: bash
         run: |
@@ -28,32 +23,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      # 4) Строим YML для Alstyle (ТОЛЬКО YML; фильтр только по категориям)
-      - name: Build Alstyle feed (YML only, categories filter)
+      - name: Build Alstyle feed (YML only; exclude Артикул/Благотворительность in specs)
         shell: bash
         env:
-          # Метка поставщика (для FEED_META)
           SUPPLIER_NAME: alstyle
-          # Официальный экспорт Alstyle (можно переопределить в секрете/ENV)
           SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
-          # Куда писать готовый YML
           OUT_FILE: docs/alstyle.yml
-          # Требуемая кодировка выхода
           OUTPUT_ENCODING: windows-1251
 
-          # Сетевые/устойчивость
           TIMEOUT_S: "30"
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "1500"
 
-          # Префикс для vendorCode и автосоздание тега при отсутствии
           VENDORCODE_PREFIX: AS
           VENDORCODE_CREATE_IF_MISSING: "1"
 
-          # ✅ Фильтр ТОЛЬКО по категориям:
-          # В файле можно указывать числовые ID (включая всех потомков)
-          # и/или текстовые правила для путей категорий (подстрока, ~=слово, /регэксп/).
           ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
           ALSTYLE_CATEGORIES_MODE: include   # include|exclude|off
         run: |
@@ -62,7 +47,6 @@ jobs:
           mkdir -p docs
           : > docs/.nojekyll
 
-      # 5) Коммитим и пушим изменения (если они есть)
       - name: Commit & Push
         shell: bash
         run: |
@@ -73,6 +57,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "build: alstyle YML (categories filter; ${GITHUB_RUN_NUMBER:-manual})"
+            git commit -m "build: alstyle YML (specs exclude: Артикул, Благотворительность)"
             git push
           fi
