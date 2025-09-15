@@ -1,27 +1,28 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-15 11:06">
+<yml_catalog date="2025-09-15 11:57">
   <!--FEED_META
-script_version                  = alstyle-2025-09-15.3                                            | Версия скрипта (для контроля в CI)
+script_version                  = alstyle-2025-09-15.4                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15886                                                           | Офферов у поставщика до очистки
+offers_total                    = 15887                                                           | Офферов у поставщика до очистки
 offers_written                  = 1980                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13906                                                           | Сколько офферов отфильтровано по категориям
+filtered_by_categories          = 13907                                                           | Сколько офферов отфильтровано по категориям
 prices_updated                  = 1980                                                            | Скольким товарам пересчитали price
 params_removed                  = 9526                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1389                                                            | Сколько офферов доступны (true)
-available_false                 = 591                                                             | Сколько офферов недоступны (false)
+available_true                  = 1392                                                            | Сколько офферов доступны (true)
+available_false                 = 588                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15886                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15887                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-15 11:06:24 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-15 16:06:24 +05                                         | Время сборки (Алматы)--><shop>
+built_utc                       = 2025-09-15 11:57:59 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-15 16:57:59 +05                                         | Время сборки (Алматы)\1
+  \2
     <offers>
       <offer id="12568">
         <price>29880</price>
@@ -39865,7 +39866,7 @@ USB-C x1
         <picture>https://img.al-style.kz/59283_1.jpg</picture>
         <picture>https://img.al-style.kz/59283_2.jpg</picture>
         <picture>https://img.al-style.kz/59283_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma G2430</name>
         <description>Цветное МФУ Canon Pixma G2430
@@ -39900,7 +39901,7 @@ USB-C x1
 - Гарантия: 1 год</description>
         <price>89900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392843">
@@ -53845,7 +53846,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
         <currencyId>KZT</currencyId>
         <vendorCode>AS62953</vendorCode>
         <picture>https://img.al-style.kz/62953_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Картридж Canon CARTRIDGE 054 Cyan</name>
         <description>Картридж Canon CARTRIDGE 054 Cyan
@@ -53880,7 +53881,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
 - Гарантия: Нет</description>
         <price>43900</price>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="398560">
@@ -59193,7 +59194,7 @@ XG 75TDFMAX148128- это современная интерактивная панель, разработанная для приме
         <vendorCode>AS65443</vendorCode>
         <picture>https://img.al-style.kz/65443_1.jpg</picture>
         <picture>https://img.al-style.kz/65443_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>XG</vendor>
         <name>Интерактивная панель XG 86TDFMAX148128</name>
         <description>Интерактивная панель XG 86TDFMAX148128
@@ -59216,7 +59217,7 @@ XG 86TDFMAX148128- это современная интерактивная панель, разработанная для приме
 - Операционная система: Android 14</description>
         <price>1027900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="401103">
@@ -66812,14 +66813,14 @@ Canon i-SENSYS MF237w
         <vendorCode>AS72046</vendorCode>
         <picture>https://img.al-style.kz/72046_1.jpg</picture>
         <picture>https://img.al-style.kz/72046_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Legrand</vendor>
         <name>Батарейный блок Legrand для ИБП Daker DK Plus 6 кВА</name>
         <description>Характеристики:
 - Гарантия: 2 года</description>
         <price>568900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="406621">
@@ -69477,7 +69478,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
         <picture>https://img.al-style.kz/75908_1.jpg</picture>
         <picture>https://img.al-style.kz/75908_2.jpg</picture>
         <picture>https://img.al-style.kz/75908_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Samsung</vendor>
         <name>Монитор Samsung 27" LS27D304GAIXCI</name>
         <description>Монитор Samsung 27" LS27D304GAIXCI
@@ -69518,7 +69519,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
 - Время отклика: 5 мс</description>
         <price>70900</price>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="409583">
