@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Build Alstyle feed (YML only; exclude Артикул/Благотворительность in specs)
+      - name: Build Alstyle feed (YML only; drop Артикул/Благотворительность lines in description)
         shell: bash
         env:
           SUPPLIER_NAME: alstyle
@@ -57,6 +57,5 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "build: alstyle YML (specs exclude: Артикул, Благотворительность)"
+            git commit -m "build: alstyle YML (strip Артикул/Благотворительность lines from description)"
             git push
-          fi
