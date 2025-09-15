@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Build Alstyle feed (YML only; drop Артикул/Благотворительность lines in description)
+      - name: Build Alstyle feed (YML only; strip Артикул/Благотворительность в описании)
         shell: bash
         env:
           SUPPLIER_NAME: alstyle
@@ -51,11 +51,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name  "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name  "github-actions[bot]"
           git add docs/alstyle.yml docs/.nojekyll || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "build: alstyle YML (strip Артикул/Благотворительность lines from description)"
-            git push
+          # Если нет изменений — выходим без ошибок (никаких if/fi)
+          git diff --cached --quiet && echo "No changes to commit." && exit 0
+          git commit -m 'build: alstyle YML (strip Артикул/Благотворительность lines from description)'
+          git push
