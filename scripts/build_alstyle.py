@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-09-15.4
+script_version = alstyle-2025-09-15.5
 
 Кратко, что делает скрипт:
 - Скачивает исходный XML Alstyle (по умолчанию из SUPPLIER_URL).
@@ -34,7 +34,7 @@ import requests  # для загрузки XML по URL
 
 # ========================== КОНСТАНТЫ И НАСТРОЙКИ ==========================
 
-SCRIPT_VERSION = "alstyle-2025-09-15.4"
+SCRIPT_VERSION = "alstyle-2025-09-15.5"
 
 # Источник и выходные файлы
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "alstyle")
@@ -58,10 +58,10 @@ ALSTYLE_CATEGORIES_DEBUG = os.getenv("ALSTYLE_CATEGORIES_DEBUG", "0").lower() in
 DROP_CATEGORY_ID_TAG = True        # убираем <categoryId> в финальном YML
 DROP_STOCK_TAGS      = True        # убираем <Stock>/<quantity> и т.п. после высчета available
 PURGE_TAGS_AFTER = (               # эти теги нам не нужны в выходе
-    "Offer_ID", "delivery", "local_delivery_cost", "manufacturer_warranty",
-    "model", "url", "status", "Status",
+    "Offer_ID","delivery","local_delivery_cost","manufacturer_warranty",
+    "model","url","status","Status",
 )
-PURGE_OFFER_ATTRS_AFTER = ("type", "available", "article")  # удаляем эти атрибуты у <offer>
+PURGE_OFFER_ATTRS_AFTER = ("type","available","article")  # удаляем эти атрибуты у <offer>
 
 # Внутренние ценовые поля, которые удаляем после перерасчета
 INTERNAL_PRICE_TAGS = (
@@ -311,7 +311,6 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
 
 # ============================== ЦЕНООБРАЗОВАНИЕ ============================
 
-# (min, max, markup_percent, fixed_add)
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -331,7 +330,6 @@ PRICING_RULES: List[PriceRule] = [
     (2000001,100000000,4.0,100000),
 ]
 
-# Поля, из которых берём «закупочную/базовую» цену (берём минимум)
 PRICE_FIELDS=["purchasePrice","purchase_price","wholesalePrice","wholesale_price","opt_price","b2bPrice","b2b_price","price","oldprice"]
 
 def parse_price_number(raw:str)->Optional[float]:
@@ -601,18 +599,14 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     true_cnt = false_cnt = from_stock_cnt = from_status_cnt = 0
     for offer in offers_el.findall("offer"):
         b, src = derive_available(offer)
-        # удаляем атрибут available у <offer>, если был
         if "available" in offer.attrib:
             offer.attrib.pop("available", None)
-        # создаём/обновляем единый тег <available>
         avail = offer.find("available") or ET.SubElement(offer, "available")
         avail.text = "true" if b else "false"
-        # статистика
         if b: true_cnt += 1
         else: false_cnt += 1
         if src == "stock":  from_stock_cnt += 1
         if src == "status": from_status_cnt += 1
-        # чистим исходные складские теги
         if DROP_STOCK_TAGS:
             for tag in ["quantity_in_stock","quantity","stock","Stock"]:
                 for node in list(offer.findall(tag)):
@@ -788,25 +782,21 @@ def main()->None:
     filtered_by_categories = 0
     if (ALSTYLE_CATEGORIES_MODE in {"include","exclude"}) and (rules_ids or rules_names):
         keep_ids: Set[str] = set(rules_ids)
-        # сбираем id по совпадениям в названии
         if rules_names and id2name:
             for cid in id2name.keys():
                 path = build_category_path_from_id(cid, id2name, id2parent)
                 if category_matches_name(path, rules_names):
                     keep_ids.add(cid)
-        # расширяем потомками
         if keep_ids and parent2children:
             keep_ids = collect_descendants(keep_ids, parent2children)
-        # фильтруем офферы
         for off in list(out_offers.findall("offer")):
             cid = get_text(off, "categoryId")
             hit = (cid in keep_ids) if cid else False
             drop_this = (ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
             if drop_this:
-                out_offers.remove(off)
-                filtered_by_categories += 1
+                out_offers.remove(off); filtered_by_categories += 1
 
-    # 6) Убираем <categoryId> в финале (чтобы не «светить» внутренние ID)
+    # 6) Убираем <categoryId> в финале
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId")) + list(off.findall("CategoryId")):
@@ -832,7 +822,7 @@ def main()->None:
     specs_offers, specs_lines = inject_specs_block(out_shop)
     removed_params = strip_all_params(out_shop)
 
-    # 12) Доп. чистка описаний (вырезаем строки Артикул/Благотворительность)
+    # 12) Доп. чистка описаний
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
     # 13) Финальная чистка тегов/атрибутов каждого <offer>
@@ -885,9 +875,9 @@ def main()->None:
     xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n  ", xml_text)
     # 17.2) Схлопываем «лишние» пустые строки
     xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
-    # 17.3) ВАЖНО: после FEED_META вставляем перевод строки перед <shop>,
-    # чтобы не было слипания вида `... (Алматы)--><shop>`
-    xml_text = re.sub(r"(-->)\s*(<shop>)", r"\\1\n  \\2", xml_text)
+    # 17.3) ВСТАВИТЬ ПЕРЕНОС ПОСЛЕ FEED_META: безопасно через функцию,
+    #       чтобы не было буквальных \1 \2 в результате.
+    xml_text = re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
 
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
