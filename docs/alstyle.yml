@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-16 12:56">
+<yml_catalog date="2025-09-16 18:38">
   <!--FEED_META
 script_version                  = alstyle-2025-09-15.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15807                                                           | Офферов у поставщика до очистки
+offers_total                    = 15813                                                           | Офферов у поставщика до очистки
 offers_written                  = 1980                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13827                                                           | Сколько офферов отфильтровано по категориям
+filtered_by_categories          = 13833                                                           | Сколько офферов отфильтровано по категориям
 prices_updated                  = 1980                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
@@ -18,15 +18,15 @@ dealer_src_missing              = 0                                             
 params_removed                  = 9521                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1377                                                            | Сколько офферов доступны (true)
-available_false                 = 603                                                             | Сколько офферов недоступны (false)
+available_true                  = 1375                                                            | Сколько офферов доступны (true)
+available_false                 = 605                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15807                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15813                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-16 12:56:40 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-16 17:56:40 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-16 18:38:41 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-16 23:38:41 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -7157,7 +7157,7 @@ built_Asia/Almaty               = 2025-09-16 17:56:40 +05                       
         <picture>https://img.al-style.kz/24278_1.jpg</picture>
         <picture>https://img.al-style.kz/24278_2.jpg</picture>
         <picture>https://img.al-style.kz/24278_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>SVC</vendor>
         <name>Источник бесперебойного питания SVC PTX-10KL-LCD</name>
         <description>Онлайн ИБП SVC PTX-10KL-LCD Используется для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю. ИБП с внешним подключением батарейного блока, позволяет индивидуально конфигурировать время автономной работы. ИБП оснащен интерфейсными портами USB/RS-232, благодаря которым можно наблюдать за параметрами работы ИБП и корректно завершать работу.
@@ -7189,7 +7189,7 @@ built_Asia/Almaty               = 2025-09-16 17:56:40 +05                       
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="22495">
@@ -32044,7 +32044,7 @@ COMIX S340   это высококачественный шредер, который обеспечит надежную защиту ва
         <picture>https://img.al-style.kz/959_1.jpg</picture>
         <picture>https://img.al-style.kz/959_2.jpg</picture>
         <picture>https://img.al-style.kz/959_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-SP150H</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -32079,7 +32079,7 @@ COMIX S340   это высококачественный шредер, который обеспечит надежную защиту ва
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="361391">
@@ -36931,7 +36931,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <currencyId>KZT</currencyId>
         <vendorCode>AS56893</vendorCode>
         <picture>https://img.al-style.kz/56893_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж стандартной емкости Xerox 006R04677 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -36951,7 +36951,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="390447">
@@ -39160,7 +39160,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
       </offer>
 
   <offer id="392902">
-        <price>2767900</price>
+        <price>3546900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS59347</vendorCode>
         <picture>https://img.al-style.kz/59347_1.jpg</picture>
@@ -42384,7 +42384,7 @@ Canon imageRUNNER 2425Canon imageRUNNER 2425i
         <picture>https://img.al-style.kz/59988_1.jpg</picture>
         <picture>https://img.al-style.kz/59988_2.jpg</picture>
         <picture>https://img.al-style.kz/59988_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Тонер-картридж Canon C-EXV 33 Black для IR 25xx 2785B002AA</name>
         <description>Тонер-картридж Canon C-EXV 33 Black
@@ -42416,7 +42416,7 @@ Canon imageRUNNER 2520Canon imageRUNNER 2525Canon imageRUNNER 2530
 - Гарантия: Нет
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393526">
@@ -48447,7 +48447,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <vendorCode>AS61378</vendorCode>
         <picture>https://img.al-style.kz/61378_1.jpg</picture>
         <picture>https://img.al-style.kz/61378_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Back-UPS BX750MI-GR</name>
         <description>Источник бесперебойного питания APC Back-UPS BX750MI-GR
@@ -48470,7 +48470,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396801">
@@ -62824,7 +62824,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <picture>https://img.al-style.kz/70249_1.jpg</picture>
         <picture>https://img.al-style.kz/70249_2.jpg</picture>
         <picture>https://img.al-style.kz/70249_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Samsung</vendor>
         <name>Монитор Samsung 27" S3 LS27D364GAIXCI</name>
         <description>Монитор Samsung 27" S3 LS27D364GAIXCI
@@ -62860,7 +62860,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
 - Видеовыход: HDMI / VGA
 - Время отклика: 4 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="405302">
@@ -68055,7 +68055,7 @@ XG 86AIVTBTM1416256 — это интерактивная панель нового поколения, предназначенная
       </offer>
 
   <offer id="410140">
-        <price>1829900</price>
+        <price>1810900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS76480</vendorCode>
         <picture>https://img.al-style.kz/76480_1.jpg</picture>
@@ -68096,7 +68096,7 @@ XG 86AIVTBTM1416256 — это интерактивная панель нового поколения, предназначенная
       </offer>
 
   <offer id="410141">
-        <price>1714900</price>
+        <price>1697900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS76481</vendorCode>
         <picture>https://img.al-style.kz/76481_1.jpg</picture>
@@ -68187,7 +68187,7 @@ XG 86AIVTBTM1416256 — это интерактивная панель нового поколения, предназначенная
       </offer>
 
   <offer id="410144">
-        <price>516900</price>
+        <price>507900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS76484</vendorCode>
         <picture>https://img.al-style.kz/76484_1.jpg</picture>
@@ -70913,7 +70913,7 @@ MateBook D 14 —  Безрамочный экран с режимом защиты зрения. Высокая производител
       </offer>
 
   <offer id="411601">
-        <price>855900</price>
+        <price>810900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS78324</vendorCode>
         <picture>https://img.al-style.kz/78324_1.jpg</picture>
@@ -71074,7 +71074,7 @@ MateBook D 14 —  Безрамочный экран с режимом защиты зрения. Высокая производител
       </offer>
 
   <offer id="411603">
-        <price>666900</price>
+        <price>638900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS78326</vendorCode>
         <picture>https://img.al-style.kz/78326_1.jpg</picture>
