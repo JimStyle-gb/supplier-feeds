@@ -17,8 +17,8 @@ available_forced                = 178                                           
 categoryId_dropped              = 2153                                                          | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 178                                                           | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 178                                                           | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-16 14:44:09 UTC                                       | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-16 19:44:09 +05                                       | Время сборки (Алматы)-->
+built_utc                       = 2025-09-16 14:44:50 UTC                                       | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-16 19:44:50 +05                                       | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="00-00000525">
