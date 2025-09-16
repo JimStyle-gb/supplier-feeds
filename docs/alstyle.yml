@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-16 01:58">
+<yml_catalog date="2025-09-16 06:41">
   <!--FEED_META
 script_version                  = alstyle-2025-09-15.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15872                                                           | Офферов у поставщика до очистки
-offers_written                  = 1979                                                            | Офферов записано (после очистки)
+offers_total                    = 15805                                                           | Офферов у поставщика до очистки
+offers_written                  = 1978                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13893                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1979                                                            | Скольким товарам пересчитали price
+filtered_by_categories          = 13827                                                           | Сколько офферов отфильтровано по категориям
+prices_updated                  = 1978                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
-dealer_src_direct_field         = 1979                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
+dealer_src_direct_field         = 1978                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
 dealer_src_rrp_fallback         = 0                                                               | Базовая цена взята из RRP/РРЦ (fallback)
 dealer_src_missing              = 0                                                               | Не нашли базовую цену
-params_removed                  = 9522                                                            | Сколько строк параметров добавлено в описание
+params_removed                  = 9519                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1381                                                            | Сколько офферов доступны (true)
-available_false                 = 598                                                             | Сколько офферов недоступны (false)
+available_true                  = 1376                                                            | Сколько офферов доступны (true)
+available_false                 = 602                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15872                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15805                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-16 01:58:14 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-16 06:58:14 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-16 06:41:17 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-16 11:41:17 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -4569,7 +4569,7 @@ built_Asia/Almaty               = 2025-09-16 06:58:14 +05                       
         <picture>https://img.al-style.kz/15897_1.jpg</picture>
         <picture>https://img.al-style.kz/15897_2.jpg</picture>
         <picture>https://img.al-style.kz/15897_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-106R02778 (WC3225/3260)</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -4604,7 +4604,7 @@ built_Asia/Almaty               = 2025-09-16 06:58:14 +05                       
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="18051">
@@ -6799,27 +6799,6 @@ built_Asia/Almaty               = 2025-09-16 06:58:14 +05                       
         <available>false</available>
       </offer>
 
-  <offer id="21378">
-        <price>154900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS23978</vendorCode>
-        <picture>https://img.al-style.kz/23978_1.jpg</picture>
-        <available>false</available>
-        <vendor>Deluxe</vendor>
-        <name>Экран моторизированный (с пультом Д/У) Deluxe DLS-ERС350x270W (137"х106"), &#216; - 174", 16:9</name>
-        <description>Экран для проекторов - Deluxe, моторизированный DLS-ERС350x270W
-В экране для проекторов Deluxe сочетаются простой дизайн, прочные компоненты и аккуратное исполнение. Экран легко устанавливается и регулируется. Полотно полностью скрыто в элегантном корпусе. Экран Deluxe опускается и фиксируется на любой длине с помощью пульта дистанционного управления.
-
-Рабочая поверхность - 334x251 см
-
-Характеристики:
-- Гарантия: 1 год
-- Материал: Ткань
-- Цвет: Белый</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="21383">
         <price>23900</price>
         <currencyId>KZT</currencyId>
@@ -6827,7 +6806,7 @@ built_Asia/Almaty               = 2025-09-16 06:58:14 +05                       
         <picture>https://img.al-style.kz/23983_1.jpg</picture>
         <picture>https://img.al-style.kz/23983_2.jpg</picture>
         <picture>https://img.al-style.kz/23983_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>SVC</vendor>
         <name>Источник бесперебойного питания SVC V-500-L-LCD</name>
         <description>Линейно-Интерактивный ИБП SVC V-500-L-LCD Устройство, позволяющее подключенному оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. Кроме того, оно способно корректировать параметры (напряжение, частоту) электропитания. Часто применяется для обеспечения бесперебойной работы компьютеров. Информативный LCD-дисплей отображает все необходимые параметры в работе ИБП, что значительно облегчает использование ИБП.
@@ -6853,7 +6832,7 @@ built_Asia/Almaty               = 2025-09-16 06:58:14 +05                       
 - Рабочая влажность: 10-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="21384">
@@ -23294,7 +23273,7 @@ PoE
         <picture>https://img.al-style.kz/22246_1.jpg</picture>
         <picture>https://img.al-style.kz/22246_2.jpg</picture>
         <picture>https://img.al-style.kz/22246_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF232A</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -23329,7 +23308,7 @@ PoE
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="265376">
@@ -25621,7 +25600,7 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS42269</vendorCode>
         <picture>https://img.al-style.kz/42269_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж стандартной емкости Xerox 006R04360 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -25642,7 +25621,7 @@ USB
 - Вес: 0.2
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266718">
@@ -36348,7 +36327,7 @@ PoE
         <picture>https://img.al-style.kz/56104_1.jpg</picture>
         <picture>https://img.al-style.kz/56104_2.jpg</picture>
         <picture>https://img.al-style.kz/56104_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>XG</vendor>
         <name>Монитор 23.8'' X-game 1T238IPS</name>
         <description>Монитор 23.8'' X-game 1T238IPS
@@ -36391,7 +36370,7 @@ HDMI x1
 - Состав: Металл, пластик
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="390131">
@@ -37062,7 +37041,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <currencyId>KZT</currencyId>
         <vendorCode>AS56897</vendorCode>
         <picture>https://img.al-style.kz/56897_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж повышенной емкости Xerox 006R04764 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -37084,7 +37063,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="390451">
@@ -37092,7 +37071,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <currencyId>KZT</currencyId>
         <vendorCode>AS56898</vendorCode>
         <picture>https://img.al-style.kz/56898_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж повышенной емкости Xerox 006R04765 (голубой)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -37114,7 +37093,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="390452">
@@ -52220,7 +52199,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
         <vendorCode>AS62951</vendorCode>
         <picture>https://img.al-style.kz/62951_1.jpg</picture>
         <picture>https://img.al-style.kz/62951_2.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Картридж Canon CARTRIDGE 054 Yellow</name>
         <description>Картридж Canon CARTRIDGE 054 Yellow
@@ -52254,7 +52233,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="398357">
@@ -53538,7 +53517,7 @@ Canon ImageRUNNER C1225Canon ImageRUNNER C1225iFCanon imageClass MF810CCanon ima
         <vendorCode>AS63850</vendorCode>
         <picture>https://img.al-style.kz/63850_1.jpg</picture>
         <picture>https://img.al-style.kz/63850_2.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-071</name>
         <description>Данный картридж обеспечивает высокое качество печати и совместим с лазерными принтерами Canon.
@@ -53570,7 +53549,7 @@ Canon ImageRUNNER C1225Canon ImageRUNNER C1225iFCanon imageClass MF810CCanon ima
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="399529">
@@ -64486,7 +64465,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <currencyId>KZT</currencyId>
         <vendorCode>AS71672</vendorCode>
         <picture>https://img.al-style.kz/71672_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R04855 (черный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -64506,7 +64485,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="406213">
@@ -64514,7 +64493,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <currencyId>KZT</currencyId>
         <vendorCode>AS71673</vendorCode>
         <picture>https://img.al-style.kz/71673_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R04856 (голубой)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -64534,7 +64513,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="406214">
@@ -64542,7 +64521,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <currencyId>KZT</currencyId>
         <vendorCode>AS71674</vendorCode>
         <picture>https://img.al-style.kz/71674_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R04857 (пурпурный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -64562,7 +64541,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="406215">
@@ -64598,7 +64577,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <currencyId>KZT</currencyId>
         <vendorCode>AS71676</vendorCode>
         <picture>https://img.al-style.kz/71676_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Принт-картридж Xerox 013R00703</name>
         <description>Принт-картридж – расходный материал, используемый принтером или МФУ. Представляет собой блок, в который входит фотобарабан, система его очистки и бункер для отработанного тонера. Главным компонентом является светочувствительный барабан, который служит для формирования электростатического изображения с последующим нанесением на него тонера
@@ -64616,7 +64595,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="406217">
@@ -70394,7 +70373,7 @@ Canon imagePROGRAF PRO-310
         <picture>https://img.al-style.kz/77357_1.jpg</picture>
         <picture>https://img.al-style.kz/77357_2.jpg</picture>
         <picture>https://img.al-style.kz/77357_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma G3480</name>
         <description>Цветное МФУ Canon Pixma G3480
@@ -70425,7 +70404,7 @@ Canon imagePROGRAF PRO-310
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="411032">
@@ -72569,7 +72548,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <picture>https://img.al-style.kz/81706_1.jpg</picture>
         <picture>https://img.al-style.kz/81706_2.jpg</picture>
         <picture>https://img.al-style.kz/81706_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Samsung</vendor>
         <name>Монитор Samsung 43" LS43CG700NIXCI</name>
         <description>Монитор Samsung 43" LS43CG700NIXCI
@@ -72606,7 +72585,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="414774">
