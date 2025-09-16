@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Build Akcent YML (flat <offers>) for Satu — script_version=akcent-2025-09-16.0
+Build Akcent YML (flat <offers>) for Satu
+script_version = akcent-2025-09-16.2
+
+Изменения в .2:
+- Строгий префиксный фильтр по файлу docs/akcent_keywords.txt:
+  Обычная строка => фраза-д префикс: оставляем товары, где <name> начинается с этой фразы.
+  /regex/ строка => регулярка, проверяется с начала строки через .match().
+- Остальная логика без изменений: чистка тегов, vendorCode с префиксом, цены, FEED_META и разрыв строки после FEED_META.
 """
 
 from __future__ import annotations
@@ -17,30 +24,22 @@ except Exception:
 
 import requests
 
-# ========================== ГЛОБАЛЬНЫЕ НАСТРОЙКИ ===========================
+# ========================== НАСТРОЙКИ ===========================
 
-SCRIPT_VERSION = "akcent-2025-09-16.0"  # Версия — чтобы в FEED_META и логах видеть актуальный скрипт
+SCRIPT_VERSION = "akcent-2025-09-16.2"
 
-# Источник и выход
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "akcent")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml")
 OUT_FILE_YML     = os.getenv("OUT_FILE", "docs/akcent.yml")
 ENC              = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-# Скачивание
 TIMEOUT_S        = int(os.getenv("TIMEOUT_S", "30"))
 RETRIES          = int(os.getenv("RETRIES", "4"))
 RETRY_BACKOFF    = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES        = int(os.getenv("MIN_BYTES", "1500"))
-
-# Поведение
 DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-# vendorCode
-VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AC")
-VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "1").lower() in {"1","true","yes"}
-
-# Ключевые слова (фильтр по <name>)
+# Фильтр по <name>
 AKCENT_KEYWORDS_PATH  = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
 AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # include|exclude
 AKCENT_KEYWORDS_DEBUG = os.getenv("AKCENT_KEYWORDS_DEBUG", "0").lower() in {"1","true","yes"}
@@ -52,178 +51,151 @@ DROP_STOCK_TAGS          = True
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url")
 PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
 
-# Внутренние ценовые теги, которые вычищаем
 INTERNAL_PRICE_TAGS = (
     "purchase_price","purchasePrice","wholesale_price","wholesalePrice",
     "opt_price","optPrice","b2b_price","b2bPrice","supplier_price","supplierPrice",
     "min_price","minPrice","max_price","maxPrice","oldprice"
 )
 
-# ================================ УТИЛИТЫ ==================================
+# ========================== УТИЛИТЫ ===========================
 
-def log(msg: str) -> None:
-    """Печатает служебное сообщение (видно в логе GitHub Actions)."""
-    print(msg, flush=True)
+def log(msg: str) -> None: print(msg, flush=True)
+def warn(msg: str) -> None: print(f"WARN: {msg}", file=sys.stderr, flush=True)
+def err(msg: str, code: int = 1) -> None: print(f"ERROR: {msg}", file=sys.stderr, flush=True); sys.exit(code)
 
-def warn(msg: str) -> None:
-    """Печатает предупреждение (используем для мягких ошибок)."""
-    print(f"WARN: {msg}", file=sys.stderr, flush=True)
-
-def err(msg: str, code: int = 1) -> None:
-    """Печатает ошибку и завершает процесс кодом `code`."""
-    print(f"ERROR: {msg}", file=sys.stderr, flush=True)
-    sys.exit(code)
-
-def now_utc_str() -> str:
-    """Дата/время в UTC для FEED_META."""
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
-
+def now_utc_str() -> str: return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 def now_almaty_str() -> str:
-    """Дата/время в Asia/Almaty для FEED_META."""
-    if ZoneInfo:
-        return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
+    if ZoneInfo: return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 def get_text(el: ET.Element, tag: str) -> str:
-    """Возвращает текст дочернего тега `tag` (или пустую строку)."""
     node = el.find(tag)
     return (node.text or "").strip() if node is not None and node.text else ""
 
 def _norm_name(s: str) -> str:
-    """Нижний регистр, замена NBSP, схлопывание пробелов — для сравнения по ключам."""
+    """Нормализация: NBSP -> пробел, ё->е, нижний регистр, схлоп пробелов."""
     s = (s or "").replace("\u00A0"," ").lower().replace("ё","е")
     return re.sub(r"\s+"," ",s).strip()
 
 # ====================== СКАЧИВАНИЕ ИСХОДНОГО XML ==========================
 
 def fetch_xml(url: str, timeout: int, retries: int, backoff: float) -> bytes:
-    """HTTP GET с ретраями; минимальная длина для защиты от обрезанных ответов."""
     sess = requests.Session()
     headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
     last_exc = None
     for attempt in range(1, retries+1):
         try:
             r = sess.get(url, headers=headers, timeout=timeout, stream=True)
-            if r.status_code != 200:
-                raise RuntimeError(f"HTTP {r.status_code}")
+            if r.status_code != 200: raise RuntimeError(f"HTTP {r.status_code}")
             data = r.content
-            if len(data) < MIN_BYTES:
-                raise RuntimeError(f"too small ({len(data)} bytes)")
+            if len(data) < MIN_BYTES: raise RuntimeError(f"too small ({len(data)} bytes)")
             return data
         except Exception as e:
             last_exc = e
             sleep = backoff * attempt * (1.0 + random.uniform(-0.2, 0.2))
             warn(f"fetch attempt {attempt}/{retries} failed: {e}; sleep {sleep:.2f}s")
-            if attempt < retries:
-                time.sleep(sleep)
+            if attempt < retries: time.sleep(sleep)
     raise RuntimeError(f"fetch failed after {retries} attempts: {last_exc}")
 
-# ==================== КЛЮЧИ ДЛЯ ФИЛЬТРА ПО НАЗВАНИЮ =======================
+# ==================== КЛЮЧИ: СТАРТОВЫЕ ФРАЗЫ/РЕГУЛЯРКИ ====================
 
 class KeySpec:
-    """Правило ключа: тип (substr/regex/word), исходная строка и re-паттерн (если нужен)."""
-    __slots__=("raw","kind","pattern")
-    def __init__(self, raw: str, kind: str, pattern):
-        self.raw, self.kind, self.pattern = raw, kind, pattern
+    """kind='prefix' (нормализованная фраза-префикс) или 'regex' (паттерн; матчим с начала через .match)."""
+    __slots__=("raw","kind","norm","pattern")
+    def __init__(self, raw: str, kind: str, norm: Optional[str], pattern: Optional[re.Pattern]):
+        self.raw, self.kind, self.norm, self.pattern = raw, kind, norm, pattern
 
 def load_keywords(path: str) -> List[KeySpec]:
-    """Читает ключи из файла любой распространённой кодировкой; поддерживает /regex/ и ~=слово."""
-    if not path or not os.path.exists(path):
-        return []
+    """
+    Читает ключи из файла (UTF-8/UTF-16/Win-1251 и т.д.).
+    - Строка вида /regex/  → регулярка (re.I), проверяется с начала имени через .match()
+    - Любая другая строка  → фраза-префикс: оставляем товары, где normalized(<name>) начинается с normalized(строка)
+    Пустые строки и строки, начинающиеся с # — игнор.
+    """
+    if not path or not os.path.exists(path): return []
     data = None
     for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
         try:
-            with open(path,"r",encoding=enc) as f:
-                txt=f.read()
+            with open(path,"r",encoding=enc) as f: txt=f.read()
             data = txt.replace("\ufeff","").replace("\x00","")
             break
         except Exception:
             continue
     if data is None:
-        try:
-            with open(path,"r",encoding="utf-8",errors="ignore") as f:
-                data=f.read().replace("\x00","")
-        except Exception:
-            return []
+        with open(path,"r",encoding="utf-8",errors="ignore") as f:
+            data = f.read().replace("\x00","")
+
     keys: List[KeySpec]=[]
     for ln in data.splitlines():
-        s=ln.strip()
-        if not s or s.lstrip().startswith("#"):
-            continue
-        if len(s)>=2 and s[0]=="/" and s[-1]=="/":
+        s = ln.strip()
+        if not s or s.lstrip().startswith("#"): continue
+        if len(s) >= 2 and s[0]=="/" and s[-1]=="/":
             try:
-                keys.append(KeySpec(s,"regex",re.compile(s[1:-1],re.I)))
-                continue
+                pat = re.compile(s[1:-1], re.I)
+                keys.append(KeySpec(raw=s, kind="regex", norm=None, pattern=pat))
             except Exception:
-                continue
-        if s.startswith("~="):
-            w=_norm_name(s[2:])
-            if not w:
-                continue
-            keys.append(KeySpec(s,"word",re.compile(r"\b"+re.escape(w)+r"\b",re.I)))
+                pass
             continue
-        keys.append(KeySpec(_norm_name(s),"substr",None))
+        norm = _norm_name(s)
+        if not norm: continue
+        keys.append(KeySpec(raw=s, kind="prefix", norm=norm, pattern=None))
     return keys
 
-def name_matches(name:str, keys:List[KeySpec]) -> Tuple[bool, Optional[str]]:
-    """True/False и какой именно ключ сработал (для отладки)."""
-    n=_norm_name(name)
+def name_matches_prefix(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[str]]:
+    """
+    Возвращает (совпало?, какой_ключ).
+    - prefix: сравниваем normalized_name.startswith(norm)
+    - regex:  применяем .match(name) (т.е. с начала строки)
+    """
+    if not keys: return False, None
+    norm_name = _norm_name(name)
     for ks in keys:
-        if ks.kind=="substr":
-            if ks.raw and ks.raw in n:
-                return True,ks.raw
-        else:
-            if ks.pattern and ks.pattern.search(name or ""):
-                return True,ks.raw
-    return False,None
+        if ks.kind == "prefix":
+            if norm_name.startswith(ks.norm):
+                return True, ks.raw
+        else:  # regex
+            if ks.pattern and ks.pattern.match(name or ""):
+                return True, ks.raw
+    return False, None
 
 # ============================ НОРМАЛИЗАЦИЯ БРЕНДА ==========================
 
 def _norm_key(s: str) -> str:
-    """Нижний регистр, убираем лишние разделители и повторные пробелы — для корректного сравнения."""
-    if not s:
-        return ""
+    if not s: return ""
     s=s.strip().lower().replace("ё","е")
     s=re.sub(r"[-_/]+"," ",s)
     s=re.sub(r"\s+"," ",s)
     return s
 
+# Не считаем брендами имена поставщиков
 SUPPLIER_BLOCKLIST={_norm_key(x) for x in["alstyle","al-style","copyline","akcent","ak-cent","vtt"]}
 UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
 
 def normalize_brand(raw: str) -> str:
-    """Пусто, если бренд плохой/служебный; иначе — очищенное исходное значение."""
     k=_norm_key(raw)
-    if (not k) or (k in SUPPLIER_BLOCKLIST):
-        return ""
+    if (not k) or (k in SUPPLIER_BLOCKLIST): return ""
     return raw.strip()
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
-    """Нормализует/удаляет бренды по правилам. Возвращает (нормализовано, топ удалённых)."""
     offers_el=shop_el.find("offers")
-    if offers_el is None:
-        return 0,{}
-    normalized=0
-    dropped: Dict[str,int]={}
+    if offers_el is None: return 0,{}
+    normalized=0; dropped: Dict[str,int]={}
     for offer in offers_el.findall("offer"):
         ven=offer.find("vendor")
         txt=(ven.text or "").strip() if ven is not None and ven.text else ""
         if txt:
             canon=normalize_brand(txt)
             if any(m in txt.lower() for m in UNKNOWN_VENDOR_MARKERS) or (not canon):
-                if ven is not None:
-                    offer.remove(ven)
-                key=_norm_key(txt)
-                if key:
-                    dropped[key]=dropped.get(key,0)+1
+                if ven is not None: offer.remove(ven)
+                key=_norm_key(txt); 
+                if key: dropped[key]=dropped.get(key,0)+1
             elif canon!=txt:
-                ven.text=canon
-                normalized+=1
+                ven.text=canon; normalized+=1
     return normalized,dropped
 
 # ============================== ЦЕНООБРАЗОВАНИЕ ============================
 
-PriceRule = Tuple[int,int,float,int]  # (минимум, максимум, надбавка %, фикс. добавка)
+PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
     ( 10001,    25000, 4.0,  4000),
@@ -246,47 +218,31 @@ PRICE_FIELDS=["purchasePrice","purchase_price","wholesalePrice","wholesale_price
               "opt_price","b2bPrice","b2b_price","price","oldprice"]
 
 def parse_price_number(raw:str)->Optional[float]:
-    """Убираем валюта/пробелы/запятые; возвращаем float или None."""
-    if raw is None:
-        return None
-    s=(raw.strip()
-         .replace("\xa0"," ")
-         .replace(" ","")
-         .replace("KZT","").replace("kzt","").replace("₸","")
-         .replace(",","."))
-    if not s:
-        return None
+    if raw is None: return None
+    s=(raw.strip().replace("\xa0"," ").replace(" ","").replace("KZT","").replace("kzt","").replace("₸","").replace(",","."))
+    if not s: return None
     try:
-        v=float(s)
-        return v if v>0 else None
+        v=float(s); return v if v>0 else None
     except Exception:
         return None
 
 def get_dealer_price(offer:ET.Element)->Optional[float]:
-    """Минимум по одиночным тегам и блокам <prices>/<price>."""
     vals=[]
     for tag in PRICE_FIELDS:
         el=offer.find(tag)
         if el is not None and el.text:
             v=parse_price_number(el.text)
-            if v is not None:
-                vals.append(v)
+            if v is not None: vals.append(v)
     for prices in list(offer.findall("prices")) + list(offer.findall("Prices")):
         for p in list(prices.findall("price")) + list(prices.findall("Price")):
             v=parse_price_number(p.text or "")
-            if v is not None:
-                vals.append(v)
+            if v is not None: vals.append(v)
     return min(vals) if vals else None
 
 def _force_tail_900(n:float)->int:
-    """Округляет вниз до ближайшего вида ХХХ900 (минимум 900)."""
-    i=int(n)
-    k=max(i//1000,0)
-    out=k*1000+900
-    return out if out>=900 else 900
+    i=int(n); k=max(i//1000,0); out=k*1000+900; return out if out>=900 else 900
 
 def compute_retail(dealer:float,rules:List[PriceRule])->Optional[int]:
-    """Ищем диапазон, считаем наценку и фикс-добавку, затем приводим к «…900»."""
     for lo,hi,pct,add in rules:
         if lo<=dealer<=hi:
             val=dealer*(1.0+pct/100.0)+add
@@ -294,10 +250,8 @@ def compute_retail(dealer:float,rules:List[PriceRule])->Optional[int]:
     return None
 
 def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int]:
-    """Пишем <price> и <currencyId>KZT</currencyId>, чистим внутренние ценовые теги."""
     offers_el=shop_el.find("offers")
-    if offers_el is None:
-        return (0,0,0)
+    if offers_el is None: return (0,0,0)
     updated=skipped=total=0
     for offer in offers_el.findall("offer"):
         total+=1
@@ -305,15 +259,13 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int]
         if dealer is None or dealer<=100:
             skipped+=1
             node=offer.find("oldprice")
-            if node is not None:
-                offer.remove(node)
+            if node is not None: offer.remove(node)
             continue
         newp=compute_retail(dealer,rules)
         if newp is None:
             skipped+=1
             node=offer.find("oldprice")
-            if node is not None:
-                offer.remove(node)
+            if node is not None: offer.remove(node)
             continue
         p=offer.find("price") or ET.SubElement(offer,"price")
         p.text=str(int(newp))
@@ -323,16 +275,13 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int]
             offer.remove(node)
         for tag in INTERNAL_PRICE_TAGS:
             node=offer.find(tag)
-            if node is not None:
-                offer.remove(node)
+            if node is not None: offer.remove(node)
         updated+=1
     return updated,skipped,total
 
 # ===================== ПАРАМЕТРЫ → «ХАРАКТЕРИСТИКИ» =======================
 
-def _key(s:str)->str:
-    """Нормализует имя параметра (нижний регистр + схлопывание пробелов)."""
-    return re.sub(r"\s+"," ",(s or "").strip()).lower()
+def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
 EXCLUDE_NAME_RE=re.compile(
     r"(новинк|акци|скидк|уценк|снижена\s*цена|хит продаж|топ продаж|лидер продаж|лучшая цена|"
@@ -341,86 +290,66 @@ EXCLUDE_NAME_RE=re.compile(
 )
 
 def _looks_like_code_value(v:str)->bool:
-    """Если это набор символов, цифр и дефисов/ссылок — не тянем в описание."""
     s=(v or "").strip()
-    if not s:
-        return True
-    if re.search(r"https?://",s,re.I):
-        return True
+    if not s: return True
+    if re.search(r"https?://",s,re.I): return True
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
 def build_specs_lines(offer:ET.Element)->List[str]:
-    """Готовит список характеристик из <param>/<Param>, убирая мусор и дубли."""
     lines=[]; seen=set()
     for p in list(offer.findall("param")) + list(offer.findall("Param")):
         raw_name=(p.attrib.get("name") or "").strip()
         raw_val =(p.text or "").strip()
-        if not raw_name or not raw_val:
-            continue
-        if EXCLUDE_NAME_RE.search(raw_name):
-            continue
-        if _looks_like_code_value(raw_val):
-            continue
+        if not raw_name or not raw_val: continue
+        if EXCLUDE_NAME_RE.search(raw_name): continue
+        if _looks_like_code_value(raw_val): continue
         k=_key(raw_name)
-        if k in seen:
-            continue
-        seen.add(k)
-        lines.append(f"- {raw_name}: {raw_val}")
+        if k in seen: continue
+        seen.add(k); lines.append(f"- {raw_name}: {raw_val}")
     return lines
 
 def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
-    """Добавляет блок «Характеристики» в описание; возвращает (офферов_затронуто, строк_добавлено)."""
     offers_el=shop_el.find("offers")
-    if offers_el is None:
-        return (0,0)
+    if offers_el is None: return (0,0)
     offers_touched=0; lines_total=0
     spec_re=re.compile(r"\[SPECS_BEGIN\].*?\[SPECS_END\]", re.S)
     for offer in offers_el.findall("offer"):
         lines=build_specs_lines(offer)
-        if not lines:
-            continue
+        if not lines: continue
         desc_el=offer.find("description")
         curr=get_text(offer,"description")
-        if curr:
-            curr=spec_re.sub("",curr).strip()
+        if curr: curr=spec_re.sub("",curr).strip()
         block="Характеристики:\n"+"\n".join(lines)
         new_text=(curr+"\n\n"+block).strip() if curr else block
-        if desc_el is None:
-            desc_el=ET.SubElement(offer,"description")
+        if desc_el is None: desc_el=ET.SubElement(offer,"description")
         desc_el.text=new_text
         offers_touched+=1; lines_total+=len(lines)
     return offers_touched,lines_total
 
 def strip_all_params(shop_el:ET.Element)->int:
-    """Удаляет все <param>/<Param> из офферов; возвращает количество удалённых тегов."""
     offers_el=shop_el.find("offers")
-    if offers_el is None:
-        return 0
+    if offers_el is None: return 0
     removed=0
     for offer in offers_el.findall("offer"):
         for p in list(offer.findall("param")) + list(offer.findall("Param")):
             offer.remove(p); removed+=1
     return removed
 
-# ==================== ОПИСАНИЯ: СЖАТЬ В ОДНУ СТРОКУ =======================
+# ====================== ОПИСАНИЯ В ОДНУ СТРОКУ ======================
 
 _HTML_NBSP_RE = re.compile(r"&nbsp;", re.I)
 
 def _clean_description_text_one_line(s:str)->str:
-    """NBSP→пробел; любые пробельные последовательности (вкл. \\n, \\t) → один пробел."""
-    if not s:
-        return s
+    if not s: return s
     s=s.replace("\r\n","\n").replace("\r","\n").replace("\u00A0"," ")
     s=_HTML_NBSP_RE.sub(" ", s)
     s=re.sub(r"\s+", " ", s)
     return s.strip()
 
 def clean_all_descriptions_one_line(shop_el:ET.Element)->int:
-    """Делает все <description> «в одну строку»; возвращает число изменённых офферов."""
     offers_el=shop_el.find("offers")
-    if offers_el is None:
-        return 0
+    if offers_el is None: return 0
     touched=0
     for offer in offers_el.findall("offer"):
         d=offer.find("description")
@@ -430,21 +359,18 @@ def clean_all_descriptions_one_line(shop_el:ET.Element)->int:
                 d.text=cleaned; touched+=1
     return touched
 
-# =========================== НАЛИЧИЕ/СКЛАД =================================
+# =========================== НАЛИЧИЕ ===========================
 
 def normalize_stock_always_true(shop_el:ET.Element)->int:
-    """Гарантирует <available>true</available> и убирает складские теги."""
     offers_el=shop_el.find("offers")
-    if offers_el is None:
-        return 0
+    if offers_el is None: return 0
     touched=0
     for offer in offers_el.findall("offer"):
         avail=offer.find("available") or ET.SubElement(offer,"available")
         avail.text="true"; touched+=1
         if DROP_STOCK_TAGS:
             for tag in ["quantity_in_stock","quantity","stock","Stock"]:
-                for node in list(offer.findall(tag)):
-                    offer.remove(node)
+                for node in list(offer.findall(tag)): offer.remove(node)
     return touched
 
 # ======================= vendorCode / артикул ==============================
@@ -452,16 +378,11 @@ def normalize_stock_always_true(shop_el:ET.Element)->int:
 ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
 
 def _extract_article_from_name(name:str)->str:
-    """Ищет похожий на артикул фрагмент в <name>."""
-    if not name:
-        return ""
-    m=ARTICUL_RE.search(name)
-    return (m.group(1) if m else "").upper()
+    if not name: return ""
+    m=ARTICUL_RE.search(name); return (m.group(1) if m else "").upper()
 
 def _extract_article_from_url(url:str)->str:
-    """Берёт последний сегмент URL без .html/.php и т.п.; ищет там артикул."""
-    if not url:
-        return ""
+    if not url: return ""
     try:
         path=urllib.parse.urlparse(url).path.rstrip("/")
         last=path.split("/")[-1]
@@ -472,20 +393,15 @@ def _extract_article_from_url(url:str)->str:
         return ""
 
 def _normalize_code(s:str)->str:
-    """Удаляем пробелы/подчёркивания/«длинные тире», оставляем A-Z/0-9/дефис; UPPERCASE."""
     s=(s or "").strip()
-    if not s:
-        return ""
-    s=re.sub(r"[\s_]+","",s)
-    s=s.replace("—","-").replace("–","-")
+    if not s: return ""
+    s=re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
     s=re.sub(r"[^A-Za-z0-9\-]+","",s)
     return s.upper()
 
 def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missing:bool=False)->Tuple[int,int,int,int]:
-    """Создаёт/заполняет vendorCode из артикулов и добавляет префикс (AC)."""
     offers_el=shop_el.find("offers")
-    if offers_el is None:
-        return (0,0,0,0)
+    if offers_el is None: return (0,0,0,0)
     total_prefixed=created=filled_from_art=fixed_bare=0
     for offer in offers_el.findall("offer"):
         vc=offer.find("vendorCode")
@@ -502,16 +418,12 @@ def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missi
               or _normalize_code(offer.attrib.get("id") or "")
             if art:
                 vc.text=art; filled_from_art+=1
-            else:
-                # если артикул так и не нашли — оставим пустой суффикс (префикс всё равно добавим ниже)
-                pass
         vc.text=f"{prefix}{(vc.text or '')}"; total_prefixed+=1
     return total_prefixed,created,filled_from_art,0
 
 # ================= ФИНАЛЬНАЯ ЧИСТКА ТЕГОВ/АТРИБУТОВ =======================
 
 def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
-    """Чистим служебные теги и атрибуты у <offer> (они не нужны Satu)."""
     removed_tags=0
     for t in PURGE_TAGS_AFTER:
         for node in list(offer.findall(t)):
@@ -523,13 +435,11 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
     return removed_tags,removed_attrs
 
 def count_category_ids(offer_el:ET.Element)->int:
-    """Подсчитывает теги categoryId/CategoryId в оффере."""
     return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
-# =========================== FEED_META (комментарий) =======================
+# =========================== FEED_META ===========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
-    """Формирует две колонки: «ключ = значение» и «комментарий» (колонка комментариев строго под '|')."""
     order=[
         "script_version","supplier","source","offers_total","offers_written",
         "keywords_mode","keywords_total","filtered_by_keywords",
@@ -544,7 +454,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
         "source":"URL исходного XML",
         "offers_total":"Офферов у поставщика до очистки",
         "offers_written":"Офферов записано (после очистки)",
-        "keywords_mode":"Режим фильтра (include/exclude)",
+        "keywords_mode":"Режим фильтра (include/exclude) — строгий префикс по файлу",
         "keywords_total":"Сколько ключей загружено",
         "filtered_by_keywords":"Сколько офферов отфильтровано по keywords",
         "prices_updated":"Скольким товарам пересчитали price",
@@ -563,30 +473,24 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     max_left = max(len(s) for s in left_parts)
     lines=["FEED_META"]
     for left, k in zip(left_parts, order):
-        comment = comments.get(k, "")
-        lines.append(f"{left.ljust(max_left)}  | {comment}")
+        lines.append(f"{left.ljust(max_left)}  | {comments.get(k,'')}")
     return "\n".join(lines)
 
 def top_dropped(d:Dict[str,int], n:int=10)->str:
-    """Возвращает строку вида 'brand:count,brand2:count2' (первые n)."""
     items=sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
     return ",".join(f"{k}:{v}" for k,v in items) if items else "n/a"
 
-# ================================= MAIN ====================================
+# =============================== MAIN ===============================
 
 def main()->None:
-    """Скачиваем → фильтруем → нормализуем → считаем цены → пишем YML."""
     log(f"Source: {SUPPLIER_URL}")
     data=fetch_xml(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF)
     src_root=ET.fromstring(data)
 
     shop_in=src_root.find("shop") if src_root.tag.lower()!="shop" else src_root
-    if shop_in is None:
-        err("XML: <shop> not found")
-
+    if shop_in is None: err("XML: <shop> not found")
     offers_in=shop_in.find("offers") or shop_in.find("Offers")
-    if offers_in is None:
-        err("XML: <offers> not found")
+    if offers_in is None: err("XML: <offers> not found")
 
     src_offers=list(offers_in.findall("offer"))
     catid_to_drop_total=sum(count_category_ids(o) for o in src_offers)
@@ -602,7 +506,7 @@ def main()->None:
                 mod.remove(node)
         out_offers.append(mod)
 
-    # Фильтр по <name> согласно файлу ключей (include/exclude)
+    # ---------- СТРОГИЙ ПРЕФИКСНЫЙ ФИЛЬТР ----------
     keys=load_keywords(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но ключей не найдено. Проверь docs/akcent_keywords.txt.", 2)
@@ -611,40 +515,38 @@ def main()->None:
     if (AKCENT_KEYWORDS_MODE in {"include","exclude"}) and len(keys)>0:
         for off in list(out_offers.findall("offer")):
             nm=get_text(off,"name")
-            hit,_=name_matches(nm,keys)
+            hit,_=name_matches_prefix(nm,keys)
             drop_this=(AKCENT_KEYWORDS_MODE=="exclude" and hit) or (AKCENT_KEYWORDS_MODE=="include" and not hit)
             if drop_this:
                 out_offers.remove(off); filtered_out+=1
 
-    # Нормализуем бренды → vendorCode → цены
+    # Нормализация брендов, vendorCode, цены
     norm_cnt, dropped_names = ensure_vendor(out_shop)
-    total_prefixed, created_nodes, filled_from_art, fixed_bare = ensure_vendorcode_with_article(
-        out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=VENDORCODE_CREATE_IF_MISSING
+    total_prefixed, created_nodes, filled_from_art, _ = ensure_vendorcode_with_article(
+        out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AC"),
+        create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
     )
     upd, skipped, total = reprice_offers(out_shop, PRICING_RULES)
 
-    # Параметры → описание; затем описание сжимаем; затем убираем сами <param>
+    # Параметры → описание; затем однострочное описание; затем удаляем <param>
     specs_offers, specs_lines = inject_specs_block(out_shop)
     removed_params = strip_all_params(out_shop)
     cleaned_desc = clean_all_descriptions_one_line(out_shop)
 
-    # Доступность (у Akcent все true)
+    # Наличие (у Akcent — всё true)
     available_forced = normalize_stock_always_true(out_shop)
 
-    # Финальная чистка лишних тегов/атрибутов
+    # Финальная чистка тегов/атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
-    # Пустая строка между офферами (для читаемости)
+    # Разделители между офферами (для читабельности)
     children = list(out_offers)
     for i in range(len(children)-1, 0, -1):
         out_offers.insert(i, ET.Comment("OFFSEP"))
 
-    # Красивый отступ (если поддерживается)
-    try:
-        ET.indent(out_root, space="  ")
-    except Exception:
-        pass
+    try: ET.indent(out_root, space="  ")
+    except Exception: pass
 
     # FEED_META
     offers_written=len(list(out_offers.findall("offer")))
@@ -670,32 +572,26 @@ def main()->None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # Сериализация → текст и постобработка OFFSEP в пустые строки
+    # Сериализация и косметика: OFFSEP → пустые строки; разрыв после FEED_META
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
     xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n  ", xml_text)
     xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
-    # ВАЖНО: разрыв строки между концом комментария и <shop> (фикс '... (Алматы)--><shop>')
     xml_text = re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
 
     if DRY_RUN:
-        log("[DRY_RUN=1] Files not written.")
-        return
+        log("[DRY_RUN=1] Files not written."); return
 
-    # Запись ТОЛЬКО YML
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
-        f.write(xml_text)
+    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f: f.write(xml_text)
 
-    # .nojekyll для GitHub Pages
     docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
     try:
-        os.makedirs(docs_dir, exist_ok=True)
-        open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+        os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} | offers={offers_written} | encoding={ENC} | script={SCRIPT_VERSION} | desc_cleaned={cleaned_desc}")
+    log(f"Wrote: {OUT_FILE_YML} | offers={offers_written} | encoding={ENC} | script={SCRIPT_VERSION}")
 
 if __name__ == "__main__":
     try:
