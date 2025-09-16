@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-16 06:42">
+<yml_catalog date="2025-09-16 12:56">
   <!--FEED_META
 script_version                  = alstyle-2025-09-15.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15805                                                           | Офферов у поставщика до очистки
-offers_written                  = 1978                                                            | Офферов записано (после очистки)
+offers_total                    = 15807                                                           | Офферов у поставщика до очистки
+offers_written                  = 1980                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
 filtered_by_categories          = 13827                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1978                                                            | Скольким товарам пересчитали price
+prices_updated                  = 1980                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
-dealer_src_direct_field         = 1978                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
+dealer_src_direct_field         = 1980                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
 dealer_src_rrp_fallback         = 0                                                               | Базовая цена взята из RRP/РРЦ (fallback)
 dealer_src_missing              = 0                                                               | Не нашли базовую цену
-params_removed                  = 9519                                                            | Сколько строк параметров добавлено в описание
+params_removed                  = 9521                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1376                                                            | Сколько офферов доступны (true)
-available_false                 = 602                                                             | Сколько офферов недоступны (false)
+available_true                  = 1377                                                            | Сколько офферов доступны (true)
+available_false                 = 603                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15805                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15807                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-16 06:42:09 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-16 11:42:09 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-16 12:56:40 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-16 17:56:40 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -74,7 +74,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
         <picture>https://img.al-style.kz/20889_1.jpg</picture>
         <picture>https://img.al-style.kz/20889_2.jpg</picture>
         <picture>https://img.al-style.kz/20889_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>SVC</vendor>
         <name>Источник бесперебойного питания SVC U-850-L</name>
         <description>Линейно-Интерактивный ИБП с функцией сетевого фильтра SVC U-850-L Устройство, позволяющее подключённому оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. 3 выходных разъёмов Shuko CEE7 с батарейной поддержкой и 3 выходных разъёмов с функцией сетевого фильтра позволят подключить большое количество оборудования. 2*USB порта 5В/2А позволят зарядить любое портативное устройство.
@@ -101,7 +101,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="12571">
@@ -2156,7 +2156,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
         <picture>https://img.al-style.kz/13997_1.jpg</picture>
         <picture>https://img.al-style.kz/13997_2.jpg</picture>
         <picture>https://img.al-style.kz/13997_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Ship</vendor>
         <name>Кабель сетевой SHIP D176A-P Cat.6A S-FTP 30В PE</name>
         <description>Кабель сетевой SHIP D176A-P  Это дважды экранированный (S-FTP) 4-х парный кабель 6-А категории. Защищён внешним экраном из медной оплетки плюс к этому каждая пара заключена в дополнительный отдельный экран. Двойной экран сводит к нулю уровень электромагнитного излучения кабеля и в несколько раз повышает защищённость от внешних помех. Используется при очень высоком уровне внешних наводок (производственные помещения) или при сверхвысоких требованиях к информационной безопасности. В отличии от кабеля 5e категории имеет жилу 0,56 мм. что позволяет работать на частоте 500 Мгц. Также по стандарту 6а категории, каждая пара имеет свой шаг скрутки. Кабель имеет стандартную PE оболочку, применяется при прокладке вне помещений.  
@@ -2173,7 +2173,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 - Стандарты: Категория 6A
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="17252">
@@ -2649,6 +2649,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: 2 года
 - Для принтеров: Samsung SL-M2020, 2022, 2070
 - Тип печати: Лазерная
@@ -3209,7 +3210,6 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
-- Вес: 2.4
 - Гарантия: 2 года
 - Для принтеров: HP LaserJet Pro 700 M712, M715, M725, Canon LBP8710, 8720, 8730, 8750, 8780
 - Тип печати: Лазерная
@@ -4644,7 +4644,6 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
-- Вес: 0.7
 - Гарантия: 2 года
 - Для принтеров: Xerox WorkCentre 3215, 3225
 - Тип печати: Лазерная</description>
@@ -7158,7 +7157,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
         <picture>https://img.al-style.kz/24278_1.jpg</picture>
         <picture>https://img.al-style.kz/24278_2.jpg</picture>
         <picture>https://img.al-style.kz/24278_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>SVC</vendor>
         <name>Источник бесперебойного питания SVC PTX-10KL-LCD</name>
         <description>Онлайн ИБП SVC PTX-10KL-LCD Используется для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю. ИБП с внешним подключением батарейного блока, позволяет индивидуально конфигурировать время автономной работы. ИБП оснащен интерфейсными портами USB/RS-232, благодаря которым можно наблюдать за параметрами работы ИБП и корректно завершать работу.
@@ -7190,7 +7189,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="22495">
@@ -8354,6 +8353,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
+- Вес: 0.6
 - Гарантия: 2 года
 - Для принтеров: Canon IR-2002, 2202
 - Тип печати: Лазерная
@@ -10344,6 +10344,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
+- Вес: 0.9
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -12260,7 +12261,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
         <currencyId>KZT</currencyId>
         <vendorCode>AS32322</vendorCode>
         <picture>https://img.al-style.kz/32322_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Принт-картридж Xerox 101R00474</name>
         <description>Принт-картридж – расходный материал, используемый принтером или МФУ. Представляет собой блок, в который входит фотобарабан, система его очистки и бункер для отработанного тонера. Главным компонентом является светочувствительный барабан, который служит для формирования электростатического изображения с последующим нанесением на него тонера
@@ -12282,7 +12283,7 @@ built_Asia/Almaty               = 2025-09-16 11:42:09 +05                       
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31859">
@@ -23273,7 +23274,7 @@ PoE
         <picture>https://img.al-style.kz/22246_1.jpg</picture>
         <picture>https://img.al-style.kz/22246_2.jpg</picture>
         <picture>https://img.al-style.kz/22246_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF232A</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -23308,7 +23309,7 @@ PoE
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="265376">
@@ -24229,6 +24230,7 @@ USB
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
+- Вес: 1.3
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -25947,7 +25949,7 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS42433</vendorCode>
         <picture>https://img.al-style.kz/42433_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R01819</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -25965,7 +25967,7 @@ USB
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="266862">
@@ -32888,7 +32890,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
         <picture>https://img.al-style.kz/21396_1.jpg</picture>
         <picture>https://img.al-style.kz/21396_2.jpg</picture>
         <picture>https://img.al-style.kz/21396_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Comix</vendor>
         <name>Уничтожитель бумаг (Шредер) COMIX S273</name>
         <description>Уничтожитель бумаг (Шредер) COMIX S273
@@ -32917,7 +32919,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
 - Отдельный слот: для Credit Cart/ CD
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="369064">
@@ -38196,7 +38198,7 @@ Type C   1 (4K, 60 Гц)
         <picture>https://img.al-style.kz/58550_1.jpg</picture>
         <picture>https://img.al-style.kz/58550_2.jpg</picture>
         <picture>https://img.al-style.kz/58550_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>LG</vendor>
         <name>Монитор 31,5" LG 32GP850-B Black</name>
         <description>Монитор 31,5" LG 32GP850-B Black
@@ -38245,7 +38247,7 @@ USB-C x1
 - Видеовыход: HDMI / DP
 - Время отклика: 1 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392732">
@@ -38919,7 +38921,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <vendorCode>AS59325</vendorCode>
         <picture>https://img.al-style.kz/59325_1.jpg</picture>
         <picture>https://img.al-style.kz/59325_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Цветное лазерное МФУ Canon I-S MF752CDW</name>
         <description>Цветное лазерное МФУ Canon I-S MF752CDW
@@ -38956,7 +38958,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Скорость сканирования: до 100 изобр./мин.
 - Скорость выхода первой страницы: 7.1 сек. (моно) / 7.1 сек. (цвет)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392881">
@@ -39424,7 +39426,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59361_1.jpg</picture>
         <picture>https://img.al-style.kz/59361_2.jpg</picture>
         <picture>https://img.al-style.kz/59361_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Монохромный лазерный принтер Canon I-S LBP246dw</name>
         <description>Монохромный лазерный принтер Canon I-S LBP246dw
@@ -39461,7 +39463,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392919">
@@ -44137,7 +44139,7 @@ Canon imagePROGRAF TM-200Canon imagePROGRAF TM-205Canon imagePROGRAF TM-300Canon
       </offer>
 
   <offer id="393974">
-        <price>439900</price>
+        <price>459900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS60451</vendorCode>
         <picture>https://img.al-style.kz/60451_1.jpg</picture>
@@ -44623,7 +44625,7 @@ HDCP
         <picture>https://img.al-style.kz/60531_1.jpg</picture>
         <picture>https://img.al-style.kz/60531_2.jpg</picture>
         <picture>https://img.al-style.kz/60531_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>iiyama</vendor>
         <name>Монитор iiyama ProLite PL2792Q XUB2792QSU-W6 27"</name>
         <description>Монитор iiyama ProLite PL2792Q XUB2792QSU-W6 27"
@@ -44668,7 +44670,7 @@ HDCP
 - Видеовыход: HDMI / DP
 - Время отклика: 0,5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="394240">
@@ -47059,7 +47061,7 @@ USB кабель
         <picture>https://img.al-style.kz/61354_1.jpg</picture>
         <picture>https://img.al-style.kz/61354_2.jpg</picture>
         <picture>https://img.al-style.kz/61354_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Smart-UPS SRT5KRMXLI</name>
         <description>Источник бесперебойного питания APC Smart-UPS SRT5KRMXLI
@@ -47090,7 +47092,7 @@ APC Smart-UPS SRT5KRMXLI обеспечивает чистое синусоидальное питание и увеличенно
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396741">
@@ -47100,7 +47102,7 @@ APC Smart-UPS SRT5KRMXLI обеспечивает чистое синусоидальное питание и увеличенно
         <picture>https://img.al-style.kz/61355_1.jpg</picture>
         <picture>https://img.al-style.kz/61355_2.jpg</picture>
         <picture>https://img.al-style.kz/61355_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Smart-UPS SRT3000RMXLI</name>
         <description>Источник бесперебойного питания APC Smart-UPS SRT3000RMXLI
@@ -47132,7 +47134,7 @@ USB кабель
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396742">
@@ -52199,7 +52201,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
         <vendorCode>AS62951</vendorCode>
         <picture>https://img.al-style.kz/62951_1.jpg</picture>
         <picture>https://img.al-style.kz/62951_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Картридж Canon CARTRIDGE 054 Yellow</name>
         <description>Картридж Canon CARTRIDGE 054 Yellow
@@ -52233,7 +52235,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="398357">
@@ -54958,7 +54960,7 @@ Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SEN
         <picture>https://img.al-style.kz/64431_1.jpg</picture>
         <picture>https://img.al-style.kz/64431_2.jpg</picture>
         <picture>https://img.al-style.kz/64431_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Монохромное лазерное МФУ Canon imageRUNNER ADVANCE DX 619i</name>
         <description>Монохромное лазерное МФУ Canon imageRUNNER ADVANCE DX 619i
@@ -54999,7 +55001,7 @@ Canon imageRUNNER ADVANCE DX 619i
 - Емкость выходных лотков: 500 листов
 - Скорость сканирования: до 190 изобр./мин.</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="400132">
@@ -59961,7 +59963,6 @@ LCD панель
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
-- Вес: 0.7
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -60004,7 +60005,6 @@ LCD панель
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
-- Вес: 0.7
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -60047,7 +60047,6 @@ LCD панель
 Условия двухлетней гарантии продукции действуют при сохранении целостности голографической защитной пломбы на корпусе картриджа, что исключает посредствующий разбор, замену запчастей, либо перезаправки оригинального картриджа EUROPRINT
 
 Характеристики:
-- Вес: 0.7
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -61658,6 +61657,7 @@ ScanPad
 В случае обнаружения брака в продукции, необходимо предъявить медиа файлы (фото или видео): распечатки с просматриваемым дефектом печати, либо ошибки возникшей в ходе работы на устройстве пользователя.
 
 Характеристики:
+- Вес: 0.9
 - Гарантия: 2 года
 - Для принтеров: HP LaserJet P2035, P2055, Pro 400 M401, MFP M425
 - Тип печати: Лазерная
@@ -64951,13 +64951,13 @@ Canon i-SENSYS MF237w
         <vendorCode>AS72046</vendorCode>
         <picture>https://img.al-style.kz/72046_1.jpg</picture>
         <picture>https://img.al-style.kz/72046_2.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Legrand</vendor>
         <name>Батарейный блок Legrand для ИБП Daker DK Plus 6 кВА</name>
         <description>Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="406621">
@@ -71809,6 +71809,29 @@ USB-C x1
         <available>true</available>
       </offer>
 
+  <offer id="411989">
+        <price>135900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS78787</vendorCode>
+        <available>false</available>
+        <vendor>Xerox</vendor>
+        <name>Комплект инициализации Xerox AltaLink C8230 (097S05274)</name>
+        <description>Содержит специальный ключ, который требуется для запуска базового модуля. После завершения процесса инициализации базовый блок продолжает работу как многофункциональное устройство Xerox AltaLink C8230 
+
+Характеристики
+
+Модель			 097S05274	
+
+Комплект поставки		• Флеш-накопитель с ключом
+• Руководство пользователя
+• Наклейка-стикер
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
   <offer id="412223">
         <price>210900</price>
         <currencyId>KZT</currencyId>
@@ -72720,6 +72743,19 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
 Кабель питания
 
 Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
+  <offer id="414810">
+        <price>10499900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS81743</vendorCode>
+        <available>true</available>
+        <vendor>Xerox</vendor>
+        <name>Узел второго переноса 152N12002</name>
+        <description>Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
