@@ -6,15 +6,10 @@
 name: build_akcent  # ← старое имя, не меняем
 
 on:
-  # Ручной запуск из вкладки Actions
   workflow_dispatch:
-
-  # ЕЖЕДНЕВНО В 02:00 ПО АЛМАТЫ (UTC+5)
-  # В GitHub Actions cron всегда в UTC, поэтому 02:00 Asia/Almaty = 21:00 UTC предыдущего дня
+  # 02:00 Asia/Almaty = 21:00 UTC (пред. день)
   schedule:
-    - cron: '0 21 * * *'  # 21:00 UTC = 02:00 Asia/Almaty
-
-  # Автозапуск при изменениях
+    - cron: '0 21 * * *'
   push:
     paths:
       - 'scripts/build_akcent.py'
@@ -22,7 +17,7 @@ on:
       - '.github/workflows/build_akcent.yml'
 
 permissions:
-  contents: write  # нужно, чтобы пушить изменения
+  contents: write
 
 concurrency:
   group: build-akcent
@@ -34,54 +29,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Забираем репозиторий
+      # Полная история нужна для pull --rebase
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 2) Ставим Python
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3) Ставим зависимости
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
-      # 4) Собираем фид Akcent
       - name: Build Akcent feed
         env:
-          # Метка и источник
           SUPPLIER_NAME: akcent
           SUPPLIER_URL: https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-
-          # Вывод
           OUT_FILE: docs/akcent.yml
           OUTPUT_ENCODING: windows-1251
-
-          # Сеть
           TIMEOUT_S: '30'
           RETRIES: '4'
           RETRY_BACKOFF_S: '2'
           MIN_BYTES: '1500'
-
-          # vendorCode
           VENDORCODE_PREFIX: AC
           VENDORCODE_CREATE_IF_MISSING: '1'
-
-          # Фильтр по префиксам из файла (<name> должен НАЧИНАТЬСЯ с фразы)
           AKCENT_KEYWORDS_PATH: docs/akcent_keywords.txt
-          AKCENT_KEYWORDS_MODE: include   # include — оставляем совпавшие; exclude — отбрасываем совпавшие
+          AKCENT_KEYWORDS_MODE: include
         run: |
           set -e
           python --version
           python scripts/build_akcent.py
 
-      # 5) Коммитим изменения, если есть
-      - name: Commit & push if changed
+      # ВАЖНО: тянем изменения с удалённого (rebase), затем push
+      - name: Commit & pull --rebase & push
         env:
+          BRANCH_NAME: ${{ github.ref_name }}
           GIT_AUTHOR_NAME: github-actions[bot]
           GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: github-actions[bot]
@@ -90,10 +76,18 @@ jobs:
           set -e
           git config user.name  "$GIT_AUTHOR_NAME"
           git config user.email "$GIT_AUTHOR_EMAIL"
+
           git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit."
-          else
-            git commit -m "chore(akcent): update docs/akcent.yml [skip ci]"
-            git push
+            exit 0
           fi
+
+          git commit -m "chore(akcent): update docs/akcent.yml [skip ci]"
+
+          # подтягиваем новые коммиты с origin и накатываем наш commit поверх
+          git fetch origin "$BRANCH_NAME"
+          git pull --rebase origin "$BRANCH_NAME"
+
+          # отправляем
+          git push origin HEAD:"$BRANCH_NAME"
