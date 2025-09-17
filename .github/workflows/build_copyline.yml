@@ -1,28 +1,18 @@
-# ================================= #
-#   CI для сборки фида Copyline     #
-#   Результат: docs/copyline.yml    #
-# ================================= #
-
-name: build_copyline  # имя воркфлоу
+name: build_copyline
 
 on:
-  workflow_dispatch:  # ручной запуск
-
-  # ЕЖЕДНЕВНО В 00:00 ПО АЛМАТЫ (UTC+5)
-  # GitHub Actions использует UTC, поэтому 00:00 Asia/Almaty = 19:00 UTC (предыдущий день)
+  workflow_dispatch:
+  # 03:00 Asia/Almaty = 22:00 UTC (пред. день)
   schedule:
-    - cron: '0 19 * * *'  # 19:00 UTC = 00:00 Asia/Almaty
-
-  # Автозапуск при изменениях
+    - cron: '0 22 * * *'
   push:
     paths:
       - 'scripts/build_copyline.py'
       - 'docs/copyline_keywords.txt'
-      - 'docs/copyline_categories.txt'
       - '.github/workflows/build_copyline.yml'
 
 permissions:
-  contents: write  # нужно для push
+  contents: write
 
 concurrency:
   group: build-copyline
@@ -34,58 +24,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Клонируем репозиторий с ПОЛНОЙ историей (для pull --rebase)
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2) Python 3.11
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3) Зависимости: requests + pandas + openpyxl (чтение xlsx)
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests pandas openpyxl
+          pip install requests openpyxl
 
-      # 4) Сборка YML
       - name: Build Copyline feed
         env:
-          # Метка и источник (XLSX)
           SUPPLIER_NAME: copyline
           SUPPLIER_URL: https://copyline.kz/files/price-CLA.xlsx
 
-          # Вывод — только YML
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
 
-          # Сеть
-          TIMEOUT_S: '40'
+          TIMEOUT_S: '30'
           RETRIES: '4'
           RETRY_BACKOFF_S: '2'
-          MIN_BYTES: '1500'
+          MIN_BYTES: '2000'
 
-          # vendorCode
           VENDORCODE_PREFIX: CL
           VENDORCODE_CREATE_IF_MISSING: '1'
 
-          # Фильтр по ПРЕФИКСАМ из файла: <name> должен НАЧИНАТЬСЯ с фразы
           COPYLINE_KEYWORDS_PATH: docs/copyline_keywords.txt
-          COPYLINE_KEYWORDS_MODE: include    # include — оставляем совпавшие; exclude — отбрасываем совпавшие
+          COPYLINE_KEYWORDS_MODE: include
 
-          # (Опционально) Фильтр по категориям — если нужен, включай include/exclude и заполни файл
-          COPYLINE_CATEGORIES_PATH: docs/copyline_categories.txt
-          COPYLINE_CATEGORIES_MODE: ''       # '', 'include' или 'exclude'
+          # ВКЛЮЧАЕМ «обрезку мусора» перед префикс-матчем и отладку первых элементов
+          COPYLINE_PREFIX_ALLOW_TRIM: '1'
+          COPYLINE_KEYWORDS_DEBUG: '1'       # Можно выключить позже
+          COPYLINE_DEBUG_MAX_HITS: '40'
         run: |
           set -e
           python --version
           python scripts/build_copyline.py
 
-      # 5) Коммит + rebase + push (чтобы избежать "rejected: fetch first")
       - name: Commit & pull --rebase & push
         env:
           BRANCH_NAME: ${{ github.ref_name }}
@@ -97,15 +78,12 @@ jobs:
           set -e
           git config user.name  "$GIT_AUTHOR_NAME"
           git config user.email "$GIT_AUTHOR_EMAIL"
-
           git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-
           git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
-
           git fetch origin "$BRANCH_NAME"
           git pull --rebase origin "$BRANCH_NAME"
           git push origin HEAD:"$BRANCH_NAME"
