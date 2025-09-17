@@ -1,25 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Build Copyline YML (flat <offers>) for Satu
-script_version = copyline-2025-09-17.0
+Сборщик YML для поставщика Copyline (плоский <offers> для Satu)
+script_version = copyline-2025-09-17.1
 
-Что делает:
-- Скачивает XLSX-прайс Copyline (по умолчанию: https://copyline.kz/files/price-CLA.xlsx)
-- Читает строки, вытягивает артикул/название/цены/бренд/картинку/категорию (если есть колонки)
-- Фильтрует товары: <name> ДОЛЖЕН НАЧИНАТЬСЯ с фразы из docs/copyline_keywords.txt (строгий префикс)
-- Считает розничную цену по правилам (4% + фикс. добавка по диапазонам) и нормализует в формат "...900"
-- Создаёт <vendorCode> с префиксом CL, если возможно достать артикул
-- Выходит только в docs/copyline.yml (windows-1251), БЕЗ <url>
-- Добавляет FEED_META (на русском) и разрыв строки между <!--...--> и <shop>
-
-Примечания:
-- Категории: если в XLSX есть колонка "Категория/Раздел/Группа", берём её для статистики, но НЕ выводим в YML.
-- Можно включить опциональный фильтр по категориям через файл docs/copyline_categories.txt (режим include).
-- Доступность: если найдём колонку "наличие/остаток/stock/qty" и там >0 или "да" — ставим true, иначе по умолчанию тоже true.
+Апдейты .1:
+- Жёсткая нормализация Юникода (NFKC) и пробелов для имен и ключей.
+- Стрип «мусора» в начале имени (кавычки, «», -, —, •, скобки и т.п.) перед проверкой префикса.
+- Расширен список заголовков для колонки 'name' (например, 'Наименование товара', 'Номенклатура').
+- Отладочные логи по ключам/совпадениям (включаются переменной окружения COPYLINE_KEYWORDS_DEBUG=1).
 """
 
 from __future__ import annotations
-import os, sys, re, io, time, random
+import os, sys, re, time, random, urllib.parse, io, hashlib, unicodedata
 from typing import Dict, List, Tuple, Optional
 from datetime import datetime, timezone
 from xml.etree import ElementTree as ET
@@ -30,207 +22,167 @@ except Exception:
     ZoneInfo = None
 
 import requests
-import pandas as pd
+from openpyxl import load_workbook
 
-# ========================== НАСТРОЙКИ (ENV) ==========================
+# ========================== НАСТРОЙКИ ===========================
 
-SCRIPT_VERSION = "copyline-2025-09-17.0"
+SCRIPT_VERSION = "copyline-2025-09-17.1"
 
-SUPPLIER_NAME  = os.getenv("SUPPLIER_NAME", "copyline")
-SUPPLIER_URL   = os.getenv("SUPPLIER_URL", "https://copyline.kz/files/price-CLA.xlsx")
-OUT_FILE_YML   = os.getenv("OUT_FILE", "docs/copyline.yml")
-ENC            = os.getenv("OUTPUT_ENCODING", "windows-1251")
+SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "copyline")
+SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://copyline.kz/files/price-CLA.xlsx")
+OUT_FILE_YML     = os.getenv("OUT_FILE", "docs/copyline.yml")
+ENC              = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-TIMEOUT_S      = int(os.getenv("TIMEOUT_S", "40"))
-RETRIES        = int(os.getenv("RETRIES", "4"))
-RETRY_BACKOFF  = float(os.getenv("RETRY_BACKOFF_S", "2"))
-MIN_BYTES      = int(os.getenv("MIN_BYTES", "1500"))
-DRY_RUN        = os.getenv("DRY_RUN", "0").lower() in {"1", "true", "yes"}
+TIMEOUT_S        = int(os.getenv("TIMEOUT_S", "30"))
+RETRIES          = int(os.getenv("RETRIES", "4"))
+RETRY_BACKOFF    = float(os.getenv("RETRY_BACKOFF_S", "2"))
+MIN_BYTES        = int(os.getenv("MIN_BYTES", "2000"))
 
-# Фильтр по НАЗВАНИЮ (строгий префикс)
-CL_KEYWORDS_PATH  = os.getenv("COPYLINE_KEYWORDS_PATH", "docs/copyline_keywords.txt")
-CL_KEYWORDS_MODE  = os.getenv("COPYLINE_KEYWORDS_MODE", "include").lower()   # include|exclude
-CL_KEYWORDS_DEBUG = os.getenv("COPYLINE_KEYWORDS_DEBUG", "0").lower() in {"1", "true", "yes"}
-CL_DEBUG_MAX_HITS = int(os.getenv("COPYLINE_DEBUG_MAX_HITS", "40"))
+COPYLINE_KEYWORDS_PATH  = os.getenv("COPYLINE_KEYWORDS_PATH", "docs/copyline_keywords.txt")
+COPYLINE_KEYWORDS_MODE  = os.getenv("COPYLINE_KEYWORDS_MODE", "include").lower()  # include|exclude
+COPYLINE_KEYWORDS_DEBUG = os.getenv("COPYLINE_KEYWORDS_DEBUG", "0").lower() in {"1","true","yes"}
+COPYLINE_DEBUG_MAX_HITS = int(os.getenv("COPYLINE_DEBUG_MAX_HITS", "40"))
+COPYLINE_PREFIX_ALLOW_TRIM = os.getenv("COPYLINE_PREFIX_ALLOW_TRIM", "1").lower() in {"1","true","yes"}
 
-# Опциональный фильтр по КАТЕГОРИЯМ (как в alstyle)
-CL_CATEGORIES_PATH = os.getenv("COPYLINE_CATEGORIES_PATH", "docs/copyline_categories.txt")
-CL_CATEGORIES_MODE = os.getenv("COPYLINE_CATEGORIES_MODE", "").lower()       # "", "include" или "exclude"
-
-# vendorCode
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "CL")
 VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "1").lower() in {"1","true","yes"}
 
-# ========================== УТИЛИТЫ ЛОГА ===========================
+DRY_RUN = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-def log(msg: str) -> None:
-    print(msg, flush=True)
+# ================================ УТИЛИТЫ ==================================
 
-def warn(msg: str) -> None:
-    print(f"WARN: {msg}", file=sys.stderr, flush=True)
+def log(msg: str) -> None: print(msg, flush=True)
+def warn(msg: str) -> None: print(f"WARN: {msg}", file=sys.stderr, flush=True)
+def err(msg: str, code: int = 1) -> None: print(f"ERROR: {msg}", file=sys.stderr, flush=True); sys.exit(code)
 
-def err(msg: str, code: int = 1) -> None:
-    print(f"ERROR: {msg}", file=sys.stderr, flush=True)
-    sys.exit(code)
-
-def now_utc_str() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
-
+def now_utc_str() -> str: return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 def now_almaty_str() -> str:
-    if ZoneInfo:
-        return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    return time.strftime("%Y-%m-%d %H:%M:%S")
+    if ZoneInfo: return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-# ========================== СКАЧАТЬ XLSX ===========================
+def _nfkc(s: str) -> str:
+    return unicodedata.normalize("NFKC", s or "")
 
-def fetch_bytes(url: str, timeout: int, retries: int, backoff: float) -> bytes:
+def _norm(s: str) -> str:
+    """NFKC → NBSP→пробел → ё→е → lower → схлоп пробелов."""
+    s = _nfkc(s).replace("\u00A0", " ").replace("ё", "е").strip().lower()
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+_LEADING_NOISE_RE = re.compile(r'^[\s\-\–\—•·|:/\\\[\]\(\)«»"“”„\']+')
+
+def _strip_leading_noise(s_norm: str) -> str:
+    """Снять 'мусор' в начале нормализованной строки (кавычки, тире, буллеты, скобки и т.п.)."""
+    return _LEADING_NOISE_RE.sub("", s_norm)
+
+def _clean_one_line(s: str) -> str:
+    if not s: return ""
+    s = _nfkc(s).replace("\r\n","\n").replace("\r","\n").replace("\u00A0"," ")
+    s = re.sub(r"&nbsp;?", " ", s, flags=re.I)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+def parse_money(raw: str) -> Optional[float]:
+    if raw is None: return None
+    s = str(raw)
+    s = (s.strip().replace("\xa0"," ").replace(" ","").replace("KZT","").replace("kzt","").replace("₸","").replace(",","."))
+    if not s: return None
+    try:
+        v = float(s); return v if v>0 else None
+    except Exception:
+        return None
+
+def stable_id_from(text: str) -> str:
+    h = hashlib.sha1((_nfkc(text)).encode("utf-8", errors="ignore")).hexdigest()[:12]
+    return f"CL-{h}"
+
+# ======================= ЗАГРУЗКА XLSX ========================
+
+def fetch_xlsx_bytes(url: str) -> bytes:
     sess = requests.Session()
     headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
     last_exc = None
-    for attempt in range(1, retries+1):
+    for attempt in range(1, RETRIES+1):
         try:
-            r = sess.get(url, headers=headers, timeout=timeout, stream=True)
-            if r.status_code != 200:
-                raise RuntimeError(f"HTTP {r.status_code}")
+            r = sess.get(url, headers=headers, timeout=TIMEOUT_S, stream=True)
+            if r.status_code != 200: raise RuntimeError(f"HTTP {r.status_code}")
             data = r.content
-            if len(data) < MIN_BYTES:
-                raise RuntimeError(f"too small ({len(data)} bytes)")
+            if len(data) < MIN_BYTES: raise RuntimeError(f"too small ({len(data)} bytes)")
             return data
         except Exception as e:
             last_exc = e
-            slp = backoff * attempt * (1 + random.uniform(-0.2, 0.2))
-            warn(f"fetch attempt {attempt}/{retries} failed: {e}; sleep {slp:.2f}s")
-            if attempt < retries:
-                time.sleep(slp)
-    raise RuntimeError(f"fetch failed after {retries} attempts: {last_exc}")
+            back = RETRY_BACKOFF * attempt * (1.0 + random.uniform(-0.2, 0.2))
+            warn(f"fetch attempt {attempt}/{RETRIES} failed: {e}; sleep {back:.2f}s")
+            if attempt < RETRIES: time.sleep(back)
+    raise RuntimeError(f"fetch failed after {RETRIES} attempts: {last_exc}")
 
-# ========================== ПОИСК КОЛОНОК ==========================
-
-def norm(s: str) -> str:
-    return re.sub(r"\s+", " ", (s or "").strip().lower().replace("ё", "е"))
-
-def guess_col(cols: List[str], patterns: List[str]) -> Optional[str]:
-    """Выбирает первую колонку, имя которой содержит один из шаблонов."""
-    ncols = [norm(c) for c in cols]
-    for p in patterns:
-        p = norm(p)
-        for raw, n in zip(cols, ncols):
-            if p in n:
-                return raw
-    return None
-
-def best_price_cols(cols: List[str]) -> List[str]:
-    """Упорядоченный список кандидатов для дилерских/оптовых цен."""
-    order = [
-        "dealer", "дилер", "опт", "wholesale", "b2b", "закуп", "purchase",
-        "price", "цена", "rrp", "розница",
-    ]
-    ncols = [norm(c) for c in cols]
-    ranked = []
-    for p in order:
-        for raw, n in zip(cols, ncols):
-            if p in n and raw not in ranked:
-                ranked.append(raw)
-    return ranked
-
-# ======================= КЛЮЧИ/КАТЕГОРИИ ФИЛЬТР =====================
+# ===================== КЛЮЧИ (префиксы/регулярки) ==================
 
 class KeySpec:
-    """Правило: 'prefix' (фраза-префикс) или 'regex' (матчим с начала строки)."""
-    __slots__ = ("raw", "kind", "norm", "pattern")
-    def __init__(self, raw: str, kind: str, norm_key: Optional[str], pattern: Optional[re.Pattern]):
-        self.raw = raw
-        self.kind = kind
-        self.norm = norm_key
-        self.pattern = pattern
+    __slots__=("raw","kind","norm","pattern")
+    def __init__(self, raw: str, kind: str, norm: Optional[str], pattern: Optional[re.Pattern]):
+        self.raw, self.kind, self.norm, self.pattern = raw, kind, norm, pattern
 
-def load_prefix_keywords(path: str) -> List[KeySpec]:
-    """Каждая строка => префикс (нормализуем) или /regex/ (матчим .match)."""
-    if not path or not os.path.exists(path):
-        return []
+def load_keywords(path: str) -> List[KeySpec]:
+    if not path or not os.path.exists(path): return []
     data = None
     for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
         try:
-            with open(path, "r", encoding=enc) as f:
-                data = f.read()
+            with open(path,"r",encoding=enc) as f: data=f.read()
+            data = data.replace("\ufeff","").replace("\x00","")
             break
         except Exception:
             continue
     if data is None:
-        with open(path, "r", encoding="utf-8", errors="ignore") as f:
-            data = f.read()
-    keys: List[KeySpec] = []
-    for ln in data.splitlines():
-        s = ln.strip()
-        if not s or s.lstrip().startswith("#"):
-            continue
-        if len(s) >= 2 and s[0] == "/" and s[-1] == "/":
+        with open(path,"r",encoding="utf-8",errors="ignore") as f:
+            data = f.read().replace("\x00","")
+    keys: List[KeySpec]=[]
+    for line in data.splitlines():
+        s = line.strip()
+        if not s or s.lstrip().startswith("#"): continue
+        if len(s)>=2 and s[0]=="/" and s[-1]=="/":
             try:
-                keys.append(KeySpec(s, "regex", None, re.compile(s[1:-1], re.I)))
+                pat = re.compile(s[1:-1], re.I)
+                keys.append(KeySpec(s,"regex",None,pat))
             except Exception:
                 pass
-            continue
-        keys.append(KeySpec(s, "prefix", norm(s), None))
+        else:
+            keys.append(KeySpec(s,"prefix",_norm(s),None))
     return keys
 
-def name_matches_prefix(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[str]]:
-    if not keys:
-        return False, None
-    n = norm(name)
+def name_passes_prefix(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[str]]:
+    if not keys: return True, None
+    nm = _norm(name)
+    nm_trim = _strip_leading_noise(nm) if COPYLINE_PREFIX_ALLOW_TRIM else nm
     for ks in keys:
-        if ks.kind == "prefix":
-            if n.startswith(ks.norm or ""):
+        if ks.kind=="prefix":
+            if ks.norm and (nm_trim.startswith(ks.norm) or nm.startswith(ks.norm)):
                 return True, ks.raw
         else:
             if ks.pattern and ks.pattern.match(name or ""):
                 return True, ks.raw
     return False, None
 
-def load_category_rules(path: str) -> List[KeySpec]:
-    """Похожие правила, но применяются к cat_path (префиксно)."""
-    if not path or not os.path.exists(path):
-        return []
-    data = None
-    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
-        try:
-            with open(path, "r", encoding=enc) as f:
-                data = f.read()
-            break
-        except Exception:
-            continue
-    if data is None:
-        with open(path, "r", encoding="utf-8", errors="ignore") as f:
-            data = f.read()
-    rules: List[KeySpec] = []
-    for ln in data.splitlines():
-        s = ln.strip()
-        if not s or s.lstrip().startswith("#"):
-            continue
-        if len(s) >= 2 and s[0] == "/" and s[-1] == "/":
-            try:
-                rules.append(KeySpec(s, "regex", None, re.compile(s[1:-1], re.I)))
-            except Exception:
-                pass
-            continue
-        rules.append(KeySpec(s, "prefix", norm(s), None))
-    return rules
+# =========================== НОРМАЛИЗАЦИЯ БРЕНДА ===========================
 
-def cat_matches(cat_path: str, rules: List[KeySpec]) -> Tuple[bool, Optional[str]]:
-    if not rules:
-        return False, None
-    n = norm(cat_path)
-    for ks in rules:
-        if ks.kind == "prefix":
-            if n.startswith(ks.norm or ""):
-                return True, ks.raw
-        else:
-            if ks.pattern and ks.pattern.match(cat_path or ""):
-                return True, ks.raw
-    return False, None
+def _norm_brand_key(s: str) -> str:
+    if not s: return ""
+    s = _nfkc(s).strip().lower().replace("ё","е")
+    s = re.sub(r"[-_/]+"," ",s)
+    s = re.sub(r"\s+"," ",s)
+    return s
 
-# ========================= ЦЕНЫ/ПРАВИЛА ==========================
+SUPPLIER_BLOCKLIST = {_norm_brand_key(x) for x in ["copyline","copy line","копилайн","alstyle","akcent","vtt"]}
+UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
 
-PriceRule = Tuple[int,int,float,int]  # (min, max, %, fix add)
+def normalize_brand(raw: str) -> str:
+    k=_norm_brand_key(raw or "")
+    if (not k) or (k in SUPPLIER_BLOCKLIST): return ""
+    return raw.strip()
+
+# ============================== ЦЕНЫ ============================
+
+PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
     ( 10001,    25000, 4.0,  4000),
@@ -249,314 +201,246 @@ PRICING_RULES: List[PriceRule] = [
     (2000001,100000000,4.0,100000),
 ]
 
-def parse_price(x) -> Optional[float]:
-    if x is None:
-        return None
-    s = str(x).strip()
-    if not s:
-        return None
-    s = s.replace("\xa0"," ").replace(" ", "").replace("KZT","").replace("kzt","").replace("₸","").replace(",", ".")
-    try:
-        v = float(s)
-        return v if v > 0 else None
-    except Exception:
-        return None
-
-def force_tail_900(n: float) -> int:
-    i = int(n)
-    k = max(i // 1000, 0)
-    out = k * 1000 + 900
-    return out if out >= 900 else 900
+def price_tail_900(n: float) -> int:
+    i=int(n); k=max(i//1000,0); out=k*1000+900; return out if out>=900 else 900
 
 def compute_retail(dealer: float) -> Optional[int]:
-    for lo, hi, pct, add in PRICING_RULES:
-        if lo <= dealer <= hi:
-            return force_tail_900(dealer * (1.0 + pct/100.0) + add)
+    for lo,hi,pct,add in PRICING_RULES:
+        if lo<=dealer<=hi:
+            return price_tail_900(dealer*(1.0+pct/100.0)+add)
     return None
 
-# =========================== ПОЛЕЗНЫЕ ШТУКИ ============================
+# ============================ РАЗБОР XLSX ============================
 
-def sanitize_code(s: str) -> str:
-    """Нормализует артикул/код: выкидывает пробелы/символы, upper."""
-    s = (str(s) if s is not None else "").strip()
-    if not s:
-        return ""
-    s = re.sub(r"[\s_]+", "", s)
-    s = s.replace("—", "-").replace("–", "-")
-    s = re.sub(r"[^A-Za-z0-9\-]+", "", s)
+NAME_COLS   = {
+    "name","наименование","название","товар","product",
+    "наименование товара","номенклатура"
+}
+SKU_COLS    = {"артикул","sku","код","part","part number","partnumber","модель"}
+PRICE_COLS  = {"цена","цена закуп","опт","dealer","закуп","b2b","стоимость","price","opt","rrp","розница"}
+BRAND_COLS  = {"бренд","производитель","vendor","brand","maker"}
+DESC_COLS   = {"описание","description","описание товара","характеристики","spec","specs"}
+URL_COLS    = {"url","ссылка","link"}
+IMG_COLS    = {"image","картинка","фото","picture","image url","img"}
+AVAIL_COLS  = {"наличие","stock","количество","qty","остаток","доступно"}
+
+def map_headers(ws) -> Dict[int, str]:
+    header_row=None
+    for r in ws.iter_rows(min_row=1, max_row=1, values_only=True):
+        header_row=[str(x or "").strip() for x in r]; break
+    if not header_row: err("XLSX: не найдена строка заголовков")
+    mapping: Dict[int,str]={}
+    for idx, raw in enumerate(header_row, start=1):
+        key=_norm(raw)
+        if key in NAME_COLS: mapping[idx]="name"
+        elif key in SKU_COLS: mapping[idx]="sku"
+        elif key in BRAND_COLS: mapping[idx]="brand"
+        elif key in DESC_COLS: mapping[idx]="desc"
+        elif key in URL_COLS: mapping[idx]="url"
+        elif key in IMG_COLS: mapping[idx]="img"
+        elif key in AVAIL_COLS: mapping[idx]="avail"
+        elif key in PRICE_COLS: mapping[idx]="price"
+    if "name" not in mapping.values():
+        err(f"XLSX: не найдена колонка с названием товара. Заголовки: {header_row}")
+    return mapping
+
+def row_to_dict(row_vals: List, mapping: Dict[int,str]) -> Dict[str,str]:
+    out: Dict[str,str]={}
+    for col_idx, field in mapping.items():
+        val = row_vals[col_idx-1] if col_idx-1 < len(row_vals) else None
+        s = "" if val is None else str(val).strip()
+        if not s: continue
+        if field=="price":
+            prev=out.get("_price_candidates",[]); prev.append(s); out["_price_candidates"]=prev
+        else:
+            out[field]=s
+    return out
+
+def best_dealer_price(row: Dict[str,str]) -> Optional[float]:
+    vals=[]
+    for s in row.get("_price_candidates", []):
+        v=parse_money(s)
+        if v is not None: vals.append(v)
+    return min(vals) if vals else None
+
+# ======================= vendorCode / артикул ==============================
+
+ARTICUL_RE = re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
+
+def norm_code(s: str) -> str:
+    if not s: return ""
+    s=re.sub(r"[\s_]+","",s)
+    s=s.replace("—","-").replace("–","-")
+    s=re.sub(r"[^A-Za-z0-9\-]+","",s)
     return s.upper()
 
-def clean_one_line(s: str) -> str:
-    """Любые пробелы/переносы → один пробел, обрезаем по краям."""
-    if s is None:
-        return ""
-    s = str(s)
-    s = s.replace("\r\n","\n").replace("\r","\n").replace("\u00A0"," ")
-    s = re.sub(r"&nbsp;", " ", s, flags=re.I)
-    s = re.sub(r"\s+", " ", s)
-    return s.strip()
+def extract_article_from_any(row: Dict[str,str]) -> str:
+    art = norm_code(row.get("sku",""))
+    if art: return art
+    name=row.get("name","")
+    m=ARTICUL_RE.search(name or "")
+    if m: return norm_code(m.group(1))
+    url=row.get("url","")
+    if url:
+        try:
+            last=urllib.parse.urlparse(url).path.rstrip("/").split("/")[-1]
+            last=re.sub(r"\.(html?|php|aspx?|htm)$","",last,flags=re.I)
+            m2=ARTICUL_RE.search(last)
+            return norm_code(m2.group(1) if m2 else last)
+        except Exception:
+            pass
+    return ""
 
-def looks_available(val) -> bool:
-    """Эвристика наличия."""
-    s = str(val).strip().lower() if val is not None else ""
-    if not s:
-        return True  # по умолчанию оставляем true
-    if re.search(r"\b(да|в наличии|есть|true|yes|instock)\b", s):
-        return True
-    if re.search(r"\b(нет|ожидается|под заказ|out ?of ?stock|false|no)\b", s):
-        return False
-    # числа > 0 считаем "в наличии"
-    try:
-        v = float(s.replace(",", "."))
-        return v > 0
-    except Exception:
-        return True
+# =============================== FEED_META =================================
 
-# =========================== FEED_META ============================
-
-def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
-    order = [
+def render_feed_meta(pairs: Dict[str, str]) -> str:
+    order=[
         "script_version","supplier","source",
-        "offers_total","offers_written",
-        "keywords_mode","keywords_total","filtered_by_keywords",
-        "categories_mode","categories_rules","filtered_by_categories",
-        "prices_updated","vendors_recovered",
-        "vendorcodes_created","vendorcodes_filled_from_article",
+        "offers_total","offers_written","filtered_by_keywords",
+        "prices_updated","vendors_detected","available_set_true",
         "built_utc","built_Asia/Almaty",
     ]
-    comments = {
-        "script_version": "Версия скрипта",
-        "supplier":       "Метка поставщика",
-        "source":         "Источник (XLSX)",
-        "offers_total":   "Строк в исходном прайсе",
-        "offers_written": "Офферов записано (после фильтров)",
-        "keywords_mode":  "Фильтр по префиксам name (include/exclude/off)",
-        "keywords_total": "Сколько префиксов загружено",
-        "filtered_by_keywords": "Сколько строк отсечено по name",
-        "categories_mode": "Фильтр по категориям (include/exclude/off)",
-        "categories_rules":"Сколько правил категорий",
-        "filtered_by_categories":"Сколько строк отсечено по категориям",
-        "prices_updated": "Скольким товарам выставили price",
-        "vendors_recovered": "Скольким товарам нормализован vendor",
-        "vendorcodes_created": "Сколько создано узлов vendorCode",
-        "vendorcodes_filled_from_article": "Сколько vendorCode взяли из артикула",
-        "built_utc":      "Время сборки (UTC)",
-        "built_Asia/Almaty": "Время сборки (Алматы)",
+    comments={
+        "script_version":"Версия скрипта (для контроля в CI)",
+        "supplier":"Метка поставщика",
+        "source":"URL исходного XLSX",
+        "offers_total":"Позиции в исходном файле (до фильтра)",
+        "offers_written":"Офферов записано (после фильтра и очистки)",
+        "filtered_by_keywords":"Сколько позиций отфильтровано по префиксам",
+        "prices_updated":"Скольким товарам рассчитали price",
+        "vendors_detected":"Скольким товарам распознали бренд",
+        "available_set_true":"Скольким офферам выставлено available=true",
+        "built_utc":"Время сборки (UTC)",
+        "built_Asia/Almaty":"Время сборки (Алматы)",
     }
-    max_key = max(len(k) for k in order)
-    left = [f"{k.ljust(max_key)} = {pairs.get(k, 'n/a')}" for k in order]
-    max_left = max(len(s) for s in left)
-    lines = ["FEED_META"]
-    for left_line, k in zip(left, order):
-        lines.append(f"{left_line.ljust(max_left)}  | {comments.get(k,'')}")
+    max_key=max(len(k) for k in order)
+    lefts=[f"{k.ljust(max_key)} = {pairs.get(k,'n/a')}" for k in order]
+    max_left=max(len(x) for x in lefts)
+    lines=["FEED_META"]
+    for left,k in zip(lefts,order):
+        lines.append(f"{left.ljust(max_left)}  | {comments[k]}")
     return "\n".join(lines)
 
-# ============================= ОСНОВА ==============================
+# ================================= MAIN ====================================
 
-def main() -> None:
+def main()->None:
     log(f"Source: {SUPPLIER_URL}")
-    data = fetch_bytes(SUPPLIER_URL, TIMEOUT_S, RETRIES, RETRY_BACKOFF)
-    buf = io.BytesIO(data)
+    data=fetch_xlsx_bytes(SUPPLIER_URL)
+    wb=load_workbook(io.BytesIO(data), data_only=True, read_only=True)
+    ws=wb.active
 
-    # Читаем Excel (первая страница)
-    df = pd.read_excel(buf, engine="openpyxl")
-    if df is None or df.empty:
-        err("Excel пустой или не распознан.", 2)
+    mapping=map_headers(ws)
+    keys=load_keywords(COPYLINE_KEYWORDS_PATH)
+    if COPYLINE_KEYWORDS_MODE=="include" and len(keys)==0:
+        err("COPYLINE_KEYWORDS_MODE=include, но ключей не найдено. Проверь docs/copyline_keywords.txt.", 2)
 
-    cols = list(df.columns)
-    # Пытаемся угадать основные колонки
-    col_name   = guess_col(cols, ["name", "наименование", "товар", "product", "позиция"])
-    col_art    = guess_col(cols, ["артикул", "article", "код", "model", "sku"])
-    col_brand  = guess_col(cols, ["бренд", "vendor", "brand", "производитель"])
-    col_desc   = guess_col(cols, ["описание", "description", "характеристики", "spec"])
-    col_image  = guess_col(cols, ["картинка", "image", "фото", "picture", "img", "photo"])
-    col_cat    = guess_col(cols, ["категория", "раздел", "группа", "category", "group", "section"])
-    col_stock  = guess_col(cols, ["наличие", "остаток", "stock", "qty", "количество", "склад"])
-    price_cols = best_price_cols(cols)
+    raw_rows=[]
+    for r in ws.iter_rows(min_row=2, values_only=True):
+        row_vals=[x if x is not None else "" for x in r]
+        d=row_to_dict(row_vals, mapping)
+        if "name" not in d or not d["name"].strip(): continue
+        raw_rows.append(d)
 
-    if not col_name:
-        err("Не найдена колонка с названием (name/наименование).", 2)
+    offers_total=len(raw_rows)
 
-    # Ключевые префиксы по name
-    keys = load_prefix_keywords(CL_KEYWORDS_PATH)
-    if CL_KEYWORDS_MODE == "include" and len(keys) == 0:
-        err("COPYLINE_KEYWORDS_MODE=include, но префиксов в docs/copyline_keywords.txt не найдено.", 2)
+    # DEBUG: показать первые имена и первые ключи
+    if COPYLINE_KEYWORDS_DEBUG:
+        log(f"[DEBUG] loaded keywords: {len(keys)}")
+        for i, ks in enumerate(keys[:10], 1):
+            log(f"[DEBUG] key[{i}]: {ks.raw} ({ks.kind})")
+        for i, d in enumerate(raw_rows[:COPYLINE_DEBUG_MAX_HITS], 1):
+            log(f"[DEBUG] name[{i}]: {d.get('name','')[:120]}")
 
-    # Категориальные правила (опционально)
-    cat_rules: List[KeySpec] = []
-    if CL_CATEGORIES_MODE in {"include", "exclude"}:
-        cat_rules = load_category_rules(CL_CATEGORIES_PATH)
+    filtered_rows=[]; filtered_out=0
+    for d in raw_rows:
+        ok,_=name_passes_prefix(d.get("name",""), keys)
+        drop=(COPYLINE_KEYWORDS_MODE=="exclude" and ok) or (COPYLINE_KEYWORDS_MODE=="include" and not ok)
+        if drop: filtered_out+=1
+        else: filtered_rows.append(d)
 
-    # Создаём каркас YML
-    out_root = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
-    out_shop = ET.SubElement(out_root, "shop")
-    out_offs = ET.SubElement(out_shop, "offers")
+    root=ET.Element("yml_catalog"); root.set("date", time.strftime("%Y-%m-%d %H:%M"))
+    shop=ET.SubElement(root,"shop"); offers=ET.SubElement(shop,"offers")
 
-    offers_total = 0
-    filtered_by_kw = 0
-    filtered_by_cat = 0
-    vendors_recovered = 0
-    prices_updated = 0
-    vendorcodes_created = 0
-    vendorcodes_filled = 0
+    prices_updated=0; vendors_detected=0; available_true=0
 
-    # Проходим по строкам прайса
-    for i, row in df.iterrows():
-        offers_total += 1
+    for row in filtered_rows:
+        name=row.get("name","").strip()
+        if not name: continue
 
-        name = clean_one_line(row.get(col_name, "")) if col_name else ""
-        if not name:
-            continue
+        article=extract_article_from_any(row)
+        offer_id=row.get("sku") or article or stable_id_from(name)
+        offer=ET.SubElement(offers,"offer",{"id":offer_id})
 
-        # Фильтр по префиксу name
-        hit, rawkey = name_matches_prefix(name, keys) if keys else (False, None)
-        drop = (CL_KEYWORDS_MODE == "exclude" and hit) or (CL_KEYWORDS_MODE == "include" and not hit)
-        if drop:
-            filtered_by_kw += 1
-            continue
+        ET.SubElement(offer,"name").text=name
 
-        # Категория (для статистики/фильтра), НЕ выводим в YML
-        cat_path = clean_one_line(row.get(col_cat, "")) if col_cat else ""
-        if cat_rules:
-            cat_hit, _ = cat_matches(cat_path, cat_rules)
-            drop_cat = (CL_CATEGORIES_MODE == "exclude" and cat_hit) or (CL_CATEGORIES_MODE == "include" and not cat_hit)
-            if drop_cat:
-                filtered_by_cat += 1
-                continue
+        img=row.get("img","").strip()
+        if img:
+            ET.SubElement(offer,"picture").text=img
 
-        # Артикул/код
-        art = sanitize_code(row.get(col_art, "")) if col_art else ""
-        # Бренд
-        vendor_raw = clean_one_line(row.get(col_brand, "")) if col_brand else ""
-        vendor = vendor_raw.strip()
-        # По общему правилу — не используем название поставщика как бренд:
-        if vendor.lower() in {"copyline"}:
-            vendor = ""  # оставляем пустым, если бренд не распознан
+        brand=normalize_brand(row.get("brand","").strip())
+        if brand:
+            ET.SubElement(offer,"vendor").text=brand
+            vendors_detected+=1
 
-        # Картинка (если есть)
-        picture = clean_one_line(row.get(col_image, "")) if col_image else ""
-
-        # Описание — в одну строку
-        desc = clean_one_line(row.get(col_desc, "")) if col_desc else ""
-
-        # Доступность
-        available = True
-        if col_stock:
-            available = looks_available(row.get(col_stock, ""))
-
-        # Цена (берём МИН из доступных «ценовых» колонок)
-        dealer_vals: List[float] = []
-        for pc in price_cols:
-            v = parse_price(row.get(pc, None))
-            if v is not None:
-                dealer_vals.append(v)
-        dealer = min(dealer_vals) if dealer_vals else None
-        retail = compute_retail(dealer) if dealer is not None and dealer > 100 else None
-
-        # Сборка offer
-        offer = ET.Element("offer")
-        # id: используем артикул, иначе порядковый индекс
-        offer_id = art or f"ROW{i+1}"
-        offer.set("id", offer_id)
-        # type/available/article не пишем (держим минимально)
-        # name
-        nm = ET.SubElement(offer, "name"); nm.text = name
-        # picture (если есть)
-        if picture:
-            pic = ET.SubElement(offer, "picture"); pic.text = picture
-        # vendor (только если не пустой)
-        if vendor:
-            ven = ET.SubElement(offer, "vendor"); ven.text = vendor
-            vendors_recovered += 1
-        # description (в одну строку, без пустых блоков)
+        desc=_clean_one_line(row.get("desc",""))
         if desc:
-            de = ET.SubElement(offer, "description"); de.text = desc
-        # vendorCode: создаём узел даже если пустой, чтобы приставить префикс
-        vc = ET.SubElement(offer, "vendorCode")
-        if art:
-            vc.text = art
-            vendorcodes_filled += 1
-        vendorcodes_created += 1
-        # приставляем префикс CL (если текст уже есть, просто префиксуем)
-        vc.text = f"{VENDORCODE_PREFIX}{(vc.text or '')}"
+            ET.SubElement(offer,"description").text=desc
 
-        # price / currencyId
-        if retail is not None:
-            pr = ET.SubElement(offer, "price"); pr.text = str(int(retail))
-            cu = ET.SubElement(offer, "currencyId"); cu.text = "KZT"
-            prices_updated += 1
+        if VENDORCODE_CREATE_IF_MISSING or article:
+            ET.SubElement(offer,"vendorCode").text=f"{VENDORCODE_PREFIX}{article}"
 
-        # available
-        av = ET.SubElement(offer, "available"); av.text = "true" if available else "false"
+        dealer=best_dealer_price(row)
+        if dealer is not None and dealer>100:
+            retail=compute_retail(dealer)
+            if retail is not None:
+                ET.SubElement(offer,"price").text=str(int(retail))
+                ET.SubElement(offer,"currencyId").text="KZT"
+                prices_updated+=1
 
-        # Важно: <url> НЕ добавляем (по твоим правилам)
-        # В YML НЕ добавляем categoryId
+        avail_txt=_norm(row.get("avail",""))
+        is_avail=True
+        if avail_txt and re.search(r"\b(0|нет|no|false|out|нет в наличии)\b", avail_txt, re.I):
+            is_avail=False
+        ET.SubElement(offer,"available").text="true" if is_avail else "false"
+        if is_avail: available_true+=1
 
-        out_offs.append(offer)
+    try: ET.indent(root, space="  ")
+    except Exception: pass
 
-    # Для читабельности добавим визуальные разделители между офферами
-    children = list(out_offs)
-    for idx in range(len(children)-1, 0, -1):
-        out_offs.insert(idx, ET.Comment("OFFSEP"))
-
-    # Красивые отступы (если доступно)
-    try:
-        ET.indent(out_root, space="  ")
-    except Exception:
-        pass
-
-    # FEED_META
-    offers_written = len([n for n in out_offs if isinstance(n.tag, str) and n.tag == "offer"])
-    meta_pairs = {
+    meta={
         "script_version": SCRIPT_VERSION,
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL,
         "offers_total": offers_total,
-        "offers_written": offers_written,
-        "keywords_mode": CL_KEYWORDS_MODE if len(keys) > 0 else "off",
-        "keywords_total": len(keys),
-        "filtered_by_keywords": filtered_by_kw,
-        "categories_mode": (CL_CATEGORIES_MODE or "off"),
-        "categories_rules": len(load_category_rules(CL_CATEGORIES_PATH)) if (CL_CATEGORIES_MODE in {"include","exclude"}) else 0,
-        "filtered_by_categories": filtered_by_cat,
+        "offers_written": len(list(offers.findall("offer"))),
+        "filtered_by_keywords": filtered_out,
         "prices_updated": prices_updated,
-        "vendors_recovered": vendors_recovered,
-        "vendorcodes_created": vendorcodes_created,
-        "vendorcodes_filled_from_article": vendorcodes_filled,
+        "vendors_detected": vendors_detected,
+        "available_set_true": available_true,
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
     }
-    out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
+    root.insert(0, ET.Comment(render_feed_meta(meta)))
 
-    # Сериализация и постобработка
-    xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
-    xml_text  = xml_bytes.decode(ENC, errors="replace")
-    # OFFSEP → пустые строки
-    xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n  ", xml_text)
-    xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
-    # Разрыв между концом FEED_META и <shop> (фикс '--><shop>')
-    xml_text = re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
+    xml_bytes=ET.tostring(root, encoding=ENC, xml_declaration=True)
+    xml_text=xml_bytes.decode(ENC, errors="replace")
+    xml_text=re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
 
     if DRY_RUN:
-        log("[DRY_RUN=1] Files not written.")
-        return
+        log("[DRY_RUN=1] File not written."); return
 
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
-        f.write(xml_text)
+    with open(OUT_FILE_YML,"w",encoding=ENC, newline="\n") as f: f.write(xml_text)
 
-    # .nojekyll для GitHub Pages (не критично, но удобно)
-    docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
+    docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
     try:
         os.makedirs(docs_dir, exist_ok=True)
-        open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+        open(os.path.join(docs_dir,".nojekyll"),"wb").close()
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} | offers={offers_written} | encoding={ENC} | script={SCRIPT_VERSION}")
+    log(f"Wrote: {OUT_FILE_YML} | offers={meta['offers_written']} | encoding={ENC} | script={SCRIPT_VERSION}")
 
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        err(str(e))
+if __name__=="__main__":
+    try: main()
+    except Exception as e: err(str(e))
