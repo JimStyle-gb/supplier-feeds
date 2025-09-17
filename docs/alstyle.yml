@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-17 01:57">
+<yml_catalog date="2025-09-17 06:42">
   <!--FEED_META
 script_version                  = alstyle-2025-09-15.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15813                                                           | Офферов у поставщика до очистки
-offers_written                  = 1980                                                            | Офферов записано (после очистки)
+offers_total                    = 15819                                                           | Офферов у поставщика до очистки
+offers_written                  = 1982                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13833                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1980                                                            | Скольким товарам пересчитали price
+filtered_by_categories          = 13837                                                           | Сколько офферов отфильтровано по категориям
+prices_updated                  = 1982                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
-dealer_src_direct_field         = 1980                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
+dealer_src_direct_field         = 1982                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
 dealer_src_rrp_fallback         = 0                                                               | Базовая цена взята из RRP/РРЦ (fallback)
 dealer_src_missing              = 0                                                               | Не нашли базовую цену
-params_removed                  = 9521                                                            | Сколько строк параметров добавлено в описание
+params_removed                  = 9525                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1375                                                            | Сколько офферов доступны (true)
-available_false                 = 605                                                             | Сколько офферов недоступны (false)
+available_true                  = 1374                                                            | Сколько офферов доступны (true)
+available_false                 = 608                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15813                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15819                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-17 01:57:45 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-17 06:57:45 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-17 06:42:33 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-17 11:42:33 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -3990,7 +3990,7 @@ built_Asia/Almaty               = 2025-09-17 06:57:45 +05                       
         <picture>https://img.al-style.kz/6284_1.jpg</picture>
         <picture>https://img.al-style.kz/6284_2.jpg</picture>
         <picture>https://img.al-style.kz/6284_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-Q7553X</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -4025,7 +4025,7 @@ built_Asia/Almaty               = 2025-09-17 06:57:45 +05                       
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="17929">
@@ -30399,7 +30399,7 @@ Microsoft Windows 11
         <currencyId>KZT</currencyId>
         <vendorCode>AS39724</vendorCode>
         <picture>https://img.al-style.kz/39724_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Вал переноса заряда Xerox 022N02871</name>
         <description>Представляет собой металлическую ось, заключенную в резиновую оболочку. Основная задача этой детали - зарядка бумаги однородным отрицательным зарядом.
@@ -30413,7 +30413,7 @@ Microsoft Windows 11
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="360495">
@@ -39426,7 +39426,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59361_1.jpg</picture>
         <picture>https://img.al-style.kz/59361_2.jpg</picture>
         <picture>https://img.al-style.kz/59361_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Монохромный лазерный принтер Canon I-S LBP246dw</name>
         <description>Монохромный лазерный принтер Canon I-S LBP246dw
@@ -39463,7 +39463,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392919">
@@ -39570,7 +39570,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59373_1.jpg</picture>
         <picture>https://img.al-style.kz/59373_2.jpg</picture>
         <picture>https://img.al-style.kz/59373_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma G3470R</name>
         <description>Цветное МФУ Canon Pixma G3470 Red
@@ -39602,7 +39602,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392937">
@@ -47765,7 +47765,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
         <picture>https://img.al-style.kz/61372_1.jpg</picture>
         <picture>https://img.al-style.kz/61372_2.jpg</picture>
         <picture>https://img.al-style.kz/61372_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV2KI</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV2KI
@@ -47797,7 +47797,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396759">
@@ -49106,6 +49106,41 @@ Canon imageRUNNER ADVANCE 8085Canon imageRUNNER ADVANCE 8095Canon imageRUNNER AD
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
+      </offer>
+
+  <offer id="397037">
+        <price>10499900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS61641</vendorCode>
+        <picture>https://img.al-style.kz/61641_1.jpg</picture>
+        <available>false</available>
+        <vendor>Canon</vendor>
+        <name>Узел обратной подачи бумаги Canon REVERSE PAPER DELIVERY ASS'Y, FM4-5313-000</name>
+        <description>Узел обратной подачи бумаги Canon FM4-5313-000
+
+Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
+
+Основные характеристики
+
+Производитель
+Canon
+
+Устройство
+REVERSE PAPER DELIVERY ASS'Y
+
+Секция аппарата
+Подача бумаги
+
+Совместимость
+
+Устройства
+Canon imageRUNNER ADVANCE 8085Canon imageRUNNER ADVANCE 8095Canon imageRUNNER ADVANCE 8105Canon imageRUNNER ADVANCE 8205Canon imageRUNNER ADVANCE 8285Canon imageRUNNER ADVANCE 8295
+
+Характеристики:
+- Вес: 4.5
+- Гарантия: Нет</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
       </offer>
 
   <offer id="397040">
@@ -58953,6 +58988,136 @@ Canon PIXMA 2540SCanon PIXMA MG2440Canon PIXMA MG2540Canon PIXMA MG2545Canon PIX
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
+      </offer>
+
+  <offer id="402520">
+        <price>1089900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS67200</vendorCode>
+        <picture>https://img.al-style.kz/67200_1.jpg</picture>
+        <available>false</available>
+        <vendor>Canon</vendor>
+        <name>Цветное МФУ Canon Pixma MG2541S Grey</name>
+        <description>Цветное МФУ Canon Pixma G2410
+
+Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики 
+
+Компактное и надежное многофункциональное устройство для дома и офиса без картриджей, которое обеспечивает экономичную и производительную печать.
+Компактное устройство без картриджей, обеспечивающее печать, копирование и сканирование
+
+Эффективный и универсальный многофункциональный принтер для дома и офиса с СНПЧ обеспечивает экономичность и высокое качество печати, копирования и сканирования большого количества документов и фотографий.
+
+Технические характеристики
+
+Общие характеристики
+
+Функции
+Копирование, сканирование, печать
+
+Габариты (ШxГxВ)
+Прибл. 445 x 330 x 163 мм
+
+Вес
+Прибл. 6,3 кг
+
+Питание
+100 240 В перем. тока, 50/60 Гц
+
+Уровень акустического шума
+прибл. 53,5 дБ (А)
+
+Энергопотребление
+Выключено: прибл. 0,2 ВтРежим ожидания (подключение к ПК через порт USB): прибл. 0,6 Вт (при выключенной лампе сканирования)Режим ожидания (все порты подключены): прибл. 0,6 Вт (лампа сканирования выключена)Время перехода в режим ожидания: 10 мин 48 сек.Копирование: прибл. 9 Вт
+
+Тип и размер экрана
+ЖК-экран (1,2 дюйма, сегментный монохромный)
+
+Картриджи
+
+Стандартные картриджи
+Чернила Canon GI-490 (PGBK) Чернила Canon GI-490 (C) Чернила Canon GI-490 (M) Чернила Canon GI-490 (Y)
+
+Наличие стартового тонера
+Да
+
+Ресурс картриджа (обычная бумага)
+Цветная печать документов A4Черный: 6000 страницЦвет: 7000 страниц* При стандартном заполнении страницы
+
+Ресурс картриджа (фото)
+Печать цветных фотографий 10x15 смЦвет: 2000 фотографий* При стандартном заполнении страницы
+
+Технические характеристики принтера
+
+Технологии печати
+2 картриджа FINE (черный и цветной)Принтер с СНПЧ
+
+Разрешение печати
+До 4800 x 1200 точек на дюйм
+
+Скорость черно-белой печати
+Прибл. 8,8 изобр./мин
+
+Скорость цветной печати
+Прибл. 5,0 изобр./мин
+
+Скорость фотопечати
+10 x 15 см без полей: прибл. за 45 сек.
+
+Печать без полей
+Да (A4, Letter, 20 x 25 см, 13 x 18 см, 13 x 13 см, 10 x 15 см)
+
+Максимальная загрузка бумаги
+Задний лоток: не более 100 листов (обычная бумага)
+
+Формат бумаги
+A4, A5, B5, 10 x 15 см, 13 x 18 см, 20 x 25 см, конверты (DL, COM10), Letter, Legal
+
+Характеристики сканера
+
+Тип сканера
+Планшетный сканер CIS для фото и документов
+
+Разрешение при сканировании (оптическое)
+600 x 1200 точек на дюйм
+
+Скорость сканирования
+Прибл. прибл. 19 сек.
+
+Глубина сканирования (на входе/на выходе)
+Цвет: 48/24 битОттенки серого: 16/8 бит
+
+Максимальный размер документов
+216 х 297 мм
+
+Характеристики копира
+
+Скорость копирования
+sFCOT: прибл. за 32 сек. sESAT: прибл. 1,7 изобр./мин
+
+Количество копий
+20 копий (макс.)
+
+Функции копирования
+Копирование документа (обычная бумага)
+
+Копирование с увеличением
+Печать на весь лист
+
+Подключение
+
+Стандартный интерфейс
+Hi-Speed USB (порт B)
+
+Программное обеспечение
+
+Поддерживаемые операционные системы
+Windows 10, Windows 8.1, Windows 7 SP1Требуется .NET Framework 4.5.2 ил...
+
+Характеристики:
+- Гарантия: 1 год
+- Состав: Металл, пластик</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
       </offer>
 
   <offer id="402521">
