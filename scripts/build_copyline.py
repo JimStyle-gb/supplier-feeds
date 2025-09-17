@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 Сборщик YML для поставщика Copyline (плоский <offers> для Satu)
-script_version = copyline-2025-09-17.4
+script_version = copyline-2025-09-17.5
 
-Изменения в .4:
-- Исправлено: в read_only-режиме openpyxl у Worksheet нет атрибута merged_cells.
-  Теперь чтение шапки безопасно: если merged_cells недоступно — просто читаем значение
-  ячейки, без попытки искать верх-левую в merge-диапазоне.
+Изменения в .5:
+- Отсев строк-заголовков категорий (например, "ДЕВЕЛОПЕРЫ").
+- PRICE_MODE по умолчанию = retail; REQUIRE_PRICE=1 — без цены не пишем оффер.
+- FILL_DESC_FROM_NAME=1 — если нет описания, ставим name в одну строку.
+- Исправлен vendorCode (без "CLCL-...").
 """
 
 from __future__ import annotations
@@ -26,7 +27,7 @@ from openpyxl.worksheet.worksheet import Worksheet
 
 # ========================== НАСТРОЙКИ ===========================
 
-SCRIPT_VERSION = "copyline-2025-09-17.4"
+SCRIPT_VERSION = "copyline-2025-09-17.5"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "copyline")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://copyline.kz/files/price-CLA.xlsx")
@@ -41,13 +42,14 @@ MIN_BYTES        = int(os.getenv("MIN_BYTES", "2000"))
 COPYLINE_KEYWORDS_PATH  = os.getenv("COPYLINE_KEYWORDS_PATH", "docs/copyline_keywords.txt")
 COPYLINE_KEYWORDS_MODE  = os.getenv("COPYLINE_KEYWORDS_MODE", "include").lower()  # include | exclude
 
-# Отладка фильтра
-COPYLINE_KEYWORDS_DEBUG = os.getenv("COPYLINE_KEYWORDS_DEBUG", "0").lower() in {"1","true","yes"}
-COPYLINE_DEBUG_MAX_HITS = int(os.getenv("COPYLINE_DEBUG_MAX_HITS", "40"))
 COPYLINE_PREFIX_ALLOW_TRIM = os.getenv("COPYLINE_PREFIX_ALLOW_TRIM", "1").lower() in {"1","true","yes"}
 
-# Режим цены: pass | retail
-PRICE_MODE = os.getenv("PRICE_MODE", "pass").strip().lower()
+# Цены: по умолчанию применяем правила (retail)
+PRICE_MODE = os.getenv("PRICE_MODE", "retail").strip().lower()   # pass | retail
+REQUIRE_PRICE = os.getenv("REQUIRE_PRICE", "1").lower() in {"1","true","yes"}
+
+# Описание: заполнять ли из name, если пусто
+FILL_DESC_FROM_NAME = os.getenv("FILL_DESC_FROM_NAME", "1").lower() in {"1","true","yes"}
 
 # vendorCode
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "CL")
@@ -74,17 +76,34 @@ def _norm(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
-_LEADING_NOISE_RE = re.compile(r'^[\s\-\–\—•·|:/\\\[\]\(\)«»"“”„\']+')
-def _strip_leading_noise(s_norm: str) -> str: return _LEADING_NOISE_RE.sub("", s_norm)
-
 def _clean_one_line(s: str) -> str:
     if not s: return ""
     s = _nfkc(s).replace("\r\n","\n").replace("\r","\n").replace("\u00A0"," ")
     s = re.sub(r"&nbsp;?", " ", s, flags=re.I)
     s = re.sub(r"\s+", " ", s).strip()
+    # убираем служебные строки из тех.спец.
     s = re.sub(r"(?:^|\s)(Артикул|Благотворительность)\s*:\s*[^;.,]+[;.,]?\s*", " ", s, flags=re.I)
     s = re.sub(r"\s+", " ", s).strip()
     return s
+
+def _is_category_header(name: str) -> bool:
+    """Эвристика: строка-шапка/категория (вроде 'ДЕВЕЛОПЕРЫ')."""
+    if not name: return False
+    s = _nfkc(name).strip()
+    # короткая фраза без цифр и пунктуации, преимущественно ВЕРХНИМ РЕГИСТРОМ
+    if len(s) <= 2 or len(s) > 48:
+        return False
+    if any(ch.isdigit() for ch in s):
+        return False
+    if re.search(r"[.,;:!?/\\\[\]\(\)\-]", s):
+        return False
+    letters = [ch for ch in s if ch.isalpha()]
+    if not letters:
+        return False
+    # "все буквы верхнего регистра" или почти все
+    upp = sum(1 for ch in letters if ch.upper() == ch)
+    ratio = upp / max(len(letters), 1)
+    return ratio > 0.95
 
 def parse_money(raw: str) -> Optional[float]:
     if raw is None: return None
@@ -96,11 +115,14 @@ def parse_money(raw: str) -> Optional[float]:
     except Exception:
         return None
 
-def stable_id_from(text: str) -> str:
-    h = hashlib.sha1((_nfkc(text)).encode("utf-8", errors="ignore")).hexdigest()[:12]
-    return f"CL-{h}"
+def stable_hash(text: str) -> str:
+    return hashlib.sha1((_nfkc(text)).encode("utf-8", errors="ignore")).hexdigest()[:12]
 
 # ======================= СКАЧИВАНИЕ XLSX ========================
+
+import requests
+from openpyxl import load_workbook
+from openpyxl.worksheet.worksheet import Worksheet
 
 def fetch_xlsx_bytes(url: str) -> bytes:
     sess = requests.Session()
@@ -157,7 +179,9 @@ def load_keywords(path: str) -> List[KeySpec]:
 def name_passes_prefix(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[str]]:
     if not keys: return True, None
     nm = _norm(name)
-    nm_trim = _strip_leading_noise(nm) if COPYLINE_PREFIX_ALLOW_TRIM else nm
+    nm_trim = nm
+    if COPYLINE_PREFIX_ALLOW_TRIM:
+        nm_trim = re.sub(r'^[\s\-\–\—•·|:/\\\[\]\(\)«»"“”„\']+', "", nm)
     for ks in keys:
         if ks.kind=="prefix":
             if ks.norm and (nm_trim.startswith(ks.norm) or nm.startswith(ks.norm)):
@@ -169,18 +193,17 @@ def name_passes_prefix(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[s
 
 # =========================== НОРМАЛИЗАЦИЯ БРЕНДА ===========================
 
-def _nf_brand_key(s: str) -> str:
+def _norm_brand_key(s: str) -> str:
     if not s: return ""
     s = _nfkc(s).strip().lower().replace("ё","е")
     s = re.sub(r"[-_/]+"," ",s)
     s = re.sub(r"\s+"," ",s)
     return s
 
-SUPPLIER_BLOCKLIST = {_nf_brand_key(x) for x in ["copyline","copy line","копилайн","alstyle","akcent","vtt"]}
-UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
+SUPPLIER_BLOCKLIST = {_norm_brand_key(x) for x in ["copyline","copy line","копилайн","alstyle","akcent","vtt"]}
 
 def normalize_brand(raw: str) -> str:
-    k=_nf_brand_key(raw or "")
+    k=_norm_brand_key(raw or "")
     if (not k) or (k in SUPPLIER_BLOCKLIST): return ""
     return raw.strip()
 
@@ -221,7 +244,7 @@ NAME_COLS   = {
     "наименование товара","номенклатура","полное наименование","наименование продукции"
 }
 SKU_COLS    = {"артикул","sku","код","part","part number","partnumber","модель"}
-PRICE_COLS  = {"цена","цена закуп","опт","dealer","закуп","b2b","стоимость","price","opt","rrp","розница","цена, тг","цена тг"}
+PRICE_COLS  = {"цена","цена закуп","опт","dealer","закуп","b2b","стоимость","price","opt","rrp","розница","цена, тг","цена тг","цена (тг)","цена тг."}
 BRAND_COLS  = {"бренд","производитель","vendor","brand","maker"}
 DESC_COLS   = {"описание","description","описание товара","характеристики","spec","specs"}
 URL_COLS    = {"url","ссылка","link"}
@@ -229,26 +252,16 @@ IMG_COLS    = {"image","картинка","фото","picture","image url","img"
 AVAIL_COLS  = {"наличие","stock","количество","qty","остаток","доступно"}
 
 def _merged_value_on_row(ws: Worksheet, row_idx: int, col_idx: int):
-    """
-    Безопасно вернуть значение ячейки:
-    - если в ячейке уже есть значение — возвращаем его;
-    - если у листа есть merged_cells — ищем верх-левую в merge-диапазоне;
-    - если merged_cells НЕТ (read_only-режим) — ничего не делаем, возвращаем текущее.
-    """
     cell = ws.cell(row=row_idx, column=col_idx)
-    if cell.value not in (None, ""):
-        return cell.value
-    # В read_only у Worksheet нет merged_cells — защищаемся
+    if cell.value not in (None, ""): return cell.value
     ranges = getattr(ws, "merged_cells", None)
-    if not ranges:
-        return cell.value
+    if not ranges: return cell.value
     try:
         rng_iter = ranges.ranges if hasattr(ranges, "ranges") else ranges
         for mr in rng_iter:
             if (mr.min_row <= row_idx <= mr.max_row) and (mr.min_col <= col_idx <= mr.max_col):
                 return ws.cell(row=mr.min_row, column=mr.min_col).value
     except Exception:
-        # На всякий — не падаем, просто возвращаем как есть
         return cell.value
     return cell.value
 
@@ -267,8 +280,7 @@ def try_map_headers_on_row(ws: Worksheet, row_idx: int) -> Dict[int, str]:
     mapping: Dict[int, str] = {}
     for idx, raw in enumerate(raw_vals, start=1):
         key = _norm(raw)
-        if not key:
-            continue
+        if not key: continue
         if key in NAME_COLS: mapping[idx] = "name"
         elif key in SKU_COLS: mapping[idx] = "sku"
         elif key in BRAND_COLS: mapping[idx] = "brand"
@@ -277,25 +289,20 @@ def try_map_headers_on_row(ws: Worksheet, row_idx: int) -> Dict[int, str]:
         elif key in IMG_COLS: mapping[idx] = "img"
         elif key in AVAIL_COLS: mapping[idx] = "avail"
         elif key in PRICE_COLS: mapping[idx] = "price"
-    if "name" not in mapping.values():
-        return {}
+    if "name" not in mapping.values(): return {}
     return mapping
 
 def find_header_row(ws: Worksheet, scan_rows: int = 60) -> Tuple[Dict[int,str], int]:
     max_row = ws.max_row or 0
     limit = min(max_row, scan_rows) if max_row else scan_rows
-    best_map: Dict[int,str] = {}
-    best_row = -1
-    best_score = -1
+    best_map: Dict[int,str] = {}; best_row = -1; best_score = -1
     for r in range(1, limit + 1):
         mapping = try_map_headers_on_row(ws, r)
-        if not mapping:
-            continue
+        if not mapping: continue
         score = len(mapping)
         if score > best_score:
             best_map, best_row, best_score = mapping, r, score
-            if score >= 3 and "name" in mapping.values():
-                break
+            if score >= 3 and "name" in mapping.values(): break
     return best_map, best_row
 
 def select_best_sheet(wb) -> Tuple[Worksheet, Dict[int,str], int]:
@@ -303,20 +310,18 @@ def select_best_sheet(wb) -> Tuple[Worksheet, Dict[int,str], int]:
     for ws in wb.worksheets:
         mapping, row_idx = find_header_row(ws, scan_rows=60)
         score = len(mapping)
-        if score > best[3]:
-            best = (ws, mapping, row_idx, score)
+        if score > best[3]: best = (ws, mapping, row_idx, score)
     ws, mapping, row_idx, score = best
     if not ws or not mapping or row_idx <= 0:
         err("XLSX: не удалось найти строку шапки ни на одном листе (нужна колонка с названием товара).")
     return ws, mapping, row_idx
 
 def row_to_dict(row_vals: List, mapping: Dict[int,str]) -> Dict[str,str]:
-    out: Dict[str,str] = {}
+    out: Dict[str,str]={}
     for col_idx, field in mapping.items():
         val = row_vals[col_idx - 1] if col_idx - 1 < len(row_vals) else None
         s = "" if val is None else str(val).strip()
-        if not s:
-            continue
+        if not s: continue
         if field == "price":
             prev = out.get("_price_candidates", [])
             prev.append(s)
@@ -326,20 +331,20 @@ def row_to_dict(row_vals: List, mapping: Dict[int,str]) -> Dict[str,str]:
     return out
 
 def best_dealer_price(row: Dict[str,str]) -> Optional[float]:
-    vals: List[float] = []
+    vals=[]
     for s in row.get("_price_candidates", []):
-        v = parse_money(s)
-        if v is not None:
-            vals.append(v)
+        v=parse_money(s)
+        if v is not None: vals.append(v)
     return min(vals) if vals else None
 
 # ======================= vendorCode / артикул ==============================
 
 ARTICUL_RE = re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
+
 def norm_code(s: str) -> str:
     if not s: return ""
-    s = re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
-    s = re.sub(r"[^A-Za-z0-9\-]+","",s)
+    s=re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
+    s=re.sub(r"[^A-Za-z0-9\-]+","",s)
     return s.upper()
 
 def extract_article_from_any(row: Dict[str,str]) -> str:
@@ -365,6 +370,7 @@ def render_feed_meta(pairs: Dict[str, str]) -> str:
     order = [
         "script_version","supplier","source",
         "offers_total","offers_written","filtered_by_keywords",
+        "headers_skipped","desc_filled_from_name",
         "prices_mode","prices_updated","vendors_detected","available_set_true",
         "built_utc","built_Asia/Almaty",
     ]
@@ -372,9 +378,11 @@ def render_feed_meta(pairs: Dict[str, str]) -> str:
         "script_version":"Версия скрипта (для контроля в CI)",
         "supplier":"Метка поставщика",
         "source":"URL исходного XLSX",
-        "offers_total":"Позиции в исходном файле (до фильтра)",
-        "offers_written":"Офферов записано (после фильтра и очистки)",
-        "filtered_by_keywords":"Сколько позиций отфильтровано по префиксам",
+        "offers_total":"Позиции в исходном файле (после шапки, до фильтра по словам)",
+        "offers_written":"Офферов записано (после всех фильтров и очистки)",
+        "filtered_by_keywords":"Отфильтровано по префиксам ключевых слов",
+        "headers_skipped":"Строк-заголовков/категорий отброшено",
+        "desc_filled_from_name":"Скольким офферам описание взяли из name",
         "prices_mode":"Режим цен (pass/retail)",
         "prices_updated":"Скольким товарам записали price",
         "vendors_detected":"Скольким товарам распознали бренд",
@@ -399,8 +407,6 @@ def main() -> None:
 
     ws, mapping, header_row_idx = select_best_sheet(wb)
     log(f"Sheet: {ws.title} | header_row={header_row_idx} | cols={len(mapping)}")
-    if COPYLINE_KEYWORDS_DEBUG:
-        log(f"[DEBUG] header mapping: {mapping}")
 
     keys = load_keywords(COPYLINE_KEYWORDS_PATH)
     if COPYLINE_KEYWORDS_MODE == "include" and len(keys) == 0:
@@ -415,31 +421,46 @@ def main() -> None:
 
     offers_total = len(raw_rows)
 
-    if COPYLINE_KEYWORDS_DEBUG:
-        log(f"[DEBUG] loaded keywords: {len(keys)}")
-        for i, ks in enumerate(keys[:10], 1): log(f"[DEBUG] key[{i}]: {ks.raw} ({ks.kind})")
-        for i, d in enumerate(raw_rows[:COPYLINE_DEBUG_MAX_HITS], 1):
-            log(f"[DEBUG] name[{i}]: {d.get('name','')[:120]}")
-
-    filtered_rows: List[Dict[str,str]] = []; filtered_out = 0
+    # Фильтр по словам (строгий ПРЕФИКС/регэксп от начала)
+    filtered_rows: List[Dict[str,str]] = []
+    filtered_out = 0
     for d in raw_rows:
         ok,_ = name_passes_prefix(d.get("name",""), keys)
         drop = (COPYLINE_KEYWORDS_MODE=="exclude" and ok) or (COPYLINE_KEYWORDS_MODE=="include" and not ok)
         if drop: filtered_out += 1
         else: filtered_rows.append(d)
 
+    # Отсев заголовков/категорий + требование цены
+    headers_skipped = 0
+    clean_rows: List[Dict[str,str]] = []
+    for d in filtered_rows:
+        name = d.get("name","").strip()
+        if _is_category_header(name):
+            headers_skipped += 1
+            continue
+        dealer = best_dealer_price(d)
+        if REQUIRE_PRICE and dealer is None:
+            # нет цены — пропускаем
+            continue
+        # сохраняем dealer как поле, чтобы не вычислять дважды
+        if dealer is not None:
+            d["_dealer"] = dealer
+        clean_rows.append(d)
+
+    # XML
     root = ET.Element("yml_catalog"); root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     shop = ET.SubElement(root, "shop"); offers = ET.SubElement(shop, "offers")
 
-    prices_updated = 0; vendors_detected = 0; available_true = 0
+    prices_updated = 0; vendors_detected = 0; available_true = 0; desc_filled_from_name = 0
 
-    for row in filtered_rows:
+    for row in clean_rows:
         name = row.get("name","").strip()
         if not name: continue
 
+        # ID и артикул
         article = extract_article_from_any(row)
-        offer_id = row.get("sku") or article or stable_id_from(name)
-        offer = ET.SubElement(offers, "offer", {"id": offer_id})
+        base_id = row.get("sku") or article or f"H{stable_hash(name)}"  # БЕЗ префикса CL
+        offer = ET.SubElement(offers, "offer", {"id": base_id})
 
         ET.SubElement(offer, "name").text = name
 
@@ -451,23 +472,36 @@ def main() -> None:
             ET.SubElement(offer, "vendor").text = brand
             vendors_detected += 1
 
+        # Описание: из XLSX, иначе из name (если разрешено)
         desc = _clean_one_line(row.get("desc",""))
-        if desc: ET.SubElement(offer, "description").text = desc
+        if not desc and FILL_DESC_FROM_NAME:
+            desc = _clean_one_line(name)
+            if desc: desc_filled_from_name += 1
+        if desc:
+            ET.SubElement(offer, "description").text = desc
 
+        # vendorCode: префикс + код (без повтора префикса)
         if VENDORCODE_CREATE_IF_MISSING or article:
-            code_body = article if article else offer_id
+            code_body = article if article else base_id
+            code_body = re.sub(rf"^{re.escape(VENDORCODE_PREFIX)}-?", "", code_body, flags=re.I)
             ET.SubElement(offer, "vendorCode").text = f"{VENDORCODE_PREFIX}{code_body}"
 
-        dealer = best_dealer_price(row)
+        # Цена
+        dealer = row.get("_dealer", None)
+        if dealer is None: dealer = best_dealer_price(row)
         price_val: Optional[int] = None
         if dealer is not None and dealer > 0:
-            if PRICE_MODE == "retail": price_val = compute_retail(dealer)
-            else: price_val = int(dealer)
+            if PRICE_MODE == "retail":
+                price_val = compute_retail(dealer)
+            else:
+                try: price_val = int(dealer)
+                except: pass
         if price_val is not None and price_val > 0:
             ET.SubElement(offer, "price").text = str(int(price_val))
             ET.SubElement(offer, "currencyId").text = "KZT"
             prices_updated += 1
 
+        # Наличие: если поля нет — считаем true
         avail_txt = _norm(row.get("avail",""))
         is_avail = not (avail_txt and re.search(r"\b(0|нет|no|false|out|нет в наличии)\b", avail_txt, re.I))
         ET.SubElement(offer, "available").text = "true" if is_avail else "false"
@@ -483,6 +517,8 @@ def main() -> None:
         "offers_total": offers_total,
         "offers_written": len(list(offers.findall("offer"))),
         "filtered_by_keywords": filtered_out,
+        "headers_skipped": headers_skipped,
+        "desc_filled_from_name": desc_filled_from_name,
         "prices_mode": PRICE_MODE,
         "prices_updated": prices_updated,
         "vendors_detected": vendors_detected,
