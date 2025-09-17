@@ -1,10 +1,18 @@
+# ================================ #
+#   CI для сборки фида Copyline    #
+#   Результат: docs/copyline.yml   #
+# ================================ #
+
 name: build_copyline
 
 on:
-  workflow_dispatch:
-  # 03:00 Asia/Almaty = 22:00 UTC (пред. день)
+  workflow_dispatch:  # ручной запуск
+
+  # Пример расписания: ежедневно в 03:00 по Алматы (UTC+5)
+  # GitHub Actions cron в UTC → 22:00 UTC (предыдущий день)
   schedule:
     - cron: '0 22 * * *'
+
   push:
     paths:
       - 'scripts/build_copyline.py'
@@ -24,21 +32,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1) Репозиторий с полной историей (нужно для pull --rebase)
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # 2) Python
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # 3) Зависимости
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests openpyxl
 
+      # 4) Сборка фида
       - name: Build Copyline feed
         env:
           SUPPLIER_NAME: copyline
@@ -56,17 +68,21 @@ jobs:
           VENDORCODE_CREATE_IF_MISSING: '1'
 
           COPYLINE_KEYWORDS_PATH: docs/copyline_keywords.txt
-          COPYLINE_KEYWORDS_MODE: include
+          COPYLINE_KEYWORDS_MODE: include     # оставляем только совпавшие префиксы
 
-          # ВКЛЮЧАЕМ «обрезку мусора» перед префикс-матчем и отладку первых элементов
+          # логика префиксов и отладка
           COPYLINE_PREFIX_ALLOW_TRIM: '1'
-          COPYLINE_KEYWORDS_DEBUG: '1'       # Можно выключить позже
+          COPYLINE_KEYWORDS_DEBUG: '0'        # можно включить '1' для диагностики
           COPYLINE_DEBUG_MAX_HITS: '40'
+
+          # ценообразование: pass (как есть) / retail (наценка + ...900)
+          PRICE_MODE: pass
         run: |
           set -e
           python --version
           python scripts/build_copyline.py
 
+      # 5) Коммит + pull --rebase + push (избегаем "fetch first")
       - name: Commit & pull --rebase & push
         env:
           BRANCH_NAME: ${{ github.ref_name }}
@@ -78,12 +94,15 @@ jobs:
           set -e
           git config user.name  "$GIT_AUTHOR_NAME"
           git config user.email "$GIT_AUTHOR_EMAIL"
+
           git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit."
             exit 0
           fi
+
           git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
+
           git fetch origin "$BRANCH_NAME"
           git pull --rebase origin "$BRANCH_NAME"
           git push origin HEAD:"$BRANCH_NAME"
