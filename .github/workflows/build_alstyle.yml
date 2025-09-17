@@ -3,13 +3,17 @@
 #   Результат: docs/alstyle.yml    #
 # ================================ #
 
-name: build_alstyle
+name: build_alstyle  # ← имя воркфлоу (не меняем)
 
 on:
-  workflow_dispatch:
-  # 01:00 Asia/Almaty = 20:00 UTC (пред. день)
+  workflow_dispatch:  # ручной запуск
+
+  # Автозапуск в 01:00 по времени Алматы (UTC+5).
+  # В cron указываем 20:00 UTC (предыдущий день), т.к. GitHub использует UTC.
   schedule:
-    - cron: '0 20 * * *'
+    - cron: '0 20 * * *'  # 20:00 UTC = 01:00 Asia/Almaty
+
+  # Автозапуск при изменениях кода/правил
   push:
     paths:
       - 'scripts/build_alstyle.py'
@@ -17,7 +21,7 @@ on:
       - '.github/workflows/build_alstyle.yml'
 
 permissions:
-  contents: write
+  contents: write  # нужно для push
 
 concurrency:
   group: build-alstyle
@@ -29,33 +33,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1) Клонируем репозиторий с полной историей (для pull --rebase)
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # нужно для pull --rebase
+          fetch-depth: 0
 
+      # 2) Ставим Python 3.11
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # 3) Ставим зависимости
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
+      # 4) Строим фид Alstyle
       - name: Build Alstyle feed
         env:
+          # Идентификатор поставщика и URL выгрузки
           SUPPLIER_NAME: alstyle
           SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
+
+          # Путь к выходному файлу (только YML)
           OUT_FILE: docs/alstyle.yml
+          # Кодировка файла (под Satu)
           OUTPUT_ENCODING: windows-1251
+
+          # Сетевые параметры скачивания
           TIMEOUT_S: '30'
           RETRIES: '4'
           RETRY_BACKOFF_S: '2'
           MIN_BYTES: '1500'
+
+          # vendorCode
           VENDORCODE_PREFIX: AS
           VENDORCODE_CREATE_IF_MISSING: '1'
+
+          # Фильтр по категориям (включаем только перечисленные в файле)
           ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
           ALSTYLE_CATEGORIES_MODE: include
         run: |
@@ -63,6 +81,7 @@ jobs:
           python --version
           python scripts/build_alstyle.py
 
+      # 5) Коммит + rebase-подтягивание удалённых изменений + push
       - name: Commit & pull --rebase & push
         env:
           BRANCH_NAME: ${{ github.ref_name }}
