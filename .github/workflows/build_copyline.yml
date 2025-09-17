@@ -1,73 +1,111 @@
-name: build_copyline
+# ================================= #
+#   CI для сборки фида Copyline     #
+#   Результат: docs/copyline.yml    #
+# ================================= #
+
+name: build_copyline  # имя воркфлоу
+
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # ручной запуск
+
+  # ЕЖЕДНЕВНО В 00:00 ПО АЛМАТЫ (UTC+5)
+  # GitHub Actions использует UTC, поэтому 00:00 Asia/Almaty = 19:00 UTC (предыдущий день)
+  schedule:
+    - cron: '0 19 * * *'  # 19:00 UTC = 00:00 Asia/Almaty
+
+  # Автозапуск при изменениях
+  push:
+    paths:
+      - 'scripts/build_copyline.py'
+      - 'docs/copyline_keywords.txt'
+      - 'docs/copyline_categories.txt'
+      - '.github/workflows/build_copyline.yml'
+
+permissions:
+  contents: write  # нужно для push
 
 concurrency:
-  group: build_copyline_${{ github.ref_name }}
+  group: build-copyline
   cancel-in-progress: false
 
 jobs:
   build:
+    name: Build Copyline YML
     runs-on: ubuntu-latest
-    timeout-minutes: 180
-    permissions:
-      contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      # 1) Клонируем репозиторий с ПОЛНОЙ историей (для pull --rebase)
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      # 2) Python 3.11
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install deps
+      # 3) Зависимости: requests + pandas + openpyxl (чтение xlsx)
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 openpyxl
+          pip install requests pandas openpyxl
 
-      - name: Ensure keywords file
-        run: |
-          mkdir -p docs
-          if [ ! -f docs/copyline_keywords.txt ]; then
-            # Без "кабель сетевой"
-            printf "drum\nдевелопер\nдрам\nкартридж\nтермоблок\nтермоэлемент\nтонер-картридж\n" > docs/copyline_keywords.txt
-          fi
-          echo "Using keywords:" && cat docs/copyline_keywords.txt
-
-      - name: Build feed (XLSX + targeted category crawl)
+      # 4) Сборка YML
+      - name: Build Copyline feed
         env:
-          XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
-          KEYWORDS_FILE: docs/copyline_keywords.txt
+          # Метка и источник (XLSX)
+          SUPPLIER_NAME: copyline
+          SUPPLIER_URL: https://copyline.kz/files/price-CLA.xlsx
+
+          # Вывод — только YML
           OUT_FILE: docs/copyline.yml
-          # Единый параметр кодировки — теперь он реально используется и в прологе XML, и при записи файла
           OUTPUT_ENCODING: windows-1251
 
-          HTTP_TIMEOUT: "25"
-          REQUEST_DELAY_MS: "120"
-          MIN_BYTES: "900"
+          # Сеть
+          TIMEOUT_S: '40'
+          RETRIES: '4'
+          RETRY_BACKOFF_S: '2'
+          MIN_BYTES: '1500'
 
-          # Ограничители, чтобы укладываться по времени
-          MAX_CRAWL_MINUTES: "60"     # мягкий лимит краулера
-          MAX_CATEGORY_PAGES: "1200"  # максимум страниц категорий
-          MAX_WORKERS: "6"            # потоки для карточек
+          # vendorCode
+          VENDORCODE_PREFIX: CL
+          VENDORCODE_CREATE_IF_MISSING: '1'
+
+          # Фильтр по ПРЕФИКСАМ из файла: <name> должен НАЧИНАТЬСЯ с фразы
+          COPYLINE_KEYWORDS_PATH: docs/copyline_keywords.txt
+          COPYLINE_KEYWORDS_MODE: include    # include — оставляем совпавшие; exclude — отбрасываем совпавшие
+
+          # (Опционально) Фильтр по категориям — если нужен, включай include/exclude и заполни файл
+          COPYLINE_CATEGORIES_PATH: docs/copyline_categories.txt
+          COPYLINE_CATEGORIES_MODE: ''       # '', 'include' или 'exclude'
         run: |
+          set -e
+          python --version
           python scripts/build_copyline.py
 
-      - name: Commit & push feed (rebase-safe)
+      # 5) Коммит + rebase + push (чтобы избежать "rejected: fetch first")
+      - name: Commit & pull --rebase & push
         env:
           BRANCH_NAME: ${{ github.ref_name }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          set -e
+          git config user.name  "$GIT_AUTHOR_NAME"
+          git config user.email "$GIT_AUTHOR_EMAIL"
 
-          git add docs/copyline.yml docs/copyline_keywords.txt || true
-          if git diff --cached --quiet; then
+          git add -A
+          if git diff --staged --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          git commit -m "Update copyline.yml (idealized: unified encoding + date + retries)"
-          git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
-          git push origin "$BRANCH_NAME"
+          git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
+
+          git fetch origin "$BRANCH_NAME"
+          git pull --rebase origin "$BRANCH_NAME"
+          git push origin HEAD:"$BRANCH_NAME"
