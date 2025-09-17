@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-17 11:50">
+<yml_catalog date="2025-09-17 12:21">
   <!--FEED_META
 script_version                  = alstyle-2025-09-15.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
@@ -18,15 +18,15 @@ dealer_src_missing              = 0                                             
 params_removed                  = 9525                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1356                                                            | Сколько офферов доступны (true)
-available_false                 = 626                                                             | Сколько офферов недоступны (false)
+available_true                  = 1358                                                            | Сколько офферов доступны (true)
+available_false                 = 624                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
 categoryId_dropped              = 15815                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-17 11:50:48 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-17 16:50:48 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-17 12:21:46 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-17 17:21:46 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -5986,7 +5986,7 @@ built_Asia/Almaty               = 2025-09-17 16:50:48 +05                       
         <picture>https://img.al-style.kz/5567_1.jpg</picture>
         <picture>https://img.al-style.kz/5567_2.jpg</picture>
         <picture>https://img.al-style.kz/5567_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Ship</vendor>
         <name>Кабель сетевой SHIP D146-P Cat.5e FTP 30В РЕ</name>
         <description>Кабель сетевой SHIP D146-P  Это экранированный (FTP) 4 - х парный кабель 5e категории. Благодаря PE оболочке применяется при прокладке вне помещений. Отличается повышенной термостойкостью и невосприимчивостью к воздействию прямых солнечных лучей.   
@@ -6006,7 +6006,7 @@ built_Asia/Almaty               = 2025-09-17 16:50:48 +05                       
 - Стандарты: Категория 5е
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="18936">
@@ -25949,7 +25949,7 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS42433</vendorCode>
         <picture>https://img.al-style.kz/42433_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R01819</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -25967,7 +25967,7 @@ USB
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266862">
@@ -27150,7 +27150,7 @@ USB
       </offer>
 
   <offer id="267081">
-        <price>62900</price>
+        <price>103900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42578</vendorCode>
         <picture>https://img.al-style.kz/42578_1.jpg</picture>
@@ -39426,7 +39426,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59361_1.jpg</picture>
         <picture>https://img.al-style.kz/59361_2.jpg</picture>
         <picture>https://img.al-style.kz/59361_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Монохромный лазерный принтер Canon I-S LBP246dw</name>
         <description>Монохромный лазерный принтер Canon I-S LBP246dw
@@ -39463,7 +39463,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392919">
@@ -47478,7 +47478,7 @@ APC Easy UPS SRV2KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
         <picture>https://img.al-style.kz/61364_1.jpg</picture>
         <picture>https://img.al-style.kz/61364_2.jpg</picture>
         <picture>https://img.al-style.kz/61364_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV1KRIRK</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV1KRIRK
@@ -47508,7 +47508,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396751">
@@ -47959,7 +47959,7 @@ Schneider Electric Easy UPS SRVS10KRILRK - высококачественный онлайн-ИБП с двойн
         <picture>https://img.al-style.kz/61388_1.jpg</picture>
         <picture>https://img.al-style.kz/61388_2.jpg</picture>
         <picture>https://img.al-style.kz/61388_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Schneider Electric</vendor>
         <name>Источник бесперебойного питания Schneider Electric Easy UPS SRVS10KIL</name>
         <description>Источник бесперебойного питания Schneider Electric Easy UPS SRVS10KIL
@@ -47987,7 +47987,7 @@ Schneider Electric Easy UPS SRVS10KRILRK - высококачественный онлайн-ИБП с двойн
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396765">
@@ -49030,7 +49030,7 @@ Canon imagePROGRAF iPF670Canon imagePROGRAF iPF680Canon imagePROGRAF iPF685Canon
         <picture>https://img.al-style.kz/61566_1.jpg</picture>
         <picture>https://img.al-style.kz/61566_2.jpg</picture>
         <picture>https://img.al-style.kz/61566_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Dahua</vendor>
         <name>Монитор 43" Dahua DHI-LM43-F400</name>
         <description>Монитор 43" Dahua DHI-LM43-F400
@@ -49071,7 +49071,7 @@ USB  1
 - Тип матрицы экрана: IPS
 - Яркость: 350 кд/м2</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="397036">
@@ -55577,6 +55577,49 @@ Canon Pixma E404Canon Pixma E464Canon Pixma E484
         <available>true</available>
       </offer>
 
+  <offer id="400287">
+        <price>643900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS64584</vendorCode>
+        <picture>https://img.al-style.kz/64584_1.jpg</picture>
+        <picture>https://img.al-style.kz/64584_2.jpg</picture>
+        <picture>https://img.al-style.kz/64584_3.jpg</picture>
+        <available>true</available>
+        <vendor>Huawei</vendor>
+        <name>Ноутбук Huawei MateBook 14 14" Ultra 5 125H 16GB 512GB Win 11 FlemingH-W5651T FLMH-X (53014APJ)</name>
+        <description>Ноутбук Huawei MateBook 14 14" Ultra 5 125H 16GB 512GB Win 11 FlemingH-W5651T FLMH-X 53014APJ
+
+Huawei MateBook 14
+
+Huawei MateBook 14 — лёгкий и стильный ноутбук премиум-класса с металлическим корпусом толщиной всего 14,5 мм. 
+Он объединяет мощность и портативность, идеально подходя для работы, учёбы и развлечений.
+
+14.2" OLED-дисплей HUAWEI FullView с разрешением 2880&#215;1920 и соотношением экрана к корпусу 90% обеспечивает яркое и реалистичное изображение. 
+Поддерживается переключение цветовых профилей (DCI-P3, sRGB, Adobe RGB), частота обновления до 120 Гц и яркость до 450 нит.
+
+Оснащён процессором Intel® Core™ Ultra 5 125H и графикой Intel® ARC™, ноутбук обеспечивает высокую производительность в многозадачности и работе с графикой. 
+16 ГБ оперативной памяти DDR5 и быстрый SSD 512 ГБ Gen4 гарантируют моментальный запуск приложений и комфортную работу с файлами.
+
+Фронтальная камера 1080p HD и поддержка HUAWEI Super Device делают ноутбук удобным для видеозвонков и обмена данными с другими устройствами. 
+Предустановленная Windows 11 Home обеспечивает современный интерфейс и готовность к работе «из коробки».
+
+Huawei MateBook 14 — это лёгкий, мощный и надёжный ноутбук, который одинаково хорошо подойдёт для офиса, учёбы и развлечений.
+
+Характеристики:
+- Гарантия: 1 год
+- Частота обновления экрана: 60 Гц
+- Тип матрицы экрана: IPS
+- Тип ноутбука: Ультрабук
+- Тип оперативной памяти: LPDDR4x
+- Объем накопителя: 512 Гб
+- Тип накопителя: SSD
+- Видеокарта: Intel UHD Graphics
+- Операционная система: Windows 11 Home
+- Процессор: Intel Core i5-12450H</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
   <offer id="400325">
         <price>38900</price>
         <currencyId>KZT</currencyId>
@@ -58527,7 +58570,7 @@ Bluetooth: Для подключения беспроводных акустических систем или других аксессуар
       </offer>
 
   <offer id="402014">
-        <price>5193900</price>
+        <price>6092900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS66356</vendorCode>
         <picture>https://img.al-style.kz/66356_1.jpg</picture>
@@ -59597,7 +59640,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
         <currencyId>KZT</currencyId>
         <vendorCode>AS67634</vendorCode>
         <picture>https://img.al-style.kz/67634_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Комплект инициализации Xerox AltaLink B8255 (097S05251)</name>
         <description>Содержит специальный ключ, который требуется для запуска базового модуля. После завершения процесса инициализации базовый модуль МФУ продолжает работу как многофункциональное устройство Xerox AltaLink B8255.
@@ -59607,7 +59650,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="402915">
@@ -67393,142 +67436,6 @@ Microsoft Windows 11 Pro</description>
         <available>false</available>
       </offer>
 
-  <offer id="409540">
-        <price>388900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS75881</vendorCode>
-        <picture>https://img.al-style.kz/75881_1.jpg</picture>
-        <picture>https://img.al-style.kz/75881_2.jpg</picture>
-        <picture>https://img.al-style.kz/75881_3.jpg</picture>
-        <available>false</available>
-        <vendor>Huawei</vendor>
-        <name>Ноутбук Huawei MateBook D 16 16" i5-12450H 16GB 1TB DOS (53013YLY)</name>
-        <description>Ноутбук Huawei MateBook D 16 16" i5-12450H 16GB 1TB DOS (53013YLY)
-1. Дисплей:
-
-Размер экрана: 16 дюймов
-
-Тип матрицы: IPS
-
-Разрешение: 1920 x 1200 пикселей (Full HD+)
-
-Яркость: до 300 нит
-
-Соотношение сторон: 16:10
-
-Антибликовое покрытие для улучшения видимости при ярком освещении.
-
-Узкие рамки по бокам, что улучшает визуальное восприятие и повышает удобство при работе с контентом.
-
-2. Процессор:
-
-Модель: Intel Core i5-12450H
-
-Количество ядер: 8
-
-Количество потоков: 12
-
-Базовая частота: 2.0 ГГц
-
-Максимальная частота в турборежиме: до 4.4 ГГц
-
-Техпроцесс: 10 нм
-
-Кэш: 12 МБ (Intel Smart Cache)
-
-3. Оперативная память:
-
-Объем: 16 ГБ
-
-Тип: LPDDR4x
-
-Частота: 4266 МГц
-
-Конфигурация: Встроенная память (не расширяемая)
-
-4. Хранение данных:
-
-Тип накопителя: SSD
-
-Объем: 1 ТБ
-
-Интерфейс: PCIe 3.0 x4
-
-5. Графика:
-
-Встроенная графика: Intel Iris Xe Graphics (подходит для работы с мультимедийным контентом, легких игр и повседневных задач)
-
-6. Операционная система:
-
-Предустановленная ОС: DOS (пользователь должен установить ОС самостоятельно, например, Windows)
-
-7. Порты и разъемы:
-
-2 x USB 3.2 Type-A
-
-1 x USB Type-C (для зарядки и передачи данных)
-
-1 x USB 2.0
-
-1 x HDMI 2.0
-
-1 x разъем для наушников 3.5 мм
-
-1 x слот для карты microSD (до 512 ГБ)
-
-8. Беспроводные технологии:
-
-Wi-Fi: Wi-Fi 6 (802.11ax)
-
-Bluetooth: Bluetooth 5.1
-
-9. Камера и звук:
-
-Камера: HD камера (720p)
-
-Колонки: 2 x 2 Вт стереодинамиков
-
-Микрофоны: Два встроенных микрофона с поддержкой шумоподавления для хорошего качества звука при звонках.
-
-10. Аккумулятор:
-
-Емкость: 56 Вт ч
-
-Время работы: до 8 часов в режиме работы (зависит от использования)
-
-Зарядка: 65 Вт USB-C адаптер
-
-11. Корпус и размеры:
-
-Материал: Металлический корпус
-
-Цвет: Синий или серебристый
-
-Размеры: 357.8 x 238.8 x 16.9 мм
-
-Вес: 1.7 кг
-
-12. Дополнительные особенности:
-
-Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawei.
-
-Клавиатура: с подсветкой для удобной работы в темных условиях.
-
-Характеристики:
-- Гарантия: 1 год
-- Частота обновления экрана: 60 Гц
-- Тип матрицы экрана: IPS
-- Тип ноутбука: Ультрабук
-- Тип оперативной памяти: LPDDR4x
-- Объем накопителя: 1 TB
-- Тип накопителя: SSD
-- Видеокарта: Intel UHD Graphics
-- Операционная система: DOS
-- Процессор: Intel Core i5-12450H</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="409547">
         <price>347900</price>
         <currencyId>KZT</currencyId>
@@ -69495,7 +69402,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76961</vendorCode>
         <picture>https://img.al-style.kz/76961_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03765 (CET141694)</name>
         <description>Тонер-картридж CET 106R03765 (CET141694)
@@ -69516,7 +69423,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410646">
@@ -69524,7 +69431,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76962</vendorCode>
         <picture>https://img.al-style.kz/76962_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03768 (CET141695)</name>
         <description>Тонер-картридж CET 106R03768 (CET141695)
@@ -69545,7 +69452,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410647">
@@ -69553,7 +69460,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76963</vendorCode>
         <picture>https://img.al-style.kz/76963_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03767 (CET141696)</name>
         <description>Тонер-картридж CET 106R03767 (CET141696)
@@ -69574,7 +69481,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410648">
@@ -69814,7 +69721,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76965</vendorCode>
         <picture>https://img.al-style.kz/76965_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03766 (CET141697)</name>
         <description>Тонер-картридж CET 106R03766 (CET141697)
@@ -69835,7 +69742,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410764">
