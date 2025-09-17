@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-17 09:27">
+<yml_catalog date="2025-09-17 11:43">
   <!--FEED_META
 script_version                  = alstyle-2025-09-15.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15818                                                           | Офферов у поставщика до очистки
+offers_total                    = 15815                                                           | Офферов у поставщика до очистки
 offers_written                  = 1982                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13836                                                           | Сколько офферов отфильтровано по категориям
+filtered_by_categories          = 13833                                                           | Сколько офферов отфильтровано по категориям
 prices_updated                  = 1982                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
@@ -18,15 +18,15 @@ dealer_src_missing              = 0                                             
 params_removed                  = 9525                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1358                                                            | Сколько офферов доступны (true)
-available_false                 = 624                                                             | Сколько офферов недоступны (false)
+available_true                  = 1356                                                            | Сколько офферов доступны (true)
+available_false                 = 626                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15818                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15815                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-17 09:27:46 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-17 14:27:46 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-17 11:43:12 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-17 16:43:12 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -24007,7 +24007,7 @@ USB
         <picture>https://img.al-style.kz/41749_1.jpg</picture>
         <picture>https://img.al-style.kz/41749_2.jpg</picture>
         <picture>https://img.al-style.kz/41749_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Монохромный принтер Xerox B230DNI</name>
         <description>Принтер B230DNI
@@ -24044,7 +24044,7 @@ USB
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 6.8 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266209">
@@ -25602,7 +25602,7 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS42269</vendorCode>
         <picture>https://img.al-style.kz/42269_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж стандартной емкости Xerox 006R04360 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -25623,7 +25623,7 @@ USB
 - Вес: 0.2
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="266718">
@@ -35566,7 +35566,7 @@ DisplayPort x1
         <picture>https://img.al-style.kz/53138_1.jpg</picture>
         <picture>https://img.al-style.kz/53138_2.jpg</picture>
         <picture>https://img.al-style.kz/53138_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>XG</vendor>
         <name>Персональный компьютер XG Basic XG710</name>
         <description>Комплектующие: 
@@ -35589,7 +35589,7 @@ DisplayPort x1
 Характеристики:
 - Вес: 5.4</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="386740">
@@ -42487,7 +42487,7 @@ Canon ImageRunner 2202Canon ImageRunner 2202NCanon ImageRunner 2204Canon ImageRu
         <currencyId>KZT</currencyId>
         <vendorCode>AS59991</vendorCode>
         <picture>https://img.al-style.kz/59991_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Чернильный картридж Canon PFI-310 Matte Black</name>
         <description>Чернила Canon PFI-310 Matte Black
@@ -42524,7 +42524,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393531">
@@ -42577,7 +42577,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <currencyId>KZT</currencyId>
         <vendorCode>AS59994</vendorCode>
         <picture>https://img.al-style.kz/59994_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Чернильный картридж Canon PFI-310 Cyan</name>
         <description>Чернила Canon PFI-310 Cyan
@@ -42614,7 +42614,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393533">
@@ -42667,7 +42667,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <currencyId>KZT</currencyId>
         <vendorCode>AS59996</vendorCode>
         <picture>https://img.al-style.kz/59996_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Чернильный картридж Canon PFI-310 Yellow</name>
         <description>Чернила Canon PFI-310 Yellow
@@ -42704,7 +42704,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393538">
@@ -47645,7 +47645,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
         <picture>https://img.al-style.kz/61369_1.jpg</picture>
         <picture>https://img.al-style.kz/61369_2.jpg</picture>
         <picture>https://img.al-style.kz/61369_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV10KI</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV10KI
@@ -47675,7 +47675,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396756">
@@ -52321,7 +52321,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
         <currencyId>KZT</currencyId>
         <vendorCode>AS62953</vendorCode>
         <picture>https://img.al-style.kz/62953_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Картридж Canon CARTRIDGE 054 Cyan</name>
         <description>Картридж Canon CARTRIDGE 054 Cyan
@@ -52355,7 +52355,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="398560">
@@ -54066,7 +54066,7 @@ Canon PIXMA E404Canon PIXMA E464Canon PIXMA E484
         <picture>https://img.al-style.kz/64239_1.jpg</picture>
         <picture>https://img.al-style.kz/64239_2.jpg</picture>
         <picture>https://img.al-style.kz/64239_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>APC</vendor>
         <name>Аккумуляторный батарейный модуль APC SRT192RMBP</name>
         <description>Аккумуляторный батарейный модуль APC SRT192RMBP 
@@ -54085,7 +54085,7 @@ Canon PIXMA E404Canon PIXMA E464Canon PIXMA E484
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="399935">
@@ -55126,7 +55126,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
         <vendorCode>AS64533</vendorCode>
         <picture>https://img.al-style.kz/64533_1.jpg</picture>
         <picture>https://img.al-style.kz/64533_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-W1510X</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -55151,7 +55151,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="400238">
@@ -55625,7 +55625,7 @@ Canon i-SENSYS LBP122dwCanon i-SENSYS MF272dwCanon i-SENSYS MF273dwCanon i-SENSY
         <currencyId>KZT</currencyId>
         <vendorCode>AS64646</vendorCode>
         <picture>https://img.al-style.kz/64646_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Картридж Canon LBP CARTRIDGE 071H</name>
         <description>Картридж Canon LBP CARTRIDGE 071H
@@ -55659,7 +55659,7 @@ Canon i-SENSYS MF272dwCanon i-SENSYS MF275dwCanon i-SENSYS LBP122dw
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400328">
@@ -57890,7 +57890,7 @@ Canon PIXMA iP100Canon PIXMA iP110Canon PIXMA iP110 WBCanon PIXMA iP100 with Bat
         <picture>https://img.al-style.kz/65517_1.jpg</picture>
         <picture>https://img.al-style.kz/65517_2.jpg</picture>
         <picture>https://img.al-style.kz/65517_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Legrand</vendor>
         <name>Источник бесперебойного питания Legrand Daker DK Plus 2 кВА</name>
         <description>Daker DK UPS Plus — это однофазный Online источник бесперебойного питания.  Подходит для использования с серверами и сетевым оборудованием. ИБП поддерживает подключение внешних батарейных блоков для увеличения времени автономной работы. Модель оснащена LCD экраном, на котором отображаются состояние и основные параметры системы, в т.ч. уровень заряда батарей и сообщения о неисправностях. Интегрированное коммуникационное ПО позволяет контролировать ИБП и выполнять отключение при обнаружении неисправности оборудования, а также выполнять удаленное тестирование основных функций, обмен данными происходит с помощью адаптера SNMP/Internet/network. Подключение к компьютеру осуществляется через интерфейсы USB и RS-232. Корпус ИБП универсален, его можно установить в стойку или поставить на пол. В шкафу он займет 2U.
@@ -57910,7 +57910,7 @@ Canon PIXMA iP100Canon PIXMA iP110Canon PIXMA iP110 WBCanon PIXMA iP100 with Bat
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="401181">
@@ -62382,6 +62382,8 @@ HDCP
         <currencyId>KZT</currencyId>
         <vendorCode>AS69908</vendorCode>
         <picture>https://img.al-style.kz/69908_1.jpg</picture>
+        <picture>https://img.al-style.kz/69908_2.jpg</picture>
+        <picture>https://img.al-style.kz/69908_3.jpg</picture>
         <available>true</available>
         <vendor>Dahua</vendor>
         <name>Профессиональный дисплей Dahua DHI-LDV65-HAI400L 65"</name>
