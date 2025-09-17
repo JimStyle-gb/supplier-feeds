@@ -3,17 +3,18 @@
 #   Результат: docs/akcent.yml    #
 # =============================== #
 
-name: build_akcent  # ← старое имя оставлено как просил
+name: build_akcent  # ← старое имя, не меняем
 
 on:
   # Ручной запуск из вкладки Actions
   workflow_dispatch:
 
-  # Расписание (UTC): 03:13, 09:13, 15:13, 21:13 ежедневно
+  # ЕЖЕДНЕВНО В 02:00 ПО АЛМАТЫ (UTC+5)
+  # В GitHub Actions cron всегда в UTC, поэтому 02:00 Asia/Almaty = 21:00 UTC предыдущего дня
   schedule:
-    - cron: '13 3,9,15,21 * * *'
+    - cron: '0 21 * * *'  # 21:00 UTC = 02:00 Asia/Almaty
 
-  # Автозапуск при изменении скрипта/правил/самого воркфлоу
+  # Автозапуск при изменениях
   push:
     paths:
       - 'scripts/build_akcent.py'
@@ -21,55 +22,64 @@ on:
       - '.github/workflows/build_akcent.yml'
 
 permissions:
-  contents: write  # нужно, чтобы коммитить сгенерированный файл
+  contents: write  # нужно, чтобы пушить изменения
 
 concurrency:
-  group: build_akcent  # блокируем одновременные запуски одного воркфлоу
+  group: build-akcent
   cancel-in-progress: false
 
 jobs:
   build:
-    name: build_akcent  # можно и так, чтобы всё было единообразно
+    name: Build Akcent YML
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Чекаут репозитория
+      # 1) Забираем репозиторий
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2) Установка Python
+      # 2) Ставим Python
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3) Минимальные зависимости для скрипта
+      # 3) Ставим зависимости
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
-      # 4) Сборка фида Akcent
+      # 4) Собираем фид Akcent
       - name: Build Akcent feed
         env:
+          # Метка и источник
           SUPPLIER_NAME: akcent
           SUPPLIER_URL: https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
+
+          # Вывод
           OUT_FILE: docs/akcent.yml
           OUTPUT_ENCODING: windows-1251
+
+          # Сеть
           TIMEOUT_S: '30'
           RETRIES: '4'
           RETRY_BACKOFF_S: '2'
           MIN_BYTES: '1500'
+
+          # vendorCode
           VENDORCODE_PREFIX: AC
           VENDORCODE_CREATE_IF_MISSING: '1'
+
+          # Фильтр по префиксам из файла (<name> должен НАЧИНАТЬСЯ с фразы)
           AKCENT_KEYWORDS_PATH: docs/akcent_keywords.txt
-          AKCENT_KEYWORDS_MODE: include  # include — оставляем совпавшие по name; exclude — отбрасываем совпавшие
+          AKCENT_KEYWORDS_MODE: include   # include — оставляем совпавшие; exclude — отбрасываем совпавшие
         run: |
           set -e
           python --version
           python scripts/build_akcent.py
 
-      # 5) Коммит и пуш, если есть изменения
+      # 5) Коммитим изменения, если есть
       - name: Commit & push if changed
         env:
           GIT_AUTHOR_NAME: github-actions[bot]
