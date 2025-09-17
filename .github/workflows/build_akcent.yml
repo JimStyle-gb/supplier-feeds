@@ -3,71 +3,96 @@
 #   Результат: docs/akcent.yml    #
 # =============================== #
 
-name: build_akcent  # ← старое имя, не меняем
+name: build_akcent  # ← старое имя воркфлоу (не меняем)
 
 on:
-  workflow_dispatch:
-  # 02:00 Asia/Almaty = 21:00 UTC (пред. день)
+  workflow_dispatch:  # ручной запуск из вкладки Actions
+
+  # Автозапуск по расписанию:
+  # GitHub Actions cron указывается в UTC, а нам нужно 02:00 по Алматы (UTC+5).
+  # Значит, ставим 21:00 UTC (предыдущий календарный день) — это и есть 02:00 в Алматы.
   schedule:
-    - cron: '0 21 * * *'
+    - cron: '0 21 * * *'  # 21:00 UTC = 02:00 Asia/Almaty
+
+  # Автозапуск при изменениях важных файлов
   push:
     paths:
       - 'scripts/build_akcent.py'
       - 'docs/akcent_keywords.txt'
       - '.github/workflows/build_akcent.yml'
 
+# Разрешаем пушить изменения обратно (обновление docs/akcent.yml)
 permissions:
   contents: write
 
+# Не запускаем несколько копий этого же воркфлоу параллельно
 concurrency:
   group: build-akcent
   cancel-in-progress: false
 
 jobs:
   build:
-    name: Build Akcent YML
-    runs-on: ubuntu-latest
+    name: Build Akcent YML  # понятное имя джоба
+    runs-on: ubuntu-latest  # среда выполнения
 
     steps:
-      # Полная история нужна для pull --rebase
+      # 1) Клонируем репозиторий с полной историей (fetch-depth: 0 важен для pull --rebase)
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # 2) Ставим нужную версию Python для запуска скрипта
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # 3) Устанавливаем зависимости, которые использует скрипт сборки
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
+      # 4) Запускаем сборку фида Akcent
+      #    Все параметры передаём через переменные окружения (env),
+      #    чтобы не хардкодить их в коде.
       - name: Build Akcent feed
         env:
+          # Метка поставщика (попадает в FEED_META)
           SUPPLIER_NAME: akcent
+          # URL исходного XML у поставщика
           SUPPLIER_URL: https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
+
+          # Куда выводим файл (только YML, без XML)
           OUT_FILE: docs/akcent.yml
+          # Кодировка под Satu
           OUTPUT_ENCODING: windows-1251
-          TIMEOUT_S: '30'
-          RETRIES: '4'
-          RETRY_BACKOFF_S: '2'
-          MIN_BYTES: '1500'
+
+          # Сетевые параметры скачивания исходника
+          TIMEOUT_S: '30'          # таймаут запроса в секундах
+          RETRIES: '4'             # кол-во повторов при неудаче
+          RETRY_BACKOFF_S: '2'     # множитель паузы между повторами
+          MIN_BYTES: '1500'        # минимальный размер ответа (защита от обрезанного файла)
+
+          # vendorCode: префикс и автосоздание тега при отсутствии
           VENDORCODE_PREFIX: AC
           VENDORCODE_CREATE_IF_MISSING: '1'
+
+          # Фильтр по префиксам из файла: <name> должен НАЧИНАТЬСЯ с одной из фраз
           AKCENT_KEYWORDS_PATH: docs/akcent_keywords.txt
-          AKCENT_KEYWORDS_MODE: include
+          AKCENT_KEYWORDS_MODE: include   # include — оставляем совпавшие; exclude — отбрасываем совпавшие
         run: |
-          set -e
+          set -e                       # прерывать шаг при любой ошибке
           python --version
           python scripts/build_akcent.py
 
-      # ВАЖНО: тянем изменения с удалённого (rebase), затем push
+      # 5) Коммитим результат и пушим в ту же ветку.
+      #    Перед пушем подтягиваем удалённые изменения с rebase,
+      #    чтобы избежать ошибки "rejected: fetch first".
       - name: Commit & pull --rebase & push
         env:
-          BRANCH_NAME: ${{ github.ref_name }}
+          BRANCH_NAME: ${{ github.ref_name }}  # имя текущей ветки (обычно main)
           GIT_AUTHOR_NAME: github-actions[bot]
           GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: github-actions[bot]
@@ -77,17 +102,21 @@ jobs:
           git config user.name  "$GIT_AUTHOR_NAME"
           git config user.email "$GIT_AUTHOR_EMAIL"
 
+          # Индексируем все изменения (например, обновлённый docs/akcent.yml)
           git add -A
+
+          # Если изменений нет — выходим
           if git diff --staged --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
+          # Создаём коммит
           git commit -m "chore(akcent): update docs/akcent.yml [skip ci]"
 
-          # подтягиваем новые коммиты с origin и накатываем наш commit поверх
+          # Тянем свежие коммиты с удалённого репозитория и накатываем наш сверху
           git fetch origin "$BRANCH_NAME"
           git pull --rebase origin "$BRANCH_NAME"
 
-          # отправляем
+          # Пушим текущую HEAD в ту же ветку
           git push origin HEAD:"$BRANCH_NAME"
