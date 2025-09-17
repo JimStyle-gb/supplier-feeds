@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-17 14:27">
+<yml_catalog date="2025-09-17 14:42">
   <!--FEED_META
 script_version                  = copyline-2025-09-17.0                     | Версия скрипта
 supplier                        = copyline                                  | Метка поставщика
@@ -16,8 +16,8 @@ prices_updated                  = 0                                         | Ск
 vendors_recovered               = 0                                         | Скольким товарам нормализован vendor
 vendorcodes_created             = 0                                         | Сколько создано узлов vendorCode
 vendorcodes_filled_from_article = 0                                         | Сколько vendorCode взяли из артикула
-built_utc                       = 2025-09-17 14:27:35 UTC                   | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-17 19:27:35 +05                   | Время сборки (Алматы)-->
+built_utc                       = 2025-09-17 14:42:03 UTC                   | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-17 19:42:03 +05                   | Время сборки (Алматы)-->
   <shop>
     <offers />
   </shop>
