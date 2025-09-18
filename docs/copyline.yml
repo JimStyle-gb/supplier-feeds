@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-17 22:17">
+<yml_catalog date="2025-09-18 12:09">
   <!--FEED_META
-script_version        = copyline-2025-09-17.5                     | Версия скрипта (для контроля в CI)
+script_version        = copyline-2025-09-17.6                     | Версия скрипта (для контроля в CI)
 supplier              = copyline                                  | Метка поставщика
 source                = https://copyline.kz/files/price-CLA.xlsx  | URL исходного XLSX
-offers_total          = 2845                                      | Позиции в исходном файле (после шапки, до фильтра по словам)
+offers_total          = 2846                                      | Позиции в исходном файле (после шапки, до фильтров)
 offers_written        = 1229                                      | Офферов записано (после всех фильтров и очистки)
-filtered_by_keywords  = 1604                                      | Отфильтровано по префиксам ключевых слов
+filtered_by_keywords  = 1605                                      | Отфильтровано по префиксам ключевых слов
 headers_skipped       = 3                                         | Строк-заголовков/категорий отброшено
 desc_filled_from_name = 1229                                      | Скольким офферам описание взяли из name
 prices_mode           = retail                                    | Режим цен (pass/retail)
 prices_updated        = 1229                                      | Скольким товарам записали price
 vendors_detected      = 0                                         | Скольким товарам распознали бренд
 available_set_true    = 1229                                      | Скольким офферам выставлено available=true
-built_utc             = 2025-09-17 22:17:20 UTC                   | Время сборки (UTC)
-built_Asia/Almaty     = 2025-09-18 03:17:20 +05                   | Время сборки (Алматы)-->
+built_utc             = 2025-09-18 12:09:06 UTC                   | Время сборки (UTC)
+built_Asia/Almaty     = 2025-09-18 17:09:06 +05                   | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="M436">
