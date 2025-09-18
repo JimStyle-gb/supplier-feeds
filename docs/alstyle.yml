@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-17 20:17">
+<yml_catalog date="2025-09-18 20:18">
   <!--FEED_META
 script_version                  = alstyle-2025-09-15.6                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15818                                                           | Офферов у поставщика до очистки
-offers_written                  = 1984                                                            | Офферов записано (после очистки)
+offers_total                    = 15830                                                           | Офферов у поставщика до очистки
+offers_written                  = 1982                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13834                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1984                                                            | Скольким товарам пересчитали price
+filtered_by_categories          = 13848                                                           | Сколько офферов отфильтровано по категориям
+prices_updated                  = 1982                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
-dealer_src_direct_field         = 1984                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
+dealer_src_direct_field         = 1982                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
 dealer_src_rrp_fallback         = 0                                                               | Базовая цена взята из RRP/РРЦ (fallback)
 dealer_src_missing              = 0                                                               | Не нашли базовую цену
-params_removed                  = 9533                                                            | Сколько строк параметров добавлено в описание
+params_removed                  = 9531                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1361                                                            | Сколько офферов доступны (true)
-available_false                 = 623                                                             | Сколько офферов недоступны (false)
+available_true                  = 1353                                                            | Сколько офферов доступны (true)
+available_false                 = 629                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15818                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15830                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-17 20:17:09 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-18 01:17:09 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-18 20:18:23 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-19 01:18:23 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -36,7 +36,7 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
         <picture>https://img.al-style.kz/20888_1.jpg</picture>
         <picture>https://img.al-style.kz/20888_2.jpg</picture>
         <picture>https://img.al-style.kz/20888_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>SVC</vendor>
         <name>Источник бесперебойного питания SVC U-650-L</name>
         <description>Линейно-Интерактивный ИБП с функцией сетевого фильтра SVC U-650-L Устройство, позволяющее подключённому оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. 3 выходных разъёмов Shuko CEE7 с батарейной поддержкой и 3 выходных разъёмов с функцией сетевого фильтра позволят подключить большое количество оборудования. 2*USB порта 5В/2А позволят зарядить любое портативное устройство.
@@ -64,7 +64,7 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="12569">
@@ -1487,38 +1487,6 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
         <available>true</available>
       </offer>
 
-  <offer id="15057">
-        <price>83900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS19669</vendorCode>
-        <picture>https://img.al-style.kz/19669_1.jpg</picture>
-        <available>false</available>
-        <vendor>Deluxe</vendor>
-        <name>Экран моторизированный (с пультом Д/У) Deluxe DLS-ERC274х206W (108"х81"), &#216; - 135", 4:3</name>
-        <description>Экран моторизированный (с пультом Д/У) Deluxe DLS-ERC274х206W (108"х81"), &#216; - 135", 4:3
-
-В проекционном экране Deluxe сочетаются простой дизайн, прочные компоненты и аккуратное исполнение. Экран легко устанавливается и регулируется. Полотно полностью скрыто в элегантном корпусе когда не используется. Экран Deluxe опускается и фиксируется на любой длине.
-
-Производитель: Deluxe
-
-Тип экрана: настенный/потолочный
-
-Формат экрана: 4:3
-
-Вес нетто: 11,5 кг
-
-Гарантия: 1
-
-Коэффициент яркости: 1.0
-
-Характеристики:
-- Гарантия: 1 год
-- Соотношение сторон экрана: 4:3
-- Цвет: Белый</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="15063">
         <price>1538900</price>
         <currencyId>KZT</currencyId>
@@ -1868,7 +1836,7 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
         <picture>https://img.al-style.kz/6281_1.jpg</picture>
         <picture>https://img.al-style.kz/6281_2.jpg</picture>
         <picture>https://img.al-style.kz/6281_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Ship</vendor>
         <name>Кабель сетевой SHIP D225-P Cat.5e UTP 30В РЕ</name>
         <description>Кабель сетевой самонесущий SHIP D225-P  Это не экранированный (UTP) 4 - х парный кабель 5e категории, со стальным тросом. Благодаря PE оболочке применяется при прокладке вне помещений. Отличается повышенной термостойкостью и не восприимчивостью к воздействию прямых солнечных лучей. Используется для создания компьютерных сетей стандарта 100 Мегабит/сек или 1 Гигабит/сек. 100 метровый сегмент успешно прошёл тестирование на сертифицированном приборе Fluke.
@@ -1884,7 +1852,7 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
 - Стандарты: Категория 5е
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="16826">
@@ -5792,7 +5760,7 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
         <picture>https://img.al-style.kz/8590_1.jpg</picture>
         <picture>https://img.al-style.kz/8590_2.jpg</picture>
         <picture>https://img.al-style.kz/8590_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>SVC</vendor>
         <name>Источник бесперебойного питания SVC RT-10KL-LCD</name>
         <description>Онлайн ИБП SVC RT-10KL-LCD Используется для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю.
@@ -5823,7 +5791,7 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="18930">
@@ -7909,7 +7877,7 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
         <picture>https://img.al-style.kz/25233_1.jpg</picture>
         <picture>https://img.al-style.kz/25233_2.jpg</picture>
         <picture>https://img.al-style.kz/25233_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>SVC</vendor>
         <name>Источник бесперебойного питания SVC V-2000-L</name>
         <description>Линейно-Интерактивный ИБП SVC V-2000-L Устройство, позволяющее подключенному оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. Кроме того, оно способно корректировать параметры (напряжение, частоту) электропитания. Часто применяется для обеспечения бесперебойной работы компьютеров.
@@ -7933,7 +7901,7 @@ built_Asia/Almaty               = 2025-09-18 01:17:09 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="24318">
@@ -16369,7 +16337,7 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS33364</vendorCode>
         <picture>https://img.al-style.kz/33364_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж повышенной емкости Xerox 106R03488 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -16390,7 +16358,7 @@ USB
 - Вес: 0.4
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="114110">
@@ -25544,7 +25512,7 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS42269</vendorCode>
         <picture>https://img.al-style.kz/42269_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж стандартной емкости Xerox 006R04360 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -25565,7 +25533,7 @@ USB
 - Вес: 0.2
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266718">
@@ -27097,7 +27065,7 @@ USB
         <vendorCode>AS42578</vendorCode>
         <picture>https://img.al-style.kz/42578_1.jpg</picture>
         <picture>https://img.al-style.kz/42578_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>CyberPower</vendor>
         <name>Источник бесперебойного питания CyberPower BS850E</name>
         <description>CyberPower BS850E - эта серия ИБП CyberPower предоставляет домашним и офисным пользователям надежное резервное электропитание для персональных компьютеров и других электронных устройств от перепадов, скачков, провалов напряжения и прочих инцидентов в электроснабжении. Конструкция с гибкими возможностями монтажа обеспечивает различные варианты установки, включая горизонтальную установку, размещение в шкаф и настенное крепление.
@@ -27126,7 +27094,7 @@ USB
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="267119">
@@ -28305,7 +28273,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
         <vendorCode>AS45707</vendorCode>
         <picture>https://img.al-style.kz/45707_1.jpg</picture>
         <picture>https://img.al-style.kz/45707_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Legrand</vendor>
         <name>Кабель сетевой Legrand Cat.5e U/UTP LSZH</name>
         <description>Кабель сетевой Legrand 032750 Cat.5e U/UTP LSZH
@@ -28325,7 +28293,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
 - Стандарты: Категория 5е
 - Цвет: Серый</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="270153">
@@ -28363,7 +28331,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
         <vendorCode>AS45709</vendorCode>
         <picture>https://img.al-style.kz/45709_1.jpg</picture>
         <picture>https://img.al-style.kz/45709_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Legrand</vendor>
         <name>Кабель сетевой Legrand Cat.6 U/UTP LSZH</name>
         <description>Кабель сетевой Legrand 032754 Cat.6 U/UTP 30В LSZH
@@ -28383,7 +28351,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
 - Стандарты: Категория 6
 - Цвет: Синий</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="270155">
@@ -28474,7 +28442,7 @@ XL Setting to Share . Поделитесь своими настройками с товарищем по команде, друг
       </offer>
 
   <offer id="281298">
-        <price>14900</price>
+        <price>12900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44045</vendorCode>
         <picture>https://img.al-style.kz/44045_1.jpg</picture>
@@ -28516,7 +28484,7 @@ XL Setting to Share . Поделитесь своими настройками с товарищем по команде, друг
       </offer>
 
   <offer id="281299">
-        <price>14900</price>
+        <price>12900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44046</vendorCode>
         <picture>https://img.al-style.kz/44046_1.jpg</picture>
@@ -28558,7 +28526,7 @@ XL Setting to Share . Поделитесь своими настройками с товарищем по команде, друг
       </offer>
 
   <offer id="281300">
-        <price>14900</price>
+        <price>12900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44047</vendorCode>
         <picture>https://img.al-style.kz/44047_1.jpg</picture>
@@ -28600,7 +28568,7 @@ XL Setting to Share . Поделитесь своими настройками с товарищем по команде, друг
       </offer>
 
   <offer id="281301">
-        <price>14900</price>
+        <price>12900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44048</vendorCode>
         <picture>https://img.al-style.kz/44048_1.jpg</picture>
@@ -31009,7 +30977,7 @@ Microsoft Windows 11
         <currencyId>KZT</currencyId>
         <vendorCode>AS46502</vendorCode>
         <picture>https://img.al-style.kz/46502_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Цветной принтер Xerox VersaLink C7000DN</name>
         <description>Принтер VersaLink C7000 
@@ -31099,7 +31067,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 - Рекомендованный ежемесячный объем печати: 10 000 страниц
 - Частота процессора: 1.05 ГГц</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="360690">
@@ -32344,7 +32312,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
       </offer>
 
   <offer id="361812">
-        <price>9900</price>
+        <price>8900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44043</vendorCode>
         <picture>https://img.al-style.kz/44043_1.jpg</picture>
@@ -32386,7 +32354,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
       </offer>
 
   <offer id="361813">
-        <price>9900</price>
+        <price>8900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44044</vendorCode>
         <picture>https://img.al-style.kz/44044_1.jpg</picture>
@@ -32638,7 +32606,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
       </offer>
 
   <offer id="361823">
-        <price>9900</price>
+        <price>8900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44071</vendorCode>
         <picture>https://img.al-style.kz/44071_1.jpg</picture>
@@ -33828,7 +33796,7 @@ Dahua DHI-LM32-F200 — это отличное решение для пользователей, которые нуждаются 
         <picture>https://img.al-style.kz/50694_1.jpg</picture>
         <picture>https://img.al-style.kz/50694_2.jpg</picture>
         <picture>https://img.al-style.kz/50694_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Comix</vendor>
         <name>Ламинатор COMIX F9099W А4</name>
         <description>Ламинатор COMIX F9099W А4
@@ -33844,7 +33812,7 @@ Dahua DHI-LM32-F200 — это отличное решение для пользователей, которые нуждаются 
 - Гарантия: 1 год
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="384099">
@@ -33866,36 +33834,6 @@ Dahua DHI-LM32-F200 — это отличное решение для пользователей, которые нуждаются 
 
 Характеристики:
 - Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
-  <offer id="384195">
-        <price>160900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS50784</vendorCode>
-        <picture>https://img.al-style.kz/50784_1.jpg</picture>
-        <picture>https://img.al-style.kz/50784_2.jpg</picture>
-        <picture>https://img.al-style.kz/50784_3.jpg</picture>
-        <available>false</available>
-        <vendor>XG</vendor>
-        <name>Персональный компьютер XG Basic XG650</name>
-        <description>Компьютер XG Basic XG650 удовлетворит базовые потребности современного пользователя и отлично подойдёт для работы, учёбы, интернет-сёрфинга и просмотра видеоконтента. 
-За высокую производительность отвечает современный процессор I3 12100, а высокоскоростная оперативная память DDR4 объёмом 8GB обеспечивает ускоренную обработку данных. Твердотельный накопитель на 512GB гарантирует быстрый запуск операционной системы и основных программ, а также надёжное хранение файлов.
-За корректную работоспособность всех компонентов ПК отвечает блок питания на 400W Вт. 
-Дизайн корпуса, продуманная система воздушного охлаждения и аккуратная укладка кабелей способствуют лучшей циркуляции воздуха внутри системного блока, меньшему накоплению пыли и предотвращают перегрев компонентов.
-
-Состав персонального компьютера:
-Твердотельный накопитель SSD 512G M.2 
-Компьютерный корпус XG XC-370PS-2 с Б/П
-Кулер для процессора Intel Deepcool THETA 31 PWM 1700
-Материнская плата Gigabyte H610M H V2 DDR4
-Модуль памяти Apacer EL.08G21.GSH
-400W
-Процессор Intel Core i3 Processor 12100 1700
-
-Характеристики:
-- Вес: 5.4</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
       </offer>
@@ -35508,7 +35446,7 @@ DisplayPort x1
         <picture>https://img.al-style.kz/53138_1.jpg</picture>
         <picture>https://img.al-style.kz/53138_2.jpg</picture>
         <picture>https://img.al-style.kz/53138_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>XG</vendor>
         <name>Персональный компьютер XG Basic XG710</name>
         <description>Комплектующие: 
@@ -35531,7 +35469,7 @@ DisplayPort x1
 Характеристики:
 - Вес: 5.4</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="386740">
@@ -36271,7 +36209,7 @@ PoE
         <picture>https://img.al-style.kz/56104_1.jpg</picture>
         <picture>https://img.al-style.kz/56104_2.jpg</picture>
         <picture>https://img.al-style.kz/56104_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>XG</vendor>
         <name>Монитор 23.8'' X-game 1T238IPS</name>
         <description>Монитор 23.8'' X-game 1T238IPS
@@ -36314,7 +36252,7 @@ HDMI x1
 - Состав: Металл, пластик
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="390131">
@@ -36784,7 +36722,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <currencyId>KZT</currencyId>
         <vendorCode>AS56890</vendorCode>
         <picture>https://img.al-style.kz/56890_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Модуль для беспроводного подключения Xerox 097N02470</name>
         <description>Модуль для беспроводного подключения Xerox 097N02470
@@ -36794,7 +36732,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
 - Вес: 0.7
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="390444">
@@ -36873,7 +36811,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <currencyId>KZT</currencyId>
         <vendorCode>AS56893</vendorCode>
         <picture>https://img.al-style.kz/56893_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Xerox</vendor>
         <name>Тонер-картридж стандартной емкости Xerox 006R04677 (чёрный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -36893,7 +36831,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="390447">
@@ -38679,6 +38617,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 Характеристики:
 - Гарантия: 1 год
 - Максимальная нагрузка: 150 000 стр./мес.
+- Состав: Металл, пластик
 - Интерфейсы: USB 2.0, Ethernet 10/100/1000, Wi-Fi
 - Частота процессора: 800 МГц
 - Скорость печати, А4: 43 стр./мин.
@@ -38810,7 +38749,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59322_1.jpg</picture>
         <picture>https://img.al-style.kz/59322_2.jpg</picture>
         <picture>https://img.al-style.kz/59322_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Монохромное лазерное МФУ Canon I-S MF465dw</name>
         <description>Монохромное лазерное МФУ Canon I-S MF465dw
@@ -38854,7 +38793,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Скорость сканирования: до 100 изобр./мин.
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392880">
@@ -39415,7 +39354,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59364_1.jpg</picture>
         <picture>https://img.al-style.kz/59364_2.jpg</picture>
         <picture>https://img.al-style.kz/59364_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Монохромный лазерный принтер Canon I-S LBP243dw</name>
         <description>Монохромный лазерный принтер Canon I-S LBP243dw
@@ -39452,7 +39391,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392925">
@@ -39512,7 +39451,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59373_1.jpg</picture>
         <picture>https://img.al-style.kz/59373_2.jpg</picture>
         <picture>https://img.al-style.kz/59373_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma G3470R</name>
         <description>Цветное МФУ Canon Pixma G3470 Red
@@ -39544,7 +39483,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392937">
@@ -40140,7 +40079,7 @@ Canon imagePROGRAF TM-250Canon imagePROGRAF TM-255Canon imagePROGRAF TM-350 Cano
         <picture>https://img.al-style.kz/59771_1.jpg</picture>
         <picture>https://img.al-style.kz/59771_2.jpg</picture>
         <picture>https://img.al-style.kz/59771_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma G3470B</name>
         <description>Цветное МФУ Canon Pixma G3470 Black
@@ -40172,7 +40111,7 @@ Canon imagePROGRAF TM-250Canon imagePROGRAF TM-255Canon imagePROGRAF TM-350 Cano
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393302">
@@ -40182,7 +40121,7 @@ Canon imagePROGRAF TM-250Canon imagePROGRAF TM-255Canon imagePROGRAF TM-350 Cano
         <picture>https://img.al-style.kz/59772_1.jpg</picture>
         <picture>https://img.al-style.kz/59772_2.jpg</picture>
         <picture>https://img.al-style.kz/59772_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma G3470W</name>
         <description>Цветное МФУ Canon Pixma G3470 White
@@ -40214,7 +40153,7 @@ Canon imagePROGRAF TM-250Canon imagePROGRAF TM-255Canon imagePROGRAF TM-350 Cano
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393303">
@@ -44081,7 +44020,7 @@ Canon imagePROGRAF TM-200Canon imagePROGRAF TM-205Canon imagePROGRAF TM-300Canon
       </offer>
 
   <offer id="393974">
-        <price>459900</price>
+        <price>690900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS60451</vendorCode>
         <picture>https://img.al-style.kz/60451_1.jpg</picture>
@@ -44567,7 +44506,7 @@ HDCP
         <picture>https://img.al-style.kz/60531_1.jpg</picture>
         <picture>https://img.al-style.kz/60531_2.jpg</picture>
         <picture>https://img.al-style.kz/60531_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>iiyama</vendor>
         <name>Монитор iiyama ProLite PL2792Q XUB2792QSU-W6 27"</name>
         <description>Монитор iiyama ProLite PL2792Q XUB2792QSU-W6 27"
@@ -44612,7 +44551,7 @@ HDCP
 - Видеовыход: HDMI / DP
 - Время отклика: 0,5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="394240">
@@ -45389,7 +45328,7 @@ Canon Cassette Feeding Unit-AE1/AG1/AJ1/AK1/AL1/AM1/AP1/AQ1/AW1Canon Color image
         <currencyId>KZT</currencyId>
         <vendorCode>AS61054</vendorCode>
         <picture>https://img.al-style.kz/61054_1.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Legrand</vendor>
         <name>Кабель сетевой Legrand Cat.6 F/UTP PVC</name>
         <description>Кабель сетевой Legrand 032758 Cat.6 F/UTP PVC 
@@ -45402,7 +45341,7 @@ Canon Cassette Feeding Unit-AE1/AG1/AJ1/AK1/AL1/AM1/AP1/AQ1/AW1Canon Color image
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396358">
@@ -46453,7 +46392,7 @@ Canon
         <picture>https://img.al-style.kz/61267_1.jpg</picture>
         <picture>https://img.al-style.kz/61267_2.jpg</picture>
         <picture>https://img.al-style.kz/61267_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Legrand</vendor>
         <name>Источник бесперебойного питания Legrand Daker DK Plus 5 кВА</name>
         <description>Источник бесперебойного питания Legrand Daker DK Plus 5 кВА
@@ -46473,7 +46412,7 @@ Daker DK UPS Plus — это однофазный Online источник бесперебойного питания. Подхо
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396682">
@@ -47256,7 +47195,7 @@ APC Easy UPS SRV3KRILRK высококачественный онлайн-ИБП с двойным преобразованием,
         <picture>https://img.al-style.kz/61360_1.jpg</picture>
         <picture>https://img.al-style.kz/61360_2.jpg</picture>
         <picture>https://img.al-style.kz/61360_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV10KRIRK</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV10KRIRK
@@ -47288,7 +47227,7 @@ APC Easy UPS SRV10KRIRK высококачественный онлайн-ИБП с двойным преобразованием,
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396747">
@@ -47298,7 +47237,7 @@ APC Easy UPS SRV10KRIRK высококачественный онлайн-ИБП с двойным преобразованием,
         <picture>https://img.al-style.kz/61361_1.jpg</picture>
         <picture>https://img.al-style.kz/61361_2.jpg</picture>
         <picture>https://img.al-style.kz/61361_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV6KRIRK</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV6KRIRK
@@ -47329,7 +47268,7 @@ APC Easy UPS SRV6KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396748">
@@ -47339,7 +47278,7 @@ APC Easy UPS SRV6KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
         <picture>https://img.al-style.kz/61362_1.jpg</picture>
         <picture>https://img.al-style.kz/61362_2.jpg</picture>
         <picture>https://img.al-style.kz/61362_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV3KRIRK</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV3KRIRK
@@ -47369,7 +47308,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396749">
@@ -47379,7 +47318,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
         <picture>https://img.al-style.kz/61363_1.jpg</picture>
         <picture>https://img.al-style.kz/61363_2.jpg</picture>
         <picture>https://img.al-style.kz/61363_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV2KRIRK</name>
         <description>Источник бесперебойного питания APC Easy UPS SRVKRIRK
@@ -47410,7 +47349,7 @@ APC Easy UPS SRV2KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396750">
@@ -47420,7 +47359,7 @@ APC Easy UPS SRV2KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
         <picture>https://img.al-style.kz/61364_1.jpg</picture>
         <picture>https://img.al-style.kz/61364_2.jpg</picture>
         <picture>https://img.al-style.kz/61364_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV1KRIRK</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV1KRIRK
@@ -47450,7 +47389,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396751">
@@ -47667,7 +47606,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
         <picture>https://img.al-style.kz/61371_1.jpg</picture>
         <picture>https://img.al-style.kz/61371_2.jpg</picture>
         <picture>https://img.al-style.kz/61371_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV3KI</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV3KI
@@ -47697,7 +47636,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396758">
@@ -47707,7 +47646,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
         <picture>https://img.al-style.kz/61372_1.jpg</picture>
         <picture>https://img.al-style.kz/61372_2.jpg</picture>
         <picture>https://img.al-style.kz/61372_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS SRV2KI</name>
         <description>Источник бесперебойного питания APC Easy UPS SRV2KI
@@ -47739,7 +47678,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396759">
@@ -47901,7 +47840,7 @@ Schneider Electric Easy UPS SRVS10KRILRK - высококачественный онлайн-ИБП с двойн
         <picture>https://img.al-style.kz/61388_1.jpg</picture>
         <picture>https://img.al-style.kz/61388_2.jpg</picture>
         <picture>https://img.al-style.kz/61388_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Schneider Electric</vendor>
         <name>Источник бесперебойного питания Schneider Electric Easy UPS SRVS10KIL</name>
         <description>Источник бесперебойного питания Schneider Electric Easy UPS SRVS10KIL
@@ -47929,7 +47868,7 @@ Schneider Electric Easy UPS SRVS10KRILRK - высококачественный онлайн-ИБП с двойн
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396765">
@@ -47978,7 +47917,7 @@ Schneider Electric Easy UPS SRVS10KRILRK - высококачественный онлайн-ИБП с двойн
         <picture>https://img.al-style.kz/61390_1.jpg</picture>
         <picture>https://img.al-style.kz/61390_2.jpg</picture>
         <picture>https://img.al-style.kz/61390_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Schneider Electric</vendor>
         <name>Источник бесперебойного питания Schneider Electric Easy UPS SRVS6KRILRK</name>
         <description>Источник бесперебойного питания Schneider Electric Easy UPS SRVS6KRILRK
@@ -48009,7 +47948,7 @@ Schneider Electric Easy UPS SRVS10KRILRK - высококачественный онлайн-ИБП с двойн
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396768">
@@ -48516,7 +48455,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61382_1.jpg</picture>
         <picture>https://img.al-style.kz/61382_2.jpg</picture>
         <picture>https://img.al-style.kz/61382_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS BVX700LI-GR</name>
         <description>Источник бесперебойного питания APC Easy UPS BVX700LI-GR
@@ -48539,7 +48478,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396805">
@@ -48548,7 +48487,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <vendorCode>AS61383</vendorCode>
         <picture>https://img.al-style.kz/61383_1.jpg</picture>
         <picture>https://img.al-style.kz/61383_2.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS BV1000I-GR</name>
         <description>Источник бесперебойного питания APC Easy UPS BV1000I-GR
@@ -48570,7 +48509,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396806">
@@ -48579,7 +48518,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <vendorCode>AS61384</vendorCode>
         <picture>https://img.al-style.kz/61384_1.jpg</picture>
         <picture>https://img.al-style.kz/61384_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS BV800I-GR</name>
         <description>Источник бесперебойного питания APC Easy UPS BV800I-GR
@@ -48602,7 +48541,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396807">
@@ -48643,7 +48582,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61405_1.jpg</picture>
         <picture>https://img.al-style.kz/61405_2.jpg</picture>
         <picture>https://img.al-style.kz/61405_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Schneider Electric</vendor>
         <name>Источник бесперебойного питания Schneider Electric Easy UPS BVS650I-GR</name>
         <description>Источник бесперебойного питания Schneider Electric Easy UPS BVS650I-GR
@@ -48663,7 +48602,7 @@ Easy-UPS-линейка источников бесперебойного питания средней ценовой категории, ор
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396810">
@@ -49653,7 +49592,7 @@ Canon imageRUNNER ADVANCE 8085Canon imageRUNNER ADVANCE 8095Canon imageRUNNER AD
         <picture>https://img.al-style.kz/62144_1.jpg</picture>
         <picture>https://img.al-style.kz/62144_2.jpg</picture>
         <picture>https://img.al-style.kz/62144_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Easy UPS BVX900LI-GR</name>
         <description>Источник бесперебойного питания APC Back-UPS Pro BVX900LI-GR
@@ -49663,7 +49602,7 @@ Canon imageRUNNER ADVANCE 8085Canon imageRUNNER ADVANCE 8095Canon imageRUNNER AD
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="397571">
@@ -49928,7 +49867,7 @@ Bluetooth
         <picture>https://img.al-style.kz/62473_1.jpg</picture>
         <picture>https://img.al-style.kz/62473_2.jpg</picture>
         <picture>https://img.al-style.kz/62473_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Ship</vendor>
         <name>Кабель сетевой SHIP D165-VS Cat.6 UTP 30В PVC</name>
         <description>Кабель сетевой SHIP  D165-VS Это неэкранированный (UTP) 4 - х парный кабель 6 категории. В отличии от кабеля 5e категории имеет жилу 0.515 мм., что позволяет работать на частоте 250 МГц. В центре кабеля проходит разделительный канал, препятствующий переплетению пар между собой.Также по стандарту 6 категории, каждая пара имеет свой шаг скрутки. Кабель имеет стандартную PVC оболочку, применяется при прокладки внутри помещения.  
@@ -49939,7 +49878,7 @@ Bluetooth
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="397894">
@@ -52043,7 +51982,7 @@ Canon Cassette Feeding Unit-AQ1Canon imageRUNNER ADVANCE DX 6000iCanon imageRUNN
       </offer>
 
   <offer id="398319">
-        <price>187900</price>
+        <price>193900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS62917</vendorCode>
         <picture>https://img.al-style.kz/62917_1.jpg</picture>
@@ -54008,7 +53947,7 @@ Canon PIXMA E404Canon PIXMA E464Canon PIXMA E484
         <picture>https://img.al-style.kz/64239_1.jpg</picture>
         <picture>https://img.al-style.kz/64239_2.jpg</picture>
         <picture>https://img.al-style.kz/64239_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>APC</vendor>
         <name>Аккумуляторный батарейный модуль APC SRT192RMBP</name>
         <description>Аккумуляторный батарейный модуль APC SRT192RMBP 
@@ -54027,7 +53966,7 @@ Canon PIXMA E404Canon PIXMA E464Canon PIXMA E484
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="399935">
@@ -55675,7 +55614,7 @@ Canon i-SENSYS LBP122dwCanon i-SENSYS MF272dwCanon i-SENSYS MF273dwCanon i-SENSY
         <currencyId>KZT</currencyId>
         <vendorCode>AS64646</vendorCode>
         <picture>https://img.al-style.kz/64646_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Картридж Canon LBP CARTRIDGE 071H</name>
         <description>Картридж Canon LBP CARTRIDGE 071H
@@ -55709,7 +55648,7 @@ Canon i-SENSYS MF272dwCanon i-SENSYS MF275dwCanon i-SENSYS LBP122dw
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400328">
@@ -55844,7 +55783,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <vendorCode>AS64667</vendorCode>
         <picture>https://img.al-style.kz/64667_1.jpg</picture>
         <picture>https://img.al-style.kz/64667_2.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-069C</name>
         <description>Данный картридж обеспечивает высокое качество печати и совместим с лазерными принтерами Canon.
@@ -55876,7 +55815,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400349">
@@ -55926,7 +55865,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <vendorCode>AS64670</vendorCode>
         <picture>https://img.al-style.kz/64670_1.jpg</picture>
         <picture>https://img.al-style.kz/64670_2.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-069Y</name>
         <description>Данный картридж обеспечивает высокое качество печати и совместим с лазерными принтерами Canon.
@@ -55958,7 +55897,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400352">
@@ -57078,7 +57017,7 @@ Canon imagePRESS C60Canon imagePRESS C65Canon imagePRESS C650Canon imagePRESS C7
         <vendorCode>AS65137</vendorCode>
         <picture>https://img.al-style.kz/65137_1.jpg</picture>
         <picture>https://img.al-style.kz/65137_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Струйный картридж Canon PG-460XL</name>
         <description>Струйный картридж Canon PG-460XL
@@ -57116,7 +57055,7 @@ Canon PIXMA TS5340Canon PIXMA TS7440
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="400808">
@@ -59797,7 +59736,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
         <picture>https://img.al-style.kz/68080_1.jpg</picture>
         <picture>https://img.al-style.kz/68080_2.jpg</picture>
         <picture>https://img.al-style.kz/68080_3.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>APC</vendor>
         <name>Источник бесперебойного питания APC Back-UPS BGM2200-GR</name>
         <description>Источник бесперебойного питания APC Back-UPS BGM2200-GR 
@@ -59815,7 +59754,7 @@ RGB-подсветка: Настраиваемая подсветка под ваш стиль и игровой сетап. Возможност
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="403352">
@@ -61623,7 +61562,7 @@ Cyborg 15
         <vendorCode>AS69260</vendorCode>
         <picture>https://img.al-style.kz/69260_1.jpg</picture>
         <picture>https://img.al-style.kz/69260_2.jpg</picture>
-        <available>false</available>
+        <available>true</available>
         <vendor>Canon</vendor>
         <name>Струйный картридж Canon BJ CARTRIDGE PG-510</name>
         <description>Струйный картридж Canon BJ CARTRIDGE PG-510
@@ -61658,7 +61597,7 @@ CANON PIXMA iP2700CANON PIXMA MP252CANON PIXMA MP260CANON PIXMA MP270CANON PIXMA
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="404320">
@@ -62184,7 +62123,7 @@ ScanPad
         <picture>https://img.al-style.kz/69731_1.jpg</picture>
         <picture>https://img.al-style.kz/69731_2.jpg</picture>
         <picture>https://img.al-style.kz/69731_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-W1510A (Без чипа)</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
@@ -62209,7 +62148,7 @@ ScanPad
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="404754">
@@ -63052,7 +62991,6 @@ Canon
 Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
 
 Характеристики:
-- Вес: 0.1
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -66281,6 +66219,7 @@ DisplayPort x1
 Правовая и нормативная информация и т.д.
 
 Характеристики:
+- Вес: 4.6
 - Гарантия: 1 год
 - Частота обновления экрана: 100 Гц
 - Тип матрицы экрана: VA
@@ -67332,7 +67271,7 @@ D-Sub x1
         <picture>https://img.al-style.kz/74099_1.jpg</picture>
         <picture>https://img.al-style.kz/74099_2.jpg</picture>
         <picture>https://img.al-style.kz/74099_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Huawei</vendor>
         <name>Ноутбук Huawei MateBook D16 16" i5-12450H 16GB 1TB Win 11 MitchellF-W5611 MCLF-X</name>
         <description>Ноутбук Huawei MateBook D 16 2024 16" WUXGA IPS i5-12450H 16GB 1TB SSD Windows 11
@@ -67377,7 +67316,7 @@ MateBook D 16 поддерживает Wi-Fi 6, оснащён широким набором портов, включая два 
 - Операционная система: Windows 11 Home
 - Процессор: Intel Core i5-12450H</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="408662">
@@ -67537,32 +67476,6 @@ HDMI кабель
         <available>true</available>
       </offer>
 
-  <offer id="409112">
-        <price>410900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS74682</vendorCode>
-        <picture>https://img.al-style.kz/74682_1.jpg</picture>
-        <picture>https://img.al-style.kz/74682_2.jpg</picture>
-        <picture>https://img.al-style.kz/74682_3.jpg</picture>
-        <available>false</available>
-        <vendor>XG</vendor>
-        <name>Персональный компьютер XG MP Game XG750 i5-12400F/H610M/RTX3050 8Gb/16GB/1TB/650W/1STPLAYER/WIN 11</name>
-        <description>Компьютер XG MP Game XG750 
-
-Состав персонального компьютера:
-
-Твердотельный накопитель SSD Apacer AS350X 1TB SATA
-Компьютерный корпус 1STPLAYER FD3-BK-1F5M-3F5S Black без Б/П
-Блок питания 1STPLAYER HA 650W BK
-Кулер для процессора Deepcool AG400 LED
-Материнская плата Gigabyte H610M S2H V2 DDR4
-Комплект модулей памяти G.SKILL F4-2666C19D-16GNT DDR4 16GB (Kit 2x8GB) 2666MHz
-Процессор (CPU) Intel Core i5 Processor 12400F 1700
-Microsoft Windows 11 Pro</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="409547">
         <price>347900</price>
         <currencyId>KZT</currencyId>
@@ -67696,6 +67609,130 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
         <available>true</available>
       </offer>
 
+  <offer id="409548">
+        <price>290900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS75890</vendorCode>
+        <picture>https://img.al-style.kz/75890_1.jpg</picture>
+        <picture>https://img.al-style.kz/75890_2.jpg</picture>
+        <picture>https://img.al-style.kz/75890_3.jpg</picture>
+        <available>false</available>
+        <vendor>Huawei</vendor>
+        <name>Ноутбук Huawei MateBook D 14 14" i5-12450H 8GB 512GB DOS (53013XFQ)</name>
+        <description>Ноутбук Huawei MateBook D 14 14" i5-12450H 8GB 512GB DOS (53013XFQ)
+Ноутбук Huawei MateBook D 14 14" i5-12450H 8GB 512GB DOS (53013XFQ)- это высокопроизводительная модель, которая подходит как для работы, так и для игр и развлечений. Устройство способно работать в многозадачном режиме без потери эффективности, скорости и производительности за счет встроенного восьмиядерного процессора. Максимальная тактовая частота 4,4 ГГц позволяет системе выполнять множество операций одновременно. Для хранения большого объема данных предусмотрен SSD-накопитель с ресурсом 512 ГБ.
+1. Дисплей:
+
+Размер экрана: 14 дюймов
+
+Тип матрицы: IPS
+
+Разрешение: 1920 x 1080 пикселей (Full HD)
+
+Яркость: до 300 нит
+
+Соотношение сторон: 16:9
+
+Обработка экрана: Антибликовое покрытие
+
+2. Процессор:
+
+Модель: Intel Core i5-12450H
+
+Количество ядер: 8
+
+Количество потоков: 12
+
+Базовая частота: 2.0 ГГц
+
+Максимальная частота в турборежиме: до 4.4 ГГц
+
+Техпроцесс: 10 нм
+
+Кэш: 12 МБ
+
+3. Оперативная память:
+
+Объем: 8 ГБ
+
+Тип: LPDDR4x
+
+Частота: 4266 МГц
+
+Конфигурация: Встроенная память, без возможности расширения
+
+4. Хранение:
+
+Тип накопителя: SSD
+
+Объем: 512 ГБ
+
+Интерфейс: PCIe 3.0 x4
+
+5. Графика:
+
+Встроенная графика: Intel Iris Xe Graphics
+
+6. Операционная система:
+
+Предустановленная ОС: DOS (пользователь должен установить ОС самостоятельно, например, Windows)
+
+7. Порты и разъемы:
+
+2x USB 3.2 Type-A
+
+1x USB Type-C (для зарядки и передачи данных)
+
+1x USB 2.0
+
+1x HDMI 2.0
+
+1x разъем для наушников 3.5 мм
+
+1x слот для карты microSD
+
+8. Беспроводные технологии:
+
+Wi-Fi: Wi-Fi 6 (802.11ax)
+
+Bluetooth: Bluetooth 5.1
+
+9. Камера и звук:
+
+Камера: HD камера (720p) с защитой от нежелательных вмешательств
+
+Колонки: 2 x 2 Вт стереодинамиков
+
+Микрофоны: Два встроенных микрофона с поддержкой шумоподавления
+
+10. Аккумулятор:
+
+Емкость: 56 Вт ч
+
+Время работы: до 8 часов (в зависимости от использования)
+
+Зарядка: 65 Вт USB-C адаптер
+
+11. Корпус и размеры:
+
+Материал: Металлический корпус
+
+Цвет: Синий или серебристый
+
+Размеры: 322.5 x 212.6 x 15.9 мм
+
+Вес: 1.38 кг
+
+12. Дополнительные особенности:
+
+Технология Huawei Share: позволяет быстро и удобно передавать файлы между устройствами Huawei.
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
   <offer id="409564">
         <price>54900</price>
         <currencyId>KZT</currencyId>
@@ -67753,7 +67790,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
         <picture>https://img.al-style.kz/75908_1.jpg</picture>
         <picture>https://img.al-style.kz/75908_2.jpg</picture>
         <picture>https://img.al-style.kz/75908_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Samsung</vendor>
         <name>Монитор Samsung 27" LS27D304GAIXCI</name>
         <description>Монитор Samsung 27" LS27D304GAIXCI
@@ -67793,7 +67830,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
 - Видеовыход: HDMI / VGA
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="409583">
@@ -69442,7 +69479,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76957</vendorCode>
         <picture>https://img.al-style.kz/76957_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 006R01755 (CET141530U)</name>
         <description>Тонер-картридж CET 006R01755 (CET141530U)
@@ -69463,7 +69500,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410642">
@@ -69529,7 +69566,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76961</vendorCode>
         <picture>https://img.al-style.kz/76961_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03765 (CET141694)</name>
         <description>Тонер-картридж CET 106R03765 (CET141694)
@@ -69550,7 +69587,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410646">
@@ -69558,7 +69595,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76962</vendorCode>
         <picture>https://img.al-style.kz/76962_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03768 (CET141695)</name>
         <description>Тонер-картридж CET 106R03768 (CET141695)
@@ -69579,7 +69616,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410647">
@@ -69587,7 +69624,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76963</vendorCode>
         <picture>https://img.al-style.kz/76963_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03767 (CET141696)</name>
         <description>Тонер-картридж CET 106R03767 (CET141696)
@@ -69608,7 +69645,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410648">
@@ -69848,7 +69885,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76965</vendorCode>
         <picture>https://img.al-style.kz/76965_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03766 (CET141697)</name>
         <description>Тонер-картридж CET 106R03766 (CET141697)
@@ -69869,7 +69906,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410764">
@@ -69906,7 +69943,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76967</vendorCode>
         <picture>https://img.al-style.kz/76967_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03748 (CET141606)</name>
         <description>Тонер-картридж CET 106R03748 (CET141606)
@@ -69927,7 +69964,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410766">
@@ -69964,7 +70001,7 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76969</vendorCode>
         <picture>https://img.al-style.kz/76969_1.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03746 (CET141608)</name>
         <description>Тонер-картридж CET 106R03746 (CET141608)
@@ -69985,7 +70022,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410768">
@@ -70574,7 +70611,7 @@ Canon imagePROGRAF PRO-310
         <picture>https://img.al-style.kz/77357_1.jpg</picture>
         <picture>https://img.al-style.kz/77357_2.jpg</picture>
         <picture>https://img.al-style.kz/77357_3.jpg</picture>
-        <available>true</available>
+        <available>false</available>
         <vendor>Canon</vendor>
         <name>Цветное МФУ Canon Pixma G3480</name>
         <description>Цветное МФУ Canon Pixma G3480
@@ -70605,7 +70642,7 @@ Canon imagePROGRAF PRO-310
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="411032">
