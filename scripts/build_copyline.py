@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 """
 Сборщик YML для поставщика Copyline
-script_version = copyline-2025-09-18.1
+script_version = copyline-2025-09-18.2
 
 Особенности:
-- XLSX: двухстрочная шапка, колонка артикула = "Номенклатура.Артикул".
-- Фильтр по ключам из docs/copyline_keywords.txt (строгий префикс).
-- SKU берём из XLSX, цена = колонка "Цена" → правила наценки + хвост 900.
-- Фото/описание/бренд тянутся с сайта по артикулу.
-- На выход docs/copyline.yml (windows-1251), только офферы.
+- XLSX: поддержка двухстрочной шапки (пример: "Номенклатура" + "Артикул").
+- SKU берём из "Номенклатура.Артикул".
+- Фильтр по префиксам из docs/copyline_keywords.txt.
+- Цены проходят правила наценки и округление до ...900.
+- Фото/описание пока заглушка (поддержка поиска по артикулу будет добавляться отдельно).
 """
 
 from __future__ import annotations
-import os, sys, re, io, time, random, hashlib, unicodedata
-from typing import Dict, List, Tuple, Optional
+import os, sys, re, io, time, random, unicodedata
+from typing import Dict, List, Tuple
 from datetime import datetime, timezone
 from xml.etree import ElementTree as ET
 import requests
@@ -26,7 +26,7 @@ except Exception:
     ZoneInfo = None
 
 # ========== Константы и настройки ==========
-SCRIPT_VERSION = "copyline-2025-09-18.1"
+SCRIPT_VERSION = "copyline-2025-09-18.2"
 
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "copyline")
 SUPPLIER_URL  = os.getenv("SUPPLIER_URL", "https://copyline.kz/files/price-CLA.xlsx")
@@ -61,7 +61,7 @@ def _norm(s: str):
     return re.sub(r"\s+", " ", _nfkc(s).replace("ё","е").lower().strip())
 
 def clean_desc(s: str):
-    """Сжать описание в одну строку, убрать лишнее."""
+    """Сжать описание в одну строку, убрать мусор."""
     if not s: return ""
     s = re.sub(r"\s+", " ", _nfkc(s)).strip()
     s = re.sub(r"(Артикул|Благотворительность)\s*:\s*[^;.,]+", "", s, flags=re.I)
@@ -81,30 +81,37 @@ def fetch_xlsx(url: str) -> bytes:
             time.sleep(BACKOFF*attempt*(1+random.uniform(-0.2,0.2)))
 
 # ========== Поиск шапки ==========
+def merge_two_rows(r1: List[str], r2: List[str]) -> List[str]:
+    """Склеиваем значения из двух строк: если в r2 есть — берём, иначе из r1."""
+    out=[]
+    for a,b in zip(r1+[""]*max(0,len(r2)-len(r1)), r2+[""]*max(0,len(r1)-len(r2))):
+        if a and b: out.append(f"{a}.{b}")
+        else: out.append(b or a)
+    return out
+
 NAME_COLS  = {"наименование","товар","product","наименование товара"}
 SKU_COLS   = {"артикул","номенклатура.артикул"}
 PRICE_COLS = {"цена"}
 
-def _norm_header(s: str): return _norm(s)
-
 def find_header(ws: Worksheet, scan_rows=50) -> Tuple[Dict[int,str],int]:
-    """Ищем строку-шапку (одну или две строки)."""
     best_map, best_row = {}, -1
     for r in range(1, scan_rows):
-        vals = [str(ws.cell(r,c).value or "").strip() for c in range(1,30)]
-        mapping = {}
-        for idx,val in enumerate(vals,1):
-            v=_norm_header(val)
-            if v in NAME_COLS: mapping[idx]="name"
-            elif v in SKU_COLS: mapping[idx]="sku"
-            elif v in PRICE_COLS: mapping[idx]="price"
-        if "name" in mapping.values():
-            if len(mapping)>len(best_map):
-                best_map,best_row=mapping,r
+        vals1 = [str(ws.cell(r,c).value or "").strip() for c in range(1,30)]
+        vals2 = [str(ws.cell(r+1,c).value or "").strip() for c in range(1,30)]
+        merged = merge_two_rows(vals1, vals2)
+        for vals in (vals1, merged):
+            mapping={}
+            for idx,val in enumerate(vals,1):
+                v=_norm(val)
+                if v in NAME_COLS: mapping[idx]="name"
+                elif v in SKU_COLS: mapping[idx]="sku"
+                elif v in PRICE_COLS: mapping[idx]="price"
+            if "name" in mapping.values() and "sku" in mapping.values():
+                if len(mapping)>len(best_map):
+                    best_map,best_row=mapping,r
     return best_map,best_row
 
 def select_best_sheet(wb):
-    """Выбираем лучший лист (возвращаем ws, mapping, row_idx)."""
     best=(None,{},-1,0)
     for ws in wb.worksheets:
         mapping,row=find_header(ws)
@@ -148,7 +155,7 @@ def main():
         err("Нет ключевых слов.")
 
     offers_total=0; offers=[]
-    for r in range(header_row+1, ws.max_row+1):
+    for r in range(header_row+2, ws.max_row+1):  # начинаем после двухстрочной шапки
         row={field:(ws.cell(r,col).value or "") for col,field in mapping.items()}
         name=str(row.get("name","")).strip()
         sku=str(row.get("sku","")).strip()
@@ -161,7 +168,6 @@ def main():
 
         if KEYWORDS_MODE=="include" and not passes(name,keys): continue
 
-        # готовим оффер
         offer=ET.Element("offer",{"id":sku})
         ET.SubElement(offer,"name").text=name
         ET.SubElement(offer,"vendorCode").text=f"{VENDORCODE_PREFIX}{sku}"
