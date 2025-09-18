@@ -1,24 +1,24 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-17 21:01">
+<yml_catalog date="2025-09-18 21:01">
   <!--FEED_META
 script_version                  = akcent-2025-09-16.2                                           | Версия скрипта (для контроля в CI)
 supplier                        = akcent                                                        | Метка поставщика
 source                          = https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml  | URL исходного XML
-offers_total                    = 2138                                                          | Офферов у поставщика до очистки
+offers_total                    = 2124                                                          | Офферов у поставщика до очистки
 offers_written                  = 169                                                           | Офферов записано (после очистки)
 keywords_mode                   = include                                                       | Режим фильтра (include/exclude) — строгий префикс по файлу
 keywords_total                  = 18                                                            | Сколько ключей загружено
-filtered_by_keywords            = 1969                                                          | Сколько офферов отфильтровано по keywords
+filtered_by_keywords            = 1955                                                          | Сколько офферов отфильтровано по keywords
 prices_updated                  = 168                                                           | Скольким товарам пересчитали price
-params_removed                  = 1418                                                          | Сколько строк параметров добавлено в описание
+params_removed                  = 1424                                                          | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                             | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                           | ТОП часто отброшенных названий бренда
 available_forced                = 169                                                           | Сколько офферов получили available=true
-categoryId_dropped              = 2138                                                          | Сколько тегов categoryId удалено
+categoryId_dropped              = 2124                                                          | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 169                                                           | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 169                                                           | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-17 21:01:43 UTC                                       | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-18 02:01:43 +05                                       | Время сборки (Алматы)-->
+built_utc                       = 2025-09-18 21:01:40 UTC                                       | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-19 02:01:40 +05                                       | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="00-00000525">
@@ -1186,17 +1186,6 @@ built_Asia/Almaty               = 2025-09-18 02:01:43 +05                       
         <available>true</available>
       </offer>
 
-  <offer id="Н0000025504">
-        <name>Проектор универсальный Epson EB-992F</name>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/bec/irm3hf7je0ol5t1vifru12u0tlu04vzm.png</picture>
-        <vendor>Epson Proj</vendor>
-        <description>Проектор для совместной работы с возможностью беспроводного подключения Функции для совместной работы Приложение iProjection1, функция разделения экрана, функция модератора Техника Projection System 3LCD Technology, RGB liquid crystal shutter LCD Panel 0,61 inch with C2 Fine Image Насыщенность цвета 4.000 Люмен- 2.400 Люмен (экономичный) In accordance with IDMS15.4 Насыщенность белого 4.000 Люмен - 2.400 Люмен (экономичный) In accordance with ISO 21118:2020 Разрешение 1080p Высокая четкость (HD) Full HD Aspect Ratio 16:9 On-Screen Pixel Count 2,073,600 Коэффициент контрастности 16.000 : 1 Light source Lamp Лампа UHE, 230 Вт, 6.500 в Срок службы, 17.000 в Срок службы (в экономном режиме) Коррекция трапеции Авто vertical: ± 30 °, Вручную horizontal ± 30 ° Обработка видеоизображения 10 биты 2D Vertical Refresh Rate 100 Гц - 120 Гц Colour Reproduction Upto 1.07 billion colours Оптика Соотношение сторон проецируемого изображения 1,32 - 2,14:1 Изменение фокусного расстояния Manual, Factor: 1 - 1,6 Объектив Оптика Размер проекции 30 inches - 300 inches Projection Distance Wide/Tele 1,76 м - 2,86 м ( 60 inch screen Projection Lens F Number 1,51 - 1,99 Фокусное расстояние 18,2 мм - 29,2 мм Фокус Вручную Offset 10 : 1 Connectivity Функция USB-дисплея 2 in 1: Image/ Sound Интерфейсы USB 2.0 типа А, USB 2.0 типа B, RS-232C, Сетевой интерфейс Ethernet (100 Base-TX / 10 Base-T), VGA (вход) (2x), VGA (выход), HDMI-вход (2x), Компонентный вход , Аудиовыход (стереофонический мини-разъем), Аудиовход (стереофонический мини-разъем) (2x), Аудиовход RCA, Вход для микрофона, Wireless LAN IEEE 802.11b/g/n, Miracast Epson iProjection App Ad-Hoc / Infrastructure Network Protocol PJLink Характеристики: - Производитель: Epson Proj - Вид: Проектор - Тип: Универсальный</description>
-        <vendorCode>ACV11H988040</vendorCode>
-        <price>762900</price>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
   <offer id="Н0000024848">
         <name>Проектор универсальный Epson EB-FH06</name>
         <picture>https://b2b.ak-cent.kz/upload/iblock/ae6/2id7uiuh9uuj1rh1q82drmexp5p1blef.png</picture>
@@ -1402,6 +1391,17 @@ built_Asia/Almaty               = 2025-09-18 02:01:43 +05                       
         <description>Совместимые продукты Epson L3100 C11CG88401 Epson L3101 C11CG88402 - Epson L3110 C11CG87405 Epson L3150 C11CG86409 Epson L3151 C11CG86411 Характеристики: - Сопутствующие товары: МФУ Epson L3100 фабрика печати - Производитель: Epson - Страна происхождения: Индонезия. Филиппин/Филиппины - Наименование производителя: Epson Чернила 103 EcoTank Yellow ink bottle - Тип: Фабрика печати (чернила EPSON) - Тип печати: струйная - Вид: чернила - Для бренда: Epson - Цвет: Желтый</description>
         <vendorCode>ACC13T00S44A</vendorCode>
         <price>7900</price>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
+  <offer id="Н0000020867">
+        <name>Чернила Epson C13T03P14A  EcoTank MX1XX Series Black Bottle XL</name>
+        <picture />
+        <vendor>Epson</vendor>
+        <description>Epson M1100 C11CG95405 Epson M1120 C11CG96405 Epson M2140-C11CG27405 Характеристики: - Сопутствующие товары: Принтер Epson M1120 фабрика печати - Производитель: Epson - Страна происхождения: Индонезия. Филиппин/Филиппины - Цвет: Черный - Наименование производителя: Epson Чернила EcoTank MX1XX Series Black Bottle XL - Тип: Фабрика печати (чернила EPSON) - Тип печати: струйная - Вид: чернила - Для бренда: Epson</description>
+        <vendorCode>ACC13T03P14A</vendorCode>
+        <price>14900</price>
         <currencyId>KZT</currencyId>
         <available>true</available>
       </offer>
