@@ -1,13 +1,15 @@
-# ================================ #
-#   CI для сборки фида Copyline    #
-#   Результат: docs/copyline.yml   #
-# ================================ #
+# ================================================ #
+#  Сборка YML для Copyline → docs/copyline.yml     #
+#  Особенности:                                    #
+#  - запускается по расписанию и вручную           #
+#  - кладёт файл в CP1251                          #
+# ================================================ #
 
-name: build_copyline  # ← имя пайплайна (не меняем)
+name: build_copyline
 
 on:
-  workflow_dispatch:    # ручной запуск
-  # 03:00 Asia/Almaty = 22:00 UTC (предыдущий день)
+  workflow_dispatch:  # ручной запуск
+  # 03:00 Asia/Almaty = 22:00 UTC предыдущего дня
   schedule:
     - cron: "0 22 * * *"
   push:
@@ -29,10 +31,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout (full history for rebase)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # нужно для git pull --rebase
+          fetch-depth: 0
 
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
@@ -48,25 +50,29 @@ jobs:
         env:
           SUPPLIER_NAME: copyline
           SUPPLIER_URL: https://copyline.kz/files/price-CLA.xlsx
+
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
+
           TIMEOUT_S: "30"
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
           MIN_BYTES: "2000"
-          VENDORCODE_PREFIX: CL
-          VENDORCODE_CREATE_IF_MISSING: "1"
+
           COPYLINE_KEYWORDS_PATH: docs/copyline_keywords.txt
           COPYLINE_KEYWORDS_MODE: include
-          PRICE_MODE: retail
-          REQUIRE_PRICE: "1"
+          COPYLINE_PREFIX_ALLOW_TRIM: "1"
+
+          VENDORCODE_PREFIX: CL
+
+          # цены: как в файле (без наценки)
           FILL_DESC_FROM_NAME: "1"
         run: |
           set -e
           python --version
           python scripts/build_copyline.py
 
-      - name: Commit & pull --rebase & push
+      - name: Commit, pull --rebase and push
         env:
           BRANCH_NAME: ${{ github.ref_name }}
           GIT_AUTHOR_NAME: github-actions[bot]
@@ -85,7 +91,6 @@ jobs:
           fi
 
           git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
-
           git fetch origin "$BRANCH_NAME"
           git pull --rebase origin "$BRANCH_NAME"
           git push origin HEAD:"$BRANCH_NAME"
