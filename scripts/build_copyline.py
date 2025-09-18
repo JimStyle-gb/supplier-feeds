@@ -1,571 +1,488 @@
 # -*- coding: utf-8 -*-
 """
-Сборщик YML для поставщика Copyline (плоский <offers> для Satu)
-script_version = copyline-2025-09-17.6
+Copyline → Satu YML (простой конвейер по твоим правилам)
+script_version = copyline-2025-09-18.1
 
-Изменения в .6:
-- Двухстрочная шапка: объединяем строки r и r+1, чтобы увидеть
-  «Номенклатура.Артикул», «Цена», и т.д.
-- SKU берём из «Номенклатура.Артикул».
-- FILL_DESC_FROM_NAME=1 — если описания нет, ставим name (в 1 строку).
-- PRICE_MODE=retail и REQUIRE_PRICE=1 по умолчанию.
-- Фикс vendorCode (без удвоения CL).
-- Жёсткий отсев строк-категорий.
+Шаги:
+1) Читаем XLSX, собираем «двухстрочную» шапку (там есть «Номенклатура.Артикул»).
+2) Оставляем только товары: есть артикул и цена > 0 (категории/подкатегории отпадают).
+3) Фильтр: берём ТОЛЬКО те товары, чьи названия НАЧИНАЮТСЯ с любого слова из docs/copyline_keywords.txt.
+4) По каждому артикулу ищем карточку на сайте copyline.kz, тянем фото/описание/характеристики/бренд.
+5) В YML записываем: name, picture, vendor (бренд), description (включая «Технические характеристики»), vendorCode=CL+артикул, price (из XLSX), currencyId=KZT, available=true.
+6) Вставляем FEED_META с русскими комментариями и аккуратным выравниванием.
+
+Зависимости: openpyxl, requests, beautifulsoup4
 """
 
 from __future__ import annotations
-import os, sys, re, time, random, urllib.parse, io, hashlib, unicodedata
+import os, re, io, time, html, json, hashlib, unicodedata
 from typing import Dict, List, Tuple, Optional
 from datetime import datetime, timezone
 from xml.etree import ElementTree as ET
-
-try:
-    from zoneinfo import ZoneInfo
-except Exception:
-    ZoneInfo = None
+from urllib.parse import urlencode, urljoin, quote
 
 import requests
+from bs4 import BeautifulSoup
 from openpyxl import load_workbook
-from openpyxl.worksheet.worksheet import Worksheet
 
-# ========================== НАСТРОЙКИ ===========================
+# ===================== НАСТРОЙКИ/ENV =====================
 
-SCRIPT_VERSION = "copyline-2025-09-17.6"
+SCRIPT_VERSION = "copyline-2025-09-18.1"
 
-SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "copyline")
-SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://copyline.kz/files/price-CLA.xlsx")
-OUT_FILE_YML     = os.getenv("OUT_FILE", "docs/copyline.yml")
-ENC              = os.getenv("OUTPUT_ENCODING", "windows-1251")
+BASE_URL        = os.getenv("BASE_URL", "https://copyline.kz")
+XLSX_URL        = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
+OUT_FILE        = os.getenv("OUT_FILE", "docs/copyline.yml")
+OUTPUT_ENCODING = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-TIMEOUT_S        = int(os.getenv("TIMEOUT_S", "30"))
-RETRIES          = int(os.getenv("RETRIES", "4"))
-RETRY_BACKOFF    = float(os.getenv("RETRY_BACKOFF_S", "2"))
-MIN_BYTES        = int(os.getenv("MIN_BYTES", "2000"))
+KEYWORDS_FILE   = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
 
-COPYLINE_KEYWORDS_PATH  = os.getenv("COPYLINE_KEYWORDS_PATH", "docs/copyline_keywords.txt")
-COPYLINE_KEYWORDS_MODE  = os.getenv("COPYLINE_KEYWORDS_MODE", "include").lower()  # include|exclude
-COPYLINE_PREFIX_ALLOW_TRIM = os.getenv("COPYLINE_PREFIX_ALLOW_TRIM", "1").lower() in {"1","true","yes"}
+HTTP_TIMEOUT    = float(os.getenv("HTTP_TIMEOUT", "25"))
+RETRIES         = int(os.getenv("RETRIES", "3"))
+REQUEST_DELAY_S = float(os.getenv("REQUEST_DELAY_S", "0.2"))
 
-# Цены и описание — включены по умолчанию
-PRICE_MODE   = os.getenv("PRICE_MODE", "retail").strip().lower()   # pass|retail
-REQUIRE_PRICE = os.getenv("REQUIRE_PRICE", "1").lower() in {"1","true","yes"}
-FILL_DESC_FROM_NAME = os.getenv("FILL_DESC_FROM_NAME", "1").lower() in {"1","true","yes"}
-
-# vendorCode
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "CL")
-VENDORCODE_CREATE_IF_MISSING = os.getenv("VENDORCODE_CREATE_IF_MISSING", "1").lower() in {"1","true","yes"}
 
-DRY_RUN = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
+# ===================== УТИЛИТЫ =====================
 
-# ================================ УТИЛИТЫ ==================================
+def log(msg: str) -> None:
+    print(msg, flush=True)
 
-def log(msg: str) -> None: print(msg, flush=True)
-def warn(msg: str) -> None: print(f"WARN: {msg}", file=sys.stderr, flush=True)
-def err(msg: str, code: int = 1) -> None: print(f"ERROR: {msg}", file=sys.stderr, flush=True); sys.exit(code)
+def now_utc_str() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
 
-def now_utc_str() -> str: return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 def now_almaty_str() -> str:
-    if ZoneInfo: return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-
-def _nfkc(s: str) -> str: return unicodedata.normalize("NFKC", s or "")
-
-def _norm(s: str) -> str:
-    s = _nfkc(s).replace("\u00A0", " ").replace("ё", "е").strip().lower()
-    s = re.sub(r"\s+", " ", s)
-    return s
-
-def _clean_one_line(s: str) -> str:
-    if not s: return ""
-    s = _nfkc(s).replace("\r\n","\n").replace("\r","\n").replace("\u00A0"," ")
-    s = re.sub(r"&nbsp;?", " ", s, flags=re.I)
-    s = re.sub(r"\s+", " ", s).strip()
-    # чистим «Артикул: …» и «Благотворительность: …», если внезапно встречаются
-    s = re.sub(r"(?:^|\s)(Артикул|Благотворительность)\s*:\s*[^;.,]+[;.,]?\s*", " ", s, flags=re.I)
-    s = re.sub(r"\s+", " ", s).strip()
-    return s
-
-def _is_category_header(name: str) -> bool:
-    """Эвристика для строк-категорий/шапок (типо «ДЕВЕЛОПЕРЫ»)."""
-    if not name: return False
-    s = _nfkc(name).strip()
-    if len(s) <= 2 or len(s) > 64: return False
-    if any(ch.isdigit() for ch in s): return False
-    if re.search(r"[.,;:!?/\\\[\]\(\)\-]", s): return False
-    letters = [ch for ch in s if ch.isalpha()]
-    if not letters: return False
-    upp = sum(1 for ch in letters if ch.upper() == ch)
-    return upp / max(len(letters), 1) > 0.95
-
-def parse_money(raw: str) -> Optional[float]:
-    if raw is None: return None
-    s = str(raw)
-    s = (s.strip().replace("\xa0"," ").replace(" ","").replace("KZT","").replace("kzt","").replace("₸","").replace(",","."))
-    if not s: return None
     try:
-        v = float(s); return v if v>0 else None
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %z")
     except Exception:
-        return None
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S +05")
 
-def stable_hash(text: str) -> str:
-    return hashlib.sha1((_nfkc(text)).encode("utf-8", errors="ignore")).hexdigest()[:12]
+def nfkc(s: str) -> str:
+    return unicodedata.normalize("NFKC", s or "")
 
-# ======================= СКАЧИВАНИЕ XLSX ========================
+def one_line(s: str) -> str:
+    """Схлопываем пробелы/переносы в одну строку и чистим мусорные «Артикул/Благотворительность»."""
+    if not s: return ""
+    s = nfkc(s).replace("\r", "\n").replace("\xa0", " ")
+    s = re.sub(r"\s+", " ", s).strip()
+    s = re.sub(r"(?:^|\s)(Артикул|Благотворительность)\s*:\s*[^;.,]+[;.,]?\s*", " ", s, flags=re.I)
+    return re.sub(r"\s+", " ", s).strip()
 
-def fetch_xlsx_bytes(url: str) -> bytes:
-    sess = requests.Session()
-    headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
-    last_exc = None
-    for attempt in range(1, RETRIES+1):
-        try:
-            r = sess.get(url, headers=headers, timeout=TIMEOUT_S, stream=True)
-            if r.status_code != 200: raise RuntimeError(f"HTTP {r.status_code}")
-            data = r.content
-            if len(data) < MIN_BYTES: raise RuntimeError(f"too small ({len(data)} bytes)")
-            return data
-        except Exception as e:
-            last_exc = e
-            back = RETRY_BACKOFF * attempt * (1.0 + random.uniform(-0.2, 0.2))
-            warn(f"fetch attempt {attempt}/{RETRIES} failed: {e}; sleep {back:.2f}s")
-            if attempt < RETRIES: time.sleep(back)
-    raise RuntimeError(f"fetch failed after {RETRIES} attempts: {last_exc}")
+def normalize_name(s: str) -> str:
+    s = nfkc(s).replace("\xa0"," ")
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
 
-# ===================== КЛЮЧИ (префиксы/регулярки) ==================
+def norm_lower(s: str) -> str:
+    s = nfkc(s).lower().replace("ё","е")
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
 
-class KeySpec:
-    __slots__=("raw","kind","norm","pattern")
-    def __init__(self, raw: str, kind: str, norm: Optional[str], pattern: Optional[re.Pattern]):
-        self.raw, self.kind, self.norm, self.pattern = raw, kind, norm, pattern
+def parse_float(val) -> Optional[float]:
+    if val is None: return None
+    s = str(val).replace("\xa0"," ").replace(" ","").replace(",",".")
+    if not re.search(r"\d", s): return None
+    try: v=float(s); return v if v>0 else None
+    except: return None
 
-def load_keywords(path: str) -> List[KeySpec]:
-    if not path or not os.path.exists(path): return []
+def sha12(s: str) -> str:
+    return hashlib.sha1(s.encode("utf-8")).hexdigest()[:12]
+
+# ===================== ЧТЕНИЕ КЛЮЧЕВЫХ СЛОВ =====================
+
+def load_prefixes(path: str) -> List[str]:
+    """Читаем keywords с авто-кодировкой. Пустые/комменты пропускаем."""
+    if not os.path.exists(path): return []
     data = None
     for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
         try:
-            with open(path,"r",encoding=enc) as f: data=f.read()
-            data = data.replace("\ufeff","").replace("\x00","")
+            with open(path, "r", encoding=enc) as f:
+                data = f.read()
             break
         except Exception:
             continue
     if data is None:
-        with open(path,"r",encoding="utf-8",errors="ignore") as f:
-            data = f.read().replace("\x00","")
-    keys: List[KeySpec]=[]
+        with open(path, "r", encoding="utf-8", errors="ignore") as f:
+            data = f.read()
+    out=[]
     for line in data.splitlines():
-        s = line.strip()
-        if not s or s.lstrip().startswith("#"): continue
-        if len(s)>=2 and s[0]=="/" and s[-1]=="/":
-            try:
-                pat = re.compile(s[1:-1], re.I)
-                keys.append(KeySpec(s,"regex",None,pat))
-            except Exception:
-                pass
+        s=line.strip()
+        if not s or s.startswith("#"): continue
+        out.append(norm_lower(s))
+    return out
+
+def name_starts_with_any(name: str, prefixes: List[str]) -> bool:
+    """Строгий префикс: название ДОЛЖНО НАЧИНАТЬСЯ с любого из ключей (после очистки ведущих знаков)."""
+    if not prefixes: return True
+    n = norm_lower(name)
+    n = re.sub(r'^[\s\-\–\—•·|:/\\\[\]\(\)«»"“”„\']+', "", n)
+    return any(n.startswith(p) for p in prefixes)
+
+# ===================== XLSX: ШАПКА И ДАННЫЕ =====================
+
+NAME_KEYS  = {"name","наименование","название","товар","наименование товара","полное наименование","товары"}
+SKU_KEYS   = {"артикул","sku","код","номенклатура.артикул"}
+PRICE_KEYS = {"цена","цена, тг","цена тг","цена (тг)","стоимость","dealer","закуп","b2b","price","опт","розница"}
+
+def best_header_map(ws) -> Tuple[Dict[int,str], int]:
+    """Находим наилучшую строку шапки. Пробуем одну строку r и r+r+1."""
+    max_row = ws.max_row or 0
+    def row_vals(r: int) -> List[str]:
+        out=[]
+        for c in range(1, min(ws.max_column or 0, 80) + 1):
+            v = ws.cell(row=r, column=c).value
+            out.append("" if v is None else str(v).strip())
+        return out
+
+    def map_from(vals: List[str]) -> Dict[int,str]:
+        m={}
+        for i,raw in enumerate(vals, start=1):
+            k = norm_lower(raw)
+            if not k: continue
+            if k in NAME_KEYS: m[i]="name"
+            elif k in SKU_KEYS: m[i]="sku"
+            elif k in PRICE_KEYS: m[i]="price"
+        return m
+
+    best, best_row, best_score = {}, -1, -1
+    for r in range(1, min(max_row, 80)+1):
+        a = row_vals(r)
+        m1 = map_from(a); s1=len(m1)
+        if r+1 <= max_row:
+            b = row_vals(r+1)
+            merged = [(b[i] or a[i]) if i < min(len(a),len(b)) else (b[i] if i<len(b) else "") for i in range(max(len(a),len(b)))]
+            m2 = map_from(merged); s2=len(m2)
         else:
-            keys.append(KeySpec(s,"prefix",_norm(s),None))
-    return keys
+            m2 = {}; s2=-1
+        if s1>best_score and "name" in m1.values(): best, best_row, best_score = m1, r, s1
+        if s2>best_score and "name" in m2.values(): best, best_row, best_score = m2, r, s2
+        if best_score>=2 and "name" in best.values(): break
+    return best, best_row
 
-def name_passes_prefix(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[str]]:
-    if not keys: return True, None
-    nm = _norm(name)
-    nm_trim = re.sub(r'^[\s\-\–\—•·|:/\\\[\]\(\)«»"“”„\']+', "", nm) if COPYLINE_PREFIX_ALLOW_TRIM else nm
-    for ks in keys:
-        if ks.kind=="prefix":
-            if ks.norm and (nm_trim.startswith(ks.norm) or nm.startswith(ks.norm)):
-                return True, ks.raw
-        else:
-            if ks.pattern and ks.pattern.match(name or ""):
-                return True, ks.raw
-    return False, None
+def iter_rows(ws, header_row_idx: int):
+    for r in ws.iter_rows(min_row=header_row_idx+1, values_only=True):
+        yield ["" if v is None else str(v).strip() for v in r]
 
-# =========================== НОРМАЛИЗАЦИЯ БРЕНДА ===========================
+def row_to_dict(vals: List[str], mapping: Dict[int,str]) -> Dict[str,str]:
+    d={}
+    for col_idx, field in mapping.items():
+        if col_idx-1 < len(vals):
+            v = vals[col_idx-1]
+            if v != "": d[field]=v
+    return d
 
-def _norm_brand_key(s: str) -> str:
-    if not s: return ""
-    s = _nfkc(s).strip().lower().replace("ё","е")
-    s = re.sub(r"[-_/]+"," ",s)
-    s = re.sub(r"\s+"," ",s)
-    return s
+def is_category_row(d: Dict[str,str]) -> bool:
+    """Категория/подкатегория — нет артикулу или нет цены; либо одно крупное слово БЕЗ цифр."""
+    name = d.get("name","").strip()
+    if not d.get("sku") or parse_float(d.get("price")) is None:
+        # это отфильтрует большинство «шапок»
+        return True
+    s = nfkc(name)
+    if 2 < len(s) < 48 and not re.search(r"\d", s):
+        letters = [ch for ch in s if ch.isalpha()]
+        if letters:
+            upp = sum(1 for ch in letters if ch.upper()==ch)
+            if upp / max(len(letters),1) > 0.95:
+                return True
+    return False
 
-SUPPLIER_BLOCKLIST = {_norm_brand_key(x) for x in ["copyline","copy line","копилайн","alstyle","akcent","vtt"]}
+# ===================== ПОИСК И РАЗБОР КАРТОЧКИ =====================
 
-def normalize_brand(raw: str) -> str:
-    k=_norm_brand_key(raw or "")
-    if (not k) or (k in SUPPLIER_BLOCKLIST): return ""
-    return raw.strip()
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-Scraper/1.0)"}
 
-# ============================== ЦЕНЫ ============================
-
-PriceRule = Tuple[int,int,float,int]
-PRICING_RULES: List[PriceRule] = [
-    (   101,    10000, 4.0,  3000),
-    ( 10001,    25000, 4.0,  4000),
-    ( 25001,    50000, 4.0,  5000),
-    ( 50001,    75000, 4.0,  7000),
-    ( 75001,   100000, 4.0, 10000),
-    (100001,   150000, 4.0, 12000),
-    (150001,   200000, 4.0, 15000),
-    (200001,   300000, 4.0, 20000),
-    (300001,   400000, 4.0, 25000),
-    (400001,   500000, 4.0, 30000),
-    (500001,   750000, 4.0, 40000),
-    (750001,  1000000, 4.0, 50000),
-    (1000001, 1500000, 4.0, 70000),
-    (1500001, 2000000, 4.0, 90000),
-    (2000001,100000000,4.0,100000),
+SEARCH_PATTERNS = [
+    "/index.php?route=product/search&search={q}",          # OpenCart
+    "/search/?search={q}",
+    "/?search={q}",
+    "/?s={q}",                                             # WP
+    "/catalogsearch/result/?q={q}",                        # Magento
 ]
 
-def price_tail_900(n: float) -> int:
-    i=int(n); k=max(i//1000,0); out=k*1000+900; return out if out>=900 else 900
-
-def compute_retail(dealer: float) -> Optional[int]:
-    for lo,hi,pct,add in PRICING_RULES:
-        if lo<=dealer<=hi:
-            return price_tail_900(dealer*(1.0+pct/100.0)+add)
+def http_get(url: str) -> Optional[bytes]:
+    """GET с ретраями и паузой между попытками."""
+    delay = REQUEST_DELAY_S
+    last = None
+    for _ in range(RETRIES):
+        try:
+            r = requests.get(url, headers=UA, timeout=HTTP_TIMEOUT, allow_redirects=True)
+            if r.status_code == 200 and len(r.content) >= 300:
+                return r.content
+            last = f"HTTP {r.status_code}, {len(r.content)} bytes"
+        except Exception as e:
+            last = str(e)
+        time.sleep(delay); delay *= 1.6
+    log(f"WARN: GET fail {url} -> {last}")
     return None
 
-# ============================ РАЗБОР XLSX ============================
+def soup_of(b: Optional[bytes]) -> Optional[BeautifulSoup]:
+    return BeautifulSoup(b, "html.parser") if b else None
 
-NAME_COLS   = {
-    "name","наименование","название","товар","product",
-    "наименование товара","номенклатура","полное наименование","наименование продукции","товары"
-}
-SKU_COLS    = {"артикул","sku","код","part","part number","partnumber","модель","номенклатура.артикул"}
-PRICE_COLS  = {"цена","цена закуп","опт","dealer","закуп","b2b","стоимость","price","opt","rrp","розница","цена, тг","цена тг","цена (тг)"}
-BRAND_COLS  = {"бренд","производитель","vendor","brand","maker"}
-DESC_COLS   = {"описание","description","описание товара","характеристики","spec","specs"}
-URL_COLS    = {"url","ссылка","link"}
-IMG_COLS    = {"image","картинка","фото","picture","image url","img"}
-AVAIL_COLS  = {"наличие","stock","количество","qty","остаток","доступно"}
-
-def _val(ws: Worksheet, r: int, c: int) -> str:
-    v = ws.cell(row=r, column=c).value
-    return "" if v is None else str(v).strip()
-
-def _merged_value_on_row(ws: Worksheet, row_idx: int, col_idx: int):
-    cell = ws.cell(row=row_idx, column=col_idx)
-    if cell.value not in (None, ""): return cell.value
-    ranges = getattr(ws, "merged_cells", None)
-    if not ranges: return cell.value
-    try:
-        rng_iter = ranges.ranges if hasattr(ranges, "ranges") else ranges
-        for mr in rng_iter:
-            if (mr.min_row <= row_idx <= mr.max_row) and (mr.min_col <= col_idx <= mr.max_col):
-                return ws.cell(row=mr.min_row, column=mr.min_col).value
-    except Exception:
-        return cell.value
-    return cell.value
-
-def _row_vals(ws: Worksheet, r: int, use_merged=True) -> List[str]:
-    vals=[]
-    max_col = ws.max_column or 0
-    limit = min(max_col, 60) if max_col else 60
-    for c in range(1, limit+1):
-        v = _merged_value_on_row(ws, r, c) if use_merged else ws.cell(row=r, column=c).value
-        vals.append("" if v is None else str(v).strip())
-    return vals
-
-def _merge_two_rows(h1: List[str], h2: List[str]) -> List[str]:
-    out=[]
-    for a,b in zip(h1 + [""]*max(0,len(h2)-len(h1)), h2 + [""]*max(0,len(h1)-len(h2))):
-        pick = b.strip() or a.strip()
-        out.append(pick)
-    return out
-
-def _map_headers_from_list(vals: List[str]) -> Dict[int,str]:
-    mapping={}
-    for idx, raw in enumerate(vals, start=1):
-        key=_norm(raw)
-        if not key: continue
-        if key in NAME_COLS: mapping[idx]="name"
-        elif key in SKU_COLS: mapping[idx]="sku"
-        elif key in BRAND_COLS: mapping[idx]="brand"
-        elif key in DESC_COLS: mapping[idx]="desc"
-        elif key in URL_COLS: mapping[idx]="url"
-        elif key in IMG_COLS: mapping[idx]="img"
-        elif key in AVAIL_COLS: mapping[idx]="avail"
-        elif key in PRICE_COLS: mapping[idx]="price"
-    return mapping
-
-def find_header_row(ws: Worksheet, scan_rows: int = 80) -> Tuple[Dict[int,str], int]:
-    """
-    Ищем лучшую шапку, пробуем:
-      а) одиночную строку r
-      б) объединённую строку r+r+1 (двухстрочная шапка)
-    Берём вариант с максимальным количеством распознанных полей.
-    """
-    max_row = ws.max_row or 0
-    limit = min(max_row, scan_rows) if max_row else scan_rows
-    best_map: Dict[int,str] = {}; best_row = -1; best_score = -1
-    for r in range(1, limit+1):
-        h1 = _row_vals(ws, r)
-        # пропускаем титульники типа «Прайс-лист»
-        if sum(1 for x in h1 if x) <= 1 and any("прайс" in _norm(x) for x in h1):
-            continue
-        # одинарная шапка
-        m1 = _map_headers_from_list(h1)
-        s1 = len(m1)
-        # двухстрочная шапка (если есть строка ниже)
-        m2 = {}; s2 = -1
-        if r+1 <= max_row:
-            h2 = _row_vals(ws, r+1)
-            hm = _merge_two_rows(h1, h2)
-            m2 = _map_headers_from_list(hm)
-            s2 = len(m2)
-        # берём лучший из двух вариантов
-        if s1>best_score and "name" in m1.values():
-            best_map, best_row, best_score = m1, r, s1
-        if s2>best_score and "name" in m2.values():
-            best_map, best_row, best_score = m2, r, s2
-        if best_score>=3 and "name" in best_map.values():
-            # достаточно хороший маппинг
-            break
-    return best_map, best_row
-
-def select_best_sheet(wb) -> Tuple[Worksheet, Dict[int,str], int]:
-    best: Tuple[Optional[Worksheet], Dict[int,str], int, int] = (None, {}, -1, -1)
-    for ws in wb.worksheets:
-        mapping, row_idx = find_header_row(ws, scan_rows=80)
-        score = len(mapping)
-        if score > best[3]:
-            best = (ws, mapping, row_idx, score)
-    ws, mapping, row_idx, score = best
-    if not ws or not mapping or row_idx <= 0:
-        err("XLSX: не удалось найти строку шапки ни на одном листе (нужна колонка с названием товара).")
-    return ws, mapping, row_idx
-
-def row_to_dict(row_vals: List, mapping: Dict[int,str]) -> Dict[str,str]:
-    out: Dict[str,str]={}
-    for col_idx, field in mapping.items():
-        val = row_vals[col_idx - 1] if col_idx - 1 < len(row_vals) else None
-        s = "" if val is None else str(val).strip()
+def try_find_product_url_by_sku(sku: str) -> Optional[str]:
+    """Ищем ссылку на товар по артикулу через несколько типовых страниц поиска."""
+    q = quote(sku)
+    for pat in SEARCH_PATTERNS:
+        url = urljoin(BASE_URL, pat.format(q=q))
+        s = soup_of(http_get(url))
         if not s: continue
-        if field == "price":
-            prev = out.get("_price_candidates", [])
-            prev.append(s)
-            out["_price_candidates"] = prev
-        else:
-            out[field] = s
-    return out
+        # кандидаты ссылок
+        links = []
+        for a in s.select("a[href]"):
+            href = a.get("href","")
+            txt  = a.get_text(" ", strip=True)
+            if not href: continue
+            if not re.search(r"/product|/catalog|/shop|/store|/goods|/item|/card|/index\.php\?route=product", href, flags=re.I):
+                continue
+            # проверка на совпадение SKU либо в тексте, либо в href
+            if re.search(re.escape(sku), href, flags=re.I) or re.search(re.escape(sku), txt, flags=re.I):
+                links.append(urljoin(BASE_URL, href))
+        if links:
+            return links[0]
+    # Пробуем прямые варианты
+    for path in [f"/product/{q}", f"/goods/{q}", f"/catalog/{q}", f"/item/{q}"]:
+        url = urljoin(BASE_URL, path)
+        b = http_get(url)
+        if b and b.startswith(b"<!"):  # хоть какая-то HTML-страница
+            return url
+    return None
 
-def best_dealer_price(row: Dict[str,str]) -> Optional[float]:
-    vals=[]
-    for s in row.get("_price_candidates", []):
-        v = parse_money(s)
-        if v is not None: vals.append(v)
-    return min(vals) if vals else None
+def parse_product_page(url: str) -> Tuple[Optional[str], Optional[str], Dict[str,str], Optional[str]]:
+    """
+    Возвращает: (title, description, specs_dict, picture_url)
+    Всё максимально толерантно к вёрстке.
+    """
+    s = soup_of(http_get(url))
+    if not s: return None, None, {}, None
 
-# ======================= vendorCode / артикул ==============================
+    # Название
+    title = None
+    h1 = s.select_one("h1") or s.select_one("h1.product-title") or s.select_one("[itemprop='name']")
+    if h1: title = h1.get_text(" ", strip=True)
+    if not title:
+        mt = s.select_one("meta[property='og:title']") or s.select_one("meta[name='title']")
+        if mt: title = mt.get("content","")
 
-ARTICUL_RE = re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
+    # Картинка
+    pic = None
+    og = s.select_one("meta[property='og:image']")
+    if og: pic = og.get("content","")
+    if not pic:
+        img = s.select_one("img[itemprop='image'], img#zoom, .product-image img, .product__image img, .product-images img")
+        if img: pic = img.get("src") or img.get("data-src") or ""
+    if pic: pic = urljoin(BASE_URL, pic)
 
-def norm_code(s: str) -> str:
-    if not s: return ""
-    s = re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
-    s = re.sub(r"[^A-Za-z0-9\-]+","",s)
-    return s.upper()
+    # Описание
+    desc = None
+    for sel in [
+        ".product-description", "#tab-description", "[itemprop='description']",
+        ".content-description", ".description", ".product__description"
+    ]:
+        el = s.select_one(sel)
+        if el:
+            desc = el.get_text(" ", strip=True)
+            break
+    if not desc:
+        md = s.select_one("meta[name='description']")
+        if md: desc = md.get("content","")
 
-def extract_article_from_any(row: Dict[str,str]) -> str:
-    # 1) явный столбец SKU / Номенклатура.Артикул
-    art = norm_code(row.get("sku",""))
-    if art: return art
-    # 2) из имени
-    name=row.get("name","")
-    m=ARTICUL_RE.search(name or "")
-    if m: return norm_code(m.group(1))
-    # 3) из URL
-    url=row.get("url","")
-    if url:
-        try:
-            last=urllib.parse.urlparse(url).path.rstrip("/").split("/")[-1]
-            last=re.sub(r"\.(html?|php|aspx?|htm)$","",last,flags=re.I)
-            m2=ARTICUL_RE.search(last)
-            return norm_code(m2.group(1) if m2 else last)
-        except Exception:
-            pass
-    return ""
+    # Характеристики (таблица/список/def-list)
+    specs: Dict[str,str] = {}
+    # таблицы
+    for tbl in s.select("table"):
+        rows = tbl.select("tr")
+        good = 0
+        for tr in rows:
+            th = tr.find("th"); td = tr.find("td")
+            if not td: continue
+            k = th.get_text(" ", strip=True) if th else ""
+            v = td.get_text(" ", strip=True)
+            if k and v and len(k) <= 60 and len(v) <= 400:
+                specs[k] = v; good += 1
+        if good >= 2: break
+    # definition list
+    if len(specs) < 2:
+        for dl in s.select("dl"):
+            dts = dl.select("dt"); dds = dl.select("dd")
+            if len(dts) >= 2 and len(dds) >= 2:
+                for dt,dd in zip(dts,dds):
+                    k = dt.get_text(" ", strip=True); v = dd.get_text(" ", strip=True)
+                    if k and v: specs[k]=v
+                break
+    # списки
+    if len(specs) < 2:
+        for ul in s.select("ul"):
+            items = [li.get_text(" ", strip=True) for li in ul.select("li")]
+            good_pairs = [i for i in items if ":" in i]
+            for pair in good_pairs:
+                k,v = pair.split(":",1)
+                k=k.strip(); v=v.strip()
+                if k and v: specs[k]=v
+            if len(specs)>=2: break
 
-# =============================== FEED_META =================================
+    # чистим лишнее из спеки
+    for bad in list(specs.keys()):
+        if re.search(r"артикул|благотворительность", bad, flags=re.I):
+            specs.pop(bad, None)
 
-def render_feed_meta(pairs: Dict[str, str]) -> str:
+    return title, desc, specs, pic
+
+def specs_to_text(specs: Dict[str,str]) -> str:
+    if not specs: return ""
+    parts = [f"{k}: {v}" for k,v in specs.items()]
+    return "; ".join(parts)
+
+# ===================== FEED_META =====================
+
+def render_feed_meta(meta: Dict[str,str]) -> str:
     order = [
         "script_version","supplier","source",
-        "offers_total","offers_written","filtered_by_keywords",
-        "headers_skipped","desc_filled_from_name",
-        "prices_mode","prices_updated","vendors_detected","available_set_true",
+        "offers_total","offers_after_keywords","offers_written",
         "built_utc","built_Asia/Almaty",
     ]
     comments = {
-        "script_version":"Версия скрипта (для контроля в CI)",
-        "supplier":"Метка поставщика",
-        "source":"URL исходного XLSX",
-        "offers_total":"Позиции в исходном файле (после шапки, до фильтров)",
-        "offers_written":"Офферов записано (после всех фильтров и очистки)",
-        "filtered_by_keywords":"Отфильтровано по префиксам ключевых слов",
-        "headers_skipped":"Строк-заголовков/категорий отброшено",
-        "desc_filled_from_name":"Скольким офферам описание взяли из name",
-        "prices_mode":"Режим цен (pass/retail)",
-        "prices_updated":"Скольким товарам записали price",
-        "vendors_detected":"Скольким товарам распознали бренд",
-        "available_set_true":"Скольким офферам выставлено available=true",
-        "built_utc":"Время сборки (UTC)",
-        "built_Asia/Almaty":"Время сборки (Алматы)",
+        "script_version": "Версия скрипта",
+        "supplier": "Метка поставщика",
+        "source": "URL исходного XLSX",
+        "offers_total": "Товарных строк в XLSX (после отсечения категорий)",
+        "offers_after_keywords": "Осталось после фильтра по словам (по началу названия)",
+        "offers_written": "Офферов записано в YML",
+        "built_utc": "Время сборки (UTC)",
+        "built_Asia/Almaty": "Время сборки (Алматы)",
     }
-    max_key = max(len(k) for k in order)
-    lefts = [f"{k.ljust(max_key)} = {pairs.get(k,'n/a')}" for k in order]
-    max_left = max(len(x) for x in lefts)
+    mk = max(len(k) for k in order)
+    lefts = [f"{k.ljust(mk)} = {str(meta.get(k,'n/a'))}" for k in order]
+    ml = max(len(x) for x in lefts)
     lines = ["FEED_META"]
-    for left, k in zip(lefts, order):
-        lines.append(f"{left.ljust(max_left)}  | {comments[k]}")
+    for left,k in zip(lefts, order):
+        lines.append(f"{left.ljust(ml)}  | {comments[k]}")
     return "\n".join(lines)
 
-# ================================= MAIN ====================================
+# ===================== MAIN =====================
 
 def main() -> None:
-    log(f"Source: {SUPPLIER_URL}")
-    data = fetch_xlsx_bytes(SUPPLIER_URL)
-    wb = load_workbook(io.BytesIO(data), data_only=True, read_only=True)
+    log(f"Source: {XLSX_URL}")
+    # 1) Скачиваем XLSX
+    b = None; last = None; delay = 0.4
+    for _ in range(RETRIES):
+        try:
+            r = requests.get(XLSX_URL, timeout=HTTP_TIMEOUT, headers=UA)
+            if r.status_code == 200 and len(r.content) > 1500:
+                b = r.content; break
+            last = f"HTTP {r.status_code}, {len(r.content)} bytes"
+        except Exception as e:
+            last = str(e)
+        time.sleep(delay); delay *= 1.7
+    if not b:
+        raise RuntimeError(f"Не удалось скачать XLSX: {last}")
 
-    ws, mapping, header_row_idx = select_best_sheet(wb)
-    log(f"Sheet: {ws.title} | header_row={header_row_idx} | cols={len(mapping)}")
+    # 2) Открываем книгу, ищем лучшую шапку
+    wb = load_workbook(io.BytesIO(b), data_only=True, read_only=True)
+    best = (None, {}, -1, -1)
+    for ws in wb.worksheets:
+        mapping, row_idx = best_header_map(ws)
+        score = len(mapping)
+        if score > best[3]:
+            best = (ws, mapping, row_idx, score)
+    ws, mapping, header_row = best
+    if not ws or not mapping or header_row <= 0:
+        raise RuntimeError("Не нашёл шапку с колонкой названия.")
 
-    # Ключи для префикс-фильтра
-    keys = load_keywords(COPYLINE_KEYWORDS_PATH)
-    if COPYLINE_KEYWORDS_MODE == "include" and len(keys) == 0:
-        err("COPYLINE_KEYWORDS_MODE=include, но ключей не найдено. Проверь docs/copyline_keywords.txt.", 2)
+    # 3) Читаем строки → словари, нормализуем
+    rows=[]
+    for vals in iter_rows(ws, header_row):
+        d = row_to_dict(vals, mapping)
+        if not d.get("name"): continue
+        d["name"] = normalize_name(d["name"])
+        rows.append(d)
 
-    # Данные
-    raw_rows: List[Dict[str,str]] = []
-    for r in ws.iter_rows(min_row=header_row_idx + 1, values_only=True):
-        row_vals = [x if x is not None else "" for x in r]
-        d = row_to_dict(row_vals, mapping)
-        if "name" not in d or not d["name"].strip(): continue
-        raw_rows.append(d)
-    offers_total = len(raw_rows)
+    # 4) Оставляем только товары (есть артикул + цена)
+    goods = [d for d in rows if not is_category_row(d)]
+    offers_total = len(goods)
 
-    # Фильтр по ключам (строгий префикс/регэксп от начала)
-    filtered_rows: List[Dict[str,str]] = []
-    filtered_out = 0
-    for d in raw_rows:
-        ok,_ = name_passes_prefix(d.get("name",""), keys)
-        drop = (COPYLINE_KEYWORDS_MODE=="exclude" and ok) or (COPYLINE_KEYWORDS_MODE=="include" and not ok)
-        if drop: filtered_out += 1
-        else: filtered_rows.append(d)
+    # 5) Фильтр по словам (по началу названия)
+    prefixes = load_prefixes(KEYWORDS_FILE)
+    goods = [d for d in goods if name_starts_with_any(d.get("name",""), prefixes)]
+    after_keywords = len(goods)
 
-    # Отсев строк-категорий и требование цены
-    headers_skipped = 0
-    clean_rows: List[Dict[str,str]] = []
-    for d in filtered_rows:
-        name = d.get("name","").strip()
-        if _is_category_header(name):
-            headers_skipped += 1
+    # 6) Для каждого артикула тянем карточку
+    out_offers = []
+    for d in goods:
+        sku = (d.get("sku") or "").strip()
+        price = parse_float(d.get("price"))
+        if not sku or not price:  # защита
             continue
-        dealer = best_dealer_price(d)
-        if REQUIRE_PRICE and dealer is None:
-            continue
-        if dealer is not None:
-            d["_dealer"] = dealer
-        clean_rows.append(d)
 
-    # XML
-    root = ET.Element("yml_catalog"); root.set("date", time.strftime("%Y-%m-%d %H:%M"))
+        url = try_find_product_url_by_sku(sku)
+        title, desc, specs, pic = (None, None, {}, None)
+        if url:
+            title, desc, specs, pic = parse_product_page(url)
+
+        name = title or d["name"]
+        description = one_line(" ".join(filter(None, [
+            desc or "",
+            ("Технические характеристики: " + specs_to_text(specs)) if specs else ""
+        ])))
+
+        # Бренд возьмём из спеки, если есть
+        vendor = ""
+        for k in list(specs.keys()):
+            if re.search(r"бренд|производитель", k, flags=re.I):
+                vendor = specs[k]; break
+
+        offer = {
+            "id": sku,
+            "name": name,
+            "picture": pic or "",
+            "vendor": vendor.strip(),
+            "description": description,
+            "vendorCode": f"{VENDORCODE_PREFIX}{sku}",
+            "price": str(int(round(price))),
+            "currencyId": "KZT",
+            "available": "true",
+        }
+        out_offers.append(offer)
+        time.sleep(REQUEST_DELAY_S)
+
+    # 7) Сборка YML
+    root = ET.Element("yml_catalog"); root.set("date", datetime.now().strftime("%Y-%m-%d %H:%M"))
     shop = ET.SubElement(root, "shop"); offers = ET.SubElement(shop, "offers")
 
-    prices_updated = 0; vendors_detected = 0; available_true = 0; desc_filled_from_name = 0
+    for o in out_offers:
+        offer = ET.SubElement(offers, "offer", {"id": o["id"], "available": o["available"]})
+        ET.SubElement(offer, "name").text = o["name"]
+        if o["picture"]: ET.SubElement(offer, "picture").text = o["picture"]
+        if o["vendor"]: ET.SubElement(offer, "vendor").text = o["vendor"]
+        if o["description"]: ET.SubElement(offer, "description").text = o["description"]
+        ET.SubElement(offer, "vendorCode").text = o["vendorCode"]
+        ET.SubElement(offer, "price").text = o["price"]
+        ET.SubElement(offer, "currencyId").text = o["currencyId"]
 
-    for row in clean_rows:
-        name = row.get("name","").strip()
-        if not name: continue
-
-        # Артикул — из «Номенклатура.Артикул» (sku), потом fallback
-        article = extract_article_from_any(row)
-        base_id = row.get("sku") or article or f"H{stable_hash(name)}"  # без префикса CL
-        offer = ET.SubElement(offers, "offer", {"id": base_id})
-
-        ET.SubElement(offer, "name").text = name
-
-        img = (row.get("img") or "").strip()
-        if img: ET.SubElement(offer, "picture").text = img
-
-        brand = normalize_brand((row.get("brand") or "").strip())
-        if brand:
-            ET.SubElement(offer, "vendor").text = brand
-            vendors_detected += 1
-
-        # Описание: description → name (если разрешено)
-        desc = _clean_one_line(row.get("desc",""))
-        if not desc and FILL_DESC_FROM_NAME:
-            desc = _clean_one_line(name)
-            if desc: desc_filled_from_name += 1
-        if desc:
-            ET.SubElement(offer, "description").text = desc
-
-        # vendorCode: префикс CL + артикул/ID (без дубля префикса)
-        if VENDORCODE_CREATE_IF_MISSING or article:
-            code_body = article if article else base_id
-            code_body = re.sub(rf"^{re.escape(VENDORCODE_PREFIX)}-?", "", code_body, flags=re.I)
-            ET.SubElement(offer, "vendorCode").text = f"{VENDORCODE_PREFIX}{code_body}"
-
-        # Цена
-        dealer = row.get("_dealer", None)
-        if dealer is None: dealer = best_dealer_price(row)
-        price_val: Optional[int] = None
-        if dealer is not None and dealer > 0:
-            if PRICE_MODE == "retail":
-                price_val = compute_retail(dealer)
-            else:
-                try: price_val = int(dealer)
-                except: pass
-        if price_val is not None and price_val > 0:
-            ET.SubElement(offer, "price").text = str(int(price_val))
-            ET.SubElement(offer, "currencyId").text = "KZT"
-            prices_updated += 1
-
-        # Наличие: если колонки нет — считаем true
-        avail_txt = _norm(row.get("avail",""))
-        is_avail = not (avail_txt and re.search(r"\b(0|нет|no|false|out|нет в наличии)\b", avail_txt, re.I))
-        ET.SubElement(offer, "available").text = "true" if is_avail else "false"
-        if is_avail: available_true += 1
-
-    try: ET.indent(root, space="  ")
-    except Exception: pass
+    try:
+        ET.indent(root, space="  ")
+    except Exception:
+        pass
 
     meta = {
         "script_version": SCRIPT_VERSION,
-        "supplier": SUPPLIER_NAME,
-        "source": SUPPLIER_URL,
-        "offers_total": offers_total,
-        "offers_written": len(list(offers.findall("offer"))),
-        "filtered_by_keywords": filtered_out,
-        "headers_skipped": headers_skipped,
-        "desc_filled_from_name": desc_filled_from_name,
-        "prices_mode": PRICE_MODE,
-        "prices_updated": prices_updated,
-        "vendors_detected": vendors_detected,
-        "available_set_true": available_true,
+        "supplier": "copyline",
+        "source": XLSX_URL,
+        "offers_total": str(offers_total),
+        "offers_after_keywords": str(after_keywords),
+        "offers_written": str(len(out_offers)),
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
     }
     root.insert(0, ET.Comment(render_feed_meta(meta)))
 
-    xml_bytes = ET.tostring(root, encoding=ENC, xml_declaration=True)
-    xml_text  = xml_bytes.decode(ENC, errors="replace")
-    xml_text  = re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
+    xml_bytes = ET.tostring(root, encoding=OUTPUT_ENCODING, xml_declaration=True)
+    xml_text  = xml_bytes.decode(OUTPUT_ENCODING, errors="replace")
+    # красивый перенос после комментария
+    xml_text  = re.sub(r"(-->)\s*(<shop>)", r"\1\n  \2", xml_text)
 
-    if DRY_RUN:
-        log("[DRY_RUN=1] File not written."); return
+    os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
+    with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, newline="\n") as f:
+        f.write(xml_text)
 
-    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f: f.write(xml_text)
-
-    docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
-    try:
-        os.makedirs(docs_dir, exist_ok=True)
-        open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
-    except Exception as e:
-        warn(f".nojekyll create warn: {e}")
-
-    log(f"Wrote: {OUT_FILE_YML} | offers={meta['offers_written']} | encoding={ENC} | script={SCRIPT_VERSION}")
+    log(f"Wrote: {OUT_FILE} | offers={len(out_offers)} | encoding={OUTPUT_ENCODING}")
 
 if __name__ == "__main__":
-    try: main()
-    except Exception as e: err(str(e))
+    main()
