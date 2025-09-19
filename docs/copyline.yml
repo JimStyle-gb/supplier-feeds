@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-19 10:41">
+<yml_catalog date="2025-09-19 12:21">
   <!--FEED_META
-script_version            = copyline-2025-09-19.4                     | Версия скрипта
+script_version            = copyline-2025-09-19.5                     | Версия скрипта
 supplier                  = copyline                                  | Метка поставщика
 source                    = https://copyline.kz/files/price-CLA.xlsx  | URL исходного XLSX
 rows_read                 = 2845                                      | Строк считано (после шапки)
 rows_after_cat_filter     = 2668                                      | После удаления категорий/шапок
 rows_after_keyword_filter = 1227                                      | После фильтра по префиксам
 offers_written            = 1227                                      | Офферов записано в YML
-picture_found             = 0                                         | Скольким товарам нашли фото (img[itemprop=image])
-vendor_found              = 0                                         | Скольким товарам нашли бренд (Brand.name)
-desc_filled_from_site     = 0                                         | Скольким товарам нашли описание/ТХ (jshop_prod_description)
-built_utc                 = 2025-09-19 11:32:58 UTC                   | Время сборки (UTC)
-built_Asia/Almaty         = 2025-09-19 16:32:58 +05                   | Время сборки (Алматы)-->
+picture_found             = 0                                         | Сколько товаров получили фото (img[itemprop=image])
+vendor_found              = 0                                         | Сколько товаров получили бренд
+desc_filled_from_site     = 0                                         | Сколько товаров получили описание/ТХ (jshop_prod_description)
+built_utc                 = 2025-09-19 13:10:34 UTC                   | Время сборки (UTC)
+built_Asia/Almaty         = 2025-09-19 18:10:34 +05                   | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="105140">
