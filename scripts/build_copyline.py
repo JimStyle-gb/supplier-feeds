@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 Сборщик YML для поставщика Copyline (плоский <offers> для Satu)
-script_version = copyline-2025-09-19.3
+script_version = copyline-2025-09-19.4
 
-Что важно в этой версии:
-- <description> берём строго из блока <div itemprop="description" class="jshop_prod_description"> ... </div>.
-- Таблицы в описании превращаем в список "— Ключ: Значение" (многострочный текст).
-- <picture> берём в приоритете из <a class="lightbox" href=".../img_products/full_*.jpg">, затем из og:image, затем из img.jshop_img.
-- Защита: URL никогда не попадёт в <description>.
-- Исправлена путаница переменных: picture ≠ description.
+Изменения:
+- Фото берём строго из <img itemprop="image" id="main_image_*" src="...">.
+- Описание и ТХ тянем из <div itemprop="description" class="jshop_prod_description"> ... </div>.
+- Бренд берём из <div itemprop="brand"><span itemprop="name">...</span></div>.
+- Защита: URL никогда не попадёт в <description>. picture ≠ description.
 """
 
 from __future__ import annotations
@@ -29,13 +28,13 @@ except Exception:
 
 # =================== НАСТРОЙКИ ===================
 
-SCRIPT_VERSION = "copyline-2025-09-19.3"
+SCRIPT_VERSION = "copyline-2025-09-19.4"
 
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "copyline")
 SUPPLIER_URL  = os.getenv("SUPPLIER_URL", "https://copyline.kz/files/price-CLA.xlsx")
 
-OUT_FILE          = os.getenv("OUT_FILE", "docs/copyline.yml")
-OUTPUT_ENCODING   = os.getenv("OUTPUT_ENCODING", "windows-1251")
+OUT_FILE        = os.getenv("OUT_FILE", "docs/copyline.yml")
+OUTPUT_ENCODING = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
 TIMEOUT_S   = int(os.getenv("TIMEOUT_S", "30"))
 RETRIES     = int(os.getenv("RETRIES", "4"))
@@ -231,7 +230,6 @@ def _desc_from_block(block: BeautifulSoup) -> List[str]:
                 t = _clean_text(li.get_text(" ", strip=True))
                 if t: parts.append(f"- {t}")
         elif tag == "table":
-            # таблицы обработаем отдельно
             continue
     return parts
 
@@ -275,60 +273,47 @@ def find_product_page_by_article(article: str) -> Optional[str]:
 def scrape_product_details(url: str) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     """
     Возвращает: (picture_url, vendor, description_full)
-    Описание = p/h3-h5 + таблица ТХ, многострочный текст; строго из jshop_prod_description.
+    - picture: из <img itemprop="image" id="main_image_*" src="...">
+    - vendor: из <div itemprop="brand"><span itemprop="name">...</span>
+    - description: p/h3–h5 + таблицы из div.jshop_prod_description
     """
     html = fetch_html(url)
     if not html: return None, None, None
     soup = BeautifulSoup(html, "html.parser")
 
-    # 1) Основное описание: целевой блок jshop_prod_description
+    # 1) Фото: img[itemprop="image"][id^=main_image_]
+    picture = None
+    img = soup.select_one('img[itemprop="image"][id^="main_image_"]')
+    if img and (img.get("src")):
+        picture = img["src"].strip()
+        if picture.startswith("/"):
+            picture = "https://copyline.kz" + picture
+    if picture and not is_url(picture):
+        picture = None
+
+    # 2) Бренд: brand/name
+    vendor = None
+    brand_name = soup.select_one('div[itemprop="brand"] [itemprop="name"]')
+    if brand_name:
+        vtxt = _clean_text(brand_name.get_text(" ", strip=True))
+        if vtxt:
+            vendor = vtxt
+
+    # 3) Описание + ТХ: из jshop_prod_description
+    desc_full = None
     block = soup.select_one('div[itemprop="description"].jshop_prod_description') \
          or soup.select_one('div.jshop_prod_description') \
          or soup.select_one('[itemprop="description"]')
-    desc_full = None
     if block:
         text_lines = _desc_from_block(block)
         spec_lines = _specs_from_block(block)
         if spec_lines:
-            # Добавим заголовок, если его нет
             if not any("технические характеристики" in _norm(x) for x in text_lines):
                 text_lines.append("Технические характеристики:")
             text_lines.extend(spec_lines)
         desc_full = "\n".join([l for l in text_lines if l]).strip()
-        if desc_full and is_url(desc_full):  # защита от ошибочного URL
+        if desc_full and is_url(desc_full):
             desc_full = None
-
-    # 2) Картинка: приоритет — полноразмер в лайтбоксе → og:image → jshop_img
-    picture = None
-    a_full = soup.select_one('a.lightbox[href*="/img_products/full_"]')
-    if a_full and a_full.get("href"):
-        picture = a_full["href"].strip()
-        if picture.startswith("/"):
-            picture = "https://copyline.kz" + picture
-    if not picture:
-        og = soup.find("meta", attrs={"property":"og:image"})
-        if og and og.get("content"):
-            picture = og["content"].strip()
-            if picture.startswith("/"):
-                picture = "https://copyline.kz" + picture
-    if not picture:
-        img = soup.select_one("img.jshop_img, .product-image img, img[src*='/upload/'], img[data-src*='/upload/']")
-        if img:
-            picture = (img.get("src") or img.get("data-src") or "").strip()
-            if picture.startswith("/"):
-                picture = "https://copyline.kz" + picture
-    if picture and not is_url(picture):
-        picture = None  # защита
-
-    # 3) Бренд: ищем подпись "Бренд/Производитель/Марка" в таблицах
-    vendor = None
-    for row in soup.select("table tr"):
-        tds = row.find_all(["td","th"])
-        if len(tds) >= 2:
-            k = (tds[0].get_text(" ", strip=True) or "").lower()
-            v = (tds[1].get_text(" ", strip=True) or "").strip()
-            if any(x in k for x in ["бренд", "производитель", "марка"]):
-                vendor = v or vendor
 
     return picture, vendor, desc_full
 
@@ -349,9 +334,9 @@ def render_feed_meta(pairs: Dict[str,str]) -> str:
         "rows_after_cat_filter":"После удаления категорий/шапок",
         "rows_after_keyword_filter":"После фильтра по префиксам",
         "offers_written":"Офферов записано в YML",
-        "picture_found":"Скольким товарам нашли фото на сайте",
-        "vendor_found":"Скольким товарам нашли бренд на сайте",
-        "desc_filled_from_site":"Скольким товарам нашли описание/ТХ на сайте",
+        "picture_found":"Скольким товарам нашли фото (img[itemprop=image])",
+        "vendor_found":"Скольким товарам нашли бренд (Brand.name)",
+        "desc_filled_from_site":"Скольким товарам нашли описание/ТХ (jshop_prod_description)",
         "built_utc":"Время сборки (UTC)",
         "built_Asia/Almaty":"Время сборки (Алматы)",
     }
@@ -415,20 +400,18 @@ def main():
     desc_from_site = 0
 
     for rec in records:
-        name = rec["name"]
-        sku  = rec["sku"]
-        price = rec["price"]
+        name = rec["name"]; sku = rec["sku"]; price = rec["price"]
 
         picture = vendor = desc = None
         try:
             page = find_product_page_by_article(sku)
             if page:
                 pic, ven, des = scrape_product_details(page)
-                # строго разводим поля
                 picture = pic if pic and is_url(pic) else None
-                vendor  = ven.strip() if ven else None
-                # описание должно быть текстом, не URL
-                desc    = des.strip() if (des and not is_url(des)) else None
+                vendor  = (ven or "").strip() or None
+                desc    = (des or "").strip() or None
+                if desc and is_url(desc):
+                    desc = None
         except Exception as e:
             warn(f"scrape error for {sku}: {e}")
 
@@ -446,10 +429,10 @@ def main():
             picture_found += 1
 
         if desc:
-            ET.SubElement(offer, "description").text = desc  # многострочный текст
+            ET.SubElement(offer, "description").text = desc
             desc_from_site += 1
         elif FILL_DESC_FROM_NAME:
-            ET.SubElement(offer, "description").text = name  # fallback
+            ET.SubElement(offer, "description").text = name
 
         if price is not None:
             ET.SubElement(offer, "price").text = str(int(price))
