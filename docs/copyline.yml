@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-19 12:21">
+<yml_catalog date="2025-09-19 14:09">
   <!--FEED_META
-script_version            = copyline-2025-09-19.5                     | Версия скрипта
-supplier                  = copyline                                  | Метка поставщика
-source                    = https://copyline.kz/files/price-CLA.xlsx  | URL исходного XLSX
-rows_read                 = 2845                                      | Строк считано (после шапки)
-rows_after_cat_filter     = 2668                                      | После удаления категорий/шапок
-rows_after_keyword_filter = 1227                                      | После фильтра по префиксам
-offers_written            = 1227                                      | Офферов записано в YML
-picture_found             = 0                                         | Сколько товаров получили фото (img[itemprop=image])
-vendor_found              = 0                                         | Сколько товаров получили бренд
-desc_filled_from_site     = 0                                         | Сколько товаров получили описание/ТХ (jshop_prod_description)
-built_utc                 = 2025-09-19 13:10:34 UTC                   | Время сборки (UTC)
-built_Asia/Almaty         = 2025-09-19 18:10:34 +05                   | Время сборки (Алматы)-->
+script_version    = copyline-2025-09-19.6                     | Версия скрипта
+supplier          = copyline                                  | Метка поставщика
+source            = https://copyline.kz/files/price-CLA.xlsx  | URL исходного XLSX
+rows_read         = 2845                                      | Строк считано (после шапки)
+rows_after_cat    = 2668                                      | После удаления категорий/шапок
+rows_after_keys   = 1227                                      | После фильтра по префиксам
+offers_written    = 1227                                      | Офферов записано в YML
+picture_found     = 0                                         | Сколько товаров получили фото
+vendor_found      = 0                                         | Сколько товаров получили бренд
+desc_found        = 0                                         | Сколько товаров получили описание/ТХ
+built_utc         = 2025-09-19 15:17:36 UTC                   | Время сборки (UTC)
+built_Asia/Almaty = 2025-09-19 20:17:36 +05                   | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="105140">
