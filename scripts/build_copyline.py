@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 Сборщик YML для поставщика Copyline (плоский <offers> для Satu)
-script_version = copyline-2025-09-18.7
+script_version = copyline-2025-09-19.1
 
-Что делает:
-- Читает XLSX с двухстрочной шапкой (строки 10–11): Номенклатура / Номенклатура.Артикул / Цена.
-- Отбрасывает категории/подкатегории (например, "Товары", "ДЕВЕЛОПЕРЫ" и т.п.).
-- Фильтрует товары по префиксам из docs/copyline_keywords.txt (строгий старт строки).
-- Берёт артикул и цену ИМЕННО ИЗ ФАЙЛА (цены не переписываем и не накидываем маржу).
-- Пытается найти карточку товара на сайте по артикулу и вытащить: фото, описание, бренд, характеристики.
-- Генерирует docs/copyline.yml (windows-1251) с русскими комментариями FEED_META.
+Обновления в 2025-09-19.1:
+- Описание и ТХ тянем из <div itemprop="description" class="jshop_prod_description">...</div>.
+- Таблицу характеристик превращаем в человекочитаемый текст, добавляем ниже описания.
+- Сохраняем переносы строк в <description> (для удобочитаемости в Satu).
+- Улучшен поиск картинки и бренда на странице.
 """
 
 from __future__ import annotations
@@ -28,15 +26,15 @@ try:
 except Exception:
     ZoneInfo = None
 
-# =================== НАСТРОЙКИ (можно переопределить ENV) ===================
+# =================== НАСТРОЙКИ ===================
 
-SCRIPT_VERSION = "copyline-2025-09-18.7"
+SCRIPT_VERSION = "copyline-2025-09-19.1"
 
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "copyline")
 SUPPLIER_URL  = os.getenv("SUPPLIER_URL", "https://copyline.kz/files/price-CLA.xlsx")
 
-OUT_FILE      = os.getenv("OUT_FILE", "docs/copyline.yml")
-OUTPUT_ENCODING = os.getenv("OUTPUT_ENCODING", "windows-1251")
+OUT_FILE          = os.getenv("OUT_FILE", "docs/copyline.yml")
+OUTPUT_ENCODING   = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
 TIMEOUT_S   = int(os.getenv("TIMEOUT_S", "30"))
 RETRIES     = int(os.getenv("RETRIES", "4"))
@@ -47,16 +45,13 @@ KEYWORDS_PATH     = os.getenv("COPYLINE_KEYWORDS_PATH", "docs/copyline_keywords.
 KEYWORDS_MODE     = os.getenv("COPYLINE_KEYWORDS_MODE", "include").lower()  # include|exclude
 PREFIX_TRIM_NOISE = os.getenv("COPYLINE_PREFIX_ALLOW_TRIM", "1").lower() in {"1","true","yes"}
 
-# Цена — как в файле (по твоему требованию)
-PRICE_MODE_PASS_THROUGH = True
-
-# Описание: если с сайта не нашли — можно подставить name
+# Важное: цену берём ИЗ ФАЙЛА, без наценок (по твоему требованию)
 FILL_DESC_FROM_NAME = os.getenv("FILL_DESC_FROM_NAME", "1").lower() in {"1","true","yes"}
 
 # vendorCode = CL + <артикул из XLSX>
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "CL")
 
-# ================ УТИЛИТЫ ================
+# =================== УТИЛИТЫ ===================
 
 def log(msg: str): print(msg, flush=True)
 def warn(msg: str): print(f"WARN: {msg}", file=sys.stderr, flush=True)
@@ -74,13 +69,6 @@ def _norm(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
-def _one_line(s: str) -> str:
-    if not s: return ""
-    s = _nfkc(s).replace("\r\n","\n").replace("\r","\n")
-    s = re.sub(r"\s+", " ", s).strip()
-    s = re.sub(r"(?:^|\s)(Артикул|Благотворительность)\s*:\s*[^;.,]+[;.,]?\s*", " ", s, flags=re.I)
-    return re.sub(r"\s+", " ", s).strip()
-
 def parse_money(raw) -> Optional[float]:
     if raw is None: return None
     s = str(raw).strip()
@@ -93,14 +81,17 @@ def parse_money(raw) -> Optional[float]:
     except Exception:
         return None
 
-# ================ СЕТЬ ================
+def stable_hash(text: str) -> str:
+    return hashlib.sha1((_nfkc(text)).encode("utf-8", errors="ignore")).hexdigest()[:12]
+
+# =================== СЕТЬ ===================
 
 def fetch_bytes(url: str, timeout: int = TIMEOUT_S) -> bytes:
     sess = requests.Session()
     last = None
     for a in range(1, RETRIES+1):
         try:
-            r = sess.get(url, timeout=timeout)
+            r = sess.get(url, timeout=timeout, headers={"User-Agent":"supplier-feed-bot/1.0"})
             if r.status_code != 200:
                 raise RuntimeError(f"HTTP {r.status_code}")
             if len(r.content) < MIN_BYTES and url.endswith(".xlsx"):
@@ -119,7 +110,7 @@ def fetch_html(url: str) -> Optional[str]:
         warn(f"html fetch fail: {url} | {e}")
         return None
 
-# ================ ШАПКА (2 СТРОКИ) ================
+# =================== ШАПКА (2 СТРОКИ) ===================
 
 def merge_two_rows(r1: List[str], r2: List[str]) -> List[str]:
     out=[]
@@ -140,21 +131,17 @@ def map_headers(vals: List[str]) -> Dict[int,str]:
     for idx, raw in enumerate(vals, start=1):
         v = _norm(raw)
         if not v: continue
-        # Имя товара
-        if ("наимен" in v) or (v == "номенклатура"):
+        if ("наимен" in v) or v == "номенклатура":
             mapping[idx]="name"
-        # Артикул
-        if ("артикул" in v):
+        if "артикул" in v:
             mapping[idx]="sku"
-        # Цена
-        if ("цена" in v):
+        if v == "цена" or "цена" in v:
             mapping[idx]="price"
-        # Остаток — можно использовать на будущее
         if ("остаток" in v) or ("налич" in v):
             mapping.setdefault(idx, None)
     return mapping
 
-def find_header(ws: Worksheet, scan_rows: int = 60, max_cols: int = 30) -> Tuple[Dict[int,str], int]:
+def find_header(ws: Worksheet, scan_rows: int = 80, max_cols: int = 40) -> Tuple[Dict[int,str], int]:
     best_map: Dict[int,str] = {}
     best_row = -1
     best_score = -1
@@ -182,7 +169,7 @@ def select_best_sheet(wb) -> Tuple[Worksheet, Dict[int,str], int]:
         err("Не удалось найти шапку.")
     return ws, mapping, row
 
-# ================ ФИЛЬТР КЛЮЧЕЙ ================
+# =================== ФИЛЬТР КЛЮЧЕЙ ===================
 
 def load_keywords(path: str) -> List[str]:
     if not os.path.exists(path): return []
@@ -212,30 +199,62 @@ def name_passes_prefix(name: str, keys: List[str]) -> bool:
         nm = re.sub(r'^[\s\-\–\—•·|:/\\\[\]\(\)«»"“”„\']+', "", nm)
     return any(nm.startswith(k) for k in keys)
 
-# ================ ОТСЕВ КАТЕГОРИЙ/ШАПОК ================
+# =================== ОТСЕВ КАТЕГОРИЙ ===================
 
 def is_category_row(name: str, sku: str, price: Optional[float]) -> bool:
     if not name: return True
-    # если нет артикула или нет цены — это не товар
     if not sku or price is None: return True
     s = _nfkc(name).strip()
-    # "Товары" — специальный маркер в файле
     if s.lower() == "товары": return True
-    # короткая фраза без цифр, почти все буквы ВЕРХНИЕ — похоже на раздел
     letters = [ch for ch in s if ch.isalpha()]
     if letters:
         upp = sum(1 for ch in letters if ch.upper()==ch)
         if upp/len(letters) > 0.95 and not re.search(r"\d", s) and len(s)<=64:
             return True
-    # если остальные "товарные" поля пусты — вероятно шапка/раздел
     return False
 
-# ================ ПОИСК КАРТОЧКИ НА САЙТЕ ================
+# =================== СКРЕЙПИНГ: КАРТОЧКА ТОВАРА ===================
+
+def _clean_text(s: str) -> str:
+    if not s: return ""
+    s = _nfkc(s).replace("\u00A0"," ")
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+def _desc_from_block(block: BeautifulSoup) -> str:
+    """Распаковать p/h4/ul/li в многострочный текст."""
+    parts: List[str] = []
+    # параграфы
+    for p in block.find_all(["p"], recursive=False):
+        t = _clean_text(p.get_text(" ", strip=True))
+        if t: parts.append(t)
+    # подзаголовки (например, 'Технические характеристики:')
+    for h in block.find_all(["h3","h4","h5"], recursive=False):
+        t = _clean_text(h.get_text(" ", strip=True))
+        if t: parts.append(t)
+    # списки
+    for ul in block.find_all(["ul","ol"], recursive=False):
+        for li in ul.find_all("li", recursive=False):
+            t = _clean_text(li.get_text(" ", strip=True))
+            if t: parts.append(f"- {t}")
+    return "\n".join(parts).strip()
+
+def _specs_from_table(block: BeautifulSoup) -> List[str]:
+    """Преобразовать таблицы с ТХ в строки 'Ключ: Значение'."""
+    lines: List[str] = []
+    for tbl in block.find_all("table"):
+        for tr in tbl.find_all("tr"):
+            cells = tr.find_all(["th","td"])
+            if len(cells) >= 2:
+                k = _clean_text(cells[0].get_text(" ", strip=True))
+                v = _clean_text(cells[1].get_text(" ", strip=True))
+                if k and v:
+                    lines.append(f"- {k}: {v}")
+    return lines
 
 def find_product_page_by_article(article: str) -> Optional[str]:
-    art = article.strip()
+    art = (article or "").strip()
     if not art: return None
-    # Несколько попыток поиска — под конкретный сайт (Bitrix/1C часто используют такие пути)
     candidates = [
         f"https://copyline.kz/search/?searchstring={art}",
         f"https://copyline.kz/search?searchstring={art}",
@@ -246,7 +265,6 @@ def find_product_page_by_article(article: str) -> Optional[str]:
         html = fetch_html(url)
         if not html: continue
         soup = BeautifulSoup(html, "html.parser")
-        # Ищем первую ссылку на товар (эвристики)
         for a in soup.select("a"):
             href = a.get("href","")
             text = (a.get_text(" ", strip=True) or "")
@@ -254,30 +272,63 @@ def find_product_page_by_article(article: str) -> Optional[str]:
             if "copyline.kz" not in href:
                 if href.startswith("/"): href = "https://copyline.kz" + href
                 else: continue
-            # Признаки товарной ссылки
-            if re.search(r"/catalog/|/product|/shop/", href) or art.lower() in href.lower() or art.lower() in text.lower():
+            # ссылки на карточки (евристики)
+            if re.search(r"/goods/|/catalog/|/product|/shop/", href) or art.lower() in href.lower() or art.lower() in text.lower():
                 return href
     return None
 
 def scrape_product_details(url: str) -> Tuple[Optional[str], Optional[str], Optional[str]]:
-    """Возвращает (picture_url, vendor, description)"""
+    """
+    Возвращает: (picture_url, vendor, description_full)
+    Описание = p/h4 + таблица ТХ, многострочный текст.
+    """
     html = fetch_html(url)
     if not html: return None, None, None
     soup = BeautifulSoup(html, "html.parser")
 
-    # 1) Картинка: сначала og:image
+    # 1) описание и ТХ — целевой блок jshop_prod_description
+    desc_text_lines: List[str] = []
+    block = soup.select_one('div[itemprop="description"].jshop_prod_description') \
+         or soup.select_one('div.jshop_prod_description') \
+         or soup.select_one('[itemprop="description"]')
+    if block:
+        # p/h4/li
+        text_block = _desc_from_block(block)
+        if text_block:
+            desc_text_lines.append(text_block)
+        # таблицы ТХ
+        spec_lines = _specs_from_table(block)
+        if spec_lines:
+            # добавим заголовок, если его нет
+            if not any("технические характеристики" in t.lower() for t in desc_text_lines):
+                desc_text_lines.append("Технические характеристики:")
+            desc_text_lines.extend(spec_lines)
+
+    # 2) если вдруг не нашли — резервные блоки
+    if not desc_text_lines:
+        ogd = soup.find("meta", attrs={"property":"og:description"})
+        if ogd and ogd.get("content"):
+            desc_text_lines.append(_clean_text(ogd["content"]))
+        else:
+            cand = soup.select_one(".product-detail, .detail, .description, .product__desc, .product-detail__text")
+            if cand:
+                desc_text_lines.append(_clean_text(cand.get_text(" ", strip=True)))
+
+    full_desc = "\n".join([s for s in desc_text_lines if s]).strip() if desc_text_lines else None
+
+    # 3) картинка: og:image → jshop img → любые upload
     picture = None
     og = soup.find("meta", attrs={"property":"og:image"})
-    if og and og.get("content"): picture = og["content"].strip()
-    # запасной поиск img
+    if og and og.get("content"):
+        picture = og["content"].strip()
     if not picture:
-        img = soup.select_one("img[src*='/upload/'], img[data-src*='/upload/']")
+        img = soup.select_one("img.jshop_img, .product-image img, img[src*='/upload/'], img[data-src*='/upload/']")
         if img:
             picture = img.get("src") or img.get("data-src")
             if picture and picture.startswith("/"):
                 picture = "https://copyline.kz" + picture
 
-    # 2) Бренд: ищем по подписям в таблицах
+    # 4) бренд: ищем в таблицах «бренд/производитель/марка»
     vendor = None
     for row in soup.select("table tr"):
         tds = row.find_all(["td","th"])
@@ -287,18 +338,9 @@ def scrape_product_details(url: str) -> Tuple[Optional[str], Optional[str], Opti
             if any(x in k for x in ["бренд", "производитель", "марка"]):
                 vendor = v or vendor
 
-    # 3) Описание: og:description или блоки текста
-    desc = None
-    ogd = soup.find("meta", attrs={"property":"og:description"})
-    if ogd and ogd.get("content"): desc = ogd["content"].strip()
-    if not desc:
-        cand = soup.select_one(".product-detail, .detail, .description, .product__desc, .product-detail__text")
-        if cand:
-            desc = cand.get_text(" ", strip=True)
+    return picture, vendor, full_desc
 
-    return picture, vendor, _one_line(desc)
-
-# ================ FEED_META ================
+# =================== FEED_META ===================
 
 def render_feed_meta(pairs: Dict[str,str]) -> str:
     order = [
@@ -317,7 +359,7 @@ def render_feed_meta(pairs: Dict[str,str]) -> str:
         "offers_written":"Офферов записано в YML",
         "picture_found":"Скольким товарам нашли фото на сайте",
         "vendor_found":"Скольким товарам нашли бренд на сайте",
-        "desc_filled_from_site":"Скольким товарам нашли описание на сайте",
+        "desc_filled_from_site":"Скольким товарам нашли описание/ТХ на сайте",
         "built_utc":"Время сборки (UTC)",
         "built_Asia/Almaty":"Время сборки (Алматы)",
     }
@@ -329,7 +371,7 @@ def render_feed_meta(pairs: Dict[str,str]) -> str:
         lines.append(f"{left.ljust(max_left)}  | {comments[k]}")
     return "\n".join(lines)
 
-# ================ MAIN ================
+# =================== MAIN ===================
 
 def main():
     log(f"Source: {SUPPLIER_URL}")
@@ -343,34 +385,34 @@ def main():
     if KEYWORDS_MODE == "include" and len(keys) == 0:
         err("COPYLINE_KEYWORDS_MODE=include, но ключей не найдено. Проверь docs/copyline_keywords.txt.")
 
-    # читаем строки (стартуем с header_row+2, т.к. шапка в 2 строки)
     rows_read = 0
     rows_after_cat = 0
     rows_after_keys = 0
-
     records: List[Dict[str,str]] = []
+
+    name_col = next(k for k,v in mapping.items() if v=="name")
+    sku_col  = next(k for k,v in mapping.items() if v=="sku")
+    price_col = next((k for k,v in mapping.items() if v=="price"), None)
+
     for r in range(header_row + 2, ws.max_row + 1):
-        name = str(ws.cell(r, [k for k,v in mapping.items() if v=="name"][0]).value or "").strip()
-        sku  = str(ws.cell(r, [k for k,v in mapping.items() if v=="sku"][0]).value or "").strip()
-        price_raw = ws.cell(r, [k for k,v in mapping.items() if v=="price"][0]).value if "price" in mapping.values() else None
+        name = str(ws.cell(r, name_col).value or "").strip()
+        sku  = str(ws.cell(r, sku_col).value or "").strip()
+        price_raw = ws.cell(r, price_col).value if price_col else None
         price = parse_money(price_raw)
 
         if name or sku or price is not None:
             rows_read += 1
 
-        # отсекаем всё, что не похоже на товар
         if is_category_row(name, sku, price):
             continue
         rows_after_cat += 1
 
-        # фильтр по префиксам
         if KEYWORDS_MODE == "include" and not name_passes_prefix(name, keys):
             continue
         rows_after_keys += 1
 
         records.append({"name": name, "sku": sku, "price": price})
 
-    # собираем YML
     root = ET.Element("yml_catalog")
     root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     shop = ET.SubElement(root, "shop")
@@ -385,7 +427,6 @@ def main():
         sku  = rec["sku"]
         price = rec["price"]
 
-        # попытка найти карточку
         picture = vendor = desc = None
         try:
             page = find_product_page_by_article(sku)
@@ -401,30 +442,24 @@ def main():
             ET.SubElement(offer, "vendor").text = vendor
             vendor_found += 1
 
-        # vendorCode обязательно
         ET.SubElement(offer, "vendorCode").text = f"{VENDORCODE_PREFIX}{sku}"
 
-        # картинка, если нашли
         if picture:
             ET.SubElement(offer, "picture").text = picture
             picture_found += 1
 
-        # описание: с сайта либо из name (одной строкой)
         if desc:
-            ET.SubElement(offer, "description").text = _one_line(desc)
+            ET.SubElement(offer, "description").text = desc  # многострочный текст
             desc_from_site += 1
         elif FILL_DESC_FROM_NAME:
-            ET.SubElement(offer, "description").text = _one_line(name)
+            ET.SubElement(offer, "description").text = name  # fallback
 
-        # цена — как в файле
         if price is not None:
             ET.SubElement(offer, "price").text = str(int(price))
             ET.SubElement(offer, "currencyId").text = "KZT"
 
-        # наличие — по умолчанию true (у этого прайса признаком наличия служит сам факт строки с ценой)
         ET.SubElement(offer, "available").text = "true"
 
-    # pretty indent
     try:
         ET.indent(root, space="  ")
     except Exception:
@@ -446,7 +481,6 @@ def main():
     }
     root.insert(0, ET.Comment(render_feed_meta(meta)))
 
-    # фиксируем перенос после комментария, чтобы не было "--><shop>"
     xml_bytes = ET.tostring(root, encoding=OUTPUT_ENCODING, xml_declaration=True)
     xml_text  = xml_bytes.decode(OUTPUT_ENCODING, errors="replace")
     xml_text  = re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
