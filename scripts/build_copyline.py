@@ -1,22 +1,17 @@
 # -*- coding: utf-8 -*-
 """
 Copyline -> Satu YML (flat <offers>)
-script_version = copyline-2025-09-21.4
+script_version = copyline-2025-09-21.4a
 
-Правка по шагу 1:
-- Не ставим available="true" и in_stock="true" на теге <offer>.
-- Добавляем отдельный дочерний тег <available>true</available>.
-- Лишние теги количества (quantity_in_stock/stock_quantity/quantity) не пишем.
-
-Остальная логика оставлена как была.
+Правка: добавлено авто-распознавание кодировки для docs/copyline_keywords.txt.
+(использует charset-normalizer при наличии; затем chardet; затем ручной перебор)
 """
 
 from __future__ import annotations
 import os, re, io, time, random, unicodedata, html, hashlib
-from typing import Any, Dict, List, Optional, Tuple, Set
+from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urljoin
-from datetime import datetime, timezone, timedelta
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timezone
 from xml.etree import ElementTree as ET
 
 import requests
@@ -24,9 +19,19 @@ from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
+# --- optional enc-detectors ---
+try:
+    from charset_normalizer import from_bytes as cn_from_bytes  # type: ignore
+except Exception:  # pragma: no cover
+    cn_from_bytes = None
+try:
+    import chardet  # type: ignore
+except Exception:  # pragma: no cover
+    chardet = None  # type: ignore
+
 # ===================== SETTINGS =====================
 
-SCRIPT_VERSION = "copyline-2025-09-21.4"
+SCRIPT_VERSION = "copyline-2025-09-21.4a"
 
 BASE_URL     = "https://copyline.kz"
 SUPPLIER_URL = os.getenv("SUPPLIER_URL", f"{BASE_URL}/files/price-CLA.xlsx")
@@ -46,10 +51,6 @@ PREFIX_TRIM     = os.getenv("COPYLINE_PREFIX_ALLOW_TRIM", "1").lower() in {"1","
 
 FILL_DESC_FROM_NAME = os.getenv("FILL_DESC_FROM_NAME", "1").lower() in {"1","true","yes"}
 VENDORCODE_PREFIX   = os.getenv("VENDORCODE_PREFIX", "CL")
-
-MAX_WORKERS     = int(os.getenv("MAX_WORKERS", "8"))
-REQUEST_DELAY_MS= int(os.getenv("REQUEST_DELAY_MS", "80"))
-MAX_CRAWL_MIN   = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
 
 UA = {"User-Agent": "Mozilla/5.0 (compatible; CopylineFeed/2025.09-fast)"}
 
@@ -155,24 +156,60 @@ def select_best_sheet(wb):
         die("Не удалось найти шапку.")
     return ws, m, r
 
-# ===================== KEYWORDS =====================
+# ===================== KEYWORDS (auto-encoding) =====================
 
 def load_keywords(path: str) -> List[str]:
-    if not os.path.exists(path): return []
-    data = None
-    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
+    """
+    Читает keywords с распознаванием кодировки.
+    Порядок:
+      1) charset-normalizer (если установлен)
+      2) chardet (если установлен)
+      3) ручной перебор кодировок
+    """
+    if not os.path.exists(path):
+        return []
+
+    # читаем "сырые" байты
+    with open(path, "rb") as f:
+        raw = f.read()
+
+    text: Optional[str] = None
+
+    # 1) charset-normalizer
+    if cn_from_bytes is not None:
         try:
-            with open(path,"r",encoding=enc) as f:
-                data = f.read()
-            data = data.replace("\ufeff","").replace("\x00","")
-            break
+            res = cn_from_bytes(raw)
+            best = res.best()
+            if best and best.encoding:
+                text = best.output().strip("\ufeff").replace("\x00", "")
         except Exception:
-            continue
-    if data is None:
-        with open(path,"r",encoding="utf-8",errors="ignore") as f:
-            data = f.read().replace("\x00","")
-    keys=[]
-    for ln in data.splitlines():
+            text = None
+
+    # 2) chardet (если ещё не распознали)
+    if text is None and 'chardet' in globals() and chardet:
+        try:
+            det = chardet.detect(raw)  # type: ignore
+            enc = det.get("encoding")
+            if enc:
+                text = raw.decode(enc, "replace").replace("\ufeff", "").replace("\x00", "")
+        except Exception:
+            text = None
+
+    # 3) ручной перебор
+    if text is None:
+        for enc in ("utf-8-sig", "utf-8", "utf-16", "utf-16-le", "utf-16-be", "windows-1251", "cp866"):
+            try:
+                text = raw.decode(enc, "replace").replace("\ufeff", "").replace("\x00", "")
+                break
+            except Exception:
+                continue
+
+    if text is None:
+        # на крайний случай
+        text = raw.decode("utf-8", "ignore").replace("\x00", "")
+
+    keys: List[str] = []
+    for ln in text.splitlines():
         s = ln.strip()
         if s and not s.startswith("#"):
             keys.append(_norm(s))
@@ -302,7 +339,7 @@ def render_feed_meta(pairs: Dict[str, str]) -> str:
         lines.append(f"{l.ljust(ml)}  | {comments[k]}")
     return "\n".join(lines)
 
-# ===================== YML BUILD (only change offer availability layout) =====================
+# ===================== YML BUILD (offer availability layout) =====================
 
 def build_yml(offers: List[Dict[str,Any]]) -> str:
     root = ET.Element("yml_catalog", date=time.strftime("%Y-%m-%d %H:%M"))
@@ -313,20 +350,20 @@ def build_yml(offers: List[Dict[str,Any]]) -> str:
 
     for it in offers:
         offer = ET.SubElement(offers_el, "offer", {"id": it["id"]})  # no available/in_stock attrs
-
         ET.SubElement(offer, "name").text = it["name"]
+
         if it.get("vendor"):
             ET.SubElement(offer, "vendor").text = it["vendor"]
             ven_cnt += 1
 
         ET.SubElement(offer, "vendorCode").text = it["vendorCode"]
 
-        pic_el = ET.SubElement(offer, "picture")  # tag always present
+        pic_el = ET.SubElement(offer, "picture")
         if it.get("picture"):
             pic_el.text = it["picture"]
             pic_cnt += 1
 
-        desc_el = ET.SubElement(offer, "description")  # tag always present
+        desc_el = ET.SubElement(offer, "description")
         if it.get("description"):
             desc_el.text = it["description"]
             desc_cnt += 1
@@ -337,7 +374,7 @@ def build_yml(offers: List[Dict[str,Any]]) -> str:
             ET.SubElement(offer, "price").text = str(int(it["price"]))
             ET.SubElement(offer, "currencyId").text = "KZT"
 
-        ET.SubElement(offer, "available").text = "true"  # single availability tag
+        ET.SubElement(offer, "available").text = "true"
 
     try:
         ET.indent(root, space="  ")
@@ -361,16 +398,13 @@ def build_yml(offers: List[Dict[str,Any]]) -> str:
     xml = re.sub(r"(-->)\s*(<shop>)", r"\1\n  \2", xml)
     return xml
 
-# ===================== MAIN (skeleton; your existing data pipeline stays) =====================
+# ===================== MAIN (заглушка под ваш сбор данных) =====================
 
 def main():
-    # NOTE: Здесь оставь твой существующий пайплайн извлечения данных (из XLSX, поиск карточек и т.п.).
-    # Ниже только пример сборки офферов в том формате, который ты просил.
+    # Здесь должен быть ваш текущий сбор товаров (из XLSX и карточек).
+    collected: List[Dict[str,Any]] = []  # заполняется вашей логикой
 
-    # Example: offers collected by your existing code (id/name/vendor/vendorCode/picture/description/price)
-    collected: List[Dict[str,Any]] = []  # fill it by your current logic
-
-    # Write YML
+    # Пишем YML
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     xml = build_yml(collected)
     with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, newline="\n") as f:
