@@ -2,17 +2,16 @@
 # -*- coding: utf-8 -*-
 """
 Copyline -> Satu YML (flat <offers>)
-script_version = copyline-2025-09-21.6
+script_version = copyline-2025-09-21.7
 
-Изменения:
-- Реальный бренд (<vendor>): markup -> характеристики -> эвристика -> МЯГКИЙ ФОЛБЭК.
-- Бренды-поставщики (copyline, alstyle, vtt) никогда не выводим.
-- Если бренд так и не найден — тег <vendor> не пишем.
-- <offer> без атрибутов available/in_stock; наличие отдельным тегом <available>true</available>.
+Изменения в этой версии:
+- НЕ выводим тег <url>.
+- Добавлен дополнительный пустой перенос строки между офферами
+  (после </offer> вставляется пустая строка).
 """
 
 from __future__ import annotations
-import os, re, io, time, html, hashlib, random, unicodedata
+import os, re, io, time, html, hashlib, random
 from typing import Any, Dict, List, Optional, Tuple, Set
 from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -260,11 +259,10 @@ def extract_brand_from_specs_kv(kv: Dict[str,str]) -> Optional[str]:
 def brand_from_text_heuristics(title: str, desc: str) -> Optional[str]:
     hay = f"{title or ''} {desc or ''}".strip().lower()
     if not hay: return None
-    # по алиасам
     if norm_ascii(hay) in BRAND_ALIASES:
         return BRAND_ALIASES[norm_ascii(hay)]
     for norm, display in BRAND_ALIASES.items():
-        if norm in BLOCK_SUPPLIER_BRANDS:  # безопасность
+        if norm in BLOCK_SUPPLIER_BRANDS:
             continue
         if norm in norm_ascii(hay) or display.lower() in hay:
             return display
@@ -284,39 +282,25 @@ def sanitize_brand(b: Optional[str]) -> Optional[str]:
     return out
 
 def brand_soft_fallback(title: str, desc: str) -> Optional[str]:
-    """
-    Мягкий фолбэк: берём первую подходящую "словесную" кандидатуру из title/desc,
-    которая не является стоп-словом и не относится к заблокированным.
-    """
     text = f"{title or ''} {desc or ''}"
     if not text.strip():
         return None
-
-    # сначала проверим биграммы (двухсловные бренды: Euro Print, NV Print, Konica Minolta)
     words = re.findall(r"[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё\-]{1,20}", text)
+
+    # биграммы (Euro Print, Konica Minolta, NV Print)
     for i in range(len(words)-1):
         pair = f"{words[i]} {words[i+1]}".strip()
         n = norm_ascii(pair)
         if n and n not in BLOCK_SUPPLIER_BRANDS and n not in STOPWORDS_BRAND and n in BRAND_ALIASES:
             return BRAND_ALIASES[n]
 
-    # затем однословные кандидаты (первое нормальное слово, не из стоп-листа)
+    # однословные кандидаты
     for w in words:
         n = norm_ascii(w)
-        if not n:
+        if not n or n in BLOCK_SUPPLIER_BRANDS or n in STOPWORDS_BRAND:
             continue
-        if n in BLOCK_SUPPLIER_BRANDS:
-            continue
-        if n in STOPWORDS_BRAND:
-            continue
-        # буквенное слово разумной длины
         if re.match(r"^[a-zа-я]+$", n) and 2 <= len(n) <= 20:
-            # нормализация через алиасы, если есть
-            if n in BRAND_ALIASES:
-                return BRAND_ALIASES[n]
-            # иначе вернем слово в тайтл-кейсе
-            return w.strip().title()
-
+            return BRAND_ALIASES.get(n, w.strip().title())
     return None
 
 def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str], Optional[str]]]:
@@ -456,7 +440,7 @@ def category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
     for a in s.find_all("a", href=True):
         txt = (a.get_text(" ", strip=True) or "").lower()
         if txt in ("следующая","вперед","вперёд","next",">"):
-            return urljoin(page_url, a["href"])
+            return urljoin(page_url, a.get("href"))
     return None
 
 def collect_product_urls_from_category(cat_url: str, limit_pages: int) -> List[str]:
@@ -538,12 +522,14 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
             "<currencyId>KZT</currencyId>",
             f"<categoryId>{cid}</categoryId>",
         ]
-        if it.get("url"):     out.append(f"<url>{yml_escape(it['url'])}</url>")
-        if it.get("picture"): out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
+        # НЕ выводим <url>
+        if it.get("picture"):
+            out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
         desc = it.get("description") or it["title"]
         out.append(f"<description>{yml_escape(desc)}</description>")
         out.append("<available>true</available>")
         out.append("</offer>")
+        out.append("")  # дополнительный пустой перенос строки между офферами
     out.append("</offers>")
 
     out.append("</shop></yml_catalog>")
@@ -687,18 +673,13 @@ def main() -> int:
         crumbs = found.get("crumbs") or []
         brand = sanitize_brand(found.get("brand"))
 
-        # если не нашли — эвристика
         if not brand:
             brand = sanitize_brand(brand_from_text_heuristics(it["title"], desc))
-        # мягкий фолбэк: первая разумная кандидатура из текста
         if not brand:
             brand = sanitize_brand(brand_soft_fallback(it["title"], desc))
-
-        # защита от поставщиков
         if brand and norm_ascii(brand) in BLOCK_SUPPLIER_BRANDS:
             brand = None
 
-        # category id
         cid = ROOT_CAT_ID
         if crumbs:
             clean = [p.strip() for p in crumbs if p and p.strip()]
@@ -720,7 +701,7 @@ def main() -> int:
             "price":      it["price"],
             "vendorCode": raw_v,
             "brand":      brand,            # может быть None -> <vendor> не пишем
-            "url":        url,
+            "url":        url,              # храним, но НЕ выводим в YML
             "picture":    pic,
             "description": desc,
         }))
