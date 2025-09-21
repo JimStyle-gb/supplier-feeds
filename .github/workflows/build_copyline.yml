@@ -1,21 +1,18 @@
 name: build_copyline
-
 on:
-  push:
-    paths:
-      - "scripts/build_copyline.py"
-      - "docs/copyline_keywords.txt"
-      - ".github/workflows/build_copyline.yml"
-  workflow_dispatch: {}
-  schedule:
-    # ежедневно в 03:00 по Алматы (UTC+5 → 22:00 UTC предыдущего дня)
-    - cron: "0 22 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: build_copyline_${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,40 +20,54 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install deps
         run: |
-          python -V
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install requests beautifulsoup4 openpyxl
 
-      - name: Build Copyline YML
-        env:
-          SUPPLIER_URL: https://copyline.kz/files/price-CLA.xlsx
-          OUT_FILE: docs/copyline.yml
-          OUTPUT_ENCODING: windows-1251
-          TIMEOUT_S: "25"
-          RETRIES: "4"
-          RETRY_BACKOFF_S: "2"
-          MIN_BYTES: "900"
-          VENDORCODE_PREFIX: CL
-          COPYLINE_KEYWORDS_PATH: docs/copyline_keywords.txt
-          COPYLINE_KEYWORDS_MODE: include
-          COPYLINE_PREFIX_ALLOW_TRIM: "1"
-          FILL_DESC_FROM_NAME: "1"
+      - name: Ensure keywords file
         run: |
-          set -e
+          mkdir -p docs
+          if [ ! -f docs/copyline_keywords.txt ]; then
+            # Без "кабель сетевой"
+            printf "drum\nдевелопер\nдрам\nкартридж\nтермоблок\nтермоэлемент\nтонер-картридж\n" > docs/copyline_keywords.txt
+          fi
+          echo "Using keywords:" && cat docs/copyline_keywords.txt
+
+      - name: Build feed (XLSX + targeted category crawl)
+        env:
+          XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
+          KEYWORDS_FILE: docs/copyline_keywords.txt
+          OUT_FILE: docs/copyline.yml
+          # Единый параметр кодировки — теперь он реально используется и в прологе XML, и при записи файла
+          OUTPUT_ENCODING: windows-1251
+
+          HTTP_TIMEOUT: "25"
+          REQUEST_DELAY_MS: "120"
+          MIN_BYTES: "900"
+
+          # Ограничители, чтобы укладываться по времени
+          MAX_CRAWL_MINUTES: "60"     # мягкий лимит краулера
+          MAX_CATEGORY_PAGES: "1200"  # максимум страниц категорий
+          MAX_WORKERS: "6"            # потоки для карточек
+        run: |
           python scripts/build_copyline.py
 
-      - name: Commit & push result (rebase-safe)
+      - name: Commit & push feed (rebase-safe)
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          set -e
           git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/copyline.yml || true
-          git commit -m "chore(copyline): update docs/copyline.yml [skip ci]" || echo "No changes"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add docs/copyline.yml docs/copyline_keywords.txt || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Update copyline.yml (idealized: unified encoding + date + retries)"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
