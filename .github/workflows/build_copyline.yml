@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,16 +37,22 @@ jobs:
           SUPPLIER_URL: https://copyline.kz/files/price-CLA.xlsx
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
+
           TIMEOUT_S: "25"
           RETRIES: "4"
           RETRY_BACKOFF_S: "2"
-          MIN_BYTES: "1200"
-          VENDORCODE_PREFIX: CL
+          MIN_BYTES: "900"
+
           COPYLINE_KEYWORDS_PATH: docs/copyline_keywords.txt
           COPYLINE_KEYWORDS_MODE: include
-          COPYLINE_MATCH_MODE: contains   # можно поменять на startswith, если нужно
+          COPYLINE_MATCH_MODE: startswith     # строго как просил
           COPYLINE_PREFIX_ALLOW_TRIM: "1"
+
+          VENDORCODE_PREFIX: CL
           FILL_DESC_FROM_NAME: "1"
+
+          MAX_WORKERS: "8"
+          REQUEST_DELAY_MS: "80"
         run: |
           set -e
           python scripts/build_copyline.py
