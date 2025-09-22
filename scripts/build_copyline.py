@@ -2,15 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 Copyline -> Satu YML (flat <offers>)
-script_version = copyline-2025-09-22.2
+script_version = copyline-2025-09-22.3
 
-Особенности:
-- Блок <!--FEED_META ...--> как в alstyle/akcent (русские комментарии, выравнивание).
-- <categories> и <categoryId> не выводим.
-- <url> не выводим.
-- Между </offer> и следующим <offer> добавляем пустую строку.
-- <vendor> = реальный бренд (markup -> specs -> эвристика -> мягкий фолбэк), запрещённые: Copyline/Alstyle/VTT.
-- <offer> без атрибутов; наличие отдельным тегом <available>true</available>.
+Изменения:
+- FEED_META закрывается на строке "Время сборки (Алматы)-->".
+- Единый "человечный" стиль форматирования <offers>: отступы и пустая строка между офферами.
+- Категории (<categories>, <categoryId>) и <url> не выводим.
 """
 
 from __future__ import annotations
@@ -50,7 +47,7 @@ UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.3)"}
 # Запрещённые "бренды-поставщики"
 BLOCK_SUPPLIER_BRANDS = {"copyline", "alstyle", "vtt"}
 
-# Известные бренды печати/расходников (алиасы -> отображаемое имя)
+# Известные бренды (алиасы -> отображаемое имя)
 BRAND_ALIASES = {
     # OEM
     "hp": "HP", "hewlettpackard": "HP",
@@ -147,7 +144,7 @@ def to_number(x: Any) -> Optional[float]:
         m = re.search(r"[\d.]+", s)
         return float(m.group(0)) if m else None
 
-# ---------- keywords (с перебором кодировок) ----------
+# ---------- keywords (перебор кодировок) ----------
 def load_keywords(path: str) -> List[str]:
     if not os.path.isfile(path):
         return []
@@ -356,7 +353,7 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str], Opt
     if block:
         desc_txt, specs_kv = extract_specs_and_text(block)
 
-    # breadcrumbs (не выводим, но используем при сборе категорий ранее; здесь оставлено для совместимости)
+    # breadcrumbs (не выводим, но оставлено для совместимости)
     crumbs: List[str] = []
     for bc in s.select('ul.breadcrumb, .breadcrumbs, .breadcrumb, .pathway, [class*="breadcrumb"], [class*="pathway"]'):
         for a in bc.find_all("a"):
@@ -365,7 +362,7 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str], Opt
             if t and tl not in ("главная","home"): crumbs.append(t)
         if crumbs: break
 
-    # brand priority: markup -> specs -> heuristics
+    # brand priority
     brand = None
     bnode = s.select_one('div[itemprop="brand"] [itemprop="name"]') or s.select_one(".manufacturer_name")
     if bnode:
@@ -380,18 +377,18 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str], Opt
 # ---------- FEED_META ----------
 def build_feed_meta(meta_items: List[Tuple[str, str, str]]) -> str:
     """
-    Возвращает многострочную строку комментария <!--FEED_META ...--> с выравниванием столбцов.
-    meta_items: список кортежей (ключ, значение, комментарий).
+    Возвращает комментарий <!--FEED_META ...--> с выравниванием.
+    Закрывающий --> ставим в КОНЦЕ ПОСЛЕДНЕЙ строки (Время сборки (Алматы)-->).
     """
     key_w = max(len(k) for k, _, _ in meta_items) if meta_items else 8
     val_w = max(len(v) for _, v, _ in meta_items) if meta_items else 8
     lines = ["  <!--FEED_META"]
-    for k, v, c in meta_items:
-        lines.append(f"{k.ljust(key_w)} = {v.ljust(val_w)} | {c}")
-    lines.append("  -->")
+    for i, (k, v, c) in enumerate(meta_items):
+        tail = " -->" if i == len(meta_items) - 1 else ""
+        lines.append(f"  {k.ljust(key_w)} = {v.ljust(val_w)} | {c}{tail}")
     return "\n".join(lines)
 
-# ---------- YML ----------
+# ---------- YML (аккуратные отступы как у других поставщиков) ----------
 def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     out: List[str] = []
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
@@ -399,38 +396,32 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     out.append(f"<yml_catalog date='{ts}'>")
     out.append(feed_meta_str)
     out.append("<shop>")
-    out.append(f"<name>{yml_escape(SUPPLIER_NAME.lower())}</name>")
-    out.append('<currencies><currency id="KZT" rate="1" /></currencies>')
-    # <categories> и <categoryId> не выводим
-
-    out.append("<offers>")
+    out.append(f"  <name>{yml_escape(SUPPLIER_NAME.lower())}</name>")
+    out.append(f"  <currencies><currency id=\"KZT\" rate=\"1\" /></currencies>")
+    out.append("")
+    out.append("  <offers>")
+    first = True
     for it in offers:
         price = it["price"]
         price_txt = str(int(price)) if float(price).is_integer() else f"{price}"
-        out += [
-            f"<offer id=\"{yml_escape(it['offer_id'])}\">",
-            f"<name>{yml_escape(it['title'])}</name>",
-        ]
+        if not first:
+            out.append("")  # пустая строка между офферами
+        first = False
+        out.append(f"    <offer id=\"{yml_escape(it['offer_id'])}\">")
+        out.append(f"      <name>{yml_escape(it['title'])}</name>")
         brand = it.get("brand")
         if brand:
-            out.append(f"<vendor>{yml_escape(brand)}</vendor>")
-
-        out += [
-            f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>",
-            f"<price>{price_txt}</price>",
-            "<currencyId>KZT</currencyId>",
-        ]
-        # <url> НЕ выводим
+            out.append(f"      <vendor>{yml_escape(brand)}</vendor>")
+        out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
+        out.append(f"      <price>{price_txt}</price>")
+        out.append(f"      <currencyId>KZT</currencyId>")
         if it.get("picture"):
-            out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
-
+            out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
         desc = it.get("description") or it["title"]
-        out.append(f"<description>{yml_escape(desc)}</description>")
-        out.append("<available>true</available>")
-        out.append("</offer>")
-        out.append("")  # пустая строка между офферами
-
-    out.append("</offers>")
+        out.append(f"      <description>{yml_escape(desc)}</description>")
+        out.append(f"      <available>true</available>")
+        out.append(f"    </offer>")
+    out.append("  </offers>")
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
@@ -457,10 +448,7 @@ def main() -> int:
     start_patterns = compile_startswith_patterns(kw_list)
 
     # Подсчёт непустых строк в исходнике (после заголовка)
-    source_rows = 0
-    for r in rows[data_start:]:
-        if any(v is not None and str(v).strip() for v in r):
-            source_rows += 1
+    source_rows = sum(1 for r in rows[data_start:] if any(v is not None and str(v).strip() for v in r))
 
     xlsx_items: List[Dict[str,Any]] = []
     want_keys: Set[str] = set()
@@ -673,7 +661,7 @@ def main() -> int:
 
     offers_written = len(offers)
 
-    # 7) FEED_META заполнение
+    # 7) FEED_META
     now_utc = datetime.now(timezone.utc)
     now_alma = datetime.now(ZoneInfo("Asia/Almaty"))
     dropped_top = f"no_match:{cnt_no_match}, no_picture:{cnt_no_picture}"
@@ -691,6 +679,8 @@ def main() -> int:
         ("built_utc",           now_utc.strftime("%Y-%m-%d %H:%M:%S UTC"),               "Время сборки (UTC)"),
         ("built_Asia/Almaty",   now_alma.strftime("%Y-%m-%d %H:%M:%S +05"),              "Время сборки (Алматы)"),
     ]
+    # перемещаем закрывающий --> к последней строке
+    # (функция сама добавит --> к последней записи)
     feed_meta_str = build_feed_meta(meta_items)
 
     # 8) Запись YML
