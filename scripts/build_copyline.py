@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 Copyline -> Satu YML (flat <offers>)
-script_version = copyline-2025-09-22.6
+script_version = copyline-2025-09-22.7
 
 Изменения в этой версии:
-- Из вывода удалены <name> и <currencies>, оставляем только контейнер <shop> и блок <offers>.
-- В остальном — то же: фильтр по startswith (keywords), бренды без Copyline/Alstyle/VTT,
-  ценовые правила как у akcent/alstyle (процент + фикс + «хвост 900»), префикс cl в <vendorCode>,
-  FEED_META без отступов, пустая строка между офферами, без <url>/<categories>.
+- Чистка описания: удаляем в <description> фрагменты вида "(Артикул: 104439)" и "Артикул: 104439".
+- Остальное без изменений: ценовые правила как у akcent/alstyle, префикс cl в <vendorCode>,
+  без <url>/<categories>, FEED_META без отступов, пустая строка между офферами, нет <name>/<currencies>.
 """
 
 from __future__ import annotations
@@ -45,7 +44,7 @@ SUPPLIER_NAME       = "Copyline"
 CURRENCY            = "KZT"
 VENDORCODE_PREFIX   = os.getenv("VENDORCODE_PREFIX", "cl")  # только в <vendorCode>
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.6)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.7)"}
 
 BLOCK_SUPPLIER_BRANDS = {"copyline", "alstyle", "vtt"}
 
@@ -257,6 +256,25 @@ def build_feed_meta(meta_items: List[Tuple[str, str, str]]) -> str:
         lines.append(f"{k.ljust(key_w)} = {v.ljust(val_w)} | {c}{tail}")
     return "\n".join(lines)
 
+# ---------- Чистка описаний ----------
+ART_PATTS = [
+    # (Артикул: 104439)
+    re.compile(r"\(\s*Артикул\s*[:#]?\s*[A-Za-z0-9\-\._/]+\s*\)", re.IGNORECASE),
+    # Артикул: 104439
+    re.compile(r"\bАртикул\s*[:#]?\s*[A-Za-z0-9\-\._/]+", re.IGNORECASE),
+]
+def clean_article_mentions(text: str) -> str:
+    if not text: return text
+    out = text
+    for rx in ART_PATTS:
+        out = rx.sub("", out)
+    # убрать пустые скобки и подчистить пробелы/пустые строки
+    out = re.sub(r"\(\s*\)", "", out)
+    out = re.sub(r"[ \t]{2,}", " ", out)
+    out = re.sub(r"[ \t]+\n", "\n", out)
+    out = re.sub(r"(\n\s*){3,}", "\n\n", out)
+    return out.strip()
+
 # ---------- Сборка YML (без <name> и <currencies>) ----------
 def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     lines: List[str] = []
@@ -280,6 +298,7 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
         if it.get("picture"):
             lines.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
         desc = it.get("description") or it["title"]
+        desc = clean_article_mentions(desc)  # <-- чистим "Артикул: ..."
         lines.append(f"      <description>{yml_escape(desc)}</description>")
         lines.append(f"      <available>true</available>")
         lines.append(f"    </offer>")
@@ -501,6 +520,7 @@ def main() -> int:
         if not found.get("pic"): cnt_no_picture += 1; continue
 
         desc = found.get("desc") or it["title"]
+        desc = clean_article_mentions(desc)  # <-- чистим "Артикул: ..."
         brand = sanitize_brand(found.get("brand")) or sanitize_brand(brand_from_text_heuristics(it["title"], desc)) or sanitize_brand(brand_soft_fallback(it["title"], desc))
         if brand and norm_ascii(brand) in BLOCK_SUPPLIER_BRANDS: brand = None
         if brand: cnt_vendors += 1
@@ -526,7 +546,7 @@ def main() -> int:
     dropped_top = f"no_match:{cnt_no_match}, no_picture:{cnt_no_picture}"
 
     meta_items = [
-        ("script_version",      "copyline-2025-09-22.6",              "Версия скрипта"),
+        ("script_version",      "copyline-2025-09-22.7",              "Версия скрипта"),
         ("supplier",            SUPPLIER_NAME,                        "Метка поставщика"),
         ("source",              XLSX_URL,                             "URL исходного XLSX"),
         ("rows_read",           str(source_rows),                     "Строк считано (после шапки)"),
