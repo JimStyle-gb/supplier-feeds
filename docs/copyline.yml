@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date='2025-09-22 14:55'>
+<yml_catalog date='2025-09-22 15:45'>
 <!--FEED_META
-script_version    = copyline-2025-09-22.6                    | Версия скрипта
+script_version    = copyline-2025-09-22.7                    | Версия скрипта
 supplier          = Copyline                                 | Метка поставщика
 source            = https://copyline.kz/files/price-CLA.xlsx | URL исходного XLSX
 rows_read         = 2845                                     | Строк считано (после шапки)
@@ -11,8 +11,8 @@ offers_written    = 1221                                     | Офферов записано 
 picture_found     = 1221                                     | Сколько товаров с фото
 vendor_found      = 1221                                     | Сколько товаров с брендом
 desc_found        = 1221                                     | Сколько товаров с описанием/ТХ
-built_utc         = 2025-09-22 14:55:55 UTC                  | Время сборки (UTC)
-built_Asia/Almaty = 2025-09-22 19:55:55 +05                  | Время сборки (Алматы) -->
+built_utc         = 2025-09-22 15:45:49 UTC                  | Время сборки (UTC)
+built_Asia/Almaty = 2025-09-22 20:45:49 +05                  | Время сборки (Алматы) -->
 <shop>
   <offers>
     <offer id="105140">
@@ -22,7 +22,7 @@ built_Asia/Almaty = 2025-09-22 19:55:55 +05                  | Время сборки (Алм
       <price>10900</price>
       <currencyId>KZT</currencyId>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-for-Hp-M436.jpg</picture>
-      <description>Девелопер HP M436 (CF257) foil bags 230гр (Артикул: 105140 )</description>
+      <description>Девелопер HP M436 (CF257) foil bags 230гр</description>
       <available>true</available>
     </offer>
 
@@ -1043,7 +1043,7 @@ built_Asia/Almaty = 2025-09-22 19:55:55 +05                  | Время сборки (Алм
       <price>109900</price>
       <currencyId>KZT</currencyId>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00669-oem.jpg</picture>
-      <description>Драм-картридж Xerox (013R00669) WC 5945/5955 (200K) Euro Print (Артикул: 104439 )</description>
+      <description>Драм-картридж Xerox (013R00669) WC 5945/5955 (200K) Euro Print</description>
       <available>true</available>
     </offer>
 
