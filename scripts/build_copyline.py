@@ -2,12 +2,18 @@
 # -*- coding: utf-8 -*-
 """
 Copyline -> Satu YML (flat <offers>)
-script_version = copyline-2025-09-22.3
+script_version = copyline-2025-09-22.5
 
-Изменения:
-- FEED_META закрывается на строке "Время сборки (Алматы)-->".
-- Единый "человечный" стиль форматирования <offers>: отступы и пустая строка между офферами.
-- Категории (<categories>, <categoryId>) и <url> не выводим.
+Что внутри:
+- XLSX парсинг (двухстрочная шапка: «Номенклатура», «Артикул», «Цена»).
+- Фильтр по startswith из docs/copyline_keywords.txt c автодетектом кодировки.
+- Поиск карточек товаров на сайте, парсинг <img id="main_image_*">, описания и ТХ из
+  <div itemprop="description" class="jshop_prod_description">, извлечение бренда.
+- Бренд не может быть Copyline/Alstyle/VTT; мягкий фолбэк по тексту.
+- ЦЕНООБРАЗОВАНИЕ: те же правила, что у akcent/alstyle (процент + фикс. надбавка,
+  округление вверх и «хвост 900»).
+- В выводе: без <url>, без категорий; <vendorCode> с префиксом "cl"; <available>true</available>;
+  чистый FEED_META и пустая строка между офферами для читаемости.
 """
 
 from __future__ import annotations
@@ -22,81 +28,59 @@ import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 
-# ---------- ENV / CONST ----------
-BASE_URL           = "https://copyline.kz"
-XLSX_URL           = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
-KEYWORDS_FILE      = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
-OUT_FILE           = os.getenv("OUT_FILE", "docs/copyline.yml")
-ENC                = (os.getenv("OUTPUT_ENCODING", "windows-1251") or "").lower()
-FILE_ENCODING      = "cp1251" if "1251" in ENC else (ENC or "utf-8")
-XML_ENCODING       = "windows-1251" if "1251" in ENC else (ENC or "utf-8")
+# ---------- Константы/настройки ----------
+BASE_URL            = "https://copyline.kz"
+XLSX_URL            = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
+KEYWORDS_FILE       = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
+OUT_FILE            = os.getenv("OUT_FILE", "docs/copyline.yml")
 
-HTTP_TIMEOUT       = float(os.getenv("HTTP_TIMEOUT", "25"))
-REQUEST_DELAY_MS   = int(os.getenv("REQUEST_DELAY_MS", "120"))
-MIN_BYTES          = int(os.getenv("MIN_BYTES", "900"))
+ENC                 = (os.getenv("OUTPUT_ENCODING", "windows-1251") or "").lower()
+FILE_ENCODING       = "cp1251" if "1251" in ENC else (ENC or "utf-8")
+XML_ENCODING        = "windows-1251" if "1251" in ENC else (ENC or "utf-8")
 
-MAX_CRAWL_MINUTES  = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
-MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "1200"))
-MAX_WORKERS        = int(os.getenv("MAX_WORKERS", "6"))
+HTTP_TIMEOUT        = float(os.getenv("HTTP_TIMEOUT", "25"))
+REQUEST_DELAY_MS    = int(os.getenv("REQUEST_DELAY_MS", "120"))
+MIN_BYTES           = int(os.getenv("MIN_BYTES", "900"))
 
-SUPPLIER_NAME      = "Copyline"
-CURRENCY           = "KZT"
+MAX_CRAWL_MINUTES   = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
+MAX_CATEGORY_PAGES  = int(os.getenv("MAX_CATEGORY_PAGES", "1200"))
+MAX_WORKERS         = int(os.getenv("MAX_WORKERS", "6"))
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.3)"}
+SUPPLIER_NAME       = "Copyline"
+CURRENCY            = "KZT"
+VENDORCODE_PREFIX   = os.getenv("VENDORCODE_PREFIX", "cl")  # только в <vendorCode>
 
-# Запрещённые "бренды-поставщики"
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.5)"}
+
+# Поставщики-«бренды», которые нельзя выставлять в <vendor>
 BLOCK_SUPPLIER_BRANDS = {"copyline", "alstyle", "vtt"}
 
-# Известные бренды (алиасы -> отображаемое имя)
+# Алиасы брендов
 BRAND_ALIASES = {
-    # OEM
     "hp": "HP", "hewlettpackard": "HP",
-    "canon": "Canon",
-    "xerox": "Xerox",
-    "brother": "Brother",
-    "kyocera": "Kyocera",
-    "ricoh": "Ricoh",
-    "konicaminolta": "Konica Minolta", "minolta": "Konica Minolta",
-    "epson": "Epson",
-    "samsung": "Samsung",
-    "lexmark": "Lexmark",
-    "panasonic": "Panasonic",
-    "sharp": "Sharp",
-    "oki": "OKI",
-    "toshiba": "Toshiba",
+    "canon": "Canon", "xerox": "Xerox", "brother": "Brother",
+    "kyocera": "Kyocera", "ricoh": "Ricoh", "konicaminolta": "Konica Minolta",
+    "epson": "Epson", "samsung": "Samsung", "lexmark": "Lexmark",
+    "panasonic": "Panasonic", "sharp": "Sharp", "oki": "OKI", "toshiba": "Toshiba",
     "dell": "Dell",
-    # Aftermarket
     "europrint": "Euro Print", "euro print": "Euro Print",
     "nvprint": "NV Print", "nv print": "NV Print",
     "hiblack": "Hi-Black", "hi-black": "Hi-Black", "hi black": "Hi-Black",
     "profiline": "ProfiLine", "profi line": "ProfiLine",
     "staticcontrol": "Static Control", "static control": "Static Control",
-    "gg": "G&G", "g&g": "G&G",
-    "cactus": "Cactus",
-    "patron": "Patron",
-    "pitatel": "Pitatel",
-    "mito": "Mito",
-    "7q": "7Q",
-    "uniton": "Uniton",
-    "printpro": "PrintPro",
+    "gg": "G&G", "g&g": "G&G", "cactus": "Cactus", "patron": "Patron",
+    "pitatel": "Pitatel", "mito": "Mito", "7q": "7Q", "uniton": "Uniton", "printpro": "PrintPro",
     "sakura": "Sakura",
 }
 
-# Общие слова, которые не должны становиться брендом в мягком фолбэке
 STOPWORDS_BRAND = {
-    # RU
-    "картридж","тонер","тонер-картридж","драм","фотобарабан","узел","узел закрепления",
-    "термоблок","термоэлемент","девелопер","порошок","бумага","пленка","ремкомплект",
-    "для","без","с","набор","черный","чёрный","цветной","голубой","пурпурный","желтый",
-    "серый","оранжевый","зеленый","фиолетовый","лазерный","струйный","принтер","мфу",
-    "ресурс","оригинальный","совместимый","фото","блок","картриджа",
-    # EN
-    "cartridge","toner","drum","developer","fuser","kit","unit","black","cyan","magenta",
-    "yellow","gray","orange","green","violet","laser","inkjet","printer","mfp","resource",
-    "original","compatible","photo","block","for","without","with"
+    "картридж","тонер","драм","фотобарабан","узел","термоблок","девелопер","порошок",
+    "бумага","ремкомплект","для","без","с","набор","черный","чёрный","цветной",
+    "лазерный","струйный","принтер","мфу","ресурс","оригинальный","совместимый",
+    "cartridge","toner","drum","developer","fuser","kit","unit","laser","inkjet",
 }
 
-# ---------- helpers ----------
+# ---------- Утилиты ----------
 def jitter_sleep(ms: int) -> None:
     time.sleep(max(0.0, ms/1000.0) * (1 + random.uniform(-0.15, 0.15)))
 
@@ -121,10 +105,6 @@ def soup_of(b: bytes) -> BeautifulSoup:
 def yml_escape(s: str) -> str:
     return html.escape(s or "")
 
-def sha1(s: str) -> str:
-    import hashlib
-    return hashlib.sha1(s.encode("utf-8")).hexdigest()
-
 def norm_ascii(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
 
@@ -144,7 +124,7 @@ def to_number(x: Any) -> Optional[float]:
         m = re.search(r"[\d.]+", s)
         return float(m.group(0)) if m else None
 
-# ---------- keywords (перебор кодировок) ----------
+# ---------- keywords (автоопределение кодировки) ----------
 def load_keywords(path: str) -> List[str]:
     if not os.path.isfile(path):
         return []
@@ -178,7 +158,7 @@ def title_startswith_strict(title: str, patterns: List[re.Pattern]) -> bool:
     if not title: return False
     return any(p.search(title) for p in patterns)
 
-# ---------- xlsx ----------
+# ---------- XLSX ----------
 def fetch_xlsx_bytes(url: str) -> bytes:
     b = http_get(url, tries=3)
     if not b: raise RuntimeError("Не удалось скачать XLSX.")
@@ -197,7 +177,7 @@ def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60):
                 return i, i + 1, {"name": name_col, "vendor_code": vendor_col, "price": price_col}
     return -1, -1, {}
 
-# ---------- product page parsing ----------
+# ---------- карточка товара (сайт) ----------
 PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
 
 def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
@@ -246,19 +226,15 @@ def extract_specs_and_text(block: BeautifulSoup) -> Tuple[str, Dict[str,str]]:
     return txt, kv
 
 def extract_brand_from_specs_kv(kv: Dict[str,str]) -> Optional[str]:
-    if not kv: return None
-    for key in list(kv.keys()):
-        k = key.strip().lower()
-        if k in ("производитель", "бренд", "торговая марка", "trademark", "brand", "manufacturer"):
-            val = kv[key].strip()
-            if val: return val
+    for k, v in kv.items():
+        kk = k.strip().lower()
+        if kk in {"производитель","бренд","торговая марка","brand","manufacturer"} and v.strip():
+            return v.strip()
     return None
 
 def brand_from_text_heuristics(title: str, desc: str) -> Optional[str]:
     hay = f"{title or ''} {desc or ''}".strip().lower()
     if not hay: return None
-    if norm_ascii(hay) in BRAND_ALIASES:
-        return BRAND_ALIASES[norm_ascii(hay)]
     for norm, display in BRAND_ALIASES.items():
         if norm in BLOCK_SUPPLIER_BRANDS:
             continue
@@ -271,28 +247,21 @@ def sanitize_brand(b: Optional[str]) -> Optional[str]:
     b_stripped = re.sub(r"\s{2,}", " ", b).strip()
     n = norm_ascii(b_stripped)
     if not n: return None
-    if n in BRAND_ALIASES:
-        out = BRAND_ALIASES[n]
-    else:
-        out = b_stripped
+    out = BRAND_ALIASES.get(n, b_stripped)
     if norm_ascii(out) in BLOCK_SUPPLIER_BRANDS:
         return None
     return out
 
 def brand_soft_fallback(title: str, desc: str) -> Optional[str]:
     text = f"{title or ''} {desc or ''}"
-    if not text.strip():
-        return None
     words = re.findall(r"[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё\-]{1,20}", text)
-
-    # биграммы (Euro Print, Konica Minolta, NV Print)
+    # биграммы
     for i in range(len(words)-1):
         pair = f"{words[i]} {words[i+1]}".strip()
         n = norm_ascii(pair)
         if n and n not in BLOCK_SUPPLIER_BRANDS and n not in STOPWORDS_BRAND and n in BRAND_ALIASES:
             return BRAND_ALIASES[n]
-
-    # однословные кандидаты
+    # однословные
     for w in words:
         n = norm_ascii(w)
         if not n or n in BLOCK_SUPPLIER_BRANDS or n in STOPWORDS_BRAND:
@@ -301,94 +270,54 @@ def brand_soft_fallback(title: str, desc: str) -> Optional[str]:
             return BRAND_ALIASES.get(n, w.strip().title())
     return None
 
-def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str], Optional[str]]]:
-    """
-    Возвращает: (sku, picture, description, breadcrumbs, brand)
-    brand: markup -> specs -> эвристика (мягкий фолбэк позже).
-    """
-    jitter_sleep(REQUEST_DELAY_MS)
-    b = http_get(url)
-    if not b: return None
-    s = soup_of(b)
+# ---------- ЦЕНООБРАЗОВАНИЕ (как у akcent/alstyle) ----------
+from typing import NamedTuple
+class PriceRule(NamedTuple):
+    lo: int; hi: int; pct: float; add: int
 
-    # sku
-    sku = None
-    skuel = s.find(attrs={"itemprop": "sku"})
-    if skuel:
-        val = (skuel.get_text(" ", strip=True) or "").strip()
-        if val: sku = val
-    if not sku:
-        txt = s.get_text(" ", strip=True)
-        m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", txt, flags=re.I)
-        if m: sku = m.group(1)
-    if not sku: return None
+# Таблица диапазонов: процент + фиксированная надбавка (один в один, как у akcent/alstyle)
+PRICING_RULES: List[PriceRule] = [
+    PriceRule(   101,    10000, 4.0,  3000),
+    PriceRule( 10001,    25000, 4.0,  4000),
+    PriceRule( 25001,    50000, 4.0,  5000),
+    PriceRule( 50001,    75000, 4.0,  7000),
+    PriceRule( 75001,   100000, 4.0, 10000),
+    PriceRule(100001,   150000, 4.0, 12000),
+    PriceRule(150001,   200000, 4.0, 15000),
+    PriceRule(200001,   300000, 4.0, 20000),
+    PriceRule(300001,   400000, 4.0, 25000),
+    PriceRule(400001,   500000, 4.0, 30000),
+    PriceRule(500001,   750000, 4.0, 40000),
+    PriceRule(750001,  1000000, 4.0, 50000),
+    PriceRule(1000001, 1500000, 4.0, 70000),
+    PriceRule(1500001, 2000000, 4.0, 90000),
+    PriceRule(2000001,100000000,4.0,100000),
+]
 
-    # picture
-    src = None
-    imgel = s.find("img", id=re.compile(r"^main_image_", re.I))
-    if imgel and (imgel.get("src") or imgel.get("data-src")):
-        src = imgel.get("src") or imgel.get("data-src")
-    if not src:
-        ogi = s.find("meta", attrs={"property": "og:image"})
-        if ogi and ogi.get("content"):
-            src = ogi["content"].strip()
-    if not src:
-        for img in s.find_all("img"):
-            src_try = img.get("src") or img.get("data-src") or ""
-            if any(k in src_try for k in ["img_products", "/products/", "/img/"]):
-                src = src_try; break
-    if not src: return None
-    pic = normalize_img_to_full(urljoin(url, src))
+def _force_tail_900(n: float) -> int:
+    i = int(n)
+    k = max(i // 1000, 0)
+    out = k * 1000 + 900
+    return out if out >= 900 else 900
 
-    # title
-    h1 = s.find(["h1","h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
-    title = (h1.get_text(" ", strip=True) if h1 else "").strip()
-
-    # description + specs-kv
-    desc_txt = ""
-    specs_kv: Dict[str,str] = {}
-    block = s.select_one('div[itemprop="description"].jshop_prod_description') \
-         or s.select_one('div.jshop_prod_description') \
-         or s.select_one('[itemprop="description"]')
-    if block:
-        desc_txt, specs_kv = extract_specs_and_text(block)
-
-    # breadcrumbs (не выводим, но оставлено для совместимости)
-    crumbs: List[str] = []
-    for bc in s.select('ul.breadcrumb, .breadcrumbs, .breadcrumb, .pathway, [class*="breadcrumb"], [class*="pathway"]'):
-        for a in bc.find_all("a"):
-            t = a.get_text(" ", strip=True)
-            tl = t.lower()
-            if t and tl not in ("главная","home"): crumbs.append(t)
-        if crumbs: break
-
-    # brand priority
-    brand = None
-    bnode = s.select_one('div[itemprop="brand"] [itemprop="name"]') or s.select_one(".manufacturer_name")
-    if bnode:
-        brand = sanitize_brand(bnode.get_text(" ", strip=True))
-    if not brand:
-        brand = sanitize_brand(extract_brand_from_specs_kv(specs_kv))
-    if not brand:
-        brand = sanitize_brand(brand_from_text_heuristics(title, desc_txt))
-
-    return sku, pic, (desc_txt or title), crumbs, brand
+def compute_retail(dealer: float) -> Optional[int]:
+    for r in PRICING_RULES:
+        if r.lo <= dealer <= r.hi:
+            val = dealer * (1.0 + r.pct / 100.0) + r.add
+            return _force_tail_900(val)
+    return None
 
 # ---------- FEED_META ----------
 def build_feed_meta(meta_items: List[Tuple[str, str, str]]) -> str:
-    """
-    Возвращает комментарий <!--FEED_META ...--> с выравниванием.
-    Закрывающий --> ставим в КОНЦЕ ПОСЛЕДНЕЙ строки (Время сборки (Алматы)-->).
-    """
     key_w = max(len(k) for k, _, _ in meta_items) if meta_items else 8
     val_w = max(len(v) for _, v, _ in meta_items) if meta_items else 8
-    lines = ["  <!--FEED_META"]
+    lines = ["<!--FEED_META"]
     for i, (k, v, c) in enumerate(meta_items):
         tail = " -->" if i == len(meta_items) - 1 else ""
-        lines.append(f"  {k.ljust(key_w)} = {v.ljust(val_w)} | {c}{tail}")
+        lines.append(f"{k.ljust(key_w)} = {v.ljust(val_w)} | {c}{tail}")
     return "\n".join(lines)
 
-# ---------- YML (аккуратные отступы как у других поставщиков) ----------
+# ---------- Сборка YML ----------
 def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     out: List[str] = []
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
@@ -402,16 +331,14 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     out.append("  <offers>")
     first = True
     for it in offers:
-        price = it["price"]
-        price_txt = str(int(price)) if float(price).is_integer() else f"{price}"
         if not first:
             out.append("")  # пустая строка между офферами
         first = False
+        price_txt = str(int(it["price"]))  # уже целое после правил
         out.append(f"    <offer id=\"{yml_escape(it['offer_id'])}\">")
         out.append(f"      <name>{yml_escape(it['title'])}</name>")
-        brand = it.get("brand")
-        if brand:
-            out.append(f"      <vendor>{yml_escape(brand)}</vendor>")
+        if it.get("brand"):
+            out.append(f"      <vendor>{yml_escape(it['brand'])}</vendor>")
         out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
         out.append(f"      <price>{price_txt}</price>")
         out.append(f"      <currencyId>KZT</currencyId>")
@@ -425,7 +352,7 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
-# ---------- MAIN ----------
+# ---------- Главная логика ----------
 def main() -> int:
     # 1) XLSX
     b = fetch_xlsx_bytes(XLSX_URL)
@@ -447,7 +374,6 @@ def main() -> int:
     kw_list = load_keywords(KEYWORDS_FILE)
     start_patterns = compile_startswith_patterns(kw_list)
 
-    # Подсчёт непустых строк в исходнике (после заголовка)
     source_rows = sum(1 for r in rows[data_start:] if any(v is not None and str(v).strip() for v in r))
 
     xlsx_items: List[Dict[str,Any]] = []
@@ -460,25 +386,32 @@ def main() -> int:
         if not title_startswith_strict(title, start_patterns):
             continue
 
-        price = to_number(r[price_col])
-        if price is None or price <= 0: continue
+        dealer = to_number(r[price_col])
+        if dealer is None or dealer <= 0: continue
 
         v_raw = r[vendor_col]
         vcode = (str(v_raw).strip() if v_raw is not None else "")
         if not vcode:
+            # резерв: выудить код из имени
             m = re.search(r"[A-ZА-Я0-9]{2,}(?:[-/–][A-ZА-Я0-9]{2,})?", title.upper())
             if m: vcode = m.group(0).replace("–","-").replace("/","-")
         if not vcode: continue
 
+        # варианты ключей для сопоставления с сайтом
         variants = { vcode, vcode.replace("-", "") }
         if re.match(r"^[Cc]\d+$", vcode): variants.add(vcode[1:])
         if re.match(r"^\d+$", vcode):     variants.add("C"+vcode)
         for v in variants:
             want_keys.add(norm_ascii(v))
 
+        # применяем те же ценовые правила, что у akcent/alstyle
+        retail = compute_retail(float(dealer))
+        if retail is None:
+            continue
+
         xlsx_items.append({
             "title": title,
-            "price": float(f"{price:.2f}"),
+            "price": float(retail),
             "vendorCode_raw": vcode,
         })
 
@@ -488,7 +421,7 @@ def main() -> int:
         return 2
     print(f"[xls] candidates: {offers_total}, distinct keys: {len(want_keys)}", flush=True)
 
-    # 4) Поиск релевантных карточек
+    # 4) Нейтральная разведка разделов
     def discover_relevant_category_urls() -> List[str]:
         seeds = [f"{BASE_URL}/", f"{BASE_URL}/goods.html"]
         pages = []
@@ -569,17 +502,72 @@ def main() -> int:
     product_urls = list(dict.fromkeys(product_urls))
     print(f"[crawl] product urls: {len(product_urls)}", flush=True)
 
-    # 5) Парс карточек
+    # 5) Парсим карточки
     def worker(u: str):
         try:
-            parsed = parse_product_page(u)
-            if not parsed: return None
-            sku, pic, desc, crumbs, brand = parsed
+            jitter_sleep(REQUEST_DELAY_MS)
+            b = http_get(u)
+            if not b: return None
+            s = soup_of(b)
+
+            # sku
+            sku = None
+            skuel = s.find(attrs={"itemprop": "sku"})
+            if skuel:
+                val = (skuel.get_text(" ", strip=True) or "").strip()
+                if val: sku = val
+            if not sku:
+                txt = s.get_text(" ", strip=True)
+                m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", txt, flags=re.I)
+                if m: sku = m.group(1)
+            if not sku: return None
+
+            # picture
+            src = None
+            imgel = s.find("img", id=re.compile(r"^main_image_", re.I))
+            if imgel and (imgel.get("src") or imgel.get("data-src")):
+                src = imgel.get("src") or imgel.get("data-src")
+            if not src:
+                ogi = s.find("meta", attrs={"property": "og:image"})
+                if ogi and ogi.get("content"):
+                    src = ogi["content"].strip()
+            if not src:
+                for img in s.find_all("img"):
+                    src_try = img.get("src") or img.get("data-src") or ""
+                    if any(k in src_try for k in ["img_products", "/products/", "/img/"]):
+                        src = src_try; break
+            if not src: return None
+            pic = normalize_img_to_full(urljoin(u, src))
+
+            # title
+            h1 = s.find(["h1","h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
+            title = (h1.get_text(" ", strip=True) if h1 else "").strip()
+
+            # description/specs
+            desc_txt = ""
+            specs_kv: Dict[str,str] = {}
+            block = s.select_one('div[itemprop="description"].jshop_prod_description') \
+                 or s.select_one('div.jshop_prod_description') \
+                 or s.select_one('[itemprop="description"]')
+            if block:
+                desc_txt, specs_kv = extract_specs_and_text(block)
+
+            # brand
+            brand = None
+            bnode = s.select_one('div[itemprop="brand"] [itemprop="name"]') or s.select_one(".manufacturer_name")
+            if bnode:
+                brand = sanitize_brand(bnode.get_text(" ", strip=True))
+            if not brand:
+                tmp = extract_brand_from_specs_kv(specs_kv)
+                brand = sanitize_brand(tmp)
+            if not brand:
+                brand = sanitize_brand(brand_from_text_heuristics(title, desc_txt))
+
             raw = sku.strip()
             keys = { norm_ascii(raw), norm_ascii(raw.replace("-", "")) }
             if re.match(r"^[Cc]\d+$", raw): keys.add(norm_ascii(raw[1:]))
             if re.match(r"^\d+$",  raw):    keys.add(norm_ascii("C"+raw))
-            return keys, {"url": u, "pic": pic, "desc": desc, "brand": brand}
+            return keys, {"url": u, "pic": pic, "desc": desc_txt or title, "brand": brand}
         except Exception:
             return None
 
@@ -607,7 +595,7 @@ def main() -> int:
 
     print(f"[index] matched keys: {len(matched_keys)}", flush=True)
 
-    # 6) Сборка офферов и счётчики для FEED_META
+    # 6) Сборка офферов
     offers: List[Dict[str,Any]] = []
     seen_offer_ids: Set[str] = set()
     cnt_no_match = 0
@@ -639,22 +627,17 @@ def main() -> int:
             brand = sanitize_brand(brand_from_text_heuristics(it["title"], desc))
         if not brand:
             brand = sanitize_brand(brand_soft_fallback(it["title"], desc))
-        if brand and norm_ascii(brand) in BLOCK_SUPPLIER_BRANDS:
-            brand = None
-        if brand:
-            cnt_vendors += 1
 
-        offer_id = raw_v
-        if offer_id in seen_offer_ids:
-            offer_id = f"{raw_v}-{sha1(it['title'])[:6]}"
+        # итог
+        offer_id = raw_v if raw_v not in seen_offer_ids else f"{raw_v}-{hashlib.sha1(it['title'].encode('utf-8')).hexdigest()[:6]}"
         seen_offer_ids.add(offer_id)
 
         offers.append({
             "offer_id":   offer_id,
             "title":      it["title"],
-            "price":      it["price"],
-            "vendorCode": raw_v,
-            "brand":      brand,            # None -> <vendor> не пишем
+            "price":      it["price"],  # уже retail (по правилам)
+            "vendorCode": f"{VENDORCODE_PREFIX}{raw_v}",
+            "brand":      brand,        # None -> тег <vendor> не пишем
             "picture":    found["pic"],
             "description": desc,
         })
@@ -662,28 +645,27 @@ def main() -> int:
     offers_written = len(offers)
 
     # 7) FEED_META
-    now_utc = datetime.now(timezone.utc)
+    now_utc  = datetime.now(timezone.utc)
     now_alma = datetime.now(ZoneInfo("Asia/Almaty"))
     dropped_top = f"no_match:{cnt_no_match}, no_picture:{cnt_no_picture}"
 
     meta_items = [
-        ("supplier",            SUPPLIER_NAME,                                           "Метка поставщика"),
-        ("source",              XLSX_URL,                                                "URL исходного XLSX"),
-        ("source_rows",         str(source_rows),                                        "Непустых строк в XLSX (после шапки)"),
-        ("offers_total",        str(offers_total),                                       "Позиций после фильтра по ключам (начало названия)"),
-        ("offers_written",      str(offers_written),                                     "Офферов записано (после сопоставления с сайтом)"),
-        ("vendors_recovered",   str(cnt_vendors),                                        "Сколько товаров получили реальный бренд"),
-        ("dropped_top",         dropped_top,                                             "ТОП причин отбрасывания"),
-        ("available_forced",    str(offers_written),                                     "Сколько офферов получили available=true"),
-        ("categories_emitted",  "0",                                                     "Категории/CategoryId не выводим"),
-        ("built_utc",           now_utc.strftime("%Y-%m-%d %H:%M:%S UTC"),               "Время сборки (UTC)"),
-        ("built_Asia/Almaty",   now_alma.strftime("%Y-%m-%d %H:%M:%S +05"),              "Время сборки (Алматы)"),
+        ("script_version",      "copyline-2025-09-22.5",              "Версия скрипта"),
+        ("supplier",            SUPPLIER_NAME,                        "Метка поставщика"),
+        ("source",              XLSX_URL,                             "URL исходного XLSX"),
+        ("rows_read",           str(source_rows),                     "Строк считано (после шапки)"),
+        ("rows_after_cat",      str(source_rows),                     "После удаления категорий/шапок"),
+        ("rows_after_keys",     str(offers_total),                    "После фильтра по словам"),
+        ("offers_written",      str(offers_written),                  "Офферов записано в YML"),
+        ("picture_found",       str(offers_written - cnt_no_picture), "Сколько товаров с фото"),
+        ("vendor_found",        str(cnt_vendors),                     "Сколько товаров с брендом"),
+        ("desc_found",          str(offers_written),                  "Сколько товаров с описанием/ТХ"),
+        ("built_utc",           now_utc.strftime("%Y-%m-%d %H:%M:%S UTC"),   "Время сборки (UTC)"),
+        ("built_Asia/Almaty",   now_alma.strftime("%Y-%m-%d %H:%M:%S +05"),  "Время сборки (Алматы)"),
     ]
-    # перемещаем закрывающий --> к последней строке
-    # (функция сама добавит --> к последней записи)
     feed_meta_str = build_feed_meta(meta_items)
 
-    # 8) Запись YML
+    # 8) Запись
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     xml = build_yml(offers, feed_meta_str)
     with open(OUT_FILE, "w", encoding=FILE_ENCODING, errors="replace") as f:
