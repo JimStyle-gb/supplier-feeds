@@ -1,22 +1,19 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date='2025-09-22 14:17'>
+<yml_catalog date='2025-09-22 14:55'>
 <!--FEED_META
-script_version    = copyline-2025-09-22.5                    | Версия скрипта
+script_version    = copyline-2025-09-22.6                    | Версия скрипта
 supplier          = Copyline                                 | Метка поставщика
 source            = https://copyline.kz/files/price-CLA.xlsx | URL исходного XLSX
 rows_read         = 2845                                     | Строк считано (после шапки)
 rows_after_cat    = 2845                                     | После удаления категорий/шапок
 rows_after_keys   = 1229                                     | После фильтра по словам
-offers_written    = 1219                                     | Офферов записано в YML
-picture_found     = 1219                                     | Сколько товаров с фото
-vendor_found      = 0                                        | Сколько товаров с брендом
-desc_found        = 1219                                     | Сколько товаров с описанием/ТХ
-built_utc         = 2025-09-22 14:17:21 UTC                  | Время сборки (UTC)
-built_Asia/Almaty = 2025-09-22 19:17:21 +05                  | Время сборки (Алматы) -->
+offers_written    = 1221                                     | Офферов записано в YML
+picture_found     = 1221                                     | Сколько товаров с фото
+vendor_found      = 1221                                     | Сколько товаров с брендом
+desc_found        = 1221                                     | Сколько товаров с описанием/ТХ
+built_utc         = 2025-09-22 14:55:55 UTC                  | Время сборки (UTC)
+built_Asia/Almaty = 2025-09-22 19:55:55 +05                  | Время сборки (Алматы) -->
 <shop>
-  <name>copyline</name>
-  <currencies><currency id="KZT" rate="1" /></currencies>
-
   <offers>
     <offer id="105140">
       <name>Девелопер HP M436 (CF257) foil bags 230 гр</name>
@@ -5840,6 +5837,36 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
 - Технология печати: Лазерная
 - Цвет печати: Пурпурный
 - Количество страниц (5% заполнение): 2600</description>
+      <available>true</available>
+    </offer>
+
+    <offer id="104940">
+      <name>Картридж (оригинал) HP CF411A Cyan for HP LaserJet Pro M477fdn/M477fdw/M477fnw/M452dn/M452nw</name>
+      <vendor>HP</vendor>
+      <vendorCode>cl104940</vendorCode>
+      <price>89900</price>
+      <currencyId>KZT</currencyId>
+      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_HP-CF411A.jpg</picture>
+      <description>Картридж оригинал CF411A (№410A) используется в принтерах серий HP Color LaserJet Pro M377dw, M477fdn, M477fdw, M477fnw, M452dn, M452nw.
+Технические характеристики:
+- Технология печати: Лазерная
+- Цвет печати: Голубой
+- Количество страниц (5% заполнение): 2300</description>
+      <available>true</available>
+    </offer>
+
+    <offer id="104941">
+      <name>Картридж (оригинал) HP CF412A Yellow for HP LaserJet Pro M477fdn/M477fdw/M477fnw/M452dn/M452nw</name>
+      <vendor>HP</vendor>
+      <vendorCode>cl104941</vendorCode>
+      <price>89900</price>
+      <currencyId>KZT</currencyId>
+      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_HP-CF412A.jpg</picture>
+      <description>Картридж оригинал CF412A (№410A) используется в принтерах серий HP Color LaserJet Pro M377dw, M477fdn, M477fdw, M477fnw, M452dn, M452nw.
+Технические характеристики:
+- Технология печати: Лазерная
+- Цвет печати: Желтый
+- Количество страниц (5% заполнение): 2300</description>
       <available>true</available>
     </offer>
 
