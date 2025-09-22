@@ -2,12 +2,16 @@
 # -*- coding: utf-8 -*-
 """
 Copyline -> Satu YML (flat <offers>)
-script_version = copyline-2025-09-22.7
+script_version = copyline-2025-09-22.9
 
 Изменения в этой версии:
-- Чистка описания: удаляем в <description> фрагменты вида "(Артикул: 104439)" и "Артикул: 104439".
-- Остальное без изменений: ценовые правила как у akcent/alstyle, префикс cl в <vendorCode>,
-  без <url>/<categories>, FEED_META без отступов, пустая строка между офферами, нет <name>/<currencies>.
+- <vendor>: приоритет ИЗВЕСТНЫМ OEM (HP, Canon, Xerox, Brother, Kyocera, Ricoh,
+  Konica Minolta, Epson, Samsung, Lexmark, Panasonic, Sharp, OKI, Toshiba, Dell).
+  Если OEM не найден — берём aftermarket (Euro Print, NV Print, MAGNETONE и т.п.).
+- Сохранено: ценовые правила как у akcent/alstyle (процент+фикс + «хвост 900»),
+  префикс cl в <vendorCode>, чистка «Артикул: ...» из описания,
+  без <url>/<categories>/<name>/<currencies>, FEED_META без отступов,
+  пустая строка между <offer>.
 """
 
 from __future__ import annotations
@@ -42,23 +46,47 @@ MAX_WORKERS         = int(os.getenv("MAX_WORKERS", "6"))
 
 SUPPLIER_NAME       = "Copyline"
 CURRENCY            = "KZT"
-VENDORCODE_PREFIX   = os.getenv("VENDORCODE_PREFIX", "cl")  # только в <vendorCode>
+VENDORCODE_PREFIX   = os.getenv("VENDORCODE_PREFIX", "cl")  # префикс для <vendorCode>
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.7)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.9)"}
 
+# Блокируем поставщиков как бренды
 BLOCK_SUPPLIER_BRANDS = {"copyline", "alstyle", "vtt"}
 
+# Алиасы брендов (OEM + aftermarket)
 BRAND_ALIASES = {
-    "hp": "HP","hewlettpackard": "HP","canon":"Canon","xerox":"Xerox","brother":"Brother",
-    "kyocera":"Kyocera","ricoh":"Ricoh","konicaminolta":"Konica Minolta","epson":"Epson",
-    "samsung":"Samsung","lexmark":"Lexmark","panasonic":"Panasonic","sharp":"Sharp",
-    "oki":"OKI","toshiba":"Toshiba","dell":"Dell",
-    "europrint":"Euro Print","euro print":"Euro Print","nvprint":"NV Print","nv print":"NV Print",
-    "hiblack":"Hi-Black","hi-black":"Hi-Black","hi black":"Hi-Black","profiline":"ProfiLine",
-    "profi line":"ProfiLine","staticcontrol":"Static Control","static control":"Static Control",
-    "gg":"G&G","g&g":"G&G","cactus":"Cactus","patron":"Patron","pitatel":"Pitatel",
-    "mito":"Mito","7q":"7Q","uniton":"Uniton","printpro":"PrintPro","sakura":"Sakura",
+    # OEM
+    "hp": "HP", "hewlettpackard": "HP",
+    "canon": "Canon", "xerox": "Xerox", "brother": "Brother",
+    "kyocera": "Kyocera", "ricoh": "Ricoh", "konicaminolta": "Konica Minolta",
+    "epson": "Epson", "samsung": "Samsung", "lexmark": "Lexmark",
+    "panasonic": "Panasonic", "sharp": "Sharp", "oki": "OKI", "toshiba": "Toshiba",
+    "dell": "Dell",
+    # Aftermarket
+    "europrint": "Euro Print", "euro print": "Euro Print",
+    "nvprint": "NV Print", "nv print": "NV Print",
+    "hiblack": "Hi-Black", "hi-black": "Hi-Black", "hi black": "Hi-Black",
+    "profiline": "ProfiLine", "profi line": "ProfiLine",
+    "staticcontrol": "Static Control", "static control": "Static Control",
+    "gg": "G&G", "g&g": "G&G",
+    "cactus": "Cactus", "patron": "Patron", "pitatel": "Pitatel",
+    "mito": "Mito", "7q": "7Q", "uniton": "Uniton", "printpro": "PrintPro",
+    "sakura": "Sakura",
+    "magnetone": "MAGNETONE", "magnet one": "MAGNETONE", "magne tone": "MAGNETONE",
 }
+
+# Приоритет OEM (СНАЧАЛА их!)
+OEM_PRIORITY = [
+    "HP","Canon","Xerox","Brother","Kyocera","Ricoh","Konica Minolta",
+    "Epson","Samsung","Lexmark","Panasonic","Sharp","OKI","Toshiba","Dell",
+]
+
+# Для справки: aftermarket пул (если OEM не найден)
+AFTERMARKET_PRIORITY = [
+    "Euro Print","NV Print","Hi-Black","ProfiLine","Static Control","G&G",
+    "Cactus","Patron","Pitatel","Mito","7Q","Uniton","PrintPro","Sakura","MAGNETONE",
+]
+
 STOPWORDS_BRAND = {
     "картридж","тонер","драм","фотобарабан","узел","термоблок","девелопер","порошок",
     "бумага","ремкомплект","для","без","с","набор","черный","чёрный","цветной",
@@ -187,13 +215,32 @@ def extract_brand_from_specs_kv(kv: Dict[str,str]) -> Optional[str]:
             return v.strip()
     return None
 
-def brand_from_text_heuristics(title: str, desc: str) -> Optional[str]:
-    hay = f"{title or ''} {desc or ''}".strip().lower()
-    if not hay: return None
+# --- Бренд: сбор кандидатов и выбор (приоритет OEM!) ---
+def collect_brand_candidates(text: str) -> List[str]:
+    if not text: return []
+    hay = text.lower()
+    found: List[str] = []
     for norm, display in BRAND_ALIASES.items():
-        if norm in BLOCK_SUPPLIER_BRANDS: continue
-        if norm in norm_ascii(hay) or display.lower() in hay: return display
-    return None
+        if norm in BLOCK_SUPPLIER_BRANDS:
+            continue
+        if norm in norm_ascii(hay) or display.lower() in hay:
+            if display not in found:
+                found.append(display)
+    return found
+
+def choose_brand_oem_first(candidates: List[str]) -> Optional[str]:
+    if not candidates:
+        return None
+    # 1) сначала OEM
+    for oem in OEM_PRIORITY:
+        if oem in candidates:
+            return oem
+    # 2) затем aftermarket (если есть)
+    for am in AFTERMARKET_PRIORITY:
+        if am in candidates:
+            return am
+    # 3) иначе — первый найденный
+    return candidates[0]
 
 def sanitize_brand(b: Optional[str]) -> Optional[str]:
     if not b: return None
@@ -203,20 +250,23 @@ def sanitize_brand(b: Optional[str]) -> Optional[str]:
 def brand_soft_fallback(title: str, desc: str) -> Optional[str]:
     text = f"{title or ''} {desc or ''}"
     words = re.findall(r"[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё\-]{1,20}", text)
+    # биграммы
     for i in range(len(words)-1):
         pair = f"{words[i]} {words[i+1]}"; n = norm_ascii(pair)
-        if n and n not in BLOCK_SUPPLIER_BRANDS and n not in STOPWORDS_BRAND and n in BRAND_ALIASES:
-            return BRAND_ALIASES[n]
+        out = BRAND_ALIASES.get(n)
+        if out and norm_ascii(out) not in BLOCK_SUPPLIER_BRANDS:
+            return out
+    # однословные
     for w in words:
         n = norm_ascii(w)
-        if n and n not in BLOCK_SUPPLIER_BRANDS and n not in STOPWORDS_BRAND and re.match(r"^[a-zа-я]+$", n):
-            return BRAND_ALIASES.get(n, w.strip().title())
+        out = BRAND_ALIASES.get(n)
+        if out and norm_ascii(out) not in BLOCK_SUPPLIER_BRANDS:
+            return out
     return None
 
-# ---------- ЦЕНООБРАЗОВАНИЕ (как у akcent/alstyle) ----------
+# ---------- ЦЕНООБРАЗОВАНИЕ ----------
 class PriceRule(NamedTuple):
     lo: int; hi: int; pct: float; add: int
-
 PRICING_RULES: List[PriceRule] = [
     PriceRule(   101,    10000, 4.0,  3000),
     PriceRule( 10001,    25000, 4.0,  4000),
@@ -234,12 +284,10 @@ PRICING_RULES: List[PriceRule] = [
     PriceRule(1500001, 2000000, 4.0, 90000),
     PriceRule(2000001,100000000,4.0,100000),
 ]
-
 def _force_tail_900(n: float) -> int:
     i = int(n); k = max(i // 1000, 0)
     out = k*1000 + 900
     return out if out >= 900 else 900
-
 def compute_retail(dealer: float) -> Optional[int]:
     for r in PRICING_RULES:
         if r.lo <= dealer <= r.hi:
@@ -258,9 +306,7 @@ def build_feed_meta(meta_items: List[Tuple[str, str, str]]) -> str:
 
 # ---------- Чистка описаний ----------
 ART_PATTS = [
-    # (Артикул: 104439)
     re.compile(r"\(\s*Артикул\s*[:#]?\s*[A-Za-z0-9\-\._/]+\s*\)", re.IGNORECASE),
-    # Артикул: 104439
     re.compile(r"\bАртикул\s*[:#]?\s*[A-Za-z0-9\-\._/]+", re.IGNORECASE),
 ]
 def clean_article_mentions(text: str) -> str:
@@ -268,14 +314,13 @@ def clean_article_mentions(text: str) -> str:
     out = text
     for rx in ART_PATTS:
         out = rx.sub("", out)
-    # убрать пустые скобки и подчистить пробелы/пустые строки
     out = re.sub(r"\(\s*\)", "", out)
     out = re.sub(r"[ \t]{2,}", " ", out)
     out = re.sub(r"[ \t]+\n", "\n", out)
     out = re.sub(r"(\n\s*){3,}", "\n\n", out)
     return out.strip()
 
-# ---------- Сборка YML (без <name> и <currencies>) ----------
+# ---------- Сборка YML ----------
 def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     lines: List[str] = []
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
@@ -297,8 +342,7 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
         lines.append(f"      <currencyId>{CURRENCY}</currencyId>")
         if it.get("picture"):
             lines.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
-        desc = it.get("description") or it["title"]
-        desc = clean_article_mentions(desc)  # <-- чистим "Артикул: ..."
+        desc = clean_article_mentions(it.get("description") or it["title"])
         lines.append(f"      <description>{yml_escape(desc)}</description>")
         lines.append(f"      <available>true</available>")
         lines.append(f"    </offer>")
@@ -316,14 +360,14 @@ def main() -> int:
     rows = [[c for c in r] for r in ws.iter_rows(values_only=True)]
     print(f"[xls] sheet: {sheet}, rows: {len(rows)}", flush=True)
 
-    # шапка (две строки)
+    # Шапка
     row0, row1, idx = detect_header_two_row(rows)
     if row0 < 0:
         print("[error] Не удалось распознать шапку.", flush=True); return 2
     data_start = row1 + 1
     name_col, vendor_col, price_col = idx["name"], idx["vendor_code"], idx["price"]
 
-    # фильтр по словам начала названия
+    # Фильтр по словам-началам
     kw_list = load_keywords(KEYWORDS_FILE)
     start_patterns = compile_startswith_patterns(kw_list)
 
@@ -467,17 +511,19 @@ def main() -> int:
                  or s.select_one('div.jshop_prod_description') \
                  or s.select_one('[itemprop="description"]')
             if block: desc_txt, specs_kv = extract_specs_and_text(block)
-            # brand
-            brand = None
-            bnode = s.select_one('div[itemprop="brand"] [itemprop="name"]') or s.select_one(".manufacturer_name")
-            if bnode: brand = sanitize_brand(bnode.get_text(" ", strip=True))
-            if not brand: brand = sanitize_brand(extract_brand_from_specs_kv(specs_kv))
-            if not brand: brand = sanitize_brand(brand_from_text_heuristics(title, desc_txt))
-            raw = sku.strip()
-            keys = { norm_ascii(raw), norm_ascii(raw.replace("-", "")) }
-            if re.match(r"^[Cc]\d+$", raw): keys.add(norm_ascii(raw[1:]))
-            if re.match(r"^\d+$",  raw):    keys.add(norm_ascii("C"+raw))
-            return keys, {"url": u, "pic": pic, "desc": desc_txt or title, "brand": brand}
+            # brand: кандидаты из текста + из specs; выбираем OEM-сначала
+            cand = collect_brand_candidates(f"{title} {desc_txt}")
+            spec_b = extract_brand_from_specs_kv(specs_kv)
+            if spec_b:
+                spec_b = sanitize_brand(spec_b)
+                if spec_b and spec_b not in cand:
+                    cand.append(spec_b)
+            brand = choose_brand_oem_first(cand)
+            return (
+                { norm_ascii(sku), norm_ascii(sku.replace("-", "")) } |
+                ({ norm_ascii(sku[1:]) } if re.match(r"^[Cc]\d+$", sku) else set()) |
+                ({ norm_ascii('C'+sku) } if re.match(r"^\d+$", sku) else set())
+            ), {"url": u, "pic": pic, "desc": desc_txt or title, "brand": brand}
         except Exception:
             return None
 
@@ -519,21 +565,33 @@ def main() -> int:
         if not found: cnt_no_match += 1; continue
         if not found.get("pic"): cnt_no_picture += 1; continue
 
-        desc = found.get("desc") or it["title"]
-        desc = clean_article_mentions(desc)  # <-- чистим "Артикул: ..."
-        brand = sanitize_brand(found.get("brand")) or sanitize_brand(brand_from_text_heuristics(it["title"], desc)) or sanitize_brand(brand_soft_fallback(it["title"], desc))
-        if brand and norm_ascii(brand) in BLOCK_SUPPLIER_BRANDS: brand = None
+        desc  = clean_article_mentions(found.get("desc") or it["title"])
+        title = it["title"]
+
+        # бренд: сначала из сайта (уже OEM-first), если нет — добиваем эвристиками, тоже OEM-first
+        brand = sanitize_brand(found.get("brand"))
+        if not brand:
+            cand = collect_brand_candidates(f"{title} {desc}")
+            brand = choose_brand_oem_first(cand)
+        if not brand:
+            brand = brand_soft_fallback(title, desc)
+            if brand:
+                # мягкий фолбэк уже прошёл через BRAND_ALIASES, но на всякий нормализуем
+                brand = sanitize_brand(brand)
+
+        if brand and norm_ascii(brand) in BLOCK_SUPPLIER_BRANDS:
+            brand = None
         if brand: cnt_vendors += 1
 
-        offer_id = raw_v if raw_v not in seen_offer_ids else f"{raw_v}-{hashlib.sha1(it['title'].encode('utf-8')).hexdigest()[:6]}"
+        offer_id = raw_v if raw_v not in seen_offer_ids else f"{raw_v}-{hashlib.sha1(title.encode('utf-8')).hexdigest()[:6]}"
         seen_offer_ids.add(offer_id)
 
         offers.append({
             "offer_id":   offer_id,
-            "title":      it["title"],
-            "price":      it["price"],         # retail по правилам
+            "title":      title,
+            "price":      it["price"],
             "vendorCode": f"{VENDORCODE_PREFIX}{raw_v}",
-            "brand":      brand,               # None -> <vendor> не пишем
+            "brand":      brand,
             "picture":    found["pic"],
             "description": desc,
         })
@@ -543,19 +601,15 @@ def main() -> int:
     # FEED_META
     now_utc  = datetime.now(timezone.utc)
     now_alma = datetime.now(ZoneInfo("Asia/Almaty"))
-    dropped_top = f"no_match:{cnt_no_match}, no_picture:{cnt_no_picture}"
-
     meta_items = [
-        ("script_version",      "copyline-2025-09-22.7",              "Версия скрипта"),
+        ("script_version",      "copyline-2025-09-22.9",              "Версия скрипта"),
         ("supplier",            SUPPLIER_NAME,                        "Метка поставщика"),
         ("source",              XLSX_URL,                             "URL исходного XLSX"),
         ("rows_read",           str(source_rows),                     "Строк считано (после шапки)"),
         ("rows_after_cat",      str(source_rows),                     "После удаления категорий/шапок"),
         ("rows_after_keys",     str(offers_total),                    "После фильтра по словам"),
         ("offers_written",      str(offers_written),                  "Офферов записано в YML"),
-        ("picture_found",       str(offers_written - cnt_no_picture), "Сколько товаров с фото"),
         ("vendor_found",        str(cnt_vendors),                     "Сколько товаров с брендом"),
-        ("desc_found",          str(offers_written),                  "Сколько товаров с описанием/ТХ"),
         ("built_utc",           now_utc.strftime("%Y-%m-%d %H:%M:%S UTC"),   "Время сборки (UTC)"),
         ("built_Asia/Almaty",   now_alma.strftime("%Y-%m-%d %H:%M:%S +05"),  "Время сборки (Алматы)"),
     ]
