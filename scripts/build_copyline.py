@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Copyline -> Satu YML (flat <offers>)
-script_version = copyline-2025-09-22.1
+script_version = copyline-2025-09-22.2
 
-Правки:
-- Полностью удалён вывод <categories> и <categoryId>.
-- Тег <url> не выводится.
-- Между офферами оставляем пустую строку для читабельности.
+Особенности:
+- Блок <!--FEED_META ...--> как в alstyle/akcent (русские комментарии, выравнивание).
+- <categories> и <categoryId> не выводим.
+- <url> не выводим.
+- Между </offer> и следующим <offer> добавляем пустую строку.
 - <vendor> = реальный бренд (markup -> specs -> эвристика -> мягкий фолбэк), запрещённые: Copyline/Alstyle/VTT.
 - <offer> без атрибутов; наличие отдельным тегом <available>true</available>.
 """
@@ -18,6 +19,7 @@ from typing import Any, Dict, List, Optional, Tuple, Set
 from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 import requests
 from bs4 import BeautifulSoup
@@ -43,7 +45,7 @@ MAX_WORKERS        = int(os.getenv("MAX_WORKERS", "6"))
 SUPPLIER_NAME      = "Copyline"
 CURRENCY           = "KZT"
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.2)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/2.3)"}
 
 # Запрещённые "бренды-поставщики"
 BLOCK_SUPPLIER_BRANDS = {"copyline", "alstyle", "vtt"}
@@ -103,13 +105,15 @@ def jitter_sleep(ms: int) -> None:
 
 def http_get(url: str, tries: int = 3) -> Optional[bytes]:
     delay = max(0.05, REQUEST_DELAY_MS / 1000.0)
+    last = None
     for _ in range(tries):
         try:
             r = requests.get(url, headers=UA, timeout=HTTP_TIMEOUT)
             if r.status_code == 200 and (len(r.content) >= MIN_BYTES if url.endswith(".xlsx") else True):
                 return r.content
-        except Exception:
-            pass
+            last = f"http {r.status_code} size={len(r.content)}"
+        except Exception as e:
+            last = repr(e)
         time.sleep(delay)
         delay *= 1.7
     return None
@@ -352,7 +356,7 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str], Opt
     if block:
         desc_txt, specs_kv = extract_specs_and_text(block)
 
-    # breadcrumbs (оставляем сбор, но далее категории не выводим)
+    # breadcrumbs (не выводим, но используем при сборе категорий ранее; здесь оставлено для совместимости)
     crumbs: List[str] = []
     for bc in s.select('ul.breadcrumb, .breadcrumbs, .breadcrumb, .pathway, [class*="breadcrumb"], [class*="pathway"]'):
         for a in bc.find_all("a"):
@@ -373,16 +377,31 @@ def parse_product_page(url: str) -> Optional[Tuple[str, str, str, List[str], Opt
 
     return sku, pic, (desc_txt or title), crumbs, brand
 
+# ---------- FEED_META ----------
+def build_feed_meta(meta_items: List[Tuple[str, str, str]]) -> str:
+    """
+    Возвращает многострочную строку комментария <!--FEED_META ...--> с выравниванием столбцов.
+    meta_items: список кортежей (ключ, значение, комментарий).
+    """
+    key_w = max(len(k) for k, _, _ in meta_items) if meta_items else 8
+    val_w = max(len(v) for _, v, _ in meta_items) if meta_items else 8
+    lines = ["  <!--FEED_META"]
+    for k, v, c in meta_items:
+        lines.append(f"{k.ljust(key_w)} = {v.ljust(val_w)} | {c}")
+    lines.append("  -->")
+    return "\n".join(lines)
+
 # ---------- YML ----------
-def build_yml(offers: List[Dict[str,Any]]) -> str:
+def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     out: List[str] = []
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     out.append(f"<?xml version='1.0' encoding='{XML_ENCODING}'?>")
-    out.append(f"<yml_catalog date='{ts}'><shop>")
+    out.append(f"<yml_catalog date='{ts}'>")
+    out.append(feed_meta_str)
+    out.append("<shop>")
     out.append(f"<name>{yml_escape(SUPPLIER_NAME.lower())}</name>")
     out.append('<currencies><currency id="KZT" rate="1" /></currencies>')
-
-    # Блок <categories> УДАЛЁН по требованию
+    # <categories> и <categoryId> не выводим
 
     out.append("<offers>")
     for it in offers:
@@ -400,7 +419,6 @@ def build_yml(offers: List[Dict[str,Any]]) -> str:
             f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>",
             f"<price>{price_txt}</price>",
             "<currencyId>KZT</currencyId>",
-            # <categoryId> НЕ выводим
         ]
         # <url> НЕ выводим
         if it.get("picture"):
@@ -438,6 +456,12 @@ def main() -> int:
     kw_list = load_keywords(KEYWORDS_FILE)
     start_patterns = compile_startswith_patterns(kw_list)
 
+    # Подсчёт непустых строк в исходнике (после заголовка)
+    source_rows = 0
+    for r in rows[data_start:]:
+        if any(v is not None and str(v).strip() for v in r):
+            source_rows += 1
+
     xlsx_items: List[Dict[str,Any]] = []
     want_keys: Set[str] = set()
 
@@ -470,12 +494,13 @@ def main() -> int:
             "vendorCode_raw": vcode,
         })
 
+    offers_total = len(xlsx_items)
     if not xlsx_items:
         print("[error] После фильтра по startswith/цене нет позиций.", flush=True)
         return 2
-    print(f"[xls] candidates: {len(xlsx_items)}, distinct keys: {len(want_keys)}", flush=True)
+    print(f"[xls] candidates: {offers_total}, distinct keys: {len(want_keys)}", flush=True)
 
-    # 4) Поиск релевантных карточек (категории не сохраняем в YML, но нам нужны ссылки на товары)
+    # 4) Поиск релевантных карточек
     def discover_relevant_category_urls() -> List[str]:
         seeds = [f"{BASE_URL}/", f"{BASE_URL}/goods.html"]
         pages = []
@@ -497,14 +522,14 @@ def main() -> int:
                 if "/goods/" not in absu and not absu.endswith("/goods.html"):
                     continue
                 ok = False
-                # ориентируемся на якорный текст и типичные слова
                 for kw in kws:
                     esc = re.escape(kw).replace(r"\ ", " ")
                     if re.search(r"(?i)(?<!\w)"+esc+r"(?!\w)", txt):
                         ok = True; break
                 if not ok:
                     slug = absu.lower()
-                    if any(h in slug for h in ["drum","developer","fuser","toner","cartridge","драм","девелопер","фьюзер","термоблок","термоэлемент","cartridg"]):
+                    if any(h in slug for h in ["drum","developer","fuser","toner","cartridge",
+                                               "драм","девелопер","фьюзер","термоблок","термоэлемент","cartridg"]):
                         ok = True
                 if ok and absu not in seen:
                     seen.add(absu)
@@ -556,7 +581,7 @@ def main() -> int:
     product_urls = list(dict.fromkeys(product_urls))
     print(f"[crawl] product urls: {len(product_urls)}", flush=True)
 
-    # 5) Парс карточек с извлечением фото/описания/бренда
+    # 5) Парс карточек
     def worker(u: str):
         try:
             parsed = parse_product_page(u)
@@ -594,9 +619,12 @@ def main() -> int:
 
     print(f"[index] matched keys: {len(matched_keys)}", flush=True)
 
-    # 6) Сборка офферов (без категорий)
+    # 6) Сборка офферов и счётчики для FEED_META
     offers: List[Dict[str,Any]] = []
     seen_offer_ids: Set[str] = set()
+    cnt_no_match = 0
+    cnt_no_picture = 0
+    cnt_vendors = 0
 
     for it in xlsx_items:
         raw_v = it["vendorCode_raw"]
@@ -609,7 +637,12 @@ def main() -> int:
             kn = norm_ascii(v)
             if kn in site_index:
                 found = site_index[kn]; break
-        if not found or not found.get("pic"):
+
+        if not found:
+            cnt_no_match += 1
+            continue
+        if not found.get("pic"):
+            cnt_no_picture += 1
             continue
 
         desc = found.get("desc") or it["title"]
@@ -620,6 +653,8 @@ def main() -> int:
             brand = sanitize_brand(brand_soft_fallback(it["title"], desc))
         if brand and norm_ascii(brand) in BLOCK_SUPPLIER_BRANDS:
             brand = None
+        if brand:
+            cnt_vendors += 1
 
         offer_id = raw_v
         if offer_id in seen_offer_ids:
@@ -636,20 +671,35 @@ def main() -> int:
             "description": desc,
         })
 
-    if not offers:
-        print("[error] Ничего не сопоставили с фото.", flush=True)
-        os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
-        with open(OUT_FILE, "w", encoding=FILE_ENCODING, errors="replace") as f:
-            f.write(build_yml([]))
-        return 2
+    offers_written = len(offers)
 
-    # 7) Запись YML
+    # 7) FEED_META заполнение
+    now_utc = datetime.now(timezone.utc)
+    now_alma = datetime.now(ZoneInfo("Asia/Almaty"))
+    dropped_top = f"no_match:{cnt_no_match}, no_picture:{cnt_no_picture}"
+
+    meta_items = [
+        ("supplier",            SUPPLIER_NAME,                                           "Метка поставщика"),
+        ("source",              XLSX_URL,                                                "URL исходного XLSX"),
+        ("source_rows",         str(source_rows),                                        "Непустых строк в XLSX (после шапки)"),
+        ("offers_total",        str(offers_total),                                       "Позиций после фильтра по ключам (начало названия)"),
+        ("offers_written",      str(offers_written),                                     "Офферов записано (после сопоставления с сайтом)"),
+        ("vendors_recovered",   str(cnt_vendors),                                        "Сколько товаров получили реальный бренд"),
+        ("dropped_top",         dropped_top,                                             "ТОП причин отбрасывания"),
+        ("available_forced",    str(offers_written),                                     "Сколько офферов получили available=true"),
+        ("categories_emitted",  "0",                                                     "Категории/CategoryId не выводим"),
+        ("built_utc",           now_utc.strftime("%Y-%m-%d %H:%M:%S UTC"),               "Время сборки (UTC)"),
+        ("built_Asia/Almaty",   now_alma.strftime("%Y-%m-%d %H:%M:%S +05"),              "Время сборки (Алматы)"),
+    ]
+    feed_meta_str = build_feed_meta(meta_items)
+
+    # 8) Запись YML
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
-    xml = build_yml(offers)
+    xml = build_yml(offers, feed_meta_str)
     with open(OUT_FILE, "w", encoding=FILE_ENCODING, errors="replace") as f:
         f.write(xml)
 
-    print(f"[done] items: {len(offers)} -> {OUT_FILE}", flush=True)
+    print(f"[done] items: {offers_written} -> {OUT_FILE}", flush=True)
     return 0
 
 if __name__ == "__main__":
