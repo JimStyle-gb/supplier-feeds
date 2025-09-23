@@ -1,18 +1,18 @@
 # scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
 """
-NVPrint → Satu YML (минимальная правка структуры + keywords с авто-кодировкой)
-script_version = nvprint-2025-09-23.3
+NVPrint → Satu YML
+script_version = nvprint-2025-09-23.4
 
-Добавлено:
-- Чтение docs/nvprint_keywords.txt с авто-определением кодировки
-  (utf-8-sig/utf-8/utf-16/utf-16-le/utf-16-be/windows-1251 + fallback).
-- Фильтр: оставляем товары, у которых <name> НАЧИНАЕТСЯ с любой строки из файла.
+Изменения в .4:
+- Всегда <available>true> для всех офферов.
+- <vendorCode> всегда с префиксом NP (режем поставщицкий NV-*, чистим, нормализуем).
 
-Ранее сделанное (сохраняется):
-1) Убраны полностью <categories> и любые <categoryId> у офферов.
-2) У <offer> удаляем атрибуты available/in_stock и создаём РОВНО ОДИН дочерний <available>.
-3) Не выводим теги остатков <quantity_in_stock> и <quantity>.
+Сохранено:
+- Файл docs/nvprint_keywords.txt читается с авто-детектом кодировки.
+- Фильтр: <name> должен НАЧИНАТЬСЯ с любой строки из keywords (если файл не пустой).
+- В выводе НЕТ <categories>/<categoryId> и НЕТ quantity_* тегов.
+- У <offer> только атрибут id; один дочерний <available>.
 """
 
 from __future__ import annotations
@@ -39,7 +39,11 @@ NV_PASS         = (os.getenv("NVPRINT_PASSWORD") or "").strip()
 # keywords (фильтр «начинается с…»)
 KEYWORDS_PATH   = os.getenv("NVPRINT_KEYWORDS_PATH", "docs/nvprint_keywords.txt")
 
-UA = {"User-Agent": "supplier-feeds/nvprint-min 1.0"}
+# наш префикс и поставщицкий для срезания
+OUR_PREFIX      = os.getenv("VENDORCODE_PREFIX", "NP")
+SUPPL_PREFIX_RX = re.compile(r"^(?:NV-)+", re.I)
+
+UA = {"User-Agent": "supplier-feeds/nvprint 1.0"}
 
 # ===================== УТИЛИТЫ =====================
 
@@ -156,23 +160,8 @@ def collect_images(node: ET.Element, limit: int = 6) -> List[str]:
         if len(out) >= limit: break
     return out
 
-POS_WORDS = ["есть","в наличии","in stock","instock","true","yes","да","доступ"]
-NEG_WORDS = ["нет","отсутств","out of stock","false","no","под заказ","ожидается"]
-
-def parse_availability(node: ET.Element) -> bool:
-    qty = 0
-    avail: Optional[bool] = None
-    for ch in node.iter():
-        nm = strip_ns(ch.tag).lower()
-        if any(k in nm for k in QTY_LIKE):
-            for val in [ch.text] + list((ch.attrib or {}).values()):
-                n = parse_float(val if isinstance(val,str) else None)
-                if n and n > 0: qty = max(qty, int(round(n)))
-        if any(k in nm for k in AVAIL_LIKE):
-            t = (ch.text or "").strip().lower() if ch.text else ""
-            if any(w in t for w in POS_WORDS): avail = True
-            elif any(w in t for w in NEG_WORDS) and avail is None: avail = False
-    return True if (avail is True or qty > 0) else False
+def parse_availability_always_true(_: ET.Element) -> bool:
+    return True  # по требованию — всегда true
 
 def guess_items(root: ET.Element) -> List[ET.Element]:
     cands = root.findall(".//Товар") + root.findall(".//item") + root.findall(".//product") + root.findall(".//row")
@@ -195,7 +184,7 @@ def parse_item(node: ET.Element) -> Optional[Dict[str,Any]]:
         price = 1.0
     desc = first_text(node, DESC_TAGS) or name
     pics = collect_images(node)
-    available = parse_availability(node)
+    available = parse_availability_always_true(node)  # всегда true
     return {
         "name": name.strip(),
         "sku": sku.strip(),
@@ -205,6 +194,29 @@ def parse_item(node: ET.Element) -> Optional[Dict[str,Any]]:
         "available": available,
     }
 
+# ===================== vendorCode: нормализация под NP =====================
+
+SAFE_CODE_RE = re.compile(r"[^A-Za-z0-9\-]+")
+
+def make_vendor_code_np(raw: str, fallback: str) -> str:
+    """
+    1) Срезаем повторные NV- в начале (любой регистр).
+    2) Убираем пробелы/служебные символы.
+    3) Приводим к верхнему регистру.
+    4) Добавляем наш префикс NP (если его ещё нет спереди).
+    """
+    s = (raw or "").strip()
+    if not s: s = fallback or ""
+    s = SUPPL_PREFIX_RX.sub("", s)          # убираем NV-... в начале
+    s = s.replace(" ", "")
+    s = SAFE_CODE_RE.sub("", s)
+    s = s.upper()
+    if not s:
+        s = SAFE_CODE_RE.sub("", (fallback or "")).upper() or "NA"
+    if not s.startswith(OUR_PREFIX.upper()):
+        s = OUR_PREFIX + s
+    return s
+
 # ===================== СБОРКА YML (без categories/categoryId и без qty-тегов) =====================
 
 def build_yml(offers: List[Dict[str,Any]]) -> str:
@@ -213,14 +225,13 @@ def build_yml(offers: List[Dict[str,Any]]) -> str:
     offers_el = ET.SubElement(shop, "offers")
 
     for it in offers:
-        # никаких атрибутов available/in_stock у <offer> — только id
         offer = ET.SubElement(offers_el, "offer"); offer.set("id", it["id"])
 
         name_el = ET.SubElement(offer, "name"); name_el.text = it["name"]
         if it.get("vendor"):
             ven = ET.SubElement(offer, "vendor"); ven.text = it["vendor"]
-        if it.get("vendorCode"):
-            vc = ET.SubElement(offer, "vendorCode"); vc.text = it["vendorCode"]
+
+        vc = ET.SubElement(offer, "vendorCode"); vc.text = it["vendorCode"]
 
         price = ET.SubElement(offer, "price"); price.text = str(int(round(it["price"])))
         cur = ET.SubElement(offer, "currencyId"); cur.text = "KZT"
@@ -230,10 +241,8 @@ def build_yml(offers: List[Dict[str,Any]]) -> str:
 
         desc = ET.SubElement(offer, "description"); desc.text = it["description"]
 
-        # РОВНО ОДИН тег <available>
-        av = ET.SubElement(offer, "available"); av.text = "true" if it["available"] else "false"
+        av = ET.SubElement(offer, "available"); av.text = "true"  # ВСЕГДА true
 
-    # красивый отступ + пустая строка между офферами
     try: ET.indent(root, space="  ")
     except Exception: pass
 
@@ -250,7 +259,7 @@ def main() -> int:
     items = guess_items(root)
     log(f"[nvprint] items detected: {len(items)}")
 
-    # загружаем keywords и готовим паттерны «startswith»
+    # keywords
     kws = load_keywords(KEYWORDS_PATH)
     pats = compile_prefix_patterns(kws)
 
@@ -259,26 +268,25 @@ def main() -> int:
         it = parse_item(node)
         if not it: continue
 
-        # фильтр: название должно НАЧИНАТЬСЯ с любого из keywords (если файл не пустой)
+        # фильтр по началу названия
         if kws and not name_starts_with(it["name"], pats):
             continue
 
-        # Формируем id и vendorCode максимально из артикула, иначе из name
-        base = it.get("sku") or it.get("name") or f"nv-{i}"
-        oid  = re.sub(r"[^\w\-]+","-", base).strip("-") or f"nv-{i}"
+        # формируем vendorCode с префиксом NP
+        base_for_id = it.get("sku") or it.get("name") or f"nv-{i}"
+        vcode_np    = make_vendor_code_np(it.get("sku") or "", fallback=base_for_id)
 
         parsed.append({
-            "id": oid,
+            "id": re.sub(r"[^\w\-]+","-", base_for_id).strip("-") or vcode_np,  # id оставим «как было»
             "name": it["name"],
-            "vendor": None,                  # как есть; при необходимости добавим позже
-            "vendorCode": it.get("sku") or "",
+            "vendor": None,
+            "vendorCode": vcode_np,    # <-- всегда начинается с NP
             "price": it["price"],
             "pictures": it["pictures"],
             "description": it["description"],
-            "available": it["available"],
+            "available": True,         # <-- всегда true
         })
 
-    # Пишем YML без <categories>/<categoryId>, с единым <available> и без qty-тегов
     xml = build_yml(parsed)
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, newline="\n") as f:
