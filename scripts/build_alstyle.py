@@ -1,7 +1,12 @@
+# scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-09-15.6
+script_version = alstyle-2025-09-23.7
+
+Изменения в .7:
+- FIX: дедупликация <available>: перед записью значения удаляем все существующие теги
+  <available> и создаём ровно один. Также снимаем атрибут offer[@available].
 
 Изменения в .6:
 - Явный выбор «закупочной» цены по приоритету: dealer/опт/b2b → явные поля → RRP fallback.
@@ -26,7 +31,7 @@ import requests
 
 # ========================== КОНСТАНТЫ И НАСТРОЙКИ ==========================
 
-SCRIPT_VERSION = "alstyle-2025-09-15.6"
+SCRIPT_VERSION = "alstyle-2025-09-23.7"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "alstyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
@@ -268,7 +273,6 @@ def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
             if PRICE_KEYWORDS_DEALER.search(t): dealer_candidates.append(val)
             elif PRICE_KEYWORDS_RRP.search(t):  rrp_candidates.append(val)
             else:
-                # неизвестный тип: не берём в dealer, пусть пойдёт как «просто цена» ниже
                 pass
     if dealer_candidates:
         return (min(dealer_candidates), "prices_dealer")
@@ -281,10 +285,10 @@ def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
             if v is not None: direct.append(v)
     if direct:
         return (min(direct), "direct_field")
-    # 3) Fallback на RRP, если вообще других цен нет
+    # 3) Fallback на RRP
     if rrp_candidates:
         return (min(rrp_candidates), "rrp_fallback")
-    # 4) Совсем ничего
+    # 4)
     return (None, "missing")
 
 def _force_tail_900(n:float)->int:
@@ -315,24 +319,19 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         src_stats[src]=src_stats.get(src,0)+1
         if dealer is None or dealer<=100:
             skipped+=1
-            # всё равно чистим мусорные ценовые поля/блоки
             for node in list(offer.findall("prices")) + list(offer.findall("Prices")): offer.remove(node)
             for tag in INTERNAL_PRICE_TAGS:
                 node=offer.find(tag)
                 if node is not None: offer.remove(node)
-            # и не оставляем старый <price>, если он был «служебным»
-            # (но если был прямой <price> от поставщика — оставляем как есть)
             continue
         newp=compute_retail(dealer,rules)
         if newp is None:
             skipped+=1
             continue
-        # установить единый <price> + currencyId
         p=offer.find("price")
         if p is None: p=ET.SubElement(offer,"price")
         p.text=str(int(newp))
         cur=offer.find("currencyId") or ET.SubElement(offer,"currencyId"); cur.text="KZT"
-        # убрать блоки <prices> и служебные ценовые теги
         for node in list(offer.findall("prices")) + list(offer.findall("Prices")): offer.remove(node)
         for tag in INTERNAL_PRICE_TAGS:
             node=offer.find(tag)
@@ -411,7 +410,6 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
         if d is None or not d.text: continue
         text=d.text
         new_text = RE_KV_LINE.sub(lambda m: ("" if m.group(1)=="" else m.group(1)), text)
-        # убрать пустой заголовок «Характеристики:»
         lines = [ln for ln in new_text.splitlines()]
         out_lines=[]; i=0
         while i < len(lines):
@@ -473,14 +471,28 @@ def derive_available(offer: ET.Element) -> Tuple[bool, str]:
     return False, "default"
 
 def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
+    """
+    Делает ЕДИНЫЙ тег <available> на оффер:
+      - снимает атрибут @available у <offer>
+      - удаляет все существующие дочерние теги <available>
+      - создаёт один <available>true|false</available>
+      - (опционально) убирает служебные теги остатков/статусов
+    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0,0,0)
     true_cnt = false_cnt = from_stock_cnt = from_status_cnt = 0
     for offer in offers_el.findall("offer"):
         b, src = derive_available(offer)
-        if "available" in offer.attrib: offer.attrib.pop("available", None)
-        avail = offer.find("available") or ET.SubElement(offer, "available")
+        # 1) снять атрибут
+        if "available" in offer.attrib:
+            offer.attrib.pop("available", None)
+        # 2) удалить ВСЕ существующие <available>
+        for node in list(offer.findall("available")):
+            offer.remove(node)
+        # 3) создать ровно один <available>
+        avail = ET.SubElement(offer, "available")
         avail.text = "true" if b else "false"
+        # 4) статистика и чистка складских тегов
         if b: true_cnt += 1
         else: false_cnt += 1
         if src == "stock": from_stock_cnt += 1
@@ -665,6 +677,7 @@ def main()->None:
     # ПЕРЕСЧЁТ ЦЕН
     upd, skipped, total, src_stats = reprice_offers(out_shop, PRICING_RULES)
 
+    # ДЕДУП и нормализация <available>
     av_true, av_false, av_from_stock, av_from_status = normalize_available_field(out_shop)
 
     specs_offers, specs_lines = inject_specs_block(out_shop)
