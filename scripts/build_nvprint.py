@@ -1,16 +1,18 @@
 # scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
 """
-NVPrint → Satu YML (минимальная правка структуры)
-script_version = nvprint-2025-09-23.2
+NVPrint → Satu YML (минимальная правка структуры + keywords с авто-кодировкой)
+script_version = nvprint-2025-09-23.3
 
-Что изменено по задаче:
+Добавлено:
+- Чтение docs/nvprint_keywords.txt с авто-определением кодировки
+  (utf-8-sig/utf-8/utf-16/utf-16-le/utf-16-be/windows-1251 + fallback).
+- Фильтр: оставляем товары, у которых <name> НАЧИНАЕТСЯ с любой строки из файла.
+
+Ранее сделанное (сохраняется):
 1) Убраны полностью <categories> и любые <categoryId> у офферов.
 2) У <offer> удаляем атрибуты available/in_stock и создаём РОВНО ОДИН дочерний <available>.
 3) Не выводим теги остатков <quantity_in_stock> и <quantity>.
-
-Остальная логика простая: читаем XML, достаём базовые поля и пишем YML.
-Цены/бренды/префиксы и т.п. здесь не трогаем (по просьбе «пока всё»).
 """
 
 from __future__ import annotations
@@ -34,6 +36,9 @@ MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 NV_USER         = (os.getenv("NVPRINT_LOGIN") or "").strip()
 NV_PASS         = (os.getenv("NVPRINT_PASSWORD") or "").strip()
 
+# keywords (фильтр «начинается с…»)
+KEYWORDS_PATH   = os.getenv("NVPRINT_KEYWORDS_PATH", "docs/nvprint_keywords.txt")
+
 UA = {"User-Agent": "supplier-feeds/nvprint-min 1.0"}
 
 # ===================== УТИЛИТЫ =====================
@@ -50,6 +55,42 @@ def parse_float(v: Optional[str]) -> Optional[float]:
     if not m: return None
     try: return float(m.group(0))
     except Exception: return None
+
+# ---------- keywords: авто-детект кодировки + фильтр «startswith» ----------
+
+def file_read_autoenc(path: str) -> str:
+    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
+        try:
+            with open(path, "r", encoding=enc) as f:
+                return f.read().replace("\ufeff","").replace("\x00","")
+        except Exception:
+            pass
+    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+        return f.read().replace("\x00","")
+
+def load_keywords(path: str) -> List[str]:
+    if not path or not os.path.isfile(path):
+        return []
+    data = file_read_autoenc(path)
+    out: List[str] = []
+    for ln in data.splitlines():
+        s = ln.strip()
+        if s and not s.startswith("#"):
+            out.append(s)
+    return out
+
+def compile_prefix_patterns(kws: List[str]) -> List[re.Pattern]:
+    pats = []
+    for kw in kws:
+        k = re.sub(r"\s+", " ", kw.strip())
+        if not k: continue
+        pats.append(re.compile(r"^\s*"+re.escape(k)+r"(?!\w)", re.I))
+    return pats
+
+def name_starts_with(name: str, patterns: List[re.Pattern]) -> bool:
+    if not patterns:  # если файл пустой — не фильтруем
+        return True
+    return any(p.search(name or "") for p in patterns)
 
 # ===================== HTTP =====================
 
@@ -184,8 +225,6 @@ def build_yml(offers: List[Dict[str,Any]]) -> str:
         price = ET.SubElement(offer, "price"); price.text = str(int(round(it["price"])))
         cur = ET.SubElement(offer, "currencyId"); cur.text = "KZT"
 
-        # Никаких <categoryId> и вообще нет раздела <categories> в этом файле!
-
         for u in (it.get("pictures") or []):
             pic = ET.SubElement(offer, "picture"); pic.text = u
 
@@ -193,8 +232,6 @@ def build_yml(offers: List[Dict[str,Any]]) -> str:
 
         # РОВНО ОДИН тег <available>
         av = ET.SubElement(offer, "available"); av.text = "true" if it["available"] else "false"
-
-        # Никаких <quantity_in_stock> или <quantity> — не выводим их совсем!
 
     # красивый отступ + пустая строка между офферами
     try: ET.indent(root, space="  ")
@@ -213,10 +250,18 @@ def main() -> int:
     items = guess_items(root)
     log(f"[nvprint] items detected: {len(items)}")
 
+    # загружаем keywords и готовим паттерны «startswith»
+    kws = load_keywords(KEYWORDS_PATH)
+    pats = compile_prefix_patterns(kws)
+
     parsed: List[Dict[str,Any]] = []
     for i, node in enumerate(items, 1):
         it = parse_item(node)
         if not it: continue
+
+        # фильтр: название должно НАЧИНАТЬСЯ с любого из keywords (если файл не пустой)
+        if kws and not name_starts_with(it["name"], pats):
+            continue
 
         # Формируем id и vendorCode максимально из артикула, иначе из name
         base = it.get("sku") or it.get("name") or f"nv-{i}"
@@ -239,7 +284,7 @@ def main() -> int:
     with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, newline="\n") as f:
         f.write(xml)
 
-    log(f"Wrote: {OUT_FILE} | offers={len(parsed)} | encoding={OUTPUT_ENCODING}")
+    log(f"Wrote: {OUT_FILE} | offers={len(parsed)} | encoding={OUTPUT_ENCODING} | keywords={len(kws)}")
     return 0
 
 if __name__ == "__main__":
