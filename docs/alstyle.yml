@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-23 13:44">
+<yml_catalog date="2025-09-23 20:17">
   <!--FEED_META
 script_version                  = alstyle-2025-09-23.7                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15921                                                           | Офферов у поставщика до очистки
+offers_total                    = 15927                                                           | Офферов у поставщика до очистки
 offers_written                  = 1980                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13941                                                           | Сколько офферов отфильтровано по категориям
+filtered_by_categories          = 13947                                                           | Сколько офферов отфильтровано по категориям
 prices_updated                  = 1980                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
@@ -18,15 +18,15 @@ dealer_src_missing              = 0                                             
 params_removed                  = 9464                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1369                                                            | Сколько офферов доступны (true)
-available_false                 = 611                                                             | Сколько офферов недоступны (false)
+available_true                  = 1370                                                            | Сколько офферов доступны (true)
+available_false                 = 610                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15921                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15927                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-23 13:44:12 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-23 18:44:12 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-23 20:17:48 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-24 01:17:48 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -11675,7 +11675,7 @@ built_Asia/Almaty               = 2025-09-23 18:44:12 +05                       
 - Емкость выходных лотков: 100 листов
 - Скорость выхода первой страницы: 8.5 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31848">
@@ -31934,7 +31934,7 @@ HDMI x1
 - Состав: Металл, пластик
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="371451">
@@ -35190,7 +35190,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
 - Объём оперативной памяти: 8 Гб
 - Операционная система: Android 13</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="390134">
