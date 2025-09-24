@@ -1,10 +1,14 @@
 # scripts/build_vtt.py
 # -*- coding: utf-8 -*-
 """
-VTT (b2b.vtt.ru) -> YML (KZT) c очисткой:
-- Исключаем из вывода: <categories>, <categoryId>, <currencyId>, <quantity>, <stock_quantity>, <quantity_in_stock>, <url>.
-- У каждого <offer> ровно один <available>true</available> (без атрибутов available/in_stock).
-- Остальное поведение как прежде (логин, обход категорий из файла, парсинг карточек).
+VTT -> YML (очистки по ТЗ + currencyId + префикс VT для vendorCode)
+
+Что делает:
+- Исключает из вывода: <categories>, <categoryId>, <quantity>, <stock_quantity>, <quantity_in_stock>, <url>.
+- У каждого <offer> ровно один <available>true</available>.
+- В каждом <offer> выводит <currencyId>KZT</currencyId>.
+- vendorCode получает префикс VT (например базовый код 12345 -> vendorCode=VT12345).
+- id оффера используется базовый код (без префикса VT), чтобы не менять формат id.
 """
 
 from __future__ import annotations
@@ -239,6 +243,12 @@ def extract_description_meta(soup: BeautifulSoup) -> str:
         return re.sub(r"\s+", " ", tag["content"].strip())
     return ""
 
+def sanitize_code(s: str) -> str:
+    # очищаем для id/vendorCode: буквы/цифры/дефис/подчерк
+    base = (s or "").strip()
+    base = re.sub(r"[^\w\-]+", "-", base).strip("-")
+    return base or "NA"
+
 def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     jitter_sleep()
     b = http_get(s, url)
@@ -260,9 +270,12 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
         return None
 
     pairs = parse_pairs(soup)
-    vendor_code = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
-    if not vendor_code:
+    base_code = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
+    if not base_code:
         return None  # артикул обязателен
+
+    # базовый id (без префикса VT)
+    base_id = sanitize_code(base_code)
 
     brand = (pairs.get("Вендор") or "").strip()
 
@@ -271,32 +284,29 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
         price_int = 1
 
     picture = first_image_url(soup)
-
-    cat  = (pairs.get("Категория") or "").strip()
-    scat = (pairs.get("Подкатегория") or "").strip()
-    cats = [c for c in [cat, scat] if c]
-
     description = extract_description_meta(soup)
 
     return {
+        "id": base_id,                      # id без префикса
+        "vendorCode": "VT" + base_id,       # vendorCode с префиксом VT
         "title": title,
-        "vendorCode": vendor_code,
         "brand": brand or "",
         "price": int(price_int),
         "picture": picture,
-        "url": url,
-        "cats": cats,
         "description": description,
+        # "url": url,  # не выводим по ТЗ
+        "cats": [pairs.get("Категория") or "", pairs.get("Подкатегория") or ""],
     }
 
-# -------- categories tree (оставляем логику, но в выводе не используем) --------
+# -------- categories tree (не выводим, оставлено для совместимости) --------
 def stable_cat_id(text: str, prefix: int = 9620000) -> int:
     h = hashlib.md5((text or "").encode("utf-8", errors="ignore")).hexdigest()[:6]
     return prefix + int(h, 16)
 
 def build_categories(paths: List[List[str]]) -> Tuple[List[Tuple[int,str,Optional[int]]], Dict[Tuple[str,...], int]]:
     cat_map: Dict[Tuple[str,...], int] = {}
-    out_list: List[Tuple[int,str,Optional[int]]] = []
+    out_list: List[Tuple[int,str,Optional[int]]] = {}
+    out_list = []
     for path in paths:
         clean = [p.strip() for p in path if p and p.strip()]
         if not clean:
@@ -320,32 +330,28 @@ def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple
     out: List[str] = []
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
     out.append("<yml_catalog><shop>")
-    # По задаче: <categories> и <categoryId> вообще не выводим.
-    # <currencies>/<name> можно оставить, но <currencyId> внутри offer — не выводим.
+    # <categories>/<categoryId> по ТЗ не выводим
     out.append("<offers>")
     for _cid, it in offers:
-        # НЕ ставим атрибуты available/in_stock у offer
-        out.append(f"<offer id=\"{yml_escape(it['vendorCode'])}\">")
+        # id — базовый код; НЕ ставим атрибуты available/in_stock
+        out.append(f"<offer id=\"{yml_escape(it['id'])}\">")
         out.append(f"<name>{yml_escape(it['title'])}</name>")
         if it.get("brand"):
             out.append(f"<vendor>{yml_escape(it['brand'])}</vendor>")
         out.append(f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
         out.append(f"<price>{int(it['price'])}</price>")
-        # НЕ выводим <currencyId>
-        # НЕ выводим <categoryId>
-        # НЕ выводим <url>
+        out.append("<currencyId>KZT</currencyId>")  # вернули валюту
         if it.get("picture"):
             out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
         if it.get("description"):
             out.append(f"<description>{yml_escape(it['description'])}</description>")
-        # ЕДИНСТВЕННЫЙ тег наличия:
+        # единственный тег наличия:
         out.append("<available>true</available>")
-        # НЕ выводим <quantity_in_stock>, <stock_quantity>, <quantity>
         out.append("</offer>")
     out.append("</offers>")
     out.append("</shop></yml_catalog>")
     xml = "\n".join(out)
-    # Для читабельности: пустая строка между офферами
+    # Пустая строка между офферами для читабельности
     xml = re.sub(r"(</offer>)\n(<offer\b)", r"\1\n\n\2", xml)
     return xml
 
@@ -379,7 +385,7 @@ def main() -> int:
 
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MIN)
 
-    # собираем ссылки товаров со всех категорий
+    # собираем ссылки товаров
     prod_urls: List[str] = []
     seen: Set[str] = set()
     for cu in categories_urls:
@@ -412,26 +418,20 @@ def main() -> int:
             it = fut.result()
             if not it:
                 continue
-            offer_id = it["vendorCode"]
+            offer_id = it["id"]
             if offer_id in seen_offer_ids:
                 offer_id = f"{offer_id}-{sha1(it['title'])[:6]}"
+                it["id"] = offer_id
+                it["vendorCode"] = "VT" + offer_id  # синхронизируем префикс
             seen_offer_ids.add(offer_id)
 
             cats = it.get("cats") or []
-            all_paths.append(cats)
+            all_paths.append([c for c in cats if c])
 
-            offers.append((ROOT_CAT_ID, {
-                "vendorCode": offer_id,
-                "title": it["title"],
-                "brand": it.get("brand") or "",
-                "price": int(it["price"]) if it.get("price") else 1,
-                # "url": it.get("url"),  # НЕ используем
-                "picture": it.get("picture"),
-                "description": it.get("description") or "",
-            }))
+            offers.append((ROOT_CAT_ID, it))
 
-    # Строим дерево категорий — но в build_yml оно не выводится
-    categories, _path_map = build_categories(all_paths)
+    # строим дерево категорий (не выводим, для совместимости)
+    categories, _ = build_categories(all_paths)
 
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     xml = build_yml(categories, offers)
