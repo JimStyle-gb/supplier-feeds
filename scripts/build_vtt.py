@@ -1,20 +1,10 @@
+# scripts/build_vtt.py
 # -*- coding: utf-8 -*-
 """
-VTT (b2b.vtt.ru) → YML (KZT) по списку категорий:
-- Логин через /validateLogin (login/password).
-- Берём категории из файла CATEGORIES_FILE (по одной ссылке на строку).
-- Для каждой категории пагинируем ?page=1..N, собираем ссылки на товары.
-- В карточке берём:
-    title: .page_title (fallback: <title>/h1)
-    vendorCode: из "Артикул" (обязательно)
-    brand: из "Вендор"
-    cats: "Категория" → "Подкатегория"
-    price KZT: .price_main → округляем до int; если нет — 1
-    picture: первая картинка (/images/*.jpg|png или og:image)
-    description: <meta name="description"> (fallback: og:description)
-- В YML:
-    <vendor> = brand (не "vtt"), <currencyId>KZT</currencyId>.
-- Без промежуточных html-файлов в docs.
+VTT (b2b.vtt.ru) -> YML (KZT) c очисткой:
+- Исключаем из вывода: <categories>, <categoryId>, <currencyId>, <quantity>, <stock_quantity>, <quantity_in_stock>, <url>.
+- У каждого <offer> ровно один <available>true</available> (без атрибутов available/in_stock).
+- Остальное поведение как прежде (логин, обход категорий из файла, парсинг карточек).
 """
 
 from __future__ import annotations
@@ -240,7 +230,6 @@ def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
             out[k] = v
     return out
 
-# --- description from meta tags (simple & safe)
 def extract_description_meta(soup: BeautifulSoup) -> str:
     tag = soup.find("meta", attrs={"name": "description"})
     if tag and tag.get("content"):
@@ -300,7 +289,7 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
         "description": description,
     }
 
-# -------- categories tree --------
+# -------- categories tree (оставляем логику, но в выводе не используем) --------
 def stable_cat_id(text: str, prefix: int = 9620000) -> int:
     h = hashlib.md5((text or "").encode("utf-8", errors="ignore")).hexdigest()[:6]
     return prefix + int(h, 16)
@@ -326,41 +315,39 @@ def build_categories(paths: List[List[str]]) -> Tuple[List[Tuple[int,str,Optiona
             parent = cid
     return out_list, cat_map
 
-# -------- YML --------
+# -------- YML (очищенный вывод) --------
 def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple[int,Dict[str,Any]]]) -> str:
     out: List[str] = []
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
     out.append("<yml_catalog><shop>")
-    out.append("<name>vtt</name>")
-    out.append('<currencies><currency id="KZT" rate="1" /></currencies>')
-    out.append("<categories>")
-    out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
-    for cid, name, parent in categories:
-        parent = parent if parent else ROOT_CAT_ID
-        out.append(f"<category id=\"{cid}\" parentId=\"{parent}\">{yml_escape(name)}</category>")
-    out.append("</categories>")
+    # По задаче: <categories> и <categoryId> вообще не выводим.
+    # <currencies>/<name> можно оставить, но <currencyId> внутри offer — не выводим.
     out.append("<offers>")
-    for cid, it in offers:
-        out.append(f"<offer id=\"{yml_escape(it['vendorCode'])}\" available=\"true\" in_stock=\"true\">")
+    for _cid, it in offers:
+        # НЕ ставим атрибуты available/in_stock у offer
+        out.append(f"<offer id=\"{yml_escape(it['vendorCode'])}\">")
         out.append(f"<name>{yml_escape(it['title'])}</name>")
-        out.append(f"<vendor>{yml_escape(it.get('brand') or '')}</vendor>")
+        if it.get("brand"):
+            out.append(f"<vendor>{yml_escape(it['brand'])}</vendor>")
         out.append(f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
         out.append(f"<price>{int(it['price'])}</price>")
-        out.append("<currencyId>KZT</currencyId>")
-        out.append(f"<categoryId>{cid}</categoryId>")
-        if it.get("url"):
-            out.append(f"<url>{yml_escape(it['url'])}</url>")
+        # НЕ выводим <currencyId>
+        # НЕ выводим <categoryId>
+        # НЕ выводим <url>
         if it.get("picture"):
             out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
         if it.get("description"):
             out.append(f"<description>{yml_escape(it['description'])}</description>")
-        out.append("<quantity_in_stock>1</quantity_in_stock>")
-        out.append("<stock_quantity>1</stock_quantity>")
-        out.append("<quantity>1</quantity>")
+        # ЕДИНСТВЕННЫЙ тег наличия:
+        out.append("<available>true</available>")
+        # НЕ выводим <quantity_in_stock>, <stock_quantity>, <quantity>
         out.append("</offer>")
     out.append("</offers>")
     out.append("</shop></yml_catalog>")
-    return "\n".join(out)
+    xml = "\n".join(out)
+    # Для читабельности: пустая строка между офферами
+    xml = re.sub(r"(</offer>)\n(<offer\b)", r"\1\n\n\2", xml)
+    return xml
 
 # -------- MAIN --------
 def main() -> int:
@@ -371,14 +358,14 @@ def main() -> int:
     if not VTT_LOGIN or not VTT_PASSWORD:
         print("[warn] Empty login/password; cannot proceed.")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
             f.write(build_yml([], []))
         return 0
 
     if not login_vtt(s):
         print("Error: login failed")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
             f.write(build_yml([], []))
         return 0
 
@@ -386,7 +373,7 @@ def main() -> int:
     if not categories_urls:
         print("[error] categories file is empty.")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
             f.write(build_yml([], []))
         return 0
 
@@ -438,24 +425,20 @@ def main() -> int:
                 "title": it["title"],
                 "brand": it.get("brand") or "",
                 "price": int(it["price"]) if it.get("price") else 1,
-                "url": it.get("url"),
+                # "url": it.get("url"),  # НЕ используем
                 "picture": it.get("picture"),
                 "description": it.get("description") or "",
             }))
 
-    # строим дерево категорий и распределяем
-    categories, path_map = build_categories(all_paths)
-    for i, (cid, it) in enumerate(offers):
-        cats = all_paths[i] if i < len(all_paths) else []
-        key = tuple([c for c in cats if c])
-        offers[i] = (path_map.get(key, ROOT_CAT_ID), it)
+    # Строим дерево категорий — но в build_yml оно не выводится
+    categories, _path_map = build_categories(all_paths)
 
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     xml = build_yml(categories, offers)
-    with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+    with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
         f.write(xml)
 
-    print(f"[done] items: {len(offers)}, cats: {len(categories)} -> {OUT_FILE}")
+    print(f"[done] items: {len(offers)} -> {OUT_FILE}")
     return 0
 
 if __name__ == "__main__":
@@ -466,8 +449,8 @@ if __name__ == "__main__":
         print("[fatal]", e)
         try:
             os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-            with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
-                f.write("<?xml version='1.0' encoding='windows-1251'?>\n<yml_catalog><shop><name>vtt</name><currencies><currency id=\"KZT\" rate=\"1\" /></currencies><categories><category id=\"9600000\">VTT</category></categories><offers></offers></shop></yml_catalog>")
+            with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
+                f.write("<?xml version='1.0' encoding='windows-1251'?>\n<yml_catalog><shop><offers></offers></shop></yml_catalog>")
         except Exception:
             pass
         sys.exit(0)
