@@ -1,72 +1,70 @@
 # scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
 """
-NVPrint -> Satu YML (упрощенный конвертер под общий шаблон + авторизация)
-script_version = nvprint-2025-09-24.2
+NVPrint → Satu YML (ровно 5 правок по ТЗ)
+script_version = nvprint-2025-09-24.1
 
-Что делает (как вы просили ранее):
-- Берёт offer/@id и vendorCode из <Артикул>:
-    offer id = <Артикул> c срезом только ведущего "NV-"
-    vendorCode = "NP" + offer_id (без доп. дефиса)
-- У всех <available>true</available>, атрибуты available/in_stock удаляем.
-- Полностью убираем <categories> и <categoryId>.
-- Удаляем <quantity_in_stock> и <quantity> (если вдруг попадутся).
-- Фильтр по docs/nvprint_keywords.txt: имя ДОЛЖНО НАЧИНАТЬСЯ с ключа;
-  файл читаем с автодетектом кодировки.
-- Валюта KZT, пустая строка между <offer> для читабельности.
-- FEED_META с временем Алматы.
+Выполняет:
+1) Удаляет <categories> и все <categoryId>.
+2) У <offer> удаляет атрибуты available/in_stock и добавляет один тег <available>.
+3) Удаляет <quantity_in_stock> и <quantity>.
+4) Читает docs/nvprint_keywords.txt с авто-детектом кодировки; фильтр: name НАЧИНАЕТСЯ с ключевого слова.
+5) <available>true для всех.
 
-Новое:
-- Авторизация к NVPrint API:
-  * если заданы NVPRINT_LOGIN и NVPRINT_PASSWORD — используем HTTP Basic;
-  * иначе если задан NVPRINT_TOKEN — используем Authorization: Bearer <token>;
-  * иначе упадём с понятной ошибкой (чтобы не ловить 401).
+Прочее:
+- id оффера сохраняется как в источнике.
+- Остальные теги копируются без изменений (кроме перечисленных вычеркнутых).
+- Вывод кодируется в windows-1251 (можно поменять через OUTPUT_ENCODING).
 """
 
 from __future__ import annotations
 import os, re, sys, html, time, random
-from typing import List, Dict, Any, Optional
+from typing import List
 from datetime import datetime
-
 import requests
 import xml.etree.ElementTree as ET
 
-# ---------------------------- настройки ----------------------------
-
+# ================= ENV =================
 SUPPLIER_URL    = (os.getenv("NVPRINT_XML_URL") or os.getenv("SUPPLIER_URL") or "").strip()
 OUT_FILE        = os.getenv("OUT_FILE", "docs/nvprint.yml")
-OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING") or "windows-1251").strip() or "windows-1251"
-TIMEOUT_S       = int(os.getenv("TIMEOUT_S", "45"))
+OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "windows-1251") or "windows-1251")
+TIMEOUT_S       = int(os.getenv("TIMEOUT_S", "60"))
 RETRIES         = int(os.getenv("RETRIES", "4"))
 RETRY_BACKOFF_S = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
 KEYWORDS_PATH   = os.getenv("NVPRINT_KEYWORDS_PATH", "docs/nvprint_keywords.txt")
 
-# Авторизация
-NVPRINT_LOGIN    = (os.getenv("NVPRINT_LOGIN") or "").strip()
-NVPRINT_PASSWORD = (os.getenv("NVPRINT_PASSWORD") or "").strip()
-NVPRINT_TOKEN    = (os.getenv("NVPRINT_TOKEN") or "").strip()
+UA = {"User-Agent": "supplier-feeds/nvprint/5fix"}
 
-UA = {"User-Agent": "supplier-feeds/nvprint 1.0"}
+# =============== utils ===============
+def log(s: str) -> None: print(s, flush=True)
+def warn(s: str) -> None: print("WARN: "+s, file=sys.stderr, flush=True)
+def err(s: str, code: int=1) -> None: print("ERROR: "+s, file=sys.stderr, flush=True); sys.exit(code)
+def strip_ns(tag: str) -> str: return tag.split("}",1)[1] if "}" in tag else tag
 
-# ---------------------------- лог и утилиты ----------------------------
-
-def log(msg: str) -> None:
-    print(msg, flush=True)
-
-def warn(msg: str) -> None:
-    print("WARN: " + msg, file=sys.stderr, flush=True)
-
-def die(msg: str, code: int = 1) -> None:
-    print("ERROR: " + msg, file=sys.stderr, flush=True)
-    sys.exit(code)
-
-def x(s: Optional[str]) -> str:
-    return html.escape((s or "").strip())
+def fetch_xml_bytes(url: str) -> bytes:
+    if not url: err("NVPRINT_XML_URL не задан")
+    last = None
+    for i in range(1, RETRIES+1):
+        try:
+            r = requests.get(url, headers=UA, timeout=TIMEOUT_S)
+            r.raise_for_status()
+            b = r.content
+            if len(b) < MIN_BYTES:
+                raise RuntimeError(f"too small ({len(b)} bytes)")
+            return b
+        except Exception as e:
+            last = e
+            if i < RETRIES:
+                sl = RETRY_BACKOFF_S*i*(1.0+random.uniform(-0.2,0.2))
+                warn(f"try {i}/{RETRIES} failed: {e}; sleep {sl:.1f}s")
+                time.sleep(sl)
+    err(f"fetch failed: {last}")
 
 def file_read_autoenc(path: str) -> str:
-    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251","cp866"):
+    # авто-детект кодировки для nvprint_keywords.txt
+    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251","cp866","koi8-r"):
         try:
             with open(path, "r", encoding=enc) as f:
                 return f.read().replace("\ufeff","").replace("\x00","")
@@ -76,231 +74,145 @@ def file_read_autoenc(path: str) -> str:
         return f.read().replace("\x00","")
 
 def load_keywords(path: str) -> List[str]:
-    if not path or not os.path.isfile(path):
-        return []
+    if not os.path.isfile(path): return []
     data = file_read_autoenc(path)
     out: List[str] = []
-    for ln in data.splitlines():
-        s = ln.strip()
+    for line in data.splitlines():
+        s = line.strip()
         if s and not s.startswith("#"):
             out.append(s)
     return out
 
 def compile_prefix_patterns(kws: List[str]) -> List[re.Pattern]:
-    pats: List[re.Pattern] = []
+    pats=[]
     for kw in kws:
         k = re.sub(r"\s+", " ", kw.strip())
         if not k: continue
+        # якорим в начало имени
         pats.append(re.compile(r"^\s*"+re.escape(k)+r"(?!\w)", re.I))
     return pats
 
-def starts_with_any(name: str, pats: List[re.Pattern]) -> bool:
+def name_starts_with(name: str, pats: List[re.Pattern]) -> bool:
     if not pats: return True
     return any(p.search(name or "") for p in pats)
 
-def parse_float(txt: Optional[str]) -> Optional[float]:
-    if not txt: return None
-    t = txt.replace("\xa0"," ").replace(" ", "").replace(",", ".")
-    m = re.search(r"-?\d+(?:\.\d+)?", t)
-    if not m: return None
-    try:
-        return float(m.group(0))
-    except Exception:
-        return None
+# =============== core ===============
+def collect_offers(src_root: ET.Element) -> List[ET.Element]:
+    # Находим все узлы offer без учёта namespace/регистра
+    offers=[]
+    for node in src_root.iter():
+        if strip_ns(node.tag).lower() == "offer":
+            offers.append(node)
+    return offers
 
-# ---------------------------- сеть ----------------------------
-
-def _requests_auth_and_headers():
-    headers = dict(UA)
-    auth = None
-    mode = "none"
-    if NVPRINT_LOGIN and NVPRINT_PASSWORD:
-        auth = (NVPRINT_LOGIN, NVPRINT_PASSWORD)  # HTTP Basic
-        mode = "basic"
-    elif NVPRINT_TOKEN:
-        headers["Authorization"] = f"Bearer {NVPRINT_TOKEN}"
-        mode = "bearer"
-    return auth, headers, mode
-
-def fetch_xml(url: str) -> bytes:
-    if not url:
-        die("NVPRINT_XML_URL не задан")
-    last = None
-    auth, headers, mode = _requests_auth_and_headers()
-    log(f"Auth mode: {mode}")  # без вывода секретов
-
-    for i in range(1, RETRIES + 1):
-        try:
-            r = requests.get(url, headers=headers, timeout=TIMEOUT_S, auth=auth)
-            # если сервер требует Basic, а мы пришли с bearer (или наоборот), пробуем альтернативу 1 раз
-            if r.status_code == 401 and mode == "bearer" and NVPRINT_LOGIN and NVPRINT_PASSWORD:
-                warn("401 с Bearer — пробуем Basic")
-                r = requests.get(url, headers=dict(UA), timeout=TIMEOUT_S, auth=(NVPRINT_LOGIN, NVPRINT_PASSWORD))
-            elif r.status_code == 401 and mode == "basic" and NVPRINT_TOKEN:
-                warn("401 с Basic — пробуем Bearer")
-                r = requests.get(url, headers={**UA, "Authorization": f"Bearer {NVPRINT_TOKEN}"}, timeout=TIMEOUT_S)
-
-            r.raise_for_status()
-            b = r.content
-            if len(b) < MIN_BYTES:
-                raise RuntimeError(f"слишком мало данных: {len(b)} байт")
-            return b
-        except Exception as e:
-            last = e
-            if i < RETRIES:
-                sl = RETRY_BACKOFF_S * i * (1.0 + random.uniform(-0.2, 0.2))
-                warn(f"попытка {i}/{RETRIES} не удалась: {e}; ждём {sl:.1f}s")
-                time.sleep(sl)
-    # даём явную подсказку, если авторизации нет
-    if isinstance(last, requests.HTTPError) and getattr(last.response, "status_code", None) == 401:
-        die("401 Unauthorized: проверьте секреты NVPRINT_LOGIN/NVPRINT_PASSWORD или NVPRINT_TOKEN в GitHub Actions.", 1)
-    die(f"не удалось скачать источник: {last}")
-
-# ---------------------------- парсинг NVPrint ----------------------------
-
-def get_first_text(node: ET.Element, tag_name: str) -> Optional[str]:
-    for ch in node:
-        nm = ch.tag.split("}", 1)[-1]
-        if nm == tag_name:
-            t = (ch.text or "").strip()
-            if t:
-                return t
-    return None
-
-def find_any_text(node: ET.Element, names: List[str]) -> Optional[str]:
-    for nm in names:
-        t = get_first_text(node, nm)
-        if t:
-            return t
-    return None
-
-def get_first_child(node: ET.Element, name: str) -> Optional[ET.Element]:
-    for ch in node:
-        if ch.tag.split("}", 1)[-1] == name:
-            return ch
-    return None
-
-def extract_price(node: ET.Element) -> Optional[float]:
-    cond = get_first_child(node, "УсловияПродаж")
-    if cond is None:
-        return None
-    for contract in cond:
-        nm = contract.tag.split("}", 1)[-1]
-        if nm != "Договор":
+def copy_allowed_children(src_offer: ET.Element, dst_offer: ET.Element) -> None:
+    """
+    Копируем все дочерние теги, КРОМЕ:
+    - categoryId
+    - quantity_in_stock
+    - quantity
+    - available (добавим свой позже)
+    """
+    SKIP = {"categoryid","quantity_in_stock","quantity","available"}
+    for ch in list(src_offer):
+        nm = strip_ns(ch.tag).lower()
+        if nm in SKIP:
             continue
-        price = get_first_text(contract, "Цена")
-        val = parse_float(price)
-        if val is not None:
-            return val
-    return None
+        # копируем тег как есть (включая вложенность)
+        dst_offer.append(_deep_copy(ch))
 
-def normalize_offer_id_from_article(article: str) -> str:
-    s = (article or "").strip()
-    s = re.sub(r"^\s*NV-", "", s, flags=re.I)   # только спереди
-    s = re.sub(r"[^\w\-]+", "-", s).strip("-")  # безопасный id
-    return s or "NA"
+def _deep_copy(el: ET.Element) -> ET.Element:
+    new = ET.Element(strip_ns(el.tag))
+    # копируем текст/атрибуты
+    new.text = el.text
+    for k, v in (el.attrib or {}).items():
+        new.set(k, v)
+    # копируем детей
+    for c in list(el):
+        new.append(_deep_copy(c))
+    return new
 
-def make_vendor_code_from_id(offer_id: str) -> str:
-    base = (offer_id or "").strip()
-    base = re.sub(r"^\-+", "", base)
-    return "NP" + base
+def build_output(offers_nodes: List[ET.Element], kw_pats: List[re.Pattern]) -> ET.Element:
+    out_root = ET.Element("yml_catalog"); out_root.set("date", datetime.now().strftime("%Y-%m-%d %H:%M"))
+    shop = ET.SubElement(out_root, "shop")
+    offers_out = ET.SubElement(shop, "offers")
 
-# ---------------------------- сборка YML ----------------------------
+    kept = 0
+    for off in offers_nodes:
+        # id обязателен
+        src_id = (off.attrib.get("id") or "").strip()
+        if not src_id:
+            # иногда id может быть дочерним тегом — пробуем
+            id_node = off.find("./id")
+            if id_node is not None and (id_node.text or "").strip():
+                src_id = id_node.text.strip()
+        if not src_id:
+            continue
 
-def build_yml(items: List[Dict[str, Any]], source: str) -> str:
-    now_local = datetime.now().strftime("%Y-%m-%d %H:%M:%S +05")
-    root = ET.Element("yml_catalog")
-    root.set("date", datetime.now().strftime("%Y-%m-%d %H:%M"))
+        # фильтр по имени (startswith)
+        name_node = off.find("./name")
+        name_text = (name_node.text or "").strip() if (name_node is not None and name_node.text) else ""
+        if kw_pats and not name_starts_with(name_text, kw_pats):
+            continue
 
-    # FEED_META-комментарий
-    meta = (
-        "\n"
-        "<!--FEED_META\n"
-        f"supplier            = NVPrint (NP)\n"
-        f"source              = {source}\n"
-        f"built_Asia/Almaty   = {now_local} | Время сборки (Алматы)-->\n"
-    )
-    root.append(ET.Comment(meta))
+        # собираем новый <offer id="..."> БЕЗ атрибутов available/in_stock
+        new_off = ET.SubElement(offers_out, "offer"); new_off.set("id", src_id)
 
-    shop = ET.SubElement(root, "shop")
-    offers = ET.SubElement(shop, "offers")
+        # копируем все разрешённые теги как есть
+        copy_allowed_children(off, new_off)
 
-    for it in items:
-        off = ET.SubElement(offers, "offer"); off.set("id", it["id"])
-        ET.SubElement(off, "name").text = it["name"]
-        ET.SubElement(off, "vendorCode").text = it["vendorCode"]
-        ET.SubElement(off, "price").text = str(int(round(it["price"])))
-        ET.SubElement(off, "currencyId").text = "KZT"
-        if it.get("picture"):
-            ET.SubElement(off, "picture").text = it["picture"]
-        ET.SubElement(off, "description").text = it["description"]
-        ET.SubElement(off, "available").text = "true"  # всегда true
+        # добавляем наш единый <available>true</available>
+        av = new_off.find("./available")
+        if av is not None:
+            new_off.remove(av)
+        ET.SubElement(new_off, "available").text = "true"
 
-    try: ET.indent(root, space="  ")
+        kept += 1
+
+    # красивый отступ
+    try: ET.indent(out_root, space="  ")
     except Exception: pass
+    return out_root
 
-    xml = ET.tostring(root, encoding=OUTPUT_ENCODING, xml_declaration=True).decode(OUTPUT_ENCODING, errors="replace")
-    # пустая строка между офферами
-    xml = re.sub(r"(</offer>)\n\s*(<offer\b)", r"\1\n\n    \2", xml)
-    return xml
-
-# ---------------------------- MAIN ----------------------------
-
+# =============== main ===============
 def main() -> int:
     log(f"Source: {SUPPLIER_URL or '(not set)'}")
-    raw = fetch_xml(SUPPLIER_URL)
-    try:
-        src = ET.fromstring(raw)
-    except Exception as e:
-        die(f"не могу распарсить XML: {e}")
+    xml_bytes = fetch_xml_bytes(SUPPLIER_URL)
+    src_root = ET.fromstring(xml_bytes)
 
-    # фильтр по именам
+    # загружаем ключевые слова и компилим startswith-паттерны
     kws = load_keywords(KEYWORDS_PATH)
-    pats = compile_prefix_patterns(kws)
+    kw_pats = compile_prefix_patterns(kws)
     log(f"keywords: {len(kws)}")
 
-    goods_parent = src.find(".//Товары")
-    if goods_parent is None:
-        die("не найден блок <Товары>")
+    # собираем офферы из источника
+    offer_nodes = collect_offers(src_root)
+    log(f"offers found (raw): {len(offer_nodes)}")
 
-    out: List[Dict[str, Any]] = []
-    for node in goods_parent.findall("Товар"):
-        name = find_any_text(node, ["НоменклатураКратко", "Номенклатура"]) or ""
-        if not name:
-            continue
-        if pats and not starts_with_any(name, pats):
-            continue
+    out_root = build_output(offer_nodes, kw_pats)
 
-        article = find_any_text(node, ["Артикул"]) or ""
-        if not article:
-            continue
+    # сериализация
+    xml = ET.tostring(out_root, encoding=OUTPUT_ENCODING, xml_declaration=True).decode(OUTPUT_ENCODING, errors="replace")
 
-        price = extract_price(node) or 1.0
-        picture = find_any_text(node, ["СсылкаНаКартинку"]) or ""
+    # гарантийно убираем <categories> и любые <categoryId> (если вдруг подсосались из вложений)
+    xml = re.sub(r"\s*<categories>.*?</categories>\s*", "", xml, flags=re.S|re.I)
+    xml = re.sub(r"\s*<categoryId\b[^>]*>.*?</categoryId>\s*", "", xml, flags=re.S|re.I)
 
-        offer_id = normalize_offer_id_from_article(article)
-        vendor_code = make_vendor_code_from_id(offer_id)
+    # убираем остатки quantity* (если где-то глубоко встретились)
+    xml = re.sub(r"\s*<quantity_in_stock\b[^>]*>.*?</quantity_in_stock>\s*", "", xml, flags=re.S|re.I)
+    xml = re.sub(r"\s*<quantity\b[^>]*>.*?</quantity>\s*", "", xml, flags=re.S|re.I)
 
-        out.append({
-            "id": offer_id,
-            "name": name,
-            "vendorCode": vendor_code,
-            "price": float(price),
-            "picture": picture if picture else None,
-            "description": name,
-        })
+    # пустая строка между офферами для читабельности
+    xml = re.sub(r"(</offer>)\n\s*(<offer\b)", r"\1\n\n    \2", xml)
 
-    xml = build_yml(out, SUPPLIER_URL or "(not set)")
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, newline="\n") as f:
         f.write(xml)
-    log(f"Wrote: {OUT_FILE} | offers={len(out)} | encoding={OUTPUT_ENCODING}")
+    log(f"Wrote: {OUT_FILE} | encoding={OUTPUT_ENCODING}")
     return 0
 
 if __name__ == "__main__":
     try:
         sys.exit(main())
-    except SystemExit:
-        raise
     except Exception as e:
-        die(str(e), 2)
+        err(str(e), 2)
