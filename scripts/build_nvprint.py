@@ -1,33 +1,26 @@
 # scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
 """
-NVPrint -> Satu YML (упрощенный конвертер под общий шаблон)
+NVPrint -> Satu YML (упрощенный конвертер под общий шаблон + авторизация)
+script_version = nvprint-2025-09-24.2
 
-Что делает:
-- Тянет исходный XML у поставщика (URL из ENV: NVPRINT_XML_URL или SUPPLIER_URL).
-- Парсит товары из узлов <Товары>/<Товар>.
-- Берёт:
-    name        = <НоменклатураКратко> или <Номенклатура>
-    article     = <Артикул>  (ОБЯЗАТЕЛЬНО, иначе оффер пропускаем)
-    price       = первое числовое <Цена> в блоке <УсловияПродаж>/<Договор>
-    picture     = <СсылкаНаКартинку> (если пусто, не выводим <picture>)
-    description = name  (минимально; можно расширить при необходимости)
-- Идентификаторы:
-    offer/@id   = article с отрезанным только ведущим "NV-" (например "NV-CF232A-SET2" -> "CF232A-SET2")
-    vendorCode  = "NP" + offer_id  (например "NPCF232A-SET2")
-- Фильтр:
-    docs/nvprint_keywords.txt - автодетект кодировки; оставляем товар, если name начинается с одного из слов.
-    Если файл не найден или пуст - ничего не фильтруем.
-- Вывод:
-    <categories> и <categoryId> отсутствуют.
-    У КАЖДОГО товара ровно один <available>true</available>.
-    Валюта KZT.
-    Человекочитаемые пустые строки между <offer> для удобства.
+Что делает (как вы просили ранее):
+- Берёт offer/@id и vendorCode из <Артикул>:
+    offer id = <Артикул> c срезом только ведущего "NV-"
+    vendorCode = "NP" + offer_id (без доп. дефиса)
+- У всех <available>true</available>, атрибуты available/in_stock удаляем.
+- Полностью убираем <categories> и <categoryId>.
+- Удаляем <quantity_in_stock> и <quantity> (если вдруг попадутся).
+- Фильтр по docs/nvprint_keywords.txt: имя ДОЛЖНО НАЧИНАТЬСЯ с ключа;
+  файл читаем с автодетектом кодировки.
+- Валюта KZT, пустая строка между <offer> для читабельности.
+- FEED_META с временем Алматы.
 
-ENV:
-    NVPRINT_XML_URL или SUPPLIER_URL  - источник XML
-    OUT_FILE                          - путь для вывода (по умолчанию docs/nvprint.yml)
-    OUTPUT_ENCODING                   - кодировка файла (по умолчанию windows-1251)
+Новое:
+- Авторизация к NVPrint API:
+  * если заданы NVPRINT_LOGIN и NVPRINT_PASSWORD — используем HTTP Basic;
+  * иначе если задан NVPRINT_TOKEN — используем Authorization: Bearer <token>;
+  * иначе упадём с понятной ошибкой (чтобы не ловить 401).
 """
 
 from __future__ import annotations
@@ -50,6 +43,11 @@ MIN_BYTES       = int(os.getenv("MIN_BYTES", "1500"))
 
 KEYWORDS_PATH   = os.getenv("NVPRINT_KEYWORDS_PATH", "docs/nvprint_keywords.txt")
 
+# Авторизация
+NVPRINT_LOGIN    = (os.getenv("NVPRINT_LOGIN") or "").strip()
+NVPRINT_PASSWORD = (os.getenv("NVPRINT_PASSWORD") or "").strip()
+NVPRINT_TOKEN    = (os.getenv("NVPRINT_TOKEN") or "").strip()
+
 UA = {"User-Agent": "supplier-feeds/nvprint 1.0"}
 
 # ---------------------------- лог и утилиты ----------------------------
@@ -65,13 +63,10 @@ def die(msg: str, code: int = 1) -> None:
     sys.exit(code)
 
 def x(s: Optional[str]) -> str:
-    # Экранируем спецсимволы для XML
     return html.escape((s or "").strip())
 
 def file_read_autoenc(path: str) -> str:
-    # Чтение текстового файла с автоподбором кодировки
-    encs = ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251","cp866")
-    for enc in encs:
+    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251","cp866"):
         try:
             with open(path, "r", encoding=enc) as f:
                 return f.read().replace("\ufeff","").replace("\x00","")
@@ -81,7 +76,6 @@ def file_read_autoenc(path: str) -> str:
         return f.read().replace("\x00","")
 
 def load_keywords(path: str) -> List[str]:
-    # Загружаем ключевые слова для фильтра с обрезкой комментов и пустых строк
     if not path or not os.path.isfile(path):
         return []
     data = file_read_autoenc(path)
@@ -93,29 +87,22 @@ def load_keywords(path: str) -> List[str]:
     return out
 
 def compile_prefix_patterns(kws: List[str]) -> List[re.Pattern]:
-    # Готовим якорные шаблоны "начинается с слова"
     pats: List[re.Pattern] = []
     for kw in kws:
         k = re.sub(r"\s+", " ", kw.strip())
-        if not k:
-            continue
-        pats.append(re.compile(r"^\s*" + re.escape(k) + r"(?!\w)", re.I))
+        if not k: continue
+        pats.append(re.compile(r"^\s*"+re.escape(k)+r"(?!\w)", re.I))
     return pats
 
 def starts_with_any(name: str, pats: List[re.Pattern]) -> bool:
-    # Проверяем, начинается ли name с любого ключевого слова
-    if not pats:
-        return True
+    if not pats: return True
     return any(p.search(name or "") for p in pats)
 
 def parse_float(txt: Optional[str]) -> Optional[float]:
-    # Нормализация числа с запятой/пробелами
-    if not txt:
-        return None
+    if not txt: return None
     t = txt.replace("\xa0"," ").replace(" ", "").replace(",", ".")
     m = re.search(r"-?\d+(?:\.\d+)?", t)
-    if not m:
-        return None
+    if not m: return None
     try:
         return float(m.group(0))
     except Exception:
@@ -123,14 +110,36 @@ def parse_float(txt: Optional[str]) -> Optional[float]:
 
 # ---------------------------- сеть ----------------------------
 
+def _requests_auth_and_headers():
+    headers = dict(UA)
+    auth = None
+    mode = "none"
+    if NVPRINT_LOGIN and NVPRINT_PASSWORD:
+        auth = (NVPRINT_LOGIN, NVPRINT_PASSWORD)  # HTTP Basic
+        mode = "basic"
+    elif NVPRINT_TOKEN:
+        headers["Authorization"] = f"Bearer {NVPRINT_TOKEN}"
+        mode = "bearer"
+    return auth, headers, mode
+
 def fetch_xml(url: str) -> bytes:
     if not url:
         die("NVPRINT_XML_URL не задан")
-    sess = requests.Session()
     last = None
+    auth, headers, mode = _requests_auth_and_headers()
+    log(f"Auth mode: {mode}")  # без вывода секретов
+
     for i in range(1, RETRIES + 1):
         try:
-            r = sess.get(url, headers=UA, timeout=TIMEOUT_S)
+            r = requests.get(url, headers=headers, timeout=TIMEOUT_S, auth=auth)
+            # если сервер требует Basic, а мы пришли с bearer (или наоборот), пробуем альтернативу 1 раз
+            if r.status_code == 401 and mode == "bearer" and NVPRINT_LOGIN and NVPRINT_PASSWORD:
+                warn("401 с Bearer — пробуем Basic")
+                r = requests.get(url, headers=dict(UA), timeout=TIMEOUT_S, auth=(NVPRINT_LOGIN, NVPRINT_PASSWORD))
+            elif r.status_code == 401 and mode == "basic" and NVPRINT_TOKEN:
+                warn("401 с Basic — пробуем Bearer")
+                r = requests.get(url, headers={**UA, "Authorization": f"Bearer {NVPRINT_TOKEN}"}, timeout=TIMEOUT_S)
+
             r.raise_for_status()
             b = r.content
             if len(b) < MIN_BYTES:
@@ -142,12 +151,14 @@ def fetch_xml(url: str) -> bytes:
                 sl = RETRY_BACKOFF_S * i * (1.0 + random.uniform(-0.2, 0.2))
                 warn(f"попытка {i}/{RETRIES} не удалась: {e}; ждём {sl:.1f}s")
                 time.sleep(sl)
+    # даём явную подсказку, если авторизации нет
+    if isinstance(last, requests.HTTPError) and getattr(last.response, "status_code", None) == 401:
+        die("401 Unauthorized: проверьте секреты NVPRINT_LOGIN/NVPRINT_PASSWORD или NVPRINT_TOKEN в GitHub Actions.", 1)
     die(f"не удалось скачать источник: {last}")
 
 # ---------------------------- парсинг NVPrint ----------------------------
 
 def get_first_text(node: ET.Element, tag_name: str) -> Optional[str]:
-    # Возвращает .text первого дочернего тега с точным именем без пространств имён
     for ch in node:
         nm = ch.tag.split("}", 1)[-1]
         if nm == tag_name:
@@ -157,15 +168,19 @@ def get_first_text(node: ET.Element, tag_name: str) -> Optional[str]:
     return None
 
 def find_any_text(node: ET.Element, names: List[str]) -> Optional[str]:
-    # Ищем первый из списка имён тегов
     for nm in names:
         t = get_first_text(node, nm)
         if t:
             return t
     return None
 
+def get_first_child(node: ET.Element, name: str) -> Optional[ET.Element]:
+    for ch in node:
+        if ch.tag.split("}", 1)[-1] == name:
+            return ch
+    return None
+
 def extract_price(node: ET.Element) -> Optional[float]:
-    # Цена - первое непустое числовое <Цена> внутри <УсловияПродаж>/<Договор>
     cond = get_first_child(node, "УсловияПродаж")
     if cond is None:
         return None
@@ -179,22 +194,13 @@ def extract_price(node: ET.Element) -> Optional[float]:
             return val
     return None
 
-def get_first_child(node: ET.Element, name: str) -> Optional[ET.Element]:
-    for ch in node:
-        if ch.tag.split("}", 1)[-1] == name:
-            return ch
-    return None
-
 def normalize_offer_id_from_article(article: str) -> str:
-    # Извлекаем offer_id из <Артикул>; срезаем только ведущий NV-
     s = (article or "").strip()
-    s = re.sub(r"^\s*NV-", "", s, flags=re.I)  # только спереди
-    # Уберем недопустимые символы в id (оставим буквы/цифры/дефисы/подчеркивания)
-    s = re.sub(r"[^\w\-]+", "-", s).strip("-")
+    s = re.sub(r"^\s*NV-", "", s, flags=re.I)   # только спереди
+    s = re.sub(r"[^\w\-]+", "-", s).strip("-")  # безопасный id
     return s or "NA"
 
 def make_vendor_code_from_id(offer_id: str) -> str:
-    # Формируем vendorCode: NP + offer_id (без дополнительного дефиса)
     base = (offer_id or "").strip()
     base = re.sub(r"^\-+", "", base)
     return "NP" + base
@@ -203,64 +209,39 @@ def make_vendor_code_from_id(offer_id: str) -> str:
 
 def build_yml(items: List[Dict[str, Any]], source: str) -> str:
     now_local = datetime.now().strftime("%Y-%m-%d %H:%M:%S +05")
-    # Корневой узел
     root = ET.Element("yml_catalog")
     root.set("date", datetime.now().strftime("%Y-%m-%d %H:%M"))
-    # Комментарий FEED_META
-    feed_meta = (
+
+    # FEED_META-комментарий
+    meta = (
         "\n"
         "<!--FEED_META\n"
-        f"supplier                = NVPrint (NP)\n"
-        f"source                  = {source}\n"
-        f"built_Asia/Almaty       = {now_local} | Время сборки (Алматы)-->\n"
+        f"supplier            = NVPrint (NP)\n"
+        f"source              = {source}\n"
+        f"built_Asia/Almaty   = {now_local} | Время сборки (Алматы)-->\n"
     )
-    # Загружаем комментарий перед <shop>
-    root_text_holder = ET.Comment(feed_meta)
-    root.append(root_text_holder)
+    root.append(ET.Comment(meta))
 
     shop = ET.SubElement(root, "shop")
-    # Имя магазина можно опустить; для единообразия оставим пустым
     offers = ET.SubElement(shop, "offers")
 
     for it in items:
-        off = ET.SubElement(offers, "offer")
-        off.set("id", it["id"])
-
-        nm = ET.SubElement(off, "name")
-        nm.text = it["name"]
-
-        vc = ET.SubElement(off, "vendorCode")
-        vc.text = it["vendorCode"]
-
-        pr = ET.SubElement(off, "price")
-        pr.text = str(int(round(it["price"])))
-
-        cur = ET.SubElement(off, "currencyId")
-        cur.text = "KZT"
-
+        off = ET.SubElement(offers, "offer"); off.set("id", it["id"])
+        ET.SubElement(off, "name").text = it["name"]
+        ET.SubElement(off, "vendorCode").text = it["vendorCode"]
+        ET.SubElement(off, "price").text = str(int(round(it["price"])))
+        ET.SubElement(off, "currencyId").text = "KZT"
         if it.get("picture"):
-            pic = ET.SubElement(off, "picture")
-            pic.text = it["picture"]
+            ET.SubElement(off, "picture").text = it["picture"]
+        ET.SubElement(off, "description").text = it["description"]
+        ET.SubElement(off, "available").text = "true"  # всегда true
 
-        ds = ET.SubElement(off, "description")
-        ds.text = it["description"]
-
-        av = ET.SubElement(off, "available")
-        av.text = "true"  # всегда true
-
-    # Красивные отступы
-    try:
-        ET.indent(root, space="  ")
-    except Exception:
-        pass
+    try: ET.indent(root, space="  ")
+    except Exception: pass
 
     xml = ET.tostring(root, encoding=OUTPUT_ENCODING, xml_declaration=True).decode(OUTPUT_ENCODING, errors="replace")
-
-    # Пустая строка между соседними <offer> для читабельности
+    # пустая строка между офферами
     xml = re.sub(r"(</offer>)\n\s*(<offer\b)", r"\1\n\n    \2", xml)
-
-    # Удаляем возможные пустые текстовые хвосты комментария
-    xml = xml.replace("&lt;!--FEED_META", "<!--FEED_META").replace("--&gt;", "-->")
     return xml
 
 # ---------------------------- MAIN ----------------------------
@@ -273,11 +254,11 @@ def main() -> int:
     except Exception as e:
         die(f"не могу распарсить XML: {e}")
 
-    # Загружаем фильтр
+    # фильтр по именам
     kws = load_keywords(KEYWORDS_PATH)
     pats = compile_prefix_patterns(kws)
+    log(f"keywords: {len(kws)}")
 
-    # Ищем список товаров
     goods_parent = src.find(".//Товары")
     if goods_parent is None:
         die("не найден блок <Товары>")
@@ -292,14 +273,13 @@ def main() -> int:
 
         article = find_any_text(node, ["Артикул"]) or ""
         if not article:
-            # Без артикула не сможем сформировать id по вашим правилам
             continue
 
         price = extract_price(node) or 1.0
         picture = find_any_text(node, ["СсылкаНаКартинку"]) or ""
 
-        offer_id = normalize_offer_id_from_article(article)  # обрезали только ведущий NV-
-        vendor_code = make_vendor_code_from_id(offer_id)     # NP + id
+        offer_id = normalize_offer_id_from_article(article)
+        vendor_code = make_vendor_code_from_id(offer_id)
 
         out.append({
             "id": offer_id,
@@ -307,16 +287,14 @@ def main() -> int:
             "vendorCode": vendor_code,
             "price": float(price),
             "picture": picture if picture else None,
-            "description": name,  # минимально, без лишних полей
+            "description": name,
         })
 
-    # Пишем YML
     xml = build_yml(out, SUPPLIER_URL or "(not set)")
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, newline="\n") as f:
         f.write(xml)
-
-    log(f"Wrote: {OUT_FILE} | offers={len(out)} | encoding={OUTPUT_ENCODING} | keywords={len(kws)}")
+    log(f"Wrote: {OUT_FILE} | offers={len(out)} | encoding={OUTPUT_ENCODING}")
     return 0
 
 if __name__ == "__main__":
