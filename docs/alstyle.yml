@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-23 20:17">
+<yml_catalog date="2025-09-24 20:18">
   <!--FEED_META
 script_version                  = alstyle-2025-09-23.7                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15927                                                           | Офферов у поставщика до очистки
-offers_written                  = 1980                                                            | Офферов записано (после очистки)
+offers_total                    = 15934                                                           | Офферов у поставщика до очистки
+offers_written                  = 1987                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
 filtered_by_categories          = 13947                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1980                                                            | Скольким товарам пересчитали price
+prices_updated                  = 1987                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
-dealer_src_direct_field         = 1980                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
+dealer_src_direct_field         = 1987                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
 dealer_src_rrp_fallback         = 0                                                               | Базовая цена взята из RRP/РРЦ (fallback)
 dealer_src_missing              = 0                                                               | Не нашли базовую цену
-params_removed                  = 9464                                                            | Сколько строк параметров добавлено в описание
+params_removed                  = 9473                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1370                                                            | Сколько офферов доступны (true)
-available_false                 = 610                                                             | Сколько офферов недоступны (false)
+available_true                  = 1372                                                            | Сколько офферов доступны (true)
+available_false                 = 615                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15927                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15934                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-23 20:17:48 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-24 01:17:48 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-24 20:18:14 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-25 01:18:14 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -1537,7 +1537,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="15307">
@@ -2620,7 +2620,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="17544">
@@ -4111,7 +4111,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Тип печати: Лазерная
 - Цвет: Пурпурный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="17937">
@@ -4450,7 +4450,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="18051">
@@ -4708,7 +4708,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="18286">
@@ -5814,7 +5814,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Стандарты: Категория 5е
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="18936">
@@ -6885,7 +6885,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="22490">
@@ -7434,7 +7434,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="23680">
@@ -7693,7 +7693,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="24318">
@@ -10208,7 +10208,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31502">
@@ -10380,7 +10380,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31738">
-        <price>90900</price>
+        <price>91900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32457</vendorCode>
         <picture>https://img.al-style.kz/32457_1.jpg</picture>
@@ -10407,7 +10407,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31749">
-        <price>235900</price>
+        <price>238900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32468</vendorCode>
         <picture>https://img.al-style.kz/32468_1.jpg</picture>
@@ -10433,7 +10433,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31752">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32471</vendorCode>
         <picture>https://img.al-style.kz/32471_1.jpg</picture>
@@ -10458,7 +10458,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31753">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32472</vendorCode>
         <picture>https://img.al-style.kz/32472_1.jpg</picture>
@@ -10483,7 +10483,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31754">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32473</vendorCode>
         <picture>https://img.al-style.kz/32473_1.jpg</picture>
@@ -10508,7 +10508,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31755">
-        <price>94900</price>
+        <price>95900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32474</vendorCode>
         <picture>https://img.al-style.kz/32474_1.jpg</picture>
@@ -10533,7 +10533,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31763">
-        <price>144900</price>
+        <price>146900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32373</vendorCode>
         <picture>https://img.al-style.kz/32373_1.jpg</picture>
@@ -10560,7 +10560,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31764">
-        <price>144900</price>
+        <price>146900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32374</vendorCode>
         <picture>https://img.al-style.kz/32374_1.jpg</picture>
@@ -10587,7 +10587,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31765">
-        <price>144900</price>
+        <price>146900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32375</vendorCode>
         <picture>https://img.al-style.kz/32375_1.jpg</picture>
@@ -10614,7 +10614,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31766">
-        <price>101900</price>
+        <price>102900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32376</vendorCode>
         <picture>https://img.al-style.kz/32376_1.jpg</picture>
@@ -10641,7 +10641,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31767">
-        <price>193900</price>
+        <price>196900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32377</vendorCode>
         <picture>https://img.al-style.kz/32377_1.jpg</picture>
@@ -10666,7 +10666,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31769">
-        <price>34900</price>
+        <price>35900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32379</vendorCode>
         <picture>https://img.al-style.kz/32379_1.jpg</picture>
@@ -10694,7 +10694,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31770">
-        <price>34900</price>
+        <price>35900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32380</vendorCode>
         <picture>https://img.al-style.kz/32380_1.jpg</picture>
@@ -10721,7 +10721,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31771">
-        <price>34900</price>
+        <price>35900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32381</vendorCode>
         <picture>https://img.al-style.kz/32381_1.jpg</picture>
@@ -10748,7 +10748,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31772">
-        <price>43900</price>
+        <price>44900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32382</vendorCode>
         <picture>https://img.al-style.kz/32382_1.jpg</picture>
@@ -10775,7 +10775,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31773">
-        <price>84900</price>
+        <price>88900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32383</vendorCode>
         <picture>https://img.al-style.kz/32383_1.jpg</picture>
@@ -10800,7 +10800,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31778">
-        <price>103900</price>
+        <price>104900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32388</vendorCode>
         <picture>https://img.al-style.kz/32388_1.jpg</picture>
@@ -10827,7 +10827,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31779">
-        <price>103900</price>
+        <price>104900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32389</vendorCode>
         <picture>https://img.al-style.kz/32389_1.jpg</picture>
@@ -10854,7 +10854,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31780">
-        <price>103900</price>
+        <price>104900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32390</vendorCode>
         <picture>https://img.al-style.kz/32390_1.jpg</picture>
@@ -10909,7 +10909,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31782">
-        <price>249900</price>
+        <price>252900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32392</vendorCode>
         <picture>https://img.al-style.kz/32392_1.jpg</picture>
@@ -10934,7 +10934,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31783">
-        <price>53900</price>
+        <price>54900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32393</vendorCode>
         <picture>https://img.al-style.kz/32393_1.jpg</picture>
@@ -10957,7 +10957,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31789">
-        <price>104900</price>
+        <price>105900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32399</vendorCode>
         <picture>https://img.al-style.kz/32399_1.jpg</picture>
@@ -10984,7 +10984,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31790">
-        <price>104900</price>
+        <price>105900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32400</vendorCode>
         <picture>https://img.al-style.kz/32400_1.jpg</picture>
@@ -11011,7 +11011,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31791">
-        <price>104900</price>
+        <price>105900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32401</vendorCode>
         <picture>https://img.al-style.kz/32401_1.jpg</picture>
@@ -11038,7 +11038,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31792">
-        <price>89900</price>
+        <price>90900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32402</vendorCode>
         <picture>https://img.al-style.kz/32402_1.jpg</picture>
@@ -11065,7 +11065,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31793">
-        <price>295900</price>
+        <price>298900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32403</vendorCode>
         <picture>https://img.al-style.kz/32403_1.jpg</picture>
@@ -11113,7 +11113,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31802">
-        <price>534900</price>
+        <price>541900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32412</vendorCode>
         <picture>https://img.al-style.kz/32412_1.jpg</picture>
@@ -11138,7 +11138,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31803">
-        <price>22900</price>
+        <price>23900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32413</vendorCode>
         <picture>https://img.al-style.kz/32413_1.jpg</picture>
@@ -11161,7 +11161,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31810">
-        <price>98900</price>
+        <price>100900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32420</vendorCode>
         <picture>https://img.al-style.kz/32420_1.jpg</picture>
@@ -11188,7 +11188,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31811">
-        <price>162900</price>
+        <price>164900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32421</vendorCode>
         <picture>https://img.al-style.kz/32421_1.jpg</picture>
@@ -11215,7 +11215,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31812">
-        <price>162900</price>
+        <price>164900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32422</vendorCode>
         <picture>https://img.al-style.kz/32422_1.jpg</picture>
@@ -11242,7 +11242,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31813">
-        <price>162900</price>
+        <price>164900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32423</vendorCode>
         <picture>https://img.al-style.kz/32423_1.jpg</picture>
@@ -11269,7 +11269,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31823">
-        <price>102900</price>
+        <price>104900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32433</vendorCode>
         <picture>https://img.al-style.kz/32433_1.jpg</picture>
@@ -11296,7 +11296,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31824">
-        <price>129900</price>
+        <price>130900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32434</vendorCode>
         <picture>https://img.al-style.kz/32434_1.jpg</picture>
@@ -11323,7 +11323,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31825">
-        <price>129900</price>
+        <price>130900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32435</vendorCode>
         <picture>https://img.al-style.kz/32435_1.jpg</picture>
@@ -11350,7 +11350,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31826">
-        <price>129900</price>
+        <price>130900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32436</vendorCode>
         <picture>https://img.al-style.kz/32436_1.jpg</picture>
@@ -11377,7 +11377,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31827">
-        <price>263900</price>
+        <price>266900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32437</vendorCode>
         <picture>https://img.al-style.kz/32437_1.jpg</picture>
@@ -11402,7 +11402,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31828">
-        <price>260900</price>
+        <price>264900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32438</vendorCode>
         <picture>https://img.al-style.kz/32438_1.jpg</picture>
@@ -11427,7 +11427,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31829">
-        <price>260900</price>
+        <price>264900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32439</vendorCode>
         <picture>https://img.al-style.kz/32439_1.jpg</picture>
@@ -11452,7 +11452,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31830">
-        <price>260900</price>
+        <price>264900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32440</vendorCode>
         <picture>https://img.al-style.kz/32440_1.jpg</picture>
@@ -11500,7 +11500,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31832">
-        <price>93900</price>
+        <price>94900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32442</vendorCode>
         <picture>https://img.al-style.kz/32442_1.jpg</picture>
@@ -11527,7 +11527,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31833">
-        <price>104900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32443</vendorCode>
         <picture>https://img.al-style.kz/32443_1.jpg</picture>
@@ -11554,7 +11554,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31834">
-        <price>104900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32444</vendorCode>
         <picture>https://img.al-style.kz/32444_1.jpg</picture>
@@ -11581,7 +11581,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31835">
-        <price>104900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32445</vendorCode>
         <picture>https://img.al-style.kz/32445_1.jpg</picture>
@@ -11608,7 +11608,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31836">
-        <price>29900</price>
+        <price>31900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32446</vendorCode>
         <picture>https://img.al-style.kz/32446_1.jpg</picture>
@@ -11774,7 +11774,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31850">
-        <price>45900</price>
+        <price>46900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32314</vendorCode>
         <picture>https://img.al-style.kz/32314_1.jpg</picture>
@@ -11804,7 +11804,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31851">
-        <price>80900</price>
+        <price>81900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32315</vendorCode>
         <picture>https://img.al-style.kz/32315_1.jpg</picture>
@@ -11834,7 +11834,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31856">
-        <price>42900</price>
+        <price>43900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32320</vendorCode>
         <picture>https://img.al-style.kz/32320_1.jpg</picture>
@@ -11865,7 +11865,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31857">
-        <price>70900</price>
+        <price>71900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32321</vendorCode>
         <picture>https://img.al-style.kz/32321_1.jpg</picture>
@@ -11924,7 +11924,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31859">
-        <price>43900</price>
+        <price>44900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32323</vendorCode>
         <picture>https://img.al-style.kz/32323_1.jpg</picture>
@@ -11951,7 +11951,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31860">
-        <price>73900</price>
+        <price>74900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32324</vendorCode>
         <picture>https://img.al-style.kz/32324_1.jpg</picture>
@@ -12003,7 +12003,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31865">
-        <price>143900</price>
+        <price>145900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32329</vendorCode>
         <picture>https://img.al-style.kz/32329_1.jpg</picture>
@@ -12030,7 +12030,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31866">
-        <price>72900</price>
+        <price>73900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32330</vendorCode>
         <picture>https://img.al-style.kz/32330_1.jpg</picture>
@@ -12055,7 +12055,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31869">
-        <price>142900</price>
+        <price>144900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32333</vendorCode>
         <picture>https://img.al-style.kz/32333_1.jpg</picture>
@@ -12082,7 +12082,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31870">
-        <price>70900</price>
+        <price>71900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32334</vendorCode>
         <picture>https://img.al-style.kz/32334_1.jpg</picture>
@@ -12107,7 +12107,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31873">
-        <price>69900</price>
+        <price>70900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32337</vendorCode>
         <picture>https://img.al-style.kz/32337_1.jpg</picture>
@@ -12213,7 +12213,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31878">
-        <price>220900</price>
+        <price>228900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32342</vendorCode>
         <picture>https://img.al-style.kz/32342_1.jpg</picture>
@@ -12238,7 +12238,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31883">
-        <price>538900</price>
+        <price>544900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32347</vendorCode>
         <picture>https://img.al-style.kz/32347_1.jpg</picture>
@@ -12265,7 +12265,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31885">
-        <price>72900</price>
+        <price>73900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32349</vendorCode>
         <picture>https://img.al-style.kz/32349_1.jpg</picture>
@@ -12293,7 +12293,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31886">
-        <price>233900</price>
+        <price>236900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32350</vendorCode>
         <picture>https://img.al-style.kz/32350_1.jpg</picture>
@@ -12318,7 +12318,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31887">
-        <price>208900</price>
+        <price>210900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32351</vendorCode>
         <picture>https://img.al-style.kz/32351_1.jpg</picture>
@@ -12344,7 +12344,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31888">
-        <price>95900</price>
+        <price>96900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32352</vendorCode>
         <picture>https://img.al-style.kz/32352_1.jpg</picture>
@@ -12372,7 +12372,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31889">
-        <price>241900</price>
+        <price>244900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32353</vendorCode>
         <picture>https://img.al-style.kz/32353_1.jpg</picture>
@@ -12397,7 +12397,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31890">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32354</vendorCode>
         <picture>https://img.al-style.kz/32354_1.jpg</picture>
@@ -12424,7 +12424,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31891">
-        <price>290900</price>
+        <price>293900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32355</vendorCode>
         <picture>https://img.al-style.kz/32355_1.jpg</picture>
@@ -12449,7 +12449,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31894">
-        <price>152900</price>
+        <price>154900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32358</vendorCode>
         <picture>https://img.al-style.kz/32358_1.jpg</picture>
@@ -12476,7 +12476,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31895">
-        <price>152900</price>
+        <price>154900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32359</vendorCode>
         <picture>https://img.al-style.kz/32359_1.jpg</picture>
@@ -12503,7 +12503,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31896">
-        <price>152900</price>
+        <price>154900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32360</vendorCode>
         <picture>https://img.al-style.kz/32360_1.jpg</picture>
@@ -12530,7 +12530,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31897">
-        <price>72900</price>
+        <price>73900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32361</vendorCode>
         <picture>https://img.al-style.kz/32361_1.jpg</picture>
@@ -12557,7 +12557,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31899">
-        <price>177900</price>
+        <price>179900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32363</vendorCode>
         <picture>https://img.al-style.kz/32363_1.jpg</picture>
@@ -12584,7 +12584,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31900">
-        <price>177900</price>
+        <price>179900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32364</vendorCode>
         <picture>https://img.al-style.kz/32364_1.jpg</picture>
@@ -12611,7 +12611,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31901">
-        <price>177900</price>
+        <price>179900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32365</vendorCode>
         <picture>https://img.al-style.kz/32365_1.jpg</picture>
@@ -12638,7 +12638,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31902">
-        <price>161900</price>
+        <price>163900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32366</vendorCode>
         <picture>https://img.al-style.kz/32366_1.jpg</picture>
@@ -12743,7 +12743,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31906">
-        <price>71900</price>
+        <price>72900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32370</vendorCode>
         <picture>https://img.al-style.kz/32370_1.jpg</picture>
@@ -12769,7 +12769,7 @@ built_Asia/Almaty               = 2025-09-24 01:17:48 +05                       
       </offer>
 
   <offer id="31907">
-        <price>1166900</price>
+        <price>1180900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32371</vendorCode>
         <picture>https://img.al-style.kz/32371_1.jpg</picture>
@@ -12891,7 +12891,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="32439">
-        <price>117900</price>
+        <price>119900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33097</vendorCode>
         <picture>https://img.al-style.kz/33097_1.jpg</picture>
@@ -12918,7 +12918,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="32450">
-        <price>83900</price>
+        <price>84900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33113</vendorCode>
         <picture>https://img.al-style.kz/33113_1.jpg</picture>
@@ -12973,7 +12973,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="36265">
-        <price>79900</price>
+        <price>80900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33687</vendorCode>
         <picture>https://img.al-style.kz/33687_1.jpg</picture>
@@ -12998,7 +12998,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="36266">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33688</vendorCode>
         <picture>https://img.al-style.kz/33688_1.jpg</picture>
@@ -13023,7 +13023,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="36267">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33689</vendorCode>
         <picture>https://img.al-style.kz/33689_1.jpg</picture>
@@ -13048,7 +13048,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="36268">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33690</vendorCode>
         <picture>https://img.al-style.kz/33690_1.jpg</picture>
@@ -13073,7 +13073,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="36443">
-        <price>63900</price>
+        <price>64900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34256</vendorCode>
         <picture>https://img.al-style.kz/34256_1.jpg</picture>
@@ -13098,7 +13098,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="36444">
-        <price>205900</price>
+        <price>207900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34257</vendorCode>
         <picture>https://img.al-style.kz/34257_1.jpg</picture>
@@ -13123,7 +13123,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="36492">
-        <price>213900</price>
+        <price>216900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33337</vendorCode>
         <picture>https://img.al-style.kz/33337_1.jpg</picture>
@@ -13146,7 +13146,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="36494">
-        <price>272900</price>
+        <price>276900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33380</vendorCode>
         <picture>https://img.al-style.kz/33380_1.jpg</picture>
@@ -13263,7 +13263,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="39091">
-        <price>231900</price>
+        <price>234900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33333</vendorCode>
         <picture>https://img.al-style.kz/33333_1.jpg</picture>
@@ -13286,7 +13286,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="39119">
-        <price>105900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33366</vendorCode>
         <picture>https://img.al-style.kz/33366_1.jpg</picture>
@@ -13314,7 +13314,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="39120">
-        <price>105900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33367</vendorCode>
         <picture>https://img.al-style.kz/33367_1.jpg</picture>
@@ -14283,7 +14283,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="45180">
-        <price>116900</price>
+        <price>118900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35202</vendorCode>
         <picture>https://img.al-style.kz/35202_1.jpg</picture>
@@ -14372,7 +14372,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="60893">
-        <price>1521900</price>
+        <price>1540900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32952</vendorCode>
         <picture>https://img.al-style.kz/32952_1.jpg</picture>
@@ -14439,7 +14439,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="60961">
-        <price>105900</price>
+        <price>107900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33346</vendorCode>
         <picture>https://img.al-style.kz/33346_1.jpg</picture>
@@ -14467,7 +14467,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="60977">
-        <price>98900</price>
+        <price>99900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33368</vendorCode>
         <picture>https://img.al-style.kz/33368_1.jpg</picture>
@@ -14493,7 +14493,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="60978">
-        <price>98900</price>
+        <price>99900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33369</vendorCode>
         <picture>https://img.al-style.kz/33369_1.jpg</picture>
@@ -14519,7 +14519,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="60979">
-        <price>98900</price>
+        <price>99900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33370</vendorCode>
         <picture>https://img.al-style.kz/33370_1.jpg</picture>
@@ -14544,7 +14544,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="60980">
-        <price>98900</price>
+        <price>99900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33371</vendorCode>
         <picture>https://img.al-style.kz/33371_1.jpg</picture>
@@ -14569,7 +14569,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="61025">
-        <price>34900</price>
+        <price>35900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33418</vendorCode>
         <picture>https://img.al-style.kz/33418_1.jpg</picture>
@@ -14613,7 +14613,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="61056">
-        <price>204900</price>
+        <price>207900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35327</vendorCode>
         <picture>https://img.al-style.kz/35327_1.jpg</picture>
@@ -14662,7 +14662,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="61079">
-        <price>90900</price>
+        <price>92900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35437</vendorCode>
         <picture>https://img.al-style.kz/35437_1.jpg</picture>
@@ -14683,7 +14683,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="61098">
@@ -14709,7 +14709,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="61145">
-        <price>131900</price>
+        <price>133900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35968</vendorCode>
         <picture>https://img.al-style.kz/35968_1.jpg</picture>
@@ -14737,7 +14737,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="61146">
-        <price>200900</price>
+        <price>203900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35969</vendorCode>
         <picture>https://img.al-style.kz/35969_1.jpg</picture>
@@ -14765,7 +14765,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="61147">
-        <price>200900</price>
+        <price>203900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35970</vendorCode>
         <picture>https://img.al-style.kz/35970_1.jpg</picture>
@@ -14793,7 +14793,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="61148">
-        <price>200900</price>
+        <price>203900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35971</vendorCode>
         <picture>https://img.al-style.kz/35971_1.jpg</picture>
@@ -14821,7 +14821,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="61149">
-        <price>503900</price>
+        <price>509900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35972</vendorCode>
         <picture>https://img.al-style.kz/35972_1.jpg</picture>
@@ -15148,7 +15148,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 - Диаметр проводника: 0,56 мм
 - Стандарты: Категория 6A</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="67884">
@@ -15201,7 +15201,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="67962">
-        <price>59900</price>
+        <price>60900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35973</vendorCode>
         <picture>https://img.al-style.kz/35973_1.jpg</picture>
@@ -15263,7 +15263,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="78255">
-        <price>105900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33345</vendorCode>
         <picture>https://img.al-style.kz/33345_1.jpg</picture>
@@ -15357,7 +15357,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="78282">
-        <price>123900</price>
+        <price>124900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS37776</vendorCode>
         <picture>https://img.al-style.kz/37776_1.jpg</picture>
@@ -15413,7 +15413,7 @@ USB
       </offer>
 
   <offer id="79746">
-        <price>203900</price>
+        <price>206900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS36638</vendorCode>
         <picture>https://img.al-style.kz/36638_1.jpg</picture>
@@ -15501,7 +15501,7 @@ USB
       </offer>
 
   <offer id="86953">
-        <price>1036900</price>
+        <price>1049900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32951</vendorCode>
         <picture>https://img.al-style.kz/32951_1.jpg</picture>
@@ -15522,7 +15522,7 @@ USB
       </offer>
 
   <offer id="86954">
-        <price>373900</price>
+        <price>377900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32953</vendorCode>
         <picture>https://img.al-style.kz/32953_1.jpg</picture>
@@ -15549,7 +15549,7 @@ USB
       </offer>
 
   <offer id="86956">
-        <price>128900</price>
+        <price>129900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32957</vendorCode>
         <picture>https://img.al-style.kz/32957_1.jpg</picture>
@@ -15568,7 +15568,7 @@ USB
       </offer>
 
   <offer id="87190">
-        <price>177900</price>
+        <price>179900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33349</vendorCode>
         <picture>https://img.al-style.kz/33349_1.jpg</picture>
@@ -15595,7 +15595,7 @@ USB
       </offer>
 
   <offer id="98757">
-        <price>808900</price>
+        <price>818900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35927</vendorCode>
         <picture>https://img.al-style.kz/35927_1.jpg</picture>
@@ -15616,7 +15616,7 @@ USB
       </offer>
 
   <offer id="113695">
-        <price>1463900</price>
+        <price>1481900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35926</vendorCode>
         <picture>https://img.al-style.kz/35926_1.jpg</picture>
@@ -15663,7 +15663,7 @@ USB
       </offer>
 
   <offer id="113731">
-        <price>34900</price>
+        <price>35900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33353</vendorCode>
         <picture>https://img.al-style.kz/33353_1.jpg</picture>
@@ -15683,7 +15683,7 @@ USB
       </offer>
 
   <offer id="113735">
-        <price>128900</price>
+        <price>129900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33354</vendorCode>
         <picture>https://img.al-style.kz/33354_1.jpg</picture>
@@ -15705,7 +15705,7 @@ USB
       </offer>
 
   <offer id="114024">
-        <price>49900</price>
+        <price>50900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33357</vendorCode>
         <picture>https://img.al-style.kz/33357_1.jpg</picture>
@@ -15732,7 +15732,7 @@ USB
       </offer>
 
   <offer id="114025">
-        <price>49900</price>
+        <price>50900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33358</vendorCode>
         <picture>https://img.al-style.kz/33358_1.jpg</picture>
@@ -15759,7 +15759,7 @@ USB
       </offer>
 
   <offer id="114037">
-        <price>49900</price>
+        <price>50900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33359</vendorCode>
         <picture>https://img.al-style.kz/33359_1.jpg</picture>
@@ -15786,7 +15786,7 @@ USB
       </offer>
 
   <offer id="114038">
-        <price>69900</price>
+        <price>70900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33360</vendorCode>
         <picture>https://img.al-style.kz/33360_1.jpg</picture>
@@ -15813,7 +15813,7 @@ USB
       </offer>
 
   <offer id="114058">
-        <price>120900</price>
+        <price>122900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33376</vendorCode>
         <picture>https://img.al-style.kz/33376_1.jpg</picture>
@@ -15840,7 +15840,7 @@ USB
       </offer>
 
   <offer id="114107">
-        <price>77900</price>
+        <price>78900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33362</vendorCode>
         <picture>https://img.al-style.kz/33362_1.jpg</picture>
@@ -15867,7 +15867,7 @@ USB
       </offer>
 
   <offer id="114109">
-        <price>107900</price>
+        <price>108900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33364</vendorCode>
         <picture>https://img.al-style.kz/33364_1.jpg</picture>
@@ -15919,7 +15919,7 @@ USB
       </offer>
 
   <offer id="114111">
-        <price>105900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33365</vendorCode>
         <picture>https://img.al-style.kz/33365_1.jpg</picture>
@@ -15946,7 +15946,7 @@ USB
       </offer>
 
   <offer id="114114">
-        <price>232900</price>
+        <price>234900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33178</vendorCode>
         <picture>https://img.al-style.kz/33178_1.jpg</picture>
@@ -15973,7 +15973,7 @@ USB
       </offer>
 
   <offer id="114132">
-        <price>122900</price>
+        <price>123900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33388</vendorCode>
         <picture>https://img.al-style.kz/33388_1.jpg</picture>
@@ -16000,7 +16000,7 @@ USB
       </offer>
 
   <offer id="114133">
-        <price>122900</price>
+        <price>123900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33389</vendorCode>
         <picture>https://img.al-style.kz/33389_1.jpg</picture>
@@ -16027,7 +16027,7 @@ USB
       </offer>
 
   <offer id="114134">
-        <price>122900</price>
+        <price>123900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33390</vendorCode>
         <picture>https://img.al-style.kz/33390_1.jpg</picture>
@@ -16054,7 +16054,7 @@ USB
       </offer>
 
   <offer id="114135">
-        <price>91900</price>
+        <price>92900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33391</vendorCode>
         <picture>https://img.al-style.kz/33391_1.jpg</picture>
@@ -16081,7 +16081,7 @@ USB
       </offer>
 
   <offer id="114272">
-        <price>105900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33392</vendorCode>
         <picture>https://img.al-style.kz/33392_1.jpg</picture>
@@ -16109,7 +16109,7 @@ USB
       </offer>
 
   <offer id="114274">
-        <price>105900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33394</vendorCode>
         <picture>https://img.al-style.kz/33394_1.jpg</picture>
@@ -16137,7 +16137,7 @@ USB
       </offer>
 
   <offer id="114275">
-        <price>94900</price>
+        <price>95900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33395</vendorCode>
         <picture>https://img.al-style.kz/33395_1.jpg</picture>
@@ -16165,7 +16165,7 @@ USB
       </offer>
 
   <offer id="114305">
-        <price>160900</price>
+        <price>161900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33400</vendorCode>
         <picture>https://img.al-style.kz/33400_1.jpg</picture>
@@ -16193,7 +16193,7 @@ USB
       </offer>
 
   <offer id="114319">
-        <price>160900</price>
+        <price>161900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33401</vendorCode>
         <picture>https://img.al-style.kz/33401_1.jpg</picture>
@@ -16221,7 +16221,7 @@ USB
       </offer>
 
   <offer id="114320">
-        <price>160900</price>
+        <price>161900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33402</vendorCode>
         <picture>https://img.al-style.kz/33402_1.jpg</picture>
@@ -16249,7 +16249,7 @@ USB
       </offer>
 
   <offer id="114334">
-        <price>82900</price>
+        <price>83900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33411</vendorCode>
         <picture>https://img.al-style.kz/33411_1.jpg</picture>
@@ -16276,7 +16276,7 @@ USB
       </offer>
 
   <offer id="114335">
-        <price>95900</price>
+        <price>96900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33410</vendorCode>
         <picture>https://img.al-style.kz/33410_1.jpg</picture>
@@ -16303,7 +16303,7 @@ USB
       </offer>
 
   <offer id="114353">
-        <price>95900</price>
+        <price>96900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33408</vendorCode>
         <picture>https://img.al-style.kz/33408_1.jpg</picture>
@@ -16330,7 +16330,7 @@ USB
       </offer>
 
   <offer id="114371">
-        <price>406900</price>
+        <price>411900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33338</vendorCode>
         <picture>https://img.al-style.kz/33338_1.jpg</picture>
@@ -16372,7 +16372,7 @@ USB
       </offer>
 
   <offer id="114401">
-        <price>238900</price>
+        <price>240900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34762</vendorCode>
         <picture>https://img.al-style.kz/34762_1.jpg</picture>
@@ -16399,7 +16399,7 @@ USB
       </offer>
 
   <offer id="114402">
-        <price>238900</price>
+        <price>240900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34764</vendorCode>
         <picture>https://img.al-style.kz/34764_1.jpg</picture>
@@ -16427,7 +16427,7 @@ USB
       </offer>
 
   <offer id="114403">
-        <price>150900</price>
+        <price>152900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34765</vendorCode>
         <picture>https://img.al-style.kz/34765_1.jpg</picture>
@@ -16455,7 +16455,7 @@ USB
       </offer>
 
   <offer id="114406">
-        <price>238900</price>
+        <price>240900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34763</vendorCode>
         <picture>https://img.al-style.kz/34763_1.jpg</picture>
@@ -16483,7 +16483,7 @@ USB
       </offer>
 
   <offer id="114413">
-        <price>45900</price>
+        <price>46900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35326</vendorCode>
         <picture>https://img.al-style.kz/35326_1.jpg</picture>
@@ -16506,7 +16506,7 @@ USB
       </offer>
 
   <offer id="114415">
-        <price>93900</price>
+        <price>94900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33416</vendorCode>
         <picture>https://img.al-style.kz/33416_1.jpg</picture>
@@ -16528,7 +16528,7 @@ USB
       </offer>
 
   <offer id="114460">
-        <price>235900</price>
+        <price>238900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34040</vendorCode>
         <picture>https://img.al-style.kz/34040_1.jpg</picture>
@@ -16555,7 +16555,7 @@ USB
       </offer>
 
   <offer id="114461">
-        <price>235900</price>
+        <price>238900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34041</vendorCode>
         <picture>https://img.al-style.kz/34041_1.jpg</picture>
@@ -16582,7 +16582,7 @@ USB
       </offer>
 
   <offer id="114464">
-        <price>235900</price>
+        <price>238900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34042</vendorCode>
         <picture>https://img.al-style.kz/34042_1.jpg</picture>
@@ -16655,7 +16655,7 @@ USB
       </offer>
 
   <offer id="114485">
-        <price>101900</price>
+        <price>103900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35325</vendorCode>
         <picture>https://img.al-style.kz/35325_1.jpg</picture>
@@ -16723,7 +16723,7 @@ USB
       </offer>
 
   <offer id="114491">
-        <price>165900</price>
+        <price>167900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS38078</vendorCode>
         <picture>https://img.al-style.kz/38078_1.jpg</picture>
@@ -16836,7 +16836,7 @@ USB
       </offer>
 
   <offer id="114561">
-        <price>119900</price>
+        <price>121900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS37161</vendorCode>
         <picture>https://img.al-style.kz/37161_1.jpg</picture>
@@ -16864,7 +16864,7 @@ USB
       </offer>
 
   <offer id="114585">
-        <price>182900</price>
+        <price>184900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS37162</vendorCode>
         <picture>https://img.al-style.kz/37162_1.jpg</picture>
@@ -16892,7 +16892,7 @@ USB
       </offer>
 
   <offer id="114586">
-        <price>182900</price>
+        <price>184900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS37163</vendorCode>
         <picture>https://img.al-style.kz/37163_1.jpg</picture>
@@ -16919,7 +16919,7 @@ USB
       </offer>
 
   <offer id="114587">
-        <price>182900</price>
+        <price>184900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS37164</vendorCode>
         <picture>https://img.al-style.kz/37164_1.jpg</picture>
@@ -16946,7 +16946,7 @@ USB
       </offer>
 
   <offer id="114682">
-        <price>138900</price>
+        <price>140900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33403</vendorCode>
         <picture>https://img.al-style.kz/33403_1.jpg</picture>
@@ -16974,7 +16974,7 @@ USB
       </offer>
 
   <offer id="114715">
-        <price>189900</price>
+        <price>191900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34043</vendorCode>
         <picture>https://img.al-style.kz/34043_1.jpg</picture>
@@ -17042,7 +17042,7 @@ USB
 - Тип печати: Лазерная
 - Цвет: Жёлтый</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="114962">
@@ -17251,7 +17251,7 @@ USB
       </offer>
 
   <offer id="117102">
-        <price>118900</price>
+        <price>120900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33342</vendorCode>
         <picture>https://img.al-style.kz/33342_1.jpg</picture>
@@ -17276,7 +17276,7 @@ USB
       </offer>
 
   <offer id="117108">
-        <price>295900</price>
+        <price>299900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS38148</vendorCode>
         <picture>https://img.al-style.kz/38148_1.jpg</picture>
@@ -17323,7 +17323,7 @@ USB
       </offer>
 
   <offer id="123235">
-        <price>479900</price>
+        <price>485900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS36630</vendorCode>
         <picture>https://img.al-style.kz/36630_1.jpg</picture>
@@ -17734,7 +17734,7 @@ USB
       </offer>
 
   <offer id="147070">
-        <price>120900</price>
+        <price>122900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33378</vendorCode>
         <picture>https://img.al-style.kz/33378_1.jpg</picture>
@@ -17761,7 +17761,7 @@ USB
       </offer>
 
   <offer id="147071">
-        <price>93900</price>
+        <price>94900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33379</vendorCode>
         <picture>https://img.al-style.kz/33379_1.jpg</picture>
@@ -17788,7 +17788,7 @@ USB
       </offer>
 
   <offer id="147085">
-        <price>233900</price>
+        <price>236900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34495</vendorCode>
         <picture>https://img.al-style.kz/34495_1.jpg</picture>
@@ -17833,7 +17833,7 @@ USB
       </offer>
 
   <offer id="150306">
-        <price>316900</price>
+        <price>320900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34258</vendorCode>
         <picture>https://img.al-style.kz/34258_1.jpg</picture>
@@ -17856,7 +17856,7 @@ USB
       </offer>
 
   <offer id="152222">
-        <price>130900</price>
+        <price>132900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33347</vendorCode>
         <picture>https://img.al-style.kz/33347_1.jpg</picture>
@@ -17883,7 +17883,7 @@ USB
       </offer>
 
   <offer id="152225">
-        <price>98900</price>
+        <price>99900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33372</vendorCode>
         <picture>https://img.al-style.kz/33372_1.jpg</picture>
@@ -17911,7 +17911,7 @@ USB
       </offer>
 
   <offer id="152226">
-        <price>98900</price>
+        <price>99900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33373</vendorCode>
         <picture>https://img.al-style.kz/33373_1.jpg</picture>
@@ -17939,7 +17939,7 @@ USB
       </offer>
 
   <offer id="152227">
-        <price>98900</price>
+        <price>99900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33374</vendorCode>
         <picture>https://img.al-style.kz/33374_1.jpg</picture>
@@ -17967,7 +17967,7 @@ USB
       </offer>
 
   <offer id="152228">
-        <price>75900</price>
+        <price>76900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33375</vendorCode>
         <picture>https://img.al-style.kz/33375_1.jpg</picture>
@@ -17995,7 +17995,7 @@ USB
       </offer>
 
   <offer id="152229">
-        <price>120900</price>
+        <price>122900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33377</vendorCode>
         <picture>https://img.al-style.kz/33377_1.jpg</picture>
@@ -18190,7 +18190,7 @@ USB
       </offer>
 
   <offer id="164825">
-        <price>305900</price>
+        <price>308900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34344</vendorCode>
         <picture>https://img.al-style.kz/34344_1.jpg</picture>
@@ -18237,7 +18237,7 @@ USB
       </offer>
 
   <offer id="164835">
-        <price>177900</price>
+        <price>179900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35744</vendorCode>
         <picture>https://img.al-style.kz/35744_1.jpg</picture>
@@ -18265,7 +18265,7 @@ USB
       </offer>
 
   <offer id="164836">
-        <price>177900</price>
+        <price>179900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35745</vendorCode>
         <picture>https://img.al-style.kz/35745_1.jpg</picture>
@@ -18293,7 +18293,7 @@ USB
       </offer>
 
   <offer id="164837">
-        <price>177900</price>
+        <price>179900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35746</vendorCode>
         <picture>https://img.al-style.kz/35746_1.jpg</picture>
@@ -18321,7 +18321,7 @@ USB
       </offer>
 
   <offer id="164839">
-        <price>148900</price>
+        <price>150900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35751</vendorCode>
         <picture>https://img.al-style.kz/35751_1.jpg</picture>
@@ -18377,7 +18377,7 @@ USB
       </offer>
 
   <offer id="164843">
-        <price>83900</price>
+        <price>84900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35872</vendorCode>
         <picture>https://img.al-style.kz/35872_1.jpg</picture>
@@ -18404,7 +18404,7 @@ USB
       </offer>
 
   <offer id="164845">
-        <price>298900</price>
+        <price>301900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS36068</vendorCode>
         <picture>https://img.al-style.kz/36068_1.jpg</picture>
@@ -18471,7 +18471,7 @@ USB
       </offer>
 
   <offer id="164876">
-        <price>229900</price>
+        <price>232900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39212</vendorCode>
         <picture>https://img.al-style.kz/39212_1.jpg</picture>
@@ -18496,7 +18496,7 @@ USB
       </offer>
 
   <offer id="164878">
-        <price>215900</price>
+        <price>218900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39214</vendorCode>
         <picture>https://img.al-style.kz/39214_1.jpg</picture>
@@ -18524,7 +18524,7 @@ USB
       </offer>
 
   <offer id="164879">
-        <price>209900</price>
+        <price>212900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39215</vendorCode>
         <picture>https://img.al-style.kz/39215_1.jpg</picture>
@@ -18552,7 +18552,7 @@ USB
       </offer>
 
   <offer id="164880">
-        <price>209900</price>
+        <price>212900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39216</vendorCode>
         <picture>https://img.al-style.kz/39216_1.jpg</picture>
@@ -18816,7 +18816,7 @@ USB
       </offer>
 
   <offer id="164909">
-        <price>161900</price>
+        <price>163900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39245</vendorCode>
         <picture>https://img.al-style.kz/39245_1.jpg</picture>
@@ -18843,7 +18843,7 @@ USB
       </offer>
 
   <offer id="164920">
-        <price>102900</price>
+        <price>103900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS38576</vendorCode>
         <picture>https://img.al-style.kz/38576_1.jpg</picture>
@@ -18870,7 +18870,7 @@ USB
       </offer>
 
   <offer id="164921">
-        <price>105900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS38577</vendorCode>
         <picture>https://img.al-style.kz/38577_1.jpg</picture>
@@ -18897,7 +18897,7 @@ USB
       </offer>
 
   <offer id="164922">
-        <price>105900</price>
+        <price>106900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS38578</vendorCode>
         <picture>https://img.al-style.kz/38578_1.jpg</picture>
@@ -19018,7 +19018,7 @@ Versant 80/180 Press
       </offer>
 
   <offer id="169906">
-        <price>272900</price>
+        <price>276900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35861</vendorCode>
         <picture>https://img.al-style.kz/35861_1.jpg</picture>
@@ -19068,7 +19068,7 @@ Versant 80/180 Press
       </offer>
 
   <offer id="169915">
-        <price>134900</price>
+        <price>136900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39229</vendorCode>
         <picture>https://img.al-style.kz/39229_1.jpg</picture>
@@ -19094,7 +19094,7 @@ Versant 80/180 Press
       </offer>
 
   <offer id="169916">
-        <price>134900</price>
+        <price>136900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39230</vendorCode>
         <picture>https://img.al-style.kz/39230_1.jpg</picture>
@@ -19182,7 +19182,7 @@ Versant 80/180 Press
       </offer>
 
   <offer id="169928">
-        <price>127900</price>
+        <price>129900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS38842</vendorCode>
         <picture>https://img.al-style.kz/38842_1.jpg</picture>
@@ -19289,7 +19289,7 @@ Versant 80/180 Press
 - Цвет: Белый
 - Процессор: Amlogic T968</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="186800">
@@ -19404,7 +19404,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="186842">
-        <price>370900</price>
+        <price>374900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39778</vendorCode>
         <picture>https://img.al-style.kz/39778_1.jpg</picture>
@@ -19467,7 +19467,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="186843">
-        <price>237900</price>
+        <price>240900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39779</vendorCode>
         <picture>https://img.al-style.kz/39779_1.jpg</picture>
@@ -19573,7 +19573,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192359">
-        <price>97900</price>
+        <price>98900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40040</vendorCode>
         <picture>https://img.al-style.kz/40040_1.jpg</picture>
@@ -19600,7 +19600,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192360">
-        <price>97900</price>
+        <price>98900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40041</vendorCode>
         <picture>https://img.al-style.kz/40041_1.jpg</picture>
@@ -19627,7 +19627,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192361">
-        <price>97900</price>
+        <price>98900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40042</vendorCode>
         <picture>https://img.al-style.kz/40042_1.jpg</picture>
@@ -19654,7 +19654,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192362">
-        <price>76900</price>
+        <price>77900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40104</vendorCode>
         <picture>https://img.al-style.kz/40104_1.jpg</picture>
@@ -19681,7 +19681,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192363">
-        <price>94900</price>
+        <price>95900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40046</vendorCode>
         <picture>https://img.al-style.kz/40046_1.jpg</picture>
@@ -19729,7 +19729,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192365">
-        <price>76900</price>
+        <price>77900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40102</vendorCode>
         <picture>https://img.al-style.kz/40102_1.jpg</picture>
@@ -19757,7 +19757,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192366">
-        <price>76900</price>
+        <price>77900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40103</vendorCode>
         <picture>https://img.al-style.kz/40103_1.jpg</picture>
@@ -19784,7 +19784,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192368">
-        <price>76900</price>
+        <price>77900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40039</vendorCode>
         <picture>https://img.al-style.kz/40039_1.jpg</picture>
@@ -19811,7 +19811,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192369">
-        <price>184900</price>
+        <price>186900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40045</vendorCode>
         <picture>https://img.al-style.kz/40045_1.jpg</picture>
@@ -19866,7 +19866,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="192608">
-        <price>148900</price>
+        <price>149900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40246</vendorCode>
         <picture>https://img.al-style.kz/40246_1.jpg</picture>
@@ -20074,7 +20074,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="220708">
-        <price>149900</price>
+        <price>151900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35747</vendorCode>
         <picture>https://img.al-style.kz/35747_1.jpg</picture>
@@ -20267,7 +20267,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="220934">
-        <price>180900</price>
+        <price>182900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS37716</vendorCode>
         <picture>https://img.al-style.kz/37716_1.jpg</picture>
@@ -20346,7 +20346,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="246422">
-        <price>318900</price>
+        <price>322900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33684</vendorCode>
         <picture>https://img.al-style.kz/33684_1.jpg</picture>
@@ -20496,7 +20496,7 @@ WorkCentre Pro 4110/4112/4127/4595
       </offer>
 
   <offer id="248735">
-        <price>180900</price>
+        <price>183900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35863</vendorCode>
         <picture>https://img.al-style.kz/35863_1.jpg</picture>
@@ -20701,7 +20701,7 @@ AltaLink C8170
       </offer>
 
   <offer id="248765">
-        <price>71900</price>
+        <price>72900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS36201</vendorCode>
         <picture>https://img.al-style.kz/36201_1.jpg</picture>
@@ -20816,7 +20816,7 @@ Mi Smart Projector 2 использует индивидуальный объем пространства и соответствую
       </offer>
 
   <offer id="248827">
-        <price>243900</price>
+        <price>246900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40563</vendorCode>
         <picture>https://img.al-style.kz/40563_1.jpg</picture>
@@ -20994,7 +20994,7 @@ Mi Smart Projector 2 использует индивидуальный объем пространства и соответствую
       </offer>
 
   <offer id="249274">
-        <price>385900</price>
+        <price>389900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33257</vendorCode>
         <picture>https://img.al-style.kz/33257_1.jpg</picture>
@@ -21131,7 +21131,7 @@ Comix F6301   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="254272">
-        <price>75900</price>
+        <price>76900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40311</vendorCode>
         <picture>https://img.al-style.kz/40311_1.jpg</picture>
@@ -21199,7 +21199,7 @@ Comix F6301   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="254361">
-        <price>233900</price>
+        <price>236900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40713</vendorCode>
         <picture>https://img.al-style.kz/40713_1.jpg</picture>
@@ -21475,7 +21475,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="256213">
-        <price>48900</price>
+        <price>49900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS38253</vendorCode>
         <picture>https://img.al-style.kz/38253_1.jpg</picture>
@@ -21778,7 +21778,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="257342">
-        <price>392900</price>
+        <price>397900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS37789</vendorCode>
         <picture>https://img.al-style.kz/37789_1.jpg</picture>
@@ -21805,7 +21805,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="257406">
-        <price>358900</price>
+        <price>362900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39067</vendorCode>
         <picture>https://img.al-style.kz/39067_1.jpg</picture>
@@ -21839,7 +21839,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="257444">
-        <price>600900</price>
+        <price>607900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39205</vendorCode>
         <picture>https://img.al-style.kz/39205_1.jpg</picture>
@@ -21865,7 +21865,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="257445">
-        <price>583900</price>
+        <price>590900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39206</vendorCode>
         <picture>https://img.al-style.kz/39206_1.jpg</picture>
@@ -21891,7 +21891,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="257446">
-        <price>410900</price>
+        <price>415900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39217</vendorCode>
         <picture>https://img.al-style.kz/39217_1.jpg</picture>
@@ -21917,7 +21917,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="257447">
-        <price>320900</price>
+        <price>324900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39219</vendorCode>
         <picture>https://img.al-style.kz/39219_1.jpg</picture>
@@ -22025,7 +22025,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="258564">
-        <price>209900</price>
+        <price>211900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35938</vendorCode>
         <picture>https://img.al-style.kz/35938_1.jpg</picture>
@@ -22089,7 +22089,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="258979">
-        <price>679900</price>
+        <price>688900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS37103</vendorCode>
         <picture>https://img.al-style.kz/37103_1.jpg</picture>
@@ -22112,7 +22112,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="259644">
-        <price>111900</price>
+        <price>113900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS34349</vendorCode>
         <picture>https://img.al-style.kz/34349_1.jpg</picture>
@@ -22203,7 +22203,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="260248">
-        <price>98900</price>
+        <price>100900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35465</vendorCode>
         <picture>https://img.al-style.kz/35465_1.jpg</picture>
@@ -22261,7 +22261,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="261527">
-        <price>174900</price>
+        <price>176900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33334</vendorCode>
         <picture>https://img.al-style.kz/33334_1.jpg</picture>
@@ -22285,7 +22285,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="261530">
-        <price>117900</price>
+        <price>118900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33356</vendorCode>
         <picture>https://img.al-style.kz/33356_1.jpg</picture>
@@ -22370,7 +22370,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="261664">
-        <price>318900</price>
+        <price>322900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33683</vendorCode>
         <picture>https://img.al-style.kz/33683_1.jpg</picture>
@@ -22397,7 +22397,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
       </offer>
 
   <offer id="261665">
-        <price>94900</price>
+        <price>95900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS33685</vendorCode>
         <picture>https://img.al-style.kz/33685_1.jpg</picture>
@@ -22557,11 +22557,11 @@ PoE
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="265376">
-        <price>159900</price>
+        <price>160900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40914</vendorCode>
         <picture>https://img.al-style.kz/40914_1.jpg</picture>
@@ -22586,7 +22586,7 @@ PoE
       </offer>
 
   <offer id="265377">
-        <price>190900</price>
+        <price>192900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40915</vendorCode>
         <picture>https://img.al-style.kz/40915_1.jpg</picture>
@@ -22611,7 +22611,7 @@ PoE
       </offer>
 
   <offer id="265378">
-        <price>190900</price>
+        <price>192900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40916</vendorCode>
         <picture>https://img.al-style.kz/40916_1.jpg</picture>
@@ -22636,7 +22636,7 @@ PoE
       </offer>
 
   <offer id="265379">
-        <price>190900</price>
+        <price>192900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40917</vendorCode>
         <picture>https://img.al-style.kz/40917_1.jpg</picture>
@@ -22717,7 +22717,7 @@ PoE
       </offer>
 
   <offer id="265936">
-        <price>110900</price>
+        <price>111900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS41481</vendorCode>
         <picture>https://img.al-style.kz/41481_1.jpg</picture>
@@ -22846,7 +22846,7 @@ PoE
       </offer>
 
   <offer id="265998">
-        <price>220900</price>
+        <price>228900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS41544</vendorCode>
         <picture>https://img.al-style.kz/41544_1.jpg</picture>
@@ -22873,7 +22873,7 @@ PoE
       </offer>
 
   <offer id="266024">
-        <price>184900</price>
+        <price>186900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS41579</vendorCode>
         <picture>https://img.al-style.kz/41579_1.jpg</picture>
@@ -22961,7 +22961,7 @@ USB
       </offer>
 
   <offer id="266125">
-        <price>269900</price>
+        <price>272900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS41681</vendorCode>
         <picture>https://img.al-style.kz/41681_1.jpg</picture>
@@ -22977,7 +22977,7 @@ USB
       </offer>
 
   <offer id="266126">
-        <price>25900</price>
+        <price>26900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS41682</vendorCode>
         <picture>https://img.al-style.kz/41682_1.jpg</picture>
@@ -24530,7 +24530,7 @@ USB
       </offer>
 
   <offer id="266713">
-        <price>51900</price>
+        <price>52900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42265</vendorCode>
         <picture>https://img.al-style.kz/42265_1.jpg</picture>
@@ -24557,7 +24557,7 @@ USB
       </offer>
 
   <offer id="266714">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42266</vendorCode>
         <picture>https://img.al-style.kz/42266_1.jpg</picture>
@@ -24586,7 +24586,7 @@ USB
       </offer>
 
   <offer id="266715">
-        <price>51900</price>
+        <price>52900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42267</vendorCode>
         <picture>https://img.al-style.kz/42267_1.jpg</picture>
@@ -24610,7 +24610,7 @@ USB
       </offer>
 
   <offer id="266716">
-        <price>106900</price>
+        <price>107900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42268</vendorCode>
         <picture>https://img.al-style.kz/42268_1.jpg</picture>
@@ -24637,7 +24637,7 @@ USB
       </offer>
 
   <offer id="266717">
-        <price>84900</price>
+        <price>88900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42269</vendorCode>
         <picture>https://img.al-style.kz/42269_1.jpg</picture>
@@ -24665,7 +24665,7 @@ USB
       </offer>
 
   <offer id="266718">
-        <price>66900</price>
+        <price>67900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42270</vendorCode>
         <picture>https://img.al-style.kz/42270_1.jpg</picture>
@@ -24693,7 +24693,7 @@ USB
       </offer>
 
   <offer id="266719">
-        <price>66900</price>
+        <price>67900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42271</vendorCode>
         <picture>https://img.al-style.kz/42271_1.jpg</picture>
@@ -24721,7 +24721,7 @@ USB
       </offer>
 
   <offer id="266720">
-        <price>66900</price>
+        <price>67900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42272</vendorCode>
         <picture>https://img.al-style.kz/42272_1.jpg</picture>
@@ -24749,7 +24749,7 @@ USB
       </offer>
 
   <offer id="266734">
-        <price>596900</price>
+        <price>604900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42296</vendorCode>
         <picture>https://img.al-style.kz/42296_1.jpg</picture>
@@ -24777,7 +24777,7 @@ USB
       </offer>
 
   <offer id="266735">
-        <price>578900</price>
+        <price>585900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42297</vendorCode>
         <picture>https://img.al-style.kz/42297_1.jpg</picture>
@@ -24805,7 +24805,7 @@ USB
       </offer>
 
   <offer id="266736">
-        <price>578900</price>
+        <price>585900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42298</vendorCode>
         <picture>https://img.al-style.kz/42298_1.jpg</picture>
@@ -24833,7 +24833,7 @@ USB
       </offer>
 
   <offer id="266852">
-        <price>1750900</price>
+        <price>1772900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42424</vendorCode>
         <picture>https://img.al-style.kz/42424_1.jpg</picture>
@@ -24909,7 +24909,7 @@ USB
       </offer>
 
   <offer id="266854">
-        <price>547900</price>
+        <price>564900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42426</vendorCode>
         <picture>https://img.al-style.kz/42426_1.jpg</picture>
@@ -24933,7 +24933,7 @@ USB
       </offer>
 
   <offer id="266855">
-        <price>1193900</price>
+        <price>1208900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42427</vendorCode>
         <picture>https://img.al-style.kz/42427_1.jpg</picture>
@@ -24956,7 +24956,7 @@ USB
       </offer>
 
   <offer id="266858">
-        <price>289900</price>
+        <price>292900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42430</vendorCode>
         <picture>https://img.al-style.kz/42430_1.jpg</picture>
@@ -24972,7 +24972,7 @@ USB
       </offer>
 
   <offer id="266861">
-        <price>70900</price>
+        <price>71900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42433</vendorCode>
         <picture>https://img.al-style.kz/42433_1.jpg</picture>
@@ -24997,7 +24997,7 @@ USB
       </offer>
 
   <offer id="266862">
-        <price>201900</price>
+        <price>203900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42434</vendorCode>
         <picture>https://img.al-style.kz/42434_1.jpg</picture>
@@ -25020,7 +25020,7 @@ USB
       </offer>
 
   <offer id="266864">
-        <price>2820900</price>
+        <price>2855900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42436</vendorCode>
         <picture>https://img.al-style.kz/42436_1.jpg</picture>
@@ -25072,7 +25072,7 @@ USB
       </offer>
 
   <offer id="266865">
-        <price>3573900</price>
+        <price>3618900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42437</vendorCode>
         <picture>https://img.al-style.kz/42437_1.jpg</picture>
@@ -25177,7 +25177,7 @@ USB
       </offer>
 
   <offer id="266921">
-        <price>3249900</price>
+        <price>3290900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42480</vendorCode>
         <picture>https://img.al-style.kz/42480_1.jpg</picture>
@@ -25230,7 +25230,7 @@ USB
       </offer>
 
   <offer id="266922">
-        <price>3728900</price>
+        <price>3775900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42481</vendorCode>
         <picture>https://img.al-style.kz/42481_1.jpg</picture>
@@ -25307,7 +25307,7 @@ USB
       </offer>
 
   <offer id="266924">
-        <price>523900</price>
+        <price>529900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42483</vendorCode>
         <picture>https://img.al-style.kz/42483_1.jpg</picture>
@@ -25330,7 +25330,7 @@ USB
       </offer>
 
   <offer id="266925">
-        <price>978900</price>
+        <price>990900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42484</vendorCode>
         <picture>https://img.al-style.kz/42484_1.jpg</picture>
@@ -25353,7 +25353,7 @@ USB
       </offer>
 
   <offer id="266928">
-        <price>65900</price>
+        <price>66900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42487</vendorCode>
         <picture>https://img.al-style.kz/42487_1.jpg</picture>
@@ -25380,7 +25380,7 @@ USB
       </offer>
 
   <offer id="266929">
-        <price>101900</price>
+        <price>102900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42488</vendorCode>
         <picture>https://img.al-style.kz/42488_1.jpg</picture>
@@ -25407,7 +25407,7 @@ USB
       </offer>
 
   <offer id="266930">
-        <price>101900</price>
+        <price>102900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42489</vendorCode>
         <picture>https://img.al-style.kz/42489_1.jpg</picture>
@@ -25434,7 +25434,7 @@ USB
       </offer>
 
   <offer id="266931">
-        <price>101900</price>
+        <price>102900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42490</vendorCode>
         <picture>https://img.al-style.kz/42490_1.jpg</picture>
@@ -25461,7 +25461,7 @@ USB
       </offer>
 
   <offer id="266932">
-        <price>215900</price>
+        <price>218900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42491</vendorCode>
         <picture>https://img.al-style.kz/42491_1.jpg</picture>
@@ -26259,7 +26259,7 @@ USB
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="267123">
@@ -26320,7 +26320,7 @@ USB
       </offer>
 
   <offer id="267210">
-        <price>166900</price>
+        <price>171900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42276</vendorCode>
         <picture>https://img.al-style.kz/42276_1.jpg</picture>
@@ -26347,7 +26347,7 @@ USB
       </offer>
 
   <offer id="267211">
-        <price>135900</price>
+        <price>136900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42277</vendorCode>
         <picture>https://img.al-style.kz/42277_1.jpg</picture>
@@ -26375,7 +26375,7 @@ USB
       </offer>
 
   <offer id="267212">
-        <price>135900</price>
+        <price>136900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42278</vendorCode>
         <picture>https://img.al-style.kz/42278_1.jpg</picture>
@@ -26403,7 +26403,7 @@ USB
       </offer>
 
   <offer id="267213">
-        <price>135900</price>
+        <price>136900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42279</vendorCode>
         <picture>https://img.al-style.kz/42279_1.jpg</picture>
@@ -26772,7 +26772,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
       </offer>
 
   <offer id="267756">
-        <price>158900</price>
+        <price>160900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS43243</vendorCode>
         <picture>https://img.al-style.kz/43243_1.jpg</picture>
@@ -26939,7 +26939,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
       </offer>
 
   <offer id="268520">
-        <price>384900</price>
+        <price>389900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44020</vendorCode>
         <picture>https://img.al-style.kz/44020_1.jpg</picture>
@@ -27739,7 +27739,7 @@ GMX24C144 также оснащен предустановками многовходовых разъемов GameMax, которые 
       </offer>
 
   <offer id="283547">
-        <price>53900</price>
+        <price>54900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44447</vendorCode>
         <picture>https://img.al-style.kz/44447_1.jpg</picture>
@@ -27828,7 +27828,7 @@ GMX24C144 также оснащен предустановками многовходовых разъемов GameMax, которые 
       </offer>
 
   <offer id="283652">
-        <price>269900</price>
+        <price>272900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42281</vendorCode>
         <picture>https://img.al-style.kz/42281_1.jpg</picture>
@@ -27846,7 +27846,7 @@ GMX24C144 также оснащен предустановками многовходовых разъемов GameMax, которые 
       </offer>
 
   <offer id="283680">
-        <price>163900</price>
+        <price>165900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS45720</vendorCode>
         <picture>https://img.al-style.kz/45720_1.jpg</picture>
@@ -27870,7 +27870,7 @@ GMX24C144 также оснащен предустановками многовходовых разъемов GameMax, которые 
       </offer>
 
   <offer id="283681">
-        <price>48900</price>
+        <price>49900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS45721</vendorCode>
         <picture>https://img.al-style.kz/45721_1.jpg</picture>
@@ -27999,7 +27999,7 @@ Quad HD (1440p) VESA DisplayHDR™ 400.
       </offer>
 
   <offer id="358903">
-        <price>207900</price>
+        <price>209900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS46038</vendorCode>
         <picture>https://img.al-style.kz/46038_1.jpg</picture>
@@ -28152,7 +28152,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359834">
-        <price>62900</price>
+        <price>63900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32426</vendorCode>
         <picture>https://img.al-style.kz/32426_1.jpg</picture>
@@ -28179,7 +28179,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359849">
-        <price>78900</price>
+        <price>79900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32416</vendorCode>
         <picture>https://img.al-style.kz/32416_1.jpg</picture>
@@ -28206,7 +28206,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359850">
-        <price>76900</price>
+        <price>77900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32417</vendorCode>
         <picture>https://img.al-style.kz/32417_1.jpg</picture>
@@ -28233,7 +28233,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359851">
-        <price>265900</price>
+        <price>268900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32418</vendorCode>
         <picture>https://img.al-style.kz/32418_1.jpg</picture>
@@ -28258,7 +28258,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359852">
-        <price>62900</price>
+        <price>63900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32425</vendorCode>
         <picture>https://img.al-style.kz/32425_1.jpg</picture>
@@ -28285,7 +28285,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359853">
-        <price>64900</price>
+        <price>65900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32427</vendorCode>
         <picture>https://img.al-style.kz/32427_1.jpg</picture>
@@ -28312,7 +28312,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359854">
-        <price>153900</price>
+        <price>154900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32429</vendorCode>
         <picture>https://img.al-style.kz/32429_1.jpg</picture>
@@ -28341,7 +28341,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359855">
-        <price>189900</price>
+        <price>192900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32430</vendorCode>
         <picture>https://img.al-style.kz/32430_1.jpg</picture>
@@ -28370,7 +28370,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359856">
-        <price>214900</price>
+        <price>216900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32431</vendorCode>
         <picture>https://img.al-style.kz/32431_1.jpg</picture>
@@ -28399,7 +28399,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359857">
-        <price>201900</price>
+        <price>203900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32432</vendorCode>
         <picture>https://img.al-style.kz/32432_1.jpg</picture>
@@ -28457,7 +28457,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359859">
-        <price>71900</price>
+        <price>72900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32459</vendorCode>
         <picture>https://img.al-style.kz/32459_1.jpg</picture>
@@ -28515,7 +28515,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359861">
-        <price>71900</price>
+        <price>72900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32461</vendorCode>
         <picture>https://img.al-style.kz/32461_1.jpg</picture>
@@ -28544,7 +28544,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359867">
-        <price>149900</price>
+        <price>151900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32428</vendorCode>
         <picture>https://img.al-style.kz/32428_1.jpg</picture>
@@ -28570,7 +28570,7 @@ Windows Professional 11
       </offer>
 
   <offer id="359876">
-        <price>141900</price>
+        <price>143900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32419</vendorCode>
         <picture>https://img.al-style.kz/32419_1.jpg</picture>
@@ -28973,7 +28973,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360364">
-        <price>233900</price>
+        <price>236900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42707</vendorCode>
         <picture>https://img.al-style.kz/42707_1.jpg</picture>
@@ -29107,7 +29107,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360369">
-        <price>148900</price>
+        <price>150900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS47609</vendorCode>
         <picture>https://img.al-style.kz/47609_1.jpg</picture>
@@ -29135,7 +29135,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360370">
-        <price>883900</price>
+        <price>893900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35328</vendorCode>
         <picture>https://img.al-style.kz/35328_1.jpg</picture>
@@ -29158,7 +29158,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360371">
-        <price>251900</price>
+        <price>254900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS41571</vendorCode>
         <picture>https://img.al-style.kz/41571_1.jpg</picture>
@@ -29221,7 +29221,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360488">
-        <price>202900</price>
+        <price>204900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS39083</vendorCode>
         <picture>https://img.al-style.kz/39083_1.jpg</picture>
@@ -29316,7 +29316,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360517">
-        <price>162900</price>
+        <price>164900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40536</vendorCode>
         <picture>https://img.al-style.kz/40536_1.jpg</picture>
@@ -29343,7 +29343,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360520">
-        <price>598900</price>
+        <price>605900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40622</vendorCode>
         <picture>https://img.al-style.kz/40622_1.jpg</picture>
@@ -29370,7 +29370,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360521">
-        <price>598900</price>
+        <price>605900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40623</vendorCode>
         <picture>https://img.al-style.kz/40623_1.jpg</picture>
@@ -29397,7 +29397,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360522">
-        <price>598900</price>
+        <price>605900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40624</vendorCode>
         <picture>https://img.al-style.kz/40624_1.jpg</picture>
@@ -29424,7 +29424,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360523">
-        <price>598900</price>
+        <price>605900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40625</vendorCode>
         <picture>https://img.al-style.kz/40625_1.jpg</picture>
@@ -29512,7 +29512,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360573">
-        <price>578900</price>
+        <price>585900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42292</vendorCode>
         <picture>https://img.al-style.kz/42292_1.jpg</picture>
@@ -29540,7 +29540,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360574">
-        <price>578900</price>
+        <price>585900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42293</vendorCode>
         <picture>https://img.al-style.kz/42293_1.jpg</picture>
@@ -29568,7 +29568,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360575">
-        <price>578900</price>
+        <price>585900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42294</vendorCode>
         <picture>https://img.al-style.kz/42294_1.jpg</picture>
@@ -29596,7 +29596,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360576">
-        <price>578900</price>
+        <price>585900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42295</vendorCode>
         <picture>https://img.al-style.kz/42295_1.jpg</picture>
@@ -29624,7 +29624,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360578">
-        <price>350900</price>
+        <price>354900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42428</vendorCode>
         <picture>https://img.al-style.kz/42428_1.jpg</picture>
@@ -29639,7 +29639,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360579">
-        <price>81900</price>
+        <price>82900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42429</vendorCode>
         <picture>https://img.al-style.kz/42429_1.jpg</picture>
@@ -29884,7 +29884,7 @@ Microsoft Windows 11
       </offer>
 
   <offer id="360680">
-        <price>1262900</price>
+        <price>1278900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS46502</vendorCode>
         <picture>https://img.al-style.kz/46502_1.jpg</picture>
@@ -30052,7 +30052,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="360729">
-        <price>76900</price>
+        <price>77900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32415</vendorCode>
         <picture>https://img.al-style.kz/32415_1.jpg</picture>
@@ -30123,7 +30123,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="360808">
-        <price>190900</price>
+        <price>192900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS35748</vendorCode>
         <picture>https://img.al-style.kz/35748_1.jpg</picture>
@@ -30151,7 +30151,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
       </offer>
 
   <offer id="360827">
-        <price>181900</price>
+        <price>183900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS36391</vendorCode>
         <picture>https://img.al-style.kz/36391_1.jpg</picture>
@@ -30264,7 +30264,7 @@ USB
       </offer>
 
   <offer id="360877">
-        <price>56900</price>
+        <price>59900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS40997</vendorCode>
         <picture>https://img.al-style.kz/40997_1.jpg</picture>
@@ -30396,7 +30396,7 @@ USB
       </offer>
 
   <offer id="360943">
-        <price>191900</price>
+        <price>193900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS43972</vendorCode>
         <picture>https://img.al-style.kz/43972_1.jpg</picture>
@@ -30527,7 +30527,7 @@ USB
       </offer>
 
   <offer id="361007">
-        <price>1356900</price>
+        <price>1372900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS46939</vendorCode>
         <picture>https://img.al-style.kz/46939_1.jpg</picture>
@@ -30587,7 +30587,7 @@ USB
       </offer>
 
   <offer id="361008">
-        <price>1122900</price>
+        <price>1135900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS46940</vendorCode>
         <picture>https://img.al-style.kz/46940_1.jpg</picture>
@@ -30668,7 +30668,7 @@ USB
       </offer>
 
   <offer id="361042">
-        <price>96900</price>
+        <price>97900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS38575</vendorCode>
         <picture>https://img.al-style.kz/38575_1.jpg</picture>
@@ -32143,7 +32143,7 @@ MoGo Pro+ быстро выполнит автофокусировку при включении или перемещении - благод
 - Гарантия: 1 год
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="374237">
@@ -32183,8 +32183,84 @@ MoGo Pro+ быстро выполнит автофокусировку при включении или перемещении - благод
         <available>true</available>
       </offer>
 
+  <offer id="375319">
+        <price>161900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS48428</vendorCode>
+        <picture>https://img.al-style.kz/48428_1.jpg</picture>
+        <picture>https://img.al-style.kz/48428_2.jpg</picture>
+        <picture>https://img.al-style.kz/48428_3.jpg</picture>
+        <vendor>Byintek</vendor>
+        <name>Проектор BYINTEK K45 Smart ( с автофокусом)</name>
+        <description>Проектор BYINTEK K45 Smart (автофокус, 950 ANSI, Full HD)
+
+Смарт-проектор на базе 5&#8243; LCD с реальным разрешением 1920&#215;1080, яркостью 950 ANSI лм и долговечным LED-источником (до 30 000 ч). Поддерживает автофокус, всенаправленную автокоррекцию трапеции, ручную угловую коррекцию, электронный зум 65–100%, а также беспроводной экран и предустановленные приложения.
+
+Ключевые особенности
+
+  Изображение: 1920&#215;1080 (Real Full HD), контраст 18 000:1, 950 ANSI лм.
+  Автонастройка: автофокус; автокоррекция трапецеидальных искажений по всем направлениям; ручная угловая коррекция.
+  Зум: дистанционный электронный 65–100%.
+  Смарт-платформа: Android 9.0, CPU MTK 9255 (CA53&#215;4), GPU Mali-G52, 1 ГБ RAM + 32 ГБ ROM.
+  Беспроводной экран: BirdCast/Miracast (смартфон/планшет/ПК), двухдиапазонный Wi-Fi 2.4/5 ГГц, Bluetooth 5.0.
+  Приложения: магазин App Store, предустановлены YouTube, Netflix, Prime Video; OfficeSuite для документов.
+  Звук: стереодинамики 2&#215;5 Вт; выход 3.5 мм.
+
+Проекция и установка
+
+  Размер экрана: 40&#8243;–230&#8243;
+  Дистанция: 1.24–6.55 м
+  Коэффициент проекции: 1.3:1
+  Формат: 16:9
+  Способы установки: Front/Ceiling/Rear/Rear Ceiling
+
+Интерфейсы
+
+  HDMI &#215;2
+  USB 2.0 &#215;2 (поддержка носителей/SSD)
+  Аудиовыход 3.5 мм
+
+Технические характеристики
+
+  ТехнологияLCD
+  Разрешение1920&#215;1080 (Real Full HD)
+  Яркость950 ANSI лм
+  Контраст18 000:1
+  Источник светаLED, срок службы до 30 000 ч
+  Процессор/видеоядроMTK 9255 (CA53&#215;4), Mali-G52
+  Память1 ГБ RAM + 32 ГБ ROM
+  ОСAndroid 9.0
+  СетиWi-Fi 2.4/5.0 ГГц, Bluetooth 5.0
+  Аудио2&#215;5 Вт, выход 3.5 мм
+  ПитаниеAC100–240 В, 50/60 Гц; потребление 133 Вт
+  Габариты29 &#215; 22 &#215; 9.3 см
+  Вес нетто2.2 кг
+
+Поддержка файлов (USB)
+
+  Видео: avi, mpg, mpeg, vob, mp4, mpeg4, m4v, wmv, rm, rv, rmvb, flv, mov, 3gp, qt, asf, mkv, divx, ts, m2ts, mts
+  Аудио: wav, wma, asf, aac, ac3, mp1, mp3, ra, flac, m4a
+  Фото: bmp, png, jpg, jpeg, jpe
+  Документы: PPT, Word, Excel, PDF
+
+Комплектация
+
+  Проектор BYINTEK K45 Smart
+  Пульт ДУ
+  Блок питания
+  Руководство пользователя
+
+Примечание: доступность/работа сторонних приложений зависит от региона и обновлений сервисов. Для экрана свыше 120&#8243; рекомендовано затемнение помещения.
+
+Характеристики:
+- Гарантия: 1 год
+- Состав: Пластик, стекло</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
   <offer id="376114">
-        <price>147900</price>
+        <price>167900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS36121</vendorCode>
         <picture>https://img.al-style.kz/36121_1.jpg</picture>
@@ -33734,7 +33810,7 @@ Keor SPE Tower может быть подключен к ПК через SNMP, USB и последовательный порт
 - Гарантия: 2 года
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="385612">
@@ -34984,6 +35060,55 @@ HDMI x1
         <available>false</available>
       </offer>
 
+  <offer id="389991">
+        <price>176900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS56451</vendorCode>
+        <picture>https://img.al-style.kz/56451_1.jpg</picture>
+        <picture>https://img.al-style.kz/56451_2.jpg</picture>
+        <vendor>Byintek</vendor>
+        <name>Проектор BYINTEK P70</name>
+        <description>Проектор BYINTEK P70
+Мощный портативный проектор с собственным разрешением 1080p, высокой яркостью, полным набором портов дисплея и длительным сроком службы, идеально подходящий для иммерсивных домашних развлечений или конференц-залов.
+Оптические параметры
+
+Световой двигатель: TI 0,23 дюйма WVGA DMD
+Источник света: OSRAM RGB 3LED
+Срок службы света: 30000 часов
+Яркость: 380 ANSI-люмен
+Контрастность: 5000:1
+Разрешение: 960*540 (WVGA)
+Соотношение сторон: 16:9/4:3
+Вне оси: 80%
+Коэффициент броска: 1,07:1
+Размер проекции: 30-200 дюймов
+Расстояние проецирования: 0,2 4,71 м
+Режим фокусировки: Auyo-фокус
+Зум: Дистанционный электрический зум
+6D трапецеидальное искажение: автоматическое/ручное трапецеидальное искажение, ручное угловое трапецеидальное искажение
+
+Аппаратное обеспечение
+
+Динамики - 5 Вт*1
+Режим проецирования: спереди/сзади/потолок спереди/потолок сзади
+Коррекция трапецеидальных искажений: автоматическая/ручная вертикальная трапецеидальная коррекция, ручная угловая трапецеидальная коррекция.
+Потребляемая мощность: 10 Вт
+Размер: 8,2*8,2*14,2 см
+Вес нетто: 0,68 кг
+
+Интерфейс
+
+1* USB 2.0
+1* USB 3.0
+1* HD
+1* Type-C
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
   <offer id="390131">
         <price>679900</price>
         <currencyId>KZT</currencyId>
@@ -35275,7 +35400,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390436">
-        <price>96900</price>
+        <price>97900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56883</vendorCode>
         <picture>https://img.al-style.kz/56883_1.jpg</picture>
@@ -35302,7 +35427,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390437">
-        <price>148900</price>
+        <price>150900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56884</vendorCode>
         <picture>https://img.al-style.kz/56884_1.jpg</picture>
@@ -35329,7 +35454,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390438">
-        <price>191900</price>
+        <price>193900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56885</vendorCode>
         <picture>https://img.al-style.kz/56885_1.jpg</picture>
@@ -35356,7 +35481,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390439">
-        <price>69900</price>
+        <price>70900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56886</vendorCode>
         <picture>https://img.al-style.kz/56886_1.jpg</picture>
@@ -35381,7 +35506,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390440">
-        <price>158900</price>
+        <price>160900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56887</vendorCode>
         <picture>https://img.al-style.kz/56887_1.jpg</picture>
@@ -35397,7 +35522,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390441">
-        <price>293900</price>
+        <price>297900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56888</vendorCode>
         <picture>https://img.al-style.kz/56888_1.jpg</picture>
@@ -35415,7 +35540,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390442">
-        <price>160900</price>
+        <price>162900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56889</vendorCode>
         <picture>https://img.al-style.kz/56889_1.jpg</picture>
@@ -35453,7 +35578,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390444">
-        <price>190900</price>
+        <price>192900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56891</vendorCode>
         <picture>https://img.al-style.kz/56891_1.jpg</picture>
@@ -35469,7 +35594,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390445">
-        <price>614900</price>
+        <price>621900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56892</vendorCode>
         <picture>https://img.al-style.kz/56892_1.jpg</picture>
@@ -35522,7 +35647,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390446">
-        <price>97900</price>
+        <price>98900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56893</vendorCode>
         <picture>https://img.al-style.kz/56893_1.jpg</picture>
@@ -35549,7 +35674,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390447">
-        <price>101900</price>
+        <price>102900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56894</vendorCode>
         <picture>https://img.al-style.kz/56894_1.jpg</picture>
@@ -35576,7 +35701,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390448">
-        <price>101900</price>
+        <price>102900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56895</vendorCode>
         <picture>https://img.al-style.kz/56895_1.jpg</picture>
@@ -35603,7 +35728,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390449">
-        <price>101900</price>
+        <price>102900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56896</vendorCode>
         <picture>https://img.al-style.kz/56896_1.jpg</picture>
@@ -35630,7 +35755,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390450">
-        <price>116900</price>
+        <price>117900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56897</vendorCode>
         <picture>https://img.al-style.kz/56897_1.jpg</picture>
@@ -35659,7 +35784,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390451">
-        <price>132900</price>
+        <price>134900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56898</vendorCode>
         <picture>https://img.al-style.kz/56898_1.jpg</picture>
@@ -35688,7 +35813,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390452">
-        <price>132900</price>
+        <price>134900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56899</vendorCode>
         <picture>https://img.al-style.kz/56899_1.jpg</picture>
@@ -35717,7 +35842,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390453">
-        <price>132900</price>
+        <price>134900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56900</vendorCode>
         <picture>https://img.al-style.kz/56900_1.jpg</picture>
@@ -35746,7 +35871,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390454">
-        <price>157900</price>
+        <price>159900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56901</vendorCode>
         <picture>https://img.al-style.kz/56901_1.jpg</picture>
@@ -35773,7 +35898,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390455">
-        <price>237900</price>
+        <price>240900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56902</vendorCode>
         <picture>https://img.al-style.kz/56902_1.jpg</picture>
@@ -35800,7 +35925,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390456">
-        <price>160900</price>
+        <price>162900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56903</vendorCode>
         <picture>https://img.al-style.kz/56903_1.jpg</picture>
@@ -35821,7 +35946,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390457">
-        <price>176900</price>
+        <price>178900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56904</vendorCode>
         <picture>https://img.al-style.kz/56904_1.jpg</picture>
@@ -35837,7 +35962,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390458">
-        <price>186900</price>
+        <price>188900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56905</vendorCode>
         <picture>https://img.al-style.kz/56905_1.jpg</picture>
@@ -35858,7 +35983,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390459">
-        <price>830900</price>
+        <price>840900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56906</vendorCode>
         <picture>https://img.al-style.kz/56906_1.jpg</picture>
@@ -35911,7 +36036,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390460">
-        <price>84900</price>
+        <price>88900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56907</vendorCode>
         <picture>https://img.al-style.kz/56907_1.jpg</picture>
@@ -35938,7 +36063,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390461">
-        <price>138900</price>
+        <price>139900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56908</vendorCode>
         <picture>https://img.al-style.kz/56908_1.jpg</picture>
@@ -35965,7 +36090,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390462">
-        <price>138900</price>
+        <price>139900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56909</vendorCode>
         <picture>https://img.al-style.kz/56909_1.jpg</picture>
@@ -35992,7 +36117,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390463">
-        <price>138900</price>
+        <price>139900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56910</vendorCode>
         <picture>https://img.al-style.kz/56910_1.jpg</picture>
@@ -36019,7 +36144,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390464">
-        <price>189900</price>
+        <price>191900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56911</vendorCode>
         <picture>https://img.al-style.kz/56911_1.jpg</picture>
@@ -36046,7 +36171,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390465">
-        <price>218900</price>
+        <price>221900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56912</vendorCode>
         <picture>https://img.al-style.kz/56912_1.jpg</picture>
@@ -36073,7 +36198,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390466">
-        <price>218900</price>
+        <price>221900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56913</vendorCode>
         <picture>https://img.al-style.kz/56913_1.jpg</picture>
@@ -36100,7 +36225,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390467">
-        <price>218900</price>
+        <price>221900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56914</vendorCode>
         <picture>https://img.al-style.kz/56914_1.jpg</picture>
@@ -36175,7 +36300,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390470">
-        <price>216900</price>
+        <price>219900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56917</vendorCode>
         <picture>https://img.al-style.kz/56917_1.jpg</picture>
@@ -36200,7 +36325,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
       </offer>
 
   <offer id="390471">
-        <price>210900</price>
+        <price>213900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS56918</vendorCode>
         <picture>https://img.al-style.kz/56918_1.jpg</picture>
@@ -36497,7 +36622,7 @@ Bluetooth: -
       </offer>
 
   <offer id="391514">
-        <price>362900</price>
+        <price>366900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS57958</vendorCode>
         <picture>https://img.al-style.kz/57958_1.jpg</picture>
@@ -36545,7 +36670,7 @@ Xerox Easy Assist и приложение Xerox Print and Scan Experience делают настройку 
       </offer>
 
   <offer id="391515">
-        <price>491900</price>
+        <price>497900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS57959</vendorCode>
         <picture>https://img.al-style.kz/57959_1.jpg</picture>
@@ -36594,7 +36719,7 @@ Xerox Easy Assist и приложение Xerox Print and Scan Experience делают настройку 
       </offer>
 
   <offer id="391516">
-        <price>560900</price>
+        <price>567900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS57960</vendorCode>
         <picture>https://img.al-style.kz/57960_1.jpg</picture>
@@ -36916,7 +37041,7 @@ USB-C x1
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392769">
@@ -37995,7 +38120,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392919">
@@ -38131,7 +38256,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392937">
@@ -38262,7 +38387,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Операционная система: Windows 11 Home
 - Процессор: Intel Core i5-12450H</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="393185">
@@ -38746,7 +38871,7 @@ Canon imagePROGRAF TM-250Canon imagePROGRAF TM-255Canon imagePROGRAF TM-350 Cano
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="393302">
@@ -38787,7 +38912,7 @@ Canon imagePROGRAF TM-250Canon imagePROGRAF TM-255Canon imagePROGRAF TM-350 Cano
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="393303">
@@ -40428,7 +40553,7 @@ Canon imageRUNNER ADVANCE DX C5840iCanon imageRUNNER ADVANCE DX C5850iCanon imag
 - Емкость выходных лотков: 250 листов
 - Скорость сканирования: до 35 изобр./мин.</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393495">
@@ -41809,7 +41934,7 @@ Canon varioPrint 6160Canon varioPrint 6200Canon varioPrint 6250Canon varioPrint 
       </offer>
 
   <offer id="393692">
-        <price>666900</price>
+        <price>674900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS60161</vendorCode>
         <picture>https://img.al-style.kz/60161_1.jpg</picture>
@@ -44399,7 +44524,7 @@ Canon imageRUNNER ADVANCE 6055Canon imageRUNNER ADVANCE 6065Canon imageRUNNER AD
       </offer>
 
   <offer id="396477">
-        <price>103900</price>
+        <price>104900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61166</vendorCode>
         <picture>https://img.al-style.kz/61166_1.jpg</picture>
@@ -44905,7 +45030,7 @@ Daker DK UPS Plus — это однофазный Online источник бесперебойного питания. Подхо
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396682">
@@ -45327,7 +45452,7 @@ USB кабель
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396738">
@@ -46248,7 +46373,7 @@ USB-кабель
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396762">
@@ -47593,7 +47718,7 @@ CANON imageRUNNER ADVANCE DX C3720iCANON imageRUNNER ADVANCE DX C3822iCANON imag
       </offer>
 
   <offer id="397386">
-        <price>191900</price>
+        <price>194900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61988</vendorCode>
         <picture>https://img.al-style.kz/61988_1.jpg</picture>
@@ -47620,7 +47745,7 @@ CANON imageRUNNER ADVANCE DX C3720iCANON imageRUNNER ADVANCE DX C3822iCANON imag
       </offer>
 
   <offer id="397387">
-        <price>209900</price>
+        <price>212900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61989</vendorCode>
         <picture>https://img.al-style.kz/61989_1.jpg</picture>
@@ -47647,7 +47772,7 @@ CANON imageRUNNER ADVANCE DX C3720iCANON imageRUNNER ADVANCE DX C3822iCANON imag
       </offer>
 
   <offer id="397388">
-        <price>209900</price>
+        <price>212900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61990</vendorCode>
         <picture>https://img.al-style.kz/61990_1.jpg</picture>
@@ -47674,7 +47799,7 @@ CANON imageRUNNER ADVANCE DX C3720iCANON imageRUNNER ADVANCE DX C3822iCANON imag
       </offer>
 
   <offer id="397389">
-        <price>209900</price>
+        <price>212900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61991</vendorCode>
         <picture>https://img.al-style.kz/61991_1.jpg</picture>
@@ -47701,7 +47826,7 @@ CANON imageRUNNER ADVANCE DX C3720iCANON imageRUNNER ADVANCE DX C3822iCANON imag
       </offer>
 
   <offer id="397390">
-        <price>159900</price>
+        <price>160900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61992</vendorCode>
         <picture>https://img.al-style.kz/61992_1.jpg</picture>
@@ -47728,7 +47853,7 @@ CANON imageRUNNER ADVANCE DX C3720iCANON imageRUNNER ADVANCE DX C3822iCANON imag
       </offer>
 
   <offer id="397391">
-        <price>182900</price>
+        <price>185900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61993</vendorCode>
         <picture>https://img.al-style.kz/61993_1.jpg</picture>
@@ -47796,7 +47921,7 @@ CANON imageRUNNER ADVANCE DX C3720iCANON imageRUNNER ADVANCE DX C3822iCANON imag
       </offer>
 
   <offer id="397394">
-        <price>159900</price>
+        <price>161900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61996</vendorCode>
         <picture>https://img.al-style.kz/61996_1.jpg</picture>
@@ -47817,7 +47942,7 @@ CANON imageRUNNER ADVANCE DX C3720iCANON imageRUNNER ADVANCE DX C3822iCANON imag
       </offer>
 
   <offer id="397395">
-        <price>372900</price>
+        <price>376900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS61997</vendorCode>
         <picture>https://img.al-style.kz/61997_1.jpg</picture>
@@ -50106,7 +50231,7 @@ Canon imagePROGRAF TZ-30000
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="398127">
@@ -50200,7 +50325,7 @@ Canon imagePROGRAF TZ-30000
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="398247">
@@ -50888,7 +51013,7 @@ sFCOT: прибл. за 24 сек. sESAT: прибл. 3,5 изобр./мин
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="398672">
@@ -51856,7 +51981,7 @@ Canon ImageRUNNER C1225Canon ImageRUNNER C1225iFCanon imageClass MF810CCanon ima
 Характеристики
 Модель: EPC-057
 Аналог модели: Canon 057
-Совместимость: Для принтеров Canon i-SENSYS LBP220/223/226/228, MF440/443/446/449
+Совместимость: Для принтеров Canon i-SENSYS LBP223/226/228, MF443/446/449
 Ресурс: 3100 страниц (А4)
 Наличие чипа: Да 
 
@@ -52285,7 +52410,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
       </offer>
 
   <offer id="399935">
-        <price>3915900</price>
+        <price>3964900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS64241</vendorCode>
         <picture>https://img.al-style.kz/64241_1.jpg</picture>
@@ -52353,7 +52478,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
       </offer>
 
   <offer id="399936">
-        <price>4777900</price>
+        <price>4837900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS64242</vendorCode>
         <picture>https://img.al-style.kz/64242_1.jpg</picture>
@@ -52422,7 +52547,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
       </offer>
 
   <offer id="399937">
-        <price>6377900</price>
+        <price>6458900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS64243</vendorCode>
         <picture>https://img.al-style.kz/64243_1.jpg</picture>
@@ -52489,7 +52614,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
       </offer>
 
   <offer id="399938">
-        <price>10562900</price>
+        <price>10696900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS64244</vendorCode>
         <picture>https://img.al-style.kz/64244_1.jpg</picture>
@@ -52556,7 +52681,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
       </offer>
 
   <offer id="399939">
-        <price>4826900</price>
+        <price>4887900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS64245</vendorCode>
         <picture>https://img.al-style.kz/64245_1.jpg</picture>
@@ -52621,7 +52746,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
       </offer>
 
   <offer id="399940">
-        <price>10488900</price>
+        <price>10622900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS64246</vendorCode>
         <picture>https://img.al-style.kz/64246_1.jpg</picture>
@@ -52725,7 +52850,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="399990">
@@ -53325,7 +53450,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="400238">
@@ -53502,7 +53627,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
 - Операционная система: Windows 11 Home
 - Процессор: Intel Core Ultra 7 155H</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="400253">
@@ -54131,7 +54256,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400350">
@@ -55803,7 +55928,7 @@ XG 86TDFMAX148128- это современная интерактивная панель, разработанная для приме
 - Объем встроенной памяти: 128 Гб
 - Операционная система: Android 14</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="401103">
@@ -57003,7 +57128,7 @@ XG 86BCDB138128   - это современная интерактивная панель, разработанная для прим
 - Объем встроенной памяти: 128 Гб
 - Операционная система: Android 13</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="402449">
@@ -57180,7 +57305,7 @@ Canon PIXMA 2540SCanon PIXMA MG2440Canon PIXMA MG2540Canon PIXMA MG2545Canon PIX
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="402520">
@@ -57688,7 +57813,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402909">
-        <price>911900</price>
+        <price>922900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67629</vendorCode>
         <picture>https://img.al-style.kz/67629_1.jpg</picture>
@@ -57705,7 +57830,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402910">
-        <price>135900</price>
+        <price>136900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67630</vendorCode>
         <picture>https://img.al-style.kz/67630_1.jpg</picture>
@@ -57722,7 +57847,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402911">
-        <price>778900</price>
+        <price>788900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67631</vendorCode>
         <picture>https://img.al-style.kz/67631_1.jpg</picture>
@@ -57739,7 +57864,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402912">
-        <price>135900</price>
+        <price>136900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67632</vendorCode>
         <picture>https://img.al-style.kz/67632_1.jpg</picture>
@@ -57756,7 +57881,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402913">
-        <price>211900</price>
+        <price>214900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67633</vendorCode>
         <picture>https://img.al-style.kz/67633_1.jpg</picture>
@@ -57773,7 +57898,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402914">
-        <price>729900</price>
+        <price>738900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67634</vendorCode>
         <picture>https://img.al-style.kz/67634_1.jpg</picture>
@@ -57790,7 +57915,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402915">
-        <price>729900</price>
+        <price>738900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67635</vendorCode>
         <picture>https://img.al-style.kz/67635_1.jpg</picture>
@@ -57807,7 +57932,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402916">
-        <price>64900</price>
+        <price>65900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67636</vendorCode>
         <picture>https://img.al-style.kz/67636_1.jpg</picture>
@@ -57834,7 +57959,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402917">
-        <price>55900</price>
+        <price>56900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67637</vendorCode>
         <picture>https://img.al-style.kz/67637_1.jpg</picture>
@@ -58977,7 +59102,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="403653">
@@ -59013,7 +59138,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="403687">
@@ -59144,6 +59269,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
         <price>1180900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS68528</vendorCode>
+        <picture>https://img.al-style.kz/68528_1.jpg</picture>
         <vendor>APC</vendor>
         <name>Аккумуляторный батарейный модуль APC E3SBTH4</name>
         <description>Комплект батарей высокой емкости для использования с ИБП Easy UPS 3S с внутренними отсеками для батарей и пустым модульным шкафом для батарей для Easy UPS 3S (E3SXR6). Каждый комплект батарей состоит из четырех батарейных модулей емкостью 9 Ач.
@@ -59706,6 +59832,7 @@ Cyborg 15
         <price>10499900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS69246</vendorCode>
+        <picture>https://img.al-style.kz/69246_1.jpg</picture>
         <vendor>Xerox</vendor>
         <name>Комплект обслуживания сканера Xerox 116R00039</name>
         <description>Модель:  116R00039
@@ -60036,7 +60163,7 @@ ScanPad
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="404745">
@@ -62922,7 +63049,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
       </offer>
 
   <offer id="406216">
-        <price>212900</price>
+        <price>214900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS71676</vendorCode>
         <picture>https://img.al-style.kz/71676_1.jpg</picture>
@@ -65757,7 +65884,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
 - Видеовыход: HDMI / VGA
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="409583">
@@ -67364,7 +67491,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410641">
@@ -67392,7 +67519,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410642">
@@ -67476,7 +67603,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410646">
@@ -67504,7 +67631,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410647">
@@ -67532,7 +67659,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410648">
@@ -67560,7 +67687,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410649">
@@ -67784,7 +67911,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410764">
@@ -67840,7 +67967,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410766">
@@ -67896,7 +68023,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="410768">
@@ -68776,7 +68903,7 @@ MateBook D 14 —  Безрамочный экран с режимом защиты зрения. Высокая производител
 - Операционная система: Windows 11 Home
 - Процессор: Intel Core Ultra 5 125H</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="411365">
@@ -69886,9 +70013,10 @@ USB-C x1
       </offer>
 
   <offer id="411989">
-        <price>135900</price>
+        <price>136900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS78787</vendorCode>
+        <picture>https://img.al-style.kz/78787_1.jpg</picture>
         <vendor>Xerox</vendor>
         <name>Комплект инициализации Xerox AltaLink C8230 (097S05274)</name>
         <description>Содержит специальный ключ, который требуется для запуска базового модуля. После завершения процесса инициализации базовый блок продолжает работу как многофункциональное устройство Xerox AltaLink C8230 
@@ -70596,6 +70724,342 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <available>true</available>
       </offer>
 
+  <offer id="414386">
+        <price>255900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS81283</vendorCode>
+        <picture>https://img.al-style.kz/81283_1.jpg</picture>
+        <picture>https://img.al-style.kz/81283_2.jpg</picture>
+        <picture>https://img.al-style.kz/81283_3.jpg</picture>
+        <vendor>Byintek</vendor>
+        <name>Проектор BYINTEK U80</name>
+        <description>Проектор BYINTEK U80 (DLP, Full HD, 500 ANSI, 15000 мА·ч)
+
+Портативный DLP-проектор с настоящим разрешением 1920&#215;1080, яркостью 500 ANSI lm и встроенной батареей 15000 мА·ч. Поддерживает автофокус по технологии TOF, автоматическую/ручную коррекцию трапецеидальных искажений, беспроводную трансляцию с iOS/Android/Windows и работу на Android OS.
+
+Ключевые особенности
+
+  Картинка: USA TI DLP, 1920&#215;1080, контраст 10 000:1, источник света OSRAM RGB+PB 4LED (ресурс до 50 000 ч).
+  Яркость: 500 ANSI люмен — комфортный просмотр в помещении с приглушённым светом.
+  Автофокус TOF: быстрый и точный фокус без ручной подстройки.
+  Коррекция Keystone: вертикаль/горизонт ±40° (авто/ручн.) и угловая коррекция (ручн.).
+  Смарт-функции: Android 9.0, Wi-Fi 2.4/5 ГГц, Bluetooth 5.0, AirPlay/Miracast/E-Share.
+  Звук: встроенные динамики 2&#215;10 Вт; выход 3.5 мм для наушников/акустики.
+  Аккумулятор: до 3 ч (Saving) / ~2 ч (Standard) / ~1.5 ч (Bright) автономной работы.
+  3D: поддержка DLP-Link Active Shutter 3D.
+
+Проекция и установка
+
+  Размер экрана: 11&#8243;–300&#8243;; дистанция: 0.3–8 м; коэффициент проекции: 1.2:1.
+  Форматы сторон: 16:10 / 16:9 / 4:3.
+  Способы установки: фронтальная/задняя, потолочная (Front/Rear, Front Ceiling/Rear Ceiling).
+
+Интерфейсы
+
+  USB 2.0 &#215;1
+  HDMI 2.0 &#215;1
+  Питание DC-in (DC19V&#9107;3.42A)
+  Аудиовыход 3.5 мм
+
+Технические характеристики
+
+  ТехнологияUSA TI DLP
+  Разрешение1920&#215;1080 (Full HD)
+  Яркость500 ANSI lm
+  Контраст10 000:1
+  Источник светаOSRAM RGB+PB 4LED, ресурс до 50 000 ч
+  ОСAndroid 9.0, RAM 2 ГБ + ROM 32 ГБ
+  Беспроводные подключенияWi-Fi 2.4/5 ГГц (Dual-band), Bluetooth 5.0
+  Беспроводной дисплейAirPlay (iOS), Miracast (Android), E-Share (Windows)
+  Потребляемая мощность50 Вт
+  Питание проектораDC19V&#9107;3.42A
+  Питание адаптераAC100–240 В, 50/60 Гц
+  Языки интерфейса33 языка, включая русский
+  Габариты проектора14.6 &#215; 14.4 &#215; 16.1 см
+  Вес проектора1.3 кг
+  Габариты упаковки24 &#215; 22 &#215; 19.5 см
+  Вес упаковки2.05 кг
+
+Комплектация
+
+  Проектор BYINTEK U80
+  Пульт ДУ
+  Блок питания
+  Руководство пользователя
+
+Примечание: яркость и автономность зависят от выбранного режима, условий просмотра и содержимого. Для 3D необходимы совместимые очки DLP-Link (поставляются отдельно).
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
+  <offer id="414388">
+        <price>272900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS81285</vendorCode>
+        <picture>https://img.al-style.kz/81285_1.jpg</picture>
+        <picture>https://img.al-style.kz/81285_2.jpg</picture>
+        <vendor>Byintek</vendor>
+        <name>Проектор BYINTEK U90</name>
+        <description>Проектор BYINTEK U90 (DLP, Full HD, 700 ANSI, 20 800 мА·ч)
+
+Портативный DLP-проектор с реальным разрешением 1920&#215;1080, яркостью 700 ANSI lm и увеличенной батареей 20 800 мА·ч (76.8 Wh). Оснащён быстрым автофокусом TOF, поддержкой MEMC для плавного видео, автоматической/ручной коррекцией трапецеидальных искажений (включая угловую), а также полной смарт-начинкой на Android 11.
+
+Ключевые особенности
+
+  Изображение: USA TI DLP, 1920&#215;1080, контраст 10 000:1, источник света OSRAM RGB+PB 4LED (ресурс до 50 000 ч).
+  Яркость: 700 ANSI люмен — комфортный просмотр в помещении с приглушённым светом.
+  TOF автофокус + MEMC: быстрая фокусировка и повышенная плавность видеоряда.
+  Коррекция Keystone: вертикаль/горизонталь ±40° (авто/ручн.) и угловая ±40° (авто/ручн.).
+  Смарт-функции: Android 11, RAM 2 ГБ + ROM 32 ГБ; Wi-Fi 2.4/5 ГГц, Bluetooth 5.1.
+  Беспроводной/проводной дисплей: AirPlay (iOS), Miracast (Android), tranScreen (Windows); проводное зеркалирование по USB-кабелю.
+  Звук: стереодинамики 2&#215;10 Вт; аудиовыход 3.5 мм.
+  Питание и автономность: батарея 20 800 мА·ч — до ~3.3 ч (Saving) / ~2 ч (Standard) / ~1.75 ч (Bright); питание от адаптера DC19V&#9107;3.42A или по USB-C (20V&#9107;5A).
+  Кронштейн: шаг наклона до 100° для удобной установки.
+
+Проекция и установка
+
+  Размер экрана: 30&#8243;–500&#8243;; дистанция: 0.8–13.33 м; коэффициент проекции: 1.2:1.
+  Форматы сторон: 16:9 / 4:3.
+  Способы установки: фронтальная/задняя, потолочная (Front/Rear, Front Ceiling/Rear Ceiling).
+
+Интерфейсы
+
+  USB 2.0 &#215;2
+  HDMI 2.0 &#215;1
+  Питание: DC-in (19V&#9107;3.42A) и USB-C (20V&#9107;5A)
+  Аудиовыход 3.5 мм
+
+Технические характеристики
+
+  ТехнологияUSA TI DLP
+  Разрешение1920&#215;1080 (Full HD)
+  Яркость700 ANSI lm
+  Контраст10 000:1
+  Источник светаOSRAM RGB+PB 4LED, ресурс до 50 000 ч
+  ОСAndroid 11.0, RAM 2 ГБ + ROM 32 ГБ
+  Беспроводные подключенияWi-Fi 2.4/5 ГГц (Dual-band), Bluetooth 5.1
+  Беспроводной дисплейAirPlay (iOS), Miracast (Android), tranScreen (Windows)
+  Проводное зеркалированиечерез USB-кабель (Wired Synchronous Display)
+  Потребляемая мощность56 Вт
+  Питание проектораDC19V&#9107;3.42A / USB-C 20V&#9107;5A
+  Питание адаптераAC100–240 В, 50/60 Гц
+  Габариты проектора18 &#215; 15 &#215; 19 см
+  Вес проектора1.93 кг
+  Габариты упаковки30 &#215; 27.5 &#215; 20 см
+  Вес упаковки3.028 кг
+  Языки интерфейса33 языка, включая русский
+
+Комплектация
+
+  Проектор BYINTEK U90
+  Пульт дистанционного управления
+  Блок питания
+  Руководство пользователя
+
+Примечание: яркость и время автономной работы зависят от выбранного режима, условий просмотра и контента.
+
+Характеристики:
+- Вес: 3.9
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
+  <offer id="414410">
+        <price>121900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS81309</vendorCode>
+        <picture>https://img.al-style.kz/81309_1.jpg</picture>
+        <picture>https://img.al-style.kz/81309_2.jpg</picture>
+        <picture>https://img.al-style.kz/81309_3.jpg</picture>
+        <vendor>Byintek</vendor>
+        <name>Проектор BYINTEK A22</name>
+        <description>Проектор BYINTEK A22 (LCD, Full HD, 1000 ANSI)
+
+Яркий домашний/офисный проектор Full HD на базе LCD с автофокусом, автоматической геометрией и Smart-функциями на Android 9.0. Поддерживает беспроводной экран (AirPlay/Miracast), двухдиапазонный Wi-Fi и может работать как Bluetooth-колонка. Стереозвук 2&#215;10 Вт и ресурс светодиодов до 30 000 часов.
+
+Ключевые преимущества
+
+  Изображение: 1920&#215;1080, 1000 ANSI лм, контраст 20 000:1, LED-источник (до 30 000 ч).
+  Автофокус и автонастройка: автоматический фокус; автораспознавание экрана и обход препятствий.
+  Геометрия: вертикальная и горизонтальная коррекция ±45° (авто/ручн.); угловая коррекция ±45° (ручн.).
+  Смарт: Android 9.0, 2 ГБ RAM + 32 ГБ ROM.
+  Беспроводной экран: AirPlay (iOS) и Miracast (Android); Wi-Fi 2.4/5 ГГц, Bluetooth 5.0.
+  Звук: встроенные динамики 2&#215;10 Вт; выход 3.5 мм для наушников/акустики.
+  Установка: фронтальная/потолочная; автостарт при подаче питания (настраивается).
+
+Проекция
+
+  Размер экрана: 45&#8243;–300&#8243;
+  Дистанция: 1.06–8 м
+  Коэффициент проекции (Throw): 1.2:1
+  Форматы: 16:9 / 4:3
+
+Интерфейсы
+
+  HDMI 2.0 &#215;1
+  USB 2.0 &#215;1
+  Аудиовыход 3.5 мм
+
+Технические характеристики
+
+  ТехнологияLCD
+  Разрешение1920&#215;1080 (Full HD)
+  Яркость1000 ANSI лм
+  Контраст20 000:1
+  Световой источникLED, срок службы до 30 000 ч
+  ОСAndroid 9.0 (RAM 2 ГБ / ROM 32 ГБ)
+  Беспроводные модулиWi-Fi 2.4/5.0 ГГц, Bluetooth 5.0
+  ПитаниеAC100–240 В, 50/60 Гц; потребляемая мощность 150 Вт
+  Габариты проектора28.5 &#215; 29.6 &#215; 11.8 см
+  Вес проектора3.14 кг
+  Габариты упаковки42 &#215; 35.5 &#215; 16.5 см
+  Вес упаковки4.233 кг
+  Языки интерфейса32 языка, включая русский
+
+Комплектация
+
+  Проектор BYINTEK A22
+  Пульт дистанционного управления
+  Блок питания
+  Руководство пользователя
+
+Примечание: фактическая яркость и впечатление от изображения зависят от условий освещения и контента. Рекомендуется затемнение помещения для экрана свыше 120&#8243;.
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
+  <offer id="414411">
+        <price>183900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS81310</vendorCode>
+        <picture>https://img.al-style.kz/81310_1.jpg</picture>
+        <picture>https://img.al-style.kz/81310_2.jpg</picture>
+        <picture>https://img.al-style.kz/81310_3.jpg</picture>
+        <vendor>Byintek</vendor>
+        <name>Проектор BYINTEK T5 Max</name>
+        <description>Проектор BYINTEK T5 Max (LCD, Full HD, 1000 ANSI)
+
+Яркий смарт-проектор Full HD на базе LCD с автофокусом, пылезащищённым оптическим модулем и Android 11. Поддерживает Chromecast/AirScreen, двухдиапазонный Wi-Fi, Bluetooth 5.0 и проводное зеркалирование по USB. Подходит для домашнего кино и презентаций в затемнённом помещении.
+
+1920&#215;1080, 1000 ANSI лм, контраст 15 000:1, LED до 30 000 ч
+  Автофокус; вертикальная/горизонтальная коррекция ±45° (авто/ручн.), угловая ±45° (ручн.)
+  Android 11, 2 ГБ RAM + 8 ГБ ROM; магазин сертифицированных приложений
+  Wi-Fi 2.4/5 ГГц, Bluetooth 5.0; Chromecast (Android/Windows) и AirScreen (iOS)
+  Стерео 2&#215;5 Вт; аудиовыход 3.5 мм; RJ-45 (Ethernet)
+
+ТехнологияLCD
+  Разрешение1920&#215;1080 (Full HD)
+  Яркость1000 ANSI лм
+  Контраст15 000:1
+  Источник светаLED, ресурс до 30 000 ч
+  ОптикаПылезащищённый оптический модуль
+  Методы установкиFront/Rear, Front Ceiling/Rear Ceiling
+  Размер экрана40&#8243;–250&#8243;
+  Дистанция1.07–6.66 м
+  Коэффициент проекции1.2:1
+  Форматы сторон16:9 / 4:3
+  Смарт-системаAndroid 11; RAM 2 ГБ + ROM 8 ГБ
+  Беспроводной дисплейChromecast (Android/Windows), AirScreen (iOS)
+  Проводное зеркалированиепо USB-кабелю
+  ИнтерфейсыHDMI 1.4 &#215;1, USB 2.0 &#215;1, RJ-45 &#215;1
+  АкустикаДинамики 2&#215;5 Вт; выход 3.5 мм
+  ПитаниеAC100–240 В, 50/60 Гц; потребление 120 Вт
+  Габариты проектора19.5 &#215; 22.5 &#215; 15 см
+  Вес проектора2.62 кг
+  Габариты упаковки31 &#215; 28.5 &#215; 27 см
+  Вес упаковки3.9 кг
+  Языки интерфейса30 языков, включая русский
+  КомплектацияПульт ДУ, блок питания, руководство пользователя
+
+Примечание: для экрана свыше 120&#8243; рекомендуется затемнение помещения.
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
+  <offer id="414412">
+        <price>166900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS81311</vendorCode>
+        <picture>https://img.al-style.kz/81311_1.jpg</picture>
+        <picture>https://img.al-style.kz/81311_2.jpg</picture>
+        <picture>https://img.al-style.kz/81311_3.jpg</picture>
+        <vendor>Byintek</vendor>
+        <name>Проектор BYINTEK U14</name>
+        <description>Проектор BYINTEK U14 (LCD, Full HD, 1250 ANSI)
+
+Яркий смарт-проектор Full HD на базе LCD с автофокусом, интеллектуальной автонастройкой экрана и пылезащищённым оптическим модулем. Подходит для домашнего кино и презентаций; поддерживает беспроводной экран (IOScast/Miracast), двухдиапазонный Wi-Fi и Bluetooth 5.0.
+
+Ключевые особенности
+
+  Картинка: 1920&#215;1080, 1250 ANSI лм, контраст 20 000:1, LED-источник до 50 000 ч.
+  Автонастройка: автофокус; вертикальная/горизонтальная коррекция ±45° (авто/ручн.); угловая ±45° (ручн.).
+  Интеллектуальные функции: автораспознавание экрана и обход препятствий; опция автозапуска при подаче питания.
+  Смарт-платформа: Android 9.0, 1 ГБ RAM + 8 ГБ ROM; Wi-Fi 2.4/5 ГГц, Bluetooth 5.0.
+  Звук: стереодинамики 2&#215;12 Вт; аудиовыход 3.5 мм; цифровой выход SPDIF.
+
+Проекция и установка
+
+  Размер экрана: 40&#8243;–450&#8243;
+  Дистанция: 1.07–12 м
+  Коэффициент проекции: 1.2:1
+  Форматы: 16:9 / 4:3
+  Способы установки: Front/Rear, Front Ceiling/Rear Ceiling
+
+Интерфейсы
+
+  HDMI 1.4 &#215;2
+  USB 2.0 &#215;2
+  AV &#215;1
+  RJ-45 (Ethernet) &#215;1
+  SPDIF &#215;1
+  Аудиовыход 3.5 мм
+
+Беспроводной/проводной экран
+
+  IOScast (iOS), Miracast (Android)
+  Проводное зеркалирование по USB-кабелю
+
+Технические характеристики
+
+  ТехнологияLCD
+  Разрешение1920&#215;1080 (Full HD)
+  Яркость1250 ANSI лм
+  Контраст20 000:1
+  ОптикаПылезащищённый оптический модуль
+  Источник светаLED, ресурс до 50 000 ч
+  ОСAndroid 9.0 (1 ГБ RAM / 8 ГБ ROM)
+  ПитаниеAC100–240 В, 50/60 Гц; потребление 180 Вт
+  Габариты проектора27.3 &#215; 23.4 &#215; 13.5 см
+  Вес проектора3.492 кг
+  Габариты упаковки36.5 &#215; 31.6 &#215; 24 см
+  Вес упаковки4.556 кг
+  Языки интерфейса30 языков, включая русский
+
+Комплектация
+
+  Проектор BYINTEK U14
+  Пульт дистанционного управления
+  Блок питания
+  Руководство пользователя
+
+Рекомендация: для экранов свыше 120&#8243; и лучшего контраста используйте затемнение помещения.
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
   <offer id="414772">
         <price>293900</price>
         <currencyId>KZT</currencyId>
@@ -70826,6 +71290,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <price>10499900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS81743</vendorCode>
+        <picture>https://img.al-style.kz/81743_1.jpg</picture>
         <vendor>Xerox</vendor>
         <name>Узел второго переноса 152N12002</name>
         <description>Узел второго переноса выполняет функцию переноса изображения с ремня на печатаемый материал. Состоит из ролика переноса, ракеля очистки, щетки для нанесения защитного воска, восковой планки. А также бункера для отработки, рычажной системой подъема вала, датчиков позиции вала, определения края листа, контакты передачи заряда.
