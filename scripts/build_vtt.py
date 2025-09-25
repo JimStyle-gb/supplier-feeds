@@ -1,12 +1,18 @@
 # scripts/build_vtt.py
 # -*- coding: utf-8 -*-
 """
-VTT (b2b.vtt.ru) -> YML (KZT) по общему шаблону (как akcent/alstyle).
+VTT (b2b.vtt.ru) -> YML (KZT) в стиле alstyle/akcent.
 
-Изменения:
-- FEED_META выровнен и оформлен как у akcent (с русскими комментариями и закрытием --> на строке Алматы).
-- Ценообразование: если нет цены или <100 => ровно 100 без правил; иначе применяем таблицу (pct+add) и поднимаем до …900.
-- Структура <offers>: как у akcent/alstyle; без categories/categoryId/url/quantity*; один <available>true</available>.
+ЦЕНА:
+- Берём из <span class="price_main"><b>11121.48</b>...</span>
+- Если цены нет или < 100 -> price = 100 (никаких правил/округлений)
+- Иначе: применяем PRICING_RULES (процент + фикс) и округляем вверх до ...900
+
+ВЫВОД:
+- Без <categories>, <categoryId>, <url>, любых *quantity*
+- <available>true</available> для всех
+- vendorCode = VT + нормализованный артикул
+- Кодировка: windows-1251
 """
 
 from __future__ import annotations
@@ -20,7 +26,7 @@ from decimal import Decimal, InvalidOperation
 import requests
 from bs4 import BeautifulSoup
 
-# ---------------- ПАРАМЕТРЫ ----------------
+# ---------------- ПАРАМЕТРЫ ОКРУЖЕНИЯ ----------------
 BASE_URL        = os.getenv("BASE_URL", "https://b2b.vtt.ru").rstrip("/")
 START_URL       = os.getenv("START_URL", f"{BASE_URL}/catalog/")
 OUT_FILE        = os.getenv("OUT_FILE", "docs/vtt.yml")
@@ -44,8 +50,8 @@ MAX_WORKERS     = int(os.getenv("MAX_WORKERS", "6"))
 
 UA = {"User-Agent": "Mozilla/5.0 (compatible; VTT-Feed/akcent-style-1.0)"}
 
-# ---------------- ЦЕНООБРАЗОВАНИЕ (как у akcent) ----------------
-PriceRule = Tuple[int, int, float, int]  # (min_incl, max_incl, pct, add_kzt)
+# ---------------- ЦЕНООБРАЗОВАНИЕ ----------------
+PriceRule = Tuple[int, int, float, int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
     ( 10001,    25000, 4.0,  4000),
@@ -65,13 +71,14 @@ PRICING_RULES: List[PriceRule] = [
 ]
 
 def _round_up_tail_900(n: int) -> int:
-    thousands = (n + 999) // 1000
-    return thousands * 1000 - 100  # ...900
+    """Округление вверх до ближайшего значения с окончанием ...900."""
+    thousands = (n + 999) // 1000  # ceil до следующей 1000
+    return thousands * 1000 - 100   # ...900
 
 def compute_price_from_supplier(base_price: Optional[int]) -> int:
     """
-    Если base_price отсутствует или <100 -> вернуть 100 и НЕ применять правила.
-    Иначе -> применяем первую подходящую ступень и поднимаем до ...900.
+    Если base_price отсутствует или <100 -> вернуть 100 (без правил и округления).
+    Иначе -> применить первую подходящую ступень и округлить вверх до ...900.
     """
     if base_price is None or base_price < 100:
         return 100
@@ -207,10 +214,6 @@ def collect_product_urls_from_category(s: requests.Session, cat_url: str, max_pa
 
 # ---------------- ПАРСИНГ ТОВАРА ----------------
 def parse_supplier_price_from_soup(soup: BeautifulSoup) -> Optional[int]:
-    """
-    Цена берется из: <span class="price_main"><b>11121.48</b>...</span>
-    Дробная часть отбрасывается.
-    """
     btag = soup.select_one("span.price_main > b")
     if not btag:
         return None
@@ -222,7 +225,7 @@ def parse_supplier_price_from_soup(soup: BeautifulSoup) -> Optional[int]:
         val = Decimal(norm)
     except InvalidOperation:
         return None
-    return int(val)  # floor для положительных чисел
+    return int(val)
 
 def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
     out: Dict[str,str] = {}
@@ -297,16 +300,16 @@ def build_feed_meta(source: str,
                     offers_written: int,
                     prices_updated: int) -> str:
     """
-    Формат и формулировки как у akcent. Колонка ключей выровнена.
-    ВАЖНО: последняя строка про Алматы завершается -->.
+    Формат как у akcent.
+    ВАЖНО: закрываем комментарий ПРЯМО на строке Алматы: '... (Алматы)-->' и больше '-->' не добавляем.
     """
     pad = 28
     lines: List[str] = []
     def kv(k, v, comment=""):
         if comment:
-            lines.append(f"{k.ljust(pad)} = {v:<60} | {comment}")
+            lines.append(f"{k.ljust(pad)} = {str(v):<60} | {comment}")
         else:
-            lines.append(f"{k.ljust(pad)} = {v}")
+            lines.append(f"{k.ljust(pad)} = {str(v)}")
     kv("supplier",             "vtt",                              "Метка поставщика")
     kv("source",               source,                             "URL исходного источника")
     kv("offers_total",         offers_total,                       "Офферов у поставщика до очистки")
@@ -318,9 +321,10 @@ def build_feed_meta(source: str,
     kv("available_forced",     offers_written,                     "Сколько офферов получили available=true")
     kv("categoryId_dropped",   offers_written,                     "Сколько тегов categoryId удалено")
     kv("built_utc",            datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"), "Время сборки (UTC)")
-    # Последняя строка должна завершаться -->, как у akcent
+    # Закрываем комментарий прямо здесь:
     lines.append(f"{'built_Asia/Almaty'.ljust(pad)} = {almaty_now_str():<60} | Время сборки (Алматы)-->")
-    return "<!--FEED_META\n" + "\n".join(lines) + "\n-->"
+    # ОТДЕЛЬНОЕ '-->' в конце блока НЕ добавляем
+    return "<!--FEED_META\n" + "\n".join(lines) + "\n"
 
 def build_yml(offers: List[Dict[str,Any]],
               source: str,
@@ -351,7 +355,19 @@ def build_yml(offers: List[Dict[str,Any]],
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
-# ---------------- MAIN ----------------
+# ---------------- ОСНОВНОЙ КОНТУР ----------------
+def collect_all_product_urls(s: requests.Session, cats: List[str], deadline: datetime) -> List[str]:
+    prod_urls: List[str] = []
+    seen: Set[str] = set()
+    for cu in cats:
+        if datetime.utcnow() > deadline:
+            break
+        for u in collect_product_urls_from_category(s, cu, MAX_PAGES, deadline):
+            if u not in seen:
+                seen.add(u)
+                prod_urls.append(u)
+    return prod_urls
+
 def main() -> int:
     s = make_session()
 
@@ -379,24 +395,13 @@ def main() -> int:
 
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MIN)
 
-    # discovery
-    prod_urls: List[str] = []
-    seen: Set[str] = set()
-    for cu in cats:
-        if datetime.utcnow() > deadline:
-            break
-        for u in collect_product_urls_from_category(s, cu, MAX_PAGES, deadline):
-            if u not in seen:
-                seen.add(u)
-                prod_urls.append(u)
+    prod_urls = collect_all_product_urls(s, cats, deadline)
     offers_total = len(prod_urls)
     print(f"[discover] product urls: {offers_total}")
 
-    # parse
     offers: List[Dict[str,Any]] = []
     seen_ids: Set[str] = set()
     prices_updated = 0
-    parsed = 0
 
     def worker(u: str) -> Optional[Dict[str,Any]]:
         if datetime.utcnow() > deadline:
@@ -409,14 +414,10 @@ def main() -> int:
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
         for fut in as_completed([ex.submit(worker, u) for u in prod_urls]):
             it = fut.result()
-            parsed += 1
             if not it:
                 continue
-
-            # считаем "prices_updated" как количество позиций, где была исходная цена >=100
             if it.get("dealer_price") is not None and it["dealer_price"] >= 100:
                 prices_updated += 1
-
             oid = it["id"]
             if oid in seen_ids:
                 oid = f"{oid}-{sha1(it['title'])[:6]}"
@@ -425,7 +426,6 @@ def main() -> int:
             seen_ids.add(oid)
             offers.append(it)
 
-    # write
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
         f.write(build_yml(offers, START_URL, offers_total, prices_updated))
