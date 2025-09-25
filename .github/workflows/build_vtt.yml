@@ -1,63 +1,95 @@
 name: build_vtt
-
 on:
-  # 05:00 Asia/Almaty = 00:00 UTC
   schedule:
-    - cron: '0 0 1,10,20 * *'
-  workflow_dispatch: {}
+    - cron: '0 0 1,10,20 * *'  # 05:00 Asia/Almaty = 00:00 UTC
+  workflow_dispatch:
 
-permissions:
-  contents: write
+concurrency:
+  group: build_vtt_${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install deps
         run: |
-          set -e
-          python -V
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
+      - name: Ensure categories file
+        run: |
+          mkdir -p docs
+          if [ ! -f docs/categories_vtt.txt ]; then
+            printf '%s\n' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG' \
+              'https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT' \
+              'https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR' \
+              'https://b2b.vtt.ru/catalog/?category=CARTMAT_CART' \
+              'https://b2b.vtt.ru/catalog/?category=DEV_DEV' \
+              'https://b2b.vtt.ru/catalog/?category=DRM_CRT' \
+              'https://b2b.vtt.ru/catalog/?category=DRM_UNIT' \
+              'https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC' \
+              'https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT' \
+            > docs/categories_vtt.txt
+          fi
+          echo "Using categories:" && cat docs/categories_vtt.txt
+
       - name: Build VTT feed
         env:
-          # ВАЖНО: НЕ переопределяем BASE_URL/START_URL — берём из кода/категорий.
+          BASE_URL: https://b2b.vtt.ru
+          START_URL: https://b2b.vtt.ru/catalog/
+          CATEGORIES_FILE: docs/categories_vtt.txt
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
-          HTTP_TIMEOUT: '25'
-          REQUEST_DELAY_MS: '120'
-          MIN_BYTES: '600'
-          MAX_PAGES: '800'
-          MAX_CRAWL_MINUTES: '60'
-          MAX_WORKERS: '6'
-          CATEGORIES_FILE: docs/categories_vtt.txt
+
+          # Secrets
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+
+          # network/limits
+          DISABLE_SSL_VERIFY: "1"
+          ALLOW_SSL_FALLBACK: "1"
+          HTTP_TIMEOUT: "25"
+          REQUEST_DELAY_MS: "120"
+          MIN_BYTES: "600"
+
+          # crawling
+          MAX_PAGES: "800"
+          MAX_CRAWL_MINUTES: "60"
+          MAX_WORKERS: "6"
         run: |
           set -euo pipefail
           python scripts/build_vtt.py
 
-      - name: Commit changes
+      - name: Commit & push feed
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          set -e
           git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/vtt.yml
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/vtt.yml docs/categories_vtt.txt || true
           if git diff --cached --quiet; then
-            echo "No changes."
+            echo "No changes to commit."
             exit 0
           fi
-          git commit -m "chore(vtt): update docs/vtt.yml [skip ci]"
-          git push || (git pull --rebase && git push)
+          git commit -m "Update vtt.yml (categories crawl)"
+          git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
