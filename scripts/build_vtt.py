@@ -1,21 +1,24 @@
-# scripts/build_vtt.py
 # -*- coding: utf-8 -*-
 """
-VTT (b2b.vtt.ru) -> YML (KZT) в стиле alstyle/akcent
-Ценообразование идентично akcent:
-- Таблица диапазонов (min..max, +pct, +fixed)
-- Розничная = dealer * (1 + pct/100) + add
-- Хвост цены доводится до ...900: _force_tail_900(int(n)) = (int(n)//1000)*1000 + 900
-- Если цены нет или <= 100 — позиция пропускается
-
-Прочее:
-- <offer>: name, vendor, vendorCode, price, currencyId, picture, description, available
-- Удаляем: <categories>, <categoryId>, <url>, любые *quantity*
-- <available>true</available> для всех, префикс vendorCode = "VT"
+VTT (b2b.vtt.ru) → YML (KZT) по списку категорий:
+- Логин через /validateLogin (login/password).
+- Берём категории из файла CATEGORIES_FILE (по одной ссылке на строку).
+- Для каждой категории пагинируем ?page=1..N, собираем ссылки на товары.
+- В карточке берём:
+    title: .page_title (fallback: <title>/h1)
+    vendorCode: из "Артикул" (обязательно)
+    brand: из "Вендор"
+    cats: "Категория" → "Подкатегория"
+    price KZT: .price_main → округляем до int; если нет — 1
+    picture: первая картинка (/images/*.jpg|png или og:image)
+    description: <meta name="description"> (fallback: og:description)
+- В YML:
+    <vendor> = brand (не "vtt"), <currencyId>KZT</currencyId>.
+- Без промежуточных html-файлов в docs.
 """
 
 from __future__ import annotations
-import os, re, time, html, hashlib
+import os, re, io, time, html, hashlib
 from typing import Any, Dict, List, Optional, Tuple, Set
 from urllib.parse import urljoin, urlparse, parse_qsl, urlencode, urlunparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -24,7 +27,7 @@ from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 
-# ---------------- НАСТРОЙКИ ----------------
+# -------- ENV --------
 BASE_URL        = os.getenv("BASE_URL", "https://b2b.vtt.ru").rstrip("/")
 START_URL       = os.getenv("START_URL", f"{BASE_URL}/catalog/")
 OUT_FILE        = os.getenv("OUT_FILE", "docs/vtt.yml")
@@ -46,46 +49,12 @@ MAX_PAGES       = int(os.getenv("MAX_PAGES", "800"))
 MAX_CRAWL_MIN   = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
 MAX_WORKERS     = int(os.getenv("MAX_WORKERS", "6"))
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; VTT-Feed/akcent-pricing-1.0)"}
+ROOT_CAT_ID     = 9600000
+ROOT_CAT_NAME   = "VTT"
+CURRENCY        = "KZT"
 
-# ---------------- ЦЕНООБРАЗОВАНИЕ (как у akcent) ----------------
-from typing import Tuple
-PriceRule = Tuple[int, int, float, int]  # (min_incl, max_incl, pct, add_kzt)
+UA = {"User-Agent": "Mozilla/5.0 (compatible; VTT-Feed/2.0)"}
 
-PRICING_RULES: List[PriceRule] = [
-    (   101,    10000, 4.0,  3000),
-    ( 10001,    25000, 4.0,  4000),
-    ( 25001,    50000, 4.0,  5000),
-    ( 50001,    75000, 4.0,  7000),
-    ( 75001,   100000, 4.0, 10000),
-    (100001,   150000, 4.0, 12000),
-    (150001,   200000, 4.0, 15000),
-    (200001,   300000, 4.0, 20000),
-    (300001,   400000, 4.0, 25000),
-    (400001,   500000, 4.0, 30000),
-    (500001,   750000, 4.0, 40000),
-    (750001,  1000000, 4.0, 50000),
-    (1000001, 1500000, 4.0, 70000),
-    (1500001, 2000000, 4.0, 90000),
-    (2000001,100000000,4.0,100000),
-]
-
-def _force_tail_900(n: float) -> int:
-    """Приводит целую цену к виду ...900 как в akcent."""
-    i = int(n)
-    k = max(i // 1000, 0)
-    out = k * 1000 + 900
-    return out if out >= 900 else 900
-
-def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
-    """Возвращает розничную цену по таблице правил + доводка до ...900."""
-    for lo, hi, pct, add in rules:
-        if lo <= dealer <= hi:
-            val = dealer * (1.0 + pct/100.0) + add
-            return _force_tail_900(val)
-    return None
-
-# ---------------- УТИЛИТЫ ----------------
 def jitter_sleep() -> None:
     time.sleep(max(0.0, REQUEST_DELAY_MS/1000.0))
 
@@ -93,8 +62,7 @@ def yml_escape(s: str) -> str:
     return html.escape(s or "")
 
 def sha1(s: str) -> str:
-    import hashlib as _h
-    return _h.sha1((s or "").encode("utf-8", errors="ignore")).hexdigest()
+    return hashlib.sha1((s or "").encode("utf-8", errors="ignore")).hexdigest()
 
 def abs_url(u: str) -> str:
     return urljoin(BASE_URL + "/", (u or "").strip())
@@ -105,12 +73,11 @@ def to_float(s: str) -> Optional[float]:
     t = s.replace("\xa0"," ").replace(" ","").replace(",",".")
     m = re.search(r"(\d+(?:\.\d+)?)", t)
     try:
-        v = float(m.group(1)) if m else None
-        return v if (v is not None and v > 0) else None
+        return float(m.group(1)) if m else None
     except Exception:
         return None
 
-# ---------------- HTTP ----------------
+# -------- session / http --------
 def make_session() -> requests.Session:
     s = requests.Session()
     s.headers.update(UA)
@@ -141,7 +108,7 @@ def http_get(s: requests.Session, url: str) -> Optional[bytes]:
 def soup_of(b: bytes) -> BeautifulSoup:
     return BeautifulSoup(b or b"", "html.parser")
 
-# ---------------- ЛОГИН ----------------
+# -------- login --------
 def login_vtt(s: requests.Session) -> bool:
     b = http_get(s, BASE_URL + "/")
     if not b:
@@ -151,10 +118,12 @@ def login_vtt(s: requests.Session) -> bool:
     m = soup.find("meta", attrs={"name":"csrf-token"})
     if m and m.get("content"):
         csrf = m["content"].strip()
+
     data = {"login": VTT_LOGIN, "password": VTT_PASSWORD, "remember": "1"}
     headers: Dict[str, str] = {}
     if csrf:
         headers["X-CSRF-TOKEN"] = csrf
+
     try:
         r = s.post(BASE_URL + "/validateLogin", data=data, headers=headers, timeout=HTTP_TIMEOUT)
         if r.status_code not in (200, 302):
@@ -170,13 +139,14 @@ def login_vtt(s: requests.Session) -> bool:
             return False
     except Exception:
         return False
+
     return bool(http_get(s, START_URL))
 
-# ---------------- КАТЕГОРИИ ----------------
+# -------- categories from file --------
 def load_categories(path: str) -> List[str]:
     out: List[str] = []
     if os.path.isfile(path):
-        with open(path, "r", encoding="utf-8") as f:
+        with io.open(path, "r", encoding="utf-8") as f:
             for line in f:
                 u = (line or "").strip()
                 if u and not u.startswith("#"):
@@ -187,8 +157,10 @@ def add_or_replace_page_param(u: str, page: int) -> str:
     pr = urlparse(u)
     q = dict(parse_qsl(pr.query, keep_blank_values=True))
     q["page"] = str(page)
-    return urlunparse((pr.scheme, pr.netloc, pr.path, pr.params, urlencode(q, doseq=True), pr.fragment))
+    new_q = urlencode(q, doseq=True)
+    return urlunparse((pr.scheme, pr.netloc, pr.path, pr.params, new_q, pr.fragment))
 
+# -------- discover links per category --------
 A_PROD = re.compile(r"^https?://[^/]+/catalog/[^/?#]+")
 
 def collect_product_urls_from_category(s: requests.Session, cat_url: str, max_pages: int, deadline: datetime) -> List[str]:
@@ -220,21 +192,38 @@ def collect_product_urls_from_category(s: requests.Session, cat_url: str, max_pa
             break
     return urls
 
-# ---------------- ПАРСИНГ КАРТОЧКИ ----------------
-_CURRENCY_RE = re.compile(r"(\d[\d\s.,]*)\s*(?:₸|KZT|kzt|тг|тенге)\b", flags=re.IGNORECASE)
-
+# -------- parse product page --------
 def parse_price_kzt(soup: BeautifulSoup) -> Optional[int]:
-    el = soup.select_one(".price_main, .price, [itemprop='price']")
+    el = soup.select_one(".price_main")
     if el:
         val = to_float(el.get_text(" ", strip=True))
         if val is not None:
             return int(round(val))
     txt = soup.get_text(" ", strip=True)
-    m = _CURRENCY_RE.search(txt)
+    m = re.search(r"(\d[\d\s.,]*)\s*[₸Тт]\b", txt)
     if m:
         val = to_float(m.group(1))
         if val is not None:
             return int(round(val))
+    return None
+
+def first_image_url(soup: BeautifulSoup) -> Optional[str]:
+    og = soup.find("meta", attrs={"property":"og:image"})
+    if og and og.get("content"):
+        return abs_url(og["content"])
+    for tag in soup.find_all(True):
+        style = tag.get("style")
+        if isinstance(style, str) and "background-image" in style:
+            m = re.search(r"url\(['\"]?([^'\"\)]+)", style)
+            if m and (".jpg" in m.group(1).lower() or ".png" in m.group(1).lower()):
+                return abs_url(m.group(1))
+        for attr in ("src","data-src","href","data-img","content"):
+            v = tag.get(attr)
+            if not v or not isinstance(v, str):
+                continue
+            vl = v.lower()
+            if "/images/" in vl and (vl.endswith(".jpg") or vl.endswith(".png")):
+                return abs_url(v)
     return None
 
 def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
@@ -251,24 +240,15 @@ def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
             out[k] = v
     return out
 
-def first_image_url(soup: BeautifulSoup) -> Optional[str]:
-    og = soup.find("meta", attrs={"property":"og:image"})
-    if og and og.get("content"):
-        return abs_url(og["content"])
-    for tag in soup.find_all(True):
-        for attr in ("src","data-src","href","data-img","content","data-large"):
-            v = tag.get(attr)
-            if not v or not isinstance(v, str):
-                continue
-            vl = v.lower()
-            if (".jpg" in vl or ".png" in vl or ".jpeg" in vl) and "/images/" in vl:
-                return abs_url(v)
-    return None
-
-def normalize_vendor_code(raw: str) -> str:
-    s = re.sub(r"\s+", "", raw or "")
-    s = re.sub(r"[^\w\-]+", "", s)
-    return s
+# --- description from meta tags (simple & safe)
+def extract_description_meta(soup: BeautifulSoup) -> str:
+    tag = soup.find("meta", attrs={"name": "description"})
+    if tag and tag.get("content"):
+        return re.sub(r"\s+", " ", tag["content"].strip())
+    tag = soup.find("meta", attrs={"property": "og:description"})
+    if tag and tag.get("content"):
+        return re.sub(r"\s+", " ", tag["content"].strip())
+    return ""
 
 def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     jitter_sleep()
@@ -277,163 +257,217 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
         return None
     soup = soup_of(b)
 
-    title_el = (soup.select_one(".page_title") or soup.title or soup.find("h1"))
-    title = title_el.get_text(" ", strip=True) if title_el else None
+    title = None
+    el = soup.select_one(".page_title")
+    if el and el.get_text(strip=True):
+        title = el.get_text(" ", strip=True)
+    if not title and soup.title:
+        title = soup.title.get_text(" ", strip=True)
+    if not title:
+        h1 = soup.find("h1")
+        if h1:
+            title = h1.get_text(" ", strip=True)
     if not title:
         return None
 
     pairs = parse_pairs(soup)
-    article = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
-    if not article:
-        return None
+    vendor_code = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
+    if not vendor_code:
+        return None  # артикул обязателен
 
     brand = (pairs.get("Вендор") or "").strip()
-    price_src = parse_price_kzt(soup)  # KZT (дилерская)
-    if price_src is None or price_src <= 100:
-        return None  # как в akcent: без цены / <=100 — пропускаем
+
+    price_int = parse_price_kzt(soup)
+    if price_int is None or price_int <= 0:
+        price_int = 1
 
     picture = first_image_url(soup)
-    meta = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
-    descr = meta.get("content").strip() if (meta and meta.get("content")) else ""
+
+    cat  = (pairs.get("Категория") or "").strip()
+    scat = (pairs.get("Подкатегория") or "").strip()
+    cats = [c for c in [cat, scat] if c]
+
+    description = extract_description_meta(soup)
 
     return {
-        "id": article,
-        "vendorCode": "VT" + normalize_vendor_code(article),
         "title": title,
+        "vendorCode": vendor_code,
         "brand": brand or "",
-        "price_src": int(price_src),
+        "price": int(price_int),
         "picture": picture,
-        "description": re.sub(r"\s+", " ", descr),
+        "url": url,
+        "cats": cats,
+        "description": description,
     }
 
-# ---------------- FEED_META + YML ----------------
-def almaty_now_str() -> str:
-    return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S +05")
+# -------- categories tree --------
+def stable_cat_id(text: str, prefix: int = 9620000) -> int:
+    h = hashlib.md5((text or "").encode("utf-8", errors="ignore")).hexdigest()[:6]
+    return prefix + int(h, 16)
 
-def build_feed_meta(source: str, stats: Dict[str,int], priced: int) -> str:
-    lines = []
-    pad = 24
-    def kv(k, v): lines.append(f"{k.ljust(pad)} = {v}")
-    kv("supplier",               "VTT (VT)")
-    kv("source",                 source)
-    kv("offers_discovered",      str(stats.get("discovered", 0)))
-    kv("offers_parsed",          str(stats.get("parsed", 0)))
-    kv("offers_skipped_no_price",str(stats.get("skipped_no_price", 0)))
-    kv("offers_written",         str(stats.get("written", 0)))
-    kv("prices_updated",         str(priced))
-    kv("removed_tags",           "categories, categoryId, quantity*, url")
-    kv("currency",               "KZT")
-    kv("price_rules_table",      f"{len(PRICING_RULES)} ranges; tail ...900")
-    kv("built_UTC",              datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"))
-    kv("built_Asia/Almaty",      f"{almaty_now_str()} | Время сборки (Алматы)-->")
-    return "<!--FEED_META\n" + "\n".join(lines) + "\n-->"
+def build_categories(paths: List[List[str]]) -> Tuple[List[Tuple[int,str,Optional[int]]], Dict[Tuple[str,...], int]]:
+    cat_map: Dict[Tuple[str,...], int] = {}
+    out_list: List[Tuple[int,str,Optional[int]]] = []
+    for path in paths:
+        clean = [p.strip() for p in path if p and p.strip()]
+        if not clean:
+            continue
+        parent = ROOT_CAT_ID
+        acc: List[str] = []
+        for name in clean:
+            acc.append(name)
+            key = tuple(acc)
+            if key in cat_map:
+                parent = cat_map[key]
+                continue
+            cid = stable_cat_id(" / ".join(acc))
+            cat_map[key] = cid
+            out_list.append((cid, name, parent))
+            parent = cid
+    return out_list, cat_map
 
-def build_yml(offers: List[Dict[str,Any]], source: str, discovered: int, parsed: int, skipped_no_price: int, priced_count: int) -> str:
-    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
+# -------- YML --------
+def build_yml(categories: List[Tuple[int,str,Optional[int]]], offers: List[Tuple[int,Dict[str,Any]]]) -> str:
     out: List[str] = []
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
-    out.append(f"<yml_catalog date=\"{date_attr}\">")
-    out.append(build_feed_meta(source, {
-        "discovered": discovered, "parsed": parsed,
-        "skipped_no_price": skipped_no_price, "written": len(offers)
-    }, priced_count))
-    out.append("<shop>")
-    out.append("  <offers>")
-    for it in offers:
-        out.append(f"    <offer id=\"{yml_escape(it['id'])}\">")
-        out.append(f"      <name>{yml_escape(it['title'])}</name>")
-        if it.get("brand"):
-            out.append(f"      <vendor>{yml_escape(it['brand'])}</vendor>")
-        out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
-        out.append(f"      <price>{int(it['price'])}</price>")
-        out.append("      <currencyId>KZT</currencyId>")
+    out.append("<yml_catalog><shop>")
+    out.append("<name>vtt</name>")
+    out.append('<currencies><currency id="KZT" rate="1" /></currencies>')
+    out.append("<categories>")
+    out.append(f"<category id=\"{ROOT_CAT_ID}\">{yml_escape(ROOT_CAT_NAME)}</category>")
+    for cid, name, parent in categories:
+        parent = parent if parent else ROOT_CAT_ID
+        out.append(f"<category id=\"{cid}\" parentId=\"{parent}\">{yml_escape(name)}</category>")
+    out.append("</categories>")
+    out.append("<offers>")
+    for cid, it in offers:
+        out.append(f"<offer id=\"{yml_escape(it['vendorCode'])}\" available=\"true\" in_stock=\"true\">")
+        out.append(f"<name>{yml_escape(it['title'])}</name>")
+        out.append(f"<vendor>{yml_escape(it.get('brand') or '')}</vendor>")
+        out.append(f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
+        out.append(f"<price>{int(it['price'])}</price>")
+        out.append("<currencyId>KZT</currencyId>")
+        out.append(f"<categoryId>{cid}</categoryId>")
+        if it.get("url"):
+            out.append(f"<url>{yml_escape(it['url'])}</url>")
         if it.get("picture"):
-            out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
+            out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
         if it.get("description"):
-            out.append(f"      <description>{yml_escape(it['description'])}</description>")
-        out.append("      <available>true</available>")
-        out.append("    </offer>\n")
-    out.append("  </offers>")
+            out.append(f"<description>{yml_escape(it['description'])}</description>")
+        out.append("<quantity_in_stock>1</quantity_in_stock>")
+        out.append("<stock_quantity>1</stock_quantity>")
+        out.append("<quantity>1</quantity>")
+        out.append("</offer>")
+    out.append("</offers>")
     out.append("</shop></yml_catalog>")
     return "\n".join(out)
 
-# ---------------- MAIN ----------------
+# -------- MAIN --------
 def main() -> int:
-    s = make_session(); source = START_URL
+    s = make_session()
+    if DISABLE_SSL_VERIFY:
+        print("[ssl] verification disabled by env")
 
     if not VTT_LOGIN or not VTT_PASSWORD:
+        print("[warn] Empty login/password; cannot proceed.")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-            f.write(build_yml([], source, 0, 0, 0, 0))
-        print("[warn] Empty login/password; wrote empty feed."); return 0
+        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+            f.write(build_yml([], []))
+        return 0
 
     if not login_vtt(s):
+        print("Error: login failed")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-            f.write(build_yml([], source, 0, 0, 0, 0))
-        print("Error: login failed, wrote empty feed."); return 0
+        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+            f.write(build_yml([], []))
+        return 0
 
-    cats = load_categories(CATEGORIES_FILE)
-    if not cats:
+    categories_urls = load_categories(CATEGORIES_FILE)
+    if not categories_urls:
+        print("[error] categories file is empty.")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-            f.write(build_yml([], source, 0, 0, 0, 0))
-        print("[error] categories file is empty; wrote empty feed."); return 0
+        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+            f.write(build_yml([], []))
+        return 0
 
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MIN)
 
-    # discovery
-    prod_urls, seen = [], set()
-    for cu in cats:
-        if datetime.utcnow() > deadline: break
-        for u in collect_product_urls_from_category(s, cu, MAX_PAGES, deadline):
-            if u not in seen: seen.add(u); prod_urls.append(u)
-    discovered = len(prod_urls); print(f"[discover] product urls: {discovered}")
+    # собираем ссылки товаров со всех категорий
+    prod_urls: List[str] = []
+    seen: Set[str] = set()
+    for cu in categories_urls:
+        if datetime.utcnow() > deadline:
+            break
+        urls = collect_product_urls_from_category(s, cu, MAX_PAGES, deadline)
+        for u in urls:
+            if u not in seen:
+                seen.add(u)
+                prod_urls.append(u)
 
-    # parse + pricing
-    parsed = 0; skipped_no_price = 0; priced_count = 0
-    offers: List[Dict[str,Any]] = []; seen_ids: Set[str] = set()
+    print(f"[discover] product urls: {len(prod_urls)}")
+
+    # парсим карточки
+    offers: List[Tuple[int,Dict[str,Any]]] = []
+    seen_offer_ids: Set[str] = set()
+    all_paths: List[List[str]] = []
 
     def worker(u: str) -> Optional[Dict[str,Any]]:
-        if datetime.utcnow() > deadline: return None
-        try: return parse_product(s, u)
-        except Exception: return None
+        if datetime.utcnow() > deadline:
+            return None
+        try:
+            return parse_product(s, u)
+        except Exception:
+            return None
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-        for fut in as_completed([ex.submit(worker, u) for u in prod_urls]):
+        futs = [ex.submit(worker, u) for u in prod_urls]
+        for fut in as_completed(futs):
             it = fut.result()
-            parsed += 1
             if not it:
-                skipped_no_price += 1
                 continue
+            offer_id = it["vendorCode"]
+            if offer_id in seen_offer_ids:
+                offer_id = f"{offer_id}-{sha1(it['title'])[:6]}"
+            seen_offer_ids.add(offer_id)
 
-            dealer = it["price_src"]
-            retail = compute_retail(dealer, PRICING_RULES)
-            if retail is None:
-                skipped_no_price += 1
-                continue
-            it["price"] = retail  # фиксируем готовую цену
+            cats = it.get("cats") or []
+            all_paths.append(cats)
 
-            oid = it["id"]
-            if oid in seen_ids:
-                oid = f"{oid}-{sha1(it['title'])[:6]}"; it["id"] = oid
-                it["vendorCode"] = "VT" + normalize_vendor_code(oid)
-            seen_ids.add(oid); offers.append(it)
+            offers.append((ROOT_CAT_ID, {
+                "vendorCode": offer_id,
+                "title": it["title"],
+                "brand": it.get("brand") or "",
+                "price": int(it["price"]) if it.get("price") else 1,
+                "url": it.get("url"),
+                "picture": it.get("picture"),
+                "description": it.get("description") or "",
+            }))
+
+    # строим дерево категорий и распределяем
+    categories, path_map = build_categories(all_paths)
+    for i, (cid, it) in enumerate(offers):
+        cats = all_paths[i] if i < len(all_paths) else []
+        key = tuple([c for c in cats if c])
+        offers[i] = (path_map.get(key, ROOT_CAT_ID), it)
 
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-        f.write(build_yml(offers, source, discovered, parsed, skipped_no_price, priced_count))
-    print(f"[done] items: {len(offers)} -> {OUT_FILE}")
+    xml = build_yml(categories, offers)
+    with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        f.write(xml)
+
+    print(f"[done] items: {len(offers)}, cats: {len(categories)} -> {OUT_FILE}")
     return 0
 
 if __name__ == "__main__":
     import sys
-    try: sys.exit(main())
+    try:
+        sys.exit(main())
     except Exception as e:
         print("[fatal]", e)
         try:
             os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-            with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-                f.write(build_yml([], START_URL, 0, 0, 0, 0))
-        except Exception: pass
+            with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+                f.write("<?xml version='1.0' encoding='windows-1251'?>\n<yml_catalog><shop><name>vtt</name><currencies><currency id=\"KZT\" rate=\"1\" /></currencies><categories><category id=\"9600000\">VTT</category></categories><offers></offers></shop></yml_catalog>")
+        except Exception:
+            pass
         sys.exit(0)
