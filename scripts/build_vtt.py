@@ -1,20 +1,9 @@
+# scripts/build_vtt.py
 # -*- coding: utf-8 -*-
 """
-VTT (b2b.vtt.ru) → YML (KZT) по списку категорий:
-- Логин через /validateLogin (login/password).
-- Берём категории из файла CATEGORIES_FILE (по одной ссылке на строку).
-- Для каждой категории пагинируем ?page=1..N, собираем ссылки на товары.
-- В карточке берём:
-    title: .page_title (fallback: <title>/h1)
-    vendorCode: из "Артикул" (обязательно)
-    brand: из "Вендор"
-    cats: "Категория" → "Подкатегория"
-    price KZT: .price_main → округляем до int; если нет — 1
-    picture: первая картинка (/images/*.jpg|png или og:image)
-    description: <meta name="description"> (fallback: og:description)
-- В YML:
-    <vendor> = brand (не "vtt"), <currencyId>KZT</currencyId>.
-- Без промежуточных html-файлов в docs.
+VTT (b2b.vtt.ru) -> YML (KZT) по списку категорий.
+Меняли ТОЛЬКО ценообразование: как у akcent (таблица правил + доводка хвоста до ...900).
+Остальное поведение оставлено как в исходном vtt.txt.
 """
 
 from __future__ import annotations
@@ -76,6 +65,48 @@ def to_float(s: str) -> Optional[float]:
         return float(m.group(1)) if m else None
     except Exception:
         return None
+
+# ========================== ЦЕНООБРАЗОВАНИЕ (как у akcent) ==========================
+# (min_incl, max_incl, percent, add_kzt)
+PriceRule = Tuple[int,int,float,int]
+PRICING_RULES: List[PriceRule] = [
+    (   101,    10000, 4.0,  3000),
+    ( 10001,    25000, 4.0,  4000),
+    ( 25001,    50000, 4.0,  5000),
+    ( 50001,    75000, 4.0,  7000),
+    ( 75001,   100000, 4.0, 10000),
+    (100001,   150000, 4.0, 12000),
+    (150001,   200000, 4.0, 15000),
+    (200001,   300000, 4.0, 20000),
+    (300001,   400000, 4.0, 25000),
+    (400001,   500000, 4.0, 30000),
+    (500001,   750000, 4.0, 40000),
+    (750001,  1000000, 4.0, 50000),
+    (1000001, 1500000, 4.0, 70000),
+    (1500001, 2000000, 4.0, 90000),
+    (2000001,100000000,4.0,100000),
+]
+
+def _force_tail_900(n: float) -> int:
+    """Приводит цену к виду ...900 (ровно как в akcent)."""
+    i = int(n)
+    k = max(i // 1000, 0)
+    out = k * 1000 + 900
+    return out if out >= 900 else 900
+
+def compute_retail_from_dealer(dealer: Optional[int]) -> Optional[int]:
+    """
+    Розничная = dealer * (1 + pct/100) + add, затем доводим хвост до ...900.
+    Если dealer отсутствует или <= 100 — вернём None (позиция будет пропущена).
+    """
+    if dealer is None or dealer <= 100:
+        return None
+    for lo, hi, pct, add in PRICING_RULES:
+        if lo <= dealer <= hi:
+            return _force_tail_900(dealer * (1.0 + pct/100.0) + add)
+    # теоретически не попадёт сюда, но на всякий случай
+    lo, hi, pct, add = PRICING_RULES[-1]
+    return _force_tail_900(dealer * (1.0 + pct/100.0) + add)
 
 # -------- session / http --------
 def make_session() -> requests.Session:
@@ -240,7 +271,6 @@ def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
             out[k] = v
     return out
 
-# --- description from meta tags (simple & safe)
 def extract_description_meta(soup: BeautifulSoup) -> str:
     tag = soup.find("meta", attrs={"name": "description"})
     if tag and tag.get("content"):
@@ -276,10 +306,7 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
         return None  # артикул обязателен
 
     brand = (pairs.get("Вендор") or "").strip()
-
-    price_int = parse_price_kzt(soup)
-    if price_int is None or price_int <= 0:
-        price_int = 1
+    dealer_price = parse_price_kzt(soup)  # исходная KZT (дилерская)
 
     picture = first_image_url(soup)
 
@@ -293,7 +320,7 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
         "title": title,
         "vendorCode": vendor_code,
         "brand": brand or "",
-        "price": int(price_int),
+        "dealer_price": int(dealer_price) if dealer_price is not None else None,
         "picture": picture,
         "url": url,
         "cats": cats,
@@ -371,14 +398,14 @@ def main() -> int:
     if not VTT_LOGIN or not VTT_PASSWORD:
         print("[warn] Empty login/password; cannot proceed.")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
             f.write(build_yml([], []))
         return 0
 
     if not login_vtt(s):
         print("Error: login failed")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
             f.write(build_yml([], []))
         return 0
 
@@ -386,7 +413,7 @@ def main() -> int:
     if not categories_urls:
         print("[error] categories file is empty.")
         os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
             f.write(build_yml([], []))
         return 0
 
@@ -425,6 +452,13 @@ def main() -> int:
             it = fut.result()
             if not it:
                 continue
+
+            # ==== ЦЕНООБРАЗОВАНИЕ (akcent-стиль) ====
+            retail = compute_retail_from_dealer(it.get("dealer_price"))
+            if retail is None:
+                continue  # без цены (<=100) не пишем оффер
+            # ========================================
+
             offer_id = it["vendorCode"]
             if offer_id in seen_offer_ids:
                 offer_id = f"{offer_id}-{sha1(it['title'])[:6]}"
@@ -437,7 +471,7 @@ def main() -> int:
                 "vendorCode": offer_id,
                 "title": it["title"],
                 "brand": it.get("brand") or "",
-                "price": int(it["price"]) if it.get("price") else 1,
+                "price": int(retail),
                 "url": it.get("url"),
                 "picture": it.get("picture"),
                 "description": it.get("description") or "",
@@ -452,7 +486,7 @@ def main() -> int:
 
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
     xml = build_yml(categories, offers)
-    with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+    with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
         f.write(xml)
 
     print(f"[done] items: {len(offers)}, cats: {len(categories)} -> {OUT_FILE}")
@@ -466,7 +500,7 @@ if __name__ == "__main__":
         print("[fatal]", e)
         try:
             os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-            with io.open(OUT_FILE, "w", encoding="cp1251", errors="ignore") as f:
+            with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
                 f.write("<?xml version='1.0' encoding='windows-1251'?>\n<yml_catalog><shop><name>vtt</name><currencies><currency id=\"KZT\" rate=\"1\" /></currencies><categories><category id=\"9600000\">VTT</category></categories><offers></offers></shop></yml_catalog>")
         except Exception:
             pass
