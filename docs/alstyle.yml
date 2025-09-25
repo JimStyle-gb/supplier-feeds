@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-24 20:18">
+<yml_catalog date="2025-09-25 20:18">
   <!--FEED_META
 script_version                  = alstyle-2025-09-23.7                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15934                                                           | Офферов у поставщика до очистки
-offers_written                  = 1987                                                            | Офферов записано (после очистки)
+offers_total                    = 15967                                                           | Офферов у поставщика до очистки
+offers_written                  = 1991                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13947                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1987                                                            | Скольким товарам пересчитали price
+filtered_by_categories          = 13976                                                           | Сколько офферов отфильтровано по категориям
+prices_updated                  = 1991                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
-dealer_src_direct_field         = 1987                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
+dealer_src_direct_field         = 1991                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
 dealer_src_rrp_fallback         = 0                                                               | Базовая цена взята из RRP/РРЦ (fallback)
 dealer_src_missing              = 0                                                               | Не нашли базовую цену
-params_removed                  = 9473                                                            | Сколько строк параметров добавлено в описание
+params_removed                  = 9486                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1372                                                            | Сколько офферов доступны (true)
-available_false                 = 615                                                             | Сколько офферов недоступны (false)
+available_true                  = 1366                                                            | Сколько офферов доступны (true)
+available_false                 = 625                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15934                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15967                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-24 20:18:14 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-25 01:18:14 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-25 20:18:27 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-26 01:18:27 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -1125,7 +1125,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="14043">
@@ -1971,7 +1971,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 - Стандарты: Категория 6
 - Цвет: Фиолетовый</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="16832">
@@ -2620,7 +2620,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="17544">
@@ -5814,7 +5814,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 - Стандарты: Категория 5е
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="18936">
@@ -6027,7 +6027,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 - Тип печати: Лазерная
 - Цвет: Синий</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="19292">
@@ -6072,7 +6072,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 - Тип печати: Лазерная
 - Цвет: Жёлтый</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="19293">
@@ -7693,7 +7693,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="24318">
@@ -9781,7 +9781,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
       </offer>
 
   <offer id="30289">
-        <price>12900</price>
+        <price>11900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS30815</vendorCode>
         <picture>https://img.al-style.kz/30815_1.jpg</picture>
@@ -9823,7 +9823,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
       </offer>
 
   <offer id="30290">
-        <price>12900</price>
+        <price>11900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS30816</vendorCode>
         <picture>https://img.al-style.kz/30816_1.jpg</picture>
@@ -9865,7 +9865,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
       </offer>
 
   <offer id="30291">
-        <price>12900</price>
+        <price>11900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS30817</vendorCode>
         <picture>https://img.al-style.kz/30817_1.jpg</picture>
@@ -11496,7 +11496,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31832">
@@ -11675,7 +11675,7 @@ built_Asia/Almaty               = 2025-09-25 01:18:14 +05                       
 - Емкость выходных лотков: 100 листов
 - Скорость выхода первой страницы: 8.5 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="31848">
@@ -19289,7 +19289,7 @@ Versant 80/180 Press
 - Цвет: Белый
 - Процессор: Amlogic T968</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="186800">
@@ -22981,7 +22981,6 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS41682</vendorCode>
         <picture>https://img.al-style.kz/41682_1.jpg</picture>
-        <vendor>Xerox</vendor>
         <name>Емкость для отработанного тонера Xerox 008R13325</name>
         <description>Емкость используется для хранения отработанного тонера в принтере. Отработанный тонер представляет собой те частицы красящего вещества, которые по различным причинам не попали на поверхность листа бумаги, а также пыль, поступающую в процесс печати вместе с бумагой и воздухом. Надежно защищает аппарат от нежелательного попадания изношенного тонера в электронные и механические узлы устройства. После заполнения контейнер необходимо заменить 
 
@@ -23415,7 +23414,7 @@ USB
 - Вес: 0.2
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266518">
@@ -24316,7 +24315,7 @@ USB
 - Удаленный мониторинг: SNMP/HTTP - опцонально с RMCARD205
 - Рабочая влажность: 0-90% (без конденсации)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="266600">
@@ -24689,7 +24688,7 @@ USB
 - Вес: 0.2
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266719">
@@ -24745,7 +24744,7 @@ USB
 - Вес: 0.2
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266734">
@@ -24993,7 +24992,7 @@ USB
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266862">
@@ -27273,7 +27272,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
 - Стандарты: Категория 5е
 - Цвет: Серый</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="270152">
@@ -30315,7 +30314,6 @@ USB
         <currencyId>KZT</currencyId>
         <vendorCode>AS41570</vendorCode>
         <picture>https://img.al-style.kz/41570_1.jpg</picture>
-        <vendor>Xerox</vendor>
         <name>Ремень переноса изображения Xerox 607K00935 / 607K00932 / 607K00933 / 607K00934 / 607K00936 / 607K00</name>
         <description>Ремень переноса изображения – используется в узле (блоке) ремня переноса изображения, в цветных лазерных принтерах и МФУ. Участвует в процессе переноса тонера на бумагу. Представляет собой ленту, на которую поочередно собирается тонер всех цветов с фотобарабанов, после происходит перенос на бумажный носитель для дальнейшего закрепления изображения в термоблоке (печке) аппарата.
 
@@ -31092,7 +31090,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="361809">
@@ -31219,7 +31217,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="361813">
@@ -31623,7 +31621,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
 - Стандарты: Категория 5е
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="368632">
@@ -33810,7 +33808,7 @@ Keor SPE Tower может быть подключен к ПК через SNMP, USB и последовательный порт
 - Гарантия: 2 года
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="385612">
@@ -36715,7 +36713,7 @@ Xerox Easy Assist и приложение Xerox Print and Scan Experience делают настройку 
 - Емкость выходных лотков: 125 листов
 - Скорость выхода первой страницы: 6.1 сек. (моно) / 6.4 сек. (цвет)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="391516">
@@ -36804,7 +36802,7 @@ Xerox Easy Assist и приложение Xerox Print and Scan Experience делают настройку 
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392004">
@@ -37041,7 +37039,7 @@ USB-C x1
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392769">
@@ -37829,7 +37827,6 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59347_1.jpg</picture>
         <picture>https://img.al-style.kz/59347_2.jpg</picture>
         <picture>https://img.al-style.kz/59347_3.jpg</picture>
-        <vendor>Canon</vendor>
         <name>Цветное лазерное МФУ Canon IR ADVANCE DX C3930i</name>
         <description>Цветное лазерное МФУ Canon IR ADVANCE DX C3930i
 Данная позиция является базовым блоком и не является рабочей конфигурацией!Для активации печатной машины необходимо приобрести комплект расходных материалов и необходимые опции к базовому блоку! (см. в Сопутствующие товары)
@@ -38387,7 +38384,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Операционная система: Windows 11 Home
 - Процессор: Intel Core i5-12450H</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393185">
@@ -38871,7 +38868,7 @@ Canon imagePROGRAF TM-250Canon imagePROGRAF TM-255Canon imagePROGRAF TM-350 Cano
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="393302">
@@ -41679,7 +41676,7 @@ USB-кабель
       </offer>
 
   <offer id="393675">
-        <price>70900</price>
+        <price>74900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS60138</vendorCode>
         <picture>https://img.al-style.kz/60138_1.jpg</picture>
@@ -41715,7 +41712,7 @@ Canon imageRUNNER ADVANCE 8085Canon imageRUNNER ADVANCE 8095Canon imageRUNNER AD
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="393677">
@@ -43984,7 +43981,7 @@ Canon Cassette Feeding Unit-AE1/AG1/AJ1/AK1/AL1/AM1/AP1/AQ1/AW1Canon Color image
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396358">
@@ -44134,7 +44131,7 @@ Canon PIXMA 2540SCanon PIXMA MG2440Canon PIXMA MG2540Canon PIXMA MG2545Canon PIX
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396370">
@@ -45452,7 +45449,7 @@ USB кабель
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396738">
@@ -46305,7 +46302,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396760">
@@ -47104,7 +47101,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="396807">
@@ -47120,6 +47117,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 ИБП семейства Back-UPS Pro надежно защищают электропитание мощных компьютерных систем, маршрутизаторов и модемов, внешних систем хранения, игровых приставок и прочей электроники в доме или организации. Эти ИБП стабилизируют напряжение при его отклонении от безопасных значений и дают возможность длительной работы от батарей при отключении электроэнергии. Они также обеспечивают защиту электропитания от опасных бросков и всплесков напряжения, а ПО для управления ИБП позволяет максимально полно использовать его возможности.
 
 Характеристики:
+- Вес: 5.4
 - Гарантия: 2 года
 - Время полной зарядки: 8 ч
 - Ёмкость батареи: 12В/7Ач
@@ -47680,6 +47678,64 @@ Canon imageRUNNER ADVANCE 6275iCanon imageRUNNER ADVANCE 6265iCanon imageRUNNER 
 Характеристики:
 - Вес: 1.3
 - Гарантия: Нет</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
+  <offer id="397062">
+        <price>627900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS61667</vendorCode>
+        <picture>https://img.al-style.kz/61667_1.jpg</picture>
+        <picture>https://img.al-style.kz/61667_2.jpg</picture>
+        <picture>https://img.al-style.kz/61667_3.jpg</picture>
+        <vendor>Samsung</vendor>
+        <name>Монитор Samsung 49" QLED LS49C950UAIXCI</name>
+        <description>Монитор Samsung 49" QLED LS49C950UAIXCI
+
+Особенности и преимущества:
+
+Экран DQHD с изгибом 1000R. 49-дюймовый экран с изгибом 1000R и форматом 32:9, практически соответствующим полю зрения, создает эффект погружения. Благодаря широкому экрану с разрешением Dual QHD вы сможете увидеть и сделать больше, работая с комфортом.
+
+Технология VESA DisplayHDR 400. Вы разглядите даже темные участки, работая над видео- и дизайн-проектами. Благодаря технологии сверхвысокой четкости VESA DisplayHDR 400 экран передает расширенный динамический диапазон контрастных теней и света. Темные области стали глубже и насыщеннее, а светлые   еще ярче и ослепительнее, благодаря чему ваши проекты будут исключительно четкими и реалистичными.
+
+Разнообразные интерфейсы. Монитор оснащен DisplayPort, 2 портами HDMI, портами USB и USB Type-C с поддержкой зарядки 90 Вт. Подключайте ваши устройства, просматривайте и передавайте данные, используя монитор вместо центра подключений, чтобы освободить место на столе.
+
+Встроенные динамики. Работайте, учитесь и играйте без дополнительных периферийных устройств. Со встроенными динамиками вы можете сократить количество подключенных устройств и освободить место на столе, но при этом с легкостью воспроизводить любое аудио.
+
+Встроенный KVM-переключатель. Встроенный переключатель позволяет управлять двумя источниками изображения, подключенными к монитору, с одной клавиатуры и мыши. Поддерживаются режимы разделения экрана, картинки в картинке и картинки рядом с картинкой. Вам больше не нужно возиться с несколькими устройствами. Вы можете легко переключаться между источниками и выполнять сразу несколько задач.
+
+Эргономичная подставка. Благодаря безрамочному дизайну ничто не будет отвлекать вас от работы. Установите монитор так, как удобно вам, и под комфортным углом, используя регулируемую по высоте подставку с функциями поворота и наклона. Лаконичный металлический стиль монитора украсит любое помещение.
+
+Умная защита глаз, сертифицированная TUV. Яркость и цветовая температура монитора ViewFinity S9 автоматически адаптируются к окружающим условиям, позволяя эффективно работать даже длительное время или ночью. Помимо умной защиты глаз, сертифицированной TUV, монитор также поддерживает режим защиты глаз Eye Saver, снижающий мерцание экрана и синее свечение.
+
+Приложение Easy Setting Box. Приложение Easy Setting Box от Samsung с интуитивно-понятным интерфейсом обеспечивает максимально удобную многозадачность при работе с монитором. Вы можете разделить экран или отобразить несколько экранов разных размеров с гибкой настройкой.
+
+Частота обновления 120 Гц. Отдохните от рабочих проектов и насладитесь игрой с плавным изображением. Частота обновления 120 Гц обеспечивает плавные движения в игре для создания эффекта полного погружения и уменьшает задержку при прокрутке веб-страниц и экранов приложений.
+
+Порты:
+
+Порт DP x1
+Порт HDMI x2
+Порт USB x3
+Порт USB-C x1
+Выход для подключения наушников x1
+
+Комплектация:
+
+Кабель HDMI
+Кабель USB Type-C
+Ка...
+
+Характеристики:
+- Вес: 4.3
+- Гарантия: 1 год
+- Частота обновления экрана: 120 Гц
+- Тип матрицы экрана: VA
+- Яркость: 600 кд/м&#178;
+- Размер VESA: 100x100 мм
+- Видеовыход: HDMI / DP
+- Время отклика: 4 мс</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
       </offer>
@@ -50888,7 +50944,7 @@ Hi-Speed USB (порт B)
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="398563">
@@ -52406,7 +52462,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="399935">
@@ -53450,7 +53506,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400238">
@@ -53892,7 +53948,7 @@ Canon Pixma E404Canon Pixma E464Canon Pixma E484
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="400268">
@@ -54216,7 +54272,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400349">
@@ -54296,7 +54352,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400352">
@@ -55928,7 +55984,7 @@ XG 86TDFMAX148128- это современная интерактивная панель, разработанная для приме
 - Объем встроенной памяти: 128 Гб
 - Операционная система: Android 14</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="401103">
@@ -55982,7 +56038,6 @@ Canon imagePROGRAF PRO-4000SCanon imagePROGRAF PRO-6000S
         <picture>https://img.al-style.kz/65486_1.jpg</picture>
         <picture>https://img.al-style.kz/65486_2.jpg</picture>
         <picture>https://img.al-style.kz/65486_3.jpg</picture>
-        <vendor>Dahua</vendor>
         <name>Интерактивная доска (панель) Dahua 75" DHI-LPH75-MC480-U</name>
         <description>Интерактивная панель Dahua 75&amp;quot; DHI-LPH75-MC480-U
 Погрузитесь в мир инноваций с интерактивной панелью Dahua 75&amp;quot; DHI-LPH75-MC480-U, которая предлагает передовые функции для удобства и эффективности в учебных заведениях, офисах и конференц-залах.
@@ -56065,7 +56120,6 @@ Canon imagePROGRAF PRO-4000SCanon imagePROGRAF PRO-6000S
         <picture>https://img.al-style.kz/65487_1.jpg</picture>
         <picture>https://img.al-style.kz/65487_2.jpg</picture>
         <picture>https://img.al-style.kz/65487_3.jpg</picture>
-        <vendor>Dahua</vendor>
         <name>Интерактивная доска (панель) Dahua 86" DHI-LPH86-MC480-U</name>
         <description>Интерактивная панель Dahua 86&amp;quot; DHI-LPH86-MC480-U
 Погрузитесь в мир инноваций с интерактивной панелью Dahua 86&amp;quot; DHI-LPH86-MC480-U, которая предлагает передовые функции для удобства и эффективности в учебных заведениях, офисах и конференц-залах.
@@ -56731,7 +56785,6 @@ Bluetooth: Для подключения беспроводных акустических систем или других аксессуар
         <currencyId>KZT</currencyId>
         <vendorCode>AS66353</vendorCode>
         <picture>https://img.al-style.kz/66353_1.jpg</picture>
-        <vendor>CyberPower</vendor>
         <name>Источник бесперебойного питания CyberPower HSTP3T10KEBCWOB</name>
         <description>CyberPower HSTP3T10KEBCWOB Трехфазный онлайн-ИБП обеспечивает длительное резервное питание для IT шкафов, транспорта, инфраструктуры и аварийных систем. Благодаря возможности параллельного резервирования ИБП серии HSTP3T (3-фазный) идеально подходят для критически важных приложений в серверных помещениях, центрах обработки данных, промышленных предприятиях и электростанциях, требующих высокой производительности, высокой надежности и увеличенного времени работы.
 
@@ -57128,7 +57181,7 @@ XG 86BCDB138128   - это современная интерактивная панель, разработанная для прим
 - Объем встроенной памяти: 128 Гб
 - Операционная система: Android 13</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="402449">
@@ -57138,7 +57191,6 @@ XG 86BCDB138128   - это современная интерактивная панель, разработанная для прим
         <picture>https://img.al-style.kz/67134_1.jpg</picture>
         <picture>https://img.al-style.kz/67134_2.jpg</picture>
         <picture>https://img.al-style.kz/67134_3.jpg</picture>
-        <vendor>XG</vendor>
         <name>Моноблок 23.8" XG Orion FB40</name>
         <description>Моноблок 23.8" XG Orion FB40 
  
@@ -57963,7 +58015,6 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
         <currencyId>KZT</currencyId>
         <vendorCode>AS67637</vendorCode>
         <picture>https://img.al-style.kz/67637_1.jpg</picture>
-        <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R04846</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
@@ -59881,7 +59932,7 @@ CANON PIXMA iP2700CANON PIXMA MP252CANON PIXMA MP260CANON PIXMA MP270CANON PIXMA
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="404320">
@@ -60163,7 +60214,7 @@ ScanPad
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="404745">
@@ -60474,7 +60525,7 @@ PoE
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="404829">
@@ -60621,7 +60672,6 @@ RJ45 (ЛВС)
         <vendorCode>AS69892</vendorCode>
         <picture>https://img.al-style.kz/69892_1.jpg</picture>
         <picture>https://img.al-style.kz/69892_2.jpg</picture>
-        <vendor>Europrint</vendor>
         <name>Картридж Europrint EPC-CF289A (Без чипа)</name>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -60811,7 +60861,6 @@ HDCP
         <picture>https://img.al-style.kz/70160_1.jpg</picture>
         <picture>https://img.al-style.kz/70160_2.jpg</picture>
         <picture>https://img.al-style.kz/70160_3.jpg</picture>
-        <vendor>Gigabyte</vendor>
         <name>Ноутбук Gigabyte G6 MF-H2KZ853KD 16" FHD 165Hz i7-13620H 16GB 512GB RTX4050 DOS</name>
         <description>Ноутбук Gigabyte G6 MF 16" FHD 165Hz i7-13620H 16GB 512GB RTX4050 DOS
 Игровой ноутбук GIGABYTE сочетает в себе совершенно новые игровые элементы будущих тенденций в сочетании с высокой производительностью нового поколения. Игровой ноутбук GIGABYTE оснащен процессором Intel® Core™ i7, графическим процессором NVIDIA® GeForce RTX™ серии 40 и дисплеем с высокой частотой обновления 165 Гц. Благодаря инструменту для решения любой задачи, этот ноутбук станет вашим верным помощником при выполнении различных ролей, поддерживая все ваши ежедневные сражения.
@@ -61252,7 +61301,7 @@ Canon imageRUNNER ADVANCE 4925i Canon imageRUNNER ADVANCE 4935iCanon imageRUNNER
       </offer>
 
   <offer id="405275">
-        <price>14900</price>
+        <price>19900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS70225</vendorCode>
         <picture>https://img.al-style.kz/70225_1.jpg</picture>
@@ -62945,7 +62994,6 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <currencyId>KZT</currencyId>
         <vendorCode>AS71672</vendorCode>
         <picture>https://img.al-style.kz/71672_1.jpg</picture>
-        <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R04855 (черный)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
@@ -62972,7 +63020,6 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <currencyId>KZT</currencyId>
         <vendorCode>AS71673</vendorCode>
         <picture>https://img.al-style.kz/71673_1.jpg</picture>
-        <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R04856 (голубой)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
@@ -63026,7 +63073,6 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <currencyId>KZT</currencyId>
         <vendorCode>AS71675</vendorCode>
         <picture>https://img.al-style.kz/71675_1.jpg</picture>
-        <vendor>Xerox</vendor>
         <name>Тонер-картридж Xerox 006R04858 (желтый)</name>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
@@ -63231,7 +63277,7 @@ A4, B5, LTR, 10 x 15 см, 13 x 18 см, 20 x 25 см, формат карточки (91 x 55 мм), к
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="406457">
@@ -65092,6 +65138,47 @@ Canon PIXMA TS7640iCanon PIXMA TS7740i
         <available>true</available>
       </offer>
 
+  <offer id="408279">
+        <price>23900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS73804</vendorCode>
+        <vendor>Canon</vendor>
+        <name>Струйный картридж Canon CL-486</name>
+        <description>Струйный картридж Canon CL-486
+
+Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
+
+Основные характеристики
+
+Производитель
+Canon
+
+Устройство
+Картридж
+
+Цвет печати
+Цветной
+
+Ресурс картриджа, cтр.
+180
+
+Технология печати
+Струйная
+
+Объем картриджа, мл
+9.9
+
+Совместимость
+
+Устройства
+Canon PIXMA TS7640iCanon PIXMA TS7740i
+
+Характеристики:
+- Гарантия: Нет</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
   <offer id="408280">
         <price>23900</price>
         <currencyId>KZT</currencyId>
@@ -65884,7 +65971,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
 - Видеовыход: HDMI / VGA
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="409583">
@@ -66104,7 +66191,7 @@ Dahua DHI-LDW43-LWI200T (K-shape)   это современный 43-дюймовый интерактивный ки
 - Яркость: 320 кд/кв. м
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="409736">
@@ -66580,7 +66667,7 @@ XG 86AIVTBTM1416256 — это интерактивная панель нового поколения, предназначенная
       </offer>
 
   <offer id="410296">
-        <price>16900</price>
+        <price>19900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS76660</vendorCode>
         <picture>https://img.al-style.kz/76660_1.jpg</picture>
@@ -67583,7 +67670,6 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76961</vendorCode>
         <picture>https://img.al-style.kz/76961_1.jpg</picture>
-        <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03765 (CET141694)</name>
         <description>Тонер-картридж CET 106R03765 (CET141694)
 Тонер-картридж — расходный материал, используемый принтером или МФУ.
@@ -67611,7 +67697,6 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76962</vendorCode>
         <picture>https://img.al-style.kz/76962_1.jpg</picture>
-        <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03768 (CET141695)</name>
         <description>Тонер-картридж CET 106R03768 (CET141695)
 Тонер-картридж — расходный материал, используемый принтером или МФУ.
@@ -67639,7 +67724,6 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76963</vendorCode>
         <picture>https://img.al-style.kz/76963_1.jpg</picture>
-        <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03767 (CET141696)</name>
         <description>Тонер-картридж CET 106R03767 (CET141696)
 Тонер-картридж — расходный материал, используемый принтером или МФУ.
@@ -67891,7 +67975,6 @@ OEM №: 13R00662, 013R00662
         <currencyId>KZT</currencyId>
         <vendorCode>AS76965</vendorCode>
         <picture>https://img.al-style.kz/76965_1.jpg</picture>
-        <vendor>CET</vendor>
         <name>Тонер-картридж CET 106R03766 (CET141697)</name>
         <description>Тонер-картридж CET 106R03766 (CET141697)
 Тонер-картридж — расходный материал, используемый принтером или МФУ.
@@ -68738,7 +68821,6 @@ MateBook D 14 —  Безрамочный экран с режимом защиты зрения. Высокая производител
         <picture>https://img.al-style.kz/77910_1.jpg</picture>
         <picture>https://img.al-style.kz/77910_2.jpg</picture>
         <picture>https://img.al-style.kz/77910_3.jpg</picture>
-        <vendor>TECNO</vendor>
         <name>Ноутбук Tecno MEGABOOK K15S 15.6" FHD i5-13420H 16GB 1TB Win 11</name>
         <description>Ноутбук Tecno Megabook K15SRA i5-13420H / 16&#8239;ГБ / SSD 1000&#8239;ГБ / Win11
 
@@ -69572,7 +69654,6 @@ USB-C x1
         <currencyId>KZT</currencyId>
         <vendorCode>AS78661</vendorCode>
         <picture>https://img.al-style.kz/78661_1.jpg</picture>
-        <vendor>ДКС</vendor>
         <name>Кабель витая пара DKC RN5EUUKPEBK кат. 5E U/UTP</name>
         <description>Кабель витая пара кат. 5E неэкранированный U/UTP, 4 пары, нг(А)-LSLTx, цвет внешней оболочки серый, коробка 305 м
 
@@ -70604,7 +70685,7 @@ OEM №: 013R00688
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="413679">
@@ -71283,6 +71364,19 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
+  <offer id="414809">
+        <price>10499900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS81742</vendorCode>
+        <vendor>Canon</vendor>
+        <name>Комплект обслуживания Canon IJC25X FLUSH KIT 8977B001BA</name>
+        <description>Характеристики:
+- Вес: 1.4
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
         <available>false</available>
       </offer>
 
@@ -71350,6 +71444,55 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <name>Ремонтный комплект CET M607 (CET7864U)</name>
         <description>Ремонтный комплект CET M607 (CET7864U)
 Расположен в узле закрепления принтера. Предназначен для прижима листа бумаги с текстом к термоузлу. Изготовлен из металлического стержня и гладкой резины.
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
+  <offer id="415518">
+        <price>61900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS82456</vendorCode>
+        <picture>https://img.al-style.kz/82456_1.jpg</picture>
+        <picture>https://img.al-style.kz/82456_2.jpg</picture>
+        <picture>https://img.al-style.kz/82456_3.jpg</picture>
+        <vendor>Xiaomi</vendor>
+        <name>Монитор Xiaomi Gaming Monitor G24i 2026 24"</name>
+        <description>Монитор Xiaomi Gaming Monitor G24i 2026 24"
+Особенности и преимущества:
+
+23,8-дюймовый HD-игровой дисплей (1920 x 1080). Точная передача каждой детали. Открывает путь к триумфу в динамичных сражениях.
+
+Ультравысокая частота обновления 200Гц. Быстрый отклик 1мс. Частота обновления до 200 Гц обеспечивает плавность динамичного геймплея. Переход G-to-G (GTG)* обеспечивает мгновенную смену изображения. Фиксирует каждую деталь, давая вам преимущество в самый ответственный момент.
+
+HDR400 обеспечивает пиковую яркость в 400 нит. Технология HDR400 расширяет динамический диапазон яркости, делая темные участки еще глубже, а светлые   ярче. Благодаря пиковой яркости в 400 нит усиливается контраст между светлыми и темными участками, обеспечивая четкий обзор каждой детали на экране.
+
+Технология синхронизации FreeSync Premium. Поддержка G-Sync Compatible для синхронизации частоты кадров между видеокартой и монитором. Это снижает разрывы и подергивания изображения во время динамичных сцен, помогая сохранять фокус в самые важные моменты.
+
+Высокая точность цветопередачи &#8710;E&amp;lt;2. Каждый монитор проходит профессиональную и точную настройку цветопередачи перед выходом с завода. Будь то офисная работа, развлечения или профессиональная визуальная деятельность   монитор легко адаптируется к вашим требованиям.
+
+Двойной широкий цветовой охват. Плавная работа и яркие цвета. Профессиональная 8-битная глубина цвета обеспечивает насыщенные градации с плавными и естественными переходами. Сочетание 100% охвата sRGB и 95% DCI-P3 гарантирует захватывающий и безупречный визуальный опыт..
+
+Стильный и обтекаемый дизайн. Аккуратная укладка кабелей. Умная организация кабелей для аккуратного рабочего места. Наслаждайтесь чистым пространством без запутанных проводов.
+
+Порты:
+
+DP-порт x1
+HDMI-порт x1
+Аудиопорт x1
+Порт питания DC IN x1
+
+Комплектация:
+
+Монитор x1
+Комплект подставки x1
+Адаптер питания x1
+Набор для крепления подставки x1
+Руководство пользователя x1
+HDMI-кабель x1
+Гарантийный талон x1
 
 Характеристики:
 - Гарантия: 1 год</description>
