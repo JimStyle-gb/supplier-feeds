@@ -4,12 +4,14 @@
 VTT (b2b.vtt.ru) -> YML (KZT) в стиле alstyle/akcent
 
 - Структура: <?xml ...?><yml_catalog date="..."><!--FEED_META ... --><shop><offers>...</offers></shop></yml_catalog>
-- В каждом <offer> порядок полей как у alstyle: name, vendor, vendorCode, price, currencyId, picture, description, available
+- Порядок полей в <offer>: name, vendor, vendorCode, price, currencyId, picture, description, available
 - Префикс vendorCode: VT
-- Не выводим: <categories>, <categoryId>, <quantity>, <stock_quantity>, <quantity_in_stock>, <url>
-- available всегда true, атрибуты available/in_stock у <offer> не используем
-- Пустая строка между офферами для читаемости
-- Ценообразование: ТВОЯ таблица PRICING_RULES + финальное округление цены в формат …900 (15640 -> 15900)
+- НЕ выводим: <categories>, <categoryId>, <url>, любые *quantity*
+- <available>true</available> для всех
+- Цены:
+    1) Если цену не нашли — ставим 100
+    2) Применяем ТВОЮ таблицу PRICING_RULES (процент + надбавка)
+    3) Финальная доводка ВВЕРХ до формата …900 (10789→10900, 238958→239900)
 """
 
 from __future__ import annotations
@@ -44,9 +46,9 @@ MAX_PAGES       = int(os.getenv("MAX_PAGES", "800"))
 MAX_CRAWL_MIN   = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
 MAX_WORKERS     = int(os.getenv("MAX_WORKERS", "6"))
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; VTT-Feed/2.4)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; VTT-Feed/2.6)"}
 
-# ---------------- ЦЕНООБРАЗОВАНИЕ (как у всех) ----------------
+# ---------------- ЦЕНООБРАЗОВАНИЕ (твоя таблица) ----------------
 from typing import Tuple
 PriceRule = Tuple[int, int, float, int]  # (min_incl, max_incl, pct, add_kzt)
 PRICING_RULES: List[PriceRule] = [
@@ -66,37 +68,38 @@ PRICING_RULES: List[PriceRule] = [
     (1500001, 2000000, 4.0, 90000),
     (2000001,100000000,4.0,100000),
 ]
-ROUND_STEP = 10            # служебное округление (к ближайшим 10) перед доводкой до …900
-ROUND_MODE = "nearest"     # "nearest" | "up"
 
-def round_price_step(x: float) -> int:
-    """Округление к ближайшим N (N=ROUND_STEP)."""
-    step = max(1, int(ROUND_STEP))
-    if ROUND_MODE == "up":
-        return step * math.ceil(float(x) / step)
-    return step * round(float(x) / step)
-
-def force_900(x: int) -> int:
-    """Финальная доводка цены: последние три цифры = 900 (пример: 15640 -> 15900)."""
-    p = max(1, int(x or 1))
-    return (p // 1000) * 1000 + 900
+def ceil_to_900(p: int) -> int:
+    """
+    Округление ВВЕРХ до ближайшего значения с окончанием ...900.
+    Примеры:
+      10789 -> 10900
+      238958 -> 239900
+      100 -> 900
+    """
+    p = max(1, int(p or 1))
+    k = p // 1000
+    cand = k * 1000 + 900
+    if p <= cand:
+        return cand
+    return (k + 1) * 1000 + 900
 
 def apply_pricing(base_price: int) -> int:
     """
-    1) Табличное правило (процент + прибавка) по твоим диапазонам.
-    2) Округление к ближайшим 10 (стабилизация).
-    3) Финальная доводка до …900.
+    1) Применяем табличное правило (процент + надбавка) если цена >= 101,
+       иначе — оставляем как есть (100..100) перед доводкой
+    2) Финальная доводка ceil_to_900 (НЕТ промежуточного округления к десяткам и т.д.)
     """
     p = max(1, int(base_price or 1))
-    if p < PRICING_RULES[0][0]:
-        return force_900(round_price_step(p))
-    for lo, hi, pct, add in PRICING_RULES:
-        if lo <= p <= hi:
+    if p >= PRICING_RULES[0][0]:
+        for lo, hi, pct, add in PRICING_RULES:
+            if lo <= p <= hi:
+                p = p * (1.0 + float(pct)/100.0) + float(add)
+                break
+        else:
+            lo, hi, pct, add = PRICING_RULES[-1]
             p = p * (1.0 + float(pct)/100.0) + float(add)
-            return force_900(round_price_step(p))
-    lo, hi, pct, add = PRICING_RULES[-1]
-    p = p * (1.0 + float(pct)/100.0) + float(add)
-    return force_900(round_price_step(p))
+    return ceil_to_900(int(round(p)))
 
 # ---------------- УТИЛИТЫ ----------------
 def jitter_sleep() -> None:
@@ -234,37 +237,28 @@ def collect_product_urls_from_category(s: requests.Session, cat_url: str, max_pa
     return urls
 
 # ---------------- ПАРСИНГ КАРТОЧКИ ----------------
+_CURRENCY_RE = re.compile(
+    r"(\d[\d\s.,]*)\s*(?:₸|KZT|kzt|тг|тенге)\b",
+    flags=re.IGNORECASE
+)
+
 def parse_price_kzt(soup: BeautifulSoup) -> Optional[int]:
-    el = soup.select_one(".price_main")
+    # 1) Явные элементы с ценой
+    el = soup.select_one(".price_main, .price, [itemprop='price']")
     if el:
         val = to_float(el.get_text(" ", strip=True))
-        if val is not None:
+        if val is not None and val > 0:
             return int(round(val))
+
+    # 2) Любой текст с явной валютой
     txt = soup.get_text(" ", strip=True)
-    m = re.search(r"(\d[\d\s.,]*)\s*[₸Тт]\b", txt)
+    m = _CURRENCY_RE.search(txt)
     if m:
         val = to_float(m.group(1))
-        if val is not None:
+        if val is not None and val > 0:
             return int(round(val))
-    return None
 
-def first_image_url(soup: BeautifulSoup) -> Optional[str]:
-    og = soup.find("meta", attrs={"property":"og:image"})
-    if og and og.get("content"):
-        return abs_url(og["content"])
-    for tag in soup.find_all(True):
-        style = tag.get("style")
-        if isinstance(style, str) and "background-image" in style:
-            m = re.search(r"url\(['\"]?([^'\"\)]+)", style)
-            if m and (".jpg" in m.group(1).lower() or ".png" in m.group(1).lower()):
-                return abs_url(m.group(1))
-        for attr in ("src","data-src","href","data-img","content"):
-            v = tag.get(attr)
-            if not v or not isinstance(v, str):
-                continue
-            vl = v.lower()
-            if "/images/" in vl and (vl.endswith(".jpg") or vl.endswith(".png")):
-                return abs_url(v)
+    # 3) Цена не найдена
     return None
 
 def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
@@ -281,14 +275,19 @@ def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
             out[k] = v
     return out
 
-def extract_description_meta(soup: BeautifulSoup) -> str:
-    tag = soup.find("meta", attrs={"name": "description"})
-    if tag and tag.get("content"):
-        return re.sub(r"\s+", " ", tag["content"].strip())
-    tag = soup.find("meta", attrs={"property": "og:description"})
-    if tag and tag.get("content"):
-        return re.sub(r"\s+", " ", tag["content"].strip())
-    return ""
+def first_image_url(soup: BeautifulSoup) -> Optional[str]:
+    og = soup.find("meta", attrs={"property":"og:image"})
+    if og and og.get("content"):
+        return abs_url(og["content"])
+    for tag in soup.find_all(True):
+        for attr in ("src","data-src","href","data-img","content","data-large"):
+            v = tag.get(attr)
+            if not v or not isinstance(v, str):
+                continue
+            vl = v.lower()
+            if (".jpg" in vl or ".png" in vl or ".jpeg" in vl) and "/images/" in vl:
+                return abs_url(v)
+    return None
 
 def normalize_vendor_code(raw: str) -> str:
     s = re.sub(r"\s+", "", raw or "")
@@ -313,9 +312,13 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
         return None
 
     brand = (pairs.get("Вендор") or "").strip()
-    price_src = parse_price_kzt(soup) or 1
+    price_src = parse_price_kzt(soup)
+    if price_src is None or price_src <= 0:
+        price_src = 100  # требование: если цены нет — ставим 100
+
     picture = first_image_url(soup)
-    description = extract_description_meta(soup)
+    meta = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
+    descr = meta.get("content").strip() if (meta and meta.get("content")) else ""
 
     return {
         "id": article,
@@ -324,7 +327,7 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
         "brand": brand or "",
         "price_src": int(price_src),
         "picture": picture,
-        "description": description,
+        "description": re.sub(r"\s+", " ", descr),
     }
 
 # ---------------- FEED_META + YML ----------------
@@ -343,7 +346,7 @@ def build_feed_meta(source: str, stats: Dict[str,int], priced: int) -> str:
     kv("prices_updated",         str(priced))
     kv("removed_tags",           "categories, categoryId, quantity*, url")
     kv("currency",               "KZT")
-    kv("price_rules_table",      f"{len(PRICING_RULES)} ranges; final …900")
+    kv("price_rules_table",      f"{len(PRICING_RULES)} ranges; final ceil(...900)")
     kv("built_UTC",              datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"))
     kv("built_Asia/Almaty",      f"{almaty_now_str()} | Время сборки (Алматы)-->")
     return "<!--FEED_META\n" + "\n".join(lines) + "\n-->"
@@ -362,13 +365,14 @@ def build_yml(offers: List[Dict[str,Any]], source: str, discovered: int, parsed:
         if it.get("brand"):
             out.append(f"      <vendor>{yml_escape(it['brand'])}</vendor>")
         out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
-        out.append(f"      <price>{int(it['price'])}</price>")
+        # применяем правила и доводку здесь
+        final_price = apply_pricing(it['price_src'])
+        out.append(f"      <price>{int(final_price)}</price>")
         out.append("      <currencyId>KZT</currencyId>")
         if it.get("picture"):
             out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
         if it.get("description"):
-            clean_desc = re.sub(r"\s+", " ", it["description"]).strip()
-            out.append(f"      <description>{yml_escape(clean_desc)}</description>")
+            out.append(f"      <description>{yml_escape(it['description'])}</description>")
         out.append("      <available>true</available>")
         out.append("    </offer>\n")
     out.append("  </offers>")
@@ -435,15 +439,14 @@ def main() -> int:
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
         for fut in as_completed([ex.submit(worker, u) for u in prod_urls]):
             it = fut.result()
+            parsed += 1
             if not it:
                 continue
-            parsed += 1
             src = it["price_src"]
             new_price = apply_pricing(src)
             if new_price != src:
                 priced_count += 1
-            it["price"] = new_price
-
+            it["price_src"] = new_price  # дальше используем уже доведённую цену при выводе
             oid = it["id"]
             if oid in seen_ids:
                 oid = f"{oid}-{sha1(it['title'])[:6]}"
