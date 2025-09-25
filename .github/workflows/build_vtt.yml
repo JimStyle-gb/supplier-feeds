@@ -1,15 +1,18 @@
 name: build_vtt
 
 on:
-  # Запуск по расписанию. GitHub использует UTC.
-  # 05:00 Asia/Almaty = 00:00 UTC.
+  # 05:00 Asia/Almaty = 00:00 UTC
   schedule:
     - cron: '0 0 1,10,20 * *'
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -23,14 +26,14 @@ jobs:
 
       - name: Install deps
         run: |
+          set -e
           python -V
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
       - name: Build VTT feed
         env:
-          BASE_URL: https://b2b.vtt.ru
-          START_URL: https://b2b.vtt.ru/catalog/
+          # ВАЖНО: НЕ переопределяем BASE_URL/START_URL — берём из кода/категорий.
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
           HTTP_TIMEOUT: '25'
@@ -39,15 +42,14 @@ jobs:
           MAX_PAGES: '800'
           MAX_CRAWL_MINUTES: '60'
           MAX_WORKERS: '6'
+          CATEGORIES_FILE: docs/categories_vtt.txt
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-          CATEGORIES_FILE: docs/categories_vtt.txt
         run: |
           set -euo pipefail
           python scripts/build_vtt.py
 
       - name: Commit changes
-        if: success()
         run: |
           set -e
           git config user.name  "github-actions[bot]"
@@ -58,5 +60,4 @@ jobs:
             exit 0
           fi
           git commit -m "chore(vtt): update docs/vtt.yml [skip ci]"
-          # Пытаемся пушнуть; если откажет из-за fast-forward — подтягиваем и повторяем.
           git push || (git pull --rebase && git push)
