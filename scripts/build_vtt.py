@@ -11,6 +11,7 @@ VTT (b2b.vtt.ru) -> YML (KZT) в стиле alstyle/akcent.
 ВЫВОД:
 - Без <categories>, <categoryId>, <url>, любых *quantity*
 - <available>true</available> для всех
+- id = VT + нормализованный артикул (как у vendorCode)
 - vendorCode = VT + нормализованный артикул
 - Кодировка: windows-1251
 """
@@ -280,9 +281,13 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     meta = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
     descr = meta.get("content").strip() if (meta and meta.get("content")) else ""
 
+    article_clean = re.sub(r"[^\w\-]+", "", article)
+    prefixed = "VT" + article_clean
+
     return {
-        "id": article,
-        "vendorCode": "VT" + re.sub(r"[^\w\-]+", "", article),
+        # ВАЖНО: теперь id с тем же префиксом, что и vendorCode
+        "id": prefixed,
+        "vendorCode": prefixed,
         "title": title,
         "brand": brand or "",
         "price": int(final_price),
@@ -301,7 +306,7 @@ def build_feed_meta(source: str,
                     prices_updated: int) -> str:
     """
     Формат как у akcent.
-    ВАЖНО: закрываем комментарий ПРЯМО на строке Алматы: '... (Алматы)-->' и больше '-->' не добавляем.
+    Закрываем комментарий ПРЯМО на строке Алматы: '... (Алматы)-->' и больше '-->' не добавляем.
     """
     pad = 28
     lines: List[str] = []
@@ -323,7 +328,6 @@ def build_feed_meta(source: str,
     kv("built_utc",            datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"), "Время сборки (UTC)")
     # Закрываем комментарий прямо здесь:
     lines.append(f"{'built_Asia/Almaty'.ljust(pad)} = {almaty_now_str():<60} | Время сборки (Алматы)-->")
-    # ОТДЕЛЬНОЕ '-->' в конце блока НЕ добавляем
     return "<!--FEED_META\n" + "\n".join(lines) + "\n"
 
 def build_yml(offers: List[Dict[str,Any]],
@@ -422,7 +426,7 @@ def main() -> int:
             if oid in seen_ids:
                 oid = f"{oid}-{sha1(it['title'])[:6]}"
                 it["id"] = oid
-                it["vendorCode"] = "VT" + re.sub(r"[^\w\-]+", "", oid)
+                # ВАЖНО: vendorCode не трогаем при коллизии id
             seen_ids.add(oid)
             offers.append(it)
 
