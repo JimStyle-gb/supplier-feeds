@@ -5,13 +5,13 @@ VTT (b2b.vtt.ru) -> YML (KZT) в стиле alstyle/akcent.
 
 ЦЕНА:
 - Берём из <span class="price_main"><b>11121.48</b>...</span>
-- Если цены нет или < 100 -> price = 100 (никаких правил/округлений)
-- Иначе: применяем PRICING_RULES (процент + фикс) и округляем вверх до ...900
+- Если цены нет или < 100 -> price = 100
+- Иначе применяем PRICING_RULES (процент + фикс) и округляем вверх до ...900
 
 ВЫВОД:
 - Без <categories>, <categoryId>, <url>, любых *quantity*
 - <available>true</available> для всех
-- id = VT + нормализованный артикул (как у vendorCode)
+- id = VT + нормализованный артикул (как и vendorCode)
 - vendorCode = VT + нормализованный артикул
 - Кодировка: windows-1251
 """
@@ -73,14 +73,11 @@ PRICING_RULES: List[PriceRule] = [
 
 def _round_up_tail_900(n: int) -> int:
     """Округление вверх до ближайшего значения с окончанием ...900."""
-    thousands = (n + 999) // 1000  # ceil до следующей 1000
-    return thousands * 1000 - 100   # ...900
+    thousands = (n + 999) // 1000
+    return thousands * 1000 - 100
 
 def compute_price_from_supplier(base_price: Optional[int]) -> int:
-    """
-    Если base_price отсутствует или <100 -> вернуть 100 (без правил и округления).
-    Иначе -> применить первую подходящую ступень и округлить вверх до ...900.
-    """
+    """Если base_price отсутствует или <100 -> 100. Иначе применяем правило и округляем вверх до ...900."""
     if base_price is None or base_price < 100:
         return 100
     for lo, hi, pct, add in PRICING_RULES:
@@ -256,6 +253,17 @@ def first_image_url(soup: BeautifulSoup) -> Optional[str]:
                 return abs_url(v)
     return None
 
+# --- НОРМАЛИЗАЦИЯ БРЕНДА (Kyocera-Mita -> Kyocera) ---
+def normalize_vendor(v: str) -> str:
+    """Правим известные варианты бренда на канонические названия."""
+    v = (v or "").strip()
+    if not v:
+        return v
+    key = re.sub(r"[\s\-]+", "", v, flags=re.IGNORECASE).lower()
+    if key == "kyoceramita":     # Kyocera-Mita, Kyocera Mita, KYOCERA-MITA
+        return "Kyocera"
+    return v
+
 def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     jitter_sleep()
     b = http_get(s, url)
@@ -273,7 +281,7 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     if not article:
         return None
 
-    brand = (pairs.get("Вендор") or "").strip()
+    brand = normalize_vendor((pairs.get("Вендор") or "").strip())
     dealer_price = parse_supplier_price_from_soup(soup)
     final_price = compute_price_from_supplier(dealer_price)
 
@@ -285,7 +293,6 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     prefixed = "VT" + article_clean
 
     return {
-        # ВАЖНО: теперь id с тем же префиксом, что и vendorCode
         "id": prefixed,
         "vendorCode": prefixed,
         "title": title,
@@ -297,16 +304,39 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     }
 
 # ---------------- FEED_META + YML ----------------
+def almaty_now() -> datetime:
+    return datetime.utcnow() + timedelta(hours=5)
+
 def almaty_now_str() -> str:
-    return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S +05")
+    return almaty_now().strftime("%Y-%m-%d %H:%M:%S +05")
+
+def next_almaty_update_str() -> str:
+    """Ближайшее время следующего автообновления: 1, 10, 20 числа в 05:00 по Алматы."""
+    now = almaty_now()
+    year, month = now.year, now.month
+    schedule_days = [1, 10, 20]
+    candidates = [datetime(year, month, d, 5, 0, 0) for d in schedule_days]
+    nxt = next((dt for dt in candidates if dt > now), None)
+    if nxt is None:
+        if month == 12:
+            year += 1; month = 1
+        else:
+            month += 1
+        nxt = datetime(year, month, 1, 5, 0, 0)
+    return nxt.strftime("%Y-%m-%d %H:%M:%S +05")
+
+def next_utc_update_str() -> str:
+    n_local = datetime.strptime(next_almaty_update_str(), "%Y-%m-%d %H:%M:%S +05")
+    n_utc = n_local - timedelta(hours=5)
+    return n_utc.strftime("%Y-%m-%d %H:%M:%S UTC")
 
 def build_feed_meta(source: str,
                     offers_total: int,
                     offers_written: int,
                     prices_updated: int) -> str:
     """
-    Формат как у akcent.
-    Закрываем комментарий ПРЯМО на строке Алматы: '... (Алматы)-->' и больше '-->' не добавляем.
+    Формат как у akcent + строки про расписание.
+    Комментарий закрываем прямо на строке Алматы: '... (Алматы)-->' и больше '-->' не добавляем.
     """
     pad = 28
     lines: List[str] = []
@@ -315,17 +345,22 @@ def build_feed_meta(source: str,
             lines.append(f"{k.ljust(pad)} = {str(v):<60} | {comment}")
         else:
             lines.append(f"{k.ljust(pad)} = {str(v)}")
-    kv("supplier",             "vtt",                              "Метка поставщика")
-    kv("source",               source,                             "URL исходного источника")
-    kv("offers_total",         offers_total,                       "Офферов у поставщика до очистки")
-    kv("offers_written",       offers_written,                     "Офферов записано (после очистки)")
-    kv("prices_updated",       prices_updated,                     "Скольким товарам пересчитали price")
-    kv("params_removed",       0,                                  "Сколько <param>/<Param> удалено")
-    kv("vendors_recovered",    0,                                  "Скольким товарам восстановлен vendor")
-    kv("dropped_top",          "",                                 "ТОП часто отброшенных названий бренда")
-    kv("available_forced",     offers_written,                     "Сколько офферов получили available=true")
-    kv("categoryId_dropped",   offers_written,                     "Сколько тегов categoryId удалено")
-    kv("built_utc",            datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"), "Время сборки (UTC)")
+
+    kv("supplier",                    "vtt",                              "Метка поставщика")
+    kv("source",                      source,                             "URL исходного источника")
+    kv("offers_total",                offers_total,                       "Офферов у поставщика до очистки")
+    kv("offers_written",              offers_written,                     "Офферов записано (после очистки)")
+    kv("prices_updated",              prices_updated,                     "Скольким товарам пересчитали price")
+    kv("params_removed",              0,                                  "Сколько <param>/<Param> удалено")
+    kv("vendors_recovered",           0,                                  "Скольким товарам восстановлен vendor")
+    kv("dropped_top",                 "",                                 "ТОП часто отброшенных названий бренда")
+    kv("available_forced",            offers_written,                     "Сколько офферов получили available=true")
+    kv("categoryId_dropped",          offers_written,                     "Сколько тегов categoryId удалено")
+    kv("updates_schedule_Asia/Almaty","05:00 (1,10,20 каждого месяца)",   "Расписание автообновления (Алматы)")
+    kv("updates_schedule_utc",        "00:00 (1,10,20 каждого месяца)",   "Расписание автообновления (UTC)")
+    kv("next_update_Asia/Almaty",     next_almaty_update_str(),           "Ближайшее автообновление (Алматы)")
+    kv("next_update_utc",             next_utc_update_str(),              "Ближайшее автообновление (UTC)")
+    kv("built_utc",                   datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"), "Время сборки (UTC)")
     # Закрываем комментарий прямо здесь:
     lines.append(f"{'built_Asia/Almaty'.ljust(pad)} = {almaty_now_str():<60} | Время сборки (Алматы)-->")
     return "<!--FEED_META\n" + "\n".join(lines) + "\n"
@@ -426,7 +461,6 @@ def main() -> int:
             if oid in seen_ids:
                 oid = f"{oid}-{sha1(it['title'])[:6]}"
                 it["id"] = oid
-                # ВАЖНО: vendorCode не трогаем при коллизии id
             seen_ids.add(oid)
             offers.append(it)
 
