@@ -3,12 +3,12 @@
 """
 VTT (b2b.vtt.ru) -> YML (KZT) в стиле alstyle/akcent.
 
-Цена:
-- Берём из <span class="price_main"><b>...</b></span>
-- Если цены нет или < 100 -> 100
-- Иначе: PRICING_RULES (процент + фикс) и округление вверх до ...900
+ЦЕНА:
+- Берём из <span class="price_main"><b>11121.48</b>...</span>
+- Если цены нет или < 100 -> price = 100
+- Иначе применяем PRICING_RULES (процент + фикс) и округляем вверх до ...900
 
-Вывод:
+ВЫВОД:
 - Без <categories>, <categoryId>, <url>, любых *quantity*
 - <available>true</available> для всех
 - id = VT + нормализованный артикул (как и vendorCode)
@@ -72,10 +72,12 @@ PRICING_RULES: List[PriceRule] = [
 ]
 
 def _round_up_tail_900(n: int) -> int:
+    """Округление вверх до ближайшего значения с окончанием ...900."""
     thousands = (n + 999) // 1000
     return thousands * 1000 - 100
 
 def compute_price_from_supplier(base_price: Optional[int]) -> int:
+    """Если base_price отсутствует или <100 -> 100. Иначе применяем правило и округляем вверх до ...900."""
     if base_price is None or base_price < 100:
         return 100
     for lo, hi, pct, add in PRICING_RULES:
@@ -251,14 +253,18 @@ def first_image_url(soup: BeautifulSoup) -> Optional[str]:
                 return abs_url(v)
     return None
 
+# --- НОРМАЛИЗАЦИЯ БРЕНДА (Kyocera-Mita -> Kyocera; SAMSUNG BY HP -> Samsung) ---
 def normalize_vendor(v: str) -> str:
+    """Правим известные варианты бренда на канонические названия."""
     v = (v or "").strip()
     if not v:
         return v
-    key = re.sub(r"[\s\-]+", "", v, flags=re.IGNORECASE).lower()
-    if key == "kyoceramita":
-        return "Kyocera"
-    return v
+    key = re.sub(r"[^\w]+", "", v, flags=re.IGNORECASE).lower()  # убрать пробелы/дефисы/знаки
+    alias = {
+        "kyoceramita": "Kyocera",
+        "samsungbyhp": "Samsung",
+    }
+    return alias.get(key, v)
 
 def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     jitter_sleep()
@@ -289,7 +295,7 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     prefixed = "VT" + article_clean
 
     return {
-        "id": prefixed,
+        "id": prefixed,           # id совпадает с vendorCode
         "vendorCode": prefixed,
         "title": title,
         "brand": brand or "",
@@ -307,7 +313,7 @@ def almaty_now_str() -> str:
     return almaty_now().strftime("%Y-%m-%d %H:%M:%S +05")
 
 def next_almaty_update_str() -> str:
-    """Ближайшее автообновление: 1, 10, 20 числа в 05:00 по Алматы."""
+    """Ближайшее время следующего автообновления: 1, 10, 20 числа в 05:00 по Алматы."""
     now = almaty_now()
     year, month = now.year, now.month
     schedule_days = [1, 10, 20]
@@ -326,8 +332,8 @@ def build_feed_meta(source: str,
                     offers_written: int,
                     prices_updated: int) -> str:
     """
-    Формат как у akcent. В FEED_META оставляем только строки по Алматы.
-    Комментарий закрываем прямо на строке Алматы: '... (Алматы)-->'.
+    Формат как у akcent + строки про расписание (только для Алматы).
+    Комментарий закрываем прямо на строке Алматы: '... (Алматы)-->' и больше '-->' не добавляем.
     """
     pad = 28
     lines: List[str] = []
