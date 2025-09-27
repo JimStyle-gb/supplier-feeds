@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-26 20:17">
+<yml_catalog date="2025-09-27 20:16">
   <!--FEED_META
 script_version                  = alstyle-2025-09-23.7                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
@@ -18,15 +18,15 @@ dealer_src_missing              = 0                                             
 params_removed                  = 9492                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1354                                                            | Сколько офферов доступны (true)
-available_false                 = 642                                                             | Сколько офферов недоступны (false)
+available_true                  = 1357                                                            | Сколько офферов доступны (true)
+available_false                 = 639                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
 categoryId_dropped              = 15958                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-26 20:17:30 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-27 01:17:30 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-27 20:16:05 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-28 01:16:05 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -35001,7 +35001,7 @@ HDMI x1
 - Состав: Металл, пластик
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="389991">
@@ -38018,7 +38018,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость лотков подачи: 250 листов
 - Скорость выхода первой страницы: 9 сек. (моно) / 11 сек. (цвет)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392916">
@@ -38064,7 +38064,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392919">
