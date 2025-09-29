@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-28 15:47">
+<yml_catalog date="2025-09-29 15:48">
 <!--FEED_META
 supplier                     = nvprint                                                      | Метка поставщика
-source                       = (unknown)                                                    | URL/файл источника
+source                       = https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true | URL/файл источника
 offers_total                 = 0                                                            | Офферов в источнике (оценочно)
 offers_written               = 0                                                            | Офферов записано
 prices_updated               = 0                                                            | Цены взяты из договоров (+ наценка)
 available_forced             = 0                                                            | Сколько офферов получили available=true
-built_Asia/Almaty            = 2025-09-28 20:47:41 +05                                      | Время сборки (Алматы)-->
+built_Asia/Almaty            = 2025-09-29 20:48:31 +05                                      | Время сборки (Алматы)-->
 
 <shop>
   <offers>
