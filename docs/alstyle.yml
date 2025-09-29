@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-28 20:16">
+<yml_catalog date="2025-09-29 20:16">
   <!--FEED_META
 script_version                  = alstyle-2025-09-23.7                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15958                                                           | Офферов у поставщика до очистки
-offers_written                  = 1996                                                            | Офферов записано (после очистки)
+offers_total                    = 15888                                                           | Офферов у поставщика до очистки
+offers_written                  = 1990                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13962                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1996                                                            | Скольким товарам пересчитали price
+filtered_by_categories          = 13898                                                           | Сколько офферов отфильтровано по категориям
+prices_updated                  = 1990                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
-dealer_src_direct_field         = 1996                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
+dealer_src_direct_field         = 1990                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
 dealer_src_rrp_fallback         = 0                                                               | Базовая цена взята из RRP/РРЦ (fallback)
 dealer_src_missing              = 0                                                               | Не нашли базовую цену
-params_removed                  = 9492                                                            | Сколько строк параметров добавлено в описание
+params_removed                  = 9503                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1357                                                            | Сколько офферов доступны (true)
-available_false                 = 639                                                             | Сколько офферов недоступны (false)
+available_true                  = 1330                                                            | Сколько офферов доступны (true)
+available_false                 = 660                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15958                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15888                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-28 20:16:12 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-09-29 01:16:12 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-09-29 20:16:39 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-09-30 01:16:39 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -5785,7 +5785,7 @@ built_Asia/Almaty               = 2025-09-29 01:16:12 +05                       
 - Стандарты: Категория 5е
 - Цвет: Серый</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="18935">
@@ -7693,7 +7693,7 @@ built_Asia/Almaty               = 2025-09-29 01:16:12 +05                       
 - Рабочая влажность: 20-90% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="24318">
@@ -11155,7 +11155,7 @@ built_Asia/Almaty               = 2025-09-29 01:16:12 +05                       
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31812">
@@ -11182,7 +11182,7 @@ built_Asia/Almaty               = 2025-09-29 01:16:12 +05                       
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31813">
@@ -11209,7 +11209,7 @@ built_Asia/Almaty               = 2025-09-29 01:16:12 +05                       
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31823">
@@ -11891,7 +11891,7 @@ built_Asia/Almaty               = 2025-09-29 01:16:12 +05                       
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31860">
@@ -15092,7 +15092,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 - Диаметр проводника: 0,56 мм
 - Стандарты: Категория 6A</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="67884">
@@ -19407,7 +19407,7 @@ WorkCentre Pro 4110/4112/4127/4595
 - Скорость сканирования: до 20 изобр./мин.
 - Скорость выхода первой страницы: 11 сек. (моно) / 11.1 сек. (цвет)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="186843">
@@ -23359,7 +23359,7 @@ USB
 - Вес: 0.2
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="266518">
@@ -24605,7 +24605,7 @@ USB
 - Вес: 0.2
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266718">
@@ -25270,7 +25270,7 @@ USB
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266925">
@@ -25293,7 +25293,7 @@ USB
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="266928">
@@ -26050,7 +26050,7 @@ USB
       </offer>
 
   <offer id="267081">
-        <price>103900</price>
+        <price>62900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS42578</vendorCode>
         <picture>https://img.al-style.kz/42578_1.jpg</picture>
@@ -27217,7 +27217,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
 - Стандарты: Категория 5е
 - Цвет: Серый</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="270152">
@@ -27273,7 +27273,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
 - Стандарты: Категория 5е
 - Цвет: Серый</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="270154">
@@ -31204,7 +31204,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="361817">
@@ -33478,7 +33478,7 @@ Keor SPE Tower может быть подключен к ПК через SNMP, USB и последовательный порт
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="385522">
@@ -33754,7 +33754,7 @@ Keor SPE Tower может быть подключен к ПК через SNMP, USB и последовательный порт
 - Гарантия: 2 года
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="385612">
@@ -34382,7 +34382,7 @@ DisplayPort x1
 - Операционная система: Android 9
 - Слот OPS: 180х119х30 (OPS)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="387013">
@@ -35001,7 +35001,7 @@ HDMI x1
 - Состав: Металл, пластик
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="389991">
@@ -35259,7 +35259,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
 - Объём оперативной памяти: 8 Гб
 - Операционная система: Android 13</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="390134">
@@ -36985,7 +36985,7 @@ USB-C x1
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="392769">
@@ -37877,7 +37877,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Операционная система: Windows 11 Home
 - Процессор: Intel Core i5-13420H</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392906">
@@ -38064,7 +38064,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392919">
@@ -38110,7 +38110,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Емкость выходных лотков: 150 листов
 - Скорость выхода первой страницы: 5.0 сек. (моно)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="392925">
@@ -38411,6 +38411,7 @@ Canon
 Canon i-SENSYS LBP243dwCanon i-SENSYS LBP246dwCanon i-SENSYS MF461dwCanon i-SENSYS MF463dwCanon i-SENSYS MF465dw
 
 Характеристики:
+- Вес: 1.2
 - Гарантия: Нет
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
@@ -43654,6 +43655,7 @@ Canon
 Canon i-SENSYS MF752CdwCanon i-SENSYS MF754CdwCanon i-SENSYS LBP673Cdw
 
 Характеристики:
+- Вес: 0.6
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
@@ -43695,6 +43697,7 @@ Canon
 Canon i-SENSYS MF752CdwCanon i-SENSYS MF754CdwCanon i-SENSYS LBP673Cdw
 
 Характеристики:
+- Вес: 0.6
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
@@ -43736,6 +43739,7 @@ Canon
 Canon i-SENSYS MF752CdwCanon i-SENSYS MF754CdwCanon i-SENSYS LBP673Cdw
 
 Характеристики:
+- Вес: 0.6
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
@@ -43820,6 +43824,7 @@ Canon
 Canon imageRUNNER 1643iCanon imageRUNNER 1643IF
 
 Характеристики:
+- Вес: 1.8
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
@@ -44124,7 +44129,7 @@ Canon PIXMA 2540SCanon PIXMA MG2440Canon PIXMA MG2540Canon PIXMA MG2545Canon PIX
 - Гарантия: 1 год
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396429">
@@ -44164,6 +44169,7 @@ Canon
 Canon i-SENSYS MF742CdwCanon i-SENSYS MF744CdwCanon i-SENSYS MF746CxCanon i-SENSYS LBP663CdwCanon i-SENSYS LBP664Cx
 
 Характеристики:
+- Вес: 0.8
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
@@ -44293,6 +44299,7 @@ Canon
 Canon i-SENSYS MF742CdwCanon i-SENSYS MF744CdwCanon i-SENSYS MF746CxCanon i-SENSYS LBP663CdwCanon i-SENSYS LBP664Cx
 
 Характеристики:
+- Вес: 0.8
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
         <currencyId>KZT</currencyId>
@@ -46249,7 +46256,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396760">
@@ -47079,7 +47086,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396809">
@@ -50070,7 +50077,7 @@ Eaton 5E Gen2 обеспечивает эффективную и доступную защиту электропитания для кри
       </offer>
 
   <offer id="398101">
-        <price>95900</price>
+        <price>110900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS62696</vendorCode>
         <picture>https://img.al-style.kz/62696_1.jpg</picture>
@@ -50368,6 +50375,7 @@ Canon
 Canon i-SENSYS LBP162dwCanon i-SENSYS MF264dwCanon i-SENSYS MF264dw IICanon i-SENSYS MF267dwCanon i-SENSYS MF267dw IICanon i-SENSYS MF269dw
 
 Характеристики:
+- Вес: 0.5
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -50588,6 +50596,7 @@ Canon
 Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF643Canon i-SENSYS MF645
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -50630,6 +50639,7 @@ Canon
 Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF643Canon i-SENSYS MF645
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -50672,6 +50682,7 @@ Canon
 Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF643Canon i-SENSYS MF645
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -50713,6 +50724,7 @@ Canon
 Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF643Canon i-SENSYS MF645
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -52082,6 +52094,7 @@ Canon
 Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SENSYS MF655CdwCanon i-SENSYS MF657Cdw
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -52745,7 +52758,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
 - Емкость выходных лотков: 500 листов
 - Скорость сканирования: до 161 изобр./мин.</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="399940">
@@ -53219,6 +53232,7 @@ Canon
 Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SENSYS MF655CdwCanon i-SENSYS MF657Cdw
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -53341,7 +53355,7 @@ Canon imageRUNNER ADVANCE DX 619i
 - Емкость выходных лотков: 500 листов
 - Скорость сканирования: до 190 изобр./мин.</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400132">
@@ -53630,7 +53644,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
 - Операционная система: Windows 11 Home
 - Процессор: Intel Core Ultra 7 155H</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400253">
@@ -55931,7 +55945,7 @@ XG 86TDFMAX148128- это современная интерактивная панель, разработанная для приме
 - Объем встроенной памяти: 128 Гб
 - Операционная система: Android 14</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="401103">
@@ -57810,6 +57824,7 @@ Canon
 Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130Canon varioPRINT 135Canon varioPRINT 140
 
 Характеристики:
+- Вес: 1.5
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -57897,7 +57912,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="402914">
@@ -58008,7 +58023,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
       </offer>
 
   <offer id="402962">
-        <price>126900</price>
+        <price>83900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS67681</vendorCode>
         <picture>https://img.al-style.kz/67681_1.jpg</picture>
@@ -59033,7 +59048,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="403651">
@@ -59105,7 +59120,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="403653">
@@ -59141,7 +59156,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="403687">
@@ -60477,7 +60492,7 @@ PoE
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="404829">
@@ -62940,7 +62955,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="406212">
@@ -63234,7 +63249,7 @@ A4, B5, LTR, 10 x 15 см, 13 x 18 см, 20 x 25 см, формат карточки (91 x 55 мм), к
 Характеристики:
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="406457">
@@ -63697,19 +63712,6 @@ USB-кабель
         <available>false</available>
       </offer>
 
-  <offer id="407053">
-        <price>10499900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS72458</vendorCode>
-        <picture>https://img.al-style.kz/72458_1.jpg</picture>
-        <vendor>Canon</vendor>
-        <name>Фильтр Canon FILTER PACKED 1070111855</name>
-        <description>Характеристики:
-- Гарантия: Нет</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="407093">
         <price>131900</price>
         <currencyId>KZT</currencyId>
@@ -63744,6 +63746,7 @@ Canon
 Canon i-SENSYS X C1127iCanon i-SENSYS X C1127iFCanon i-SENSYS X C1127P
 
 Характеристики:
+- Вес: 0.9
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -63783,6 +63786,7 @@ Canon
 Canon i-SENSYS X C1127iCanon i-SENSYS X C1127iFCanon i-SENSYS X C1127P
 
 Характеристики:
+- Вес: 0.9
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -63822,6 +63826,7 @@ Canon
 Canon i-SENSYS X C1127iCanon i-SENSYS X C1127iFCanon i-SENSYS X C1127P
 
 Характеристики:
+- Вес: 0.9
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
@@ -63861,24 +63866,8 @@ Canon
 Canon i-SENSYS X C1127iCanon i-SENSYS X C1127iFCanon i-SENSYS X C1127P
 
 Характеристики:
+- Вес: 0.9
 - Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
-  <offer id="407232">
-        <price>10499900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS72616</vendorCode>
-        <picture>https://img.al-style.kz/72616_1.jpg</picture>
-        <vendor>Canon</vendor>
-        <name>Комплект для ремонта двигателя Canon KIT 3, ENGINE OUT OVERHAUL</name>
-        <description>Комплект для ремонта двигателя Canon KIT 3, ENGINE OUT OVERHAUL
-Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
-
-Характеристики:
-- Вес: 4.1
-- Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
       </offer>
@@ -64580,7 +64569,7 @@ DisplayPort x1
 - Видеовыход: HDMI / VGA
 - Время отклика: 5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="408081">
@@ -65249,7 +65238,7 @@ Canon PIXMA TS9541CCanon PIXMA TS9540Canon PIXMA TS624
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="408378">
@@ -69543,7 +69532,7 @@ USB-C x1
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="411652">
@@ -70490,18 +70479,6 @@ Canon I-S LBP361DW
         <available>false</available>
       </offer>
 
-  <offer id="413315">
-        <price>10499900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS80128</vendorCode>
-        <vendor>Canon</vendor>
-        <name>Очиститель Canon CLEANER P 1070076433</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="413465">
         <price>10864900</price>
         <currencyId>KZT</currencyId>
@@ -70582,43 +70559,6 @@ USB-C*1
 - Время отклика: 6 мс</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
-      </offer>
-
-  <offer id="413536">
-        <price>19900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS80335</vendorCode>
-        <vendor>Canon</vendor>
-        <name>Набор фильтров Canon FILTER SET DOOR 1070113303</name>
-        <description>Характеристики:
-- Вес: 0.8
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
-  <offer id="413537">
-        <price>5900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS80336</vendorCode>
-        <vendor>Canon</vendor>
-        <name>Пружина Canon SPRING TNSN 0003851337</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
-  <offer id="413538">
-        <price>46900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS80337</vendorCode>
-        <vendor>Canon</vendor>
-        <name>Разделительный ремень в сборе Canon BELT SEPARATION ASSY 1070113524</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
       </offer>
 
   <offer id="413651">
@@ -70740,7 +70680,7 @@ OEM №: 013R00688
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="413679">
@@ -71336,7 +71276,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="414775">
