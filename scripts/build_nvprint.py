@@ -4,16 +4,17 @@
 NVPrint -> YML (KZT)
 
 Цена:
-  1) <Договор НомерДоговора="ТА-000079"> -> <Цена> (Казахстан)
-  2) если нет, <Договор НомерДоговора="TA-000079Мск"> -> <Цена> (Москва)
-  3) если нет нигде -> 100
-  4) после этого применяем PRICING_RULES (наценка) и округляем вверх до ...900
+  1) берём <Цена> из <Договор НомерДоговора="ТА-000079"> (Казахстан);
+  2) если нет, из <Договор НомерДоговора="TA-000079Мск"> (Москва);
+  3) если нет нигде, ставим 100;
+  4) применяем PRICING_RULES и округляем вверх до ...900.
 
-Вывод (минимальный шаблон под Satu):
-  - Без <categories>, <categoryId>, <url>, любых quantity-тегов
-  - <available>true</available> всем
-  - id = <Артикул> без префикса "NV-", vendorCode = "NP" + id
-  - Кодировка файла: windows-1251
+Вывод:
+  - только нужные теги (name, vendor, vendorCode, price, currencyId, picture, description, available);
+  - без <categories>, <categoryId>, <url>, quantity-тегов;
+  - всем <available>true</available>;
+  - id = <Артикул> без NV-, vendorCode = "NP" + id;
+  - файл в кодировке windows-1251.
 """
 
 from __future__ import annotations
@@ -28,11 +29,11 @@ try:
 except Exception:
     requests = None
 
-# ---------------- ENV ----------------
-SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "").strip()
-OUT_FILE         = os.getenv("OUT_FILE", "docs/nvprint.yml")
-OUTPUT_ENCODING  = os.getenv("OUTPUT_ENCODING", "windows-1251")
-HTTP_TIMEOUT     = float(os.getenv("HTTP_TIMEOUT", "45"))
+# ---------------- CONSTANTS ----------------
+SUPPLIER_URL    = "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
+OUT_FILE        = "docs/nvprint.yml"
+OUTPUT_ENCODING = "windows-1251"
+HTTP_TIMEOUT    = 45.0
 
 # ---------------- UTILS ----------------
 def yml_escape(s: str) -> str:
@@ -75,27 +76,21 @@ def find_descendant(item: ET.Element, tag_names: List[str]) -> Optional[ET.Eleme
             return node
     return None
 
-def read_source_bytes(src: str) -> bytes:
-    if not src:
-        raise RuntimeError("SUPPLIER_URL не задан")
-    if os.path.isfile(src):
-        with io.open(src, "rb") as f:
-            b = f.read()
-        if not b:
-            raise RuntimeError("Пустой локальный файл источника")
-        return b
+def read_source_bytes() -> bytes:
+    if not SUPPLIER_URL:
+        raise RuntimeError("SUPPLIER_URL пуст")
     if requests is None:
-        raise RuntimeError("requests недоступен для скачивания URL")
-    r = requests.get(src, timeout=HTTP_TIMEOUT)
+        raise RuntimeError("requests недоступен")
+    r = requests.get(SUPPLIER_URL, timeout=HTTP_TIMEOUT)
     r.raise_for_status()
     b = r.content
     if not b:
         raise RuntimeError("Источник вернул пустой ответ")
     return b
 
-# ---------------- ЦЕНА ИЗ ДОГОВОРОВ ----------------
+# ---------------- PRICE FROM CONTRACTS ----------------
 def _norm_contract(s: str) -> str:
-    """Латинизируем похожие кириллические буквы, убираем пробелы/дефисы/подчёркивания, upper."""
+    # Латинизируем похожие кириллические буквы, удаляем пробелы/дефисы/подчёркивания, upper.
     if not s:
         return ""
     tr = str.maketrans({
@@ -138,7 +133,7 @@ def _extract_price_from_contracts(item: ET.Element) -> Optional[float]:
         return price_msk
     return None
 
-# ---------------- ЦЕНООБРАЗОВАНИЕ (как у других поставщиков) ----------------
+# ---------------- PRICING RULES ----------------
 from typing import Tuple
 PriceRule = Tuple[int, int, float, int]
 PRICING_RULES: List[PriceRule] = [
@@ -160,12 +155,12 @@ PRICING_RULES: List[PriceRule] = [
 ]
 
 def _round_up_tail_900(n: int) -> int:
-    """Округление вверх до ближайшего значения с окончанием ...900."""
+    # Округление вверх до ближайшего значения с окончанием ...900.
     thousands = (n + 999) // 1000
     return thousands * 1000 - 100
 
 def compute_price_from_supplier(base_price: Optional[int]) -> int:
-    """Если base_price отсутствует или <100 -> 100. Иначе применяем правило и округляем вверх до ...900."""
+    # Если base_price отсутствует или < 100 -> 100. Иначе применяем правило и округляем вверх до ...900.
     if base_price is None or base_price < 100:
         return 100
     for lo, hi, pct, add in PRICING_RULES:
@@ -175,9 +170,9 @@ def compute_price_from_supplier(base_price: Optional[int]) -> int:
     raw = base_price * (1.0 + PRICING_RULES[-1][2]/100.0) + PRICING_RULES[-1][3]
     return _round_up_tail_900(int(math.ceil(raw)))
 
-# ---------------- ПАРСИНГ ТОВАРА ----------------
+# ---------------- ITEM PARSING ----------------
 def clean_article(raw: str) -> str:
-    """Удаляем ведущий NV-/NV_/NV и пробелы."""
+    # Удаляем ведущий NV-/NV_/NV и пробелы.
     s = (raw or "").strip()
     s = re.sub(r"^\s*NV[\-\_\s]+", "", s, flags=re.IGNORECASE)
     s = s.replace(" ", "")
@@ -195,14 +190,14 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
     if not name:
         return None
 
-    # 1) Цена с приоритетом КЗ -> МСК -> 100
+    # 1) цена с приоритетом: КЗ -> МСК -> 100
     base = _extract_price_from_contracts(elem)
     if base is None or base <= 0:
         base_int = 100
     else:
         base_int = int(math.ceil(base))
 
-    # 2) Применяем правила наценки и округления до ...900
+    # 2) наценка и округление до ...900
     final_price = compute_price_from_supplier(base_int)
 
     vendor = first_child_text(elem, ["Бренд","Производитель","Вендор","Brand","Vendor"]) or ""
@@ -309,10 +304,10 @@ def parse_xml_to_yml(xml_bytes: bytes, source_label: str) -> str:
 
 def main() -> int:
     try:
-        data = read_source_bytes(SUPPLIER_URL)
-        yml = parse_xml_to_yml(data, SUPPLIER_URL or "(local)")
+        data = read_source_bytes()
+        yml = parse_xml_to_yml(data, SUPPLIER_URL)
     except Exception as e:
-        yml = build_yml([], SUPPLIER_URL or "(unknown)", 0, 0)
+        yml = build_yml([], SUPPLIER_URL, 0, 0)
         print(f"ERROR: {e}", file=sys.stderr)
 
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
