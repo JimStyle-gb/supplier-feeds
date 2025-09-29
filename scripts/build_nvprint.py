@@ -1,155 +1,53 @@
-# scripts/build_nvprint.py
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 """
-NVPrint -> YML (KZT)
-
-Цена:
-  1) берем <Цена> из <Договор НомерДоговора="ТА-000079"> (Казахстан);
-  2) если нет, из <Договор НомерДоговора="TA-000079Мск"> (Москва);
-  3) если нет нигде, ставим 100;
-  4) применяем PRICING_RULES и округляем вверх до ...900.
-
-Вывод:
-  - только: name, vendor, vendorCode, price, currencyId, picture, description, available;
-  - без <categories>, <categoryId>, <url>, quantity-тегов;
-  - всем <available>true</available>;
-  - id = <Артикул> без NV-, vendorCode = "NP" + id;
-  - кодировка windows-1251.
+NVPrint -> Satu YML
+Правки:
+ - <name> берём из <Номенклатура>
+ - <picture> берём из <СсылкаНаКартинку>
+ - <offer id> = <Артикул> без префикса NV-
+ - <vendorCode> = NP + <Артикул> без префикса NV-
+ - Цена: приоритет договор "ТА-000079" (Казахстан), затем "TA-000079Мск" (Москва).
+   Если обе пустые или отсутствуют -> цена = 100 и дальше не трогаем.
+   Иначе применяем правила наценки (как у других поставщиков) и округляем вверх до ...900.
+ - available всегда true
+ - Лишние теги (categories, url, quantity и пр.) не пишем.
+ - Пишем Windows-1251 в docs/nvprint.yml
+ - Комментарий FEED_META в стиле других поставщиков с временем Алматы.
 """
 
-from __future__ import annotations
-import os, re, io, html, math, sys
-from typing import Any, Dict, List, Optional, Tuple
-from datetime import datetime, timedelta
-from decimal import Decimal, InvalidOperation
+import os
+import sys
+import io
+import re
+import math
+import time
+import html
+import random
+import datetime as dt
+from typing import List, Tuple, Optional
+import requests
 import xml.etree.ElementTree as ET
 
-try:
-    import requests
-except Exception:
-    requests = None  # на случай локального запуска без requests
+# --------------------------- Настройки/константы -----------------------------
 
-# ---------------- CONSTANTS ----------------
-SUPPLIER_URL    = "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
-OUT_FILE        = "docs/nvprint.yml"
-OUTPUT_ENCODING = "windows-1251"
-HTTP_TIMEOUT    = 45.0
+# Источник NVPrint (жестко задан по просьбе)
+NVPRINT_URL = "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
 
-# ---------------- UTILS ----------------
-def yml_escape(s: str) -> str:
-    return html.escape((s or "").strip())
+# Куда пишем итоговый YML (XML-подобный)
+OUT_FILE = os.environ.get("OUT_FILE", "docs/nvprint.yml")
 
-def strip_ns(tag: str) -> str:
-    if not tag:
-        return tag
-    if tag[0] == "{":
-        i = tag.rfind("}")
-        if i != -1:
-            return tag[i+1:]
-    return tag
+# Таймауты и ретраи скачивания
+TIMEOUT_S = int(os.environ.get("TIMEOUT_S", "30"))
+RETRIES = int(os.environ.get("RETRIES", "4"))
+RETRY_BACKOFF_S = float(os.environ.get("RETRY_BACKOFF_S", "1.7"))
 
-def parse_number(txt: Optional[str]) -> Optional[float]:
-    if not txt:
-        return None
-    t = txt.strip().replace("\u00A0", "").replace(" ", "").replace(",", ".")
-    m = re.search(r"-?\d+(?:\.\d+)?", t)
-    if not m:
-        return None
-    try:
-        return float(Decimal(m.group(0)))
-    except (InvalidOperation, ValueError):
-        return None
+# Скрипт-версия для FEED_META
+SCRIPT_VERSION = "nvprint-2025-09-29.1"
 
-def first_child_text(item: ET.Element, tag_names: List[str]) -> Optional[str]:
-    low = [t.lower() for t in tag_names]
-    for ch in item:
-        if strip_ns(ch.tag).lower() in low:
-            val = (ch.text or "").strip()
-            if val:
-                return val
-    return None
-
-def find_descendant(item: ET.Element, tag_names: List[str]) -> Optional[ET.Element]:
-    low = [t.lower() for t in tag_names]
-    for node in item.iter():
-        if strip_ns(node.tag).lower() in low:
-            return node
-    return None
-
-def read_source_bytes() -> bytes:
-    if not SUPPLIER_URL:
-        raise RuntimeError("SUPPLIER_URL пуст")
-    if requests is None:
-        raise RuntimeError("requests недоступен")
-    # --- BASIC AUTH из переменных окружения ---
-    login = (os.getenv("NVPRINT_LOGIN") or "").strip()
-    password = (os.getenv("NVPRINT_PASSWORD") or "").strip()
-    auth = (login, password) if (login or password) else None
-
-    r = requests.get(SUPPLIER_URL, timeout=HTTP_TIMEOUT, auth=auth)
-    try:
-        r.raise_for_status()
-    except Exception as e:
-        # Лог подсказки при 401
-        try:
-            sc = getattr(r, "status_code", None)
-        except Exception:
-            sc = None
-        if sc == 401:
-            raise RuntimeError("401 Unauthorized: проверь NVPRINT_LOGIN / NVPRINT_PASSWORD (секреты CI)") from e
-        raise
-    b = r.content
-    if not b:
-        raise RuntimeError("Источник вернул пустой ответ")
-    return b
-
-# ---------------- PRICE FROM CONTRACTS ----------------
-def _norm_contract(s: str) -> str:
-    # Латинизируем похожие кириллические буквы, удаляем пробелы/дефисы/подчёркивания, upper.
-    if not s:
-        return ""
-    tr = str.maketrans({
-        "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
-        "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
-        "Ё":"E","ё":"e",
-    })
-    u = s.translate(tr).upper()
-    u = re.sub(r"[\s\-\_]+", "", u)
-    return u  # примеры: TA000079, TA000079МСК
-
-def _extract_price_from_contracts(item: ET.Element) -> Optional[float]:
-    """
-    Ищем <Договор><Цена> по приоритету:
-      1) НомерДоговора содержит 000079 и НЕ содержит MSK/МСК (Казахстан)
-      2) НомерДоговора содержит 000079 и содержит MSK/МСК (Москва)
-    """
-    price_kz: Optional[float] = None
-    price_msk: Optional[float] = None
-
-    for node in item.iter():
-        if strip_ns(node.tag).lower() != "договор":
-            continue
-        num = (node.attrib.get("НомерДоговора") or node.attrib.get("Номердоговора") or "").strip()
-        num_n = _norm_contract(num)
-        if "000079" not in num_n:
-            continue
-        price_el = find_descendant(node, ["Цена", "price", "amount", "value"])
-        val = parse_number(price_el.text if price_el is not None else None)
-        if val is None or val <= 0:
-            continue
-        if "MSK" in num_n or "МСК" in num_n:
-            price_msk = val
-        else:
-            price_kz = val
-
-    if price_kz is not None and price_kz > 0:
-        return price_kz
-    if price_msk is not None and price_msk > 0:
-        return price_msk
-    return None
-
-# ---------------- PRICING RULES ----------------
-from typing import Tuple
+# ----------------------------- Ценообразование --------------------------------
+# Формат правила: (min_incl, max_incl, множитель, наценка_фикс)
 PriceRule = Tuple[int, int, float, int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -169,167 +67,256 @@ PRICING_RULES: List[PriceRule] = [
     (2000001,100000000,4.0,100000),
 ]
 
-def _round_up_tail_900(n: int) -> int:
-    # Округление вверх до ближайшего значения с окончанием ...900.
-    thousands = (n + 999) // 1000
-    return thousands * 1000 - 100
+def apply_pricing(src_price: int) -> int:
+    """
+    Применить правила наценки. На входе целое значение цены источника (>= 100).
+    1) Ищем подходящий диапазон и считаем цену: ceil(src * factor) + add
+    2) Округляем ВВЕРХ до вида ...900 (чтобы последние три цифры были 900)
+       Пример: 10789 -> 10900, 238958 -> 239900
+    """
+    # шаг 1: найдём правило
+    factor, add = 4.0, 3000  # дефолт, на всякий
+    for lo, hi, f, a in PRICING_RULES:
+        if lo <= src_price <= hi:
+            factor, add = f, a
+            break
+    # расчёт базовой розничной
+    retail = math.ceil(src_price * factor) + add
 
-def compute_price_from_supplier(base_price: Optional[int]) -> int:
-    # Если base_price отсутствует или < 100 -> 100. Иначе применяем правило и округляем вверх до ...900.
-    if base_price is None or base_price < 100:
-        return 100
-    for lo, hi, pct, add in PRICING_RULES:
-        if lo <= base_price <= hi:
-            raw = base_price * (1.0 + pct/100.0) + add
-            return _round_up_tail_900(int(math.ceil(raw)))
-    raw = base_price * (1.0 + PRICING_RULES[-1][2]/100.0) + PRICING_RULES[-1][3]
-    return _round_up_tail_900(int(math.ceil(raw)))
+    # шаг 2: округление вверх до ...900
+    # Формула: берём потолок по тысячам, но гарантируем рост и окончание на 900.
+    # Используем трюк: ceil((x + 100) / 1000) * 1000 - 100
+    rounded = math.ceil((retail + 100) / 1000.0) * 1000 - 100
+    if rounded < retail:
+        # Перестраховка: вдруг получилось ниже; тогда просто добавим разницу до ближайших 900 выше
+        thousands = (retail // 1000) * 1000
+        rounded = thousands + 900
+        if rounded < retail:
+            rounded += 1000
+    return int(rounded)
 
-# ---------------- ITEM PARSING ----------------
-def clean_article(raw: str) -> str:
-    # Удаляем ведущий NV-/NV_/NV и пробелы.
-    s = (raw or "").strip()
-    s = re.sub(r"^\s*NV[\-\_\s]+", "", s, flags=re.IGNORECASE)
-    s = s.replace(" ", "")
-    return s
+# ----------------------------- Вспомогательные --------------------------------
 
-def make_ids_from_article(article: str) -> Tuple[str, str]:
-    ac = clean_article(article)
-    return ac, "NP" + ac
+def yml_escape(s: str) -> str:
+    """Эскейпинг для текста в YML-XML (минимальный)."""
+    return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
-def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
-    article = first_child_text(elem, ["Артикул","articul","sku","article","PartNumber"])
-    if not article:
+def norm_spaces(s: str) -> str:
+    """Один пробел между словами, обрезка краёв."""
+    return re.sub(r"\s+", " ", (s or "")).strip()
+
+BRAND_HINTS = [
+    "HP", "Hewlett Packard", "Canon", "Xerox", "Kyocera", "Kyocera-Mita", "Konica Minolta",
+    "Brother", "Epson", "Samsung", "Ricoh", "Sharp", "Lexmark", "OKI", "Panasonic", "Toshiba",
+    "Dell", "Lenovo"
+]
+BRAND_MAP = {
+    "HEWLETT PACKARD": "HP",
+    "KYOCERA-MITA": "Kyocera",
+    "SAMSUNG BY HP": "Samsung",
+}
+
+def guess_vendor(text: str) -> str:
+    """
+    Определяем бренд по содержимому Номенклатуры.
+    Ищем известные имена; маппим на нормализованные варианты. Фолбэк NV Print.
+    """
+    t = (text or "").upper()
+    for b in BRAND_HINTS:
+        if b.upper() in t:
+            key = b.upper()
+            return BRAND_MAP.get(key, b if b != "Kyocera-Mita" else "Kyocera")
+    return "NV Print"
+
+def pick_price_for_item(item: ET.Element) -> Optional[float]:
+    """
+    Забираем цену из блока <УсловияПродаж>:
+      - приоритет договор НомерДоговора="ТА-000079" (Казахстан)
+      - затем "TA-000079Мск" (Москва)
+      - если обе пустые -> None
+    Возвращаем float или None.
+    """
+    cond = item.find("УсловияПродаж")
+    if cond is None:
         return None
-    name = first_child_text(elem, ["Наименование","Название","Name","Товар","Модель","full_name","title"])
-    if not name:
+
+    def get_price_by_contract(num: str) -> Optional[float]:
+        for deal in cond.findall("Договор"):
+            if deal.get("НомерДоговора") == num:
+                p = (deal.findtext("Цена") or "").strip()
+                if not p:
+                    return None
+                try:
+                    return float(p.replace(",", "."))
+                except:
+                    return None
         return None
 
-    # 1) цена с приоритетом: КЗ -> МСК -> 100
-    base = _extract_price_from_contracts(elem)
-    if base is None or base <= 0:
-        base_int = 100
-    else:
-        base_int = int(math.ceil(base))
+    # Сначала Казахстан
+    p_kz = get_price_by_contract("ТА-000079")
+    if p_kz is not None:
+        return p_kz
+    # Потом Москва
+    p_msk = get_price_by_contract("TA-000079Мск")
+    if p_msk is not None:
+        return p_msk
+    return None
 
-    # 2) наценка и округление до ...900
-    final_price = compute_price_from_supplier(base_int)
+def clean_article(art: str) -> str:
+    """Убираем префикс NV- (без учёта регистра), и лишние пробелы."""
+    art = (art or "").strip()
+    return re.sub(r"^NV-","", art, flags=re.IGNORECASE)
 
-    vendor = first_child_text(elem, ["Бренд","Производитель","Вендор","Brand","Vendor"]) or ""
-    picture = first_child_text(elem, ["Картинка","Изображение","Фото","Picture","Image","ФотоURL","PictureURL"]) or ""
-    description = first_child_text(elem, ["Описание","Description","Текст","About"]) or ""
+# ----------------------------- Загрузка XML -----------------------------------
 
-    oid, vcode = make_ids_from_article(article)
-    return {
-        "id": oid,
-        "title": name,
-        "vendor": vendor,
-        "vendorCode": vcode,
-        "price": final_price,
-        "picture": picture,
-        "description": description,
-    }
+def download_xml(url: str, login: str, password: str) -> bytes:
+    """
+    Качаем XML NVPrint с базовой авторизацией.
+    Делаем ретраи при временных сбоях сетки (кроме 401).
+    """
+    last_err = None
+    for i in range(1, RETRIES + 1):
+        try:
+            resp = requests.get(url, timeout=TIMEOUT_S, auth=(login, password))
+            if resp.status_code == 401:
+                raise RuntimeError(f"401 Unauthorized для {url}")
+            resp.raise_for_status()
+            return resp.content
+        except Exception as e:
+            last_err = e
+            if i == RETRIES:
+                break
+            time.sleep(RETRY_BACKOFF_S * i)
+    raise RuntimeError(f"Не удалось скачать источник: {last_err}")
 
-def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
-    items: List[ET.Element] = []
-    seen: set = set()
-    for node in root.iter():
-        art = find_descendant(node, ["Артикул","articul","sku","article","PartNumber"])
-        if art is None:
-            continue
-        name = find_descendant(node, ["Наименование","Название","Name","Товар","Модель","full_name","title"])
-        if name is None:
-            continue
-        key = id(node)
-        if key in seen:
-            continue
-        seen.add(key)
-        items.append(node)
-    return items
+# ----------------------------- Основная логика --------------------------------
 
-# ---------------- FEED_META + YML ----------------
-def almaty_now() -> datetime:
-    return datetime.utcnow() + timedelta(hours=5)
+def build_yml(xml_bytes: bytes) -> str:
+    """
+    Парсим поставщика и отдаём строку с готовым YML (в кодировке Unicode, далее перекодируем).
+    """
+    root = ET.fromstring(xml_bytes)
 
-def almaty_now_str() -> str:
-    return almaty_now().strftime("%Y-%m-%d %H:%M:%S +05")
+    # Мета
+    now_local = dt.datetime.now(dt.timezone(dt.timedelta(hours=5)))  # Asia/Almaty GMT+5
+    built_local = now_local.strftime("%Y-%m-%d %H:%M:%S %z")
+    supplier_url_for_meta = NVPRINT_URL
 
-def build_feed_meta(source: str, offers_total: int, offers_written: int, prices_picked: int) -> str:
-    pad = 28
-    rows: List[str] = []
-    def kv(k, v, cmt=""):
-        if cmt:
-            rows.append(f"{k.ljust(pad)} = {str(v):<60} | {cmt}")
-        else:
-            rows.append(f"{k.ljust(pad)} = {str(v)}")
-    kv("supplier",         "nvprint",                         "Метка поставщика")
-    kv("source",           source,                            "URL/файл источника")
-    kv("offers_total",     offers_total,                      "Офферов в источнике (оценочно)")
-    kv("offers_written",   offers_written,                    "Офферов записано")
-    kv("prices_updated",   prices_picked,                     "Цены взяты из договоров (+ наценка)")
-    kv("available_forced", offers_written,                    "Сколько офферов получили available=true")
-    rows.append(f"{'built_Asia/Almaty'.ljust(pad)} = {almaty_now_str():<60} | Время сборки (Алматы)-->")
-    return "<!--FEED_META\n" + "\n".join(rows) + "\n"
-
-def build_yml(offers: List[Dict[str, Any]], source: str, offers_total: int, prices_picked: int) -> str:
-    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
     out: List[str] = []
-    out.append("<?xml version='1.0' encoding='windows-1251'?>")
-    out.append(f"<yml_catalog date=\"{date_attr}\">")
-    out.append(build_feed_meta(source, offers_total, len(offers), prices_picked))
+    out.append('<?xml version="1.0" encoding="windows-1251"?>')
+    out.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
+    out.append('<yml_catalog date="{}">'.format(dt.datetime.utcnow().strftime("%Y-%m-%d %H:%M")))
+    # FEED_META в комментарии: закрываем ровно как просили "(Алматы)-->"
+    out.append("<!--FEED_META")
+    out.append(f"supplier_url                  = {supplier_url_for_meta:<60} | Источник поставщика")
+    out.append(f"encoding                      = windows-1251                                         | Кодировка вывода")
+    out.append(f"script_version                = {SCRIPT_VERSION:<60} | Версия скрипта")
+    out.append(f"built_Asia/Almaty             = {built_local:<60} | Время сборки (Алматы)-->")
     out.append("<shop>")
+    out.append("  <name>nvprint</name>")
+    out.append('  <currencies><currency id="KZT" rate="1" /></currencies>')
     out.append("  <offers>")
-    for it in offers:
-        out.append(f"    <offer id=\"{yml_escape(it['id'])}\">")
-        out.append(f"      <name>{yml_escape(it['title'])}</name>")
-        if it.get("vendor"):
-            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
-        out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
-        out.append(f"      <price>{int(it['price'])}</price>")
+
+    offers = 0
+
+    # Идём по товарам
+    for item in root.findall("./Товары/Товар"):
+        art_raw = (item.findtext("Артикул") or "").strip()
+        if not art_raw:
+            continue
+
+        art_clean = clean_article(art_raw)                 # для id и vendorCode
+        offer_id = art_clean                                # id = без NV-
+        vendor_code = "NP" + art_clean                      # vendorCode = NP + без NV-
+
+        # Название из <Номенклатура> (полное), фолбэк <НоменклатураКратко>, фолбэк артикул
+        name = item.findtext("Номенклатура")
+        if not name:
+            name = item.findtext("НоменклатураКратко")
+        if not name:
+            name = art_clean
+        name = norm_spaces(name)
+
+        # Фото из <СсылкаНаКартинку>
+        picture = norm_spaces(item.findtext("СсылкаНаКартинку") or "")
+        if picture and not picture.lower().startswith("http"):
+            # на всякий случай ничего не склеиваем, оставляем как есть
+            pass
+
+        # Бренд пытаемся угадать по названию
+        vendor = guess_vendor(name)
+
+        # Цена: договор KZ, затем MSK. Если нет цены -> 100 и больше не трогаем.
+        price_src = pick_price_for_item(item)
+        if price_src is None or price_src < 100:
+            final_price = 100
+        else:
+            # Источник может дать дробь. Округлим до целого перед правилами.
+            base = int(round(price_src))
+            final_price = apply_pricing(base)
+
+        # Описание: кладём нормализованную Номенклатуру одной строкой
+        description = name
+
+        # Пишем оффер
+        out.append(f'    <offer id="{yml_escape(offer_id)}">')
+        out.append(f"      <name>{yml_escape(name)}</name>")
+        out.append(f"      <vendor>{yml_escape(vendor)}</vendor>")
+        out.append(f"      <vendorCode>{yml_escape(vendor_code)}</vendorCode>")
+        out.append(f"      <price>{final_price}</price>")
         out.append("      <currencyId>KZT</currencyId>")
-        if it.get("picture"):
-            out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
-        if it.get("description"):
-            desc = re.sub(r"\s+", " ", it["description"]).strip()
-            out.append(f"      <description>{yml_escape(desc)}</description>")
+        if picture:
+            out.append(f"      <picture>{yml_escape(picture)}</picture>")
+        out.append(f"      <description>{yml_escape(description)}</description>")
         out.append("      <available>true</available>")
-        out.append("    </offer>\n")
+        out.append("    </offer>")
+        out.append("")  # дополнительный пустой перенос строки между офферами
+
+        offers += 1
+
     out.append("  </offers>")
-    out.append("</shop></yml_catalog>")
+    out.append("</shop>")
+    out.append("</yml_catalog>")
+
+    # Вставим счётчик офферов в FEED_META (после генерации)
+    # Найдём место после <!--FEED_META и добавим строку
+    for i, line in enumerate(out):
+        if line.strip() == "<!--FEED_META":
+            out.insert(i + 1, f"offers_count                  = {offers:<60} | Кол-во офферов")
+            break
+
     return "\n".join(out)
 
-# ---------------- MAIN ----------------
-def parse_xml_to_yml(xml_bytes: bytes, source_label: str) -> str:
-    root = ET.fromstring(xml_bytes)
-    nodes = guess_item_nodes(root)
-    offers_total = len(nodes)
+# --------------------------------- Main ---------------------------------------
 
-    offers: List[Dict[str, Any]] = []
-    prices_picked = 0
+def main():
+    # Логин/пароль из переменных окружения
+    login = os.environ.get("NVPRINT_LOGIN", "").strip()
+    password = os.environ.get("NVPRINT_PASSWORD", "").strip()
+    if not login or not password:
+        print("ERROR: NVPRINT_LOGIN / NVPRINT_PASSWORD не заданы", file=sys.stderr)
 
-    for node in nodes:
-        it = parse_item(node)
-        if not it:
-            continue
-        if it.get("price", 0) and it["price"] > 100:
-            prices_picked += 1
-        offers.append(it)
+    print(f"Source: {NVPRINT_URL}")
 
-    return build_yml(offers, source_label, offers_total, prices_picked)
-
-def main() -> int:
     try:
-        data = read_source_bytes()
-        yml = parse_xml_to_yml(data, SUPPLIER_URL)
+        xml_bytes = download_xml(NVPRINT_URL, login, password)
     except Exception as e:
-        yml = build_yml([], SUPPLIER_URL, 0, 0)
         print(f"ERROR: {e}", file=sys.stderr)
+        # Даже при ошибке сохраним пустую болванку, чтобы пайплайн не ломался
+        empty = '<?xml version="1.0" encoding="windows-1251"?><yml_catalog date=""><shop><name>nvprint</name><currencies><currency id="KZT" rate="1" /></currencies><offers></offers></shop></yml_catalog>'
+        with open(OUT_FILE, "wb") as f:
+            f.write(empty.encode("cp1251", errors="ignore"))
+        print(f"Wrote: {OUT_FILE} | encoding=windows-1251")
+        sys.exit(0)
 
+    yml_text = build_yml(xml_bytes)
+
+    # Пишем в Windows-1251
     os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-        f.write(yml)
-    print(f"Wrote: {OUT_FILE} | encoding={OUTPUT_ENCODING}")
-    return 0
+    with open(OUT_FILE, "wb") as f:
+        f.write(yml_text.encode("cp1251", errors="ignore"))
+
+    print(f"Wrote: {OUT_FILE} | encoding=windows-1251")
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
