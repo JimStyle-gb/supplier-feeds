@@ -4,17 +4,17 @@
 NVPrint -> YML (KZT)
 
 Цена:
-  1) берём <Цена> из <Договор НомерДоговора="ТА-000079"> (Казахстан);
+  1) берем <Цена> из <Договор НомерДоговора="ТА-000079"> (Казахстан);
   2) если нет, из <Договор НомерДоговора="TA-000079Мск"> (Москва);
   3) если нет нигде, ставим 100;
   4) применяем PRICING_RULES и округляем вверх до ...900.
 
 Вывод:
-  - только нужные теги (name, vendor, vendorCode, price, currencyId, picture, description, available);
+  - только: name, vendor, vendorCode, price, currencyId, picture, description, available;
   - без <categories>, <categoryId>, <url>, quantity-тегов;
   - всем <available>true</available>;
   - id = <Артикул> без NV-, vendorCode = "NP" + id;
-  - файл в кодировке windows-1251.
+  - кодировка windows-1251.
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ import xml.etree.ElementTree as ET
 try:
     import requests
 except Exception:
-    requests = None
+    requests = None  # на случай локального запуска без requests
 
 # ---------------- CONSTANTS ----------------
 SUPPLIER_URL    = "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
@@ -81,8 +81,23 @@ def read_source_bytes() -> bytes:
         raise RuntimeError("SUPPLIER_URL пуст")
     if requests is None:
         raise RuntimeError("requests недоступен")
-    r = requests.get(SUPPLIER_URL, timeout=HTTP_TIMEOUT)
-    r.raise_for_status()
+    # --- BASIC AUTH из переменных окружения ---
+    login = (os.getenv("NVPRINT_LOGIN") or "").strip()
+    password = (os.getenv("NVPRINT_PASSWORD") or "").strip()
+    auth = (login, password) if (login or password) else None
+
+    r = requests.get(SUPPLIER_URL, timeout=HTTP_TIMEOUT, auth=auth)
+    try:
+        r.raise_for_status()
+    except Exception as e:
+        # Лог подсказки при 401
+        try:
+            sc = getattr(r, "status_code", None)
+        except Exception:
+            sc = None
+        if sc == 401:
+            raise RuntimeError("401 Unauthorized: проверь NVPRINT_LOGIN / NVPRINT_PASSWORD (секреты CI)") from e
+        raise
     b = r.content
     if not b:
         raise RuntimeError("Источник вернул пустой ответ")
