@@ -20,7 +20,7 @@ import os, sys, re, time, random, urllib.parse
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional, Set
 from xml.etree import ElementTree as ET
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 
 try:
     from zoneinfo import ZoneInfo
@@ -465,7 +465,7 @@ def derive_available(offer: ET.Element) -> Tuple[bool, str]:
             if b is not None: return b, "status"
     for p in list(offer.findall("param")) + list(offer.findall("Param")):
         nm = (p.attrib.get("name") or "").strip().lower()
-        if "статус" in nm или "налич" in nm:
+        if "статус" in nm or "налич" in nm:
             b = _parse_bool_str(p.text or "")
             if b is not None: return b, "status"
     return False, "default"
@@ -566,11 +566,12 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
 def count_category_ids(offer_el:ET.Element)->int:
     return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
-# ========================== FEED_META (ИЗМЕНЕНО ТОЛЬКО ЭТО) ========================
+# ========================== FEED_META (ЗАМЕНЕНО) ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
     """
-    Строгий формат как в feed.txt:
+    Формат строго как в feed.txt:
+
     FEED_META
     Поставщик | value
     URL поставщика | value
@@ -581,18 +582,28 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     Сколько товаров есть в наличии (true) | value
     Сколько товаров нет в наличии (false) | value
     """
-    # текущее и ближайшее 01:00 времени Алматы
+    # текущее время Алматы
     try:
         tz = ZoneInfo("Asia/Almaty")
         now_alm = datetime.now(tz)
     except Exception:
-        now_alm = datetime.utcnow() + timedelta(hours=5)
-    next_alm = now_alm.replace(hour=1, minute=0, second=0, microsecond=0)
-    if now_alm >= next_alm:
-        next_alm = next_alm + timedelta(days=1)
+        # fallback без timedelta: UTC + 5*3600 секунд
+        now_alm = datetime.utcfromtimestamp(time.time() + 5*3600)
+
+    # ближайшее 01:00 (Алматы) — без использования timedelta
+    today_01 = datetime(
+        now_alm.year, now_alm.month, now_alm.day, 1, 0, 0,
+        tzinfo=getattr(now_alm, "tzinfo", None)
+    )
+    base_ts = today_01.timestamp()
+    if now_alm.timestamp() >= base_ts:
+        next_ts = base_ts + 86400  # +1 день секундами, DST в Алматы не используется
+    else:
+        next_ts = base_ts
+    next_alm = datetime.fromtimestamp(next_ts, getattr(now_alm, "tzinfo", None))
 
     def fmt(dt: datetime) -> str:
-        return dt.strftime("%d:%m:%Y - %H:%M:%S")  # без суффикса зоны
+        return dt.strftime("%d:%m:%Y - %H:%M:%S")  # без текстового суффикса зоны
 
     rows = [
         ("Поставщик", pairs.get("supplier","")),
