@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-09-23.7
+script_version = alstyle-2025-09-23.8
+
+Изменения в .8:
+- Синхронизация идентификатора оффера с vendorCode: <offer id="..."> == <vendorCode>.
 
 Изменения в .7:
 - FIX: дедупликация <available>: перед записью значения удаляем все существующие теги
@@ -31,7 +34,7 @@ import requests
 
 # ========================== КОНСТАНТЫ И НАСТРОЙКИ ==========================
 
-SCRIPT_VERSION = "alstyle-2025-09-23.7"
+SCRIPT_VERSION = "alstyle-2025-09-23.8"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "alstyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
@@ -297,11 +300,7 @@ def compute_retail(dealer:float,rules:List[PriceRule])->Optional[int]:
 
 def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,Dict[str,int]]:
     """
-    Пересчитываем цену:
-      - выбираем базовую (dealer) по приоритету (см. pick_dealer_price)
-      - пишем <price> (один)
-      - удаляем <prices> и служебные ценовые поля
-    Возвращает: (updated, skipped, total, src_stats)
+    Пересчитываем цену и пишем ровно один <price> и <currencyId>.
     """
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0,{"missing":0})
@@ -540,6 +539,28 @@ def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missi
         vc.text=f"{prefix}{(vc.text or '')}"; total_prefixed+=1
     return total_prefixed,created,filled_from_art,fixed_bare
 
+# === СИНХРОНИЗАЦИЯ offer/@id С vendorCode (id = vendorCode) ===
+
+def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> int:
+    """
+    Делает идентификатор оффера равным vendorCode:
+      <offer id="..."> == <vendorCode>...</vendorCode>
+    Возвращает количество офферов, где id был изменён/установлен.
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return 0
+    changed = 0
+    for offer in offers_el.findall("offer"):
+        vc = offer.find("vendorCode")
+        if vc is None or not (vc.text or "").strip():
+            # если по какой-то причине vendorCode пуст — пропускаем (его создаёт ensure_vendorcode_with_article)
+            continue
+        new_id = (vc.text or "").strip()
+        if offer.attrib.get("id") != new_id:
+            offer.attrib["id"] = new_id
+            changed += 1
+    return changed
+
 # ===================== ЧИСТКА ТЕГОВ/АТРИБУТОВ =====================
 
 def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
@@ -569,10 +590,8 @@ def fix_currency_id_order_and_dedup(shop_el: ET.Element, default_code: str = "KZ
         return 0
     touched = 0
     for offer in offers_el.findall("offer"):
-        # удалить все существующие currencyId
         for node in list(offer.findall("currencyId")):
             offer.remove(node)
-        # создать новый узел
         new_cur = ET.Element("currencyId"); new_cur.text = default_code
         price = offer.find("price")
         if price is not None:
@@ -587,12 +606,10 @@ def fix_currency_id_order_and_dedup(shop_el: ET.Element, default_code: str = "KZ
         touched += 1
     return touched
 
-# ========================== FEED_META (ЗАМЕНЕНО) ========================
+# ========================== FEED_META (формат из feed.txt) ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
     """
-    Формат строго как в feed.txt:
-
     FEED_META
     Поставщик | value
     URL поставщика | value
@@ -608,23 +625,20 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
         tz = ZoneInfo("Asia/Almaty")
         now_alm = datetime.now(tz)
     except Exception:
-        # fallback без timedelta: UTC + 5*3600 секунд
+        # fallback: UTC + 5*3600 сек
         now_alm = datetime.utcfromtimestamp(time.time() + 5*3600)
 
-    # ближайшее 01:00 (Алматы) — без использования timedelta
+    # ближайшее 01:00 (Алматы)
     today_01 = datetime(
         now_alm.year, now_alm.month, now_alm.day, 1, 0, 0,
         tzinfo=getattr(now_alm, "tzinfo", None)
     )
     base_ts = today_01.timestamp()
-    if now_alm.timestamp() >= base_ts:
-        next_ts = base_ts + 86400  # +1 день секундами (DST в Алматы не используется)
-    else:
-        next_ts = base_ts
+    next_ts = base_ts + 86400 if now_alm.timestamp() >= base_ts else base_ts
     next_alm = datetime.fromtimestamp(next_ts, getattr(now_alm, "tzinfo", None))
 
     def fmt(dt: datetime) -> str:
-        return dt.strftime("%d:%m:%Y - %H:%M:%S")  # без текстового суффикса зоны
+        return dt.strftime("%d:%m:%Y - %H:%M:%S")
 
     rows = [
         ("Поставщик", pairs.get("supplier","")),
@@ -702,6 +716,9 @@ def main()->None:
         create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
     )
 
+    # --- СИНХРОНИЗАЦИЯ ID С vendorCode ---
+    synced = sync_offer_id_with_vendorcode(out_shop)
+
     # ПЕРЕСЧЁТ ЦЕН
     upd, skipped, total, src_stats = reprice_offers(out_shop, PRICING_RULES)
 
@@ -751,6 +768,7 @@ def main()->None:
         "vendorcodes_created": created_nodes,
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
+        # можно добавить "ids_synced": synced при необходимости статистики
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
