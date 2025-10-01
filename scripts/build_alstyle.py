@@ -556,6 +556,23 @@ def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> int:
             changed += 1
     return changed
 
+# ===================== ЧИСТКА ТЕГОВ/АТРИБУТОВ =====================
+
+def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
+    removed_tags=0
+    for t in PURGE_TAGS_AFTER:
+        for node in list(offer.findall(t)):
+            offer.remove(node); removed_tags+=1
+    removed_attrs=0
+    for a in PURGE_OFFER_ATTRS_AFTER:
+        if a in offer.attrib:
+            offer.attrib.pop(a,None); removed_attrs+=1
+    return removed_tags,removed_attrs
+
+def count_category_ids(offer_el: ET.Element) -> int:
+    """Подсчёт количества тегов categoryId/CategoryId внутри оффера (для метрик)."""
+    return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
+
 # ===================== currencyId: дедуп без привязки к месту =====================
 
 def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
@@ -593,29 +610,25 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
 
     for offer in offers_el.findall("offer"):
         children = list(offer)
-        if not children: 
+        if not children:
             continue
 
-        # buckets for desired tags
         buckets: Dict[str, List[ET.Element]] = {k: [] for k in DESIRED_ORDER}
         others: List[ET.Element] = []
 
         for node in children:
             tag = node.tag
             if tag in buckets:
-                # <picture> может быть много — просто накапливаем
                 buckets[tag].append(node)
             else:
                 others.append(node)
 
-        # Если порядок уже совпадает, пропускаем
         rebuilt = []
         for k in DESIRED_ORDER:
             rebuilt.extend(buckets[k])
         rebuilt.extend(others)
 
         if rebuilt != children:
-            # пересобираем: сначала удаляем всех детей, потом вставляем по порядку
             for node in children:
                 offer.remove(node)
             for node in rebuilt:
@@ -749,7 +762,7 @@ def main()->None:
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
 
-    # --- НОВОЕ: жёсткий порядок тегов внутри <offer> ---
+    # Жёсткий порядок тегов внутри <offer>
     reorder_offer_children(out_shop)
 
     children=list(out_offers)
