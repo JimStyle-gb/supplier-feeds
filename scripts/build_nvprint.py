@@ -105,6 +105,7 @@ def read_source_bytes() -> bytes:
         raise RuntimeError("SUPPLIER_URL пуст")
     if requests is None:
         raise RuntimeError("requests недоступен")
+
     auth = (NV_LOGIN, NV_PASSWORD) if (NV_LOGIN or NV_PASSWORD) else None
     last_err = None
     for attempt in range(1, RETRIES + 1):
@@ -357,15 +358,39 @@ def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
         items.append(node)
     return items
 
-# ---------------- FEED_META (выровненный) + YML ----------------
-KEY_PAD = 28
-VAL_PAD = 60
+# ---------------- FEED_META + YML ----------------
+def utc_now_str() -> str:
+    return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
 
-def _meta_row(key: str, value: str, comment: str = "") -> str:
-    # значение выравниваем до 60 символов, если длиннее — не режем, просто не добиваем пробелами
-    val = value if len(value) > VAL_PAD else f"{value:<{VAL_PAD}}"
-    left = f"{key.ljust(KEY_PAD)} = {val}"
-    return f"{left} | {comment}" if comment else left
+def almaty_now_str() -> str:
+    return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S +05")
+
+def _format_meta_rows(rows: List[Tuple[str, str, str]]) -> str:
+    """
+    Выравнивание FEED_META:
+      - выравниваем колонку ключей по максимальной ширине
+      - выравниваем колонку комментариев к общей позиции COMMENT_COL
+      - последняя строка (built_Asia/Almaty) завершает комментарий: '... | Время сборки (Алматы)-->'
+    """
+    if not rows:
+        return ""
+    key_width = max(len(k) for k, _, _ in rows)
+    # Колонка комментариев начинаем на этой позиции (гарантировано не меньше "key = value")
+    COMMENT_COL = max(72, key_width + 3 + 10)  # ' = ' + хотя бы 10 символов значения
+
+    lines: List[str] = []
+    for i, (k, v, cmt) in enumerate(rows):
+        left = f"{k.ljust(key_width)} = {v}"
+        if cmt:
+            pad = " " * max(1, COMMENT_COL - len(left)) if len(left) < COMMENT_COL else "  "
+            tail = f"{pad}| {cmt}"
+        else:
+            tail = ""
+        # Для последней строки (built_Asia/Almaty) закрываем комментарий:
+        if i == len(rows) - 1 and "Время сборки (Алматы)" in cmt:
+            tail = (tail[:-0] if tail else " ") + "-->"
+        lines.append(left + tail)
+    return "\n".join(lines)
 
 def build_feed_meta(
     source: str,
@@ -375,20 +400,19 @@ def build_feed_meta(
     kw_count: int,
     kw_dropped: int
 ) -> str:
-    rows = [
-        _meta_row("supplier",            "nvprint",                  "Метка поставщика"),
-        _meta_row("source",              source,                     "URL/файл источника"),
-        _meta_row("offers_total",        str(offers_total),          "Всего товаров в источнике (оценочно)"),
-        _meta_row("offers_written",      str(offers_written),        "Товаров записано в YML"),
-        _meta_row("prices_updated",      str(prices_picked),         "Цены взяты по договорам (+ наценка)"),
-        _meta_row("keywords_loaded",     str(kw_count),              "Ключевых слов в фильтре (startswith)"),
-        _meta_row("dropped_by_keywords", str(kw_dropped),            "Отброшено фильтром по началу названия"),
-        _meta_row("available_forced",    str(offers_written),        "Сколько офферов получили available=true"),
-        _meta_row("built_utc",           datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"), "Время сборки (UTC)"),
-        # последняя строка — закрываем комментарий -->
-        _meta_row("built_Asia/Almaty",   (datetime.utcnow()+timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S +05"), "Время сборки (Алматы)") + "-->",
+    rows: List[Tuple[str, str, str]] = [
+        ("supplier",            "nvprint",              "Метка поставщика"),
+        ("source",              source,                 "URL/файл источника"),
+        ("offers_total",        str(offers_total),      "Всего товаров в источнике (оценочно)"),
+        ("offers_written",      str(offers_written),    "Товаров записано в YML"),
+        ("prices_updated",      str(prices_picked),     "Цены взяты по договорам (+ наценка)"),
+        ("keywords_loaded",     str(kw_count),          "Ключевых слов в фильтре (startswith)"),
+        ("dropped_by_keywords", str(kw_dropped),        "Отброшено фильтром по началу названия"),
+        ("available_forced",    str(offers_written),    "Сколько офферов получили available=true"),
+        ("built_utc",           utc_now_str(),          "Время сборки (UTC)"),
+        ("built_Asia/Almaty",   almaty_now_str(),       "Время сборки (Алматы)"),
     ]
-    return "<!--FEED_META\n" + "\n".join(rows) + "\n"
+    return "<!--FEED_META\n" + _format_meta_rows(rows) + "\n"
 
 def build_yml(
     offers: List[Dict[str, Any]],
