@@ -1,31 +1,27 @@
 # scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
 """
-NVPrint -> YML (KZT) под единый шаблон.
+NVPrint -> YML (KZT) под общий шаблон.
 
-Маппинг:
+Поля:
   <name>        = <НоменклатураКратко>
   <description> = <Номенклатура> + блок "Технические характеристики" из:
                   <Ресурс>, <ТипПечати>, <ЦветПечати>, <СовместимостьСМоделями>, <Вес>, <Принтеры>/<Принтер>
-
-ID и код:
-  id = vendorCode = "NP" + <Артикул_без_префикса NV-> (пробелы удаляем)
-
+ID/Код:
+  id = vendorCode = "NP" + <Артикул_без_префикса NV->  (пробелы удаляем)
 Цена:
   1) <Договор НомерДоговора="ТА-000079"> -> <Цена> (Казахстан приоритет)
   2) иначе <Договор НомерДоговора="TA-000079Мск"> -> <Цена> (Москва)
   3) иначе 100
-  4) применяем PRICING_RULES (твои) и округляем вверх до ...900
-
-Фильтр по ключевым словам:
-  - берём список из docs/nvprint_keywords.txt (или NVPRINT_KEYWORDS_FILE)
-  - оставляем только товары, где <НоменклатураКратко> начинается с одного из слов (case-insensitive)
+  4) применяем PRICING_RULES и округляем вверх до ...900
+Фильтр:
+  docs/nvprint_keywords.txt — оставляем товары, где <НоменклатураКратко> НАЧИНАЕТСЯ с любого слова из списка
 
 Вывод:
-  - только нужные теги (name, vendor, vendorCode, price, currencyId, picture, description, available)
-  - без <categories>, <categoryId>, <url>, quantity-тегов
-  - всем <available>true</available>
-  - кодировка файла: windows-1251
+  только нужные теги (name, vendor, vendorCode, price, currencyId, picture, description, available)
+  без <categories>, <categoryId>, <url> и quantity-тегов
+  <available>true</available> — ВСЕМ
+  кодировка: windows-1251
 """
 
 from __future__ import annotations
@@ -40,7 +36,7 @@ try:
 except Exception:
     requests = None
 
-# ---------------- CONSTANTS / ENV ----------------
+# ---------------- КОНСТАНТЫ / ОКРУЖЕНИЕ ----------------
 SUPPLIER_URL      = "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
 OUT_FILE          = "docs/nvprint.yml"
 OUTPUT_ENCODING   = "windows-1251"
@@ -48,14 +44,14 @@ HTTP_TIMEOUT      = 45.0
 RETRIES           = 4
 RETRY_BACKOFF_S   = 2.0
 
-# Basic-Auth (обязательно задать в CI)
+# Basic-Auth из секретов CI
 NV_LOGIN          = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
 NV_PASSWORD       = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
 
-# Keywords-файл (по умолчанию docs/nvprint_keywords.txt)
+# Keywords-файл
 KEYWORDS_FILE     = (os.getenv("NVPRINT_KEYWORDS_FILE") or "docs/nvprint_keywords.txt").strip()
 
-# ---------------- UTILS ----------------
+# ---------------- УТИЛИТЫ ----------------
 def yml_escape(s: str) -> str:
     return html.escape((s or "").strip())
 
@@ -129,7 +125,7 @@ def read_source_bytes() -> bytes:
             time.sleep(RETRY_BACKOFF_S * attempt)
     raise RuntimeError(str(last_err) if last_err else "Не удалось скачать источник")
 
-# ---------------- KEYWORDS LOADER ----------------
+# ---------------- KEYWORDS ----------------
 def read_text_with_encodings(path: str, encodings: List[str]) -> Optional[str]:
     if not os.path.isfile(path):
         return None
@@ -139,7 +135,6 @@ def read_text_with_encodings(path: str, encodings: List[str]) -> Optional[str]:
                 return f.read()
         except Exception:
             continue
-    # как крайний случай — байтовое чтение и latin-1
     try:
         with io.open(path, "rb") as f:
             raw = f.read()
@@ -148,10 +143,6 @@ def read_text_with_encodings(path: str, encodings: List[str]) -> Optional[str]:
         return None
 
 def load_keywords(path: str) -> List[str]:
-    """
-    Читает файл ключевых слов (по одному на строку).
-    Игнорирует пустые строки и комментарии, нормализует к нижнему регистру и одиночным пробелам.
-    """
     txt = read_text_with_encodings(path, ["utf-8-sig", "utf-8", "utf-16", "cp1251", "koi8-r", "iso-8859-5", "cp866"])
     if not txt:
         return []
@@ -160,11 +151,9 @@ def load_keywords(path: str) -> List[str]:
         ln = line.strip()
         if not ln or ln.startswith("#") or ln.startswith(";"):
             continue
-        # нормализация: collapse spaces, lower
         ln = re.sub(r"\s+", " ", ln).strip().lower()
         if ln:
             kws.append(ln)
-    # убрать дубли, сохранить порядок
     seen = set(); out: List[str] = []
     for k in kws:
         if k not in seen:
@@ -172,11 +161,9 @@ def load_keywords(path: str) -> List[str]:
     return out
 
 def norm_for_match(s: str) -> str:
-    """Нормализовать строку для сравнения: lower + collapse spaces."""
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
-def match_starts_with(name_short: str, keywords: List[str]) -> bool:
-    """Проверка: name_short начинается с любого ключевого слова (case-insensitive)."""
+def name_starts_with_keywords(name_short: str, keywords: List[str]) -> bool:
     if not keywords:
         return True
     base = norm_for_match(name_short)
@@ -185,7 +172,7 @@ def match_starts_with(name_short: str, keywords: List[str]) -> bool:
             return True
     return False
 
-# ---------------- PRICE FROM CONTRACTS ----------------
+# ---------------- ЦЕНЫ ПО ДОГОВОРАМ ----------------
 def _norm_contract(s: str) -> str:
     if not s:
         return ""
@@ -222,7 +209,7 @@ def _extract_price_from_contracts(item: ET.Element) -> Optional[float]:
         return price_msk
     return None
 
-# ---------------- PRICING RULES ----------------
+# ---------------- ПРАВИЛА ЦЕНООБРАЗОВАНИЯ ----------------
 from typing import Tuple
 PriceRule = Tuple[int, int, float, int]
 PRICING_RULES: List[PriceRule] = [
@@ -257,7 +244,7 @@ def compute_price_from_supplier(base_price: Optional[int]) -> int:
     raw = base_price * (1.0 + PRICING_RULES[-1][2]/100.0) + PRICING_RULES[-1][3]
     return _round_up_tail_900(int(math.ceil(raw)))
 
-# ---------------- ITEM PARSING ----------------
+# ---------------- СБОР ОПИСАНИЯ ----------------
 def clean_article(raw: str) -> str:
     s = (raw or "").strip()
     s = re.sub(r"^\s*NV[\-\_\s]+", "", s, flags=re.IGNORECASE)
@@ -323,8 +310,8 @@ def build_description(item: ET.Element) -> str:
 
     return "\n".join(parts).strip()
 
+# ---------------- ПАРСИНГ ТОВАРА ----------------
 def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
-    # Обязательные поля
     article = first_child_text(elem, ["Артикул","articul","sku","article","PartNumber"])
     if not article:
         return None
@@ -334,7 +321,6 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
         return None
     name_short = re.sub(r"\s+", " ", name_short).strip()
 
-    # Цена: КЗ -> МСК -> 100, затем правила
     base = _extract_price_from_contracts(elem)
     base_int = 100 if (base is None or base <= 0) else int(math.ceil(base))
     final_price = compute_price_from_supplier(base_int)
@@ -373,18 +359,20 @@ def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
     return items
 
 # ---------------- FEED_META + YML ----------------
-def almaty_now() -> datetime:
-    return datetime.utcnow() + timedelta(hours=5)
+def utc_now_str() -> str:
+    return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
 
 def almaty_now_str() -> str:
-    return almaty_now().strftime("%Y-%m-%d %H:%M:%S +05")
+    return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S +05")
 
-def build_feed_meta(source: str,
-                    offers_total: int,
-                    offers_written: int,
-                    prices_picked: int,
-                    kw_count: int,
-                    kw_dropped: int) -> str:
+def build_feed_meta(
+    source: str,
+    offers_total: int,
+    offers_written: int,
+    prices_picked: int,
+    kw_count: int,
+    kw_dropped: int
+) -> str:
     pad = 28
     rows: List[str] = []
     def kv(k, v, cmt=""):
@@ -392,23 +380,26 @@ def build_feed_meta(source: str,
             rows.append(f"{k.ljust(pad)} = {str(v):<60} | {cmt}")
         else:
             rows.append(f"{k.ljust(pad)} = {str(v)}")
-    kv("supplier",                "nvprint",                         "Метка поставщика")
-    kv("source",                  source,                            "URL/файл источника")
-    kv("offers_total",            offers_total,                      "Офферов в источнике (оценочно)")
-    kv("offers_written",          offers_written,                    "Офферов записано")
-    kv("prices_updated",          prices_picked,                     "Цены взяты из договоров (+ наценка)")
-    kv("available_forced",        offers_written,                    "Сколько офферов получили available=true")
-    kv("keywords_loaded",         kw_count,                          "Ключевых слов в фильтре (startswith)")
-    kv("dropped_by_keywords",     kw_dropped,                        "Отброшено фильтром по началу названия")
+    kv("supplier",            "nvprint",                         "Метка поставщика")
+    kv("source",              source,                            "URL/файл источника")
+    kv("offers_total",        offers_total,                      "Всего товаров в источнике (оценочно)")
+    kv("offers_written",      offers_written,                    "Товаров записано в YML")
+    kv("prices_updated",      prices_picked,                     "Цены взяты по договорам (+ наценка)")
+    kv("keywords_loaded",     kw_count,                          "Ключевых слов в фильтре (startswith)")
+    kv("dropped_by_keywords", kw_dropped,                        "Отброшено фильтром по началу названия")
+    kv("available_forced",    offers_written,                    "Сколько офферов получили available=true")
+    rows.append(f"{'built_utc'.ljust(pad)} = {utc_now_str():<60} | Время сборки (UTC)")
     rows.append(f"{'built_Asia/Almaty'.ljust(pad)} = {almaty_now_str():<60} | Время сборки (Алматы)-->")
     return "<!--FEED_META\n" + "\n".join(rows) + "\n"
 
-def build_yml(offers: List[Dict[str, Any]],
-              source: str,
-              offers_total: int,
-              prices_picked: int,
-              kw_count: int,
-              kw_dropped: int) -> str:
+def build_yml(
+    offers: List[Dict[str, Any]],
+    source: str,
+    offers_total: int,
+    prices_picked: int,
+    kw_count: int,
+    kw_dropped: int
+) -> str:
     date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
     out: List[str] = []
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
@@ -429,6 +420,7 @@ def build_yml(offers: List[Dict[str, Any]],
         if it.get("description"):
             desc_clean = re.sub(r"\s+", " ", it["description"]).strip()
             out.append(f"      <description>{yml_escape(desc_clean)}</description>")
+        # ВАЖНО: всегда добавляем available=true (без условий и один раз)
         out.append("      <available>true</available>")
         out.append("    </offer>\n")
     out.append("  </offers>")
@@ -439,7 +431,6 @@ def build_yml(offers: List[Dict[str, Any]],
 def parse_xml_to_yml(xml_bytes: bytes, source_label: str) -> str:
     root = ET.fromstring(xml_bytes)
 
-    # keywords
     keywords = load_keywords(KEYWORDS_FILE)
     kw_count = len(keywords)
 
@@ -451,9 +442,8 @@ def parse_xml_to_yml(xml_bytes: bytes, source_label: str) -> str:
     kw_dropped = 0
 
     for node in nodes:
-        # фильтр по началу <НоменклатураКратко>
-        nmk_short = find_descendant_text(node, ["НоменклатураКратко"]) or ""
-        if not match_starts_with(nmk_short, keywords):
+        name_short = find_descendant_text(node, ["НоменклатураКратко"]) or ""
+        if not name_starts_with_keywords(name_short, keywords):
             kw_dropped += 1
             continue
 
@@ -471,7 +461,6 @@ def main() -> int:
         data = read_source_bytes()
         yml = parse_xml_to_yml(data, SUPPLIER_URL)
     except Exception as e:
-        # На ошибке всё равно пишем пустой корректный YML, чтобы CI не падал с пустым файлом
         yml = build_yml([], SUPPLIER_URL, 0, 0, 0, 0)
         print(f"ERROR: {e}", file=sys.stderr)
 
