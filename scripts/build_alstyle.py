@@ -262,7 +262,6 @@ def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
       3) <prices><price type~RRP/РРЦ> (fallback)
       4) missing
     """
-    # 1) Ищем в <prices>
     dealer_candidates=[]
     rrp_candidates=[]
     for prices in list(offer.findall("prices")) + list(offer.findall("Prices")):
@@ -272,11 +271,8 @@ def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
             t=(p.attrib.get("type") or "")
             if PRICE_KEYWORDS_DEALER.search(t): dealer_candidates.append(val)
             elif PRICE_KEYWORDS_RRP.search(t):  rrp_candidates.append(val)
-            else:
-                pass
     if dealer_candidates:
         return (min(dealer_candidates), "prices_dealer")
-    # 2) Явные поля
     direct=[]
     for tag in PRICE_FIELDS_DIRECT:
         el=offer.find(tag)
@@ -285,10 +281,8 @@ def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
             if v is not None: direct.append(v)
     if direct:
         return (min(direct), "direct_field")
-    # 3) Fallback на RRP
     if rrp_candidates:
         return (min(rrp_candidates), "rrp_fallback")
-    # 4)
     return (None, "missing")
 
 def _force_tail_900(n:float)->int:
@@ -483,16 +477,12 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     true_cnt = false_cnt = from_stock_cnt = from_status_cnt = 0
     for offer in offers_el.findall("offer"):
         b, src = derive_available(offer)
-        # 1) снять атрибут
         if "available" in offer.attrib:
             offer.attrib.pop("available", None)
-        # 2) удалить ВСЕ существующие <available>
         for node in list(offer.findall("available")):
             offer.remove(node)
-        # 3) создать ровно один <available>
         avail = ET.SubElement(offer, "available")
         avail.text = "true" if b else "false"
-        # 4) статистика и чистка складских тегов
         if b: true_cnt += 1
         else: false_cnt += 1
         if src == "stock": from_stock_cnt += 1
@@ -566,6 +556,37 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
 def count_category_ids(offer_el:ET.Element)->int:
     return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
+# ===================== currencyId: фикс порядка и дублей =====================
+
+def fix_currency_id_order_and_dedup(shop_el: ET.Element, default_code: str = "KZT") -> int:
+    """
+    Гарантирует РОВНО один <currencyId> на каждый <offer> и ставит его сразу
+    после <price>. Если price отсутствует — добавляем currencyId в конец offer.
+    Возвращает количество офферов, в которых что-то правили.
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        # удалить все существующие currencyId
+        for node in list(offer.findall("currencyId")):
+            offer.remove(node)
+        # создать новый узел
+        new_cur = ET.Element("currencyId"); new_cur.text = default_code
+        price = offer.find("price")
+        if price is not None:
+            children = list(offer)
+            try:
+                idx = children.index(price)
+                offer.insert(idx + 1, new_cur)
+            except ValueError:
+                offer.append(new_cur)
+        else:
+            offer.append(new_cur)
+        touched += 1
+    return touched
+
 # ========================== FEED_META (ЗАМЕНЕНО) ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
@@ -597,7 +618,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     )
     base_ts = today_01.timestamp()
     if now_alm.timestamp() >= base_ts:
-        next_ts = base_ts + 86400  # +1 день секундами, DST в Алматы не используется
+        next_ts = base_ts + 86400  # +1 день секундами (DST в Алматы не используется)
     else:
         next_ts = base_ts
     next_alm = datetime.fromtimestamp(next_ts, getattr(now_alm, "tzinfo", None))
@@ -690,6 +711,9 @@ def main()->None:
     specs_offers, specs_lines = inject_specs_block(out_shop)
     removed_params = strip_all_params(out_shop)
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
+
+    # Убираем дубли <currencyId> и ставим его сразу после <price>
+    fix_currency_id_order_and_dedup(out_shop, default_code="KZT")
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
 
