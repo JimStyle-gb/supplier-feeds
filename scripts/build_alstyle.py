@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-09-23.8
+script_version = alstyle-2025-09-23.9
+
+Изменения в .9:
+- Единый порядок тегов внутри <offer>:
+  <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <available>, <description>.
+  Для остальных тегов порядок сохраняем после перечисленных.
 
 Изменения в .8:
 - Синхронизация идентификатора оффера с vendorCode: <offer id="..."> == <vendorCode>.
@@ -34,7 +39,7 @@ import requests
 
 # ========================== КОНСТАНТЫ И НАСТРОЙКИ ==========================
 
-SCRIPT_VERSION = "alstyle-2025-09-23.8"
+SCRIPT_VERSION = "alstyle-2025-09-23.9"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "alstyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
@@ -300,7 +305,7 @@ def compute_retail(dealer:float,rules:List[PriceRule])->Optional[int]:
 
 def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,Dict[str,int]]:
     """
-    Пересчитываем цену и пишем ровно один <price> и <currencyId>.
+    Пересчитываем цену и пишем ровно один <price>. Убираем служебные ценовые поля.
     """
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0,{"missing":0})
@@ -324,7 +329,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         p=offer.find("price")
         if p is None: p=ET.SubElement(offer,"price")
         p.text=str(int(newp))
-        cur=offer.find("currencyId") or ET.SubElement(offer,"currencyId"); cur.text="KZT"
+        # currencyId не вставляем здесь — его создаст/обновит fix_currency_id(), порядок выставит reorder_offer_children()
         for node in list(offer.findall("prices")) + list(offer.findall("Prices")): offer.remove(node)
         for tag in INTERNAL_PRICE_TAGS:
             node=offer.find(tag)
@@ -465,11 +470,7 @@ def derive_available(offer: ET.Element) -> Tuple[bool, str]:
 
 def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     """
-    Делает ЕДИНЫЙ тег <available> на оффер:
-      - снимает атрибут @available у <offer>
-      - удаляет все существующие дочерние теги <available>
-      - создаёт один <available>true|false</available>
-      - (опционально) убирает служебные теги остатков/статусов
+    Делает ЕДИНЫЙ тег <available> на оффер (child), снимает атрибут @available.
     """
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0,0,0)
@@ -542,18 +543,12 @@ def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missi
 # === СИНХРОНИЗАЦИЯ offer/@id С vendorCode (id = vendorCode) ===
 
 def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> int:
-    """
-    Делает идентификатор оффера равным vendorCode:
-      <offer id="..."> == <vendorCode>...</vendorCode>
-    Возвращает количество офферов, где id был изменён/установлен.
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     changed = 0
     for offer in offers_el.findall("offer"):
         vc = offer.find("vendorCode")
         if vc is None or not (vc.text or "").strip():
-            # если по какой-то причине vendorCode пуст — пропускаем (его создаёт ensure_vendorcode_with_article)
             continue
         new_id = (vc.text or "").strip()
         if offer.attrib.get("id") != new_id:
@@ -561,29 +556,12 @@ def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> int:
             changed += 1
     return changed
 
-# ===================== ЧИСТКА ТЕГОВ/АТРИБУТОВ =====================
+# ===================== currencyId: дедуп без привязки к месту =====================
 
-def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
-    removed_tags=0
-    for t in PURGE_TAGS_AFTER:
-        for node in list(offer.findall(t)):
-            offer.remove(node); removed_tags+=1
-    removed_attrs=0
-    for a in PURGE_OFFER_ATTRS_AFTER:
-        if a in offer.attrib:
-            offer.attrib.pop(a,None); removed_attrs+=1
-    return removed_tags,removed_attrs
-
-def count_category_ids(offer_el:ET.Element)->int:
-    return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
-
-# ===================== currencyId: фикс порядка и дублей =====================
-
-def fix_currency_id_order_and_dedup(shop_el: ET.Element, default_code: str = "KZT") -> int:
+def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
     """
-    Гарантирует РОВНО один <currencyId> на каждый <offer> и ставит его сразу
-    после <price>. Если price отсутствует — добавляем currencyId в конец offer.
-    Возвращает количество офферов, в которых что-то правили.
+    Оставляет РОВНО один <currencyId> на каждый <offer> с текстом default_code.
+    Порядок расставит reorder_offer_children().
     """
     offers_el = shop_el.find("offers")
     if offers_el is None:
@@ -592,19 +570,59 @@ def fix_currency_id_order_and_dedup(shop_el: ET.Element, default_code: str = "KZ
     for offer in offers_el.findall("offer"):
         for node in list(offer.findall("currencyId")):
             offer.remove(node)
-        new_cur = ET.Element("currencyId"); new_cur.text = default_code
-        price = offer.find("price")
-        if price is not None:
-            children = list(offer)
-            try:
-                idx = children.index(price)
-                offer.insert(idx + 1, new_cur)
-            except ValueError:
-                offer.append(new_cur)
-        else:
-            offer.append(new_cur)
+        new_cur = ET.SubElement(offer, "currencyId")
+        new_cur.text = default_code
         touched += 1
     return touched
+
+# ===================== СОРТИРОВКА ДЕТЕЙ ВНУТРИ <offer> =====================
+
+DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","available","description"]
+
+def reorder_offer_children(shop_el: ET.Element) -> int:
+    """
+    Переставляет дочерние узлы каждого <offer> в фиксированный порядок DESIRED_ORDER.
+    Несколько <picture> сохраняют относительный порядок. Остальные теги, не входящие
+    в DESIRED_ORDER, добавляются после перечисленных, в исходной последовательности.
+    Возвращает число офферов, где порядок был изменён.
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return 0
+    changed = 0
+    wanted = set(DESIRED_ORDER)
+
+    for offer in offers_el.findall("offer"):
+        children = list(offer)
+        if not children: 
+            continue
+
+        # buckets for desired tags
+        buckets: Dict[str, List[ET.Element]] = {k: [] for k in DESIRED_ORDER}
+        others: List[ET.Element] = []
+
+        for node in children:
+            tag = node.tag
+            if tag in buckets:
+                # <picture> может быть много — просто накапливаем
+                buckets[tag].append(node)
+            else:
+                others.append(node)
+
+        # Если порядок уже совпадает, пропускаем
+        rebuilt = []
+        for k in DESIRED_ORDER:
+            rebuilt.extend(buckets[k])
+        rebuilt.extend(others)
+
+        if rebuilt != children:
+            # пересобираем: сначала удаляем всех детей, потом вставляем по порядку
+            for node in children:
+                offer.remove(node)
+            for node in rebuilt:
+                offer.append(node)
+            changed += 1
+
+    return changed
 
 # ========================== FEED_META (формат из feed.txt) ========================
 
@@ -620,15 +638,12 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     Сколько товаров есть в наличии (true) | value
     Сколько товаров нет в наличии (false) | value
     """
-    # текущее время Алматы
     try:
         tz = ZoneInfo("Asia/Almaty")
         now_alm = datetime.now(tz)
     except Exception:
-        # fallback: UTC + 5*3600 сек
         now_alm = datetime.utcfromtimestamp(time.time() + 5*3600)
 
-    # ближайшее 01:00 (Алматы)
     today_01 = datetime(
         now_alm.year, now_alm.month, now_alm.day, 1, 0, 0,
         tzinfo=getattr(now_alm, "tzinfo", None)
@@ -658,7 +673,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
 
 def top_dropped(d:Dict[str,int], n:int=10)->str:
     items=sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
-    return ",".join(f"{k}:{v}" for k,v in items) if items else "n/a"
+    return(",".join(f"{k}:{v}" for k,v in items) if items else "n/a")
 
 # ================================= MAIN ====================================
 
@@ -716,8 +731,8 @@ def main()->None:
         create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
     )
 
-    # --- СИНХРОНИЗАЦИЯ ID С vendorCode ---
-    synced = sync_offer_id_with_vendorcode(out_shop)
+    # ID = vendorCode
+    sync_offer_id_with_vendorcode(out_shop)
 
     # ПЕРЕСЧЁТ ЦЕН
     upd, skipped, total, src_stats = reprice_offers(out_shop, PRICING_RULES)
@@ -729,10 +744,13 @@ def main()->None:
     removed_params = strip_all_params(out_shop)
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
-    # Убираем дубли <currencyId> и ставим его сразу после <price>
-    fix_currency_id_order_and_dedup(out_shop, default_code="KZT")
+    # Один currencyId на оффер (значение выставит default_code), место расставит reorder
+    fix_currency_id(out_shop, default_code="KZT")
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
+
+    # --- НОВОЕ: жёсткий порядок тегов внутри <offer> ---
+    reorder_offer_children(out_shop)
 
     children=list(out_offers)
     for i in range(len(children)-1, 0, -1):
@@ -768,7 +786,6 @@ def main()->None:
         "vendorcodes_created": created_nodes,
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
-        # можно добавить "ids_synced": synced при необходимости статистики
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
