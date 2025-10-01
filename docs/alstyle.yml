@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-09-30 20:17">
+<yml_catalog date="2025-10-01 13:55">
   <!--FEED_META
 script_version                  = alstyle-2025-09-23.7                                            | Версия скрипта (для контроля в CI)
 supplier                        = alstyle                                                         | Метка поставщика
 source                          = https://al-style.kz/upload/catalog_export/al_style_catalog.php  | URL исходного XML
-offers_total                    = 15874                                                           | Офферов у поставщика до очистки
-offers_written                  = 1995                                                            | Офферов записано (после очистки)
+offers_total                    = 15896                                                           | Офферов у поставщика до очистки
+offers_written                  = 1982                                                            | Офферов записано (после очистки)
 categories_mode                 = include                                                         | Режим фильтра категорий (off/include/exclude)
 categories_total                = 58                                                              | Сколько правил категорий загружено
-filtered_by_categories          = 13879                                                           | Сколько офферов отфильтровано по категориям
-prices_updated                  = 1995                                                            | Скольким товарам пересчитали price
+filtered_by_categories          = 13914                                                           | Сколько офферов отфильтровано по категориям
+prices_updated                  = 1982                                                            | Скольким товарам пересчитали price
 prices_skipped                  = 0                                                               | Скольких товаров пропустили при пересчёте цены
 dealer_src_prices_dealer        = 0                                                               | Базовая цена взята из <prices type~dealer/opт/b2b>
-dealer_src_direct_field         = 1995                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
+dealer_src_direct_field         = 1982                                                            | Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)
 dealer_src_rrp_fallback         = 0                                                               | Базовая цена взята из RRP/РРЦ (fallback)
 dealer_src_missing              = 0                                                               | Не нашли базовую цену
-params_removed                  = 9482                                                            | Сколько строк параметров добавлено в описание
+params_removed                  = 9473                                                            | Сколько строк параметров добавлено в описание
 vendors_recovered               = 0                                                               | Скольким товарам нормализован/восстановлен vendor
 dropped_top                     = n/a                                                             | ТОП часто отброшенных названий бренда
-available_true                  = 1344                                                            | Сколько офферов доступны (true)
-available_false                 = 651                                                             | Сколько офферов недоступны (false)
+available_true                  = 1316                                                            | Сколько офферов доступны (true)
+available_false                 = 666                                                             | Сколько офферов недоступны (false)
 available_from_stock            = 0                                                               | Сколько доступностей определено по остаткам
 available_from_status           = 0                                                               | Сколько доступностей определено по статусу
-categoryId_dropped              = 15874                                                           | Сколько тегов categoryId удалено
+categoryId_dropped              = 15896                                                           | Сколько тегов categoryId удалено
 vendorcodes_filled_from_article = 0                                                               | Скольким офферам проставили vendorCode из артикула
 vendorcodes_created             = 0                                                               | Сколько узлов vendorCode было создано
-built_utc                       = 2025-09-30 20:17:41 UTC                                         | Время сборки (UTC)
-built_Asia/Almaty               = 2025-10-01 01:17:41 +05                                         | Время сборки (Алматы)-->
+built_utc                       = 2025-10-01 13:55:47 UTC                                         | Время сборки (UTC)
+built_Asia/Almaty               = 2025-10-01 18:55:47 +05                                         | Время сборки (Алматы)-->
   <shop>
     <offers>
       <offer id="12568">
@@ -1712,23 +1712,6 @@ built_Asia/Almaty               = 2025-10-01 01:17:41 +05                       
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
-      </offer>
-
-  <offer id="15754">
-        <price>39900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS9020</vendorCode>
-        <picture>https://img.al-style.kz/9020_1.jpg</picture>
-        <vendor>Deluxe</vendor>
-        <name>Экран моторизированный Deluxe DLS-E229х185 (90"х73"), &#216; - 116", Раб. поверхность 221х125 см., 16:9</name>
-        <description>Экран для проекторв Deluxe, моторизированный DLS-E229-185
- В экране для проекторов Deluxe сочетаются простой дизайн, прочные компоненты и аккуратное исполнение. Экран легко устанавливается и регулируется. Полотно полностью скрыто в элегантном корпусе когда не используется. Экран Deluxe опускается и фиксируется на любой длине с помощью мотора, встроенного в корпус экрана.
-
-Характеристики:
-- Гарантия: 1 год
-- Цвет: Белый</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
       </offer>
 
   <offer id="16824">
@@ -6092,7 +6075,7 @@ built_Asia/Almaty               = 2025-10-01 01:17:41 +05                       
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="19569">
@@ -8927,7 +8910,7 @@ built_Asia/Almaty               = 2025-10-01 01:17:41 +05                       
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="28203">
@@ -11517,7 +11500,7 @@ built_Asia/Almaty               = 2025-10-01 01:17:41 +05                       
       </offer>
 
   <offer id="31847">
-        <price>54900</price>
+        <price>60900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS32311</vendorCode>
         <picture>https://img.al-style.kz/32311_1.jpg</picture>
@@ -12275,7 +12258,7 @@ built_Asia/Almaty               = 2025-10-01 01:17:41 +05                       
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="31890">
@@ -12992,7 +12975,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 
 Модель			013R00686	
 
-Совместимые модели			Xerox AltaLink B8145/B8155/B8170
+Совместимые модели			Xerox AltaLink B8145/B8155/B8170/B8245/B8255/B8270
 
 Цвет			Чёрный	
 
@@ -14606,7 +14589,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 
 Модель			006R01754	
 
-Совместимые модели			AltaLink C8130/C8135
+Совместимые модели			AltaLink C8130/C8135/C8230/C8235
 
 Цвет			Чёрный	
 
@@ -14634,7 +14617,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 
 Модель			006R01755	
 
-Совместимые модели			AltaLink C8130/C8135
+Совместимые модели			AltaLink C8130/C8135/C8230/C8235
 
 Цвет			Голубой	
 
@@ -14662,7 +14645,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 
 Модель			006R01756	
 
-Совместимые модели			AltaLink C8130/C8135
+Совместимые модели			AltaLink C8130/C8135/C8230/C8235
 
 Цвет			Малиновый	
 
@@ -14690,7 +14673,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 
 Модель			006R01757	
 
-Совместимые модели			AltaLink C8130/C8135
+Совместимые модели			AltaLink C8130/C8135/C8230/C8235
 
 Цвет			Жёлтый	
 
@@ -14716,7 +14699,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 
 Модель			013R00681	
 
-Совместимые модели			AltaLink C8130/C8135/C8145/C8155/C8170
+Совместимые модели			AltaLink C8130/C8135/C8145/C8155/C8170/C8230/C8235/C8245/C8255/C8270
 
 Цвет			По одному на каждый цвет
 
@@ -15079,7 +15062,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 - Стандарты: Категория 5е
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="67962">
@@ -15095,7 +15078,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
 
 Модель			008R08101	
 
-Совместимые модели		 AltaLink B8145/B8155/B8170/C8130/C8135/C8145/C8155/C8170
+Совместимые модели		 AltaLink B8145/B8155/C8130/C8135/C8145/C8155/B8245/B8255/C8230/C8235/C8245/C8255
 
 Ресурс			121 000 отпечатков
 
@@ -16705,7 +16688,7 @@ USB
 
 Модель			006R01758	
 
-Совместимые модели			Xerox AltaLink C8145/8155/8170
+Совместимые модели			Xerox AltaLink C8145/8155/8170/C8245/C8255/C8270
 
 Цвет			чёрный	
 
@@ -16733,7 +16716,7 @@ USB
 
 Модель			006R01759	
 
-Совместимые модели			Xerox AltaLink C8145/8155/8170
+Совместимые модели			Xerox AltaLink C8145/8155/8170/C8245/C8255/C8270
 
 Цвет			голубой	
 
@@ -16761,7 +16744,7 @@ USB
 
 Модель			006R01760	
 
-Совместимые модели			Xerox AltaLink C8145/8155/8170
+Совместимые модели			Xerox AltaLink C8145/8155/8170/C8245/C8255/C8270
 
 Цвет			малиновый	
 
@@ -16788,7 +16771,7 @@ USB
 
 Модель			006R01761	
 
-Совместимые модели			Xerox AltaLink C8145/8155/8170
+Совместимые модели			Xerox AltaLink C8145/8155/8170/C8245/C8255/C8270
 
 Цвет			желтый	
 
@@ -17662,7 +17645,7 @@ USB
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="149940">
@@ -17700,7 +17683,7 @@ USB
 
 Модель			607K22320 / 126K39311	
 
-Совместимые модели			Xerox AltaLink C8145/C8155
+Совместимые модели			Xerox AltaLink C8145/C8155/C8245/C8255
 								
 	Ресурс			500 000 стандартных страниц в среднем. Ресурс указан в соответствии со стандартом ISO/IEC19752. Ресурс может отличаться в зависимости от изображений, области покрытия и режимов печати
 
@@ -19144,7 +19127,7 @@ Versant 80/180 Press
 - Цвет: Белый
 - Процессор: Amlogic T968</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="186800">
@@ -25081,7 +25064,7 @@ USB
 - Скорость сканирования: до 80 изобр./мин.
 - Скорость выхода первой страницы: 6.9 / 6.7 / 5.4 сек. (моно) / 8.8 / 8.8 / 7 сек. (цвет)</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="266922">
@@ -25181,7 +25164,7 @@ USB
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="266925">
@@ -26448,7 +26431,7 @@ XL Setting to Share . Поделитесь своими настройками с товарищем по команде, друг
 - Время отклика: 1 мс
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="267500">
@@ -29410,7 +29393,7 @@ Microsoft Windows 11
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="360579">
@@ -30051,7 +30034,7 @@ USB
 
 Модель			008R08102	
 
-Совместимые модели		 Xerox AltaLink 8170
+Совместимые модели		 Xerox AltaLink B8170/B8270/C8170/C8270
 
 Ресурс			121 000 отпечатков
 
@@ -31794,7 +31777,7 @@ HDMI x1
       </offer>
 
   <offer id="372127">
-        <price>26128900</price>
+        <price>33168900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS44949</vendorCode>
         <picture>https://img.al-style.kz/44949_1.jpg</picture>
@@ -33741,7 +33724,7 @@ Keor SPE Tower может быть подключен к ПК через SNMP, USB и последовательный порт
         <picture>https://img.al-style.kz/52563_2.jpg</picture>
         <picture>https://img.al-style.kz/52563_3.jpg</picture>
         <vendor>LG</vendor>
-        <name>Монитор 31,5" LG 32UN650K White</name>
+        <name>Монитор 31,5" LG 32UN650 White</name>
         <description>Исключительная четкость и детализация
 Монитор LG UHD 4K обеспечивает исключительную чёткость, детализацию и производительность для ваших творческих задач и отдыха, о которой раньше вы могли только мечтать.
 Подходящая четкость, точность и цветопередача
@@ -34196,7 +34179,7 @@ DisplayPort x1
 - Операционная система: Android 9
 - Слот OPS: 180х119х30 (OPS)</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="387013">
@@ -34620,7 +34603,7 @@ USB  1
 - Подсветка: LED
 - Время отклика: 8 мс</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="389118">
@@ -35073,7 +35056,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
 - Объём оперативной памяти: 8 Гб
 - Операционная система: Android 13</description>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
       </offer>
 
   <offer id="390134">
@@ -37576,7 +37559,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
       </offer>
 
   <offer id="392904">
-        <price>430900</price>
+        <price>456900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS59349</vendorCode>
         <picture>https://img.al-style.kz/59349_1.jpg</picture>
@@ -38009,7 +37992,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
       </offer>
 
   <offer id="393057">
-        <price>399900</price>
+        <price>420900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS59506</vendorCode>
         <picture>https://img.al-style.kz/59506_1.jpg</picture>
@@ -42810,59 +42793,6 @@ HDCP
         <available>false</available>
       </offer>
 
-  <offer id="394124">
-        <price>79900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS60527</vendorCode>
-        <picture>https://img.al-style.kz/60527_1.jpg</picture>
-        <picture>https://img.al-style.kz/60527_2.jpg</picture>
-        <picture>https://img.al-style.kz/60527_3.jpg</picture>
-        <vendor>iiyama</vendor>
-        <name>Монитор iiyama ProLite PL2492H XUB2492HSU-W6 24"</name>
-        <description>Монитор iiyama ProLite PL2492H XUB2492HSU-W6 24"
-
-Стильный дизайн от края до края делает ProLite XUB2492HSU идеальным для многомониторных установок. Технология панели IPS обеспечивает точную и стабильную цветопередачу с широкими углами обзора. Частота обновления 100 Гц вместе с функцией AdaptiveSync обеспечивает мгновенное, ощутимое улучшение плавности изображения. Высокие значения контрастности и яркости означают, что монитор обеспечит превосходную производительность для фотографического и веб-дизайна. Оснащен динамиками, концентратором USB 3.2, разъемом для наушников, соединениями HDMI и DisplayPort, функцией снижения синего света для снижения утомляемости глаз и эргономичной регулируемой по высоте подставкой 150 мм для оптимального комфорта пользователя, что делает этот 24-дюймовый монитор отличным выбором как для многомониторной конфигурации, так и для офисных приложений.
-
-ОСОБЕННОСТИ И ПРЕИМУЩЕСТВА:
-
-Технология IPS. IPS дисплеи известны своими широкими углами обзора, естественными цветами и точной цветопередачей. Они особенно хорошо подходят для приложений по работе с цветом.
-
-HAS (150 мм) + PIVOT. С регулируемой по высоте подставкой вы создадите эргономичную рабочую позу и положение, которые соответствуют всем требованиям охраны труда и техники безопасности. Это не только предотвратит любые проблемы со здоровьем, но и повысит вашу производительность. Функция поворота позволяет поворачивать экран из альбомной в портретную ориентацию. Эта функция может быть полезна, если приложение требует большей высоты, чем ширины.
-
-100Hz. Частота обновления 100 Гц означает повышенную плавность изображения. Это означает, что мерцание уменьшается, и, следовательно, усталость глаз также менее заметна. Повышенная частота также означает более плавные переходы между контрастными цветами, более плавные сцены движения как в фильмах, так и в играх и даже уменьшенное мерцание курсора мыши.
-
-Нет мерцания + подавление синего. Оптимальное решение для комфорта и здоровья ваших глаз. Немерцающие мониторы с функцией уменьшения синего света существенно снижают напряжение и усталость в сравнении с обычными мониторами.
-
-Динамики и наушники. Играете с друзьями? Используйте качественные встроенные динамики. Не хотите никого беспокоить? Присоедините гарнитуру к аудиоразъему и прибавьте громкости.
-
-ИНТЕРФЕЙСЫ / РАЗЪЕМЫ / УПРАВЛЕНИЕ:
-
-HDMI x1
-DisplayPort x1
-USB HUB x4
-HDCP
-Разъём для наушников
-
-АКСЕССУАРЫ:
-
-Кабель питания
-Кабель USB
-Кабель HDMI
-Кабель DP
-Краткое руководство по началу работы
-Руководство по безопасности
-
-Характеристики:
-- Гарантия: 1 год
-- Частота обновления экрана: 100 Гц
-- Тип матрицы экрана: IPS
-- Яркость: 250 кд/м2
-- Видеовыход: HDMI / DP
-- Время отклика: 4 мс</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
   <offer id="394129">
         <price>116900</price>
         <currencyId>KZT</currencyId>
@@ -46083,46 +46013,6 @@ USB-кабель
         <available>false</available>
       </offer>
 
-  <offer id="396762">
-        <price>1595900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS61386</vendorCode>
-        <picture>https://img.al-style.kz/61386_1.jpg</picture>
-        <picture>https://img.al-style.kz/61386_2.jpg</picture>
-        <picture>https://img.al-style.kz/61386_3.jpg</picture>
-        <vendor>Schneider Electric</vendor>
-        <name>Источник бесперебойного питания Schneider Electric Easy UPS SRVS10KRILRK</name>
-        <description>Источник бесперебойного питания Schneider Electric Easy UPS SRVS10KRILRK
-
-Schneider Electric Easy UPS SRVS10KRILRK - высококачественный онлайн-ИБП с двойным преобразованием, предназначенный для обеспечения необходимой защиты электропитания даже в самых нестабильных условиях электропитания.
-В комплект поставки входит:
-1 USB кабель
-1 Кабель для конфигурирования через порт RS-232
-2 Кронштейны для монтажа в аппаратурные стойки
-2 Направляющие для монтажа в аппаратурные стойки
-1 external battery pack
-1 батарейный кабель
- руководство по эксплуатации
-
-Характеристики:
-- Гарантия: 2 года
-- Время полной зарядки: 1,5 ч
-- Мощность (Bт): 10кВА/10кВт
-- Тип ИБП: Онлайн
-- Время переключения режимов: 0 мс
-- Форма выходного сигнала: Синусоида
-- Автоматическое включение: Есть
-- Рабочий диапазон температур: от 0 до 40 °С
-- Состав: Металл, пластик
-- Количество и тип выходных разъёмов: Клеммная колодка
-- Лицевая панель: ЖК-дисплей
-- Высота в монтажной стойке: 5U
-- Рабочая влажность: 0-90% (без конденсации)
-- Цвет: Чёрный</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="396764">
         <price>1242900</price>
         <currencyId>KZT</currencyId>
@@ -46534,7 +46424,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396796">
@@ -46627,7 +46517,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="396801">
@@ -51811,7 +51701,7 @@ Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SEN
 - Вес: 0.7
 - Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="399644">
@@ -54544,6 +54434,47 @@ Canon
         <available>true</available>
       </offer>
 
+  <offer id="400572">
+        <price>6029900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS64889</vendorCode>
+        <vendor>CyberPower</vendor>
+        <name>Источник бесперебойного питания CyberPower HSTP3T40KE</name>
+        <description>CyberPower HSTP3T40KE Трехфазный онлайн-ИБП обеспечивает длительное резервное питание для IT шкафов, транспорта, инфраструктуры и аварийных систем. Благодаря возможности параллельного резервирования ИБП серии HSTP3T (3-фазный) идеально подходят для критически важных приложений в серверных помещениях, центрах обработки данных, промышленных предприятиях и электростанциях, требующих высокой производительности, высокой надежности и увеличенного времени работы.
+
+Благодаря встроенной технологии IGBT и интеллектуальному управлению на основе DSP, ИБП производит меньше входных гармонических искажений (THDi) и достигает более высокой энергоэффективности до 98% в экономичном режиме. Более высокая операционная эффективность означает меньшее тепловыделение в БТЕ и пониженное энергопотребление в режиме холостого хода, что приводит к сокращению эксплуатационных расходов и уменьшению выбросов углекислого газа.
+
+Для повышения эффективности работы система ИБП в нормальных условиях работает в режиме байпаса, в течение которого инвертор находится в режиме ожидания. Во время сбоев питания ИБП переключается в режим работы от батарей, а инвертор непрерывно подает критическую нагрузку на подключенное оборудование.
+
+Гарантийное обслуживание ИБП будет возможно только в случае проведения установки, монтажа и запуска в работу ТОЛЬКО сертифицированным производителем сервисным инженером на основании акта ввода оборудования в эксплуатацию.
+
+Характеристики:
+- Гарантия: 2 года
+- Безопасность: Есть
+- Тип подключения: Клеммная колодка
+- Мощность (Bт): 40кВА/36кВт
+- Ёмкость батареи: 12В х 40 шт. или группами по 40 шт. (не поставляются в комплекте, приобретаются отдельно)
+- Тип ИБП: Онлайн
+- Назначение: Да
+- Время переключения режимов: 0 мс
+- Интерфейс для связи с ПК: RS-232 (технология Smart)
+- Форма выходного сигнала: Синусоида
+- Автоматическое включение: Есть
+- Рабочий диапазон температур: от 0 до 40 °С
+- Защита от полного разряда батареи: Есть
+- Бесшумный режим: Есть
+- Напряжение батарейного блока: ±240В
+- Выходная частота: 50/60 ±0.01Гц
+- Количество и тип выходных разъёмов: Клеммная колодка
+- Лицевая панель: LCD-дисплей + LED индикаторы
+- Тип подключения батарейного блока: Клеммная колодка
+- Удаленный мониторинг: SNMP/HTTP - опцонально с RMCARD205
+- Рабочая влажность: 0-95% (без конденсации)
+- Цвет: Чёрный</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
   <offer id="400743">
         <price>191900</price>
         <currencyId>KZT</currencyId>
@@ -54840,7 +54771,7 @@ CANON PIXMA MX454CANON PIXMA MG2240CANON PIXMA MG4140CANON PIXMA MG3240CANON PIX
 - Гарантия: 1 год
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400774">
@@ -55048,39 +54979,6 @@ Canon imagePRESS C60Canon imagePRESS C65Canon imagePRESS C650Canon imagePRESS C7
         <available>true</available>
       </offer>
 
-  <offer id="400800">
-        <price>10499900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS65129</vendorCode>
-        <picture>https://img.al-style.kz/65129_1.jpg</picture>
-        <vendor>Canon</vendor>
-        <name>Ролик подачи бумаги Canon ROLLER, PAPER FEEDER FC0-9450-000</name>
-        <description>Ролик подачи бумаги Canon FC0-9450-000
-
-Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
-
-Основные характеристики
-
-Производитель
-Canon
-
-Устройство
-Ролик подачи бумаги
-
-Секция аппарата
-Подача бумаги
-
-Совместимость
-
-Устройства
-Canon imagePRESS C60Canon imagePRESS Lite C165Canon imagePRESS Lite C170Canon imageRUNNER ADVANCE C7565iCanon imageRUNNER ADVANCE C7570iCanon imageRUNNER ADVANCE C7580i
-
-Характеристики:
-- Гарантия: Нет</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="400807">
         <price>20900</price>
         <currencyId>KZT</currencyId>
@@ -55124,7 +55022,7 @@ Canon PIXMA TS5340Canon PIXMA TS7440
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="400808">
@@ -55833,7 +55731,7 @@ Canon imagePROGRAF PRO-4000SCanon imagePROGRAF PRO-6000S
 - Объем встроенной памяти: 128 Гб
 - Операционная система: Android 13</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="401157">
@@ -56109,7 +56007,7 @@ Canon PIXMA iP2840Canon PIXMA MG2440Canon PIXMA MG2540Canon PIXMA MG2940Canon PI
 - Гарантия: Нет
 - Состав: Пластик</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="401377">
@@ -56333,7 +56231,7 @@ Bluetooth: Для подключения беспроводных акустических систем или других аксессуар
 - Гарантия: 1 год
 - Состав: Металл, пластик, стекло</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="401847">
@@ -56422,7 +56320,7 @@ Bluetooth: Для подключения беспроводных акустических систем или других аксессуар
       </offer>
 
   <offer id="402011">
-        <price>2105900</price>
+        <price>2471900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS66353</vendorCode>
         <picture>https://img.al-style.kz/66353_1.jpg</picture>
@@ -56466,7 +56364,7 @@ Bluetooth: Для подключения беспроводных акустических систем или других аксессуар
       </offer>
 
   <offer id="402012">
-        <price>2654900</price>
+        <price>4314900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS66354</vendorCode>
         <picture>https://img.al-style.kz/66354_1.jpg</picture>
@@ -56505,11 +56403,11 @@ Bluetooth: Для подключения беспроводных акустических систем или других аксессуар
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="402013">
-        <price>4148900</price>
+        <price>4863900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS66355</vendorCode>
         <picture>https://img.al-style.kz/66355_1.jpg</picture>
@@ -56548,7 +56446,7 @@ Bluetooth: Для подключения беспроводных акустических систем или других аксессуар
 - Рабочая влажность: 0-95% (без конденсации)
 - Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="402014">
@@ -57504,42 +57402,6 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
 Характеристики:
 - Вес: 1.5
 - Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
-  <offer id="402707">
-        <price>10499900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS67414</vendorCode>
-        <picture>https://img.al-style.kz/67414_1.jpg</picture>
-        <vendor>Canon</vendor>
-        <name>Ролик отделения Canon ROLLER, FEED SEPARATION FC0-5080-000</name>
-        <description>Ролик отделения Canon FC0-5080-000
-
-Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
-
-Основные характеристики
-
-Производитель
-Canon
-
-Устройство
-Ролик отделения
-
-Секция аппарата
-Подача бумаги
-
-Ресурс, стр.
-120 000
-
-Совместимость
-
-Устройства
-Canon Cassette Feeding Module-Y1Canon Cassette Feeding Unit-AD1Canon Cassette Feeding Unit-AF1Canon Cassette Feeding Unit-Y3Canon imageRUNNER 3230Canon imageRUNNER 3235Canon imageRUNNER 3245Canon imageRUNNER ADVANCE C5235Canon imageRUNNER ADVANCE C5240Canon imageRUNNER ADVANCE C5250Canon imageRUNNER ADVANCE C5255Canon imageRUNNER ADVANCE DX 4725iCanon imageRUNNER ADVANCE DX 4735iCanon imageRUNNER ADVANCE DX 4745iCanon imageRUNNER ADVANCE DX 4751i
-
-Характеристики:
-- Гарантия: Нет</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
       </offer>
@@ -59349,7 +59211,7 @@ Canon imagePRESS C60Canon imagePRESS C65Canon imagePRESS C710Canon imagePRESS C8
       </offer>
 
   <offer id="404000">
-        <price>985900</price>
+        <price>1037900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS68726</vendorCode>
         <picture>https://img.al-style.kz/68726_1.jpg</picture>
@@ -59490,7 +59352,7 @@ Cyborg 15
 - Операционная система: DOS
 - Процессор: Intel Core i5-13420H</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="404193">
@@ -60247,7 +60109,7 @@ PoE
 Характеристики:
 - Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="404831">
@@ -60373,59 +60235,6 @@ RJ45 (ЛВС)
 
 Характеристики:
 - Гарантия: 2 года</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
-  <offer id="404900">
-        <price>74900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS69893</vendorCode>
-        <picture>https://img.al-style.kz/69893_1.jpg</picture>
-        <picture>https://img.al-style.kz/69893_2.jpg</picture>
-        <picture>https://img.al-style.kz/69893_3.jpg</picture>
-        <vendor>iiyama</vendor>
-        <name>Монитор iiyama ProLite PL2492H XUB2492HSU-B6 A 23,8"</name>
-        <description>Монитор iiyama ProLite PL2492H XUB2492HSU-B6 A 23,8"
-
-Стильный дизайн от края до края делает ProLite XUB2492HSU идеальным для многомониторных установок. Технология панели IPS обеспечивает точную и стабильную цветопередачу с широкими углами обзора. Частота обновления 100 Гц вместе с функцией AdaptiveSync обеспечивает мгновенное, ощутимое улучшение плавности изображения. Высокие значения контрастности и яркости означают, что монитор обеспечит превосходную производительность для фотографического и веб-дизайна. Оснащен динамиками, концентратором USB 3.2, разъемом для наушников, соединениями HDMI и DisplayPort, функцией снижения синего света для снижения утомляемости глаз и эргономичной регулируемой по высоте подставкой 150 мм для оптимального комфорта пользователя, что делает этот 24-дюймовый монитор отличным выбором как для многомониторной конфигурации, так и для офисных приложений.
-
-ОСОБЕННОСТИ И ПРЕИМУЩЕСТВА:
-
-Технология IPS. IPS дисплеи известны своими широкими углами обзора, естественными цветами и точной цветопередачей. Они особенно хорошо подходят для приложений по работе с цветом.
-
-HAS (150 мм) + PIVOT. С регулируемой по высоте подставкой вы создадите эргономичную рабочую позу и положение, которые соответствуют всем требованиям охраны труда и техники безопасности. Это не только предотвратит любые проблемы со здоровьем, но и повысит вашу производительность. Функция поворота позволяет поворачивать экран из альбомной в портретную ориентацию. Эта функция может быть полезна, если приложение требует большей высоты, чем ширины.
-
-100Hz. Частота обновления 100 Гц означает повышенную плавность изображения. Это означает, что мерцание уменьшается, и, следовательно, усталость глаз также менее заметна. Повышенная частота также означает более плавные переходы между контрастными цветами, более плавные сцены движения как в фильмах, так и в играх и даже уменьшенное мерцание курсора мыши.
-
-Нет мерцания + подавление синего. Оптимальное решение для комфорта и здоровья ваших глаз. Немерцающие мониторы с функцией уменьшения синего света существенно снижают напряжение и усталость в сравнении с обычными мониторами.
-
-Динамики и наушники. Играете с друзьями? Используйте качественные встроенные динамики. Не хотите никого беспокоить? Присоедините гарнитуру к аудиоразъему и прибавьте громкости.
-
-ИНТЕРФЕЙСЫ / РАЗЪЕМЫ / УПРАВЛЕНИЕ:
-
-HDMI x1
-DisplayPort x1
-USB HUB x4
-HDCP
-Разъём для наушников
-
-АКСЕССУАРЫ:
-
-Кабель питания
-Кабель USB
-Кабель HDMI
-Кабель DP
-Краткое руководство по началу работы
-Руководство по безопасности
-
-Характеристики:
-- Гарантия: 1 год
-- Тип матрицы экрана: IPS
-- Яркость: 250 кд/м2
-- Размер VESA: 100x100 мм
-- Видеовыход: HDMI / DP
-- Объём: 0.1</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
       </offer>
@@ -62152,7 +61961,7 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
 - Видеовыход: HDMI / DP
 - Время отклика: 1 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="405519">
@@ -62569,6 +62378,24 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
 
 Характеристики:
 - Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
+  <offer id="405926">
+        <price>3382900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS71379</vendorCode>
+        <vendor>CyberPower</vendor>
+        <name>Источник бесперебойного питания CyberPower OLS3S20KEXL</name>
+        <description>CyberPower OLS3S20KEXL гарантирует защиту источников резервного питания для информационно-технического оборудования, серверов, рабочих станций, NAS / устройств хранения данных, телекоммуникационных устройств, сетевых устройств, систем безопасности / систем аварийного питания, а также систем видеонаблюдения. Данный ИБП использует топологию двойного преобразования для обеспечения высококачественной выходной мощности с дополнительным ECO-режимом, что позволяет экономить электроэнергию и сократить расходы на нее. Данный ИБП поддерживает параллельное расширение, позволяя подключать несколько ИБП, обеспечивая системное резервирование. Он совместим с генераторам, что дает возможность продлить время бесперебойного питания, а также с сервисным байпасным переключателем для обеспечения быстрого и безопасного обслуживания без необходимости отключения ИБП и подключенного оборудования. Устройство может быть подключено к Переключателю аварийного питания (EPO), что позволяет пользователям незамедлительно отключать ИБП в аварийных ситуациях.
+
+ИБП может использовать Расширенные батарейные модули (EBM) для увеличения времени автономной работы, а также функцию Интеллектуального управления батареей (SBM), чтобы повысить эффективность процесса зарядки батарей, что, в свою очередь, увеличит срок службы батарей. Данная модель также оснащается многофункциональным ЖК-дисплеем для отображения информации о состоянии системы питания и аккумуляторных батарей. Программное обеспечение PowerPanel по управлению электропитанием позволяет пользователю в реальном времени осуществлять мониторинг и дистанционное управление ИБП.
+
+Гарантийное обслуживание ИБП будет возможно только в случае проведения установки, монтажа и запуска в работу ТОЛЬКО сертифицированным производителем сервисным инженером на основании акта ввода оборудования в эксплуатацию.
+
+Характеристики:
+- Гарантия: 2 года</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
       </offer>
@@ -63834,59 +63661,6 @@ IPS-панель. Наслаждайтесь потрясающими цветами по всему экрану с панелью IPS. Цв
         <available>true</available>
       </offer>
 
-  <offer id="407698">
-        <price>62900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS73230</vendorCode>
-        <picture>https://img.al-style.kz/73230_1.jpg</picture>
-        <picture>https://img.al-style.kz/73230_2.jpg</picture>
-        <picture>https://img.al-style.kz/73230_3.jpg</picture>
-        <vendor>iiyama</vendor>
-        <name>Монитор iiyama ProLite PL2293H XU2293HSU-B7 21.5"</name>
-        <description>Монитор iiyama ProLite PL2293H XU2293HSU-B7 21.5"
-
-Стильный дизайн от края до края делает ProLite XU2293HSU идеальным для многомониторных установок. Технология панели IPS обеспечивает точную и стабильную цветопередачу с широкими углами обзора. Высокие значения контрастности и яркости означают, что монитор обеспечит превосходную производительность для фотографического и веб-дизайна. Оснащенный динамиками, разъемом для наушников, 2-портовым USB-концентратором, соединениями HDMI и DisplayPort, функцией снижения синего света для снижения утомляемости глаз для комфорта пользователя, этот 21,5-дюймовый дисплей является отличным выбором для домашнего и офисного применения.
-
-ОСОБЕННОСТИ И ПРЕИМУЩЕСТВА:
-
-Технология IPS. IPS дисплеи известны своими широкими углами обзора, естественными цветами и точной цветопередачей. Они особенно хорошо подходят для приложений по работе с цветом.
-
-Full HD. Благодаря поддержке разрешения 1920х1080, монитор может отображать любые изображения! Full HD обеспечивает большую рабочую зону по сравнению с обычными мониторами, которые работают в разрешении 1280х1024.
-
-Нет мерцания + подавление синего. Оптимальное решение для комфорта и здоровья ваших глаз. Немерцающие мониторы с функцией уменьшения синего света существенно снижают напряжение и усталость в сравнении с обычными мониторами.
-
-ACR. Контрастность &#8213; это отношение яркостей самой светлой и самой тёмной частей изображения на экране ЖК-монитора. Технология Advanced Contrast Ratio (продвинутая контрастность) автоматически регулирует контрастность и яркость, основываясь на характеристиках картинки. Чем выше контрастность, тем лучше будет смотреться картинка в темной комнате.
-
-Динамики и наушники. Играете с друзьями? Используйте качественные встроенные динамики. Не хотите никого беспокоить? Присоедините гарнитуру к аудиоразъему и прибавьте громкости.
-
-ИНТЕРФЕЙСЫ / РАЗЪЕМЫ / УПРАВЛЕНИЕ:
-
-HDMI x1
-DisplayPort x1
-USB HUB x2 (2.0 (DC5V, 500mA))
-HDCP
-Разъём для наушников
-
-АКСЕССУАРЫ:
-
-Кабель питания
-Кабель USB
-Кабель HDMI
-Краткое руководство по началу работы
-Руководство по безопасности
-
-Характеристики:
-- Гарантия: 1 год
-- Частота обновления экрана: 100 Гц
-- Тип матрицы экрана: IPS
-- Яркость: 250 кд/м2
-- Размер VESA: 100x100 мм
-- Видеовыход: HDMI / DP
-- Время отклика: 1 мс</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
   <offer id="407699">
         <price>64900</price>
         <currencyId>KZT</currencyId>
@@ -63936,7 +63710,7 @@ HDCP
 - Видеовыход: HDMI / DP
 - Время отклика: 1 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="407704">
@@ -63988,7 +63762,7 @@ HDCP
 - Видеовыход: HDMI / DP
 - Время отклика: 0,5 мс</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="407950">
@@ -64038,6 +63812,58 @@ HDCP
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
+      </offer>
+
+  <offer id="407951">
+        <price>195900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS73498</vendorCode>
+        <picture>https://img.al-style.kz/73498_1.jpg</picture>
+        <picture>https://img.al-style.kz/73498_2.jpg</picture>
+        <picture>https://img.al-style.kz/73498_3.jpg</picture>
+        <vendor>LG</vendor>
+        <name>Монитор 32" LG 32UR500-B Black</name>
+        <description>Монитор 32" LG 32UR500-B Black
+
+Особенности и преимущества:
+
+Все тонкости учтены. Оцените потрясающую чистоту изображения и яркость цвета мониторов LG UHD 4K HDR. Большой экран с диагональю 31,5 дюйма способствует эффективной работе, позволяя полностью погрузиться в стриминг.
+
+Иммерсивная игра. 32UR500 поражает не только изображением и стереозвуком (совместно с Waves MaxxAudio ), но также обладает функциями AMD FreeSync , Dynamic Action Sync и Black Stabilizer для реалистичного изображения в играх.
+
+Плавное и быстрое движение. Благодаря технологии AMD FreeSync  геймеры могут наслаждаться плавными и четкими движениями в играх с высоким разрешением и быстрым темпом. Она практически исключает разрывы и зависания экрана, обеспечивая захватывающий игровой процесс.
+
+Быстрая реакция. Уменьшая задержку ввода с помощью технологии Dynamic Action Sync, геймеры могут улавливать критические моменты в реальном времени и быстро реагировать на них.
+
+Шаг вперед в темноте. Функция Black Stabilizer помогает геймерам обнаруживать снайперов, затаившихся в самых темных углах, и быстро ориентироваться во вспышках взрывов.
+
+Визуальное великолепие. Открывайте HDR-контент с разных стриминговых сервисов и наслаждайтесь ярким изображением и широким диапазоном цветов на мониторе LG UHD 4K. Благодаря технологии HDR, поддерживающей цветовое пространство DCI-P3, вы погрузитесь в потрясающие визуальные эффекты, которые оживят ваш развлекательный контент.
+
+Оптимизированное управление. С помощью программного обеспечения OnScreen Control можно легко управлять настройками дисплея несколькими щелчками мыши. Вы также можете легко разделить всю область дисплея с помощью функции  Разделение экрана .
+
+Эргономичный дизайн. Подставка с быстрой фиксацией позволяет легко установить монитор без дополнительного оборудования и настроить его положение с помощью простой регулировки наклона.
+
+Порты:
+
+HDMI x2
+DisplayPort x1
+Выход для наушников
+
+Что в коробке:
+
+Кабель питания
+Кабель HDMI
+
+Характеристики:
+- Гарантия: 2 года
+- Частота обновления экрана: 60 Гц
+- Тип матрицы экрана: VA
+- Яркость: 250 кд/м2
+- Размер VESA: 100x100 мм
+- Видеовыход: HDMI / DP
+- Время отклика: 4 мс</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
       </offer>
 
   <offer id="407956">
@@ -64483,7 +64309,7 @@ DisplayPort x1
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="408215">
@@ -64835,6 +64661,8 @@ Canon PIXMA TS7640iCanon PIXMA TS7740i
         <price>23900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS73804</vendorCode>
+        <picture>https://img.al-style.kz/73804_1.jpg</picture>
+        <picture>https://img.al-style.kz/73804_2.jpg</picture>
         <vendor>Canon</vendor>
         <name>Струйный картридж Canon CL-486</name>
         <description>Струйный картридж Canon CL-486
@@ -65231,7 +65059,7 @@ D-Sub x1
       </offer>
 
   <offer id="408550">
-        <price>440900</price>
+        <price>466900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS74099</vendorCode>
         <picture>https://img.al-style.kz/74099_1.jpg</picture>
@@ -65485,7 +65313,7 @@ HDMI кабель
       </offer>
 
   <offer id="409547">
-        <price>347900</price>
+        <price>368900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS75889</vendorCode>
         <picture>https://img.al-style.kz/75889_1.jpg</picture>
@@ -65906,14 +65734,14 @@ APC Smart-UPS SRTG15KXLI обеспечивает чистое синусоидальное питание и увеличенно
         <available>true</available>
       </offer>
 
-  <offer id="409839">
-        <price>112900</price>
+  <offer id="409812">
+        <price>162900</price>
         <currencyId>KZT</currencyId>
-        <vendorCode>AS76181</vendorCode>
+        <vendorCode>AS76152</vendorCode>
         <vendor>LG</vendor>
-        <name>Монитор 27" LG 27GS60F-B</name>
+        <name>Монитор 34" LG 34WR50QK-B Black</name>
         <description>Характеристики:
-- Вес: 7.9
+- Вес: 8.4
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -66949,18 +66777,6 @@ OEM №: 13R00662, 013R00662
         <available>false</available>
       </offer>
 
-  <offer id="410573">
-        <price>10499900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS76889</vendorCode>
-        <vendor>Canon</vendor>
-        <name>Узел фиксации Canon FIXING ASSEMBLY</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="410606">
         <price>8900</price>
         <currencyId>KZT</currencyId>
@@ -67294,7 +67110,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410641">
@@ -67322,7 +67138,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410642">
@@ -67350,7 +67166,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410643">
@@ -67378,7 +67194,7 @@ OEM №: 13R00662, 013R00662
 Характеристики:
 - Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
       </offer>
 
   <offer id="410645">
@@ -68436,7 +68252,7 @@ Canon imagePROGRAF PRO-310
       </offer>
 
   <offer id="411032">
-        <price>378900</price>
+        <price>399900</price>
         <currencyId>KZT</currencyId>
         <vendorCode>AS77506</vendorCode>
         <picture>https://img.al-style.kz/77506_1.jpg</picture>
@@ -68532,79 +68348,6 @@ MateBook D 14 —  Безрамочный экран с режимом защиты зрения. Высокая производител
 - Процессор: Intel Core i5-13420H</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
-      </offer>
-
-  <offer id="411362">
-        <price>292900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS77910</vendorCode>
-        <picture>https://img.al-style.kz/77910_1.jpg</picture>
-        <picture>https://img.al-style.kz/77910_2.jpg</picture>
-        <picture>https://img.al-style.kz/77910_3.jpg</picture>
-        <vendor>TECNO</vendor>
-        <name>Ноутбук Tecno MEGABOOK K15S 15.6" FHD i5-13420H 16GB 1TB Win 11</name>
-        <description>Ноутбук Tecno Megabook K15SRA i5-13420H / 16&#8239;ГБ / SSD 1000&#8239;ГБ / Win11
-
-    Тонкий. Надёжный. Современный.
-    Универсальный ноутбук с алюминиевым корпусом, качественным экраном и высокой автономностью. Подходит для студентов, офисной работы, мультимедиа и повседневного использования.
-
-     Ключевые характеристики:
-    
-      Процессор: Intel® Core™ i5-13420H (8 ядер / 12 потоков) — производительный и энергоэффективный для многозадачности.
-      Графика: Intel® UHD Graphics for 13th Gen — встроенное решение для повседневных задач и видео.
-      Экран: 15.6&#8243; IPS, Full HD (1920&#215;1080), матовый
-      &#8594; Чёткое изображение, антибликовое покрытие
-      ОЗУ: 16&#8239;ГБ DDR4 3200&#8239;МГц
-      Накопитель: 1000ГБ SSD M.2 PCIe
-      Корпус: Алюминиевый, раскрытие на 180°
-      Клавиатура: Подсветка, цифровой блок, сканер отпечатка пальца
-
-Порты и подключения:
-    
-      HDMI 1.4, RJ-45 (LAN)
-      USB-C (USB 3.2 Gen2 x1) с Power Delivery
-      USB-A: USB 3.2 Gen2 x1, USB 3.2 Gen1 x1
-      3.5 мм аудиоразъём, кардридер microSD
-      Сеть: Wi-Fi 5 (802.11ac), Bluetooth 5.0, Ethernet 1&#8239;Gbps
-
-Автономность и габариты:
-    
-      Батарея: 70&#8239;Вт&#8901;ч (6060 мА&#8901;ч)
-      Зарядка: Быстрая зарядка, адаптер 65&#8239;Вт (20&#8239;В)
-      Размеры: 359.5 &#215; 236 &#215; 17.3&#8239;мм
-      Вес: 1.7&#8239;кг
-      Цвет: Серый
-      ОС: Windows 11 Home — готов к работе
-
-Камера и мультимедиа:
-    
-      Камера: 1&#8239;Мп (720p) с шторкой
-      Микрофон: Встроенный
-      Датчики: Датчик внешней освещённости
-
-&#11088; Почему стоит купить именно этот ноутбук:
-    
-      &#9989; Алюминиевый корпус — премиальный внешний вид и прочность
-      &#9989; Быстрый SSD и 16&#8239;ГБ ОЗУ — плавная работа без тормозов
-      &#9989; Качественный IPS экран с антибликовым покрытием
-      &#9989; Склонен к мобильности: тонкий, лёгкий и до 70&#8239;Вт&#8901;ч батарея
-      &#9989; Полный набор портов, включая Ethernet, HDMI и USB-C с Power Delivery
-      &#9989; Поддержка быстрой зарядки — удобно в поездках и на работе
-
-Характеристики:
-- Вес: 2.3
-- Гарантия: 1 год
-- Частота обновления экрана: 60 Гц
-- Тип матрицы экрана: IPS
-- Тип ноутбука: Базовый ноутбук
-- Тип оперативной памяти: DDR4
-- Объем накопителя: 1 TB
-- Тип накопителя: SSD
-- Видеокарта: Intel UHD Graphics
-- Операционная система: Windows 11 Home
-- Процессор: Intel Core i5-13420H</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
       </offer>
 
   <offer id="411363">
@@ -69213,101 +68956,6 @@ USB-C x1
 - Тип матрицы экрана: IPS
 - Размер VESA: 100x100 мм
 - Время отклика: 5 мс</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
-  <offer id="411615">
-        <price>338900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS78338</vendorCode>
-        <vendor>LG</vendor>
-        <name>Монитор 32" LG 32UN880K-B</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
-  <offer id="411616">
-        <price>213900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS78339</vendorCode>
-        <vendor>LG</vendor>
-        <name>Монитор 27" LG 27UP850K-W</name>
-        <description>Характеристики:
-- Вес: 8.9
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
-  <offer id="411617">
-        <price>199900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS78340</vendorCode>
-        <vendor>LG</vendor>
-        <name>Монитор 34" LG 34WR55QK-B</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
-  <offer id="411618">
-        <price>566900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS78341</vendorCode>
-        <picture>https://img.al-style.kz/78341_1.jpg</picture>
-        <picture>https://img.al-style.kz/78341_2.jpg</picture>
-        <picture>https://img.al-style.kz/78341_3.jpg</picture>
-        <vendor>LG</vendor>
-        <name>Монитор 27" LG 27GX790A-B</name>
-        <description>Монитор 27" LG 27GX790A-B
-
-Особенности и преимущества:
-
-27-дюймовый OLED-дисплей Brilliance с частотой обновления до 480 Гц   революционная скорость. Оцените невероятно плавный игровой процесс без разрывов благодаря частоте обновления до 480 Гц и времени отклика 0,03 мс на ярком 27-дюймовом QHD OLED-дисплее. Реагируйте мгновенно, замечайте каждую деталь и опережайте своих соперников в каждом кадре с непревзойденной скоростью и четкостью.
-
-Раскройте потенциал скорости следующего поколения с готовым к будущему DisplayPort 2.1. DisplayPort 2.1 обеспечивает сверхвысокую скорость передачи данных для безупречного игрового процесса с частотой обновления 480 Гц. Наслаждайтесь более чётким изображением благодаря поддержке более высокого разрешения, практически нулевой задержке и мгновенному отклику, что даёт вам преимущество перед конкурентами. Монитор также оснащен двумя портами HDMI 2.1 и портом USB 3.0 (1 восходящий / 2 нисходящих).
-
-Яркое изображение. Глубокий чёрный цвет, великолепная детализация: OLED Gaming FTW. Погрузитесь в яркие визуальные эффекты благодаря технологии OLED, которая обеспечивает исключительную яркость, цветовой охват до 98,5% DCI-P3, коэффициент контрастности 1,5 млн:1 и DisplayHDR True Black 400. Каждая игровая сцена поражает глубоким черным цветом, яркими бликами и кинематографическими цветами.
-
-Лучшая синхронизация кадров: совместимость с FreeSync  Premium Pro и G-SYNC . Забудьте о разрывах и подтормаживании изображения. Благодаря совместимости с AMD FreeSync  Premium Pro и NVIDIA  G-SYNC  этот OLED-монитор обеспечивает невероятно плавное изображение без разрывов, обеспечивая идеальную синхронизацию кадров как на ПК, так и на консолях нового поколения.
-
-Бесшовный дисплей, настраиваемый под игровые характеристики. Погрузитесь в игровой процесс на практически безрамочном 27-дюймовом OLED-экране. Тонкий дисплей с регулировкой высоты, наклона, поворота и вращения позволяет настроить вид по своему вкусу, а шестиугольная RGB-подсветка сделает вашу боевую станцию ещё более яркой, добавив ярких красок в каждую сессию.
-
-Порты:
-
-HDMI x2
-DisplayPort x1
-USB x2
-Выход для наушников
-
-Что в коробке:
-
-Кабель DisplayPort
-Кабель HDMI
-Основание подставки
-Кабель USB A B
-
-Характеристики:
-- Гарантия: 1 год
-- Тип матрицы экрана: OLED
-- Размер VESA: 100x100 мм</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
-  <offer id="411619">
-        <price>185900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS78342</vendorCode>
-        <vendor>LG</vendor>
-        <name>Монитор 27" LG 27GS85Q-B</name>
-        <description>Характеристики:
-- Вес: 8.6
-- Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
       </offer>
@@ -70107,30 +69755,6 @@ Canon i-SENSYS MF287DW
         <available>true</available>
       </offer>
 
-  <offer id="412460">
-        <price>685900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS79259</vendorCode>
-        <vendor>LG</vendor>
-        <name>Монитор 32" LG 32GS95UV-B</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
-  <offer id="412461">
-        <price>460900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS79260</vendorCode>
-        <vendor>LG</vendor>
-        <name>Монитор 27" LG 27GS95QE-B</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
   <offer id="412463">
         <price>140900</price>
         <currencyId>KZT</currencyId>
@@ -70171,19 +69795,6 @@ DisplayPort x1
 - Гарантия: 1 год
 - Размер VESA: 100x100 мм
 - Видеовыход: HDMI / DP</description>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-      </offer>
-
-  <offer id="412464">
-        <price>133900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS79263</vendorCode>
-        <vendor>LG</vendor>
-        <name>Монитор 24" LG 24BA650-B</name>
-        <description>Характеристики:
-- Вес: 8.3
-- Гарантия: 1 год</description>
         <currencyId>KZT</currencyId>
         <available>true</available>
       </offer>
@@ -70334,6 +69945,44 @@ Canon I-S LBP361DW
 
 Характеристики:
 - Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>false</available>
+      </offer>
+
+  <offer id="412986">
+        <price>291900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS79804</vendorCode>
+        <vendor>CyberPower</vendor>
+        <name>Источник бесперебойного питания CyberPower OLS2000ERT2Ua</name>
+        <description>CyberPower OLS2000ERT2Ua высокопроизводительный онлайн ИБП двойного преобразования с выходным сигналом в виде чистой синусоиды для защиты критически важного оборудования в самых разных сферах. Спектр применения очень широк – это серверное, телекоммуникационное оборудование, системы хранения данных, видеонаблюдение, аварийное освещение, инфраструктура транспортного сектора и др.
+
+ИБП имеет цветной ЖК-дисплей, позволяющий пользователям легко контролировать систему электропитания и проводить настройку параметров, а также сухой релейный контакт для локального управления. Эта модель может автоматически определять количество подключенных внешних батарейных модулей (EBM) для оценки времени работы ИБП. Вентиляторы с изменяемой скоростью вращения обеспечивают автоматическое регулирование температуры в зависимости от мощности нагрузки, чтобы снизить уровень шума и повысить комфорт для пользователей.
+
+Характеристики:
+- Гарантия: 2 года
+- Безопасность: Есть
+- Время полной зарядки: 5 ч
+- Тип подключения: IEC C14
+- Номинальное входное напряжение: 230В ±10%
+- Тип ИБП: Онлайн
+- Назначение: Да
+- Время переключения режимов: 0 мс
+- Длина кабеля: 1,5 м
+- Интерфейс для связи с ПК: USB (технология Smart)
+- Форма выходного сигнала: Чистый синусоидальный сигнал
+- Автоматическое включение: Есть
+- Выход: 220В±1% (в режиме работы от аккумулятора)
+- Рабочий диапазон температур: от 0 до 40 °С
+- Защита от полного разряда батареи: Есть
+- Выходная частота: 50/60 ±0.5% (в режиме работы от аккумулятора)
+- Количество и тип выходных разъёмов: 8 х IEC C13
+- Лицевая панель: ЖК-дисплей
+- Высота в монтажной стойке: 2U
+- Номинальный ток: 9A
+- Удаленный мониторинг: SNMP/HTTP - опцонально с RMCARD205
+- Рабочая влажность: 0-90% (без конденсации)
+- Цвет: Чёрный</description>
         <currencyId>KZT</currencyId>
         <available>false</available>
       </offer>
@@ -71244,30 +70893,6 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <available>true</available>
       </offer>
 
-  <offer id="414832">
-        <price>10499900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS81765</vendorCode>
-        <vendor>Canon</vendor>
-        <name>Подшипник Canon BEARING BALL XG9-0563-000</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
-  <offer id="414836">
-        <price>10499900</price>
-        <currencyId>KZT</currencyId>
-        <vendorCode>AS81769</vendorCode>
-        <vendor>Canon</vendor>
-        <name>Ролик захвата бумаги Canon ROLLER PAPER PICK-UP FL1-3120-000</name>
-        <description>Характеристики:
-- Гарантия: 1 год</description>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-      </offer>
-
   <offer id="415181">
         <price>84900</price>
         <currencyId>KZT</currencyId>
@@ -71309,6 +70934,55 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <name>Ремонтный комплект CET M607 (CET7864U)</name>
         <description>Ремонтный комплект CET M607 (CET7864U)
 Расположен в узле закрепления принтера. Предназначен для прижима листа бумаги с текстом к термоузлу. Изготовлен из металлического стержня и гладкой резины.
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
+  <offer id="415517">
+        <price>73900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS82455</vendorCode>
+        <picture>https://img.al-style.kz/82455_1.jpg</picture>
+        <picture>https://img.al-style.kz/82455_2.jpg</picture>
+        <picture>https://img.al-style.kz/82455_3.jpg</picture>
+        <vendor>Xiaomi</vendor>
+        <name>Монитор Xiaomi Gaming Monitor G27i 2026 27"</name>
+        <description>Монитор Xiaomi Gaming Monitor G27i 2026 27"
+Особенности и преимущества:
+
+27-дюймовый быстрый IPS. Обзор всего поля боя. Точная передача каждой детали. Разрешение до 1920 x 1080. Технология Fast IPS. Мгновенная реакция на изменения на поле боя.
+
+Частота обновления 200Гц. Задержка 1мс GTG помогает опередить соперников. Частота обновления 200Гц обеспечивает невероятно плавный игровой процесс во время динамичных сражений. Молниеносная задержка 1мс GTG значительно снижает шлейфы и размытие. В мире киберспорта, где всё решают доли секунды, реагируйте быстрей и побеждайте конкурентов.
+
+HDR400 обеспечивает пиковую яркость в 400 нит. Технология HDR400 расширяет динамический диапазон яркости, делая темные участки еще глубже, а светлые   ярче. Благодаря пиковой яркости в 400 нит усиливается контраст между светлыми и темными участками, обеспечивая четкий обзор каждой детали на экране.
+
+Технология синхронизации FreeSync Premium. Поддержка G-Sync Compatible для синхронизации частоты кадров между видеокартой и монитором. Это снижает разрывы и подергивания изображения во время динамичных сцен, помогая сохранять фокус в самые важные моменты.
+
+Высокая точность цветопередачи &#8710;E&amp;lt;2. Каждый монитор проходит профессиональную и точную настройку цветопередачи перед выходом с завода. Будь то офисная работа, развлечения или профессиональная визуальная деятельность   монитор легко адаптируется к вашим требованиям.
+
+Двойной широкий цветовой охват. Плавная работа и яркие цвета. Профессиональная 8-битная глубина цвета обеспечивает насыщенные градации с плавными и естественными переходами. Сочетание 100% охвата sRGB и 95% DCI-P3 гарантирует захватывающий и безупречный визуальный опыт..
+
+Стильный и обтекаемый дизайн. Аккуратная укладка кабелей. Умная организация кабелей для аккуратного рабочего места. Наслаждайтесь чистым пространством без запутанных проводов.
+
+Порты:
+
+DP-порт x1
+HDMI-порт x1
+Аудиопорт x1
+Порт питания DC IN x1
+
+Комплектация:
+
+Монитор x1
+Комплект подставки x1
+Адаптер питания x1
+Набор для крепления подставки x1
+Руководство пользователя x1
+HDMI-кабель x1
+Гарантийный талон x1
 
 Характеристики:
 - Гарантия: 1 год</description>
@@ -71358,6 +71032,27 @@ HDMI-порт x1
 Руководство пользователя x1
 HDMI-кабель x1
 Гарантийный талон x1
+
+Характеристики:
+- Гарантия: 1 год</description>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+      </offer>
+
+  <offer id="416029">
+        <price>235900</price>
+        <currencyId>KZT</currencyId>
+        <vendorCode>AS83005</vendorCode>
+        <vendor>LG</vendor>
+        <name>Монитор 31,5" LG 32UN650K-W</name>
+        <description>Исключительная четкость и детализация
+Монитор LG UHD 4K обеспечивает исключительную чёткость, детализацию и производительность для ваших творческих задач и отдыха, о которой раньше вы могли только мечтать.
+Подходящая четкость, точность и цветопередача
+
+Благодаря DCI-P3 95% (Typ.) и HDR10 на 31.5-дюймовом 4K IPS дисплее, предлагающим в 4 раза больше пикселей, чем Full HD, вы можете позволить себе небывалую чёткость и точность отображения цветов, чтобы ваша работа выглядела великолепно.
+
+Захватывающий игровой опыт
+Монитор LG 32UN650 открывает новую эру игровых впечатлений 4K и HDR от качественного изображения и звука, а также даёт геймерам преимущество в большинстве битв с AMD FreeSync ™, Dynamic Action Sync и Black Stabilizer.
 
 Характеристики:
 - Гарантия: 1 год</description>
