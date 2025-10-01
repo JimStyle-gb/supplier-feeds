@@ -365,6 +365,33 @@ def utc_now_str() -> str:
 def almaty_now_str() -> str:
     return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S +05")
 
+def _format_meta_rows(rows: List[Tuple[str, str, str]]) -> str:
+    """
+    Выравнивание FEED_META:
+      - выравниваем колонку ключей по максимальной ширине
+      - выравниваем колонку комментариев к общей позиции COMMENT_COL
+      - последняя строка (built_Asia/Almaty) завершает комментарий: '... | Время сборки (Алматы)-->'
+    """
+    if not rows:
+        return ""
+    key_width = max(len(k) for k, _, _ in rows)
+    # Колонка комментариев начинаем на этой позиции (гарантировано не меньше "key = value")
+    COMMENT_COL = max(72, key_width + 3 + 10)  # ' = ' + хотя бы 10 символов значения
+
+    lines: List[str] = []
+    for i, (k, v, cmt) in enumerate(rows):
+        left = f"{k.ljust(key_width)} = {v}"
+        if cmt:
+            pad = " " * max(1, COMMENT_COL - len(left)) if len(left) < COMMENT_COL else "  "
+            tail = f"{pad}| {cmt}"
+        else:
+            tail = ""
+        # Для последней строки (built_Asia/Almaty) закрываем комментарий:
+        if i == len(rows) - 1 and "Время сборки (Алматы)" in cmt:
+            tail = (tail[:-0] if tail else " ") + "-->"
+        lines.append(left + tail)
+    return "\n".join(lines)
+
 def build_feed_meta(
     source: str,
     offers_total: int,
@@ -373,24 +400,19 @@ def build_feed_meta(
     kw_count: int,
     kw_dropped: int
 ) -> str:
-    pad = 28
-    rows: List[str] = []
-    def kv(k, v, cmt=""):
-        if cmt:
-            rows.append(f"{k.ljust(pad)} = {str(v):<60} | {cmt}")
-        else:
-            rows.append(f"{k.ljust(pad)} = {str(v)}")
-    kv("supplier",            "nvprint",                         "Метка поставщика")
-    kv("source",              source,                            "URL/файл источника")
-    kv("offers_total",        offers_total,                      "Всего товаров в источнике (оценочно)")
-    kv("offers_written",      offers_written,                    "Товаров записано в YML")
-    kv("prices_updated",      prices_picked,                     "Цены взяты по договорам (+ наценка)")
-    kv("keywords_loaded",     kw_count,                          "Ключевых слов в фильтре (startswith)")
-    kv("dropped_by_keywords", kw_dropped,                        "Отброшено фильтром по началу названия")
-    kv("available_forced",    offers_written,                    "Сколько офферов получили available=true")
-    rows.append(f"{'built_utc'.ljust(pad)} = {utc_now_str():<60} | Время сборки (UTC)")
-    rows.append(f"{'built_Asia/Almaty'.ljust(pad)} = {almaty_now_str():<60} | Время сборки (Алматы)-->")
-    return "<!--FEED_META\n" + "\n".join(rows) + "\n"
+    rows: List[Tuple[str, str, str]] = [
+        ("supplier",            "nvprint",              "Метка поставщика"),
+        ("source",              source,                 "URL/файл источника"),
+        ("offers_total",        str(offers_total),      "Всего товаров в источнике (оценочно)"),
+        ("offers_written",      str(offers_written),    "Товаров записано в YML"),
+        ("prices_updated",      str(prices_picked),     "Цены взяты по договорам (+ наценка)"),
+        ("keywords_loaded",     str(kw_count),          "Ключевых слов в фильтре (startswith)"),
+        ("dropped_by_keywords", str(kw_dropped),        "Отброшено фильтром по началу названия"),
+        ("available_forced",    str(offers_written),    "Сколько офферов получили available=true"),
+        ("built_utc",           utc_now_str(),          "Время сборки (UTC)"),
+        ("built_Asia/Almaty",   almaty_now_str(),       "Время сборки (Алматы)"),
+    ]
+    return "<!--FEED_META\n" + _format_meta_rows(rows) + "\n"
 
 def build_yml(
     offers: List[Dict[str, Any]],
@@ -420,7 +442,6 @@ def build_yml(
         if it.get("description"):
             desc_clean = re.sub(r"\s+", " ", it["description"]).strip()
             out.append(f"      <description>{yml_escape(desc_clean)}</description>")
-        # ВАЖНО: всегда добавляем available=true (без условий и один раз)
         out.append("      <available>true</available>")
         out.append("    </offer>\n")
     out.append("  </offers>")
