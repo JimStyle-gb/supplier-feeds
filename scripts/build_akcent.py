@@ -2,19 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Build Akcent YML (flat <offers>) for Satu
-script_version = akcent-2025-09-23.3
+script_version = akcent-2025-09-23.4
 
-Изменения в .3:
-- FEED_META в формате из feed.txt: строки "Поставщик | …", "URL поставщика | …",
-  "Время сборки (Алматы) | …", "Ближайшее время сборки (Алматы) | …",
-  "Сколько товаров у поставщика до фильтра | …", "… после фильтра | …",
-  "Сколько товаров есть в наличии (true) | …", "… нет в наличии (false) | …".
-- Синхронизация идентификатора оффера с vendorCode:
-  <offer id="..."> == <vendorCode>...</vendorCode>.
-
-Изменения в .2 (оставлены без изменений):
-- Строгий префиксный фильтр по файлу docs/akcent_keywords.txt.
-- Очистки тегов, vendorCode c префиксом, цены, перенос после FEED_META и т.д.
+Что нового в .4:
+- FEED_META в формате из feed.txt + правильное «Ближайшее время сборки (Алматы)» = 02:00.
+- Порядок тегов внутри <offer> приводим к единому:
+  <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <available>, <description>.
+- <offer id="…"> синхронизируем с <vendorCode> (id = vendorCode).
 """
 
 from __future__ import annotations
@@ -33,7 +27,7 @@ import requests
 
 # ========================== НАСТРОЙКИ ===========================
 
-SCRIPT_VERSION = "akcent-2025-09-23.3"
+SCRIPT_VERSION = "akcent-2025-09-23.4"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "akcent")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml")
@@ -113,12 +107,7 @@ class KeySpec:
         self.raw, self.kind, self.norm, self.pattern = raw, kind, norm, pattern
 
 def load_keywords(path: str) -> List[KeySpec]:
-    """
-    Читает ключи из файла (UTF-8/UTF-16/Win-1251 и т.д.).
-    - Строка вида /regex/  → регулярка (re.I), проверяется с начала имени через .match()
-    - Любая другая строка  → фраза-префикс: оставляем товары, где normalized(<name>) начинается с normalized(строка)
-    Пустые строки и строки, начинающиеся с # — игнор.
-    """
+    """Чтение списка ключей (префиксы/регулярки)."""
     if not path or not os.path.exists(path): return []
     data = None
     for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
@@ -149,11 +138,7 @@ def load_keywords(path: str) -> List[KeySpec]:
     return keys
 
 def name_matches_prefix(name: str, keys: List[KeySpec]) -> Tuple[bool, Optional[str]]:
-    """
-    Возвращает (совпало?, какой_ключ).
-    - prefix: сравниваем normalized_name.startswith(norm)
-    - regex:  применяем .match(name) (т.е. с начала строки)
-    """
+    """Возвращает (совпало?, какой_ключ)."""
     if not keys: return False, None
     norm_name = _norm_name(name)
     for ks in keys:
@@ -276,8 +261,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int]
             continue
         p=offer.find("price") or ET.SubElement(offer,"price")
         p.text=str(int(newp))
-        cur=offer.find("currencyId") or ET.SubElement(offer,"currencyId")
-        cur.text="KZT"
+        # currencyId выставим/дедуплицируем позднее через fix_currency_id()
         for node in list(offer.findall("prices")) + list(offer.findall("Prices")):
             offer.remove(node)
         for tag in INTERNAL_PRICE_TAGS:
@@ -431,11 +415,6 @@ def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missi
 # === СИНХРОНИЗАЦИЯ offer/@id С vendorCode (id = vendorCode) ===
 
 def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> int:
-    """
-    Делает идентификатор оффера равным vendorCode:
-      <offer id="..."> == <vendorCode>...</vendorCode>
-    Возвращает количество офферов, где id был изменён/установлен.
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     changed = 0
@@ -465,6 +444,49 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
 def count_category_ids(offer_el:ET.Element)->int:
     return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
+# =============== currencyId: оставить ровно один на оффер =================
+
+def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        for node in list(offer.findall("currencyId")):
+            offer.remove(node)
+        cur = ET.SubElement(offer, "currencyId")
+        cur.text = default_code
+        touched += 1
+    return touched
+
+# ======= СОРТИРОВКА ДЕТЕЙ ВНУТРИ <offer> (единый порядок тегов) =========
+
+DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","available","description"]
+
+def reorder_offer_children(shop_el: ET.Element) -> int:
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return 0
+    changed = 0
+    for offer in offers_el.findall("offer"):
+        children = list(offer)
+        if not children: 
+            continue
+        buckets: Dict[str, List[ET.Element]] = {k: [] for k in DESIRED_ORDER}
+        others: List[ET.Element] = []
+        for node in children:
+            if node.tag in buckets:
+                buckets[node.tag].append(node)
+            else:
+                others.append(node)
+        rebuilt: List[ET.Element] = []
+        for k in DESIRED_ORDER:
+            rebuilt.extend(buckets[k])
+        rebuilt.extend(others)
+        if rebuilt != children:
+            for n in children: offer.remove(n)
+            for n in rebuilt:  offer.append(n)
+            changed += 1
+    return changed
+
 # =========================== FEED_META (из feed.txt) ===========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
@@ -473,7 +495,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     Поставщик | value
     URL поставщика | value
     Время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
-    Ближайшее время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+    Ближайшее время сборки (Алматы) | дд:мм:гггг - чч:мм:сс   ← 02:00
     Сколько товаров у поставщика до фильтра | value
     Сколько товаров у поставщика после фильтра | value
     Сколько товаров есть в наличии (true) | value
@@ -484,17 +506,22 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
         tz = ZoneInfo("Asia/Almaty")
         now_alm = datetime.now(tz)
     except Exception:
-        # fallback: UTC + 5ч
         now_alm = datetime.utcfromtimestamp(time.time() + 5*3600)
 
-    # Ближайшее время сборки — 01:00 по Алматы (сегодня, если ещё не 01:00; иначе завтра)
-    today_01 = datetime(now_alm.year, now_alm.month, now_alm.day, 1, 0, 0, tzinfo=getattr(now_alm, "tzinfo", None))
-    base_ts = today_01.timestamp()
-    next_ts = base_ts + 86400 if now_alm.timestamp() >= base_ts else base_ts
+    # Ближайшее время сборки — 02:00 по Алматы (сегодня, если ещё не 02:00; иначе завтра)
+    today_02 = datetime(
+        now_alm.year, now_alm.month, now_alm.day, 2, 0, 0,
+        tzinfo=getattr(now_alm, "tzinfo", None)
+    )
+    base_ts = today_02.timestamp()
+    next_ts = base_ts if now_alm.timestamp() < base_ts else base_ts + 86400
     next_alm = datetime.fromtimestamp(next_ts, getattr(now_alm, "tzinfo", None))
 
     def fmt(dt: datetime) -> str:
         return dt.strftime("%d:%m:%Y - %H:%M:%S")
+
+    # Для Akcent наличие форсим в true у всех (см. normalize_stock_always_true)
+    offers_written = int(pairs.get("offers_written", 0) or 0)
 
     rows = [
         ("Поставщик", pairs.get("supplier","")),
@@ -502,9 +529,9 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
         ("Время сборки (Алматы)", fmt(now_alm)),
         ("Ближайшее время сборки (Алматы)", fmt(next_alm)),
         ("Сколько товаров у поставщика до фильтра", str(pairs.get("offers_total","0"))),
-        ("Сколько товаров у поставщика после фильтра", str(pairs.get("offers_written","0"))),
-        ("Сколько товаров есть в наличии (true)", str(pairs.get("available_true","0"))),
-        ("Сколько товаров нет в наличии (false)", str(pairs.get("available_false","0"))),
+        ("Сколько товаров у поставщика после фильтра", str(offers_written)),
+        ("Сколько товаров есть в наличии (true)", str(offers_written)),
+        ("Сколько товаров нет в наличии (false)", "0"),
     ]
     key_w = max(len(k) for k,_ in rows)
     lines = ["FEED_META"]
@@ -577,9 +604,15 @@ def main()->None:
     # Наличие (у Akcent — всё true)
     available_forced = normalize_stock_always_true(out_shop)
 
+    # Один currencyId на оффер и в нужном месте
+    fix_currency_id(out_shop, default_code="KZT")
+
     # Финальная чистка тегов/атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
+
+    # Порядок тегов внутри <offer>
+    reorder_offer_children(out_shop)
 
     # Разделители между офферами (для читабельности)
     children = list(out_offers)
@@ -589,19 +622,13 @@ def main()->None:
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    # FEED_META (по формату feed.txt)
+    # FEED_META (по формату feed.txt и с 02:00)
     offers_written=len(list(out_offers.findall("offer")))
-    # т.к. normalize_stock_always_true делает всем <available>true>
-    available_true  = offers_written
-    available_false = 0
-
     meta_pairs={
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL,
         "offers_total": len(src_offers),
         "offers_written": offers_written,
-        "available_true": available_true,
-        "available_false": available_false,
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
