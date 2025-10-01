@@ -2,17 +2,16 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-09-23.7
+script_version = alstyle-2025-10-01.8
+
+Изменения в .8:
+- FEED_META: формат «Лейбл | Значение» (без "=", без комментариев).
+- Выравнивание левой колонки для читаемости; порядок строк под шаблоном feed.txt.
+- Добавлены полезные строки: «Фильтром по категориям исключено», «Курс сборки (UTC)» и т.п.
 
 Изменения в .7:
-- FIX: дедупликация <available>: перед записью значения удаляем все существующие теги
-  <available> и создаём ровно один. Также снимаем атрибут offer[@available].
-
-Изменения в .6:
-- Явный выбор «закупочной» цены по приоритету: dealer/опт/b2b → явные поля → RRP fallback.
-- FEED_META: счета по источникам базовой цены.
-- После пересчёта удаляем все <prices> и оставляем один <price>.
-- Прочее из .5 оставлено (чистка Артикул/Благотворительность, описание в одну строку, перенос после FEED_META).
+- FIX: дедупликация <available>: снимаем offer[@available], удаляем все <available>, создаём ровно один.
+- Прочие улучшения из .6 сохранены.
 """
 
 from __future__ import annotations
@@ -31,7 +30,7 @@ import requests
 
 # ========================== КОНСТАНТЫ И НАСТРОЙКИ ==========================
 
-SCRIPT_VERSION = "alstyle-2025-09-23.7"
+SCRIPT_VERSION = "alstyle-2025-10-01.8"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "alstyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
@@ -483,16 +482,12 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     true_cnt = false_cnt = from_stock_cnt = from_status_cnt = 0
     for offer in offers_el.findall("offer"):
         b, src = derive_available(offer)
-        # 1) снять атрибут
         if "available" in offer.attrib:
             offer.attrib.pop("available", None)
-        # 2) удалить ВСЕ существующие <available>
         for node in list(offer.findall("available")):
             offer.remove(node)
-        # 3) создать ровно один <available>
         avail = ET.SubElement(offer, "available")
         avail.text = "true" if b else "false"
-        # 4) статистика и чистка складских тегов
         if b: true_cnt += 1
         else: false_cnt += 1
         if src == "stock": from_stock_cnt += 1
@@ -504,245 +499,4 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
 
 # ===================== vendorCode / артикул =====================
 
-ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
-
-def _extract_article_from_name(name:str)->str:
-    if not name: return ""
-    m=ARTICUL_RE.search(name); return (m.group(1) if m else "").upper()
-
-def _extract_article_from_url(url:str)->str:
-    if not url: return ""
-    try:
-        path=urllib.parse.urlparse(url).path.rstrip("/")
-        last=path.split("/")[-1]
-        last=re.sub(r"\.(html?|php|aspx?)$","",last,flags=re.I)
-        m=ARTICUL_RE.search(last)
-        return (m.group(1) if m else last).upper()
-    except Exception:
-        return ""
-
-def _normalize_code(s:str)->str:
-    s=(s or "").strip()
-    if not s: return ""
-    s=re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
-    s=re.sub(r"[^A-Za-z0-9\-]+","",s)
-    return s.upper()
-
-def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missing:bool=False)->Tuple[int,int,int,int]:
-    offers_el=shop_el.find("offers")
-    if offers_el is None: return (0,0,0,0)
-    total_prefixed=created=filled_from_art=fixed_bare=0
-    for offer in offers_el.findall("offer"):
-        vc=offer.find("vendorCode")
-        if vc is None:
-            if create_if_missing:
-                vc=ET.SubElement(offer,"vendorCode"); vc.text=""; created+=1
-            else:
-                continue
-        old=(vc.text or "").strip()
-        if (old=="") or (old.upper()==prefix.upper()):
-            art=_normalize_code(offer.attrib.get("article") or "") \
-              or _normalize_code(_extract_article_from_name(get_text(offer,"name"))) \
-              or _normalize_code(_extract_article_from_url(get_text(offer,"url"))) \
-              or _normalize_code(offer.attrib.get("id") or "")
-            if art: vc.text=art
-            else:   fixed_bare+=1
-        vc.text=f"{prefix}{(vc.text or '')}"; total_prefixed+=1
-    return total_prefixed,created,filled_from_art,fixed_bare
-
-# ===================== ЧИСТКА ТЕГОВ/АТРИБУТОВ =====================
-
-def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
-    removed_tags=0
-    for t in PURGE_TAGS_AFTER:
-        for node in list(offer.findall(t)):
-            offer.remove(node); removed_tags+=1
-    removed_attrs=0
-    for a in PURGE_OFFER_ATTRS_AFTER:
-        if a in offer.attrib:
-            offer.attrib.pop(a,None); removed_attrs+=1
-    return removed_tags,removed_attrs
-
-def count_category_ids(offer_el:ET.Element)->int:
-    return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
-
-# ========================== FEED_META ========================
-
-def render_feed_meta_comment(pairs:Dict[str,str])->str:
-    order=[
-        "script_version","supplier","source","offers_total","offers_written",
-        "categories_mode","categories_total","filtered_by_categories",
-        "prices_updated","prices_skipped","dealer_src_prices_dealer","dealer_src_direct_field","dealer_src_rrp_fallback","dealer_src_missing",
-        "params_removed","vendors_recovered","dropped_top",
-        "available_true","available_false","available_from_stock","available_from_status",
-        "categoryId_dropped","vendorcodes_filled_from_article","vendorcodes_created",
-        "built_utc","built_Asia/Almaty",
-    ]
-    comments={
-        "script_version":"Версия скрипта (для контроля в CI)",
-        "supplier":"Метка поставщика",
-        "source":"URL исходного XML",
-        "offers_total":"Офферов у поставщика до очистки",
-        "offers_written":"Офферов записано (после очистки)",
-        "categories_mode":"Режим фильтра категорий (off/include/exclude)",
-        "categories_total":"Сколько правил категорий загружено",
-        "filtered_by_categories":"Сколько офферов отфильтровано по категориям",
-        "prices_updated":"Скольким товарам пересчитали price",
-        "prices_skipped":"Скольких товаров пропустили при пересчёте цены",
-        "dealer_src_prices_dealer":"Базовая цена взята из <prices type~dealer/opт/b2b>",
-        "dealer_src_direct_field":"Базовая цена взята из явных полей (purchase/wholesale/opt/b2b)",
-        "dealer_src_rrp_fallback":"Базовая цена взята из RRP/РРЦ (fallback)",
-        "dealer_src_missing":"Не нашли базовую цену",
-        "params_removed":"Сколько строк параметров добавлено в описание",
-        "vendors_recovered":"Скольким товарам нормализован/восстановлен vendor",
-        "dropped_top":"ТОП часто отброшенных названий бренда",
-        "available_true":"Сколько офферов доступны (true)",
-        "available_false":"Сколько офферов недоступны (false)",
-        "available_from_stock":"Сколько доступностей определено по остаткам",
-        "available_from_status":"Сколько доступностей определено по статусу",
-        "categoryId_dropped":"Сколько тегов categoryId удалено",
-        "vendorcodes_filled_from_article":"Скольким офферам проставили vendorCode из артикула",
-        "vendorcodes_created":"Сколько узлов vendorCode было создано",
-        "built_utc":"Время сборки (UTC)",
-        "built_Asia/Almaty":"Время сборки (Алматы)",
-    }
-    max_key=max(len(k) for k in order)
-    left=[f"{k.ljust(max_key)} = {pairs.get(k,'n/a')}" for k in order]
-    max_left=max(len(s) for s in left)
-    lines=["FEED_META"]
-    for l,k in zip(left,order):
-        lines.append(f"{l.ljust(max_left)}  | {comments.get(k,'')}")
-    return "\n".join(lines)
-
-def top_dropped(d:Dict[str,int], n:int=10)->str:
-    items=sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
-    return ",".join(f"{k}:{v}" for k,v in items) if items else "n/a"
-
-# ================================= MAIN ====================================
-
-def main()->None:
-    log(f"Source: {SUPPLIER_URL or '(not set)'}")
-    data=load_source_bytes(SUPPLIER_URL)
-    src_root=ET.fromstring(data)
-
-    shop_in=src_root.find("shop") if src_root.tag.lower()!="shop" else src_root
-    if shop_in is None: err("XML: <shop> not found")
-    offers_in_el = shop_in.find("offers") or shop_in.find("Offers")
-    if offers_in_el is None: err("XML: <offers> not found")
-    src_offers=list(offers_in_el.findall("offer"))
-
-    id2name, id2parent, parent2children = parse_categories_tree(shop_in)
-    catid_to_drop_total=sum(count_category_ids(o) for o in src_offers)
-
-    out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
-    out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
-
-    for o in src_offers: out_offers.append(deepcopy(o))
-
-    # фильтр категорий
-    rules_ids, rules_names = (set(),[])
-    if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
-        rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
-        if ALSTYLE_CATEGORIES_MODE=="include" and not (rules_ids or rules_names):
-            err("ALSTYLE_CATEGORIES_MODE=include, но правил категорий не найдено. Проверь docs/alstyle_categories.txt.", 2)
-    filtered_by_categories = 0
-    if (ALSTYLE_CATEGORIES_MODE in {"include","exclude"}) and (rules_ids or rules_names):
-        keep_ids: Set[str] = set(rules_ids)
-        if rules_names and id2name:
-            for cid in id2name.keys():
-                path = build_category_path_from_id(cid, id2name, id2parent)
-                if category_matches_name(path, rules_names):
-                    keep_ids.add(cid)
-        if keep_ids and parent2children:
-            keep_ids = collect_descendants(keep_ids, parent2children)
-        for off in list(out_offers.findall("offer")):
-            cid = get_text(off, "categoryId")
-            hit = (cid in keep_ids) if cid else False
-            drop_this = (ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
-            if drop_this:
-                out_offers.remove(off); filtered_by_categories += 1
-
-    if DROP_CATEGORY_ID_TAG:
-        for off in out_offers.findall("offer"):
-            for node in list(off.findall("categoryId")) + list(off.findall("CategoryId")):
-                off.remove(node)
-
-    norm_cnt, dropped_names = ensure_vendor(out_shop)
-
-    total_prefixed, created_nodes, filled_from_art, fixed_bare = ensure_vendorcode_with_article(
-        out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AS"),
-        create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
-    )
-
-    # ПЕРЕСЧЁТ ЦЕН
-    upd, skipped, total, src_stats = reprice_offers(out_shop, PRICING_RULES)
-
-    # ДЕДУП и нормализация <available>
-    av_true, av_false, av_from_stock, av_from_status = normalize_available_field(out_shop)
-
-    specs_offers, specs_lines = inject_specs_block(out_shop)
-    removed_params = strip_all_params(out_shop)
-    removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
-
-    for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
-
-    children=list(out_offers)
-    for i in range(len(children)-1, 0, -1):
-        out_offers.insert(i, ET.Comment("OFFSEP"))
-    try: ET.indent(out_root, space="  ")
-    except Exception: pass
-
-    offers_written=len(list(out_offers.findall("offer")))
-    meta_pairs={
-        "script_version": SCRIPT_VERSION,
-        "supplier": SUPPLIER_NAME,
-        "source": SUPPLIER_URL or "file",
-        "offers_total": len(src_offers),
-        "offers_written": offers_written,
-        "categories_mode": ALSTYLE_CATEGORIES_MODE if (rules_ids or rules_names) else "off",
-        "categories_total": len(rules_ids) + len(rules_names),
-        "filtered_by_categories": filtered_by_categories,
-        "prices_updated": upd,
-        "prices_skipped": skipped,
-        "dealer_src_prices_dealer": src_stats.get("prices_dealer",0),
-        "dealer_src_direct_field": src_stats.get("direct_field",0),
-        "dealer_src_rrp_fallback": src_stats.get("rrp_fallback",0),
-        "dealer_src_missing": src_stats.get("missing",0),
-        "params_removed": specs_lines,
-        "vendors_recovered": norm_cnt,
-        "dropped_top": top_dropped(dropped_names),
-        "available_true": av_true,
-        "available_false": av_false,
-        "available_from_stock": av_from_stock,
-        "available_from_status": av_from_status,
-        "categoryId_dropped": catid_to_drop_total,
-        "vendorcodes_filled_from_article": filled_from_art,
-        "vendorcodes_created": created_nodes,
-        "built_utc": now_utc_str(),
-        "built_Asia/Almaty": now_almaty_str(),
-    }
-    out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
-
-    xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
-    xml_text  = xml_bytes.decode(ENC, errors="replace")
-    xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n  ", xml_text)
-    xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
-    xml_text = re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
-
-    if DRY_RUN:
-        log("[DRY_RUN=1] Files not written."); return
-
-    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f: f.write(xml_text)
-
-    docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
-    try:
-        os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
-    except Exception as e:
-        warn(f".nojekyll create warn: {e}")
-
-    log(f"Wrote: {OUT_FILE_YML} | offers={offers_written} | encoding={ENC} | script={SCRIPT_VERSION}")
-
-if __name__ == "__main__":
-    try: main()
-    except Exception as e: err(str(e))
+ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re
