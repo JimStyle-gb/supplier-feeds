@@ -1,48 +1,75 @@
 name: build_copyline
 
 on:
+  # Редкие срабатывания (за сутки до нужного времени в Алматы)
   schedule:
-    - cron: "0 21 * * *"  # покрытие 03:00 Asia/Almaty при UTC+6
-    - cron: "0 22 * * *"  # покрытие 03:00 Asia/Almaty при UTC+5 (на всякий случай)
+    - cron: "0 21 9,19,30,31 * *"   # 21:00 UTC (≈ 03:00 Asia/Almaty на 10/20/1)
   workflow_dispatch:
+    inputs:
+      force:
+        description: "Игнорировать тайм-гейт при ручном запуске"
+        required: false
+        default: "true"
+
+permissions:
+  contents: write   # нужно, чтобы шаг Commit & push мог записать изменения
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Time gate (03:00 Asia/Almaty on 1/10/20)
-        id: gate
+      - name: Decide run flag (schedule vs manual)
+        id: runflag
+        env:
+          FORCE_INPUT: ${{ inputs.force }}
+          EVENT_NAME: ${{ github.event_name }}
         shell: bash
         run: |
           set -e
-          export TZ=Asia/Almaty
-          echo "Now (Almaty): $(date)"
-          DAY=$(date +%-d)
-          HOUR=$(date +%H)
-          if [[ "$DAY" =~ ^(1|10|20)$ ]] && [ "$HOUR" == "03" ]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-            echo "Gate: pass."
+          echo "event=${EVENT_NAME}"
+          echo "force_input=${FORCE_INPUT:-<unset>}"
+
+          if [ "${EVENT_NAME}" = "schedule" ]; then
+            # Тайм-гейт только для расписания
+            export TZ=Asia/Almaty
+            echo "Now (Almaty): $(date)"
+            DAY=$(date +%-d)
+            HOUR=$(date +%H)
+            if [[ "$DAY" =~ ^(1|10|20)$ ]] && [ "$HOUR" = "03" ]; then
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              echo "Gate: pass (scheduled)."
+            else
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Gate: skip (scheduled but not 03:00 on 1/10/20)."
+            fi
           else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Gate: skip (not 03:00 on 1/10/20 in Asia/Almaty)."
+            # Ручной запуск — всегда запускаем (можно выключить через force=false)
+            if [ "${FORCE_INPUT:-true}" = "false" ]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Manual run: force=false => skip."
+            else
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              echo "Manual run: force=true (or default) => pass."
+            fi
           fi
 
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
-        if: steps.gate.outputs.run == 'true'
+        if: steps.runflag.outputs.run == 'true'
         with:
           python-version: "3.11"
 
       - name: Install deps
-        if: steps.gate.outputs.run == 'true'
+        if: steps.runflag.outputs.run == 'true'
         run: |
+          set -e
           python -V
           pip install --upgrade pip
           pip install requests beautifulsoup4 openpyxl
 
       - name: Build Copyline YML
-        if: steps.gate.outputs.run == 'true'
+        if: steps.runflag.outputs.run == 'true'
         env:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
@@ -60,16 +87,16 @@ jobs:
           python scripts/build_copyline.py
 
       - name: Commit & push
-        if: steps.gate.outputs.run == 'true'
+        if: steps.runflag.outputs.run == 'true'
         run: |
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/copyline.yml || true
-          git commit -m "chore(copyline): update docs/copyline.yml [skip ci]" || echo "No changes"
+          git commit -m "chore(copyline): update docs/copyline.yml [skip ci]" || echo "No changes to commit"
           git pull --rebase || true
-          git push || true
+          git push
 
-      - name: Skipped (not scheduled time)
-        if: steps.gate.outputs.run != 'true'
-        run: echo "Skipping build — not 03:00 at 1/10/20 in Asia/Almaty."
+      - name: Skipped
+        if: steps.runflag.outputs.run != 'true'
+        run: echo "Skipping build — not scheduled time and manual force=false."
