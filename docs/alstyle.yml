@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-01 20:18">
+<yml_catalog date="2025-10-02 12:24">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 02:10:2025 - 01:18:30
+Время сборки (Алматы)                      | 02:10:2025 - 17:24:45
 Ближайшее время сборки (Алматы)            | 03:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15899
-Сколько товаров у поставщика после фильтра | 1982
-Сколько товаров есть в наличии (true)      | 1315
-Сколько товаров нет в наличии (false)      | 667-->
+Сколько товаров у поставщика до фильтра    | 15913
+Сколько товаров у поставщика после фильтра | 1992
+Сколько товаров есть в наличии (true)      | 1319
+Сколько товаров нет в наличии (false)      | 673-->
   <shop>
     <offers>
       <offer id="AS20888">
@@ -1434,7 +1434,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/21461_3.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -5098,7 +5098,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/14654_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Линейно-интерактивный ИБП SVC RTL-2K-LCD Cтоечные ИБП RTL-серии источники бесперебойного питания линейно-интерактивного типа с синусоидальной формой выходного напряжения. Надёжно обеспечивают стабилизированное питание для компьютерной техники (персональные компьютеры, серверы, сетевое оборудование) и другого чувствительного к качеству электропитания периферийного компьютерного оборудования. Незаменим в условиях офиса, когда необходимо защитить одновременно несколько устройств. ИБП RTL-серии от SVC можно разместить горизонтально, вертикально или в стойку, что позволяет наиболее рационально использовать рабочее пространство.
 
 Характеристики:
@@ -5867,7 +5867,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/19290_3.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -8633,7 +8633,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/28782_3.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -11502,7 +11502,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32325_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Принт-картридж – расходный материал, используемый принтером или МФУ. Представляет собой блок, в который входит фотобарабан, система его очистки и бункер для отработанного тонера. Главным компонентом является светочувствительный барабан, который служит для формирования электростатического изображения с последующим нанесением на него тонера
 
 Характеристики
@@ -11882,7 +11882,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32353_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Принт-картридж – расходный материал, используемый принтером или МФУ. Представляет собой блок, в который входит фотобарабан, система его очистки и бункер для отработанного тонера. Главным компонентом является светочувствительный барабан, который служит для формирования электростатического изображения с последующим нанесением на него тонера
 
 Характеристики
@@ -18478,13 +18478,13 @@ Versant 80/180 Press
   <offer id="AS23934">
         <vendorCode>AS23934</vendorCode>
         <name>Проектор Mi Laser Projector 150</name>
-        <price>676900</price>
+        <price>689900</price>
         <picture>https://img.al-style.kz/23934_1.jpg</picture>
         <picture>https://img.al-style.kz/23934_2.jpg</picture>
         <picture>https://img.al-style.kz/23934_3.jpg</picture>
         <vendor>MI</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Проектор Xiaomi Laser Projector 
 Огромный размер проекции 150 дюймов
 Размер картинки проектора Xiaomi составляет целых 150 дюймов, превратите свой дом в настоящий кинотеатр. Размер кадра составляет 80-150 дюймов, регулируется до подходящего размера. Почувствуйте эффект присутствия в видеоиграх и фильмах.
@@ -26270,7 +26270,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
         <picture>https://img.al-style.kz/45708_2.jpg</picture>
         <vendor>Legrand</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Кабель сетевой Legrand 032751 Cat.5e U/UTP PVC
 Это неэкранированный (UTP) 4 - х парный кабель 5e категории имеет стандартную PVC оболочку, применяется при прокладке внутри помещений.   
 Используется для создания компьютерных сетей стандарта 100 Мегабит/сек или 1 Гигабит/сек.   
@@ -27518,7 +27518,7 @@ Windows Professional 11
         <picture>https://img.al-style.kz/23867_3.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Comix F9061   ламинатор начального уровня для дома офиса.
 Ламинатор предназначен для работы с пленкой 80, 100 и 125 мкм. Максимальный формат документа   А4. Ламинатор прост в управлении и не требует дополнительных настроек. Синий световой сигнал подскажет о готовности к работе через 3-5 минут после включения.
 Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Comix F9061 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое. 
@@ -28426,7 +28426,7 @@ Microsoft Windows 11
         <picture>https://img.al-style.kz/42428_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Опциональный жесткий диск позволяет ускорить работу устройства, хранить больше данных о пользователях, устанавливать больше приложений, а также обрабатывать более сложные и большие задания
 
 Характеристики:
@@ -30332,7 +30332,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
   <offer id="AS48335">
         <vendorCode>AS48335</vendorCode>
         <name>Кабель сетевой SHIP D106-VS Cat.5e UTP 30В PE</name>
-        <price>47900</price>
+        <price>48900</price>
         <picture>https://img.al-style.kz/48335_1.jpg</picture>
         <picture>https://img.al-style.kz/48335_2.jpg</picture>
         <picture>https://img.al-style.kz/48335_3.jpg</picture>
@@ -30853,6 +30853,38 @@ HDMI x1
 - Цвет: Чёрный</description>
       </offer>
 
+  <offer id="AS45019">
+        <vendorCode>AS45019</vendorCode>
+        <name>Источник бесперебойного питания CyberPower SM300KMFX</name>
+        <price>13984900</price>
+        <vendor>CyberPower</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>CyberPower SM300KMFX Трехфазный "Online" ИБП с встроенной аккумуляторной батареей обеспечивает долговременное резервное питание для коммуникационных шкафов, и инфраструктуры, а также систем аварийного питания. Благодаря возможности параллельной избыточности ИБП, ИБП серии "HSTP33" (3 фазы) идеально подходят для ответственных применений в серверных комнатах, центрах хранения и обработки данных, фабриках и электростанциях, требующих высокой производительности, высокой надежности и продолжительности автономной работы.
+
+Благодаря встроенной БТИЗ-технологии и интеллектуальному управлению на базе ЦОС, данный модульный (3-фазный) ИБП вырабатывает меньший коэффициент нелинейных искажений входного сигнала (THDi) и обеспечивает более высокую энергоэффективность, до 98% в Экономичном режиме, что делает его самым эффективным ИБП в отрасли. Более высокая эффективность работы означает снижение теплоотдачи БТЕ и пониженное потребление энергии в режиме холостого хода, что приводит к сокращению эксплуатационных расходов и снижению выбросов углекислого газа.
+
+Данные Модульные ИБП (3-фазные) отличаются таким преимуществом как масштабируемость, позволяя увеличить пропускную способность до 400 кВА от общей нагрузки на существующую систему резервного питания. Каждый независимый модуль питания предназначен для параллельной работы с активным распределением тока для достижения N + 1 резервирования питания. В случае сбоев у модуля питания, нагрузка автоматически распределяется между оставшимися модулями, чтобы избежать риска отказа, вызванного неисправностью одного элемента. Каждый модуль питания в целях удобства имеет возможность "горячей замены" , легкого увеличения мощности, а также возможность проведения обслуживания системы без прерывания подключенной нагрузки - все это способствует значительному повышению надежности системы.
+
+Характеристики:
+- Гарантия: 1 год</description>
+      </offer>
+
+  <offer id="AS45020">
+        <vendorCode>AS45020</vendorCode>
+        <name>Силовой модуль CyberPower SM30KPMX</name>
+        <price>5152900</price>
+        <vendor>CyberPower</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>CyberPower SM30KPMX - это модуль питания, который может быть установлен в ИБП для обеспечения вертикальной масштабируемости и увеличения мощности ИБП центра обработки данных. Пользователи могут выбирать количество устанавливаемых модулей питания и гибко настраивать мощность в зависимости от своих бизнес-потребностей.
+
+Изделие может быть установлено без каких-либо дополнительных затрат, экономя ценную площадь пола. Функция plug-n-play поддерживает быструю и немедленную установку. Кроме того, продукт имеет возможность горячей замены, что позволяет пользователям безопасно заменять батарейный модуль, не прерывая подключенных нагрузок, и обеспечивает бесперебойную работу.
+
+Характеристики:
+- Гарантия: 2 года</description>
+      </offer>
+
   <offer id="AS48428">
         <vendorCode>AS48428</vendorCode>
         <name>Проектор BYINTEK K45 Smart ( с автофокусом)</name>
@@ -30935,7 +30967,7 @@ HDMI x1
         <picture>https://img.al-style.kz/36121_1.jpg</picture>
         <vendor>Dahua</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор 43" Dahua DHI-LM43-F200
 
 Особенности и преимущества:
@@ -32622,7 +32654,7 @@ Keor SPE Tower может быть подключен к ПК через SNMP, USB и последовательный порт
   <offer id="AS52563">
         <vendorCode>AS52563</vendorCode>
         <name>Монитор 31,5" LG 32UN650 White</name>
-        <price>208900</price>
+        <price>230900</price>
         <picture>https://img.al-style.kz/52563_1.jpg</picture>
         <picture>https://img.al-style.kz/52563_2.jpg</picture>
         <picture>https://img.al-style.kz/52563_3.jpg</picture>
@@ -33802,7 +33834,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <picture>https://img.al-style.kz/56624_3.jpg</picture>
         <vendor>iiyama</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Интерактивная панель iiyama TE7514MIS-B1AG
 Интерактивный сенсорный ЖК-экран с диагональю 75 дюймов и разрешением 4K меняет представление о превосходстве интерактивных дисплеев
 TE7514MIS-B1AG   это исключительный интерактивный дисплей с разрешением 4K UHD, задающий новый стандарт инноваций и производительности. Благодаря множеству расширенных функций, таких как ЖК-экран Zero Airgap, устраняющий параллакс, точный PureTouch-IR+ с функцией Palm Rejection, iiWare 11 с Android 13, Wi-Fi и платформа управления устройствами iiyama DMS. Делитесь информацией по беспроводной сети проще, чем когда-либо прежде, с помощью приложений iiyama Share и EShare, которые обеспечивают легкое генерирование идей и эффективное сотрудничество на вашем предприятии или в школе.
@@ -35506,7 +35538,7 @@ Type C   1 (4K, 60 Гц)
         <picture>https://img.al-style.kz/59206_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Широкоформатный принтер Canon imagePROGRAF TM-340
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики 
@@ -35864,7 +35896,7 @@ Type C   1 (4K, 60 Гц)
   <offer id="AS59319">
         <vendorCode>AS59319</vendorCode>
         <name>Монохромное лазерное МФУ Canon I-S MF552dw</name>
-        <price>593900</price>
+        <price>605900</price>
         <picture>https://img.al-style.kz/59319_1.jpg</picture>
         <picture>https://img.al-style.kz/59319_2.jpg</picture>
         <picture>https://img.al-style.kz/59319_3.jpg</picture>
@@ -35922,7 +35954,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59320_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монохромное лазерное МФУ Canon I-S MF461dw
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
 Устройства серии i-SENSYS MF460 позволят вашим сотрудникам экономить ценное время и повышать производительность. Оцените быструю печать и сканирование и легко защитите устройства от взлома и вирусных угроз.
@@ -36080,7 +36112,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59325_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Цветное лазерное МФУ Canon I-S MF752CDW
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
@@ -36649,7 +36681,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
   <offer id="AS59370">
         <vendorCode>AS59370</vendorCode>
         <name>Монохромный лазерный принтер Canon I-S LBP6030B BUNDLE</name>
-        <price>185900</price>
+        <price>189900</price>
         <picture>https://img.al-style.kz/59370_1.jpg</picture>
         <picture>https://img.al-style.kz/59370_2.jpg</picture>
         <picture>https://img.al-style.kz/59370_3.jpg</picture>
@@ -36791,7 +36823,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59506_3.jpg</picture>
         <vendor>Huawei</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Ноутбук Huawei MateBook D 14 MendelF-W5651D / i5&#8209;12450H / 16&#8239;ГБ / SSD 512&#8239;ГБ / Win 11 Home
 
     Создан для лёгкой и быстрой работы.
@@ -37504,7 +37536,7 @@ USB-кабель
   <offer id="AS59811">
         <vendorCode>AS59811</vendorCode>
         <name>Монохромное лазерное МФУ Canon MF3010</name>
-        <price>173900</price>
+        <price>195900</price>
         <picture>https://img.al-style.kz/59811_1.jpg</picture>
         <picture>https://img.al-style.kz/59811_2.jpg</picture>
         <picture>https://img.al-style.kz/59811_3.jpg</picture>
@@ -38218,7 +38250,7 @@ Canon imageRUNNER 2625iCanon imageRUNNER 2630iCanon imageRUNNER 2645i
   <offer id="AS59886">
         <vendorCode>AS59886</vendorCode>
         <name>Тонер-картридж Canon C-EXV 53 Black для IR ADVANCE 45xx, DX 47xx. 0473C002AA</name>
-        <price>103900</price>
+        <price>105900</price>
         <picture>https://img.al-style.kz/59886_1.jpg</picture>
         <picture>https://img.al-style.kz/59886_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -38260,7 +38292,7 @@ Canon imageRUNNER ADVANCE 4525iCanon imageRUNNER ADVANCE 4535iCanon imageRUNNER 
   <offer id="AS59891">
         <vendorCode>AS59891</vendorCode>
         <name>Тонер-картридж Canon C-EXV 55 Black для IR ADVANCE C256 C356 2182C002AA</name>
-        <price>60900</price>
+        <price>62900</price>
         <picture>https://img.al-style.kz/59891_1.jpg</picture>
         <picture>https://img.al-style.kz/59891_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -38423,6 +38455,7 @@ Canon
 Canon imageRUNNER C3326i
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: 1 год
 - Состав: Пластик</description>
       </offer>
@@ -38642,7 +38675,7 @@ Canon imageRUNNER 2725iCanon imageRUNNER 2730iCanon imageRUNNER 2745i
   <offer id="AS59915">
         <vendorCode>AS59915</vendorCode>
         <name>Тонер-картридж Canon C-EXV 58 Black для IR ADVANCE DX C58xx 3763C002AA</name>
-        <price>139900</price>
+        <price>143900</price>
         <picture>https://img.al-style.kz/59915_1.jpg</picture>
         <picture>https://img.al-style.kz/59915_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -38684,7 +38717,7 @@ Canon imageRUNNER ADVANCE DX C5840iCanon imageRUNNER ADVANCE DX C5850iCanon imag
   <offer id="AS59916">
         <vendorCode>AS59916</vendorCode>
         <name>Тонер-картридж Canon C-EXV 58 CYAN для IR ADVANCE DX C58xx 3764C002AA</name>
-        <price>297900</price>
+        <price>303900</price>
         <picture>https://img.al-style.kz/59916_1.jpg</picture>
         <picture>https://img.al-style.kz/59916_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -38768,7 +38801,7 @@ Canon imageRUNNER ADVANCE DX C5840iCanon imageRUNNER ADVANCE DX C5850iCanon imag
   <offer id="AS59920">
         <vendorCode>AS59920</vendorCode>
         <name>Тонер-картридж Canon C-EXV 58 YELLOW для IR ADVANCE DX C58xx 3766C002AA</name>
-        <price>297900</price>
+        <price>303900</price>
         <picture>https://img.al-style.kz/59920_1.jpg</picture>
         <picture>https://img.al-style.kz/59920_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -38851,7 +38884,7 @@ Canon imageRUNNER ADVANCE DX C5840iCanon imageRUNNER ADVANCE DX C5850iCanon imag
   <offer id="AS59922">
         <vendorCode>AS59922</vendorCode>
         <name>Тонер-картридж Canon C-EXV 58L MAGENTA для IR ADVANCE DX C58xx 3765C002AA</name>
-        <price>155900</price>
+        <price>158900</price>
         <picture>https://img.al-style.kz/59922_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -39392,7 +39425,7 @@ Canon imageRUNNER 2425Canon imageRUNNER 2425i
   <offer id="AS59988">
         <vendorCode>AS59988</vendorCode>
         <name>Тонер-картридж Canon C-EXV 33 Black для IR 25xx 2785B002AA</name>
-        <price>44900</price>
+        <price>46900</price>
         <picture>https://img.al-style.kz/59988_1.jpg</picture>
         <picture>https://img.al-style.kz/59988_2.jpg</picture>
         <picture>https://img.al-style.kz/59988_3.jpg</picture>
@@ -39936,7 +39969,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
   <offer id="AS60029">
         <vendorCode>AS60029</vendorCode>
         <name>Протяжный Сканер Canon imageFORMULA DR-C225 II</name>
-        <price>263900</price>
+        <price>269900</price>
         <picture>https://img.al-style.kz/60029_1.jpg</picture>
         <picture>https://img.al-style.kz/60029_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -40005,7 +40038,7 @@ USB-кабель
   <offer id="AS60033">
         <vendorCode>AS60033</vendorCode>
         <name>Протяжный Сканер Canon imageFORMULA DR-C230</name>
-        <price>368900</price>
+        <price>376900</price>
         <picture>https://img.al-style.kz/60033_1.jpg</picture>
         <picture>https://img.al-style.kz/60033_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -40043,7 +40076,7 @@ USB-кабель
   <offer id="AS60036">
         <vendorCode>AS60036</vendorCode>
         <name>Протяжный Сканер Canon imageFORMULA DR-M160 II</name>
-        <price>578900</price>
+        <price>591900</price>
         <picture>https://img.al-style.kz/60036_1.jpg</picture>
         <picture>https://img.al-style.kz/60036_2.jpg</picture>
         <picture>https://img.al-style.kz/60036_3.jpg</picture>
@@ -40161,7 +40194,7 @@ Canon imagePRESS C6000/C6000VPCanon imagePRESS C6010/C6010S/C6010VP/C6010VPSCano
   <offer id="AS60141">
         <vendorCode>AS60141</vendorCode>
         <name>Тонер-картридж Canon C-EXV20 TONER CYAN для imagePRESS C6000 0437B002AA</name>
-        <price>91900</price>
+        <price>93900</price>
         <picture>https://img.al-style.kz/60141_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -40202,7 +40235,7 @@ Canon imagePRESS C6000/C6000VPCanon imagePRESS C6010/C6010S/C6010VP/C6010VPSCano
   <offer id="AS60142">
         <vendorCode>AS60142</vendorCode>
         <name>Тонер-картридж Canon C-EXV20 TONER MAGENTA для imagePRESS C6000 0438B002AA</name>
-        <price>91900</price>
+        <price>93900</price>
         <picture>https://img.al-style.kz/60142_1.jpg</picture>
         <picture>https://img.al-style.kz/60142_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -41259,7 +41292,7 @@ Cтойка с регулированием высоты
   <offer id="AS60491">
         <vendorCode>AS60491</vendorCode>
         <name>Тонер-картридж Canon C-EXV 51L CYAN для IR ADVANCE C55xx 0485C002AA</name>
-        <price>155900</price>
+        <price>158900</price>
         <picture>https://img.al-style.kz/60491_1.jpg</picture>
         <picture>https://img.al-style.kz/60491_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -41301,7 +41334,7 @@ Canon imageRUNNER ADVANCE C5535Canon imageRUNNER ADVANCE C5535iCanon imageRUNNER
   <offer id="AS60492">
         <vendorCode>AS60492</vendorCode>
         <name>Тонер-картридж Canon C-EXV 51L MAGENTA для IR ADVANCE C55xx 0486C002AA</name>
-        <price>155900</price>
+        <price>158900</price>
         <picture>https://img.al-style.kz/60492_1.jpg</picture>
         <picture>https://img.al-style.kz/60492_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -41343,7 +41376,7 @@ Canon imageRUNNER ADVANCE C5535Canon imageRUNNER ADVANCE C5535iCanon imageRUNNER
   <offer id="AS60493">
         <vendorCode>AS60493</vendorCode>
         <name>Тонер-картридж Canon C-EXV 51L YELLOW для IR ADVANCE C55xx 0487C002AA</name>
-        <price>155900</price>
+        <price>158900</price>
         <picture>https://img.al-style.kz/60493_1.jpg</picture>
         <picture>https://img.al-style.kz/60493_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -41385,7 +41418,7 @@ Canon imageRUNNER ADVANCE C5535Canon imageRUNNER ADVANCE C5535iCanon imageRUNNER
   <offer id="AS60494">
         <vendorCode>AS60494</vendorCode>
         <name>Тонер-картридж Canon C-EXV 51 Black для IR ADVANCE C55xx 0481C002AA</name>
-        <price>136900</price>
+        <price>138900</price>
         <picture>https://img.al-style.kz/60494_1.jpg</picture>
         <picture>https://img.al-style.kz/60494_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -41707,6 +41740,7 @@ Canon
 Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130Canon varioPRINT 135Canon varioPRINT 140
 
 Характеристики:
+- Вес: 3.5
 - Гарантия: Нет
 - Состав: Пластик</description>
       </offer>
@@ -41757,7 +41791,7 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
   <offer id="AS60669">
         <vendorCode>AS60669</vendorCode>
         <name>Цветное лазерное МФУ Canon I-S MF651CW</name>
-        <price>205900</price>
+        <price>266900</price>
         <picture>https://img.al-style.kz/60669_1.jpg</picture>
         <picture>https://img.al-style.kz/60669_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -41859,47 +41893,10 @@ Bluetooth: 5.0
 - Состав: Металл, пластик, стекло</description>
       </offer>
 
-  <offer id="AS60854">
-        <vendorCode>AS60854</vendorCode>
-        <name>Подставка для плоттера Canon PRINTER STAND SD-24</name>
-        <price>159900</price>
-        <picture>https://img.al-style.kz/60854_1.jpg</picture>
-        <picture>https://img.al-style.kz/60854_2.jpg</picture>
-        <vendor>Canon</vendor>
-        <currencyId>KZT</currencyId>
-        <available>false</available>
-        <description>Подставка для плоттера Canon PRINTER STAND SD-24
-Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
-Подставка для плоттера Canon SD-24 — это прочный и функциональный аксессуар, разработанный в дополнение к плоттеру Canon. Эта подставка обеспечивает устойчивую платформу для вашего принтера, предлагая практичность и удобство.
-Основные характеристики
-
-Производитель
-Canon
-
-Устройство
-Подставка для плоттера
-
-Габариты, вес, комплектация
-
-Габариты
-270 x 820 x 1050 мм
-
-Вес
-18 кг
-
-Совместимость
-
-Устройства
-Canon imagePROGRAF TC-20Canon imagePROGRAF TC-20MCanon imagePROGRAF TM-240
-
-Характеристики:
-- Гарантия: Нет</description>
-      </offer>
-
   <offer id="AS60898">
         <vendorCode>AS60898</vendorCode>
         <name>Блок барабана Canon DRUM UNIT C-EXV 49 8528B003AA</name>
-        <price>162900</price>
+        <price>155900</price>
         <picture>https://img.al-style.kz/60898_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -42307,7 +42304,7 @@ Canon Cassette Feeding Unit-AE1/AG1/AJ1/AK1/AL1/AM1/AP1/AQ1/AW1Canon Color image
   <offer id="AS61063">
         <vendorCode>AS61063</vendorCode>
         <name>Цветной лазерный принтер Canon I-S LBP631CW</name>
-        <price>165900</price>
+        <price>172900</price>
         <picture>https://img.al-style.kz/61063_1.jpg</picture>
         <picture>https://img.al-style.kz/61063_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -42680,7 +42677,7 @@ Canon imageRUNNER ADVANCE 6055Canon imageRUNNER ADVANCE 6065Canon imageRUNNER AD
   <offer id="AS61157">
         <vendorCode>AS61157</vendorCode>
         <name>Цветное лазерное МФУ Canon I-S MF655CDW</name>
-        <price>277900</price>
+        <price>284900</price>
         <picture>https://img.al-style.kz/61157_1.jpg</picture>
         <picture>https://img.al-style.kz/61157_3.jpg</picture>
         <vendor>Canon</vendor>
@@ -42770,7 +42767,7 @@ Canon imageRUNNER ADVANCE 6055Canon imageRUNNER ADVANCE 6065Canon imageRUNNER AD
   <offer id="AS61162">
         <vendorCode>AS61162</vendorCode>
         <name>Цветной лазерный принтер Canon I-S LBP633CDW</name>
-        <price>211900</price>
+        <price>215900</price>
         <picture>https://img.al-style.kz/61162_1.jpg</picture>
         <picture>https://img.al-style.kz/61162_2.jpg</picture>
         <picture>https://img.al-style.kz/61162_3.jpg</picture>
@@ -43176,7 +43173,7 @@ Canon imagePROGRAF TZ-30000
   <offer id="AS61203">
         <vendorCode>AS61203</vendorCode>
         <name>Блок барабана Canon DRUM UNIT C-EXV 32 2772B003BA</name>
-        <price>241900</price>
+        <price>246900</price>
         <picture>https://img.al-style.kz/61203_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -45266,7 +45263,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61384_2.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Источник бесперебойного питания APC Easy UPS BV800I-GR
 
 ИБП семейства Easy UPS надежно защищают электропитание мощных компьютерных систем, маршрутизаторов и модемов, внешних систем хранения, игровых приставок и прочей электроники в доме или организации. Эти ИБП стабилизируют напряжение при его отклонении от безопасных значений и дают возможность длительной работы от батарей при отключении электроэнергии. Они также обеспечивают защиту электропитания от опасных бросков и всплесков напряжения, а ПО для управления ИБП позволяет максимально полно использовать его возможности.
@@ -45640,7 +45637,7 @@ Canon imagePROGRAF iPF670Canon imagePROGRAF iPF680Canon imagePROGRAF iPF685Canon
         <picture>https://img.al-style.kz/61566_3.jpg</picture>
         <vendor>Dahua</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор 43" Dahua DHI-LM43-F400
 
 Особенности и преимущества:
@@ -46336,7 +46333,7 @@ Canon imageRUNNER ADVANCE 8085Canon imageRUNNER ADVANCE 8095Canon imageRUNNER AD
   <offer id="AS62163">
         <vendorCode>AS62163</vendorCode>
         <name>Протяжный Сканер Canon imageFORMULA DR-F120</name>
-        <price>310900</price>
+        <price>316900</price>
         <picture>https://img.al-style.kz/62163_1.jpg</picture>
         <picture>https://img.al-style.kz/62163_2.jpg</picture>
         <picture>https://img.al-style.kz/62163_3.jpg</picture>
@@ -46371,7 +46368,7 @@ USB-кабель
   <offer id="AS62173">
         <vendorCode>AS62173</vendorCode>
         <name>Протяжный Сканер Canon imageFORMULA P-208 II</name>
-        <price>118900</price>
+        <price>120900</price>
         <picture>https://img.al-style.kz/62173_1.jpg</picture>
         <picture>https://img.al-style.kz/62173_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -46406,7 +46403,7 @@ USB-кабель
   <offer id="AS62178">
         <vendorCode>AS62178</vendorCode>
         <name>Протяжный Сканер Canon imageFORMULA P-215 II</name>
-        <price>197900</price>
+        <price>201900</price>
         <picture>https://img.al-style.kz/62178_1.jpg</picture>
         <picture>https://img.al-style.kz/62178_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -47642,7 +47639,7 @@ Eaton 5E Gen2 обеспечивает эффективную и доступную защиту электропитания для кри
         <picture>https://img.al-style.kz/62612_3.jpg</picture>
         <vendor>EATON</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>EATON 9SX1500I
 
 Онлайн-ИБП с двойным преобразованием
@@ -48195,7 +48192,7 @@ Eaton 5E Gen2 обеспечивает эффективную и доступную защиту электропитания для кри
   <offer id="AS62696">
         <vendorCode>AS62696</vendorCode>
         <name>Сетевой интерфейс Canon LAN Board-F1 5984C001</name>
-        <price>110900</price>
+        <price>97900</price>
         <picture>https://img.al-style.kz/62696_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -48451,7 +48448,7 @@ Canon imagePROGRAF TZ-30000
   <offer id="AS62838">
         <vendorCode>AS62838</vendorCode>
         <name>Картридж Canon LBP CARTRIDGE 051</name>
-        <price>60900</price>
+        <price>61900</price>
         <picture>https://img.al-style.kz/62838_1.jpg</picture>
         <picture>https://img.al-style.kz/62838_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -48750,7 +48747,7 @@ Canon i-SENSYS LBP621Canon i-SENSYS LBP623Canon i-SENSYS MF641Canon i-SENSYS MF6
   <offer id="AS62952">
         <vendorCode>AS62952</vendorCode>
         <name>Картридж Canon CARTRIDGE 054 Magenta</name>
-        <price>47900</price>
+        <price>50900</price>
         <picture>https://img.al-style.kz/62952_1.jpg</picture>
         <picture>https://img.al-style.kz/62952_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -49397,7 +49394,7 @@ Canon imagePROGRAF TC-20Canon imagePROGRAF TC-20M
   <offer id="AS63298">
         <vendorCode>AS63298</vendorCode>
         <name>Тонер-картридж Canon C-EXV 43 Black 2788B002AA</name>
-        <price>53900</price>
+        <price>72900</price>
         <picture>https://img.al-style.kz/63298_1.jpg</picture>
         <picture>https://img.al-style.kz/63298_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -50142,7 +50139,7 @@ Canon ImageRUNNER C1225Canon ImageRUNNER C1225iFCanon imageClass MF810CCanon ima
         <picture>https://img.al-style.kz/63876_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Картридж Canon CARTRIDGE 067 Black
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
 Оригинальный монохромный картридж Canon 067 с ресурсом 1350 стр. для принтеров и МФУ Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cdw, MF657Cdw.
@@ -50370,7 +50367,7 @@ Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SEN
   <offer id="AS64053">
         <vendorCode>AS64053</vendorCode>
         <name>Монохромное лазерное МФУ Canon I-S MF553dw</name>
-        <price>391900</price>
+        <price>686900</price>
         <picture>https://img.al-style.kz/64053_1.jpg</picture>
         <picture>https://img.al-style.kz/64053_2.jpg</picture>
         <picture>https://img.al-style.kz/64053_3.jpg</picture>
@@ -51244,6 +51241,7 @@ Canon
 Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SENSYS MF655CdwCanon i-SENSYS MF657Cdw
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: Нет</description>
       </offer>
 
@@ -51321,6 +51319,7 @@ Canon
 Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SENSYS MF655CdwCanon i-SENSYS MF657Cdw
 
 Характеристики:
+- Вес: 0.7
 - Гарантия: Нет</description>
       </offer>
 
@@ -51926,7 +51925,7 @@ Canon Pixma E404Canon Pixma E464Canon Pixma E484
         <picture>https://img.al-style.kz/64584_3.jpg</picture>
         <vendor>Huawei</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Ноутбук Huawei MateBook 14 14" Ultra 5 125H 16GB 512GB Win 11 FlemingH-W5651T FLMH-X 53014APJ
 
 Huawei MateBook 14
@@ -51997,7 +51996,7 @@ Canon i-SENSYS LBP122dwCanon i-SENSYS MF272dwCanon i-SENSYS MF273dwCanon i-SENSY
   <offer id="AS64646">
         <vendorCode>AS64646</vendorCode>
         <name>Картридж Canon LBP CARTRIDGE 071H</name>
-        <price>47900</price>
+        <price>57900</price>
         <picture>https://img.al-style.kz/64646_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -52037,7 +52036,7 @@ Canon i-SENSYS MF272dwCanon i-SENSYS MF275dwCanon i-SENSYS LBP122dw
   <offer id="AS64648">
         <vendorCode>AS64648</vendorCode>
         <name>Картридж Canon LBP CARTRIDGE 057</name>
-        <price>79900</price>
+        <price>81900</price>
         <picture>https://img.al-style.kz/64648_1.jpg</picture>
         <picture>https://img.al-style.kz/64648_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -52438,7 +52437,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <picture>https://img.al-style.kz/64677_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор Samsung 27" ViewFinity S7 LS27D700EAIXCI
 
 Особенности и преимущества:
@@ -53138,7 +53137,7 @@ A4, B5, LTR, 10 x 15 см, 13 x 18 см, 20 x 25 см, формат карточки (91 x 55 мм), к
         <picture>https://img.al-style.kz/65100_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Струйный картридж Canon PG-440XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -53382,7 +53381,7 @@ Canon imagePRESS C60Canon imagePRESS C65Canon imagePRESS C650Canon imagePRESS C7
         <picture>https://img.al-style.kz/65137_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Струйный картридж Canon PG-460XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -54568,7 +54567,7 @@ Canon imageRUNNER ADVANCE DX C3822iCanon imageRUNNER ADVANCE DX C3826iCanon imag
         <picture>https://img.al-style.kz/66146_3.jpg</picture>
         <vendor>Wanbo</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Проектор портативный Wanbo Dali 1   это высокотехнологичное устройство, которое сочетает в себе передовые функции и элегантный дизайн.
 Основные характеристики:
 
@@ -55381,7 +55380,7 @@ Windows 10, Windows 8.1, Windows 7 SP1Требуется .NET Framework 4.5.2 ил...
   <offer id="AS67201">
         <vendorCode>AS67201</vendorCode>
         <name>Цветной лазерный принтер Canon I-S LBP673CDW</name>
-        <price>232900</price>
+        <price>296900</price>
         <picture>https://img.al-style.kz/67201_1.jpg</picture>
         <picture>https://img.al-style.kz/67201_2.jpg</picture>
         <picture>https://img.al-style.kz/67201_3.jpg</picture>
@@ -55705,7 +55704,7 @@ Bес:
   <offer id="AS67408">
         <vendorCode>AS67408</vendorCode>
         <name>Тонер-картридж Canon UNIVERSAL PLOTWAVE TONER PCR 2X500 GR</name>
-        <price>219900</price>
+        <price>229900</price>
         <picture>https://img.al-style.kz/67408_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -57719,7 +57718,7 @@ Cyborg 15
   <offer id="AS69260">
         <vendorCode>AS69260</vendorCode>
         <name>Струйный картридж Canon BJ CARTRIDGE PG-510</name>
-        <price>13900</price>
+        <price>15900</price>
         <picture>https://img.al-style.kz/69260_1.jpg</picture>
         <picture>https://img.al-style.kz/69260_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -57972,7 +57971,7 @@ HDMI-кабель
   <offer id="AS69411">
         <vendorCode>AS69411</vendorCode>
         <name>Настольный сканер Canon IRISCAN DESK6 PRO</name>
-        <price>129900</price>
+        <price>131900</price>
         <picture>https://img.al-style.kz/69411_1.jpg</picture>
         <picture>https://img.al-style.kz/69411_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -58008,7 +58007,7 @@ ScanPad
         <picture>https://img.al-style.kz/69661_2.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
@@ -59295,7 +59294,7 @@ Google TV™ объединяет 400 000+ фильмов, сериалов и многого другого в 10 000+ при
         <picture>https://img.al-style.kz/70291_3.jpg</picture>
         <vendor>ASRock</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор 27" ASRock PG27QFT2A
 
 Особенности и преимущества:
@@ -60591,6 +60590,25 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
 - Гарантия: 1 год</description>
       </offer>
 
+  <offer id="AS71378">
+        <vendorCode>AS71378</vendorCode>
+        <name>Источник бесперебойного питания CyberPower HSTP3T400KE</name>
+        <price>44445900</price>
+        <vendor>CyberPower</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>CyberPower HSTP3T400KE Трехфазный онлайн-ИБП обеспечивает длительное резервное питание для IT шкафов, транспорта, инфраструктуры и аварийных систем. Благодаря возможности параллельного резервирования ИБП серии HSTP3T (3-фазный) идеально подходят для критически важных приложений в серверных помещениях, центрах обработки данных, промышленных предприятиях и электростанциях, требующих высокой производительности, высокой надежности и увеличенного времени работы.
+
+Благодаря встроенной технологии IGBT и интеллектуальному управлению на основе DSP, ИБП производит меньше входных гармонических искажений (THDi) и достигает более высокой энергоэффективности до 98% в экономичном режиме. Более высокая операционная эффективность означает меньшее тепловыделение в БТЕ и пониженное энергопотребление в режиме холостого хода, что приводит к сокращению эксплуатационных расходов и уменьшению выбросов углекислого газа.
+
+Для повышения эффективности работы система ИБП в нормальных условиях работает в режиме байпаса, в течение которого инвертор находится в режиме ожидания. Во время сбоев питания ИБП переключается в режим работы от батарей, а инвертор непрерывно подает критическую нагрузку на подключенное оборудование.
+
+Гарантийное обслуживание ИБП будет возможно только в случае проведения установки, монтажа и запуска в работу ТОЛЬКО сертифицированным производителем сервисным инженером на основании акта ввода оборудования в эксплуатацию.
+
+Характеристики:
+- Гарантия: 2 года</description>
+      </offer>
+
   <offer id="AS71379">
         <vendorCode>AS71379</vendorCode>
         <name>Источник бесперебойного питания CyberPower OLS3S20KEXL</name>
@@ -60601,6 +60619,25 @@ Dolby Audio: Единственный продукт из бюджетного сегмента, поддерживающий Dolby A
         <description>CyberPower OLS3S20KEXL гарантирует защиту источников резервного питания для информационно-технического оборудования, серверов, рабочих станций, NAS / устройств хранения данных, телекоммуникационных устройств, сетевых устройств, систем безопасности / систем аварийного питания, а также систем видеонаблюдения. Данный ИБП использует топологию двойного преобразования для обеспечения высококачественной выходной мощности с дополнительным ECO-режимом, что позволяет экономить электроэнергию и сократить расходы на нее. Данный ИБП поддерживает параллельное расширение, позволяя подключать несколько ИБП, обеспечивая системное резервирование. Он совместим с генераторам, что дает возможность продлить время бесперебойного питания, а также с сервисным байпасным переключателем для обеспечения быстрого и безопасного обслуживания без необходимости отключения ИБП и подключенного оборудования. Устройство может быть подключено к Переключателю аварийного питания (EPO), что позволяет пользователям незамедлительно отключать ИБП в аварийных ситуациях.
 
 ИБП может использовать Расширенные батарейные модули (EBM) для увеличения времени автономной работы, а также функцию Интеллектуального управления батареей (SBM), чтобы повысить эффективность процесса зарядки батарей, что, в свою очередь, увеличит срок службы батарей. Данная модель также оснащается многофункциональным ЖК-дисплеем для отображения информации о состоянии системы питания и аккумуляторных батарей. Программное обеспечение PowerPanel по управлению электропитанием позволяет пользователю в реальном времени осуществлять мониторинг и дистанционное управление ИБП.
+
+Гарантийное обслуживание ИБП будет возможно только в случае проведения установки, монтажа и запуска в работу ТОЛЬКО сертифицированным производителем сервисным инженером на основании акта ввода оборудования в эксплуатацию.
+
+Характеристики:
+- Гарантия: 2 года</description>
+      </offer>
+
+  <offer id="AS71380">
+        <vendorCode>AS71380</vendorCode>
+        <name>Источник бесперебойного питания CyberPower HSTP3T90KE</name>
+        <price>16302900</price>
+        <vendor>CyberPower</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>CyberPower HSTP3T90KE Трехфазный онлайн-ИБП обеспечивает длительное резервное питание для IT шкафов, транспорта, инфраструктуры и аварийных систем. Благодаря возможности параллельного резервирования ИБП серии HSTP3T (3-фазный) идеально подходят для критически важных приложений в серверных помещениях, центрах обработки данных, промышленных предприятиях и электростанциях, требующих высокой производительности, высокой надежности и увеличенного времени работы.
+
+Благодаря встроенной технологии IGBT и интеллектуальному управлению на основе DSP, ИБП производит меньше входных гармонических искажений (THDi) и достигает более высокой энергоэффективности до 98% в экономичном режиме. Более высокая операционная эффективность означает меньшее тепловыделение в БТЕ и пониженное энергопотребление в режиме холостого хода, что приводит к сокращению эксплуатационных расходов и уменьшению выбросов углекислого газа.
+
+Для повышения эффективности работы система ИБП в нормальных условиях работает в режиме байпаса, в течение которого инвертор находится в режиме ожидания. Во время сбоев питания ИБП переключается в режим работы от батарей, а инвертор непрерывно подает критическую нагрузку на подключенное оборудование.
 
 Гарантийное обслуживание ИБП будет возможно только в случае проведения установки, монтажа и запуска в работу ТОЛЬКО сертифицированным производителем сервисным инженером на основании акта ввода оборудования в эксплуатацию.
 
@@ -61317,7 +61354,7 @@ USB-кабель
   <offer id="AS72158">
         <vendorCode>AS72158</vendorCode>
         <name>Протяжный Сканер Canon imageFORMULA DR-S250N</name>
-        <price>304900</price>
+        <price>476900</price>
         <picture>https://img.al-style.kz/72158_1.jpg</picture>
         <picture>https://img.al-style.kz/72158_2.jpg</picture>
         <picture>https://img.al-style.kz/72158_3.jpg</picture>
@@ -61392,7 +61429,7 @@ USB-кабель
   <offer id="AS72498">
         <vendorCode>AS72498</vendorCode>
         <name>Тонер-картридж Canon TONER T09 CYAN 3019C006AA</name>
-        <price>131900</price>
+        <price>134900</price>
         <picture>https://img.al-style.kz/72498_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -61431,7 +61468,7 @@ Canon i-SENSYS X C1127iCanon i-SENSYS X C1127iFCanon i-SENSYS X C1127P
   <offer id="AS72499">
         <vendorCode>AS72499</vendorCode>
         <name>Тонер-картридж Canon TONER T09 MAGENTA 3018C006AA</name>
-        <price>131900</price>
+        <price>134900</price>
         <picture>https://img.al-style.kz/72499_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -61470,7 +61507,7 @@ Canon i-SENSYS X C1127iCanon i-SENSYS X C1127iFCanon i-SENSYS X C1127P
   <offer id="AS72500">
         <vendorCode>AS72500</vendorCode>
         <name>Тонер-картридж Canon TONER T09 YELLOW 3017C006AA</name>
-        <price>131900</price>
+        <price>134900</price>
         <picture>https://img.al-style.kz/72500_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -61509,7 +61546,7 @@ Canon i-SENSYS X C1127iCanon i-SENSYS X C1127iFCanon i-SENSYS X C1127P
   <offer id="AS72501">
         <vendorCode>AS72501</vendorCode>
         <name>Тонер-картридж Canon TONER T09 BLACK 3020C006AA</name>
-        <price>89900</price>
+        <price>91900</price>
         <picture>https://img.al-style.kz/72501_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -62680,7 +62717,7 @@ Canon PIXMA TS9540Canon PIXMA TS6340
   <offer id="AS73801">
         <vendorCode>AS73801</vendorCode>
         <name>Струйный картридж Canon CLI-481 Black</name>
-        <price>9900</price>
+        <price>10900</price>
         <picture>https://img.al-style.kz/73801_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -63340,7 +63377,7 @@ MateBook D 16 поддерживает Wi-Fi 6, оснащён широким набором портов, включая два 
   <offer id="AS74472">
         <vendorCode>AS74472</vendorCode>
         <name>Тонер-картридж Canon C-EXV 47 BLACK для IR ADVANCE C250i /C350i</name>
-        <price>48900</price>
+        <price>49900</price>
         <picture>https://img.al-style.kz/74472_1.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
@@ -63862,7 +63899,30 @@ APC Smart-UPS SRTG15KXLI обеспечивает чистое синусоидальное питание и увеличенно
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
-        <description>Характеристики:
+        <description>Монитор 34" LG 34WR50QK-B Black
+
+Особенности и преимущества:
+
+Монитор UltraWide  QHD (3440x1440) с изогнутостью 1800R и соотношением сторон 21:9 отлично подходит для работы, поскольку на нем можно видеть сразу несколько программ.
+На мониторе 34WR50QK можно просматривать различное содержимое с двух компьютеров благодаря функции Picture By Picture, что повышает эффективность работы.
+Режим чтения регулирует цветовую температуру и яркость, что помогает снизить утомляемость глаз и обеспечить комфорт во время чтения документов на мониторе.
+Функция  Отсутствие мерцания  сокращает невидимое мерцание на экране, тем самым уменьшая напряженность глаз. Это обеспечивает комфортные условия для работы в течение длительного времени.
+
+Порты:
+
+HDMI x2
+DisplayPort x1
+USB Type C
+
+В коробке:
+
+Адаптер питания
+Кабель питания
+Кабель HDMI
+Кабель Display Port
+Calibration Report (Paper)
+
+Характеристики:
 - Вес: 8.4
 - Гарантия: 1 год</description>
       </offer>
@@ -67005,6 +67065,147 @@ USB-C x1
 - Время отклика: 5 мс</description>
       </offer>
 
+  <offer id="AS78338">
+        <vendorCode>AS78338</vendorCode>
+        <name>Монитор 32" LG 32UN880K-B</name>
+        <price>355900</price>
+        <vendor>LG</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Монитор 32" LG 32UN880K-B
+
+Особенности и преимущества:
+
+Чёткий и большой дисплей для визуального комфорта. Благодаря поддержке DCI-P3 и HDR10, монитор LG UltraFine  Ergo обеспечивает исключительное качество изображения. 31,5-дюймовый 4K IPS-дисплей гарантирует комфортный просмотр, минимизируя искажение цветов при изменении угла обзора.
+
+Идеально подстраивается под уровень глаз. Улучшенная гибкость подставки Ergo обеспечивает расширенные возможности эргономичной настройки: выдвижение, втягивание, поворот, разворот, регулировку высоты и наклона. Это позволяет точно настроить положение экрана для более комфортного и длительного использования.
+
+Подходит для работы в любом положении. Подставка Ergo   это полезная инновация для всех, кто проводит много времени за рабочим столом. Технологически и эргономически продвинутая подставка LG способствует поддержанию правильной осанки благодаря широкому диапазону настроек, позволяя каждому пользователю создать идеально адаптированное рабочее пространство.
+
+Используйте рабочее пространство по максимуму. Компактный дизайн подставки Ergo занимает минимум места на рабочем столе и упрощает установку. Способствуя созданию аккуратного и организованного пространства, решение с одним кабелем USB-C обеспечивает быструю передачу данных и зарядку ноутбука   всё через один удобный кабель.
+
+Переключайтесь быстро. Приложение LG Switch помогает оптимизировать монитор под ваши рабочие и личные задачи. Вы можете легко разделить экран на до 6 зон, изменить оформление темы или даже запустить платформу для видеозвонков с помощью назначенной горячей клавиши.
+
+Порты:
+
+HDMI x2
+DisplayPort x1
+USB-A x2
+USB-C x1
+Выход для наушников
+
+Что в коробке:
+
+Кабель питания
+Адаптер питания
+Кабель HDMI
+Кабель USB-C
+
+Характеристики:
+- Гарантия: 1 год</description>
+      </offer>
+
+  <offer id="AS78339">
+        <vendorCode>AS78339</vendorCode>
+        <name>Монитор 27" LG 27UP850K-W</name>
+        <price>213900</price>
+        <vendor>LG</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Характеристики:
+- Вес: 8.9
+- Гарантия: 1 год</description>
+      </offer>
+
+  <offer id="AS78340">
+        <vendorCode>AS78340</vendorCode>
+        <name>Монитор 34" LG 34WR55QK-B</name>
+        <price>213900</price>
+        <vendor>LG</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Монитор 34" LG 34WR55QK-B
+
+Особенности и преимущества:
+
+Больше обзора   больше возможностей. Монитор UltraWide  QHD (3440x1440) с кривизной 1800R и соотношением сторон 21:9 идеально подходит для работы, позволяя одновременно отображать несколько программ на одном экране.
+
+Быстрая настройка для эффективной многозадачности. Модель 34WR55QK позволяет одновременно отображать контент с двух компьютеров благодаря функции Picture-by-Picture (PBP), что способствует более эффективной работе.
+
+Переключайтесь быстро. Приложение LG Switch помогает оптимизировать монитор под ваши рабочие и личные задачи. Вы можете легко разделить экран на до 6 зон, изменить оформление темы или даже запустить платформу для видеозвонков с помощью назначенной горячей клавиши.
+
+Полюбуйтесь удивительными цветами. Технология HDR применяется в различных типах контента. Этот монитор совместим с промышленным стандартом HDR10 (High Dynamic Range) и охватывает 99% цветового пространства sRGB, обеспечивая поддержку определённых уровней яркости и цвета. Это позволяет зрителям наслаждаться насыщенными и выразительными оттенками при просмотре контента.
+
+Простое управление и подключение. Порты USB Type-C  обеспечивают передачу изображения, данных и зарядку подключённых устройств (до 65 Вт), позволяя поддерживать работу ноутбука   всё это через один единственный кабель.
+
+Разнообразие интерфейсов. Данный монитор оснащён разъёмами USB Type-C , DisplayPort, HDMI и USB (Downstream 3.0), что обеспечивает совместимость с существующими устройствами для стабильной передачи изображения. Также предусмотрен выход на наушники, поддерживающий аппаратное подключение.
+
+Просто и удобно. Добейтесь оптимального положения с помощью эргономичной подставки: простая установка в одно нажатие и лёгкая регулировка высоты и наклона для комфортного просмотра.
+
+Порты:
+
+HDMI x2
+DisplayPort x1
+USB-A x2
+USB-C x1
+Выход для наушников
+
+Что в коробке:
+
+Кабель питания
+Адаптер питания
+Кабель HDMI
+Кабель USB-C
+
+Характеристики:
+- Гарантия: 1 год</description>
+      </offer>
+
+  <offer id="AS78342">
+        <vendorCode>AS78342</vendorCode>
+        <name>Монитор 27" LG 27GS85Q-B</name>
+        <price>195900</price>
+        <vendor>LG</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Монитор 27" LG 27GS85Q-B
+
+Особенности и преимущества:
+
+Погрузитесь в бурный поток ярких красок. Ускорьте свой игровой мир с помощью скорости разгона до 200Hz. Оживите игровой процесс благодаря разрешению QHD, широким углам обзора Nano IPS и потрясающей частоте обновления с разгоном до 200Hz.
+
+Улучшенная скорость. Новый стандарт. Мы повысили стандарт скорости UltraGear до 200Hz. Вы сможете наслаждаться сверхчетким и плавным изображением благодаря частоте обновления 200Hz (разгон), которая загружает изображения 200 раз в секунду.
+
+Блестящая игра с широкого угла обзора. Технология Nano IPS передает игровые сцены ярко и с высокой точностью цветопередачи, а расширенный цветовой спектр DCI-P3 98% позволяет наслаждаться необычайно яркими игровыми впечатлениями.
+
+Превосходные цветовые характеристики. Этот монитор поддерживает 98%-ный охват спектра DCI-P3 благодаря применению наноразмерных частиц в Nano IPS, что обеспечивает яркую цветопередачу.
+
+Создан для непревзойденной скорости. Дисплей Nano IPS с частотой 1ms минимизирует послесвечение и обеспечивает быстрое время отклика, позволяя вам насладиться совершенно новыми игровыми возможностями.
+
+Погружение в игру с реалистичными цветами. Этот монитор воспроизводит цвета с высокой точностью благодаря технологии VESA DisplayHDR  400, позволяя геймерам видеть яркие цвета, задуманные разработчиками игр, независимо от поля боя.
+
+Дизайн, созданный для геймеров. Улучшите процесс игры благодаря конструкции с практически незаметной рамкой с 3 сторон для захватывающего просмотра. С помощью регулируемой подставки можно изменять наклон, высоту и поворот.
+
+Порты:
+
+HDMI x2
+DisplayPort x1
+USB-A x3
+Выход для наушников
+
+Что в коробке:
+
+Кабель питания
+Адаптер питания
+Кабель HDMI
+Кабель DisplayPort
+Кабель USB A to B
+
+Характеристики:
+- Вес: 8.6
+- Гарантия: 1 год</description>
+      </offer>
+
   <offer id="AS78372">
         <vendorCode>AS78372</vendorCode>
         <name>Широкоформатный принтер Canon imagePROGRAF TC-21</name>
@@ -67785,6 +67986,94 @@ Canon i-SENSYS MF287DW
 - Гарантия: 1 год</description>
       </offer>
 
+  <offer id="AS79259">
+        <vendorCode>AS79259</vendorCode>
+        <name>Монитор 32" LG 32GS95UV-B</name>
+        <price>685900</price>
+        <vendor>LG</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Монитор 32" LG 32GS95UV-B
+
+Особенности и преимущества:
+
+Новый жанр игрового монитора. Станьте свидетелем революции в мире технологий с Dual-Mode. Данный монитор открывает новый жанр, удовлетворяя потребности всех геймеров и открывая новую эру в игровой индустрии.
+
+Встречайте более широкий 32-дюймовый 4K OLED-дисплей. Побалуйте себя более широкими игровыми возможностями с 32-дюймовым 4K OLED, созданным для геймеров, готовых погрузиться в более широкий мир. Он будет завораживать вас ощущением масштабности.
+
+Совершенство для великолепной игры. Великолепный OLED-дисплей выводит цвета на новый уровень яркости. Благодаря стандартной яркости 275 нит и пиковой яркости 1300 нит этот монитор обеспечивает насыщенное и динамичное изображение, гарантируя, что вы никогда не будете играть в темноте.
+
+Взрыв красок. VESA DisplayHDR True Black 400 оживляет любую сцену, яркую или темную, реалистичными деталями благодаря уровню контрастности 1,5 млн и DCI-P3 98.5% (стандарт).
+
+Чрезвычайно быстрое время отклика 0.03ms. Благодаря времени отклика 0.03ms (GtG), уменьшению гостинга и четкому отображению объектов вы сможете наслаждаться игрой с более плавными движениями и сюрреалистической визуальной плавностью.
+
+Пространственный звук. Глубокий звук от встроенных стереодинамиков 7 Вт x 2 усиливает захватывающий игровой процесс. Благодаря DTS  Virtual:X  до 7.1-каналов ощутите невероятный игровой звук.
+
+Дизайн, созданный для геймеров. Представление нового стиля UltraGear в единообразном шестиугольном дизайне. Организуйте свою собственную игровую комнату с обтекаемым, уникальным дизайном. С помощью регулируемой подставки можно изменять шарнир, наклон и высоту, а регулировка поворота позволяет играть в игры еще удобнее.
+
+Порты:
+
+HDMI x2
+DisplayPort x1
+USB-A x2
+Выход для наушников
+
+Что в коробке:
+
+Кабель питания
+Адаптер питания
+Кабель HDMI
+Кабель DisplayPort
+Кабель USB
+
+Характеристики:
+- Гарантия: 1 год</description>
+      </offer>
+
+  <offer id="AS79260">
+        <vendorCode>AS79260</vendorCode>
+        <name>Монитор 27" LG 27GS95QE-B</name>
+        <price>504900</price>
+        <vendor>LG</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Монитор 27" LG 27GS95QE-B
+
+Особенности и преимущества:
+
+Создан для игры. Самый яркий игровой OLED-монитор с частотой 240Hz и временем отклика 0.03ms (GtG).
+
+Блеск во всех ваших играх. Погрузитесь в игровой процесс с OLED, сохраняющим красочность сцен и обеспечивающим яркие цвета, во что бы вы ни играли. Улучшите свой игровой процесс с помощью этого великолепного OLED-дисплея.
+
+Показывайте только свою игру. Применение технологии антибликового покрытия и низкого уровня отражения обеспечивает более приятные впечатления от просмотра, уменьшая отвлечение от экрана даже в условиях недостаточного освещения.
+
+OLED с молниеносной скоростью. Новый монитор LG UltraGear  обеспечивает сверхскоростную частоту обновления 240Hz и время отклика 0.03ms (GtG) на OLED-дисплее.
+
+Невероятная скорость, частота обновления OLED 240Hz. Повышенная скорость 240Hz позволяет быстро увидеть следующий кадр во время игры, обеспечивая плавность отображения изображений. Это помогает геймерам быстро реагировать на противников и легко прицеливаться.
+
+Чрезвычайно быстрое время отклика 0.03ms. Благодаря времени отклика 0.03ms (GtG), уменьшению обратных ореолов и четкому отображению объектов позвольте себе наслаждаться игрой с более плавными движениями и сюрреалистической визуальной плавностью.
+
+Дизайн, созданный для геймеров. Улучшите процесс игры благодаря новой шестиугольной подсветке и конструкции с практически незаметной рамкой с 4 сторон. С помощью регулируемой подставки можно изменять шарнир, наклон и высоту, а регулировка поворота позволяет играть в игры еще удобнее.
+
+Порты:
+
+HDMI x2
+DisplayPort x1
+USB-A x3
+Выход для наушников
+
+Что в коробке:
+
+Кабель питания
+Адаптер питания
+Кабель HDMI
+Кабель DisplayPort
+Кабель USB A to B
+
+Характеристики:
+- Гарантия: 1 год</description>
+      </offer>
+
   <offer id="AS79262">
         <vendorCode>AS79262</vendorCode>
         <name>Монитор 27" LG 27GS60QC-B</name>
@@ -67828,6 +68117,49 @@ DisplayPort x1
 - Видеовыход: HDMI / DP</description>
       </offer>
 
+  <offer id="AS79263">
+        <vendorCode>AS79263</vendorCode>
+        <name>Монитор 24" LG 24BA650-B</name>
+        <price>133900</price>
+        <vendor>LG</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Монитор 24" LG 24BA650-B
+
+Особенности и преимущества:
+
+Точная цветопередача при широких углах. Монитор LG Full HD (1920x1080) с технологией IPS обеспечивает чёткую и равномерную цветопередачу. Он обеспечивает точную цветопередачу и позволяет просматривать изображение под широким углом.
+
+Универсальные бизнес-мониторы для различных рабочих пространств. Этот универсальный монитор может использоваться для различных работ во многих местах, например, в офисах, государственных учреждениях и службах обслуживания клиентов, благодаря четкому дисплею IPS и практически безрамочному дизайну с трех сторон.
+
+Интегрированный силовой модуль. Благодаря встроенному источнику питания рабочие места можно спроектировать с рациональной и лаконичной планировкой. Это позволяет эффективнее использовать и организовывать пространство, создавая более чистую и эффективную рабочую среду.
+
+Центр производительности с простым подключением. Порт USB Type-C  позволяет передавать данные с дисплея на подключенные устройства и заряжать их (до 65 Вт), обеспечивая одновременную поддержку ноутбука по одному кабелю.
+
+Мультипорты. 24BA650 предлагает широкий выбор портов, решая проблему ограниченного подключения для активных пользователей. Благодаря множеству портов вы можете легко подключить множество устройств для эффективной организации рабочего места. Попрощайтесь с разочарованием из-за нехватки портов.
+
+Эргономичный дизайн. Модель 24BA650 поддерживает регулировку наклона, поворота, вращения и высоты, создавая комфортную рабочую станцию для тех, кто проводит много времени перед мониторами. Кроме того, наша эргономичная подставка облегчает общение с клиентами или коллегами, позволяя регулировать высоту.
+
+Порты:
+
+HDMI x1
+DisplayPort x1
+USB-A x4
+USB-C x1
+Выход для наушников
+
+Что в коробке:
+
+Кабель питания
+Адаптер питания
+Кабель DisplayPort
+Кабель USB-C
+
+Характеристики:
+- Вес: 8.3
+- Гарантия: 1 год</description>
+      </offer>
+
   <offer id="AS79443">
         <vendorCode>AS79443</vendorCode>
         <name>Источник бесперебойного питания Schneider Electric SRVS10KRIRK</name>
@@ -67853,7 +68185,7 @@ Schneider Electric Easy UPS SRVS10KRIRK высококачественный онлайн-ИБП с двойным 
   <offer id="AS79464">
         <vendorCode>AS79464</vendorCode>
         <name>Картридж Canon LBP CARTRIDGE 073</name>
-        <price>202900</price>
+        <price>176900</price>
         <picture>https://img.al-style.kz/79464_1.jpg</picture>
         <picture>https://img.al-style.kz/79464_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -67891,7 +68223,7 @@ Canon I-S LBP361DW
   <offer id="AS79688">
         <vendorCode>AS79688</vendorCode>
         <name>Цветное МФУ Canon Pixma TS9540A</name>
-        <price>231900</price>
+        <price>250900</price>
         <picture>https://img.al-style.kz/79688_1.jpg</picture>
         <picture>https://img.al-style.kz/79688_2.jpg</picture>
         <vendor>Canon</vendor>
@@ -68008,6 +68340,7 @@ Canon I-S LBP361DW
 - Высота в монтажной стойке: 2U
 - Номинальный ток: 9A
 - Удаленный мониторинг: SNMP/HTTP - опцонально с RMCARD205
+- Защита телефонной линии: Есть
 - Рабочая влажность: 0-90% (без конденсации)
 - Цвет: Чёрный</description>
       </offer>
@@ -68101,7 +68434,7 @@ USB-C*1
         <picture>https://img.al-style.kz/80443_3.jpg</picture>
         <vendor>Zowie</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор 24.1" ZOWIE XL2586X+
 ZOWIE XL2586X+   новый быстрый игровой монитор TN 600 Гц DyAc 2 для киберспорта.
 Особенности и преимущества:
@@ -68847,7 +69180,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <picture>https://img.al-style.kz/81709_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор Samsung 32" LS32D700EAIXCI
 
 Особенности и преимущества:
@@ -69040,10 +69373,10 @@ HDMI-кабель x1
 - Гарантия: 1 год</description>
       </offer>
 
-  <offer id="AS83005">
-        <vendorCode>AS83005</vendorCode>
-        <name>Монитор 31,5" LG 32UN650K-W</name>
-        <price>235900</price>
+  <offer id="AS83007">
+        <vendorCode>AS83007</vendorCode>
+        <name>Монитор 40" LG 40U990A-W</name>
+        <price>1020900</price>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
