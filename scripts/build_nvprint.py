@@ -233,7 +233,9 @@ def build_description(item: ET.Element) -> str:
     color  = find_descendant_text(item, ["ЦветПечати"])
     if color: specs.append(f"- Цвет печати: {color.strip()}")
     compat = find_descendant_text(item, ["СовместимостьСМоделями"])
-    if compat: specs.append(f"- Совместимость с моделями: {re.sub(r'\\s+',' ',compat).strip()}")
+    if compat:
+        compat_clean = re.sub(r"\s+", " ", compat).strip()
+        specs.append(f"- Совместимость с моделями: {compat_clean}")
     weight = find_descendant_text(item, ["Вес"])
     if weight: specs.append(f"- Вес: {weight.strip()}")
     prn_list = collect_printers(item)
@@ -281,20 +283,21 @@ def _next_build_1_10_20_at_04() -> datetime:
     now = _almaty_now()
     targets = [1,10,20]
     # кандидаты в этом месяце
-    cands = [now.replace(day=d, hour=4, minute=0, second=0, microsecond=0) for d in targets if d <= 28]
-    # корректировка для 30/31 дней — 1-е след. месяца покроем отдельно
+    cands = []
+    for d in targets:
+        try:
+            cands.append(now.replace(day=d, hour=4, minute=0, second=0, microsecond=0))
+        except ValueError:
+            pass
     future = [t for t in cands if t > now]
     if future:
         return min(future)
     # иначе — 1-е число следующего месяца, 04:00
-    if now.month == 12:
-        return now.replace(year=now.year+1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
-    else:
-        # безопасно: шаг к 1-му числу следующего месяца
-        first_next = (now.replace(day=1, hour=4, minute=0, second=0, microsecond=0)
-                      + timedelta(days=32))
-        first_next = first_next.replace(day=1)
-        return first_next
+    y, m = now.year, now.month
+    if m == 12:
+        y, m = y+1, 1
+    first_next = datetime(y, m, 1, 4, 0, 0)
+    return first_next
 
 def _fmt_alm(dt: datetime) -> str:
     return dt.strftime("%d:%m:%Y - %H:%M:%S")
