@@ -401,7 +401,7 @@ def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
     now_alm  = _almaty_now()
     next_alm = _next_build_1_10_20_at_04()
     rows = [
-        ("Поставщик", "nvprint"),
+        ("Поставщик", "NVPrint"),
         ("URL поставщика", pairs.get("source", "")),
         ("Время сборки (Алматы)", _fmt_alm(now_alm)),
         ("Ближайшее время сборки (Алматы)", _fmt_alm(next_alm)),
