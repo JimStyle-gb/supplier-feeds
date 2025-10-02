@@ -1,35 +1,59 @@
 name: build_vtt
+
 on:
-  schedule:
-    - cron: '0 0 1,10,20 * *'  # 05:00 Asia/Almaty = 00:00 UTC
   workflow_dispatch:
+  schedule:
+    # 00:00 UTC == 05:00 Asia/Almaty в тот же день
+    - cron: "0 0 1,10,20 * *"
 
 concurrency:
   group: build_vtt_${{ github.ref_name }}
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    permissions:
-      contents: write
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # Тайм-гейт: выполняем шаги только когда реально 05:00 в Алматы и день 1/10/20.
+      # При ручном запуске (workflow_dispatch) шаги проходят без ограничений.
+      - name: Check Almaty schedule gate
+        id: check
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timedelta
+          import os
+          now_utc = datetime.utcnow()
+          now_alm = now_utc + timedelta(hours=5)  # Asia/Almaty (UTC+5)
+          day  = now_alm.day
+          hour = now_alm.hour
+          should = 'yes' if (day in (1,10,20) and hour == 5) else 'no'
+          print(f"::notice::Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"run={should}\n")
+          PY
+
       - uses: actions/setup-python@v5
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install deps
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         run: |
           python -m pip install --upgrade pip
           pip install requests beautifulsoup4
 
       - name: Ensure categories file
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         run: |
           mkdir -p docs
           if [ ! -f docs/categories_vtt.txt ]; then
@@ -53,6 +77,7 @@ jobs:
           echo "Using categories:" && cat docs/categories_vtt.txt
 
       - name: Build VTT feed
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         env:
           BASE_URL: https://b2b.vtt.ru
           START_URL: https://b2b.vtt.ru/catalog/
@@ -80,6 +105,7 @@ jobs:
           python scripts/build_vtt.py
 
       - name: Commit & push feed
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
@@ -90,6 +116,6 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "Update vtt.yml (categories crawl)"
+          git commit -m "Update vtt.yml"
           git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
           git push origin "$BRANCH_NAME"
