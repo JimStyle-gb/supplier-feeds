@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-01 21:07">
+<yml_catalog date="2025-10-02 10:16">
   <!--FEED_META
 Поставщик                                  | akcent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 02:10:2025 - 02:07:50
+Время сборки (Алматы)                      | 02:10:2025 - 15:16:22
 Ближайшее время сборки (Алматы)            | 03:10:2025 - 02:00:00
-Сколько товаров у поставщика до фильтра    | 1991
-Сколько товаров у поставщика после фильтра | 113
-Сколько товаров есть в наличии (true)      | 113
+Сколько товаров у поставщика до фильтра    | 1990
+Сколько товаров у поставщика после фильтра | 114
+Сколько товаров есть в наличии (true)      | 114
 Сколько товаров нет в наличии (false)      | 0-->
   <shop>
     <offers>
@@ -69,7 +69,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T671400">
         <vendorCode>ACC13T671400</vendorCode>
         <name>Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K)</name>
-        <price>44900</price>
+        <price>43900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/94b/23nc7h0t6dsigfnw39h01wamhjk05rkj.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -91,7 +91,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACS102ABK43">
         <vendorCode>ACS102ABK43</vendorCode>
         <name>Интерактивная доска Mr.Pixel S102 BLACK</name>
-        <price>256900</price>
+        <price>255900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/8a1/xztzsh0z3lnubxwrilghnufahyjf6zqc.png</picture>
         <vendor>Mr.Pixel</vendor>
         <currencyId>KZT</currencyId>
@@ -102,7 +102,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACS82ABK43">
         <vendorCode>ACS82ABK43</vendorCode>
         <name>Интерактивная доска Mr.Pixel S82 BLACK</name>
-        <price>147900</price>
+        <price>146900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/c81/n89r9s09vqiejojkn8dhzl071dvwoh2x.jpg</picture>
         <vendor>Mr.Pixel</vendor>
         <currencyId>KZT</currencyId>
@@ -113,7 +113,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACSBID-QX275-P">
         <vendorCode>ACSBID-QX275-P</vendorCode>
         <name>Интерактивная панель SBID-QX275-P</name>
-        <price>3554900</price>
+        <price>3541900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/491/1eat55lb6wvp2s78b4clqny11gsfekov.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -132,39 +132,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <prices>
           <price type="Цена дилерского портала KZT" currencyId="KZT">0</price>
         </prices>
-      </offer>
-
-  <offer id="ACC13T13L240">
-        <vendorCode>ACC13T13L240</vendorCode>
-        <name>Картридж Epson C13T13L240 голубой</name>
-        <picture />
-        <vendor>Epson</vendor>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-        <description>Характеристики: - Страна происхождения: Китай - Производитель: Epson - Цвет: Голубой - Гарантия: 12 мес - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 945 стр. - Для бренда: Epson</description>
-        <prices />
-      </offer>
-
-  <offer id="ACC13T13L340">
-        <vendorCode>ACC13T13L340</vendorCode>
-        <name>Картридж Epson C13T13L340 пурпурный</name>
-        <picture />
-        <vendor>Epson</vendor>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-        <description>Картридж Epson C13T13L340 пурпурный Характеристики: - Страна происхождения: Китай - Производитель: Epson - Цвет: Голубой - Гарантия: 12 мес - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 945 стр. - Для бренда: Epson</description>
-        <prices />
-      </offer>
-
-  <offer id="ACC13T13L440">
-        <vendorCode>ACC13T13L440</vendorCode>
-        <name>Картридж Epson C13T13L440 жёлтый</name>
-        <picture />
-        <vendor>Epson</vendor>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-        <description>Картридж Epson C13T13L440 жёлтый Характеристики: - Страна происхождения: Китай - Производитель: Epson - Гарантия: 12 мес - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 945 стр. - Для бренда: Epson - Цвет: жёлтый</description>
-        <prices />
       </offer>
 
   <offer id="ACC13T27914022">
@@ -203,7 +170,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T692100">
         <vendorCode>ACC13T692100</vendorCode>
         <name>Картридж Epson C13T692100 T3000/5000/7000, Т3200/5200/7200  фото черный</name>
-        <price>51900</price>
+        <price>50900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/f3e/s3gcxq4vbvyay96nmx1la4hichwzh5y9.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -225,7 +192,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T965140">
         <vendorCode>ACC13T965140</vendorCode>
         <name>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</name>
-        <price>189900</price>
+        <price>188900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/e6f/4gmrxkkwlwu90wuwsqyqj47wf022ikkr.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -236,7 +203,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T97410N">
         <vendorCode>ACC13T97410N</vendorCode>
         <name>Картридж Epson C13T97410N WorkForce Pro WF-C869R черный</name>
-        <price>328900</price>
+        <price>327900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/5e7/jv3mwq7s1q18gs57bnguv3g1vdz1d6h4.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -247,7 +214,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T97420N">
         <vendorCode>ACC13T97420N</vendorCode>
         <name>Картридж Epson C13T97420N WorkForce Pro WF-C869R голубой</name>
-        <price>578900</price>
+        <price>576900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/7b0/63pnrhjjkjqbdc98xzcq1lzikfwofww4.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -258,7 +225,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T97430N">
         <vendorCode>ACC13T97430N</vendorCode>
         <name>Картридж Epson C13T97430N WorkForce Pro WF-C869R пурпурный</name>
-        <price>578900</price>
+        <price>576900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/550/4ynk21nx0cc31w6030irwh5fsi1zuck3.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -269,7 +236,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T97440N">
         <vendorCode>ACC13T97440N</vendorCode>
         <name>Картридж Epson C13T97440N WorkForce Pro WF-C869R желтый</name>
-        <price>578900</price>
+        <price>576900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/286/ejkdara2zlw4nzamqzvrwu65bi9iipjr.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -357,7 +324,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACXG320U">
         <vendorCode>ACXG320U</vendorCode>
         <name>Монитор ViewSonic XG320U</name>
-        <price>418900</price>
+        <price>417900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/2df/bfr7ax0t9qzxq3pm0p2w0erb2fvcqnop.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -368,7 +335,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CH96404">
         <vendorCode>ACC11CH96404</vendorCode>
         <name>МФУ Epson L14150 фабрика печати</name>
-        <price>521900</price>
+        <price>519900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/e01/i7xpt3gv7ue9szoaw0zmrh90in3ra05i.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -379,7 +346,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CH72404">
         <vendorCode>ACC11CH72404</vendorCode>
         <name>МФУ Epson L15150 фабрика печати</name>
-        <price>946900</price>
+        <price>942900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/850/htr5v7efov1369os0yacsrphvrryff1u.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -423,18 +390,29 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ66409">
         <vendorCode>ACC11CJ66409</vendorCode>
         <name>МФУ Epson L3260 фабрика печати, Wi-Fi</name>
-        <price>183900</price>
-        <picture />
+        <price>182900</price>
+        <picture>https://b2b.ak-cent.kz/upload/iblock/076/66np35qtaxhae6ndwy7bxai6belswrkv.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Домашний струйный принтер Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct и ЖК-экраном Печать, сканирование и копирование Wi-Fi Direct ЖК-экран Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту&#185; вы с легкостью сможете выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета. Постоянная экономия Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет&#178;, обеспечивает значительную экономию средств при печати. Сменный набор чернильных флаконов может использоваться для печати до 4500 страниц в черном цвете и до 7500 страниц в цвете&#179;. Приложение Epson Smart Panel Приложение позволяет управлять принтером с мобильного устройства&#8308;. Вы можете быстро и легко настроить Wi-Fi, распечатать документы и фотографии, контролировать и устранять неисправности принтера. Гибкость, отвечающая современным требованиям Благодаря компактному дизайну, возможностям подключения Wi-Fi и Wi-Fi Direct этот принтер можно легко интегрировать в существующую домашнюю систему для печати с мобильных устройств, планшетов и ноутбуков&#8308;. Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 59 Сопла (цвет) Минимальный размер капли 3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5.760 x 1.440 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия Скорость печати ISO/IEC 24734 10 Стр./мин. Монохромная печать, 5 Стр./мин. Colour Максимальная скорость печати 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 15 Стр./мин. Colour (plain paper 75 g/m&#178;), 69 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Цвета Black, Cyan, Yellow, Magenta Скорость одностороннего сканирования (A4, черный) 200 DPI (точек на дюйм); , 11 sec. with flatbed scan Single-sided scan speed (A4 colour) 200 DPI (точек на дюйм); , 28 sec. with flatbed scan Разрешение сканирования 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG Тип сканера Контактный датчик изображения (CIS) Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A6 (10,5x14,8 см) , A5 (14,8x21,0 см) , B5 , 10 x 15 см , 13 x 18 см , 16:9 , DL (Конверт), No. 10 (Конверт) , C6 (Конверт) , Letter , Выбрать формат, Legal Дуплекс Вручную Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 100 Листы Стандарт, 20 Листы фотобумаги Обработка мультимедиа Печать без полей Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,7 Ватт (sleep mode), 4,3 Ватт Готов, 0,2 Ватт (выключать) Напряжение питания AC 100 V - 240 V Габариты 375 x 347 x 179 мм (Ширина x Глубина x Высота) Вес 4 кг Уровень шума 6,3 B (A) with Epson Premium Glossy Photo Paper / Photo RPM mode - 51 dB (A) with Epson Premium Glossy Photo Paper / Photo RPM mode Совместимые операционные системы Mac OS X 10.6.8 or later, Windows 10, Windows 7, Windows 8, Windows 8.1, Windows Vista, Windows XP, XP Professional x64 Edition Встроенное программное обеспечение Epson Scan Интерфейсы USB, WiFi, Wi-Fi Direct Безопасность WLAN WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA2 PSK (AES) Услуги мобильной и облачной печати Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google Cloud Print, Epson Smart Panel App Энергоснабжение 100V, 110V, 220V, 240V Комплект поставки 4 x 65ml individual ink bottles (Bk, C,Y,M), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Программное обеспечение (CD), Гарантийные документы Цвет черный Характеристики: - Автоподатчик: нет - Двусторонняя печать: нет - ЖК дисплей: нет - Интерфейс: USB, тип B - Наименование производителя: Epson L3260 - Производитель: Epson - Гарантия: 12 мес - Тип: МФУ Офис - Тип печати: струйная - Формат: A4 - Цветность: 4 цвета - Тип чернил: водорастворимые - Вид: МФУ Офис</description>
       </offer>
 
+  <offer id="ACC11CK59404">
+        <vendorCode>ACC11CK59404</vendorCode>
+        <name>МФУ Epson L3550 фабрика печати, Wi-Fi</name>
+        <price>179900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>МФУ с чернильными емкостями для печати дома Высокоскоростной цветной принтер 3-в-1 формата A4 с поддержкой Wi-Fi Direct Печать, сканирование, копирование Поддержка Wi-Fi Direct Черный Благодаря отсутствию картриджей МФУ (принтер-копир-скан) с поддержкой Wi-Fi Direct подойдет тем, кому необходимо высокое качество при низкой себестоимости печати. Решайте разнообразные задачи благодаря заднему лотку на 100 листов, функции печати фотографий без полей (размером до 10&#215;15 см), а также скорости печати до 15 страниц в минуту&#185;. При необходимости емкость для отработанных чернил легко заменить самостоятельно без обращения в сервисный центр. Забудьте о дорогих картриджах Устройства серии EcoTank с чернильными емкостями большого объема — это удобное решение для печати дома. Модели оснащены усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Еще больше экономии Чернил в комплекте хватит на три года использования&#179;, благодаря чему экономия составит до 90 % стоимости чернил&#178;. Одного комплекта чернил достаточно для печати 4 300 черно-белых страниц и 7 300 цветных страниц &#8308;. Приложение Epson Smart Panel Приложение позволяет управлять принтером с умных устройств&#8309;. Вы сможете легко и быстро настроить Wi-Fi, печатать документы, контролировать состояние принтера и устранять неисправности. Современные гибкие возможности Благодаря компактному дизайну, а также поддержке Wi-Fi и Wi-Fi Direct вы легко сможете интегрировать новый принтер в существующую экосистему и печатать со смартфонов, планшетов и ноутбуков&#8309;. Технология холодной печати Epson Heat-Free Технология PrecisionCore Heat-Free, не использующая нагрев при печати, помогает экономить электроэнергию и деньги за счет меньшего количества деталей, подлежащих регулярной замене. В отличие от принтеров других производителей, модель поставляется с установленной печатающей головкой и не требует сложной настройки. Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 4.800 x 1.200 DPI (точек на дюйм) Многофункциональный Печать, сканирование, Копия Печать Количество цветов 4 colour Скорость печати ISO/IEC 24734 15 Стр./мин. Монохромная печать, 8 Стр./мин. Colour Максимальная скорость печати 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 20 Стр./мин. Colour (plain paper 75 g/m&#178;) Время до первой страницы Монохромная печать 9 секунд, Colour 15 секунд Цвета Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye] Colours Capacity Black [65ml], Cyan [65ml], Yellow [65ml], Magenta [65ml] Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Скорость одностороннего сканирования (A4, черный) 11 sec. with flatbed scan Single-sided scan speed (A4 colour) 28 sec. with flatbed scan Разрешение сканирования 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG, PDF multi Тип сканера Контактный датчик изображения (CIS) Спецификации бумаги и датчики Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , B6, C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , 100 x 148 мм , 10 x 15 см , 13 x 18 см , 9 x 13 см, 16:9 Дуплекс Вручную Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 100 Листы Стандарт Подходящий вес бумаги 64 - 300г/м2 Обработка мультимедиа Печать без полей Общее Recommended number of users From: 1 To: 2 Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,8 Ватт (sleep mode), 5,4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,19 kWh/week Напряжение питания AC 220 V - 240 V Габариты 375 x 347 x 179 мм (Ширина x Глубина x Высота) Вес 4,1 кг Уровень шума 5,1 B (A) with Epson Premium Glossy Photo Paper / Photo RPM mode - 41 dB (A) with Epson Premium Glossy Photo Paper / Photo RPM mode Совместимые операционные системы Mac OS X 10.9.5 or later, Windows 10 (32/64 bit), Windows 11 or later, Windows 7 (32/64 bit), Windows 8 (32/64 bit), Windows 8.1 (32/64 bit), Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 R2, Windows Server 2016, Windows Vista (32/64 bit), Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later, macOS 11 or later Интерфейсы USB, WiFi, Wi-Fi Direct Безопасность WLAN WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA2 PSK (AES), WPA3-SAE(AES) Услуги мобильной и облачной печати Apple AirPrint, Epson Smart Panel App, Epson Connect (Email Print, Remote Print Driver) Энергоснабжение 220V, 240V Комплект поставки 4 x 65ml individual ink bottles (Bk,C,Y,M) + 1 extra black ink bottle, Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы Цвет Black Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Гарантия: 12 мес - Тип: МФУ Дом - Вид: МФУ Дом</description>
+      </offer>
+
   <offer id="ACC11CJ63412">
         <vendorCode>ACC11CJ63412</vendorCode>
         <name>МФУ Epson L4260 фабрика печати</name>
-        <price>243900</price>
+        <price>242900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/7bd/08volzcxquckbulpwd8vc4qric0nbc3k.png</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -445,7 +423,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ63413">
         <vendorCode>ACC11CJ63413</vendorCode>
         <name>МФУ Epson L4267 фабрика печати</name>
-        <price>243900</price>
+        <price>242900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/d48/mvzpp0jxqdf0qwnzxam5v2c3pw7xo0jy.png</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -456,7 +434,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ65407">
         <vendorCode>ACC11CJ65407</vendorCode>
         <name>МФУ Epson L5290  фабрика печати, факс,Wi-Fi</name>
-        <price>310900</price>
+        <price>309900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/ca7/nf3rr4pa3rockbljc48gyy3o0zv4dku9.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -467,7 +445,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CG21404">
         <vendorCode>ACC11CG21404</vendorCode>
         <name>МФУ Epson L6160 фабрика печати, Wi-Fi</name>
-        <price>365900</price>
+        <price>364900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/4b9/tlhtfc43v012br00cwxmujef5klere3p.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -478,7 +456,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ30404">
         <vendorCode>ACC11CJ30404</vendorCode>
         <name>МФУ Epson L6550 фабрика печати, факс,Wi-Fi</name>
-        <price>766900</price>
+        <price>764900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/082/n046j2p2cxwtobyryhqyloq4qkxsmjxo.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -489,7 +467,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ20404">
         <vendorCode>ACC11CJ20404</vendorCode>
         <name>МФУ Epson L8160  фабрика печати, Wi-Fi</name>
-        <price>465900</price>
+        <price>464900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/6a6/447sac7ayrx4kpz6srhqgt50eddky8z4.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -500,7 +478,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ21403">
         <vendorCode>ACC11CJ21403</vendorCode>
         <name>МФУ Epson L8180  фабрика печати</name>
-        <price>529900</price>
+        <price>528900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/620/lt3dvkdj5lpeuxyceyp1mzs58sfjcurb.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -511,7 +489,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ19401">
         <vendorCode>ACC11CJ19401</vendorCode>
         <name>МФУ Epson M2110 (CIS) фабрика печати</name>
-        <price>197900</price>
+        <price>196900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/f25/mz7j1fc8jkudpfx7m2gf9pz7qcrt0csf.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -522,7 +500,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ18404">
         <vendorCode>ACC11CJ18404</vendorCode>
         <name>МФУ Epson M2120 (CIS) фабрика печати</name>
-        <price>197900</price>
+        <price>196900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/447/y3dlqxl9tw2zwix1o39zuyjoy4pwfl8w.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -544,8 +522,8 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ15301A0">
         <vendorCode>ACC11CJ15301A0</vendorCode>
         <name>Плоттер Epson SureColor SC-T3100X</name>
-        <price>2000900</price>
-        <picture />
+        <price>1993900</price>
+        <picture>https://b2b.ak-cent.kz/upload/iblock/86e/g6fr716hqictr8dfcbvci0l9nbueeo3s.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -555,7 +533,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CH79301A0">
         <vendorCode>ACC11CH79301A0</vendorCode>
         <name>Плоттер Epson SureColor SC-T3700E</name>
-        <price>2569900</price>
+        <price>2560900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/86e/g6fr716hqictr8dfcbvci0l9nbueeo3s.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -566,7 +544,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ56301A0">
         <vendorCode>ACC11CJ56301A0</vendorCode>
         <name>Плоттер Epson SureColor SC-T5405</name>
-        <price>2018900</price>
+        <price>2011900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/e71/67tz5dygc970kiihjrdlj0qa75gd7d5x.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -577,7 +555,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CH83301A0">
         <vendorCode>ACC11CH83301A0</vendorCode>
         <name>Плоттер Epson SureColor SC-T7700D</name>
-        <price>4341900</price>
+        <price>4326900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/ad7/lrd72u1az9vw0jasiu1j07jlxlkoz16d.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -588,7 +566,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CK39403">
         <vendorCode>ACC11CK39403</vendorCode>
         <name>Принтер Epson L11050 фабрика печати</name>
-        <price>494900</price>
+        <price>492900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/40b/0kqkc0mhgn3q9c4w4qjzf7v3jyvufpcf.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -599,7 +577,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CD76414">
         <vendorCode>ACC11CD76414</vendorCode>
         <name>Принтер Epson L121 фабрика печати</name>
-        <price>99900</price>
+        <price>98900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/0d4/2udclpes3jwktyz62x9gz5pb8ize77g4.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -632,7 +610,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CK38403">
         <vendorCode>ACC11CK38403</vendorCode>
         <name>Принтер Epson L18050 фабрика печати</name>
-        <price>536900</price>
+        <price>535900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/6cf/0y79lvjhs4nbyggrp59597m34l3t2jf5.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -676,7 +654,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CG26405">
         <vendorCode>ACC11CG26405</vendorCode>
         <name>Принтер Epson M1140 (CIS) фабрика печати</name>
-        <price>190900</price>
+        <price>189900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/fbc/7fwnu9j1zvm63110ptkum8j19kydwb96.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -709,7 +687,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACZD4A042-30EE00EZ">
         <vendorCode>ACZD4A042-30EE00EZ</vendorCode>
         <name>Принтер этикеток Zebra ZD421-30EE чёрный</name>
-        <price>324900</price>
+        <price>323900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/08a/jocnbglebcovzofuisgy30pr6xwxa9o7.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -720,7 +698,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACZD4A042-30EM00EZ">
         <vendorCode>ACZD4A042-30EM00EZ</vendorCode>
         <name>Принтер этикеток Zebra ZD421-30EM чёрный</name>
-        <price>261900</price>
+        <price>260900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/073/v31m7e9dlijzdmukj01tib83et4rb8tz.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -731,7 +709,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACZD4A042-D0EE00EZ">
         <vendorCode>ACZD4A042-D0EE00EZ</vendorCode>
         <name>Принтер этикеток Zebra ZD421-D0EE чёрный</name>
-        <price>295900</price>
+        <price>294900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/19f/t2kigtvyi09umot1n0pwsdcsad7fr3b5.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -742,7 +720,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACZT23142-T0E000FZ">
         <vendorCode>ACZT23142-T0E000FZ</vendorCode>
         <name>Принтер этикеток Zebra ZT231-T0E0 чёрный</name>
-        <price>433900</price>
+        <price>431900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/d1a/q5mc2h7hvh5d550flum9i8qvdtxi7ab1.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -753,18 +731,29 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACLS550WH">
         <vendorCode>ACLS550WH</vendorCode>
         <name>Проектор ViewSonic LS550WH</name>
-        <price>463900</price>
+        <price>461900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/617/3blmz9pzsckyou9popj46cwiilmhy97f.jpg</picture>
-        <vendor>ViewSonic proj</vendor>
+        <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Это первый безламповый короткофокусный WXGA-проектор ViewSonic с яркостью 3000 LED люмен для бизнеса и образования. Используя ведущую в отрасли светодиодную технологию 3-го поколения, он избавляет пользователей от необходимости частой замены ламп и от использования токсичной ртути, создавая более безопасную и экологичную среду, обеспечивая феноменальный срок службы в 30 000 часов и реалистичные цвета с 125% Rec.709. Короткофокусный объектив 0,49 обеспечивает 100-дюймовый экран с расстояния всего 1,06 м, что позволяет исключительно эффективно использовать пространство и избавлять выступающих от ослепляющего света. Сделайте проведение презентаций и уроков простыми благодаря эффективному мгновенному включению/выключению и проецированию с углом наклона 360° для гибкой настройки в конференц-залах/классах малого и среднего размера. Общие параметры Основной цвет:Белый Тип гарантии:в сервисном центре Срок гарантии:12 месяцев Страна производства:Китай Изображение Контрастность:3000000:1 Время отклика (GTG):16мс Цвета:1.07 млрд Глубина цвета:10 bit Проектор Тип проектора:Бизнес, Образование Источник света:LED Технология проекции:DLP Тип DMD:DC3 Проекционная система:DLP Аппаратное разрешение (проектор):1280x800 (WXGA) Поддерживаемое разрешение:VGA(640 x 480) до FullHD(1920 x 1080) Яркость (ANSI LUMEN):2000 Яркость (LED LUMEN):3000 Проекционное отношение (мин):0.49 Проекционное отношение (макс):0.49 Проекционное расстояние:100" @ 1 - 1.5м Срок службы источника света :30000 Контрастность изображения проектора:3000000:1 Размер изображения:30&amp;quot;-300&amp;quot; Расстояние от проектора до экрана:0.63m-1.58m Корр. трапец. искажений вертикальная:+36°/-40° Корр. трапец. искажений горизонтальная:± 40° Смещение проекции:100%+/-5% Оптический зум:Нет Цифровой зум:0.8x-2.0x Свойства объектива:F=2.6, f=6.9mm Сдвиг объектива проектора:Нет Слышимый шум:30dB Интерфейсы и разъемы HDMI вход (количество):1 HDMI доп информация:(HDMI 1.4/ HDCP 1.4) USB (Питание внешних устройств):1 Аудиовход (3.5 мм):1 Аудиовыход (3.5 мм):1 RS232:1 Аудиосистема Встроенные динамики:2 Вт Электропитание Тип блока питания:встроенный Работа от аккумуляторных батарей:нет Энергопотребление:156W Энергопотребление, режим ожидания:&amp;lt;0.5W Упаковка, габариты, вес Расчетный вес товара с упаковкой, кг:3.55 Ширина Упаковки, см:36.5 Высота Упаковки, см:30 Глубина Упаковки, см:18.8 Вес Нетто, кг:2.45 Габариты товара:293x221x115мм Дополнительно Рабочая температура:0~40&#8451; Характеристики: - Производитель: ViewSonic proj - Тип: Проектор - Вид: Проектор</description>
       </offer>
 
+  <offer id="ACV11HB61042">
+        <vendorCode>ACV11HB61042</vendorCode>
+        <name>Проектор для дом. кино Epson EH-TW850 белый</name>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Основные характеристики: Технология: 3LCD с 3-чиповой технологией — обеспечивает яркие, живые цвета и высокую яркость. Разрешение: Full HD (1920&#215;1080) для чёткого изображения. Яркость: Цветовая яркость — 3 400 лм; Белая яркость — 3 400 лм; В эконом режиме — около 2 100 лм. Контрастность: 16 000 : 1 для глубокого изображения чёрного. Цветовой охват: до 16.77 млн цветов, 8 битовая глубина. Дистанция проекции: для 60&#8243; экрана — 1.35 м – 1.64 м. Характеристики: - Гарантия: 12 мес</description>
+        <prices />
+      </offer>
+
   <offer id="ACLS500WH">
         <vendorCode>ACLS500WH</vendorCode>
         <name>Проектор для дом. кино ViewSonic LS500WH</name>
-        <price>432900</price>
+        <price>430900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/17f/ky19oyhto7r65bsqjh7xurb226esh3nb.jpg</picture>
         <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
@@ -775,18 +764,40 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACPX701-4K">
         <vendorCode>ACPX701-4K</vendorCode>
         <name>Проектор для дом. кино ViewSonic PX701-4K</name>
-        <price>649900</price>
+        <price>647900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/72a/i2j9pup446n9z7k4is2wlbaknhe9wgz2.jpg</picture>
-        <vendor>ViewSonic proj</vendor>
+        <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Проектор ViewSonic PX701-4K – это высококачественное решение для домашнего кинотеатра и профессиональных презентаций, которое обеспечит четкое изображение в 4K разрешении и превосходную яркость. Основные характеристики: Разрешение: 4K UHD (3840 x 2160) для невероятной четкости и детализации. Яркость: 3200 ANSI люменов, что позволяет использовать проектор даже в условиях с ярким освещением. Технология цветопередачи: поддержка технологии Cinema SuperColor™, которая обеспечивает точную и насыщенную цветопередачу. Контрастность: 12,000:1, благодаря чему темные сцены становятся более насыщенными, а яркие - более отчетливыми. Лампа: Долговечная лампа с сроком службы до 20,000 часов, что значительно снижает расходы на обслуживание. Подключение: HDMI 2.0, USB Type-A, USB Type-B, VGA, аудио выходы, а также поддержка беспроводных подключений с помощью опционального устройства. Проекционные расстояния: Поддерживает проекцию от 1.2 м до 12 м, в зависимости от размера экрана. Аудио: Встроенные динамики мощностью 10 Вт с поддержкой технологии Smart Sound для качественного звука. Размер проекции: От 30" до 300", с возможностью настройки для разных помещений. Размеры: 301 x 230 x 123 мм. Вес: 3.6 кг – компактный и легко переносимый. Преимущества: Высокая яркость для ярких и четких изображений в любом освещении. Потрясающая четкость 4K для просмотра фильмов, игр или презентаций с максимальной детализацией. Подключение через HDMI 2.0 и USB, что делает его совместимым с различными устройствами. Долговечная лампа с увеличенным сроком службы, что снижает необходимость в частой замене. Поддержка различных форматов контента, включая фильмы, игры и офисные презентации. ViewSonic PX701-4K — идеальный выбор для тех, кто ищет качество 4K и удобство использования в компактном и стильном устройстве. Характеристики: - Страна происхождения: Китай - Гарантия: 2 года - Производитель: ViewSonic proj - Тип: Проектор домашний - Интерфейс HDBaseT/DIGITAL LINK: Нет - Видео вход DVI-D: Нет - USB: Тип A - Видео вход DisplayPort: Нет - Видео вход S-video: Нет - Видео вход VGA: Нет - Вид: Проектор - Тип источника света: Ламповый источник света - Разрешение: 4K Ultra HD (3840x2160) - Технология: DLP - Wi-Fi: Нет - Интерактивный: Нет - Ethernet (RJ-45): Нет - 3D: Нет</description>
       </offer>
 
+  <offer id="ACV11HA84240">
+        <vendorCode>ACV11HA84240</vendorCode>
+        <name>Проектор для дома  Epson CO-FD01</name>
+        <price>404900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Создать впечатление от большого экрана дома легко, если у вас есть проектор Epson CO-FD01, он также идеально подходит для офиса или класса. Вы можете получить впечатляющий 391-дюймовый дисплей и иметь Android TV . Он прост в настройке и имеет яркость 3000 люменов для четкого и яркого изображения. Долговечное решение со сроком службы лампы, обеспечивающим 18 лет развлечений. Источник света: лампа Тип лампы: UHE Типы проекции: фронтальная Тип матрицы: 3LCD Разрешение матрицы: 1920 &#215; 1080 (FHD) Максимальное поддерживаемое разрешение: 1920 &#215; 1080 (FHD) Яркость, ANSI: 3000 лм Контрастность: 350:1 Количество отображаемых цветов: 16.7 млн. Поддержка форматов изображения: 16:9 Проекционное отношение: 1.19...1.61 :1 Коррекция трапецеидальных искажений (°): вертикальная ±30, горизонтальная ±30 Минимальное проекционное расстояние: 0.9 м Максимальное проекционное расстояние: 10.4 м Минимальная диагональ изображения: 0.66 м Максимальная диагональ изображения: 9.93 м Фокусировка: ручная Вертикальная развёртка: 100...120 Гц Интерфейсы и порты: 1 &#215; HDMI 1 &#215; USB-A 2.0 1 &#215; USB-B 2.0 Функциональные особенности: поддержка MHL встроенный динамик Характеристики встроенных динамиков: 1 &#215; 5 Вт Безопасность: разъём Kensington Lock Мощность лампы: 188 Вт Энергопотребление в экономичном режиме: 214 Вт Ресурс лампы: 6000 часов (стандартный режим), 12000 часов (экономичный режим) Вентиляционный шум: 38 дБ Диапазон рабочих температур: 5...40 °C Питание: сеть 220 В Размеры: 295 &#215; 211 &#215; 87 мм Вес: 2.4 кг Цвет: белый Характеристики: - Производитель: Epson Proj - Тип: Проектор для дома - Гарантия: 12 месяцев - Вид: Проектор</description>
+      </offer>
+
+  <offer id="ACV11HA84040">
+        <vendorCode>ACV11HA84040</vendorCode>
+        <name>Проектор для дома  Epson CO-FH01</name>
+        <price>404900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Проектор с разрешением Full HD Воспроизведение на большом экране Любимые фильмы, игры и спорт на большом экране у вас дома Простота настройки Коррекция искажений, разъем HDMI Долговечность До 18 лет&#185; работы Доступное высокотехнологичное оборудование Насладитесь качеством изображения на проекторе с разрешением Full HD 1080p Впечатляюще яркий экран Одинаково высокая цветовая яркость и яркость по белому цвету 3 000 люмен Техника Projection System 3LCD Technology, RGB liquid crystal shutter LCD Panel 0,59 inch with MLA (D10) Image Насыщенность цвета 3.000 Люмен- 2.000 Люмен (экономичный) In accordance with ISO 21118:2020 Насыщенность белого 3.000 Люмен - 2.000 Люмен (экономичный) In accordance with ISO 21118:2020 Разрешение 1080p Высокая четкость (HD) Full HD Aspect Ratio 16:9 Light source Lamp Лампа UHE, 188 Вт, 6.000 в Срок службы, 12.000 в Срок службы (в экономном режиме) Коррекция трапеции Вручную vertical: ± 30 °, Вручную horizontal ± 30 ° Обработка видеоизображения 8 биты 2D Vertical Refresh Rate 100 Гц - 120 Гц Colour Reproduction 16.77 million colours Оптика Соотношение сторон проецируемого изображения 1,19 - 1,61:1 Изменение фокусного расстояния Digital, Factor: 1 - 1,35 Объектив Оптика Размер проекции 26 inches - 391 inches Дистанция проекции широкоугольной 0,9 м - 10,4 м Дистанция проекции Tele 0,9 м - 10,4 м Projection Distance Wide/Tele 1,58 м ( 60 inch screen Projection Lens F Number 1,44 Фокус Вручную Offset 7 : 1 Характеристики: - Производитель: Epson Proj - Тип: Проектор для дома - Вид: Проектор - Гарантия: 12 мес</description>
+      </offer>
+
   <offer id="ACM2">
         <vendorCode>ACM2</vendorCode>
         <name>Проектор короткофокусный ViewSonic M2</name>
-        <price>526900</price>
+        <price>524900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/2d5/e11mki0l86do05rks83ktzd1sviq05u6.jpg</picture>
         <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
@@ -797,12 +808,23 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACV11HA86040">
         <vendorCode>ACV11HA86040</vendorCode>
         <name>Проектор универсальный Epson CO-W01</name>
-        <price>266900</price>
+        <price>265900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/af1/97a1vgcpviwp02bosk7ef0jgjzxlqiiv.png</picture>
-        <vendor>Epson Proj</vendor>
+        <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Создавайте впечатления с большим экраном с помощью этого высококачественного, долговечного и универсального проектора для дома и офиса с разрешением WXGA. Вот проектор, которым может наслаждаться вся семья; от просмотра бокс-сетов до создания ярких презентаций — этот WXGA-проектор имеет все необходимое для работы. Не нужно беспокоиться об окружающем освещении; он создаёт яркий и четкий дисплей с 3000 люмен и технологией 3LCD. Проектор легко транспортировать и устанавливать. Невероятно долгий срок службы лампы означает отличное соотношение цены и качества. Чем больше, тем лучше Независимо от того, смотрите ли вы свой любимый фильм или проводите презентацию, этот проектор может создать впечатляющий 378-дюймовый дисплей. CO-W01 предлагает великолепное качество благодаря технологии 3LCD, которая делает дисплей в три раза ярче, чем продукты конкурентов&#185;, благодаря ярким и живым цветам. От семьи и друзей до коллег по бизнесу и клиентов, он обязательно привлечет внимание каждого. Качественные, яркие изображени Характеристики: - Производитель: Epson Proj - Тип: Проектор универсальный - Вид: Проектор - Гарантия: 12 мес</description>
+      </offer>
+
+  <offer id="ACV11HA86340">
+        <vendorCode>ACV11HA86340</vendorCode>
+        <name>Проектор универсальный Epson CO-WX02</name>
+        <price>318900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Доступный яркий WXGA проектор Технология: LCD: 3 х 0.59" P-Si TFT Разрешение: WXGA (1280х800) Яркость: 3000 ANSI lm Цветовая яркость: 3000 ANSI lm Зум 1,35х (цифровой) Передача изображения по беспроводной сети Wi-fi (опционально) Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Встроенный динамик 5 Вт Моментальное выключение Вес: 2,2 кг Технические характеристики Epson CO-WX02 Состав поставки Проектор Кабель питания 1,8 м Пульт ДУ Руководство пользователя Основные свойства Категория Для офиса и мобильных презентаций Для образования Варианты проекции крепление к потолку обратная фронтальная Используемая технология LCD:3 P-Si TFT ЖК дисплей, дюймы 0.59 Оригинальное разрешение WXGA (1280x800) Поддерживаемые разрешения VGA (640x480) SVGA (800x600) XGA (1024x768) SXGA1 (1152x864) WXGA (1280x800) SXGA2 (1280x960) SXGA3 (1280x1024) WXGA2 (1280x768) WXGA3 (1366x7 Характеристики: - Тип: Проектор универсальный - Вид: Проектор - Гарантия: 12 мес</description>
       </offer>
 
   <offer id="ACV11H973040">
@@ -810,29 +832,29 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <name>Проектор универсальный Epson EB-W06</name>
         <price>432900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/d9f/jspn1h9wcmdq1mcm4zuxqx488zccciqs.png</picture>
-        <vendor>Epson Proj</vendor>
+        <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Проектор Epson EB-W06 создавался с расчетом, чтобы установка и настройка были как можно более быстрыми. Набор функциональных возможностей проектора включает быструю коррекцию трапецеидальных искажений, долгий ресурс лампы и опциональную поддержку Wi-Fi, которая позволяет отображать контент с мобильных устройств с помощью приложения iProjection. Технология: LCD: 3 &#215; 0.59" P-Si TFT Разрешение: WXGA (1280&#215;800) Яркость: 3700 ANSI lm Цветовая яркость: 3700 ANSI lm Контрастность: 16000:1 Зум 1,2&#215; (оптический) Передача изображения по беспроводной сети Wi-fi (опционально) Автоматическая коррекция вертикальных трапецеидальных искажений Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Функция Split Screen Встроенный динамик 2 Вт Фронтальный вывод тепла Моментальное выключение Вес: 2,5 кг Технические характеристики Состав поставки Проектор Кабель питания 1,8 м Кабель для подключения к ПК с 15-контактным разъемом D-Sub (n/n) 1,8м Пульт ДУ Руководство пользователя Основные свойства Категория Для офиса и мобильных презентаций Для образования Варианты проекции к Характеристики: - Сопутствующие товары: Крепление для проектора на потолок Mr. Pixel PRB-2 - Видео вход HDMI: Есть - Производитель: Epson Proj - Тип: Проектор универсальный - Интерфейс HDBaseT/DIGITAL LINK: Нет - Видео вход DVI-D: Нет - USB: Тип A и B - Видео вход DisplayPort: Нет - Видео вход S-video: Нет - Вид: Проектор - Оригинальное разрешение: Оригинальное - Наименование производителя: Epson EB-W06 - Совместимые продукты: V12H005A01,V12H003B23,V12H003P13,V12H003P14,V13H134A32,V13H010L97 - Тип источника света: Ламповый источник света - Технология: 3LCD - Wi-Fi: Опция - Интерактивный: Нет - Ethernet (RJ-45): Нет - Страна происхождения: Китай, Филиппины</description>
       </offer>
 
-  <offer id="ACV11H977040">
-        <vendorCode>ACV11H977040</vendorCode>
-        <name>Проектор универсальный Epson EB-W51</name>
-        <price>504900</price>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/e28/u3dfpp3gk98bu9rz5i6v9agrx6xcjkq7.jpg</picture>
-        <vendor>Epson Proj</vendor>
+  <offer id="ACV11HB35240">
+        <vendorCode>ACV11HB35240</vendorCode>
+        <name>Проектор универсальный Epson EF-21R розовый кварц</name>
+        <price>644900</price>
+        <picture />
+        <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
-        <description>pson EB-W51 — высококачественный, яркий, мобильный проектор для дома и офиса, построенный на базе технологии Epson 3LCD, с разрешением WXGA и набором дополнительных функций для большей гибкости и простоты использования. Смотрите кино на экране диагональю до 300 дюймов. Быстро начинайте деловую презентацию, не тратя время на предварительную настройку — проектор создавался с расчетом, чтобы установка была как можно более быстрой! Благодаря 4000 люмен яркости и технологии 3LCD, цвета на экране будут яркими и точными, а изображение — таким, как задумал режиссер. Пользователю остается лишь наслаждаться просмотром — ресурс одной лампы позволяет смотреть по фильму в день на протяжении 18 лет. Проектор универсальный Epson EB-W51. Технология: LCD: 3 &#215; 0.59" P-Si TFT Разрешение: WXGA (1280&#215;800) Яркость: 4000 ANSI lm Цветовая яркость: 4000 ANSI lm Контрастность: 16000:1 Зум 1,2&#215; (оптический) Передача изображения по беспроводной сети Wi-fi (опционально) Автоматическая коррекция вертикальных трапецеидальных искажений Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Функция Split Screen Встроенный динамик 2 Вт Фронтальный вывод тепла Моментальное выключение Вес: 2,5 кг Технические характеристики Доступный яркий WXGA проектор Технология: LCD: 3 &#215; 0.59" P-Si TFT Разрешение: WXGA (1280&#215;800) Яркость: 4000 ANSI lm Цветовая яркость: 4000 ANSI lm Контрастность: 16000:1 Зум 1,2&#215; (оптический) Передача изображения по беспроводной сети Wi-fi (опционально) Автоматиче Характеристики: - Сопутствующие товары: Крепление для проектора на потолок Mr. Pixel PRB-2 - Видео вход HDMI: Есть - Производитель: Epson Proj - Тип: Проектор универсальный - Цвет: Белый - Интерфейс HDBaseT/DIGITAL LINK: Нет - Видео вход DVI-D: Нет - USB: Тип A и B - Видео вход DisplayPort: Нет - Видео вход S-video: Нет - Вид: Проектор - Оригинальное разрешение: Оригинальное - Источник света: Лампа - Наименование производителя: Epson EB-W51 - Совместимые продукты: V12H005A01,V12H757040,V12H758040,V13H010L97,V13H134A32,V12H003B23,V12H003P13,V12H003P14 - Тип источника света: Ламповый источник света - Гарантия: 12 мес - Технология: 3LCD - Wi-Fi: Опция - Интерактивный: Нет - Ethernet (RJ-45): Нет - 3D: Нет - Страна происхождения: Китай, Филиппины</description>
+        <description>EF-21R стильный и компактный с размером экрана до 150 дюймов Мини умный лазерный проекционный телевизор Увеличьте изображение любимых фильмов, игр и спортивных событий у себя дома с диагональю экрана до 150 дюймов Развлечения для умного дома Смотрите 400 000+* фильмов и эпизодов телепередач в одном месте. Google TV собирает ваш любимый контент из всех ваших приложений и подписок и упорядочивает его специально для вас Долговечное решение Благодаря долговечному лазерному источнику света этой модели вы сможете наслаждаться развлечениями до 10 лет* Превосходное качество изображения Благодаря технологии 3LCD от Epson изображения выглядят более яркими и яркими, цвета в три раза ярче по сравнению с аналогичными 1-чиповыми DLP-проекторами* Освежающе прост в использовании Подключайтесь, включайте, подключайтесь и играйте. Получите доступ к мгновенным развлечениям дома или в дороге. Технологии Проекционная система Технология 3LCD, жидкокристаллический затвор RGB ЖК-панель 0,62 дюйма Образ Цветной световой поток 1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4 Выход белого света 1.000 люмен - 500 люмен (эконом) В соответствии с ISO 21118:2020 Повышение разрешения Full HD Характеристики: - Производитель: Epson Proj - Тип: Проектор универсальный - Вид: Проектор - Гарантия: 24 мес</description>
       </offer>
 
   <offer id="ACPA503W">
         <vendorCode>ACPA503W</vendorCode>
         <name>Проектор универсальный ViewSonic PA503W</name>
-        <price>254900</price>
+        <price>253900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/398/ojblo0siw82hl6ts2vij3gn9m1jlyrdh.jpg</picture>
-        <vendor>ViewSonic proj</vendor>
+        <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Проектор ViewSonic PA503W создает впечатляющее изображение в аудиториях и конференц-залах малых размеров. Благодаря повышенной яркости и увеличенному сроку эксплуатации лампы проектор PA503W гарантированно создает изображение с мельчайшими деталями в любой среде в течение более длительного срока службы. Эксклюзивная технология компании ViewSonic, SuperColour™, позволяет воспроизводить более широкий цветовой диапазон, и зрители могут наслаждаться более реалистичными и точными цветами и при свете и в темноте — качество изображения всегда остается высоким. Характеристики СПЕЦИФИКАЦИИ Проекционная система : 0.65" WXGA Собственное разрешение : 1280x800 Тип DS : DC3 Яркость : 4000 люмен Коэффициент контрастности в режиме SuperEco : 22000:1 Цветопередача : 1,07 млрд цветов Источник света : Лампа Срок службы источника света (Нормальный/SuperEco) : 5000/15000 Лампа, Вт : 200W Объектив : F=2.56-2.68, f=22-24.1 мм Смещение проекции : 100%+/-5% Проекционный коэффициент : 1.55~1.70 Размер изображения : 30" - 300" Проекционное расстояние : 1м-10.98м(100" @3.34м) Трапецеидальные искажения : +/– 40° (по вертикали) Оптическое увеличение : 1.1x Слышимый шум (эко) : 29dB Поддержка разрешения : VGA(640 x 480) to FullHD(1920 x 1080) HDTV-совместимость : 480i, 480p, 576i, 576p, 720p, 1080i, 1080p Совместимость видео : NTSC, PAL, SECAM Горизонтальная частота : 15K~102KHz Скорость вертикального сканирования : 23~120Hz Вход Компьютер (общий с компонентным) : 2 Композитный : 1 Аудиовход (3.5мм) : 1 HDMI : 1 (сзади) выход видео выход : 1 Аудиовыход (3.5мм) : 1 ГРОМКОГОВОРИТЕЛИ : 2W Управление RS232 : 1 USB, тип Mini B (сервисный) : 1 другое Напряжение питания : 100-240V+/- 10%, 50/60Hz AC Энергопотребление : Стандартное: 240 Вт Режим ожидания: &lt;0,5 Вт Рабочая температура : 0~40&#8451; Упаковка : Коричневая Масса, нетто : 2.12 кг Размеры (ШxГxВ) с регулировочной ногой : 294x218x110 мм Язык : английский, французский, испанский, тайский, корейский, немецкий, итальянский, русский, шведский, голландский, польский, чешский, традиционный китайский, упрощенный китайский, японский, турецкий, португальский, финский, индонезийский, индийский, арабский, вьетнамский Стандартные аксессуары Шнур питания : 1 Кабель VGA : 1 Пульт ДУ : 1 Краткое руководство и CD : 1 воздушный фильтр : RSPL Характеристики: - Страна происхождения: Китай - Сопутствующие товары: Крепление для проектора на потолок Mr. Pixel PRB-2 - Производитель: ViewSonic proj - Тип: Проектор универсальный - Цвет: Белый - Интерфейс HDBaseT/DIGITAL LINK: Нет - Видео вход DVI-D: Нет - USB: Тип B - Видео вход DisplayPort: Нет - Тип источника света: UHE - Видео вход S-video: Нет - Вид: Проектор - Разрешение: WXGA (1280х800) - Технология: DLP - Wi-Fi: Нет - Интерактивный: Нет - Ethernet (RJ-45): Нет - 3D: Нет</description>
@@ -841,9 +863,9 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACPA503X">
         <vendorCode>ACPA503X</vendorCode>
         <name>Проектор универсальный ViewSonic PA503X</name>
-        <price>254900</price>
+        <price>253900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/398/ojblo0siw82hl6ts2vij3gn9m1jlyrdh.jpg</picture>
-        <vendor>ViewSonic proj</vendor>
+        <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Проектор ViewSonic PA503X создает впечатляющее изображение в аудиториях и конференц-залах малых размеров. Благодаря повышенной яркости и увеличенному сроку эксплуатации лампы проектор PA503X гарантированно создает изображение с мельчайшими деталями в любой среде в течение более длительного срока службы. Эксклюзивная технология компании ViewSonic, SuperColour™, позволяет воспроизводить более широкий цветовой диапазон, и зрители могут наслаждаться более реалистичными и точными цветами и при свете и в темноте — качество изображения всегда остается высоким. Характеристики СПЕЦИФИКАЦИИ Проекционная система : 0.55" XGA Собственное разрешение : 1024x768 Тип DS : DC3 Яркость : 3600 люмен Коэффициент контрастности в режиме SuperEco : 22000:1 Цветопередача : 1,07 млрд цветов Источник света : Лампа Срок службы источника света (Нормальный/SuperEco) : 5000/15000 Лампа, Вт : 190W Объектив : F=2.56-2.68, f=22-24.1 мм Смещение проекции : 120%+/-5% Проекционный коэффициент : 1.96~2.15 Размер изображения : 30" - 300" Проекционное расстояние : 1.19м-13.11м(100" @3.98м) Трапецеидальные искажения : +/– 40° (по вертикали) Оптическое увеличение : 1.1x Слышимый шум (эко) : 29dB Поддержка разрешения : VGA(640 x 480) to FullHD(1920 x 1080) HDTV-совместимость : 480i, 480p, 576i, 576p, 720p, 1080i, 1080p Совместимость видео : NTSC, PAL, SECAM Горизонтальная частота : 15K~102KHz Скорость вертикального сканирования : 23~120Hz Вход Компьютер (общий с компонентным) : 2 Композитный : 1 Аудиовход (3.5мм) : 1 HDMI : 1 (сзади) выход видео выход : 1 Аудиовыход (3.5мм) : 1 ГРОМКОГОВОРИТЕЛИ : 2W Управление RS232 : 1 USB, тип Mini B (сервисный) : 1 другое Напряжение питания : 100-240V+/- 10%, 50/60Hz AC Энергопотребление : Стандартное: 240 Вт Режим ожидания: &lt;0,5 Вт Рабочая температура : 0~40&#8451; Упаковка : Коричневая Масса, нетто : 2.12 кг Размеры (ШxГxВ) с регулировочной ногой : 294x218x110 мм Язык : английский, французский, испанский, тайский, корейский, немецкий, итальянский, русский, шведский, голландский, польский, чешский, традиционный китайский, упрощенный китайский, японский, турецкий, португальский, финский, индонезийский, индийский, арабский, вьетнамский Стандартные аксессуары Шнур питания : 1 Кабель VGA : 1 Пульт ДУ : 1 Краткое руководство и CD : 1 воздушный фильтр : RSPL Характеристики: - Страна происхождения: Китай - Сопутствующие товары: Крепление для проектора на потолок Mr. Pixel PRB-2 - Производитель: ViewSonic proj - Тип: Проектор универсальный - Цвет: Белый - Интерфейс HDBaseT/DIGITAL LINK: Нет - Видео вход DVI-D: Нет - USB: Тип B - Видео вход DisplayPort: Нет - Тип источника света: UHE - Видео вход S-video: Нет - Вид: Проектор - Разрешение: XGA (1024х768) - Технология: DLP - Wi-Fi: Нет - Интерактивный: Нет - Ethernet (RJ-45): Нет - 3D: Нет</description>
@@ -852,7 +874,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACDX273">
         <vendorCode>ACDX273</vendorCode>
         <name>Проектор универсальный Vivitek DX273</name>
-        <price>250900</price>
+        <price>249900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/27c/gihvoghhjscmu103lz5gmmcqevrqartp.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -863,7 +885,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACB11B268401">
         <vendorCode>ACB11B268401</vendorCode>
         <name>Сканер Epson Perfection V39II</name>
-        <price>72900</price>
+        <price>71900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/cf6/s6b251wzwuckych5x78795z6x330h6u0.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -1091,17 +1113,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Контейнер с черными чернилами для: Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550 Характеристики: - Страна происхождения: Индонезия - Сопутствующие товары: Принтер Epson L132 фабрика печати - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson Чернила L100 черные 70 ml - Тип: Фабрика печати (чернила EPSON) - Тип печати: струйная - Вид: чернила - Ресурс: 4000 – 7100 страниц формата A4* - Для бренда: Epson</description>
       </offer>
 
-  <offer id="ACC13T66434A">
-        <vendorCode>ACC13T66434A</vendorCode>
-        <name>Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 пурпурный</name>
-        <price>7900</price>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/b49/mfc9kpbqs9r4mg824ar7b142osgpep83.jpg</picture>
-        <vendor>Epson</vendor>
-        <currencyId>KZT</currencyId>
-        <available>true</available>
-        <description>Контейнер с пурпурными чернилами для: Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550 Характеристики: - Страна происхождения: Индонезия - Сопутствующие товары: Принтер Epson L132 фабрика печати - Производитель: Epson - Цвет: пурпурный - Наименование производителя: Epson Чернила L100 пурпурные 70ml - Тип: Фабрика печати (чернила EPSON) - Тип печати: струйная - Вид: чернила - Ресурс: 5700 – 6500 страниц формата A4* - Для бренда: Epson</description>
-      </offer>
-
   <offer id="ACC13T66444A">
         <vendorCode>ACC13T66444A</vendorCode>
         <name>Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый</name>
@@ -1204,7 +1215,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACMSPSAB112V2">
         <vendorCode>ACMSPSAB112V2</vendorCode>
         <name>Экран моторизированный Mr.Pixel 80" X 80" (2,03 X 2,03)</name>
-        <price>61900</price>
+        <price>60900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/825/ep82w9j8e3mc96iy6agwe0cchxkv3lv9.jpg</picture>
         <vendor>Mr.Pixel</vendor>
         <currencyId>KZT</currencyId>
@@ -1215,7 +1226,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACMAGNASDB96V2">
         <vendorCode>ACMAGNASDB96V2</vendorCode>
         <name>Экран на треноге Mr.Pixel ECO 70" X 70" (1,78 X 1,78)</name>
-        <price>26900</price>
+        <price>25900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/ae7/17vjki228x0jep5rhnt8upif1q7r3pjk.jpg</picture>
         <vendor>Mr.Pixel</vendor>
         <currencyId>KZT</currencyId>
