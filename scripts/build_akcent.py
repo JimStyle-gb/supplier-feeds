@@ -33,7 +33,7 @@ import requests
 
 SCRIPT_VERSION = "akcent-2025-10-02.6"
 
-SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "akcent")
+SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AkCent")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml")
 OUT_FILE_YML     = os.getenv("OUT_FILE", "docs/akcent.yml")
 ENC              = os.getenv("OUTPUT_ENCODING", "windows-1251")
