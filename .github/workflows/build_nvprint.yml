@@ -2,56 +2,79 @@
 name: build_nvprint
 
 on:
+  # Стартуем редко: за 6 часов до нужного времени (22:00 UTC) на 9/19/30/31.
+  schedule:
+    - cron: "0 22 9,19,30,31 * *"
   workflow_dispatch:
+    inputs:
+      force:
+        description: "Запустить вручную, игнорируя расписание"
+        required: false
+        default: "true"
 
 permissions:
   contents: write
 
-concurrency:
-  group: build_nvprint_${{ github.ref_name }}
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-
     steps:
+      - name: Decide run flag (schedule vs manual)
+        id: runflag
+        env:
+          FORCE_INPUT: ${{ inputs.force }}
+          EVENT_NAME: ${{ github.event_name }}
+        shell: bash
+        run: |
+          set -e
+          if [ "${EVENT_NAME}" = "schedule" ]; then
+            export TZ=Asia/Almaty
+            echo "Now (Almaty): $(date)"
+            DAY=$(date +%-d)
+            HOUR=$(date +%H)
+            if [[ "$DAY" =~ ^(1|10|20)$ ]] && [ "$HOUR" = "04" ]; then
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              echo "Gate: pass (scheduled 04:00 Asia/Almaty on 1/10/20)."
+            else
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Gate: skip."
+            fi
+          else
+            if [ "${FORCE_INPUT:-true}" = "false" ]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"; echo "Manual force=false => skip."
+            else
+              echo "run=true"  >> "$GITHUB_OUTPUT"; echo "Manual force=true => pass."
+            fi
+          fi
+
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-python@v5
+        if: steps.runflag.outputs.run == 'true'
         with:
           python-version: '3.11'
 
       - name: Install deps
+        if: steps.runflag.outputs.run == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
       - name: Ensure keywords file
+        if: steps.runflag.outputs.run == 'true'
         run: |
           python - <<'PY'
           import os, io
           os.makedirs("docs", exist_ok=True)
-          path = "docs/nvprint_keywords.txt"
-          if not os.path.isfile(path):
-              data = "\n".join([
-                  "Картридж",
-                  "Тонер-картридж",
-                  "Блок фотобарабана",
-                  "Печатающая головка",
-                  "Струйный картридж",
-                  "Тонер-туба",
-              ]) + "\n"
-              with io.open(path, "w", encoding="utf-8") as f:
-                  f.write(data)
-          with io.open(path, "r", encoding="utf-8") as f:
-              print("Using keywords:\n" + f.read())
+          p = "docs/nvprint_keywords.txt"
+          if not os.path.isfile(p):
+              with io.open(p, "w", encoding="utf-8") as f:
+                  f.write("Картридж\nТонер-картридж\nБлок фотобарабана\n")
+          print("keywords ready:", p)
           PY
 
       - name: Build NVPrint feed
+        if: steps.runflag.outputs.run == 'true'
         env:
           NVPRINT_XML_URL: 'https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true'
           NVPRINT_LOGIN: ${{ secrets.NVPRINT_LOGIN }}
@@ -61,10 +84,11 @@ jobs:
           HTTP_TIMEOUT: "60"
           NVPRINT_KEYWORDS_FILE: docs/nvprint_keywords.txt
         run: |
-          set -euo pipefail
+          set -e
           python scripts/build_nvprint.py
 
       - name: Commit & push feed
+        if: steps.runflag.outputs.run == 'true'
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
@@ -72,10 +96,10 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/nvprint.yml docs/nvprint_keywords.txt || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "chore(nvprint): update docs/nvprint.yml"
+          git commit -m "chore(nvprint): update docs/nvprint.yml" || echo "No changes"
           git pull --rebase origin "$BRANCH_NAME" || true
-          git push origin "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME" || true
+
+      - name: Skipped
+        if: steps.runflag.outputs.run != 'true'
+        run: echo "Skipping — not 04:00 Asia/Almaty on 1/10/20 and manual force=false."
