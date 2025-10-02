@@ -1,59 +1,60 @@
-# (из cl.txt, правка только формата <offer> и добавлен <available>)
-
+# .github/workflows/build_copyline.yml
 name: build_copyline
 on:
+  schedule:
+    - cron: "0 * * * *"  # каждый час (UTC)
   workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
+      - name: Check Almaty time gate
+        id: gate
+        run: |
+          pipx install pytz tzlocal >/dev/null 2>&1 || true
+          python - <<'PY'
+import sys, datetime, pytz
+tz = pytz.timezone("Asia/Almaty")
+now = datetime.datetime.now(tz)
+ok_day   = now.day in (1,10,20)
+ok_hour  = now.hour == 3
+print(f"Now Almaty: {now}")
+if not (ok_day and ok_hour):
+    print("Skip: not 03:00 at 1/10/20 in Asia/Almaty.")
+    sys.exit(78)   # neutral (skipped)
+PY
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-
+            python-version: "3.11"
       - name: Install deps
         run: |
           python -V
           pip install --upgrade pip
           pip install requests beautifulsoup4 openpyxl
-
       - name: Build Copyline YML
         env:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
           OUT_FILE: docs/copyline.yml
           OUTPUT_ENCODING: windows-1251
-
           HTTP_TIMEOUT: "25"
           REQUEST_DELAY_MS: "120"
           MIN_BYTES: "900"
-
           MAX_CRAWL_MINUTES: "60"
           MAX_CATEGORY_PAGES: "1200"
           MAX_WORKERS: "6"
+          VENDORCODE_PREFIX: "CL"
         run: |
           set -e
           python scripts/build_copyline.py
-
       - name: Commit & push
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/copyline.yml || true
           git commit -m "chore(copyline): update docs/copyline.yml [skip ci]" || echo "No changes"
-          git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
-          git push origin "$BRANCH_NAME"
+          git pull --rebase || true
+          git push || true
