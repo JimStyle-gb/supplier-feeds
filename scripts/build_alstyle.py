@@ -41,7 +41,7 @@ import requests
 
 SCRIPT_VERSION = "alstyle-2025-09-23.9"
 
-SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "alstyle")
+SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
 OUT_FILE_YML     = os.getenv("OUT_FILE", "docs/alstyle.yml")
 ENC              = os.getenv("OUTPUT_ENCODING", "windows-1251")
