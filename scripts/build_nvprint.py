@@ -417,6 +417,7 @@ def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
         lines.append(f"{k.ljust(key_w)} | {v}{end}")
     return "\n".join(lines)
 
+# ---------------- СБОРКА YML (здесь задан порядок тегов внутри <offer>) ----------------
 def build_yml(
     offers: List[Dict[str, Any]],
     source: str,
@@ -444,18 +445,19 @@ def build_yml(
     out.append("  <offers>")
     for it in offers:
         out.append(f"    <offer id=\"{yml_escape(it['id'])}\">")
-        out.append(f"      <name>{yml_escape(it['title'])}</name>")
-        if it.get("vendor"):
-            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
+        # === ВАЖНО: фиксированный порядок тегов ===
         out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
+        out.append(f"      <name>{yml_escape(it['title'])}</name>")
         out.append(f"      <price>{int(it['price'])}</price>")
-        out.append("      <currencyId>KZT</currencyId>")
         if it.get("picture"):
             out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
+        if it.get("vendor"):
+            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
+        out.append("      <currencyId>KZT</currencyId>")
+        out.append("      <available>true</available>")
         if it.get("description"):
             desc_clean = re.sub(r"\s+", " ", it["description"]).strip()
             out.append(f"      <description>{yml_escape(desc_clean)}</description>")
-        out.append("      <available>true</available>")
         out.append("    </offer>\n")
     out.append("  </offers>")
     out.append("</shop></yml_catalog>")
