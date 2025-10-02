@@ -9,8 +9,15 @@ NVPrint -> YML (KZT) под общий шаблон, без локального
   <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <available>, <description>
 - <available>true</available> всем
 - Валюта одна: <currencyId>KZT</currencyId>
-- FEED_META в шапке как комментарий
-
+- FEED_META в шапке как в файле feed.txt:
+  Поставщик | ...
+  URL поставщика | ...
+  Время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+  Ближайшее время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+  Сколько товаров у поставщика до фильтра | ...
+  Сколько товаров у поставщика после фильтра | ...
+  Сколько товаров есть в наличии (true) | ...
+  Сколько товаров нет в наличии (false) | ...
 Источник берётся из ENV NVPRINT_XML_URL (если не задан — дефолтный URL NVPrint API).
 """
 
@@ -34,11 +41,11 @@ HTTP_TIMEOUT      = float(os.getenv("HTTP_TIMEOUT", "45"))
 RETRIES           = int(os.getenv("RETRIES", "4"))
 RETRY_BACKOFF_S   = float(os.getenv("RETRY_BACKOFF_S", "2"))
 
-# Basic-Auth из секретов CI
+# Basic-Auth из секретов CI (если требуется)
 NV_LOGIN          = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
 NV_PASSWORD       = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
 
-# Keywords-файл
+# Keywords-файл (startswith-фильтр по короткому имени)
 KEYWORDS_FILE     = (os.getenv("NVPRINT_KEYWORDS_FILE") or "docs/nvprint_keywords.txt").strip()
 
 # ---------------- УТИЛИТЫ ----------------
@@ -348,112 +355,75 @@ def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
         items.append(node)
     return items
 
-# ---------------- FEED_META + YML ----------------
-def utc_now_str() -> str:
-    return datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+# ---------------- FEED_META (как в файле) + YML ----------------
+def _almaty_now():
+    # Простое смещение +05:00, чтобы не тянуть zoneinfo (достаточно для формата)
+    return datetime.utcnow() + timedelta(hours=5)
 
-def almaty_now_str() -> str:
-    return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S +05")
+def _fmt_alm(dt: datetime) -> str:
+    return dt.strftime("%d:%m:%Y - %H:%M:%S")
 
-def _format_meta_rows(rows: List[Tuple[str, str, str]]) -> str:
-    if not rows:
-        return ""
-    key_width = max(len(k) for k, _, _ in rows)
-    COMMENT_COL = max(72, key_width + 3 + 10)
-    lines: List[str] = []
-    for i, (k, v, cmt) in enumerate(rows):
-        left = f"{k.ljust(key_width)} = {v}"
-        tail = f"{(' ' * max(1, COMMENT_COL - len(left))) if len(left) < COMMENT_COL else '  '}| {cmt}" if cmt else ""
-        if i == len(rows) - 1 and "Время сборки (Алматы)" in (cmt or ""):
-            tail = (tail or " ") + "-->"
-        lines.append(left + tail)
+def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
+    """
+    Формат ровно как в feed.txt:
+    Поставщик | ...
+    URL поставщика | ...
+    Время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+    Ближайшее время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+    Сколько товаров у поставщика до фильтра | ...
+    Сколько товаров у поставщика после фильтра | ...
+    Сколько товаров есть в наличии (true) | ...
+    Сколько товаров нет в наличии (false) | ...
+    """
+    now_alm = _almaty_now()
+    next_alm = now_alm + timedelta(days=1)  # по умолчанию «через сутки»
+    rows = [
+        ("Поставщик", pairs.get("supplier","")),
+        ("URL поставщика", pairs.get("source","")),
+        ("Время сборки (Алматы)", _fmt_alm(now_alm)),
+        ("Ближайшее время сборки (Алматы)", _fmt_alm(next_alm)),
+        ("Сколько товаров у поставщика до фильтра", str(pairs.get("offers_total","0"))),
+        ("Сколько товаров у поставщика после фильтра", str(pairs.get("offers_written","0"))),
+        ("Сколько товаров есть в наличии (true)", str(pairs.get("available_true","0"))),
+        ("Сколько товаров нет в наличии (false)", str(pairs.get("available_false","0"))),
+    ]
+    key_w = max(len(k) for k,_ in rows)
+    lines = ["<!--FEED_META"]
+    for i,(k,v) in enumerate(rows):
+        end = " -->" if i == len(rows)-1 else ""
+        lines.append(f"{k.ljust(key_w)} | {v}{end}")
     return "\n".join(lines)
 
-def build_feed_meta(source: str, offers_total: int, offers_written: int, prices_picked: int, kw_count: int, kw_dropped: int) -> str:
-    rows: List[Tuple[str, str, str]] = [
-        ("supplier",            "nvprint",              "Метка поставщика"),
-        ("source",              source,                 "URL/файл источника"),
-        ("offers_total",        str(offers_total),      "Всего товаров в источнике (оценочно)"),
-        ("offers_written",      str(offers_written),    "Товаров записано в YML"),
-        ("prices_updated",      str(prices_picked),     "Цены взяты по договорам (+ наценка)"),
-        ("keywords_loaded",     str(kw_count),          "Ключевых слов в фильтре (startswith)"),
-        ("dropped_by_keywords", str(kw_dropped),        "Отброшено фильтром по началу названия"),
-        ("available_forced",    str(offers_written),    "Сколько офферов получили available=true"),
-        ("built_utc",           utc_now_str(),          "Время сборки (UTC)"),
-        ("built_Asia/Almaty",   almaty_now_str(),       "Время сборки (Алматы)"),
-    ]
-    return "<!--FEED_META\n" + _format_meta_rows(rows) + "\n"
-
-def build_yml(offers: List[Dict[str, Any]], source: str, offers_total: int, prices_picked: int, kw_count: int, kw_dropped: int) -> str:
+def build_yml(offers: List[Dict[str, Any]], source: str, offers_total: int) -> str:
     date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
+    offers_written = len(offers)
+    available_true = offers_written
+    available_false = 0
+
+    meta_pairs = {
+        "supplier": "nvprint",
+        "source": source,
+        "offers_total": str(offers_total),
+        "offers_written": str(offers_written),
+        "available_true": str(available_true),
+        "available_false": str(available_false),
+    }
+
     out: List[str] = []
     out.append(f"<?xml version='1.0' encoding='{OUTPUT_ENCODING}'?>")
     out.append(f"<yml_catalog date=\"{date_attr}\">")
-    out.append(build_feed_meta(source, offers_total, len(offers), prices_picked, kw_count, kw_dropped))
+    out.append(render_feed_meta_comment(meta_pairs))
     out.append("<shop>")
     out.append("  <offers>")
     for it in offers:
-        # id должен быть строго равен vendorCode
+        # id строго равен vendorCode
         offer_id = it.get("vendorCode") or it.get("id")
         out.append(f"    <offer id=\"{yml_escape(offer_id)}\">")
-        # ПОРЯДОК ТЕГОВ (унифицировано):
+        # ПОРЯДОК ТЕГОВ:
         out.append(f"      <vendorCode>{yml_escape(offer_id)}</vendorCode>")
         out.append(f"      <name>{yml_escape(it['title'])}</name>")
         out.append(f"      <price>{int(it['price'])}</price>")
         if it.get("picture"):
             out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
         if it.get("vendor"):
-            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
-        out.append("      <currencyId>KZT</currencyId>")
-        out.append("      <available>true</available>")
-        if it.get("description"):
-            desc_clean = re.sub(r"\s+", " ", it["description"]).strip()
-            out.append(f"      <description>{yml_escape(desc_clean)}</description>")
-        out.append("    </offer>\n")
-    out.append("  </offers>")
-    out.append("</shop></yml_catalog>")
-    return "\n".join(out)
-
-# ---------------- MAIN ----------------
-def parse_xml_to_yml(xml_bytes: bytes, source_label: str) -> str:
-    root = ET.fromstring(xml_bytes)
-    keywords = load_keywords(KEYWORDS_FILE)
-    kw_count = len(keywords)
-
-    nodes = guess_item_nodes(root)
-    offers_total = len(nodes)
-
-    offers: List[Dict[str, Any]] = []
-    prices_picked = 0
-    kw_dropped = 0
-
-    for node in nodes:
-        name_short = find_descendant_text(node, ["НоменклатураКратко"]) or ""
-        if not name_starts_with_keywords(name_short, keywords):
-            kw_dropped += 1
-            continue
-        it = parse_item(node)
-        if not it:
-            continue
-        if it.get("price", 0) and it["price"] > 100:
-            prices_picked += 1
-        offers.append(it)
-
-    return build_yml(offers, source_label, offers_total, prices_picked, kw_count, kw_dropped)
-
-def main() -> int:
-    try:
-        data = read_source_bytes()
-        yml = parse_xml_to_yml(data, SUPPLIER_URL)
-    except Exception as e:
-        yml = build_yml([], SUPPLIER_URL, 0, 0, 0, 0)
-        print(f"ERROR: {e}", file=sys.stderr)
-
-    os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
-    with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-        f.write(yml)
-    print(f"Wrote: {OUT_FILE} | encoding={OUTPUT_ENCODING}")
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(main())
+            out
