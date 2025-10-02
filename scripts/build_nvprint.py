@@ -5,7 +5,7 @@ NVPrint -> YML (KZT) без локального docs/nvprint_source.xml.
 
 Правила:
 - id = vendorCode = "NP" + <очищенный артикул>
-- Порядок тегов в <offer>:
+- Порядок тегов в <offer> строго такой:
   <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <available>, <description>
 - <available>true</available> всем, валюта одна: <currencyId>KZT</currencyId>
 - FEED_META: как в feed.txt, «Ближайшее время сборки (Алматы)» = ближайшее 1/10/20 в 04:00 Asia/Almaty.
@@ -234,7 +234,7 @@ def build_description(item: ET.Element) -> str:
     if color: specs.append(f"- Цвет печати: {color.strip()}")
     compat = find_descendant_text(item, ["СовместимостьСМоделями"])
     if compat:
-        compat_clean = re.sub(r"\s+", " ", compat).strip()
+        compat_clean = re.sub(r"\s+"," ", compat).strip()
         specs.append(f"- Совместимость с моделями: {compat_clean}")
     weight = find_descendant_text(item, ["Вес"])
     if weight: specs.append(f"- Вес: {weight.strip()}")
@@ -282,21 +282,19 @@ def _almaty_now() -> datetime:
 def _next_build_1_10_20_at_04() -> datetime:
     now = _almaty_now()
     targets = [1,10,20]
-    # кандидаты в этом месяце
-    cands = []
+    cands=[]
     for d in targets:
         try:
             cands.append(now.replace(day=d, hour=4, minute=0, second=0, microsecond=0))
         except ValueError:
             pass
-    future = [t for t in cands if t > now]
+    future=[t for t in cands if t>now]
     if future:
         return min(future)
     # иначе — 1-е число следующего месяца, 04:00
-    y, m = now.year, now.month
-    if m == 12:
-        y, m = y+1, 1
-    first_next = datetime(y, m, 1, 4, 0, 0)
+    if now.month == 12:
+        return now.replace(year=now.year+1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
+    first_next = (now.replace(day=1, hour=4, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
     return first_next
 
 def _fmt_alm(dt: datetime) -> str:
@@ -343,11 +341,14 @@ def build_yml(offers: List[Dict[str,Any]], source: str, offers_total: int) -> st
     for it in offers:
         offer_id = it.get("vendorCode") or it.get("id")
         out.append(f"    <offer id=\"{yml_escape(offer_id)}\">")
+        # ВАЖНЫЙ ПОРЯДОК ТЕГОВ:
         out.append(f"      <vendorCode>{yml_escape(offer_id)}</vendorCode>")
         out.append(f"      <name>{yml_escape(it['title'])}</name>")
         out.append(f"      <price>{int(it['price'])}</price>")
-        if it.get("picture"): out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
-        if it.get("vendor"):  out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
+        if it.get("picture"):
+            out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
+        if it.get("vendor"):
+            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
         out.append("      <currencyId>KZT</currencyId>")
         out.append("      <available>true</available>")
         if it.get("description"):
