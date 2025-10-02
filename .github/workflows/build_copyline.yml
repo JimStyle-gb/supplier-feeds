@@ -2,21 +2,21 @@ name: build_copyline
 
 on:
   schedule:
-    - cron: "0 * * * *"  # запуск каждый час (UTC)
+    - cron: "0 21 * * *"  # покрытие 03:00 Asia/Almaty при UTC+6
+    - cron: "0 22 * * *"  # покрытие 03:00 Asia/Almaty при UTC+5 (на всякий случай)
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Time gate (Asia/Almaty 03:00 on 1/10/20)
+      - name: Time gate (03:00 Asia/Almaty on 1/10/20)
         id: gate
         shell: bash
         run: |
           set -e
           export TZ=Asia/Almaty
           echo "Now (Almaty): $(date)"
-          # День месяца без ведущего нуля (%-d на Linux). На Mac — тоже работает, на Windows не используется.
           DAY=$(date +%-d)
           HOUR=$(date +%H)
           if [[ "$DAY" =~ ^(1|10|20)$ ]] && [ "$HOUR" == "03" ]; then
@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
+        if: steps.gate.outputs.run == 'true'
         with:
           python-version: "3.11"
 
