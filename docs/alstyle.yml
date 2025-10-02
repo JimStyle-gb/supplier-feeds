@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-02 12:24">
+<yml_catalog date="2025-10-02 20:17">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 02:10:2025 - 17:24:45
-Ближайшее время сборки (Алматы)            | 03:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15913
+Время сборки (Алматы)                      | 03:10:2025 - 01:17:25
+Ближайшее время сборки (Алматы)            | 04:10:2025 - 01:00:00
+Сколько товаров у поставщика до фильтра    | 15916
 Сколько товаров у поставщика после фильтра | 1992
-Сколько товаров есть в наличии (true)      | 1319
-Сколько товаров нет в наличии (false)      | 673-->
+Сколько товаров есть в наличии (true)      | 1332
+Сколько товаров нет в наличии (false)      | 660-->
   <shop>
     <offers>
       <offer id="AS20888">
@@ -20,7 +20,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/20888_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Линейно-Интерактивный ИБП с функцией сетевого фильтра SVC U-650-L Устройство, позволяющее подключённому оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. 3 выходных разъёмов Shuko CEE7 с батарейной поддержкой и 3 выходных разъёмов с функцией сетевого фильтра позволят подключить большое количество оборудования. 2*USB порта 5В/2А позволят зарядить любое портативное устройство.
 
 Характеристики:
@@ -56,7 +56,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/20889_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Линейно-Интерактивный ИБП с функцией сетевого фильтра SVC U-850-L Устройство, позволяющее подключённому оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. 3 выходных разъёмов Shuko CEE7 с батарейной поддержкой и 3 выходных разъёмов с функцией сетевого фильтра позволят подключить большое количество оборудования. 2*USB порта 5В/2А позволят зарядить любое портативное устройство.
 
 Характеристики:
@@ -7151,7 +7151,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/24704_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Линейно-интерактивный ИБП SVC RTU-1KL-LCD Cтоечные источники бесперебойного питания RTU-серии линейно-интерактивного типа с синусоидальной формой выходного напряжения. Надёжно обеспечивают стабилизированное питание для компьютерной техники (персональные компьютеры, серверы, сетевое оборудование) и другого чувствительного к качеству электропитания периферийного компьютерного оборудования. Незаменим в условиях офиса, когда необходимо защитить одновременно несколько устройств. ИБП RTU-серии от SVC можно разместить горизонтально, вертикально или в стойку, что позволяет наиболее рационально использовать рабочее пространство. А подключение внешних аккумуляторов позволит индивидуально сконфигурировать необходимое время автономной работы.
 
 Характеристики:
@@ -7188,7 +7188,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/24705_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Линейно-интерактивный ИБП SVC RTU-2KL-LCD Cтоечные источники бесперебойного питания RTU-серии линейно-интерактивного типа с синусоидальной формой выходного напряжения. Надёжно обеспечивают стабилизированное питание для компьютерной техники (персональные компьютеры, серверы, сетевое оборудование) и другого чувствительного к качеству электропитания периферийного компьютерного оборудования. Незаменим в условиях офиса, когда необходимо защитить одновременно несколько устройств. ИБП RTU-серии от SVC можно разместить горизонтально, вертикально или в стойку, что позволяет наиболее рационально использовать рабочее пространство. А подключение внешних аккумуляторов позволит индивидуально сконфигурировать необходимое время автономной работы.
 
 Характеристики:
@@ -7226,7 +7226,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/24706_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Линейно-интерактивный ИБП SVC RTU-3KL-LCD Cтоечные источники бесперебойного питания RTU-серии линейно-интерактивного типа с синусоидальной формой выходного напряжения. Надёжно обеспечивают стабилизированное питание для компьютерной техники (персональные компьютеры, серверы, сетевое оборудование) и другого чувствительного к качеству электропитания периферийного компьютерного оборудования. Незаменим в условиях офиса, когда необходимо защитить одновременно несколько устройств. ИБП RTU-серии от SVC можно разместить горизонтально, вертикально или в стойку, что позволяет наиболее рационально использовать рабочее пространство. А подключение внешних аккумуляторов позволит индивидуально сконфигурировать необходимое время автономной работы.
 
 Характеристики:
@@ -9684,7 +9684,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32036_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Онлайн ИБП SVC LRT-2KL-LCD 
 ИБП LRT-серии имеют широкий диапазон входного напряжения. Используются для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю.
 
@@ -9722,7 +9722,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32038_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Онлайн ИБП SVC LRT-3KL-LCD 
 ИБП LRT-серии имеют широкий диапазон входного напряжения. Используются для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю.
 
@@ -9761,7 +9761,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32039_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Онлайн ИБП SVC LRT-1KL-LCD 
 ИБП LRT-серии имеют широкий диапазон входного напряжения. Используются для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю.
 
@@ -10691,7 +10691,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32413_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Контейнер используется для хранения отработанного тонера в принтере. Отработанный тонер представляет собой те частицы красящего вещества, которые по различным причинам не попали на поверхность листа бумаги, а также пыль, поступающую в процесс печати вместе с бумагой и воздухом. Надежно защищает аппарат от нежелательного попадания изношенного тонера в электронные и механические узлы устройства. После заполнения контейнер необходимо заменить 
 
 Характеристики
@@ -17172,7 +17172,7 @@ USB
         <picture>https://img.al-style.kz/33372_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -17199,7 +17199,7 @@ USB
         <picture>https://img.al-style.kz/33373_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -20078,7 +20078,7 @@ Mi Smart Projector 2 использует индивидуальный объем пространства и соответствую
         <picture>https://img.al-style.kz/37172_3.jpg</picture>
         <vendor>Gigabyte</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор 27" Gigabyte G27FC A-EK
 Роль монитора в игровом процессе, зачастую, недооценивают. Правда заключается в том, что благодаря дисплеям достигается синергетический эффект и визуальное восприятие реальной производительности ПК. Игровые мониторы GIGABYTE   это востребованная функциональность и безупречное качество исполнения. Владельцы таких дисплеев могут наслаждаться качеством картинки и реальным быстродействием игрового процесса без излишней экстравагантности имиджевой составляющей изделия.
 Особенности и преимущества:
@@ -26297,7 +26297,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
         <picture>https://img.al-style.kz/45709_2.jpg</picture>
         <vendor>Legrand</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Кабель сетевой Legrand 032754 Cat.6 U/UTP 30В LSZH
 Это неэкранированный (UTP) 4 - х парный кабель 6 категории. Благодаря внешней LSZH оболочке применяется при высоких требованиях к пожарной безопасности. Отличается низким дымовыделением и не содержит опасных для здоровья галогенов.   
 Используется для создания компьютерных сетей стандарта 1 Гигабит/сек до 4 Гигабит/сек.   
@@ -26324,7 +26324,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
         <picture>https://img.al-style.kz/45710_2.jpg</picture>
         <vendor>Legrand</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Кабель сетевой Legrand 032755 Cat.6 U/UTP PVC 
 Это неэкранированный (UTP) 4 - х парный кабель 6 категории.    
 Используется для создания компьютерных сетей стандарта 1 Гигабит/сек до 4 Гигабит/сек.   
@@ -32206,7 +32206,7 @@ Keor SPE Tower может быть подключен к ПК через SNMP, USB и последовательный порт
         <picture>https://img.al-style.kz/52081_1.jpg</picture>
         <vendor>Legrand</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Батарейный блок Legrand для ИБП Daker DK Plus 10 кВАДополнительный батарейный шкаф для источника бесперебойного питания Daker DK Plus 10 кВА (3 101 77). Позволяет увеличить время автономной работы ИБП, кроме того, использование дополнительных батарей особенно необходимо, если в вашей электрической сети возможны длительные перебои, в то время как подключенные устройства не могут оставаться без питания.
 
 Характеристики:
@@ -34285,7 +34285,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <picture>https://img.al-style.kz/56893_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -35538,7 +35538,7 @@ Type C   1 (4K, 60 Гц)
         <picture>https://img.al-style.kz/59206_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Широкоформатный принтер Canon imagePROGRAF TM-340
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики 
@@ -36061,7 +36061,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59322_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монохромное лазерное МФУ Canon I-S MF465dw
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
@@ -36112,7 +36112,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59325_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Цветное лазерное МФУ Canon I-S MF752CDW
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
@@ -42289,7 +42289,7 @@ Canon Cassette Feeding Unit-AE1/AG1/AJ1/AK1/AL1/AM1/AP1/AQ1/AW1Canon Color image
         <picture>https://img.al-style.kz/61055_1.jpg</picture>
         <vendor>Legrand</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Кабель сетевой Legrand 032758 Cat.6 F/UTP PVC 
 Это экранированный (UTP) 4 - х парный кабель 6 категории.    
 Используется для создания компьютерных сетей стандарта 1 Гигабит/сек до 4 Гигабит/сек. Благодаря внешней LSZH оболочке применяется при высоких требованиях к пожарной безопасности. Отличается низким дымовыделением и не содержит опасных для здоровья галогенов.   
@@ -43613,7 +43613,7 @@ USB-кабель
         <picture>https://img.al-style.kz/61348_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Источник бесперебойного питания APC Smart-UPS SRTG10KXLI
 
 ИБП APC Smart-UPS предназначен для ИТ-специалистов и сетевых администраторов, чтобы обеспечить бесперебойную работу и непрерывность бизнеса. 
@@ -45115,7 +45115,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61379_2.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Источник бесперебойного питания APC Easy UPS BVX2200LI-GR
 
 ИБП семейства Easy UPS надежно защищают электропитание мощных компьютерных систем, маршрутизаторов и модемов, внешних систем хранения, игровых приставок и прочей электроники в доме или организации. Эти ИБП стабилизируют напряжение при его отклонении от безопасных значений и дают возможность длительной работы от батарей при отключении электроэнергии. Они также обеспечивают защиту электропитания от опасных бросков и всплесков напряжения, а ПО для управления ИБП позволяет максимально полно использовать его возможности.
@@ -48068,7 +48068,7 @@ Eaton 5E Gen2 обеспечивает эффективную и доступную защиту электропитания для кри
         <picture>https://img.al-style.kz/62620_3.jpg</picture>
         <vendor>EATON</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>EATON 9SX11KiRT
 
 Высокопроизводительный онлайн-ИБП с двойным преобразованием
@@ -67069,6 +67069,9 @@ USB-C x1
         <vendorCode>AS78338</vendorCode>
         <name>Монитор 32" LG 32UN880K-B</name>
         <price>355900</price>
+        <picture>https://img.al-style.kz/78338_1.jpg</picture>
+        <picture>https://img.al-style.kz/78338_2.jpg</picture>
+        <picture>https://img.al-style.kz/78338_3.jpg</picture>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -67109,6 +67112,9 @@ USB-C x1
         <vendorCode>AS78339</vendorCode>
         <name>Монитор 27" LG 27UP850K-W</name>
         <price>213900</price>
+        <picture>https://img.al-style.kz/78339_1.jpg</picture>
+        <picture>https://img.al-style.kz/78339_2.jpg</picture>
+        <picture>https://img.al-style.kz/78339_3.jpg</picture>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -67121,6 +67127,9 @@ USB-C x1
         <vendorCode>AS78340</vendorCode>
         <name>Монитор 34" LG 34WR55QK-B</name>
         <price>213900</price>
+        <picture>https://img.al-style.kz/78340_1.jpg</picture>
+        <picture>https://img.al-style.kz/78340_2.jpg</picture>
+        <picture>https://img.al-style.kz/78340_3.jpg</picture>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -67165,6 +67174,9 @@ USB-C x1
         <vendorCode>AS78342</vendorCode>
         <name>Монитор 27" LG 27GS85Q-B</name>
         <price>195900</price>
+        <picture>https://img.al-style.kz/78342_1.jpg</picture>
+        <picture>https://img.al-style.kz/78342_2.jpg</picture>
+        <picture>https://img.al-style.kz/78342_3.jpg</picture>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -67990,6 +68002,9 @@ Canon i-SENSYS MF287DW
         <vendorCode>AS79259</vendorCode>
         <name>Монитор 32" LG 32GS95UV-B</name>
         <price>685900</price>
+        <picture>https://img.al-style.kz/79259_1.jpg</picture>
+        <picture>https://img.al-style.kz/79259_2.jpg</picture>
+        <picture>https://img.al-style.kz/79259_3.jpg</picture>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -68034,6 +68049,9 @@ USB-A x2
         <vendorCode>AS79260</vendorCode>
         <name>Монитор 27" LG 27GS95QE-B</name>
         <price>504900</price>
+        <picture>https://img.al-style.kz/79260_1.jpg</picture>
+        <picture>https://img.al-style.kz/79260_2.jpg</picture>
+        <picture>https://img.al-style.kz/79260_3.jpg</picture>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -68121,6 +68139,9 @@ DisplayPort x1
         <vendorCode>AS79263</vendorCode>
         <name>Монитор 24" LG 24BA650-B</name>
         <price>133900</price>
+        <picture>https://img.al-style.kz/79263_1.jpg</picture>
+        <picture>https://img.al-style.kz/79263_2.jpg</picture>
+        <picture>https://img.al-style.kz/79263_3.jpg</picture>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -68586,7 +68607,7 @@ OEM №: 302H493011, 302LZ93061, DK-150, DK-170
         <picture>https://img.al-style.kz/80473_1.jpg</picture>
         <vendor>CET</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Драм-юнит CET 013R00679 (DGP0591)
 Данный драм-юнит обеспечивает высокое качество печати и совместим с лазерными копирами XEROX.
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -69180,7 +69201,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <picture>https://img.al-style.kz/81709_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор Samsung 32" LS32D700EAIXCI
 
 Особенности и преимущества:
@@ -69377,6 +69398,9 @@ HDMI-кабель x1
         <vendorCode>AS83007</vendorCode>
         <name>Монитор 40" LG 40U990A-W</name>
         <price>1020900</price>
+        <picture>https://img.al-style.kz/83007_1.jpg</picture>
+        <picture>https://img.al-style.kz/83007_2.jpg</picture>
+        <picture>https://img.al-style.kz/83007_3.jpg</picture>
         <vendor>LG</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
