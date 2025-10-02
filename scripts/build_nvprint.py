@@ -1,27 +1,17 @@
 # scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
 """
-NVPrint -> YML (KZT) под общий шаблон.
+NVPrint -> YML (KZT) под общий шаблон, без локального docs/nvprint_source.xml.
 
-Поля:
-  <name>        = <НоменклатураКратко>
-  <description> = <Номенклатура> + блок "Технические характеристики" из:
-                  <Ресурс>, <ТипПечати>, <ЦветПечати>, <СовместимостьСМоделями>, <Вес>, <Принтеры>/<Принтер>
-ID/Код:
-  id = vendorCode = "NP" + <Артикул_без_префикса NV->  (пробелы удаляем)
-Цена:
-  1) <Договор НомерДоговора="ТА-000079"> -> <Цена> (Казахстан приоритет)
-  2) иначе <Договор НомерДоговора="TA-000079Мск"> -> <Цена> (Москва)
-  3) иначе 100
-  4) применяем PRICING_RULES и округляем вверх до ...900
-Фильтр:
-  docs/nvprint_keywords.txt — оставляем товары, где <НоменклатураКратко> НАЧИНАЕТСЯ с любого слова из списка
+Требования:
+- id = vendorCode = "NP" + <Артикул без префикса NV и без пробелов>
+- Порядок тегов внутри <offer>:
+  <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <available>, <description>
+- <available>true</available> всем
+- Валюта одна: <currencyId>KZT</currencyId>
+- FEED_META в шапке как комментарий
 
-Вывод:
-  только нужные теги (name, vendor, vendorCode, price, currencyId, picture, description, available)
-  без <categories>, <categoryId>, <url> и quantity-тегов
-  <available>true</available> — ВСЕМ
-  кодировка: windows-1251
+Источник берётся из ENV NVPRINT_XML_URL (если не задан — дефолтный URL NVPrint API).
 """
 
 from __future__ import annotations
@@ -37,12 +27,12 @@ except Exception:
     requests = None
 
 # ---------------- КОНСТАНТЫ / ОКРУЖЕНИЕ ----------------
-SUPPLIER_URL      = "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
-OUT_FILE          = "docs/nvprint.yml"
-OUTPUT_ENCODING   = "windows-1251"
-HTTP_TIMEOUT      = 45.0
-RETRIES           = 4
-RETRY_BACKOFF_S   = 2.0
+SUPPLIER_URL      = os.getenv("NVPRINT_XML_URL", "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true")
+OUT_FILE          = os.getenv("OUT_FILE", "docs/nvprint.yml")
+OUTPUT_ENCODING   = os.getenv("OUTPUT_ENCODING", "windows-1251")
+HTTP_TIMEOUT      = float(os.getenv("HTTP_TIMEOUT", "45"))
+RETRIES           = int(os.getenv("RETRIES", "4"))
+RETRY_BACKOFF_S   = float(os.getenv("RETRY_BACKOFF_S", "2"))
 
 # Basic-Auth из секретов CI
 NV_LOGIN          = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
@@ -254,7 +244,7 @@ def clean_article(raw: str) -> str:
 def make_ids_from_article(article: str) -> Tuple[str, str]:
     ac = clean_article(article)
     pref = "NP" + ac
-    return pref, pref
+    return pref, pref  # id, vendorCode
 
 def collect_printers(item: ET.Element) -> List[str]:
     printers: List[str] = []
@@ -366,40 +356,20 @@ def almaty_now_str() -> str:
     return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S +05")
 
 def _format_meta_rows(rows: List[Tuple[str, str, str]]) -> str:
-    """
-    Выравнивание FEED_META:
-      - выравниваем колонку ключей по максимальной ширине
-      - выравниваем колонку комментариев к общей позиции COMMENT_COL
-      - последняя строка (built_Asia/Almaty) завершает комментарий: '... | Время сборки (Алматы)-->'
-    """
     if not rows:
         return ""
     key_width = max(len(k) for k, _, _ in rows)
-    # Колонка комментариев начинаем на этой позиции (гарантировано не меньше "key = value")
-    COMMENT_COL = max(72, key_width + 3 + 10)  # ' = ' + хотя бы 10 символов значения
-
+    COMMENT_COL = max(72, key_width + 3 + 10)
     lines: List[str] = []
     for i, (k, v, cmt) in enumerate(rows):
         left = f"{k.ljust(key_width)} = {v}"
-        if cmt:
-            pad = " " * max(1, COMMENT_COL - len(left)) if len(left) < COMMENT_COL else "  "
-            tail = f"{pad}| {cmt}"
-        else:
-            tail = ""
-        # Для последней строки (built_Asia/Almaty) закрываем комментарий:
-        if i == len(rows) - 1 and "Время сборки (Алматы)" in cmt:
-            tail = (tail[:-0] if tail else " ") + "-->"
+        tail = f"{(' ' * max(1, COMMENT_COL - len(left))) if len(left) < COMMENT_COL else '  '}| {cmt}" if cmt else ""
+        if i == len(rows) - 1 and "Время сборки (Алматы)" in (cmt or ""):
+            tail = (tail or " ") + "-->"
         lines.append(left + tail)
     return "\n".join(lines)
 
-def build_feed_meta(
-    source: str,
-    offers_total: int,
-    offers_written: int,
-    prices_picked: int,
-    kw_count: int,
-    kw_dropped: int
-) -> str:
+def build_feed_meta(source: str, offers_total: int, offers_written: int, prices_picked: int, kw_count: int, kw_dropped: int) -> str:
     rows: List[Tuple[str, str, str]] = [
         ("supplier",            "nvprint",              "Метка поставщика"),
         ("source",              source,                 "URL/файл источника"),
@@ -414,35 +384,31 @@ def build_feed_meta(
     ]
     return "<!--FEED_META\n" + _format_meta_rows(rows) + "\n"
 
-def build_yml(
-    offers: List[Dict[str, Any]],
-    source: str,
-    offers_total: int,
-    prices_picked: int,
-    kw_count: int,
-    kw_dropped: int
-) -> str:
+def build_yml(offers: List[Dict[str, Any]], source: str, offers_total: int, prices_picked: int, kw_count: int, kw_dropped: int) -> str:
     date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
     out: List[str] = []
-    out.append("<?xml version='1.0' encoding='windows-1251'?>")
+    out.append(f"<?xml version='1.0' encoding='{OUTPUT_ENCODING}'?>")
     out.append(f"<yml_catalog date=\"{date_attr}\">")
     out.append(build_feed_meta(source, offers_total, len(offers), prices_picked, kw_count, kw_dropped))
     out.append("<shop>")
     out.append("  <offers>")
     for it in offers:
-        out.append(f"    <offer id=\"{yml_escape(it['id'])}\">")
+        # id должен быть строго равен vendorCode
+        offer_id = it.get("vendorCode") or it.get("id")
+        out.append(f"    <offer id=\"{yml_escape(offer_id)}\">")
+        # ПОРЯДОК ТЕГОВ (унифицировано):
+        out.append(f"      <vendorCode>{yml_escape(offer_id)}</vendorCode>")
         out.append(f"      <name>{yml_escape(it['title'])}</name>")
-        if it.get("vendor"):
-            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
-        out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
         out.append(f"      <price>{int(it['price'])}</price>")
-        out.append("      <currencyId>KZT</currencyId>")
         if it.get("picture"):
             out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
+        if it.get("vendor"):
+            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
+        out.append("      <currencyId>KZT</currencyId>")
+        out.append("      <available>true</available>")
         if it.get("description"):
             desc_clean = re.sub(r"\s+", " ", it["description"]).strip()
             out.append(f"      <description>{yml_escape(desc_clean)}</description>")
-        out.append("      <available>true</available>")
         out.append("    </offer>\n")
     out.append("  </offers>")
     out.append("</shop></yml_catalog>")
@@ -451,7 +417,6 @@ def build_yml(
 # ---------------- MAIN ----------------
 def parse_xml_to_yml(xml_bytes: bytes, source_label: str) -> str:
     root = ET.fromstring(xml_bytes)
-
     keywords = load_keywords(KEYWORDS_FILE)
     kw_count = len(keywords)
 
@@ -467,7 +432,6 @@ def parse_xml_to_yml(xml_bytes: bytes, source_label: str) -> str:
         if not name_starts_with_keywords(name_short, keywords):
             kw_dropped += 1
             continue
-
         it = parse_item(node)
         if not it:
             continue
@@ -485,7 +449,7 @@ def main() -> int:
         yml = build_yml([], SUPPLIER_URL, 0, 0, 0, 0)
         print(f"ERROR: {e}", file=sys.stderr)
 
-    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
+    os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
     with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
         f.write(yml)
     print(f"Wrote: {OUT_FILE} | encoding={OUTPUT_ENCODING}")
