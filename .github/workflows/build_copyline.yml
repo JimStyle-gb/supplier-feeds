@@ -1,39 +1,47 @@
-# .github/workflows/build_copyline.yml
 name: build_copyline
+
 on:
   schedule:
-    - cron: "0 * * * *"  # каждый час (UTC)
+    - cron: "0 * * * *"  # запуск каждый час (UTC)
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Almaty time gate
+      - name: Time gate (Asia/Almaty 03:00 on 1/10/20)
         id: gate
+        shell: bash
         run: |
-          pipx install pytz tzlocal >/dev/null 2>&1 || true
-          python - <<'PY'
-import sys, datetime, pytz
-tz = pytz.timezone("Asia/Almaty")
-now = datetime.datetime.now(tz)
-ok_day   = now.day in (1,10,20)
-ok_hour  = now.hour == 3
-print(f"Now Almaty: {now}")
-if not (ok_day and ok_hour):
-    print("Skip: not 03:00 at 1/10/20 in Asia/Almaty.")
-    sys.exit(78)   # neutral (skipped)
-PY
+          set -e
+          export TZ=Asia/Almaty
+          echo "Now (Almaty): $(date)"
+          # День месяца без ведущего нуля (%-d на Linux). На Mac — тоже работает, на Windows не используется.
+          DAY=$(date +%-d)
+          HOUR=$(date +%H)
+          if [[ "$DAY" =~ ^(1|10|20)$ ]] && [ "$HOUR" == "03" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Gate: pass."
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Gate: skip (not 03:00 on 1/10/20 in Asia/Almaty)."
+          fi
+
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
-            python-version: "3.11"
+          python-version: "3.11"
+
       - name: Install deps
+        if: steps.gate.outputs.run == 'true'
         run: |
           python -V
           pip install --upgrade pip
           pip install requests beautifulsoup4 openpyxl
+
       - name: Build Copyline YML
+        if: steps.gate.outputs.run == 'true'
         env:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
@@ -49,7 +57,9 @@ PY
         run: |
           set -e
           python scripts/build_copyline.py
+
       - name: Commit & push
+        if: steps.gate.outputs.run == 'true'
         run: |
           set -e
           git config user.name  "github-actions[bot]"
@@ -58,3 +68,7 @@ PY
           git commit -m "chore(copyline): update docs/copyline.yml [skip ci]" || echo "No changes"
           git pull --rebase || true
           git push || true
+
+      - name: Skipped (not scheduled time)
+        if: steps.gate.outputs.run != 'true'
+        run: echo "Skipping build — not 03:00 at 1/10/20 in Asia/Almaty."
