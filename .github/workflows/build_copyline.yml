@@ -1,75 +1,64 @@
 name: build_copyline
 
 on:
-  # Редкие срабатывания (за сутки до нужного времени в Алматы)
-  schedule:
-    - cron: "0 21 9,19,30,31 * *"   # 21:00 UTC (≈ 03:00 Asia/Almaty на 10/20/1)
   workflow_dispatch:
-    inputs:
-      force:
-        description: "Игнорировать тайм-гейт при ручном запуске"
-        required: false
-        default: "true"
+  schedule:
+    # Для 10 и 20 числа в 03:00 по Алматы:
+    - cron: "0 22 9 * *"   # 22:00 UTC => 03:00 Asia/Almaty (на 10-е)
+    - cron: "0 22 19 * *"  # 22:00 UTC => 03:00 Asia/Almaty (на 20-е)
+    # Для 1-го числа в 03:00 по Алматы — покрываем разную длину месяца:
+    - cron: "0 22 28 * *"  # февраль (и вообще при 28 днях)
+    - cron: "0 22 29 * *"  # високосный февраль
+    - cron: "0 22 30 * *"
+    - cron: "0 22 31 * *"
+
+concurrency:
+  group: build_copyline_${{ github.ref_name }}
+  cancel-in-progress: false
 
 permissions:
-  contents: write   # нужно, чтобы шаг Commit & push мог записать изменения
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Decide run flag (schedule vs manual)
-        id: runflag
-        env:
-          FORCE_INPUT: ${{ inputs.force }}
-          EVENT_NAME: ${{ github.event_name }}
-        shell: bash
-        run: |
-          set -e
-          echo "event=${EVENT_NAME}"
-          echo "force_input=${FORCE_INPUT:-<unset>}"
-
-          if [ "${EVENT_NAME}" = "schedule" ]; then
-            # Тайм-гейт только для расписания
-            export TZ=Asia/Almaty
-            echo "Now (Almaty): $(date)"
-            DAY=$(date +%-d)
-            HOUR=$(date +%H)
-            if [[ "$DAY" =~ ^(1|10|20)$ ]] && [ "$HOUR" = "03" ]; then
-              echo "run=true" >> "$GITHUB_OUTPUT"
-              echo "Gate: pass (scheduled)."
-            else
-              echo "run=false" >> "$GITHUB_OUTPUT"
-              echo "Gate: skip (scheduled but not 03:00 on 1/10/20)."
-            fi
-          else
-            # Ручной запуск — всегда запускаем (можно выключить через force=false)
-            if [ "${FORCE_INPUT:-true}" = "false" ]; then
-              echo "run=false" >> "$GITHUB_OUTPUT"
-              echo "Manual run: force=false => skip."
-            else
-              echo "run=true" >> "$GITHUB_OUTPUT"
-              echo "Manual run: force=true (or default) => pass."
-            fi
-          fi
-
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Как у nvprint: единый тайм-гейт; ручной запуск проходит без условий
+      - name: Check Almaty schedule gate
+        id: check
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timedelta
+          import os
+          now_utc = datetime.utcnow()
+          now_alm = now_utc + timedelta(hours=5)  # Asia/Almaty ~ UTC+5
+          day  = now_alm.day
+          hour = now_alm.hour
+          should = 'yes' if (day in (1,10,20) and hour == 3) else 'no'
+          print(f"::notice::Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"run={should}\n")
+          PY
 
       - uses: actions/setup-python@v5
-        if: steps.runflag.outputs.run == 'true'
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         with:
           python-version: "3.11"
 
       - name: Install deps
-        if: steps.runflag.outputs.run == 'true'
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         run: |
           set -e
-          python -V
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install requests beautifulsoup4 openpyxl
 
       - name: Build Copyline YML
-        if: steps.runflag.outputs.run == 'true'
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         env:
           XLSX_URL: https://copyline.kz/files/price-CLA.xlsx
           KEYWORDS_FILE: docs/copyline_keywords.txt
@@ -87,16 +76,16 @@ jobs:
           python scripts/build_copyline.py
 
       - name: Commit & push
-        if: steps.runflag.outputs.run == 'true'
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         run: |
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/copyline.yml || true
-          git commit -m "chore(copyline): update docs/copyline.yml [skip ci]" || echo "No changes to commit"
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
           git pull --rebase || true
           git push
-
-      - name: Skipped
-        if: steps.runflag.outputs.run != 'true'
-        run: echo "Skipping build — not scheduled time and manual force=false."
