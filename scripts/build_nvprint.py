@@ -358,20 +358,18 @@ def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
         items.append(node)
     return items
 
-# ---------------- FEED_META + YML ----------------
-# === НОВЫЙ БЛОК FEED_META (визуал "Поле | значение" + 1/10/20 в 04:00) ===
+# ---------------- FEED_META (визуал "Поле | значение") ----------------
 def _almaty_now() -> datetime:
-    # Простое смещение +05:00 (Asia/Almaty) — без zoneinfo, только для визуала
-    return datetime.utcnow() + timedelta(hours=5)
+    return datetime.utcnow() + timedelta(hours=5)  # Asia/Almaty ~ UTC+5
 
 def _next_build_1_10_20_at_04() -> datetime:
     """
-    Ближайшее 1/10/20 в 04:00 по времени Алматы.
-    Если окна в этом месяце уже прошли — вернём 1-е число следующего месяца 04:00.
+    Ближайшее число 1/10/20 в 04:00 по времени Алматы.
+    Если в текущем месяце окна уже прошли — вернём 1-е число следующего месяца (04:00).
     """
     now = _almaty_now()
     targets = [1, 10, 20]
-    cands = []
+    cands: List[datetime] = []
     for d in targets:
         try:
             cands.append(now.replace(day=d, hour=4, minute=0, second=0, microsecond=0))
@@ -380,54 +378,44 @@ def _next_build_1_10_20_at_04() -> datetime:
     future = [t for t in cands if t > now]
     if future:
         return min(future)
-    # 1-е следующего месяца, 04:00
     if now.month == 12:
-        return now.replace(year=now.year+1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
+        return now.replace(year=now.year + 1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
     first_next = (now.replace(day=1, hour=4, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
     return first_next
 
 def _fmt_alm(dt: datetime) -> str:
     return dt.strftime("%d:%m:%Y - %H:%M:%S")
 
-def render_feed_meta_comment(pairs: dict) -> str:
+def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
+    """
+    Ровно как в feed.txt:
+      Поставщик | ...
+      URL поставщика | ...
+      Время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+      Ближайшее время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+      Сколько товаров у поставщика до фильтра | ...
+      Сколько товаров у поставщика после фильтра | ...
+      Сколько товаров есть в наличии (true) | ...
+      Сколько товаров нет в наличии (false) | ...
+    """
     now_alm  = _almaty_now()
     next_alm = _next_build_1_10_20_at_04()
     rows = [
-        ("Поставщик",                                  pairs.get("supplier", "nvprint")),
-        ("URL поставщика",                             pairs.get("source", "")),
-        ("Время сборки (Алматы)",                      _fmt_alm(now_alm)),
-        ("Ближайшее время сборки (Алматы)",            _fmt_alm(next_alm)),
-        ("Сколько товаров у поставщика до фильтра",    str(pairs.get("offers_total", "0"))),
+        ("Поставщик", "nvprint"),
+        ("URL поставщика", pairs.get("source", "")),
+        ("Время сборки (Алматы)", _fmt_alm(now_alm)),
+        ("Ближайшее время сборки (Алматы)", _fmt_alm(next_alm)),
+        ("Сколько товаров у поставщика до фильтра", str(pairs.get("offers_total", "0"))),
         ("Сколько товаров у поставщика после фильтра", str(pairs.get("offers_written", "0"))),
-        ("Сколько товаров есть в наличии (true)",      str(pairs.get("available_true", "0"))),
-        ("Сколько товаров нет в наличии (false)",      str(pairs.get("available_false", "0"))),
+        ("Сколько товаров есть в наличии (true)", str(pairs.get("available_true", "0"))),
+        ("Сколько товаров нет в наличии (false)", str(pairs.get("available_false", "0"))),
     ]
-    key_w = max(len(k) for k,_ in rows) if rows else 0
+    key_w = max(len(k) for k, _ in rows)
     lines = ["<!--FEED_META"]
-    for i,(k,v) in enumerate(rows):
-        end = " -->" if i == len(rows)-1 else ""
+    for i, (k, v) in enumerate(rows):
+        end = " -->" if i == len(rows) - 1 else ""
         lines.append(f"{k.ljust(key_w)} | {v}{end}")
     return "\n".join(lines)
-
-def build_feed_meta(
-    source: str,
-    offers_total: int,
-    offers_written: int,
-    prices_picked: int,
-    kw_count: int,
-    kw_dropped: int,
-) -> str:
-    # Собираем пары для визуального FEED_META
-    pairs = {
-        "supplier": "nvprint",
-        "source": source,
-        "offers_total": offers_total,
-        "offers_written": offers_written,
-        "available_true": offers_written,
-        "available_false": 0,
-    }
-    return render_feed_meta_comment(pairs) + "\n"
-# === КОНЕЦ НОВОГО FEED_META ===
 
 def build_yml(
     offers: List[Dict[str, Any]],
@@ -442,16 +430,16 @@ def build_yml(
     out.append("<?xml version='1.0' encoding='windows-1251'?>")
     out.append(f"<yml_catalog date=\"{date_attr}\">")
 
-    # пары для FEED_META (подставляются в новый визуальный рендер)
+    # пары для FEED_META (только визуал, без комментариев)
     offers_written = len(offers)
-    out.append(build_feed_meta(
-        source=source,
-        offers_total=offers_total,
-        offers_written=offers_written,
-        prices_picked=prices_picked,
-        kw_count=kw_count,
-        kw_dropped=kw_dropped
-    ))
+    meta_pairs = {
+        "source": source,
+        "offers_total": offers_total,
+        "offers_written": offers_written,
+        "available_true": offers_written,
+        "available_false": 0,
+    }
+    out.append(render_feed_meta_comment(meta_pairs))
 
     out.append("<shop>")
     out.append("  <offers>")
