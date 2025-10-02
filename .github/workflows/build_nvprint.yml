@@ -1,105 +1,94 @@
 name: build_nvprint
-
 on:
-  # Стартуем редко: 23:00 UTC в 9/19/30/31 (это ~04:00 Asia/Almaty на 10/20/1)
-  schedule:
-    - cron: "0 23 9,19,30,31 * *"
   workflow_dispatch:
-    inputs:
-      force:
-        description: "Запустить вручную прямо сейчас (игнорировать расписание)"
-        required: false
-        default: "true"
 
-permissions:
-  contents: write
+concurrency:
+  group: build_nvprint_${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
 
     steps:
-      - name: Decide run flag (schedule vs manual)
-        id: runflag
-        env:
-          FORCE_INPUT: ${{ inputs.force }}
-          EVENT_NAME: ${{ github.event_name }}
-        shell: bash
-        run: |
-          set -e
-          if [ "${EVENT_NAME}" = "schedule" ]; then
-            export TZ=Asia/Almaty
-            echo "Now (Almaty): $(date)"
-            DAY=$(date +%-d)
-            HOUR=$(date +%H)
-            if [[ "$DAY" =~ ^(1|10|20)$ ]] && [ "$HOUR" = "04" ]; then
-              echo "run=true" >> "$GITHUB_OUTPUT"
-              echo "Gate: pass (scheduled 04:00 Asia/Almaty on 1/10/20)."
-            else
-              echo "run=false" >> "$GITHUB_OUTPUT"
-              echo "Gate: skip."
-            fi
-          else
-            if [ "${FORCE_INPUT:-true}" = "false" ]; then
-              echo "run=false" >> "$GITHUB_OUTPUT"; echo "Manual force=false => skip."
-            else
-              echo "run=true"  >> "$GITHUB_OUTPUT"; echo "Manual force=true => pass."
-            fi
-          fi
-
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
-        if: steps.runflag.outputs.run == 'true'
         with:
           python-version: '3.11'
 
       - name: Install deps
-        if: steps.runflag.outputs.run == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
       - name: Ensure keywords file
-        if: steps.runflag.outputs.run == 'true'
         run: |
           python - <<'PY'
           import os, io
           os.makedirs("docs", exist_ok=True)
-          p = "docs/nvprint_keywords.txt"
-          if not os.path.isfile(p):
-              with io.open(p, "w", encoding="utf-8") as f:
-                  f.write("Картридж\nТонер-картридж\nБлок фотобарабана\n")
-          print("keywords ready:", p)
+          path = "docs/nvprint_keywords.txt"
+          if not os.path.isfile(path):
+              data = "\n".join([
+                  "Блок фотобарабана",
+                  "Картридж",
+                  "Печатающая головка",
+                  "Струйный картридж",
+                  "Тонер-картридж",
+                  "Тонер-туба",
+              ]) + "\n"
+              with io.open(path, "w", encoding="utf-8") as f:
+                  f.write(data)
+          with io.open(path, "r", encoding="utf-8") as f:
+              print("Using keywords:\n" + f.read())
           PY
 
       - name: Build NVPrint feed
-        if: steps.runflag.outputs.run == 'true'
         env:
+          # источник XML — ОБЯЗАТЕЛЬНО в кавычках
           NVPRINT_XML_URL: 'https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true'
           NVPRINT_LOGIN: ${{ secrets.NVPRINT_LOGIN }}
           NVPRINT_PASSWORD: ${{ secrets.NVPRINT_PASSWORD }}
+
+          # вывод
           OUT_FILE: docs/nvprint.yml
-          OUTPUT_ENCODING: windows-1251
           HTTP_TIMEOUT: "60"
+          MAX_PICTURES: "10"
+
+          # наличие: принудительно всё в наличии
+          NVPRINT_FORCE_AVAILABLE: "1"
+
+          # фильтр по ключевым словам
           NVPRINT_KEYWORDS_FILE: docs/nvprint_keywords.txt
+
+          # маппинг (опционально)
+          NVPRINT_MAP_FILE: docs/nvprint_map.csv
+          NVPRINT_MAP_DELIM: ","
+          NVPRINT_MAP_SUPPLIER_COL: "0"
+          NVPRINT_MAP_OUR_COL: "1"
+          NVPRINT_REQUIRE_MAP: "0"
+          NVPRINT_OUR_SKU_PREFIX: ""
+          NVPRINT_PARAM_SUPPLIER_CODE: "SupplierCode"
         run: |
-          set -e
+          set -euo pipefail
           python scripts/build_nvprint.py
 
       - name: Commit & push feed
-        if: steps.runflag.outputs.run == 'true'
         env:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/nvprint.yml docs/nvprint_keywords.txt || true
-          git commit -m "chore(nvprint): update docs/nvprint.yml" || echo "No changes"
-          git pull --rebase origin "$BRANCH_NAME" || true
-          git push origin "$BRANCH_NAME" || true
-
-      - name: Skipped
-        if: steps.runflag.outputs.run != 'true'
-        run: echo "Skipping — not 04:00 Asia/Almaty on 1/10/20 and manual force=false."
+          git add docs/nvprint.yml docs/nvprint_source.xml docs/nvprint_keywords.txt || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Update nvprint.yml (keywords filter + force available)"
+          git pull --rebase origin "$BRANCH_NAME" || git pull --no-rebase -X ours origin "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
