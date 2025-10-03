@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-03 13:21">
+<yml_catalog date="2025-10-03 20:17">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 03:10:2025 - 18:21:24
-Ближайшее время сборки (Алматы)            | 04:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15930
+Время сборки (Алматы)                      | 04:10:2025 - 01:17:15
+Ближайшее время сборки (Алматы)            | 05:10:2025 - 01:00:00
+Сколько товаров у поставщика до фильтра    | 15931
 Сколько товаров у поставщика после фильтра | 1995
-Сколько товаров есть в наличии (true)      | 1314
-Сколько товаров нет в наличии (false)      | 681-->
+Сколько товаров есть в наличии (true)      | 1318
+Сколько товаров нет в наличии (false)      | 677-->
   <shop>
     <offers>
       <offer id="AS20888">
@@ -392,7 +392,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/21397_3.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Уничтожитель бумаг (Шредер) COMIX S801
 Уничтожитель бумаг COMIX S801   это идеальное решение для эффективного уничтожения конфиденциальных документов. Благодаря своей мощности и надежности, он обеспечивает высокий уровень безопасности и защиты ваших важных данных.
 Основные особенности COMIX S801:
@@ -20078,7 +20078,7 @@ Mi Smart Projector 2 использует индивидуальный объем пространства и соответствую
         <picture>https://img.al-style.kz/37172_3.jpg</picture>
         <vendor>Gigabyte</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор 27" Gigabyte G27FC A-EK
 Роль монитора в игровом процессе, зачастую, недооценивают. Правда заключается в том, что благодаря дисплеям достигается синергетический эффект и визуальное восприятие реальной производительности ПК. Игровые мониторы GIGABYTE   это востребованная функциональность и безупречное качество исполнения. Владельцы таких дисплеев могут наслаждаться качеством картинки и реальным быстродействием игрового процесса без излишней экстравагантности имиджевой составляющей изделия.
 Особенности и преимущества:
@@ -20405,7 +20405,7 @@ Comix F6301   ламинатор начального уровня для дома офиса.
         <picture>https://img.al-style.kz/23855_3.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Переплётная машина на пластиковую пружину COMIX B2950
 Comix B2950 - Персональный переплетчик для создания брошюр формата до А4.
 Брошюровщик Comix B2988, с регулировкой формата и глубины пробивки. Максимальное количество листов для переплета 150л., перфорация 8 листов за один раз.
@@ -20435,7 +20435,7 @@ Comix B2950 - Персональный переплетчик для создания брошюр формата до А4.
         <picture>https://img.al-style.kz/23863_3.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Ламинатор COMIX F9052
 Comix F9052   ламинатор начального уровня для дома офиса.
 Ламинатор предназначен для работы с пленкой 80, 100 и 125 мкм. Максимальный формат документа   А3. Также подходит для A4. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 3-5 минут после включения.
@@ -29508,7 +29508,7 @@ USB
         <picture>https://img.al-style.kz/21395_3.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Уничтожитель бумаг (Шредер) COMIX S340
 COMIX S340   это высококачественный шредер, который обеспечит надежную защиту вашей конфиденциальной информации. С его помощью вы сможете безопасно уничтожить документы, избегая риска утечки данных.
 Основные особенности COMIX S340:
@@ -30707,7 +30707,7 @@ HDMI x1
         <picture>https://img.al-style.kz/23857_3.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Comix F6801   ламинатор начального уровня для дома офиса.
 Ламинатор предназначен для работы с пленкой 80, 100 и 125 мкм. Максимальный формат документа   А4. Ламинатор прост в управлении и не требует дополнительных настроек. Синий световой сигнал подскажет о готовности к работе через 90 секунд после включения.
 Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Comix F6801 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое. 
@@ -30726,7 +30726,7 @@ HDMI x1
         <picture>https://img.al-style.kz/23865_3.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Comix F9062   ламинатор начального уровня для дома офиса.
 Ламинатор предназначен для работы с пленкой 80, 100 и 125 мкм. Максимальный формат документа   А3. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 3-5 минут после включения.
 Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Comix F9052 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое. 
@@ -50188,7 +50188,7 @@ Canon ImageRUNNER C1225Canon ImageRUNNER C1225iFCanon imageClass MF810CCanon ima
         <picture>https://img.al-style.kz/63876_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж Canon CARTRIDGE 067 Black
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
 Оригинальный монохромный картридж Canon 067 с ресурсом 1350 стр. для принтеров и МФУ Canon i-SENSYS LBP631Cw, LBP633Cdw, MF651Cw, MF655Cdw, MF657Cdw.
@@ -64791,7 +64791,7 @@ OEM №: C-EXV63, 5144C001AA, 5144C002AA
         <picture>https://img.al-style.kz/76742_1.jpg</picture>
         <vendor>CET</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Драм-юнит CET C-EXV49 CMYK (CET5228P)
 Данный драм-юнит обеспечивает высокое качество печати и совместим с лазерными копирами Canon.
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -69298,7 +69298,7 @@ Canon imagePROGRAF iPF TX-2000Canon imagePROGRAF iPF TX-3000Canon imagePROGRAF i
         <picture>https://img.al-style.kz/81709_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор Samsung 32" LS32D700EAIXCI
 
 Особенности и преимущества:
