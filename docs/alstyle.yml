@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-04 20:15">
+<yml_catalog date="2025-10-05 20:16">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 05:10:2025 - 01:15:40
-Ближайшее время сборки (Алматы)            | 06:10:2025 - 01:00:00
+Время сборки (Алматы)                      | 06:10:2025 - 01:16:11
+Ближайшее время сборки (Алматы)            | 07:10:2025 - 01:00:00
 Сколько товаров у поставщика до фильтра    | 15931
 Сколько товаров у поставщика после фильтра | 1995
-Сколько товаров есть в наличии (true)      | 1320
-Сколько товаров нет в наличии (false)      | 675-->
+Сколько товаров есть в наличии (true)      | 1315
+Сколько товаров нет в наличии (false)      | 680-->
   <shop>
     <offers>
       <offer id="AS20888">
@@ -33024,7 +33024,7 @@ DisplayPort x1
         <picture>https://img.al-style.kz/53288_3.jpg</picture>
         <vendor>Dahua</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Интерактивная панель Dahua 75" DHI-LCH75-MC410-B
 Данная интеллектуальная интерактивная доска диагональю 75 дюймов включает в себя следующие характеристики:
 &amp;gt; Дисплей 4K HD.&amp;gt; Поддерживается использование как Android, так и Windows (должен быть установлен модуль ПК).&amp;gt; Беспроводное совместное использование экрана с нескольких устройств, таких как телефоны, компьютеры и планшеты.&amp;gt; Поддерживается запись стилусом.&amp;gt; Поддерживает программное обеспечение Office и воспроизведение видео и аудиофайлов.&amp;gt; Все каналы запуска настраиваются.&amp;gt; Поддержка проводных и беспроводных сетей.&amp;gt; Встроенная 5-мегапиксельная камера.&amp;gt; Модуль OPS приобретается отдельно.
@@ -36664,7 +36664,7 @@ MateBook D 16 оснащен 16-дюймовым IPS-экраном с золотым соотношением сторон 16:1
         <picture>https://img.al-style.kz/59364_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монохромный лазерный принтер Canon I-S LBP243dw
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
 Повысьте эффективность и производительность с черно-белыми лазерными принтерами серии i-SENSYS LBP240.
@@ -39072,7 +39072,7 @@ Canon imageRUNNER ADVANCE DX C5840iCanon imageRUNNER ADVANCE DX C5850iCanon imag
         <picture>https://img.al-style.kz/59960_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монохромное лазерное МФУ Canon imageRUNNER ADVANCE DX 4925i
 Данная позиция является базовым блоком и не является рабочей конфигурацией!Для активации печатной машины необходимо приобрести комплект расходных материалов и необходимые опции к базовому блоку! (см. в Сопутствующие товары)
 Требуется запуск АСЦ
@@ -50471,7 +50471,7 @@ Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SEN
         <picture>https://img.al-style.kz/64108_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Струйный картридж Canon CL-56
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -52937,7 +52937,7 @@ Canon
         <picture>https://img.al-style.kz/65077_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монохромное лазерное МФУ Canon MF272dw
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
@@ -53186,7 +53186,7 @@ A4, B5, LTR, 10 x 15 см, 13 x 18 см, 20 x 25 см, формат карточки (91 x 55 мм), к
         <picture>https://img.al-style.kz/65100_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Струйный картридж Canon PG-440XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -53475,7 +53475,7 @@ Canon PIXMA TS5340Canon PIXMA TS7440
         <picture>https://img.al-style.kz/65138_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Струйный картридж Canon CL-461XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
