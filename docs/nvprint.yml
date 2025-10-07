@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-03 13:44">
+<yml_catalog date="2025-10-07 13:18">
 <!--FEED_META
 Поставщик                                  | NVPrint
 URL поставщика                             | https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true
-Время сборки (Алматы)                      | 03:10:2025 - 18:44:00
+Время сборки (Алматы)                      | 07:10:2025 - 18:18:17
 Ближайшее время сборки (Алматы)            | 10:10:2025 - 04:00:00
-Сколько товаров у поставщика до фильтра    | 3535
-Сколько товаров у поставщика после фильтра | 1730
-Сколько товаров есть в наличии (true)      | 1730
+Сколько товаров у поставщика до фильтра    | 3541
+Сколько товаров у поставщика после фильтра | 1731
+Сколько товаров есть в наличии (true)      | 1731
 Сколько товаров нет в наличии (false)      | 0 -->
 <shop>
   <offers>
     <offer id="NP013R00669DU">
       <vendorCode>NP013R00669DU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-013R00669 DU</name>
-      <price>106900</price>
+      <price>105900</price>
       <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -1274,7 +1274,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTK1140-SET3">
       <vendorCode>NPTK1140-SET3</vendorCode>
       <name>Картридж NVP совместимый NV-TK-1140-SET3</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>http://nvprint.ru/promo/photo/NV-TK1140-SET3.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -1649,6 +1649,16 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <currencyId>KZT</currencyId>
       <available>true</available>
       <description>Печатающая головка NVP 761 (NV-CH648A) Black для Designjet T7100/T7200 (совместимая) Технические характеристики: - Вес: 0</description>
+    </offer>
+
+    <offer id="NPT05204010">
+      <vendorCode>NPT05204010</vendorCode>
+      <name>Струйный картридж NV Print T0520 Color для Epson совместимый</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Струйный картридж NV Print T0520 Color для Epson совместимый Технические характеристики: - Вес: 0</description>
     </offer>
 
     <offer id="NP106R01481C">
@@ -2294,7 +2304,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTN-2335">
       <vendorCode>NPTN-2335</vendorCode>
       <name>Картридж NVP совместимый TN-2335</name>
-      <price>6900</price>
+      <price>5900</price>
       <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -2448,7 +2458,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-C-EXV49CMYKDU.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Блок фотобарабана NVР совместимый NV-C-EXV49 CMYK DU для Canon iR ADV C3025/C3320/C3325/C3330/C3520/C3525/C3530 (86300k) Технические характеристики: - Ресурс: 86300 - Тип печати: Лазерная - Цвет печати: CMYK - Совместимость с моделями: Canon iR ADV C3025/C3320/C3325/C3330/C3520/C3525/C3530 - Вес: 0.945 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER C3025, Canon imageRUNNER C3025i, Canon imageRUNNER ADVANCE C3525</description>
+      <description>Блок фотобарабана NVР совместимый NV-C-EXV49 CMYK DU для Canon iR ADV C3025/C3320/C3325/C3330/C3520/C3525/C3530 (86300k) Технические характеристики: - Ресурс: 86300 - Тип печати: Лазерная - Цвет печати: CMYK - Совместимость с моделями: Canon iR ADV C3025/C3320/C3325/C3330/C3520/C3525/C3530 - Вес: 0.945 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER C3025, Canon imageRUNNER C3025i, Canon imageRUNNER ADVANCE C3525, Canon imageRUNNER ADVANCE DX C3720, Canon imageRUNNER ADVANCE DX C3725, Canon imageRUNNER ADVANCE DX C3730</description>
     </offer>
 
     <offer id="NPC-EXV50DU">
@@ -3128,7 +3138,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-719H.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVP совместимый NV-719H для Canon LBP-6300dn/ LBP-6650dn/ MF5840dn/ MF5880dn (6400k) Технические характеристики: - Ресурс: 6400 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon i-SENSYS LBP6300dn/6310dn/6650dn/6670dn/6680x/MF5840dn/5880dn/5940dn/5980dw - Вес: 1.216 - Принтеры: Canon i-SENSYS LBP251dw, Canon i-SENSYS LBP252dw, Canon i-SENSYS LBP253x, Canon i-SENSYS LBP6300, Canon i-SENSYS LBP6310, Canon i-SENSYS LBP6650, Canon i-SENSYS LBP6670, Canon i-SENSYS LBP6680, Canon i-SENSYS MF411dw, Canon i-SENSYS MF416dw, Canon i-SENSYS MF418x, Canon i-SENSYS MF5880, Canon i-SENSYS MF5940, Canon i-SENSYS MF5980dn, Canon i-SENSYS MF5980, Canon i-SENSYS MF6140dn, Canon i-SENSYS MF6180dw, Canon i-SENSYS LBP6300dn, Canon i-SENSYS LBP6310dn, Canon i-SENSYS LBP6650dn, Canon i-SENSYS LBP6670dn, Canon i-SENSYS LBP6680x, Canon i-SENSYS MF5840dn, Canon i-SENSYS MF5880dn, Canon i-SENSYS MF5940dn, Canon i-SENSYS MF5980dw, Canon i-SENSYS MF419x, Canon i-SENSYS MF5840</description>
+      <description>Картридж NVP совместимый NV-719H для Canon LBP-6300dn/ LBP-6650dn/ MF5840dn/ MF5880dn (6400k) Технические характеристики: - Ресурс: 6400 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon i-SENSYS LBP6300dn/6310dn/6650dn/6670dn/6680x/MF5840dn/5880dn/5940dn/5980dw - Вес: 1.216 - Принтеры: Canon i-SENSYS LBP251dw, Canon i-SENSYS LBP252dw, Canon i-SENSYS LBP253x, Canon i-SENSYS LBP6300, Canon i-SENSYS LBP6310, Canon i-SENSYS LBP6650, Canon i-SENSYS LBP6670, Canon i-SENSYS LBP6680, Canon i-SENSYS MF411dw, Canon i-SENSYS MF416dw, Canon i-SENSYS MF418x, Canon i-SENSYS MF5880, Canon i-SENSYS MF5940, Canon i-SENSYS MF5980dn, Canon i-SENSYS MF5980, Canon i-SENSYS MF6140dn, Canon i-SENSYS MF6180dw, Canon i-SENSYS LBP6300dn, Canon i-SENSYS LBP6310dn, Canon i-SENSYS LBP6650dn, Canon i-SENSYS LBP6670dn, Canon i-SENSYS LBP6680x, Canon i-SENSYS MF5840dn, Canon i-SENSYS MF5880dn, Canon i-SENSYS MF5940dn, Canon i-SENSYS MF5980dw, Canon i-SENSYS MF419x, Canon i-SENSYS MF5840, Canon i-SENSYS MF6140, Canon i-SENSYS MF6180, Canon i-SENSYS LBP251, Canon i-SENSYS LBP253, Canon i-SENSYS LBP252</description>
     </offer>
 
     <offer id="NP720">
@@ -3204,7 +3214,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPC-EXV54BK">
       <vendorCode>NPC-EXV54BK</vendorCode>
       <name>Картридж NVP совместимый NV-C-EXV54 Black</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>http://nvprint.ru/promo/photo/NV-C-EXV54BK.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3348,7 +3358,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CEXV49Bk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVР совместимый NV-CEXV49 Black для Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i (36000k) Технические характеристики: - Ресурс: 36000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i - Вес: 0.93 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3325i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER ADVANCE C3325, Canon imageRUNNER ADVANCE C3330, Canon imageRUNNER ADVANCE C3525</description>
+      <description>Картридж NVР совместимый NV-CEXV49 Black для Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i (36000k) Технические характеристики: - Ресурс: 36000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i - Вес: 0.93 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3325i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER ADVANCE C3325, Canon imageRUNNER ADVANCE C3330, Canon imageRUNNER ADVANCE C3525, Canon imageRUNNER ADVANCE DX C3720, Canon imageRUNNER ADVANCE DX C3725, Canon imageRUNNER ADVANCE DX C3730</description>
     </offer>
 
     <offer id="NPCEXV49C">
@@ -3358,7 +3368,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CEXV49C.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVР совместимый NV-CEXV49 Cyan для Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i (19000k) Технические характеристики: - Ресурс: 19000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i - Вес: 0.68 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3325i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER ADVANCE C3325, Canon imageRUNNER ADVANCE C3330, Canon imageRUNNER ADVANCE C3525</description>
+      <description>Картридж NVР совместимый NV-CEXV49 Cyan для Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i (19000k) Технические характеристики: - Ресурс: 19000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i - Вес: 0.68 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3325i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER ADVANCE C3325, Canon imageRUNNER ADVANCE C3330, Canon imageRUNNER ADVANCE C3525, Canon imageRUNNER ADVANCE DX C3720, Canon imageRUNNER ADVANCE DX C3725, Canon imageRUNNER ADVANCE DX C3730</description>
     </offer>
 
     <offer id="NPCEXV49M">
@@ -3368,7 +3378,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CEXV49M.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVР совместимый NV-CEXV49 Magenta для Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i (19000k) Технические характеристики: - Ресурс: 19000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i - Вес: 0.68 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3325i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER ADVANCE C3325, Canon imageRUNNER ADVANCE C3330, Canon imageRUNNER ADVANCE C3525</description>
+      <description>Картридж NVР совместимый NV-CEXV49 Magenta для Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i (19000k) Технические характеристики: - Ресурс: 19000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i - Вес: 0.68 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3325i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER ADVANCE C3325, Canon imageRUNNER ADVANCE C3330, Canon imageRUNNER ADVANCE C3525, Canon imageRUNNER ADVANCE DX C3720, Canon imageRUNNER ADVANCE DX C3725, Canon imageRUNNER ADVANCE DX C3730</description>
     </offer>
 
     <offer id="NPCEXV49Y">
@@ -3378,13 +3388,13 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CEXV49Y.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVР совместимый NV-CEXV49 Yellow для Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i (19000k) Технические характеристики: - Ресурс: 19000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i - Вес: 0.68 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3325i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER ADVANCE C3325, Canon imageRUNNER ADVANCE C3330, Canon imageRUNNER ADVANCE C3525</description>
+      <description>Картридж NVР совместимый NV-CEXV49 Yellow для Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i (19000k) Технические характеристики: - Ресурс: 19000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Canon iR ADV C3320/3320i/3325i/3330i/3530i/3525i/3520i - Вес: 0.68 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3325i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER ADVANCE C3325, Canon imageRUNNER ADVANCE C3330, Canon imageRUNNER ADVANCE C3525, Canon imageRUNNER ADVANCE DX C3720, Canon imageRUNNER ADVANCE DX C3725, Canon imageRUNNER ADVANCE DX C3730</description>
     </offer>
 
     <offer id="NP3630B001-NO">
       <vendorCode>NP3630B001-NO</vendorCode>
       <name>Печатающая головка NVP PF-04 (NV-3630B001-NO) для Canon iPF 650/680/750/760/770/785 (оригинальная)</name>
-      <price>302900</price>
+      <price>301900</price>
       <picture>http://nvprint.ru/promo/photo/NV-3630B001-NO.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3654,7 +3664,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP6705B001">
       <vendorCode>NP6705B001</vendorCode>
       <name>Струйный картридж NV Print PFI-107BK (NV-6705B001) Black для Canon imagePROGRAF iPF670/680/770 (130 мл) совместимый</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>http://nvprint.ru/promo/photo/NV-6705B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3664,7 +3674,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP6706B001">
       <vendorCode>NP6706B001</vendorCode>
       <name>Струйный картридж NV Print PFI-107C (NV-6706B001) Cyan для Canon imagePROGRAF iPF670/680/770 (130 мл) совместимый</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>http://nvprint.ru/promo/photo/NV-6706B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3674,7 +3684,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP6707B001">
       <vendorCode>NP6707B001</vendorCode>
       <name>Струйный картридж NV Print PFI-107M (NV-6707B001) Magenta для Canon imagePROGRAF iPF670/680/770 (130 мл) совместимый</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>http://nvprint.ru/promo/photo/NV-6707B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3694,7 +3704,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP6708B001">
       <vendorCode>NP6708B001</vendorCode>
       <name>Струйный картридж NV Print PFI-107Y (NV-6708B001) Yellow для Canon imagePROGRAF iPF670/680/770 (130 мл) совместимый</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>http://nvprint.ru/promo/photo/NV-6708B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3904,7 +3914,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP9821B001">
       <vendorCode>NP9821B001</vendorCode>
       <name>Струйный картридж NVP PFI-707BK (NV-9821B001) Black для Canon ImagePrograf iPF830/iPF840/iPF850 (700 мл) совместимый</name>
-      <price>62900</price>
+      <price>61900</price>
       <picture>http://nvprint.ru/promo/photo/NV-9821B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3914,7 +3924,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP9822B001">
       <vendorCode>NP9822B001</vendorCode>
       <name>Струйный картридж NVP PFI-707C (NV-9822B001) Cyan для Canon ImagePrograf iPF830/iPF840/iPF850 (700 мл) совместимый</name>
-      <price>62900</price>
+      <price>61900</price>
       <picture>http://nvprint.ru/promo/photo/NV-9822B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3924,7 +3934,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP9823B001">
       <vendorCode>NP9823B001</vendorCode>
       <name>Струйный картридж NVP PFI-707M NV-9823B001) Magenta для Canon ImagePrograf iPF830/iPF840/iPF850 (700 мл) совместимый</name>
-      <price>62900</price>
+      <price>61900</price>
       <picture>http://nvprint.ru/promo/photo/NV-9823B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3934,7 +3944,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP9820B001">
       <vendorCode>NP9820B001</vendorCode>
       <name>Струйный картридж NVP PFI-707MBK (NV-9820B001) Matte Black для Canon ImagePrograf iPF830/iPF840/iPF850 (700 мл) совместимый</name>
-      <price>62900</price>
+      <price>61900</price>
       <picture>http://nvprint.ru/promo/photo/NV-9820B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -3944,7 +3954,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP9824B001">
       <vendorCode>NP9824B001</vendorCode>
       <name>Струйный картридж NVP PFI-707Y NV-9824B001) Yellow для Canon ImagePrograf iPF830/iPF840/iPF850 (700 мл) совместимый</name>
-      <price>62900</price>
+      <price>61900</price>
       <picture>http://nvprint.ru/promo/photo/NV-9824B001.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -4204,7 +4214,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPCEXV51Bk">
       <vendorCode>NPCEXV51Bk</vendorCode>
       <name>Тонер-картридж NVP совместимый NV-C-EXV51 Black</name>
-      <price>20900</price>
+      <price>19900</price>
       <picture>http://nvprint.ru/promo/photo/NV-CEXV51Bk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -4764,7 +4774,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPC13T858100">
       <vendorCode>NPC13T858100</vendorCode>
       <name>Струйный картридж NV Print T8581 Black для Epson WorkForce Enterprise WF-C20590/ WF-C20590 D4TWF (50 000 стр) совместимый</name>
-      <price>63900</price>
+      <price>62900</price>
       <picture>http://nvprint.ru/promo/photo/NV-C13T858100.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -4774,7 +4784,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPC13T858200">
       <vendorCode>NPC13T858200</vendorCode>
       <name>Струйный картридж NV Print T8582 Cyan для Epson WorkForce Enterprise WF-C20590/ WF-C20590 D4TWF (50 000 стр) совместимый</name>
-      <price>50900</price>
+      <price>49900</price>
       <picture>http://nvprint.ru/promo/photo/NV-C13T858200.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -4784,7 +4794,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPC13T858300">
       <vendorCode>NPC13T858300</vendorCode>
       <name>Струйный картридж NV Print T8583 Magenta для Epson WorkForce Enterprise WF-C20590/ WF-C20590 D4TWF (50 000 стр) совместимый</name>
-      <price>50900</price>
+      <price>49900</price>
       <picture>http://nvprint.ru/promo/photo/NV-C13T858300.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -4794,7 +4804,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPC13T858400">
       <vendorCode>NPC13T858400</vendorCode>
       <name>Струйный картридж NV Print T8584 Yellow для Epson WorkForce Enterprise WF-C20590/ WF-C20590 D4TWF (50 000 стр) совместимый</name>
-      <price>50900</price>
+      <price>49900</price>
       <picture>http://nvprint.ru/promo/photo/NV-C13T858400.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -4974,7 +4984,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPCF257A">
       <vendorCode>NPCF257A</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-CF257A</name>
-      <price>51900</price>
+      <price>50900</price>
       <picture>http://nvprint.ru/promo/photo/NV-CF257A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -5034,7 +5044,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPW9044MCBCMYDU">
       <vendorCode>NPW9044MCBCMYDU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-W9044MC BCMY DU</name>
-      <price>71900</price>
+      <price>70900</price>
       <picture>http://nvprint.ru/promo/photo/NV-W9044MCBCMY DU.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -5388,7 +5398,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CE270ABk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVP совместимый NV-CE270A Black для HP Color LaserJet CP5525dn/ CP5525n/ CP5525xh/ M750dn/ M750n/ M750xh (13500k) Технические характеристики: - Ресурс: 13500 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Color CP5525dn/CP5525n/CP5525xh/M750dn/M750n/M750xh - Вес: 2.406 - Принтеры: HP Color LaserJet CP5525dn, HP Color LaserJet CP5525n, HP Color LaserJet CP5525, HP Color LaserJet CP5525xh, HP Color LaserJet Enterprise M750dn, HP Color LaserJet Enterprise M750n, HP Color LaserJet Enterprise M750xh</description>
+      <description>Картридж NVP совместимый NV-CE270A Black для HP Color LaserJet CP5525dn/ CP5525n/ CP5525xh/ M750dn/ M750n/ M750xh (13500k) Технические характеристики: - Ресурс: 13500 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Color CP5525dn/CP5525n/CP5525xh/M750dn/M750n/M750xh - Вес: 2.406 - Принтеры: HP Color LaserJet CP5525dn, HP Color LaserJet CP5525n, HP Color LaserJet CP5525, HP Color LaserJet CP5525xh, HP Color LaserJet Enterprise M750dn, HP Color LaserJet Enterprise M750n, HP Color LaserJet Enterprise M750xh, HP Color LaserJet Enterprise M750</description>
     </offer>
 
     <offer id="NPCE271AC">
@@ -5398,7 +5408,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CE271AC.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVP совместимый NV-CE271A Cyan для HP Color LaserJet CP5525dn/ CP5525n/ CP5525xh/ M750dn/ M750n/ M750xh (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: HP LaserJet Color CP5525dn/CP5525n/CP5525xh/M750dn/M750n/M750xh - Вес: 2.406 - Принтеры: HP Color LaserJet CP5525dn, HP Color LaserJet CP5525n, HP Color LaserJet CP5525, HP Color LaserJet Enterprise M750dn, HP Color LaserJet Enterprise M750n, HP Color LaserJet Enterprise M750xh</description>
+      <description>Картридж NVP совместимый NV-CE271A Cyan для HP Color LaserJet CP5525dn/ CP5525n/ CP5525xh/ M750dn/ M750n/ M750xh (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: HP LaserJet Color CP5525dn/CP5525n/CP5525xh/M750dn/M750n/M750xh - Вес: 2.406 - Принтеры: HP Color LaserJet CP5525dn, HP Color LaserJet CP5525n, HP Color LaserJet CP5525, HP Color LaserJet Enterprise M750dn, HP Color LaserJet Enterprise M750n, HP Color LaserJet Enterprise M750xh, HP Color LaserJet Enterprise M750</description>
     </offer>
 
     <offer id="NPCE272AY">
@@ -5408,7 +5418,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CE272AY.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVP совместимый NV-CE272A Yellow для HP Color LaserJet CP5525dn/ CP5525n/ CP5525xh/ M750dn/ M750n/ M750xh (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: HP LaserJet Color CP5525dn/CP5525n/CP5525xh/M750dn/M750n/M750xh - Вес: 2.406 - Принтеры: HP Color LaserJet CP5525dn, HP Color LaserJet CP5525, HP Color LaserJet CP5525xh, HP Color LaserJet Enterprise M750dn, HP Color LaserJet Enterprise M750n, HP Color LaserJet Enterprise M750xh</description>
+      <description>Картридж NVP совместимый NV-CE272A Yellow для HP Color LaserJet CP5525dn/ CP5525n/ CP5525xh/ M750dn/ M750n/ M750xh (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: HP LaserJet Color CP5525dn/CP5525n/CP5525xh/M750dn/M750n/M750xh - Вес: 2.406 - Принтеры: HP Color LaserJet CP5525dn, HP Color LaserJet CP5525, HP Color LaserJet CP5525xh, HP Color LaserJet Enterprise M750dn, HP Color LaserJet Enterprise M750n, HP Color LaserJet Enterprise M750xh, HP Color LaserJet Enterprise M750</description>
     </offer>
 
     <offer id="NPCE273AM">
@@ -5418,7 +5428,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CE273AM.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVP совместимый NV-CE273A Magenta для HP Color LaserJet CP5525dn/ CP5525n/ CP5525xh/ M750dn/ M750n/ M750xh (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: HP LaserJet Color CP5525dn/CP5525n/CP5525xh/M750dn/M750n/M750xh - Вес: 2.406 - Принтеры: HP Color LaserJet CP5525dn, HP Color LaserJet CP5525, HP Color LaserJet CP5525xh, HP Color LaserJet Enterprise M750dn, HP Color LaserJet Enterprise M750n, HP Color LaserJet Enterprise M750xh</description>
+      <description>Картридж NVP совместимый NV-CE273A Magenta для HP Color LaserJet CP5525dn/ CP5525n/ CP5525xh/ M750dn/ M750n/ M750xh (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: HP LaserJet Color CP5525dn/CP5525n/CP5525xh/M750dn/M750n/M750xh - Вес: 2.406 - Принтеры: HP Color LaserJet CP5525dn, HP Color LaserJet CP5525, HP Color LaserJet CP5525xh, HP Color LaserJet Enterprise M750dn, HP Color LaserJet Enterprise M750n, HP Color LaserJet Enterprise M750xh, HP Color LaserJet Enterprise M750</description>
     </offer>
 
     <offer id="NPCE278A">
@@ -5704,7 +5714,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPCE410XBk">
       <vendorCode>NPCE410XBk</vendorCode>
       <name>Картридж NVP совместимый NV-CE410X Black</name>
-      <price>9900</price>
+      <price>8900</price>
       <picture>http://nvprint.ru/promo/photo/NV-CE410XBk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -6244,7 +6254,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPCF294A">
       <vendorCode>NPCF294A</vendorCode>
       <name>Картридж NVP совместимый NV-CF294A</name>
-      <price>13900</price>
+      <price>12900</price>
       <picture>http://nvprint.ru/promo/photo/NV-CF294A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -6354,7 +6364,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPCF320XBk">
       <vendorCode>NPCF320XBk</vendorCode>
       <name>Картридж NVP совместимый NV-CF320X Black</name>
-      <price>17900</price>
+      <price>16900</price>
       <picture>http://nvprint.ru/promo/photo/NV-CF320XBk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -7134,7 +7144,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPQ6473AM">
       <vendorCode>NPQ6473AM</vendorCode>
       <name>Картридж NVP совместимый NV-Q6473A Magenta</name>
-      <price>17900</price>
+      <price>16900</price>
       <picture>http://nvprint.ru/promo/photo/NV-Q6473AM.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -7274,7 +7284,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPW1470Y">
       <vendorCode>NPW1470Y</vendorCode>
       <name>Картридж NVP совместимый NV-W1470Y</name>
-      <price>62900</price>
+      <price>61900</price>
       <picture>http://nvprint.ru/promo/photo/NV-W1470Y.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -7424,7 +7434,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPW2011X-659X-C">
       <vendorCode>NPW2011X-659X-C</vendorCode>
       <name>Картридж NVP совместимый NV-W2011X 659X Cyan</name>
-      <price>126900</price>
+      <price>125900</price>
       <picture>http://nvprint.ru/promo/photo/NV-W2011X-659X-C.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -7444,7 +7454,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPW2012X-659X-Y">
       <vendorCode>NPW2012X-659X-Y</vendorCode>
       <name>Картридж NVP совместимый NV-W2012X 659X Yellow</name>
-      <price>126900</price>
+      <price>125900</price>
       <picture>http://nvprint.ru/promo/photo/NV-W2012X-659X-Y.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -7464,7 +7474,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPW2013X-659X-M">
       <vendorCode>NPW2013X-659X-M</vendorCode>
       <name>Картридж NVP совместимый NV-W2013X 659X Magenta</name>
-      <price>126900</price>
+      <price>125900</price>
       <picture>http://nvprint.ru/promo/photo/NV-W2013X-659X-M.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -7594,7 +7604,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPW2070ABK">
       <vendorCode>NPW2070ABK</vendorCode>
       <name>Картридж NVP совместимый NV-W2070A Black</name>
-      <price>20900</price>
+      <price>19900</price>
       <picture>http://nvprint.ru/promo/photo/NV-W2070ABK.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8214,7 +8224,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPC1Q10A-RE">
       <vendorCode>NPC1Q10A-RE</vendorCode>
       <name>Печатающая головка NVP 711 (NV-C1Q10A-RE) для HP Designjet DJ T120, T520 (совместимая)</name>
-      <price>228900</price>
+      <price>222900</price>
       <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8654,7 +8664,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPC1Q12A">
       <vendorCode>NPC1Q12A</vendorCode>
       <name>Струйный картридж NV Print 727 (NV-C1Q12A) Matte Black для HP DesignJet T920/T930/T1500/T1530/T2500/T2530 (300 мл) совместимый</name>
-      <price>34900</price>
+      <price>31900</price>
       <picture>http://nvprint.ru/promo/photo/NV-C1Q12A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8664,7 +8674,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPF9J76A">
       <vendorCode>NPF9J76A</vendorCode>
       <name>Струйный картридж NV Print 727 (NV-F9J76A) Cyan для HP DesignJet T920/T930/T1500/T1530/T2500/T2530 (300 мл) совместимый</name>
-      <price>32900</price>
+      <price>28900</price>
       <picture>http://nvprint.ru/promo/photo/NV-F9J76A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8674,7 +8684,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPF9J77A">
       <vendorCode>NPF9J77A</vendorCode>
       <name>Струйный картридж NV Print 727 (NV-F9J77A) Magenta для HP DesignJet T920/T930/T1500/T1530/T2500/T2530 (300 мл) совместимый</name>
-      <price>32900</price>
+      <price>28900</price>
       <picture>http://nvprint.ru/promo/photo/NV-F9J77A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8684,7 +8694,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPF9J78A">
       <vendorCode>NPF9J78A</vendorCode>
       <name>Струйный картридж NV Print 727 (NV-F9J78A) Yellow для HP DesignJet T920/T930/T1500/T1530/T2500/T2530 (300 мл) совместимый</name>
-      <price>32900</price>
+      <price>28900</price>
       <picture>http://nvprint.ru/promo/photo/NV-F9J78A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8694,7 +8704,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPF9J79A">
       <vendorCode>NPF9J79A</vendorCode>
       <name>Струйный картридж NV Print 727 (NV-F9J79A) Photo Black для HP DesignJet T920/T930/T1500/T1530/T2500/T2530 (300 мл) совместимый</name>
-      <price>32900</price>
+      <price>28900</price>
       <picture>http://nvprint.ru/promo/photo/NV-F9J79A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8704,7 +8714,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPF9J80A">
       <vendorCode>NPF9J80A</vendorCode>
       <name>Струйный картридж NV Print 727 (NV-F9J80A) Gray для HP DesignJet T920/T930/T1500/T1530/T2500/T2530 (300 мл) совместимый</name>
-      <price>32900</price>
+      <price>28900</price>
       <picture>http://nvprint.ru/promo/photo/NV-F9J80A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8724,7 +8734,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPF9K15A">
       <vendorCode>NPF9K15A</vendorCode>
       <name>Струйный картридж NV Print 728 (NV-F9K15A) Yellow для HP DesignJet T830/T730 (300 мл) совместимый</name>
-      <price>25900</price>
+      <price>24900</price>
       <picture>http://nvprint.ru/promo/photo/NV-F9K15A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8734,7 +8744,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPF9K16A">
       <vendorCode>NPF9K16A</vendorCode>
       <name>Струйный картридж NV Print 728 (NV-F9K16A) Magenta для HP DesignJet T830/T730 (300 мл) совместимый</name>
-      <price>25900</price>
+      <price>24900</price>
       <picture>http://nvprint.ru/promo/photo/NV-F9K16A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -8744,7 +8754,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPF9K17A">
       <vendorCode>NPF9K17A</vendorCode>
       <name>Струйный картридж NV Print 728 (NV-F9K17A) Cyan для HP DesignJet T830/T730 (300 мл) совместимый</name>
-      <price>25900</price>
+      <price>24900</price>
       <picture>http://nvprint.ru/promo/photo/NV-F9K17A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -9164,7 +9174,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPM0K02AE">
       <vendorCode>NPM0K02AE</vendorCode>
       <name>Струйный картридж NV Print 991XL (NV-M0K02AE) Black для HP PageWide Pro 750/772/777 (510 мл) совместимый</name>
-      <price>56900</price>
+      <price>55900</price>
       <picture>http://nvprint.ru/promo/photo/NV-M0K02AE.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -9544,7 +9554,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPL0S20YC">
       <vendorCode>NPL0S20YC</vendorCode>
       <name>Струйный картридж NVP 976YC (NV-L0S20YC) Black для HP PageWide P55250/P57750dw MFP Managed (21000 стр) совместимый</name>
-      <price>53900</price>
+      <price>52900</price>
       <picture>http://nvprint.ru/promo/photo/NV-L0S20YC.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -9554,7 +9564,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPL0S29YC">
       <vendorCode>NPL0S29YC</vendorCode>
       <name>Струйный картридж NVP 976YC (NV-L0S29YC) Cyan для HP PageWide P55250/P57750dw MFP Managed (16000 стр) совместимый</name>
-      <price>41900</price>
+      <price>40900</price>
       <picture>http://nvprint.ru/promo/photo/NV-L0S29YC.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -9564,7 +9574,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPL0S30YC">
       <vendorCode>NPL0S30YC</vendorCode>
       <name>Струйный картридж NVP 976YC (NV-L0S30YC) Magenta для HP PageWide P55250/P57750dw MFP Managed (16000 стр) совместимый</name>
-      <price>41900</price>
+      <price>40900</price>
       <picture>http://nvprint.ru/promo/photo/NV-L0S30YC.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -9574,7 +9584,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPL0S31YC">
       <vendorCode>NPL0S31YC</vendorCode>
       <name>Струйный картридж NVP 976YC (NV-L0S31YC) Yellow для HP PageWide P55250/P57750dw MFP Managed (16000 стр) совместимый</name>
-      <price>41900</price>
+      <price>40900</price>
       <picture>http://nvprint.ru/promo/photo/NV-L0S31YC.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10118,7 +10128,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CF280A-CE505A-719L.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVP совместимый NV-CF280A/CE505A/NV-719L для HP LaserJet Pro 400 MFP M425dn/ 400 MFP M425dw/ 400 M401dne/ 400 M401a/ 400 M401d/ 400 M401dn/ 400 M401dw/ P2035/ P2035n/ P2055/ P2055d/ P2055dn/ P2055d/ Canon LBP-6300dn/ LBP-6650dn/ MF5840dn/ MF5880dn (2700k) Технические характеристики: - Ресурс: 2700 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Pro 400 MFP M425dn/ 400 MFP M425dw/ 400 M401dne/ 400 M401a/ 400 M401d/ 400 M401dn/ 400 M401dw/ P2035/ P2035n/ P2055/ P2055d/ P2055dn/ P205 - Вес: 0.855 - Принтеры: Canon i-SENSYS LBP251dw, Canon i-SENSYS LBP252dw, Canon i-SENSYS LBP253x, Canon i-SENSYS MF411dw, Canon i-SENSYS MF416dw, Canon i-SENSYS MF418x, Canon i-SENSYS MF5980dn, Canon i-SENSYS MF6140dn, HP LaserJet Pro 400 MFP M425, HP LaserJet Pro 400 M401, Canon i-SENSYS LBP6300dn, Canon i-SENSYS LBP6310dn, Canon i-SENSYS LBP6650dn, Canon i-SENSYS LBP6670dn, Canon i-SENSYS LBP6680x, Canon i-SENSYS MF5840dn, Canon i-SENSYS MF5880dn, Canon i-SENSYS MF5940dn, Canon i-SENSYS MF419x, HP LaserJet P2035, HP LaserJet P2035n, HP LaserJet P2055, HP LaserJet P2055d, HP LaserJet P2055dn, HP LaserJet Pro 400 M401d, HP LaserJet Pro 400 M401dn, HP LaserJet Pro 400 M401dw, HP LaserJet Pro 400 M401a, HP LaserJet Pro 400 M401dne, HP LaserJet Pro 400 MFP M425dw, HP LaserJet Pro 400 MFP M425dn</description>
+      <description>Картридж NVP совместимый NV-CF280A/CE505A/NV-719L для HP LaserJet Pro 400 MFP M425dn/ 400 MFP M425dw/ 400 M401dne/ 400 M401a/ 400 M401d/ 400 M401dn/ 400 M401dw/ P2035/ P2035n/ P2055/ P2055d/ P2055dn/ P2055d/ Canon LBP-6300dn/ LBP-6650dn/ MF5840dn/ MF5880dn (2700k) Технические характеристики: - Ресурс: 2700 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Pro 400 MFP M425dn/ 400 MFP M425dw/ 400 M401dne/ 400 M401a/ 400 M401d/ 400 M401dn/ 400 M401dw/ P2035/ P2035n/ P2055/ P2055d/ P2055dn/ P205 - Вес: 0.855 - Принтеры: Canon i-SENSYS LBP251dw, Canon i-SENSYS LBP252dw, Canon i-SENSYS LBP253x, Canon i-SENSYS MF411dw, Canon i-SENSYS MF416dw, Canon i-SENSYS MF418x, Canon i-SENSYS MF5980dn, Canon i-SENSYS MF6140dn, HP LaserJet Pro 400 MFP M425, HP LaserJet Pro 400 M401, Canon i-SENSYS LBP6300dn, Canon i-SENSYS LBP6310dn, Canon i-SENSYS LBP6650dn, Canon i-SENSYS LBP6670dn, Canon i-SENSYS LBP6680x, Canon i-SENSYS MF5840dn, Canon i-SENSYS MF5880dn, Canon i-SENSYS MF5940dn, Canon i-SENSYS MF419x, HP LaserJet P2035, HP LaserJet P2035n, HP LaserJet P2055, HP LaserJet P2055d, HP LaserJet P2055dn, HP LaserJet Pro 400 M401d, HP LaserJet Pro 400 M401dn, HP LaserJet Pro 400 M401dw, HP LaserJet Pro 400 M401a, HP LaserJet Pro 400 M401dne, HP LaserJet Pro 400 MFP M425dw, HP LaserJet Pro 400 MFP M425dn, Canon i-SENSYS MF6140, Canon i-SENSYS LBP251, Canon i-SENSYS LBP253, Canon i-SENSYS LBP252</description>
     </offer>
 
     <offer id="NPCF280X/CE505X/719H">
@@ -10128,7 +10138,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <picture>http://nvprint.ru/promo/photo/NV-CF280X-CE505X-719H.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
-      <description>Картридж NVP совместимый NV-CF280X/CE505X/NV-719H для HP LaserJet Pro 400 MFP M425dn/ 400 MFP M425dw/ 400 M401dne/ 400 M401a/ 400 M401d/ 400 M401dn/ 400 M401dw/ P2055/ P2055d/ P2055dn / Canon LBP-6300dn/ LBP-6650dn/ MF5840dn/ MF5880dn (6900k) Технические характеристики: - Ресурс: 6900 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Pro 400 MFP M425dn/ 400 MFP M425dw/ 400 M401dne/ 400 M401a/ 400 M401d/ 400 M401dn/ 400 M401dw/ P2055/ P2055d/ P2055dn / Canon LBP-6300dn/ - Вес: 1.06 - Принтеры: Canon i-SENSYS LBP251dw, Canon i-SENSYS LBP252dw, Canon i-SENSYS LBP253x, Canon i-SENSYS MF411dw, Canon i-SENSYS MF416dw, Canon i-SENSYS MF418x, Canon i-SENSYS MF5980dn, Canon i-SENSYS MF6140dn, HP LaserJet Pro 400 MFP M425, HP LaserJet Pro 400 M401, Canon i-SENSYS LBP6300dn, Canon i-SENSYS LBP6310dn, Canon i-SENSYS LBP6650dn, Canon i-SENSYS LBP6670dn, Canon i-SENSYS LBP6680x, Canon i-SENSYS MF5840dn, Canon i-SENSYS MF5880dn, Canon i-SENSYS MF5940dn, Canon i-SENSYS MF419x, HP LaserJet P2055, HP LaserJet P2055d, HP LaserJet P2055dn, HP LaserJet Pro 400 M401d, HP LaserJet Pro 400 M401dn, HP LaserJet Pro 400 M401dw, HP LaserJet Pro 400 M401a, HP LaserJet Pro 400 M401dne, HP LaserJet Pro 400 MFP M425dw, HP LaserJet Pro 400 MFP M425dn</description>
+      <description>Картридж NVP совместимый NV-CF280X/CE505X/NV-719H для HP LaserJet Pro 400 MFP M425dn/ 400 MFP M425dw/ 400 M401dne/ 400 M401a/ 400 M401d/ 400 M401dn/ 400 M401dw/ P2055/ P2055d/ P2055dn / Canon LBP-6300dn/ LBP-6650dn/ MF5840dn/ MF5880dn (6900k) Технические характеристики: - Ресурс: 6900 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Pro 400 MFP M425dn/ 400 MFP M425dw/ 400 M401dne/ 400 M401a/ 400 M401d/ 400 M401dn/ 400 M401dw/ P2055/ P2055d/ P2055dn / Canon LBP-6300dn/ - Вес: 1.06 - Принтеры: Canon i-SENSYS LBP251dw, Canon i-SENSYS LBP252dw, Canon i-SENSYS LBP253x, Canon i-SENSYS MF411dw, Canon i-SENSYS MF416dw, Canon i-SENSYS MF418x, Canon i-SENSYS MF5980dn, Canon i-SENSYS MF6140dn, HP LaserJet Pro 400 MFP M425, HP LaserJet Pro 400 M401, Canon i-SENSYS LBP6300dn, Canon i-SENSYS LBP6310dn, Canon i-SENSYS LBP6650dn, Canon i-SENSYS LBP6670dn, Canon i-SENSYS LBP6680x, Canon i-SENSYS MF5840dn, Canon i-SENSYS MF5880dn, Canon i-SENSYS MF5940dn, Canon i-SENSYS MF419x, HP LaserJet P2055, HP LaserJet P2055d, HP LaserJet P2055dn, HP LaserJet Pro 400 M401d, HP LaserJet Pro 400 M401dn, HP LaserJet Pro 400 M401dw, HP LaserJet Pro 400 M401a, HP LaserJet Pro 400 M401dne, HP LaserJet Pro 400 MFP M425dw, HP LaserJet Pro 400 MFP M425dn, Canon i-SENSYS MF6140, Canon i-SENSYS LBP251, Canon i-SENSYS LBP253, Canon i-SENSYS LBP252</description>
     </offer>
 
     <offer id="NPCF281X/NV-039H">
@@ -10214,7 +10224,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPQ6000A/707Bk">
       <vendorCode>NPQ6000A/707Bk</vendorCode>
       <name>Картридж NVP совместимый NV-Q6000A/NV-707 Black</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>http://nvprint.ru/promo/photo/NV-Q6000A-707Bk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10224,7 +10234,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPQ6001A/707C">
       <vendorCode>NPQ6001A/707C</vendorCode>
       <name>Картридж NVP совместимый NV-Q6001A/NV-707 Cyan</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>http://nvprint.ru/promo/photo/NV-Q6001A-707C.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10234,7 +10244,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPQ6002A/707Y">
       <vendorCode>NPQ6002A/707Y</vendorCode>
       <name>Картридж NVP совместимый NV-Q6002A/NV-707 Yellow</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>http://nvprint.ru/promo/photo/NV-Q6002A-707Y.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10244,7 +10254,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPQ6003A/707M">
       <vendorCode>NPQ6003A/707M</vendorCode>
       <name>Картридж NVP совместимый NV-Q6003A/NV-707 Magenta</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>http://nvprint.ru/promo/photo/NV-Q6003A-707M.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10484,7 +10494,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTN-221Bk">
       <vendorCode>NPTN-221Bk</vendorCode>
       <name>Тонер-картридж NVP совместимый NV-TN-221 Black</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>http://nvprint.ru/promo/photo/NV-TN-221Bk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10874,7 +10884,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPDK-3130DU">
       <vendorCode>NPDK-3130DU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-DK-3130 DU</name>
-      <price>123900</price>
+      <price>122900</price>
       <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10884,7 +10894,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPDK-3150DU">
       <vendorCode>NPDK-3150DU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-DK-3150 DU</name>
-      <price>123900</price>
+      <price>122900</price>
       <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10894,7 +10904,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPDK-3170DU">
       <vendorCode>NPDK-3170DU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-DK-3170 DU</name>
-      <price>123900</price>
+      <price>122900</price>
       <picture>http://nvprint.ru/promo/photo/NV-DK-3170DU.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10904,7 +10914,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPDK-3190">
       <vendorCode>NPDK-3190</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-DK-3190</name>
-      <price>130900</price>
+      <price>129900</price>
       <picture>http://nvprint.ru/promo/photo/NV-DK-3190.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10924,7 +10934,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPDK-475DU">
       <vendorCode>NPDK-475DU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-DK-475 DU</name>
-      <price>116900</price>
+      <price>113900</price>
       <picture>http://nvprint.ru/promo/photo/NV-DK-475DU.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10944,7 +10954,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPDK-5195">
       <vendorCode>NPDK-5195</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-DK-5195</name>
-      <price>121900</price>
+      <price>120900</price>
       <picture>http://nvprint.ru/promo/photo/NV-DK-5195.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -10974,7 +10984,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPDK-6115DU">
       <vendorCode>NPDK-6115DU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-DK-6115 DU</name>
-      <price>121900</price>
+      <price>120900</price>
       <picture>http://nvprint.ru/promo/photo/NV-DK-6115DU.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -11954,7 +11964,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTK580C">
       <vendorCode>NPTK580C</vendorCode>
       <name>Картридж NVP совместимый NV-TK-580 Cyan</name>
-      <price>7900</price>
+      <price>6900</price>
       <picture>http://nvprint.ru/promo/photo/NV-TK580C.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -11964,7 +11974,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTK580M">
       <vendorCode>NPTK580M</vendorCode>
       <name>Картридж NVP совместимый NV-TK-580 Magenta</name>
-      <price>7900</price>
+      <price>6900</price>
       <picture>http://nvprint.ru/promo/photo/NV-TK580M.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -11974,7 +11984,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTK580Y">
       <vendorCode>NPTK580Y</vendorCode>
       <name>Картридж NVP совместимый NV-TK-580 Yellow</name>
-      <price>7900</price>
+      <price>6900</price>
       <picture>http://nvprint.ru/promo/photo/NV-TK580Y.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -12064,7 +12074,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTK710">
       <vendorCode>NPTK710</vendorCode>
       <name>Картридж NVP совместимый NV-TK-710</name>
-      <price>15900</price>
+      <price>14900</price>
       <picture>http://nvprint.ru/promo/photo/NV-TK710.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -12564,7 +12574,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP52D0ZA0DU">
       <vendorCode>NP52D0ZA0DU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-52D0ZA0 DU</name>
-      <price>21900</price>
+      <price>20900</price>
       <picture>http://nvprint.ru/promo/photo/NV-52D0ZA0DU.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -12704,7 +12714,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP51F5H00">
       <vendorCode>NP51F5H00</vendorCode>
       <name>Картридж NVP совместимый NV-51F5H00</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>http://nvprint.ru/promo/photo/NV-51F5H00.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -13364,7 +13374,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPD1272110DUBk">
       <vendorCode>NPD1272110DUBk</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-D1272110 DU Black</name>
-      <price>64900</price>
+      <price>63900</price>
       <picture>http://nvprint.ru/promo/photo/NV-D1272110DUBk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -14294,7 +14304,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPS-7250E">
       <vendorCode>NPS-7250E</vendorCode>
       <name>Картридж NVP для Riso ComColor FW 1230/2230/5230/5000 (NV-S-7250E, совместимый), Black (1000 мл)</name>
-      <price>55900</price>
+      <price>54900</price>
       <picture>http://nvprint.ru/promo/photo/NV-S-7250E.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -14324,7 +14334,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPS-7253E">
       <vendorCode>NPS-7253E</vendorCode>
       <name>Картридж NVP для Riso ComColor FW 1230/2230/5230/5000 (NV-S-7253E, совместимый), Yellow (1000 мл)</name>
-      <price>55900</price>
+      <price>54900</price>
       <picture>http://nvprint.ru/promo/photo/NV-S-7253E.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -14804,7 +14814,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPMLTD203E">
       <vendorCode>NPMLTD203E</vendorCode>
       <name>Картридж NVP совместимый NV-MLT-D203E</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>http://nvprint.ru/promo/photo/NV-MLTD203E.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -15294,7 +15304,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP108R01417DUC">
       <vendorCode>NP108R01417DUC</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-108R01417 DU Cyan</name>
-      <price>56900</price>
+      <price>55900</price>
       <picture>http://nvprint.ru/promo/photo/NV-108R01417DUC.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -15304,7 +15314,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP108R01418DUM">
       <vendorCode>NP108R01418DUM</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-108R01418 DU Magenta</name>
-      <price>56900</price>
+      <price>55900</price>
       <picture>http://nvprint.ru/promo/photo/NV-108R01418DUM.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -15314,7 +15324,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP108R01419DUY">
       <vendorCode>NP108R01419DUY</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-108R01419 DU Yellow</name>
-      <price>56900</price>
+      <price>55900</price>
       <picture>http://nvprint.ru/promo/photo/NV-108R01419DUY.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -15324,7 +15334,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP108R01420DUBk">
       <vendorCode>NP108R01420DUBk</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-108R01420 DU Black</name>
-      <price>56900</price>
+      <price>55900</price>
       <picture>http://nvprint.ru/promo/photo/NV-108R01420DUBk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -15734,7 +15744,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP006R04404">
       <vendorCode>NP006R04404</vendorCode>
       <name>Картридж NVP совместимый NV-006R04404</name>
-      <price>42900</price>
+      <price>41900</price>
       <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -15794,7 +15804,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP106R01305">
       <vendorCode>NP106R01305</vendorCode>
       <name>Картридж NVP совместимый NV-106R01305</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>http://nvprint.ru/promo/photo/NV-106R01305.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -16114,7 +16124,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP106R01602M">
       <vendorCode>NP106R01602M</vendorCode>
       <name>Картридж NVP совместимый NV-106R01602 Magenta</name>
-      <price>5900</price>
+      <price>4900</price>
       <picture>http://nvprint.ru/promo/photo/NV-106R01602M.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -16124,7 +16134,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP106R01603Y">
       <vendorCode>NP106R01603Y</vendorCode>
       <name>Картридж NVP совместимый NV-106R01603 Yellow</name>
-      <price>5900</price>
+      <price>4900</price>
       <picture>http://nvprint.ru/promo/photo/NV-106R01603Y.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -16924,7 +16934,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP006R01683">
       <vendorCode>NP006R01683</vendorCode>
       <name>Тонер-картридж NVP совместимый NV-006R01683</name>
-      <price>51900</price>
+      <price>50900</price>
       <picture>http://nvprint.ru/promo/photo/NV-006R01683.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -16934,7 +16944,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NP006R01701Bk">
       <vendorCode>NP006R01701Bk</vendorCode>
       <name>Тонер-картридж NVP совместимый NV-006R01701 Black</name>
-      <price>21900</price>
+      <price>20900</price>
       <picture>http://nvprint.ru/promo/photo/NV-006R01701Bk.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -17164,7 +17174,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPDR133DU">
       <vendorCode>NPDR133DU</vendorCode>
       <name>Блок фотобарабана NVP совместимый NV-DR133 DU</name>
-      <price>14900</price>
+      <price>13900</price>
       <picture>http://nvprint.ru/promo/photo/NV-DR133DU.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
