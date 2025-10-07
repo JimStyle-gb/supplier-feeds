@@ -64,15 +64,25 @@ jobs:
             git push origin "$BRANCH_NAME"
           fi
 
-      - name: Print useful URLs
+      - name: Print useful URLs (Pages + RAW/CDN)
         if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'yes' }}
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPO_SLUG: ${{ github.repository }}
         run: |
-          RAW="https://raw.githubusercontent.com/${{ github.repository }}/main/docs/price.yml"
-          CDN1="https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/docs/price.yml"
-          CDN2="https://cdn.statically.io/gh/${{ github.repository }}/main/docs/price.yml"
-          echo "::notice::RAW:  ${RAW}"
-          echo "::notice::CDN1: ${CDN1}"
-          echo "::notice::CDN2: ${CDN2}"
-          echo "RAW:  ${RAW}"
-          echo "CDN1: ${CDN1}"
-          echo "CDN2: ${CDN2}"
+          set -e
+          REPO="${REPO_SLUG#*/}"  # extract repo name from owner/repo
+          PAGES="https://${OWNER}.github.io/${REPO}/price.yml"
+          RAW="https://raw.githubusercontent.com/${OWNER}/${REPO}/main/docs/price.yml"
+          CDN1="https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@main/docs/price.yml"
+          CDN2="https://cdn.statically.io/gh/${OWNER}/${REPO}/main/docs/price.yml"
+
+          echo "::notice::PAGES: ${PAGES}"
+          echo "::notice::RAW:   ${RAW}"
+          echo "::notice::CDN1:  ${CDN1}"
+          echo "::notice::CDN2:  ${CDN2}"
+
+          echo "PAGES: ${PAGES}"
+          echo "RAW:   ${RAW}"
+          echo "CDN1:  ${CDN1}"
+          echo "CDN2:  ${CDN2}"
