@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-07 13:19">
+<yml_catalog date="2025-10-07 20:17">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 07:10:2025 - 18:19:46
-Ближайшее время сборки (Алматы)            | 08:10:2025 - 01:00:00
+Время сборки (Алматы)                      | 08:10:2025 - 01:17:24
+Ближайшее время сборки (Алматы)            | 09:10:2025 - 01:00:00
 Сколько товаров у поставщика до фильтра    | 15890
 Сколько товаров у поставщика после фильтра | 2002
-Сколько товаров есть в наличии (true)      | 1322
-Сколько товаров нет в наличии (false)      | 680-->
+Сколько товаров есть в наличии (true)      | 1318
+Сколько товаров нет в наличии (false)      | 684-->
   <shop>
     <offers>
       <offer id="AS20888">
@@ -36206,7 +36206,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59326_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Цветное лазерное МФУ Canon I-S MF754CDW
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
 Оптимальная производительность печати и сканирования с помощью цветного многофункционального принтера с прямым подключением к облаку.
@@ -58668,7 +58668,7 @@ RJ45 (ЛВС)
         <picture>https://img.al-style.kz/70006_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Источник бесперебойного питания APC Smart-UPS SMT2200IC
 
 Интеллектуальная и эффективная защита электропитания сети — от начального уровня до масштабируемой среды выполнения. Идеальный ИБП для серверов, торговых точек, маршрутизаторов, коммутаторов, концентраторов и других сетевых устройств.
@@ -63814,7 +63814,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
         <picture>https://img.al-style.kz/75908_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор Samsung 27" LS27D304GAIXCI
 
 Особенности и преимущества:
@@ -64664,7 +64664,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <picture>https://img.al-style.kz/76667_3.jpg</picture>
         <vendor>TECNO</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Ноутбук Tecno Megabook K16SAA i5-13420H / 16&#8239;ГБ / SSD 512&#8239;ГБ / Win 11 Home
 
     Работай. Учись. Создавай.
