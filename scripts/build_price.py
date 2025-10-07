@@ -1,23 +1,24 @@
 # scripts/build_price.py
 # -*- coding: utf-8 -*-
 """
-Сборка единого прайса docs/price.yml из 5 источников с выводом ровно как в «должно быть».
+Сборка единого прайса docs/price.yml из 5 источников в точном формате.
 
 Формат:
-- Шапка:
-    <?xml ...>
-    <yml_catalog date="...">
-
-    <!--FEED_META
+- Первый блок FEED_META:
     Поставщик | Price
     ...
-    Разбивка по источникам | AlStyle:..., AkCent:..., CopyLine:..., NVPrint:..., VTT:...-->
-- Затем блоки FEED_META каждого поставщика, между блоками одна пустая строка.
-- Затем <shop><offers> с офферами; между </offer> и следующим <offer> ровно одна пустая строка.
+    Разбивка по источникам | AlStyle:..., AkCent:..., CopyLine:..., NVPrint:..., VTT:...
+    -->
+  (закрывающий маркер на отдельной строке)
+
+- Затем блоки FEED_META каждого поставщика (между блоками ровно одна пустая строка),
+  у них тоже закрывающий маркер на отдельной строке.
+
+- Далее <shop><offers>; между </offer> и следующим <offer> ровно одна пустая строка.
 
 Прочее:
 - Дедуп по <vendorCode> (берём первый).
-- id не трогаем (берём как есть из поставщиков).
+- id сохраняем как в источниках.
 - Кодировка I/O: windows-1251.
 """
 
@@ -48,7 +49,7 @@ RX_VENDORCODE  = re.compile(r"<vendorCode>\s*([^<\s]+)\s*</vendorCode>", re.I)
 RX_AVAILABLE   = re.compile(r"<available>\s*(true|false)\s*</available>", re.I)
 RX_SUPPLIER_LN = re.compile(r"^(Поставщик\s*\|)(.*)$", re.M)
 
-# --- Время Алматы (UTC+6, как в твоих примерах) ---
+# --- Время Алматы (UTC+6) ---
 ALMATY_TZ = timezone(timedelta(hours=6))
 
 def now_almaty() -> datetime:
@@ -86,8 +87,7 @@ def extract_feed_meta_inner(xml: str) -> str:
 
 def normalize_supplier_name_in_meta(inner: str, display_name: str) -> str:
     """
-    Внутри блока FEED_META заменяет строку 'Поставщик | ...' на нужное display_name.
-    Сохраняет остальные строки как есть.
+    Внутри блока FEED_META заменяет строку 'Поставщик | ...' на требуемое display_name.
     """
     def _repl(m: re.Match) -> str:
         return f"{m.group(1)} {display_name}"
@@ -125,7 +125,7 @@ def main() -> None:
     per_source_count: dict[str,int] = {}
     total_in = 0
 
-    # читаем все источники (сохраняем порядок)
+    # читаем все источники (в исходном порядке)
     for display, path, key in SOURCES:
         if not path.exists():
             per_source_count[display] = 0
@@ -148,7 +148,7 @@ def main() -> None:
     total_after = len(merged_offers)
     avail_true, avail_false = count_availability(merged_offers)
 
-    # разбивка как в примере «должно быть» (строго по SOURCES порядку)
+    # разбивка в нужном порядке
     breakdown = ", ".join(f"{display}:{per_source_count.get(display,0)}" for display,_,_ in SOURCES)
 
     # --- Шапка XML ---
@@ -156,9 +156,9 @@ def main() -> None:
     xml_lines = []
     xml_lines.append("<?xml version='1.0' encoding='windows-1251'?>")
     xml_lines.append(f"<yml_catalog date=\"{fmt_yml_dt(now)}\">")
-    xml_lines.append("")  # пустая строка как в «должно быть»
+    xml_lines.append("")  # пустая строка
 
-    # --- Общий FEED_META (Price) — закрывающий '-->' сразу после строки ---
+    # --- Общий FEED_META (Price) — закрывающий '-->' на отдельной строке
     xml_lines.append("<!--FEED_META")
     xml_lines.append("Поставщик                                  | Price")
     xml_lines.append(f"Время сборки (Алматы)                      | {fmt_meta_dt(now)}")
@@ -167,20 +167,18 @@ def main() -> None:
     xml_lines.append(f"Сколько товаров есть в наличии (true)      | {avail_true}")
     xml_lines.append(f"Сколько товаров нет в наличии (false)      | {avail_false}")
     xml_lines.append(f"Дубликатов по vendorCode отброшено         | 0")
-    xml_lines.append(f"Разбивка по источникам                     | {breakdown}-->")
+    xml_lines.append(f"Разбивка по источникам                     | {breakdown}")
+    xml_lines.append("-->")
     xml_lines.append("")  # пустая строка между FEED_META-блоками
 
-    # --- Блоки FEED_META поставщиков (как есть, но с нормализованным 'Поставщик | ...') ---
+    # --- Блоки FEED_META поставщиков — закрывающий '-->' также на отдельной строке
     for display, _offers, inner in sources_data:
         if not inner:
             continue
-        # inner уже без оболочки; закроем так же «в строку»
         xml_lines.append("<!--FEED_META")
-        xml_lines.append(inner)
-        # убрать возможные лишние пробелы в конце последней строки перед '-->'
-        if xml_lines[-1].endswith(" "):
-            xml_lines[-1] = xml_lines[-1].rstrip()
-        xml_lines[-1] = xml_lines[-1]  # последняя строка тела остаётся последней строкой блока
+        # inner уже без оболочки; кладём как есть, без доп. "FEED_META" внутри
+        inner_lines = [ln.rstrip() for ln in inner.splitlines()]
+        xml_lines.extend(inner_lines)
         xml_lines.append("-->")
         xml_lines.append("")  # пустая строка-разделитель
 
@@ -188,15 +186,13 @@ def main() -> None:
     xml_lines.append("  <shop>")
     xml_lines.append("    <offers>")
 
-    # офферы: между ними ровно одна пустая строка; все строки внутри оффера отступаем на 6 пробелов
-    # (берём оффер как есть из источника)
+    # офферы: между ними ровно одна пустая строка; строки оффера отступаем на 6 пробелов
     if merged_offers:
         joined = "\n\n".join(merged_offers).rstrip() + "\n"
-        # смещение на 6 пробелов
         indented = "\n".join(("      " + ln if ln else "") for ln in joined.splitlines())
-        # сохранить пустые строки между офферами:
-        indented = indented.replace("\n      \n", "\n\n")
+        indented = indented.replace("\n      \n", "\n\n")  # сохранить пустую строку между офферами
         xml_lines.append(indented.rstrip())
+
     # закрытия
     xml_lines.append("    </offers>")
     xml_lines.append("  </shop>")
