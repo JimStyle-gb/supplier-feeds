@@ -1,27 +1,30 @@
 # scripts/build_price.py
 # -*- coding: utf-8 -*-
 """
-Merge supplier feeds -> docs/price.yml (windows-1251)
-
-Источники (если существуют): docs/alstyle.yml, docs/akcent.yml, docs/copyline.yml, docs/nvprint.yml, docs/vtt.yml
-Оставляем порядок тегов в <offer>:
-  <vendorCode><name><price><picture><vendor><currencyId><available><description>
-Правила:
-- id == vendorCode (как в исходниках)
-- При дублях vendorCode: берём ПЕРВЫЙ (остальные считаем дубликатами)
-- FEED_META: сводка по каждому источнику и итого
+Сборщик общего YML (Price) из 5 поставщиков.
+- Правильный FEED_META (без лишних <!-- и -->)
+- Сразу после общего FEED_META приклеиваются FEED_META всех поставщиков (как есть, по порядку)
+- Сортировка тегов внутри <offer>:
+    <vendorCode>
+    <name>
+    <price>
+    <picture> (все подряд, если их несколько)
+    <vendor>
+    <currencyId>
+    <available>
+    <description>
+- Дедупликация по vendorCode (первый победил).
 """
 
 from __future__ import annotations
-import os, io, re, html
-from typing import List, Dict, Any
-from datetime import datetime, timedelta
-import xml.etree.ElementTree as ET
+import os, re, sys, time
+from datetime import datetime, timezone, timedelta
+from xml.etree import ElementTree as ET
 
-OUTPUT = "docs/price.yml"
-ENC    = "windows-1251"
-
-SOURCES = [
+# ---------- настройки ----------
+ENC               = os.getenv("OUTPUT_ENCODING", "windows-1251")
+OUT_FILE_YML      = os.getenv("OUT_FILE_PRICE", "docs/price.yml")
+SUPPLIER_FILES    = [
     ("alstyle",  "docs/alstyle.yml"),
     ("akcent",   "docs/akcent.yml"),
     ("copyline", "docs/copyline.yml"),
@@ -29,146 +32,215 @@ SOURCES = [
     ("vtt",      "docs/vtt.yml"),
 ]
 
-def _alm_now():
-    # Asia/Almaty ≈ UTC+5 без тонкой TZ
-    return datetime.utcnow() + timedelta(hours=5)
+# ---------- время Алматы ----------
+try:
+    from zoneinfo import ZoneInfo  # py3.9+
+    ALMATY_TZ = ZoneInfo("Asia/Almaty")
+except Exception:
+    ALMATY_TZ = None
 
-def _fmt(dt: datetime) -> str:
+def now_almaty_str() -> str:
+    if ALMATY_TZ:
+        return datetime.now(ALMATY_TZ).strftime("%d:%m:%Y - %H:%M:%S")
+    return time.strftime("%d:%m:%Y - %H:%M:%S", time.localtime())
+
+def next_build_time_almaty(hours: int = 4, days_list=(1,10,20)) -> str:
+    """Чисто косметика для FEED_META в общем прайсе: ближайшая дата D из days_list, время HH:00:00."""
+    if ALMATY_TZ:
+        now = datetime.now(ALMATY_TZ)
+    else:
+        now = datetime.now()
+    y, m = now.year, now.month
+    candidates = []
+    for d in sorted(days_list):
+        dt = datetime(y, m, d, hours, 0, 0)
+        if ALMATY_TZ: dt = dt.replace(tzinfo=ALMATY_TZ)
+        if dt >= now: candidates.append(dt)
+    if not candidates:
+        # следующий месяц
+        if m == 12:
+            y2, m2 = y+1, 1
+        else:
+            y2, m2 = y, m+1
+        for d in sorted(days_list):
+            # если дня нет (напр. 31), пропускаем
+            try:
+                dt = datetime(y2, m2, d, hours, 0, 0)
+                if ALMATY_TZ: dt = dt.replace(tzinfo=ALMATY_TZ)
+                candidates.append(dt)
+            except ValueError:
+                pass
+    dt = candidates[0]
     return dt.strftime("%d:%m:%Y - %H:%M:%S")
 
-def yesc(s: str) -> str:
-    return html.escape((s or "").strip())
+# ---------- утилиты ----------
+def read_text(path: str) -> str:
+    with open(path, "r", encoding=ENC, errors="replace") as f:
+        return f.read()
 
-def _get_text(el: ET.Element, tag: str) -> str:
-    t = el.find(tag)
-    return (t.text or "").strip() if (t is not None and t.text) else ""
+def extract_feed_meta(txt: str) -> str:
+    """
+    Вытаскивает первый <!--FEED_META ... --> как есть (без двойных маркеров).
+    Если встречается случай с лишним <!-- в начале или --> в конце, нормализуем.
+    """
+    # Находим самый первый блок комментария, где в теле есть 'FEED_META'
+    for m in re.finditer(r"<!--(.*?)-->", txt, flags=re.S):
+        body = m.group(1)
+        if "FEED_META" in body:
+            # вычистим возможные лишние маркеры из тела
+            body_clean = body
+            body_clean = body_clean.replace("<!--", "").replace("-->", "")
+            body_clean = body_clean.strip()
+            return f"<!--{body_clean}-->"
+    return ""  # если у файла нет FEED_META
 
-def parse_offers(path: str) -> List[ET.Element]:
-    with io.open(path, "r", encoding=ENC, errors="ignore") as f:
-        xml = f.read()
-    root = ET.fromstring(xml.encode(ENC, errors="ignore"))
-    shop = root.find("shop") if root.tag.lower() != "shop" else root
+def parse_offers_from_file(path: str) -> list[ET.Element]:
+    xml = ET.fromstring(read_text(path))
+    shop = xml.find("shop") if xml.tag.lower() != "shop" else xml
     if shop is None: return []
-    offers = shop.find("offers")
-    return list(offers.findall("offer")) if offers is not None else []
+    offers_el = shop.find("offers") or shop.find("Offers")
+    if offers_el is None: return []
+    return list(offers_el.findall("offer"))
 
 ORDER = ["vendorCode","name","price","picture","vendor","currencyId","available","description"]
 
 def reorder_offer_children(offer: ET.Element) -> None:
-    """Приводим к строгому порядку тегов; остальные теги (если вдруг есть) — в конец."""
+    # собираем по типам
     children = list(offer)
-    by_name: Dict[str, List[ET.Element]] = {}
-    rest: List[ET.Element] = []
+    # buckets
+    by_tag = {k: [] for k in ORDER}
+    others = []
     for ch in children:
-        nm = ch.tag
-        if nm in ORDER:
-            by_name.setdefault(nm, []).append(ch)
+        tag = ch.tag
+        if tag == "picture":
+            by_tag["picture"].append(ch)
+        elif tag in by_tag:
+            by_tag[tag] = [ch] if tag != "picture" else by_tag["picture"]
         else:
-            rest.append(ch)
+            others.append(ch)
     # очищаем
     for ch in children:
         offer.remove(ch)
-    # добавляем в порядке
-    for nm in ORDER:
-        for ch in by_name.get(nm, []):
-            offer.append(ch)
-    for ch in rest:
-        offer.append(ch)
+    # кладём по порядку
+    def add_one(el: ET.Element | None):
+        if el is not None:
+            offer.append(el)
+    # vendorCode, name, price
+    add_one(by_tag["vendorCode"][0] if by_tag["vendorCode"] else None)
+    add_one(by_tag["name"][0]       if by_tag["name"]       else None)
+    add_one(by_tag["price"][0]      if by_tag["price"]      else None)
+    # все <picture>
+    for p in by_tag["picture"]:
+        offer.append(p)
+    # vendor, currencyId, available, description
+    add_one(by_tag["vendor"][0]     if by_tag["vendor"]     else None)
+    add_one(by_tag["currencyId"][0] if by_tag["currencyId"] else None)
+    add_one(by_tag["available"][0]  if by_tag["available"]  else None)
+    add_one(by_tag["description"][0]if by_tag["description"]else None)
+    # остальное (если что-то осталось необычное — в конец, чтобы ничего не потерять)
+    for o in others:
+        offer.append(o)
 
-def render_feed_meta(stats: Dict[str,int], dups: int, total: int) -> str:
-    rows = [
-        ("Поставщик", "merged"),
-        ("Время сборки (Алматы)", _fmt(_alm_now())),
-        ("Сколько товаров у поставщика до фильтра", str(total + dups)),
-        ("Сколько товаров у поставщика после фильтра", str(total)),
-        ("Сколько товаров есть в наличии (true)", str(sum(stats.values()))),  # считаем все true
-        ("Сколько товаров нет в наличии (false)", "0"),
-        ("Дубликатов по vendorCode отброшено", str(dups)),
-        ("Разбивка по источникам", ", ".join(f"{k}:{v}" for k,v in stats.items()) or "n/a"),
-    ]
-    key_w = max(len(k) for k,_ in rows)
-    out = ["<!--FEED_META"]
-    for i,(k,v) in enumerate(rows):
-        end = " -->" if i == len(rows)-1 else ""
-        out.append(f"{k.ljust(key_w)} | {v}{end}")
-    return "\n".join(out)
+def get_text(el: ET.Element, tag: str) -> str:
+    n = el.find(tag)
+    return (n.text or "").strip() if n is not None and n.text else ""
 
-def main() -> int:
-    os.makedirs(os.path.dirname(OUTPUT) or ".", exist_ok=True)
+# ---------- сборка ----------
+def main() -> None:
+    # создаём общий корень
+    out_root = ET.Element("yml_catalog")
+    out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
+    out_shop = ET.SubElement(out_root, "shop")
+    out_offers = ET.SubElement(out_shop, "offers")
 
-    stats: Dict[str,int] = {}
-    seen_codes: set[str] = set()
-    merged: List[ET.Element] = []
-    dups = 0
-    total_candidates = 0
+    # статистика
+    total_in = 0
+    by_source_count: dict[str,int] = {}
+    seen_vendorcodes: set[str] = set()
+    duplicates = 0
 
-    for key, path in SOURCES:
-        if not os.path.isfile(path):
+    # собираем FEED_META поставщиков (текстом)
+    suppliers_meta_comments: list[str] = []
+
+    # пробегаемся по поставщикам
+    for supplier_key, path in SUPPLIER_FILES:
+        if not os.path.exists(path):
             continue
-        offers = parse_offers(path)
-        cnt_before = 0
-        for off in offers:
-            cnt_before += 1
-            total_candidates += 1
-            vcode = _get_text(off, "vendorCode")
-            if not vcode:
-                # пропускаем странные офферы без vendorCode
+        txt = read_text(path)
+        # заберём FEED_META как есть, но нормализованный
+        fm = extract_feed_meta(txt)
+        if fm:
+            suppliers_meta_comments.append(fm)
+
+        # парсим офферы
+        offers = parse_offers_from_file(path)
+        total_in += len(offers)
+        kept = 0
+        for o in offers:
+            vc = get_text(o, "vendorCode")
+            if not vc:
+                # без кода — пропускаем
                 continue
-            if vcode in seen_codes:
-                dups += 1
+            if vc in seen_vendorcodes:
+                duplicates += 1
                 continue
-            # нормализуем currencyId (ровно один)
-            cids = off.findall("currencyId")
-            if len(cids) == 0:
-                ET.SubElement(off, "currencyId").text = "KZT"
-            elif len(cids) > 1:
-                # оставляем только первый
-                first = cids[0]
-                for extra in cids[1:]:
-                    off.remove(extra)
-                first.text = "KZT"
-            else:
-                cids[0].text = "KZT"
-            # available по умолчанию true, если нет
-            av = off.find("available")
-            if av is None:
-                av = ET.SubElement(off, "available")
-            av.text = "true" if (av.text or "").strip().lower() != "false" else "false"
-            # id = vendorCode (если вдруг не равно)
-            off.attrib["id"] = vcode
-            # порядок тегов
-            reorder_offer_children(off)
-            # добавляем
-            merged.append(off)
-            seen_codes.add(vcode)
-        stats[key] = stats.get(key, 0) + (cnt_before - (total_candidates - len(merged) - dups))
+            seen_vendorcodes.add(vc)
+            # сортируем теги
+            reorder_offer_children(o)
+            out_offers.append(o)
+            kept += 1
+        by_source_count[supplier_key] = kept
 
-    # соберём выходной YML
-    root = ET.Element("yml_catalog"); root.set("date", datetime.utcnow().strftime("%Y-%m-%d %H:%M"))
-    root.append(ET.Comment(render_feed_meta(stats, dups, len(merged))))
-    shop = ET.SubElement(root, "shop")
-    offers = ET.SubElement(shop, "offers")
-    for off in merged:
-        offers.append(off)
+    written = len(list(out_offers.findall("offer")))
+    avail_true = sum(1 for o in out_offers.findall("offer") if get_text(o,"available").lower()=="true")
+    avail_false = written - avail_true
 
-    # pretty
-    try: ET.indent(root, space="  ")
-    except Exception: pass
+    # ---------- общий FEED_META ----------
+    merged_meta_lines = [
+        "FEED_META",
+        f"Поставщик                                  | merged",
+        f"Время сборки (Алматы)                      | {now_almaty_str()}",
+        f"Сколько товаров у поставщика до фильтра    | {total_in}",
+        f"Сколько товаров у поставщика после фильтра | {written}",
+        f"Сколько товаров есть в наличии (true)      | {avail_true}",
+        f"Сколько товаров нет в наличии (false)      | {avail_false}",
+        f"Дубликатов по vendorCode отброшено         | {duplicates}",
+        "Разбивка по источникам                     | " + ", ".join(f"{k}:{by_source_count.get(k,0)}" for k,_ in SUPPLIER_FILES),
+    ]
+    merged_meta = "<!--" + "\n".join(merged_meta_lines) + " -->"
 
-    xml_bytes = ET.tostring(root, encoding=ENC, xml_declaration=True)
-    xml_text  = xml_bytes.decode(ENC, errors="replace")
-    with io.open(OUTPUT, "w", encoding=ENC, newline="\n") as f:
-        f.write(xml_text)
+    # вставляем общий FEED_META как первый комментарий
+    out_root.insert(0, ET.Comment("\n".join(merged_meta_lines)))
 
-    # nojekyll, чтобы Pages отдал файл
+    # “красиво” отформатируем
     try:
-        open("docs/.nojekyll", "wb").close()
+        ET.indent(out_root, space="  ")
     except Exception:
         pass
 
-    print(f"Wrote: {OUTPUT} | offers={len(merged)}")
-    return 0
+    # сериализация
+    xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
+    xml_text  = xml_bytes.decode(ENC, errors="replace")
+
+    # аккуратно заменим автоматически вставленный комментарий на «ровный» вариант (он такой же, но это избавляет от сюрпризов)
+    xml_text = re.sub(r"<!--\s*FEED_META.*?-->", merged_meta, xml_text, flags=re.S, count=1)
+
+    # приклеим подряд FEED_META всех поставщиков сразу ПОСЛЕ общего FEED_META
+    # найдём позицию первого ' -->' нашего общего блока
+    m = re.search(r"(<!--FEED_META.*?-->)", xml_text, flags=re.S)
+    if m and suppliers_meta_comments:
+        tail = "\n" + "\n\n".join(suppliers_meta_comments) + "\n"
+        xml_text = xml_text[:m.end()] + tail + xml_text[m.end():]
+
+    # финальная косметика: убрать возможные лишние пустые строки
+    xml_text = re.sub(r"\n{3,}", "\n\n", xml_text)
+
+    # запись
+    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
+    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
+        f.write(xml_text)
+
+    print(f"Wrote: {OUT_FILE_YML} | total_in={total_in} | written={written} | dup={duplicates} | encoding={ENC}")
 
 if __name__ == "__main__":
-    import sys
-    sys.exit(main())
+    main()
