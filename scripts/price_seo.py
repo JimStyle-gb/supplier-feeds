@@ -13,10 +13,10 @@ Output: docs/price_seo.yml (cp1251)
 - Порядок тегов -> vendorCode, name, price, picture*, vendor, currencyId, available, description.
 - FEED_META-комментарии из price.yml сохраняются как есть.
 - Между офферами — пустая строка.
+- FIX: безопасный парсинг <shop> с санитацией «сырых» & и недопустимых символов.
 
 Запуск:
   python scripts/price_seo.py
-(можно в CI после build_price.py)
 """
 
 from __future__ import annotations
@@ -38,16 +38,11 @@ def wtext(path: str, text: str) -> None:
     with io.open(path, "w", encoding=ENC, newline="\n") as f:
         f.write(text)
 
-# ---------- safe slice of <shop>…</shop> to preserve FEED_META ----------
+# ---------- split around <shop> ----------
 SHOP_OPEN_RX = re.compile(r"<shop\b[^>]*>", re.I)
 SHOP_CLOSE_RX = re.compile(r"</shop>", re.I)
 
 def split_around_shop(xml_text: str) -> tuple[str, str, str]:
-    """
-    Возвращает (head, shop_block, tail), где head включает шапку и FEED_META,
-    shop_block — содержимое от <shop> до </shop> (включая их),
-    tail — всё после </shop>. Если не нашли — кидаем ValueError.
-    """
     m_open = SHOP_OPEN_RX.search(xml_text)
     m_close = SHOP_CLOSE_RX.search(xml_text)
     if not (m_open and m_close and m_close.end() > m_open.start()):
@@ -57,7 +52,46 @@ def split_around_shop(xml_text: str) -> tuple[str, str, str]:
     tail = xml_text[m_close.end():]
     return head, shop_block, tail
 
-# ---------- small XML helpers ----------
+# ---------- sanitize helpers (FIX) ----------
+# Разрешённые сущности: &amp; &lt; &gt; &quot; &apos; &#123; &#x1F4A9;
+_ALLOWED_ENTITY_RX = re.compile(r"&(?:amp|lt|gt|quot|apos|#\d+|#x[0-9A-Fa-f]+);")
+
+def _escape_bad_ampersands(s: str) -> str:
+    # Заменяем & на &amp;, если это НЕ начало допустимой сущности
+    out = []
+    i = 0
+    L = len(s)
+    while i < L:
+        ch = s[i]
+        if ch == "&":
+            # быстро проверить «похоже ли на сущность»
+            m = _ALLOWED_ENTITY_RX.match(s, i)
+            if m:
+                out.append(m.group(0))
+                i = m.end()
+                continue
+            else:
+                out.append("&amp;")
+        else:
+            out.append(ch)
+        i += 1
+    return "".join(out)
+
+# недопустимые управляющие символы XML 1.0 (исключая \t \n \r)
+_INVALID_CTRL_RX = re.compile(
+    r"([\x00-\x08\x0B\x0C\x0E-\x1F])"
+)
+
+def sanitize_xml_fragment(s: str) -> str:
+    if not s:
+        return s
+    # сначала экранируем «плохие» &
+    s = _escape_bad_ampersands(s)
+    # удалим запрещённые управляющие
+    s = _INVALID_CTRL_RX.sub("", s)
+    return s
+
+# ---------- XML helpers ----------
 def get_text(el: ET.Element, tag: str) -> str:
     n = el.find(tag)
     return (n.text or "").strip() if (n is not None and n.text) else ""
@@ -309,14 +343,21 @@ def enhance_offer(off: ET.Element, all_offers: List[ET.Element]) -> None:
 def main() -> int:
     xml_in = rtext(INPUT_PATH)
 
-    # сохраним все FEED_META и прочие комментарии/шапку как есть
+    # сохраним FEED_META и прочее вокруг <shop>
     head, shop_block, tail = split_around_shop(xml_in)
 
-    # вытащим только <offers> из shop_block и обработаем через XML
+    # Санитизируем только shop_block (чтобы не трогать шапку с комментариями)
+    shop_block_safe = sanitize_xml_fragment(shop_block)
+
+    # Парсим <shop>…</shop>
     try:
-        shop_root = ET.fromstring(shop_block.encode(ENC, errors="replace"))
+        shop_root = ET.fromstring(shop_block_safe.encode(ENC, errors="replace"))
     except Exception as e:
-        print(f"[seo] XML parse error in <shop> block: {e}")
+        print(f"[seo] XML parse error in <shop> block after sanitize: {e}")
+        # На случай редкой ошибки — подсказка, где искать «&»
+        bad = re.findall(r"[^&]&[^a-zA-Z#]", shop_block)
+        if bad:
+            print(f"[seo] Hint: found suspicious '&' around: {bad[:3]}")
         return 2
 
     offers_el = shop_root.find("offers") or shop_root.find("Offers")
@@ -325,7 +366,7 @@ def main() -> int:
         return 3
 
     offers = list(offers_el.findall("offer"))
-    # пробегаемся по всем офферам
+    # Пробегаемся по всем офферам (для подбора аналогов нужен общий список)
     for off in offers:
         enhance_offer(off, offers)
 
