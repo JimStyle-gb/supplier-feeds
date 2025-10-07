@@ -1,20 +1,86 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-06 21:01">
+<yml_catalog date="2025-10-07 21:01">
   <!--FEED_META
 Поставщик                                  | akcent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 07:10:2025 - 02:01:21
-Ближайшее время сборки (Алматы)            | 08:10:2025 - 02:00:00
-Сколько товаров у поставщика до фильтра    | 1948
-Сколько товаров у поставщика после фильтра | 109
-Сколько товаров есть в наличии (true)      | 109
+Время сборки (Алматы)                      | 08:10:2025 - 02:01:28
+Ближайшее время сборки (Алматы)            | 09:10:2025 - 02:00:00
+Сколько товаров у поставщика до фильтра    | 2018
+Сколько товаров у поставщика после фильтра | 177
+Сколько товаров есть в наличии (true)      | 177
 Сколько товаров нет в наличии (false)      | 0-->
   <shop>
     <offers>
-      <offer id="ACC12C890191">
+      <offer id="ACC13T55K200">
+        <vendorCode>ACC13T55K200</vendorCode>
+        <name>C13T55K200 Singlepack (Голубой) T55K200 UltraChrome HDX/HD 700ml</name>
+        <price>184900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Картридж Epson C13T55K200 Singlepack с голубыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати голубой Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл</description>
+      </offer>
+
+  <offer id="ACC13T55K30N">
+        <vendorCode>ACC13T55K30N</vendorCode>
+        <name>C13T55K30N Singlepack (Пурпурный) T55K30N UltraChrome HDX/HD 700ml</name>
+        <price>184900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Картридж Epson C13T55K30N Singlepack с пурпурными чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати пурпурный Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл</description>
+      </offer>
+
+  <offer id="ACC13T55K400">
+        <vendorCode>ACC13T55K400</vendorCode>
+        <name>C13T55K400 Singlepack (Желтый) T55K400 UltraChrome HDX/HD 700ml</name>
+        <price>184900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Картридж Epson C13T55K400 Singlepack с жёлтыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати жёлтый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл</description>
+      </offer>
+
+  <offer id="ACC13T55K700">
+        <vendorCode>ACC13T55K700</vendorCode>
+        <name>C13T55K700 Singlepack (Серый) T55K700 UltraChrome HDX/HD 700ml</name>
+        <price>184900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Картридж Epson C13T55K700 Singlepack с серыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати серый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл</description>
+      </offer>
+
+  <offer id="ACC13T55KA00">
+        <vendorCode>ACC13T55KA00</vendorCode>
+        <name>C13T55KA00 Singlepack (Оранжевый) T55KA00 UltraChrome HDX/HD 700ml</name>
+        <price>184900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Картридж Epson C13T55KA00 Singlepack с оранжевыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати оранжевый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл</description>
+      </offer>
+
+  <offer id="ACC13T55KD00">
+        <vendorCode>ACC13T55KD00</vendorCode>
+        <name>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</name>
+        <price>184900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson. Вид струйный Назначение широкоформатный принтер Цвет печати фиолетовый Поддерживаемые модели принтеров Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor SC- P8000, Epson SureColor SC-P9000 Ресурс 700 мл</description>
+      </offer>
+
+  <offer id="ACC12C890191">
         <vendorCode>ACC12C890191</vendorCode>
         <name>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</name>
-        <price>28900</price>
+        <price>27900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/2d7/ki3oefnq23xjd3vnveobttanctwdmf7m.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -58,7 +124,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T619300">
         <vendorCode>ACC13T619300</vendorCode>
         <name>Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200</name>
-        <price>61900</price>
+        <price>60900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/998/8rq8oj23l7fep0amvc3cn6nvz6owlmmk.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -77,10 +143,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Емкость для отработанных чернил Характеристики: - Производитель: Epson - Сопутствующие товары: МФУ Epson WorkForce Pro WF-C8690DWF - Страна происхождения: Индонезия, Япония - Наименование производителя: Epson Ёмкость для отработанных чернил C13T671400 для WorkForce Pro WF-C869R - Совместимые продукты: C11CG70401,C11CG68401,C11CH60401BX,C11CH35401BX - Тип: Ёмкость для отработанных чернил - Тип печати: струйная - Вид: Ёмкость для отработанных чернил - Для бренда: Epson</description>
       </offer>
 
+  <offer id="ACC13T699700">
+        <vendorCode>ACC13T699700</vendorCode>
+        <name>Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</name>
+        <price>31900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Основные преимущества: Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управление принтера. Характеристики: - Страна происхождения: Китай - Гарантия: нет - Производитель: Epson - Сопутствующие товары: Плоттер Epson SureColor SC-P8000 STD - Тип: Ёмкость для отработанных чернил - Тип печати: струйная - Вид: Ёмкость для отработанных чернил - Для бренда: Epson</description>
+      </offer>
+
   <offer id="ACC33S021601">
         <vendorCode>ACC33S021601</vendorCode>
         <name>Ёмкость для отработанных чернил Epson C33S021601	SJMB4000 C4000e Maintenance box</name>
-        <price>26900</price>
+        <price>25900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/675/s60k3q4eiocr8vpfwnmi2qfb31nel7lx.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -88,10 +165,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Ёмкость для отработанных чернил Epson C33S021601SJMB4000 C4000e Maintenance box Характеристики: - Тип: Ёмкость для отработанных чернил - Вид: Ёмкость для отработанных чернил</description>
       </offer>
 
+  <offer id="ACC12C937201">
+        <vendorCode>ACC12C937201</vendorCode>
+        <name>Ёмкость для отработанных чернил Epson Maintenance Box for AM-C400/550</name>
+        <price>62900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Для Epson AM-C400/550. Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: светло-голубой - Наименование производителя: Epson Картридж C13T08054011 для P50/PX660 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 330 стр. - Для бренда: Epson</description>
+      </offer>
+
   <offer id="ACS102ABK43">
         <vendorCode>ACS102ABK43</vendorCode>
         <name>Интерактивная доска Mr.Pixel S102 BLACK</name>
-        <price>255900</price>
+        <price>253900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/8a1/xztzsh0z3lnubxwrilghnufahyjf6zqc.png</picture>
         <vendor>Mr.Pixel</vendor>
         <currencyId>KZT</currencyId>
@@ -102,7 +190,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACS82ABK43">
         <vendorCode>ACS82ABK43</vendorCode>
         <name>Интерактивная доска Mr.Pixel S82 BLACK</name>
-        <price>146900</price>
+        <price>145900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/c81/n89r9s09vqiejojkn8dhzl071dvwoh2x.jpg</picture>
         <vendor>Mr.Pixel</vendor>
         <currencyId>KZT</currencyId>
@@ -113,7 +201,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACSBID-QX275-P">
         <vendorCode>ACSBID-QX275-P</vendorCode>
         <name>Интерактивная панель SBID-QX275-P</name>
-        <price>3541900</price>
+        <price>3516900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/491/1eat55lb6wvp2s78b4clqny11gsfekov.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -145,10 +233,153 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Epson WorkForce WF-7620DTWF Epson WorkForce WF-7610DWF Epson WorkForce WF-7110DTW Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson C13T27914022 для WF-7620DTW - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson - Ресурс: Около 2200 стр.</description>
       </offer>
 
+  <offer id="ACC13T40D140">
+        <vendorCode>ACC13T40D140</vendorCode>
+        <name>Картридж Epson C13T40D140 UltraChrome XD2 Black T40D140(80ml)</name>
+        <price>67900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Черный картридж повышенной емкости (80 мл) Совместимые продукты Epson SureColor SC-T3100 C11CF11302A0 - Epson SureColor SC-T3100N (без стенда) C11CF11301A0 - Epson SureColor SC-T5100 C11CF12301A0 - Epson SureColor SC-T5100N (без стенда)-C11CF12302A0 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml) - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T40D240">
+        <vendorCode>ACC13T40D240</vendorCode>
+        <name>Картридж Epson C13T40D240 UltraChrome XD2 Cyan T40D240(50ml)</name>
+        <price>47900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Голубой картридж повышенной емкости (50 мл) (C13T40D240) Epson SureColor SC-T3100 C11CF11302A0 - Epson SureColor SC-T3100N (без стенда) C11CF11301A0 - Epson SureColor SC-T5100 C11CF12301A0 - Epson SureColor SC-T5100N (без стенда) C11CF12302A0 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: Голубой - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T40D34N">
+        <vendorCode>ACC13T40D34N</vendorCode>
+        <name>Картридж Epson C13T40D34N UltraChrome XD2 Magenta T40D340(50ml)</name>
+        <price>47900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Пурпурный картридж повышенной емкости (50 мл) Совместимые продукты Epson SureColor SC-T3100 C11CF11302A0 - Epson SureColor SC-T3100N (без стенда) C11CF11301A0 - Epson SureColor SC-T5100 C11CF12301A0 - Epson SureColor SC-T5100N (без стенда) C11CF12302A0 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: пурпурный - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T40D440">
+        <vendorCode>ACC13T40D440</vendorCode>
+        <name>Картридж Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</name>
+        <price>47900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Желтый картридж повышенной емкости (50 мл) (C13T40D440) Совместимые продукты Epson SureColor SC-T3100 C11CF11302A0 Epson SureColor SC-T3100N (без стенда) C11CF11301A0 . Epson SureColor SC-T5100 C11CF12301A0 Epson SureColor SC-T5100N (без стенда) C11CF12302A0 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Наименование производителя: Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml) - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson - Цвет: Желтый</description>
+      </offer>
+
+  <offer id="ACC13T41E240">
+        <vendorCode>ACC13T41E240</vendorCode>
+        <name>Картридж Epson C13T41E240 UltraChrome 700 ml голубой</name>
+        <price>230900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Для SureColor SC-T3405 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: Голубой - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 350 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T41E34N">
+        <vendorCode>ACC13T41E34N</vendorCode>
+        <name>Картридж Epson C13T41E34N UltraChrome XD2 T41E340 M 350 ml пурпурный</name>
+        <price>230900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>для Epson SC-T 3400/3405 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: пурпурный - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 350 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T41E440">
+        <vendorCode>ACC13T41E440</vendorCode>
+        <name>Картридж Epson C13T41E440 700ml жёлтый</name>
+        <price>230900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Для SureColor SC-T3405 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 700 мл - Для бренда: Epson - Цвет: Желтый</description>
+      </offer>
+
+  <offer id="ACC13T41E540">
+        <vendorCode>ACC13T41E540</vendorCode>
+        <name>Картридж Epson C13T41E540 UltraChrome 700ml черный</name>
+        <price>230900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Для SureColor SC-T3405 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson Картридж C13T41F540 UltraChrome XD2 для T41F540 B 350ml - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 700 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T49H20N">
+        <vendorCode>ACC13T49H20N</vendorCode>
+        <name>Картридж Epson C13T49H20N Контейнер с голубыми чернилами для SC-T3100x</name>
+        <price>23900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Совместимые продукты Epson SureColor SC-T3100X C11CJ15301A0 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Наименование производителя: Картридж Epson C13T49H200 для SC-T3100x голубой - Производитель: Epson - Цвет: Голубой - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T49H400">
+        <vendorCode>ACC13T49H400</vendorCode>
+        <name>Картридж Epson C13T49H400  Контейнер с желтыми чернилами для SC-T3100x</name>
+        <price>23900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Совместимые продукты Epson SureColor SC-T3100X C11CJ15301A0 Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson - Наименование производителя: Epson Картридж C13T49H400 Контейнер с желтыми чернилами для SC-T3100x - Цвет: Желтый</description>
+      </offer>
+
+  <offer id="ACC13T50M400">
+        <vendorCode>ACC13T50M400</vendorCode>
+        <name>Картридж Epson C13T50M400 T3000/5000/7000, Т3700/5700/7700 жёлтый</name>
+        <price>216900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Жёлтый картридж 700 ml, для: Epson SC-T3700D Epson SC-73700DE Epson SC-T3700E Epson SC-T5700D Epson SC-T7700D Epson SC-T7700DM Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Наименование производителя: Epson Картридж C13T693500 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 350 мл - Для бренда: Epson - Цвет: жёлтый</description>
+      </offer>
+
+  <offer id="ACC13T50MF00">
+        <vendorCode>ACC13T50MF00</vendorCode>
+        <name>Картридж Epson C13T50MF00 T3000/5000/7000, Т3700/5700/7700 красный</name>
+        <price>216900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Красный картридж 700 ml, для: Epson SC-T3700D Epson SC-73700DE Epson SC-T3700E Epson SC-T5700D Epson SC-T7700D Epson SC-T7700DM Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: Красный - Наименование производителя: Epson Картридж C13T693500 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 350 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T606400">
+        <vendorCode>ACC13T606400</vendorCode>
+        <name>Картридж Epson C13T606400 SP-4880 желтый</name>
+        <price>98900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Желтый картридж для: Epson Stylus Pro 4800 Epson Stylus Pro 4880 Характеристики: - Страна происхождения: Китай - Производитель: Epson - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 220 мл - Для бренда: Epson - Цвет: Желтый</description>
+      </offer>
+
   <offer id="ACC13T606500">
         <vendorCode>ACC13T606500</vendorCode>
         <name>Картридж Epson C13T606500 SP-4880 светло-голубой</name>
-        <price>99900</price>
+        <price>98900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/eb5/3gcomagb6du43id6yintt3p35e55i0ba.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -159,12 +390,78 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T606600">
         <vendorCode>ACC13T606600</vendorCode>
         <name>Картридж Epson C13T606600 SP-4880 светло-пурпурный</name>
-        <price>99900</price>
+        <price>98900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/897/4t2v3apeovfv6gpfx7pz87o6hitapmxu.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Светло-пурпурный картридж Vivid Light Magenta для: Epson Stylus Pro 4880 Характеристики: - Страна происхождения: Китай - Производитель: Epson - Цвет: светло-пурпурный - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 220 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T606900">
+        <vendorCode>ACC13T606900</vendorCode>
+        <name>Картридж Epson C13T606900 SP-4880 светло-серый</name>
+        <price>98900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Светло-серый картридж для: Epson Stylus Pro 4800 Epson Stylus Pro 4880 Характеристики: - Страна происхождения: Китай - Производитель: Epson - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 220 мл - Для бренда: Epson - Цвет: Светло-серый</description>
+      </offer>
+
+  <offer id="ACC13T606B00">
+        <vendorCode>ACC13T606B00</vendorCode>
+        <name>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</name>
+        <price>98900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Пурпурный картридж для: Epson Stylus Pro 4800 Характеристики: - Гарантия: 12 мес</description>
+      </offer>
+
+  <offer id="ACC13T606C00">
+        <vendorCode>ACC13T606C00</vendorCode>
+        <name>Картридж Epson C13T606C00 SP-4800 пурпурный светлый</name>
+        <price>98900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Светло-пурпурный картридж для: Epson Stylus Pro 4800 Характеристики: - Страна происхождения: Китай - Гарантия: нет - Ресурс: 221 мл - Производитель: Epson - Цвет: пурпурный - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T614200">
+        <vendorCode>ACC13T614200</vendorCode>
+        <name>Картридж Epson C13T614200 SP-4450 голубой</name>
+        <price>98900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Голубой картридж для: Epson Stylus Pro 4400 Epson Stylus Pro 4450 Характеристики: - Страна происхождения: Китай - Производитель: Epson - Цвет: Голубой - Наименование производителя: Epson Картридж C13T614200 SP-4450 голубой - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 220 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T614400">
+        <vendorCode>ACC13T614400</vendorCode>
+        <name>Картридж Epson C13T614400 SP-4450 желтый</name>
+        <price>98900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Желтый картридж для: Epson Stylus Pro 4400 Epson Stylus Pro 4450 Характеристики: - Страна происхождения: Китай - Производитель: Epson - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 220 мл - Для бренда: Epson - Цвет: Желтый</description>
+      </offer>
+
+  <offer id="ACC13T61480N">
+        <vendorCode>ACC13T61480N</vendorCode>
+        <name>Картридж Epson C13T61480N SP-4450  220ml черный матовый</name>
+        <price>98900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Матовый черный картридж для: Epson Stylus Pro 4800 Epson Stylus Pro 4880 Epson Stylus Pro 4400 Epson Stylus Pro 4450 Характеристики: - Страна происхождения: Китай - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson C13T614800 SP-4450 220ml - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 220 мл - Для бренда: Epson</description>
       </offer>
 
   <offer id="ACC13T692100">
@@ -178,10 +475,43 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Фото черный картридж 110ml, для: Epson SureColor T-3000, Epson SureColor T-5000, Epson SureColor T-7000 Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson Картридж C13T692100 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 110 мл - Для бренда: Epson</description>
       </offer>
 
+  <offer id="ACC13T69230N">
+        <vendorCode>ACC13T69230N</vendorCode>
+        <name>Картридж Epson C13T69230N T3000/5000/7000, Т3200/5200/7200 пурпурный</name>
+        <price>50900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Пурпурный картридж 110ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000 Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Цвет: пурпурный - Наименование производителя: Epson Картридж C13T692300 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 110 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T69240N">
+        <vendorCode>ACC13T69240N</vendorCode>
+        <name>Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый</name>
+        <price>50900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Желтый картридж 110ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Наименование производителя: Epson Картридж C13T692400 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 110 мл - Для бренда: Epson - Цвет: Желтый</description>
+      </offer>
+
+  <offer id="ACC13T692500">
+        <vendorCode>ACC13T692500</vendorCode>
+        <name>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
+        <price>50900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Матовый черный картридж 110ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000 Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson Картридж C13T692500 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 110 мл - Для бренда: Epson</description>
+      </offer>
+
   <offer id="ACC13T694100">
         <vendorCode>ACC13T694100</vendorCode>
         <name>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
-        <price>218900</price>
+        <price>216900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/f6b/tc1jcv3quat1vv5xtm2vl3z0vkhx4ju1.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -189,10 +519,54 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Фото черный картридж 700 ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000 Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Цвет: Черный - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 700 мл - Для бренда: Epson</description>
       </offer>
 
+  <offer id="ACC13T69420N">
+        <vendorCode>ACC13T69420N</vendorCode>
+        <name>Картридж Epson C13T69420N T3000/5000/7000, Т3200/5200/7200 голубой</name>
+        <price>216900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Голубой картридж 700 ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000 Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Цвет: Голубой - Наименование производителя: Epson Картридж C13T694200 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 700 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T69440N">
+        <vendorCode>ACC13T69440N</vendorCode>
+        <name>Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый</name>
+        <price>216900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Желтый картридж 700 ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000 Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Наименование производителя: Epson Картридж C13T694400 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 700 мл - Для бренда: Epson - Цвет: Желтый</description>
+      </offer>
+
+  <offer id="ACC13T694500">
+        <vendorCode>ACC13T694500</vendorCode>
+        <name>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
+        <price>216900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Матовый черный картридж 700 ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000 Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson Картридж C13T694500 для T3000/5000/7000, Т3200/5200/7200 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 700 мл - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T838140">
+        <vendorCode>ACC13T838140</vendorCode>
+        <name>Картридж Epson C13T838140 WF-R5190DTW (RIPS)/WF-R5690DTWF (RIPS) черный</name>
+        <price>119900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Контейнер с черными чернилами стандартной емкости XL Емкость Стандартная Цвет черный Ресурс картриджа (в страницах)/объем картриджа (в мл) 20000 стр. Для WF-R5190DTW (RIPS)/WF-R5690DTWF (RIPS) Характеристики: - Страна происхождения: Япония - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson Картридж C13T838140 для WF-R5190DTW (RIPS)/WF-R5690DTWF (RIPS) - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 20000 стр. - Для бренда: Epson</description>
+      </offer>
+
   <offer id="ACC13T965140">
         <vendorCode>ACC13T965140</vendorCode>
         <name>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</name>
-        <price>188900</price>
+        <price>187900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/e6f/4gmrxkkwlwu90wuwsqyqj47wf022ikkr.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -200,10 +574,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Контейнер с черными чернилами ресурсом 10 000 стр. (XL) Совместимые продукты для Контейнер с черными чернилами ресурсом 10 000 стр. (XL) Epson WorkForce Pro WF-M5299DW C11CG07401 Epson WorkForce Pro WF-M5299DWSV C11CG07401 Epson WorkForce Pro WF-M5799DWF C11CG04401 Epson WorkForce Pro WF-M5799DWFMV Характеристики: - Гарантия: нет - Производитель: Epson - Страна происхождения: Китай,Индонезия - Цвет: Черный - Наименование производителя: Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl. - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson</description>
       </offer>
 
+  <offer id="ACC13T966140">
+        <vendorCode>ACC13T966140</vendorCode>
+        <name>Картридж Epson C13T966140 WF-M52/57xx Series Ink Cartridge XXL BK.</name>
+        <price>340900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Контейнер с черными чернилами ресурсом 40 000 стр. (XXL) Характеристики: - Производитель: Epson - Страна происхождения: Китай,Индонезия - Цвет: Черный - Наименование производителя: Epson Картридж C13T966140 для WF-M52/57xx Series Ink Cartridge XXL BK. - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson</description>
+      </offer>
+
   <offer id="ACC13T97410N">
         <vendorCode>ACC13T97410N</vendorCode>
         <name>Картридж Epson C13T97410N WorkForce Pro WF-C869R черный</name>
-        <price>327900</price>
+        <price>325900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/5e7/jv3mwq7s1q18gs57bnguv3g1vdz1d6h4.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -214,7 +599,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T97420N">
         <vendorCode>ACC13T97420N</vendorCode>
         <name>Картридж Epson C13T97420N WorkForce Pro WF-C869R голубой</name>
-        <price>576900</price>
+        <price>573900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/7b0/63pnrhjjkjqbdc98xzcq1lzikfwofww4.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -225,7 +610,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T97430N">
         <vendorCode>ACC13T97430N</vendorCode>
         <name>Картридж Epson C13T97430N WorkForce Pro WF-C869R пурпурный</name>
-        <price>576900</price>
+        <price>573900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/550/4ynk21nx0cc31w6030irwh5fsi1zuck3.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -236,12 +621,67 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC13T97440N">
         <vendorCode>ACC13T97440N</vendorCode>
         <name>Картридж Epson C13T97440N WorkForce Pro WF-C869R желтый</name>
-        <price>576900</price>
+        <price>573900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/286/ejkdara2zlw4nzamqzvrwu65bi9iipjr.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Epson WorkForce Pro WF-C869RDTWF (RIPS) Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Для бренда: Epson - Цвет: Желтый</description>
+      </offer>
+
+  <offer id="ACC13T69220N">
+        <vendorCode>ACC13T69220N</vendorCode>
+        <name>Картридж Epson Singlepack UltraChrome XD CyanT69220N (110ml)</name>
+        <price>50900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Картридж струйный Epson голубой C13T69220N для принтеров SC-T3000/5000/7000 110ml Модели ниже совместимы с одним или несколькими товарами в этом диапазоне. Для получения более подробной информации, пожалуйста, обратитесь к ссылкам ниже или к руководству по вашему продукту. SureColor SC-T7200D (двойной рулон) SureColor SC-T7200D (комплект для двухрулонной печати Post Script) SureColor SC-T7200 PostScript и HDD SureColor SC-T7200 (с подставкой) SureColor SC-T5200PS - (модуль Adobe PostScript) SureColor SC-T5200D-PS (модуль Adobe PostScript) МФУ SureColor SC-T5200D PS SureColor SC-T5200D (двойной рулон) МФУ SureColor SC-T5200 PS МФУ SureColor SC-T5200 SureColor SC-T5200 SureColor SC-T3200N - (Без подставки) SureColor SC-T3200-PS (с модулем Adobe Postscript) Серия SureColor SC-T3200 SureColor SC-T3200 (с подставкой) SureColor SC-T3000 (без подставки) Epson SureColor SC-T7000 POS Epson SureColor SC-T7000 Epson SureColor SC-T5000 POS Epson SureColor SC-T5000 Epson SureColor SC-T3000 POS Epson SureColor SC-T3000 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: светло-голубой - Наименование производителя: Epson Картридж C13T08054011 для P50/PX660 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 330 стр. - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T08N140">
+        <vendorCode>ACC13T08N140</vendorCode>
+        <name>Картридж Epson WorkForce Enterprise AM-C400 Black Ink</name>
+        <price>301900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Для WorkForce Enterprise AM-C400. Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: светло-голубой - Наименование производителя: Epson Картридж C13T08054011 для P50/PX660 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 330 стр. - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T08N240">
+        <vendorCode>ACC13T08N240</vendorCode>
+        <name>Картридж Epson WorkForce Enterprise AM-C400 Cyan Ink</name>
+        <price>380900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Для WorkForce Enterprise AM-C400. Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: светло-голубой - Наименование производителя: Epson Картридж C13T08054011 для P50/PX660 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 330 стр. - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T08N340">
+        <vendorCode>ACC13T08N340</vendorCode>
+        <name>Картридж Epson WorkForce Enterprise AM-C400 Magenta Ink</name>
+        <price>380900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Для WorkForce Enterprise AM-C400 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: светло-голубой - Наименование производителя: Epson Картридж C13T08054011 для P50/PX660 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 330 стр. - Для бренда: Epson</description>
+      </offer>
+
+  <offer id="ACC13T08N440">
+        <vendorCode>ACC13T08N440</vendorCode>
+        <name>Картридж Epson WorkForce Enterprise AM-C400 Yellow Ink</name>
+        <price>380900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Для WorkForce Enterprise AM-C400 Характеристики: - Страна происхождения: Индонезия - Гарантия: нет - Производитель: Epson - Цвет: светло-голубой - Наименование производителя: Epson Картридж C13T08054011 для P50/PX660 - Тип: Картридж EPSON - Тип печати: струйная - Вид: картридж - Ресурс: 330 стр. - Для бренда: Epson</description>
       </offer>
 
   <offer id="ACAWP28610">
@@ -269,12 +709,12 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="AC8058201">
         <vendorCode>AC8058201</vendorCode>
         <name>Ламинатор Fellowes AMARIS A3 LAMINATOR 230V EU</name>
+        <price>107900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/da5/nd6ngbetjnq6mu5yzvl6wzmdknrcgs9o.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Минимальная толщина плёнки: 75 мкм Автоматический режим ожидания: Да Цвет продукта Белый, Серый Время предварительного нагрева: 1 мин Индикатор готовности: Да Количество роликов: 6 Скорость ламинирования: 780 мм/мин Формат: A3 Максимальная ширина ламинирования: 32 см Автоматическое обнаружение замятия: Да Максимальная толщина пакета: 175 мкм Максимальная толщина документа: 0,6 мм Автоматическое отключение питания: Да Тип: Холодный ламинатор Функция реверса двигателя: Да Характеристики: - Страна происхождения: Китай - Тип: Ламинатор А3 - Вид: Ламинатор А3 - Гарантия: 12 мес</description>
-        <prices />
       </offer>
 
   <offer id="ACFS-45700">
@@ -297,6 +737,28 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Ламинатор Ion А4 Диапазон плёнок 75 – 125 мкм Скорость ламинирования 30 см/мин. Время нагрева 4 мин. Гарантия 1 год Артикул fs-45600 Макс. формат A4 Рекомендуемое количество ламинирований в день 25 листов, неинтенсивное использование Максимальная толщина ламинирования (лист+пленка), мм 0,4 Толщина пленки, мкм 75/80, 100, 125 Ширина входа, мм 230 Система нагрева нагреваемые валы Кол-во валов 2 Время нагрева, мин 4 Регулировка температуры нет Макс. скорость, см/мин 30 Регулировка скорости нет AutoSense нет InstaHeat нет HeatGuard™ нет Easi-Access механизм нет Освобождение да Реверс нет Auto Shut Off (Автоотключение) да (30 мин после включения) Сигнал готовности свет Персональные настройки нет Холодное ламинирование нет Съемный сетевой кабель нет Выходной лоток нет Гарантия, лет 1 Стартовый набор для 10 документов да Габаритные размеры, мм (ВxШxГ) 62 x 359 x 113 Вес, кг 1 Размеры розничной упаковки, мм (ВxШxГ) 157 x 405 x 101 Вес розничной упаковки, кг 1,5 Размеры транспортной упаковки, мм (ВxШxГ) 171 x 390 x 412 Вес транспортной упаковки, кг 6,7 Количество в транспортной упаковке 4 Характеристики: - Страна происхождения: Китай - Сопутствующие товары: Пленка для ламинирования Lamirel А4, 100мкм, 100 шт. - Цвет: Белый - Производитель: Fellowes - Тип: Ламинатор А4 - Вид: Ламинатор А4 - Гарантия: 12 мес</description>
+      </offer>
+
+  <offer id="AC5716701">
+        <vendorCode>AC5716701</vendorCode>
+        <name>Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин</name>
+        <price>37900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Lunar A3 – ламинатор начального уровня для домашнего офиса и использования время от времени. Ламинатор Lunar A3 предназначен для работы с пленкой 75/80 мкм. Максимальный формат документа – А3. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 6 минут после включения. Рычаг освобождения поможет изъять неправильно поданный документ. Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Lunar A3 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое. Основные характеристики: •Диапазон плёнок 75 – 80 мкм • Скорость ламинирования 30 см/мин. •Время нагрева - 6 мин •Гарантия 1 год Технические характеристики Параметр/ Значение 1. Общие 1.01 Английское название LUNAR A3 LAMINATOR 230V EU 1.02 Страна - изготовитель КИТАЙ 1.03 Retail BarCode (EU) 043859624430 1.04 CRC (EU) 57167 Характеристики: - Страна происхождения: Китай - Сопутствующие товары: Пленка для ламинирования Lamirel А4, 75мкм, 100 шт. - Производитель: Fellowes - Тип: Ламинатор А3 - Вид: Ламинатор А3 - Гарантия: 12 мес</description>
+      </offer>
+
+  <offer id="AC5742801">
+        <vendorCode>AC5742801</vendorCode>
+        <name>Ламинатор Fellowes Lunar+ A4, Blue, 75/80,125 мкм, 30 см/мин</name>
+        <price>35900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Артикул fs-57428 Lunar+ A4 серый/синий — яркий ламинатор начального уровня для домашнего офиса и использования время от времени. Ламинатор Lunar+ A4 предназначен для работы с пленкой 75/80 и 125 мкм. Максимальный формат документа — А4. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 4 минут после включения. Рычаг освобождения поможет изъять неправильно поданный документ в ламинатор. Корпус ламинатора не перегревается и безопасен при прикосновении. Ламинатор Lunar+ A4 позволяет надежно заламинировать документы, презентационные и рекламные материалы, фотографии, грамоты, рисунки, открытки, визитки, инструкции и многое другое. Бесплатная замена на новый ламинатор вместо бракованного. Fellowes гарантирует непревзойденное качество товаров и сервисного обслуживания. При наступлении гарантийного случая вместо бракованного устройства будет бесплатно предоставлен новый ламинатор в любом из 150 официальных сервисных центров Fellow Характеристики: - Страна происхождения: Китай - Сопутствующие товары: Пленка для ламинирования Lamirel А4, 100мкм, 100 шт. - Производитель: Fellowes - Тип: Ламинатор А4 - Вид: Ламинатор А4 - Гарантия: 12 мес</description>
       </offer>
 
   <offer id="AC64V61AAABB">
@@ -324,7 +786,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACXG320U">
         <vendorCode>ACXG320U</vendorCode>
         <name>Монитор ViewSonic XG320U</name>
-        <price>417900</price>
+        <price>414900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/2df/bfr7ax0t9qzxq3pm0p2w0erb2fvcqnop.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -335,7 +797,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CH96404">
         <vendorCode>ACC11CH96404</vendorCode>
         <name>МФУ Epson L14150 фабрика печати</name>
-        <price>519900</price>
+        <price>516900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/e01/i7xpt3gv7ue9szoaw0zmrh90in3ra05i.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -346,7 +808,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CH72404">
         <vendorCode>ACC11CH72404</vendorCode>
         <name>МФУ Epson L15150 фабрика печати</name>
-        <price>942900</price>
+        <price>936900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/850/htr5v7efov1369os0yacsrphvrryff1u.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -365,6 +827,17 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Домашний струйный принтер Цветное многофункциональное устройство 3-в-1 формата A4 Печать, сканирование и копирование Компактный дизайн Черный Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту&#185; вы с легкостью сможете выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета. Постоянная экономия Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет&#178;, обеспечивает значительную экономию средств при печати. Сменный набор чернильных флаконов может использоваться для печати до 4500 страниц в черном цвете и до 7500 страниц в цвете&#179;. Многочисленные функции Благодаря функциям печати, сканирования и копирования, печати фотографий без полей (до 10 x 15 см) вы сможете с легкостью выполнять различные задачи. Технология Heat-Free Благодаря технологии Epson Micro Piezo Heat-Free вы можете наслаждаться быстрой и высококачественной печатью. Надежная и долговечная печатающая головка также поставляется предварительно установленной, поэтому настройка принтера не требует дополнительных усилий. Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 59 Сопла (цвет) Минимальный размер капли 3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5.760 x 1.440 DPI (точек на дюйм) Выработка Для дома, Для домашнего офиса Многофункциональный Печать, сканирование, Копия Количество цветов 4 colour Скорость печати ISO/IEC 24734 9,2 Стр./мин. Монохромная печать, 4,5 Стр./мин. Colour Максимальная скорость печати 15 Стр./мин. Colour (plain paper 75 g/m&#178;), 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 27 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Цвета Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye] Скорость одностороннего сканирования (A4, черный) 200 DPI (точек на дюйм); , 11 sec. with flatbed scan Single-sided scan speed (A4 colour) 200 DPI (точек на дюйм); , 32 sec. with flatbed scan Разрешение сканирования 600 DPI (точек на дюйм) x 1.200 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG Тип сканера Контактный датчик изображения (CIS) Optical Resolution 600 DPI (точек на дюйм) x 1.200 DPI (точек на дюйм) (горизонтальный x вертикальный Количество бумажных ящиков 1 Формат бумаги C6 (Конверт) , B5 , A6 (10,5x14,8 см) , A5 (14,8x21,0 см) , A4 (21,0x29,7 см) , Legal, Выбрать формат, 13 x 18 см , 10 x 15 см , Letter , No. 10 (Конверт) , DL (Конверт), 16:9 Дуплекс Вручную Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 100 Листы Стандарт Подходящий вес бумаги 64 - 300г/м2 Обработка мультимедиа Печать без полей Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,4 Ватт (sleep mode), 4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,04 kWh/week Напряжение питания AC 100 V - 240 V, 50 Hz - 60 Hz Габариты 375 x 347 x 179 мм (Ширина x Глубина x Высота) Вес 3,9 кг Уровень шума 6,5 B (A) with Epson Premium Glossy Photo Paper / Photo RPM mode - 52 dB (A) with Epson Premium Glossy Photo Paper / Photo RPM mode Совместимые операционные системы Mac OS X 10.6.8 or later, Windows 10, Windows 7, Windows 8, Windows 8.1, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later Встроенное программное обеспечение Epson Scan Интерфейсы USB Комплект поставки 4 x 65ml individual ink bottles (Bk, C,Y,M), Драйвер и вспомогательная программа (CD), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы Цвет Black Характеристики: - Страна происхождения: Филипины - Гарантия: 12 мес - Тип: МФУ Дом - Вид: МФУ Дом</description>
       </offer>
 
+  <offer id="ACC11CJ67412">
+        <vendorCode>ACC11CJ67412</vendorCode>
+        <name>МФУ Epson L3250 фабрика печати. Wi-Fi</name>
+        <price>117900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Домашний струйный принтер Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct Печать, сканирование и копирование Wi-Fi Direct Черный Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту&#185; вы с легкостью сможете выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета. Постоянная экономия Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет, обеспечивает значительную экономию средств при печати. Сменный набор чернильных флаконов может использоваться для печати до 4500 страниц в черном цвете и до 7500 страниц в цвете. Приложение Epson Smart Panel Приложение позволяет управлять принтером с мобильного устройства&#8308;. Вы можете быстро и легко настроить Wi-Fi, распечатать документы и фотографии, контролировать и устранять неисправности принтера. Гибкость, отвечающая современным требованиям Благодаря компактному дизайну, возможностям подключения Wi-Fi и Wi-Fi Direct этот принтер можно легко интегрировать в существующую домашнюю систему для печати с мобильных устройств, планшетов и ноутбуков. Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 59 Сопла (цвет) Минимальный размер капли 3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5.760 x 1.440 DPI (точек на дюйм) Выработка Для дома, Для домашнего офиса Многофункциональный Печать, сканирование, Копия Количество цветов 4 colour Скорость печати ISO/IEC 24734 10 Стр./мин. Монохромная печать, 5 Стр./мин. Colour Максимальная скорость печати 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 15 Стр./мин. Colour (plain paper 75 g/m&#178;), 69 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Цвета Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye] Скорость одностороннего сканирования (A4, черный) 200 DPI (точек на дюйм); , 11 sec. with flatbed scan Single-sided scan speed (A4 colour) 200 DPI (точек на дюйм); , 28 sec. with flatbed scan Разрешение сканирования 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG Тип сканера Контактный датчик изображения (CIS) Optical Resolution 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A6 (10,5x14,8 см) , A5 (14,8x21,0 см) , B5 , 10 x 15 см , 13 x 18 см , 16:9 , DL (Конверт), No. 10 (Конверт) , C6 (Конверт) , Letter , Выбрать формат, Legal Дуплекс Вручную Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 100 Листы Стандарт, 20 Листы фотобумаги Подходящий вес бумаги 64 - 300г/м2 Обработка мультимедиа Печать без полей Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,7 Ватт (sleep mode), 4,5 Ватт Готов, 0,2 Ватт (выключать), TEC 0,15 kWh/week Напряжение питания AC 100 V - 240 V, 50 Hz - 60 Hz Габариты 375 x 347 x 179 мм (Ширина x Глубина x Высота) Вес 3,9 кг Совместимые операционные системы Mac OS X 10.6.8 or later, Windows 10, Windows 7, Windows 8, Windows 8.1, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later Интерфейсы USB, WiFi, Wi-Fi Direct Услуги мобильной и облачной печати Epson Smart Panel App Комплект поставки 4 x 65ml individual ink bottles (Bk, C,Y,M), Драйвер и вспомогательная программа (CD), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы Цвет Black Характеристики: - Наименование производителя: Epson L3250 - Совместимые продукты: C13T00S14A, C13T00S24A, C13T00S34A, C13T00S44A - Производитель: Epson - Страна происхождения: Филипины - Гарантия: 12 мес - Тип: МФУ Дом - Тип печати: струйная - Формат: A4 - Вид: МФУ Дом</description>
+      </offer>
+
   <offer id="ACC11CJ67414">
         <vendorCode>ACC11CJ67414</vendorCode>
         <name>МФУ Epson L3256 фабрика печати</name>
@@ -379,7 +852,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CK59404">
         <vendorCode>ACC11CK59404</vendorCode>
         <name>МФУ Epson L3550 фабрика печати, Wi-Fi</name>
-        <price>152900</price>
+        <price>151900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/e10/xpzbjarimtv5yxj30y8wzb0adaiauc3e.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -387,10 +860,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>МФУ с чернильными емкостями для печати дома Высокоскоростной цветной принтер 3-в-1 формата A4 с поддержкой Wi-Fi Direct Печать, сканирование, копирование Поддержка Wi-Fi Direct Черный Благодаря отсутствию картриджей МФУ (принтер-копир-скан) с поддержкой Wi-Fi Direct подойдет тем, кому необходимо высокое качество при низкой себестоимости печати. Решайте разнообразные задачи благодаря заднему лотку на 100 листов, функции печати фотографий без полей (размером до 10&#215;15 см), а также скорости печати до 15 страниц в минуту&#185;. При необходимости емкость для отработанных чернил легко заменить самостоятельно без обращения в сервисный центр. Забудьте о дорогих картриджах Устройства серии EcoTank с чернильными емкостями большого объема — это удобное решение для печати дома. Модели оснащены усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Еще больше экономии Чернил в комплекте хватит на три года использования&#179;, благодаря чему экономия составит до 90 % стоимости чернил&#178;. Одного комплекта чернил достаточно для печати 4 300 черно-белых страниц и 7 300 цветных страниц &#8308;. Приложение Epson Smart Panel Приложение позволяет управлять принтером с умных устройств&#8309;. Вы сможете легко и быстро настроить Wi-Fi, печатать документы, контролировать состояние принтера и устранять неисправности. Современные гибкие возможности Благодаря компактному дизайну, а также поддержке Wi-Fi и Wi-Fi Direct вы легко сможете интегрировать новый принтер в существующую экосистему и печатать со смартфонов, планшетов и ноутбуков&#8309;. Технология холодной печати Epson Heat-Free Технология PrecisionCore Heat-Free, не использующая нагрев при печати, помогает экономить электроэнергию и деньги за счет меньшего количества деталей, подлежащих регулярной замене. В отличие от принтеров других производителей, модель поставляется с установленной печатающей головкой и не требует сложной настройки. Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 4.800 x 1.200 DPI (точек на дюйм) Многофункциональный Печать, сканирование, Копия Печать Количество цветов 4 colour Скорость печати ISO/IEC 24734 15 Стр./мин. Монохромная печать, 8 Стр./мин. Colour Максимальная скорость печати 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 20 Стр./мин. Colour (plain paper 75 g/m&#178;) Время до первой страницы Монохромная печать 9 секунд, Colour 15 секунд Цвета Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye] Colours Capacity Black [65ml], Cyan [65ml], Yellow [65ml], Magenta [65ml] Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Скорость одностороннего сканирования (A4, черный) 11 sec. with flatbed scan Single-sided scan speed (A4 colour) 28 sec. with flatbed scan Разрешение сканирования 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG, PDF multi Тип сканера Контактный датчик изображения (CIS) Спецификации бумаги и датчики Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , B6, C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , 100 x 148 мм , 10 x 15 см , 13 x 18 см , 9 x 13 см, 16:9 Дуплекс Вручную Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 100 Листы Стандарт Подходящий вес бумаги 64 - 300г/м2 Обработка мультимедиа Печать без полей Общее Recommended number of users From: 1 To: 2 Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,8 Ватт (sleep mode), 5,4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,19 kWh/week Напряжение питания AC 220 V - 240 V Габариты 375 x 347 x 179 мм (Ширина x Глубина x Высота) Вес 4,1 кг Уровень шума 5,1 B (A) with Epson Premium Glossy Photo Paper / Photo RPM mode - 41 dB (A) with Epson Premium Glossy Photo Paper / Photo RPM mode Совместимые операционные системы Mac OS X 10.9.5 or later, Windows 10 (32/64 bit), Windows 11 or later, Windows 7 (32/64 bit), Windows 8 (32/64 bit), Windows 8.1 (32/64 bit), Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 R2, Windows Server 2016, Windows Vista (32/64 bit), Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later, macOS 11 or later Интерфейсы USB, WiFi, Wi-Fi Direct Безопасность WLAN WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA2 PSK (AES), WPA3-SAE(AES) Услуги мобильной и облачной печати Apple AirPrint, Epson Smart Panel App, Epson Connect (Email Print, Remote Print Driver) Энергоснабжение 220V, 240V Комплект поставки 4 x 65ml individual ink bottles (Bk,C,Y,M) + 1 extra black ink bottle, Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы Цвет Black Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Гарантия: 12 мес - Тип: МФУ Дом - Вид: МФУ Дом</description>
       </offer>
 
+  <offer id="ACC11CK58404">
+        <vendorCode>ACC11CK58404</vendorCode>
+        <name>МФУ Epson L3560 фабрика печати, Wi-Fi</name>
+        <price>171900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>МФУ с чернильными емкостями для печати дома Высокоскоростной цветной принтер 3-в-1 формата A4 с поддержкой Wi-Fi Direct и ЖК-экраном Печать, сканирование, копирование Поддержка Wi-Fi Direct ЖК-экран Благодаря отсутствию картриджей МФУ (принтер-копир-скан) с поддержкой Wi-Fi Direct и ЖК-экраном подойдет тем, кому необходимо высокое качество при низкой себестоимости печати. Решайте разнообразные задачи благодаря заднему лотку на 100 листов, функции печати фотографий без полей (размером до 10&#215;15 см), а также скорости печати до 15 страниц в минуту&#185;. При необходимости емкость для отработанных чернил легко заменить самостоятельно без обращения в сервисный центр. Забудьте о дорогих картриджах Устройства серии EcoTank с чернильными емкостями большого объема — это удобное решение для печати дома. Модели оснащены усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Еще больше экономии Чернил в комплекте хватит на три года использования&#179;, благодаря чему экономия составит до 90 % стоимости чернил&#178;. Одного комплекта чернил достаточно для печати 4 300 черно-белых страниц и 7 300 цветных страниц&#8308;. Приложение Epson Smart Panel Приложение позволяет управлять принтером с умных устройств&#8309;. Вы сможете легко и быстро настроить Wi-Fi, печатать документы, контролировать состояние принтера и устранять неисправности. Современные гибкие возможности Благодаря компактному дизайну, а также поддержке Wi-Fi и Wi-Fi Direct вы легко сможете интегрировать новый принтер в существующую экосистему и печатать со смартфонов, планшетов и ноутбуков&#8309;. Технология холодной печати Epson Heat-Free Технология PrecisionCore Heat-Free, не использующая нагрев при печати, помогает экономить электроэнергию и деньги за счет меньшего количества деталей, подлежащих регулярной замене. В отличие от принтеров других производителей, модель поставляется с установленной печатающей головкой и не требует сложной настройки. Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 4.800 x 1.200 DPI (точек на дюйм) Многофункциональный Печать, сканирование, Копия Печать Количество цветов 4 colour Скорость печати ISO/IEC 24734 15 Стр./мин. Монохромная печать, 8 Стр./мин. Colour Максимальная скорость печати 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 20 Стр./мин. Colour (plain paper 75 g/m&#178;) Время до первой страницы Монохромная печать 9 секунд, Colour 15 секунд Цвета Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye] Colours Capacity Black [65ml], Cyan [65ml], Yellow [65ml], Magenta [65ml] Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Скорость одностороннего сканирования (A4, черный) 11 sec. with flatbed scan Single-sided scan speed (A4 colour) 28 sec. with flatbed scan Разрешение сканирования 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG, PDF multi Тип сканера Контактный датчик изображения (CIS) Спецификации бумаги и датчики Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , B6, C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , 100 x 148 мм , 10 x 15 см , 13 x 18 см , 9 x 13 см, 16:9 Дуплекс Вручную Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 100 Листы Стандарт Подходящий вес бумаги 64 - 300г/м2 Обработка мультимедиа Печать без полей Общее Recommended number of users From: 1 To: 2 Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,8 Ватт (sleep mode), 5,4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,19 kWh/week Напряжение питания AC 100 V - 240 V, 50 Hz - 60 Hz Габариты 375 x 347 x 179 мм (Ширина x Глубина x Высота) Вес 4,1 кг Уровень шума 5,1 B (A) with Epson Premium Glossy Photo Paper / Photo RPM mode - 41 dB (A) with Epson Premium Glossy Photo Paper / Photo RPM mode Совместимые операционные системы Mac OS X 10.9.5 or later, Windows 10 (32/64 bit), Windows 11 or later, Windows 7 (32/64 bit), Windows 8 (32/64 bit), Windows 8.1 (32/64 bit), Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 R2, Windows Server 2016, Windows Vista (32/64 bit), Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later, macOS 11 or later Интерфейсы USB, WiFi, Wi-Fi Direct Безопасность WLAN WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA2 PSK (AES), WPA3-SAE(AES) Услуги мобильной и облачной печати Apple AirPrint, Epson Smart Panel App, Epson Connect (Email Print, Remote Print Driver) Энергоснабжение 220V, 240V Комплект поставки 4 x 65ml individual ink bottles (Bk,C,Y,M) + 1 extra black ink bottle, Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы Другие функции ЖК-дисплей Тип: Цветной режим, Диагональ: 3,7 см Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Гарантия: 12 мес - Тип: МФУ Дом - Вид: МФУ Дом</description>
+      </offer>
+
   <offer id="ACC11CJ63412">
         <vendorCode>ACC11CJ63412</vendorCode>
         <name>МФУ Epson L4260 фабрика печати</name>
-        <price>242900</price>
+        <price>240900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/7bd/08volzcxquckbulpwd8vc4qric0nbc3k.png</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -401,7 +885,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ63413">
         <vendorCode>ACC11CJ63413</vendorCode>
         <name>МФУ Epson L4267 фабрика печати</name>
-        <price>242900</price>
+        <price>240900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/d48/mvzpp0jxqdf0qwnzxam5v2c3pw7xo0jy.png</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -412,7 +896,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ65407">
         <vendorCode>ACC11CJ65407</vendorCode>
         <name>МФУ Epson L5290  фабрика печати, факс,Wi-Fi</name>
-        <price>309900</price>
+        <price>307900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/ca7/nf3rr4pa3rockbljc48gyy3o0zv4dku9.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -423,7 +907,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CG21404">
         <vendorCode>ACC11CG21404</vendorCode>
         <name>МФУ Epson L6160 фабрика печати, Wi-Fi</name>
-        <price>364900</price>
+        <price>361900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/4b9/tlhtfc43v012br00cwxmujef5klere3p.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -431,10 +915,32 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Печать без картриджей Устройство 3-в-1 нового поколения без картриджей имеет широкие возможности подключения, поддерживает двустороннюю печать и оснащено ЖК-экраном с диагональю 6,1 см. Сокращение стоимости печати до 90 % Печать без картриджей Создан для бизнеса Узнайте, как сэкономить на печати до 90 %&#178; со струйным принтером 3-в-1 без картриджей с поддержкой Wi-Fi, Wi-Fi Direct и Ethernet. Затраты на печать страницы рекордно низкие благодаря тому, что чернил в комплекте хватит до трех лет&#185; для печати до 14 000 черно-белых или 11 200 цветных страниц&#178;. Устройство оптимально подойдет для офисного использования благодаря печатающей головке PrecisionCore, скорости печати 15 страниц в минуту&#179;, двусторонней печати и фронтальному лотку на 150 листов. Рекордно низкая стоимость печати EcoTank с емкостями для чернил позволяет сократить затраты на печать до 90 %&#178; благодаря инновационной конструкции. Емкости для чернил большого объема позволяют отказаться от использования картриджей, а чернил в комплекте хватит на три года использования&#185;. Доступны недорогие контейнеры с чернилами для заправки. Печать тысяч страниц Печатайте больше без заправки. Чернил в комплекте достаточно для печати 14 000 черно-белых и 11 200 цветных страниц&#178;. Новое поколение контейнеров Фронтальное расположение емкостей для чернил делает EcoTank компактнее и удобнее предыдущих моделей. Усовершенствованная система заправки чернил сводит к минимуму опасность разлить их и защищает от протечек. Новые контейнеры оснащены механизмом, благодаря которому невозможно перепутать цвета чернил во время заправки. Функции офисного качества Печатайте четкие тексты благодаря печатающей головке PrecisionCore, не требующей замены, и оригинальным черным пигментным чернилам Epson. Созданный для бизнеса принтер оснащен лотком на 150 листов, поддерживает двустороннюю печать и скорость печати до 15 страниц в минуту&#179;. На модель распространяется стандартная годичная гарантия. Печать без компьютера Благодаря поддержке Wi-Fi и Wi-Fi Direct документы на печать можно отправлять с интеллектуальных устройств при помощи приложения Epson iPrint&#8308;. Epson Email Print позволяет получать файлы для печати из любой точки мира. Технические характеристики Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей), Технология капель с переменным размером Технология чернил Пигментный чёрный и цветные чернила на красителях Разрешение при печати 4.800 x 1.200 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия Печать Скорость печати ISO/IEC 24734 15 Стр./мин. Монохромная печать, 8 Стр./мин. Colour Максимальная скорость печати 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 20 Стр./мин. Colour (plain paper 75 g/m&#178;), 69 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Duplex Printing Speed ISO/IEC 24734 6,5 A4 Pages/min Монохромная печать, 4,5 A4 Pages/min Colour Цвета Black, Cyan, Yellow, Magenta Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Скорость одностороннего сканирования (A4, черный) 300 DPI (точек на дюйм) 1,5 msec/line Single-sided scan speed (A4 colour) 300 DPI (точек на дюйм) 7 msec/line Разрешение сканирования 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, Сканирование для TIFF, Сканирование для PDF Тип сканера Контактный датчик изображения (CIS) Спецификации бумаги и датчики Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , Letter , 9 x 13 см, 10 x 15 см , 16:9 , Legal Дуплекс Нет Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 150 Листы Стандарт, 150 Листы максимальный, 20 Листы фотобумаги Подходящий вес бумаги 64 - 250г/м2 Обработка мультимедиа Автоматический дуплекс, Печать без полей Общее Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,7 Ватт (sleep mode), 5,3 Ватт Готов, 0,3 Ватт (выключать) Напряжение питания AC 100 V - 240 V Габариты 375 x 347 x 187 мм (Ширина x Глубина x Высота) Вес 6 кг Совместимые операционные системы Mac OS 10.10.x, Mac OS 10.7.x, Mac OS 10.8.x, Mac OS 10.9.x, Mac OS X 10.11.x, Mac OS X 10.12, Mac OS X 10.6.8, Windows 10, Windows 7, Windows 7 x64, Windows 8, Windows 8 (32/64 bit), Windows 8.1, Windows 8.1 x64 Edition, Windows Server 2003, Windows Server 2003 R2 x64, Windows Server 2003 x64, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP SP3, Windows Server 2003 R2, XP Professional x64 Edition SP2 Встроенное программное обеспечение Epson Easy Photo Print, Epson Event Manager, Epson Scan, EpsonNet Print, EpsonNet setup Интерфейсы USB, Ethernet, WiFi, Wi-Fi Direct Услуги мобильной и облачной печати Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple AirPrint, Google Cloud Print Энергоснабжение 100V, 110V, 220V, 240V Комплект поставки 2 full sets of ink (Bk – 127ml, cmY – 70ml), Ведущее устройство, Токоподводящий кабель, Программное обеспечение (CD), Гарантийные документы Другие функции ЖК-дисплей Тип: Цветной режим, Диагональ: 6,1 см Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Автоподатчик: нет - Страна происхождения: Филиппины - Двусторонняя печать: да - ЖК дисплей: да - Тип чернил: водорастворимые и пигментные - Сопутствующие товары: Кабель DEFENDER USB04-10 USB2.0 AM-BM, 3.0м (ДЛЯ ПРИНТЕРА) - Производитель: Epson - Совместимые продукты: C13T04D100,C13T03V24A,C13T03V44A,C13T03V34A,C13T03V14A - Гарантия: 12 мес - Тип: МФУ Офис - Тип печати: струйная - Формат: A4 - Интерфейс: Wi-Fi*Ethernet*USB - Цветность: 4 цвета - Область применения: Для офиса - Тип расходных материалов: чернила - Наименование производителя: Epson L6160 - Вид: МФУ Офис</description>
       </offer>
 
+  <offer id="ACC11CJ61405">
+        <vendorCode>ACC11CJ61405</vendorCode>
+        <name>МФУ Epson L6270 фабрика печати, Wi-Fi</name>
+        <price>387900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Офисный струйный принтер Двустороннее многофункциональное устройство 3-в-1 для цветной печати формата A4 с автоподатчиком, Wi-Fi Direct и Ethernet Печать, копирование и сканирование Wi-Fi Direct и Ethernet ЖК-экран, автоподатчик и двусторонн Благодаря отсутствию необходимости в замене картриджей это двустороннее многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct, Ethernet и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. Благодаря 30-страничному автоподатчику документов (ADF), 250-листовому переднему лотку для бумаги, высококачественной лазерной печати документов черными пигментными чернилами и скорости печати до 15,5 страницы в минуту&#185; вы можете с легкостью выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета. Постоянная экономия Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет&#178;, обеспечивает значительную экономию средств при печати. Включенный в комплект набор чернильных флаконов может использоваться для печати до 14 000 страниц в черном цвете и до 5200 страниц в цвете&#179;. Приложение Epson Smart Panel Приложение позволяет управлять принтером с мобильного устройства&#8308;. Вы можете быстро и легко настроить Wi-Fi, распечатать документы и фотографии, контролировать и устранять неисправности принтера. Гибкость, отвечающая современным требованиям Благодаря компактному дизайну, возможностям подключения Wi-Fi и Wi-Fi Direct этот принтер можно легко интегрировать в существующую домашнюю систему для печати с мобильных устройств, планшетов и ноутбуков&#8308;. Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей), Технология капель с переменным размером Технология чернил Пигментный чёрный и цветные чернила на красителях Разрешение при печати 4.800 x 1.200 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия Печать Скорость печати ISO/IEC 24734 15,5 Стр./мин. Монохромная печать, 8,5 Стр./мин. Colour Максимальная скорость печати 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 20 Стр./мин. Colour (plain paper 75 g/m&#178;), 69 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Duplex Printing Speed ISO/IEC 24734 6,5 A4 Pages/min Монохромная печать, 4,5 A4 Pages/min Colour Цвета Black [Pigment], Cyan [Dye], Yellow [Dye], Magenta [Dye] Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Скорость одностороннего сканирования (A4, черный) 300 DPI (точек на дюйм) 1,5 msec/line Single-sided scan speed (A4 colour) 300 DPI (точек на дюйм) 7 msec/line Разрешение сканирования 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, Сканирование для TIFF, Сканирование для PDF Тип сканера Контактный датчик изображения (CIS) Спецификации бумаги и датчики Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , Letter , 9 x 13 см, 10 x 15 см , 16:9 , Legal Дуплекс Нет Автоматический сбор документов 30 Страницы Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 150 Листы Стандарт, 150 Листы максимальный, 20 Листы фотобумаги Подходящий вес бумаги 64 - 250г/м2 Обработка мультимедиа Автоподатчик листов, Автоматический дуплекс, Печать без полей Общее Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,9 Ватт (sleep mode), 5,3 Ватт Готов, 0,3 Ватт (выключать) Напряжение питания AC 100 V - 240 V Габариты 375 x 347 x 231 мм (Ширина x Глубина x Высота) Вес 7,3 кг Совместимые операционные системы Mac OS 10.10.x, Mac OS 10.7.x, Mac OS 10.8.x, Mac OS 10.9.x, Mac OS X 10.11.x, Mac OS X 10.12, Mac OS X 10.6.8, Windows 10, Windows 7, Windows 7 x64, Windows 8, Windows 8 (32/64 bit), Windows 8.1, Windows 8.1 x64 Edition, Windows Server 2003, Windows Server 2003 R2 x64, Windows Server 2003 x64, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP SP3, Windows Server 2003 R2, XP Professional x64 Edition SP2 Встроенное программное обеспечение Epson Easy Photo Print, Epson Event Manager, Epson Scan, EpsonNet Print, EpsonNet setup Интерфейсы USB, Ethernet, WiFi, Wi-Fi Direct Услуги мобильной и облачной печати Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple AirPrint, Google Cloud Print, Epson Smart Panel App Энергоснабжение 220V, 240V Комплект поставки 1 full set of ink (Bk – 127ml, cmY – 70ml), Ведущее устройство, Токоподводящий кабель, Программное обеспечение (CD), Гарантийные документы Цвет Black Другие функции ЖК-дисплей Тип: Цветной режим, Диагональ: 6,1 см Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Гарантия: 12 мес - Тип: МФУ Дом - Вид: МФУ Дом</description>
+      </offer>
+
+  <offer id="ACC11CJ60406">
+        <vendorCode>ACC11CJ60406</vendorCode>
+        <name>МФУ Epson L6290 фабрика печати, факс.Wi-Fi</name>
+        <price>399900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Офисный струйный принтер Двустороннее многофункциональное устройство 4-в-1 для цветной печати формата A4 с автоподатчиком, Wi-Fi Direct и Ethernet Принтер, копир, сканер и факс Wi-Fi Direct и Ethernet ЖК-экран, автоподатчик и двусторонн Благодаря отсутствию необходимости в замене картриджей это двустороннее многофункциональное устройство (печать, сканирование, копирование, факс) с Wi-Fi Direct, Ethernet и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. Благодаря 30-страничному автоподатчику документов (ADF), 250-листовому переднему лотку для бумаги, высококачественной лазерной печати документов черными пигментными чернилами и скорости печати до 15,5 страницы в минуту&#185; вы можете с легкостью выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета. Постоянная экономия Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет&#178;, обеспечивает значительную экономию средств при печати. Включенный в комплект набор чернильных флаконов может использоваться для печати до 14 000 страниц в черном цвете и до 5200 страниц в цвете&#179;. Приложение Epson Smart Panel Приложение позволяет управлять принтером с мобильного устройства&#8308;. Вы можете быстро и легко настроить Wi-Fi, распечатать документы и фотографии, контролировать и устранять неисправности принтера. Гибкость, отвечающая современным требованиям Благодаря компактному дизайну, возможностям подключения Wi-Fi и Wi-Fi Direct этот принтер можно легко интегрировать в существующую домашнюю систему для печати с мобильных устройств, планшетов и ноутбуков&#8308;. Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей), Технология капель с переменным размером Технология чернил Пигментный чёрный и цветные чернила на красителях Разрешение при печати 4.800 x 1.200 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия, Факс Печать Скорость печати ISO/IEC 24734 15,5 Стр./мин. Монохромная печать, 8,5 Стр./мин. Colour Максимальная скорость печати 33 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 20 Стр./мин. Colour (plain paper 75 g/m&#178;), 69 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Duplex Printing Speed ISO/IEC 24734 6,5 A4 Pages/min Монохромная печать, 4,5 A4 Pages/min Colour Цвета Black [Pigment], Cyan [Dye], Yellow [Dye], Magenta Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Скорость одностороннего сканирования (A4, черный) 300 DPI (точек на дюйм) 1,5 msec/line Single-sided scan speed (A4 colour) 300 DPI (точек на дюйм) 7 msec/line Разрешение сканирования 1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, Сканирование для TIFF, Сканирование для PDF Тип сканера Контактный датчик изображения (CIS) Факс Type of fax Walk-up black and white and colour fax capability Fax Transmission Speed Up to 33.6kbps / Approx. 3 sec/page Error correction mode CCITU/ITU Group3 fax with Error Correction Mode Fax speed dials (max) 60 names and numbers Page memory Up to 100 pages (ITU-T No.1 chart) Функции факса Отправить факс по компьютеру, Auto Redial, Address Book, Delay Send, Broadcast Fax Спецификации бумаги и датчики Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , Letter , 9 x 13 см, 10 x 15 см , 16:9 , Legal Дуплекс Нет Автоматический сбор документов 30 Страницы Емкость отделения подачи бумаги 30 Листы Paper Tray Capacity 250 Листы Стандарт, 250 Листы максимальный, 20 Листы фотобумаги Подходящий вес бумаги 64 - 250г/м2 Обработка мультимедиа Автоподатчик листов, Автоматический дуплекс, Печать без полей Общее Энергопотребление 12 Ватт (standalone copying, ISO/IEC 24712 pattern), 1 Ватт (sleep mode), 5,4 Ватт Готов, 0,3 Ватт (выключать) Напряжение питания AC 100 V - 240 V Габариты 375 x 347 x 231 мм (Ширина x Глубина x Высота) Вес 7,3 кг Совместимые операционные системы Mac OS 10.10.x, Mac OS 10.7.x, Mac OS 10.8.x, Mac OS 10.9.x, Mac OS X 10.11.x, Mac OS X 10.12, Mac OS X 10.6.8, Windows 10, Windows 7, Windows 7 x64, Windows 8, Windows 8 (32/64 bit), Windows 8.1, Windows 8.1 x64 Edition, Windows Server 2003, Windows Server 2003 R2 x64, Windows Server 2003 x64, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP SP3, Windows Server 2003 R2, XP Professional x64 Edition SP2 Встроенное программное обеспечение Epson Easy Photo Print, Epson Event Manager, Epson Scan, EpsonNet Print, EpsonNet setup Интерфейсы USB, Ethernet, WiFi, Wi-Fi Direct Услуги мобильной и облачной печати Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple AirPrint, Google Cloud Print, Epson Smart Panel App Энергоснабжение 100V, 110V, 220V, 240V Комплект поставки 1 full set of ink (Bk – 127ml, cmY – 70ml), Ведущее устройство, Токоподводящий кабель, Программное обеспечение (CD), Гарантийные документы Цвет Black Другие функции ЖК-дисплей Тип: Цветной режим, Диагональ: 6,1 см Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Страна происхождения: Филипины - Гарантия: 12 мес - Тип: МФУ Дом - Тип печати: струйная - Вид: МФУ Дом</description>
+      </offer>
+
   <offer id="ACC11CJ30404">
         <vendorCode>ACC11CJ30404</vendorCode>
         <name>МФУ Epson L6550 фабрика печати, факс,Wi-Fi</name>
-        <price>764900</price>
+        <price>759900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/082/n046j2p2cxwtobyryhqyloq4qkxsmjxo.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -442,10 +948,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Многофункциональное устройство 4-в-1 с возможностью печати документов формата А4, фронтальными чернильными емкостями и поддержкой печати по Wi-Fi и Ethernet. Принтер-сканер-копир-факс для сверхэкономичной печати документов Фронтальные лотки загрузки бумаги общей емкостью 500 листов Задний лоток подачи бумаги на 50 листов Фронтальные чернильные емкости Высокая скорость печати - до 25 стр./мин. ч/б ISO и 12 стр./мин. цвет (ISO) Печать по Wi-Fi Direct, Epson Connect, Ethernet Пигментные чернила всех цветов ЖК-дисплей диагональю 10,9 см с сенсорной панелью управления Набор контейнеров в комплекте поставки рассчитан на 7500 ч/б и 6000 цветных отпечатков Сменная емкость для отработанных чернил Автоматическая двусторонняя печать Автоподатчик для сканирования документов емкостью 50 листов Технические характеристики Состав поставки Принтер-сканер-копир-факс Кабель питания CD с программным обеспечением и драйверами для Windows и macOS Руководство по установке Руководство по настройке факса Гаран Характеристики: - Страна происхождения: Филиппины - Двусторонняя печать: да - ЖК дисплей: да - Автоподатчик: да - Производитель: Epson - Факс: да - Совместимые продукты: C12C934591,C13T06C14A,C13T06C34A,C13T06C44A,C13T06C24A - Гарантия: 12 мес - Тип: МФУ Офис - Тип печати: струйная - Формат: A4 - Интерфейс: Wi-Fi*Ethernet*USB - Цветность: 4 цвета - Тип чернил: пигментные - Область применения: Для офиса - Тип расходных материалов: чернила - Наименование производителя: Epson L6550 - Вид: МФУ Офис</description>
       </offer>
 
+  <offer id="ACC11CK94401">
+        <vendorCode>ACC11CK94401</vendorCode>
+        <name>МФУ Epson L8100 фабрика печати</name>
+        <price>362900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Техника Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 180 Сопла (цвет) Минимальный размер капли 1,5 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5.760 x 1.440 DPI (точек на дюйм) Выработка Фото Многофункциональный Печать, сканирование, Копия Печать Количество цветов 6 colour Скорость печати ISO/IEC 24734 8 Стр./мин. Монохромная печать, 8 Стр./мин. Colour, 25 секунд per 10 x 15 cm photo Максимальная скорость печати 22 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 22 Стр./мин. Colour (plain paper 75 g/m&#178;), 12 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Время до первой страницы Монохромная печать 13,2 секунд, Colour 13,3 секунд Цвета Black [Dye], Cyan [Dye], Light Cyan [Dye], Yellow [Dye], Magenta [Dye], Light Magenta [Dye] Colours Capacity Black [70ml], Cyan [70ml], Light Cyan [70ml], Yellow [70ml], Magenta [70ml], Light Magenta [70ml] Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Разрешение сканирования 1.200 DPI (точек на дюйм) x 4.800 DPI (точек на дюйм) (горизонтальный x вертикальный) Maximum scan size 216 мм x 297 мм Тип сканера Контактный датчик изображения (CIS) Optical Resolution 1.200 DPI (точек на дюйм) x 4.800 DPI (точек на дюйм) (горизонтальный x вертикальный) Спецификации бумаги и датчики Количество бумажных ящиков 1 Формат бумаги A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , Letter , Пластиковые карточки Дуплекс Вручную Paper Tray Capacity 100 Листы Стандарт, 100 Листы максимальный, 20 Листы фотобумаги Rear paper path (special media) Да Обработка мультимедиа Печать без полей, Печать на CD/DVD Общее Энергопотребление 0,6 Ватт (sleep mode), 19 Ватт (Printing), 4,4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,11 kWh/week Напряжение питания AC 100 V - 240 V Габариты 404 x 410 x 162 мм (Ширина x Глубина x Высота) Вес 7,6 кг Уровень шума 5,1 B (A) Согласно ISO 7779 образец печати на Epson Premium Glossy Photo Paper / Photo RPM Modus Совместимые операционные системы Mac OS X 10.9.5 or later, Windows 10, Windows 11, Windows 7, Windows 8, Windows 8.1, Windows Server 2003 R2 x64, Windows Server 2003 SP2, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP SP3 or later (32-bit), XP Professional x64 Edition SP2 Интерфейсы Wireless LAN IEEE 802.11a/b/g/n, Wi-Fi Direct Мощность звука Функционирование: 5,1 B (A) Звуковое давление Функционирование: 37 dB (A) Безопасность WLAN WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA2 PSK (AES), WPA3-SAE(AES) Услуги мобильной и облачной печати Epson iPrint App, Epson Smart Panel App Комплект поставки 6 x 70ml individual ink bottles (Bk,C,Y,M,Lc,LM), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы Другие функции ЖК-дисплей Тип: Цветной режим, Сенсорный экран, Диагональ: 6,1 см Эмуляции ESC/P-R Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Автоподатчик: нет - Двусторонняя печать: нет - Страна происхождения: Индонезия - ЖК дисплей: да - Сопутствующие товары: Чернила Epson C13T67324A L800/1800/810/850 голубой - Производитель: Epson - Печать фото: да - Гарантия: 12 мес - Тип: МФУ Дом - Тип печати: струйная - Формат: A4 - Интерфейс: USB - Цветность: 6 цветов - Тип чернил: водорастворимые - Область применения: Для дома - Тип расходных материалов: чернила - Наименование производителя: Epson L850 - Вид: МФУ Дом</description>
+      </offer>
+
   <offer id="ACC11CJ20404">
         <vendorCode>ACC11CJ20404</vendorCode>
         <name>МФУ Epson L8160  фабрика печати, Wi-Fi</name>
-        <price>464900</price>
+        <price>461900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/6a6/447sac7ayrx4kpz6srhqgt50eddky8z4.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -453,10 +970,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Фотопринтер EcoTank A4 Печатайте великолепные фотографии в формате A4 с беспроводным шестицветным многофункциональным принтером для творчества 6-цветная система подачи чернил Работа с 5 типами носителей Рекордно низкая стоимость печати A4 Раскройте свой творческий потенциал благодаря печати великолепных фото и документов в формате A4 с невероятно низкой стоимостью печати страницы. Печать, копирование и сканирование просты как никогда благодаря впечатляющему цветному сенсорному экрану с диагональю 10,9 см, поддержке 5 видов носителей и инновационной шестицветной системе подачи чернил. Отсутствие необходимости замены картриджей и гибкие возможности подключения делают эту модель идеальным выбором для современных художников. 6-цветная система подачи чернил Чернила Epson Claria ET Premium позволяют печатать высококачественные и долговечные фотографии формата до A4, а также черно-белые фото благодаря новым серым чернилам. Пигментные черные чернила идеально подходят для печати текста на простой бумаге. Экономия времени и денег Запасные контенеры с чернилами позволят напечатать до 2 300 высококачественных фотографий на этом экономичном принтере&#185;. Емкости и контенеры с чернилами просты в использовании и не доставят никаких неудобств, когда потребуется заправка. Современные гибкие возможности С поддержкой Wi-Fi, Wi-Fi Direct и Ethernet вы легко сможете интегрировать новый принтер в существующую экосистему. Возможна печать с SD-карт и USB-накопителей с помощью цветного сенсорного экрана с диагональю 10,9 см. Поддержка художественных носителей Модель L8160 оснащена лотками под фотобумагу и листы A4, а также позволяет печатать непосредственно на специальных CD и DVD-дисках. Лоток формата A4 также позволяет работать со специальными носителями, такими как крафтовая бумага и карточки, а прямая подача A4 обеспечивает возможность печати на носителях толщиной до 1,3 мм и длиной до 2 м. Приложение Epson Smart Panel Приложение позволяет управлять принтером с умных устройств&#178;. Отправляйте фотографии на печать, копируйте документы, настраивайте и отлаживайте принтер и дайте волю своей фантазии с большим набором художественных шаблонов. Технология без нагрева Не требующая нагрева технология Micro Piezo обеспечивает постоянно высокую скорость печати, снижает общее энергопотребление, давая возможность экономить время и деньги. Техника Метод печати Epson Micro Piezo™ print head Конфигурация сопла 360 Сопла (черный), 180 Сопла (цвет) Минимальный размер капли 1,9 капли(ей), Технология капель с переменным размером Технология чернил Чорнила Claria™ Premium, Пигментный чёрный и цветные чернила на красителях Разрешение при печати 5.760 x 1.440 DPI (точек на дюйм) Выработка Для дома, Для домашнего офиса, Фото Многофункциональный Печать, сканирование, Копия Печать Количество цветов 6 colour Скорость печати ISO/IEC 24734 16 Стр./мин. Монохромная печать, 12 Стр./мин. Colour, 25 секунд per 10 x 15 cm photo Максимальная скорость печати 32 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 32 Стр./мин. Colour (plain paper 75 g/m&#178;), 25 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Duplex Printing Speed ISO/IEC 24734 6 A4 Pages/min Монохромная печать, 5 A4 Pages/min Colour Время до первой страницы Монохромная печать 15 секунд, Colour 16 секунд Цвета Black [Pigment], Photo Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye], Grey [Dye] Colours Capacity Black [70ml], Photo Black [70ml], Cyan [70ml], Yellow [70ml], Magenta [70ml], Grey [70ml] Print from Mobile Device, USB, Mobile Device (WiFi Direct) Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Скорость одностороннего сканирования (A4, черный) 200 dpi (flatbed) 6 sec. with flatbed scan Single-sided scan speed (A4 colour) 200 dpi (flatbed) 11 sec. with flatbed scan Разрешение сканирования 1.200 DPI (точек на дюйм) x 4.800 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG Тип сканера Контактный датчик изображения (CIS) Спецификации бумаги и датчики Количество бумажных ящиков 2 Формат бумаги A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , Letter , 10 x 15 см , 13 x 18 см , 16:9 , Legal, 9 x 13 см Дуплекс Yes (A4, plain paper) Print Margin 0 мм top, 0 мм right, 0 мм bottom, 0 мм left (Wherever margin is defined. Otherwise 3mm top, left, right, bottom.) Емкость отделения подачи бумаги 50 Листы Paper Tray Capacity 100 Листы Стандарт, 20 Листы фотобумаги Rear paper path (special media) Да Thickness Single Sheet 1,3 мм Подходящий вес бумаги 64 - 300г/м2 Обработка мультимедиа Automatic duplex (A4, plain paper), Печать без полей, Печать на CD/DVD Общее Энергопотребление 17 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,9 Ватт (sleep mode), 7,5 Ватт Готов, 0,2 Ватт (выключать), TEC 0,16 kWh/week Напряжение питания AC 220 V - 240 V, 50 Hz - 60 Hz Габариты 403 x 369 x 162 мм (Ширина x Глубина x Высота) Вес 8,4 кг Уровень шума 5 B (A) Согласно ISO 7779 образец печати на Epson Premium Glossy Photo Paper / Photo RPM Modus Совместимые операционные системы Mac OS X 10.6.8 or later, Windows 10 (32/64 bit), Windows 7, Windows 8, Windows 8.1, Windows 8.1 (32/64 bit), Windows Server 2003 R2 x64, Windows Server 2003 SP2, Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows Vista (32/64 bit), Windows XP, Windows XP Professional x64 Edition SP2 or later, XP Professional x64 Edition Встроенное программное обеспечение Epson Easy Photo Print, Epson Print CD Интерфейсы WiFi, USB, Ethernet, Wi-Fi Direct, USB-хост Безопасность WLAN WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA PSK (AES) Услуги мобильной и облачной печати Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple AirPrint, Mopria Энергоснабжение 220V, 240V Комплект поставки Ведущее устройство, Maintenance box, Токоподводящий кабель, Руководство по установке, Программное обеспечение (CD), Гарантийные документы Другие функции ЖК-дисплей Тип: Цветной режим, Сенсорный экран, Диагональ: 10,9 см Карты памяти SD Свойства Удаление эффекта красных глаз, Улучшение качества фотографий, Прямая печать с USB, Беспроводная печать PictBridge Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Автоподатчик: нет - Страна происхождения: Филиппины - Двусторонняя печать: да - ЖК дисплей: да - Тип чернил: водорастворимые и пигментные - Формат: A5 - Производитель: Epson - Наименование производителя: Epson L8160 - Совместимые продукты: C13T07D14A,C13T07D24A,C13T07D44A,C13T07D34A,C13T07D54A,C13T07C14A,C12C934591 - Гарантия: 12 мес - Тип: МФУ Офис - Тип печати: струйная - Интерфейс: USB*Ethernet - Цветность: 6 цветов - Вид: МФУ Офис</description>
       </offer>
 
+  <offer id="ACC11CJ21403">
+        <vendorCode>ACC11CJ21403</vendorCode>
+        <name>МФУ Epson L8180  фабрика печати</name>
+        <price>524900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Фотопринтер EcoTank A3+ Печатайте великолепные фотографии в формате A3+ с беспроводным шестицветным многофункциональным принтером для творчества 6-цветная система подачи чернил Работа с 5 типами носителей Рекордно низкая стоимость печати в формате A3+ Раскройте свой творческий потенциал благодаря печати великолепных фото и документов в формате A3+ с невероятно низкой стоимостью печати страницы. Печать, копирование и сканирование просты как никогда благодаря впечатляющему цветному сенсорному экрану с диагональю 10,9 см, поддержке 5 видов носителей и инновационной шестицветной системе подачи чернил. Отсутствие необходимости замены картриджей и гибкие возможности подключения делают эту модель идеальным выбором для современных художников. 6-цветная система подачи чернил Чернила Epson Claria ET Premium позволяют печатать высококачественные и долговечные фотографии формата до A3+, а также черно-белые фото благодаря новым серым чернилам. Пигментные черные чернила идеально подходят для печати текста на простой бумаге. Экономия времени и денег Запасные контейнеры с чернилами позволят напечатать до 2 300 высококачественных фотографий на этом экономичном принтере&#185;. Емкости и контейнеры с чернилами просты в использовании и не доставят никаких неудобств, когда потребуется заправка. Современные гибкие возможности С поддержкой Wi-Fi, Wi-Fi Direct и Ethernet вы легко сможете интегрировать новый принтер в существующую экосистему. Возможна печать с SD-карт и USB-накопителей с помощью цветного сенсорного экрана с диагональю 10,9 см. Поддержка художественных носителей Модель L8180 оснащена лотками под фотобумагу и листы A4, а также позволяет печатать непосредственно на специальных CD и DVD-дисках. Лоток формата A3+ также позволяет работать со специальными носителями, такими как крафтовая бумага и карточки, а прямая подача A3+ обеспечивает возможность печати на носителях толщиной до 1,3 мм и длиной до 2 м. Приложение Epson Smart Panel Приложение позволяет управлять принтером с умных устройств&#178;. Отправляйте фотографии на печать, копируйте документы, настраивайте и отлаживайте принтер и дайте волю своей фантазии с большим набором художественных шаблонов. Технология без нагрева Не требующая нагрева технология Micro Piezo обеспечивает постоянно высокую скорость печати, снижает общее энергопотребление, давая возможность экономить время и деньги. Техника Метод печати 6-colour inkjet printer Конфигурация сопла 360 Сопла (черный), 180 Сопла (цвет) Минимальный размер капли 1,9 капли(ей), Технология капель с переменным размером Технология чернил Пигментный чёрный и цветные чернила на красителях Разрешение при печати 5.760 x 1.440 DPI (точек на дюйм) Выработка Для дома, Фото Многофункциональный Печать, сканирование, Копия Печать Количество цветов 6 colour Скорость печати ISO/IEC 24734 16 Стр./мин. Монохромная печать, 12 Стр./мин. Colour, 25 секунд per 10 x 15 cm photo Максимальная скорость печати 32 Стр./мин. Монохромная печать (plain paper 75 g/m&#178;), 32 Стр./мин. Colour (plain paper 75 g/m&#178;), 15 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper) Duplex Printing Speed ISO/IEC 24734 6 A4 Pages/min Монохромная печать, 5 A4 Pages/min Colour Цвета Black [Pigment], Photo Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye], Grey [Dye] Print from PC, MAC, USB, Mobile Device (WiFi Direct), Mobile Device (Wireless) Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing. сканирование Разрешение сканирования 1.200 DPI (точек на дюйм) x 4.800 DPI (точек на дюйм) (горизонтальный x вертикальный) Формат выводимых данных BMP, Сканирование для JPEG, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, Сканирование для просматриваемого PDF, PNG Тип сканера Контактный датчик изображения (CIS) Спецификации бумаги и датчики Количество бумажных ящиков 3 Формат бумаги A3+ , A3 (29,7x42,0 см) , A4 (21,0x29,7 см) , A5 (14,8x21,0 см) , A6 (10,5x14,8 см) , B5 , B6, C6 (Конверт) , DL (Конверт), No. 10 (Конверт) , Letter , 10 x 15 см , 13 x 18 см , 100 x 148 мм , B4 , Legal, Executive Дуплекс Yes (A4, plain paper) Print Margin 0 мм top, 0 мм right, 0 мм bottom, 0 мм left (Wherever margin is defined. Otherwise 3mm top, left, right, bottom.) Емкость отделения подачи бумаги 50 Листы Paper Tray Capacity 100 Листы Стандарт, 20 Листы фотобумаги Rear paper path (special media) Да Thickness Single Sheet 1,3 мм Подходящий вес бумаги 64 - 300г/м2 Обработка мультимедиа Automatic duplex (A4, plain paper), Печать без полей, Печать на CD/DVD, Художественная печать, Задний лоток для плотных носителей, Поддержка плотных носителей Общее Энергопотребление 17 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,8 Ватт (sleep mode), 7,5 Ватт Готов, 0,3 Ватт (выключать), TEC 0,16 kWh/week Напряжение питания AC 220 V - 240 V, 50 Hz - 60 Hz Габариты 523 x 379 x 169 мм (Ширина x Глубина x Высота) Вес 11,1 кг Уровень шума 5 B (A) Согласно ISO 7779 образец печати на Epson Premium Glossy Photo Paper / Photo RPM Modus - 37 dB (A) Согласно ISO 9226 Совместимые операционные системы Mac OS X 10.6.8 or later, Windows 10 (32/64 bit), Windows 7 (32/64 bit), Windows 8 (32/64 bit), Windows 8.1 (32/64 bit), Windows Vista (32/64 bit), Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 SP2 or later Встроенное программное обеспечение Epson Photo+, Epson ScanSmart, EpsonNet Config Интерфейсы Ethernet, USB, Wi-Fi Direct, USB-хост, Wireless LAN IEEE 802.11a/b/g/n/ac, SD Card Slot Услуги мобильной и облачной печати Apple AirPrint, Mopria, Epson Smart Panel App, Epson Connect (Email Print, Remote Print Driver), Epson Connect (Email Print, Scan-to-Cloud) Комплект поставки AC cable, Driver and Utilities (CD), Ink set, Ведущее устройство, Quick Start Guide, Гарантийные документы Другие функции ЖК-дисплей Тип: Цветной режим, Сенсорный экран, Диагональ: 10,9 см Карты памяти SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC* (* Adaptor required, not supplied in box) Свойства Сенсорный экран, PictBridge , Прямая печать, Прямая печать с USB Другие Гарантия 12 месяца(ев) Мобильная (гарантия), 50.000 Страницы Характеристики: - Автоподатчик: нет - Двусторонняя печать: нет - ЖК дисплей: нет - Страна происхождения: Филиппины - Тип чернил: водорастворимые и пигментные - Производитель: Epson - Печать фото: да - Наименование производителя: Epson L8180 - Совместимые продукты: C13T07D14A,C13T07D24A,C13T07D44A,C13T07D34A,C13T07D54A,C13T07C14A,C12C934591 - Гарантия: 12 мес - Тип: МФУ Офис - Тип печати: струйная - Формат: А3 - Интерфейс: Wi-Fi*Ethernet*USB - Цветность: 6 цветов - Область применения: Для офиса - Тип расходных материалов: чернила - Вид: МФУ Офис</description>
+      </offer>
+
   <offer id="ACC11CJ19401">
         <vendorCode>ACC11CJ19401</vendorCode>
         <name>МФУ Epson M2110 (CIS) фабрика печати</name>
-        <price>196900</price>
+        <price>195900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/f25/mz7j1fc8jkudpfx7m2gf9pz7qcrt0csf.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -467,12 +995,34 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ18404">
         <vendorCode>ACC11CJ18404</vendorCode>
         <name>МФУ Epson M2120 (CIS) фабрика печати</name>
-        <price>196900</price>
+        <price>195900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/447/y3dlqxl9tw2zwix1o39zuyjoy4pwfl8w.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Компактное монохромное МФУ для малого офиса с Wi-Fi Компактное МФУ для сверхэкономичной печати черно-белых документов Принтер, сканер, копир. Формат А4 Рекордно низкая себестоимость печати благодаря использованию контейнеров с чернилами вместо картриджей Пигментные чернила Скорость печати до 32 стр./мин Время выхода первого отпечатка от 8 сек. Гарантия производителя 12 мес. или 100 000 отпечатков Ресурс контейнера с чернилами – 6 000 отпечатков Беспроводная печать по Wi-Fi Direct, Epson Connect Фронтальные ёмкости и система Ink lock. Технические характеристики Epson M2120 Состав поставки МФУ Руководство по установке Гарантийный талон Компакт-диск с программным обеспечением и драйверами Кабель питания 1 контейнер емкостью 120 мл. с черными пигментными чернилами Основные свойства Тип устройства МФУ Серия устройств Фабрика печати Epson Теxнология печати Струйная Область применения Для дома Для офиса Назначение Для печати черно-белых документов Функция копирования Да Функция сканирова Характеристики: - Автоподатчик: нет - Двусторонняя печать: нет - Страна происхождения: Филиппины - ЖК дисплей: да - Производитель: Epson - Сопутствующие товары: Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml - Интерфейс: USB* тип B*Wi-Fi - Совместимые продукты: C13T01L14A,C13T03P14A - Гарантия: 12 мес - Тип: МФУ Дом - Тип печати: струйная - Формат: A4 - Цветность: 1 цвет - Тип чернил: пигментные - Область применения: Для дома - Тип расходных материалов: чернила - Наименование производителя: Epson M2120 - Вид: МФУ Дом</description>
+      </offer>
+
+  <offer id="ACC11CG27405">
+        <vendorCode>ACC11CG27405</vendorCode>
+        <name>МФУ Epson M2140 (CIS) фабрика печати</name>
+        <price>219900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Компактное монохромное МФУ для малого офиса Компактное МФУ для сверхэкономичной печати черно-белых документов Принтер, сканер, копир. Формат А4 Рекордно низкая себестоимость печати благодаря использованию контейнеров с чернилами вместо картриджей Пигментные чернила Скорость печати до 39 стр./мин Автоматическая двусторонняя печать документов Ресурс стартового комплекта чернил – 11 000 отпечатков Сменная емкость для отработанных чернил Фронтальные ёмкости и система “Ink lock” Интерфейс подключения - Hi-Speed USB - compatible with USB 2.0 specification. Технические характеристики Epson M2140 Состав поставки МФУ Руководство по установке Гарантийный талон Компакт-диск с программным обеспечением и драйверами Кабель питания 2 контейнера по 120 мл. в комплекте. Ресурс стартового комплекта чернил – 11 000 отпечатков Основные свойства Тип устройства МФУ Тип расходных материалов Встроенные емкости для чернил Серия устройств Фабрика печати Epson Теxнология печати Струйная Область применения Дл Характеристики: - Автоподатчик: нет - Страна происхождения: Филиппины - Двусторонняя печать: да - ЖК дисплей: да - Сопутствующие товары: Кабель DEFENDER USB04-10 USB2.0 AM-BM, 3.0м (ДЛЯ ПРИНТЕРА) - Производитель: Epson - Наименование производителя: Epson M2140 - Совместимые продукты: C13T04D100,C13T01L14A,C13T03P14A - Гарантия: 12 мес - Тип: МФУ Дом - Тип печати: струйная - Формат: A4 - Интерфейс: USB - Цветность: 1 цвет - Тип чернил: пигментные - Область применения: Для дома - Тип расходных материалов: чернила - Вид: МФУ Дом</description>
+      </offer>
+
+  <offer id="AC5627501">
+        <vendorCode>AC5627501</vendorCode>
+        <name>Переплетчик Fellowes STAR+ 150 COMB BINDER</name>
+        <price>54900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Переплетчик STAR+ на пластиковую пружину Оптимальный брошюровщик для небольшого офиса Механическая перфорация Кол-во сшиваемых листов: 150 Кол-во пробиваемых листов: 15 Диапазон диаметров пружин: 6-19 мм. Гарантия: 2 года. Артикул fs-56275 Кол-во перфорируемых листов (80г/м&#178;) 15 Максимальный диаметр пружины, мм 19 Хранилище для пружин да Съемный блок для сшивания (Satellite system) нет Доступ к лотку для отходов с одной стороны Окошко лотка для отходов да Раздельные механизмы перфорации и сшивания да Эргономичное расположение зубцов да Изменение глубины перфорации нет Селектор диаметра пружин и толщины документа да Вертикальная загрузка документа да Ручка перфорации широкая Отключаемые пуансоны нет Селектор формата А4-А5 сдвижной Гарантия, лет 2 Габаритные размеры, мм (ВxШxГ) 80 x 448 x 280 Вес, кг 4,26 Размеры розничной упаковки, мм (ВxШxГ) 350 x 512 x 144 Вес розничной упаковки, кг 5,1 Размеры транспортной упаковки, мм (ВxШxГ) 374 x 298 x 528 Вес транспортной упаковки, кг 10,88 Количество в транспортной упаковке 2 Сетевой кабель нет Характеристики: - Производитель: Fellowes - Тип: переплетные машины на пластиковую пружину - Вид: переплетные машины на пластиковую пружину</description>
       </offer>
 
   <offer id="ACFS-53061">
@@ -489,7 +1039,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ15301A0">
         <vendorCode>ACC11CJ15301A0</vendorCode>
         <name>Плоттер Epson SureColor SC-T3100X</name>
-        <price>1993900</price>
+        <price>1979900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/86e/g6fr716hqictr8dfcbvci0l9nbueeo3s.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -497,10 +1047,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Настольный инженерный принтер Настольный принтер с шириной печати 24 дюйма обеспечивает надежную и экономичную печать постеров, POS- и образовательных материалов Решение с заправляемыми емкостями Надежная пылезащита Технология Nozzle Verification Простота в работе Защита от пыли и технология NVT предотвращают дефекты печати и сокращают простои Модель SC-T3100x предназначена для тех, кому требуется принтер начального уровня шириной 24 дюйма с автоподатчиком носителей формата A4/A3 для профессиональной печати. Производительный и компактный принтер отличается низкой общей стоимостью владения, высокой точностью печати и исключительной надежностью, поэтому прекрасно подходит для печати постеров, POS-материалов или больших объемов САПР/ГИС. Надежность Epson понимает, что ваш бизнес должен работать непрерывно и быстро реагировать на изменения потребностей клиентов. Именно поэтому в модели SC-T3100x реализована технология Nozzle Verification Technology (NVT), а также предусмотрена защита от пыли, которые предотвращают закупорку дюз и дефекты печати. Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Сопутствующие товары: Рулон 36" GIANT IMAGE RC INKJET PAPER 240g Glossy - Тип чернил: пигментные (K), водорастворимые (CMY) - Вид: CAD - Интерфейс: USB 3.0* Gigabit ethernet interface* Wireless LAN IEEE 802.11b/g/n* Wi-Fi Direct - Гарантия: 12 мес - Тип: CAD - Тип печати: струйная - Формат: A1+ - Цветность: 4 цвета - Тип расходных материалов: чернила - Область применения: CAD - Наименование производителя: Epson SureColor SC-T3100X</description>
       </offer>
 
+  <offer id="ACC11CJ55301A0">
+        <vendorCode>ACC11CJ55301A0</vendorCode>
+        <name>Плоттер Epson SureColor SC-T3405</name>
+        <price>1521900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>одительность Картриджи емкостью 110 мл/350 мл/700 мл Режим черновой печати Печать постера формата А1 за 24 секунды Удобный дизайн Продуманная конструкция для использования в любых условиях Удобство использования — беспроводная печать С компьютера или мобильного устройства Уверенность в результатах Уникальная технология Nozzle Verification Technology (NVT) предотвращает дефекты печати Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Тип чернил: пигментные (K), водорастворимые (CMY) - Вид: CAD - Интерфейс: USB 3.0* Gigabit ethernet interface* Wireless LAN IEEE 802.11b/g/n* Wi-Fi Direct - Гарантия: 12 мес - Тип: CAD - Тип печати: струйная - Формат: A1+ - Цветность: 4 цвета - Тип расходных материалов: чернила - Область применения: CAD - Наименование производителя: Epson SureColor SC-T3100X</description>
+      </offer>
+
   <offer id="ACC11CH79301A0">
         <vendorCode>ACC11CH79301A0</vendorCode>
         <name>Плоттер Epson SureColor SC-T3700E</name>
-        <price>2560900</price>
+        <price>2542900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/86e/g6fr716hqictr8dfcbvci0l9nbueeo3s.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -511,7 +1072,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CH83301A0">
         <vendorCode>ACC11CH83301A0</vendorCode>
         <name>Плоттер Epson SureColor SC-T7700D</name>
-        <price>4326900</price>
+        <price>4295900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/ad7/lrd72u1az9vw0jasiu1j07jlxlkoz16d.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -522,7 +1083,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CK39403">
         <vendorCode>ACC11CK39403</vendorCode>
         <name>Принтер Epson L11050 фабрика печати</name>
-        <price>492900</price>
+        <price>489900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/40b/0kqkc0mhgn3q9c4w4qjzf7v3jyvufpcf.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -533,7 +1094,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CD76414">
         <vendorCode>ACC11CD76414</vendorCode>
         <name>Принтер Epson L121 фабрика печати</name>
-        <price>82900</price>
+        <price>81900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/0d4/2udclpes3jwktyz62x9gz5pb8ize77g4.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -544,7 +1105,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CJ71404">
         <vendorCode>ACC11CJ71404</vendorCode>
         <name>Принтер Epson L1250 фабрика печати</name>
-        <price>112900</price>
+        <price>111900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/d55/m7h0jpajdbik8ehykps74vysiz2n5oqy.png</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -566,7 +1127,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CK38403">
         <vendorCode>ACC11CK38403</vendorCode>
         <name>Принтер Epson L18050 фабрика печати</name>
-        <price>535900</price>
+        <price>531900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/6cf/0y79lvjhs4nbyggrp59597m34l3t2jf5.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -577,7 +1138,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CK37403">
         <vendorCode>ACC11CK37403</vendorCode>
         <name>Принтер Epson L8050 фабрика печати, Wi-Fi</name>
-        <price>186900</price>
+        <price>185900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/f03/wel80wbcjejkn7d1v5mfofkv0fjmbfao.png</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -588,7 +1149,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CG95405">
         <vendorCode>ACC11CG95405</vendorCode>
         <name>Принтер Epson M1100 фабрика печати</name>
-        <price>138900</price>
+        <price>137900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/0e2/6olpz4ot8cok9ssapqrwg6nfffzfewvg.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -599,7 +1160,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CG96405">
         <vendorCode>ACC11CG96405</vendorCode>
         <name>Принтер Epson M1120 фабрика печати</name>
-        <price>149900</price>
+        <price>148900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/e97/4i2m80mr6dgl8rqc9p2grpv0brjrgqpv.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -610,7 +1171,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC11CG26405">
         <vendorCode>ACC11CG26405</vendorCode>
         <name>Принтер Epson M1140 (CIS) фабрика печати</name>
-        <price>189900</price>
+        <price>188900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/fbc/7fwnu9j1zvm63110ptkum8j19kydwb96.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -632,7 +1193,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACC51CA63100">
         <vendorCode>ACC51CA63100</vendorCode>
         <name>Принтер ленточный Epson LW700</name>
-        <price>80900</price>
+        <price>79900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/632/90bfat3qgqy9r1plezn746kmlggyiheh.jpg</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -643,7 +1204,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACZD4A042-30EE00EZ">
         <vendorCode>ACZD4A042-30EE00EZ</vendorCode>
         <name>Принтер этикеток Zebra ZD421-30EE чёрный</name>
-        <price>323900</price>
+        <price>321900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/08a/jocnbglebcovzofuisgy30pr6xwxa9o7.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -654,7 +1215,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACZD4A042-30EM00EZ">
         <vendorCode>ACZD4A042-30EM00EZ</vendorCode>
         <name>Принтер этикеток Zebra ZD421-30EM чёрный</name>
-        <price>260900</price>
+        <price>258900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/073/v31m7e9dlijzdmukj01tib83et4rb8tz.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -665,7 +1226,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACZD4A042-D0EE00EZ">
         <vendorCode>ACZD4A042-D0EE00EZ</vendorCode>
         <name>Принтер этикеток Zebra ZD421-D0EE чёрный</name>
-        <price>294900</price>
+        <price>292900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/19f/t2kigtvyi09umot1n0pwsdcsad7fr3b5.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -676,7 +1237,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACZT23142-T0E000FZ">
         <vendorCode>ACZT23142-T0E000FZ</vendorCode>
         <name>Принтер этикеток Zebra ZT231-T0E0 чёрный</name>
-        <price>431900</price>
+        <price>428900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/d1a/q5mc2h7hvh5d550flum9i8qvdtxi7ab1.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -687,7 +1248,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACLS550WH">
         <vendorCode>ACLS550WH</vendorCode>
         <name>Проектор ViewSonic LS550WH</name>
-        <price>461900</price>
+        <price>449900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/617/3blmz9pzsckyou9popj46cwiilmhy97f.jpg</picture>
         <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
@@ -698,7 +1259,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACLS500WH">
         <vendorCode>ACLS500WH</vendorCode>
         <name>Проектор для дом. кино ViewSonic LS500WH</name>
-        <price>430900</price>
+        <price>411900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/17f/ky19oyhto7r65bsqjh7xurb226esh3nb.jpg</picture>
         <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
@@ -709,7 +1270,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACPX701-4K">
         <vendorCode>ACPX701-4K</vendorCode>
         <name>Проектор для дом. кино ViewSonic PX701-4K</name>
-        <price>647900</price>
+        <price>643900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/72a/i2j9pup446n9z7k4is2wlbaknhe9wgz2.jpg</picture>
         <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
@@ -720,7 +1281,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACV11HA84240">
         <vendorCode>ACV11HA84240</vendorCode>
         <name>Проектор для дома  Epson CO-FD01</name>
-        <price>404900</price>
+        <price>401900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/af1/97a1vgcpviwp02bosk7ef0jgjzxlqiiv.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -731,7 +1292,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACV11HA84040">
         <vendorCode>ACV11HA84040</vendorCode>
         <name>Проектор для дома  Epson CO-FH01</name>
-        <price>404900</price>
+        <price>401900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/af1/97a1vgcpviwp02bosk7ef0jgjzxlqiiv.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -739,10 +1300,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Проектор с разрешением Full HD Воспроизведение на большом экране Любимые фильмы, игры и спорт на большом экране у вас дома Простота настройки Коррекция искажений, разъем HDMI Долговечность До 18 лет&#185; работы Доступное высокотехнологичное оборудование Насладитесь качеством изображения на проекторе с разрешением Full HD 1080p Впечатляюще яркий экран Одинаково высокая цветовая яркость и яркость по белому цвету 3 000 люмен Техника Projection System 3LCD Technology, RGB liquid crystal shutter LCD Panel 0,59 inch with MLA (D10) Image Насыщенность цвета 3.000 Люмен- 2.000 Люмен (экономичный) In accordance with ISO 21118:2020 Насыщенность белого 3.000 Люмен - 2.000 Люмен (экономичный) In accordance with ISO 21118:2020 Разрешение 1080p Высокая четкость (HD) Full HD Aspect Ratio 16:9 Light source Lamp Лампа UHE, 188 Вт, 6.000 в Срок службы, 12.000 в Срок службы (в экономном режиме) Коррекция трапеции Вручную vertical: ± 30 °, Вручную horizontal ± 30 ° Обработка видеоизображения 8 биты 2D Vertical Refresh Rate 100 Гц - 120 Гц Colour Reproduction 16.77 million colours Оптика Соотношение сторон проецируемого изображения 1,19 - 1,61:1 Изменение фокусного расстояния Digital, Factor: 1 - 1,35 Объектив Оптика Размер проекции 26 inches - 391 inches Дистанция проекции широкоугольной 0,9 м - 10,4 м Дистанция проекции Tele 0,9 м - 10,4 м Projection Distance Wide/Tele 1,58 м ( 60 inch screen Projection Lens F Number 1,44 Фокус Вручную Offset 7 : 1 Характеристики: - Производитель: Epson Proj - Тип: Проектор для дома - Вид: Проектор - Гарантия: 12 мес</description>
       </offer>
 
+  <offer id="ACV11HA07040">
+        <vendorCode>ACV11HA07040</vendorCode>
+        <name>Проектор для дома  Epson EH-LS300W, лазерный</name>
+        <price>1490900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Этот 120-дюймовый интеллектуальный лазерный проекционный телевизор Full HD из новой линейки EpiqVision Ultra поставляется с Android TV™ и звуком от YAMAHA. Откройте возможности для более масштабных и захватывающих домашних развлечений, сохраняя при этом стильный дом без постоянно висящего на стене черного экрана. Ультракороткофокусный лазерный проекционный телевизор Epson Full HD с элегантным дизайном, Android TV и звуком от YAMAHA, предназначен для проецирования до 120 дюймов с технологией 3LCD, высокой контрастностью и четкими изображениями. Характеристики: - Производитель: Epson Proj - Тип: Проектор для дома - Вид: Проектор</description>
+      </offer>
+
   <offer id="ACM2">
         <vendorCode>ACM2</vendorCode>
         <name>Проектор короткофокусный ViewSonic M2</name>
-        <price>524900</price>
+        <price>520900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/2d5/e11mki0l86do05rks83ktzd1sviq05u6.jpg</picture>
         <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
@@ -753,7 +1325,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACV11HA86040">
         <vendorCode>ACV11HA86040</vendorCode>
         <name>Проектор универсальный Epson CO-W01</name>
-        <price>265900</price>
+        <price>263900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/af1/97a1vgcpviwp02bosk7ef0jgjzxlqiiv.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -761,21 +1333,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Создавайте впечатления с большим экраном с помощью этого высококачественного, долговечного и универсального проектора для дома и офиса с разрешением WXGA. Вот проектор, которым может наслаждаться вся семья; от просмотра бокс-сетов до создания ярких презентаций — этот WXGA-проектор имеет все необходимое для работы. Не нужно беспокоиться об окружающем освещении; он создаёт яркий и четкий дисплей с 3000 люмен и технологией 3LCD. Проектор легко транспортировать и устанавливать. Невероятно долгий срок службы лампы означает отличное соотношение цены и качества. Чем больше, тем лучше Независимо от того, смотрите ли вы свой любимый фильм или проводите презентацию, этот проектор может создать впечатляющий 378-дюймовый дисплей. CO-W01 предлагает великолепное качество благодаря технологии 3LCD, которая делает дисплей в три раза ярче, чем продукты конкурентов&#185;, благодаря ярким и живым цветам. От семьи и друзей до коллег по бизнесу и клиентов, он обязательно привлечет внимание каждого. Качественные, яркие изображени Характеристики: - Производитель: Epson Proj - Тип: Проектор универсальный - Вид: Проектор - Гарантия: 12 мес</description>
       </offer>
 
-  <offer id="ACV11HA86340">
-        <vendorCode>ACV11HA86340</vendorCode>
-        <name>Проектор универсальный Epson CO-WX02</name>
-        <price>318900</price>
-        <picture>https://b2b.ak-cent.kz/upload/iblock/5e5/34oi7bz02a2zk9tr1k4h99cd717rx7c0.jpg</picture>
-        <vendor />
+  <offer id="ACV11H974040">
+        <vendorCode>ACV11H974040</vendorCode>
+        <name>Проектор универсальный Epson EB-FH06</name>
+        <price>685900</price>
+        <picture />
+        <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
-        <description>Доступный яркий WXGA проектор Технология: LCD: 3 х 0.59" P-Si TFT Разрешение: WXGA (1280х800) Яркость: 3000 ANSI lm Цветовая яркость: 3000 ANSI lm Зум 1,35х (цифровой) Передача изображения по беспроводной сети Wi-fi (опционально) Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Встроенный динамик 5 Вт Моментальное выключение Вес: 2,2 кг Технические характеристики Epson CO-WX02 Состав поставки Проектор Кабель питания 1,8 м Пульт ДУ Руководство пользователя Основные свойства Категория Для офиса и мобильных презентаций Для образования Варианты проекции крепление к потолку обратная фронтальная Используемая технология LCD:3 P-Si TFT ЖК дисплей, дюймы 0.59 Оригинальное разрешение WXGA (1280x800) Поддерживаемые разрешения VGA (640x480) SVGA (800x600) XGA (1024x768) SXGA1 (1152x864) WXGA (1280x800) SXGA2 (1280x960) SXGA3 (1280x1024) WXGA2 (1280x768) WXGA3 (1366x7 Характеристики: - Тип: Проектор универсальный - Вид: Проектор - Гарантия: 12 мес</description>
+        <description>Проектор универсальный Epson EB-FH06. Технология: LCD: 3 &#215; 0.61" P-Si TFT Разрешение: 1080p (1920&#215;1080) Яркость: 3500 ANSI lm Цветовая яркость: 3500 ANSI lm Контрастность: 16000:1 Зум 1,2&#215; (оптический) Передача изображения по беспроводной сети Wi-fi (опционально) Автоматическая коррекция вертикальных трапецеидальных искажений Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Функция Split Screen Встроенный динамик 2 Вт Фронтальный вывод тепла Моментальное выключение Вес: 2,7 кг Технические характеристики Состав поставки Проектор Кабель питания 1,8 м Кабель для подключения к ПК с 15-контактным разъемом D-Sub (n/n) 1,8м Пульт ДУ Руководство пользователя Основные свойства Категория Для офиса и мобильных презентаций Для образования Варианты проекции Характеристики: - Сопутствующие товары: Крепление для проектора на потолок Mr. Pixel PRB-2 - Видео вход HDMI: Есть - Производитель: Epson Proj - Тип: Проектор универсальный - Цвет: Белый - Интерфейс HDBaseT/DIGITAL LINK: Нет - Видео вход DVI-D: Нет - USB: Тип A и B - Видео вход DisplayPort: Нет - Видео вход S-video: Нет - Вид: Проектор - Оригинальное разрешение: Оригинальное - Источник света: Лампа - Наименование производителя: Epson EB-FH06 - Совместимые продукты: V12H005A01,V12H757040,V12H758040,V13H010L97,V13H134A32,V12H003B23,V12H003P13,V12H003P14 - Тип источника света: Ламповый источник света - Гарантия: 12 мес - Разрешение: FullHD (1920x1080) - Технология: 3LCD - Wi-Fi: Опция - Интерактивный: Нет - Ethernet (RJ-45): Нет - 3D: Нет - Страна происхождения: Китай, Филиппины</description>
       </offer>
 
   <offer id="ACV11H973040">
         <vendorCode>ACV11H973040</vendorCode>
         <name>Проектор универсальный Epson EB-W06</name>
-        <price>432900</price>
+        <price>429900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/d9f/jspn1h9wcmdq1mcm4zuxqx488zccciqs.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -786,7 +1358,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACV11HB35240">
         <vendorCode>ACV11HB35240</vendorCode>
         <name>Проектор универсальный Epson EF-21R розовый кварц</name>
-        <price>645900</price>
+        <price>640900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/eed/72hj380v1ywx4used3q63o93j9fuh3yg.png</picture>
         <vendor>Epson</vendor>
         <currencyId>KZT</currencyId>
@@ -794,10 +1366,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>EF-21R стильный и компактный с размером экрана до 150 дюймов Мини умный лазерный проекционный телевизор Увеличьте изображение любимых фильмов, игр и спортивных событий у себя дома с диагональю экрана до 150 дюймов Развлечения для умного дома Смотрите 400 000+* фильмов и эпизодов телепередач в одном месте. Google TV собирает ваш любимый контент из всех ваших приложений и подписок и упорядочивает его специально для вас Долговечное решение Благодаря долговечному лазерному источнику света этой модели вы сможете наслаждаться развлечениями до 10 лет* Превосходное качество изображения Благодаря технологии 3LCD от Epson изображения выглядят более яркими и яркими, цвета в три раза ярче по сравнению с аналогичными 1-чиповыми DLP-проекторами* Освежающе прост в использовании Подключайтесь, включайте, подключайтесь и играйте. Получите доступ к мгновенным развлечениям дома или в дороге. Технологии Проекционная система Технология 3LCD, жидкокристаллический затвор RGB ЖК-панель 0,62 дюйма Образ Цветной световой поток 1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4 Выход белого света 1.000 люмен - 500 люмен (эконом) В соответствии с ISO 21118:2020 Повышение разрешения Full HD Характеристики: - Производитель: Epson Proj - Тип: Проектор универсальный - Вид: Проектор - Гарантия: 24 мес</description>
       </offer>
 
+  <offer id="ACV11HB38140">
+        <vendorCode>ACV11HB38140</vendorCode>
+        <name>Проектор универсальный Epson EF-22B</name>
+        <price>718900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Технологии Проекционная система Технология 3LCD, жидкокристаллический затвор RGB ЖК-панель 0,62 дюйма Образ Цветной световой поток 1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4 Выход белого света 1.000 люмен - 500 люмен (эконом) В соответствии с ISO 21118:2020 Повышение разрешения Full HD Aspect Ratio 16:9 Contrast Ratio 5.000.000 : 1 Light source Laser Laser Light source 20.000 hours Durability High, 20.000 hours Durability Medium, 20.000 hours Durability Eco Keystone Correction Auto Colour Video Processing 8 Bits 2D Vertical Refresh Rate 200 Hz - 240 Hz Colour Reproduction 16.77 million colours HDR support HDR10 Optical Throw Ratio 1,00 - 1,82:1 Lens Optical Screen Size 30 inches - 150 inches Projection Distance Wide/Tele 1,33 m ( 60 inch screen Projection Lens F Number 2 Projection Lens Focal Length 13,9 mm Projection Lens Focus Motorized Offset 10 : 1 Connectivity Interfaces USB 2.0-A, USB 2.0 Mini-B, Jack plug out, HDMI ARC, HDMI (HDCP 2.3) Google TV Yes Advanced Features 2D Colour Modes Dynamic, Natural, Cinema, Vivid Other features Automatic keystone correction, Built-in speaker, Chromecast, Google Search, Horizontal and vertical keystone correction, Instant on/off, Quick Corner Video Color Modes Cinema, Dynamic, Natural, Vivid General Power consumption 108 Watt (Normal Peak-mode), 78 Watt (Eco Peak-Mode), Supply Voltage AC 100 V - 240 V, 50 Hz - 60 Hz Product dimensions 236 x 191 x 193 mm (Width x Depth x Height) Product weight 3 kg Noise Level Normal: 22 dB (A) - Economy: 18 dB (A) Supported Temperature Operation 5° C - 35° C, Storage -10° C - 60° C Supported Humidity Operation 20% - 80%, Storage -10% - 60% Loudspeaker 5 Watt, Stereo: Stereo Room Type / Application Gaming, Home Cinema, Home Office, Home Photo, Sports, Streaming, TV &amp; Box sets Positioning Desktop, Floor, TV Cabinet Colour Black Other Warranty 60 months Carry in or 12.000 h Характеристики: - Производитель: Epson Proj - Тип: Проектор универсальный - Вид: Проектор</description>
+      </offer>
+
   <offer id="ACPA503W">
         <vendorCode>ACPA503W</vendorCode>
         <name>Проектор универсальный ViewSonic PA503W</name>
-        <price>253900</price>
+        <price>251900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/398/ojblo0siw82hl6ts2vij3gn9m1jlyrdh.jpg</picture>
         <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
@@ -808,7 +1391,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACPA503X">
         <vendorCode>ACPA503X</vendorCode>
         <name>Проектор универсальный ViewSonic PA503X</name>
-        <price>253900</price>
+        <price>251900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/398/ojblo0siw82hl6ts2vij3gn9m1jlyrdh.jpg</picture>
         <vendor>ViewSonic</vendor>
         <currencyId>KZT</currencyId>
@@ -819,7 +1402,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <offer id="ACDX273">
         <vendorCode>ACDX273</vendorCode>
         <name>Проектор универсальный Vivitek DX273</name>
-        <price>249900</price>
+        <price>247900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/27c/gihvoghhjscmu103lz5gmmcqevrqartp.jpg</picture>
         <vendor />
         <currencyId>KZT</currencyId>
@@ -838,10 +1421,21 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Технические характеристики Epson Perfection V39II Photo Состав поставки Сканер Руководство по установке USB-кабель Гарантийный талон Основные характеристики Устройство Сканер Применение Для дома Для офиса Сканирование с планшета Планшетный Технология Тип датчика CIS Тип лампы светодиодная (LED) Epson ReadyScan LED Да Dual Lens System Нет Digital Ice, пленка Нет Digital Ice, непрозрачные оригиналы Нет Качество сканирования Разрешение сканера, dpi 4800x4800 Интерполяционное разрешение, dpi 4800 Глубина цвета, бит 48/24 Форматы оригиналов Пленка 35 мм Нет Слайды 35 мм Нет Пленка, слайды 6х12 см Нет Пленка, слайды 6х20 см Нет Пленка, слайды 4"х5" Нет Пленка 203х254 мм Нет Максимальный формат сканирования А4 Скорость сканирования Скорость сканирования: предварительный просмотр (A4), сек 10 Интерфейсы Интерфейс USB Да Интерфейс IEEE-1394 (FireWire) Нет Подключение по Wi-Fi Нет Дополнительная информация Слайд-модуль Нет Автоподатчик для пленок Нет Двустороннее сканирование Характеристики: - Гарантия: 12 мес - Тип: сканер для дома планшетные - Вид: сканер для дома планшетные</description>
       </offer>
 
+  <offer id="ACB11B265401">
+        <vendorCode>ACB11B265401</vendorCode>
+        <name>Сканер Epson WorkForce DS-790WN</name>
+        <price>645900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Сетевой сканер премиум-класса Широкие возможности аутентификации Локальная или удаленная настройка для нескольких пользователей (поддержка протокола LDAP) Автономное сканирование ScanWay Прямое сканирование в сеть, облако, электронную почту или на USB-накопитель без использования ПК Широкие возможности подключения Поддержка USB 3.0, Wi-Fi, Wi-Fi Direct и Gigabit Ethernet Высокая скорость работы Одновременное двустороннее сканирование со скоростью до 45 страниц в минуту / 90 изображений в минуту и автоподатчик на 100 листов Большой встроенный экран Цветной сенсорный экран с диагональю 10,9 см с возможностью изменения настроек и отображения меню Характеристики: - Гарантия: 12 мес - Тип: Потоковые для бизнеса - Вид: Потоковые для бизнеса</description>
+      </offer>
+
   <offer id="ACLI4278-TRBU0100ZER">
         <vendorCode>ACLI4278-TRBU0100ZER</vendorCode>
         <name>Сканер штрих-кода Zebra LI4278 чёрный</name>
-        <price>118900</price>
+        <price>117900</price>
         <picture>https://b2b.ak-cent.kz/upload/iblock/211/hl1v3eymv724drkay9iasoxsken46ryf.jpg</picture>
         <vendor>Zebra</vendor>
         <currencyId>KZT</currencyId>
@@ -1058,6 +1652,17 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Контейнер с черными чернилами для: Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550 Характеристики: - Страна происхождения: Индонезия - Сопутствующие товары: Принтер Epson L132 фабрика печати - Производитель: Epson - Цвет: Черный - Наименование производителя: Epson Чернила L100 черные 70 ml - Тип: Фабрика печати (чернила EPSON) - Тип печати: струйная - Вид: чернила - Ресурс: 4000 – 7100 страниц формата A4* - Для бренда: Epson</description>
       </offer>
 
+  <offer id="ACC13T66434A">
+        <vendorCode>ACC13T66434A</vendorCode>
+        <name>Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 пурпурный</name>
+        <price>7900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Контейнер с пурпурными чернилами для: Epson L100 Epson L200 Epson L110 Epson L210 Epson L300 Epson L355 Epson L550 Характеристики: - Страна происхождения: Индонезия - Сопутствующие товары: Принтер Epson L132 фабрика печати - Производитель: Epson - Цвет: пурпурный - Наименование производителя: Epson Чернила L100 пурпурные 70ml - Тип: Фабрика печати (чернила EPSON) - Тип печати: струйная - Вид: чернила - Ресурс: 5700 – 6500 страниц формата A4* - Для бренда: Epson</description>
+      </offer>
+
   <offer id="ACC13T66444A">
         <vendorCode>ACC13T66444A</vendorCode>
         <name>Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый</name>
@@ -1146,6 +1751,61 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <description>Контейнер T7741 серии с черными пигментными чернилами для: M100 M105 M200 Характеристики: - Страна происхождения: Индонезия - Сопутствующие товары: Принтер Epson L805 фабрика печати, Wi-Fi - Производитель: Epson - Цвет: Черный - Наименование производителя: Ink bottle for M100. M200. M105 140ml - Тип: Фабрика печати (чернила EPSON) - Тип печати: струйная - Вид: чернила - Ресурс: 6000 страниц формата A4* - Для бренда: Epson</description>
       </offer>
 
+  <offer id="AC5050001">
+        <vendorCode>AC5050001</vendorCode>
+        <name>Шредер Fellowes Powershred LX201 черный</name>
+        <price>189900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Новая серия шредеров LX представляет собой следующее поколение шредеров благодаря совершенно новому дизайну, несравнимому удобству в использовании и недосягаемому уровню эффективности уничтожения. Удобство пользования шредером вышло на новый уровень благодаря применению новой многофункциональной панели IntelliBAR: Характеристики: - Производитель: Fellowes - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="ACFS-46801">
+        <vendorCode>ACFS-46801</vendorCode>
+        <name>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</name>
+        <price>185900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер с автоподачей AutoMax™ 150C Компактный уничтожитель с автоподачей и инновационной технологией accufeed Загрузка лотка до 150 листов Перекрестная резка - 4х38 мм P-4 уровень секретности Удобная выдвижная корзина 32 литра &#8776; 200 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки, диски Артикул fs-46801* Количество пользователей 1-3 Пользователя Рекомендуемое количество CD дисков в день 10 Производительность, листов (A4, 70 гр./м&#178;) 150 (8 вручную) Тип Резки Перекрестная Размер резки, мм 4 x 38 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. 410 Уровень секретности для кредитных карт, DIN 66399 T-4 Ширина входа, мм 230 Скорость резки, м/мин 3 Рабочий цикл, мин 12 / 25 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да (ручная загрузка) Уничтожение CD или Blu-Ray DVD (1,2 слоя) да 100% Jam-Proof Технология нет Другие технологии предотвращения заторов Автореверс Safe Характеристики: - Производительность уничтожителя: 150 (8 вручную) - Страна происхождения: Китай - Тип резки: перекрестная - Уровень секретности: P-4 - Уничтожение: Листы бумаги, скрепленные скобами и скрепками; Глянцевую бумагу и документы с двусторонней печатью; - Производитель: Fellowes - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="AC4653601">
+        <vendorCode>AC4653601</vendorCode>
+        <name>Шредер Fellowes® AutoMax® 200C, автоподача, DIN P-4, 4х38мм, 200 лст. авто, 10 ручн., 32 лт</name>
+        <price>206900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер с автоподачей AutoMax™ 200C Компактный уничтожитель с инновационной автоподачей accufeed Загрузка лотка до 200 листов Перекрестная резка - 4х38 мм P-4 уровень секретности Удобная выдвижная корзина 32 литра &#8776; 200 листов А4 Гарантия 2 года на устройство и 7 лет на ножи Возможности уничтожения - скобы, карты, скрепки, диски Артикул fs-46536 Количество пользователей 5+ пользователей Рекомендуемое количество листов в день 400 Рекомендуемое количество кредитных карт в день 25 Рекомендуемое количество CD дисков в день 10 Загрузка, листов (A4, 70гр/м&#178;) 200 ( вручную 12) Тип Резки Перекрест. Размер резки, мм 4 x 38 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. &#8805;380 Уровень секретности для кредитных карт, DIN 66399 T-4 Уровень секретности для CD дисков, DIN 66399 O-3 Ширина входа, мм 230 Скорость резки, м/мин 3 Рабочий цикл, мин 25 / 25 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да (ручная загрузка) Уничтожение CD Характеристики: - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="AC4621501">
+        <vendorCode>AC4621501</vendorCode>
+        <name>Шредер Fellowes® AutoMax® 80M, минирезка, DIN P-4, 4х12 мм,автоподача 80 лст., 17 лтр., автореверc</name>
+        <price>104900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер с автоподачей AutoMax™ 80M Гибридная модель с автоматической/ручной подачей Ультра тихий механизм уничтожения с плавающим режущим блоком Загрузка лотка до 800 листов, быстрая подача бумаги благодаря 8 прорезиненным роликам Перекрестная минирезка - 4х12 мм, лист А4 разрезается на 1500 фрагментов Удобная выдвижная корзина 17 литров Гарантия 2 года на устройство и 7 лет на ножи Возможности уничтожения - скобы, карты, скрепки AutoFeed. Автоматическая подача документов на уничтожение. Просто загрузите стопку документов в лоток и включите шредер – все остальное он сделает за вас. Auto Reverse Auto Reverse. В случае образования затора автоматически запускается обратный ход, чтобы расправить на ножах бумагу. Уничтожение продолжится в обычном режиме. SilentShred SilentShred®. Тихая и комфортная работа уничтожителя документов. Особая конструкция двигателя и механизма привода минимизирует уровень шума при работе шредера. Sleep Mode Sleep Mode™. автоматическое отключение питания шредера Характеристики: - Страна происхождения: Китай - Тип резки: перекрестная - Уровень секретности: P-4 - Уничтожение: скобы, карты, скрепки - Автоподатчик: да - Производительность уничтожителя: 80 листов - Производитель: Fellowes - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="ACFS-71201">
+        <vendorCode>ACFS-71201</vendorCode>
+        <name>Шредер Fellowes® Powershred® 12C, DIN P-4, 4х40мм, 12лст., 18лтр., Safety Lock</name>
+        <price>96900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер Powershred® 12C Высокая производительность и увеличенный рабочий цикл 20 мин Уничтожает до 12 листов одновременно Перекрестная резка - 4х40 мм P-4 уровень секретности Удобная выдвижная корзина 18 литров &#8776; 220 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, скрепки, карты Артикул fs-71201 Количество пользователей 1-3 Пользователя Рекомендуемое количество листов в день 500 Рекомендуемое количество кредитных карт в день 25 Рекомендуемое количество CD дисков в день нет Загрузка, листов (A4, 70гр/м&#178;) 12 Тип Резки Перекрест. Размер резки, мм 4 x 40 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. &#8805;380 Уровень секретности для кредитных карт, DIN 66399 T-4 Ширина входа, мм 224 Скорость резки, м/мин 2 Рабочий цикл, мин 20 / 30 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет 100% Jam-Proof Технология предотвращения заторов нет Другие Характеристики: - Страна происхождения: Китай - Тип резки: перекрестная - Уровень секретности: P-4 - Производитель: Fellowes - Тип: шредеры офисные - Вид: шредеры офисные - Производительность уничтожителя: до 12 листов одновременно - Уничтожение: скобы, скрепки, карты - Гарантия: 12 мес</description>
+      </offer>
+
   <offer id="AC4653101">
         <vendorCode>AC4653101</vendorCode>
         <name>Шредер Fellowes® Powershred® 53C, DIN P-4</name>
@@ -1155,6 +1815,94 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <available>true</available>
         <description>Простой в использовании. Имеет автоматическую функцию старт-стоп и обратная функция. Нарезка на частицы также обеспечивает повышенный уровень безопасности. уменьшает заполнение корзины. Легкое опорожнение корзины - прорези для подъема головы. Он измельчает документы с помощью мелких скоб, канцелярских скрепок и т. Д. кредитные карты и CD / Blu-Ray / DVD. Ширина входа 220 мм. Простота использования - автоматическая функция Характеристики: - Страна происхождения: Китай - Гарантия: 1 год - Тип резки: перекрестная - Уровень секретности: P-4 - Уничтожение: cкобкы, карты, скрепки - Производитель: Fellowes - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="AC5502201">
+        <vendorCode>AC5502201</vendorCode>
+        <name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</name>
+        <price>181900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер Powershred® LX200 Шредер нового поколения с непревзойденным удобством и эффективностью Уничтожает до 12 листов одновременно Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов Вместительная корзина 22 литра &#8776; 350 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки Артикул fs-55022 Количество пользователей 1-3 Пользователя Рекомендуемое количество листов в день 1000 Рекомендуемое количество кредитных карт в день 25 Рекомендуемое количество CD дисков в день нет Загрузка, листов (A4, 70гр/м&#178;) 12 Тип Резки Перекрест. Размер резки, мм 4 x 12 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. &#8805;1300 Уровень секретности для кредитных карт, DIN 66399 T-4 Уровень секретности для CD дисков, DIN 66399 нет Ширина входа, мм 230 Скорость резки, м/мин 2 Рабочий цикл, мин 10 / 15 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да Уничтожение CD или Blu-Ray DVD (1, Характеристики: - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="AC5502501">
+        <vendorCode>AC5502501</vendorCode>
+        <name>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</name>
+        <price>186900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер Powershred® LX210 Шредер нового поколения с непревзойденным удобством и эффективностью Уничтожает до 16 листов одновременно Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов Вместительная корзина 23 литра &#8776; 425 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки Артикул fs-55025 Количество пользователей 1-3 Пользователя Рекомендуемое количество листов в день 1000 Рекомендуемое количество кредитных карт в день 25 Рекомендуемое количество CD дисков в день нет Загрузка, листов (A4, 70гр/м&#178;) 16 Тип Резки Перекрест. Размер резки, мм 4 x 12 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. &gt;1300 Уровень секретности для кредитных карт, DIN 66399 T-4 Уровень секретности для CD дисков, DIN 66399 нет Ширина входа, мм 230 Скорость резки, м/мин 2 Рабочий цикл, мин 20 / 15 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет 100% Jam-Proof Технология предотвращения заторов да SafeSense® Технология да Sleep Mode (автоотключение) да Тип корзины выдвижная Емкость корзины, л 23 Емкость корзины в листах А4, приближенно 425 Наличие колес для перемещения да Кабель питания несъемный Датчик пуска при подаче бумаги электронный Индикатор возникновения затора да Индикатор наполнения корзины да Автостоп при заполнении корзины да Индикатор открытой дверцы да Автоматическая защита от перегрева да Индикатор перегрева да Автоотключение при снятой корзине да Тип электродвигателя постоянного тока Сила тока, А 3 Мощность, Вт 650 Уровень шума без загрузки, дБ 65 Уровень шума под нагрузкой, дБ 70 Гарантия, лет 2 Гарантия на ножи, лет 5 Габаритные размеры, мм (ВxШxГ) 535 x 358 x 297 Вес, кг 12,2 Размеры розничной упаковки, мм (ВxШxГ) 590 x 405 x 335 Вес розничной упаковки, кг 14,1 Размеры транспортной упаковки, мм (ВxШxГ) 620 x 430 x 350 Вес транспортной упаковки, кг 15,2 Количество в транспортной упаковке 1 Характеристики: - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="ACFS-44075">
+        <vendorCode>ACFS-44075</vendorCode>
+        <name>Шредер Fellowes® Powershred® LX70, DIN P-4, 4х37мм, 11 лст., 18 лтр., уничт.: скрепки,скобы,карты</name>
+        <price>91900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер Powershred® LX70 Высокая производительность, до 11 листов одновременно Перекрестная резка - 4 х 40 мм, P-4 уровень секретности Корзина 18 литров &#8776; 220 листов А4 Гарантия 2 года на устройство и 3 года на ножи Возможности уничтожения - скобы, карты, скрепки Артикул fs-44075 Количество пользователей 1 пользователь Рекомендуемое количество листов в день 100 Рекомендуемое количество кредитных карт в день 25 Рекомендуемое количество CD дисков в день нет Загрузка, листов (A4, 70гр/м&#178;) 11 Тип Резки Перекрест. Размер резки, мм 4 x 40 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. &#8805;390 Уровень секретности для кредитных карт, DIN 66399 T-3 Ширина входа, мм 224 Скорость резки, м/мин 3 Рабочий цикл, мин 5 / 30 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет 100% Jam-Proof Технология предотвращения заторов нет Другие технологии предотвращения заторов Реверс SafeSense® Технолог Характеристики: - Страна происхождения: Китай - Уровень секретности: P-4 - Уничтожение: скобы, карты, скрепки - Гарантия: 2 года на устройство и 3 года на ножи - Тип резки: Перекрестная резка - 4 х 40 мм - Производительность уничтожителя: до 11 листов одновременно - Емкость корзины, литров: 18 л &#8776; 220 листов А4 - Производитель: Fellowes - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="AC4170601">
+        <vendorCode>AC4170601</vendorCode>
+        <name>Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</name>
+        <price>49900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер Fellowes LX25M - персональный шредер в новом фирменном стиле с повышенной секретностью. Шредер уничтожает лист A4 на более чем 1300 фрагментов размером 4х12мм. Оптимальная производительность для персонального использования – 6 листов, рекомендуемая нагрузка до 30 листов в день. Модель является уникальной на рынке и наиболее доступной по цене среди шредеров Fellowes, которые предназначены для уничтожения конфиденциальных документов повышенного уровня секретности. Процесс измельчения запускается автоматически при подаче бумаги в слот. Функция реверса может эффективно предотвращать бумажные заторы. Шредер Powershred LX25M обеспечивается увеличенной гарантией на 2 года на устройство и 3 года на ножи. Характеристики: - Тип: шредеры офисные - Вид: шредеры офисные - Гарантия: 24 мес</description>
+      </offer>
+
+  <offer id="AC4400501">
+        <vendorCode>AC4400501</vendorCode>
+        <name>Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU</name>
+        <price>56900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер Powershred® LX45 Самый доступный уничтожитель Fellowes с увеличенной гарантией 2 года Уничтожает до 8 листов одновременно Перекрестная резка - 4 х 37 мм P-4 уровень секретности Корзина 17 литров &#8776; 250 листов А4 Гарантия 2 года на устройство и 3 года на ножи Возможности уничтожения - скобы, карты, скрепки Артикул fs-44005 Количество пользователей 1 пользователь Рекомендуемое количество листов в день 60 Рекомендуемое количество кредитных карт в день 5 Рекомендуемое количество CD дисков в день нет Загрузка, листов (A4, 70гр/м&#178;) 8 Тип Резки Перекрест. Размер резки, мм 4 x 37 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. &#8805;390 Уровень секретности для кредитных карт, DIN 66399 T-4 Ширина входа, мм 229 Скорость резки, м/мин 4 Рабочий цикл, мин 6 / 20 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет 100% Jam-Proof Технология предотвращения заторов нет Другие технологии предотвращения заторов Реверс SafeSense® Технология нет Safety Lock да SilentShred® нет Energy Savings System нет Sleep Mode (автоотключение) нет Auto-Oil™ нет Селектор количества листов нет Тип корзины стандартная (съемный режущий блок) Емкость корзины, л 17 Емкость корзины в листах А4, приближенно 254 Наличие колес для перемещения нет Кабель питания несъемный Датчик пуска при подаче бумаги механический Индикатор возникновения затора нет Индикатор наполнения корзины нет Автостоп при заполнении корзины нет Индикатор открытой дверцы нет Автоматическая защита от перегрева да Индикатор перегрева да Автоотключение при снятой корзине да Тип электродвигателя универсальный Сила тока, А 1 Мощность, Вт 230 Уровень шума без загрузки, дБ 70 Уровень шума под нагрузкой, дБ 70 Гарантия, лет 2 Гарантия на ножи, лет 3 Габаритные размеры, мм (ВxШxГ) 401 x 310 x 220 Вес, кг 4,2 Размеры розничной упаковки, мм (ВxШxГ) 380 x 330 x 240 Вес розничной упаковки, кг 4,9 Размеры транспортной упаковки, мм (ВxШxГ) 395 x 495 x 343 Вес транспортной упаковки, кг 10,5 Количество в транспортной упаковке 2 Характеристики: - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="AC4400701">
+        <vendorCode>AC4400701</vendorCode>
+        <name>Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</name>
+        <price>74900</price>
+        <picture />
+        <vendor />
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер Powershred® LX65 Самый доступный уничтожитель с технологией безопасности SafeSense Высокая скорость уничтожения 4 м/мин, одновременное уничтожение до 10 листов Перекрестная резка - 4х40 мм, P-4 уровень секретности Корзина 22 литра &#8776; 300 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки Артикул fs-44007 Количество пользователей 1-3 Пользователя Рекомендуемое количество листов в день 100 Рекомендуемое количество кредитных карт в день 5 Рекомендуемое количество CD дисков в день нет Загрузка, листов (A4, 70гр/м&#178;) 10 Тип Резки Перекрест. Размер резки, мм 4 x 40 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. &#8805;380 Уровень секретности для кредитных карт, DIN 66399 T-4 Ширина входа, мм 222 Скорость резки, м/мин 4 Рабочий цикл, мин 6 / 20 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет 100% Jam-Proof Технология предотвращения заторов нет Другие технологии предотвращения заторов Реверс SafeSense® Технология да Safety Lock нет SilentShred® нет Energy Savings System нет Sleep Mode (автоотключение) нет Auto-Oil™ нет Селектор количества листов нет Тип корзины стандартная (съемный режущий блок) Емкость корзины, л 22 Емкость корзины в листах А4, приближенно 300 Наличие колес для перемещения нет Кабель питания несъемный Датчик пуска при подаче бумаги электронный Индикатор возникновения затора нет Индикатор наполнения корзины нет Автостоп при заполнении корзины нет Индикатор открытой дверцы нет Автоматическая защита от перегрева да Индикатор перегрева да Автоотключение при снятой корзине да Тип электродвигателя универсальный Сила тока, А 1,3 Мощность, Вт 299 Уровень шума без загрузки, дБ 70 Уровень шума под нагрузкой, дБ 70 Гарантия, лет 2 Гарантия на ножи, лет 5 Габаритные размеры, мм (ВxШxГ) 407 x 233 x 371 Вес, кг 5,3 Размеры розничной упаковки, мм (ВxШxГ) 425 x 260 x 390 Вес розничной упаковки, кг 6,6 Размеры транспортной упаковки, мм (ВxШxГ) 443 x 535 x 403 Вес транспортной упаковки, кг 14 Количество в транспортной упаковке 2 Характеристики: - Тип: шредеры офисные - Вид: шредеры офисные</description>
+      </offer>
+
+  <offer id="AC6008101">
+        <vendorCode>AC6008101</vendorCode>
+        <name>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.,</name>
+        <price>31900</price>
+        <picture />
+        <vendor>Fellowes</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Шредер Powershred® P-30C Эксклюзивная модель для М.Видео Уничтожает до 6 листов одновременно Перекрестная резка - 4x34 мм P-4 уровень секретности Корзина 15 литров Гарантия 1 год на устройство и 3 года на ножи Возможности уничтожения - бумага, кредитные карты, скрепки, скобы Артикул fs-60081 Количество пользователей 1 пользователь Рекомендуемое количество листов в день 30 Рекомендуемое количество кредитных карт в день 5 Рекомендуемое количество CD дисков в день нет Загрузка, листов (A4, 70гр/м&#178;) 6 Тип Резки Перекрест. Размер резки, мм 4x34 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. &#8805;380 Уровень секретности для кредитных карт, DIN 66399 T-4 Уровень секретности для CD дисков, DIN 66399 нет Ширина входа, мм 220 Скорость резки, м/мин 3 Рабочий цикл, мин 3/40 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет Отдельный слот для CD нет Отдельная корзина для фрагментов CD н Характеристики: - Гарантия: 12 месяцев - Производитель: Fellowes</description>
+      </offer>
+
+  <offer id="ACC13T03V64A">
+        <vendorCode>ACC13T03V64A</vendorCode>
+        <name>Экономичный набор из четырех контейнеров с чернилами, серия 101</name>
+        <price>20900</price>
+        <picture />
+        <vendor>Epson</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Экономичный комплект из четырех контейнеров с оригинальными чернилами Epson 101 объемом 127 мл (черные пигментные) и 70 мл (цветные водорастворимые) для струйных принтеров и МФУ Epson L4150, L4160, L4167 Подробнее: Характеристики: - Страна происхождения: Индонезия - Производитель: Epson - Тип: Фабрика печати (чернила EPSON) - Вид: чернила</description>
       </offer>
 
   <offer id="ACMSPSAB112V2">
