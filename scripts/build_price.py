@@ -1,67 +1,117 @@
 # scripts/build_price.py
-import re
-import sys
-from pathlib import Path
-from datetime import datetime, timezone, timedelta
+# -*- coding: utf-8 -*-
+"""
+Сборка единого прайса docs/price.yml из 5 источников с выводом ровно как в «должно быть».
 
-# --- настройки путей ---
+Формат:
+- Шапка:
+    <?xml ...>
+    <yml_catalog date="...">
+
+    <!--FEED_META
+    Поставщик | Price
+    ...
+    Разбивка по источникам | AlStyle:..., AkCent:..., CopyLine:..., NVPrint:..., VTT:...-->
+- Затем блоки FEED_META каждого поставщика, между блоками одна пустая строка.
+- Затем <shop><offers> с офферами; между </offer> и следующим <offer> ровно одна пустая строка.
+
+Прочее:
+- Дедуп по <vendorCode> (берём первый).
+- id не трогаем (берём как есть из поставщиков).
+- Кодировка I/O: windows-1251.
+"""
+
+from __future__ import annotations
+import re
+from pathlib import Path
+from datetime import datetime, timedelta, timezone
+
+# --- Пути и источники ---
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
-OUT_FILE = DOCS / "price.yml"
+OUT  = DOCS / "price.yml"
 
-SUPPLIERS = {
-    "alstyle":  DOCS / "alstyle.yml",
-    "akcent":   DOCS / "akcent.yml",
-    "copyline": DOCS / "copyline.yml",
-    "nvprint":  DOCS / "nvprint.yml",
-    "vtt":      DOCS / "vtt.yml",
-}
+SOURCES = [
+    ("AlStyle",  DOCS / "alstyle.yml",  "alstyle"),
+    ("AkCent",   DOCS / "akcent.yml",   "akcent"),
+    ("CopyLine", DOCS / "copyline.yml", "copyline"),
+    ("NVPrint",  DOCS / "nvprint.yml",  "nvprint"),
+    ("VTT",      DOCS / "vtt.yml",      "vtt"),
+]
 
-# Имена для разбивки
-HUMAN_NAMES = {
-    "alstyle":  "AlStyle",
-    "akcent":   "AkCent",
-    "copyline": "CopyLine",
-    "nvprint":  "NVPrint",
-    "vtt":      "VTT",
-}
+ENC = "cp1251"
 
-# --- утилиты времени под Алматы ---
-ALMATY_TZ = timezone(timedelta(hours=6))  # UTC+6
-def now_almaty():
+# --- Регексы ---
+RX_OFFER       = re.compile(r"<offer\b.*?</offer>", re.I | re.S)
+RX_FEED_META   = re.compile(r"<!--\s*FEED_META\s*(.*?)\s*-->", re.I | re.S)
+RX_VENDORCODE  = re.compile(r"<vendorCode>\s*([^<\s]+)\s*</vendorCode>", re.I)
+RX_AVAILABLE   = re.compile(r"<available>\s*(true|false)\s*</available>", re.I)
+RX_SUPPLIER_LN = re.compile(r"^(Поставщик\s*\|)(.*)$", re.M)
+
+# --- Время Алматы (UTC+6, как в твоих примерах) ---
+ALMATY_TZ = timezone(timedelta(hours=6))
+
+def now_almaty() -> datetime:
     return datetime.now(ALMATY_TZ)
 
 def fmt_meta_dt(dt: datetime) -> str:
-    # 07:10:2025 - 19:03:59
     return dt.strftime("%d:%m:%Y - %H:%M:%S")
 
-def yml_catalog_dt(dt: datetime) -> str:
-    # 2025-10-07 14:03
+def fmt_yml_dt(dt: datetime) -> str:
     return dt.strftime("%Y-%m-%d %H:%M")
 
-# --- парсеры ---
-OFFER_RX = re.compile(r"<offer\b.*?</offer>", re.DOTALL | re.IGNORECASE)
-AVAIL_RX = re.compile(r"<available>\s*(true|false)\s*</available>", re.IGNORECASE)
-FEED_META_RX = re.compile(r"<!--\s*FEED_META\s*(.*?)\s*-->", re.DOTALL | re.IGNORECASE)
-VENDOR_CODE_RX = re.compile(r"<vendorCode>\s*([^<\s]+)\s*</vendorCode>", re.IGNORECASE)
+# --- IO ---
+def rtext(p: Path) -> str:
+    return p.read_text(encoding=ENC, errors="replace")
 
-def read_text(p: Path) -> str:
-    return p.read_text(encoding="cp1251", errors="replace")
+def wtext(p: Path, txt: str) -> None:
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(txt, encoding=ENC, errors="replace")
 
-def extract_offers(xml: str):
-    return OFFER_RX.findall(xml)
+# --- Парсинг исходников ---
+def extract_offers(xml: str) -> list[str]:
+    return RX_OFFER.findall(xml)
 
-def extract_feed_meta_block(xml: str):
-    """Вернёт текст внутри комментария FEED_META без обёртки <!--FEED_META ... -->.
-    Если не найдёт — пустую строку.
+def extract_feed_meta_inner(xml: str) -> str:
     """
-    m = FEED_META_RX.search(xml)
-    return (m.group(1).strip() if m else "")
+    Возвращает «внутренность» первого блока FEED_META (без <!--FEED_META / -->).
+    Удаляет вложенные <!-- и -->, лишние пробелы по краям.
+    """
+    m = RX_FEED_META.search(xml)
+    if not m:
+        return ""
+    inner = m.group(1)
+    inner = inner.replace("<!--", "").replace("-->", "")
+    return inner.strip()
 
-def count_availability(offers: list[str]):
+def normalize_supplier_name_in_meta(inner: str, display_name: str) -> str:
+    """
+    Внутри блока FEED_META заменяет строку 'Поставщик | ...' на нужное display_name.
+    Сохраняет остальные строки как есть.
+    """
+    def _repl(m: re.Match) -> str:
+        return f"{m.group(1)} {display_name}"
+    return RX_SUPPLIER_LN.sub(_repl, inner, count=1)
+
+def dedupe_by_vendorcode(offers: list[str]) -> tuple[list[str], int]:
+    seen = set()
+    out  = []
+    for off in offers:
+        m = RX_VENDORCODE.search(off)
+        code = (m.group(1).strip() if m else None)
+        if not code:
+            out.append(off)
+            continue
+        if code in seen:
+            continue
+        seen.add(code)
+        out.append(off)
+    return out, len(seen)
+
+def count_availability(offers: list[str]) -> tuple[int,int]:
     t = f = 0
     for off in offers:
-        m = AVAIL_RX.search(off)
+        m = RX_AVAILABLE.search(off)
         if m:
             if m.group(1).lower() == "true":
                 t += 1
@@ -69,128 +119,99 @@ def count_availability(offers: list[str]):
                 f += 1
     return t, f
 
-def dedupe_by_vendor_code(offers: list[str]):
-    """Оставляем первое вхождение по <vendorCode>."""
-    seen = set()
-    result = []
-    for off in offers:
-        vm = VENDOR_CODE_RX.search(off)
-        key = vm.group(1).strip() if vm else None
-        if not key:
-            # если нет vendorCode — оставляем как есть, но ключ None чтобы не дублировать
-            result.append(off)
-            continue
-        if key in seen:
-            continue
-        seen.add(key)
-        result.append(off)
-    return result, len(seen)
+# --- Сборка ---
+def main() -> None:
+    sources_data: list[tuple[str, list[str], str]] = []  # (DisplayName, offers[], FEED_META inner)
+    per_source_count: dict[str,int] = {}
+    total_in = 0
 
-# --- сборка ---
-def main():
-    # читаем все источники
-    sources = {}
-    for key, path in SUPPLIERS.items():
+    # читаем все источники (сохраняем порядок)
+    for display, path, key in SOURCES:
         if not path.exists():
-            # допускаем отсутствие какого-то файла — просто пропустим
+            per_source_count[display] = 0
             continue
-        txt = read_text(path)
+        txt = rtext(path)
         offers = extract_offers(txt)
-        meta  = extract_feed_meta_block(txt)  # только внутренности, без повторного "FEED_META"
-        sources[key] = {
-            "text": txt,
-            "offers": offers,
-            "meta": meta,
-        }
+        inner  = extract_feed_meta_inner(txt)
+        if inner:
+            inner = normalize_supplier_name_in_meta(inner, display)
+        sources_data.append((display, offers, inner))
+        per_source_count[display] = len(offers)
+        total_in += len(offers)
 
-    # объединяем офферы
-    merged_offers = []
-    per_source_counts = {k: 0 for k in SUPPLIERS.keys()}
-    for key in SUPPLIERS.keys():
-        if key not in sources:
-            continue
-        offs = sources[key]["offers"]
-        merged_offers.extend(offs)
-        per_source_counts[key] = len(offs)
+    # объединяем офферы и дедупим
+    merged_offers: list[str] = []
+    for display, offers, _ in sources_data:
+        merged_offers.extend(offers)
 
-    # дедуп по vendorCode (по умолчанию оставляем первый)
-    merged_offers, unique_vendorcodes = dedupe_by_vendor_code(merged_offers)
-
-    # подсчёты
-    total_before = sum(per_source_counts.values())
+    merged_offers, _unique = dedupe_by_vendorcode(merged_offers)
     total_after = len(merged_offers)
     avail_true, avail_false = count_availability(merged_offers)
 
-    # разбивка строка
-    breakdown_parts = []
-    for key in SUPPLIERS.keys():
-        if key in sources:
-            breakdown_parts.append(f"{HUMAN_NAMES[key]}:{per_source_counts[key]}")
-    breakdown = ", ".join(breakdown_parts)
+    # разбивка как в примере «должно быть» (строго по SOURCES порядку)
+    breakdown = ", ".join(f"{display}:{per_source_count.get(display,0)}" for display,_,_ in SOURCES)
 
-    # время
+    # --- Шапка XML ---
     now = now_almaty()
-    yml_dt = yml_catalog_dt(now)
-    now_str = fmt_meta_dt(now)
+    xml_lines = []
+    xml_lines.append("<?xml version='1.0' encoding='windows-1251'?>")
+    xml_lines.append(f"<yml_catalog date=\"{fmt_yml_dt(now)}\">")
+    xml_lines.append("")  # пустая строка как в «должно быть»
 
-    # собираем общий FEED_META (без лишних пробелов слева)
-    merged_meta_block = (
-        "<!--FEED_META\n"
-        f"Поставщик                                  | Price\n"
-        f"Время сборки (Алматы)                      | {now_str}\n"
-        f"Сколько товаров у поставщика до фильтра    | {total_before}\n"
-        f"Сколько товаров у поставщика после фильтра | {total_after}\n"
-        f"Сколько товаров есть в наличии (true)      | {avail_true}\n"
-        f"Сколько товаров нет в наличии (false)      | {avail_false}\n"
-        f"Дубликатов по vendorCode отброшено         | 0\n"
-        f"Разбивка по источникам                     | {breakdown}\n"
-        f"-->\n"
-    )
+    # --- Общий FEED_META (Price) — закрывающий '-->' сразу после строки ---
+    xml_lines.append("<!--FEED_META")
+    xml_lines.append("Поставщик                                  | Price")
+    xml_lines.append(f"Время сборки (Алматы)                      | {fmt_meta_dt(now)}")
+    xml_lines.append(f"Сколько товаров у поставщика до фильтра    | {total_in}")
+    xml_lines.append(f"Сколько товаров у поставщика после фильтра | {total_after}")
+    xml_lines.append(f"Сколько товаров есть в наличии (true)      | {avail_true}")
+    xml_lines.append(f"Сколько товаров нет в наличии (false)      | {avail_false}")
+    xml_lines.append(f"Дубликатов по vendorCode отброшено         | 0")
+    xml_lines.append(f"Разбивка по источникам                     | {breakdown}-->")
+    xml_lines.append("")  # пустая строка между FEED_META-блоками
 
-    # собираем конкатенацию FEED_META поставщиков (ровно как есть, без второго 'FEED_META')
-    supplier_metas = []
-    for key in SUPPLIERS.keys():
-        if key not in sources:
+    # --- Блоки FEED_META поставщиков (как есть, но с нормализованным 'Поставщик | ...') ---
+    for display, _offers, inner in sources_data:
+        if not inner:
             continue
-        inner = sources[key]["meta"]
-        if inner:
-            supplier_metas.append("<!--FEED_META\n" + inner + "\n-->")
-    supplier_meta_block = ("\n\n".join(supplier_metas) + "\n") if supplier_metas else ""
+        # inner уже без оболочки; закроем так же «в строку»
+        xml_lines.append("<!--FEED_META")
+        xml_lines.append(inner)
+        # убрать возможные лишние пробелы в конце последней строки перед '-->'
+        if xml_lines[-1].endswith(" "):
+            xml_lines[-1] = xml_lines[-1].rstrip()
+        xml_lines[-1] = xml_lines[-1]  # последняя строка тела остаётся последней строкой блока
+        xml_lines.append("-->")
+        xml_lines.append("")  # пустая строка-разделитель
 
-    # аккуратно склеиваем офферы с пустой строкой-разделителем между ними
-    offers_body = ("\n\n".join(merged_offers)).rstrip() + ("\n" if merged_offers else "")
+    # --- Начало shop/offers ---
+    xml_lines.append("  <shop>")
+    xml_lines.append("    <offers>")
 
-    # финальный документ
-    header = "<?xml version='1.0' encoding='windows-1251'?>\n"
-    yml_open = f"<yml_catalog date=\"{yml_dt}\">\n"
-    shop_open = "  <shop>\n    <offers>\n"
-    shop_close = "    </offers>\n  </shop>"
-    yml_close = "</yml_catalog>"
+    # офферы: между ними ровно одна пустая строка; все строки внутри оффера отступаем на 6 пробелов
+    # (берём оффер как есть из источника)
+    if merged_offers:
+        joined = "\n\n".join(merged_offers).rstrip() + "\n"
+        # смещение на 6 пробелов
+        indented = "\n".join(("      " + ln if ln else "") for ln in joined.splitlines())
+        # сохранить пустые строки между офферами:
+        indented = indented.replace("\n      \n", "\n\n")
+        xml_lines.append(indented.rstrip())
+    # закрытия
+    xml_lines.append("    </offers>")
+    xml_lines.append("  </shop>")
+    xml_lines.append("</yml_catalog>")
 
-    # Важный момент: между </offer> и следующим <offer> будет пустая строка (см. join выше)
-    out = []
-    out.append(header)
-    out.append(yml_open)
-    out.append(merged_meta_block)
-    if supplier_meta_block:
-        out.append(supplier_meta_block)
-    out.append(shop_open)
-    # смещаем каждую строку офферов на два пробела для ровного вида
-    indented_offers = "\n".join(("      " + line if line else "")
-                                for line in offers_body.splitlines())
-    # так, чтобы начало каждого <offer ...> было с 6 пробелами, а между офферами — реальный пустой абзац
-    indented_offers = indented_offers.replace("\n      \n", "\n\n")
-    out.append(indented_offers + ("\n" if indented_offers and not indented_offers.endswith("\n") else ""))
-    out.append(shop_close + "\n")
-    out.append(yml_close)
+    # запись
+    wtext(OUT, "\n".join(xml_lines) + "\n")
 
-    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    OUT_FILE.write_text("".join(out), encoding="cp1251", errors="replace")
-    print(f"OK: written {OUT_FILE.relative_to(ROOT)}")
+    # на всякий — .nojekyll
+    try:
+        (DOCS / ".nojekyll").write_bytes(b"")
+    except Exception:
+        pass
+
+    print(f"[price] Wrote {OUT.relative_to(ROOT)} | before={total_in} after={total_after} true={avail_true} false={avail_false}")
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(f"ERROR: {e}", file=sys.stderr)
-        sys.exit(1)
+    main()
