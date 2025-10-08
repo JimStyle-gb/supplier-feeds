@@ -29,8 +29,10 @@ def rtext(path: str) -> str:
         return f.read()
 
 def wtext(path: str, text: str) -> None:
+    # перед записью в cp1251 заменяем символ тенге на "тг."
+    text = text.replace("\u20b8", "тг.")
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-    with io.open(path, "w", encoding=ENC, newline="\n") as f:
+    with io.open(path, "w", encoding=ENC, newline="\n", errors="strict") as f:
         f.write(text)
 
 # ----------------- locate blocks -----------------
@@ -61,7 +63,6 @@ def split_around_offers(shop_block: str) -> tuple[str, str, str]:
 _ALLOWED_ENTITY_RX = re.compile(r"&(?:amp|lt|gt|quot|apos|#\d+|#x[0-9A-Fa-f]+);")
 _INVALID_CTRL_RX   = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F]")
 
-# Экранируем "плохие" & (которые не сущности)
 def escape_bad_ampersands(s: str) -> str:
     out = []
     i = 0
@@ -71,9 +72,7 @@ def escape_bad_ampersands(s: str) -> str:
         if ch == "&":
             m = _ALLOWED_ENTITY_RX.match(s, i)
             if m:
-                out.append(m.group(0))
-                i = m.end()
-                continue
+                out.append(m.group(0)); i = m.end(); continue
             else:
                 out.append("&amp;")
         else:
@@ -81,7 +80,6 @@ def escape_bad_ampersands(s: str) -> str:
         i += 1
     return "".join(out)
 
-# Экранируем «сырые» <, которые не открывают теги
 RAW_LT_RX = re.compile(r"<(?!(?:[A-Za-z_/?!]|!--|\!\[CDATA\[|!DOCTYPE))")
 def escape_raw_lt(s: str) -> str:
     return RAW_LT_RX.sub("&lt;", s)
@@ -91,20 +89,19 @@ def sanitize_text(s: str) -> str:
     s = _INVALID_CTRL_RX.sub("", s)
     s = escape_bad_ampersands(s)
     s = escape_raw_lt(s)
+    # FIX: символ тенге не входит в cp1251, заменяем на "тг."
+    s = s.replace("\u20b8", "тг.")
     return s
 
 # ----------------- tiny xml-ish getters via regex -----------------
-# Вытаскиваем ПЕРВОЕ вхождение <tag>…</tag> (без вложенности), с безопасным DOTALL.
 def get_tag_text(block: str, tag: str) -> Optional[str]:
     m = re.search(rf"<{tag}\b[^>]*>(.*?)</{tag}>", block, re.I | re.S)
     if not m: return None
     return m.group(1).strip()
 
-# Берём ВСЕ <picture>…</picture>
 def get_pictures(block: str) -> List[str]:
     return [m.strip() for m in re.findall(r"<picture\b[^>]*>(.*?)</picture>", block, re.I | re.S)]
 
-# Вырезаем конкретные теги (для сборки «остатка»)
 def remove_known_tags(block: str, known: List[str]) -> str:
     pat = r"|".join([rf"</?{re.escape(t)}\b[^>]*>.*?</{re.escape(t)}>" for t in known])
     if not pat: return block
@@ -176,7 +173,9 @@ def parse_specs_from_description(desc: str) -> Dict[str,str]:
 
 def build_lead(brand: str, model: str, kind: str, base_desc: str, price: str) -> str:
     core = f"{kind.capitalize()} {brand} {model} — надёжное решение для повседневных задач."
-    if price: core += f" Цена: {price} ₸."
+    if price:
+        # FIX: без символа ₸
+        core += f" Цена: {price} тг."
     tail = first_sentence(base_desc)
     return trim_to_limit((core + " " + tail).strip(), 180)
 
@@ -240,24 +239,15 @@ def build_service_block() -> str:
             "Поможем с подбором аналога/замены под вашу модель.")
 
 # ----------------- offer processing (regex-based) -----------------
-# Вырезаем открывающий тег <offer ...> и закрывающий </offer>, внутрянку возвращаем отдельно
 OFFER_HEADER_RX = re.compile(r"^(\s*)<offer\b([^>]*)>(.*)</offer>\s*$", re.I | re.S)
 
 def parse_offer(off_txt: str) -> dict:
-    """
-    Возвращает словарь полей + 'rest' (неизвестные теги сырым XML).
-    Поля: vendorCode, name, price, pictures(list), vendor, currencyId, available, description
-    """
     m = OFFER_HEADER_RX.match(off_txt)
     if not m:
-        # fallback: считаем без заголовка (редко)
-        inner = off_txt
-        prefix = ""
-        attrs = ""
+        inner = off_txt; prefix = ""; attrs = ""
     else:
         prefix, attrs, inner = m.group(1), m.group(2), m.group(3)
 
-    # базовые поля
     vendorCode  = get_tag_text(inner, "vendorCode")  or ""
     name        = get_tag_text(inner, "name")        or ""
     price       = get_tag_text(inner, "price")       or ""
@@ -267,7 +257,6 @@ def parse_offer(off_txt: str) -> dict:
     description = get_tag_text(inner, "description") or ""
     pictures    = get_pictures(inner)
 
-    # «остальные» теги (сохраним как есть)
     known = ["vendorCode","name","price","picture","vendor","currencyId","available","description"]
     rest = remove_known_tags(inner, known).strip()
 
@@ -280,10 +269,6 @@ def parse_offer(off_txt: str) -> dict:
     }
 
 def render_offer(data: dict) -> str:
-    """
-    Собираем оффер в нужном порядке, сохраняя id/атрибуты и добавляя rest в конце.
-    Все тексты проходят мягкую санитацию.
-    """
     px   = data.get("_prefix","")
     attrs= data.get("_attrs","")
     vc   = sanitize_text(data.get("vendorCode",""))
@@ -297,10 +282,8 @@ def render_offer(data: dict) -> str:
     pics = [sanitize_text(p) for p in (data.get("pictures") or [])]
     rest = data.get("rest","").strip()
 
-    # собираем
     out = []
     out.append(f"{px}<offer{attrs}>")
-    # порядок
     if vc:  out.append(f"{px}  <vendorCode>{vc}</vendorCode>")
     if nm:  out.append(f"{px}  <name>{nm}</name>")
     if pr:  out.append(f"{px}  <price>{pr}</price>")
@@ -321,7 +304,6 @@ def render_offer(data: dict) -> str:
 def enhance_one_offer(off_txt: str, all_vendor_codes: List[str]) -> str:
     d = parse_offer(off_txt)
 
-    # исходные поля
     vc   = d["vendorCode"]
     base = d["name"]
     pr   = d["price"]
@@ -330,13 +312,11 @@ def enhance_one_offer(off_txt: str, all_vendor_codes: List[str]) -> str:
     brand = normalize_vendor(brand_raw) or "NoName"
     d["vendor"] = brand
 
-    # эвристики
     specs = parse_specs_from_description(desc)
     kind  = detect_type_tokens(base, desc)
     model = extract_model(base, vc) or vc
     compat = extract_compatibility(desc) or extract_compatibility(base)
 
-    # аналоги (простая эвристика по префиксу и наличию в all_vendor_codes)
     analogs: List[str] = []
     if (d.get("available") or "").lower() == "false" and vc:
         pref = vc[:3]
@@ -346,11 +326,9 @@ def enhance_one_offer(off_txt: str, all_vendor_codes: List[str]) -> str:
                 analogs.append(other)
             if len(analogs) >= 3: break
 
-    # SEO name
     seo_name = make_seo_name(brand, model, kind, base)
     d["name"] = seo_name
 
-    # описание
     lead = build_lead(brand, model, kind, desc, pr)
     bullets = build_bullets(kind, specs)
     specs_block = build_specs_block(kind, specs, base)
@@ -381,26 +359,20 @@ def enhance_one_offer(off_txt: str, all_vendor_codes: List[str]) -> str:
         for a in analogs: lines.append(f"— {a}")
 
     d["description"] = "\n".join(lines).strip()
-
     return render_offer(d)
 
 # ----------------- main -----------------
 def main() -> int:
     full = rtext(INPUT_PATH)
 
-    # 1) head / <shop>…</shop> / tail
     head, shop_block, tail = split_around_shop(full)
-    # 2) <offers>…</offers> внутри shop
     shop_head, offers_inner, shop_tail = split_around_offers(shop_block)
-    # 3) все офферы как текст
     raw_offers = OFFER_RX.findall(offers_inner)
     if not raw_offers:
-        # ничего не делаем
         wtext(OUTPUT_PATH, full)
         print("[seo] No offers found, copied input to output.")
         return 0
 
-    # список всех vendorCode (для подбора «аналогов»)
     all_vcs = []
     for off in raw_offers:
         vc = get_tag_text(off, "vendorCode")
@@ -410,12 +382,9 @@ def main() -> int:
     for off in raw_offers:
         processed.append(enhance_one_offer(off, all_vcs))
 
-    # 4) склейка обратно: ровно одна пустая строка между офферами
-    # найдём отступ перед первым <offer> (обычно 6 пробелов)
     indent_m = re.search(r"\n([ \t]*)<offer\b", offers_inner)
     base_indent = indent_m.group(1) if indent_m else "      "
     new_inner = ("\n\n".join(base_indent + p.replace("\n", "\n"+base_indent) for p in processed)).rstrip()
-
     if new_inner:
         new_inner = "\n" + new_inner + "\n" + (re.search(r"\n([ \t]*)</offers", shop_tail).group(1) if re.search(r"\n([ \t]*)</offers", shop_tail) else "    ")
 
