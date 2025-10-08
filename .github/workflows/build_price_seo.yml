@@ -19,34 +19,56 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # При автоматическом запуске гейт по времени; вручную — игнорируется
       - name: Check Almaty schedule gate
         id: gate
         run: |
           python - <<'PY'
           from datetime import datetime, timedelta
           now_utc = datetime.utcnow()
-          # Алматы сейчас UTC+5
-          now_alm = now_utc + timedelta(hours=5)
+          now_alm = now_utc + timedelta(hours=5)  # Алматы UTC+5
           should = 'yes' if now_alm.hour == 7 else 'no'
           print(f"::notice::Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
           with open("${GITHUB_OUTPUT}", "a") as f:
               f.write(f"run={should}\n")
           PY
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
         if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'yes' }}
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Pre-check docs folder
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'yes' }}
+        run: |
+          set -e
+          mkdir -p docs
+          touch docs/.nojekyll
+          echo "== Before =="
+          ls -la docs || true
+          if [ ! -f docs/price.yml ]; then
+            echo "::error::docs/price.yml not found. Сначала нужно собрать price.yml (build_price)."
+            exit 2
+          fi
 
       - name: Run SEO enhancer (price_seo.py)
         if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'yes' }}
         run: |
           set -e
           python scripts/price_seo.py
+
+      - name: Show docs after build
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'yes' }}
+        run: |
+          echo "== After =="
+          ls -la docs || true
+          test -f docs/price_seo.yml || (echo "::error::price_seo.yml was not produced" && exit 3)
 
       - name: Commit & push docs/price_seo.yml
         if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'yes' }}
@@ -59,13 +81,13 @@ jobs:
           git add docs/price_seo.yml docs/.nojekyll || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
-          else:
+          else
             git commit -m "chore(seo): build docs/price_seo.yml"
             git pull --rebase origin "$BRANCH_NAME" || true
             git push origin "$BRANCH_NAME"
           fi
 
-      - name: Print URLs (Pages + RAW/CDN)
+      - name: Print URLs
         if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'yes' }}
         env:
           OWNER: ${{ github.repository_owner }}
