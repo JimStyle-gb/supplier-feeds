@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-07 20:17">
+<yml_catalog date="2025-10-08 20:17">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 08:10:2025 - 01:17:24
-Ближайшее время сборки (Алматы)            | 09:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15890
-Сколько товаров у поставщика после фильтра | 2002
-Сколько товаров есть в наличии (true)      | 1318
-Сколько товаров нет в наличии (false)      | 684-->
+Время сборки (Алматы)                      | 09:10:2025 - 01:17:58
+Ближайшее время сборки (Алматы)            | 10:10:2025 - 01:00:00
+Сколько товаров у поставщика до фильтра    | 15892
+Сколько товаров у поставщика после фильтра | 2004
+Сколько товаров есть в наличии (true)      | 1325
+Сколько товаров нет в наличии (false)      | 679-->
   <shop>
     <offers>
       <offer id="AS20888">
@@ -20,7 +20,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/20888_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Линейно-Интерактивный ИБП с функцией сетевого фильтра SVC U-650-L Устройство, позволяющее подключённому оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. 3 выходных разъёмов Shuko CEE7 с батарейной поддержкой и 3 выходных разъёмов с функцией сетевого фильтра позволят подключить большое количество оборудования. 2*USB порта 5В/2А позволят зарядить любое портативное устройство.
 
 Характеристики:
@@ -5098,7 +5098,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/14654_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Линейно-интерактивный ИБП SVC RTL-2K-LCD Cтоечные ИБП RTL-серии источники бесперебойного питания линейно-интерактивного типа с синусоидальной формой выходного напряжения. Надёжно обеспечивают стабилизированное питание для компьютерной техники (персональные компьютеры, серверы, сетевое оборудование) и другого чувствительного к качеству электропитания периферийного компьютерного оборудования. Незаменим в условиях офиса, когда необходимо защитить одновременно несколько устройств. ИБП RTL-серии от SVC можно разместить горизонтально, вертикально или в стойку, что позволяет наиболее рационально использовать рабочее пространство.
 
 Характеристики:
@@ -5362,7 +5362,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/8590_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Онлайн ИБП SVC RT-10KL-LCD Используется для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю.
 
 Характеристики:
@@ -9958,7 +9958,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32457">
         <vendorCode>AS32457</vendorCode>
         <name>Тонер-картридж Xerox 006R01160</name>
-        <price>91900</price>
+        <price>94900</price>
         <picture>https://img.al-style.kz/32457_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -9984,7 +9984,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32468">
         <vendorCode>AS32468</vendorCode>
         <name>Принт-картридж Xerox 013R00591</name>
-        <price>238900</price>
+        <price>246900</price>
         <picture>https://img.al-style.kz/32468_1.jpg</picture>
         <picture>https://img.al-style.kz/32468_2.jpg</picture>
         <vendor>Xerox</vendor>
@@ -10009,7 +10009,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32471">
         <vendorCode>AS32471</vendorCode>
         <name>Принт-картридж Xerox 108R01481 (голубой)</name>
-        <price>79900</price>
+        <price>82900</price>
         <picture>https://img.al-style.kz/32471_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10033,7 +10033,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32472">
         <vendorCode>AS32472</vendorCode>
         <name>Принт-картридж Xerox 108R01482 (малиновый)</name>
-        <price>79900</price>
+        <price>82900</price>
         <picture>https://img.al-style.kz/32472_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10057,7 +10057,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32473">
         <vendorCode>AS32473</vendorCode>
         <name>Принт-картридж Xerox 108R01483 (жёлтый)</name>
-        <price>79900</price>
+        <price>82900</price>
         <picture>https://img.al-style.kz/32473_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10081,7 +10081,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32474">
         <vendorCode>AS32474</vendorCode>
         <name>Принт-картридж Xerox 108R01484 (чёрный)</name>
-        <price>95900</price>
+        <price>99900</price>
         <picture>https://img.al-style.kz/32474_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10233,7 +10233,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32379">
         <vendorCode>AS32379</vendorCode>
         <name>Тонер-картридж Xerox 006R01694 (голубой)</name>
-        <price>35900</price>
+        <price>36900</price>
         <picture>https://img.al-style.kz/32379_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10260,7 +10260,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32380">
         <vendorCode>AS32380</vendorCode>
         <name>Тонер-картридж Xerox 006R01695 (малиновый)</name>
-        <price>35900</price>
+        <price>36900</price>
         <picture>https://img.al-style.kz/32380_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10286,7 +10286,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32381">
         <vendorCode>AS32381</vendorCode>
         <name>Тонер-картридж Xerox 006R01696 (жёлтый)</name>
-        <price>35900</price>
+        <price>36900</price>
         <picture>https://img.al-style.kz/32381_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10312,7 +10312,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32382">
         <vendorCode>AS32382</vendorCode>
         <name>Тонер-картридж Xerox 006R01693 (чёрный)</name>
-        <price>44900</price>
+        <price>45900</price>
         <picture>https://img.al-style.kz/32382_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10338,7 +10338,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32383">
         <vendorCode>AS32383</vendorCode>
         <name>Фотобарабан Xerox 013R00677 (по одному на каждый цвет)</name>
-        <price>88900</price>
+        <price>91900</price>
         <picture>https://img.al-style.kz/32383_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10362,7 +10362,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32388">
         <vendorCode>AS32388</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03748 (голубой)</name>
-        <price>104900</price>
+        <price>107900</price>
         <picture>https://img.al-style.kz/32388_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10388,7 +10388,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32389">
         <vendorCode>AS32389</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03747 (малиновый)</name>
-        <price>104900</price>
+        <price>107900</price>
         <picture>https://img.al-style.kz/32389_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10414,7 +10414,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32390">
         <vendorCode>AS32390</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03746 (жёлтый)</name>
-        <price>104900</price>
+        <price>107900</price>
         <picture>https://img.al-style.kz/32390_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10440,7 +10440,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32391">
         <vendorCode>AS32391</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03745 (чёрный)</name>
-        <price>56900</price>
+        <price>60900</price>
         <picture>https://img.al-style.kz/32391_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10467,7 +10467,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32392">
         <vendorCode>AS32392</vendorCode>
         <name>Фотобарабан Xerox 113R00780 (по одному на каждый цвет)</name>
-        <price>252900</price>
+        <price>260900</price>
         <picture>https://img.al-style.kz/32392_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10513,7 +10513,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32399">
         <vendorCode>AS32399</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R01702 (голубой)</name>
-        <price>105900</price>
+        <price>109900</price>
         <picture>https://img.al-style.kz/32399_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10539,7 +10539,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32400">
         <vendorCode>AS32400</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R01703 (малиновый)</name>
-        <price>105900</price>
+        <price>109900</price>
         <picture>https://img.al-style.kz/32400_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10565,7 +10565,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32401">
         <vendorCode>AS32401</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R01704 (жёлтый)</name>
-        <price>105900</price>
+        <price>109900</price>
         <picture>https://img.al-style.kz/32401_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10591,7 +10591,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32402">
         <vendorCode>AS32402</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R01701 (чёрный)</name>
-        <price>90900</price>
+        <price>93900</price>
         <picture>https://img.al-style.kz/32402_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10617,7 +10617,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32403">
         <vendorCode>AS32403</vendorCode>
         <name>Фотобарабан Xerox 013R00662 (по одному на каждый цвет)</name>
-        <price>298900</price>
+        <price>309900</price>
         <picture>https://img.al-style.kz/32403_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10641,7 +10641,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32404">
         <vendorCode>AS32404</vendorCode>
         <name>Контейнер для отработанного тонера Xerox 008R13061</name>
-        <price>55900</price>
+        <price>59900</price>
         <picture>https://img.al-style.kz/32404_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10709,7 +10709,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32420">
         <vendorCode>AS32420</vendorCode>
         <name>Тонер-картридж Xerox 006R01529 (чёрный)</name>
-        <price>100900</price>
+        <price>103900</price>
         <picture>https://img.al-style.kz/32420_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10735,7 +10735,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32421">
         <vendorCode>AS32421</vendorCode>
         <name>Тонер-картридж Xerox 006R01530 (жёлтый)</name>
-        <price>164900</price>
+        <price>173900</price>
         <picture>https://img.al-style.kz/32421_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10761,7 +10761,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32422">
         <vendorCode>AS32422</vendorCode>
         <name>Тонер-картридж Xerox 006R01531 (малиновый)</name>
-        <price>164900</price>
+        <price>173900</price>
         <picture>https://img.al-style.kz/32422_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10787,7 +10787,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32423">
         <vendorCode>AS32423</vendorCode>
         <name>Тонер-картридж Xerox 006R01532 (голубой)</name>
-        <price>164900</price>
+        <price>173900</price>
         <picture>https://img.al-style.kz/32423_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10813,7 +10813,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32433">
         <vendorCode>AS32433</vendorCode>
         <name>Тонер-картридж Xerox 006R01461 (чёрный)</name>
-        <price>104900</price>
+        <price>107900</price>
         <picture>https://img.al-style.kz/32433_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10839,7 +10839,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32434">
         <vendorCode>AS32434</vendorCode>
         <name>Тонер-картридж Xerox 006R01464 (голубой)</name>
-        <price>130900</price>
+        <price>135900</price>
         <picture>https://img.al-style.kz/32434_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10865,7 +10865,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32435">
         <vendorCode>AS32435</vendorCode>
         <name>Тонер-картридж Xerox 006R01463 (малиновый)</name>
-        <price>130900</price>
+        <price>135900</price>
         <picture>https://img.al-style.kz/32435_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -10891,7 +10891,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32436">
         <vendorCode>AS32436</vendorCode>
         <name>Тонер-картридж Xerox 006R01462 (жёлтый)</name>
-        <price>130900</price>
+        <price>135900</price>
         <picture>https://img.al-style.kz/32436_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11013,7 +11013,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32441">
         <vendorCode>AS32441</vendorCode>
         <name>Контейнер для отработанного тонера Xerox 008R13089</name>
-        <price>36900</price>
+        <price>37900</price>
         <picture>https://img.al-style.kz/32441_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11035,7 +11035,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32442">
         <vendorCode>AS32442</vendorCode>
         <name>Тонер-картридж Xerox 006R01517 (чёрный)</name>
-        <price>94900</price>
+        <price>97900</price>
         <picture>https://img.al-style.kz/32442_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11061,7 +11061,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32443">
         <vendorCode>AS32443</vendorCode>
         <name>Тонер-картридж Xerox 006R01520 (голубой)</name>
-        <price>106900</price>
+        <price>109900</price>
         <picture>https://img.al-style.kz/32443_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11087,7 +11087,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32444">
         <vendorCode>AS32444</vendorCode>
         <name>Тонер-картридж Xerox 006R01519 (малиновый)</name>
-        <price>106900</price>
+        <price>109900</price>
         <picture>https://img.al-style.kz/32444_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11113,7 +11113,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32445">
         <vendorCode>AS32445</vendorCode>
         <name>Тонер-картридж Xerox 006R01518 (жёлтый)</name>
-        <price>106900</price>
+        <price>109900</price>
         <picture>https://img.al-style.kz/32445_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11139,7 +11139,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32446">
         <vendorCode>AS32446</vendorCode>
         <name>Тонер-картридж Xerox 006R01573</name>
-        <price>31900</price>
+        <price>32900</price>
         <picture>https://img.al-style.kz/32446_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11359,7 +11359,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32320">
         <vendorCode>AS32320</vendorCode>
         <name>Тонер-картридж Xerox 106R02778</name>
-        <price>43900</price>
+        <price>44900</price>
         <picture>https://img.al-style.kz/32320_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11389,7 +11389,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32321">
         <vendorCode>AS32321</vendorCode>
         <name>Тонер-картридж (двойная упаковка) Xerox 106R02782</name>
-        <price>71900</price>
+        <price>74900</price>
         <picture>https://img.al-style.kz/32321_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11418,7 +11418,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32322">
         <vendorCode>AS32322</vendorCode>
         <name>Принт-картридж Xerox 101R00474</name>
-        <price>63900</price>
+        <price>65900</price>
         <picture>https://img.al-style.kz/32322_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11446,7 +11446,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32323">
         <vendorCode>AS32323</vendorCode>
         <name>Тонер-картридж Xerox 106R04348</name>
-        <price>44900</price>
+        <price>45900</price>
         <picture>https://img.al-style.kz/32323_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11472,7 +11472,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32324">
         <vendorCode>AS32324</vendorCode>
         <name>Тонер-картридж (двойная упаковка) Xerox 106R04349</name>
-        <price>74900</price>
+        <price>76900</price>
         <picture>https://img.al-style.kz/32324_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11498,11 +11498,11 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32325">
         <vendorCode>AS32325</vendorCode>
         <name>Принт-картридж Xerox 101R00664</name>
-        <price>45900</price>
+        <price>47900</price>
         <picture>https://img.al-style.kz/32325_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Принт-картридж – расходный материал, используемый принтером или МФУ. Представляет собой блок, в который входит фотобарабан, система его очистки и бункер для отработанного тонера. Главным компонентом является светочувствительный барабан, который служит для формирования электростатического изображения с последующим нанесением на него тонера
 
 Характеристики
@@ -11522,7 +11522,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32329">
         <vendorCode>AS32329</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03623</name>
-        <price>145900</price>
+        <price>150900</price>
         <picture>https://img.al-style.kz/32329_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11548,7 +11548,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32330">
         <vendorCode>AS32330</vendorCode>
         <name>Принт-картридж Xerox 101R00555</name>
-        <price>73900</price>
+        <price>76900</price>
         <picture>https://img.al-style.kz/32330_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11572,7 +11572,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32333">
         <vendorCode>AS32333</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03585</name>
-        <price>144900</price>
+        <price>149900</price>
         <picture>https://img.al-style.kz/32333_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11598,7 +11598,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32334">
         <vendorCode>AS32334</vendorCode>
         <name>Принт-картридж Xerox 101R00554</name>
-        <price>71900</price>
+        <price>73900</price>
         <picture>https://img.al-style.kz/32334_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11622,7 +11622,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32337">
         <vendorCode>AS32337</vendorCode>
         <name>Принт-картридж Xerox 101R00582</name>
-        <price>70900</price>
+        <price>72900</price>
         <picture>https://img.al-style.kz/32337_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11698,7 +11698,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32341">
         <vendorCode>AS32341</vendorCode>
         <name>Тонер-картридж Xerox 006R01731</name>
-        <price>50900</price>
+        <price>52900</price>
         <picture>https://img.al-style.kz/32341_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11725,7 +11725,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32342">
         <vendorCode>AS32342</vendorCode>
         <name>Принт-картридж Xerox 013R00679</name>
-        <price>228900</price>
+        <price>236900</price>
         <picture>https://img.al-style.kz/32342_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11775,7 +11775,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32349">
         <vendorCode>AS32349</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03396</name>
-        <price>73900</price>
+        <price>75900</price>
         <picture>https://img.al-style.kz/32349_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11802,7 +11802,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32350">
         <vendorCode>AS32350</vendorCode>
         <name>Принт-картридж Xerox 113R00779</name>
-        <price>236900</price>
+        <price>244900</price>
         <picture>https://img.al-style.kz/32350_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11832,7 +11832,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32351_3.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Фьюзер (так же термоблок или печка) – Основной компонент финишной обработки отпечатанных документов. Служит для закрепления тонера на листе бумаги, посредством нагрева с помощью термоэлементов и прижимного вала. 
 
 Характеристики
@@ -11851,7 +11851,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32352">
         <vendorCode>AS32352</vendorCode>
         <name>Тонер-картридж (двойная упаковка) Xerox 006R01683</name>
-        <price>96900</price>
+        <price>99900</price>
         <picture>https://img.al-style.kz/32352_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11878,7 +11878,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32353">
         <vendorCode>AS32353</vendorCode>
         <name>Принт-картридж Xerox 013R00675</name>
-        <price>244900</price>
+        <price>252900</price>
         <picture>https://img.al-style.kz/32353_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11952,7 +11952,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32358">
         <vendorCode>AS32358</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03534 (голубой)</name>
-        <price>154900</price>
+        <price>159900</price>
         <picture>https://img.al-style.kz/32358_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -11978,7 +11978,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32359">
         <vendorCode>AS32359</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03535 (малиновый)</name>
-        <price>154900</price>
+        <price>159900</price>
         <picture>https://img.al-style.kz/32359_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12004,7 +12004,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32360">
         <vendorCode>AS32360</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03533 (жёлтый)</name>
-        <price>154900</price>
+        <price>159900</price>
         <picture>https://img.al-style.kz/32360_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12030,7 +12030,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32361">
         <vendorCode>AS32361</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03532 (чёрный)</name>
-        <price>73900</price>
+        <price>75900</price>
         <picture>https://img.al-style.kz/32361_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12056,7 +12056,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32363">
         <vendorCode>AS32363</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03924 (голубой)</name>
-        <price>179900</price>
+        <price>185900</price>
         <picture>https://img.al-style.kz/32363_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12082,7 +12082,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32364">
         <vendorCode>AS32364</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03925 (малиновый)</name>
-        <price>179900</price>
+        <price>185900</price>
         <picture>https://img.al-style.kz/32364_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12108,7 +12108,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32365">
         <vendorCode>AS32365</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03926 (жёлтый)</name>
-        <price>179900</price>
+        <price>185900</price>
         <picture>https://img.al-style.kz/32365_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12134,7 +12134,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32366">
         <vendorCode>AS32366</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03927 (чёрный)</name>
-        <price>163900</price>
+        <price>171900</price>
         <picture>https://img.al-style.kz/32366_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12160,7 +12160,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32367">
         <vendorCode>AS32367</vendorCode>
         <name>Принт-картридж Xerox 108R01485 (голубой)</name>
-        <price>73900</price>
+        <price>76900</price>
         <picture>https://img.al-style.kz/32367_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12185,7 +12185,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32368">
         <vendorCode>AS32368</vendorCode>
         <name>Принт-картридж Xerox 108R01486 (малиновый)</name>
-        <price>73900</price>
+        <price>76900</price>
         <picture>https://img.al-style.kz/32368_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12210,7 +12210,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32369">
         <vendorCode>AS32369</vendorCode>
         <name>Принт-картридж Xerox 108R01487 (жёлтый)</name>
-        <price>73900</price>
+        <price>76900</price>
         <picture>https://img.al-style.kz/32369_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12235,7 +12235,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS32370">
         <vendorCode>AS32370</vendorCode>
         <name>Принт-картридж Xerox 108R01488 (чёрный)</name>
-        <price>72900</price>
+        <price>75900</price>
         <picture>https://img.al-style.kz/32370_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12380,7 +12380,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33097">
         <vendorCode>AS33097</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 106R03621</name>
-        <price>119900</price>
+        <price>123900</price>
         <picture>https://img.al-style.kz/33097_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12406,7 +12406,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33113">
         <vendorCode>AS33113</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R01487</name>
-        <price>84900</price>
+        <price>90900</price>
         <picture>https://img.al-style.kz/33113_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12603,7 +12603,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33337">
         <vendorCode>AS33337</vendorCode>
         <name>Фьюзерный модуль Xerox 115R00089</name>
-        <price>216900</price>
+        <price>229900</price>
         <picture>https://img.al-style.kz/33337_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12625,7 +12625,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33380">
         <vendorCode>AS33380</vendorCode>
         <name>Фотобарабан Xerox 108R01121 (по одному на каждый цвет)</name>
-        <price>276900</price>
+        <price>285900</price>
         <picture>https://img.al-style.kz/33380_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12649,7 +12649,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33417">
         <vendorCode>AS33417</vendorCode>
         <name>Контейнер для отработанного тонера Xerox 108R01124</name>
-        <price>27900</price>
+        <price>28900</price>
         <picture>https://img.al-style.kz/33417_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12737,7 +12737,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33333">
         <vendorCode>AS33333</vendorCode>
         <name>Фьюзерный модуль Xerox 109R00848</name>
-        <price>234900</price>
+        <price>242900</price>
         <picture>https://img.al-style.kz/33333_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12759,7 +12759,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33366">
         <vendorCode>AS33366</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03694 (малиновый)</name>
-        <price>106900</price>
+        <price>110900</price>
         <picture>https://img.al-style.kz/33366_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12786,7 +12786,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33367">
         <vendorCode>AS33367</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03695 (жёлтый)</name>
-        <price>106900</price>
+        <price>110900</price>
         <picture>https://img.al-style.kz/33367_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -12813,7 +12813,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33419">
         <vendorCode>AS33419</vendorCode>
         <name>Контейнер для отработанного тонера Xerox 008R13215</name>
-        <price>32900</price>
+        <price>33900</price>
         <picture>https://img.al-style.kz/33419_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -13729,7 +13729,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS35202">
         <vendorCode>AS35202</vendorCode>
         <name>Тонер-картридж (двойная упаковка) Xerox 006R01606 / 006R01605</name>
-        <price>118900</price>
+        <price>122900</price>
         <picture>https://img.al-style.kz/35202_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -13879,7 +13879,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33346">
         <vendorCode>AS33346</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03581</name>
-        <price>107900</price>
+        <price>110900</price>
         <picture>https://img.al-style.kz/33346_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -13906,7 +13906,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33368">
         <vendorCode>AS33368</vendorCode>
         <name>Фотобарабан Xerox 108R01417 (голубой)</name>
-        <price>99900</price>
+        <price>103900</price>
         <picture>https://img.al-style.kz/33368_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -13931,7 +13931,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33369">
         <vendorCode>AS33369</vendorCode>
         <name>Фотобарабан Xerox 108R01418 (малиновый)</name>
-        <price>99900</price>
+        <price>103900</price>
         <picture>https://img.al-style.kz/33369_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -13956,7 +13956,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33370">
         <vendorCode>AS33370</vendorCode>
         <name>Фотобарабан Xerox 108R01419 (жёлтый)</name>
-        <price>99900</price>
+        <price>103900</price>
         <picture>https://img.al-style.kz/33370_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -13980,7 +13980,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33371">
         <vendorCode>AS33371</vendorCode>
         <name>Фотобарабан Xerox 108R01420 (чёрный)</name>
-        <price>99900</price>
+        <price>103900</price>
         <picture>https://img.al-style.kz/33371_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -14046,7 +14046,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS35327">
         <vendorCode>AS35327</vendorCode>
         <name>Фотобарабан Xerox 101R00602 (по одному на каждый цвет)</name>
-        <price>207900</price>
+        <price>214900</price>
         <picture>https://img.al-style.kz/35327_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -14550,7 +14550,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
         <picture>https://img.al-style.kz/35492_2.jpg</picture>
         <vendor>Ship</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Кабель сетевой SHIP D177A-P  Это дважды экранированный (S-FTP) 4-х парный кабель 6-А категории. Защищён внешним экраном из медной оплетки плюс к этому каждая пара заключена в дополнительный отдельный экран. Двойной экран сводит к нулю уровень электромагнитного излучения кабеля и в несколько раз повышает защищённость от внешних помех. Используется при очень высоком уровне внешних наводок (производственные помещения) или при сверхвысоких требованиях к информационной безопасности. В отличии от кабеля 5e категории имеет жилу 0,56 мм. что позволяет работать на частоте 500 Мгц. Также по стандарту 6а категории, каждая пара имеет свой шаг скрутки. Кабель имеет LSZH оболочку, применяется при высоких требованиях к пожарной безопасности..  
 Используется для создания локальных вычислительных сетей (ЛВС) стандарта 10 Гбит/сек., максимально зафиксированная скорость передачи данных по данному типу кабеля 40 Гигабит/сек.   
 100 метровый сегмент успешно прошёл тестирование на сертифицированном приборе Fluke.
@@ -14673,7 +14673,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS33345">
         <vendorCode>AS33345</vendorCode>
         <name>Принт-картридж Xerox 113R00773</name>
-        <price>106900</price>
+        <price>110900</price>
         <picture>https://img.al-style.kz/33345_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -14818,7 +14818,7 @@ USB
   <offer id="AS36638">
         <vendorCode>AS36638</vendorCode>
         <name>Принт-картридж Xerox 013R00670</name>
-        <price>206900</price>
+        <price>213900</price>
         <picture>https://img.al-style.kz/36638_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -14967,7 +14967,7 @@ USB
   <offer id="AS33349">
         <vendorCode>AS33349</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03945</name>
-        <price>179900</price>
+        <price>186900</price>
         <picture>https://img.al-style.kz/33349_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15058,7 +15058,7 @@ USB
   <offer id="AS33353">
         <vendorCode>AS33353</vendorCode>
         <name>Картридж скрепок Xerox 008R12964</name>
-        <price>35900</price>
+        <price>36900</price>
         <picture>https://img.al-style.kz/33353_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15077,7 +15077,7 @@ USB
   <offer id="AS33354">
         <vendorCode>AS33354</vendorCode>
         <name>Картридж скрепок для буклетирования Xerox 008R12897</name>
-        <price>129900</price>
+        <price>134900</price>
         <picture>https://img.al-style.kz/33354_1.jpg</picture>
         <picture>https://img.al-style.kz/33354_2.jpg</picture>
         <vendor>Xerox</vendor>
@@ -15098,7 +15098,7 @@ USB
   <offer id="AS33357">
         <vendorCode>AS33357</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03481 (голубой)</name>
-        <price>50900</price>
+        <price>51900</price>
         <picture>https://img.al-style.kz/33357_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15124,7 +15124,7 @@ USB
   <offer id="AS33358">
         <vendorCode>AS33358</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03482 (малиновый)</name>
-        <price>50900</price>
+        <price>51900</price>
         <picture>https://img.al-style.kz/33358_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15150,7 +15150,7 @@ USB
   <offer id="AS33359">
         <vendorCode>AS33359</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03483 (жёлтый)</name>
-        <price>50900</price>
+        <price>51900</price>
         <picture>https://img.al-style.kz/33359_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15176,7 +15176,7 @@ USB
   <offer id="AS33360">
         <vendorCode>AS33360</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03484 (чёрный)</name>
-        <price>70900</price>
+        <price>72900</price>
         <picture>https://img.al-style.kz/33360_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15202,7 +15202,7 @@ USB
   <offer id="AS33376">
         <vendorCode>AS33376</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03522 (голубой)</name>
-        <price>122900</price>
+        <price>126900</price>
         <picture>https://img.al-style.kz/33376_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15254,7 +15254,7 @@ USB
   <offer id="AS33364">
         <vendorCode>AS33364</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03488 (чёрный)</name>
-        <price>108900</price>
+        <price>112900</price>
         <picture>https://img.al-style.kz/33364_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15281,7 +15281,7 @@ USB
   <offer id="AS32475">
         <vendorCode>AS32475</vendorCode>
         <name>Контейнер для отработанного тонера Xerox 108R01416</name>
-        <price>24900</price>
+        <price>25900</price>
         <picture>https://img.al-style.kz/32475_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15304,7 +15304,7 @@ USB
   <offer id="AS33365">
         <vendorCode>AS33365</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03693 (голубой)</name>
-        <price>106900</price>
+        <price>110900</price>
         <picture>https://img.al-style.kz/33365_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15356,7 +15356,7 @@ USB
   <offer id="AS33388">
         <vendorCode>AS33388</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03884 (голубой)</name>
-        <price>123900</price>
+        <price>127900</price>
         <picture>https://img.al-style.kz/33388_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15382,7 +15382,7 @@ USB
   <offer id="AS33389">
         <vendorCode>AS33389</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03885 (малиновый)</name>
-        <price>123900</price>
+        <price>127900</price>
         <picture>https://img.al-style.kz/33389_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15408,7 +15408,7 @@ USB
   <offer id="AS33390">
         <vendorCode>AS33390</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03886 (жёлтый)</name>
-        <price>123900</price>
+        <price>127900</price>
         <picture>https://img.al-style.kz/33390_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15434,7 +15434,7 @@ USB
   <offer id="AS33391">
         <vendorCode>AS33391</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03887 (чёрный)</name>
-        <price>92900</price>
+        <price>95900</price>
         <picture>https://img.al-style.kz/33391_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15541,7 +15541,7 @@ USB
   <offer id="AS33400">
         <vendorCode>AS33400</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03936 (голубой)</name>
-        <price>161900</price>
+        <price>167900</price>
         <picture>https://img.al-style.kz/33400_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15568,7 +15568,7 @@ USB
   <offer id="AS33401">
         <vendorCode>AS33401</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03937 (малиновый)</name>
-        <price>161900</price>
+        <price>167900</price>
         <picture>https://img.al-style.kz/33401_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15595,7 +15595,7 @@ USB
   <offer id="AS33402">
         <vendorCode>AS33402</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03938 (жёлтый)</name>
-        <price>161900</price>
+        <price>167900</price>
         <picture>https://img.al-style.kz/33402_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15696,7 +15696,7 @@ USB
   <offer id="AS33352">
         <vendorCode>AS33352</vendorCode>
         <name>Скрепки для финишера Xerox 008R12941</name>
-        <price>60900</price>
+        <price>62900</price>
         <picture>https://img.al-style.kz/33352_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15714,7 +15714,7 @@ USB
   <offer id="AS34762">
         <vendorCode>AS34762</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R04054 (голубой)</name>
-        <price>240900</price>
+        <price>249900</price>
         <picture>https://img.al-style.kz/34762_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15740,7 +15740,7 @@ USB
   <offer id="AS34764">
         <vendorCode>AS34764</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R04056 (жёлтый)</name>
-        <price>240900</price>
+        <price>249900</price>
         <picture>https://img.al-style.kz/34764_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15767,7 +15767,7 @@ USB
   <offer id="AS34765">
         <vendorCode>AS34765</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R04057 (чёрный)</name>
-        <price>152900</price>
+        <price>157900</price>
         <picture>https://img.al-style.kz/34765_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15794,7 +15794,7 @@ USB
   <offer id="AS34763">
         <vendorCode>AS34763</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R04055 (малиновый)</name>
-        <price>240900</price>
+        <price>249900</price>
         <picture>https://img.al-style.kz/34763_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15821,7 +15821,7 @@ USB
   <offer id="AS35326">
         <vendorCode>AS35326</vendorCode>
         <name>Контейнер для отработанного тонера Xerox 108R01504</name>
-        <price>46900</price>
+        <price>48900</price>
         <picture>https://img.al-style.kz/35326_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15843,7 +15843,7 @@ USB
   <offer id="AS33416">
         <vendorCode>AS33416</vendorCode>
         <name>Картридж скрепок Xerox 008R13177</name>
-        <price>94900</price>
+        <price>97900</price>
         <picture>https://img.al-style.kz/33416_1.jpg</picture>
         <picture>https://img.al-style.kz/33416_2.jpg</picture>
         <vendor>Xerox</vendor>
@@ -15864,7 +15864,7 @@ USB
   <offer id="AS34040">
         <vendorCode>AS34040</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R04082 (голубой)</name>
-        <price>238900</price>
+        <price>246900</price>
         <picture>https://img.al-style.kz/34040_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15890,7 +15890,7 @@ USB
   <offer id="AS34041">
         <vendorCode>AS34041</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R04083 (малиновый)</name>
-        <price>238900</price>
+        <price>246900</price>
         <picture>https://img.al-style.kz/34041_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -15916,7 +15916,7 @@ USB
   <offer id="AS34042">
         <vendorCode>AS34042</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R04084 (жёлтый)</name>
-        <price>238900</price>
+        <price>246900</price>
         <picture>https://img.al-style.kz/34042_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -16051,7 +16051,7 @@ USB
   <offer id="AS38078">
         <vendorCode>AS38078</vendorCode>
         <name>Картридж повышенной емкости Xerox 106R02732</name>
-        <price>167900</price>
+        <price>176900</price>
         <picture>https://img.al-style.kz/38078_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -16265,7 +16265,7 @@ USB
   <offer id="AS33403">
         <vendorCode>AS33403</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03939 (чёрный)</name>
-        <price>140900</price>
+        <price>145900</price>
         <picture>https://img.al-style.kz/33403_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -16292,7 +16292,7 @@ USB
   <offer id="AS34043">
         <vendorCode>AS34043</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R04085 (чёрный)</name>
-        <price>191900</price>
+        <price>198900</price>
         <picture>https://img.al-style.kz/34043_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -16562,7 +16562,7 @@ USB
   <offer id="AS33342">
         <vendorCode>AS33342</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R02721</name>
-        <price>120900</price>
+        <price>124900</price>
         <picture>https://img.al-style.kz/33342_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -16586,7 +16586,7 @@ USB
   <offer id="AS38148">
         <vendorCode>AS38148</vendorCode>
         <name>Фьюзерный модуль Xerox 115R00140</name>
-        <price>299900</price>
+        <price>309900</price>
         <picture>https://img.al-style.kz/38148_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17025,7 +17025,7 @@ USB
   <offer id="AS33378">
         <vendorCode>AS33378</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03521 (жёлтый)</name>
-        <price>122900</price>
+        <price>126900</price>
         <picture>https://img.al-style.kz/33378_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17051,7 +17051,7 @@ USB
   <offer id="AS33379">
         <vendorCode>AS33379</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03520 (чёрный)</name>
-        <price>94900</price>
+        <price>97900</price>
         <picture>https://img.al-style.kz/33379_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17168,7 +17168,7 @@ USB
   <offer id="AS33372">
         <vendorCode>AS33372</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03510 (голубой)</name>
-        <price>99900</price>
+        <price>102900</price>
         <picture>https://img.al-style.kz/33372_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17195,7 +17195,7 @@ USB
   <offer id="AS33373">
         <vendorCode>AS33373</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03511 (малиновый)</name>
-        <price>99900</price>
+        <price>102900</price>
         <picture>https://img.al-style.kz/33373_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17222,11 +17222,11 @@ USB
   <offer id="AS33374">
         <vendorCode>AS33374</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03509 (жёлтый)</name>
-        <price>99900</price>
+        <price>102900</price>
         <picture>https://img.al-style.kz/33374_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -17249,7 +17249,7 @@ USB
   <offer id="AS33375">
         <vendorCode>AS33375</vendorCode>
         <name>Тонер-картридж стандартный Xerox 106R03508 (чёрный)</name>
-        <price>76900</price>
+        <price>79900</price>
         <picture>https://img.al-style.kz/33375_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17276,7 +17276,7 @@ USB
   <offer id="AS33377">
         <vendorCode>AS33377</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03523 (малиновый)</name>
-        <price>122900</price>
+        <price>126900</price>
         <picture>https://img.al-style.kz/33377_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17508,7 +17508,7 @@ USB
   <offer id="AS35744">
         <vendorCode>AS35744</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R02233 (голубой)</name>
-        <price>179900</price>
+        <price>185900</price>
         <picture>https://img.al-style.kz/35744_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17535,7 +17535,7 @@ USB
   <offer id="AS35745">
         <vendorCode>AS35745</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R02234 (малиновый)</name>
-        <price>179900</price>
+        <price>185900</price>
         <picture>https://img.al-style.kz/35745_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17562,7 +17562,7 @@ USB
   <offer id="AS35746">
         <vendorCode>AS35746</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R02235 (жёлтый)</name>
-        <price>179900</price>
+        <price>185900</price>
         <picture>https://img.al-style.kz/35746_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17589,7 +17589,7 @@ USB
   <offer id="AS35751">
         <vendorCode>AS35751</vendorCode>
         <name>Тонер-картридж Xerox 106R01294</name>
-        <price>150900</price>
+        <price>155900</price>
         <picture>https://img.al-style.kz/35751_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17669,7 +17669,7 @@ USB
   <offer id="AS36068">
         <vendorCode>AS36068</vendorCode>
         <name>Принт-картридж Xerox 113R00670</name>
-        <price>301900</price>
+        <price>312900</price>
         <picture>https://img.al-style.kz/36068_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17733,7 +17733,7 @@ USB
   <offer id="AS39212">
         <vendorCode>AS39212</vendorCode>
         <name>Принт-картридж Xerox 113R00762</name>
-        <price>232900</price>
+        <price>240900</price>
         <picture>https://img.al-style.kz/39212_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17757,7 +17757,7 @@ USB
   <offer id="AS39214">
         <vendorCode>AS39214</vendorCode>
         <name>Тонер-картридж Xerox 106R02754 (жёлтый)</name>
-        <price>218900</price>
+        <price>230900</price>
         <picture>https://img.al-style.kz/39214_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17784,7 +17784,7 @@ USB
   <offer id="AS39215">
         <vendorCode>AS39215</vendorCode>
         <name>Тонер-картридж Xerox 106R02752 (голубой)</name>
-        <price>212900</price>
+        <price>219900</price>
         <picture>https://img.al-style.kz/39215_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -17811,7 +17811,7 @@ USB
   <offer id="AS39216">
         <vendorCode>AS39216</vendorCode>
         <name>Тонер-картридж Xerox 106R02753 (малиновый)</name>
-        <price>212900</price>
+        <price>219900</price>
         <picture>https://img.al-style.kz/39216_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -18065,7 +18065,7 @@ USB
   <offer id="AS39245">
         <vendorCode>AS39245</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R02306</name>
-        <price>163900</price>
+        <price>171900</price>
         <picture>https://img.al-style.kz/39245_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -18091,7 +18091,7 @@ USB
   <offer id="AS38576">
         <vendorCode>AS38576</vendorCode>
         <name>Тонер-картридж Xerox 106R02251 (жёлтый)</name>
-        <price>103900</price>
+        <price>107900</price>
         <picture>https://img.al-style.kz/38576_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -18117,7 +18117,7 @@ USB
   <offer id="AS38577">
         <vendorCode>AS38577</vendorCode>
         <name>Тонер-картридж Xerox 106R02249 (голубой)</name>
-        <price>106900</price>
+        <price>110900</price>
         <picture>https://img.al-style.kz/38577_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -18143,7 +18143,7 @@ USB
   <offer id="AS38578">
         <vendorCode>AS38578</vendorCode>
         <name>Тонер-картридж Xerox 106R02250 (малиновый)</name>
-        <price>106900</price>
+        <price>110900</price>
         <picture>https://img.al-style.kz/38578_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -18259,7 +18259,7 @@ Versant 80/180 Press
   <offer id="AS35861">
         <vendorCode>AS35861</vendorCode>
         <name>Тонер-туба Xerox 006R01146</name>
-        <price>276900</price>
+        <price>285900</price>
         <picture>https://img.al-style.kz/35861_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -18307,7 +18307,7 @@ Versant 80/180 Press
   <offer id="AS39229">
         <vendorCode>AS39229</vendorCode>
         <name>Принт-картридж Xerox 108R00971 (голубой)</name>
-        <price>136900</price>
+        <price>140900</price>
         <picture>https://img.al-style.kz/39229_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -18332,7 +18332,7 @@ Versant 80/180 Press
   <offer id="AS39230">
         <vendorCode>AS39230</vendorCode>
         <name>Принт-картридж Xerox 108R00973 (жёлтый)</name>
-        <price>136900</price>
+        <price>140900</price>
         <picture>https://img.al-style.kz/39230_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19077,7 +19077,7 @@ WorkCentre Pro 4110/4112/4127/4595
   <offer id="AS40246">
         <vendorCode>AS40246</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R02739</name>
-        <price>149900</price>
+        <price>155900</price>
         <picture>https://img.al-style.kz/40246_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19276,7 +19276,7 @@ WorkCentre Pro 4110/4112/4127/4595
   <offer id="AS35747">
         <vendorCode>AS35747</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R02236 (чёрный)</name>
-        <price>151900</price>
+        <price>156900</price>
         <picture>https://img.al-style.kz/35747_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19461,7 +19461,7 @@ WorkCentre Pro 4110/4112/4127/4595
   <offer id="AS37716">
         <vendorCode>AS37716</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 108R00796</name>
-        <price>182900</price>
+        <price>188900</price>
         <picture>https://img.al-style.kz/37716_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19537,7 +19537,7 @@ WorkCentre Pro 4110/4112/4127/4595
   <offer id="AS33684">
         <vendorCode>AS33684</vendorCode>
         <name>Тонер-картридж Xerox 106R01440 (голубой)</name>
-        <price>322900</price>
+        <price>338900</price>
         <picture>https://img.al-style.kz/33684_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19610,7 +19610,7 @@ WorkCentre Pro 4110/4112/4127/4595
         <picture>https://img.al-style.kz/39179_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Модель:  130N01757
 Совместимость: Xerox Phaser 3020, WorkCentre 3025
 
@@ -19680,7 +19680,7 @@ WorkCentre Pro 4110/4112/4127/4595
   <offer id="AS35863">
         <vendorCode>AS35863</vendorCode>
         <name>Картридж скрепок Xerox 008R13029 / 008R13041</name>
-        <price>183900</price>
+        <price>189900</price>
         <picture>https://img.al-style.kz/35863_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19798,7 +19798,7 @@ AltaLink C8170
   <offer id="AS36198">
         <vendorCode>AS36198</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 106R02760 (голубой)</name>
-        <price>51900</price>
+        <price>53900</price>
         <picture>https://img.al-style.kz/36198_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19824,7 +19824,7 @@ AltaLink C8170
   <offer id="AS36199">
         <vendorCode>AS36199</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 106R02761 (малиновый)</name>
-        <price>51900</price>
+        <price>53900</price>
         <picture>https://img.al-style.kz/36199_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19850,7 +19850,7 @@ AltaLink C8170
   <offer id="AS36200">
         <vendorCode>AS36200</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 106R02762 (жёлтый)</name>
-        <price>51900</price>
+        <price>53900</price>
         <picture>https://img.al-style.kz/36200_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19876,7 +19876,7 @@ AltaLink C8170
   <offer id="AS36201">
         <vendorCode>AS36201</vendorCode>
         <name>Тонер-картридж стандартной емкости, Xerox, 106R02763 (чёрный)</name>
-        <price>72900</price>
+        <price>75900</price>
         <picture>https://img.al-style.kz/36201_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -19988,7 +19988,7 @@ Mi Smart Projector 2 использует индивидуальный объем пространства и соответствую
   <offer id="AS40563">
         <vendorCode>AS40563</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R01536</name>
-        <price>246900</price>
+        <price>254900</price>
         <picture>https://img.al-style.kz/40563_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -20914,7 +20914,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
   <offer id="AS37789">
         <vendorCode>AS37789</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R01443 (голубой)</name>
-        <price>397900</price>
+        <price>411900</price>
         <picture>https://img.al-style.kz/37789_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -21151,7 +21151,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
   <offer id="AS35938">
         <vendorCode>AS35938</vendorCode>
         <name>Тонер-картридж Xerox 006R01046</name>
-        <price>211900</price>
+        <price>219900</price>
         <picture>https://img.al-style.kz/35938_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -21235,7 +21235,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
   <offer id="AS34349">
         <vendorCode>AS34349</vendorCode>
         <name>Тонер-картридж Xerox 106R02310</name>
-        <price>113900</price>
+        <price>119900</price>
         <picture>https://img.al-style.kz/34349_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -21378,7 +21378,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
   <offer id="AS33334">
         <vendorCode>AS33334</vendorCode>
         <name>Фьюзерный модуль Xerox 109R00849</name>
-        <price>176900</price>
+        <price>182900</price>
         <picture>https://img.al-style.kz/33334_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -21401,7 +21401,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
   <offer id="AS33356">
         <vendorCode>AS33356</vendorCode>
         <name>Скрепки (refill) Xerox 008R12898</name>
-        <price>118900</price>
+        <price>122900</price>
         <picture>https://img.al-style.kz/33356_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -21483,7 +21483,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
   <offer id="AS33683">
         <vendorCode>AS33683</vendorCode>
         <name>Тонер-картридж Xerox 106R01441 (малиновый)</name>
-        <price>322900</price>
+        <price>338900</price>
         <picture>https://img.al-style.kz/33683_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -21509,7 +21509,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
   <offer id="AS33685">
         <vendorCode>AS33685</vendorCode>
         <name>Картридж скрепок Xerox 108R00493</name>
-        <price>95900</price>
+        <price>98900</price>
         <picture>https://img.al-style.kz/33685_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -21883,7 +21883,7 @@ PoE
         <picture>https://img.al-style.kz/41497_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тормозная площадка -  одна из основных деталей в узле захвата бумаги. Задача этой детали — отделить верхний лист от всей пачки бумаги, при подаче листа на печать.Накладка из полиуретана является основной рабочей частью. Полиуретан обладает не скользящей поверхностью. Такое свойство полиуретана не даст страницам соскальзывать с тормозной площадки во время захвата бумаги. Со временем накладка теряет свои свойства, т.е. изнашивается, теряет эластичность, это приводит к тому, что принтер затягивает сразу несколько листов, при подаче страницы на печать. Затягивание нескольких страниц приводит к значительным неудобствам в работе, увеличивается время на сортировку отпечатанных страниц, возрастают расходы на бумагу.  .
 Модель:  108R01472
 Совместимость: Xerox WorkCentre 3335
@@ -21940,7 +21940,7 @@ PoE
   <offer id="AS41544">
         <vendorCode>AS41544</vendorCode>
         <name>Тонер-картридж Xerox 106R02741 (чёрный)</name>
-        <price>228900</price>
+        <price>236900</price>
         <picture>https://img.al-style.kz/41544_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -22051,7 +22051,7 @@ USB
   <offer id="AS41681">
         <vendorCode>AS41681</vendorCode>
         <name>Комплект блока формирования изображений Xerox 013R00692</name>
-        <price>272900</price>
+        <price>281900</price>
         <picture>https://img.al-style.kz/41681_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -22917,7 +22917,7 @@ USB
         <picture>https://img.al-style.kz/42085_3.jpg</picture>
         <vendor>CyberPower</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>CyberPower PR1500ERTXL2U конструкция для монтажа в стойку гарантирует защиту резервного питания для систем домашнего кинотеатра, мультимедийных устройств, ИТ-оборудования, компьютеров, рабочих станций, NAS / устройств хранения, телекоммуникационных устройств, сетевых устройств и систем наблюдения. ИБП использует линейно-интерактивную топологию с функцией автоматического регулирования напряжения (AVR) и предлагает стабилизированный выходной сигнал чистой синусоиды для обеспечения высокого качества электроэнергии.
 
 Коэффициент выходной мощности ИБП равен 1, что означает, что он может подключаться к более критическим нагрузкам, чем обычный ИБП. Он также оснащен технологией управления батареями, которая помогает добиться оптимального срока службы за счет балансировки напряжения в цепочке батарей. Двухфазная зарядка аккумулятора позволяет быстро и безопасно заряжать аккумулятор. Аккумуляторные блоки с возможностью горячей замены упрощают обслуживание без перебоев в подаче электроэнергии. Многофункциональный матричный ЖК-дисплей поддерживает интуитивно понятное управление и быструю настройку. ЖК-панель также может поворачиваться в соответствии с требованиями установки.
@@ -23679,7 +23679,7 @@ USB
   <offer id="AS42269">
         <vendorCode>AS42269</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 006R04360 (чёрный)</name>
-        <price>88900</price>
+        <price>91900</price>
         <picture>https://img.al-style.kz/42269_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -23706,7 +23706,7 @@ USB
   <offer id="AS42270">
         <vendorCode>AS42270</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 006R04361 (голубой)</name>
-        <price>67900</price>
+        <price>69900</price>
         <picture>https://img.al-style.kz/42270_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -23733,7 +23733,7 @@ USB
   <offer id="AS42271">
         <vendorCode>AS42271</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 006R04362 (малиновый)</name>
-        <price>67900</price>
+        <price>69900</price>
         <picture>https://img.al-style.kz/42271_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -23760,7 +23760,7 @@ USB
   <offer id="AS42272">
         <vendorCode>AS42272</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 006R04363 (жёлтый)</name>
-        <price>67900</price>
+        <price>69900</price>
         <picture>https://img.al-style.kz/42272_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -24006,7 +24006,7 @@ USB
         <picture>https://img.al-style.kz/42433_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -25312,7 +25312,7 @@ USB
   <offer id="AS42276">
         <vendorCode>AS42276</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R04368 (чёрный)</name>
-        <price>171900</price>
+        <price>176900</price>
         <picture>https://img.al-style.kz/42276_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -25338,7 +25338,7 @@ USB
   <offer id="AS42277">
         <vendorCode>AS42277</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R04369 (голубой)</name>
-        <price>136900</price>
+        <price>141900</price>
         <picture>https://img.al-style.kz/42277_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -25365,7 +25365,7 @@ USB
   <offer id="AS42278">
         <vendorCode>AS42278</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R04370 (малиновый)</name>
-        <price>136900</price>
+        <price>141900</price>
         <picture>https://img.al-style.kz/42278_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -25392,7 +25392,7 @@ USB
   <offer id="AS42279">
         <vendorCode>AS42279</vendorCode>
         <name>Тонер-картридж повышенной ёмкости Xerox 006R04371 (жёлтый)</name>
-        <price>136900</price>
+        <price>141900</price>
         <picture>https://img.al-style.kz/42279_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -25751,7 +25751,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
   <offer id="AS43243">
         <vendorCode>AS43243</vendorCode>
         <name>Тонер-картридж Xerox 106R01534 (чёрный)</name>
-        <price>160900</price>
+        <price>166900</price>
         <picture>https://img.al-style.kz/43243_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -25814,7 +25814,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
   <offer id="AS43756">
         <vendorCode>AS43756</vendorCode>
         <name>Кабель сетевой SHIP D135-VS Cat.5e UTP 30В PVC</name>
-        <price>44900</price>
+        <price>49900</price>
         <picture>https://img.al-style.kz/43756_1.jpg</picture>
         <picture>https://img.al-style.kz/43756_2.jpg</picture>
         <vendor>Ship</vendor>
@@ -26718,7 +26718,7 @@ GMX24C144 также оснащен предустановками многовходовых разъемов GameMax, которые 
   <offer id="AS42281">
         <vendorCode>AS42281</vendorCode>
         <name>Блок формирования изображения Xerox 013R00692</name>
-        <price>272900</price>
+        <price>281900</price>
         <picture>https://img.al-style.kz/42281_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -26735,7 +26735,7 @@ GMX24C144 также оснащен предустановками многовходовых разъемов GameMax, которые 
   <offer id="AS45721">
         <vendorCode>AS45721</vendorCode>
         <name>Контейнер для отработанного тонера Xerox 108R00975</name>
-        <price>49900</price>
+        <price>50900</price>
         <picture>https://img.al-style.kz/45721_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -27927,7 +27927,7 @@ Microsoft Windows 11
   <offer id="AS47609">
         <vendorCode>AS47609</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 106R04073 (чёрный)</name>
-        <price>150900</price>
+        <price>155900</price>
         <picture>https://img.al-style.kz/47609_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -28126,7 +28126,7 @@ Microsoft Windows 11
   <offer id="AS40536">
         <vendorCode>AS40536</vendorCode>
         <name>Тонер-картридж Xerox 106R02755 (чёрный) Для Xerox WC6655X</name>
-        <price>164900</price>
+        <price>173900</price>
         <picture>https://img.al-style.kz/40536_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -28901,7 +28901,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
   <offer id="AS35748">
         <vendorCode>AS35748</vendorCode>
         <name>Тонер-картридж Xerox 106R01624 (голубой)</name>
-        <price>192900</price>
+        <price>199900</price>
         <picture>https://img.al-style.kz/35748_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -29162,7 +29162,7 @@ USB
   <offer id="AS43972">
         <vendorCode>AS43972</vendorCode>
         <name>Картридж скрепок Xerox 008R12925 / 029K92040</name>
-        <price>193900</price>
+        <price>200900</price>
         <picture>https://img.al-style.kz/43972_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -29425,7 +29425,7 @@ USB
   <offer id="AS38575">
         <vendorCode>AS38575</vendorCode>
         <name>Тонер-картридж Xerox 106R02252 (чёрный)</name>
-        <price>97900</price>
+        <price>100900</price>
         <picture>https://img.al-style.kz/38575_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -31269,7 +31269,7 @@ Dahua DHI-LM32-F200 — это отличное решение для пользователей, которые нуждаются 
   <offer id="AS49572">
         <vendorCode>AS49572</vendorCode>
         <name>Тонер-картридж Xerox 106R02308</name>
-        <price>82900</price>
+        <price>96900</price>
         <picture>https://img.al-style.kz/49572_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
@@ -33707,6 +33707,44 @@ HDMI x1
 - Время отклика: 5 мс</description>
       </offer>
 
+  <offer id="AS56392">
+        <vendorCode>AS56392</vendorCode>
+        <name>Монитор Samsung 25" Odyssey G4 LS25BG400EIXCI</name>
+        <price>110900</price>
+        <picture>https://img.al-style.kz/56392_1.jpg</picture>
+        <picture>https://img.al-style.kz/56392_2.jpg</picture>
+        <picture>https://img.al-style.kz/56392_3.jpg</picture>
+        <vendor>Samsung</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Монитор Samsung 25" Odyssey G4 LS25BG400EIXCII
+Играйте с максимальной реалистичностью
+
+Бросьте вызов реальности. Играйте, как никогда прежде. Панель IPS обеспечивает яркие цвета, широкий угол обзора 178&#186; и четкость с любой точки просмотра. Благодаря большему числу пикселей и невероятной глубине игры стали еще ближе к реальности..
+
+Реагируйте в режиме реального времени
+
+Играйте с молниеносной скоростью. Частота обновления 240 Гц исключает задержку, обеспечивая головокружительный игровой сеанс с невероятной плавностью действий. Мгновенно атакуйте врагов благодаря времени отклика 1 мс и кадрам без размытия
+
+Полностью сосредоточьтесь на игре
+
+Непринужденная плавность игрового сеанса. Совместимость с технологией G-Sync обеспечивает синхронизацию графического процессора и панели, устраняя рябь, задержку экрана и разрывы изображения. Получите конкурентное преимущество с технологией AMD FreeSync Premium, которая обеспечивает стабильность динамичных и сложных сцен без подергивания изображения.
+
+HAS (Регулируемая по высоте подставка): 120.0 мм (±5.0 мм)
+Наклон: -3.0&#730;(±2.0&#730;) ~ 22.0&#730;(±2.0&#730;)
+Вращение в плоскости стола:-15&#730;(±2.0&#730;) ~ 15&#730;(±2.0&#730;)
+Pivot (Портретный режим): -92.0°(±2.0°) ~ 92.0°(±2.0°)
+
+Характеристики:
+- Гарантия: 2 года
+- Тип матрицы экрана: IPS
+- Яркость: 400 кд/м2
+- Частота: 240 Гц
+- Состав: Металл, пластик
+- Разрешение: 1920/1080 (Full HD)
+- Время отклика: 1 мс</description>
+      </offer>
+
   <offer id="AS56451">
         <vendorCode>AS56451</vendorCode>
         <name>Проектор BYINTEK P70</name>
@@ -34417,7 +34455,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <picture>https://img.al-style.kz/56898_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -35538,7 +35576,7 @@ Type C   1 (4K, 60 Гц)
         <picture>https://img.al-style.kz/59206_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Широкоформатный принтер Canon imagePROGRAF TM-340
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики 
@@ -35954,7 +35992,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59320_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монохромное лазерное МФУ Canon I-S MF461dw
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
 Устройства серии i-SENSYS MF460 позволят вашим сотрудникам экономить ценное время и повышать производительность. Оцените быструю печать и сканирование и легко защитите устройства от взлома и вирусных угроз.
@@ -36161,7 +36199,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59325_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Цветное лазерное МФУ Canon I-S MF752CDW
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
@@ -36206,7 +36244,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59326_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Цветное лазерное МФУ Canon I-S MF754CDW
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
 Оптимальная производительность печати и сканирования с помощью цветного многофункционального принтера с прямым подключением к облаку.
@@ -36736,7 +36774,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59370_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монохромный лазерный принтер Canon I-S LBP6030B BUNDLE
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
 Доступный и компактный черно-белый лазерный принтер предназначен для персонального использования или небольшого офиса. Этот бесшумный и надежный принтер обладает повышенной энергоэффективностью и позволяет получать быстрые высококачественные результаты при низком уровне энергопотребления.
@@ -38940,7 +38978,7 @@ Canon imageRUNNER ADVANCE DX C5840iCanon imageRUNNER ADVANCE DX C5850iCanon imag
         <picture>https://img.al-style.kz/59954_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монохромное лазерное МФУ Canon imageRUNNER 2925i
 Данная позиция является базовым блоком и не является рабочей конфигурацией!Для активации печатной машины необходимо приобрести комплект расходных материалов и необходимые опции к базовому блоку! (см. в Сопутствующие товары)
 Требуется запуск АСЦ
@@ -42448,7 +42486,7 @@ Canon PIXMA 2540SCanon PIXMA MG2440Canon PIXMA MG2540Canon PIXMA MG2545Canon PIX
         <picture>https://img.al-style.kz/61068_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Струйный картридж Canon CL-446
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -42620,7 +42658,7 @@ Canon i-SENSYS MF742CdwCanon i-SENSYS MF744CdwCanon i-SENSYS MF746CxCanon i-SENS
         <picture>https://img.al-style.kz/61130_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Картридж Canon CARTRIDGE 055 Black
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
 Лазерный тонер-картридж Canon 055 стандартной емкости, ресурсом 2100 страниц, для точной цветопередачи и бесперебойной работы вашего печатного устройства.
@@ -45097,7 +45135,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61378_2.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Источник бесперебойного питания APC Back-UPS BX750MI-GR
 
 ИБП семейства Back-UPS надежно защищают электропитание мощных компьютерных систем, маршрутизаторов и модемов, внешних систем хранения, игровых приставок и прочей электроники в доме или организации. Эти ИБП стабилизируют напряжение при его отклонении от безопасных значений и дают возможность длительной работы от батарей при отключении электроэнергии. Они также обеспечивают защиту электропитания от опасных бросков и всплесков напряжения, а ПО для управления ИБП позволяет максимально полно использовать его возможности.
@@ -45157,7 +45195,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61380_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Источник бесперебойного питания APC Easy UPS BVX1600LI-GR
 
 ИБП семейства Easy UPS надежно защищают электропитание мощных компьютерных систем, маршрутизаторов и модемов, внешних систем хранения, игровых приставок и прочей электроники в доме или организации. Эти ИБП стабилизируют напряжение при его отклонении от безопасных значений и дают возможность длительной работы от батарей при отключении электроэнергии. Они также обеспечивают защиту электропитания от опасных бросков и всплесков напряжения, а ПО для управления ИБП позволяет максимально полно использовать его возможности.
@@ -51372,7 +51410,7 @@ Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SEN
   <offer id="AS64391">
         <vendorCode>AS64391</vendorCode>
         <name>Источник бесперебойного питания APC SUA500PDRI</name>
-        <price>298900</price>
+        <price>249900</price>
         <picture>https://img.al-style.kz/64391_1.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
@@ -51533,7 +51571,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
         <picture>https://img.al-style.kz/64533_2.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -53277,7 +53315,7 @@ CANON PIXMA MX454CANON PIXMA MG2240CANON PIXMA MG4140CANON PIXMA MG3240CANON PIX
         <picture>https://img.al-style.kz/65101_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Струйный картридж Canon CL-441XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -53476,7 +53514,7 @@ Canon imagePRESS C60Canon imagePRESS C65Canon imagePRESS C650Canon imagePRESS C7
         <picture>https://img.al-style.kz/65137_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Струйный картридж Canon PG-460XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -53889,7 +53927,7 @@ XG 75TLSM148128- это современная интерактивная панель, разработанная для примене
         <picture>https://img.al-style.kz/65439_2.jpg</picture>
         <vendor>XG</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Интерактивная панель XG 65TLS148128
 XG 65TLS148128- это современная интерактивная панель, разработанная для применения в образовании и бизнесе. Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.
 Основные возможности:
@@ -55013,7 +55051,7 @@ Canon i-SENSYS LBP620Canon i-SENSYS LBP312xCanon i-SENSYS LBP325xCanon i-SENSYS 
         <picture>https://img.al-style.kz/66401_3.jpg</picture>
         <vendor>iiyama</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор iiyama ProLite PL2492H XUB2492HSU-B6 A 23,8"
 
 ProLite XUB2792UHSU со стильным дизайном передней панели и разрешением 4K без труда вмещает в четыре раза больше информации, чем дисплей Full HD. Оснащенный панелью IPS для точной цветопередачи и широких углов обзора, а также высокими значениями контрастности и яркости, он обеспечивает безупречную производительность как для фотографических, так и для веб-дизайнерских задач. Регулируемая по высоте подставка 150 мм с функциями поворота и вращения позволяет получить идеальный угол обзора. Благодаря функции динамического энергосбережения (DPS) просто переключите переключатель, чтобы насладиться интеллектуальной регулировкой яркости для оптимальной энергоэффективности без ущерба для яркости. Переопределите свой творческий рабочий процесс с помощью ProLite XUB2792UHSU.
@@ -55180,7 +55218,7 @@ XG 75BCDB138128- это современная интерактивная панель, разработанная для примене
         <picture>https://img.al-style.kz/67117_3.jpg</picture>
         <vendor>XG</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Интерактивная панель XG 86BCDB138128   
 XG 86BCDB138128   - это современная интерактивная панель, разработанная для применения в образовании и бизнесе. Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.
 Основные возможности:
@@ -58668,7 +58706,7 @@ RJ45 (ЛВС)
         <picture>https://img.al-style.kz/70006_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Источник бесперебойного питания APC Smart-UPS SMT2200IC
 
 Интеллектуальная и эффективная защита электропитания сети — от начального уровня до масштабируемой среды выполнения. Идеальный ИБП для серверов, торговых точек, маршрутизаторов, коммутаторов, концентраторов и других сетевых устройств.
@@ -61979,7 +62017,7 @@ E&amp;lt;2 калибровка для каждого экрана. Каждый дисплей строго проверяется на п
         <picture>https://img.al-style.kz/72768_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор Samsung 24" LS24D400GAIXCI
 
 Особенности и преимущества:
@@ -62470,7 +62508,7 @@ DisplayPort x1
         <picture>https://img.al-style.kz/73515_3.jpg</picture>
         <vendor>Dahua</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор 24" Dahua DHI-LM24-B200S
 
 Особенности и преимущества:
@@ -62541,7 +62579,7 @@ DisplayPort x1
         <picture>https://img.al-style.kz/73661_3.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
@@ -62563,6 +62601,60 @@ DisplayPort x1
 - Для принтеров: HP LaserJet Pro M402, MFP M426
 - Тип печати: Лазерная
 - Цвет: Чёрный</description>
+      </offer>
+
+  <offer id="AS73669">
+        <vendorCode>AS73669</vendorCode>
+        <name>Монитор iiyama ProLite XUB2797UHSNP-B1 27"</name>
+        <price>197900</price>
+        <picture>https://img.al-style.kz/73669_1.jpg</picture>
+        <picture>https://img.al-style.kz/73669_2.jpg</picture>
+        <picture>https://img.al-style.kz/73669_3.jpg</picture>
+        <vendor>iiyama</vendor>
+        <currencyId>KZT</currencyId>
+        <available>true</available>
+        <description>Монитор iiyama ProLite XUB2797UHSNP-B1 27"
+
+Откройте для себя XUB2797UHSNP, 27-дюймовую 4K IPS-панель, оснащенную док-станцией USB-C (96 Вт PD), KVM-переключателем и RJ45 для подключения по локальной сети. KVM-переключатель позволяет подключать несколько компьютеров через одну консоль. Избавьтесь от путаницы кабелей с док-станцией USB-C, которая переносит все данные (аудио и видео) и одновременно питает ваш ноутбук. Легко расширьте свой рабочий стол, создав двухмониторную конфигурацию с выходом DisplayPort. Наслаждайтесь точными цветами и широкими углами обзора благодаря IPS-панели. Воспользуйтесь исключительной производительностью для таких задач, как фотография и веб-дизайн, благодаря разрешению 4K и высокой контрастности. Эргономичная подставка обеспечивает регулировку высоты 150 мм и наклонно-поворотные механизмы для портретного режима, оптимизируя комфорт при работе с обширными техническими таблицами.
+
+ОСОБЕННОСТИ И ПРЕИМУЩЕСТВА:
+
+Технология IPS. IPS дисплеи известны своими широкими углами обзора, естественными цветами и точной цветопередачей. Они особенно хорошо подходят для приложений по работе с цветом.
+
+4K. Разрешение UHD (3840x2160), также известное как 4K, помещает в 4 раза больше информации, чем обычный экран Full HD. Благодаря высокому показателю DPI (количество точек на дюйм), такой экран воспроизводит необычайно четкое и контрастное изображение.
+
+USB-C Dock. Док-станция позволяет подключать ноутбук к монитору с помощью одного кабеля, и быть уверенным, что он заряжен и подключен к проводной сети, а сигнал с ноутбука отправляется на монитор. Второй монитор можно подключить к выходу DisplayPort (MST) для создания конфигурации с несколькими мониторами. С помощью дополнительных USB портов к монитору также можно подключить мышь, клавиатуру или веб-камеру. И все это благодаря одному кабелю, соединяющему Ваш ноутбук с USB-C  док-станцией в мониторе.
+
+KVM SWITCH. Наличие монитора с KVM-переключателем позволит Вам использовать устройства, подключенные к монитору через USB, совместно с двумя разными ПК. Просто измените входной сигнал в экранном меню монитора, и Ваша клавиатура, мышь и веб-камера переключатся с рабочего ноутбука на игровой ПК.
+
+PIP. Функция PIP (картинка в картинке) позволяет одновременно выводить на экран два изображения, поступающих от двух различных источников.
+
+ИНТЕРФЕЙСЫ / РАЗЪЕМЫ / УПРАВЛЕНИЕ:
+
+HDMI x1 (v.2.0)
+DisplayPort x1 (v.1.2)
+USB HUB x4 (3x v.3.2 Gen 1 (5Gbps, 4.5W) 1x Type C (5Gbps, 15W))
+USB-C DOCK x1 (Power delivery 96W, LAN, DP out, USB v.3.2 (Gen 1, 5Gbit))
+HDCP
+Разъём для наушников
+RJ45 (LAN) x1
+
+АКСЕССУАРЫ:
+
+Кабель питания
+Кабель USB
+Кабель HDMI
+Кабель DP
+Кабель USB-C
+Краткое руководство по началу работы
+Руководство по безопасности
+
+Характеристики:
+- Гарантия: 1 год
+- Тип матрицы экрана: IPS
+- Яркость: 350 кд/м2
+- Размер VESA: 100x100 мм
+- Время отклика: 1 мс</description>
       </offer>
 
   <offer id="AS73722">
@@ -63814,7 +63906,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
         <picture>https://img.al-style.kz/75908_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор Samsung 27" LS27D304GAIXCI
 
 Особенности и преимущества:
@@ -64664,7 +64756,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <picture>https://img.al-style.kz/76667_3.jpg</picture>
         <vendor>TECNO</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Ноутбук Tecno Megabook K16SAA i5-13420H / 16&#8239;ГБ / SSD 512&#8239;ГБ / Win 11 Home
 
     Работай. Учись. Создавай.
@@ -66818,7 +66910,7 @@ MateBook D 14 —  Безрамочный экран с режимом защиты зрения. Высокая производител
         <picture>https://img.al-style.kz/77913_3.jpg</picture>
         <vendor>TECNO</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Ноутбук Tecno Megabook T16 Pro i7 Ultra 155H / 16&#8239;ГБ / SSD 1&#8239;ТБ / Win11
 
     Максимум мощности, элегантности и свободы.
@@ -68896,10 +68988,30 @@ OEM №: 013R00679
         <vendorCode>AS80923</vendorCode>
         <name>Ламинатор COMIX F9071 А3</name>
         <price>70900</price>
+        <picture>https://img.al-style.kz/80923_1.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
-        <description>Характеристики:
+        <description>Ламинатор COMIX F9071 A3
+
+Ламинатор Comix F9071 A3 – это профессиональный, высокопроизводительный ламинатор, предназначенный для интенсивной работы в крупных офисах, копировальных центрах и типографиях.
+
+Ламинатор оснащен шестью валами, что гарантирует безупречное качество ламинирования, идеально ровный результат и высокую четкость изображения без складок и пузырей. Модель предназначена для работы с плёнкой в широком диапазоне толщин – от 75 до 250 мкм. Максимальный формат документа – A3.
+
+Благодаря впечатляющей скорости до 1100 мм/мин, он способен быстро обрабатывать большие объемы документов, презентационных и рекламных материалов, фотографий, чертежей и сертификатов. Модель поддерживает как горячее, так и холодное ламинирование, а также оснащена функцией реверса для быстрого устранения замятий.
+
+Основные характеристики:
+
+  Диапазон плёнок: 75 – 250 мкм
+  Скорость ламинирования: до 1100 мм/мин
+  Количество валов: 6
+  Время нагрева: 12 секунд
+  Габариты (объём): 0.03 м&#179;
+  Цвет: Чёрный
+  Гарантия: 1 год
+  Вес брутто: 6,5 кг
+
+Характеристики:
 - Гарантия: 1 год</description>
       </offer>
 
@@ -68907,6 +69019,8 @@ OEM №: 013R00679
         <vendorCode>AS81004</vendorCode>
         <name>Ламинатор COMIX F6301D А3, 4 вала, 80-175 мкм, 40 см/мин.</name>
         <price>46900</price>
+        <picture>https://img.al-style.kz/81004_1.jpg</picture>
+        <picture>https://img.al-style.kz/81004_2.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
@@ -68925,6 +69039,7 @@ Comix F6301   ламинатор начального уровня для дома офиса.
         <vendorCode>AS81005</vendorCode>
         <name>Уничтожитель бумаг (Шредер) COMIX S4210M</name>
         <price>81900</price>
+        <picture>https://img.al-style.kz/81005_1.jpg</picture>
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
