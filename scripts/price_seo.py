@@ -4,14 +4,12 @@
 """
 price_seo.py
 Копирует docs/price.yml -> docs/price_seo.yml и добавляет в НАЧАЛО каждого <description>
-единый «safe» HTML-блок (без инлайн-стилей). Родной текст описания сохраняется и идёт сразу после.
-Если у оффера нет <description>, он будет добавлен с этим блоком.
+твой блок с ВАШИМ ЖЕ ТЕКСТОМ (без изменений смысла и формулировок), но с безопасным форматированием:
+— без inline-стилей и без target=... (чтобы Satu не отрезал),
+— через CDATA,
+— запись в cp1251 с безопасной заменой неподдерживаемых символов.
 
-Особенности:
-- Без XML-парсера (устойчив к «грязным» & и < в тексте).
-- Защита от двойной вставки (ищем маркер "Написать нам в WhatsApp").
-- Кодировка: windows-1251. Символы вне cp1251 обрабатываем безопасно:
-  ₸ -> "тг.", ≈ -> "~", прочие — через xmlcharrefreplace (&#NNNN;).
+Родной текст описания идёт сразу после блока. Повторной вставки нет.
 """
 
 from pathlib import Path
@@ -23,19 +21,23 @@ SRC = Path("docs/price.yml")
 DST = Path("docs/price_seo.yml")
 ENC = "windows-1251"
 
-# --- «safe» HTML-шаблон для Satu (вставляется ВВЕРХУ каждого описания) ---
-TEMPLATE_HTML = """<p><strong><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0">Написать нам в WhatsApp</a></strong></p>
-<p>Быстрые ответы в WhatsApp: <a href="tel:+77073270501"><strong>+7 (707) 327-05-01</strong></a> или почта <a href="mailto:info@complex-solutions.kz"><strong>info@complex-solutions.kz</strong></a></p>
-<p><strong>Оплата</strong></p>
+# === ТВОЙ ТЕКСТ (сохранён по смыслу и словам), только убраны style/target ===
+TEMPLATE_HTML = """<p><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"><strong>НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</strong></a></p>
+
+<p>Просьба отправлять запросы в <a href="tel:+77073270501"><strong>WhatsApp: +7 (707) 327-05-01</strong></a> либо на почту: <a href="mailto:info@complex-solutions.kz"><strong>info@complex-solutions.kz</strong></a></p>
+
+<h2>Оплата</h2>
 <ul>
-  <li>Безналичный расчёт для юр. лиц</li>
-  <li>Оплата по Kaspi для физ. лиц</li>
+  <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>
+  <li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>
 </ul>
-<p><strong>Доставка</strong></p>
+
+<h2>Доставка</h2>
 <ul>
-  <li>Алматы (“квадрат”) — бесплатно</li>
-  <li>По Казахстану: до 5 кг ~ 2500 тг., 3–7 рабочих дней</li>
-  <li>Любой перевозчик или отправка через автовокзал «Сайран»</li>
+  <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>
+  <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 2500 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией <a href="https://exline.kz/"><strong>Exline.kz</strong></a></em></li>
+  <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
+  <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>
 </ul>"""
 
 # --- IO helpers ---
@@ -44,13 +46,15 @@ def read_cp1251(path: Path) -> str:
         return f.read()
 
 def write_cp1251(path: Path, text: str) -> None:
-    # Нормализация неподдерживаемых символов под cp1251
+    # Нормализация неподдерживаемых символов под cp1251 (не меняет смысла)
     text = (text
-            .replace("\u20b8", "тг.")   # ₸ -> тг.
-            .replace("\u2248", "~")     # ≈ -> ~
-            .replace("\u00A0", " "))    # nbsp -> space
+            .replace("\u20b8", "тг.")   # ₸ -> "тг."
+            .replace("\u2248", "~")     # ≈ -> "~"
+            .replace("\u00A0", " ")     # NBSP -> обычный пробел
+            .replace("\u201C", '"').replace("\u201D", '"')  # “ ” -> "
+            .replace("\u201E", '"').replace("\u201F", '"')
+            .replace("\u2013", "-").replace("\u2014", "—")) # – -> -, — оставляем
     path.parent.mkdir(parents=True, exist_ok=True)
-    # На всякий случай: редкие символы превратятся в &#NNNN;
     with io.open(path, "w", encoding=ENC, newline="\n", errors="xmlcharrefreplace") as f:
         f.write(text)
 
@@ -68,15 +72,15 @@ def wrap_cdata(s: str) -> str:
     return "<![CDATA[" + s.replace("]]>", "]]&gt;") + "]]>"
 
 def inject_into_description_block(desc_inner: str) -> str:
-    """Вставляет шаблон в начало блока описания, если его там ещё нет."""
+    """Вставляет шаблон в начало блока описания, если его там ещё нет (ищем точную фразу WhatsApp)."""
     inner_clean = strip_cdata(desc_inner)
-    if "Написать нам в WhatsApp" in inner_clean:
+    if "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in inner_clean:
         return f"<description>{desc_inner}</description>"
     combined = TEMPLATE_HTML + ("\n\n" + inner_clean.strip() if inner_clean.strip() else "")
     return "<description>" + wrap_cdata(combined) + "</description>"
 
 def add_description_if_missing(offer_block: str) -> str:
-    """Если в оффере нет description — вставляем его перед </offer> с шаблоном."""
+    """Если в оффере нет description — вставляем его перед </offer> с твоим блоком."""
     if re.search(r"<description\b", offer_block, flags=re.I):
         return offer_block
     m = re.search(r"\n([ \t]+)<", offer_block)
@@ -107,7 +111,7 @@ def main() -> int:
     original = read_cp1251(SRC)
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
-    print(f"[seo] Готово: добавлен «safe»-блок в описания. Файл: {DST}")
+    print(f"[seo] Готово: блок добавлен в начало описания каждого товара. Файл: {DST}")
     return 0
 
 if __name__ == "__main__":
