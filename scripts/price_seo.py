@@ -11,12 +11,8 @@ Output: docs/price_seo.yml (cp1251)
 - <description>: лид (≈160–180) + Преимущества (буллеты) + Характеристики (если были)
   + Совместимость (если была) + FAQ + Сервис/доставка + Аналоги при available=false.
 - Порядок тегов -> vendorCode, name, price, picture*, vendor, currencyId, available, description.
-- FEED_META-комментарии из price.yml сохраняются как есть.
-- Между офферами — пустая строка.
-- FIX: безопасный парсинг <shop> с санитацией «сырых» & и недопустимых символов.
-
-Запуск:
-  python scripts/price_seo.py
+- FEED_META и окружение вокруг <shop> — не трогаем.
+- FIX: Работаем только внутри <offers>…</offers> текстом; каждый <offer> санитизируем и парсим отдельно.
 """
 
 from __future__ import annotations
@@ -28,7 +24,7 @@ INPUT_PATH  = os.getenv("SEO_INPUT",  "docs/price.yml")
 OUTPUT_PATH = os.getenv("SEO_OUTPUT", "docs/price_seo.yml")
 ENC         = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-# ---------- low-level IO ----------
+# ---------- IO ----------
 def rtext(path: str) -> str:
     with io.open(path, "r", encoding=ENC, errors="replace") as f:
         return f.read()
@@ -38,33 +34,40 @@ def wtext(path: str, text: str) -> None:
     with io.open(path, "w", encoding=ENC, newline="\n") as f:
         f.write(text)
 
-# ---------- split around <shop> ----------
-SHOP_OPEN_RX = re.compile(r"<shop\b[^>]*>", re.I)
-SHOP_CLOSE_RX = re.compile(r"</shop>", re.I)
+# ---------- locate blocks ----------
+SHOP_OPEN_RX   = re.compile(r"<shop\b[^>]*>", re.I)
+SHOP_CLOSE_RX  = re.compile(r"</shop>", re.I)
+OFFERS_OPEN_RX = re.compile(r"<offers\b[^>]*>", re.I)
+OFFERS_CLOSE_RX= re.compile(r"</offers>", re.I)
+OFFER_RX       = re.compile(r"<offer\b.*?</offer>", re.I | re.S)
 
 def split_around_shop(xml_text: str) -> tuple[str, str, str]:
     m_open = SHOP_OPEN_RX.search(xml_text)
     m_close = SHOP_CLOSE_RX.search(xml_text)
     if not (m_open and m_close and m_close.end() > m_open.start()):
         raise ValueError("XML does not contain proper <shop>...</shop> block")
-    head = xml_text[:m_open.start()]
-    shop_block = xml_text[m_open.start():m_close.end()]
-    tail = xml_text[m_close.end():]
-    return head, shop_block, tail
+    return xml_text[:m_open.start()], xml_text[m_open.start():m_close.end()], xml_text[m_close.end():]
 
-# ---------- sanitize helpers (FIX) ----------
-# Разрешённые сущности: &amp; &lt; &gt; &quot; &apos; &#123; &#x1F4A9;
+def split_around_offers(shop_block: str) -> tuple[str, str, str]:
+    mo = OFFERS_OPEN_RX.search(shop_block)
+    mc = OFFERS_CLOSE_RX.search(shop_block)
+    if not (mo and mc and mc.end() > mo.end()):
+        raise ValueError("<offers>...</offers> not found inside <shop>")
+    head = shop_block[:mo.end()]           # включая <offers>
+    inner = shop_block[mo.end():mc.start()]# между тегами
+    tail = shop_block[mc.start():]         # включая </offers> и всё дальше до </shop>
+    return head, inner, tail
+
+# ---------- sanitize one <offer> ----------
 _ALLOWED_ENTITY_RX = re.compile(r"&(?:amp|lt|gt|quot|apos|#\d+|#x[0-9A-Fa-f]+);")
+_INVALID_CTRL_RX   = re.compile(r"([\x00-\x08\x0B\x0C\x0E-\x1F])")
 
-def _escape_bad_ampersands(s: str) -> str:
-    # Заменяем & на &amp;, если это НЕ начало допустимой сущности
+def escape_bad_ampersands(s: str) -> str:
     out = []
     i = 0
     L = len(s)
     while i < L:
-        ch = s[i]
-        if ch == "&":
-            # быстро проверить «похоже ли на сущность»
+        if s[i] == "&":
             m = _ALLOWED_ENTITY_RX.match(s, i)
             if m:
                 out.append(m.group(0))
@@ -73,22 +76,18 @@ def _escape_bad_ampersands(s: str) -> str:
             else:
                 out.append("&amp;")
         else:
-            out.append(ch)
+            out.append(s[i])
         i += 1
     return "".join(out)
 
-# недопустимые управляющие символы XML 1.0 (исключая \t \n \r)
-_INVALID_CTRL_RX = re.compile(
-    r"([\x00-\x08\x0B\x0C\x0E-\x1F])"
-)
+# Экранируем «сырые» знаки '<', которые НЕ начинают тег или комментарий/CDATA/doctype.
+RAW_LT_RX = re.compile(r"<(?!(?:[A-Za-z_/?!]|!--|\!\[CDATA\[|!DOCTYPE))")
 
-def sanitize_xml_fragment(s: str) -> str:
-    if not s:
-        return s
-    # сначала экранируем «плохие» &
-    s = _escape_bad_ampersands(s)
-    # удалим запрещённые управляющие
+def sanitize_offer_xml_text(offer_xml: str) -> str:
+    s = offer_xml
     s = _INVALID_CTRL_RX.sub("", s)
+    s = escape_bad_ampersands(s)
+    s = RAW_LT_RX.sub("&lt;", s)
     return s
 
 # ---------- XML helpers ----------
@@ -286,7 +285,6 @@ def enhance_offer(off: ET.Element, all_offers: List[ET.Element]) -> None:
     compat = extract_compatibility(desc) or extract_compatibility(base)
     available = (get_text(off, "available") or "true").lower()
 
-    # подберём простые "аналоги" из того же бренда с похожим префиксом кода
     analogs: List[str] = []
     if available == "false":
         vc_pref = vc[:3]
@@ -300,7 +298,6 @@ def enhance_offer(off: ET.Element, all_offers: List[ET.Element]) -> None:
                 if nm: analogs.append(nm)
             if len(analogs) >= 3: break
 
-    # SEO name и description
     seo_name = make_seo_name(brand, model, kind, base)
     set_text(off, "name", seo_name)
 
@@ -335,58 +332,56 @@ def enhance_offer(off: ET.Element, all_offers: List[ET.Element]) -> None:
             lines.append(f"— {a}")
 
     set_text(off, "description", "\n".join(lines).strip())
-
-    # Порядок тегов
     reorder_offer_children(off)
 
 # ---------- main ----------
 def main() -> int:
-    xml_in = rtext(INPUT_PATH)
+    full = rtext(INPUT_PATH)
 
-    # сохраним FEED_META и прочее вокруг <shop>
-    head, shop_block, tail = split_around_shop(xml_in)
+    # 1) отделяем <shop> и всё вокруг, чтобы не ломать FEED_META
+    head, shop_block, tail = split_around_shop(full)
 
-    # Санитизируем только shop_block (чтобы не трогать шапку с комментариями)
-    shop_block_safe = sanitize_xml_fragment(shop_block)
+    # 2) отделяем <offers>…</offers> внутри shop
+    shop_head, offers_inner, shop_tail = split_around_offers(shop_block)
 
-    # Парсим <shop>…</shop>
-    try:
-        shop_root = ET.fromstring(shop_block_safe.encode(ENC, errors="replace"))
-    except Exception as e:
-        print(f"[seo] XML parse error in <shop> block after sanitize: {e}")
-        # На случай редкой ошибки — подсказка, где искать «&»
-        bad = re.findall(r"[^&]&[^a-zA-Z#]", shop_block)
-        if bad:
-            print(f"[seo] Hint: found suspicious '&' around: {bad[:3]}")
-        return 2
+    # 3) вытаскиваем офферы текстом
+    raw_offers = OFFER_RX.findall(offers_inner)
 
-    offers_el = shop_root.find("offers") or shop_root.find("Offers")
-    if offers_el is None:
-        print("[seo] No <offers> inside <shop>")
-        return 3
+    processed_offers_txt: List[str] = []
+    for off_txt in raw_offers:
+        safe_txt = sanitize_offer_xml_text(off_txt)
+        # парсим отдельный оффер
+        try:
+            off_el = ET.fromstring(safe_txt.encode(ENC, errors="replace"))
+        except Exception as e:
+            # если вдруг всё ещё не парсится — экранируем любые остаточные '<'
+            safe_txt2 = re.sub(r"<", "&lt;", safe_txt)
+            off_el = ET.fromstring(safe_txt2.encode(ENC, errors="replace"))
+        # собираем список для аналогов (минимально — сам оффер)
+        enhance_offer(off_el, [off_el])
+        # сериализация без декларации
+        try:
+            ET.indent(off_el, space="  ")
+        except Exception:
+            pass
+        rendered = ET.tostring(off_el, encoding=ENC, method="xml").decode(ENC, errors="replace").strip()
+        processed_offers_txt.append(rendered)
 
-    offers = list(offers_el.findall("offer"))
-    # Пробегаемся по всем офферам (для подбора аналогов нужен общий список)
-    for off in offers:
-        enhance_offer(off, offers)
+    # 4) склеиваем обратно внутренности <offers>:
+    #    между </offer> и <offer> — пустая строка; с тем же базовым отступом, что был в файле (обычно 4 пробела до <offer>)
+    #    возьмём отступ из shop_head (последняя строка)
+    m_indent = re.search(r"\n([ \t]*)$", shop_head)
+    base_indent = (m_indent.group(1) if m_indent else "    ")
+    offer_indent = base_indent + "  "  # обычно было 6 пробелов перед <offer>
 
-    # pretty print внутри shop
-    try:
-        ET.indent(shop_root, space="  ")
-    except Exception:
-        pass
+    inner_new = ("\n\n".join(offer_indent + o.replace("\n", "\n"+offer_indent) for o in processed_offers_txt)).rstrip()
+    if inner_new:
+        inner_new = "\n" + inner_new + "\n" + base_indent  # обрамление как в исходном
 
-    # сериализуем обратно только <shop>…</shop>
-    shop_txt = ET.tostring(shop_root, encoding=ENC, method="xml").decode(ENC, errors="replace")
-
-    # Гарантируем пустую строку между офферами
-    shop_txt = re.sub(r"\s*</offer>\s*<offer\b", "</offer>\n\n  <offer", shop_txt, flags=re.S)
-
-    # Собираем финальный документ: head + shop + tail (FEED_META остаются нетронутыми)
-    out_txt = head + shop_txt + tail
-
-    wtext(OUTPUT_PATH, out_txt)
-    print(f"[seo] Wrote {OUTPUT_PATH}")
+    # 5) собираем итог: head + shop_head + inner_new + shop_tail + tail
+    out = head + shop_head + inner_new + shop_tail + tail
+    wtext(OUTPUT_PATH, out)
+    print(f"[seo] Wrote {OUTPUT_PATH} | offers={len(processed_offers_txt)}")
     return 0
 
 if __name__ == "__main__":
