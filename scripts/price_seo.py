@@ -10,14 +10,13 @@ price_seo.py
 Особенности:
 - Без XML-парсера (устойчив к «грязным» & и < в тексте).
 - Защита от двойной вставки (ищем маркер "Написать нам в WhatsApp").
-- Кодировка записи: windows-1251. Символ ₸ автоматически заменяется на "тг.".
-- Между </offer> и <offer> исходное форматирование сохраняется.
+- Кодировка: windows-1251. Символы вне cp1251 обрабатываем безопасно:
+  ₸ -> "тг.", ≈ -> "~", прочие — через xmlcharrefreplace (&#NNNN;).
 """
 
 from pathlib import Path
 import re
 import sys
-import os
 import io
 
 SRC = Path("docs/price.yml")
@@ -35,24 +34,28 @@ TEMPLATE_HTML = """<p><strong><a href="https://api.whatsapp.com/send/?phone=7707
 <p><strong>Доставка</strong></p>
 <ul>
   <li>Алматы (“квадрат”) — бесплатно</li>
-  <li>По Казахстану: до 5 кг ≈ 2500 тг., 3–7 рабочих дней</li>
+  <li>По Казахстану: до 5 кг ~ 2500 тг., 3–7 рабочих дней</li>
   <li>Любой перевозчик или отправка через автовокзал «Сайран»</li>
 </ul>"""
 
-# --- утилиты чтения/записи ---
+# --- IO helpers ---
 def read_cp1251(path: Path) -> str:
     with io.open(path, "r", encoding=ENC, errors="replace") as f:
         return f.read()
 
 def write_cp1251(path: Path, text: str) -> None:
-    # заменяем символ тенге на "тг." (₸ не входит в cp1251)
-    text = text.replace("\u20b8", "тг.")
+    # Нормализация неподдерживаемых символов под cp1251
+    text = (text
+            .replace("\u20b8", "тг.")   # ₸ -> тг.
+            .replace("\u2248", "~")     # ≈ -> ~
+            .replace("\u00A0", " "))    # nbsp -> space
     path.parent.mkdir(parents=True, exist_ok=True)
-    with io.open(path, "w", encoding=ENC, newline="\n", errors="strict") as f:
+    # На всякий случай: редкие символы превратятся в &#NNNN;
+    with io.open(path, "w", encoding=ENC, newline="\n", errors="xmlcharrefreplace") as f:
         f.write(text)
 
-# --- helpers ---
-DESC_RX = re.compile(r"<description\b[^>]*>(.*?)</description>", re.S | re.I)
+# --- regex helpers ---
+DESC_RX  = re.compile(r"<description\b[^>]*>(.*?)</description>", re.S | re.I)
 OFFER_RX = re.compile(r"<offer\b[^>]*>.*?</offer>", re.S | re.I)
 
 def strip_cdata(s: str) -> str:
@@ -62,59 +65,48 @@ def strip_cdata(s: str) -> str:
     return s
 
 def wrap_cdata(s: str) -> str:
-    # не допускаем последовательность "]]>" внутри CDATA
     return "<![CDATA[" + s.replace("]]>", "]]&gt;") + "]]>"
 
 def inject_into_description_block(desc_inner: str) -> str:
     """Вставляет шаблон в начало блока описания, если его там ещё нет."""
     inner_clean = strip_cdata(desc_inner)
-    # Проверка на повторную вставку
     if "Написать нам в WhatsApp" in inner_clean:
         return f"<description>{desc_inner}</description>"
-    # Собираем: шаблон + пустая строка + исходный текст (если был)
-    if inner_clean.strip():
-        combined = TEMPLATE_HTML + "\n\n" + inner_clean.strip()
-    else:
-        combined = TEMPLATE_HTML
+    combined = TEMPLATE_HTML + ("\n\n" + inner_clean.strip() if inner_clean.strip() else "")
     return "<description>" + wrap_cdata(combined) + "</description>"
 
 def add_description_if_missing(offer_block: str) -> str:
     """Если в оффере нет description — вставляем его перед </offer> с шаблоном."""
     if re.search(r"<description\b", offer_block, flags=re.I):
         return offer_block
-    # вычислим базовый отступ (по остальным тегам внутри оффера)
     m = re.search(r"\n([ \t]+)<", offer_block)
     indent = (m.group(1) if m else "  ")
     insertion = f"\n{indent}<description>{wrap_cdata(TEMPLATE_HTML)}</description>"
-    return offer_block.replace("</offer>", insertion + "\n" + indent[:-2] + "</offer>" if len(indent) >= 2 else insertion + "\n</offer>")
+    return offer_block.replace("</offer>",
+                              (insertion + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2
+                              else (insertion + "\n</offer>"))
 
 def process_whole_text(xml_text: str) -> str:
-    # 1) сначала обрабатываем все существующие <description>...</description>
+    # 1) обновляем существующие description
     def _repl(m: re.Match) -> str:
         inner = m.group(1)
         return inject_into_description_block(inner)
-
     text_after_desc = DESC_RX.sub(_repl, xml_text)
-
-    # 2) затем добавим description тем офферам, где его нет
+    # 2) добавляем для тех офферов, где description отсутствует
     def _offer_repl(m: re.Match) -> str:
         block = m.group(0)
         if re.search(r"<description\b", block, flags=re.I):
             return block
         return add_description_if_missing(block)
-
-    final_text = OFFER_RX.sub(_offer_repl, text_after_desc)
-    return final_text
+    return OFFER_RX.sub(_offer_repl, text_after_desc)
 
 def main() -> int:
     if not SRC.exists():
         print(f"[seo] Исходный файл не найден: {SRC}", file=sys.stderr)
         return 1
-
     original = read_cp1251(SRC)
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
-
     print(f"[seo] Готово: добавлен «safe»-блок в описания. Файл: {DST}")
     return 0
 
