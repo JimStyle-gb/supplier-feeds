@@ -32,7 +32,7 @@ COLOR_BTN   = "#27ae60"   # зелёный фон кнопки
 COLOR_KASPI = "#8b0000"   # тёмно-красный для KASPI
 
 # Весь блок — в шрифте Arial/Helvetica; кнопка с border-radius; все ссылки без подчёркивания
-TEMPLATE_HTML: str = f"""<div style="font-family: Arial, Helvetica, sans-serif;">
+TEMPLATE_HTML: str = f"""<div style="font-family: Calibri, Helvetica, sans-serif;">
   <center>
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
        style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:700;">
