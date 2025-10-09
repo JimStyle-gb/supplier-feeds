@@ -7,11 +7,13 @@ price_seo.py
 Создаёт docs/price_seo.yml из docs/price.yml и добавляет в НАЧАЛО каждого <description>
 ВАШ ВЕРХНИЙ БЛОК (Cambria) → <hr> → красиво оформленное родное описание (Times New Roman).
 
-Новое:
-  • Абзац с «Характеристики:» преобразуется в столбик-список <ul>…</ul>.
-  • В элементах списка жирнеет только ключ до двоеточия: <strong>Гарантия:</strong> 1 год.
+Особенности:
+  • «Характеристики» сводятся к списку-столбцу.
+  • Ключи до двоеточия — жирные: <strong>Гарантия:</strong> 1 год.
+  • Если внутри одного <li> склеены несколько пар (' - Ключ: Значение - ...'),
+    они автоматически «разрезаются» на много <li>.
 
-Без CDATA. Повторной вставки блока нет. Кодировка: windows-1251 (безопасная нормализация).
+Без CDATA. Повторной вставки блока нет. Кодировка выхода: windows-1251 (безопасная нормализация).
 """
 
 from __future__ import annotations
@@ -74,6 +76,7 @@ def read_cp1251(path: Path) -> str:
         return f.read()
 
 def write_cp1251(path: Path, text: str) -> None:
+    """Пишем в cp1251 с безопасной нормализацией."""
     safe = (
         text
         .replace("\u20B8", "тг.")   # ₸ → "тг."
@@ -94,10 +97,10 @@ OFFER_RX       = re.compile(r"<offer\b[^>]*>.*?</offer>",                re.I | 
 HAS_HTML_TAGS  = re.compile(r"<[a-zA-Z/!][^>]*>")  # грубая проверка на наличие HTML
 A_NO_STYLE_RX  = re.compile(r"<a(?![^>]*\bstyle=)", re.I)  # <a ...> без style=
 
-# ─────────────────────────── Вспомогательные ───────────────────────────
-
 # Линия «ключ: значение»
 KV_LINE_RX = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
+
+# ─────────────────────────── Хелперы характеристик ───────────────────────────
 
 def kv_to_li(text_line: str) -> str:
     """'- Гарантия: 1 год' -> '<li><strong>Гарантия:</strong> 1 год</li>'"""
@@ -112,57 +115,71 @@ def kv_to_li(text_line: str) -> str:
     return f"<li>{html_escape(s)}</li>"
 
 def make_ul_from_bullets(text_block: str) -> str:
-    """Преобразует набор строк c '-'/'•' в <ul>…</ul>"""
+    """Преобразует набор строк c '-'/'•' в <ul>…</ul>."""
     lines = [ln for ln in text_block.replace("\r\n","\n").replace("\r","\n").split("\n") if ln.strip()]
     items = [kv_to_li(ln) for ln in lines if ln.strip()]
     return "<ul>\n" + "\n".join(items) + "\n</ul>"
 
-# ─────────────────────────── Оформление родного описания ───────────────────────────
-
-def transform_characteristics_paragraphs(html: str) -> str:
+# ★ NEW: разбиваем один LI с инлайновыми парами " - Ключ: Значение" на несколько LI
+def explode_inline_kv_pairs_in_li(html: str) -> str:
     """
-    Ищем абзацы с «Характеристики:» и пулями внутри (через переносы или <br>),
-    превращаем их в: <p><strong>Характеристики:</strong></p><ul>…</ul>.
+    Находит <li>..</li>, где внутри несколько пар вида " - Ключ: Значение"
+    и разрезает их на отдельные <li>. Ключ жирный.
     """
-    def para_repl(m: re.Match) -> str:
-        start, body, end = m.group(1), m.group(2), m.group(3)
-        # есть ли «Характеристики:»
-        if not re.search(r"\bХарактеристик[аи]:", body, flags=re.I):
+    def li_repl(m: re.Match) -> str:
+        before, body, after = m.group(1), m.group(2), m.group(3)
+
+        # Быстрый выход: нет потенциальных разделителей — не трогаем
+        if not any(sep in body for sep in (" - ", " — ", " • ", " · ")):
             return m.group(0)
 
-        # Разделим на «заголовок» и «пулевые элементы»
-        # Варианты: "- ..." через \n ИЛИ через <br>
-        # Сначала нормализуем <br> в \n
-        norm = re.sub(r"<br\s*/?>", "\n", body, flags=re.I)
-        # Выделим часть после ключевого слова
-        parts = re.split(r"(?i)Характеристик[аи]:", norm, maxsplit=1)
-        if len(parts) != 2:
-            return m.group(0)
-        head, tail = parts[0], parts[1]
+        # Нормализуем разделители к ' - ' для анализа
+        norm = body.replace(" — ", " - ").replace(" • ", " - ").replace(" · ", " - ")
 
-        # В tail должны быть строки с "-" / "•"
-        bullet_lines = [ln for ln in tail.strip().split("\n") if ln.strip()]
-        bullet_like = [ln for ln in bullet_lines if ln.lstrip().startswith(("-", "•", "–", "—"))]
-        if len(bullet_like) < 1:
-            # нет маркеров — не трогаем
+        # Если всего одно двоеточие — скорее одна пара, оставляем
+        if norm.count(":") <= 1:
             return m.group(0)
 
-        ul = make_ul_from_bullets("\n".join(bullet_lines))
-        # head может содержать текст перед «Характеристики:» — сохраним его как параграф (если есть)
-        head_html = head.strip()
-        out = ""
-        if head_html:
-            out += f"<p>{head_html}</p>\n"
+        # Сплит по " - " только если фрагмент начинается с "Ключ:" (то есть содержит двоеточие сразу после слова)
+        parts = []
+        buf = []
+        tokens = norm.split(" - ")
+        for i, tk in enumerate(tokens):
+            if i == 0:
+                buf.append(tk)
+                continue
+            if re.match(r"\s*[^:<>{}\n]{1,120}:\s*.", tk, flags=re.S):
+                parts.append(" - ".join(buf))
+                buf = [tk]
+            else:
+                buf.append(tk)
+        parts.append(" - ".join(buf))
 
-        out += "<p><strong>Характеристики:</strong></p>\n" + ul
-        return start + out + end
+        # Превращаем каждый фрагмент в отдельный <li> с жирным ключом
+        lis = []
+        for frag in parts:
+            frag = frag.strip()
+            frag = re.sub(r"^[-•–—]\s*", "", frag).strip()
+            m_kv = re.match(r"([^:<>{}\n]{1,120}?)\s*:\s*(.+)$", frag, flags=re.S)
+            if m_kv:
+                key = html_escape(m_kv.group(1).strip())
+                val = html_escape(m_kv.group(2).strip())
+                lis.append(f"<li><strong>{key}:</strong> {val}</li>")
+            elif frag:
+                lis.append(f"<li>{html_escape(frag)}</li>")
 
-    # Работать только по <p>…</p>
-    PARA_RX = re.compile(r"(<p[^>]*>)(.*?)(</p>)", re.S | re.I)
-    return PARA_RX.sub(para_repl, html)
+        return "".join([before] + lis + [after])
 
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, html, flags=re.S | re.I)
+
+# ★ REPLACE: emphasize_kv_in_li — сначала «раскалывает» LI, потом жирнит ключ
 def emphasize_kv_in_li(html: str) -> str:
-    """В <li> превращаем 'Ключ: Значение' в '<strong>Ключ:</strong> Значение'."""
+    """
+    Делает жирным 'Ключ:' в <li>. Сначала раскалывает одиночные <li> с
+    инлайновыми парами ' - Ключ: Значение' на несколько <li>.
+    """
+    html2 = explode_inline_kv_pairs_in_li(html)
+
     def repl(m: re.Match) -> str:
         before, body, after = m.group(1), m.group(2), m.group(3)
         if re.search(r"^\s*(?:[-–—]\s*)?<strong>[^:]{1,120}:</strong>", body, flags=re.I):
@@ -173,23 +190,53 @@ def emphasize_kv_in_li(html: str) -> str:
             body, count=1, flags=re.S
         )
         return f"{before}{kv}{after}"
-    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", repl, html, flags=re.S | re.I)
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", repl, html2, flags=re.S | re.I)
+
+# ─────────────────────────── Преобразования HTML-описаний ───────────────────────────
+
+def transform_characteristics_paragraphs(html: str) -> str:
+    """
+    Ищем абзацы с «Характеристики:» и пулями внутри (через переносы или <br>),
+    превращаем их в: <p><strong>Характеристики:</strong></p><ul>…</ul>.
+    """
+    def para_repl(m: re.Match) -> str:
+        start, body, end = m.group(1), m.group(2), m.group(3)
+        if not re.search(r"\bХарактеристик[аи]:", body, flags=re.I):
+            return m.group(0)
+
+        norm = re.sub(r"<br\s*/?>", "\n", body, flags=re.I)
+        parts = re.split(r"(?i)Характеристик[аи]:", norm, maxsplit=1)
+        if len(parts) != 2:
+            return m.group(0)
+        head, tail = parts[0], parts[1]
+
+        bullet_lines = [ln for ln in tail.strip().split("\n") if ln.strip()]
+        bullet_like = [ln for ln in bullet_lines if ln.lstrip().startswith(("-", "•", "–", "—"))]
+        if len(bullet_like) < 1:
+            return m.group(0)
+
+        ul = make_ul_from_bullets("\n".join(bullet_lines))
+        head_html = head.strip()
+        out = ""
+        if head_html:
+            out += f"<p>{head_html}</p>\n"
+        out += "<p><strong>Характеристики:</strong></p>\n" + ul
+        return start + out + end
+
+    PARA_RX = re.compile(r"(<p[^>]*>)(.*?)(</p>)", re.S | re.I)
+    return PARA_RX.sub(para_repl, html)
 
 def beautify_existing_html(html: str) -> str:
     """
     Уже-HTML-описание:
-      • приводим «Характеристики» к списку,
-      • добавляем стиль ссылкам без style,
-      • жирним 'Ключ:' в <li>,
-      • оборачиваем в контейнер Times New Roman.
+      • «Характеристики» → список,
+      • ссылки без style → красим,
+      • <li> — жирный ключ и сплит одиночных LI на много,
+      • контейнер Times New Roman.
     """
-    # 1) «Характеристики: - ...» → список
     step1 = transform_characteristics_paragraphs(html)
-    # 2) ссылки без style → красим
     step2 = A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"', step1)
-    # 3) <li> Ключ: Значение → жирный ключ
     step3 = emphasize_kv_in_li(step2)
-    # 4) контейнер-шрифт
     wrapper = (
         f'<div style="font-family: \'Times New Roman\', Times, serif; '
         f'font-size:15px; line-height:1.55;">{step3}</div>'
@@ -203,7 +250,6 @@ def beautify_plain_text(text: str) -> str:
     t = text.replace("\r\n", "\n").replace("\r", "\n").strip()
     if not t:
         return ""
-
     blocks = [b.strip("\n") for b in re.split(r"\n{2,}", t)]
     out: list[str] = []
 
@@ -212,9 +258,7 @@ def beautify_plain_text(text: str) -> str:
         return bool(lines) and all(ln.startswith(("- ", "• ", "– ", "— ")) for ln in lines)
 
     for blk in blocks:
-        # Блок "Характеристики:" специально
         if re.search(r"(?i)\bХарактеристик[аи]:", blk):
-            # отделим заголовок и хвост
             parts = re.split(r"(?i)Характеристик[аи]:", blk, maxsplit=1)
             head = parts[0].strip()
             tail = parts[1].strip() if len(parts) == 2 else ""
@@ -233,7 +277,6 @@ def beautify_plain_text(text: str) -> str:
                 lis.append(kv_to_li(ln))
             out.append("<ul>\n" + "\n".join(lis) + "\n</ul>")
         else:
-            # обычный параграф (сохраняем одинарные переносы)
             lines = [html_escape(x) for x in blk.split("\n")]
             out.append(f"<p>{'<br>'.join(lines)}</p>")
 
@@ -244,6 +287,7 @@ def beautify_plain_text(text: str) -> str:
     return wrapped
 
 def beautify_original_description(existing_inner: str) -> str:
+    """Возвращает красиво оформленный HTML оригинального описания (Times New Roman)."""
     content = existing_inner.strip()
     if not content:
         return ""
@@ -260,7 +304,8 @@ HR_RX = re.compile(r"<hr\b[^>]*>", re.I)
 
 def rebuild_with_existing_block(desc_inner: str) -> str:
     """
-    Если блок уже есть: оформляем часть после первого <hr> (или добавим <hr>, если его нет).
+    Если блок уже есть: оформляем часть после первого <hr> (если он есть).
+    Если <hr> нет — возвращаем как есть, чтобы не ломать старый контент.
     """
     parts = HR_RX.split(desc_inner, maxsplit=1)
     if len(parts) == 2:
@@ -270,11 +315,6 @@ def rebuild_with_existing_block(desc_inner: str) -> str:
             return "<description>" + head + "<hr>\n\n" + pretty_tail + "</description>"
         return "<description>" + desc_inner + "</description>"
     else:
-        # <hr> нет: вставим и оформим всё после блока (если удастся выделить),
-        # иначе просто добавим <hr>, не ломая существующее описание.
-        pretty_tail = ""  # без явной границы не рискуем делить
-        if pretty_tail:
-            return "<description>" + desc_inner + "<hr>\n\n" + pretty_tail + "</description>"
         return "<description>" + desc_inner + "</description>"
 
 def build_new_description(existing_inner: str) -> str:
@@ -320,7 +360,7 @@ def main() -> int:
     original  = read_cp1251(SRC)
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
-    print(f"[seo] Готово: «Характеристики» стали списком-столбцом, ключи жирные. Файл: {DST}")
+    print(f"[seo] Готово: характеристики в столбик, ключи жирные; блок/шрифты — как задано. Файл: {DST}")
     return 0
 
 if __name__ == "__main__":
