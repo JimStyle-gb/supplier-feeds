@@ -29,8 +29,9 @@ ENC: str  = "windows-1251"
 COLOR_LINK  = "#0b3d91"   # тёмно-синий
 COLOR_WHITE = "#ffffff"   # белый (текст на «кнопке»)
 COLOR_BTN   = "#27ae60"   # зелёный фон «кнопки»
+COLOR_KASPI = "#8b0000"   # тёмно-красный для слова KASPI
 
-# Ваш блок: две верхние строки по центру, все ссылки без подчёркивания (style="text-decoration:none")
+# Ваш блок: две верхние строки по центру, все ссылки без подчёркивания
 TEMPLATE_HTML: str = f"""<center>
   <table border="0" cellspacing="0" cellpadding="10" align="center" bgcolor="{COLOR_BTN}">
     <tr>
@@ -53,13 +54,13 @@ TEMPLATE_HTML: str = f"""<center>
 <h2>Оплата</h2>
 <ul>
   <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>
-  <li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>
+  <li><strong>Удаленная оплата</strong> по <font color="{COLOR_KASPI}"><strong>KASPI</strong></font> счету для <u>физических лиц</u></li>
 </ul>
 
 <h2>Доставка</h2>
 <ul>
   <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>
-  <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 2500 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией
+  <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией
     <a style="text-decoration:none" href="https://exline.kz/"><font color="{COLOR_LINK}"><strong>Exline.kz</strong></font></a></em>
   </li>
   <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
@@ -160,7 +161,7 @@ def main() -> int:
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
 
-    print(f"[seo] Готово: блок с «кнопкой» без подчёркивания и тёмно-синими ссылками добавлен. Файл: {DST}")
+    print(f"[seo] Готово: блок с «кнопкой», тёмно-красным KASPI и доставкой 5000 тг. добавлен. Файл: {DST}")
     return 0
 
 # ─────────────────────────── Точка входа ───────────────────────────
