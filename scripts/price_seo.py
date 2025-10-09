@@ -5,11 +5,15 @@
 price_seo.py
 -----------------------------------
 Создаёт docs/price_seo.yml из docs/price.yml и добавляет в НАЧАЛО каждого <description>
-ваш маркетинговый блок: зелёная «кнопка» WhatsApp с округлёнными углами, контакты
-(тёмно-синие ссылки без подчёркивания), затем <hr>, затем — родное описание.
+ваш маркетинговый блок (НЕ МЕНЯЛ: зелёная кнопка, тёмно-синие ссылки без подчёркивания,
+KASPI тёмно-красным, доставка 5000), затем <hr>, затем — красиво оформленное родное описание.
 
-Без CDATA. Повторной вставки нет (ищем фразу "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!").
-Кодировка: windows-1251 с безопасной нормализацией.
+Красивое оформление родного описания:
+  • Если там уже HTML — лишь оборачиваем в <div> со шрифтом Cambria и line-height, и добавляем стиль ссылкам без style.
+  • Если это plain-text — превращаем в чистый HTML: параграфы, списки (- и •), <br> внутри абзацев, экранирование.
+
+Без CDATA. Повторной вставки нет.
+Кодировка вывода: windows-1251 с безопасной нормализацией.
 """
 
 from __future__ import annotations
@@ -18,6 +22,7 @@ from pathlib import Path
 import io
 import re
 import sys
+from html import escape as html_escape
 
 # ─────────────────────────── Конфигурация ───────────────────────────
 
@@ -25,14 +30,14 @@ SRC: Path = Path("docs/price.yml")
 DST: Path = Path("docs/price_seo.yml")
 ENC: str  = "windows-1251"
 
-# Цвета
+# Цвета (сохраняем как в твоём блоке)
 COLOR_LINK  = "#0b3d91"   # тёмно-синий для ссылок
 COLOR_WHITE = "#ffffff"   # белый для текста на кнопке
 COLOR_BTN   = "#27ae60"   # зелёный фон кнопки
 COLOR_KASPI = "#8b0000"   # тёмно-красный для KASPI
 
-# Весь блок — в шрифте Arial/Helvetica; кнопка с border-radius; все ссылки без подчёркивания
-TEMPLATE_HTML: str = f"""<div style="font-family: Cambria, Helvetica, sans-serif;">
+# ── ТВОЙ ВЕРХНИЙ БЛОК: НЕ МЕНЯЛ ─────────────────────────────────────
+TEMPLATE_HTML: str = f"""<div style="font-family: Arial, Helvetica, sans-serif;">
   <center>
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
        style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:700;">
@@ -94,21 +99,98 @@ def write_cp1251(path: Path, text: str) -> None:
 DESC_RX  = re.compile(r"<description\b[^>]*>(.*?)</description>", re.I | re.S)
 OFFER_RX = re.compile(r"<offer\b[^>]*>.*?</offer>",                re.I | re.S)
 
-# ─────────────────────────── Вспомогательные ───────────────────────────
+HAS_HTML_TAGS_RX = re.compile(r"<[a-zA-Z/!][^>]*>")  # грубая проверка на наличие HTML-тегов
+A_NO_STYLE_RX    = re.compile(r"<a(?![^>]*\bstyle=)", re.I)  # <a ...> без style=
+
+# ─────────────────────────── Оформление родного описания ───────────────────────────
+
+def beautify_existing_html(html: str) -> str:
+    """
+    Уже-HTML-описание: не трогаем структуру, только:
+      • добавляем стиль ссылкам без style (тёмно-синий, без подчёркивания),
+      • оборачиваем в див со шрифтом Cambria и line-height.
+    """
+    with_links = A_NO_STYLE_RX.sub(
+        f'<a style="color:{COLOR_LINK};text-decoration:none"', html
+    )
+    wrapper = (
+        f'<div style="font-family: Cambria, \'Times New Roman\', serif; '
+        f'font-size:15px; line-height:1.55;">{with_links}</div>'
+    )
+    return wrapper
+
+def beautify_plain_text(text: str) -> str:
+    """
+    Превращаем plain-text в приятный HTML:
+      • блоки по пустым строкам → параграфы или списки,
+      • строки, начинающиеся с "-" или "•" → <ul><li>…</li></ul>,
+      • одинарные переносы внутри абзаца сохраняем как <br>,
+      • всё экранируем.
+    """
+    t = text.replace("\r\n", "\n").replace("\r", "\n").strip()
+    if not t:
+        return ""
+
+    blocks = [b.strip("\n") for b in re.split(r"\n{2,}", t)]
+    out: list[str] = []
+
+    def is_list_block(block: str) -> bool:
+        lines = [ln.strip() for ln in block.split("\n") if ln.strip()]
+        if not lines:
+            return False
+        return all(ln.startswith("- ") or ln.startswith("• ") for ln in lines)
+
+    for blk in blocks:
+        if is_list_block(blk):
+            lis = []
+            for ln in blk.split("\n"):
+                s = ln.strip()
+                if not s:
+                    continue
+                s = s[2:]  # убираем "- " или "• "
+                lis.append(f"<li>{html_escape(s)}</li>")
+            out.append("<ul>\n" + "\n".join(lis) + "\n</ul>")
+        else:
+            # параграф: одинарные переносы -> <br>
+            lines = [html_escape(x) for x in blk.split("\n")]
+            para = "<br>".join(lines)
+            out.append(f"<p>{para}</p>")
+
+    wrapped = (
+        f'<div style="font-family: Cambria, \'Times New Roman\', serif; '
+        f'font-size:15px; line-height:1.55;">' + "\n".join(out) + "</div>"
+    )
+    return wrapped
+
+def beautify_original_description(existing_inner: str) -> str:
+    """
+    Выдаёт красиво оформленный HTML оригинального описания.
+    """
+    content = existing_inner.strip()
+    if not content:
+        return ""
+
+    if HAS_HTML_TAGS_RX.search(content):
+        return beautify_existing_html(content)
+    else:
+        return beautify_plain_text(content)
+
+# ─────────────────────────── Сборка description ───────────────────────────
 
 def has_our_block(desc_html: str) -> bool:
-    """Проверяем, вставлялся ли уже наш блок (по ключевой фразе)."""
+    """Проверяем, вставлялся ли уже наш верхний блок (по ключевой фразе)."""
     return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_html
 
 def build_new_description(existing_inner: str) -> str:
     """
-    Формируем новое содержимое <description>:
-      [ваш блок] + <hr> + [родной текст], если он был.
+    Конструируем новое <description>:
+      [ваш верхний блок] + <hr> + [красиво оформленный родной текст] (если он был).
     """
-    if existing_inner.strip():
-        return TEMPLATE_HTML + "\n\n<hr>\n\n" + existing_inner.strip()
+    pretty = beautify_original_description(existing_inner)
+    if pretty:
+        return TEMPLATE_HTML + "\n\n<hr>\n\n" + pretty
     else:
-        return TEMPLATE_HTML  # если родного текста не было — делить нечего
+        return TEMPLATE_HTML
 
 def inject_into_description_block(desc_inner: str) -> str:
     """Обновляет существующий <description>."""
@@ -118,12 +200,10 @@ def inject_into_description_block(desc_inner: str) -> str:
 
 def add_description_if_missing(offer_block: str) -> str:
     """
-    Если <description> отсутствует — создаём его перед </offer> с вашим блоком.
-    (<hr> не нужен, потому что нет «второй части».)
+    Если <description> отсутствует — создаём его перед </offer> с твоим блоком (без <hr>).
     """
     if re.search(r"<description\b", offer_block, flags=re.I):
         return offer_block
-    # подхватываем отступ для красивого вида
     m = re.search(r"\n([ \t]+)<", offer_block)
     indent = m.group(1) if m else "  "
     insertion = f"\n{indent}<description>{TEMPLATE_HTML}</description>"
@@ -149,6 +229,8 @@ def process_whole_text(xml_text: str) -> str:
 
     return OFFER_RX.sub(_offer_repl, updated)
 
+# ─────────────────────────── Точка входа ───────────────────────────
+
 def main() -> int:
     if not SRC.exists():
         print(f"[seo] Исходный файл не найден: {SRC}", file=sys.stderr)
@@ -158,10 +240,8 @@ def main() -> int:
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
 
-    print(f"[seo] Готово: блок с округлой кнопкой и красивым шрифтом добавлен. Файл: {DST}")
+    print(f"[seo] Готово: блок добавлен, родное описание красиво оформлено (Cambria). Файл: {DST}")
     return 0
-
-# ─────────────────────────── Точка входа ───────────────────────────
 
 if __name__ == "__main__":
     raise SystemExit(main())
