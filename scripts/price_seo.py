@@ -5,11 +5,11 @@
 price_seo.py
 -----------------------------------
 Создаёт docs/price_seo.yml из docs/price.yml и добавляет в НАЧАЛО каждого <description>
-ваш блок (две строки по центру: зеленая «кнопка» WhatsApp + контакты с тёмно-синими ссылками),
+ваш блок: зелёная «кнопка» WhatsApp (без подчёркивания), контакты с тёмно-синими ссылками (без подчёркивания),
 затем <hr>, затем — родной текст.
 
 Без CDATA. Повторной вставки нет (ищем фразу "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!").
-Кодировка вывода: windows-1251 с безопасной нормализацией.
+Кодировка: windows-1251 с безопасной нормализацией.
 """
 
 from __future__ import annotations
@@ -25,18 +25,17 @@ SRC: Path = Path("docs/price.yml")
 DST: Path = Path("docs/price_seo.yml")
 ENC: str  = "windows-1251"
 
-# Цвета для ссылок (без CSS, через <font color="...">)
+# Цвета
 COLOR_LINK  = "#0b3d91"   # тёмно-синий
-COLOR_WHITE = "#ffffff"   # белый (для текста на «кнопке»)
+COLOR_WHITE = "#ffffff"   # белый (текст на «кнопке»)
 COLOR_BTN   = "#27ae60"   # зелёный фон «кнопки»
 
-# Ваш блок: первая строка — «кнопка» (table bgcolor), вторая — контакты; всё по центру.
-# Амперсанды в URL экранированы (&amp;).
+# Ваш блок: две верхние строки по центру, все ссылки без подчёркивания (style="text-decoration:none")
 TEMPLATE_HTML: str = f"""<center>
   <table border="0" cellspacing="0" cellpadding="10" align="center" bgcolor="{COLOR_BTN}">
     <tr>
       <td>
-        <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0">
+        <a style="text-decoration:none" href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0">
           <font color="{COLOR_WHITE}"><strong>НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</strong></font>
         </a>
       </td>
@@ -46,9 +45,9 @@ TEMPLATE_HTML: str = f"""<center>
 
 <center>
   Просьба отправлять запросы в
-  <a href="tel:+77073270501"><font color="{COLOR_LINK}"><strong>WhatsApp: +7 (707) 327-05-01</strong></font></a>
+  <a style="text-decoration:none" href="tel:+77073270501"><font color="{COLOR_LINK}"><strong>WhatsApp: +7 (707) 327-05-01</strong></font></a>
   либо на почту:
-  <a href="mailto:info@complex-solutions.kz"><font color="{COLOR_LINK}"><strong>info@complex-solutions.kz</strong></font></a>
+  <a style="text-decoration:none" href="mailto:info@complex-solutions.kz"><font color="{COLOR_LINK}"><strong>info@complex-solutions.kz</strong></font></a>
 </center>
 
 <h2>Оплата</h2>
@@ -61,7 +60,7 @@ TEMPLATE_HTML: str = f"""<center>
 <ul>
   <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>
   <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 2500 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией
-    <a href="https://exline.kz/"><font color="{COLOR_LINK}"><strong>Exline.kz</strong></font></a></em>
+    <a style="text-decoration:none" href="https://exline.kz/"><font color="{COLOR_LINK}"><strong>Exline.kz</strong></font></a></em>
   </li>
   <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
   <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>
@@ -83,7 +82,7 @@ def write_cp1251(path: Path, text: str) -> None:
         text
         .replace("\u20B8", "тг.")   # ₸ → "тг."
         .replace("\u2248", "~")     # ≈ → "~"
-        .replace("\u00A0", " ")     # NBSP → обычный пробел
+        .replace("\u00A0", " ")     # NBSP → пробел
         .replace("\u201C", '"').replace("\u201D", '"')  # “ ” → "
         .replace("\u201E", '"').replace("\u201F", '"')  # „ ‟ → "
         .replace("\u2013", "-").replace("\u2014", "—")  # – → -, — оставляем
@@ -111,7 +110,7 @@ def build_new_description(existing_inner: str) -> str:
     if existing_inner.strip():
         return TEMPLATE_HTML + "\n\n<hr>\n\n" + existing_inner.strip()
     else:
-        return TEMPLATE_HTML  # если родного текста не было — и нечего разделять
+        return TEMPLATE_HTML  # если родного текста не было — делить нечего
 
 def inject_into_description_block(desc_inner: str) -> str:
     """Обновляет существующий <description>."""
@@ -126,7 +125,7 @@ def add_description_if_missing(offer_block: str) -> str:
     """
     if re.search(r"<description\b", offer_block, flags=re.I):
         return offer_block
-    # отступ подхватим по ближайшему тегу
+    # подхватываем отступ для красивого вида
     m = re.search(r"\n([ \t]+)<", offer_block)
     indent = m.group(1) if m else "  "
     insertion = f"\n{indent}<description>{TEMPLATE_HTML}</description>"
@@ -161,7 +160,7 @@ def main() -> int:
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
 
-    print(f"[seo] Готово: блок с «кнопкой» и тёмно-синими ссылками добавлен. Файл: {DST}")
+    print(f"[seo] Готово: блок с «кнопкой» без подчёркивания и тёмно-синими ссылками добавлен. Файл: {DST}")
     return 0
 
 # ─────────────────────────── Точка входа ───────────────────────────
