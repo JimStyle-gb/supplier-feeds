@@ -5,10 +5,10 @@
 price_seo.py
 -----------------------------------
 Создаёт docs/price_seo.yml из docs/price.yml и добавляет в НАЧАЛО каждого <description>
-ваш блок (2 строки по центру через <center>), затем <hr>, затем — родной текст.
+ваш блок (две строки по центру: зеленая «кнопка» WhatsApp + контакты с тёмно-синими ссылками),
+затем <hr>, затем — родной текст.
 
-Важно: CDATA не используется (чистый HTML внутри <description>).
-Повторной вставки нет (ищем фразу "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!").
+Без CDATA. Повторной вставки нет (ищем фразу "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!").
 Кодировка вывода: windows-1251 с безопасной нормализацией.
 """
 
@@ -25,11 +25,31 @@ SRC: Path = Path("docs/price.yml")
 DST: Path = Path("docs/price_seo.yml")
 ENC: str  = "windows-1251"
 
-# Ваш блок: первые две строки — строго по центру через <center>.
-# Важно: амперсанды в URL уже экранированы (&amp;).
-TEMPLATE_HTML: str = """<center><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"><strong>НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</strong></a></center>
+# Цвета для ссылок (без CSS, через <font color="...">)
+COLOR_LINK  = "#0b3d91"   # тёмно-синий
+COLOR_WHITE = "#ffffff"   # белый (для текста на «кнопке»)
+COLOR_BTN   = "#27ae60"   # зелёный фон «кнопки»
 
-<center>Просьба отправлять запросы в <a href="tel:+77073270501"><strong>WhatsApp: +7 (707) 327-05-01</strong></a> либо на почту: <a href="mailto:info@complex-solutions.kz"><strong>info@complex-solutions.kz</strong></a></center>
+# Ваш блок: первая строка — «кнопка» (table bgcolor), вторая — контакты; всё по центру.
+# Амперсанды в URL экранированы (&amp;).
+TEMPLATE_HTML: str = f"""<center>
+  <table border="0" cellspacing="0" cellpadding="10" align="center" bgcolor="{COLOR_BTN}">
+    <tr>
+      <td>
+        <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0">
+          <font color="{COLOR_WHITE}"><strong>НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</strong></font>
+        </a>
+      </td>
+    </tr>
+  </table>
+</center>
+
+<center>
+  Просьба отправлять запросы в
+  <a href="tel:+77073270501"><font color="{COLOR_LINK}"><strong>WhatsApp: +7 (707) 327-05-01</strong></font></a>
+  либо на почту:
+  <a href="mailto:info@complex-solutions.kz"><font color="{COLOR_LINK}"><strong>info@complex-solutions.kz</strong></font></a>
+</center>
 
 <h2>Оплата</h2>
 <ul>
@@ -40,7 +60,9 @@ TEMPLATE_HTML: str = """<center><a href="https://api.whatsapp.com/send/?phone=77
 <h2>Доставка</h2>
 <ul>
   <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>
-  <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 2500 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией <a href="https://exline.kz/"><strong>Exline.kz</strong></a></em></li>
+  <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 2500 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией
+    <a href="https://exline.kz/"><font color="{COLOR_LINK}"><strong>Exline.kz</strong></font></a></em>
+  </li>
   <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
   <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>
 </ul>"""
@@ -85,7 +107,6 @@ def build_new_description(existing_inner: str) -> str:
     """
     Формируем новое содержимое <description>:
       [ваш блок] + <hr> + [родной текст], если он был.
-    CDATA не используется.
     """
     if existing_inner.strip():
         return TEMPLATE_HTML + "\n\n<hr>\n\n" + existing_inner.strip()
@@ -101,7 +122,7 @@ def inject_into_description_block(desc_inner: str) -> str:
 def add_description_if_missing(offer_block: str) -> str:
     """
     Если <description> отсутствует — создаём его перед </offer> с вашим блоком.
-    (Тут <hr> не нужен, потому что нет «второй части».)
+    (<hr> не нужен, потому что нет «второй части».)
     """
     if re.search(r"<description\b", offer_block, flags=re.I):
         return offer_block
@@ -140,7 +161,7 @@ def main() -> int:
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
 
-    print(f"[seo] Готово: блок добавлен сверху, <hr> перед родным описанием. Файл: {DST}")
+    print(f"[seo] Готово: блок с «кнопкой» и тёмно-синими ссылками добавлен. Файл: {DST}")
     return 0
 
 # ─────────────────────────── Точка входа ───────────────────────────
