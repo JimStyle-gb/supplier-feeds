@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-08 20:17">
+<yml_catalog date="2025-10-09 20:18">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 09:10:2025 - 01:17:58
-Ближайшее время сборки (Алматы)            | 10:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15892
+Время сборки (Алматы)                      | 10:10:2025 - 01:18:31
+Ближайшее время сборки (Алматы)            | 11:10:2025 - 01:00:00
+Сколько товаров у поставщика до фильтра    | 15874
 Сколько товаров у поставщика после фильтра | 2004
-Сколько товаров есть в наличии (true)      | 1325
-Сколько товаров нет в наличии (false)      | 679-->
+Сколько товаров есть в наличии (true)      | 1313
+Сколько товаров нет в наличии (false)      | 691-->
   <shop>
     <offers>
       <offer id="AS20888">
@@ -20,7 +20,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/20888_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Линейно-Интерактивный ИБП с функцией сетевого фильтра SVC U-650-L Устройство, позволяющее подключённому оборудованию некоторое время работать от встроенных аккумуляторов, при пропадании электрического тока или при выходе его параметров за допустимые нормы. 3 выходных разъёмов Shuko CEE7 с батарейной поддержкой и 3 выходных разъёмов с функцией сетевого фильтра позволят подключить большое количество оборудования. 2*USB порта 5В/2А позволят зарядить любое портативное устройство.
 
 Характеристики:
@@ -2320,7 +2320,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/7686_3.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -5284,7 +5284,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/6607_3.jpg</picture>
         <vendor>SVC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Онлайн ИБП SVC RT-3KL-LCD Используется для защиты питания файловых серверов и АТС, а также любого другого оборудования, предъявляющего повышенные требования к качеству сетевого электропитания. Принцип работы состоит в двойном преобразовании (double conversion) тока. Сначала входное переменное напряжение преобразуется в постоянное, затем обратно в переменное напряжение с помощью обратного преобразователя (инвертора). При потере питания в городской сети, время переключения в автономный режим равно нулю.
 
 Характеристики:
@@ -11171,7 +11171,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32311_3.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Принтер Phaser 3020BI
 Монохромный лазерный принтер Phaser 3020BI идеально подходит для малого бизнеса и домашнего использования, обеспечивая впечатляющие результаты при минимальных затратах. Он ультракомпактен, легко настраивается и прост в использовании, при этом демонстрирует высокую производительность.
 
@@ -11450,7 +11450,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/32323_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -15868,7 +15868,7 @@ USB
         <picture>https://img.al-style.kz/34040_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -15894,7 +15894,7 @@ USB
         <picture>https://img.al-style.kz/34041_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -15920,7 +15920,7 @@ USB
         <picture>https://img.al-style.kz/34042_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -16296,7 +16296,7 @@ USB
         <picture>https://img.al-style.kz/34043_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -17199,7 +17199,7 @@ USB
         <picture>https://img.al-style.kz/33373_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -20976,7 +20976,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
         <picture>https://img.al-style.kz/39205_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -21001,7 +21001,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
         <picture>https://img.al-style.kz/39206_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -21026,7 +21026,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
         <picture>https://img.al-style.kz/39217_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -21051,7 +21051,7 @@ Comix F9052   ламинатор начального уровня для дома офиса.
         <picture>https://img.al-style.kz/39219_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -24643,7 +24643,7 @@ USB
   <offer id="AS42549">
         <vendorCode>AS42549</vendorCode>
         <name>Источник бесперебойного питания CyberPower UTC850E</name>
-        <price>22900</price>
+        <price>27900</price>
         <picture>https://img.al-style.kz/42549_1.jpg</picture>
         <picture>https://img.al-style.kz/42549_2.jpg</picture>
         <picture>https://img.al-style.kz/42549_3.jpg</picture>
@@ -24745,7 +24745,7 @@ USB
   <offer id="AS42555">
         <vendorCode>AS42555</vendorCode>
         <name>Источник бесперебойного питания CyberPower UTI875E</name>
-        <price>21900</price>
+        <price>26900</price>
         <picture>https://img.al-style.kz/42555_1.jpg</picture>
         <picture>https://img.al-style.kz/42555_2.jpg</picture>
         <picture>https://img.al-style.kz/42555_3.jpg</picture>
@@ -25814,7 +25814,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
   <offer id="AS43756">
         <vendorCode>AS43756</vendorCode>
         <name>Кабель сетевой SHIP D135-VS Cat.5e UTP 30В PVC</name>
-        <price>49900</price>
+        <price>46900</price>
         <picture>https://img.al-style.kz/43756_1.jpg</picture>
         <picture>https://img.al-style.kz/43756_2.jpg</picture>
         <vendor>Ship</vendor>
@@ -25941,7 +25941,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
         <picture>https://img.al-style.kz/44031_2.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -26021,7 +26021,7 @@ D. USB Type-A(Заряжайте свой смартфон и планшет в любое время / электропитание д
         <picture>https://img.al-style.kz/44033_2.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -28426,7 +28426,7 @@ Microsoft Windows 11
         <picture>https://img.al-style.kz/42428_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Опциональный жесткий диск позволяет ускорить работу устройства, хранить больше данных о пользователях, устанавливать больше приложений, а также обрабатывать более сложные и большие задания
 
 Характеристики:
@@ -32871,7 +32871,7 @@ DisplayPort x1
   <offer id="AS52861">
         <vendorCode>AS52861</vendorCode>
         <name>Источник бесперебойного питания CyberPower OL10KERTHD</name>
-        <price>2096900</price>
+        <price>2709900</price>
         <picture>https://img.al-style.kz/52861_1.jpg</picture>
         <picture>https://img.al-style.kz/52861_2.jpg</picture>
         <picture>https://img.al-style.kz/52861_3.jpg</picture>
@@ -33641,7 +33641,7 @@ E&amp;lt;2 калибровка экрана. Каждый монитор Xiaomi A27i был строго проверен на 
         <picture>https://img.al-style.kz/55711_1.jpg</picture>
         <vendor>Dahua</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Кабель сетевой Dahua DH-PFM920I-5EU 
 Это неэкранированный (UTP) 4 - х парный кабель 5e категории имеет PE оболочку, применяется при прокладке снаружи помещений. Кабели витой пары UTP – наиболее распространенная среда передачи
 в современных сетях. Обычно состоят из четырех пар свитых
@@ -34349,7 +34349,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <picture>https://img.al-style.kz/56894_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -34375,7 +34375,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <picture>https://img.al-style.kz/56895_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -34401,7 +34401,7 @@ WiFi: да (WiFi: 2,4 ГГц/5 ГГц, 802.11 a/b/g/n/ac, поддержка Bluetooth: 2.1/3.0/4
         <picture>https://img.al-style.kz/56896_1.jpg</picture>
         <vendor>Xerox</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
 Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
@@ -35434,7 +35434,7 @@ Xerox Easy Assist и приложение Xerox Print and Scan Experience делают настройку 
         <picture>https://img.al-style.kz/58439_1.jpg</picture>
         <vendor>Legrand</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Батарейный блок Legrand для ИБП Daker DK Plus 3 кВАДополнительный батарейный шкаф для источника бесперебойного питания Daker DK Plus 3 кВА. Позволяет увеличить время автономной работы ИБП, кроме того, использование дополнительных батарей особенно необходимо, если в вашей электрической сети возможны длительные перебои, в то время как подключенные устройства не могут оставаться без питания.
 
 Характеристики:
@@ -36199,7 +36199,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59325_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Цветное лазерное МФУ Canon I-S MF752CDW
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
@@ -36244,7 +36244,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <picture>https://img.al-style.kz/59326_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Цветное лазерное МФУ Canon I-S MF754CDW
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
 Оптимальная производительность печати и сканирования с помощью цветного многофункционального принтера с прямым подключением к облаку.
@@ -37344,7 +37344,7 @@ Canon imagePROGRAF TM-250Canon imagePROGRAF TM-255Canon imagePROGRAF TM-350 Cano
         <picture>https://img.al-style.kz/59771_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Цветное МФУ Canon Pixma G3470 Black
 
 Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики 
@@ -42339,7 +42339,7 @@ Canon Cassette Feeding Unit-AE1/AG1/AJ1/AK1/AL1/AM1/AP1/AQ1/AW1Canon Color image
         <picture>https://img.al-style.kz/61055_1.jpg</picture>
         <vendor>Legrand</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Кабель сетевой Legrand 032758 Cat.6 F/UTP PVC 
 Это экранированный (UTP) 4 - х парный кабель 6 категории.    
 Используется для создания компьютерных сетей стандарта 1 Гигабит/сек до 4 Гигабит/сек. Благодаря внешней LSZH оболочке применяется при высоких требованиях к пожарной безопасности. Отличается низким дымовыделением и не содержит опасных для здоровья галогенов.   
@@ -43816,7 +43816,7 @@ USB кабель
         <picture>https://img.al-style.kz/61353_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Источник бесперебойного питания APC Smart-UPS SRT6KRMXLI
 
 ИБП APC Smart-UPS предназначен для ИТ-специалистов и сетевых администраторов, чтобы обеспечить бесперебойную работу и непрерывность бизнеса.
@@ -44093,7 +44093,7 @@ APC Easy UPS SRV3KRILRK высококачественный онлайн-ИБП с двойным преобразованием,
   <offer id="AS61360">
         <vendorCode>AS61360</vendorCode>
         <name>Источник бесперебойного питания APC Easy UPS SRV10KRIRK</name>
-        <price>1263900</price>
+        <price>1230900</price>
         <picture>https://img.al-style.kz/61360_1.jpg</picture>
         <picture>https://img.al-style.kz/61360_2.jpg</picture>
         <picture>https://img.al-style.kz/61360_3.jpg</picture>
@@ -44133,7 +44133,7 @@ APC Easy UPS SRV10KRIRK высококачественный онлайн-ИБП с двойным преобразованием,
   <offer id="AS61361">
         <vendorCode>AS61361</vendorCode>
         <name>Источник бесперебойного питания APC Easy UPS SRV6KRIRK</name>
-        <price>1062900</price>
+        <price>1034900</price>
         <picture>https://img.al-style.kz/61361_1.jpg</picture>
         <picture>https://img.al-style.kz/61361_2.jpg</picture>
         <picture>https://img.al-style.kz/61361_3.jpg</picture>
@@ -44172,7 +44172,7 @@ APC Easy UPS SRV6KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
   <offer id="AS61362">
         <vendorCode>AS61362</vendorCode>
         <name>Источник бесперебойного питания APC Easy UPS SRV3KRIRK</name>
-        <price>455900</price>
+        <price>438900</price>
         <picture>https://img.al-style.kz/61362_1.jpg</picture>
         <picture>https://img.al-style.kz/61362_2.jpg</picture>
         <picture>https://img.al-style.kz/61362_3.jpg</picture>
@@ -44210,7 +44210,7 @@ APC Easy UPS SRV3KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
   <offer id="AS61363">
         <vendorCode>AS61363</vendorCode>
         <name>Источник бесперебойного питания APC Easy UPS SRV2KRIRK</name>
-        <price>383900</price>
+        <price>373900</price>
         <picture>https://img.al-style.kz/61363_1.jpg</picture>
         <picture>https://img.al-style.kz/61363_2.jpg</picture>
         <picture>https://img.al-style.kz/61363_3.jpg</picture>
@@ -44408,7 +44408,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
   <offer id="AS61369">
         <vendorCode>AS61369</vendorCode>
         <name>Источник бесперебойного питания APC Easy UPS SRV10KI</name>
-        <price>938900</price>
+        <price>914900</price>
         <picture>https://img.al-style.kz/61369_1.jpg</picture>
         <picture>https://img.al-style.kz/61369_2.jpg</picture>
         <picture>https://img.al-style.kz/61369_3.jpg</picture>
@@ -44484,7 +44484,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
   <offer id="AS61371">
         <vendorCode>AS61371</vendorCode>
         <name>Источник бесперебойного питания APC Easy UPS SRV3KI</name>
-        <price>350900</price>
+        <price>341900</price>
         <picture>https://img.al-style.kz/61371_1.jpg</picture>
         <picture>https://img.al-style.kz/61371_2.jpg</picture>
         <picture>https://img.al-style.kz/61371_3.jpg</picture>
@@ -44522,7 +44522,7 @@ APC Easy UPS SRV1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, 
   <offer id="AS61372">
         <vendorCode>AS61372</vendorCode>
         <name>Источник бесперебойного питания APC Easy UPS SRV2KI</name>
-        <price>295900</price>
+        <price>280900</price>
         <picture>https://img.al-style.kz/61372_1.jpg</picture>
         <picture>https://img.al-style.kz/61372_2.jpg</picture>
         <picture>https://img.al-style.kz/61372_3.jpg</picture>
@@ -44635,7 +44635,7 @@ USB-кабель
   <offer id="AS61345">
         <vendorCode>AS61345</vendorCode>
         <name>Источник бесперебойного питания APC Smart-UPS SMT2200IC</name>
-        <price>1064900</price>
+        <price>938900</price>
         <picture>https://img.al-style.kz/61345_1.jpg</picture>
         <picture>https://img.al-style.kz/61345_2.jpg</picture>
         <vendor>APC</vendor>
@@ -45100,7 +45100,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
   <offer id="AS61377">
         <vendorCode>AS61377</vendorCode>
         <name>Источник бесперебойного питания APC Back-UPS BX950MI-GR</name>
-        <price>101900</price>
+        <price>98900</price>
         <picture>https://img.al-style.kz/61377_1.jpg</picture>
         <picture>https://img.al-style.kz/61377_2.jpg</picture>
         <picture>https://img.al-style.kz/61377_3.jpg</picture>
@@ -45165,7 +45165,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61379_2.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Источник бесперебойного питания APC Easy UPS BVX2200LI-GR
 
 ИБП семейства Easy UPS надежно защищают электропитание мощных компьютерных систем, маршрутизаторов и модемов, внешних систем хранения, игровых приставок и прочей электроники в доме или организации. Эти ИБП стабилизируют напряжение при его отклонении от безопасных значений и дают возможность длительной работы от батарей при отключении электроэнергии. Они также обеспечивают защиту электропитания от опасных бросков и всплесков напряжения, а ПО для управления ИБП позволяет максимально полно использовать его возможности.
@@ -45195,7 +45195,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61380_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Источник бесперебойного питания APC Easy UPS BVX1600LI-GR
 
 ИБП семейства Easy UPS надежно защищают электропитание мощных компьютерных систем, маршрутизаторов и модемов, внешних систем хранения, игровых приставок и прочей электроники в доме или организации. Эти ИБП стабилизируют напряжение при его отклонении от безопасных значений и дают возможность длительной работы от батарей при отключении электроэнергии. Они также обеспечивают защиту электропитания от опасных бросков и всплесков напряжения, а ПО для управления ИБП позволяет максимально полно использовать его возможности.
@@ -45313,7 +45313,7 @@ BE650G2-GR имеет в общей сложности 8 выходных разъемов, 6 из которых предназначе
         <picture>https://img.al-style.kz/61384_2.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Источник бесперебойного питания APC Easy UPS BV800I-GR
 
 ИБП семейства Easy UPS надежно защищают электропитание мощных компьютерных систем, маршрутизаторов и модемов, внешних систем хранения, игровых приставок и прочей электроники в доме или организации. Эти ИБП стабилизируют напряжение при его отклонении от безопасных значений и дают возможность длительной работы от батарей при отключении электроэнергии. Они также обеспечивают защиту электропитания от опасных бросков и всплесков напряжения, а ПО для управления ИБП позволяет максимально полно использовать его возможности.
@@ -49626,7 +49626,7 @@ Bluetooth
   <offer id="AS63386">
         <vendorCode>AS63386</vendorCode>
         <name>Источник бесперебойного питания APC Smart-UPS SMT3000RMI2UC</name>
-        <price>1413900</price>
+        <price>1385900</price>
         <picture>https://img.al-style.kz/63386_1.jpg</picture>
         <picture>https://img.al-style.kz/63386_2.jpg</picture>
         <picture>https://img.al-style.kz/63386_3.jpg</picture>
@@ -50552,7 +50552,7 @@ Canon PIXMA E404Canon PIXMA E414Canon PIXMA E484
         <picture>https://img.al-style.kz/64239_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Аккумуляторный батарейный модуль APC SRT192RMBP 
 
 Батарейный комплект для ИБП Smart-UPS серии On-line SRT
@@ -51571,7 +51571,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
         <picture>https://img.al-style.kz/64533_2.jpg</picture>
         <vendor>Europrint</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
 Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. 
@@ -52521,7 +52521,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <picture>https://img.al-style.kz/64677_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор Samsung 27" ViewFinity S7 LS27D700EAIXCI
 
 Особенности и преимущества:
@@ -53270,7 +53270,7 @@ A4, B5, LTR, 10 x 15 см, 13 x 18 см, 20 x 25 см, формат карточки (91 x 55 мм), к
         <picture>https://img.al-style.kz/65100_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Струйный картридж Canon PG-440XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -53315,7 +53315,7 @@ CANON PIXMA MX454CANON PIXMA MG2240CANON PIXMA MG4140CANON PIXMA MG3240CANON PIX
         <picture>https://img.al-style.kz/65101_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Струйный картридж Canon CL-441XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -56187,7 +56187,7 @@ RGB-подсветка: Настраиваемая подсветка под ваш стиль и игровой сетап. Возможност
         <picture>https://img.al-style.kz/68162_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Характеристики:
 - Гарантия: 2 года</description>
       </offer>
@@ -62017,7 +62017,7 @@ E&amp;lt;2 калибровка для каждого экрана. Каждый дисплей строго проверяется на п
         <picture>https://img.al-style.kz/72768_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Монитор Samsung 24" LS24D400GAIXCI
 
 Особенности и преимущества:
@@ -62612,7 +62612,7 @@ DisplayPort x1
         <picture>https://img.al-style.kz/73669_3.jpg</picture>
         <vendor>iiyama</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор iiyama ProLite XUB2797UHSNP-B1 27"
 
 Откройте для себя XUB2797UHSNP, 27-дюймовую 4K IPS-панель, оснащенную док-станцией USB-C (96 Вт PD), KVM-переключателем и RJ45 для подключения по локальной сети. KVM-переключатель позволяет подключать несколько компьютеров через одну консоль. Избавьтесь от путаницы кабелей с док-станцией USB-C, которая переносит все данные (аудио и видео) и одновременно питает ваш ноутбук. Легко расширьте свой рабочий стол, создав двухмониторную конфигурацию с выходом DisplayPort. Наслаждайтесь точными цветами и широкими углами обзора благодаря IPS-панели. Воспользуйтесь исключительной производительностью для таких задач, как фотография и веб-дизайн, благодаря разрешению 4K и высокой контрастности. Эргономичная подставка обеспечивает регулировку высоты 150 мм и наклонно-поворотные механизмы для портретного режима, оптимизируя комфорт при работе с обширными техническими таблицами.
@@ -63906,7 +63906,7 @@ Huawei Share: позволяет легко и быстро передавать файлы между устройствами Huawe
         <picture>https://img.al-style.kz/75908_3.jpg</picture>
         <vendor>Samsung</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Монитор Samsung 27" LS27D304GAIXCI
 
 Особенности и преимущества:
@@ -64756,7 +64756,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <picture>https://img.al-style.kz/76667_3.jpg</picture>
         <vendor>TECNO</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Ноутбук Tecno Megabook K16SAA i5-13420H / 16&#8239;ГБ / SSD 512&#8239;ГБ / Win 11 Home
 
     Работай. Учись. Создавай.
@@ -65768,7 +65768,7 @@ OEM №: 13R00662, 013R00662
         <picture>https://img.al-style.kz/76972_1.jpg</picture>
         <vendor>CET</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж CET 006R01519 (CET141211)
 Тонер-картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -65822,7 +65822,7 @@ OEM №: 13R00662, 013R00662
         <picture>https://img.al-style.kz/76974_1.jpg</picture>
         <vendor>CET</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж CET 006R01693 (CET141589)
 Тонер-картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -65876,7 +65876,7 @@ OEM №: 13R00662, 013R00662
         <picture>https://img.al-style.kz/76977_1.jpg</picture>
         <vendor>CET</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж CET 006R01695 (CET141591)
 Тонер-картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -65903,7 +65903,7 @@ OEM №: 13R00662, 013R00662
         <picture>https://img.al-style.kz/76978_1.jpg</picture>
         <vendor>CET</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Тонер-картридж CET 006R01696 (CET141592)
 Тонер-картридж — расходный материал, используемый принтером или МФУ.
 Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. 
@@ -69043,26 +69043,26 @@ Comix F6301   ламинатор начального уровня для дома офиса.
         <vendor>Comix</vendor>
         <currencyId>KZT</currencyId>
         <available>true</available>
-        <description>Уничтожитель бумаг (Шредер) COMIX S3508D
-У вас есть куча бумаг, которые нужно уничтожить?
-Защитите конфиденциальную информацию и устраните беспорядок с помощью сверхмощного измельчителя бумаги Comix S3508D!
-Основные особенности COMIX S3508D:
-- Уровень секретности: 4
-- Непрерывное измельчение в течение 30 минут. Отдельные слоты для компакт-дисков и пластиковых карт
-- Вместимость: 8 листов (A4)
-- Емкость измельчения: 8 листов (A4), 1 компакт-диск, 1 пластиковая карта
-- Размер фрагмента резки: 2 12 мм
-- Ширина гнезда подачи: 220 мм
-- Тип измельчения: микрорезка
-- Скорость измельчения: 2,3 м/мин.
-- Рабочий цикл: 30 минут вкл., 40 минут выкл.
-- Функция переключателя: вкл/выкл-вперед-авто-реверс
-- Ёмкость корзины: 22 л
-- Габариты (ШхГхВ): 350x260x565 мм
-- Вес нетто: 9,0 кг
-- Шум: 65 дБ
-- Отдельная конструкция корзины для компакт-дисков для разделения различных отходов
-- Энергосберегающая технология отключает питание через 30 минут бездействия
+        <description>Уничтожитель бумаг (Шредер) COMIX S4210M
+
+Профессиональный уничтожитель документов COMIX S4210M разработан для обеспечения максимального уровня безопасности при утилизации конфиденциальной информации в офисе или дома. Благодаря высокосекретной микро-резке и увеличенному времени непрерывной работы, эта модель является идеальным решением для обработки больших объемов документации.
+
+Технические характеристики:
+
+Модель: COMIX S4210M
+    Тип резки: Микро-резка
+    Уровень секретности: (P-5)
+    Размер фрагментов: 2x15 мм
+    Макс. загрузка (70 г/м&#178;): 10 листов
+    Время непрерывной работы: 60 минут
+    Объем корзины: 25 л
+    Ширина загрузки: 220 мм
+    Скорость уничтожения: 2 м/мин
+    Уровень шума: 58 дБ
+    Уничтожает: Бумага, кредитные карты, скобы, скрепки
+    Функции переключателя: Реверс, Авто/Выкл/Вперед
+    Габариты (ДхШхВ): 373x280x570 мм
+    Вес нетто: 11.5 кг
 
 Характеристики:
 - Гарантия: 1 год</description>
