@@ -5,8 +5,8 @@
 price_seo.py
 -----------------------------------
 Создаёт docs/price_seo.yml из docs/price.yml и добавляет в НАЧАЛО каждого <description>
-ваш блок: зелёная «кнопка» WhatsApp (без подчёркивания), контакты с тёмно-синими ссылками (без подчёркивания),
-затем <hr>, затем — родной текст.
+ваш маркетинговый блок: зелёная «кнопка» WhatsApp с округлёнными углами, контакты
+(тёмно-синие ссылки без подчёркивания), затем <hr>, затем — родное описание.
 
 Без CDATA. Повторной вставки нет (ищем фразу "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!").
 Кодировка: windows-1251 с безопасной нормализацией.
@@ -26,46 +26,43 @@ DST: Path = Path("docs/price_seo.yml")
 ENC: str  = "windows-1251"
 
 # Цвета
-COLOR_LINK  = "#0b3d91"   # тёмно-синий
-COLOR_WHITE = "#ffffff"   # белый (текст на «кнопке»)
-COLOR_BTN   = "#27ae60"   # зелёный фон «кнопки»
-COLOR_KASPI = "#8b0000"   # тёмно-красный для слова KASPI
+COLOR_LINK  = "#0b3d91"   # тёмно-синий для ссылок
+COLOR_WHITE = "#ffffff"   # белый для текста на кнопке
+COLOR_BTN   = "#27ae60"   # зелёный фон кнопки
+COLOR_KASPI = "#8b0000"   # тёмно-красный для KASPI
 
-# Ваш блок: две верхние строки по центру, все ссылки без подчёркивания
-TEMPLATE_HTML: str = f"""<center>
-  <table border="0" cellspacing="0" cellpadding="10" align="center" bgcolor="{COLOR_BTN}">
-    <tr>
-      <td>
-        <a style="text-decoration:none" href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0">
-          <font color="{COLOR_WHITE}"><strong>НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</strong></font>
-        </a>
-      </td>
-    </tr>
-  </table>
-</center>
+# Весь блок — в шрифте Arial/Helvetica; кнопка с border-radius; все ссылки без подчёркивания
+TEMPLATE_HTML: str = f"""<div style="font-family: Arial, Helvetica, sans-serif;">
+  <center>
+    <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
+       style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:700;">
+      НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
+    </a>
+  </center>
 
-<center>
-  Просьба отправлять запросы в
-  <a style="text-decoration:none" href="tel:+77073270501"><font color="{COLOR_LINK}"><strong>WhatsApp: +7 (707) 327-05-01</strong></font></a>
-  либо на почту:
-  <a style="text-decoration:none" href="mailto:info@complex-solutions.kz"><font color="{COLOR_LINK}"><strong>info@complex-solutions.kz</strong></font></a>
-</center>
+  <center>
+    Просьба отправлять запросы в
+    <a href="tel:+77073270501" style="color:{COLOR_LINK};text-decoration:none;"><strong>WhatsApp: +7 (707) 327-05-01</strong></a>
+    либо на почту:
+    <a href="mailto:info@complex-solutions.kz" style="color:{COLOR_LINK};text-decoration:none;"><strong>info@complex-solutions.kz</strong></a>
+  </center>
 
-<h2>Оплата</h2>
-<ul>
-  <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>
-  <li><strong>Удаленная оплата</strong> по <font color="{COLOR_KASPI}"><strong>KASPI</strong></font> счету для <u>физических лиц</u></li>
-</ul>
+  <h2>Оплата</h2>
+  <ul>
+    <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>
+    <li><strong>Удаленная оплата</strong> по <font color="{COLOR_KASPI}"><strong>KASPI</strong></font> счету для <u>физических лиц</u></li>
+  </ul>
 
-<h2>Доставка</h2>
-<ul>
-  <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>
-  <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией
-    <a style="text-decoration:none" href="https://exline.kz/"><font color="{COLOR_LINK}"><strong>Exline.kz</strong></font></a></em>
-  </li>
-  <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
-  <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>
-</ul>"""
+  <h2>Доставка</h2>
+  <ul>
+    <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>
+    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией
+      <a href="https://exline.kz/" style="color:{COLOR_LINK};text-decoration:none;"><strong>Exline.kz</strong></a></em>
+    </li>
+    <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
+    <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>
+  </ul>
+</div>"""
 
 # ─────────────────────────── I/O утилиты ───────────────────────────
 
@@ -161,7 +158,7 @@ def main() -> int:
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
 
-    print(f"[seo] Готово: блок с «кнопкой», тёмно-красным KASPI и доставкой 5000 тг. добавлен. Файл: {DST}")
+    print(f"[seo] Готово: блок с округлой кнопкой и красивым шрифтом добавлен. Файл: {DST}")
     return 0
 
 # ─────────────────────────── Точка входа ───────────────────────────
