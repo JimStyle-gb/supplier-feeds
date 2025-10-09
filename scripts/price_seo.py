@@ -4,13 +4,12 @@
 """
 price_seo.py
 -----------------------------------
-Создаёт docs/price_seo.yml на основе docs/price.yml и добавляет в НАЧАЛО
-каждого <description> ваш блок (2 строки по центру), затем <hr>, затем — родное описание.
+Создаёт docs/price_seo.yml из docs/price.yml и добавляет в НАЧАЛО каждого <description>
+ваш блок (2 строки по центру через <center>), затем <hr>, затем — родной текст.
 
-Особенности:
-  • Без XML-парсера (устойчив к «грязным» текстам с & и <).
-  • Повторной вставки нет (узнаём по фразе "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!").
-  • Кодировка вывода: windows-1251 с безопасной нормализацией.
+Важно: CDATA не используется (чистый HTML внутри <description>).
+Повторной вставки нет (ищем фразу "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!").
+Кодировка вывода: windows-1251 с безопасной нормализацией.
 """
 
 from __future__ import annotations
@@ -27,6 +26,7 @@ DST: Path = Path("docs/price_seo.yml")
 ENC: str  = "windows-1251"
 
 # Ваш блок: первые две строки — строго по центру через <center>.
+# Важно: амперсанды в URL уже экранированы (&amp;).
 TEMPLATE_HTML: str = """<center><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"><strong>НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</strong></a></center>
 
 <center>Просьба отправлять запросы в <a href="tel:+77073270501"><strong>WhatsApp: +7 (707) 327-05-01</strong></a> либо на почту: <a href="mailto:info@complex-solutions.kz"><strong>info@complex-solutions.kz</strong></a></center>
@@ -72,60 +72,50 @@ def write_cp1251(path: Path, text: str) -> None:
 
 # ─────────────────────────── Регэкспы ───────────────────────────
 
-DESC_RX   = re.compile(r"<description\b[^>]*>(.*?)</description>", re.I | re.S)
-OFFER_RX  = re.compile(r"<offer\b[^>]*>.*?</offer>",                re.I | re.S)
-CD_START  = "<![CDATA["
-CD_END    = "]]>"
+DESC_RX  = re.compile(r"<description\b[^>]*>(.*?)</description>", re.I | re.S)
+OFFER_RX = re.compile(r"<offer\b[^>]*>.*?</offer>",                re.I | re.S)
 
 # ─────────────────────────── Вспомогательные ───────────────────────────
 
-def strip_cdata(s: str) -> str:
-    s = s.strip()
-    if s.startswith(CD_START) and s.endswith(CD_END):
-        return s[len(CD_START):-len(CD_END)]
-    return s
+def has_our_block(desc_html: str) -> bool:
+    """Проверяем, вставлялся ли уже наш блок (по ключевой фразе)."""
+    return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_html
 
-def wrap_cdata(s: str) -> str:
-    # Запрещаем "]]>" внутри CDATA
-    return CD_START + s.replace("]]>", "]]&gt;") + CD_END
+def build_new_description(existing_inner: str) -> str:
+    """
+    Формируем новое содержимое <description>:
+      [ваш блок] + <hr> + [родной текст], если он был.
+    CDATA не используется.
+    """
+    if existing_inner.strip():
+        return TEMPLATE_HTML + "\n\n<hr>\n\n" + existing_inner.strip()
+    else:
+        return TEMPLATE_HTML  # если родного текста не было — и нечего разделять
 
 def inject_into_description_block(desc_inner: str) -> str:
-    """
-    Вставляет ваш блок в начало описания (если его ещё нет).
-    После блока добавляет <hr>, затем — исходный текст.
-    """
-    inner_clean = strip_cdata(desc_inner)
-
-    # Защита от дублирования
-    if "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in inner_clean:
+    """Обновляет существующий <description>."""
+    if has_our_block(desc_inner):
         return f"<description>{desc_inner}</description>"
-
-    if inner_clean.strip():
-        combined = TEMPLATE_HTML + "\n\n<hr>\n\n" + inner_clean.strip()
-    else:
-        combined = TEMPLATE_HTML
-
-    return "<description>" + wrap_cdata(combined) + "</description>"
+    return "<description>" + build_new_description(desc_inner) + "</description>"
 
 def add_description_if_missing(offer_block: str) -> str:
     """
-    Если описания нет — создаём <description> с вашим блоком (без <hr>).
+    Если <description> отсутствует — создаём его перед </offer> с вашим блоком.
+    (Тут <hr> не нужен, потому что нет «второй части».)
     """
     if re.search(r"<description\b", offer_block, flags=re.I):
         return offer_block
-
-    # Определим отступ по ближайшему тегу внутри оффера (чтобы было красиво)
+    # отступ подхватим по ближайшему тегу
     m = re.search(r"\n([ \t]+)<", offer_block)
     indent = m.group(1) if m else "  "
-
-    insertion = f"\n{indent}<description>{wrap_cdata(TEMPLATE_HTML)}</description>"
+    insertion = f"\n{indent}<description>{TEMPLATE_HTML}</description>"
     tail = (insertion + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (insertion + "\n</offer>")
     return offer_block.replace("</offer>", tail)
 
 # ─────────────────────────── Основная логика ───────────────────────────
 
 def process_whole_text(xml_text: str) -> str:
-    # 1) сначала обновляем все существующие <description>…</description>
+    # 1) обновляем все существующие <description>…</description>
     def _desc_repl(m: re.Match) -> str:
         inner = m.group(1)
         return inject_into_description_block(inner)
