@@ -11,10 +11,10 @@ price_seo.py — Этап 1 (Совместимость, только принт
 • Совместимость:
   - извлекаем модели из <name> и <description>;
   - расширяем «слэш-списки» (E77822/E77825/E77830);
-  - ищем контекст бренда и семейства (например, Konica Minolta bizhub);
+  - ищем контекст бренда и семейства (сохраняем оригинальное написание, напр. Konica-Minolta bizhub);
   - ГЛАВНОЕ: фильтруем только устройства (принтеры/МФУ/плоттеры);
-    * выкидываем артикулы картриджей/драмов (CE285A, CRG-725, TN-210K, TK-1170, DR-, и т.п., плюс совпадение с vendorCode);
-    * «голые» коды (C250) оставляем только при найденном семействе (→ Konica Minolta bizhub C250), иначе — удаляем.
+    * выкидываем артикулы картриджей/драмов (CE285A, CRG-725, TN-210K, TK-1170, DR-…, и т.п., плюс совпадение с vendorCode);
+    * «голые» коды (C250) оставляем только при найденном семействе (→ Konica-Minolta bizhub C250), иначе — удаляем.
 """
 
 from __future__ import annotations
@@ -241,7 +241,7 @@ def beautify_original_description(inner: str) -> str:
 
 BRANDS = (
     "HP","Hewlett Packard","Canon","Epson","Brother","Kyocera","Samsung",
-    "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Pantum",
+    "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Konica-Minolta","Pantum",
 )
 
 FAMILY_HINTS = (
@@ -265,13 +265,12 @@ FAMILY_HINTS = (
     "bizhub",
 )
 
-# Паттерны артикулов картриджей/драмов (не устройства!)
 CARTRIDGE_PATTERNS = (
-    r"(?:CE|CF|CB|CC|Q)[0-9]{2,4}[A-Z]",       # CE285A, CF226X...
-    r"(?:CRG)[- ]?\d{2,4}",                    # CRG-725
-    r"(?:TN|TK|TKC|TNP|TNR)[- ]?\d{2,5}[A-Z]?",# TN-210K, TK-1170
-    r"(?:DR|DK|DV)[- ]?\d{2,5}[A-Z]?",         # DR-2300, DK-1110, DV-116
-    r"(?:CN|AR|MX|JL)[- ]?\d{2,5}[A-Z]?",      # разные вендорные
+    r"(?:CE|CF|CB|CC|Q)[0-9]{2,4}[A-Z]",        # CE285A, CF226X...
+    r"(?:CRG)[- ]?\d{2,4}",                     # CRG-725
+    r"(?:TN|TK|TKC|TNP|TNR)[- ]?\d{2,5}[A-Z]?", # TN-210K, TK-1170
+    r"(?:DR|DK|DV)[- ]?\d{2,5}[A-Z]?",          # DR-2300, DK-1110, DV-116
+    r"(?:CN|AR|MX|JL)[- ]?\d{2,5}[A-Z]?",       # прочие
 )
 
 CARTRIDGE_RE = re.compile(rf"(?i)\b({'|'.join(CARTRIDGE_PATTERNS)})\b")
@@ -283,17 +282,28 @@ def normalize_space(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").replace("\u00A0"," ")).strip()
 
 def extract_brand_context(text: str) -> tuple[str,str]:
+    """
+    Ищем бренд и семейство в тексте и ВОЗВРАЩАЕМ ИХ В ТОЧНОМ ВИДЕ,
+    как они встретились (с дефисами и регистром).
+    """
     t = normalize_space(text)
     brand = ""
+    brand_pos = 1_000_000
     for b in BRANDS:
-        m = re.search(rf"(?i)\b{re.escape(b)}\b", t)
-        if m and (not brand or m.start() < t.lower().find(brand.lower())):
-            brand = b
+        m = re.search(rf"(?i)\b{re.escape(b)}\b", t, flags=0)
+        if m and m.start() < brand_pos:
+            brand = m.group(0)  # точная подстрока
+            brand_pos = m.start()
+
     family = ""
     if brand:
-        after = t[t.lower().find(brand.lower()) + len(brand):].strip()
-        m2 = re.search(rf"(?i)\b({'|'.join([re.escape(x) for x in FAMILY_HINTS])})\b", after)
-        if m2: family = m2.group(0)
+        after = t[brand_pos + len(brand):]
+        best_pos = 1_000_000
+        for fam in FAMILY_HINTS:
+            m2 = re.search(rf"(?i)\b{re.escape(fam)}\b", after, flags=0)
+            if m2 and m2.start() < best_pos:
+                family = m2.group(0)  # точная подстрока
+                best_pos = m2.start()
     return brand.strip(), family.strip()
 
 def split_candidates(chunk: str) -> list[str]:
@@ -335,23 +345,21 @@ def is_cartridge_code(s: str, vendor_code_hint: str = "") -> bool:
 def attach_brand_family_only_devices(models: list[str], brand: str, family: str) -> list[str]:
     """
     Приклеиваем «brand [family]» ТОЛЬКО к тем, что выглядят как модели устройств.
-    Удаляем «голые» короткие коды без найденного семейства (чтобы не засорять список).
+    Удаляем «голые» короткие коды без найденного семейства.
     """
     b = brand.strip()
     fam = family.strip()
     res = []
     for m in models:
-        # если модель уже содержит явный вендор/бренд — оставляем как есть
-        if re.match(r"(?i)^(HP|HEWLETT PACKARD|EPSON|CANON|BROTHER|KYOCERA|SAMSUNG|RICOH|XEROX|SHARP|LEXMARK|OKI|PANASONIC|KONICA|KONICA MINOLTA|PANTUM)\b", m):
+        # если уже содержит явный бренд в начале — оставляем
+        if re.match(r"(?i)^(HP|HEWLETT PACKARD|EPSON|CANON|BROTHER|KYOCERA|SAMSUNG|RICOH|XEROX|SHARP|LEXMARK|OKI|PANASONIC|KONICA|KONICA-MINOLTA|KONICA MINOLTA|PANTUM)\b", m):
             res.append(m)
             continue
-        # короткий код без контекста — разрешаем только при наличии семейства
-        if fam:
+        # короткие коды допускаем ТОЛЬКО при наличии семейства
+        if fam or b:
             prefix = " ".join([x for x in (b, fam) if x])
             res.append((prefix + " " + m).strip())
         else:
-            # без family считаем сомнительным и отбрасываем
-            # (пример C250/C252 без "bizhub")
             continue
     return res
 
@@ -380,7 +388,7 @@ def build_compatibility_block(name_text: str, desc_text_plain: str, vendor_code_
     raw_models = [m for m in raw_models if not is_cartridge_code(m, vendor_code_hint)]
     # переносим бренд/семейство только для «устройств», короткие без family — отбрасываем
     models = attach_brand_family_only_devices(raw_models, brand, family)
-    # sanity: последняя часть — «модельная» часть должна быть буквенно-цифровой
+    # sanity: должна быть буквенно-цифровая модельная часть
     models = [m for m in models if re.search(r"[A-Za-z]*\d", m)]
     models = uniq_sorted(models)
     if len(models) < 2:
@@ -471,7 +479,7 @@ def global_li_polish(xml_text: str) -> str:
 # ===================== Основной конвейер =====================
 
 def process_offer_block(offer_block: str) -> str:
-    # имя товара — контекст бренда/семейства
+    # имя товара — контекст бренда/семейства (сохраняем исходное написание)
     name_text = ""
     mname = NAME_RX.search(offer_block)
     if mname and mname.group(1):
