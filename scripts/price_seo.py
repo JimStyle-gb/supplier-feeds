@@ -11,7 +11,7 @@ price_seo.py
   • «Характеристики» сводятся к списку-столбцу.
   • Ключи до двоеточия — жирные: <strong>Гарантия:</strong> 1 год.
   • Если внутри одного <li> склеены несколько пар (' - Ключ: Значение - ...'),
-    они автоматически «разрезаются» на много <li>.
+    они автоматически «разрезаются» на несколько СОСЕДНИХ <li>.
 
 Без CDATA. Повторной вставки блока нет. Кодировка выхода: windows-1251 (безопасная нормализация).
 """
@@ -120,14 +120,15 @@ def make_ul_from_bullets(text_block: str) -> str:
     items = [kv_to_li(ln) for ln in lines if ln.strip()]
     return "<ul>\n" + "\n".join(items) + "\n</ul>"
 
-# ★ NEW: разбиваем один LI с инлайновыми парами " - Ключ: Значение" на несколько LI
+# ★ FIXED: разбиваем один LI с инлайновыми парами " - Ключ: Значение" на несколько СОСЕДНИХ <li>
 def explode_inline_kv_pairs_in_li(html: str) -> str:
     """
-    Находит <li>..</li>, где внутри несколько пар вида " - Ключ: Значение"
-    и разрезает их на отдельные <li>. Ключ жирный.
+    Находит <li>..</li>, где внутри несколько пар вида " - Ключ: Значение",
+    и ЗАМЕНЯЕТ такой <li> на несколько СОСЕДНИХ <li>. Ключ жирный.
+    Сохраняем существующую разметку (например, <strong>Ресурс:</strong> 34000).
     """
     def li_repl(m: re.Match) -> str:
-        before, body, after = m.group(1), m.group(2), m.group(3)
+        body = m.group(2)
 
         # Быстрый выход: нет потенциальных разделителей — не трогаем
         if not any(sep in body for sep in (" - ", " — ", " • ", " · ")):
@@ -136,11 +137,11 @@ def explode_inline_kv_pairs_in_li(html: str) -> str:
         # Нормализуем разделители к ' - ' для анализа
         norm = body.replace(" — ", " - ").replace(" • ", " - ").replace(" · ", " - ")
 
-        # Если всего одно двоеточие — скорее одна пара, оставляем
+        # Если всего одно двоеточие — оставляем как есть (скорее одна пара)
         if norm.count(":") <= 1:
             return m.group(0)
 
-        # Сплит по " - " только если фрагмент начинается с "Ключ:" (то есть содержит двоеточие сразу после слова)
+        # Сплит по " - " только если фрагмент ПРАВДА похож на "Ключ: ..."
         parts = []
         buf = []
         tokens = norm.split(" - ")
@@ -155,11 +156,15 @@ def explode_inline_kv_pairs_in_li(html: str) -> str:
                 buf.append(tk)
         parts.append(" - ".join(buf))
 
-        # Превращаем каждый фрагмент в отдельный <li> с жирным ключом
+        # КАЖДЫЙ фрагмент -> ОТДЕЛЬНЫЙ <li> (без внешней обёртки!)
         lis = []
         for frag in parts:
             frag = frag.strip()
-            frag = re.sub(r"^[-•–—]\s*", "", frag).strip()
+            # если во фрагменте уже есть HTML (например, <strong>Ключ:</strong> 34000) — не экранируем
+            if "<" in frag or ">" in frag:
+                lis.append(f"<li>{frag}</li>")
+                continue
+            # иначе пытаемся распознать "Ключ: Значение"
             m_kv = re.match(r"([^:<>{}\n]{1,120}?)\s*:\s*(.+)$", frag, flags=re.S)
             if m_kv:
                 key = html_escape(m_kv.group(1).strip())
@@ -168,11 +173,12 @@ def explode_inline_kv_pairs_in_li(html: str) -> str:
             elif frag:
                 lis.append(f"<li>{html_escape(frag)}</li>")
 
-        return "".join([before] + lis + [after])
+        # ВАЖНО: возвращаем ТОЛЬКО набор <li>…</li> БЕЗ исходного before/after <li>…</li>
+        return "".join(lis)
 
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, html, flags=re.S | re.I)
 
-# ★ REPLACE: emphasize_kv_in_li — сначала «раскалывает» LI, потом жирнит ключ
+# Делает жирным 'Ключ:' в <li> + вызывает сплит одиночных LI
 def emphasize_kv_in_li(html: str) -> str:
     """
     Делает жирным 'Ключ:' в <li>. Сначала раскалывает одиночные <li> с
