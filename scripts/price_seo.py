@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py
+price_seo.py 
 ————————
 Меняет ТОЛЬКО <description> у каждого <offer>:
 
