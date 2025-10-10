@@ -10,7 +10,8 @@ price_seo.py
 • Абзац с «Характеристики: …» превращается в список-столбец.
 • Ключи до двоеточия жирные: <strong>Гарантия:</strong> 1 год.
 • Если внутри одного <li> склеены много пар (' - Ключ: Значение - ...'), они разрезаются на несколько соседних <li>.
-• ВАЖНО: даже если хвост уже завернут в Times New Roman, применяется пост-обработка БЕЗ повторной обёртки.
+• Даём дополнительную «жёсткую» подстановку: " - Ключ: Значение" → "</li><li><strong>Ключ:</strong> Значение"
+  прямо внутри <li> — чтобы сработало в самых «капризных» кейсах.
 
 Без CDATA. Повторной вставки блока нет. Вывод: windows-1251 (безопасная нормализация).
 """
@@ -106,14 +107,21 @@ def make_ul_from_bullets(text_block: str) -> str:
     items = [kv_to_li(ln) for ln in lines]
     return "<ul>\n" + "\n".join(items) + "\n</ul>"
 
-# --- разрезаем один длинный <li> на несколько соседних <li> ---
+# ── 1) Разрезаем длинные <li> на несколько СТАРШИХ соседних <li> ───────────────────
 def explode_inline_kv_pairs_in_li(html: str) -> str:
     def li_repl(m: re.Match) -> str:
         body = m.group(2)
-        if not any(sep in body for sep in (" - ", " — ", " • ", " · ")):
+        # ранний выход — нет разделителей
+        if not re.search(r"[ \u00A0][\-–—•·][ \u00A0]", body):
             return m.group(0)
 
-        norm = body.replace(" — ", " - ").replace(" • ", " - ").replace(" · ", " - ")
+        # normalize separators to " - "
+        norm = (body.replace("\u00A0", " ")
+                    .replace(" — ", " - ")
+                    .replace(" – ", " - ")
+                    .replace(" • ", " - ")
+                    .replace(" · ", " - "))
+
         if norm.count(":") <= 1:
             return m.group(0)
 
@@ -132,7 +140,7 @@ def explode_inline_kv_pairs_in_li(html: str) -> str:
         for frag in parts:
             frag = frag.strip()
             if "<" in frag or ">" in frag:
-                lis.append(f"<li>{frag}</li>")  # сохраняем существующую разметку ключа
+                lis.append(f"<li>{frag}</li>")  # сохраняем имеющуюся в фрагменте разметку
                 continue
             m_kv = re.match(r"([^:<>{}\n]{1,120}?)\s*:\s*(.+)$", frag, flags=re.S)
             if m_kv:
@@ -141,11 +149,35 @@ def explode_inline_kv_pairs_in_li(html: str) -> str:
                 lis.append(f"<li><strong>{key}:</strong> {val}</li>")
             elif frag:
                 lis.append(f"<li>{html_escape(frag)}</li>")
-        return "".join(lis)  # без исходного <li>…</li>
+        return "".join(lis)
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, html, flags=re.S | re.I)
 
+# ── 2) «Жёсткая» замена прямо внутри <li>: " - Ключ: Значение" → "</li><li><strong>Ключ:</strong> Значение" ──
+def force_inline_li_breaks(html: str) -> str:
+    def inner_fix(m: re.Match) -> str:
+        before, body, after = m.group(1), m.group(2), m.group(3)
+        # нормализуем пробелы/дефисы
+        x = (body.replace("\u00A0", " ")
+                 .replace(" — ", " - ")
+                 .replace(" – ", " - ")
+                 .replace(" • ", " - ")
+                 .replace(" · ", " - "))
+
+        # заменяем каждое " - Ключ: Значение" на закрыть/открыть LI
+        def sub_kv(mkv: re.Match) -> str:
+            key = mkv.group(1).strip()
+            val = mkv.group(2).strip()
+            return f"</li><li><strong>{html_escape(key)}:</strong> {html_escape(val)}"
+
+        x2 = re.sub(r"\s-\s([^:<>{}\n]{1,120}?)\s*:\s*(.+?)(?= \-\s[^:<>{}\n]{1,120}:\s|$)", sub_kv, x)
+        return before + x2 + after
+
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", inner_fix, html, flags=re.S | re.I)
+
+# ── 3) Жирним ключи в одиночных <li> ────────────────────────────────────────────────
 def emphasize_kv_in_li(html: str) -> str:
-    html2 = explode_inline_kv_pairs_in_li(html)
+    html2 = explode_inline_kv_pairs_in_li(html)     # мягкое разбиение
+    html3 = force_inline_li_breaks(html2)           # жёсткий дожим
     def repl(m: re.Match) -> str:
         before, body, after = m.group(1), m.group(2), m.group(3)
         if re.search(r"^\s*(?:[-–—]\s*)?<strong>[^:]{1,120}:</strong>", body, flags=re.I):
@@ -156,8 +188,9 @@ def emphasize_kv_in_li(html: str) -> str:
             body, count=1, flags=re.S
         )
         return f"{before}{kv}{after}"
-    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", repl, html2, flags=re.S | re.I)
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", repl, html3, flags=re.S | re.I)
 
+# ── Абзацы «Характеристики: …» → список ────────────────────────────────────────────
 def transform_characteristics_paragraphs(html: str) -> str:
     def para_repl(m: re.Match) -> str:
         start, body, end = m.group(1), m.group(2), m.group(3)
@@ -176,12 +209,6 @@ def transform_characteristics_paragraphs(html: str) -> str:
     return re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html, flags=re.S | re.I)
 
 def postprocess_tail_no_wrap(html: str) -> str:
-    """
-    Пост-обработка УЖЕ существующего HTML-хвоста БЕЗ обёртки:
-    • «Характеристики:» → список
-    • ссылки без style → стиль
-    • <li> разрезать/ожирнить ключи
-    """
     step1 = transform_characteristics_paragraphs(html)
     step2 = A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"', step1)
     step3 = emphasize_kv_in_li(step2)
@@ -236,18 +263,10 @@ def has_our_block(desc_html: str) -> bool:
     return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_html
 
 def rebuild_with_existing_block(desc_inner: str) -> str:
-    """
-    Если блок уже есть:
-      • если есть <hr> — берём хвост и оформляем;
-      • если хвост уже завернут в Times — применяем пост-обработку БЕЗ повторной обёртки;
-      • если <hr> нет — возвращаем как есть (ничего не ломаем).
-    """
     parts = HR_RX.split(desc_inner, maxsplit=1)
     if len(parts) != 2:
         return "<description>" + desc_inner + "</description>"
     head, tail = parts[0], parts[1]
-
-    # Если внутри уже есть Times-контейнер — обработаем ЕГО содержимое без повторной обёртки.
     m = re.search(r"(<div[^>]*font-family:\s*['\"]?Times New Roman['\"]?[^>]*>)(.*?)(</div>)",
                   tail, flags=re.I | re.S)
     if m:
@@ -255,8 +274,6 @@ def rebuild_with_existing_block(desc_inner: str) -> str:
         processed_inner = postprocess_tail_no_wrap(inner)
         new_tail = tail[:m.start()] + start_div + processed_inner + end_div + tail[m.end():]
         return "<description>" + head + "<hr>\n\n" + new_tail + "</description>"
-
-    # Иначе — обычное красивое оформление с обёрткой
     pretty_tail = beautify_original_description(tail)
     return "<description>" + head + "<hr>\n\n" + pretty_tail + "</description>"
 
@@ -297,7 +314,7 @@ def main() -> int:
     original  = read_cp1251(SRC)
     processed = process_whole_text(original)
     write_cp1251(DST, processed)
-    print(f"[seo] Готово: хвост обрабатывается даже при существующей обёртке Times; длинные <li> разрезаются. Файл: {DST}")
+    print(f"[seo] Готово: длинные LI режутся, ключи жирные; блок/шрифты — как задано. Файл: {DST}")
     return 0
 
 if __name__ == "__main__":
