@@ -8,11 +8,10 @@ price_seo.py
 В <description> добавляет ваш верхний блок (Cambria) → <hr> → красиво оформленный хвост (Times).
 «Характеристики» всегда идут столбцом, ключи до двоеточия — жирные.
 
-Новое:
-  • Если в исходном тексте встречается «технические характеристики» (в любой форме/регистре),
-    заголовок ставится «Технические характеристики», иначе — «Характеристики».
-  • Финальный глобальный проход по ВСЕМ <li>: даже если внутри одного <li> склеены
-    ' - Ключ: Значение - ...', он разрежет на несколько СОСЕДНИХ <li> и ожирнит ключи.
+Дополнения:
+  • Если встречается «технические характеристики», заголовок ставится «Технические характеристики».
+  • Удаляем висящее слово «Технические» из предыдущего абзаца (чтобы не оставалось лишнего «… Технические»).
+  • Жёстко режем длинные <li> с « - Ключ: Значение - …» на несколько соседних <li>.
 """
 
 from __future__ import annotations
@@ -90,11 +89,16 @@ HR_RX         = re.compile(r"<hr\b[^>]*>", re.I)
 KV_LINE_RX    = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
 TECH_RX       = re.compile(r"(?i)техническ\w*\s+характеристик", re.U)
 
-# ============ Заголовок «Характеристики» / «Технические характеристики» ============
+# ============ Заголовок + подчистка «висящего» слова ============
 
 def pick_char_heading(context: str) -> str:
-    """Если встречается «технические характеристики» — используем полную форму."""
     return "Технические характеристики" if TECH_RX.search(context or "") else "Характеристики"
+
+TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
+
+def trim_trailing_tech_word(s: str) -> str:
+    """Убираем висящее «… Технические» в конце предшествующего текста."""
+    return TRIM_TECH_TAIL_RX.sub("", s or "").rstrip()
 
 # ============ Характеристики ============
 
@@ -113,33 +117,39 @@ def make_ul(text_block: str) -> str:
     return "<ul>\n" + "\n".join(kv_to_li(ln) for ln in lines) + "\n</ul>"
 
 def transform_characteristics_paragraphs(html: str) -> str:
-    # <p>...Характеристики/Технические характеристики: ...\n- ключ: значение ...</p> -> заголовок + <ul>
+    """
+    <p>...Характеристики/Технические характеристики: ... - ключ: значение ...</p>
+    → (очищаем хвост «Технические» в head) + <p><strong>Заголовок:</strong></p><ul>…</ul>
+    """
     def para_repl(m: re.Match) -> str:
         start, body, end = m.group(1), m.group(2), m.group(3)
-        if not re.search(r"(?i)характеристик", body):  # любое упоминание «характеристик»
+        if not re.search(r"(?i)характеристик", body):
             return m.group(0)
         norm = re.sub(r"<br\s*/?>", "\n", body, flags=re.I)
         parts = re.split(r"(?i)характеристик[аи]:", norm, maxsplit=1)
-        if len(parts) != 2: return m.group(0)
-        head, tail = parts[0], parts[1]
+        if len(parts) != 2:
+            return m.group(0)
+
+        head_raw, tail = parts[0], parts[1]
+        # подчистим висящее «Технические» в конце head
+        head = trim_trailing_tech_word(head_raw.strip())
         bullet_lines = [ln for ln in tail.strip().split("\n") if ln.strip()]
         bullet_like = [ln for ln in bullet_lines if ln.lstrip().startswith(("-", "•", "–", "—"))]
-        if not bullet_like: return m.group(0)
+        if not bullet_like:
+            return m.group(0)
+
         label = pick_char_heading(body)
         ul = make_ul("\n".join(bullet_lines))
-        out = (f"<p>{head.strip()}</p>\n" if head.strip() else "") + f"<p><strong>{label}:</strong></p>\n" + ul
+        out = (f"<p>{head}</p>\n" if head else "") + f"<p><strong>{label}:</strong></p>\n" + ul
         return start + out + end
 
     return re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html, flags=re.S | re.I)
 
 def explode_inline_li(html: str) -> str:
-    """
-    Мягкое разрезание: один <li> с ' - Ключ: Значение - ...' -> несколько соседних <li>.
-    """
+    """Мягкое разрезание длинного <li> с « - Ключ: Значение …» → несколько <li>."""
     def li_repl(m: re.Match) -> str:
         body = m.group(2)
         if not re.search(r"[ \u00A0][\-–—•·][ \u00A0]", body): return m.group(0)
-
         norm = (body.replace("\u00A0"," ")
                     .replace(" — "," - ").replace(" – "," - ")
                     .replace(" • "," - ").replace(" · "," - "))
@@ -147,8 +157,7 @@ def explode_inline_li(html: str) -> str:
 
         parts, buf = [], []
         for i, tk in enumerate(norm.split(" - ")):
-            if i == 0:
-                buf.append(tk); continue
+            if i == 0: buf.append(tk); continue
             if re.match(r"\s*[^:<>{}\n]{1,120}:\s*.", tk, flags=re.S):
                 parts.append(" - ".join(buf)); buf = [tk]
             else:
@@ -158,7 +167,7 @@ def explode_inline_li(html: str) -> str:
         lis = []
         for frag in parts:
             frag = frag.strip()
-            if "<" in frag or ">" in frag:
+            if "<" in frag and ">" in frag:
                 lis.append(f"<li>{frag}</li>")
                 continue
             m_kv = re.match(r"([^:<>{}\n]{1,120}?)\s*:\s*(.+)$", frag, flags=re.S)
@@ -173,9 +182,7 @@ def explode_inline_li(html: str) -> str:
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, html, flags=re.S | re.I)
 
 def force_inline_li_breaks(html: str) -> str:
-    """
-    Жёсткий дожим внутри <li>: ' - Ключ: Значение' -> '</li><li><strong>Ключ:</strong> Значение'
-    """
+    """Жёсткий дожим: ' - Ключ: Значение' → '</li><li><strong>Ключ:</strong> Значение'."""
     def inner_fix(m: re.Match) -> str:
         before, body, after = m.group(1), m.group(2), m.group(3)
         x = (body.replace("\u00A0"," ")
@@ -219,9 +226,10 @@ def beautify_plain_text(text: str) -> str:
     for blk in blocks:
         if re.search(r"(?i)\bхарактеристик", blk):
             parts = re.split(r"(?i)характеристик[аи]:", blk, maxsplit=1)
-            head = parts[0].strip()
-            tail = parts[1].strip() if len(parts)==2 else ""
-            label = pick_char_heading(blk)
+            head_raw = parts[0].strip()
+            tail     = parts[1].strip() if len(parts)==2 else ""
+            label    = pick_char_heading(blk)
+            head     = trim_trailing_tech_word(head_raw)
             if head: out.append(f"<p>{html_escape(head)}</p>")
             if tail:
                 out.append(f"<p><strong>{label}:</strong></p>")
