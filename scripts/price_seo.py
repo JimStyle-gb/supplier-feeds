@@ -4,11 +4,15 @@
 """
 price_seo.py
 ————————
-Меняет ТОЛЬКО содержимое <description>:
-• добавляет/пересобирает блок «Совместимость» из РОДНОГО описания (ключи: «Совместимость с моделями», «Принтеры», «Совместимость»),
-• раскрывает слэш-списки (CM1100ADW/СM1100ADN/… -> отдельные пункты),
-• нормализует похожие кириллические буквы (С↔C и др.), чтобы ничего не потерять,
-• НЕ трогает «Технические характеристики» и остальной текст/теги внутри <offer>.
+Меняет ТОЛЬКО <description> у каждого <offer>:
+
+1) Если верхнего блока (WhatsApp/Оплата/Доставка) нет — добавляет его и <hr>.
+2) НОРМАЛИЗУЕТ «Технические характеристики», когда они даны в одну строку с разделителями " - ":
+   превращает в список <ul>, где <strong>Ключ:</strong> значение (ключ жирный).
+   Готовые списки не ломает.
+3) Добавляет/обновляет «Совместимость» из родного описания (ключи: «Совместимость с моделями», «Принтеры», «Совместимость»),
+   раскрывает слэш-списки и фиксит кириллическую «С» в моделях.
+4) Ни порядок остальных тегов оффера, ни их содержимое НЕ трогает.
 
 Вход:  docs/price.yml
 Выход: docs/price_seo.yml
@@ -23,7 +27,7 @@ SRC = Path("docs/price.yml")
 DST = Path("docs/price_seo.yml")
 ENC = "windows-1251"
 
-# ===== Верхний фиксированный блок (как у тебя) =====
+# ===== Верхний фиксированный блок =====
 COLOR_LINK  = "#0b3d91"
 COLOR_WHITE = "#ffffff"
 COLOR_BTN   = "#27ae60"
@@ -85,22 +89,70 @@ HR_RX    = re.compile(r"<hr\b[^>]*>", re.I)
 def normsp(s: str) -> str:
     return re.sub(r"\s+"," ", (s or "").replace("\u00A0"," ")).strip()
 
-# нормализация похожих букв (кириллица→латиница), чтобы парсить CM/CP и т.п.
+# ===== «ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ» → список =====
+# Признак абзаца с характеристиками
+TECH_HDR_RX = re.compile(r"(?i)\bтехническ\w*\s+характеристик[аи]\s*:\s*")
+# Разбиваем « - » на сегменты
+DASH_SPLIT = re.compile(r"\s[-–—]\s")
+# «ключ: значение»
+KV_RX = re.compile(r"^\s*([^:]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
+
+def kv_li(line: str) -> str:
+    m = KV_RX.match(line.strip())
+    if m:
+        key = esc(normsp(m.group(1)))
+        val = esc(normsp(m.group(2)))
+        return f"<li><strong>{key}:</strong> {val}</li>"
+    return f"<li>{esc(normsp(line))}</li>"
+
+def to_ul_from_dashed(text_after_header: str) -> str:
+    parts = [p for p in DASH_SPLIT.split(text_after_header) if p.strip()]
+    if len(parts) < 2:
+        return ""  # слишком мало — не преобразуем
+    items = "\n".join(kv_li(p) for p in parts)
+    return "<ul>\n" + items + "\n</ul>"
+
+def normalize_tech_block(html_tail: str) -> str:
+    """
+    Ищем участок “… Технические характеристики: … - Ключ: Значение - Ключ: Значение …”
+    и превращаем в:
+      <p><strong>Технические характеристики:</strong></p>
+      <ul>…</ul>
+    Уже оформленные списки не трогаем.
+    """
+    # если уже есть правильный заголовок+<ul> — ничего не делаем
+    if re.search(r"(?is)<p[^>]*>\s*<strong>\s*техническ\w*\s+характеристик[аи]\s*:\s*</strong>\s*</p>\s*<ul>.*?</ul>",
+                 html_tail):
+        return html_tail
+
+    def para_repl(m: re.Match) -> str:
+        start, body, end = m.group(1), m.group(2), m.group(3)
+        # если в абзаце есть «Тех. характеристики: …» и дальше идут « - »
+        if not TECH_HDR_RX.search(body):
+            return m.group(0)
+        # вырезаем всё до двоеточия
+        after = re.split(TECH_HDR_RX, body, maxsplit=1)[-1].strip()
+        ul = to_ul_from_dashed(after)
+        if not ul:
+            return m.group(0)  # не удалось красиво распарсить — оставим как было
+        return start + "<strong>Технические характеристики:</strong>" + end + "\n" + ul
+
+    # Пробуем преобразовать абзацы <p>...</p> с длинной строкой
+    html2 = re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html_tail, flags=re.S|re.I)
+    return html2
+
+# ===== «СОВМЕСТИМОСТЬ» =====
 LOOKALIKE = str.maketrans({
     "А":"A","В":"B","С":"C","Е":"E","Н":"H","К":"K","М":"M","О":"O","Р":"P","Т":"T","Х":"X","У":"Y",
     "а":"a","в":"b","с":"c","е":"e","н":"h","к":"k","м":"m","о":"o","р":"p","т":"t","х":"x","у":"y",
 })
 def latinize(s: str) -> str: return (s or "").translate(LOOKALIKE)
 
-# ===== Извлечение моделей ТОЛЬКО из родного описания =====
-# Берём значения у ключей «Совместимость с моделями: …», «Принтеры: …», «Совместимость: …»
-KV_SPLIT = re.compile(r"\s[-–—]\s")  # разделитель « - »
+KV_SPLIT = re.compile(r"\s[-–—]\s")
 KEY_RX   = re.compile(r"^\s*([^:]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
-TARGET_KEYS = (
-    "совместимость с моделями",
-    "принтеры",
-    "совместимость",
-)
+TARGET_KEYS = ("совместимость с моделями", "принтеры", "совместимость")
+MODEL_TOKEN_RE = re.compile(r"\b([A-Z]{1,4}-?[A-Z]?\d{2,6}[A-Z]?(?:-[A-Z0-9]{1,4})?)\b", re.I)
+SEPS_RE        = re.compile(r"[;,]|\s+\bи\b\s+", re.I)
 
 def html_to_text(html: str) -> str:
     t = re.sub(r"<br\s*/?>", "\n", html, flags=re.I)
@@ -117,9 +169,6 @@ def parse_kv_pairs(flat_text: str) -> dict[str,str]:
         val = normsp(m.group(2))
         pairs[key] = val
     return pairs
-
-MODEL_TOKEN_RE = re.compile(r"\b([A-Z]{1,4}-?[A-Z]?\d{2,6}[A-Z]?(?:-[A-Z0-9]{1,4})?)\b", re.I)
-SEPS_RE        = re.compile(r"[;,]|\s+\bи\b\s+", re.I)
 
 def expand_slashes(series: str) -> list[str]:
     parts = [p for p in series.split("/") if p]
@@ -150,7 +199,7 @@ def extract_models_from_value(value: str) -> list[str]:
     for frag in split_series(value):
         for m in MODEL_TOKEN_RE.finditer(frag):
             token = m.group(1).upper()
-            models.append(frag[:m.start()] + token + frag[m.end():])  # сохраняем бренд/семейство слева
+            models.append(frag[:m.start()] + token + frag[m.end():])
     seen, out = set(), []
     for s in models:
         s2 = normsp(s)
@@ -171,7 +220,6 @@ def collect_compat_from_description(desc_inner_html: str) -> list[str]:
         m = re.search(r"(?i)принтеры\s*:\s*(.+)", flat)
         if m:
             models_all.extend(extract_models_from_value(m.group(1)))
-    # дедуп с сохранением порядка
     seen, out = set(), []
     for s in models_all:
         s2 = normsp(s)
@@ -188,12 +236,17 @@ def render_compat_ul(models: list[str]) -> str:
 def has_compat_block(html: str) -> bool:
     return re.search(r"(?i)<strong>\s*совместим\w*\s*:</strong>", html) is not None
 
+# ===== Сборка частей =====
+def ensure_header(desc_inner: str) -> str:
+    if "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_inner:
+        return desc_inner
+    return HEADER_HTML + ("\n\n<hr>\n\n" + desc_inner if desc_inner.strip() else "")
+
 def inject_compatibility(desc_inner_html: str) -> str:
     # если «Совместимость» уже есть и там >=2 пунктов — не трогаем
     if has_compat_block(desc_inner_html):
-        lis = re.findall(r"(?is)<p[^>]*>\s*<strong>\s*совместим\w*:\s*</strong>\s*</p>\s*<ul>(.*?)</ul>",
-                         desc_inner_html)
-        if lis and len(re.findall(r"<li\b", lis[0], flags=re.I)) >= 2:
+        m = re.search(r"(?is)<p[^>]*>\s*<strong>\s*совместим\w*:\s*</strong>\s*</p>\s*<ul>(.*?)</ul>", desc_inner_html)
+        if m and len(re.findall(r"<li\b", m.group(1), flags=re.I)) >= 2:
             return "<description>" + desc_inner_html + "</description>"
     models = collect_compat_from_description(desc_inner_html)
     compat_html = render_compat_ul(models)
@@ -203,28 +256,27 @@ def inject_compatibility(desc_inner_html: str) -> str:
     parts = HR_RX.split(desc_inner_html, maxsplit=1)
     if len(parts) == 2:
         head, tail = parts[0], parts[1]
+        # НОРМАЛИЗУЕМ «Технические характеристики» в «низу» перед вставкой
+        tail = normalize_tech_block(tail)
+        # затем вставляем/заменяем «Совместимость»
         tail2 = re.sub(r"(?is)<p[^>]*>\s*<strong>\s*совместим\w*:\s*</strong>\s*</p>\s*<ul>.*?</ul>",
                        compat_html, tail, count=1)
         if tail2 == tail:
             tail2 = tail.rstrip() + ("\n" if not tail.rstrip().endswith("\n") else "") + compat_html
         return "<description>" + head + "<hr>\n\n" + tail2 + "</description>"
     else:
-        body = desc_inner_html.rstrip() + ("\n" if not desc_inner_html.rstrip().endswith("\n") else "") + compat_html
+        body = normalize_tech_block(desc_inner_html)
+        body = body.rstrip() + ("\n" if not body.rstrip().endswith("\n") else "") + compat_html
         return "<description>" + body + "</description>"
 
-def ensure_header(desc_inner: str) -> str:
-    if "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_inner:
-        return desc_inner
-    return HEADER_HTML + ("\n\n<hr>\n\n" + desc_inner if desc_inner.strip() else "")
-
+# ===== Основной проход =====
 def process_offer(offer_xml: str) -> str:
     def _desc_repl(m: re.Match) -> str:
-        inner = m.group(1)
-        inner = ensure_header(inner)
+        inner = ensure_header(m.group(1))
         return inject_compatibility(inner)
     new_block = DESC_RX.sub(_desc_repl, offer_xml)
     if new_block == offer_xml:
-        # не было <description> — создаём минимальный с «шапкой»
+        # не было <description> — создадим минимальный с «шапкой»
         m = re.search(r"\n([ \t]+)<", offer_xml)
         indent = m.group(1) if m else "  "
         ins = f"\n{indent}<description>{HEADER_HTML}</description>"
@@ -241,7 +293,7 @@ def main() -> int:
     original  = rtext(SRC)
     processed = process_text(original)
     wtext(DST, processed)
-    print(f"[seo] OK: {DST} — обновлён только раздел «Совместимость», остальное без изменений")
+    print(f"[seo] OK: {DST} — «Характеристики» снова списком, «Совместимость» добавлена, остальное без изменений")
     return 0
 
 if __name__ == "__main__":
