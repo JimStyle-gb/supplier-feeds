@@ -8,7 +8,9 @@ price_seo.py
 В <description> добавляет ваш верхний блок (Cambria) → <hr> → красиво оформленный хвост (Times).
 «Характеристики» всегда идут столбцом, ключи до двоеточия — жирные.
 
-НОВОЕ:
+Новое:
+  • Если в исходном тексте встречается «технические характеристики» (в любой форме/регистре),
+    заголовок ставится «Технические характеристики», иначе — «Характеристики».
   • Финальный глобальный проход по ВСЕМ <li>: даже если внутри одного <li> склеены
     ' - Ключ: Значение - ...', он разрежет на несколько СОСЕДНИХ <li> и ожирнит ключи.
 """
@@ -85,8 +87,14 @@ HAS_HTML_TAGS = re.compile(r"<[a-zA-Z/!][^>]*>")
 A_NO_STYLE_RX = re.compile(r"<a(?![^>]*\bstyle=)", re.I)
 HR_RX         = re.compile(r"<hr\b[^>]*>", re.I)
 
-# Ключ: Значение (без HTML-скобок в ключе)
-KV_LINE_RX = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
+KV_LINE_RX    = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
+TECH_RX       = re.compile(r"(?i)техническ\w*\s+характеристик", re.U)
+
+# ============ Заголовок «Характеристики» / «Технические характеристики» ============
+
+def pick_char_heading(context: str) -> str:
+    """Если встречается «технические характеристики» — используем полную форму."""
+    return "Технические характеристики" if TECH_RX.search(context or "") else "Характеристики"
 
 # ============ Характеристики ============
 
@@ -105,19 +113,21 @@ def make_ul(text_block: str) -> str:
     return "<ul>\n" + "\n".join(kv_to_li(ln) for ln in lines) + "\n</ul>"
 
 def transform_characteristics_paragraphs(html: str) -> str:
-    # <p>...Характеристики: ...\n- ключ: значение ...</p> -> <p><strong>Характеристики:</strong></p><ul>...</ul>
+    # <p>...Характеристики/Технические характеристики: ...\n- ключ: значение ...</p> -> заголовок + <ul>
     def para_repl(m: re.Match) -> str:
         start, body, end = m.group(1), m.group(2), m.group(3)
-        if "Характеристик" not in body and "Характеристики" not in body: return m.group(0)
+        if not re.search(r"(?i)характеристик", body):  # любое упоминание «характеристик»
+            return m.group(0)
         norm = re.sub(r"<br\s*/?>", "\n", body, flags=re.I)
-        parts = re.split(r"(?i)Характеристик[аи]:", norm, maxsplit=1)
+        parts = re.split(r"(?i)характеристик[аи]:", norm, maxsplit=1)
         if len(parts) != 2: return m.group(0)
         head, tail = parts[0], parts[1]
         bullet_lines = [ln for ln in tail.strip().split("\n") if ln.strip()]
         bullet_like = [ln for ln in bullet_lines if ln.lstrip().startswith(("-", "•", "–", "—"))]
         if not bullet_like: return m.group(0)
+        label = pick_char_heading(body)
         ul = make_ul("\n".join(bullet_lines))
-        out = (f"<p>{head.strip()}</p>\n" if head.strip() else "") + "<p><strong>Характеристики:</strong></p>\n" + ul
+        out = (f"<p>{head.strip()}</p>\n" if head.strip() else "") + f"<p><strong>{label}:</strong></p>\n" + ul
         return start + out + end
 
     return re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html, flags=re.S | re.I)
@@ -207,13 +217,14 @@ def beautify_plain_text(text: str) -> str:
         lines = [ln.strip() for ln in block.split("\n") if ln.strip()]
         return bool(lines) and all(ln.startswith(("- ","• ","– ","— ")) for ln in lines)
     for blk in blocks:
-        if re.search(r"(?i)\bХарактеристик[аи]:", blk):
-            parts = re.split(r"(?i)Характеристик[аи]:", blk, maxsplit=1)
+        if re.search(r"(?i)\bхарактеристик", blk):
+            parts = re.split(r"(?i)характеристик[аи]:", blk, maxsplit=1)
             head = parts[0].strip()
             tail = parts[1].strip() if len(parts)==2 else ""
+            label = pick_char_heading(blk)
             if head: out.append(f"<p>{html_escape(head)}</p>")
             if tail:
-                out.append("<p><strong>Характеристики:</strong></p>")
+                out.append(f"<p><strong>{label}:</strong></p>")
                 out.append(make_ul(tail))
             continue
         if is_list_block(blk):
@@ -244,7 +255,10 @@ def rebuild_with_existing_block(desc_inner: str) -> str:
                   tail, flags=re.I | re.S)
     if m:
         start_div, inner, end_div = m.group(1), m.group(2), m.group(3)
-        processed = emphasize_kv_in_li(A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"', transform_characteristics_paragraphs(inner)))
+        processed = emphasize_kv_in_li(
+            A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"',
+                              transform_characteristics_paragraphs(inner))
+        )
         new_tail = tail[:m.start()] + start_div + processed + end_div + tail[m.end():]
         return "<description>" + head + "<hr>\n\n" + new_tail + "</description>"
     pretty_tail = beautify_original_description(tail)
@@ -271,26 +285,16 @@ SPLIT_HINT_RX = re.compile(r"\s[-–—•·]\s(?=[^:<>{}\n]{1,120}\s*:)")
 KV_ANY_RX     = re.compile(r"^\s*([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
 
 def global_li_polish(xml_text: str) -> str:
-    """
-    Находит ЛЮБОЙ <li>…</li>, где внутри несколько ' - Ключ: Значение',
-    и ЗАМЕНЯЕТ на несколько соседних <li> с жирным ключом.
-    """
     def li_global_repl(m: re.Match) -> str:
         body = m.group(2)
-        # быстрый выход — нет подсказок на сплит
         if not SPLIT_HINT_RX.search(body): return m.group(0)
-
-        # режем по ' - ' (и аналогам), но только там, где дальше ключ с двоеточием
         parts = SPLIT_HINT_RX.split(body)
         if len(parts) <= 1: return m.group(0)
-
         out_lis = []
         for frag in parts:
             frag = frag.strip()
-            # если видим уже HTML (например, <strong>Ключ:</strong>) — оставляем как есть
             if "<" in frag and ">" in frag:
-                out_lis.append(f"<li>{frag}</li>")
-                continue
+                out_lis.append(f"<li>{frag}</li>"); continue
             mm = KV_ANY_RX.match(frag)
             if mm:
                 key = html_escape(mm.group(1).strip())
@@ -299,18 +303,14 @@ def global_li_polish(xml_text: str) -> str:
             elif frag:
                 out_lis.append(f"<li>{html_escape(frag)}</li>")
         return "".join(out_lis)
-
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_global_repl, xml_text, flags=re.S | re.I)
 
 # ============ Основной конвейер ============
 
 def process_text(xml_text: str) -> str:
-    # 1) вставляем/обновляем description
     updated = DESC_RX.sub(lambda m: inject_into_description_block(m.group(1)), xml_text)
-    # 2) добавляем description если его не было
     updated = OFFER_RX.sub(lambda m: (m.group(0) if re.search(r"<description\b", m.group(0), re.I)
                                       else add_description_if_missing(m.group(0))), updated)
-    # 3) ГЛОБАЛЬНЫЙ полиш по всем <li> во всём документе
     polished = global_li_polish(updated)
     return polished
 
