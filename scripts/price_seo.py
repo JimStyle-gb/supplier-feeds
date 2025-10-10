@@ -2,34 +2,36 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py
-———————
-Меняет ТОЛЬКО содержимое <description>:
-- добавляет/пересобирает блок «Совместимость» из уже имеющегося текста описания;
-- учитывает слэш-списки (CM1100ADW/СM1100ADN/… → все модели по отдельности);
-- нормализует похожие кириллические буквы (С↔C и др.), чтобы ничего не потерять;
-- НЕ трогает «Технические характеристики» и прочие теги/порядок внутри <offer>.
+price_seo.py — Этап 1 (Совместимость, только принтеры/МФУ)
+----------------------------------------------------------
+Создаёт docs/price_seo.yml из docs/price.yml.
 
-Вход:  docs/price.yml
-Выход: docs/price_seo.yml  (та же структура, правки только в <description>)
+• Верхний блок (Cambria, кнопка WhatsApp, оплата/доставка) — без изменений.
+• Хвост (Times) — аккуратный, «Ключ: Значение» в столбец, ключи жирные.
+• Совместимость:
+  - извлекаем модели из <name> и <description>;
+  - расширяем «слэш-списки» (E77822/E77825/E77830);
+  - ищем контекст бренда и семейства (сохраняем оригинальное написание, напр. Konica-Minolta bizhub);
+  - ГЛАВНОЕ: фильтруем только устройства (принтеры/МФУ/плоттеры);
+    * выкидываем артикулы картриджей/драмов (CE285A, CRG-725, TN-210K, TK-1170, DR-…, и т.п., плюс совпадение с vendorCode);
+    * «голые» коды (C250) оставляем только при найденном семействе (→ Konica-Minolta bizhub C250), иначе — удаляем.
 """
 
 from __future__ import annotations
 from pathlib import Path
 import io, re, sys
-from html import escape as esc
+from html import escape as html_escape
 
 SRC = Path("docs/price.yml")
 DST = Path("docs/price_seo.yml")
 ENC = "windows-1251"
 
-# ===== Верхний фиксированный блок (как у тебя) =====
 COLOR_LINK  = "#0b3d91"
 COLOR_WHITE = "#ffffff"
 COLOR_BTN   = "#27ae60"
 COLOR_KASPI = "#8b0000"
 
-HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
+TEMPLATE_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
   <center>
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
        style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:700;">
@@ -61,187 +63,445 @@ HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
   </ul>
 </div>"""
 
-# ===== I/O =====
-def rtext(p: Path) -> str:
-    with io.open(p, "r", encoding=ENC, errors="replace") as f:
+# ===================== I/O =====================
+
+def rtext(path: Path) -> str:
+    with io.open(path, "r", encoding=ENC, errors="replace") as f:
         return f.read()
 
-def wtext(p: Path, s: str) -> None:
-    # cp1251-safe
-    safe = (s.replace("\u00A0"," ")
-              .replace("\u20B8","тг.")   # ₸
-              .replace("\u2248","~")     # ≈
-              .replace("\u2013","-").replace("\u2014","—")
-              .replace("\u201C",'"').replace("\u201D",'"')
-              .replace("\u201E",'"').replace("\u201F",'"'))
-    p.parent.mkdir(parents=True, exist_ok=True)
-    with io.open(p, "w", encoding=ENC, newline="\n", errors="xmlcharrefreplace") as f:
+def wtext(path: Path, text: str) -> None:
+    safe = (text
+            .replace("\u20B8", "тг.")   # ₸
+            .replace("\u2248", "~")     # ≈
+            .replace("\u00A0", " ")     # NBSP
+            .replace("\u201C", '"').replace("\u201D", '"')
+            .replace("\u201E", '"').replace("\u201F", '"')
+            .replace("\u2013", "-").replace("\u2014", "—"))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with io.open(path, "w", encoding=ENC, newline="\n", errors="xmlcharrefreplace") as f:
         f.write(safe)
 
-# ===== Регэкспы: работаем ТОЛЬКО внутри <description> =====
-OFFER_RX = re.compile(r"<offer\b[^>]*>.*?</offer>", re.I|re.S)
-DESC_RX  = re.compile(r"<description\b[^>]*>(.*?)</description>", re.I|re.S)
-NAME_RX  = re.compile(r"<name\b[^>]*>(.*?)</name>", re.I|re.S)
-HR_RX    = re.compile(r"<hr\b[^>]*>", re.I)
+# ===================== Регэкспы/служебные =====================
 
-# нормализация похожих букв (кириллица→латиница), чтобы парсить CM/CP и т.п.
-LOOKALIKE = str.maketrans({
-    "А":"A","В":"B","С":"C","Е":"E","Н":"H","К":"K","М":"M","О":"O","Р":"P","Т":"T","Х":"X","У":"Y",
-    "а":"a","в":"b","с":"c","е":"e","н":"h","к":"k","м":"m","о":"o","р":"p","т":"t","х":"x","у":"y",
-})
-def latinize(s: str) -> str: return (s or "").translate(LOOKALIKE)
-def normsp(s: str) -> str:   return re.sub(r"\s+"," ", (s or "").replace("\u00A0"," ")).strip()
+DESC_RX       = re.compile(r"<description\b[^>]*>(.*?)</description>", re.I | re.S)
+OFFER_RX      = re.compile(r"<offer\b[^>]*>.*?</offer>",              re.I | re.S)
+NAME_RX       = re.compile(r"<name\b[^>]*>(.*?)</name>",              re.I | re.S)
+VENDORCODE_RX = re.compile(r"<vendorCode\b[^>]*>(.*?)</vendorCode>",  re.I | re.S)
+HAS_HTML_TAGS = re.compile(r"<[a-zA-Z/!][^>]*>")
+A_NO_STYLE_RX = re.compile(r"<a(?![^>]*\bstyle=)", re.I)
+HR_RX         = re.compile(r"<hr\b[^>]*>", re.I)
 
-# ===== Извлечение моделей ТОЛЬКО из родного описания =====
-# Берём значения у ключей «Совместимость с моделями: …», «Принтеры: …»
-KV_SPLIT = re.compile(r"\s[-–—]\s")  # разделитель « - » между парами ключ:значение
-KEY_RX   = re.compile(r"^\s*([^:]{1,100}?)\s*:\s*(.+?)\s*$", re.S)
-TARGET_KEYS = (
-    "совместимость с моделями",
-    "принтеры",           # часто список моделей тут
-    "совместимость",      # на всякий случай
+KV_LINE_RX    = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
+TECH_RX       = re.compile(r"(?i)техническ\w*\s+характеристик", re.U)
+TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
+
+def pick_char_heading(context: str) -> str:
+    return "Технические характеристики" if TECH_RX.search(context or "") else "Характеристики"
+
+def trim_trailing_tech_word(s: str) -> str:
+    return TRIM_TECH_TAIL_RX.sub("", s or "").rstrip()
+
+# ===================== ХАРАКТЕРИСТИКИ — оформление =====================
+
+def kv_to_li(line: str) -> str:
+    s = line.strip()
+    if s.startswith(("- ","• ","– ","— ")): s = s[2:].strip()
+    m = KV_LINE_RX.match(s)
+    if m:
+        key = html_escape(m.group(1).strip())
+        val = html_escape(m.group(2).strip())
+        return f"<li><strong>{key}:</strong> {val}</li>"
+    return f"<li>{html_escape(s)}</li>"
+
+def make_ul(text_block: str) -> str:
+    lines = [ln for ln in text_block.replace("\r\n","\n").replace("\r","\n").split("\n") if ln.strip()]
+    return "<ul>\n" + "\n".join(kv_to_li(ln) for ln in lines) + "\n</ul>"
+
+def transform_characteristics_paragraphs(html: str) -> str:
+    def para_repl(m: re.Match) -> str:
+        start, body, end = m.group(1), m.group(2), m.group(3)
+        if not re.search(r"(?i)характеристик", body): return m.group(0)
+        norm = re.sub(r"<br\s*/?>", "\n", body, flags=re.I)
+        parts = re.split(r"(?i)характеристик[аи]:", norm, maxsplit=1)
+        if len(parts) != 2: return m.group(0)
+        head_raw, tail = parts[0], parts[1]
+        head = trim_trailing_tech_word(head_raw.strip())
+        bullet_lines = [ln for ln in tail.strip().split("\n") if ln.strip()]
+        bullet_like = [ln for ln in bullet_lines if ln.lstrip().startswith(("-", "•", "–", "—"))]
+        if not bullet_like: return m.group(0)
+        label = pick_char_heading(body)
+        ul = make_ul("\n".join(bullet_lines))
+        out = (f"<p>{head}</p>\n" if head else "") + f"<p><strong>{label}:</strong></p>\n" + ul
+        return start + out + end
+    return re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html, flags=re.S | re.I)
+
+SPLIT_HINT_RX = re.compile(r"\s[-–—•·]\s(?=[^:<>{}\n]{1,120}\s*:)")
+KV_ANY_RX     = re.compile(r"^\s*([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
+
+def explode_inline_li(html: str) -> str:
+    def li_repl(m: re.Match) -> str:
+        body = m.group(2)
+        if not re.search(r"[ \u00A0][\-–—•·][ \u00A0]", body): return m.group(0)
+        norm = (body.replace("\u00A0"," ")
+                    .replace(" — "," - ").replace(" – "," - ")
+                    .replace(" • "," - ").replace(" · "," - "))
+        if norm.count(":") <= 1: return m.group(0)
+        parts, buf = [], []
+        for i, tk in enumerate(norm.split(" - ")):
+            if i == 0: buf.append(tk); continue
+            if re.match(r"\s*[^:<>{}\n]{1,120}:\s*.", tk, flags=re.S):
+                parts.append(" - ".join(buf)); buf = [tk]
+            else:
+                buf.append(tk)
+        parts.append(" - ".join(buf))
+        lis = []
+        for frag in parts:
+            frag = frag.strip()
+            if "<" in frag and ">" in frag:
+                lis.append(f"<li>{frag}</li>"); continue
+            m_kv = re.match(r"([^:<>{}\n]{1,120}?)\s*:\s*(.+)$", frag, flags=re.S)
+            if m_kv:
+                key = html_escape(m_kv.group(1).strip())
+                val = html_escape(m_kv.group(2).strip())
+                lis.append(f"<li><strong>{key}:</strong> {val}</li>")
+            elif frag:
+                lis.append(f"<li>{html_escape(frag)}</li>")
+        return "".join(lis)
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, html, flags=re.S | re.I)
+
+def force_inline_li_breaks(html: str) -> str:
+    def inner_fix(m: re.Match) -> str:
+        before, body, after = m.group(1), m.group(2), m.group(3)
+        x = (body.replace("\u00A0"," ")
+                 .replace(" — "," - ").replace(" – "," - ")
+                 .replace(" • "," - ").replace(" · "," - "))
+        def sub_kv(mm: re.Match) -> str:
+            key = html_escape(mm.group(1).strip())
+            val = html_escape(mm.group(2).strip())
+            return f"</li><li><strong>{key}:</strong> {val}"
+        x2 = re.sub(r"\s-\s([^:<>{}\n]{1,120}?)\s*:\s*(.+?)(?=\s-\s[^:<>{}\n]{1,120}:\s|$)", sub_kv, x)
+        return before + x2 + after
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", inner_fix, html, flags=re.S | re.I)
+
+def emphasize_kv_in_li(html: str) -> str:
+    html2 = explode_inline_li(html)
+    html3 = force_inline_li_breaks(html2)
+    def repl(m: re.Match) -> str:
+        before, body, after = m.group(1), m.group(2), m.group(3)
+        if re.search(r"^\s*(?:[-–—]\s*)?<strong>[^:]{1,120}:</strong>", body, flags=re.I): return m.group(0)
+        kv = re.sub(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$",
+                    lambda k: f"<strong>{k.group(1).strip()}:</strong> {k.group(2).strip()}",
+                    body, count=1, flags=re.S)
+        return f"{before}{kv}{after}"
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", repl, html3, flags=re.S | re.I)
+
+def beautify_existing_html(html: str) -> str:
+    step1 = transform_characteristics_paragraphs(html)
+    step2 = A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"', step1)
+    step3 = emphasize_kv_in_li(step2)
+    return (f'<div style="font-family: \'Times New Roman\', Times, serif; '
+            f'font-size:15px; line-height:1.55;">{step3}</div>')
+
+def beautify_plain_text(text: str) -> str:
+    t = text.replace("\r\n","\n").replace("\r","\n").strip()
+    if not t: return ""
+    blocks = [b.strip("\n") for b in re.split(r"\n{2,}", t)]
+    out = []
+    def is_list_block(block: str) -> bool:
+        lines = [ln.strip() for ln in block.split("\n") if ln.strip()]
+        return bool(lines) and all(ln.startswith(("- ","• ","– ","— ")) for ln in lines)
+    for blk in blocks:
+        if re.search(r"(?i)\bхарактеристик", blk):
+            parts = re.split(r"(?i)характеристик[аи]:", blk, maxsplit=1)
+            head_raw = parts[0].strip()
+            tail     = parts[1].strip() if len(parts)==2 else ""
+            label    = pick_char_heading(blk)
+            head     = trim_trailing_tech_word(head_raw)
+            if head: out.append(f"<p>{html_escape(head)}</p>")
+            if tail:
+                out.append(f"<p><strong>{label}:</strong></p>")
+                out.append(make_ul(tail))
+            continue
+        if is_list_block(blk):
+            lis = [kv_to_li(ln) for ln in blk.split("\n") if ln.strip()]
+            out.append("<ul>\n" + "\n".join(lis) + "\n</ul>")
+        else:
+            lines = [html_escape(x) for x in blk.split("\n")]
+            out.append(f"<p>{'<br>'.join(lines)}</p>")
+    return (f'<div style="font-family: \'Times New Roman\', Times, serif; '
+            f'font-size:15px; line-height:1.55;">' + "\n".join(out) + "</div>")
+
+def beautify_original_description(inner: str) -> str:
+    content = inner.strip()
+    if not content: return ""
+    if HAS_HTML_TAGS.search(content): return beautify_existing_html(content)
+    return beautify_plain_text(content)
+
+# ===================== СОВМЕСТИМОСТЬ — только устройства =====================
+
+BRANDS = (
+    "HP","Hewlett Packard","Canon","Epson","Brother","Kyocera","Samsung",
+    "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Konica-Minolta","Pantum",
 )
 
-def html_to_text(html: str) -> str:
-    t = re.sub(r"<br\s*/?>", "\n", html, flags=re.I)
-    t = re.sub(r"<[^>]+>", " ", t)
-    t = t.replace(" — ", " - ").replace(" – ", " - ")
-    return normsp(t)
+FAMILY_HINTS = (
+    # HP
+    "Color","Laser","LaserJet","LJ","MFP","DeskJet","OfficeJet","PageWide","DesignJet",
+    # Canon
+    "imageRUNNER","i-SENSYS","LBP","PIXMA",
+    # Epson
+    "Stylus","WorkForce","EcoTank","SureColor",
+    # Brother
+    "HL","DCP","MFC",
+    # Kyocera
+    "FS","TASKalfa","ECOSYS",
+    # Samsung
+    "CLX","ML","SL",
+    # Ricoh
+    "SP","Aficio",
+    # Xerox
+    "VersaLink","WorkCentre","Phaser",
+    # Konica Minolta
+    "bizhub",
+)
 
-def parse_kv_pairs(flat_text: str) -> dict[str,str]:
-    # делим по « - », затем ловим «ключ: значение»
-    pairs = {}
-    for chunk in KV_SPLIT.split(flat_text):
-        m = KEY_RX.match(chunk.strip())
-        if not m: continue
-        key = normsp(m.group(1)).lower()
-        val = normsp(m.group(2))
-        pairs[key] = val
-    return pairs
+CARTRIDGE_PATTERNS = (
+    r"(?:CE|CF|CB|CC|Q)[0-9]{2,4}[A-Z]",        # CE285A, CF226X...
+    r"(?:CRG)[- ]?\d{2,4}",                     # CRG-725
+    r"(?:TN|TK|TKC|TNP|TNR)[- ]?\d{2,5}[A-Z]?", # TN-210K, TK-1170
+    r"(?:DR|DK|DV)[- ]?\d{2,5}[A-Z]?",          # DR-2300, DK-1110, DV-116
+    r"(?:CN|AR|MX|JL)[- ]?\d{2,5}[A-Z]?",       # прочие
+)
 
-MODEL_TOKEN_RE = re.compile(r"\b([A-Z]{1,4}-?[A-Z]?\d{2,6}[A-Z]?(?:-[A-Z0-9]{1,4})?)\b", re.I)
-SEPS_RE        = re.compile(r"[;,]|\s+\bи\b\s+", re.I)
+CARTRIDGE_RE = re.compile(rf"(?i)\b({'|'.join(CARTRIDGE_PATTERNS)})\b")
 
-def expand_slashes(series: str) -> list[str]:
-    # Восстанавливаем общий префикс первой части до цифры (например, "Pantum CM")
-    parts = [p for p in series.split("/") if p]
-    if len(parts) == 1:
-        return [series]
-    first = normsp(latinize(parts[0]))
-    m = re.match(r"^(.*?)[A-Za-z]*\d", first)
-    prefix = normsp(m.group(1)) if m else ""
-    out = [first]
-    for p in parts[1:]:
-        tk = normsp(latinize(p))
-        out.append((prefix + tk).strip() if prefix and not tk.lower().startswith(prefix.lower()) else tk)
-    return out
+MODEL_RE = re.compile(r"\b([A-Z]{1,4}-?[A-Z]?\d{2,6}[A-Z]?(?:-[A-Z0-9]{1,4})?)\b", re.I)
+SEPS_RE  = re.compile(r"[,/;|]|(?:\s+\bи\b\s+)", re.I)
 
-def split_series(value: str) -> list[str]:
-    # разбиваем по запятым/«и»/точкам с запятой, внутри фрагментов раскрываем слэш-списки
-    items = []
-    for chunk in SEPS_RE.split(value):
-        chunk = normsp(chunk)
-        if not chunk: continue
-        if "/" in chunk:
-            items.extend(expand_slashes(chunk))
+def normalize_space(s: str) -> str:
+    return re.sub(r"\s+", " ", (s or "").replace("\u00A0"," ")).strip()
+
+def extract_brand_context(text: str) -> tuple[str,str]:
+    """
+    Ищем бренд и семейство в тексте и ВОЗВРАЩАЕМ ИХ В ТОЧНОМ ВИДЕ,
+    как они встретились (с дефисами и регистром).
+    """
+    t = normalize_space(text)
+    brand = ""
+    brand_pos = 1_000_000
+    for b in BRANDS:
+        m = re.search(rf"(?i)\b{re.escape(b)}\b", t, flags=0)
+        if m and m.start() < brand_pos:
+            brand = m.group(0)  # точная подстрока
+            brand_pos = m.start()
+
+    family = ""
+    if brand:
+        after = t[brand_pos + len(brand):]
+        best_pos = 1_000_000
+        for fam in FAMILY_HINTS:
+            m2 = re.search(rf"(?i)\b{re.escape(fam)}\b", after, flags=0)
+            if m2 and m2.start() < best_pos:
+                family = m2.group(0)  # точная подстрока
+                best_pos = m2.start()
+    return brand.strip(), family.strip()
+
+def split_candidates(chunk: str) -> list[str]:
+    return [normalize_space(p) for p in SEPS_RE.split(chunk) if normalize_space(p)]
+
+def expand_slashed_models(s: str) -> list[str]:
+    if "/" not in s: return [s]
+    tokens = [t for t in s.split("/") if t]
+    prefix = ""
+    m2 = re.match(r"^(.*?)[A-Za-z]*\d.*$", tokens[0].strip())
+    if m2: prefix = normalize_space(m2.group(1) or "")
+    out = []
+    for tk in tokens:
+        tk = normalize_space(tk)
+        if prefix and not re.match(r"(?i)^" + re.escape(prefix), tk):
+            out.append((prefix + tk).strip())
         else:
-            items.append(latinize(chunk))
-    return items
-
-def extract_models_from_value(value: str) -> list[str]:
-    # из одной строки значения (после ключа) — достаём все токены-модели
-    models = []
-    for frag in split_series(value):
-        for m in MODEL_TOKEN_RE.finditer(frag):
-            token = m.group(1).upper()
-            models.append(frag[:m.start()] + token + frag[m.end():])  # сохраняем бренд/семейство слева
-    # нормализация/дедуп
-    seen, out = set(), []
-    for s in models:
-        s2 = normsp(s)
-        if s2 and s2 not in seen:
-            seen.add(s2); out.append(s2)
+            out.append(tk)
     return out
 
-def collect_compat_from_description(desc_inner_html: str) -> list[str]:
-    # работаем только с родным низом (после <hr>), но если <hr> нет — со всем
-    parts = HR_RX.split(desc_inner_html, maxsplit=1)
-    tail = parts[1] if len(parts) == 2 else desc_inner_html
-    flat = html_to_text(tail)
-    kv = parse_kv_pairs(flat)
-    models_all: list[str] = []
-    for key, val in kv.items():
-        if any(key.startswith(k) for k in TARGET_KEYS):
-            models_all.extend(extract_models_from_value(val))
-    # если из ключей мало — попробуем просто найти явный список после слова «Принтеры»
-    if len(models_all) < 2:
-        m = re.search(r"(?i)принтеры\s*:\s*(.+)", flat)
-        if m:
-            models_all.extend(extract_models_from_value(m.group(1)))
-    # дедуп с сохранением порядка
-    seen, out = set(), []
-    for s in models_all:
-        s2 = normsp(s)
-        if s2 and s2 not in seen:
-            seen.add(s2); out.append(s2)
+def extract_models_from_text(text: str) -> list[str]:
+    t = normalize_space(text)
+    raw_parts = split_candidates(t)
+    expanded = []
+    for p in raw_parts:
+        expanded.extend(expand_slashed_models(p))
+    models = []
+    for item in expanded:
+        for m in MODEL_RE.finditer(item):
+            models.append(m.group(1).upper())
+    return models
+
+def is_cartridge_code(s: str, vendor_code_hint: str = "") -> bool:
+    if not s: return False
+    if vendor_code_hint and s.upper() == vendor_code_hint.upper():
+        return True
+    return CARTRIDGE_RE.search(s) is not None
+
+def attach_brand_family_only_devices(models: list[str], brand: str, family: str) -> list[str]:
+    """
+    Приклеиваем «brand [family]» ТОЛЬКО к тем, что выглядят как модели устройств.
+    Удаляем «голые» короткие коды без найденного семейства.
+    """
+    b = brand.strip()
+    fam = family.strip()
+    res = []
+    for m in models:
+        # если уже содержит явный бренд в начале — оставляем
+        if re.match(r"(?i)^(HP|HEWLETT PACKARD|EPSON|CANON|BROTHER|KYOCERA|SAMSUNG|RICOH|XEROX|SHARP|LEXMARK|OKI|PANASONIC|KONICA|KONICA-MINOLTA|KONICA MINOLTA|PANTUM)\b", m):
+            res.append(m)
+            continue
+        # короткие коды допускаем ТОЛЬКО при наличии семейства
+        if fam or b:
+            prefix = " ".join([x for x in (b, fam) if x])
+            res.append((prefix + " " + m).strip())
+        else:
+            continue
+    return res
+
+def uniq_sorted(models: list[str]) -> list[str]:
+    seen = set(); out = []
+    for m in models:
+        k = normalize_space(m)
+        if k and k not in seen:
+            seen.add(k); out.append(k)
+    out.sort(key=lambda s: (re.split(r"\s+", s)[0].lower(), s.lower()))
     return out
 
 def render_compat_ul(models: list[str]) -> str:
+    items = "\n".join(f"<li>{html_escape(m)}</li>" for m in models)
+    return "<ul>\n" + items + "\n</ul>"
+
+def extract_plain_text(html: str) -> str:
+    txt = re.sub(r"<br\s*/?>", "\n", html, flags=re.I)
+    txt = re.sub(r"<[^>]+>", " ", txt)
+    return normalize_space(txt)
+
+def build_compatibility_block(name_text: str, desc_text_plain: str, vendor_code_hint: str) -> str:
+    brand, family = extract_brand_context(name_text + " " + desc_text_plain)
+    raw_models = extract_models_from_text(name_text) + extract_models_from_text(desc_text_plain)
+    # фильтр: выкидываем артикулы картриджей/драмов
+    raw_models = [m for m in raw_models if not is_cartridge_code(m, vendor_code_hint)]
+    # переносим бренд/семейство только для «устройств», короткие без family — отбрасываем
+    models = attach_brand_family_only_devices(raw_models, brand, family)
+    # sanity: должна быть буквенно-цифровая модельная часть
+    models = [m for m in models if re.search(r"[A-Za-z]*\d", m)]
+    models = uniq_sorted(models)
     if len(models) < 2:
         return ""
-    items = "\n".join(f"<li>{esc(m)}</li>" for m in models)
-    return "<p><strong>Совместимость:</strong></p>\n<ul>\n" + items + "\n</ul>"
+    return "<p><strong>Совместимость:</strong></p>\n" + render_compat_ul(models)
 
-def has_our_header(desc_inner: str) -> bool:
-    return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_inner
+def has_compat_block(html: str) -> bool:
+    return re.search(r"(?i)<strong>\s*совместим\w*\s*:</strong>", html) is not None
 
-def ensure_compat_block(desc_inner: str, name_text: str) -> str:
-    models = collect_compat_from_description(desc_inner)
-    compat_html = render_compat_ul(models)
-    if not compat_html:
-        return "<description>" + desc_inner + "</description>"
-    # если наш верхний блок уже есть — вставим/заменим «Совместимость» в «низу»
+def inject_compatibility(html_tail_times: str, name_text: str, vendor_code_hint: str) -> str:
+    if has_compat_block(html_tail_times):
+        lis = re.findall(r"(?is)<p[^>]*>\s*<strong>\s*совместим\w*\s*:</strong>\s*</p>\s*<ul>(.*?)</ul>", html_tail_times)
+        if lis:
+            items = re.findall(r"<li\b", lis[0], flags=re.I)
+            if len(items) >= 2:
+                return html_tail_times
+    plain = extract_plain_text(html_tail_times)
+    compat_block = build_compatibility_block(name_text, plain, vendor_code_hint)
+    if not compat_block:
+        return html_tail_times
+    return re.sub(r"(?is)</div>\s*$", "\n" + compat_block + "\n</div>", html_tail_times, count=1)
+
+# ===================== СБОРКА DESCRIPTION =====================
+
+def has_our_block(desc_html: str) -> bool:
+    return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_html
+
+def rebuild_with_existing_block(desc_inner: str, name_text: str, vendor_code_hint: str) -> str:
     parts = HR_RX.split(desc_inner, maxsplit=1)
-    if len(parts) == 2:
-        head, tail = parts[0], parts[1]
-        # если «Совместимость» уже есть — заменим список
-        tail2 = re.sub(r"(?is)<p[^>]*>\s*<strong>\s*совместим\w*:\s*</strong>\s*</p>\s*<ul>.*?</ul>",
-                       compat_html, tail, count=1)
-        if tail2 == tail:
-            # не было — аккуратно добавим ближе к концу
-            tail2 = re.sub(r"(?is)</div>\s*$", "\n" + compat_html + "\n</div>", tail, count=1)
-        return "<description>" + head + "<hr>\n\n" + tail2 + "</description>"
-    # если <hr> нет — просто прицепим совместимость в конец
-    return "<description>" + desc_inner + ("\n\n" + compat_html) + "</description>"
+    if len(parts) != 2:
+        return "<description>" + desc_inner + "</description>"
+    head, tail = parts[0], parts[1]
+    m = re.search(r"(<div[^>]*font-family:\s*['\"]?Times New Roman['\"]?[^>]*>)(.*?)(</div>)",
+                  tail, flags=re.I | re.S)
+    if m:
+        start_div, inner, end_div = m.group(1), m.group(2), m.group(3)
+        processed = emphasize_kv_in_li(
+            A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"',
+                              transform_characteristics_paragraphs(inner))
+        )
+        processed = inject_compatibility(processed, name_text, vendor_code_hint)
+        new_tail = tail[:m.start()] + start_div + processed + end_div + tail[m.end():]
+        return "<description>" + head + "<hr>\n\n" + new_tail + "</description>"
+    pretty_tail = beautify_original_description(tail)
+    pretty_tail = inject_compatibility(pretty_tail, name_text, vendor_code_hint)
+    return "<description>" + head + "<hr>\n\n" + pretty_tail + "</description>"
 
-def inject_header_if_missing(desc_inner: str) -> str:
-    if has_our_header(desc_inner):
-        return desc_inner
-    # если описания нет вообще — создадим базовый каркас с нашим блоком
-    return HEADER_HTML + ("\n\n<hr>\n\n" + desc_inner if desc_inner.strip() else "")
+def build_new_description(existing_inner: str, name_text: str, vendor_code_hint: str) -> str:
+    pretty = beautify_original_description(existing_inner)
+    pretty = inject_compatibility(pretty, name_text, vendor_code_hint)
+    return TEMPLATE_HTML + ("\n\n<hr>\n\n" + pretty if pretty else "")
 
-def process_offer(offer_xml: str) -> str:
-    # вытаскиваем name только как контекст (не обязательно)
-    mname = NAME_RX.search(offer_xml)
-    name_text = normsp(re.sub(r"<[^>]+>", " ", mname.group(1))) if (mname and mname.group(1)) else ""
-    # меняем только содержимое <description>
+def inject_into_description_block(desc_inner: str, name_text: str, vendor_code_hint: str) -> str:
+    if has_our_block(desc_inner):
+        return rebuild_with_existing_block(desc_inner, name_text, vendor_code_hint)
+    return "<description>" + build_new_description(desc_inner, name_text, vendor_code_hint) + "</description>"
+
+def add_description_if_missing(offer_block: str) -> str:
+    if re.search(r"<description\b", offer_block, flags=re.I): return offer_block
+    m = re.search(r"\n([ \t]+)<", offer_block); indent = m.group(1) if m else "  "
+    insertion = f"\n{indent}<description>{TEMPLATE_HTML}</description>"
+    tail = (insertion + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (insertion + "\n</offer>")
+    return offer_block.replace("</offer>", tail)
+
+# ===================== Глобальный полиш <li> =====================
+
+def global_li_polish(xml_text: str) -> str:
+    def li_global_repl(m: re.Match) -> str:
+        body = m.group(2)
+        if not SPLIT_HINT_RX.search(body): return m.group(0)
+        parts = SPLIT_HINT_RX.split(body)
+        if len(parts) <= 1: return m.group(0)
+        out_lis = []
+        for frag in parts:
+            frag = frag.strip()
+            if "<" in frag and ">" in frag:
+                out_lis.append(f"<li>{frag}</li>"); continue
+            mm = KV_ANY_RX.match(frag)
+            if mm:
+                key = html_escape(mm.group(1).strip())
+                val = html_escape(mm.group(2).strip())
+                out_lis.append(f"<li><strong>{key}:</strong> {val}</li>")
+            elif frag:
+                out_lis.append(f"<li>{html_escape(frag)}</li>")
+        return "".join(out_lis)
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_global_repl, xml_text, flags=re.S | re.I)
+
+# ===================== Основной конвейер =====================
+
+def process_offer_block(offer_block: str) -> str:
+    # имя товара — контекст бренда/семейства (сохраняем исходное написание)
+    name_text = ""
+    mname = NAME_RX.search(offer_block)
+    if mname and mname.group(1):
+        name_text = normalize_space(re.sub(r"<[^>]+>", " ", mname.group(1)))
+    # vendorCode — подсказка для фильтра артикулов
+    vendor_hint = ""
+    mvc = VENDORCODE_RX.search(offer_block)
+    if mvc and mvc.group(1):
+        vendor_hint = normalize_space(re.sub(r"<[^>]+>", " ", mvc.group(1)))
+
     def _desc_repl(m: re.Match) -> str:
-        inner = m.group(1)
-        inner2 = inject_header_if_missing(inner)
-        return ensure_compat_block(inner2, name_text)
-    new_block = DESC_RX.sub(_desc_repl, offer_xml)
-    # если у оффера не было description — создадим минимальный (с хедером)
-    if new_block == offer_xml:
-        # вставим перед </offer>, сохранив отступ
-        m = re.search(r"\n([ \t]+)<", offer_xml)
-        indent = m.group(1) if m else "  "
-        ins = f"\n{indent}<description>{HEADER_HTML}</description>"
-        tail = (ins + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (ins + "\n</offer>")
-        new_block = offer_xml.replace("</offer>", tail)
-    return new_block
+        return inject_into_description_block(m.group(1), name_text, vendor_hint)
+
+    block = DESC_RX.sub(_desc_repl, offer_block)
+    if not re.search(r"<description\b", block, flags=re.I):
+        block = add_description_if_missing(block)
+    return block
 
 def process_text(xml_text: str) -> str:
-    return OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
+    updated = OFFER_RX.sub(lambda m: process_offer_block(m.group(0)), xml_text)
+    polished = global_li_polish(updated)
+    return polished
 
 def main() -> int:
     if not SRC.exists():
@@ -249,7 +509,7 @@ def main() -> int:
     original  = rtext(SRC)
     processed = process_text(original)
     wtext(DST, processed)
-    print(f"[seo] OK: {DST} — обновлён только раздел «Совместимость», остальное без изменений")
+    print(f"[seo] OK (этап 1 — совместимость, только устройства): {DST}")
     return 0
 
 if __name__ == "__main__":
