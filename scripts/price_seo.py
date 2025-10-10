@@ -2,19 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 1 (Совместимость, только принтеры/МФУ)
-----------------------------------------------------------
-Создаёт docs/price_seo.yml из docs/price.yml.
-
-• Верхний блок (Cambria, кнопка WhatsApp, оплата/доставка) — без изменений.
-• Хвост (Times) — аккуратный, «Ключ: Значение» в столбец, ключи жирные.
-• Совместимость:
-  - извлекаем модели из <name> и <description>;
-  - расширяем «слэш-списки» (E77822/E77825/E77830);
-  - ищем контекст бренда и семейства (сохраняем оригинальное написание, напр. Konica-Minolta bizhub);
-  - ГЛАВНОЕ: фильтруем только устройства (принтеры/МФУ/плоттеры);
-    * выкидываем артикулы картриджей/драмов (CE285A, CRG-725, TN-210K, TK-1170, DR-…, и т.п., плюс совпадение с vendorCode);
-    * «голые» коды (C250) оставляем только при найденном семействе (→ Konica-Minolta bizhub C250), иначе — удаляем.
+price_seo.py — работает ТОЛЬКО с <description>, прочие теги не трогает.
+Фикс: нормализация кириллических «похожих» букв (С↔C, А↔A и т.п.) для корректного извлечения всех моделей.
 """
 
 from __future__ import annotations
@@ -63,7 +52,7 @@ TEMPLATE_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;"
   </ul>
 </div>"""
 
-# ===================== I/O =====================
+# ---------------- I/O ----------------
 
 def rtext(path: Path) -> str:
     with io.open(path, "r", encoding=ENC, errors="replace") as f:
@@ -81,7 +70,7 @@ def wtext(path: Path, text: str) -> None:
     with io.open(path, "w", encoding=ENC, newline="\n", errors="xmlcharrefreplace") as f:
         f.write(safe)
 
-# ===================== Регэкспы/служебные =====================
+# ------------- Служебные RegExp (ТОЛЬКО для description) -------------
 
 DESC_RX       = re.compile(r"<description\b[^>]*>(.*?)</description>", re.I | re.S)
 OFFER_RX      = re.compile(r"<offer\b[^>]*>.*?</offer>",              re.I | re.S)
@@ -101,7 +90,20 @@ def pick_char_heading(context: str) -> str:
 def trim_trailing_tech_word(s: str) -> str:
     return TRIM_TECH_TAIL_RX.sub("", s or "").rstrip()
 
-# ===================== ХАРАКТЕРИСТИКИ — оформление =====================
+# ----------- Нормализация «похожих» букв (кириллица → латиница) -----------
+
+LOOKALIKE_MAP = str.maketrans({
+    "А":"A","В":"B","С":"C","Е":"E","Н":"H","К":"K","М":"M","О":"O","Р":"P","Т":"T","Х":"X","У":"Y",
+    "а":"a","в":"b","с":"c","е":"e","н":"h","к":"k","м":"m","о":"o","р":"p","т":"t","х":"x","у":"y",
+})
+
+def latinize_lookalikes(text: str) -> str:
+    return (text or "").translate(LOOKALIKE_MAP)
+
+def normalize_space(s: str) -> str:
+    return re.sub(r"\s+", " ", (s or "").replace("\u00A0"," ")).strip()
+
+# ---------------- Оформление характеристик (внутри description) ----------------
 
 def kv_to_li(line: str) -> str:
     s = line.strip()
@@ -237,73 +239,45 @@ def beautify_original_description(inner: str) -> str:
     if HAS_HTML_TAGS.search(content): return beautify_existing_html(content)
     return beautify_plain_text(content)
 
-# ===================== СОВМЕСТИМОСТЬ — только устройства =====================
+# ------------- Совместимость (только устройства), с нормализацией букв -------------
 
 BRANDS = (
     "HP","Hewlett Packard","Canon","Epson","Brother","Kyocera","Samsung",
     "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Konica-Minolta","Pantum",
 )
 
-FAMILY_HINTS = (
-    # HP
-    "Color","Laser","LaserJet","LJ","MFP","DeskJet","OfficeJet","PageWide","DesignJet",
-    # Canon
-    "imageRUNNER","i-SENSYS","LBP","PIXMA",
-    # Epson
-    "Stylus","WorkForce","EcoTank","SureColor",
-    # Brother
-    "HL","DCP","MFC",
-    # Kyocera
-    "FS","TASKalfa","ECOSYS",
-    # Samsung
-    "CLX","ML","SL",
-    # Ricoh
-    "SP","Aficio",
-    # Xerox
-    "VersaLink","WorkCentre","Phaser",
-    # Konica Minolta
-    "bizhub",
-)
+FAMILY_HINTS = ("Color","Laser","LaserJet","LJ","MFP","DeskJet","OfficeJet","PageWide","DesignJet",
+                "imageRUNNER","i-SENSYS","LBP","PIXMA","Stylus","WorkForce","EcoTank","SureColor",
+                "HL","DCP","MFC","FS","TASKalfa","ECOSYS","CLX","ML","SL","SP","Aficio",
+                "VersaLink","WorkCentre","Phaser","bizhub")
 
 CARTRIDGE_PATTERNS = (
-    r"(?:CE|CF|CB|CC|Q)[0-9]{2,4}[A-Z]",        # CE285A, CF226X...
-    r"(?:CRG)[- ]?\d{2,4}",                     # CRG-725
-    r"(?:TN|TK|TKC|TNP|TNR)[- ]?\d{2,5}[A-Z]?", # TN-210K, TK-1170
-    r"(?:DR|DK|DV)[- ]?\d{2,5}[A-Z]?",          # DR-2300, DK-1110, DV-116
-    r"(?:CN|AR|MX|JL)[- ]?\d{2,5}[A-Z]?",       # прочие
+    r"(?:CE|CF|CB|CC|Q)[0-9]{2,4}[A-Z]",
+    r"(?:CRG)[- ]?\d{2,4}",
+    r"(?:TN|TK|TKC|TNP|TNR)[- ]?\d{2,5}[A-Z]?",
+    r"(?:DR|DK|DV)[- ]?\d{2,5}[A-Z]?",
+    r"(?:CN|AR|MX|JL)[- ]?\d{2,5}[A-Z]?",
 )
-
 CARTRIDGE_RE = re.compile(rf"(?i)\b({'|'.join(CARTRIDGE_PATTERNS)})\b")
 
 MODEL_RE = re.compile(r"\b([A-Z]{1,4}-?[A-Z]?\d{2,6}[A-Z]?(?:-[A-Z0-9]{1,4})?)\b", re.I)
 SEPS_RE  = re.compile(r"[,/;|]|(?:\s+\bи\b\s+)", re.I)
 
-def normalize_space(s: str) -> str:
-    return re.sub(r"\s+", " ", (s or "").replace("\u00A0"," ")).strip()
-
 def extract_brand_context(text: str) -> tuple[str,str]:
-    """
-    Ищем бренд и семейство в тексте и ВОЗВРАЩАЕМ ИХ В ТОЧНОМ ВИДЕ,
-    как они встретились (с дефисами и регистром).
-    """
-    t = normalize_space(text)
-    brand = ""
-    brand_pos = 1_000_000
+    t = normalize_space(latinize_lookalikes(text))
+    brand = ""; brand_pos = 10**9
     for b in BRANDS:
-        m = re.search(rf"(?i)\b{re.escape(b)}\b", t, flags=0)
+        m = re.search(rf"(?i)\b{re.escape(b)}\b", t)
         if m and m.start() < brand_pos:
-            brand = m.group(0)  # точная подстрока
-            brand_pos = m.start()
-
+            brand, brand_pos = m.group(0), m.start()
     family = ""
     if brand:
         after = t[brand_pos + len(brand):]
-        best_pos = 1_000_000
+        best = 10**9
         for fam in FAMILY_HINTS:
-            m2 = re.search(rf"(?i)\b{re.escape(fam)}\b", after, flags=0)
-            if m2 and m2.start() < best_pos:
-                family = m2.group(0)  # точная подстрока
-                best_pos = m2.start()
+            m2 = re.search(rf"(?i)\b{re.escape(fam)}\b", after)
+            if m2 and m2.start() < best:
+                family, best = m2.group(0), m2.start()
     return brand.strip(), family.strip()
 
 def split_candidates(chunk: str) -> list[str]:
@@ -313,7 +287,8 @@ def expand_slashed_models(s: str) -> list[str]:
     if "/" not in s: return [s]
     tokens = [t for t in s.split("/") if t]
     prefix = ""
-    m2 = re.match(r"^(.*?)[A-Za-z]*\d.*$", tokens[0].strip())
+    first = tokens[0].strip()
+    m2 = re.match(r"^(.*?)[A-Za-z]*\d.*$", first)
     if m2: prefix = normalize_space(m2.group(1) or "")
     out = []
     for tk in tokens:
@@ -325,7 +300,7 @@ def expand_slashed_models(s: str) -> list[str]:
     return out
 
 def extract_models_from_text(text: str) -> list[str]:
-    t = normalize_space(text)
+    t = normalize_space(latinize_lookalikes(text))
     raw_parts = split_candidates(t)
     expanded = []
     for p in raw_parts:
@@ -342,24 +317,24 @@ def is_cartridge_code(s: str, vendor_code_hint: str = "") -> bool:
         return True
     return CARTRIDGE_RE.search(s) is not None
 
+DEVICE_BRAND_PREFIX_RE = re.compile(
+    r"(?i)^(HP|Hewlett Packard|Epson|Canon|Brother|Kyocera|Samsung|Ricoh|Xerox|Sharp|Lexmark|OKI|Panasonic|Konica|Konica-Minolta|Konica Minolta|Pantum)\b"
+)
+
 def attach_brand_family_only_devices(models: list[str], brand: str, family: str) -> list[str]:
-    """
-    Приклеиваем «brand [family]» ТОЛЬКО к тем, что выглядят как модели устройств.
-    Удаляем «голые» короткие коды без найденного семейства.
-    """
-    b = brand.strip()
-    fam = family.strip()
+    b = brand.strip(); fam = family.strip()
     res = []
     for m in models:
-        # если уже содержит явный бренд в начале — оставляем
-        if re.match(r"(?i)^(HP|HEWLETT PACKARD|EPSON|CANON|BROTHER|KYOCERA|SAMSUNG|RICOH|XEROX|SHARP|LEXMARK|OKI|PANASONIC|KONICA|KONICA-MINOLTA|KONICA MINOLTA|PANTUM)\b", m):
-            res.append(m)
-            continue
-        # короткие коды допускаем ТОЛЬКО при наличии семейства
-        if fam or b:
+        if DEVICE_BRAND_PREFIX_RE.match(m):
+            res.append(m); continue
+        # если есть бренд — допускаем и без family (Pantum CM1100ADW …)
+        if b:
             prefix = " ".join([x for x in (b, fam) if x])
             res.append((prefix + " " + m).strip())
+        elif fam:
+            res.append((fam + " " + m).strip())
         else:
+            # короткий код без контекста — отбрасываем
             continue
     return res
 
@@ -384,11 +359,8 @@ def extract_plain_text(html: str) -> str:
 def build_compatibility_block(name_text: str, desc_text_plain: str, vendor_code_hint: str) -> str:
     brand, family = extract_brand_context(name_text + " " + desc_text_plain)
     raw_models = extract_models_from_text(name_text) + extract_models_from_text(desc_text_plain)
-    # фильтр: выкидываем артикулы картриджей/драмов
     raw_models = [m for m in raw_models if not is_cartridge_code(m, vendor_code_hint)]
-    # переносим бренд/семейство только для «устройств», короткие без family — отбрасываем
     models = attach_brand_family_only_devices(raw_models, brand, family)
-    # sanity: должна быть буквенно-цифровая модельная часть
     models = [m for m in models if re.search(r"[A-Za-z]*\d", m)]
     models = uniq_sorted(models)
     if len(models) < 2:
@@ -397,6 +369,17 @@ def build_compatibility_block(name_text: str, desc_text_plain: str, vendor_code_
 
 def has_compat_block(html: str) -> bool:
     return re.search(r"(?i)<strong>\s*совместим\w*\s*:</strong>", html) is not None
+
+# ---------------- Сборка DESCRIPTION (прочие теги не трогаем) ----------------
+
+def has_our_block(desc_html: str) -> bool:
+    return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_html
+
+def beautify_original_description(inner: str) -> str:
+    content = inner.strip()
+    if not content: return ""
+    if HAS_HTML_TAGS.search(content): return beautify_existing_html(content)
+    return beautify_plain_text(content)
 
 def inject_compatibility(html_tail_times: str, name_text: str, vendor_code_hint: str) -> str:
     if has_compat_block(html_tail_times):
@@ -411,11 +394,6 @@ def inject_compatibility(html_tail_times: str, name_text: str, vendor_code_hint:
         return html_tail_times
     return re.sub(r"(?is)</div>\s*$", "\n" + compat_block + "\n</div>", html_tail_times, count=1)
 
-# ===================== СБОРКА DESCRIPTION =====================
-
-def has_our_block(desc_html: str) -> bool:
-    return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_html
-
 def rebuild_with_existing_block(desc_inner: str, name_text: str, vendor_code_hint: str) -> str:
     parts = HR_RX.split(desc_inner, maxsplit=1)
     if len(parts) != 2:
@@ -426,8 +404,7 @@ def rebuild_with_existing_block(desc_inner: str, name_text: str, vendor_code_hin
     if m:
         start_div, inner, end_div = m.group(1), m.group(2), m.group(3)
         processed = emphasize_kv_in_li(
-            A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"',
-                              transform_characteristics_paragraphs(inner))
+            A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"', inner)
         )
         processed = inject_compatibility(processed, name_text, vendor_code_hint)
         new_tail = tail[:m.start()] + start_div + processed + end_div + tail[m.end():]
@@ -453,38 +430,13 @@ def add_description_if_missing(offer_block: str) -> str:
     tail = (insertion + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (insertion + "\n</offer>")
     return offer_block.replace("</offer>", tail)
 
-# ===================== Глобальный полиш <li> =====================
-
-def global_li_polish(xml_text: str) -> str:
-    def li_global_repl(m: re.Match) -> str:
-        body = m.group(2)
-        if not SPLIT_HINT_RX.search(body): return m.group(0)
-        parts = SPLIT_HINT_RX.split(body)
-        if len(parts) <= 1: return m.group(0)
-        out_lis = []
-        for frag in parts:
-            frag = frag.strip()
-            if "<" in frag and ">" in frag:
-                out_lis.append(f"<li>{frag}</li>"); continue
-            mm = KV_ANY_RX.match(frag)
-            if mm:
-                key = html_escape(mm.group(1).strip())
-                val = html_escape(mm.group(2).strip())
-                out_lis.append(f"<li><strong>{key}:</strong> {val}</li>")
-            elif frag:
-                out_lis.append(f"<li>{html_escape(frag)}</li>")
-        return "".join(out_lis)
-    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_global_repl, xml_text, flags=re.S | re.I)
-
-# ===================== Основной конвейер =====================
+# ------------- Глобально НЕ меняем теги, только содержимое description -------------
 
 def process_offer_block(offer_block: str) -> str:
-    # имя товара — контекст бренда/семейства (сохраняем исходное написание)
     name_text = ""
     mname = NAME_RX.search(offer_block)
     if mname and mname.group(1):
         name_text = normalize_space(re.sub(r"<[^>]+>", " ", mname.group(1)))
-    # vendorCode — подсказка для фильтра артикулов
     vendor_hint = ""
     mvc = VENDORCODE_RX.search(offer_block)
     if mvc and mvc.group(1):
@@ -493,15 +445,15 @@ def process_offer_block(offer_block: str) -> str:
     def _desc_repl(m: re.Match) -> str:
         return inject_into_description_block(m.group(1), name_text, vendor_hint)
 
+    # правим только <description> внутри оффера
     block = DESC_RX.sub(_desc_repl, offer_block)
     if not re.search(r"<description\b", block, flags=re.I):
         block = add_description_if_missing(block)
     return block
 
 def process_text(xml_text: str) -> str:
-    updated = OFFER_RX.sub(lambda m: process_offer_block(m.group(0)), xml_text)
-    polished = global_li_polish(updated)
-    return polished
+    # Меняем только контент <description>, остальное копируем как есть
+    return OFFER_RX.sub(lambda m: process_offer_block(m.group(0)), xml_text)
 
 def main() -> int:
     if not SRC.exists():
@@ -509,7 +461,7 @@ def main() -> int:
     original  = rtext(SRC)
     processed = process_text(original)
     wtext(DST, processed)
-    print(f"[seo] OK (этап 1 — совместимость, только устройства): {DST}")
+    print(f"[seo] OK: {DST} (описания обновлены, прочие теги не тронуты)")
     return 0
 
 if __name__ == "__main__":
