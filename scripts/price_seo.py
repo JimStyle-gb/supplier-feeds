@@ -1,21 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-price_seo.py — добавляет блок «Совместимость»
-----------------------------------------------
-Вход:  docs/price.yml
-Выход: docs/price_seo.yml
-
-Меняет только <description>:
-• Сохраняет твой верхний блок (Cambria + WhatsApp-кнопка, Оплата/Доставка) и <hr>.
-• «Технические характеристики» не трогает (если слитно — аккуратно раскладывает в <ul>).
-• ДОБАВЛЯЕТ внизу блок «Совместимость:» списком устройств, извлекая модели из <name> и текста описания.
-  - раскрывает списки со слешем (например, CM1100ADW/CM1100ADN/…);
-  - приклеивает бренд/семейство (Pantum / HP LJ / Konica Minolta bizhub и т.п.) если модель «голая»;
-  - отсеивает коды расходников (CE285A, TN-210K, DR-2300 и т.п.) и совпадение с vendorCode;
-  - если устройств < 2 — блок не добавляется.
-"""
+# scripts/price_seo.py
+# Правит ТОЛЬКО <description> у каждого <offer>.
+# Ключевое исправление: глобальный разрез " - Ключ: Значение" внутри одного <li> на отдельные <li>.
 
 from __future__ import annotations
 from pathlib import Path
@@ -26,7 +14,6 @@ SRC = Path("docs/price.yml")
 DST = Path("docs/price_seo.yml")
 ENC = "windows-1251"
 
-# ---------- Верхний фиксированный блок ----------
 COLOR_LINK  = "#0b3d91"
 COLOR_WHITE = "#ffffff"
 COLOR_BTN   = "#27ae60"
@@ -91,9 +78,9 @@ HAS_HTML_TAGS = re.compile(r"<[a-zA-Z/!][^>]*>")
 def normsp(s: str) -> str:
     return re.sub(r"\s+"," ", (s or "").replace("\u00A0"," ")).strip()
 
-# ---------- «Технические характеристики»: раскладка (как у тебя) ----------
+# ---------- «Технические характеристики»: как у тебя ----------
 KV_LINE_RX = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
-TECH_HDR_RX = re.compile(r"(?i)\bтехническ\w*\s+характеристик[аи]\s*:\s*")
+TECH_WORD_RX = re.compile(r"(?i)\bтехническ\w*\s+характеристик", re.U)
 TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
 
 def kv_li(line: str) -> str:
@@ -110,7 +97,7 @@ def make_ul(block_text: str) -> str:
     return "<ul>\n" + "\n".join(kv_li(ln) for ln in lines) + "\n</ul>"
 
 def pick_char_heading(context: str) -> str:
-    return "Технические характеристики" if re.search(r"(?i)техническ\w*\s+характеристик", context or "") else "Характеристики"
+    return "Технические характеристики" if TECH_WORD_RX.search(context or "") else "Характеристики"
 
 def trim_trailing_tech_word(s: str) -> str:
     return TRIM_TECH_TAIL_RX.sub("", s or "").rstrip()
@@ -179,7 +166,7 @@ def beautify_original_description(inner: str) -> str:
     if not c: return ""
     return beautify_existing_html(c) if HAS_HTML_TAGS.search(c) else beautify_plain_text(c)
 
-# ---------- «Совместимость»: извлечение из name + description ----------
+# ---------- «Совместимость»: вытаскиваем из name+description (без внешних источников) ----------
 BRANDS = (
     "HP","Hewlett Packard","Canon","Epson","Brother","Kyocera","Samsung",
     "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Pantum",
@@ -207,7 +194,7 @@ MODEL_RE = re.compile(r"\b([A-Z]{1,4}-?[A-Z]?\d{2,6}[A-Z]?(?:-[A-Z0-9]{1,4})?)\b
 SEPS_RE  = re.compile(r"[,/;|]|(?:\s+\bи\b\s+)", re.I)
 
 def normalize_space(s: str) -> str:
-    return re.sub(r"\s+", " ", (s or "").replace("\u00A0"," ")).strip()
+    return re.sub(r"\s+"," ", (s or "").replace("\u00A0"," ")).strip()
 
 def extract_brand_context(text: str) -> tuple[str,str]:
     t = normalize_space(text)
@@ -254,17 +241,15 @@ def extract_models_from_text(text: str) -> list[str]:
 
 def build_compatibility_block(name_text: str, desc_text_plain: str, vendor_code_hint: str) -> str:
     brand, family = extract_brand_context(name_text + " " + desc_text_plain)
-    raw_models = extract_models_from_text(name_text) + extract_models_from_text(desc_text_plain)
-    raw_models = [m for m in raw_models if (not vendor_code_hint or m.upper()!=vendor_code_hint.upper()) and not CARTRIDGE_RE.search(m)]
-    # приклеиваем бренд/семейство к «голым» кодам; без family — пропускаем короткие
+    raw = extract_models_from_text(name_text) + extract_models_from_text(desc_text_plain)
+    raw = [m for m in raw if (not vendor_code_hint or m.upper()!=vendor_code_hint.upper()) and not CARTRIDGE_RE.search(m)]
     models = []
-    for m in raw_models:
+    for m in raw:
         if re.match(r"(?i)^(HP|HEWLETT PACKARD|EPSON|CANON|BROTHER|KYOCERA|SAMSUNG|RICOH|XEROX|SHARP|LEXMARK|OKI|PANASONIC|KONICA|KONICA MINOLTA|PANTUM)\b", m):
             models.append(m); continue
         if family:
             prefix = " ".join(x for x in (brand, family) if x)
             models.append((prefix + " " + m).strip())
-    # уникализация и сортировка
     seen=set(); out=[]
     for x in models:
         k=normalize_space(x)
@@ -304,8 +289,10 @@ def beautify_tail_any(tail: str) -> str:
                   tail, flags=re.I|re.S)
     if m:
         start_div, inner, end_div = m.group(1), m.group(2), m.group(3)
-        processed = emphasize_kv_in_li(A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"',
-                              transform_characteristics_paragraphs(inner)))
+        processed = emphasize_kv_in_li(
+            A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"',
+                              transform_characteristics_paragraphs(inner))
+        )
         return tail[:m.start()] + start_div + processed + end_div + tail[m.end():]
     return beautify_existing_html(tail)
 
@@ -337,18 +324,38 @@ def add_description_if_missing(offer_xml: str) -> str:
     tail = (ins + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (ins + "\n</offer>")
     return offer_xml.replace("</offer>", tail)
 
+# ---------- ГЛОБАЛЬНЫЙ добивающий проход по всему XML ----------
+# Разрезает ЛЮБОЙ <li> с « - Ключ: Значение - Ключ: Значение …» на отдельные <li>.
+SPLIT_CHAIN = re.compile(r"\s[-–—•·]\s(?=[^:<>{}\n]{1,120}\s*:)")
+KV_ANY      = re.compile(r"^\s*([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
+
+def global_li_polish(xml_text: str) -> str:
+    def li_repl(m: re.Match) -> str:
+        before, body, after = m.group(1), m.group(2), m.group(3)
+        if not SPLIT_CHAIN.search(body): return m.group(0)
+        # нормализация разделителей
+        norm = (body.replace("\u00A0"," ")
+                    .replace(" — "," - ").replace(" – "," - ")
+                    .replace(" • "," - ").replace(" · "," - "))
+        parts = SPLIT_CHAIN.split(norm)
+        if len(parts) <= 1: return m.group(0)
+        out = []
+        for frag in parts:
+            frag = frag.strip()
+            mm = KV_ANY.match(frag)
+            if mm:
+                key = esc(mm.group(1).strip())
+                val = esc(mm.group(2).strip())
+                out.append(f"<li><strong>{key}:</strong> {val}</li>")
+            elif frag:
+                out.append(f"<li>{esc(frag)}</li>")
+        return "".join(out)
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, xml_text, flags=re.S | re.I)
+
 # ---------- Основной проход ----------
 def process_offer(offer_xml: str) -> str:
-    # контекст
-    name_text = ""
-    mname = NAME_RX.search(offer_xml)
-    if mname and mname.group(1):
-        name_text = normsp(re.sub(r"<[^>]+>", " ", mname.group(1)))
-    vendor_hint = ""
-    mvc = VENDORCODE_RX.search(offer_xml)
-    if mvc and mvc.group(1):
-        vendor_hint = normsp(re.sub(r"<[^>]+>", " ", mvc.group(1)))
-    # описание
+    name_text = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
+    vendor_hint = normsp(re.sub(r"<[^>]+>", " ", VENDORCODE_RX.search(offer_xml).group(1))) if VENDORCODE_RX.search(offer_xml) else ""
     def _desc_repl(m: re.Match) -> str:
         return inject_into_description(m.group(1), name_text, vendor_hint)
     updated = DESC_RX.sub(_desc_repl, offer_xml)
@@ -357,7 +364,10 @@ def process_offer(offer_xml: str) -> str:
     return updated
 
 def process_text(xml_text: str) -> str:
-    return OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
+    stage1 = OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
+    # Добивающий глобальный сплит по всем <li>
+    stage2 = global_li_polish(stage1)
+    return stage2
 
 def main() -> int:
     if not SRC.exists():
@@ -365,7 +375,7 @@ def main() -> int:
     original  = rtext(SRC)
     processed = process_text(original)
     wtext(DST, processed)
-    print(f"[seo] OK: {DST} — добавлен блок «Совместимость» (из name+description), остальное без изменений")
+    print(f"[seo] OK: {DST} — характеристики в столбик, ключи жирные; «Совместимость» добавлена; паровозики в <li> разрезаны")
     return 0
 
 if __name__ == "__main__":
