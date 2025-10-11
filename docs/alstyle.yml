@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-10 20:17">
+<yml_catalog date="2025-10-11 20:15">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 11:10:2025 - 01:17:38
-Ближайшее время сборки (Алматы)            | 12:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15884
+Время сборки (Алматы)                      | 12:10:2025 - 01:15:45
+Ближайшее время сборки (Алматы)            | 13:10:2025 - 01:00:00
+Сколько товаров у поставщика до фильтра    | 15885
 Сколько товаров у поставщика после фильтра | 2005
-Сколько товаров есть в наличии (true)      | 1306
-Сколько товаров нет в наличии (false)      | 699-->
+Сколько товаров есть в наличии (true)      | 1305
+Сколько товаров нет в наличии (false)      | 700-->
   <shop>
     <offers>
       <offer id="AS20888">
@@ -64814,7 +64814,7 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <picture>https://img.al-style.kz/76667_3.jpg</picture>
         <vendor>TECNO</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Ноутбук Tecno Megabook K16SAA i5-13420H / 16&#8239;ГБ / SSD 512&#8239;ГБ / Win 11 Home
 
     Работай. Учись. Создавай.
