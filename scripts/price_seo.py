@@ -2,22 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2: SEO-блок после «родного» описания
---------------------------------------------------------
+price_seo.py — Этап 2 (фикс «паровозиков» и SEO-блок без заголовка)
 Создаёт docs/price_seo.yml из docs/price.yml.
 
-Что делает:
-• Твой верхний блок (Cambria + WhatsApp-кнопка, Оплата/Доставка) — сохраняет/добавляет.
-• Затем <hr>, затем «родное» описание, тех.характеристики (ключи жирные, в столбик), «Совместимость».
-• ПОСЛЕ ЭТОГО ещё один <hr> и новый SEO-блок:
-    - Пытаемся кратко подтянуть 2–3 предложения с RU/EN Wikipedia и (по возможности) сайта бренда (таймауты короткие).
-    - Если интернет не дал результата — генерируем продающий текст по данным оффера (fallback).
-• Меняет только <description> внутри <offer>. Остальные теги не трогает.
-
-Тонкости:
-• Кодировка вывода — windows-1251 (не допускаем символы вроде ₸, ≈ и NBSP).
-• Ссылки без подчеркивания, цвета те же, что в твоём блоке.
-• Включение веб-обогащения контролируется переменной окружения SEO_ENRICH (по умолчанию ВКЛ).
+— Верхний блок (Cambria + WhatsApp/Оплата/Доставка) сохраняем.
+— Далее <hr>, «родное» описание, тех.характеристики (в столбик, ключи жирные), «Совместимость».
+— После этого <hr> и НОВЫЙ SEO-блок (без слов «SEO-описание»).
+— Глобально добиваем «паровозики» внутри любого <li>: "… 2300 - Тип печати: … - Цвет печати: …" → несколько <li>.
+— Кодировка выхода: windows-1251, опасные символы заменены.
 """
 
 from __future__ import annotations
@@ -25,7 +17,6 @@ from pathlib import Path
 import io, re, sys, os, html
 from html import escape as esc
 
-# ------------------- Параметры/пути -------------------
 SRC = Path("docs/price.yml")
 DST = Path("docs/price_seo.yml")
 ENC = "windows-1251"
@@ -69,29 +60,28 @@ HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
   </ul>
 </div>"""
 
-# ------------------- I/O -------------------
-def rtext(path: Path) -> str:
-    with io.open(path, "r", encoding=ENC, errors="replace") as f:
+# ---------- I/O ----------
+def rtext(p: Path) -> str:
+    with io.open(p, "r", encoding=ENC, errors="replace") as f:
         return f.read()
 
-def wtext(path: Path, text: str) -> None:
-    safe = (text
-            .replace("\u20B8", "тг.")     # ₸
-            .replace("\u2248", "~")       # ≈
-            .replace("\u00A0", " ")       # NBSP
-            .replace("\u2013", "-").replace("\u2014", "—")
-            .replace("\u201C", '"').replace("\u201D", '"')
-            .replace("\u201E", '"').replace("\u201F", '"'))
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with io.open(path, "w", encoding=ENC, newline="\n", errors="xmlcharrefreplace") as f:
+def wtext(p: Path, s: str) -> None:
+    safe = (s.replace("\u00A0"," ")
+              .replace("\u20B8","тг.")     # ₸
+              .replace("\u2248","~")       # ≈
+              .replace("\u2013","-").replace("\u2014","—")
+              .replace("\u201C",'"').replace("\u201D",'"')
+              .replace("\u201E",'"').replace("\u201F",'"'))
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with io.open(p, "w", encoding=ENC, newline="\n", errors="xmlcharrefreplace") as f:
         f.write(safe)
 
-# ------------------- Регэкспы и утилиты -------------------
-OFFER_RX      = re.compile(r"<offer\b[^>]*>.*?</offer>",              re.I|re.S)
-DESC_RX       = re.compile(r"<description\b[^>]*>(.*?)</description>", re.I|re.S)
-NAME_RX       = re.compile(r"<name\b[^>]*>(.*?)</name>",               re.I|re.S)
-VENDOR_RX     = re.compile(r"<vendor\b[^>]*>(.*?)</vendor>",           re.I|re.S)
-VENDORCODE_RX = re.compile(r"<vendorCode\b[^>]*>(.*?)</vendorCode>",   re.I|re.S)
+# ---------- Регэкспы ----------
+OFFER_RX      = re.compile(r"<offer\b[^>]*>.*?</offer>",               re.I|re.S)
+DESC_RX       = re.compile(r"<description\b[^>]*>(.*?)</description>",  re.I|re.S)
+NAME_RX       = re.compile(r"<name\b[^>]*>(.*?)</name>",                re.I|re.S)
+VENDOR_RX     = re.compile(r"<vendor\b[^>]*>(.*?)</vendor>",            re.I|re.S)
+VENDORCODE_RX = re.compile(r"<vendorCode\b[^>]*>(.*?)</vendorCode>",    re.I|re.S)
 HAS_HTML_TAGS = re.compile(r"<[a-zA-Z/!][^>]*>")
 A_NO_STYLE_RX = re.compile(r"<a(?![^>]*\bstyle=)", re.I)
 HR_RX         = re.compile(r"<hr\b[^>]*>", re.I)
@@ -99,7 +89,7 @@ HR_RX         = re.compile(r"<hr\b[^>]*>", re.I)
 def normsp(s: str) -> str:
     return re.sub(r"\s+"," ", (s or "").replace("\u00A0"," ")).strip()
 
-# ------------------- Тех.характеристики (как у тебя) -------------------
+# ---------- Характеристики: столбец + жирные ключи ----------
 KV_LINE_RX = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
 TECH_WORD_RX = re.compile(r"(?i)\bтехническ\w*\s+характеристик", re.U)
 TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
@@ -123,7 +113,7 @@ def pick_char_heading(context: str) -> str:
 def trim_trailing_tech_word(s: str) -> str:
     return TRIM_TECH_TAIL_RX.sub("", s or "").rstrip()
 
-def transform_characteristics_paragraphs(html: str) -> str:
+def transform_characteristics_paragraphs(html_txt: str) -> str:
     def para_repl(m: re.Match) -> str:
         start, body, end = m.group(1), m.group(2), m.group(3)
         if not re.search(r"(?i)характеристик", body): return m.group(0)
@@ -139,9 +129,9 @@ def transform_characteristics_paragraphs(html: str) -> str:
         ul    = make_ul("\n".join(bullet_lines))
         out = (f"<p>{esc(head)}</p>\n" if head else "") + f"<p><strong>{label}:</strong></p>\n" + ul
         return start + out + end
-    return re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html, flags=re.S | re.I)
+    return re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html_txt, flags=re.S | re.I)
 
-# Разрез «паровозиков» внутри одного <li>
+# Разрез «паровозиков» внутри <li> и жирнение первой пары
 SPLIT_CHAIN = re.compile(r"\s[-–—•·]\s(?=[^:<>{}\n]{1,120}\s*:)")
 KV_ANY      = re.compile(r"^\s*([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
 
@@ -165,7 +155,6 @@ def explode_inline_li(html_txt: str) -> str:
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, html_txt, flags=re.S | re.I)
 
 def emphasize_kv_in_li(html_txt: str) -> str:
-    # после разреза — убеждаемся, что первая пара в каждом <li> жирная
     def repl(m: re.Match) -> str:
         before, body, after = m.group(1), m.group(2), m.group(3)
         if re.search(r"^\s*(?:[-–—]\s*)?<strong>[^:]{1,120}:</strong>", body, flags=re.I): return m.group(0)
@@ -209,7 +198,7 @@ def beautify_original_description(inner: str) -> str:
     if not c: return ""
     return beautify_existing_html(c) if HAS_HTML_TAGS.search(c) else beautify_plain_text(c)
 
-# ------------------- Совместимость (как в предыдущем этапе) -------------------
+# ---------- Совместимость (как раньше) ----------
 BRANDS = ("HP","Hewlett Packard","Canon","Epson","Brother","Kyocera","Samsung",
           "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Pantum")
 FAMILY_HINTS = ("Color","Laser","LaserJet","LJ","MFP","DeskJet","OfficeJet","PageWide","DesignJet",
@@ -270,9 +259,9 @@ def extract_models_from_text(text: str) -> list[str]:
             models.append(m.group(1).upper())
     return models
 
-def build_compatibility_block(name_text: str, desc_text_plain: str, vendor_code_hint: str) -> str:
-    brand, family = extract_brand_context(name_text + " " + desc_text_plain)
-    raw = extract_models_from_text(name_text) + extract_models_from_text(desc_text_plain)
+def build_compatibility_block(name_text: str, desc_plain: str, vendor_code_hint: str) -> str:
+    brand, family = extract_brand_context(name_text + " " + desc_plain)
+    raw = extract_models_from_text(name_text) + extract_models_from_text(desc_plain)
     raw = [m for m in raw if (not vendor_code_hint or m.upper()!=vendor_code_hint.upper()) and not CARTRIDGE_RE.search(m)]
     models = []
     for m in raw:
@@ -309,9 +298,8 @@ def inject_compatibility(html_tail_times: str, name_text: str, vendor_code_hint:
         return html_tail_times
     return re.sub(r"(?is)</div>\s*$", "\n" + compat_block + "\n</div>", html_tail_times, count=1) or (html_tail_times + "\n" + compat_block)
 
-# ------------------- SEO-блок после <hr> -------------------
+# ---------- SEO-блок после второго <hr> (без слова «SEO-описание») ----------
 def short_sentences(txt: str, n: int = 3) -> str:
-    # грубое выделение 2–3 предложений
     parts = re.split(r"(?<=[.!?])\s+", txt)
     parts = [p.strip() for p in parts if 10 <= len(p.strip()) <= 300]
     return " ".join(parts[:n]).strip()
@@ -327,7 +315,6 @@ def fetch_try(url: str, timeout: float = 6.0) -> str:
     return ""
 
 def html_text_only(html_src: str) -> str:
-    # вытащим «википедийную» первую секцию
     txt = re.sub(r"(?is)<script[^>]*>.*?</script>|<style[^>]*>.*?</style>", " ", html_src)
     txt = re.sub(r"(?is)<table[^>]*>.*?</table>", " ", txt)
     txt = re.sub(r"(?is)</?(?:p|br|li|ul|ol|h[1-6]|div)[^>]*>", "\n", txt)
@@ -335,7 +322,6 @@ def html_text_only(html_src: str) -> str:
     return normsp(txt)
 
 def build_seo_block(name_text: str, vendor_text: str, tail_plain: str) -> str:
-    # Попробуем RU и EN Wikipedia по названию и бренду
     queries = []
     qname = normsp(re.sub(r"\s+", " ", name_text))
     if qname: queries.append(qname)
@@ -360,9 +346,7 @@ def build_seo_block(name_text: str, vendor_text: str, tail_plain: str) -> str:
                     break
             if grabbed: break
 
-    # если ничего не схватили — делаем достойный fallback
     if not grabbed:
-        # вытащим из хвоста пару полезных полей, чтобы сделать УТП
         color  = re.search(r"(?i)\bцвет(?:\s*печати)?\s*:\s*([A-Za-zА-Яа-я]+)", tail_plain or "")
         pages  = re.search(r"(?i)\b(ресурс|колич[её]ство\s*страниц)[^0-9]{0,10}(\d{2,6})", tail_plain or "")
         compat = re.search(r"(?i)\b(HP|Canon|Epson|Brother|Kyocera|Samsung|Ricoh|Xerox|Sharp|Lexmark|OKI|Panasonic|Konica Minolta|Pantum)\b", name_text + " " + (tail_plain or ""))
@@ -375,17 +359,14 @@ def build_seo_block(name_text: str, vendor_text: str, tail_plain: str) -> str:
         bits.append("Поддерживаем гарантию, помогаем с подбором расходников и обслуживанием парка печати.")
         grabbed = " ".join(bits)
 
-    # верстаем аккуратно
     body = esc(grabbed)
-    html_block = (
+    return (
         '<div style="font-family: \'Times New Roman\', Times, serif; font-size:15px; line-height:1.55;">'
-        '<p><strong>SEO-описание:</strong></p>'
         f'<p>{body}</p>'
         '</div>'
     )
-    return html_block
 
-# ------------------- Сборка DESCRIPTION -------------------
+# ---------- Сборка DESCRIPTION ----------
 def has_our_header(desc_html: str) -> bool:
     return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_html
 
@@ -407,15 +388,12 @@ def rebuild_with_existing_header(desc_inner: str, name_text: str, vendor_hint: s
     parts = HR_RX.split(desc_inner, maxsplit=1)
     if len(parts) != 2:
         body = beautify_tail_any(desc_inner)
-        # после «родного» сразу <hr> и SEO
         tail_plain = extract_plain_text(body)
         seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
         return "<description>" + body + "\n\n<hr>\n\n" + seo_block + "</description>"
     head, tail = parts[0], parts[1]
     pretty_tail = beautify_tail_any(tail)
-    # добавим «Совместимость»
     pretty_tail = inject_compatibility(pretty_tail, name_text, vendor_hint)
-    # затем <hr> и SEO-блок
     tail_plain = extract_plain_text(pretty_tail)
     seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
     return "<description>" + head + "<hr>\n\n" + pretty_tail + "\n\n<hr>\n\n" + seo_block + "</description>"
@@ -435,20 +413,16 @@ def inject_into_description(desc_inner: str, name_text: str, vendor_hint: str) -
 def add_description_if_missing(offer_xml: str) -> str:
     if re.search(r"<description\b", offer_xml, flags=re.I): return offer_xml
     m = re.search(r"\n([ \t]+)<", offer_xml); indent = m.group(1) if m else "  "
-    ins = f"\n{indent}<description>{HEADER_HTML}</description>"
-    # даже если описания не было — тебе нужен SEO-блок: добавим <hr> и SEO сразу после заголовка
-    seo_block = build_seo_block(
-        name_text=normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else "",
-        vendor_text=normsp(re.sub(r"<[^>]+>", " ", VENDOR_RX.search(offer_xml).group(1))) if VENDOR_RX.search(offer_xml) else "",
-        tail_plain=""
-    )
+    name_text = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
+    vendor_text = normsp(re.sub(r"<[^>]+>", " ", VENDOR_RX.search(offer_xml).group(1))) if VENDOR_RX.search(offer_xml) else ""
+    seo_block = build_seo_block(name_text, vendor_text, "")
     ins = f"\n{indent}<description>{HEADER_HTML}\n\n<hr>\n\n{seo_block}</description>"
     tail = (ins + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (ins + "\n</offer>")
     return offer_xml.replace("</offer>", tail)
 
-# ------------------- Главный проход -------------------
+# ---------- Главный проход + глобальный добивающий сплит <li> ----------
 def process_offer(offer_xml: str) -> str:
-    name_text = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
+    name_text   = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
     vendor_text = normsp(re.sub(r"<[^>]+>", " ", VENDOR_RX.search(offer_xml).group(1))) if VENDOR_RX.search(offer_xml) else ""
     vendor_hint = normsp(re.sub(r"<[^>]+>", " ", VENDORCODE_RX.search(offer_xml).group(1))) if VENDORCODE_RX.search(offer_xml) else ""
     def _desc_repl(m: re.Match) -> str:
@@ -458,8 +432,30 @@ def process_offer(offer_xml: str) -> str:
         updated = add_description_if_missing(offer_xml)
     return updated
 
+def global_li_polish(xml_text: str) -> str:
+    # Пройтись по всему файлу и разрезать любые « - Ключ: Значение - Ключ: …» внутри одного <li>
+    def li_repl(m: re.Match) -> str:
+        body = m.group(2)
+        if not SPLIT_CHAIN.search(body): return m.group(0)
+        norm = (body.replace("\u00A0"," ")
+                    .replace(" — "," - ").replace(" – "," - ")
+                    .replace(" • "," - ").replace(" · "," - "))
+        parts = SPLIT_CHAIN.split(norm)
+        out = []
+        for frag in parts:
+            frag = frag.strip()
+            mm = KV_ANY.match(frag)
+            if mm:
+                out.append(f"<li><strong>{esc(mm.group(1).strip())}:</strong> {esc(mm.group(2).strip())}</li>")
+            elif frag:
+                out.append(f"<li>{esc(frag)}</li>")
+        return "".join(out)
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, xml_text, flags=re.S | re.I)
+
 def process_text(xml_text: str) -> str:
-    return OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
+    stage1 = OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
+    stage2 = global_li_polish(stage1)  # ВАЖНО: финальный добивающий разрез по всему документу
+    return stage2
 
 def main() -> int:
     if not SRC.exists():
@@ -467,7 +463,7 @@ def main() -> int:
     original  = rtext(SRC)
     processed = process_text(original)
     wtext(DST, processed)
-    print(f"[seo] OK: {DST} — добавлен SEO-блок после родного описания (с <hr>), характеристики сохранены, совместимость добавлена")
+    print(f"[seo] OK: {DST} — тех.характеристики в столбик, ключи жирные; «паровозики» разрезаны; SEO-блок без заголовка")
     return 0
 
 if __name__ == "__main__":
