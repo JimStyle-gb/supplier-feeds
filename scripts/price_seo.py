@@ -2,14 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2 (фикс «паровозиков» и SEO-блок без заголовка)
+price_seo.py — Этап 2 (фикс «паровозиков», жирных ключей и SEO-блок без заголовка)
 Создаёт docs/price_seo.yml из docs/price.yml.
-
-— Верхний блок (Cambria + WhatsApp/Оплата/Доставка) сохраняем.
-— Далее <hr>, «родное» описание, тех.характеристики (в столбик, ключи жирные), «Совместимость».
-— После этого <hr> и НОВЫЙ SEO-блок (без слов «SEO-описание»).
-— Глобально добиваем «паровозики» внутри любого <li>.
-— Кодировка выхода: windows-1251, опасные символы заменены.
 """
 
 from __future__ import annotations
@@ -89,20 +83,26 @@ HR_RX         = re.compile(r"<hr\b[^>]*>", re.I)
 def normsp(s: str) -> str:
     return re.sub(r"\s+"," ", (s or "").replace("\u00A0"," ")).strip()
 
-# ---------- Характеристики: столбец + жирные ключи ----------
+# ---------- Характеристики ----------
 KV_LINE_RX = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
 TECH_WORD_RX = re.compile(r"(?i)\bтехническ\w*\s+характеристик", re.U)
 TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
 
 def kv_li(line: str) -> str:
     """
-    ВАЖНО: если пункт уже содержит <strong>…:</strong>, НЕ экранируем, а вставляем как есть.
-    Это защищает от &lt;strong&gt; в готовом UL (см. кейс «Ресурс: 2300»).
+    Если строка уже содержит <strong>..:</strong> или &lt;strong&gt;..&lt;/strong&gt;, не экранируем.
     """
     s = line.strip()
     if s.startswith(("- ","• ","– ","— ")): s = s[2:].strip()
+
+    # Вариант 1: уже реальные теги <strong>…</strong>
     if re.search(r"(?is)^<\s*strong\b[^>]*>.*?:\s*</\s*strong\s*>", s):
         return f"<li>{s}</li>"
+
+    # Вариант 2: то же, но в виде HTML-сущностей (&lt;strong&gt;…&lt;/strong&gt;)
+    if re.search(r"(?is)^&lt;\s*strong\b[^&]*&gt;.*?:\s*&lt;/\s*strong\s*&gt;", s):
+        return f"<li>{html.unescape(s)}</li>"
+
     m = KV_LINE_RX.match(s)
     if m:
         key = esc(m.group(1).strip()); val = esc(m.group(2).strip())
@@ -204,7 +204,7 @@ def beautify_original_description(inner: str) -> str:
     if not c: return ""
     return beautify_existing_html(c) if HAS_HTML_TAGS.search(c) else beautify_plain_text(c)
 
-# ---------- Совместимость (с прошлого шага) ----------
+# ---------- Совместимость ----------
 BRANDS = ("HP","Hewlett Packard","Canon","Epson","Brother","Kyocera","Samsung",
           "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Pantum")
 FAMILY_HINTS = ("Color","Laser","LaserJet","LJ","MFP","DeskJet","OfficeJet","PageWide","DesignJet",
@@ -223,8 +223,7 @@ MODEL_RE = re.compile(r"\b([A-Z]{1,4}-?[A-Z]?\d{2,6}[A-Z]?(?:-[A-Z0-9]{1,4})?)\b
 SEPS_RE  = re.compile(r"[,/;|]|(?:\s+\bи\b\s+)", re.I)
 
 def extract_brand_context(text: str) -> tuple[str,str]:
-    t = normsp(text)
-    brand = ""
+    t = normsp(text); brand = ""
     for b in BRANDS:
         m = re.search(rf"(?i)\b{re.escape(b)}\b", t)
         if m and (not brand or m.start() < t.lower().find(brand.lower())):
@@ -255,11 +254,10 @@ def expand_slashed_models(s: str) -> list[str]:
     return out
 
 def extract_models_from_text(text: str) -> list[str]:
-    t = normsp(text)
-    raw = []
+    t = normsp(text); raw=[]
     for p in split_candidates(t):
         raw.extend(expand_slashed_models(p))
-    models = []
+    models=[]
     for item in raw:
         for m in MODEL_RE.finditer(item):
             models.append(m.group(1).upper())
@@ -269,7 +267,7 @@ def build_compatibility_block(name_text: str, desc_plain: str, vendor_code_hint:
     brand, family = extract_brand_context(name_text + " " + desc_plain)
     raw = extract_models_from_text(name_text) + extract_models_from_text(desc_plain)
     raw = [m for m in raw if (not vendor_code_hint or m.upper()!=vendor_code_hint.upper()) and not CARTRIDGE_RE.search(m)]
-    models = []
+    models=[]
     for m in raw:
         if re.match(r"(?i)^(HP|HEWLETT PACKARD|EPSON|CANON|BROTHER|KYOCERA|SAMSUNG|RICOH|XEROX|SHARP|LEXMARK|OKI|PANASONIC|KONICA|KONICA MINOLTA|PANTUM)\b", m):
             models.append(m); continue
@@ -304,7 +302,7 @@ def inject_compatibility(html_tail_times: str, name_text: str, vendor_code_hint:
         return html_tail_times
     return re.sub(r"(?is)</div>\s*$", "\n" + compat_block + "\n</div>", html_tail_times, count=1) or (html_tail_times + "\n" + compat_block)
 
-# ---------- SEO-блок (без «SEO-описание») ----------
+# ---------- SEO-блок ----------
 def short_sentences(txt: str, n: int = 3) -> str:
     parts = re.split(r"(?<=[.!?])\s+", txt)
     parts = [p.strip() for p in parts if 10 <= len(p.strip()) <= 300]
@@ -468,7 +466,7 @@ def main() -> int:
     original  = rtext(SRC)
     processed = process_text(original)
     wtext(DST, processed)
-    print(f"[seo] OK: {DST} — тех.характеристики в столбик, ключи жирные; «паровозики» разрезаны; SEO-блок без заголовка")
+    print(f"[seo] OK: {DST}")
     return 0
 
 if __name__ == "__main__":
