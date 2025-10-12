@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2 (фикс &lt;strong&gt; в <li>, «паровозики», блок с оранжевым фоном и SEO-хвост без заголовка)
+price_seo.py — Этап 2 (фикс &lt;strong&gt; в <li>, «паровозики», блок с оранжевым фоном ниже контактов и без <hr> после «САЙРАН»)
 Создаёт docs/price_seo.yml из docs/price.yml.
 """
 
@@ -31,14 +31,14 @@ HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
     </a>
   </center>
 
-  <div style="background:{COLOR_BG}; padding:12px 16px; border-radius:10px; margin-top:10px;">
-    <center>
-      Просьба отправлять запросы в
-      <a href="tel:+77073270501" style="color:{COLOR_LINK};text-decoration:none;"><strong>WhatsApp: +7 (707) 327-05-01</strong></a>
-      либо на почту:
-      <a href="mailto:info@complex-solutions.kz" style="color:{COLOR_LINK};text-decoration:none;"><strong>info@complex-solutions.kz</strong></a>
-    </center>
+  <center>
+    Просьба отправлять запросы в
+    <a href="tel:+77073270501" style="color:{COLOR_LINK};text-decoration:none;"><strong>WhatsApp: +7 (707) 327-05-01</strong></a>
+    либо на почту:
+    <a href="mailto:info@complex-solutions.kz" style="color:{COLOR_LINK};text-decoration:none;"><strong>info@complex-solutions.kz</strong></a>
+  </center>
 
+  <div style="background:{COLOR_BG}; padding:12px 16px; border-radius:10px; margin-top:10px;">
     <h2>Оплата</h2>
     <ul>
       <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>
@@ -92,20 +92,14 @@ TECH_WORD_RX = re.compile(r"(?i)\bтехническ\w*\s+характерист
 TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
 
 def kv_li(line: str) -> str:
-    """
-    Если пункт уже содержит <strong>…:</strong> или это же в виде сущностей &lt;strong&gt;…&lt;/strong&gt; — не экранируем.
-    """
     s = line.strip()
     if s.startswith(("- ","• ","– ","— ")): s = s[2:].strip()
-
-    # Реальные теги
+    # Уже реальный <strong>…:</strong>
     if re.search(r"(?is)^<\s*strong\b[^>]*>.*?:\s*</\s*strong\s*>", s):
         return f"<li>{s}</li>"
-
-    # Сущности &lt;strong&gt;…&lt;/strong&gt; — разворачиваем
+    # Разворачиваем &lt;strong&gt;…&lt;/strong&gt;
     if re.search(r"(?is)^&lt;\s*strong\b[^&]*&gt;.*?:\s*&lt;/\s*strong\s*&gt;", s):
         return f"<li>{html.unescape(s)}</li>"
-
     m = KV_LINE_RX.match(s)
     if m:
         key = esc(m.group(1).strip()); val = esc(m.group(2).strip())
@@ -397,20 +391,23 @@ def rebuild_with_existing_header(desc_inner: str, name_text: str, vendor_hint: s
         body = beautify_tail_any(desc_inner)
         tail_plain = extract_plain_text(body)
         seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
-        return "<description>" + body + "\n\n<hr>\n\n" + seo_block + "</description>"
+        # без <hr> после шапки
+        return "<description>" + body + "\n\n" + seo_block + "</description>"
     head, tail = parts[0], parts[1]
     pretty_tail = beautify_tail_any(tail)
     pretty_tail = inject_compatibility(pretty_tail, name_text, vendor_hint)
     tail_plain = extract_plain_text(pretty_tail)
     seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
-    return "<description>" + head + "<hr>\n\n" + pretty_tail + "\n\n<hr>\n\n" + seo_block + "</description>"
+    # без <hr> между шапкой и «родным» описанием; <hr> только перед SEO-блоком
+    return "<description>" + head + "\n\n" + pretty_tail + "\n\n<hr>\n\n" + seo_block + "</description>"
 
 def build_new_description(existing_inner: str, name_text: str, vendor_hint: str) -> str:
     pretty = beautify_tail_any(existing_inner)
     pretty = inject_compatibility(pretty, name_text, vendor_hint)
     tail_plain = extract_plain_text(pretty)
     seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
-    return HEADER_HTML + ("\n\n<hr>\n\n" + pretty if pretty else "") + "\n\n<hr>\n\n" + seo_block
+    # без <hr> после «САЙРАН»
+    return HEADER_HTML + ("\n\n" + pretty if pretty else "") + "\n\n<hr>\n\n" + seo_block
 
 def inject_into_description(desc_inner: str, name_text: str, vendor_hint: str) -> str:
     if has_our_header(desc_inner):
@@ -423,7 +420,8 @@ def add_description_if_missing(offer_xml: str) -> str:
     name_text = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
     vendor_text = normsp(re.sub(r"<[^>]+>", " ", VENDOR_RX.search(offer_xml).group(1))) if VENDOR_RX.search(offer_xml) else ""
     seo_block = build_seo_block(name_text, vendor_text, "")
-    ins = f"\n{indent}<description>{HEADER_HTML}\n\n<hr>\n\n{seo_block}</description>"
+    # без <hr> после шапки (так как «родного» описания нет)
+    ins = f"\n{indent}<description>{HEADER_HTML}\n\n{seo_block}</description>"
     tail = (ins + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (ins + "\n</offer>")
     return offer_xml.replace("</offer>", tail)
 
@@ -471,7 +469,7 @@ def global_li_polish(xml_text: str) -> str:
 def process_text(xml_text: str) -> str:
     stage1 = OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
     stage2 = global_li_polish(stage1)
-    stage3 = unescape_strong_entities_in_lis(stage2)  # финальный фикс &lt;strong&gt;
+    stage3 = unescape_strong_entities_in_lis(stage2)
     return stage3
 
 def main() -> int:
