@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2 (фикс <strong> в <li>, «паровозики», фон только у блока Оплата/Доставка, без контактной строки и без <hr> после «САЙРАН»)
+price_seo.py — Этап 2.1
+Добавлено: вставка <name> (жирным) сразу после верхнего блока и перед родным описанием.
+
 Создаёт docs/price_seo.yml из docs/price.yml.
 """
 
@@ -23,7 +25,7 @@ COLOR_BTN   = "#27ae60"
 COLOR_KASPI = "#8b0000"
 COLOR_BG    = "#FFF6E5"  # очень светло-оранжевый фон
 
-# --- ТВОИ ОТСТУПЫ/РАДИУСЫ ВСТАВЛЕНЫ НИЖЕ ---
+# ТВОИ отступы/радиусы сохранены:
 HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
   <center>
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
@@ -88,10 +90,8 @@ TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
 def kv_li(line: str) -> str:
     s = line.strip()
     if s.startswith(("- ","• ","– ","— ")): s = s[2:].strip()
-    # Уже реальный <strong>…:</strong>
     if re.search(r"(?is)^<\s*strong\b[^>]*>.*?:\s*</\s*strong\s*>", s):
         return f"<li>{s}</li>"
-    # Разворачиваем &lt;strong&gt;…&lt;/strong&gt;
     if re.search(r"(?is)^&lt;\s*strong\b[^&]*&gt;.*?:\s*&lt;/\s*strong\s*&gt;", s):
         return f"<li>{html.unescape(s)}</li>"
     m = KV_LINE_RX.match(s)
@@ -128,7 +128,6 @@ def transform_characteristics_paragraphs(html_txt: str) -> str:
         return start + out + end
     return re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html_txt, flags=re.S | re.I)
 
-# Разрез «паровозиков» внутри <li> и жирнение первой пары
 SPLIT_CHAIN = re.compile(r"\s[-–—•·]\s(?=[^:<>{}\n]{1,120}\s*:)")
 KV_ANY      = re.compile(r"^\s*([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
 
@@ -361,6 +360,24 @@ def build_seo_block(name_text: str, vendor_text: str, tail_plain: str) -> str:
         '</div>'
     )
 
+# ---------- ВСТАВКА НАЗВАНИЯ ПОСЛЕ ШАПКИ ----------
+TIMES_DIV_OPEN_RX = re.compile(r"(<div[^>]*font-family:\s*['\"]?Times New Roman['\"]?[^>]*>)", re.I)
+
+def inject_name_heading(html_tail_times: str, name_text: str) -> str:
+    name_text = normsp(name_text or "")
+    if not name_text:
+        return html_tail_times
+    # Если есть Times-обёртка — вставляем сразу после её открытия
+    def _ins(m: re.Match) -> str:
+        return m.group(1) + f"\n<p><strong>{esc(name_text)}</strong></p>\n"
+    new = TIMES_DIV_OPEN_RX.sub(_ins, html_tail_times, count=1)
+    if new != html_tail_times:
+        return new
+    # Иначе — просто добавим абзац Times перед телом
+    name_p = ("<p style=\"font-family: 'Times New Roman', Times, serif; "
+              "font-size:15px; line-height:1.55;\"><strong>" + esc(name_text) + "</strong></p>\n")
+    return name_p + html_tail_times
+
 # ---------- Сборка DESCRIPTION ----------
 def has_our_header(desc_html: str) -> bool:
     return "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!" in desc_html
@@ -383,24 +400,24 @@ def rebuild_with_existing_header(desc_inner: str, name_text: str, vendor_hint: s
     parts = HR_RX.split(desc_inner, maxsplit=1)
     if len(parts) != 2:
         body = beautify_tail_any(desc_inner)
+        body = inject_name_heading(body, name_text)  # <<< вставка имени
         tail_plain = extract_plain_text(body)
         seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
-        # без <hr> после шапки
         return "<description>" + body + "\n\n" + seo_block + "</description>"
     head, tail = parts[0], parts[1]
     pretty_tail = beautify_tail_any(tail)
+    pretty_tail = inject_name_heading(pretty_tail, name_text)  # <<< вставка имени
     pretty_tail = inject_compatibility(pretty_tail, name_text, vendor_hint)
     tail_plain = extract_plain_text(pretty_tail)
     seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
-    # без <hr> между шапкой и «родным» описанием; <hr> только перед SEO-блоком
     return "<description>" + head + "\n\n" + pretty_tail + "\n\n<hr>\n\n" + seo_block + "</description>"
 
 def build_new_description(existing_inner: str, name_text: str, vendor_hint: str) -> str:
     pretty = beautify_tail_any(existing_inner)
+    pretty = inject_name_heading(pretty, name_text)  # <<< вставка имени
     pretty = inject_compatibility(pretty, name_text, vendor_hint)
     tail_plain = extract_plain_text(pretty)
     seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
-    # без <hr> после «САЙРАН»
     return HEADER_HTML + ("\n\n" + pretty if pretty else "") + "\n\n<hr>\n\n" + seo_block
 
 def inject_into_description(desc_inner: str, name_text: str, vendor_hint: str) -> str:
@@ -413,9 +430,10 @@ def add_description_if_missing(offer_xml: str) -> str:
     m = re.search(r"\n([ \t]+)<", offer_xml); indent = m.group(1) if m else "  "
     name_text = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
     vendor_text = normsp(re.sub(r"<[^>]+>", " ", VENDOR_RX.search(offer_xml).group(1))) if VENDOR_RX.search(offer_xml) else ""
+    name_p = ("<p style=\"font-family: 'Times New Roman', Times, serif; "
+              "font-size:15px; line-height:1.55;\"><strong>" + esc(name_text) + "</strong></p>\n") if name_text else ""
     seo_block = build_seo_block(name_text, vendor_text, "")
-    # без <hr> после шапки (так как «родного» описания нет)
-    ins = f"\n{indent}<description>{HEADER_HTML}\n\n{seo_block}</description>"
+    ins = f"\n{indent}<description>{HEADER_HTML}\n\n{name_p}{seo_block}</description>"
     tail = (ins + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (ins + "\n</offer>")
     return offer_xml.replace("</offer>", tail)
 
