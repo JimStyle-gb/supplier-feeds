@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2 (фикс «паровозиков», жирных ключей и SEO-блок без заголовка)
+price_seo.py — Этап 2 (фикс &lt;strong&gt; в <li>, «паровозики», и SEO-блок без заголовка)
 Создаёт docs/price_seo.yml из docs/price.yml.
 """
 
@@ -90,16 +90,16 @@ TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
 
 def kv_li(line: str) -> str:
     """
-    Если строка уже содержит <strong>..:</strong> или &lt;strong&gt;..&lt;/strong&gt;, не экранируем.
+    Если пункт уже содержит <strong>…:</strong> или это же в виде сущностей &lt;strong&gt;…&lt;/strong&gt; — не экранируем.
     """
     s = line.strip()
     if s.startswith(("- ","• ","– ","— ")): s = s[2:].strip()
 
-    # Вариант 1: уже реальные теги <strong>…</strong>
+    # Реальные теги
     if re.search(r"(?is)^<\s*strong\b[^>]*>.*?:\s*</\s*strong\s*>", s):
         return f"<li>{s}</li>"
 
-    # Вариант 2: то же, но в виде HTML-сущностей (&lt;strong&gt;…&lt;/strong&gt;)
+    # Сущности &lt;strong&gt;…&lt;/strong&gt; — разворачиваем
     if re.search(r"(?is)^&lt;\s*strong\b[^&]*&gt;.*?:\s*&lt;/\s*strong\s*&gt;", s):
         return f"<li>{html.unescape(s)}</li>"
 
@@ -424,6 +424,16 @@ def add_description_if_missing(offer_xml: str) -> str:
     tail = (ins + "\n" + indent[:-2] + "</offer>") if len(indent) >= 2 else (ins + "\n</offer>")
     return offer_xml.replace("</offer>", tail)
 
+# ---------- Пост-фикс: разворачиваем &lt;strong&gt; внутри <li> ----------
+STRONG_ENTITY_RX = re.compile(r"(?is)&lt;\s*strong\s*&gt;(.*?)&lt;\s*/\s*strong\s*&gt;")
+
+def unescape_strong_entities_in_lis(xml_text: str) -> str:
+    def li_fix(m: re.Match) -> str:
+        before, body, after = m.group(1), m.group(2), m.group(3)
+        body2 = STRONG_ENTITY_RX.sub(r"<strong>\1</strong>", body)
+        return before + body2 + after
+    return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_fix, xml_text, flags=re.S | re.I)
+
 # ---------- Главный проход + глобальный добивающий сплит <li> ----------
 def process_offer(offer_xml: str) -> str:
     name_text   = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
@@ -458,7 +468,8 @@ def global_li_polish(xml_text: str) -> str:
 def process_text(xml_text: str) -> str:
     stage1 = OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
     stage2 = global_li_polish(stage1)
-    return stage2
+    stage3 = unescape_strong_entities_in_lis(stage2)  # <<< ключевая правка
+    return stage3
 
 def main() -> int:
     if not SRC.exists():
