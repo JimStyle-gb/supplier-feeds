@@ -2,12 +2,21 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2.2
-Добавлено:
-- Нормализация блока: <p>Характеристики</p> + несколько <p>Ключ  Значение</p>
-  → в <p><strong>Характеристики:</strong></p><ul><li><strong>Ключ:</strong> Значение</li>…</ul>
+price_seo.py — Этап 2.3 (фикс парсинга блока «Характеристики» без двоеточия)
+---------------------------------------------------------------------------
 
-Создаёт docs/price_seo.yml из docs/price.yml.
+Что поправлено:
+- Блок вида:
+    <p>Характеристики</p>
+    <p>   Модель        001R00613 </p>
+    <p>   Ресурс        160 000 страниц (А4)</p>
+  теперь корректно преобразуется в:
+    <p><strong>Характеристики:</strong></p>
+    <ul>
+      <li><strong>Модель:</strong> 001R00613</li>
+      <li><strong>Ресурс:</strong> 160 000 страниц (А4)</li>
+    </ul>
+- Лишние «дорожки» пробелов в ключах/значениях чистятся.
 """
 
 from __future__ import annotations
@@ -27,7 +36,6 @@ COLOR_BTN   = "#27ae60"
 COLOR_KASPI = "#8b0000"
 COLOR_BG    = "#FFF6E5"  # очень светло-оранжевый фон
 
-# Шапка (твой блок) — параметры отступов сохранены
 HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
   <center>
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
@@ -89,25 +97,36 @@ KV_LINE_RX = re.compile(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+
 TECH_WORD_RX = re.compile(r"(?i)\bтехническ\w*\s+характеристик", re.U)
 TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
 
+def _compact_spaces(s: str) -> str:
+    # Убираем «дорожки» пробелов, оставляя одиночные
+    return re.sub(r"[ \t]{2,}", " ", s.strip())
+
 def kv_li(line: str) -> str:
     s = line.strip()
     if s.startswith(("- ","• ","– ","— ")): s = s[2:].strip()
+
+    # кейс 1: уже есть <strong>Ключ:</strong> Значение (или в entity-виде)
     if re.search(r"(?is)^<\s*strong\b[^>]*>.*?:\s*</\s*strong\s*>", s):
         return f"<li>{s}</li>"
     if re.search(r"(?is)^&lt;\s*strong\b[^&]*&gt;.*?:\s*&lt;/\s*strong\s*&gt;", s):
         return f"<li>{html.unescape(s)}</li>"
+
+    # кейс 2: «Ключ: Значение»
     m = KV_LINE_RX.match(s)
     if m:
-        key = esc(m.group(1).strip()); val = esc(m.group(2).strip())
-        return f"<li><strong>{key}:</strong> {val}</li>"
-    # Попытка разделить «ключ  значение» табами/множественными пробелами
-    m2 = re.match(r"^\s*([^:<>{}\n]{1,120}?)\s{2,}(.+?)\s*$", s, flags=re.S)
-    if not m2:
-        m2 = re.match(r"^\s*([^:<>{}\n]{1,120}?)\t+(.+?)\s*$", s, flags=re.S)
+        key = _compact_spaces(m.group(1))
+        val = _compact_spaces(m.group(2))
+        return f"<li><strong>{esc(key)}:</strong> {esc(val)}</li>"
+
+    # кейс 3: «Ключ{2+ пробела/табы}Значение» — ВАЖНО для твоего примера
+    m2 = re.match(r"^\s*([^:<>{}\n]{1,120}?)[ \t]{2,}(.+?)\s*$", s, flags=re.S)
     if m2:
-        key = esc(m2.group(1).strip()); val = esc(m2.group(2).strip())
-        return f"<li><strong>{key}:</strong> {val}</li>"
-    return f"<li>{esc(s)}</li>"
+        key = _compact_spaces(m2.group(1))
+        val = _compact_spaces(m2.group(2))
+        return f"<li><strong>{esc(key)}:</strong> {esc(val)}</li>"
+
+    # иначе — как есть
+    return f"<li>{esc(_compact_spaces(s))}</li>"
 
 def make_ul(block_text: str) -> str:
     lines = [ln for ln in block_text.replace("\r\n","\n").replace("\r","\n").split("\n") if ln.strip()]
@@ -119,33 +138,39 @@ def pick_char_heading(context: str) -> str:
 def trim_trailing_tech_word(s: str) -> str:
     return TRIM_TECH_TAIL_RX.sub("", s or "").rstrip()
 
-# НОВОЕ: преобразование «<p>Характеристики</p> + p p p…» → стандартный блок
+# --- КЛЮЧЕВОЙ ФИКС: не схлопываем пробелы/табы ДО парсинга ---
 def transform_heading_then_p_kv(html_txt: str) -> str:
+    """
+    Находит блок:
+      <p>Характеристики</p><p>...строка...</p><p>...строка...</p>...
+    и превращает его в «Характеристики:» + <ul><li>Ключ: Значение</li>…</ul>.
+    Внутри <p> строки парсятся по:
+      - «Ключ: Значение»
+      - «Ключ<таб/2+ пробелов>Значение»
+    """
     def repl(m: re.Match) -> str:
         heading_raw = m.group(1) or ""
         block_ps    = m.group(2) or ""
-        # Соберём строки из каждого <p>…</p>
         items = []
+        # ВАЖНО: не используем normsp — сохраняем множественные пробелы/табы
         for ptxt in re.findall(r"<p[^>]*>(.*?)</p>", block_ps, flags=re.S|re.I):
-            # выпилим теги и схлопнем пробелы
-            t = normsp(re.sub(r"<[^>]+>", " ", ptxt))
-            if not t: continue
-            items.append(t)
-        if not items: 
+            t = re.sub(r"<[^>]+>", " ", ptxt)  # выкинуть дочерние теги, но НЕ схлопывать пробелы
+            t = t.strip()
+            if t:
+                items.append(t)
+        if not items:
             return m.group(0)
-        # Заголовок в жирный + двоеточие
         heading = "Технические характеристики" if re.search(r"(?i)техническ", heading_raw) else "Характеристики"
-        # Сконструируем UL
         lis = "\n".join(kv_li(x) for x in items)
         return f"<p><strong>{heading}:</strong></p>\n<ul>\n{lis}\n</ul>"
-    # Ищем «Характеристики» (с/без пробелов/переводов строк) и за ним 1..30 параграфов
-    pattern = re.compile(r"(?is)<p[^>]*>\s*(Характеристик[а-яA-Я]*)\s*</p>\s*((?:<p[^>]*>.*?</p>\s*){1,30})")
+
+    pattern = re.compile(r"(?is)<p[^>]*>\s*(Характеристик[а-яA-Я]*)\s*</p>\s*((?:<p[^>]*>.*?</p>\s*){1,40})")
     return pattern.sub(repl, html_txt, count=0)
 
 def transform_characteristics_paragraphs(html_txt: str) -> str:
-    # Сначала нормализуем вариант «заголовок без двоеточия + p p p»
+    # Сначала — вариант без двоеточия
     html_txt = transform_heading_then_p_kv(html_txt)
-    # Затем — прежняя логика для случаев «внутри одного <p>» с буллетами
+    # Затем — предыдущая логика для «в одном <p>» с буллетами/переносами
     def para_repl(m: re.Match) -> str:
         start, body, end = m.group(1), m.group(2), m.group(3)
         if not re.search(r"(?i)характеристик", body): return m.group(0)
@@ -163,7 +188,7 @@ def transform_characteristics_paragraphs(html_txt: str) -> str:
         return start + out + end
     return re.sub(r"(<p[^>]*>)(.*?)(</p>)", para_repl, html_txt, flags=re.S | re.I)
 
-SPLIT_CHAIN = re.compile(r"\s[-–—•·]\s(?=[^:<>{}\n]{1,120}\s*:)")
+SPLIT_CHAIN = re.compile(r"\s[-–—•·]\s(?=[^:<>{}\n]{1,120}:\s)")
 KV_ANY      = re.compile(r"^\s*([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$", re.S)
 
 def explode_inline_li(html_txt: str) -> str:
@@ -179,9 +204,9 @@ def explode_inline_li(html_txt: str) -> str:
             frag = frag.strip()
             mm = KV_ANY.match(frag)
             if mm:
-                out.append(f"<li><strong>{esc(mm.group(1).strip())}:</strong> {esc(mm.group(2).strip())}</li>")
+                out.append(f"<li><strong>{esc(_compact_spaces(mm.group(1)))}:</strong> {esc(_compact_spaces(mm.group(2)))}</li>")
             elif frag:
-                out.append(f"<li>{esc(frag)}</li>")
+                out.append(f"<li>{esc(_compact_spaces(frag))}</li>")
         return "".join(out)
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, html_txt, flags=re.S | re.I)
 
@@ -190,13 +215,13 @@ def emphasize_kv_in_li(html_txt: str) -> str:
         before, body, after = m.group(1), m.group(2), m.group(3)
         if re.search(r"^\s*(?:[-–—]\s*)?<strong>[^:]{1,120}:</strong>", body, flags=re.I): return m.group(0)
         kv = re.sub(r"^\s*(?:[-•–—]\s*)?([^:<>{}\n]{1,120}?)\s*:\s*(.+?)\s*$",
-                    lambda k: f"<strong>{esc(k.group(1).strip())}:</strong> {esc(k.group(2).strip())}",
+                    lambda k: f"<strong>{esc(_compact_spaces(k.group(1)))}:</strong> {esc(_compact_spaces(k.group(2)))}",
                     body, count=1, flags=re.S)
         return f"{before}{kv}{after}"
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", repl, explode_inline_li(html_txt), flags=re.S | re.I)
 
 def beautify_existing_html(html_txt: str) -> str:
-    step0 = transform_heading_then_p_kv(html_txt)               # <<< НОВОЕ — до всего
+    step0 = transform_heading_then_p_kv(html_txt)               # <<< фикс
     step1 = transform_characteristics_paragraphs(step0)
     step2 = A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"', step1)
     step3 = emphasize_kv_in_li(step2)
@@ -220,7 +245,7 @@ def beautify_plain_text(text: str) -> str:
                 out.append(f"<p><strong>{label}:</strong></p>")
                 out.append(make_ul(tail))
         else:
-            lines = [esc(x) for x in blk.split("\n")]
+            lines = [esc(_compact_spaces(x)) for x in blk.split("\n")]
             out.append(f"<p>{'<br>'.join(lines)}</p>")
     return (f'<div style="font-family: \'Times New Roman\', Times, serif; '
             f'font-size:15px; line-height:1.55;">' + "\n".join(out) + "</div>")
@@ -230,7 +255,7 @@ def beautify_original_description(inner: str) -> str:
     if not c: return ""
     return beautify_existing_html(c) if HAS_HTML_TAGS.search(c) else beautify_plain_text(c)
 
-# ---------- Совместимость ----------
+# ---------- Совместимость (как было) ----------
 BRANDS = ("HP","Hewlett Packard","Canon","Epson","Brother","Kyocera","Samsung",
           "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Pantum")
 FAMILY_HINTS = ("Color","Laser","LaserJet","LJ","MFP","DeskJet","OfficeJet","PageWide","DesignJet",
@@ -463,7 +488,7 @@ def add_description_if_missing(offer_xml: str) -> str:
     if re.search(r"<description\b", offer_xml, flags=re.I): return offer_xml
     m = re.search(r"\n([ \t]+)<", offer_xml); indent = m.group(1) if m else "  "
     name_text = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
-    vendor_text = normsp(re.sub(r"<[^>]+>", " ", VENDOR_RX.search(offer_xml).group(1))) if VENDOR_RX.search(offer_xml) else ""
+    vendor_text = normsp(resub(r"<[^>]+>", " ", VENDOR_RX.search(offer_xml).group(1))) if VENDOR_RX.search(offer_xml) else ""
     name_p = ("<p style=\"font-family: 'Times New Roman', Times, serif; "
               "font-size:15px; line-height:1.55;\"><strong>" + esc(name_text) + "</strong></p>\n") if name_text else ""
     seo_block = build_seo_block(name_text, vendor_text, "")
@@ -481,7 +506,7 @@ def unescape_strong_entities_in_lis(xml_text: str) -> str:
         return before + body2 + after
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_fix, xml_text, flags=re.S | re.I)
 
-# ---------- Главный проход + глобальный добивающий сплит <li> ----------
+# ---------- Главный проход ----------
 def process_offer(offer_xml: str) -> str:
     name_text   = normsp(re.sub(r"<[^>]+>", " ", NAME_RX.search(offer_xml).group(1))) if NAME_RX.search(offer_xml) else ""
     vendor_text = normsp(re.sub(r"<[^>]+>", " ", VENDOR_RX.search(offer_xml).group(1))) if VENDOR_RX.search(offer_xml) else ""
@@ -506,9 +531,9 @@ def global_li_polish(xml_text: str) -> str:
             frag = frag.strip()
             mm = KV_ANY.match(frag)
             if mm:
-                out.append(f"<li><strong>{esc(mm.group(1).strip())}:</strong> {esc(mm.group(2).strip())}</li>")
+                out.append(f"<li><strong>{esc(_compact_spaces(mm.group(1)))}:</strong> {esc(_compact_spaces(mm.group(2)))}</li>")
             elif frag:
-                out.append(f"<li>{esc(frag)}</li>")
+                out.append(f"<li>{esc(_compact_spaces(frag))}</li>")
         return "".join(out)
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", li_repl, xml_text, flags=re.S | re.I)
 
