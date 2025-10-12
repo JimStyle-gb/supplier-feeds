@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2 (фикс &lt;strong&gt; в <li>, «паровозики», блок с оранжевым фоном ниже контактов и без <hr> после «САЙРАН»)
+price_seo.py — Этап 2 (фикс <strong> в <li>, «паровозики», фон только у блока Оплата/Доставка, без контактной строки и без <hr> после «САЙРАН»)
 Создаёт docs/price_seo.yml из docs/price.yml.
 """
 
@@ -29,13 +29,6 @@ HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
        style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:700;">
       НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
     </a>
-  </center>
-
-  <center>
-    Просьба отправлять запросы в
-    <a href="tel:+77073270501" style="color:{COLOR_LINK};text-decoration:none;"><strong>WhatsApp: +7 (707) 327-05-01</strong></a>
-    либо на почту:
-    <a href="mailto:info@complex-solutions.kz" style="color:{COLOR_LINK};text-decoration:none;"><strong>info@complex-solutions.kz</strong></a>
   </center>
 
   <div style="background:{COLOR_BG}; padding:12px 16px; border-radius:10px; margin-top:10px;">
