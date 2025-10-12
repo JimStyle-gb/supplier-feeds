@@ -8,7 +8,7 @@ price_seo.py — Этап 2 (фикс «паровозиков» и SEO-блок
 — Верхний блок (Cambria + WhatsApp/Оплата/Доставка) сохраняем.
 — Далее <hr>, «родное» описание, тех.характеристики (в столбик, ключи жирные), «Совместимость».
 — После этого <hr> и НОВЫЙ SEO-блок (без слов «SEO-описание»).
-— Глобально добиваем «паровозики» внутри любого <li>: "… 2300 - Тип печати: … - Цвет печати: …" → несколько <li>.
+— Глобально добиваем «паровозики» внутри любого <li>.
 — Кодировка выхода: windows-1251, опасные символы заменены.
 """
 
@@ -95,8 +95,14 @@ TECH_WORD_RX = re.compile(r"(?i)\bтехническ\w*\s+характерист
 TRIM_TECH_TAIL_RX = re.compile(r"(?i)[\s,;:—–-]*техническ\w*\s*$")
 
 def kv_li(line: str) -> str:
+    """
+    ВАЖНО: если пункт уже содержит <strong>…:</strong>, НЕ экранируем, а вставляем как есть.
+    Это защищает от &lt;strong&gt; в готовом UL (см. кейс «Ресурс: 2300»).
+    """
     s = line.strip()
     if s.startswith(("- ","• ","– ","— ")): s = s[2:].strip()
+    if re.search(r"(?is)^<\s*strong\b[^>]*>.*?:\s*</\s*strong\s*>", s):
+        return f"<li>{s}</li>"
     m = KV_LINE_RX.match(s)
     if m:
         key = esc(m.group(1).strip()); val = esc(m.group(2).strip())
@@ -198,7 +204,7 @@ def beautify_original_description(inner: str) -> str:
     if not c: return ""
     return beautify_existing_html(c) if HAS_HTML_TAGS.search(c) else beautify_plain_text(c)
 
-# ---------- Совместимость (как раньше) ----------
+# ---------- Совместимость (с прошлого шага) ----------
 BRANDS = ("HP","Hewlett Packard","Canon","Epson","Brother","Kyocera","Samsung",
           "Ricoh","Xerox","Sharp","Lexmark","OKI","Panasonic","Konica Minolta","Pantum")
 FAMILY_HINTS = ("Color","Laser","LaserJet","LJ","MFP","DeskJet","OfficeJet","PageWide","DesignJet",
@@ -298,7 +304,7 @@ def inject_compatibility(html_tail_times: str, name_text: str, vendor_code_hint:
         return html_tail_times
     return re.sub(r"(?is)</div>\s*$", "\n" + compat_block + "\n</div>", html_tail_times, count=1) or (html_tail_times + "\n" + compat_block)
 
-# ---------- SEO-блок после второго <hr> (без слова «SEO-описание») ----------
+# ---------- SEO-блок (без «SEO-описание») ----------
 def short_sentences(txt: str, n: int = 3) -> str:
     parts = re.split(r"(?<=[.!?])\s+", txt)
     parts = [p.strip() for p in parts if 10 <= len(p.strip()) <= 300]
@@ -433,7 +439,6 @@ def process_offer(offer_xml: str) -> str:
     return updated
 
 def global_li_polish(xml_text: str) -> str:
-    # Пройтись по всему файлу и разрезать любые « - Ключ: Значение - Ключ: …» внутри одного <li>
     def li_repl(m: re.Match) -> str:
         body = m.group(2)
         if not SPLIT_CHAIN.search(body): return m.group(0)
@@ -454,7 +459,7 @@ def global_li_polish(xml_text: str) -> str:
 
 def process_text(xml_text: str) -> str:
     stage1 = OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
-    stage2 = global_li_polish(stage1)  # ВАЖНО: финальный добивающий разрез по всему документу
+    stage2 = global_li_polish(stage1)
     return stage2
 
 def main() -> int:
