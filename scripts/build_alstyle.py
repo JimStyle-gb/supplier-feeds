@@ -856,17 +856,4 @@ def main()->None:
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written."); return
 
-    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f: f.write(xml_text)
-
-    docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
-    try:
-        os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
-    except Exception as e:
-        warn(f".nojekyll create warn: {e}")
-
-    log(f"Wrote: {OUT_FILE_YML} | offers={offers_written} | encoding={ENC} | script={SCRIPT_VERSION} | ortho_changed={ortho_changed}")
-
-if __name__ == "__main__":
-    try: main()
-    except Exception as e: err(str(e))
+    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist
