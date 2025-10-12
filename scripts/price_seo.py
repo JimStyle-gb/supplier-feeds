@@ -23,15 +23,16 @@ COLOR_BTN   = "#27ae60"
 COLOR_KASPI = "#8b0000"
 COLOR_BG    = "#FFF6E5"  # очень светло-оранжевый фон
 
+# --- ТВОИ ОТСТУПЫ/РАДИУСЫ ВСТАВЛЕНЫ НИЖЕ ---
 HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
   <center>
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
-       style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:700;">
+       style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 20px;border-radius:10px;font-weight:700;">
       НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
     </a>
   </center>
 
-  <div style="background:{COLOR_BG}; padding:12px 16px; border-radius:10px; margin-top:10px;">
+  <div style="background:{COLOR_BG}; padding:1px 15px; border-radius:0px; margin-top:10px;">
     <h2>Оплата</h2>
     <ul>
       <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>
@@ -419,7 +420,7 @@ def add_description_if_missing(offer_xml: str) -> str:
     return offer_xml.replace("</offer>", tail)
 
 # ---------- Пост-фикс: разворачиваем &lt;strong&gt; внутри <li> ----------
-STRONG_ENTITY_RX = re.compile(r"(?is)&lt;\s*strong\s*&gt;(.*?)&lt;\s*/\s*strong\s*&gt;")
+STRONG_ENTITY_RX = re.compile(r"(?is)&lt;\s*strong\s*&gt;(.*?)&lt;/\s*strong\s*&gt;")
 
 def unescape_strong_entities_in_lis(xml_text: str) -> str:
     def li_fix(m: re.Match) -> str:
