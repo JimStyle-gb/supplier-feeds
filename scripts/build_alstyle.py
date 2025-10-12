@@ -1,37 +1,13 @@
-# scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
 script_version = alstyle-2025-10-12.10
 
-Изменения в .10:
-- Встроена процедура «Орфография» БЕЗ добавления новых тегов:
-  • чистка описаний: убираем «Назначение: Да», «Безопасность: Есть», «процент заполнения страницы» и пр.;
-  • исправляем единицы/термины: Bт→Вт, Shuko→Schuko, °С→°C, пробелы вокруг «/», «×» и т.п.;
-  • декодируем HTML-сущности в описаниях (исправляем &amp;gt; → &gt; и т.п.), затем безопасно пишем текст — ElementTree сам экранирует XML;
-  • при наличии в описании шаблона «NNN ВА / MMM Вт» аккуратно добавляем « • NNN ВА / MMM Вт» в <name>, если там ещё нет.
-
-Изменения в .9:
-- Единый порядок тегов внутри <offer>:
-  <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <available>, <description>.
-  Для остальных тегов порядок сохраняем после перечисленных.
-
-Изменения в .8:
-- Синхронизация идентификатора оффера с vendorCode: <offer id="..."> == <vendorCode>.
-
-Изменения в .7:
-- FIX: дедупликация <available>: перед записью значения удаляем все существующие теги
-  <available> и создаём ровно один. Также снимаем атрибут offer[@available].
-
-Изменения в .6:
-- Явный выбор «закупочной» цены по приоритету: dealer/опт/b2b → явные поля → RRP fallback.
-- FEED_META: счета по источникам базовой цены.
-- После пересчёта удаляем все <prices> и оставляем один <price>.
-- Прочее из .5 оставлено (чистка Артикул/Благотворительность, описание в одну строку, перенос после FEED_META).
+Главное: встроена «Орфография» (чистка описаний и нормализация единиц) без добавления новых тегов.
 """
 
 from __future__ import annotations
-import os, sys, re, time, random, urllib.parse, html  # ← добавили html для декодирования сущностей
+import os, sys, re, time, random, urllib.parse, html
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional, Set
 from xml.etree import ElementTree as ET
@@ -120,8 +96,7 @@ def load_source_bytes(src: str) -> bytes:
             if attempt<RETRIES: time.sleep(sleep)
     raise RuntimeError(f"fetch failed after {RETRIES} attempts: {last_exc}")
 
-# ========================= КАТЕГОРИИ =========================
-# ... (без изменений весь блок категорий)
+# ========================= КАТЕГОРИИ (как было) =========================
 class CatRule:
     __slots__=("raw","kind","pattern")
     def __init__(self, raw: str, kind: str, pattern):
@@ -199,8 +174,7 @@ def build_category_path_from_id(cat_id: str, id2name: Dict[str,str], id2parent: 
     names=[n for n in names if n]
     return " / ".join(reversed(names)) if names else ""
 
-# ============================ БРЕНДЫ ============================
-
+# ============================ БРЕНДЫ / vendor ============================
 def _norm_key(s: str) -> str:
     if not s: return ""
     s=s.strip().lower().replace("ё","е")
@@ -233,8 +207,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
                 ven.text=canon; normalized+=1
     return normalized,dropped
 
-# ============================ ЦЕНЫ ============================
-# ... (без изменений весь блок цен/пересчёта)
+# ============================ ЦЕНЫ (как было) ============================
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -331,7 +304,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         updated+=1
     return updated,skipped,total,src_stats
 
-# ===== ПАРАМЕТРЫ → «Характеристики» (без Артикул/Благотворительность) =====
+# ===== ПАРАМЕТРЫ → «Характеристики» (без запрещённых KV) =====
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
 EXCLUDE_NAME_RE=re.compile(
@@ -561,7 +534,7 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
 def count_category_ids(offer_el: ET.Element) -> int:
     return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
-# ===================== currencyId: дедуп без привязки к месту =====================
+# ===================== currencyId: дедуп =====================
 
 def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
     offers_el = shop_el.find("offers")
@@ -617,7 +590,6 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
 
 # ===================== «ОРФОГРАФИЯ» (встроенная) =====================
 
-# Карта простых замен для единиц/терминов/опечаток
 ORTHO_REPLACEMENTS = (
     (r"\bBт\b", "Вт"),
     (r"\bВтт\b", "Вт"),
@@ -633,7 +605,6 @@ ORTHO_REPLACEMENTS = (
     (r"эексплуат", "эксплуат"),
 )
 
-# Шаблоны «мусорных» строк/абзацев (удаляем целиком)
 ORTHO_NOISE_PATTERNS = [
     re.compile(r"^\s*Назначение:\s*Да\s*$", re.I),
     re.compile(r"^\s*Безопасность:\s*Есть\s*$", re.I),
@@ -641,7 +612,6 @@ ORTHO_NOISE_PATTERNS = [
     re.compile(r"процент[а]? заполнения листа", re.I),
 ]
 
-# Поиск «NNN ВА / MMM Вт» в тексте (разные варианты записи)
 ORTHO_POWER_PATTERNS = [
     re.compile(r"(\d{3,4})\s*ВА\s*/\s*(\d{2,4})\s*Вт", re.I),
     re.compile(r"(\d{3,4})\s*ВА\s*[–/-]\s*(\d{2,4})\s*Вт", re.I),
@@ -649,24 +619,21 @@ ORTHO_POWER_PATTERNS = [
 ]
 
 def ortho_normalize_units(text: str) -> str:
-    """Простые правки единиц/терминов + пробелы вокруг «/» и «×», схлопывание лишних пробелов."""
     out = text
     for rx, repl in ORTHO_REPLACEMENTS:
         out = re.sub(rx, repl, out)
-    out = re.sub(r"\s*/\s*", " / ", out)     # выравниваем пробелы вокруг слеша
-    out = re.sub(r"\s*×\s*", " × ", out)     # и вокруг знака умножения
-    out = re.sub(r"[ \t]{2,}", " ", out)     # множественные пробелы → один
+    out = re.sub(r"\s*/\s*", " / ", out)
+    out = re.sub(r"\s*×\s*", " × ", out)
+    out = re.sub(r"[ \t]{2,}", " ", out)
     return out.strip()
 
 def ortho_strip_noise_lines(text: str) -> str:
-    """Удаляем шумовые строки (по шаблонам) и сжимаем пустые строки."""
     lines = text.splitlines()
     keep = []
     for ln in lines:
         if any(rx.search(ln) for rx in ORTHO_NOISE_PATTERNS):
             continue
         keep.append(ln)
-    # схлопываем пустые
     out = []
     blank = 0
     for ln in keep:
@@ -680,12 +647,6 @@ def ortho_strip_noise_lines(text: str) -> str:
     return "\n".join(out).strip()
 
 def ortho_maybe_enhance_name(name_text: str, desc_text_plain: str) -> str:
-    """
-    Добавляем « • NNN ВА / MMM Вт» в <name>, если:
-      — в имени ещё нет «ВА / Вт», и
-      — нашли это в описании.
-    Ничего не придумываем — только если уверенно нашли.
-    """
     if re.search(r"\d+\s*ВА\s*/\s*\d+\s*Вт", name_text, flags=re.I):
         return name_text
     for pat in ORTHO_POWER_PATTERNS:
@@ -696,33 +657,20 @@ def ortho_maybe_enhance_name(name_text: str, desc_text_plain: str) -> str:
     return name_text
 
 def apply_orthography(shop_el: ET.Element) -> int:
-    """
-    Применяем «Орфографию» ТОЛЬКО к текстам <name>/<description>.
-    — Декод HTML-сущностей → чистка шума → нормализация единиц → запись.
-    — ElementTree сам экранирует XML при сохранении (без двойного &amp;).
-    Возвращает количество изменённых офферов.
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     changed = 0
     for offer in offers_el.findall("offer"):
         d = offer.find("description")
         n = offer.find("name")
-
-        # ОПИСАНИЕ
         if d is not None and (d.text or "").strip():
             raw = d.text or ""
-            # 1) декодируем HTML-сущности (чтобы убрать &amp;gt; и пр.)
             plain = html.unescape(raw)
-            # 2) убираем шумовые строки (Назначение: Да, и т.п.)
             plain = ortho_strip_noise_lines(plain)
-            # 3) нормализуем единицы/термины и пробелы
             plain = ortho_normalize_units(plain)
-            # 4) записываем обратно — ET при сериализации сам экранирует XML
             if plain != raw:
                 d.text = plain
                 changed += 1
-            # 5) возможно дополним <name> мощностью
             if n is not None and (n.text or "").strip():
                 name_plain = html.unescape(n.text or "").strip()
                 name_norm  = ortho_normalize_units(name_plain)
@@ -731,7 +679,6 @@ def apply_orthography(shop_el: ET.Element) -> int:
                     n.text = name_new
                     changed += 1
         else:
-            # если описания нет, но есть name — прогоняем хотя бы нормализацию имени
             if n is not None and (n.text or "").strip():
                 name_plain = html.unescape(n.text or "").strip()
                 name_norm  = ortho_normalize_units(name_plain)
@@ -740,7 +687,7 @@ def apply_orthography(shop_el: ET.Element) -> int:
                     changed += 1
     return changed
 
-# ========================== FEED_META (формат из feed.txt) ========================
+# ========================== FEED_META ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
     try:
@@ -852,10 +799,10 @@ def main()->None:
     # Удаляем «Артикул: …» / «Благотворительность: …» в описаниях
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
-    # >>> ОРФОГРАФИЯ: чистка описаний/имён (без добавления новых тегов)
+    # >>> ОРФОГРАФИЯ: чистка описаний/имён
     ortho_changed = apply_orthography(out_shop)
 
-    # Один currencyId на оффер (значение выставит default_code), место расставит reorder
+    # Один currencyId на оффер
     fix_currency_id(out_shop, default_code="KZT")
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
@@ -923,112 +870,3 @@ def main()->None:
 if __name__ == "__main__":
     try: main()
     except Exception as e: err(str(e))
-
-
-# ================================ #
-#   CI для сборки фида Alstyle     #
-#   Результат: docs/alstyle.yml    #
-# ================================ #
-
-name: build_alstyle  # ← имя воркфлоу (не меняем)
-
-on:
-  workflow_dispatch:  # ручной запуск
-
-  # Автозапуск в 01:00 по времени Алматы (UTC+5).
-  # В cron указываем 20:00 UTC (предыдущий день), т.к. GitHub использует UTC.
-  schedule:
-    - cron: '0 20 * * *'  # 20:00 UTC = 01:00 Asia/Almaty
-
-  # Автозапуск при изменениях кода/правил
-  push:
-    paths:
-      - 'scripts/build_alstyle.py'
-      - 'docs/alstyle_categories.txt'
-      - '.github/workflows/build_alstyle.yml'
-
-permissions:
-  contents: write  # нужно для push
-
-concurrency:
-  group: build-alstyle
-  cancel-in-progress: false
-
-jobs:
-  build:
-    name: Build Alstyle YML
-    runs-on: ubuntu-latest
-
-    steps:
-      # 1) Клонируем репозиторий с полной историей (для pull --rebase)
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      # 2) Ставим Python 3.11
-      - name: Setup Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      # 3) Ставим зависимости
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
-
-      # 4) Строим фид Alstyle
-      - name: Build Alstyle feed
-        env:
-          # Идентификатор поставщика и URL выгрузки
-          SUPPLIER_NAME: alstyle
-          SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
-
-          # Путь к выходному файлу (только YML)
-          OUT_FILE: docs/alstyle.yml
-          # Кодировка файла (под Satu)
-          OUTPUT_ENCODING: windows-1251
-
-          # Сетевые параметры скачивания
-          TIMEOUT_S: '30'
-          RETRIES: '4'
-          RETRY_BACKOFF_S: '2'
-          MIN_BYTES: '1500'
-
-          # vendorCode
-          VENDORCODE_PREFIX: AS
-          VENDORCODE_CREATE_IF_MISSING: '1'
-
-          # Фильтр по категориям (включаем только перечисленные в файле)
-          ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
-          ALSTYLE_CATEGORIES_MODE: include
-        run: |
-          set -e
-          python --version
-          python scripts/build_alstyle.py
-
-      # 5) Коммит + rebase-подтягивание удалённых изменений + push
-      - name: Commit & pull --rebase & push
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
-          GIT_AUTHOR_NAME: github-actions[bot]
-          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
-          GIT_COMMITTER_NAME: github-actions[bot]
-          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
-        run: |
-          set -e
-          git config user.name  "$GIT_AUTHOR_NAME"
-          git config user.email "$GIT_AUTHOR_EMAIL"
-
-          git add -A
-          if git diff --staged --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-
-          git commit -m "chore(alstyle): update docs/alstyle.yml [skip ci]"
-
-          git fetch origin "$BRANCH_NAME"
-          git pull --rebase origin "$BRANCH_NAME"
-          git push origin HEAD:"$BRANCH_NAME"
