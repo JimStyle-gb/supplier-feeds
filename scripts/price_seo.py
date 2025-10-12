@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2.1
-Добавлено: вставка <name> (жирным) сразу после верхнего блока и перед родным описанием.
+price_seo.py — Этап 2.2
+Добавлено:
+- Нормализация блока: <p>Характеристики</p> + несколько <p>Ключ  Значение</p>
+  → в <p><strong>Характеристики:</strong></p><ul><li><strong>Ключ:</strong> Значение</li>…</ul>
 
 Создаёт docs/price_seo.yml из docs/price.yml.
 """
@@ -25,7 +27,7 @@ COLOR_BTN   = "#27ae60"
 COLOR_KASPI = "#8b0000"
 COLOR_BG    = "#FFF6E5"  # очень светло-оранжевый фон
 
-# ТВОИ отступы/радиусы сохранены:
+# Шапка (твой блок) — параметры отступов сохранены
 HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
   <center>
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
@@ -98,6 +100,13 @@ def kv_li(line: str) -> str:
     if m:
         key = esc(m.group(1).strip()); val = esc(m.group(2).strip())
         return f"<li><strong>{key}:</strong> {val}</li>"
+    # Попытка разделить «ключ  значение» табами/множественными пробелами
+    m2 = re.match(r"^\s*([^:<>{}\n]{1,120}?)\s{2,}(.+?)\s*$", s, flags=re.S)
+    if not m2:
+        m2 = re.match(r"^\s*([^:<>{}\n]{1,120}?)\t+(.+?)\s*$", s, flags=re.S)
+    if m2:
+        key = esc(m2.group(1).strip()); val = esc(m2.group(2).strip())
+        return f"<li><strong>{key}:</strong> {val}</li>"
     return f"<li>{esc(s)}</li>"
 
 def make_ul(block_text: str) -> str:
@@ -110,7 +119,33 @@ def pick_char_heading(context: str) -> str:
 def trim_trailing_tech_word(s: str) -> str:
     return TRIM_TECH_TAIL_RX.sub("", s or "").rstrip()
 
+# НОВОЕ: преобразование «<p>Характеристики</p> + p p p…» → стандартный блок
+def transform_heading_then_p_kv(html_txt: str) -> str:
+    def repl(m: re.Match) -> str:
+        heading_raw = m.group(1) or ""
+        block_ps    = m.group(2) or ""
+        # Соберём строки из каждого <p>…</p>
+        items = []
+        for ptxt in re.findall(r"<p[^>]*>(.*?)</p>", block_ps, flags=re.S|re.I):
+            # выпилим теги и схлопнем пробелы
+            t = normsp(re.sub(r"<[^>]+>", " ", ptxt))
+            if not t: continue
+            items.append(t)
+        if not items: 
+            return m.group(0)
+        # Заголовок в жирный + двоеточие
+        heading = "Технические характеристики" if re.search(r"(?i)техническ", heading_raw) else "Характеристики"
+        # Сконструируем UL
+        lis = "\n".join(kv_li(x) for x in items)
+        return f"<p><strong>{heading}:</strong></p>\n<ul>\n{lis}\n</ul>"
+    # Ищем «Характеристики» (с/без пробелов/переводов строк) и за ним 1..30 параграфов
+    pattern = re.compile(r"(?is)<p[^>]*>\s*(Характеристик[а-яA-Я]*)\s*</p>\s*((?:<p[^>]*>.*?</p>\s*){1,30})")
+    return pattern.sub(repl, html_txt, count=0)
+
 def transform_characteristics_paragraphs(html_txt: str) -> str:
+    # Сначала нормализуем вариант «заголовок без двоеточия + p p p»
+    html_txt = transform_heading_then_p_kv(html_txt)
+    # Затем — прежняя логика для случаев «внутри одного <p>» с буллетами
     def para_repl(m: re.Match) -> str:
         start, body, end = m.group(1), m.group(2), m.group(3)
         if not re.search(r"(?i)характеристик", body): return m.group(0)
@@ -161,7 +196,8 @@ def emphasize_kv_in_li(html_txt: str) -> str:
     return re.sub(r"(<li[^>]*>)(.*?)(</li>)", repl, explode_inline_li(html_txt), flags=re.S | re.I)
 
 def beautify_existing_html(html_txt: str) -> str:
-    step1 = transform_characteristics_paragraphs(html_txt)
+    step0 = transform_heading_then_p_kv(html_txt)               # <<< НОВОЕ — до всего
+    step1 = transform_characteristics_paragraphs(step0)
     step2 = A_NO_STYLE_RX.sub(f'<a style="color:{COLOR_LINK};text-decoration:none"', step1)
     step3 = emphasize_kv_in_li(step2)
     return (f'<div style="font-family: \'Times New Roman\', Times, serif; '
@@ -360,20 +396,18 @@ def build_seo_block(name_text: str, vendor_text: str, tail_plain: str) -> str:
         '</div>'
     )
 
-# ---------- ВСТАВКА НАЗВАНИЯ ПОСЛЕ ШАПКИ ----------
+# ---------- Вставка названия после шапки ----------
 TIMES_DIV_OPEN_RX = re.compile(r"(<div[^>]*font-family:\s*['\"]?Times New Roman['\"]?[^>]*>)", re.I)
 
 def inject_name_heading(html_tail_times: str, name_text: str) -> str:
     name_text = normsp(name_text or "")
     if not name_text:
         return html_tail_times
-    # Если есть Times-обёртка — вставляем сразу после её открытия
     def _ins(m: re.Match) -> str:
         return m.group(1) + f"\n<p><strong>{esc(name_text)}</strong></p>\n"
     new = TIMES_DIV_OPEN_RX.sub(_ins, html_tail_times, count=1)
     if new != html_tail_times:
         return new
-    # Иначе — просто добавим абзац Times перед телом
     name_p = ("<p style=\"font-family: 'Times New Roman', Times, serif; "
               "font-size:15px; line-height:1.55;\"><strong>" + esc(name_text) + "</strong></p>\n")
     return name_p + html_tail_times
@@ -400,13 +434,13 @@ def rebuild_with_existing_header(desc_inner: str, name_text: str, vendor_hint: s
     parts = HR_RX.split(desc_inner, maxsplit=1)
     if len(parts) != 2:
         body = beautify_tail_any(desc_inner)
-        body = inject_name_heading(body, name_text)  # <<< вставка имени
+        body = inject_name_heading(body, name_text)
         tail_plain = extract_plain_text(body)
         seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
         return "<description>" + body + "\n\n" + seo_block + "</description>"
     head, tail = parts[0], parts[1]
     pretty_tail = beautify_tail_any(tail)
-    pretty_tail = inject_name_heading(pretty_tail, name_text)  # <<< вставка имени
+    pretty_tail = inject_name_heading(pretty_tail, name_text)
     pretty_tail = inject_compatibility(pretty_tail, name_text, vendor_hint)
     tail_plain = extract_plain_text(pretty_tail)
     seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
@@ -414,7 +448,7 @@ def rebuild_with_existing_header(desc_inner: str, name_text: str, vendor_hint: s
 
 def build_new_description(existing_inner: str, name_text: str, vendor_hint: str) -> str:
     pretty = beautify_tail_any(existing_inner)
-    pretty = inject_name_heading(pretty, name_text)  # <<< вставка имени
+    pretty = inject_name_heading(pretty, name_text)
     pretty = inject_compatibility(pretty, name_text, vendor_hint)
     tail_plain = extract_plain_text(pretty)
     seo_block = build_seo_block(name_text, vendor_hint, tail_plain)
