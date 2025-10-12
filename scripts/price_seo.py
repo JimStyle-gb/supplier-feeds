@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-price_seo.py — Этап 2 (фикс &lt;strong&gt; в <li>, «паровозики», и SEO-блок без заголовка)
+price_seo.py — Этап 2 (фикс &lt;strong&gt; в <li>, «паровозики», блок с оранжевым фоном и SEO-хвост без заголовка)
 Создаёт docs/price_seo.yml из docs/price.yml.
 """
 
@@ -21,37 +21,40 @@ COLOR_LINK  = "#0b3d91"
 COLOR_WHITE = "#ffffff"
 COLOR_BTN   = "#27ae60"
 COLOR_KASPI = "#8b0000"
+COLOR_BG    = "#FFF6E5"  # очень светло-оранжевый фон
 
 HEADER_HTML = f"""<div style="font-family: Cambria, 'Times New Roman', serif;">
   <center>
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
-       style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;">
+       style="display:inline-block;background:{COLOR_BTN};color:{COLOR_WHITE};text-decoration:none;padding:10px 16px;border-radius:8px;font-weight:700;">
       НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
     </a>
   </center>
 
-  <center>
-    Просьба отправлять запросы в
-    <a href="tel:+77073270501" style="color:{COLOR_LINK};text-decoration:none;"><strong>WhatsApp: +7 (707) 327-05-01</strong></a>
-    либо на почту:
-    <a href="mailto:info@complex-solutions.kz" style="color:{COLOR_LINK};text-decoration:none;"><strong>info@complex-solutions.kz</strong></a>
-  </center>
+  <div style="background:{COLOR_BG}; padding:12px 16px; border-radius:10px; margin-top:10px;">
+    <center>
+      Просьба отправлять запросы в
+      <a href="tel:+77073270501" style="color:{COLOR_LINK};text-decoration:none;"><strong>WhatsApp: +7 (707) 327-05-01</strong></a>
+      либо на почту:
+      <a href="mailto:info@complex-solutions.kz" style="color:{COLOR_LINK};text-decoration:none;"><strong>info@complex-solutions.kz</strong></a>
+    </center>
 
-  <h2>Оплата</h2>
-  <ul>
-    <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>
-    <li><strong>Удаленная оплата</strong> по <font color="{COLOR_KASPI}"><strong>KASPI</strong></font> счету для <u>физических лиц</u></li>
-  </ul>
+    <h2>Оплата</h2>
+    <ul>
+      <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>
+      <li><strong>Удаленная оплата</strong> по <font color="{COLOR_KASPI}"><strong>KASPI</strong></font> счету для <u>физических лиц</u></li>
+    </ul>
 
-  <h2>Доставка</h2>
-  <ul>
-    <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>
-    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией
-      <a href="https://exline.kz/" style="color:{COLOR_LINK};text-decoration:none;"><strong>Exline.kz</strong></a></em>
-    </li>
-    <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
-    <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>
-  </ul>
+    <h2>Доставка</h2>
+    <ul>
+      <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>
+      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Сотрудничаем с курьерской компанией
+        <a href="https://exline.kz/" style="color:{COLOR_LINK};text-decoration:none;"><strong>Exline.kz</strong></a></em>
+      </li>
+      <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
+      <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>
+    </ul>
+  </div>
 </div>"""
 
 # ---------- I/O ----------
@@ -468,7 +471,7 @@ def global_li_polish(xml_text: str) -> str:
 def process_text(xml_text: str) -> str:
     stage1 = OFFER_RX.sub(lambda m: process_offer(m.group(0)), xml_text)
     stage2 = global_li_polish(stage1)
-    stage3 = unescape_strong_entities_in_lis(stage2)  # <<< ключевая правка
+    stage3 = unescape_strong_entities_in_lis(stage2)  # финальный фикс &lt;strong&gt;
     return stage3
 
 def main() -> int:
