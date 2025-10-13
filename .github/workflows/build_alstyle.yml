@@ -1,82 +1,107 @@
-name: build_alstyle
+# ================================ #
+#   CI для сборки фида Alstyle     #
+#   Результат: docs/alstyle.yml    #
+# ================================ #
+
+name: build_alstyle  # ← имя воркфлоу (не меняем)
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # ручной запуск
+
+  # Автозапуск в 01:00 по времени Алматы (UTC+5).
+  # В cron указываем 20:00 UTC (предыдущий день), т.к. GitHub использует UTC.
+  schedule:
+    - cron: '0 20 * * *'  # 20:00 UTC = 01:00 Asia/Almaty
+
+  # Автозапуск при изменениях кода/правил
   push:
-    branches: [ main ]
     paths:
       - 'scripts/build_alstyle.py'
+      - 'docs/alstyle_categories.txt'
       - '.github/workflows/build_alstyle.yml'
 
 permissions:
-  contents: write
+  contents: write  # нужно для push
+
+concurrency:
+  group: build-alstyle
+  cancel-in-progress: false
 
 jobs:
   build:
+    name: Build Alstyle YML
     runs-on: ubuntu-latest
+
     steps:
+      # 1) Клонируем репозиторий с полной историей (для pull --rebase)
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Set up Python
+      # 2) Ставим Python 3.11
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # 3) Ставим зависимости
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
+      # 4) Строим фид Alstyle
       - name: Build Alstyle feed
         env:
+          # Идентификатор поставщика и URL выгрузки
           SUPPLIER_NAME: alstyle
           SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
+
+          # Путь к выходному файлу (только YML)
           OUT_FILE: docs/alstyle.yml
+          # Кодировка файла (под Satu)
           OUTPUT_ENCODING: windows-1251
 
-          TIMEOUT_S: "30"
-          RETRIES: "4"
-          RETRY_BACKOFF_S: "2"
-          MIN_BYTES: "1500"
+          # Сетевые параметры скачивания
+          TIMEOUT_S: '30'
+          RETRIES: '4'
+          RETRY_BACKOFF_S: '2'
+          MIN_BYTES: '1500'
 
+          # vendorCode
           VENDORCODE_PREFIX: AS
-          VENDORCODE_CREATE_IF_MISSING: "1"
+          VENDORCODE_CREATE_IF_MISSING: '1'
 
-          # Категории поставщика (включишь, когда файл с правилами будет готов)
+          # Фильтр по категориям (включаем только перечисленные в файле)
           ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
-          ALSTYLE_CATEGORIES_MODE: off   # off|include|exclude
-
-          # Усиленные HTML-описания (в CDATA) — включить по желанию
-          ENHANCED_DESC: "0"   # 1 = включить, 0 = выключить
+          ALSTYLE_CATEGORIES_MODE: include
         run: |
           set -e
           python --version
           python scripts/build_alstyle.py
 
-      - name: Show output size
-        run: ls -lh docs/alstyle.yml || true
-
-      - name: Git diff
-        id: git_status
+      # 5) Коммит + rebase-подтягивание удалённых изменений + push
+      - name: Commit & pull --rebase & push
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
         run: |
-          if git diff --quiet; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
+          set -e
+          git config user.name  "$GIT_AUTHOR_NAME"
+          git config user.email "$GIT_AUTHOR_EMAIL"
+
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
           fi
 
-      - name: Commit & push feed
-        if: steps.git_status.outputs.changed == 'true'
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/alstyle.yml docs/.nojekyll || true
-          git commit -m "build: update docs/alstyle.yml [skip ci]"
-          git push
+          git commit -m "chore(alstyle): update docs/alstyle.yml [skip ci]"
 
-      - name: Upload artifact (alstyle.yml)
-        uses: actions/upload-artifact@v4
-        with:
-          name: alstyle-feed
-          path: docs/alstyle.yml
+          git fetch origin "$BRANCH_NAME"
+          git pull --rebase origin "$BRANCH_NAME"
+          git push origin HEAD:"$BRANCH_NAME"
