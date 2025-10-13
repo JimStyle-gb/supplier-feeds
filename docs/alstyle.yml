@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-13 08:51">
+<yml_catalog date="2025-10-13 09:01">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 13:10:2025 - 13:51:31
+Время сборки (Алматы)                      | 13:10:2025 - 14:01:06
 Ближайшее время сборки (Алматы)            | 14:10:2025 - 01:00:00
 Сколько товаров у поставщика до фильтра    | 15831
 Сколько товаров у поставщика после фильтра | 2004
@@ -5423,7 +5423,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
   <offer id="AS590">
         <vendorCode>AS590</vendorCode>
         <name>Кабель сетевой SHIP D135-P Cat.5e UTP 30В PVC</name>
-        <price>52900</price>
+        <price>53900</price>
         <picture>https://img.al-style.kz/590_1.jpg</picture>
         <picture>https://img.al-style.kz/590_2.jpg</picture>
         <picture>https://img.al-style.kz/590_3.jpg</picture>
@@ -5516,7 +5516,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <picture>https://img.al-style.kz/591_3.jpg</picture>
         <vendor>Ship</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Кабель сетевой SHIP D145-P Это экранированный (FTP) 4 - х парный кабель 5e категории. Защищён одним общим экраном в виде фольги. Экран снижает уровень электромагнитного излучения кабеля и повышает защищённость от внешних помех. Используется при значительном уровне внешних наводок (производственные помещения) или при повышенных требованиях к информационной безопасности. Имеет стандартную PVC оболочку, применяется при прокладке внутри помещений. 
 Используется при создании компьютерных сетей стандарта 100 Мегабит / сек или 1 Гигабит / сек. 
 100 метровый сегмент успешно прошёл тестирование на сертифицированном приборе Fluke. 
@@ -35465,7 +35465,7 @@ Xerox Easy Assist и приложение Xerox Print and Scan Experience делают настройку 
         <picture>https://img.al-style.kz/58563_3.jpg</picture>
         <vendor>Dahua</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Интерактивная доска (панель) Dahua DHI-LPH98-MC470-P 98"
 &gt; Оснащен технологией Zero Air Gap, 4K DLED дисплей, обеспечивает четкое изображение с резкими и яркими цветами.
 &gt; Встроенная камера AI 4K и 8-микрофонный массив, обеспечивающие превосходное качество визуальной и аудиосвязи.
@@ -42345,7 +42345,7 @@ Canon Cassette Feeding Unit-AE1 / AG1 / AJ1 / AK1 / AL1 / AM1 / AP1 / AQ1 / AW1C
         <picture>https://img.al-style.kz/61055_1.jpg</picture>
         <vendor>Legrand</vendor>
         <currencyId>KZT</currencyId>
-        <available>false</available>
+        <available>true</available>
         <description>Кабель сетевой Legrand 032758 Cat.6 F / UTP PVC 
 Это экранированный (UTP) 4 - х парный кабель 6 категории. 
 Используется для создания компьютерных сетей стандарта 1 Гигабит / сек до 4 Гигабит / сек. Благодаря внешней LSZH оболочке применяется при высоких требованиях к пожарной безопасности. Отличается низким дымовыделением и не содержит опасных для здоровья галогенов. 
@@ -43570,7 +43570,7 @@ Canon imageRUNNER ADVANCE C2020Canon imageRUNNER ADVANCE C2020LCanon imageRUNNER
         <picture>https://img.al-style.kz/61342_3.jpg</picture>
         <vendor>APC</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Источник бесперебойного питания APC Smart-UPS SMT2200RMI2UC
 Интеллектуальная и эффективная защита — от начального уровня до крупных объектов. Идеальный ИБП для серверов, маршрутизаторов, коммутаторов, и других сетевых устройств.
 В комплект поставки входит:
@@ -50512,7 +50512,7 @@ Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SEN
         <picture>https://img.al-style.kz/64108_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Струйный картридж Canon CL-56
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
@@ -53529,7 +53529,7 @@ Canon PIXMA TS5340Canon PIXMA TS7440
         <picture>https://img.al-style.kz/65138_2.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <available>true</available>
+        <available>false</available>
         <description>Струйный картридж Canon CL-461XL
 
 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
