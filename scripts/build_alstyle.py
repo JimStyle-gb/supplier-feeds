@@ -800,7 +800,7 @@ def main()->None:
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
     # >>> ОРФОГРАФИЯ: чистка описаний/имён
-    ortho_changed = apply_orthography(out_shop)
+    apply_orthography(out_shop)
 
     # Один currencyId на оффер
     fix_currency_id(out_shop, default_code="KZT")
@@ -829,7 +829,6 @@ def main()->None:
         "prices_updated": upd,
         "prices_skipped": skipped,
         "dealer_src_prices_dealer": src_stats.get("prices_dealer",0),
-        "dealer_src_direct_field": src_stats.get("direct_field",0),
         "dealer_src_rrp_fallback": src_stats.get("rrp_fallback",0),
         "dealer_src_missing": src_stats.get("missing",0),
         "params_removed": specs_lines,
@@ -856,4 +855,17 @@ def main()->None:
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written."); return
 
-    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist
+    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
+    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f: f.write(xml_text)
+
+    docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
+    try:
+        os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+    except Exception as e:
+        warn(f".nojekyll create warn: {e}")
+
+    log(f"Wrote: {OUT_FILE_YML} | offers={offers_written} | encoding={ENC} | script={SCRIPT_VERSION}")
+
+if __name__ == "__main__":
+    try: main()
+    except Exception as e: err(str(e))
