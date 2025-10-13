@@ -3,8 +3,7 @@ name: build_alstyle
 on:
   workflow_dispatch:
   schedule:
-    # 01:00 Asia/Almaty = 20:00 UTC предыдущего дня
-    - cron: '0 20 * * *'
+    - cron: '0 20 * * *'   # 01:00 Asia/Almaty
   push:
     paths:
       - 'scripts/build_alstyle.py'
@@ -23,25 +22,16 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Идентификатор поставщика и URL выгрузки
       SUPPLIER_NAME: alstyle
       SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
-
-      # Выходной файл
       OUT_FILE: docs/alstyle.yml
       OUTPUT_ENCODING: windows-1251
-
-      # Сетевые параметры
       TIMEOUT_S: '30'
       RETRIES: '4'
       RETRY_BACKOFF_S: '2'
       MIN_BYTES: '1500'
-
-      # vendorCode
       VENDORCODE_PREFIX: AS
       VENDORCODE_CREATE_IF_MISSING: '1'
-
-      # Фильтр по категориям
       ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
       ALSTYLE_CATEGORIES_MODE: include
 
@@ -52,8 +42,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: '3.11'   # <<< cache убран
 
       - name: Install dependencies
         run: |
