@@ -1,15 +1,8 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-09-23.14
-
-.d14:
-- Удаляем ТОЛЬКО параметры: Благотворительность, Снижена цена, Новинка,
-  Артикул, Оригинальный код, Артикул/Штрихкод — и из <param>, и из описаний.
-- FEED_META оставлен.
-- <offer available="true|false"> как атрибут; тег <available> не создаём.
-- <keywords>: авто-ген при отсутствии + добавление GEO к существующим (KZ).
+Alstyle → YML for Satu
+version: alstyle-2025-09-23.strict-01
 """
 
 from __future__ import annotations
@@ -26,7 +19,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-09-23.14"
+SCRIPT_VERSION = "alstyle-2025-09-23.strict-01"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -50,10 +43,11 @@ SATU_KEYWORDS_MAXLEN   = int(os.getenv("SATU_KEYWORDS_MAXLEN", "160"))
 SATU_KEYWORDS_MAXWORDS = int(os.getenv("SATU_KEYWORDS_MAXWORDS", "16"))
 SATU_KEYWORDS_GEO      = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","1","true","yes"}
 
+# Ничего лишнего не трогаем
 DROP_CATEGORY_ID_TAG = True
 DROP_STOCK_TAGS      = True
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
-PURGE_OFFER_ATTRS_AFTER = ("type","article")  # ВАЖНО: 'available' здесь НЕ чистим
+PURGE_OFFER_ATTRS_AFTER = ("type","article")  # 'available' НЕ трогаем
 
 INTERNAL_PRICE_TAGS = (
     "purchase_price","purchasePrice","wholesale_price","wholesalePrice",
@@ -220,7 +214,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
                 ven.text=canon; normalized+=1
     return normalized,dropped
 
-# --------------------- цены ---------------------
+# --------------------- цены (как было) ---------------------
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -316,7 +310,7 @@ UNWANTED_PARAM_NAME_RE = re.compile(
     r"новинк\w*|"                   # Новинка
     r"артикул(?:\s*/\s*штрихкод)?|" # Артикул / Артикул/Штрихкод
     r"оригинальн\w*\s*код|"         # Оригинальный код
-    r"штрихкод"                     # Штрихкод
+    r"штрихкод"                     # Штрихкод (как самостоятельное имя)
     r")\s*)$",
     re.I
 )
@@ -333,7 +327,7 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                     offer.remove(p); removed+=1
     return removed
 
-# В Характеристики не включаем только перечисленные (НЕ трогаем другие вроде «Назначение» и т.п.)
+# В «Характеристики» в описании НЕ включаем только эти же названия
 EXCLUDE_NAME_RE = re.compile(
     r"(?:\bартикул\b|благотворительн\w*|штрихкод|оригинальн\w*\s*код|новинк\w*|снижена\s*цена)",
     re.I
@@ -377,8 +371,7 @@ def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
 
 # Чистим из описаний строки, начинающиеся ИСКЛЮЧИТЕЛЬНО с перечисленных заголовков
 BAD_LINE_START = re.compile(
-    r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|"
-    r"благотворительн\w*|новинк\w*|снижена\s*цена)\b",
+    r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена)\b",
     re.I
 )
 
@@ -415,6 +408,7 @@ def _parse_int(s: str) -> Optional[int]:
     except Exception: return None
 
 def derive_available(offer: ET.Element) -> Tuple[bool, str]:
+    # берём из тега <available>, складских чисел или статуса, иначе False
     avail_el=offer.find("available")
     if avail_el is not None and avail_el.text:
         b=_parse_bool_str(avail_el.text)
@@ -428,22 +422,16 @@ def derive_available(offer: ET.Element) -> Tuple[bool, str]:
         if node is not None and node.text:
             b=_parse_bool_str(node.text)
             if b is not None: return b, "status"
-    for p in list(offer.findall("param")) + list(offer.findall("Param")):
-        nm=(p.attrib.get("name") or "").strip().lower()
-        if "статус" in nm or "налич" in nm:
-            b=_parse_bool_str(p.text or "")
-            if b is not None: return b, "status"
     return False, "default"
 
 def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
-    """Переносим доступность в атрибут offer[@available]; теги <available> удаляем."""
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0,0)
     t_cnt=f_cnt=st_cnt=ss_cnt=0
     for offer in offers_el.findall("offer"):
         b, src=derive_available(offer)
-        remove_all(offer, "available")
-        offer.attrib["available"]="true" if b else "false"
+        remove_all(offer, "available")                 # УДАЛЯЕМ тег
+        offer.attrib["available"]="true" if b else "false"  # СТАВИМ атрибут
         if b: t_cnt+=1
         else: f_cnt+=1
         if src=="stock": st_cnt+=1
@@ -495,7 +483,6 @@ def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missi
               or _normalize_code(_extract_article_from_url(get_text(offer,"url"))) \
               or _normalize_code(offer.attrib.get("id") or "")
             if art: vc.text=art
-            else:   fixed_bare+=1
         vc.text=f"{prefix}{(vc.text or '')}"; total_prefixed+=1
     return total_prefixed,created,filled_from_art,fixed_bare
 
@@ -536,7 +523,8 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
         touched+=1
     return touched
 
-DESIRED_ORDER=["vendorCode","name","price","picture","vendor","currencyId","description"]  # без 'available' (он атрибут)
+# Порядок детей (без тега <available>, т.к. он атрибут)
+DESIRED_ORDER=["vendorCode","name","price","picture","vendor","currencyId","description"]
 
 def reorder_offer_children(shop_el: ET.Element) -> int:
     offers_el=shop_el.find("offers")
@@ -741,7 +729,7 @@ def main()->None:
     # «Характеристики» в описания
     specs_offers, specs_lines = inject_specs_block(out_shop)
 
-    # подчистить строки в описаниях по списку (Артикул/Штрихкод/…)
+    # подчистить строки в описаниях по списку (только перечисленные названия)
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
     # валюта
@@ -774,27 +762,8 @@ def main()->None:
         "source": SUPPLIER_URL or "file",
         "offers_total": len(src_offers),
         "offers_written": offers_written,
-        "categories_mode": ALSTYLE_CATEGORIES_MODE if (rules_ids or rules_names) else "off",
-        "categories_total": len(rules_ids) + len(rules_names),
-        "filtered_by_categories": filtered_by_categories,
-        "prices_updated": upd,
-        "prices_skipped": skipped,
-        "dealer_src_prices_dealer": src_stats.get("prices_dealer",0),
-        "dealer_src_direct_field": src_stats.get("direct_field",0),
-        "dealer_src_rrp_fallback": src_stats.get("rrp_fallback",0),
-        "dealer_src_missing": src_stats.get("missing",0),
-        "params_removed": unwanted_removed,
-        "spec_lines_written": specs_lines,
-        "vendors_recovered": norm_cnt,
         "available_true": av_true,
         "available_false": av_false,
-        "available_from_stock": av_from_stock,
-        "available_from_status": av_from_status,
-        "categoryId_dropped": catid_to_drop_total,
-        "vendorcodes_filled_from_article": filled_from_art,
-        "vendorcodes_created": created_nodes,
-        "keywords_added": kw_added,
-        "keywords_geo_appended": kw_geo_appended,
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
     }
