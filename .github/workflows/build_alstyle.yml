@@ -1,4 +1,4 @@
-name: Build Alstyle feed
+name: build_alstyle
 
 on:
   workflow_dispatch:
