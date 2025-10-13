@@ -1,13 +1,30 @@
+# scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-10-12.11
+script_version = alstyle-2025-09-23.9
 
-Добавлено: ENHANCED_DESC (HTML-описания в CDATA) + ранее: <categoryId>0</categoryId> первым узлом.
+Изменения в .9:
+- Единый порядок тегов внутри <offer>:
+  <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <available>, <description>.
+  Для остальных тегов порядок сохраняем после перечисленных.
+
+Изменения в .8:
+- Синхронизация идентификатора оффера с vendorCode: <offer id="..."> == <vendorCode>.
+
+Изменения в .7:
+- FIX: дедупликация <available>: перед записью значения удаляем все существующие теги
+  <available> и создаём ровно один. Также снимаем атрибут offer[@available].
+
+Изменения в .6:
+- Явный выбор «закупочной» цены по приоритету: dealer/опт/b2b → явные поля → RRP fallback.
+- FEED_META: счета по источникам базовой цены.
+- После пересчёта удаляем все <prices> и оставляем один <price>.
+- Прочее из .5 оставлено (чистка Артикул/Благотворительность, описание в одну строку, перенос после FEED_META).
 """
 
 from __future__ import annotations
-import os, sys, re, time, random, urllib.parse, html
+import os, sys, re, time, random, urllib.parse
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional, Set
 from xml.etree import ElementTree as ET
@@ -22,7 +39,7 @@ import requests
 
 # ========================== КОНСТАНТЫ И НАСТРОЙКИ ==========================
 
-SCRIPT_VERSION = "alstyle-2025-10-12.11"
+SCRIPT_VERSION = "alstyle-2025-09-23.9"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
@@ -37,9 +54,6 @@ DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
 ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # off|include|exclude
-
-# ▼ новый тумблер: включать ли «красивые» HTML-описания
-ENHANCED_DESC = os.getenv("ENHANCED_DESC", "0").lower() in {"1","true","yes"}
 
 DROP_CATEGORY_ID_TAG = True
 DROP_STOCK_TAGS      = True
@@ -99,7 +113,8 @@ def load_source_bytes(src: str) -> bytes:
             if attempt<RETRIES: time.sleep(sleep)
     raise RuntimeError(f"fetch failed after {RETRIES} attempts: {last_exc}")
 
-# ========================= КАТЕГОРИИ (как было) =========================
+# ========================= КАТЕГОРИИ =========================
+
 class CatRule:
     __slots__=("raw","kind","pattern")
     def __init__(self, raw: str, kind: str, pattern):
@@ -177,7 +192,8 @@ def build_category_path_from_id(cat_id: str, id2name: Dict[str,str], id2parent: 
     names=[n for n in names if n]
     return " / ".join(reversed(names)) if names else ""
 
-# ============================ БРЕНДЫ / vendor ============================
+# ============================ БРЕНДЫ ============================
+
 def _norm_key(s: str) -> str:
     if not s: return ""
     s=s.strip().lower().replace("ё","е")
@@ -210,7 +226,8 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
                 ven.text=canon; normalized+=1
     return normalized,dropped
 
-# ============================ ЦЕНЫ (как было) ============================
+# ============================ ЦЕНЫ ============================
+
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -244,6 +261,15 @@ def parse_price_number(raw:str)->Optional[float]:
     except Exception: return None
 
 def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
+    """
+    Возвращает (dealer_price, source_tag):
+      source_tag ∈ {'prices_dealer','direct_field','rrp_fallback','missing'}
+    Приоритет:
+      1) <prices><price type~dealer/опт/b2b/…>
+      2) Явные поля purchase/wholesale/opt/b2b
+      3) <prices><price type~RRP/РРЦ> (fallback)
+      4) missing
+    """
     dealer_candidates=[]
     rrp_candidates=[]
     for prices in list(offer.findall("prices")) + list(offer.findall("Prices")):
@@ -278,6 +304,9 @@ def compute_retail(dealer:float,rules:List[PriceRule])->Optional[int]:
     return None
 
 def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,Dict[str,int]]:
+    """
+    Пересчитываем цену и пишем ровно один <price>. Убираем служебные ценовые поля.
+    """
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0,{"missing":0})
     updated=skipped=total=0
@@ -300,6 +329,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         p=offer.find("price")
         if p is None: p=ET.SubElement(offer,"price")
         p.text=str(int(newp))
+        # currencyId не вставляем здесь — его создаст/обновит fix_currency_id(), порядок выставит reorder_offer_children()
         for node in list(offer.findall("prices")) + list(offer.findall("Prices")): offer.remove(node)
         for tag in INTERNAL_PRICE_TAGS:
             node=offer.find(tag)
@@ -307,7 +337,8 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         updated+=1
     return updated,skipped,total,src_stats
 
-# ===== ПАРАМЕТРЫ → «Характеристики» =====
+# ===== ПАРАМЕТРЫ → «Характеристики» (без Артикул/Благотворительность) =====
+
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
 EXCLUDE_NAME_RE=re.compile(
@@ -329,14 +360,7 @@ def build_specs_lines(offer:ET.Element)->List[str]:
     for p in list(offer.findall("param")) + list(offer.findall("Param")):
         raw_name=(p.attrib.get("name") or "").strip()
         raw_val =(p.text or "").strip()
-        if not raw_name or not raw_val:
-            continue
-        # точечный скип двух «пустых» характеристик
-        name_norm = _key(raw_name)
-        val_norm  = _norm_text(raw_val)
-        if name_norm in {"безопасность", "назначение"} and val_norm in {"есть", "да"}:
-            continue
-
+        if not raw_name or not raw_val: continue
         if EXCLUDE_NAME_RE.search(raw_name): continue
         if _looks_like_code_value(raw_val): continue
         k=_key(raw_name)
@@ -371,7 +395,8 @@ def strip_all_params(shop_el:ET.Element)->int:
             offer.remove(p); removed+=1
     return removed
 
-# === ЧИСТКА ОПИСАНИЙ: убрать «Артикул: …» и «Благотворительность: …» ===
+# === ДОП. ЧИСТКА ОПИСАНИЙ: убрать «Артикул: …» и «Благотворительность: …» ===
+
 RE_KV_LINE = re.compile(r"(^|\n)\s*[-–—]?\s*(Артикул|Благотворительн\w*)\s*:\s*.*?(?=\n|$)", re.I)
 
 def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
@@ -444,6 +469,9 @@ def derive_available(offer: ET.Element) -> Tuple[bool, str]:
     return False, "default"
 
 def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
+    """
+    Делает ЕДИНЫЙ тег <available> на оффер (child), снимает атрибут @available.
+    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0,0,0)
     true_cnt = false_cnt = from_stock_cnt = from_status_cnt = 0
@@ -542,11 +570,16 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
     return removed_tags,removed_attrs
 
 def count_category_ids(offer_el: ET.Element) -> int:
+    """Подсчёт количества тегов categoryId/CategoryId внутри оффера (для метрик)."""
     return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
-# ===================== currencyId: дедуп =====================
+# ===================== currencyId: дедуп без привязки к месту =====================
 
 def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
+    """
+    Оставляет РОВНО один <currencyId> на каждый <offer> с текстом default_code.
+    Порядок расставит reorder_offer_children().
+    """
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -564,6 +597,12 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
 DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","available","description"]
 
 def reorder_offer_children(shop_el: ET.Element) -> int:
+    """
+    Переставляет дочерние узлы каждого <offer> в фиксированный порядок DESIRED_ORDER.
+    Несколько <picture> сохраняют относительный порядок. Остальные теги, не входящие
+    в DESIRED_ORDER, добавляются после перечисленных, в исходной последовательности.
+    Возвращает число офферов, где порядок был изменён.
+    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     changed = 0
@@ -598,252 +637,20 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
 
     return changed
 
-# ===================== «ОРФОГРАФИЯ» (встроенная) =====================
-
-ORTHO_REPLACEMENTS = (
-    (r"\bBт\b", "Вт"),
-    (r"\bВтт\b", "Вт"),
-    (r"\bAч\b", "А·ч"), (r"\bАч\b", "А·ч"), (r"\bач\b", "А·ч"),
-    (r"°С", "°C"),
-    (r"\bShuko\b", "Schuko"), (r"\bSchucko\b", "Schuko"), (r"\bShucko\b", "Schuko"),
-    (r"\bCEE7\b", "CEE 7/4"), (r"\bCEE7/4\b", "CEE 7/4"),
-    (r"Линейно-Интерактивный", "Линейно-интерактивный"),
-    (r"\bLED индикаторы\b", "LED-индикаторы"),
-    (r"\bLED- индикаторы\b", "LED-индикаторы"),
-    (r"позвояют", "позволяют"),
-    (r"паралел", "параллел"),
-    (r"эексплуат", "эксплуат"),
-)
-
-ORTHO_NOISE_PATTERNS = [
-    # без маркера
-    re.compile(r"^\s*Назначение\s*:\s*Да\s*$", re.I),
-    re.compile(r"^\s*Безопасность\s*:\s*(?:Есть|Да)\s*$", re.I),
-    # с маркером «- »
-    re.compile(r"^\s*-\s*Назначение\s*:\s*Да\s*$", re.I),
-    re.compile(r"^\s*-\s*Безопасность\s*:\s*(?:Есть|Да)\s*$", re.I),
-
-    re.compile(r"процент[а]? заполнения страниц[ы]?", re.I),
-    re.compile(r"процент[а]? заполнения листа", re.I),
-]
-
-ORTHO_POWER_PATTERNS = [
-    re.compile(r"(\d{3,4})\s*ВА\s*/\s*(\d{2,4})\s*Вт", re.I),
-    re.compile(r"(\d{3,4})\s*ВА\s*[–/-]\s*(\d{2,4})\s*Вт", re.I),
-    re.compile(r"(\d{3,4})\s*VA\s*/\s*(\d{2,4})\s*W", re.I),
-]
-
-def ortho_normalize_units(text: str) -> str:
-    out = text
-    for rx, repl in ORTHO_REPLACEMENTS:
-        out = re.sub(rx, repl, out)
-    out = re.sub(r"\s*/\s*", " / ", out)
-    out = re.sub(r"\s*×\s*", " × ", out)
-    out = re.sub(r"[ \t]{2,}", " ", out)
-    return out.strip()
-
-def ortho_strip_noise_lines(text: str) -> str:
-    lines = text.splitlines()
-    keep = []
-    for ln in lines:
-        if any(rx.search(ln) for rx in ORTHO_NOISE_PATTERNS):
-            continue
-        keep.append(ln)
-    out = []
-    blank = 0
-    for ln in keep:
-        if ln.strip() == "":
-            blank += 1
-            if blank <= 1:
-                out.append("")
-        else:
-            blank = 0
-            out.append(ln)
-    return "\n".join(out).strip()
-
-def ortho_maybe_enhance_name(name_text: str, desc_text_plain: str) -> str:
-    if re.search(r"\d+\s*ВА\s*/\s*\d+\s*Вт", name_text, flags=re.I):
-        return name_text
-    for pat in ORTHO_POWER_PATTERNS:
-        m = pat.search(desc_text_plain)
-        if m:
-            va, w = m.group(1), m.group(2)
-            return f"{name_text} • {va} ВА / {w} Вт"
-    return name_text
-
-def apply_orthography(shop_el: ET.Element) -> int:
-    offers_el = shop_el.find("offers")
-    if offers_el is None: return 0
-    changed = 0
-    for offer in offers_el.findall("offer"):
-        d = offer.find("description")
-        n = offer.find("name")
-        if d is not None and (d.text or "").strip():
-            raw = d.text or ""
-            plain = html.unescape(raw)
-            plain = ortho_strip_noise_lines(plain)
-            plain = ortho_normalize_units(plain)
-            if plain != raw:
-                d.text = plain
-                changed += 1
-            if n is not None and (n.text or "").strip():
-                name_plain = html.unescape(n.text or "").strip()
-                name_norm  = ortho_normalize_units(name_plain)
-                name_new   = ortho_maybe_enhance_name(name_norm, plain)
-                if name_new != n.text:
-                    n.text = name_new
-                    changed += 1
-        else:
-            if n is not None and (n.text or "").strip():
-                name_plain = html.unescape(n.text or "").strip()
-                name_norm  = ortho_normalize_units(name_plain)
-                if name_norm != n.text:
-                    n.text = name_norm
-                    changed += 1
-    return changed
-
-# ===================== ДОБАВИТЬ <categoryId>0 ПЕРВЫМ ДЛЯ КАЖДОГО <offer> =====================
-
-def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
-    """
-    Для каждого <offer> создаёт единственный <categoryId>0</categoryId>
-    и вставляет его ПЕРВЫМ ребёнком (сразу после <offer>).
-    Любые существующие categoryId/CategoryId внутри оффера удаляются.
-    Возвращает количество обработанных офферов.
-    """
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        for node in list(offer.findall("categoryId")) + list(offer.findall("CategoryId")):
-            offer.remove(node)
-        cid = ET.Element("categoryId")
-        cid.text = "0"
-        offer.insert(0, cid)
-        touched += 1
-    return touched
-
-# ===================== ENHANCED HTML DESCRIPTION (в CDATA) =====================
-
-def _find_power_va_w(text: str):
-    for pat in ORTHO_POWER_PATTERNS:
-        m = pat.search(text or "")
-        if m: return m.group(1), m.group(2)
-    return None
-
-def _has_word(text: str, *words: str) -> bool:
-    t = (text or "").lower()
-    return any(w.lower() in t for w in words)
-
-def _grab_specs_lines(desc_text: str) -> List[str]:
-    if not desc_text: return []
-    lines = desc_text.splitlines()
-    out, take = [], False
-    for ln in lines:
-        if not take and re.match(r"^\s*Характеристики\s*:\s*$", ln, re.I):
-            take = True; continue
-        if take:
-            if re.match(r"^\s*\S.*:\s*$", ln) and not re.match(r"^\s*[-–—]\s*\S", ln):
-                break
-            s = ln.strip()
-            if not s: continue
-            if s.startswith(("-", "•")):
-                s = re.sub(r"^\s*[-–—•]\s*", "", s)
-            out.append(s)
-    return out
-
-def _specs_to_html(spec_lines: List[str]) -> str:
-    if not spec_lines: return ""
-    items = []
-    for s in spec_lines:
-        m = re.match(r"^([^:]+):\s*(.*)$", s)
-        if m:
-            name, val = m.group(1).strip(), m.group(2).strip()
-            items.append(f"<li><b>{html.escape(name)}:</b> {html.escape(val)}</li>")
-        else:
-            items.append(f"<li>{html.escape(s)}</li>")
-    return "<h3>Характеристики</h3>\n<ul>\n" + "\n".join(items) + "\n</ul>"
-
-def _compose_enhanced_html(offer: ET.Element, current_desc: str) -> str:
-    name  = get_text(offer, "name")
-    brand = get_text(offer, "vendor")
-
-    va_w  = _find_power_va_w(current_desc)
-    has_schuko   = _has_word(current_desc, "schuko")
-    has_usb      = _has_word(current_desc, "usb 5", "usb", "5 в")
-    has_led      = _has_word(current_desc, "led")
-    has_line     = _has_word(current_desc, "телефонн", "phone line")
-    has_silent   = _has_word(current_desc, "бесшум")
-    has_step_sine= _has_word(current_desc, "ступенчатая синусоида", "step")
-    has_autoon   = _has_word(current_desc, "автоматическое включение", "автовключение")
-
-    title = html.escape(name or "").strip()
-    if brand and not (name or "").lower().startswith(brand.lower()):
-        title = f"{html.escape(brand)} {title}"
-    lead = (
-        f"<p><b>{title}</b> — линейно-интерактивный ИБП для защиты техники от перебоев и скачков напряжения. "
-        f"При отключении сети устройство автоматически переключает нагрузку на батарею, позволяя безопасно завершить работу.</p>"
-    )
-
-    adv = []
-    if va_w:          adv.append(f"{va_w[0]} ВА / {va_w[1]} Вт — запас для домашних и офисных задач")
-    if has_schuko:    adv.append("розетки Schuko: можно разделить критичную и некритичную нагрузку")
-    if has_usb:       adv.append("2 × USB 5 В/2 А для зарядки портативной электроники")
-    if has_led:       adv.append("LED-индикация режимов")
-    if has_line:      adv.append("защита телефонной линии от помех")
-    if has_silent:    adv.append("бесшумный режим")
-    if has_step_sine: adv.append("ступенчатая синусоида — совместимо с бытовой техникой")
-    if has_autoon:    adv.append("автовключение после восстановления питания")
-    if not adv:
-        adv = ["защита от перепадов напряжения", "стабильная работа подключённых устройств"]
-    adv_html = "<h3>Преимущества</h3>\n<ul>\n" + "\n".join(f"<li>{html.escape(x)}</li>" for x in adv) + "\n</ul>"
-
-    scenarios_html = (
-        "<h3>Подходит для</h3>\n<ul>\n"
-        "<li>ПК и моноблоков</li>\n"
-        "<li>Wi-Fi роутеров и модемов</li>\n"
-        "<li>POS-касс и чековых принтеров</li>\n"
-        "<li>DVR/NVR и систем видеонаблюдения</li>\n"
-        "</ul>"
-    )
-
-    specs_lines = _grab_specs_lines(current_desc)
-    specs_html  = _specs_to_html(specs_lines)
-
-    kg_html = "<p><i>Комплектация:</i> ИБП, кабель питания, документация. <i>Гарантия:</i> 12 месяцев.</p>"
-
-    html_out = (
-        "<div class=\"desc\">"
-        + lead
-        + adv_html
-        + scenarios_html
-        + kg_html
-        + (specs_html or "")
-        + "</div>"
-    ).strip()
-
-    return html_out
-
-def enhance_descriptions(shop_el: ET.Element) -> int:
-    offers_el = shop_el.find("offers")
-    if offers_el is None: return 0
-    changed = 0
-    for offer in offers_el.findall("offer"):
-        d = offer.find("description")
-        curr = (d.text or "").strip() if d is not None and d.text else ""
-        if not curr:
-            continue
-        html_block = _compose_enhanced_html(offer, curr)
-        if d is None:
-            d = ET.SubElement(offer, "description")
-        d.text = "<![CDATA[" + html_block + "]]>"
-        changed += 1
-    return changed
-
-# ========================== FEED_META ========================
+# ========================== FEED_META (формат из feed.txt) ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
+    """
+    FEED_META
+    Поставщик | value
+    URL поставщика | value
+    Время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+    Ближайшее время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
+    Сколько товаров у поставщика до фильтра | value
+    Сколько товаров у поставщика после фильтра | value
+    Сколько товаров есть в наличии (true) | value
+    Сколько товаров нет в наличии (false) | value
+    """
     try:
         tz = ZoneInfo("Asia/Almaty")
         now_alm = datetime.now(tz)
@@ -946,21 +753,11 @@ def main()->None:
     # ДЕДУП и нормализация <available>
     av_true, av_false, av_from_stock, av_from_status = normalize_available_field(out_shop)
 
-    # Инъекция характеристик из <param> → в описание, затем удаляем <param>
     specs_offers, specs_lines = inject_specs_block(out_shop)
     removed_params = strip_all_params(out_shop)
-
-    # Удаляем «Артикул: …» / «Благотворительность: …» в описаниях
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
-    # >>> ОРФОГРАФИЯ
-    apply_orthography(out_shop)
-
-    # УСИЛЕННЫЕ HTML-описания (в CDATA), по флагу
-    if ENHANCED_DESC:
-        enhance_descriptions(out_shop)
-
-    # Один currencyId на оффер
+    # Один currencyId на оффер (значение выставит default_code), место расставит reorder
     fix_currency_id(out_shop, default_code="KZT")
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
@@ -968,10 +765,6 @@ def main()->None:
     # Жёсткий порядок тегов внутри <offer>
     reorder_offer_children(out_shop)
 
-    # === ДОБАВИТЬ <categoryId>0 ПЕРВЫМ ДЛЯ КАЖДОГО <offer> ===
-    ensure_categoryid_zero_first(out_shop)
-
-    # Разделительные комментарии и отступы
     children=list(out_offers)
     for i in range(len(children)-1, 0, -1):
         out_offers.insert(i, ET.Comment("OFFSEP"))
@@ -991,15 +784,18 @@ def main()->None:
         "prices_updated": upd,
         "prices_skipped": skipped,
         "dealer_src_prices_dealer": src_stats.get("prices_dealer",0),
+        "dealer_src_direct_field": src_stats.get("direct_field",0),
         "dealer_src_rrp_fallback": src_stats.get("rrp_fallback",0),
         "dealer_src_missing": src_stats.get("missing",0),
         "params_removed": specs_lines,
         "vendors_recovered": norm_cnt,
+        "dropped_top": top_dropped(dropped_names),
         "available_true": av_true,
         "available_false": av_false,
         "available_from_stock": av_from_stock,
         "available_from_status": av_from_status,
         "categoryId_dropped": catid_to_drop_total,
+        "vendorcodes_filled_from_article": filled_from_art,
         "vendorcodes_created": created_nodes,
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
@@ -1008,10 +804,6 @@ def main()->None:
 
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
-
-    # восстановить CDATA (ElementTree их экранирует)
-    xml_text = xml_text.replace("&lt;![CDATA[", "<![CDATA[").replace("]]&gt;", "]]>")
-
     xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n  ", xml_text)
     xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
     xml_text = re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
