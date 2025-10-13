@@ -2,38 +2,26 @@ name: build_alstyle
 
 on:
   workflow_dispatch:
-  # Автозапуск в 01:00 по времени Алматы (UTC+5).
-  # GitHub использует UTC, поэтому ставим 20:00 UTC предыдущего дня.
-  schedule:
-    - cron: "0 20 * * *"
   push:
+    branches: [ main ]
     paths:
-      - "scripts/build_alstyle.py"
-      - "docs/alstyle_categories.txt"
-      - ".github/workflows/build_alstyle.yml"
+      - 'scripts/build_alstyle.py'
+      - '.github/workflows/build_alstyle.yml'
 
 permissions:
   contents: write
 
-concurrency:
-  group: build-alstyle
-  cancel-in-progress: false
-
 jobs:
   build:
-    name: Build Alstyle YML
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Setup Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -55,32 +43,40 @@ jobs:
           VENDORCODE_PREFIX: AS
           VENDORCODE_CREATE_IF_MISSING: "1"
 
+          # Категории поставщика (включишь, когда файл с правилами будет готов)
           ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
-          ALSTYLE_CATEGORIES_MODE: include
+          ALSTYLE_CATEGORIES_MODE: off   # off|include|exclude
+
+          # Усиленные HTML-описания (в CDATA) — включить по желанию
+          ENHANCED_DESC: "0"   # 1 = включить, 0 = выключить
         run: |
           set -e
           python --version
           python scripts/build_alstyle.py
 
-      - name: Commit & pull --rebase & push
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
-          GIT_AUTHOR_NAME: github-actions[bot]
-          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
-          GIT_COMMITTER_NAME: github-actions[bot]
-          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
-        run: |
-          set -e
-          git config user.name  "$GIT_AUTHOR_NAME"
-          git config user.email "$GIT_AUTHOR_EMAIL"
+      - name: Show output size
+        run: ls -lh docs/alstyle.yml || true
 
-          git add -A
-          if git diff --staged --quiet; then
-            echo "No changes to commit."
-            exit 0
+      - name: Git diff
+        id: git_status
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-          git commit -m "chore(alstyle): update docs/alstyle.yml [skip ci]"
-          git fetch origin "$BRANCH_NAME"
-          git pull --rebase origin "$BRANCH_NAME"
-          git push origin HEAD:"$BRANCH_NAME"
+      - name: Commit & push feed
+        if: steps.git_status.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/alstyle.yml docs/.nojekyll || true
+          git commit -m "build: update docs/alstyle.yml [skip ci]"
+          git push
+
+      - name: Upload artifact (alstyle.yml)
+        uses: actions/upload-artifact@v4
+        with:
+          name: alstyle-feed
+          path: docs/alstyle.yml
