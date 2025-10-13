@@ -3,7 +3,8 @@
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
 script_version = alstyle-2025-10-12.10
 
-Главное: встроена «Орфография» (чистка описаний и нормализация единиц) без добавления новых тегов.
+Главное: встроена «Орфография» (чистка описаний и нормализация единиц).
+Добавлено: для каждого <offer> вставляется <categoryId>0</categoryId> ПЕРВЫМ ребёнком.
 """
 
 from __future__ import annotations
@@ -328,13 +329,11 @@ def build_specs_lines(offer:ET.Element)->List[str]:
         raw_val =(p.text or "").strip()
         if not raw_name or not raw_val:
             continue
-
-        # ▼ точечный скип двух «пустых» характеристик ▼
+        # точечный скип двух «пустых» характеристик
         name_norm = _key(raw_name)
         val_norm  = _norm_text(raw_val)
         if name_norm in {"безопасность", "назначение"} and val_norm in {"есть", "да"}:
             continue
-        # ▲ конец добавки ▲
 
         if EXCLUDE_NAME_RE.search(raw_name): continue
         if _looks_like_code_value(raw_val): continue
@@ -701,6 +700,28 @@ def apply_orthography(shop_el: ET.Element) -> int:
                     changed += 1
     return changed
 
+# ===================== ДОБАВИТЬ <categoryId>0 ПЕРВЫМ ДЛЯ КАЖДОГО <offer> =====================
+
+def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
+    """
+    Для каждого <offer> создаёт единственный <categoryId>0</categoryId>
+    и вставляет его ПЕРВЫМ ребёнком (сразу после <offer>).
+    Любые существующие categoryId/CategoryId внутри оффера удаляются.
+    Возвращает количество обработанных офферов.
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        for node in list(offer.findall("categoryId")) + list(offer.findall("CategoryId")):
+            offer.remove(node)
+        cid = ET.Element("categoryId")
+        cid.text = "0"
+        offer.insert(0, cid)
+        touched += 1
+    return touched
+
 # ========================== FEED_META ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
@@ -813,7 +834,7 @@ def main()->None:
     # Удаляем «Артикул: …» / «Благотворительность: …» в описаниях
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
-    # >>> ОРФОГРАФИЯ: чистка описаний/имён (+ фильтр двух пустых характеристик)
+    # >>> ОРФОГРАФИЯ
     apply_orthography(out_shop)
 
     # Один currencyId на оффер
@@ -824,6 +845,10 @@ def main()->None:
     # Жёсткий порядок тегов внутри <offer>
     reorder_offer_children(out_shop)
 
+    # === ДОБАВИТЬ <categoryId>0 ПЕРВЫМ ДЛЯ КАЖДОГО <offer> ===
+    ensure_categoryid_zero_first(out_shop)
+
+    # Разделительные комментарии для читабельности, отступы
     children=list(out_offers)
     for i in range(len(children)-1, 0, -1):
         out_offers.insert(i, ET.Comment("OFFSEP"))
