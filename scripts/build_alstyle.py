@@ -2,25 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-09-23.9
+script_version = alstyle-2025-09-23.10
 
-Изменения в .9:
-- Единый порядок тегов внутри <offer>:
-  <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <available>, <description>.
-  Для остальных тегов порядок сохраняем после перечисленных.
-
-Изменения в .8:
-- Синхронизация идентификатора оффера с vendorCode: <offer id="..."> == <vendorCode>.
-
-Изменения в .7:
-- FIX: дедупликация <available>: перед записью значения удаляем все существующие теги
-  <available> и создаём ровно один. Также снимаем атрибут offer[@available].
-
-Изменения в .6:
-- Явный выбор «закупочной» цены по приоритету: dealer/опт/b2b → явные поля → RRP fallback.
-- FEED_META: счета по источникам базовой цены.
-- После пересчёта удаляем все <prices> и оставляем один <price>.
-- Прочее из .5 оставлено (чистка Артикул/Благотворительность, описание в одну строку, перенос после FEED_META).
+.d10:
+- Добавлен ensure_categoryid_zero_first(): вставляет <categoryId>0</categoryId> ПЕРВЫМ узлом в каждом <offer>.
+- Вызов ensure_categoryid_zero_first() поставлен ПОСЛЕ reorder_offer_children(), чтобы categoryId остался сверху.
+- Мелкие упрощения из прошлого шага сохранены, формат минут в FEED_META исправлен на %M.
 """
 
 from __future__ import annotations
@@ -39,7 +26,7 @@ import requests
 
 # ========================== КОНСТАНТЫ И НАСТРОЙКИ ==========================
 
-SCRIPT_VERSION = "alstyle-2025-09-23.9"
+SCRIPT_VERSION = "alstyle-2025-09-23.10"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
@@ -55,7 +42,7 @@ DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # off|include|exclude
 
-DROP_CATEGORY_ID_TAG = True
+DROP_CATEGORY_ID_TAG = True         # ранние categoryId от поставщика удаляем
 DROP_STOCK_TAGS      = True
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
 PURGE_OFFER_ATTRS_AFTER = ("type","available","article")
@@ -85,32 +72,47 @@ def _norm_text(s: str) -> str:
     s = (s or "").replace("\u00A0"," ").lower().replace("ё","е")
     return re.sub(r"\s+"," ",s).strip()
 
+def remove_all(el: ET.Element, *tags: str) -> int:
+    """Удалить все дочерние узлы el с указанными тегами. Вернуть количество удалённых."""
+    cnt = 0
+    for t in tags:
+        for n in list(el.findall(t)):
+            el.remove(n)
+            cnt += 1
+    return cnt
+
 # ============================= ЗАГРУЗКА =============================
 
 def load_source_bytes(src: str) -> bytes:
-    if not src: raise RuntimeError("SUPPLIER_URL не задан")
-    if src.startswith("file://"):
-        with open(src[7:], "rb") as f: data=f.read()
-        if len(data) < MIN_BYTES: raise RuntimeError(f"file too small: {len(data)} bytes")
+    if not src:
+        raise RuntimeError("SUPPLIER_URL не задан")
+    # Локальный файл или file://
+    if "://" not in src or src.startswith("file://"):
+        path = src[7:] if src.startswith("file://") else src
+        with open(path, "rb") as f:
+            data = f.read()
+        if len(data) < MIN_BYTES:
+            raise RuntimeError(f"file too small: {len(data)} bytes")
         return data
-    if "://" not in src:
-        with open(src, "rb") as f: data=f.read()
-        if len(data) < MIN_BYTES: raise RuntimeError(f"file too small: {len(data)} bytes")
-        return data
-    sess=requests.Session(); headers={"User-Agent":"supplier-feed-bot/1.0 (+github-actions)"}
-    last_exc=None
-    for attempt in range(1,RETRIES+1):
+    # HTTP(S)
+    sess = requests.Session()
+    headers = {"User-Agent": "supplier-feed-bot/1.0 (+github-actions)"}
+    last_exc = None
+    for attempt in range(1, RETRIES + 1):
         try:
-            r=sess.get(src, headers=headers, timeout=TIMEOUT_S, stream=True)
-            if r.status_code!=200: raise RuntimeError(f"HTTP {r.status_code}")
-            data=r.content
-            if len(data)<MIN_BYTES: raise RuntimeError(f"too small ({len(data)} bytes)")
+            r = sess.get(src, headers=headers, timeout=TIMEOUT_S)  # stream не нужен
+            if r.status_code != 200:
+                raise RuntimeError(f"HTTP {r.status_code}")
+            data = r.content
+            if len(data) < MIN_BYTES:
+                raise RuntimeError(f"too small ({len(data)} bytes)")
             return data
         except Exception as e:
-            last_exc=e
-            sleep=RETRY_BACKOFF*attempt*(1.0+random.uniform(-0.2,0.2))
+            last_exc = e
+            sleep = RETRY_BACKOFF * attempt * (1.0 + random.uniform(-0.2, 0.2))
             warn(f"fetch attempt {attempt}/{RETRIES} failed: {e}; sleep {sleep:.2f}s")
-            if attempt<RETRIES: time.sleep(sleep)
+            if attempt < RETRIES:
+                time.sleep(sleep)
     raise RuntimeError(f"fetch failed after {RETRIES} attempts: {last_exc}")
 
 # ========================= КАТЕГОРИИ =========================
@@ -261,15 +263,6 @@ def parse_price_number(raw:str)->Optional[float]:
     except Exception: return None
 
 def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
-    """
-    Возвращает (dealer_price, source_tag):
-      source_tag ∈ {'prices_dealer','direct_field','rrp_fallback','missing'}
-    Приоритет:
-      1) <prices><price type~dealer/опт/b2b/…>
-      2) Явные поля purchase/wholesale/opt/b2b
-      3) <prices><price type~RRP/РРЦ> (fallback)
-      4) missing
-    """
     dealer_candidates=[]
     rrp_candidates=[]
     for prices in list(offer.findall("prices")) + list(offer.findall("Prices")):
@@ -304,9 +297,6 @@ def compute_retail(dealer:float,rules:List[PriceRule])->Optional[int]:
     return None
 
 def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,Dict[str,int]]:
-    """
-    Пересчитываем цену и пишем ровно один <price>. Убираем служебные ценовые поля.
-    """
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0,{"missing":0})
     updated=skipped=total=0
@@ -317,10 +307,9 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         src_stats[src]=src_stats.get(src,0)+1
         if dealer is None or dealer<=100:
             skipped+=1
-            for node in list(offer.findall("prices")) + list(offer.findall("Prices")): offer.remove(node)
+            remove_all(offer, "prices", "Prices")
             for tag in INTERNAL_PRICE_TAGS:
-                node=offer.find(tag)
-                if node is not None: offer.remove(node)
+                remove_all(offer, tag)
             continue
         newp=compute_retail(dealer,rules)
         if newp is None:
@@ -329,15 +318,13 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         p=offer.find("price")
         if p is None: p=ET.SubElement(offer,"price")
         p.text=str(int(newp))
-        # currencyId не вставляем здесь — его создаст/обновит fix_currency_id(), порядок выставит reorder_offer_children()
-        for node in list(offer.findall("prices")) + list(offer.findall("Prices")): offer.remove(node)
+        remove_all(offer, "prices", "Prices")
         for tag in INTERNAL_PRICE_TAGS:
-            node=offer.find(tag)
-            if node is not None: offer.remove(node)
+            remove_all(offer, tag)
         updated+=1
     return updated,skipped,total,src_stats
 
-# ===== ПАРАМЕТРЫ → «Характеристики» (без Артикул/Благотворительность) =====
+# ===== ПАРАМЕТРЫ → «Характеристики» =====
 
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
@@ -391,11 +378,11 @@ def strip_all_params(shop_el:ET.Element)->int:
     if offers_el is None: return 0
     removed=0
     for offer in offers_el.findall("offer"):
-        for p in list(offer.findall("param")) + list(offer.findall("Param")):
-            offer.remove(p); removed+=1
+        removed += remove_all(offer, "param")
+        removed += remove_all(offer, "Param")
     return removed
 
-# === ДОП. ЧИСТКА ОПИСАНИЙ: убрать «Артикул: …» и «Благотворительность: …» ===
+# === ДОП. ЧИСТКА ОПИСАНИЙ ===
 
 RE_KV_LINE = re.compile(r"(^|\n)\s*[-–—]?\s*(Артикул|Благотворительн\w*)\s*:\s*.*?(?=\n|$)", re.I)
 
@@ -469,9 +456,6 @@ def derive_available(offer: ET.Element) -> Tuple[bool, str]:
     return False, "default"
 
 def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
-    """
-    Делает ЕДИНЫЙ тег <available> на оффер (child), снимает атрибут @available.
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0,0,0)
     true_cnt = false_cnt = from_stock_cnt = from_status_cnt = 0
@@ -479,8 +463,7 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
         b, src = derive_available(offer)
         if "available" in offer.attrib:
             offer.attrib.pop("available", None)
-        for node in list(offer.findall("available")):
-            offer.remove(node)
+        remove_all(offer, "available")
         avail = ET.SubElement(offer, "available")
         avail.text = "true" if b else "false"
         if b: true_cnt += 1
@@ -488,8 +471,7 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
         if src == "stock": from_stock_cnt += 1
         if src == "status": from_status_cnt += 1
         if DROP_STOCK_TAGS:
-            for tag in ["quantity_in_stock","quantity","stock","Stock"]:
-                for node in list(offer.findall(tag)): offer.remove(node)
+            remove_all(offer, "quantity_in_stock", "quantity", "stock", "Stock")
     return true_cnt, false_cnt, from_stock_cnt, from_status_cnt
 
 # ===================== vendorCode / артикул =====================
@@ -570,23 +552,17 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
     return removed_tags,removed_attrs
 
 def count_category_ids(offer_el: ET.Element) -> int:
-    """Подсчёт количества тегов categoryId/CategoryId внутри оффера (для метрик)."""
     return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
-# ===================== currencyId: дедуп без привязки к месту =====================
+# ===================== currencyId: дедуп =====================
 
 def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
-    """
-    Оставляет РОВНО один <currencyId> на каждый <offer> с текстом default_code.
-    Порядок расставит reorder_offer_children().
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
     touched = 0
     for offer in offers_el.findall("offer"):
-        for node in list(offer.findall("currencyId")):
-            offer.remove(node)
+        remove_all(offer, "currencyId")
         new_cur = ET.SubElement(offer, "currencyId")
         new_cur.text = default_code
         touched += 1
@@ -597,16 +573,9 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
 DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","available","description"]
 
 def reorder_offer_children(shop_el: ET.Element) -> int:
-    """
-    Переставляет дочерние узлы каждого <offer> в фиксированный порядок DESIRED_ORDER.
-    Несколько <picture> сохраняют относительный порядок. Остальные теги, не входящие
-    в DESIRED_ORDER, добавляются после перечисленных, в исходной последовательности.
-    Возвращает число офферов, где порядок был изменён.
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return 0
     changed = 0
-    wanted = set(DESIRED_ORDER)
 
     for offer in offers_el.findall("offer"):
         children = list(offer)
@@ -637,20 +606,28 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
 
     return changed
 
-# ========================== FEED_META (формат из feed.txt) ========================
+# ===================== ДОБАВИТЬ <categoryId>0 САМЫМ ВЕРХОМ =====================
+
+def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
+    """
+    Для каждого <offer> удаляет все categoryId/CategoryId и вставляет
+    <categoryId>0</categoryId> ПЕРВЫМ дочерним узлом.
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        remove_all(offer, "categoryId", "CategoryId")
+        cid = ET.Element("categoryId")
+        cid.text = "0"
+        offer.insert(0, cid)
+        touched += 1
+    return touched
+
+# ========================== FEED_META ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
-    """
-    FEED_META
-    Поставщик | value
-    URL поставщика | value
-    Время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
-    Ближайшее время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
-    Сколько товаров у поставщика до фильтра | value
-    Сколько товаров у поставщика после фильтра | value
-    Сколько товаров есть в наличии (true) | value
-    Сколько товаров нет в наличии (false) | value
-    """
     try:
         tz = ZoneInfo("Asia/Almaty")
         now_alm = datetime.now(tz)
@@ -666,7 +643,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     next_alm = datetime.fromtimestamp(next_ts, getattr(now_alm, "tzinfo", None))
 
     def fmt(dt: datetime) -> str:
-        return dt.strftime("%d:%m:%Y - %H:%M:%S")
+        return dt.strftime("%d:%m:%Y - %H:%M:%S")  # латинская %M
 
     rows = [
         ("Поставщик", pairs.get("supplier","")),
@@ -757,7 +734,7 @@ def main()->None:
     removed_params = strip_all_params(out_shop)
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
-    # Один currencyId на оффер (значение выставит default_code), место расставит reorder
+    # Один currencyId на оффер
     fix_currency_id(out_shop, default_code="KZT")
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
@@ -765,6 +742,10 @@ def main()->None:
     # Жёсткий порядок тегов внутри <offer>
     reorder_offer_children(out_shop)
 
+    # === ВСТАВИТЬ <categoryId>0 ПЕРВЫМ УЗЛОМ В КАЖДЫЙ <offer> ===
+    ensure_categoryid_zero_first(out_shop)
+
+    # Разделительные комментарии и отступы
     children=list(out_offers)
     for i in range(len(children)-1, 0, -1):
         out_offers.insert(i, ET.Comment("OFFSEP"))
