@@ -326,7 +326,16 @@ def build_specs_lines(offer:ET.Element)->List[str]:
     for p in list(offer.findall("param")) + list(offer.findall("Param")):
         raw_name=(p.attrib.get("name") or "").strip()
         raw_val =(p.text or "").strip()
-        if not raw_name or not raw_val: continue
+        if not raw_name or not raw_val:
+            continue
+
+        # ▼ точечный скип двух «пустых» характеристик ▼
+        name_norm = _key(raw_name)
+        val_norm  = _norm_text(raw_val)
+        if name_norm in {"безопасность", "назначение"} and val_norm in {"есть", "да"}:
+            continue
+        # ▲ конец добавки ▲
+
         if EXCLUDE_NAME_RE.search(raw_name): continue
         if _looks_like_code_value(raw_val): continue
         k=_key(raw_name)
@@ -606,8 +615,13 @@ ORTHO_REPLACEMENTS = (
 )
 
 ORTHO_NOISE_PATTERNS = [
-    re.compile(r"^\s*Назначение:\s*Да\s*$", re.I),
-    re.compile(r"^\s*Безопасность:\s*Есть\s*$", re.I),
+    # без маркера
+    re.compile(r"^\s*Назначение\s*:\s*Да\s*$", re.I),
+    re.compile(r"^\s*Безопасность\s*:\s*(?:Есть|Да)\s*$", re.I),
+    # с маркером «- »
+    re.compile(r"^\s*-\s*Назначение\s*:\s*Да\s*$", re.I),
+    re.compile(r"^\s*-\s*Безопасность\s*:\s*(?:Есть|Да)\s*$", re.I),
+
     re.compile(r"процент[а]? заполнения страниц[ы]?", re.I),
     re.compile(r"процент[а]? заполнения листа", re.I),
 ]
@@ -799,7 +813,7 @@ def main()->None:
     # Удаляем «Артикул: …» / «Благотворительность: …» в описаниях
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
-    # >>> ОРФОГРАФИЯ: чистка описаний/имён
+    # >>> ОРФОГРАФИЯ: чистка описаний/имён (+ фильтр двух пустых характеристик)
     apply_orthography(out_shop)
 
     # Один currencyId на оффер
