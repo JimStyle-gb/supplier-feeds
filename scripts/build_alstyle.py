@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu (плоские <offer> внутри <offers>)
-script_version = alstyle-2025-10-12.10
+script_version = alstyle-2025-10-12.11
 
-Главное: встроена «Орфография» (чистка описаний и нормализация единиц).
-Добавлено: для каждого <offer> вставляется <categoryId>0</categoryId> ПЕРВЫМ ребёнком.
+Добавлено: ENHANCED_DESC (HTML-описания в CDATA) + ранее: <categoryId>0</categoryId> первым узлом.
 """
 
 from __future__ import annotations
@@ -23,7 +22,7 @@ import requests
 
 # ========================== КОНСТАНТЫ И НАСТРОЙКИ ==========================
 
-SCRIPT_VERSION = "alstyle-2025-10-12.10"
+SCRIPT_VERSION = "alstyle-2025-10-12.11"
 
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
@@ -38,6 +37,9 @@ DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
 ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # off|include|exclude
+
+# ▼ новый тумблер: включать ли «красивые» HTML-описания
+ENHANCED_DESC = os.getenv("ENHANCED_DESC", "0").lower() in {"1","true","yes"}
 
 DROP_CATEGORY_ID_TAG = True
 DROP_STOCK_TAGS      = True
@@ -305,7 +307,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         updated+=1
     return updated,skipped,total,src_stats
 
-# ===== ПАРАМЕТРЫ → «Характеристики» (без запрещённых KV) =====
+# ===== ПАРАМЕТРЫ → «Характеристики» =====
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
 EXCLUDE_NAME_RE=re.compile(
@@ -369,7 +371,7 @@ def strip_all_params(shop_el:ET.Element)->int:
             offer.remove(p); removed+=1
     return removed
 
-# === ДОП. ЧИСТКА ОПИСАНИЙ: убрать «Артикул: …» и «Благотворительность: …» ===
+# === ЧИСТКА ОПИСАНИЙ: убрать «Артикул: …» и «Благотворительность: …» ===
 RE_KV_LINE = re.compile(r"(^|\n)\s*[-–—]?\s*(Артикул|Благотворительн\w*)\s*:\s*.*?(?=\n|$)", re.I)
 
 def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
@@ -722,6 +724,123 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         touched += 1
     return touched
 
+# ===================== ENHANCED HTML DESCRIPTION (в CDATA) =====================
+
+def _find_power_va_w(text: str):
+    for pat in ORTHO_POWER_PATTERNS:
+        m = pat.search(text or "")
+        if m: return m.group(1), m.group(2)
+    return None
+
+def _has_word(text: str, *words: str) -> bool:
+    t = (text or "").lower()
+    return any(w.lower() in t for w in words)
+
+def _grab_specs_lines(desc_text: str) -> List[str]:
+    if not desc_text: return []
+    lines = desc_text.splitlines()
+    out, take = [], False
+    for ln in lines:
+        if not take and re.match(r"^\s*Характеристики\s*:\s*$", ln, re.I):
+            take = True; continue
+        if take:
+            if re.match(r"^\s*\S.*:\s*$", ln) and not re.match(r"^\s*[-–—]\s*\S", ln):
+                break
+            s = ln.strip()
+            if not s: continue
+            if s.startswith(("-", "•")):
+                s = re.sub(r"^\s*[-–—•]\s*", "", s)
+            out.append(s)
+    return out
+
+def _specs_to_html(spec_lines: List[str]) -> str:
+    if not spec_lines: return ""
+    items = []
+    for s in spec_lines:
+        m = re.match(r"^([^:]+):\s*(.*)$", s)
+        if m:
+            name, val = m.group(1).strip(), m.group(2).strip()
+            items.append(f"<li><b>{html.escape(name)}:</b> {html.escape(val)}</li>")
+        else:
+            items.append(f"<li>{html.escape(s)}</li>")
+    return "<h3>Характеристики</h3>\n<ul>\n" + "\n".join(items) + "\n</ul>"
+
+def _compose_enhanced_html(offer: ET.Element, current_desc: str) -> str:
+    name  = get_text(offer, "name")
+    brand = get_text(offer, "vendor")
+
+    va_w  = _find_power_va_w(current_desc)
+    has_schuko   = _has_word(current_desc, "schuko")
+    has_usb      = _has_word(current_desc, "usb 5", "usb", "5 в")
+    has_led      = _has_word(current_desc, "led")
+    has_line     = _has_word(current_desc, "телефонн", "phone line")
+    has_silent   = _has_word(current_desc, "бесшум")
+    has_step_sine= _has_word(current_desc, "ступенчатая синусоида", "step")
+    has_autoon   = _has_word(current_desc, "автоматическое включение", "автовключение")
+
+    title = html.escape(name or "").strip()
+    if brand and not (name or "").lower().startswith(brand.lower()):
+        title = f"{html.escape(brand)} {title}"
+    lead = (
+        f"<p><b>{title}</b> — линейно-интерактивный ИБП для защиты техники от перебоев и скачков напряжения. "
+        f"При отключении сети устройство автоматически переключает нагрузку на батарею, позволяя безопасно завершить работу.</p>"
+    )
+
+    adv = []
+    if va_w:          adv.append(f"{va_w[0]} ВА / {va_w[1]} Вт — запас для домашних и офисных задач")
+    if has_schuko:    adv.append("розетки Schuko: можно разделить критичную и некритичную нагрузку")
+    if has_usb:       adv.append("2 × USB 5 В/2 А для зарядки портативной электроники")
+    if has_led:       adv.append("LED-индикация режимов")
+    if has_line:      adv.append("защита телефонной линии от помех")
+    if has_silent:    adv.append("бесшумный режим")
+    if has_step_sine: adv.append("ступенчатая синусоида — совместимо с бытовой техникой")
+    if has_autoon:    adv.append("автовключение после восстановления питания")
+    if not adv:
+        adv = ["защита от перепадов напряжения", "стабильная работа подключённых устройств"]
+    adv_html = "<h3>Преимущества</h3>\n<ul>\n" + "\n".join(f"<li>{html.escape(x)}</li>" for x in adv) + "\n</ul>"
+
+    scenarios_html = (
+        "<h3>Подходит для</h3>\n<ul>\n"
+        "<li>ПК и моноблоков</li>\n"
+        "<li>Wi-Fi роутеров и модемов</li>\n"
+        "<li>POS-касс и чековых принтеров</li>\n"
+        "<li>DVR/NVR и систем видеонаблюдения</li>\n"
+        "</ul>"
+    )
+
+    specs_lines = _grab_specs_lines(current_desc)
+    specs_html  = _specs_to_html(specs_lines)
+
+    kg_html = "<p><i>Комплектация:</i> ИБП, кабель питания, документация. <i>Гарантия:</i> 12 месяцев.</p>"
+
+    html_out = (
+        "<div class=\"desc\">"
+        + lead
+        + adv_html
+        + scenarios_html
+        + kg_html
+        + (specs_html or "")
+        + "</div>"
+    ).strip()
+
+    return html_out
+
+def enhance_descriptions(shop_el: ET.Element) -> int:
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return 0
+    changed = 0
+    for offer in offers_el.findall("offer"):
+        d = offer.find("description")
+        curr = (d.text or "").strip() if d is not None and d.text else ""
+        if not curr:
+            continue
+        html_block = _compose_enhanced_html(offer, curr)
+        if d is None:
+            d = ET.SubElement(offer, "description")
+        d.text = "<![CDATA[" + html_block + "]]>"
+        changed += 1
+    return changed
+
 # ========================== FEED_META ========================
 
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
@@ -837,6 +956,10 @@ def main()->None:
     # >>> ОРФОГРАФИЯ
     apply_orthography(out_shop)
 
+    # УСИЛЕННЫЕ HTML-описания (в CDATA), по флагу
+    if ENHANCED_DESC:
+        enhance_descriptions(out_shop)
+
     # Один currencyId на оффер
     fix_currency_id(out_shop, default_code="KZT")
 
@@ -848,7 +971,7 @@ def main()->None:
     # === ДОБАВИТЬ <categoryId>0 ПЕРВЫМ ДЛЯ КАЖДОГО <offer> ===
     ensure_categoryid_zero_first(out_shop)
 
-    # Разделительные комментарии для читабельности, отступы
+    # Разделительные комментарии и отступы
     children=list(out_offers)
     for i in range(len(children)-1, 0, -1):
         out_offers.insert(i, ET.Comment("OFFSEP"))
@@ -872,13 +995,11 @@ def main()->None:
         "dealer_src_missing": src_stats.get("missing",0),
         "params_removed": specs_lines,
         "vendors_recovered": norm_cnt,
-        "dropped_top": top_dropped(dropped_names),
         "available_true": av_true,
         "available_false": av_false,
         "available_from_stock": av_from_stock,
         "available_from_status": av_from_status,
         "categoryId_dropped": catid_to_drop_total,
-        "vendorcodes_filled_from_article": filled_from_art,
         "vendorcodes_created": created_nodes,
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
@@ -887,6 +1008,10 @@ def main()->None:
 
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
+
+    # восстановить CDATA (ElementTree их экранирует)
+    xml_text = xml_text.replace("&lt;![CDATA[", "<![CDATA[").replace("]]&gt;", "]]>")
+
     xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n  ", xml_text)
     xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
     xml_text = re.sub(r"(-->)\s*(<shop>)", lambda m: f"{m.group(1)}\n  {m.group(2)}", xml_text)
