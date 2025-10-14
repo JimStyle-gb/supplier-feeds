@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-09-23.strict-01 + desc_cleanup
+version: alstyle-2025-09-23.strict-01+desc_fix2
 """
 
 from __future__ import annotations
-import os, sys, re, time, random, urllib.parse
+import os, sys, re, time, random, urllib.parse, html
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional, Set
 from xml.etree import ElementTree as ET
@@ -19,7 +19,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+desc_cleanup"
+SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+desc_fix2"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -63,7 +63,7 @@ def err(msg: str, code: int = 1) -> None: print(f"ERROR: {msg}", file=sys.stderr
 def now_utc_str() -> str: return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 def now_almaty_str() -> str:
     if ZoneInfo: return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    return time.strftime("%Y-%m-%d %H:%М:%S", time.localtime())
 
 def get_text(el: ET.Element, tag: str) -> str:
     node = el.find(tag)
@@ -367,6 +367,7 @@ def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
         offers_touched+=1; lines_total+=len(lines)
     return offers_touched,lines_total
 
+# Чистим из описаний только перечисленные служебные строки
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена)\b",
     re.I
@@ -386,8 +387,7 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
             d.text=new_text; changed+=1
     return changed
 
-# --- НОВОЕ: мягкая «полировка» описаний по смыслам/опечаткам/форматированию ---
-RE_MEANINGLESS_VAL = re.compile(r":\s*(?:да|нет|есть|присутствует|имеется|поддерживается)\.?\s*$", re.I)
+# --- МЯГКАЯ ПОЛИРОВКА ОПИСАНИЙ (без удаления "Есть/Да/Нет") ---
 RE_SCHUKO_WRONG   = re.compile(r"\bshuko\b", re.I)
 RE_LATIN_WATT     = re.compile(r"\bBт\b|\bBТ\b")
 RE_BAD_HYPHENCASE = re.compile(r"\bЛинейно-Интерактивный\b")
@@ -398,76 +398,63 @@ RE_PM_TIGHT       = re.compile(r"±\s*(\d)")
 RE_DOUBLE_SPACES  = re.compile(r"[ \t]{2,}")
 RE_WEIRD_QUOTES   = re.compile(r"[“”´`]+")
 RE_MULTI_HDR      = re.compile(r"(^|\n)\s*Характеристики:\s*", re.I)
+RE_HTML_TAG       = re.compile(r"<[^>]+>")
+
+def _strip_invisibles_and_entities(txt: str) -> str:
+    # HTML entity → unicode, NBSP → пробел
+    txt = html.unescape(txt)
+    # Invisibles
+    txt = txt.replace("\uFEFF","").replace("\u200B","").replace("\u200C","").replace("\u200D","")
+    # NBSP → обычный пробел
+    txt = txt.replace("\u00A0", " ")
+    return txt
 
 def _polish_description_text(txt: str) -> str:
-    if not txt.strip():
+    if not (txt or "").strip():
         return txt
 
-    # построчная чистка: убираем строки вида "…: Да/Нет/Есть"
-    lines = []
-    for ln in txt.splitlines():
-        if ":" in ln and RE_MEANINGLESS_VAL.search(ln):
-            continue
-        lines.append(ln)
-    txt = "\n".join(lines)
+    txt = _strip_invisibles_and_entities(txt)
 
-    # опечатки и терминология
+    # Убираем случайные сырые HTML-теги, если попали
+    txt = RE_HTML_TAG.sub("", txt)
+
+    # Опечатки/терминология
     txt = RE_SCHUKO_WRONG.sub("Schuko", txt)
     txt = RE_LATIN_WATT.sub("Вт", txt)
     txt = RE_BAD_HYPHENCASE.sub("Линейно-интерактивный", txt)
     txt = RE_X_MULTIPLY.sub(" × ", txt)
 
-    # формат единиц/знаков
-    txt = RE_MISSING_SPACE_UNITS.sub(r"\1 ", txt)
-    txt = RE_HZ_TIGHT.sub(r"\1 \2", txt)
-    txt = RE_PM_TIGHT.sub(r"± \1", txt)
+    # Формат единиц/знаков
+    txt = RE_MISSING_SPACE_UNITS.sub(r"\1 ", txt)   # 12В → 12 В
+    txt = RE_HZ_TIGHT.sub(r"\1 \2", txt)           # 0.5Гц → 0.5 Гц
+    txt = RE_PM_TIGHT.sub(r"± \1", txt)            # ±0.5 → ± 0.5
 
-    # кавычки и пробелы
+    # Кавычки/пробелы
     txt = RE_WEIRD_QUOTES.sub('"', txt)
     txt = RE_DOUBLE_SPACES.sub(" ", txt)
 
-    # множественные "Характеристики:" → оставляем один
+    # Если почему-то два раза «Характеристики:» — оставим один заголовок
     if len(RE_MULTI_HDR.findall(txt)) > 1:
         parts = RE_MULTI_HDR.split(txt)
-        # соберём первое вхождение и остальное без повторов заголовка
-        buf = []
-        seen_hdr = False
+        buf, seen_hdr = [], False
         for chunk in parts:
-            if chunk.strip().lower().startswith("характеристики:"):
-                if seen_hdr:
-                    continue
-                seen_hdr = True
-                buf.append("Характеристики:")
-            else:
+            c = chunk.strip()
+            if c.lower().startswith("характеристики:"):
+                if not seen_hdr:
+                    buf.append("Характеристики:")
+                    seen_hdr = True
+            elif c:
                 buf.append(chunk)
-        txt = "\n".join([p for p in buf if p is not None]).strip()
+        txt = "\n".join(buf).strip()
 
-    # убираем точные дубликаты строк (сохраняем порядок)
-    seen = set()
-    out_lines = []
-    for ln in (l.strip() for l in txt.splitlines()):
-        key = ln.lower()
-        if ln == "":  # пустые строки оставим как есть
-            out_lines.append(ln); continue
-        if key in seen:
-            continue
-        seen.add(key); out_lines.append(ln)
-    return "\n".join(out_lines).strip()
+    # НИКАКИХ удалений строк «…: Есть/Да/Нет» — оставляем как есть
+    return txt.strip()
 
 def polish_descriptions(shop_el: ET.Element) -> Tuple[int,int,int]:
-    """
-    Мягкая полировка описаний:
-    - удаляет строки с пустыми значениями ('Да/Нет/Есть/…'),
-    - правит Shuko→Schuko, Bт→Вт, 'Линейно-Интерактивный'→'Линейно-интерактивный', '2x'→'2 ×',
-    - добавляет пробелы перед единицами/Гц и после '±',
-    - заменяет нестандартные кавычки, двойные пробелы,
-    - убирает дубли «Характеристики:» и точные дубликаты строк.
-    Возвращает: (сколько_офферов_изменено, всего_строк_выкинуто/исправлено_грубо_оценочно, заглушка).
-    """
     offers_el = shop_el.find("offers")
     if offers_el is None: return (0,0,0)
     changed = 0
-    rough_edits = 0
+    size_delta = 0
     for offer in offers_el.findall("offer"):
         d = offer.find("description")
         if d is None or not (d.text or "").strip():
@@ -477,8 +464,8 @@ def polish_descriptions(shop_el: ET.Element) -> Tuple[int,int,int]:
         if after != before:
             d.text = after
             changed += 1
-            rough_edits += abs(len(before) - len(after))  # просто индикатор масштаба правок
-    return (changed, rough_edits, 0)
+            size_delta += abs(len(before) - len(after))
+    return (changed, size_delta, 0)
 
 # --------------------- доступность ---------------------
 TRUE_WORDS  = {"true","1","yes","y","да","есть","in stock","available"}
@@ -818,10 +805,10 @@ def main()->None:
     # «Характеристики» в описания
     specs_offers, specs_lines = inject_specs_block(out_shop)
 
-    # подчистить строки в описаниях по списку (только перечисленные названия)
+    # подчистить служебные строки в описаниях
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
-    # НОВОЕ: мягкая полировка описаний
+    # МЯГКАЯ полировка описаний (без удаления смысловых строк)
     desc_changed, desc_delta, _ = polish_descriptions(out_shop)
 
     # валюта
