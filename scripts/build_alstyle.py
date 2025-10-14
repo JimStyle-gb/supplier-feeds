@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-10-14.slim-01
+version: alstyle-2025-10-14.slim-02 (with working category filter)
 
-Что изменено (без изменения результата):
-- Убрал дублирующиеся регэкспы: один общий список «запрещённых полей».
-- Ввел iter_offers() — единый итератор по офферам (меньше повторов).
-- Объединил работу с <keywords> в одну функцию build_or_update_keywords().
-- Финализация структуры оффера (categoryId/currencyId/порядок/чистка) — за один проход.
-- Логику цен, FEED_META, available="true|false" и т. п. не трогал.
+Изменения против slim-01 (без изменения результата):
+- Вернул рабочий фильтр категорий (include/exclude) по ID и по имени/пути категории.
+- Фильтрация выполняется ДО финализации офферов (до подстановки <categoryId>0).
+- Остальной «slim»-рефактор сохранён: общий регэксп, iter_offers(), единая функция keywords,
+  финализация структуры оффера за один проход.
 """
 
 from __future__ import annotations
@@ -26,7 +25,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-14.slim-01"
+SCRIPT_VERSION = "alstyle-2025-10-14.slim-02"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -114,7 +113,7 @@ def load_source_bytes(src: str) -> bytes:
             if i<RETRIES: time.sleep(back)
     raise RuntimeError(f"fetch failed after {RETRIES}: {last}")
 
-# --------------------- категории (опционально) ---------------------
+# --------------------- категории ---------------------
 class CatRule:
     __slots__=("raw","kind","pattern")
     def __init__(self, raw: str, kind: str, pattern):
@@ -141,7 +140,8 @@ def load_category_rules(path: str) -> Tuple[Set[str], List[CatRule]]:
     for ln in data.splitlines():
         s=ln.strip()
         if not s or s.lstrip().startswith("#"): continue
-        if re.fullmatch(r"\d{2,}", s): ids.add(s); continue
+        if re.fullmatch(r"\d{2,}", s):
+            ids.add(s); continue
         if len(s)>=2 and s[0]=="/" and s[-1]=="/":
             try: rules.append(CatRule(s,"regex",re.compile(s[1:-1],re.I))); continue
             except Exception: continue
@@ -165,6 +165,36 @@ def parse_categories_tree(shop_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,
         if pid: id2parent[cid]=pid
         parent2children.setdefault(pid, set()).add(cid)
     return id2name,id2parent,parent2children
+
+def build_category_path_from_id(cat_id: str,
+                                id2name: Dict[str,str],
+                                id2parent: Dict[str,str]) -> str:
+    names=[]; cur=cat_id; seen=set()
+    while cur and cur not in seen and cur in id2name:
+        seen.add(cur)
+        names.append(id2name.get(cur,""))
+        cur=id2parent.get(cur,"")
+    names=[n for n in names if n]
+    return " / ".join(reversed(names)) if names else ""
+
+def category_matches_name(path_str: str, rules: List[CatRule]) -> bool:
+    pnorm = _norm_text(path_str)
+    for cr in rules:
+        if cr.kind == "substr":
+            if cr.raw and cr.raw in pnorm: return True
+        else:  # regex | word
+            if cr.pattern and cr.pattern.search(path_str): return True
+    return False
+
+def collect_descendants(ids: Set[str], parent2children: Dict[str,Set[str]]) -> Set[str]:
+    if not ids: return set()
+    out=set(ids); stack=list(ids)
+    while stack:
+        cur=stack.pop()
+        for ch in parent2children.get(cur, ()):
+            if ch not in out:
+                out.add(ch); stack.append(ch)
+    return out
 
 # --------------------- бренды ---------------------
 def _norm_key(s: str) -> str:
@@ -566,7 +596,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
         tz=ZoneInfo("Asia/Almaty"); now_alm=datetime.now(tz)
     except Exception:
         now_alm=datetime.utcfromtimestamp(time.time()+5*3600)
-    def fmt(dt:datetime)->str: return dt.strftime("%d:%m:%Y - %H:%M:%S")
+    def fmt(dt:datetime)->str: return dt.strftime("%d:%m:%Y - %H:%М:%S")
     rows=[
         ("Поставщик", pairs.get("supplier","")),
         ("URL поставщика", pairs.get("source","")),
@@ -599,19 +629,40 @@ def main()->None:
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # Категории (если включено)
-    id2name,id2parent,parent2children=parse_categories_tree(shop_in)
-    filtered_by_categories=0
-    if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
+    # --- Категории (фильтр include/exclude) ДО любых правок офферов ---
+    id2name, id2parent, parent2children = parse_categories_tree(shop_in)
+    filtered_by_categories = 0
+    keep_ids: Set[str] = set()
+
+    if ALSTYLE_CATEGORIES_MODE in {"include", "exclude"}:
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
-        if rules_ids or rules_names:
-            # Опциональная фильтрация (оставлена как есть)
-            keep_ids=set(rules_ids)
-            if rules_names and id2name:
-                for cid in id2name.keys():
-                    path="/".join([])  # путь категорий не используем сейчас (упрощено)
-                    # если нужны правила по имени, можно доработать
-            # В этом slim-варианте пропускаем фактическое вырезание по именам категорий
+
+        # 1) Правила по ID
+        keep_ids.update(rules_ids)
+
+        # 2) Правила по имени/пути категории
+        if rules_names and id2name:
+            for cid in id2name.keys():
+                path = build_category_path_from_id(cid, id2name, id2parent)
+                if category_matches_name(path, rules_names):
+                    keep_ids.add(cid)
+
+        # 3) Всех потомков тоже учитываем
+        if keep_ids:
+            keep_ids = collect_descendants(keep_ids, parent2children)
+
+        # 4) Удаляем/оставляем офферы исходя из режима
+        for off in list(out_offers.findall("offer")):
+            cid_node = off.find("categoryId")
+            cid = (cid_node.text or "").strip() if cid_node is not None and cid_node.text else ""
+            hit = (cid in keep_ids) if cid else False
+            drop = (ALSTYLE_CATEGORIES_MODE == "exclude" and hit) or \
+                   (ALSTYLE_CATEGORIES_MODE == "include" and not hit)
+            if drop:
+                out_offers.remove(off)
+                filtered_by_categories += 1
+
+        log(f"Category filter: mode={ALSTYLE_CATEGORIES_MODE}, keep={len(keep_ids)}, removed_offers={filtered_by_categories}")
 
     # Бренды
     norm_cnt, dropped_names=ensure_vendor(out_shop)
