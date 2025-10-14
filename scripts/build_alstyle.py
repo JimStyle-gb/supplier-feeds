@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-09-23.strict-01+desc_fix2
+version: alstyle-2025-09-23.strict-01 + desc_fix3 + param_prune
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+desc_fix2"
+SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+desc_fix3+param_prune"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -63,7 +63,7 @@ def err(msg: str, code: int = 1) -> None: print(f"ERROR: {msg}", file=sys.stderr
 def now_utc_str() -> str: return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
 def now_almaty_str() -> str:
     if ZoneInfo: return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S %Z")
-    return time.strftime("%Y-%m-%d %H:%М:%S", time.localtime())
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 def get_text(el: ET.Element, tag: str) -> str:
     node = el.find(tag)
@@ -302,6 +302,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
 # --------------------- параметры / описание ---------------------
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
+# служебные параметры, которые всегда убираем
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:"
     r"благотворительн\w*|"
@@ -314,18 +315,59 @@ UNWANTED_PARAM_NAME_RE = re.compile(
     re.I
 )
 
+# плейсхолдеры/заглушки, которые считаем «нет значения»
+PLACEHOLDER_VALUES = {
+    "", "-", "—", "–", "— —", "— — —", ".", "..", "...",
+    "n/a", "na", "none", "null", "нет данных", "не указано", "неизвестно"
+}
+
+def _is_placeholder(v: str) -> bool:
+    s=_norm_text(v)
+    return s in PLACEHOLDER_VALUES
+
+RE_URL   = re.compile(r"https?://|www\.", re.I)
+RE_EMAIL = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+")
+RE_HTML  = re.compile(r"<[^>]+>")
+
+# некоторые кодовые поля удаляем ТОЛЬКО по имени (не по виду значения)
+CODELIKE_PARAM_NAME_RE = re.compile(r"(?:артикул|штрихкод|оригинальн\w*\s*код)\b", re.I)
+
+# НЕ трогаем эти «кодовые» поля (даже если похоже на код)
+PARAM_NAME_EXCEPTIONS = {"код тн вэд", "код тн вэд eaeu", "код тнвэд"}
+
 def remove_specific_params(shop_el: ET.Element) -> int:
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
     removed=0
     for offer in offers_el.findall("offer"):
+        # удалим дубляжи по имени: оставим первый непустой
+        seen_names=set()
         for tag in ("param","Param"):
             for p in list(offer.findall(tag)):
                 nm=(p.attrib.get("name") or "").strip()
+                val=(p.text or "").strip()
+                nm_key=_key(nm)
+
+                # служебные названия
                 if UNWANTED_PARAM_NAME_RE.match(nm):
-                    offer.remove(p); removed+=1
+                    offer.remove(p); removed+=1; continue
+
+                # кодовые по названию — убираем, кроме исключений
+                if CODELIKE_PARAM_NAME_RE.search(nm) and nm_key not in PARAM_NAME_EXCEPTIONS:
+                    offer.remove(p); removed+=1; continue
+
+                # пустые/заглушки/URL/почта/HTML — удаляем
+                if _is_placeholder(val) or RE_URL.search(val) or RE_EMAIL.search(val) or RE_HTML.search(val):
+                    offer.remove(p); removed+=1; continue
+
+                # дубликаты по имени (с учётом регистра/пробелов)
+                if nm_key in seen_names:
+                    # если раньше было непустое значение — текущее удалим
+                    offer.remove(p); removed+=1; continue
+                seen_names.add(nm_key)
     return removed
 
+# параметры для сборки «Характеристик» в description (оставляем только осмысленные значения)
 EXCLUDE_NAME_RE = re.compile(
     r"(?:\bартикул\b|благотворительн\w*|штрихкод|оригинальн\w*\s*код|новинк\w*|снижена\s*цена)",
     re.I
@@ -346,6 +388,7 @@ def build_specs_lines(offer:ET.Element)->List[str]:
         if not raw_name or not raw_val: continue
         if EXCLUDE_NAME_RE.search(raw_name): continue
         if _looks_like_code_value(raw_val): continue
+        if _is_placeholder(raw_val): continue
         k=_key(raw_name)
         if k in seen: continue
         seen.add(k); lines.append(f"- {raw_name}: {raw_val}")
@@ -367,7 +410,7 @@ def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
         offers_touched+=1; lines_total+=len(lines)
     return offers_touched,lines_total
 
-# Чистим из описаний только перечисленные служебные строки
+# Чистим из описаний только перечисленные служебные строки (остальное — не трогаем)
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена)\b",
     re.I
@@ -387,7 +430,7 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
             d.text=new_text; changed+=1
     return changed
 
-# --- МЯГКАЯ ПОЛИРОВКА ОПИСАНИЙ (без удаления "Есть/Да/Нет") ---
+# --- ПОЛИРОВКА ОПИСАНИЙ: «мусорные» символы, опечатки, форматирование ---
 RE_SCHUKO_WRONG   = re.compile(r"\bshuko\b", re.I)
 RE_LATIN_WATT     = re.compile(r"\bBт\b|\bBТ\b")
 RE_BAD_HYPHENCASE = re.compile(r"\bЛинейно-Интерактивный\b")
@@ -399,14 +442,15 @@ RE_DOUBLE_SPACES  = re.compile(r"[ \t]{2,}")
 RE_WEIRD_QUOTES   = re.compile(r"[“”´`]+")
 RE_MULTI_HDR      = re.compile(r"(^|\n)\s*Характеристики:\s*", re.I)
 RE_HTML_TAG       = re.compile(r"<[^>]+>")
+RE_CTRL           = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F]")
+RE_TRADEMARKS     = re.compile(r"[®™©]")
 
 def _strip_invisibles_and_entities(txt: str) -> str:
-    # HTML entity → unicode, NBSP → пробел
     txt = html.unescape(txt)
-    # Invisibles
     txt = txt.replace("\uFEFF","").replace("\u200B","").replace("\u200C","").replace("\u200D","")
-    # NBSP → обычный пробел
-    txt = txt.replace("\u00A0", " ")
+    txt = txt.replace("\u00A0", " ")  # NBSP→space
+    txt = RE_CTRL.sub("", txt)        # control chars
+    txt = txt.replace("Â", "")        # частый артефакт кодировки
     return txt
 
 def _polish_description_text(txt: str) -> str:
@@ -414,9 +458,8 @@ def _polish_description_text(txt: str) -> str:
         return txt
 
     txt = _strip_invisibles_and_entities(txt)
-
-    # Убираем случайные сырые HTML-теги, если попали
-    txt = RE_HTML_TAG.sub("", txt)
+    txt = RE_HTML_TAG.sub("", txt)          # сырые HTML-теги
+    txt = RE_TRADEMARKS.sub("", txt)        # убрать ® ™ ©
 
     # Опечатки/терминология
     txt = RE_SCHUKO_WRONG.sub("Schuko", txt)
@@ -433,7 +476,7 @@ def _polish_description_text(txt: str) -> str:
     txt = RE_WEIRD_QUOTES.sub('"', txt)
     txt = RE_DOUBLE_SPACES.sub(" ", txt)
 
-    # Если почему-то два раза «Характеристики:» — оставим один заголовок
+    # Дубликаты заголовка «Характеристики:» — оставляем один
     if len(RE_MULTI_HDR.findall(txt)) > 1:
         parts = RE_MULTI_HDR.split(txt)
         buf, seen_hdr = [], False
@@ -447,7 +490,7 @@ def _polish_description_text(txt: str) -> str:
                 buf.append(chunk)
         txt = "\n".join(buf).strip()
 
-    # НИКАКИХ удалений строк «…: Есть/Да/Нет» — оставляем как есть
+    # НИКАКИХ удалений строк вида «…: Есть/Да/Нет» — это сохраняем
     return txt.strip()
 
 def polish_descriptions(shop_el: ET.Element) -> Tuple[int,int,int]:
@@ -734,10 +777,6 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     for k,v in rows: lines.append(f"{k.ljust(key_w)} | {v}")
     return "\n".join(lines)
 
-def top_dropped(d:Dict[str,int], n:int=10)->str:
-    items=sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
-    return(",".join(f"{k}:{v}" for k,v in items) if items else "n/a")
-
 # --------------------- MAIN ---------------------
 def main()->None:
     log(f"Source: {SUPPLIER_URL or '(not set)'}")
@@ -751,31 +790,29 @@ def main()->None:
     src_offers=list(offers_in_el.findall("offer"))
 
     id2name,id2parent,parent2children=parse_categories_tree(shop_in)
-    catid_to_drop_total=sum(count_category_ids(o) for o in src_offers)
 
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # Фильтр категорий (если включён)
-    rules_ids, rules_names=(set(),[])
+    # фильтр категорий (если включён)
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         if ALSTYLE_CATEGORIES_MODE=="include" and not (rules_ids or rules_names):
             err("ALSTYLE_CATEGORIES_MODE=include, но правил категорий не найдено. Проверь docs/alstyle_categories.txt.", 2)
-    filtered_by_categories=0
-    if (ALSTYLE_CATEGORIES_MODE in {"include","exclude"}) and (rules_ids or rules_names):
         keep_ids=set(rules_ids)
         if rules_names and id2name:
             for cid in id2name.keys():
                 path=build_category_path_from_id(cid,id2name,id2parent)
                 if category_matches_name(path, rules_names): keep_ids.add(cid)
         if keep_ids and parent2children: keep_ids=collect_descendants(keep_ids,parent2children)
+        filtered=0
         for off in list(out_offers.findall("offer")):
             cid=get_text(off,"categoryId")
             hit=(cid in keep_ids) if cid else False
             drop=(ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
-            if drop: out_offers.remove(off); filtered_by_categories+=1
+            if drop: out_offers.remove(off); filtered+=1
+        log(f"Category filter removed: {filtered}")
 
     # убрать старые categoryId
     if DROP_CATEGORY_ID_TAG:
@@ -784,32 +821,33 @@ def main()->None:
                 off.remove(node)
 
     # бренды
-    norm_cnt, dropped_names=ensure_vendor(out_shop)
+    ensure_vendor(out_shop)
 
     # vendorCode + id
-    total_prefixed, created_nodes, filled_from_art, fixed_bare = ensure_vendorcode_with_article(
+    ensure_vendorcode_with_article(
         out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AS"),
         create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
     )
     sync_offer_id_with_vendorcode(out_shop)
 
     # цены
-    upd, skipped, total, src_stats = reprice_offers(out_shop, PRICING_RULES)
+    reprice_offers(out_shop, PRICING_RULES)
 
     # доступность — как атрибут
-    av_true, av_false, av_from_stock, av_from_status = normalize_available_field(out_shop)
+    normalize_available_field(out_shop)
 
-    # удалить ТОЛЬКО заданные параметры
-    unwanted_removed = remove_specific_params(out_shop)
+    # Чистка <param>: служебные, пустые/заглушки, url/email/html и дубликаты по имени
+    removed_params = remove_specific_params(out_shop)
+    log(f"Params removed: {removed_params}")
 
     # «Характеристики» в описания
-    specs_offers, specs_lines = inject_specs_block(out_shop)
+    inject_specs_block(out_shop)
 
     # подчистить служебные строки в описаниях
-    removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
+    remove_blacklisted_kv_from_descriptions(out_shop)
 
-    # МЯГКАЯ полировка описаний (без удаления смысловых строк)
-    desc_changed, desc_delta, _ = polish_descriptions(out_shop)
+    # Полировка описаний: удалить мусорные символы/опечатки/формат
+    polish_descriptions(out_shop)
 
     # валюта
     fix_currency_id(out_shop, default_code="KZT")
@@ -823,10 +861,8 @@ def main()->None:
 
     # keywords
     if SATU_MODE=="full":
-        kw_added = add_keywords_auto(out_shop, mode=SATU_KEYWORDS)
-        kw_geo_appended = enforce_keywords_geo(out_shop)
-    else:
-        kw_added = kw_geo_appended = 0
+        add_keywords_auto(out_shop, mode=SATU_KEYWORDS)
+        enforce_keywords_geo(out_shop)
 
     # разделители / форматирование
     children=list(out_offers)
@@ -834,15 +870,13 @@ def main()->None:
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    offers_written=len(list(out_offers.findall("offer")))
+    # FEED_META
     meta_pairs={
         "script_version": SCRIPT_VERSION,
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL,
         "offers_total": len(src_offers),
-        "offers_written": offers_written,
-        "available_true": av_true,
-        "available_false": av_false,
+        "offers_written": len(list(out_offers.findall("offer"))),
         "built_utc": now_utc_str(),
         "built_Asia/Almaty": now_almaty_str(),
     }
@@ -859,14 +893,13 @@ def main()->None:
 
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
     with open(OUT_FILE_YML,"w",encoding=ENC, newline="\n") as f: f.write(xml_text)
-
-    docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
     try:
+        docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} | offers={offers_written} | encoding={ENC} | script={SCRIPT_VERSION}")
+    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | script={SCRIPT_VERSION}")
 
 if __name__ == "__main__":
     try: main()
