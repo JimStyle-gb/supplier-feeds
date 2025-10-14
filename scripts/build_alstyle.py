@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-09-23.strict-01
+version: alstyle-2025-09-23.strict-01 + desc_cleanup
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-09-23.strict-01"
+SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+desc_cleanup"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -302,15 +302,14 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
 # --------------------- параметры / описание ---------------------
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
-# Удаляем ИСКЛЮЧИТЕЛЬНО перечисленные названия (и вариации) из <param>
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:"
-    r"благотворительн\w*|"          # Благотворительность
-    r"снижена\s*цена|"              # Снижена цена
-    r"новинк\w*|"                   # Новинка
-    r"артикул(?:\s*/\s*штрихкод)?|" # Артикул / Артикул/Штрихкод
-    r"оригинальн\w*\s*код|"         # Оригинальный код
-    r"штрихкод"                     # Штрихкод (как самостоятельное имя)
+    r"благотворительн\w*|"
+    r"снижена\s*цена|"
+    r"новинк\w*|"
+    r"артикул(?:\s*/\s*штрихкод)?|"
+    r"оригинальн\w*\s*код|"
+    r"штрихкод"
     r")\s*)$",
     re.I
 )
@@ -327,7 +326,6 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                     offer.remove(p); removed+=1
     return removed
 
-# В «Характеристики» в описании НЕ включаем только эти же названия
 EXCLUDE_NAME_RE = re.compile(
     r"(?:\bартикул\b|благотворительн\w*|штрихкод|оригинальн\w*\s*код|новинк\w*|снижена\s*цена)",
     re.I
@@ -369,7 +367,6 @@ def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
         offers_touched+=1; lines_total+=len(lines)
     return offers_touched,lines_total
 
-# Чистим из описаний строки, начинающиеся ИСКЛЮЧИТЕЛЬНО с перечисленных заголовков
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена)\b",
     re.I
@@ -388,6 +385,100 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
         if new_text!=(d.text or "").strip():
             d.text=new_text; changed+=1
     return changed
+
+# --- НОВОЕ: мягкая «полировка» описаний по смыслам/опечаткам/форматированию ---
+RE_MEANINGLESS_VAL = re.compile(r":\s*(?:да|нет|есть|присутствует|имеется|поддерживается)\.?\s*$", re.I)
+RE_SCHUKO_WRONG   = re.compile(r"\bshuko\b", re.I)
+RE_LATIN_WATT     = re.compile(r"\bBт\b|\bBТ\b")
+RE_BAD_HYPHENCASE = re.compile(r"\bЛинейно-Интерактивный\b")
+RE_X_MULTIPLY     = re.compile(r"(?<=\d)\s*[xX]\s*(?=\d)")
+RE_MISSING_SPACE_UNITS = re.compile(r"(?<!\d)(\d+)(?=(В|Вт|Ач|А|Гц|мм|см|кг)\b)")
+RE_HZ_TIGHT       = re.compile(r"(\d(?:[.,]\d+)?)\s*(Гц)\b")
+RE_PM_TIGHT       = re.compile(r"±\s*(\d)")
+RE_DOUBLE_SPACES  = re.compile(r"[ \t]{2,}")
+RE_WEIRD_QUOTES   = re.compile(r"[“”´`]+")
+RE_MULTI_HDR      = re.compile(r"(^|\n)\s*Характеристики:\s*", re.I)
+
+def _polish_description_text(txt: str) -> str:
+    if not txt.strip():
+        return txt
+
+    # построчная чистка: убираем строки вида "…: Да/Нет/Есть"
+    lines = []
+    for ln in txt.splitlines():
+        if ":" in ln and RE_MEANINGLESS_VAL.search(ln):
+            continue
+        lines.append(ln)
+    txt = "\n".join(lines)
+
+    # опечатки и терминология
+    txt = RE_SCHUKO_WRONG.sub("Schuko", txt)
+    txt = RE_LATIN_WATT.sub("Вт", txt)
+    txt = RE_BAD_HYPHENCASE.sub("Линейно-интерактивный", txt)
+    txt = RE_X_MULTIPLY.sub(" × ", txt)
+
+    # формат единиц/знаков
+    txt = RE_MISSING_SPACE_UNITS.sub(r"\1 ", txt)
+    txt = RE_HZ_TIGHT.sub(r"\1 \2", txt)
+    txt = RE_PM_TIGHT.sub(r"± \1", txt)
+
+    # кавычки и пробелы
+    txt = RE_WEIRD_QUOTES.sub('"', txt)
+    txt = RE_DOUBLE_SPACES.sub(" ", txt)
+
+    # множественные "Характеристики:" → оставляем один
+    if len(RE_MULTI_HDR.findall(txt)) > 1:
+        parts = RE_MULTI_HDR.split(txt)
+        # соберём первое вхождение и остальное без повторов заголовка
+        buf = []
+        seen_hdr = False
+        for chunk in parts:
+            if chunk.strip().lower().startswith("характеристики:"):
+                if seen_hdr:
+                    continue
+                seen_hdr = True
+                buf.append("Характеристики:")
+            else:
+                buf.append(chunk)
+        txt = "\n".join([p for p in buf if p is not None]).strip()
+
+    # убираем точные дубликаты строк (сохраняем порядок)
+    seen = set()
+    out_lines = []
+    for ln in (l.strip() for l in txt.splitlines()):
+        key = ln.lower()
+        if ln == "":  # пустые строки оставим как есть
+            out_lines.append(ln); continue
+        if key in seen:
+            continue
+        seen.add(key); out_lines.append(ln)
+    return "\n".join(out_lines).strip()
+
+def polish_descriptions(shop_el: ET.Element) -> Tuple[int,int,int]:
+    """
+    Мягкая полировка описаний:
+    - удаляет строки с пустыми значениями ('Да/Нет/Есть/…'),
+    - правит Shuko→Schuko, Bт→Вт, 'Линейно-Интерактивный'→'Линейно-интерактивный', '2x'→'2 ×',
+    - добавляет пробелы перед единицами/Гц и после '±',
+    - заменяет нестандартные кавычки, двойные пробелы,
+    - убирает дубли «Характеристики:» и точные дубликаты строк.
+    Возвращает: (сколько_офферов_изменено, всего_строк_выкинуто/исправлено_грубо_оценочно, заглушка).
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None: return (0,0,0)
+    changed = 0
+    rough_edits = 0
+    for offer in offers_el.findall("offer"):
+        d = offer.find("description")
+        if d is None or not (d.text or "").strip():
+            continue
+        before = d.text
+        after  = _polish_description_text(before)
+        if after != before:
+            d.text = after
+            changed += 1
+            rough_edits += abs(len(before) - len(after))  # просто индикатор масштаба правок
+    return (changed, rough_edits, 0)
 
 # --------------------- доступность ---------------------
 TRUE_WORDS  = {"true","1","yes","y","да","есть","in stock","available"}
@@ -408,7 +499,6 @@ def _parse_int(s: str) -> Optional[int]:
     except Exception: return None
 
 def derive_available(offer: ET.Element) -> Tuple[bool, str]:
-    # берём из тега <available>, складских чисел или статуса, иначе False
     avail_el=offer.find("available")
     if avail_el is not None and avail_el.text:
         b=_parse_bool_str(avail_el.text)
@@ -430,8 +520,8 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     t_cnt=f_cnt=st_cnt=ss_cnt=0
     for offer in offers_el.findall("offer"):
         b, src=derive_available(offer)
-        remove_all(offer, "available")                 # УДАЛЯЕМ тег
-        offer.attrib["available"]="true" if b else "false"  # СТАВИМ атрибут
+        remove_all(offer, "available")
+        offer.attrib["available"]="true" if b else "false"
         if b: t_cnt+=1
         else: f_cnt+=1
         if src=="stock": st_cnt+=1
@@ -523,7 +613,6 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
         touched+=1
     return touched
 
-# Порядок детей (без тега <available>, т.к. он атрибут)
 DESIRED_ORDER=["vendorCode","name","price","picture","vendor","currencyId","description"]
 
 def reorder_offer_children(shop_el: ET.Element) -> int:
@@ -732,6 +821,9 @@ def main()->None:
     # подчистить строки в описаниях по списку (только перечисленные названия)
     removed_kv = remove_blacklisted_kv_from_descriptions(out_shop)
 
+    # НОВОЕ: мягкая полировка описаний
+    desc_changed, desc_delta, _ = polish_descriptions(out_shop)
+
     # валюта
     fix_currency_id(out_shop, default_code="KZT")
 
@@ -759,7 +851,7 @@ def main()->None:
     meta_pairs={
         "script_version": SCRIPT_VERSION,
         "supplier": SUPPLIER_NAME,
-        "source": SUPPLIER_URL or "file",
+        "source": SUPPLIER_URL,
         "offers_total": len(src_offers),
         "offers_written": offers_written,
         "available_true": av_true,
