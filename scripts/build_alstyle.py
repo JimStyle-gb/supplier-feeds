@@ -2,7 +2,14 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-10-15.strict-02 + desc_whitespace_normalize + desc_merge + specs_alpha + seo_kw_dedup
+version: alstyle-2025-10-15.strict-03
+changes:
+- нормализация пробелов/табов/пустых строк в <description>
+- вырезание «битых» пуль (-  :: VALUE / -  : VALUE / - Имя:) до парсинга
+- извлечение KV из табличек/колонок без заголовка «Характеристики»
+- слияние с <param>, дедуп по имени, сортировка А–Я
+- нормализация пунктуации в значениях (%, °С, ::, .., пробелы), удаление URL из описания до блока
+- остальная логика неизменна
 """
 
 from __future__ import annotations
@@ -19,7 +26,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-15.strict-02+desc_norm+desc_merge+specs_alpha+seo_kw_dedup"
+SCRIPT_VERSION = "alstyle-2025-10-15.strict-03+desc_norm+bullet_garbage+desc_merge+specs_alpha+seo_kw_dedup"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -37,8 +44,8 @@ ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_ca
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # off|include|exclude
 
 # Режим под Satu
-SATU_MODE        = os.getenv("SATU_MODE", "full").lower()   # lean|full
-SATU_KEYWORDS    = os.getenv("SATU_KEYWORDS", "auto").lower()  # auto|off
+SATU_MODE              = os.getenv("SATU_MODE", "full").lower()   # lean|full
+SATU_KEYWORDS          = os.getenv("SATU_KEYWORDS", "auto").lower()  # auto|off
 SATU_KEYWORDS_MAXLEN   = int(os.getenv("SATU_KEYWORDS_MAXLEN", "160"))
 SATU_KEYWORDS_MAXWORDS = int(os.getenv("SATU_KEYWORDS_MAXWORDS", "16"))
 SATU_KEYWORDS_GEO      = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","1","true","yes"}
@@ -47,7 +54,7 @@ SATU_KEYWORDS_GEO      = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","
 DROP_CATEGORY_ID_TAG = True
 DROP_STOCK_TAGS      = True
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
-PURGE_OFFER_ATTRS_AFTER = ("type","article")
+PURGE_OFFER_ATTRS_AFTER = ("type","article")  # 'available' НЕ трогаем
 
 INTERNAL_PRICE_TAGS = (
     "purchase_price","purchasePrice","wholesale_price","wholesalePrice",
@@ -91,7 +98,7 @@ def load_source_bytes(src: str) -> bytes:
     sess=requests.Session()
     headers={"User-Agent":"supplier-feed-bot/1.0 (+github-actions)"}
     last=None
-    for i in range(1,RETRIES+1):
+    for i in(1,2,3,4):
         try:
             r=sess.get(src, headers=headers, timeout=TIMEOUT_S)
             if r.status_code!=200: raise RuntimeError(f"HTTP {r.status_code}")
@@ -100,9 +107,9 @@ def load_source_bytes(src: str) -> bytes:
             return data
         except Exception as e:
             last=e; back=RETRY_BACKOFF*i*(1+random.uniform(-0.2,0.2))
-            warn(f"fetch {i}/{RETRIES} failed: {e}; sleep {back:.2f}s")
-            if i<RETRIES: time.sleep(back)
-    raise RuntimeError(f"fetch failed after {RETRIES}: {last}")
+            warn(f"fetch {i}/4 failed: {e}; sleep {back:.2f}s")
+            if i<4: time.sleep(back)
+    raise RuntimeError(f"fetch failed: {last}")
 
 # --------------------- categories ---------------------
 class CatRule:
@@ -137,8 +144,7 @@ def load_category_rules(path: str) -> Tuple[Set[str], List[CatRule]]:
             except Exception: continue
         if s.startswith("~="):
             w=_norm_text(s[2:])
-            if w: rules.append(CatRule(s,"word",re.compile(r"\b"+re.escape(w)+r"\b",re.I)))
-            continue
+            if w: rules.append(CatRule(s,"word",re.compile(r"\b"+re.escape(w)+r"\b",re.I))); continue
         rules.append(CatRule(_norm_text(s),"substr",None))
     return ids, rules
 
@@ -214,7 +220,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
                 ven.text=canon; normalized+=1
     return normalized,dropped
 
-# --------------------- pricing (как было) ---------------------
+# --------------------- pricing ---------------------
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -367,23 +373,41 @@ def _looks_like_code_value(v:str)->bool:
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
-# ==== Нормализация «мусорных» пробелов/табов в description (для парсинга) ====
+# ==== Нормализация пробелов/табов/пустых строк в description ====
 def _normalize_description_whitespace(text: str) -> str:
     t = (text or "").replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
-    # схлопываем табы в один, оставляем как маркер расстояния
+    # схлопываем табы в один (маркер столбца), множественные пробелы не трогаем пока
     t = re.sub(r"\t+", "\t", t)
-    # подчистим хвостовые/начальные пробелы в строках
+    # обрезаем ходы пробелов по краям
     lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
-    # убираем лишние пустые строки (оставляем максимум одну подряд)
-    out=[]
-    last_blank=False
+    # убираем лишние пустые строки (макс одна подряд)
+    out=[]; last_blank=False
     for ln in lines:
         blank = (ln.strip()=="")
-        if blank and last_blank:
+        if blank and last_blank: 
             continue
-        out.append(ln.strip())  # лёгкая чистка по краям
+        out.append(ln.strip())
         last_blank = blank
-    return "\n".join(out).strip()
+    t = "\n".join(out).strip()
+    return t
+
+# ==== Нормализация пунктуации (в значениях «Имя: Значение») ====
+RE_SPACE_BEFORE_PUNCT = re.compile(r"\s+([,;.!?])")
+RE_PERCENT            = re.compile(r"(\d)\s*%")
+RE_DEGREE_C           = re.compile(r"(\d)\s*°\s*([СC])")  # кир/лат C
+RE_DBL_COLON          = re.compile(r"\s*:\s*:\s*")
+RE_DOTS2              = re.compile(r"(?<!\.)\.\.(?!\.)")
+
+def normalize_value_punct(v: str) -> str:
+    if not v: return v
+    s=v
+    s=RE_DBL_COLON.sub(": ", s)      # :: → :
+    s=RE_DOTS2.sub(".", s)           # .. → .
+    s=RE_SPACE_BEFORE_PUNCT.sub(r"\1", s)  # убираем пробел перед пунктуацией
+    s=RE_PERCENT.sub(r"\1%", s)      # 50 % → 50%
+    s=RE_DEGREE_C.sub(r"\1°\2", s)   # 40 °С → 40°С
+    s=re.sub(r"\s{2,}", " ", s)      # схлопнуть двойные пробелы
+    return s.strip()
 
 # ===== НОРМАЛИЗАЦИЯ ПАР «имя: значение» =====
 def normalize_kv(name: str, value: str) -> Tuple[str, str]:
@@ -411,6 +435,7 @@ def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     elif re.fullmatch(r"цвет", n_l):
         v = v.lower()
 
+    v = normalize_value_punct(v)
     return n, v
 
 # ===== Извлечение KV из <param> (как пары) =====
@@ -428,12 +453,18 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
         seen.add(k); pairs.append((name, val))
     return pairs
 
-# ===== Извлечение KV из <description> (с учётом лишних пробелов/табов и без заголовка) =====
+# ===== Извлечение KV из <description> =====
 HDR_RE = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
 KV_BULLET_RE = re.compile(r"^\s*-\s*([^:]+?)\s*:\s*(.+)$")
 KV_COLON_RE  = re.compile(r"^\s*([^:]{2,}?)\s*:\s*(.+)$")
 KV_TABS_RE   = re.compile(r"^\s*([^\t]{2,}?)\t+(.+)$")
 KV_SPACES_RE = re.compile(r"^\s*(\S.{1,}?)\s{2,}(.+)$")  # имя   значение (2+ пробелов)
+
+# «битые» пули, которые нужно удалить ДО парсинга:
+BULLET_NO_KEY      = re.compile(r"^\s*-\s*[:\s\-]{0,5}:\s*\S")
+BULLET_KEY_NOVALUE = re.compile(r"^\s*-\s*[^:]+:\s*$")
+
+URL_RE = re.compile(r"https?://\S+", re.I)
 
 def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     if not (text or "").strip():
@@ -444,15 +475,25 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     keep_mask = [True]*len(lines)
     pairs: List[Tuple[str,str]] = []
 
-    # 1) вырежем заголовки "Характеристики"
+    # 0) убрать явные URL из «человеческой» части (не из KV-строк)
     for i, ln in enumerate(lines):
-        if HDR_RE.match(ln):
-            keep_mask[i] = False
+        if URL_RE.search(ln):
+            # если это не KV-строка и не будет распознана как KV — чистим ссылку
+            if not (KV_BULLET_RE.match(ln) or KV_COLON_RE.match(ln) or KV_TABS_RE.match(ln) or KV_SPACES_RE.match(ln)):
+                lines[i] = URL_RE.sub("", ln).strip()
 
-    # 2) пробег по всем строкам — пытаемся распознать пары даже БЕЗ заголовка
+    # 1) срезать заголовки "Характеристики"
+    for i, ln in enumerate(lines):
+        if HDR_RE.match(ln): keep_mask[i] = False
+
+    # 2) выкинуть «битые» пули ( -  :: val / -  : val / - Имя: )
+    for i, ln in enumerate(lines):
+        if BULLET_NO_KEY.match(ln) or BULLET_KEY_NOVALUE.match(ln):
+            keep_mask[i] = False  # мусор — просто удаляем
+
+    # 3) распознать пары в оставшихся строках
     def try_parse_kv(ln: str) -> Optional[Tuple[str,str]]:
-        # сначала схлопнем множественные пробелы для стабильности распознавания
-        probe = re.sub(r"[ \t]{2,}", "  ", ln)
+        probe = re.sub(r"[ \t]{2,}", "  ", ln)  # стабилизация
         for rx in (KV_BULLET_RE, KV_TABS_RE, KV_SPACES_RE, KV_COLON_RE):
             m = rx.match(probe)
             if m:
@@ -467,10 +508,9 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
             keep_mask[i] = False
             pairs.append(parsed)
 
-    # 3) соберём "чистое" описание без распознанных строк
-    cleaned_lines = [ln for ln, keep in zip(lines, keep_mask) if keep]
+    # 4) собрать «чистое» описание
+    cleaned_lines = [ln for ln, keep in zip(lines, keep_mask) if keep and (ln.strip()!="")]
     cleaned = "\n".join(cleaned_lines).strip()
-    # уберём тройные и более переносы
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
 
     return cleaned, pairs
@@ -500,7 +540,6 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
                 merged[k] = (name, val)
 
         if not merged:
-            # только почистили пробелы — обновим description при необходимости
             if cleaned_desc != raw_desc and desc_el is not None:
                 desc_el.text = cleaned_desc
                 offers_touched += 1
@@ -508,6 +547,7 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
 
         merged_pairs = list(merged.values())
         merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
+
         lines = [f"- {name}: {val}" for name, val in merged_pairs]
 
         new_text = (cleaned_desc + "\n\n" if cleaned_desc else "") + "Характеристики:\n" + "\n".join(lines)
@@ -702,7 +742,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# --------------------- keywords (SEO с дедупликацией) ---------------------
+# --------------------- keywords (SEO, без артикулов) ---------------------
 STOPWORDS = {
     "для","и","или","с","на","в","к","по","под","от","до","из","без","при","это","данный","данная","данные","тот","та","те",
     "а","но","же","ли","как","что","чтобы","есть","нет","да","у","во","так","бы","можно","может","мы","вы","они","он","она"
@@ -826,14 +866,10 @@ def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
         for t in tokens:
             if _try_add(t) and len(final)>=5:
                 break
-        for ph in phrase_tokens: 
-            _try_add(ph)
-        for t in tokens:
-            _try_add(t)
-        for tr in translit_tokens: 
-            _try_add(tr)
-        for g in geo_tokens: 
-            _try_add(g)
+        for ph in phrase_tokens: _try_add(ph)
+        for t in tokens: _try_add(t)
+        for tr in translit_tokens: _try_add(tr)
+        for g in geo_tokens: _try_add(g)
 
         if not final: 
             continue
@@ -958,10 +994,10 @@ def main()->None:
     # чистка <param>
     remove_specific_params(out_shop)
 
-    # УНИФИКАЦИЯ: нормализуем description, собираем пары отовсюду и делаем 1 блок A–Я
+    # УНИФИКАЦИЯ: нормализуем description, вырезаем «битые» пули/мусор, собираем пары и делаем 1 блок A–Я
     unify_specs_in_description(out_shop)
 
-    # страховка от служебных строк
+    # страховка от служебных строк (после унификации)
     remove_blacklisted_kv_from_descriptions(out_shop)
 
     # валюта
