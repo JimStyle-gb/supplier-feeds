@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-09-23.strict-01 + tnved_purge + seo_keywords
+version: alstyle-2025-09-23.strict-01 + tnved_purge + seo_keywords + kw_dedup
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+tnved_purge+seo_keywords"
+SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+tnved_purge+seo_keywords+kw_dedup"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -584,7 +584,6 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
     return touched
 
 # --------------------- keywords (SEO) ---------------------
-# БАЗА: не добавляем «пустяки», НЕ используем vendorCode/артикул (AS69730 и т.п.)
 STOPWORDS = {
     "для","и","или","с","на","в","к","по","под","от","до","из","без","при","это","данный","данная","данные","тот","та","те",
     "а","но","же","ли","как","что","чтобы","есть","нет","да","у","во","так","бы","можно","может","мы","вы","они","он","она"
@@ -600,24 +599,19 @@ def translit_ru_en(s: str) -> str:
 
 GEO_TOKENS=["Казахстан","Алматы","Астана","Шымкент","Караганда"]
 
-# НЕ включать твои артикулы и схожие паттерны (AS69730, AB1234 и т.п., но НЕ режем U-650-L)
+# НЕ включать артикулы вида AS69730, AB1234 и т.п. (но не режем U-650-L, C13 и пр.)
 RE_BLOCKED_ARTICLE = re.compile(r"^(?:AS\d{3,}|[A-Z]{2,}\d{3,})$", re.I)
 
 # Фразы-синонимы по товарам
 KEYWORD_RULES = [
-    # ИБП / UPS
     (re.compile(r"\b(ибп|ups)\b", re.I),
      ["источник бесперебойного питания","ИБП","UPS","line-interactive","on-line ups"]),
-    # Стабилизаторы
     (re.compile(r"\bстабилизатор\w*\b", re.I),
      ["стабилизатор напряжения","voltage stabilizer"]),
-    # Сетевые фильтры / удлинители / PDU
     (re.compile(r"(сетев(ой|ые)\s*фильтр|удлинител\w*|pdu\b)", re.I),
      ["сетевой фильтр","удлинитель","surge protector","power strip","PDU"]),
-    # Кабели / шнуры
     (re.compile(r"\b(кабель|шнур|провод|патч-?корд)\b", re.I),
      ["кабель питания","power cable","patch cord","сетевой кабель"]),
-    # Аккумуляторы / АКБ
     (re.compile(r"\b(аккумулятор|акб|battery)\b", re.I),
      ["аккумулятор для ибп","ups battery","свинцово-кислотный"]),
 ]
@@ -628,8 +622,8 @@ def _norm_word(s: str) -> str:
 def _good_token(t: str) -> bool:
     if not t or len(t) < 2: return False
     if _norm_word(t) in STOPWORDS: return False
-    if RE_BLOCKED_ARTICLE.match(t): return False         # AS69730 → исключаем
-    if re.fullmatch(r"\d+", t): return False             # голые числа
+    if RE_BLOCKED_ARTICLE.match(t): return False
+    if re.fullmatch(r"\d+", t): return False
     return True
 
 def _split_tokens(text: str) -> list[str]:
@@ -641,12 +635,13 @@ def _split_tokens(text: str) -> list[str]:
         for w in re.split(r"\s+", p):
             w = w.strip()
             if not w: continue
-            if re.match(r"^[A-Za-z]*\d[\w\-]*$", w):     # модели/серии (U-650-L, C13, 2U и т.п.)
+            if re.match(r"^[A-Za-z]*\d[\w\-]*$", w):
                 tokens.append(w)
             else:
                 tokens.append(re.sub(r"^[^\w]+|[^\w]+$", "", w))
     return [t for t in tokens if t]
 
+# >>> ДЕДУПЛИКАЦИЯ КЛЮЧЕЙ: строгая, по нормализованной форме
 def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
     if mode!="auto": return 0
     offers_el=shop_el.find("offers")
@@ -659,8 +654,8 @@ def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
     added=0
     for offer in offers_el.findall("offer"):
         kw_el = offer.find("keywords")
-        if kw_el is not None and (kw_el.text or "").strip():  # не перетираем существующие
-            continue
+        if kw_el is not None and (kw_el.text or "").strip():
+            continue  # существующие не трогаем
 
         name   = get_text(offer, "name")
         vendor = get_text(offer, "vendor")
@@ -668,57 +663,77 @@ def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
         # 1) базовые токены (бренд + имя товара). vendorCode/артикул НЕ используем
         base_text = " ".join([vendor, name])
         raw_tokens = _split_tokens(base_text)
-        tokens = []
-        seen = set()
+        tokens, seen_tokens = [], set()
         for t in raw_tokens:
-            if not _good_token(t): continue
+            if not _good_token(t): 
+                continue
             k = _norm_word(t)
-            if k in seen: continue
-            seen.add(k); tokens.append(t)
+            if k in seen_tokens: 
+                continue
+            seen_tokens.add(k)
+            tokens.append(t)
 
         # 2) фразовые синонимы по типу
         phrase_tokens=[]
+        seen_phr = set(seen_tokens)
         for rx, phrases in KEYWORD_RULES:
             if rx.search(name or ""):
                 for ph in phrases:
                     k=_norm_word(ph)
-                    if k not in seen:
-                        seen.add(k); phrase_tokens.append(ph)
+                    if k not in seen_phr:
+                        seen_phr.add(k)
+                        phrase_tokens.append(ph)
 
-        # 3) транслит ключевых слов (чуть-чуть для охвата)
+        # 3) транслит ключевых (чуть-чуть)
         translit_tokens=[]
+        seen_tr = set(seen_phr)
         for t in tokens[:8]:
             tr=translit_ru_en(t)
             if tr and tr!=t.lower():
                 k=_norm_word(tr)
-                if k not in seen:
-                    seen.add(k); translit_tokens.append(tr)
+                if k not in seen_tr:
+                    seen_tr.add(k)
+                    translit_tokens.append(tr)
 
         # 4) гео
         geo_tokens = GEO_TOKENS if include_geo else []
 
-        # 5) сборка с лимитами
+        # 5) сборка с ЖЁСТКОЙ дедупликацией
         final=[]
+        final_seen=set()
         def _try_add(item:str)->bool:
-            if not item: return False
+            if not item: 
+                return False
+            k=_norm_word(item)
+            if k in final_seen: 
+                return False
             cand=", ".join(final+[item])
             if (len(final)<max_words) and (len(cand)<=max_len):
-                final.append(item); return True
+                final.append(item)
+                final_seen.add(k)
+                return True
             return False
 
-        # приоритет: бренд → информативные модельные из name → фразы → остаток → транслит → гео
+        # приоритет: бренд → информативные модельные → фразы → остаток → транслит → гео
         if vendor: _try_add(vendor.strip())
         for t in tokens:
-            if _try_add(t) and len(final)>=5: break
-        for ph in phrase_tokens: _try_add(ph)
+            if _try_add(t) and len(final)>=5:
+                break
+        for ph in phrase_tokens: 
+            _try_add(ph)
         for t in tokens:
-            if t not in final: _try_add(t)
-        for tr in translit_tokens: _try_add(tr)
-        for g in geo_tokens: _try_add(g)
+            _try_add(t)
+        for tr in translit_tokens: 
+            _try_add(tr)
+        for g in geo_tokens: 
+            _try_add(g)
 
-        if not final: continue
-        if kw_el is None: kw_el=ET.SubElement(offer,"keywords")
-        kw_el.text=", ".join(final); added+=1
+        if not final: 
+            continue
+        if kw_el is None: 
+            kw_el=ET.SubElement(offer,"keywords")
+        kw_el.text=", ".join(final)
+        added+=1
 
     return added
 
@@ -858,7 +873,7 @@ def main()->None:
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
-    # KEYWORDS: генерим SEO-ключи (без артикулов) + гео-добавка
+    # KEYWORDS: генерим SEO-ключи (без дубликатов и без артикулов) + гео-добавка
     if SATU_MODE=="full":
         add_keywords_auto(out_shop, mode=SATU_KEYWORDS)
         enforce_keywords_geo(out_shop)
