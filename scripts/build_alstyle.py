@@ -302,7 +302,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
 # --------------------- параметры / описание ---------------------
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
-# Удаляем ИСКЛЮЧИТЕЛЬНО перечисленные названия (и вариации) из <param>
+# >>>>>> ПРАВКА #1: добавлены варианты ТН ВЭД / TN VED / HS code
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:"
     r"благотворительн\w*|"          # Благотворительность
@@ -310,7 +310,13 @@ UNWANTED_PARAM_NAME_RE = re.compile(
     r"новинк\w*|"                   # Новинка
     r"артикул(?:\s*/\s*штрихкод)?|" # Артикул / Артикул/Штрихкод
     r"оригинальн\w*\s*код|"         # Оригинальный код
-    r"штрихкод"                     # Штрихкод (как самостоятельное имя)
+    r"штрихкод|"                    # Штрихкод (как самостоятельное имя)
+    r"код\s*тн\s*вэд(?:\s*eaeu)?|"  # Код ТН ВЭД (в т.ч. 'EAEU')
+    r"код\s*тнвэд(?:\s*eaeu)?|"     # Код ТНВЭД (в т.ч. 'EAEU')
+    r"тн\s*вэд|"                    # ТН ВЭД
+    r"тнвэд|"                       # ТНВЭД
+    r"tn\s*ved|"                    # TN VED
+    r"hs\s*code"                    # HS code
     r")\s*)$",
     re.I
 )
@@ -327,9 +333,10 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                     offer.remove(p); removed+=1
     return removed
 
-# В «Характеристики» в описании НЕ включаем только эти же названия
+# >>>>>> ПРАВКА #2: НЕ включать в «Характеристики» те же имена (добавлены ТН ВЭД)
 EXCLUDE_NAME_RE = re.compile(
-    r"(?:\bартикул\b|благотворительн\w*|штрихкод|оригинальн\w*\s*код|новинк\w*|снижена\s*цена)",
+    r"(?:\bартикул\b|благотворительн\w*|штрихкод|оригинальн\w*\s*код|новинк\w*|снижена\s*цена|"
+    r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)",
     re.I
 )
 
@@ -369,9 +376,10 @@ def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
         offers_touched+=1; lines_total+=len(lines)
     return offers_touched,lines_total
 
-# Чистим из описаний строки, начинающиеся ИСКЛЮЧИТЕЛЬНО с перечисленных заголовков
+# >>>>>> ПРАВКА #3: чистим строки в описаниях, начинающиеся с этих имён (добавлены ТН ВЭД)
 BAD_LINE_START = re.compile(
-    r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена)\b",
+    r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
+    r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
     re.I
 )
 
@@ -408,7 +416,6 @@ def _parse_int(s: str) -> Optional[int]:
     except Exception: return None
 
 def derive_available(offer: ET.Element) -> Tuple[bool, str]:
-    # берём из тега <available>, складских чисел или статуса, иначе False
     avail_el=offer.find("available")
     if avail_el is not None and avail_el.text:
         b=_parse_bool_str(avail_el.text)
@@ -430,8 +437,8 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     t_cnt=f_cnt=st_cnt=ss_cnt=0
     for offer in offers_el.findall("offer"):
         b, src=derive_available(offer)
-        remove_all(offer, "available")                 # УДАЛЯЕМ тег
-        offer.attrib["available"]="true" if b else "false"  # СТАВИМ атрибут
+        remove_all(offer, "available")
+        offer.attrib["available"]="true" if b else "false"
         if b: t_cnt+=1
         else: f_cnt+=1
         if src=="stock": st_cnt+=1
