@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-10-15.strict-04
-changes vs strict-03:
-- пропускаем строки-предложения с двоеточием (гарантия/маркировки/инструкции и т.п.) при разборе KV,
-  чтобы они НЕ попадали в «Характеристики:» (пример с «Картриджи Europrint маркированы...», «В случае...», «Условия гарантии...»)
-- остальная логика — без изменений
+version: alstyle-2025-10-15.strict-05
+what's new vs strict-04 (только фиксы описаний):
+- убрал «ведущий двоеточие» в значении KV (фикс кейса 'Аналог модели:: 006R01462')
+- доп. нормализация свободного текста описания (::, : :, пробелы перед знаками, %, °С, двойные точки/пробелы)
+- оставшаяся логика без изменений
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-15.strict-04+desc_norm+bullet_garbage+desc_merge+specs_alpha+seo_kw_dedup+kv_guard"
+SCRIPT_VERSION = "alstyle-2025-10-15.strict-05+desc_punct_fix+kv_leading_colon_strip"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -371,7 +371,7 @@ def _looks_like_code_value(v:str)->bool:
 # ==== Нормализация пробелов/табов/пустых строк в description ====
 def _normalize_description_whitespace(text: str) -> str:
     t = (text or "").replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
-    t = re.sub(r"\t+", "\t", t)  # табы → один таб (маркер столбца)
+    t = re.sub(r"\t+", "\t", t)  # табы → один таб
     lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
     out=[]; last_blank=False
     for ln in lines:
@@ -382,7 +382,7 @@ def _normalize_description_whitespace(text: str) -> str:
         last_blank = blank
     return "\n".join(out).strip()
 
-# ==== Нормализация пунктуации (в значениях) ====
+# ==== Нормализация пунктуации ====
 RE_SPACE_BEFORE_PUNCT = re.compile(r"\s+([,;.!?])")
 RE_PERCENT            = re.compile(r"(\d)\s*%")
 RE_DEGREE_C           = re.compile(r"(\d)\s*°\s*([СC])")
@@ -400,12 +400,28 @@ def normalize_value_punct(v: str) -> str:
     s=re.sub(r"\s{2,}", " ", s)
     return s.strip()
 
+def normalize_free_text_punct(s: str) -> str:
+    if not s: return s
+    t = s
+    t = RE_DBL_COLON.sub(": ", t)      # :: → :
+    t = RE_DOTS2.sub(".", t)           # .. → .
+    t = RE_SPACE_BEFORE_PUNCT.sub(r"\1", t)
+    t = RE_PERCENT.sub(r"\1%", t)
+    t = RE_DEGREE_C.sub(r"\1°\2", t)
+    t = re.sub(r"\s{2,}", " ", t)
+    # варианты ": :" → ": "
+    t = re.sub(r":\s*:\s*", ": ", t)
+    return t.strip()
+
 # ===== НОРМАЛИЗАЦИЯ ПАР «имя: значение» =====
 def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     n = re.sub(r"\s+", " ", (name or "").strip())
     v = re.sub(r"\s+", " ", (value or "").strip())
     if not n or not v:
         return n, v
+
+    # НОВОЕ: вырезаем ведущие двоеточия/комбинации (":", ": :", "::") из начала значения
+    v = re.sub(r"^\s*(?::\s*)+", "", v)
 
     n_l = n.lower()
 
@@ -456,7 +472,6 @@ BULLET_KEY_NOVALUE = re.compile(r"^\s*-\s*[^:]+:\s*$")
 
 URL_RE = re.compile(r"https?://\S+", re.I)
 
-# <<< НОВОЕ: фильтр имен «ключа», чтобы не ловить обычные предложения >>>
 BAD_KV_NAME_RE = re.compile(
     r"(?:\bв\s+случае\b|\bуслов\w*\s+гаран|необходим\w*|следует|предостав\w*|предъяв\w*|"
     r"указан\w*|содержит|соответству\w*|упаков\w*|маркиров\w*|голографическ\w*|"
@@ -467,15 +482,12 @@ BAD_KV_NAME_RE = re.compile(
 def _valid_kv_name(name: str) -> bool:
     n = (name or "").strip(" -•*·").strip()
     if not n: return False
-    # слишком длинные/многословные названия — это скорее предложения
     if len(n) > 48: return False
     if len(re.findall(r"[A-Za-zА-Яа-я0-9%°\-\+]+", n)) > 6: return False
     if BAD_KV_NAME_RE.search(n): return False
     if re.search(r"[.!?]$", n): return False
-    # два и более запятых в «ключе» — тоже похоже на предложение
     if n.count(",") >= 2: return False
     return True
-# >>> НОВОЕ (конец)
 
 def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     if not (text or "").strip():
@@ -486,7 +498,7 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     keep_mask = [True]*len(lines)
     pairs: List[Tuple[str,str]] = []
 
-    # 0) убрать явные URL из «человеческой» части
+    # 0) убрать URL из «человеческой» части
     for i, ln in enumerate(lines):
         if URL_RE.search(ln):
             if not (KV_BULLET_RE.match(ln) or KV_COLON_RE.match(ln) or KV_TABS_RE.match(ln) or KV_SPACES_RE.match(ln)):
@@ -508,7 +520,6 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
             m = rx.match(probe)
             if m:
                 name, val = (m.group(1) or "").strip(), (m.group(2) or "").strip()
-                # <<< проверка: имя похоже на человеческое предложение? тогда НЕ KV
                 if not _valid_kv_name(name):
                     return None
                 if name and val:
@@ -521,10 +532,11 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
             keep_mask[i] = False
             pairs.append(parsed)
 
-    # 4) собрать «чистое» описание
+    # 4) собрать «чистое» описание + ДОП. НОРМАЛИЗАЦИЯ ПУНКТУАЦИИ
     cleaned_lines = [ln for ln, keep in zip(lines, keep_mask) if keep and (ln.strip()!="")]
     cleaned = "\n".join(cleaned_lines).strip()
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    cleaned = normalize_free_text_punct(cleaned)
 
     return cleaned, pairs
 
@@ -571,6 +583,7 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
 
     return offers_touched, total_kv
 
+# Чистка служебных строк
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
@@ -752,7 +765,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# --------------------- keywords ---------------------
+# --------------------- keywords (как было) ---------------------
 STOPWORDS = {
     "для","и","или","с","на","в","к","по","под","от","до","из","без","при","это","данный","данная","данные","тот","та","те",
     "а","но","же","ли","как","что","чтобы","есть","нет","да","у","во","так","бы","можно","может","мы","вы","они","он","она"
