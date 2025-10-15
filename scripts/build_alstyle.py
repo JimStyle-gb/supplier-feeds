@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-10-15.strict-01 + tnved_purge + seo_keywords + kw_dedup + specs_alpha + desc_merge
+version: alstyle-2025-10-15.strict-02 + desc_whitespace_normalize + desc_merge + specs_alpha + seo_kw_dedup
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-15.strict-01+tnved_purge+seo_keywords+kw_dedup+specs_alpha+desc_merge"
+SCRIPT_VERSION = "alstyle-2025-10-15.strict-02+desc_norm+desc_merge+specs_alpha+seo_kw_dedup"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -43,11 +43,11 @@ SATU_KEYWORDS_MAXLEN   = int(os.getenv("SATU_KEYWORDS_MAXLEN", "160"))
 SATU_KEYWORDS_MAXWORDS = int(os.getenv("SATU_KEYWORDS_MAXWORDS", "16"))
 SATU_KEYWORDS_GEO      = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","1","true","yes"}
 
-# Не трогаем общую структуру
+# Структура (как договаривались)
 DROP_CATEGORY_ID_TAG = True
 DROP_STOCK_TAGS      = True
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
-PURGE_OFFER_ATTRS_AFTER = ("type","article")  # 'available' НЕ трогаем
+PURGE_OFFER_ATTRS_AFTER = ("type","article")
 
 INTERNAL_PRICE_TAGS = (
     "purchase_price","purchasePrice","wholesale_price","wholesalePrice",
@@ -55,7 +55,7 @@ INTERNAL_PRICE_TAGS = (
     "min_price","minPrice","max_price","maxPrice","oldprice"
 )
 
-# --------------------- утилиты ---------------------
+# --------------------- utils ---------------------
 def log(msg: str) -> None: print(msg, flush=True)
 def warn(msg: str) -> None: print(f"WARN: {msg}", file=sys.stderr, flush=True)
 def err(msg: str, code: int = 1) -> None: print(f"ERROR: {msg}", file=sys.stderr, flush=True); sys.exit(code)
@@ -80,7 +80,7 @@ def remove_all(el: ET.Element, *tags: str) -> int:
             el.remove(x); n+=1
     return n
 
-# --------------------- загрузка ---------------------
+# --------------------- load ---------------------
 def load_source_bytes(src: str) -> bytes:
     if not src: raise RuntimeError("SUPPLIER_URL не задан")
     if "://" not in src or src.startswith("file://"):
@@ -104,7 +104,7 @@ def load_source_bytes(src: str) -> bytes:
             if i<RETRIES: time.sleep(back)
     raise RuntimeError(f"fetch failed after {RETRIES}: {last}")
 
-# --------------------- категории ---------------------
+# --------------------- categories ---------------------
 class CatRule:
     __slots__=("raw","kind","pattern")
     def __init__(self, raw: str, kind: str, pattern):
@@ -181,7 +181,7 @@ def build_category_path_from_id(cat_id: str, id2name: Dict[str,str], id2parent: 
     names=[n for n in names if n]
     return " / ".join(reversed(names)) if names else ""
 
-# --------------------- бренды ---------------------
+# --------------------- brands ---------------------
 def _norm_key(s: str) -> str:
     if not s: return ""
     s=s.strip().lower().replace("ё","е")
@@ -214,7 +214,7 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
                 ven.text=canon; normalized+=1
     return normalized,dropped
 
-# --------------------- цены (как было) ---------------------
+# --------------------- pricing (как было) ---------------------
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -308,10 +308,10 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         updated+=1
     return updated,skipped,total,src_stats
 
-# --------------------- параметры / описание ---------------------
+# --------------------- params / description ---------------------
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
-# Чёрный список параметров (включая ТН ВЭД / TN VED / HS code)
+# Чёрный список параметров (служебное, ТН ВЭД и т.п.)
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:"
     r"благотворительн\w*|"
@@ -367,6 +367,24 @@ def _looks_like_code_value(v:str)->bool:
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
+# ==== Нормализация «мусорных» пробелов/табов в description (для парсинга) ====
+def _normalize_description_whitespace(text: str) -> str:
+    t = (text or "").replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
+    # схлопываем табы в один, оставляем как маркер расстояния
+    t = re.sub(r"\t+", "\t", t)
+    # подчистим хвостовые/начальные пробелы в строках
+    lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
+    # убираем лишние пустые строки (оставляем максимум одну подряд)
+    out=[]
+    last_blank=False
+    for ln in lines:
+        blank = (ln.strip()=="")
+        if blank and last_blank:
+            continue
+        out.append(ln.strip())  # лёгкая чистка по краям
+        last_blank = blank
+    return "\n".join(out).strip()
+
 # ===== НОРМАЛИЗАЦИЯ ПАР «имя: значение» =====
 def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     n = re.sub(r"\s+", " ", (name or "").strip())
@@ -376,24 +394,20 @@ def normalize_kv(name: str, value: str) -> Tuple[str, str]:
 
     n_l = n.lower()
 
-    # Синонимы
     if re.search(r"совместим\w*\s*модел", n_l):
         n = "Совместимость"
     elif re.search(r"ресурс", n_l):
         n = "Ресурс картриджа"
-        # вытащим число страниц и стандарт ISO, если есть
         m = re.search(r"(\d[\d\s]{0,12}\d)", v)
-        iso = re.search(r"(19|20)\d{3,5}", v)
+        iso = re.search(r"(?:iso|iec)[\/\s\-]*([12]\d{3,5})", v, re.I) or re.search(r"\b([12]\d{3,5})\b", v)
         if m:
             num = re.sub(r"\s+", " ", m.group(1)).strip()
             v = f"{num} стр."
             if iso:
-                v += f" (ISO/IEC {iso.group(0)})"
+                v += f" (ISO/IEC {iso.group(1)})"
     elif re.fullmatch(r"вес", n_l):
-        # добавим "кг", если нет
         if not re.search(r"\bкг\b", v, re.I):
-            v = v.replace(",", ".")
-            v = v.strip() + " кг"
+            v = v.replace(",", ".").strip() + " кг"
     elif re.fullmatch(r"цвет", n_l):
         v = v.lower()
 
@@ -414,7 +428,7 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
         seen.add(k); pairs.append((name, val))
     return pairs
 
-# ===== Извлечение KV из <description> (и очистка лишних блоков) =====
+# ===== Извлечение KV из <description> (с учётом лишних пробелов/табов и без заголовка) =====
 HDR_RE = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
 KV_BULLET_RE = re.compile(r"^\s*-\s*([^:]+?)\s*:\s*(.+)$")
 KV_COLON_RE  = re.compile(r"^\s*([^:]{2,}?)\s*:\s*(.+)$")
@@ -425,16 +439,22 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     if not (text or "").strip():
         return "", []
 
-    lines = text.splitlines()
+    t = _normalize_description_whitespace(text)
+    lines = t.split("\n")
     keep_mask = [True]*len(lines)
     pairs: List[Tuple[str,str]] = []
 
-    in_kv = False
-    non_kv_streak = 0
+    # 1) вырежем заголовки "Характеристики"
+    for i, ln in enumerate(lines):
+        if HDR_RE.match(ln):
+            keep_mask[i] = False
 
+    # 2) пробег по всем строкам — пытаемся распознать пары даже БЕЗ заголовка
     def try_parse_kv(ln: str) -> Optional[Tuple[str,str]]:
+        # сначала схлопнем множественные пробелы для стабильности распознавания
+        probe = re.sub(r"[ \t]{2,}", "  ", ln)
         for rx in (KV_BULLET_RE, KV_TABS_RE, KV_SPACES_RE, KV_COLON_RE):
-            m = rx.match(ln)
+            m = rx.match(probe)
             if m:
                 name, val = (m.group(1) or "").strip(), (m.group(2) or "").strip()
                 if name and val:
@@ -442,42 +462,15 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
         return None
 
     for i, ln in enumerate(lines):
-        if HDR_RE.match(ln):
+        parsed = try_parse_kv(ln)
+        if parsed:
             keep_mask[i] = False
-            in_kv = True
-            non_kv_streak = 0
-            continue
+            pairs.append(parsed)
 
-        parsed = None
-        if in_kv:
-            parsed = try_parse_kv(ln)
-            if parsed:
-                keep_mask[i] = False
-                pairs.append(parsed)
-                non_kv_streak = 0
-                continue
-            else:
-                # строка не похожа на KV
-                if ln.strip() == "":
-                    # пустая строка завершает блок
-                    in_kv = False
-                else:
-                    non_kv_streak += 1
-                    if non_kv_streak >= 2:
-                        in_kv = False
-
-        # вне режима in_kv также попробуем поймать маркеры "- Имя: Значение"
-        if not in_kv and KV_BULLET_RE.match(ln):
-            parsed = try_parse_kv(ln)
-            if parsed:
-                keep_mask[i] = False
-                pairs.append(parsed)
-
-    # Собираем "чистое" описание (без заголовков/строк KV)
+    # 3) соберём "чистое" описание без распознанных строк
     cleaned_lines = [ln for ln, keep in zip(lines, keep_mask) if keep]
     cleaned = "\n".join(cleaned_lines).strip()
-
-    # Убираем лишние двойные пустые строки
+    # уберём тройные и более переносы
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
 
     return cleaned, pairs
@@ -494,13 +487,10 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
         desc_el = offer.find("description")
         raw_desc = (desc_el.text or "").strip() if (desc_el is not None and desc_el.text) else ""
 
-        # 1) Вытащим KV из описания и очистим его
         cleaned_desc, kv_from_desc = extract_kv_from_description(raw_desc)
-
-        # 2) Пары из <param>
         pairs_from_params = build_specs_pairs_from_params(offer)
 
-        # 3) Мёрдж с приоритетом параметров (они «чище»)
+        # Мёрдж с приоритетом параметров
         merged: Dict[str, Tuple[str,str]] = {}
         for name, val in pairs_from_params:
             merged[_key(name)] = (name, val)
@@ -510,22 +500,17 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
                 merged[k] = (name, val)
 
         if not merged:
-            # Нечего добавлять — просто обновим описание, если мы что-то чистили
+            # только почистили пробелы — обновим description при необходимости
             if cleaned_desc != raw_desc and desc_el is not None:
                 desc_el.text = cleaned_desc
                 offers_touched += 1
             continue
 
-        # 4) Отсортируем A–Я по имени (нормализованному)
         merged_pairs = list(merged.values())
         merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
-
-        # 5) Сборка строк
         lines = [f"- {name}: {val}" for name, val in merged_pairs]
 
-        # 6) Итоговое описание: «интро» + пустая строка + блок «Характеристики»
         new_text = (cleaned_desc + "\n\n" if cleaned_desc else "") + "Характеристики:\n" + "\n".join(lines)
-
         if desc_el is None:
             desc_el = ET.SubElement(offer, "description")
         desc_el.text = new_text.strip()
@@ -535,7 +520,7 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
 
     return offers_touched, total_kv
 
-# Чистка служебных строк (на всякий случай после унификации)
+# Чистка служебных строк (страховка)
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
@@ -556,7 +541,7 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
             d.text=new_text; changed+=1
     return changed
 
-# --------------------- доступность ---------------------
+# --------------------- availability ---------------------
 TRUE_WORDS  = {"true","1","yes","y","да","есть","in stock","available"}
 FALSE_WORDS = {"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 
@@ -606,7 +591,7 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
             remove_all(offer, "quantity_in_stock","quantity","stock","Stock")
     return t_cnt,f_cnt,st_cnt,ss_cnt
 
-# --------------------- vendorCode / id ---------------------
+# --------------------- ids / vendorCode ---------------------
 ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
 
 def _extract_article_from_name(name:str)->str:
@@ -664,7 +649,7 @@ def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> int:
             offer.attrib["id"]=new_id; changed+=1
     return changed
 
-# --------------------- чистка тегов/атрибутов ---------------------
+# --------------------- cleanup / order ---------------------
 def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
     removed_tags=0
     for t in PURGE_TAGS_AFTER:
@@ -675,9 +660,6 @@ def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
         if a in offer.attrib:
             offer.attrib.pop(a,None); removed_attrs+=1
     return removed_tags,removed_attrs
-
-def count_category_ids(offer_el: ET.Element) -> int:
-    return len(list(offer_el.findall("categoryId"))) + len(list(offer_el.findall("CategoryId")))
 
 def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
     offers_el=shop_el.find("offers")
@@ -725,7 +707,6 @@ STOPWORDS = {
     "для","и","или","с","на","в","к","по","под","от","до","из","без","при","это","данный","данная","данные","тот","та","те",
     "а","но","же","ли","как","что","чтобы","есть","нет","да","у","во","так","бы","можно","может","мы","вы","они","он","она"
 }
-
 TRANSLIT = str.maketrans({
     "а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n",
     "о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y",
@@ -736,7 +717,6 @@ def translit_ru_en(s: str) -> str:
 
 GEO_TOKENS=["Казахстан","Алматы","Астана","Шымкент","Караганда"]
 RE_BLOCKED_ARTICLE = re.compile(r"^(?:AS\d{3,}|[A-Z]{2,}\d{3,})$", re.I)
-
 KEYWORD_RULES = [
     (re.compile(r"\b(ибп|ups)\b", re.I),
      ["источник бесперебойного питания","ИБП","UPS","line-interactive","on-line ups"]),
@@ -918,10 +898,6 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     for k,v in rows: lines.append(f"{k.ljust(key_w)} | {v}")
     return "\n".join(lines)
 
-def top_dropped(d:Dict[str,int], n:int=10)->str:
-    items=sorted(d.items(), key=lambda kv: kv[1], reverse=True)[:n]
-    return(",".join(f"{k}:{v}" for k,v in items) if items else "n/a")
-
 # --------------------- MAIN ---------------------
 def main()->None:
     log(f"Source: {SUPPLIER_URL or '(not set)'}")
@@ -940,7 +916,7 @@ def main()->None:
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # Фильтр категорий (как в исходном скрипте)
+    # фильтр категорий (как было)
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         if ALSTYLE_CATEGORIES_MODE=="include" and not (rules_ids or rules_names):
@@ -951,13 +927,11 @@ def main()->None:
                 path=build_category_path_from_id(cid,id2name,id2parent)
                 if category_matches_name(path, rules_names): keep_ids.add(cid)
         if keep_ids and parent2children: keep_ids=collect_descendants(keep_ids,parent2children)
-        filtered=0
         for off in list(out_offers.findall("offer")):
             cid=get_text(off,"categoryId")
             hit=(cid in keep_ids) if cid else False
             drop=(ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
-            if drop: out_offers.remove(off); filtered+=1
-        log(f"Category filter removed: {filtered}")
+            if drop: out_offers.remove(off)
 
     # убрать старые categoryId
     if DROP_CATEGORY_ID_TAG:
@@ -978,16 +952,16 @@ def main()->None:
     # цены
     reprice_offers(out_shop, PRICING_RULES)
 
-    # доступность — как атрибут
+    # доступность
     normalize_available_field(out_shop)
 
     # чистка <param>
     remove_specific_params(out_shop)
 
-    # УНИФИКАЦИЯ: вытащить KV из description, слить с <param>, собрать единый блок A–Я
+    # УНИФИКАЦИЯ: нормализуем description, собираем пары отовсюду и делаем 1 блок A–Я
     unify_specs_in_description(out_shop)
 
-    # На всякий случай подчистить служебные строки
+    # страховка от служебных строк
     remove_blacklisted_kv_from_descriptions(out_shop)
 
     # валюта
@@ -1000,7 +974,7 @@ def main()->None:
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
-    # KEYWORDS: генерим SEO-ключи (без дубликатов и без артикулов) + гео-добавка
+    # SEO keywords
     if SATU_MODE=="full":
         add_keywords_auto(out_shop, mode=SATU_KEYWORDS)
         enforce_keywords_geo(out_shop)
