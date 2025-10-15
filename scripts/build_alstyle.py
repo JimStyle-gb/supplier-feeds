@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-09-23.strict-01 + tnved_purge + seo_keywords + kw_dedup + specs_alpha
+version: alstyle-2025-10-15.strict-01 + tnved_purge + seo_keywords + kw_dedup + specs_alpha + desc_merge
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+tnved_purge+seo_keywords+kw_dedup+specs_alpha"
+SCRIPT_VERSION = "alstyle-2025-10-15.strict-01+tnved_purge+seo_keywords+kw_dedup+specs_alpha+desc_merge"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -353,7 +353,7 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                 seen.add(k)
     return removed
 
-# Исключения для сборки «Характеристик» (тут тоже исключаем ТН ВЭД)
+# Исключения для сборки «Характеристик»
 EXCLUDE_NAME_RE = re.compile(
     r"(?:\bартикул\b|благотворительн\w*|штрихкод|оригинальн\w*\s*код|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)",
@@ -367,47 +367,175 @@ def _looks_like_code_value(v:str)->bool:
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
-# === ОБНОВЛЕНО: строим и сортируем «Характеристики» по алфавиту ===
-def build_specs_lines(offer:ET.Element)->List[str]:
-    """
-    Собираем пары 'Имя: Значение' из <param> и возвращаем
-    ОТСОРТИРОВАННЫЙ по алфавиту список строк: "- Имя: Значение"
-    """
-    lines=[]; seen=set()
+# ===== НОРМАЛИЗАЦИЯ ПАР «имя: значение» =====
+def normalize_kv(name: str, value: str) -> Tuple[str, str]:
+    n = re.sub(r"\s+", " ", (name or "").strip())
+    v = re.sub(r"\s+", " ", (value or "").strip())
+    if not n or not v:
+        return n, v
+
+    n_l = n.lower()
+
+    # Синонимы
+    if re.search(r"совместим\w*\s*модел", n_l):
+        n = "Совместимость"
+    elif re.search(r"ресурс", n_l):
+        n = "Ресурс картриджа"
+        # вытащим число страниц и стандарт ISO, если есть
+        m = re.search(r"(\d[\d\s]{0,12}\d)", v)
+        iso = re.search(r"(19|20)\d{3,5}", v)
+        if m:
+            num = re.sub(r"\s+", " ", m.group(1)).strip()
+            v = f"{num} стр."
+            if iso:
+                v += f" (ISO/IEC {iso.group(0)})"
+    elif re.fullmatch(r"вес", n_l):
+        # добавим "кг", если нет
+        if not re.search(r"\bкг\b", v, re.I):
+            v = v.replace(",", ".")
+            v = v.strip() + " кг"
+    elif re.fullmatch(r"цвет", n_l):
+        v = v.lower()
+
+    return n, v
+
+# ===== Извлечение KV из <param> (как пары) =====
+def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
+    pairs=[]; seen=set()
     for p in list(offer.findall("param")) + list(offer.findall("Param")):
         raw_name=(p.attrib.get("name") or "").strip()
         raw_val =(p.text or "").strip()
         if not raw_name or not raw_val: continue
         if EXCLUDE_NAME_RE.search(raw_name): continue
         if _looks_like_code_value(raw_val): continue
-        k=_key(raw_name)
+        name, val = normalize_kv(raw_name, raw_val)
+        k=_key(name)
         if k in seen: continue
-        seen.add(k); lines.append(f"- {raw_name}: {raw_val}")
+        seen.add(k); pairs.append((name, val))
+    return pairs
 
-    def _sort_key(s: str) -> str:
-        name = re.split(r":", re.sub(r"^\s*-\s*", "", s), 1)[0]
-        return _norm_text(name)  # нормализуем для корректной сортировки (регистр, пробелы, ё→е)
+# ===== Извлечение KV из <description> (и очистка лишних блоков) =====
+HDR_RE = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
+KV_BULLET_RE = re.compile(r"^\s*-\s*([^:]+?)\s*:\s*(.+)$")
+KV_COLON_RE  = re.compile(r"^\s*([^:]{2,}?)\s*:\s*(.+)$")
+KV_TABS_RE   = re.compile(r"^\s*([^\t]{2,}?)\t+(.+)$")
+KV_SPACES_RE = re.compile(r"^\s*(\S.{1,}?)\s{2,}(.+)$")  # имя   значение (2+ пробелов)
 
-    lines.sort(key=_sort_key)
-    return lines
+def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
+    if not (text or "").strip():
+        return "", []
 
-def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
+    lines = text.splitlines()
+    keep_mask = [True]*len(lines)
+    pairs: List[Tuple[str,str]] = []
+
+    in_kv = False
+    non_kv_streak = 0
+
+    def try_parse_kv(ln: str) -> Optional[Tuple[str,str]]:
+        for rx in (KV_BULLET_RE, KV_TABS_RE, KV_SPACES_RE, KV_COLON_RE):
+            m = rx.match(ln)
+            if m:
+                name, val = (m.group(1) or "").strip(), (m.group(2) or "").strip()
+                if name and val:
+                    return normalize_kv(name, val)
+        return None
+
+    for i, ln in enumerate(lines):
+        if HDR_RE.match(ln):
+            keep_mask[i] = False
+            in_kv = True
+            non_kv_streak = 0
+            continue
+
+        parsed = None
+        if in_kv:
+            parsed = try_parse_kv(ln)
+            if parsed:
+                keep_mask[i] = False
+                pairs.append(parsed)
+                non_kv_streak = 0
+                continue
+            else:
+                # строка не похожа на KV
+                if ln.strip() == "":
+                    # пустая строка завершает блок
+                    in_kv = False
+                else:
+                    non_kv_streak += 1
+                    if non_kv_streak >= 2:
+                        in_kv = False
+
+        # вне режима in_kv также попробуем поймать маркеры "- Имя: Значение"
+        if not in_kv and KV_BULLET_RE.match(ln):
+            parsed = try_parse_kv(ln)
+            if parsed:
+                keep_mask[i] = False
+                pairs.append(parsed)
+
+    # Собираем "чистое" описание (без заголовков/строк KV)
+    cleaned_lines = [ln for ln, keep in zip(lines, keep_mask) if keep]
+    cleaned = "\n".join(cleaned_lines).strip()
+
+    # Убираем лишние двойные пустые строки
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+
+    return cleaned, pairs
+
+# ===== Сборка финального блока «Характеристики» и замена в description =====
+def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0)
-    offers_touched=0; lines_total=0
-    for offer in offers_el.findall("offer"):
-        lines=build_specs_lines(offer)
-        if not lines: continue
-        desc_el=offer.find("description")
-        curr=get_text(offer,"description")
-        block="Характеристики:\n"+"\n".join(lines)
-        new_text=(curr+"\n\n"+block).strip() if curr else block
-        if desc_el is None: desc_el=ET.SubElement(offer,"description")
-        desc_el.text=new_text
-        offers_touched+=1; lines_total+=len(lines)
-    return offers_touched,lines_total
 
-# Чистка служебных строк в описании
+    offers_touched=0
+    total_kv = 0
+
+    for offer in offers_el.findall("offer"):
+        desc_el = offer.find("description")
+        raw_desc = (desc_el.text or "").strip() if (desc_el is not None and desc_el.text) else ""
+
+        # 1) Вытащим KV из описания и очистим его
+        cleaned_desc, kv_from_desc = extract_kv_from_description(raw_desc)
+
+        # 2) Пары из <param>
+        pairs_from_params = build_specs_pairs_from_params(offer)
+
+        # 3) Мёрдж с приоритетом параметров (они «чище»)
+        merged: Dict[str, Tuple[str,str]] = {}
+        for name, val in pairs_from_params:
+            merged[_key(name)] = (name, val)
+        for name, val in kv_from_desc:
+            k = _key(name)
+            if k not in merged:
+                merged[k] = (name, val)
+
+        if not merged:
+            # Нечего добавлять — просто обновим описание, если мы что-то чистили
+            if cleaned_desc != raw_desc and desc_el is not None:
+                desc_el.text = cleaned_desc
+                offers_touched += 1
+            continue
+
+        # 4) Отсортируем A–Я по имени (нормализованному)
+        merged_pairs = list(merged.values())
+        merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
+
+        # 5) Сборка строк
+        lines = [f"- {name}: {val}" for name, val in merged_pairs]
+
+        # 6) Итоговое описание: «интро» + пустая строка + блок «Характеристики»
+        new_text = (cleaned_desc + "\n\n" if cleaned_desc else "") + "Характеристики:\n" + "\n".join(lines)
+
+        if desc_el is None:
+            desc_el = ET.SubElement(offer, "description")
+        desc_el.text = new_text.strip()
+
+        offers_touched += 1
+        total_kv += len(lines)
+
+    return offers_touched, total_kv
+
+# Чистка служебных строк (на всякий случай после унификации)
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
@@ -774,7 +902,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     base_ts=today_01.timestamp()
     next_ts=base_ts+86400 if now_alm.timestamp()>=base_ts else base_ts
     next_alm=datetime.fromtimestamp(next_ts,getattr(now_alm,"tzinfo",None))
-    def fmt(dt:datetime)->str: return dt.strftime("%d:%m:%Y - %H:%М:%S")
+    def fmt(dt:datetime)->str: return dt.strftime("%d:%m:%Y - %H:%M:%S")
     rows=[
         ("Поставщик", pairs.get("supplier","")),
         ("URL поставщика", pairs.get("source","")),
@@ -856,10 +984,10 @@ def main()->None:
     # чистка <param>
     remove_specific_params(out_shop)
 
-    # «Характеристики» (теперь отсортированы A–Я)
-    inject_specs_block(out_shop)
+    # УНИФИКАЦИЯ: вытащить KV из description, слить с <param>, собрать единый блок A–Я
+    unify_specs_in_description(out_shop)
 
-    # подчистить служебные строки в описаниях
+    # На всякий случай подчистить служебные строки
     remove_blacklisted_kv_from_descriptions(out_shop)
 
     # валюта
