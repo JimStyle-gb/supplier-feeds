@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-09-23.strict-01 + tnved_purge + seo_keywords + kw_dedup
+version: alstyle-2025-09-23.strict-01 + tnved_purge + seo_keywords + kw_dedup + specs_alpha
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+tnved_purge+seo_keywords+kw_dedup"
+SCRIPT_VERSION = "alstyle-2025-09-23.strict-01+tnved_purge+seo_keywords+kw_dedup+specs_alpha"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -340,10 +340,8 @@ def remove_specific_params(shop_el: ET.Element) -> int:
             for p in list(offer.findall(tag)):
                 nm=(p.attrib.get("name") or "").strip()
                 val=(p.text or "").strip()
-                # служебные/ТН ВЭД
                 if UNWANTED_PARAM_NAME_RE.match(nm):
                     offer.remove(p); removed+=1; continue
-                # пустые/заглушки/URL/e-mail/HTML/дубликаты
                 if (val.lower() in {"","-","—","–",".","..","...","n/a","na","none","null","нет данных","не указано","неизвестно"}
                     or re.search(r"https?://|www\.", val, re.I)
                     or re.search(r"[^@\s]+@[^@\s]+\.[^@\s]+", val)
@@ -369,7 +367,12 @@ def _looks_like_code_value(v:str)->bool:
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
+# === ОБНОВЛЕНО: строим и сортируем «Характеристики» по алфавиту ===
 def build_specs_lines(offer:ET.Element)->List[str]:
+    """
+    Собираем пары 'Имя: Значение' из <param> и возвращаем
+    ОТСОРТИРОВАННЫЙ по алфавиту список строк: "- Имя: Значение"
+    """
     lines=[]; seen=set()
     for p in list(offer.findall("param")) + list(offer.findall("Param")):
         raw_name=(p.attrib.get("name") or "").strip()
@@ -380,6 +383,12 @@ def build_specs_lines(offer:ET.Element)->List[str]:
         k=_key(raw_name)
         if k in seen: continue
         seen.add(k); lines.append(f"- {raw_name}: {raw_val}")
+
+    def _sort_key(s: str) -> str:
+        name = re.split(r":", re.sub(r"^\s*-\s*", "", s), 1)[0]
+        return _norm_text(name)  # нормализуем для корректной сортировки (регистр, пробелы, ё→е)
+
+    lines.sort(key=_sort_key)
     return lines
 
 def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
@@ -398,7 +407,7 @@ def inject_specs_block(shop_el:ET.Element)->Tuple[int,int]:
         offers_touched+=1; lines_total+=len(lines)
     return offers_touched,lines_total
 
-# Чистка строк-«маркеров» в описании (включая ТН ВЭД)
+# Чистка служебных строк в описании
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
@@ -583,7 +592,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# --------------------- keywords (SEO) ---------------------
+# --------------------- keywords (SEO с дедупликацией) ---------------------
 STOPWORDS = {
     "для","и","или","с","на","в","к","по","под","от","до","из","без","при","это","данный","данная","данные","тот","та","те",
     "а","но","же","ли","как","что","чтобы","есть","нет","да","у","во","так","бы","можно","может","мы","вы","они","он","она"
@@ -598,11 +607,8 @@ def translit_ru_en(s: str) -> str:
     return "".join(ch.translate(TRANSLIT) if ch.lower() in "абвгдежзийклмнопрстуфхцчшщыэюяё" else ch for ch in s.lower())
 
 GEO_TOKENS=["Казахстан","Алматы","Астана","Шымкент","Караганда"]
-
-# НЕ включать артикулы вида AS69730, AB1234 и т.п. (но не режем U-650-L, C13 и пр.)
 RE_BLOCKED_ARTICLE = re.compile(r"^(?:AS\d{3,}|[A-Z]{2,}\d{3,})$", re.I)
 
-# Фразы-синонимы по товарам
 KEYWORD_RULES = [
     (re.compile(r"\b(ибп|ups)\b", re.I),
      ["источник бесперебойного питания","ИБП","UPS","line-interactive","on-line ups"]),
@@ -641,7 +647,6 @@ def _split_tokens(text: str) -> list[str]:
                 tokens.append(re.sub(r"^[^\w]+|[^\w]+$", "", w))
     return [t for t in tokens if t]
 
-# >>> ДЕДУПЛИКАЦИЯ КЛЮЧЕЙ: строгая, по нормализованной форме
 def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
     if mode!="auto": return 0
     offers_el=shop_el.find("offers")
@@ -655,12 +660,11 @@ def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
     for offer in offers_el.findall("offer"):
         kw_el = offer.find("keywords")
         if kw_el is not None and (kw_el.text or "").strip():
-            continue  # существующие не трогаем
+            continue
 
         name   = get_text(offer, "name")
         vendor = get_text(offer, "vendor")
 
-        # 1) базовые токены (бренд + имя товара). vendorCode/артикул НЕ используем
         base_text = " ".join([vendor, name])
         raw_tokens = _split_tokens(base_text)
         tokens, seen_tokens = [], set()
@@ -673,7 +677,6 @@ def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
             seen_tokens.add(k)
             tokens.append(t)
 
-        # 2) фразовые синонимы по типу
         phrase_tokens=[]
         seen_phr = set(seen_tokens)
         for rx, phrases in KEYWORD_RULES:
@@ -684,7 +687,6 @@ def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
                         seen_phr.add(k)
                         phrase_tokens.append(ph)
 
-        # 3) транслит ключевых (чуть-чуть)
         translit_tokens=[]
         seen_tr = set(seen_phr)
         for t in tokens[:8]:
@@ -695,10 +697,8 @@ def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
                     seen_tr.add(k)
                     translit_tokens.append(tr)
 
-        # 4) гео
         geo_tokens = GEO_TOKENS if include_geo else []
 
-        # 5) сборка с ЖЁСТКОЙ дедупликацией
         final=[]
         final_seen=set()
         def _try_add(item:str)->bool:
@@ -714,7 +714,6 @@ def add_keywords_auto(shop_el: ET.Element, mode: str="auto")->int:
                 return True
             return False
 
-        # приоритет: бренд → информативные модельные → фразы → остаток → транслит → гео
         if vendor: _try_add(vendor.strip())
         for t in tokens:
             if _try_add(t) and len(final)>=5:
@@ -775,7 +774,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     base_ts=today_01.timestamp()
     next_ts=base_ts+86400 if now_alm.timestamp()>=base_ts else base_ts
     next_alm=datetime.fromtimestamp(next_ts,getattr(now_alm,"tzinfo",None))
-    def fmt(dt:datetime)->str: return dt.strftime("%d:%m:%Y - %H:%M:%S")
+    def fmt(dt:datetime)->str: return dt.strftime("%d:%m:%Y - %H:%М:%S")
     rows=[
         ("Поставщик", pairs.get("supplier","")),
         ("URL поставщика", pairs.get("source","")),
@@ -857,7 +856,7 @@ def main()->None:
     # чистка <param>
     remove_specific_params(out_shop)
 
-    # «Характеристики» в описания
+    # «Характеристики» (теперь отсортированы A–Я)
     inject_specs_block(out_shop)
 
     # подчистить служебные строки в описаниях
