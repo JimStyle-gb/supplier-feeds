@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-10-15.strict-03
-changes:
-- нормализация пробелов/табов/пустых строк в <description>
-- вырезание «битых» пуль (-  :: VALUE / -  : VALUE / - Имя:) до парсинга
-- извлечение KV из табличек/колонок без заголовка «Характеристики»
-- слияние с <param>, дедуп по имени, сортировка А–Я
-- нормализация пунктуации в значениях (%, °С, ::, .., пробелы), удаление URL из описания до блока
-- остальная логика неизменна
+version: alstyle-2025-10-15.strict-04
+changes vs strict-03:
+- пропускаем строки-предложения с двоеточием (гарантия/маркировки/инструкции и т.п.) при разборе KV,
+  чтобы они НЕ попадали в «Характеристики:» (пример с «Картриджи Europrint маркированы...», «В случае...», «Условия гарантии...»)
+- остальная логика — без изменений
 """
 
 from __future__ import annotations
@@ -26,7 +23,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-15.strict-03+desc_norm+bullet_garbage+desc_merge+specs_alpha+seo_kw_dedup"
+SCRIPT_VERSION = "alstyle-2025-10-15.strict-04+desc_norm+bullet_garbage+desc_merge+specs_alpha+seo_kw_dedup+kv_guard"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -98,7 +95,7 @@ def load_source_bytes(src: str) -> bytes:
     sess=requests.Session()
     headers={"User-Agent":"supplier-feed-bot/1.0 (+github-actions)"}
     last=None
-    for i in(1,2,3,4):
+    for i in (1,2,3,4):
         try:
             r=sess.get(src, headers=headers, timeout=TIMEOUT_S)
             if r.status_code!=200: raise RuntimeError(f"HTTP {r.status_code}")
@@ -317,7 +314,6 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
 # --------------------- params / description ---------------------
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
-# Чёрный список параметров (служебное, ТН ВЭД и т.п.)
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:"
     r"благотворительн\w*|"
@@ -359,7 +355,6 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                 seen.add(k)
     return removed
 
-# Исключения для сборки «Характеристик»
 EXCLUDE_NAME_RE = re.compile(
     r"(?:\bартикул\b|благотворительн\w*|штрихкод|оригинальн\w*\s*код|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)",
@@ -376,11 +371,8 @@ def _looks_like_code_value(v:str)->bool:
 # ==== Нормализация пробелов/табов/пустых строк в description ====
 def _normalize_description_whitespace(text: str) -> str:
     t = (text or "").replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
-    # схлопываем табы в один (маркер столбца), множественные пробелы не трогаем пока
-    t = re.sub(r"\t+", "\t", t)
-    # обрезаем ходы пробелов по краям
+    t = re.sub(r"\t+", "\t", t)  # табы → один таб (маркер столбца)
     lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
-    # убираем лишние пустые строки (макс одна подряд)
     out=[]; last_blank=False
     for ln in lines:
         blank = (ln.strip()=="")
@@ -388,25 +380,24 @@ def _normalize_description_whitespace(text: str) -> str:
             continue
         out.append(ln.strip())
         last_blank = blank
-    t = "\n".join(out).strip()
-    return t
+    return "\n".join(out).strip()
 
-# ==== Нормализация пунктуации (в значениях «Имя: Значение») ====
+# ==== Нормализация пунктуации (в значениях) ====
 RE_SPACE_BEFORE_PUNCT = re.compile(r"\s+([,;.!?])")
 RE_PERCENT            = re.compile(r"(\d)\s*%")
-RE_DEGREE_C           = re.compile(r"(\d)\s*°\s*([СC])")  # кир/лат C
+RE_DEGREE_C           = re.compile(r"(\d)\s*°\s*([СC])")
 RE_DBL_COLON          = re.compile(r"\s*:\s*:\s*")
 RE_DOTS2              = re.compile(r"(?<!\.)\.\.(?!\.)")
 
 def normalize_value_punct(v: str) -> str:
     if not v: return v
     s=v
-    s=RE_DBL_COLON.sub(": ", s)      # :: → :
-    s=RE_DOTS2.sub(".", s)           # .. → .
-    s=RE_SPACE_BEFORE_PUNCT.sub(r"\1", s)  # убираем пробел перед пунктуацией
-    s=RE_PERCENT.sub(r"\1%", s)      # 50 % → 50%
-    s=RE_DEGREE_C.sub(r"\1°\2", s)   # 40 °С → 40°С
-    s=re.sub(r"\s{2,}", " ", s)      # схлопнуть двойные пробелы
+    s=RE_DBL_COLON.sub(": ", s)      
+    s=RE_DOTS2.sub(".", s)           
+    s=RE_SPACE_BEFORE_PUNCT.sub(r"\1", s)
+    s=RE_PERCENT.sub(r"\1%", s)
+    s=RE_DEGREE_C.sub(r"\1°\2", s)
+    s=re.sub(r"\s{2,}", " ", s)
     return s.strip()
 
 # ===== НОРМАЛИЗАЦИЯ ПАР «имя: значение» =====
@@ -438,7 +429,7 @@ def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     v = normalize_value_punct(v)
     return n, v
 
-# ===== Извлечение KV из <param> (как пары) =====
+# ===== Извлечение KV из <param> =====
 def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     pairs=[]; seen=set()
     for p in list(offer.findall("param")) + list(offer.findall("Param")):
@@ -458,13 +449,33 @@ HDR_RE = re.compile(r"^\s*(технические\s+характеристики
 KV_BULLET_RE = re.compile(r"^\s*-\s*([^:]+?)\s*:\s*(.+)$")
 KV_COLON_RE  = re.compile(r"^\s*([^:]{2,}?)\s*:\s*(.+)$")
 KV_TABS_RE   = re.compile(r"^\s*([^\t]{2,}?)\t+(.+)$")
-KV_SPACES_RE = re.compile(r"^\s*(\S.{1,}?)\s{2,}(.+)$")  # имя   значение (2+ пробелов)
+KV_SPACES_RE = re.compile(r"^\s*(\S.{1,}?)\s{2,}(.+)$")
 
-# «битые» пули, которые нужно удалить ДО парсинга:
 BULLET_NO_KEY      = re.compile(r"^\s*-\s*[:\s\-]{0,5}:\s*\S")
 BULLET_KEY_NOVALUE = re.compile(r"^\s*-\s*[^:]+:\s*$")
 
 URL_RE = re.compile(r"https?://\S+", re.I)
+
+# <<< НОВОЕ: фильтр имен «ключа», чтобы не ловить обычные предложения >>>
+BAD_KV_NAME_RE = re.compile(
+    r"(?:\bв\s+случае\b|\bуслов\w*\s+гаран|необходим\w*|следует|предостав\w*|предъяв\w*|"
+    r"указан\w*|содержит|соответству\w*|упаков\w*|маркиров\w*|голографическ\w*|"
+    r"на\s+корпусе|на\s+упаковке|на\s+коробке|фото|видео)",
+    re.I
+)
+
+def _valid_kv_name(name: str) -> bool:
+    n = (name or "").strip(" -•*·").strip()
+    if not n: return False
+    # слишком длинные/многословные названия — это скорее предложения
+    if len(n) > 48: return False
+    if len(re.findall(r"[A-Za-zА-Яа-я0-9%°\-\+]+", n)) > 6: return False
+    if BAD_KV_NAME_RE.search(n): return False
+    if re.search(r"[.!?]$", n): return False
+    # два и более запятых в «ключе» — тоже похоже на предложение
+    if n.count(",") >= 2: return False
+    return True
+# >>> НОВОЕ (конец)
 
 def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     if not (text or "").strip():
@@ -475,10 +486,9 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     keep_mask = [True]*len(lines)
     pairs: List[Tuple[str,str]] = []
 
-    # 0) убрать явные URL из «человеческой» части (не из KV-строк)
+    # 0) убрать явные URL из «человеческой» части
     for i, ln in enumerate(lines):
         if URL_RE.search(ln):
-            # если это не KV-строка и не будет распознана как KV — чистим ссылку
             if not (KV_BULLET_RE.match(ln) or KV_COLON_RE.match(ln) or KV_TABS_RE.match(ln) or KV_SPACES_RE.match(ln)):
                 lines[i] = URL_RE.sub("", ln).strip()
 
@@ -486,18 +496,21 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     for i, ln in enumerate(lines):
         if HDR_RE.match(ln): keep_mask[i] = False
 
-    # 2) выкинуть «битые» пули ( -  :: val / -  : val / - Имя: )
+    # 2) выкинуть «битые» пули
     for i, ln in enumerate(lines):
         if BULLET_NO_KEY.match(ln) or BULLET_KEY_NOVALUE.match(ln):
-            keep_mask[i] = False  # мусор — просто удаляем
+            keep_mask[i] = False
 
-    # 3) распознать пары в оставшихся строках
+    # 3) распознать пары
     def try_parse_kv(ln: str) -> Optional[Tuple[str,str]]:
-        probe = re.sub(r"[ \t]{2,}", "  ", ln)  # стабилизация
+        probe = re.sub(r"[ \t]{2,}", "  ", ln)
         for rx in (KV_BULLET_RE, KV_TABS_RE, KV_SPACES_RE, KV_COLON_RE):
             m = rx.match(probe)
             if m:
                 name, val = (m.group(1) or "").strip(), (m.group(2) or "").strip()
+                # <<< проверка: имя похоже на человеческое предложение? тогда НЕ KV
+                if not _valid_kv_name(name):
+                    return None
                 if name and val:
                     return normalize_kv(name, val)
         return None
@@ -515,7 +528,7 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
 
     return cleaned, pairs
 
-# ===== Сборка финального блока «Характеристики» и замена в description =====
+# ===== Сборка финального блока «Характеристики» =====
 def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0)
@@ -530,7 +543,6 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
         cleaned_desc, kv_from_desc = extract_kv_from_description(raw_desc)
         pairs_from_params = build_specs_pairs_from_params(offer)
 
-        # Мёрдж с приоритетом параметров
         merged: Dict[str, Tuple[str,str]] = {}
         for name, val in pairs_from_params:
             merged[_key(name)] = (name, val)
@@ -547,7 +559,6 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
 
         merged_pairs = list(merged.values())
         merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
-
         lines = [f"- {name}: {val}" for name, val in merged_pairs]
 
         new_text = (cleaned_desc + "\n\n" if cleaned_desc else "") + "Характеристики:\n" + "\n".join(lines)
@@ -560,7 +571,6 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
 
     return offers_touched, total_kv
 
-# Чистка служебных строк (страховка)
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
@@ -742,7 +752,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# --------------------- keywords (SEO, без артикулов) ---------------------
+# --------------------- keywords ---------------------
 STOPWORDS = {
     "для","и","или","с","на","в","к","по","под","от","до","из","без","при","это","данный","данная","данные","тот","та","те",
     "а","но","же","ли","как","что","чтобы","есть","нет","да","у","во","так","бы","можно","может","мы","вы","они","он","она"
@@ -994,10 +1004,10 @@ def main()->None:
     # чистка <param>
     remove_specific_params(out_shop)
 
-    # УНИФИКАЦИЯ: нормализуем description, вырезаем «битые» пули/мусор, собираем пары и делаем 1 блок A–Я
+    # описание → «Характеристики»
     unify_specs_in_description(out_shop)
 
-    # страховка от служебных строк (после унификации)
+    # страховка от служебных строк
     remove_blacklisted_kv_from_descriptions(out_shop)
 
     # валюта
