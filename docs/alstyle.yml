@@ -1,17 +1,17 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-15 23:43">
+<yml_catalog date="2025-10-16 20:19">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 16:10:2025 - 04:43:42
-Ближайшее время сборки (Алматы)            | 17:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15877
-Сколько товаров у поставщика после фильтра | 1984
-Сколько товаров есть в наличии (true)      | 1321
-Сколько товаров нет в наличии (false)      | 663-->
+Время сборки (Алматы)                      | 17:10:2025 - 01:19:54
+Ближайшее время сборки (Алматы)            | 18:10:2025 - 01:00:00
+Сколько товаров у поставщика до фильтра    | 15908
+Сколько товаров у поставщика после фильтра | 1987
+Сколько товаров есть в наличии (true)      | 1316
+Сколько товаров нет в наличии (false)      | 671-->
 <shop>
     <offers>
-      <offer id="AS20888" available="true">
+      <offer id="AS20888" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS20888</vendorCode>
         <name>Источник бесперебойного питания SVC U-650-L</name>
@@ -5126,7 +5126,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.005566222</param>
       </offer>
 
-<offer id="AS15898" available="false">
+<offer id="AS15898" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS15898</vendorCode>
         <name>Драм-картридж Europrint EPC-101R00474 (WC3225)</name>
@@ -6839,7 +6839,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.132396</param>
       </offer>
 
-<offer id="AS6607" available="true">
+<offer id="AS6607" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS6607</vendorCode>
         <name>Источник бесперебойного питания SVC RT-3KL-LCD</name>
@@ -8884,7 +8884,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.0040703</param>
       </offer>
 
-<offer id="AS24658" available="true">
+<offer id="AS24658" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS24658</vendorCode>
         <name>Тонер-картридж Europrint EPC-006R01573 (WC5019)</name>
@@ -9145,7 +9145,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.007136458</param>
       </offer>
 
-<offer id="AS24704" available="false">
+<offer id="AS24704" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS24704</vendorCode>
         <name>Источник бесперебойного питания SVC RTU-1KL-LCD</name>
@@ -9430,7 +9430,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.02535235</param>
       </offer>
 
-<offer id="AS25232" available="true">
+<offer id="AS25232" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS25232</vendorCode>
         <name>Источник бесперебойного питания SVC V-1500-L</name>
@@ -11507,7 +11507,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.00719401</param>
       </offer>
 
-<offer id="AS29620" available="true">
+<offer id="AS29620" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS29620</vendorCode>
         <name>Источник бесперебойного питания SVC PTS-1KL-LCD</name>
@@ -13867,7 +13867,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.035328</param>
       </offer>
 
-<offer id="AS32333" available="false">
+<offer id="AS32333" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS32333</vendorCode>
         <name>Тонер-картридж экстра повышенной емкости Xerox 106R03585</name>
@@ -20370,7 +20370,7 @@ WorkCentre Pro 4110/4112/4127/4595
         <param name="Объём">0.00005</param>
       </offer>
 
-<offer id="AS39777" available="true">
+<offer id="AS39777" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS39777</vendorCode>
         <name>Монохромный принтер Xerox B310DNI</name>
@@ -20426,7 +20426,7 @@ WorkCentre Pro 4110/4112/4127/4595
         <param name="Объём">0.030064128</param>
       </offer>
 
-<offer id="AS39778" available="true">
+<offer id="AS39778" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS39778</vendorCode>
         <name>Цветное МФУ Xerox C235DNI</name>
@@ -20696,7 +20696,7 @@ WorkCentre Pro 4110/4112/4127/4595
         <param name="Объём">0.0084375</param>
       </offer>
 
-<offer id="AS40046" available="false">
+<offer id="AS40046" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS40046</vendorCode>
         <name>Принт-картридж Xerox 013R00690</name>
@@ -25744,7 +25744,7 @@ USB
         <param name="Объём">0.0947793</param>
       </offer>
 
-<offer id="AS42101" available="true">
+<offer id="AS42101" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS42101</vendorCode>
         <name>Источник бесперебойного питания CyberPower OLS6000ERT6U</name>
@@ -26225,7 +26225,7 @@ USB
         <param name="Объём">0.00009</param>
       </offer>
 
-<offer id="AS42270" available="true">
+<offer id="AS42270" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS42270</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 006R04361 (голубой)</name>
@@ -28236,7 +28236,7 @@ USB
         <param name="Объём">0.0105</param>
       </offer>
 
-<offer id="AS42276" available="false">
+<offer id="AS42276" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS42276</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R04368 (чёрный)</name>
@@ -29220,7 +29220,7 @@ AV*1
         <param name="Объём">0.000189128</param>
       </offer>
 
-<offer id="AS45708" available="false">
+<offer id="AS45708" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS45708</vendorCode>
         <name>Кабель сетевой Legrand Cat.5e U/UTP PVC</name>
@@ -29295,7 +29295,7 @@ AV*1
         <param name="Объём">0.000138098</param>
       </offer>
 
-<offer id="AS45710" available="false">
+<offer id="AS45710" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS45710</vendorCode>
         <name>Кабель сетевой Legrand Cat.6 U/UTP PVC</name>
@@ -29985,7 +29985,7 @@ Quad HD (1440p) VESA DisplayHDR™ 400.
         <categoryId>0</categoryId>
         <vendorCode>AS47814</vendorCode>
         <name>Персональный компьютер XG Basic XG100 Win Pro 11</name>
-        <price>105900</price>
+        <price>106900</price>
         <picture>https://img.al-style.kz/47814_1.jpg</picture>
         <picture>https://img.al-style.kz/47814_2.jpg</picture>
         <picture>https://img.al-style.kz/47814_3.jpg</picture>
@@ -32344,7 +32344,7 @@ USB
         <param name="Объём">0.000185296</param>
       </offer>
 
-<offer id="AS48452" available="true">
+<offer id="AS48452" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS48452</vendorCode>
         <name>Монитор 23.8" Gigabyte G24F 2</name>
@@ -36115,7 +36115,7 @@ Keor SPE Tower может быть подключен к ПК через SNMP, USB и последовательный порт
         <param name="Объём">0.09567563</param>
       </offer>
 
-<offer id="AS52572" available="true">
+<offer id="AS52572" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS52572</vendorCode>
         <name>Монитор 27" LG 27QN600 Black</name>
@@ -36479,34 +36479,6 @@ DisplayPort x1
         <param name="Рабочая влажность">0-90% (без конденсации)</param>
         <param name="Цвет">Чёрный</param>
         <param name="Объём">0.3886812</param>
-      </offer>
-
-<offer id="AS53138" available="false">
-        <categoryId>0</categoryId>
-        <vendorCode>AS53138</vendorCode>
-        <name>Персональный компьютер XG Basic XG710</name>
-        <price>132900</price>
-        <picture>https://img.al-style.kz/53138_1.jpg</picture>
-        <picture>https://img.al-style.kz/53138_2.jpg</picture>
-        <picture>https://img.al-style.kz/53138_3.jpg</picture>
-        <vendor>XG</vendor>
-        <currencyId>KZT</currencyId>
-        <description>Комплектующие:
-Материнская плата Gigabyte H510M K
-Модуль памяти Apacer EL.08G2V.GNH DDR4 8GBX2
-Процессор (CPU) Intel Core i3 Processor 10105
-Твердотельный накопитель SSD Apacer AS340X 240GB SATA
-Компьютерный корпус Delux DLC-DW701PS с Б/П 400W
-Кулер для процессора Deepcool GAMMA ARCHER
-Компьютер XG Basic XG710 удовлетворит базовые потребности современного пользователя и отлично подойдёт для работы, учёбы, интернет-сёрфинга и просмотра видеоконтента.
-За высокую производительность отвечает современный процессор Intel Core i3 10105, а высокоскоростная оперативная память DDR4 объёмом 16 GB обеспечивает ускоренную обработку данных. Твердотельный накопитель на 240 GB гарантирует быстрый запуск операционной системы и основных программ, а также надёжное хранение файлов.
-За корректную работоспособность всех компонентов ПК отвечает блок питания на 400 Вт.
-Дизайн корпуса, продуманная система воздушного охлаждения и аккуратная укладка кабелей способствуют лучшей циркуляции воздуха внутри системного блока, меньшему накоплению пыли и предотвращают перегрев компонентов.
-
-Характеристики:
-- Вес: 5.4 кг</description>
-        <param name="Вес">5.4</param>
-        <param name="Объём">0.02838225</param>
       </offer>
 
 <offer id="AS53242" available="false">
@@ -37102,7 +37074,7 @@ HDMI x1
         <param name="Объём">0.187136</param>
       </offer>
 
-<offer id="AS54844" available="true">
+<offer id="AS54844" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS54844</vendorCode>
         <name>Монитор Samsung 27" Odyssey G4 LS27BG400EIXCI</name>
@@ -37752,7 +37724,7 @@ HDMI x1
         <param name="Объём">0.00875</param>
       </offer>
 
-<offer id="AS56884" available="false">
+<offer id="AS56884" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS56884</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 006R04729 (чёрный)</name>
@@ -37982,7 +37954,7 @@ HDMI x1
         <param name="Объём">0.2151345</param>
       </offer>
 
-<offer id="AS56893" available="false">
+<offer id="AS56893" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS56893</vendorCode>
         <name>Тонер-картридж стандартной емкости Xerox 006R04677 (чёрный)</name>
@@ -38278,7 +38250,7 @@ HDMI x1
         <param name="Объём">0.0529356</param>
       </offer>
 
-<offer id="AS56906" available="false">
+<offer id="AS56906" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS56906</vendorCode>
         <name>Цветное МФУ Xerox VersaLink C415DN</name>
@@ -39643,7 +39615,7 @@ Xerox Easy Assist и приложение Xerox Print and Scan Experience делают настройку 
 Характеристики:
 - Гарантия: 1 год
 - Состав: Металл, пластик</description>
-        <param name="Вес">9.02</param>
+        <param name="Вес">8.836</param>
         <param name="Гарантия">1 год</param>
         <param name="Состав">Металл, пластик</param>
         <param name="Объём">0.064827</param>
@@ -39869,7 +39841,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <param name="Объём">0.161538</param>
       </offer>
 
-<offer id="AS59322" available="true">
+<offer id="AS59322" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS59322</vendorCode>
         <name>Монохромное лазерное МФУ Canon I-S MF465dw</name>
@@ -39963,7 +39935,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
 - Скорость сканирования: до 100 изобр./мин.
 - Тип сканера: Двусторонний автоподатчик документов
 - Частота процессора: 1.2 ГГц</description>
-        <param name="Вес">28</param>
+        <param name="Вес">31.873</param>
         <param name="Гарантия">1 год</param>
         <param name="Максимальная нагрузка">50 000 стр./мес.</param>
         <param name="Интерфейсы">USB 2.0, Ethernet 10/100/1000, Wi-Fi</param>
@@ -40499,7 +40471,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <param name="Объём">0.092352</param>
       </offer>
 
-<offer id="AS59370" available="false">
+<offer id="AS59370" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS59370</vendorCode>
         <name>Монохромный лазерный принтер Canon I-S LBP6030B BUNDLE</name>
@@ -43847,7 +43819,7 @@ Canon imagePROGRAF 6300SCanon imagePROGRAF 6400Canon imagePROGRAF 6450Canon imag
         <param name="Объём">0.00225</param>
       </offer>
 
-<offer id="AS60182" available="true">
+<offer id="AS60182" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS60182</vendorCode>
         <name>Зап. часть Печатающая головка Canon PRINTHEAD PF-06 (2352C001AA)</name>
@@ -45579,7 +45551,7 @@ Canon Cassette Feeding Unit-AE1/AG1/AJ1/AK1/AL1/AM1/AP1/AQ1/AW1Canon Color image
 - Интерфейсы: USB 2.0
 - Разрешение печати: 4800x1200 dpi
 - Струйный принтер: Формула выгодной печати PIXMA G1430 с пополняемыми емкостями для чернил</description>
-        <param name="Вес">7.55</param>
+        <param name="Вес">8.326</param>
         <param name="Гарантия">1 год</param>
         <param name="Интерфейсы">USB 2.0</param>
         <param name="Разрешение печати">4800x1200 dpi</param>
@@ -53496,7 +53468,7 @@ Canon imagePRESS C165
         <param name="Объём">0.013359375</param>
       </offer>
 
-<offer id="AS63301" available="true">
+<offer id="AS63301" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS63301</vendorCode>
         <name>Тонер-картридж Canon TONER T07 MAGENTA 3643C001AA</name>
@@ -53529,7 +53501,7 @@ Canon imagePRESS C165
         <param name="Объём">0.004114</param>
       </offer>
 
-<offer id="AS63302" available="true">
+<offer id="AS63302" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS63302</vendorCode>
         <name>Тонер-картридж Canon TONER T07 YELLOW 3644C001AA</name>
@@ -56023,7 +55995,7 @@ Canon imageRUNNER ADVANCE 4525iCanon imageRUNNER ADVANCE 4535iCanon imageRUNNER 
         <param name="Объём">0.000003211</param>
       </offer>
 
-<offer id="AS64563" available="true">
+<offer id="AS64563" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS64563</vendorCode>
         <name>Струйный картридж Canon PG-46</name>
@@ -56578,7 +56550,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <param name="Объём">0.05320128</param>
       </offer>
 
-<offer id="AS64680" available="true">
+<offer id="AS64680" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS64680</vendorCode>
         <name>Картридж Europrint EPC-TL420H</name>
@@ -58716,7 +58688,7 @@ USB 2.0 ( 1) Поддерживает воспроизведение изображений, музыки, видео файлов, а т
         <param name="Объём">0.372</param>
       </offer>
 
-<offer id="AS66354" available="true">
+<offer id="AS66354" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS66354</vendorCode>
         <name>Источник бесперебойного питания CyberPower HSTP3T20KEBCWOB</name>
@@ -59782,7 +59754,7 @@ Bес:
         <param name="Объём">0.021529375</param>
       </offer>
 
-<offer id="AS67395" available="false">
+<offer id="AS67395" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS67395</vendorCode>
         <name>Кабель сетевой Legrand Cat.6 нг(А)-HF 4п</name>
@@ -61170,7 +61142,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
         <param name="Объём">0.000003211</param>
       </offer>
 
-<offer id="AS68526" available="false">
+<offer id="AS68526" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS68526</vendorCode>
         <name>Источник бесперебойного питания APC Easy UPS E3SUPS20KHB</name>
@@ -61800,7 +61772,7 @@ CANON PIXMA iP2700CANON PIXMA MP252CANON PIXMA MP260CANON PIXMA MP270CANON PIXMA
         <param name="Объём">0.00047685</param>
       </offer>
 
-<offer id="AS69261" available="true">
+<offer id="AS69261" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS69261</vendorCode>
         <name>Струйный картридж Canon BJ CARTRIDGE CL-511</name>
@@ -67249,7 +67221,7 @@ HDMI кабель
         <param name="Объём">0.0781969</param>
       </offer>
 
-<offer id="AS75908" available="true">
+<offer id="AS75908" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS75908</vendorCode>
         <name>Монитор Samsung 27" LS27D304GAIXCI</name>
@@ -72003,7 +71975,7 @@ USB-C*1
         <param name="Объём">0.0226</param>
       </offer>
 
-<offer id="AS81005" available="false">
+<offer id="AS81005" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS81005</vendorCode>
         <name>Уничтожитель бумаг (Шредер) COMIX S4210M</name>
@@ -72572,6 +72544,209 @@ IOScast (iOS), Miracast (Android)
         <param name="Объём">0.000075</param>
       </offer>
 
+<offer id="AS82022" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS82022</vendorCode>
+        <name>Ноутбук Razer Blade 16 16" QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11</name>
+        <price>1660900</price>
+        <picture>https://img.al-style.kz/82022_1.jpg</picture>
+        <picture>https://img.al-style.kz/82022_2.jpg</picture>
+        <picture>https://img.al-style.kz/82022_3.jpg</picture>
+        <vendor>Razer</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Ноутбук Razer Blade 16 16&amp;quot; QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11
+Ноутбук Razer Blade 16 16&amp;quot; QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11
+Razer Blade 16 объединяет новейшие технологии в ультратонком корпусе, обеспечивая баланс между производительностью, дисплеем премиум-класса и портативностью. OLED-панель с высоким разрешением и частотой 240 Гц идеально подойдёт для геймеров и профессионалов, работающих с графикой.
+Основные характеристики
+Видеокарта: NVIDIA® GeForce RTX™ 5070, 8 ГБ GDDR7 (Dynamic Boost +25 Вт)
+Дополнительные возможности
+Клавиатура Per-key RGB с Razer Chroma™ (N-Key rollover)
+Precision glass touchpad
+Безопасность и ПО
+Microsoft Pluton, TPM 2.0
+Razer Synapse 3 &amp;amp; 4 — управление производительностью, подсветкой и вентиляторами
+Kensington Security Slot, Modern Standby
+Razer Blade 16 — мощный рабочий инструмент и игровой ноутбук в одном, созданный для тех, кто требует максимальной производительности и безупречного дисплея в портативном форм-факторе.
+
+Характеристики:
+- .specs li { margin-bottom: 0.4rem; }
+- body { font-family: Arial, Helvetica, sans-serif; line-height: 1.5; color:#111; padding:20px; }
+- h1 { font-size: 1.25rem; margin-bottom:0.5rem; }
+- h2 { font-size: 1rem; margin-top:1rem; }
+- p.lead { margin-top: 0; }
+- ul { margin: 0.5rem 0 1rem 1.25rem; }
+- Аккумулятор: 90 Whr, быстрая зарядка (50% за 30 мин, 80% за 48 мин). Комплектные адаптеры: 200W / 280W
+- Аудио: 6 встроенных динамиков с Smart Amp, THX® Spatial Audio, поддержка 7.1 через HDMI
+- Веб-камера: Windows Hello IR FHD (1080p)
+- Гарантия: 1 год
+- Дисплей: 16&amp;quot; QHD+ OLED (2560&#215;1600), 240 Гц
+- Накопитель: 1 ТБ SSD M.2 NVMe PCIe Gen4 (x2)
+- Оперативная память: 32 ГБ LPDDR5X 8000 МГц (распаянная)
+- ОС: Windows 11 Home
+- Подключения: 3&#215; USB 3.2 Gen2 Type-A, 2&#215; USB4 Type-C (PD 100W, DisplayPort 1.4 via iGPU), HDMI 2.1, MicroSD UHS-II
+- Процессор: AMD Ryzen™ AI 9 365 (10 ядер / 20 потоков, 2.0–5.0 ГГц) с Radeon™ 880M Graphics
+- Размеры: 14.9–17.4 мм &#215; 250.5 мм &#215; 355 мм · Вес: ~2.14 кг
+- Сеть: Wi-Fi 7 (tri-band 2&#215;2 802.11a/b/g/n/ac/ax/be), Bluetooth 5.4
+- Цвет и корпус: Чёрный, CNC-фрезерованный алюминий с анодированным покрытием и подсвечиваемым логотипом Razer</description>
+        <param name="Вес">4.45</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.001903049</param>
+      </offer>
+
+<offer id="AS82023" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS82023</vendorCode>
+        <name>Ноутбук Razer Blade 18 18" Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti Win11</name>
+        <price>2041900</price>
+        <picture>https://img.al-style.kz/82023_1.jpg</picture>
+        <picture>https://img.al-style.kz/82023_2.jpg</picture>
+        <picture>https://img.al-style.kz/82023_3.jpg</picture>
+        <vendor>Razer</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Ноутбук Razer Blade 18 (K11) RZ09-05298ER3-R3E1
+Ноутбук Razer Blade 18 18" Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti Win11Home
+Razer Blade 18 — самый мощный ноутбук компании, сочетающий в себе экран с уникальной Dual Mode технологией, топовый процессор Intel, графику NVIDIA нового поколения и премиальный корпус из анодированного алюминия. Идеальное решение для геймеров, креаторов и профессионалов, которым нужна замена полноценному десктопу.
+Основные характеристики:
+Видеокарта: NVIDIA® GeForce RTX™ 5070 Ti, 12 ГБ GDDR7 (Dynamic Boost +25 Вт), поддержка DLSS 4, Ray Tracing, VR Ready
+Дополнительные возможности:
+Клавиатура с RGB-подсветкой Razer Chroma™ (N-Key rollover, настройка каждой клавиши)
+Precision Glass Touchpad
+Защита и гарантия:
+Intel PTT (sTPM 2.0), Modern Standby
+Kensington Security Slot
+1 год гарантии на ноутбук
+&#10024; Razer Blade 18 (K11) — это новый эталон среди 18-дюймовых ноутбуков: экран для киберспорта и креатива, бескомпромиссная производительность и максимальная функциональность в премиальном корпусе.
+
+Характеристики:
+- Аккумулятор: 99 Whr, блок питания 400W
+- Аудио: массив из 6 динамиков (2 твитера + 4 сабвуфера), 3 смарт-усилителя, THX® Spatial Audio, поддержка 7.1 через HDMI
+- Веб-камера: Windows Hello IR 5MP с механической шторкой
+- Вес: 3.1 кг
+- Габариты: 21.99–27.94 мм &#215; 275.4 мм &#215; 399.96 мм
+- Гарантия: 1 год
+- Дисплей: 18" UHD+ (3840&#215;2400) 240 Гц | FHD+ (1920&#215;1200) 440 Гц, Dual Mode IPS
+- Накопитель: 1 ТБ SSD M.2 NVMe PCIe 4.0
+- Объем накопителя: 1 TB
+- Оперативная память: 32 ГБ DDR5-5600 МГц
+- Операционная система: Windows 11 Home
+- Подключения: 3&#215; USB 3.2 Gen 2 Type-A, 1&#215; Thunderbolt™ 5 (Type-C), 1&#215; Thunderbolt™ 4 (Type-C), HDMI 2.1, RJ45 2.5Gb Ethernet, кардридер UHS-II
+- Процессор: Intel Core Ultra 9 275HX
+- Сеть: Wi-Fi 7, Bluetooth 5.4
+- Тип накопителя: SSD
+- Тип ноутбука: Игровой ноутбук
+- Тип оперативной памяти: DDR5
+- Цвет: чёрный, корпус из фрезерованного алюминия с анодированным покрытием и подсвечиваемым логотипом razer
+- Частота обновления экрана: 240 Гц</description>
+        <param name="Вес">5.925</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Частота обновления экрана">240 Гц</param>
+        <param name="Тип ноутбука">Игровой ноутбук</param>
+        <param name="Тип оперативной памяти">DDR5</param>
+        <param name="Объем накопителя">1 TB</param>
+        <param name="Тип накопителя">SSD</param>
+        <param name="Процессор">Intel Core Ultra 9 275HX</param>
+        <param name="Объём">0.0038556</param>
+      </offer>
+
+<offer id="AS82024" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS82024</vendorCode>
+        <name>Ноутбук Razer Blade 18 18" Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5080 Win11</name>
+        <price>2353900</price>
+        <picture>https://img.al-style.kz/82024_1.jpg</picture>
+        <picture>https://img.al-style.kz/82024_2.jpg</picture>
+        <picture>https://img.al-style.kz/82024_3.jpg</picture>
+        <vendor>Razer</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Ноутбук Razer Blade 18 (K11) RZ09-05298ER3-R3E1
+Ноутбук Razer Blade 18 18" Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5080 Win11
+Razer Blade 18 — самый мощный ноутбук компании, сочетающий в себе экран с уникальной Dual Mode технологией, топовый процессор Intel, графику NVIDIA нового поколения и премиальный корпус из анодированного алюминия. Идеальное решение для геймеров, креаторов и профессионалов, которым нужна замена полноценному десктопу.
+Основные характеристики:
+Видеокарта: NVIDIA® GeForce RTX™ 5080, 16 ГБ GDDR7 (Dynamic Boost +25 Вт), поддержка DLSS 4, Ray Tracing, VR Ready
+Дополнительные возможности:
+Клавиатура с RGB-подсветкой Razer Chroma™ (N-Key rollover, настройка каждой клавиши)
+Precision Glass Touchpad
+Защита и гарантия:
+Intel PTT (sTPM 2.0), Modern Standby
+Kensington Security Slot
+1 год гарантии на ноутбук
+&#10024; Razer Blade 18 (K11) — это новый эталон среди 18-дюймовых ноутбуков: экран для киберспорта и креатива, бескомпромиссная производительность и максимальная функциональность в премиальном корпусе.
+
+Характеристики:
+- Аккумулятор: 99 Whr, блок питания 400W
+- Аудио: массив из 6 динамиков (2 твитера + 4 сабвуфера), 3 смарт-усилителя, THX® Spatial Audio, поддержка 7.1 через HDMI
+- Веб-камера: Windows Hello IR 5MP с механической шторкой
+- Вес: 3.1 кг
+- Габариты: 21.99–27.94 мм &#215; 275.4 мм &#215; 399.96 мм
+- Гарантия: 1 год
+- Дисплей: 18" UHD+ (3840&#215;2400) 240 Гц | FHD+ (1920&#215;1200) 440 Гц, Dual Mode IPS
+- Накопитель: 1 ТБ SSD M.2 NVMe PCIe 4.0
+- Объем накопителя: 1 TB
+- Оперативная память: 32 ГБ DDR5-5600 МГц
+- Операционная система: Windows 11 Home
+- Подключения: 3&#215; USB 3.2 Gen 2 Type-A, 1&#215; Thunderbolt™ 5 (Type-C), 1&#215; Thunderbolt™ 4 (Type-C), HDMI 2.1, RJ45 2.5Gb Ethernet, кардридер UHS-II
+- Процессор: Intel Core Ultra 9 275HX
+- Сеть: Wi-Fi 7, Bluetooth 5.4
+- Тип накопителя: SSD
+- Тип ноутбука: Игровой ноутбук
+- Тип оперативной памяти: DDR5
+- Цвет: чёрный, корпус из фрезерованного алюминия с анодированным покрытием и подсвечиваемым логотипом razer
+- Частота обновления экрана: 240 Гц</description>
+        <param name="Вес">5.925</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Частота обновления экрана">240 Гц</param>
+        <param name="Тип ноутбука">Игровой ноутбук</param>
+        <param name="Тип оперативной памяти">DDR5</param>
+        <param name="Объем накопителя">1 TB</param>
+        <param name="Тип накопителя">SSD</param>
+        <param name="Процессор">Intel Core Ultra 9 275HX</param>
+        <param name="Объём">0.0038556</param>
+      </offer>
+
+<offer id="AS82025" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS82025</vendorCode>
+        <name>Ноутбук Razer Blade 14 14" 2.8K OLED 120Hz Ryzen AI 9 365 64GB 2TB RTX5070 Win11</name>
+        <price>1766900</price>
+        <picture>https://img.al-style.kz/82025_1.jpg</picture>
+        <picture>https://img.al-style.kz/82025_2.jpg</picture>
+        <picture>https://img.al-style.kz/82025_3.jpg</picture>
+        <vendor>Razer</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Ноутбук Razer Blade 14 (P11-NT) RZ09-05306ES4-R3E1
+Ноутбук Razer Blade 14 14" 2.8K OLED 120Hz Ryzen AI 9 365 64GB 2TB RTX5070 Win11Home
+Razer Blade 14 — флагманский 14-дюймовый ноутбук, сочетающий ультракомпактный корпус, топовую производительность и премиальные материалы.
+Создан для геймеров, разработчиков и креаторов, которым нужна максимальная мощь в портативном формате.
+Основные характеристики:
+Видеокарта: NVIDIA® GeForce RTX™ 5070, 8 ГБ GDDR7, 4608 CUDA-ядер, до 115 Вт TGP (с Dynamic Boost), поддержка DLSS 4, Ray Tracing, VR Ready
+Дополнительные возможности:
+Клавиатура с RGB-подсветкой Razer Chroma™ (каждая клавиша отдельно) (Английская раскладка)
+Precision Glass Touchpad
+Защита и гарантия:
+TPM 2.0, Microsoft Pluton, Kensington Security Slot
+Modern Standby
+1 год гарантии
+&#10024; Razer Blade 14 (P11-NT) — это новый стандарт в классе 14-дюймовых ноутбуков: компактный, стильный и невероятно мощный.
+
+Характеристики:
+- Аккумулятор: 72 Whr (до 10 ч работы), блок питания 200W
+- Аудио: 6 динамиков с поддержкой THX® Spatial Audio, 3.5 мм аудиоразъём, массив микрофонов
+- Веб-камера: Windows Hello IR FHD (1080p)
+- Гарантия: 1 год
+- Дисплей: 14" OLED, 2.8K (2880&#215;1800), 120 Гц, 100% DCI-P3, высокая яркость и контрастность
+- Накопитель: 2 ТБ SSD M.2 NVMe PCIe 4.0 x4
+- Оперативная память: 64 ГБ LPDDR5X 8000 МГц (распаянная)
+- Операционная система: Windows 11 Home
+- Подключения: 2&#215; USB 3.2 Gen 2 Type-A, 2&#215; USB4 Type-C (PD 100W, DisplayPort 2.1), HDMI 2.1, слот MicroSD UHS-II
+- Процессор: AMD Ryzen™ AI 9 365 (10 ядер / 20 потоков, 2.0–5.0 ГГц) с Radeon™ 880M Graphics
+- Размеры: 15.8–16.2 мм / 224.3 мм / 310.7 мм, вес 1.63 кг
+- Сеть: Wi-Fi 7, Bluetooth 5.4
+- Цвет: чёрный, корпус из анодированного алюминия с подсвечиваемым логотипом razer</description>
+        <param name="Вес">3.283</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.001407738</param>
+      </offer>
+
 <offer id="AS82115" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS82115</vendorCode>
@@ -72771,7 +72946,7 @@ HDMI
         <param name="Объём">0.0876384</param>
       </offer>
 
-<offer id="AS83340" available="true">
+<offer id="AS83340" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS83340</vendorCode>
         <name>Монитор Samsung 27" LS27FG512EIXCI</name>
@@ -72803,7 +72978,7 @@ HDMI
         <param name="Объём">0.0528</param>
       </offer>
 
-<offer id="AS83341" available="true">
+<offer id="AS83341" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS83341</vendorCode>
         <name>Монитор Samsung 32" LS32DG500EIXCI</name>
