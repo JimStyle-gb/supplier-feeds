@@ -1,13 +1,17 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML (фикс '::' в характеристиках + чистка описаний)
-version: alstyle-2025-10-17.clean-05f
+AlStyle → YML (автоподстановка vendor при отсутствии + все предыдущие фиксы)
+version: alstyle-2025-10-18.clean-05h
 
-Что нового vs 05e:
-- Убраны ХВОСТОВЫЕ двоеточия у имени параметра (name) -> не будет «name :: value».
-- Страховка на финальной сборке: режем все хвостовые двоеточия у name и ведущие у value.
-- Остальная логика (цены, available, FEED_META, порядок тегов, categoryId=0 первым и т.д.) — без изменений.
+Новые изменения vs 05g:
+- Больше нет хардкода Samsung. Если <vendor> отсутствует — бренд выводится автоматически:
+  • сначала по уже встречающимся в фиде брендам (точное совпадение в <name>),
+  • затем по словарю синонимов (HP ⇄ Hewlett Packard, Konica ⇢ Konica Minolta, DKC ⇄ ДКС и т.п.),
+  • затем по списку типичных брендов (Canon/Xerox/Samsung/...),
+  • затем эвристика: первое «словесное» токен-слово из <name>, если оно не похоже на общий термин.
+- Остальная логика (цены, available, FEED_META, чистка описаний/параметров, «Особенности» и «Характеристики»,
+  categoryId=0 первым, форматирование вывода, разрывы между <offer>) — без изменений.
 """
 
 from __future__ import annotations
@@ -24,7 +28,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-17.clean-05f"
+SCRIPT_VERSION = "alstyle-2025-10-18.clean-05h"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -84,8 +88,8 @@ def remove_all(el: ET.Element, *tags: str) -> int:
             el.remove(x); n+=1
     return n
 
-# --- colon normalization (ASCII ':' из любых «похожих» символов) ---
-_COLON_ALIASES = ":\uFF1A\uFE55\u2236\uFE30"  # ':'，'：'(FF1A)，'﹕'(FE55)，'∶'(2236)，'︰'(FE30)
+# --- colon normalization ---
+_COLON_ALIASES = ":\uFF1A\uFE55\u2236\uFE30"
 _COLON_CLASS = "[" + re.escape(_COLON_ALIASES) + "]"
 _COLON_CLASS_RE = re.compile(_COLON_CLASS)
 def canon_colons(s: str) -> str:
@@ -93,15 +97,14 @@ def canon_colons(s: str) -> str:
 
 # --- noise / invisible chars ---
 NOISE_RE = re.compile(
-    r"[\u200B-\u200F\u202A-\u202E\u2060\uFEFF\u00AD"  # zero-width, directional, BOM, soft hyphen
-    r"\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F"  # C0/DEL
-    r"\u0080-\u009F]"                                # C1
+    r"[\u200B-\u200F\u202A-\u202E\u2060\uFEFF\u00AD"
+    r"\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F"
+    r"\u0080-\u009F]"
 )
 def strip_noise_chars(s: str) -> str:
     if not s: return s or ""
-    s = NOISE_RE.sub("", s)
-    s = s.replace("�","").replace("¬","")
-    s = s.replace("•","-")  # буллет → дефис
+    s = NOISE_RE.sub("", s).replace("�","").replace("¬","")
+    s = s.replace("•","-")
     return s
 
 # --------------------- load ---------------------
@@ -237,7 +240,111 @@ def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
                 ven.text=canon; normalized+=1
     return normalized,dropped
 
-# --------------------- pricing ---------------------
+# --- авто-подстановка бренда, если <vendor> отсутствует ---
+COMMON_BRANDS = [
+    "HP","Hewlett Packard","Canon","Xerox","Brother","Kyocera","Ricoh","Epson","Samsung","Panasonic","OKI","Lexmark","Sharp","Konica Minolta",
+    "SVC","APC","Powercom","Comix","Europrint","Cactus","CET","WWM","Barva",
+    "Gembird","D-Link","TP-Link","Ubiquiti","MikroTik","SNR","DKC","ДКС","Legrand","IEK","Schneider Electric",
+    "Dahua","Hikvision","EZVIZ","Kingston","ADATA","Seagate","Western Digital","Transcend","SanDisk","Ship","SHIP"
+]
+BRAND_SYNONYMS = {
+    "hewlett packard": "hp",
+    "hp inc": "hp",
+    "hewlett-packard": "hp",
+    "samsung electronics": "samsung",
+    "konica": "konica minolta",
+    "konica-minolta": "konica minolta",
+    "apc by schneider electric": "apc",
+    "dkc": "дкс",   # латиница → кириллица, если ДКС встречается в фиде
+    "ship": "SHIP",
+}
+
+GENERIC_WORDS = {
+    "картридж","тонер","ламинатор","кабель","источник","питания","принтер","бумага","кресло",
+    "клей","лейбл","лента","камера","коммутатор","маршрутизатор","адаптер","мышь","монитор",
+    "папка","пленка","шредер","уничтожитель","степлер","гребенка","папки","скрепки","клейкая",
+    "скотч","клавиатура","наклейка","бумажн","система","кабеля","пара","витая"
+}
+
+def _words(s: str) -> List[str]:
+    return re.findall(r"[A-Za-zА-Яа-яЁё]+", s or "")
+
+def build_brand_index(shop_el: ET.Element) -> Dict[str, str]:
+    """Собираем уже встреченные бренды -> канонический вид."""
+    idx: Dict[str,str] = {}
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return idx
+    for offer in offers_el.findall("offer"):
+        v = offer.find("vendor")
+        if v is None or not (v.text or "").strip(): continue
+        canon = v.text.strip()
+        idx[_norm_key(canon)] = canon
+    return idx
+
+def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
+    name = get_text(offer, "name")
+    nrm  = _norm_key(name)
+
+    # 1) Уже встречавшиеся бренды — точное вхождение
+    for br_norm, canon in sorted(brand_index.items(), key=lambda kv: len(kv[0]), reverse=True):
+        if re.search(rf"\b{re.escape(br_norm)}\b", nrm):
+            return canon
+
+    # 2) Синонимы
+    for alt, target in BRAND_SYNONYMS.items():
+        if re.search(rf"\b{re.escape(alt)}\b", nrm):
+            # если целевой бренд уже встречался, берем его канонический вид
+            t_norm = _norm_key(target)
+            if t_norm in brand_index:
+                return brand_index[t_norm]
+            # иначе — нормализованный тайтл
+            return target.title() if len(target.split())>1 else target.upper()
+
+    # 3) Типичные бренды
+    for cb in COMMON_BRANDS:
+        cb_norm = _norm_key(cb)
+        if re.search(rf"\b{re.escape(cb_norm)}\b", nrm):
+            # приоритет известному канону из фида
+            if cb_norm in brand_index:
+                return brand_index[cb_norm]
+            return cb
+
+    # 4) Эвристика по первому «словесному» токену
+    toks = _words(name)
+    if toks:
+        first = toks[0]
+        if _norm_key(first) not in GENERIC_WORDS and len(first) <= 12:
+            f_norm = _norm_key(first)
+            if f_norm in brand_index:
+                return brand_index[f_norm]
+            # TitleCase для русских слов, UPPER для коротких латинских
+            if re.fullmatch(r"[A-Z]{2,12}", first):
+                return first
+            return first[:1].upper()+first[1:]
+
+    return ""
+
+def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
+    """Если <vendor> пустой/отсутствует — пытаемся угадать по <name>."""
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0
+    brand_index = build_brand_index(shop_el)
+    touched=0
+    for offer in offers_el.findall("offer"):
+        v = offer.find("vendor")
+        cur = (v.text or "").strip() if (v is not None and v.text) else ""
+        if cur:
+            continue
+        guess = guess_vendor_for_offer(offer, brand_index)
+        if guess:
+            if v is None:
+                v = ET.SubElement(offer, "vendor")
+            v.text = guess
+            brand_index[_norm_key(guess)] = guess
+            touched += 1
+    return touched
+
+# --------------------- pricing (без изменений) ---------------------
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -331,7 +438,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         updated+=1
     return updated,skipped,total,src_stats
 
-# --------------------- params / description ---------------------
+# --------------------- params / description (как в 05g) ---------------------
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
 UNWANTED_PARAM_NAME_RE = re.compile(
@@ -351,7 +458,6 @@ UNWANTED_PARAM_NAME_RE = re.compile(
     r")\s*)$",
     re.I
 )
-
 KASPI_CODE_NAME_RE = re.compile(r"^код\s+товара\s+kaspi$", re.I)
 
 def remove_specific_params(shop_el: ET.Element) -> int:
@@ -397,7 +503,6 @@ def _looks_like_code_value(v:str)->bool:
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
-# ==== Санитизация и нормализация описаний ====
 DISCL_RE = re.compile(
     r"(голографическ\w*|маркиров\w*|на\s+корпусе|на\s+коробке|на\s+упаковке|"
     r"медиа\s*файл\w*|фото|видео|предъяв\w*|обнаруж\w*\s+брак|серии\s+картриджа|"
@@ -453,24 +558,13 @@ def normalize_free_text_punct(s: str) -> str:
     t = re.sub(r"\bдля дома\s+офиса\b", "для дома и офиса", t, flags=re.I)
     return t.strip()
 
-# ===== НОРМАЛИЗАЦИЯ ПАР «имя: значение» =====
 def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     n = re.sub(r"\s+", " ", (name or "").strip())
     v = re.sub(r"\s+", " ", (value or "").strip())
-
-    # нормализуем варианты двоеточий
-    n = canon_colons(n)
-    v = canon_colons(v)
-
-    # ВАЖНО: срезаем хвостовые двоеточия у имени
-    n = re.sub(rf"\s*{_COLON_CLASS}+\s*$", "", n)
-
-    if not n or not v:
-        return n, v
-
-    # и ведущие двоеточия у значения
-    v = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", v)
-
+    n = canon_colons(n); v = canon_colons(v)
+    n = re.sub(rf"\s*{_COLON_CLASS}+\s*$", "", n)   # хвостовые ':' у имени
+    v = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", v)   # лидирующие ':' у значения
+    if not n or not v: return n, v
     n_l = n.lower()
     if re.search(r"совместим\w*\s*модел", n_l):
         n = "Совместимость"
@@ -481,33 +575,15 @@ def normalize_kv(name: str, value: str) -> Tuple[str, str]:
         if m:
             num = re.sub(r"\s+", " ", m.group(1)).strip()
             v = f"{num} стр."
-            if iso:
-                v += f" (ISO/IEC {iso.group(1)})"
+            if iso: v += f" (ISO/IEC {iso.group(1)})"
     elif re.fullmatch(r"вес", n_l):
         if not re.search(r"\bкг\b", v, re.I):
             v = v.replace(",", ".").strip() + " кг"
     elif re.fullmatch(r"цвет", n_l):
         v = v.lower()
-
     v = normalize_value_punct(v)
     return n, v
 
-# ===== Извлечение KV из <param> =====
-def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
-    pairs=[]; seen=set()
-    for p in list(offer.findall("param")) + list(offer.findall("Param")):
-        raw_name=(p.attrib.get("name") or "").strip()
-        raw_val =(p.text or "").strip()
-        if not raw_name or not raw_val: continue
-        if EXCLUDE_NAME_RE.search(raw_name): continue
-        if _looks_like_code_value(raw_val): continue
-        name, val = normalize_kv(raw_name, raw_val)
-        k=_key(name)
-        if k in seen: continue
-        seen.add(k); pairs.append((name, val))
-    return pairs
-
-# ===== Извлечение KV из <description> =====
 HDR_RE            = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
 HEAD_ONLY_RE      = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*$", re.I)
 HEAD_PREFIX_RE    = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*", re.I)
@@ -551,10 +627,9 @@ def _split_inline_bullets(line: str) -> List[str]:
         out.append(p)
     return out or [s]
 
-def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
+def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]], List[str]]:
     if not (text or "").strip():
-        return "", []
-
+        return "", [], []
     t = _normalize_description_whitespace(text)
     raw_lines = t.split("\n")
 
@@ -597,32 +672,51 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
             keep_mask[i] = False
             pairs.append(parsed)
 
-    cleaned_lines = []
+    kept=[]
     for ln, keep in zip(lines, keep_mask):
         if not keep: continue
         if DISCL_RE.search(ln) and len(ln.strip())>60:
             continue
-        cleaned_lines.append(ln)
+        kept.append(ln)
 
-    cleaned = "\n".join([x for x in cleaned_lines if x.strip()]).strip()
+    features=[]
+    rest=[]
+    for ln in kept:
+        s=ln.strip()
+        if s.startswith("- ") and ":" not in s:
+            features.append(s[2:].strip())
+        else:
+            rest.append(ln)
+
+    cleaned = "\n".join([x for x in rest if x.strip()]).strip()
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     cleaned = normalize_free_text_punct(cleaned)
 
-    return cleaned, pairs
+    return cleaned, pairs, features
 
-# ===== Сборка «Характеристик» =====
-def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
+def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
+    pairs=[]; seen=set()
+    for p in list(offer.findall("param")) + list(offer.findall("Param")):
+        raw_name=(p.attrib.get("name") or "").strip()
+        raw_val =(p.text or "").strip()
+        if not raw_name or not raw_val: continue
+        if EXCLUDE_NAME_RE.search(raw_name): continue
+        if _looks_like_code_value(raw_val): continue
+        name, val = normalize_kv(raw_name, raw_val)
+        k=_key(name)
+        if k in seen: continue
+        seen.add(k); pairs.append((name, val))
+    return pairs
+
+def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
     offers_el=shop_el.find("offers")
-    if offers_el is None: return (0,0)
-    offers_touched=0; total_kv=0
+    if offers_el is None: return (0,0,0)
+    offers_touched=0; total_kv=0; total_feats=0
     for offer in offers_el.findall("offer"):
         desc_el = offer.find("description")
         raw_desc = (desc_el.text or "").strip() if (desc_el is not None and desc_el.text) else ""
-
-        cleaned_desc, kv_from_desc = extract_kv_from_description(raw_desc)
+        cleaned_desc, kv_from_desc, features = extract_kv_from_description(raw_desc)
         pairs_from_params = build_specs_pairs_from_params(offer)
-
-        # режем ровно «Назначение: Да»
         kv_from_desc = [(n,v) for (n,v) in kv_from_desc if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")]
 
         merged: Dict[str, Tuple[str,str]] = {}
@@ -630,36 +724,36 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
         for name, val in kv_from_desc:
             k=_key(name)
             if k not in merged: merged[k]=(name,val)
-
         merged = {k:(n,v) for k,(n,v) in merged.items() if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")}
-        if not merged:
-            if cleaned_desc != raw_desc and desc_el is not None:
-                desc_el.text = cleaned_desc
-                offers_touched += 1
-            continue
 
-        merged_pairs = list(merged.values())
-        merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
+        parts=[]
+        if cleaned_desc: parts.append(cleaned_desc)
 
-        # ФИНАЛЬНАЯ СТРАХОВКА ОТ «::»
-        tmp_pairs=[]
-        for name, val in merged_pairs:
-            name = re.sub(rf"\s*{_COLON_CLASS}+\s*$", "", str(name or ""))  # убираем хвостовые двоеточия у name
-            clean_val = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", str(val or ""))  # убираем лидирующие у value
-            tmp_pairs.append((name, clean_val))
-        merged_pairs = tmp_pairs
+        if features:
+            feats = [f"- {normalize_free_text_punct(f)}" for f in features]
+            parts.append("Особенности:\n" + "\n".join(feats))
+            total_feats += len(feats)
 
-        lines = [f"- {name}: {val}" for name, val in merged_pairs]
-        new_text = (cleaned_desc + "\n\n" if cleaned_desc else "") + "Характеристики:\n" + "\n".join(lines)
-        if desc_el is None:
-            desc_el = ET.SubElement(offer, "description")
-        desc_el.text = new_text.strip()
+        if merged:
+            merged_pairs = list(merged.values())
+            merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
+            tmp_pairs=[]
+            for name, val in merged_pairs:
+                name = re.sub(rf"\s*{_COLON_CLASS}+\s*$", "", str(name or ""))
+                clean_val = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", str(val or ""))
+                tmp_pairs.append((name, clean_val))
+            merged_pairs = tmp_pairs
+            lines = [f"- {name}: {val}" for name, val in merged_pairs]
+            parts.append("Характеристики:\n" + "\n".join(lines))
+            total_kv += len(lines)
 
-        offers_touched += 1
-        total_kv += len(lines)
-    return offers_touched, total_kv
+        if parts:
+            if desc_el is None:
+                desc_el = ET.SubElement(offer, "description")
+            desc_el.text = "\n\n".join(parts).strip()
+            offers_touched += 1
+    return offers_touched, total_kv, total_feats
 
-# Чистка явных служебных строк (страховка)
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
@@ -685,7 +779,7 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
             d.text=new_text; changed+=1
     return changed
 
-# --------------------- availability ---------------------
+# --------------------- availability / misc ---------------------
 TRUE_WORDS  = {"true","1","yes","y","да","есть","in stock","available"}
 FALSE_WORDS = {"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 
@@ -732,6 +826,16 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
         if DROP_STOCK_TAGS:
             remove_all(offer, "quantity_in_stock","quantity","stock","Stock")
     return t_cnt,f_cnt,st_cnt,ss_cnt
+
+def mark_offers_without_pictures_unavailable(shop_el: ET.Element) -> int:
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0
+    changed=0
+    for offer in offers_el.findall("offer"):
+        if not offer.findall("picture"):
+            offer.attrib["available"]="false"
+            changed+=1
+    return changed
 
 # --------------------- ids / vendorCode ---------------------
 ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
@@ -884,7 +988,7 @@ def main()->None:
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # фильтр категорий (как было)
+    # фильтр категорий
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         if ALSTYLE_CATEGORIES_MODE=="include" and not (rules_ids or rules_names):
@@ -907,8 +1011,9 @@ def main()->None:
             for node in list(off.findall("categoryId"))+list(off.findall("CategoryId")):
                 off.remove(node)
 
-    # бренды
+    # бренды: нормализация + автоподстановка для пустых
     ensure_vendor(out_shop)
+    ensure_vendor_auto_fill(out_shop)
 
     # vendorCode + id
     ensure_vendorcode_with_article(
@@ -920,17 +1025,20 @@ def main()->None:
     # цены
     reprice_offers(out_shop, PRICING_RULES)
 
-    # доступность (для FEED_META правдиво)
-    t_true, t_false, _, _ = normalize_available_field(out_shop)
-
     # чистка <param>
     remove_specific_params(out_shop)
 
-    # описание → чистка + «Характеристики»
+    # описание → чистка + Особенности + Характеристики
     unify_specs_in_description(out_shop)
 
     # страховка от служебных строк
     remove_blacklisted_kv_from_descriptions(out_shop)
+
+    # офферы без картинок → unavailable
+    mark_offers_without_pictures_unavailable(out_shop)
+
+    # доступность — считаем ПОСЛЕ всех правок
+    t_true, t_false, _, _ = normalize_available_field(out_shop)
 
     # валюта
     fix_currency_id(out_shop, default_code="KZT")
@@ -946,7 +1054,7 @@ def main()->None:
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    # FEED_META (вставка в начало)
+    # FEED_META
     meta_pairs={
         "script_version": SCRIPT_VERSION,
         "supplier": SUPPLIER_NAME,
@@ -963,10 +1071,10 @@ def main()->None:
     # сериализация и косметика вывода
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
-    xml_text = re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)          # <shop> на новой строке
-    xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n", xml_text)                         # маркер OFFSEP → пустая строка
-    xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)          # разрыв между офферами
-    xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)                             # не больше 2 пустых строк
+    xml_text = re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
+    xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n", xml_text)
+    xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
+    xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
 
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written."); return
