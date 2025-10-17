@@ -1,18 +1,13 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-Alstyle → YML (косяки по описаниям исправлены, без оформления под Satu)
-version: alstyle-2025-10-17.clean-05e
+AlStyle → YML (фикс '::' в характеристиках + чистка описаний)
+version: alstyle-2025-10-17.clean-05f
 
-Добавлено к 05d:
-- Глубокая санитизация текста в <description>:
-  • нормализация "двойных двоеточий" и их аналогов (：﹕∶︰) → ':'
-  • удаление невидимых/служебных символов (Zero Width, управляющие, BOM, soft hyphen), мусора (�, ¬)
-  • замена маркера • на '-' (для устойчивого парсинга пунктов)
-  • фикса «для дома офиса» → «для дома и офиса»
-  • вырезание длинных служебных дисклеймеров (Europrint: голограммы, медиафайлы и т.п.) из описаний
-  • разбор строк типа «Основные характеристики:: - ... - ...» на отдельные пункты
-- Остальная логика (цены, available, FEED_META, порядок тегов и т.д.) — без изменений.
+Что нового vs 05e:
+- Убраны ХВОСТОВЫЕ двоеточия у имени параметра (name) -> не будет «name :: value».
+- Страховка на финальной сборке: режем все хвостовые двоеточия у name и ведущие у value.
+- Остальная логика (цены, available, FEED_META, порядок тегов, categoryId=0 первым и т.д.) — без изменений.
 """
 
 from __future__ import annotations
@@ -29,7 +24,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-17.clean-05e"
+SCRIPT_VERSION = "alstyle-2025-10-17.clean-05f"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -46,7 +41,7 @@ DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # off|include|exclude
 
-# Satu-режим (оставлено, но ничего не меняем в оформлении)
+# Режимы под Satu — оставлены для совместимости
 SATU_MODE              = os.getenv("SATU_MODE", "full").lower()
 SATU_KEYWORDS          = os.getenv("SATU_KEYWORDS", "auto").lower()
 SATU_KEYWORDS_MAXLEN   = int(os.getenv("SATU_KEYWORDS_MAXLEN", "160"))
@@ -90,7 +85,7 @@ def remove_all(el: ET.Element, *tags: str) -> int:
     return n
 
 # --- colon normalization (ASCII ':' из любых «похожих» символов) ---
-_COLON_ALIASES = ":\uFF1A\uFE55\u2236\uFE30"
+_COLON_ALIASES = ":\uFF1A\uFE55\u2236\uFE30"  # ':'，'：'(FF1A)，'﹕'(FE55)，'∶'(2236)，'︰'(FE30)
 _COLON_CLASS = "[" + re.escape(_COLON_ALIASES) + "]"
 _COLON_CLASS_RE = re.compile(_COLON_CLASS)
 def canon_colons(s: str) -> str:
@@ -402,8 +397,7 @@ def _looks_like_code_value(v:str)->bool:
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
-# ==== Санитизация и нормализация текста описания ====
-# Дисклеймеры / «служебные» абзацы, которые надо убрать из описания
+# ==== Санитизация и нормализация описаний ====
 DISCL_RE = re.compile(
     r"(голографическ\w*|маркиров\w*|на\s+корпусе|на\s+коробке|на\s+упаковке|"
     r"медиа\s*файл\w*|фото|видео|предъяв\w*|обнаруж\w*\s+брак|серии\s+картриджа|"
@@ -416,7 +410,6 @@ def _normalize_description_whitespace(text: str) -> str:
     t = canon_colons(t)
     t = t.replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
     t = re.sub(r"\t+", "\t", t)
-    # мелкая грамматика
     t = re.sub(r"\bдля дома\s+офиса\b", "для дома и офиса", t, flags=re.I)
     lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
     out=[]; last_blank=False
@@ -426,12 +419,10 @@ def _normalize_description_whitespace(text: str) -> str:
             if last_blank: continue
             out.append(""); last_blank=True; continue
         last_blank=False
-        # убрать полностью строки-дисклеймеры
         if DISCL_RE.search(s) and len(s) > 60:
             continue
         out.append(s)
     t = "\n".join(out).strip()
-    # нормализация повторов пунктуации
     t = re.sub(r":\s*:", ": ", t)
     t = re.sub(r"(?<!\.)\.\.(?!\.)", ".", t)
     t = re.sub(r"(\n){3,}", "\n\n", t)
@@ -466,9 +457,20 @@ def normalize_free_text_punct(s: str) -> str:
 def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     n = re.sub(r"\s+", " ", (name or "").strip())
     v = re.sub(r"\s+", " ", (value or "").strip())
-    n = canon_colons(n); v = canon_colons(v)
-    if not n or not v: return n, v
+
+    # нормализуем варианты двоеточий
+    n = canon_colons(n)
+    v = canon_colons(v)
+
+    # ВАЖНО: срезаем хвостовые двоеточия у имени
+    n = re.sub(rf"\s*{_COLON_CLASS}+\s*$", "", n)
+
+    if not n or not v:
+        return n, v
+
+    # и ведущие двоеточия у значения
     v = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", v)
+
     n_l = n.lower()
     if re.search(r"совместим\w*\s*модел", n_l):
         n = "Совместимость"
@@ -479,12 +481,14 @@ def normalize_kv(name: str, value: str) -> Tuple[str, str]:
         if m:
             num = re.sub(r"\s+", " ", m.group(1)).strip()
             v = f"{num} стр."
-            if iso: v += f" (ISO/IEC {iso.group(1)})"
+            if iso:
+                v += f" (ISO/IEC {iso.group(1)})"
     elif re.fullmatch(r"вес", n_l):
         if not re.search(r"\bкг\b", v, re.I):
             v = v.replace(",", ".").strip() + " кг"
     elif re.fullmatch(r"цвет", n_l):
         v = v.lower()
+
     v = normalize_value_punct(v)
     return n, v
 
@@ -596,8 +600,7 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     cleaned_lines = []
     for ln, keep in zip(lines, keep_mask):
         if not keep: continue
-        # дополнительно режем служебные дисклеймеры и явные мусорные хвосты
-        if DISCL_RE.search(ln) and len(ln) > 60:
+        if DISCL_RE.search(ln) and len(ln.strip())>60:
             continue
         cleaned_lines.append(ln)
 
@@ -623,16 +626,12 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
         kv_from_desc = [(n,v) for (n,v) in kv_from_desc if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")]
 
         merged: Dict[str, Tuple[str,str]] = {}
-        for name, val in pairs_from_params:
-            merged[_key(name)] = (name, val)
+        for name, val in pairs_from_params: merged[_key(name)] = (name, val)
         for name, val in kv_from_desc:
             k=_key(name)
-            if k not in merged:
-                merged[k]=(name,val)
+            if k not in merged: merged[k]=(name,val)
 
-        # повторная страховка
         merged = {k:(n,v) for k,(n,v) in merged.items() if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")}
-
         if not merged:
             if cleaned_desc != raw_desc and desc_el is not None:
                 desc_el.text = cleaned_desc
@@ -642,9 +641,11 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
         merged_pairs = list(merged.values())
         merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
 
+        # ФИНАЛЬНАЯ СТРАХОВКА ОТ «::»
         tmp_pairs=[]
         for name, val in merged_pairs:
-            clean_val = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", str(val or ""))
+            name = re.sub(rf"\s*{_COLON_CLASS}+\s*$", "", str(name or ""))  # убираем хвостовые двоеточия у name
+            clean_val = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", str(val or ""))  # убираем лидирующие у value
             tmp_pairs.append((name, clean_val))
         merged_pairs = tmp_pairs
 
@@ -925,7 +926,7 @@ def main()->None:
     # чистка <param>
     remove_specific_params(out_shop)
 
-    # описание → чистка + «Характеристики» (без декоративного HTML)
+    # описание → чистка + «Характеристики»
     unify_specs_in_description(out_shop)
 
     # страховка от служебных строк
