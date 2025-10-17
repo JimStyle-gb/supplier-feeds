@@ -2,15 +2,17 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-10-16.strict-05b
+version: alstyle-2025-10-16.strict-05c (colon-fix)
 
-В этой версии:
-- FEED_META показывает реальные счётчики доступности (true/false)
-- В итоговом XML переносим <shop> на новую строку после FEED_META (исправление '--><shop>')
-- Добавляем дополнительный пустой разрыв между офферами: </offer> ⏎⏎ <offer ...>
-- По твоему ТЗ: удаляем <param name="Код товара Kaspi">…</param> и «Назначение: Да»
-  (включая этот пункт, если он встречается в блоке «Характеристики» внутри <description>)
-Остальная логика не тронута.
+Изменения по сравнению с 05b:
+- Полный фикс «двойных двоеточий» в характеристиках:
+  • нормализуем любые «варианты» двоеточий к ASCII ':'
+  • срезаем лидирующие двоеточия в значениях при парсинге и на финальной сборке
+- Остальное — как в 05b:
+  • FEED_META показывает реальные счётчики доступности (true/false)
+  • В итоговом XML переносим <shop> на новую строку после FEED_META (исправление '--><shop>')
+  • Добавляем дополнительный пустой разрыв между офферами: </offer> ⏎⏎ <offer ...>
+  • Чистим только то, что согласовано: <param name="Код товара Kaspi">…</param> и «Назначение: Да»
 """
 
 from __future__ import annotations
@@ -27,7 +29,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-16.strict-05b"
+SCRIPT_VERSION = "alstyle-2025-10-16.strict-05c"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -44,7 +46,7 @@ DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # off|include|exclude
 
-# Режим под Satu
+# Режим под Satu (оставлено для совместимости)
 SATU_MODE              = os.getenv("SATU_MODE", "full").lower()   # lean|full
 SATU_KEYWORDS          = os.getenv("SATU_KEYWORDS", "auto").lower()  # auto|off
 SATU_KEYWORDS_MAXLEN   = int(os.getenv("SATU_KEYWORDS_MAXLEN", "160"))
@@ -87,6 +89,16 @@ def remove_all(el: ET.Element, *tags: str) -> int:
         for x in list(el.findall(t)):
             el.remove(x); n+=1
     return n
+
+# --- colon normalization (ASCII ':' из любых «похожих» символов) ---
+_COLON_ALIASES = ":\uFF1A\uFE55\u2236\uFE30"  # ':'，'：'(FF1A)，'﹕'(FE55)，'∶'(2236)，'︰'(FE30)
+_COLON_CLASS = "[" + re.escape(_COLON_ALIASES) + "]"
+_COLON_CLASS_RE = re.compile(_COLON_CLASS)
+def canon_colons(s: str) -> str:
+    """Заменяет любые «варианты» двоеточия на ASCII ':'"""
+    if not s:
+        return s or ""
+    return _COLON_CLASS_RE.sub(":", s)
 
 # --------------------- load ---------------------
 def load_source_bytes(src: str) -> bytes:
@@ -340,7 +352,7 @@ UNWANTED_PARAM_NAME_RE = re.compile(
 KASPI_CODE_NAME_RE = re.compile(r"^код\s+товара\s+kaspi$", re.I)
 
 def remove_specific_params(shop_el: ET.Element) -> int:
-    """Удаляем только то, о чём ты просил:
+    """Удаляем только то, о чём согласовано:
        - <param name="Код товара Kaspi">…</param>
        - «Назначение: Да» (строго со значением 'Да')"""
     offers_el=shop_el.find("offers")
@@ -361,7 +373,7 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                 if re.fullmatch(r"назначение", nm, re.I) and re.fullmatch(r"да", val, re.I):
                     offer.remove(p); removed+=1; continue
 
-                # Остальное — прежняя фильтрация мусора (НЕ расширяем)
+                # Остальное — фильтрация мусора из согласованного списка
                 if UNWANTED_PARAM_NAME_RE.match(nm):
                     offer.remove(p); removed+=1; continue
                 if (val.lower() in {"","-","—","–",".","..","...","n/a","na","none","null","нет данных","не указано","неизвестно"}
@@ -391,7 +403,8 @@ def _looks_like_code_value(v:str)->bool:
 # ==== Нормализация пробелов/табов/пустых строк в description ====
 def _normalize_description_whitespace(text: str) -> str:
     t = (text or "").replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
-    t = re.sub(r"\t+", "\t", t)  # табы → один таб
+    t = canon_colons(t)                       # важная нормализация двоеточий
+    t = re.sub(r"\t+", "\t", t)               # табы → один таб
     lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
     out=[]; last_blank=False
     for ln in lines:
@@ -406,42 +419,43 @@ def _normalize_description_whitespace(text: str) -> str:
 RE_SPACE_BEFORE_PUNCT = re.compile(r"\s+([,;.!?])")
 RE_PERCENT            = re.compile(r"(\d)\s*%")
 RE_DEGREE_C           = re.compile(r"(\d)\s*°\s*([СC])")
-RE_DBL_COLON          = re.compile(r"\s*:\s*:\s*")
 RE_DOTS2              = re.compile(r"(?<!\.)\.\.(?!\.)")
 
 def normalize_value_punct(v: str) -> str:
     if not v: return v
-    s=v
-    s=RE_DBL_COLON.sub(": ", s)      # :: → :
-    s=RE_DOTS2.sub(".", s)           # .. → .
-    s=RE_SPACE_BEFORE_PUNCT.sub(r"\1", s)
-    s=RE_PERCENT.sub(r"\1%", s)
-    s=RE_DEGREE_C.sub(r"\1°\2", s)
-    s=re.sub(r"\s{2,}", " ", s)
+    s = canon_colons(v)
+    s = re.sub(r":\s*:", ": ", s)          # '::' или ': :' → ': '
+    s = RE_DOTS2.sub(".", s)
+    s = RE_SPACE_BEFORE_PUNCT.sub(r"\1", s)
+    s = RE_PERCENT.sub(r"\1%", s)
+    s = RE_DEGREE_C.sub(r"\1°\2", s)
+    s = re.sub(r"\s{2,}", " ", s)
     return s.strip()
 
 def normalize_free_text_punct(s: str) -> str:
     if not s: return s
-    t = s
-    t = RE_DBL_COLON.sub(": ", t)      # :: → :
-    t = RE_DOTS2.sub(".", t)           # .. → .
+    t = canon_colons(s)
+    t = re.sub(r":\s*:", ": ", t)          # '::' или ': :' → ': '
+    t = RE_DOTS2.sub(".", t)
     t = RE_SPACE_BEFORE_PUNCT.sub(r"\1", t)
     t = RE_PERCENT.sub(r"\1%", t)
     t = RE_DEGREE_C.sub(r"\1°\2", t)
     t = re.sub(r"\s{2,}", " ", t)
-    # варианты ": :" → ": "
-    t = re.sub(r":\s*:\s*", ": ", t)
     return t.strip()
 
 # ===== НОРМАЛИЗАЦИЯ ПАР «имя: значение» =====
 def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     n = re.sub(r"\s+", " ", (name or "").strip())
     v = re.sub(r"\s+", " ", (value or "").strip())
+
+    n = canon_colons(n)
+    v = canon_colons(v)
+
     if not n or not v:
         return n, v
 
-    # убираем ведущие двоеточия/комбинации (":", ": :", "::") из начала значения
-    v = re.sub(r"^\s*(?::\s*)+", "", v)
+    # удаляем любые ведущие двоеточия/пробелы: ':', '：', '﹕', '∶', '︰'
+    v = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", v)
 
     n_l = n.lower()
 
@@ -535,6 +549,7 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
 
     # 3) распознать пары
     def try_parse_kv(ln: str) -> Optional[Tuple[str,str]]:
+        ln = canon_colons(ln)                      # важная нормализация
         probe = re.sub(r"[ \t]{2,}", "  ", ln)
         for rx in (KV_BULLET_RE, KV_TABS_RE, KV_SPACES_RE, KV_COLON_RE):
             m = rx.match(probe)
@@ -552,7 +567,7 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
             keep_mask[i] = False
             pairs.append(parsed)
 
-    # 4) собрать «чистое» описание + ДОП. НОРМАЛИЗАЦИЯ ПУНКТУАЦИИ
+    # 4) «чистое» описание + пунктуация
     cleaned_lines = [ln for ln, keep in zip(lines, keep_mask) if keep and (ln.strip()!="")]
     cleaned = "\n".join(cleaned_lines).strip()
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
@@ -575,7 +590,7 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
         cleaned_desc, kv_from_desc = extract_kv_from_description(raw_desc)
         pairs_from_params = build_specs_pairs_from_params(offer)
 
-        # --- ФИЛЬТР РОВНО «Назначение: Да» из описаний (не трогаем другие значения)
+        # --- Фильтр ровно «Назначение: Да»
         kv_from_desc = [
             (n,v) for (n,v) in kv_from_desc
             if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")
@@ -589,7 +604,7 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
             if k not in merged:
                 merged[k] = (name, val)
 
-        # страховка: выкинуть из финального набора «Назначение: Да» (если пролезло)
+        # страховка: выкинуть «Назначение: Да», если пролезло
         merged = {
             k:(n,v) for k,(n,v) in merged.items()
             if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")
@@ -603,6 +618,14 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
 
         merged_pairs = list(merged.values())
         merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
+
+        # финальная страховка: срезать все лидирующие двоеточия в value
+        tmp_pairs = []
+        for name, val in merged_pairs:
+            clean_val = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", str(val or ""))
+            tmp_pairs.append((name, clean_val))
+        merged_pairs = tmp_pairs
+
         lines = [f"- {name}: {val}" for name, val in merged_pairs]
 
         new_text = (cleaned_desc + "\n\n" if cleaned_desc else "") + "Характеристики:\n" + "\n".join(lines)
@@ -615,13 +638,12 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
 
     return offers_touched, total_kv
 
-# Чистка служебных строк (на всякий)
+# Чистка явных служебных строк в description (страховка)
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
     re.I
 )
-
 def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
@@ -688,11 +710,9 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
 
 # --------------------- ids / vendorCode ---------------------
 ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
-
 def _extract_article_from_name(name:str)->str:
     if not name: return ""
     m=ARTICUL_RE.search(name); return (m.group(1) if m else "").upper()
-
 def _extract_article_from_url(url:str)->str:
     if not url: return ""
     try:
@@ -703,7 +723,6 @@ def _extract_article_from_url(url:str)->str:
         return (m.group(1) if m else last).upper()
     except Exception:
         return ""
-
 def _normalize_code(s:str)->str:
     s=(s or "").strip()
     if not s: return ""
@@ -767,7 +786,6 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
     return touched
 
 DESIRED_ORDER=["vendorCode","name","price","picture","vendor","currencyId","description"]
-
 def reorder_offer_children(shop_el: ET.Element) -> int:
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
@@ -880,7 +898,7 @@ def main()->None:
     # доступность (важно: собираем реальную статистику для FEED_META)
     t_true, t_false, _, _ = normalize_available_field(out_shop)
 
-    # чистка <param> (только «Код товара Kaspi» и «Назначение: Да»)
+    # чистка <param> (только «Код товара Kaspi» и «Назначение: Да», плюс согласованные «мусорные» наименования)
     remove_specific_params(out_shop)
 
     # описание → «Характеристики»
