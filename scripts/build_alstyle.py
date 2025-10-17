@@ -1,17 +1,22 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML (автоподстановка vendor при отсутствии + все предыдущие фиксы)
-version: alstyle-2025-10-18.clean-05h
+AlStyle → YML (автоподстановка vendor при отсутствии + очистка описаний + EUROPRINT heading fix)
+version: alstyle-2025-10-18.clean-05i
 
-Новые изменения vs 05g:
-- Больше нет хардкода Samsung. Если <vendor> отсутствует — бренд выводится автоматически:
-  • сначала по уже встречающимся в фиде брендам (точное совпадение в <name>),
-  • затем по словарю синонимов (HP ⇄ Hewlett Packard, Konica ⇢ Konica Minolta, DKC ⇄ ДКС и т.п.),
-  • затем по списку типичных брендов (Canon/Xerox/Samsung/...),
-  • затем эвристика: первое «словесное» токен-слово из <name>, если оно не похоже на общий термин.
-- Остальная логика (цены, available, FEED_META, чистка описаний/параметров, «Особенности» и «Характеристики»,
-  categoryId=0 первым, форматирование вывода, разрывы между <offer>) — без изменений.
+Что умеет:
+- Нормализует бренды; если <vendor> пуст — пытается угадать по <name> (бренд-словарь, синонимы, эвристика).
+- Собирает «Особенности» и «Характеристики» из <description> и <param>, чистит мусор, сортирует характеристики по алфавиту.
+- Убирает «::», лишние пробелы/переносы, дисклеймеры («голограмма/фото/видео/условия брака» и т.п.).
+- Специально чинит «Тонер-картриджи/Картриджи EUROPRINT: …» и «Условия гарантии:» (сливает или убирает пустой заголовок).
+- Ставит available как атрибут у <offer>, теги <available> и склад/статус внутри удаляет.
+- Офферы без картинок помечает available="false".
+- Удаляет служебные/бессмысленные параметры (Благотворительность, Снижена цена, Новинка, Артикул/Штрихкод, ТН ВЭД, «Назначение: Да», «Код товара Kaspi», пустые/URL/e-mail/HTML).
+- Пересчитывает цену из дилерской/оптовой по правилам, выравнивает до …900.
+- Выставляет <currencyId>KZT</currencyId> у всех.
+- Расставляет теги в нужном порядке, <categoryId>0</categoryId> — самым первым.
+- FEED_META-комментарий с корректной статистикой после всех правок.
+- В выводе: <shop> переносится на новую строку после комментария, и между офферами — пустая строка.
 """
 
 from __future__ import annotations
@@ -28,7 +33,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-18.clean-05h"
+SCRIPT_VERSION = "alstyle-2025-10-18.clean-05i"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -45,7 +50,7 @@ DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # off|include|exclude
 
-# Режимы под Satu — оставлены для совместимости
+# Режимы под Satu — оставлены для совместимости (ключевые слова и т.п.)
 SATU_MODE              = os.getenv("SATU_MODE", "full").lower()
 SATU_KEYWORDS          = os.getenv("SATU_KEYWORDS", "auto").lower()
 SATU_KEYWORDS_MAXLEN   = int(os.getenv("SATU_KEYWORDS_MAXLEN", "160"))
@@ -255,22 +260,19 @@ BRAND_SYNONYMS = {
     "konica": "konica minolta",
     "konica-minolta": "konica minolta",
     "apc by schneider electric": "apc",
-    "dkc": "дкс",   # латиница → кириллица, если ДКС встречается в фиде
+    "dkc": "дкс",
     "ship": "SHIP",
 }
-
 GENERIC_WORDS = {
     "картридж","тонер","ламинатор","кабель","источник","питания","принтер","бумага","кресло",
     "клей","лейбл","лента","камера","коммутатор","маршрутизатор","адаптер","мышь","монитор",
     "папка","пленка","шредер","уничтожитель","степлер","гребенка","папки","скрепки","клейкая",
     "скотч","клавиатура","наклейка","бумажн","система","кабеля","пара","витая"
 }
-
 def _words(s: str) -> List[str]:
     return re.findall(r"[A-Za-zА-Яа-яЁё]+", s or "")
 
 def build_brand_index(shop_el: ET.Element) -> Dict[str, str]:
-    """Собираем уже встреченные бренды -> канонический вид."""
     idx: Dict[str,str] = {}
     offers_el=shop_el.find("offers")
     if offers_el is None: return idx
@@ -284,48 +286,30 @@ def build_brand_index(shop_el: ET.Element) -> Dict[str, str]:
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name = get_text(offer, "name")
     nrm  = _norm_key(name)
-
-    # 1) Уже встречавшиеся бренды — точное вхождение
+    # 1) уже встречавшиеся бренды — точное вхождение
     for br_norm, canon in sorted(brand_index.items(), key=lambda kv: len(kv[0]), reverse=True):
         if re.search(rf"\b{re.escape(br_norm)}\b", nrm):
             return canon
-
-    # 2) Синонимы
+    # 2) синонимы
     for alt, target in BRAND_SYNONYMS.items():
         if re.search(rf"\b{re.escape(alt)}\b", nrm):
-            # если целевой бренд уже встречался, берем его канонический вид
             t_norm = _norm_key(target)
-            if t_norm in brand_index:
-                return brand_index[t_norm]
-            # иначе — нормализованный тайтл
-            return target.title() if len(target.split())>1 else target.upper()
-
-    # 3) Типичные бренды
+            return brand_index.get(t_norm, target.title() if len(target.split())>1 else target.upper())
+    # 3) типичные бренды
     for cb in COMMON_BRANDS:
         cb_norm = _norm_key(cb)
         if re.search(rf"\b{re.escape(cb_norm)}\b", nrm):
-            # приоритет известному канону из фида
-            if cb_norm in brand_index:
-                return brand_index[cb_norm]
-            return cb
-
-    # 4) Эвристика по первому «словесному» токену
+            return brand_index.get(cb_norm, cb)
+    # 4) эвристика — первый осмысленный токен
     toks = _words(name)
     if toks:
         first = toks[0]
         if _norm_key(first) not in GENERIC_WORDS and len(first) <= 12:
             f_norm = _norm_key(first)
-            if f_norm in brand_index:
-                return brand_index[f_norm]
-            # TitleCase для русских слов, UPPER для коротких латинских
-            if re.fullmatch(r"[A-Z]{2,12}", first):
-                return first
-            return first[:1].upper()+first[1:]
-
+            return brand_index.get(f_norm, first if not re.fullmatch(r"[A-Z]{2,12}", first) else first.upper())
     return ""
 
 def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
-    """Если <vendor> пустой/отсутствует — пытаемся угадать по <name>."""
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
     brand_index = build_brand_index(shop_el)
@@ -333,18 +317,16 @@ def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
     for offer in offers_el.findall("offer"):
         v = offer.find("vendor")
         cur = (v.text or "").strip() if (v is not None and v.text) else ""
-        if cur:
-            continue
+        if cur: continue
         guess = guess_vendor_for_offer(offer, brand_index)
         if guess:
-            if v is None:
-                v = ET.SubElement(offer, "vendor")
+            if v is None: v = ET.SubElement(offer, "vendor")
             v.text = guess
             brand_index[_norm_key(guess)] = guess
             touched += 1
     return touched
 
-# --------------------- pricing (без изменений) ---------------------
+# --------------------- pricing ---------------------
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),
@@ -438,7 +420,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         updated+=1
     return updated,skipped,total,src_stats
 
-# --------------------- params / description (как в 05g) ---------------------
+# --------------------- params / description ---------------------
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
 UNWANTED_PARAM_NAME_RE = re.compile(
@@ -479,11 +461,13 @@ def remove_specific_params(shop_el: ET.Element) -> int:
 
                 if UNWANTED_PARAM_NAME_RE.match(nm):
                     offer.remove(p); removed+=1; continue
+
                 if (val.lower() in {"","-","—","–",".","..","...","n/a","na","none","null","нет данных","не указано","неизвестно"}
                     or re.search(r"https?://|www\.", val, re.I)
                     or re.search(r"[^@\s]+@[^@\s]+\.[^@\s]+", val)
                     or re.search(r"<[^>]+>", val)):
                     offer.remove(p); removed+=1; continue
+
                 k=_key(nm)
                 if k in seen:
                     offer.remove(p); removed+=1; continue
@@ -503,6 +487,7 @@ def _looks_like_code_value(v:str)->bool:
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
+# ==== Санитизация и нормализация описаний ====
 DISCL_RE = re.compile(
     r"(голографическ\w*|маркиров\w*|на\s+корпусе|на\s+коробке|на\s+упаковке|"
     r"медиа\s*файл\w*|фото|видео|предъяв\w*|обнаруж\w*\s+брак|серии\s+картриджа|"
@@ -510,15 +495,56 @@ DISCL_RE = re.compile(
     re.I
 )
 
+# --- новые паттерны заголовков ---
+HEADLINE_EUROPRINT_RE  = re.compile(r"^(?:тонер-)?картриджи\s+europrint\s*:?\s*$", re.I)
+HEADLINE_WARRANTY_RE   = re.compile(r"^условия\s+гарантии\s*:?\s*$", re.I)
+
+def _merge_europrint_headings(lines: List[str]) -> List[str]:
+    """Склеивает 'Картриджи EUROPRINT:' с текстом, и убирает пустой 'Условия гарантии:'"""
+    out: List[str] = []
+    i = 0
+    n = len(lines)
+    while i < n:
+        cur = (lines[i] or "").strip()
+        nxt = (lines[i+1] or "").strip() if i+1 < n else ""
+
+        # 1) EUROPRINT заголовок
+        if HEADLINE_EUROPRINT_RE.match(cur):
+            if nxt:
+                merged = "Картриджи EUROPRINT. " + re.sub(r"^[—\-•\s]+", "", nxt)
+                out.append(merged.strip())
+                i += 2
+                continue
+            i += 1
+            continue
+
+        # 2) Условия гарантии — пустой заголовок
+        if HEADLINE_WARRANTY_RE.match(cur):
+            if nxt:
+                out.append(nxt)
+                i += 2
+                continue
+            i += 1
+            continue
+
+        out.append(cur)
+        i += 1
+    return out
+
 def _normalize_description_whitespace(text: str) -> str:
     t = strip_noise_chars(text or "")
     t = canon_colons(t)
     t = t.replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
     t = re.sub(r"\t+", "\t", t)
     t = re.sub(r"\bдля дома\s+офиса\b", "для дома и офиса", t, flags=re.I)
-    lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
+
+    raw_lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
+
+    # сначала чиним заголовки EUROPRINT/«Условия гарантии»
+    raw_lines = _merge_europrint_headings(raw_lines)
+
     out=[]; last_blank=False
-    for ln in lines:
+    for ln in raw_lines:
         s = ln.strip()
         if not s:
             if last_blank: continue
@@ -527,6 +553,7 @@ def _normalize_description_whitespace(text: str) -> str:
         if DISCL_RE.search(s) and len(s) > 60:
             continue
         out.append(s)
+
     t = "\n".join(out).strip()
     t = re.sub(r":\s*:", ": ", t)
     t = re.sub(r"(?<!\.)\.\.(?!\.)", ".", t)
@@ -584,6 +611,7 @@ def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     v = normalize_value_punct(v)
     return n, v
 
+# Заголовки/шапки
 HDR_RE            = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
 HEAD_ONLY_RE      = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*$", re.I)
 HEAD_PREFIX_RE    = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*", re.I)
@@ -779,7 +807,7 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
             d.text=new_text; changed+=1
     return changed
 
-# --------------------- availability / misc ---------------------
+# --------------------- availability ---------------------
 TRUE_WORDS  = {"true","1","yes","y","да","есть","in stock","available"}
 FALSE_WORDS = {"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 
@@ -1011,7 +1039,7 @@ def main()->None:
             for node in list(off.findall("categoryId"))+list(off.findall("CategoryId")):
                 off.remove(node)
 
-    # бренды: нормализация + автоподстановка для пустых
+    # бренды: нормализация + автоподстановка
     ensure_vendor(out_shop)
     ensure_vendor_auto_fill(out_shop)
 
@@ -1028,7 +1056,7 @@ def main()->None:
     # чистка <param>
     remove_specific_params(out_shop)
 
-    # описание → чистка + Особенности + Характеристики
+    # описание → чистка + Особенности + Характеристики (с фиксом EUROPRINT/Warranty)
     unify_specs_in_description(out_shop)
 
     # страховка от служебных строк
@@ -1071,9 +1099,13 @@ def main()->None:
     # сериализация и косметика вывода
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
+    # <shop> на новой строке после комментария
     xml_text = re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
+    # OFFSEP → пустая строка (на будущее)
     xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n", xml_text)
+    # разрыв между офферами
     xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
+    # не больше 2 пустых подряд
     xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
 
     if DRY_RUN:
