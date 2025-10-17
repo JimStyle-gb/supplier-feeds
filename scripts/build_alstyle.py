@@ -2,17 +2,16 @@
 # -*- coding: utf-8 -*-
 """
 Alstyle → YML for Satu
-version: alstyle-2025-10-16.strict-05c (colon-fix)
+version: alstyle-2025-10-17.strict-05d (colon+inline-bullets fix)
 
-Изменения по сравнению с 05b:
-- Полный фикс «двойных двоеточий» в характеристиках:
-  • нормализуем любые «варианты» двоеточий к ASCII ':'
-  • срезаем лидирующие двоеточия в значениях при парсинге и на финальной сборке
-- Остальное — как в 05b:
-  • FEED_META показывает реальные счётчики доступности (true/false)
-  • В итоговом XML переносим <shop> на новую строку после FEED_META (исправление '--><shop>')
-  • Добавляем дополнительный пустой разрыв между офферами: </offer> ⏎⏎ <offer ...>
-  • Чистим только то, что согласовано: <param name="Код товара Kaspi">…</param> и «Назначение: Да»
+Что добавлено к 05c:
+- Полный фикс «::» и их аналогов в описаниях (уже был).
+- Разбираем строки вида «Основные характеристики:: - ... - ...»:
+  • отрезаем префикс «(Основные) характеристики:»
+  • бьём одну строку на несколько пунктов по внутренним «- ...: ...»
+  • конвертируем их в аккуратные «- Ключ: Значение»
+- Косметика текста: «для дома офиса» → «для дома и офиса».
+- Остальное (цены, available, FEED_META, чистка параметров и т.д.) — без изменений.
 """
 
 from __future__ import annotations
@@ -29,7 +28,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-16.strict-05c"
+SCRIPT_VERSION = "alstyle-2025-10-17.strict-05d"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -441,6 +440,8 @@ def normalize_free_text_punct(s: str) -> str:
     t = RE_PERCENT.sub(r"\1%", t)
     t = RE_DEGREE_C.sub(r"\1°\2", t)
     t = re.sub(r"\s{2,}", " ", t)
+    # мелкая грамматика
+    t = re.sub(r"\bдля дома\s+офиса\b", "для дома и офиса", t, flags=re.I)
     return t.strip()
 
 # ===== НОРМАЛИЗАЦИЯ ПАР «имя: значение» =====
@@ -495,7 +496,10 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     return pairs
 
 # ===== Извлечение KV из <description> =====
-HDR_RE = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
+HDR_RE            = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
+HEAD_ONLY_RE      = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*$", re.I)
+HEAD_PREFIX_RE    = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*", re.I)
+
 KV_BULLET_RE = re.compile(r"^\s*-\s*([^:]+?)\s*:\s*(.+)$")
 KV_COLON_RE  = re.compile(r"^\s*([^:]{2,}?)\s*:\s*(.+)$")
 KV_TABS_RE   = re.compile(r"^\s*([^\t]{2,}?)\t+(.+)$")
@@ -523,33 +527,70 @@ def _valid_kv_name(name: str) -> bool:
     if n.count(",") >= 2: return False
     return True
 
+def _split_inline_bullets(line: str) -> List[str]:
+    """
+    Делит строку вида:
+    "… - Диапазон плёнок: 80… - Скорость: 40 см/мин. - Кол-во валов: 4 …"
+    на ["Диапазон плёнок: 80…", "Скорость: 40 см/мин.", "Кол-во валов: 4 …"]
+    """
+    s = line.strip()
+    if not s:
+        return []
+    # только если есть двоеточие — т.е. пара "ключ: значение"
+    if ":" not in s:
+        return [s]
+    parts = re.split(r"\s*-\s+(?=[^:]{2,}:\s*\S)", s)
+    out = []
+    for p in parts:
+        p = p.strip()
+        if not p:
+            continue
+        # убираем лишние дефисы в начале
+        p = re.sub(r"^\s*-\s*", "", p)
+        out.append(p)
+    return out or [s]
+
 def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     if not (text or "").strip():
         return "", []
 
     t = _normalize_description_whitespace(text)
-    lines = t.split("\n")
+    raw_lines = t.split("\n")
+
+    # 0) предобработка заголовков «(Основные) характеристики»
+    lines: List[str] = []
+    for ln in raw_lines:
+        if URL_RE.search(ln):
+            # URL убираем только если это не kv-строка
+            if not (KV_BULLET_RE.match(ln) or KV_COLON_RE.match(ln) or KV_TABS_RE.match(ln) or KV_SPACES_RE.match(ln)):
+                ln = URL_RE.sub("", ln).strip()
+
+        if HDR_RE.match(ln) or HEAD_ONLY_RE.match(ln):
+            # «Характеристики:» отдельной строкой — выбрасываем
+            continue
+
+        # если заголовок + контент в одной строке — срезаем префикс и оставляем содержимое
+        ln2 = HEAD_PREFIX_RE.sub("", ln)
+
+        # если после префикса всё ещё пусто — пропускаем
+        if not ln2.strip():
+            continue
+
+        # если в строке несколько «- Имя: Значение», разрезаем на независимые строки
+        splitted = _split_inline_bullets(ln2)
+        lines.extend(splitted)
+
     keep_mask = [True]*len(lines)
     pairs: List[Tuple[str,str]] = []
 
-    # 0) убрать URL из «человеческой» части
-    for i, ln in enumerate(lines):
-        if URL_RE.search(ln):
-            if not (KV_BULLET_RE.match(ln) or KV_COLON_RE.match(ln) or KV_TABS_RE.match(ln) or KV_SPACES_RE.match(ln)):
-                lines[i] = URL_RE.sub("", ln).strip()
-
-    # 1) срезать заголовки "Характеристики"
-    for i, ln in enumerate(lines):
-        if HDR_RE.match(ln): keep_mask[i] = False
-
-    # 2) выкинуть «битые» пули
+    # 1) выкинуть «битые» пули
     for i, ln in enumerate(lines):
         if BULLET_NO_KEY.match(ln) or BULLET_KEY_NOVALUE.match(ln):
             keep_mask[i] = False
 
-    # 3) распознать пары
+    # 2) распознать пары
     def try_parse_kv(ln: str) -> Optional[Tuple[str,str]]:
-        ln = canon_colons(ln)                      # важная нормализация
+        ln = canon_colons(ln)                      # нормализация
         probe = re.sub(r"[ \t]{2,}", "  ", ln)
         for rx in (KV_BULLET_RE, KV_TABS_RE, KV_SPACES_RE, KV_COLON_RE):
             m = rx.match(probe)
@@ -567,7 +608,7 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
             keep_mask[i] = False
             pairs.append(parsed)
 
-    # 4) «чистое» описание + пунктуация
+    # 3) собрать «чистое» описание + пунктуация
     cleaned_lines = [ln for ln, keep in zip(lines, keep_mask) if keep and (ln.strip()!="")]
     cleaned = "\n".join(cleaned_lines).strip()
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
@@ -898,10 +939,10 @@ def main()->None:
     # доступность (важно: собираем реальную статистику для FEED_META)
     t_true, t_false, _, _ = normalize_available_field(out_shop)
 
-    # чистка <param> (только «Код товара Kaspi» и «Назначение: Да», плюс согласованные «мусорные» наименования)
+    # чистка <param> (только согласованные вещи)
     remove_specific_params(out_shop)
 
-    # описание → «Характеристики»
+    # описание → «Характеристики» (в т.ч. разбор «Основные характеристики:: - ...»)
     unify_specs_in_description(out_shop)
 
     # страховка от служебных строк
