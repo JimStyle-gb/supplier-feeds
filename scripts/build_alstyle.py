@@ -1,17 +1,18 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-Alstyle → YML for Satu
-version: alstyle-2025-10-17.strict-05d (colon+inline-bullets fix)
+Alstyle → YML (косяки по описаниям исправлены, без оформления под Satu)
+version: alstyle-2025-10-17.clean-05e
 
-Что добавлено к 05c:
-- Полный фикс «::» и их аналогов в описаниях (уже был).
-- Разбираем строки вида «Основные характеристики:: - ... - ...»:
-  • отрезаем префикс «(Основные) характеристики:»
-  • бьём одну строку на несколько пунктов по внутренним «- ...: ...»
-  • конвертируем их в аккуратные «- Ключ: Значение»
-- Косметика текста: «для дома офиса» → «для дома и офиса».
-- Остальное (цены, available, FEED_META, чистка параметров и т.д.) — без изменений.
+Добавлено к 05d:
+- Глубокая санитизация текста в <description>:
+  • нормализация "двойных двоеточий" и их аналогов (：﹕∶︰) → ':'
+  • удаление невидимых/служебных символов (Zero Width, управляющие, BOM, soft hyphen), мусора (�, ¬)
+  • замена маркера • на '-' (для устойчивого парсинга пунктов)
+  • фикса «для дома офиса» → «для дома и офиса»
+  • вырезание длинных служебных дисклеймеров (Europrint: голограммы, медиафайлы и т.п.) из описаний
+  • разбор строк типа «Основные характеристики:: - ... - ...» на отдельные пункты
+- Остальная логика (цены, available, FEED_META, порядок тегов и т.д.) — без изменений.
 """
 
 from __future__ import annotations
@@ -28,7 +29,7 @@ except Exception:
 
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-17.strict-05d"
+SCRIPT_VERSION = "alstyle-2025-10-17.clean-05e"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -45,14 +46,13 @@ DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "include").lower()  # off|include|exclude
 
-# Режим под Satu (оставлено для совместимости)
-SATU_MODE              = os.getenv("SATU_MODE", "full").lower()   # lean|full
-SATU_KEYWORDS          = os.getenv("SATU_KEYWORDS", "auto").lower()  # auto|off
+# Satu-режим (оставлено, но ничего не меняем в оформлении)
+SATU_MODE              = os.getenv("SATU_MODE", "full").lower()
+SATU_KEYWORDS          = os.getenv("SATU_KEYWORDS", "auto").lower()
 SATU_KEYWORDS_MAXLEN   = int(os.getenv("SATU_KEYWORDS_MAXLEN", "160"))
 SATU_KEYWORDS_MAXWORDS = int(os.getenv("SATU_KEYWORDS_MAXWORDS", "16"))
 SATU_KEYWORDS_GEO      = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","1","true","yes"}
 
-# Структура (как договаривались)
 DROP_CATEGORY_ID_TAG = True
 DROP_STOCK_TAGS      = True
 PURGE_TAGS_AFTER = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
@@ -90,14 +90,24 @@ def remove_all(el: ET.Element, *tags: str) -> int:
     return n
 
 # --- colon normalization (ASCII ':' из любых «похожих» символов) ---
-_COLON_ALIASES = ":\uFF1A\uFE55\u2236\uFE30"  # ':'，'：'(FF1A)，'﹕'(FE55)，'∶'(2236)，'︰'(FE30)
+_COLON_ALIASES = ":\uFF1A\uFE55\u2236\uFE30"
 _COLON_CLASS = "[" + re.escape(_COLON_ALIASES) + "]"
 _COLON_CLASS_RE = re.compile(_COLON_CLASS)
 def canon_colons(s: str) -> str:
-    """Заменяет любые «варианты» двоеточия на ASCII ':'"""
-    if not s:
-        return s or ""
-    return _COLON_CLASS_RE.sub(":", s)
+    return _COLON_CLASS_RE.sub(":", s or "")
+
+# --- noise / invisible chars ---
+NOISE_RE = re.compile(
+    r"[\u200B-\u200F\u202A-\u202E\u2060\uFEFF\u00AD"  # zero-width, directional, BOM, soft hyphen
+    r"\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F"  # C0/DEL
+    r"\u0080-\u009F]"                                # C1
+)
+def strip_noise_chars(s: str) -> str:
+    if not s: return s or ""
+    s = NOISE_RE.sub("", s)
+    s = s.replace("�","").replace("¬","")
+    s = s.replace("•","-")  # буллет → дефис
+    return s
 
 # --------------------- load ---------------------
 def load_source_bytes(src: str) -> bytes:
@@ -347,13 +357,9 @@ UNWANTED_PARAM_NAME_RE = re.compile(
     re.I
 )
 
-# helper: «Код товара Kaspi»
 KASPI_CODE_NAME_RE = re.compile(r"^код\s+товара\s+kaspi$", re.I)
 
 def remove_specific_params(shop_el: ET.Element) -> int:
-    """Удаляем только то, о чём согласовано:
-       - <param name="Код товара Kaspi">…</param>
-       - «Назначение: Да» (строго со значением 'Да')"""
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
     removed=0
@@ -364,15 +370,12 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                 nm=(p.attrib.get("name") or "").strip()
                 val=(p.text or "").strip()
 
-                # 1) Удаляем ровно «Код товара Kaspi»
                 if KASPI_CODE_NAME_RE.fullmatch(nm):
                     offer.remove(p); removed+=1; continue
 
-                # 2) Удаляем «Назначение: Да» в <param>
                 if re.fullmatch(r"назначение", nm, re.I) and re.fullmatch(r"да", val, re.I):
                     offer.remove(p); removed+=1; continue
 
-                # Остальное — фильтрация мусора из согласованного списка
                 if UNWANTED_PARAM_NAME_RE.match(nm):
                     offer.remove(p); removed+=1; continue
                 if (val.lower() in {"","-","—","–",".","..","...","n/a","na","none","null","нет данных","не указано","неизвестно"}
@@ -399,32 +402,49 @@ def _looks_like_code_value(v:str)->bool:
     clean=re.sub(r"[0-9\-\_/ ]","",s)
     return (len(clean)/max(len(s),1))<0.3
 
-# ==== Нормализация пробелов/табов/пустых строк в description ====
+# ==== Санитизация и нормализация текста описания ====
+# Дисклеймеры / «служебные» абзацы, которые надо убрать из описания
+DISCL_RE = re.compile(
+    r"(голографическ\w*|маркиров\w*|на\s+корпусе|на\s+коробке|на\s+упаковке|"
+    r"медиа\s*файл\w*|фото|видео|предъяв\w*|обнаруж\w*\s+брак|серии\s+картриджа|"
+    r"услов\w*\s+гаран|следует|необходим\w*)",
+    re.I
+)
+
 def _normalize_description_whitespace(text: str) -> str:
-    t = (text or "").replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
-    t = canon_colons(t)                       # важная нормализация двоеточий
-    t = re.sub(r"\t+", "\t", t)               # табы → один таб
+    t = strip_noise_chars(text or "")
+    t = canon_colons(t)
+    t = t.replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
+    t = re.sub(r"\t+", "\t", t)
+    # мелкая грамматика
+    t = re.sub(r"\bдля дома\s+офиса\b", "для дома и офиса", t, flags=re.I)
     lines = [re.sub(r"[ \t]+$", "", ln) for ln in t.split("\n")]
     out=[]; last_blank=False
     for ln in lines:
-        blank = (ln.strip()=="")
-        if blank and last_blank: 
+        s = ln.strip()
+        if not s:
+            if last_blank: continue
+            out.append(""); last_blank=True; continue
+        last_blank=False
+        # убрать полностью строки-дисклеймеры
+        if DISCL_RE.search(s) and len(s) > 60:
             continue
-        out.append(ln.strip())
-        last_blank = blank
-    return "\n".join(out).strip()
+        out.append(s)
+    t = "\n".join(out).strip()
+    # нормализация повторов пунктуации
+    t = re.sub(r":\s*:", ": ", t)
+    t = re.sub(r"(?<!\.)\.\.(?!\.)", ".", t)
+    t = re.sub(r"(\n){3,}", "\n\n", t)
+    return t
 
-# ==== Нормализация пунктуации ====
 RE_SPACE_BEFORE_PUNCT = re.compile(r"\s+([,;.!?])")
 RE_PERCENT            = re.compile(r"(\d)\s*%")
 RE_DEGREE_C           = re.compile(r"(\d)\s*°\s*([СC])")
-RE_DOTS2              = re.compile(r"(?<!\.)\.\.(?!\.)")
 
 def normalize_value_punct(v: str) -> str:
-    if not v: return v
-    s = canon_colons(v)
-    s = re.sub(r":\s*:", ": ", s)          # '::' или ': :' → ': '
-    s = RE_DOTS2.sub(".", s)
+    s = canon_colons(v or "")
+    s = re.sub(r":\s*:", ": ", s)
+    s = re.sub(r"(?<!\.)\.\.(?!\.)", ".", s)
     s = RE_SPACE_BEFORE_PUNCT.sub(r"\1", s)
     s = RE_PERCENT.sub(r"\1%", s)
     s = RE_DEGREE_C.sub(r"\1°\2", s)
@@ -432,15 +452,13 @@ def normalize_value_punct(v: str) -> str:
     return s.strip()
 
 def normalize_free_text_punct(s: str) -> str:
-    if not s: return s
-    t = canon_colons(s)
-    t = re.sub(r":\s*:", ": ", t)          # '::' или ': :' → ': '
-    t = RE_DOTS2.sub(".", t)
+    t = canon_colons(s or "")
+    t = re.sub(r":\s*:", ": ", t)
+    t = re.sub(r"(?<!\.)\.\.(?!\.)", ".", t)
     t = RE_SPACE_BEFORE_PUNCT.sub(r"\1", t)
     t = RE_PERCENT.sub(r"\1%", t)
     t = RE_DEGREE_C.sub(r"\1°\2", t)
     t = re.sub(r"\s{2,}", " ", t)
-    # мелкая грамматика
     t = re.sub(r"\bдля дома\s+офиса\b", "для дома и офиса", t, flags=re.I)
     return t.strip()
 
@@ -448,18 +466,10 @@ def normalize_free_text_punct(s: str) -> str:
 def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     n = re.sub(r"\s+", " ", (name or "").strip())
     v = re.sub(r"\s+", " ", (value or "").strip())
-
-    n = canon_colons(n)
-    v = canon_colons(v)
-
-    if not n or not v:
-        return n, v
-
-    # удаляем любые ведущие двоеточия/пробелы: ':', '：', '﹕', '∶', '︰'
+    n = canon_colons(n); v = canon_colons(v)
+    if not n or not v: return n, v
     v = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", v)
-
     n_l = n.lower()
-
     if re.search(r"совместим\w*\s*модел", n_l):
         n = "Совместимость"
     elif re.search(r"ресурс", n_l):
@@ -469,14 +479,12 @@ def normalize_kv(name: str, value: str) -> Tuple[str, str]:
         if m:
             num = re.sub(r"\s+", " ", m.group(1)).strip()
             v = f"{num} стр."
-            if iso:
-                v += f" (ISO/IEC {iso.group(1)})"
+            if iso: v += f" (ISO/IEC {iso.group(1)})"
     elif re.fullmatch(r"вес", n_l):
         if not re.search(r"\bкг\b", v, re.I):
             v = v.replace(",", ".").strip() + " кг"
     elif re.fullmatch(r"цвет", n_l):
         v = v.lower()
-
     v = normalize_value_punct(v)
     return n, v
 
@@ -509,7 +517,6 @@ BULLET_NO_KEY      = re.compile(r"^\s*-\s*[:\s\-]{0,5}:\s*\S")
 BULLET_KEY_NOVALUE = re.compile(r"^\s*-\s*[^:]+:\s*$")
 
 URL_RE = re.compile(r"https?://\S+", re.I)
-
 BAD_KV_NAME_RE = re.compile(
     r"(?:\bв\s+случае\b|\bуслов\w*\s+гаран|необходим\w*|следует|предостав\w*|предъяв\w*|"
     r"указан\w*|содержит|соответству\w*|упаков\w*|маркиров\w*|голографическ\w*|"
@@ -528,24 +535,14 @@ def _valid_kv_name(name: str) -> bool:
     return True
 
 def _split_inline_bullets(line: str) -> List[str]:
-    """
-    Делит строку вида:
-    "… - Диапазон плёнок: 80… - Скорость: 40 см/мин. - Кол-во валов: 4 …"
-    на ["Диапазон плёнок: 80…", "Скорость: 40 см/мин.", "Кол-во валов: 4 …"]
-    """
     s = line.strip()
-    if not s:
-        return []
-    # только если есть двоеточие — т.е. пара "ключ: значение"
-    if ":" not in s:
-        return [s]
+    if not s: return []
+    if ":" not in s: return [s]
     parts = re.split(r"\s*-\s+(?=[^:]{2,}:\s*\S)", s)
     out = []
     for p in parts:
         p = p.strip()
-        if not p:
-            continue
-        # убираем лишние дефисы в начале
+        if not p: continue
         p = re.sub(r"^\s*-\s*", "", p)
         out.append(p)
     return out or [s]
@@ -557,40 +554,28 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
     t = _normalize_description_whitespace(text)
     raw_lines = t.split("\n")
 
-    # 0) предобработка заголовков «(Основные) характеристики»
     lines: List[str] = []
     for ln in raw_lines:
         if URL_RE.search(ln):
-            # URL убираем только если это не kv-строка
             if not (KV_BULLET_RE.match(ln) or KV_COLON_RE.match(ln) or KV_TABS_RE.match(ln) or KV_SPACES_RE.match(ln)):
                 ln = URL_RE.sub("", ln).strip()
-
         if HDR_RE.match(ln) or HEAD_ONLY_RE.match(ln):
-            # «Характеристики:» отдельной строкой — выбрасываем
             continue
-
-        # если заголовок + контент в одной строке — срезаем префикс и оставляем содержимое
         ln2 = HEAD_PREFIX_RE.sub("", ln)
-
-        # если после префикса всё ещё пусто — пропускаем
         if not ln2.strip():
             continue
-
-        # если в строке несколько «- Имя: Значение», разрезаем на независимые строки
         splitted = _split_inline_bullets(ln2)
         lines.extend(splitted)
 
     keep_mask = [True]*len(lines)
     pairs: List[Tuple[str,str]] = []
 
-    # 1) выкинуть «битые» пули
     for i, ln in enumerate(lines):
         if BULLET_NO_KEY.match(ln) or BULLET_KEY_NOVALUE.match(ln):
             keep_mask[i] = False
 
-    # 2) распознать пары
     def try_parse_kv(ln: str) -> Optional[Tuple[str,str]]:
-        ln = canon_colons(ln)                      # нормализация
+        ln = canon_colons(ln)
         probe = re.sub(r"[ \t]{2,}", "  ", ln)
         for rx in (KV_BULLET_RE, KV_TABS_RE, KV_SPACES_RE, KV_COLON_RE):
             m = rx.match(probe)
@@ -608,22 +593,25 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]]]:
             keep_mask[i] = False
             pairs.append(parsed)
 
-    # 3) собрать «чистое» описание + пунктуация
-    cleaned_lines = [ln for ln, keep in zip(lines, keep_mask) if keep and (ln.strip()!="")]
-    cleaned = "\n".join(cleaned_lines).strip()
+    cleaned_lines = []
+    for ln, keep in zip(lines, keep_mask):
+        if not keep: continue
+        # дополнительно режем служебные дисклеймеры и явные мусорные хвосты
+        if DISCL_RE.search(ln) and len(ln) > 60:
+            continue
+        cleaned_lines.append(ln)
+
+    cleaned = "\n".join([x for x in cleaned_lines if x.strip()]).strip()
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
     cleaned = normalize_free_text_punct(cleaned)
 
     return cleaned, pairs
 
-# ===== Сборка финального блока «Характеристики» =====
+# ===== Сборка «Характеристик» =====
 def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0)
-
-    offers_touched=0
-    total_kv = 0
-
+    offers_touched=0; total_kv=0
     for offer in offers_el.findall("offer"):
         desc_el = offer.find("description")
         raw_desc = (desc_el.text or "").strip() if (desc_el is not None and desc_el.text) else ""
@@ -631,25 +619,19 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
         cleaned_desc, kv_from_desc = extract_kv_from_description(raw_desc)
         pairs_from_params = build_specs_pairs_from_params(offer)
 
-        # --- Фильтр ровно «Назначение: Да»
-        kv_from_desc = [
-            (n,v) for (n,v) in kv_from_desc
-            if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")
-        ]
+        # режем ровно «Назначение: Да»
+        kv_from_desc = [(n,v) for (n,v) in kv_from_desc if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")]
 
         merged: Dict[str, Tuple[str,str]] = {}
         for name, val in pairs_from_params:
             merged[_key(name)] = (name, val)
         for name, val in kv_from_desc:
-            k = _key(name)
+            k=_key(name)
             if k not in merged:
-                merged[k] = (name, val)
+                merged[k]=(name,val)
 
-        # страховка: выкинуть «Назначение: Да», если пролезло
-        merged = {
-            k:(n,v) for k,(n,v) in merged.items()
-            if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")
-        }
+        # повторная страховка
+        merged = {k:(n,v) for k,(n,v) in merged.items() if not (_norm_text(n)=="назначение" and _norm_text(v)=="да")}
 
         if not merged:
             if cleaned_desc != raw_desc and desc_el is not None:
@@ -660,15 +642,13 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
         merged_pairs = list(merged.values())
         merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
 
-        # финальная страховка: срезать все лидирующие двоеточия в value
-        tmp_pairs = []
+        tmp_pairs=[]
         for name, val in merged_pairs:
             clean_val = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", str(val or ""))
             tmp_pairs.append((name, clean_val))
         merged_pairs = tmp_pairs
 
         lines = [f"- {name}: {val}" for name, val in merged_pairs]
-
         new_text = (cleaned_desc + "\n\n" if cleaned_desc else "") + "Характеристики:\n" + "\n".join(lines)
         if desc_el is None:
             desc_el = ET.SubElement(offer, "description")
@@ -676,10 +656,9 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int]:
 
         offers_touched += 1
         total_kv += len(lines)
-
     return offers_touched, total_kv
 
-# Чистка явных служебных строк в description (страховка)
+# Чистка явных служебных строк (страховка)
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)\b",
@@ -693,7 +672,13 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
         d=offer.find("description")
         if d is None or not (d.text or "").strip(): continue
         lines=(d.text or "").splitlines()
-        kept=[ln for ln in lines if not BAD_LINE_START.search(ln)]
+        kept=[]
+        for ln in lines:
+            if BAD_LINE_START.search(ln): 
+                continue
+            if DISCL_RE.search(ln) and len(ln.strip())>60:
+                continue
+            kept.append(ln)
         new_text="\n".join(kept).strip()
         if new_text!=(d.text or "").strip():
             d.text=new_text; changed+=1
@@ -704,15 +689,13 @@ TRUE_WORDS  = {"true","1","yes","y","да","есть","in stock","available"}
 FALSE_WORDS = {"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 
 def _parse_bool_str(s: str) -> Optional[bool]:
-    if s is None: return None
-    v=_norm_text(s)
+    v=_norm_text(s or "")
     if v in TRUE_WORDS: return True
     if v in FALSE_WORDS: return False
     return None
 
 def _parse_int(s: str) -> Optional[int]:
-    if s is None: return None
-    t=re.sub(r"[^\d\-]+","", s)
+    t=re.sub(r"[^\d\-]+","", s or "")
     if t in {"","-","+"}: return None
     try: return int(t)
     except Exception: return None
@@ -936,13 +919,13 @@ def main()->None:
     # цены
     reprice_offers(out_shop, PRICING_RULES)
 
-    # доступность (важно: собираем реальную статистику для FEED_META)
+    # доступность (для FEED_META правдиво)
     t_true, t_false, _, _ = normalize_available_field(out_shop)
 
-    # чистка <param> (только согласованные вещи)
+    # чистка <param>
     remove_specific_params(out_shop)
 
-    # описание → «Характеристики» (в т.ч. разбор «Основные характеристики:: - ...»)
+    # описание → чистка + «Характеристики» (без декоративного HTML)
     unify_specs_in_description(out_shop)
 
     # страховка от служебных строк
@@ -962,7 +945,7 @@ def main()->None:
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    # FEED_META (вставка в начало, с корректными счётчиками)
+    # FEED_META (вставка в начало)
     meta_pairs={
         "script_version": SCRIPT_VERSION,
         "supplier": SUPPLIER_NAME,
@@ -976,22 +959,13 @@ def main()->None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # сериализация
+    # сериализация и косметика вывода
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
-
-    # --- ФИНАЛЬНАЯ ПРАВКА ФОРМАТА ВЫВОДА ---
-    # 1) Перевести <shop> на новую строку после FEED_META
-    xml_text = re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
-
-    # 2) Если встречались маркеры OFFSEP – заменить их на пустую строку (безопасно даже если их нет)
-    xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n", xml_text)
-
-    # 3) Гарантированный дополнительный разрыв между офферами: </offer>\n\n<offer ...>
-    xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
-
-    # 4) Не больше двух подряд пустых строк
-    xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
+    xml_text = re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)          # <shop> на новой строке
+    xml_text = re.sub(r"\s*<!--OFFSEP-->\s*", "\n\n", xml_text)                         # маркер OFFSEP → пустая строка
+    xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)          # разрыв между офферами
+    xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)                             # не больше 2 пустых строк
 
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written."); return
