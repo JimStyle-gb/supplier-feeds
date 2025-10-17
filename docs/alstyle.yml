@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-16 20:19">
+<yml_catalog date="2025-10-17 12:04">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 17:10:2025 - 01:19:54
+Время сборки (Алматы)                      | 17:10:2025 - 17:04:49
 Ближайшее время сборки (Алматы)            | 18:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15908
-Сколько товаров у поставщика после фильтра | 1987
+Сколько товаров у поставщика до фильтра    | 15838
+Сколько товаров у поставщика после фильтра | 1991
 Сколько товаров есть в наличии (true)      | 1316
-Сколько товаров нет в наличии (false)      | 671-->
+Сколько товаров нет в наличии (false)      | 675-->
 <shop>
     <offers>
       <offer id="AS20888" available="false">
@@ -193,7 +193,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <param name="Объём">0.0592325</param>
       </offer>
 
-<offer id="AS21162" available="true">
+<offer id="AS21162" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS21162</vendorCode>
         <name>Источник бесперебойного питания SVC PTS-3KL-LCD</name>
@@ -625,7 +625,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <param name="Объём">0.0895</param>
       </offer>
 
-<offer id="AS1940" available="true">
+<offer id="AS1940" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS1940</vendorCode>
         <name>Кабель сетевой A&amp;P APC030502CCA UTP PVC</name>
@@ -1425,7 +1425,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <param name="Объём">0.659736</param>
       </offer>
 
-<offer id="AS18638" available="false">
+<offer id="AS18638" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS18638</vendorCode>
         <name>Источник бесперебойного питания SVC GT33-40KVA</name>
@@ -2475,7 +2475,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.05148</param>
       </offer>
 
-<offer id="AS6443" available="false">
+<offer id="AS6443" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS6443</vendorCode>
         <name>Кабель сетевой SHIP D165A-L Cat.6 UTP 30В LSZH</name>
@@ -5126,7 +5126,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.005566222</param>
       </offer>
 
-<offer id="AS15898" available="true">
+<offer id="AS15898" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS15898</vendorCode>
         <name>Драм-картридж Europrint EPC-101R00474 (WC3225)</name>
@@ -9430,7 +9430,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.02535235</param>
       </offer>
 
-<offer id="AS25232" available="false">
+<offer id="AS25232" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS25232</vendorCode>
         <name>Источник бесперебойного питания SVC V-1500-L</name>
@@ -9943,7 +9943,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.075096</param>
       </offer>
 
-<offer id="AS26787" available="true">
+<offer id="AS26787" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS26787</vendorCode>
         <name>Источник бесперебойного питания SVC PTL-5K-LCD</name>
@@ -13779,7 +13779,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.011492</param>
       </offer>
 
-<offer id="AS32324" available="false">
+<offer id="AS32324" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS32324</vendorCode>
         <name>Тонер-картридж (двойная упаковка) Xerox 106R04349</name>
@@ -16788,7 +16788,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
         <param name="Объём">0.003</param>
       </offer>
 
-<offer id="AS37104" available="false">
+<offer id="AS37104" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS37104</vendorCode>
         <name>Ремень переноса Xerox 064K93623</name>
@@ -20426,7 +20426,7 @@ WorkCentre Pro 4110/4112/4127/4595
         <param name="Объём">0.030064128</param>
       </offer>
 
-<offer id="AS39778" available="false">
+<offer id="AS39778" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS39778</vendorCode>
         <name>Цветное МФУ Xerox C235DNI</name>
@@ -22789,7 +22789,7 @@ Comix B2950 - Персональный переплетчик для создания брошюр формата до А4.
         <param name="Объём">0.03304</param>
       </offer>
 
-<offer id="AS39205" available="false">
+<offer id="AS39205" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS39205</vendorCode>
         <name>Тонер-картридж Xerox 006R01724 (золотой)</name>
@@ -22812,7 +22812,7 @@ Comix B2950 - Персональный переплетчик для создания брошюр формата до А4.
         <param name="Объём">0.00790625</param>
       </offer>
 
-<offer id="AS39206" available="false">
+<offer id="AS39206" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS39206</vendorCode>
         <name>Тонер-картридж Xerox 006R01725 (серебрянный)</name>
@@ -28880,7 +28880,7 @@ AV*1
         <param name="Объём">0.0212205</param>
       </offer>
 
-<offer id="AS44031" available="false">
+<offer id="AS44031" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS44031</vendorCode>
         <name>Картридж Europrint EPC-W2410A</name>
@@ -33872,6 +33872,8 @@ HDMI x1
         <vendorCode>AS45019</vendorCode>
         <name>Источник бесперебойного питания CyberPower SM300KMFX</name>
         <price>13984900</price>
+        <picture>https://img.al-style.kz/45019_1.jpg</picture>
+        <picture>https://img.al-style.kz/45019_2.jpg</picture>
         <vendor>CyberPower</vendor>
         <currencyId>KZT</currencyId>
         <description>CyberPower SM300KMFX Трехфазный "Online" ИБП с встроенной аккумуляторной батареей обеспечивает долговременное резервное питание для коммуникационных шкафов, и инфраструктуры, а также систем аварийного питания. Благодаря возможности параллельной избыточности ИБП, ИБП серии "HSTP33" (3 фазы) идеально подходят для ответственных применений в серверных комнатах, центрах хранения и обработки данных, фабриках и электростанциях, требующих высокой производительности, высокой надежности и продолжительности автономной работы.
@@ -33890,6 +33892,8 @@ HDMI x1
         <vendorCode>AS45020</vendorCode>
         <name>Силовой модуль CyberPower SM30KPMX</name>
         <price>5152900</price>
+        <picture>https://img.al-style.kz/45020_1.jpg</picture>
+        <picture>https://img.al-style.kz/45020_2.jpg</picture>
         <vendor>CyberPower</vendor>
         <currencyId>KZT</currencyId>
         <description>CyberPower SM30KPMX - это модуль питания, который может быть установлен в ИБП для обеспечения вертикальной масштабируемости и увеличения мощности ИБП центра обработки данных. Пользователи могут выбирать количество устанавливаемых модулей питания и гибко настраивать мощность в зависимости от своих бизнес-потребностей.
@@ -36686,7 +36690,7 @@ DisplayPort x1
         <param name="Объём">0.000192</param>
       </offer>
 
-<offer id="AS53647" available="true">
+<offer id="AS53647" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS53647</vendorCode>
         <name>Монитор 34" ASRock PG34WQ15R2B</name>
@@ -39898,7 +39902,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <param name="Объём">0.164739875</param>
       </offer>
 
-<offer id="AS59325" available="false">
+<offer id="AS59325" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS59325</vendorCode>
         <name>Цветное лазерное МФУ Canon I-S MF752CDW</name>
@@ -40216,7 +40220,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <param name="Объём">0.62475</param>
       </offer>
 
-<offer id="AS59351" available="true">
+<offer id="AS59351" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS59351</vendorCode>
         <name>Цветное МФУ Canon MAXIFY GX3040</name>
@@ -42892,7 +42896,7 @@ Canon imageRUNNER 2520Canon imageRUNNER 2525Canon imageRUNNER 2530
         <param name="Объём">0.0012</param>
       </offer>
 
-<offer id="AS59990" available="true">
+<offer id="AS59990" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS59990</vendorCode>
         <name>Тонер-картридж Canon C-EXV 42 Black для IR 22xx 6908B002AA</name>
@@ -43779,7 +43783,7 @@ Canon ImagePROGRAF 650Canon ImagePROGRAF 655Canon ImagePROGRAF 670Canon ImagePRO
 Характеристики:
 - Гарантия: Нет
 - Состав: Пластик</description>
-        <param name="Вес">0.235</param>
+        <param name="Вес">0.12</param>
         <param name="Гарантия">Нет</param>
         <param name="Состав">Пластик</param>
         <param name="Объём">0.00225</param>
@@ -43848,7 +43852,7 @@ Canon imagePROGRAF TM-200Canon imagePROGRAF TM-205Canon imagePROGRAF TM-300Canon
 - Гарантия: 1 год
 - Печатающая головка Canon PF-06: инновация в области технологии печатающих головок, которая обеспечивает впечатляющую скорость печати на новых гибридных плоттерах Canon серий TX, TA и TM. Система пятицветных пигментированных чернил Canon LUCIA TD и Canon LUCIA TM в сочетании с данной печатающей головкой дает лучшую точность и скорость, чем когда-либо прежде для создания ярких и долговечных отпечатков.
 - Состав: Пластик</description>
-        <param name="Вес">0.266</param>
+        <param name="Вес">0.205</param>
         <param name="Гарантия">1 год</param>
         <param name="Состав">Пластик</param>
         <param name="Объём">0.0008925</param>
@@ -44611,58 +44615,6 @@ Canon imageRUNNER ADVANCE C5535Canon imageRUNNER ADVANCE C5535iCanon imageRUNNER
         <param name="Гарантия">Нет</param>
         <param name="Состав">Пластик</param>
         <param name="Объём">0.00411825</param>
-      </offer>
-
-<offer id="AS60526" available="false">
-        <categoryId>0</categoryId>
-        <vendorCode>AS60526</vendorCode>
-        <name>Монитор iiyama ProLite PL2492H XUB2492HSU-B6 24"</name>
-        <price>70900</price>
-        <picture>https://img.al-style.kz/60526_1.jpg</picture>
-        <picture>https://img.al-style.kz/60526_2.jpg</picture>
-        <picture>https://img.al-style.kz/60526_3.jpg</picture>
-        <vendor>iiyama</vendor>
-        <currencyId>KZT</currencyId>
-        <description>Монитор iiyama ProLite PL2492H XUB2492HSU-B6 24"
-Стильный дизайн от края до края делает ProLite XUB2492HSU идеальным для многомониторных установок. Технология панели IPS обеспечивает точную и стабильную цветопередачу с широкими углами обзора. Частота обновления 100 Гц вместе с функцией AdaptiveSync обеспечивает мгновенное, ощутимое улучшение плавности изображения. Высокие значения контрастности и яркости означают, что монитор обеспечит превосходную производительность для фотографического и веб-дизайна. Оснащен динамиками, концентратором USB 3.2, разъемом для наушников, соединениями HDMI и DisplayPort, функцией снижения синего света для снижения утомляемости глаз и эргономичной регулируемой по высоте подставкой 150 мм для оптимального комфорта пользователя, что делает этот 24-дюймовый монитор отличным выбором как для многомониторной конфигурации, так и для офисных приложений.
-ОСОБЕННОСТИ И ПРЕИМУЩЕСТВА:
-Технология IPS. IPS дисплеи известны своими широкими углами обзора, естественными цветами и точной цветопередачей. Они особенно хорошо подходят для приложений по работе с цветом.
-HAS (150 мм) + PIVOT. С регулируемой по высоте подставкой вы создадите эргономичную рабочую позу и положение, которые соответствуют всем требованиям охраны труда и техники безопасности. Это не только предотвратит любые проблемы со здоровьем, но и повысит вашу производительность. Функция поворота позволяет поворачивать экран из альбомной в портретную ориентацию. Эта функция может быть полезна, если приложение требует большей высоты, чем ширины.
-100Hz. Частота обновления 100 Гц означает повышенную плавность изображения. Это означает, что мерцание уменьшается, и, следовательно, усталость глаз также менее заметна. Повышенная частота также означает более плавные переходы между контрастными цветами, более плавные сцены движения как в фильмах, так и в играх и даже уменьшенное мерцание курсора мыши.
-Нет мерцания + подавление синего. Оптимальное решение для комфорта и здоровья ваших глаз. Немерцающие мониторы с функцией уменьшения синего света существенно снижают напряжение и усталость в сравнении с обычными мониторами.
-Динамики и наушники. Играете с друзьями? Используйте качественные встроенные динамики. Не хотите никого беспокоить? Присоедините гарнитуру к аудиоразъему и прибавьте громкости.
-ИНТЕРФЕЙСЫ / РАЗЪЕМЫ / УПРАВЛЕНИЕ:
-HDMI x1
-DisplayPort x1
-USB HUB x4
-HDCP
-Разъём для наушников
-АКСЕССУАРЫ:
-Кабель питания
-Кабель USB
-Кабель HDMI
-Кабель DP
-Краткое руководство по началу работы
-Руководство по безопасности
-
-Характеристики:
-- Вес: 6.6 кг
-- Видеовыход: HDMI / DP
-- Гарантия: 1 год
-- Размер VESA: 100x100 мм
-- Тип матрицы экрана: IPS
-- Яркость: 250 кд/м2</description>
-        <param name="Вес">6.6</param>
-        <param name="Гарантия">1 год</param>
-        <param name="Тип матрицы экрана">IPS</param>
-        <param name="Яркость">250 кд/м2</param>
-        <param name="Размер VESA">100x100 мм</param>
-        <param name="Видеовыход">HDMI / DP</param>
-        <param name="Угол обзора">178/178°</param>
-        <param name="Разрешение">1920x1080</param>
-        <param name="Соотношение сторон экрана">16:9</param>
-        <param name="Диагональ экрана">24</param>
-        <param name="Объём">0.049143402</param>
       </offer>
 
 <offer id="AS60531" available="true">
@@ -49414,7 +49366,7 @@ Canon imagePROGRAF iPF670Canon imagePROGRAF iPF680Canon imagePROGRAF iPF685Canon
         <param name="Объём">0.000312</param>
       </offer>
 
-<offer id="AS61473" available="true">
+<offer id="AS61473" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS61473</vendorCode>
         <name>Чернила Canon Ink Tank PFI-107 Cyan</name>
@@ -49449,7 +49401,7 @@ Canon imagePROGRAF iPF670Canon imagePROGRAF iPF680Canon imagePROGRAF iPF685Canon
         <param name="Объём">0.000312</param>
       </offer>
 
-<offer id="AS61474" available="true">
+<offer id="AS61474" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS61474</vendorCode>
         <name>Чернила Canon Ink Tank PFI-107 Magenta</name>
@@ -49716,6 +49668,60 @@ Canon imageRUNNER ADVANCE 6275iCanon imageRUNNER ADVANCE 6265iCanon imageRUNNER 
         <param name="Вес">1.3</param>
         <param name="Гарантия">Нет</param>
         <param name="Объём">0.0176</param>
+      </offer>
+
+<offer id="AS61667" available="false">
+        <categoryId>0</categoryId>
+        <vendorCode>AS61667</vendorCode>
+        <name>Монитор Samsung 49" QLED LS49C950UAIXCI</name>
+        <price>640900</price>
+        <picture>https://img.al-style.kz/61667_1.jpg</picture>
+        <picture>https://img.al-style.kz/61667_2.jpg</picture>
+        <picture>https://img.al-style.kz/61667_3.jpg</picture>
+        <vendor>Samsung</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Монитор Samsung 49" QLED LS49C950UAIXCI
+Особенности и преимущества:
+Экран DQHD с изгибом 1000R. 49-дюймовый экран с изгибом 1000R и форматом 32:9, практически соответствующим полю зрения, создает эффект погружения. Благодаря широкому экрану с разрешением Dual QHD вы сможете увидеть и сделать больше, работая с комфортом.
+Технология VESA DisplayHDR 400. Вы разглядите даже темные участки, работая над видео- и дизайн-проектами. Благодаря технологии сверхвысокой четкости VESA DisplayHDR 400 экран передает расширенный динамический диапазон контрастных теней и света. Темные области стали глубже и насыщеннее, а светлые еще ярче и ослепительнее, благодаря чему ваши проекты будут исключительно четкими и реалистичными.
+Разнообразные интерфейсы. Монитор оснащен DisplayPort, 2 портами HDMI, портами USB и USB Type-C с поддержкой зарядки 90 Вт. Подключайте ваши устройства, просматривайте и передавайте данные, используя монитор вместо центра подключений, чтобы освободить место на столе.
+Встроенные динамики. Работайте, учитесь и играйте без дополнительных периферийных устройств. Со встроенными динамиками вы можете сократить количество подключенных устройств и освободить место на столе, но при этом с легкостью воспроизводить любое аудио.
+Встроенный KVM-переключатель. Встроенный переключатель позволяет управлять двумя источниками изображения, подключенными к монитору, с одной клавиатуры и мыши. Поддерживаются режимы разделения экрана, картинки в картинке и картинки рядом с картинкой. Вам больше не нужно возиться с несколькими устройствами. Вы можете легко переключаться между источниками и выполнять сразу несколько задач.
+Эргономичная подставка. Благодаря безрамочному дизайну ничто не будет отвлекать вас от работы. Установите монитор так, как удобно вам, и под комфортным углом, используя регулируемую по высоте подставку с функциями поворота и наклона. Лаконичный металлический стиль монитора украсит любое помещение.
+Умная защита глаз, сертифицированная TUV. Яркость и цветовая температура монитора ViewFinity S9 автоматически адаптируются к окружающим условиям, позволяя эффективно работать даже длительное время или ночью. Помимо умной защиты глаз, сертифицированной TUV, монитор также поддерживает режим защиты глаз Eye Saver, снижающий мерцание экрана и синее свечение.
+Приложение Easy Setting Box. Приложение Easy Setting Box от Samsung с интуитивно-понятным интерфейсом обеспечивает максимально удобную многозадачность при работе с монитором. Вы можете разделить экран или отобразить несколько экранов разных размеров с гибкой настройкой.
+Частота обновления 120 Гц. Отдохните от рабочих проектов и насладитесь игрой с плавным изображением. Частота обновления 120 Гц обеспечивает плавные движения в игре для создания эффекта полного погружения и уменьшает задержку при прокрутке веб-страниц и экранов приложений.
+Порты:
+Порт DP x1
+Порт HDMI x2
+Порт USB x3
+Порт USB-C x1
+Выход для подключения наушников x1
+Комплектация:
+Кабель HDMI
+Кабель USB Type-C
+Ка...
+
+Характеристики:
+- Вес: 4.3 кг
+- Видеовыход: HDMI / DP
+- Время отклика: 4 мс
+- Гарантия: 1 год
+- Размер VESA: 100x100 мм
+- Тип матрицы экрана: VA
+- Частота обновления экрана: 120 Гц
+- Яркость: 600 кд/м&#178;</description>
+        <param name="Вес">4.3</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Частота обновления экрана">120 Гц</param>
+        <param name="Контрастность">3000:1</param>
+        <param name="Тип матрицы экрана">VA</param>
+        <param name="Яркость">600 кд/м&#178;</param>
+        <param name="Размер VESA">100x100 мм</param>
+        <param name="Видеовыход">HDMI / DP</param>
+        <param name="Угол обзора">178/178°</param>
+        <param name="Время отклика">4 мс</param>
+        <param name="Объём">0.03390702</param>
       </offer>
 
 <offer id="AS61696" available="true">
@@ -50588,7 +50594,7 @@ OLED Care. AORUS использует алгоритм на основе искусственного интеллекта для мин
 - Гарантия: 2 года
 - Модель: EPC-070H
 - Наличие чипа: Да
-- Ресурс картриджа: 10 200 стр.
+- Ресурс картриджа: 10 000 стр.
 - Совместимость: Для принтеров Canon i-SENSYS LBP243/LBP246/MF465/MF463/MF461</description>
         <param name="Вес">1.2</param>
         <param name="Гарантия">2 года</param>
@@ -52367,7 +52373,7 @@ Eaton 5E Gen2 обеспечивает эффективную и доступную защиту электропитания для кри
         <param name="Объём">0.108576</param>
       </offer>
 
-<offer id="AS62620" available="true">
+<offer id="AS62620" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS62620</vendorCode>
         <name>Источник бесперебойного питания Eaton 9SX11KiRT</name>
@@ -53244,7 +53250,7 @@ Hi-Speed USB (порт B)
         <categoryId>0</categoryId>
         <vendorCode>AS63159</vendorCode>
         <name>Цветное МФУ Canon Pixma G3410</name>
-        <price>108900</price>
+        <price>111900</price>
         <picture>https://img.al-style.kz/63159_1.jpg</picture>
         <picture>https://img.al-style.kz/63159_2.jpg</picture>
         <picture>https://img.al-style.kz/63159_3.jpg</picture>
@@ -56930,6 +56936,7 @@ Canon
         <vendorCode>AS64889</vendorCode>
         <name>Источник бесперебойного питания CyberPower HSTP3T40KE</name>
         <price>6029900</price>
+        <picture>https://img.al-style.kz/64889_1.jpg</picture>
         <vendor>CyberPower</vendor>
         <currencyId>KZT</currencyId>
         <description>CyberPower HSTP3T40KE Трехфазный онлайн-ИБП обеспечивает длительное резервное питание для IT шкафов, транспорта, инфраструктуры и аварийных систем. Благодаря возможности параллельного резервирования ИБП серии HSTP3T (3-фазный) идеально подходят для критически важных приложений в серверных помещениях, центрах обработки данных, промышленных предприятиях и электростанциях, требующих высокой производительности, высокой надежности и увеличенного времени работы.
@@ -57042,7 +57049,7 @@ Canon
         <categoryId>0</categoryId>
         <vendorCode>AS65086</vendorCode>
         <name>Цветное МФУ Canon Pixma TR4640 BLACK</name>
-        <price>55900</price>
+        <price>59900</price>
         <picture>https://img.al-style.kz/65086_1.jpg</picture>
         <picture>https://img.al-style.kz/65086_2.jpg</picture>
         <picture>https://img.al-style.kz/65086_3.jpg</picture>
@@ -59283,7 +59290,7 @@ XG Crystal Desk GT40 поддерживает Bluetooth – версии 4.2/5.0/5.1/5.2.
         <param name="Объём">0.084564</param>
       </offer>
 
-<offer id="AS67136" available="true">
+<offer id="AS67136" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS67136</vendorCode>
         <name>Моноблок 27" XG Excalibur GS70</name>
@@ -61298,7 +61305,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
         <categoryId>0</categoryId>
         <vendorCode>AS68568</vendorCode>
         <name>Драм-картридж Europrint EPC-013R00690 (B305/B310)</name>
-        <price>13900</price>
+        <price>15900</price>
         <picture>https://img.al-style.kz/68568_1.jpg</picture>
         <picture>https://img.al-style.kz/68568_2.jpg</picture>
         <picture>https://img.al-style.kz/68568_3.jpg</picture>
@@ -61549,11 +61556,11 @@ Canon imagePRESS C60Canon imagePRESS C65Canon imagePRESS C710Canon imagePRESS C8
         <param name="Объём">0.0055809</param>
       </offer>
 
-<offer id="AS68726" available="true">
+<offer id="AS68726" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS68726</vendorCode>
         <name>Ноутбук Huawei MateBook X Pro 14 14" Ultra 7 155H 16GB 1TB Win 11 VanGoghH-7611TM 53014ANN</name>
-        <price>1037900</price>
+        <price>1089900</price>
         <picture>https://img.al-style.kz/68726_1.jpg</picture>
         <picture>https://img.al-style.kz/68726_2.jpg</picture>
         <picture>https://img.al-style.kz/68726_3.jpg</picture>
@@ -63171,6 +63178,58 @@ Canon Pixma G5040Canon Pixma G6040Canon Pixma G7040
         <param name="Объём">0.052224</param>
       </offer>
 
+<offer id="AS70253" available="false">
+        <categoryId>0</categoryId>
+        <vendorCode>AS70253</vendorCode>
+        <name>Монитор Samsung 34" ViewFinity S6 LS34C650UAIXCI</name>
+        <price>255900</price>
+        <picture>https://img.al-style.kz/70253_1.jpg</picture>
+        <picture>https://img.al-style.kz/70253_2.jpg</picture>
+        <picture>https://img.al-style.kz/70253_3.jpg</picture>
+        <vendor>Samsung</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Монитор Samsung 34" ViewFinity S6 LS34C650UAIXCI
+Особенности и преимущества:
+Ultra WQHD с изгибом 1000R. Экран 34'' с форматом 21:9 и изгибом 1000R, который практически соответствует полю зрения человека, обеспечивает эффект погружения угол обзора увеличивается, а нагрузка на глаза снижается.
+1 миллиард оттенков с технологией HDR10. Цветопередача сильно расширена для максимальной четкости и детализации. HDR10 передает практически неограниченное количество оттенков и обеспечивает реалистичную визуализацию цвета с более темными тенями и более ярким светом. Каждое изображение передается именно так, как нужно, и радует глаз.
+Встроенные динамики. Работайте, учитесь и играйте без дополнительных периферийных устройств. Со встроенными динамиками вы можете сократить количество подключенных устройств и освободить место на столе, но при этом с легкостью воспроизводить любое аудио.
+Встроенный KVM-переключатель. Встроенный KVM-переключатель позволяет управлять двумя источниками изображения, подключенными к монитору, с одной клавиатуры и мыши. Поддерживаются режимы разделения экрана, картинки в картинке и картинки рядом с картинкой. Вам больше не нужно возиться с несколькими устройствами. Вы можете легко переключаться между источниками и выполнять сразу несколько задач.
+Порты USB-C и LAN в эргономичной конструкции. Монитор оснащен портом USB-C для зарядки устройств и передачи данных и портом LAN для подключения к ноутбуку без LAN и работы через Ethernet. Удобное подключение кабелей дополняется регулируемой высотой подставки с функциями поворота и наклона для комфортной длительной работы.
+Частота обновления 100 Гц и технология AMD FreeSync. Частота обновления 100 Гц и технология AMD FreeSync обеспечивают плавное изображение без полос и обрывов. Вы сможете рассмотреть все и сделать все, ничего не упустив из виду.
+Умная защита глаз, сертифицированная TUV. Сохраните здоровье ваших глаз и уменьшите нагрузку на них. Яркость и цветовая температура во время ночной работы автоматически адаптируются к окружающим условиям. Помимо умной защиты глаз, сертифицированной TUV, монитор Samsung также поддерживает режим защиты глаз Eye Saver, снижающий мерцание экрана и синее свечение.
+Создано для экологии. 5% задней крышки изготавливается из переработанного пластика (OBP). Экологичная упаковка позволяет сократить количество отходов и продлить ей жизнь после первого использования.
+Порты:
+Порт DisplayPort x1
+Порт HDMI x1
+Порт USB x3
+Порт USB-C x1
+Выход для подключения наушников x1
+Комплектация:
+Кабель питания
+Кабель HDMI
+Кабель USB Type-C
+
+Характеристики:
+- Вес: 6.6 кг
+- Видеовыход: HDMI / DP / USB Type-C
+- Время отклика: 5 мс
+- Гарантия: 1 год
+- Тип матрицы экрана: VA
+- Частота обновления экрана: 100 Гц
+- Яркость: 350 кд/м2</description>
+        <param name="Вес">6.6</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Частота обновления экрана">100 Гц</param>
+        <param name="Тип матрицы экрана">VA</param>
+        <param name="Яркость">350 кд/м2</param>
+        <param name="Видеовыход">HDMI / DP / USB Type-C</param>
+        <param name="Соотношение сторон экрана">21:9</param>
+        <param name="Диагональ экрана">34</param>
+        <param name="Разрешение экрана">3440х1440</param>
+        <param name="Время отклика">5 мс</param>
+        <param name="Объём">0.052224</param>
+      </offer>
+
 <offer id="AS70273" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS70273</vendorCode>
@@ -64507,6 +64566,7 @@ Canon imagePROGRAF PRO-1100
         <vendorCode>AS71378</vendorCode>
         <name>Источник бесперебойного питания CyberPower HSTP3T400KE</name>
         <price>44445900</price>
+        <picture>https://img.al-style.kz/71378_1.jpg</picture>
         <vendor>CyberPower</vendor>
         <currencyId>KZT</currencyId>
         <description>CyberPower HSTP3T400KE Трехфазный онлайн-ИБП обеспечивает длительное резервное питание для IT шкафов, транспорта, инфраструктуры и аварийных систем. Благодаря возможности параллельного резервирования ИБП серии HSTP3T (3-фазный) идеально подходят для критически важных приложений в серверных помещениях, центрах обработки данных, промышленных предприятиях и электростанциях, требующих высокой производительности, высокой надежности и увеличенного времени работы.
@@ -64526,6 +64586,9 @@ Canon imagePROGRAF PRO-1100
         <vendorCode>AS71379</vendorCode>
         <name>Источник бесперебойного питания CyberPower OLS3S20KEXL</name>
         <price>3382900</price>
+        <picture>https://img.al-style.kz/71379_1.jpg</picture>
+        <picture>https://img.al-style.kz/71379_2.jpg</picture>
+        <picture>https://img.al-style.kz/71379_3.jpg</picture>
         <vendor>CyberPower</vendor>
         <currencyId>KZT</currencyId>
         <description>CyberPower OLS3S20KEXL гарантирует защиту источников резервного питания для информационно-технического оборудования, серверов, рабочих станций, NAS / устройств хранения данных, телекоммуникационных устройств, сетевых устройств, систем безопасности / систем аварийного питания, а также систем видеонаблюдения. Данный ИБП использует топологию двойного преобразования для обеспечения высококачественной выходной мощности с дополнительным ECO-режимом, что позволяет экономить электроэнергию и сократить расходы на нее. Данный ИБП поддерживает параллельное расширение, позволяя подключать несколько ИБП, обеспечивая системное резервирование. Он совместим с генераторам, что дает возможность продлить время бесперебойного питания, а также с сервисным байпасным переключателем для обеспечения быстрого и безопасного обслуживания без необходимости отключения ИБП и подключенного оборудования. Устройство может быть подключено к Переключателю аварийного питания (EPO), что позволяет пользователям незамедлительно отключать ИБП в аварийных ситуациях.
@@ -64544,6 +64607,7 @@ Canon imagePROGRAF PRO-1100
         <vendorCode>AS71380</vendorCode>
         <name>Источник бесперебойного питания CyberPower HSTP3T90KE</name>
         <price>16302900</price>
+        <picture>https://img.al-style.kz/71380_1.jpg</picture>
         <vendor>CyberPower</vendor>
         <currencyId>KZT</currencyId>
         <description>CyberPower HSTP3T90KE Трехфазный онлайн-ИБП обеспечивает длительное резервное питание для IT шкафов, транспорта, инфраструктуры и аварийных систем. Благодаря возможности параллельного резервирования ИБП серии HSTP3T (3-фазный) идеально подходят для критически важных приложений в серверных помещениях, центрах обработки данных, промышленных предприятиях и электростанциях, требующих высокой производительности, высокой надежности и увеличенного времени работы.
@@ -65606,6 +65670,104 @@ E&amp;lt;2 калибровка для каждого экрана. Каждый дисплей строго проверяется на п
         <param name="Объём">0.047168625</param>
       </offer>
 
+<offer id="AS72768" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS72768</vendorCode>
+        <name>Монитор Samsung 24" LS24D400GAIXCI</name>
+        <price>73900</price>
+        <picture>https://img.al-style.kz/72768_1.jpg</picture>
+        <picture>https://img.al-style.kz/72768_2.jpg</picture>
+        <picture>https://img.al-style.kz/72768_3.jpg</picture>
+        <vendor>Samsung</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Монитор Samsung 24" LS24D400GAIXCI
+Особенности и преимущества:
+Яркие цвета по всему экрану. Наслаждайтесь потрясающими цветами по всему экрану с панелью IPS. Цвета остаются яркими и чистыми под любым углом. Тона и оттенки передаются точно и реалистично с меньшей потерей цвета.
+Плавное воспроизведение любого контента. Вы не пропустите ни кадра из вашей игры, видео или творческого проекта. Частота обновления 100 Гц снижает задержки и размытие, чтобы вы не упустили ничего важного даже на большой скорости.
+Оптимизация настроек для каждого жанра игры. Оптимизация настроек игры даст вам преимущества перед соперниками. Цвет и контраст мгновенно регулируются для четкого представления сцен и выслеживания противников в темноте, а режим игрового изображения настраивает картинку под ваш экран, позволяя разглядеть все детали.
+Режим защиты глаз Eye Saver и сниженное мерцание экрана. Защитите ваше зрение и обеспечьте комфорт даже в длительных игровых сеансах. Не отвлекайтесь от задачи благодаря сниженному уровню синего свечения и мерцанию экрана.
+Гибкая регулировка для оптимального комфорта. Сверхтонкий корпус добавит стиля любому пространству, а регулировка по высоте позволит настраивать любые удобные положения. Сверхтонкие рамки оставляют максимум полезной площади экрана, и его можно повернуть даже на 90 градусов и поставить вертикально.
+Широкие возможности подключения. Подключайте устройства прямо к монитору для большего удобства и создавайте собственную систему.
+Порты:
+Порт Display Port x1
+Порт HDMI x2
+Порт USB2.0 x2
+Выход для подключения наушников x1
+Комплектация:
+Кабель HDMI x1
+Кабель питания x1
+
+Характеристики:
+- Вес: 4.8 кг
+- Видеовыход: HDMI / DP
+- Время отклика: 5 мс
+- Гарантия: 1 год
+- Тип матрицы экрана: IPS
+- Частота обновления экрана: 100 Гц
+- Яркость: 250 кд/м2</description>
+        <param name="Вес">4.8</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Частота обновления экрана">100 Гц</param>
+        <param name="Контрастность">1000:1</param>
+        <param name="Тип матрицы экрана">IPS</param>
+        <param name="Яркость">250 кд/м2</param>
+        <param name="Видеовыход">HDMI / DP</param>
+        <param name="Соотношение сторон экрана">16:9</param>
+        <param name="Диагональ экрана">24</param>
+        <param name="Разрешение экрана">1920x1080</param>
+        <param name="Время отклика">5 мс</param>
+        <param name="Объём">0.028502955</param>
+      </offer>
+
+<offer id="AS72780" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS72780</vendorCode>
+        <name>Монитор Samsung 27" LS27D400GAIXCI</name>
+        <price>88900</price>
+        <picture>https://img.al-style.kz/72780_1.jpg</picture>
+        <picture>https://img.al-style.kz/72780_2.jpg</picture>
+        <picture>https://img.al-style.kz/72780_3.jpg</picture>
+        <vendor>Samsung</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Монитор Samsung 27" LS27D400GAIXCI
+Особенности и преимущества:
+IPS-панель. Наслаждайтесь потрясающими цветами по всему экрану с панелью IPS. Цвета остаются яркими и чистыми под любым углом. Тона и оттенки передаются точно и реалистично с меньшей потерей цвета.
+Частота обновления 100 Гц. Вы не пропустите ни кадра из вашей игры, видео или творческого проекта. Частота обновления 100 Гц снижает задержки и размытие, чтобы вы не упустили ничего важного даже на большой скорости.
+Режим игрового изображения. Оптимизация настроек игры даст вам преимущества перед соперниками. Цвет и контраст мгновенно регулируются для четкого представления сцен и выслеживания противников в темноте, а режим игрового изображения настраивает картинку под ваш экран, позволяя разглядеть все детали.
+Режим защиты глаз Eye Saver и сниженное мерцание экрана. Защитите ваше зрение и обеспечьте комфорт даже в длительных игровых сеансах. Не отвлекайтесь от задачи благодаря сниженному уровню синего свечения и мерцанию экрана.
+Сверхтонкий эргономичный корпус. Сверхтонкий корпус добавит стиля любому пространству, а регулировка по высоте позволит настраивать любые удобные положения. Сверхтонкие рамки оставляют максимум полезной площади экрана, и его можно повернуть даже на 90 градусов и поставить вертикально.
+Подключение разных устройств. Подключайте устройства прямо к монитору для большего удобства и создавайте собственную систему.
+Порты:
+Порт DisplayPort x1
+Порт HDMI x2
+Порт USB x2
+Порт USB-B x1
+Выход для подключения наушников x1
+Комплектация:
+Кабель питания
+Кабель HDMI
+
+Характеристики:
+- Вес: 5.6 кг
+- Видеовыход: HDMI / DP
+- Время отклика: 5 мс
+- Гарантия: 1 год
+- Тип матрицы экрана: IPS
+- Частота обновления экрана: 100 Гц
+- Яркость: 250 кд/м2</description>
+        <param name="Вес">5.6</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Частота обновления экрана">100 Гц</param>
+        <param name="Контрастность">1000:1</param>
+        <param name="Тип матрицы экрана">IPS</param>
+        <param name="Яркость">250 кд/м2</param>
+        <param name="Видеовыход">HDMI / DP</param>
+        <param name="Соотношение сторон экрана">16:9</param>
+        <param name="Диагональ экрана">27</param>
+        <param name="Время отклика">5 мс</param>
+        <param name="Объём">0.0528</param>
+      </offer>
+
 <offer id="AS73230" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS73230</vendorCode>
@@ -66606,7 +66768,7 @@ Canon PIXMA TS9540Canon PIXMA TS6340
 
 Характеристики:
 - Гарантия: 1 год</description>
-        <param name="Вес">0.075</param>
+        <param name="Вес">0.067</param>
         <param name="Гарантия">1 год</param>
         <param name="Объём">0.00047685</param>
       </offer>
@@ -66931,7 +67093,7 @@ Canon PIXMA TS5340Canon PIXMA TS7440
         <param name="Объём">0.0004675</param>
       </offer>
 
-<offer id="AS74067" available="false">
+<offer id="AS74067" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS74067</vendorCode>
         <name>Струйный картридж Canon CL-461</name>
@@ -69168,7 +69330,7 @@ Hikvision DS-D5A75RB/A2 — это современная интерактивная панель, созданная для эф
         <param name="Объём">0.00405</param>
       </offer>
 
-<offer id="AS76976" available="true">
+<offer id="AS76976" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS76976</vendorCode>
         <name>Тонер-картридж CET 006R01694 (CET141590)</name>
@@ -71308,6 +71470,54 @@ NVP показатель (cкорость распростр. сигнала в кабеле) : %	68
         <param name="Объём">0.0697133</param>
       </offer>
 
+<offer id="AS79136" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS79136</vendorCode>
+        <name>Монитор Samsung 32" LS32D804UAIXCI</name>
+        <price>239900</price>
+        <picture>https://img.al-style.kz/79136_1.jpg</picture>
+        <picture>https://img.al-style.kz/79136_2.jpg</picture>
+        <picture>https://img.al-style.kz/79136_3.jpg</picture>
+        <vendor>Samsung</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Монитор Samsung 32" LS32D804UAIXCI
+Особенности и преимущества:
+Вы не упустите ни одной детали. Превосходное изображение понравится даже профессионалам. Разрешение UHD (3840x2160) обеспечивает максимальную детализацию благодаря более высокой плотности пикселей. Профессионалы оценят точную передачу оттенков и увеличенное экранное пространство, на котором можно создавать изысканные проекты, сложные диаграммы и динамичное видео, наслаждаясь более плавными рабочими процессами.
+1,07 миллиарда оттенков с технологией HDR10. Цветопередача сильно расширена для максимальной четкости и детализации. HDR10 передает практически неограниченное количество оттенков и обеспечивает реалистичную визуализацию цвета с более темными тенями и более ярким светом. Каждое изображение передается именно так, как нужно, и радует глаз.
+Порты USB-C и LAN. Подключите все, чтобы расширить возможности вашего рабочего пространства. Порт USB-C поддерживает зарядку 90 Вт с одновременной передачей данных, а встроенный порт LAN обеспечивает идеальное подключение Ethernet для ноутбуков.
+Подставка Easy Setup Stand. С подставкой Easy Setup Stand вы можете легко создать идеальное рабочее пространство без инструментов и крепежа. Чтобы отрегулировать положение, просто нажмите кнопку и наслаждайтесь гибкостью конструкции.
+Эргономичный дизайн. Экран можно отрегулировать по высоте и наклонить для наилучшего угла обзора и максимального удобства. Экран также можно поворачивать на 90 градусов, что позволяет просматривать длинные документы практически без прокрутки.
+Порты:
+Порт Display Port x1
+Порт HDMI x1
+Концентратор USB x3
+Порт USB-C x1
+Ethernet x1
+Выход для подключения наушников x1
+Что в коробке:
+Кабель питания
+Кабель HDMI
+Кабель USB Type-C
+
+Характеристики:
+- Вес: 8.9 кг
+- Видеовыход: HDMI / DP / USB
+- Время отклика: 5 мс
+- Гарантия: 1 год
+- Размер VESA: 100x100 мм
+- Яркость: 350 кд/м2</description>
+        <param name="Вес">8.9</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Яркость">350 кд/м2</param>
+        <param name="Размер VESA">100x100 мм</param>
+        <param name="Видеовыход">HDMI / DP / USB</param>
+        <param name="Разрешение">3840x2160</param>
+        <param name="Соотношение сторон экрана">16:9</param>
+        <param name="Диагональ экрана">32</param>
+        <param name="Время отклика">5 мс</param>
+        <param name="Объём">0.0697133</param>
+      </offer>
+
 <offer id="AS79137" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS79137</vendorCode>
@@ -71656,6 +71866,9 @@ Canon I-S LBP361DW
         <vendorCode>AS79804</vendorCode>
         <name>Источник бесперебойного питания CyberPower OLS2000ERT2Ua</name>
         <price>291900</price>
+        <picture>https://img.al-style.kz/79804_1.jpg</picture>
+        <picture>https://img.al-style.kz/79804_2.jpg</picture>
+        <picture>https://img.al-style.kz/79804_3.jpg</picture>
         <vendor>CyberPower</vendor>
         <currencyId>KZT</currencyId>
         <description>CyberPower OLS2000ERT2Ua высокопроизводительный онлайн ИБП двойного преобразования с выходным сигналом в виде чистой синусоиды для защиты критически важного оборудования в самых разных сферах. Спектр применения очень широк – это серверное, телекоммуникационное оборудование, системы хранения данных, видеонаблюдение, аварийное освещение, инфраструктура транспортного сектора и др.
@@ -72515,16 +72728,38 @@ IOScast (iOS), Miracast (Android)
         <vendorCode>AS81734</vendorCode>
         <name>Цветное МФУ Canon MAXIFY GX4040</name>
         <price>205900</price>
+        <picture>https://img.al-style.kz/81734_1.jpg</picture>
+        <picture>https://img.al-style.kz/81734_2.jpg</picture>
+        <picture>https://img.al-style.kz/81734_3.jpg</picture>
         <vendor>Canon</vendor>
         <currencyId>KZT</currencyId>
-        <description>Характеристики:
+        <description>Цветное МФУ Canon MAXIFY GX4040
+Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики
+Печатайте большие объемы высококачественных корпоративных документов и экономьте благодаря низким показателям CPP1 и TCO2 с этими удобным в использовании принтером 4 в 1 «Формула выгодной печати» из серии MAXIFY GX с пополняемыми емкостями для чернил, устройством автоподачи документов, Wi-Fi и Ethernet.
+Превосходная производительность и лучшие в своем классе показатели CPP и TCO3
+CPP (стоимость одной страницы) — это себестоимость одной печатной страницы. Этот показатель равен стоимости комплекта чернил, деленной на ресурс расхода этого комплекта.
+TCO (совокупная стоимость владения) — это расчетный показатель стоимости владения принтером на основании изначальной стоимости устройства, а также стоимости чернил в течение фиксированного периода времени.
+Сверхнизкие эксплуатационные расходы.
+Экономьте на протяжении всего срока службы принтера благодаря экономичным пополняемым емкостям для чернил, которые значительно снижают совокупную стоимость владения и стоимость печати одной страницы. Оцените больший ресурс печати в экорежиме5 и печатайте в 1,5 раза больше страниц с тем же количеством чернил
+Компактность.
+Экономьте пространство дома или в офисе благодаря компактному размеру принтера, в то время как малое количество пластика в упаковке обеспечивает ее более полную переработку
+Простота использования.
+Сократите время простоя благодаря сменному картриджу для технического обслуживания с удобным доступом со стороны передней панели принтера. Подпружиненные колпачки и цветовые метки на бутылочках с чернилами помогут пополнять их без лишних усилий и уборкиСократите время простоя благодаря сменному картриджу для технического обслуживания с удобным доступом со стороны передней панели принтера. Подпружиненные колпачки и цветовые метки на бутылочках с чернилами помогут пополнять их без лишних усилий и уборки.
+Комплект поставки
+МФУ Canon MAXIFY GX3040
+Руководство пользователя
+4 контейнера для чернил с увеличенным ресурсом (1 черный и 1 голубой / пурпурный / желтый) 5000 страниц (ЧБ); 5000 страниц (цвет)
+Установочный диск CD-ROM (CD только для ОС Windows)
+Кабель питания
+
+Характеристики:
 - Гарантия: 1 год</description>
         <param name="Вес">14.51</param>
         <param name="Гарантия">1 год</param>
         <param name="Объём">0.097885125</param>
       </offer>
 
-<offer id="AS81743" available="true">
+<offer id="AS81743" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS81743</vendorCode>
         <name>Узел второго переноса 152N12002</name>
