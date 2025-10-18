@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-17 21:30">
+<yml_catalog date="2025-10-18 20:17">
   <!--FEED_META
 Поставщик                                  | alstyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 18:10:2025 - 02:30:39
-Ближайшее время сборки (Алматы)            | 19:10:2025 - 01:00:00
-Сколько товаров у поставщика до фильтра    | 15837
-Сколько товаров у поставщика после фильтра | 1992
-Сколько товаров есть в наличии (true)      | 1322
-Сколько товаров нет в наличии (false)      | 670-->
+Время сборки (Алматы)                      | 19:10:2025 - 01:17:42
+Ближайшее время сборки (Алматы)            | 20:10:2025 - 01:00:00
+Сколько товаров у поставщика до фильтра    | 15851
+Сколько товаров у поставщика после фильтра | 2006
+Сколько товаров есть в наличии (true)      | 1387
+Сколько товаров нет в наличии (false)      | 619-->
 <shop>
     <offers>
       <offer id="AS20888" available="false">
@@ -678,7 +678,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <param name="Объём">0.0272655</param>
       </offer>
 
-<offer id="AS3720" available="false">
+<offer id="AS3720" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS3720</vendorCode>
         <name>Картридж Europrint EPC-Q2612A</name>
@@ -832,7 +832,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <param name="Объём">0.00795375</param>
       </offer>
 
-<offer id="AS10306" available="false">
+<offer id="AS10306" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS10306</vendorCode>
         <name>Картридж Europrint EPC-CE740A</name>
@@ -910,7 +910,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <param name="Объём">0.0168025</param>
       </offer>
 
-<offer id="AS10308" available="false">
+<offer id="AS10308" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS10308</vendorCode>
         <name>Картридж Europrint EPC-CE742A</name>
@@ -1841,7 +1841,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <param name="Объём">0.0224</param>
       </offer>
 
-<offer id="AS21461" available="false">
+<offer id="AS21461" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS21461</vendorCode>
         <name>Картридж Europrint EPC-CF226X</name>
@@ -2046,7 +2046,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
         <param name="Объём">0.06387975</param>
       </offer>
 
-<offer id="AS7042" available="false">
+<offer id="AS7042" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS7042</vendorCode>
         <name>Картридж Europrint EPC-MLT-D101S</name>
@@ -3541,7 +3541,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.12615</param>
       </offer>
 
-<offer id="AS13495" available="false">
+<offer id="AS13495" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS13495</vendorCode>
         <name>Картридж Europrint EPC-CF214A</name>
@@ -4125,7 +4125,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.018941</param>
       </offer>
 
-<offer id="AS6189" available="false">
+<offer id="AS6189" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS6189</vendorCode>
         <name>Картридж Europrint EPC-CE505X</name>
@@ -4397,7 +4397,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.0040703</param>
       </offer>
 
-<offer id="AS17002" available="false">
+<offer id="AS17002" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS17002</vendorCode>
         <name>Картридж Europrint EPC-CF413A</name>
@@ -4585,7 +4585,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.003276</param>
       </offer>
 
-<offer id="AS5574" available="false">
+<offer id="AS5574" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS5574</vendorCode>
         <name>Картридж Europrint EPC-728</name>
@@ -4780,7 +4780,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.005566222</param>
       </offer>
 
-<offer id="AS15898" available="false">
+<offer id="AS15898" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS15898</vendorCode>
         <name>Драм-картридж Europrint EPC-101R00474 (WC3225)</name>
@@ -6463,7 +6463,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.132396</param>
       </offer>
 
-<offer id="AS6607" available="false">
+<offer id="AS6607" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS6607</vendorCode>
         <name>Источник бесперебойного питания SVC RT-3KL-LCD</name>
@@ -7161,7 +7161,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.0133182</param>
       </offer>
 
-<offer id="AS19290" available="false">
+<offer id="AS19290" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS19290</vendorCode>
         <name>Картридж Europrint EPC-CF230A</name>
@@ -7200,7 +7200,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.003276</param>
       </offer>
 
-<offer id="AS896" available="false">
+<offer id="AS896" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS896</vendorCode>
         <name>Картридж Europrint EPC-106R03623 (WC3345)</name>
@@ -9504,7 +9504,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.0133182</param>
       </offer>
 
-<offer id="AS27016" available="false">
+<offer id="AS27016" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS27016</vendorCode>
         <name>Тонер-картридж Europrint NPG-59/C-EXV42</name>
@@ -10093,7 +10093,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.0133182</param>
       </offer>
 
-<offer id="AS28400" available="false">
+<offer id="AS28400" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS28400</vendorCode>
         <name>Картридж Europrint EPC-047</name>
@@ -11177,7 +11177,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.0098124</param>
       </offer>
 
-<offer id="AS31531" available="false">
+<offer id="AS31531" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS31531</vendorCode>
         <name>Картридж Europrint EPC-106R03585 (B400/405)</name>
@@ -11732,7 +11732,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.0126</param>
       </offer>
 
-<offer id="AS32375" available="true">
+<offer id="AS32375" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS32375</vendorCode>
         <name>Тонер-картридж повышенной емкости Xerox 106R03766 (жёлтый)</name>
@@ -12191,7 +12191,7 @@ SCX-3400, 3401, 3405, 3406</param>
         <param name="Объём">0.06468</param>
       </offer>
 
-<offer id="AS32413" available="false">
+<offer id="AS32413" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS32413</vendorCode>
         <name>Контейнер для отработанного тонера Xerox 008R12990</name>
@@ -14278,7 +14278,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
         <param name="Объём">0.011330222</param>
       </offer>
 
-<offer id="AS33663" available="false">
+<offer id="AS33663" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS33663</vendorCode>
         <name>Картридж Europrint EPC-106R03532 (C400/405)</name>
@@ -14311,7 +14311,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
         <param name="Объём">0.003019179</param>
       </offer>
 
-<offer id="AS33664" available="false">
+<offer id="AS33664" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS33664</vendorCode>
         <name>Картридж Europrint EPC-106R03534 (C400/405)</name>
@@ -14344,7 +14344,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
         <param name="Объём">0.003019179</param>
       </offer>
 
-<offer id="AS33665" available="false">
+<offer id="AS33665" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS33665</vendorCode>
         <name>Картридж Europrint EPC-106R03535 (C400/405)</name>
@@ -14377,7 +14377,7 @@ XPS, TIFF, JPEG, HP-GL, Adobe® PostScript® 3
         <param name="Объём">0.003019179</param>
       </offer>
 
-<offer id="AS33666" available="false">
+<offer id="AS33666" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS33666</vendorCode>
         <name>Картридж Europrint EPC-106R03533 (C400/405)</name>
@@ -17205,7 +17205,7 @@ USB
         <param name="Объём">0.00846</param>
       </offer>
 
-<offer id="AS17001" available="false">
+<offer id="AS17001" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS17001</vendorCode>
         <name>Картридж Europrint EPC-CF412A</name>
@@ -17281,7 +17281,7 @@ USB
         <param name="Объём">0.005566222</param>
       </offer>
 
-<offer id="AS16999" available="false">
+<offer id="AS16999" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS16999</vendorCode>
         <name>Картридж Europrint EPC-CF410A</name>
@@ -17886,7 +17886,7 @@ USB
         <param name="Объём">0.008436</param>
       </offer>
 
-<offer id="AS34495" available="false">
+<offer id="AS34495" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS34495</vendorCode>
         <name>Фьюзерный модуль Xerox 126K36852 / 126K36850 / 126K36851</name>
@@ -19282,7 +19282,7 @@ WorkCentre Pro 4110/4112/4127/4595
         <param name="Объём">0.030064128</param>
       </offer>
 
-<offer id="AS39778" available="true">
+<offer id="AS39778" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS39778</vendorCode>
         <name>Цветное МФУ Xerox C235DNI</name>
@@ -21848,7 +21848,7 @@ Comix B2950 - Персональный переплетчик для создания брошюр формата до А4.
         <param name="Объём">0.0522</param>
       </offer>
 
-<offer id="AS34349" available="false">
+<offer id="AS34349" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS34349</vendorCode>
         <name>Тонер-картридж Xerox 106R02310</name>
@@ -22239,7 +22239,7 @@ PoE
         <param name="Объём">0.03036</param>
       </offer>
 
-<offer id="AS22246" available="false">
+<offer id="AS22246" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS22246</vendorCode>
         <name>Картридж Europrint EPC-CF232A</name>
@@ -27638,7 +27638,7 @@ AV*1
         <param name="Объём">0.0040703</param>
       </offer>
 
-<offer id="AS44033" available="false">
+<offer id="AS44033" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS44033</vendorCode>
         <name>Картридж Europrint EPC-W2412A</name>
@@ -29180,7 +29180,7 @@ Microsoft Windows 11
         <param name="Объём">0.02838225</param>
       </offer>
 
-<offer id="AS44684" available="false">
+<offer id="AS44684" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS44684</vendorCode>
         <name>Картридж Europrint EPC-W1360A</name>
@@ -29211,7 +29211,7 @@ Microsoft Windows 11
         <param name="Объём">0.0040703</param>
       </offer>
 
-<offer id="AS44685" available="false">
+<offer id="AS44685" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS44685</vendorCode>
         <name>Картридж Europrint EPC-W1360X</name>
@@ -30935,7 +30935,7 @@ USB
         <param name="Объём">0.000185296</param>
       </offer>
 
-<offer id="AS48452" available="false">
+<offer id="AS48452" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS48452</vendorCode>
         <name>Монитор 23.8" Gigabyte G24F 2</name>
@@ -31415,7 +31415,7 @@ Black eQualizer - функция, которая отвечает запросам требовательных киберспортсм
         <param name="Объём">0.0040703</param>
       </offer>
 
-<offer id="AS44044" available="false">
+<offer id="AS44044" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS44044</vendorCode>
         <name>Картридж Europrint EPC-W2033A</name>
@@ -38358,7 +38358,7 @@ Canon i-SENSYS серии MF550 отличается высокой производительностью благодаря высо
         <param name="Объём">0.164739875</param>
       </offer>
 
-<offer id="AS59325" available="true">
+<offer id="AS59325" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS59325</vendorCode>
         <name>Цветное лазерное МФУ Canon I-S MF752CDW</name>
@@ -43188,6 +43188,34 @@ Canon varioPRINT 110Canon varioPRINT 115Canon varioPRINT 120Canon varioPRINT 130
         <param name="Гарантия">Нет</param>
         <param name="Состав">Пластик</param>
         <param name="Объём">0.0074844</param>
+      </offer>
+
+<offer id="AS60641" available="false">
+        <categoryId>0</categoryId>
+        <vendorCode>AS60641</vendorCode>
+        <name>Ролик подачи бумаги Canon ROLLER, PAPER FEEDER FC5-2526-000</name>
+        <price>10499900</price>
+        <picture>https://img.al-style.kz/60641_1.jpg</picture>
+        <vendor>Canon</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Ролик захвата Canon FC5-2526-000
+Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики
+Оригинальный ролик захвата для устройств Canon серий imageRUNNER / imageRUNNER ADVANCE.
+Производитель
+Canon
+Устройство
+Ролик захвата
+Секция аппарата
+Подача документов
+Совместимость
+Устройства
+Canon imageRUNNER ADVANCE 6055Canon imageRUNNER ADVANCE 6065Canon imageRUNNER ADVANCE 6075Canon imageRUNNER ADVANCE 6255Canon imageRUNNER ADVANCE 6265Canon imageRUNNER ADVANCE 6275Canon imageRUNNER ADVANCE 6555iCanon imageRUNNER ADVANCE 6555i IICanon imageRUNNER ADVANCE 6555i IIICanon imageRUNNER ADVANCE 6565iCanon imageRUNNER ADVANCE 6565i IICanon imageRUNNER ADVANCE 6565i IIICanon imageRUNNER ADVANCE 6575iCanon imageRUNNER ADVANCE 6575i IICanon imageRUNNER ADVANCE 6575i IIICanon imageRUNNER ADVANCE 8085Canon imageRUNNER ADVANCE 8095Canon imageRUNNER ADVANCE 8105Canon imageRUNNER ADVANCE 8205Canon imageRUNNER ADVANCE 8285Canon imageRUNNER ADVANCE 8295Canon imageRUNNER ADVANCE 8505iCanon imageRUNNER ADVANCE 8505i IICanon imageRUNNER ADVANCE 8505i IIICanon imageRUNNER ADVANCE 8585iCanon imageRUNNER ADVANCE 8585i IICanon imageRUNNER ADVANCE 8585i IIICanon imageRUNNER ADVANCE 8595iCanon imageRUNNER ADVANCE 8595i IICanon imageRUNNER ADVANCE 8595i IIICanon imageRUNNER ADVANCE C7055Canon imageRUNNER ADVANCE C7065Canon imageRUNNER ADVANCE C7260Canon imageRUNNER ADVANCE C7270Canon imageRUNNER ADVANCE C9065 PROCanon imageRUNNER ADVANCE C9075 PROCanon imageRUNNER ADVANCE C9270 PROCanon imageRUNNER ADVANCE C9280 PROCanon imageRUNNER C5058Canon imageRUNNER C5068Canon imageRUNNER C5800Canon imageRUNNER C5870UCanon imageRUNNER C6800Canon imageRUNNER C6870U
+
+Характеристики:
+- Гарантия: Нет</description>
+        <param name="Вес">0.015</param>
+        <param name="Гарантия">Нет</param>
+        <param name="Объём">0.00003</param>
       </offer>
 
 <offer id="AS60666" available="false">
@@ -52568,7 +52596,7 @@ Canon i-SENSYS LBP631CwCanon i-SENSYS LBP633CdwCanon i-SENSYS MF651CwCanon i-SEN
         <param name="Объём">0.007136458</param>
       </offer>
 
-<offer id="AS63532" available="false">
+<offer id="AS63532" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS63532</vendorCode>
         <name>Картридж Europrint EPC-CF289X</name>
@@ -53856,7 +53884,7 @@ Canon imageRUNNER ADVANCE 525iCanon imageRUNNER ADVANCE 615iCanon imageRUNNER AD
         <param name="Объём">0.032637</param>
       </offer>
 
-<offer id="AS64533" available="false">
+<offer id="AS64533" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS64533</vendorCode>
         <name>Картридж Europrint EPC-W1510X</name>
@@ -54150,7 +54178,7 @@ Canon imageRUNNER ADVANCE 4525iCanon imageRUNNER ADVANCE 4535iCanon imageRUNNER 
         <param name="Объём">0.000003211</param>
       </offer>
 
-<offer id="AS64563" available="false">
+<offer id="AS64563" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS64563</vendorCode>
         <name>Струйный картридж Canon PG-46</name>
@@ -54349,7 +54377,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <param name="Объём">0.007128</param>
       </offer>
 
-<offer id="AS64665" available="false">
+<offer id="AS64665" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS64665</vendorCode>
         <name>Картридж Europrint EPC-069K</name>
@@ -54381,7 +54409,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <param name="Объём">0.0040703</param>
       </offer>
 
-<offer id="AS64667" available="false">
+<offer id="AS64667" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS64667</vendorCode>
         <name>Картридж Europrint EPC-069C</name>
@@ -54413,7 +54441,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <param name="Объём">0.0040703</param>
       </offer>
 
-<offer id="AS64669" available="false">
+<offer id="AS64669" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS64669</vendorCode>
         <name>Картридж Europrint EPC-069M</name>
@@ -54445,7 +54473,7 @@ Canon i-SENSYS LBP223dwCanon i-SENSYS LBP226dwCanon i-SENSYS MF443dwCanon i-SENS
         <param name="Объём">0.0040703</param>
       </offer>
 
-<offer id="AS64670" available="false">
+<offer id="AS64670" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS64670</vendorCode>
         <name>Картридж Europrint EPC-069Y</name>
@@ -55506,7 +55534,7 @@ Canon PIXMA TS5340Canon PIXMA TS7440
         <param name="Объём">0.00047685</param>
       </offer>
 
-<offer id="AS65138" available="false">
+<offer id="AS65138" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS65138</vendorCode>
         <name>Струйный картридж Canon CL-461XL</name>
@@ -59181,7 +59209,7 @@ Canon imageRUNNER ADVANCE DX C3926iCanon imageRUNNER ADVANCE DX C3930iCanon imag
         <param name="Объём">0.05106896</param>
       </offer>
 
-<offer id="AS68567" available="false">
+<offer id="AS68567" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS68567</vendorCode>
         <name>Картридж Europrint EPC-006R04381 (B305/B310)</name>
@@ -59884,7 +59912,7 @@ ScanPad
         <param name="Объём">0.0129276</param>
       </offer>
 
-<offer id="AS69661" available="false">
+<offer id="AS69661" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS69661</vendorCode>
         <name>Картридж Europrint EPC-CE505A/CF280A</name>
@@ -60142,7 +60170,7 @@ ScanPad
         <param name="Объём">0.005566222</param>
       </offer>
 
-<offer id="AS69732" available="false">
+<offer id="AS69732" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS69732</vendorCode>
         <name>Картридж Europrint EPC-W1510X (Без чипа)</name>
@@ -62366,7 +62394,7 @@ Canon imagePROGRAF PRO-1100
         <param name="Объём">0.000179352</param>
       </offer>
 
-<offer id="AS71471" available="false">
+<offer id="AS71471" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS71471</vendorCode>
         <name>Картридж Europrint EPC-CF259A (Без чипа)</name>
@@ -62489,7 +62517,7 @@ Canon imagePROGRAF PRO-1100
         <param name="Объём">0.000075</param>
       </offer>
 
-<offer id="AS71676" available="false">
+<offer id="AS71676" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS71676</vendorCode>
         <name>Принт-картридж Xerox 013R00703</name>
@@ -63977,6 +64005,36 @@ DisplayPort x1
         <param name="Объём">0.000075</param>
       </offer>
 
+<offer id="AS73659" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS73659</vendorCode>
+        <name>Картридж Europrint EPC-W1470A</name>
+        <price>20900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Наклейкой с датой производства на коробке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог: W1470A
+- Вес: 2.1 кг
+- Гарантия: 2 года
+- Модель: EPC-W1470A
+- Наличие чипа: Да
+- Ресурс картриджа: 10500 стр. (ISO/IEC 10500)
+- Совместимость: Для принтеров HP LaserJet Enterprise M610/M611/M612/M634/M635/M636</description>
+        <param name="Вес">2.1</param>
+        <param name="Гарантия">2 года</param>
+        <param name="Объём">0.015424375</param>
+      </offer>
+
 <offer id="AS73661" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS73661</vendorCode>
@@ -65245,6 +65303,65 @@ XG 75TSDBLC1316256 — это современная интерактивная панель, разработанная для при
         <param name="Объём">0.1861632</param>
       </offer>
 
+<offer id="AS76044" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS76044</vendorCode>
+        <name>Картридж Europrint EPC-W1470X</name>
+        <price>29900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Наклейкой с датой производства на коробке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог: W1470X
+- Вес: 2.6 кг
+- Гарантия: 2 года
+- Модель: EPC-W1470X
+- Наличие чипа: Да
+- Ресурс картриджа: 10500 стр. (ISO/IEC 10500)
+- Совместимость: Для принтеров HP LaserJet Enterprise M610/M611/M612/M635/M636</description>
+        <param name="Вес">2.6</param>
+        <param name="Гарантия">2 года</param>
+        <param name="Объём">0.015424375</param>
+      </offer>
+
+<offer id="AS76046" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS76046</vendorCode>
+        <name>Картридж Europrint EPC-CF257A</name>
+        <price>36900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: CF257A
+- Гарантия: 2 года
+- Модель: EPC-CF257A
+- Наличие чипа: Да
+- Ресурс картриджа: 80000 стр.
+- Совместимость: Для принтеров HP LaserJet Pro M433/M436/M438/M442/M443</description>
+        <param name="Вес">1.913</param>
+        <param name="Гарантия">2 года</param>
+        <param name="Объём">0.0168025</param>
+      </offer>
+
 <offer id="AS76068" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76068</vendorCode>
@@ -66023,7 +66140,7 @@ DS-D5C98RB/A
         <param name="Объём">0.0055</param>
       </offer>
 
-<offer id="AS76742" available="false">
+<offer id="AS76742" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76742</vendorCode>
         <name>Драм-юнит CET C-EXV49 CMYK (CET5228P)</name>
@@ -66202,7 +66319,7 @@ DS-D5C98RB/A
         <param name="Объём">0.0066</param>
       </offer>
 
-<offer id="AS76761" available="false">
+<offer id="AS76761" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76761</vendorCode>
         <name>Драм-юнит CET 013R00662 (CET7949N)</name>
@@ -66658,7 +66775,7 @@ DS-D5C98RB/A
         <param name="Объём">0.00405</param>
       </offer>
 
-<offer id="AS76958" available="false">
+<offer id="AS76958" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76958</vendorCode>
         <name>Тонер-картридж CET 006R01756 (CET141531U)</name>
@@ -66691,7 +66808,7 @@ DS-D5C98RB/A
         <param name="Объём">0.00405</param>
       </offer>
 
-<offer id="AS76959" available="false">
+<offer id="AS76959" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76959</vendorCode>
         <name>Тонер-картридж CET 006R01757 (CET141532U)</name>
@@ -66823,7 +66940,7 @@ DS-D5C98RB/A
         <param name="Объём">0.002597</param>
       </offer>
 
-<offer id="AS76972" available="false">
+<offer id="AS76972" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76972</vendorCode>
         <name>Тонер-картридж CET 006R01519 (CET141211)</name>
@@ -66889,7 +67006,7 @@ DS-D5C98RB/A
         <param name="Объём">0.00405</param>
       </offer>
 
-<offer id="AS76974" available="false">
+<offer id="AS76974" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76974</vendorCode>
         <name>Тонер-картридж CET 006R01693 (CET141589)</name>
@@ -66955,7 +67072,7 @@ DS-D5C98RB/A
         <param name="Объём">0.00405</param>
       </offer>
 
-<offer id="AS76977" available="false">
+<offer id="AS76977" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76977</vendorCode>
         <name>Тонер-картридж CET 006R01695 (CET141591)</name>
@@ -66988,7 +67105,7 @@ DS-D5C98RB/A
         <param name="Объём">0.00405</param>
       </offer>
 
-<offer id="AS76978" available="false">
+<offer id="AS76978" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76978</vendorCode>
         <name>Тонер-картридж CET 006R01696 (CET141592)</name>
@@ -67101,7 +67218,7 @@ DS-D5C98RB/A
         <param name="Объём">0.002597</param>
       </offer>
 
-<offer id="AS76966" available="false">
+<offer id="AS76966" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS76966</vendorCode>
         <name>Тонер-картридж CET 106R03745 (CET141605)</name>
@@ -67721,11 +67838,40 @@ Canon imagePROGRAF PRO-310
         <param name="Объём">0.064827</param>
       </offer>
 
+<offer id="AS77401" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS77401</vendorCode>
+        <name>Картридж Europrint EPC-TL5120H</name>
+        <price>5900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: TL-420H
+- Гарантия: 1 год
+- Модель: EPC-TL420H
+- Наличие чипа: Да
+- Ресурс картриджа: 3000 стр.
+- Совместимость: Для принтеров Pantum P3010/P3300/M6700/M7100/M6800/M7200/M7300</description>
+        <param name="Вес">0.683</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.005566222</param>
+      </offer>
+
 <offer id="AS77506" available="false">
         <categoryId>0</categoryId>
         <vendorCode>AS77506</vendorCode>
         <name>Ноутбук Huawei MateBook D 16 16" i5-13420H 8GB 512GB Win 11 MCLG-X (53014CNC)</name>
-        <price>399900</price>
+        <price>430900</price>
         <picture>https://img.al-style.kz/77506_1.jpg</picture>
         <picture>https://img.al-style.kz/77506_2.jpg</picture>
         <picture>https://img.al-style.kz/77506_3.jpg</picture>
@@ -69480,6 +69626,277 @@ Canon I-S LBP361DW
         <param name="Объём">0.119328</param>
       </offer>
 
+<offer id="AS80093" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80093</vendorCode>
+        <name>Картридж Europrint EPC-W2010A</name>
+        <price>33900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W2010A
+- Гарантия: 1 год
+- Модель: EPC-W2010A
+- Наличие чипа: да
+- Ресурс картриджа: 16000 стр. (ISO/IEC 16000)
+- Совместимость: Для принтеров HP Color Laser Enterprise M776/M856
+- Цвет: чёрный</description>
+        <param name="Вес">1.663</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.0168025</param>
+      </offer>
+
+<offer id="AS80094" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80094</vendorCode>
+        <name>Картридж Europrint EPC-W2011A</name>
+        <price>32900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W2011A
+- Гарантия: 1 год
+- Модель: EPC-W2011A
+- Наличие чипа: да
+- Ресурс картриджа: 13000 стр. (ISO/IEC 13000)
+- Совместимость: Для принтеров HP Color Laser Enterprise M776/M856
+- Цвет: синий</description>
+        <param name="Вес">1.713</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.0168025</param>
+      </offer>
+
+<offer id="AS80095" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80095</vendorCode>
+        <name>Картридж Europrint EPC-W2012A</name>
+        <price>32900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W2012A
+- Вес: 1.7 кг
+- Гарантия: 1 год
+- Модель: EPC-W2012A
+- Наличие чипа: да
+- Ресурс картриджа: 13000 стр. (ISO/IEC 13000)
+- Совместимость: Для принтеров HP Color Laser Enterprise M776/M856
+- Цвет: жёлтый</description>
+        <param name="Вес">1.7</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.0168025</param>
+      </offer>
+
+<offer id="AS80098" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80098</vendorCode>
+        <name>Картридж Europrint EPC-W2013A</name>
+        <price>32900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W2013A
+- Вес: 1.7 кг
+- Гарантия: 1 год
+- Модель: EPC-W2013A
+- Наличие чипа: да
+- Ресурс картриджа: 13000 стр. (ISO/IEC 13000)
+- Совместимость: Для принтеров HP Color Laser Enterprise M776/M856
+- Цвет: пурпурный</description>
+        <param name="Вес">1.7</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.0168025</param>
+      </offer>
+
+<offer id="AS80101" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80101</vendorCode>
+        <name>Картридж Europrint EPC-W1120A</name>
+        <price>15900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W1120A
+- Гарантия: 1 год
+- Модель: EPC-W1120A
+- Наличие чипа: да
+- Ресурс картриджа: 16000 стр. (ISO/IEC 16000)
+- Совместимость: для принтеров HP Color Laser150a/150nw, MFP 178nw/179fnw</description>
+        <param name="Вес">1.025</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.020734281</param>
+      </offer>
+
+<offer id="AS80104" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80104</vendorCode>
+        <name>Картридж Europrint EPC-W2220A</name>
+        <price>21900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W2220A
+- Гарантия: 1 год
+- Модель: EPC-W2220A
+- Наличие чипа: да
+- Ресурс картриджа: 1300 стр. (ISO/IEC 1300)
+- Совместимость: Для принтеров HP Color LaserJet Pro 3203/3288, MFP3303/MFP3388
+- Цвет: чёрный</description>
+        <param name="Вес">0.706</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.004332625</param>
+      </offer>
+
+<offer id="AS80115" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80115</vendorCode>
+        <name>Картридж Europrint EPC-W2221A</name>
+        <price>21900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W2221A
+- Гарантия: 1 год
+- Модель: EPC-W2221A
+- Наличие чипа: да
+- Ресурс картриджа: 1200 стр. (ISO/IEC 1200)
+- Совместимость: Для принтеров HP Color LaserJet Pro 3203/3288, MFP3303/MFP3388
+- Цвет: синий</description>
+        <param name="Вес">0.706</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.004332625</param>
+      </offer>
+
+<offer id="AS80117" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80117</vendorCode>
+        <name>Картридж Europrint EPC-W2222A</name>
+        <price>21900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W2222A
+- Гарантия: 1 год
+- Модель: EPC-W2222A
+- Наличие чипа: да
+- Ресурс картриджа: 1200 стр. (ISO/IEC 1200)
+- Совместимость: Для принтеров HP Color LaserJet Pro 3203/3288, MFP3303/MFP3388
+- Цвет: жёлтый</description>
+        <param name="Вес">0.706</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.004207042</param>
+      </offer>
+
+<offer id="AS80118" available="true">
+        <categoryId>0</categoryId>
+        <vendorCode>AS80118</vendorCode>
+        <name>Картридж Europrint EPC-W2223A</name>
+        <price>21900</price>
+        <vendor>Europrint</vendor>
+        <currencyId>KZT</currencyId>
+        <description>Картридж — расходный материал, используемый принтером или МФУ.
+Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.
+Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.
+Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером.
+Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.
+
+Особенности:
+- Голографической пломбой на корпусе и упаковке
+- Наклейкой с моделью картриджа на корпусе
+
+Характеристики:
+- Аналог модели: W2223A
+- Гарантия: 1 год
+- Модель: EPC-W2223A
+- Наличие чипа: да
+- Ресурс картриджа: 1200 стр. (ISO/IEC 1200)
+- Совместимость: Для принтеров HP Color LaserJet Pro 3203/3288, MFP3303/MFP3388
+- Цвет: пурпурный</description>
+        <param name="Вес">0.706</param>
+        <param name="Гарантия">1 год</param>
+        <param name="Объём">0.004332625</param>
+      </offer>
+
 <offer id="AS80273" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS80273</vendorCode>
@@ -69562,7 +69979,7 @@ USB-C*1
         <param name="Объём">0.0579689</param>
       </offer>
 
-<offer id="AS80466" available="false">
+<offer id="AS80466" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS80466</vendorCode>
         <name>Драм-юнит CET 113R00779 (DGP2021)</name>
@@ -69648,7 +70065,7 @@ USB-C*1
         <param name="Объём">0.011951</param>
       </offer>
 
-<offer id="AS80473" available="false">
+<offer id="AS80473" available="true">
         <categoryId>0</categoryId>
         <vendorCode>AS80473</vendorCode>
         <name>Драм-юнит CET 013R00679 (DGP0591)</name>
