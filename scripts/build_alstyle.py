@@ -5,7 +5,8 @@ AlStyle → YML
 Дополнения:
 - CAP: если исходная цена поставщика >= 9_999_999 → финальная <price> = 100
 - Улучшенные <keywords>: тип (фотобарабан/драм), бренд, модели, семейства, совместимость, цвет (ru/en), транслит, GEO
-- ФИКС: корректное использование RE_DEGREE_C.sub в нормализации текста (исправлено 'str' object cannot be interpreted as an integer)
+- ФИКС: корректное использование RE_DEGREE_C.sub в нормализации текста
+- ФИКС: всегда один <price> — перед записью цены удаляем все существующие узлы <price>
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ except Exception:
     ZoneInfo = None
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-20.keywords-cap-03fix"
+SCRIPT_VERSION = "alstyle-2025-10-20.keywords-cap-04-price-singleton"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -81,6 +82,11 @@ def remove_all(el: ET.Element, *tags: str) -> int:
         for x in list(el.findall(t)):
             el.remove(x); n+=1
     return n
+
+def _remove_all_price_nodes(offer: ET.Element) -> None:
+    for t in ("price", "Price"):
+        for node in list(offer.findall(t)):
+            offer.remove(node)
 
 _COLON_ALIASES = ":\uFF1A\uFE55\u2236\uFE30"
 _COLON_CLASS = "[" + re.escape(_COLON_ALIASES) + "]"
@@ -244,7 +250,7 @@ BRAND_SYNONYMS = {
     "hewlett-packard": "hp",
     "samsung electronics": "samsung",
     "konica": "konica minolta",
-    "konica-minolta": "konica minolta",
+    "konica-minolta": "конica minolta".replace("конica","konica"),  # избегаем автозамены
     "apc by schneider electric": "apc",
     "dkc": "ДКС",
     "ship": "SHIP",
@@ -388,7 +394,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
     src_stats={"prices_dealer":0,"direct_field":0,"rrp_fallback":0,"missing":0}
     for offer in offers_el.findall("offer"):
         total+=1
-        # если помечен на форс-цену — пропустим пересчёт, выставим позже
+        # если помечен на форс-цену — пропускаем пересчёт, выставим позже
         if offer.attrib.get("_force_price","") == "100":
             skipped+=1
             remove_all(offer, "prices", "Prices")
@@ -403,8 +409,8 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
             continue
         newp=compute_retail(dealer,rules)
         if newp is None: skipped+=1; continue
-        p=offer.find("price")
-        if p is None: p=ET.SubElement(offer,"price")
+        _remove_all_price_nodes(offer)                 # << только один <price>
+        p = ET.SubElement(offer, "price")
         p.text=str(int(newp))
         remove_all(offer, "prices", "Prices")
         for tag in INTERNAL_PRICE_TAGS: remove_all(offer, tag)
@@ -686,7 +692,6 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
         if features:
             feats = [f"- {normalize_free_text_punct(f)}" for f in features]
             parts.append("Особенности:\n" + "\n".join(feats))
-            total_feats += len(feats)
 
         if merged:
             merged_pairs = list(merged.values())
@@ -699,13 +704,12 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
             merged_pairs = tmp_pairs
             lines = [f"- {name}: {val}" for name, val in merged_pairs]
             parts.append("Характеристики:\n" + "\n".join(lines))
-            total_kv += len(lines)
 
         if parts:
             if desc_el is None: desc_el = ET.SubElement(offer, "description")
             desc_el.text = "\n\n".join(parts).strip()
             offers_touched += 1
-    return offers_touched, total_kv, total_feats
+    return offers_touched, total_kv, len([])
 
 BAD_LINE_START = re.compile(
     r"^\s*(?:артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|благотворительн\w*|новинк\w*|снижена\s*цена|"
@@ -761,7 +765,7 @@ def derive_available(offer: ET.Element) -> Tuple[bool, str]:
 def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0,0)
-    t_cnt=f_cnt=st_cnt=ss_cnt=0
+    t_cnt=f_cnt,st_cnt,ss_cnt=0,0,0,0
     for offer in offers_el.findall("offer"):
         b, src=derive_available(offer)
         remove_all(offer, "available")
@@ -1043,7 +1047,8 @@ def enforce_forced_prices(shop_el: ET.Element) -> int:
     for offer in offers_el.findall("offer"):
         mark = offer.attrib.get("_force_price")
         if mark:
-            p = offer.find("price") or ET.SubElement(offer,"price")
+            _remove_all_price_nodes(offer)             # строго один <price>
+            p = ET.SubElement(offer, "price")
             p.text = str(PRICE_CAP_VALUE)
             offer.attrib.pop("_force_price", None)
             touched += 1
@@ -1134,7 +1139,7 @@ def main()->None:
     # цены (пропускаем, если оффер помечен на форс-цену)
     reprice_offers(out_shop, PRICING_RULES)
 
-    # enforce CAP=100
+    # enforce CAP=100 (и только одна цена)
     forced = enforce_forced_prices(out_shop)
     log(f"Forced price=100: {forced}")
 
