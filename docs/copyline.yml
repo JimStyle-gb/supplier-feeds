@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date='2025-10-09 22:32'>
+<yml_catalog date='2025-10-19 22:29'>
 <!--FEED_META
 Поставщик                                  | Copyline
 URL поставщика                             | https://copyline.kz/files/price-CLA.xlsx
-Время сборки (Алматы)                      | 10:10:2025 - 03:32:27
-Ближайшее время сборки (Алматы)            | 20:10:2025 - 03:00:00
+Время сборки (Алматы)                      | 20:10:2025 - 03:29:24
+Ближайшее время сборки (Алматы)            | 01:11:2025 - 03:00:00
 Сколько товаров у поставщика до фильтра    | 1221
 Сколько товаров у поставщика после фильтра | 1213
 Сколько товаров есть в наличии (true)      | 1213
@@ -266,7 +266,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
       <vendorCode>CL104243</vendorCode>
       <name>Drum Unit Brother DR-2175 для HL-2140/2150/2170/7030/7040</name>
       <price>7900</price>
-      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Brother_DR-2175.jpg</picture>
+      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR2175-ep-0.jpg</picture>
       <vendor>Brother</vendor>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -302,7 +302,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
       <vendorCode>CL104159</vendorCode>
       <name>Drum Unit Brother DR-3200 для HL-5340D/5350DN/5370DW/DCP-8070D/8085DN/MFC-8370D/8880DN Euro Print</name>
       <price>10900</price>
-      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Brother_DR-3200.jpg</picture>
+      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR3110-ep-0.jpg</picture>
       <vendor>Brother</vendor>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -4284,7 +4284,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
       <vendorCode>CL105420</vendorCode>
       <name>Картридж HP W1540A (№154A) for LaserJet Tank 1502/1602/2502/2602 (2,5K) Euro Print</name>
       <price>4900</price>
-      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1540A-ep.jpg</picture>
+      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_hp-w1540a-ep-0.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -4300,7 +4300,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
       <vendorCode>CL105421</vendorCode>
       <name>Картридж HP W1540X (№154X) for LaserJet Tank 1502/1602/2502/2602 (5K) Euro Print</name>
       <price>5900</price>
-      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1540X-ep.jpg</picture>
+      <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_hp-w1540x-ep-01.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
       <available>true</available>
