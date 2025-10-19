@@ -5,6 +5,7 @@ AlStyle → YML
 Дополнения:
 - CAP: если исходная цена поставщика >= 9_999_999 → финальная <price> = 100
 - Улучшенные <keywords>: тип (фотобарабан/драм), бренд, модели, семейства, совместимость, цвет (ru/en), транслит, GEO
+- ФИКС: корректное использование RE_DEGREE_C.sub в нормализации текста (исправлено 'str' object cannot be interpreted as an integer)
 """
 
 from __future__ import annotations
@@ -19,7 +20,7 @@ except Exception:
     ZoneInfo = None
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-20.keywords-cap-02"
+SCRIPT_VERSION = "alstyle-2025-10-20.keywords-cap-03fix"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -410,7 +411,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         updated+=1
     return updated,skipped,total,src_stats
 
-# --------------------- params / description (нормализация) ---------------------
+# --------------------- params / description ---------------------
 def _key(s:str)->str: return re.sub(r"\s+"," ",(s or "").strip()).lower()
 
 UNWANTED_PARAM_NAME_RE = re.compile(
@@ -482,6 +483,14 @@ def _merge_europrint_headings(lines: List[str]) -> List[str]:
         out.append(cur); i+=1
     return out
 
+RE_SPACE_BEFORE_PUNCT = re.compile(r"\s+([,;.!?])")
+RE_PERCENT            = re.compile(r"(\d)\s*%")
+RE_DEGREE_C           = re.compile(r"(\d)\s*°\s*([СC])")
+
+def _fix_degrees(s: str) -> str:
+    # нормализуем «...° C/С» -> «...°C/С»
+    return RE_DEGREE_C.sub(r"\1°\2", s or "")
+
 def _normalize_description_whitespace(text: str) -> str:
     t = strip_noise_chars(text or ""); t = canon_colons(t)
     t = t.replace("\r\n","\n").replace("\r","\n").replace("\u00A0", " ")
@@ -504,16 +513,13 @@ def _normalize_description_whitespace(text: str) -> str:
     t = re.sub(r"(\n){3,}", "\n\n", t)
     return t
 
-RE_SPACE_BEFORE_PUNCT = re.compile(r"\s+([,;.!?])")
-RE_PERCENT            = re.compile(r"(\d)\s*%")
-RE_DEGREE_C           = re.compile(r"(\d)\s*°\s*([СC])")
 def normalize_value_punct(v: str) -> str:
     s = canon_colons(v or "")
     s = re.sub(r":\s*:", ": ", s)
     s = re.sub(r"(?<!\.)\.\.(?!\.)", ".", s)
     s = RE_SPACE_BEFORE_PUNCT.sub(r"\1", s)
     s = RE_PERCENT.sub(r"\1%", s)
-    s = RE_DEGREE_C.sub(r"\1°\2", s)
+    s = _fix_degrees(s)
     s = re.sub(r"\s{2,}", " ", s)
     return s.strip()
 
@@ -523,7 +529,7 @@ def normalize_free_text_punct(s: str) -> str:
     t = re.sub(r"(?<!\.)\.\.(?!\.)", ".", t)
     t = RE_SPACE_BEFORE_PUNCT.sub(r"\1", t)
     t = RE_PERCENT.sub(r"\1%", t)
-    t = RE_DEGREE_C.sub(r"(\d)\s*°\s*([СC])", r"\1°\2", t)
+    t = _fix_degrees(t)
     t = re.sub(r"\s{2,}", " ", t)
     t = re.sub(r"\bдля дома\s+офиса\b", "для дома и офиса", t, flags=re.I)
     return t.strip()
@@ -892,7 +898,6 @@ GENERIC_KEYWORDS = [
 ]
 GEO_TOKENS = ["Казахстан","Алматы","Астана","Шымкент","Караганда"]
 FAMILY_WORDS = [
-    # Xerox / HP / Canon / etc
     "Phaser","WorkCentre","Versant","DocuCentre","LaserJet","Color LaserJet","PageWide",
     "DeskJet","OfficeJet","PIXMA","imageRUNNER","imageCLASS","imagePRESS",
     "ECOSYS","TASKalfa","AcuLaser","WorkForce","Stylus","bizhub","ApeosPort","HL","MFC","DCP"
@@ -972,23 +977,18 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     vendor=get_text(offer,"vendor").strip()
     if vendor: parts.append(vendor)
 
-    # Тип товара (фотобарабан/драм/тонер-картридж)
     parts += product_type_tokens(name)
 
-    # Базовые термины по совпадению (из GENERIC_KEYWORDS)
     nrm_name=_norm_text(name)
     for kw in GENERIC_KEYWORDS:
         if _norm_text(kw) in nrm_name:
             parts.append(kw)
 
-    # Модели + семейства + совместимость из описания
     parts += extract_model_tokens(offer)
     parts += extract_family_tokens(offer)
 
-    # Цвет (ru/en)
     parts += color_tokens(name)
 
-    # Транслит для русских слов
     extra=[]
     for w in parts:
         if re.search(r"[А-Яа-яЁё]", w):
@@ -996,10 +996,8 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
             if tr and tr not in extra: extra.append(tr)
     parts += extra
 
-    # GEO
     if SATU_KEYWORDS_GEO: parts += GEO_TOKENS
 
-    # дедупликация, запрет артикулов ASxxxxx, лимиты
     parts = [p for p in dedup_preserve_order(parts) if not AS_INTERNAL_ART_RE.match(str(p))]
     parts = parts[:SATU_KEYWORDS_MAXWORDS]
     out=[]; total=0
