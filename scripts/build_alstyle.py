@@ -250,7 +250,7 @@ BRAND_SYNONYMS = {
     "hewlett-packard": "hp",
     "samsung electronics": "samsung",
     "konica": "konica minolta",
-    "konica-minolta": "конica minolta".replace("конica","konica"),  # избегаем автозамены
+    "konica-minolta": "konica minolta",
     "apc by schneider electric": "apc",
     "dkc": "ДКС",
     "ship": "SHIP",
@@ -765,7 +765,8 @@ def derive_available(offer: ET.Element) -> Tuple[bool, str]:
 def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0,0)
-    t_cnt=f_cnt,st_cnt,ss_cnt=0,0,0,0
+    # FIX: корректная инициализация счетчиков
+    t_cnt = f_cnt = st_cnt = ss_cnt = 0
     for offer in offers_el.findall("offer"):
         b, src=derive_available(offer)
         remove_all(offer, "available")
@@ -1000,7 +1001,7 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
             if tr and tr not in extra: extra.append(tr)
     parts += extra
 
-    if SATU_KEYWORDS_GEO: parts += GEO_TOKENS
+    if SATU_KEYWORDS_GEO: parts += ["Казахстан","Алматы","Астана","Шымкент","Караганда"]
 
     parts = [p for p in dedup_preserve_order(parts) if not AS_INTERNAL_ART_RE.match(str(p))]
     parts = parts[:SATU_KEYWORDS_MAXWORDS]
