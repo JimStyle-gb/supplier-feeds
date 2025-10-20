@@ -742,13 +742,8 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     return t_cnt,f_cnt,st_cnt,ss_cnt
 
 def mark_offers_without_pictures_unavailable(shop_el: ET.Element) -> int:
-    offers_el=shop_el.find("offers")
-    if offers_el is None: return 0
-    changed=0
-    for offer in offers_el.findall("offer"):
-        if not offer.findall("picture"):
-            offer.attrib["available"]="false"; changed+=1
-    return changed
+    # [Variant A] Disabled: доступность определяется поставщиком; отсутствие фото не влияет
+    return 0
 
 # --------------------- ids / vendorCode ---------------------
 ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
