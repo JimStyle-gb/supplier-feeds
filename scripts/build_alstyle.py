@@ -1,14 +1,15 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML конвертер (фикс «двойных двоеточий ::» в характеристиках)
+AlStyle → YML конвертер (фикс «двойных двоеточий ::» и мелкие правки)
 Обновлено: 2025-10-20
 
-Единственное функциональное изменение:
-- Гарантированное удаление лишних двоеточий в именах характеристик, чтобы
-  в HTML не появлялось `<strong>Имя::</strong>`.
+Изменения vs твоей последней рабочей версии:
+- Исправлена синтаксическая ошибка в normalize_free_text_punct (двойная точка).
+- Гарантированно убираем «::» в названиях характеристик и в описаниях.
+- Поправлен backreference при переносе <shop> на новую строку.
 
-Остальная логика сохранена без изменений.
+Остальную логику не трогал.
 """
 
 from __future__ import annotations
@@ -386,7 +387,7 @@ def _fix_degrees(s: str) -> str:
 
 def normalize_value_punct(v: str) -> str:
     s = canon_colons(v or "")
-    s = re.sub(r":\s*:", ": ", s)      # <-- фикс двойных
+    s = re.sub(r":\s*:", ": ", s)      # <-- фикс «: :»
     s = re.sub(r"(?<!\.)\.\.(?!\.)", ".", s)
     s = RE_SPACE_BEFORE_PUNCT.sub(r"\1", s)
     s = RE_PERCENT.sub(r"\1%", s)
@@ -396,8 +397,8 @@ def normalize_value_punct(v: str) -> str:
 
 def normalize_free_text_punct(s: str) -> str:
     t = canon_colons(s or "")
-    t = re.sub(r":\s*:", ": ", t)      # <-- фикс двойных
-    t = re.sub(r"(?<!\.)\.\.(?!\.)", t".")
+    t = re.sub(r":\s*:", ": ", t)      # <-- фикс «: :»
+    t = re.sub(r"(?<!\.)\.\.(?!\.)", ".", t)
     t = RE_SPACE_BEFORE_PUNCT.sub(r"\1", t)
     t = RE_PERCENT.sub(r"\1%", t)
     t = _fix_degrees(t)
@@ -579,8 +580,7 @@ def render_html_description(product_name: str,
         parts.append("<h3>Характеристики</h3>")
         parts.append("<ul>")
         for name, val in specs_pairs:
-            # ДОП. СТРАХОВКА: срезать любые финальные двоеточия у имени,
-            # чтобы не получить `<strong>Имя::</strong>`
+            # РЕЗКА хвостовых двоеточий у имени (фикс '::')
             safe_name = re.sub(rf'\s*{_COLON_ALIASES}+\s*$', '', str(name).strip())
             parts.append("  <li><strong>" + safe_name + ":</strong> " + str(val).strip() + "</li>")
         parts.append("</ul>")
@@ -774,7 +774,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# --------------------- KEYWORDS (без изменений) ---------------------
+# --------------------- KEYWORDS (как было) ---------------------
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 FEATURE_ACRONYM_BLACKLIST = {
     "QHD","UHD","FHD","FULL","HDR","HDR10","HDR400","DISPLAYHDR",
@@ -904,24 +904,17 @@ def build_keywords(offer: ET.Element) -> Optional[str]:
     name = get_text(offer, "name")
     vendor = get_text(offer, "vendor")
     base = []
-    # 1) главная «родовая» часть из name
     head = head_noun_from_name(name, vendor)
     if head: base.append(head)
-    # 2) из name — модели, биграммы, содержательные слова
     base += keywords_from_name_generic(name)
-    # 3) цвета
     base += color_tokens(name)
-    # 4) модели из описания (если есть)
     base += extract_model_tokens(offer)
-    # 5) трансліт ключа (SEO-хвост)
     if head:
         base.append(translit_ru_to_lat(head))
-    # 6) гео
     if SATU_KEYWORDS_GEO:
         for ru, en in GEO_CITIES[:SATU_KEYWORDS_GEO_MAX]:
             base.append(ru)
     words = dedup_preserve_order(base)
-    # лимиты
     if SATU_KEYWORDS_MAXWORDS > 0:
         words = words[:SATU_KEYWORDS_MAXWORDS]
     out = ", ".join(words)
@@ -974,26 +967,22 @@ def ensure_keywords(shop_el: ET.Element) -> int:
     return updated
 
 def _escape_cdata_end(text: str) -> str:
-    # безопасно «разрезаем» ]]> чтобы не ломать CDATA
     return (text or "").replace("]]>", "]]]]><![CDATA[>")
 
 def element_to_xml_bytes(root: ET.Element) -> bytes:
     xml_decl = '<?xml version="1.0" encoding="windows-1251"?>\n'
-    # обычный ET.tostring -> потом постобработка
     raw = ET.tostring(root, encoding="unicode")
-    # 1) заменяем маркеры [[HTML]] ... [[/HTML]] на CDATA
     raw = re.sub(
         r"<description>\s*\[\[HTML\]\]([\s\S]*?)\[\[/HTML\]\]\s*</description>",
         lambda m: "<description><![CDATA[\n" + _escape_cdata_end(m.group(1)) + "\n]]></description>",
         raw,
         flags=re.I
     )
-    # 2) приводим </shop> на новой строке (визуальная правка)
-    raw = re.sub(r"(-->\s*)<shop>", r"\\1\n<shop>", raw)
-    # 3) дополнительные пустые строки между офферами (визуально)
+    # перенести <shop> на новую строку после комментария
+    raw = re.sub(r"(-->\s*)<shop>", r"\1\n<shop>", raw)
+    # пустая строка между офферами (визуально)
     raw = re.sub(r"</offer>\s*<offer\b", "</offer>\n\n      <offer", raw)
     out = xml_decl + raw
-    # кодировка cp1251 с fallback на utf-8
     try:
         return out.encode(ENC, errors="strict")
     except Exception:
@@ -1016,40 +1005,27 @@ def main() -> None:
     if shop is None:
         err("No <shop> root inside source")
 
-    # нормализации
     ensure_vendor(shop)
     ensure_vendor_auto_fill(shop)
 
-    # доступность
     t_cnt,f_cnt,st_cnt,ss_cnt = normalize_available_field(shop)
     _ = mark_offers_without_pictures_unavailable(shop)
 
-    # categoryId=0 первым
     ensure_categoryid_zero_first(shop)
-
-    # вычистить ненужные параметры
     _ = remove_specific_params(shop)
 
-    # кап цен
     flagged = set_price_cap_flags(shop)
     forced  = apply_price_cap(shop)
 
-    # расчёт розницы для нефорсированных (логика прежняя)
     upd,skp,tot,stats = reprice_offers(shop, PRICING_RULES)
 
-    # унификация описаний → HTML (с фиксом «::»)
     _ = unify_specs_in_description(shop)
 
-    # валюты
     _ = fix_currency_id(shop, "KZT")
-
-    # порядок
     _ = reorder_offer_children(shop)
 
-    # keywords
     kw_upd = ensure_keywords(shop)
 
-    # сериализация
     out_bytes = element_to_xml_bytes(root)
 
     if DRY_RUN:
