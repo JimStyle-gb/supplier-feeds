@@ -4,13 +4,10 @@
 AlStyle → YML конвертер (устойчивый к «плохим» символам)
 Обновлено: 2025-10-20
 
-Исправлено:
-- «charmap' codec can't encode ...» — добавлен двойной fallback кодировки:
-  1) на этапе сериализации: prefer OUTPUT_ENCODING, иначе UTF-8;
-  2) на этапе записи файла: если запись в OUTPUT_ENCODING упала, автоматически
-     перезаписываем в UTF-8 и правим XML-декларацию.
-
-Логика из предыдущей версии сохранена (CAP=100, keywords, HTML в <description>, available-атрибут, categoryId=0 первым, чистки и т.д.).
+Правки в этой версии:
+- Безопасная обёртка CDATA для <description>, чтобы не появлялись хвосты вроде ']]></description>'.
+- В описании вместо <h3>Кратко</h3> теперь <h3>{name}</h3> — заголовок с названием товара.
+- Остальная логика сохранена без изменений.
 """
 
 from __future__ import annotations
@@ -25,7 +22,7 @@ except Exception:
     ZoneInfo = None
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-20.coding-fallback-3"
+SCRIPT_VERSION = "alstyle-2025-10-20.cdata-safe-h3-name"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -630,12 +627,15 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     return pairs
 
 # --- HTML-рендер описания в CDATA ---
-def render_html_description(cleaned_desc: str,
+def render_html_description(product_name: str,
+                            cleaned_desc: str,
                             specs_pairs: List[Tuple[str,str]],
                             features: List[str]) -> str:
     parts: List[str] = []
+    if product_name:
+        # Название товара вместо «Кратко»
+        parts.append("<h3>" + html_lib.escape(product_name.strip()) + "</h3>")
     if cleaned_desc:
-        parts.append("<h3>Кратко</h3>")
         paragraphs = [p.strip() for p in re.split(r"\n\s*\n", cleaned_desc) if p.strip()]
         for p in paragraphs:
             p_html = p.replace("\n", "<br>")
@@ -675,9 +675,11 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
         merged_pairs = list(merged.values())
         merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
 
-        html_block = render_html_description(cleaned_desc, merged_pairs, features)
+        prod_name = get_text(offer, "name")
+        html_block = render_html_description(prod_name, cleaned_desc, merged_pairs, features)
         if html_block:
             if desc_el is None: desc_el = ET.SubElement(offer, "description")
+            # Маркируем для пост-замены на CDATA
             desc_el.text = f"[[HTML]]\n{html_block}\n[[/HTML]]"
             offers_touched += 1
     return offers_touched, total_kv, total_feats
@@ -1120,6 +1122,12 @@ def _ensure_xml_decl_encoding(xml_text: str, enc: str) -> str:
         return XML_DECL_RE.sub(f'<?xml version="1.0" encoding="{enc}"?>', xml_text, count=1)
     return f'<?xml version="1.0" encoding="{enc}"?>\n{xml_text}'
 
+def _to_cdata_safe(s: str) -> str:
+    """Безопасно заворачивает HTML в CDATA, корректно обрабатывая ']]>'."""
+    s = s or ""
+    s = s.replace("]]>", "]]]]><![CDATA[>")
+    return "<![CDATA[\n" + s + "\n]]>"
+
 # --------------------- MAIN ---------------------
 def main()->None:
     log(f"Source: {SUPPLIER_URL or '(not set)'}")
@@ -1230,11 +1238,11 @@ def main()->None:
     # убираем тройные пустые строки
     xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
 
-    # [[HTML]] → CDATA + unescape
+    # [[HTML]] → CDATA (безопасно к ']]>')
     def _desc_html_to_cdata(m: re.Match) -> str:
         inner = m.group(1).strip()
         inner = html_lib.unescape(inner)
-        return "<description><![CDATA[\n" + inner + "\n]]></description>"
+        return "<description>" + _to_cdata_safe(inner) + "</description>"
 
     xml_text = re.sub(
         r"<description>\s*\[\[HTML\]\](.*?)\[\[/HTML\]\]\s*</description>",
