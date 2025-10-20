@@ -1,6 +1,12 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
-"""AlStyle → YML: вариант A (фото не влияет на availability) + небольшой рефактор без изменения результата."""
+"""AlStyle → YML (вариант A): HTML-оформление <description> для Satu.
+— Фото НЕ влияет на available.
+— FEED_META не трогаем.
+— В <description> вставляем HTML с заголовком <h3>ИМЯ ТОВАРА</h3>,
+  далее «Описание» (как есть) и «Характеристики» списком <ul><li>, где ключи жирные (<strong>Ключ:</strong> Значение).
+— Текст НЕ редактируем по смыслу: только структура и теги.
+"""
 
 from __future__ import annotations
 import os, sys, re, time, random, urllib.parse, requests
@@ -8,12 +14,13 @@ from copy import deepcopy
 from typing import Dict, List, Tuple, Optional, Set
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone
+from html import unescape as _unescape
 try:
     from zoneinfo import ZoneInfo
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-20.A-compact"
+SCRIPT_VERSION = "alstyle-2025-10-20.A-html-desc"
 
 # --- ENV ---
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -99,7 +106,7 @@ def load_source_bytes(src: str) -> bytes:
         return data
     sess=requests.Session(); headers={"User-Agent":"supplier-feed-bot/1.0 (+github-actions)"}
     last=None
-    for i in range(1, 4+1):  # фикс 4 ретрая как раньше
+    for i in range(1, 4+1):
         try:
             r=sess.get(src, headers=headers, timeout=TIMEOUT_S)
             if r.status_code!=200: raise RuntimeError(f"HTTP {r.status_code}")
@@ -313,7 +320,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         strip_supplier_price_blocks(offer); updated+=1
     return updated,skipped,total,src_stats
 
-# --- params / description ---
+# --- params / description (минимальные изменения, как и раньше) ---
 _key=lambda s: re.sub(r"\s+"," ",(s or "").strip()).lower()
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:благотворительн\w*|снижена\s*цена|новинк\w*|артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|"
@@ -362,6 +369,7 @@ def normalize_value_punct(v: str) -> str:
     s=RE_SPACE_BEFORE_PUNCT.sub(r"\1", s); s=RE_PERCENT.sub(r"\1%", s)
     s=_fix_degrees(s); s=re.sub(r"\s{2,}", " ", s)
     return s.strip()
+
 def normalize_free_text_punct(s: str) -> str:
     t=canon_colons(s or "")
     t=re.sub(r":\s*:", ": ", t); t=re.sub(r"(?<!\.)\.\.(?!\.)", ".", t)
@@ -481,6 +489,8 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     return pairs
 
 def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
+    """Как раньше: собираем «Описание», «Особенности» и «Характеристики» в текстовом виде.
+       Дальше мы этот текст ПРЕОБРАЗУЕМ в HTML, сохранив слова 1:1."""
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0)
     offers_touched=0
@@ -499,13 +509,11 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
         parts=[]
         if cleaned_desc: parts.append(cleaned_desc)
         if features:
-            feats = [f"- {normalize_free_text_punct(f)}" for f in features]
+            feats = [f"- {f}" for f in features]  # НЕ правим текст, только маркер
             parts.append("Особенности:\n" + "\n".join(feats))
         if merged:
             merged_pairs = list(merged.values()); merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
-            tmp=[(re.sub(rf"\s*{_COLON_CLASS_RE.pattern}+\s*$", "", str(n or "")),
-                  re.sub(rf"^\s*{_COLON_CLASS_RE.pattern}+\s*", "", str(v or ""))) for n,v in merged_pairs]
-            lines = [f"- {n}: {v}" for n, v in tmp]
+            lines = [f"- {n}: {v}" for n, v in merged_pairs]
             parts.append("Характеристики:\n" + "\n".join(lines))
         if parts:
             if desc_el is None: desc_el = ET.SubElement(offer, "description")
@@ -530,8 +538,7 @@ def remove_blacklisted_kv_from_descriptions(shop_el: ET.Element) -> int:
 TRUE_WORDS={"true","1","yes","y","да","есть","in stock","available"}
 FALSE_WORDS={"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 def _parse_bool_str(s: str)->Optional[bool]:
-    v=_norm_text(s or "")
-    return True if v in TRUE_WORDS else False if v in FALSE_WORDS else None
+    v=_norm_text(s or "");  return True if v in TRUE_WORDS else False if v in FALSE_WORDS else None
 def _parse_int(s: str)->Optional[int]:
     t=re.sub(r"[^\d\-]+","", s or "")
     if t in {"","-","+"}: return None
@@ -659,7 +666,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# --- KEYWORDS ---
+# --- KEYWORDS (как раньше, без изменений поведения) ---
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 FEATURE_ACRONYM_BLACKLIST = {"QHD","UHD","FHD","FULL","HDR","HDR10","HDR400","DISPLAYHDR","IPS","VA","TN","LED","OLED",
                              "HDMI","DP","DISPLAY","PORT","USB","TYPEC","TYPE-C","AMD","RADEON","NVIDIA","GSYNC","G-SYNC","FREESYNC","GTG","EYE","SAVER"}
@@ -804,6 +811,102 @@ def enforce_forced_prices(shop_el: ET.Element) -> int:
             offer.attrib.pop("_force_price", None); touched += 1
     return touched
 
+# --- HTML описание для Satu ---
+HEAD_FEATURES_RE = re.compile(r"^\s*особенности\s*:?\s*$", re.I)
+HEAD_SPECS_RE    = re.compile(r"^\s*характеристик[аи]\s*:?\s*$", re.I)
+BULLET_MARK_RE   = re.compile(r"^\s*[-–—•*]\s*")
+
+def _split_description_sections(desc_text: str) -> Tuple[str, List[str], List[str]]:
+    """Возвращает: intro_text, features_lines, specs_lines. Текст НЕ правим — только режем по секциям."""
+    if not (desc_text or "").strip():
+        return "", [], []
+    lines = (desc_text or "").replace("\r\n","\n").replace("\r","\n").split("\n")
+    section = "intro"
+    intro_lines: List[str] = []
+    features: List[str] = []
+    specs: List[str] = []
+    for raw in lines:
+        ln = raw.rstrip()
+        if HEAD_FEATURES_RE.match(ln):
+            section = "features"; continue
+        if HEAD_SPECS_RE.match(ln):
+            section = "specs"; continue
+        if section == "intro":
+            intro_lines.append(ln)
+        elif section == "features":
+            features.append(BULLET_MARK_RE.sub("", ln))  # убираем только маркер «- », сам текст как есть
+        else:
+            specs.append(BULLET_MARK_RE.sub("", ln))
+    # вычищаем пустые строки на концах секций
+    def _strip_empty(arr: List[str]) -> List[str]:
+        a = [x for x in arr]
+        while a and not a[0].strip(): a.pop(0)
+        while a and not a[-1].strip(): a.pop()
+        return a
+    return "\n".join(_strip_empty(intro_lines)).strip(), _strip_empty(features), _strip_empty(specs)
+
+def _html_escape_in_cdata_safe(s: str) -> str:
+    """CDATA не требует экранирования <>&, но последовательность ']]>' ломает CDATA — чиним её."""
+    return (s or "").replace("]]>", "]]&gt;")
+
+def _build_html_description(name: str, intro: str, features: List[str], specs: List[str]) -> str:
+    """Собираем финальный HTML. Ключи в specs делаем жирными (до двоеточия)."""
+    parts: List[str] = []
+    title = _html_escape_in_cdata_safe(name or "")
+    parts.append(f"<h3>{title}</h3>")
+    if intro:
+        intro_html = _html_escape_in_cdata_safe(intro).replace("\n", "<br>\n")
+        parts.append(f"<p>{intro_html}</p>")
+    if features:
+        parts.append("<h3>Особенности</h3>")
+        parts.append("<ul>")
+        for item in features:
+            if not item.strip(): continue
+            parts.append(f"  <li>{_html_escape_in_cdata_safe(item)}</li>")
+        parts.append("</ul>")
+    if specs:
+        parts.append("<h3>Характеристики</h3>")
+        parts.append("<ul>")
+        for item in specs:
+            txt = item.strip()
+            if not txt: continue
+            # жирним часть ДО первого двоеточия, но сам текст не меняем
+            if ":" in txt:
+                key, val = txt.split(":", 1)
+                parts.append(f"  <li><strong>{_html_escape_in_cdata_safe(key.strip())}:</strong>{_html_escape_in_cdata_safe(val)}</li>")
+            else:
+                parts.append(f"  <li>{_html_escape_in_cdata_safe(txt)}</li>")
+        parts.append("</ul>")
+    return "\n".join(parts)
+
+def convert_descriptions_to_html(shop_el: ET.Element) -> int:
+    """Меняет <description> на HTML-версию. Вставляем плейсхолдеры, потом заменим их на CDATA на этапе сериализации."""
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        name = get_text(offer, "name")
+        d = offer.find("description")
+        raw = (d.text or "").strip() if (d is not None and d.text) else ""
+        intro, feats, specs = _split_description_sections(raw)
+        html = _build_html_description(name, intro, feats, specs)
+        placeholder = f"[[[HTML]]]{html}[[[/HTML]]]"
+        if d is None: d = ET.SubElement(offer, "description")
+        d.text = placeholder
+        touched += 1
+    return touched
+
+def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
+    """На готовой строке XML ищем <description>[[[HTML]]]...[[[/HTML]]]</description> и подменяем на CDATA-блок."""
+    def repl(m):
+        inner = m.group(1)
+        # убираем маркеры и обратное экранирование &lt;h3&gt; → <h3>
+        inner = inner.replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
+        inner = _unescape(inner)
+        inner = _html_escape_in_cdata_safe(inner)
+        return f"<description><![CDATA[\n{inner}\n]]></description>"
+    return re.sub(r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>", repl, xml_text, flags=re.S)
+
 # --- FEED_META ---
 def render_feed_meta_comment(pairs:Dict[str,str])->str:
     try: tz=ZoneInfo("Asia/Almaty"); now_alm=datetime.now(tz)
@@ -839,6 +942,7 @@ def main()->None:
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
+    # фильтр категорий (опционально, как раньше)
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         if ALSTYLE_CATEGORIES_MODE=="include" and not (rules_ids or rules_names):
@@ -854,33 +958,47 @@ def main()->None:
             drop=(ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
             if drop: out_offers.remove(off)
 
+    # убрать старые categoryId — и поставить '0' первым
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId"))+list(off.findall("CategoryId")): off.remove(node)
 
+    # PRICE CAP
     flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
+    # бренды
     ensure_vendor(out_shop); ensure_vendor_auto_fill(out_shop)
 
+    # vendorCode + id
     ensure_vendorcode_with_article(
         out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AS"),
         create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
     )
     sync_offer_id_with_vendorcode(out_shop)
 
+    # цены
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price=100: {forced}")
 
-    remove_specific_params(out_shop); unify_specs_in_description(out_shop); remove_blacklisted_kv_from_descriptions(out_shop)
+    # описание (как раньше собираем текст) → затем HTML
+    remove_specific_params(out_shop)
+    unify_specs_in_description(out_shop)
+    remove_blacklisted_kv_from_descriptions(out_shop)
+    html_touched = convert_descriptions_to_html(out_shop)
+    log(f"Descriptions HTML-converted: {html_touched}")
 
-    t_true, t_false, _, _ = normalize_available_field(out_shop)   # Вариант A: фото не учитываем
+    # доступность / валюта (вариант A — фото не используем)
+    t_true, t_false, _, _ = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
 
+    # чистка, порядок, categoryId первым
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
     reorder_offer_children(out_shop); ensure_categoryid_zero_first(out_shop)
 
+    # KEYWORDS
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
+    # форматирование (переносы)
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
@@ -890,11 +1008,17 @@ def main()->None:
                 "built_utc": now_utc_str(),"built_Asia/Almaty": now_almaty_str()}
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
+    # сериализация
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
-    xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)     # пустая строка после FEED_META
-    xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)     # пустая строка между офферами
-    xml_text=re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)                        # без тройных пустых строк
+    # перевод строки после комментария FEED_META
+    xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
+    # пустая строка между офферами
+    xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
+    # без тройных пустых строк
+    xml_text=re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
+    # ВАЖНО: подмена плейсхолдеров описаний на CDATA с HTML
+    xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
     if DRY_RUN: log("[DRY_RUN=1] Files not written."); return
 
