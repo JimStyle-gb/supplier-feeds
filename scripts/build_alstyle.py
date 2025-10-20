@@ -942,7 +942,7 @@ def main()->None:
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # фильтр категорий (опционально, как раньше)
+    # фильтр категорий (как было)
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         if ALSTYLE_CATEGORIES_MODE=="include" and not (rules_ids or rules_names):
@@ -1002,28 +1002,42 @@ def main()->None:
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
+    # FEED_META (как есть)
     meta_pairs={"script_version": SCRIPT_VERSION,"supplier": SUPPLIER_NAME,"source": SUPPLIER_URL or "file",
                 "offers_total": len(src_offers),"offers_written": len(list(out_offers.findall("offer"))),
                 "available_true": str(t_true),"available_false": str(t_false),
                 "built_utc": now_utc_str(),"built_Asia/Almaty": now_almaty_str()}
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # сериализация
+    # сериализация в строку
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
-    # перевод строки после комментария FEED_META
+    # перевод строки после FEED_META
     xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     # пустая строка между офферами
     xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
     # без тройных пустых строк
     xml_text=re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
-    # ВАЖНО: подмена плейсхолдеров описаний на CDATA с HTML
+    # подмена плейсхолдеров описаний на CDATA с HTML
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
-    if DRY_RUN: log("[DRY_RUN=1] Files not written."); return
+    # --- запись файла БЕЗ падения по cp1251 ---
+    if DRY_RUN:
+        log("[DRY_RUN=1] Files not written.")
+        return
 
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    with open(OUT_FILE_YML,"w",encoding=ENC, newline="\n") as f: f.write(xml_text)
+    try:
+        # пробуем обычную запись в заявленной кодировке
+        with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
+            f.write(xml_text)
+    except UnicodeEncodeError as e:
+        # fallback: кодируем недопустимые символы как &#NNNN; (корректно отображается на Satu)
+        warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
+        data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
+        with open(OUT_FILE_YML, "wb") as f:
+            f.write(data_bytes)
+
     try:
         docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
