@@ -6,8 +6,12 @@
 — В <description> вставляем HTML с заголовком <h3>ИМЯ ТОВАРА</h3>,
   далее «Описание» (как есть) и «Характеристики» списком <ul><li>, где ключи жирные (<strong>Ключ:</strong> Значение).
 — Текст НЕ редактируем по смыслу: только структура и теги.
-— FIX: распознаём пары «лейбл на строке» → «значение на следующей строке» даже если значение выглядит «как лейбл»
-  (например, Производитель → Canon, Секция аппарата → Перенос изображения и т.п.).
+
+NEW:
+- Форс-пары для «Ресурс картриджа, стр.» → значение на следующей строке (нормируем к «Ресурс картриджа: 300 стр.»).
+- Форс-пары для «Технология печати» → след. строка (обычно «Струйная»).
+- Форс-пары для «Объем/Объём картриджа, мл» → число на следующей строке (добавляем « мл», если не указано).
+- Не воспринимаем одиночные слова-значения (например, «Струйная», «Черный») как ключи.
 """
 
 from __future__ import annotations
@@ -22,7 +26,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.C-html-desc-lvpairs2"
+SCRIPT_VERSION = "alstyle-2025-10-21.D-html-desc-lvpairs3"
 
 # --- ENV ---
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -393,28 +397,58 @@ def _valid_kv_name(name: str) -> bool:
     if not n or len(n)>48 or len(re.findall(r"[A-Za-zА-Яа-я0-9%°\-\+]+", n))>6: return False
     return not (BAD_KV_NAME_RE.search(n) or re.search(r"[.!?]$", n) or n.count(",")>=2)
 
-# --- NEW: склейка «лейбл → следующая строка значение»
-LABEL_CANDIDATE_RE = re.compile(r"^[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё\s/()\-]{1,40}$")
-FORCE_VALUE_FOR = {"производитель","устройство","секция аппарата","совместимость"}
+# --- лейблы/значения ---
+LABEL_CANDIDATE_RE = re.compile(r"^[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё\s/()\-\,\.]{1,60}$")
+# Лейблы, для которых следующая строка — значение (даже если выглядит «как лейбл»)
+FORCE_VALUE_FOR = {
+    "производитель","устройство","секция аппарата","совместимость",
+    "технология печати",
+    "ресурс картриджа","ресурс картриджа, стр","ресурс картриджа, cтр",
+    "объем картриджа","объем картриджа, мл","объём картриджа","объём картриджа, мл",
+    "цвет печати","состав"
+}
+# Слова-значения (не считать их лейблами, если они одиночные)
+VALUE_ONLY_WORDS = {
+    "струйная","лазерная","черный","чёрный","голубой","пурпурный","желтый","жёлтый","цветной","цветная","монохромная"
+}
+# Однословные лейблы, которым верим
+ALLOW_ONE_WORD_LABELS = {"производитель","устройство","совместимость","вес","цвет","состав","страна","материал","тип"}
+
 def _is_label_line(s: str) -> bool:
     s=(s or "").strip()
     if not s: return False
     if ":" in s or any(ch.isdigit() for ch in s): return False
-    if re.search(r"[.,;!?]", s): return False
+    if re.search(r"[!?]", s): return False
     if _norm_text(s) in {"описание","основные характеристики","характеристики","особенности"}: return False
-    return bool(LABEL_CANDIDATE_RE.fullmatch(s))
+    if not LABEL_CANDIDATE_RE.fullmatch(s): return False
+    # не считаем одиночные «значения» лейблами
+    words=len(s.split())
+    s_norm=_norm_text(s)
+    if words==1 and s_norm not in ALLOW_ONE_WORD_LABELS: 
+        return False
+    if words==1 and s_norm in VALUE_ONLY_WORDS:
+        return False
+    return True
+
+def _looks_like_forced_label(s_norm: str) -> bool:
+    # "ресурс картриджа, стр." → s_norm == "ресурс картриджа, стр" — приведём запятую/точки
+    s_norm = s_norm.replace(".", "").replace(",", "")
+    for k in list(FORCE_VALUE_FOR):
+        key = k.replace(".", "").replace(",", "")
+        if s_norm==key or s_norm.startswith(key):
+            return True
+    return False
 
 def _pair_loose_label_values(lines: List[str]) -> Tuple[List[Tuple[str,str]], List[str]]:
-    """Находит пары: Лейбл (строка i) + Значение (следующая непустая строка).
-       Для лейблов из FORCE_VALUE_FOR принимаем след. строку как значение даже если она «похожа на лейбл»."""
+    """Лейбл (строка i) + значение (следующая непустая). Для FORCE_VALUE_FOR — всегда, иначе если следующая строка не «лейбл»."""
     pairs: List[Tuple[str,str]] = []
     consumed: Set[int] = set()
     i=0; n=len(lines)
     while i<n:
         if i in consumed: i+=1; continue
         a=(lines[i] or "").strip()
-        if _is_label_line(a):
-            a_norm=_norm_text(a)
+        a_norm=_norm_text(a)
+        if _is_label_line(a) or _looks_like_forced_label(a_norm):
             j=i+1
             while j<n and not (lines[j] or "").strip(): consumed.add(j); j+=1
             if j<n:
@@ -422,8 +456,8 @@ def _pair_loose_label_values(lines: List[str]) -> Tuple[List[Tuple[str,str]], Li
                 # спец-кейс: Совместимость → Устройства → <модели>
                 if a_norm=="совместимость" and _norm_text(b)=="устройства" and (j+1)<n:
                     consumed.add(j); j+=1; b=(lines[j] or "").strip()
-                # решающее условие: либо b «не лейбл», либо у нас форсированный лейбл
-                if b and (not _is_label_line(b) or a_norm in FORCE_VALUE_FOR):
+                # решающее условие: либо b «не лейбл», либо a — форс-лейбл
+                if b and (not _is_label_line(b) or _looks_like_forced_label(a_norm)):
                     name, val = normalize_kv(a, b)
                     if name and val:
                         pairs.append((name, val))
@@ -478,20 +512,29 @@ def _normalize_description_whitespace(text: str) -> str:
 def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     n=re.sub(r"\s+"," ",(name or "").strip()); v=re.sub(r"\s+"," ",(value or "").strip())
     n=canon_colons(n); v=canon_colons(v); n=re.sub(rf"\s*{_COLON_CLASS_RE.pattern}+\s*$","",n); v=re.sub(rf"^\s*{_COLON_CLASS_RE.pattern}+\s*","",v)
-    if not n or not v: return n, v
     n_l=n.lower()
+    # унификация ключей/значений
     if re.search(r"совместим\w*\s*модел", n_l): n="Совместимость"
-    elif re.search(r"ресурс", n_l):
-        n="Ресурс картриджа"; m=re.search(r"(\d[\d\s]{0,12}\d)", v)
+    elif "ресурс" in n_l:
+        n="Ресурс картриджа"
+        m=re.search(r"(\d[\d\s]{0,12}\d)", v)
         iso = re.search(r"(?:iso|iec)[\/\s\-]*([12]\d{3,5})", v, re.I) or re.search(r"\b([12]\d{3,5})\b", v)
         if m:
             num=re.sub(r"\s+"," ", m.group(1)).strip()
             v=f"{num} стр." + (f" (ISO/IEC {iso.group(1)})" if iso else "")
+        elif re.fullmatch(r"\d{1,6}", v):
+            v=f"{v} стр."
+    elif re.search(r"об[ъь]ем\s+картриджа", n_l):
+        n="Объем картриджа, мл"
+        if re.fullmatch(r"\d{1,4}", v) and not re.search(r"\bмл\b|\bml\b", v, re.I):
+            v=f"{v} мл"
     elif re.fullmatch(r"вес", n_l) and not re.search(r"\bкг\b", v, re.I):
         v=v.replace(",", ".").strip() + " кг"
+    elif "технология печати" in n_l:
+        n="Технология печати"
     elif re.fullmatch(r"цвет", n_l):
         v=v.lower()
-    return n, normalize_value_punct(v)
+    return n.strip(), normalize_value_punct(v)
 
 def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]], List[str]]:
     if not (text or "").strip(): return "", [], []
@@ -517,12 +560,12 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]], L
         if re.match(BULLET_NO_KEY, ln) or re.match(BULLET_KEY_NOVALUE, ln): keep[i]=False
         parsed=try_parse_kv(ln)
         if parsed: keep[i]=False; pairs.append(parsed)
-    # 2) NEW: лейбл на строке + значение на следующей строке (с форс-лейблами)
+    # 2) Лейбл → следующая строка значение (с форс-лейблами)
     kept_lines=[ln for ln,k in zip(lines,keep) if k and not (DISCL_RE.search(ln) and len(ln.strip())>60)]
     extra_pairs, rest_after_pairs = _pair_loose_label_values(kept_lines)
     pairs.extend(extra_pairs)
 
-    # 3) Остаток делим на «особенности» (буллеты без двоеточия) и свободный текст
+    # 3) Остаток: «особенности» (буллеты без двоеточия) и свободный текст
     features=[s[2:].strip() for s in rest_after_pairs if s.strip().startswith("- ") and ":" not in s]
     rest=[ln for ln in rest_after_pairs if not (ln.strip().startswith("- ") and ":" not in ln)]
     cleaned="\n".join([x for x in rest if x.strip()]).strip()
@@ -718,9 +761,9 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# --- KEYWORDS ---
+# --- KEYWORDS (без изменений, опущены комментарии ради краткости) ---
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
-FEATURE_ACRONYM_BLACKLIST = {"QHD","UHD","FHD","FULL","HDR","HDR10","HDR400","DISPLAYHDR","IPS","VA","TN","LED","OLED",
+FEATURE_ACRONYM_BLACKLIST = {"QHD","UHD","FHD","FULL","HDR","HDR10","DISPLAYHDR","IPS","VA","TN","LED","OLED",
                              "HDMI","DP","DISPLAY","PORT","USB","TYPEC","TYPE-C","AMD","RADEON","NVIDIA","GSYNC","G-SYNC","FREESYNC","GTG","EYE","SAVER"}
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
 STOPWORDS_RU = {"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","о","об","у","без","про","как","это","той","тот","эта","эти",
@@ -864,13 +907,12 @@ def enforce_forced_prices(shop_el: ET.Element) -> int:
             offer.attrib.pop("_force_price", None); touched += 1
     return touched
 
-# --- HTML описание для Satu ---
+# --- HTML → CDATA ---
 HEAD_FEATURES_RE = re.compile(r"^\s*особенности\s*:?\s*$", re.I)
 HEAD_SPECS_RE    = re.compile(r"^\s*характеристик[аи]\s*:?\s*$", re.I)
 BULLET_MARK_RE   = re.compile(r"^\s*[-–—•*]\s*")
 
 def _split_description_sections(desc_text: str) -> Tuple[str, List[str], List[str]]:
-    """Возвращает: intro_text, features_lines, specs_lines. Текст НЕ правим — только режем по секциям."""
     if not (desc_text or "").strip():
         return "", [], []
     lines = (desc_text or "").replace("\r\n","\n").replace("\r","\n").split("\n")
@@ -898,11 +940,9 @@ def _split_description_sections(desc_text: str) -> Tuple[str, List[str], List[st
     return "\n".join(_strip_empty(intro_lines)).strip(), _strip_empty(features), _strip_empty(specs)
 
 def _html_escape_in_cdata_safe(s: str) -> str:
-    """CDATA не требует экранирования <>&, но последовательность ']]>' ломает CDATA — чиним её."""
     return (s or "").replace("]]>", "]]&gt;")
 
 def _build_html_description(name: str, intro: str, features: List[str], specs: List[str]) -> str:
-    """Собираем финальный HTML. Ключи в specs делаем жирными (до двоеточия)."""
     parts: List[str] = []
     title = _html_escape_in_cdata_safe(name or "")
     parts.append(f"<h3>{title}</h3>")
@@ -924,14 +964,13 @@ def _build_html_description(name: str, intro: str, features: List[str], specs: L
             if not txt: continue
             if ":" in txt:
                 key, val = txt.split(":", 1)
-                parts.append(f"  <li><strong>{_html_escape_in_cdata_safe(key.strip())}:</strong>{_html_escape_in_cdata_safe(val)}</li>")
+                parts.append(f"  <li><strong>{_html_escape_in_cdata_safe(key.strip())}:</strong> {_html_escape_in_cdata_safe(val.strip())}</li>")
             else:
                 parts.append(f"  <li>{_html_escape_in_cdata_safe(txt)}</li>")
         parts.append("</ul>")
     return "\n".join(parts)
 
 def convert_descriptions_to_html(shop_el: ET.Element) -> int:
-    """Меняет <description> на HTML-версию. Вставляем плейсхолдеры, потом заменим их на CDATA на этапе сериализации."""
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
     touched = 0
@@ -948,7 +987,6 @@ def convert_descriptions_to_html(shop_el: ET.Element) -> int:
     return touched
 
 def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
-    """На готовой строке XML ищем <description>[[[HTML]]]...[[[/HTML]]]</description> и подменяем на CDATA-блок."""
     def repl(m):
         inner = m.group(1)
         inner = inner.replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
@@ -964,7 +1002,7 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     today_01=datetime(now_alm.year,now_alm.month,now_alm.day,1,0,0,tzinfo=getattr(now_alm,"tzinfo",None))
     base_ts=today_01.timestamp(); next_ts=base_ts+86400 if now_alm.timestamp()>=base_ts else base_ts
     next_alm=datetime.fromtimestamp(next_ts,getattr(now_alm,"tzinfo",None))
-    fmt=lambda dt: dt.strftime("%d:%m:%Y - %H:%M:%S")
+    fmt=lambda dt: dt.strftime("%d:%m:%Y - %H:%М:%S")
     rows=[("Поставщик",pairs.get("supplier","")),("URL поставщика",pairs.get("source","")),
           ("Время сборки (Алматы)",fmt(now_alm)),("Ближайшее время сборки (Алматы)",fmt(next_alm)),
           ("Сколько товаров у поставщика до фильтра",str(pairs.get("offers_total","0"))),
@@ -1030,7 +1068,7 @@ def main()->None:
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price=100: {forced}")
 
-    # описание → HTML (с учётом лейбл→значение)
+    # описание → HTML
     remove_specific_params(out_shop)
     unify_specs_in_description(out_shop)
     remove_blacklisted_kv_from_descriptions(out_shop)
@@ -1048,7 +1086,7 @@ def main()->None:
     # KEYWORDS
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
-    # форматирование (переносы)
+    # форматирование
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
@@ -1067,7 +1105,7 @@ def main()->None:
     xml_text=re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
-    # запись файла (cp1251-фолбэк безопасный)
+    # запись файла
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
         return
