@@ -6,6 +6,7 @@
 — В <description> вставляем HTML с заголовком <h3>ИМЯ ТОВАРА</h3>,
   далее «Описание» (как есть) и «Характеристики» списком <ul><li>, где ключи жирные (<strong>Ключ:</strong> Значение).
 — Текст НЕ редактируем по смыслу: только структура и теги.
+— NEW: собираем пары «лейбл на строке» + «значение на следующей строке» (Производитель ↦ Canon и т.п.) и переносим в Характеристики.
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-20.A-html-desc"
+SCRIPT_VERSION = "alstyle-2025-10-20.B-html-desc-lvpairs"
 
 # --- ENV ---
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -115,7 +116,7 @@ def load_source_bytes(src: str) -> bytes:
             return data
         except Exception as e:
             last=e; back=RETRY_BACKOFF*i*(1+random.uniform(-0.2,0.2))
-            warn(f"fetch {i}/4 failed: {e}; sleep {back:.2f}s")
+            warn(f"fetch {i}/4 failed: {e}); sleep {back:.2f}s")
             if i<4: time.sleep(back)
     raise RuntimeError(f"fetch failed: {last}")
 
@@ -230,8 +231,8 @@ def build_brand_index(shop_el: ET.Element) -> Dict[str, str]:
 
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name = get_text(offer, "name"); nrm=_norm_key(name)
-    if not nrm: return ""
-    first = re.split(r"\s+", name.strip())[0]; f_norm=_norm_key(first)
+    first = re.split(r"\s+", name.strip())[0] if name else ""
+    f_norm=_norm_key(first)
     if f_norm in brand_index: return brand_index[f_norm]
     for br_norm, canon in sorted(brand_index.items(), key=lambda kv: len(kv[0]), reverse=True):
         if re.search(rf"\b{re.escape(br_norm)}\b", nrm): return canon
@@ -320,7 +321,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
         strip_supplier_price_blocks(offer); updated+=1
     return updated,skipped,total,src_stats
 
-# --- params / description (минимальные изменения, как и раньше) ---
+# --- params / description ---
 _key=lambda s: re.sub(r"\s+"," ",(s or "").strip()).lower()
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:благотворительн\w*|снижена\s*цена|новинк\w*|артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|"
@@ -385,19 +386,60 @@ KV_TABS_RE   = re.compile(r"^\s*([^\t]{2,}?)\t+(.+)$");     KV_SPACES_RE = re.co
 BULLET_NO_KEY=re.compile(r"^\s*-\s*[:\s\-]{0,5}:\s*\S");     BULLET_KEY_NOVALUE=re.compile(r"^\s*-\s*[^:]+:\s*$")
 URL_RE       = re.compile(r"https?://\S+", re.I)
 BAD_KV_NAME_RE = re.compile(r"(?:\bв\s+случае\b|\bуслов\w*\s+гаран|необходим\w*|следует|предостав\w*|предъяв\w*|указан\w*|содержит|соответству\w*|упаков\w*|маркиров\w*|голографическ\w*|на\s+корпусе|на\s+упаковке|на\s+коробке|фото|видео)", re.I)
+
 def _valid_kv_name(name: str) -> bool:
     n=(name or "").strip(" -•*·").strip()
     if not n or len(n)>48 or len(re.findall(r"[A-Za-zА-Яа-я0-9%°\-\+]+", n))>6: return False
     return not (BAD_KV_NAME_RE.search(n) or re.search(r"[.!?]$", n) or n.count(",")>=2)
 
+# --- NEW: склейка «лейбл → следующая строка значение»
+LABEL_CANDIDATE_RE = re.compile(r"^[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё\s/()\-]{1,40}$")
+def _is_label_line(s: str) -> bool:
+    s=(s or "").strip()
+    if not s: return False
+    if ":" in s or any(ch.isdigit() for ch in s): return False
+    if re.search(r"[.,;!?]", s): return False
+    # частые «шапки», которые не должны сами становиться ключами
+    if _norm_text(s) in {"описание","основные характеристики","характеристики","особенности"}: return False
+    return bool(LABEL_CANDIDATE_RE.fullmatch(s))
+
+def _pair_loose_label_values(lines: List[str]) -> Tuple[List[Tuple[str,str]], List[str]]:
+    """Находит пары: Лейбл (строка i) + Значение (следующая непустая строка). Возвращает пары и «остаток» строк."""
+    pairs: List[Tuple[str,str]] = []
+    consumed: Set[int] = set()
+    i=0; n=len(lines)
+    while i<n:
+        if i in consumed: i+=1; continue
+        a=(lines[i] or "").strip()
+        if _is_label_line(a):
+            # ищем значение на следующей непустой строке
+            j=i+1
+            while j<n and not (lines[j] or "").strip(): consumed.add(j); j+=1
+            if j<n:
+                b=(lines[j] or "").strip()
+                # кейс: Совместимость → Устройства → <модели>
+                if _norm_text(a)=="совместимость" and _norm_text(b)=="устройства" and (j+1)<n:
+                    consumed.add(j); j+=1; b=(lines[j] or "").strip()
+                # если и b похоже на лейбл — не склеиваем
+                if b and not _is_label_line(b):
+                    name, val = normalize_kv(a, b)
+                    if name and val:
+                        pairs.append((name, val))
+                        consumed.update({i, j})
+                        i=j+1
+                        continue
+        i+=1
+    rest=[ln for k,ln in enumerate(lines) if k not in consumed]
+    return pairs, rest
+
 def _merge_europrint_headings(lines: List[str]) -> List[str]:
     out=[]; i=0
     while i < len(lines):
         cur=(lines[i] or "").strip(); nxt=(lines[i+1] or "").strip() if i+1<len(lines) else ""
-        if HEADLINE_EUROPRINT_RE.match(cur): 
+        if re.compile(r"^(?:тонер-)?картриджи\s+europrint\s*:?\s*$", re.I).match(cur):
             if nxt: out.append("Картриджи EUROPRINT. "+nxt.lstrip("—-• ").strip()); i+=2; continue
             i+=1; continue
-        if HEADLINE_WARRANTY_RE.match(cur):
+        if re.compile(r"^условия\s+гарантии\s*:?\s*$", re.I).match(cur):
             if nxt: out.append(nxt); i+=2; continue
             i+=1; continue
         out.append(cur); i+=1
@@ -458,6 +500,7 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]], L
         if HDR_RE.match(ln) or HEAD_ONLY_RE.match(ln): continue
         ln2=HEAD_PREFIX_RE.sub("", ln)
         if ln2.strip(): lines.extend(_split_inline_bullets(ln2))
+
     keep=[True]*len(lines); pairs=[]
     def try_parse_kv(ln: str)->Optional[Tuple[str,str]]:
         ln=canon_colons(ln); probe=re.sub(r"[ \t]{2,}", "  ", ln)
@@ -467,13 +510,19 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]], L
                 name,val=(m.group(1) or "").strip(), (m.group(2) or "").strip()
                 if _valid_kv_name(name) and name and val: return normalize_kv(name, val)
         return None
+    # 1) классические пары key:value
     for i, ln in enumerate(lines):
         if re.match(BULLET_NO_KEY, ln) or re.match(BULLET_KEY_NOVALUE, ln): keep[i]=False
         parsed=try_parse_kv(ln)
         if parsed: keep[i]=False; pairs.append(parsed)
-    kept=[ln for ln,k in zip(lines,keep) if k and not (DISCL_RE.search(ln) and len(ln.strip())>60)]
-    features=[s[2:].strip() for s in kept if s.strip().startswith("- ") and ":" not in s]
-    rest=[ln for ln in kept if not (ln.strip().startswith("- ") and ":" not in ln)]
+    # 2) NEW: лейбл на строке + значение на следующей строке
+    kept_lines=[ln for ln,k in zip(lines,keep) if k and not (DISCL_RE.search(ln) and len(ln.strip())>60)]
+    extra_pairs, rest_after_pairs = _pair_loose_label_values(kept_lines)
+    pairs.extend(extra_pairs)
+
+    # 3) Остаток делим на «особенности» (буллеты без двоеточия) и свободный текст
+    features=[s[2:].strip() for s in rest_after_pairs if s.strip().startswith("- ") and ":" not in s]
+    rest=[ln for ln in rest_after_pairs if not (ln.strip().startswith("- ") and ":" not in ln)]
     cleaned="\n".join([x for x in rest if x.strip()]).strip()
     cleaned=re.sub(r"\n{3,}", "\n\n", cleaned)
     return normalize_free_text_punct(cleaned), pairs, features
@@ -489,8 +538,8 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     return pairs
 
 def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
-    """Как раньше: собираем «Описание», «Особенности» и «Характеристики» в текстовом виде.
-       Дальше мы этот текст ПРЕОБРАЗУЕМ в HTML, сохранив слова 1:1."""
+    """Собираем «Описание», «Особенности» и «Характеристики» в текстовом виде,
+       затем этот текст конвертируем в HTML (слова 1:1)."""
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0,0)
     offers_touched=0
@@ -509,10 +558,12 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
         parts=[]
         if cleaned_desc: parts.append(cleaned_desc)
         if features:
-            feats = [f"- {f}" for f in features]  # НЕ правим текст, только маркер
+            feats = [f"- {f}" for f in features]
             parts.append("Особенности:\n" + "\n".join(feats))
         if merged:
-            merged_pairs = list(merged.values()); merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
+            merged_pairs = list(merged.values())
+            # порядок не сортируем жёстко, чтобы сохранить исходную логичность — только стабильный ключ
+            merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
             lines = [f"- {n}: {v}" for n, v in merged_pairs]
             parts.append("Характеристики:\n" + "\n".join(lines))
         if parts:
@@ -666,7 +717,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# --- KEYWORDS (как раньше, без изменений поведения) ---
+# --- KEYWORDS ---
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 FEATURE_ACRONYM_BLACKLIST = {"QHD","UHD","FHD","FULL","HDR","HDR10","HDR400","DISPLAYHDR","IPS","VA","TN","LED","OLED",
                              "HDMI","DP","DISPLAY","PORT","USB","TYPEC","TYPE-C","AMD","RADEON","NVIDIA","GSYNC","G-SYNC","FREESYNC","GTG","EYE","SAVER"}
@@ -684,8 +735,9 @@ def build_bigrams(words: List[str]) -> List[str]:
     out=[]; 
     for i in range(len(words)-1):
         a,b=words[i],words[i+1]
-        if is_content_word(a) and is_content_word(b) and (_norm_text(a) not in STOPWORDS_RU) and (_norm_text(b) not in STOPWORDS_RU):
-            out.append(f"{a} {b}")
+        if is_content_word(a) and is_content_word(b):
+            if (_norm_text(a) not in STOPWORDS_RU) and (_norm_text(b) not in STOPWORDS_RU):
+                out.append(f"{a} {b}")
     return out
 def dedup_preserve_order(words: List[str]) -> List[str]:
     seen=set(); out=[]
@@ -834,10 +886,9 @@ def _split_description_sections(desc_text: str) -> Tuple[str, List[str], List[st
         if section == "intro":
             intro_lines.append(ln)
         elif section == "features":
-            features.append(BULLET_MARK_RE.sub("", ln))  # убираем только маркер «- », сам текст как есть
+            features.append(BULLET_MARK_RE.sub("", ln))
         else:
             specs.append(BULLET_MARK_RE.sub("", ln))
-    # вычищаем пустые строки на концах секций
     def _strip_empty(arr: List[str]) -> List[str]:
         a = [x for x in arr]
         while a and not a[0].strip(): a.pop(0)
@@ -870,7 +921,6 @@ def _build_html_description(name: str, intro: str, features: List[str], specs: L
         for item in specs:
             txt = item.strip()
             if not txt: continue
-            # жирним часть ДО первого двоеточия, но сам текст не меняем
             if ":" in txt:
                 key, val = txt.split(":", 1)
                 parts.append(f"  <li><strong>{_html_escape_in_cdata_safe(key.strip())}:</strong>{_html_escape_in_cdata_safe(val)}</li>")
@@ -900,7 +950,6 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
     """На готовой строке XML ищем <description>[[[HTML]]]...[[[/HTML]]]</description> и подменяем на CDATA-блок."""
     def repl(m):
         inner = m.group(1)
-        # убираем маркеры и обратное экранирование &lt;h3&gt; → <h3>
         inner = inner.replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
         inner = _unescape(inner)
         inner = _html_escape_in_cdata_safe(inner)
@@ -942,7 +991,7 @@ def main()->None:
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # фильтр категорий (как было)
+    # фильтр категорий (опционально)
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         if ALSTYLE_CATEGORIES_MODE=="include" and not (rules_ids or rules_names):
@@ -980,14 +1029,14 @@ def main()->None:
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price=100: {forced}")
 
-    # описание (как раньше собираем текст) → затем HTML
+    # описание → HTML (с учётом лейбл→значение)
     remove_specific_params(out_shop)
     unify_specs_in_description(out_shop)
     remove_blacklisted_kv_from_descriptions(out_shop)
     html_touched = convert_descriptions_to_html(out_shop)
     log(f"Descriptions HTML-converted: {html_touched}")
 
-    # доступность / валюта (вариант A — фото не используем)
+    # доступность / валюта
     t_true, t_false, _, _ = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
 
@@ -1002,37 +1051,31 @@ def main()->None:
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    # FEED_META (как есть)
+    # FEED_META
     meta_pairs={"script_version": SCRIPT_VERSION,"supplier": SUPPLIER_NAME,"source": SUPPLIER_URL or "file",
                 "offers_total": len(src_offers),"offers_written": len(list(out_offers.findall("offer"))),
                 "available_true": str(t_true),"available_false": str(t_false),
                 "built_utc": now_utc_str(),"built_Asia/Almaty": now_almaty_str()}
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # сериализация в строку
+    # сериализация -> строка
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
-    # перевод строки после FEED_META
     xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
-    # пустая строка между офферами
     xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
-    # без тройных пустых строк
     xml_text=re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
-    # подмена плейсхолдеров описаний на CDATA с HTML
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
-    # --- запись файла БЕЗ падения по cp1251 ---
+    # запись файла (cp1251-фолбэк безопасный)
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
         return
 
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
     try:
-        # пробуем обычную запись в заявленной кодировке
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
     except UnicodeEncodeError as e:
-        # fallback: кодируем недопустимые символы как &#NNNN; (корректно отображается на Satu)
         warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
