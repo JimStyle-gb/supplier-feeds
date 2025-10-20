@@ -1,23 +1,17 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML конвертер (универсальная версия)
-
-Главное:
-- PRICE CAP: если исходная цена поставщика >= 9_999_999 → финальная <price> = 100 (и только один тег <price>)
-- <keywords>: универсально извлекаем ключи из <name> для любых товаров + бренд, модели, цвет, транслит, GEO (много городов)
-- available: переводим в атрибут <offer available="true/false">, удаляем теги <available>, чистим остаточные stock/status
-- <categoryId> ставим первым узлом оффера с значением 0 (для дальнейшей подстановки ID)
-- Чистка: удаляем в <param> и в описаниях служебные вещи (Благотворительность, Снижена цена, Новинка, Артикул, Оригинальный код, Штрихкод и т.п.)
-- Описание: объединяем характеристики из текста и <param>, нормализуем двоеточия и пробелы, убираем «лишние» предупреждения
-- Форматирование: перенос после FEED_META перед <shop>, пустая строка между офферами, без дублей пустых строк
-
-Отладочная печать:
-- Статистика по PRICE CAP
-- Статистика по <keywords>
-
-Авторская метка:
-- SCRIPT_VERSION — меняется при обновлениях
+AlStyle → YML конвертер (универсальная версия, keywords ≈ Satu)
+Изменения в этой версии:
+- Лимиты для <keywords>: длина строки по умолчанию 1024 символа (как у Satu), ограничение по числу слов фактически снято.
+- Универсальная генерация keywords из <name>: head-слово («Монитор» и т.п.), размер из названия (напр., 32 дюйма), бренд,
+  модели/коды (строгая фильтрация, без мусорных аббревиатур), информативные биграммы, цвета, транслит и расширенный GEO.
+- PRICE CAP: если исходная <price> у поставщика >= 9_999_999 → проставляем ровно один <price>100.
+- available: всегда атрибут <offer available="true/false">; теги <available> и складские поля удаляются.
+- <categoryId> ставится первым узлом оффера и равным 0 (для дальнейшей подстановки реального ID).
+- Чистка <param> и описаний: вырезаем служебные поля (Благотворительность/Новинка/Артикул/Штрихкод/ТН ВЭД и т.п.),
+  объединяем и нормализуем «Характеристики», чиним «::», «..», пробелы перед знаками, градусы/проценты и т.д.
+- Форматирование вывода: перенос после FEED_META перед <shop>, пустая строка между соседними <offer>.
 """
 
 from __future__ import annotations
@@ -32,7 +26,7 @@ except Exception:
     ZoneInfo = None
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-20.uni-keywords-geo-01"
+SCRIPT_VERSION = "alstyle-2025-10-20.keywords-1024-geo-universal"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -49,12 +43,12 @@ DRY_RUN          = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 ALSTYLE_CATEGORIES_PATH  = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE  = os.getenv("ALSTYLE_CATEGORIES_MODE", "off").lower()  # off|include|exclude
 
-# KEYWORDS
+# KEYWORDS (лимиты под Satu)
 SATU_KEYWORDS            = os.getenv("SATU_KEYWORDS", "auto").lower()   # auto|off
-SATU_KEYWORDS_MAXLEN     = int(os.getenv("SATU_KEYWORDS_MAXLEN", "160"))
-SATU_KEYWORDS_MAXWORDS   = int(os.getenv("SATU_KEYWORDS_MAXWORDS", "18"))
+SATU_KEYWORDS_MAXLEN     = int(os.getenv("SATU_KEYWORDS_MAXLEN", "1024"))  # длина строки keywords
+SATU_KEYWORDS_MAXWORDS   = int(os.getenv("SATU_KEYWORDS_MAXWORDS", "1000")) # фактически «нет лимита по словам»
 SATU_KEYWORDS_GEO        = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","1","true","yes"}
-SATU_KEYWORDS_GEO_MAX    = int(os.getenv("SATU_KEYWORDS_GEO_MAX", "12"))
+SATU_KEYWORDS_GEO_MAX    = int(os.getenv("SATU_KEYWORDS_GEO_MAX", "20"))
 SATU_KEYWORDS_GEO_LAT    = os.getenv("SATU_KEYWORDS_GEO_LAT", "on").lower() in {"on","1","true","yes"}
 
 # PRICE CAP
@@ -265,11 +259,9 @@ def build_brand_index(shop_el: ET.Element) -> Dict[str, str]:
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name = get_text(offer, "name"); nrm=_norm_key(name)
     if not nrm: return ""
-    # Попробуем найти бренд как первое слово (если похоже на бренд)
     first = re.split(r"\s+", name.strip())[0]
     f_norm=_norm_key(first)
     if f_norm in brand_index: return brand_index[f_norm]
-    # Ищем любой известный бренд среди токенов названия
     for br_norm, canon in sorted(brand_index.items(), key=lambda kv: len(kv[0]), reverse=True):
         if re.search(rf"\b{re.escape(br_norm)}\b", nrm): return canon
     return ""
@@ -368,7 +360,6 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
     src_stats={"prices_dealer":0,"direct_field":0,"rrp_fallback":0,"missing":0}
     for offer in offers_el.findall("offer"):
         total+=1
-        # если помечен на форс-цену — пропускаем пересчёт, выставим позже
         if offer.attrib.get("_force_price","") == "100":
             skipped+=1
             remove_all(offer, "prices", "Prices")
@@ -383,7 +374,7 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
             continue
         newp=compute_retail(dealer,rules)
         if newp is None: skipped+=1; continue
-        _remove_all_price_nodes(offer)                 # только один <price>
+        _remove_all_price_nodes(offer)
         p = ET.SubElement(offer, "price")
         p.text=str(int(newp))
         remove_all(offer, "prices", "Prices")
@@ -868,7 +859,14 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
 # --------------------- KEYWORDS (универсальные) ---------------------
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 
-# токенизация названия
+# Фильтр «мусорных» аббревиатур (не считаем моделями)
+FEATURE_ACRONYM_BLACKLIST = {
+    "QHD","UHD","FHD","FULL","HDR","HDR10","HDR400","DISPLAYHDR",
+    "IPS","VA","TN","LED","OLED",
+    "HDMI","DP","DISPLAY","PORT","USB","TYPEC","TYPE-C",
+    "AMD","RADEON","NVIDIA","GSYNC","G-SYNC","FREESYNC","GTG","EYE","SAVER"
+}
+
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
 
 STOPWORDS_RU = {
@@ -921,7 +919,6 @@ def translit_ru_to_lat(s: str) -> str:
     out = re.sub(r"\s+","-", out).strip("-")
     return out
 
-# Цвета на основе названия (ru/en)
 def color_tokens(name: str) -> List[str]:
     out=[]
     low=name.lower()
@@ -938,31 +935,53 @@ def color_tokens(name: str) -> List[str]:
         if k in low: out.append(val)
     return dedup_preserve_order(out)
 
-MODEL_RE = re.compile(r"\b([A-Z]?[A-Z0-9]{2,}[A-Z0-9\-]{1,})\b", re.I)
+MODEL_RE = re.compile(r"\b([A-Z0-9][A-Z0-9\-]{2,})\b", re.I)
 def extract_model_tokens(offer: ET.Element) -> List[str]:
     tokens=set()
     for src in (get_text(offer,"name"), get_text(offer,"description")):
+        if not src: continue
         for m in MODEL_RE.findall(src or ""):
             t=m.upper()
-            if not AS_INTERNAL_ART_RE.match(t):
-                tokens.add(t)
+            if AS_INTERNAL_ART_RE.match(t): 
+                continue
+            if t in FEATURE_ACRONYM_BLACKLIST:
+                continue
+            if not (re.search(r"[A-Z]", t) and re.search(r"\d", t)):
+                continue
+            if len(t) < 5:
+                continue
+            tokens.add(t)
     return list(tokens)
 
 def keywords_from_name_generic(name: str) -> List[str]:
-    """Универсально: берём информативные биграммы и одиночные из <name>."""
     raw_tokens = tokenize_name(name or "")
     modelish = [t for t in raw_tokens if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t)]
-    content = [t for t in raw_tokens if is_content_word(t)]
-    bigr = build_bigrams(content)
-
+    content  = [t for t in raw_tokens if is_content_word(t)]
+    bigr     = build_bigrams(content)
     def norm_token(tok: str) -> str:
         return tok if re.search(r"[A-Z]{2,}", tok) else tok.capitalize()
-
     out: List[str] = []
     out += modelish[:8]
     out += bigr[:8]
     out += [norm_token(t) for t in content[:10]]
     return dedup_preserve_order(out)
+
+def head_noun_from_name(name: str, vendor: str = "") -> str:
+    if not name: return ""
+    n = re.sub(r"[\"“”″']", " ", name)
+    toks = tokenize_name(n)
+    vend = _norm_text(vendor)
+    for t in toks:
+        tn = _norm_text(t)
+        if vend and tn == vend:
+            continue
+        if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t):
+            continue
+        if tn in STOPWORDS_RU or tn in STOPWORDS_EN or tn in GENERIC_DROP:
+            continue
+        if len(tn) >= 4 and re.search(r"[А-Яа-яЁё]", t):
+            return t.capitalize()
+    return ""
 
 # GEO города (RU + опционально латиница)
 GEO_CITIES = [
@@ -1001,36 +1020,37 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     if SATU_KEYWORDS == "off": return ""
     parts: List[str] = []
 
-    name = get_text(offer,"name")
+    name   = get_text(offer,"name")
     vendor = get_text(offer,"vendor").strip()
     if vendor:
         parts.append(vendor)
 
-    # 1) Модели/артикулы (из name/description)
+    # головное слово и размер из названия (напр., «Монитор», «32 дюйма»)
+    head = head_noun_from_name(name, vendor)
+    if head: parts.append(head)
+    m_size = re.search(r'(\d{2,3})\s*["″]', name or "")
+    if m_size: parts.append(f"{m_size.group(1)} дюйма")
+
+    # модели / универсальные фразы / цвета
     parts += extract_model_tokens(offer)
-
-    # 2) Универсальные ключи из <name>
     parts += keywords_from_name_generic(name)
-
-    # 3) Цвета
     parts += color_tokens(name)
 
-    # 4) Транслит русских ключей
+    # транслит русских ключей
     extra=[]
     for w in parts:
         if re.search(r"[А-Яа-яЁё]", str(w)):
             tr = translit_ru_to_lat(str(w))
-            if tr and tr not in extra:
-                extra.append(tr)
+            if tr and tr not in extra: extra.append(tr)
     parts += extra
 
-    # 5) GEO (расширенный список)
+    # GEO
     parts += geo_tokens()
 
-    # Дедуп и отсечение внутренних артикулов вида AS12345
+    # дедуп и фильтр внутренних артикулов вида AS12345
     parts = [p for p in dedup_preserve_order(parts) if not AS_INTERNAL_ART_RE.match(str(p))]
 
-    # Ограничения по длине/кол-ву
+    # ограничиваем только по длине (и очень большим безопасным лимитом по словам)
     parts = parts[:SATU_KEYWORDS_MAXWORDS]
     out=[]; total=0
     for p in parts:
@@ -1057,7 +1077,6 @@ def ensure_keywords(shop_el: ET.Element) -> int:
 
 # --------------------- PRICE CAP helpers ---------------------
 def flag_unrealistic_supplier_prices(shop_el: ET.Element) -> int:
-    """Если исходный <price> у поставщика >= PRICE_CAP_THRESHOLD — помечаем оффер на форс-цену 100."""
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
     flagged=0
@@ -1075,7 +1094,7 @@ def enforce_forced_prices(shop_el: ET.Element) -> int:
     for offer in offers_el.findall("offer"):
         mark = offer.attrib.get("_force_price")
         if mark:
-            _remove_all_price_nodes(offer)             # строго один <price>
+            _remove_all_price_nodes(offer)
             p = ET.SubElement(offer, "price")
             p.text = str(PRICE_CAP_VALUE)
             offer.attrib.pop("_force_price", None)
@@ -1126,7 +1145,7 @@ def main()->None:
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # (необязательно) фильтр по категориям
+    # (опц.) фильтр по категориям
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         if ALSTYLE_CATEGORIES_MODE=="include" and not (rules_ids or rules_names):
@@ -1149,7 +1168,7 @@ def main()->None:
             for node in list(off.findall("categoryId"))+list(off.findall("CategoryId")):
                 off.remove(node)
 
-    # >>> PRICE CAP пометка по исходной цене
+    # PRICE CAP: пометка офферов на форс-цену
     flagged = flag_unrealistic_supplier_prices(out_shop)
     log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
@@ -1164,10 +1183,10 @@ def main()->None:
     )
     sync_offer_id_with_vendorcode(out_shop)
 
-    # цены (пропускаем, если оффер помечен на форс-цену)
+    # пересчёт цен (кроме помеченных на CAP=100)
     reprice_offers(out_shop, PRICING_RULES)
 
-    # enforce CAP=100 (и только одна цена)
+    # CAP=100 и строго один <price>
     forced = enforce_forced_prices(out_shop)
     log(f"Forced price=100: {forced}")
 
