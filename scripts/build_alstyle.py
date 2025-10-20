@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 """
 AlStyle → YML конвертер (универсальная версия, keywords ≈ Satu)
+Обновлено: 2025-10-20
 Изменения в этой версии:
+- Исправлен SyntaxError из-за backslash внутри f-string при генерации <description>.
+- Добавлен безопасный fallback кодировки при записи файла: если windows-1251 не тянет, автоматически падаем на UTF-8.
 - <description>: единый HTML-шаблон (Кратко/Особенности/Характеристики) с реальными тегами <h3>, <p>, <ul><li>, <strong>,
   вывод в CDATA (без &lt;li&gt; и &lt;strong&gt;). Остальная логика кода НЕ изменена.
-- Лимиты для <keywords>: длина строки по умолчанию 1024 символа (как у Satu), ограничение по числу слов фактически снято.
-- Универсальная генерация keywords из <name>: head-слово, размер из названия, бренд,
-  модели/коды (строгая фильтрация, без мусорных аббревиатур), информативные биграммы, цвета, транслит и GEO.
-- PRICE CAP: если исходная <price> у поставщика >= 9_999_999 → проставляем строго один <price>100.
+- KEYWORDS: универсальная генерация из <name> (+бренд, модели, цвета, GEO), длина ограничена SATU_KEYWORDS_MAXLEN (по умолчанию 1024).
+- PRICE CAP: если исходная <price> у поставщика >= 9_999_999 → форсируем строго один <price>100.
 - available: всегда атрибут <offer available="true/false">; теги <available> и складские поля удаляются.
 - <categoryId> ставится первым узлом оффера и равным 0 (для дальнейшей подстановки реального ID).
 - Чистка <param> и описаний: вырезаем служебные поля (Благотворительность/Новинка/Артикул/Штрихкод/ТН ВЭД и т.п.),
@@ -28,13 +29,13 @@ except Exception:
     ZoneInfo = None
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-20.html-desc-cdata-fix"
+SCRIPT_VERSION = "alstyle-2025-10-20.html-desc-cdata-fallback"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
 SUPPLIER_URL     = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
 OUT_FILE_YML     = os.getenv("OUT_FILE", "docs/alstyle.yml")
-ENC              = os.getenv("OUTPUT_ENCODING", "windows-1251")
+ENC              = os.getenv("OUTPUT_ENCODING", "windows-1251")  # будет авто-fallback на UTF-8 при проблемах
 
 TIMEOUT_S        = int(os.getenv("TIMEOUT_S", "30"))
 RETRIES          = int(os.getenv("RETRIES", "4"))
@@ -633,28 +634,24 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
         seen.add(k); pairs.append((name, val))
     return pairs
 
-# --- NEW: HTML-рендер описания (вместо plain-текста) ---
+# --- HTML-рендер описания в CDATA ---
+_COLON_CLASS = "[" + re.escape(":\uFF1A\uFE55\u2236\uFE30") + "]"
 def render_html_description(cleaned_desc: str,
                             specs_pairs: List[Tuple[str,str]],
                             features: List[str]) -> str:
     parts: List[str] = []
-    # Кратко
     if cleaned_desc:
         parts.append("<h3>Кратко</h3>")
-        # делим на абзацы по пустым строкам
         paragraphs = [p.strip() for p in re.split(r"\n\s*\n", cleaned_desc) if p.strip()]
         for p in paragraphs:
-            # Важно: без backslash внутри f-строки
             p_html = p.replace("\n", "<br>")
             parts.append("<p>" + p_html + "</p>")
-    # Особенности
     if features:
         parts.append("<h3>Особенности</h3>")
         parts.append("<ul>")
         for ftxt in features:
             parts.append("  <li>" + ftxt + "</li>")
         parts.append("</ul>")
-    # Характеристики
     if specs_pairs:
         parts.append("<h3>Характеристики</h3>")
         parts.append("<ul>")
@@ -1130,6 +1127,24 @@ def render_feed_meta_comment(pairs:Dict[str,str])->str:
     for k,v in rows: lines.append(f"{k.ljust(key_w)} | {v}")
     return "\n".join(lines)
 
+# --------------------- ENCODING FALLBACK ---------------------
+def _serialize_with_fallback(root: ET.Element, preferred_enc: str) -> Tuple[str, str]:
+    """
+    Сериализует XML с учётом кодировки. Если preferred_enc (например, windows-1251)
+    не может закодировать некоторые символы, автоматически падаем на UTF-8.
+    Возвращает (xml_text, used_encoding).
+    """
+    try:
+        xml_bytes = ET.tostring(root, encoding=preferred_enc, xml_declaration=True)
+        xml_text = xml_bytes.decode(preferred_enc)
+        used = preferred_enc
+    except Exception as e:
+        warn(f"Encoding '{preferred_enc}' failed: {e}; falling back to UTF-8.")
+        xml_bytes = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+        xml_text = xml_bytes.decode("utf-8")
+        used = "utf-8"
+    return xml_text, used
+
 # --------------------- MAIN ---------------------
 def main()->None:
     log(f"Source: {SUPPLIER_URL or '(not set)'}")
@@ -1212,7 +1227,7 @@ def main()->None:
     kw_touched = ensure_keywords(out_shop)
     log(f"Keywords updated: {kw_touched}")
 
-    # форматирование (переносы)
+    # аккуратная pretty-печать
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
@@ -1229,17 +1244,15 @@ def main()->None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
-    xml_text=xml_bytes.decode(ENC, errors="replace")
+    # --- сериализация с авто-fallback на UTF-8 при проблемах кодировки ---
+    xml_text, used_enc = _serialize_with_fallback(out_root, ENC)
 
-    # перенос строки после комментария FEED_META перед <shop>
-    xml_text = re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
-    # пустая строка между офферами
-    xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
-    # убираем тройные пустые строки
-    xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
+    # Разметочные правки текста
+    xml_text = re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)          # перенос после FEED_META
+    xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)          # пустая строка между офферами
+    xml_text = re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)                             # без тройных пустых строк
 
-    # --- NEW: Преобразуем [[HTML]]...[[/HTML]] в CDATA с разэкраниванием ---
+    # [[HTML]] → CDATA
     def _desc_html_to_cdata(m: re.Match) -> str:
         inner = m.group(1).strip()
         inner = html_lib.unescape(inner)
@@ -1256,14 +1269,14 @@ def main()->None:
         log("[DRY_RUN=1] Files not written."); return
 
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    with open(OUT_FILE_YML,"w",encoding=ENC, newline="\n") as f: f.write(xml_text)
+    with open(OUT_FILE_YML,"w",encoding=used_enc, newline="\n") as f: f.write(xml_text)
     try:
         docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | script={SCRIPT_VERSION}")
+    log(f"Wrote: {OUT_FILE_YML} | encoding={used_enc} | script={SCRIPT_VERSION}")
 
 if __name__ == "__main__":
     try: main()
