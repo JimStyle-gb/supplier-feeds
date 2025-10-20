@@ -6,7 +6,8 @@
 — В <description> вставляем HTML с заголовком <h3>ИМЯ ТОВАРА</h3>,
   далее «Описание» (как есть) и «Характеристики» списком <ul><li>, где ключи жирные (<strong>Ключ:</strong> Значение).
 — Текст НЕ редактируем по смыслу: только структура и теги.
-— NEW: собираем пары «лейбл на строке» + «значение на следующей строке» (Производитель ↦ Canon и т.п.) и переносим в Характеристики.
+— FIX: распознаём пары «лейбл на строке» → «значение на следующей строке» даже если значение выглядит «как лейбл»
+  (например, Производитель → Canon, Секция аппарата → Перенос изображения и т.п.).
 """
 
 from __future__ import annotations
@@ -21,7 +22,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-20.B-html-desc-lvpairs"
+SCRIPT_VERSION = "alstyle-2025-10-21.C-html-desc-lvpairs2"
 
 # --- ENV ---
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -95,7 +96,7 @@ canon_colons    = lambda s: _COLON_CLASS_RE.sub(":", s or "")
 NOISE_RE = re.compile(r"[\u200B-\u200F\u202A-\u202E\u2060\uFEFF\u00AD\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u0080-\u009F]")
 def strip_noise_chars(s: str) -> str:
     if not s: return ""
-    return NOISE_RE.sub("", s).replace("�","").replace("¬","").replace("•","-")
+    return NOISE_RE.sub("", s).replace("�","").replace("•","-")
 
 # --- загрузка исходника ---
 def load_source_bytes(src: str) -> bytes:
@@ -116,7 +117,7 @@ def load_source_bytes(src: str) -> bytes:
             return data
         except Exception as e:
             last=e; back=RETRY_BACKOFF*i*(1+random.uniform(-0.2,0.2))
-            warn(f"fetch {i}/4 failed: {e}); sleep {back:.2f}s")
+            warn(f"fetch {i}/4 failed: {e}; sleep {back:.2f}s")
             if i<4: time.sleep(back)
     raise RuntimeError(f"fetch failed: {last}")
 
@@ -394,17 +395,18 @@ def _valid_kv_name(name: str) -> bool:
 
 # --- NEW: склейка «лейбл → следующая строка значение»
 LABEL_CANDIDATE_RE = re.compile(r"^[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё\s/()\-]{1,40}$")
+FORCE_VALUE_FOR = {"производитель","устройство","секция аппарата","совместимость"}
 def _is_label_line(s: str) -> bool:
     s=(s or "").strip()
     if not s: return False
     if ":" in s or any(ch.isdigit() for ch in s): return False
     if re.search(r"[.,;!?]", s): return False
-    # частые «шапки», которые не должны сами становиться ключами
     if _norm_text(s) in {"описание","основные характеристики","характеристики","особенности"}: return False
     return bool(LABEL_CANDIDATE_RE.fullmatch(s))
 
 def _pair_loose_label_values(lines: List[str]) -> Tuple[List[Tuple[str,str]], List[str]]:
-    """Находит пары: Лейбл (строка i) + Значение (следующая непустая строка). Возвращает пары и «остаток» строк."""
+    """Находит пары: Лейбл (строка i) + Значение (следующая непустая строка).
+       Для лейблов из FORCE_VALUE_FOR принимаем след. строку как значение даже если она «похожа на лейбл»."""
     pairs: List[Tuple[str,str]] = []
     consumed: Set[int] = set()
     i=0; n=len(lines)
@@ -412,16 +414,16 @@ def _pair_loose_label_values(lines: List[str]) -> Tuple[List[Tuple[str,str]], Li
         if i in consumed: i+=1; continue
         a=(lines[i] or "").strip()
         if _is_label_line(a):
-            # ищем значение на следующей непустой строке
+            a_norm=_norm_text(a)
             j=i+1
             while j<n and not (lines[j] or "").strip(): consumed.add(j); j+=1
             if j<n:
                 b=(lines[j] or "").strip()
-                # кейс: Совместимость → Устройства → <модели>
-                if _norm_text(a)=="совместимость" and _norm_text(b)=="устройства" and (j+1)<n:
+                # спец-кейс: Совместимость → Устройства → <модели>
+                if a_norm=="совместимость" and _norm_text(b)=="устройства" and (j+1)<n:
                     consumed.add(j); j+=1; b=(lines[j] or "").strip()
-                # если и b похоже на лейбл — не склеиваем
-                if b and not _is_label_line(b):
+                # решающее условие: либо b «не лейбл», либо у нас форсированный лейбл
+                if b and (not _is_label_line(b) or a_norm in FORCE_VALUE_FOR):
                     name, val = normalize_kv(a, b)
                     if name and val:
                         pairs.append((name, val))
@@ -515,7 +517,7 @@ def extract_kv_from_description(text: str) -> Tuple[str, List[Tuple[str,str]], L
         if re.match(BULLET_NO_KEY, ln) or re.match(BULLET_KEY_NOVALUE, ln): keep[i]=False
         parsed=try_parse_kv(ln)
         if parsed: keep[i]=False; pairs.append(parsed)
-    # 2) NEW: лейбл на строке + значение на следующей строке
+    # 2) NEW: лейбл на строке + значение на следующей строке (с форс-лейблами)
     kept_lines=[ln for ln,k in zip(lines,keep) if k and not (DISCL_RE.search(ln) and len(ln.strip())>60)]
     extra_pairs, rest_after_pairs = _pair_loose_label_values(kept_lines)
     pairs.extend(extra_pairs)
@@ -562,7 +564,6 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
             parts.append("Особенности:\n" + "\n".join(feats))
         if merged:
             merged_pairs = list(merged.values())
-            # порядок не сортируем жёстко, чтобы сохранить исходную логичность — только стабильный ключ
             merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
             lines = [f"- {n}: {v}" for n, v in merged_pairs]
             parts.append("Характеристики:\n" + "\n".join(lines))
