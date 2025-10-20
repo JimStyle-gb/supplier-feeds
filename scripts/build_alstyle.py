@@ -6,8 +6,8 @@ AlStyle → YML конвертер (универсальная версия, key
 - <description>: единый HTML-шаблон (Кратко/Особенности/Характеристики) с реальными тегами <h3>, <p>, <ul><li>, <strong>,
   вывод в CDATA (без &lt;li&gt; и &lt;strong&gt;). Остальная логика кода НЕ изменена.
 - Лимиты для <keywords>: длина строки по умолчанию 1024 символа (как у Satu), ограничение по числу слов фактически снято.
-- Универсальная генерация keywords из <name>: head-слово («Монитор» и т.п.), размер из названия (напр., 32 дюйма), бренд,
-  модели/коды (строгая фильтрация, без мусорных аббревиатур), информативные биграммы, цвета, транслит и расширенный GEO.
+- Универсальная генерация keywords из <name>: head-слово, размер из названия, бренд,
+  модели/коды (строгая фильтрация, без мусорных аббревиатур), информативные биграммы, цвета, транслит и GEO.
 - PRICE CAP: если исходная <price> у поставщика >= 9_999_999 → проставляем строго один <price>100.
 - available: всегда атрибут <offer available="true/false">; теги <available> и складские поля удаляются.
 - <categoryId> ставится первым узлом оффера и равным 0 (для дальнейшей подстановки реального ID).
@@ -28,7 +28,7 @@ except Exception:
     ZoneInfo = None
 import requests
 
-SCRIPT_VERSION = "alstyle-2025-10-20.html-desc-cdata"
+SCRIPT_VERSION = "alstyle-2025-10-20.html-desc-cdata-fix"
 
 # --------------------- ENV ---------------------
 SUPPLIER_NAME    = os.getenv("SUPPLIER_NAME", "AlStyle")
@@ -548,8 +548,8 @@ def normalize_kv(name: str, value: str) -> Tuple[str, str]:
     n = re.sub(r"\s+", " ", (name or "").strip())
     v = re.sub(r"\s+", " ", (value or "").strip())
     n = canon_colons(n); v = canon_colons(v)
-    n = re.sub(rf"\s*{_COLON_CLASS}+\s*$", "", n)
-    v = re.sub(rf"^\s*{_COLON_CLASS}+\s*", "", v)
+    n = re.sub(rf'\s*{_COLON_CLASS}+\s*$', '', n)
+    v = re.sub(rf'^\s*{_COLON_CLASS}+\s*', '', v)
     if not n or not v: return n, v
     n_l = n.lower()
     if re.search(r"совместим\w*\s*модел", n_l): n = "Совместимость"
@@ -644,14 +644,15 @@ def render_html_description(cleaned_desc: str,
         # делим на абзацы по пустым строкам
         paragraphs = [p.strip() for p in re.split(r"\n\s*\n", cleaned_desc) if p.strip()]
         for p in paragraphs:
-            # одиночные переводы строк внутри абзаца преобразуем в <br>
-            parts.append(f"<p>{p.replace('\n','<br>')}</p>")
+            # Важно: без backslash внутри f-строки
+            p_html = p.replace("\n", "<br>")
+            parts.append("<p>" + p_html + "</p>")
     # Особенности
     if features:
         parts.append("<h3>Особенности</h3>")
         parts.append("<ul>")
-        for f in features:
-            parts.append(f"  <li>{f}</li>")
+        for ftxt in features:
+            parts.append("  <li>" + ftxt + "</li>")
         parts.append("</ul>")
     # Характеристики
     if specs_pairs:
@@ -660,7 +661,7 @@ def render_html_description(cleaned_desc: str,
         for name, val in specs_pairs:
             nn = re.sub(rf'\s*{_COLON_CLASS}+\s*$', '', str(name or '')).strip()
             vv = re.sub(rf'^\s*{_COLON_CLASS}+\s*', '', str(val or '')).strip()
-            parts.append(f"  <li><strong>{nn}:</strong> {vv}</li>")
+            parts.append("  <li><strong>" + nn + ":</strong> " + vv + "</li>")
         parts.append("</ul>")
     return "\n".join(parts).strip()
 
@@ -685,7 +686,6 @@ def unify_specs_in_description(shop_el: ET.Element) -> Tuple[int,int,int]:
         merged_pairs = list(merged.values())
         merged_pairs.sort(key=lambda kv: _norm_text(kv[0]))
 
-        # HTML описание с плейсхолдерами [[HTML]]...[[/HTML]] (позже завернём в CDATA и разэкраним)
         html_block = render_html_description(cleaned_desc, merged_pairs, features)
         if html_block:
             if desc_el is None: desc_el = ET.SubElement(offer, "description")
@@ -1070,10 +1070,10 @@ def ensure_keywords(shop_el: ET.Element) -> int:
     touched=0
     for offer in offers_el.findall("offer"):
         kw = build_keywords_for_offer(offer)
-        if not kw:
-            for k in list(offer.findall("keywords")): offer.remove(k)
-            continue
         node = offer.find("keywords")
+        if not kw:
+            if node is not None: offer.remove(node)
+            continue
         if node is None: node = ET.SubElement(offer, "keywords")
         node.text = kw; touched+=1
     return touched
@@ -1242,7 +1242,6 @@ def main()->None:
     # --- NEW: Преобразуем [[HTML]]...[[/HTML]] в CDATA с разэкраниванием ---
     def _desc_html_to_cdata(m: re.Match) -> str:
         inner = m.group(1).strip()
-        # разэкраниваем то, что экранировал XML-сериализатор
         inner = html_lib.unescape(inner)
         return "<description><![CDATA[\n" + inner + "\n]]></description>"
 
