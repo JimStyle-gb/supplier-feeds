@@ -1,19 +1,24 @@
 # scripts/build_akcent.py
 # -*- coding: utf-8 -*-
 #
-# Akcent → SATU feed normalizer
-# - РАННИЙ фильтр по docs/akcent_keywords.txt (include|exclude; префикс и /regex/)
-# - Сохраняем ВСЕ <param> из источника (ничего из них не удаляем)
-# - Автоподстановка бренда из name/description (без «фантазий», только чёткие совпадения)
-# - vendorCode = AC + артикул; id синхронизирован с vendorCode
-# - Пересчёт цен из «дилерских/закупочных» с наценкой и «хвостом 900»
-# - available, currencyId=KZT
-# - Плейсхолдеры фото (brand → category → default) с HEAD-проверкой
-# - SEO-блок (лид + РОДНОЕ описание + FAQ + 3 отзыва), кэш, «освежение» 1-го числа (Asia/Almaty)
-# - <keywords> — базовая генерация (не связана с akcent_keywords.txt)
-# - FEED_META-комментарий с выровненной колонкой "|"
+# Akcent → SATU feed нормализация
 #
-# Выход: docs/akcent.yml (по умолчанию), encoding=windows-1251
+# Что делает:
+# - РАННИЙ фильтр по docs/akcent_keywords.txt (режимы include|exclude; поддержка префиксов и /regex/)
+# - НЕ трогаем вообще <param> (сохраняем как есть)
+# - Автоопределение бренда из name/description (только чёткие совпадения; «Китай/China» убираем)
+# - vendorCode = AC + артикул; id синхронизирован с vendorCode
+# - Нормализация цен (из дилерских/закупочных) + «хвост 900», защита от нереалистичных цен
+# - available (true/false) и currencyId=KZT
+# - Плейсхолдеры фото (brand → category → default) с HEAD-проверкой
+# - SEO-блок (Лид + НОВЫЙ «Характеристики» из «родного» текста если он «ключ→значение» + РОДНОЕ описание + FAQ + 3 отзыва)
+#   * SEO-блок липкий: кэш + освежение 1-го числа месяца (Asia/Almaty)
+#   * Лёгкая автокоррекция опечаток в «родном» описании (адресные правки: «высококачетсвенную»→«высококачественную», «приентеров»→«принтеров» и т.п.)
+#   * Аккуратная правка «SC- P8000» → «SC-P8000», «700мл» → «700 мл», двойные пробелы
+# - <keywords> генерируются из name/brand/моделей/биграмм (+ транслит + гео); НЕ связаны с файлом фильтра
+# - FEED_META-комментарий (выровненный «|») с датами (Алматы), счётчиками и источником
+#
+# Выход по умолчанию: docs/akcent.yml (encoding=windows-1251)
 
 from __future__ import annotations
 import os, sys, re, time, random, json, hashlib, urllib.parse, requests
@@ -27,7 +32,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-21.v1.3.1"
+SCRIPT_VERSION = "akcent-2025-10-21.v1.4.0"
 
 # ========= ENV / CONST =========
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -187,7 +192,7 @@ def _norm_key(s: str) -> str:
     s=s.strip().lower().replace("ё","е")
     s=re.sub(r"[-_/]+"," ",s); s=re.sub(r"\s+"," ",s); return s
 SUPPLIER_BLOCKLIST={_norm_key(x) for x in["alstyle","al-style","copyline","akcent","ak-cent","vtt"]}
-UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
+UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a","китай","china")
 COMMON_BRANDS=["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","BenQ","ViewSonic","Optoma","Acer","Panasonic","Sony",
                "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum","Lenovo","Dell","ASUS","Samsung","Apple","MSI"]
 BRAND_ALIASES={"hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -438,6 +443,102 @@ def ensure_placeholder_pictures(shop_el: ET.Element) -> int:
         ET.SubElement(offer,"picture").text=picked; added+=1
     return added
 
+# ========= Извлечение «ключ→значение» и автокоррекции в «родном» описании =========
+KV_KEYS_MAP = {
+    "вид":"Вид",
+    "назначение":"Назначение",
+    "цвет печати":"Цвет печати",
+    "поддерживаемые модели принтеров":"Совместимость",
+    "совместимость":"Совместимость",
+    "ресурс":"Ресурс",
+    "технология печати":"Технология печати",
+    "тип":"Тип",
+}
+
+def autocorrect_minor_typos_in_html(html: str) -> str:
+    s = html or ""
+    # адресные правки
+    s = re.sub(r"\bвысококачетсвенную\b", "высококачественную", s, flags=re.I)
+    s = re.sub(r"\bприентеров\b", "принтеров", s, flags=re.I)
+    # «SC- P8000» → «SC-P8000»
+    s = re.sub(r"\bSC-\s*P(\d{3,4}\b)", r"SC-P\1", s)
+    s = re.sub(r"SureColor\s+SC-\s*P", "SureColor SC-P", s)
+    # «700мл» → «700 мл»
+    s = re.sub(r"(\d)\s*мл\b", r"\1 мл", s, flags=re.I)
+    # лишние двойные пробелы (только вне тегов не отслеживаем — CDATA это терпит)
+    s = re.sub(r"[ ]{2,}", " ", s)
+    return s
+
+def _text_from_html(desc_html: str) -> str:
+    t = re.sub(r"<br\s*/?>", "\n", desc_html or "", flags=re.I)
+    t = re.sub(r"</p\s*>", "\n", t, flags=re.I)
+    t = re.sub(r"<[^>]+>", " ", t)
+    t = re.sub(r"\u00A0", " ", t)
+    t = re.sub(r"[ \t]+\n", "\n", t)
+    t = re.sub(r"\n{2,}", "\n", t)
+    return t.strip()
+
+def _normalize_models_list(val: str) -> str:
+    x = val or ""
+    x = re.sub(r"\bSC-\s*P(\d{3,4}\b)", r"SC-P\1", x)  # дефис без пробелов
+    x = re.sub(r"\s{2,}", " ", x)
+    parts = re.split(r"[,\n;]+", x)
+    parts = [p.strip(" .") for p in parts if p.strip()]
+    # убираем дубликаты сохраняя порядок
+    seen=set(); out=[]
+    for p in parts:
+        if p not in seen:
+            seen.add(p); out.append(p)
+    return "; ".join(out)
+
+def extract_kv_specs_from_description_html(desc_html: str) -> List[Tuple[str,str]]:
+    """
+    Ищем пары «ключ → значение» в «родном» тексте, встречающемся у части товаров Akcent.
+    Формат обычно: ключ (строка), на следующей строке значение. Продолжается по списку.
+    """
+    txt = _text_from_html(desc_html)
+    if not txt: return []
+    lines = [l.strip() for l in txt.split("\n") if l.strip()]
+    specs=[]
+    i=0
+    while i < len(lines):
+        key_raw = lines[i].strip().strip(":").lower()
+        norm_key = KV_KEYS_MAP.get(key_raw)
+        if norm_key:
+            val=[]
+            i+=1
+            while i < len(lines):
+                nxt = lines[i].strip()
+                if KV_KEYS_MAP.get(nxt.strip(":").lower()):  # следующий ключ
+                    break
+                val.append(nxt); i+=1
+            value = " ".join(val).strip()
+            if not value:
+                continue
+            # спец-нормализация для "Совместимость"
+            if norm_key=="Совместимость":
+                value = _normalize_models_list(value)
+            specs.append((norm_key, value))
+        else:
+            i+=1
+    # немного чистим значения
+    cleaned=[]
+    for k,v in specs:
+        v=re.sub(r"\s{2,}", " ", v).strip(" ;,.-")
+        cleaned.append((k,v))
+    return cleaned
+
+def render_specs_html_from_kv(specs: List[Tuple[str,str]]) -> str:
+    if not specs: return ""
+    out=["<h3>Характеристики</h3>","<ul>"]
+    for k,v in specs:
+        if k=="Совместимость":
+            out.append(f'  <li><strong>{k}:</strong><br>{_html_escape_in_cdata_safe(v)}</li>')
+        else:
+            out.append(f'  <li><strong>{k}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
+    out.append("</ul>")
+    return "\n".join(out)
+
 # ========= SEO (лид + FAQ + отзывы), кэш ежемесячный =========
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+|^AK\d+|^AC\d+", re.I)
 MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
@@ -452,7 +553,6 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
         inner=m.group(1).replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
         inner=_unescape(inner); inner=_html_escape_in_cdata_safe(inner)
         return f"<description><![CDATA[\n{inner}\n]]></description>"
-    # ВАЖНО: передаём сам текст третьим аргументом!
     return re.sub(
         r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>",
         repl,
@@ -603,14 +703,27 @@ def compute_seo_checksum(name: str, kind: str, desc_html: str) -> str:
     base="|".join([name or "", kind or "", hashlib.md5((desc_html or "").encode("utf-8")).hexdigest()])
     return hashlib.md5(base.encode("utf-8")).hexdigest()
 
-def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str]:
+def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str,int,int]:
+    """
+    Возвращает: (изменено_офферов, seo_last_dt_alm_str, добавлено_specs, исправлено_опечаток)
+    """
     off_el=shop_el.find("offers")
-    if off_el is None: return 0,""
+    if off_el is None: return 0,"",0,0
     cache=load_seo_cache(SEO_CACHE_PATH) if SEO_STICKY else {}
-    changed=0
+    changed=0; specs_added=0; typos_fixed=0
     for offer in off_el.findall("offer"):
         d=offer.find("description")
         raw = inner_html(d)
+        # лёгкая автокоррекция в «родном» тексте
+        corrected_raw = autocorrect_minor_typos_in_html(raw or "")
+        if corrected_raw != (raw or ""): typos_fixed += 1
+
+        # извлекаем пары «ключ→значение» (если они действительно есть)
+        kv_specs = extract_kv_specs_from_description_html(corrected_raw)
+        specs_html = render_specs_html_from_kv(kv_specs) if kv_specs else ""
+        if specs_html: specs_added += 1
+
+        # основной SEO-контент
         lead_html, faq_html, reviews_html, kind = build_lead_faq_reviews(offer)
         checksum=compute_seo_checksum(get_text(offer,"name"), kind, raw)
         cache_key = offer.attrib.get("id") or (get_text(offer,"vendorCode") or "").strip() or hashlib.md5((get_text(offer,"name") or "").encode("utf-8")).hexdigest()
@@ -624,8 +737,13 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str]:
                 lead_html=ent.get("lead_html",lead_html); faq_html=ent.get("faq_html",faq_html); reviews_html=ent.get("reviews_html",reviews_html)
                 use_cache=True
 
-        # Структура: SEO-лид → РОДНОЕ описание → FAQ → отзывы
-        full_html = "\n".join([lead_html, _html_escape_in_cdata_safe(raw), faq_html, reviews_html]).strip()
+        # Окончательная структура: Лид → (опц.) Характеристики → РОДНОЕ описание → FAQ → Отзывы
+        parts=[lead_html]
+        if specs_html: parts.append(specs_html)
+        parts.append(_html_escape_in_cdata_safe(corrected_raw))
+        parts.extend([faq_html, reviews_html])
+        full_html = "\n".join([p for p in parts if p]).strip()
+
         placeholder=f"[[[HTML]]]{full_html}[[[/HTML]]]"
         if d is None:
             d=ET.SubElement(offer,"description"); d.text=placeholder; changed+=1
@@ -653,7 +771,7 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str]:
             except Exception:
                 continue
     if not last_alm: last_alm=now_almaty()
-    return changed, format_dt_almaty(last_alm)
+    return changed, format_dt_almaty(last_alm), specs_added, typos_fixed
 
 # ========= KEYWORDS =========
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
@@ -809,6 +927,8 @@ def render_feed_meta_comment(pairs:Dict[str,str]) -> str:
 
 # ========= MAIN =========
 def main()->None:
+    log("Run set -e")
+    log(f"Python {sys.version.split()[0]}")
     log(f"Source: {SUPPLIER_URL}")
     data=load_source_bytes(SUPPLIER_URL)
     src_root=ET.fromstring(data)
@@ -822,7 +942,7 @@ def main()->None:
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
-    # 1) Копируем офферы; categoryId удаляю прямо сейчас (потом выставлю 0 в начало)
+    # 1) Копируем офферы; categoryId удаляем сейчас (потом вставим 0 в начало)
     for o in src_offers:
         mod=deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
@@ -841,15 +961,15 @@ def main()->None:
             nm=get_text(off,"name")
             hit=name_matches(nm,keys)
             if hit: hits+=1
-            drop_this=(AKCENT_KEYWORDS_MODE=="exclude" and hit) or (AKCENT_KEYWORDS_MODE=="include" and not hit)
-            if drop_this:
+            drop=(AKCENT_KEYWORDS_MODE=="exclude" and hit) or (AKCENT_KEYWORDS_MODE=="include" and not hit)
+            if drop:
                 out_offers.remove(off); filtered_out+=1
         kept=before-filtered_out
         log(f"Filter mode: {AKCENT_KEYWORDS_MODE} | Keywords loaded: {len(keys)} | Offers before: {before} | Matched: {hits} | Removed: {filtered_out} | Kept: {kept}")
     else:
         log("Filter disabled: no keys or mode not in {include,exclude}")
 
-    # 3) Флаги цен-поставщика (слишком большие) → принудительная цена
+    # 3) Флаги нереалистичных цен
     flagged = flag_unrealistic_supplier_prices(out_shop)
     log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
@@ -871,9 +991,11 @@ def main()->None:
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
-    # 8) SEO-блок (липкий + обновление каждое 1-е число)
-    seo_changed, seo_last = inject_seo_descriptions(out_shop)
+    # 8) SEO-блок (липкий + обновление 1-го числа) + «Характеристики» из родного текста + автоподправление опечаток
+    seo_changed, seo_last, specs_added, typos_fixed = inject_seo_descriptions(out_shop)
     log(f"SEO blocks touched: {seo_changed}")
+    log(f"Specs blocks added: {specs_added}")
+    log(f"Native typos auto-fixed: {typos_fixed}")
 
     # 9) Наличие/валюта
     t_true, t_false = normalize_available_field(out_shop)
@@ -914,8 +1036,10 @@ def main()->None:
     except Exception: pass
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
+    # чуть улучшим читаемость
     xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
     xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text)
+    # заменим [[[HTML]]] → CDATA
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
     if DRY_RUN:
