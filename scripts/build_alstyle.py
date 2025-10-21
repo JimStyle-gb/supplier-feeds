@@ -3,37 +3,17 @@
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
 
-Из этого обновления (строго по твоим 6 пунктам):
-1) Плейсхолдер фото: если у товара нет ни одной <picture>, добавляем ОДНУ картинку.
-   Сначала пытаемся брендовый плейсхолдер, если бренда нет — по типу (картридж/ИБП/другое),
-   иначе дефолтный плейсхолдер. Работает и для новых товаров.
-   Конфиг через ENV:
-     PLACEHOLDER_ENABLE=1|0
-     PLACEHOLDER_BRAND_BASE=https://img.al-style.kz/brand
-     PLACEHOLDER_CATEGORY_BASE=https://img.al-style.kz/category
-     PLACEHOLDER_DEFAULT_URL=https://img.al-style.kz/placeholder.jpg
-     PLACEHOLDER_EXT=jpg
+Обновление v6.1: вернул отсутствовавшую функцию ensure_keywords(...).
 
-2) Отсутствующий бренд: автоопределяем из name/description по словарю брендов + эвристика
-   (первое слово и совпадение в тексте). Работает и для новых товаров.
-
-3) «Полная совместимость» (картриджи): расширенные триггеры («Совместимость», «Подходит»,
-   «Для моделей», «Для использования в», «Compatible with», «For use in» и пр.); забираем
-   блок/строки после триггера до следующего заголовка/пустой строки/фраз типа «Характеристики».
-   Если нашли — поднимаем в SEO-блок. Работает и для новых товаров.
-
-4) Вариативные SEO-заголовки: больше шаблонов, + короткий бренд/параметр-маркер (напр. «Canon • 390Вт»).
-   Стабильный выбор по seed от offer id. Работает и для новых товаров.
-
-5) Отзывы: больше вариантов (в т.ч. лёгкий «минус» у одного отзыва), разнообразные формулировки,
-   но всё реалистично и лаконично. Стабильно по seed. Работает и для новых товаров.
-
-6) Характеристики: аккуратная нормализация единиц и опечаток в значениях:
-   «Bт/Bt»→«Вт», «V/Hz/ms»→«В/Гц/мс», «Вес» дополняется «кг» при отсутствии,
-   «Объём/Объем» с точкой и т.п. (только в автосгенерированном блоке, «родное» не трогаем).
-
-Остальная логика из предыдущей версии без изменений: липкий SEO-кэш (docs/alstyle_cache/seo_cache.json),
-родное описание целиком, CDATA, порядок тегов, keywords и т.д.
+Что делает (суммарно по твоим 6 пунктам):
+1) Плейсхолдер фото: если нет ни одной <picture>, добавляем ОДНУ — сначала брендовый, иначе по типу (картридж/ИБП/другое), иначе дефолт.
+2) Бренд: автоопределение из name/description по словарю и эвристикам.
+3) «Полная совместимость» (картриджи): расширенные триггеры, поднимаем список в SEO-блок.
+4) Вариативные SEO-заголовки: больше шаблонов + компактный маркер (бренд/ключ-параметр).
+5) Отзывы: реалистичнее, с лёгким «минусом» у одного.
+6) Нормализация единиц в автособранных «Характеристиках».
++ Липкий SEO-кэш: docs/alstyle_cache/seo_cache.json
++ «Родное описание» — всегда полностью и неизменно.
 """
 
 from __future__ import annotations
@@ -48,7 +28,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.SEOblock-sticky-safehtml.v6-placeholders-brands-compat-titles-reviews-units"
+SCRIPT_VERSION = "alstyle-2025-10-21.SEOblock-sticky-safehtml.v6.1"
 
 # ========== ENV / CONST ==========
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -301,17 +281,13 @@ def build_brand_index(shop_el: ET.Element) -> Dict[str, str]:
 def _find_brand_in_text(text: str) -> str:
     t=_norm_text(text)
     if not t: return ""
-    # точные из словаря
     for b in COMMON_BRANDS:
         if re.search(rf"\b{re.escape(_norm_text(b))}\b", t): return b
-    # алиасы
     for a,canon in BRAND_ALIASES.items():
         if re.search(rf"\b{re.escape(a)}\b", t): return canon
-    # эвристика: первое слово с буквой и без цифр (часто бренд)
     m=re.match(r"^([A-Za-zА-Яа-яЁё]+)\b", text.strip())
     if m:
         cand=m.group(1)
-        # приводим к известным, если совпало
         for b in COMMON_BRANDS:
             if _norm_text(b)==_norm_text(cand): return b
     return ""
@@ -319,14 +295,11 @@ def _find_brand_in_text(text: str) -> str:
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name = get_text(offer, "name")
     desc = inner_html(offer.find("description"))
-    # 1) по индексу известных брендов
     first = re.split(r"\s+", name.strip())[0] if name else ""
     f_norm=_norm_key(first)
     if f_norm in brand_index: return brand_index[f_norm]
-    # 2) по словарю/алиасам в name и description
     b = _find_brand_in_text(name) or _find_brand_in_text(desc)
     if b: return b
-    # 3) по любому вхождению известных брендов
     nrm=_norm_key(name)
     for br in COMMON_BRANDS:
         if re.search(rf"\b{re.escape(_norm_text(br))}\b", nrm): return br
@@ -418,7 +391,6 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->Tuple[int,int,int,
 # ========== PARAMS / TEXT PARСING ==========
 EXCLUDE_NAME_RE = re.compile(r"(?:\bартикул\b|благотворительн\w*|штрихкод|оригинальн\w*\s*код|новинк\w*|снижена\s*цена|код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|tn\s*ved|hs\s*code)", re.I)
 
-# --- точный фильтр <param> (из предыдущей версии, без изменений логики удаления) ---
 _key = lambda s: re.sub(r"\s+"," ",(s or "").strip()).lower()
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:благотворительн\w*|снижена\s*цена|новинк\w*|"
@@ -439,6 +411,7 @@ SAFE_SPEC_WHITELIST = {
 _URL_RE   = re.compile(r"https?://|www\.", re.I)
 _EMAIL_RE = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+")
 _HTML_RE  = re.compile(r"<[^>]+>")
+
 def _value_is_empty_or_noise(val: str) -> bool:
     v=(val or "").strip()
     if not v or v.lower() in {"-","—","–",".","..","...","n/a","na","none","null","нет данных","не указано","неизвестно"}:
@@ -446,6 +419,7 @@ def _value_is_empty_or_noise(val: str) -> bool:
     if _URL_RE.search(v) or _EMAIL_RE.search(v) or _HTML_RE.search(v):
         return True
     return False
+
 def _looks_like_code_value(v: str) -> bool:
     s=(v or "").strip()
     if not s: return True
@@ -473,16 +447,18 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                 seen.add(k)
     return removed
 
-# KV извлечение из текста (для SEO-лида)
+# KV из «родного» описания (для SEO-лида)
 HDR_RE = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
 HEAD_ONLY_RE = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*$", re.I)
 HEAD_PREFIX_RE = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*", re.I)
 KV_COLON_RE  = re.compile(r"^\s*([^:]{2,}?)\s*:\s*(.+)$")
 URL_RE       = re.compile(r"https?://\S+", re.I)
+
 def normalize_free_text_punct(s: str) -> str:
     t=canon_colons(s or ""); t=re.sub(r":\s*:", ": ", t)
     t=re.sub(r"(?<!\.)\.\.(?!\.)", ".", t)
     return re.sub(r"\s{2,}", " ", t).strip()
+
 def extract_kv_from_description(text: str) -> List[Tuple[str,str]]:
     if not (text or "").strip(): return []
     t=(text or "").replace("\r\n","\n").replace("\r","\n")
@@ -499,24 +475,19 @@ def extract_kv_from_description(text: str) -> List[Tuple[str,str]]:
             if name and val: pairs.append((name, normalize_free_text_punct(val)))
     return pairs
 
-# нормализация единиц/опечаток (только для автособранных характеристик)
+# нормализация единиц (только для автособранных характеристик)
 def _normalize_units(name: str, value: str) -> str:
     v = value.strip()
-    # латинские -> кириллица и стандартные обозначения
     v = re.sub(r"\b[Bb][Tt]\b", "Вт", v)
     v = re.sub(r"(?<=\d)\s*[Vv]\b", "В", v)
     v = re.sub(r"\b[Hh][Zz]\b", "Гц", v)
     v = re.sub(r"\b[mM][sS]\b", "мс", v)
-    # запятые -> точки, лишние пробелы
     v = v.replace(",", ".")
     v = re.sub(r"\s{2,}", " ", v).strip()
-    # «Вес» — дополним «кг», если единиц нет
     if _key(name) == "вес" and not re.search(r"\bкг\b", v, re.I): v = v + " кг"
-    # Объём
     if _key(name) in {"объём","объем"}: v = v
     return v
 
-# Автодобавка "Характеристики" при отсутствии в «родном»
 SPEC_PREFERRED_ORDER = [
     "мощность", "ёмкость батареи", "емкость батареи", "время переключения режимов", "диапазон работы avr",
     "количество и тип выходных разъёмов", "количество и тип выходных разъемов",
@@ -531,6 +502,7 @@ def _rank_key(k: str) -> Tuple[int, str]:
     for i, pref in enumerate(SPEC_PREFERRED_ORDER):
         if k_low.startswith(pref): return (i, k)
     return (1000, k_low)
+
 def has_specs_in_raw_desc(raw_desc_html: str) -> bool:
     if not raw_desc_html: return False
     s = raw_desc_html.lower()
@@ -553,11 +525,9 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     return pairs
 
 def extract_full_compatibility(raw_desc: str, params_pairs: List[Tuple[str,str]]) -> str:
-    # 1) param на «Совместим…»
     for n,v in params_pairs:
         if re.match(r"^\s*совместим", n.strip(), re.I): return v.strip()
         if re.match(r"^\s*подходит", n.strip(), re.I): return v.strip()
-    # 2) из текста по расширенным триггерам
     t = (raw_desc or "")
     if not t.strip(): return ""
     lines = [ln.strip() for ln in t.replace("\r\n","\n").replace("\r","\n").split("\n")]
@@ -566,18 +536,15 @@ def extract_full_compatibility(raw_desc: str, params_pairs: List[Tuple[str,str]]
     buf=[]; capturing=False
     for ln in lines:
         if not capturing and triggers.search(ln):
-            # если есть «:» — берём после двоеточия; если нет — со следующей строки
             after = ln.split(":",1)[1].strip() if ":" in ln else ""
             if after: buf.append(after)
             capturing=True; continue
         if capturing:
             if not ln or stopheads.match(ln): break
-            # не забираем явные ключи вида «Гарантия:»
             if re.match(r"^[А-Яа-яA-Za-z].+:\s*\S+", ln) and not re.search(r"[;,]|\bCanon\b|\bHP\b|\bEpson\b|\bXerox\b|\bBrother\b", ln):
                 break
             buf.append(ln)
     compat = " ".join(buf).strip()
-    # лёгкая чистка
     compat = re.sub(r"\s{2,}", " ", compat)
     return compat
 
@@ -818,6 +785,26 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
         out.append(s); total+=len(add)
     return ", ".join(out)
 
+def ensure_keywords(shop_el: ET.Element) -> int:
+    """Создаёт/обновляет <keywords> для каждого оффера, либо удаляет тег, если SATU_KEYWORDS=off."""
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0
+    touched=0
+    for offer in offers_el.findall("offer"):
+        kw=build_keywords_for_offer(offer)
+        node=offer.find("keywords")
+        if not kw:
+            if node is not None:
+                offer.remove(node)
+            continue
+        if node is None:
+            node=ET.SubElement(offer, "keywords")
+            node.text=kw; touched+=1
+        else:
+            if (node.text or "") != kw:
+                node.text=kw; touched+=1
+    return touched
+
 # ========== PRICE CAP ==========
 def flag_unrealistic_supplier_prices(shop_el: ET.Element) -> int:
     offers_el=shop_el.find("offers")
@@ -873,7 +860,6 @@ def _seo_title(name: str, vendor: str, kind: str, kv_all: Dict[str,str], seed: i
         "хороший выбор","удачный выбор","надежный вариант"
     ]
     ph = choose(phrases, seed)
-    # мини-маркер: бренд + важный параметр
     mark = ""
     if vendor: mark = vendor
     if kind=="cartridge":
@@ -970,7 +956,6 @@ def build_faq_html(kind: str) -> str:
 
 def build_reviews_html(seed: int) -> str:
     parts=["<h3>Отзывы (3)</h3>"]
-    # разнообразие: 2 позитивных, 1 нейтрально-позитивный с лёгким минусом
     review_sets = [
         ("⭐⭐⭐⭐⭐","Печать/работа стабильная, всё как ожидал."),
         ("⭐⭐⭐⭐⭐","Установка заняла пару минут, проблем не было."),
@@ -1014,8 +999,8 @@ def compute_seo_checksum(name: str, lead_inputs: Dict[str,str], raw_desc_text_fo
 def compose_full_description_html(lead_html: str, raw_desc_html_full: str, specs_html: str, faq_html: str, reviews_html: str) -> str:
     pieces=[]
     if lead_html: pieces.append(lead_html)
-    if raw_desc_html_full: pieces.append(_html_escape_in_cdata_safe(raw_desc_html_full))  # родное — полностью
-    if specs_html: pieces.append(specs_html)  # только если в родном не было
+    if raw_desc_html_full: pieces.append(_html_escape_in_cdata_safe(raw_desc_html_full))
+    if specs_html: pieces.append(specs_html)
     if faq_html: pieces.append(faq_html)
     if reviews_html: pieces.append(reviews_html)
     return "\n".join(pieces)
@@ -1108,10 +1093,24 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
     return re.sub(r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>", repl, xml_text, flags=re.S)
 
 # ========== PLACEHOLDERS (фото) ==========
+def translit_ru_to_lat(s: str) -> str:
+    table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
+    out=s.lower().translate(table); out=re.sub(r"[^a-z0-9\- ]+","", out); return re.sub(r"\s+","-", out).strip("-")
+
 def _slug(s: str) -> str:
     if not s: return ""
     base = translit_ru_to_lat(s)
     return re.sub(r"[^a-z0-9\-]+","", base.lower()).strip("-") or "unknown"
+
+def detect_kind(name: str, params_pairs: List[Tuple[str,str]]) -> str:
+    n=(name or "").lower()
+    if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
+    if ("ибп" in n) or ("ups" in n) or ("источник бесперебойного питания" in n):
+        return "ups"
+    for k,_ in params_pairs:
+        if k.strip().lower().startswith("тип ибп"): return "ups"
+    if "мфу" in n or "printer" in n or "принтер" in n: return "mfp"
+    return "other"
 
 def _placeholder_url(vendor: str, kind: str) -> str:
     if vendor:
@@ -1121,7 +1120,6 @@ def _placeholder_url(vendor: str, kind: str) -> str:
     return PLACEHOLDER_DEFAULT_URL
 
 def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
-    """Возвращает (added_placeholders, skipped_because_disabled)"""
     if not PLACEHOLDER_ENABLE: return (0,0)
     offers_el=shop_el.find("offers")
     if offers_el is None: return (0,0)
@@ -1130,7 +1128,6 @@ def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
         pics = list(offer.findall("picture"))
         has_pic = any((p.text or "").strip() for p in pics)
         if has_pic: continue
-        # определим бренд/тип
         vendor = get_text(offer,"vendor").strip()
         name   = get_text(offer,"name").strip()
         kind   = detect_kind(name, [])
@@ -1168,12 +1165,10 @@ def main()->None:
     if offers_in_el is None: err("XML: <offers> not found")
     src_offers=list(offers_in_el.findall("offer"))
 
-    # Собираем выходной документ
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # Категорийные фильтры (если заданы)
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         id2name,id2parent,parent2children=parse_categories_tree(shop_in)
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
@@ -1190,15 +1185,12 @@ def main()->None:
             drop=(ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
             if drop: out_offers.remove(off)
 
-    # CATEGORY ID → 0 первым
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId"))+list(off.findall("CategoryId")): off.remove(node)
 
-    # PRICE CAP
     flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
-    # vendor/vendorCode/id (бренд: нормализация + автоопределение из name/description)
     ensure_vendor(out_shop)
     filled = ensure_vendor_auto_fill(out_shop); log(f"Vendors auto-filled: {filled}")
 
@@ -1208,36 +1200,27 @@ def main()->None:
     )
     sync_offer_id_with_vendorcode(out_shop)
 
-    # цены
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price=100: {forced}")
 
-    # параметры (чистим только param; описание НЕ трогаем)
     removed_params = remove_specific_params(out_shop); log(f"Params removed: {removed_params}")
 
-    # плейсхолдеры фото (если совсем нет картинок)
     ph_added,_ = ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
 
-    # SEO-описания: SEO лид + родное (полностью) + (авто-характеристики при необходимости) + FAQ/Отзывы
     seo_changed, seo_last_update_alm = inject_seo_descriptions(out_shop)
     log(f"SEO blocks touched: {seo_changed}")
 
-    # доступность + валюта
     t_true, t_false, _, _ = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
 
-    # чистка служебных тегов, порядок, categoryId первым
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
     reorder_offer_children(out_shop); ensure_categoryid_zero_first(out_shop)
 
-    # KEYWORDS
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
-    # pretty indent
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    # FEED_META
     built_alm = now_almaty()
     meta_pairs={
         "script_version": SCRIPT_VERSION,
@@ -1254,19 +1237,13 @@ def main()->None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # сериализация
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
-
-    # приятные отступы
     xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
     xml_text=re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
-
-    # CDATA для description
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
-    # запись
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
         return
@@ -1280,7 +1257,6 @@ def main()->None:
         with open(OUT_FILE_YML, "wb") as f:
             f.write(data_bytes)
 
-    # .nojekyll
     try:
         docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
