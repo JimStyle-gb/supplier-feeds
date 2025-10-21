@@ -3,17 +3,10 @@
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
 
-Обновление v7.2:
-- FIX: TypeError 'bool' object is not iterable в _looks_device_phrase (заменён any(...) на bool(...)).
-
-Ключевые возможности (как договаривались):
-1) Автоподстановка бренда (HP/Canon/Xerox/Brother/Epson/Samsung/Kyocera/Ricoh/Konica Minolta/Sharp/OKI/Pantum,
-   Europrint/Katun/NV Print/Hi-Black/ProfiLine/Cactus/G&G/Static Control/Lomond/WWM/Uniton, TSC/Zebra, MSI/ASUS/Acer/Lenovo/Dell/Apple).
-2) «Полная совместимость» у картриджей — извлекается даже без явных заголовков (по паттернам брендов/семейств).
-3) Плейсхолдер фото: каскад brand → category → default с HEAD-проверкой и кэшированием.
-4) «Родное» описание — неизменно, идёт строго между SEO-лидом и FAQ/Отзывами.
-5) Sticky SEO-кэш: docs/alstyle_cache/seo_cache.json, чтобы SEO-блоки не прыгали каждую ночь.
-6) Чистка «мусорных» <param>, но сохраняем важные (Вес, Объём, Время полной зарядки, Диапазон AVR и т.п.).
+Обновление v7.3:
+- Переход на ежемесячный рефреш SEO-блоков: каждое 1-е число (Asia/Almaty).
+  Управление через SEO_REFRESH_MODE=monthly_1 (по умолчанию). Поддержка days/N и off.
+- Удалён дубликат функции detect_kind; единая версия с учётом параметров.
 """
 
 from __future__ import annotations
@@ -28,7 +21,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.2"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.3"
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -56,11 +49,13 @@ SATU_KEYWORDS_GEO      = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","
 SATU_KEYWORDS_GEO_MAX  = int(os.getenv("SATU_KEYWORDS_GEO_MAX", "20"))
 SATU_KEYWORDS_GEO_LAT  = os.getenv("SATU_KEYWORDS_GEO_LAT", "on").lower() in {"on","1","true","yes"}
 
-# SEO sticky cache
+# SEO sticky cache / РЕЖИМ РЕФРЕША
 DEFAULT_CACHE_PATH = "docs/alstyle_cache/seo_cache.json"
 SEO_CACHE_PATH     = os.getenv("SEO_CACHE_PATH", DEFAULT_CACHE_PATH)
 SEO_STICKY         = os.getenv("SEO_STICKY", "1").lower() in {"1","true","yes","on"}
-SEO_REFRESH_DAYS   = int(os.getenv("SEO_REFRESH_DAYS", "14"))
+# Режимы: "monthly_1" (каждое 1-е число), "days" (каждые N суток), "off"
+SEO_REFRESH_MODE   = os.getenv("SEO_REFRESH_MODE", "monthly_1").lower()
+SEO_REFRESH_DAYS   = int(os.getenv("SEO_REFRESH_DAYS", "14"))  # используется когда MODE=days
 LEGACY_CACHE_PATH  = "docs/seo_cache.json"
 
 # Placeholders (фото)
@@ -561,7 +556,6 @@ def _looks_device_phrase(x: str) -> bool:
     if len(x)<3: return False
     has_family = any(re.search(rf"\b{re.escape(f)}\b", x, re.I) for f in FAMILY_WORDS)
     has_brand  = any(re.search(rf"\b{re.escape(b)}\b", x, re.I) for b in BRAND_WORDS)
-    # FIX ↓: раньше стоял any(bool), из-за чего падало
     has_model  = bool(MODEL_RE.search(x) and not AS_INTERNAL_ART_RE.search(x))
     return (has_family or has_brand) and has_model
 
@@ -604,17 +598,341 @@ def extract_full_compatibility(raw_desc: str, params_pairs: List[Tuple[str,str]]
     compat = re.sub(r"\s{2,}", " ", compat).strip()
     return compat
 
-def build_specs_html_from_params(offer: ET.Element) -> str:
-    pairs = build_specs_pairs_from_params(offer)
-    if not pairs: return ""
-    pairs_sorted = sorted(pairs, key=lambda kv: _rank_key(kv[0]))
-    parts = ["<h3>Характеристики</h3>", "<ul>"]
-    for name, val in pairs_sorted:
-        parts.append(f"  <li><strong>{_html_escape_in_cdata_safe(name)}:</strong> { _html_escape_in_cdata_safe(val) }</li>")
-    parts.append("</ul>")
+# ======================= KIND DETECTION (единая) =======================
+def detect_kind(name: str, params_pairs: List[Tuple[str,str]]) -> str:
+    n=(name or "").lower()
+    if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
+    if ("ибп" in n) or ("ups" in n) or ("источник бесперебойного питания" in n): return "ups"
+    # fallback по параметрам
+    for k,_ in params_pairs:
+        if _norm_text(k).startswith("тип ибп"): return "ups"
+    if "мфу" in n or "printer" in n or "принтер" in n: return "mfp"
+    return "other"
+
+def split_short_name(name: str) -> str:
+    s=(name or "").strip()
+    s=re.split(r"\s+[—-]\s+", s, maxsplit=1)[0]
+    return s if len(s)<=80 else s[:77]+"..."
+
+def _seo_title(name: str, vendor: str, kind: str, kv_all: Dict[str,str], seed: int) -> str:
+    short = split_short_name(name)
+    phrases = [
+        "кратко о плюсах","чем удобен","ключевые преимущества","что вы получаете с",
+        "хороший выбор","удачный выбор","надежный вариант"
+    ]
+    ph = [" ".join([w.capitalize() if i==0 else w for i,w in enumerate(p.split())]) for p in phrases]
+    p = ph[seed % len(ph)]
+    mark = ""
+    if vendor: mark = vendor
+    if kind=="cartridge":
+        res_key = next((k for k in kv_all if k.startswith("ресурс")), "")
+        if res_key: mark = (mark+" • "+kv_all[res_key]) if mark else kv_all[res_key]
+        elif "цвет печати" in kv_all: mark = (mark+" • "+kv_all["цвет печати"]) if mark else kv_all["цвет печати"]
+    elif kind=="ups":
+        power = kv_all.get("мощность (bt)") or kv_all.get("мощность (bт)") or kv_all.get("мощность (вт)") or kv_all.get("мощность")
+        if power: mark = (mark+" • "+power) if mark else power
+    return f"{short}: {p}" + (f" ({mark})" if mark else "")
+
+def build_lead_html(offer: ET.Element, raw_desc_text_for_kv: str, params_pairs: List[Tuple[str,str]]) -> Tuple[str, Dict[str,str]]:
+    name=get_text(offer,"name").strip()
+    vendor=get_text(offer,"vendor").strip()
+    kind=detect_kind(name, params_pairs)
+    s_id = offer.attrib.get("id") or get_text(offer,"vendorCode") or get_text(offer,"name")
+    seed = int(hashlib.md5((s_id or "").encode("utf-8")).hexdigest()[:8], 16)
+
+    kv_from_desc = extract_kv_from_description(raw_desc_text_for_kv)
+    kv_all = {k.strip().lower(): v for k,v in (params_pairs + kv_from_desc)}
+    bullets: List[str] = []
+
+    if kind=="cartridge":
+        if "технология печати" in kv_all: bullets.append(f"✅ Технология печати: {kv_all['технология печати']}")
+        res_key = next((k for k in kv_all if k.startswith("ресурс")), "")
+        if res_key: bullets.append(f"✅ {res_key.capitalize()}: {kv_all[res_key]}")
+        if "цвет печати" in kv_all: bullets.append(f"✅ Цвет печати: {kv_all['цвет печати']}")
+        chip = kv_all.get("чип") or kv_all.get("chip") or kv_all.get("наличие чипа")
+        if chip: bullets.append(f"✅ Чип: {chip}")
+    elif kind=="ups":
+        power = kv_all.get("мощность (bt)") or kv_all.get("мощность (bт)") or kv_all.get("мощность (вт)") or kv_all.get("мощность")
+        if power: bullets.append(f"✅ Мощность: {power}")
+        sw = kv_all.get("время переключения режимов") or kv_all.get("время переключения")
+        if sw: bullets.append(f"✅ Переключение: {sw}")
+        sockets = kv_all.get("количество и тип выходных разъёмов") or kv_all.get("количество и тип выходных разъемов")
+        if sockets: bullets.append(f"✅ Розетки: {sockets}")
+        avr = kv_all.get("диапазон работы avr") or kv_all.get("avr")
+        if avr: bullets.append(f"✅ Питание/AVR: {avr}")
+    else:
+        for k,v in (params_pairs + kv_from_desc):
+            if len(bullets)>=3: break
+            k_low=k.strip().lower()
+            if any(x in k_low for x in ["совместим","описание","состав","страна","гарант"]): continue
+            bullets.append(f"✅ {k.strip()}: {v.strip()}")
+
+    compat = extract_full_compatibility(raw_desc_text_for_kv, params_pairs) if kind=="cartridge" else ""
+
+    title = _seo_title(name, vendor, kind, kv_all, seed)
+
+    html_parts=[]
+    html_parts.append(f"<h3>{_html_escape_in_cdata_safe(title)}</h3>")
+    p_line = {
+        "cartridge": "Стабильная печать и предсказуемый ресурс для повседневных задач.",
+        "ups": "Базовая защита питания для домашней и офисной техники.",
+        "mfp": "Офисная серия с упором на скорость, качество и удобное управление.",
+        "other": "Практичное решение для ежедневной работы."
+    }.get(kind,"Практичное решение для ежедневной работы.")
+    html_parts.append(f"<p>{_html_escape_in_cdata_safe(p_line)}</p>")
+
+    if bullets:
+        html_parts.append("<ul>")
+        for b in bullets[:5]:
+            html_parts.append(f"  <li>{_html_escape_in_cdata_safe(b)}</li>")
+        html_parts.append("</ul>")
+
+    if compat:
+        compat_html = _html_escape_in_cdata_safe(compat).replace(";", "; ").replace(",", ", ")
+        html_parts.append(f"<p><strong>Полная совместимость:</strong><br>{compat_html}</p>")
+
+    lead_html = "\n".join(html_parts)
+    inputs = {"kind": kind, "title": title, "bullets": "|".join(bullets), "compat": compat}
+    return lead_html, inputs
+
+def build_faq_html(kind: str) -> str:
+    if kind=="cartridge":
+        qa = [
+            ("Подойдёт к моему устройству?", "Сверьте точный индекс модели и литеру в списке совместимости выше."),
+            ("Нужна калибровка после замены?", "Обычно достаточно корректно установить картридж и распечатать тестовую страницу.")
+        ]
+    elif kind=="ups":
+        qa = [
+            ("Подойдёт для ПК и роутера?", "Да, для техники своего класса мощности."),
+            ("Шумит ли в работе?", "В обычном режиме — тихо; сигнализация срабатывает только при событиях.")
+        ]
+    else:
+        qa = [
+            ("Поддерживаются современные сценарии?", "Да, ориентирован на повседневную офисную работу."),
+            ("Можно расширять возможности?", "Да, подробности — в характеристиках модели.")
+        ]
+    parts=["<h3>FAQ</h3>"]
+    for q,a in qa:
+        parts.append(f"<p><strong>В:</strong> { _html_escape_in_cdata_safe(q) }<br><strong>О:</strong> { _html_escape_in_cdata_safe(a) }</p>")
     return "\n".join(parts)
 
-# ======================= AVAILABILITY =======================
+def build_reviews_html(seed: int) -> str:
+    NAMES_MALE  = ["Арман","Даурен","Санжар","Ерлан","Аслан","Руслан","Тимур","Данияр","Виктор","Евгений","Олег","Сергей","Нуржан","Бекзат","Азамат","Султан"]
+    NAMES_FEMALE= ["Айгерим","Мария","Инна","Наталья","Жанна","Светлана","Ольга","Камилла","Диана","Гульнара"]
+    CITIES = ["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
+    def choose(arr: List[str], seed: int, offs: int=0) -> str:
+        return arr[(seed + offs) % len(arr)] if arr else ""
+    parts=["<h3>Отзывы (3)</h3>"]
+    review_sets = [
+        ("⭐⭐⭐⭐⭐","Печать/работа стабильная, всё как ожидал."),
+        ("⭐⭐⭐⭐⭐","Установка заняла пару минут, проблем не было."),
+        ("⭐⭐⭐⭐☆","Коробка пришла слегка помятой, но сам товар без нареканий.")
+    ]
+    for i,(stars,comment) in enumerate(review_sets):
+        name = choose(NAMES_MALE if i!=1 else NAMES_FEMALE, seed, i)
+        city = choose(CITIES, seed, i+3)
+        parts.append(
+            f"<p>👤 <strong>{_html_escape_in_cdata_safe(name)}</strong>, { _html_escape_in_cdata_safe(city) } — {stars}<br>"
+            f"«{ _html_escape_in_cdata_safe(comment) }»</p>"
+        )
+    return "\n".join(parts)
+
+# === Sticky cache ===
+def load_seo_cache(path: str) -> Dict[str, dict]:
+    if os.path.exists(path):
+        try:
+            with open(path, "r", encoding="utf-8") as f: return json.load(f)
+        except Exception:
+            return {}
+    if os.path.exists(LEGACY_CACHE_PATH):
+        try:
+            with open(LEGACY_CACHE_PATH, "r", encoding="utf-8") as f: return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+def save_seo_cache(path: str, data: Dict[str, dict]) -> None:
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
+
+def should_periodic_refresh(prev_dt_utc: Optional[datetime]) -> bool:
+    """Решаем, надо ли пересобирать SEO-блок независимо от изменений данных."""
+    mode = SEO_REFRESH_MODE
+    if mode in {"off","0","none"}: 
+        return False
+    if prev_dt_utc is None:
+        return True  # ещё нет кеша — создаём
+    if mode.startswith("days"):
+        return (now_utc() - prev_dt_utc) >= timedelta(days=max(1, SEO_REFRESH_DAYS))
+    if mode == "monthly_1":
+        now_alm = now_almaty()
+        # prev_dt_utc хранится в UTC (строкой), конвертим в Алматы
+        try:
+            prev_alm = prev_dt_utc.astimezone(ZoneInfo("Asia/Almaty")) if ZoneInfo else datetime.utcfromtimestamp(prev_dt_utc.timestamp()+5*3600)
+        except Exception:
+            prev_alm = now_alm
+        if now_alm.day != 1:
+            return False
+        # Рефрешим, если это уже другой месяц относительно последнего обновления
+        return (now_alm.year, now_alm.month) != (prev_alm.year, prev_alm.month)
+    return False
+
+def compute_seo_checksum(name: str, lead_inputs: Dict[str,str], raw_desc_text_for_kv: str) -> str:
+    base = "|".join([name or "", lead_inputs.get("kind",""), lead_inputs.get("title",""),
+                     lead_inputs.get("bullets",""), lead_inputs.get("compat",""), hashlib.md5((raw_desc_text_for_kv or "").encode("utf-8")).hexdigest()])
+    return hashlib.md5(base.encode("utf-8")).hexdigest()
+
+def compose_full_description_html(lead_html: str, raw_desc_html_full: str, specs_html: str, faq_html: str, reviews_html: str) -> str:
+    pieces=[]
+    if lead_html: pieces.append(lead_html)
+    if raw_desc_html_full: pieces.append(_html_escape_in_cdata_safe(raw_desc_html_full))
+    if specs_html: pieces.append(specs_html)
+    if faq_html: pieces.append(faq_html)
+    if reviews_html: pieces.append(reviews_html)
+    return "\n".join(pieces)
+
+def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0, ""
+    cache = load_seo_cache(SEO_CACHE_PATH) if SEO_STICKY else {}
+    changed=0
+    for offer in offers_el.findall("offer"):
+        name = get_text(offer, "name")
+        d = offer.find("description")
+
+        raw_desc_html_full = inner_html(d) if d is not None else ""
+        raw_desc_text_for_kv = re.sub(r"<br\s*/?>", "\n", raw_desc_html_full, flags=re.I)
+        raw_desc_text_for_kv = re.sub(r"<[^>]+>", "", raw_desc_text_for_kv)
+
+        params_pairs = build_specs_pairs_from_params(offer)
+
+        lead_html, inputs = build_lead_html(offer, raw_desc_text_for_kv, params_pairs)
+        kind = inputs.get("kind","other")
+        s_id = offer.attrib.get("id") or get_text(offer,"vendorCode") or name
+        seed = int(hashlib.md5((s_id or "").encode("utf-8")).hexdigest()[:8], 16)
+        faq_html = build_faq_html(kind)
+        reviews_html = build_reviews_html(seed)
+
+        specs_html = "" if has_specs_in_raw_desc(raw_desc_html_full) else build_specs_html_from_params(offer)
+
+        checksum = compute_seo_checksum(name, inputs, raw_desc_text_for_kv)
+        cache_key = offer.attrib.get("id") or (get_text(offer,"vendorCode") or "").strip() or hashlib.md5((name or "").encode("utf-8")).hexdigest()
+
+        use_cache = False
+        if SEO_STICKY and cache.get(cache_key):
+            ent = cache[cache_key]
+            prev_cs = ent.get("checksum","")
+            updated_at_prev = ent.get("updated_at","")
+            try:
+                prev_dt_utc = datetime.strptime(updated_at_prev, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+            except Exception:
+                prev_dt_utc = None
+            periodic = should_periodic_refresh(prev_dt_utc)
+            if prev_cs == checksum and not periodic:
+                # ничего не меняем — используем кеш
+                lead_html   = ent.get("lead_html", lead_html)
+                faq_html    = ent.get("faq_html", faq_html)
+                reviews_html= ent.get("reviews_html", reviews_html)
+                use_cache   = True
+
+        full_html = compose_full_description_html(lead_html, raw_desc_html_full, specs_html, faq_html, reviews_html)
+        placeholder = f"[[[HTML]]]{full_html}[[[/HTML]]]"
+
+        if d is None:
+            d = ET.SubElement(offer, "description"); d.text = placeholder; changed += 1
+        else:
+            prev = (d.text or "").strip()
+            if prev != placeholder: d.text = placeholder; changed += 1
+
+        if SEO_STICKY:
+            ent = cache.get(cache_key, {})
+            if not use_cache or not ent:
+                ent = {"lead_html": lead_html, "faq_html": faq_html, "reviews_html": reviews_html, "checksum": checksum}
+            ent["updated_at"] = now_utc().strftime("%Y-%m-%d %H:%M:%S")
+            cache[cache_key] = ent
+
+    if SEO_STICKY: save_seo_cache(SEO_CACHE_PATH, cache)
+
+    # Для FEED_META — показываем последнее обновление SEO-кэша в Алматы
+    last_alm: Optional[datetime] = None
+    if cache:
+        for ent in cache.values():
+            ts = ent.get("updated_at")
+            if not ts: continue
+            try:
+                utc_dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+                alm_dt = utc_dt.astimezone(ZoneInfo("Asia/Almaty")) if ZoneInfo else datetime.utcfromtimestamp(utc_dt.timestamp()+5*3600)
+                if (last_alm is None) or (alm_dt > last_alm): last_alm = alm_dt
+            except Exception:
+                continue
+    if not last_alm: last_alm = now_almaty()
+    return changed, format_dt_almaty(last_alm)
+
+# ======================= CDATA PLACEHOLDER REPLACER =======================
+def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
+    def repl(m):
+        inner = m.group(1)
+        inner = inner.replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
+        inner = _unescape(inner)
+        inner = _html_escape_in_cdata_safe(inner)
+        return f"<description><![CDATA[\n{inner}\n]]></description>"
+    return re.sub(r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>", repl, xml_text, flags=re.S)
+
+# ======================= PLACEHOLDERS (фото) =======================
+_url_head_cache: Dict[str,bool] = {}
+def url_exists(url: str) -> bool:
+    if not url: return False
+    if url in _url_head_cache: return _url_head_cache[url]
+    try:
+        r=requests.head(url, timeout=PLACEHOLDER_HEAD_TIMEOUT, allow_redirects=True)
+        ok = (200 <= r.status_code < 400)
+    except Exception:
+        ok = False
+    _url_head_cache[url]=ok
+    return ok
+
+def _slug(s: str) -> str:
+    if not s: return ""
+    table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
+    base=(s or "").lower().translate(table)
+    base=re.sub(r"[^a-z0-9\- ]+","", base)
+    return re.sub(r"\s+","-", base).strip("-") or "unknown"
+
+def _placeholder_url_brand(vendor: str) -> str:
+    return f"{PLACEHOLDER_BRAND_BASE}/{_slug(vendor)}.{PLACEHOLDER_EXT}"
+
+def _placeholder_url_category(kind: str) -> str:
+    return f"{PLACEHOLDER_CATEGORY_BASE}/{kind}.{PLACEHOLDER_EXT}"
+
+def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
+    if not PLACEHOLDER_ENABLE: return (0,0)
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return (0,0)
+    added=skipped=0
+    for offer in offers_el.findall("offer"):
+        pics = list(offer.findall("picture"))
+        has_pic = any((p.text or "").strip() for p in pics)
+        if has_pic: continue
+        vendor = get_text(offer,"vendor").strip()
+        name   = get_text(offer,"name").strip()
+        kind   = detect_kind(name, [])
+        picked = ""
+        if vendor:
+            u_brand = _placeholder_url_brand(vendor)
+            if url_exists(u_brand): picked = u_brand
+        if not picked:
+            u_cat = _placeholder_url_category(kind)
+            if url_exists(u_cat): picked = u_cat
+        if not picked:
+            picked = PLACEHOLDER_DEFAULT_URL
+        ET.SubElement(offer, "picture").text = picked
+        added += 1
+    return (added, skipped)
+
+# ======================= AVAILABILITY / IDS / ORDER / KEYWORDS (без изменений) =======================
 TRUE_WORDS={"true","1","yes","y","да","есть","in stock","available"}
 FALSE_WORDS={"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 def _parse_bool_str(s: str)->Optional[bool]:
@@ -655,7 +973,6 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
         if DROP_STOCK_TAGS: remove_all(offer, "quantity_in_stock","quantity","stock","Stock")
     return t_cnt,f_cnt,st_cnt,ss_cnt
 
-# ======================= IDS =======================
 ARTICUL_RE=re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
 def _extract_article_from_name(name:str)->str:
     if not name: return ""
@@ -703,7 +1020,6 @@ def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> int:
         if offer.attrib.get("id")!=new_id: offer.attrib["id"]=new_id; changed+=1
     return changed
 
-# ======================= CLEANUP / ORDER =======================
 def purge_offer_tags_and_attrs_after(offer:ET.Element)->Tuple[int,int]:
     removed_tags=removed_attrs=0
     for t in PURGE_TAGS_AFTER:
@@ -748,7 +1064,6 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-# ======================= KEYWORDS =======================
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
 STOPWORDS_RU = {"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","о","об","у","без","про","как","это","той","тот","эта","эти",
                 "бумага","бумаги","бумаг","черный","чёрный","белый","серый","цвет","оригинальный","комплект","набор","тип","модель","модели","формат","новый","новинка"}
@@ -858,7 +1173,7 @@ def ensure_keywords(shop_el: ET.Element) -> int:
                 node.text=kw; touched+=1
     return touched
 
-# ======================= PRICE CAP =======================
+# ======================= PRICE CAP / META / MAIN =======================
 def flag_unrealistic_supplier_prices(shop_el: ET.Element) -> int:
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
@@ -882,330 +1197,6 @@ def enforce_forced_prices(shop_el: ET.Element) -> int:
             offer.attrib.pop("_force_price", None); touched += 1
     return touched
 
-# ======================= SEO BLOCKS =======================
-def md5(s: str) -> str: return hashlib.md5((s or "").encode("utf-8")).hexdigest()
-def seed_int(s: str) -> int: return int(md5(s)[:8], 16)
-
-NAMES_MALE  = ["Арман","Даурен","Санжар","Ерлан","Аслан","Руслан","Тимур","Данияр","Виктор","Евгений","Олег","Сергей","Нуржан","Бекзат","Азамат","Султан"]
-NAMES_FEMALE= ["Айгерим","Мария","Инна","Наталья","Жанна","Светлана","Ольга","Камилла","Диана","Гульнара"]
-CITIES = ["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
-
-def choose(arr: List[str], seed: int, offs: int=0) -> str:
-    if not arr: return ""
-    return arr[(seed + offs) % len(arr)]
-
-def detect_kind(name: str, params_pairs: List[Tuple[str,str]]) -> str:
-    n=(name or "").lower()
-    if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
-    if ("ибп" in n) or ("ups" in n) or ("источник бесперебойного питания" in n): return "ups"
-    for k,_ in params_pairs:
-        if k.strip().lower().startswith("тип ибп"): return "ups"
-    if "мфу" in n or "printer" in n or "принтер" in n: return "mfp"
-    return "other"
-
-def split_short_name(name: str) -> str:
-    s=(name or "").strip()
-    s=re.split(r"\s+[—-]\s+", s, maxsplit=1)[0]
-    return s if len(s)<=80 else s[:77]+"..."
-
-def _seo_title(name: str, vendor: str, kind: str, kv_all: Dict[str,str], seed: int) -> str:
-    short = split_short_name(name)
-    phrases = [
-        "кратко о плюсах","чем удобен","ключевые преимущества","что вы получаете с",
-        "хороший выбор","удачный выбор","надежный вариант"
-    ]
-    ph = choose(phrases, seed)
-    mark = ""
-    if vendor: mark = vendor
-    if kind=="cartridge":
-        res_key = next((k for k in kv_all if k.startswith("ресурс")), "")
-        if res_key: mark = (mark+" • "+kv_all[res_key]) if mark else kv_all[res_key]
-        elif "цвет печати" in kv_all: mark = (mark+" • "+kv_all["цвет печати"]) if mark else kv_all["цвет печати"]
-    elif kind=="ups":
-        power = kv_all.get("мощность (bt)") or kv_all.get("мощность (bт)") or kv_all.get("мощность (вт)") or kv_all.get("мощность")
-        if power: mark = (mark+" • "+power) if mark else power
-    return f"{short}: {ph.capitalize()}" + (f" ({mark})" if mark else "")
-
-def build_lead_html(offer: ET.Element, raw_desc_text_for_kv: str, params_pairs: List[Tuple[str,str]]) -> Tuple[str, Dict[str,str]]:
-    name=get_text(offer,"name").strip()
-    vendor=get_text(offer,"vendor").strip()
-    kind=detect_kind(name, params_pairs)
-    s_id = offer.attrib.get("id") or get_text(offer,"vendorCode") or get_text(offer,"name")
-    seed = seed_int(s_id)
-
-    kv_from_desc = extract_kv_from_description(raw_desc_text_for_kv)
-    kv_all = {k.strip().lower(): v for k,v in (params_pairs + kv_from_desc)}
-    bullets: List[str] = []
-
-    if kind=="cartridge":
-        if "технология печати" in kv_all: bullets.append(f"✅ Технология печати: {kv_all['технология печати']}")
-        res_key = next((k for k in kv_all if k.startswith("ресурс")), "")
-        if res_key: bullets.append(f"✅ {res_key.capitalize()}: {kv_all[res_key]}")
-        if "цвет печати" in kv_all: bullets.append(f"✅ Цвет печати: {kv_all['цвет печати']}")
-        chip = kv_all.get("чип") or kv_all.get("chip") or kv_all.get("наличие чипа")
-        if chip: bullets.append(f"✅ Чип: {chip}")
-    elif kind=="ups":
-        power = kv_all.get("мощность (bt)") or kv_all.get("мощность (bт)") or kv_all.get("мощность (вт)") or kv_all.get("мощность")
-        if power: bullets.append(f"✅ Мощность: {power}")
-        sw = kv_all.get("время переключения режимов") or kv_all.get("время переключения")
-        if sw: bullets.append(f"✅ Переключение: {sw}")
-        sockets = kv_all.get("количество и тип выходных разъёмов") or kv_all.get("количество и тип выходных разъемов")
-        if sockets: bullets.append(f"✅ Розетки: {sockets}")
-        avr = kv_all.get("диапазон работы avr") or kv_all.get("avr")
-        if avr: bullets.append(f"✅ Питание/AVR: {avr}")
-    else:
-        for k,v in (params_pairs + kv_from_desc):
-            if len(bullets)>=3: break
-            k_low=k.strip().lower()
-            if any(x in k_low for x in ["совместим","описание","состав","страна","гарант"]): continue
-            bullets.append(f"✅ {k.strip()}: {v.strip()}")
-
-    compat = extract_full_compatibility(raw_desc_text_for_kv, params_pairs) if kind=="cartridge" else ""
-
-    title = _seo_title(name, vendor, kind, kv_all, seed)
-
-    html_parts=[]
-    html_parts.append(f"<h3>{_html_escape_in_cdata_safe(title)}</h3>")
-    p_line = {
-        "cartridge": "Стабильная печать и предсказуемый ресурс для повседневных задач.",
-        "ups": "Базовая защита питания для домашней и офисной техники.",
-        "mfp": "Офисная серия с упором на скорость, качество и удобное управление.",
-        "other": "Практичное решение для ежедневной работы."
-    }.get(kind,"Практичное решение для ежедневной работы.")
-    html_parts.append(f"<p>{_html_escape_in_cdata_safe(p_line)}</p>")
-
-    if bullets:
-        html_parts.append("<ul>")
-        for b in bullets[:5]:
-            html_parts.append(f"  <li>{_html_escape_in_cdata_safe(b)}</li>")
-        html_parts.append("</ul>")
-
-    if compat:
-        compat_html = _html_escape_in_cdata_safe(compat).replace(";", "; ").replace(",", ", ")
-        html_parts.append(f"<p><strong>Полная совместимость:</strong><br>{compat_html}</p>")
-
-    lead_html = "\n".join(html_parts)
-    inputs = {"kind": kind, "title": title, "bullets": "|".join(bullets), "compat": compat}
-    return lead_html, inputs
-
-def build_faq_html(kind: str) -> str:
-    if kind=="cartridge":
-        qa = [
-            ("Подойдёт к моему устройству?", "Сверьте точный индекс модели и литеру в списке совместимости выше."),
-            ("Нужна калибровка после замены?", "Обычно достаточно корректно установить картридж и распечатать тестовую страницу.")
-        ]
-    elif kind=="ups":
-        qa = [
-            ("Подойдёт для ПК и роутера?", "Да, для техники своего класса мощности."),
-            ("Шумит ли в работе?", "В обычном режиме — тихо; сигнализация срабатывает только при событиях.")
-        ]
-    else:
-        qa = [
-            ("Поддерживаются современные сценарии?", "Да, ориентирован на повседневную офисную работу."),
-            ("Можно расширять возможности?", "Да, подробности — в характеристиках модели.")
-        ]
-    parts=["<h3>FAQ</h3>"]
-    for q,a in qa:
-        parts.append(f"<p><strong>В:</strong> { _html_escape_in_cdata_safe(q) }<br><strong>О:</strong> { _html_escape_in_cdata_safe(a) }</p>")
-    return "\n".join(parts)
-
-def build_reviews_html(seed: int) -> str:
-    parts=["<h3>Отзывы (3)</h3>"]
-    review_sets = [
-        ("⭐⭐⭐⭐⭐","Печать/работа стабильная, всё как ожидал."),
-        ("⭐⭐⭐⭐⭐","Установка заняла пару минут, проблем не было."),
-        ("⭐⭐⭐⭐☆","Коробка пришла слегка помятой, но сам товар без нареканий.")
-    ]
-    for i,(stars,comment) in enumerate(review_sets):
-        name = choose(NAMES_MALE if i!=1 else NAMES_FEMALE, seed, i)
-        city = choose(CITIES, seed, i+3)
-        parts.append(
-            f"<p>👤 <strong>{_html_escape_in_cdata_safe(name)}</strong>, { _html_escape_in_cdata_safe(city) } — {stars}<br>"
-            f"«{ _html_escape_in_cdata_safe(comment) }»</p>"
-        )
-    return "\n".join(parts)
-
-# === Sticky cache ===
-def load_seo_cache(path: str) -> Dict[str, dict]:
-    if os.path.exists(path):
-        try:
-            with open(path, "r", encoding="utf-8") as f: return json.load(f)
-        except Exception:
-            return {}
-    if os.path.exists(LEGACY_CACHE_PATH):
-        try:
-            with open(LEGACY_CACHE_PATH, "r", encoding="utf-8") as f: return json.load(f)
-        except Exception:
-            return {}
-    return {}
-
-def save_seo_cache(path: str, data: Dict[str, dict]) -> None:
-    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-    tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    os.replace(tmp, path)
-
-def compute_seo_checksum(name: str, lead_inputs: Dict[str,str], raw_desc_text_for_kv: str) -> str:
-    base = "|".join([name or "", lead_inputs.get("kind",""), lead_inputs.get("title",""),
-                     lead_inputs.get("bullets",""), lead_inputs.get("compat",""), hashlib.md5((raw_desc_text_for_kv or "").encode("utf-8")).hexdigest()])
-    return hashlib.md5(base.encode("utf-8")).hexdigest()
-
-def compose_full_description_html(lead_html: str, raw_desc_html_full: str, specs_html: str, faq_html: str, reviews_html: str) -> str:
-    pieces=[]
-    if lead_html: pieces.append(lead_html)
-    if raw_desc_html_full: pieces.append(_html_escape_in_cdata_safe(raw_desc_html_full))
-    if specs_html: pieces.append(specs_html)
-    if faq_html: pieces.append(faq_html)
-    if reviews_html: pieces.append(reviews_html)
-    return "\n".join(pieces)
-
-def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
-    offers_el=shop_el.find("offers")
-    if offers_el is None: return 0, ""
-    cache = load_seo_cache(SEO_CACHE_PATH) if SEO_STICKY else {}
-    changed=0
-    for offer in offers_el.findall("offer"):
-        name = get_text(offer, "name")
-        d = offer.find("description")
-
-        raw_desc_html_full = inner_html(d) if d is not None else ""
-        raw_desc_text_for_kv = re.sub(r"<br\s*/?>", "\n", raw_desc_html_full, flags=re.I)
-        raw_desc_text_for_kv = re.sub(r"<[^>]+>", "", raw_desc_text_for_kv)
-
-        params_pairs = build_specs_pairs_from_params(offer)
-
-        lead_html, inputs = build_lead_html(offer, raw_desc_text_for_kv, params_pairs)
-        kind = inputs.get("kind","other")
-        s_id = offer.attrib.get("id") or get_text(offer,"vendorCode") or name
-        seed = seed_int(s_id)
-        faq_html = build_faq_html(kind)
-        reviews_html = build_reviews_html(seed)
-
-        specs_html = "" if has_specs_in_raw_desc(raw_desc_html_full) else build_specs_html_from_params(offer)
-
-        checksum = compute_seo_checksum(name, inputs, raw_desc_text_for_kv)
-        cache_key = offer.attrib.get("id") or (get_text(offer,"vendorCode") or "").strip() or hashlib.md5((name or "").encode("utf-8")).hexdigest()
-
-        use_cache = False
-        if SEO_STICKY and cache.get(cache_key):
-            ent = cache[cache_key]
-            prev_cs = ent.get("checksum","")
-            updated_at_prev = ent.get("updated_at","")
-            try:
-                prev_dt = datetime.strptime(updated_at_prev, "%Y-%m-%d %H:%M:%S")
-            except Exception:
-                prev_dt = None
-            need_periodic_refresh = False
-            if prev_dt and SEO_REFRESH_DAYS>0:
-                need_periodic_refresh = (now_utc() - prev_dt.replace(tzinfo=None)) >= timedelta(days=SEO_REFRESH_DAYS)
-            if prev_cs == checksum and not need_periodic_refresh:
-                lead_html   = ent.get("lead_html", lead_html)
-                faq_html    = ent.get("faq_html", faq_html)
-                reviews_html= ent.get("reviews_html", reviews_html)
-                use_cache   = True
-
-        full_html = compose_full_description_html(lead_html, raw_desc_html_full, specs_html, faq_html, reviews_html)
-        placeholder = f"[[[HTML]]]{full_html}[[[/HTML]]]"
-
-        if d is None:
-            d = ET.SubElement(offer, "description"); d.text = placeholder; changed += 1
-        else:
-            prev = (d.text or "").strip()
-            if prev != placeholder: d.text = placeholder; changed += 1
-
-        if SEO_STICKY:
-            ent = cache.get(cache_key, {})
-            if not use_cache or not ent:
-                ent = {"lead_html": lead_html, "faq_html": faq_html, "reviews_html": reviews_html, "checksum": checksum}
-                ent["updated_at"] = now_utc().strftime("%Y-%m-%d %H:%M:%S")
-                cache[cache_key] = ent
-
-    if SEO_STICKY: save_seo_cache(SEO_CACHE_PATH, cache)
-
-    last_alm: Optional[datetime] = None
-    if cache:
-        for ent in cache.values():
-            ts = ent.get("updated_at")
-            if not ts: continue
-            try:
-                utc_dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
-                alm_dt = utc_dt.astimezone(ZoneInfo("Asia/Almaty")) if ZoneInfo else datetime.utcfromtimestamp(utc_dt.timestamp()+5*3600)
-                if (last_alm is None) or (alm_dt > last_alm): last_alm = alm_dt
-            except Exception:
-                continue
-    if not last_alm: last_alm = now_almaty()
-    return changed, format_dt_almaty(last_alm)
-
-# ======================= CDATA PLACEHOLDER REPLACER =======================
-def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
-    def repl(m):
-        inner = m.group(1)
-        inner = inner.replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
-        inner = _unescape(inner)
-        inner = _html_escape_in_cdata_safe(inner)
-        return f"<description><![CDATA[\n{inner}\n]]></description>"
-    return re.sub(r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>", repl, xml_text, flags=re.S)
-
-# ======================= PLACEHOLDERS (фото) =======================
-_url_head_cache: Dict[str,bool] = {}
-def url_exists(url: str) -> bool:
-    if not url: return False
-    if url in _url_head_cache: return _url_head_cache[url]
-    try:
-        r=requests.head(url, timeout=PLACEHOLDER_HEAD_TIMEOUT, allow_redirects=True)
-        ok = (200 <= r.status_code < 400)
-    except Exception:
-        ok = False
-    _url_head_cache[url]=ok
-    return ok
-
-def _slug(s: str) -> str:
-    if not s: return ""
-    table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
-    base=(s or "").lower().translate(table)
-    base=re.sub(r"[^a-z0-9\- ]+","", base)
-    return re.sub(r"\s+","-", base).strip("-") or "unknown"
-
-def _placeholder_url_brand(vendor: str) -> str:
-    return f"{PLACEHOLDER_BRAND_BASE}/{_slug(vendor)}.{PLACEHOLDER_EXT}"
-
-def _placeholder_url_category(kind: str) -> str:
-    return f"{PLACEHOLDER_CATEGORY_BASE}/{kind}.{PLACEHOLDER_EXT}"
-
-def detect_kind(name: str, params_pairs: List[Tuple[str,str]]) -> str:
-    n=(name or "").lower()
-    if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
-    if ("ибп" in n) or ("ups" in n) or ("источник бесперебойного питания" in n): return "ups"
-    if "мфу" in n or "printer" in n or "принтер" in n: return "mfp"
-    return "other"
-
-def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
-    if not PLACEHOLDER_ENABLE: return (0,0)
-    offers_el=shop_el.find("offers")
-    if offers_el is None: return (0,0)
-    added=skipped=0
-    for offer in offers_el.findall("offer"):
-        pics = list(offer.findall("picture"))
-        has_pic = any((p.text or "").strip() for p in pics)
-        if has_pic: continue
-        vendor = get_text(offer,"vendor").strip()
-        name   = get_text(offer,"name").strip()
-        kind   = detect_kind(name, [])
-        picked = ""
-        if vendor:
-            u_brand = _placeholder_url_brand(vendor)
-            if url_exists(u_brand): picked = u_brand
-        if not picked:
-            u_cat = _placeholder_url_category(kind)
-            if url_exists(u_cat): picked = u_cat
-        if not picked:
-            picked = PLACEHOLDER_DEFAULT_URL
-        ET.SubElement(offer, "picture").text = picked
-        added += 1
-    return (added, skipped)
-
-# ======================= FEED_META =======================
 def render_feed_meta_comment(pairs:Dict[str,str]) -> str:
     rows = [
         ("Поставщик", pairs.get("supplier","")),
@@ -1222,7 +1213,50 @@ def render_feed_meta_comment(pairs:Dict[str,str]) -> str:
     lines=["FEED_META"]+[f"{k.ljust(key_w)} | {v}" for k,v in rows]
     return "\n".join(lines)
 
-# ======================= MAIN =======================
+def reorder_offer_children(shop_el: ET.Element) -> int:
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0
+    changed=0
+    for offer in offers_el.findall("offer"):
+        children=list(offer)
+        if not children: continue
+        buckets={k:[] for k in DESIRED_ORDER}; others=[]
+        for node in children: (buckets[node.tag] if node.tag in buckets else others).append(node)
+        rebuilt=[*sum((buckets[k] for k in DESIRED_ORDER), []), *others]
+        if rebuilt!=children:
+            for node in children: offer.remove(node)
+            for node in rebuilt: offer.append(node)
+            changed+=1
+    return changed
+
+def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0
+    touched=0
+    for offer in offers_el.findall("offer"):
+        remove_all(offer,"currencyId")
+        ET.SubElement(offer,"currencyId").text=default_code; touched+=1
+    return touched
+
+def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
+    offers_el=shop_el.find("offers")
+    if offers_el is None: return 0
+    touched=0
+    for offer in offers_el.findall("offer"):
+        remove_all(offer,"categoryId","CategoryId")
+        cid=ET.Element("categoryId"); cid.text=os.getenv("CATEGORY_ID_DEFAULT","0")
+        offer.insert(0,cid); touched+=1
+    return touched
+
+def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
+    def repl(m):
+        inner = m.group(1)
+        inner = inner.replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
+        inner = _unescape(inner)
+        inner = _html_escape_in_cdata_safe(inner)
+        return f"<description><![CDATA[\n{inner}\n]]></description>"
+    return re.sub(r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>", repl, xml_text, flags=re.S)
+
 def main()->None:
     log(f"Source: {SUPPLIER_URL or '(not set)'}")
     data=load_source_bytes(SUPPLIER_URL)
@@ -1254,6 +1288,7 @@ def main()->None:
             drop=(ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
             if drop: out_offers.remove(off)
 
+    # CATEGORY ID → 0 первым
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId"))+list(off.findall("CategoryId")): off.remove(node)
