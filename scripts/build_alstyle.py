@@ -3,15 +3,17 @@
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
 
-Обновление v7.1 (три правки по задаче):
-1) Автоподстановка бренда — расширен словарь и алиасы, улучшены эвристики.
-2) «Полная совместимость» у картриджей — извлечение даже без триггеров (по паттернам брендов/семейств).
-3) Плейсхолдеры фото — каскад brand → category → default с HEAD-проверкой и кэшированием.
+Обновление v7.2:
+- FIX: TypeError 'bool' object is not iterable в _looks_device_phrase (заменён any(...) на bool(...)).
 
-Дополнительно сохраняем прежние фичи:
-- Родное описание всегда идёт после SEO-лида и до FAQ/Отзывов, не изменяется.
-- Sticky SEO-кэш: docs/alstyle_cache/seo_cache.json
-- Чистка «мусорных» <param>, но сохраняем важные (Вес, Объём, Время полной зарядки, Диапазон AVR и т.д.).
+Ключевые возможности (как договаривались):
+1) Автоподстановка бренда (HP/Canon/Xerox/Brother/Epson/Samsung/Kyocera/Ricoh/Konica Minolta/Sharp/OKI/Pantum,
+   Europrint/Katun/NV Print/Hi-Black/ProfiLine/Cactus/G&G/Static Control/Lomond/WWM/Uniton, TSC/Zebra, MSI/ASUS/Acer/Lenovo/Dell/Apple).
+2) «Полная совместимость» у картриджей — извлекается даже без явных заголовков (по паттернам брендов/семейств).
+3) Плейсхолдер фото: каскад brand → category → default с HEAD-проверкой и кэшированием.
+4) «Родное» описание — неизменно, идёт строго между SEO-лидом и FAQ/Отзывами.
+5) Sticky SEO-кэш: docs/alstyle_cache/seo_cache.json, чтобы SEO-блоки не прыгали каждую ночь.
+6) Чистка «мусорных» <param>, но сохраняем важные (Вес, Объём, Время полной зарядки, Диапазон AVR и т.п.).
 """
 
 from __future__ import annotations
@@ -26,7 +28,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.1"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.2"
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -238,14 +240,11 @@ SUPPLIER_BLOCKLIST={_norm_key(x) for x in["alstyle","al-style","copyline","akcen
 UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a")
 
 COMMON_BRANDS = [
-    # печать/расходка
     "Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","Samsung","Kyocera","Ricoh","Konica Minolta",
     "Lexmark","Sharp","OKI","Pantum",
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
-    # ИБП/питание
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    # ноутбуки и пр.
     "MSI","ASUS","Acer","Lenovo","Dell","Apple"
 ]
 BRAND_ALIASES = {
@@ -307,7 +306,6 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     first = re.split(r"\s+", name.strip())[0] if name else ""
     f_norm=_norm_key(first)
     if f_norm in brand_index: return brand_index[f_norm]
-    # алиасы и прямые вхождения
     b = _find_brand_in_text(name) or _find_brand_in_text(desc)
     if b: return b
     nrm=_norm_key(name)
@@ -455,7 +453,7 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                 seen.add(k)
     return removed
 
-# ===== Извлечение KV из «родного» описания, нормализация единиц (для автосборных Specs) =====
+# ===== KV из «родного» описания + нормализация единиц =====
 HDR_RE = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
 HEAD_ONLY_RE = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*$", re.I)
 HEAD_PREFIX_RE = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*", re.I)
@@ -525,7 +523,6 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
         if name_norm == "назначение" and val_norm.lower() == "да": continue
         if _looks_like_code_value(val_norm) and name_norm not in SAFE_SPEC_WHITELIST: continue
         pairs.append((raw_name.strip(), canon_units(raw_name, raw_val.strip())))
-    # dedup by key
     out=[]; seen=set()
     for n,v in pairs:
         k=_norm_text(n)
@@ -534,38 +531,23 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     return out
 
 # ======================= COMPATIBILITY (расширено) =======================
-# Бренды и семейства для «немого» извлечения
-BRAND_WORDS = [
-    "Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","Samsung","Kyocera","Ricoh","Konica Minolta","Sharp","OKI","Pantum",
-]
+BRAND_WORDS = ["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","Samsung","Kyocera","Ricoh","Konica Minolta","Sharp","OKI","Pantum"]
 FAMILY_WORDS = [
-    # Canon
     "PIXMA","imageRUNNER","iR","imageCLASS","imagePRESS","LBP","MF","i-SENSYS",
-    # HP
     "LaserJet","DeskJet","OfficeJet","PageWide","Color LaserJet","Neverstop","Smart Tank",
-    # Xerox
     "Phaser","WorkCentre","VersaLink","AltaLink","DocuCentre",
-    # Brother
     "DCP","HL","MFC","FAX",
-    # Epson
     "L","XP","WF","WorkForce","EcoTank",
-    # Kyocera
     "FS","TASKalfa","ECOSYS",
-    # Ricoh
     "Aficio","SP","MP","IM",
-    # Sharp / OKI / Pantum и пр.
     "MX","BP","B","C","P2500","M6500","CM","DL","DP"
 ]
-# Модель: буквы+цифры с дефисами (исключаем внутренние AS-коды)
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
 
 def _split_joined_models(s: str) -> List[str]:
-    """Разбивает 'Canon imagePRESS Lite C165Canon imagePRESS Lite C170' → ['Canon imagePRESS Lite C165','Canon imagePRESS Lite C170']"""
-    # Вставим разделитель перед повторяющимися 'Canon'/'HP'/... без пробела
     for bw in BRAND_WORDS:
         s = re.sub(rf"({re.escape(bw)})\s*(?={re.escape(bw)})", r"\1\n", s)
-    # Потом по переводам строки и точкам/запятым
     raw = re.split(r"[,\n;]+", s)
     out=[]
     for chunk in raw:
@@ -577,17 +559,15 @@ def _split_joined_models(s: str) -> List[str]:
 def _looks_device_phrase(x: str) -> bool:
     x=x.strip()
     if len(x)<3: return False
-    # должен содержать хотя бы одно семейство или бренд + модельный код
     has_family = any(re.search(rf"\b{re.escape(f)}\b", x, re.I) for f in FAMILY_WORDS)
     has_brand  = any(re.search(rf"\b{re.escape(b)}\b", x, re.I) for b in BRAND_WORDS)
-    has_model  = any(MODEL_RE.search(x) and not AS_INTERNAL_ART_RE.search(x))
+    # FIX ↓: раньше стоял any(bool), из-за чего падало
+    has_model  = bool(MODEL_RE.search(x) and not AS_INTERNAL_ART_RE.search(x))
     return (has_family or has_brand) and has_model
 
 def extract_full_compatibility(raw_desc: str, params_pairs: List[Tuple[str,str]]) -> str:
-    # 1) сначала из param-ов
     for n,v in params_pairs:
         if re.match(r"^\s*(совместим|подходит)\b", n.strip(), re.I): return v.strip()
-    # 2) из текста по заголовкам-триггерам
     t = (raw_desc or "")
     text_lines = [ln.strip() for ln in t.replace("\r\n","\n").replace("\r","\n").split("\n")]
     triggers = re.compile(r"(совместим(?:ость)?|подходит(?:\s*для)?|для\s*модел[ей]|для\s*использования\s*в|compatible\s*with|for\s*use\s*in)", re.I)
@@ -600,26 +580,21 @@ def extract_full_compatibility(raw_desc: str, params_pairs: List[Tuple[str,str]]
             capturing=True; continue
         if capturing:
             if not ln or stopheads.match(ln): break
-            # если началась новая секция с «Имя: Значение» — вероятно, конец списка
             if re.match(r"^[А-Яа-яA-Za-z].+:\s*\S+", ln) and not re.search(r"[;,]|\bCanon\b|\bHP\b|\bEpson\b|\bXerox\b|\bBrother\b", ln):
                 break
             buf.append(ln)
     compat = " ".join(buf).strip()
-    # 3) если не нашли, пытаемся по «немому» списку
     if not compat:
-        # Берём весь текст и пытаемся разрезать слепленные бренды
         whole = re.sub(r"<[^>]+>"," ", raw_desc)
         whole = re.sub(r"\s{2,}"," ", whole).strip()
         parts = _split_joined_models(whole)
         found=[]
         for part in parts:
-            # режем ещё по «Canon ... Canon ...»
             subs=_split_joined_models(part)
             for sub in subs:
                 s=sub.strip()
                 if _looks_device_phrase(s):
                     found.append(s)
-        # укоротим нерелевантные хвосты и почистим повторы
         clean=[]
         for x in found:
             x=re.sub(r"\s{2,}"," ", x).strip(" ,;.")
@@ -865,7 +840,6 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     return ", ".join(out)
 
 def ensure_keywords(shop_el: ET.Element) -> int:
-    """Создаёт/обновляет <keywords> для каждого оффера, либо удаляет тег, если SATU_KEYWORDS=off."""
     offers_el=shop_el.find("offers")
     if offers_el is None: return 0
     touched=0
@@ -1218,7 +1192,6 @@ def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
         vendor = get_text(offer,"vendor").strip()
         name   = get_text(offer,"name").strip()
         kind   = detect_kind(name, [])
-        # каскад: brand → category → default (с HEAD-проверкой)
         picked = ""
         if vendor:
             u_brand = _placeholder_url_brand(vendor)
@@ -1265,7 +1238,6 @@ def main()->None:
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
     for o in src_offers: out_offers.append(deepcopy(o))
 
-    # Категорийные фильтры (если заданы)
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         id2name,id2parent,parent2children=parse_categories_tree(shop_in)
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
@@ -1282,15 +1254,12 @@ def main()->None:
             drop=(ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
             if drop: out_offers.remove(off)
 
-    # CATEGORY ID → 0 первым
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId"))+list(off.findall("CategoryId")): off.remove(node)
 
-    # PRICE CAP
     flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
-    # vendor/vendorCode/id
     ensure_vendor(out_shop)
     filled = ensure_vendor_auto_fill(out_shop); log(f"Vendors auto-filled: {filled}")
 
@@ -1300,36 +1269,27 @@ def main()->None:
     )
     sync_offer_id_with_vendorcode(out_shop)
 
-    # цены
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price=100: {forced}")
 
-    # параметры
     removed_params = remove_specific_params(out_shop); log(f"Params removed: {removed_params}")
 
-    # плейсхолдеры фото (новая логика с HEAD/фолбэками)
     ph_added,_ = ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
 
-    # SEO-описания
     seo_changed, seo_last_update_alm = inject_seo_descriptions(out_shop)
     log(f"SEO blocks touched: {seo_changed}")
 
-    # доступность + валюта
     t_true, t_false, _, _ = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
 
-    # чистка/порядок
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
     reorder_offer_children(out_shop); ensure_categoryid_zero_first(out_shop)
 
-    # KEYWORDS
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
-    # pretty indent
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    # FEED_META
     built_alm = now_almaty()
     meta_pairs={
         "script_version": SCRIPT_VERSION,
@@ -1346,19 +1306,13 @@ def main()->None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # сериализация
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
-
-    # приятные отступы
     xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
     xml_text=re.sub(r"(\n[ \t]*){3,}", "\n\n", xml_text)
-
-    # CDATA для description
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
-    # запись
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
         return
@@ -1372,7 +1326,6 @@ def main()->None:
         with open(OUT_FILE_YML, "wb") as f:
             f.write(data_bytes)
 
-    # .nojekyll
     try:
         docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
