@@ -13,7 +13,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-21.v1.2.0"
+SCRIPT_VERSION = "akcent-2025-10-21.v1.2.1"
 
 # ========= ENV / CONST =========
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -26,7 +26,7 @@ RETRY_BACKOFF = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES     = int(os.getenv("MIN_BYTES", "1500"))
 DRY_RUN       = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-# Фильтр офферов по имени (старое поведение)
+# Фильтр офферов по имени (как в старом коде)
 AKCENT_KEYWORDS_PATH  = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
 AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # include|exclude
 
@@ -68,7 +68,7 @@ SEO_CACHE_PATH=os.getenv("SEO_CACHE_PATH", DEFAULT_CACHE_PATH)
 SEO_STICKY=os.getenv("SEO_STICKY","1").lower() in {"1","true","yes","on"}
 SEO_REFRESH_MODE=os.getenv("SEO_REFRESH_MODE","monthly_1").lower()
 
-# Ключевые слова в <keywords> (базовая генерация; без внешнего файла)
+# Ключевые слова в <keywords> (базовая генерация)
 SATU_KEYWORDS_MAXLEN=1024
 SATU_KEYWORDS_GEO=True
 SATU_KEYWORDS_GEO_MAX=20
@@ -127,7 +127,7 @@ def load_source_bytes(src: str) -> bytes:
             if i<RETRIES: time.sleep(back)
     raise RuntimeError(f"fetch failed: {last}")
 
-# ========= Фильтр офферов по имени (как в старом коде) =========
+# ========= Фильтр офферов по имени =========
 class KeySpec:
     __slots__=("raw","kind","norm","pattern")
     def __init__(self, raw: str, kind: str, norm: Optional[str], pattern: Optional[re.Pattern]):
@@ -436,7 +436,13 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
         inner=m.group(1).replace("[[[HTML]]]","").replace("[[[/HTML]]]","")
         inner=_unescape(inner); inner=_html_escape_in_cdata_safe(inner)
         return f"<description><![CDATA[\n{inner}\n]]></description>"
-    return re.sub(r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>", repl, flags=re.S)
+    # >>> ФИКС: добавил xml_text как третий аргумент re.sub <<<
+    return re.sub(
+        r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>",
+        repl,
+        xml_text,
+        flags=re.S
+    )
 
 def split_short_name(name: str) -> str:
     s=(name or "").strip(); s=re.split(r"\s+[—-]\s+", s, maxsplit=1)[0]
@@ -645,13 +651,14 @@ def translit_ru_to_lat(s: str) -> str:
     table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
     out=s.lower().translate(table); out=re.sub(r"[^a-z0-9\- ]+","", out); return re.sub(r"\s+","-", out).strip("-")
 
+AS_INTERNAL_ART_RE2 = AS_INTERNAL_ART_RE  # reuse pattern
 def extract_models(text_srcs: List[str]) -> List[str]:
     tokens=set()
     for src in text_srcs:
         if not src: continue
         for m in MODEL_RE.findall(src or ""):
             t=m.upper()
-            if AS_INTERNAL_ART_RE.match(t) or not (re.search(r"[A-Z]", t) and re.search(r"\d", t)) or len(t)<5: continue
+            if AS_INTERNAL_ART_RE2.match(t) or not (re.search(r"[A-Z]", t) and re.search(r"\d", t)) or len(t)<5: continue
             tokens.add(t)
     return list(tokens)
 
@@ -804,7 +811,7 @@ def main()->None:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
         out_offers.append(mod)
 
-    # ====== РАННИЙ ФИЛЬТР (как у тебя в старом коде) ======
+    # ====== РАННИЙ ФИЛЬТР ======
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
@@ -818,7 +825,7 @@ def main()->None:
             if drop_this:
                 out_offers.remove(off); filtered_out+=1
 
-    # ====== Дальше — весь остальной конвейер ======
+    # ====== Дальше — конвейер ======
     flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
     ensure_vendor(out_shop)
@@ -831,10 +838,10 @@ def main()->None:
 
     reprice_offers(out_shop, PRICING_RULES)
 
-    # Плейсхолдеры фото (без картинок)
+    # Плейсхолдеры фото
     ph_added=ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
 
-    # SEO-блок (лид → родное описание → FAQ → отзывы), кэш 1-го числа
+    # SEO-блок
     seo_changed, seo_last = inject_seo_descriptions(out_shop); log(f"SEO blocks touched: {seo_changed}")
 
     # Наличие + валюта
