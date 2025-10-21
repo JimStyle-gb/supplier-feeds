@@ -3,10 +3,10 @@
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
 
-Обновление v7.3:
-- Переход на ежемесячный рефреш SEO-блоков: каждое 1-е число (Asia/Almaty).
-  Управление через SEO_REFRESH_MODE=monthly_1 (по умолчанию). Поддержка days/N и off.
-- Удалён дубликат функции detect_kind; единая версия с учётом параметров.
+Обновление v7.3.1:
+- FIX: NameError 'build_specs_html_from_params' — функция добавлена.
+- Чистка дублей функций (detect_kind, reorder_offer_children, _replace_html_placeholders_with_cdata).
+- Режим SEO-рефреша: каждое 1-е число месяца (Asia/Almaty), можно переключить через ENV.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.3"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.1"
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -525,6 +525,17 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
         seen.add(k); out.append((n,v))
     return out
 
+def build_specs_html_from_params(offer: ET.Element) -> str:
+    """HTML-список <li> из тегов <param>. Показываем только если в «родном» описании нет характеристик."""
+    pairs = build_specs_pairs_from_params(offer)
+    if not pairs: return ""
+    pairs_sorted = sorted(pairs, key=lambda kv: _rank_key(kv[0]))
+    parts = ["<h3>Характеристики</h3>", "<ul>"]
+    for name, val in pairs_sorted:
+        parts.append(f"  <li><strong>{_html_escape_in_cdata_safe(name)}:</strong> {_html_escape_in_cdata_safe(val)}</li>")
+    parts.append("</ul>")
+    return "\n".join(parts)
+
 # ======================= COMPATIBILITY (расширено) =======================
 BRAND_WORDS = ["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","Samsung","Kyocera","Ricoh","Konica Minolta","Sharp","OKI","Pantum"]
 FAMILY_WORDS = [
@@ -598,12 +609,11 @@ def extract_full_compatibility(raw_desc: str, params_pairs: List[Tuple[str,str]]
     compat = re.sub(r"\s{2,}", " ", compat).strip()
     return compat
 
-# ======================= KIND DETECTION (единая) =======================
+# ======================= KIND DETECTION =======================
 def detect_kind(name: str, params_pairs: List[Tuple[str,str]]) -> str:
     n=(name or "").lower()
     if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
     if ("ибп" in n) or ("ups" in n) or ("источник бесперебойного питания" in n): return "ups"
-    # fallback по параметрам
     for k,_ in params_pairs:
         if _norm_text(k).startswith("тип ибп"): return "ups"
     if "мфу" in n or "printer" in n or "принтер" in n: return "mfp"
@@ -616,12 +626,11 @@ def split_short_name(name: str) -> str:
 
 def _seo_title(name: str, vendor: str, kind: str, kv_all: Dict[str,str], seed: int) -> str:
     short = split_short_name(name)
-    phrases = [
-        "кратко о плюсах","чем удобен","ключевые преимущества","что вы получаете с",
-        "хороший выбор","удачный выбор","надежный вариант"
+    variants = [
+        "Кратко о плюсах","Чем удобен","Ключевые преимущества","Что вы получаете с",
+        "Хороший выбор","Удачный выбор","Надежный вариант"
     ]
-    ph = [" ".join([w.capitalize() if i==0 else w for i,w in enumerate(p.split())]) for p in phrases]
-    p = ph[seed % len(ph)]
+    p = variants[seed % len(variants)]
     mark = ""
     if vendor: mark = vendor
     if kind=="cartridge":
@@ -759,7 +768,6 @@ def save_seo_cache(path: str, data: Dict[str, dict]) -> None:
     os.replace(tmp, path)
 
 def should_periodic_refresh(prev_dt_utc: Optional[datetime]) -> bool:
-    """Решаем, надо ли пересобирать SEO-блок независимо от изменений данных."""
     mode = SEO_REFRESH_MODE
     if mode in {"off","0","none"}: 
         return False
@@ -769,14 +777,12 @@ def should_periodic_refresh(prev_dt_utc: Optional[datetime]) -> bool:
         return (now_utc() - prev_dt_utc) >= timedelta(days=max(1, SEO_REFRESH_DAYS))
     if mode == "monthly_1":
         now_alm = now_almaty()
-        # prev_dt_utc хранится в UTC (строкой), конвертим в Алматы
         try:
             prev_alm = prev_dt_utc.astimezone(ZoneInfo("Asia/Almaty")) if ZoneInfo else datetime.utcfromtimestamp(prev_dt_utc.timestamp()+5*3600)
         except Exception:
             prev_alm = now_alm
         if now_alm.day != 1:
             return False
-        # Рефрешим, если это уже другой месяц относительно последнего обновления
         return (now_alm.year, now_alm.month) != (prev_alm.year, prev_alm.month)
     return False
 
@@ -832,7 +838,6 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
                 prev_dt_utc = None
             periodic = should_periodic_refresh(prev_dt_utc)
             if prev_cs == checksum and not periodic:
-                # ничего не меняем — используем кеш
                 lead_html   = ent.get("lead_html", lead_html)
                 faq_html    = ent.get("faq_html", faq_html)
                 reviews_html= ent.get("reviews_html", reviews_html)
@@ -932,7 +937,7 @@ def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
         added += 1
     return (added, skipped)
 
-# ======================= AVAILABILITY / IDS / ORDER / KEYWORDS (без изменений) =======================
+# ======================= AVAILABILITY / IDS / ORDER / KEYWORDS =======================
 TRUE_WORDS={"true","1","yes","y","да","есть","in stock","available"}
 FALSE_WORDS={"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 def _parse_bool_str(s: str)->Optional[bool]:
@@ -1064,6 +1069,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
+# ======================= KEYWORDS =======================
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
 STOPWORDS_RU = {"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","о","об","у","без","про","как","это","той","тот","эта","эти",
                 "бумага","бумаги","бумаг","черный","чёрный","белый","серый","цвет","оригинальный","комплект","набор","тип","модель","модели","формат","новый","новинка"}
@@ -1213,50 +1219,6 @@ def render_feed_meta_comment(pairs:Dict[str,str]) -> str:
     lines=["FEED_META"]+[f"{k.ljust(key_w)} | {v}" for k,v in rows]
     return "\n".join(lines)
 
-def reorder_offer_children(shop_el: ET.Element) -> int:
-    offers_el=shop_el.find("offers")
-    if offers_el is None: return 0
-    changed=0
-    for offer in offers_el.findall("offer"):
-        children=list(offer)
-        if not children: continue
-        buckets={k:[] for k in DESIRED_ORDER}; others=[]
-        for node in children: (buckets[node.tag] if node.tag in buckets else others).append(node)
-        rebuilt=[*sum((buckets[k] for k in DESIRED_ORDER), []), *others]
-        if rebuilt!=children:
-            for node in children: offer.remove(node)
-            for node in rebuilt: offer.append(node)
-            changed+=1
-    return changed
-
-def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
-    offers_el=shop_el.find("offers")
-    if offers_el is None: return 0
-    touched=0
-    for offer in offers_el.findall("offer"):
-        remove_all(offer,"currencyId")
-        ET.SubElement(offer,"currencyId").text=default_code; touched+=1
-    return touched
-
-def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
-    offers_el=shop_el.find("offers")
-    if offers_el is None: return 0
-    touched=0
-    for offer in offers_el.findall("offer"):
-        remove_all(offer,"categoryId","CategoryId")
-        cid=ET.Element("categoryId"); cid.text=os.getenv("CATEGORY_ID_DEFAULT","0")
-        offer.insert(0,cid); touched+=1
-    return touched
-
-def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
-    def repl(m):
-        inner = m.group(1)
-        inner = inner.replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
-        inner = _unescape(inner)
-        inner = _html_escape_in_cdata_safe(inner)
-        return f"<description><![CDATA[\n{inner}\n]]></description>"
-    return re.sub(r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>", repl, xml_text, flags=re.S)
-
 def main()->None:
     log(f"Source: {SUPPLIER_URL or '(not set)'}")
     data=load_source_bytes(SUPPLIER_URL)
@@ -1318,7 +1280,27 @@ def main()->None:
     fix_currency_id(out_shop, default_code="KZT")
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
-    reorder_offer_children(out_shop); ensure_categoryid_zero_first(out_shop)
+
+    # Упорядочивание блоков, categoryId=0 в начало
+    DESIRED_ORDER=["vendorCode","name","price","picture","vendor","currencyId","description"]
+    def reorder_offer_children(shop_el: ET.Element) -> int:
+        offers_el=shop_el.find("offers")
+        if offers_el is None: return 0
+        changed=0
+        for offer in offers_el.findall("offer"):
+            children=list(offer)
+            if not children: continue
+            buckets={k:[] for k in DESIRED_ORDER}; others=[]
+            for node in children: (buckets[node.tag] if node.tag in buckets else others).append(node)
+            rebuilt=[*sum((buckets[k] for k in DESIRED_ORDER), []), *others]
+            if rebuilt!=children:
+                for node in children: offer.remove(node)
+                for node in rebuilt: offer.append(node)
+                changed+=1
+        return changed
+
+    reorder_offer_children(out_shop)
+    ensure_categoryid_zero_first(out_shop)
 
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
