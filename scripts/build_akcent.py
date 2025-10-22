@@ -12,7 +12,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.7.3-descfix-specs"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.7.4-universal-compat"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -88,7 +88,7 @@ def inner_html(el: ET.Element) -> str:
         if ch.tail: parts.append(ch.tail)
     return "".join(parts).strip()
 def _html_escape_in_cdata_safe(s: str) -> str:
-    # не экранируем теги; только защищаем CDATA от "]]>"
+    # оставляем HTML-теги нетронутыми; защищаем только "]]>"
     return (s or "").replace("]]>", "]]&gt;")
 def get_text(el: ET.Element, tag: str) -> str:
     node = el.find(tag); return (node.text or "").strip() if node is not None and node.text else ""
@@ -368,7 +368,7 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
             changed+=1
     return changed
 
-# ===================== DETECT KIND =====================
+# ===================== DETECT KIND (для текстов SEO/FAQ) =====================
 def detect_kind(name: str) -> str:
     n=(name or "").lower()
     if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
@@ -421,15 +421,14 @@ def autocorrect_minor_typos_in_html(html_text: str) -> str:
     s = re.sub(r"SureColor\s+SC-\s*P", "SureColor SC-P", s)
     s = re.sub(r"(\d)\s*мл\b", r"\1 мл", s, flags=re.I)
     s = re.sub(r"[ ]{2,}", " ", s)
-    s = re.sub(r'\s*style="[^"]*"', "", s)  # убираем инлайн-стили
-    # убираем эмодзи/пиктограммы
+    s = re.sub(r'\s*style="[^"]*"', "", s)
     s = re.sub(r"[\U0001F300-\U0001FAFF\U00002700-\U000027BF\U00002600-\U000026FF]+", "", s)
     return s
 
 def _html_to_text(desc_html: str) -> str:
     t = re.sub(r"<br\s*/?>", "\n", desc_html or "", flags=re.I)
     t = re.sub(r"</p\s*>", "\n", t, flags=re.I)
-    t = re.sub(r"<a\b[^>]*>.*?</a>", "", t, flags=re.I|re.S)   # «подробнее» вырезаем
+    t = re.sub(r"<a\b[^>]*>.*?</a>", "", t, flags=re.I|re.S)
     t = re.sub(r"<[^>]+>", " ", t)
     t = t.replace("\u00A0"," ")
     t = re.sub(r"[ \t]+\n", "\n", t)
@@ -441,6 +440,8 @@ KV_KEYS_MAP = {
     # картриджи
     "вид":"Вид","назначение":"Назначение","цвет печати":"Цвет печати",
     "поддерживаемые модели принтеров":"Совместимость","совместимость":"Совместимость",
+    # + пара синонимов часто встречается у поставщиков
+    "подходит для моделей":"Совместимость","совместимые модели":"Совместимость","для моделей":"Совместимость",
     "ресурс":"Ресурс","технология печати":"Технология печати","тип":"Тип",
     # сканеры
     "устройство":"Устройство","сканирование с планшета":"Тип сканирования","тип датчика":"Тип датчика",
@@ -601,7 +602,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
     raw_text=re.sub(r"<[^>]+>"," ", re.sub(r"<br\s*/?>","\n",autocorrect_minor_typos_in_html(desc_html) or "", flags=re.I))
     kind=detect_kind(name)
 
-    # NEW: если не распознали по name — пробуем по «родному» тексту
+    # детекция kind только для текста SEO/FAQ; «Характеристики» это не трогает
     low_all=(name or "").lower()+"\n"+raw_text.lower()
     if kind=="other":
         if ("картридж" in low_all) or ("тонер" in low_all) or ("чернила" in low_all):
@@ -649,7 +650,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
         if re.search(r"\b(a4|а4)\b",low): bullets.append("Максимальный формат — A4")
         if re.search(r"\busb\b",low) or "интерфейс usb" in low: bullets.append("Подключение — USB")
         bullets.append("Подходит для дома и офиса")
-    elif kind in ("mfp"):
+    elif kind=="mfp":
         if re.search(r"\b\d+\s*стр/мин|\bppm\b",low): bullets.append("Скорость печати — комфортная для офиса")
         if re.search(r"\bдвусторонняя\b|\bдуплекс\b",low): bullets.append("Двусторонняя печать (см. характеристики)")
         if re.search(r"\bwi[-\s]?fi\b|\busb\b",low): bullets.append("Подключение — USB/Wi-Fi (см. характеристики)")
@@ -657,7 +658,9 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
     else:
         bullets.append("Практичное решение для повседневных задач")
 
-    compat = extract_full_compatibility(desc_html) if kind=="cartridge" else ""
+    # Универсально: если в родном описании реально прослеживается совместимость — покажем
+    compat = extract_full_compatibility(desc_html)
+
     lead=[]
     lead.append(f"<h3>{_html_escape_in_cdata_safe(title)}</h3>")
     p_line={"cartridge":"Стабильная печать и предсказуемый ресурс.",
@@ -759,7 +762,7 @@ def inject_seo_descriptions(out_shop: ET.Element) -> Tuple[int,str,int,int,int]:
         if removed_links>0: native_cleaned += 1
         specs_html = render_specs_html(kv_specs) if kv_specs else ""
 
-        # построили SEO-вступление/FAQ/Отзывы (с учетом корректного kind)
+        # построили SEO-вступление/FAQ/Отзывы (kind только для текстов)
         lead_html, faq_html, reviews_html, kind = build_lead_faq_reviews(offer)
 
         checksum=compute_seo_checksum(name, kind, raw_html)
