@@ -5,13 +5,13 @@ import os, sys, re, time, random, json, hashlib, urllib.parse, requests, html
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
 from xml.etree import ElementTree as ET
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
 try:
     from zoneinfo import ZoneInfo
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.native-fulltext-sanitize.v1.2.1"
+SCRIPT_VERSION = "akcent-2025-10-22.native-fulltext-sanitize.v1.2.2"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -271,7 +271,7 @@ def strip_supplier_price_blocks(offer: ET.Element):
     for tag in INTERNAL_PRICE_TAGS: remove_all(offer, tag)
 
 def reprice_offers(out_shop:ET.Element,rules:List[PriceRule])->None:
-    off_el=out_shop.find("offers")
+    off_el=out_shop.find("offers"); 
     if off_el is None: return
     for offer in off_el.findall("offer"):
         if offer.attrib.get("_force_price","")=="100":
@@ -406,39 +406,19 @@ KV_KEYS_MAP = {
 
 def sanitize_supplier_html(raw_html: str) -> str:
     s = raw_html or ""
-
-    # убрать emoji
-    s = re.sub(r"[\U0001F300-\U0001FAFF\U00002700-\U000027BF\U00002600-\U000026FF]+", "", s)
-
-    # убрать опасные/лишние блоки
+    s = re.sub(r"[\U0001F300-\U0001FAFF\U00002700-\U000027BF\U00002600-\U000026FF]+", "", s)  # emoji
     s = re.sub(r"<(script|style|iframe|object|embed|noscript)[^>]*>.*?</\1>", " ", s, flags=re.I|re.S)
-
-    # развернуть ссылки в текст
     s = re.sub(r"<a\b[^>]*>", "", s, flags=re.I); s = re.sub(r"</a>", "", s, flags=re.I)
-
-    # удалить таблицы, но оставить их содержимое
     s = re.sub(r"</?(table|thead|tbody|tr|td|th)[^>]*>", " ", s, flags=re.I)
-
-    # унифицировать <br>
     s = re.sub(r"<br\s*/?>", "<br>", s, flags=re.I)
-
-    # заголовки → h3
     s = re.sub(r"<h[1-6][^>]*>", "<h3>", s, flags=re.I); s = re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
-
-    # двойные <br> → новый абзац
     s = re.sub(r"(\s*<br>\s*){2,}", "</p><p>", s, flags=re.I)
-
-    # разрешённые теги без атрибутов; остальное — в пробел
     s = re.sub(r"<(p|ul|ol|li|h3|br)(\s+[^>]*)?>", r"<\1>", s, flags=re.I)
     s = re.sub(r"</?(?!p|ul|ol|li|h3|br)\w+[^>]*>", " ", s, flags=re.I)
-
-    # чистка пустых блоков
     s = re.sub(r"<(p|li|ul|ol|h3)>\s*</\1>", "", s, flags=re.I)
     s = re.sub(r"\s{2,}", " ", s).strip()
-
     if s and not re.match(r"^\s*<", s):
         s = f"<p>{_html_escape_in_cdata_safe(s)}</p>"
-
     s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s, flags=re.I)
     return s.strip()
 
@@ -454,23 +434,37 @@ def _html_to_text(desc_html: str) -> str:
     t = re.sub(r"\n{3,}", "\n\n", t)
     return t.strip()
 
+def _dedupe_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
+    best: Dict[str,str] = {}
+    for k,v in specs:
+        if not v: continue
+        v=v.strip(" .;—-")
+        if not v or v.lower() in {"нет","-","—"}: continue
+        old=best.get(k)
+        if not old or len(v)>len(old):
+            best[k]=v
+    return [(k,best[k]) for k in best]
+
 def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[Tuple[str,str]], str]:
+    """
+    Достаём характеристики из текста поставщика.
+    Работают оба режима:
+    1) построчно (если ключ в начале строки)
+    2) ИНЛАЙН (если ключи идут в одном абзаце подряд: «Вид струйный Назначение ... Ресурс 700 мл»)
+    """
     txt = _html_to_text(desc_html)
+
+    # 1) Построчный режим (как было)
     lines_raw=[]
     for l in [l.strip() for l in txt.split("\n")]:
-        if not l:
-            lines_raw.append("")
-            continue
-        if URL_RE.search(l) or MORE_PHRASES_RE.match(l):
-            continue
+        if not l: lines_raw.append(""); continue
+        if URL_RE.search(l) or MORE_PHRASES_RE.match(l): continue
         lines_raw.append(l)
 
     def _norm(s:str)->str:
-        s=(s or "").lower()
-        s=re.sub(r"[\s\-–—:;,.]+"," ", s)
-        return s.strip()
+        s=(s or "").lower(); s=re.sub(r"[\s\-–—:;,.]+"," ", s); return s.strip()
 
-    if lines_raw and _norm(lines_raw[0]) and product_name and _norm(lines_raw[0])==_norm(product_name):
+    if lines_raw and product_name and _norm(lines_raw[0])==_norm(product_name):
         lines_raw=lines_raw[1:]
 
     map_keys = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
@@ -487,14 +481,10 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
     bundle_items: List[str]=[]
     out_lines=[]
     i=0
-
     while i < len(lines_raw):
         line = lines_raw[i].strip()
         if not line:
-            out_lines.append("")
-            i+=1
-            continue
-
+            out_lines.append(""); i+=1; continue
         kv1 = try_split_kv(line)
         if kv1:
             label, value = kv1
@@ -505,23 +495,17 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
                     specs.append((label, value))
-            i+=1
-            continue
+            i+=1; continue
 
         key_raw = line.strip(":").lower()
         label = KV_KEYS_MAP.get(key_raw)
         if label:
-            i+=1
-            vals=[]
+            i+=1; vals=[]
             while i < len(lines_raw):
                 nxt=lines_raw[i].strip()
-                if not nxt:
-                    i+=1
-                    continue
-                if KV_KEYS_MAP.get(nxt.strip(":").lower()) or try_split_kv(nxt):
-                    break
-                vals.append(nxt)
-                i+=1
+                if not nxt: i+=1; continue
+                if KV_KEYS_MAP.get(nxt.strip(":").lower()) or try_split_kv(nxt): break
+                vals.append(nxt); i+=1
             value=" ".join(vals).strip()
             if label=="Комплектация":
                 for v in re.split(r"[;,\n]+", value):
@@ -532,32 +516,58 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
                     specs.append((label, value))
             continue
 
-        out_lines.append(line)
-        i+=1
+        out_lines.append(line); i+=1
 
+    # 2) ИНЛАЙН режим — ищем ключи внутри одного абзаца и режем по позициям
+    keys_sorted = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
+    key_pattern = r"(?i)\b(" + "|".join(re.escape(k) for k in keys_sorted) + r")\b"
+    matches = list(re.finditer(key_pattern, txt))
+    for idx, m in enumerate(matches):
+        raw_key = m.group(1).lower()
+        label = KV_KEYS_MAP.get(raw_key)
+        if not label: continue
+        start = m.end()
+        end   = matches[idx+1].start() if idx+1 < len(matches) else len(txt)
+        value = txt[start:end].strip(" \t:—-.,;")
+        # обрезаем «хвосты» по явным разделителям, если они вдруг «съели» следующий ключ без матча
+        # но не урезаем списки совместимости с запятыми
+        value = re.sub(r"\s{2,}", " ", value)
+        # защитимся от слишком длинных хвостов (оставим до 600 символов)
+        value = value[:600].strip()
+        if not value or value.lower() in {"нет","-","—"}: continue
+        if label=="Комплектация":
+            for v in re.split(r"[;,\n]+", value):
+                v=v.strip(" .;")
+                if v: bundle_items.append(v)
+        else:
+            specs.append((label, value))
+
+    # собираем «Комплектацию»
     if bundle_items:
         bundle="; ".join(dict.fromkeys([b for b in bundle_items if b]))
         if bundle:
             specs.append(("Комплектация", bundle))
 
+    # дедуп по ключам (берём самое содержательное значение)
+    specs = _dedupe_specs(specs)
+
     native_plain="\n".join([ln for ln in out_lines if ln.strip()]).strip()
     return specs, native_plain
 
 def render_specs_html(specs: List[Tuple[str,str]]) -> str:
-    if not specs:
-        return ""
+    if not specs: return ""
     important_order = [
+        "Тип","Назначение","Цвет печати","Совместимость","Ресурс","Технология печати",
         "Тип сканирования","Тип датчика","Подсветка","Оптическое разрешение","Интерполяция",
         "Глубина цвета","Макс. формат","Скорость сканирования","Подключение","Wi-Fi","FireWire",
         "Тип печати","Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Формат",
         "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
         "Мощность","Стабилизация AVR","Стабилизация","Розетки",
-        "Совместимость","Комплектация",
+        "Комплектация",
     ]
     order_idx = {k:i for i,k in enumerate(important_order)}
     filtered=[(k,v) for k,v in specs if k!="Комплектация" and v]
-    if not filtered:
-        return ""
+    if not filtered: return ""
     specs_sorted = sorted(filtered, key=lambda it:(order_idx.get(it[0], 999), it[0]))
     out=["<h3>Характеристики</h3>","<ul>"]
     for k,v in specs_sorted:
@@ -569,44 +579,34 @@ def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
     for k,v in specs:
         if k=="Комплектация" and v:
             items=[it.strip() for it in re.split(r"[;,\n]+", v) if it.strip()]
-            if not items:
-                return ""
+            if not items: return ""
             out=["<h3>Состав поставки</h3>","<ul>"]
-            for it in items:
-                out.append(f"  <li>{_html_escape_in_cdata_safe(it)}</li>")
+            for it in items: out.append(f"  <li>{_html_escape_in_cdata_safe(it)}</li>")
             out.append("</ul>")
             return "\n".join(out)
     return ""
 
-# =========== PARAMS: записываем характеристики в <param> ===========
+# =========== PARAMS ===========
 def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> int:
-    for pn in list(offer.findall("param")):
-        offer.remove(pn)
-    if not specs:
-        return 0
-
+    for pn in list(offer.findall("param")): offer.remove(pn)
+    if not specs: return 0
     important_order = [
+        "Тип","Назначение","Цвет печати","Совместимость","Ресурс","Технология печати",
         "Тип сканирования","Тип датчика","Подсветка","Оптическое разрешение","Интерполяция",
         "Глубина цвета","Макс. формат","Скорость сканирования","Подключение","Wi-Fi","FireWire",
         "Тип печати","Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Формат",
         "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
         "Мощность","Стабилизация AVR","Стабилизация","Розетки",
-        "Совместимость","Комплектация",
+        "Комплектация",
     ]
     order_idx={k:i for i,k in enumerate(important_order)}
     specs_sorted=sorted([(k,v) for k,v in specs if v], key=lambda it:(order_idx.get(it[0],999), it[0]))
-
     added=0
     for k,v in specs_sorted:
         val=(v or "").strip()
-        if not val:
-            continue
-        if len(val) > PARAMS_MAX_VALUE_LEN:
-            val = val[:PARAMS_MAX_VALUE_LEN-1] + "…"
-        node=ET.SubElement(offer,"param")
-        node.set("name", k)
-        node.text=val
-        added+=1
+        if not val: continue
+        if len(val)>PARAMS_MAX_VALUE_LEN: val = val[:PARAMS_MAX_VALUE_LEN-1] + "…"
+        node=ET.SubElement(offer,"param"); node.set("name", k); node.text=val; added+=1
     return added
 
 # ===================== KEYWORDS =====================
@@ -680,22 +680,6 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
         res.append(p); total+=len(add)
     return ", ".join(res)
 
-def ensure_keywords(out_shop: ET.Element) -> int:
-    off_el=out_shop.find("offers")
-    if off_el is None: return 0
-    touched=0
-    for offer in off_el.findall("offer"):
-        kw=build_keywords_for_offer(offer)
-        node=offer.find("keywords")
-        if not kw:
-            if node is not None: offer.remove(node)
-            continue
-        if node is None:
-            node=ET.SubElement(offer,"keywords"); node.text=kw; touched+=1
-        else:
-            if (node.text or "")!=kw: node.text=kw; touched+=1
-    return touched
-
 # ===================== VENDORCODE / ARTICLE HELPERS =====================
 ARTICUL_RE = re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
 
@@ -726,8 +710,7 @@ def ensure_vendorcode_with_article(out_shop: ET.Element, prefix: str, create_if_
     for offer in off_el.findall("offer"):
         vc = offer.find("vendorCode")
         if vc is None:
-            if not create_if_missing:
-                continue
+            if not create_if_missing: continue
             vc = ET.SubElement(offer, "vendorCode"); vc.text = ""
         old = (vc.text or "").strip()
         if (old == "") or (old.upper() == prefix.upper()):
@@ -805,14 +788,12 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
     """
     <description> = <h3>{name}</h3> + ПОЛНЫЙ, санитизированный HTML поставщика
                     + (если нет в тексте) 'Состав поставки'
-                    + (если есть пары К:Зн и нет явного блока) 'Характеристики'
-    Возвращает: (изменено описаний, добавлено param)
+                    + (если нашли пары) 'Характеристики'
     """
     off_el=out_shop.find("offers")
     if off_el is None: return (0,0)
 
-    changed=0
-    params_added_total=0
+    changed=0; params_added_total=0
 
     for offer in off_el.findall("offer"):
         name=get_text(offer,"name")
@@ -833,6 +814,7 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
         if bundle_html and not has_bundle_in_supplier: parts.append(bundle_html)
 
         specs_html = render_specs_html(specs)
+        # если есть хоть одна пара — показываем блок (если его нет у поставщика, чтобы не дублировать)
         if specs_html and not has_specs_in_supplier: parts.append(specs_html)
 
         full_html = "\n".join([p for p in parts if p]).strip()
@@ -851,13 +833,11 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
 def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
     def repl(m):
         inner=m.group(1).replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
-        inner = html.unescape(inner)  # разэкранировать, чтобы рендерилось как HTML
+        inner = html.unescape(inner)
         return f"<description><![CDATA[\n{inner}\n]]></description>"
     return re.sub(
         r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>",
-        repl,
-        xml_text,
-        flags=re.S
+        repl, xml_text, flags=re.S
     )
 
 # ===================== MAIN =====================
@@ -878,14 +858,14 @@ def main()->None:
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
-    # копируем офферы как есть
+    # копируем офферы
     for o in src_offers:
         mod=deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
         out_offers.append(mod)
 
-    # фильтр по именам
+    # фильтр имен (как было)
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
@@ -895,7 +875,7 @@ def main()->None:
             drop=(AKCENT_KEYWORDS_MODE=="exclude" and hit) or (AKCENT_KEYWORDS_MODE=="include" and not hit)
             if drop: out_offers.remove(off)
 
-    # цены/бренды/плейсхолдеры
+    # базовая нормализация
     flag_unrealistic_supplier_prices(out_shop)
     ensure_vendor(out_shop)
     ensure_vendorcode_with_article(
@@ -906,7 +886,7 @@ def main()->None:
     reprice_offers(out_shop, PRICING_RULES)
     ensure_placeholder_pictures(out_shop)
 
-    # описания: полный текст поставщика + аккуратная верстка
+    # описания
     desc_changed, params_added = rebuild_descriptions_preserve_supplier(out_shop)
 
     t_true, t_false = normalize_available_field(out_shop)
@@ -921,36 +901,48 @@ def main()->None:
 
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
+
+    # keywords
     ensure_keywords(out_shop)
 
     built_alm=now_almaty()
-    meta = (
+    meta_pairs={
+        "supplier": SUPPLIER_NAME,
+        "source": SUPPLIER_URL,
+        "offers_total": len(src_offers),
+        "offers_written": len(list(out_offers.findall("offer"))),
+        "available_true": str(t_true),
+        "available_false": str(t_false),
+        "built_alm": format_dt_almaty(built_alm),
+        "script": SCRIPT_VERSION,
+        "descriptions_changed": str(desc_changed),
+        "params_added": str(params_added),
+    }
+    # FEED_META — вернул в прежний формат
+    out_root.insert(0, ET.Comment(
         "FEED_META\n"
-        f"Поставщик               | {SUPPLIER_NAME}\n"
-        f"URL поставщика         | {SUPPLIER_URL}\n"
-        f"Время сборки (Алматы)  | {format_dt_almaty(built_alm)}\n"
-        f"Товаров до фильтра     | {len(src_offers)}\n"
-        f"Товаров после фильтра  | {len(list(out_offers.findall('offer')))}\n"
-        f"В наличии (true)       | {t_true}\n"
-        f"Нет в наличии (false)  | {t_false}\n"
-        f"Скрипт                 | {SCRIPT_VERSION}\n"
-        f"Descriptions changed   | {desc_changed}\n"
-        f"Params added           | {params_added}"
-    )
-    out_root.insert(0, ET.Comment(meta))
+        f"Поставщик                  | {meta_pairs['supplier']}\n"
+        f"URL поставщика            | {meta_pairs['source']}\n"
+        f"Время сборки (Алматы)     | {meta_pairs['built_alm']}\n"
+        f"Товаров до фильтра        | {meta_pairs['offers_total']}\n"
+        f"Товаров после фильтра     | {meta_pairs['offers_written']}\n"
+        f"В наличии (true)          | {meta_pairs['available_true']}\n"
+        f"Нет в наличии (false)     | {meta_pairs['available_false']}\n"
+        f"Скрипт                    | {meta_pairs['script']}\n"
+        f"Descriptions changed      | {meta_pairs['descriptions_changed']}\n"
+        f"Params added              | {meta_pairs['params_added']}"
+    ))
 
-    # форматируем XML
     try: ET.indent(out_root, space="  ")
     except Exception: pass
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
 
-    # [[[HTML]]] → CDATA с разэкраниванием
+    # [[[HTML]]] → CDATA (разэкранировали теги)
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
     if DRY_RUN:
-        log("[DRY_RUN=1] Files not written.")
-        return
+        log("[DRY_RUN=1] Files not written."); return
 
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
     try:
