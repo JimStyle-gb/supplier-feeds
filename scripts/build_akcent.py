@@ -12,7 +12,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.6.4"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.6.5"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -160,7 +160,7 @@ def name_matches(name: str, keys: List[KeySpec]) -> bool:
         if ks.kind=="regex"  and ks.pattern and ks.pattern.search(name or ""): return True
     return False
 
-# ===================== BRAND / PRICE / AVAIL / PICS =====================
+# ===================== BRAND / PRICE / AVAIL / ORDER =====================
 def _norm_key(s: str) -> str:
     if not s: return ""
     s=s.strip().lower().replace("ё","е")
@@ -169,7 +169,7 @@ SUPPLIER_BLOCKLIST={_norm_key(x) for x in["alstyle","al-style","copyline","akcen
 UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a","китай","china")
 COMMON_BRANDS=["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","BenQ","ViewSonic","Optoma","Acer","Panasonic","Sony",
                "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum","Lenovo","Dell","ASUS","Samsung","Apple","MSI"]
-BRAND_ALIASES={"hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Конica Minolta",
+BRAND_ALIASES={"hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
                "viewsonic proj":"ViewSonic","epson proj":"Epson","epson projector":"Epson","benq proj":"BenQ",
                "hp inc":"HP","nvprint":"NV Print","nv print":"NV Print","gg":"G&G","g&g":"G&G"}
 
@@ -267,12 +267,14 @@ def strip_supplier_price_blocks(offer: ET.Element):
     remove_all(offer,"prices","Prices")
     for tag in INTERNAL_PRICE_TAGS: remove_all(offer, tag)
 
-def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->None:
-    off_el=shop_el.find("offers")
+def reprice_offers(out_shop:ET.Element,rules:List[PriceRule])->None:
+    off_el=out_shop.find("offers")
     if off_el is None: return
     for offer in off_el.findall("offer"):
         if offer.attrib.get("_force_price","")=="100":
-            strip_supplier_price_blocks(offer); _remove_all_price_nodes(offer); ET.SubElement(offer,"price").text=str(PRICE_CAP_VALUE); offer.attrib.pop("_force_price",None); continue
+            strip_supplier_price_blocks(offer); _remove_all_price_nodes(offer)
+            ET.SubElement(offer,"price").text=str(PRICE_CAP_VALUE)
+            offer.attrib.pop("_force_price",None); continue
         dealer=pick_dealer_price(offer)
         if dealer is None or dealer<=100:
             strip_supplier_price_blocks(offer); continue
@@ -281,8 +283,8 @@ def reprice_offers(shop_el:ET.Element,rules:List[PriceRule])->None:
             strip_supplier_price_blocks(offer); continue
         _remove_all_price_nodes(offer); ET.SubElement(offer,"price").text=str(int(newp)); strip_supplier_price_blocks(offer)
 
-def flag_unrealistic_supplier_prices(shop_el: ET.Element) -> int:
-    off_el=shop_el.find("offers")
+def flag_unrealistic_supplier_prices(out_shop: ET.Element) -> int:
+    off_el=out_shop.find("offers")
     if off_el is None: return 0
     flagged=0
     for offer in off_el.findall("offer"):
@@ -319,8 +321,8 @@ def derive_available(offer: ET.Element) -> bool:
             if b is not None: return b
     return False
 
-def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int]:
-    off_el=shop_el.find("offers")
+def normalize_available_field(out_shop: ET.Element) -> Tuple[int,int]:
+    off_el=out_shop.find("offers")
     if off_el is None: return (0,0)
     t=f=0
     for offer in off_el.findall("offer"):
@@ -331,16 +333,16 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int]:
         t+=1 if b else 0; f+=0 if b else 1
     return t,f
 
-def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
-    off_el=shop_el.find("offers")
+def fix_currency_id(out_shop: ET.Element, default_code: str = "KZT") -> int:
+    off_el=out_shop.find("offers")
     if off_el is None: return 0
     touched=0
     for offer in off_el.findall("offer"):
         remove_all(offer,"currencyId"); ET.SubElement(offer,"currencyId").text=default_code; touched+=1
     return touched
 
-def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
-    off_el=shop_el.find("offers")
+def ensure_categoryid_zero_first(out_shop: ET.Element) -> int:
+    off_el=out_shop.find("offers")
     if off_el is None: return 0
     touched=0
     for offer in off_el.findall("offer"):
@@ -349,8 +351,8 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         offer.insert(0,cid); touched+=1
     return touched
 
-def reorder_offer_children(shop_el: ET.Element) -> int:
-    off_el=shop_el.find("offers")
+def reorder_offer_children(out_shop: ET.Element) -> int:
+    off_el=out_shop.find("offers")
     if off_el is None: return 0
     changed=0
     for offer in off_el.findall("offer"):
@@ -363,6 +365,15 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
             for n in rebuilt:  offer.append(n)
             changed+=1
     return changed
+
+# ===================== Kind detector (single correct version) =====================
+def detect_kind(name: str) -> str:
+    n=(name or "").lower()
+    if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
+    if "ибп" in n or "ups" in n or "источник бесперебойного питания" in n: return "ups"
+    if "проектор" in n or "projector" in n: return "projector"
+    if "принтер" in n or "mfp" in n or "мфу" in n: return "mfp"
+    return "other"
 
 # ===================== K/V из «родного» + чистка =====================
 KV_KEYS_MAP = {
@@ -490,14 +501,6 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
 def split_short_name(name: str) -> str:
     s=(name or "").strip(); s=re.split(r"\s+[—-]\s+", s, maxsplit=1)[0]
     return s if len(s)<=80 else s[:77]+"..."
-
-def detect_kind(name: str) -> str:
-    n=(name or "").lower()
-    if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
-    if ("ибп" in n) or ("ups" in n) or ("источник бесперебойного питания" in n): return "ups"
-    if "проектор" in n or "projector" in n: return "projector"
-    if "принтер" in n or "mfp" in n) or ("мфу" in n): return "mfp"
-    return "other"
 
 def _split_joined_models(s: str) -> List[str]:
     for bw in BRAND_WORDS:
@@ -635,8 +638,8 @@ def compute_seo_checksum(name: str, kind: str, desc_html: str) -> str:
     base="|".join([name or "", kind or "", hashlib.md5((desc_html or "").encode("utf-8")).hexdigest()])
     return hashlib.md5(base.encode("utf-8")).hexdigest()
 
-def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str,int,int,int]:
-    off_el=shop_el.find("offers")
+def inject_seo_descriptions(out_shop: ET.Element) -> Tuple[int,str,int,int,int]:
+    off_el=out_shop.find("offers")
     if off_el is None: return 0,"",0,0,0
     cache=load_seo_cache(SEO_CACHE_PATH) if SEO_STICKY else {}
     changed=0; specs_added=0; native_cleaned=0; links_removed_total=0
@@ -774,8 +777,8 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
         res.append(p); total+=len(add)
     return ", ".join(res)
 
-def ensure_keywords(shop_el: ET.Element) -> int:
-    off_el=shop_el.find("offers")
+def ensure_keywords(out_shop: ET.Element) -> int:
+    off_el=out_shop.find("offers")
     if off_el is None: return 0
     touched=0
     for offer in off_el.findall("offer"):
@@ -808,8 +811,8 @@ def _normalize_code(s:str)->str:
     s=re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
     return re.sub(r"[^A-Za-z0-9\-]+","",s).upper()
 
-def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missing:bool=False)->None:
-    off_el=shop_el.find("offers")
+def ensure_vendorcode_with_article(out_shop:ET.Element,prefix:str,create_if_missing:bool=False)->None:
+    off_el=out_shop.find("offers")
     if off_el is None: return
     for offer in off_el.findall("offer"):
         vc=offer.find("vendorCode")
@@ -827,8 +830,8 @@ def ensure_vendorcode_with_article(shop_el:ET.Element,prefix:str,create_if_missi
             if art: vc.text=art
         vc.text=f"{prefix}{(vc.text or '')}"
 
-def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> None:
-    off_el=shop_el.find("offers")
+def sync_offer_id_with_vendorcode(out_shop: ET.Element) -> None:
+    off_el=out_shop.find("offers")
     if off_el is None: return
     for offer in off_el.findall("offer"):
         vc=offer.find("vendorCode")
@@ -873,9 +876,9 @@ def _slug(s: str) -> str:
 def _placeholder_url_brand(vendor: str) -> str: return f"{PLACEHOLDER_BRAND_BASE}/{_slug(vendor)}.{PLACEHOLDER_EXT}"
 def _placeholder_url_category(kind: str) -> str: return f"{PLACEHOLDER_CATEGORY_BASE}/{kind}.{PLACEHOLDER_EXT}"
 
-def ensure_placeholder_pictures(shop_el: ET.Element) -> int:
+def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
     if not PLACEHOLDER_ENABLE: return 0
-    off_el=shop_el.find("offers")
+    off_el=out_shop.find("offers")
     if off_el is None: return 0
     added=0
     for offer in off_el.findall("offer"):
