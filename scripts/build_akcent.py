@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.2.5"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.2.6"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -484,7 +484,7 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
             label, value = kv1
             if label=="Комплектация":
                 if value:
-                    v=value.strip(" .;"); 
+                    v=value.strip(" .;")
                     if v: bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
@@ -512,7 +512,7 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
 
         out_lines.append(line); i+=1
 
-    # 2) ИНЛАЙН (ключи внутри одного абзаца)
+    # 2) Инлайн-ключи внутри абзацев
     keys_sorted = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
     if keys_sorted:
         key_pattern = r"(?i)\b(" + "|".join(re.escape(k) for k in keys_sorted) + r")\b"
@@ -575,35 +575,53 @@ def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
             return "\n".join(out)
     return ""
 
-# --- вырезаем намёки на характеристики из текста поставщика ---
+# --- аккуратно убираем «хвост» характеристик из текста поставщика ---
 def strip_specs_from_supplier_html(s: str) -> str:
-    if not s: return s
-    s0 = s
+    if not s:
+        return s
 
-    # 1) убрать заголовки блоков характеристик/комплектации с примыкающим списком
-    s = re.sub(
+    # набор ключей
+    keys = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
+    key_re = re.compile(r"(?i)\b(" + "|".join(re.escape(k) for k in keys) + r")\b")
+
+    out = s
+
+    # 1) заголовки «Характеристики/Комплектация» с примыкающими списками/абзацами
+    out = re.sub(
         r"(?is)<h3>\s*(технические характеристики|характеристики|состав поставки|комплектация)\s*</h3>\s*(<(?:ul|ol)[^>]*>.*?</(?:ul|ol)>|<p>.*?</p>)?",
-        "", s, flags=re.I
+        "",
+        out,
+        flags=re.I
     )
 
-    # 2) удалить <p>/<li>, начинающиеся с ключа (Вид, Назначение, Ресурс, ...)
-    keys = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
-    key_re = r"(?:" + "|".join(re.escape(k) for k in keys) + r")"
-    s = re.sub(rf"(?is)<(p|li)>\s*{key_re}\b.*?</\1>", "", s)
+    # 2) удаляем <li>, начинающиеся с ключа
+    out = re.sub(rf"(?is)<li>\s*{key_re.pattern}\b.*?</li>", "", out)
 
-    # 3) удалить абзацы, где встречается >=2 ключей подряд (инлайн-списки)
-    def _drop_if_many_keys(m):
-        inner=m.group(0)
-        if len(re.findall(key_re, inner, flags=re.I)) >= 2:
+    # 3) в каждом <p> оставляем только базовый текст до первого ключа
+    def _clean_p(m: re.Match) -> str:
+        full = m.group(0)
+        inner = m.group(1) or ""
+
+        # ключ прямо в начале — выпиливаем абзац
+        if re.match(rf"^\s*{key_re.pattern}", inner):
             return ""
-        return inner
-    s = re.sub(r"(?is)<p>.*?</p>", _drop_if_many_keys, s)
 
-    # 4) подчистить пустые контейнеры/мусор
-    s = re.sub(r"(?is)<(p|li|ul|ol)>\s*</\1>", "", s)
-    s = re.sub(r"\s{2,}", " ", s).strip()
-    s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s)
-    return s or s0
+        km = key_re.search(inner)
+        if not km:
+            return full  # ключей нет — оставляем
+
+        keep = inner[:km.start()].rstrip(" ,;:—-")
+        if not re.search(r"[A-Za-zА-Яа-яЁё0-9]", keep):
+            return ""
+        return f"<p>{keep}</p>"
+
+    out = re.sub(r"(?is)<p>(.*?)</p>", _clean_p, out)
+
+    # 4) подчистка
+    out = re.sub(r"(?is)<(p|li|ul|ol)>\s*</\1>", "", out)
+    out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out)
+    out = re.sub(r"\s{2,}", " ", out).strip()
+    return out
 
 # =========== PARAMS ===========
 def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> int:
@@ -665,8 +683,7 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     name=get_text(offer,"name"); vendor=get_text(offer,"vendor").strip()
     desc_html=inner_html(offer.find("description"))
     base=[vendor] if vendor else []
-    raw_tokens=tokenize(name or ""
-    )
+    raw_tokens=tokenize(name or "")
     modelish=[t for t in raw_tokens if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t)]
     content=[t for t in raw_tokens if is_content_word(t)]
     bigr=[]
@@ -823,7 +840,7 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
 # ===================== DESCRIPTION REBUILD =====================
 def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,int]:
     """
-    <description> = <h3>{name}</h3> + очищенный текст поставщика (без характеристик/комплектации)
+    <description> = <h3>{name}</h3> + очищенный текст поставщика (без «хвостов» характеристик)
                     + (если нашли пары) 'Состав поставки'
                     + (если нашли пары) 'Характеристики'
     """
@@ -840,7 +857,7 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
         supplier_html = sanitize_supplier_html(raw_html)
         specs, _ = extract_kv_specs_and_text(raw_html, name)
 
-        # удаляем намёки на характеристики из родного описания:
+        # вырезаем характеристики из родного описания
         supplier_html = strip_specs_from_supplier_html(supplier_html)
 
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
