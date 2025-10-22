@@ -12,7 +12,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.6.6-descfix"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.7.0-descfix"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -119,7 +119,7 @@ def load_source_bytes(src: str) -> bytes:
             if i<RETRIES: time.sleep(back)
     raise RuntimeError(f"fetch failed: {last}")
 
-# ===================== NAME FILTER (EARLY) =====================
+# ===================== NAME FILTER =====================
 class KeySpec:
     __slots__=("raw","kind","norm","pattern")
     def __init__(self, raw: str, kind: str, norm: Optional[str], pattern: Optional[re.Pattern]):
@@ -366,19 +366,47 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
             changed+=1
     return changed
 
-# ===================== Kind detector (single correct version) =====================
+# ===================== Kind detector (расширено для scanner) =====================
 def detect_kind(name: str) -> str:
     n=(name or "").lower()
     if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
     if "ибп" in n or "ups" in n or "источник бесперебойного питания" in n: return "ups"
-    if "сканер" in n or "scanner" in n: return "scanner"                      # NEW: детект сканера
+    if "сканер" in n or "scanner" in n: return "scanner"
     if "проектор" in n or "projector" in n: return "projector"
     if "принтер" in n or "mfp" in n or "мфу" in n: return "mfp"
     return "other"
 
-# ===================== K/V из «родного» + чистка (описание) =====================
+# ===================== Чистка HTML для описаний =====================
+def autocorrect_minor_typos_in_html(html_text: str) -> str:
+    s = html_text or ""
+    # декодируем html-сущности (чтобы поймать эмодзи как символы)
+    s = _unescape(s)
+    # правки опечаток
+    s = re.sub(r"\bвысококачетсвенную\b", "высококачественную", s, flags=re.I)
+    s = re.sub(r"\bприентеров\b", "принтеров", s, flags=re.I)
+    s = re.sub(r"\bSC-\s*P(\d{3,4}\b)", r"SC-P\1", s)
+    s = re.sub(r"SureColor\s+SC-\s*P", "SureColor SC-P", s)
+    s = re.sub(r"(\d)\s*мл\b", r"\1 мл", s, flags=re.I)
+    s = re.sub(r"[ ]{2,}", " ", s)
+    # убрать инлайн-стили
+    s = re.sub(r'\s*style="[^"]*"', "", s)
+    # убрать эмодзи/пиктограммы (диапазоны Unicode)
+    s = re.sub(r"[\U0001F300-\U0001FAFF\U00002700-\U000027BF\U00002600-\U000026FF]+", "", s)
+    return s
+
+def _html_to_text(desc_html: str) -> str:
+    t = re.sub(r"<br\s*/?>", "\n", desc_html or "", flags=re.I)
+    t = re.sub(r"</p\s*>", "\n", t, flags=re.I)
+    t = re.sub(r"<a\b[^>]*>.*?</a>", "", t, flags=re.I|re.S)   # ссылки «Подробнее…» вырезаем
+    t = re.sub(r"<[^>]+>", " ", t)
+    t = t.replace("\u00A0"," ")
+    t = re.sub(r"[ \t]+\n", "\n", t)
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t.strip()
+
+# ===================== K/V карты для «Характеристик» =====================
 KV_KEYS_MAP = {
-    # базовые (были)
+    # картриджи / расходники
     "вид":"Вид",
     "назначение":"Назначение",
     "цвет печати":"Цвет печати",
@@ -388,7 +416,7 @@ KV_KEYS_MAP = {
     "технология печати":"Технология печати",
     "тип":"Тип",
 
-    # сканеры (добавлено)
+    # сканеры
     "устройство":"Устройство",
     "сканирование с планшета":"Тип сканирования",
     "тип датчика":"Тип датчика",
@@ -406,37 +434,46 @@ KV_KEYS_MAP = {
     "интерфейс ieee-1394 (firewire)":"FireWire",
     "подключение по wi-fi":"Wi-Fi",
 
-    # для выделения комплектации
+    # принтеры / МФУ
+    "скорость печати":"Скорость печати",
+    "двусторонняя печать":"Двусторонняя печать",
+    "интерфейсы":"Интерфейсы",
+    "формат":"Формат",
+    "разрешение печати":"Разрешение печати",
+    "тип печати":"Тип печати",
+    "подача бумаги":"Подача бумаги",
+    "выход лоток":"Выходной лоток",
+    "емкость лотка":"Емкость лотка",
+
+    # проекторы
+    "яркость":"Яркость",
+    "контрастность":"Контрастность",
+    "разрешение":"Разрешение",
+    "источник света":"Источник света",
+    "ресурс лампы":"Ресурс источника",
+    "входы":"Входы",
+    "интерфейсы (видео)":"Входы",
+    "коррекция трапеции":"Коррекция трапеции",
+    "поддержка 3d":"Поддержка 3D",
+
+    # UPS
+    "мощность":"Мощность",
+    "мощность, ва":"Мощность",
+    "выходная мощность":"Мощность",
+    "время автономии":"Время автономии",
+    "avr":"Стабилизация AVR",
+    "стабилизация":"Стабилизация",
+    "выходные розетки":"Розетки",
+    "тип розеток":"Розетки",
+
+    # комплектация
     "состав поставки":"Комплектация",
     "комплектация":"Комплектация",
     "в комплекте":"Комплектация",
 }
+
 MORE_PHRASES_RE = re.compile(r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию)\s*\.?\s*$", re.I)
 URL_RE = re.compile(r"https?://\S+", re.I)
-
-def autocorrect_minor_typos_in_html(html: str) -> str:
-    s = html or ""
-    # правки опечаток
-    s = re.sub(r"\bвысококачетсвенную\b", "высококачественную", s, flags=re.I)
-    s = re.sub(r"\bприентеров\b", "принтеров", s, flags=re.I)
-    s = re.sub(r"\bSC-\s*P(\d{3,4}\b)", r"SC-P\1", s)
-    s = re.sub(r"SureColor\s+SC-\s*P", "SureColor SC-P", s)
-    s = re.sub(r"(\d)\s*мл\b", r"\1 мл", s, flags=re.I)
-    s = re.sub(r"[ ]{2,}", " ", s)
-    # убрать инлайн-стили и числовые эмодзи (например, &#9989;)
-    s = re.sub(r'\s*style="[^"]*"', "", s)
-    s = re.sub(r"&#\d+;", "", s)
-    return s
-
-def _html_to_text(desc_html: str) -> str:
-    t = re.sub(r"<br\s*/?>", "\n", desc_html or "", flags=re.I)
-    t = re.sub(r"</p\s*>", "\n", t, flags=re.I)
-    t = re.sub(r"<a\b[^>]*>.*?</a>", "", t, flags=re.I|re.S)
-    t = re.sub(r"<[^>]+>", " ", t)
-    t = t.replace("\u00A0"," ")
-    t = re.sub(r"[ \t]+\n", "\n", t)
-    t = re.sub(r"\n{3,}", "\n\n", t)
-    return t.strip()
 
 def _normalize_models_list(val: str) -> str:
     x = val or ""
@@ -452,15 +489,13 @@ def _normalize_models_list(val: str) -> str:
 
 def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tuple[List[Tuple[str,str]], str, int, int]:
     """
-    ЧИСТО ОПИСАНИЕ: из «родного» текста выделяем пары K:V и переносим в «Характеристики».
-    Поддержка форматов:
-      - ключ (на отдельной строке) -> последующие строки до следующего ключа = значение
-      - ключ и значение на одной строке: "Разрешение сканера, dpi 4800x4800"
-      - Комплектация/Состав поставки: собираем в одну строку через "; "
-    Шум («Подробнее», ссылки) вырезаем. Строки со значением 'Нет' для второстепенных ключей не включаем.
+    Из «родного» текста:
+      — выделяем пары K:V (включая варианты «ключ и значение на одной строке»),
+      — собираем «Комплектацию» в одну строку,
+      — убираем мусор («Подробнее», URL),
+      — НЕ тащим малополезные «Нет/—».
     """
     txt = _html_to_text(desc_html)
-    # срезаем мусор (ссылки/«подробнее»)
     lines_raw=[]
     removed_links=0
     for l in [l.strip() for l in txt.split("\n")]:
@@ -472,7 +507,6 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
             continue
         lines_raw.append(l)
 
-    # убираем дубли названия в начале
     def _norm(s:str)->str:
         s=(s or "").lower()
         s=re.sub(r"[\s\-–—:;,.]+"," ", s)
@@ -480,15 +514,13 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
     if lines_raw and _norm(lines_raw[0]) and _norm(lines_raw[0])==_norm(product_name):
         lines_raw=lines_raw[1:]
 
-    # для поиска "ключ + значение" на одной строке
+    # распознавание «ключ + значение» на одной строке
     map_keys = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
     def try_split_kv(line: str) -> Optional[Tuple[str,str]]:
         low=line.lower()
         for k in map_keys:
             if low.startswith(k):
-                rest=line[len(line[:len(k)]) : ]  # аккуратно с регистром
-                rest=line[len(k):]
-                rest=rest.strip(" \t:—-")
+                rest=line[len(k):].strip(" \t:—-")
                 return (KV_KEYS_MAP[k], rest) if rest else (KV_KEYS_MAP[k], "")
         return None
 
@@ -498,22 +530,18 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
     i=0
     removed_any_kv=0
 
-    # основная итерация
     while i < len(lines_raw):
         line = lines_raw[i].strip()
         if not line:
             out_lines.append("")
             i+=1; continue
 
-        # кейс 1: ключ и значение на одной строке
         kv1 = try_split_kv(line)
         if kv1:
             label, value = kv1
-            # Комплектация: собираем
             if label=="Комплектация":
                 if value: bundle_items.append(value.strip(" .;"))
             else:
-                # фильтр значений 'Нет' (оставляем только важные бинарные поля, которых у нас нет в мапе)
                 if value and value.strip().lower() not in {"нет","-","—"}:
                     if label=="Совместимость":
                         value=_normalize_models_list(value)
@@ -521,7 +549,6 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
                     removed_any_kv=1
             i+=1; continue
 
-        # кейс 2: ключ на своей строке, дальше идут значения до следующего ключа
         key_raw = line.strip(":").lower()
         label = KV_KEYS_MAP.get(key_raw)
         if label:
@@ -547,11 +574,9 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
                     removed_any_kv=1
             continue
 
-        # если это не K/V — оставляем как «native»
         out_lines.append(line); i+=1
 
     native_plain="\n".join([ln for ln in out_lines if ln.strip()]).strip()
-    # Комплектация — в конец характеристик
     if bundle_items:
         bundle="; ".join(dict.fromkeys([b for b in bundle_items if b]))
         if bundle:
@@ -561,8 +586,27 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
 
 def render_specs_html(specs: List[Tuple[str,str]]) -> str:
     if not specs: return ""
+    # приоритетный порядок сортировки
+    important_order = [
+        # scanner
+        "Тип сканирования","Тип датчика","Подсветка","Оптическое разрешение","Интерполяция",
+        "Глубина цвета","Макс. формат","Скорость сканирования","Подключение","Wi-Fi","FireWire",
+        # printer/mfp
+        "Тип печати","Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Формат",
+        # projector
+        "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
+        # ups
+        "Мощность","Стабилизация AVR","Стабилизация","Розетки",
+        # misc
+        "Совместимость","Комплектация",
+    ]
+    order_idx = {k:i for i,k in enumerate(important_order)}
+    def sort_key(it: Tuple[str,str]) -> Tuple[int,str]:
+        k,_=it; return (order_idx.get(k, 999), k)
+
+    specs_sorted = sorted([(k,v) for k,v in specs if v], key=sort_key)
     out=["<h3>Характеристики</h3>","<ul>"]
-    for k,v in specs:
+    for k,v in specs_sorted:
         if k=="Совместимость":
             out.append(f'  <li><strong>{k}:</strong><br>{_html_escape_in_cdata_safe(v)}</li>')
         else:
@@ -574,7 +618,7 @@ def render_specs_html(specs: List[Tuple[str,str]]) -> str:
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+|^AK\d+|^AC\d+", re.I)
 MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
 BRAND_WORDS = ["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","BenQ","ViewSonic","Optoma","Acer","Panasonic","Sony",
-               "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum"]
+               "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum","Lenovo","Dell","ASUS","Samsung","Apple","MSI"]
 FAMILY_WORDS = ["PIXMA","imageRUNNER","iR","imageCLASS","imagePRESS","LBP","MF","i-SENSYS","LaserJet","DeskJet","OfficeJet",
                 "PageWide","Color LaserJet","Neverstop","Smart Tank","Phaser","WorkCentre","VersaLink","AltaLink","DocuCentre",
                 "DCP","HL","MFC","FAX","XP","WF","EcoTank","TASKalfa","ECOSYS","Aficio","SP","MP","IM","MX","BP"]
@@ -582,7 +626,7 @@ FAMILY_WORDS = ["PIXMA","imageRUNNER","iR","imageCLASS","imagePRESS","LBP","MF",
 def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
     def repl(m):
         inner=m.group(1).replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
-        inner=_unescape(inner); inner=_html_escape_in_cdata_safe(inner)
+        inner=_html_escape_in_cdata_safe(inner)
         return f"<description><![CDATA[\n{inner}\n]]></description>"
     return re.sub(
         r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>",
@@ -621,44 +665,49 @@ def extract_full_compatibility(raw_desc: str) -> str:
     return ", ".join(clean[:50])
 
 def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
-    name=get_text(offer,"name"); vendor=get_text(offer,"vendor").strip()
+    name=get_text(offer,"name")
     desc_html=inner_html(offer.find("description"))
     raw_text=re.sub(r"<[^>]+>"," ", re.sub(r"<br\s*/?>","\n",desc_html or "", flags=re.I))
     kind=detect_kind(name)
     s_id=offer.attrib.get("id") or get_text(offer,"vendorCode") or name
     seed=int(hashlib.md5((s_id or "").encode("utf-8")).hexdigest()[:8],16)
 
-    variants={"cartridge":["Кратко о плюсах","Чем удобен","Что получаете с","Для каких устройств"],
-              "projector":["Ключевые преимущества","Чем хорош","Для каких задач","Кратко о плюсах"],
+    variants={"cartridge":["Ключевые преимущества","Кратко о плюсах","Для каких устройств"],
+              "projector":["Ключевые преимущества","Кратко о плюсах","Для каких задач"],
               "ups":["Ключевые преимущества","Чем удобен","Что вы получаете"],
-              "mfp":["Кратко о плюсах","Основные сильные стороны","Для кого подойдёт"],
+              "mfp":["Ключевые преимущества","Кратко о плюсах","Для кого подойдёт"],
               "scanner":["Ключевые преимущества","Кратко о плюсах","Чем удобен"],
-              "other":["Кратко о плюсах","Чем удобен","Ключевые преимущества"]}
+              "other":["Ключевые преимущества","Кратко о плюсах","Чем удобен"]}
     short=split_short_name(name)
-    p=variants.get(kind,variants["other"])[seed % len(variants.get(kind,variants["other"]))]  # noqa
-    title=f"{short}: {p}" + (f" ({vendor})" if vendor else "")
+    title_suffix=variants.get(kind,variants["other"])[seed % len(variants.get(kind,variants["other"]))]  # noqa
+    title=f"{short}: {title_suffix}"  # БЕЗ (Brand) в конце
 
     bullets=[]
     low=raw_text.lower()
     if kind=="projector":
-        if re.search(r"\b(ansi\s*лм|люмен|lumen|lm)\b",low): bullets.append("Яркость: заявленная производителем")
-        if re.search(r"\b(fhd|1080p|4k|wxga|wuxga|svga|xga|uxga)\b",low): bullets.append("Разрешение: соответствует классу модели")
-        if re.search(r"\b(контраст|contrast)\b",low): bullets.append("Контраст: комфортная картинка в офисе/доме")
-        bullets.append("Подходит для презентаций и обучения")
+        if re.search(r"\b(ansi\s*лм|люмен|lumen|lm)\b",low): bullets.append("Яркость — для переговорных и обучения")
+        if re.search(r"\b(fhd|1080p|4k|wxga|wuxga|svga|xga|uxga)\b",low): bullets.append("Разрешение — соответствует классу модели")
+        if re.search(r"\b(контраст|contrast)\b",low): bullets.append("Контраст — комфортная картинка")
+        bullets.append("Подходит для презентаций и домашнего использования")
     elif kind=="cartridge":
-        if re.search(r"\bресурс\b",low): bullets.append("Ресурс: предсказуемая отдача страниц")
-        if re.search(r"\bцвет\b|\bcyan|\bmagenta|\byellow|\bblack",low): bullets.append("Цветность: соответствует спецификации")
-        bullets.append("Стабильная печать без лишних настроек")
+        if re.search(r"\bресурс\b",low): bullets.append("Ресурс — предсказуемая отдача страниц")
+        if re.search(r"\bцвет\b|\bcyan|\bmagenta|\byellow|\bblack",low): bullets.append("Цветность — по спецификации модели")
+        bullets.append("Стабильная печать без сложных настроек")
     elif kind=="ups":
-        if re.search(r"\b(ва|вт)\b",low): bullets.append("Мощность: соответствует типовым офисным задачам")
-        if re.search(r"\bavr\b|\bстабилиз",low): bullets.append("AVR/стабилизация входного напряжения")
+        if re.search(r"\b(ва|вт)\b",low): bullets.append("Мощность — для типового ПК/офиса")
+        if re.search(r"\bavr\b|\bстабилиз",low): bullets.append("AVR — стабилизация входного напряжения")
         bullets.append("Базовая защита ПК, роутера и периферии")
     elif kind=="scanner":
-        if re.search(r"\b(\d{3,4})\s*[xх×]\s*(\d{3,4})\b",low): bullets.append("Оптическое разрешение класса модели")
-        if re.search(r"\bcis\b",low): bullets.append("CIS-сенсор, точная детализация")
+        if re.search(r"\b(\d{3,4})\s*[xх×]\s*(\d{3,4})\b",low): bullets.append("Оптическое разрешение — высокого уровня")
+        if re.search(r"\bcis\b",low): bullets.append("Сенсор CIS — точная детализация")
         if re.search(r"\b(a4|а4)\b",low): bullets.append("Максимальный формат — A4")
-        if re.search(r"\busb\b",low) or "интерфейс usb" in low: bullets.append("Подключение по USB")
+        if re.search(r"\busb\b",low) or "интерфейс usb" in low: bullets.append("Подключение — USB")
         bullets.append("Подходит для дома и офиса")
+    elif kind in ("mfp"):
+        if re.search(r"\b\d+\s*стр/мин|\bppm\b",low): bullets.append("Скорость печати — комфортная для офиса")
+        if re.search(r"\bдвусторонняя\b|\bдуплекс\b",low): bullets.append("Двусторонняя печать (см. характеристики)")
+        if re.search(r"\bwi[-\s]?fi\b|\busb\b",low): bullets.append("Подключение — USB/Wi-Fi (см. характеристики)")
+        bullets.append("Экономичное решение для повседневной печати")
     else:
         bullets.append("Практичное решение для повседневных задач")
 
@@ -668,9 +717,9 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
     p_line={"cartridge":"Стабильная печать и предсказуемый ресурс.",
             "ups":"Базовая защита питания для домашней и офисной техники.",
             "projector":"Чёткая картинка и надёжная работа для переговорных и обучения.",
-            "mfp":"Скорость, удобство и качество для офиса.",
+            "mfp":"Скорость, удобство и качество печати.",
             "scanner":"Планшетный сканер для дома и офиса.",
-            "other":"Практичное решение для ежедневной работы."}.get(kind,"Практичное решение для ежедневной работы.")
+            "other":"Ключевые преимущества модели."}.get(kind,"Ключевые преимущества модели.")
     lead.append(f"<p>{_html_escape_in_cdata_safe(p_line)}</p>")
     if bullets:
         lead.append("<ul>")
@@ -681,37 +730,41 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
         lead.append(f"<p><strong>Полная совместимость:</strong><br>{compat_html}</p>")
     lead_html="\n".join(lead)
 
+    # FAQ — 2 Q/A по типу, без воды
     if kind=="cartridge":
         qa=[("Подойдёт к моему устройству?","Сверьте индекс модели в списке совместимости ниже."),
             ("Нужна калибровка после замены?","Обычно достаточно корректно установить и распечатать тестовую страницу.")]
     elif kind=="projector":
-        qa=[("Подойдёт для переговорной?","Да, для типовой комнаты и презентаций/обучения."),
-            ("Нужно затемнение?","При высокой яркости лучше приглушить свет для контраста.")]
+        qa=[("Подойдёт для переговорной?","Да, смотрите яркость и контраст в характеристиках."),
+            ("Какие входы доступны?","Список входов/интерфейсов указан в характеристиках.")]
     elif kind=="ups":
-        qa=[("Подойдёт для ПК и роутера?","Да, для техники своего класса мощности."),
-            ("Шумит ли в работе?","В обычном режиме — тихо; сигнализация только при событиях.")]
+        qa=[("Подойдёт для ПК и роутера?","Да, при соответствующей мощности (ВА/Вт)."),
+            ("Есть стабилизация напряжения?","Смотрите пункт AVR/стабилизация в характеристиках.")]
     elif kind=="scanner":
-        qa=[("Подходит для современных задач?","Да, оптимален для домашнего и офисного использования."),
-            ("Нужно питание от сети?","Как правило, достаточно USB (см. характеристики).")]
+        qa=[("Нужно отдельное питание?","Как правило, достаточно USB (см. характеристики)."),
+            ("Для каких задач подходит?","Сканирование документов и фотографий дома и в офисе.")]
+    elif kind=="mfp":
+        qa=[("Есть двусторонняя печать?","Смотрите пункт «Двусторонняя печать»."),
+            ("Можно печатать по Wi-Fi?","Да, если заявлено в «Интерфейсах».")]
     else:
-        qa=[("Поддерживаются современные сценарии?","Да, ориентирован на повседневную работу."),
-            ("Можно расширять возможности?","Да, подробности — в характеристиках модели.")]
+        qa=[("Подходит для ежедневных задач?","Да, модель рассчитана на повседневное использование."),
+            ("Сложно ли в установке?","Нет, базовая настройка занимает несколько минут.")]
     faq=["<h3>FAQ</h3>"]+[f"<p><strong>В:</strong> { _html_escape_in_cdata_safe(q) }<br><strong>О:</strong> { _html_escape_in_cdata_safe(a) }</p>" for q,a in qa]
     faq_html="\n".join(faq)
 
-    # отзывы — без эмодзи
+    # Отзывы — без эмодзи и «звёздочек», только «Оценка: N/5»
     NAMES_M=["Арман","Даурен","Санжар","Ерлан","Аслан","Руслан","Тимур","Данияр","Виктор","Евгений","Олег","Сергей","Нуржан","Бекзат","Азамат","Султан"]
     NAMES_F=["Айгерим","Мария","Инна","Наталья","Жанна","Светлана","Ольга","Камилла","Диана","Гульнара"]
     CITIES=["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
     pick=lambda arr,offs=0: arr[(seed+offs)%len(arr)]
     reviews=["<h3>Отзывы (3)</h3>"]
-    rv=[("★★★★★","Картинка чёткая, для презентаций — то, что надо."),
-        ("★★★★★","Установка заняла пару минут, проблем не было."),
-        ("★★★★☆","Со своими задачами справляется отлично.")]
-    for i,(stars,comment) in enumerate(rv):
+    rv=[("5/5","Качество отличное, с задачами справляется уверенно."),
+        ("5/5","Установка заняла пару минут, всё просто и понятно."),
+        ("4/5","Со своими задачами справляется отлично.")]
+    for i,(score,comment) in enumerate(rv):
         name=(pick(NAMES_M,i) if i!=1 else pick(NAMES_F,i))
         city=pick(CITIES,i+3)
-        reviews.append(f"<p><strong>{_html_escape_in_cdata_safe(name)}</strong>, { _html_escape_in_cdata_safe(city) } — {stars}<br>«{ _html_escape_in_cdata_safe(comment) }»</p>")
+        reviews.append(f"<p><strong>{_html_escape_in_cdata_safe(name)}</strong>, { _html_escape_in_cdata_safe(city) } — Оценка: {score}<br>«{ _html_escape_in_cdata_safe(comment) }»</p>")
     reviews_html="\n".join(reviews)
     return lead_html, faq_html, reviews_html, kind
 
@@ -770,12 +823,13 @@ def inject_seo_descriptions(out_shop: ET.Element) -> Tuple[int,str,int,int,int]:
                 lead_html=ent.get("lead_html",lead_html); faq_html=ent.get("faq_html",faq_html); reviews_html=ent.get("reviews_html",reviews_html)
                 use_cache=True
 
-        # native — без инлайн-стилей и без эмодзи, только если что-то осталось
+        # native — без инлайн-стилей и без эмодзи (текстом), только если что-то осталось
         native_html = ""
         if native_plain:
             native_text = _html_escape_in_cdata_safe(native_plain)
             native_html = f'<div class="native">{native_text}</div>'
 
+        # ВАЖНО: порядок блоков — как ты и просил
         parts=[lead_html, native_html]
         if specs_html: parts.append(specs_html)
         parts.extend([faq_html, reviews_html])
@@ -1020,14 +1074,14 @@ def main()->None:
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
-    # копируем офферы как есть (НЕ ТРОГАЕМ общую логику)
+    # копируем офферы как есть
     for o in src_offers:
         mod=deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
         out_offers.append(mod)
 
-    # фильтр по docs/akcent_keywords.txt (как было)
+    # фильтр по списку
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
@@ -1064,15 +1118,15 @@ def main()->None:
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
+    # === ТОЛЬКО БЛОК ОПИСАНИЙ: SEO → native → Характеристики → FAQ → Отзывы ===
     seo_changed, seo_last, specs_added, native_cleaned, links_removed_total = inject_seo_descriptions(out_shop)
     log(f"SEO blocks touched: {seo_changed}")
-    log(f"Specs blocks added: {specs_added}")
     log(f"Native blocks cleaned: {native_cleaned} (links removed: {links_removed_total})")
 
     t_true, t_false = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
 
-    # чистка служебных тегов (НЕ трогаем <param>)
+    # чистка служебных тегов
     for off in out_offers.findall("offer"):
         for t in PURGE_TAGS_AFTER:
             for node in list(off.findall(t)): off.remove(node)
