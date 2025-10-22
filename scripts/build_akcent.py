@@ -12,7 +12,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.7.2-descfix-html"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.7.3-descfix-specs"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -75,7 +75,7 @@ def now_utc() -> datetime: return datetime.now(timezone.utc)
 def now_almaty() -> datetime:
     try:   return datetime.now(ZoneInfo("Asia/Almaty")) if ZoneInfo else datetime.utcfromtimestamp(time.time()+5*3600)
     except Exception: return datetime.utcfromtimestamp(time.time()+5*3600)
-def format_dt_almaty(dt: datetime) -> str: return dt.strftime("%d:%m:%Y - %H:%М:%S")
+def format_dt_almaty(dt: datetime) -> str: return dt.strftime("%d:%m:%Y - %H:%M:%S")
 def next_build_time_almaty() -> datetime:
     cur = now_almaty(); t = cur.replace(hour=1, minute=0, second=0, microsecond=0)
     return t + timedelta(days=1) if cur >= t else t
@@ -368,7 +368,7 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
             changed+=1
     return changed
 
-# ===================== Kind detector =====================
+# ===================== DETECT KIND =====================
 def detect_kind(name: str) -> str:
     n=(name or "").lower()
     if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
@@ -377,6 +377,40 @@ def detect_kind(name: str) -> str:
     if "проектор" in n or "projector" in n: return "projector"
     if "принтер" in n or "mfp" in n or "мфу" in n: return "mfp"
     return "other"
+
+# ===================== SEO/FAQ/REVIEWS/COMPAT HELPERS =====================
+AS_INTERNAL_ART_RE = re.compile(r"^AS\d+|^AK\d+|^AC\d+", re.I)
+MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
+BRAND_WORDS = ["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","BenQ","ViewSonic","Optoma","Acer","Panasonic","Sony",
+               "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum","Lenovo","Dell","ASUS","Samsung","Apple","MSI"]
+FAMILY_WORDS = ["PIXMA","imageRUNNER","iR","imageCLASS","imagePRESS","LBP","MF","i-SENSYS","LaserJet","DeskJet","OfficeJet",
+                "PageWide","Color LaserJet","Neverstop","Smart Tank","Phaser","WorkCentre","VersaLink","AltaLink","DocuCentre",
+                "DCP","HL","MFC","FAX","XP","WF","EcoTank","TASKalfa","ECOSYS","Aficio","SP","MP","IM","MX","BP"]
+
+def _split_joined_models(s: str) -> List[str]:
+    for bw in BRAND_WORDS:
+        s=re.sub(rf"({re.escape(bw)})\s*(?={re.escape(bw)})", r"\1\n", s)
+    raw=re.split(r"[,\n;]+", s); return [c.strip() for c in raw if c.strip()]
+
+def _looks_device_phrase(x: str) -> bool:
+    if len(x.strip())<3: return False
+    has_family=any(re.search(rf"\b{re.escape(f)}\b", x, re.I) for f in FAMILY_WORDS)
+    has_brand =any(re.search(rf"\b{re.escape(b)}\b", x, re.I) for b in BRAND_WORDS)
+    has_model=bool(MODEL_RE.search(x) and not AS_INTERNAL_ART_RE.search(x))
+    return (has_family or has_brand) and has_model
+
+def extract_full_compatibility(raw_desc: str) -> str:
+    t=(raw_desc or "")
+    text=re.sub(r"<br\s*/?>","\n",t,flags=re.I); text=re.sub(r"<[^>]+>"," ",text)
+    parts=_split_joined_models(text); found=[]
+    for sub in parts:
+        s=sub.strip()
+        if _looks_device_phrase(s): found.append(s)
+    clean=[]
+    for x in found:
+        x=re.sub(r"\s{2,}"," ",x).strip(" ,;.")
+        if x and x not in clean: clean.append(x)
+    return ", ".join(clean[:50])
 
 # ===================== Чистка HTML/текста описаний =====================
 def autocorrect_minor_typos_in_html(html_text: str) -> str:
@@ -507,6 +541,12 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
 
         out_lines.append(line); i+=1
 
+    # Fallback: если не нашли ключ "Совместимость" — пробуем собрать его из текста
+    if not any(k == "Совместимость" for k,_ in specs):
+        compat = extract_full_compatibility(desc_html)
+        if compat:
+            specs.append(("Совместимость", compat))
+
     native_plain="\n".join([ln for ln in out_lines if ln.strip()]).strip()
     if bundle_items:
         bundle="; ".join(dict.fromkeys([b for b in bundle_items if b]))
@@ -537,14 +577,10 @@ def render_specs_html(specs: List[Tuple[str,str]]) -> str:
     out.append("</ul>")
     return "\n".join(out)
 
-# ===================== SEO/FAQ/REVIEWS/COMPAT =====================
-AS_INTERNAL_ART_RE = re.compile(r"^AS\d+|^AK\d+|^AC\d+", re.I)
-MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
-BRAND_WORDS = ["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","BenQ","ViewSonic","Optoma","Acer","Panasonic","Sony",
-               "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum","Lenovo","Dell","ASUS","Samsung","Apple","MSI"]
-FAMILY_WORDS = ["PIXMA","imageRUNNER","iR","imageCLASS","imagePRESS","LBP","MF","i-SENSYS","LaserJet","DeskJet","OfficeJet",
-                "PageWide","Color LaserJet","Neverstop","Smart Tank","Phaser","WorkCentre","VersaLink","AltaLink","DocuCentre",
-                "DCP","HL","MFC","FAX","XP","WF","EcoTank","TASKalfa","ECOSYS","Aficio","SP","MP","IM","MX","BP"]
+# ===================== SEO/FAQ/REVIEWS (build) =====================
+def split_short_name(name: str) -> str:
+    s=(name or "").strip(); s=re.split(r"\s+[—-]\s+", s, maxsplit=1)[0]
+    return s if len(s)<=80 else s[:77]+"..."
 
 def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
     def repl(m):
@@ -559,40 +595,26 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
         flags=re.S
     )
 
-def split_short_name(name: str) -> str:
-    s=(name or "").strip(); s=re.split(r"\s+[—-]\s+", s, maxsplit=1)[0]
-    return s if len(s)<=80 else s[:77]+"..."
-
-def _split_joined_models(s: str) -> List[str]:
-    for bw in BRAND_WORDS:
-        s=re.sub(rf"({re.escape(bw)})\s*(?={re.escape(bw)})", r"\1\n", s)
-    raw=re.split(r"[,\n;]+", s); return [c.strip() for c in raw if c.strip()]
-
-def _looks_device_phrase(x: str) -> bool:
-    if len(x.strip())<3: return False
-    has_family=any(re.search(rf"\b{re.escape(f)}\b", x, re.I) for f in FAMILY_WORDS)
-    has_brand =any(re.search(rf"\b{re.escape(b)}\b", x, re.I) for b in BRAND_WORDS)
-    has_model=bool(MODEL_RE.search(x) and not AS_INTERNAL_ART_RE.search(x))
-    return (has_family or has_brand) and has_model
-
-def extract_full_compatibility(raw_desc: str) -> str:
-    t=(raw_desc or "")
-    text=re.sub(r"<br\s*/?>","\n",t,flags=re.I); text=re.sub(r"<[^>]+>"," ",text)
-    parts=_split_joined_models(text); found=[]
-    for sub in parts:
-        s=sub.strip()
-        if _looks_device_phrase(s): found.append(s)
-    clean=[]
-    for x in found:
-        x=re.sub(r"\s{2,}"," ",x).strip(" ,;.")
-        if x and x not in clean: clean.append(x)
-    return ", ".join(clean[:50])
-
 def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
     name=get_text(offer,"name")
     desc_html=inner_html(offer.find("description"))
-    raw_text=re.sub(r"<[^>]+>"," ", re.sub(r"<br\s*/?>","\n",desc_html or "", flags=re.I))
+    raw_text=re.sub(r"<[^>]+>"," ", re.sub(r"<br\s*/?>","\n",autocorrect_minor_typos_in_html(desc_html) or "", flags=re.I))
     kind=detect_kind(name)
+
+    # NEW: если не распознали по name — пробуем по «родному» тексту
+    low_all=(name or "").lower()+"\n"+raw_text.lower()
+    if kind=="other":
+        if ("картридж" in low_all) or ("тонер" in low_all) or ("чернила" in low_all):
+            kind="cartridge"
+        elif ("сканер" in low_all) or ("scanner" in low_all):
+            kind="scanner"
+        elif ("проектор" in low_all) or ("projector" in low_all):
+            kind="projector"
+        elif ("принтер" in low_all) or ("мфу" in low_all) or ("mfp" in low_all):
+            kind="mfp"
+        elif ("ибп" in low_all) or ("ups" in low_all) or ("источник бесперебойного питания" in low_all):
+            kind="ups"
+
     s_id=offer.attrib.get("id") or get_text(offer,"vendorCode") or name
     seed=int(hashlib.md5((s_id or "").encode("utf-8")).hexdigest()[:8],16)
 
@@ -730,10 +752,14 @@ def inject_seo_descriptions(out_shop: ET.Element) -> Tuple[int,str,int,int,int]:
         raw_html = inner_html(d)
         corrected_raw = autocorrect_minor_typos_in_html(raw_html or "")
         name=get_text(offer,"name")
+
+        # вытащили характеристики из «родного» блока
         kv_specs, native_plain, removed_links, _ = extract_kv_specs_and_clean_native(corrected_raw, name)
         links_removed_total += removed_links
         if removed_links>0: native_cleaned += 1
         specs_html = render_specs_html(kv_specs) if kv_specs else ""
+
+        # построили SEO-вступление/FAQ/Отзывы (с учетом корректного kind)
         lead_html, faq_html, reviews_html, kind = build_lead_faq_reviews(offer)
 
         checksum=compute_seo_checksum(name, kind, raw_html)
