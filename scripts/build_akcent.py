@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.2.3"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.2.4"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -172,7 +172,7 @@ SUPPLIER_BLOCKLIST={_norm_key(x) for x in["alstyle","al-style","copyline","akcen
 UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a","китай","china")
 COMMON_BRANDS=["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","BenQ","ViewSonic","Optoma","Acer","Panasonic","Sony",
                "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum","Lenovo","Dell","ASUS","Samsung","Apple","MSI"]
-BRAND_ALIASES={"hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
+BRAND_ALIASES={"hewlett packard":"HP","konica":"Konica Minolta","конiка":"Konica Minolta","konica-minolta":"Konica Minolta",
                "viewsonic proj":"ViewSonic","epson proj":"Epson","epson projector":"Epson","benq proj":"BenQ",
                "hp inc":"HP","nvprint":"NV Print","nv print":"NV Print","gg":"G&G","g&g":"G&G"}
 
@@ -447,10 +447,7 @@ def _dedupe_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
 
 def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[Tuple[str,str]], str]:
     """
-    Достаём характеристики из текста поставщика.
-    Работают оба режима:
-    1) построчно (если ключ в начале строки)
-    2) ИНЛАЙН (если ключи идут подряд в одном абзаце: «Вид струйный Назначение ... Ресурс 700 мл»)
+    Достаём характеристики из текста поставщика (и построчно, и «инлайн»).
     """
     txt = _html_to_text(desc_html)
 
@@ -490,7 +487,7 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
             label, value = kv1
             if label=="Комплектация":
                 if value:
-                    v=value.strip(" .;"); 
+                    v=value.strip(" .;")
                     if v: bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
@@ -580,6 +577,36 @@ def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
             out.append("</ul>")
             return "\n".join(out)
     return ""
+
+# --- НОВОЕ: вырезаем намёки на характеристики из текста поставщика ---
+def strip_specs_from_supplier_html(s: str) -> str:
+    if not s: return s
+    s0 = s
+
+    # 1) убрать заголовки блоков характеристик/комплектации с примыкающим списком
+    s = re.sub(
+        r"(?is)<h3>\s*(технические характеристики|характеристики|состав поставки|комплектация)\s*</h3>\s*(<(?:ul|ol)[^>]*>.*?</(?:ul|ol)>|<p>.*?</p>)?",
+        "", s, flags=re.I
+    )
+
+    # 2) удалить <p>/<li>, начинающиеся с ключа (Вид, Назначение, Ресурс, ...)
+    keys = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
+    key_re = r"(?:" + "|".join(re.escape(k) for k in keys) + r")"
+    s = re.sub(rf"(?is)<(p|li)>\s*{key_re}\b.*?</\1>", "", s)
+
+    # 3) удалить абзацы, где встречается >=2 ключей подряд (инлайн-списки вида «Вид ... Назначение ...»)
+    def _drop_if_many_keys(m):
+        inner=m.group(0)
+        if len(re.findall(key_re, inner, flags=re.I)) >= 2:
+            return ""
+        return inner
+    s = re.sub(r"(?is)<p>.*?</p>", _drop_if_many_keys, s)
+
+    # 4) подчистить пустые контейнеры/мусор
+    s = re.sub(r"(?is)<(p|li|ul|ol)>\s*</\1>", "", s)
+    s = re.sub(r"\s{2,}", " ", s).strip()
+    s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s)
+    return s or s0  # на всякий случай
 
 # =========== PARAMS ===========
 def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> int:
@@ -771,7 +798,7 @@ def _placeholder_url_category(name: str) -> str:
     if "ибп" in n or "ups" in n or "источник бесперебойного питания" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/ups.{PLACEHOLDER_EXT}"
     if "сканер" in n or "scanner" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/scanner.{PLACEHOLDER_EXT}"
     if "проектор" in n or "projector" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/projector.{PLACEHOLDER_EXT}"
-    if "принтер" in n or "мфу" in n or "mfp" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/mfp.{PLACEHOLDER_EXT}"
+    if "принтер" in n или "мфу" in n or "mfp" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/mfp.{PLACEHOLDER_EXT}"
     return f"{PLACEHOLDER_CATEGORY_BASE}/other.{PLACEHOLDER_EXT}"
 
 def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
@@ -798,8 +825,8 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
 # ===================== DESCRIPTION REBUILD =====================
 def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,int]:
     """
-    <description> = <h3>{name}</h3> + санитизированный HTML поставщика
-                    + (если нет в тексте) 'Состав поставки'
+    <description> = <h3>{name}</h3> + САНИТИЗИРОВАННЫЙ И ОЧИЩЕННЫЙ ОТ ХАРАКТЕРИСТИК текст поставщика
+                    + (если нашли пары) 'Состав поставки'
                     + (если нашли пары) 'Характеристики'
     """
     off_el=out_shop.find("offers")
@@ -815,18 +842,18 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
         supplier_html = sanitize_supplier_html(raw_html)
         specs, _ = extract_kv_specs_and_text(raw_html, name)
 
+        # удаляем намёки на характеристики из родного описания:
+        supplier_html = strip_specs_from_supplier_html(supplier_html)
+
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
         if supplier_html: parts.append(supplier_html)
 
-        low_sup = re.sub(r"\s+"," ", supplier_html.lower())
-        has_bundle_in_supplier = bool(re.search(r"<h3>\s*(состав поставки|комплектация)\b", low_sup, re.I))
-        has_specs_in_supplier  = bool(re.search(r"<h3>\s*(технические характеристики|характеристики)\b", low_sup, re.I))
-
+        # наши отдельные блоки
         bundle_html = render_bundle_html(specs)
-        if bundle_html and not has_bundle_in_supplier: parts.append(bundle_html)
+        if bundle_html: parts.append(bundle_html)
 
         specs_html = render_specs_html(specs)
-        if specs_html and not has_specs_in_supplier: parts.append(specs_html)
+        if specs_html: parts.append(specs_html)
 
         full_html = "\n".join([p for p in parts if p]).strip()
         placeholder=f"[[[HTML]]]{full_html}[[[/HTML]]]"
@@ -924,7 +951,7 @@ def main()->None:
         f"Время сборки (Алматы)     | {format_dt_almaty(built_alm)}\n"
         f"Товаров до фильтра        | {len(src_offers)}\n"
         f"Товаров после фильтра     | {len(list(out_offers.findall('offer')))}\n"
-        f"В наличии (true)          | {normalize_available_field.__name__ and t_true}\n"
+        f"В наличии (true)          | {t_true}\n"
         f"Нет в наличии (false)     | {t_false}\n"
         f"Скрипт                    | {SCRIPT_VERSION}\n"
         f"Descriptions changed      | {desc_changed}\n"
