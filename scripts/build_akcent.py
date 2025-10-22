@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.2.4"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.2.5"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -446,9 +446,6 @@ def _dedupe_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
     return [(k,best[k]) for k in best]
 
 def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[Tuple[str,str]], str]:
-    """
-    Достаём характеристики из текста поставщика (и построчно, и «инлайн»).
-    """
     txt = _html_to_text(desc_html)
 
     # 1) Построчный
@@ -487,7 +484,7 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
             label, value = kv1
             if label=="Комплектация":
                 if value:
-                    v=value.strip(" .;")
+                    v=value.strip(" .;"); 
                     if v: bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
@@ -578,7 +575,7 @@ def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
             return "\n".join(out)
     return ""
 
-# --- НОВОЕ: вырезаем намёки на характеристики из текста поставщика ---
+# --- вырезаем намёки на характеристики из текста поставщика ---
 def strip_specs_from_supplier_html(s: str) -> str:
     if not s: return s
     s0 = s
@@ -594,7 +591,7 @@ def strip_specs_from_supplier_html(s: str) -> str:
     key_re = r"(?:" + "|".join(re.escape(k) for k in keys) + r")"
     s = re.sub(rf"(?is)<(p|li)>\s*{key_re}\b.*?</\1>", "", s)
 
-    # 3) удалить абзацы, где встречается >=2 ключей подряд (инлайн-списки вида «Вид ... Назначение ...»)
+    # 3) удалить абзацы, где встречается >=2 ключей подряд (инлайн-списки)
     def _drop_if_many_keys(m):
         inner=m.group(0)
         if len(re.findall(key_re, inner, flags=re.I)) >= 2:
@@ -606,7 +603,7 @@ def strip_specs_from_supplier_html(s: str) -> str:
     s = re.sub(r"(?is)<(p|li|ul|ol)>\s*</\1>", "", s)
     s = re.sub(r"\s{2,}", " ", s).strip()
     s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s)
-    return s or s0  # на всякий случай
+    return s or s0
 
 # =========== PARAMS ===========
 def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> int:
@@ -668,7 +665,8 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     name=get_text(offer,"name"); vendor=get_text(offer,"vendor").strip()
     desc_html=inner_html(offer.find("description"))
     base=[vendor] if vendor else []
-    raw_tokens=tokenize(name or "")
+    raw_tokens=tokenize(name or ""
+    )
     modelish=[t for t in raw_tokens if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t)]
     content=[t for t in raw_tokens if is_content_word(t)]
     bigr=[]
@@ -798,7 +796,7 @@ def _placeholder_url_category(name: str) -> str:
     if "ибп" in n or "ups" in n or "источник бесперебойного питания" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/ups.{PLACEHOLDER_EXT}"
     if "сканер" in n or "scanner" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/scanner.{PLACEHOLDER_EXT}"
     if "проектор" in n or "projector" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/projector.{PLACEHOLDER_EXT}"
-    if "принтер" in n или "мфу" in n or "mfp" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/mfp.{PLACEHOLDER_EXT}"
+    if "принтер" in n or "мфу" in n or "mfp" in n: return f"{PLACEHOLDER_CATEGORY_BASE}/mfp.{PLACEHOLDER_EXT}"
     return f"{PLACEHOLDER_CATEGORY_BASE}/other.{PLACEHOLDER_EXT}"
 
 def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
@@ -825,7 +823,7 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
 # ===================== DESCRIPTION REBUILD =====================
 def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,int]:
     """
-    <description> = <h3>{name}</h3> + САНИТИЗИРОВАННЫЙ И ОЧИЩЕННЫЙ ОТ ХАРАКТЕРИСТИК текст поставщика
+    <description> = <h3>{name}</h3> + очищенный текст поставщика (без характеристик/комплектации)
                     + (если нашли пары) 'Состав поставки'
                     + (если нашли пары) 'Характеристики'
     """
