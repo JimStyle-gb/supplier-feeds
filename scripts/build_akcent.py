@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.2.8"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.2.9"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -371,7 +371,7 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
     return changed
 
 # ===================== TEXT PROCESSING (sanitize + specs) =====================
-URL_RE = re.compile(r"https?://\S+", re.I)
+URL_RE = re.compile(r"https?://\S+|www\.\S+", re.I)
 MORE_PHRASES_RE = re.compile(r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию)\s*\.?\s*$", re.I)
 
 KV_KEYS_MAP = {
@@ -431,7 +431,6 @@ DISALLOWED_PARAM_NAMES = {
 
 # нормализация имён параметров из существующих Param/param
 CANON_NAME_MAP = {
-    # synonyms → canonical
     "совместимые продукты":"Совместимость",
     "совместимые модели":"Совместимость",
     "совместимые принтеры":"Совместимость",
@@ -451,7 +450,6 @@ CANON_NAME_MAP = {
     "тип розеток":"Розетки",
     "выход лоток":"Выходной лоток",
     "емкость лотка":"Емкость лотка",
-    # already canonical — оставим как есть
 }
 
 def canon_param_name(name: str) -> Optional[str]:
@@ -459,17 +457,13 @@ def canon_param_name(name: str) -> Optional[str]:
     key = name.strip().lower().replace("ё","е")
     if key in DISALLOWED_PARAM_NAMES:
         return None
-    # явные синонимы
     if key in CANON_NAME_MAP:
         return CANON_NAME_MAP[key]
-    # маппинг из текстового KV_KEYS_MAP
     if key in KV_KEYS_MAP:
         return KV_KEYS_MAP[key]
-    # если уже совпадает с каноническим
     title = name.strip()
     if title in ALLOWED_PARAM_CANON:
         return title
-    # пробуем «нормализацию» вида/регистра
     title_cap = title[:1].upper()+title[1:].lower()
     if title_cap in ALLOWED_PARAM_CANON:
         return title_cap
@@ -540,7 +534,6 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
             if low.startswith(k):
                 rest=line[len(k):].strip(" \t:—-")
                 canon = KV_KEYS_MAP[k]
-                # пропускаем мусорные каноны
                 if canon_param_name(canon) is None and canon not in ("Комплектация",):
                     return None
                 return (canon, rest) if rest else (canon, "")
@@ -563,7 +556,6 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
                     if v: bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
-                    # нормализуем имя
                     canon = canon_param_name(label) or label
                     if canon in ALLOWED_PARAM_CANON:
                         specs.append((canon, value))
@@ -690,9 +682,56 @@ def strip_specs_from_supplier_html(s: str) -> str:
     out = re.sub(r"\s{2,}", " ", out).strip()
     return out
 
+# --- финальная чистка описаний: ссылки, CTA, дубликат имени, пустые теги ---
+CTA_PHRASES = [
+    "подробнее","читать далее","узнать больше","все детали","подробности",
+    "смотреть на сайте производителя","скачать инструкцию"
+]
+CTA_ALT_RE = re.compile(r"(" + "|".join(re.escape(x) for x in CTA_PHRASES) + r")", re.I)
+
+def postprocess_supplier_html(html_in: str, product_name: str) -> str:
+    s = html_in or ""
+
+    # 1) убрать любые URL-тексты
+    s = re.sub(r"\bhttps?://[^\s<]+", "", s, flags=re.I)
+    s = re.sub(r"\bwww\.[^\s<]+", "", s, flags=re.I)
+
+    # 2) удалить параграфы, целиком состоящие из CTA-фраз (и хвостиков)
+    def drop_cta_p(m: re.Match) -> str:
+        inner = m.group(1)
+        if CTA_ALT_RE.search(inner):
+            # если кроме CTA в параграфе ничего существенного — убрать
+            tmp = CTA_ALT_RE.sub("", inner)
+            tmp = re.sub(r"[ .,:;—–\-]+", " ", tmp).strip()
+            if not re.search(r"[A-Za-zА-Яа-яЁё0-9]", tmp):
+                return ""
+            # иначе просто вырезать сами фразы
+            clean = CTA_ALT_RE.sub("", inner)
+            clean = re.sub(r"\s{2,}", " ", clean).strip(" .,:;—–-")
+            return f"<p>{clean}</p>" if clean else ""
+        return m.group(0)
+
+    s = re.sub(r"<p>(.*?)</p>", drop_cta_p, s, flags=re.I|re.S)
+
+    # 3) внутри оставшихся параграфов убрать префикс — повтор названия
+    if product_name:
+        pat = re.compile(rf"^\s*{re.escape(product_name)}\s*[—–\-:,]*\s*", re.I)
+        def cut_name_prefix(m: re.Match) -> str:
+            inner = m.group(1)
+            cleaned = pat.sub("", inner)
+            cleaned = cleaned.strip()
+            return f"<p>{cleaned}</p>" if cleaned else ""
+        s = re.sub(r"<p>(.*?)</p>", cut_name_prefix, s, flags=re.I|re.S)
+
+    # 4) подчистка пустых p/li и лишних пробелов
+    s = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I|re.S)
+    s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s, flags=re.I|re.S)
+    s = re.sub(r"\s{2,}", " ", s).strip()
+
+    return s
+
 # =========== PARAMS ===========
 def collect_allowed_params_from_existing(offer: ET.Element) -> List[Tuple[str,str]]:
-    """Берём полезные параметры из уже существующих Param/param, нормализуем имена, отбрасываем мусорные."""
     res: Dict[str,str] = {}
     for tag in ("Param","param","PARAM"):
         for pn in offer.findall(tag):
@@ -701,21 +740,16 @@ def collect_allowed_params_from_existing(offer: ET.Element) -> List[Tuple[str,st
             if not name or not value: continue
             canon = canon_param_name(name)
             if not canon: continue
-            # храним самое «содержательное» значение
             old = res.get(canon, "")
             if len(value) > len(old):
                 res[canon] = value
     return list(res.items())
 
 def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> int:
-    # 1) собрать разрешённые параметры из существующих Param/param
     keep_from_existing = collect_allowed_params_from_existing(offer)
-
-    # 2) очистить любые варианты Param/param
     for tag in ("param","Param","PARAM"):
         for pn in list(offer.findall(tag)): offer.remove(pn)
 
-    # 3) объединить: существующие + извлечённые из описания
     merged: Dict[str,str] = {}
     for k,v in keep_from_existing:
         if k in ALLOWED_PARAM_CANON and v:
@@ -734,9 +768,8 @@ def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> i
     ]
     order_idx={k:i for i,k in enumerate(important_order)}
 
-    # specs из описания (только разрешённые)
     for k,v in specs:
-        if k=="Комплектация":  # в param не пишем
+        if k=="Комплектация":
             continue
         if k in ALLOWED_PARAM_CANON and v:
             v=v.strip()
@@ -745,7 +778,6 @@ def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> i
             if len(v) > len(prev):
                 merged[k] = v
 
-    # 4) запись в оффер
     added=0
     for k in sorted(merged.keys(), key=lambda it: order_idx.get(it, 999)):
         val = merged[k]
@@ -766,7 +798,7 @@ def dedup(words: List[str]) -> List[str]:
     return out
 
 def translit_ru_to_lat(s: str) -> str:
-    table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
+    table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"p","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
     out=s.lower().translate(table); out=re.sub(r"[^a-z0-9\- ]+","", out); return re.sub(r"\s+","-", out).strip("-")
 
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+|^AK\d+|^AC\d+", re.I)
@@ -949,7 +981,7 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
 # ===================== DESCRIPTION REBUILD =====================
 def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,int]:
     """
-    <description> = <h3>{name}</h3> + очищенный текст поставщика (без «хвостов» характеристик)
+    <description> = <h3>{name}</h3> + (очищенный родной текст без «хвостов» характеристик, ссылок и CTA)
                     + (если нашли пары) 'Состав поставки'
                     + (если нашли пары) 'Характеристики'
     """
@@ -966,8 +998,10 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
         supplier_html = sanitize_supplier_html(raw_html)
         specs, _ = extract_kv_specs_and_text(raw_html, name)
 
-        # вырезаем характеристики из родного описания
+        # 1) вырезаем характеристики из родного описания
         supplier_html = strip_specs_from_supplier_html(supplier_html)
+        # 2) чистим ссылки/CTA + дубликаты имени, пустые теги
+        supplier_html = postprocess_supplier_html(supplier_html, name)
 
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
         if supplier_html: parts.append(supplier_html)
@@ -988,7 +1022,6 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
             if (d.text or "") != placeholder:
                 d.text=placeholder; changed+=1
 
-        # здесь создаём унифицированные <param> (с учётом существующих Param/param)
         params_added_total += write_params_from_specs(offer, specs)
 
     return (changed, params_added_total)
