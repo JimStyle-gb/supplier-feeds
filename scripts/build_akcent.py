@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.2.6"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.2.7"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -406,10 +406,10 @@ KV_KEYS_MAP = {
 
 def sanitize_supplier_html(raw_html: str) -> str:
     s = raw_html or ""
-    s = re.sub(r"[\U0001F300-\U0001FAFF\U00002700-\U000027BF\U00002600-\U000026FF]+", "", s)  # emoji
     s = re.sub(r"<(script|style|iframe|object|embed|noscript)[^>]*>.*?</\1>", " ", s, flags=re.I|re.S)
+    s = re.sub(r"[\U0001F300-\U0001FAFF\U00002700-\U000027BF\U00002600-\U000026FF]+", "", s)  # emoji
     s = re.sub(r"<a\b[^>]*>", "", s, flags=re.I); s = re.sub(r"</a>", "", s, flags=re.I)
-    s = re.sub(r"</?(table|thead|tbody|tr|td|th)[^>]*>", " ", s, flags=re.I)
+    s = re.sub(r"</?(table|thead|tbody|tr|td|th)[^>]*>", " ", s, flags=re.I|re.S)
     s = re.sub(r"<br\s*/?>", "<br>", s, flags=re.I)
     s = re.sub(r"<h[1-6][^>]*>", "<h3>", s, flags=re.I); s = re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
     s = re.sub(r"(\s*<br>\s*){2,}", "</p><p>", s, flags=re.I)
@@ -580,46 +580,48 @@ def strip_specs_from_supplier_html(s: str) -> str:
     if not s:
         return s
 
-    # набор ключей
+    # 0) подготовка альта ключей
     keys = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
-    key_re = re.compile(r"(?i)\b(" + "|".join(re.escape(k) for k in keys) + r")\b")
+    if not keys:
+        return s
+    keys_alt = "(?:" + "|".join(re.escape(k) for k in keys) + ")"
 
     out = s
 
-    # 1) заголовки «Характеристики/Комплектация» с примыкающими списками/абзацами
+    # 1) заголовки «Характеристики/Комплектация» + примыкающие списки/абзацы
     out = re.sub(
-        r"(?is)<h3>\s*(технические характеристики|характеристики|состав поставки|комплектация)\s*</h3>\s*(<(?:ul|ol)[^>]*>.*?</(?:ul|ol)>|<p>.*?</p>)?",
+        r"<h3>\s*(?:технические характеристики|характеристики|состав поставки|комплектация)\s*</h3>\s*(?:(?:<(?:ul|ol)[^>]*>.*?</(?:ul|ol)>)|(?:<p>.*?</p>))?",
         "",
         out,
-        flags=re.I
+        flags=re.I|re.S
     )
 
-    # 2) удаляем <li>, начинающиеся с ключа
-    out = re.sub(rf"(?is)<li>\s*{key_re.pattern}\b.*?</li>", "", out)
+    # 2) удалить <li>, начинающиеся с ключа
+    out = re.sub(rf"<li>\s*{keys_alt}\b.*?</li>", "", out, flags=re.I|re.S)
 
-    # 3) в каждом <p> оставляем только базовый текст до первого ключа
+    # 3) в каждом <p> оставить текст до первого ключа
     def _clean_p(m: re.Match) -> str:
         full = m.group(0)
         inner = m.group(1) or ""
 
-        # ключ прямо в начале — выпиливаем абзац
-        if re.match(rf"^\s*{key_re.pattern}", inner):
+        # если ключ в самом начале — убрать абзац
+        if re.match(rf"^\s*{keys_alt}\b", inner, flags=re.I):
             return ""
 
-        km = key_re.search(inner)
+        km = re.search(rf"{keys_alt}\b", inner, flags=re.I)
         if not km:
-            return full  # ключей нет — оставляем
+            return full
 
         keep = inner[:km.start()].rstrip(" ,;:—-")
         if not re.search(r"[A-Za-zА-Яа-яЁё0-9]", keep):
             return ""
         return f"<p>{keep}</p>"
 
-    out = re.sub(r"(?is)<p>(.*?)</p>", _clean_p, out)
+    out = re.sub(r"<p>(.*?)</p>", _clean_p, out, flags=re.I|re.S)
 
-    # 4) подчистка
-    out = re.sub(r"(?is)<(p|li|ul|ol)>\s*</\1>", "", out)
-    out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out)
+    # 4) подчистка пустых контейнеров и пробелов
+    out = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", out, flags=re.I|re.S)
+    out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out, flags=re.I|re.S)
     out = re.sub(r"\s{2,}", " ", out).strip()
     return out
 
