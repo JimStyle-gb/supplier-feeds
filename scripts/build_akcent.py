@@ -12,7 +12,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.7.1-descfix-html"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.7.2-descfix-html"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -75,7 +75,7 @@ def now_utc() -> datetime: return datetime.now(timezone.utc)
 def now_almaty() -> datetime:
     try:   return datetime.now(ZoneInfo("Asia/Almaty")) if ZoneInfo else datetime.utcfromtimestamp(time.time()+5*3600)
     except Exception: return datetime.utcfromtimestamp(time.time()+5*3600)
-def format_dt_almaty(dt: datetime) -> str: return dt.strftime("%d:%m:%Y - %H:%M:%S")
+def format_dt_almaty(dt: datetime) -> str: return dt.strftime("%d:%m:%Y - %H:%М:%S")
 def next_build_time_almaty() -> datetime:
     cur = now_almaty(); t = cur.replace(hour=1, minute=0, second=0, microsecond=0)
     return t + timedelta(days=1) if cur >= t else t
@@ -368,7 +368,7 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
             changed+=1
     return changed
 
-# ===================== Kind detector (scanner добавлен) =====================
+# ===================== Kind detector =====================
 def detect_kind(name: str) -> str:
     n=(name or "").lower()
     if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
@@ -380,7 +380,7 @@ def detect_kind(name: str) -> str:
 
 # ===================== Чистка HTML/текста описаний =====================
 def autocorrect_minor_typos_in_html(html_text: str) -> str:
-    s = _unescape(html_text or "")  # важно: разэкранируем сущности сразу
+    s = _unescape(html_text or "")  # разэкранируем сущности
     s = re.sub(r"\bвысококачетсвенную\b", "высококачественную", s, flags=re.I)
     s = re.sub(r"\bприентеров\b", "принтеров", s, flags=re.I)
     s = re.sub(r"\bSC-\s*P(\d{3,4}\b)", r"SC-P\1", s)
@@ -496,7 +496,9 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
             value=" ".join(vals).strip()
             if label=="Комплектация":
                 for v in re.split(r"[;\n]+", value):
-                    v=v.strip(" .;"); if v: bundle_items.append(v)
+                    v = v.strip(" .;")
+                    if v:
+                        bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
                     if label=="Совместимость": value=_normalize_models_list(value)
@@ -547,8 +549,8 @@ FAMILY_WORDS = ["PIXMA","imageRUNNER","iR","imageCLASS","imagePRESS","LBP","MF",
 def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
     def repl(m):
         inner=m.group(1).replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
-        inner=_unescape(inner)                 # ВАЖНО: &lt;h3&gt; -> <h3>
-        inner=_html_escape_in_cdata_safe(inner)  # только защита от "]]>"
+        inner=_unescape(inner)                 # &lt;h3&gt; -> <h3>
+        inner=_html_escape_in_cdata_safe(inner)  # защитить CDATA
         return f"<description><![CDATA[\n{inner}\n]]></description>"
     return re.sub(
         r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>",
@@ -602,7 +604,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
               "other":["Ключевые преимущества","Кратко о плюсах","Чем удобен"]}
     short=split_short_name(name)
     title_suffix=variants.get(kind,variants["other"])[seed % len(variants.get(kind,variants["other"]))]  # noqa
-    title=f"{short}: {title_suffix}"  # без (Brand)
+    title=f"{short}: {title_suffix}"
 
     bullets=[]
     low=raw_text.lower()
@@ -652,7 +654,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
         lead.append(f"<p><strong>Полная совместимость:</strong><br>{compat_html}</p>")
     lead_html="\n".join(lead)
 
-    # FAQ — 2 Q/A по типу
+    # FAQ
     if kind=="cartridge":
         qa=[("Подойдёт к моему устройству?","Сверьте индекс модели в списке совместимости ниже."),
             ("Нужна калибровка после замены?","Обычно достаточно корректно установить и распечатать тестовую страницу.")]
@@ -1057,7 +1059,7 @@ def main()->None:
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
 
-    # ВАЖНО: превращаем [[[HTML]]]… в CDATA и разэкранируем теги (&lt;h3&gt; -> <h3>)
+    # Превращаем [[[HTML]]]… в CDATA и разэкранируем теги (&lt;h3&gt; -> <h3>)
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
     if DRY_RUN:
