@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.2.7"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.2.8"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -375,11 +375,12 @@ URL_RE = re.compile(r"https?://\S+", re.I)
 MORE_PHRASES_RE = re.compile(r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию)\s*\.?\s*$", re.I)
 
 KV_KEYS_MAP = {
-    # картриджи
-    "вид":"Вид","назначение":"Назначение","цвет печати":"Цвет печати",
+    # картриджи/расходники
+    "вид":"Вид","тип":"Тип","назначение":"Назначение","цвет печати":"Цвет печати",
     "поддерживаемые модели принтеров":"Совместимость","совместимость":"Совместимость",
-    "подходит для моделей":"Совместимость","совместимые модели":"Совместимость","для моделей":"Совместимость",
-    "ресурс":"Ресурс","технология печати":"Технология печати","тип":"Тип",
+    "совместимые продукты":"Совместимость","совместимые модели":"Совместимость",
+    "подходит для моделей":"Совместимость","совместимые принтеры":"Совместимость","для моделей":"Совместимость",
+    "ресурс":"Ресурс","технология печати":"Технология печати",
     # сканеры
     "устройство":"Устройство","сканирование с планшета":"Тип сканирования","тип датчика":"Тип датчика",
     "тип лампы":"Подсветка","epson readyscan led":"Подсветка","dual lens system":"Оптика",
@@ -402,7 +403,77 @@ KV_KEYS_MAP = {
     "выходные розетки":"Розетки","тип розеток":"Розетки",
     # комплектация
     "состав поставки":"Комплектация","комплектация":"Комплектация","в комплекте":"Комплектация","комплектация поставки":"Комплектация",
+    # общие
+    "страна происхождения":"Страна происхождения","гарантия":"Гарантия",
 }
+
+# --- белый список для <param> и синонимы для нормализации имён ---
+ALLOWED_PARAM_CANON = {
+    # универсальные/часто фильтруемые
+    "Совместимость","Тип","Назначение","Цвет печати","Ресурс","Технология печати",
+    "Страна происхождения","Гарантия",
+    # сканеры
+    "Тип сканирования","Тип датчика","Подсветка","Оптическое разрешение","Интерполяция",
+    "Глубина цвета","Макс. формат","Скорость сканирования","Подключение","Wi-Fi","FireWire",
+    # принтеры/МФУ
+    "Тип печати","Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Формат",
+    "Подача бумаги","Выходной лоток","Емкость лотка",
+    # проекторы
+    "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
+    # UPS
+    "Мощность","Стабилизация AVR","Стабилизация","Розетки",
+}
+
+DISALLOWED_PARAM_NAMES = {
+    "производитель","для бренда","наименование производителя","сопутствующие товары",
+    "бренд","brand","manufacturer","vendor","поставщик","партномер","артикул поставщика","код на складе",
+}
+
+# нормализация имён параметров из существующих Param/param
+CANON_NAME_MAP = {
+    # synonyms → canonical
+    "совместимые продукты":"Совместимость",
+    "совместимые модели":"Совместимость",
+    "совместимые принтеры":"Совместимость",
+    "поддерживаемые модели принтеров":"Совместимость",
+    "для моделей":"Совместимость",
+    "цвет":"Цвет печати",
+    "цвет печати":"Цвет печати",
+    "вид":"Тип",
+    "тип":"Тип",
+    "разрешение сканера, dpi":"Оптическое разрешение",
+    "интерполяционное разрешение, dpi":"Интерполяция",
+    "максимальный формат сканирования":"Макс. формат",
+    "интерфейс usb":"Подключение",
+    "подключение по wi-fi":"Wi-Fi",
+    "ресурс лампы":"Ресурс источника",
+    "мощность, ва":"Мощность",
+    "тип розеток":"Розетки",
+    "выход лоток":"Выходной лоток",
+    "емкость лотка":"Емкость лотка",
+    # already canonical — оставим как есть
+}
+
+def canon_param_name(name: str) -> Optional[str]:
+    if not name: return None
+    key = name.strip().lower().replace("ё","е")
+    if key in DISALLOWED_PARAM_NAMES:
+        return None
+    # явные синонимы
+    if key in CANON_NAME_MAP:
+        return CANON_NAME_MAP[key]
+    # маппинг из текстового KV_KEYS_MAP
+    if key in KV_KEYS_MAP:
+        return KV_KEYS_MAP[key]
+    # если уже совпадает с каноническим
+    title = name.strip()
+    if title in ALLOWED_PARAM_CANON:
+        return title
+    # пробуем «нормализацию» вида/регистра
+    title_cap = title[:1].upper()+title[1:].lower()
+    if title_cap in ALLOWED_PARAM_CANON:
+        return title_cap
+    return None
 
 def sanitize_supplier_html(raw_html: str) -> str:
     s = raw_html or ""
@@ -464,11 +535,15 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
     map_keys = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
 
     def try_split_kv(line: str) -> Optional[Tuple[str,str]]:
-        low=line.lower()
+        low=line.lower().replace("ё","е")
         for k in map_keys:
             if low.startswith(k):
                 rest=line[len(k):].strip(" \t:—-")
-                return (KV_KEYS_MAP[k], rest) if rest else (KV_KEYS_MAP[k], "")
+                canon = KV_KEYS_MAP[k]
+                # пропускаем мусорные каноны
+                if canon_param_name(canon) is None and canon not in ("Комплектация",):
+                    return None
+                return (canon, rest) if rest else (canon, "")
         return None
 
     specs: List[Tuple[str,str]]=[]
@@ -488,17 +563,20 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
                     if v: bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
-                    specs.append((label, value))
+                    # нормализуем имя
+                    canon = canon_param_name(label) or label
+                    if canon in ALLOWED_PARAM_CANON:
+                        specs.append((canon, value))
             i+=1; continue
 
-        key_raw = line.strip(":").lower()
+        key_raw = line.strip(":").lower().replace("ё","е")
         label = KV_KEYS_MAP.get(key_raw)
         if label:
             i+=1; vals=[]
             while i < len(lines_raw):
                 nxt=lines_raw[i].strip()
                 if not nxt: i+=1; continue
-                if KV_KEYS_MAP.get(nxt.strip(":").lower()) or try_split_kv(nxt): break
+                if KV_KEYS_MAP.get(nxt.strip(":").lower().replace("ё","е")) or try_split_kv(nxt): break
                 vals.append(nxt); i+=1
             value=" ".join(vals).strip()
             if label=="Комплектация":
@@ -507,7 +585,9 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
                     if v: bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
-                    specs.append((label, value))
+                    canon = canon_param_name(label) or label
+                    if canon in ALLOWED_PARAM_CANON:
+                        specs.append((canon, value))
             continue
 
         out_lines.append(line); i+=1
@@ -515,10 +595,10 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
     # 2) Инлайн-ключи внутри абзацев
     keys_sorted = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
     if keys_sorted:
-        key_pattern = r"(?i)\b(" + "|".join(re.escape(k) for k in keys_sorted) + r")\b"
-        matches = list(re.finditer(key_pattern, txt))
+        keys_alt = r"\b(?:" + "|".join(re.escape(k) for k in keys_sorted) + r")\b"
+        matches = list(re.finditer(keys_alt, txt, flags=re.I))
         for idx, m in enumerate(matches):
-            raw_key = m.group(1).lower()
+            raw_key = m.group(0).lower().replace("ё","е")
             label = KV_KEYS_MAP.get(raw_key)
             if not label: continue
             start = m.end()
@@ -532,7 +612,9 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
                     v=v.strip(" .;")
                     if v: bundle_items.append(v)
             else:
-                specs.append((label, value))
+                canon = canon_param_name(label) or label
+                if canon in ALLOWED_PARAM_CANON:
+                    specs.append((canon, value))
 
     if bundle_items:
         bundle="; ".join(dict.fromkeys([b for b in bundle_items if b]))
@@ -550,8 +632,10 @@ def render_specs_html(specs: List[Tuple[str,str]]) -> str:
         "Тип сканирования","Тип датчика","Подсветка","Оптическое разрешение","Интерполяция",
         "Глубина цвета","Макс. формат","Скорость сканирования","Подключение","Wi-Fi","FireWire",
         "Тип печати","Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Формат",
+        "Подача бумаги","Выходной лоток","Емкость лотка",
         "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
         "Мощность","Стабилизация AVR","Стабилизация","Розетки",
+        "Страна происхождения","Гарантия",
         "Комплектация",
     ]
     order_idx = {k:i for i,k in enumerate(important_order)}
@@ -579,72 +663,95 @@ def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
 def strip_specs_from_supplier_html(s: str) -> str:
     if not s:
         return s
-
-    # 0) подготовка альта ключей
     keys = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
     if not keys:
         return s
     keys_alt = "(?:" + "|".join(re.escape(k) for k in keys) + ")"
-
     out = s
-
-    # 1) заголовки «Характеристики/Комплектация» + примыкающие списки/абзацы
     out = re.sub(
         r"<h3>\s*(?:технические характеристики|характеристики|состав поставки|комплектация)\s*</h3>\s*(?:(?:<(?:ul|ol)[^>]*>.*?</(?:ul|ol)>)|(?:<p>.*?</p>))?",
         "",
         out,
         flags=re.I|re.S
     )
-
-    # 2) удалить <li>, начинающиеся с ключа
     out = re.sub(rf"<li>\s*{keys_alt}\b.*?</li>", "", out, flags=re.I|re.S)
-
-    # 3) в каждом <p> оставить текст до первого ключа
     def _clean_p(m: re.Match) -> str:
-        full = m.group(0)
-        inner = m.group(1) or ""
-
-        # если ключ в самом начале — убрать абзац
+        full = m.group(0); inner = m.group(1) or ""
         if re.match(rf"^\s*{keys_alt}\b", inner, flags=re.I):
             return ""
-
         km = re.search(rf"{keys_alt}\b", inner, flags=re.I)
-        if not km:
-            return full
-
+        if not km: return full
         keep = inner[:km.start()].rstrip(" ,;:—-")
-        if not re.search(r"[A-Za-zА-Яа-яЁё0-9]", keep):
-            return ""
+        if not re.search(r"[A-Za-zА-Яа-яЁё0-9]", keep): return ""
         return f"<p>{keep}</p>"
-
     out = re.sub(r"<p>(.*?)</p>", _clean_p, out, flags=re.I|re.S)
-
-    # 4) подчистка пустых контейнеров и пробелов
     out = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", out, flags=re.I|re.S)
     out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out, flags=re.I|re.S)
     out = re.sub(r"\s{2,}", " ", out).strip()
     return out
 
 # =========== PARAMS ===========
+def collect_allowed_params_from_existing(offer: ET.Element) -> List[Tuple[str,str]]:
+    """Берём полезные параметры из уже существующих Param/param, нормализуем имена, отбрасываем мусорные."""
+    res: Dict[str,str] = {}
+    for tag in ("Param","param","PARAM"):
+        for pn in offer.findall(tag):
+            name = pn.get("name") or pn.get("Name") or ""
+            value = (pn.text or "").strip()
+            if not name or not value: continue
+            canon = canon_param_name(name)
+            if not canon: continue
+            # храним самое «содержательное» значение
+            old = res.get(canon, "")
+            if len(value) > len(old):
+                res[canon] = value
+    return list(res.items())
+
 def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> int:
-    for pn in list(offer.findall("param")): offer.remove(pn)
-    if not specs: return 0
+    # 1) собрать разрешённые параметры из существующих Param/param
+    keep_from_existing = collect_allowed_params_from_existing(offer)
+
+    # 2) очистить любые варианты Param/param
+    for tag in ("param","Param","PARAM"):
+        for pn in list(offer.findall(tag)): offer.remove(pn)
+
+    # 3) объединить: существующие + извлечённые из описания
+    merged: Dict[str,str] = {}
+    for k,v in keep_from_existing:
+        if k in ALLOWED_PARAM_CANON and v:
+            merged[k] = v.strip()
+
     important_order = [
         "Тип","Назначение","Цвет печати","Совместимость","Ресурс","Технология печати",
         "Тип сканирования","Тип датчика","Подсветка","Оптическое разрешение","Интерполяция",
         "Глубина цвета","Макс. формат","Скорость сканирования","Подключение","Wi-Fi","FireWire",
         "Тип печати","Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Формат",
+        "Подача бумаги","Выходной лоток","Емкость лотка",
         "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
         "Мощность","Стабилизация AVR","Стабилизация","Розетки",
+        "Страна происхождения","Гарантия",
         "Комплектация",
     ]
     order_idx={k:i for i,k in enumerate(important_order)}
-    specs_sorted=sorted([(k,v) for k,v in specs if v], key=lambda it:(order_idx.get(it[0],999), it[0]))
+
+    # specs из описания (только разрешённые)
+    for k,v in specs:
+        if k=="Комплектация":  # в param не пишем
+            continue
+        if k in ALLOWED_PARAM_CANON and v:
+            v=v.strip()
+            if not v: continue
+            prev = merged.get(k, "")
+            if len(v) > len(prev):
+                merged[k] = v
+
+    # 4) запись в оффер
     added=0
-    for k,v in specs_sorted:
-        val=(v or "").strip()
+    for k in sorted(merged.keys(), key=lambda it: order_idx.get(it, 999)):
+        val = merged[k]
         if not val: continue
-        if len(val)>PARAMS_MAX_VALUE_LEN: val = val[:PARAMS_MAX_VALUE_LEN-1] + "…"
+        if len(val)>PARAMS_MAX_VALUE_LEN:
+            val = val[:PARAMS_MAX_VALUE_LEN-1] + "…"
         node=ET.SubElement(offer,"param"); node.set("name", k); node.text=val; added+=1
     return added
 
@@ -804,7 +911,7 @@ def url_exists(url: str) -> bool:
 
 def _slug(s: str) -> str:
     if not s: return "unknown"
-    table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
+    table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"p","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
     base=(s or "").lower().translate(table); base=re.sub(r"[^a-z0-9\- ]+","", base)
     return re.sub(r"\s+","-", base).strip("-") or "unknown"
 
@@ -881,6 +988,7 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
             if (d.text or "") != placeholder:
                 d.text=placeholder; changed+=1
 
+        # здесь создаём унифицированные <param> (с учётом существующих Param/param)
         params_added_total += write_params_from_specs(offer, specs)
 
     return (changed, params_added_total)
@@ -941,7 +1049,7 @@ def main()->None:
     reprice_offers(out_shop, PRICING_RULES)
     ensure_placeholder_pictures(out_shop)
 
-    # описания
+    # описания + параметры
     desc_changed, params_added = rebuild_descriptions_preserve_supplier(out_shop)
 
     t_true, t_false = normalize_available_field(out_shop)
