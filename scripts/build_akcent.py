@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.native-fulltext-sanitize.v1.2.0"
+SCRIPT_VERSION = "akcent-2025-10-22.native-fulltext-sanitize.v1.2.1"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -407,15 +407,14 @@ KV_KEYS_MAP = {
 def sanitize_supplier_html(raw_html: str) -> str:
     s = raw_html or ""
 
-    # убрать emoji и «тяжёлые» символы
+    # убрать emoji
     s = re.sub(r"[\U0001F300-\U0001FAFF\U00002700-\U000027BF\U00002600-\U000026FF]+", "", s)
 
     # убрать опасные/лишние блоки
     s = re.sub(r"<(script|style|iframe|object|embed|noscript)[^>]*>.*?</\1>", " ", s, flags=re.I|re.S)
 
     # развернуть ссылки в текст
-    s = re.sub(r"<a\b[^>]*>", "", s, flags=re.I)
-    s = re.sub(r"</a>", "", s, flags=re.I)
+    s = re.sub(r"<a\b[^>]*>", "", s, flags=re.I); s = re.sub(r"</a>", "", s, flags=re.I)
 
     # удалить таблицы, но оставить их содержимое
     s = re.sub(r"</?(table|thead|tbody|tr|td|th)[^>]*>", " ", s, flags=re.I)
@@ -424,17 +423,16 @@ def sanitize_supplier_html(raw_html: str) -> str:
     s = re.sub(r"<br\s*/?>", "<br>", s, flags=re.I)
 
     # заголовки → h3
-    s = re.sub(r"<h[1-6][^>]*>", "<h3>", s, flags=re.I)
-    s = re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
+    s = re.sub(r"<h[1-6][^>]*>", "<h3>", s, flags=re.I); s = re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
 
     # двойные <br> → новый абзац
     s = re.sub(r"(\s*<br>\s*){2,}", "</p><p>", s, flags=re.I)
 
-    # удалить любые теги кроме разрешённых; у разрешённых — убрать атрибуты
-    s = re.sub(r"<(p|ul|ol|li|h3|br)(\s+[^>]*)?>", r"<\1>", s, flags=re.I)  # разрешённые, без атрибутов
-    s = re.sub(r"</?(?!p|ul|ol|li|h3|br)\w+[^>]*>", " ", s, flags=re.I)      # все остальные — в пробел
+    # разрешённые теги без атрибутов; остальное — в пробел
+    s = re.sub(r"<(p|ul|ol|li|h3|br)(\s+[^>]*)?>", r"<\1>", s, flags=re.I)
+    s = re.sub(r"</?(?!p|ul|ol|li|h3|br)\w+[^>]*>", " ", s, flags=re.I)
 
-    # нормализация блоков
+    # чистка пустых блоков
     s = re.sub(r"<(p|li|ul|ol|h3)>\s*</\1>", "", s, flags=re.I)
     s = re.sub(r"\s{2,}", " ", s).strip()
 
@@ -502,9 +500,8 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
             label, value = kv1
             if label=="Комплектация":
                 if value:
-                    v=value.strip(" .;")
-                    if v:
-                        bundle_items.append(v)
+                    v=value.strip(" .;"); 
+                    if v: bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
                     specs.append((label, value))
@@ -529,8 +526,7 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
             if label=="Комплектация":
                 for v in re.split(r"[;,\n]+", value):
                     v=v.strip(" .;")
-                    if v:
-                        bundle_items.append(v)
+                    if v: bundle_items.append(v)
             else:
                 if value and value.strip().lower() not in {"нет","-","—"}:
                     specs.append((label, value))
@@ -581,6 +577,37 @@ def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
             out.append("</ul>")
             return "\n".join(out)
     return ""
+
+# =========== PARAMS: записываем характеристики в <param> ===========
+def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> int:
+    for pn in list(offer.findall("param")):
+        offer.remove(pn)
+    if not specs:
+        return 0
+
+    important_order = [
+        "Тип сканирования","Тип датчика","Подсветка","Оптическое разрешение","Интерполяция",
+        "Глубина цвета","Макс. формат","Скорость сканирования","Подключение","Wi-Fi","FireWire",
+        "Тип печати","Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Формат",
+        "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
+        "Мощность","Стабилизация AVR","Стабилизация","Розетки",
+        "Совместимость","Комплектация",
+    ]
+    order_idx={k:i for i,k in enumerate(important_order)}
+    specs_sorted=sorted([(k,v) for k,v in specs if v], key=lambda it:(order_idx.get(it[0],999), it[0]))
+
+    added=0
+    for k,v in specs_sorted:
+        val=(v or "").strip()
+        if not val:
+            continue
+        if len(val) > PARAMS_MAX_VALUE_LEN:
+            val = val[:PARAMS_MAX_VALUE_LEN-1] + "…"
+        node=ET.SubElement(offer,"param")
+        node.set("name", k)
+        node.text=val
+        added+=1
+    return added
 
 # ===================== KEYWORDS =====================
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
@@ -694,9 +721,6 @@ def _normalize_code(s: str) -> str:
     return re.sub(r"[^A-Za-z0-9\-]+", "", s).upper()
 
 def ensure_vendorcode_with_article(out_shop: ET.Element, prefix: str, create_if_missing: bool = False) -> None:
-    """
-    Заполняет <vendorCode> из article/name/url/id, добавляет префикс, по необходимости создаёт тег.
-    """
     off_el = out_shop.find("offers")
     if off_el is None: return
     for offer in off_el.findall("offer"):
@@ -777,10 +801,6 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
     return added
 
 # ===================== DESCRIPTION REBUILD =====================
-def render_intro_html(full_supplier_html: str) -> str:
-    # Показываем «как есть» — весь очищенный HTML
-    return full_supplier_html or ""
-
 def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,int]:
     """
     <description> = <h3>{name}</h3> + ПОЛНЫЙ, санитизированный HTML поставщика
@@ -800,23 +820,20 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
         raw_html=inner_html(d)
 
         supplier_html = sanitize_supplier_html(raw_html)
-        specs, _native_plain_text = extract_kv_specs_and_text(raw_html, name)
+        specs, _ = extract_kv_specs_and_text(raw_html, name)
 
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
-        intro_html = render_intro_html(supplier_html)
-        if intro_html: parts.append(intro_html)
+        if supplier_html: parts.append(supplier_html)
 
         low_sup = re.sub(r"\s+"," ", supplier_html.lower())
         has_bundle_in_supplier = bool(re.search(r"<h3>\s*(состав поставки|комплектация)\b", low_sup, re.I))
         has_specs_in_supplier  = bool(re.search(r"<h3>\s*(технические характеристики|характеристики)\b", low_sup, re.I))
 
         bundle_html = render_bundle_html(specs)
-        if bundle_html and not has_bundle_in_supplier:
-            parts.append(bundle_html)
+        if bundle_html and not has_bundle_in_supplier: parts.append(bundle_html)
 
         specs_html = render_specs_html(specs)
-        if specs_html and not has_specs_in_supplier:
-            parts.append(specs_html)
+        if specs_html and not has_specs_in_supplier: parts.append(specs_html)
 
         full_html = "\n".join([p for p in parts if p]).strip()
         placeholder=f"[[[HTML]]]{full_html}[[[/HTML]]]"
@@ -834,7 +851,7 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
 def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
     def repl(m):
         inner=m.group(1).replace("[[[HTML]]]", "").replace("[[[/HTML]]]", "")
-        inner = html.unescape(inner)  # КРИТИЧЕСКОЕ: разэкранировать, чтобы рендерилось как HTML
+        inner = html.unescape(inner)  # разэкранировать, чтобы рендерилось как HTML
         return f"<description><![CDATA[\n{inner}\n]]></description>"
     return re.sub(
         r"<description>(\s*\[\[\[HTML\]\]\].*?\[\[\[\/HTML\]\]\]\s*)</description>",
@@ -868,7 +885,7 @@ def main()->None:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
         out_offers.append(mod)
 
-    # фильтр по именам (как было)
+    # фильтр по именам
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
@@ -889,7 +906,7 @@ def main()->None:
     reprice_offers(out_shop, PRICING_RULES)
     ensure_placeholder_pictures(out_shop)
 
-    # === ПЕРЕСТРОЙКА ОПИСАНИЙ: полный текст поставщика + аккуратная верстка ===
+    # описания: полный текст поставщика + аккуратная верстка
     desc_changed, params_added = rebuild_descriptions_preserve_supplier(out_shop)
 
     t_true, t_false = normalize_available_field(out_shop)
@@ -928,7 +945,7 @@ def main()->None:
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
 
-    # превращаем [[[HTML]]]… в CDATA с разэкраниванием
+    # [[[HTML]]] → CDATA с разэкраниванием
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
     if DRY_RUN:
