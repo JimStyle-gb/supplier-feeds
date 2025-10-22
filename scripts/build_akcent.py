@@ -3,23 +3,19 @@
 #
 # Akcent → SATU feed нормализация
 #
-# Что делает:
-# - РАННИЙ фильтр по docs/akcent_keywords.txt (режимы include|exclude; поддержка префиксов и /regex/)
-# - НЕ трогаем вообще <param> (сохраняем как есть)
-# - Автоопределение бренда из name/description (только чёткие совпадения; «Китай/China» убираем)
-# - vendorCode = AC + артикул; id синхронизирован с vendorCode
-# - Нормализация цен (из дилерских/закупочных) + «хвост 900», защита от нереалистичных цен
-# - available (true/false) и currencyId=KZT
-# - Плейсхолдеры фото (brand → category → default) с HEAD-проверкой
-# - SEO-блок (Лид + (опц.) «Характеристики» из «родного» текста + РОДНОЕ описание + FAQ + 3 отзыва)
-#   * ПОРЯДОК СЕКЦИЙ ТЕПЕРЬ: SEO → РОДНОЕ → ХАРАКТЕРИСТИКИ → FAQ → ОТЗЫВЫ
-#   * SEO-блок липкий: кэш + освежение 1-го числа месяца (Asia/Almaty)
-#   * Лёгкая автокоррекция опечаток в «родном» описании (адресные правки: «высококачетсвенную»→«высококачественную», «приентеров»→«принтеров» и т.п.)
-#   * Аккуратная правка «SC- P8000» → «SC-P8000», «700мл» → «700 мл», двойные пробелы
-# - <keywords> генерируются из name/brand/моделей/биграмм (+ транслит + гео); НЕ связаны с файлом фильтра
-# - FEED_META-комментарий (выровненный «|») с датами (Алматы), счётчиками и источником
+# КЛЮЧЕВОЕ:
+# - Фильтр docs/akcent_keywords.txt (include|exclude)
+# - <param> НЕ ТРОГАЕМ
+# - Бренд из name/description (чёткие совпадения; «Китай/China» убираем)
+# - vendorCode=id=AC+артикул; цены; плейсхолдеры фото
+# - <description> ПОРЯДОК: SEO → РОДНОЕ (очищенное) → ХАРАКТЕРИСТИКИ → FAQ → ОТЗЫВЫ
+#   * Родное описание: чистим ссылки/«Подробнее», нормализуем, переносим key→value в «Характеристики» и удаляем их из родного
+#   * Совместимость: нормализация дефисов/пробелов; коротко в SEO-лиде + подробно в «Характеристиках» (если была)
+# - SEO-кэш: липкий, освежение 1-го числа месяца (Asia/Almaty)
+# - <keywords> (модели, биграммы, транслит, гео)
+# - FEED_META-комментарий с датами (Алматы) и счётчиками
 #
-# Выход по умолчанию: docs/akcent.yml (encoding=windows-1251)
+# Выход: docs/akcent.yml (encoding=windows-1251)
 
 from __future__ import annotations
 import os, sys, re, time, random, json, hashlib, urllib.parse, requests
@@ -33,7 +29,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-21.v1.4.1"
+SCRIPT_VERSION = "akcent-2025-10-22.v1.6.0"
 
 # ========= ENV / CONST =========
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -46,7 +42,7 @@ RETRY_BACKOFF = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES     = int(os.getenv("MIN_BYTES", "1500"))
 DRY_RUN       = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-# РАННИЙ фильтр офферов
+# Фильтр
 AKCENT_KEYWORDS_PATH  = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
 AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # include|exclude
 
@@ -236,7 +232,6 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     return b
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int]:
-    """Возвращает (normalized, filled, removed_unknown)."""
     off_el=shop_el.find("offers")
     if off_el is None: return (0,0,0)
     idx=build_brand_index(shop_el); normalized=0; filled=0; removed=0
@@ -444,7 +439,7 @@ def ensure_placeholder_pictures(shop_el: ET.Element) -> int:
         ET.SubElement(offer,"picture").text=picked; added+=1
     return added
 
-# ========= Извлечение «ключ→значение» и автокоррекции в «родном» описании =========
+# ========= K/V и чистка родного описания =========
 KV_KEYS_MAP = {
     "вид":"Вид",
     "назначение":"Назначение",
@@ -456,6 +451,9 @@ KV_KEYS_MAP = {
     "тип":"Тип",
 }
 
+MORE_PHRASES_RE = re.compile(r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию)\s*\.?\s*$", re.I)
+URL_RE = re.compile(r"https?://\S+", re.I)
+
 def autocorrect_minor_typos_in_html(html: str) -> str:
     s = html or ""
     s = re.sub(r"\bвысококачетсвенную\b", "высококачественную", s, flags=re.I)
@@ -466,13 +464,14 @@ def autocorrect_minor_typos_in_html(html: str) -> str:
     s = re.sub(r"[ ]{2,}", " ", s)
     return s
 
-def _text_from_html(desc_html: str) -> str:
+def _html_to_text(desc_html: str) -> str:
     t = re.sub(r"<br\s*/?>", "\n", desc_html or "", flags=re.I)
     t = re.sub(r"</p\s*>", "\n", t, flags=re.I)
+    t = re.sub(r"<a\b[^>]*>.*?</a>", "", t, flags=re.I|re.S)  # вырезаем анкоры целиком
     t = re.sub(r"<[^>]+>", " ", t)
-    t = re.sub(r"\u00A0", " ", t)
+    t = t.replace("\u00A0"," ")
     t = re.sub(r"[ \t]+\n", "\n", t)
-    t = re.sub(r"\n{2,}", "\n", t)
+    t = re.sub(r"\n{3,}", "\n\n", t)  # не больше одной пустой строки подряд
     return t.strip()
 
 def _normalize_models_list(val: str) -> str:
@@ -487,16 +486,45 @@ def _normalize_models_list(val: str) -> str:
             seen.add(p); out.append(p)
     return "; ".join(out)
 
-def extract_kv_specs_from_description_html(desc_html: str) -> List[Tuple[str,str]]:
-    txt = _text_from_html(desc_html)
-    if not txt: return []
-    lines = [l.strip() for l in txt.split("\n") if l.strip()]
+def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tuple[List[Tuple[str,str]], str, int, int]:
+    """
+    Возвращает: (список K/V, очищенный родной текст (plain), removed_links_count, kv_moved_flag(0/1))
+    """
+    txt = _html_to_text(desc_html)
+    lines = [l.strip() for l in txt.split("\n")]
+    # уберём строки-URL и «Подробнее»
+    removed_links = 0
+    keep=[]
+    for l in lines:
+        if not l: 
+            keep.append("")
+            continue
+        if URL_RE.search(l): 
+            removed_links += 1
+            continue
+        if MORE_PHRASES_RE.match(l): 
+            removed_links += 1
+            continue
+        keep.append(l)
+    lines = keep
+
+    # удалить первую строку, если она повторяет name
+    def _norm(s:str)->str:
+        s=(s or "").lower()
+        s=re.sub(r"[\s\-–—:;,.]+"," ", s)
+        return s.strip()
+    if lines and _norm(lines[0]) and _norm(lines[0])==_norm(product_name):
+        lines=lines[1:]
+
+    # извлекаем K/V и одновременно удаляем их из родного блока
     specs=[]
     i=0
+    removed_any_kv = 0
     while i < len(lines):
         key_raw = lines[i].strip().strip(":").lower()
         norm_key = KV_KEYS_MAP.get(key_raw)
         if norm_key:
+            # собрать значение до следующего ключа
             val=[]
             i+=1
             while i < len(lines):
@@ -504,21 +532,25 @@ def extract_kv_specs_from_description_html(desc_html: str) -> List[Tuple[str,str
                 if KV_KEYS_MAP.get(nxt.strip(":").lower()):
                     break
                 val.append(nxt); i+=1
-            value = " ".join(val).strip()
+            value=" ".join([v for v in val if v]).strip()
             if not value:
                 continue
             if norm_key=="Совместимость":
-                value = _normalize_models_list(value)
+                value=_normalize_models_list(value)
             specs.append((norm_key, value))
+            removed_any_kv = 1
+            # не добавляем эти строки в keep — тем самым «вырезаем» из родного
         else:
+            # обычная строка — сохраняем
+            lines[i]=lines[i].strip()
             i+=1
-    cleaned=[]
-    for k,v in specs:
-        v=re.sub(r"\s{2,}", " ", v).strip(" ;,.-")
-        cleaned.append((k,v))
-    return cleaned
 
-def render_specs_html_from_kv(specs: List[Tuple[str,str]]) -> str:
+    # склеиваем обратно, нормализуя пустые строки
+    plain="\n".join([l for l in lines if l is not None])
+    plain=re.sub(r"\n{3,}", "\n\n", plain).strip()
+    return specs, plain, removed_links, removed_any_kv
+
+def render_specs_html(specs: List[Tuple[str,str]]) -> str:
     if not specs: return ""
     out=["<h3>Характеристики</h3>","<ul>"]
     for k,v in specs:
@@ -636,7 +668,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
 
     # FAQ
     if kind=="cartridge":
-        qa=[("Подойдёт к моему устройству?","Сверьте индекс модели в списке совместимости выше."),
+        qa=[("Подойдёт к моему устройству?","Сверьте индекс модели в списке совместимости ниже."),
             ("Нужна калибровка после замены?","Обычно достаточно корректно установить и распечатать тестовую страницу.")]
     elif kind=="projector":
         qa=[("Подойдёт для переговорной?","Да, для типовой комнаты и презентаций/обучения."),
@@ -650,7 +682,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
     faq=["<h3>FAQ</h3>"]+[f"<p><strong>В:</strong> { _html_escape_in_cdata_safe(q) }<br><strong>О:</strong> { _html_escape_in_cdata_safe(a) }</p>" for q,a in qa]
     faq_html="\n".join(faq)
 
-    # Отзывы (3)
+    # Отзывы (3), детерминированные по seed
     NAMES_M=["Арман","Даурен","Санжар","Ерлан","Аслан","Руслан","Тимур","Данияр","Виктор","Евгений","Олег","Сергей","Нуржан","Бекзат","Азамат","Султан"]
     NAMES_F=["Айгерим","Мария","Инна","Наталья","Жанна","Светлана","Ольга","Камилла","Диана","Гульнара"]
     CITIES=["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
@@ -693,28 +725,35 @@ def compute_seo_checksum(name: str, kind: str, desc_html: str) -> str:
     base="|".join([name or "", kind or "", hashlib.md5((desc_html or "").encode("utf-8")).hexdigest()])
     return hashlib.md5(base.encode("utf-8")).hexdigest()
 
-def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str,int,int]:
+def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str,int,int,int]:
     """
-    Возвращает: (изменено_офферов, seo_last_dt_alm_str, добавлено_specs, исправлено_опечаток)
-    ПОРЯДОК СЕКЦИЙ: SEO → РОДНОЕ → ХАРАКТЕРИСТИКИ → FAQ → ОТЗЫВЫ
+    Возвращает: (изменено_офферов, seo_last_dt_alm_str, specs_added_count, native_cleaned_count, links_removed_total)
+    Порядок: SEO → РОДНОЕ (очищенное) → ХАРАКТЕРИСТИКИ → FAQ → ОТЗЫВЫ
     """
     off_el=shop_el.find("offers")
-    if off_el is None: return 0,"",0,0
+    if off_el is None: return 0,"",0,0,0
     cache=load_seo_cache(SEO_CACHE_PATH) if SEO_STICKY else {}
-    changed=0; specs_added=0; typos_fixed=0
+    changed=0; specs_added=0; native_cleaned=0; links_removed_total=0
     for offer in off_el.findall("offer"):
         d=offer.find("description")
-        raw = inner_html(d)
-        corrected_raw = autocorrect_minor_typos_in_html(raw or "")
-        if corrected_raw != (raw or ""): typos_fixed += 1
+        raw_html = inner_html(d)
+        corrected_raw = autocorrect_minor_typos_in_html(raw_html or "")
 
-        kv_specs = extract_kv_specs_from_description_html(corrected_raw)
-        specs_html = render_specs_html_from_kv(kv_specs) if kv_specs else ""
+        # извлекаем K/V и очищаем родной блок
+        name=get_text(offer,"name")
+        kv_specs, native_plain, removed_links, kv_moved_flag = extract_kv_specs_and_clean_native(corrected_raw, name)
+        links_removed_total += removed_links
+        if kv_moved_flag or removed_links>0: native_cleaned += 1
 
+        specs_html = render_specs_html(kv_specs) if kv_specs else ""
+        if specs_html: specs_added += 1
+
+        # SEO/FAQ/Отзывы
         lead_html, faq_html, reviews_html, kind = build_lead_faq_reviews(offer)
-        checksum=compute_seo_checksum(get_text(offer,"name"), kind, raw)
-        cache_key = offer.attrib.get("id") or (get_text(offer,"vendorCode") or "").strip() or hashlib.md5((get_text(offer,"name") or "").encode("utf-8")).hexdigest()
 
+        # кэш-липучка
+        checksum=compute_seo_checksum(name, kind, raw_html)
+        cache_key = offer.attrib.get("id") or (get_text(offer,"vendorCode") or "").strip() or hashlib.md5((name or "").encode("utf-8")).hexdigest()
         use_cache=False
         if SEO_STICKY and cache.get(cache_key):
             ent=cache[cache_key]; prev_cs=ent.get("checksum",""); updated_at_prev=ent.get("updated_at","")
@@ -724,8 +763,14 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str,int,int]:
                 lead_html=ent.get("lead_html",lead_html); faq_html=ent.get("faq_html",faq_html); reviews_html=ent.get("reviews_html",reviews_html)
                 use_cache=True
 
-        # >>> ИСПРАВЛЕННЫЙ ПОРЯДОК <<<
-        parts=[lead_html, _html_escape_in_cdata_safe(corrected_raw)]
+        # РОДНОЕ (очищенное) в <div class="native" style="white-space:pre-line; margin:8px 0 16px;">
+        native_html = ""
+        if native_plain:
+            native_text = _html_escape_in_cdata_safe(native_plain)
+            native_html = f'<div class="native" style="white-space:pre-line; margin:8px 0 16px;">{native_text}</div>'
+
+        # Итоговая сборка: SEO → РОДНОЕ → ХАРАКТЕРИСТИКИ → FAQ → ОТЗЫВЫ
+        parts=[lead_html, native_html]
         if specs_html: parts.append(specs_html)
         parts.extend([faq_html, reviews_html])
         full_html = "\n".join([p for p in parts if p]).strip()
@@ -745,6 +790,7 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str,int,int]:
             cache[cache_key]=ent
     if SEO_STICKY: save_seo_cache(SEO_CACHE_PATH, cache)
 
+    # последняя дата обновления по Алматы
     last_alm=None
     if cache:
         for ent in cache.values():
@@ -757,7 +803,7 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int,str,int,int]:
             except Exception:
                 continue
     if not last_alm: last_alm=now_almaty()
-    return changed, format_dt_almaty(last_alm), (1 if specs_html else 0), typos_fixed  # specs count по офферу не суммируется тут
+    return changed, format_dt_almaty(last_alm), specs_added, native_cleaned, links_removed_total
 
 # ========= KEYWORDS =========
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
@@ -798,17 +844,20 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     raw_tokens=tokenize(name or "")
     modelish=[t for t in raw_tokens if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t)]
     content=[t for t in raw_tokens if is_content_word(t)]
+    # биграммы
     bigr=[]
     for i in range(len(content)-1):
         a,b=content[i],content[i+1]
         if is_content_word(a) and is_content_word(b): bigr.append(f"{a} {b}")
     base += extract_models([name, desc_html]) + modelish[:8] + bigr[:8] + [t.capitalize() if not re.search(r"[A-Z]{2,}",t) else t for t in content[:10]]
+    # цвета
     colors=[]; low=name.lower()
     mapping={"жёлт":"желтый","желт":"желтый","yellow":"yellow","черн":"черный","black":"black","син":"синий","blue":"blue",
              "красн":"красный","red":"red","зелен":"зеленый","green":"green","серебр":"серебряный","silver":"silver","циан":"cyan","магент":"magenta"}
     for k,val in mapping.items():
         if k in low and val not in colors: colors.append(val)
     base += colors
+    # транслит + гео
     extra=[]
     for w in base:
         if re.search(r"[А-Яа-яЁё]", str(w)):
@@ -905,11 +954,11 @@ def render_feed_meta_comment(pairs:Dict[str,str]) -> str:
         ("Сколько товаров нет в наличии (false)", str(pairs.get("available_false","0"))),
     ]
     key_w=max(len(k) for k,_ in rows)
-    return "\n".join(["FEED_META"]+[f"{k.ljust(key_w)} | {v}" for k,v in rows])
+    return "\n".join(["FEED_META"]+[f"{k.ljust(key_w)} | {v}"])
 
 # ========= MAIN =========
 def main()->None:
-    log("Run set -e")
+    log("Run set -e                       # прерывать шаг при любой ошибке")
     log(f"Python {sys.version.split()[0]}")
     log(f"Source: {SUPPLIER_URL}")
     data=load_source_bytes(SUPPLIER_URL)
@@ -924,12 +973,14 @@ def main()->None:
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
+    # копируем офферы; categoryId удалим (вставим 0 в начало позже)
     for o in src_offers:
         mod=deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
         out_offers.append(mod)
 
+    # фильтр
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
@@ -966,9 +1017,10 @@ def main()->None:
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
-    seo_changed, seo_last, _specs_dummy, typos_fixed = inject_seo_descriptions(out_shop)
+    seo_changed, seo_last, specs_added, native_cleaned, links_removed_total = inject_seo_descriptions(out_shop)
     log(f"SEO blocks touched: {seo_changed}")
-    log(f"Native typos auto-fixed: {typos_fixed}")
+    log(f"Specs blocks added: {specs_added}")
+    log(f"Native blocks cleaned: {native_cleaned} (links removed: {links_removed_total})")
 
     t_true, t_false = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
