@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+AkCent feed builder
+— Чистит «родное» описание (маркетинговый текст коротко, без «спеков»)
+— Выделяет «Состав поставки» отдельным блоком (из описания или из Param: Комплектация)
+— Блок «Характеристики» формирует ТОЛЬКО из <Param> поставщика (канонизация + нормализация)
+— Фильтр товаров — строго по <name> из файла docs/akcent_keywords.txt
+— Пустая строка между </offer> и следующим <offer>
+— FEED_META в «старом» формате
+"""
+
 import os, sys, re, time, random, urllib.parse, requests, html
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
@@ -11,7 +21,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v3.3.0"
+SCRIPT_VERSION = "akcent-2025-10-23.v4.0.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -436,11 +446,10 @@ def sanitize_supplier_html(raw_html: str) -> str:
     return s
 
 def wrap_bare_text_lines_to_paragraphs(html_in: str) -> str:
-    """Оборачиваем «голые» строки (без тегов) в <p>...</p> для корректной дальнейшей обработки."""
+    """Оборачиваем «голые» строки (без тегов) в <p>...</p>."""
     if not html_in.strip(): return html_in
     lines = html_in.splitlines()
-    out=[]
-    buf=[]
+    out=[]; buf=[]
     def flush_buf():
         if not buf: return
         text = " ".join([x.strip() for x in buf if x.strip()])
@@ -449,17 +458,14 @@ def wrap_bare_text_lines_to_paragraphs(html_in: str) -> str:
         buf.clear()
     for ln in lines:
         s=ln.strip()
-        if not s: 
-            flush_buf()
-            continue
+        if not s:
+            flush_buf(); continue
         if s.startswith("<"):
-            flush_buf()
-            out.append(ln)
+            flush_buf(); out.append(ln)
         else:
             buf.append(s)
     flush_buf()
     res="\n".join(out)
-    # если после оборачивания вообще нет тегов, сделаем один параграф
     if not re.search(r"<(p|ul|ol|h3)\b", res, flags=re.I):
         txt=_html_escape_in_cdata_safe(" ".join(x.strip() for x in lines if x.strip()))
         res=f"<p>{txt}</p>"
@@ -602,12 +608,12 @@ def improve_supplier_description(supplier_html: str, product_name: str) -> Tuple
     s = supplier_html or ""
     s = remove_urls_and_cta(s)
     s = strip_name_repeats(s, product_name)
-    # оборачиваем «голые» строки в <p> до дальнейших шагов
+    # ВАЖНО: сначала оборачиваем «голые» строки, чтобы не терять текст
     s = wrap_bare_text_lines_to_paragraphs(s)
     s, bundle_from_desc = extract_bundle_from_supplier_html(s)
-    s = strip_after_techspec_headings(s)
-    s = remove_param_like_sentences(s)
-    s = convert_paragraphs_to_bullets(s)
+    s = strip_after_techspec_headings(s)   # Срезать всё после «Технические характеристики»
+    s = remove_param_like_sentences(s)     # Вырезать «спеки»-предложения (dpi, A4, Wi-Fi и т. п.)
+    s = convert_paragraphs_to_bullets(s)   # Превратить «лестницы» в <ul>
     s = truncate_first_paragraph(s, limit_chars=700)
     s = compact_html_whitespace(s)
     return s, bundle_from_desc
@@ -647,7 +653,6 @@ CANON_NAME_MAP_BASE = {
     "комплектация":"Комплектация","состав поставки":"Комплектация","в комплекте":"Комплектация",
     "тип чернил":"Тип чернил","ресурс":"Ресурс","объем":"Объем","объём":"Объем",
     "автоподатчик":"Автоподатчик",
-    # «разрешение» — контекстно (ниже)
 }
 
 ALLOWED_PARAM_CANON = {
@@ -704,13 +709,18 @@ def _norm_yesno(s: str) -> str:
     if re.search(r"^(опци(я|онально)|option(al)?)$", low): return "Опционально"
     return s.strip()
 
-def _norm_display(s: str) -> str:
-    t=s.replace(",", "."); m=re.search(r"(\d{1,2}(\.\d)?)", t)
-    return f"{m.group(1)} см" if m else s.strip()
+def _norm_display_val(s: str) -> str:
+    t=s.replace(",", ".")
+    m=re.search(r"(\d{1,2}(\.\d)?)", t)
+    if m: return f"{m.group(1)} см"
+    yn=_norm_yesno(s)
+    return "есть" if yn=="Да" else ("нет" if yn=="Нет" else s.strip())
 
 def _norm_speed(s: str) -> str:
     m=re.search(r"(\d{1,3})\s*(стр|pages)\s*/?\s*мин", s, re.I)
-    return f"до {m.group(1)} стр/мин" if m else s.strip()
+    if m: return f"до {m.group(1)} стр/мин"
+    m2=re.search(r"^(\d{1,3})$", s.strip())
+    return f"до {m2.group(1)} стр/мин" if m2 else s.strip()
 
 _ALLOWED_FORMAT_TOKEN = re.compile(
     r"^(A\d|B\d|C6|DL|Letter|Legal|No\.?\s*10|\d{1,2}\s*[×x]\s*\d{1,2}|16:9|10\s*×\s*15|13\s*×\s*18|9\s*×\s*13)$",
@@ -750,6 +760,14 @@ def _norm_colors_list(s: str) -> str:
         if x not in seen: out.append(x); seen.add(x)
     return ", ".join(out)
 
+def _interpret_print_color(val: str) -> str:
+    s=val.strip().lower()
+    if re.search(r"(ч/б|монохром|1\s*цвет|один\s*цвет|black\s*only)", s): return "монохромная"
+    m=re.search(r"(\d+)\s*цвет", s)
+    if m and int(m.group(1))>=3: return "цветная"
+    if re.search(r"(cm+y|cyan|magenta|yellow)", s): return "цветная"
+    return val.strip()
+
 def clean_param_value(key: str, value: str) -> str:
     if not value: return ""
     s = value.replace("\u00A0"," ").strip()
@@ -766,11 +784,12 @@ def normalize_value_by_key(k: str, v: str, kind: str) -> str:
     if key in ("интерфейсы","входы"):  return _norm_interfaces(s)
     if key=="wi-fi":                    return _norm_yesno(s)
     if key=="формат":                   return _norm_format(s)
-    if key=="дисплей":                  return _norm_display(s)
+    if key=="дисплей":                  return _norm_display_val(s)
     if key=="скорость печати":          return _norm_speed(s)
     if key=="цвета чернил":             return _norm_colors_list(s)
     if key=="двусторонняя печать":      return _norm_yesno(s)
     if key=="оптическое разрешение":    return _norm_resolution_print(s)
+    if key=="цвет печати":              return _interpret_print_color(s)
     return clean_param_value(k, s)
 
 def classify_kind(name: str) -> str:
@@ -785,6 +804,20 @@ def classify_kind(name: str) -> str:
     if "монитор" in n: return "monitor"
     return "device"
 
+def _split_type_and_usage(val: str) -> Tuple[str, Optional[str]]:
+    """Напр. 'МФУ Дом' -> ('МФУ','Дом'); 'МФУ Офис' -> ('МФУ','Офис')"""
+    s=val.strip()
+    tokens=re.split(r"[\s,/]+", s)
+    usage=None
+    for t in tokens[:]:
+        low=t.lower()
+        if low in {"дом","домашний","домашнее"}:
+            usage="Дом"; tokens.remove(t)
+        elif low in {"офис","офисный","офисное"}:
+            usage="Офис"; tokens.remove(t)
+    base=" ".join(tokens).strip()
+    return (base or val.strip(), usage)
+
 def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
     name = get_text(offer,"name")
     kind = classify_kind(name)
@@ -796,27 +829,39 @@ def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
             if not raw_name or not raw_val: continue
             canon = canon_param_name(raw_name, kind)
             if not canon: continue
+            # Переназначение для устройств отображения:
             if canon=="Разрешение печати" and kind in {"projector","panel","monitor","interactive"}:
                 canon="Разрешение"
+            # Нормализация значения:
             val = normalize_value_by_key(canon, raw_val, kind)
             if not val: continue
+            # Совместимость только для расходников/аксессуаров
             if canon=="Совместимость" and kind not in {"consumable","accessory"}:
                 continue
+            # Спец-логика: «Тип» может содержать «Дом/Офис» -> выносим в «Назначение»
             if canon=="Тип":
-                val = re.sub(r"\s+Офис\b","", val, flags=re.I).strip()
+                base, usage = _split_type_and_usage(val)
+                base = re.sub(r"\s+Офис\b","", base, flags=re.I).strip()
+                val = base or val
+                if usage and "Назначение" not in merged:
+                    merged["Назначение"] = usage
+            # Цвет печати: «1 цвет» -> монохромная
             if canon=="Цвет печати":
-                cols = merged.get("Цвета чернил","")
-                if (("ч/б" in val.lower()) and cols and "," in cols):
-                    val="цветная"
+                val = _interpret_print_color(val)
+            # Формат: мусор — пропускаем
             if canon=="Формат" and not re.search(r"[A-Za-z0-9]", val):
                 continue
+            # Слияние: берём самое информативное (длиннее)
             old = merged.get(canon, "")
             if len(val) > len(old):
                 merged[canon] = val
+
+    # Приводим булевы значения
     for bkey in ("Двусторонняя печать","Wi-Fi","Автоподатчик"):
         if bkey in merged:
             merged[bkey] = _norm_yesno(merged[bkey])
-
+    # Уточнение: если «Цвет печати» монохромная, а «Цвета чернил» присутствуют — не конфликтуем (у МФУ это разные сущности)
+    # Порядок вывода:
     important_order = [
         "Тип","Назначение","Тип печати","Цвет печати","Формат",
         "Разрешение","Разрешение печати","Скорость печати","Двусторонняя печать",
