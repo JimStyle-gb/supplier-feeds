@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v1.3.8"
+SCRIPT_VERSION = "akcent-2025-10-23.v1.4.2"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -75,7 +75,7 @@ def now_almaty() -> datetime:
     except Exception:
         return datetime.utcfromtimestamp(time.time()+5*3600)
 
-def format_dt_almaty(dt: datetime) -> str: return dt.strftime("%d:%m:%Y - %H:%M:%S")
+def format_dt_almaty(dt: datetime) -> str: return dt.strftime("%d:%m:%Y - %H:%М:%S")
 
 def inner_html(el: ET.Element) -> str:
     if el is None: return ""
@@ -382,6 +382,7 @@ def maybe_unescape_html(s: str) -> str:
             if not re.search(r"&lt;/?[a-zA-Z]", s): break
     return s
 
+# --- ключи/синонимы
 KV_KEYS_MAP = {
     "вид":"Вид","тип":"Тип","назначение":"Назначение","цвет печати":"Цвет печати",
     "поддерживаемые модели принтеров":"Совместимость","совместимость":"Совместимость",
@@ -396,10 +397,10 @@ KV_KEYS_MAP = {
     "скорость сканирования":"Скорость сканирования","интерфейс usb":"Подключение",
     "интерфейс ieee-1394 (firewire)":"FireWire","подключение по wi-fi":"Wi-Fi",
     "скорость печати":"Скорость печати","двусторонняя печать":"Двусторонняя печать",
-    "интерфейсы":"Интерфейсы","формат":"Формат","разрешение печати":"Разрешение печати",
+    "интерфейсы":"Интерфейсы","формат":"Формат","разрешение печати":"Разрешение печати","разрешение":"Разрешение печати",
     "тип печати":"Тип печати","подача бумаги":"Подача бумаги","выход лоток":"Выходной лоток","емкость лотка":"Емкость лотка",
     "диагональ":"Дисплей",
-    "яркость":"Яркость","контрастность":"Контрастность","разрешение":"Разрешение",
+    "яркость":"Яркость","контрастность":"Контрастность",
     "источник света":"Источник света","ресурс лампы":"Ресурс источника","входы":"Входы",
     "интерфейсы (видео)":"Входы","коррекция трапеции":"Коррекция трапеции","поддержка 3d":"Поддержка 3D",
     "мощность":"Мощность","мощность, ва":"Мощность","время автономии":"Время автономии","avr":"Стабилизация AVR","стабилизация":"Стабилизация",
@@ -407,7 +408,11 @@ KV_KEYS_MAP = {
     "состав поставки":"Комплектация","комплектация":"Комплектация","в комплекте":"Комплектация","комплектация поставки":"Комплектация",
     "страна происхождения":"Страна происхождения","гарантия":"Гарантия",
     "цвета":"Цвета чернил","colours":"Цвета чернил","colors":"Цвета чернил",
+    # доп. синонимы для «умного» сплита
+    "количество бумажных ящиков":"Подача бумаги",
+    "бумаги":"Формат",  # когда пишут "Формат: бумаги A4..."
 }
+
 ALLOWED_PARAM_CANON = {
     "Совместимость","Тип","Назначение","Цвет печати","Ресурс","Технология печати",
     "Страна происхождения","Гарантия",
@@ -415,7 +420,7 @@ ALLOWED_PARAM_CANON = {
     "Глубина цвета","Макс. формат","Скорость сканирования","Подключение","Wi-Fi","FireWire",
     "Тип печати","Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Формат",
     "Подача бумаги","Выходной лоток","Емкость лотка",
-    "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
+    "Яркость","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
     "Мощность","Стабилизация AVR","Стабилизация","Розетки",
     "Дисплей","Цвета чернил",
 }
@@ -432,31 +437,21 @@ CANON_NAME_MAP = {
     "ресурс лампы":"Ресурс источника","мощность, ва":"Мощность","тип розеток":"Розетки",
     "выход лоток":"Выходной лоток","емкость лотка":"Емкость лотка",
     "диагональ":"Дисплей","colours":"Цвета чернил","colors":"Цвета чернил",
+    "количество бумажных ящиков":"Подача бумаги",
+    "бумаги":"Формат",
 }
 
-def canon_param_name(name: str) -> Optional[str]:
-    if not name: return None
-    key = name.strip().lower().replace("ё","е")
-    if key in DISALLOWED_PARAM_NAMES: return None
-    if key in CANON_NAME_MAP: return CANON_NAME_MAP[key]
-    if key in KV_KEYS_MAP:    return KV_KEYS_MAP[key]
-    title = name.strip()
-    if title in ALLOWED_PARAM_CANON: return title
-    title_cap = title[:1].upper()+title[1:].lower()
-    if title_cap in ALLOWED_PARAM_CANON: return title_cap
-    return None
-
+# --- «стоп»-токены и чистка
 STOP_SECTION_TOKENS = [
     "карты памяти","свойства","безопасность wlan","услуги мобильной и облачной печати","энергоснабжение",
     "дуплекс","поля печати","пределы полей","емкость отделения подачи бумаги","емкость отделения",
     "задний тракт","толщина","подходящий вес бумаги","обработка мультимедиа","время до первой страницы",
-    "цвета","количество цветов","цвета чернил",
     "print margin","paper tray capacity","rear paper path","thickness",
     "media handling","duplex printing speed","colours capacity","colours","colors","print from",
-    "mobile device","wlan security",
+    "mobile device","wlan security","метод печати","конфигурация сопла","сопла","улучшение качества фотографий",
 ]
 STOP_CUT_RE   = re.compile(r"|".join(re.escape(x) for x in STOP_SECTION_TOKENS), re.I)
-SECOND_KEY_RE = re.compile(r"\b(" + "|".join(re.escape(x) for x in sorted(ALLOWED_PARAM_CANON | set(KV_KEYS_MAP.values()), key=len, reverse=True)) + r")\s*[:—-]", re.I)
+SECOND_KEY_RE = re.compile(r"\b(" + "|".join(re.escape(x) for x in sorted(set(list(ALLOWED_PARAM_CANON)+list(KV_KEYS_MAP.values())), key=len, reverse=True)) + r")\b", re.I)
 MAX_SPEC_LEN  = 180
 EN_RU_FIXES   = [
     (re.compile(r"\bPages/min\b", re.I), "стр/мин"),
@@ -467,28 +462,156 @@ EN_RU_FIXES   = [
     (re.compile(r"\bper\s+10\s*[x×]\s*15\s*cm\s*photo\b", re.I), "на фото 10×15 см"),
 ]
 
+# --- нормализации по ключам
+def _norm_resolution_text(s: str) -> str:
+    t=re.sub(r"[^\dx×xX ]+"," ", s)
+    t=re.sub(r"(?<=\d)[\.,\s]+(?=\d)","", t)  # 5.760 -> 5760
+    t=t.replace("x","×").replace("X","×")
+    m=re.search(r"(\d{2,5})\s*[×]\s*(\d{2,5})", t)
+    return f"{m.group(1)}×{m.group(2)} dpi" if m else ""
+
+def _norm_speed_text(s: str) -> str:
+    # вытащить N стр/мин
+    m=re.search(r"(\d{1,3})\s*(стр|pages)\s*/?\s*мин", s, re.I)
+    return f"до {m.group(1)} стр/мин" if m else ""
+
+def _norm_interfaces(s: str) -> str:
+    t=s
+    repl = {
+        "wifi":"Wi-Fi","wi-fi":"Wi-Fi","wi fi":"Wi-Fi","usb-хост":"USB-host","usb host":"USB-host",
+        "ethernet":"Ethernet","bluetooth":"Bluetooth","rs-232":"RS-232","rj-45":"RJ-45",
+    }
+    for k,v in repl.items():
+        t=re.sub(rf"\b{k}\b", v, t, flags=re.I)
+    t=re.sub(r"\s*,\s*", ", ", t); t=re.sub(r"\s{2,}"," ", t)
+    return t.strip(" ,;")
+
+def _norm_colors(s: str) -> str:
+    t=re.sub(r"\[[^\]]*\]","", s)  # убрать [70ml]
+    t=re.sub(r"\bcapacity\b","", t, flags=re.I)
+    t=re.sub(r"\s{2,}"," ", t)
+    # нормализовать названия
+    mapping = {
+        "black":"Black","photo black":"Photo Black","cyan":"Cyan","magenta":"Magenta","yellow":"Yellow",
+        "grey":"Grey","gray":"Grey"
+    }
+    parts=re.split(r"[,/;]+|\s+\+\s+", t)
+    out=[]
+    for p in parts:
+        w=p.strip()
+        if not w: continue
+        wl=w.lower()
+        out.append(mapping.get(wl, w))
+    out=[x for x in out if re.search(r"[A-Za-zА-Яа-яЁё]", x)]
+    # уникализуем сохраняя порядок
+    seen=set(); uniq=[]
+    for x in out:
+        if x not in seen: uniq.append(x); seen.add(x)
+    return ", ".join(uniq)
+
+def _norm_format_list(s: str) -> str:
+    t=s
+    t=t.replace("бумаги","").replace("Нет.","No.")
+    t=re.sub(r"\b(см|cm)\b","", t)
+    t=re.sub(r"\s*x\s*","×", t)
+    t=re.sub(r"\s{2,}"," ", t)
+    parts=re.split(r"[,;]+", t)
+    clean=[]
+    for p in parts:
+        w=p.strip()
+        if not w: continue
+        # вычистить служебное слово "Конверт"
+        w=re.sub(r"\s*\(Конверт\)\s*","", w, flags=re.I)
+        w=re.sub(r"\s+"," ", w)
+        clean.append(w)
+    # ограничить
+    if len(clean)>10: clean=clean[:10]+["и др."]
+    return ", ".join(clean)
+
+def _norm_yesno(v: str) -> str:
+    v=v.strip()
+    if not v: return ""
+    if re.search(r"^(да|yes|y)$", v, re.I): return "Да"
+    if re.search(r"^(нет|no|n)$", v, re.I): return "Нет"
+    return v
+
+def _norm_display(v: str) -> str:
+    t=v.replace(",", ".")
+    m=re.search(r"(\d{1,2}(\.\d)?)", t)
+    return f"{m.group(1)} см" if m else v
+
+def _norm_guarantee(v: str) -> str:
+    t=v
+    m=re.search(r"(\d{1,2})\s*(месяц|мес)", t, re.I)
+    if m: return f"{m.group(1)} мес."
+    m=re.search(r"(\d(\.\d)?)\s*г(од|ода|ода|лет)?", t, re.I)
+    if m:
+        years=float(m.group(1))
+        if abs(years-round(years))<1e-6:
+            return f"{int(round(years))*12} мес."
+        return f"{years} лет"
+    return ""
+
+def normalize_by_key(k: str, v: str) -> str:
+    if not v: return ""
+    key=k.lower()
+    s=v.strip()
+    if key=="разрешение печати":
+        got=_norm_resolution_text(s)
+        return got or clean_spec_value(k, s)
+    if key in ("интерфейсы","подключение","wi-fi","входы"):
+        return _norm_interfaces(s)
+    if key=="цвета чернил":
+        return _norm_colors(s)
+    if key=="формат":
+        return _norm_format_list(s)
+    if key=="двусторонняя печать":
+        return _norm_yesno(s)
+    if key=="дисплей":
+        return _norm_display(s)
+    if key=="гарантия":
+        return _norm_guarantee(s)
+    if key=="скорость печати":
+        got=_norm_speed_text(s)
+        return got or clean_spec_value(k, s)
+    if key=="тип датчика":
+        # "сканера Контактный датчик изображения (CIS)" -> "CIS (контактный)"
+        if "cis" in s.lower():
+            return "CIS (контактный)"
+    if key=="подача бумаги":
+        # "Количество бумажных ящиков 2" -> "2 лотка"
+        m=re.search(r"колич[^0-9]*?\b(\d{1,2})\b", s, re.I)
+        if m: return f"{m.group(1)} лотка"
+    return clean_spec_value(k, s)
+
+# --- базовая чистка значений
 def clean_spec_value(key: str, value: str) -> str:
     if not value: return ""
     s=value.strip().replace("\u00A0"," ")
     s=re.sub(r"\s+", " ", s)
     m=STOP_CUT_RE.search(s)
     if m: s=s[:m.start()].rstrip(" ,;:—–-")
+    # отрезать на втором ключе
     m2=SECOND_KEY_RE.search(s)
-    if m2: s=s[:m2.start()].rstrip(" ,;:—–-")
+    if m2 and m2.start()>0: s=s[:m2.start()].rstrip(" ,;:—–-")
     for rx, repl in EN_RU_FIXES: s=rx.sub(repl, s)
     s=re.sub(r"[ ,;:—–-]+$", "", s)
-    if s.endswith("("): s=s[:-1].rstrip()
     s=re.sub(r"\([^)]*$", "", s).strip()
-    s=s.replace("\n"," ").strip()
-    if len(s)>MAX_SPEC_LEN: s=s[:MAX_SPEC_LEN].rstrip(" ,;:—–-")+"…"
+    if len(s)>MAX_SPEC_LEN:
+        cut=re.split(r"(,|;|\))", s)
+        if cut and len("".join(cut[:6]))>40:
+            s="".join(cut[:6]).strip(" ,;:—–-") + "…"
+        else:
+            s=s[:MAX_SPEC_LEN].rstrip(" ,;:—–-")+"…"
     if not re.search(r"[A-Za-zА-Яа-яЁё0-9]", s): return ""
     return s
 
 def postclean_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
     cleaned=[]
     for k,v in specs:
-        s=clean_spec_value(k, v)
+        s=normalize_by_key(k, v)
         if s: cleaned.append((k,s))
+    # dedupe keep longest
     best={}
     for k,v in cleaned:
         if k not in best or len(v)>len(best[k]): best[k]=v
@@ -497,7 +620,7 @@ def postclean_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
         "Интерфейсы","Подключение","Wi-Fi","Емкость лотка","Выходной лоток","Подача бумаги",
         "Оптическое разрешение","Скорость сканирования","Макс. формат","Тип сканирования","Тип датчика",
         "Дисплей","Цвета чернил",
-        "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
+        "Яркость","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
         "Мощность","Стабилизация AVR","Стабилизация","Розетки",
         "Страна происхождения","Гарантия",
     ]
@@ -526,9 +649,62 @@ def _dedupe_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
         if not old or len(v)>len(old): best[k]=v
     return [(k,best[k]) for k in best]
 
+# --- мульти-сплит значения по второму ключу (умнее)
+def split_on_secondary_keys(value: str) -> List[Tuple[str,str]]:
+    """ Ищем внутри value вхождения вторых ключей (по KV_KEYS_MAP/CANON_NAME_MAP).
+        Возвращаем список сегментов вида (key_or_empty, chunk_text).
+        Первый сегмент — continuation текущего значения (key="").
+    """
+    if not value: return [("", "")]
+    s=value.strip()
+    keys_sorted = sorted(set(list(KV_KEYS_MAP.keys())+list(CANON_NAME_MAP.keys())+list(KV_KEYS_MAP.values())+list(ALLOWED_PARAM_CANON)), key=len, reverse=True)
+    if not keys_sorted: return [("", s)]
+    pat = re.compile(r"\b(" + "|".join(re.escape(k) for k in keys_sorted) + r")\b", re.I)
+    pos=0; segs=[]
+    for m in pat.finditer(s):
+        if m.start()==0:  # если сразу начался новый ключ
+            if pos==0:
+                segs.append(("", ""))  # пустой первый
+            else:
+                segs.append(("", s[pos:m.start()].strip(" ,;:—–-")))
+            segs.append((m.group(1), ""))  # отдельный ключ, значение добавим позже
+            pos=m.end()
+            break
+    # если выше не сработало — ищем все
+    if not segs:
+        matches=list(pat.finditer(s))
+        if not matches:
+            return [("", s)]
+        head = s[:matches[0].start()].strip(" ,;:—–-")
+        segs.append(("", head))
+        for i,mm in enumerate(matches):
+            key=mm.group(1)
+            end=matches[i+1].start() if i+1<len(matches) else len(s)
+            val=s[mm.end():end].strip(" ,;:—–-")
+            segs.append((key, val))
+        return segs
+    # Если попали сюда — уже добавили первый «ключ» и обрезали голову
+    tail=s[pos:]
+    matches=list(pat.finditer(tail))
+    if not matches:
+        segs[-1]=(segs[-1][0], tail.strip(" ,;:—–-"))
+        return segs
+    start0=0
+    for i,mm in enumerate(matches):
+        key=mm.group(1)
+        if i==0:
+            # заполнить значение для предыдущего ключа
+            segs[-1]=(segs[-1][0], tail[:mm.start()].strip(" ,;:—–-"))
+        end=matches[i+1].start() if i+1<len(matches) else len(tail)
+        val=tail[mm.end():end].strip(" ,;:—–-")
+        segs.append((key, val))
+    return segs
+
+# --- извлечение из HTML
 def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[Tuple[str,str]], str]:
     txt = _html_to_text(desc_html)
 
+    # чистые строки без URL/CTA
     lines_raw=[]
     for l in [l.strip() for l in txt.split("\n")]:
         if not l: lines_raw.append(""); continue
@@ -555,6 +731,12 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
 
     specs: List[Tuple[str,str]]=[]; bundle_items: List[str]=[]; out_lines=[]; i=0
 
+    def push_spec(k: str, v: str):
+        if not v or v.strip().lower() in {"нет","-","—"}: return
+        canon = canon_param_name(k) or k
+        if canon in ALLOWED_PARAM_CANON:
+            specs.append((canon, v))
+
     while i < len(lines_raw):
         line = lines_raw[i].strip()
         if not line:
@@ -567,10 +749,21 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
                     v=value.strip(" .;")
                     if v: bundle_items.append(v)
             else:
-                if value and value.strip().lower() not in {"нет","-","—"}:
-                    canon = canon_param_name(label) or label
-                    if canon in ALLOWED_PARAM_CANON:
-                        specs.append((canon, value))
+                # умный мульти-сплит
+                segs = split_on_secondary_keys(value)
+                if segs:
+                    head = segs[0][1] if segs[0][0]=="" else value
+                    if head: push_spec(label, head)
+                    for key_raw, val in segs[1:]:
+                        canon_key = canon_param_name(key_raw) or KV_KEYS_MAP.get(key_raw.lower().replace("ё","е")) or key_raw
+                        if canon_key=="Комплектация":
+                            for v in re.split(r"[;,\n]+", val): 
+                                v=v.strip(" .;"); 
+                                if v: bundle_items.append(v)
+                        else:
+                            push_spec(canon_key, val)
+                else:
+                    push_spec(label, value)
             i+=1; continue
 
         key_raw = line.strip(":").lower().replace("ё","е")
@@ -588,14 +781,25 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
                     v=v.strip(" .;")
                     if v: bundle_items.append(v)
             else:
-                if value and value.strip().lower() not in {"нет","-","—"}:
-                    canon = canon_param_name(label) or label
-                    if canon in ALLOWED_PARAM_CANON:
-                        specs.append((canon, value))
+                segs = split_on_secondary_keys(value)
+                if segs:
+                    head = segs[0][1] if segs[0][0]=="" else value
+                    if head: push_spec(label, head)
+                    for key_raw2, val2 in segs[1:]:
+                        canon_key2 = canon_param_name(key_raw2) or KV_KEYS_MAP.get(key_raw2.lower().replace("ё","е")) or key_raw2
+                        if canon_key2=="Комплектация":
+                            for v in re.split(r"[;,\n]+", val2):
+                                v=v.strip(" .;")
+                                if v: bundle_items.append(v)
+                        else:
+                            push_spec(canon_key2, val2)
+                else:
+                    push_spec(label, value)
             continue
 
         out_lines.append(line); i+=1
 
+    # доп. попытка распарсить куски между ключами в сплошном тексте
     keys_sorted = sorted(KV_KEYS_MAP.keys(), key=len, reverse=True)
     if keys_sorted:
         keys_alt = r"\b(?:" + "|".join(re.escape(k) for k in keys_sorted) + r")\b"
@@ -607,17 +811,22 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
             start = m.end()
             end   = matches[idx+1].start() if idx+1 < len(matches) else len(txt)
             value = txt[start:end].strip(" \t:—-.,;")
-            value = re.sub(r"\s{2,}", " ", value)
-            value = value[:600].strip()
+            value = re.sub(r"\s{2,}", " ", value)[:600].strip()
             if not value or value.lower() in {"нет","-","—"}: continue
-            if label=="Комплектация":
-                for v in re.split(r"[;,\n]+", value):
-                    v=v.strip(" .;")
-                    if v: bundle_items.append(v)
+            segs = split_on_secondary_keys(value)
+            if segs:
+                head = segs[0][1] if segs[0][0]=="" else value
+                if head: push_spec(label, head)
+                for key_raw2, val2 in segs[1:]:
+                    canon_key2 = canon_param_name(key_raw2) or KV_KEYS_MAP.get(key_raw2.lower().replace("ё","е")) or key_raw2
+                    if canon_key2=="Комплектация":
+                        for v in re.split(r"[;,\n]+", val2):
+                            v=v.strip(" .;")
+                            if v: bundle_items.append(v)
+                    else:
+                        push_spec(canon_key2, val2)
             else:
-                canon = canon_param_name(label) or label
-                if canon in ALLOWED_PARAM_CANON:
-                    specs.append((canon, value))
+                push_spec(label, value)
 
     if bundle_items:
         bundle="; ".join(dict.fromkeys([b for b in bundle_items if b]))
@@ -681,14 +890,14 @@ def strip_specs_from_supplier_html(s: str) -> str:
 
     out = re.sub(r"<p>(.*?)</p>", _clean_p, out, flags=re.I|re.S)
     out = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", out, flags=re.I|re.S)
-    out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out, flags=re.I|re.S)  # <-- FIX: re.S
+    out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out, flags=re.I|re.S)
     out = re.sub(r"\s{2,}", " ", out).strip()
     return out
 
 # ---------------- сокращение «родного» описания ----------------
 FLUFF_PHRASES = [
     "раскройте свой творческий потенциал","идеальным выбором","современные возможности",
-    "просты как никогда","экономия времени и денег","дайте волю","впечатляющий","великолепн",
+    "просты как никогда","экономия времени и денег","дайте волю","впечатляющ","великолепн",
     "гибкие возможности","простая настройка","подойдет для","предназначен для широкого круга задач"
 ]
 FLUFF_RE = re.compile("|".join(re.escape(x) for x in FLUFF_PHRASES), re.I)
@@ -782,6 +991,18 @@ def postprocess_supplier_html(html_in: str, product_name: str) -> str:
     return s
 
 # =========== PARAMS ===========
+def canon_param_name(name: str) -> Optional[str]:
+    if not name: return None
+    key = name.strip().lower().replace("ё","е")
+    if key in DISALLOWED_PARAM_NAMES: return None
+    if key in CANON_NAME_MAP: return CANON_NAME_MAP[key]
+    if key in KV_KEYS_MAP:    return KV_KEYS_MAP[key]
+    title = name.strip()
+    if title in ALLOWED_PARAM_CANON: return title
+    title_cap = title[:1].upper()+title[1:].lower()
+    if title_cap in ALLOWED_PARAM_CANON: return title_cap
+    return None
+
 def collect_allowed_params_from_existing(offer: ET.Element) -> List[Tuple[str,str]]:
     res: Dict[str,str] = {}
     for tag in ("Param","param","PARAM"):
@@ -820,7 +1041,7 @@ def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> i
         "Интерфейсы","Подключение","Wi-Fi","Емкость лотка","Выходной лоток","Подача бумаги",
         "Оптическое разрешение","Скорость сканирования","Макс. формат","Тип сканирования","Тип датчика",
         "Дисплей","Цвета чернил",
-        "Яркость","Разрешение","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
+        "Яркость","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
         "Мощность","Стабилизация AVR","Стабилизация","Розетки",
         "Страна происхождения","Гарантия",
     ]
@@ -829,6 +1050,7 @@ def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> i
     for k in sorted(merged.keys(), key=lambda it: order_idx.get(it, 999)):
         val = merged[k]
         if not val: continue
+        if k=="Гарантия" and not re.search(r"\d", val): continue
         if len(val)>PARAMS_MAX_VALUE_LEN: val = val[:PARAMS_MAX_VALUE_LEN-1] + "…"
         node=ET.SubElement(offer,"param"); node.set("name", k); node.text=val; added+=1
     return added
@@ -1049,10 +1271,10 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
         supplier_html = postprocess_supplier_html(supplier_html, name)
 
         lead = build_lead_from_supplier(supplier_html, name, specs)
-        lead_html = f"<p>{_html_escape_in_cdata_safe(lead)}</p>" if lead else ""
+        lead_html = f"<p>{_html_escape_in_cdata_safe(lead)}</p>" if lead else "<p></p>"
 
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
-        if lead_html: parts.append(lead_html)
+        parts.append(lead_html)  # всегда создаём лид-абзац, даже если пустой — для ровного вида
         bundle_html = render_bundle_html(specs)
         if bundle_html: parts.append(bundle_html)
         specs_html = render_specs_html(specs)
@@ -1136,10 +1358,10 @@ def main()->None:
 
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
-
     ensure_keywords(out_shop)
 
     built_alm=now_almaty()
+    # старый компактный FEED_META оставляю
     out_root.insert(0, ET.Comment(
         "FEED_META\n"
         f"Поставщик                  | {SUPPLIER_NAME}\n"
