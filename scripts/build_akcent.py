@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v2.5.0"  # фильтр и FEED_META как в старом коде
+SCRIPT_VERSION = "akcent-2025-10-23.v2.5.2"  # fix: no stray out_offers refs
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -224,7 +224,7 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     return b
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int,int,int]:
-    off_el=shop_el.find("offers"); 
+    off_el=shop_el.find("offers")
     if off_el is None: return (0,0,0)
     idx=build_brand_index(shop_el); normalized=0; filled=0; removed=0
     for offer in off_el.findall("offer"):
@@ -360,7 +360,7 @@ def ensure_categoryid_zero_first(out_shop: ET.Element) -> int:
     off_el=out_shop.find("offers")
     if off_el is None: return 0
     touched=0
-    for offer in out_offers.findall("offer"):
+    for offer in off_el.findall("offer"):
         remove_all(offer,"categoryId","CategoryId")
         cid=ET.Element("categoryId"); cid.text=os.getenv("CATEGORY_ID_DEFAULT","0")
         offer.insert(0,cid); touched+=1
@@ -381,8 +381,7 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
             changed+=1
     return changed
 
-# ===================== DESCRIPTION (поставщик + Характеристики из Param) =====================
-URL_RE = re.compile(r"https?://\S+|www\.\S+", re.I)
+# ===================== DESCRIPTION (supplier + Param→Характеристики) =====================
 MORE_PHRASES_RE = re.compile(r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию)\s*\.?\s*$", re.I)
 
 def maybe_unescape_html(s: str) -> str:
@@ -417,8 +416,7 @@ def sanitize_supplier_html(raw_html: str) -> str:
 
 def postprocess_supplier_html(html_in: str, product_name: str) -> str:
     s = html_in or ""
-    s = re.sub(r"\bhttps?://[^\s<]+", "", s, flags=re.I)
-    s = re.sub(r"\bwww\.[^\s<]+", "", s, flags=re.I)
+    # убираем CTA и повторы названия
     def drop_cta_p(m: re.Match) -> str:
         inner = m.group(1)
         if MORE_PHRASES_RE.match(inner): return ""
@@ -639,7 +637,7 @@ def render_specs_html(specs: List[Tuple[str,str]]) -> str:
     if not specs: return ""
     out=["<h3>Характеристики</h3>","<ul>"]
     for k,v in specs:
-        if k=="Комплектация":  # в specs не выводим; отдельно ниже
+        if k=="Комплектация":
             continue
         out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
     out.append("</ul>")
@@ -697,7 +695,6 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
         out=s.lower().translate(table); out=re.sub(r"[^a-z0-9\- ]+","", out); return re.sub(r"\s+","-", out).strip("-")
 
     name=get_text(offer,"name"); vendor=get_text(offer,"vendor").strip()
-    desc_html=inner_html(offer.find("description"))
     base=[vendor] if vendor else []
     raw_tokens=tokenize(name or "")
     modelish=[t for t in raw_tokens if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t)]
@@ -707,11 +704,6 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
         a,b=content[i],content[i+1]
         bigr.append(f"{a} {b}")
     base += list(set([t.upper() for t in modelish[:8]])) + bigr[:8] + [t.capitalize() if not re.search(r"[A-Z]{2,}",t) else t for t in content[:10]]
-    colors=[]; low=name.lower()
-    mapping={"жёлт":"желтый","желт":"желтый","yellow":"yellow","черн":"черный","black":"black","син":"синий","blue":"blue","красн":"красный","red":"red","зелен":"зеленый","green":"green","серебр":"серебряный","silver":"silver","циан":"cyan","магент":"magenta"}
-    for k,val in mapping.items():
-        if k in low and val not in colors: colors.append(val)
-    base += colors
     extra=[]
     for w in base:
         if re.search(r"[А-Яа-яЁё]", str(w)):
@@ -724,7 +716,12 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
         if SATU_KEYWORDS_GEO_LAT:
             geo += ["Kazakhstan","Almaty","Astana","Shymkent","Karaganda","Aktobe","Pavlodar","Atyrau","Taraz","Oskemen","Semey","Kostanay","Kyzylorda","Oral","Petropavl","Taldykorgan","Aktau","Temirtau","Ekibastuz","Kokshetau","Rudny"]
         base += geo[:SATU_KEYWORDS_GEO_MAX]
-    parts=dedup([p for p in base if p])
+    parts=[]; seen=set()
+    for p in base:
+        if not p: continue
+        k=p.lower()
+        if k in seen: continue
+        seen.add(k); parts.append(p)
     res=[]; total=0
     for p in parts:
         add=((", " if res else "")+p)
@@ -885,30 +882,30 @@ def main()->None:
     src_offers=list(offers_in.findall("offer"))
 
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
-    out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
+    out_shop=ET.SubElement(out_root,"shop"); offers_el=ET.SubElement(out_shop,"offers")
 
     # копируем офферы
     for o in src_offers:
         mod=deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
-        out_offers.append(mod)
+        offers_el.append(mod)
 
-    # === ФИЛЬТР ТОЛЬКО ПО <name> (как в старом коде) ===
+    # === ФИЛЬТР ТОЛЬКО ПО <name> (старый стиль) ===
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
     filtered_out=0
     if (AKCENT_KEYWORDS_MODE in {"include","exclude"}) and len(keys)>0:
-        before=len(list(out_offers.findall("offer")))
+        before=len(list(offers_el.findall("offer")))
         hits=0
-        for off in list(out_offers.findall("offer")):
+        for off in list(offers_el.findall("offer")):
             nm=get_text(off,"name")
             hit=name_matches(nm,keys)
             if hit: hits+=1
             drop=(AKCENT_KEYWORDS_MODE=="exclude" and hit) or (AKCENT_KEYWORDS_MODE=="include" and not hit)
             if drop:
-                out_offers.remove(off); filtered_out+=1
+                offers_el.remove(off); filtered_out+=1
         kept=before-filtered_out
         log(f"Filter mode: {AKCENT_KEYWORDS_MODE} | Keywords loaded: {len(keys)} | Offers before: {before} | Matched: {hits} | Removed: {filtered_out} | Kept: {kept}")
     else:
@@ -930,34 +927,29 @@ def main()->None:
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
-    # Описание: «родное» очищенное + Состав поставки + Характеристики (только из Param)
+    # Описание: supplier HTML (очищенный) + Состав поставки + Характеристики (только из Param)
     desc_changed = rebuild_descriptions_from_supplier_only(out_shop)
 
-    # Переписываем <param> канонически (из Param, ровно как в описании)
-    # (заметим: старый код не трогал param; по твоей новой логике мы хотим нормализовать)
-    # Если нужно НЕ трогать param — просто закомментируй блок ниже.
-    # --- begin normalize params ---
-    for offer in out_offers.findall("offer"):
+    # Нормализуем <param> (канонизированные пары)
+    for offer in offers_el.findall("offer"):
         specs = collect_params_canonical(offer)
         for tag in ("param","Param","PARAM"):
             for pn in list(offer.findall(tag)): offer.remove(pn)
         for k,v in specs:
             if not v: continue
             node=ET.SubElement(offer,"param"); node.set("name", k); node.text=v
-    # --- end normalize params ---
 
     t_true, t_false = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
 
     # чистка служебных тегов
-    for off in out_offers.findall("offer"):
+    for off in offers_el.findall("offer"):
         for t in PURGE_TAGS_AFTER:
             for node in list(off.findall(t)): off.remove(node)
         for a in PURGE_OFFER_ATTRS_AFTER:
             if a in off.attrib: off.attrib.pop(a,None)
 
     reorder_offer_children(out_shop)
-
     ensure_categoryid_zero_first(out_shop)
     kw_touched=ensure_keywords(out_shop)
     log(f"Keywords updated: {kw_touched}")
@@ -968,12 +960,11 @@ def main()->None:
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL,
         "offers_total": len(src_offers),
-        "offers_written": len(list(out_offers.findall("offer"))),
+        "offers_written": len(list(offers_el.findall("offer"))),
         "available_true": str(t_true),
         "available_false": str(t_false),
         "built_alm": format_dt_almaty(built_alm),
         "next_build_alm": format_dt_almaty(next_build_time_almaty()),
-        # у нас нет SEO-кэша — ставим текущее время сборки
         "seo_last_update_alm": format_dt_almaty(built_alm),
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
