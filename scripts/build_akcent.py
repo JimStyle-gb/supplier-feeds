@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v3.2.0"
+SCRIPT_VERSION = "akcent-2025-10-23.v3.3.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -24,11 +24,11 @@ RETRY_BACKOFF = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES     = int(os.getenv("MIN_BYTES", "1500"))
 DRY_RUN       = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-# === фильтр по <name> (как в старом коде) ===
+# === фильтр по <name> ===
 AKCENT_KEYWORDS_PATH  = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
 AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # include|exclude
 
-# === ценообразование (не менял) ===
+# === ценообразование (как было) ===
 PRICE_CAP_THRESHOLD = int(os.getenv("PRICE_CAP_THRESHOLD", "9999999"))
 PRICE_CAP_VALUE     = int(os.getenv("PRICE_CAP_VALUE", "100"))
 PriceRule = Tuple[int,int,float,int]
@@ -45,7 +45,7 @@ PRICE_FIELDS_DIRECT=["purchasePrice","purchase_price","wholesalePrice","wholesal
 PRICE_KEYWORDS_DEALER = re.compile(r"(дилер|dealer|опт|wholesale|b2b|закуп|purchase|оптов)", re.I)
 PRICE_KEYWORDS_RRP    = re.compile(r"(rrp|ррц|розниц|retail|msrp)", re.I)
 
-# === плейсхолдеры (как было) ===
+# === плейсхолдеры ===
 PLACEHOLDER_ENABLE        = os.getenv("PLACEHOLDER_ENABLE", "1").lower() in {"1","true","yes","on"}
 PLACEHOLDER_BRAND_BASE    = os.getenv("PLACEHOLDER_BRAND_BASE", "https://img.akcent.kz/brand").rstrip("/")
 PLACEHOLDER_CATEGORY_BASE = os.getenv("PLACEHOLDER_CATEGORY_BASE", "https://img.akcent.kz/category").rstrip("/")
@@ -53,7 +53,7 @@ PLACEHOLDER_DEFAULT_URL   = os.getenv("PLACEHOLDER_DEFAULT_URL", "https://img.ak
 PLACEHOLDER_EXT           = os.getenv("PLACEHOLDER_EXT", "jpg").strip().lower()
 PLACEHOLDER_HEAD_TIMEOUT  = float(os.getenv("PLACEHOLDER_HEAD_TIMEOUT_S", "5"))
 
-# === прочее (как было) ===
+# === прочее ===
 DROP_CATEGORY_ID_TAG = True
 DROP_STOCK_TAGS      = True
 PURGE_TAGS_AFTER     = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
@@ -398,7 +398,7 @@ BUNDLE_HEADINGS = re.compile(
 )
 ALLOWED_TAGS = ("h3","p","ul","ol","li","br","strong","em","b","i")
 
-# автопоправки опечаток в «родном» описании
+# автопоправки опечаток
 TYPO_FIXES = [
     (re.compile(r"высококачетсв", re.I), "высококачеств"),
     (re.compile(r"приентер", re.I), "принтер"),
@@ -435,6 +435,36 @@ def sanitize_supplier_html(raw_html: str) -> str:
         s = pat.sub(rep, s)
     return s
 
+def wrap_bare_text_lines_to_paragraphs(html_in: str) -> str:
+    """Оборачиваем «голые» строки (без тегов) в <p>...</p> для корректной дальнейшей обработки."""
+    if not html_in.strip(): return html_in
+    lines = html_in.splitlines()
+    out=[]
+    buf=[]
+    def flush_buf():
+        if not buf: return
+        text = " ".join([x.strip() for x in buf if x.strip()])
+        if text:
+            out.append(f"<p>{_html_escape_in_cdata_safe(text)}</p>")
+        buf.clear()
+    for ln in lines:
+        s=ln.strip()
+        if not s: 
+            flush_buf()
+            continue
+        if s.startswith("<"):
+            flush_buf()
+            out.append(ln)
+        else:
+            buf.append(s)
+    flush_buf()
+    res="\n".join(out)
+    # если после оборачивания вообще нет тегов, сделаем один параграф
+    if not re.search(r"<(p|ul|ol|h3)\b", res, flags=re.I):
+        txt=_html_escape_in_cdata_safe(" ".join(x.strip() for x in lines if x.strip()))
+        res=f"<p>{txt}</p>"
+    return res
+
 def remove_urls_and_cta(html_in: str) -> str:
     s = re.sub(r"\bhttps?://[^\s<]+", "", html_in, flags=re.I)
     s = re.sub(r"\bwww\.[^\s<]+", "", s, flags=re.I)
@@ -452,7 +482,6 @@ def strip_name_repeats(html_in: str, product_name: str) -> str:
         return f"<p>{cleaned}</p>" if cleaned else ""
     return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.I|re.S)
 
-# усиленный «анти-спеки» фильтр
 PARAM_SENTENCE_RE = re.compile(
     r"\b(dpi|стр/?\s*мин|ppm|pages\s*per\s*minute|wi-?fi|ethernet|usb|bluetooth|rj-?45|hdmi|display\s*port|displayport|"
     r"\bA[0-6]\b|Letter|Legal|10\s*×\s*15|13\s*×\s*18|9\s*×\s*13|мм|cm|см|g/\s?м2|г/\s?м2|совместим|compatible)\b",
@@ -509,20 +538,6 @@ def truncate_first_paragraph(html_in: str, limit_chars: int = 700) -> str:
     short_html=f"<p>{_html_escape_in_cdata_safe(short)}</p>"
     start, end = first_p.span()
     return html_in[:start] + short_html + html_in[end:]
-
-def trim_paragraphs_to_last_sentence(html_in: str) -> str:
-    def cut(m: re.Match) -> str:
-        inner=m.group(1)
-        txt=re.sub(r"<[^>]+>","",inner).strip()
-        if not txt: return ""
-        if re.search(r"[\.!\?]\s*\Z", txt): return m.group(0)
-        pos=max(txt.rfind("."), txt.rfind("!"), txt.rfind("?"))
-        if pos>=40:
-            txt=txt[:pos+1].strip()
-            return f"<p>{_html_escape_in_cdata_safe(txt)}</p>"
-        txt=re.sub(r"[A-Za-zА-Яа-яЁё]{1,12}$","", txt).strip()
-        return f"<p>{_html_escape_in_cdata_safe(txt)}</p>"
-    return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.S|re.I)
 
 def compact_html_whitespace(s: str) -> str:
     s=re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I)
@@ -587,12 +602,13 @@ def improve_supplier_description(supplier_html: str, product_name: str) -> Tuple
     s = supplier_html or ""
     s = remove_urls_and_cta(s)
     s = strip_name_repeats(s, product_name)
+    # оборачиваем «голые» строки в <p> до дальнейших шагов
+    s = wrap_bare_text_lines_to_paragraphs(s)
     s, bundle_from_desc = extract_bundle_from_supplier_html(s)
     s = strip_after_techspec_headings(s)
     s = remove_param_like_sentences(s)
     s = convert_paragraphs_to_bullets(s)
     s = truncate_first_paragraph(s, limit_chars=700)
-    s = trim_paragraphs_to_last_sentence(s)
     s = compact_html_whitespace(s)
     return s, bundle_from_desc
 
@@ -631,7 +647,7 @@ CANON_NAME_MAP_BASE = {
     "комплектация":"Комплектация","состав поставки":"Комплектация","в комплекте":"Комплектация",
     "тип чернил":"Тип чернил","ресурс":"Ресурс","объем":"Объем","объём":"Объем",
     "автоподатчик":"Автоподатчик",
-    # ВАЖНО: "разрешение" — контекстно (ниже)
+    # «разрешение» — контекстно (ниже)
 }
 
 ALLOWED_PARAM_CANON = {
@@ -648,7 +664,6 @@ def canon_param_name(name: str, kind: str) -> Optional[str]:
     if not name: return None
     key = name.strip().lower().replace("ё","е")
     if key in DISALLOWED_PARAM_NAMES: return None
-    # «Разрешение» — контекст: проекторы/панели/мониторы → "Разрешение", иначе оставим базовые маппинги
     if key == "разрешение":
         return "Разрешение" if kind in {"projector","panel","monitor","interactive"} else "Разрешение печати"
     if key in CANON_NAME_MAP_BASE: return CANON_NAME_MAP_BASE[key]
@@ -673,11 +688,11 @@ def _norm_resolution_display(s: str) -> str:
 def _norm_interfaces(s: str) -> str:
     t=s
     repl={"wifi":"Wi-Fi","wi-fi":"Wi-Fi","wi fi":"Wi-Fi","usb-хост":"USB-host","usb host":"USB-host",
-          "ethernet":"Ethernet","bluetooth":"Bluetooth","rs-232":"RS-232","rj-45":"RJ-45"}
+          "ethernet":"Ethernet","bluetooth":"Bluetooth","rs-232":"RS-232","rj-45":"RJ-45","hdmi":"HDMI","displayport":"DisplayPort"}
     for k,v in repl.items(): t=re.sub(rf"\b{k}\b", v, t, flags=re.I)
     t=re.sub(r"[\*/;/]\s*", ", ", t); t=re.sub(r"\s*,\s*", ", ", t)
     t=re.sub(r"\s{2,}"," ", t).strip(" ,;")
-    junk = ["wlan security","безопасность wlan","scan-to-cloud","apple airprint","mopria","питание","power"]
+    junk = ["wlan security","безопасность wlan","scan-to-cloud","apple airprint","mopria","питание","power","220v","240v"]
     for j in junk:
         t = re.sub(rf",?\s*{re.escape(j)}[^,]*", "", t, flags=re.I)
     return t.strip(" ,;")
@@ -781,12 +796,10 @@ def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
             if not raw_name or not raw_val: continue
             canon = canon_param_name(raw_name, kind)
             if not canon: continue
-            # специальный кейс: проекторы — «Разрешение печати» → «Разрешение»
             if canon=="Разрешение печати" and kind in {"projector","panel","monitor","interactive"}:
                 canon="Разрешение"
             val = normalize_value_by_key(canon, raw_val, kind)
             if not val: continue
-            # «Совместимость» только у расходников/аксессуаров
             if canon=="Совместимость" and kind not in {"consumable","accessory"}:
                 continue
             if canon=="Тип":
@@ -800,7 +813,6 @@ def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
             old = merged.get(canon, "")
             if len(val) > len(old):
                 merged[canon] = val
-    # булевы правим регистр/«Опционально»
     for bkey in ("Двусторонняя печать","Wi-Fi","Автоподатчик"):
         if bkey in merged:
             merged[bkey] = _norm_yesno(merged[bkey])
@@ -1123,7 +1135,7 @@ def main()->None:
             if (d.text or "") != placeholder:
                 d.text=placeholder; desc_changed+=1
 
-    # Нормализуем <param> (канон) + убираем исходные
+    # Нормализуем <param> (канон) + убираем исходные Param
     for offer in offers_el.findall("offer"):
         specs = collect_params_canonical(offer)
         for tag in ("param","Param","PARAM"):
