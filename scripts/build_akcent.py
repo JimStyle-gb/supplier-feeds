@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v2.5.2"  # fix: no stray out_offers refs
+SCRIPT_VERSION = "akcent-2025-10-23.v2.6.0"  # + smarter description shaping
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -133,7 +133,7 @@ def load_source_bytes(src: str) -> bytes:
             if i<RETRIES: time.sleep(back)
     raise RuntimeError(f"fetch failed: {last}")
 
-# ===================== NAME FILTER (как в старом коде) =====================
+# ===================== NAME FILTER =====================
 class KeySpec:
     __slots__=("raw","kind","norm","pattern")
     def __init__(self, raw: str, kind: str, norm: Optional[str], pattern: Optional[re.Pattern]):
@@ -382,7 +382,13 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
     return changed
 
 # ===================== DESCRIPTION (supplier + Param→Характеристики) =====================
-MORE_PHRASES_RE = re.compile(r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию)\s*\.?\s*$", re.I)
+
+MORE_PHRASES_RE = re.compile(
+    r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию|click here|learn more)\s*\.?\s*$",
+    re.I
+)
+
+ALLOWED_TAGS = ("h3","p","ul","ol","li","br","strong","em","b","i")
 
 def maybe_unescape_html(s: str) -> str:
     if not s: return s
@@ -392,48 +398,169 @@ def maybe_unescape_html(s: str) -> str:
             if not re.search(r"&lt;/?[a-zA-Z]", s): break
     return s
 
-ALLOWED_TAGS = ("h3","p","ul","ol","li","br","strong","em","b","i")
-
 def sanitize_supplier_html(raw_html: str) -> str:
     s = raw_html or ""
     s = maybe_unescape_html(s)
+    # убираем скрипты/стили/встраиваемые
     s = re.sub(r"<(script|style|iframe|object|embed|noscript)[^>]*>.*?</\1>", " ", s, flags=re.I|re.S)
+    # убираем таблицы/картинки (в описании не нужны)
     s = re.sub(r"</?(table|thead|tbody|tr|td|th|img)[^>]*>", " ", s, flags=re.I|re.S)
+    # ссылки прочь
     s = re.sub(r"<a\b[^>]*>", "", s, flags=re.I); s = re.sub(r"</a>", "", s, flags=re.I)
+    # заголовки → h3
     s = re.sub(r"<h[1-6]\b[^>]*>", "<h3>", s, flags=re.I); s = re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
+    # div → p
     s = re.sub(r"<div\b[^>]*>", "<p>", s, flags=re.I); s = re.sub(r"</div>", "</p>", s, flags=re.I)
+    # span прочь
     s = re.sub(r"</?span\b[^>]*>", "", s, flags=re.I)
+    # ™, ® и подобные
+    s = s.replace("™","").replace("®","")
+    # повторяющиеся <br> → разделение абзацев
     s = re.sub(r"(?:\s*<br\s*/?>\s*){2,}", "</p><p>", s, flags=re.I)
+    # выпилить инлайновые атрибуты
     s = re.sub(r"\sstyle\s*=\s*(['\"]).*?\1", "", s, flags=re.I)
     s = re.sub(r"\s(class|id|align|width|height)\s*=\s*(['\"]).*?\2", "", s, flags=re.I)
+    # запретные теги
     s = re.sub(r"</?(?!"+("|".join(ALLOWED_TAGS))+r")\w+[^>]*>", " ", s, flags=re.I)
+    # пустые контейнеры
     s = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I)
+    # аккуратные переносы
     s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s, flags=re.I)
+    # типографика: латинская x → ×
+    s = re.sub(r"(?<=\d)\s*[xX]\s*(?=\d)", "×", s)
+    # пробелы
     s = re.sub(r"\s{2,}", " ", s).strip()
     if s and not re.match(r"^\s*<", s):
         s = f"<p>{_html_escape_in_cdata_safe(s)}</p>"
     return s
 
-def postprocess_supplier_html(html_in: str, product_name: str) -> str:
-    s = html_in or ""
-    # убираем CTA и повторы названия
+def remove_urls_and_cta(html_in: str) -> str:
+    s = re.sub(r"\bhttps?://[^\s<]+", "", html_in, flags=re.I)
+    s = re.sub(r"\bwww\.[^\s<]+", "", s, flags=re.I)
     def drop_cta_p(m: re.Match) -> str:
         inner = m.group(1)
         if MORE_PHRASES_RE.match(inner): return ""
         return m.group(0)
-    s = re.sub(r"<p>(.*?)</p>", drop_cta_p, s, flags=re.I|re.S)
-    if product_name:
-        pat = re.compile(rf"^\s*{re.escape(product_name)}\s*[—–\-:,]*\s*", re.I)
-        def cut_name_prefix(m: re.Match) -> str:
-            inner = m.group(1); cleaned = pat.sub("", inner).strip()
-            return f"<p>{cleaned}</p>" if cleaned else ""
-        s = re.sub(r"<p>(.*?)</p>", cut_name_prefix, s, flags=re.I|re.S)
-    s = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I|re.S)
-    s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s, flags=re.I|re.S)
-    s = re.sub(r"\s{2,}", " ", s).strip()
+    return re.sub(r"<p>(.*?)</p>", drop_cta_p, s, flags=re.I|re.S)
+
+def strip_name_repeats(html_in: str, product_name: str) -> str:
+    if not product_name: return html_in
+    pat = re.compile(rf"^\s*{re.escape(product_name)}\s*[—–\-:,]*\s*", re.I)
+    def cut(m: re.Match) -> str:
+        inner = m.group(1); cleaned = pat.sub("", inner).strip()
+        return f"<p>{cleaned}</p>" if cleaned else ""
+    return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.I|re.S)
+
+PARAM_SENTENCE_RE = re.compile(
+    r"\b(dpi|стр/?\s*мин|ppm|pages\s*per\s*minute|wi-?fi|ethernet|usb|bluetooth|rj-?45|hdmi|display\s*port|displayport|"
+    r"\bA[0-6]\b|Letter|Legal|10\s*×\s*15|13\s*×\s*18|9\s*×\s*13|мм|cm|см|g/\s?м2|г/\s?м2)\b",
+    re.I
+)
+
+def remove_param_like_sentences(html_in: str) -> str:
+    def clean_p(m: re.Match) -> str:
+        inner = m.group(1)
+        # режем по предложениям
+        sents = re.split(r"(?<=[\.\!\?])\s+", inner)
+        keep=[]
+        for s in sents:
+            if not PARAM_SENTENCE_RE.search(s):
+                keep.append(s)
+        txt=" ".join(keep).strip()
+        return f"<p>{txt}</p>" if txt else ""
+    return re.sub(r"<p>(.*?)</p>", clean_p, html_in, flags=re.S|re.I)
+
+def bullets_from_short_lines(p_text: str) -> Optional[str]:
+    # заменим <br> на переносы и очистим маркеры
+    t = re.sub(r"<br\s*/?>", "\n", p_text, flags=re.I)
+    # уберём теги внутри, оставим только текст
+    t = re.sub(r"<[^>]+>", "", t)
+    lines=[re.sub(r"^\s*([•\-\–\—\*]|\d+\)|\d+\.)\s*", "", ln).strip() for ln in t.split("\n")]
+    lines=[ln for ln in lines if ln]
+    if len(lines) < 2 or len(lines) > 8:
+        return None
+    def ok(ln:str)->bool:
+        # короткие тезисы без “кирпичей”
+        return 3 <= len(ln) <= 160 and ln.count(".") <= 1
+    cand=[ln for ln in lines if ok(ln)]
+    if len(cand) < 2:
+        return None
+    out=["<ul>"] + [f"  <li>{_html_escape_in_cdata_safe(ln)}</li>" for ln in cand[:6]] + ["</ul>"]
+    return "\n".join(out)
+
+def convert_paragraphs_to_bullets(html_in: str) -> str:
+    # пытаемся превратить параграфы со “строчками” в списки
+    def repl(m: re.Match) -> str:
+        inner=m.group(1)
+        ul=bullets_from_short_lines(inner)
+        return ul if ul else m.group(0)
+    return re.sub(r"<p>(.*?)</p>", repl, html_in, flags=re.S|re.I)
+
+def truncate_first_paragraph(html_in: str, limit_chars: int = 700) -> str:
+    # находим первый <p> и аккуратно режем по предложениям
+    first_p = re.search(r"<p>(.*?)</p>", html_in, flags=re.S|re.I)
+    if not first_p: return html_in
+    inner=first_p.group(1)
+    # если это уже список-тезисы, не трогаем
+    if re.search(r"<ul>|<ol>", html_in, flags=re.I):
+        return html_in
+    txt = re.sub(r"<[^>]+>", "", inner).strip()
+    if len(txt) <= limit_chars:
+        return html_in
+    sents = re.split(r"(?<=[\.\!\?])\s+", txt)
+    acc=[]; total=0
+    for s in sents:
+        if not s: continue
+        add = (("" if not acc else " ") + s)
+        if total + len(add) > limit_chars and len(acc) >= 2:
+            break
+        acc.append(s); total += len(add)
+        if len(acc) >= 4: break
+    short=" ".join(acc).strip()
+    short_html=f"<p>{_html_escape_in_cdata_safe(short)}</p>"
+    start, end = first_p.span()
+    return html_in[:start] + short_html + html_in[end:]
+
+def compact_html_whitespace(s: str) -> str:
+    s=re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I)
+    s=re.sub(r"</p>\s*<p>", "</p>\n<p>", s, flags=re.I)
+    s=re.sub(r"\n{3,}", "\n\n", s)
+    s=re.sub(r"\s{2,}", " ", s)
+    return s.strip()
+
+def improve_supplier_description(supplier_html: str, product_name: str) -> str:
+    s = supplier_html or ""
+    s = remove_urls_and_cta(s)
+    s = strip_name_repeats(s, product_name)
+    s = remove_param_like_sentences(s)
+    s = convert_paragraphs_to_bullets(s)
+    s = truncate_first_paragraph(s, limit_chars=700)
+    s = compact_html_whitespace(s)
     return s
 
+def render_specs_html(specs: List[Tuple[str,str]]) -> str:
+    if not specs: return ""
+    out=["<h3>Характеристики</h3>","<ul>"]
+    for k,v in specs:
+        if k=="Комплектация":
+            continue
+        out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
+    out.append("</ul>")
+    return "\n".join(out)
+
+def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
+    for k,v in specs:
+        if k=="Комплектация" and v:
+            items=[it.strip() for it in re.split(r"[;,\n]+", v) if it.strip()]
+            if not items: return ""
+            out=["<h3>Состав поставки</h3>","<ul>"]
+            for it in items: out.append(f"  <li>{_html_escape_in_cdata_safe(it)}</li>")
+            out.append("</ul>")
+            return "\n".join(out)
+    return ""
+
 # ===== Param → Характеристики =====
+
 DISALLOWED_PARAM_NAMES = {
     "производитель","для бренда","наименование производителя","сопутствующие товары",
     "бренд","brand","manufacturer","vendor","поставщик","партномер","артикул поставщика","код на складе",
@@ -633,27 +760,6 @@ def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
     order_idx={k:i for i,k in enumerate(important_order)}
     return [(k, merged[k]) for k in sorted(merged.keys(), key=lambda x: order_idx.get(x, 999))]
 
-def render_specs_html(specs: List[Tuple[str,str]]) -> str:
-    if not specs: return ""
-    out=["<h3>Характеристики</h3>","<ul>"]
-    for k,v in specs:
-        if k=="Комплектация":
-            continue
-        out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
-    out.append("</ul>")
-    return "\n".join(out)
-
-def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
-    for k,v in specs:
-        if k=="Комплектация" and v:
-            items=[it.strip() for it in re.split(r"[;,\n]+", v) if it.strip()]
-            if not items: return ""
-            out=["<h3>Состав поставки</h3>","<ul>"]
-            for it in items: out.append(f"  <li>{_html_escape_in_cdata_safe(it)}</li>")
-            out.append("</ul>")
-            return "\n".join(out)
-    return ""
-
 def rebuild_descriptions_from_supplier_only(out_shop: ET.Element) -> int:
     off_el=out_shop.find("offers")
     if off_el is None: return 0
@@ -663,7 +769,9 @@ def rebuild_descriptions_from_supplier_only(out_shop: ET.Element) -> int:
         d=offer.find("description")
         supplier_raw=inner_html(d)
         supplier_html = sanitize_supplier_html(supplier_raw)
-        supplier_html = postprocess_supplier_html(supplier_html, name)
+        # улучшить: убрать URL/CTA/повторы имени, вырезать псевдо-характеристики,
+        # превратить короткие строки в <ul>, укоротить первый абзац
+        supplier_html = improve_supplier_description(supplier_html, name)
         specs = collect_params_canonical(offer)
         bundle_html = render_bundle_html(specs)
         specs_html  = render_specs_html(specs)
@@ -684,12 +792,6 @@ def rebuild_descriptions_from_supplier_only(out_shop: ET.Element) -> int:
 def build_keywords_for_offer(offer: ET.Element) -> str:
     WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
     def tokenize(s: str) -> List[str]: return WORD_RE.findall(s or "")
-    def dedup(words: List[str]) -> List[str]:
-        seen=set(); out=[]
-        for w in words:
-            k=w.lower()
-            if k and k not in seen: seen.add(k); out.append(w)
-        return out
     def translit_ru_to_lat(s: str) -> str:
         table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"p","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
         out=s.lower().translate(table); out=re.sub(r"[^a-z0-9\- ]+","", out); return re.sub(r"\s+","-", out).strip("-")
@@ -838,7 +940,7 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
         ET.SubElement(offer,"picture").text=picked; added+=1
     return added
 
-# ===================== FEED_META (как в старом коде) =====================
+# ===================== FEED_META =====================
 def render_feed_meta_comment(pairs:Dict[str,str]) -> str:
     rows=[
         ("Поставщик", pairs.get("supplier","")),
@@ -891,7 +993,7 @@ def main()->None:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
         offers_el.append(mod)
 
-    # === ФИЛЬТР ТОЛЬКО ПО <name> (старый стиль) ===
+    # === ФИЛЬТР ТОЛЬКО ПО <name> ===
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
@@ -927,7 +1029,7 @@ def main()->None:
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
-    # Описание: supplier HTML (очищенный) + Состав поставки + Характеристики (только из Param)
+    # Описание: supplier HTML (улучшенный) + Состав поставки + Характеристики (только из Param)
     desc_changed = rebuild_descriptions_from_supplier_only(out_shop)
 
     # Нормализуем <param> (канонизированные пары)
