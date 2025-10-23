@@ -4,29 +4,28 @@
 """
 build_akcent.py
 
-Готовый скрипт сборки фида для поставщика AkCent со всеми оговорёнными правками:
+Готовый скрипт сборки фида для поставщика AkCent со всеми согласованными моментами:
 
-1) Фильтр товаров — строго по <name> используя файл docs/akcent_keywords.txt (режим include/exclude).
-2) FEED_META — в «старом» формате, время — Asia/Almaty.
-3) Цены: забираем «дилерскую/закупочную», применяем правила наценок. Нереальные цены >= PRICE_CAP_THRESHOLD → 100 KZT.
-4) <vendor> нормализуем/восстанавливаем; <vendorCode> приводим к артикулу (при необходимости) и синхронизируем с offer@id (id = vendorCode).
+1) Фильтр товаров — строго по <name> с использованием docs/akcent_keywords.txt (режим include|exclude).
+2) FEED_META — «старый» формат в комментарии, время — Asia/Almaty.
+3) Цены: берём «дилерскую/закупочную», применяем правила наценок. Нереальные цены >= PRICE_CAP_THRESHOLD → 100 KZT.
+4) <vendor> нормализуем/восстанавливаем; <vendorCode> приводим к артикулу (при необходимости) и синхронизируем с offer@id (id = vendorCode с префиксом).
 5) Плейсхолдеры для отсутствующих картинок (бренд/категория/дефолт).
-6) <currencyId>KZT</currencyId>, available=true/false выводится через атрибут offer@available; чистим складские поля.
+6) <currencyId>KZT</currencyId>, атрибут offer@available рассчитывается; чистим складские/служебные поля.
 7) <description>:
-   - Берём «родное» HTML-описание, чистим от мусора/ссылок и приводим к <h3>/<p>/<ul>.
-   - Если внутри «родного» текста есть намёки на характеристики (dpi, Wi-Fi, USB, A4, стр/мин и т. п.)
-     или строки формата «Ключ: Значение», то такие пункты ВЫНОСЯТСЯ в блок <h3>Характеристики</h3><ul>...</ul>.
-     В «родном» тексте эти пунктЫ удаляются. Блок «Состав поставки/Комплектация» вырезается и выводится отдельным списком.
-   - Дополнительно «Характеристики» формируются из тегов <Param> поставщика (с канонизацией имён).
-     В итоге блок характеристик — объединение: уже имеющийся (если был) + извлечённый из «родного» + из <Param>, с нормализацией.
-8) <param name="..."> для Сату — формируются из тегов поставщика <Param> (после канонизации и чистки),
-   мусорные/служебные имена выкидываются (например, «Сопутствующие товары», «Производитель», «Наименование производителя» и т. п.).
-9) <keywords> — Переcобираются (модельные токены, би-граммы, транслит, гео и пр.) — ограничение до 1024 символов.
-10) Пустая строка между </offer> … <offer> (удобно глазами/диффом).
+   - Берём «родное» HTML-описание, санитизируем и приводим к <h3>/<p>/<ul>.
+   - Из «родного» текста извлекаем всё, что похоже на характеристики (строки «Ключ: значение», dpi, A4, Wi-Fi/USB/Ethernet, «стр/мин» и т. п.) → в блок «Характеристики». В тексте эти пункты удаляются.
+   - Если «Состав поставки/Комплектация» встречается блоком — сохраняем отдельным списком.
+   - Блок «Характеристики» дополнительно формируется из тегов <Param> (с канонизацией имён).
+   - Значения чистятся от лишних пробелов, в том числе &nbsp;. После </strong> всегда ровно один пробел.
+8) <param name="..."> для Сату — формируются из тегов поставщика <Param> (после канонизации/нормализации);
+   мусорные имена выкидываются (например, «Сопутствующие товары», «Производитель», «Наименование производителя» и т. п.).
+9) <keywords> — пересобираются (модельные токены, би-граммы, транслит, гео) — ограничение 1024 символа.
+10) Пустая строка между </offer> … <offer> (для читаемости диффов/глазами).
 11) Порядок полей в offer — как раньше: vendorCode, name, price, picture, vendor, currencyId, description, затем прочее.
-12) Код аккуратно обрабатывает Windows-1251/UTF-8 источники.
+12) Код аккуратно обрабатывает источники в Windows-1251/UTF-8.
 
-Env-переменные (необязательно):
+Env-переменные (по желанию):
 - SUPPLIER_URL, OUT_FILE, OUTPUT_ENCODING, AKCENT_KEYWORDS_PATH, AKCENT_KEYWORDS_MODE (include|exclude),
   PRICE_CAP_THRESHOLD, PRICE_CAP_VALUE, VENDORCODE_PREFIX, VENDORCODE_CREATE_IF_MISSING.
 """
@@ -41,7 +40,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v5.0.0"
+SCRIPT_VERSION = "akcent-2025-10-23.v5.1.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -502,7 +501,9 @@ def strip_name_repeats(html_in: str, product_name: str) -> str:
         return f"<p>{cleaned}</p>" if cleaned else ""
     return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.I|re.S)
 
-# === Извлечение «характеристик» из «родного» текста ===
+# --- ЕДИНАЯ ЧИСТКА ПРОБЕЛОВ ---
+def _clean_ws(val: str) -> str:
+    return re.sub(r"\s+", " ", (val or "").replace("\u00A0", " ")).strip(" \t\r\n,;:.-")
 
 def _strip_tags_keep_breaks(s: str) -> str:
     t = re.sub(r"<br\s*/?>", "\n", s, flags=re.I)
@@ -553,16 +554,20 @@ def canon_key(k: str) -> Optional[str]:
     return CANON_MAP.get(key)
 
 def normalize_value_spec(key: str, val: str) -> str:
-    v = re.sub(r"\s{2,}"," ", val or "").strip(" ,;:.")
+    v = _clean_ws(val)
+
     if key == "Скорость печати":
         m = re.search(r"(\d{1,3})", v)
-        if m: return f"до {m.group(1)} стр/мин"
+        if m:
+            return f"до {m.group(1)} стр/мин"
+
     if key in ("Разрешение печати","Оптическое разрешение"):
         vv = v.replace("x","×").replace("X","×")
         vv = re.sub(r"(?<=\d)[\.,](?=\d{3}\b)", "", vv)
         if not re.search(r"\bdpi\b", vv, re.I):
             vv += " dpi"
-        return vv.strip()
+        return _clean_ws(vv)
+
     if key == "Интерфейсы":
         vv = re.sub(r"[\*/;|]+", ", ", v)
         vv = re.sub(r"\s*,\s*", ", ", vv)
@@ -573,15 +578,18 @@ def normalize_value_spec(key: str, val: str) -> str:
             low = re.sub(rf"\b{k}\b", w.lower(), low)
         tokens = [t.strip() for t in low.split(",") if t.strip()]
         tokens = [t.capitalize() if t not in ("wi-fi","usb-host","rj-45") else t for t in tokens]
-        norm = []
+        norm=[]
         for t in tokens:
-            t = t.replace("wi-fi","Wi-Fi").replace("usb-host","USB-host").replace("rj-45","RJ-45")
-            norm.append(t)
-        return ", ".join(dict.fromkeys(norm))
+            t=t.replace("wi-fi","Wi-Fi").replace("usb-host","USB-host").replace("rj-45","RJ-45")
+            if t not in norm: norm.append(t)
+        return _clean_ws(", ".join(norm))
+
     if key in ("Wi-Fi","Двусторонняя печать","Автоподатчик","Дисплей"):
         low = v.lower()
-        if re.search(r"^(да|yes|true|есть)$", low): return "Да"
-        if re.search(r"^(нет|no|false|отсутствует)$", low): return "Нет"
+        if re.search(r"^(да|yes|true|есть)$", low):  return "Да"
+        if re.search(r"^(нет|no|false|отсутствует)$", low):  return "Нет"
+        return _clean_ws(v)
+
     if key == "Формат":
         t = v.replace("бумаги","")
         t = re.sub(r"\s*[xX]\s*", "×", t)
@@ -591,12 +599,13 @@ def normalize_value_spec(key: str, val: str) -> str:
             if re.search(r"^(A\d|B\d|C6|DL|Letter|Legal|No\.?\s*10|\d{1,2}\s*×\s*\d{1,2}|16:9)$", p, re.I):
                 keep.append(re.sub(r"\s*×\s*","×", p))
         if keep:
-            if len(keep) > 10: keep = keep[:10] + ["и др."]
-            return ", ".join(keep)
-    return v
+            if len(keep) > 10:
+                keep = keep[:10] + ["и др."]
+            return _clean_ws(", ".join(keep))
+
+    return _clean_ws(v)
 
 def parse_existing_specs_block(html_frag: str):
-    """Вернуть (specs_dict, html_without_specs_block) если блок характеристик уже есть в supplier HTML."""
     specs = {}
     m = re.search(r"(?is)(<h3>\s*Характеристики\s*</h3>\s*<ul>(.*?)</ul>)", html_frag)
     if not m:
@@ -611,7 +620,6 @@ def parse_existing_specs_block(html_frag: str):
     return specs, cleaned
 
 def extract_bundle_block(html_frag: str):
-    """Достать блок 'Состав поставки/Комплектация' если он уже верстан и убрать из оригинала."""
     m = re.search(r"(?is)(<h3>\s*(Состав\s+поставки|Комплектация)\s*</h3>\s*<ul>.*?</ul>)", html_frag)
     if not m:
         return "", html_frag
@@ -620,11 +628,6 @@ def extract_bundle_block(html_frag: str):
     return bundle_html, cleaned
 
 def extract_specs_from_text_block(html_frag: str):
-    """
-    Просканировать параграфы/списки «родного» текста, вытащить потенциальные характеристики
-    (линии «Ключ: Значение», упоминания dpi/A4/стр/мин/Wi-Fi/USB и т. п.) и удалить их из текста.
-    Вернуть (extracted_specs_dict, cleaned_html)
-    """
     extracted = {}
 
     def process_li_list(ul_html):
@@ -690,12 +693,9 @@ def extract_specs_from_text_block(html_frag: str):
         out_txt = " ".join(keep).strip()
         return f"<p>{out_txt}</p>" if out_txt else ""
 
-    # Убираем служебные «Характеристики/Спецификации» заголовки в «родном» тексте;
     cleaned = re.sub(r"(?is)<h3>\s*(Техническ[^<]*|Характеристики|Основные характеристики|Спецификации)\s*</h3>", "", html_frag)
-
     cleaned = re.sub(r"(?is)<ul>.*?</ul>", lambda m: process_li_list(m.group(0)), cleaned)
     cleaned = re.sub(r"(?is)<p>.*?</p>",  lambda m: process_paragraph(m.group(0)), cleaned)
-
     cleaned = re.sub(r"\n{3,}", "\n\n", cleaned).strip()
     return extracted, cleaned
 
@@ -711,8 +711,9 @@ def render_specs_dict(specs: Dict[str,str]) -> str:
     items = sorted(specs.items(), key=lambda kv: key_order.get(kv[0], 999))
     lines = ["<h3>Характеристики</h3>","<ul>"]
     for k,v in items:
-        v = normalize_value_spec(k, v)
-        if not v: continue
+        v = _clean_ws(normalize_value_spec(k, v))
+        if not v:
+            continue
         lines.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> {_html_escape_in_cdata_safe(v)}</li>')
     lines.append("</ul>")
     return "\n".join(lines)
@@ -825,13 +826,13 @@ def _norm_resolution_print(s: str) -> str:
     t=s.replace("\u00A0"," ").replace("x","×").replace("X","×")
     t=re.sub(r"(?<=\d)[\.,](?=\d{3}\b)","", t)
     m=re.search(r"(\d{2,5})\s*×\s*(\d{2,5})", t)
-    return (f"{m.group(1)}×{m.group(2)} dpi" if m else s.strip())
+    return (f"{m.group(1)}×{m.group(2)} dpi" if m else _clean_ws(s))
 
 def _norm_resolution_display(s: str) -> str:
     t=s.replace("\u00A0"," ").replace("x","×").replace("X","×")
     t=re.sub(r"\s*dpi\b","", t, flags=re.I)
     m=re.search(r"(\d{3,5})\s*×\s*(\d{3,5})", t)
-    return (f"{m.group(1)}×{m.group(2)}" if m else t.strip(" ,;"))
+    return (f"{m.group(1)}×{m.group(2)}" if m else _clean_ws(t))
 
 def _norm_interfaces(s: str) -> str:
     return normalize_value_spec("Интерфейсы", s)
@@ -841,20 +842,20 @@ def _norm_yesno(s: str) -> str:
     if re.search(r"^(да|yes|y|true|есть)$", low): return "Да"
     if re.search(r"^(нет|no|n|false|отсутствует)$", low): return "Нет"
     if re.search(r"^(опци(я|онально)|option(al)?)$", low): return "Опционально"
-    return s.strip()
+    return _clean_ws(s)
 
 def _norm_display_val(s: str) -> str:
     t=s.replace(",", ".")
     m=re.search(r"(\d{1,2}(\.\d)?)", t)
     if m: return f"{m.group(1)} см"
     yn=_norm_yesno(s)
-    return "есть" if yn=="Да" else ("нет" if yn=="Нет" else s.strip())
+    return "есть" if yn=="Да" else ("нет" if yn=="Нет" else _clean_ws(s))
 
 def _norm_speed(s: str) -> str:
     m=re.search(r"(\d{1,3})\s*(стр|pages)\s*/?\s*мин", s, re.I)
     if m: return f"до {m.group(1)} стр/мин"
     m2=re.search(r"^(\d{1,3})$", s.strip())
-    return f"до {m2.group(1)} стр/мин" if m2 else s.strip()
+    return f"до {m2.group(1)} стр/мин" if m2 else _clean_ws(s)
 
 _ALLOWED_FORMAT_TOKEN = re.compile(
     r"^(A\d|B\d|C6|DL|Letter|Legal|No\.?\s*10|\d{1,2}\s*[×x]\s*\d{1,2}|16:9|10\s*×\s*15|13\s*×\s*18|9\s*×\s*13)$",
@@ -872,7 +873,7 @@ def _norm_format(s: str) -> str:
             p = re.sub(r"\s*×\s*", "×", p); keep.append(p)
     if not keep: return ""
     if len(keep) > 10: keep = keep[:10] + ["и др."]
-    return ", ".join(keep)
+    return _clean_ws(", ".join(keep))
 
 def _norm_colors_list(s: str) -> str:
     t=re.sub(r"\[[^\]]*\]","", s)
@@ -891,7 +892,7 @@ def _norm_colors_list(s: str) -> str:
     seen=set(); out=[]
     for x in norm:
         if x not in seen: out.append(x); seen.add(x)
-    return ", ".join(out)
+    return _clean_ws(", ".join(out))
 
 def _interpret_print_color(val: str) -> str:
     s=val.strip().lower()
@@ -903,9 +904,8 @@ def _interpret_print_color(val: str) -> str:
 
 def clean_param_value(key: str, value: str) -> str:
     if not value: return ""
-    s = value.replace("\u00A0"," ").strip()
-    s = re.sub(r"https?://\S+|www\.\S+","", s, flags=re.I)
-    s = re.sub(r"\s{2,}"," ", s).strip(" ,;:.—–-")
+    s = re.sub(r"https?://\S+|www\.\S+","", (value or ""), flags=re.I)
+    s = _clean_ws(s)
     if len(s) > PARAMS_MAX_VALUE_LEN:
         s = s[:PARAMS_MAX_VALUE_LEN-1] + "…"
     return s
@@ -1000,38 +1000,26 @@ def render_specs_html(specs: List[Tuple[str,str]]) -> str:
     if not specs: return ""
     out=["<h3>Характеристики</h3>","<ul>"]
     for k,v in specs:
-        if k=="Комплектация": continue
-        out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
+        v = _clean_ws(normalize_value_spec(k, v))
+        if not v: continue
+        out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> {_html_escape_in_cdata_safe(v)}</li>')
     out.append("</ul>")
     return "\n".join(out)
 
 def render_bundle_html_from_specs(specs: List[Tuple[str,str]]) -> str:
     return parse_existing_bundle_from_specs(specs)
 
-# === Итоговая сборка «родного» описания + извлечение характеристик ===
-
 def improve_supplier_description_and_extract_specs(supplier_html: str, product_name: str) -> Tuple[str, Dict[str,str], str]:
-    """
-    Вернуть:
-      - marketing_html: «родной» текст, очищенный, без технических фраз (они перенесены в спецификации)
-      - specs_from_desc: dict характеристик, извлечённых из «родного» описания
-      - bundle_html: «Состав поставки» (если нашёлся)
-    """
     s = supplier_html or ""
     s = remove_urls_and_cta(s)
     s = strip_name_repeats(s, product_name)
     s = wrap_bare_text_lines_to_paragraphs(s)
-    # если в supplier уже был блок «Характеристики» — парсим и убираем
     existing_specs, rest = parse_existing_specs_block(s)
-    # если был блок «Состав поставки/Комплектация» — временно выносим
     bundle_html, rest2 = extract_bundle_block(rest)
-    # теперь вытащим спекоподобные фразы из маркетинговых абзацев/списков
     extracted_specs, marketing_clean = extract_specs_from_text_block(rest2)
-    # пост-обработка: превратить «лестницы» в <ul>, чуть сократить первый абзац
     marketing_clean = convert_paragraphs_to_bullets(marketing_clean)
     marketing_clean = truncate_first_paragraph(marketing_clean, limit_chars=700)
     marketing_clean = compact_html_whitespace(marketing_clean)
-    # объединяем существующие и извлечённые характеристики
     specs = dict(existing_specs)
     for k,v in extracted_specs.items():
         if k not in specs or (len(v) > len(specs[k])): specs[k] = v
@@ -1300,18 +1288,17 @@ def main()->None:
         d=offer.find("description")
         supplier_raw=inner_html(d)
 
-        # 1) Приводим «родное» описание к безопасному HTML
+        # 1) Санитизация «родного» описания
         supplier_html = sanitize_supplier_html(supplier_raw)
 
-        # 2) Выделяем спекоподобные фразы из «родного» текста → в характеристики, и убираем их из текста.
+        # 2) Извлечение характеристик из «родного» текста и удаление их из текста
         marketing_html, specs_from_desc, bundle_from_desc = improve_supplier_description_and_extract_specs(supplier_html, name)
 
         # 3) Характеристики из PARAM (канонизация)
         specs_from_param = collect_params_canonical(offer)
 
-        # 4) Объединяем характеристики: сначала Param (как более надёжные), затем добиваем из описания
+        # 4) Объединяем: Param (приоритетнее) + из «родного»
         merged_specs: Dict[str,str] = {k:v for k,v in specs_from_desc.items()}
-        # Переносим PARAM поверх/добавляем (они приоритетнее)
         for k,v in specs_from_param:
             cur = merged_specs.get(k)
             if (cur is None) or (len(v) > len(cur)):
@@ -1320,7 +1307,7 @@ def main()->None:
         # 5) Сборка HTML
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
         if marketing_html: parts.append(marketing_html)
-        # Состав поставки: берём из описания, если есть; иначе — из PARAM (Комплектация)
+        # Состав поставки
         bundle_html = bundle_from_desc or render_bundle_html_from_specs(specs_from_param)
         if bundle_html: parts.append(bundle_html)
         specs_html = render_specs_dict(merged_specs)
@@ -1341,7 +1328,7 @@ def main()->None:
             for pn in list(offer.findall(tag)): offer.remove(pn)
         for k,v in specs:
             if not v: continue
-            node=ET.SubElement(offer,"param"); node.set("name", k); node.text=v
+            node=ET.SubElement(offer,"param"); node.set("name", k); node.text=_clean_ws(v)
 
     t_true, t_false = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
