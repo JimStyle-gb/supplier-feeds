@@ -4,13 +4,15 @@
 """
 build_akcent.py — AkCent
 
-Ключевые изменения, чтобы результат точно менялся:
-- Новый извлекатель «слитных» характеристик из маркетингового абзаца без двоеточий
-  (пример: "Вид струйный Назначение широкоформатный принтер ... Ресурс 700 мл").
-  Эти пары уходят в <Характеристики>, а из абзаца удаляются.
-- Нормализация «Гарантия: 3» → «3 мес.»
-- Жёсткий фикс пробелов: ровно один пробел после </strong> и без &nbsp;
-- Всё остальное (фильтр по <name>, старый FEED_META, порядок тегов, плейсхолдеры, keywords, пустая строка между офферами) — как было согласовано.
+Добавлено:
+- Расщепление «хвостов» в значениях <li> на отдельные пары:
+  * "Функция копирования Да"  → Копирование: Да
+  * "Функция сканирова..."    → Сканирование: Да/Нет (или Да по эвристике)
+  * "Wi-Fi Direct", "Epson Connect" → доб. к «Интерфейсы», Wi-Fi: Да
+  * "… отпечатков"            → Ресурс: до N отпечатков
+  * "… мл"                    → Объём: N мл (и разведение с Ресурс)
+- Нормализация «USB (тип B)», «Дисплей: Да/Нет», фиксы пробелов после </strong>.
+- Остальная логика (фильтр по <name>, старый feed_meta, плейсхолдеры, цены и т.д.) сохранена.
 """
 
 import os, sys, re, time, random, urllib.parse, requests, html
@@ -23,7 +25,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v6.0.0"
+SCRIPT_VERSION = "akcent-2025-10-23.v7.0.0"
 
 # ------------------------- ENV / CONST -------------------------
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -94,7 +96,7 @@ def next_build_time_almaty() -> datetime:
     return t + timedelta(days=1) if cur >= t else t
 
 def format_dt_almaty(dt: datetime) -> str:
-    return dt.strftime("%d:%m:%Y - %H:%M:%S")
+    return dt.strftime("%d:%m:%Y - %H:%М:%S").replace("М","M")  # windows-1251 safe
 
 def inner_html(el: ET.Element) -> str:
     if el is None: return ""
@@ -473,13 +475,8 @@ def strip_name_repeats(html_in: str, product_name: str) -> str:
         return f"<p>{cleaned}</p>" if cleaned else ""
     return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.I|re.S)
 
-# Универсальная чистка пробелов (&nbsp; тоже)
 def _clean_ws(val: str) -> str:
-    return re.sub(
-        r"\s+",
-        " ",
-        (val or "").replace("\u00A0", " ").replace("&nbsp;", " ")
-    ).strip(" \t\r\n,;:.-")
+    return re.sub(r"\s+"," ", (val or "").replace("\u00A0"," ").replace("&nbsp;"," ")).strip(" \t\r\n,;:.-")
 
 def _strip_tags_keep_breaks(s: str) -> str:
     t = re.sub(r"<br\s*/?>", "\n", s, flags=re.I)
@@ -500,10 +497,8 @@ def _is_spec_sentence(s: str) -> bool:
         return True
     return False
 
-# Ровно один пробел после </strong>
 def _fix_li_values(html_in: str) -> str:
-    if not html_in:
-        return html_in
+    if not html_in: return html_in
     pat = re.compile(r"(?is)(<li>\s*<strong>[^<:]+:\s*</strong>)(.*?)(</li>)")
     def repl(m: re.Match) -> str:
         head, val, tail = m.group(1), m.group(2), m.group(3)
@@ -514,7 +509,6 @@ def _fix_li_values(html_in: str) -> str:
     out = re.sub(r"(<strong>[^<]*:</strong>)\s+", r"\1 ", out)
     return out
 
-# Канон. ключи
 CANON_MAP = {
     "тип":"Тип",
     "тип печати":"Тип печати",
@@ -552,29 +546,49 @@ def normalize_value_spec(key: str, val: str) -> str:
     if key in ("Разрешение печати","Оптическое разрешение"):
         vv = v.replace("x","×").replace("X","×")
         vv = re.sub(r"(?<=\d)[\.,](?=\d{3}\b)", "", vv)
-        if key=="Оптическое разрешение":
-            if not re.search(r"\bdpi\b", vv, re.I): vv += " dpi"
-        else:
-            if not re.search(r"\bdpi\b", vv, re.I): vv += " dpi"
+        if not re.search(r"\bdpi\b", vv, re.I): vv += " dpi"
         return _clean_ws(vv)
 
     if key == "Интерфейсы":
         vv = re.sub(r"[\*/;|]+", ", ", v)
         vv = re.sub(r"\s*,\s*", ", ", vv)
-        repl = {"wifi":"Wi-Fi","wi fi":"Wi-Fi","wi-fi":"Wi-Fi","ethernet":"Ethernet",
-                "usb-host":"USB-host","usb host":"USB-host","bluetooth":"Bluetooth","rj-45":"RJ-45"}
         low = vv.lower()
+        repl = {"wifi":"wi-fi","wi fi":"wi-fi","wi-fi":"wi-fi","ethernet":"ethernet",
+                "usb-host":"usb-host","usb host":"usb-host","bluetooth":"bluetooth","rj-45":"rj-45"}
         for k,w in repl.items():
-            low = re.sub(rf"\b{k}\b", w.lower(), low)
+            low = re.sub(rf"\b{k}\b", w, low)
         tokens = [t.strip() for t in low.split(",") if t.strip()]
-        tokens = [t.capitalize() if t not in ("wi-fi","usb-host","rj-45") else t for t in tokens]
-        norm=[]
-        for t in tokens:
-            t=t.replace("wi-fi","Wi-Fi").replace("usb-host","USB-host").replace("rj-45","RJ-45")
-            if t not in norm: norm.append(t)
+
+        # Склеиваем "usb" + "тип b" -> "USB (тип B)"
+        has_usb = any(t=="usb" for t in tokens)
+        type_b_idx = [i for i,t in enumerate(tokens) if re.fullmatch(r"(тип|type)\s*b", t)]
+        out=[]
+        skip=set()
+        for i,t in enumerate(tokens):
+            if i in skip: continue
+            if t=="usb" and type_b_idx:
+                out.append("USB (тип B)")
+                skip.update(type_b_idx)
+            elif t=="wi-fi":
+                out.append("Wi-Fi")
+            elif t=="usb-host":
+                out.append("USB-host")
+            elif t=="rj-45":
+                out.append("RJ-45")
+            elif t=="ethernet":
+                out.append("Ethernet")
+            elif t=="bluetooth":
+                out.append("Bluetooth")
+            else:
+                out.append(t.capitalize())
+        # уникализируем
+        norm=[]; seen=set()
+        for t in out:
+            if t not in seen:
+                norm.append(t); seen.add(t)
         return _clean_ws(", ".join(norm))
 
-    if key in ("Wi-Fi","Двусторонняя печать","Автоподатчик"):
+    if key in ("Wi-Fi","Двусторонняя печать","Автоподатчик","Копирование","Сканирование","Дисплей"):
         low = v.lower()
         if re.search(r"^(да|yes|true|есть)$", low):  return "Да"
         if re.search(r"^(нет|no|false|отсутствует)$", low):  return "Нет"
@@ -594,7 +608,6 @@ def normalize_value_spec(key: str, val: str) -> str:
             return _clean_ws(", ".join(keep))
 
     if key == "Гарантия":
-        # Если просто число — считаем «мес.»
         m = re.match(r"^\s*(\d{1,3})\s*(?:мес|месяц|месяцев|год|лет|г\.)?\s*$", v, re.I)
         if m:
             return f"{m.group(1)} мес"
@@ -602,11 +615,6 @@ def normalize_value_spec(key: str, val: str) -> str:
 
     return _clean_ws(v)
 
-# --- НОВОЕ: извлечение «слитных» KV-пар без двоеточий ---
-LABELS = [
-    "Вид","Назначение","Цвет печати","Поддерживаемые модели принтеров","Поддерживаемые модели",
-    "Совместимость","Ресурс","Объем","Объём","Серия чернил","Цвет"
-]
 LABELS_RE = re.compile(
     r"\b(Вид|Назначение|Цвет печати|Поддерживаемые модели принтеров|Поддерживаемые модели|Совместимость|Ресурс|Объем|Объём|Серия чернил|Цвет)\b\s+(.*?)(?=\s+\b(Вид|Назначение|Цвет печати|Поддерживаемые модели принтеров|Поддерживаемые модели|Совместимость|Ресурс|Объем|Объём|Серия чернил|Цвет)\b|$)",
     re.I|re.S
@@ -616,7 +624,6 @@ def _label_to_canon(label: str, val: str, kind: str) -> Tuple[str,str]:
     lab = label.strip().lower().replace("ё","е")
     v = _clean_ws(val)
     if lab == "вид":
-        # если похоже на струйный/лазерный — это «Тип печати», иначе «Тип»
         if re.search(r"(струйн|ink|лазер|laser)", v, re.I):
             return "Тип печати", v
         return "Тип", v
@@ -629,20 +636,14 @@ def _label_to_canon(label: str, val: str, kind: str) -> Tuple[str,str]:
     if lab in ("объем","объём"):
         return "Объем", v
     if lab == "ресурс":
-        # если в значении мл — трактуем как объем, иначе как ресурс
         if re.search(r"\b(мл|ml)\b", v, re.I):
             return "Объем", v
         return "Ресурс", v
     if lab == "серия чернил":
-        # в характеристиках можно оставить, в <param> — пока не маппим
         return "Серия чернил", v
     return label.strip(), v
 
 def extract_kv_runs_from_paragraph(p_text_html: str, kind: str) -> Tuple[Dict[str,str], str]:
-    """
-    Ищем внутри одного <p> «слитные» пары без двоеточий.
-    Возвращаем: dict(канон_ключ -> значение), и очищенный HTML абзаца (с вырезанными KV-фрагментами).
-    """
     inner = _strip_tags_keep_breaks(p_text_html)
     found=[]
     for m in LABELS_RE.finditer(inner):
@@ -651,17 +652,14 @@ def extract_kv_runs_from_paragraph(p_text_html: str, kind: str) -> Tuple[Dict[st
     specs={}
     if not found:
         return specs, p_text_html
-    # собрали и нормализовали ключи
     for lbl,val in found:
         k,v = _label_to_canon(lbl, val, kind)
-        k = canon_key(k) or k  # прогоняем через базовый канон
+        k = canon_key(k) or k
         v = normalize_value_spec(k, v)
         old = specs.get(k, "")
         if len(v) > len(old): specs[k] = v
-    # вырезаем совпавшие куски: самый простой способ — если найдено ≥ 2 пар, убираем абзац целиком
     if len(specs) >= 2:
-        return specs, ""  # весь параграф был «списком» без двоеточий — не несёт маркетинга
-    # иначе — точечная замена: удаляем лейблы с их значениями
+        return specs, ""
     cleaned = inner
     for lbl,val in found:
         patt = re.compile(re.escape(lbl)+r"\s+"+re.escape(val), re.I)
@@ -669,7 +667,6 @@ def extract_kv_runs_from_paragraph(p_text_html: str, kind: str) -> Tuple[Dict[st
     cleaned = re.sub(r"\s{2,}", " ", cleaned).strip()
     return specs, (f"<p>{_html_escape_in_cdata_safe(cleaned)}</p>" if cleaned else "")
 
-# --- Из уже существующего <ul> Характеристики + из свободного текста ---
 def parse_existing_specs_block(html_frag: str):
     specs = {}
     m = re.search(r"(?is)(<h3>\s*Характеристики\s*</h3>\s*<ul>(.*?)</ul>)", html_frag)
@@ -683,6 +680,22 @@ def parse_existing_specs_block(html_frag: str):
             specs[k] = v
     cleaned = html_frag[:m.start()] + html_frag[m.end():]
     return specs, cleaned
+
+def _is_spec_sentence_block(plain: str) -> Optional[Tuple[str,str]]:
+    s = plain
+    if re.search(r"\b(dpi)\b", s, re.I):
+        k = "Оптическое разрешение" if re.search(r"скан", s, re.I) else "Разрешение печати"
+        v = re.sub(r".*?(\d{2,5}\s*[x×]\s*\d{2,5}.*?dpi).*", r"\1", s, flags=re.I)
+        return k, normalize_value_spec(k, v or s)
+    if re.search(r"стр\.?/?\s*мин|ppm", s, re.I):
+        m=re.search(r"(\d{1,3})", s)
+        v=f"до {m.group(1)} стр/мин" if m else s
+        return "Скорость печати", v
+    if re.search(r"\b(a[0-6]\b|letter|legal|\d+\s*[x×]\s*\d+)\b", s, re.I):
+        return "Формат", normalize_value_spec("Формат", s)
+    if re.search(r"\b(wi-?fi|ethernet|usb|bluetooth|rj-45|hdmi|display\s*port)\b", s, re.I):
+        return "Интерфейсы", normalize_value_spec("Интерфейсы", s)
+    return None
 
 def extract_specs_from_text_block(html_frag: str, kind: str):
     extracted = {}
@@ -701,19 +714,10 @@ def extract_specs_from_text_block(html_frag: str, kind: str):
                 ck = canon_key(k_raw)
                 if ck:
                     extracted.setdefault(ck, normalize_value_spec(ck, v_raw)); took = True
-            if not took and _is_spec_sentence(plain):
-                if re.search(r"\b(dpi)\b", plain, re.I):
-                    k = "Оптическое разрешение" if re.search(r"скан", plain, re.I) else "Разрешение печати"
-                    v = re.sub(r".*?(\d{2,5}\s*[x×]\s*\d{2,5}.*?dpi).*", r"\1", plain, flags=re.I)
-                    extracted.setdefault(k, normalize_value_spec(k, v or plain)); took = True
-                elif re.search(r"стр\.?/?\s*мин|ppm", plain, re.I):
-                    k="Скорость печати"; m2=re.search(r"(\d{1,3})", plain)
-                    v=f"до {m2.group(1)} стр/мин" if m2 else plain
-                    extracted.setdefault(k, v); took = True
-                elif re.search(r"\b(a[0-6]\b|letter|legal|\d+\s*[x×]\s*\d+)\b", plain, re.I):
-                    k="Формат"; extracted.setdefault(k, normalize_value_spec(k, plain)); took=True
-                elif re.search(r"\b(wi-?fi|ethernet|usb|bluetooth|rj-?45|hdmi|display\s*port)\b", plain, re.I):
-                    k="Интерфейсы"; extracted.setdefault(k, normalize_value_spec(k, plain)); took=True
+            if not took:
+                kv = _is_spec_sentence_block(plain)
+                if kv:
+                    extracted.setdefault(kv[0], kv[1]); took=True
             if not took: keep_items.append(item)
         if keep_items:
             return "<ul>\n" + "\n".join(f"  <li>{it}</li>" for it in keep_items) + "\n</ul>"
@@ -721,16 +725,14 @@ def extract_specs_from_text_block(html_frag: str, kind: str):
 
     def process_paragraph(p_html):
         nonlocal extracted
-        # 1) сначала пробуем выдрать «слитные» пары без двоеточий
         kv, cleaned_html = extract_kv_runs_from_paragraph(p_html, kind)
         for k,v in kv.items():
             if k in extracted and len(extracted[k]) >= len(v): 
                 pass
             else:
                 extracted[k] = v
-        if cleaned_html == "":  # параграф состоял из одних «вид/назначение/…» — просто выкидываем
+        if cleaned_html == "":
             return ""
-        # 2) дополнительно выцепляем классические признаки из оставшегося текста
         txt = _strip_tags_keep_breaks(cleaned_html)
         sents = re.split(r"(?<=[\.\!\?])\s+", txt)
         keep = []
@@ -743,19 +745,9 @@ def extract_specs_from_text_block(html_frag: str, kind: str):
                 k_raw = m.group(1).strip(); v_raw = m.group(2).strip()
                 ck = canon_key(k_raw)
                 if ck: extracted.setdefault(ck, normalize_value_spec(ck, v_raw)); took=True
-            if not took and _is_spec_sentence(s0):
-                if re.search(r"\b(dpi)\b", s0, re.I):
-                    k = "Оптическое разрешение" if re.search(r"скан", s0, re.I) else "Разрешение печати"
-                    v = re.sub(r".*?(\d{2,5}\s*[x×]\s*\d{2,5}.*?dpi).*", r"\1", s0, flags=re.I)
-                    extracted.setdefault(k, normalize_value_spec(k, v or s0)); took=True
-                elif re.search(r"стр\.?/?\s*мин|ppm", s0, re.I):
-                    k="Скорость печати"; m2=re.search(r"(\d{1,3})", s0)
-                    v=f"до {m2.group(1)} стр/мин" if m2 else s0
-                    extracted.setdefault(k, v); took=True
-                elif re.search(r"\b(a[0-6]\b|letter|legal|\d+\s*[x×]\s*\d+)\b", s0, re.I):
-                    k="Формат"; extracted.setdefault(k, normalize_value_spec(k, s0)); took=True
-                elif re.search(r"\b(wi-?fi|ethernet|usb|bluetooth|rj-45|hdmi|display\s*port)\b", s0, re.I):
-                    k="Интерфейсы"; extracted.setdefault(k, normalize_value_spec(k, s0)); took=True
+            if not took:
+                kv2 = _is_spec_sentence_block(s0)
+                if kv2: extracted.setdefault(kv2[0], kv2[1]); took=True
             if not took: keep.append(s0)
         out_txt = " ".join(keep).strip()
         return f"<p>{_html_escape_in_cdata_safe(out_txt)}</p>" if out_txt else ""
@@ -772,9 +764,9 @@ def render_specs_dict(specs: Dict[str,str]) -> str:
         "Тип","Назначение","Тип печати","Цвет печати","Формат",
         "Разрешение","Разрешение печати","Оптическое разрешение","Скорость печати",
         "Интерфейсы","Wi-Fi","Двусторонняя печать","Подача бумаги","Дисплей",
+        "Копирование","Сканирование",
         "Цвета чернил","Тип чернил","Ресурс","Объем","Совместимость",
-        "Страна происхождения","Гарантия","Автоподатчик",
-        "Серия чернил",
+        "Страна происхождения","Гарантия","Автоподатчик","Серия чернил",
     ]
     key_order = {k:i for i,k in enumerate(order)}
     items = sorted(specs.items(), key=lambda kv: key_order.get(kv[0], 999))
@@ -911,10 +903,12 @@ def _norm_yesno(s: str) -> str:
 
 def _norm_display_val(s: str) -> str:
     t=s.replace(",", ".")
-    m=re.search(r"(\d{1,2}(\.\d)?)", t)
-    if m: return f"{m.group(1)} см"
+    m=re.search(r"(\d{1,2}(\.\d)?)\s*(см|дюйм|\"|inch|in)\b", t, re.I)
+    if m: 
+        num=m.group(1).replace(".", ",")
+        return f"{num} см"
     yn=_norm_yesno(s)
-    return "есть" if yn=="Да" else ("нет" if yn=="Нет" else _clean_ws(s))
+    return "Да" if yn=="Да" else ("Нет" if yn=="Нет" else _clean_ws(s))
 
 def _norm_speed(s: str) -> str:
     m=re.search(r"(\d{1,3})\s*(стр|pages)\s*/?\s*мин", s, re.I)
@@ -1049,7 +1043,7 @@ def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
             if len(val) > len(old):
                 merged[canon] = val
 
-    for bkey in ("Двусторонняя печать","Wi-Fi","Автоподатчик"):
+    for bkey in ("Двусторонняя печать","Wi-Fi","Автоподатчик","Дисплей"):
         if bkey in merged:
             merged[bkey] = _norm_yesno(merged[bkey])
 
@@ -1078,23 +1072,102 @@ def render_specs_html(specs: List[Tuple[str,str]]) -> str:
 def render_bundle_html_from_specs(specs: List[Tuple[str,str]]) -> str:
     return parse_existing_bundle_from_specs(specs)
 
-def improve_supplier_description_and_extract_specs(supplier_html: str, product_name: str) -> Tuple[str, Dict[str,str], str]:
-    s = supplier_html or ""
-    s = remove_urls_and_cta(s)
-    s = strip_name_repeats(s, product_name)
-    s = wrap_bare_text_lines_to_paragraphs(s)
-    existing_specs, rest = parse_existing_specs_block(s)
-    bundle_html, rest2 = ("", rest)  # bundle вытащим из Param при наличии «Комплектация»
+# -------- НОВОЕ: пост-обработка значений — распознаём «вложенные» пары --------
+def refine_specs_from_value_tails(specs: Dict[str,str]) -> Dict[str,str]:
+    out = dict(specs)
+    add_interfaces=set()
+    yes_wifi=False
 
-    kind = classify_kind(product_name)
-    extracted_specs, marketing_clean = extract_specs_from_text_block(rest2, kind)
-    marketing_clean = convert_paragraphs_to_bullets(marketing_clean)
-    marketing_clean = truncate_first_paragraph(marketing_clean, limit_chars=700)
-    marketing_clean = compact_html_whitespace(marketing_clean)
-    specs = dict(existing_specs)
-    for k,v in extracted_specs.items():
-        if k not in specs or (len(v) > len(specs[k])): specs[k] = v
-    return marketing_clean, specs, bundle_html
+    volume_ml_pat = re.compile(r"(\d{1,4})\s*(мл|ml)\b", re.I)
+    resource_pat  = re.compile(r"(\d[\d\s]{1,6})\s*отпечатк", re.I)
+    wifi_direct_pat = re.compile(r"\bwi-?\s*fi\s*direct\b", re.I)
+    epson_connect_pat = re.compile(r"\bepson\s+connect\b", re.I)
+    copy_pat = re.compile(r"функц\w*\s+копирован\w*\s+(да|нет)\b", re.I)
+    scan_pat = re.compile(r"(функц\w*\s+сканирова\w*|сканировани\w*)\s+(да|нет)\b", re.I)
+
+    for k in list(out.keys()):
+        v = out.get(k,"")
+        if not v: continue
+        vv = v
+
+        # Копирование: Да/Нет
+        m = copy_pat.search(vv)
+        if m:
+            out["Копирование"] = "Да" if m.group(1).lower().startswith("д") else "Нет"
+            vv = copy_pat.sub(" ", vv)
+
+        # Сканирование: Да/Нет
+        m = scan_pat.search(vv)
+        if m:
+            out["Сканирование"] = "Да" if m.group(2).lower().startswith("д") else "Нет"
+            vv = scan_pat.sub(" ", vv)
+
+        # Wi-Fi Direct / Epson Connect
+        if wifi_direct_pat.search(vv):
+            add_interfaces.add("Wi-Fi Direct"); yes_wifi=True
+            vv = wifi_direct_pat.sub(" ", vv)
+        if epson_connect_pat.search(vv):
+            add_interfaces.add("Epson Connect"); yes_wifi=True
+            vv = epson_connect_pat.sub(" ", vv)
+
+        # Ресурс из «… отпечатков»
+        m = resource_pat.search(vv)
+        if m:
+            num = re.sub(r"\s+","", m.group(1))
+            try:
+                num_int = int(num)
+                out["Ресурс"] = f"до {num_int} отпечатков" if "Ресурс" not in out else out["Ресурс"]
+            except Exception:
+                pass
+            vv = resource_pat.sub(" ", vv)
+
+        # Объём из «… мл»
+        m = volume_ml_pat.search(vv)
+        if m:
+            out["Объем"] = f"{m.group(1)} мл"
+            vv = volume_ml_pat.sub(" ", vv)
+
+        vv = _clean_ws(vv)
+
+        # Если ключ «Объем» оказался только про «отпечатки» — переносим в Ресурс
+        if k=="Объем" and "Объем" in out:
+            if not volume_ml_pat.search(v):
+                if resource_pat.search(v) and "Ресурс" not in out:
+                    m2 = resource_pat.search(v)
+                    num = re.sub(r"\s+","", m2.group(1))
+                    try:
+                        out["Ресурс"] = f"до {int(num)} отпечатков"
+                    except Exception:
+                        pass
+                # убираем нерелевантный «Объем»
+                del out["Объем"]
+
+        # Обратно пишем очищенное значение (если оно осталось)
+        if vv:
+            out[k] = vv
+        else:
+            # если очистили всё — удаляем пункт
+            del out[k]
+
+    # Дозаполняем Интерфейсы
+    if add_interfaces:
+        base = out.get("Интерфейсы","")
+        if base:
+            base_list=[t.strip() for t in base.split(",") if t.strip()]
+        else:
+            base_list=[]
+        for t in add_interfaces:
+            if t not in base_list: base_list.append(t)
+        out["Интерфейсы"] = normalize_value_spec("Интерфейсы", ", ".join(base_list))
+    # Wi-Fi = Да, если нашли Wi-Fi Direct/Epson Connect или в Интерфейсах есть Wi-Fi
+    if ("Wi-Fi" not in out) and (yes_wifi or re.search(r"\bWi-?Fi\b", out.get("Интерфейсы",""), re.I)):
+        out["Wi-Fi"] = "Да"
+
+    # Эвристика: если есть «Оптическое разрешение», но нет «Сканирование», ставим Сканирование: Да
+    if ("Оптическое разрешение" in out) and ("Сканирование" not in out):
+        out["Сканирование"] = "Да"
+
+    return out
 
 # ------------------------- KEYWORDS -------------------------
 def build_keywords_for_offer(offer: ET.Element) -> str:
@@ -1111,7 +1184,6 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
         a,b=content[i],content[i+1]
         bigr.append(f"{a} {b}")
     base += list(set([t.upper() for t in modelish[:8]])) + bigr[:8] + [t.capitalize() if not re.search(r"[A-Z]{2,}",t) else t for t in content[:10]]
-    # гео-хвост
     geo=["Казахстан","Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз",
          "Оскемен","Семей","Костанаи","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный",
          "Kazakhstan","Almaty","Astana","Shymkent","Karaganda","Aktobe","Pavlodar","Atyrau","Taraz","Oskemen","Semey","Kostanay","Kyzylorda","Oral","Petropavl","Taldykorgan","Aktau","Temirtau","Ekibastuz","Kokshetau","Rudny"]
@@ -1300,7 +1372,7 @@ def main()->None:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
         offers_el.append(mod)
 
-    # Фильтр только по <name>
+    # Фильтр по <name>
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
@@ -1349,26 +1421,38 @@ def main()->None:
         d=offer.find("description")
         supplier_raw=inner_html(d)
 
+        # Санитайз
         supplier_html = sanitize_supplier_html(supplier_raw)
 
-        marketing_html, specs_from_desc, bundle_from_desc = improve_supplier_description_and_extract_specs(supplier_html, name)
+        # Улучшаем маркетинговый текст и вытягиваем хар-ки из «родного»
+        kind = classify_kind(name)
+        supplier_html = remove_urls_and_cta(supplier_html)
+        supplier_html = strip_name_repeats(supplier_html, name)
+        supplier_html = wrap_bare_text_lines_to_paragraphs(supplier_html)
+        existing_specs, rest = parse_existing_specs_block(supplier_html)
+        extracted_specs, marketing_clean = extract_specs_from_text_block(rest, kind)
+        marketing_clean = convert_paragraphs_to_bullets(marketing_clean)
+        marketing_clean = truncate_first_paragraph(marketing_clean, limit_chars=700)
+        marketing_clean = compact_html_whitespace(marketing_clean)
 
+        # Х-ки из Param
         specs_from_param = collect_params_canonical(offer)
 
-        # Объединяем: Param (приоритетнее) + из «родного»
-        merged_specs: Dict[str,str] = {k:v for k,v in specs_from_desc.items()}
+        # Объединяем
+        merged_specs: Dict[str,str] = dict(existing_specs)
+        for k,v in extracted_specs.items():
+            if k not in merged_specs or (len(v) > len(merged_specs[k])): merged_specs[k] = v
         for k,v in specs_from_param:
-            cur = merged_specs.get(k)
-            if (cur is None) or (len(v) > len(cur)):
-                merged_specs[k] = v
+            if k not in merged_specs or (len(v) > len(merged_specs[k])): merged_specs[k] = v
+
+        # !!! НОВОЕ: разбор «хвостов» во значениях
+        merged_specs = refine_specs_from_value_tails(merged_specs)
+
+        # Состав поставки
+        bundle_html = render_bundle_html_from_specs(specs_from_param)
 
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
-        if marketing_html: parts.append(marketing_html)
-
-        # Комплектация: если есть в Param, рендерим из них
-        bundle_html = render_bundle_html_from_specs(specs_from_param)
-        if not bundle_html:
-            bundle_html = bundle_from_desc
+        if marketing_clean: parts.append(marketing_clean)
         if bundle_html: parts.append(bundle_html)
 
         specs_html = render_specs_dict(merged_specs)
@@ -1384,7 +1468,7 @@ def main()->None:
             if (d.text or "") != placeholder:
                 d.text=placeholder; desc_changed+=1
 
-    # Перезапись <param> из канонических PARAM
+    # Перезапись <param> каноническими PARAM
     for offer in offers_el.findall("offer"):
         specs = collect_params_canonical(offer)
         for tag in ("param","Param","PARAM"):
