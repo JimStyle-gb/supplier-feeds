@@ -4,30 +4,22 @@
 """
 build_akcent.py
 
-Готовый скрипт сборки фида для поставщика AkCent со всеми согласованными моментами:
+Сборка YML для поставщика AkCent с согласованной логикой:
 
-1) Фильтр товаров — строго по <name> с использованием docs/akcent_keywords.txt (режим include|exclude).
-2) FEED_META — «старый» формат в комментарии, время — Asia/Almaty.
-3) Цены: берём «дилерскую/закупочную», применяем правила наценок. Нереальные цены >= PRICE_CAP_THRESHOLD → 100 KZT.
-4) <vendor> нормализуем/восстанавливаем; <vendorCode> приводим к артикулу (при необходимости) и синхронизируем с offer@id (id = vendorCode с префиксом).
-5) Плейсхолдеры для отсутствующих картинок (бренд/категория/дефолт).
-6) <currencyId>KZT</currencyId>, атрибут offer@available рассчитывается; чистим складские/служебные поля.
+1) Фильтр по <name> на базе docs/akcent_keywords.txt (include|exclude).
+2) FEED_META — «старый» вид, время по Asia/Almaty.
+3) Цены: берём «дилерскую/закупочную», применяем правила наценок; PRICE_CAP.
+4) <vendor> нормализуем/восстанавливаем; <vendorCode> = артикул (с префиксом), offer@id = vendorCode.
+5) Плейсхолдеры картинок при отсутствии фото.
+6) <currencyId>KZT</currencyId>, offer@available вычисляется.
 7) <description>:
-   - Берём «родное» HTML-описание, санитизируем и приводим к <h3>/<p>/<ul>.
-   - Из «родного» текста извлекаем всё, что похоже на характеристики (строки «Ключ: значение», dpi, A4, Wi-Fi/USB/Ethernet, «стр/мин» и т. п.) → в блок «Характеристики». В тексте эти пункты удаляются.
-   - Если «Состав поставки/Комплектация» встречается блоком — сохраняем отдельным списком.
-   - Блок «Характеристики» дополнительно формируется из тегов <Param> (с канонизацией имён).
-   - Значения чистятся от лишних пробелов, в том числе &nbsp;. После </strong> всегда ровно один пробел.
-8) <param name="..."> для Сату — формируются из тегов поставщика <Param> (после канонизации/нормализации);
-   мусорные имена выкидываются (например, «Сопутствующие товары», «Производитель», «Наименование производителя» и т. п.).
-9) <keywords> — пересобираются (модельные токены, би-граммы, транслит, гео) — ограничение 1024 символа.
-10) Пустая строка между </offer> … <offer> (для читаемости диффов/глазами).
-11) Порядок полей в offer — как раньше: vendorCode, name, price, picture, vendor, currencyId, description, затем прочее.
-12) Код аккуратно обрабатывает источники в Windows-1251/UTF-8.
-
-Env-переменные (по желанию):
-- SUPPLIER_URL, OUT_FILE, OUTPUT_ENCODING, AKCENT_KEYWORDS_PATH, AKCENT_KEYWORDS_MODE (include|exclude),
-  PRICE_CAP_THRESHOLD, PRICE_CAP_VALUE, VENDORCODE_PREFIX, VENDORCODE_CREATE_IF_MISSING.
+   - Санитизация «родного» HTML, аккуратные <h3>/<p>/<ul>.
+   - Из «родного» текста всё, что похоже на характеристики, извлекается в блок «Характеристики» и удаляется из текста.
+   - Блок «Характеристики» ДОПОЛНЯЕТСЯ данными из <Param> (канонизация имён).
+   - В значениях убираются лишние пробелы/nbsp; после </strong>.
+8) <param name="..."> для Сату — из <Param> (канонизированные, без мусора), значения нормализуем.
+9) <keywords> пересобираются, лимит 1024 символа.
+10) Пустая строка между </offer> и следующим <offer>.
 """
 
 import os, sys, re, time, random, urllib.parse, requests, html
@@ -40,7 +32,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v5.1.0"
+SCRIPT_VERSION = "akcent-2025-10-23.v5.2.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -378,12 +370,12 @@ def normalize_available_field(out_shop: ET.Element) -> Tuple[int,int]:
         t+=1 if b else 0; f+=0 if b else 1
     return t,f
 
-def fix_currency_id(out_shop: ET.Element, default_code: str = "KZT") -> int:
+def fix_currency_id(out_shop: ET.Element) -> int:
     off_el=out_shop.find("offers")
     if off_el is None: return 0
     touched=0
     for offer in off_el.findall("offer"):
-        remove_all(offer,"currencyId"); ET.SubElement(offer,"currencyId").text=default_code; touched+=1
+        remove_all(offer,"currencyId"); ET.SubElement(offer,"currencyId").text="KZT"; touched+=1
     return touched
 
 def ensure_categoryid_zero_first(out_shop: ET.Element) -> int:
@@ -419,7 +411,6 @@ MORE_PHRASES_RE = re.compile(
 )
 ALLOWED_TAGS = ("h3","p","ul","ol","li","br","strong","em","b","i")
 
-# автопоправки опечаток (минимальный набор)
 TYPO_FIXES = [
     (re.compile(r"высококачетсв", re.I), "высококачеств"),
     (re.compile(r"приентер", re.I), "принтер"),
@@ -437,26 +428,17 @@ def maybe_unescape_html(s: str) -> str:
 def sanitize_supplier_html(raw_html: str) -> str:
     s = raw_html or ""
     s = maybe_unescape_html(s)
-    # убираем опасные/лишние теги
     s = re.sub(r"<(script|style|iframe|object|embed|noscript)[^>]*>.*?</\1>", " ", s, flags=re.I|re.S)
     s = re.sub(r"</?(table|thead|tbody|tr|td|th|img)[^>]*>", " ", s, flags=re.I|re.S)
-    # ссылки → убираем теги <a>, но оставляем текст
     s = re.sub(r"<a\b[^>]*>", "", s, flags=re.I); s = re.sub(r"</a>", "", s, flags=re.I)
-    # приводим заголовки к h3
     s = re.sub(r"<h[1-6]\b[^>]*>", "<h3>", s, flags=re.I); s = re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
-    # div -> p, чистим span и прочее
     s = re.sub(r"<div\b[^>]*>", "<p>", s, flags=re.I); s = re.sub(r"</div>", "</p>", s, flags=re.I)
     s = re.sub(r"</?span\b[^>]*>", "", s, flags=re.I)
-    # брейки -> нормальные абзацы
     s = re.sub(r"(?:\s*<br\s*/?>\s*){2,}", "</p><p>", s, flags=re.I)
-    # убираем инлайновые стили/классы
     s = re.sub(r"\sstyle\s*=\s*(['\"]).*?\1", "", s, flags=re.I)
     s = re.sub(r"\s(class|id|align|width|height)\s*=\s*(['\"]).*?\2", "", s, flags=re.I)
-    # оставить только разрешённые теги
     s = re.sub(r"</?(?!"+("|".join(ALLOWED_TAGS))+r")\w+[^>]*>", " ", s, flags=re.I)
-    # пустые блоки
     s = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I)
-    # нормализуем x -> ×, пробелы
     s = re.sub(r"(?<=\d)\s*[xX]\s*(?=\d)", "×", s)
     s = re.sub(r"\s{2,}", " ", s).strip()
     for pat,rep in TYPO_FIXES:
@@ -501,9 +483,13 @@ def strip_name_repeats(html_in: str, product_name: str) -> str:
         return f"<p>{cleaned}</p>" if cleaned else ""
     return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.I|re.S)
 
-# --- ЕДИНАЯ ЧИСТКА ПРОБЕЛОВ ---
+# --- ЕДИНАЯ ЧИСТКА ПРОБЕЛОВ (усиленная: &nbsp;) ---
 def _clean_ws(val: str) -> str:
-    return re.sub(r"\s+", " ", (val or "").replace("\u00A0", " ")).strip(" \t\r\n,;:.-")
+    return re.sub(
+        r"\s+",
+        " ",
+        (val or "").replace("\u00A0", " ").replace("&nbsp;", " ")
+    ).strip(" \t\r\n,;:.-")
 
 def _strip_tags_keep_breaks(s: str) -> str:
     t = re.sub(r"<br\s*/?>", "\n", s, flags=re.I)
@@ -524,7 +510,21 @@ def _is_spec_sentence(s: str) -> bool:
         return True
     return False
 
-# канонизация имён для характеристик
+# фиксер: ровно один пробел после </strong> и чистое значение
+def _fix_li_values(html_in: str) -> str:
+    if not html_in:
+        return html_in
+    pat = re.compile(r"(?is)(<li>\s*<strong>[^<:]+:\s*</strong>)(.*?)(</li>)")
+    def repl(m: re.Match) -> str:
+        head, val, tail = m.group(1), m.group(2), m.group(3)
+        val = (val or "").replace("\u00A0", " ").replace("&nbsp;", " ")
+        val = re.sub(r"\s+", " ", val).strip(" \t\r\n,;:.")
+        return f"{head} {val}{tail}" if val else f"{head}{tail}"
+    out = pat.sub(repl, html_in)
+    out = re.sub(r"(<strong>[^<]*:</strong>)\s+", r"\1 ", out)
+    return out
+
+# канонизация ключей
 CANON_MAP = {
     "тип":"Тип",
     "тип печати":"Тип печати",
@@ -823,13 +823,13 @@ def canon_param_name(name: str, kind: str) -> Optional[str]:
     return None
 
 def _norm_resolution_print(s: str) -> str:
-    t=s.replace("\u00A0"," ").replace("x","×").replace("X","×")
+    t=s.replace("\u00A0"," ").replace("&nbsp;"," ").replace("x","×").replace("X","×")
     t=re.sub(r"(?<=\d)[\.,](?=\d{3}\b)","", t)
     m=re.search(r"(\d{2,5})\s*×\s*(\d{2,5})", t)
     return (f"{m.group(1)}×{m.group(2)} dpi" if m else _clean_ws(s))
 
 def _norm_resolution_display(s: str) -> str:
-    t=s.replace("\u00A0"," ").replace("x","×").replace("X","×")
+    t=s.replace("\u00A0"," ").replace("&nbsp;"," ").replace("x","×").replace("X","×")
     t=re.sub(r"\s*dpi\b","", t, flags=re.I)
     m=re.search(r"(\d{3,5})\s*×\s*(\d{3,5})", t)
     return (f"{m.group(1)}×{m.group(2)}" if m else _clean_ws(t))
@@ -1208,7 +1208,7 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
 # ===================== NAME NORMALIZATION =====================
 def normalize_name_text(s: str) -> str:
     if not s: return s
-    t=s.replace("\u00A0"," ")
+    t=s.replace("\u00A0"," ").replace("&nbsp;"," ")
     t=re.sub(r"\s{2,}"," ", t)
     t=re.sub(r"(?<=\d)\s*[xX]\s*(?=\d)", "×", t)
     t=re.sub(r"\b(Wi)[\s\-]?Fi\b", "Wi-Fi", t, flags=re.I)
@@ -1314,6 +1314,9 @@ def main()->None:
         if specs_html:  parts.append(specs_html)
 
         full_html = "\n".join([p for p in parts if p]).strip()
+        # <<< ВАЖНО: фиксер лишних пробелов после </strong> >>>
+        full_html = _fix_li_values(full_html)
+
         placeholder=f"[[[HTML]]]{full_html}[[[/HTML]]]"
         if d is None:
             d=ET.SubElement(offer,"description"); d.text=placeholder; desc_changed+=1
@@ -1331,7 +1334,7 @@ def main()->None:
             node=ET.SubElement(offer,"param"); node.set("name", k); node.text=_clean_ws(v)
 
     t_true, t_false = normalize_available_field(out_shop)
-    fix_currency_id(out_shop, default_code="KZT")
+    fix_currency_id(out_shop)
 
     # чистка служебных тегов
     for off in offers_el.findall("offer"):
