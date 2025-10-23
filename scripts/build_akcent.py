@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v3.1.0"
+SCRIPT_VERSION = "akcent-2025-10-23.v3.2.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -24,11 +24,11 @@ RETRY_BACKOFF = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES     = int(os.getenv("MIN_BYTES", "1500"))
 DRY_RUN       = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-# === фильтр по name (как в старом коде) ===
+# === фильтр по <name> (как в старом коде) ===
 AKCENT_KEYWORDS_PATH  = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
 AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # include|exclude
 
-# === ценообразование ===
+# === ценообразование (не менял) ===
 PRICE_CAP_THRESHOLD = int(os.getenv("PRICE_CAP_THRESHOLD", "9999999"))
 PRICE_CAP_VALUE     = int(os.getenv("PRICE_CAP_VALUE", "100"))
 PriceRule = Tuple[int,int,float,int]
@@ -45,7 +45,7 @@ PRICE_FIELDS_DIRECT=["purchasePrice","purchase_price","wholesalePrice","wholesal
 PRICE_KEYWORDS_DEALER = re.compile(r"(дилер|dealer|опт|wholesale|b2b|закуп|purchase|оптов)", re.I)
 PRICE_KEYWORDS_RRP    = re.compile(r"(rrp|ррц|розниц|retail|msrp)", re.I)
 
-# === плейсхолдеры ===
+# === плейсхолдеры (как было) ===
 PLACEHOLDER_ENABLE        = os.getenv("PLACEHOLDER_ENABLE", "1").lower() in {"1","true","yes","on"}
 PLACEHOLDER_BRAND_BASE    = os.getenv("PLACEHOLDER_BRAND_BASE", "https://img.akcent.kz/brand").rstrip("/")
 PLACEHOLDER_CATEGORY_BASE = os.getenv("PLACEHOLDER_CATEGORY_BASE", "https://img.akcent.kz/category").rstrip("/")
@@ -53,7 +53,7 @@ PLACEHOLDER_DEFAULT_URL   = os.getenv("PLACEHOLDER_DEFAULT_URL", "https://img.ak
 PLACEHOLDER_EXT           = os.getenv("PLACEHOLDER_EXT", "jpg").strip().lower()
 PLACEHOLDER_HEAD_TIMEOUT  = float(os.getenv("PLACEHOLDER_HEAD_TIMEOUT_S", "5"))
 
-# === прочее ===
+# === прочее (как было) ===
 DROP_CATEGORY_ID_TAG = True
 DROP_STOCK_TAGS      = True
 PURGE_TAGS_AFTER     = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
@@ -311,10 +311,11 @@ def flag_unrealistic_supplier_prices(out_shop: ET.Element) -> int:
             offer.attrib["_force_price"]=str(PRICE_CAP_VALUE); flagged+=1
     return flagged
 
-TRUE_WORDS={"true","1","yes","y","да","есть","in stock","available"}
-FALSE_WORDS={"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
+TRUE_WORDS={"true","1","yes","y","да","есть","in stock","available","опция","опционально","option","optional"}
+FALSE_WORDS={"false","0","no","n","нет","отсутствует","out of stock","unavailable","под заказ","ожидается","на заказ"}
 def _parse_bool_str(s: str)->Optional[bool]:
     v=(s or "").strip().lower()
+    if v in {"опция","опционально","option","optional"}: return None
     return True if v in TRUE_WORDS else False if v in FALSE_WORDS else None
 
 def derive_available(offer: ET.Element) -> bool:
@@ -397,6 +398,13 @@ BUNDLE_HEADINGS = re.compile(
 )
 ALLOWED_TAGS = ("h3","p","ul","ol","li","br","strong","em","b","i")
 
+# автопоправки опечаток в «родном» описании
+TYPO_FIXES = [
+    (re.compile(r"высококачетсв", re.I), "высококачеств"),
+    (re.compile(r"приентер", re.I), "принтер"),
+    (re.compile(r"\bконтенер", re.I), "контейнер"),
+]
+
 def maybe_unescape_html(s: str) -> str:
     if not s: return s
     if re.search(r"&lt;/?[a-zA-Z]", s):
@@ -423,8 +431,8 @@ def sanitize_supplier_html(raw_html: str) -> str:
     s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s, flags=re.I)
     s = re.sub(r"(?<=\d)\s*[xX]\s*(?=\d)", "×", s)
     s = re.sub(r"\s{2,}", " ", s).strip()
-    if s and not re.match(r"^\s*<", s):
-        s = f"<p>{_html_escape_in_cdata_safe(s)}</p>"
+    for pat,rep in TYPO_FIXES:
+        s = pat.sub(rep, s)
     return s
 
 def remove_urls_and_cta(html_in: str) -> str:
@@ -444,9 +452,10 @@ def strip_name_repeats(html_in: str, product_name: str) -> str:
         return f"<p>{cleaned}</p>" if cleaned else ""
     return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.I|re.S)
 
+# усиленный «анти-спеки» фильтр
 PARAM_SENTENCE_RE = re.compile(
     r"\b(dpi|стр/?\s*мин|ppm|pages\s*per\s*minute|wi-?fi|ethernet|usb|bluetooth|rj-?45|hdmi|display\s*port|displayport|"
-    r"\bA[0-6]\b|Letter|Legal|10\s*×\s*15|13\s*×\s*18|9\s*×\s*13|мм|cm|см|g/\s?м2|г/\s?м2)\b",
+    r"\bA[0-6]\b|Letter|Legal|10\s*×\s*15|13\s*×\s*18|9\s*×\s*13|мм|cm|см|g/\s?м2|г/\s?м2|совместим|compatible)\b",
     re.I
 )
 
@@ -508,10 +517,9 @@ def trim_paragraphs_to_last_sentence(html_in: str) -> str:
         if not txt: return ""
         if re.search(r"[\.!\?]\s*\Z", txt): return m.group(0)
         pos=max(txt.rfind("."), txt.rfind("!"), txt.rfind("?"))
-        if pos>=40:  # не отрезаем слишком рано
+        if pos>=40:
             txt=txt[:pos+1].strip()
             return f"<p>{_html_escape_in_cdata_safe(txt)}</p>"
-        # иначе оставим как есть, но без последних обрезков слов & мусора
         txt=re.sub(r"[A-Za-zА-Яа-яЁё]{1,12}$","", txt).strip()
         return f"<p>{_html_escape_in_cdata_safe(txt)}</p>"
     return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.S|re.I)
@@ -534,10 +542,6 @@ def _block_until_next_h3(html_in: str, start_pos: int) -> Tuple[int,int]:
     return (start_pos, start_pos + next_h3.start())
 
 def extract_bundle_from_supplier_html(html_in: str) -> Tuple[str,str]:
-    """
-    Возвращает (supplier_without_bundle, bundle_html)
-    Ищем заголовки 'Состав поставки/Комплектация/В комплекте' и забираем блок до следующего <h3>.
-    """
     s = html_in
     bundle_html = ""
     m = BUNDLE_HEADINGS.search(s)
@@ -547,8 +551,6 @@ def extract_bundle_from_supplier_html(html_in: str) -> Tuple[str,str]:
     block_start = m.end()
     _s,_e = _block_until_next_h3(s, block_start)
     block = s[_s:_e]
-
-    # если внутри уже есть список — нормализуем
     items=[]
     if re.search(r"<li>.*?</li>", block, flags=re.S|re.I):
         for li in re.findall(r"<li>(.*?)</li>", block, flags=re.S|re.I):
@@ -556,14 +558,12 @@ def extract_bundle_from_supplier_html(html_in: str) -> Tuple[str,str]:
             t = re.sub(r"\s{2,}"," ", t)
             if t: items.append(t)
     else:
-        # превращаем строки в пункты
         txt = re.sub(r"<[^>]+>","\n", block)
         txt = txt.replace(";", "\n").replace(",", "\n")
         for ln in txt.splitlines():
             w=ln.strip(" .;:-—–\t")
             if 2<=len(w)<=120:
                 items.append(w)
-    # фильтрация дублей
     uniq=[]; seen=set()
     for i in items:
         k=i.lower()
@@ -575,10 +575,7 @@ def extract_bundle_from_supplier_html(html_in: str) -> Tuple[str,str]:
         out += [f"  <li>{_html_escape_in_cdata_safe(x)}</li>" for x in uniq]
         out.append("</ul>")
         bundle_html = "\n".join(out)
-
-    # вырезаем блок из supplier
     cleaned = (s[:start_h3] + s[_e:]).strip()
-    # на случай повторных разделов — вырежем все такие заголовки
     while True:
         m2=BUNDLE_HEADINGS.search(cleaned)
         if not m2: break
@@ -587,25 +584,15 @@ def extract_bundle_from_supplier_html(html_in: str) -> Tuple[str,str]:
     return cleaned, bundle_html
 
 def improve_supplier_description(supplier_html: str, product_name: str) -> Tuple[str,str]:
-    """
-    Возвращает (описание, состав_поставки_из_описания)
-    """
     s = supplier_html or ""
     s = remove_urls_and_cta(s)
     s = strip_name_repeats(s, product_name)
-    # сначала вынести "Состав поставки"
     s, bundle_from_desc = extract_bundle_from_supplier_html(s)
-    # отрезать техразделы
     s = strip_after_techspec_headings(s)
-    # снять псевдохарактеристики
     s = remove_param_like_sentences(s)
-    # превратить лестницы в списки
     s = convert_paragraphs_to_bullets(s)
-    # укоротить первый абзац
     s = truncate_first_paragraph(s, limit_chars=700)
-    # подправить обрывки предложений
     s = trim_paragraphs_to_last_sentence(s)
-    # финальная шлифовка
     s = compact_html_whitespace(s)
     return s, bundle_from_desc
 
@@ -615,11 +602,11 @@ DISALLOWED_PARAM_NAMES = {
     "производитель","для бренда","наименование производителя","сопутствующие товары",
     "бренд","brand","manufacturer","vendor","поставщик","партномер","артикул поставщика","код на складе",
 }
-CANON_NAME_MAP = {
+CANON_NAME_MAP_BASE = {
     "тип":"Тип","вид":"Тип","тип печати":"Тип печати",
     "цвет печати":"Цвет печати","цветность":"Цвет печати",
     "формат":"Формат","формат бумаги":"Формат","бумаги":"Формат",
-    "разрешение печати":"Разрешение печати","разрешение печати,dpi":"Разрешение печати","разрешение":"Разрешение печати",
+    "разрешение печати":"Разрешение печати",
     "оптическое разрешение":"Оптическое разрешение","разрешение сканера":"Оптическое разрешение","разрешение сканера,dpi":"Оптическое разрешение",
     "скорость печати":"Скорость печати","максимальная скорость печати а4 стр/мин":"Скорость печати",
     "двусторонняя печать":"Двусторонняя печать",
@@ -644,24 +631,27 @@ CANON_NAME_MAP = {
     "комплектация":"Комплектация","состав поставки":"Комплектация","в комплекте":"Комплектация",
     "тип чернил":"Тип чернил","ресурс":"Ресурс","объем":"Объем","объём":"Объем",
     "автоподатчик":"Автоподатчик",
+    # ВАЖНО: "разрешение" — контекстно (ниже)
 }
+
 ALLOWED_PARAM_CANON = {
     "Тип","Назначение","Тип печати","Цвет печати","Формат",
-    "Разрешение печати","Скорость печати","Двусторонняя печать","Интерфейсы","Wi-Fi",
+    "Разрешение печати","Разрешение","Скорость печати","Двусторонняя печать","Интерфейсы","Wi-Fi",
     "Подача бумаги","Выходной лоток","Емкость лотка","Дисплей",
     "Страна происхождения","Гарантия",
     "Оптическое разрешение","Тип датчика","Тип сканирования","Макс. формат","Подсветка","Скорость сканирования",
-    "Разрешение","Яркость","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D","Мощность","Стабилизация AVR","Стабилизация","Розетки",
-    "Цвета чернил","Тип чернил",
-    "Ресурс","Объем","Совместимость",
-    "Автоподатчик","Комплектация",
+    "Яркость","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D","Мощность","Стабилизация AVR","Стабилизация","Розетки",
+    "Цвета чернил","Тип чернил","Ресурс","Объем","Совместимость","Комплектация","Автоподатчик",
 }
 
-def canon_param_name(name: str) -> Optional[str]:
+def canon_param_name(name: str, kind: str) -> Optional[str]:
     if not name: return None
     key = name.strip().lower().replace("ё","е")
     if key in DISALLOWED_PARAM_NAMES: return None
-    if key in CANON_NAME_MAP: return CANON_NAME_MAP[key]
+    # «Разрешение» — контекст: проекторы/панели/мониторы → "Разрешение", иначе оставим базовые маппинги
+    if key == "разрешение":
+        return "Разрешение" if kind in {"projector","panel","monitor","interactive"} else "Разрешение печати"
+    if key in CANON_NAME_MAP_BASE: return CANON_NAME_MAP_BASE[key]
     title = name.strip()
     title_cap = title[:1].upper()+title[1:].lower()
     if title_cap in ALLOWED_PARAM_CANON: return title_cap
@@ -673,6 +663,12 @@ def _norm_resolution_print(s: str) -> str:
     t=re.sub(r"(?<=\d)[\.,](?=\d{3}\b)","", t)
     m=re.search(r"(\d{2,5})\s*×\s*(\d{2,5})", t)
     return (f"{m.group(1)}×{m.group(2)} dpi" if m else s.strip())
+
+def _norm_resolution_display(s: str) -> str:
+    t=s.replace("\u00A0"," ").replace("x","×").replace("X","×")
+    t=re.sub(r"\s*dpi\b","", t, flags=re.I)
+    m=re.search(r"(\d{3,5})\s*×\s*(\d{3,5})", t)
+    return (f"{m.group(1)}×{m.group(2)}" if m else t.strip(" ,;"))
 
 def _norm_interfaces(s: str) -> str:
     t=s
@@ -690,6 +686,7 @@ def _norm_yesno(s: str) -> str:
     low=s.strip().lower()
     if re.search(r"^(да|yes|y|true|есть)$", low): return "Да"
     if re.search(r"^(нет|no|n|false|отсутствует)$", low): return "Нет"
+    if re.search(r"^(опци(я|онально)|option(al)?)$", low): return "Опционально"
     return s.strip()
 
 def _norm_display(s: str) -> str:
@@ -747,9 +744,10 @@ def clean_param_value(key: str, value: str) -> str:
         s = s[:PARAMS_MAX_VALUE_LEN-1] + "…"
     return s
 
-def normalize_value_by_key(k: str, v: str) -> str:
+def normalize_value_by_key(k: str, v: str, kind: str) -> str:
     key=k.lower(); s=v.strip()
     if key=="разрешение печати":       return _norm_resolution_print(s)
+    if key=="разрешение":              return _norm_resolution_display(s)
     if key in ("интерфейсы","входы"):  return _norm_interfaces(s)
     if key=="wi-fi":                    return _norm_yesno(s)
     if key=="формат":                   return _norm_format(s)
@@ -762,12 +760,14 @@ def normalize_value_by_key(k: str, v: str) -> str:
 
 def classify_kind(name: str) -> str:
     n=(name or "").lower()
-    if any(k in n for k in ["картридж","чернила","емкость для отработанных","maintenance box","тонер","ribbon","фотобарабан","drum"]):
-        return "consumable"
-    if any(k in n for k in ["пленка для ламинирования","пленка ламин","плівка"]):
+    if any(k in n for k in ["картридж","чернила","ёмкость для отработанных","емкость для отработанных","maintenance box","тонер","ribbon","фотобарабан","drum","пленка для ламинирования","плёнка для ламинирования"]):
         return "consumable"
     if any(k in n for k in ["кабель","шнур","адаптер","лоток","крышка","держатель","подставка","брекет","лампа"]):
         return "accessory"
+    if "проектор" in n or "projector" in n: return "projector"
+    if "интерактивная панел" in n: return "panel"
+    if "интерактивный дисплей" in n or "интерактивная доска" in n: return "interactive"
+    if "монитор" in n: return "monitor"
     return "device"
 
 def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
@@ -779,11 +779,15 @@ def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
             raw_name = (pn.get("name") or pn.get("Name") or "").strip()
             raw_val  = (pn.text or "").strip()
             if not raw_name or not raw_val: continue
-            canon = canon_param_name(raw_name)
+            canon = canon_param_name(raw_name, kind)
             if not canon: continue
-            val = normalize_value_by_key(canon, raw_val)
+            # специальный кейс: проекторы — «Разрешение печати» → «Разрешение»
+            if canon=="Разрешение печати" and kind in {"projector","panel","monitor","interactive"}:
+                canon="Разрешение"
+            val = normalize_value_by_key(canon, raw_val, kind)
             if not val: continue
-            if canon=="Совместимость" and kind!="consumable":
+            # «Совместимость» только у расходников/аксессуаров
+            if canon=="Совместимость" and kind not in {"consumable","accessory"}:
                 continue
             if canon=="Тип":
                 val = re.sub(r"\s+Офис\b","", val, flags=re.I).strip()
@@ -796,9 +800,14 @@ def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
             old = merged.get(canon, "")
             if len(val) > len(old):
                 merged[canon] = val
+    # булевы правим регистр/«Опционально»
+    for bkey in ("Двусторонняя печать","Wi-Fi","Автоподатчик"):
+        if bkey in merged:
+            merged[bkey] = _norm_yesno(merged[bkey])
+
     important_order = [
         "Тип","Назначение","Тип печати","Цвет печати","Формат",
-        "Разрешение печати","Скорость печати","Двусторонняя печать",
+        "Разрешение","Разрешение печати","Скорость печати","Двусторонняя печать",
         "Интерфейсы","Wi-Fi",
         "Подача бумаги","Выходной лоток","Емкость лотка",
         "Оптическое разрешение","Тип датчика","Тип сканирования","Макс. формат","Скорость сканирования","Подсветка",
@@ -1011,6 +1020,15 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
         repl, xml_text, flags=re.S
     )
 
+# ===================== NAME NORMALIZATION =====================
+def normalize_name_text(s: str) -> str:
+    if not s: return s
+    t=s.replace("\u00A0"," ")
+    t=re.sub(r"\s{2,}"," ", t)
+    t=re.sub(r"(?<=\d)\s*[xX]\s*(?=\d)", "×", t)
+    t=re.sub(r"\b(Wi)[\s\-]?Fi\b", "Wi-Fi", t, flags=re.I)
+    return t.strip()
+
 # ===================== MAIN =====================
 def main()->None:
     log("Run set -e                       # прерывать шаг при любой ошибке")
@@ -1072,6 +1090,12 @@ def main()->None:
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
+    # Нормализация <name>
+    for offer in offers_el.findall("offer"):
+        nm_el = offer.find("name")
+        if nm_el is not None and nm_el.text:
+            nm_el.text = normalize_name_text(nm_el.text)
+
     # Описание: supplier HTML → чистка/сжатие; перенос «Состав поставки»; Характеристики только из Param
     desc_changed = 0
     for offer in offers_el.findall("offer"):
@@ -1087,7 +1111,6 @@ def main()->None:
 
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
         if improved_html: parts.append(improved_html)
-        # приоритет: если вытащили из описания — берём его; иначе — из Param
         bundle_html = bundle_from_desc or bundle_from_specs
         if bundle_html: parts.append(bundle_html)
         if specs_html:  parts.append(specs_html)
@@ -1100,7 +1123,7 @@ def main()->None:
             if (d.text or "") != placeholder:
                 d.text=placeholder; desc_changed+=1
 
-    # Нормализуем <param> (канонизированные пары)
+    # Нормализуем <param> (канон) + убираем исходные
     for offer in offers_el.findall("offer"):
         specs = collect_params_canonical(offer)
         for tag in ("param","Param","PARAM"):
