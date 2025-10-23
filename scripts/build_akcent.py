@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v2.6.0"  # + smarter description shaping
+SCRIPT_VERSION = "akcent-2025-10-23.v3.1.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -381,13 +381,20 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
             changed+=1
     return changed
 
-# ===================== DESCRIPTION (supplier + Param→Характеристики) =====================
+# ===================== DESCRIPTION HELPERS =====================
 
 MORE_PHRASES_RE = re.compile(
     r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию|click here|learn more)\s*\.?\s*$",
     re.I
 )
-
+TECH_HEADINGS = re.compile(
+    r"<h3>\s*(техническ[а-я\s]*характеристик[а-я]*|основн[а-я\s]*характеристик[а-я]*|основн[а-я\s]*свойств[а-я]*|спецификац[а-я]+|характеристики)\s*</h3>",
+    re.I
+)
+BUNDLE_HEADINGS = re.compile(
+    r"<h3>\s*(состав\s+поставки|комплектац[а-я]+|в\s+комплект[еуя])\s*</h3>",
+    re.I
+)
 ALLOWED_TAGS = ("h3","p","ul","ol","li","br","strong","em","b","i")
 
 def maybe_unescape_html(s: str) -> str:
@@ -401,34 +408,20 @@ def maybe_unescape_html(s: str) -> str:
 def sanitize_supplier_html(raw_html: str) -> str:
     s = raw_html or ""
     s = maybe_unescape_html(s)
-    # убираем скрипты/стили/встраиваемые
     s = re.sub(r"<(script|style|iframe|object|embed|noscript)[^>]*>.*?</\1>", " ", s, flags=re.I|re.S)
-    # убираем таблицы/картинки (в описании не нужны)
     s = re.sub(r"</?(table|thead|tbody|tr|td|th|img)[^>]*>", " ", s, flags=re.I|re.S)
-    # ссылки прочь
     s = re.sub(r"<a\b[^>]*>", "", s, flags=re.I); s = re.sub(r"</a>", "", s, flags=re.I)
-    # заголовки → h3
     s = re.sub(r"<h[1-6]\b[^>]*>", "<h3>", s, flags=re.I); s = re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
-    # div → p
     s = re.sub(r"<div\b[^>]*>", "<p>", s, flags=re.I); s = re.sub(r"</div>", "</p>", s, flags=re.I)
-    # span прочь
     s = re.sub(r"</?span\b[^>]*>", "", s, flags=re.I)
-    # ™, ® и подобные
     s = s.replace("™","").replace("®","")
-    # повторяющиеся <br> → разделение абзацев
     s = re.sub(r"(?:\s*<br\s*/?>\s*){2,}", "</p><p>", s, flags=re.I)
-    # выпилить инлайновые атрибуты
     s = re.sub(r"\sstyle\s*=\s*(['\"]).*?\1", "", s, flags=re.I)
     s = re.sub(r"\s(class|id|align|width|height)\s*=\s*(['\"]).*?\2", "", s, flags=re.I)
-    # запретные теги
     s = re.sub(r"</?(?!"+("|".join(ALLOWED_TAGS))+r")\w+[^>]*>", " ", s, flags=re.I)
-    # пустые контейнеры
     s = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I)
-    # аккуратные переносы
     s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s, flags=re.I)
-    # типографика: латинская x → ×
     s = re.sub(r"(?<=\d)\s*[xX]\s*(?=\d)", "×", s)
-    # пробелы
     s = re.sub(r"\s{2,}", " ", s).strip()
     if s and not re.match(r"^\s*<", s):
         s = f"<p>{_html_escape_in_cdata_safe(s)}</p>"
@@ -460,7 +453,6 @@ PARAM_SENTENCE_RE = re.compile(
 def remove_param_like_sentences(html_in: str) -> str:
     def clean_p(m: re.Match) -> str:
         inner = m.group(1)
-        # режем по предложениям
         sents = re.split(r"(?<=[\.\!\?])\s+", inner)
         keep=[]
         for s in sents:
@@ -471,25 +463,18 @@ def remove_param_like_sentences(html_in: str) -> str:
     return re.sub(r"<p>(.*?)</p>", clean_p, html_in, flags=re.S|re.I)
 
 def bullets_from_short_lines(p_text: str) -> Optional[str]:
-    # заменим <br> на переносы и очистим маркеры
     t = re.sub(r"<br\s*/?>", "\n", p_text, flags=re.I)
-    # уберём теги внутри, оставим только текст
     t = re.sub(r"<[^>]+>", "", t)
     lines=[re.sub(r"^\s*([•\-\–\—\*]|\d+\)|\d+\.)\s*", "", ln).strip() for ln in t.split("\n")]
     lines=[ln for ln in lines if ln]
-    if len(lines) < 2 or len(lines) > 8:
-        return None
-    def ok(ln:str)->bool:
-        # короткие тезисы без “кирпичей”
-        return 3 <= len(ln) <= 160 and ln.count(".") <= 1
+    if len(lines) < 3 or len(lines) > 12: return None
+    def ok(ln:str)->bool: return 3 <= len(ln) <= 160 and ln.count(".") <= 1
     cand=[ln for ln in lines if ok(ln)]
-    if len(cand) < 2:
-        return None
+    if len(cand) < 3: return None
     out=["<ul>"] + [f"  <li>{_html_escape_in_cdata_safe(ln)}</li>" for ln in cand[:6]] + ["</ul>"]
     return "\n".join(out)
 
 def convert_paragraphs_to_bullets(html_in: str) -> str:
-    # пытаемся превратить параграфы со “строчками” в списки
     def repl(m: re.Match) -> str:
         inner=m.group(1)
         ul=bullets_from_short_lines(inner)
@@ -497,29 +482,39 @@ def convert_paragraphs_to_bullets(html_in: str) -> str:
     return re.sub(r"<p>(.*?)</p>", repl, html_in, flags=re.S|re.I)
 
 def truncate_first_paragraph(html_in: str, limit_chars: int = 700) -> str:
-    # находим первый <p> и аккуратно режем по предложениям
     first_p = re.search(r"<p>(.*?)</p>", html_in, flags=re.S|re.I)
     if not first_p: return html_in
     inner=first_p.group(1)
-    # если это уже список-тезисы, не трогаем
-    if re.search(r"<ul>|<ol>", html_in, flags=re.I):
-        return html_in
+    if re.search(r"<ul>|<ol>", html_in, flags=re.I): return html_in
     txt = re.sub(r"<[^>]+>", "", inner).strip()
-    if len(txt) <= limit_chars:
-        return html_in
+    if len(txt) <= limit_chars: return html_in
     sents = re.split(r"(?<=[\.\!\?])\s+", txt)
     acc=[]; total=0
     for s in sents:
         if not s: continue
         add = (("" if not acc else " ") + s)
-        if total + len(add) > limit_chars and len(acc) >= 2:
-            break
+        if total + len(add) > limit_chars and len(acc) >= 2: break
         acc.append(s); total += len(add)
         if len(acc) >= 4: break
     short=" ".join(acc).strip()
     short_html=f"<p>{_html_escape_in_cdata_safe(short)}</p>"
     start, end = first_p.span()
     return html_in[:start] + short_html + html_in[end:]
+
+def trim_paragraphs_to_last_sentence(html_in: str) -> str:
+    def cut(m: re.Match) -> str:
+        inner=m.group(1)
+        txt=re.sub(r"<[^>]+>","",inner).strip()
+        if not txt: return ""
+        if re.search(r"[\.!\?]\s*\Z", txt): return m.group(0)
+        pos=max(txt.rfind("."), txt.rfind("!"), txt.rfind("?"))
+        if pos>=40:  # не отрезаем слишком рано
+            txt=txt[:pos+1].strip()
+            return f"<p>{_html_escape_in_cdata_safe(txt)}</p>"
+        # иначе оставим как есть, но без последних обрезков слов & мусора
+        txt=re.sub(r"[A-Za-zА-Яа-яЁё]{1,12}$","", txt).strip()
+        return f"<p>{_html_escape_in_cdata_safe(txt)}</p>"
+    return re.sub(r"<p>(.*?)</p>", cut, html_in, flags=re.S|re.I)
 
 def compact_html_whitespace(s: str) -> str:
     s=re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I)
@@ -528,38 +523,93 @@ def compact_html_whitespace(s: str) -> str:
     s=re.sub(r"\s{2,}", " ", s)
     return s.strip()
 
-def improve_supplier_description(supplier_html: str, product_name: str) -> str:
+def strip_after_techspec_headings(html_in: str) -> str:
+    m = TECH_HEADINGS.search(html_in)
+    if not m: return html_in
+    return html_in[:m.start()].strip()
+
+def _block_until_next_h3(html_in: str, start_pos: int) -> Tuple[int,int]:
+    next_h3 = re.search(r"<h3>.*?</h3>", html_in[start_pos:], flags=re.I|re.S)
+    if not next_h3: return (start_pos, len(html_in))
+    return (start_pos, start_pos + next_h3.start())
+
+def extract_bundle_from_supplier_html(html_in: str) -> Tuple[str,str]:
+    """
+    Возвращает (supplier_without_bundle, bundle_html)
+    Ищем заголовки 'Состав поставки/Комплектация/В комплекте' и забираем блок до следующего <h3>.
+    """
+    s = html_in
+    bundle_html = ""
+    m = BUNDLE_HEADINGS.search(s)
+    if not m:
+        return s, ""
+    start_h3 = m.start()
+    block_start = m.end()
+    _s,_e = _block_until_next_h3(s, block_start)
+    block = s[_s:_e]
+
+    # если внутри уже есть список — нормализуем
+    items=[]
+    if re.search(r"<li>.*?</li>", block, flags=re.S|re.I):
+        for li in re.findall(r"<li>(.*?)</li>", block, flags=re.S|re.I):
+            t = re.sub(r"<[^>]+>"," ", li).strip()
+            t = re.sub(r"\s{2,}"," ", t)
+            if t: items.append(t)
+    else:
+        # превращаем строки в пункты
+        txt = re.sub(r"<[^>]+>","\n", block)
+        txt = txt.replace(";", "\n").replace(",", "\n")
+        for ln in txt.splitlines():
+            w=ln.strip(" .;:-—–\t")
+            if 2<=len(w)<=120:
+                items.append(w)
+    # фильтрация дублей
+    uniq=[]; seen=set()
+    for i in items:
+        k=i.lower()
+        if k in seen: continue
+        seen.add(k); uniq.append(i)
+    uniq=uniq[:12]
+    if uniq:
+        out=["<h3>Состав поставки</h3>","<ul>"]
+        out += [f"  <li>{_html_escape_in_cdata_safe(x)}</li>" for x in uniq]
+        out.append("</ul>")
+        bundle_html = "\n".join(out)
+
+    # вырезаем блок из supplier
+    cleaned = (s[:start_h3] + s[_e:]).strip()
+    # на случай повторных разделов — вырежем все такие заголовки
+    while True:
+        m2=BUNDLE_HEADINGS.search(cleaned)
+        if not m2: break
+        bs=m2.end(); ss,se=_block_until_next_h3(cleaned, bs)
+        cleaned = (cleaned[:m2.start()] + cleaned[se:]).strip()
+    return cleaned, bundle_html
+
+def improve_supplier_description(supplier_html: str, product_name: str) -> Tuple[str,str]:
+    """
+    Возвращает (описание, состав_поставки_из_описания)
+    """
     s = supplier_html or ""
     s = remove_urls_and_cta(s)
     s = strip_name_repeats(s, product_name)
+    # сначала вынести "Состав поставки"
+    s, bundle_from_desc = extract_bundle_from_supplier_html(s)
+    # отрезать техразделы
+    s = strip_after_techspec_headings(s)
+    # снять псевдохарактеристики
     s = remove_param_like_sentences(s)
+    # превратить лестницы в списки
     s = convert_paragraphs_to_bullets(s)
+    # укоротить первый абзац
     s = truncate_first_paragraph(s, limit_chars=700)
+    # подправить обрывки предложений
+    s = trim_paragraphs_to_last_sentence(s)
+    # финальная шлифовка
     s = compact_html_whitespace(s)
-    return s
+    return s, bundle_from_desc
 
-def render_specs_html(specs: List[Tuple[str,str]]) -> str:
-    if not specs: return ""
-    out=["<h3>Характеристики</h3>","<ul>"]
-    for k,v in specs:
-        if k=="Комплектация":
-            continue
-        out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
-    out.append("</ul>")
-    return "\n".join(out)
-
-def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
-    for k,v in specs:
-        if k=="Комплектация" and v:
-            items=[it.strip() for it in re.split(r"[;,\n]+", v) if it.strip()]
-            if not items: return ""
-            out=["<h3>Состав поставки</h3>","<ul>"]
-            for it in items: out.append(f"  <li>{_html_escape_in_cdata_safe(it)}</li>")
-            out.append("</ul>")
-            return "\n".join(out)
-    return ""
-
-# ===== Param → Характеристики =====
+# ===================== PARAM → ХАРАКТЕРИСТИКИ =====================
 
 DISALLOWED_PARAM_NAMES = {
     "производитель","для бренда","наименование производителя","сопутствующие товары",
@@ -760,33 +810,26 @@ def collect_params_canonical(offer: ET.Element) -> List[Tuple[str,str]]:
     order_idx={k:i for i,k in enumerate(important_order)}
     return [(k, merged[k]) for k in sorted(merged.keys(), key=lambda x: order_idx.get(x, 999))]
 
-def rebuild_descriptions_from_supplier_only(out_shop: ET.Element) -> int:
-    off_el=out_shop.find("offers")
-    if off_el is None: return 0
-    changed=0
-    for offer in off_el.findall("offer"):
-        name=get_text(offer,"name")
-        d=offer.find("description")
-        supplier_raw=inner_html(d)
-        supplier_html = sanitize_supplier_html(supplier_raw)
-        # улучшить: убрать URL/CTA/повторы имени, вырезать псевдо-характеристики,
-        # превратить короткие строки в <ul>, укоротить первый абзац
-        supplier_html = improve_supplier_description(supplier_html, name)
-        specs = collect_params_canonical(offer)
-        bundle_html = render_bundle_html(specs)
-        specs_html  = render_specs_html(specs)
-        parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
-        if supplier_html: parts.append(supplier_html)
-        if bundle_html: parts.append(bundle_html)
-        if specs_html:  parts.append(specs_html)
-        full_html = "\n".join([p for p in parts if p]).strip()
-        placeholder=f"[[[HTML]]]{full_html}[[[/HTML]]]"
-        if d is None:
-            d=ET.SubElement(offer,"description"); d.text=placeholder; changed+=1
-        else:
-            if (d.text or "") != placeholder:
-                d.text=placeholder; changed+=1
-    return changed
+def render_specs_html(specs: List[Tuple[str,str]]) -> str:
+    if not specs: return ""
+    out=["<h3>Характеристики</h3>","<ul>"]
+    for k,v in specs:
+        if k=="Комплектация":
+            continue
+        out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
+    out.append("</ul>")
+    return "\n".join(out)
+
+def render_bundle_html_from_specs(specs: List[Tuple[str,str]]) -> str:
+    for k,v in specs:
+        if k=="Комплектация" and v:
+            items=[it.strip() for it in re.split(r"[;,\n]+", v) if it.strip()]
+            if not items: return ""
+            out=["<h3>Состав поставки</h3>","<ul>"]
+            for it in items[:12]: out.append(f"  <li>{_html_escape_in_cdata_safe(it)}</li>")
+            out.append("</ul>")
+            return "\n".join(out)
+    return ""
 
 # ===================== KEYWORDS =====================
 def build_keywords_for_offer(offer: ET.Element) -> str:
@@ -1029,8 +1072,33 @@ def main()->None:
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
-    # Описание: supplier HTML (улучшенный) + Состав поставки + Характеристики (только из Param)
-    desc_changed = rebuild_descriptions_from_supplier_only(out_shop)
+    # Описание: supplier HTML → чистка/сжатие; перенос «Состав поставки»; Характеристики только из Param
+    desc_changed = 0
+    for offer in offers_el.findall("offer"):
+        name=get_text(offer,"name")
+        d=offer.find("description")
+        supplier_raw=inner_html(d)
+        supplier_html = sanitize_supplier_html(supplier_raw)
+        improved_html, bundle_from_desc = improve_supplier_description(supplier_html, name)
+
+        specs = collect_params_canonical(offer)
+        bundle_from_specs = render_bundle_html_from_specs(specs)
+        specs_html  = render_specs_html(specs)
+
+        parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
+        if improved_html: parts.append(improved_html)
+        # приоритет: если вытащили из описания — берём его; иначе — из Param
+        bundle_html = bundle_from_desc or bundle_from_specs
+        if bundle_html: parts.append(bundle_html)
+        if specs_html:  parts.append(specs_html)
+
+        full_html = "\n".join([p for p in parts if p]).strip()
+        placeholder=f"[[[HTML]]]{full_html}[[[/HTML]]]"
+        if d is None:
+            d=ET.SubElement(offer,"description"); d.text=placeholder; desc_changed+=1
+        else:
+            if (d.text or "") != placeholder:
+                d.text=placeholder; desc_changed+=1
 
     # Нормализуем <param> (канонизированные пары)
     for offer in offers_el.findall("offer"):
