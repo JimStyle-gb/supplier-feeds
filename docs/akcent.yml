@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-23 17:22">
+<yml_catalog date="2025-10-23 17:48">
   <!--FEED_META
 Поставщик                                  | akcent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 23:10:2025 - 22:23:07
+Время сборки (Алматы)                      | 23:10:2025 - 22:48:28
 Ближайшее время сборки (Алматы)            | 24:10:2025 - 01:00:00
-Последнее обновление SEO-блока             | 23:10:2025 - 22:23:07
+Последнее обновление SEO-блока             | 23:10:2025 - 22:48:28
 Сколько товаров у поставщика до фильтра    | 1961
 Сколько товаров у поставщика после фильтра | 161
 Сколько товаров есть в наличии (true)      | 161
@@ -29,7 +29,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 </ul>
 ]]></description>
         <param name="Гарантия">3</param>
-        <keywords>Epson, T55K200, C13T55K200, 700ML, C13T55K200 Singlepack, Singlepack Голубой, Голубой T55K200, T55K200 UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Голубой, Ultrachrome, HDX, singlepack-goluboy, goluboy-t55k200, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, 700ML, C13T55K200, T55K200, C13T55K200 Singlepack, Singlepack Голубой, Голубой T55K200, T55K200 UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Голубой, Ultrachrome, HDX, singlepack-goluboy, goluboy-t55k200, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T55K30N" available="true">
@@ -49,7 +49,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 </ul>
 ]]></description>
         <param name="Гарантия">3</param>
-        <keywords>Epson, 700ML, T55K30N, C13T55K30N, C13T55K30N Singlepack, Singlepack Пурпурный, Пурпурный T55K30N, T55K30N UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Пурпурный, Ultrachrome, HDX, singlepack-puppupnyy, puppupnyy-t55k30n, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T55K30N, 700ML, C13T55K30N, C13T55K30N Singlepack, Singlepack Пурпурный, Пурпурный T55K30N, T55K30N UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Пурпурный, Ultrachrome, HDX, singlepack-puppupnyy, puppupnyy-t55k30n, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T55K400" available="true">
@@ -69,7 +69,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 </ul>
 ]]></description>
         <param name="Гарантия">3</param>
-        <keywords>Epson, 700ML, C13T55K400, T55K400, C13T55K400 Singlepack, Singlepack Желтый, Желтый T55K400, T55K400 UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Желтый, Ultrachrome, HDX, singlepack-zheltyy, zheltyy-t55k400, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T55K400, 700ML, T55K400, C13T55K400 Singlepack, Singlepack Желтый, Желтый T55K400, T55K400 UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Желтый, Ultrachrome, HDX, singlepack-zheltyy, zheltyy-t55k400, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T55KD00" available="true">
@@ -115,7 +115,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, SP9600, C12C890191, SP7600, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C12C890191, C12C890191 SP7600, SP7600 SP9600, Ёмкость, Отработанных, Чернил, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C12C890191, SP7600, SP9600, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C12C890191, C12C890191 SP7600, SP7600 SP9600, Ёмкость, Отработанных, Чернил, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC12C934591" available="true">
@@ -141,7 +141,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Гарантия">3</param>
         <param name="Совместимость">C11CJ04404,C11CH72404,C11CH71404,C11CJ30404,C11CJ41404,C11CJ28404,C11CJ20404,C11CJ21403</param>
-        <keywords>Epson, WF-78XX, ET-166XX, C12C934591, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C12C934591, C12C934591 WF-78XX, WF-78XX ET-166XX, ET-166XX MAINTENANCE, MAINTENANCE BOX, Ёмкость, Отработанных, Чернил, MAINTENANCE, BOX, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C12C934591, WF-78XX, ET-166XX, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C12C934591, C12C934591 WF-78XX, WF-78XX ET-166XX, ET-166XX MAINTENANCE, MAINTENANCE BOX, Ёмкость, Отработанных, Чернил, MAINTENANCE, BOX, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T04D000" available="true">
@@ -243,7 +243,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, C13T619300, T3000, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T619300, C13T619300 T3000, T3000 5000, 5000 7000, 7000 Т3200, Ёмкость, Отработанных, Чернил, 5000, 7000, Т3200, 5200, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, 7000-t3200, emkost, otpabotannyh, chepnil, t3200, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T3000, C13T619300, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T619300, C13T619300 T3000, T3000 5000, 5000 7000, 7000 Т3200, Ёмкость, Отработанных, Чернил, 5000, 7000, Т3200, 5200, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, 7000-t3200, emkost, otpabotannyh, chepnil, t3200, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T671100" available="true">
@@ -297,7 +297,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия, Япония</param>
         <param name="Гарантия">3</param>
         <param name="Совместимость">C11CG70401,C11CG68401,C11CH60401BX,C11CH35401BX</param>
-        <keywords>Epson, 80K, C13T671400, WF-C869R, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T671400, C13T671400 WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R Maintenance, Ёмкость, Отработанных, Чернил, Workforce, Pro, Maintenance, Box, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T671400, WF-C869R, 80K, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T671400, C13T671400 WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R Maintenance, Ёмкость, Отработанных, Чернил, Workforce, Pro, Maintenance, Box, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T699700" available="true">
@@ -325,7 +325,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">нет</param>
         <param name="Объем">0,003</param>
-        <keywords>Epson, SC-P6000, C13T699700, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T699700, C13T699700 SC-P6000, SC-P6000 7000, 7000 8000, 8000 9000, Ёмкость, Отработанных, Чернил, 7000, 8000, 9000, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T699700, SC-P6000, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T699700, C13T699700 SC-P6000, SC-P6000 7000, 7000 8000, 8000 9000, Ёмкость, Отработанных, Чернил, 7000, 8000, 9000, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC33S021601" available="true">
@@ -347,7 +347,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 ]]></description>
         <param name="Тип">Ёмкость для отработанных чернил</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, C4000E, SJMB4000, C33S021601, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C33S021601, C33S021601 SJMB4000, SJMB4000 C4000e, C4000e Maintenance, Maintenance box, Ёмкость, Отработанных, Чернил, Maintenance, Box, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C33S021601, SJMB4000, C4000E, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C33S021601, C33S021601 SJMB4000, SJMB4000 C4000e, C4000e Maintenance, Maintenance box, Ёмкость, Отработанных, Чернил, Maintenance, Box, emkost-otpabotannyh, otpabotannyh-chepnil, chepnil-epson, emkost, otpabotannyh, chepnil, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC12C937201" available="true">
@@ -391,6 +391,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Интерактивная доска</li>
+  <li><strong>Интерфейсы:</strong> Общие характеристики: рамка выполнена из алюминия, Цвет серый внешний размер: (мм) 2252 х 1280 х 44 (мм) активная область: 95 дюймов 2120 (мм) х 1150 (мм) соотношение сторон: 16:9 технология: ик сенсорная 10 точек касания интерфейс usb 2.0 и usb 3.0 размер упаковки (мм) 2350 х 90 х 1340 (мм) вес нетто (нетто) 46 кг вес брутто (брутто) 51кг разрешение (интерполяция) 4096 х 4096 время отклика 8 мс скорость отклика 20 мс метод ввода: палец, Маркер или не прозрачные предметы минимальный предмет касания должен быть не менее 5мм температура эксплуатации: от -20°c до 70°c хранения: -40°c ~ 85°с относительная влажность: рабочая: 90% (без конденсации при максимальной температуре 40°c) хранение: 90% (без конденсации при максимальной температуре 40°c) время эксплуатации не менее 7 лет напряжение тока: +dc 5v, +4.75v to +5.25v питания от usb, Мощность пульсации max.200mv rms мощность 2 вт, Рабочий ток 200ma сертификаты: ce, Fcc class b, Rohs ос windows xp, Win7, Win8, Win10, Не совместим с</li>
   <li><strong>Гарантия:</strong> 1 год</li>
 </ul>
 ]]></description>
@@ -412,6 +413,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Интерактивная доска</li>
+  <li><strong>Интерфейсы:</strong> Общие характерстики: внешний материал рамки выполнен из алюминия, Цвет черный соотношение сторон: 4:3 технология: ик-сенсорная 10 точек касания интерфейс usb 2.0 и usb 3.0 внешние размеры: 1688, 1208, 32 активная область: 77 дюймов 1610 (мм) х 1130 (мм) размер упаковки: 178, 130, 70мм вес нетто: 16.5 кг вес брутто: 25kg разрешение (интерполяция): 32767, 32767 время отклика: 8мс скорость отклика: 20мс метод ввода: палец, Маркер или не прозрачные предметы время прикосновения маркера к доске: неограниченно минимальный предмет касания к доске: не менее 5 мм температура в окружающей среде: эксплуатации: от -20°c до 70°c хранения: -40°c ~ 85°с в относительной влажности: рабочая: 90% (без конденсации при максимальной температуре 40°c) хранение: 90% (без конденсации при максимальной температуре 40°c) срок службы: не менее 7 лет рабочее напряжение: + dc 5v, + 4.75v до + 5.25v источник питания от usb, Мощность max</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -432,6 +434,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Интерактивная панель SBID-QX275-P</h3>
+<h3>Характеристики</h3>
+<ul>
+  <li><strong>Формат:</strong> Тип дисплея	LED Покрытие экрана	Спец стекло (антитрение, антиблик) Диагональ	75" Яркость (maximum)	&#8805; 400 cd/m&#178; Соотношение сторон	16:9 Разрешение	4K UHD (3840 &#215; 2160) Число касаний	20 (Win, Mac) Технология распознавания	HyPr Touch with Advanced IR Жесты	Мультитач Стилус	Два пассивных Гарантия	3 года Панель управления	да Звук	20 Вт динамик (2 шт.) Микрофоны	массив из 6 микрофонов с эхоподавлением Индикатор состояния	есть Встроенный NFC считыватель	есть Время отклика	&#8804; 5 мс Минимальный размер объекта	2 мм Подключение	USB/HDMI Энергопотребление	124 Вт (0.5 Вт в режиме ожидания) Входы (на задней стороне)	OPS-слот (поддержка OPS-C) MicroSD slot USB-A 2.0 USB-A 3.2*2 USB-B 3.2 (x2) USB-C (4K@60Гц), 65W RS-232 (DB-9 connector) HDMI вход с поддержкой HDCP 2.3 (x2) RJ45 (LAN In) Входы (на передней стороне)	USB-A 3.0 (x2) USB 3.2 Gen 1 Type-B USB-C (4K@60Гц), 15W HDMI вход с поддержкой HDCP 2.3</li>
+</ul>
 ]]></description>
         <keywords>SBID-QX275-P, Интерактивная панель, панель SBID-QX275-P, Интерактивная, Панель, intepaktivnaya-panel, panel-sbid-qx275-p, intepaktivnaya, panel, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
@@ -448,6 +454,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <p>Обновленная серия имеет все необходимое, что нужно преподавателям для работы даже с учениками, находящимися на дистанционном обучении. Дисплеи с диагоналями от 55” до 86” и разрешением 4K Ultra HD включают программное обеспечение SMART Notebook и стандартную трехлетнюю гарантию. Запатентованная оболочка IQ позволяет студентам использовать свои любимые девайсы в любой учебной среде, а также предоставляет быстрый доступ к инструментам для совместной работы, такие как цифровая доска, веб-браузер и беспроводная трансляция экрана. Функции персонализации делают дисплеи незаменимым помощником.</p>
 <h3>Характеристики</h3>
 <ul>
+  <li><strong>Формат:</strong> 7&#215;92, 8&#215;8</li>
   <li><strong>Гарантия:</strong> 36</li>
 </ul>
 ]]></description>
@@ -480,7 +487,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Ресурс">Около 2200 стр</param>
-        <keywords>Epson, C13T27914022, WF-7620DTWF, Картридж Epson, Epson C13T27914022, C13T27914022 WF-7620DTWF, WF-7620DTWF черный, черный new, Картридж, Черный, New, kaptpidzh-epson, wf-7620dtwf-chepnyy, chepnyy-new, kaptpidzh, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-7620DTWF, C13T27914022, Картридж Epson, Epson C13T27914022, C13T27914022 WF-7620DTWF, WF-7620DTWF черный, черный new, Картридж, Черный, New, kaptpidzh-epson, wf-7620dtwf-chepnyy, chepnyy-new, kaptpidzh, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T40D140" available="true">
@@ -506,7 +513,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
-        <keywords>Epson, 80ML, XD2, T40D140, C13T40D140, Картридж Epson, Epson C13T40D140, C13T40D140 UltraChrome, UltraChrome XD2, XD2 Black, Black T40D140, T40D140 80ml, Картридж, Ultrachrome, Black, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, XD2, 80ML, C13T40D140, T40D140, Картридж Epson, Epson C13T40D140, C13T40D140 UltraChrome, UltraChrome XD2, XD2 Black, Black T40D140, T40D140 80ml, Картридж, Ultrachrome, Black, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T40D240" available="true">
@@ -532,7 +539,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
-        <keywords>Epson, T40D240, 50ML, C13T40D240, XD2, Картридж Epson, Epson C13T40D240, C13T40D240 UltraChrome, UltraChrome XD2, XD2 Cyan, Cyan T40D240, T40D240 50ml, Картридж, Ultrachrome, Cyan, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, XD2, T40D240, 50ML, C13T40D240, Картридж Epson, Epson C13T40D240, C13T40D240 UltraChrome, UltraChrome XD2, XD2 Cyan, Cyan T40D240, T40D240 50ml, Картридж, Ultrachrome, Cyan, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T40D34N" available="true">
@@ -558,7 +565,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
-        <keywords>Epson, C13T40D34N, XD2, T40D340, 50ML, Картридж Epson, Epson C13T40D34N, C13T40D34N UltraChrome, UltraChrome XD2, XD2 Magenta, Magenta T40D340, T40D340 50ml, Картридж, Ultrachrome, Magenta, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, XD2, T40D340, 50ML, C13T40D34N, Картридж Epson, Epson C13T40D34N, C13T40D34N UltraChrome, UltraChrome XD2, XD2 Magenta, Magenta T40D340, T40D340 50ml, Картридж, Ultrachrome, Magenta, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T40D440" available="true">
@@ -584,7 +591,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
-        <keywords>Epson, C13T40D440, 50ML, XD2, T40D440, Картридж Epson, Epson C13T40D440, C13T40D440 UltraChrome, UltraChrome XD2, XD2 Yellow, Yellow T40D440, T40D440 50ml, Картридж, Ultrachrome, Yellow, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T40D440, T40D440, XD2, 50ML, Картридж Epson, Epson C13T40D440, C13T40D440 UltraChrome, UltraChrome XD2, XD2 Yellow, Yellow T40D440, T40D440 50ml, Картридж, Ultrachrome, Yellow, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T41E240" available="true">
@@ -640,7 +647,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
         <param name="Ресурс">350 мл</param>
-        <keywords>Epson, XD2, T41E340, C13T41E34N, Картридж Epson, Epson C13T41E34N, C13T41E34N UltraChrome, UltraChrome XD2, XD2 T41E340, T41E340 350, 350 пурпурный, Картридж, Ultrachrome, 350, Пурпурный, kaptpidzh-epson, 350-puppupnyy, kaptpidzh, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, XD2, C13T41E34N, T41E340, Картридж Epson, Epson C13T41E34N, C13T41E34N UltraChrome, UltraChrome XD2, XD2 T41E340, T41E340 350, 350 пурпурный, Картридж, Ultrachrome, 350, Пурпурный, kaptpidzh-epson, 350-puppupnyy, kaptpidzh, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T41E440" available="true">
@@ -668,7 +675,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
         <param name="Ресурс">700 мл</param>
-        <keywords>Epson, C13T41E440, 700ML, Картридж Epson, Epson C13T41E440, C13T41E440 700ml, 700ml жёлтый, Картридж, Жёлтый, kaptpidzh-epson, 700ml-zheltyy, kaptpidzh, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, 700ML, C13T41E440, Картридж Epson, Epson C13T41E440, C13T41E440 700ml, 700ml жёлтый, Картридж, Жёлтый, kaptpidzh-epson, 700ml-zheltyy, kaptpidzh, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T41E540" available="true">
@@ -696,7 +703,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
         <param name="Ресурс">700 мл</param>
-        <keywords>Epson, 700ML, C13T41E540, Картридж Epson, Epson C13T41E540, C13T41E540 UltraChrome, UltraChrome 700ml, 700ml черный, Картридж, Ultrachrome, Черный, kaptpidzh-epson, 700ml-chepnyy, kaptpidzh, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T41E540, 700ML, Картридж Epson, Epson C13T41E540, C13T41E540 UltraChrome, UltraChrome 700ml, 700ml черный, Картридж, Ultrachrome, Черный, kaptpidzh-epson, 700ml-chepnyy, kaptpidzh, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T50M400" available="true">
@@ -752,7 +759,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
         <param name="Ресурс">350 мл</param>
-        <keywords>Epson, T3000, C13T50MF00, Картридж Epson, Epson C13T50MF00, C13T50MF00 T3000, T3000 5000, 5000 7000, 7000 Т3700, Т3700 5700, 5700 7700, Картридж, 5000, 7000, Т3700, 5700, 7700, Красный, kaptpidzh-epson, 7000-t3700, t3700-5700, kaptpidzh, t3700, kpasnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T50MF00, T3000, Картридж Epson, Epson C13T50MF00, C13T50MF00 T3000, T3000 5000, 5000 7000, 7000 Т3700, Т3700 5700, 5700 7700, Картридж, 5000, 7000, Т3700, 5700, 7700, Красный, kaptpidzh-epson, 7000-t3700, t3700-5700, kaptpidzh, t3700, kpasnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T606400" available="true">
@@ -808,7 +815,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">3</param>
         <param name="Ресурс">220 мл</param>
-        <keywords>Epson, SP-4880, C13T606500, Картридж Epson, Epson C13T606500, C13T606500 SP-4880, SP-4880 светло-голубой, Картридж, Светло-голубой, kaptpidzh-epson, sp-4880-svetlo-goluboy, kaptpidzh, svetlo-goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T606500, SP-4880, Картридж Epson, Epson C13T606500, C13T606500 SP-4880, SP-4880 светло-голубой, Картридж, Светло-голубой, kaptpidzh-epson, sp-4880-svetlo-goluboy, kaptpidzh, svetlo-goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T606600" available="true">
@@ -884,7 +891,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 </ul>
 ]]></description>
         <param name="Гарантия">12 мес</param>
-        <keywords>Epson, C13T606B00, SP-4800, 220ML, Картридж Epson, Epson C13T606B00, C13T606B00 SP-4800, SP-4800 220ml, 220ml пурпурный, пурпурный new, Картридж, Пурпурный, New, kaptpidzh-epson, 220ml-puppupnyy, puppupnyy-new, kaptpidzh, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, SP-4800, 220ML, C13T606B00, Картридж Epson, Epson C13T606B00, C13T606B00 SP-4800, SP-4800 220ml, 220ml пурпурный, пурпурный new, Картридж, Пурпурный, New, kaptpidzh-epson, 220ml-puppupnyy, puppupnyy-new, kaptpidzh, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T606C00" available="true">
@@ -912,7 +919,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">нет</param>
         <param name="Ресурс">221 мл</param>
-        <keywords>Epson, SP-4800, C13T606C00, Картридж Epson, Epson C13T606C00, C13T606C00 SP-4800, SP-4800 пурпурный, пурпурный светлый, Картридж, Пурпурный, Светлый, kaptpidzh-epson, sp-4800-puppupnyy, puppupnyy-svetlyy, kaptpidzh, puppupnyy, svetlyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T606C00, SP-4800, Картридж Epson, Epson C13T606C00, C13T606C00 SP-4800, SP-4800 пурпурный, пурпурный светлый, Картридж, Пурпурный, Светлый, kaptpidzh-epson, sp-4800-puppupnyy, puppupnyy-svetlyy, kaptpidzh, puppupnyy, svetlyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T614200" available="true">
@@ -996,7 +1003,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">3</param>
         <param name="Ресурс">220 мл</param>
-        <keywords>Epson, SP-4450, 220ML, C13T61480N, Картридж Epson, Epson C13T61480N, C13T61480N SP-4450, SP-4450 220ml, 220ml черный, черный матовый, Картридж, Черный, Матовый, kaptpidzh-epson, 220ml-chepnyy, chepnyy-matovyy, kaptpidzh, chepnyy, matovyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T61480N, SP-4450, 220ML, Картридж Epson, Epson C13T61480N, C13T61480N SP-4450, SP-4450 220ml, 220ml черный, черный матовый, Картридж, Черный, Матовый, kaptpidzh-epson, 220ml-chepnyy, chepnyy-matovyy, kaptpidzh, chepnyy, matovyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T692100" available="true">
@@ -1024,7 +1031,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Ресурс">110 мл</param>
-        <keywords>Epson, C13T692100, T3000, Картридж Epson, Epson C13T692100, C13T692100 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Фото, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, foto, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T3000, C13T692100, Картридж Epson, Epson C13T692100, C13T692100 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Фото, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, foto, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T69230N" available="true">
@@ -1052,7 +1059,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Ресурс">110 мл</param>
-        <keywords>Epson, C13T69230N, T3000, Картридж Epson, Epson C13T69230N, C13T69230N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Пурпурный, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T3000, C13T69230N, Картридж Epson, Epson C13T69230N, C13T69230N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Пурпурный, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T69240N" available="true">
@@ -1080,7 +1087,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
         <param name="Ресурс">110 мл</param>
-        <keywords>Epson, C13T69240N, T3000, Картридж Epson, Epson C13T69240N, C13T69240N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Желтый, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T3000, C13T69240N, Картридж Epson, Epson C13T69240N, C13T69240N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Желтый, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T692500" available="true">
@@ -1108,7 +1115,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Ресурс">110 мл</param>
-        <keywords>Epson, C13T692500, T3000, Картридж Epson, Epson C13T692500, C13T692500 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Матовый, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, matovyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T3000, C13T692500, Картридж Epson, Epson C13T692500, C13T692500 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Матовый, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, matovyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T694100" available="true">
@@ -1164,7 +1171,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Ресурс">700 мл</param>
-        <keywords>Epson, C13T69420N, T3000, Картридж Epson, Epson C13T69420N, C13T69420N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Голубой, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T3000, C13T69420N, Картридж Epson, Epson C13T69420N, C13T69420N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Голубой, kaptpidzh-epson, 7000-t3200, t3200-5200, kaptpidzh, t3200, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T69440N" available="true">
@@ -1220,7 +1227,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Япония</param>
         <param name="Гарантия">3</param>
         <param name="Ресурс">20000 стр</param>
-        <keywords>Epson, WF-R5690DTWF, C13T838140, WF-R5190DTW, Картридж Epson, Epson C13T838140, C13T838140 WF-R5190DTW, WF-R5190DTW RIPS, RIPS WF-R5690DTWF, WF-R5690DTWF RIPS, RIPS черный, Картридж, RIPS, Черный, kaptpidzh-epson, rips-chepnyy, kaptpidzh, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T838140, WF-R5190DTW, WF-R5690DTWF, Картридж Epson, Epson C13T838140, C13T838140 WF-R5190DTW, WF-R5190DTW RIPS, RIPS WF-R5690DTWF, WF-R5690DTWF RIPS, RIPS черный, Картридж, RIPS, Черный, kaptpidzh-epson, rips-chepnyy, kaptpidzh, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T965140" available="true">
@@ -1246,7 +1253,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Китай,Индонезия</param>
         <param name="Гарантия">нет</param>
-        <keywords>Epson, WF-M52XX, 57XX, C13T965140, Картридж Epson, Epson C13T965140, C13T965140 WF-M52xx, WF-M52xx 57xx, 57xx Series, Series Ink, Ink Cartridge, Картридж, Series, Ink, Cartridge, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T965140, 57XX, WF-M52XX, Картридж Epson, Epson C13T965140, C13T965140 WF-M52xx, WF-M52xx 57xx, 57xx Series, Series Ink, Ink Cartridge, Картридж, Series, Ink, Cartridge, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T966140" available="true">
@@ -1272,7 +1279,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Китай,Индонезия</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, 57XX, C13T966140, WF-M52, Картридж Epson, Epson C13T966140, C13T966140 WF-M52, WF-M52 57xx, 57xx Series, Series Ink, Ink Cartridge, Cartridge XXL, Картридж, Series, Ink, Cartridge, XXL, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-M52, 57XX, C13T966140, Картридж Epson, Epson C13T966140, C13T966140 WF-M52, WF-M52 57xx, 57xx Series, Series Ink, Ink Cartridge, Cartridge XXL, Картридж, Series, Ink, Cartridge, XXL, kaptpidzh-epson, kaptpidzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T97410N" available="true">
@@ -1324,7 +1331,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
-        <keywords>Epson, C13T97420N, WF-C869R, Картридж Epson, Epson C13T97420N, C13T97420N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R голубой, Картридж, Workforce, Pro, Голубой, kaptpidzh-epson, wf-c869r-goluboy, kaptpidzh, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-C869R, C13T97420N, Картридж Epson, Epson C13T97420N, C13T97420N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R голубой, Картридж, Workforce, Pro, Голубой, kaptpidzh-epson, wf-c869r-goluboy, kaptpidzh, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T97430N" available="true">
@@ -1350,7 +1357,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">нет</param>
-        <keywords>Epson, WF-C869R, C13T97430N, Картридж Epson, Epson C13T97430N, C13T97430N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R пурпурный, Картридж, Workforce, Pro, Пурпурный, kaptpidzh-epson, wf-c869r-puppupnyy, kaptpidzh, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T97430N, WF-C869R, Картридж Epson, Epson C13T97430N, C13T97430N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R пурпурный, Картридж, Workforce, Pro, Пурпурный, kaptpidzh-epson, wf-c869r-puppupnyy, kaptpidzh, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T97440N" available="true">
@@ -1578,6 +1585,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Ламинатор А3</li>
+  <li><strong>Формат:</strong> Минимальная толщина плёнки: 75 мкм Автоматический режим ожидания: Да Цвет продукта Белый, Серый Время предварительного нагрева: 1 мин Индикатор готовности: Да Количество роликов: 6 Скорость ламинирования: 780 мм/мин Формат: A3 Максимальная ширина ламинирования: 32 см Автоматическое обнаружение замятия: Да Максимальная толщина пакета: 175 мкм Максимальная толщина документа: 0,6 мм Автоматическое отключение питания: Да Тип: Холодный ламинатор Функция реверса двигателя: Да</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -1598,10 +1606,11 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Ламинатор Fellowes Arc A4, 75/80 мкм, 30 см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</h3>
-<p>Время нагрева 4 мин. Гарантия 1 год Артикул	fs-45700 Макс.</p>
+<p>Ламинатор Arc А4 Диапазон плёнок 75 – 80 мкм Скорость ламинирования 30 см/мин. Время нагрева 4 мин. Гарантия 1 год Артикул	fs-45700 Макс.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Ламинатор А4</li>
+  <li><strong>Формат:</strong> формат	A4 Рекомендуемое количество ламинирований в день	25 листов, неинтенсивное использование Максимальная толщина ламинирования (лист+пленка), мм	0,4 Толщина пленки, мкм	75/80 Ширина входа, мм	230 Система нагрева	нагреваемые валы Кол-во валов	2 Время нагрева, мин	4 Регулировка температуры	нет Макс</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -1622,10 +1631,11 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Ламинатор Fellowes Ion A4, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</h3>
-<p>Время нагрева 4 мин. Гарантия 1 год Артикул	fs-45600 Макс.</p>
+<p>Ламинатор Ion А4 Диапазон плёнок 75 – 125 мкм Скорость ламинирования 30 см/мин. Время нагрева 4 мин. Гарантия 1 год Артикул	fs-45600 Макс.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Ламинатор А4</li>
+  <li><strong>Формат:</strong> формат	A4 Рекомендуемое количество ламинирований в день	25 листов, неинтенсивное использование Максимальная толщина ламинирования (лист+пленка), мм	0,4 Толщина пленки, мкм	75/80, 100, 125 Ширина входа, мм	230 Система нагрева	нагреваемые валы Кол-во валов	2 Время нагрева, мин	4 Регулировка температуры	нет Макс</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -1646,10 +1656,11 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин</h3>
-<p>Максимальный формат документа – А3. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 6 минут после включения. Рычаг освобождения поможет изъять неправильно поданный документ. Корпус ламинатора не перегревается и безопасен при прикосновении. •Время нагрева - 6 мин •Гарантия 1 год Технические характеристики Параметр/ Значение 1.</p>
+<p>Максимальный формат документа – А3. Ламинатор прост в управлении и не требует дополнительных настроек. Зеленый световой сигнал подскажет о готовности к работе через 6 минут после включения. Рычаг освобождения поможет изъять неправильно поданный документ. Корпус ламинатора не перегревается и безопасен при прикосновении. Основные характеристики: •Диапазон плёнок 75 – 80 мкм • Скорость ламинирования 30 см/мин. •Время нагрева - 6 мин •Гарантия 1 год Технические характеристики Параметр/ Значение 1.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Ламинатор А3</li>
+  <li><strong>Формат:</strong> Lunar A3 – ламинатор начального уровня для домашнего офиса и использования время от времени</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -1674,6 +1685,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Ламинатор А4</li>
+  <li><strong>Формат:</strong> Артикул	fs-57428 Lunar+ A4 серый/синий — яркий ламинатор начального уровня для домашнего офиса и использования время от времени</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -1693,7 +1705,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Монитор Hyperx MNTR HX Armada 27 QHD Gaming</h3>
-<p>Игровые мониторы HyperX Armada — это первые игровые мониторы, в комплект которых входит монитор и эргономичный кронштейн. Вы избавите себя от хлопот, связанных с поиском совместимого настольного крепления, а вместо этого потратите время, наслаждаясь изысканными визуальными эффектами QHD Armada 27 с DisplayHDR . Говоря о времени, частота обновления 165 Гц и время отклика 1 мс могут помочь вам выиграть драгоценные доли секунды, которые могут иметь решающее значение для победы. Улучшите свои игровые возможности с помощью технологии AMD FreeSync Premium3, которая устраняет разрывы экрана и минимизирует компенсацию кадров и задержку.</p>
+<p>Игровые мониторы HyperX Armada — это первые игровые мониторы, в комплект которых входит монитор и эргономичный кронштейн. Вы избавите себя от хлопот, связанных с поиском совместимого настольного крепления, а вместо этого потратите время, наслаждаясь изысканными визуальными эффектами QHD Armada 27 с DisplayHDR™ . Говоря о времени, частота обновления 165 Гц и время отклика 1 мс могут помочь вам выиграть драгоценные доли секунды, которые могут иметь решающее значение для победы. Улучшите свои игровые возможности с помощью технологии AMD FreeSync™ Premium3, которая устраняет разрывы экрана и минимизирует компенсацию кадров и задержку.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Монитор</li>
@@ -1720,6 +1732,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Монитор</li>
+  <li><strong>Формат:</strong> Дисплей Размер экрана (дюйм): 32 Область отображения (дюйм): 32 Тип панели: IPS Technology Разрешение: 3840&#215;2160 Тип разрешения: UHD Коэффициент контрастности: 1,000:1 (тип.) Коэффициент динамической контрастности: 120M:1 Тип подсветки: LED Яркость: 400 кд/м&#178; (тип.) Цвета: 1.07B Цветовое пространство: 10 bit true Соотношение сторон: 16:9 Время отклика (GTG): 1мс Углы обзора: 178&#186; по вертикали, 178&#186; по горизонтали Срок жизни ламп подсветки: 30000 часов (мин.) Изгиб панели: Плоская Частота обновления: 150 Адаптивная синхронизация: FreeSync Фильтр синего света: Да Уменьшение мерцания: Да X Lighting: Нет Цветовая гамма: Adobe RGB: 99% coverage (Typ) NTSC: 113% size (Typ) sRGB: 159% size (Typ) Размер пикселя: 0.185 мм (Г) x 0.185 мм (В) Покрытие экрана: антибликовое, твердость (3H) Совместимость Разрешение ПК (макс.): 3840&#215;2160 Разрешение Mac® (макс.): 3840&#215;2160 ОС: Windows 10 certified; macOS tested Разрешение Mac® (мин.): 3840&#215;2160 Интерфейсы USB 3.2 Type A Down Stream: 3 USB 3.2 Type B Up Stream: 1 Micro USB: 1 3.5mm Audio Out: 1 HDMI 2.1: 1 HDMI 2.0 (with HDCP 2.2): 1 DisplayPort: 1 Power in: 3-pin Socket (IEC C14 / CEE22) Аудио Встроенные динамики: 5Вт x2 Питание Эко-режим (станд.): 41.8В Эко-режим (оптим.): 43.9В Потребление (тип.): 46.3В Потребление (макс.): 74В Напряжение: AC 100-240V, 50/60 Hz В режиме ожидания: 0.5В Блок питания: Внутренний Дополнительно Замок Кенсингтон: 1 Укладка кабелей: Да Управление Физически: Joystick key: Up, Right, Down, Left, Center; Quick Access; Power на экране: Game Modes, Display, Input Select, ViewMode, Audio Adjust, Setup Menu Условия эксплуатации Температура: 32°F to 104°F (0°C to 40°C) Влажность: 20% to 90% Крепление Совместимое с VESA: 100&#215;100 mm Входной сигнал Частота по горизонтали: HDMI (v2.1): 30 ~ 230KHz, HDMI (v2.0): 30 ~ 230KHz, DisplayPort (v1.4): 30 ~ 250KHz Частота по вертикали: HDMI (v2.1): 48 ~ 144Hz, HDMI (v2.0): 48 ~ 60Hz, DisplayPort (v1.4): 48 ~ 150Hz Видео входы Цифровая синхронизация: TMDS - HDMI (v2.1), TMDS - HDMI (v2.0), PCI-E - DisplayPort (v1.4) Эргономика Регулировка по высоте (мм): 120 Разворот: 50&#186; Наклон (Вперед/Назад): -5&#186; / 20&#186; Поворот (Вправо/Влево): Нет Вес (фунты) Нетто (фунт): 22.2 Нетто без стенда (фунт): 15.6 Гросс (фунт): 32.3 Вес (кг) Нетто (кг): 10.1 Нетто без стенда (кг): 7.1 Гросс (кг): 14.7 Размеры (дюймы) Упаковка (дюйм): 33.5&#215;20.7&#215;12.9 Физические (дюйм): 28.6&#215;18.99~23.71&#215;10.4 Физические без подставки (дюйм): 28.6&#215;17&#215;3.4 Размеры (мм) Упаковка (мм): 850&#215;527&#215;327 Физические (мм): 726&#215;482.3~602.3&#215;265 Физические без подставки (мм): 726&#215;432&#215;87 Общее Сертификация: cTUVus, FCC-B, ICES003, CEC, NOM, Mexico Energy, CE, CE EMC, CB, RoHS, ErP, REACH, WEEE, EAC, UkrSEPRO, UKCA, CCC, China RoHS, China Energy Label СОСТАВ УПАКОВКИ: XG320U x1, 3-pin Plug (IEC C13 / CEE22) x1, HDMI Cable (v2.1; Male-Male) x1, DisplayPort Cable (v1.4; Male-Male) x1, USB A/B Cable (v3.2; Male-Male) x1, Quick Start Guide x1 Переработка: Пожалуйста, утилизируйте в соответствии с местными, государственными или федеральными законами</li>
   <li><strong>Гарантия:</strong> 36</li>
 </ul>
 ]]></description>
@@ -1745,16 +1758,16 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Назначение:</strong> Офис</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Формат:</strong> A4</li>
+  <li><strong>Формат:</strong> Печать без картриджей Компактный быстрый многофункциональный принтер EcoTank для печати формата A3+</li>
+  <li><strong>Оптическое разрешение:</strong> Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей) Технология чернил Пигментный чёрный и цветные чернила на красителях Разрешение при печати 4800&#215;1200 DPI (точек на дюйм) Выработка Для домашнего офиса, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия, Факс Печать Скорость печати ISO/IEC 24734 17 Стр./мин</li>
   <li><strong>Скорость печати:</strong> до 17 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Благодаря поддержке Wi-Fi и Wi-Fi direct документы на печать можно отправлять с умных устройств при помощи приложения epson iprint&#8308;</li>
   <li><strong>Двусторонняя печать:</strong> Да</li>
-  <li><strong>Интерфейсы:</strong> Wi-Fi, Ethernet, USB</li>
-  <li><strong>Оптическое разрешение:</strong> 1200&#215;2400 dpi</li>
-  <li><strong>Дисплей:</strong> есть</li>
+  <li><strong>Дисплей:</strong> Да</li>
+  <li><strong>Тип чернил:</strong> пигментные</li>
   <li><strong>Страна происхождения:</strong> Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Да</li>
-  <li><strong>Тип чернил:</strong> пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">МФУ</param>
@@ -1764,7 +1777,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 17 стр/мин</param>
         <param name="Двусторонняя печать">Да</param>
-        <param name="Интерфейсы">Wi-Fi, Ethernet, USB</param>
+        <param name="Интерфейсы">Wi-Fi, Ethernet, Usb</param>
         <param name="Оптическое разрешение">1200&#215;2400 dpi</param>
         <param name="Дисплей">есть</param>
         <param name="Страна происхождения">Филиппины</param>
@@ -1791,15 +1804,16 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Назначение:</strong> Офис</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Скорость печати:</strong> до 33 стр/мин</li>
-  <li><strong>Двусторонняя печать:</strong> Да</li>
-  <li><strong>Интерфейсы:</strong> USB, Ethernet</li>
+  <li><strong>Формат:</strong> Высокая производительность печати Быстрое многофункциональное устройство EcoTank формата A3+ для печати, сканирования, копирования и отправки факсов</li>
   <li><strong>Оптическое разрешение:</strong> 1200&#215;2400 dpi</li>
-  <li><strong>Дисплей:</strong> есть</li>
+  <li><strong>Скорость печати:</strong> до 33 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Широкие возможности печати с мобильных устройств, Поддержка ethernet и сенсорный жк-экран диагональю 10, 9 см с аппаратными кнопками</li>
+  <li><strong>Двусторонняя печать:</strong> Да</li>
+  <li><strong>Дисплей:</strong> Да</li>
+  <li><strong>Тип чернил:</strong> пигментные</li>
   <li><strong>Страна происхождения:</strong> Индонезия</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Да</li>
-  <li><strong>Тип чернил:</strong> пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">МФУ</param>
@@ -1808,7 +1822,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Цвет печати">цветная</param>
         <param name="Скорость печати">до 33 стр/мин</param>
         <param name="Двусторонняя печать">Да</param>
-        <param name="Интерфейсы">USB, Ethernet</param>
+        <param name="Интерфейсы">Usb, Ethernet</param>
         <param name="Оптическое разрешение">1200&#215;2400 dpi</param>
         <param name="Дисплей">есть</param>
         <param name="Страна происхождения">Индонезия</param>
@@ -1835,15 +1849,16 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Назначение:</strong> Офис</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Формат:</strong> A4</li>
+  <li><strong>Формат:</strong> Домашний струйный принтер Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct и ЖК-экраном Печать, сканирование и копирование Wi-Fi Direct ЖК-экран Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу</li>
+  <li><strong>Разрешение печати:</strong> with flatbed scan Single-sided scan speed (A4 colour) 200 DPI (точек на дюйм); , 28 sec</li>
+  <li><strong>Оптическое разрешение:</strong> Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 59 Сопла (цвет) Минимальный размер капли 3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5760&#215;1440 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия Скорость печати ISO/IEC 24734 10 Стр./мин</li>
   <li><strong>Скорость печати:</strong> до 33 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Вы можете быстро и легко настроить Wi-Fi, Распечатать документы и фотографии, Контролировать и устранять неисправности принтера</li>
   <li><strong>Двусторонняя печать:</strong> Нет</li>
-  <li><strong>Интерфейсы:</strong> USB, тип B</li>
-  <li><strong>Оптическое разрешение:</strong> 1200&#215;2400 dpi</li>
-  <li><strong>Дисплей:</strong> нет</li>
+  <li><strong>Дисплей:</strong> Нет</li>
+  <li><strong>Тип чернил:</strong> водорастворимые</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> водорастворимые</li>
 </ul>
 ]]></description>
         <param name="Тип">МФУ</param>
@@ -1853,7 +1868,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 33 стр/мин</param>
         <param name="Двусторонняя печать">Нет</param>
-        <param name="Интерфейсы">USB, тип B</param>
+        <param name="Интерфейсы">Usb, Тип b</param>
         <param name="Оптическое разрешение">1200&#215;2400 dpi</param>
         <param name="Дисплей">нет</param>
         <param name="Гарантия">12 мес</param>
@@ -1877,6 +1892,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <ul>
   <li><strong>Тип:</strong> МФУ</li>
   <li><strong>Назначение:</strong> Дом</li>
+  <li><strong>Формат:</strong> Домашний струйный принтер Двустороннее многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct и ЖК-экраном Печать, сканирование и копирование Wi-Fi Direct ЖК-экран и двусторонняя печать Благодаря отсутствию необходимости в замене картриджей это двустороннее многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу</li>
+  <li><strong>Оптическое разрешение:</strong> етод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 59 Сопла (цвет) Минимальный размер капли 3 капли(ей), Технология капель с переменным размером Технология чернил Пигментный чёрный и цветные чернила на красителях Разрешение при печати 5760&#215;1440 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия Скорость печати ISO/IEC 24734 10,5 Стр./мин</li>
+  <li><strong>Скорость печати:</strong> до 5 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Вы можете быстро и легко настроить Wi-Fi, Распечатать документы и фотографии, Контролировать и устранять неисправности принтера</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -1901,6 +1920,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <ul>
   <li><strong>Тип:</strong> МФУ</li>
   <li><strong>Назначение:</strong> Дом</li>
+  <li><strong>Формат:</strong> Домашний струйный принтер Двустороннее многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct и ЖК-экраном Печать, сканирование и копирование Wi-Fi Direct ЖК-экран и двусторонняя печать Благодаря отсутствию необходимости в замене картриджей это двустороннее многофункциональное устройство (печать, сканирование, копирование) в красном корпусе с Wi-Fi Direct и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу</li>
+  <li><strong>Оптическое разрешение:</strong> Техника Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 59 Сопла (цвет) Минимальный размер капли 3 капли(ей), Технология капель с переменным размером Технология чернил Пигментный чёрный и цветные чернила на красителях Разрешение при печати 5760&#215;1440 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия Печать Скорость печати ISO/IEC 24734 10,5 Стр./мин</li>
+  <li><strong>Скорость печати:</strong> до 5 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Вы можете быстро и легко настроить Wi-Fi, Распечатать документы и фотографии, Контролировать и устранять неисправности принтера</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -1924,6 +1947,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <ul>
   <li><strong>Тип:</strong> МФУ</li>
   <li><strong>Назначение:</strong> Офис</li>
+  <li><strong>Оптическое разрешение:</strong> Принтер-сканер-копир-факс с фронтальными чернильными емкостями, Wi-Fi, Ethernet и автоподатчиком для сканирования документов Принтер – Сканер – Копир - Факс для сверхэкономичной печати документов Возможность печати c проводами и без по Wi-Fi Direct, Epson Connect, Ethernet Скорость печати до 33 стр./мин Рекордно низкая себестоимость печати Комплект чернил рассчитан на печать до 7500 цветных и 4500 Ч/Б документов А4 ЖК-дисплей диагональю 3,7 см Состав поставки Принтер Кабель питания CD с программным обеспечением и драйверами для Windows и OS &#215; Руководство по установке Гарантийный талон Контейнеры с чернилами (черный, голубой, пурпурный, желтый) Применение Сферы бизнеса	Офис Типовое назначение	Для малых и средних рабочих групп Принтер Максимальный формат	A4 Печать на CD/DVD	Нет Максимальное разрешение, dpi	5760&#215;1440 Печать на рулоне	Нет Печать фотографий	Да Автоматическая Двусторонняя печать	Нет Минимальный объем капли, пл	3 Печать без полей	есть (10х15) Область печати, мм	210&#215;297 Мак</li>
   <li><strong>Страна происхождения:</strong> Филипины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -1951,6 +1975,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип:</strong> МФУ</li>
   <li><strong>Назначение:</strong> Дом</li>
   <li><strong>Тип печати:</strong> струйная</li>
+  <li><strong>Формат:</strong> Офисный струйный принтер Двустороннее многофункциональное устройство 4-в-1 для цветной печати формата A4 с автоподатчиком, Wi-Fi Direct и Ethernet Принтер, копир, сканер и факс Wi-Fi Direct и Ethernet ЖК-экран, автоподатчик и двусторонн Благодаря отсутствию необходимости в замене картриджей это двустороннее многофункциональное устройство (печать, сканирование, копирование, факс) с Wi-Fi Direct, Ethernet и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу</li>
+  <li><strong>Оптическое разрешение:</strong> Техника Метод печати PrecisionCore™ Print Head Конфигурация сопла 400 Сопла (черный), 128 Сопла (цвет) Минимальный размер капли 3,3 капли(ей), Технология капель с переменным размером Технология чернил Пигментный чёрный и цветные чернила на красителях Разрешение при печати 4800&#215;1200 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать, сканирование, Копия, Факс Печать Скорость печати ISO/IEC 24734 15,5 Стр./мин</li>
+  <li><strong>Скорость печати:</strong> до 8 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Вы можете быстро и легко настроить Wi-Fi, Распечатать документы и фотографии, Контролировать и устранять неисправности принтера</li>
   <li><strong>Страна происхождения:</strong> Филипины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -1973,7 +2001,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>МФУ Epson L6550 фабрика печати, факс,Wi-Fi</h3>
-<p>Принтер-сканер-копир-факс для сверхэкономичной печати документов Фронтальные лотки загрузки бумаги общей емкостью 500 листов Задний лоток подачи бумаги на 50 листов Фронтальные чернильные емкости Высокая скорость печати - до 25 стр./мин. ч/б ISO и 12 стр./мин.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> МФУ</li>
@@ -1981,15 +2008,15 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
   <li><strong>Формат:</strong> A4</li>
-  <li><strong>Скорость печати:</strong> до 32 стр/мин</li>
-  <li><strong>Двусторонняя печать:</strong> Да</li>
-  <li><strong>Интерфейсы:</strong> Wi-Fi, Ethernet, USB</li>
   <li><strong>Оптическое разрешение:</strong> 1200&#215;2400 dpi</li>
-  <li><strong>Дисплей:</strong> есть</li>
+  <li><strong>Скорость печати:</strong> до 500 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Многофункциональное устройство 4-в-1 с возможностью печати документов формата а4, Фронтальными чернильными емкостями и поддержкой печати по Wi-Fi и ethernet</li>
+  <li><strong>Двусторонняя печать:</strong> Да</li>
+  <li><strong>Дисплей:</strong> Да</li>
+  <li><strong>Тип чернил:</strong> пигментные</li>
   <li><strong>Страна происхождения:</strong> Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Да</li>
-  <li><strong>Тип чернил:</strong> пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">МФУ</param>
@@ -1999,7 +2026,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 32 стр/мин</param>
         <param name="Двусторонняя печать">Да</param>
-        <param name="Интерфейсы">Wi-Fi, Ethernet, USB</param>
+        <param name="Интерфейсы">Wi-Fi, Ethernet, Usb</param>
         <param name="Оптическое разрешение">1200&#215;2400 dpi</param>
         <param name="Дисплей">есть</param>
         <param name="Страна происхождения">Филиппины</param>
@@ -2019,24 +2046,25 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>МФУ Epson L8160 фабрика печати, Wi-Fi</h3>
-<p>Отсутствие необходимости замены картриджей и гибкие возможности подключения делают эту модель идеальным выбором для современных художников. Пигментные черные чернила идеально подходят для печати текста на простой бумаге. Экономия времени и денег Запасные контейнеры с чернилами позволят напечатать до 2 300 высококачественных фотографий на этом экономичном принтере&#185;. Емкости и контейнеры с чернилами просты в использовании и не доставят никаких неудобств, когда потребуется заправка.</p>
+<p>Печать, копирование и сканирование просты как никогда благодаря впечатляющему цветному сенсорному экрану с диагональю 10,9 см, поддержке 5 видов носителей и инновационной шестицветной системе подачи чернил. Отсутствие необходимости замены картриджей и гибкие возможности подключения делают эту модель идеальным выбором для современных художников. Пигментные черные чернила идеально подходят для печати текста на простой бумаге. Экономия времени и денег Запасные контейнеры с чернилами позволят напечатать до 2 300 высококачественных фотографий на этом экономичном принтере&#185;.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> МФУ</li>
   <li><strong>Назначение:</strong> Офис</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Формат:</strong> A5</li>
-  <li><strong>Скорость печати:</strong> до 32 стр/мин</li>
+  <li><strong>Формат:</strong> Фотопринтер EcoTank A4 Печатайте великолепные фотографии в формате A4 с беспроводным шестицветным многофункциональным принтером для творчества 6-цветная система подачи чернил Работа с 5 типами носителей Рекордно низкая стоимость печати A4 Раскройте свой творческий потенциал благодаря печати великолепных фото и документов в формате A4 с невероятно низкой стоимостью печати страницы</li>
+  <li><strong>Разрешение печати:</strong> with flatbed scan Single-sided scan speed (A4 colour) 200 dpi (flatbed) 11 sec</li>
+  <li><strong>Оптическое разрешение:</strong> Техника Метод печати Epson Micro Piezo™ print head Конфигурация сопла 360 Сопла (черный), 180 Сопла (цвет) Минимальный размер капли 1,9 капли(ей), Технология капель с переменным размером Технология чернил Чорнила Claria™ Premium, Пигментный чёрный и цветные чернила на красителях Разрешение при печати 5760&#215;1440 DPI (точек на дюйм) Выработка Для дома, Для домашнего офиса, Фото Многофункциональный Печать, сканирование, Копия Печать Количество цветов 6 colour Скорость печати ISO/IEC 24734 16 Стр./мин</li>
+  <li><strong>Скорость печати:</strong> до 12 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Современные гибкие возможности с поддержкой Wi-Fi, Wi-fi direct и ethernet вы легко сможете интегрировать новый принтер в существующую экосистему</li>
   <li><strong>Двусторонняя печать:</strong> Да</li>
-  <li><strong>Интерфейсы:</strong> USB, Ethernet</li>
-  <li><strong>Оптическое разрешение:</strong> 1200&#215;4800 dpi</li>
-  <li><strong>Дисплей:</strong> есть</li>
+  <li><strong>Дисплей:</strong> Да</li>
+  <li><strong>Тип чернил:</strong> водорастворимые и
+пигментные</li>
   <li><strong>Страна происхождения:</strong> Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> водорастворимые и
-пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">МФУ</param>
@@ -2046,7 +2074,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A5</param>
         <param name="Скорость печати">до 32 стр/мин</param>
         <param name="Двусторонняя печать">Да</param>
-        <param name="Интерфейсы">USB, Ethernet</param>
+        <param name="Интерфейсы">Usb, Ethernet</param>
         <param name="Оптическое разрешение">1200&#215;4800 dpi</param>
         <param name="Дисплей">есть</param>
         <param name="Страна происхождения">Филиппины</param>
@@ -2067,7 +2095,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>МФУ Epson M2120 (CIS) фабрика печати</h3>
-<p>Формат А4 Рекордно низкая себестоимость печати благодаря использованию контейнеров с чернилами вместо картриджей Пигментные чернила Скорость печати до 32 стр./мин Время выхода первого отпечатка от 8 сек. Гарантия производителя 12 мес. Технические характеристики Epson M2120 Состав поставки МФУ Руководство по установке Гарантийный талон Компакт-диск с программным обеспечением и драйверами Кабель питания 1 контейнер емкостью 120 мл. с черными пигментными чернилами Основные свойства Тип устройства	МФУ Серия устройств	Фабрика печати Epson Теxнология печати	Струйная Область применения Для дома Для офиса Назначение	Для печати черно-белых документов Функция копирования	Да Функция сканирова</p>
+<p>Гарантия производителя 12 мес. Технические характеристики Epson M2120 Состав поставки МФУ Руководство по установке Гарантийный талон Компакт-диск с программным обеспечением и драйверами Кабель питания 1 контейнер емкостью 120 мл. с черными пигментными чернилами Основные свойства Тип устройства	МФУ Серия устройств	Фабрика печати Epson Теxнология печати	Струйная Область применения Для дома Для офиса Назначение	Для печати черно-белых документов Функция копирования	Да Функция сканирова</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> МФУ</li>
@@ -2075,15 +2103,15 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> монохромная</li>
   <li><strong>Формат:</strong> A4</li>
-  <li><strong>Скорость печати:</strong> до 32 стр/мин</li>
-  <li><strong>Двусторонняя печать:</strong> Нет</li>
-  <li><strong>Интерфейсы:</strong> USB, тип B, Wi-Fi</li>
   <li><strong>Оптическое разрешение:</strong> 1200&#215;2400 dpi</li>
-  <li><strong>Дисплей:</strong> есть</li>
+  <li><strong>Скорость печати:</strong> до 32 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Компактное монохромное мфу для малого офиса с Wi-Fi компактное мфу для сверхэкономичной печати черно-белых документов принтер, Сканер, Копир</li>
+  <li><strong>Двусторонняя печать:</strong> Нет</li>
+  <li><strong>Дисплей:</strong> Да</li>
+  <li><strong>Тип чернил:</strong> пигментные</li>
   <li><strong>Страна происхождения:</strong> Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">МФУ</param>
@@ -2093,7 +2121,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 32 стр/мин</param>
         <param name="Двусторонняя печать">Нет</param>
-        <param name="Интерфейсы">USB, тип B, Wi-Fi</param>
+        <param name="Интерфейсы">Usb, Тип b, Wi-Fi</param>
         <param name="Оптическое разрешение">1200&#215;2400 dpi</param>
         <param name="Дисплей">есть</param>
         <param name="Страна происхождения">Филиппины</param>
@@ -2121,15 +2149,15 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> монохромная</li>
   <li><strong>Формат:</strong> A4</li>
-  <li><strong>Скорость печати:</strong> до 39 стр/мин</li>
-  <li><strong>Двусторонняя печать:</strong> Да</li>
-  <li><strong>Интерфейсы:</strong> USB</li>
   <li><strong>Оптическое разрешение:</strong> 1200&#215;2400 dpi</li>
-  <li><strong>Дисплей:</strong> есть</li>
+  <li><strong>Скорость печати:</strong> до 39 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Usb</li>
+  <li><strong>Двусторонняя печать:</strong> Да</li>
+  <li><strong>Дисплей:</strong> Да</li>
+  <li><strong>Тип чернил:</strong> пигментные</li>
   <li><strong>Страна происхождения:</strong> Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">МФУ</param>
@@ -2139,7 +2167,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 39 стр/мин</param>
         <param name="Двусторонняя печать">Да</param>
-        <param name="Интерфейсы">USB</param>
+        <param name="Интерфейсы">Usb</param>
         <param name="Оптическое разрешение">1200&#215;2400 dpi</param>
         <param name="Дисплей">есть</param>
         <param name="Страна происхождения">Филиппины</param>
@@ -2159,11 +2187,12 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Переплетчик Fellowes STAR+ 150 COMB BINDER</h3>
-<p>Гарантия: 2 года.</p>
+<p>Переплетчик STAR+ на пластиковую пружину Оптимальный брошюровщик для небольшого офиса Механическая перфорация Кол-во сшиваемых листов: 150 Кол-во пробиваемых листов: 15 Диапазон диаметров пружин: 6-19 мм.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> переплетные машины на пластиковую пружину</li>
-  <li><strong>Гарантия:</strong> 24</li>
+  <li><strong>Формат:</strong> Артикул	fs-56275 Кол-во перфорируемых листов (80г/м&#178;)	15 Максимальный диаметр пружины, мм	19 Хранилище для пружин	да Съемный блок для сшивания (Satellite system)	нет Доступ к лотку для отходов	с одной стороны Окошко лотка для отходов	да Раздельные механизмы перфорации и сшивания	да Эргономичное расположение зубцов	да Изменение глубины перфорации	нет Селектор диаметра пружин и толщины документа	да Вертикальная загрузка документа	да Ручка перфорации	широкая Отключаемые пуансоны	нет Селектор формата А4-А5	сдвижной Гарантия, лет	2 Габаритные размеры, мм (ВxШxГ)	80&#215;448&#215;280 Вес, кг	4,26 Размеры розничной упаковки, мм (ВxШxГ)	350&#215;512&#215;144 Вес розничной упаковки, кг	5,1 Размеры транспортной упаковки, мм (ВxШxГ)	374&#215;298&#215;528 Вес транспортной упаковки, кг	10,88 Количество в транспортной упаковке	2 Сетевой кабель	нет</li>
+  <li><strong>Гарантия:</strong> 2 года</li>
 </ul>
 ]]></description>
         <param name="Тип">переплетные машины на пластиковую пружину</param>
@@ -2209,16 +2238,16 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип:</strong> CAD</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Интерфейсы:</strong> USB 3.0, Gigabit Ethernet interface, Wireless LAN IEEE 802.11b, g, n, Wi-Fi Direct</li>
+  <li><strong>Интерфейсы:</strong> Usb 3.0, Gigabit ethernet interface, Wireless lan ieee 802.11b, G, N, Wi-fi direct</li>
+  <li><strong>Тип чернил:</strong> пигментные (K), водорастворимые (CMY)</li>
   <li><strong>Страна происхождения:</strong> Индонезия</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
-  <li><strong>Тип чернил:</strong> пигментные (K), водорастворимые (CMY)</li>
 </ul>
 ]]></description>
         <param name="Тип">CAD</param>
         <param name="Тип печати">струйная</param>
         <param name="Цвет печати">цветная</param>
-        <param name="Интерфейсы">USB 3.0, Gigabit Ethernet interface, Wireless LAN IEEE 802.11b, g, n, Wi-Fi Direct</param>
+        <param name="Интерфейсы">Usb 3.0, Gigabit ethernet interface, Wireless lan ieee 802.11b, G, N, Wi-fi direct</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">12 мес</param>
         <param name="Тип чернил">пигментные (K), водорастворимые (CMY)</param>
@@ -2240,16 +2269,16 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип:</strong> CAD</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Интерфейсы:</strong> USB 3.0, Gigabit Ethernet interface, Wireless LAN IEEE 802.11b, g, n, Wi-Fi Direct</li>
+  <li><strong>Интерфейсы:</strong> Инженерный принтер с шириной печати 24 дюйма высокая производительность быстрая, Удобная и безопасная печать с пк, Мобильных устройств, Usb-носителей расширенные функции защиты конфиденциальности печати обеспечьте защиту важных документов универсальность автоматическая подача носителя и функция сохранения превосходное качество изображения 2, 64-дюймовая печатающая головка precisioncore micro tfp с каплями размером 3, 5 пл ценные функции ssd-накопитель емкостью 960 гб и укладчик отпечатков (опциональный)</li>
+  <li><strong>Тип чернил:</strong> пигментные (K), водорастворимые (CMY)</li>
   <li><strong>Страна происхождения:</strong> Индонезия</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
-  <li><strong>Тип чернил:</strong> пигментные (K), водорастворимые (CMY)</li>
 </ul>
 ]]></description>
         <param name="Тип">CAD</param>
         <param name="Тип печати">струйная</param>
         <param name="Цвет печати">цветная</param>
-        <param name="Интерфейсы">USB 3.0, Gigabit Ethernet interface, Wireless LAN IEEE 802.11b, g, n, Wi-Fi Direct</param>
+        <param name="Интерфейсы">Usb 3.0, Gigabit ethernet interface, Wireless lan ieee 802.11b, G, N, Wi-fi direct</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">12 мес</param>
         <param name="Тип чернил">пигментные (K), водорастворимые (CMY)</param>
@@ -2272,16 +2301,17 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип:</strong> CAD</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Интерфейсы:</strong> USB, Ethernet, Fast Ethernet</li>
+  <li><strong>Формат:</strong> 1 SSD-накопитель не входит в комплект поставки 2 Срок службы до 78 000 отпечатков формата A1 на матовой бумаге — 5 лет гарантии Epson CoverPlus 3 Укладчик отпечатков не входит в комплект поставки</li>
+  <li><strong>Интерфейсы:</strong> Наборы чернил объемом 1, 6 литра расширенные функции безопасности поддержка mps высокая производительность быстрая, Удобная и безопасная печать с пк, Мобильных устройств, Usb-носителей и ssd-накопителя емкостью 960 гб расширенные функции защиты конфиденциальности печати обеспечьте защиту важных документов универсальность автоматическая подача носителя, Поддержка двух рулонов и укладчик отпечатков&#179; превосходное качество изображения adobe postscript 3 в комплекте для высокой детализации и четкости печати уменьшение количества отходов наборы чернил объемом 1, 6 литра сокращают количество отходов</li>
+  <li><strong>Тип чернил:</strong> пигментные</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
-  <li><strong>Тип чернил:</strong> пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">CAD</param>
         <param name="Тип печати">струйная</param>
         <param name="Цвет печати">цветная</param>
-        <param name="Интерфейсы">USB, Ethernet, Fast Ethernet</param>
+        <param name="Интерфейсы">Usb, Ethernet, Fast ethernet</param>
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">12 мес</param>
         <param name="Тип чернил">пигментные</param>
@@ -2298,7 +2328,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Принтер Epson L11050 фабрика печати</h3>
-<p>Принтер А3+ формата с рекордно низкой себестоимостью печати «Фабрика печати Epson» А3+ формата Рекордно низкая себестоимость печати Встроенные емкости для чернил объёмом по 70мл. 2 емкости для черных чернил Скорость печати до 30 стр./мин. Гарантия производителя 12 мес. или 30000 отпечатков Стартовый набор из 5 контейнеров с чернилами по 70 мл.</p>
+<p>Принтер А3+ формата с рекордно низкой себестоимостью печати «Фабрика печати Epson» А3+ формата Рекордно низкая себестоимость печати Встроенные емкости для чернил объёмом по 70мл. Гарантия производителя 12 мес. или 30000 отпечатков Стартовый набор из 5 контейнеров с чернилами по 70 мл. каждый Ресурс стартового комплекта чернил — около 7100 ч/б документов А4 и 5700 цветных документов А4 Технические характеристики Epson L1300 Состав поставки Принтер Кабель питания CD с программным обеспечением и драйверами для Windows и OS X.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Принтер для цветной печати</li>
@@ -2306,13 +2336,13 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Цвет печати:</strong> цветная</li>
   <li><strong>Формат:</strong> A3</li>
   <li><strong>Скорость печати:</strong> до 30 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Usb</li>
   <li><strong>Двусторонняя печать:</strong> Нет</li>
-  <li><strong>Интерфейсы:</strong> USB</li>
-  <li><strong>Дисплей:</strong> нет</li>
+  <li><strong>Дисплей:</strong> Нет</li>
+  <li><strong>Тип чернил:</strong> водорастворимые</li>
   <li><strong>Страна происхождения:</strong> Индонезия</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> водорастворимые</li>
 </ul>
 ]]></description>
         <param name="Тип">Принтер для цветной печати</param>
@@ -2321,7 +2351,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A3</param>
         <param name="Скорость печати">до 30 стр/мин</param>
         <param name="Двусторонняя печать">Нет</param>
-        <param name="Интерфейсы">USB</param>
+        <param name="Интерфейсы">Usb</param>
         <param name="Дисплей">нет</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">12 мес</param>
@@ -2348,14 +2378,15 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
   <li><strong>Формат:</strong> A4</li>
-  <li><strong>Скорость печати:</strong> до 9 стр/мин</li>
+  <li><strong>Разрешение печати:</strong> 720&#215;720 DPI</li>
+  <li><strong>Скорость печати:</strong> до 4 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Usb</li>
   <li><strong>Двусторонняя печать:</strong> Нет</li>
-  <li><strong>Интерфейсы:</strong> USB</li>
-  <li><strong>Дисплей:</strong> нет</li>
+  <li><strong>Дисплей:</strong> Нет</li>
+  <li><strong>Тип чернил:</strong> водорастворимые</li>
   <li><strong>Страна происхождения:</strong> Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> водорастворимые</li>
 </ul>
 ]]></description>
         <param name="Тип">Принтер для цветной печати</param>
@@ -2364,7 +2395,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 9 стр/мин</param>
         <param name="Двусторонняя печать">Нет</param>
-        <param name="Интерфейсы">USB</param>
+        <param name="Интерфейсы">Usb</param>
         <param name="Дисплей">нет</param>
         <param name="Страна происхождения">Филиппины</param>
         <param name="Гарантия">12 мес</param>
@@ -2388,6 +2419,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <ul>
   <li><strong>Тип:</strong> МФУ</li>
   <li><strong>Назначение:</strong> Дом</li>
+  <li><strong>Формат:</strong> Домашний струйный принтер Цветной принтер формата A4 с Wi-Fi Принтер Wi-Fi Direct Компактный дизайн Благодаря отсутствию необходимости в замене картриджей этот принтер подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу</li>
+  <li><strong>Разрешение печати:</strong> Техника Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 59 Сопла (цвет) Минимальный размер капли 3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5760&#215;1440 DPI (точек на дюйм) Выработка Для дома, Для домашнего офиса Многофункциональный Печать Печать Количество цветов 4 colour Скорость печати ISO/IEC 24734 10 Стр./мин</li>
+  <li><strong>Скорость печати:</strong> до 5 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Вы можете быстро и легко настроить Wi-Fi, Распечатать документы и фотографии, Контролировать и устранять неисправности принтера</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -2414,15 +2449,16 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип:</strong> Принтер для цветной печати</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Формат:</strong> A4</li>
+  <li><strong>Формат:</strong> 0&#215;29, 8&#215;21, 5&#215;14, B5</li>
+  <li><strong>Разрешение печати:</strong> Метод печати On-demand inkjet (Piezo electric) Конфигурация сопла 180 Сопла (черный), 59 Сопла (цвет) Минимальный размер капли 3 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5760&#215;1440 DPI (точек на дюйм) Выработка Для дома, Настольные устройства для офиса Многофункциональный Печать Скорость печати ISO/IEC 24734 7 Стр./мин</li>
   <li><strong>Скорость печати:</strong> до 15 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Usb</li>
   <li><strong>Двусторонняя печать:</strong> Нет</li>
-  <li><strong>Интерфейсы:</strong> USB</li>
-  <li><strong>Дисплей:</strong> нет</li>
+  <li><strong>Дисплей:</strong> Нет</li>
+  <li><strong>Тип чернил:</strong> водорастворимые</li>
   <li><strong>Страна происхождения:</strong> Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> водорастворимые</li>
 </ul>
 ]]></description>
         <param name="Тип">Принтер для цветной печати</param>
@@ -2431,7 +2467,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 15 стр/мин</param>
         <param name="Двусторонняя печать">Нет</param>
-        <param name="Интерфейсы">USB</param>
+        <param name="Интерфейсы">Usb</param>
         <param name="Дисплей">нет</param>
         <param name="Страна происхождения">Филиппины</param>
         <param name="Гарантия">12 мес</param>
@@ -2450,21 +2486,22 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Принтер Epson L18050 фабрика печати</h3>
-<p>Компактный L18050 с фронтальными чернильными емкостями позволяет легко отслеживать уровень чернил и оснащен усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Принтер печатает на различных носителях, в том числе ID-карточках из ПВХ, CD и DVD-дисках. Печать без картриджей Встроенные емкости для чернил большого объема с фронтальным расположением позволяют печатать фотографии с минимальными затратами. Простая заправка благодаря контейнерам с защитой от проливания.</p>
+<p>Компактный L18050 с фронтальными чернильными емкостями позволяет легко отслеживать уровень чернил и оснащен усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Принтер печатает на различных носителях, в том числе ID-карточках из ПВХ, CD и DVD-дисках. Печать без картриджей Встроенные емкости для чернил большого объема с фронтальным расположением позволяют печатать фотографии с минимальными затратами. Емкости для чернил и контейнеры с чернилами объемом 70 мл обеспечивают печать до 2 100 фотографий размером 10 х 15 см с одного комплекта контейнеров с чернилами&#185;.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Принтер для цветной печати</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> цветная</li>
-  <li><strong>Формат:</strong> A3</li>
+  <li><strong>Формат:</strong> Фотопринтер формата A3+ Шестицветный фотопринтер формата A3+ обеспечивает быструю печать больших объемов фотографий с рекордно низкой себестоимостью</li>
+  <li><strong>Разрешение печати:</strong> Техника Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 180 Сопла (цвет) Минимальный размер капли 1,5 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5760&#215;1440 DPI (точек на дюйм) Выработка Фото Многофункциональный Печать Печать Количество цветов 6 colour Скорость печати ISO/IEC 24734 8 Стр./мин</li>
   <li><strong>Скорость печати:</strong> до 15 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Благодаря поддержке Wi-Fi и Wi-Fi direct документы на печать можно отправлять с умных устройств при помощи приложения epson smart panel&#179;</li>
   <li><strong>Двусторонняя печать:</strong> Нет</li>
-  <li><strong>Интерфейсы:</strong> USB</li>
-  <li><strong>Дисплей:</strong> нет</li>
+  <li><strong>Дисплей:</strong> Нет</li>
+  <li><strong>Тип чернил:</strong> водорастворимые</li>
   <li><strong>Страна происхождения:</strong> Индонезия</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> водорастворимые</li>
 </ul>
 ]]></description>
         <param name="Тип">Принтер для цветной печати</param>
@@ -2473,7 +2510,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A3</param>
         <param name="Скорость печати">до 15 стр/мин</param>
         <param name="Двусторонняя печать">Нет</param>
-        <param name="Интерфейсы">USB</param>
+        <param name="Интерфейсы">Usb</param>
         <param name="Дисплей">нет</param>
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">12 мес</param>
@@ -2492,11 +2529,15 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Принтер Epson L8050 фабрика печати, Wi-Fi</h3>
-<p>Компактный L8050 с фронтальными чернильными емкостями позволяет легко отслеживать уровень чернил и оснащен усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Принтер печатает на различных носителях, в том числе ID-карточках из ПВХ, CD и DVD-дисках. Печать без картриджей Встроенные емкости для чернил большого объема с фронтальным расположением позволяют печатать фотографии с минимальными затратами. Простая заправка благодаря контейнерам с защитой от проливания.</p>
+<p>Компактный L8050 с фронтальными чернильными емкостями позволяет легко отслеживать уровень чернил и оснащен усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Принтер печатает на различных носителях, в том числе ID-карточках из ПВХ, CD и DVD-дисках. Печать без картриджей Встроенные емкости для чернил большого объема с фронтальным расположением позволяют печатать фотографии с минимальными затратами. Емкости для чернил и контейнеры с чернилами объемом 70 мл обеспечивают печать до 2 100 фотографий размером 10 х 15 см с одного комплекта контейнеров с чернилами&#185;.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> МФУ</li>
   <li><strong>Назначение:</strong> Дом</li>
+  <li><strong>Формат:</strong> Фотопринтер для большого объема печати Шестицветный фотопринтер формата A4 позволяет быстро и просто печатать в больших объемах с рекордно низкой себестоимостью</li>
+  <li><strong>Разрешение печати:</strong> Техника Метод печати Epson Micro Piezo™ print head Конфигурация сопла 180 Сопла (черный), 180 Сопла (цвет) Минимальный размер капли 1,5 капли(ей), Технология капель с переменным размером Технология чернил Чернила на красителях Разрешение при печати 5760&#215;1440 DPI (точек на дюйм) Выработка Фото Многофункциональный Печать Печать Количество цветов 6 colour Скорость печати ISO/IEC 24734 8 Стр./мин</li>
+  <li><strong>Скорость печати:</strong> до 8 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Благодаря поддержке Wi-Fi и Wi-Fi direct документы на печать можно отправлять с умных устройств при помощи приложения epson smart panel&#179;</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -2522,15 +2563,16 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип:</strong> Принтер для черно-белой печати</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> монохромная</li>
-  <li><strong>Формат:</strong> A4</li>
+  <li><strong>Формат:</strong> 0&#215;29, 8&#215;21, 5&#215;14, B5, B6</li>
+  <li><strong>Разрешение печати:</strong> 440&#215;720 DPI</li>
   <li><strong>Скорость печати:</strong> до 32 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Используйте лоток на 150 листов и подключение по usb</li>
   <li><strong>Двусторонняя печать:</strong> Нет</li>
-  <li><strong>Интерфейсы:</strong> USB</li>
-  <li><strong>Дисплей:</strong> нет</li>
+  <li><strong>Дисплей:</strong> Нет</li>
+  <li><strong>Тип чернил:</strong> пигментные</li>
   <li><strong>Страна происхождения:</strong> Индонезия,Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">Принтер для черно-белой печати</param>
@@ -2539,7 +2581,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 32 стр/мин</param>
         <param name="Двусторонняя печать">Нет</param>
-        <param name="Интерфейсы">USB</param>
+        <param name="Интерфейсы">Usb</param>
         <param name="Дисплей">нет</param>
         <param name="Страна происхождения">Индонезия,Филиппины</param>
         <param name="Гарантия">12 мес</param>
@@ -2564,15 +2606,16 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип:</strong> Принтер для черно-белой печати</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> монохромная</li>
-  <li><strong>Формат:</strong> A4</li>
+  <li><strong>Формат:</strong> 0&#215;29, 8&#215;21, 5&#215;14, Legal, Letter, B5, B6</li>
+  <li><strong>Разрешение печати:</strong> 440&#215;720 DPI</li>
   <li><strong>Скорость печати:</strong> до 32 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Печать до 6000 страниц Wi-Fi и печать с мобильных устройств фронтальный лоток на 150 листов оцените преимущества мобильной печати и экономию с этим надежным, Быстрым и экономичным устройством серии ecotank с заправляемой емкостью для чернил</li>
   <li><strong>Двусторонняя печать:</strong> Нет</li>
-  <li><strong>Интерфейсы:</strong> USB</li>
-  <li><strong>Дисплей:</strong> нет</li>
+  <li><strong>Дисплей:</strong> Нет</li>
+  <li><strong>Тип чернил:</strong> пигментные</li>
   <li><strong>Страна происхождения:</strong> Индонезия,Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
-  <li><strong>Тип чернил:</strong> пигментные</li>
 </ul>
 ]]></description>
         <param name="Тип">Принтер для черно-белой печати</param>
@@ -2581,7 +2624,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Формат">A4</param>
         <param name="Скорость печати">до 32 стр/мин</param>
         <param name="Двусторонняя печать">Нет</param>
-        <param name="Интерфейсы">USB</param>
+        <param name="Интерфейсы">Usb</param>
         <param name="Дисплей">нет</param>
         <param name="Страна происхождения">Индонезия,Филиппины</param>
         <param name="Гарантия">12 мес</param>
@@ -2606,8 +2649,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Тип:</strong> Принтер для черно-белой печати</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Цвет печати:</strong> монохромная</li>
-  <li><strong>Формат:</strong> A4</li>
-  <li><strong>Интерфейсы:</strong> USB</li>
+  <li><strong>Формат:</strong> 0&#215;29</li>
+  <li><strong>Разрешение печати:</strong> Техника Метод печати PrecisionCore™ TFP print head Конфигурация сопла 400 Сопла (черный) Минимальный размер капли 2,8 капли(ей) Технология чернил Пигментные чернила Разрешение при печати 1200&#215;2400 DPI (точек на дюйм) Выработка Для домашнего офиса, Настольные устройства для офиса, Для рабочих групп в офисе Многофункциональный Печать Печать Скорость печати ISO/IEC 24734 20 Стр./мин</li>
+  <li><strong>Скорость печати:</strong> до 39 стр/мин</li>
+  <li><strong>Интерфейсы:</strong> Устройство m1140 оснащено лотком на 250 листов и поддерживает подключение к пк по usb</li>
   <li><strong>Страна происхождения:</strong> Филипины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
   <li><strong>Автоподатчик:</strong> Нет</li>
@@ -2617,7 +2662,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Цвет печати">монохромная</param>
         <param name="Формат">A4</param>
-        <param name="Интерфейсы">USB</param>
+        <param name="Интерфейсы">Usb</param>
         <param name="Страна происхождения">Филипины</param>
         <param name="Гарантия">12 мес</param>
         <param name="Автоподатчик">Нет</param>
@@ -2634,11 +2679,12 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Принтер ленточный Epson LW400</h3>
-<p>для картотек, хранилищ, финансовых департаментов и для печати штрих-кодов; Эргономичный и портативный; Выделенные кнопки позволяют быстро перейти к процессу печати и отрезу бумаги; Принтер способен создавать и воспроизводить из памяти до 50 сохраненных этикеток; Подсветка экрана позволяет видеть макет этикетки вне зависимости от условий освещенности Технические характеристики Epson LabelWorks LW-400 Состав поставки Epson LabelWorks LW-400, Блок питания, 1 лента LC-4WBN9 9м, Инструкция пользователя, Краткое руководство пользователя, Каталог с перечнем расходных материалов, Гарантийный талон.</p>
+<p>Ленточный принтер для офисной маркировки Портативный принтер для печати этикеток со встроенной клавиатурой; Работает с лентами шириной 6, 9, 12,18 мм; Идеально подходит для офисной маркировки, в т.ч. для картотек, хранилищ, финансовых департаментов и для печати штрих-кодов; Эргономичный и портативный; Выделенные кнопки позволяют быстро перейти к процессу печати и отрезу бумаги; Принтер способен создавать и воспроизводить из памяти до 50 сохраненных этикеток; Подсветка экрана позволяет видеть макет этикетки вне зависимости от условий освещенности Технические характеристики Epson LabelWorks LW-400 Состав поставки Epson LabelWorks LW-400, Блок питания, 1 лента LC-4WBN9 9м, Инструкция пользователя, Краткое руководство пользователя, Каталог с перечнем расходных материалов, Гарантийный талон.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> ленточный</li>
   <li><strong>Тип печати:</strong> ленточный</li>
+  <li><strong>Разрешение печати:</strong> Печать Tехнология печати	Термотрансферная Длина носителя, метров	9 Ширина носителя, миллиметров 6 9 12 18 Разрешение	180 dpi Максимальная высота символа, миллиметров	9 Максимальная скорость печати</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -2664,6 +2710,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Принтер</li>
+  <li><strong>Интерфейсы:</strong> Комплектация: инструкция, Провод с вилкой два вида (евро, Тип а)+адаптер, Кабель usb, Принтер, Втулки</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -2688,6 +2735,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Принтер</li>
+  <li><strong>Интерфейсы:</strong> Термотрансферный принтер штрих-кода zebra zd421, Разрешение 203 точки на дюйм, Ширина печати 104 мм, Скорость печати 152 мм, Сек, Интерфейсы подключения usb, USB-host</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -2712,6 +2760,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Принтер</li>
+  <li><strong>Интерфейсы:</strong> Комплектация: инструкция, Провод с вилкой два вида (евро, Тип а)+адаптер, Кабель usb, Принтер, Втулки</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -2736,6 +2785,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор</li>
+  <li><strong>Формат:</strong> искажений горизонтальная:± 40° Смещение проекции:100%+/-5% Оптический зум:Нет Цифровой зум:0.8x-2.0x Свойства объектива:F=2.6, f=6.9mm Сдвиг объектива проектора:Нет Слышимый шум:30dB Интерфейсы и разъемы HDMI вход (количество):1 HDMI доп информация:(HDMI 1.4/ HDCP 1.4) USB (Питание внешних устройств):1 Аудиовход (3.5 мм):1 Аудиовыход (3.5 мм):1 RS232:1 Аудиосистема Встроенные динамики:2 Вт Электропитание Тип блока питания:встроенный Работа от аккумуляторных батарей:нет Энергопотребление:156W Энергопотребление, режим ожидания:&lt;0.5W Упаковка, габариты, вес Расчетный вес товара с упаковкой, кг:3.55 Ширина Упаковки, см:36.5 Высота Упаковки, см:30 Глубина Упаковки, см:18.8 Вес Нетто, кг:2.45 Габариты товара:293&#215;221&#215;115мм Дополнительно Рабочая температура:0~40&#8451;</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
 ]]></description>
@@ -2761,7 +2811,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
   <li><strong>Назначение:</strong> Дом</li>
   <li><strong>Разрешение:</strong> 1920&#215;1080</li>
   <li><strong>Wi-Fi:</strong> Опционально</li>
-  <li><strong>Контрастность:</strong> 22 000 : 1</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -2769,7 +2818,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Назначение">Дом</param>
         <param name="Разрешение">1920&#215;1080</param>
         <param name="Wi-Fi">Опционально</param>
-        <param name="Контрастность">22 000 : 1</param>
         <param name="Гарантия">12 мес</param>
         <keywords>ViewSonic, LS500WH, Проектор дом, дом кино, кино ViewSonic, ViewSonic LS500WH, Проектор, Дом, Кино, ppoektop-dom, dom-kino, kino-viewsonic, ppoektop, dom, kino, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
@@ -2784,14 +2832,15 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Проектор для дом. кино ViewSonic PX701-4K</h3>
-<p>Проектор ViewSonic PX701-4K – это высококачественное решение для домашнего кинотеатра и профессиональных презентаций, которое обеспечит четкое изображение в 4K разрешении и превосходную яркость. Основные характеристики: Разрешение: 4K UHD (3840&#215;2160) для невероятной четкости и детализации. Яркость: 3200 ANSI люменов, что позволяет использовать проектор даже в условиях с ярким освещением. Технология цветопередачи: поддержка технологии Cinema SuperColor, которая обеспечивает точную и насыщенную цветопередачу.</p>
+<p>Проектор ViewSonic PX701-4K – это высококачественное решение для домашнего кинотеатра и профессиональных презентаций, которое обеспечит четкое изображение в 4K разрешении и превосходную яркость. Основные характеристики: Разрешение: 4K UHD (3840&#215;2160) для невероятной четкости и детализации. Яркость: 3200 ANSI люменов, что позволяет использовать проектор даже в условиях с ярким освещением. Технология цветопередачи: поддержка технологии Cinema SuperColor™, которая обеспечивает точную и насыщенную цветопередачу.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор</li>
   <li><strong>Назначение:</strong> Дом</li>
+  <li><strong>Формат:</strong> Размеры: 301&#215;230&#215;123 мм</li>
   <li><strong>Разрешение:</strong> 3840&#215;2160</li>
+  <li><strong>Интерфейсы:</strong> Подключение: hdmi 2.0, Usb type-a, Usb type-b, Vga, Аудио выходы, А также поддержка беспроводных подключений с помощью опционального устройства</li>
   <li><strong>Wi-Fi:</strong> Нет</li>
-  <li><strong>Контрастность:</strong> 12 000 : 1</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 2 года</li>
 </ul>
@@ -2800,7 +2849,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Назначение">Дом</param>
         <param name="Разрешение">3840&#215;2160</param>
         <param name="Wi-Fi">Нет</param>
-        <param name="Контрастность">12 000 : 1</param>
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">2 года</param>
         <keywords>ViewSonic, PX701-4K, Проектор дом, дом кино, кино ViewSonic, ViewSonic PX701-4K, Проектор, Дом, Кино, ppoektop-dom, dom-kino, kino-viewsonic, ppoektop, dom, kino, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
@@ -2820,6 +2868,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор для дома</li>
+  <li><strong>Формат:</strong> Поддержка форматов изображения: 16:9 Проекционное отношение: 1.19...1.61 :1 Коррекция трапецеидальных искажений (°): вертикальная ±30, горизонтальная ±30 Минимальное проекционное расстояние: 0.9 м Максимальное проекционное расстояние: 10.4 м Минимальная диагональ изображения: 0.66 м Максимальная диагональ изображения: 9.93 м Фокусировка: ручная Вертикальная развёртка: 100...120 Гц Интерфейсы и порты: 1 &#215; HDMI 1 &#215; USB-A 2.0 1 &#215; USB-B 2.0 Функциональные особенности: поддержка MHL встроенный динамик Характеристики встроенных динамиков: 1 &#215; 5 Вт Безопасность: разъём Kensington Lock Мощность лампы: 188 Вт Энергопотребление в экономичном режиме: 214 Вт Ресурс лампы: 6000 часов (стандартный режим), 12000 часов (экономичный режим) Вентиляционный шум: 38 дБ Диапазон рабочих температур: 5...40 °C Питание: сеть 220 В Размеры: 295 &#215; 211 &#215; 87 мм Вес: 2.4 кг Цвет: белый</li>
   <li><strong>Гарантия:</strong> 12 месяцев</li>
 </ul>
 ]]></description>
@@ -2841,6 +2890,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор для дома</li>
+  <li><strong>Интерфейсы:</strong> Проектор с разрешением full hd воспроизведение на большом экране любимые фильмы, Игры и спорт на большом экране у вас дома простота настройки коррекция искажений, Разъем hdmi долговечность до 18 лет&#185; работы доступное высокотехнологичное оборудование насладитесь качеством изображения на проекторе с разрешением full hd 1080p впечатляюще яркий экран одинаково высокая цветовая яркость и яркость по белому цвету 3 000 люмен техника projection system 3lcd technology, Rgb liquid crystal shutter lcd panel 0, 59 inch with mla (d10) image насыщенность цвета 3.000 люмен- 2.000 люмен (экономичный) in accordance with iso 21118:2020 насыщенность белого 3.000 люмен - 2.000 люмен (экономичный) in accordance with iso 21118:2020 разрешение 1080p высокая четкость (hd) full hd aspect ratio 16:9 light source lamp лампа uhe, 188 вт, 6.000 в срок службы, 12.000 в срок службы (в экономном режиме) коррекция трапеции вручную vertical: ± 30 °, Вручную horizontal ± 30 ° обработка видеоизображения 8 биты 2d vertical refresh rate 100 гц - 120 гц colour reproduction 16.77 million colours оптика соотношение сторон проецируемого изображения 1, 19 - 1, 61:1 изменение фокусного расстояния digital, Factor: 1 - 1, 35 объектив оптика размер проекции 26 inches - 391 inches дистанция проекции широкоугольной 0, 9 м - 10, 4 м дистанция проекции tele 0, 4 м projection distance wide, Tele 1, 58 м ( 60 inch screen projection lens f number 1, 44 фокус вручную offset 7 : 1</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -2859,7 +2909,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Проектор для дома Epson EH-LS300W, лазерный</h3>
-<p>Этот 120-дюймовый интеллектуальный лазерный проекционный телевизор Full HD из новой линейки EpiqVision Ultra поставляется с Android TV и звуком от YAMAHA. Откройте возможности для более масштабных и захватывающих домашних развлечений, сохраняя при этом стильный дом без постоянно висящего на стене черного экрана. Ультракороткофокусный лазерный проекционный телевизор Epson Full HD с элегантным дизайном, Android TV и звуком от YAMAHA, предназначен для проецирования до 120 дюймов с технологией 3LCD, высокой контрастностью и четкими изображениями.</p>
+<p>Этот 120-дюймовый интеллектуальный лазерный проекционный телевизор Full HD из новой линейки EpiqVision Ultra поставляется с Android TV™ и звуком от YAMAHA. Откройте возможности для более масштабных и захватывающих домашних развлечений, сохраняя при этом стильный дом без постоянно висящего на стене черного экрана. Ультракороткофокусный лазерный проекционный телевизор Epson Full HD с элегантным дизайном, Android TV и звуком от YAMAHA, предназначен для проецирования до 120 дюймов с технологией 3LCD, высокой контрастностью и четкими изображениями.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор для дома</li>
@@ -2885,6 +2935,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор короткофокусный</li>
+  <li><strong>Формат:</strong> Основные характеристики ViewSonic M2: Параметр	Значение Тип	Портативный, короткофокусный Источник света	LED (RGBB), срок службы до 30 000 часов Яркость	~1200 LED люмен Разрешение	Full HD 1920&#215;1080 Контрастность	3 000 000:1 (динамическая) Проекционное расстояние	0.7–3.2 м Размер изображения	24"–100"+ (оптимально 60"–100") Фокусировка	Автофокус Коррекция трапецеидальных искажений	Автоматическая (вертикальная и горизонтальная) Операционная система	Aptoide TV (аналог Android TV, без Google Play) Встроенный звук	Harman Kardon (2&#215;3 Вт) Память	16 ГБ (встроенная) Подключения	HDMI 2.0, USB-C, USB-A, microSD, Bluetooth, Wi-Fi, аудиовыход Вес	~1 кг ________________________________________ &#9989; Преимущества ViewSonic M2: • Разрешение Full HD (1920&#215;1080) — чёткое и яркое изображение • LED-источник света на 30 000 часов — экономия на лампах • Акустика Harman/Kardon — насыщенный и объёмный звук без внешних колонок • Беспроводное подключение — стриминг с телефона, ноутбука или планшета • Множество портов: HDMI, USB-C, USB-A, microSD, Wi-Fi, Bluetooth • Работает от внешнего аккумулятора (PD 45W) — идеально для путешествий • Автофокус и коррекция трапеции — изображение всегда ровное •	Быстрый запуск (LED-источник без прогрева) •	Беспроводная передача с мобильных устройств •	Автофокус и автоматическая коррекция трапеции — удобно в любых условиях •	Тихая работа, почти без шума вентилятора •	Питание возможно от Power Delivery (USB-C 45W и выше) Портативный проектор ViewSonic M2 — кинотеатр в вашей сумке!</li>
   <li><strong>Разрешение:</strong> 1920&#215;1080</li>
   <li><strong>Wi-Fi:</strong> Да</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
@@ -2935,6 +2986,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор универсальный</li>
+  <li><strong>Формат:</strong> Доступный яркий WXGA проектор Технология: LCD: 3 х 0.59" P-Si TFT Разрешение: WXGA (1280х800) Яркость: 3000 ANSI lm Цветовая яркость: 3000 ANSI lm Зум 1,35х (цифровой) Передача изображения по беспроводной сети Wi-fi (опционально) Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Встроенный динамик 5 Вт Моментальное выключение Вес: 2,2 кг Технические характеристики Epson CO-WX02 Состав поставки Проектор Кабель питания 1,8 м Пульт ДУ Руководство пользователя Основные свойства Категория Для офиса и мобильных презентаций Для образования Варианты проекции крепление к потолку обратная фронтальная Используемая технология	LCD:3 P-Si TFT ЖК дисплей, дюймы	0.59 Оригинальное разрешение	WXGA (1280&#215;800) Поддерживаемые разрешения VGA (640&#215;480) SVGA (800&#215;600) XGA (1024&#215;768) SXGA1 (1152&#215;864) WXGA (1280&#215;800) SXGA2 (1280&#215;960) SXGA3 (1280&#215;1024) WXGA2 (1280&#215;768) WXGA3 (1366&#215;7</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -2957,10 +3009,9 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор универсальный</li>
+  <li><strong>Формат:</strong> Технология: LCD: 3 &#215; 0.61" P-Si TFT Разрешение: 1080p (1920&#215;1080) Яркость: 3500 ANSI lm Цветовая яркость: 3500 ANSI lm Контрастность: 16000:1 Зум 1,2&#215; (оптический) Передача изображения по беспроводной сети Wi-fi (опционально) Автоматическая коррекция вертикальных трапецеидальных искажений Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Функция Split Screen Встроенный динамик 2 Вт Фронтальный вывод тепла Моментальное выключение Вес: 2,7 кг Технические характеристики Состав поставки Проектор Кабель питания 1,8 м Кабель для подключения к ПК с 15-контактным разъемом D-Sub (n/n) 1,8м Пульт ДУ Руководство пользователя Основные свойства Категория Для офиса и мобильных презентаций Для образования Варианты проекции</li>
   <li><strong>Разрешение:</strong> 1920&#215;1080</li>
   <li><strong>Wi-Fi:</strong> Опционально</li>
-  <li><strong>Контрастность:</strong> 16 000 : 1</li>
-  <li><strong>Источник света:</strong> Лампа</li>
   <li><strong>Страна происхождения:</strong> Китай, Филиппины</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -2968,8 +3019,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип">Проектор универсальный</param>
         <param name="Разрешение">1920&#215;1080</param>
         <param name="Wi-Fi">Опционально</param>
-        <param name="Контрастность">16 000 : 1</param>
-        <param name="Источник света">Лампа</param>
         <param name="Страна происхождения">Китай, Филиппины</param>
         <param name="Гарантия">12 мес</param>
         <keywords>Epson, EB-FH06, Проектор универсальный, универсальный Epson, Epson EB-FH06, Проектор, Универсальный, ppoektop-univepsalnyy, univepsalnyy-epson, ppoektop, univepsalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
@@ -2989,9 +3038,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор универсальный</li>
+  <li><strong>Формат:</strong> Технология: LCD: 3 &#215; 0.59" P-Si TFT Разрешение: WXGA (1280&#215;800) Яркость: 3700 ANSI lm Цветовая яркость: 3700 ANSI lm Контрастность: 16000:1 Зум 1,2&#215; (оптический) Передача изображения по беспроводной сети Wi-fi (опционально) Автоматическая коррекция вертикальных трапецеидальных искажений Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером Функция Quick Corner Возможность просмотра изображений напрямую с USB носителей USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю Функция Split Screen Встроенный динамик 2 Вт Фронтальный вывод тепла Моментальное выключение Вес: 2,5 кг Технические характеристики Состав поставки Проектор Кабель питания 1,8 м Кабель для подключения к ПК с 15-контактным разъемом D-Sub (n/n) 1,8м Пульт ДУ Руководство пользователя Основные свойства Категория Для офиса и мобильных презентаций Для образования Варианты проекции к</li>
   <li><strong>Разрешение:</strong> 1280х800</li>
+  <li><strong>Интерфейсы:</strong> Набор функциональных возможностей проектора включает быструю коррекцию трапецеидальных искажений, Долгий ресурс лампы и опциональную поддержку Wi-Fi, Которая позволяет отображать контент с мобильных устройств с помощью приложения iprojection</li>
   <li><strong>Wi-Fi:</strong> Опционально</li>
-  <li><strong>Контрастность:</strong> 16 000 : 1</li>
   <li><strong>Страна происхождения:</strong> Китай, Филиппины</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
@@ -2999,7 +3049,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип">Проектор универсальный</param>
         <param name="Разрешение">1280х800</param>
         <param name="Wi-Fi">Опционально</param>
-        <param name="Контрастность">16 000 : 1</param>
         <param name="Страна происхождения">Китай, Филиппины</param>
         <param name="Гарантия">24</param>
         <keywords>Epson, EB-W06, Проектор универсальный, универсальный Epson, Epson EB-W06, Проектор, Универсальный, ppoektop-univepsalnyy, univepsalnyy-epson, ppoektop, univepsalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
@@ -3040,6 +3089,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор универсальный</li>
+  <li><strong>Формат:</strong> Технологии Проекционная система Технология 3LCD, жидкокристаллический затвор RGB ЖК-панель 0,62 дюйма Образ Цветной световой поток 1.000 люмен - 500 люмен (эконом) В соответствии с IDMS15.4 Выход белого света 1.000 люмен - 500 люмен (эконом) В соответствии с ISO 21118:2020 Повышение разрешения Full HD Aspect Ratio 16:9 Contrast Ratio 5.000.000 : 1 Light source Laser Laser Light source 20.000 hours Durability High, 20.000 hours Durability Medium, 20.000 hours Durability Eco Keystone Correction Auto Colour Video Processing 8 Bits 2D Vertical Refresh Rate 200 Hz - 240 Hz Colour Reproduction 16.77 million colours HDR support HDR10 Optical Throw Ratio 1,00 - 1,82:1 Lens Optical Screen Size 30 inches - 150 inches Projection Distance Wide/Tele 1,33 m ( 60 inch screen Projection Lens F Number 2 Projection Lens Focal Length 13,9 mm Projection Lens Focus Motorized Offset 10 : 1 Connectivity Interfaces USB 2.0-A, USB 2.0 Mini-B, Jack plug out, HDMI ARC, HDMI (HDCP 2.3) Google TV Yes Advanced Features 2D Colour Modes Dynamic, Natural, Cinema, Vivid Other features Automatic keystone correction, Built-in speaker, Chromecast, Google Search, Horizontal and vertical keystone correction, Instant on/off, Quick Corner Video Color Modes Cinema, Dynamic, Natural, Vivid General Power consumption 108 Watt (Normal Peak-mode), 78 Watt (Eco Peak-Mode), Supply Voltage AC 100 V - 240 V, 50 Hz - 60 Hz Product dimensions 236&#215;191&#215;193 mm (Width x Depth x Height) Product weight 3 kg Noise Level Normal: 22 dB (A) - Economy: 18 dB (A) Supported Temperature Operation 5° C - 35° C, Storage -10° C - 60° C Supported Humidity Operation 20% - 80%, Storage -10% - 60% Loudspeaker 5 Watt, Stereo: Stereo Room Type / Application Gaming, Home Cinema, Home Office, Home Photo, Sports, Streaming, TV & Box sets Positioning Desktop, Floor, TV Cabinet Colour Black Other Warranty 60 months Carry in or 12.000 h</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
 ]]></description>
@@ -3058,13 +3108,13 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Проектор универсальный ViewSonic PA503X</h3>
-<p>Проектор ViewSonic PA503X создает впечатляющее изображение в аудиториях и конференц-залах малых размеров. Благодаря повышенной яркости и увеличенному сроку эксплуатации лампы проектор PA503X гарантированно создает изображение с мельчайшими деталями в любой среде в течение более длительного срока службы. Эксклюзивная технология компании ViewSonic, SuperColour, позволяет воспроизводить более широкий цветовой диапазон, и зрители могут наслаждаться более реалистичными и точными цветами и при свете и в темноте — качество изображения всегда остается высоким.</p>
+<p>Проектор ViewSonic PA503X создает впечатляющее изображение в аудиториях и конференц-залах малых размеров. Благодаря повышенной яркости и увеличенному сроку эксплуатации лампы проектор PA503X гарантированно создает изображение с мельчайшими деталями в любой среде в течение более длительного срока службы. Эксклюзивная технология компании ViewSonic, SuperColour™, позволяет воспроизводить более широкий цветовой диапазон, и зрители могут наслаждаться более реалистичными и точными цветами и при свете и в темноте — качество изображения всегда остается высоким.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор универсальный</li>
+  <li><strong>Формат:</strong> Характеристики СПЕЦИФИКАЦИИ Проекционная система : 0.55" XGA Собственное разрешение : 1024&#215;768 Тип DS : DC3 Яркость : 3600 люмен Коэффициент контрастности в режиме SuperEco : 22000:1 Цветопередача : 1,07 млрд цветов Источник света : Лампа Срок службы источника света (Нормальный/SuperEco) : 5000/15000 Лампа, Вт : 190W Объектив : F=2.56-2.68, f=22-24.1 мм Смещение проекции : 120%+/-5% Проекционный коэффициент : 1.96~2.15 Размер изображения : 30" - 300" Проекционное расстояние : 1.19м-13.11м(100" @3.98м) Трапецеидальные искажения : +/– 40° (по вертикали) Оптическое увеличение : 1.1x Слышимый шум (эко) : 29dB Поддержка разрешения : VGA(640&#215;480) to FullHD(1920&#215;1080) HDTV-совместимость : 480i, 480p, 576i, 576p, 720p, 1080i, 1080p Совместимость видео : NTSC, PAL, SECAM Горизонтальная частота : 15K~102KHz Скорость вертикального сканирования : 23~120Hz Вход Компьютер (общий с компонентным) : 2 Композитный : 1 Аудиовход (3.5мм) : 1 HDMI : 1 (сзади) выход видео выход : 1 Аудиовыход (3.5мм) : 1 ГРОМКОГОВОРИТЕЛИ : 2W Управление RS232 : 1 USB, тип Mini B (сервисный) : 1 другое Напряжение питания : 100-240V+/- 10%, 50/60Hz AC Энергопотребление : Стандартное: 240 Вт Режим ожидания: <0,5 Вт Рабочая температура : 0~40&#8451; Упаковка : Коричневая Масса, нетто : 2.12 кг Размеры (ШxГxВ) с регулировочной ногой : 294&#215;218&#215;110 мм Язык : английский, французский, испанский, тайский, корейский, немецкий, итальянский, русский, шведский, голландский, польский, чешский, традиционный китайский, упрощенный китайский, японский, турецкий, португальский, финский, индонезийский, индийский, арабский, вьетнамский Стандартные аксессуары Шнур питания : 1 Кабель VGA : 1 Пульт ДУ : 1 Краткое руководство и CD : 1 воздушный фильтр : RSPL</li>
   <li><strong>Разрешение:</strong> &#215;GA (1024х768)</li>
   <li><strong>Wi-Fi:</strong> Нет</li>
-  <li><strong>Контрастность:</strong> 22 000 : 1</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
@@ -3072,7 +3122,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип">Проектор универсальный</param>
         <param name="Разрешение">&#215;GA (1024х768)</param>
         <param name="Wi-Fi">Нет</param>
-        <param name="Контрастность">22 000 : 1</param>
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">24</param>
         <keywords>ViewSonic, PA503X, Проектор универсальный, универсальный ViewSonic, ViewSonic PA503X, Проектор, Универсальный, ppoektop-univepsalnyy, univepsalnyy-viewsonic, ppoektop, univepsalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
@@ -3088,13 +3137,14 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Проектор универсальный Vivitek DX273</h3>
-<p>Используйте данный проектор в любом, удобном для работы месте: как в конференц-зале так и во время поездок DX273 – цифровой проектор компании Vivitek, имеющий реальное разрешение XGA. Он создан на базе технологий DLP и BrilliantColor, позволяющих получить на экране яркие и «живые» изображения. Благодаря своим компактным размерам и малому весу, а также короткому проекционному расстоянию, проектор отличается гибкостью при установке. Ключевые особенности Технологии DLP и BrilliantColor обеспечивают «живое» изображение на экране Яркость 4 000 ANSI Lm и контрастность 20 000:1 помогают получить четкие и яркие проецируемые изображения.</p>
+<p>Используйте данный проектор в любом, удобном для работы месте: как в конференц-зале так и во время поездок DX273 – цифровой проектор компании Vivitek, имеющий реальное разрешение XGA. Он создан на базе технологий DLP® и BrilliantColor™, позволяющих получить на экране яркие и «живые» изображения. Благодаря своим компактным размерам и малому весу, а также короткому проекционному расстоянию, проектор отличается гибкостью при установке. Ключевые особенности Технологии DLP® и BrilliantColor™ обеспечивают «живое» изображение на экране Яркость 4 000 ANSI Lm и контрастность 20 000:1 помогают получить четкие и яркие проецируемые изображения.</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Проектор универсальный</li>
+  <li><strong>Формат:</strong> Реальное разрешение XGA (1024&#215;768), масштабируемое до максимального разрешения WUXGA (1920&#215;1200) Два HDMI входа Компактные размеры и малый вес (2,6 кг) позволяют легко переносить проектор Длительный срок службы лампы (до 10 000 часов) снижает совокупную стоимость владения Поддержка Audio ready – встроенный динамик мощностью 2 Вт, наличие аудиовхода и аудиовыхода</li>
   <li><strong>Разрешение:</strong> &#215;GA (1024х768)</li>
+  <li><strong>Интерфейсы:</strong> Проектор vivitek dx273 имеет на борту богатый набор входных интерфейсов, В том числе два hdmi v1.4, Обеспечивает уровень яркости 4 000 ansi lm при контрастности 20 000:1</li>
   <li><strong>Wi-Fi:</strong> Нет</li>
-  <li><strong>Контрастность:</strong> 20 000 : 1</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -3102,7 +3152,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип">Проектор универсальный</param>
         <param name="Разрешение">&#215;GA (1024х768)</param>
         <param name="Wi-Fi">Нет</param>
-        <param name="Контрастность">20 000 : 1</param>
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">12 мес</param>
         <keywords>DX273, Проектор универсальный, универсальный Vivitek, Vivitek DX273, Проектор, Универсальный, Vivitek, ppoektop-univepsalnyy, univepsalnyy-vivitek, ppoektop, univepsalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
@@ -3121,6 +3170,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> сканер для дома планшетные</li>
+  <li><strong>Оптическое разрешение:</strong> 4800&#215;4800 Интерполяционное разрешение, dpi</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -3142,6 +3192,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Потоковые для бизнеса</li>
+  <li><strong>Интерфейсы:</strong> Сетевой сканер премиум-класса широкие возможности аутентификации локальная или удаленная настройка для нескольких пользователей (поддержка протокола ldap) автономное сканирование scanway прямое сканирование в сеть, Облако, Электронную почту или на usb-накопитель без использования пк широкие возможности подключения поддержка usb 3.0, Wi-Fi, Wi-fi direct и gigabit ethernet высокая скорость работы одновременное двустороннее сканирование со скоростью до 45 страниц в минуту, 90 изображений в минуту и автоподатчик на 100 листов большой встроенный экран цветной сенсорный экран с диагональю 10, 9 см с возможностью изменения настроек и отображения меню</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
 ]]></description>
@@ -3164,6 +3215,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Сканер</li>
+  <li><strong>Интерфейсы:</strong> Комплектация: инструкция, Подставка, Сканер, Кабель usb</li>
   <li><strong>Страна происхождения:</strong> Мексика</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -3197,7 +3249,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, C13T00Q140, L7160, L7180, Чернила Epson, Epson C13T00Q140, C13T00Q140 L7160, L7160 L7180, L7180 черный, черный пигмент, Чернила, Черный, Пигмент, chepnila-epson, l7180-chepnyy, chepnyy-pigment, chepnila, chepnyy, pigment, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T00Q140, L7180, L7160, Чернила Epson, Epson C13T00Q140, C13T00Q140 L7160, L7160 L7180, L7180 черный, черный пигмент, Чернила, Черный, Пигмент, chepnila-epson, l7180-chepnyy, chepnyy-pigment, chepnila, chepnyy, pigment, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00R140" available="true">
@@ -3223,7 +3275,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, L7160, C13T00R140, L7180, Чернила Epson, Epson C13T00R140, C13T00R140 L7160, L7160 L7180, L7180 чёрный, Чернила, Чёрный, chepnila-epson, l7180-chepnyy, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L7160, L7180, C13T00R140, Чернила Epson, Epson C13T00R140, C13T00R140 L7160, L7160 L7180, L7180 чёрный, Чернила, Чёрный, chepnila-epson, l7180-chepnyy, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00R240" available="true">
@@ -3249,7 +3301,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, C13T00R240, L7160, L7180, Чернила Epson, Epson C13T00R240, C13T00R240 L7160, L7160 L7180, L7180 голубой, Чернила, Голубой, chepnila-epson, l7180-goluboy, chepnila, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L7160, L7180, C13T00R240, Чернила Epson, Epson C13T00R240, C13T00R240 L7160, L7160 L7180, L7180 голубой, Чернила, Голубой, chepnila-epson, l7180-goluboy, chepnila, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00R340" available="true">
@@ -3275,7 +3327,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, L7160, L7180, C13T00R340, Чернила Epson, Epson C13T00R340, C13T00R340 L7160, L7160 L7180, L7180 пурпурный, Чернила, Пурпурный, chepnila-epson, l7180-puppupnyy, chepnila, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L7180, C13T00R340, L7160, Чернила Epson, Epson C13T00R340, C13T00R340 L7160, L7160 L7180, L7180 пурпурный, Чернила, Пурпурный, chepnila-epson, l7180-puppupnyy, chepnila, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00R440" available="true">
@@ -3301,7 +3353,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, L7160, C13T00R440, L7180, Чернила Epson, Epson C13T00R440, C13T00R440 L7160, L7160 L7180, L7180 жёлтый, Чернила, Жёлтый, chepnila-epson, l7180-zheltyy, chepnila, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L7180, C13T00R440, L7160, Чернила Epson, Epson C13T00R440, C13T00R440 L7160, L7160 L7180, L7180 жёлтый, Чернила, Жёлтый, chepnila-epson, l7180-zheltyy, chepnila, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00S14A" available="true">
@@ -3314,20 +3366,20 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Чернила Epson C13T00S14A 103 EcoTank для L3100/L3101/L3110/L3150 черный</h3>
-<p>Совместимые продукты: Epson L3100	C11CG88401 Epson L3101	C11CG88402 Epson L3110	C11CG87405 Epson L3150	C11CG86409 Epson L3151 C11CG86411 Epson L1110	C11CG89403</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li>
   <li><strong>Тип печати:</strong> струйная</li>
   <li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li>
   <li><strong>Гарантия:</strong> 3</li>
+  <li><strong>Совместимость:</strong> Epson L3100	C11CG88401 Epson L3101	C11CG88402 Epson L3110	C11CG87405 Epson L3150	C11CG86409 Epson L3151 C11CG86411 Epson L1110	C11CG89403</li>
 </ul>
 ]]></description>
         <param name="Тип">Фабрика печати (чернила EPSON)</param>
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, L3100, L3150, L3101, C13T00S14A, L3110, Чернила Epson, Epson C13T00S14A, C13T00S14A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Черный, chepnila-epson, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L3150, C13T00S14A, L3110, L3101, L3100, Чернила Epson, Epson C13T00S14A, C13T00S14A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Черный, chepnila-epson, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00S24A" available="true">
@@ -3353,7 +3405,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, L3100, L3150, L3101, C13T00S24A, L3110, Чернила Epson, Epson C13T00S24A, C13T00S24A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Голубой, chepnila-epson, chepnila, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T00S24A, L3150, L3110, L3101, L3100, Чернила Epson, Epson C13T00S24A, C13T00S24A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Голубой, chepnila-epson, chepnila, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00S34A" available="true">
@@ -3379,7 +3431,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, L3100, C13T00S34A, L3150, L3101, L3110, Чернила Epson, Epson C13T00S34A, C13T00S34A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Пурпурный, chepnila-epson, chepnila, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T00S34A, L3150, L3110, L3101, L3100, Чернила Epson, Epson C13T00S34A, C13T00S34A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Пурпурный, chepnila-epson, chepnila, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00S44A" available="true">
@@ -3405,7 +3457,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип печати">струйная</param>
         <param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
         <param name="Гарантия">3</param>
-        <keywords>Epson, C13T00S44A, L3100, L3150, L3101, L3110, Чернила Epson, Epson C13T00S44A, C13T00S44A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Жёлтый, chepnila-epson, chepnila, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L3150, C13T00S44A, L3110, L3101, L3100, Чернила Epson, Epson C13T00S44A, C13T00S44A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Жёлтый, chepnila-epson, chepnila, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T01L14A" available="true">
@@ -3435,7 +3487,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
         <param name="Ресурс">2000 стр</param>
-        <keywords>Epson, C13T01L14A, MX1XX, Чернила Epson, Epson C13T01L14A, C13T01L14A EcoTank, EcoTank MX1XX, MX1XX Series, Series Black, Black Bottle, Bottle 40, Чернила, Ecotank, Series, Black, Bottle, 40, chepnila-epson, chepnila, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, MX1XX, C13T01L14A, Чернила Epson, Epson C13T01L14A, C13T01L14A EcoTank, EcoTank MX1XX, MX1XX Series, Series Black, Black Bottle, Bottle 40, Чернила, Ecotank, Series, Black, Bottle, 40, chepnila-epson, chepnila, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T03V14A" available="true">
@@ -3463,7 +3515,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
-        <keywords>Epson, 127ML, L4150, C13T03V14A, L4160, Чернила Epson, Epson C13T03V14A, C13T03V14A 101, 101 EcoTank, EcoTank 127ml, 127ml L4150, L4150 L4160, L4160 черный, Чернила, 101, Ecotank, Черный, chepnila-epson, l4160-chepnyy, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L4160, 127ML, C13T03V14A, L4150, Чернила Epson, Epson C13T03V14A, C13T03V14A 101, 101 EcoTank, EcoTank 127ml, 127ml L4150, L4150 L4160, L4160 черный, Чернила, 101, Ecotank, Черный, chepnila-epson, l4160-chepnyy, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T03V24A" available="true">
@@ -3491,7 +3543,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
-        <keywords>Epson, L4150, C13T03V24A, 70ML, L4160, Чернила Epson, Epson C13T03V24A, C13T03V24A 101, 101 EcoTank, EcoTank 70ml, 70ml L4150, L4150 L4160, L4160 голубой, Чернила, 101, Ecotank, Голубой, chepnila-epson, l4160-goluboy, chepnila, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T03V24A, 70ML, L4160, L4150, Чернила Epson, Epson C13T03V24A, C13T03V24A 101, 101 EcoTank, EcoTank 70ml, 70ml L4150, L4150 L4160, L4160 голубой, Чернила, 101, Ecotank, Голубой, chepnila-epson, l4160-goluboy, chepnila, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T06C14A" available="true">
@@ -3519,7 +3571,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
-        <keywords>Epson, L15150, C13T06C14A, Чернила Epson, Epson C13T06C14A, C13T06C14A L15150, L15150 чёрный, Чернила, Чёрный, chepnila-epson, l15150-chepnyy, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T06C14A, L15150, Чернила Epson, Epson C13T06C14A, C13T06C14A L15150, L15150 чёрный, Чернила, Чёрный, chepnila-epson, l15150-chepnyy, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T06C24A" available="true">
@@ -3575,7 +3627,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
-        <keywords>Epson, L15150, C13T06C34A, Чернила Epson, Epson C13T06C34A, C13T06C34A L15150, L15150 пурпурный, Чернила, Пурпурный, chepnila-epson, l15150-puppupnyy, chepnila, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T06C34A, L15150, Чернила Epson, Epson C13T06C34A, C13T06C34A L15150, L15150 пурпурный, Чернила, Пурпурный, chepnila-epson, l15150-puppupnyy, chepnila, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T06C44A" available="true">
@@ -3603,7 +3655,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
-        <keywords>Epson, L15150, C13T06C44A, Чернила Epson, Epson C13T06C44A, C13T06C44A L15150, L15150 жёлтый, Чернила, Жёлтый, chepnila-epson, l15150-zheltyy, chepnila, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T06C44A, L15150, Чернила Epson, Epson C13T06C44A, C13T06C44A L15150, L15150 жёлтый, Чернила, Жёлтый, chepnila-epson, l15150-zheltyy, chepnila, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T07C14A" available="true">
@@ -3631,7 +3683,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
-        <keywords>Epson, C13T07C14A, L8180, L8160, Чернила Epson, Epson C13T07C14A, C13T07C14A L8160, L8160 L8180, L8180 черный, черный пигмент, Чернила, Черный, Пигмент, chepnila-epson, l8180-chepnyy, chepnyy-pigment, chepnila, chepnyy, pigment, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L8180, C13T07C14A, L8160, Чернила Epson, Epson C13T07C14A, C13T07C14A L8160, L8160 L8180, L8180 черный, черный пигмент, Чернила, Черный, Пигмент, chepnila-epson, l8180-chepnyy, chepnyy-pigment, chepnila, chepnyy, pigment, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T07D14A" available="true">
@@ -3687,7 +3739,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
-        <keywords>Epson, L8180, C13T07D24A, L8160, Чернила Epson, Epson C13T07D24A, C13T07D24A L8160, L8160 L8180, L8180 голубые, Чернила, Голубые, chepnila-epson, l8180-golubye, chepnila, golubye, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L8180, L8160, C13T07D24A, Чернила Epson, Epson C13T07D24A, C13T07D24A L8160, L8160 L8180, L8180 голубые, Чернила, Голубые, chepnila-epson, l8180-golubye, chepnila, golubye, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T07D44A" available="true">
@@ -3715,7 +3767,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Страна происхождения">Индонезия</param>
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
-        <keywords>Epson, C13T07D44A, L8180, L8160, Чернила Epson, Epson C13T07D44A, C13T07D44A L8160, L8160 L8180, L8180 жёлтые, Чернила, Жёлтые, chepnila-epson, l8180-zheltye, chepnila, zheltye, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T07D44A, L8160, L8180, Чернила Epson, Epson C13T07D44A, C13T07D44A L8160, L8160 L8180, L8180 жёлтые, Чернила, Жёлтые, chepnila-epson, l8180-zheltye, chepnila, zheltye, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T07D54A" available="true">
@@ -3803,7 +3855,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
         <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
-        <keywords>Epson, L100, C13T66424A, Чернила Epson, Epson C13T66424A, C13T66424A L100, L100 110, 110 120, 120 1300, 1300 132, 132 200, Чернила, 110, 120, 1300, 132, 200, 210, chepnila-epson, chepnila, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T66424A, L100, Чернила Epson, Epson C13T66424A, C13T66424A L100, L100 110, 110 120, 120 1300, 1300 132, 132 200, Чернила, 110, 120, 1300, 132, 200, 210, chepnila-epson, chepnila, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T66434A" available="true">
@@ -3833,7 +3885,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
         <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
-        <keywords>Epson, C13T66434A, L100, Чернила Epson, Epson C13T66434A, C13T66434A L100, L100 110, 110 120, 120 1300, 1300 132, 132 200, Чернила, 110, 120, 1300, 132, 200, 210, chepnila-epson, chepnila, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L100, C13T66434A, Чернила Epson, Epson C13T66434A, C13T66434A L100, L100 110, 110 120, 120 1300, 1300 132, 132 200, Чернила, 110, 120, 1300, 132, 200, 210, chepnila-epson, chepnila, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T66444A" available="true">
@@ -3863,7 +3915,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Гарантия">3</param>
         <param name="Объем">0,000</param>
         <param name="Ресурс">5700 – 6500 страниц формата A4*</param>
-        <keywords>Epson, C13T66444A, L100, Чернила Epson, Epson C13T66444A, C13T66444A L100, L100 110, 110 120, 120 1300, 1300 132, 132 200, Чернила, 110, 120, 1300, 132, 200, 210, chepnila-epson, chepnila, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L100, C13T66444A, Чернила Epson, Epson C13T66444A, C13T66444A L100, L100 110, 110 120, 120 1300, 1300 132, 132 200, Чернила, 110, 120, 1300, 132, 200, 210, chepnila-epson, chepnila, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T67324A" available="true">
@@ -3923,7 +3975,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Гарантия">3</param>
         <param name="Объем">0,000</param>
         <param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
-        <keywords>Epson, L800, C13T67334A, Чернила Epson, Epson C13T67334A, C13T67334A L800, L800 1800, 1800 810, 810 850, 850 пурпурный, Чернила, 1800, 810, 850, Пурпурный, chepnila-epson, 850-puppupnyy, chepnila, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T67334A, L800, Чернила Epson, Epson C13T67334A, C13T67334A L800, L800 1800, 1800 810, 810 850, 850 пурпурный, Чернила, 1800, 810, 850, Пурпурный, chepnila-epson, 850-puppupnyy, chepnila, puppupnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T67344A" available="true">
@@ -4043,7 +4095,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Гарантия">3</param>
         <param name="Объем">0,001</param>
         <param name="Ресурс">6000 страниц формата A4*</param>
-        <keywords>Epson, M100, C13T77414A, M200, M105, Чернила Epson, Epson C13T77414A, C13T77414A M100, M100 M105, M105 M200, M200 черный, Чернила, Черный, chepnila-epson, m200-chepnyy, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, M100, M200, M105, C13T77414A, Чернила Epson, Epson C13T77414A, C13T77414A M100, M100 M105, M105 M200, M200 черный, Чернила, Черный, chepnila-epson, m200-chepnyy, chepnila, chepnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="AC5050001" available="true">
@@ -4078,9 +4130,11 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</h3>
+<p>410 Уровень секретности для кредитных карт, DIN 66399	T-4 Ширина входа, мм	230 Скорость резки, м/мин	3 Рабочий цикл, мин	12 / 25 Уничтожение степлерных скоб	да Уничтожение скрепок	да Уничтожение кредитных карт	да (ручная загрузка) Уничтожение CD или Blu-Ray DVD (1,2 слоя)	да 100% Jam-Proof Технология	нет Другие технологии предотвращения заторов	Автореверс Safe</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
+  <li><strong>Формат:</strong> Шредер с автоподачей AutoMax™ 150C Компактный уничтожитель с автоподачей и инновационной технологией accufeed Загрузка лотка до 150 листов Перекрестная резка - 4х38 мм P-4 уровень секретности Удобная выдвижная корзина 32 литра &#8776; 200 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки, диски Артикул	fs-46801* Количество пользователей	1-3 Пользователя Рекомендуемое количество CD дисков в день	10 Производительность, листов (A4, 70 гр./м&#178;)	150 (8 вручную) Тип Резки	Перекрестная Размер резки, мм	4&#215;38 Уровень секретности, DIN 66399	P-4 Количество фрагментов при резке листа А4, шт</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
@@ -4101,15 +4155,17 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Шредер Fellowes® AutoMax® 200C, автоподача, DIN P-4, 4х38мм, 200 лст. авто, 10 ручн., 32 лт</h3>
+<p>&#8805;380 Уровень секретности для кредитных карт, DIN 66399	T-4 Уровень секретности для CD дисков, DIN 66399	O-3 Ширина входа, мм	230 Скорость резки, м/мин	3 Рабочий цикл, мин	25 / 25 Уничтожение степлерных скоб	да Уничтожение скрепок	да Уничтожение кредитных карт	да (ручная загрузка) Уничтожение CD</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
+  <li><strong>Формат:</strong> Шредер с автоподачей AutoMax™ 200C Компактный уничтожитель с инновационной автоподачей accufeed Загрузка лотка до 200 листов Перекрестная резка - 4х38 мм P-4 уровень секретности Удобная выдвижная корзина 32 литра &#8776; 200 листов А4 Гарантия 2 года на устройство и 7 лет на ножи Возможности уничтожения - скобы, карты, скрепки, диски Артикул	fs-46536 Количество пользователей	5+ пользователей Рекомендуемое количество листов в день	400 Рекомендуемое количество кредитных карт в день	25 Рекомендуемое количество CD дисков в день	10 Загрузка, листов (A4, 70гр/м&#178;)	200 ( вручную 12) Тип Резки	Перекрест</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
 ]]></description>
         <param name="Тип">шредеры офисные</param>
         <param name="Гарантия">24</param>
-        <keywords>P-4, 200C, Шредер Fellowes, Fellowes AutoMax, AutoMax 200C, 200C автоподача, автоподача DIN, DIN P-4, P-4 4х38мм, 4х38мм 200, Шредер, Fellowes, Automax, Автоподача, DIN, 4х38мм, 200, Лст, shpedep-fellowes, 200c-avtopodacha, avtopodacha-din, p-4-4h38mm, 4h38mm-200, shpedep, avtopodacha, 4h38mm, lst, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>200C, P-4, Шредер Fellowes, Fellowes AutoMax, AutoMax 200C, 200C автоподача, автоподача DIN, DIN P-4, P-4 4х38мм, 4х38мм 200, Шредер, Fellowes, Automax, Автоподача, DIN, 4х38мм, 200, Лст, shpedep-fellowes, 200c-avtopodacha, avtopodacha-din, p-4-4h38mm, 4h38mm-200, shpedep, avtopodacha, 4h38mm, lst, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACFS-71201" available="true">
@@ -4122,9 +4178,11 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Шредер Fellowes® Powershred® 12C, DIN P-4, 4х40мм, 12лст., 18лтр., Safety Lock</h3>
+<p>&#8805;380 Уровень секретности для кредитных карт, DIN 66399	T-4 Ширина входа, мм	224 Скорость резки, м/мин	2 Рабочий цикл, мин	20 / 30 Уничтожение степлерных скоб	да Уничтожение скрепок	да Уничтожение кредитных карт	да Уничтожение CD или Blu-Ray DVD (1,2 слоя)	нет 100% Jam-Proof Технология предотвращения заторов	нет Другие</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
+  <li><strong>Формат:</strong> Шредер Powershred® 12C Высокая производительность и увеличенный рабочий цикл 20 мин Уничтожает до 12 листов одновременно Перекрестная резка - 4х40 мм P-4 уровень секретности Удобная выдвижная корзина 18 литров &#8776; 220 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, скрепки, карты Артикул	fs-71201 Количество пользователей	1-3 Пользователя Рекомендуемое количество листов в день	500 Рекомендуемое количество кредитных карт в день	25 Рекомендуемое количество CD дисков в день	нет Загрузка, листов (A4, 70гр/м&#178;)	12 Тип Резки	Перекрест</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 12 мес</li>
 </ul>
@@ -4132,7 +4190,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип">шредеры офисные</param>
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">12 мес</param>
-        <keywords>Fellowes, P-4, 12C, Шредер Fellowes, Fellowes Powershred, Powershred 12C, 12C DIN, DIN P-4, P-4 4х40мм, 4х40мм 12лст, 12лст 18лтр, Шредер, Powershred, DIN, 4х40мм, 12лст, 18лтр, Safety, shpedep-fellowes, p-4-4h40mm, 4h40mm-12lst, 12lst-18ltp, shpedep, 4h40mm, 12lst, 18ltp, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Fellowes, 12C, P-4, Шредер Fellowes, Fellowes Powershred, Powershred 12C, 12C DIN, DIN P-4, P-4 4х40мм, 4х40мм 12лст, 12лст 18лтр, Шредер, Powershred, DIN, 4х40мм, 12лст, 18лтр, Safety, shpedep-fellowes, p-4-4h40mm, 4h40mm-12lst, 12lst-18ltp, shpedep, 4h40mm, 12lst, 18ltp, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="AC4653101" available="true">
@@ -4145,7 +4203,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Шредер Fellowes® Powershred® 53C, DIN P-4</h3>
-<p>Простой в использовании. Имеет автоматическую функцию старт-стоп и обратная функция. Нарезка на частицы также обеспечивает повышенный уровень безопасности. уменьшает заполнение корзины. Легкое опорожнение корзины - прорези для подъема головы. Он измельчает документы с помощью мелких скоб, канцелярских скрепок и т. Д. кредитные карты и CD / Blu-Ray / DVD. Простота использования - автоматическая функция</p>
+<p>Простой в использовании. Имеет автоматическую функцию старт-стоп и обратная функция. Нарезка на частицы также обеспечивает повышенный уровень безопасности. уменьшает заполнение корзины. Легкое опорожнение корзины - прорези для подъема головы. Он измельчает документы с помощью мелких скоб, канцелярских скрепок и т. Д. кредитные карты и CD / Blu-Ray / DVD. Ширина входа 220 мм. Простота использования - автоматическая функция</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
@@ -4156,7 +4214,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <param name="Тип">шредеры офисные</param>
         <param name="Страна происхождения">Китай</param>
         <param name="Гарантия">1 год</param>
-        <keywords>Fellowes, P-4, 53C, Шредер Fellowes, Fellowes Powershred, Powershred 53C, 53C DIN, DIN P-4, Шредер, Powershred, DIN, shpedep-fellowes, shpedep, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Fellowes, 53C, P-4, Шредер Fellowes, Fellowes Powershred, Powershred 53C, 53C DIN, DIN P-4, Шредер, Powershred, DIN, shpedep-fellowes, shpedep, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="AC5502201" available="true">
@@ -4169,15 +4227,17 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</h3>
+<p>&#8805;1300 Уровень секретности для кредитных карт, DIN 66399	T-4 Уровень секретности для CD дисков, DIN 66399	нет Ширина входа, мм	230 Скорость резки, м/мин	2 Рабочий цикл, мин	10 / 15 Уничтожение степлерных скоб	да Уничтожение скрепок	да Уничтожение кредитных карт	да Уничтожение CD или Blu-Ray DVD (1,</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
+  <li><strong>Формат:</strong> Шредер Powershred® LX200 Шредер нового поколения с непревзойденным удобством и эффективностью Уничтожает до 12 листов одновременно Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов Вместительная корзина 22 литра &#8776; 350 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки Артикул	fs-55022 Количество пользователей	1-3 Пользователя Рекомендуемое количество листов в день	1000 Рекомендуемое количество кредитных карт в день	25 Рекомендуемое количество CD дисков в день	нет Загрузка, листов (A4, 70гр/м&#178;)	12 Тип Резки	Перекрест</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
 ]]></description>
         <param name="Тип">шредеры офисные</param>
         <param name="Гарантия">24</param>
-        <keywords>P-4, LX200, Шредер Fellowes, Fellowes Powershred, Powershred LX200, LX200 черный, черный DIN, DIN P-4, P-4 4х12, 4х12 12, Шредер, Fellowes, Powershred, Черный, DIN, 4х12, 12, Лст, shpedep-fellowes, lx200-chepnyy, chepnyy-din, p-4-4h12, 4h12-12, shpedep, chepnyy, 4h12, lst, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>LX200, P-4, Шредер Fellowes, Fellowes Powershred, Powershred LX200, LX200 черный, черный DIN, DIN P-4, P-4 4х12, 4х12 12, Шредер, Fellowes, Powershred, Черный, DIN, 4х12, 12, Лст, shpedep-fellowes, lx200-chepnyy, chepnyy-din, p-4-4h12, 4h12-12, shpedep, chepnyy, 4h12, lst, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="AC5502501" available="true">
@@ -4193,6 +4253,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
+  <li><strong>Формат:</strong> Шредер Powershred® LX210 Шредер нового поколения с непревзойденным удобством и эффективностью Уничтожает до 16 листов одновременно Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов Вместительная корзина 23 литра &#8776; 425 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки Артикул	fs-55025 Количество пользователей	1-3 Пользователя Рекомендуемое количество листов в день	1000 Рекомендуемое количество кредитных карт в день	25 Рекомендуемое количество CD дисков в день	нет Загрузка, листов (A4, 70гр/м&#178;)	16 Тип Резки	Перекрест</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
 ]]></description>
@@ -4211,9 +4272,11 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
         <currencyId>KZT</currencyId>
         <description><![CDATA[
 <h3>Шредер Fellowes® Powershred® LX70, DIN P-4, 4х37мм, 11 лст., 18 лтр., уничт.: скрепки,скобы,карты</h3>
+<p>&#8805;390 Уровень секретности для кредитных карт, DIN 66399	T-3 Ширина входа, мм	224 Скорость резки, м/мин	3 Рабочий цикл, мин	5 / 30 Уничтожение степлерных скоб	да Уничтожение скрепок	да Уничтожение кредитных карт	да Уничтожение CD или Blu-Ray DVD (1,2 слоя)	нет 100% Jam-Proof Технология предотвращения заторов	нет Другие технологии предотвращения заторов	Реверс SafeSense® Технолог</p>
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
+  <li><strong>Формат:</strong> Шредер Powershred® LX70 Высокая производительность, до 11 листов одновременно Перекрестная резка - 4 х 40 мм, P-4 уровень секретности Корзина 18 литров &#8776; 220 листов А4 Гарантия 2 года на устройство и 3 года на ножи Возможности уничтожения - скобы, карты, скрепки Артикул	fs-44075 Количество пользователей	1 пользователь Рекомендуемое количество листов в день	100 Рекомендуемое количество кредитных карт в день	25 Рекомендуемое количество CD дисков в день	нет Загрузка, листов (A4, 70гр/м&#178;)	11 Тип Резки	Перекрест</li>
   <li><strong>Страна происхождения:</strong> Китай</li>
   <li><strong>Гарантия:</strong> 2 года на устройство и 3 года на ножи</li>
 </ul>
@@ -4238,12 +4301,13 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
+  <li><strong>Формат:</strong> Шредер уничтожает лист A4 на более чем 1300 фрагментов размером 4х12мм</li>
   <li><strong>Гарантия:</strong> 24 мес</li>
 </ul>
 ]]></description>
         <param name="Тип">шредеры офисные</param>
         <param name="Гарантия">24 мес</param>
-        <keywords>LX25M, 230V, Шредер Fellowes, Fellowes Powershred, Powershred LX25M, LX25M SHREDDER, SHREDDER CROSS, CROSS CUT, CUT 230V, Шредер, Fellowes, Powershred, SHREDDER, CROSS, CUT, shpedep-fellowes, shpedep, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>230V, LX25M, Шредер Fellowes, Fellowes Powershred, Powershred LX25M, LX25M SHREDDER, SHREDDER CROSS, CROSS CUT, CUT 230V, Шредер, Fellowes, Powershred, SHREDDER, CROSS, CUT, shpedep-fellowes, shpedep, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="AC4400701" available="true">
@@ -4259,12 +4323,13 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <h3>Характеристики</h3>
 <ul>
   <li><strong>Тип:</strong> шредеры офисные</li>
+  <li><strong>Формат:</strong> Шредер Powershred® LX65 Самый доступный уничтожитель с технологией безопасности SafeSense Высокая скорость уничтожения 4 м/мин, одновременное уничтожение до 10 листов Перекрестная резка - 4х40 мм, P-4 уровень секретности Корзина 22 литра &#8776; 300 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки Артикул	fs-44007 Количество пользователей	1-3 Пользователя Рекомендуемое количество листов в день	100 Рекомендуемое количество кредитных карт в день	5 Рекомендуемое количество CD дисков в день	нет Загрузка, листов (A4, 70гр/м&#178;)	10 Тип Резки	Перекрест</li>
   <li><strong>Гарантия:</strong> 24</li>
 </ul>
 ]]></description>
         <param name="Тип">шредеры офисные</param>
         <param name="Гарантия">24</param>
-        <keywords>LX65, 230V, Шредер Fellowes, Fellowes Powershred, Powershred LX65, LX65 SHREDDER, SHREDDER CROSS, CROSS CUT, CUT 230V, Шредер, Fellowes, Powershred, SHREDDER, CROSS, CUT, shpedep-fellowes, shpedep, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>230V, LX65, Шредер Fellowes, Fellowes Powershred, Powershred LX65, LX65 SHREDDER, SHREDDER CROSS, CROSS CUT, CUT 230V, Шредер, Fellowes, Powershred, SHREDDER, CROSS, CUT, shpedep-fellowes, shpedep, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанаи, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T66464A" available="true">
