@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.3.8"
+SCRIPT_VERSION = "akcent-2025-10-23.v1.3.8"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -349,7 +349,7 @@ def ensure_categoryid_zero_first(out_shop: ET.Element) -> int:
     off_el=out_shop.find("offers")
     if off_el is None: return 0
     touched=0
-    for offer in off_el.findall("offer"):
+    for offer in out_shop.find("offers").findall("offer"):
         remove_all(offer,"categoryId","CategoryId")
         cid=ET.Element("categoryId"); cid.text=os.getenv("CATEGORY_ID_DEFAULT","0")
         offer.insert(0,cid); touched+=1
@@ -359,7 +359,7 @@ def reorder_offer_children(out_shop: ET.Element) -> int:
     off_el=out_shop.find("offers")
     if off_el is None: return 0
     changed=0
-    for offer in out_offers.findall("offer"):
+    for offer in off_el.findall("offer"):
         children=list(offer)
         buckets={k:[] for k in DESIRED_ORDER}; others=[]
         for n in children: (buckets[n.tag] if n.tag in buckets else others).append(n)
@@ -681,7 +681,7 @@ def strip_specs_from_supplier_html(s: str) -> str:
 
     out = re.sub(r"<p>(.*?)</p>", _clean_p, out, flags=re.I|re.S)
     out = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", out, flags=re.I|re.S)
-    out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out, flags=re.I|re.S)  # <-- FIXED HERE
+    out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out, flags=re.I|re.S)  # <-- FIX: re.S
     out = re.sub(r"\s{2,}", " ", out).strip()
     return out
 
@@ -1096,9 +1096,7 @@ def main()->None:
     src_offers=list(offers_in.findall("offer"))
 
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
-    out_shop=ET.SubElement(out_root,"shop"); 
-    global out_offers
-    out_offers=ET.SubElement(out_shop,"offers")
+    out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
     for o in src_offers:
         mod=deepcopy(o)
@@ -1138,6 +1136,7 @@ def main()->None:
 
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
+
     ensure_keywords(out_shop)
 
     built_alm=now_almaty()
@@ -1160,6 +1159,7 @@ def main()->None:
 
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text=xml_bytes.decode(ENC, errors="replace")
+
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
     if DRY_RUN:
