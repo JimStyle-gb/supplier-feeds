@@ -11,7 +11,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-23.v1.5.0"
+SCRIPT_VERSION = "akcent-2025-10-23.v2.0.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -76,7 +76,6 @@ def now_almaty() -> datetime:
         return datetime.utcfromtimestamp(time.time()+5*3600)
 
 def format_dt_almaty(dt: datetime) -> str:
-    # ВАЖНО: латинская M, иначе минуты «залипают»
     return dt.strftime("%d:%m:%Y - %H:%M:%S")
 
 def inner_html(el: ET.Element) -> str:
@@ -384,7 +383,6 @@ def maybe_unescape_html(s: str) -> str:
             if not re.search(r"&lt;/?[a-zA-Z]", s): break
     return s
 
-# --- ключи/синонимы
 KV_KEYS_MAP = {
     "вид":"Вид","тип":"Тип","назначение":"Назначение","цвет печати":"Цвет печати",
     "поддерживаемые модели принтеров":"Совместимость","совместимость":"Совместимость",
@@ -442,7 +440,6 @@ CANON_NAME_MAP = {
     "бумаги":"Формат",
 }
 
-# --- стоп-секции/границы для резки значений
 STOP_SECTION_TOKENS = [
     "карты памяти","свойства","безопасность wlan","услуги мобильной и облачной печати","энергоснабжение",
     "дуплекс","поля печати","емкость отделения подачи бумаги","задний тракт","толщина","обработка мультимедиа",
@@ -452,7 +449,6 @@ STOP_SECTION_TOKENS = [
     "комплект поставки","сканирование","scan","для получения подробной информации","посетите",
     "www.","http://","https://","на сайте производителя","apple airprint","mopria",
 ]
-SECOND_KEY_RE = re.compile(r"\b(" + "|".join(re.escape(x) for x in sorted(set(list(ALLOWED_PARAM_CANON)+list(KV_KEYS_MAP.values())), key=len, reverse=True)) + r")\b", re.I)
 MAX_SPEC_LEN  = 180
 
 EN_RU_FIXES   = [
@@ -464,14 +460,11 @@ EN_RU_FIXES   = [
     (re.compile(r"\bper\s+10\s*[x×]\s*15\s*cm\s*photo\b", re.I), "на фото 10×15 см"),
 ]
 
-# --- DPI: защита от «14406»
 def _norm_resolution_text(s: str) -> str:
     t = s.replace("\u00A0", " ")
-    t = re.sub(r"(?<=\d)[\.,](?=\d{3}\b)", "", t)  # 5.760 -> 5760
+    t = re.sub(r"(?<=\d)[\.,](?=\d{3}\b)", "", t)
     t = t.replace("x", "×").replace("X", "×")
-    m = re.search(r"(\d{2,5})\s*×\s*(\d{2,5})", t)
-    if not m:
-        m = re.search(r"(\d{2,5})\s*[xX]\s*(\d{2,5})", t)
+    m = re.search(r"(\d{2,5})\s*×\s*(\d{2,5})", t) or re.search(r"(\d{2,5})\s*[xX]\s*(\d{2,5})", t)
     if not m: return ""
     a, b = m.group(1), m.group(2)
     if b.endswith("06") and len(b) >= 4:
@@ -485,12 +478,9 @@ def _norm_speed_text(s: str) -> str:
 
 def _norm_interfaces(s: str) -> str:
     t=s
-    repl = {
-        "wifi":"Wi-Fi","wi-fi":"Wi-Fi","wi fi":"Wi-Fi","usb-хост":"USB-host","usb host":"USB-host",
-        "ethernet":"Ethernet","bluetooth":"Bluetooth","rs-232":"RS-232","rj-45":"RJ-45",
-    }
-    for k,v in repl.items():
-        t=re.sub(rf"\b{k}\b", v, t, flags=re.I)
+    repl = {"wifi":"Wi-Fi","wi-fi":"Wi-Fi","wi fi":"Wi-Fi","usb-хост":"USB-host","usb host":"USB-host",
+            "ethernet":"Ethernet","bluetooth":"Bluetooth","rs-232":"RS-232","rj-45":"RJ-45",}
+    for k,v in repl.items(): t=re.sub(rf"\b{k}\b", v, t, flags=re.I)
     t=re.sub(r"\s*,\s*", ", ", t); t=re.sub(r"\s{2,}"," ", t)
     return t.strip(" ,;")
 
@@ -499,8 +489,7 @@ _ALLOWED_FORMAT_TOKEN = re.compile(
     re.I
 )
 def _norm_format_list(s: str) -> str:
-    t = s
-    t = t.replace("бумаги", "")
+    t = s.replace("бумаги", "")
     t = re.sub(r"\b(см|cm)\b", "", t)
     t = re.sub(r"\s*[xX]\s*", "×", t)
     t = re.sub(r"\b\d+\s*-\s*\d+\s*г/м2\b", "", t, flags=re.I)
@@ -512,38 +501,30 @@ def _norm_format_list(s: str) -> str:
         p = re.sub(r"\s*\(Конверт\)\s*", "", p, flags=re.I)
         p = re.sub(r"\s{2,}"," ", p)
         if _ALLOWED_FORMAT_TOKEN.match(p):
-            p = re.sub(r"\s*×\s*", "×", p)
-            keep.append(p)
-    if not keep:
-        return ""
-    if len(keep) > 10:
-        keep = keep[:10] + ["и др."]
+            p = re.sub(r"\s*×\s*", "×", p); keep.append(p)
+    if not keep: return ""
+    if len(keep) > 10: keep = keep[:10] + ["и др."]
     return ", ".join(keep)
 
-_COLOR_WORDS = {
-    "black":"Black","photo black":"Photo Black","cyan":"Cyan","magenta":"Magenta","yellow":"Yellow",
-    "grey":"Grey","gray":"Grey","light cyan":"Light Cyan","light magenta":"Light Magenta"
-}
+_COLOR_WORDS = {"black":"Black","photo black":"Photo Black","cyan":"Cyan","magenta":"Magenta","yellow":"Yellow",
+                "grey":"Grey","gray":"Grey","light cyan":"Light Cyan","light magenta":"Light Magenta"}
 def _norm_colors(s: str) -> str:
     t = re.sub(r"\[[^\]]*\]","", s)
     t = re.sub(r"\bcapacity\b","", t, flags=re.I)
     cut = STOP_SECTION_TOKENS + ["print from","для получения подробной информации","www.","http://","https://"]
-    pat = re.compile("|".join(re.escape(x) for x in cut), re.I)
-    m = pat.search(t)
+    pat = re.compile("|".join(re.escape(x) for x in cut), re.I); m = pat.search(t)
     if m: t = t[:m.start()]
     parts = re.split(r"[,/;]+|\s+\+\s+", t)
     out=[]
     for p in parts:
         w = p.strip().lower()
         if not w: continue
-        if w in _COLOR_WORDS:
-            out.append(_COLOR_WORDS[w])
+        if w in _COLOR_WORDS: out.append(_COLOR_WORDS[w])
         elif re.fullmatch(r"(black|grey|gray|cyan|magenta|yellow|photo black)", w):
             out.append(_COLOR_WORDS.get(w, w.title()))
     seen=set(); uniq=[]
     for x in out:
-        if x not in seen:
-            uniq.append(x); seen.add(x)
+        if x not in seen: uniq.append(x); seen.add(x)
     return ", ".join(uniq)
 
 def _norm_yesno(v: str) -> str:
@@ -555,8 +536,7 @@ def _norm_yesno(v: str) -> str:
     return v
 
 def _norm_display(v: str) -> str:
-    t=v.replace(",", ".")
-    m=re.search(r"(\d{1,2}(\.\d)?)", t)
+    t=v.replace(",", "."); m=re.search(r"(\d{1,2}(\.\d)?)", t)
     return f"{m.group(1)} см" if m else v
 
 def _norm_guarantee(v: str) -> str:
@@ -566,12 +546,10 @@ def _norm_guarantee(v: str) -> str:
     m=re.search(r"(\d(\.\d)?)\s*г(од|ода|лет)?", t, re.I)
     if m:
         years=float(m.group(1))
-        if abs(years-round(years))<1e-6:
-            return f"{int(round(years))*12} мес."
+        if abs(years-round(years))<1e-6: return f"{int(round(years))*12} мес."
         return f"{years} лет"
     return ""
 
-# --- базовая чистка значений с резкой по границам
 def clean_spec_value(key: str, value: str) -> str:
     if not value: return ""
     s = value.replace("\u00A0"," ").strip()
@@ -579,8 +557,7 @@ def clean_spec_value(key: str, value: str) -> str:
     for tok in STOP_SECTION_TOKENS:
         i = s.lower().find(tok.lower())
         if i > 0:
-            s = s[:i].rstrip(" ,;:—–-")
-            break
+            s = s[:i].rstrip(" ,;:—–-"); break
     s = URL_RE.sub("", s)
     s = re.sub(r"\s{2,}", " ", s).strip(" ,;:—–-")
     if len(s) > MAX_SPEC_LEN:
@@ -591,11 +568,9 @@ def clean_spec_value(key: str, value: str) -> str:
             s = s[:MAX_SPEC_LEN].rstrip(" ,;:—–-") + "…"
     return s if re.search(r"[A-Za-zА-Яа-яЁё0-9]", s) else ""
 
-# --- нормализация по ключам
 def normalize_by_key(k: str, v: str) -> str:
     if not v: return ""
-    key=k.lower()
-    s=v.strip()
+    key=k.lower(); s=v.strip()
     if key=="разрешение печати":
         got=_norm_resolution_text(s); return got or clean_spec_value(k, s)
     if key in ("интерфейсы","подключение","входы"):
@@ -624,6 +599,8 @@ def normalize_by_key(k: str, v: str) -> str:
         if "ч/б" in low or "монохром" in low or "черн" in low: return "ч/б"
         if "цветн" in low or "colour" in low or "color" in low: return "цветная"
         return ""
+    if key=="разрешение":  # для проекторов/панелей
+        return clean_spec_value(k, s.replace("XGA","XGA").replace("4k","4K"))
     return clean_spec_value(k, s)
 
 def _dedupe_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
@@ -636,24 +613,38 @@ def _dedupe_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
         if not old or len(v)>len(old): best[k]=v
     return [(k,best[k]) for k in best]
 
-def postclean_specs(specs: List[Tuple[str,str]]) -> List[Tuple[str,str]]:
+def postclean_specs(specs: List[Tuple[str,str]], kind: str) -> List[Tuple[str,str]]:
     cleaned=[]
     for k,v in specs:
         s=normalize_by_key(k, v)
         if s: cleaned.append((k,s))
     best={}
     for k,v in cleaned:
-        if k not in best or len(v)>len(best[k]): best[k]=v
-    if "Разрешение печати" in best:
-        best["Разрешение печати"] = re.sub(r"\s*dpi.*$", " dpi", best["Разрешение печати"], flags=re.I)
+        if k not in ALLOWED_PARAM_CANON: continue
+        if kind!="consumable" and k=="Совместимость":
+            continue
+        if k=="Совместимость":
+            # отбрасываем «совместимость», если там только артикулы расходников
+            if not re.search(r"[A-Za-z]{2,}-?\d{2,}", v):  # нет модельных имен устройств
+                continue
+        if k=="Цвет печати" and v=="ч/б":
+            # если есть цвета чернил >1 — принудительно «цветная»
+            colors=[vv for kk,vv in cleaned if kk=="Цвета чернил"]
+            if colors and re.search(r",", colors[0]): v="цветная"
+        if k=="Формат" and not re.search(r"[A-Za-z0-9]", v):
+            continue
+        old=best.get(k)
+        if not old or len(v)>len(old): best[k]=v
+
+    # порядок
     important_order = [
-        "Тип","Назначение","Тип печати","Формат","Разрешение печати","Скорость печати","Двусторонняя печать",
+        "Тип","Назначение","Тип печати","Цвет печати","Формат","Разрешение печати","Скорость печати","Двусторонняя печать",
         "Интерфейсы","Подключение","Wi-Fi","Емкость лотка","Выходной лоток","Подача бумаги",
         "Оптическое разрешение","Скорость сканирования","Макс. формат","Тип сканирования","Тип датчика",
         "Дисплей","Цвета чернил",
-        "Яркость","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
+        "Яркость","Контрастность","Входы","Источник света","Ресурс источника","Коррекция трапеции","Поддержка 3D",
         "Мощность","Стабилизация AVR","Стабилизация","Розетки",
-        "Страна происхождения","Гарантия",
+        "Страна происхождения","Гарантия","Совместимость",
     ]
     order_idx={k:i for i,k in enumerate(important_order)}
     return [(k,best[k]) for k in sorted(best.keys(), key=lambda x: order_idx.get(x, 999))]
@@ -687,9 +678,20 @@ def split_on_secondary_keys(value: str) -> List[Tuple[str,str]]:
         segs.append((key, val))
     return segs
 
+def canon_param_name(name: str) -> Optional[str]:
+    if not name: return None
+    key = name.strip().lower().replace("ё","е")
+    if key in DISALLOWED_PARAM_NAMES: return None
+    if key in CANON_NAME_MAP: return CANON_NAME_MAP[key]
+    if key in KV_KEYS_MAP:    return KV_KEYS_MAP[key]
+    title = name.strip()
+    if title in ALLOWED_PARAM_CANON: return title
+    title_cap = title[:1].upper()+title[1:].lower()
+    if title_cap in ALLOWED_PARAM_CANON: return title_cap
+    return None
+
 def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[Tuple[str,str]], str]:
     txt = _html_to_text(desc_html)
-
     lines_raw=[]
     for l in [l.strip() for l in txt.split("\n")]:
         if not l: lines_raw.append(""); continue
@@ -698,7 +700,6 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
 
     def _norm(s:str)->str:
         s=(s or "").lower(); s=re.sub(r"[\s\-–—:;,.]+"," ", s); return s.strip()
-
     if lines_raw and product_name and _norm(lines_raw[0])==_norm(product_name):
         lines_raw=lines_raw[1:]
 
@@ -815,36 +816,38 @@ def extract_kv_specs_and_text(desc_html: str, product_name: str) -> Tuple[List[T
         bundle="; ".join(dict.fromkeys([b for b in bundle_items if b]))
         if bundle: specs.append(("Комплектация", bundle))
 
-    specs = postclean_specs(_dedupe_specs(specs))
+    # Классификация для правил (расходник/устройство)
+    def classify_product(name: str, desc_text: str) -> str:
+        n=(name or "").lower()+" "+(desc_text or "").lower()
+        if any(k in n for k in ["картридж","тонер","емкость для отработанных","maintenance box","чернила","порошок","ribbon","фотобарабан","drum"]):
+            return "consumable"
+        if any(k in n for k in ["кабель","шнур","адаптер","лоток","крышка","держатель","подставка","брекет","лампа"]):
+            return "accessory"
+        return "device"
+
+    kind = classify_product(product_name, txt)
+    specs = postclean_specs(_dedupe_specs(specs), kind)
     native_plain="\n".join([ln for ln in out_lines if ln.strip()]).strip()
     return specs, native_plain
 
-# ---------------- sanitize supplier HTML ----------------
 ALLOWED_TAGS = ("h3","p","ul","ol","li","br","strong","em","b","i")
 
 def sanitize_supplier_html(raw_html: str) -> str:
     s = raw_html or ""
     s = maybe_unescape_html(s)
-
     s = re.sub(r"<(script|style|iframe|object|embed|noscript)[^>]*>.*?</\1>", " ", s, flags=re.I|re.S)
     s = re.sub(r"</?(table|thead|tbody|tr|td|th|img)[^>]*>", " ", s, flags=re.I|re.S)
     s = re.sub(r"<a\b[^>]*>", "", s, flags=re.I); s = re.sub(r"</a>", "", s, flags=re.I)
-
     s = re.sub(r"<h[1-6]\b[^>]*>", "<h3>", s, flags=re.I); s = re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
     s = re.sub(r"<div\b[^>]*>", "<p>", s, flags=re.I); s = re.sub(r"</div>", "</p>", s, flags=re.I)
     s = re.sub(r"</?span\b[^>]*>", "", s, flags=re.I)
-
     s = re.sub(r"(?:\s*<br\s*/?>\s*){2,}", "</p><p>", s, flags=re.I)
-
     s = re.sub(r"\sstyle\s*=\s*(['\"]).*?\1", "", s, flags=re.I)
     s = re.sub(r"\s(class|id|align|width|height)\s*=\s*(['\"]).*?\2", "", s, flags=re.I)
-
     s = re.sub(r"</?(?!"+("|".join(ALLOWED_TAGS))+r")\w+[^>]*>", " ", s, flags=re.I)
-
     s = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I)
     s = re.sub(r"</p>\s*<p>", "</p>\n<p>", s, flags=re.I)
     s = re.sub(r"\s{2,}", " ", s).strip()
-
     if s and not re.match(r"^\s*<", s):
         s = f"<p>{_html_escape_in_cdata_safe(s)}</p>"
     return s
@@ -861,7 +864,6 @@ def strip_specs_from_supplier_html(s: str) -> str:
         out, flags=re.I|re.S
     )
     out = re.sub(rf"<li>\s*{keys_alt}\b.*?</li>", "", out, flags=re.I|re.S)
-
     def _clean_p(m: re.Match) -> str:
         full = m.group(0); inner = m.group(1) or ""
         if re.match(rf"^\s*{keys_alt}\b", inner, flags=re.I): return ""
@@ -870,20 +872,11 @@ def strip_specs_from_supplier_html(s: str) -> str:
         keep = inner[:km.start()].rstrip(" ,;:—-")
         if not re.search(r"[A-Za-zА-Яа-яЁё0-9]", keep): return ""
         return f"<p>{keep}</p>"
-
     out = re.sub(r"<p>(.*?)</p>", _clean_p, out, flags=re.I|re.S)
     out = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", out, flags=re.I|re.S)
     out = re.sub(r"</p>\s*<p>", "</p>\n<p>", out, flags=re.I|re.S)
     out = re.sub(r"\s{2,}", " ", out).strip()
     return out
-
-# ---------------- сокращение «родного» описания ----------------
-FLUFF_PHRASES = [
-    "раскройте свой творческий потенциал","идеальным выбором","современные возможности",
-    "просты как никогда","экономия времени и денег","дайте волю","впечатляющ","великолепн",
-    "гибкие возможности","простая настройка","подойдет для","предназначен для широкого круга задач"
-]
-FLUFF_RE = re.compile("|".join(re.escape(x) for x in FLUFF_PHRASES), re.I)
 
 def split_sentences(text: str) -> List[str]:
     t = re.sub(r"\s+", " ", text).strip()
@@ -895,16 +888,11 @@ def split_sentences(text: str) -> List[str]:
         out.append(p)
     return out
 
-def classify_product(name: str, desc_text: str) -> str:
-    n=(name or "").lower()+" "+(desc_text or "").lower()
-    if any(k in n for k in ["картридж","тонер","емкость для отработанных","maintenance box","чернила","порошок","ribbon","фотобарабан","drum"]):
-        return "consumable"
-    if any(k in n for k in ["кабель","шнур","адаптер","лоток","крышка","держатель","подставка","брекет","лампа"]):
-        return "accessory"
-    return "device"
-
-def target_limits(kind: str) -> int:
-    return 220 if kind=="consumable" else (300 if kind=="accessory" else 600)
+FLUFF_RE = re.compile("|".join(re.escape(x) for x in [
+    "раскройте свой творческий потенциал","идеальным выбором","современные возможности",
+    "просты как никогда","экономия времени и денег","дайте волю","впечатляющ","великолепн",
+    "гибкие возможности","простая настройка","подойдет для","предназначен для широкого круга задач"
+]), re.I)
 
 def sentence_is_fluff(s: str) -> bool:
     if FLUFF_RE.search(s): return True
@@ -921,8 +909,16 @@ def sentence_duplicates_specs(s: str, specs: List[Tuple[str,str]]) -> bool:
 def build_lead_from_supplier(supplier_html: str, name: str, specs: List[Tuple[str,str]]) -> str:
     txt = _html_to_text(supplier_html)
     sentences = split_sentences(txt)
+    # классификация для лимита
+    def classify_product(name: str, desc_text: str) -> str:
+        n=(name or "").lower()+" "+(desc_text or "").lower()
+        if any(k in n for k in ["картридж","тонер","емкость для отработанных","maintenance box","чернила","порошок","ribbon","фотобарабан","drum"]):
+            return "consumable"
+        if any(k in n for k in ["кабель","шнур","адаптер","лоток","крышка","держатель","подставка","брекет","лампа"]):
+            return "accessory"
+        return "device"
     kind = classify_product(name, txt)
-    limit = target_limits(kind)
+    limit = 220 if kind=="consumable" else (300 if kind=="accessory" else 600)
 
     clean=[]
     for s in sentences:
@@ -930,10 +926,8 @@ def build_lead_from_supplier(supplier_html: str, name: str, specs: List[Tuple[st
         if sentence_duplicates_specs(s, specs): continue
         if URL_RE.search(s): continue
         clean.append(s)
-
     if not clean and sentences:
-        clean = sentences[:2]  # пусть будет 1-2 предложения «как есть»
-
+        clean = sentences[:2]
     lead=""
     for s in clean:
         add = s if not lead else (lead + ". " + s)
@@ -946,7 +940,6 @@ def build_lead_from_supplier(supplier_html: str, name: str, specs: List[Tuple[st
                     words=words[:-1]
                 lead=" ".join(words).rstrip(" ,;:—–-")
             break
-
     lead = lead.strip(" .")
     if lead: lead += "."
     return lead
@@ -973,18 +966,25 @@ def postprocess_supplier_html(html_in: str, product_name: str) -> str:
     s = re.sub(r"\s{2,}", " ", s).strip()
     return s
 
-# =========== PARAMS ===========
-def canon_param_name(name: str) -> Optional[str]:
-    if not name: return None
-    key = name.strip().lower().replace("ё","е")
-    if key in DISALLOWED_PARAM_NAMES: return None
-    if key in CANON_NAME_MAP: return CANON_NAME_MAP[key]
-    if key in KV_KEYS_MAP:    return KV_KEYS_MAP[key]
-    title = name.strip()
-    if title in ALLOWED_PARAM_CANON: return title
-    title_cap = title[:1].upper()+title[1:].lower()
-    if title_cap in ALLOWED_PARAM_CANON: return title_cap
-    return None
+def render_specs_html(specs: List[Tuple[str,str]]) -> str:
+    if not specs: return ""
+    out=["<h3>Характеристики</h3>","<ul>"]
+    for k,v in specs:
+        if k=="Комплектация": continue
+        out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
+    out.append("</ul>")
+    return "\n".join(out)
+
+def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
+    for k,v in specs:
+        if k=="Комплектация" and v:
+            items=[it.strip() for it in re.split(r"[;,\n]+", v) if it.strip()]
+            if not items: return ""
+            out=["<h3>Состав поставки</h3>","<ul>"]
+            for it in items: out.append(f"  <li>{_html_escape_in_cdata_safe(it)}</li>")
+            out.append("</ul>")
+            return "\n".join(out)
+    return ""
 
 def collect_allowed_params_from_existing(offer: ET.Element) -> List[Tuple[str,str]]:
     res: Dict[str,str] = {}
@@ -1000,7 +1000,17 @@ def collect_allowed_params_from_existing(offer: ET.Element) -> List[Tuple[str,st
                 res[canon] = value
     return list(res.items())
 
-def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> int:
+def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]], name_for_kind: str) -> int:
+    # Определяем тип для фильтра «Совместимость»
+    def classify_product(name: str) -> str:
+        n=(name or "").lower()
+        if any(k in n for k in ["картридж","тонер","емкость для отработанных","maintenance box","чернила","порошок","ribbon","фотобарабан","drum"]):
+            return "consumable"
+        if any(k in n for k in ["кабель","шнур","адаптер","лоток","крышка","держатель","подставка","брекет","лампа"]):
+            return "accessory"
+        return "device"
+    kind = classify_product(name_for_kind)
+
     keep_from_existing = collect_allowed_params_from_existing(offer)
     for tag in ("param","Param","PARAM"):
         for pn in list(offer.findall(tag)): offer.remove(pn)
@@ -1013,22 +1023,34 @@ def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> i
     for k,v in specs:
         if k=="Комплектация":
             continue
+        if k=="Совместимость" and kind!="consumable":
+            continue
         if k in ALLOWED_PARAM_CANON and v:
             v=v.strip()
             if not v: continue
             prev = merged.get(k, "")
+            # защита от «Совместимости» с артикульными кодами
+            if k=="Совместимость" and not re.search(r"[A-Za-z]{2,}-?\d{2,}", v):
+                continue
             if len(v) > len(prev): merged[k] = v
 
+    # принудительно «цветная», если есть список чернил >1
+    if merged.get("Цвет печати","")=="ч/б":
+        cols = merged.get("Цвета чернил","")
+        if cols and "," in cols:
+            merged["Цвет печати"]="цветная"
+
     important_order = [
-        "Тип","Назначение","Тип печати","Формат","Разрешение печати","Скорость печати","Двусторонняя печать",
+        "Тип","Назначение","Тип печати","Цвет печати","Формат","Разрешение печати","Скорость печати","Двусторонняя печать",
         "Интерфейсы","Подключение","Wi-Fi","Емкость лотка","Выходной лоток","Подача бумаги",
         "Оптическое разрешение","Скорость сканирования","Макс. формат","Тип сканирования","Тип датчика",
         "Дисплей","Цвета чернил",
         "Яркость","Контрастность","Источник света","Ресурс источника","Входы","Коррекция трапеции","Поддержка 3D",
         "Мощность","Стабилизация AVR","Стабилизация","Розетки",
-        "Страна происхождения","Гарантия",
+        "Страна происхождения","Гарантия","Совместимость",
     ]
     order_idx={k:i for i,k in enumerate(important_order)}
+
     added=0
     for k in sorted(merged.keys(), key=lambda it: order_idx.get(it, 999)):
         val = merged[k]
@@ -1038,69 +1060,54 @@ def write_params_from_specs(offer: ET.Element, specs: List[Tuple[str,str]]) -> i
         node=ET.SubElement(offer,"param"); node.set("name", k); node.text=val; added+=1
     return added
 
-# ===================== KEYWORDS =====================
-WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
-def tokenize(s: str) -> List[str]: return WORD_RE.findall(s or "")
-def dedup(words: List[str]) -> List[str]:
-    seen=set(); out=[]
-    for w in words:
-        k=w.lower()
-        if k and k not in seen: seen.add(k); out.append(w)
-    return out
-
-def translit_ru_to_lat(s: str) -> str:
-    table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"p","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
-    out=s.lower().translate(table); out=re.sub(r"[^a-z0-9\- ]+","", out); return re.sub(r"\s+","-", out).strip("-")
-
-AS_INTERNAL_ART_RE = re.compile(r"^AS\d+|^AK\d+|^AC\d+", re.I)
-MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
-def extract_models(text_srcs: List[str]) -> List[str]:
-    tokens=set()
-    for src in text_srcs:
-        if not src: continue
-        for m in MODEL_RE.findall(src or ""):
-            t=m.upper()
-            if AS_INTERNAL_ART_RE.match(t) or not (re.search(r"[A-Z]", t) and re.search(r"\d", t)) or len(t)<5: continue
-            tokens.add(t)
-    return list(tokens)
-
-def is_content_word(t: str) -> bool:
-    x=t.lower()
-    STOP_RU={"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","о","об","у","без","про","как","это","тип","модель","комплект","формат","новый","новинка","оригинальный"}
-    STOP_EN={"for","and","or","with","of","the","a","an","to","in","on","by","at","from","new","original","type","model","set","kit","pack"}
-    GENERIC={"изделие","товар","продукция","аксессуар","устройство","оборудование"}
-    return (x not in STOP_RU) and (x not in STOP_EN) and (x not in GENERIC) and (any(ch.isdigit() for ch in x) or "-" in x or len(x)>=3)
-
 def build_keywords_for_offer(offer: ET.Element) -> str:
+    WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
+    def tokenize(s: str) -> List[str]: return WORD_RE.findall(s or "")
+    def dedup(words: List[str]) -> List[str]:
+        seen=set(); out=[]
+        for w in words:
+            k=w.lower()
+            if k and k not in seen: seen.add(k); out.append(w)
+        return out
+    def translit_ru_to_lat(s: str) -> str:
+        table=str.maketrans({"а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"p","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ы":"y","э":"e","ю":"yu","я":"ya","ь":"","ъ":""})
+        out=s.lower().translate(table); out=re.sub(r"[^a-z0-9\- ]+","", out); return re.sub(r"\s+","-", out).strip("-")
+
     name=get_text(offer,"name"); vendor=get_text(offer,"vendor").strip()
     desc_html=inner_html(offer.find("description"))
     base=[vendor] if vendor else []
     raw_tokens=tokenize(name or "")
     modelish=[t for t in raw_tokens if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t)]
-    content=[t for t in raw_tokens if is_content_word(t)]
+    content=[t for t in raw_tokens if (t.lower() not in {"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","о","об","у","без","про","как","это","тип","модель","комплект","формат","новый","новинка","оригинальный"}) and (any(ch.isdigit() for ch in t) or "-" in t or len(t)>=3)]
     bigr=[]
     for i in range(len(content)-1):
         a,b=content[i],content[i+1]
-        if is_content_word(a) and is_content_word(b): bigr.append(f"{a} {b}")
-    base += extract_models([name, desc_html]) + modelish[:8] + bigr[:8] + [t.capitalize() if not re.search(r"[A-Z]{2,}",t) else t for t in content[:10]]
-    colors=[]; low=name.lower() if name else ""
-    mapping={"жёлт":"желтый","желт":"желтый","yellow":"yellow","черн":"черный","black":"black","син":"синий","blue":"blue",
-             "красн":"красный","red":"red","зелен":"зеленый","green":"green","серебр":"серебряный","silver":"silver","циан":"cyan","магент":"magenta"}
-    for k,val in mapping.items():
-        if k in low and val not in colors: colors.append(val)
-    base += colors
+        bigr.append(f"{a} {b}")
+    base += list(set([t.upper() for t in modelish[:8]])) + bigr[:8] + [t.capitalize() if not re.search(r"[A-Z]{2,}",t) else t for t in content[:10]]
+
+    # добавим латиницу для русских слов
     extra=[]
     for w in base:
         if re.search(r"[А-Яа-яЁё]", str(w)):
             tr=translit_ru_to_lat(str(w))
             if tr and tr not in extra: extra.append(tr)
     base += extra
+
     if SATU_KEYWORDS_GEO:
         geo=["Казахстан","Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз",
              "Оскемен","Семей","Костанаи","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
         if SATU_KEYWORDS_GEO_LAT:
             geo += ["Kazakhstan","Almaty","Astana","Shymkent","Karaganda","Aktobe","Pavlodar","Atyrau","Taraz","Oskemen","Semey","Kostanay","Kyzylorda","Oral","Petropavl","Taldykorgan","Aktau","Temirtau","Ekibastuz","Kokshetau","Rudny"]
         base += geo[:SATU_KEYWORDS_GEO_MAX]
+
+    # цвета из названия
+    colors=[]; low=name.lower() if name else ""
+    mapping={"жёлт":"желтый","желт":"желтый","yellow":"yellow","черн":"черный","black":"black","син":"синий","blue":"blue",
+             "красн":"красный","red":"red","зелен":"зеленый","green":"green","серебр":"серебряный","silver":"silver","циан":"cyan","магент":"magenta"}
+    for k,val in mapping.items():
+        if k in low and val not in colors: colors.append(val)
+    base += colors
+
     parts=dedup([p for p in base if p])
     res=[]; total=0
     for p in parts:
@@ -1125,7 +1132,6 @@ def ensure_keywords(out_shop: ET.Element) -> int:
             if (node.text or "")!=kw: node.text=kw; touched+=1
     return touched
 
-# ===================== VENDORCODE / ARTICLE =====================
 ARTICUL_RE = re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
 def _extract_article_from_name(name: str) -> str:
     if not name: return ""
@@ -1145,6 +1151,7 @@ def _normalize_code(s: str) -> str:
     if not s: return ""
     s = re.sub(r"[\s_]+", "", s).replace("—", "-").replace("–", "-")
     return re.sub(r"[^A-Za-z0-9\-]+", "", s).upper()
+
 def ensure_vendorcode_with_article(out_shop: ET.Element, prefix: str, create_if_missing: bool = False) -> None:
     off_el = out_shop.find("offers")
     if off_el is None: return
@@ -1161,6 +1168,7 @@ def ensure_vendorcode_with_article(out_shop: ET.Element, prefix: str, create_if_
                    _normalize_code(offer.attrib.get("id") or ""))
             if art: vc.text = art
         vc.text = f"{prefix}{(vc.text or '')}"
+
 def sync_offer_id_with_vendorcode(out_shop: ET.Element) -> None:
     off_el=out_shop.find("offers")
     if off_el is None: return
@@ -1172,7 +1180,6 @@ def sync_offer_id_with_vendorcode(out_shop: ET.Element) -> None:
         if offer.attrib.get("id")!=code:
             offer.attrib["id"]=code
 
-# ===================== PLACEHOLDERS =====================
 _url_head_cache: Dict[str,bool]={}
 def url_exists(url: str) -> bool:
     if not url: return False
@@ -1217,27 +1224,6 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
         ET.SubElement(offer,"picture").text=picked; added+=1
     return added
 
-# ===================== DESCRIPTION REBUILD =====================
-def render_specs_html(specs: List[Tuple[str,str]]) -> str:
-    if not specs: return ""
-    out=["<h3>Характеристики</h3>","<ul>"]
-    for k,v in specs:
-        if k=="Комплектация": continue
-        out.append(f'  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> { _html_escape_in_cdata_safe(v) }</li>')
-    out.append("</ul>")
-    return "\n".join(out)
-
-def render_bundle_html(specs: List[Tuple[str,str]]) -> str:
-    for k,v in specs:
-        if k=="Комплектация" and v:
-            items=[it.strip() for it in re.split(r"[;,\n]+", v) if it.strip()]
-            if not items: return ""
-            out=["<h3>Состав поставки</h3>","<ul>"]
-            for it in items: out.append(f"  <li>{_html_escape_in_cdata_safe(it)}</li>")
-            out.append("</ul>")
-            return "\n".join(out)
-    return ""
-
 def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,int]:
     off_el=out_shop.find("offers")
     if off_el is None: return (0,0)
@@ -1246,23 +1232,21 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
         name=get_text(offer,"name")
         d=offer.find("description")
         raw_html=inner_html(d)
-
         supplier_html = sanitize_supplier_html(raw_html)
         specs, _ = extract_kv_specs_and_text(supplier_html, name)
 
+        # вырезаем потенциальные «характеристики» из нативного текста
         supplier_html = strip_specs_from_supplier_html(supplier_html)
         supplier_html = postprocess_supplier_html(supplier_html, name)
-
         lead = build_lead_from_supplier(supplier_html, name, specs)
-        lead_html = f"<p>{_html_escape_in_cdata_safe(lead)}</p>" if lead else "<p></p>"
 
         parts=[f"<h3>{_html_escape_in_cdata_safe(name)}</h3>"]
-        parts.append(lead_html)
+        if lead:
+            parts.append(f"<p>{_html_escape_in_cdata_safe(lead)}</p>")
         bundle_html = render_bundle_html(specs)
         if bundle_html: parts.append(bundle_html)
         specs_html = render_specs_html(specs)
         if specs_html: parts.append(specs_html)
-
         full_html = "\n".join([p for p in parts if p]).strip()
         placeholder=f"[[[HTML]]]{full_html}[[[/HTML]]]"
 
@@ -1272,7 +1256,7 @@ def rebuild_descriptions_preserve_supplier(out_shop: ET.Element) -> Tuple[int,in
             if (d.text or "") != placeholder:
                 d.text=placeholder; changed+=1
 
-        params_added_total += write_params_from_specs(offer, specs)
+        params_added_total += write_params_from_specs(offer, specs, name)
     return (changed, params_added_total)
 
 def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
@@ -1285,20 +1269,15 @@ def _replace_html_placeholders_with_cdata(xml_text: str) -> str:
         repl, xml_text, flags=re.S
     )
 
-# ===================== MAIN =====================
-def flag_unrealistic_supplier_prices(out_shop: ET.Element) -> int:
-    off_el=out_shop.find("offers")
-    if off_el is None: return 0
-    flagged=0
-    for offer in off_el.findall("offer"):
-        try:
-            src_p = float((get_text(offer,"price") or "").replace(",",".")) if get_text(offer,"price") else None
-        except Exception:
-            src_p = None
-        if src_p is not None and src_p >= PRICE_CAP_THRESHOLD:
-            offer.attrib["_force_price"]=str(PRICE_CAP_VALUE); flagged+=1
-    return flagged
+# ===================== KEYWORDS / VENDORCODE / ORDER =====================
+def ensure_keywords_all(out_shop: ET.Element) -> int:
+    return ensure_keywords(out_shop)
 
+def ensure_vendorcode_with_article_all(out_shop: ET.Element, prefix: str, create_if_missing: bool):
+    ensure_vendorcode_with_article(out_shop, prefix, create_if_missing)
+    sync_offer_id_with_vendorcode(out_shop)
+
+# ===================== MAIN =====================
 def main()->None:
     log("Run set -e")
     log(f"Python {sys.version.split()[0]}")
@@ -1333,11 +1312,10 @@ def main()->None:
 
     flag_unrealistic_supplier_prices(out_shop)
     ensure_vendor(out_shop)
-    ensure_vendorcode_with_article(
+    ensure_vendorcode_with_article_all(
         out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AC"),
         create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
     )
-    sync_offer_id_with_vendorcode(out_shop)
     reprice_offers(out_shop, PRICING_RULES)
     ensure_placeholder_pictures(out_shop)
 
@@ -1354,22 +1332,20 @@ def main()->None:
 
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
-    ensure_keywords(out_shop)
+    ensure_keywords_all(out_shop)
 
     built_alm=now_almaty()
-    # Старый компактный FEED_META (как ты просил)
+    # feed_meta — оставляем «как раньше»: без лишних полей, только ключевые строки
     out_root.insert(0, ET.Comment(
         "FEED_META\n"
-        f"Поставщик                  | {SUPPLIER_NAME}\n"
-        f"URL поставщика            | {SUPPLIER_URL}\n"
-        f"Время сборки (Алматы)     | {format_dt_almaty(built_alm)}\n"
-        f"Товаров до фильтра        | {len(src_offers)}\n"
-        f"Товаров после фильтра     | {len(list(out_offers.findall('offer')))}\n"
-        f"В наличии (true)          | {t_true}\n"
-        f"Нет в наличии (false)     | {t_false}\n"
-        f"Скрипт                    | {SCRIPT_VERSION}\n"
-        f"Descriptions changed      | {desc_changed}\n"
-        f"Params added              | {params_added}"
+        f"Поставщик              | {SUPPLIER_NAME}\n"
+        f"URL поставщика        | {SUPPLIER_URL}\n"
+        f"Время сборки (Алматы) | {format_dt_almaty(built_alm)}\n"
+        f"Товаров исходно       | {len(src_offers)}\n"
+        f"Товаров в выгрузке    | {len(list(out_offers.findall('offer')))}\n"
+        f"В наличии             | {t_true}\n"
+        f"Нет в наличии         | {t_false}\n"
+        f"Скрипт                | {SCRIPT_VERSION}"
     ))
 
     try: ET.indent(out_root, space="  ")
