@@ -11,7 +11,7 @@ from xml.etree import ElementTree as ET
 SUPPLIER_NAME = "Akcent"
 SUPPLIER_URL  = os.getenv("SUPPLIER_URL", "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml").strip()
 OUT_FILE      = os.getenv("OUT_FILE", "docs/akcent.yml").strip()
-ENCODING_OUT  = os.getenv("OUTPUT_ENCODING", "windows-1251").strip()  # CP1251 по умолчанию
+ENCODING_OUT  = os.getenv("OUTPUT_ENCODING", "windows-1251").strip()  # CP1251
 
 AKCENT_KEYWORDS_PATH = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt")
 AKCENT_KEYWORDS_MODE = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # include|exclude
@@ -22,7 +22,6 @@ RETRIES = 4
 PRICE_CAP_THRESHOLD = int(os.getenv("PRICE_CAP_THRESHOLD", "9999999"))
 PRICE_CAP_VALUE     = 100
 
-# Наценки (минимум — как договорились раньше)
 PRICING_RULES = [
     (101,10000,4.0,3000),(10001,25000,4.0,4000),(25001,50000,4.0,5000),
     (50001,75000,4.0,7000),(75001,100000,4.0,10000),(100001,150000,4.0,12000),
@@ -53,13 +52,12 @@ def enc_safe(s: str, enc: str) -> str:
     if not s: return s
     repl = {
         "\u2026":"...", "\u2014":"-", "\u2013":"-", "\u2212":"-",
-        "\u2122":"", "\u2265":">=", "\u2264":"<=", "\u2009":" ", "\u200A":" ",
-        "\u200B":"", "\u2018":"'", "\u2019":"'", "\u201C":'"', "\u201D":'"', "\u00A0":" ",
+        "\u2122":"",  "\u2265":">=", "\u2264":"<=", "\u2009":" ", "\u200A":" ",
+        "\u200B":"",  "\u2018":"'", "\u2019":"'", "\u201C":'"', "\u201D":'"', "\u00A0":" ",
     }
     for a,b in repl.items(): s = s.replace(a,b)
     try:
-        s.encode(enc)
-        return s
+        s.encode(enc); return s
     except Exception:
         return s.encode(enc, errors="ignore").decode(enc, errors="ignore")
 
@@ -78,6 +76,14 @@ def inner_html(el):
 
 def strip_html(s: str) -> str:
     return re.sub(r"<[^>]+>", " ", s or "", flags=re.S)
+
+def parse_num(s):
+    if not s: return None
+    t = s.replace("\xa0"," ").replace(" ","").replace("KZT","").replace("₸","").replace(",",".")
+    try:
+        v=float(t)
+        return v if v>0 else None
+    except: return None
 
 # =========================
 # Загрузка XML
@@ -106,18 +112,16 @@ class KeySpec:
 
 def load_name_filter(path):
     if not os.path.exists(path): return []
-    # пробуем разные кодировки
-    txt = None
+    txt=None
     for enc in ("utf-8-sig","utf-8","cp1251","utf-16","utf-16-le","utf-16-be"):
         try:
-            txt = open(path,"r",encoding=enc).read()
-            break
+            txt=open(path,"r",encoding=enc).read(); break
         except Exception: pass
     if txt is None:
-        txt = open(path,"r",encoding="utf-8",errors="ignore").read()
+        txt=open(path,"r",encoding="utf-8",errors="ignore").read()
     keys=[]
     for ln in txt.splitlines():
-        s = ln.strip()
+        s=ln.strip()
         if not s or s.startswith("#"): continue
         if len(s)>=2 and s[0]=="/" and s[-1]=="/":
             try: keys.append(KeySpec(s,"regex", None, re.compile(s[1:-1], re.I)))
@@ -148,28 +152,27 @@ def _bool_from_str(s):
     return None
 
 def derive_available(offer) -> bool:
-    # 1) читаем АТРИБУТ <offer available="...">
+    # 1) атрибут offer@available
     if "available" in offer.attrib:
-        b = _bool_from_str(offer.attrib.get("available"))
+        b=_bool_from_str(offer.attrib.get("available"))
         if b is not None: return b
-    # 2) дочерний <available> (если вдруг есть)
+    # 2) дочерний тег <available>
     n = offer.find("available")
     if n is not None and n.text:
-        b = _bool_from_str(n.text)
+        b=_bool_from_str(n.text)
         if b is not None: return b
     # 3) quantity / status
     for t in ("quantity_in_stock","quantity","stock","Stock"):
         qn = offer.find(t)
         if qn is not None and qn.text:
-            try: 
-                return int(re.sub(r"[^\d\-]+","",qn.text))>0
+            try:
+                return int(re.sub(r"[^\d\-]+","", qn.text))>0
             except: pass
     for t in ("status","Status"):
         sn = offer.find(t)
         if sn is not None and sn.text:
-            b = _bool_from_str(sn.text)
+            b=_bool_from_str(sn.text)
             if b is not None: return b
-    # по умолчанию — False
     return False
 
 def normalize_available_field(shop):
@@ -177,22 +180,17 @@ def normalize_available_field(shop):
     on=off=0
     for o in offers.findall("offer"):
         b = derive_available(o)
-        # фиксируем только атрибут
         o.attrib["available"] = "true" if b else "false"
-        # дочерний тег вычищаем
         for n in list(o.findall("available")): o.remove(n)
         if b: on+=1
         else: off+=1
-    return on, off
+    return on,off
 
 def fix_currency(shop):
     offers = shop.find("offers") or ET.Element("offers")
-    k=0
     for o in offers.findall("offer"):
         for n in list(o.findall("currencyId")): o.remove(n)
         ET.SubElement(o,"currencyId").text="KZT"
-        k+=1
-    return k
 
 def ensure_categoryid_zero_first(shop):
     offers = shop.find("offers") or ET.Element("offers")
@@ -220,14 +218,6 @@ def reorder_offer_children(shop):
 # =========================
 PRICE_TAGS_INTERNAL = ("purchase_price","purchasePrice","wholesale_price","wholesalePrice","opt_price","optPrice",
                        "b2b_price","b2bPrice","supplier_price","supplierPrice","min_price","minPrice","max_price","maxPrice","oldprice")
-
-def parse_num(s):
-    if not s: return None
-    t = s.replace("\xa0"," ").replace(" ","").replace("KZT","").replace("₸","").replace(",",".")
-    try:
-        v=float(t)
-        return v if v>0 else None
-    except: return None
 
 def pick_dealer_price(o):
     vals=[]
@@ -257,7 +247,6 @@ def strip_supplier_price_blocks(o):
 def reprice(shop):
     offers = shop.find("offers") or ET.Element("offers")
     for o in offers.findall("offer"):
-        # треш цены — принудительно ставим 100
         pnode = o.find("price")
         if pnode is not None and pnode.text:
             try:
@@ -268,7 +257,6 @@ def reprice(shop):
                     strip_supplier_price_blocks(o)
                     continue
             except: pass
-
         d = pick_dealer_price(o)
         if not d:
             strip_supplier_price_blocks(o)
@@ -284,7 +272,6 @@ def reprice(shop):
 # =========================
 # Описание / Характеристики
 # =========================
-ALLOWED_TAGS = ("h3","p","ul","ol","li","br","strong","em","b","i")
 DROP_SECTION_HEADS = re.compile(
     r"^\s*(состав поставки|комплект поставки|основные (свойства|характеристики)|технические характеристики)\b",
     re.I
@@ -301,24 +288,17 @@ def unescape_maybe(s: str)->str:
 def sanitize_supplier_html(raw_html: str)->str:
     s = raw_html or ""
     s = unescape_maybe(s)
-    # убрать скрипты/картинки/таблицы/ссылки/стили
     s = re.sub(r"<(script|style|iframe|object|embed|noscript)[^>]*>.*?</\1>", " ", s, flags=re.I|re.S)
     s = re.sub(r"</?(table|thead|tbody|tr|td|th|img)[^>]*>", " ", s, flags=re.I|re.S)
     s = re.sub(r"<a\b[^>]*>.*?</a>", " ", s, flags=re.I|re.S)
-    # заголовки → h3, div → p, убрать span
     s = re.sub(r"<h[1-6]\b[^>]*>", "<h3>", s, flags=re.I); s=re.sub(r"</h[1-6]>", "</h3>", s, flags=re.I)
     s = re.sub(r"<div\b[^>]*>", "<p>", s, flags=re.I); s=re.sub(r"</div>", "</p>", s, flags=re.I)
     s = re.sub(r"</?span\b[^>]*>", " ", s, flags=re.I)
-    # чистка атрибутов
     s = re.sub(r"\s(style|class|id|width|height|align)\s*=\s*(['\"]).*?\2", "", s, flags=re.I)
-    # двойные <br> → новый параграф
     s = re.sub(r"(?:\s*<br\s*/?>\s*){2,}", "</p><p>", s, flags=re.I)
-    # удалить URL'ы и CTA «подробнее/читать далее...»
     s = re.sub(r"\bhttps?://\S+|www\.\S+", "", s, flags=re.I)
     s = re.sub(r"<p>\s*(подробнее|читать далее|узнать больше|подробности|смотреть на сайте)\.?\s*</p>", "", s, flags=re.I)
-    # убрать пустые контейнеры
     s = re.sub(r"<(p|li|ul|ol)>\s*</\1>", "", s, flags=re.I)
-    # финальная нормализация пробелов
     s = re.sub(r"\s{2,}", " ", s).strip()
     return s
 
@@ -357,7 +337,6 @@ CANON_MAP = {
     "ресурс":"Ресурс","объем":"Объем","объём":"Объем",
     "сканирование":"Сканирование","копирование":"Копирование",
 }
-
 ALLOWED_SPECS = set(CANON_MAP.values())
 
 def canon_key(k: str):
@@ -388,7 +367,6 @@ def extract_ifaces(text: str):
     found=[]
     for pat,label in IFACE_PAT:
         if pat.search(s): found.append(label)
-    # порядок и уникальность
     uniq=[]
     for k in IFACE_ORDER:
         if k in found and k not in uniq: uniq.append(k)
@@ -431,11 +409,22 @@ def norm_format(s):
         return ", ".join(keep)
     return ""
 
+MAX_LEN_BY_KEY = {
+    "Тип":40,"Назначение":120,"Тип печати":20,"Цвет печати":20,"Формат":120,
+    "Разрешение":30,"Разрешение печати":30,"Оптическое разрешение":30,
+    "Скорость печати":30,"Интерфейсы":120,"Дисплей":20,"Wi-Fi":5,
+    "Двусторонняя печать":5,"Подача бумаги":40,"Тип чернил":60,"Цвета чернил":120,
+    "Страна происхождения":40,"Гарантия":20,"Автоподатчик":5,"Совместимость":400,
+    "Ресурс":60,"Сканирование":5,"Копирование":5,"Объем":40
+}
+
+DISALLOWED_PARAM_NAMES = {"сопутствующие товары","бренд","brand","manufacturer","vendor","поставщик","для бренда","наименование производителя"}
+
 def norm_value_by_key(key, val, kind="device"):
     k=key.lower()
     if k=="разрешение печати":     return norm_resolution_print(val)
     if k=="разрешение":            return norm_resolution_display(val)
-    if k=="интерфейсы" or k=="входы": return extract_ifaces(val)
+    if k in {"интерфейсы","входы","интерфейс"}: return extract_ifaces(val)
     if k=="wi-fi":                 return yesno(val)
     if k=="формат":                return norm_format(val)
     if k=="дисплей":               return "Да" if yesno(val)=="Да" else clean_ws(val)
@@ -446,7 +435,6 @@ def norm_value_by_key(key, val, kind="device"):
         m=re.search(r"(\d{1,3})", val); return f"{m.group(1)} мес" if m else clean_ws(val)
     return clean_ws(val)
 
-# извлечение блока <h3>Характеристики</h3> если он в сыром HTML уже был
 def remove_existing_specs_block(html_in: str):
     specs={}
     m=re.search(r"(?is)(<h3>\s*Характеристики\s*</h3>\s*<ul>(.*?)</ul>)", html_in)
@@ -458,53 +446,49 @@ def remove_existing_specs_block(html_in: str):
     cleaned = html_in[:m.start()] + html_in[m.end():]
     return specs, cleaned
 
-# вытягивание техфраз из маркетингового блока
 def extract_specs_from_marketing(mark_html: str):
     text = strip_html(mark_html)
     specs = {}
-    # формат
+    # Формат
     m = re.search(r"\bформат[а]?[\s:]*((?:A\d|Letter|Legal|10\s*×?\s*15|13\s*×?\s*18|9\s*×?\s*13|16:9))", text, re.I)
     if m: specs["Формат"]=norm_format(m.group(1))
-    # разрешение (dpi)
+    # Разрешение (dpi)
     m = re.search(r"(\d{2,5})\s*[x×]\s*(\d{2,5})\s*(dpi)?", text, re.I)
     if m:
         val = f"{m.group(1)}×{m.group(2)}"
         if m.group(3): specs["Разрешение печати"]=norm_resolution_print(val)
         else: specs["Оптическое разрешение"]=norm_resolution_print(val)
-    # скорость печати
+    # Скорость печати
     m = re.search(r"(?:скорост[ьи]\s*печати.*?|\bдо\b)\s*(\d{1,3})\s*(?:стр|pages)", text, re.I)
     if m: specs["Скорость печати"]=f"до {m.group(1)} стр/мин"
-    # интерфейсы
+    # Интерфейсы
     iface = extract_ifaces(text)
     if iface: specs["Интерфейсы"]=iface
     if "Wi-Fi" in iface: specs["Wi-Fi"]="Да"
-    # тип чернил
+    # Тип чернил
     if re.search(r"пигментн\w+", text, re.I) and re.search(r"водорастворим\w+", text, re.I):
         specs["Тип чернил"]="водорастворимые и пигментные"
     elif re.search(r"пигментн\w+", text, re.I):
         specs["Тип чернил"]="пигментные"
     elif re.search(r"водорастворим\w+", text, re.I):
         specs["Тип чернил"]="водорастворимые"
-    # гарантия
+    # Гарантия
     m = re.search(r"гаранти\w*\s*(\d{1,3})\s*мес", text, re.I)
     if m: specs["Гарантия"]=f"{m.group(1)} мес"
-    # ресурс
+    # Ресурс
     m = re.search(r"ресурс[^.\n]*?(\d[\d\s]{0,7})\s*(стр|страниц|мл)", text, re.I)
     if m:
         qty = re.sub(r"\s+","", m.group(1))
         unit = "стр" if m.group(2).lower().startswith("стр") else "мл"
         specs["Ресурс"]=f"{qty} {unit}"
-    # сканер/копир
+    # Скан/копир/дуплекс
     if re.search(r"\bсканер\b", text, re.I): specs["Сканирование"]="Да"
     if re.search(r"\bкопир|\bкопирован", text, re.I): specs["Копирование"]="Да"
-    # двусторонняя печать
     if re.search(r"\bдвусторонн\w+\s*печать\b", text, re.I): specs["Двусторонняя печать"]="Да"
 
-    # вырезаем из маркетинга явные «технические» хвосты
+    # срезаем из маркетинга явно тех-фразы
     cleaned = mark_html
-    # убрать строки-параграфы, начинающиеся на маркеры «служебных» разделов
     cleaned = re.sub(r"(?is)<p>\s*("+DROP_SECTION_HEADS.pattern+r").*?</p>", "", cleaned)
-    # убрать фразы с форматами, dpi, ресурсами, гарантией, скоростью и т.п.
     drop_patterns = [
         r"\bформат[а]?\s*A\d\b.*",
         r"\bформат[а]?.*(Letter|Legal|10\s*×?\s*15|13\s*×?\s*18|9\s*×?\s*13|16:9).*",
@@ -526,23 +510,10 @@ def extract_specs_from_marketing(mark_html: str):
         inner=m.group(1)
         t=strip_html(inner).strip()
         for dp in drop_patterns:
-            if re.search(dp, t, re.I):
-                return ""  # выкидываем весь параграф
+            if re.search(dp, t, re.I): return ""
         return m.group(0)
     cleaned = re.sub(r"(?is)<p>(.*?)</p>", drop_in_p, cleaned)
-
     return specs, cleaned
-
-# сбор параметров поставщика → канон
-DISALLOWED_PARAM_NAMES = {"сопутствующие товары","бренд","brand","manufacturer","vendor","поставщик","для бренда","наименование производителя"}
-MAX_LEN_BY_KEY = {
-    "Тип":40,"Назначение":120,"Тип печати":20,"Цвет печати":20,"Формат":120,
-    "Разрешение":30,"Разрешение печати":30,"Оптическое разрешение":30,
-    "Скорость печати":30,"Интерфейсы":120,"Дисплей":20,"Wi-Fi":5,
-    "Двусторонняя печать":5,"Подача бумаги":40,"Тип чернил":60,"Цвета чернил":120,
-    "Страна происхождения":40,"Гарантия":20,"Автоподатчик":5,"Совместимость":400,
-    "Ресурс":60,"Сканирование":5,"Копирование":5,"Объем":40
-}
 
 def collect_params_canonical(offer, vendor_text: str):
     merged={}
@@ -558,17 +529,12 @@ def collect_params_canonical(offer, vendor_text: str):
             if not v: continue
             old = merged.get(ck,"")
             if len(v)>len(old): merged[ck]=v
-
-    # если нет бренда в теге vendor — сохраняем «Производитель» как параметр
     if not vendor_text:
-        # ищем «Производитель» у поставщика
         for tag in ("Param","param","PARAM"):
             for p in offer.findall(tag):
                 if (p.get("name") or p.get("Name") or "").strip().lower()=="производитель":
                     val = clean_ws(p.text or "")
                     if val: merged["Производитель"]=val
-
-    # привести Да/Нет и чутка подрезать длины
     out={}
     for k,v in merged.items():
         if k in {"Wi-Fi","Дисплей","Двусторонняя печать","Автоподатчик","Сканирование","Копирование"}:
@@ -580,9 +546,7 @@ def collect_params_canonical(offer, vendor_text: str):
 
 def fix_li_spacing(html_in: str) -> str:
     if not html_in: return html_in
-    # один пробел после </strong>
     out = re.sub(r"(?is)(<strong>[^<:]+:\s*</strong>)[\s]*", r"\1 ", html_in)
-    # убрать двойные пробелы/знаки
     out = re.sub(r"\s{2,}"," ", out)
     out = re.sub(r"\s+</li>", "</li>", out)
     return out
@@ -597,7 +561,6 @@ def build_keywords(offer):
            "Оскемен","Семей","Костанаи","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау"]
     words=[]
     if vendor: words.append(vendor)
-    # модели
     for t in re.findall(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}", name or ""):
         if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t):
             up=t.upper()
@@ -614,8 +577,7 @@ def ensure_keywords(shop):
         kw = build_keywords(o)
         node = o.find("keywords")
         if node is None:
-            ET.SubElement(o,"keywords").text = kw
-            k+=1
+            ET.SubElement(o,"keywords").text = kw; k+=1
         else:
             if (node.text or "") != kw:
                 node.text = kw; k+=1
@@ -684,7 +646,7 @@ def main():
     ensure_categoryid_zero_first(out_shop)
     reorder_offer_children(out_shop)
 
-    # Нормализуем <name> (мелкие правки)
+    # Нормализуем <name>
     for o in out_offers.findall("offer"):
         n = o.find("name")
         if n is not None and n.text:
@@ -696,6 +658,7 @@ def main():
 
     # Описание + Характеристики + Параметры
     desc_changed=0
+    cdata_chunks = []   # сюда собираем HTML, заменим после сериализации
     for offer in out_offers.findall("offer"):
         name = get_text(offer,"name")
         vendor = get_text(offer,"vendor")
@@ -706,24 +669,30 @@ def main():
         s = sanitize_supplier_html(raw)
         s = wrap_bare_lines_to_paragraphs(s)
 
-        # 2) срежем существующий блок «Характеристики» если был
+        # 2) убрать встроенный блок Характеристик, если был
         specs_from_block, s_wo_specs = remove_existing_specs_block(s)
 
-        # 3) из маркетинга выдернем техфразы
+        # 3) из маркетинга выдернуть тех-фразы и зачистить маркетинг
         specs_from_mark, marketing_html = extract_specs_from_marketing(s_wo_specs)
 
-        # маркетинговый абзац: первый <p> и не длиннее 700 символов
+        # маркетинговый короткий абзац
         short_p = ""
         m = re.search(r"(?is)<p>(.*?)</p>", marketing_html)
         if m:
             txt = strip_html(m.group(1)).strip()
             if len(txt)>700: txt = txt[:700].rsplit(" ",1)[0]+"..."
-            if txt: short_p = f"<p>{html.escape(txt)}</p>"
+            if txt: short_p = f"<p>{txt}</p>"
 
         # 4) параметры поставщика → канон
         specs_from_param = collect_params_canonical(offer, vendor)
 
-        # 5) слить всё и нормализовать
+        # 5) слить всё
+        CANON_ORDER = ["Тип","Назначение","Тип печати","Цвет печати","Формат","Разрешение","Разрешение печати",
+                       "Оптическое разрешение","Скорость печати","Интерфейсы","Wi-Fi","Двусторонняя печать",
+                       "Дисплей","Подача бумаги","Тип чернил","Цвета чернил","Сканирование","Копирование",
+                       "Совместимость","Ресурс","Страна происхождения","Гарантия","Автоподатчик","Объем"]
+        idx = {k:i for i,k in enumerate(CANON_ORDER)}
+
         merged={}
         for src in (specs_from_block, specs_from_mark, specs_from_param):
             for k,v in src.items():
@@ -733,10 +702,10 @@ def main():
                 old = merged.get(k,"")
                 if len(vv)>len(old): merged[k]=vv
 
-        # финальные правки + обрезки
+        # финальная нормализация/обрезка
         final={}
         for k,v in merged.items():
-            vv = v
+            vv=v
             if k in {"Wi-Fi","Дисплей","Двусторонняя печать","Автоподатчик","Сканирование","Копирование"}:
                 vv = yesno(vv)
             if k in {"Разрешение","Разрешение печати","Оптическое разрешение"} and not re.search(r"\b\d{2,5}\s*×\s*\d{2,5}", vv):
@@ -755,30 +724,27 @@ def main():
                 vv = vv[:MAX_LEN_BY_KEY[k]-3]+"..."
             if vv: final[k]=vv
 
-        # 6) собрать HTML
-        parts = [f"<h3>{html.escape(name)}</h3>"]
+        # 6) собрать HTML (НЕ экранируем, т.к. уйдёт в CDATA)
+        parts = [f"<h3>{name}</h3>"]
         if short_p: parts.append(short_p)
         if final:
-            order = ["Тип","Назначение","Тип печати","Цвет печати","Формат","Разрешение","Разрешение печати",
-                     "Оптическое разрешение","Скорость печати","Интерфейсы","Wi-Fi","Двусторонняя печать",
-                     "Дисплей","Подача бумаги","Тип чернил","Цвета чернил","Сканирование","Копирование",
-                     "Совместимость","Ресурс","Страна происхождения","Гарантия","Автоподатчик","Объем"]
-            idx = {k:i for i,k in enumerate(order)}
             lines = ["<h3>Характеристики</h3>","<ul>"]
-            for k,v in sorted(final.items(), key=lambda kv: idx.get(kv[0],999)):
-                lines.append(f'  <li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>')
+            for k in sorted(final.keys(), key=lambda z: idx.get(z, 999)):
+                v = final[k]
+                lines.append(f'  <li><strong>{k}:</strong> {v}</li>')
             lines.append("</ul>")
             parts.append("\n".join(lines))
         html_out = "\n".join([p for p in parts if p]).strip()
         html_out = fix_li_spacing(html_out)
 
-        # 7) перезаписать description
-        if dnode is None:
-            dnode = ET.SubElement(offer,"description")
-        dnode.text = f"<![CDATA[\n{html_out}\n]]>"
+        # 7) поставить плейсхолдер для CDATA (реальный CDATA — после сериализации)
+        token = f"__CDATA_DESC_{len(cdata_chunks)}__"
+        cdata_chunks.append(html_out)
+        if dnode is None: dnode = ET.SubElement(offer,"description")
+        dnode.text = token
         desc_changed += 1
 
-        # 8) перезаписать параметры для SATU (как <Param>)
+        # 8) перезаписать параметры SATU (<Param>)
         for tag in ("Param","param","PARAM"):
             for p in list(offer.findall(tag)): offer.remove(p)
         for k,v in final.items():
@@ -788,7 +754,7 @@ def main():
     kw = ensure_keywords(out_shop); log(f"Keywords updated: {kw}")
     log(f"Descriptions rebuilt: {desc_changed}")
 
-    # feed_meta комментарий
+    # feed_meta
     meta = {
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL,
@@ -802,13 +768,21 @@ def main():
     }
     out_root.insert(0, ET.Comment(render_feed_meta(meta)))
 
-    # pretty
+    # pretty indent
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
+    # сериализация
     xml_unicode = ET.tostring(out_root, encoding="unicode")
 
-    # CDATA уже в тексте, оставляем как есть; добавим пустые строки между офферами
+    # вставить настоящие CDATA по плейсхолдерам
+    for i,html_chunk in enumerate(cdata_chunks):
+        token = f"__CDATA_DESC_{i}__"
+        # допускаем пробелы/переносы
+        pat = re.compile(rf"<description>\s*{re.escape(token)}\s*</description>")
+        xml_unicode = pat.sub(f"<description><![CDATA[\n{html_chunk}\n]]></description>", xml_unicode)
+
+    # пустая строка между офферами + после комментария FEED_META
     xml_unicode = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_unicode)
     xml_unicode = re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_unicode)
 
@@ -821,7 +795,7 @@ def main():
     with open(OUT_FILE, "w", encoding=ENCODING_OUT, newline="\n") as f:
         f.write(xml_out)
 
-    # .nojekyll на GitHub Pages
+    # .nojekyll
     try:
         d=os.path.dirname(OUT_FILE) or "docs"
         os.makedirs(d, exist_ok=True)
