@@ -7,8 +7,10 @@
 
   • Фильтр товаров (include|exclude) — из файла docs/akcent_keywords.txt и/или ENV;
   • Фильтрация <param> под Satu/SEO (whitelist + шаблоны: интерфейс, диагональ и т.п.);
-  • Блок «Характеристики»: парсит как «Ключ: Значение», так и «Ключ  Значение» (без двоеточия),
-    регистронезависимо; распознаёт теххарактеристики по семействам и единицам измерения;
+  • Блок «Характеристики»: парсит «Ключ: Значение», «Ключ  Значение» (без «:») и строки с единицами,
+    вытягивает спеки и:
+        — вставляет их в описание как HTML/список;
+        — ДОБАВЛЯЕТ соответствующие <param name="…">value</param> в <offer> (только нужные для Satu).
   • Репрайсинг (правила + хвост «…900»), чистка служебных прайс-тегов;
   • available → атрибут offer/@available; <currencyId>KZT</currencyId>;
   • Плейсхолдеры картинок при их отсутствии;
@@ -43,7 +45,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-27.v3.0.0"
+SCRIPT_VERSION = "akcent-2025-10-27.v4.0.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -738,6 +740,66 @@ def _extract_pairs_from_native(native_text: str) -> List[Tuple[str,str]]:
                 out.append((k, v.strip().strip(".;")))
     return out
 
+# ---------- Маппинг характеристик в <param> ----------
+def _canon_param_key(k: str) -> str:
+    n=_norm_param_name(k)
+    # нормализуем часто встречающиеся ключи к «красивому» виду
+    canon_map={
+        "разъем":"Разъем","разъемы":"Разъемы","разьем":"Разъем","разьемы":"Разъемы","разъём":"Разъём","разъёмы":"Разъёмы",
+        "интерфейс":"Интерфейс","интерфейсы":"Интерфейсы",
+        "диагональ":"Диагональ","разрешение":"Разрешение","тип матрицы":"Тип матрицы","частота обновления":"Частота обновления",
+        "яркость":"Яркость","контрастность":"Контрастность","время отклика":"Время отклика","угол обзора":"Угол обзора",
+        "тип печати":"Тип печати","цвет печати":"Цвет печати","цвет":"Цвет","ресурс":"Ресурс",
+        "скорость чтения":"Скорость чтения","скорость записи":"Скорость записи",
+        "емкость":"Емкость","объем":"Объем","объём":"Объем","форм-фактор":"Форм-фактор","формфактор":"Форм-фактор","тип памяти":"Тип памяти",
+        "мощность":"Мощность","напряжение":"Напряжение","частота":"Частота","сила тока":"Сила тока","энергопотребление":"Энергопотребление",
+        "вес":"Вес","размеры":"Размеры","габариты":"Габариты",
+        "страна":"Страна","страна производитель":"Страна производитель","гарантия":"Гарантия","комплектация":"Комплектация",
+        "usb":"USB","hdmi":"HDMI","displayport":"DisplayPort","dp":"DP","wi-fi":"Wi-Fi","wi fi":"Wi-Fi","bluetooth":"Bluetooth","bt":"Bluetooth","lan":"LAN","ethernet":"Ethernet",
+        "sata":"SATA","pcie":"PCIe","m.2":"M.2","m2":"M.2","nvme":"NVMe","micro sd":"Micro SD","sd":"SD","sdhc":"SDHC","sdxc":"SDXC",
+        "poe":"PoE","ip":"IP","ip рейтинг":"IP рейтинг","ip rating":"IP rating",
+        "микрофон":"Микрофон","динамики":"Динамики","камера":"Камера",
+        "hdr":"HDR","версия hdmi":"Версия HDMI",
+        "совместимость":"Совместимость","совместимость с моделями":"Совместимость","подходит для":"Совместимость","модели":"Совместимость","принтеры":"Совместимость",
+    }
+    return canon_map.get(n, k.strip().rstrip(":").strip().capitalize())
+
+def _clean_param_value(v: str, key_norm: str) -> str:
+    s=(v or "").strip()
+    s=re.sub(r"\s{2,}"," ", s)
+    s=re.sub(r"\s*;\s*", "; ", s)
+    s=re.sub(r"\s*,\s*", ", ", s)
+    s=re.sub(r"\s*-\s*", " - ", s)
+    s=re.sub(r"\s*\(\s*", " (", s); s=re.sub(r"\s*\)\s*", ")", s)
+    if key_norm=="совместимость":
+        s=_normalize_models_list(s)
+    return s.strip(" ;,.")
+
+def upsert_params_from_specs(offer: ET.Element, specs_pairs: List[Tuple[str,str]]) -> int:
+    """Добавляет в offer только разрешённые параметры по нашему списку/паттернам.
+       Уже существующие <param> не дублируем (по нормализованному имени)."""
+    if not specs_pairs: return 0
+    # Существующие имена
+    existing=set()
+    for p in offer.findall("param"):
+        nm=_attr_ci(p,"name")
+        if nm: existing.add(_norm_param_name(nm))
+
+    added=0
+    for k,v in specs_pairs:
+        if not _param_allowed(k):  # строго через whitelist/паттерны
+            continue
+        k_norm=_norm_param_name(k)
+        if k_norm in existing:
+            # Обновим пустые значения (если были) — по желанию можно пропустить
+            continue
+        k_out=_canon_param_key(k)
+        v_out=_clean_param_value(v, k_norm)
+        if not v_out: continue
+        el=ET.SubElement(offer,"param"); el.set("name", k_out); el.text=v_out
+        existing.add(k_norm); added+=1
+    return added
+
 def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tuple[List[Tuple[str,str]], str, int, int]:
     txt = _html_to_text(desc_html)
     tmp=[]; removed_links=0
@@ -1010,7 +1072,7 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
         ET.SubElement(offer,"picture").text=picked; added+=1
     return added
 
-# ===================== SEO CACHE / INJECTOR =====================
+# ===================== SEO CACHE / INJECTOR + PARAMS FROM SPECS =====================
 def compute_seo_checksum(name: str, kind: str, desc_html: str) -> str:
     base="|".join([name or "", kind or "", hashlib.md5((desc_html or "").encode("utf-8")).hexdigest()])
     return hashlib.md5(base.encode("utf-8")).hexdigest()
@@ -1040,11 +1102,12 @@ def save_seo_cache(path: str, data: Dict[str, dict]) -> None:
     with open(tmp,"w",encoding="utf-8") as f: json.dump(data,f,ensure_ascii=False,indent=2)
     os.replace(tmp,path)
 
-def inject_seo_descriptions(out_shop: ET.Element) -> Tuple[int,str,int,int,int]:
+def inject_seo_descriptions_and_params(out_shop: ET.Element) -> Tuple[int,str,int,int,int,int]:
+    """Возвращает: changed_html, last_alm_str, specs_added, native_cleaned, links_removed_total, params_added_total"""
     off_el=out_shop.find("offers")
-    if off_el is None: return 0,"",0,0,0
+    if off_el is None: return 0,"",0,0,0,0
     cache=load_seo_cache(SEO_CACHE_PATH) if SEO_STICKY else {}
-    changed=0; specs_added=0; native_cleaned=0; links_removed_total=0
+    changed=0; specs_added=0; native_cleaned=0; links_removed_total=0; params_added_total=0
     for offer in off_el.findall("offer"):
         d=offer.find("description")
         raw_html = inner_html(d)
@@ -1085,6 +1148,10 @@ def inject_seo_descriptions(out_shop: ET.Element) -> Tuple[int,str,int,int,int]:
             if (d.text or "").strip()!=placeholder:
                 d.text=placeholder; changed+=1
 
+        # === Новое: генерируем <param> из извлечённых характеристик ===
+        if kv_specs:
+            params_added_total += upsert_params_from_specs(offer, kv_specs)
+
         if SEO_STICKY:
             ent=cache.get(cache_key,{})
             if not use_cache or not ent:
@@ -1106,7 +1173,7 @@ def inject_seo_descriptions(out_shop: ET.Element) -> Tuple[int,str,int,int,int]:
             except Exception:
                 continue
     if not last_alm: last_alm=now_almaty()
-    return changed, format_dt_almaty(last_alm), specs_added, native_cleaned, links_removed_total
+    return changed, format_dt_almaty(last_alm), specs_added, native_cleaned, links_removed_total, params_added_total
 
 # ===================== MAIN =====================
 def main()->None:
@@ -1161,9 +1228,9 @@ def main()->None:
     else:
         log("Filter disabled (AKCENT_KEYWORDS_MODE=off)")
 
-    # 3) Фильтр <param> (Satu/SEO)
+    # 3) Фильтр <param> (Satu/SEO) исходных параметров из поставщика
     p_touched, p_kept, p_dropped = filter_params_for_satu(out_shop)
-    log(f"Param filter: offers touched={p_touched}, kept={p_kept}, dropped={p_dropped}")
+    log(f"Param filter (source params): offers touched={p_touched}, kept={p_kept}, dropped={p_dropped}")
 
     # 4) Кэп «нереальных» цен
     flagged = flag_unrealistic_supplier_prices(out_shop)
@@ -1184,9 +1251,10 @@ def main()->None:
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
-    # 9) SEO/описания/характеристики
-    seo_changed, seo_last, specs_added, native_cleaned, links_removed_total = inject_seo_descriptions(out_shop)
+    # 9) SEO/описания/характеристики + ДОБАВЛЕНИЕ <param> из «Характеристик»
+    seo_changed, seo_last, specs_added, native_cleaned, links_removed_total, params_added_total = inject_seo_descriptions_and_params(out_shop)
     log(f"SEO blocks touched: {seo_changed}, specs added: {specs_added}, native cleaned: {native_cleaned}, links removed: {links_removed_total}")
+    log(f"Params added from specs: {params_added_total}")
 
     # 10) Наличие, валюта
     t_true, t_false = normalize_available_field(out_shop)
