@@ -3,19 +3,26 @@
 # -*- coding: utf-8 -*-
 
 """
-Полный сборщик фида Akcent (YML/XML) c патчем по «Совместимость»:
-— Исправлено «захватывание» последующих секций (Интерфейсы/Аудио/Питание/…) в значение «Совместимость».
-— Добавлен список SECTION_BREAKERS и функция _is_section_header(), используется в extract_kv_specs_and_clean_native().
-— Остальной функционал: фильтр названий, фильтр <param> для Satu, SEO-блок (можно отключать ENV), репрайсинг, плейсхолдеры, keywords.
+Полный рабочий сборщик фида Akcent (YML/XML) со всеми правками:
+
+  • Фильтр товаров (include|exclude) — из файла docs/akcent_keywords.txt и/или ENV;
+  • Фильтрация <param> под Satu/SEO (whitelist + шаблоны: интерфейс, диагональ и т.п.);
+  • Блок «Характеристики»: парсит «Ключ: Значение», «Ключ  Значение» (без «:») и строки с единицами,
+    вытягивает спеки и:
+        — вставляет их в описание как HTML/список;
+        — ДОБАВЛЯЕТ соответствующие <param name="…">value</param> в <offer> (только нужные для Satu).
+  • Репрайсинг (правила + хвост «…900»), чистка служебных прайс-тегов;
+  • available → атрибут offer/@available; <currencyId>KZT</currencyId>;
+  • Плейсхолдеры картинок при их отсутствии;
+  • <keywords> для Satu (модели/цвета/гео);
+  • FEED_META-комментарий с метриками;
+  • Запись в docs/akcent.yml (по умолчанию windows-1251).
 
 Запуск:
   python scripts/build_akcent.py
 
-ENV (важные):
-  SUPPLIER_URL="..." | OUT_FILE="docs/akcent.yml" | OUTPUT_ENCODING="windows-1251" или "utf-8"
-  AKCENT_KEYWORDS_MODE=include|exclude|off
-  PARAM_FILTER_ENABLE=1|0
-  SEO_STICKY=1|0  (можно отключить SEO-вставки)
+Зависимости:
+  Python 3.11+, requests
 """
 
 from __future__ import annotations
@@ -38,7 +45,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-27.v4.1.0"
+SCRIPT_VERSION = "akcent-2025-10-27.v4.0.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -107,7 +114,7 @@ def _norm_param_name(s: str) -> str:
     return re.sub(r"\s+"," ", (s or "").strip().lower().replace("ё","е"))
 
 DEFAULT_PARAM_WHITELIST = {
-    # Принтеры/совместимость
+    # Принтеры/расходники/совместимость
     "совместимость", "совместимость с моделями", "принтеры", "подходит для", "модели",
     "тип печати", "цвет печати", "цвет", "ресурс", "ресурс барабана", "черный ресурс", "цветной ресурс",
     # Кабели/соединение
@@ -116,7 +123,7 @@ DEFAULT_PARAM_WHITELIST = {
     # Память/накопители
     "емкость", "объем", "объём", "форм-фактор", "формфактор", "тип памяти",
     "скорость чтения", "скорость записи",
-    # Мониторы/видео
+    # Мониторы/ноутбуки/видео
     "диагональ", "разрешение", "тип матрицы", "частота обновления", "яркость", "контрастность",
     "время отклика", "угол обзора", "hdr", "версия hdmi",
     # Порты/беспроводное
@@ -253,6 +260,11 @@ def _norm_name(s: str) -> str:
     return re.sub(r"\s+"," ", s).strip()
 
 def load_name_filter(path: str) -> List[KeySpec]:
+    """Читает docs/akcent_keywords.txt:
+       - строки без слешей = подстрока/префикс (регистр не важен);
+       - /regex/ = регулярка (re.I);
+       - пустые и начинающиеся с # игнорируются.
+    """
     if not path or not os.path.exists(path): return []
     data=None
     for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
@@ -507,7 +519,7 @@ def detect_kind(name: str) -> str:
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+|^AK\d+|^AC\d+", re.I)
 MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
 BRAND_WORDS_SEO = ["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","BenQ","ViewSonic","Optoma","Acer","Panasonic","Sony",
-                   "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum","Lenovo","Dell","ASUS","Samsung","Apple","MSI"]
+                   "Konica Minolta","Ricoh","Kyocera","Sharp","OKI","Pantum"]
 FAMILY_WORDS = ["PIXMA","imageRUNNER","iR","imageCLASS","imagePRESS","LBP","MF","i-SENSYS","LaserJet","DeskJet","OfficeJet",
                 "PageWide","Color LaserJet","Neverstop","Smart Tank","Phaser","WorkCentre","VersaLink","AltaLink","DocuCentre",
                 "DCP","HL","MFC","FAX","XP","WF","EcoTank","TASKalfa","ECOSYS","Aficio","SP","MP","IM","MX","BP"]
@@ -555,7 +567,8 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
               "mfp":["Кратко о плюсах","Основные сильные стороны","Для кого подойдёт"],
               "other":["Кратко о плюсах","Чем удобен","Ключевые преимущества"]}
     short=split_short_name(name)
-    p = variants.get(kind, variants["other"])[seed % len(variants.get(kind, variants["other"]))]
+    vlist = variants.get(kind, variants["other"])
+    p = vlist[seed % len(vlist)]
     title=f"{short}: {p}" + (f" ({vendor})" if vendor else "")
 
     bullets=[]
@@ -610,7 +623,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
     faq=["<h3>FAQ</h3>"]+[f"<p><strong>В:</strong> { _html_escape_in_cdata_safe(q) }<br><strong>О:</strong> { _html_escape_in_cdata_safe(a) }</p>" for q,a in qa]
     faq_html="\n".join(faq)
 
-    # Фиктивные отзывы (локализовано)
+    # Отзывы (фиктивные, локализованные)
     NAMES_M=["Арман","Даурен","Санжар","Ерлан","Аслан","Руслан","Тимур","Данияр","Виктор","Евгений","Олег","Сергей","Нуржан","Бекзат","Азамат","Султан"]
     NAMES_F=["Айгерим","Мария","Инна","Наталья","Жанна","Светлана","Ольга","Камилла","Диана","Гульнара"]
     CITIES=["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
@@ -626,7 +639,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
     reviews_html="\n".join(reviews)
     return lead_html, faq_html, reviews_html, kind
 
-# ===================== «Родной» текст → Характеристики (ПАТЧ ПО СЕКЦИЯМ) =====================
+# ===================== «Родной» текст → Характеристики (УЛУЧШЕНО) =====================
 KV_KEYS_MAP = {
     "вид":"Вид",
     "назначение":"Назначение",
@@ -637,27 +650,6 @@ KV_KEYS_MAP = {
     "технология печати":"Технология печати",
     "тип":"Тип",
 }
-
-# --- PATCH: список явных секций, после которых нужно останавливаться ---
-SECTION_BREAKERS = {
-    "интерфейсы","аудио","питание","дополнительно","управление",
-    "условия эксплуатации","крепление","входной сигнал","видео входы",
-    "эргономика","вес (фунты)","вес (кг)","размеры (дюймы)","размеры (мм)",
-    "общее","сертификация","состав упаковки","переработка"
-}
-
-def _is_section_header(s: str) -> bool:
-    """Заголовок секции без двоеточия (или из известных), чтобы не 'проглатывать' их в предыдущую секцию."""
-    t = (s or "").strip()
-    if not t: return False
-    t_norm = t.strip(":").lower().replace("ё","е")
-    if t_norm in SECTION_BREAKERS: return True
-    if t_norm in KV_KEYS_MAP: return True
-    # Эвристика: 1–2 слова, без цифр, без ':', начинается с буквы
-    if ":" not in t and re.match(r"^[A-Za-zА-Яа-яЁё]+(?: [A-Za-zА-Яа-яЁё]+)?$", t) and not re.search(r"\d", t):
-        return True
-    return False
-
 MORE_PHRASES_RE = re.compile(r"^\s*(подробнее|читать далее|узнать больше|все детали|подробности|смотреть на сайте производителя|скачать инструкцию)\s*\.?\s*$", re.I)
 URL_RE = re.compile(r"https?://\S+", re.I)
 
@@ -751,6 +743,7 @@ def _extract_pairs_from_native(native_text: str) -> List[Tuple[str,str]]:
 # ---------- Маппинг характеристик в <param> ----------
 def _canon_param_key(k: str) -> str:
     n=_norm_param_name(k)
+    # нормализуем часто встречающиеся ключи к «красивому» виду
     canon_map={
         "разъем":"Разъем","разъемы":"Разъемы","разьем":"Разъем","разьемы":"Разъемы","разъём":"Разъём","разъёмы":"Разъёмы",
         "интерфейс":"Интерфейс","интерфейсы":"Интерфейсы",
@@ -783,17 +776,22 @@ def _clean_param_value(v: str, key_norm: str) -> str:
     return s.strip(" ;,.")
 
 def upsert_params_from_specs(offer: ET.Element, specs_pairs: List[Tuple[str,str]]) -> int:
+    """Добавляет в offer только разрешённые параметры по нашему списку/паттернам.
+       Уже существующие <param> не дублируем (по нормализованному имени)."""
     if not specs_pairs: return 0
+    # Существующие имена
     existing=set()
     for p in offer.findall("param"):
         nm=_attr_ci(p,"name")
         if nm: existing.add(_norm_param_name(nm))
+
     added=0
     for k,v in specs_pairs:
-        if not _param_allowed(k):
+        if not _param_allowed(k):  # строго через whitelist/паттерны
             continue
         k_norm=_norm_param_name(k)
         if k_norm in existing:
+            # Обновим пустые значения (если были) — по желанию можно пропустить
             continue
         k_out=_canon_param_key(k)
         v_out=_clean_param_value(v, k_norm)
@@ -823,16 +821,14 @@ def extract_kv_specs_and_clean_native(desc_html: str, product_name: str) -> Tupl
 
     specs=[]; out_lines=[]; i=0; removed_any_kv=0
     while i < len(tmp):
-        key_raw = tmp[i].strip().strip(":")
-        key_low = key_raw.lower()
-        norm_key = KV_KEYS_MAP.get(key_low)
+        key_raw = tmp[i].strip().strip(":").lower()
+        norm_key = KV_KEYS_MAP.get(key_raw)
         if norm_key:
             i+=1
             vals=[]
             while i < len(tmp):
                 nxt = tmp[i].strip()
-                # PATCH: останавливаемся на любом заголовке секции
-                if _is_section_header(nxt):
+                if KV_KEYS_MAP.get(nxt.strip(":").lower()):
                     break
                 if nxt!="":
                     vals.append(nxt)
@@ -1107,6 +1103,7 @@ def save_seo_cache(path: str, data: Dict[str, dict]) -> None:
     os.replace(tmp,path)
 
 def inject_seo_descriptions_and_params(out_shop: ET.Element) -> Tuple[int,str,int,int,int,int]:
+    """Возвращает: changed_html, last_alm_str, specs_added, native_cleaned, links_removed_total, params_added_total"""
     off_el=out_shop.find("offers")
     if off_el is None: return 0,"",0,0,0,0
     cache=load_seo_cache(SEO_CACHE_PATH) if SEO_STICKY else {}
@@ -1151,6 +1148,7 @@ def inject_seo_descriptions_and_params(out_shop: ET.Element) -> Tuple[int,str,in
             if (d.text or "").strip()!=placeholder:
                 d.text=placeholder; changed+=1
 
+        # === Новое: генерируем <param> из извлечённых характеристик ===
         if kv_specs:
             params_added_total += upsert_params_from_specs(offer, kv_specs)
 
