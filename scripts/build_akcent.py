@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+Полный, готовый к запуску файл сборки Akcent с ВСТРОЕННОЙ фильтрацией <param>:
+— Оставляет только те параметры, которые реально полезны для Satu/SEO
+  (включая «Интерфейс», «Диагональ» и др.).
+— Никаких внешних файлов/списков не требуется.
+"""
+
 import os, sys, re, time, random, json, hashlib, urllib.parse, requests
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
@@ -12,7 +19,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-22.v1.6.5"
+SCRIPT_VERSION = "akcent-2025-10-27.v1.7.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -66,6 +73,120 @@ SATU_KEYWORDS_MAXLEN=1024
 SATU_KEYWORDS_GEO=True
 SATU_KEYWORDS_GEO_MAX=20
 SATU_KEYWORDS_GEO_LAT=True
+
+# ===================== PARAM FILTER (Satu/SEO) =====================
+# Включение/выключение фильтра по env (по умолчанию ВКЛ.)
+PARAM_FILTER_ENABLE = os.getenv("PARAM_FILTER_ENABLE", "1").lower() in {"1","true","yes","on"}
+
+def _norm_param_name(s: str) -> str:
+    """Нормализуем имя параметра: нижний регистр, 'ё'->'е', один пробел."""
+    s = (s or "").strip().lower().replace("ё", "е")
+    return re.sub(r"\s+", " ", s)
+
+# Белый список — встроен внутрь файла (без внешних зависимостей).
+# ВКЛЮЧАЕТ «интерфейс», «диагональ» и другие ключевые поля для Satu/SEO.
+DEFAULT_PARAM_WHITELIST = {
+    # Принтеры/расходники/совместимость
+    "совместимость", "совместимость с моделями", "принтеры", "подходит для", "модели",
+    "тип печати", "цвет печати", "цвет", "ресурс", "ресурс барабана", "черный ресурс", "цветной ресурс",
+    # Кабели/соединение
+    "разъем", "разъемы", "разьем", "разьемы", "разъём", "разъёмы",
+    "интерфейс", "интерфейсы", "длина кабеля", "материал",
+    # Память/накопители
+    "емкость", "объем", "объём", "форм-фактор", "формфактор", "тип памяти",
+    "скорость чтения", "скорость записи",
+    # Мониторы/ноутбуки/видео
+    "диагональ", "разрешение", "тип матрицы", "частота обновления", "яркость", "контрастность",
+    "время отклика", "угол обзора", "hdr", "версия hdmi",
+    # Порты/беспроводное
+    "usb", "hdmi", "displayport", "dp", "wi-fi", "wi fi", "bluetooth", "bt", "lan", "ethernet",
+    # Энергия/электрика
+    "мощность", "напряжение", "частота", "сила тока", "энергопотребление",
+    # Общие важные
+    "страна", "страна производитель", "гарантия", "комплектация",
+    "вес", "размеры", "габариты",
+    # Интерфейсы накопителей/карты
+    "sata", "pcie", "m.2", "m2", "nvme", "micro sd", "sd", "sdhc", "sdxc",
+    # Сетевое/питание
+    "poe", "ip", "ip рейтинг", "ip rating",
+    # Аудио/встроенное
+    "микрофон", "динамики", "камера",
+}
+_PARAM_WL_NORM = {_norm_param_name(x) for x in DEFAULT_PARAM_WHITELIST}
+
+# Шаблоны семейств — пропускаем даже без точного совпадения в whitelist
+_PARAM_ALLOWED_PATTERNS = [re.compile(p, re.I) for p in [
+    r"^совместим",                    # совместим.*, совместимость…
+    r"^принтер",                      # принтеры
+    r"^подходит",                     # подходит для…
+    r"^модел",                        # модели
+    r"^цвет( печати)?$",              # цвет / цвет печати
+    r"^тип( печати| матрицы)?$",      # тип / тип печати / тип матрицы
+    r"^ресурс",                       # ресурс...
+    r"^раз(ъ|е)м",                    # разъем/разъём
+    r"^интерфейс(ы)?$",               # интерфейс(ы)
+    r"^диагонал",                     # диагональ
+    r"^разрешени",                    # разрешение
+    r"^частот[аы] (обновлен|кадров)", # частота обновления/кадров
+    r"^яркост", r"^контраст", r"^время отклик", r"^угол обзора$",
+    r"^hdr$", r"^(usb|hdmi|displayport|dp|wi-?fi|bluetooth|bt|lan|ethernet)$",
+    r"^длина кабел", r"^материал$",
+    r"^(емкост|об(ъ|)ем|capacity)",   # емкость/объем
+    r"^форм[- ]?фактор$",             # форм-фактор
+    r"^скорост[ьи] (чт|зап)",         # скорость чтения/записи
+    r"^мощност", r"^напряжен", r"^частот", r"^сила тока", r"^энергопотреблен",
+    r"^(вес|габарит(ы)?|размер(ы)?)$",
+    r"^страна( производитель)?$", r"^гаранти", r"^комплектац",
+    r"^(sata|pcie|m\.?2|nvme|micro ?sd|sd(hc|xc)?)$",
+    r"^poe$", r"^ip( рейтинг| rating)?$",
+    r"^(микрофон|динамик(и)?|камера)$",
+]]
+
+def _attr_ci(el: ET.Element, key: str) -> Optional[str]:
+    """Достаём атрибут по имени без учёта регистра (name/NAME/Name)."""
+    k = key.lower()
+    for a,v in el.attrib.items():
+        if a.lower() == k:
+            return v
+    return None
+
+def _param_allowed(name_raw: Optional[str]) -> bool:
+    """Решает, оставляем ли <param> по имени (учёт whitelist и семейств)."""
+    if not name_raw:
+        return False
+    n = _norm_param_name(name_raw)
+    if n in _PARAM_WL_NORM:
+        return True
+    return any(p.search(n) for p in _PARAM_ALLOWED_PATTERNS)
+
+def filter_params_for_satu(out_shop: ET.Element) -> Tuple[int,int,int]:
+    """
+    Оставляет внутри каждого <offer> только нужные <param>.
+    Возвращает кортеж статистики: (offers_touched, params_kept, params_dropped).
+    """
+    if not PARAM_FILTER_ENABLE:
+        return (0,0,0)
+    off_el = out_shop.find("offers")
+    if off_el is None:
+        return (0,0,0)
+
+    touched = kept = dropped = 0
+    for offer in off_el.findall("offer"):
+        changed_here = False
+        for node in list(offer):
+            if node.tag.lower() != "param":
+                continue
+            name_val = _attr_ci(node, "name")
+            if _param_allowed(name_val):
+                kept += 1
+                continue
+            # удаляем ненужный <param>
+            offer.remove(node)
+            dropped += 1
+            changed_here = True
+        if changed_here:
+            touched += 1
+    return (touched, kept, dropped)
 
 # ===================== UTILS =====================
 log  = lambda m: print(m, flush=True)
@@ -915,14 +1036,14 @@ def main()->None:
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
-    # копируем офферы как есть (ПАРАМЫ НЕ ТРОГАЕМ)
+    # 1) Копируем офферы как есть (последовательность узлов сохраняем)
     for o in src_offers:
         mod=deepcopy(o)
         if DROP_CATEGORY_ID_TAG:
             for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
         out_offers.append(mod)
 
-    # фильтр по docs/akcent_keywords.txt (ранний)
+    # 2) Фильтр по названиям (docs/akcent_keywords.txt) — ранняя стадия
     keys=load_name_filter(AKCENT_KEYWORDS_PATH)
     if AKCENT_KEYWORDS_MODE=="include" and len(keys)==0:
         err("AKCENT_KEYWORDS_MODE=include, но файл docs/akcent_keywords.txt пуст или не найден.", 2)
@@ -942,44 +1063,58 @@ def main()->None:
     else:
         log("Filter disabled: no keys or mode not in {include,exclude}")
 
+    # 3) НОВОЕ: Встроенная фильтрация <param> для Satu/SEO
+    p_touched, p_kept, p_dropped = filter_params_for_satu(out_shop)
+    log(f"Param filter: offers touched={p_touched}, kept={p_kept}, dropped={p_dropped} (enable={PARAM_FILTER_ENABLE})")
+
+    # 4) Кэп «нереальных» цен -> _force_price=100
     flagged = flag_unrealistic_supplier_prices(out_shop)
     log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
+    # 5) Вендоры: нормализация/дозаполнение
     v_norm, v_filled, v_removed = ensure_vendor(out_shop)
     log(f"Vendors auto-filled: {v_filled}")
 
+    # 6) vendorCode + id
     ensure_vendorcode_with_article(
         out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AC"),
         create_if_missing=os.getenv("VENDORCODE_CREATE_IF_MISSING","1").lower() in {"1","true","yes"}
     )
     sync_offer_id_with_vendorcode(out_shop)
 
+    # 7) Репрайс
     reprice_offers(out_shop, PRICING_RULES)
 
+    # 8) Плейсхолдеры фото
     ph_added=ensure_placeholder_pictures(out_shop)
     log(f"Placeholders added: {ph_added}")
 
+    # 9) SEO/описания/характеристики (из родного описания)
     seo_changed, seo_last, specs_added, native_cleaned, links_removed_total = inject_seo_descriptions(out_shop)
     log(f"SEO blocks touched: {seo_changed}")
     log(f"Specs blocks added: {specs_added}")
     log(f"Native blocks cleaned: {native_cleaned} (links removed: {links_removed_total})")
 
+    # 10) Наличие, валюта
     t_true, t_false = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
 
-    # чистка служебных тегов (НЕ трогаем <param>)
+    # 11) Чистка служебных тегов (НЕ трогаем description/keywords)
     for off in out_offers.findall("offer"):
         for t in PURGE_TAGS_AFTER:
             for node in list(off.findall(t)): off.remove(node)
         for a in PURGE_OFFER_ATTRS_AFTER:
             if a in off.attrib: off.attrib.pop(a,None)
 
+    # 12) Порядок узлов + categoryId в начало
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
+    # 13) <keywords>
     kw_touched=ensure_keywords(out_shop)
     log(f"Keywords updated: {kw_touched}")
 
+    # 14) FEED_META
     built_alm=now_almaty()
     meta_pairs={
         "supplier": SUPPLIER_NAME,
@@ -994,6 +1129,7 @@ def main()->None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
+    # 15) Финальная запись
     try: ET.indent(out_root, space="  ")
     except Exception: pass
     xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
