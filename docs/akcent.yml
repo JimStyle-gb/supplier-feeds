@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-10-27 15:14">
+<yml_catalog date="2025-10-27 15:29">
   <!--FEED_META
 Поставщик                                  | akcent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 27:10:2025 - 20:14:59
+Время сборки (Алматы)                      | 27:10:2025 - 20:29:42
 Ближайшее время сборки (Алматы)            | 28:10:2025 - 01:00:00
-Последнее обновление SEO-блока             | 27:10:2025 - 20:14:59
+Последнее обновление SEO-блока             | 27:10:2025 - 20:29:42
 Сколько товаров у поставщика до фильтра    | 1950
 Сколько товаров у поставщика после фильтра | 198
 Сколько товаров есть в наличии (true)      | 198
@@ -26,15 +26,12 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <ul>
   <li>&#9989; Практичное решение для повседневных задач</li>
 </ul>
-<div class="native" style="white-space:pre-line; margin:8px 0 16px;">Картридж Epson C13T55K200 Singlepack с голубыми чернилами обеспечит высококачественную печать для принтеров Epson.
-
-струйный
-
-широкоформатный принтер
-
-голубой</div>
+<div class="native" style="white-space:pre-line; margin:8px 0 16px;">Картридж Epson C13T55K200 Singlepack с голубыми чернилами обеспечит высококачественную печать для принтеров Epson.</div>
 <h3>Характеристики</h3>
 <ul>
+  <li><strong>Вид:</strong> струйный</li>
+  <li><strong>Назначение:</strong> широкоформатный принтер</li>
+  <li><strong>Цвет печати:</strong> голубой</li>
   <li><strong>Совместимость:</strong><br>Epson SureColor SC-P6000; Epson SureColor SC-P7000; Epson SureColor SC-P8000; Epson SureColor SC-P9000</li>
   <li><strong>Ресурс:</strong> 700 мл</li>
 </ul>
@@ -47,9 +44,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <p>&#128100; <strong>Аслан</strong>, Караганда — &#11088;&#11088;&#11088;&#11088;&#9734;<br>«Со своими задачами справляется отлично.»</p>
 ]]></description>
         <Param name="Гарантия">3</Param>
+        <param name="Цвет печати">голубой</param>
         <param name="Совместимость">Epson SureColor SC - P6000; Epson SureColor SC - P7000; Epson SureColor SC - P8000; Epson SureColor SC - P9000</param>
         <param name="Ресурс">700 мл</param>
-        <keywords>Epson, SC-P9000, SC-P8000, T55K200, SC-P6000, SC-P7000, C13T55K200, 700ml, C13T55K200 Singlepack, Singlepack Голубой, Голубой T55K200, T55K200 UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Голубой, Ultrachrome, HDX, singlepack-goluboy, goluboy-t55k200, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T55K200, SC-P7000, SC-P8000, SC-P6000, C13T55K200, SC-P9000, 700ml, C13T55K200 Singlepack, Singlepack Голубой, Голубой T55K200, T55K200 UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Голубой, Ultrachrome, HDX, singlepack-goluboy, goluboy-t55k200, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T55K30N" available="true">
@@ -66,15 +64,12 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <ul>
   <li>&#9989; Практичное решение для повседневных задач</li>
 </ul>
-<div class="native" style="white-space:pre-line; margin:8px 0 16px;">Картридж Epson C13T55K30N Singlepack с пурпурными чернилами обеспечит высококачественную печать для принтеров Epson.
-
-струйный
-
-широкоформатный принтер
-
-пурпурный</div>
+<div class="native" style="white-space:pre-line; margin:8px 0 16px;">Картридж Epson C13T55K30N Singlepack с пурпурными чернилами обеспечит высококачественную печать для принтеров Epson.</div>
 <h3>Характеристики</h3>
 <ul>
+  <li><strong>Вид:</strong> струйный</li>
+  <li><strong>Назначение:</strong> широкоформатный принтер</li>
+  <li><strong>Цвет печати:</strong> пурпурный</li>
   <li><strong>Совместимость:</strong><br>Epson SureColor SC-P6000; Epson SureColor SC-P7000; Epson SureColor SC-P8000; Epson SureColor SC-P9000</li>
   <li><strong>Ресурс:</strong> 700 мл</li>
 </ul>
@@ -87,9 +82,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <p>&#128100; <strong>Султан</strong>, Талдыкорган — &#11088;&#11088;&#11088;&#11088;&#9734;<br>«Со своими задачами справляется отлично.»</p>
 ]]></description>
         <Param name="Гарантия">3</Param>
+        <param name="Цвет печати">пурпурный</param>
         <param name="Совместимость">Epson SureColor SC - P6000; Epson SureColor SC - P7000; Epson SureColor SC - P8000; Epson SureColor SC - P9000</param>
         <param name="Ресурс">700 мл</param>
-        <keywords>Epson, SC-P9000, C13T55K30N, SC-P8000, SC-P6000, SC-P7000, T55K30N, 700ml, C13T55K30N Singlepack, Singlepack Пурпурный, Пурпурный T55K30N, T55K30N UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Пурпурный, Ultrachrome, HDX, singlepack-purpurnyy, purpurnyy-t55k30n, purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, SC-P7000, SC-P8000, C13T55K30N, SC-P6000, T55K30N, SC-P9000, 700ml, C13T55K30N Singlepack, Singlepack Пурпурный, Пурпурный T55K30N, T55K30N UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Пурпурный, Ultrachrome, HDX, singlepack-purpurnyy, purpurnyy-t55k30n, purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T55K400" available="true">
@@ -106,15 +102,12 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <ul>
   <li>&#9989; Практичное решение для повседневных задач</li>
 </ul>
-<div class="native" style="white-space:pre-line; margin:8px 0 16px;">Картридж Epson C13T55K400 Singlepack с жёлтыми чернилами обеспечит высококачественную печать для принтеров Epson.
-
-струйный
-
-широкоформатный принтер
-
-жёлтый</div>
+<div class="native" style="white-space:pre-line; margin:8px 0 16px;">Картридж Epson C13T55K400 Singlepack с жёлтыми чернилами обеспечит высококачественную печать для принтеров Epson.</div>
 <h3>Характеристики</h3>
 <ul>
+  <li><strong>Вид:</strong> струйный</li>
+  <li><strong>Назначение:</strong> широкоформатный принтер</li>
+  <li><strong>Цвет печати:</strong> жёлтый</li>
   <li><strong>Совместимость:</strong><br>Epson SureColor SC-P6000; Epson SureColor SC-P7000; Epson SureColor SC-P8000; Epson SureColor SC-P9000</li>
   <li><strong>Ресурс:</strong> 700 мл</li>
 </ul>
@@ -127,9 +120,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <p>&#128100; <strong>Нуржан</strong>, Кызылорда — &#11088;&#11088;&#11088;&#11088;&#9734;<br>«Со своими задачами справляется отлично.»</p>
 ]]></description>
         <Param name="Гарантия">3</Param>
+        <param name="Цвет печати">жёлтый</param>
         <param name="Совместимость">Epson SureColor SC - P6000; Epson SureColor SC - P7000; Epson SureColor SC - P8000; Epson SureColor SC - P9000</param>
         <param name="Ресурс">700 мл</param>
-        <keywords>Epson, SC-P9000, SC-P8000, T55K400, C13T55K400, SC-P6000, SC-P7000, 700ml, C13T55K400 Singlepack, Singlepack Желтый, Желтый T55K400, T55K400 UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Желтый, Ultrachrome, HDX, singlepack-zheltyy, zheltyy-t55k400, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, SC-P7000, C13T55K400, T55K400, SC-P8000, SC-P6000, SC-P9000, 700ml, C13T55K400 Singlepack, Singlepack Желтый, Желтый T55K400, T55K400 UltraChrome, UltraChrome HDX, HDX 700ml, Singlepack, Желтый, Ultrachrome, HDX, singlepack-zheltyy, zheltyy-t55k400, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T55KD00" available="true">
@@ -146,15 +140,12 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <ul>
   <li>&#9989; Практичное решение для повседневных задач</li>
 </ul>
-<div class="native" style="white-space:pre-line; margin:8px 0 16px;">Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачественную печать для принтеров Epson.
-
-струйный
-
-широкоформатный принтер
-
-фиолетовый</div>
+<div class="native" style="white-space:pre-line; margin:8px 0 16px;">Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачественную печать для принтеров Epson.</div>
 <h3>Характеристики</h3>
 <ul>
+  <li><strong>Вид:</strong> струйный</li>
+  <li><strong>Назначение:</strong> широкоформатный принтер</li>
+  <li><strong>Цвет печати:</strong> фиолетовый</li>
   <li><strong>Совместимость:</strong><br>Epson SureColor SC-P6000; Epson SureColor SC-P7000; Epson SureColor SC-P8000; Epson SureColor SC-P9000</li>
   <li><strong>Ресурс:</strong> 700 мл</li>
 </ul>
@@ -167,9 +158,10 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <p>&#128100; <strong>Руслан</strong>, Темиртау — &#11088;&#11088;&#11088;&#11088;&#9734;<br>«Со своими задачами справляется отлично.»</p>
 ]]></description>
         <Param name="Гарантия">3</Param>
+        <param name="Цвет печати">фиолетовый</param>
         <param name="Совместимость">Epson SureColor SC - P6000; Epson SureColor SC - P7000; Epson SureColor SC - P8000; Epson SureColor SC - P9000</param>
         <param name="Ресурс">700 мл</param>
-        <keywords>Epson, SC-P9000, SC-P8000, T55KD00ULTRACHROME, C13T55KD00, SC-P6000, SC-P7000, 700ml, C13T55KD00 Singlepack, Singlepack Фиолетовый, Фиолетовый T55KD00UltraChrome, T55KD00UltraChrome HDX, HDX 700ml, Singlepack, Фиолетовый, HDX, singlepack-fioletovyy, fioletovyy-t55kd00ultrachrome, fioletovyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, SC-P7000, SC-P8000, C13T55KD00, SC-P6000, T55KD00ULTRACHROME, SC-P9000, 700ml, C13T55KD00 Singlepack, Singlepack Фиолетовый, Фиолетовый T55KD00UltraChrome, T55KD00UltraChrome HDX, HDX 700ml, Singlepack, Фиолетовый, HDX, singlepack-fioletovyy, fioletovyy-t55kd00ultrachrome, fioletovyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -232,7 +224,7 @@ L15150</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Ёмкость для отработанных чернил</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, ET-166XX, WF-78XX, L15150, C12C934591, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C12C934591, C12C934591 WF-78XX, WF-78XX ET-166XX, ET-166XX MAINTENANCE, MAINTENANCE BOX, Ёмкость, Отработанных, Чернил, MAINTENANCE, BOX, черный, emkost-otrabotannyh, otrabotannyh-chernil, chernil-epson, emkost, otrabotannyh, chernil, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C12C934591, WF-78XX, ET-166XX, L15150, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C12C934591, C12C934591 WF-78XX, WF-78XX ET-166XX, ET-166XX MAINTENANCE, MAINTENANCE BOX, Ёмкость, Отработанных, Чернил, MAINTENANCE, BOX, черный, emkost-otrabotannyh, otrabotannyh-chernil, chernil-epson, emkost, otrabotannyh, chernil, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T04D000" available="true">
@@ -326,7 +318,7 @@ Epson WorkForce Pro WP-4535DWF</div>
 ]]></description>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Ёмкость для отработанных чернил</Param>
-        <keywords>Epson, B-310N, C13T619000, B-300, WP-4535DWF, WP-4025DW, B500DN, B-510DN, B300, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T619000, C13T619000 B300, B300 B500DN, Ёмкость, Отработанных, Чернил, черный, emkost-otrabotannyh, otrabotannyh-chernil, chernil-epson, emkost, otrabotannyh, chernil, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WP-4025DW, C13T619000, B500DN, B-310N, B-510DN, B-300, WP-4535DWF, B300, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T619000, C13T619000 B300, B300 B500DN, Ёмкость, Отработанных, Чернил, черный, emkost-otrabotannyh, otrabotannyh-chernil, chernil-epson, emkost, otrabotannyh, chernil, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T619300" available="true">
@@ -363,7 +355,7 @@ SC-B6000</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Ёмкость для отработанных чернил</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, SC-T7000, SC-T3000, SC-T5000, C13T619300, SC-F6000, SC-B6000, SCF7000, T3000, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T619300, C13T619300 T3000, T3000 5000, 5000 7000, 7000 Т3200, Ёмкость, Отработанных, Чернил, 5000, 7000, Т3200, 5200, черный, emkost-otrabotannyh, otrabotannyh-chernil, chernil-epson, 7000-t3200, emkost, otrabotannyh, chernil, t3200, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T619300, SC-T7000, SC-T3000, T3000, SC-B6000, SCF7000, SC-F6000, SC-T5000, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C13T619300, C13T619300 T3000, T3000 5000, 5000 7000, 7000 Т3200, Ёмкость, Отработанных, Чернил, 5000, 7000, Т3200, 5200, черный, emkost-otrabotannyh, otrabotannyh-chernil, chernil-epson, 7000-t3200, emkost, otrabotannyh, chernil, t3200, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T671100" available="true">
@@ -482,7 +474,7 @@ SC-B6000</div>
 ]]></description>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Ёмкость для отработанных чернил</Param>
-        <keywords>Epson, C33S021601, C4000E, C33S021601SJMB4000, SJMB4000, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C33S021601, C33S021601 SJMB4000, SJMB4000 C4000e, C4000e Maintenance, Maintenance box, Ёмкость, Отработанных, Чернил, Maintenance, Box, черный, emkost-otrabotannyh, otrabotannyh-chernil, chernil-epson, emkost, otrabotannyh, chernil, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C33S021601, SJMB4000, C33S021601SJMB4000, C4000E, Ёмкость отработанных, отработанных чернил, чернил Epson, Epson C33S021601, C33S021601 SJMB4000, SJMB4000 C4000e, C4000e Maintenance, Maintenance box, Ёмкость, Отработанных, Чернил, Maintenance, Box, черный, emkost-otrabotannyh, otrabotannyh-chernil, chernil-epson, emkost, otrabotannyh, chernil, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC12C937201" available="true">
@@ -739,7 +731,7 @@ HDMI вход с поддержкой HDCP 2.3</div>
 <p>&#128100; <strong>Олег</strong>, Петропавл — &#11088;&#11088;&#11088;&#11088;&#9734;<br>«Со своими задачами справляется отлично.»</p>
 ]]></description>
         <param name="Энергопотребление">124 Вт (0.5 Вт в режиме ожидания)</param>
-        <keywords>SBID-QX275-P, RS-232, Интерактивная панель, панель SBID-QX275-P, Интерактивная, Панель, interaktivnaya-panel, panel-sbid-qx275-p, interaktivnaya, panel, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>RS-232, SBID-QX275-P, Интерактивная панель, панель SBID-QX275-P, Интерактивная, Панель, interaktivnaya-panel, panel-sbid-qx275-p, interaktivnaya, panel, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACSBID-MX265-V4" available="true">
@@ -812,7 +804,7 @@ HDMI вход с поддержкой HDCP 2.3
 ]]></description>
         <Param name="Гарантия">36</Param>
         <param name="Энергопотребление">124 Вт (0.5 Вт в режиме ожидания)</param>
-        <keywords>Smart, SBID-MX265-V4, RS-232, Интерактивный дисплей, дисплей SMART, SMART SBID-MX265-V4, Интерактивный, Дисплей, interaktivnyy-displey, displey-smart, interaktivnyy, displey, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Smart, RS-232, SBID-MX265-V4, Интерактивный дисплей, дисплей SMART, SMART SBID-MX265-V4, Интерактивный, Дисплей, interaktivnyy-displey, displey-smart, interaktivnyy, displey, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="AC83765" available="true">
@@ -1100,7 +1092,7 @@ Cablexpert CC-DP-HDMI-6</div>
         <Param name="Гарантия">12 мес</Param>
         <Param name="Тип">Кабель HDMI</Param>
         <param name="Цвет">чёрный</param>
-        <keywords>Cablexpert, CC-DP-HDMI-6, CC-DP-HDMI-5M, 20M, 19M, Кабель DisplayPort-, DisplayPort- HDMI, HDMI Cablexpert, Cablexpert CC-DP-HDMI-5M, CC-DP-HDMI-5M 5м, 5м 20M, 20M 19M, 19M черный, Кабель, Displayport-, HDMI, 5м, Черный, Экран, kabel-displayport, cc-dp-hdmi-5m-5m, 5m-20m, 19m-chernyy, kabel, 5m, chernyy, ekran, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Cablexpert, CC-DP-HDMI-5M, CC-DP-HDMI-6, 20M, 19M, Кабель DisplayPort-, DisplayPort- HDMI, HDMI Cablexpert, Cablexpert CC-DP-HDMI-5M, CC-DP-HDMI-5M 5м, 5м 20M, 20M 19M, 19M черный, Кабель, Displayport-, HDMI, 5м, Черный, Экран, kabel-displayport, cc-dp-hdmi-5m-5m, 5m-20m, 19m-chernyy, kabel, 5m, chernyy, ekran, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACCC-DP-HDMI-6" available="true">
@@ -1717,7 +1709,7 @@ Gembird/Cablexpert CC-HDMI4L-10 – интерфейсный кабель цифрового аудио-видео стан
         <Param name="Тип">Кабель</Param>
         <Param name="Гарантия">12 мес</Param>
         <param name="Разъемы">два 15 - контактных HD15M [папа]</param>
-        <keywords>Cablexpert, CC-PPVGA-10, HD15M, 15M, Кабель VGA, VGA Premium, Premium Cablexpert, Cablexpert CC-PPVGA-10, CC-PPVGA-10 15M, 15M 15M, 15M 0м, 0м двойной, Кабель, VGA, Premium, 0м, Двойной, Экран, kabel-vga, 15m-0m, 0m-dvoynoy, kabel, 0m, dvoynoy, ekran, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Cablexpert, HD15M, CC-PPVGA-10, 15M, Кабель VGA, VGA Premium, Premium Cablexpert, Cablexpert CC-PPVGA-10, CC-PPVGA-10 15M, 15M 15M, 15M 0м, 0м двойной, Кабель, VGA, Premium, 0м, Двойной, Экран, kabel-vga, 15m-0m, 0m-dvoynoy, kabel, 0m, dvoynoy, ekran, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACCC-PPVGA-10M-B" available="true">
@@ -1800,7 +1792,7 @@ Gembird/Cablexpert CC-HDMI4L-10 – интерфейсный кабель цифрового аудио-видео стан
         <Param name="Гарантия">нет</Param>
         <Param name="Тип">Кабель питания</Param>
         <Param name="Цвет">Черный</Param>
-        <keywords>Cablexpert, C13-C14, PC-189-1-3M, 3x1кв, Кабель питания, питания сист, сист блок-монитор, блок-монитор Cablexpert, Cablexpert PC-189-1-3M, PC-189-1-3M 3м, 3м C13-C14, C13-C14 3x1кв, Кабель, Питания, Сист, Блок-монитор, 3м, Черный, 3x1kv, kabel-pitaniya, pitaniya-sist, sist-blok-monitor, blok-monitor-cablexpert, pc-189-1-3m-3m, 3m-c13-c14, c13-c14-3x1kv, kabel, pitaniya, sist, blok-monitor, 3m, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Cablexpert, PC-189-1-3M, C13-C14, 3x1кв, Кабель питания, питания сист, сист блок-монитор, блок-монитор Cablexpert, Cablexpert PC-189-1-3M, PC-189-1-3M 3м, 3м C13-C14, C13-C14 3x1кв, Кабель, Питания, Сист, Блок-монитор, 3м, Черный, 3x1kv, kabel-pitaniya, pitaniya-sist, sist-blok-monitor, blok-monitor-cablexpert, pc-189-1-3m-3m, 3m-c13-c14, c13-c14-3x1kv, kabel, pitaniya, sist, blok-monitor, 3m, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACCC-HDMI4X-05M" available="true">
@@ -1930,7 +1922,7 @@ Epson WorkForce WF-7110DTW</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">Около 2200 стр.</Param>
-        <keywords>Epson, WF-7610DWF, WF-7110DTW, C13T27914022, WF-7620DTWF, Картридж Epson, Epson C13T27914022, C13T27914022 WF-7620DTWF, WF-7620DTWF черный, Картридж, Черный, kartridzh-epson, wf-7620dtwf-chernyy, kartridzh, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-7110DTW, WF-7610DWF, C13T27914022, WF-7620DTWF, Картридж Epson, Epson C13T27914022, C13T27914022 WF-7620DTWF, WF-7620DTWF черный, Картридж, Черный, kartridzh-epson, wf-7620dtwf-chernyy, kartridzh, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T40D140" available="true">
@@ -1966,7 +1958,7 @@ Epson SureColor SC-T5100N (без стенда)-C11CF12302A0</div>
         <Param name="Цвет">Черный</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, C11CF11302A0, SC-T3100N, C13T40D140, SC-T3100, SC-T5100N, SC-T5100, C11CF12302A0, C11CF12301A0, C11CF11301A0, T40D140, XD2, 80ml, Картридж Epson, Epson C13T40D140, C13T40D140 UltraChrome, UltraChrome XD2, XD2 Black, Black T40D140, T40D140 80ml, Картридж, Ultrachrome, Black, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CF12302A0, C11CF11301A0, SC-T5100N, C11CF11302A0, SC-T3100N, SC-T3100, T40D140, C11CF12301A0, C13T40D140, SC-T5100, XD2, 80ml, Картридж Epson, Epson C13T40D140, C13T40D140 UltraChrome, UltraChrome XD2, XD2 Black, Black T40D140, T40D140 80ml, Картридж, Ultrachrome, Black, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T40D240" available="true">
@@ -2001,7 +1993,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</div>
         <Param name="Цвет">Голубой</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, C11CF11302A0, SC-T3100N, T40D240, SC-T3100, SC-T5100N, C13T40D240, SC-T5100, C11CF12301A0, C11CF12302A0, C11CF11301A0, XD2, 50ml, Картридж Epson, Epson C13T40D240, C13T40D240 UltraChrome, UltraChrome XD2, XD2 Cyan, Cyan T40D240, T40D240 50ml, Картридж, Ultrachrome, Cyan, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CF12302A0, C13T40D240, T40D240, C11CF11301A0, SC-T5100N, C11CF11302A0, SC-T3100N, SC-T3100, C11CF12301A0, SC-T5100, XD2, 50ml, Картридж Epson, Epson C13T40D240, C13T40D240 UltraChrome, UltraChrome XD2, XD2 Cyan, Cyan T40D240, T40D240 50ml, Картридж, Ultrachrome, Cyan, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T40D34N" available="true">
@@ -2037,7 +2029,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</div>
         <Param name="Цвет">пурпурный</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, C11CF11302A0, SC-T3100N, SC-T3100, SC-T5100N, T40D340, SC-T5100, C11CF12301A0, C11CF12302A0, C11CF11301A0, C13T40D34N, XD2, 50ml, Картридж Epson, Epson C13T40D34N, C13T40D34N UltraChrome, UltraChrome XD2, XD2 Magenta, Magenta T40D340, T40D340 50ml, Картридж, Ultrachrome, Magenta, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CF12302A0, C11CF11301A0, SC-T5100N, T40D340, C11CF11302A0, SC-T3100N, SC-T3100, C11CF12301A0, SC-T5100, C13T40D34N, XD2, 50ml, Картридж Epson, Epson C13T40D34N, C13T40D34N UltraChrome, UltraChrome XD2, XD2 Magenta, Magenta T40D340, T40D340 50ml, Картридж, Ultrachrome, Magenta, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T40D440" available="true">
@@ -2073,7 +2065,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Цвет">Желтый</Param>
-        <keywords>Epson, C13T40D440, C11CF11302A0, SC-T3100N, SC-T3100, T40D440, SC-T5100N, SC-T5100, C11CF12302A0, C11CF12301A0, C11CF11301A0, XD2, 50ml, Картридж Epson, Epson C13T40D440, C13T40D440 UltraChrome, UltraChrome XD2, XD2 Yellow, Yellow T40D440, T40D440 50ml, Картридж, Ultrachrome, Yellow, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T40D440, C11CF12302A0, C11CF11301A0, SC-T5100N, C11CF11302A0, SC-T3100N, SC-T3100, C11CF12301A0, SC-T5100, T40D440, XD2, 50ml, Картридж Epson, Epson C13T40D440, C13T40D440 UltraChrome, UltraChrome XD2, XD2 Yellow, Yellow T40D440, T40D440 50ml, Картридж, Ultrachrome, Yellow, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T41E240" available="true">
@@ -2104,7 +2096,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">350 мл</Param>
-        <keywords>Epson, SC-T3405, C13T41E240, Картридж Epson, Epson C13T41E240, C13T41E240 UltraChrome, UltraChrome 700, 700 голубой, Картридж, Ultrachrome, 700, Голубой, kartridzh-epson, 700-goluboy, kartridzh, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T41E240, SC-T3405, Картридж Epson, Epson C13T41E240, C13T41E240 UltraChrome, UltraChrome 700, 700 голубой, Картридж, Ultrachrome, 700, Голубой, kartridzh-epson, 700-goluboy, kartridzh, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T41E34N" available="true">
@@ -2136,7 +2128,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">350 мл</Param>
-        <keywords>Epson, T41E340, C13T41E34N, XD2, Картридж Epson, Epson C13T41E34N, C13T41E34N UltraChrome, UltraChrome XD2, XD2 T41E340, T41E340 350, 350 пурпурный, Картридж, Ultrachrome, 350, Пурпурный, kartridzh-epson, 350-purpurnyy, kartridzh, purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T41E34N, T41E340, XD2, Картридж Epson, Epson C13T41E34N, C13T41E34N UltraChrome, UltraChrome XD2, XD2 T41E340, T41E340 350, 350 пурпурный, Картридж, Ultrachrome, 350, Пурпурный, kartridzh-epson, 350-purpurnyy, kartridzh, purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T41E440" available="true">
@@ -2236,7 +2228,7 @@ Epson SC-T7700DM</div>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">350 мл</Param>
         <Param name="Цвет">жёлтый</Param>
-        <keywords>Epson, SC-T3700E, SC-73700DE, SC-T3700D, SC-T5700D, C13T50M400, SC-T7700DM, SC-T7700D, T3000, Картридж Epson, Epson C13T50M400, C13T50M400 T3000, T3000 5000, 5000 7000, 7000 Т3700, Т3700 5700, 5700 7700, Картридж, 5000, 7000, Т3700, 5700, 7700, Жёлтый, желтый, kartridzh-epson, 7000-t3700, t3700-5700, kartridzh, t3700, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T50M400, SC-T7700D, SC-T3700D, SC-73700DE, SC-T5700D, T3000, SC-T3700E, SC-T7700DM, Картридж Epson, Epson C13T50M400, C13T50M400 T3000, T3000 5000, 5000 7000, 7000 Т3700, Т3700 5700, 5700 7700, Картридж, 5000, 7000, Т3700, 5700, 7700, Жёлтый, желтый, kartridzh-epson, 7000-t3700, t3700-5700, kartridzh, t3700, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T50MF00" available="true">
@@ -2274,7 +2266,7 @@ Epson SC-T7700DM</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">350 мл</Param>
-        <keywords>Epson, SC-T3700E, C13T50MF00, SC-73700DE, SC-T3700D, SC-T5700D, SC-T7700DM, SC-T7700D, T3000, Картридж Epson, Epson C13T50MF00, C13T50MF00 T3000, T3000 5000, 5000 7000, 7000 Т3700, Т3700 5700, 5700 7700, Картридж, 5000, 7000, Т3700, 5700, 7700, Красный, kartridzh-epson, 7000-t3700, t3700-5700, kartridzh, t3700, krasnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, SC-T7700D, SC-T3700D, SC-73700DE, SC-T5700D, T3000, SC-T3700E, C13T50MF00, SC-T7700DM, Картридж Epson, Epson C13T50MF00, C13T50MF00 T3000, T3000 5000, 5000 7000, 7000 Т3700, Т3700 5700, 5700 7700, Картридж, 5000, 7000, Т3700, 5700, 7700, Красный, kartridzh-epson, 7000-t3700, t3700-5700, kartridzh, t3700, krasnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T606400" available="true">
@@ -2308,7 +2300,7 @@ Epson Stylus Pro 4880</div>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">220 мл</Param>
         <Param name="Цвет">Желтый</Param>
-        <keywords>Epson, SP-4880, C13T606400, Картридж Epson, Epson C13T606400, C13T606400 SP-4880, SP-4880 желтый, Картридж, Желтый, kartridzh-epson, sp-4880-zheltyy, kartridzh, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T606400, SP-4880, Картридж Epson, Epson C13T606400, C13T606400 SP-4880, SP-4880 желтый, Картридж, Желтый, kartridzh-epson, sp-4880-zheltyy, kartridzh, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T606500" available="true">
@@ -2376,7 +2368,7 @@ Epson Stylus Pro 4880</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">220 мл</Param>
-        <keywords>Epson, SP-4880, C13T606600, Картридж Epson, Epson C13T606600, C13T606600 SP-4880, SP-4880 светло-пурпурный, Картридж, Светло-пурпурный, kartridzh-epson, sp-4880-svetlo-purpurnyy, kartridzh, svetlo-purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T606600, SP-4880, Картридж Epson, Epson C13T606600, C13T606600 SP-4880, SP-4880 светло-пурпурный, Картридж, Светло-пурпурный, kartridzh-epson, sp-4880-svetlo-purpurnyy, kartridzh, svetlo-purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T606900" available="true">
@@ -2410,7 +2402,7 @@ Epson Stylus Pro 4880</div>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">220 мл</Param>
         <Param name="Цвет">Светло-серый</Param>
-        <keywords>Epson, SP-4880, C13T606900, Картридж Epson, Epson C13T606900, C13T606900 SP-4880, SP-4880 светло-серый, Картридж, Светло-серый, kartridzh-epson, sp-4880-svetlo-seryy, kartridzh, svetlo-seryy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T606900, SP-4880, Картридж Epson, Epson C13T606900, C13T606900 SP-4880, SP-4880 светло-серый, Картридж, Светло-серый, kartridzh-epson, sp-4880-svetlo-seryy, kartridzh, svetlo-seryy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T606B00" available="true">
@@ -2472,7 +2464,7 @@ Epson Stylus Pro 4800</div>
         <Param name="Цвет">пурпурный</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, C13T606C00, SP-4800, Картридж Epson, Epson C13T606C00, C13T606C00 SP-4800, SP-4800 пурпурный, пурпурный светлый, Картридж, Пурпурный, Светлый, kartridzh-epson, sp-4800-purpurnyy, purpurnyy-svetlyy, kartridzh, purpurnyy, svetlyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, SP-4800, C13T606C00, Картридж Epson, Epson C13T606C00, C13T606C00 SP-4800, SP-4800 пурпурный, пурпурный светлый, Картридж, Пурпурный, Светлый, kartridzh-epson, sp-4800-purpurnyy, purpurnyy-svetlyy, kartridzh, purpurnyy, svetlyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T614200" available="true">
@@ -2506,7 +2498,7 @@ Epson Stylus Pro 4450</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">220 мл</Param>
-        <keywords>Epson, SP-4450, C13T614200, Картридж Epson, Epson C13T614200, C13T614200 SP-4450, SP-4450 голубой, Картридж, Голубой, kartridzh-epson, sp-4450-goluboy, kartridzh, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T614200, SP-4450, Картридж Epson, Epson C13T614200, C13T614200 SP-4450, SP-4450 голубой, Картридж, Голубой, kartridzh-epson, sp-4450-goluboy, kartridzh, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T614400" available="true">
@@ -2576,7 +2568,7 @@ Epson Stylus Pro 4450</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">220 мл</Param>
-        <keywords>Epson, SP-4450, C13T61480N, 220ml, Картридж Epson, Epson C13T61480N, C13T61480N SP-4450, SP-4450 220ml, 220ml черный, черный матовый, Картридж, Черный, Матовый, kartridzh-epson, 220ml-chernyy, chernyy-matovyy, kartridzh, chernyy, matovyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T61480N, SP-4450, 220ml, Картридж Epson, Epson C13T61480N, C13T61480N SP-4450, SP-4450 220ml, 220ml черный, черный матовый, Картридж, Черный, Матовый, kartridzh-epson, 220ml-chernyy, chernyy-matovyy, kartridzh, chernyy, matovyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T692100" available="true">
@@ -2611,7 +2603,7 @@ Epson SureColor T-7000</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">110 мл</Param>
-        <keywords>Epson, C13T692100, T-7000, T-3000, T3000, T-5000, Картридж Epson, Epson C13T692100, C13T692100 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Фото, черный, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, foto, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T-3000, T-7000, T3000, C13T692100, T-5000, Картридж Epson, Epson C13T692100, C13T692100 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Фото, черный, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, foto, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T69230N" available="true">
@@ -2646,7 +2638,7 @@ Epson SureColor T-7000</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">110 мл</Param>
-        <keywords>Epson, T-7000, C13T69230N, T-3000, T3000, T-5000, Картридж Epson, Epson C13T69230N, C13T69230N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Пурпурный, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T-3000, T-7000, T3000, C13T69230N, T-5000, Картридж Epson, Epson C13T69230N, C13T69230N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Пурпурный, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T69240N" available="true">
@@ -2681,7 +2673,7 @@ Epson SureColor T-7000</div>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">110 мл</Param>
         <Param name="Цвет">Желтый</Param>
-        <keywords>Epson, T-7000, C13T69240N, T-3000, T3000, T-5000, Картридж Epson, Epson C13T69240N, C13T69240N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Желтый, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T-3000, T-7000, C13T69240N, T3000, T-5000, Картридж Epson, Epson C13T69240N, C13T69240N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Желтый, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T692500" available="true">
@@ -2716,7 +2708,7 @@ Epson SureColor T-7000</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">110 мл</Param>
-        <keywords>Epson, T-7000, C13T692500, T-3000, T3000, T-5000, Картридж Epson, Epson C13T692500, C13T692500 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Матовый, черный, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, matovyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T-3000, T-7000, T3000, C13T692500, T-5000, Картридж Epson, Epson C13T692500, C13T692500 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Матовый, черный, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, matovyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T694100" available="true">
@@ -2751,7 +2743,7 @@ Epson SureColor T-7000</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">700 мл</Param>
-        <keywords>Epson, T-7000, T-3000, C13T694100, T3000, T-5000, Картридж Epson, Epson C13T694100, C13T694100 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Фото, черный, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, foto, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T-3000, T-7000, C13T694100, T3000, T-5000, Картридж Epson, Epson C13T694100, C13T694100 T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Фото, черный, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, foto, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T69420N" available="true">
@@ -2786,7 +2778,7 @@ Epson SureColor T-7000</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">700 мл</Param>
-        <keywords>Epson, T-7000, C13T69420N, T-3000, T3000, T-5000, Картридж Epson, Epson C13T69420N, C13T69420N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Голубой, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T-3000, T-7000, T3000, C13T69420N, T-5000, Картридж Epson, Epson C13T69420N, C13T69420N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Голубой, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, goluboy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T69440N" available="true">
@@ -2821,7 +2813,7 @@ Epson SureColor T-7000</div>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">700 мл</Param>
         <Param name="Цвет">Желтый</Param>
-        <keywords>Epson, C13T69440N, T-7000, T-3000, T3000, T-5000, Картридж Epson, Epson C13T69440N, C13T69440N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Желтый, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, T-3000, T-7000, T3000, C13T69440N, T-5000, Картридж Epson, Epson C13T69440N, C13T69440N T3000, T3000 5000, 5000 7000, 7000 Т3200, Т3200 5200, 5200 7200, Картридж, 5000, 7000, Т3200, 5200, 7200, Желтый, kartridzh-epson, 7000-t3200, t3200-5200, kartridzh, t3200, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T838140" available="true">
@@ -2866,7 +2858,7 @@ Epson SureColor T-7000</div>
         <Param name="Ресурс">20000 стр.</Param>
         <param name="Емкость">Стандартная</param>
         <param name="Цвет">черный</param>
-        <keywords>Epson, WF-R5690DTWF, WF-R5190DTW, C13T838140, Картридж Epson, Epson C13T838140, C13T838140 WF-R5190DTW, WF-R5190DTW RIPS, RIPS WF-R5690DTWF, WF-R5690DTWF RIPS, RIPS черный, Картридж, RIPS, Черный, kartridzh-epson, rips-chernyy, kartridzh, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-R5190DTW, C13T838140, WF-R5690DTWF, Картридж Epson, Epson C13T838140, C13T838140 WF-R5190DTW, WF-R5190DTW RIPS, RIPS WF-R5690DTWF, WF-R5690DTWF RIPS, RIPS черный, Картридж, RIPS, Черный, kartridzh-epson, rips-chernyy, kartridzh, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T965140" available="true">
@@ -2903,7 +2895,7 @@ Epson WorkForce Pro WF-M5799DWFMV</div>
         <Param name="Цвет">Черный</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, WF-M5799DWF, C11CG04401, C13T965140, C11CG07401, WF-M52XX, WF-M5299DW, WF-M5799DWFMV, WF-M5299DWSV, 57xx, Картридж Epson, Epson C13T965140, C13T965140 WF-M52xx, WF-M52xx 57xx, 57xx Series, Series Ink, Ink Cartridge, Картридж, Series, Ink, Cartridge, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-M5799DWF, WF-M5299DW, WF-M52XX, WF-M5299DWSV, C11CG07401, C13T965140, WF-M5799DWFMV, C11CG04401, 57xx, Картридж Epson, Epson C13T965140, C13T965140 WF-M52xx, WF-M52xx 57xx, 57xx Series, Series Ink, Ink Cartridge, Картридж, Series, Ink, Cartridge, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T966140" available="true">
@@ -2933,7 +2925,7 @@ Epson WorkForce Pro WF-M5799DWFMV</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, WF-M52, C13T966140, 57xx, Картридж Epson, Epson C13T966140, C13T966140 WF-M52, WF-M52 57xx, 57xx Series, Series Ink, Ink Cartridge, Cartridge XXL, Картридж, Series, Ink, Cartridge, XXL, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T966140, WF-M52, 57xx, Картридж Epson, Epson C13T966140, C13T966140 WF-M52, WF-M52 57xx, 57xx Series, Series Ink, Ink Cartridge, Cartridge XXL, Картридж, Series, Ink, Cartridge, XXL, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T97410N" available="true">
@@ -2964,7 +2956,7 @@ Epson WorkForce Pro WF-M5799DWFMV</div>
         <Param name="Цвет">Черный</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, WF-C869R, C13T97410N, WF-C869RDTWF, Картридж Epson, Epson C13T97410N, C13T97410N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R черный, Картридж, Workforce, Pro, Черный, kartridzh-epson, wf-c869r-chernyy, kartridzh, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-C869RDTWF, C13T97410N, WF-C869R, Картридж Epson, Epson C13T97410N, C13T97410N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R черный, Картридж, Workforce, Pro, Черный, kartridzh-epson, wf-c869r-chernyy, kartridzh, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T97420N" available="true">
@@ -3026,7 +3018,7 @@ Epson WorkForce Pro WF-M5799DWFMV</div>
         <Param name="Цвет">пурпурный</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, WF-C869R, C13T97430N, WF-C869RDTWF, Картридж Epson, Epson C13T97430N, C13T97430N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R пурпурный, Картридж, Workforce, Pro, Пурпурный, kartridzh-epson, wf-c869r-purpurnyy, kartridzh, purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-C869RDTWF, C13T97430N, WF-C869R, Картридж Epson, Epson C13T97430N, C13T97430N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R пурпурный, Картридж, Workforce, Pro, Пурпурный, kartridzh-epson, wf-c869r-purpurnyy, kartridzh, purpurnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T97440N" available="true">
@@ -3057,7 +3049,7 @@ Epson WorkForce Pro WF-M5799DWFMV</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Цвет">Желтый</Param>
-        <keywords>Epson, WF-C869R, C13T97440N, WF-C869RDTWF, Картридж Epson, Epson C13T97440N, C13T97440N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R желтый, Картридж, Workforce, Pro, Желтый, kartridzh-epson, wf-c869r-zheltyy, kartridzh, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WF-C869RDTWF, C13T97440N, WF-C869R, Картридж Epson, Epson C13T97440N, C13T97440N WorkForce, WorkForce Pro, Pro WF-C869R, WF-C869R желтый, Картридж, Workforce, Pro, Желтый, kartridzh-epson, wf-c869r-zheltyy, kartridzh, zheltyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T69220N" available="true">
@@ -3114,7 +3106,7 @@ Epson SureColor SC-T3000</div>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">330  стр.</Param>
-        <keywords>Epson, SC-T7000, SC-T3000, SC-T5000, CYANT69220N, SC-T3200-PS, SC-T5200D-PS, C13T69220N, SC-T5200D, SC-T7200, SC-T5200, SC-T7200D, SC-T5200PS, SC-T3200N, SC-T3200, 110ml, Картридж Epson, Epson Singlepack, Singlepack UltraChrome, UltraChrome CyanT69220N, CyanT69220N 110ml, Картридж, Singlepack, Ultrachrome, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, SC-T7200D, SC-T7000, SC-T3200N, SC-T7200, SC-T3200, SC-T3000, SC-T5200D-PS, SC-T5200, C13T69220N, SC-T3200-PS, CYANT69220N, SC-T5200PS, SC-T5200D, SC-T5000, 110ml, Картридж Epson, Epson Singlepack, Singlepack UltraChrome, UltraChrome CyanT69220N, CyanT69220N 110ml, Картридж, Singlepack, Ultrachrome, kartridzh-epson, kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T08N140" available="true">
@@ -3324,7 +3316,7 @@ Epson SureColor SC-T3000</div>
         <Param name="Тип">Картридж для фильтра</Param>
         <Param name="Гарантия">Без гарантии</Param>
         <param name="Ресурс фильтра">200 л</param>
-        <keywords>Philips, AWP29, AWP201, Картридж фильтра, фильтра Philips, Philips AWP201, AWP201 10, Картридж, Фильтра, 10, kartridzh-filtra, filtra-philips, kartridzh, filtra, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Philips, AWP201, AWP29, Картридж фильтра, фильтра Philips, Philips AWP201, AWP201 10, Картридж, Фильтра, 10, kartridzh-filtra, filtra-philips, kartridzh, filtra, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="AC64V69AAABB64355" available="true">
@@ -3871,7 +3863,7 @@ Fellowes гарантирует непревзойденное качество товаров и сервисного обслуживания.
         <Param name="Цвет">Черный</Param>
         <Param name="Гарантия">0</Param>
         <Param name="Совместимость">Epson</Param>
-        <keywords>Epson, EB-SXW11, EB-S02, EB-SXW12, EB-S12, ELPLP67, EB-W02, EB-S11, Лампа проектора, проектора Epson, Epson ELPLP67, Лампа, Проектора, lampa-proektora, proektora-epson, lampa, proektora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, ELPLP67, EB-S12, EB-S11, EB-SXW11, EB-W02, EB-SXW12, EB-S02, Лампа проектора, проектора Epson, Epson ELPLP67, Лампа, Проектора, lampa-proektora, proektora-epson, lampa, proektora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACV13H010L76" available="true">
@@ -3913,7 +3905,7 @@ Epson EB-G6970WU</div>
 ]]></description>
         <Param name="Тип">Лампа для проектора</Param>
         <Param name="Гарантия">0</Param>
-        <keywords>Epson, EB-G6070W, EB-G6770WU, EB-G6270W, EB-G6XXX, EB-G6050W, EB-G6370, EB-G6970WU, ELPLP76, EB-G6900WU, EB-G6570WU, EB-G6650WU, EB-G6550WU, EB-G6800, EB-G6250W, EB-G6350, EB-G6450WU, Лампа проектора, проектора Epson, Epson ELPLP76, ELPLP76 Epson, Epson EB-G6xxx, EB-G6xxx Series, Лампа, Проектора, Series, lampa-proektora, proektora-epson, lampa, proektora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, EB-G6650WU, EB-G6770WU, EB-G6370, EB-G6350, EB-G6550WU, EB-G6270W, ELPLP76, EB-G6570WU, EB-G6050W, EB-G6XXX, EB-G6800, EB-G6900WU, EB-G6970WU, EB-G6450WU, EB-G6250W, EB-G6070W, Лампа проектора, проектора Epson, Epson ELPLP76, ELPLP76 Epson, Epson EB-G6xxx, EB-G6xxx Series, Лампа, Проектора, Series, lampa-proektora, proektora-epson, lampa, proektora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACV13H010L77" available="true">
@@ -3941,7 +3933,7 @@ Epson EB-G6970WU</div>
 ]]></description>
         <Param name="Тип">Лампа для проектора</Param>
         <Param name="Гарантия">14 дней</Param>
-        <keywords>Epson, ELPLP77, EB-4000, EB-4XXX, Лампа проектора, проектора Lamp, Lamp ELPLP77, ELPLP77 EB-4xxx, EB-4xxx Series, Лампа, Проектора, Lamp, Series, lampa-proektora, proektora-lamp, lampa, proektora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, EB-4XXX, ELPLP77, EB-4000, Лампа проектора, проектора Lamp, Lamp ELPLP77, ELPLP77 EB-4xxx, EB-4xxx Series, Лампа, Проектора, Lamp, Series, lampa-proektora, proektora-lamp, lampa, proektora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="AC64V69AAABB" available="true">
@@ -4022,70 +4014,10 @@ X Lighting: Нет
 NTSC: 113% size (Typ)
 sRGB: 159% size (Typ)
 Размер пикселя: 0.185 мм (Г) x 0.185 мм (В)
-Покрытие экрана: антибликовое, твердость (3H)
-Интерфейсы
-USB 3.2 Type A Down Stream: 3
-USB 3.2 Type B Up Stream: 1
-Micro USB: 1
-3.5mm Audio Out: 1
-HDMI 2.1: 1
-HDMI 2.0 (with HDCP 2.2): 1
-DisplayPort: 1
-Power in: 3-pin Socket (IEC C14 / CEE22)
-Аудио
-Встроенные динамики: 5Вт x2
-Питание
-Эко-режим (станд.): 41.8В
-Эко-режим (оптим.): 43.9В
-Потребление (тип.): 46.3В
-Потребление (макс.): 74В
-Напряжение: AC 100-240V, 50/60 Hz
-В режиме ожидания: 0.5В
-Блок питания: Внутренний
-Дополнительно
-Замок Кенсингтон: 1
-Укладка кабелей: Да
-Управление
-Физически: Joystick key: Up, Right, Down, Left, Center; Quick Access; Power
-на экране: Game Modes, Display, Input Select, ViewMode, Audio Adjust, Setup Menu
-Условия эксплуатации
-Температура: 32°F to 104°F (0°C to 40°C)
-Влажность: 20% to 90%
-Крепление
-Совместимое с VESA: 100 x 100 mm
-Входной сигнал
-Частота по горизонтали: HDMI (v2.1): 30 ~ 230KHz, HDMI (v2.0): 30 ~ 230KHz, DisplayPort (v1.4): 30 ~ 250KHz
-Частота по вертикали: HDMI (v2.1): 48 ~ 144Hz, HDMI (v2.0): 48 ~ 60Hz, DisplayPort (v1.4): 48 ~ 150Hz
-Видео входы
-Цифровая синхронизация: TMDS - HDMI (v2.1), TMDS - HDMI (v2.0), PCI-E - DisplayPort (v1.4)
-Эргономика
-Регулировка по высоте (мм): 120
-Разворот: 50&#186;
-Наклон (Вперед/Назад): -5&#186; / 20&#186;
-Поворот (Вправо/Влево): Нет
-Вес (фунты)
-Нетто (фунт): 22.2
-Нетто без стенда (фунт): 15.6
-Гросс (фунт): 32.3
-Вес (кг)
-Нетто (кг): 10.1
-Нетто без стенда (кг): 7.1
-Гросс (кг): 14.7
-Размеры (дюймы)
-Упаковка (дюйм): 33.5 x 20.7 x 12.9
-Физические (дюйм): 28.6 x 18.99~23.71 x 10.4
-Физические без подставки (дюйм): 28.6 x 17 x 3.4
-Размеры (мм)
-Упаковка (мм): 850 x 527 x 327
-Физические (мм): 726 x 482.3~602.3 x 265
-Физические без подставки (мм): 726 x 432 x 87
-Общее
-Сертификация: cTUVus, FCC-B, ICES003, CEC, NOM, Mexico Energy, CE, CE EMC, CB, RoHS, ErP, REACH, WEEE, EAC, UkrSEPRO, UKCA, CCC, China RoHS, China Energy Label
-СОСТАВ УПАКОВКИ: XG320U x1, 3-pin Plug (IEC C13 / CEE22) x1, HDMI Cable (v2.1; Male-Male) x1, DisplayPort Cable (v1.4; Male-Male) x1, USB A/B Cable (v3.2; Male-Male) x1, Quick Start Guide x1
-Переработка: Пожалуйста, утилизируйте в соответствии с местными, государственными или федеральными законами.</div>
+Покрытие экрана: антибликовое, твердость (3H)</div>
 <h3>Характеристики</h3>
 <ul>
-  <li><strong>Совместимость:</strong><br>Разрешение ПК (макс.): 3840x2160 Разрешение Mac® (макс.): 3840x2160 ОС: Windows 10 certified; macOS tested Разрешение Mac® (мин.): 3840x2160</li>
+  <li><strong>Совместимость:</strong><br>Разрешение ПК (макс.): 3840x2160 Разрешение Mac® (макс.): 3840x2160 ОС: Windows 10 certified; macOS tested Разрешение Mac® (мин.): 3840x2160 Интерфейсы USB 3.2 Type A Down Stream: 3 USB 3.2 Type B Up Stream: 1 Micro USB: 1 3.5mm Audio Out: 1 HDMI 2.1: 1 HDMI 2.0 (with HDCP 2.2): 1 DisplayPort: 1 Power in: 3-pin Socket (IEC C14 / CEE22) Аудио Встроенные динамики: 5Вт x2 Питание Эко-режим (станд.): 41.8В Эко-режим (оптим.): 43.9В Потребление (тип.): 46.3В Потребление (макс.): 74В Напряжение: AC 100-240V; 50/60 Hz В режиме ожидания: 0.5В Блок питания: Внутренний Дополнительно Замок Кенсингтон: 1 Укладка кабелей: Да Управление Физически: Joystick key: Up; Right; Down; Left; Center; Quick Access; Power на экране: Game Modes; Display; Input Select; ViewMode; Audio Adjust; Setup Menu Условия эксплуатации Температура: 32°F to 104°F (0°C to 40°C) Влажность: 20% to 90% Крепление Совместимое с VESA: 100 x 100 mm Входной сигнал Частота по горизонтали: HDMI (v2.1): 30 ~ 230KHz; HDMI (v2.0): 30 ~ 230KHz; DisplayPort (v1.4): 30 ~ 250KHz Частота по вертикали: HDMI (v2.1): 48 ~ 144Hz; HDMI (v2.0): 48 ~ 60Hz; DisplayPort (v1.4): 48 ~ 150Hz Видео входы Цифровая синхронизация: TMDS - HDMI (v2.1); TMDS - HDMI (v2.0); PCI-E - DisplayPort (v1.4) Эргономика Регулировка по высоте (мм): 120 Разворот: 50&#186; Наклон (Вперед/Назад): -5&#186; / 20&#186; Поворот (Вправо/Влево): Нет Вес (фунты) Нетто (фунт): 22.2 Нетто без стенда (фунт): 15.6 Гросс (фунт): 32.3 Вес (кг) Нетто (кг): 10.1 Нетто без стенда (кг): 7.1 Гросс (кг): 14.7 Размеры (дюймы) Упаковка (дюйм): 33.5 x 20.7 x 12.9 Физические (дюйм): 28.6 x 18.99~23.71 x 10.4 Физические без подставки (дюйм): 28.6 x 17 x 3.4 Размеры (мм) Упаковка (мм): 850 x 527 x 327 Физические (мм): 726 x 482.3~602.3 x 265 Физические без подставки (мм): 726 x 432 x 87 Общее Сертификация: cTUVus; FCC-B; ICES003; CEC; NOM; Mexico Energy; CE; CE EMC; CB; RoHS; ErP; REACH; WEEE; EAC; UkrSEPRO; UKCA; CCC; China RoHS; China Energy Label СОСТАВ УПАКОВКИ: XG320U x1; 3-pin Plug (IEC C13 / CEE22) x1; HDMI Cable (v2.1; Male-Male) x1; DisplayPort Cable (v1.4; USB A/B Cable (v3.2; Quick Start Guide x1 Переработка: Пожалуйста; утилизируйте в соответствии с местными; государственными или федеральными законами</li>
   <li><strong>Размер экрана (дюйм):</strong> 32</li>
   <li><strong>Область отображения (дюйм):</strong> 32</li>
   <li><strong>Тип панели:</strong> IPS Technology</li>
@@ -4104,31 +4036,6 @@ Power in: 3-pin Socket (IEC C14 / CEE22)
   <li><strong>Фильтр синего света:</strong> Да</li>
   <li><strong>Цветовая гамма:</strong> Adobe RGB: 99% coverage (Typ)</li>
   <li><strong>Размер пикселя:</strong> 0.185 мм (Г) x 0.185 мм (В)</li>
-  <li><strong>USB 3.2 Type A Down Stream:</strong> 3</li>
-  <li><strong>USB 3.2 Type B Up Stream:</strong> 1</li>
-  <li><strong>Micro USB:</strong> 1</li>
-  <li><strong>Встроенные динамики:</strong> 5Вт x2</li>
-  <li><strong>Потребление (тип.):</strong> 46.3В</li>
-  <li><strong>Напряжение:</strong> AC 100-240V, 50/60 Hz</li>
-  <li><strong>В режиме ожидания:</strong> 0.5В</li>
-  <li><strong>Влажность:</strong> 20% to 90%</li>
-  <li><strong>Совместимое с VESA:</strong> 100 x 100 mm</li>
-  <li><strong>Частота по горизонтали:</strong> HDMI (v2.1): 30 ~ 230KHz, HDMI (v2.0): 30 ~ 230KHz, DisplayPort (v1.4): 30 ~ 250KHz</li>
-  <li><strong>Частота по вертикали:</strong> HDMI (v2.1): 48 ~ 144Hz, HDMI (v2.0): 48 ~ 60Hz, DisplayPort (v1.4): 48 ~ 150Hz</li>
-  <li><strong>Цифровая синхронизация:</strong> TMDS - HDMI (v2.1), TMDS - HDMI (v2.0), PCI-E - DisplayPort (v1.4)</li>
-  <li><strong>Регулировка по высоте (мм):</strong> 120</li>
-  <li><strong>Разворот:</strong> 50&#186;</li>
-  <li><strong>Наклон (Вперед/Назад):</strong> -5&#186; / 20&#186;</li>
-  <li><strong>Поворот (Вправо/Влево):</strong> Нет</li>
-  <li><strong>Нетто (кг):</strong> 10.1</li>
-  <li><strong>Нетто без стенда (кг):</strong> 7.1</li>
-  <li><strong>Гросс (кг):</strong> 14.7</li>
-  <li><strong>Упаковка (дюйм):</strong> 33.5 x 20.7 x 12.9</li>
-  <li><strong>Физические (дюйм):</strong> 28.6 x 18.99~23.71 x 10.4</li>
-  <li><strong>Физические без подставки (дюйм):</strong> 28.6 x 17 x 3.4</li>
-  <li><strong>Упаковка (мм):</strong> 850 x 527 x 327</li>
-  <li><strong>Физические (мм):</strong> 726 x 482.3~602.3 x 265</li>
-  <li><strong>Физические без подставки (мм):</strong> 726 x 432 x 87</li>
 </ul>
 <h3>FAQ</h3>
 <p><strong>В:</strong> Поддерживаются современные сценарии?<br><strong>О:</strong> Да, ориентирован на повседневную работу.</p>
@@ -4140,16 +4047,12 @@ Power in: 3-pin Socket (IEC C14 / CEE22)
 ]]></description>
         <Param name="Тип">Монитор</Param>
         <Param name="Гарантия">36</Param>
-        <param name="Совместимость">Разрешение ПК (макс.): 3840x2160 Разрешение Mac® (макс.): 3840x2160 ОС: Windows 10 certified; macOS tested Разрешение Mac® (мин.): 3840x2160</param>
+        <param name="Совместимость">Разрешение ПК (макс.): 3840x2160 Разрешение Mac® (макс.): 3840x2160 ОС: Windows 10 certified; macOS tested Разрешение Mac® (мин.): 3840x2160 Интерфейсы USB 3.2 Type A Down Stream: 3 USB 3.2 Type B Up Stream: 1 Micro USB: 1 3.5mm Audio Out: 1 HDMI 2.1: 1 HDMI 2.0 (with HDCP 2.2): 1 DisplayPort: 1 Power in: 3 - pin Socket (IEC C14 / CEE22)Аудио Встроенные динамики: 5Вт x2 Питание Эко - режим (станд.): 41.8В Эко - режим (оптим.): 43.9В Потребление (тип.): 46.3В Потребление (макс.): 74В Напряжение: AC 100 - 240V; 50/60 Hz В режиме ожидания: 0.5В Блок питания: Внутренний Дополнительно Замок Кенсингтон: 1 Укладка кабелей: Да Управление Физически: Joystick key: Up; Right; Down; Left; Center; Quick Access; Power на экране: Game Modes; Display; Input Select; ViewMode; Audio Adjust; Setup Menu Условия эксплуатации Температура: 32°F to 104°F (0°C to 40°C)Влажность: 20% to 90% Крепление Совместимое с VESA: 100 x 100 mm Входной сигнал Частота по горизонтали: HDMI (v2.1): 30 ~ 230KHz; HDMI (v2.0): 30 ~ 230KHz; DisplayPort (v1.4): 30 ~ 250KHz Частота по вертикали: HDMI (v2.1): 48 ~ 144Hz; HDMI (v2.0): 48 ~ 60Hz; DisplayPort (v1.4): 48 ~ 150Hz Видео входы Цифровая синхронизация: TMDS - HDMI (v2.1); TMDS - HDMI (v2.0); PCI - E - DisplayPort (v1.4)Эргономика Регулировка по высоте (мм): 120 Разворот: 50&#186; Наклон (Вперед/Назад): - 5&#186; / 20&#186; Поворот (Вправо/Влево): Нет Вес (фунты)Нетто (фунт): 22.2 Нетто без стенда (фунт): 15.6 Гросс (фунт): 32.3 Вес (кг)Нетто (кг): 10.1 Нетто без стенда (кг): 7.1 Гросс (кг): 14.7 Размеры (дюймы)Упаковка (дюйм): 33.5 x 20.7 x 12.9 Физические (дюйм): 28.6 x 18.99~23.71 x 10.4 Физические без подставки (дюйм): 28.6 x 17 x 3.4 Размеры (мм)Упаковка (мм): 850 x 527 x 327 Физические (мм): 726 x 482.3~602.3 x 265 Физические без подставки (мм): 726 x 432 x 87 Общее Сертификация: cTUVus; FCC - B; ICES003; CEC; NOM; Mexico Energy; CE; CE EMC; CB; RoHS; ErP; REACH; WEEE; EAC; UkrSEPRO; UKCA; CCC; China RoHS; China Energy Label СОСТАВ УПАКОВКИ: XG320U x1; 3 - pin Plug (IEC C13 / CEE22)x1; HDMI Cable (v2.1; Male - Male)x1; DisplayPort Cable (v1.4; USB A/B Cable (v3.2; Quick Start Guide x1 Переработка: Пожалуйста; утилизируйте в соответствии с местными; государственными или федеральными законами</param>
         <param name="Разрешение">3840 x 2160</param>
         <param name="Яркость">400 кд/м&#178; (тип.)</param>
         <param name="Время отклика (gtg)">1мс</param>
         <param name="Частота обновления">150</param>
-        <param name="Напряжение">AC 100 - 240V, 50/60 Hz</param>
-        <param name="Совместимое с vesa">100 x 100 mm</param>
-        <param name="Частота по горизонтали">HDMI (v2.1): 30 ~ 230KHz, HDMI (v2.0): 30 ~ 230KHz, DisplayPort (v1.4): 30 ~ 250KHz</param>
-        <param name="Частота по вертикали">HDMI (v2.1): 48 ~ 144Hz, HDMI (v2.0): 48 ~ 60Hz, DisplayPort (v1.4): 48 ~ 150Hz</param>
-        <keywords>ViewSonic, XG320U, CEE22, ICES003, Монитор ViewSonic, ViewSonic XG320U, Монитор, monitor-viewsonic, monitor, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>ViewSonic, XG320U, ICES003, CEE22, Монитор ViewSonic, ViewSonic XG320U, Монитор, monitor-viewsonic, monitor, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC11CH96404" available="true">
@@ -4906,7 +4809,7 @@ Black
         <Param name="Тип">МФУ  Дом</Param>
         <Param name="Тип печати">струйная</Param>
         <param name="Тип">Цветной режим, Диагональ: 6, 1 см</param>
-        <keywords>Epson, L6290, GROUP3, МФУ Epson, Epson L6290, L6290 фабрика, фабрика печати, печати факс, факс Wi-Fi, Мфу, Фабрика, Печати, Факс, Wi-fi, mfu-epson, l6290-fabrika, fabrika-pechati, pechati-faks, faks-wi-fi, mfu, fabrika, pechati, faks, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, GROUP3, L6290, МФУ Epson, Epson L6290, L6290 фабрика, фабрика печати, печати факс, факс Wi-Fi, Мфу, Фабрика, Печати, Факс, Wi-fi, mfu-epson, l6290-fabrika, fabrika-pechati, pechati-faks, faks-wi-fi, mfu, fabrika, pechati, faks, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC11CJ30404" available="true">
@@ -5620,7 +5523,7 @@ CD с программным обеспечением и драйверами для Windows и OS X.
         <Param name="Интерфейс">USB</Param>
         <Param name="Разрешение печати,dpi">5760x1440</Param>
         <param name="Ресурс стартового комплекта чернил">около 7100 ч/б документов А4 и 5700 цветных документов А4</param>
-        <keywords>Epson, L11050, L1300, Принтер Epson, Epson L11050, L11050 фабрика, фабрика печати, Принтер, Фабрика, Печати, printer-epson, l11050-fabrika, fabrika-pechati, printer, fabrika, pechati, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L1300, L11050, Принтер Epson, Epson L11050, L11050 фабрика, фабрика печати, Принтер, Фабрика, Печати, printer-epson, l11050-fabrika, fabrika-pechati, printer, fabrika, pechati, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC11CJ71404" available="true">
@@ -5843,7 +5746,7 @@ ESC/P-R
         <Param name="Тип печати">струйная</Param>
         <Param name="Интерфейс">USB</Param>
         <Param name="Разрешение печати,dpi">5760x1440</Param>
-        <keywords>Epson, L18050, WPA3-SAE, Принтер Epson, Epson L18050, L18050 фабрика, фабрика печати, Принтер, Фабрика, Печати, printer-epson, l18050-fabrika, fabrika-pechati, printer, fabrika, pechati, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, WPA3-SAE, L18050, Принтер Epson, Epson L18050, L18050 фабрика, фабрика печати, Принтер, Фабрика, Печати, printer-epson, l18050-fabrika, fabrika-pechati, printer, fabrika, pechati, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC11CG95405" available="true">
@@ -6303,7 +6206,7 @@ Zebra ZD421 обладает расширенным функционалом, включает новый более интуитивный 
 <p>&#128100; <strong>Данияр</strong>, Кокшетау — &#11088;&#11088;&#11088;&#11088;&#9734;<br>«Со своими задачами справляется отлично.»</p>
 ]]></description>
         <Param name="Гарантия">12 мес</Param>
-        <keywords>Zebra, ZD421-30EM, ZD421, Принтер этикеток, этикеток Zebra, Zebra ZD421-30EM, ZD421-30EM чёрный, Принтер, Этикеток, Чёрный, printer-etiketok, etiketok-zebra, zd421-30em-chernyy, printer, etiketok, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Zebra, ZD421, ZD421-30EM, Принтер этикеток, этикеток Zebra, Zebra ZD421-30EM, ZD421-30EM чёрный, Принтер, Этикеток, Чёрный, printer-etiketok, etiketok-zebra, zd421-30em-chernyy, printer, etiketok, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACZD4A042-D0EE00EZ" available="true">
@@ -6971,7 +6874,7 @@ WXGA3 (1366x7</div>
         <param name="Разрешение">WXGA (1280х800)</param>
         <param name="Яркость">3000 ANSI lm</param>
         <param name="Вес">2, 2 кг</param>
-        <keywords>Epson, SXGA1, WXGA2, WXGA3, SXGA2, CO-WX02, SXGA3, Проектор универсальный, универсальный Epson, Epson CO-WX02, Проектор, Универсальный, proektor-universalnyy, universalnyy-epson, proektor, universalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, SXGA2, CO-WX02, WXGA2, WXGA3, SXGA3, SXGA1, Проектор универсальный, универсальный Epson, Epson CO-WX02, Проектор, Универсальный, proektor-universalnyy, universalnyy-epson, proektor, universalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACV11H974040" available="true">
@@ -7302,7 +7205,7 @@ Warranty
 ]]></description>
         <Param name="Тип">Проектор универсальный</Param>
         <Param name="Гарантия">24</Param>
-        <keywords>Epson, IDMS15, EF-22B, HDR10, Проектор универсальный, универсальный Epson, Epson EF-22B, Проектор, Универсальный, proektor-universalnyy, universalnyy-epson, proektor, universalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, HDR10, IDMS15, EF-22B, Проектор универсальный, универсальный Epson, Epson EF-22B, Проектор, Универсальный, proektor-universalnyy, universalnyy-epson, proektor, universalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACPA503X" available="true">
@@ -7501,7 +7404,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество портов HDMI (x2), S-Video, Ком
         <Param name="USB">Mini usb</Param>
         <param name="Тип">лампы и срок службы	5 500 / 7 000 / 10 000 часов (Стандартный/Экономичный/Динамический экономичный режим), 210 Вт</param>
         <param name="Размеры">(Ш х Г х В)331 x 244 x 105 мм</param>
-        <keywords>XX5040005400, X1200, RS-232, XX5810005600, DX273, Проектор универсальный, универсальный Vivitek, Vivitek DX273, Проектор, Универсальный, Vivitek, proektor-universalnyy, universalnyy-vivitek, proektor, universalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>RS-232, DX273, X1200, XX5040005400, XX5810005600, Проектор универсальный, универсальный Vivitek, Vivitek DX273, Проектор, Универсальный, Vivitek, proektor-universalnyy, universalnyy-vivitek, proektor, universalnyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACDSP-2PH4-03" available="true">
@@ -7533,7 +7436,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество портов HDMI (x2), S-Video, Ком
         <Param name="Гарантия">нет</Param>
         <Param name="Тип">Разветвитель</Param>
         <Param name="Цвет">Черный</Param>
-        <keywords>Cablexpert, HD19F, DSP-2PH4-03, 2x19F, 3D, 4v, Разветвитель HDMI, HDMI Cablexpert, Cablexpert DSP-2PH4-03, DSP-2PH4-03 HD19F, HD19F 2x19F, 2x19F компьютер, компьютер монитора, монитора Full-HD, Разветвитель, HDMI, Компьютер, Монитора, Full-HD, razvetvitel-hdmi, 2x19f-kompyuter, kompyuter-monitora, monitora-full-hd, razvetvitel, kompyuter, monitora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Cablexpert, DSP-2PH4-03, HD19F, 2x19F, 3D, 4v, Разветвитель HDMI, HDMI Cablexpert, Cablexpert DSP-2PH4-03, DSP-2PH4-03 HD19F, HD19F 2x19F, 2x19F компьютер, компьютер монитора, монитора Full-HD, Разветвитель, HDMI, Компьютер, Монитора, Full-HD, razvetvitel-hdmi, 2x19f-kompyuter, kompyuter-monitora, monitora-full-hd, razvetvitel, kompyuter, monitora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACDSP-4PH4-02" available="true">
@@ -7583,7 +7486,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество портов HDMI (x2), S-Video, Ком
         <Param name="Гарантия">12 мес</Param>
         <param name="Размеры">146 х 73 х 24 мм</param>
         <param name="Вес">0, 28 кг</param>
-        <keywords>Cablexpert, HD19F, DSP-4PH4-02, 4x19F, 3D, 4v, Разветвитель HDMI, HDMI Cablexpert, Cablexpert DSP-4PH4-02, DSP-4PH4-02 HD19F, HD19F 4x19F, 4x19F компьютер, компьютер монитора, монитора Full-HD, Разветвитель, HDMI, Компьютер, Монитора, Full-HD, razvetvitel-hdmi, 4x19f-kompyuter, kompyuter-monitora, monitora-full-hd, razvetvitel, kompyuter, monitora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Cablexpert, DSP-4PH4-02, HD19F, 4x19F, 3D, 4v, Разветвитель HDMI, HDMI Cablexpert, Cablexpert DSP-4PH4-02, DSP-4PH4-02 HD19F, HD19F 4x19F, 4x19F компьютер, компьютер монитора, монитора Full-HD, Разветвитель, HDMI, Компьютер, Монитора, Full-HD, razvetvitel-hdmi, 4x19f-kompyuter, kompyuter-monitora, monitora-full-hd, razvetvitel, kompyuter, monitora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACDSP-8PH4-03" available="true">
@@ -7629,7 +7532,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество портов HDMI (x2), S-Video, Ком
         <Param name="Гарантия">12 мес</Param>
         <param name="Разъемы">1 вход + 8 выходов HDMI 19 pin (мама)</param>
         <param name="Интерфейс">HDMI + HDCP v.1.4b (совместим со всеми версиями HDMI)</param>
-        <keywords>Cablexpert, HD19F, DOLBY-AC3, DSP-8PH4-03, 8x19F, 3D, 4v, Разветвитель HDMI, HDMI Cablexpert, Cablexpert DSP-8PH4-03, DSP-8PH4-03 HD19F, HD19F 8x19F, 8x19F компьютер, компьютер мониторов, мониторов Full-HD, Разветвитель, HDMI, Компьютер, Мониторов, Full-HD, razvetvitel-hdmi, 8x19f-kompyuter, kompyuter-monitorov, monitorov-full-hd, razvetvitel, kompyuter, monitorov, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Cablexpert, DOLBY-AC3, DSP-8PH4-03, HD19F, 8x19F, 3D, 4v, Разветвитель HDMI, HDMI Cablexpert, Cablexpert DSP-8PH4-03, DSP-8PH4-03 HD19F, HD19F 8x19F, 8x19F компьютер, компьютер мониторов, мониторов Full-HD, Разветвитель, HDMI, Компьютер, Мониторов, Full-HD, razvetvitel-hdmi, 8x19f-kompyuter, kompyuter-monitorov, monitorov-full-hd, razvetvitel, kompyuter, monitorov, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACCC-VGAX2-20CM" available="true">
@@ -7657,7 +7560,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество портов HDMI (x2), S-Video, Ком
 ]]></description>
         <Param name="Тип">Переходник</Param>
         <Param name="Гарантия">12 мес</Param>
-        <keywords>Cablexpert, CC-VGAX2-20CM, HD15M, HD15F, 2x15F, Разветвитель VGA, VGA Cablexpert, Cablexpert CC-VGAX2-20CM, CC-VGAX2-20CM HD15M, HD15M 2x15F, 2x15F компьютер, компьютер монитора, Разветвитель, VGA, Компьютер, Монитора, razvetvitel-vga, 2x15f-kompyuter, kompyuter-monitora, razvetvitel, kompyuter, monitora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Cablexpert, HD15M, CC-VGAX2-20CM, HD15F, 2x15F, Разветвитель VGA, VGA Cablexpert, Cablexpert CC-VGAX2-20CM, CC-VGAX2-20CM HD15M, HD15M 2x15F, 2x15F компьютер, компьютер монитора, Разветвитель, VGA, Компьютер, Монитора, razvetvitel-vga, 2x15f-kompyuter, kompyuter-monitora, razvetvitel, kompyuter, monitora, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13S015637" available="true">
@@ -7690,7 +7593,7 @@ LX-350</div>
         <Param name="Цвет">Черный</Param>
         <Param name="Тип">Картридж EPSON</Param>
         <Param name="Тип печати">матричный</Param>
-        <keywords>Epson, LX-350, LX-300, C13S015637, LX350, LX300, Риббон-картридж Epson, Epson C13S015637, C13S015637 LX350, LX350 LX300, Риббон-картридж, ribbon-kartridzh-epson, ribbon-kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13S015637, LX350, LX-300, LX300, LX-350, Риббон-картридж Epson, Epson C13S015637, C13S015637 LX350, LX350 LX300, Риббон-картридж, ribbon-kartridzh-epson, ribbon-kartridzh, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACB11B268401" available="true">
@@ -7762,7 +7665,7 @@ Digital Ice, непрозрачные оригиналы	Нет
 ]]></description>
         <Param name="Гарантия">12 мес</Param>
         <Param name="Тип">сканер для дома планшетные</Param>
-        <keywords>Epson, IEEE-1394, V39II, Сканер Epson, Epson Perfection, Perfection V39II, Сканер, Perfection, skaner-epson, skaner, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, V39II, IEEE-1394, Сканер Epson, Epson Perfection, Perfection V39II, Сканер, Perfection, skaner-epson, skaner, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACB11B265401" available="true">
@@ -7854,7 +7757,7 @@ Epson L7180	C11CG16404</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, L7160, C13T00Q140, C11CG15404, C11CG16404, L7180, Чернила Epson, Epson C13T00Q140, C13T00Q140 L7160, L7160 L7180, L7180 черный, черный пигмент, Чернила, Черный, Пигмент, chernila-epson, l7180-chernyy, chernyy-pigment, chernila, chernyy, pigment, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CG15404, C11CG16404, L7180, C13T00Q140, L7160, Чернила Epson, Epson C13T00Q140, C13T00Q140 L7160, L7160 L7180, L7180 черный, черный пигмент, Чернила, Черный, Пигмент, chernila-epson, l7180-chernyy, chernyy-pigment, chernila, chernyy, pigment, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00R140" available="true">
@@ -7886,7 +7789,7 @@ Epson L7180	C11CG16404</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, L7160, C13T00R140, C11CG15404, C11CG16404, L7180, Чернила Epson, Epson C13T00R140, C13T00R140 L7160, L7160 L7180, L7180 чёрный, Чернила, Чёрный, черный, chernila-epson, l7180-chernyy, chernila, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CG15404, C11CG16404, L7180, C13T00R140, L7160, Чернила Epson, Epson C13T00R140, C13T00R140 L7160, L7160 L7180, L7180 чёрный, Чернила, Чёрный, черный, chernila-epson, l7180-chernyy, chernila, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00R240" available="true">
@@ -7918,7 +7821,7 @@ Epson L7180	C11CG16404</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, L7160, C13T00R240, C11CG15404, C11CG16404, L7180, Чернила Epson, Epson C13T00R240, C13T00R240 L7160, L7160 L7180, L7180 голубой, Чернила, Голубой, черный, chernila-epson, l7180-goluboy, chernila, goluboy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CG15404, C11CG16404, C13T00R240, L7180, L7160, Чернила Epson, Epson C13T00R240, C13T00R240 L7160, L7160 L7180, L7180 голубой, Чернила, Голубой, черный, chernila-epson, l7180-goluboy, chernila, goluboy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00R340" available="true">
@@ -7950,7 +7853,7 @@ Epson L7180	C11CG16404</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, L7160, C11CG15404, C13T00R340, C11CG16404, L7180, Чернила Epson, Epson C13T00R340, C13T00R340 L7160, L7160 L7180, L7180 пурпурный, Чернила, Пурпурный, черный, chernila-epson, l7180-purpurnyy, chernila, purpurnyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CG15404, C11CG16404, C13T00R340, L7180, L7160, Чернила Epson, Epson C13T00R340, C13T00R340 L7160, L7160 L7180, L7180 пурпурный, Чернила, Пурпурный, черный, chernila-epson, l7180-purpurnyy, chernila, purpurnyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00R440" available="true">
@@ -7982,7 +7885,7 @@ Epson L7180	C11CG16404</div>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Цвет">Желтый</Param>
-        <keywords>Epson, L7160, C11CG15404, C13T00R440, C11CG16404, L7180, Чернила Epson, Epson C13T00R440, C13T00R440 L7160, L7160 L7180, L7180 жёлтый, Чернила, Жёлтый, желтый, черный, chernila-epson, l7180-zheltyy, chernila, zheltyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T00R440, C11CG15404, C11CG16404, L7180, L7160, Чернила Epson, Epson C13T00R440, C13T00R440 L7160, L7160 L7180, L7180 жёлтый, Чернила, Жёлтый, желтый, черный, chernila-epson, l7180-zheltyy, chernila, zheltyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00S14A" available="true">
@@ -8019,7 +7922,7 @@ Epson L1110	C11CG89403</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, L3150, L3101, C11CG88401, C13T00S14A, C11CG88402, L3110, L3151, C11CG89403, C11CG86409, C11CG86411, L1110, C11CG87405, L3100, Чернила Epson, Epson C13T00S14A, C13T00S14A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Черный, chernila-epson, chernila, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CG86411, C11CG89403, L3150, L3110, C11CG88402, C11CG88401, C11CG87405, C13T00S14A, C11CG86409, L3100, L3151, L1110, L3101, Чернила Epson, Epson C13T00S14A, C13T00S14A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Черный, chernila-epson, chernila, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00S24A" available="true">
@@ -8054,7 +7957,7 @@ Epson L3151	C11CG86411</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, L3150, L3101, C11CG88401, C11CG88402, L3110, C13T00S24A, L3151, C11CG86409, C11CG86411, C11CG87405, L3100, Чернила Epson, Epson C13T00S24A, C13T00S24A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Голубой, черный, chernila-epson, chernila, goluboy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CG86411, C13T00S24A, L3150, L3110, C11CG88402, C11CG88401, C11CG87405, C11CG86409, L3100, L3151, L3101, Чернила Epson, Epson C13T00S24A, C13T00S24A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Голубой, черный, chernila-epson, chernila, goluboy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00S34A" available="true">
@@ -8089,7 +7992,7 @@ Epson L3151	C11CG86411</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, L3150, L3101, C11CG88401, C13T00S34A, C11CG88402, L3110, L3151, C11CG86409, C11CG86411, C11CG87405, L3100, Чернила Epson, Epson C13T00S34A, C13T00S34A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Пурпурный, черный, chernila-epson, chernila, purpurnyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CG86411, L3150, L3110, C11CG88402, C11CG88401, C13T00S34A, C11CG87405, C11CG86409, L3100, L3151, L3101, Чернила Epson, Epson C13T00S34A, C13T00S34A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Пурпурный, черный, chernila-epson, chernila, purpurnyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T00S44A" available="true">
@@ -8124,7 +8027,7 @@ Epson L3151	C11CG86411</div>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Цвет">Желтый</Param>
-        <keywords>Epson, L3150, C13T00S44A, L3101, C11CG88401, C11CG88402, L3110, L3151, C11CG86409, C11CG86411, C11CG87405, L3100, Чернила Epson, Epson C13T00S44A, C13T00S44A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Жёлтый, желтый, черный, chernila-epson, chernila, zheltyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CG86411, L3150, L3110, C11CG88402, C11CG88401, C11CG87405, C11CG86409, L3100, C13T00S44A, L3151, L3101, Чернила Epson, Epson C13T00S44A, C13T00S44A 103, 103 EcoTank, EcoTank L3100, L3100 L3101, L3101 L3110, L3110 L3150, Чернила, 103, Ecotank, Жёлтый, желтый, черный, chernila-epson, chernila, zheltyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T01L14A" available="true">
@@ -8166,7 +8069,7 @@ Epson M2170 C11CH43404</div>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Ресурс">2000 стр</Param>
-        <keywords>Epson, M3140, M2140, M1100, C11CG26405, M1120, M1180, C11CG92405, C11CH43404, C11CG91405, M3170, C11CH44404, M1170, C11CG94405, M3180, C11CG95405, MX1XX, M1140, C11CG96405, C11CG27405, C13T01L14A, C11CG93405, M2170, Чернила Epson, Epson C13T01L14A, C13T01L14A EcoTank, EcoTank MX1XX, MX1XX Series, Series Black, Black Bottle, Bottle 40, Чернила, Ecotank, Series, Black, Bottle, 40, черный, chernila-epson, chernila, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C11CH44404, C11CH43404, C11CG26405, C13T01L14A, C11CG94405, M1180, C11CG96405, M1170, M1120, C11CG91405, M1140, M1100, M2170, C11CG93405, M3170, M2140, C11CG27405, M3180, M3140, C11CG92405, C11CG95405, MX1XX, Чернила Epson, Epson C13T01L14A, C13T01L14A EcoTank, EcoTank MX1XX, MX1XX Series, Series Black, Black Bottle, Bottle 40, Чернила, Ecotank, Series, Black, Bottle, 40, черный, chernila-epson, chernila, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T03V14A" available="true">
@@ -8230,7 +8133,7 @@ L4150/L4160</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, C13T03V24A, L4160, L4150, 70ml, Чернила Epson, Epson C13T03V24A, C13T03V24A 101, 101 EcoTank, EcoTank 70ml, 70ml L4150, L4150 L4160, L4160 голубой, Чернила, 101, Ecotank, Голубой, черный, chernila-epson, l4160-goluboy, chernila, goluboy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L4160, C13T03V24A, L4150, 70ml, Чернила Epson, Epson C13T03V24A, C13T03V24A 101, 101 EcoTank, EcoTank 70ml, 70ml L4150, L4150 L4160, L4160 голубой, Чернила, 101, Ecotank, Голубой, черный, chernila-epson, l4160-goluboy, chernila, goluboy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T06C14A" available="true">
@@ -8416,7 +8319,7 @@ L4150/L4160</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, C13T07D14A, L8160, L8180, Чернила Epson, Epson C13T07D14A, C13T07D14A L8160, L8160 L8180, L8180 водорастворимые, водорастворимые фото, фото черный, Чернила, Водорастворимые, Фото, Черный, chernila-epson, l8180-vodorastvorimye, vodorastvorimye-foto, foto-chernyy, chernila, vodorastvorimye, foto, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L8160, C13T07D14A, L8180, Чернила Epson, Epson C13T07D14A, C13T07D14A L8160, L8160 L8180, L8180 водорастворимые, водорастворимые фото, фото черный, Чернила, Водорастворимые, Фото, Черный, chernila-epson, l8180-vodorastvorimye, vodorastvorimye-foto, foto-chernyy, chernila, vodorastvorimye, foto, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T07D24A" available="true">
@@ -8447,7 +8350,7 @@ L4150/L4160</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, C13T07D24A, L8160, L8180, Чернила Epson, Epson C13T07D24A, C13T07D24A L8160, L8160 L8180, L8180 голубые, Чернила, Голубые, черный, chernila-epson, l8180-golubye, chernila, golubye, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L8160, C13T07D24A, L8180, Чернила Epson, Epson C13T07D24A, C13T07D24A L8160, L8160 L8180, L8180 голубые, Чернила, Голубые, черный, chernila-epson, l8180-golubye, chernila, golubye, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T07D44A" available="true">
@@ -8478,7 +8381,7 @@ L4150/L4160</div>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
         <Param name="Цвет">Желтый</Param>
-        <keywords>Epson, L8160, L8180, C13T07D44A, Чернила Epson, Epson C13T07D44A, C13T07D44A L8160, L8160 L8180, L8180 жёлтые, Чернила, Жёлтые, желтый, черный, chernila-epson, l8180-zheltye, chernila, zheltye, zheltyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, C13T07D44A, L8180, L8160, Чернила Epson, Epson C13T07D44A, C13T07D44A L8160, L8160 L8180, L8180 жёлтые, Чернила, Жёлтые, желтый, черный, chernila-epson, l8180-zheltye, chernila, zheltye, zheltyy, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T07D54A" available="true">
@@ -8509,7 +8412,7 @@ L4150/L4160</div>
         <Param name="Гарантия">3</Param>
         <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
         <Param name="Тип печати">струйная</Param>
-        <keywords>Epson, L8160, L8180, C13T07D54A, Чернила Epson, Epson C13T07D54A, C13T07D54A L8160, L8160 L8180, L8180 серые, Чернила, Серые, черный, chernila-epson, l8180-serye, chernila, serye, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+        <keywords>Epson, L8160, C13T07D54A, L8180, Чернила Epson, Epson C13T07D54A, C13T07D54A L8160, L8160 L8180, L8180 серые, Чернила, Серые, черный, chernila-epson, l8180-serye, chernila, serye, chernyy, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавл, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
       </offer>
 
 <offer id="ACC13T66414A" available="true">
