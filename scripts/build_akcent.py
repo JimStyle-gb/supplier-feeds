@@ -3,18 +3,18 @@
 # -*- coding: utf-8 -*-
 
 """
-Полный готовый скрипт сборки Akcent с:
-  • Фильтрацией <param> под Satu/SEO (встроенный whitelist + шаблоны: «интерфейс», «диагональ» и т.д.);
-  • Усиленным парсером блока «Характеристики»:
-      — ловит «Ключ: Значение» И «Ключ  Значение» (без «:», по 2+ пробелам), регистронезависимо;
-      — распознаёт техпункты по ключевым «семействам» и по наличию единиц (мм, кг, Вт, dpi, лм, °C и пр.);
-      — аккуратно сливает с жёстко заданными ключами, нормализует «Совместимость».
-  • Репрайсингом (правила + хвост «…900»), чисткой служебных прайс-тегов;
-  • available в атрибут оффера, <currencyId>KZT</currencyId>;
-  • Плейсхолдерами картинок при их отсутствии;
-  • Генерацией <keywords> (модели/цвета/гео до 20 слов);
-  • FEED_META-комментарием;
-  • Записью в docs/akcent.yml (windows-1251 по умолчанию; fallback xmlcharrefreplace).
+Полный рабочий сборщик фида Akcent (YML/XML) со всеми правками:
+
+  • Фильтр товаров (include|exclude) — из файла docs/akcent_keywords.txt и/или ENV;
+  • Фильтрация <param> под Satu/SEO (whitelist + шаблоны: интерфейс, диагональ и т.п.);
+  • Блок «Характеристики»: парсит как «Ключ: Значение», так и «Ключ  Значение» (без двоеточия),
+    регистронезависимо; распознаёт теххарактеристики по семействам и единицам измерения;
+  • Репрайсинг (правила + хвост «…900»), чистка служебных прайс-тегов;
+  • available → атрибут offer/@available; <currencyId>KZT</currencyId>;
+  • Плейсхолдеры картинок при их отсутствии;
+  • <keywords> для Satu (модели/цвета/гео);
+  • FEED_META-комментарий с метриками;
+  • Запись в docs/akcent.yml (по умолчанию windows-1251).
 
 Запуск:
   python scripts/build_akcent.py
@@ -43,7 +43,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "akcent-2025-10-27.v2.1.0"
+SCRIPT_VERSION = "akcent-2025-10-27.v3.0.0"
 
 # ===================== ENV / CONST =====================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "Akcent").strip()
@@ -56,8 +56,9 @@ RETRY_BACKOFF = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES     = int(os.getenv("MIN_BYTES", "1500"))
 DRY_RUN       = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-# Встроенный фильтр по названиям (по умолчанию выключен, чтобы не требовать внешних файлов)
-AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "off").lower()  # include|exclude|off
+# ---- Фильтр по названиям (file + env) ----
+AKCENT_KEYWORDS_PATH  = os.getenv("AKCENT_KEYWORDS_PATH", "docs/akcent_keywords.txt").strip()
+AKCENT_KEYWORDS_MODE  = os.getenv("AKCENT_KEYWORDS_MODE", "include").lower()  # include|exclude|off
 AKCENT_KEYWORDS_LIST  = [s.strip() for s in os.getenv("AKCENT_KEYWORDS", "").split(",") if s.strip()]
 
 # ---- Pricing ----
@@ -246,17 +247,53 @@ def load_source_bytes(src: str) -> bytes:
             if i<RETRIES: time.sleep(back)
     raise RuntimeError(f"fetch failed: {last}")
 
-# ===================== NAME FILTER (optional) =====================
-def _norm_name_simple(s: str) -> str:
-    return re.sub(r"\s+"," ", (s or "").replace("\u00A0"," ").lower().replace("ё","е")).strip()
+# ===================== NAME FILTER (file + env) =====================
+class KeySpec:
+    __slots__=("raw","kind","norm","pattern")
+    def __init__(self, raw: str, kind: str, norm: Optional[str], pattern: Optional[re.Pattern]):
+        self.raw, self.kind, self.norm, self.pattern = raw, kind, norm, pattern
 
-def name_matches_keys(name: str, keys: List[str]) -> bool:
+def _norm_name(s: str) -> str:
+    s=(s or "").replace("\u00A0"," ").lower().replace("ё","е")
+    return re.sub(r"\s+"," ", s).strip()
+
+def load_name_filter(path: str) -> List[KeySpec]:
+    """Читает docs/akcent_keywords.txt:
+       - строки без слешей = подстрока/префикс (регистр не важен);
+       - /regex/ = регулярка (re.I);
+       - пустые и начинающиеся с # игнорируются.
+    """
+    if not path or not os.path.exists(path): return []
+    data=None
+    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
+        try:
+            with open(path,"r",encoding=enc) as f: data=f.read()
+            break
+        except Exception: continue
+    if data is None:
+        with open(path,"r",encoding="utf-8",errors="ignore") as f: data=f.read()
+    data = data.replace("\ufeff","").replace("\x00","")
+
+    keys: List[KeySpec]=[]
+    for ln in data.splitlines():
+        s=ln.strip()
+        if not s or s.startswith("#"): continue
+        if len(s)>=2 and s[0]=="/" and s[-1]=="/":
+            try: keys.append(KeySpec(s,"regex",None,re.compile(s[1:-1],re.I)))
+            except Exception: pass
+        else:
+            n=_norm_name(s)
+            if n: keys.append(KeySpec(s,"substr",n,None))
+    return keys
+
+def name_matches(name: str, keys: List[KeySpec]) -> bool:
     if not keys: return False
-    n=_norm_name_simple(name)
-    for k in keys:
-        kk=_norm_name_simple(k)
-        if not kk: continue
-        if n.startswith(kk) or kk in n: return True
+    n=_norm_name(name or "")
+    for ks in keys:
+        if ks.kind=="substr" and (n.startswith(ks.norm) or (ks.norm in n)):
+            return True
+        if ks.kind=="regex" and ks.pattern and ks.pattern.search(name or ""):
+            return True
     return False
 
 # ===================== BRAND / PRICE / AVAIL / ORDER =====================
@@ -264,6 +301,7 @@ def _norm_key(s: str) -> str:
     if not s: return ""
     s=s.strip().lower().replace("ё","е")
     s=re.sub(r"[-_/]+"," ",s); s=re.sub(r"\s+"," ",s); return s
+
 SUPPLIER_BLOCKLIST={_norm_key(x) for x in["alstyle","al-style","copyline","akcent","ak-cent","vtt"]}
 UNKNOWN_VENDOR_MARKERS=("неизвест","unknown","без бренда","no brand","noname","no-name","n/a","китай","china")
 COMMON_BRANDS=["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","BenQ","ViewSonic","Optoma","Acer","Panasonic","Sony",
@@ -599,7 +637,7 @@ def build_lead_faq_reviews(offer: ET.Element) -> Tuple[str,str,str,str]:
     reviews_html="\n".join(reviews)
     return lead_html, faq_html, reviews_html, kind
 
-# ===================== «Родной» текст → спеки (УЛУЧШЕНО) =====================
+# ===================== «Родной» текст → Характеристики (УЛУЧШЕНО) =====================
 KV_KEYS_MAP = {
     "вид":"Вид",
     "назначение":"Назначение",
@@ -645,7 +683,6 @@ def _normalize_models_list(val: str) -> str:
             seen.add(p); out.append(p)
     return "; ".join(out)
 
-# Тех-ключевые слова/единицы
 TECH_KEYWORDS = [
     "тип","модель","серия","совместим","ресурс","цвет печати","технология печати","скорость печати",
     "разрешение","формат бумаги","лоток","интерфейс","порт","usb","ethernet","wi-fi","bluetooth","lan",
@@ -840,7 +877,7 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     base += extra
     if SATU_KEYWORDS_GEO:
         geo=["Казахстан","Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз",
-             "Оскемен","Семей","Костанаи","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
+             "Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавл","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
         if SATU_KEYWORDS_GEO_LAT:
             geo += ["Kazakhstan","Almaty","Astana","Shymkent","Karaganda","Aktobe","Pavlodar","Atyrau","Taraz","Oskemen","Semey","Kostanay","Kyzylorda","Oral","Petropavl","Taldykorgan","Aktau","Temirtau","Ekibastuz","Kokshetau","Rudny"]
         base += geo[:SATU_KEYWORDS_GEO_MAX]
@@ -973,134 +1010,7 @@ def ensure_placeholder_pictures(out_shop: ET.Element) -> int:
         ET.SubElement(offer,"picture").text=picked; added+=1
     return added
 
-# ===================== MAIN =====================
-def main()->None:
-    log("Run set -e                       # прерывать шаг при любой ошибке")
-    log(f"Python {sys.version.split()[0]}")
-    log(f"Source: {SUPPLIER_URL}")
-    data=load_source_bytes(SUPPLIER_URL)
-    src_root=ET.fromstring(data)
-
-    shop_in=src_root.find("shop") if src_root.tag.lower()!="shop" else src_root
-    if shop_in is None: err("XML: <shop> not found")
-    offers_in=shop_in.find("offers") or shop_in.find("Offers")
-    if offers_in is None: err("XML: <offers> not found")
-    src_offers=list(offers_in.findall("offer"))
-
-    out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
-    out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
-
-    # 1) Копируем офферы (убираем categoryId на входе)
-    for o in src_offers:
-        mod=deepcopy(o)
-        if DROP_CATEGORY_ID_TAG:
-            for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
-        out_offers.append(mod)
-
-    # 2) Фильтр по названиям (env-параметр; по умолчанию выключен)
-    filtered_out=0
-    if AKCENT_KEYWORDS_MODE in {"include","exclude"} and AKCENT_KEYWORDS_LIST:
-        before=len(list(out_offers.findall("offer")))
-        hits=0
-        for off in list(out_offers.findall("offer")):
-            nm=get_text(off,"name")
-            hit=name_matches_keys(nm, AKCENT_KEYWORDS_LIST)
-            if hit: hits+=1
-            drop=(AKCENT_KEYWORDS_MODE=="exclude" and hit) or (AKCENT_KEYWORDS_MODE=="include" and not hit)
-            if drop:
-                out_offers.remove(off); filtered_out+=1
-        kept=before-filtered_out
-        log(f"Filter mode: {AKCENT_KEYWORDS_MODE} | Keys: {len(AKCENT_KEYWORDS_LIST)} | Offers before: {before} | Matched: {hits} | Removed: {filtered_out} | Kept: {kept}")
-    else:
-        log("Filter disabled (AKCENT_KEYWORDS_MODE=off or empty list)")
-
-    # 3) Фильтр <param> (Satu/SEO)
-    p_touched, p_kept, p_dropped = filter_params_for_satu(out_shop)
-    log(f"Param filter: offers touched={p_touched}, kept={p_kept}, dropped={p_dropped}")
-
-    # 4) Кэп «нереальных» цен
-    flagged = flag_unrealistic_supplier_prices(out_shop)
-    log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
-
-    # 5) Вендоры
-    v_norm, v_filled, v_removed = ensure_vendor(out_shop)
-    log(f"Vendors normalized={v_norm}, filled={v_filled}, removed_bad={v_removed}")
-
-    # 6) vendorCode + id
-    ensure_vendorcode_with_article(out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AC"), create_if_missing=True)
-    sync_offer_id_with_vendorcode(out_shop)
-
-    # 7) Репрайсинг
-    reprice_offers(out_shop, PRICING_RULES)
-
-    # 8) Плейсхолдеры фото
-    ph_added=ensure_placeholder_pictures(out_shop)
-    log(f"Placeholders added: {ph_added}")
-
-    # 9) SEO/описания/характеристики
-    seo_changed, seo_last, specs_added, native_cleaned, links_removed_total = inject_seo_descriptions(out_shop)
-    log(f"SEO blocks touched: {seo_changed}, specs added: {specs_added}, native cleaned: {native_cleaned}, links removed: {links_removed_total}")
-
-    # 10) Наличие, валюта
-    t_true, t_false = normalize_available_field(out_shop)
-    fix_currency_id(out_shop, default_code="KZT")
-
-    # 11) Чистка служебных тегов/атрибутов
-    for off in out_offers.findall("offer"):
-        for t in PURGE_TAGS_AFTER:
-            for node in list(off.findall(t)): off.remove(node)
-        for a in PURGE_OFFER_ATTRS_AFTER:
-            if a in off.attrib: off.attrib.pop(a,None)
-
-    # 12) Порядок узлов + <categoryId> первым
-    reorder_offer_children(out_shop)
-    ensure_categoryid_zero_first(out_shop)
-
-    # 13) <keywords>
-    kw_touched=ensure_keywords(out_shop)
-    log(f"Keywords updated: {kw_touched}")
-
-    # 14) FEED_META
-    built_alm=now_almaty()
-    meta_pairs={
-        "supplier": SUPPLIER_NAME,
-        "source": SUPPLIER_URL,
-        "offers_total": len(src_offers),
-        "offers_written": len(list(out_offers.findall("offer"))),
-        "available_true": str(t_true),
-        "available_false": str(t_false),
-        "built_alm": format_dt_almaty(built_alm),
-        "next_build_alm": format_dt_almaty(next_build_time_almaty()),
-        "seo_last_update_alm": seo_last or format_dt_almaty(built_alm),
-    }
-    out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
-
-    # 15) Запись
-    try: ET.indent(out_root, space="  ")
-    except Exception: pass
-    xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
-    xml_text=xml_bytes.decode(ENC, errors="replace")
-    xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
-    xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text)
-    xml_text=_replace_html_placeholders_with_cdata(xml_text)
-
-    if DRY_RUN:
-        log("[DRY_RUN=1] Files not written."); return
-    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    try:
-        with open(OUT_FILE_YML,"w",encoding=ENC, newline="\n") as f: f.write(xml_text)
-    except UnicodeEncodeError as e:
-        warn(f"{ENC} encode issue ({e}); using xmlcharrefreplace fallback")
-        with open(OUT_FILE_YML,"wb") as f: f.write(xml_text.encode(ENC, errors="xmlcharrefreplace"))
-
-    try:
-        docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
-        os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
-    except Exception as e: warn(f".nojekyll create warn: {e}")
-
-    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | script={SCRIPT_VERSION}")
-
-# ===================== SEO INJECTOR (после определения ф-ций) =====================
+# ===================== SEO CACHE / INJECTOR =====================
 def compute_seo_checksum(name: str, kind: str, desc_html: str) -> str:
     base="|".join([name or "", kind or "", hashlib.md5((desc_html or "").encode("utf-8")).hexdigest()])
     return hashlib.md5(base.encode("utf-8")).hexdigest()
@@ -1197,6 +1107,145 @@ def inject_seo_descriptions(out_shop: ET.Element) -> Tuple[int,str,int,int,int]:
                 continue
     if not last_alm: last_alm=now_almaty()
     return changed, format_dt_almaty(last_alm), specs_added, native_cleaned, links_removed_total
+
+# ===================== MAIN =====================
+def main()->None:
+    log("Run set -e                       # прерывать шаг при любой ошибке")
+    log(f"Python {sys.version.split()[0]}")
+    log(f"Source: {SUPPLIER_URL}")
+    data=load_source_bytes(SUPPLIER_URL)
+    src_root=ET.fromstring(data)
+
+    shop_in=src_root.find("shop") if src_root.tag.lower()!="shop" else src_root
+    if shop_in is None: err("XML: <shop> not found")
+    offers_in=shop_in.find("offers") or shop_in.find("Offers")
+    if offers_in is None: err("XML: <offers> not found")
+    src_offers=list(offers_in.findall("offer"))
+
+    out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
+    out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
+
+    # 1) Копируем офферы (убираем categoryId на входе)
+    for o in src_offers:
+        mod=deepcopy(o)
+        if DROP_CATEGORY_ID_TAG:
+            for node in list(mod.findall("categoryId"))+list(mod.findall("CategoryId")): mod.remove(node)
+        out_offers.append(mod)
+
+    # 2) Фильтр по названиям (file приоритетно, иначе ENV)
+    filtered_out=0
+    keys_file = load_name_filter(AKCENT_KEYWORDS_PATH)
+    keys: List[KeySpec] = keys_file[:]
+    if not keys and AKCENT_KEYWORDS_LIST:
+        keys = [KeySpec(k, "substr", _norm_name(k), None) for k in AKCENT_KEYWORDS_LIST]
+
+    if AKCENT_KEYWORDS_MODE in {"include","exclude"}:
+        if not keys:
+            if AKCENT_KEYWORDS_MODE=="include":
+                err(f"AKCENT_KEYWORDS_MODE=include, но ключи не заданы (нет {AKCENT_KEYWORDS_PATH} и пустой AKCENT_KEYWORDS).")
+            else:
+                log("Filter disabled (exclude), ключей нет.")
+        else:
+            before=len(list(out_offers.findall("offer")))
+            hits=0
+            for off in list(out_offers.findall("offer")):
+                nm=get_text(off,"name")
+                hit=name_matches(nm, keys)
+                if hit: hits+=1
+                drop=(AKCENT_KEYWORDS_MODE=="exclude" and hit) or (AKCENT_KEYWORDS_MODE=="include" and not hit)
+                if drop:
+                    out_offers.remove(off); filtered_out+=1
+            kept=before-filtered_out
+            src=("file" if keys_file else "env")
+            log(f"Filter mode: {AKCENT_KEYWORDS_MODE} | Source: {src} | Keys: {len(keys)} | Offers before: {before} | Matched: {hits} | Removed: {filtered_out} | Kept: {kept}")
+    else:
+        log("Filter disabled (AKCENT_KEYWORDS_MODE=off)")
+
+    # 3) Фильтр <param> (Satu/SEO)
+    p_touched, p_kept, p_dropped = filter_params_for_satu(out_shop)
+    log(f"Param filter: offers touched={p_touched}, kept={p_kept}, dropped={p_dropped}")
+
+    # 4) Кэп «нереальных» цен
+    flagged = flag_unrealistic_supplier_prices(out_shop)
+    log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
+
+    # 5) Вендоры
+    v_norm, v_filled, v_removed = ensure_vendor(out_shop)
+    log(f"Vendors normalized={v_norm}, filled={v_filled}, removed_bad={v_removed}")
+
+    # 6) vendorCode + id
+    ensure_vendorcode_with_article(out_shop, prefix=os.getenv("VENDORCODE_PREFIX","AC"), create_if_missing=True)
+    sync_offer_id_with_vendorcode(out_shop)
+
+    # 7) Репрайсинг
+    reprice_offers(out_shop, PRICING_RULES)
+
+    # 8) Плейсхолдеры фото
+    ph_added=ensure_placeholder_pictures(out_shop)
+    log(f"Placeholders added: {ph_added}")
+
+    # 9) SEO/описания/характеристики
+    seo_changed, seo_last, specs_added, native_cleaned, links_removed_total = inject_seo_descriptions(out_shop)
+    log(f"SEO blocks touched: {seo_changed}, specs added: {specs_added}, native cleaned: {native_cleaned}, links removed: {links_removed_total}")
+
+    # 10) Наличие, валюта
+    t_true, t_false = normalize_available_field(out_shop)
+    fix_currency_id(out_shop, default_code="KZT")
+
+    # 11) Чистка служебных тегов/атрибутов
+    for off in out_offers.findall("offer"):
+        for t in PURGE_TAGS_AFTER:
+            for node in list(off.findall(t)): off.remove(node)
+        for a in PURGE_OFFER_ATTRS_AFTER:
+            if a in off.attrib: off.attrib.pop(a,None)
+
+    # 12) Порядок узлов + <categoryId> первым
+    reorder_offer_children(out_shop)
+    ensure_categoryid_zero_first(out_shop)
+
+    # 13) <keywords>
+    kw_touched=ensure_keywords(out_shop)
+    log(f"Keywords updated: {kw_touched}")
+
+    # 14) FEED_META
+    built_alm=now_almaty()
+    meta_pairs={
+        "supplier": SUPPLIER_NAME,
+        "source": SUPPLIER_URL,
+        "offers_total": len(src_offers),
+        "offers_written": len(list(out_offers.findall("offer"))),
+        "available_true": str(t_true),
+        "available_false": str(t_false),
+        "built_alm": format_dt_almaty(built_alm),
+        "next_build_alm": format_dt_almaty(next_build_time_almaty()),
+        "seo_last_update_alm": seo_last or format_dt_almaty(built_alm),
+    }
+    out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
+
+    # 15) Запись
+    try: ET.indent(out_root, space="  ")
+    except Exception: pass
+    xml_bytes=ET.tostring(out_root, encoding=ENC, xml_declaration=True)
+    xml_text=xml_bytes.decode(ENC, errors="replace")
+    xml_text=re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
+    xml_text=re.sub(r"(?s)(-->)\s*(<shop\b)", r"\1\n\2", xml_text)
+    xml_text=_replace_html_placeholders_with_cdata(xml_text)
+
+    if DRY_RUN:
+        log("[DRY_RUN=1] Files not written."); return
+    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
+    try:
+        with open(OUT_FILE_YML,"w",encoding=ENC, newline="\n") as f: f.write(xml_text)
+    except UnicodeEncodeError as e:
+        warn(f"{ENC} encode issue ({e}); using xmlcharrefreplace fallback")
+        with open(OUT_FILE_YML,"wb") as f: f.write(xml_text.encode(ENC, errors="xmlcharrefreplace"))
+
+    try:
+        docs_dir=os.path.dirname(OUT_FILE_YML) or "docs"
+        os.makedirs(docs_dir, exist_ok=True); open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+    except Exception as e: warn(f".nojekyll create warn: {e}")
+
+    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | script={SCRIPT_VERSION}")
 
 # ===================== ENTRY =====================
 if __name__ == "__main__":
