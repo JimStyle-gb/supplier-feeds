@@ -2,18 +2,18 @@
 # -*- coding: utf-8 -*-
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
-ТВОЙ рабочий код. Логику НЕ менял — только улучшил оформление «родного описания».
+ТВОЙ рабочий код. Логику НЕ менял — только доработал оформление «родного описания».
 
-Правки в оформлении «родного описания» (beautify_raw_description):
-- Больше НЕ превращает строки вида «Вес — 3 кг» и «Цвет — …» в <h3>.
-  Такие строки попадают в единый блок <h3>Размеры и вес</h3> → <ul><li>…</li></ul>.
-- Если встречаются строки «Вес — …»/«Цвет — …» БЕЗ явного заголовка «Размеры и вес»,
-  движок сам создаёт единый блок «Размеры и вес».
-- «Корпус: Металлическая крышка, цвет — …, вес …» больше не станет <h3> — это абзац, а «вес/цвет»
-  добываются в список «Размеры и вес».
-- В «Порты и подключения»: токены «2 x» нормализуются в «2× …»; «RJ-45 (2.5 Гбит/с LAN)» склеивается;
-  «Сеть: … Wi-Fi …» объединяется с последующим «Bluetooth …» в одну строку:
-  «Сеть: Intel® Killer™ Wi-Fi 7 BE1750, Bluetooth 5.4».
+Что именно исправлено в beautify_raw_description (и вспомогательных функциях):
+1) Больше НЕ будет нескольких заголовков «Размеры и вес» — собираем все размеры/вес/цвет по всему тексту и выводим ОДИН блок в одном месте.
+2) Строка «Корпус: Металлическая крышка, цвет — Cosmos Gray, вес 3 кг.» больше не попадает как сырой пункт в «Размеры и вес».
+   Из неё корректно извлекаются «Цвет: Cosmos Gray» и «Вес: 3 кг» (лишний текст о крышке не засоряет список).
+3) «Автономность и питание», «Безопасность и мультимедиа», «Почему стоит выбрать» распознаются как самостоятельные заголовки,
+   поэтому не проваливаются в список «Порты и подключения».
+4) В «Порты и подключения» корректно группируются токены (RJ-45 не рвётся; «Сеть: … Wi-Fi …, Bluetooth …» объединяются).
+5) У пунктов «Вес/Цвет/Габариты» гарантируется метка («Вес: …», «Цвет: …», «Габариты: …»), не будет пунктов вида «— 3 кг».
+
+Остальной функционал (цены 4% + фикс-надбавка, keywords, порядок тегов, <available> и т.д.) — БЕЗ изменений.
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.3"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.4"  # ↑ только патч-версия за счёт фикса «родного описания»
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -134,27 +134,52 @@ def _html_to_lines(s: str) -> list[str]:
     t = t.replace("&#215;", "×").replace("&times;", "×")
     return [ln.strip() for ln in t.splitlines() if ln.strip()]
 
+def _extract_color_weight(sentence: str) -> Tuple[Optional[str], Optional[str]]:
+    """Из одного предложения пытаемся вытащить Цвет и Вес (в кг). Возвращаем ('Цвет: ...', 'Вес: ...') или None."""
+    s = canon_colons(sentence)
+    s = re.sub(r"[.,;]\s*$", "", s)
+    color = None
+    weight = None
+    # Цвет — Cosmos Gray / Цвет: Серый космос
+    m = re.search(r"(?i)\bцвет\s*[—:-]\s*([A-Za-zА-Яа-яЁё0-9\-\s]+)", s)
+    if m:
+        color_val = m.group(1).strip()
+        color = f"Цвет: {color_val}"
+    # вес 3 кг / вес: 3кг / вес — 3.2 кг
+    m = re.search(r"(?i)\bвес\s*[—:-]?\s*([\d]+(?:[.,]\d+)?)\s*(кг|kg|г|гр|g)?", s)
+    if m:
+        num = m.group(1).replace(",", ".")
+        unit = (m.group(2) or "").lower()
+        if unit in {"г","гр","g"}:
+            try:
+                kg = float(num)/1000.0
+                weight = f"Вес: {kg:.2f} кг".replace(".00","")
+            except Exception:
+                weight = f"Вес: {num} г"
+        else:
+            weight = f"Вес: {num} кг" if unit in {"кг","kg",""} else f"Вес: {num} {unit}"
+    return color, weight
+
 def _is_heading(line: str) -> tuple[bool, str]:
-    """Заголовками считаем ТОЛЬКО 'чистые' линии без полезной нагрузки.
-    Для блоков 'Размеры/Вес/Цвет/Корпус' — только если пусто после двоеточия."""
+    """ 'Чистые' заголовки: только заголовок раздела, без полезной нагрузки.
+        Добавлены: 'Автономность и питание', 'Безопасность и мультимедиа', 'Почему стоит выбрать' и т.п. """
     raw = line.strip()
     text = re.sub(r"<[^>]+>", "", raw).strip()
+    # убрать финальные двоеточия/вариации
     text_nocol = re.sub(r"[:：]+$", "", text)
     low = text_nocol.lower()
 
-    # «чистые» заголовки разделов
     pure_heads = {
         "особенности","преимущества","ключевые характеристики","характеристики",
         "порты и подключения","порты","подключения","комплектация","что в коробке",
-        "faq","отзывы","почему стоит выбрать","почему стоит купить"
+        "faq","отзывы","почему стоит выбрать","почему стоит купить",
+        "автономность и питание","безопасность и мультимедиа",
+        "размеры и вес","размеры","вес","цвет","корпус"
     }
     if low in pure_heads:
-        return True, text_nocol
-
-    # Заголовки типа «Размеры и вес», «Размеры», «Вес», «Цвет», «Корпус» — только если без полезной части
-    if re.fullmatch(r"(?i)(размеры и вес|размеры|вес|цвет|корпус)\s*[:：]?\s*", text):
-        return True, text_nocol
-
+        # считаем «чистым» только если это именно заголовок (линия без «Сеть: Wi-Fi …» и пр.)
+        if re.fullmatch(r"(?i)[A-Za-zА-Яа-яЁё0-9\s\-]+", text_nocol):
+            return True, text_nocol
     return False, text_nocol
 
 def _lines_to_ul(items: list[str]) -> str:
@@ -207,7 +232,7 @@ def _is_net_token(s: str) -> bool:
     return bool(re.search(r"(wi-?fi|bluetooth|be\d+|ieee\s*802\.11|lan|ethernet)", s, re.I))
 
 def _fix_network_group(items: list[str]) -> list[str]:
-    """Объединяет «Сеть: ...» с последующими Wi-Fi/Bluetooth в одну строку. Также поддерживает уже заполненное после «Сеть:»."""
+    """Объединяет «Сеть: ...» с последующими Wi-Fi/Bluetooth в одну строку."""
     out=[]; i=0
     while i < len(items):
         t = items[i].strip()
@@ -216,10 +241,8 @@ def _fix_network_group(items: list[str]) -> list[str]:
             payload = [m_full.group(1)] if m_full.group(1) else []
             j=i+1
             while j < len(items) and _is_net_token(items[j]):
-                payload.append(items[j].strip())
-                j+=1
-            payload = [x for x in payload if x]
-            out.append("Сеть: " + ", ".join(payload) if payload else "Сеть")
+                payload.append(items[j].strip()); j+=1
+            out.append("Сеть: " + ", ".join([p for p in payload if p]))
             i=j; continue
         if re.fullmatch(r"(?i)сеть[:：]?\s*", t):
             nets=[]; j=i+1
@@ -267,18 +290,32 @@ def _parse_ports_block(raw_lines: list[str]) -> list[str]:
     return cleaned
 
 def _push_dims_line(ln: str, dims: list[str]) -> None:
+    """Гарантируем метки «Габариты/Вес/Цвет» и вычищаем мусор."""
     s = canon_colons(ln)
     s = re.sub(r"^(корпус|размеры и вес|размеры|вес|цвет)\s*[:：-]*\s*", "", s, flags=re.I)
+    # сначала попытаться вытащить цвет/вес из сложных предложений
+    color, weight = _extract_color_weight(ln)
+    if color and color not in dims: dims.append(color)
+    if weight and weight not in dims: dims.append(weight)
+    # габариты
     if re.search(r"\d+\s*[×xX]\s*\d+.*\d", s):
-        dims.append(f"Габариты: {s}")
-    elif re.match(r"(?i)^вес\b", s):
-        dims.append(s if ":" in s else s.replace("—"," — ").replace("-", " - "))
-    elif re.match(r"(?i)^цвет\b", s):
-        dims.append(s if ":" in s else s.replace("—"," — ").replace("-", " - "))
-    else:
-        dims.append(s)
+        val = re.sub(r"^\s*(габариты\s*[:：-]?\s*)?", "", s, flags=re.I)
+        dims.append(f"Габариты: {val}")
+        return
+    # отдельные простые поля
+    if re.match(r"(?i)^вес\b", s):
+        val = re.sub(r"(?i)^вес\s*[:：-]?\s*", "", s).strip().strip(".")
+        if val and not re.search(r"\bкг\b", val, re.I):
+            val = f"{val} кг"
+        dims.append(f"Вес: {val}")
+        return
+    if re.match(r"(?i)^цвет\b", s):
+        val = re.sub(r"(?i)^цвет\s*[:：-]?\s*", "", s).strip().strip(".")
+        dims.append(f"Цвет: {val}")
+        return
+    # если остался нейтральный кусок — игнорируем (не мусорим «Размеры и вес»)
 
-_DIM_LINE_RE = re.compile(r"(?i)^\s*(размеры и вес|размеры|вес|цвет|корпус)\s*[:：\-—]?\s*(.+)?$")
+_DIM_LINE_RE = re.compile(r"(?i)^\s*(размеры и вес|размеры|вес|цвет|корпус)\s*[:：\-—]?\s*(.*)$")
 
 def beautify_raw_description(raw_html: str) -> str:
     """Оформляет «родное описание» для Satu: списки, заголовки, порты, галочки, размеры/вес."""
@@ -293,98 +330,103 @@ def beautify_raw_description(raw_html: str) -> str:
     buf: list[str] = []
     current_heading: Optional[str] = None
 
-    collecting_dims = False
-    dims: list[str] = []
+    dims: list[str] = []                # собираем ВСЕ размеры/вес/цвет глобально
+    dims_anchor_index: Optional[int] = None  # куда вставить блок «Размеры и вес» (первая встреча заголовка или перед «Порты…»)
+    emitted_headings: Set[str] = set()  # чтобы не дублировать одинаковые заголовки
 
     def flush_buf():
         nonlocal buf, blocks, current_heading
         if not buf:
             current_heading = None
             return
+        # если шла секция «Порты и подключения» — разбираем как порты
         if current_heading and current_heading.lower().startswith("порты"):
             items=_parse_ports_block(buf)
-            blocks.append(_lines_to_ul(items))
+            if items:
+                blocks.append(_lines_to_ul(items))
         else:
             expanded=[]
             for b in buf:
                 expanded.extend(_split_checked_line_to_items(b))
-            if len(expanded) >= 2:
+            # если накопилось 2+ строк — список, иначе абзац
+            if len([x for x in expanded if x.strip()]) >= 2:
                 blocks.append(_lines_to_ul(expanded))
             else:
-                blocks.append(f"<p>{canon_colons(expanded[0])}</p>")
+                only = canon_colons(expanded[0]) if expanded else ""
+                if only:
+                    blocks.append(f"<p>{only}</p>")
         buf.clear()
         current_heading = None
 
-    def flush_dims():
-        nonlocal dims, blocks
-        if not dims: return
+    def place_dims_block_if_needed():
+        """Вставить собранный «Размеры и вес» в заранее выбранную позицию (или в конец, если якоря нет)."""
+        nonlocal dims, blocks, dims_anchor_index, emitted_headings
+        if not dims:
+            return
+        # уникализировать и привести в порядок
         uniq=[]; seen=set()
         for d in dims:
-            d=re.sub(r"\s{2,}"," ", d).strip(" ;,")
-            if not d: continue
-            key=d.lower()
-            if key not in seen:
-                seen.add(key); uniq.append(d)
-        blocks.append("<h3>Размеры и вес</h3>")
-        blocks.append(_lines_to_ul(uniq))
+            dd = re.sub(r"\s{2,}", " ", d).strip(" ;,")
+            if not dd: continue
+            k = dd.lower()
+            if k not in seen:
+                seen.add(k); uniq.append(dd)
+        if not uniq:
+            dims.clear(); return
+        dims_html = ["<h3>Размеры и вес</h3>", _lines_to_ul(uniq)]
+        if dims_anchor_index is None or dims_anchor_index > len(blocks):
+            blocks.extend(dims_html)
+        else:
+            blocks[dims_anchor_index:dims_anchor_index] = dims_html
+        emitted_headings.add("размеры и вес")
         dims.clear()
+        dims_anchor_index = None
 
     i=0
     while i < len(lines):
         ln = lines[i]
 
-        # 1) Явные строки параметров «Вес — …» / «Цвет — …» / «Размеры …» → в единый блок
+        # 1) Если это строка про размеры/вес/цвет — собираем глобально, НО не выводим сразу
         m_dim = _DIM_LINE_RE.match(ln)
         if m_dim:
-            key = (m_dim.group(1) or "").lower()
-            payload = (m_dim.group(2) or "").strip()
-            if key in {"вес","цвет","размеры","размеры и вес","корпус"} and payload:
-                if not collecting_dims:
-                    collecting_dims = True
-                _push_dims_line(ln, dims)
-                i += 1
-                continue
-            # если это «чистая» шапка «Размеры и вес» — открыть сбор
-            if re.fullmatch(r"(?i)(размеры и вес|размеры)\s*", ln):
-                flush_buf()
-                collecting_dims = True
-                i += 1
-                continue
-
-        # 2) Заголовки разделов (только «чистые», без полезной нагрузки)
-        is_h, title = _is_heading(ln)
-        if is_h:
-            flush_buf()
-            if collecting_dims:
-                flush_dims()
-                collecting_dims=False
-            blocks.append(f"<h3>{title}</h3>")
-            current_heading = title
-            i += 1
-            continue
-
-        # 3) Сбор DIMs, если активен
-        if collecting_dims:
+            # Ставим якорь для блока «Размеры и вес», если ещё не выбран:
+            if dims_anchor_index is None:
+                dims_anchor_index = len(blocks) + (1 if buf else 0)  # после текущего абзаца/заголовка
             _push_dims_line(ln, dims)
             i += 1
             continue
 
-        # 4) Маркеры-галочки
-        if re.match(r"^([•\-—]|&#9989;|✅)\s*", ln):
+        # 2) Заголовки разделов (только «чистые»)
+        is_h, title = _is_heading(ln)
+        if is_h:
+            # перед переключением секций — дописать буфер
             flush_buf()
-            blocks.append(_lines_to_ul([re.sub(r"^([•\-—]|&#9989;|✅)\s*", "", ln).strip()]))
+            lowt = title.lower()
+            # если это «Размеры и вес» — не вставляем заголовок сейчас, а только помечаем якорь
+            if lowt in {"размеры и вес","размеры","вес","цвет","корпус"}:
+                if dims_anchor_index is None:
+                    dims_anchor_index = len(blocks)
+                # НЕ добавляем заголовок в blocks сейчас (чтобы не дублировать позже)
+                i += 1
+                continue
+            # обычные заголовки: без дублей
+            if lowt not in emitted_headings:
+                blocks.append(f"<h3>{title}</h3>")
+                emitted_headings.add(lowt)
+            current_heading = title
             i += 1
             continue
 
-        # 5) Обычная строка → буфер
+        # 3) Обычная строка → буфер
         buf.append(ln)
         i += 1
 
+    # Хвосты
     flush_buf()
-    if collecting_dims:
-        flush_dims()
+    # Вставить «Размеры и вес» один раз, в якорь
+    place_dims_block_if_needed()
 
-    # Слить подряд идущие <ul> в один (внутри «родного описания»)
+    # Слить подряд идущие <ul> в один
     blocks = _merge_adjacent_uls(blocks)
 
     html = "\n".join(blocks)
