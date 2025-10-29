@@ -3,10 +3,9 @@
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
 
-Обновление v7.3.1:
-- FIX: NameError 'build_specs_html_from_params' — функция добавлена.
-- Чистка дублей функций (detect_kind, reorder_offer_children, _replace_html_placeholders_with_cdata).
-- Режим SEO-рефреша: каждое 1-е число месяца (Asia/Almaty), можно переключить через ENV.
+Обновление v7.3.2:
+- FIX: NameError 'raw_desc_text_for_kv' — теперь передаётся параметром в build_lead_bullets(...).
+- Оформление «родного описания» без изменений.
 """
 
 from __future__ import annotations
@@ -21,7 +20,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.1"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.2"
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -96,7 +95,6 @@ def choose(seq: List[str], seed: int, idx: int) -> str:
     rnd = random.Random(int(hashlib.md5(f"{seed}:{idx}:{CHOICES_SEED_SALT}".encode("utf-8")).hexdigest(),16))
     return seq[rnd.randrange(0, len(seq))]
 
-# Безопасные двоеточия/кавычки и т.п.
 COLON_CLASS = r"[:\uFF1A\uFE55\u2236\uFE30]"
 canon_colons    = lambda s: re.sub(COLON_CLASS, ":", s or "")
 NOISE_RE        = re.compile(r"[\u200B-\u200F\u202A-\u202E\u00A0\u202F\u2060\uFEFF\uFFF9-\uFFFB\u0000-\u001F\u007F-\u009F]")
@@ -299,25 +297,24 @@ def _force_tail_900(x: float) -> int:
     return int(str(p)[:-3] + "900") if p >= 1000 and len(str(p)) >= 4 else p
 
 PRICE_RULES: List[PriceRule] = [
-    (101,        10_000,     4.0,  3_000),
-    (10_001,     25_000,     4.0,  4_000),
-    (25_001,     50_000,     4.0,  5_000),
-    (50_001,     75_000,     4.0,  7_000),
-    (75_001,     100_000,    4.0,  10_000),
-    (100_001,    150_000,    4.0,  12_000),
-    (150_001,    200_000,    4.0,  15_000),
-    (200_001,    300_000,    4.0,  20_000),
-    (300_001,    400_000,    4.0,  25_000),
-    (400_001,    500_000,    4.0,  30_000),
-    (500_001,    750_000,    4.0,  40_000),
-    (750_001,    1_000_000,  4.0,  50_000),
-    (1_000_001,  1_500_000,  4.0,  70_000),
-    (1_500_001,  2_000_000,  4.0,  90_000),
-    (2_000_001,  99_000_000, 4.0,  100_000),
+    (101,        10000,     4.0,  3000),
+    (10001,      25000,     4.0,  4000),
+    (25001,      50000,     4.0,  5000),
+    (50001,      75000,     4.0,  7000),
+    (75001,      100000,    4.0,  10000),
+    (100001,     150000,    4.0,  12000),
+    (150001,     200000,    4.0,  15000),
+    (200001,     300000,    4.0,  20000),
+    (300001,     400000,    4.0,  25000),
+    (400001,     500000,    4.0,  30000),
+    (500001,     750000,    4.0,  40000),
+    (750001,     1000000,   4.0,  50000),
+    (1000001,    1500000,   4.0,  70000),
+    (1500001,    2000000,   4.0,  90000),
+    (2000001,    99000000,  4.0,  100000),
 ]
 
 def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
-    # приоритет <prices type~dealer/опт/b2b> > прямые поля > RRP fallback
     prices = offer.find("prices") or offer.find("Prices")
     if prices is not None:
         for p in prices.findall("price"):
@@ -411,7 +408,6 @@ def clean_params(offer: ET.Element) -> int:
             seen.add(k)
     return removed
 
-# ===== KV из «родного» описания + нормализация единиц =====
 HDR_RE = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
 HEAD_ONLY_RE = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*$", re.I)
 HEAD_PREFIX_RE = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*", re.I)
@@ -460,7 +456,6 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
         if not name or not val: continue
         if GOOD_PARAM_NAME_RE.search(name) and not UNWANTED_PARAM_NAME_RE.search(name):
             pairs.append((normalize_param_name(name), normalize_param_val(name, val)))
-    # убираем дубли по ключу имени
     out=[]; seen=set()
     for n,v in pairs:
         k=_key(n)
@@ -483,7 +478,6 @@ def has_specs_in_raw_desc(html_text: str) -> bool:
     return bool(HDR_RE.search(plain) or HEAD_ONLY_RE.search(plain) or HEAD_PREFIX_RE.search(plain))
 
 def build_specs_html_from_params(offer: ET.Element) -> str:
-    """HTML-список <li> из тегов <param>. Показываем только если в «родном» описании нет характеристик."""
     pairs = build_specs_pairs_from_params(offer)
     if not pairs: return ""
     pairs_sorted = sorted(pairs, key=lambda kv: _rank_key(kv[0]))
@@ -503,27 +497,18 @@ SECTION_TITLES = [
     "Комплектация",
     "Почему стоит выбрать",
 ]
-
-# Подпункты, которые всегда идут как li внутри "Ключевые характеристики"
 KEY_SUBLABELS = {"процессор","графика","экран","озу","накопитель","охлаждение","клавиатура","корпус"}
-
-# Простые эвристики для распознавания строк портов
 PORT_TOKENS = ("thunderbolt", "usb", "hdmi", "displayport", "sd", "type-c", "rj-45", "lan", "аудиоразъём", "аудиоразъем")
 
 def _to_text_lines(html_in: str) -> list[str]:
     if not (html_in or "").strip():
         return []
     t = (html_in or "")
-    # Блоковые теги → перевод строки
     t = re.sub(r"(?i)</?(?:p|div|br|li|ul|ol|h[1-6])[^>]*>", "\n", t)
-    # Удаляем остальные теги
     t = re.sub(r"<[^>]+>", "", t)
-    # HTML-entities → символы (кроме CDATA-закрывающей последовательности)
     t = _unescape(t).replace("]]>", "]]&gt;")
-    # Нормализация пробелов
     t = t.replace("\r\n","\n").replace("\r","\n")
     lines = [normalize_free_text_punct(ln.strip()) for ln in t.split("\n")]
-    # Убираем пустые подряд
     out=[] 
     for ln in lines:
         if not ln: 
@@ -531,7 +516,6 @@ def _to_text_lines(html_in: str) -> list[str]:
                 out.append("")
             continue
         out.append(ln)
-    # Убираем ведущие/замыкающие пустые
     while out and out[0]=="": out.pop(0)
     while out and out[-1]=="": out.pop()
     return out
@@ -541,10 +525,8 @@ def _is_section_title(line: str) -> str|None:
     for title in SECTION_TITLES:
         if _norm_text(title) == s:
             return title
-    # Частный случай: строки вроде "Почему стоит выбрать MSI ..."
     if s.startswith(_norm_text("почему стоит выбрать")):
         return "Почему стоит выбрать"
-    # "Порты" алиасы
     if s in {"порты","разъемы","разъёмы","порты и подключения","разъемы и подключение","разъёмы и подключение"}:
         return "Порты и подключения"
     return None
@@ -556,18 +538,15 @@ def _line_looks_like_port(line: str) -> bool:
     return any(tok in s for tok in PORT_TOKENS)
 
 def _split_network_features(s: str) -> list[str]:
-    # "Сеть: Intel Killer Wi-Fi 7 BE1750, Bluetooth 5.4" → ["Intel Killer Wi-Fi 7 BE1750", "Bluetooth 5.4"]
     v = re.sub(r"^\s*сеть\s*:\s*","", s, flags=re.I)
     parts = re.split(r"\s*,\s*|\s+и\s+", v)
     return [p.strip(" .;") for p in parts if p.strip(" .;")]
 
 def format_native_description(raw_html: str) -> str:
-    """Преобразует «родное» описание в понятный, чистый HTML для Сату без изменения смысла."""
     lines = _to_text_lines(raw_html)
     if not lines:
         return ""
 
-    # Коллекторы секций
     intro_paragraphs: list[str] = []
     key_items: list[str] = []
     ports_items: list[str] = []
@@ -587,26 +566,22 @@ def format_native_description(raw_html: str) -> str:
         if not raw:
             continue
 
-        # 1) Заголовки секций
         sec = _is_section_title(raw)
         if sec:
             current_section = sec
             continue
 
-        # 2) Строки с "Лейбл: Значение"
         m = re.match(r"^\s*([^:：﹕∶︰]{2,}?)\s*[:：﹕∶︰]\s*(.+)$", raw)
         if m:
             label = _norm_text(m.group(1))
             value = m.group(2).strip()
 
-            # a) Сеть → в "Порты и подключения" (разбиваем по Wi-Fi/BT)
             if label in {"сеть","сетевые возможности","беспроводные интерфейсы"}:
                 for p in _split_network_features(value):
                     if p: ports_items.append(p)
                 current_section = current_section or "Порты и подключения"
                 continue
 
-            # b) Размеры/вес/цвет → "Размеры и вес"
             if label in {"размер","размеры","габариты"}:
                 size_items.append(f"Габариты: {value}"); current_section = current_section or "Размеры и вес"; continue
             if label in {"вес"}:
@@ -614,38 +589,31 @@ def format_native_description(raw_html: str) -> str:
             if label in {"цвет","цвета"}:
                 size_items.append(f"Цвет: {value}"); current_section = current_section or "Размеры и вес"; continue
 
-            # c) Аккумулятор/зарядка → "Автономность и питание"
             if label in {"батарея","аккумулятор"}:
                 power_items.append(f"Батарея: {value}"); current_section = current_section or "Автономность и питание"; continue
             if label in {"зарядка","зарядное устройство","адаптер питания"}:
                 power_items.append(f"Зарядное устройство: {value}"); current_section = current_section or "Автономность и питание"; continue
 
-            # d) Комплектация
             if label in {"комплектация","что в коробке","в комплекте"}:
-                # Разбиваем по запятым/точкам с запятой
                 for part in re.split(r"[;,]\s*", value):
                     if part: bundle_items.append(part.strip())
                 current_section = current_section or "Комплектация"; continue
 
-            # e) Подпункты ключевых характеристик (никогда не как <h3>)
             if label in KEY_SUBLABELS or current_section == "Ключевые характеристики":
                 key_items.append(f"{m.group(1).strip()}: {value}")
                 current_section = "Ключевые характеристики"
                 continue
 
-            # f) Порты в форме "X: …" (например, "Thunderbolt: …")
             if _line_looks_like_port(m.group(0)):
                 ports_items.append(m.group(0))
                 current_section = "Порты и подключения"
                 continue
 
-            # g) Безопасность/мультимедиа
             if any(w in label for w in ["камера","tpm","kensington","безопас","динамик","аудио","микрофон"]):
                 secure_items.append(f"{m.group(1).strip()}: {value}")
                 current_section = current_section or "Безопасность и мультимедиа"
                 continue
 
-            # по умолчанию — если есть текущая секция, кладём как пункт туда; иначе — во вводный текст
             if current_section == "Ключевые характеристики":
                 key_items.append(f"{m.group(1).strip()}: {value}"); continue
             if current_section == "Порты и подключения":
@@ -661,21 +629,18 @@ def format_native_description(raw_html: str) -> str:
                     if part: bundle_items.append(part.strip()); continue
 
             add_intro(raw)
-            continue  # конец обработки KV
+            continue
 
-        # 3) Пункты «похожие на порты» (начинаются с "2× ...", или содержат HDMI/USB/...)
         if _line_looks_like_port(raw):
             ports_items.append(raw)
             current_section = current_section or "Порты и подключения"
             continue
 
-        # 4) Список «Почему стоит выбрать …» — строки с галочками
         if raw.startswith("✅") or raw.startswith("✔"):
             why_items.append(raw.lstrip("✅✔").strip())
             current_section = "Почему стоит выбрать"
             continue
 
-        # 5) Общие строки — раскладываем по известным разделам эвристически
         low = _norm_text(raw)
         if low.startswith("ир-веб-камера") or "nahimic" in low or "tpm" in low or "kensington" in low:
             secure_items.append(raw); current_section = current_section or "Безопасность и мультимедиа"; continue
@@ -686,14 +651,12 @@ def format_native_description(raw_html: str) -> str:
         if any(w in low for w in ["кабель питания","hdmi","комплектация","что в коробке"]):
             bundle_items.append(raw); current_section = current_section or "Комплектация"; continue
 
-        # 6) Если ничего из выше — считаем это вводным текстом
         add_intro(raw)
 
-    # Рендер секций
     out_parts: list[str] = []
 
     if intro_paragraphs:
-        for para in intro_paragraphs[:6]:  # ограничим «вступление», чтобы не было простыни текста
+        for para in intro_paragraphs[:6]:
             out_parts.append(f"<p>{_html_escape_in_cdata_safe(para)}</p>")
 
     def _render_ul(title: str, items: list[str]):
@@ -717,11 +680,8 @@ def format_native_description(raw_html: str) -> str:
     _render_ul("Комплектация", bundle_items)
     _render_ul("Почему стоит выбрать", why_items)
 
-    # Финишная чистка: убираем подряд идущие пустые секции (если вдруг)
     html_out = "\n".join([p for p in out_parts if p.strip()])
-    # Уничтожаем <h3> с хвостами типа "и подключения" после "Порты и подключения"
     html_out = re.sub(r"<h3>\s*и подключения\s*</h3>\s*", "", html_out, flags=re.I)
-    # Удаляем дубли заголовков
     html_out = re.sub(r"(?:<h3>[^<]+</h3>\s*){2,}", lambda m: m.group(0).split("</h3>")[0]+"</h3>\n", html_out)
     return html_out
 
@@ -799,7 +759,15 @@ def _seo_title(name: str, vendor: str, kind: str, kv_all: Dict[str,str], seed: i
     v = vendor.strip() or ""
     return f"{short}: {p} ({v})" if v else f"{short}: {p}"
 
-def build_lead_bullets(name: str, vendor: str, kind: str, params_pairs: List[Tuple[str,str]], raw_kv: List[Tuple[str,str]], seed: int) -> List[str]:
+def build_lead_bullets(
+    name: str,
+    vendor: str,
+    kind: str,
+    params_pairs: List[Tuple[str,str]],
+    raw_kv: List[Tuple[str,str]],
+    seed: int,
+    raw_desc_text_for_kv: str = ""
+) -> List[str]:
     kv_all={}
     for k,v in (params_pairs + raw_kv):
         k_n=_norm_text(k)
@@ -817,14 +785,14 @@ def build_lead_bullets(name: str, vendor: str, kind: str, params_pairs: List[Tup
             for k,v in params_pairs:
                 if _norm_text(k) in {"цвет печати","ресурс","тип печати"}:
                     bullets.append(f"✅ {k}: {v}")
+        compat = extract_full_compatibility(raw_desc_text_for_kv, params_pairs)
     else:
         for k,v in (params_pairs + raw_kv):
             if len(bullets)>=3: break
             k_low=k.strip().lower()
             if any(x in k_low for x in ["совместим","описание","состав","страна","гарант"]): continue
             bullets.append(f"✅ {k.strip()}: {v.strip()}")
-
-    compat = extract_full_compatibility(raw_desc_text_for_kv, params_pairs) if kind=="cartridge" else ""
+        compat = ""
 
     title = _seo_title(name, vendor, kind, kv_all, seed)
 
@@ -975,7 +943,7 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
                 reviews_html= ent.get("reviews_html", reviews_html)
                 use_cache   = True
         if not use_cache:
-            lead_html = build_lead_bullets(name, vendor, kind, params_pairs, raw_kv, seed)
+            lead_html = build_lead_bullets(name, vendor, kind, params_pairs, raw_kv, seed, raw_desc_text_for_kv)
 
         formatted_native = format_native_description(raw_desc_html_full)
         full_html = compose_full_description_html(lead_html, formatted_native, specs_html, faq_html, reviews_html)
@@ -988,7 +956,6 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
         else:
             old_in = inner_html(d)
             if old_in != placeholder:
-                # заменяем весь HTML-нутряк description на плейсхолдер
                 d.clear()
                 d.text = placeholder
                 changed += 1
@@ -1002,7 +969,6 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
                 "reviews_html": reviews_html,
             }
 
-    # Для FEED_META — показываем последнее обновление SEO-кэша в Алматы
     last_alm: Optional[datetime] = None
     if cache:
         for ent in cache.values():
@@ -1094,7 +1060,6 @@ def _extract_article_from_url(url:str)->str:
     except Exception: return ""
 def _normalize_code(s:str)->str:
     s=(s or "").strip()
-    if not s: return ""
     s=re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
     return re.sub(r"[^A-Za-z0-9\-]+","",s).upper()
 
@@ -1195,7 +1160,6 @@ def dedup_preserve_order(seq: List[str]) -> List[str]:
 def extract_model_tokens(offer: ET.Element) -> List[str]:
     name=get_text(offer,"name")
     content=name or ""
-    # также попробовать vendorCode / url
     vc=get_text(offer,"vendorCode")
     if vc: content += " " + vc
     url=get_text(offer,"url")
@@ -1254,7 +1218,6 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
             tr=translit_ru_to_lat(str(w))
             if tr and tr not in extra: extra.append(tr)
     parts+=extra+geo_tokens()
-    # фильтрация/обрезка
     out=[]
     for w in parts:
         w=w.strip().strip(",.;")
@@ -1296,11 +1259,9 @@ def main()->None:
     out_root=ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop=ET.SubElement(out_root,"shop"); out_offers=ET.SubElement(out_shop,"offers")
 
-    # Копируем офферы как есть (с дальнейшими модификациями)
     for off in src_offers:
         out_offers.append(deepcopy(off))
 
-    # Категории: по правилам
     try:
         mode=ALSTYLE_CATEGORIES_MODE
         if mode in {"include","exclude"}:
@@ -1309,30 +1270,23 @@ def main()->None:
     except Exception as e:
         warn(f"category rules warn: {e}")
 
-    # Вендор
     auto_vendor = ensure_vendor_auto_fill(out_shop); log(f"Vendor autofill: {auto_vendor}")
 
-    # Цена
     updated,skipped,total,src_stats=reprice_offers(out_shop, PRICE_RULES)
     log(f"Pricing: updated={updated}, skipped={skipped}, total={total}, src={src_stats}")
 
-    # Чистка params и нормализация
     for off in out_offers.findall("offer"): clean_params(off)
 
-    # SEO description
     changed_seo, seo_last_update_alm = inject_seo_descriptions(out_shop)
     log(f"Descriptions updated: {changed_seo}; SEO last update (Almaty): {seo_last_update_alm}")
 
-    # Очистка лишних тегов/атрибутов
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
 
-    # Доступность/валюта
     t_true, t_false, _, _ = normalize_available_field(out_shop)
     fix_currency_id(out_shop, default_code="KZT")
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
 
-    # Упорядочивание блоков, categoryId=0 в начало
     DESIRED_ORDER=["vendorCode","name","price","picture","vendor","currencyId","description"]
     def reorder_offer_children(shop_el: ET.Element) -> int:
         offers_el=shop_el.find("offers")
@@ -1358,10 +1312,8 @@ def main()->None:
     try: ET.indent(out_root, space="  ")
     except Exception: pass
 
-    # Подмена [[[HTML]]] → CDATA
     xml_text = ET.tostring(out_root, encoding="unicode")
     def _replace_html_placeholders_with_cdata(xml_s: str) -> str:
-        # Меняем [[[HTML]]]<...>[[[/HTML]]] на <![CDATA[...]]>
         return re.sub(
             r"\[\[\[HTML\]\]\]((?s).*?)\[\[\[\/HTML\]\]\]",
             lambda m: "<![CDATA[\n" + m.group(1) + "\n]]>",
@@ -1370,7 +1322,6 @@ def main()->None:
         )
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
-    # FEED_META в начале файла
     meta_pairs={
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL,
@@ -1385,7 +1336,6 @@ def main()->None:
     meta_comment = render_feed_meta_comment(meta_pairs)
     xml_text = "<!--\n" + meta_comment + "\n-->\n" + xml_text
 
-    # Пишем файл (windows-1251, безопасная деградация)
     try:
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
