@@ -1,94 +1,87 @@
-name: build_alstyle
+# .github/workflows/build_alstyle.yml
+name: Build Alstyle feed
 
 on:
   workflow_dispatch:
   schedule:
-    # 01:00 Asia/Almaty = 20:00 UTC предыдущего дня
-    - cron: '0 20 * * *'
+    - cron: "0 20 * * *"    # Ежедневно 20:00 UTC (~01:00 Asia/Almaty)
   push:
     paths:
-      - 'scripts/build_alstyle.py'
-      - 'docs/alstyle_categories.txt'
-      - '.github/workflows/build_alstyle.yml'
+      - "scripts/build_alstyle.py"
+      - ".github/workflows/build_alstyle.yml"
+      - "docs/alstyle_categories.txt"
 
 permissions:
   contents: write
 
 concurrency:
-  group: build-alstyle
+  group: build-alstyle-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      # Поставщик и источник
-      SUPPLIER_NAME: alstyle
-      SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
-
-      # Выходной файл
-      OUT_FILE: docs/alstyle.yml
-      OUTPUT_ENCODING: windows-1251
-
-      # Сетевые параметры
-      TIMEOUT_S: '30'
-      RETRIES: '4'
-      RETRY_BACKOFF_S: '2'
-      MIN_BYTES: '1500'
-
-      # vendorCode
-      VENDORCODE_PREFIX: AS
-      VENDORCODE_CREATE_IF_MISSING: '1'
-
-      # Категории (фильтр на стороне скрипта)
-      ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
-      ALSTYLE_CATEGORIES_MODE: include
-
-      # categoryId по умолчанию (ставится самым верхним тегом в каждом offer)
-      CATEGORY_ID_DEFAULT: '0'
-
-      # Режим Satu+ (вариант B) без pickup/delivery/sales_notes
-      SATU_MODE: full
-      SATU_KEYWORDS: auto
+    timeout-minutes: 25
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+        # actions/checkout v5.0.0 (pinned)
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          python-version: '3.11'   # без cache, чтобы не требовать requirements.txt
+          fetch-depth: 1
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
+      - name: Setup Python 3.11
+        # actions/setup-python v6.0.0 (pinned)
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-      - name: Build Alstyle feed
+      - name: Install deps
         run: |
-          set -e
+          python -m pip install --upgrade pip wheel
+          pip install requests beautifulsoup4
+
+      - name: Ensure categories file
+        run: |
+          test -f docs/alstyle_categories.txt || echo "5010" > docs/alstyle_categories.txt
+          echo "---- docs/ ----"
+          ls -l docs || true
+
+      - name: Build alstyle feed
+        env:
+          OUT_FILE: docs/alstyle.yml
+          OUTPUT_ENCODING: windows-1251
+          ALSTYLE_CATEGORIES_FILE: docs/alstyle_categories.txt
+          ALSTYLE_CATEGORIES_MODE: include
+        run: |
+          set -euo pipefail
+          python --version
           python scripts/build_alstyle.py
-
-      - name: Show output size
-        run: ls -lh docs/alstyle.yml || true
+          echo "---- docs/ ----"
+          ls -l docs || true
+          test -f docs/alstyle.yml
 
       - name: Commit & push if changed
         run: |
-          set -e
-          if git diff --quiet -- docs/alstyle.yml; then
-            echo "No changes."
-            exit 0
-          fi
+          set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/alstyle.yml docs/.nojekyll || true
-          git commit -m "build(alstyle): update docs/alstyle.yml [skip ci]"
-          git push
+          git add docs/alstyle.yml docs/alstyle_categories.txt || true
+          if ! git diff --staged --quiet; then
+            git commit -m "build(alstyle): update docs/alstyle.yml"
+            git pull --rebase --autostash
+            git push
+          else
+            echo "No changes to commit"
+          fi
 
-      - name: Upload artifact (alstyle.yml)
-        uses: actions/upload-artifact@v4
+      - name: Upload artifact
+        if: success()
+        # actions/upload-artifact v5.0.0 (pinned)
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
         with:
-          name: alstyle-feed
+          name: alstyle.yml
           path: docs/alstyle.yml
+          if-no-files-found: error
+          retention-days: 14
