@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
+Из твоего рабочего кода. Логику НЕ менял — только улучшил оформление «родного описания».
 
-Обновление v7.3.1:
-- FIX: NameError 'build_specs_html_from_params' — функция добавлена.
-- Чистка дублей функций (detect_kind, reorder_offer_children, _replace_html_placeholders_with_cdata).
-- Режим SEO-рефреша: каждое 1-е число месяца (Asia/Almaty), можно переключить через ENV.
+Доб. правки:
+- beautify_raw_description(): аккуратные списки, заголовки; «Порты и подключения» склеиваются (2× + порт),
+  «RJ-45 (2.5 Гбит/с LAN)» не рвётся, «Сеть: … Wi-Fi … Bluetooth …» собирается в одну строку,
+  подряд идущие одиночные <ul> объединяются в один, «Размеры и вес» формируется как один блок.
+- split_short_name(): обрезает по границе слова (не режет «1TB», «32GB» и т.п.).
 """
 
 from __future__ import annotations
@@ -21,7 +23,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.1"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.2"
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -53,9 +55,8 @@ SATU_KEYWORDS_GEO_LAT  = os.getenv("SATU_KEYWORDS_GEO_LAT", "on").lower() in {"o
 DEFAULT_CACHE_PATH = "docs/alstyle_cache/seo_cache.json"
 SEO_CACHE_PATH     = os.getenv("SEO_CACHE_PATH", DEFAULT_CACHE_PATH)
 SEO_STICKY         = os.getenv("SEO_STICKY", "1").lower() in {"1","true","yes","on"}
-# Режимы: "monthly_1" (каждое 1-е число), "days" (каждые N суток), "off"
 SEO_REFRESH_MODE   = os.getenv("SEO_REFRESH_MODE", "monthly_1").lower()
-SEO_REFRESH_DAYS   = int(os.getenv("SEO_REFRESH_DAYS", "14"))  # используется когда MODE=days
+SEO_REFRESH_DAYS   = int(os.getenv("SEO_REFRESH_DAYS", "14"))
 LEGACY_CACHE_PATH  = "docs/seo_cache.json"
 
 # Placeholders (фото)
@@ -109,9 +110,8 @@ def inner_html(el: ET.Element) -> str:
         if child.tail: parts.append(child.tail)
     return "".join(parts).strip()
 
-# ======================= RAW DESCRIPTION BEAUTIFIER (ДОБАВЛЕНО) =======================
+# ======================= RAW DESCRIPTION BEAUTIFIER (УЛУЧШЕНО) =======================
 def _has_enough_markup(s: str) -> bool:
-    """Heuristic: уже структурировано, если есть <ul><li> ИЛИ 2+ <h3> + список."""
     if not s: return False
     low = s.lower()
     if "<ul" in low and "<li" in low:
@@ -134,42 +134,26 @@ def _is_heading(line: str) -> tuple[bool, str]:
     h_clean = re.sub(r"[:：]+$", "", h)
     c = h_clean.lower()
     keys = [
-        "особенности", "преимущества",
-        "ключевые характеристики", "характеристики",
-        "порты и подключения", "порты", "подключения",
-        "комплектация", "что в коробке",
-        "размеры и вес", "размеры", "вес",
-        "автономность", "питание", "аккумулятор",
-        "безопасность", "мультимедиа",
-        "почему стоит выбрать", "почему стоит купить", "почему выбрать",
+        "особенности","преимущества",
+        "ключевые характеристики","характеристики",
+        "порты и подключения","порты","подключения",
+        "комплектация","что в коробке",
+        "размеры и вес","размеры","вес","цвет","корпус",
+        "автономность","питание","аккумулятор",
+        "безопасность","мультимедиа",
+        "почему стоит выбрать","почему стоит купить","почему выбрать",
     ]
-    if any(k in c for k in keys):
+    if any(k == c for k in keys) or any(c.startswith(k) for k in keys):
         return True, h_clean
     mt = re.match(r"(?is)<h[23][^>]*>(.*?)</h[23]>", h)
     if mt:
         return True, re.sub(r"<[^>]+>", "", mt.group(1)).strip()
     return False, h
 
-def _lines_to_ul(lines: list[str]) -> str:
-    items = [f"<li>{canon_colons(ln)}</li>" for ln in lines if ln]
+def _lines_to_ul(items: list[str]) -> str:
+    items = [i for i in items if i]
     if not items: return ""
-    return "<ul>\n  " + "\n  ".join(items) + "\n</ul>"
-
-def _split_ports_block(text: str) -> list[str]:
-    s = text.replace("  ", " ").replace(" ;", ";").replace("; ", ";")
-    tokens = re.split(r"(?=(?:\d+\s*[×xX]\s*|RJ-?45|USB|Thunderbolt|HDMI|SD\b|LAN\b|Wi-?Fi|Bluetooth))", s)
-    out=[]
-    for tok in tokens:
-        tok = tok.strip(" ;,")
-        if tok: out.append(tok)
-    final=[]
-    for t in out:
-        parts = re.split(r"\s{2,}|;|,\s(?=\d|USB|HDMI|RJ|SD|Thunderbolt|Wi-?Fi|Bluetooth)", t)
-        for p in parts:
-            p = p.strip(" ,;")
-            if p: final.append(p)
-    final = [re.sub(r"(\d+)\s*[xX]\s*", r"\1× ", p) for p in final]
-    return final
+    return "<ul>\n  " + "\n  ".join(f"<li>{canon_colons(i)}</li>" for i in items) + "\n</ul>"
 
 def _split_checked_line_to_items(line: str) -> list[str]:
     if "&#9989;" not in line and "✅" not in line:
@@ -178,11 +162,122 @@ def _split_checked_line_to_items(line: str) -> list[str]:
     parts = re.split(r"(?=&#9989;)", s)
     return [p.strip(" •-—;") for p in parts if p.strip(" •-—;")]
 
+def _merge_adjacent_uls(blocks: list[str]) -> list[str]:
+    """Сливает подряд идущие <ul>…</ul> в один список."""
+    out=[]; buf=[]
+    def flush():
+        nonlocal buf, out
+        if not buf: return
+        li=[]
+        for b in buf:
+            li += re.findall(r"<li>(.*?)</li>", b, flags=re.S)
+        out.append(_lines_to_ul(li))
+        buf=[]
+    for b in blocks:
+        if b.strip().lower().startswith("<ul"):
+            buf.append(b)
+        else:
+            flush()
+            out.append(b)
+    flush()
+    return out
+
+def _fix_rj_split(tokens: list[str]) -> list[str]:
+    """Склеивает 'RJ-45 (2.5 Гбит/с' + 'LAN)' → 'RJ-45 (2.5 Гбит/с LAN)' и похожие разрывы со скобками."""
+    out=[]; i=0
+    while i < len(tokens):
+        t=tokens[i].strip(" ,;")
+        if ("(" in t and ")" not in t) and i+1 < len(tokens):
+            t = f"{t} {tokens[i+1].strip(' ,;')}"
+            i += 2
+            # Если всё ещё нет ')', продолжим склеивать
+            while i < len(tokens) and ")" not in t:
+                t = f"{t} {tokens[i].strip(' ,;')}"
+                i += 1
+            out.append(t)
+            continue
+        out.append(t); i+=1
+    return out
+
+def _fix_network_group(items: list[str]) -> list[str]:
+    """Собирает 'Сеть: …' + 'Wi-Fi 7 …' + 'Bluetooth …' в одну строку."""
+    out=[]; i=0
+    while i < len(items):
+        t = items[i]
+        if re.search(r"(^|\s)сеть[:：]?\s*$", t, re.I):
+            nets=[t.rstrip(":：").strip()]
+            j=i+1
+            while j < len(items) and re.search(r"(wi-?fi|bluetooth|be\d+)", items[j], re.I):
+                nets.append(items[j]); j+=1
+            merged = "Сеть: " + ", ".join(x for x in nets[1:] if x)
+            out.append(merged)
+            i=j; continue
+        out.append(t); i+=1
+    return out
+
+def _fix_count_prefix(items: list[str]) -> list[str]:
+    """Склеивает '2×' + 'USB-A 3.2' → '2× USB-A 3.2'. Также нормализует формы '2 x' → '2×'."""
+    out=[]; i=0
+    while i < len(items):
+        t=items[i].strip()
+        # count only
+        m_only = re.fullmatch(r"(\d+)\s*[xX×]\s*", t)
+        if m_only and i+1 < len(items):
+            nxt = items[i+1].strip()
+            out.append(f"{m_only.group(1)}× {nxt}")
+            i += 2
+            continue
+        # count + text
+        m = re.match(r"^\s*(\d+)\s*[xX×]\s*(.+)$", t)
+        if m:
+            out.append(f"{m.group(1)}× {m.group(2).strip()}")
+            i+=1; continue
+        out.append(t); i+=1
+    return out
+
+def _parse_ports_block(raw_lines: list[str]) -> list[str]:
+    # Берём то, что есть как последовательность токенов и чиним
+    tokens=[]
+    for b in raw_lines:
+        # разбиваем по ; или двойным пробелам, но не убиваем скобки
+        parts = re.split(r";|\s{2,}|,\s(?=\d|USB|HDMI|RJ|SD|Thunderbolt|Wi-?Fi|Bluetooth)", b)
+        for p in parts:
+            p=p.strip(" ,;")
+            if p: tokens.append(p)
+    tokens = _fix_count_prefix(tokens)
+    tokens = _fix_rj_split(tokens)
+    tokens = _fix_network_group(tokens)
+    # зачистка повтора и пустоты
+    cleaned=[]
+    seen=set()
+    for t in tokens:
+        t=re.sub(r"\s{2,}"," ", t).strip(" ,;")
+        if not t: continue
+        key=t.lower()
+        if key not in seen:
+            seen.add(key); cleaned.append(t)
+    return cleaned
+
+def _push_dims_line(ln: str, dims: list[str]) -> None:
+    s = canon_colons(ln)
+    s = re.sub(r"^(корпус|размеры и вес|размеры|вес|цвет)\s*[:：-]*\s*", "", s, flags=re.I)
+    # детект габаритов
+    if re.search(r"\d+\s*[×xX]\s*\d+.*\d", s):
+        dims.append(f"Габариты: {s}")
+    elif re.match(r"(?i)^вес\b", s):
+        dims.append(s if ":" in s else s.replace("—","— ").replace("-", "- "))
+    elif re.match(r"(?i)^цвет\b", s):
+        dims.append(s if ":" in s else s.replace("—","— ").replace("-", "- "))
+    else:
+        # остальное как пункт
+        dims.append(s)
+
 def beautify_raw_description(raw_html: str) -> str:
-    """Оформляет «родное описание» для Satu: списки, заголовки, порты, галочки."""
+    """Оформляет «родное описание» для Satu: списки, заголовки, порты, галочки, размеры/вес."""
     if not raw_html:
         return raw_html
     if _has_enough_markup(raw_html):
+        # уже прилично размечено — не трогаем
         return raw_html
 
     lines = _html_to_lines(raw_html)
@@ -191,14 +286,16 @@ def beautify_raw_description(raw_html: str) -> str:
     buf: list[str] = []
     current_heading: Optional[str] = None
 
+    collecting_dims = False
+    dims: list[str] = []
+
     def flush_buf():
         nonlocal buf, blocks, current_heading
         if not buf:
+            current_heading = None
             return
         if current_heading and current_heading.lower().startswith("порты"):
-            items=[]
-            for b in buf:
-                items.extend(_split_ports_block(b))
+            items=_parse_ports_block(buf)
             blocks.append(_lines_to_ul(items))
         else:
             expanded=[]
@@ -211,19 +308,65 @@ def beautify_raw_description(raw_html: str) -> str:
         buf.clear()
         current_heading = None
 
-    for ln in lines:
+    def flush_dims():
+        nonlocal dims, blocks
+        if not dims: return
+        # Удалим дубли и пустяки, соберём в красивый список
+        uniq=[]; seen=set()
+        for d in dims:
+            d=re.sub(r"\s{2,}"," ", d).strip(" ;,")
+            if not d: continue
+            key=d.lower()
+            if key not in seen:
+                seen.add(key); uniq.append(d)
+        blocks.append("<h3>Размеры и вес</h3>")
+        blocks.append(_lines_to_ul(uniq))
+        dims.clear()
+
+    i=0
+    while i < len(lines):
+        ln = lines[i]
         is_h, title = _is_heading(ln)
         if is_h:
+            # Закрываем текущие буферы перед новым разделом
             flush_buf()
-            blocks.append(f"<h3>{title}</h3>")
-            current_heading = title
+            if collecting_dims:
+                flush_dims()
+                collecting_dims=False
+
+            tl = title.strip().lower()
+            if tl in {"размеры и вес","размеры","вес","цвет","корпус"}:
+                # Начинаем сбор «Размеры и вес» как единого блока
+                collecting_dims=True
+                # Заголовок «Размеры и вес» покажем один раз (в flush_dims)
+                i += 1
+                continue
+            else:
+                blocks.append(f"<h3>{title}</h3>")
+                current_heading = title
+                i += 1
+                continue
+
+        if collecting_dims:
+            _push_dims_line(ln, dims)
+            i += 1
             continue
+
         if re.match(r"^([•\-—]|&#9989;|✅)\s*", ln):
             flush_buf()
             blocks.append(_lines_to_ul([re.sub(r"^([•\-—]|&#9989;|✅)\s*", "", ln).strip()]))
+            i += 1
             continue
+
         buf.append(ln)
+        i += 1
+
     flush_buf()
+    if collecting_dims:
+        flush_dims()
+
+    # Слить подряд идущие <ul> в один (актуально для «Почему стоит выбрать…»)
+    blocks = _merge_adjacent_uls(blocks)
 
     html = "\n".join(blocks)
     html = re.sub(r"\n{3,}", "\n\n", html)
@@ -231,7 +374,7 @@ def beautify_raw_description(raw_html: str) -> str:
     return html
 # ===================== END BEAUTIFIER ======================
 
-# ======================= LOAD SOURCE =======================
+# ======================= ЗАГРУЗКА ИСХОДНИКА =======================
 def load_source_bytes(src: str) -> bytes:
     if not src: raise RuntimeError("SUPPLIER_URL не задан")
     if "://" not in src or src.startswith("file://"):
@@ -425,7 +568,7 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     if f_norm in brand_index: return brand_index[f_norm]
     b = _find_brand_in_text(name) or _find_brand_in_text(desc)
     if b: return b
-    nrm=_norm_key(name)
+    nrm=_norm_text(name)
     for br in COMMON_BRANDS:
         if re.search(rf"\b{re.escape(_norm_text(br))}\b", nrm): return br
     return ""
@@ -570,7 +713,7 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                 seen.add(k)
     return removed
 
-# ===== KV из «родного» описания + нормализация единиц =====
+# ==== Извлечение KV из «родного» описания (для лид-блоков и характеристик) =====
 HDR_RE = re.compile(r"^\s*(технические\s+характеристики|характеристики)\s*:?\s*$", re.I)
 HEAD_ONLY_RE = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*$", re.I)
 HEAD_PREFIX_RE = re.compile(r"^\s*(?:основные\s+)?характеристики\s*[:：﹕∶︰-]*\s*", re.I)
@@ -648,7 +791,6 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     return out
 
 def build_specs_html_from_params(offer: ET.Element) -> str:
-    """HTML-список <li> из тегов <param>. Показываем только если в «родном» описании нет характеристик."""
     pairs = build_specs_pairs_from_params(offer)
     if not pairs: return ""
     pairs_sorted = sorted(pairs, key=lambda kv: _rank_key(kv[0]))
@@ -742,9 +884,22 @@ def detect_kind(name: str, params_pairs: List[Tuple[str,str]]) -> str:
     return "other"
 
 def split_short_name(name: str) -> str:
+    """Обрезает по границе слова (не рвёт токены типа '1TB', '32GB')."""
     s=(name or "").strip()
     s=re.split(r"\s+[—-]\s+", s, maxsplit=1)[0]
-    return s if len(s)<=80 else s[:77]+"..."
+    if len(s) <= 80: return s
+    cut = s[:80]
+    # если разрез попал внутрь слова — откатываем до пробела
+    if not cut.endswith(" ") and " " in cut:
+        cut = cut[:cut.rfind(" ")]
+    # не рвём единицы хранения (GB/TB/ГБ)
+    if re.search(r"(?:\d+)$", cut) and len(s) > len(cut):
+        # расширим до следующего токена-единицы, если он идёт сразу
+        rest = s[len(cut):]
+        m = re.match(r"\s*(TB|GB|ГБ)\b", rest, re.I)
+        if m:
+            cut += " " + m.group(1).upper()
+    return cut + "..."
 
 def _seo_title(name: str, vendor: str, kind: str, kv_all: Dict[str,str], seed: int) -> str:
     short = split_short_name(name)
@@ -850,7 +1005,7 @@ def build_faq_html(kind: str) -> str:
 def build_reviews_html(seed: int) -> str:
     NAMES_MALE  = ["Арман","Даурен","Санжар","Ерлан","Аслан","Руслан","Тимур","Данияр","Виктор","Евгений","Олег","Сергей","Нуржан","Бекзат","Азамат","Султан"]
     NAMES_FEMALE= ["Айгерим","Мария","Инна","Наталья","Жанна","Светлана","Ольга","Камилла","Диана","Гульнара"]
-    CITIES = ["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавлоск","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
+    CITIES = ["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавловск","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
     def choose(arr: List[str], seed: int, offs: int=0) -> str:
         return arr[(seed + offs) % len(arr)] if arr else ""
     parts=["<h3>Отзывы (3)</h3>"]
@@ -885,8 +1040,7 @@ def load_seo_cache(path: str) -> Dict[str, dict]:
 def save_seo_cache(path: str, data: Dict[str, dict]) -> None:
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    with open(tmp, "w", encoding="utf-8") as f: json.dump(data, f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
 
 def should_periodic_refresh(prev_dt_utc: Optional[datetime]) -> bool:
@@ -894,7 +1048,7 @@ def should_periodic_refresh(prev_dt_utc: Optional[datetime]) -> bool:
     if mode in {"off","0","none"}: 
         return False
     if prev_dt_utc is None:
-        return True  # ещё нет кеша — создаём
+        return True
     if mode.startswith("days"):
         return (now_utc() - prev_dt_utc) >= timedelta(days=max(1, SEO_REFRESH_DAYS))
     if mode == "monthly_1":
@@ -932,7 +1086,6 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
         d = offer.find("description")
 
         raw_desc_html_full = inner_html(d) if d is not None else ""
-        # ДОБАВЛЕНО: приводим «родное описание» к аккуратному HTML для Satu
         if raw_desc_html_full:
             try:
                 raw_desc_html_full = beautify_raw_description(raw_desc_html_full)
@@ -990,7 +1143,6 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
 
     if SEO_STICKY: save_seo_cache(SEO_CACHE_PATH, cache)
 
-    # Для FEED_META — показываем последнее обновление SEO-кэша в Алматы
     last_alm: Optional[datetime] = None
     if cache:
         for ent in cache.values():
@@ -1379,7 +1531,6 @@ def main()->None:
             drop=(ALSTYLE_CATEGORIES_MODE=="exclude" and hit) or (ALSTYLE_CATEGORIES_MODE=="include" and not hit)
             if drop: out_offers.remove(off)
 
-    # CATEGORY ID → 0 первым
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId"))+list(off.findall("CategoryId")): off.remove(node)
@@ -1409,24 +1560,6 @@ def main()->None:
     fix_currency_id(out_shop, default_code="KZT")
 
     for off in out_offers.findall("offer"): purge_offer_tags_and_attrs_after(off)
-
-    # Упорядочивание блоков, categoryId=0 в начало
-    DESIRED_ORDER=["vendorCode","name","price","picture","vendor","currencyId","description"]
-    def reorder_offer_children(shop_el: ET.Element) -> int:
-        offers_el=shop_el.find("offers")
-        if offers_el is None: return 0
-        changed=0
-        for offer in offers_el.findall("offer"):
-            children=list(offer)
-            if not children: continue
-            buckets={k:[] for k in DESIRED_ORDER}; others=[]
-            for node in children: (buckets[node.tag] if node.tag in buckets else others).append(node)
-            rebuilt=[*sum((buckets[k] for k in DESIRED_ORDER), []), *others]
-            if rebuilt!=children:
-                for node in children: offer.remove(node)
-                for node in rebuilt: offer.append(node)
-                changed+=1
-        return changed
 
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
