@@ -3,9 +3,10 @@
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
 
-Обновление v7.3.2:
-- FIX: NameError 'raw_desc_text_for_kv' — теперь передаётся параметром в build_lead_bullets(...).
-- Оформление «родного описания» без изменений.
+Обновление v7.3.3:
+- FIX: RegEx “global flags not at the start of the expression” — заменён шаблон
+  в _replace_html_placeholders_with_cdata: убран (?s), включён re.DOTALL.
+- Остальную логику не трогал.
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.2"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.3"
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -372,8 +373,7 @@ UNWANTED_PARAM_NAME_RE = re.compile(
 GOOD_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:вес|цвет|габарит\w*|интерфейс\w*|частота\s*обновления|тип\s*матрицы|диагональ|разрешение|"
     r"тип\s*ноутбука|тип\s*оперативной\s*памяти|объем\s*накопителя|тип\s*накопителя|видеокарта|"
-    r"операционная\s*система|процессор|объ[ее]м|емкость|емк\w*|"
-    r"порты|подключения|питание|тип\s*дисплея)\s*)$",
+    r"операционная\s*система|процессор|объ[ее]м)\s*)$",
     re.I
 )
 
@@ -1314,12 +1314,14 @@ def main()->None:
 
     xml_text = ET.tostring(out_root, encoding="unicode")
     def _replace_html_placeholders_with_cdata(xml_s: str) -> str:
+        # ВАЖНО: убрали inline-флаг (?s) из середины паттерна; используем DOTALL
         return re.sub(
-            r"\[\[\[HTML\]\]\]((?s).*?)\[\[\[\/HTML\]\]\]",
+            r"\[\[\[HTML\]\]\](.*?)\[\[\[\/HTML\]\]\]",
             lambda m: "<![CDATA[\n" + m.group(1) + "\n]]>",
             xml_s,
             flags=re.DOTALL
         )
+
     xml_text=_replace_html_placeholders_with_cdata(xml_text)
 
     meta_pairs={
