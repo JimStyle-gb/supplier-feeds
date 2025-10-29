@@ -1,112 +1,94 @@
-# .github/workflows/build_alstyle.yml
-# ИДЕАЛЬНЫЙ workflow для автоматической сборки и публикации docs/alstyle.yml
-# - Детерминированный запуск (кнопка / расписание / пуш)
-# - Кеш pip (быстрее сборки)
-# - Тайм-аут, конкуренция, минимальные права
-# - Жёстко фиксированное имя файла: docs/alstyle.yml
-# - Коммит в репозиторий + артефакт (можно скачать из Actions)
-# - .nojekyll для корректной раздачи через GitHub Pages
-
-name: Build AlStyle feed
+name: build_alstyle
 
 on:
   workflow_dispatch:
   schedule:
-    # Ежедневно в 01:00 Asia/Almaty (это 20:00 UTC предыдущего дня)
-    - cron: "0 20 * * *"
+    # 01:00 Asia/Almaty = 20:00 UTC предыдущего дня
+    - cron: '0 20 * * *'
   push:
     paths:
-      - "scripts/build_alstyle.py"
-      - ".github/workflows/build_alstyle.yml"
-      - "docs/alstyle_categories.txt"
+      - 'scripts/build_alstyle.py'
+      - 'docs/alstyle_categories.txt'
+      - '.github/workflows/build_alstyle.yml'
 
 permissions:
-  contents: write   # только то, что нужно для коммита результатов
+  contents: write
 
 concurrency:
-  group: build-alstyle-${{ github.ref }}
-  cancel-in-progress: true   # не допускать параллельных сборок одного рефа
+  group: build-alstyle
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+
     env:
-      TZ: Asia/Almaty   # для корректных дат/времени в логах и метках
+      # Поставщик и источник
+      SUPPLIER_NAME: alstyle
+      SUPPLIER_URL: https://al-style.kz/upload/catalog_export/al_style_catalog.php
+
+      # Выходной файл
+      OUT_FILE: docs/alstyle.yml
+      OUTPUT_ENCODING: windows-1251
+
+      # Сетевые параметры
+      TIMEOUT_S: '30'
+      RETRIES: '4'
+      RETRY_BACKOFF_S: '2'
+      MIN_BYTES: '1500'
+
+      # vendorCode
+      VENDORCODE_PREFIX: AS
+      VENDORCODE_CREATE_IF_MISSING: '1'
+
+      # Категории (фильтр на стороне скрипта)
+      ALSTYLE_CATEGORIES_PATH: docs/alstyle_categories.txt
+      ALSTYLE_CATEGORIES_MODE: include
+
+      # categoryId по умолчанию (ставится самым верхним тегом в каждом offer)
+      CATEGORY_ID_DEFAULT: '0'
+
+      # Режим Satu+ (вариант B) без pickup/delivery/sales_notes
+      SATU_MODE: full
+      SATU_KEYWORDS: auto
 
     steps:
       - name: Checkout
-        # actions/checkout v5.0.0 (pinned)
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-        with:
-          fetch-depth: 0   # полный клон для безопасного pull --rebase
+        uses: actions/checkout@v4
 
-      - name: Prepare dependency manifest (for pip cache)
-        # Создаём минимальный requirements.txt, чтобы работало cache: "pip"
-        run: |
-          echo -e "requests\nbeautifulsoup4" > requirements.txt
-          ls -l requirements.txt
-          cat requirements.txt
-
-      - name: Setup Python 3.11
-        # actions/setup-python v6.0.0 (pinned)
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-          cache: "pip"
-          cache-dependency-path: "requirements.txt"
+          python-version: '3.11'   # без cache, чтобы не требовать requirements.txt
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip wheel
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install requests
 
-      - name: Ensure categories file
-        # Создаём список категорий, если его нет (алюминевый дефолт 5010 — как договорено)
+      - name: Build Alstyle feed
         run: |
-          set -euo pipefail
-          mkdir -p docs
-          test -f docs/alstyle_categories.txt || echo "5010" > docs/alstyle_categories.txt
-          echo "---- docs/ ----"
-          ls -l docs || true
-
-      - name: Build AlStyle feed
-        # Запускаем твой скрипт с нужными ENV. ЛОГИКА — ТОЛЬКО В СКРИПТЕ.
-        env:
-          OUT_FILE: docs/alstyle.yml
-          OUTPUT_ENCODING: windows-1251
-          ALSTYLE_CATEGORIES_FILE: docs/alstyle_categories.txt
-          ALSTYLE_CATEGORIES_MODE: include
-        run: |
-          set -euo pipefail
-          python --version
+          set -e
           python scripts/build_alstyle.py
-          printf "\n" > docs/.nojekyll
-          echo "---- result ----"
-          ls -l docs/alstyle.yml
 
-      - name: Commit & push (if changed)
-        # Надёжный автокоммит результата; без лишнего шума
+      - name: Show output size
+        run: ls -lh docs/alstyle.yml || true
+
+      - name: Commit & push if changed
         run: |
-          set -euo pipefail
+          set -e
+          if git diff --quiet -- docs/alstyle.yml; then
+            echo "No changes."
+            exit 0
+          fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/alstyle.yml docs/alstyle_categories.txt docs/.nojekyll || true
-          if ! git diff --staged --quiet; then
-            git commit -m "build(alstyle): update docs/alstyle.yml"
-            # безопасно подтягиваем возможные изменения
-            git pull --rebase --autostash
-            git push
-          else
-            echo "No changes to commit"
-          fi
+          git add docs/alstyle.yml docs/.nojekyll || true
+          git commit -m "build(alstyle): update docs/alstyle.yml [skip ci]"
+          git push
 
-      - name: Upload artifact
-        if: success()
-        # actions/upload-artifact v5.0.0 (pinned)
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
+      - name: Upload artifact (alstyle.yml)
+        uses: actions/upload-artifact@v4
         with:
-          name: alstyle.yml
+          name: alstyle-feed
           path: docs/alstyle.yml
-          if-no-files-found: error
-          retention-days: 30
