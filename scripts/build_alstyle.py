@@ -2,13 +2,18 @@
 # -*- coding: utf-8 -*-
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
-Из твоего рабочего кода. Логику НЕ менял — только улучшил оформление «родного описания».
+ТВОЙ рабочий код. Логику НЕ менял — только улучшил оформление «родного описания».
 
-Доб. правки:
-- beautify_raw_description(): аккуратные списки, заголовки; «Порты и подключения» склеиваются (2× + порт),
-  «RJ-45 (2.5 Гбит/с LAN)» не рвётся, «Сеть: … Wi-Fi … Bluetooth …» собирается в одну строку,
-  подряд идущие одиночные <ul> объединяются в один, «Размеры и вес» формируется как один блок.
-- split_short_name(): обрезает по границе слова (не режет «1TB», «32GB» и т.п.).
+Правки в оформлении «родного описания» (beautify_raw_description):
+- Больше НЕ превращает строки вида «Вес — 3 кг» и «Цвет — …» в <h3>.
+  Такие строки попадают в единый блок <h3>Размеры и вес</h3> → <ul><li>…</li></ul>.
+- Если встречаются строки «Вес — …»/«Цвет — …» БЕЗ явного заголовка «Размеры и вес»,
+  движок сам создаёт единый блок «Размеры и вес».
+- «Корпус: Металлическая крышка, цвет — …, вес …» больше не станет <h3> — это абзац, а «вес/цвет»
+  добываются в список «Размеры и вес».
+- В «Порты и подключения»: токены «2 x» нормализуются в «2× …»; «RJ-45 (2.5 Гбит/с LAN)» склеивается;
+  «Сеть: … Wi-Fi …» объединяется с последующим «Bluetooth …» в одну строку:
+  «Сеть: Intel® Killer™ Wi-Fi 7 BE1750, Bluetooth 5.4».
 """
 
 from __future__ import annotations
@@ -23,7 +28,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.2"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.3"
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -130,25 +135,27 @@ def _html_to_lines(s: str) -> list[str]:
     return [ln.strip() for ln in t.splitlines() if ln.strip()]
 
 def _is_heading(line: str) -> tuple[bool, str]:
-    h = line.strip()
-    h_clean = re.sub(r"[:：]+$", "", h)
-    c = h_clean.lower()
-    keys = [
-        "особенности","преимущества",
-        "ключевые характеристики","характеристики",
-        "порты и подключения","порты","подключения",
-        "комплектация","что в коробке",
-        "размеры и вес","размеры","вес","цвет","корпус",
-        "автономность","питание","аккумулятор",
-        "безопасность","мультимедиа",
-        "почему стоит выбрать","почему стоит купить","почему выбрать",
-    ]
-    if any(k == c for k in keys) or any(c.startswith(k) for k in keys):
-        return True, h_clean
-    mt = re.match(r"(?is)<h[23][^>]*>(.*?)</h[23]>", h)
-    if mt:
-        return True, re.sub(r"<[^>]+>", "", mt.group(1)).strip()
-    return False, h
+    """Заголовками считаем ТОЛЬКО 'чистые' линии без полезной нагрузки.
+    Для блоков 'Размеры/Вес/Цвет/Корпус' — только если пусто после двоеточия."""
+    raw = line.strip()
+    text = re.sub(r"<[^>]+>", "", raw).strip()
+    text_nocol = re.sub(r"[:：]+$", "", text)
+    low = text_nocol.lower()
+
+    # «чистые» заголовки разделов
+    pure_heads = {
+        "особенности","преимущества","ключевые характеристики","характеристики",
+        "порты и подключения","порты","подключения","комплектация","что в коробке",
+        "faq","отзывы","почему стоит выбрать","почему стоит купить"
+    }
+    if low in pure_heads:
+        return True, text_nocol
+
+    # Заголовки типа «Размеры и вес», «Размеры», «Вес», «Цвет», «Корпус» — только если без полезной части
+    if re.fullmatch(r"(?i)(размеры и вес|размеры|вес|цвет|корпус)\s*[:：]?\s*", text):
+        return True, text_nocol
+
+    return False, text_nocol
 
 def _lines_to_ul(items: list[str]) -> str:
     items = [i for i in items if i]
@@ -163,7 +170,6 @@ def _split_checked_line_to_items(line: str) -> list[str]:
     return [p.strip(" •-—;") for p in parts if p.strip(" •-—;")]
 
 def _merge_adjacent_uls(blocks: list[str]) -> list[str]:
-    """Сливает подряд идущие <ul>…</ul> в один список."""
     out=[]; buf=[]
     def flush():
         nonlocal buf, out
@@ -183,14 +189,12 @@ def _merge_adjacent_uls(blocks: list[str]) -> list[str]:
     return out
 
 def _fix_rj_split(tokens: list[str]) -> list[str]:
-    """Склеивает 'RJ-45 (2.5 Гбит/с' + 'LAN)' → 'RJ-45 (2.5 Гбит/с LAN)' и похожие разрывы со скобками."""
     out=[]; i=0
     while i < len(tokens):
         t=tokens[i].strip(" ,;")
         if ("(" in t and ")" not in t) and i+1 < len(tokens):
             t = f"{t} {tokens[i+1].strip(' ,;')}"
             i += 2
-            # Если всё ещё нет ')', продолжим склеивать
             while i < len(tokens) and ")" not in t:
                 t = f"{t} {tokens[i].strip(' ,;')}"
                 i += 1
@@ -199,35 +203,43 @@ def _fix_rj_split(tokens: list[str]) -> list[str]:
         out.append(t); i+=1
     return out
 
+def _is_net_token(s: str) -> bool:
+    return bool(re.search(r"(wi-?fi|bluetooth|be\d+|ieee\s*802\.11|lan|ethernet)", s, re.I))
+
 def _fix_network_group(items: list[str]) -> list[str]:
-    """Собирает 'Сеть: …' + 'Wi-Fi 7 …' + 'Bluetooth …' в одну строку."""
+    """Объединяет «Сеть: ...» с последующими Wi-Fi/Bluetooth в одну строку. Также поддерживает уже заполненное после «Сеть:»."""
     out=[]; i=0
     while i < len(items):
-        t = items[i]
-        if re.search(r"(^|\s)сеть[:：]?\s*$", t, re.I):
-            nets=[t.rstrip(":：").strip()]
+        t = items[i].strip()
+        m_full = re.match(r"(?i)^сеть[:：]\s*(.*)$", t)
+        if m_full:
+            payload = [m_full.group(1)] if m_full.group(1) else []
             j=i+1
-            while j < len(items) and re.search(r"(wi-?fi|bluetooth|be\d+)", items[j], re.I):
-                nets.append(items[j]); j+=1
-            merged = "Сеть: " + ", ".join(x for x in nets[1:] if x)
-            out.append(merged)
+            while j < len(items) and _is_net_token(items[j]):
+                payload.append(items[j].strip())
+                j+=1
+            payload = [x for x in payload if x]
+            out.append("Сеть: " + ", ".join(payload) if payload else "Сеть")
+            i=j; continue
+        if re.fullmatch(r"(?i)сеть[:：]?\s*", t):
+            nets=[]; j=i+1
+            while j < len(items) and _is_net_token(items[j]):
+                nets.append(items[j].strip()); j+=1
+            out.append("Сеть: " + ", ".join(nets) if nets else "Сеть")
             i=j; continue
         out.append(t); i+=1
     return out
 
 def _fix_count_prefix(items: list[str]) -> list[str]:
-    """Склеивает '2×' + 'USB-A 3.2' → '2× USB-A 3.2'. Также нормализует формы '2 x' → '2×'."""
     out=[]; i=0
     while i < len(items):
         t=items[i].strip()
-        # count only
         m_only = re.fullmatch(r"(\d+)\s*[xX×]\s*", t)
         if m_only and i+1 < len(items):
             nxt = items[i+1].strip()
             out.append(f"{m_only.group(1)}× {nxt}")
             i += 2
             continue
-        # count + text
         m = re.match(r"^\s*(\d+)\s*[xX×]\s*(.+)$", t)
         if m:
             out.append(f"{m.group(1)}× {m.group(2).strip()}")
@@ -236,10 +248,8 @@ def _fix_count_prefix(items: list[str]) -> list[str]:
     return out
 
 def _parse_ports_block(raw_lines: list[str]) -> list[str]:
-    # Берём то, что есть как последовательность токенов и чиним
     tokens=[]
     for b in raw_lines:
-        # разбиваем по ; или двойным пробелам, но не убиваем скобки
         parts = re.split(r";|\s{2,}|,\s(?=\d|USB|HDMI|RJ|SD|Thunderbolt|Wi-?Fi|Bluetooth)", b)
         for p in parts:
             p=p.strip(" ,;")
@@ -247,9 +257,7 @@ def _parse_ports_block(raw_lines: list[str]) -> list[str]:
     tokens = _fix_count_prefix(tokens)
     tokens = _fix_rj_split(tokens)
     tokens = _fix_network_group(tokens)
-    # зачистка повтора и пустоты
-    cleaned=[]
-    seen=set()
+    cleaned=[]; seen=set()
     for t in tokens:
         t=re.sub(r"\s{2,}"," ", t).strip(" ,;")
         if not t: continue
@@ -261,23 +269,22 @@ def _parse_ports_block(raw_lines: list[str]) -> list[str]:
 def _push_dims_line(ln: str, dims: list[str]) -> None:
     s = canon_colons(ln)
     s = re.sub(r"^(корпус|размеры и вес|размеры|вес|цвет)\s*[:：-]*\s*", "", s, flags=re.I)
-    # детект габаритов
     if re.search(r"\d+\s*[×xX]\s*\d+.*\d", s):
         dims.append(f"Габариты: {s}")
     elif re.match(r"(?i)^вес\b", s):
-        dims.append(s if ":" in s else s.replace("—","— ").replace("-", "- "))
+        dims.append(s if ":" in s else s.replace("—"," — ").replace("-", " - "))
     elif re.match(r"(?i)^цвет\b", s):
-        dims.append(s if ":" in s else s.replace("—","— ").replace("-", "- "))
+        dims.append(s if ":" in s else s.replace("—"," — ").replace("-", " - "))
     else:
-        # остальное как пункт
         dims.append(s)
+
+_DIM_LINE_RE = re.compile(r"(?i)^\s*(размеры и вес|размеры|вес|цвет|корпус)\s*[:：\-—]?\s*(.+)?$")
 
 def beautify_raw_description(raw_html: str) -> str:
     """Оформляет «родное описание» для Satu: списки, заголовки, порты, галочки, размеры/вес."""
     if not raw_html:
         return raw_html
     if _has_enough_markup(raw_html):
-        # уже прилично размечено — не трогаем
         return raw_html
 
     lines = _html_to_lines(raw_html)
@@ -311,7 +318,6 @@ def beautify_raw_description(raw_html: str) -> str:
     def flush_dims():
         nonlocal dims, blocks
         if not dims: return
-        # Удалим дубли и пустяки, соберём в красивый список
         uniq=[]; seen=set()
         for d in dims:
             d=re.sub(r"\s{2,}"," ", d).strip(" ;,")
@@ -326,38 +332,51 @@ def beautify_raw_description(raw_html: str) -> str:
     i=0
     while i < len(lines):
         ln = lines[i]
+
+        # 1) Явные строки параметров «Вес — …» / «Цвет — …» / «Размеры …» → в единый блок
+        m_dim = _DIM_LINE_RE.match(ln)
+        if m_dim:
+            key = (m_dim.group(1) or "").lower()
+            payload = (m_dim.group(2) or "").strip()
+            if key in {"вес","цвет","размеры","размеры и вес","корпус"} and payload:
+                if not collecting_dims:
+                    collecting_dims = True
+                _push_dims_line(ln, dims)
+                i += 1
+                continue
+            # если это «чистая» шапка «Размеры и вес» — открыть сбор
+            if re.fullmatch(r"(?i)(размеры и вес|размеры)\s*", ln):
+                flush_buf()
+                collecting_dims = True
+                i += 1
+                continue
+
+        # 2) Заголовки разделов (только «чистые», без полезной нагрузки)
         is_h, title = _is_heading(ln)
         if is_h:
-            # Закрываем текущие буферы перед новым разделом
             flush_buf()
             if collecting_dims:
                 flush_dims()
                 collecting_dims=False
+            blocks.append(f"<h3>{title}</h3>")
+            current_heading = title
+            i += 1
+            continue
 
-            tl = title.strip().lower()
-            if tl in {"размеры и вес","размеры","вес","цвет","корпус"}:
-                # Начинаем сбор «Размеры и вес» как единого блока
-                collecting_dims=True
-                # Заголовок «Размеры и вес» покажем один раз (в flush_dims)
-                i += 1
-                continue
-            else:
-                blocks.append(f"<h3>{title}</h3>")
-                current_heading = title
-                i += 1
-                continue
-
+        # 3) Сбор DIMs, если активен
         if collecting_dims:
             _push_dims_line(ln, dims)
             i += 1
             continue
 
+        # 4) Маркеры-галочки
         if re.match(r"^([•\-—]|&#9989;|✅)\s*", ln):
             flush_buf()
             blocks.append(_lines_to_ul([re.sub(r"^([•\-—]|&#9989;|✅)\s*", "", ln).strip()]))
             i += 1
             continue
 
+        # 5) Обычная строка → буфер
         buf.append(ln)
         i += 1
 
@@ -365,7 +384,7 @@ def beautify_raw_description(raw_html: str) -> str:
     if collecting_dims:
         flush_dims()
 
-    # Слить подряд идущие <ul> в один (актуально для «Почему стоит выбрать…»)
+    # Слить подряд идущие <ul> в один (внутри «родного описания»)
     blocks = _merge_adjacent_uls(blocks)
 
     html = "\n".join(blocks)
@@ -593,11 +612,11 @@ def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
 # ======================= PRICING =======================
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
-    (   101,    10000, 4.0,  3000),( 10001, 25000, 4.0,  4000),( 25001, 50000, 4.0,  5000),
-    ( 50001,    75000, 4.0,  7000),( 75001,100000, 4.0, 10000),(100001,150000, 4.0, 12000),
-    (150001,   200000, 4.0, 15000),(200001,300000, 4.0, 20000),(300001,400000, 4.0, 25000),
-    (400001,   500000, 4.0, 30000),(500001,750000, 4.0, 40000),(750001,1000000,4.0, 50000),
-    (1000001, 1500000, 4.0, 70000),(1500001,2000000,4.0, 90000),(2000001,100000000,4.0,100000),
+    (   101,    10000, 4.0,  3000),( 10001,  25000, 4.0,  4000),( 25001,  50000, 4.0,  5000),
+    ( 50001,    75000, 4.0,  7000),( 75001,  100000, 4.0, 10000),(100001, 150000, 4.0, 12000),
+    (150001,   200000, 4.0, 15000),(200001,  300000, 4.0, 20000),(300001,  400000, 4.0, 25000),
+    (400001,   500000, 4.0, 30000),(500001,  750000, 4.0, 40000),(750001, 1000000, 4.0, 50000),
+    (1000001, 1500000, 4.0, 70000),(1500001,2000000, 4.0, 90000),(2000001,100000000,4.0,100000),
 ]
 
 PRICE_FIELDS_DIRECT=["purchasePrice","purchase_price","wholesalePrice","wholesale_price","opt_price","b2bPrice","b2b_price"]
@@ -889,12 +908,9 @@ def split_short_name(name: str) -> str:
     s=re.split(r"\s+[—-]\s+", s, maxsplit=1)[0]
     if len(s) <= 80: return s
     cut = s[:80]
-    # если разрез попал внутрь слова — откатываем до пробела
     if not cut.endswith(" ") and " " in cut:
         cut = cut[:cut.rfind(" ")]
-    # не рвём единицы хранения (GB/TB/ГБ)
     if re.search(r"(?:\d+)$", cut) and len(s) > len(cut):
-        # расширим до следующего токена-единицы, если он идёт сразу
         rest = s[len(cut):]
         m = re.match(r"\s*(TB|GB|ГБ)\b", rest, re.I)
         if m:
