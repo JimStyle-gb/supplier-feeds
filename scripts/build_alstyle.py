@@ -3,12 +3,10 @@
 """
 AlStyle → YML: стабильные цены/наличие + безопасный HTML для <description>.
 
-Обновление v7.3.2:
-- Улучшено оформление «родного описания»:
-  •plain→HTML для голого текста;
-  •реструктуризация существующего HTML: ключевые блоки → <ul><li>, разбиение «портов» 2×/1×/...,
-   пары label: value → список, унификация галочек в &#9989;.
-- Остальная логика (цены 4%+надбавки, порядок полей, keywords и т.д.) НЕ ИЗМЕНЕНА.
+Обновление v7.3.1:
+- FIX: NameError 'build_specs_html_from_params' — функция добавлена.
+- Чистка дублей функций (detect_kind, reorder_offer_children, _replace_html_placeholders_with_cdata).
+- Режим SEO-рефреша: каждое 1-е число месяца (Asia/Almaty), можно переключить через ENV.
 """
 
 from __future__ import annotations
@@ -23,7 +21,7 @@ try:
 except Exception:
     ZoneInfo = None
 
-SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.2"
+SCRIPT_VERSION = "alstyle-2025-10-21.v7.3.1"
 
 # ======================= ENV / CONST =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
@@ -111,214 +109,127 @@ def inner_html(el: ET.Element) -> str:
         if child.tail: parts.append(child.tail)
     return "".join(parts).strip()
 
-# ========= НОВОЕ: улучшенное оформление «родного описания» =========
-_HTML_BLOCK_RE = re.compile(r"<\s*(p|ul|ol|li|h1|h2|h3|table|br)\b", re.I)
-_BULLET_RE     = re.compile(r"^\s*(?:[-–—*•·]|•)\s*(.+)$")
-_HDR_RE_TXT    = re.compile(r"^\s*([A-Za-zА-Яа-яЁё0-9 ,/()+\-]{2,60})\s*:\s*$")
-MULT_SIGN_RE   = re.compile(r"[xX×]")  # унификация "×"
+# ======================= RAW DESCRIPTION BEAUTIFIER (ДОБАВЛЕНО) =======================
+def _has_enough_markup(s: str) -> bool:
+    """Heuristic: уже структурировано, если есть <ul><li> ИЛИ 2+ <h3> + список."""
+    if not s: return False
+    low = s.lower()
+    if "<ul" in low and "<li" in low:
+        return True
+    h3s = len(re.findall(r"<h3[^>]*>", low))
+    lis = len(re.findall(r"<li[^>]*>", low))
+    return h3s >= 2 and lis >= 3
 
-SECTION_HEADINGS = [
-    ("ключев", "Ключевые характеристики"),
-    ("порт", "Порты и подключения"),
-    ("подключ", "Порты и подключения"),
-    ("автоном", "Автономность и питание"),
-    ("питани", "Автономность и питание"),
-    ("безопас", "Безопасность и мультимедиа"),
-    ("мультимед", "Безопасность и мультимедиа"),
-    ("размер", "Размеры и вес"),
-    ("вес", "Размеры и вес"),
-    ("комплект", "Комплектация"),
-    ("в коробке", "Комплектация"),
-    ("почему стоит выбрать", "Почему стоит выбрать"),
-]
+def _html_to_lines(s: str) -> list[str]:
+    t = _unescape(s or "")
+    t = re.sub(r"(?i)<br\s*/?>", "\n", t)
+    t = re.sub(r"(?is)</p\s*>", "\n", t)
+    t = re.sub(r"(?is)<p[^>]*>", "", t)
+    t = re.sub(r"[ \t]+\n", "\n", t)
+    t = t.replace("&#215;", "×").replace("&times;", "×")
+    return [ln.strip() for ln in t.splitlines() if ln.strip()]
 
-def _looks_like_html_block(s: str) -> bool:
-    return bool(_HTML_BLOCK_RE.search(s or ""))
+def _is_heading(line: str) -> tuple[bool, str]:
+    h = line.strip()
+    h_clean = re.sub(r"[:：]+$", "", h)
+    c = h_clean.lower()
+    keys = [
+        "особенности", "преимущества",
+        "ключевые характеристики", "характеристики",
+        "порты и подключения", "порты", "подключения",
+        "комплектация", "что в коробке",
+        "размеры и вес", "размеры", "вес",
+        "автономность", "питание", "аккумулятор",
+        "безопасность", "мультимедиа",
+        "почему стоит выбрать", "почему стоит купить", "почему выбрать",
+    ]
+    if any(k in c for k in keys):
+        return True, h_clean
+    mt = re.match(r"(?is)<h[23][^>]*>(.*?)</h[23]>", h)
+    if mt:
+        return True, re.sub(r"<[^>]+>", "", mt.group(1)).strip()
+    return False, h
 
-def _format_plain_text_to_html_blocks(text: str) -> str:
-    """Голый текст → аккуратный HTML: <h3>, <ul><li>, <p>."""
-    if not (text or "").strip(): return ""
-    t = (text or "").replace("\r\n", "\n").replace("\r", "\n")
-    lines = [ln.rstrip() for ln in t.split("\n")]
+def _lines_to_ul(lines: list[str]) -> str:
+    items = [f"<li>{canon_colons(ln)}</li>" for ln in lines if ln]
+    if not items: return ""
+    return "<ul>\n  " + "\n  ".join(items) + "\n</ul>"
 
-    blocks, para_buf, ul_buf = [], [], None
-
-    def flush_para():
-        nonlocal para_buf
-        s = " ".join(x.strip() for x in para_buf if x.strip())
-        para_buf = []
-        if s:
-            blocks.append(f"<p>{_html_escape_in_cdata_safe(s)}</p>")
-
-    def flush_ul():
-        nonlocal ul_buf
-        if ul_buf:
-            items = "\n".join(f"  <li>{_html_escape_in_cdata_safe(x)}</li>" for x in ul_buf if x.strip())
-            blocks.append("<ul>\n" + items + "\n</ul>")
-            ul_buf = None
-
-    for raw in lines:
-        ln = raw.strip()
-        if not ln:
-            flush_para(); flush_ul(); continue
-        m_b = _BULLET_RE.match(ln)
-        if m_b:
-            flush_para()
-            if ul_buf is None: ul_buf = []
-            ul_buf.append(m_b.group(1).strip()); continue
-        m_h = _HDR_RE_TXT.match(ln)
-        if m_h:
-            flush_para(); flush_ul()
-            blocks.append(f"<h3>{_html_escape_in_cdata_safe(m_h.group(1).strip())}</h3>")
-            continue
-        if re.search(r"\b[x×]\s*\d+\b", ln, re.I) or re.search(r"^\s*(порт|кабель|адаптер|выход|вход|набор)\b", ln, re.I):
-            flush_para()
-            if ul_buf is None: ul_buf = []
-            ul_buf.append(ln); continue
-        para_buf.append(ln)
-
-    flush_para(); flush_ul()
-    return "\n".join(blocks)
-
-def _std_icons(s: str) -> str:
-    # унифицируем только внутри «родного описания»
-    return (s or "").replace("✅", "&#9989;")
-
-def _split_label_value_pairs(text: str) -> List[Tuple[str,str]]:
-    """
-    Делим строку вида 'Процессор: ... Графика: ... Охлаждение: ...'
-    на пары (label, value). Работает по повторяющимся 'X: '.
-    """
-    if not text: return []
-    t = canon_colons(text)
-    # вставим разделители перед каждым Label:
-    t = re.sub(r"\s*([A-Za-zА-Яа-яЁё0-9 /()+\-\.]{2,}:\s*)", r"|@@|\1", t)
-    parts = [p for p in t.split("|@@|") if p.strip()]
-    pairs=[]
-    cur_label=None
-    for part in parts:
-        if ":" in part:
-            label, val = part.split(":", 1)
-            label = label.strip()
-            val   = val.strip()
-            if cur_label is not None and pairs and not pairs[-1][1]:
-                pairs[-1] = (cur_label, label + (": "+val if val else ""))
-            else:
-                cur_label = label
-                pairs.append((label, val))
-        else:
-            # хвост без двоеточия — допишем в предыдущее значение
-            if pairs:
-                pairs[-1] = (pairs[-1][0], (pairs[-1][1] + " " + part.strip()).strip())
-    # фильтр мусора
+def _split_ports_block(text: str) -> list[str]:
+    s = text.replace("  ", " ").replace(" ;", ";").replace("; ", ";")
+    tokens = re.split(r"(?=(?:\d+\s*[×xX]\s*|RJ-?45|USB|Thunderbolt|HDMI|SD\b|LAN\b|Wi-?Fi|Bluetooth))", s)
     out=[]
-    for k,v in pairs:
-        k=k.strip(" -—–:") ; v=v.strip(" -—–;.")
-        if k and v: out.append((k,v))
-    return out
+    for tok in tokens:
+        tok = tok.strip(" ;,")
+        if tok: out.append(tok)
+    final=[]
+    for t in out:
+        parts = re.split(r"\s{2,}|;|,\s(?=\d|USB|HDMI|RJ|SD|Thunderbolt|Wi-?Fi|Bluetooth)", t)
+        for p in parts:
+            p = p.strip(" ,;")
+            if p: final.append(p)
+    final = [re.sub(r"(\d+)\s*[xX]\s*", r"\1× ", p) for p in final]
+    return final
 
-def _pairs_to_ul(pairs: List[Tuple[str,str]]) -> str:
-    items = "\n".join(f"  <li><strong>{_html_escape_in_cdata_safe(k)}:</strong> {_html_escape_in_cdata_safe(v)}</li>"
-                      for k,v in pairs if k and v)
-    return "<ul>\n" + items + "\n</ul>"
+def _split_checked_line_to_items(line: str) -> list[str]:
+    if "&#9989;" not in line and "✅" not in line:
+        return [line]
+    s = line.replace("✅", "&#9989;")
+    parts = re.split(r"(?=&#9989;)", s)
+    return [p.strip(" •-—;") for p in parts if p.strip(" •-—;")]
 
-def _split_ports_line(text: str) -> List[str]:
-    """
-    Разбивает «портовый» абзац на пункты:
-    '2× TB5 ... 2× USB-A ... 1× HDMI ... Сеть: Wi-Fi 7 ...' → ['2× TB5 ...','2× USB-A ...','1× HDMI ...','Сеть: Wi-Fi 7 ...']
-    """
-    if not text: return []
-    t = MULT_SIGN_RE.sub("×", text)
-    # маркеры начала пункта: число×, либо слова "Сеть:"/"Беспроводная связь:"
-    t = re.sub(r"(?<!^)\s+(?=(\d+\s*×)|(\d+\s*x)|(\d+\s*X)|((Сеть|Беспроводная связь)\s*:))", "||ITEM||", t, flags=re.I)
-    chunks = [c.strip(" ;,") for c in t.split("||ITEM||") if c.strip()]
-    return chunks
+def beautify_raw_description(raw_html: str) -> str:
+    """Оформляет «родное описание» для Satu: списки, заголовки, порты, галочки."""
+    if not raw_html:
+        return raw_html
+    if _has_enough_markup(raw_html):
+        return raw_html
 
-def _paragraph_to_ul(text: str) -> Optional[str]:
-    """Пытаемся превратить абзац в список — по label: value или «портовым» паттернам, либо по галочкам."""
-    if not (text or "").strip(): return None
-    txt = _std_icons(text)
+    lines = _html_to_lines(raw_html)
 
-    # 1) Галочки в строке → нарезаем по ним
-    if "&#9989;" in txt or "✅" in txt:
-        txt = _std_icons(txt)
-        parts = [p.strip(" -—–;,.") for p in re.split(r"(?:&#9989;|✅)", txt) if p.strip()]
-        if len(parts) >= 2:
-            return "<ul>\n" + "\n".join(f"  <li>{_html_escape_in_cdata_safe(p)}</li>" for p in parts) + "\n</ul>"
+    blocks: list[str] = []
+    buf: list[str] = []
+    current_heading: Optional[str] = None
 
-    # 2) label: value label: value ...
-    pairs = _split_label_value_pairs(txt)
-    if len(pairs) >= 2:
-        return _pairs_to_ul(pairs)
+    def flush_buf():
+        nonlocal buf, blocks, current_heading
+        if not buf:
+            return
+        if current_heading and current_heading.lower().startswith("порты"):
+            items=[]
+            for b in buf:
+                items.extend(_split_ports_block(b))
+            blocks.append(_lines_to_ul(items))
+        else:
+            expanded=[]
+            for b in buf:
+                expanded.extend(_split_checked_line_to_items(b))
+            if len(expanded) >= 2:
+                blocks.append(_lines_to_ul(expanded))
+            else:
+                blocks.append(f"<p>{canon_colons(expanded[0])}</p>")
+        buf.clear()
+        current_heading = None
 
-    # 3) Порты/интерфейсы
-    ports = _split_ports_line(txt)
-    if len(ports) >= 2:
-        return "<ul>\n" + "\n".join(f"  <li>{_html_escape_in_cdata_safe(p)}</li>" for p in ports) + "\n</ul>"
+    for ln in lines:
+        is_h, title = _is_heading(ln)
+        if is_h:
+            flush_buf()
+            blocks.append(f"<h3>{title}</h3>")
+            current_heading = title
+            continue
+        if re.match(r"^([•\-—]|&#9989;|✅)\s*", ln):
+            flush_buf()
+            blocks.append(_lines_to_ul([re.sub(r"^([•\-—]|&#9989;|✅)\s*", "", ln).strip()]))
+            continue
+        buf.append(ln)
+    flush_buf()
 
-    return None
-
-def _rebalance_section_lists(html: str) -> str:
-    """
-    Ищем заголовки секций и, если сразу после них идёт «слепленный» <p> — превращаем в <ul>.
-    """
-    s = html
-
-    def repl(match):
-        h3_full = match.group(0)
-        head    = match.group(1)
-        para    = match.group(2)
-        ul = _paragraph_to_ul(para)
-        if ul:
-            return f"<h3>{head}</h3>\n{ul}"
-        return h3_full
-
-    # Нормализуем заголовки (ловим вариации)
-    for key, canon in SECTION_HEADINGS:
-        # <h3>...ключев.../порт.../почему стоит выбрать...</h3><p>...</p>
-        pattern = re.compile(
-            rf"<h3>\s*([^<]*{key}[^<]*)\s*</h3>\s*<p>(.*?)</p>",
-            re.I | re.S
-        )
-        s = pattern.sub(lambda m: repl(m), s)
-
-    return s
-
-def _rebalance_existing_html(html: str) -> str:
-    """
-    На входе уже есть HTML. Улучшаем:
-    - склейки «label: value ...» → списки
-    - «2×/1×...» → списки
-    - секции с известными заголовками → списки
-    - унифицируем галочки
-    """
-    if not (html or "").strip(): return ""
-    s = _std_icons(html)
-
-    # Преобразуем одиночные <p> с множеством пар label:value в списки
-    def p_repl(m):
-        p = m.group(1)
-        as_ul = _paragraph_to_ul(p)
-        return (as_ul or f"<p>{p}</p>")
-
-    s = re.sub(r"<p>(.*?)</p>", lambda m: p_repl(m), s, flags=re.S)
-
-    # Секции: заголовок + абзац → список
-    s = _rebalance_section_lists(s)
-
-    # Мелкая типографика: унифицируем знак умножения в портах
-    s = MULT_SIGN_RE.sub("×", s)
-
-    return s
-
-def beautify_raw_description(raw_html_or_text: str) -> str:
-    """Единая точка входа для улучшения «родного описания»."""
-    if not (raw_html_or_text or "").strip():
-        return ""
-    if _looks_like_html_block(raw_html_or_text):
-        return _rebalance_existing_html(raw_html_or_text)
-    return _format_plain_text_to_html_blocks(raw_html_or_text)
-# ======================= КОНЕЦ блока оформления описания =================
+    html = "\n".join(blocks)
+    html = re.sub(r"\n{3,}", "\n\n", html)
+    html = html.replace("&nbsp;", " ").replace("  ", " ")
+    return html
+# ===================== END BEAUTIFIER ======================
 
 # ======================= LOAD SOURCE =======================
 def load_source_bytes(src: str) -> bytes:
@@ -737,6 +648,7 @@ def build_specs_pairs_from_params(offer: ET.Element) -> List[Tuple[str,str]]:
     return out
 
 def build_specs_html_from_params(offer: ET.Element) -> str:
+    """HTML-список <li> из тегов <param>. Показываем только если в «родном» описании нет характеристик."""
     pairs = build_specs_pairs_from_params(offer)
     if not pairs: return ""
     pairs_sorted = sorted(pairs, key=lambda kv: _rank_key(kv[0]))
@@ -746,7 +658,7 @@ def build_specs_html_from_params(offer: ET.Element) -> str:
     parts.append("</ul>")
     return "\n".join(parts)
 
-# ======================= COMPAT, LEAD, FAQ, REVIEWS (без изменений) =======================
+# ======================= COMPATIBILITY (расширено) =======================
 BRAND_WORDS = ["Canon","HP","Hewlett-Packard","Xerox","Brother","Epson","Samsung","Kyocera","Ricoh","Konica Minolta","Sharp","OKI","Pantum"]
 FAMILY_WORDS = [
     "PIXMA","imageRUNNER","iR","imageCLASS","imagePRESS","LBP","MF","i-SENSYS",
@@ -819,6 +731,7 @@ def extract_full_compatibility(raw_desc: str, params_pairs: List[Tuple[str,str]]
     compat = re.sub(r"\s{2,}", " ", compat).strip()
     return compat
 
+# ======================= KIND DETECTION =======================
 def detect_kind(name: str, params_pairs: List[Tuple[str,str]]) -> str:
     n=(name or "").lower()
     if "картридж" in n or "тонер" in n or "тонер-" in n: return "cartridge"
@@ -937,7 +850,7 @@ def build_faq_html(kind: str) -> str:
 def build_reviews_html(seed: int) -> str:
     NAMES_MALE  = ["Арман","Даурен","Санжар","Ерлан","Аслан","Руслан","Тимур","Данияр","Виктор","Евгений","Олег","Сергей","Нуржан","Бекзат","Азамат","Султан"]
     NAMES_FEMALE= ["Айгерим","Мария","Инна","Наталья","Жанна","Светлана","Ольга","Камилла","Диана","Гульнара"]
-    CITIES = ["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавловск","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
+    CITIES = ["Алматы","Астана","Шымкент","Караганда","Актобе","Павлодар","Атырау","Тараз","Оскемен","Семей","Костанай","Кызылорда","Орал","Петропавлоск","Талдыкорган","Актау","Темиртау","Экибастуз","Кокшетау","Рудный"]
     def choose(arr: List[str], seed: int, offs: int=0) -> str:
         return arr[(seed + offs) % len(arr)] if arr else ""
     parts=["<h3>Отзывы (3)</h3>"]
@@ -981,7 +894,7 @@ def should_periodic_refresh(prev_dt_utc: Optional[datetime]) -> bool:
     if mode in {"off","0","none"}: 
         return False
     if prev_dt_utc is None:
-        return True
+        return True  # ещё нет кеша — создаём
     if mode.startswith("days"):
         return (now_utc() - prev_dt_utc) >= timedelta(days=max(1, SEO_REFRESH_DAYS))
     if mode == "monthly_1":
@@ -1019,17 +932,18 @@ def inject_seo_descriptions(shop_el: ET.Element) -> Tuple[int, str]:
         d = offer.find("description")
 
         raw_desc_html_full = inner_html(d) if d is not None else ""
+        # ДОБАВЛЕНО: приводим «родное описание» к аккуратному HTML для Satu
+        if raw_desc_html_full:
+            try:
+                raw_desc_html_full = beautify_raw_description(raw_desc_html_full)
+            except Exception:
+                pass
+
         raw_desc_text_for_kv = re.sub(r"<br\s*/?>", "\n", raw_desc_html_full, flags=re.I)
         raw_desc_text_for_kv = re.sub(r"<[^>]+>", "", raw_desc_text_for_kv)
 
-        # === ТОЛЬКО ЭТО: формируем/улучшаем «родное описание» ===
-        if raw_desc_html_full:
-            raw_desc_html_full = beautify_raw_description(raw_desc_html_full)
-        else:
-            raw_desc_html_full = ""
-        # ========================================================
-
         params_pairs = build_specs_pairs_from_params(offer)
+
         lead_html, inputs = build_lead_html(offer, raw_desc_text_for_kv, params_pairs)
         kind = inputs.get("kind","other")
         s_id = offer.attrib.get("id") or get_text(offer,"vendorCode") or name
@@ -1360,7 +1274,7 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     parts += extract_model_tokens(offer) + keywords_from_name_generic(name) + color_tokens(name)
     extra=[]
     for w in parts:
-        if re.search(r"[А-Яа-яЁё]", str(w)):
+        if re.search(r"[А-Яа-я]", str(w)):
             tr=translit_ru_to_lat(str(w))
             if tr and tr not in extra: extra.append(tr)
     parts+=extra+geo_tokens()
