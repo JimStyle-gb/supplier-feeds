@@ -226,7 +226,7 @@ def build_category_path_from_id(cat_id: str, id2name: Dict[str,str], id2parent: 
     while cur and cur not in seen and cur in id2name:
         seen.add(cur); names.append(id2name.get(cur,"")); cur=id2parent.get(cur,"")
     names=[n for n in names if n]
-    return " / ".join(reversed(names)) if names else ""
+    return " ".join(reversed(names)) if names else ""
 
 # ======================= BRANDS =======================
 def _norm_key(s: str) -> str:
@@ -306,7 +306,7 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     if f_norm in brand_index: return brand_index[f_norm]
     b = _find_brand_in_text(name) or _find_brand_in_text(desc)
     if b: return b
-    nrm=_norm_key(name)
+    nrm=_norm_text(name)
     for br in COMMON_BRANDS:
         if re.search(rf"\b{re.escape(_norm_text(br))}\b", nrm): return br
     return ""
@@ -830,7 +830,7 @@ def format_native_description(raw_html: str) -> str:
     plain = re.sub(r"\s{2,}", " ", plain)
     plain = re.sub(r"(?:\n\s*){3,}", "\n\n", plain).strip()
 
-    # 2) Расставим переноси перед типовыми заголовками
+    # 2) Расставим переносы перед типовыми заголовками
     headers = [
         "Особенности и преимущества","Ключевые характеристики","Порты и подключения",
         "Порты","Разъемы","Разъёмы","Автономность и питание","Безопасность и мультимедиа",
@@ -1134,7 +1134,6 @@ def _extract_article_from_url(url:str)->str:
     except Exception: return ""
 def _normalize_code(s:str)->str:
     s=(s or "").strip()
-    if not s: return ""
     s=re.sub(r"[\s_]+","",s).replace("—","-").replace("–","-")
     return re.sub(r"[^A-Za-z0-9\-]+","",s).upper()
 
@@ -1480,7 +1479,8 @@ def main()->None:
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
     except UnicodeEncodeError as e:
-        warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback}")
+        # ←← ИСПРАВЛЕНО: убрал лишнюю закрывающую скобку `}`
+        warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
             f.write(data_bytes)
