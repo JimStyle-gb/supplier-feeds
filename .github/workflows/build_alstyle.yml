@@ -1,10 +1,19 @@
 # .github/workflows/build_alstyle.yml
-name: Build Alstyle feed
+# ИДЕАЛЬНЫЙ workflow для автоматической сборки и публикации docs/alstyle.yml
+# - Детерминированный запуск (кнопка / расписание / пуш)
+# - Кеш pip (быстрее сборки)
+# - Тайм-аут, конкуренция, минимальные права
+# - Жёстко фиксированное имя файла: docs/alstyle.yml
+# - Коммит в репозиторий + артефакт (можно скачать из Actions)
+# - .nojekyll для корректной раздачи через GitHub Pages
+
+name: Build AlStyle feed
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 20 * * *"    # Ежедневно 20:00 UTC (~01:00 Asia/Almaty)
+    # Ежедневно в 01:00 Asia/Almaty (это 20:00 UTC предыдущего дня)
+    - cron: "0 20 * * *"
   push:
     paths:
       - "scripts/build_alstyle.py"
@@ -12,25 +21,28 @@ on:
       - "docs/alstyle_categories.txt"
 
 permissions:
-  contents: write
+  contents: write   # только то, что нужно для коммита результатов
 
 concurrency:
   group: build-alstyle-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true   # не допускать параллельных сборок одного рефа
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      TZ: Asia/Almaty   # для корректных дат/времени в логах и метках
 
     steps:
       - name: Checkout
         # actions/checkout v5.0.0 (pinned)
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
-          fetch-depth: 1
+          fetch-depth: 0   # полный клон для безопасного pull --rebase
 
       - name: Prepare dependency manifest (for pip cache)
+        # Создаём минимальный requirements.txt, чтобы работало cache: "pip"
         run: |
           echo -e "requests\nbeautifulsoup4" > requirements.txt
           ls -l requirements.txt
@@ -44,18 +56,22 @@ jobs:
           cache: "pip"
           cache-dependency-path: "requirements.txt"
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip wheel
           pip install -r requirements.txt
 
       - name: Ensure categories file
+        # Создаём список категорий, если его нет (алюминевый дефолт 5010 — как договорено)
         run: |
+          set -euo pipefail
+          mkdir -p docs
           test -f docs/alstyle_categories.txt || echo "5010" > docs/alstyle_categories.txt
           echo "---- docs/ ----"
           ls -l docs || true
 
-      - name: Build alstyle feed
+      - name: Build AlStyle feed
+        # Запускаем твой скрипт с нужными ENV. ЛОГИКА — ТОЛЬКО В СКРИПТЕ.
         env:
           OUT_FILE: docs/alstyle.yml
           OUTPUT_ENCODING: windows-1251
@@ -65,12 +81,12 @@ jobs:
           set -euo pipefail
           python --version
           python scripts/build_alstyle.py
-          echo "---- docs/ ----"
-          ls -l docs || true
-          test -f docs/alstyle.yml
           printf "\n" > docs/.nojekyll
+          echo "---- result ----"
+          ls -l docs/alstyle.yml
 
-      - name: Commit & push if changed
+      - name: Commit & push (if changed)
+        # Надёжный автокоммит результата; без лишнего шума
         run: |
           set -euo pipefail
           git config user.name  "github-actions[bot]"
@@ -78,6 +94,7 @@ jobs:
           git add docs/alstyle.yml docs/alstyle_categories.txt docs/.nojekyll || true
           if ! git diff --staged --quiet; then
             git commit -m "build(alstyle): update docs/alstyle.yml"
+            # безопасно подтягиваем возможные изменения
             git pull --rebase --autostash
             git push
           else
@@ -92,4 +109,4 @@ jobs:
           name: alstyle.yml
           path: docs/alstyle.yml
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30
