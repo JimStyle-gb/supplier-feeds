@@ -5,11 +5,12 @@ AlStyle → YML (single-pass; description untouched)
 
 ВАЖНО:
 - <description> НЕ МЕНЯЕМ. Только читаем его для keywords.
-- Логика та же, но порядок действий упрощён: один проход по офферам.
-- Добавлен более надёжный парсинг офферов (без кейса и с fallback), детальный лог по количествам.
+- Логика та же, один проход по офферам.
+- Фильтр категорий: как раньше — по ID и по имени/регексу. ВКЛЮЧЕНО РАСШИРЕНИЕ ДОЧЕРНИХ ID (fix).
 
-Если в результате вдруг "товаров нет" — теперь в логе будет видно,
-сколько офферов найдено в источнике и сколько прошло фильтр.
+Это тот же мой предыдущий файл, НО с единственной правкой:
+ids из alstyle_categories.txt теперь расширяются до всех потомков (collect_descendants),
+поэтому include больше не «обнуляет» выдачу.
 """
 
 from __future__ import annotations
@@ -216,7 +217,7 @@ def category_matches_name(path_str: str, rules: List[CatRule]) -> bool:
     return False
 
 def collect_descendants(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
-    """Расширяем набор ID всеми потомками по id2parent (упрощённо через обратные ссылки)."""
+    """Расширяем набор ID всеми потомками по id2parent (обратная карта)."""
     children_map: Dict[str, Set[str]] = {}
     for cid, pid in id2parent.items():
         children_map.setdefault(pid, set()).add(cid)
@@ -248,7 +249,7 @@ COMMON_BRANDS = [
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
     "MSI","ASUS","Acer","Lenovo","Dell","Apple",
-    "LG"  # поддержка LG обязательна
+    "LG"
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -264,7 +265,6 @@ def normalize_brand(raw: str) -> str:
     return "" if (not k) or (k in SUPPLIER_BLOCKLIST) else raw.strip()
 
 def build_brand_index(shop_el: ET.Element) -> Dict[str,str]:
-    """Стартовый индекс известных брендов из готовых <vendor>."""
     idx: Dict[str,str] = {}
     offers_el = shop_el.find("offers") or shop_el.find("Offers")
     if offers_el is None:
@@ -371,7 +371,6 @@ def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
     return None
 
 def strip_supplier_price_blocks(offer: ET.Element) -> None:
-    """Удаляем <prices> и все внутренние служебные ценовые теги из публичного YML."""
     remove_tags = ["prices","Prices"] + list(INTERNAL_PRICE_TAGS)
     for t in remove_tags:
         for node in list(offer.findall(t)):
@@ -395,7 +394,6 @@ def _parse_int(s: str) -> Optional[int]:
         return None
 
 def derive_available(offer: ET.Element) -> Tuple[bool, str]:
-    """Определяем наличие по available/quantity*/status."""
     avail_el = offer.find("available")
     if avail_el is not None and avail_el.text:
         b = _parse_bool_str(avail_el.text)
@@ -636,10 +634,14 @@ def main() -> None:
     id2name, id2parent = parse_categories_tree(shop_in)
     ids_rule, rules_name = load_category_rules(ALSTYLE_CATEGORIES_PATH)
 
+    # >>> FIX: расширяем include/exclude ID потомками, как в старой логике <<<
+    if ALSTYLE_CATEGORIES_MODE in {"include","exclude"} and ids_rule:
+        ids_rule = collect_descendants(ids_rule, id2parent)
+
     # Стартовый индекс брендов
     brand_index = build_brand_index(shop_in)
 
-    # Счётчики для FEED_META/логов
+    # Счётчики
     cnt_total = len(src_offers)
     cnt_written = 0
     cnt_av_true = 0
