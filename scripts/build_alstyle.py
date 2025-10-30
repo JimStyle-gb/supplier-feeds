@@ -7,7 +7,7 @@ AlStyle → YML (NO-DESCRIPTION-TOUCH edition)
 Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
 Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords, порядок полей и т.д.) сохранён.
 
-Версия: alstyle-2025-10-30.ndt-2-lg
+Версия: alstyle-2025-10-30.ndt-1
 Python: 3.11+
 """
 
@@ -278,16 +278,14 @@ COMMON_BRANDS = [
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple",
-    "LG"  # ← добавлено: для автозаполнения <vendor> брендом LG
+    "MSI","ASUS","Acer","Lenovo","Dell","Apple"
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
     "powercom":"Powercom","pcm":"Powercom","apc":"APC","msi":"MSI",
     "nvprint":"NV Print","nv print":"NV Print",
     "hi black":"Hi-Black","hiblack":"Hi-Black","hi-black":"Hi-Black",
-    "g&g":"G&G","gg":"G&G",
-    "lg":"LG"  # ← добавлено: алиас для LG
+    "g&g":"G&G","gg":"G&G"
 }
 
 def normalize_brand(raw: str) -> str:
