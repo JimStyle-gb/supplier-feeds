@@ -278,7 +278,7 @@ COMMON_BRANDS = [
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple"
+    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # ← добавил LG
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -1009,7 +1009,7 @@ def main() -> None:
 
         log(f"Category rules ({ALSTYLE_CATEGORIES_MODE}): removed={removed_count}")
     else:
-        log("Category rules (include): removed=0")
+        log("Category rules (off): removed=0")
 
     # Удаляем исходные categoryId (позже поставим 0 первым тегом)
     if DROP_CATEGORY_ID_TAG:
