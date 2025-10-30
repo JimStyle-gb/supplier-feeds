@@ -3,27 +3,13 @@
 """
 AlStyle → YML (single-pass; description untouched)
 
-Задача:
-- Перестроить пайплайн в один проход по офферам (SPPO), сохранить тот же результат, но упростить порядок действий.
-- Тег <description> НЕ МЕНЯЕМ — читаем только при генерации keywords.
-- Сохранить всю прежнюю логику по ценам, available, vendor, vendorCode/id, валюте, картинкам, param-чистке, порядку тегов, keywords и FEED_META.
+ВАЖНО:
+- <description> НЕ МЕНЯЕМ. Только читаем его для keywords.
+- Логика та же, но порядок действий упрощён: один проход по офферам.
+- Добавлен более надёжный парсинг офферов (без кейса и с fallback), детальный лог по количествам.
 
-Как работает (в общих чертах):
-0) Читаем исходный XML поставщика.
-1) Готовим вспомогательные индексы (категории/бренды), если нужно.
-2) Один проход по каждому offer:
-   - фильтр по категории (если включён),
-   - нормализация/автозаполнение vendor (с учётом LG и алиасов),
-   - расчёт цены (+4% + фикс по диапазону, хвост 900; кап по порогу),
-   - перенос available в атрибут и чистка складских тегов,
-   - чистка мусорных <param>,
-   - картинки (заглушки при отсутствии),
-   - vendorCode (префикс AS) и синхронизация offer/@id,
-   - чистка служебных тегов и атрибутов,
-   - валюта KZT,
-   - keywords,
-   - финальный порядок детей оффера + <categoryId>0</categoryId> первым.
-3) FEED_META и запись в windows-1251 (с безопасным fallback).
+Если в результате вдруг "товаров нет" — теперь в логе будет видно,
+сколько офферов найдено в источнике и сколько прошло фильтр.
 """
 
 from __future__ import annotations
@@ -33,7 +19,7 @@ from copy import deepcopy
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
-# -------- Время (Алматы) --------
+# -------- Таймзона (Алматы) --------
 try:
     from zoneinfo import ZoneInfo
 except Exception:
@@ -262,7 +248,7 @@ COMMON_BRANDS = [
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
     "MSI","ASUS","Acer","Lenovo","Dell","Apple",
-    "LG"  # важно: поддержка LG
+    "LG"  # поддержка LG обязательна
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -280,10 +266,12 @@ def normalize_brand(raw: str) -> str:
 def build_brand_index(shop_el: ET.Element) -> Dict[str,str]:
     """Стартовый индекс известных брендов из готовых <vendor>."""
     idx: Dict[str,str] = {}
-    offers_el = shop_el.find("offers")
+    offers_el = shop_el.find("offers") or shop_el.find("Offers")
     if offers_el is None:
         return idx
-    for offer in offers_el.findall("offer"):
+    for offer in list(offers_el):
+        if (getattr(offer, "tag", "") or "").lower() != "offer":
+            continue
         ven = offer.find("vendor")
         if ven is not None and (ven.text or "").strip():
             canon = normalize_brand(ven.text or "")
@@ -382,13 +370,8 @@ def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
             return _force_tail_900(dealer * (1.0 + pct / 100.0) + add)
     return None
 
-def _remove_all_price_nodes(offer: ET.Element) -> None:
-    for t in ("price","Price"):
-        for node in list(offer.findall(t)):
-            offer.remove(node)
-
 def strip_supplier_price_blocks(offer: ET.Element) -> None:
-    """Удаляем <prices> и все внутренние полузакрытые теги цен из публичного YML."""
+    """Удаляем <prices> и все внутренние служебные ценовые теги из публичного YML."""
     remove_tags = ["prices","Prices"] + list(INTERNAL_PRICE_TAGS)
     for t in remove_tags:
         for node in list(offer.findall(t)):
@@ -636,7 +619,13 @@ def main() -> None:
     offers_in = shop_in.find("offers") or shop_in.find("Offers")
     if offers_in is None:
         err("XML: <offers> not found")
-    src_offers = list(offers_in.findall("offer"))
+
+    # НАДЁЖНЫЙ СБОР ОФФЕРОВ (без кейса + fallback .//offer)
+    src_offers = [el for el in list(offers_in) if (getattr(el, "tag", "") or "").lower() == "offer"]
+    if not src_offers:
+        src_offers = [el for el in shop_in.findall(".//offer")]
+    if not src_offers:
+        warn("No <offer> found in <offers>; result will be empty if source is empty.")
 
     # Готовим выходную структуру
     out_root = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
@@ -650,11 +639,14 @@ def main() -> None:
     # Стартовый индекс брендов
     brand_index = build_brand_index(shop_in)
 
-    # Счётчики для FEED_META
+    # Счётчики для FEED_META/логов
     cnt_total = len(src_offers)
     cnt_written = 0
     cnt_av_true = 0
     cnt_av_false = 0
+    cnt_cat_dropped = 0
+
+    log(f"Found in source: offers={cnt_total}, categories={'on' if ALSTYLE_CATEGORIES_MODE!='off' else 'off'} mode={ALSTYLE_CATEGORIES_MODE}")
 
     # Один проход по офферам
     for src_offer in src_offers:
@@ -663,7 +655,6 @@ def main() -> None:
 
         # (1) Фильтр по категориям (если включён)
         if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
-            # Получаем categoryId из исходника (если был)
             catid_node = offer.find("categoryId") or offer.find("CategoryId")
             cid = (catid_node.text or "").strip() if (catid_node is not None and catid_node.text) else ""
             path = build_category_path_from_id(cid, id2name, id2parent) if cid else ""
@@ -672,7 +663,8 @@ def main() -> None:
             hit = hit_id or hit_nm
             drop = (ALSTYLE_CATEGORIES_MODE == "exclude" and hit) or (ALSTYLE_CATEGORIES_MODE == "include" and not hit)
             if drop:
-                continue  # не пишем оффер вовсе
+                cnt_cat_dropped += 1
+                continue  # пропускаем оффер
 
         # (2) Нормализация/автозаполнение vendor
         v_node = offer.find("vendor")
@@ -684,35 +676,26 @@ def main() -> None:
                     v_node.text = canon
                 brand_index[_norm_key(canon)] = canon
             else:
-                # мусорный бренд — удаляем
                 offer.remove(v_node)
                 v_node = None
                 v_text = ""
         if not v_text:
-            # угадываем по name/description
             name_txt = (offer.findtext("name") or "").strip()
-            desc_html = "".join(offer.find("description").itertext()) if offer.find("description") is not None else ""
-            # простое чтение innerHTML как текст-лайн для поиска бренда
             raw_desc = ET.tostring(offer.find("description"), encoding="unicode") if offer.find("description") is not None else ""
-            guess = ""
-            # сначала из name
-            guess = _find_brand_in_text(name_txt) or guess
-            # затем из HTML description (как строка)
-            guess = _find_brand_in_text(raw_desc) if not guess else guess
-            # затем из индекса по первому слову name
-            first = re.split(r"\s+", name_txt)[0] if name_txt else ""
-            f_norm = _norm_key(first)
-            if not guess and f_norm in brand_index:
-                guess = brand_index[f_norm]
+            guess = _find_brand_in_text(name_txt) or _find_brand_in_text(raw_desc)
+            if not guess and name_txt:
+                first = re.split(r"\s+", name_txt)[0]
+                f_norm = _norm_key(first)
+                if f_norm in brand_index:
+                    guess = brand_index[f_norm]
             if guess:
                 v_node = ET.SubElement(offer, "vendor"); v_node.text = guess
                 brand_index[_norm_key(guess)] = guess
                 v_text = guess
 
         # (3) Цена: выбор dealer → вычисление retail → хвост 900 → кап при завышении
-        dealer, src = pick_dealer_price(offer)
+        dealer, src_price_kind = pick_dealer_price(offer)
         if dealer is not None and dealer >= PRICE_CAP_THRESHOLD:
-            # форс-кап
             for t in ("price","Price"):
                 for node in list(offer.findall(t)):
                     offer.remove(node)
@@ -725,18 +708,15 @@ def main() -> None:
                         for node in list(offer.findall(t)):
                             offer.remove(node)
                     ET.SubElement(offer, "price").text = str(int(newp))
-            # убираем служебные ценовые блоки (всегда)
             strip_supplier_price_blocks(offer)
 
-        # (4) available → в атрибут; чистим складские теги
+        # (4) available → атрибут; чистка складских тегов
         b, _src_av = derive_available(offer)
-        # удаляем дочерний <available>, если был
         for node in list(offer.findall("available")):
             offer.remove(node)
         offer.attrib["available"] = "true" if b else "false"
         if b: cnt_av_true += 1
         else: cnt_av_false += 1
-        # чистим складские теги
         for tag in ["quantity_in_stock","quantity","stock","Stock","status","Status"]:
             for node in list(offer.findall(tag)):
                 offer.remove(node)
@@ -802,7 +782,7 @@ def main() -> None:
             offer.remove(node)
         ET.SubElement(offer, "currencyId").text = "KZT"
 
-        # (10) Keywords (чтение description только для токенов; само описание не меняем)
+        # (10) Keywords (читаем description, но НЕ меняем его)
         name_txt = (offer.findtext("name") or "").strip()
         vendor_txt = (offer.findtext("vendor") or "").strip()
         desc_node = offer.find("description")
@@ -818,9 +798,7 @@ def main() -> None:
                 offer.remove(kw_node)
 
         # (11) Порядок детей оффера + <categoryId>0</categoryId> первым
-        # Желаемый порядок
         desired = ["vendorCode","name","price","picture","vendor","currencyId","description","keywords"]
-        # Собираем в buckets:
         children = list(offer)
         buckets: Dict[str, List[ET.Element]] = {k: [] for k in desired}
         others: List[ET.Element] = []
@@ -829,15 +807,12 @@ def main() -> None:
                 buckets[node.tag].append(node)
             else:
                 others.append(node)
-        # Перестраиваем
         for node in children:
             offer.remove(node)
-        # Вставляем <categoryId>0</categoryId> ПЕРВЫМ (перезатираем любые старые categoryId)
         for node in list(offer.findall("categoryId")) + list(offer.findall("CategoryId")):
             offer.remove(node)
         cid = ET.Element("categoryId"); cid.text = os.getenv("CATEGORY_ID_DEFAULT","0")
         offer.insert(0, cid)
-        # Далее — по порядку
         for key in desired:
             for node in buckets[key]:
                 offer.append(node)
@@ -859,6 +834,8 @@ def main() -> None:
         "offers_written": str(cnt_written),
         "available_true": str(cnt_av_true),
         "available_false": str(cnt_av_false),
+        "categories_mode": ALSTYLE_CATEGORIES_MODE,
+        "categories_dropped": str(cnt_cat_dropped),
     }
     def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
         rows = [
@@ -870,6 +847,8 @@ def main() -> None:
             ("Сколько товаров у поставщика после фильтра", pairs.get("offers_written","0")),
             ("Сколько товаров есть в наличии (true)", pairs.get("available_true","0")),
             ("Сколько товаров нет в наличии (false)", pairs.get("available_false","0")),
+            ("Режим категорий", pairs.get("categories_mode","off")),
+            ("Сколько срезано по категориям", pairs.get("categories_dropped","0")),
         ]
         key_w = max(len(k) for k,_ in rows)
         lines = ["FEED_META"] + [f"{k.ljust(key_w)} | {v}" for k,v in rows]
@@ -911,7 +890,7 @@ def main() -> None:
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS")
+    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS | in={cnt_total} | out={cnt_written} | dropped_by_cat={cnt_cat_dropped}")
 
 if __name__ == "__main__":
     try:
