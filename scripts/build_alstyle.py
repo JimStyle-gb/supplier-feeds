@@ -1,14 +1,29 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML (NO-DESCRIPTION-TOUCH edition)
+AlStyle → YML (single-pass; description untouched)
 
-Задача: полностью отключить любые изменения содержимого тега <description>.
-Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
-Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords, порядок полей и т.д.) сохранён.
+Задача:
+- Перестроить пайплайн в один проход по офферам (SPPO), сохранить тот же результат, но упростить порядок действий.
+- Тег <description> НЕ МЕНЯЕМ — читаем только при генерации keywords.
+- Сохранить всю прежнюю логику по ценам, available, vendor, vendorCode/id, валюте, картинкам, param-чистке, порядку тегов, keywords и FEED_META.
 
-Версия: alstyle-2025-10-30.ndt-2-lg
-Python: 3.11+
+Как работает (в общих чертах):
+0) Читаем исходный XML поставщика.
+1) Готовим вспомогательные индексы (категории/бренды), если нужно.
+2) Один проход по каждому offer:
+   - фильтр по категории (если включён),
+   - нормализация/автозаполнение vendor (с учётом LG и алиасов),
+   - расчёт цены (+4% + фикс по диапазону, хвост 900; кап по порогу),
+   - перенос available в атрибут и чистка складских тегов,
+   - чистка мусорных <param>,
+   - картинки (заглушки при отсутствии),
+   - vendorCode (префикс AS) и синхронизация offer/@id,
+   - чистка служебных тегов и атрибутов,
+   - валюта KZT,
+   - keywords,
+   - финальный порядок детей оффера + <categoryId>0</categoryId> первым.
+3) FEED_META и запись в windows-1251 (с безопасным fallback).
 """
 
 from __future__ import annotations
@@ -18,8 +33,9 @@ from copy import deepcopy
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
+# -------- Время (Алматы) --------
 try:
-    from zoneinfo import ZoneInfo  # для времени Алматы в FEED_META
+    from zoneinfo import ZoneInfo
 except Exception:
     ZoneInfo = None
 
@@ -35,14 +51,14 @@ RETRY_BACKOFF = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES     = int(os.getenv("MIN_BYTES", "1500"))
 DRY_RUN       = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-# Категории: include/exclude/off + правила из файла
+# Категории: include/exclude/off + путь к правилам
 ALSTYLE_CATEGORIES_PATH = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE = os.getenv("ALSTYLE_CATEGORIES_MODE", "off").lower()  # off|include|exclude
 
-# Префикс для vendorCode/id
+# Префикс vendorCode/id
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")
 
-# Цены: наценка по диапазонам и форс-цена при завышенных исходных
+# Кап по завышенным ценам
 PRICE_CAP_THRESHOLD = int(os.getenv("PRICE_CAP_THRESHOLD", "9999999"))
 PRICE_CAP_VALUE     = int(os.getenv("PRICE_CAP_VALUE", "100"))
 
@@ -54,7 +70,7 @@ SATU_KEYWORDS_GEO      = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","
 SATU_KEYWORDS_GEO_MAX  = int(os.getenv("SATU_KEYWORDS_GEO_MAX", "20"))
 SATU_KEYWORDS_GEO_LAT  = os.getenv("SATU_KEYWORDS_GEO_LAT", "on").lower() in {"on","1","true","yes"}
 
-# Фото-заглушки (если нет картинок)
+# Фото-заглушки
 PLACEHOLDER_ENABLE        = os.getenv("PLACEHOLDER_ENABLE", "1").lower() in {"1","true","yes","on"}
 PLACEHOLDER_BRAND_BASE    = os.getenv("PLACEHOLDER_BRAND_BASE", "https://img.al-style.kz/brand").rstrip("/")
 PLACEHOLDER_CATEGORY_BASE = os.getenv("PLACEHOLDER_CATEGORY_BASE", "https://img.al-style.kz/category").rstrip("/")
@@ -62,16 +78,14 @@ PLACEHOLDER_DEFAULT_URL   = os.getenv("PLACEHOLDER_DEFAULT_URL", "https://img.al
 PLACEHOLDER_EXT           = os.getenv("PLACEHOLDER_EXT", "jpg").strip().lower()
 PLACEHOLDER_HEAD_TIMEOUT  = float(os.getenv("PLACEHOLDER_HEAD_TIMEOUT_S", "5"))
 
-# Публичный YML: вычищаем внутренние теги
-DROP_CATEGORY_ID_TAG    = True
-DROP_STOCK_TAGS         = True
+# Публичный YML: вычищаем служебные теги/атрибуты
 PURGE_TAGS_AFTER        = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
 PURGE_OFFER_ATTRS_AFTER = ("type","article")
 INTERNAL_PRICE_TAGS     = ("purchase_price","purchasePrice","wholesale_price","wholesalePrice","opt_price","optPrice",
                            "b2b_price","b2bPrice","supplier_price","supplierPrice","min_price","minPrice",
                            "max_price","maxPrice","oldprice")
 
-# ======================= УТИЛИТЫ =======================
+# ======================= ЛОГ/УТИЛИТЫ =======================
 def log(msg: str) -> None:
     print(msg, flush=True)
 
@@ -82,31 +96,24 @@ def err(msg: str, code: int = 1) -> None:
     print(f"ERROR: {msg}", file=sys.stderr, flush=True)
     sys.exit(code)
 
-def now_utc() -> datetime:
-    return datetime.now(timezone.utc)
-
-def now_utc_str() -> str:
-    return now_utc().strftime("%Y-%m-%d %H:%M:%S %Z")
-
 def now_almaty() -> datetime:
     if ZoneInfo:
         try:
             return datetime.now(ZoneInfo("Asia/Almaty"))
         except Exception:
             pass
-    # fallback: UTC+5
     return datetime.utcfromtimestamp(time.time() + 5*3600)
-
-def format_dt_almaty(dt: datetime) -> str:
-    return dt.strftime("%Y-%m-%d %H:%M:%S")
 
 def next_build_time_almaty() -> datetime:
     cur = now_almaty()
     t = cur.replace(hour=1, minute=0, second=0, microsecond=0)
     return t + timedelta(days=1) if cur >= t else t
 
+def format_dt_almaty(dt: datetime) -> str:
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
+
 def load_source_bytes(src: str) -> bytes:
-    """Скачиваем/читаем исходный XML поставщика."""
+    """Скачиваем/читаем исходный XML поставщика; гарантируем минимальный размер."""
     if not src:
         raise RuntimeError("SUPPLIER_URL не задан")
     if "://" not in src or src.startswith("file://"):
@@ -136,37 +143,7 @@ def load_source_bytes(src: str) -> bytes:
                 time.sleep(back)
     raise RuntimeError(f"fetch failed: {last_err}")
 
-def get_text(el: ET.Element, tag: str) -> str:
-    node = el.find(tag)
-    return (node.text or "").strip() if node is not None and node.text else ""
-
-def remove_all(el: ET.Element, *tags: str) -> int:
-    n = 0
-    for t in tags:
-        for x in list(el.findall(t)):
-            el.remove(x)
-            n += 1
-    return n
-
-def inner_html(el: ET.Element) -> str:
-    """Возвращает innerHTML тега (используем только для чтения, описания не меняем)."""
-    if el is None:
-        return ""
-    parts: List[str] = []
-    if el.text:
-        parts.append(el.text)
-    for child in el:
-        parts.append(ET.tostring(child, encoding="unicode"))
-        if child.tail:
-            parts.append(child.tail)
-    return "".join(parts).strip()
-
-# ======================= КАТЕГОРИИ: include/exclude =======================
-class CatRule:
-    __slots__ = ("raw", "kind", "pattern")
-    def __init__(self, raw: str, kind: str, pattern):
-        self.raw, self.kind, self.pattern = raw, kind, pattern
-
+# ======================= НОРМАЛИЗАЦИЯ ТЕКСТА/КАТЕГОРИИ =======================
 def _norm_text(s: str) -> str:
     s = (s or "").replace("\u00A0", " ").lower().replace("ё", "е")
     return re.sub(r"\s+", " ", s).strip()
@@ -178,8 +155,13 @@ def _norm_cat(s: str) -> str:
     s = re.sub(r"\s*[/>\|]\s*", " / ", s)
     return re.sub(r"\s+"," ", s).strip()
 
+class CatRule:
+    __slots__ = ("raw", "kind", "pattern")
+    def __init__(self, raw: str, kind: str, pattern):
+        self.raw, self.kind, self.pattern = raw, kind, pattern
+
 def load_category_rules(path: str) -> Tuple[Set[str], List[CatRule]]:
-    """Читаем docs/alstyle_categories.txt: чистые ID и строки/регексы для имён путей."""
+    """Читаем docs/alstyle_categories.txt: чистые ID и строки/регексы для путей категорий."""
     if not path or not os.path.exists(path):
         return set(), []
     data: Optional[str] = None
@@ -193,7 +175,6 @@ def load_category_rules(path: str) -> Tuple[Set[str], List[CatRule]]:
     if data is None:
         with open(path, "r", encoding="utf-8", errors="ignore") as f:
             data = f.read().replace("\x00","")
-
     ids: Set[str] = set()
     rules: List[CatRule] = []
     for ln in data.splitlines():
@@ -211,13 +192,12 @@ def load_category_rules(path: str) -> Tuple[Set[str], List[CatRule]]:
         rules.append(CatRule(_norm_text(s), "substr", None))
     return ids, rules
 
-def parse_categories_tree(shop_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
+def parse_categories_tree(shop_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str]]:
     id2name: Dict[str,str] = {}
     id2parent: Dict[str,str] = {}
-    parent2children: Dict[str,Set[str]] = {}
     cats_root = shop_el.find("categories") or shop_el.find("Categories")
     if cats_root is None:
-        return id2name, id2parent, parent2children
+        return id2name, id2parent
     for c in cats_root.findall("category"):
         cid = (c.attrib.get("id") or "").strip()
         if not cid:
@@ -226,8 +206,7 @@ def parse_categories_tree(shop_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,
         id2name[cid] = (c.text or "").strip()
         if pid:
             id2parent[cid] = pid
-        parent2children.setdefault(pid, set()).add(cid)
-    return id2name, id2parent, parent2children
+    return id2name, id2parent
 
 def build_category_path_from_id(cat_id: str, id2name: Dict[str,str], id2parent: Dict[str,str]) -> str:
     names: List[str] = []
@@ -250,12 +229,16 @@ def category_matches_name(path_str: str, rules: List[CatRule]) -> bool:
             return True
     return False
 
-def collect_descendants(ids: Set[str], parent2children: Dict[str,Set[str]]) -> Set[str]:
+def collect_descendants(ids: Set[str], id2parent: Dict[str,str]) -> Set[str]:
+    """Расширяем набор ID всеми потомками по id2parent (упрощённо через обратные ссылки)."""
+    children_map: Dict[str, Set[str]] = {}
+    for cid, pid in id2parent.items():
+        children_map.setdefault(pid, set()).add(cid)
     out = set(ids)
     stack = list(ids)
     while stack:
         cur = stack.pop()
-        for ch in parent2children.get(cur, ()):
+        for ch in children_map.get(cur, ()):
             if ch not in out:
                 out.add(ch)
                 stack.append(ch)
@@ -279,7 +262,7 @@ COMMON_BRANDS = [
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
     "MSI","ASUS","Acer","Lenovo","Dell","Apple",
-    "LG"  # ← добавлено: для автозаполнения <vendor> брендом LG
+    "LG"  # важно: поддержка LG
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -287,47 +270,25 @@ BRAND_ALIASES = {
     "nvprint":"NV Print","nv print":"NV Print",
     "hi black":"Hi-Black","hiblack":"Hi-Black","hi-black":"Hi-Black",
     "g&g":"G&G","gg":"G&G",
-    "lg":"LG"  # ← добавлено: алиас для LG
+    "lg":"LG"
 }
 
 def normalize_brand(raw: str) -> str:
     k = _norm_key(raw)
     return "" if (not k) or (k in SUPPLIER_BLOCKLIST) else raw.strip()
 
-def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
-    """Чистим/нормализуем <vendor>: удаляем мусор/пустое, supplier-бренды, оставляем валидные значения."""
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0, {}
-    normalized = 0
-    dropped: Dict[str,int] = {}
-    for offer in offers_el.findall("offer"):
-        ven = offer.find("vendor")
-        txt = (ven.text or "").strip() if ven is not None and ven.text else ""
-        if txt:
-            canon = normalize_brand(txt)
-            if any(m in txt.lower() for m in UNKNOWN_VENDOR_MARKERS) or (not canon):
-                if ven is not None:
-                    offer.remove(ven)
-                key = _norm_key(txt)
-                if key:
-                    dropped[key] = dropped.get(key, 0) + 1
-            elif canon != txt:
-                ven.text = canon
-                normalized += 1
-    return normalized, dropped
-
 def build_brand_index(shop_el: ET.Element) -> Dict[str,str]:
+    """Стартовый индекс известных брендов из готовых <vendor>."""
     idx: Dict[str,str] = {}
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return idx
     for offer in offers_el.findall("offer"):
-        v = offer.find("vendor")
-        if v is None or not (v.text or "").strip():
-            continue
-        canon = v.text.strip()
-        idx[_norm_key(canon)] = canon
+        ven = offer.find("vendor")
+        if ven is not None and (ven.text or "").strip():
+            canon = normalize_brand(ven.text or "")
+            if canon:
+                idx[_norm_key(canon)] = canon
     return idx
 
 def _find_brand_in_text(text: str) -> str:
@@ -348,51 +309,14 @@ def _find_brand_in_text(text: str) -> str:
                 return b
     return ""
 
-def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
-    name  = get_text(offer, "name")
-    desc  = inner_html(offer.find("description"))  # читаем, но НЕ меняем
-    first = re.split(r"\s+", name.strip())[0] if name else ""
-    f_norm = _norm_key(first)
-    if f_norm in brand_index:
-        return brand_index[f_norm]
-    b = _find_brand_in_text(name) or _find_brand_in_text(desc)
-    if b:
-        return b
-    nrm = _norm_text(name)
-    for br in COMMON_BRANDS:
-        if re.search(rf"\b{re.escape(_norm_text(br))}\b", nrm, flags=re.I):
-            return br
-    return ""
-
-def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
-    """Если <vendor> пуст — пытаемся угадать по name/description (только чтение)."""
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    brand_index = build_brand_index(shop_el)
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        v = offer.find("vendor")
-        cur = (v.text or "").strip() if (v is not None and v.text) else ""
-        if cur:
-            continue
-        guess = guess_vendor_for_offer(offer, brand_index)
-        if guess:
-            if v is None:
-                v = ET.SubElement(offer, "vendor")
-            v.text = guess
-            brand_index[_norm_key(guess)] = guess
-            touched += 1
-    return touched
-
 # ======================= ЦЕНООБРАЗОВАНИЕ =======================
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
-    (   101,    10000, 4.0,  3000),( 10001,  25000, 4.0,  4000),( 25001,  50000, 4.0,  5000),
-    ( 50001,    75000, 4.0,  7000),( 75001, 100000, 4.0, 10000),(100001, 150000, 4.0, 12000),
-    (150001,   200000, 4.0, 15000),(200001, 300000, 4.0, 20000),(300001, 400000, 4.0, 25000),
-    (400001,   500000, 4.0, 30000),(500001, 750000, 4.0, 40000),(750001,1000000, 4.0, 50000),
-    (1000001, 1500000, 4.0, 70000),(1500001,2000000, 4.0, 90000),(2000001,100000000,4.0,100000),
+    (101, 10000, 4.0, 3000),(10001, 25000, 4.0, 4000),(25001, 50000, 4.0, 5000),
+    (50001, 75000, 4.0, 7000),(75001, 100000, 4.0, 10000),(100001, 150000, 4.0, 12000),
+    (150001, 200000, 4.0, 15000),(200001, 300000, 4.0, 20000),(300001, 400000, 4.0, 25000),
+    (400001, 500000, 4.0, 30000),(500001, 750000, 4.0, 40000),(750001, 1000000, 4.0, 50000),
+    (1000001, 1500000, 4.0, 70000),(1500001, 2000000, 4.0, 90000),(2000001, 100000000, 4.0, 100000),
 ]
 
 PRICE_FIELDS_DIRECT = ["purchasePrice","purchase_price","wholesalePrice","wholesale_price","opt_price","b2bPrice","b2b_price"]
@@ -418,6 +342,7 @@ def parse_price_number(raw: str) -> Optional[float]:
         return None
 
 def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
+    """Приоритет: <prices type~dealer/опт/b2b> → прямые поля → RRP."""
     dealer_candidates: List[float] = []
     rrp_candidates: List[float] = []
     for prices in list(offer.findall("prices")) + list(offer.findall("Prices")):
@@ -447,8 +372,9 @@ def pick_dealer_price(offer: ET.Element) -> Tuple[Optional[float], str]:
         return (min(rrp_candidates), "rrp_fallback")
     return (None, "missing")
 
-def _force_tail_900(n: int) -> int:
-    return max(int(n) // 1000, 0) * 1000 + 900 if int(n) >= 0 else 900
+def _force_tail_900(n: float) -> int:
+    n_int = int(round(n))
+    return (n_int // 1000) * 1000 + 900
 
 def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
     for lo, hi, pct, add in rules:
@@ -457,48 +383,57 @@ def compute_retail(dealer: float, rules: List[PriceRule]) -> Optional[int]:
     return None
 
 def _remove_all_price_nodes(offer: ET.Element) -> None:
-    for t in ("price", "Price"):
+    for t in ("price","Price"):
         for node in list(offer.findall(t)):
             offer.remove(node)
 
 def strip_supplier_price_blocks(offer: ET.Element) -> None:
-    remove_all(offer, "prices", "Prices")
-    for tag in INTERNAL_PRICE_TAGS:
-        remove_all(offer, tag)
+    """Удаляем <prices> и все внутренние полузакрытые теги цен из публичного YML."""
+    remove_tags = ["prices","Prices"] + list(INTERNAL_PRICE_TAGS)
+    for t in remove_tags:
+        for node in list(offer.findall(t)):
+            offer.remove(node)
 
-def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int,int,Dict[str,int]]:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return (0,0,0,{"missing":0})
-    updated = skipped = total = 0
-    src_stats = {"prices_dealer":0,"direct_field":0,"rrp_fallback":0,"missing":0}
-    for offer in offers_el.findall("offer"):
-        total += 1
-        if offer.attrib.get("_force_price", "") == "100":
-            skipped += 1
-            strip_supplier_price_blocks(offer)
-            continue
-        dealer, src = pick_dealer_price(offer)
-        src_stats[src] = src_stats.get(src, 0) + 1
-        if dealer is None or dealer <= 100:
-            skipped += 1
-            strip_supplier_price_blocks(offer)
-            continue
-        newp = compute_retail(dealer, rules)
-        if newp is None:
-            skipped += 1
-            strip_supplier_price_blocks(offer)
-            continue
-        _remove_all_price_nodes(offer)
-        ET.SubElement(offer, "price").text = str(int(newp))
-        strip_supplier_price_blocks(offer)
-        updated += 1
-    return updated, skipped, total, src_stats
+# ======================= AVAILABLE/ЧИСТКИ/ПОРЯДОК =======================
+TRUE_WORDS = {"true","1","yes","y","да","есть","in stock","available"}
+FALSE_WORDS= {"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 
-# ======================= ПАРАМЕТРЫ/МУСОР =======================
+def _parse_bool_str(s: str) -> Optional[bool]:
+    v = _norm_text(s or "")
+    return True if v in TRUE_WORDS else False if v in FALSE_WORDS else None
+
+def _parse_int(s: str) -> Optional[int]:
+    t = re.sub(r"[^\d\-]+","", s or "")
+    if t in {"","-","+"}:
+        return None
+    try:
+        return int(t)
+    except Exception:
+        return None
+
+def derive_available(offer: ET.Element) -> Tuple[bool, str]:
+    """Определяем наличие по available/quantity*/status."""
+    avail_el = offer.find("available")
+    if avail_el is not None and avail_el.text:
+        b = _parse_bool_str(avail_el.text)
+        if b is not None:
+            return b, "tag"
+    for tag in ["quantity_in_stock","quantity","stock","Stock"]:
+        for node in offer.findall(tag):
+            val = _parse_int(node.text or "")
+            if val is not None:
+                return (val > 0), "stock"
+    for tag in ["status","Status"]:
+        node = offer.find(tag)
+        if node is not None and node.text:
+            b = _parse_bool_str(node.text)
+            if b is not None:
+                return b, "status"
+    return False, "default"
+
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:благотворительн\w*|снижена\s*цена|новинк\w*|"
-    r"артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|"
+    r"артикул(?:\s*/\s*штрихкод)?|штрихкод|"
     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|"
     r"tn\s*ved|hs\s*code)\s*)$",
     re.I
@@ -515,29 +450,7 @@ def _value_is_empty_or_noise(val: str) -> bool:
         return True
     return False
 
-def remove_specific_params(shop_el: ET.Element) -> int:
-    """Удаляем мусорные/дублирующиеся <param> — к описанию не прикасаемся."""
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    removed = 0
-    for offer in offers_el.findall("offer"):
-        seen: Set[str] = set()
-        for tag in ("param","Param"):
-            for p in list(offer.findall(tag)):
-                nm = (p.attrib.get("name") or "").strip()
-                val = (p.text or "").strip()
-                if KASPI_CODE_NAME_RE.fullmatch(nm) or UNWANTED_PARAM_NAME_RE.match(nm):
-                    offer.remove(p); removed += 1; continue
-                if _value_is_empty_or_noise(val):
-                    offer.remove(p); removed += 1; continue
-                key = _norm_text(nm)
-                if key in seen:
-                    offer.remove(p); removed += 1; continue
-                seen.add(key)
-    return removed
-
-# ======================= ФОТО-ПЛЕЙСХОЛДЕРЫ =======================
+# ======================= КАРТИНКИ =======================
 _url_head_cache: Dict[str,bool] = {}
 def url_exists(url: str) -> bool:
     if not url:
@@ -576,91 +489,9 @@ def detect_kind(name: str) -> str:
         return "mfp"
     return "other"
 
-def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
-    """Если нет <picture> — подставляем заглушку по бренду/категории/дефолт."""
-    if not PLACEHOLDER_ENABLE:
-        return (0,0)
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return (0,0)
-    added = skipped = 0
-    for offer in offers_el.findall("offer"):
-        pics = list(offer.findall("picture"))
-        has_pic = any((p.text or "").strip() for p in pics)
-        if has_pic:
-            continue
-        vendor = get_text(offer, "vendor").strip()
-        name   = get_text(offer, "name").strip()
-        kind   = detect_kind(name)
-        picked = ""
-        if vendor:
-            u_brand = _placeholder_url_brand(vendor)
-            if url_exists(u_brand):
-                picked = u_brand
-        if not picked:
-            u_cat = _placeholder_url_category(kind)
-            if url_exists(u_cat):
-                picked = u_cat
-        if not picked:
-            picked = PLACEHOLDER_DEFAULT_URL
-        ET.SubElement(offer, "picture").text = picked
-        added += 1
-    return (added, skipped)
-
-# ======================= НАЛИЧИЕ/ID/ПОРЯДОК/ВАЛЮТА =======================
-TRUE_WORDS = {"true","1","yes","y","да","есть","in stock","available"}
-FALSE_WORDS= {"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
-
-def _parse_bool_str(s: str) -> Optional[bool]:
-    v = _norm_text(s or "")
-    return True if v in TRUE_WORDS else False if v in FALSE_WORDS else None
-
-def _parse_int(s: str) -> Optional[int]:
-    t = re.sub(r"[^\d\-]+","", s or "")
-    if t in {"","-","+"}:
-        return None
-    try:
-        return int(t)
-    except Exception:
-        return None
-
-def derive_available(offer: ET.Element) -> Tuple[bool, str]:
-    avail_el = offer.find("available")
-    if avail_el is not None and avail_el.text:
-        b = _parse_bool_str(avail_el.text)
-        if b is not None:
-            return b, "tag"
-    for tag in ["quantity_in_stock","quantity","stock","Stock"]:
-        for node in offer.findall(tag):
-            val = _parse_int(node.text or "")
-            if val is not None:
-                return (val > 0), "stock"
-    for tag in ["status","Status"]:
-        node = offer.find(tag)
-        if node is not None and node.text:
-            b = _parse_bool_str(node.text)
-            if b is not None:
-                return b, "status"
-    return False, "default"
-
-def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return (0,0,0,0)
-    t_cnt=f_cnt=st_cnt=ss_cnt=0
-    for offer in offers_el.findall("offer"):
-        b, src = derive_available(offer)
-        remove_all(offer, "available")
-        offer.attrib["available"] = "true" if b else "false"
-        if b: t_cnt+=1
-        else: f_cnt+=1
-        if src=="stock": st_cnt+=1
-        if src=="status": ss_cnt+=1
-        if DROP_STOCK_TAGS:
-            remove_all(offer, "quantity_in_stock","quantity","stock","Stock")
-    return t_cnt, f_cnt, st_cnt, ss_cnt
-
+# ======================= ИЗВЛЕЧЕНИЕ АРТИКУЛА/ID =======================
 ARTICUL_RE = re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
+AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 
 def _extract_article_from_name(name: str) -> str:
     if not name: return ""
@@ -683,105 +514,7 @@ def _normalize_code(s: str) -> str:
     s = re.sub(r"[\s_]+","", s).replace("—","-").replace("–","-")
     return re.sub(r"[^A-Za-z0-9\-]+","", s).upper()
 
-def ensure_vendorcode_with_article(shop_el: ET.Element, prefix: str, create_if_missing: bool = True) -> Tuple[int,int,int,int]:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return (0,0,0,0)
-    total_prefixed=created=filled_from_art=fixed_bare=0
-    for offer in offers_el.findall("offer"):
-        vc = offer.find("vendorCode")
-        if vc is None:
-            if create_if_missing:
-                vc = ET.SubElement(offer,"vendorCode"); vc.text = ""
-                created += 1
-            else:
-                continue
-        if not (vc.text or "").strip() or (vc.text or "").strip().upper() == prefix.upper():
-            art = _normalize_code(offer.attrib.get("article") or "") \
-               or _normalize_code(_extract_article_from_name(get_text(offer,"name"))) \
-               or _normalize_code(_extract_article_from_url(get_text(offer,"url"))) \
-               or _normalize_code(offer.attrib.get("id") or "")
-            if art:
-                vc.text = art
-                filled_from_art += 1
-        vc.text = f"{prefix}{(vc.text or '')}"
-        total_prefixed += 1
-    return total_prefixed, created, filled_from_art, fixed_bare
-
-def sync_offer_id_with_vendorcode(shop_el: ET.Element) -> int:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    changed = 0
-    for offer in offers_el.findall("offer"):
-        vc = offer.find("vendorCode")
-        if vc is None or not (vc.text or "").strip():
-            continue
-        new_id = (vc.text or "").strip()
-        if offer.attrib.get("id") != new_id:
-            offer.attrib["id"] = new_id
-            changed += 1
-    return changed
-
-def purge_offer_tags_and_attrs_after(offer: ET.Element) -> Tuple[int,int]:
-    removed_tags = removed_attrs = 0
-    for t in PURGE_TAGS_AFTER:
-        for node in list(offer.findall(t)):
-            offer.remove(node); removed_tags += 1
-    for a in PURGE_OFFER_ATTRS_AFTER:
-        if a in offer.attrib:
-            offer.attrib.pop(a, None); removed_attrs += 1
-    return removed_tags, removed_attrs
-
-def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        remove_all(offer, "currencyId")
-        ET.SubElement(offer, "currencyId").text = default_code
-        touched += 1
-    return touched
-
-DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","description"]
-def reorder_offer_children(shop_el: ET.Element) -> int:
-    """Переупорядочиваем теги в оффере (описание не трогаем по содержимому)."""
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    changed = 0
-    for offer in offers_el.findall("offer"):
-        children = list(offer)
-        if not children:
-            continue
-        buckets: Dict[str,List[ET.Element]] = {k: [] for k in DESIRED_ORDER}
-        others: List[ET.Element] = []
-        for node in children:
-            (buckets[node.tag] if node.tag in buckets else others).append(node)
-        rebuilt = [*sum((buckets[k] for k in DESIRED_ORDER), []), *others]
-        if rebuilt != children:
-            for node in children:
-                offer.remove(node)
-            for node in rebuilt:
-                offer.append(node)
-            changed += 1
-    return changed
-
-def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
-    """Вставляем <categoryId>0</categoryId> первым элементом оффера (по требованию пользователя)."""
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        remove_all(offer, "categoryId", "CategoryId")
-        cid = ET.Element("categoryId"); cid.text = os.getenv("CATEGORY_ID_DEFAULT","0")
-        offer.insert(0, cid)
-        touched += 1
-    return touched
-
-# ======================= КЛЮЧЕВЫЕ СЛОВА =======================
+# ======================= KEYWORDS =======================
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
 STOPWORDS_RU = {"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","о","об","у","без","про","как","это","той","тот","эта","эти",
                 "бумага","бумаги","бумаг","черный","чёрный","белый","серый","цвет","оригинальный","комплект","набор","тип","модель","модели","формат","новый","новинка"}
@@ -829,29 +562,18 @@ def color_tokens(name: str) -> List[str]:
     return dedup_preserve_order(out)
 
 MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
-AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 
-def extract_model_tokens(offer: ET.Element) -> List[str]:
-    """Извлекаем модельные токены из name/description (description только читаем)."""
+def extract_model_tokens(name: str, description_html: str) -> List[str]:
     tokens: Set[str] = set()
-    for src in (get_text(offer,"name"), inner_html(offer.find("description"))):
+    for src in (name, description_html):
         if not src:
             continue
-        for m in MODEL_RE.findall(src or ""):
+        for m in MODEL_RE.findall(src):
             t = m.upper()
             if AS_INTERNAL_ART_RE.match(t) or not (re.search(r"[A-Z]", t) and re.search(r"\d", t)) or len(t) < 5:
                 continue
             tokens.add(t)
     return list(tokens)
-
-def keywords_from_name_generic(name: str) -> List[str]:
-    raw_tokens = tokenize_name(name or "")
-    modelish   = [t for t in raw_tokens if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t)]
-    content    = [t for t in raw_tokens if is_content_word(t)]
-    bigr       = build_bigrams(content)
-    norm = lambda tok: tok if re.search(r"[A-Z]{2,}", tok) else tok.capitalize()
-    out = modelish[:8] + bigr[:8] + [norm(t) for t in content[:10]]
-    return dedup_preserve_order(out)
 
 def geo_tokens() -> List[str]:
     if not SATU_KEYWORDS_GEO:
@@ -864,13 +586,20 @@ def geo_tokens() -> List[str]:
     toks = dedup_preserve_order(toks)
     return toks[:max(0, SATU_KEYWORDS_GEO_MAX)]
 
-def build_keywords_for_offer(offer: ET.Element) -> str:
+def keywords_from_offer(name: str, vendor: str, description_html: str) -> str:
     if SATU_KEYWORDS == "off":
         return ""
-    name   = get_text(offer, "name")
-    vendor = get_text(offer, "vendor").strip()
     parts: List[str] = [vendor] if vendor else []
-    parts += extract_model_tokens(offer) + keywords_from_name_generic(name) + color_tokens(name)
+    parts += extract_model_tokens(name, description_html)
+
+    raw_tokens = tokenize_name(name or "")
+    modelish   = [t for t in raw_tokens if re.search(r"[A-Za-z].*\d|\d.*[A-Za-z]", t)]
+    content    = [t for t in raw_tokens if is_content_word(t)]
+    bigr       = build_bigrams(content)
+    norm = lambda tok: tok if re.search(r"[A-Z]{2,}", tok) else tok.capitalize()
+    parts += modelish[:8] + bigr[:8] + [norm(t) for t in content[:10]]
+    parts += color_tokens(name)
+
     extra: List[str] = []
     for w in parts:
         if re.search(r"[А-Яа-яЁё]", str(w) or ""):
@@ -880,6 +609,7 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
     parts += extra + geo_tokens()
     parts = [p for p in dedup_preserve_order(parts) if not AS_INTERNAL_ART_RE.match(str(p))]
     parts = parts[:SATU_KEYWORDS_MAXWORDS]
+
     out: List[str] = []
     total = 0
     for p in parts:
@@ -893,195 +623,269 @@ def build_keywords_for_offer(offer: ET.Element) -> str:
         total += len(add)
     return ", ".join(out)
 
-def ensure_keywords(shop_el: ET.Element) -> int:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        kw = build_keywords_for_offer(offer)
-        node = offer.find("keywords")
-        if not kw:
-            if node is not None:
-                offer.remove(node)
-            continue
-        if node is None:
-            node = ET.SubElement(offer, "keywords")
-            node.text = kw
-            touched += 1
-        else:
-            if (node.text or "") != kw:
-                node.text = kw
-                touched += 1
-    return touched
-
-# ======================= ПРОЧЕЕ =======================
-def flag_unrealistic_supplier_prices(shop_el: ET.Element) -> int:
-    """Помечаем офферы с ценами выше порога — затем принудительно ставим цену=PRICE_CAP_VALUE."""
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    flagged = 0
-    for offer in offers_el.findall("offer"):
-        try:
-            p_txt = get_text(offer, "price")
-            src_p = float(p_txt.replace(",", ".")) if p_txt else None
-        except Exception:
-            src_p = None
-        if src_p is not None and src_p >= PRICE_CAP_THRESHOLD:
-            offer.attrib["_force_price"] = str(PRICE_CAP_VALUE)
-            flagged += 1
-    return flagged
-
-def enforce_forced_prices(shop_el: ET.Element) -> int:
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        if offer.attrib.get("_force_price"):
-            _remove_all_price_nodes(offer)
-            ET.SubElement(offer, "price").text = str(PRICE_CAP_VALUE)
-            offer.attrib.pop("_force_price", None)
-            touched += 1
-    return touched
-
-def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
-    rows = [
-        ("Поставщик", pairs.get("supplier","")),
-        ("URL поставщика", pairs.get("source","")),
-        ("Время сборки (Алматы)", pairs.get("built_alm","")),
-        ("Ближайшая сборка (Алматы)", pairs.get("next_build_alm","")),
-        ("Сколько товаров у поставщика до фильтра", str(pairs.get("offers_total","0"))),
-        ("Сколько товаров у поставщика после фильтра", str(pairs.get("offers_written","0"))),
-        ("Сколько товаров есть в наличии (true)", str(pairs.get("available_true","0"))),
-        ("Сколько товаров нет в наличии (false)", str(pairs.get("available_false","0"))),
-    ]
-    key_w = max(len(k) for k,_ in rows)
-    lines = ["FEED_META"] + [f"{k.ljust(key_w)} | {v}" for k,v in rows]
-    return "\n".join(lines)
-
 # ======================= MAIN =======================
 def main() -> None:
     log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
     data = load_source_bytes(SUPPLIER_URL)
 
+    # Разбираем XML источника
     src_root = ET.fromstring(data)
     shop_in  = src_root.find("shop") if src_root.tag.lower() != "shop" else src_root
     if shop_in is None:
         err("XML: <shop> not found")
-
-    offers_in_el = shop_in.find("offers") or shop_in.find("Offers")
-    if offers_in_el is None:
+    offers_in = shop_in.find("offers") or shop_in.find("Offers")
+    if offers_in is None:
         err("XML: <offers> not found")
-
-    src_offers = list(offers_in_el.findall("offer"))
+    src_offers = list(offers_in.findall("offer"))
 
     # Готовим выходную структуру
-    out_root  = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
-    out_shop  = ET.SubElement(out_root, "shop")
-    out_offers= ET.SubElement(out_shop, "offers")
+    out_root = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
+    out_shop = ET.SubElement(out_root, "shop")
+    out_offers = ET.SubElement(out_shop, "offers")
 
-    # Копируем офферы 1:1 (описание НЕ трогаем — уйдет как в источнике)
-    for o in src_offers:
-        out_offers.append(deepcopy(o))
+    # Категории (для фильтра по ID/пути)
+    id2name, id2parent = parse_categories_tree(shop_in)
+    ids_rule, rules_name = load_category_rules(ALSTYLE_CATEGORIES_PATH)
 
-    # Фильтр категорий (include/exclude по ID/названию)
-    removed_count = 0
-    if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
-        id2name,id2parent,parent2children = parse_categories_tree(shop_in)
-        rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
-        keep_ids: Set[str] = set(rules_ids)
+    # Стартовый индекс брендов
+    brand_index = build_brand_index(shop_in)
 
-        if rules_names and id2name:
-            for cid in id2name.keys():
-                path = build_category_path_from_id(cid, id2name, id2parent)
-                if category_matches_name(path, rules_names):
-                    keep_ids.add(cid)
+    # Счётчики для FEED_META
+    cnt_total = len(src_offers)
+    cnt_written = 0
+    cnt_av_true = 0
+    cnt_av_false = 0
 
-        if keep_ids and parent2children:
-            keep_ids = collect_descendants(keep_ids, parent2children)
+    # Один проход по офферам
+    for src_offer in src_offers:
+        # --- КОПИРУЕМ исходный оффер (description остаётся как есть внутри копии) ---
+        offer = deepcopy(src_offer)
 
-        for off in list(out_offers.findall("offer")):
-            cid = get_text(off, "categoryId")
-            hit = (cid in keep_ids) if cid else False
+        # (1) Фильтр по категориям (если включён)
+        if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
+            # Получаем categoryId из исходника (если был)
+            catid_node = offer.find("categoryId") or offer.find("CategoryId")
+            cid = (catid_node.text or "").strip() if (catid_node is not None and catid_node.text) else ""
+            path = build_category_path_from_id(cid, id2name, id2parent) if cid else ""
+            hit_id = (cid in ids_rule) if cid else False
+            hit_nm = category_matches_name(path, rules_name) if path else False
+            hit = hit_id or hit_nm
             drop = (ALSTYLE_CATEGORIES_MODE == "exclude" and hit) or (ALSTYLE_CATEGORIES_MODE == "include" and not hit)
             if drop:
-                out_offers.remove(off); removed_count += 1
+                continue  # не пишем оффер вовсе
 
-        log(f"Category rules ({ALSTYLE_CATEGORIES_MODE}): removed={removed_count}")
-    else:
-        log("Category rules (include): removed=0")
+        # (2) Нормализация/автозаполнение vendor
+        v_node = offer.find("vendor")
+        v_text = (v_node.text or "").strip() if (v_node is not None and v_node.text) else ""
+        if v_text:
+            canon = normalize_brand(v_text)
+            if canon:
+                if canon != v_text:
+                    v_node.text = canon
+                brand_index[_norm_key(canon)] = canon
+            else:
+                # мусорный бренд — удаляем
+                offer.remove(v_node)
+                v_node = None
+                v_text = ""
+        if not v_text:
+            # угадываем по name/description
+            name_txt = (offer.findtext("name") or "").strip()
+            desc_html = "".join(offer.find("description").itertext()) if offer.find("description") is not None else ""
+            # простое чтение innerHTML как текст-лайн для поиска бренда
+            raw_desc = ET.tostring(offer.find("description"), encoding="unicode") if offer.find("description") is not None else ""
+            guess = ""
+            # сначала из name
+            guess = _find_brand_in_text(name_txt) or guess
+            # затем из HTML description (как строка)
+            guess = _find_brand_in_text(raw_desc) if not guess else guess
+            # затем из индекса по первому слову name
+            first = re.split(r"\s+", name_txt)[0] if name_txt else ""
+            f_norm = _norm_key(first)
+            if not guess and f_norm in brand_index:
+                guess = brand_index[f_norm]
+            if guess:
+                v_node = ET.SubElement(offer, "vendor"); v_node.text = guess
+                brand_index[_norm_key(guess)] = guess
+                v_text = guess
 
-    # Удаляем исходные categoryId (позже поставим 0 первым тегом)
-    if DROP_CATEGORY_ID_TAG:
-        for off in out_offers.findall("offer"):
-            for node in list(off.findall("categoryId")) + list(off.findall("CategoryId")):
-                off.remove(node)
+        # (3) Цена: выбор dealer → вычисление retail → хвост 900 → кап при завышении
+        dealer, src = pick_dealer_price(offer)
+        if dealer is not None and dealer >= PRICE_CAP_THRESHOLD:
+            # форс-кап
+            for t in ("price","Price"):
+                for node in list(offer.findall(t)):
+                    offer.remove(node)
+            ET.SubElement(offer, "price").text = str(int(PRICE_CAP_VALUE))
+        else:
+            if dealer is not None and dealer > 100:
+                newp = compute_retail(dealer, PRICING_RULES)
+                if newp is not None:
+                    for t in ("price","Price"):
+                        for node in list(offer.findall(t)):
+                            offer.remove(node)
+                    ET.SubElement(offer, "price").text = str(int(newp))
+            # убираем служебные ценовые блоки (всегда)
+            strip_supplier_price_blocks(offer)
 
-    # Флаг/форсирование цен
-    flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
+        # (4) available → в атрибут; чистим складские теги
+        b, _src_av = derive_available(offer)
+        # удаляем дочерний <available>, если был
+        for node in list(offer.findall("available")):
+            offer.remove(node)
+        offer.attrib["available"] = "true" if b else "false"
+        if b: cnt_av_true += 1
+        else: cnt_av_false += 1
+        # чистим складские теги
+        for tag in ["quantity_in_stock","quantity","stock","Stock","status","Status"]:
+            for node in list(offer.findall(tag)):
+                offer.remove(node)
 
-    # Бренды
-    ensure_vendor(out_shop)
-    filled = ensure_vendor_auto_fill(out_shop); log(f"Vendors auto-filled: {filled}")
+        # (5) Чистка мусорных/дублирующих <param>
+        seen: Set[str] = set()
+        for tag in ("param","Param"):
+            for p in list(offer.findall(tag)):
+                nm = (p.attrib.get("name") or "").strip()
+                val = (p.text or "").strip()
+                if KASPI_CODE_NAME_RE.fullmatch(nm) or UNWANTED_PARAM_NAME_RE.match(nm) or _value_is_empty_or_noise(val):
+                    offer.remove(p); continue
+                key = _norm_text(nm)
+                if key in seen:
+                    offer.remove(p); continue
+                seen.add(key)
 
-    # vendorCode/id
-    ensure_vendorcode_with_article(out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=True)
-    sync_offer_id_with_vendorcode(out_shop)
+        # (6) Картинки: если нет — плейсхолдер
+        pics = list(offer.findall("picture"))
+        has_pic = any((p.text or "").strip() for p in pics)
+        if not has_pic and PLACEHOLDER_ENABLE:
+            vendor = (v_node.text or "").strip() if v_node is not None and v_node.text else ""
+            name_txt = (offer.findtext("name") or "").strip()
+            kind = detect_kind(name_txt)
+            picked = ""
+            if vendor:
+                u_brand = _placeholder_url_brand(vendor)
+                if url_exists(u_brand):
+                    picked = u_brand
+            if not picked:
+                u_cat = _placeholder_url_category(kind)
+                if url_exists(u_cat):
+                    picked = u_cat
+            if not picked:
+                picked = PLACEHOLDER_DEFAULT_URL
+            ET.SubElement(offer, "picture").text = picked
 
-    # Пересчёт розницы + принудительные цены
-    reprice_offers(out_shop, PRICING_RULES)
-    forced = enforce_forced_prices(out_shop); log(f"Forced price={PRICE_CAP_VALUE}: {forced}")
+        # (7) vendorCode/id: извлечь артикул и префикс AS
+        vc = offer.find("vendorCode")
+        if vc is None:
+            vc = ET.SubElement(offer, "vendorCode"); vc.text = ""
+        if not (vc.text or "").strip() or (vc.text or "").strip().upper() == VENDORCODE_PREFIX.upper():
+            art = _normalize_code(offer.attrib.get("article") or "") \
+               or _normalize_code(_extract_article_from_name(offer.findtext("name") or "")) \
+               or _normalize_code(_extract_article_from_url(offer.findtext("url") or "")) \
+               or _normalize_code(offer.attrib.get("id") or "")
+            if art:
+                vc.text = art
+        vc.text = f"{VENDORCODE_PREFIX}{(vc.text or '')}"
+        if offer.attrib.get("id") != (vc.text or ""):
+            offer.attrib["id"] = (vc.text or "")
 
-    # Чистим мусорные <param>
-    removed_params = remove_specific_params(out_shop); log(f"Params removed: {removed_params}")
+        # (8) Чистка служебных тегов/атрибутов
+        for t in PURGE_TAGS_AFTER:
+            for node in list(offer.findall(t)):
+                offer.remove(node)
+        for a in PURGE_OFFER_ATTRS_AFTER:
+            if a in offer.attrib:
+                offer.attrib.pop(a, None)
 
-    # Фото-заглушки (если нет ни одной картинки)
-    ph_added, _ = ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
+        # (9) Валюта
+        for node in list(offer.findall("currencyId")):
+            offer.remove(node)
+        ET.SubElement(offer, "currencyId").text = "KZT"
 
-    # available → в атрибут оффера, удаляем складские поля
-    t_true, t_false, _, _ = normalize_available_field(out_shop)
+        # (10) Keywords (чтение description только для токенов; само описание не меняем)
+        name_txt = (offer.findtext("name") or "").strip()
+        vendor_txt = (offer.findtext("vendor") or "").strip()
+        desc_node = offer.find("description")
+        desc_html = ET.tostring(desc_node, encoding="unicode") if desc_node is not None else ""
+        kw = keywords_from_offer(name_txt, vendor_txt, desc_html)
+        kw_node = offer.find("keywords")
+        if kw:
+            if kw_node is None:
+                kw_node = ET.SubElement(offer, "keywords")
+            kw_node.text = kw
+        else:
+            if kw_node is not None:
+                offer.remove(kw_node)
 
-    # Валюта
-    fix_currency_id(out_shop, default_code="KZT")
+        # (11) Порядок детей оффера + <categoryId>0</categoryId> первым
+        # Желаемый порядок
+        desired = ["vendorCode","name","price","picture","vendor","currencyId","description","keywords"]
+        # Собираем в buckets:
+        children = list(offer)
+        buckets: Dict[str, List[ET.Element]] = {k: [] for k in desired}
+        others: List[ET.Element] = []
+        for node in children:
+            if node.tag in buckets:
+                buckets[node.tag].append(node)
+            else:
+                others.append(node)
+        # Перестраиваем
+        for node in children:
+            offer.remove(node)
+        # Вставляем <categoryId>0</categoryId> ПЕРВЫМ (перезатираем любые старые categoryId)
+        for node in list(offer.findall("categoryId")) + list(offer.findall("CategoryId")):
+            offer.remove(node)
+        cid = ET.Element("categoryId"); cid.text = os.getenv("CATEGORY_ID_DEFAULT","0")
+        offer.insert(0, cid)
+        # Далее — по порядку
+        for key in desired:
+            for node in buckets[key]:
+                offer.append(node)
+        for node in others:
+            offer.append(node)
 
-    # Чистка служебных тегов/атрибутов
-    for off in out_offers.findall("offer"):
-        purge_offer_tags_and_attrs_after(off)
+        # Пишем оффер в выходной документ
+        out_offers.append(offer)
+        cnt_written += 1
 
-    # Порядок тегов + categoryId=0 первым
-    reorder_offer_children(out_shop)
-    ensure_categoryid_zero_first(out_shop)
-
-    # Ключевые слова (НЕ трогаем description, только читаем при необходимости)
-    kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
-
-    # Красивые отступы (Python 3.9+)
-    try:
-        ET.indent(out_root, space="  ")
-    except Exception:
-        pass
-
-    # FEED_META
+    # -------- FEED_META --------
     built_alm = now_almaty()
     meta_pairs = {
         "supplier": SUPPLIER_NAME,
         "source": SUPPLIER_URL or "file",
         "built_alm": format_dt_almaty(built_alm),
         "next_build_alm": format_dt_almaty(next_build_time_almaty()),
-        "offers_total": len(src_offers),
-        "offers_written": len(list(out_offers.findall("offer"))),
-        "available_true": str(t_true),
-        "available_false": str(t_false),
+        "offers_total": str(cnt_total),
+        "offers_written": str(cnt_written),
+        "available_true": str(cnt_av_true),
+        "available_false": str(cnt_av_false),
     }
+    def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
+        rows = [
+            ("Поставщик", pairs.get("supplier","")),
+            ("URL поставщика", pairs.get("source","")),
+            ("Время сборки (Алматы)", pairs.get("built_alm","")),
+            ("Ближайшая сборка (Алматы)", pairs.get("next_build_alm","")),
+            ("Сколько товаров у поставщика до фильтра", pairs.get("offers_total","0")),
+            ("Сколько товаров у поставщика после фильтра", pairs.get("offers_written","0")),
+            ("Сколько товаров есть в наличии (true)", pairs.get("available_true","0")),
+            ("Сколько товаров нет в наличии (false)", pairs.get("available_false","0")),
+        ]
+        key_w = max(len(k) for k,_ in rows)
+        lines = ["FEED_META"] + [f"{k.ljust(key_w)} | {v}" for k,v in rows]
+        return "\n".join(lines)
+
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # Сериализация
+    # Красивые отступы
+    try:
+        ET.indent(out_root, space="  ")
+    except Exception:
+        pass
+
+    # Сериализация (windows-1251) + перенос после FEED_META + пустая строка между офферами
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
-
-    # Лёгкая косметика: перенос после FEED_META и пустая строка между офферами
     xml_text = re.sub(r"(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
 
@@ -1094,7 +898,6 @@ def main() -> None:
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
     except UnicodeEncodeError as e:
-        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
         warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
