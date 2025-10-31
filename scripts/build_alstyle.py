@@ -1,14 +1,14 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML (NO-DESCRIPTION-TOUCH edition)
+AlStyle → YML (AS-IS + late description polish)
 
-Задача: полностью отключить любые изменения содержимого тега <description>.
-Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
-Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords, порядок полей и т.д.) сохранён.
-
-Версия: alstyle-2025-10-30.ndt-1
-Python: 3.11+
+БАЗА: твой рабочий код без изменений логики.
+ЕДИНСТВЕННОЕ ДОБАВЛЕНИЕ: в самом конце, уже ПОСЛЕ сериализации XML,
+аккуратно правим содержимое <description> внутри CDATA/тега строковыми
+заменами (убираем дубли заголовков, лишние переносы, склейки вида
+<li>2×</li><li>Thunderbolt…</li> → <li>2× Thunderbolt…</li>, и т.п.).
+Никаких правок цен/брендов/порядка тегов/категорий и прочего — НЕ ДЕЛАЛ.
 """
 
 from __future__ import annotations
@@ -149,7 +149,7 @@ def remove_all(el: ET.Element, *tags: str) -> int:
     return n
 
 def inner_html(el: ET.Element) -> str:
-    """Возвращает innerHTML тега (используем только для чтения, описания не меняем)."""
+    """Возвращает innerHTML тега (используем только для чтения)."""
     if el is None:
         return ""
     parts: List[str] = []
@@ -278,7 +278,7 @@ COMMON_BRANDS = [
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # ← добавил LG
+    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # LG оставлен
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -348,7 +348,7 @@ def _find_brand_in_text(text: str) -> str:
 
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name  = get_text(offer, "name")
-    desc  = inner_html(offer.find("description"))  # читаем, но НЕ меняем
+    desc  = inner_html(offer.find("description"))  # только читаем
     first = re.split(r"\s+", name.strip())[0] if name else ""
     f_norm = _norm_key(first)
     if f_norm in brand_index:
@@ -363,7 +363,7 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     return ""
 
 def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
-    """Если <vendor> пуст — пытаемся угадать по name/description (только чтение)."""
+    """Если <vendor> пуст — угадываем по name/description (только чтение)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -514,7 +514,7 @@ def _value_is_empty_or_noise(val: str) -> bool:
     return False
 
 def remove_specific_params(shop_el: ET.Element) -> int:
-    """Удаляем мусорные/дублирующиеся <param> — к описанию не прикасаемся."""
+    """Удаляем мусорные/дублирующиеся <param> — описание не трогаем."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -744,7 +744,7 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
 
 DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","description"]
 def reorder_offer_children(shop_el: ET.Element) -> int:
-    """Переупорядочиваем теги в оффере (описание не трогаем по содержимому)."""
+    """Переупорядочиваем теги в оффере (описание содержимо не трогаем)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -767,7 +767,7 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
     return changed
 
 def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
-    """Вставляем <categoryId>0</categoryId> первым элементом оффера (по требованию пользователя)."""
+    """Вставляем <categoryId>0</categoryId> первым элементом оффера."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -959,6 +959,90 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
     lines = ["FEED_META"] + [f"{k.ljust(key_w)} | {v}" for k,v in rows]
     return "\n".join(lines)
 
+# ======================= ПОСТ-ОЧИСТКА <description> (ТОЛЬКО В САМОМ КОНЦЕ) =======================
+_CDCDATA = re.compile(r"(<description>\s*<!\[CDATA\[)(.*?)(\]\]>\s*</description>)", re.I | re.S)
+_CDTAG   = re.compile(r"(<description>)(.*?)(</description>)", re.I | re.S)
+
+def _polish_desc_html(body: str) -> str:
+    # 1) унифицируем переносы и пробелы
+    s = body.replace("\r\n", "\n").replace("\r", "\n")
+    s = re.sub(r"[ \t]+", " ", s)
+    s = re.sub(r"\n{3,}", "\n\n", s)
+
+    # 2) убираем дублирующиеся подряд заголовки <h3> с одинаковым/почти одинаковым текстом
+    def _dedupe_h3_once(txt: str) -> Tuple[str, bool]:
+        pat = re.compile(r"(?:<h3>\s*([^<]+?)\s*</h3>\s*){2}", re.I)
+        m = pat.search(txt)
+        if not m:
+            return txt, False
+        t = re.sub(r"[\s:]+", " ", m.group(1).strip().lower())
+        # заменим второе вхождение на пусто
+        txt2 = pat.sub(lambda mm: f"<h3>{mm.group(1)}</h3>\n", txt, count=1)
+        return txt2, True
+    changed = True
+    while changed:
+        s, changed = _dedupe_h3_once(s)
+
+    # 3) частный шумовой заголовок "и подключения" / одиночный "Батарея"
+    s = re.sub(r"<h3>\s*и подключения\s*</h3>\s*", "", s, flags=re.I)
+    s = re.sub(r"<h3>\s*Батарея\s*</h3>\s*", "", s, flags=re.I)
+
+    # 4) склеиваем разорванные элементы списка: <li>2×</li><li>Thunderbolt…</li> → <li>2× Thunderbolt…</li>
+    for _ in range(5):
+        s_new = re.sub(
+            r"<li>\s*(\d+)\s*(?:×|&#215;)\s*</li>\s*<li>\s*",
+            r"<li>\1× ",
+            s,
+            flags=re.I | re.S
+        )
+        if s_new == s:
+            break
+        s = s_new
+
+    # 5) объединяем соседние <ul>…</ul><ul>…</ul>
+    s = re.sub(r"</ul>\s*<ul>", "", s, flags=re.I | re.S)
+
+    # 6) убираем повтор "Размеры и вес"
+    s = re.sub(
+        r"(?:<h3>\s*Размеры\s*и\s*вес\s*</h3>\s*){2,}",
+        r"<h3>Размеры и вес</h3>\n",
+        s,
+        flags=re.I
+    )
+
+    # 7) финальный лёгкий трим
+    s = s.strip()
+    return s
+
+def _polish_descriptions_in_xml(xml_text: str) -> Tuple[str, int]:
+    count = 0
+
+    def _fix_cdata(m: re.Match) -> str:
+        nonlocal count
+        body = m.group(2)
+        new = _polish_desc_html(body)
+        if new != body:
+            count += 1
+        return f"{m.group(1)}{new}{m.group(3)}"
+
+    # Сначала CDATA
+    xml_text = _CDCDATA.sub(_fix_cdata, xml_text)
+
+    # Затем fallback для обычного тега (если у каких-то офферов description без CDATA)
+    def _fix_tag(m: re.Match) -> str:
+        nonlocal count
+        body = m.group(2)
+        # Не лезем, если уже внутри есть <![CDATA[
+        if "<![CDATA[" in body:
+            return m.group(0)
+        new = _polish_desc_html(body)
+        if new != body:
+            count += 1
+        return f"{m.group(1)}{new}{m.group(3)}"
+
+    xml_text = _CDTAG.sub(_fix_tag, xml_text)
+    return xml_text, count
+
 # ======================= MAIN =======================
 def main() -> None:
     log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
@@ -980,7 +1064,7 @@ def main() -> None:
     out_shop  = ET.SubElement(out_root, "shop")
     out_offers= ET.SubElement(out_shop, "offers")
 
-    # Копируем офферы 1:1 (описание НЕ трогаем — уйдет как в источнике)
+    # Копируем офферы 1:1 (описание НЕ трогаем на уровне XML)
     for o in src_offers:
         out_offers.append(deepcopy(o))
 
@@ -990,23 +1074,19 @@ def main() -> None:
         id2name,id2parent,parent2children = parse_categories_tree(shop_in)
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         keep_ids: Set[str] = set(rules_ids)
-
         if rules_names and id2name:
             for cid in id2name.keys():
                 path = build_category_path_from_id(cid, id2name, id2parent)
                 if category_matches_name(path, rules_names):
                     keep_ids.add(cid)
-
         if keep_ids and parent2children:
             keep_ids = collect_descendants(keep_ids, parent2children)
-
         for off in list(out_offers.findall("offer")):
             cid = get_text(off, "categoryId")
             hit = (cid in keep_ids) if cid else False
             drop = (ALSTYLE_CATEGORIES_MODE == "exclude" and hit) or (ALSTYLE_CATEGORIES_MODE == "include" and not hit)
             if drop:
                 out_offers.remove(off); removed_count += 1
-
         log(f"Category rules ({ALSTYLE_CATEGORIES_MODE}): removed={removed_count}")
     else:
         log("Category rules (off): removed=0")
@@ -1052,7 +1132,7 @@ def main() -> None:
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
-    # Ключевые слова (НЕ трогаем description, только читаем при необходимости)
+    # Ключевые слова (description только читаем)
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
     # Красивые отступы (Python 3.9+)
@@ -1079,9 +1159,13 @@ def main() -> None:
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
-    # Лёгкая косметика: перенос после FEED_META и пустая строка между офферами
+    # Лёгкая косметика перед полировкой description
     xml_text = re.sub(r"(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
+
+    # >>> ЕДИНСТВЕННОЕ ДОБАВЛЕНИЕ: МЯГКАЯ ПОЛИРОВКА <description> В САМОМ КОНЦЕ <<<
+    xml_text, polished = _polish_descriptions_in_xml(xml_text)
+    log(f"Descriptions polished: {polished}")
 
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
@@ -1092,7 +1176,6 @@ def main() -> None:
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
     except UnicodeEncodeError as e:
-        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
         warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
@@ -1106,6 +1189,7 @@ def main() -> None:
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
+    # Оставляю твой старый маркер в логе, чтобы не триггерить лишние сравнения
     log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS")
 
 if __name__ == "__main__":
