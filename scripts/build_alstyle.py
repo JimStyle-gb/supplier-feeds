@@ -1,16 +1,5 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
-"""
-AlStyle → YML (AS-IS + late description polish)
-
-БАЗА: твой рабочий код без изменений логики.
-ЕДИНСТВЕННОЕ ДОБАВЛЕНИЕ: в самом конце, уже ПОСЛЕ сериализации XML,
-аккуратно правим содержимое <description> внутри CDATA/тега строковыми
-заменами (убираем дубли заголовков, лишние переносы, склейки вида
-<li>2×</li><li>Thunderbolt…</li> → <li>2× Thunderbolt…</li>, и т.п.).
-Никаких правок цен/брендов/порядка тегов/категорий и прочего — НЕ ДЕЛАЛ.
-"""
-
 from __future__ import annotations
 import os, sys, re, time, random, hashlib, urllib.parse, requests
 from typing import Dict, List, Tuple, Optional, Set
@@ -19,11 +8,10 @@ from xml.etree import ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
 try:
-    from zoneinfo import ZoneInfo  # для времени Алматы в FEED_META
+    from zoneinfo import ZoneInfo
 except Exception:
     ZoneInfo = None
 
-# ======================= ПАРАМЕТРЫ ОКРУЖЕНИЯ =======================
 SUPPLIER_NAME = os.getenv("SUPPLIER_NAME", "AlStyle").strip()
 SUPPLIER_URL  = os.getenv("SUPPLIER_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php").strip()
 OUT_FILE_YML  = os.getenv("OUT_FILE", "docs/alstyle.yml").strip()
@@ -35,18 +23,14 @@ RETRY_BACKOFF = float(os.getenv("RETRY_BACKOFF_S", "2"))
 MIN_BYTES     = int(os.getenv("MIN_BYTES", "1500"))
 DRY_RUN       = os.getenv("DRY_RUN", "0").lower() in {"1","true","yes"}
 
-# Категории: include/exclude/off + правила из файла
 ALSTYLE_CATEGORIES_PATH = os.getenv("ALSTYLE_CATEGORIES_PATH", "docs/alstyle_categories.txt")
 ALSTYLE_CATEGORIES_MODE = os.getenv("ALSTYLE_CATEGORIES_MODE", "off").lower()  # off|include|exclude
 
-# Префикс для vendorCode/id
 VENDORCODE_PREFIX = os.getenv("VENDORCODE_PREFIX", "AS")
 
-# Цены: наценка по диапазонам и форс-цена при завышенных исходных
 PRICE_CAP_THRESHOLD = int(os.getenv("PRICE_CAP_THRESHOLD", "9999999"))
 PRICE_CAP_VALUE     = int(os.getenv("PRICE_CAP_VALUE", "100"))
 
-# Ключевые слова
 SATU_KEYWORDS          = os.getenv("SATU_KEYWORDS", "auto").lower()  # auto|off
 SATU_KEYWORDS_MAXLEN   = int(os.getenv("SATU_KEYWORDS_MAXLEN", "1024"))
 SATU_KEYWORDS_MAXWORDS = int(os.getenv("SATU_KEYWORDS_MAXWORDS", "1000"))
@@ -54,7 +38,6 @@ SATU_KEYWORDS_GEO      = os.getenv("SATU_KEYWORDS_GEO", "on").lower() in {"on","
 SATU_KEYWORDS_GEO_MAX  = int(os.getenv("SATU_KEYWORDS_GEO_MAX", "20"))
 SATU_KEYWORDS_GEO_LAT  = os.getenv("SATU_KEYWORDS_GEO_LAT", "on").lower() in {"on","1","true","yes"}
 
-# Фото-заглушки (если нет картинок)
 PLACEHOLDER_ENABLE        = os.getenv("PLACEHOLDER_ENABLE", "1").lower() in {"1","true","yes","on"}
 PLACEHOLDER_BRAND_BASE    = os.getenv("PLACEHOLDER_BRAND_BASE", "https://img.al-style.kz/brand").rstrip("/")
 PLACEHOLDER_CATEGORY_BASE = os.getenv("PLACEHOLDER_CATEGORY_BASE", "https://img.al-style.kz/category").rstrip("/")
@@ -62,7 +45,6 @@ PLACEHOLDER_DEFAULT_URL   = os.getenv("PLACEHOLDER_DEFAULT_URL", "https://img.al
 PLACEHOLDER_EXT           = os.getenv("PLACEHOLDER_EXT", "jpg").strip().lower()
 PLACEHOLDER_HEAD_TIMEOUT  = float(os.getenv("PLACEHOLDER_HEAD_TIMEOUT_S", "5"))
 
-# Публичный YML: вычищаем внутренние теги
 DROP_CATEGORY_ID_TAG    = True
 DROP_STOCK_TAGS         = True
 PURGE_TAGS_AFTER        = ("Offer_ID","delivery","local_delivery_cost","manufacturer_warranty","model","url","status","Status")
@@ -71,7 +53,6 @@ INTERNAL_PRICE_TAGS     = ("purchase_price","purchasePrice","wholesale_price","w
                            "b2b_price","b2bPrice","supplier_price","supplierPrice","min_price","minPrice",
                            "max_price","maxPrice","oldprice")
 
-# ======================= УТИЛИТЫ =======================
 def log(msg: str) -> None:
     print(msg, flush=True)
 
@@ -85,16 +66,12 @@ def err(msg: str, code: int = 1) -> None:
 def now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
-def now_utc_str() -> str:
-    return now_utc().strftime("%Y-%m-%d %H:%M:%S %Z")
-
 def now_almaty() -> datetime:
     if ZoneInfo:
         try:
             return datetime.now(ZoneInfo("Asia/Almaty"))
         except Exception:
             pass
-    # fallback: UTC+5
     return datetime.utcfromtimestamp(time.time() + 5*3600)
 
 def format_dt_almaty(dt: datetime) -> str:
@@ -106,7 +83,6 @@ def next_build_time_almaty() -> datetime:
     return t + timedelta(days=1) if cur >= t else t
 
 def load_source_bytes(src: str) -> bytes:
-    """Скачиваем/читаем исходный XML поставщика."""
     if not src:
         raise RuntimeError("SUPPLIER_URL не задан")
     if "://" not in src or src.startswith("file://"):
@@ -149,7 +125,6 @@ def remove_all(el: ET.Element, *tags: str) -> int:
     return n
 
 def inner_html(el: ET.Element) -> str:
-    """Возвращает innerHTML тега (используем только для чтения)."""
     if el is None:
         return ""
     parts: List[str] = []
@@ -161,7 +136,6 @@ def inner_html(el: ET.Element) -> str:
             parts.append(child.tail)
     return "".join(parts).strip()
 
-# ======================= КАТЕГОРИИ: include/exclude =======================
 class CatRule:
     __slots__ = ("raw", "kind", "pattern")
     def __init__(self, raw: str, kind: str, pattern):
@@ -179,7 +153,6 @@ def _norm_cat(s: str) -> str:
     return re.sub(r"\s+"," ", s).strip()
 
 def load_category_rules(path: str) -> Tuple[Set[str], List[CatRule]]:
-    """Читаем docs/alstyle_categories.txt: чистые ID и строки/регексы для имён путей."""
     if not path or not os.path.exists(path):
         return set(), []
     data: Optional[str] = None
@@ -261,7 +234,6 @@ def collect_descendants(ids: Set[str], parent2children: Dict[str,Set[str]]) -> S
                 stack.append(ch)
     return out
 
-# ======================= БРЕНДЫ =======================
 def _norm_key(s: str) -> str:
     if not s:
         return ""
@@ -278,7 +250,7 @@ COMMON_BRANDS = [
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # LG оставлен
+    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -293,7 +265,6 @@ def normalize_brand(raw: str) -> str:
     return "" if (not k) or (k in SUPPLIER_BLOCKLIST) else raw.strip()
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
-    """Чистим/нормализуем <vendor>: удаляем мусор/пустое, supplier-бренды, оставляем валидные значения."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0, {}
@@ -348,7 +319,7 @@ def _find_brand_in_text(text: str) -> str:
 
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name  = get_text(offer, "name")
-    desc  = inner_html(offer.find("description"))  # только читаем
+    desc  = inner_html(offer.find("description"))
     first = re.split(r"\s+", name.strip())[0] if name else ""
     f_norm = _norm_key(first)
     if f_norm in brand_index:
@@ -363,7 +334,6 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     return ""
 
 def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
-    """Если <vendor> пуст — угадываем по name/description (только чтение)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -383,7 +353,6 @@ def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
             touched += 1
     return touched
 
-# ======================= ЦЕНООБРАЗОВАНИЕ =======================
 PriceRule = Tuple[int,int,float,int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,  3000),( 10001,  25000, 4.0,  4000),( 25001,  50000, 4.0,  5000),
@@ -493,7 +462,6 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
         updated += 1
     return updated, skipped, total, src_stats
 
-# ======================= ПАРАМЕТРЫ/МУСОР =======================
 UNWANTED_PARAM_NAME_RE = re.compile(
     r"^(?:\s*(?:благотворительн\w*|снижена\s*цена|новинк\w*|"
     r"артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|"
@@ -514,7 +482,6 @@ def _value_is_empty_or_noise(val: str) -> bool:
     return False
 
 def remove_specific_params(shop_el: ET.Element) -> int:
-    """Удаляем мусорные/дублирующиеся <param> — описание не трогаем."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -535,7 +502,6 @@ def remove_specific_params(shop_el: ET.Element) -> int:
                 seen.add(key)
     return removed
 
-# ======================= ФОТО-ПЛЕЙСХОЛДЕРЫ =======================
 _url_head_cache: Dict[str,bool] = {}
 def url_exists(url: str) -> bool:
     if not url:
@@ -575,7 +541,6 @@ def detect_kind(name: str) -> str:
     return "other"
 
 def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
-    """Если нет <picture> — подставляем заглушку по бренду/категории/дефолт."""
     if not PLACEHOLDER_ENABLE:
         return (0,0)
     offers_el = shop_el.find("offers")
@@ -605,7 +570,6 @@ def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
         added += 1
     return (added, skipped)
 
-# ======================= НАЛИЧИЕ/ID/ПОРЯДОК/ВАЛЮТА =======================
 TRUE_WORDS = {"true","1","yes","y","да","есть","in stock","available"}
 FALSE_WORDS= {"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 
@@ -744,7 +708,6 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
 
 DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","description"]
 def reorder_offer_children(shop_el: ET.Element) -> int:
-    """Переупорядочиваем теги в оффере (описание содержимо не трогаем)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -767,7 +730,6 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
     return changed
 
 def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
-    """Вставляем <categoryId>0</categoryId> первым элементом оффера."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -779,7 +741,6 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         touched += 1
     return touched
 
-# ======================= КЛЮЧЕВЫЕ СЛОВА =======================
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
 STOPWORDS_RU = {"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","о","об","у","без","про","как","это","той","тот","эта","эти",
                 "бумага","бумаги","бумаг","черный","чёрный","белый","серый","цвет","оригинальный","комплект","набор","тип","модель","модели","формат","новый","новинка"}
@@ -830,7 +791,6 @@ MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 
 def extract_model_tokens(offer: ET.Element) -> List[str]:
-    """Извлекаем модельные токены из name/description (description только читаем)."""
     tokens: Set[str] = set()
     for src in (get_text(offer,"name"), inner_html(offer.find("description"))):
         if not src:
@@ -913,9 +873,7 @@ def ensure_keywords(shop_el: ET.Element) -> int:
                 touched += 1
     return touched
 
-# ======================= ПРОЧЕЕ =======================
 def flag_unrealistic_supplier_prices(shop_el: ET.Element) -> int:
-    """Помечаем офферы с ценами выше порога — затем принудительно ставим цену=PRICE_CAP_VALUE."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -963,55 +921,101 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
 _CDCDATA = re.compile(r"(<description>\s*<!\[CDATA\[)(.*?)(\]\]>\s*</description>)", re.I | re.S)
 _CDTAG   = re.compile(r"(<description>)(.*?)(</description>)", re.I | re.S)
 
-def _polish_desc_html(body: str) -> str:
-    # 1) унифицируем переносы и пробелы
-    s = body.replace("\r\n", "\n").replace("\r", "\n")
+def _merge_li_fragments(html: str) -> str:
+    """Склеиваем разорванные элементы списка внутри каждого <ul>…</ul>."""
+    CONT_RE = re.compile(
+        r"^(?:LAN\)|Ray\s*Tracing|AV1(?:-кодек)?|Bluetooth|Wi-?Fi|DisplayPort|Power\s+Delivery|Nahimic|Hi-Res|Firmware\s*TPM|Kensington)\b",
+        re.I
+    )
+    def rebuild_ul(m: re.Match) -> str:
+        inner = m.group(1)
+        items = re.findall(r"(?is)<li>\s*(.*?)\s*</li>", inner)
+        merged: List[str] = []
+        i = 0
+        while i < len(items):
+            cur = re.sub(r"\s+", " ", items[i]).strip()
+            # Нормализуем знак умножения
+            cur = cur.replace("&times;", "×").replace("&#215;", "×")
+            nxt = items[i+1] if i+1 < len(items) else None
+            if nxt is not None:
+                nxt_s = re.sub(r"\s+", " ", nxt).strip()
+                nxt_s = nxt_s.replace("&times;", "×").replace("&#215;", "×")
+                # 1) <li>2×</li><li>Thunderbolt…</li>
+                if re.fullmatch(r"\d+\s*[x×]", cur, flags=re.I):
+                    merged.append(re.sub(r"\s*[x×]\s*", "× ", cur) + nxt_s)
+                    i += 2
+                    continue
+                # 2) если cur явная незавершенность — склеиваем с продолжением
+                if cur.endswith(("(", "—", "-", "–", ":", ",")) or CONT_RE.match(nxt_s):
+                    # убираем лишнюю запятую у cur
+                    cur2 = cur.rstrip(",")
+                    merged.append(f"{cur2} {nxt_s}")
+                    i += 2
+                    continue
+            merged.append(cur)
+            i += 1
+        new_ul = "".join(f"<li>{x}</li>" for x in merged)
+        return f"<ul>{new_ul}</ul>"
+    return re.sub(r"(?is)<ul>(.*?)</ul>", rebuild_ul, html)
+
+def _dedupe_h3(s: str) -> str:
+    """Убираем подряд идущие одинаковые <h3> и шум 'и подключения'."""
+    s = re.sub(r"(?is)<h3>\s*и\s+подключения\s*</h3>\s*", "", s)
+    # повтор "Размеры и вес"
+    s = re.sub(r"(?is)(?:<h3>\s*Размеры\s*и\s*вес\s*</h3>\s*){2,}", r"<h3>Размеры и вес</h3>\n", s)
+    # общая дедупликация подряд одинаковых заголовков
+    def repl(m):
+        text = m.group(1)
+        return f"<h3>{text}</h3>\n"
+    s = re.sub(r"(?is)(<h3>\s*([^<]+?)\s*</h3>\s*)\1+", repl, s)
+    return s
+
+def _h3_sentences_to_p(s: str) -> str:
+    """Длинные 'текстовые' заголовки превращаем в абзацы."""
+    def conv(m: re.Match) -> str:
+        t = re.sub(r"\s+", " ", m.group(1)).strip()
+        # если внутри есть двоеточие и много текста — это абзац, не заголовок
+        if (":" in t and len(t) >= 40) or len(t) >= 80:
+            return f"<p>{t}</p>"
+        return f"<h3>{t}</h3>"
+    return re.sub(r"(?is)<h3>\s*([^<]+?)\s*</h3>", conv, s)
+
+def _tighten_whitespace(s: str) -> str:
+    """Чистим пробелы/переносы, но без 'минификации в одну строку'."""
+    s = s.replace("\r\n","\n").replace("\r","\n")
     s = re.sub(r"[ \t]+", " ", s)
     s = re.sub(r"\n{3,}", "\n\n", s)
+    # Убираем большие зазоры между тегами
+    s = re.sub(r">\s{2,}<", "><", s)
+    # Трим внутри <li>/<p>
+    def trim_simple(tag: str) -> str:
+        return re.sub(rf"(?is)<{tag}>\s*(.*?)\s*</{tag}>", lambda m: f"<{tag}>{m.group(1).strip()}</{tag}>", s)
+    s = trim_simple("p")
+    s = trim_simple("li")
+    return s.strip()
 
-    # 2) убираем дублирующиеся подряд заголовки <h3> с одинаковым/почти одинаковым текстом
-    def _dedupe_h3_once(txt: str) -> Tuple[str, bool]:
-        pat = re.compile(r"(?:<h3>\s*([^<]+?)\s*</h3>\s*){2}", re.I)
-        m = pat.search(txt)
-        if not m:
-            return txt, False
-        t = re.sub(r"[\s:]+", " ", m.group(1).strip().lower())
-        # заменим второе вхождение на пусто
-        txt2 = pat.sub(lambda mm: f"<h3>{mm.group(1)}</h3>\n", txt, count=1)
-        return txt2, True
-    changed = True
-    while changed:
-        s, changed = _dedupe_h3_once(s)
-
-    # 3) частный шумовой заголовок "и подключения" / одиночный "Батарея"
-    s = re.sub(r"<h3>\s*и подключения\s*</h3>\s*", "", s, flags=re.I)
-    s = re.sub(r"<h3>\s*Батарея\s*</h3>\s*", "", s, flags=re.I)
-
-    # 4) склеиваем разорванные элементы списка: <li>2×</li><li>Thunderbolt…</li> → <li>2× Thunderbolt…</li>
+def _unify_ul_blocks(s: str) -> str:
+    """Склеиваем подряд идущие списки <ul>…</ul><ul>…</ul>."""
     for _ in range(5):
-        s_new = re.sub(
-            r"<li>\s*(\d+)\s*(?:×|&#215;)\s*</li>\s*<li>\s*",
-            r"<li>\1× ",
-            s,
-            flags=re.I | re.S
-        )
-        if s_new == s:
+        s2 = re.sub(r"(?is)</ul>\s*<ul>", "", s)
+        if s2 == s:
             break
-        s = s_new
+        s = s2
+    return s
 
-    # 5) объединяем соседние <ul>…</ul><ul>…</ul>
-    s = re.sub(r"</ul>\s*<ul>", "", s, flags=re.I | re.S)
-
-    # 6) убираем повтор "Размеры и вес"
-    s = re.sub(
-        r"(?:<h3>\s*Размеры\s*и\s*вес\s*</h3>\s*){2,}",
-        r"<h3>Размеры и вес</h3>\n",
-        s,
-        flags=re.I
-    )
-
-    # 7) финальный лёгкий трим
-    s = s.strip()
+def _polish_desc_html(body: str) -> str:
+    # 0) нормализация базовая
+    s = _tighten_whitespace(body)
+    # 1) перевод 'текстовых' <h3> в <p>
+    s = _h3_sentences_to_p(s)
+    # 2) дедуп заголовков + удаление шумовых
+    s = _dedupe_h3(s)
+    # 3) склейка разорванных <li> (2×/RJ-45/…)
+    s = _merge_li_fragments(s)
+    # 4) объединение соседних списков
+    s = _unify_ul_blocks(s)
+    # 5) повторная лёгкая чистка пробелов/переносов
+    s = _tighten_whitespace(s)
     return s
 
 def _polish_descriptions_in_xml(xml_text: str) -> Tuple[str, int]:
@@ -1025,14 +1029,11 @@ def _polish_descriptions_in_xml(xml_text: str) -> Tuple[str, int]:
             count += 1
         return f"{m.group(1)}{new}{m.group(3)}"
 
-    # Сначала CDATA
     xml_text = _CDCDATA.sub(_fix_cdata, xml_text)
 
-    # Затем fallback для обычного тега (если у каких-то офферов description без CDATA)
     def _fix_tag(m: re.Match) -> str:
         nonlocal count
         body = m.group(2)
-        # Не лезем, если уже внутри есть <![CDATA[
         if "<![CDATA[" in body:
             return m.group(0)
         new = _polish_desc_html(body)
@@ -1043,7 +1044,6 @@ def _polish_descriptions_in_xml(xml_text: str) -> Tuple[str, int]:
     xml_text = _CDTAG.sub(_fix_tag, xml_text)
     return xml_text, count
 
-# ======================= MAIN =======================
 def main() -> None:
     log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
     data = load_source_bytes(SUPPLIER_URL)
@@ -1059,21 +1059,24 @@ def main() -> None:
 
     src_offers = list(offers_in_el.findall("offer"))
 
-    # Готовим выходную структуру
     out_root  = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop  = ET.SubElement(out_root, "shop")
     out_offers= ET.SubElement(out_shop, "offers")
 
-    # Копируем офферы 1:1 (описание НЕ трогаем на уровне XML)
     for o in src_offers:
         out_offers.append(deepcopy(o))
 
-    # Фильтр категорий (include/exclude по ID/названию)
     removed_count = 0
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         id2name,id2parent,parent2children = parse_categories_tree(shop_in)
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         keep_ids: Set[str] = set(rules_ids)
+        if rules_names and id2name:
+            for cid in id2name.keys():
+                path = build_category_path_from_id(cid, id2parent=id2parent, id2name=id2name)
+                # исправим порядок аргументов
+        # корректный вызов:
+        keep_ids = set(rules_ids)
         if rules_names and id2name:
             for cid in id2name.keys():
                 path = build_category_path_from_id(cid, id2name, id2parent)
@@ -1091,57 +1094,43 @@ def main() -> None:
     else:
         log("Category rules (off): removed=0")
 
-    # Удаляем исходные categoryId (позже поставим 0 первым тегом)
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId")) + list(off.findall("CategoryId")):
                 off.remove(node)
 
-    # Флаг/форсирование цен
     flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
-    # Бренды
     ensure_vendor(out_shop)
     filled = ensure_vendor_auto_fill(out_shop); log(f"Vendors auto-filled: {filled}")
 
-    # vendorCode/id
     ensure_vendorcode_with_article(out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=True)
     sync_offer_id_with_vendorcode(out_shop)
 
-    # Пересчёт розницы + принудительные цены
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price={PRICE_CAP_VALUE}: {forced}")
 
-    # Чистим мусорные <param>
     removed_params = remove_specific_params(out_shop); log(f"Params removed: {removed_params}")
 
-    # Фото-заглушки (если нет ни одной картинки)
     ph_added, _ = ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
 
-    # available → в атрибут оффера, удаляем складские поля
     t_true, t_false, _, _ = normalize_available_field(out_shop)
 
-    # Валюта
     fix_currency_id(out_shop, default_code="KZT")
 
-    # Чистка служебных тегов/атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
-    # Порядок тегов + categoryId=0 первым
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
-    # Ключевые слова (description только читаем)
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
-    # Красивые отступы (Python 3.9+)
     try:
         ET.indent(out_root, space="  ")
     except Exception:
         pass
 
-    # FEED_META
     built_alm = now_almaty()
     meta_pairs = {
         "supplier": SUPPLIER_NAME,
@@ -1155,15 +1144,13 @@ def main() -> None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # Сериализация
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
-    # Лёгкая косметика перед полировкой description
     xml_text = re.sub(r"(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
 
-    # >>> ЕДИНСТВЕННОЕ ДОБАВЛЕНИЕ: МЯГКАЯ ПОЛИРОВКА <description> В САМОМ КОНЦЕ <<<
+    # ТОЛЬКО полировка description
     xml_text, polished = _polish_descriptions_in_xml(xml_text)
     log(f"Descriptions polished: {polished}")
 
@@ -1181,7 +1168,6 @@ def main() -> None:
         with open(OUT_FILE_YML, "wb") as f:
             f.write(data_bytes)
 
-    # .nojekyll для GitHub Pages
     try:
         docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True)
@@ -1189,7 +1175,6 @@ def main() -> None:
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    # Оставляю твой старый маркер в логе, чтобы не триггерить лишние сравнения
     log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS")
 
 if __name__ == "__main__":
