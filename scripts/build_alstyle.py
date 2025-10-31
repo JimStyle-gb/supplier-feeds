@@ -3,7 +3,7 @@
 """
 AlStyle → YML (plain-description cleanup only)
 
-Требование пользователя:
+Требования:
 — НЕ менять общую логику пайплайна (цены, вендор, категории, порядок тегов и т.д.).
 — В самом конце сделать мягкую чистку ТОЛЬКО содержимого <description> без HTML-оформления
   (убрать лишние пустые строки, хвосты-обрубки, декодировать HTML-сущности, нормализовать 'x' → '×' между цифрами).
@@ -212,9 +212,14 @@ def load_category_rules(path: str) -> Tuple[Set[str], List[CatRule]]:
             rules.append(CatRule(_norm_text(raw), "substr", None))
     return ids, rules
 
-def parse_categories_tree(tree: ET.ElementTree) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
-    root = tree.getroot()
-    shop_el = root.find("shop") or root.find("Shop")
+def parse_categories_tree(src) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
+    """
+    FIX: принимает либо ElementTree, либо Element.
+    Раньше ожидал только ElementTree → при передаче shop_in (Element) падало с
+    `'Element' object has no attribute 'getroot'`.
+    """
+    root = src.getroot() if hasattr(src, "getroot") else src
+    shop_el = root.find("shop") or root.find("Shop") if root.tag != "shop" else root
     id2name: Dict[str,str] = {}
     id2parent: Dict[str,str] = {}
     parent2children: Dict[str,Set[str]] = {}
@@ -297,7 +302,6 @@ def normalize_brand(raw: str) -> str:
     return "" if (not k) or (k in SUPPLIER_BLOCKLIST) else raw.strip()
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
-    """Чистим/нормализуем <vendor>: удаляем мусор/пустое, supplier-бренды, оставляем валидные значения."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0, {}
@@ -365,7 +369,6 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     return ""
 
 def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
-    """Если <vendor> пуст — пытаемся угадать по name/description (только чтение)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -1027,7 +1030,7 @@ def main() -> None:
     # 5) Фильтр категорий (include/exclude по ID/названию)
     removed_count = 0
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
-        id2name,id2parent,parent2children = parse_categories_tree(shop_in)
+        id2name,id2parent,parent2children = parse_categories_tree(shop_in)  # <— FIX поддержан Element
         rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
         keep_ids: Set[str] = set(rules_ids)
 
@@ -1060,7 +1063,7 @@ def main() -> None:
     flagged = flag_forced_price_if_needed(out_shop)
     up, sk, tot, src_stats = reprice_offers(out_shop, PRICE_RULES)
     log(f"Pricing: updated={up}, skipped={sk}, total={tot}, src={src_stats}")
-    touched_enforce = enforce_forced_prices(out_shop)
+    enforce_forced_prices(out_shop)
 
     # 8) чистим параметры
     cleanup_param_blocks(out_shop)
