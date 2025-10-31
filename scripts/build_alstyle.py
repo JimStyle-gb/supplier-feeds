@@ -1,19 +1,16 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle -> YML (NO-DESCRIPTION-TOUCH edition)
+AlStyle -> YML (DESC-FLAT edition)
 
-Задача: полностью отключить любые изменения содержимого тега <description>.
-Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
-Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords,
-порядок полей и т.д.) сохранён.
-
-Версия: alstyle-2025-10-30.ndt-2
-Python: 3.11+
+База = ваш КОД2 без изменений логики.
+Единственное добавление: в самом конце ПЛОСКАЯ нормализация <description>
+(удаляем теги внутри description, склеиваем всё в одну строку, схлопываем
+много пробелов/переносов; пустые описания не трогаем).
 """
 
 from __future__ import annotations
-import os, sys, re, time, random, hashlib, urllib.parse, requests
+import os, sys, re, time, random, hashlib, urllib.parse, requests, html
 from typing import Dict, List, Tuple, Optional, Set
 from copy import deepcopy
 from xml.etree import ElementTree as ET
@@ -150,7 +147,7 @@ def remove_all(el: ET.Element, *tags: str) -> int:
     return n
 
 def inner_html(el: ET.Element) -> str:
-    """Возвращает innerHTML тега (используем только для чтения, описания не меняем)."""
+    """Возвращает innerHTML тега (используем только для чтения)."""
     if el is None:
         return ""
     parts: List[str] = []
@@ -294,6 +291,7 @@ def normalize_brand(raw: str) -> str:
     return "" if (not k) or (k in SUPPLIER_BLOCKLIST) else raw.strip()
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
+    """Чистим/нормализуем <vendor>: удаляем мусор/пустое, supplier-бренды, оставляем валидные значения."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0, {}
@@ -348,7 +346,7 @@ def _find_brand_in_text(text: str) -> str:
 
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name  = get_text(offer, "name")
-    desc  = inner_html(offer.find("description"))  # читаем, но НЕ меняем
+    desc  = inner_html(offer.find("description"))  # читаем, не меняем здесь
     first = re.split(r"\s+", name.strip())[0] if name else ""
     f_norm = _norm_key(first)
     if f_norm in brand_index:
@@ -959,6 +957,44 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
     lines = ["FEED_META"] + [f"{k.ljust(key_w)} | {v}" for k,v in rows]
     return "\n".join(lines)
 
+# ======================= ФИНАЛЬНАЯ НОРМАЛИЗАЦИЯ DESCRIPTION (ПОДХОД 2) =======================
+DESC_TAG_STRIP_RE = re.compile(r"<[^>]+>")
+
+def _flatten_desc_text(desc_el: ET.Element) -> Optional[str]:
+    # Берём inner HTML, убираем все теги, декодируем сущности, схлопываем пробелы/переносы
+    raw_html = inner_html(desc_el)
+    if not raw_html:
+        return None
+    txt = DESC_TAG_STRIP_RE.sub(" ", raw_html)          # теги -> пробел
+    txt = html.unescape(txt)                            # &nbsp; &quot; и т.п.
+    txt = txt.replace("\u00A0", " ")
+    # Схлопываем все виды пробельных символов в один пробел
+    txt = re.sub(r"\s+", " ", txt, flags=re.UNICODE).strip()
+    return txt or None
+
+def flatten_all_descriptions(shop_el: ET.Element) -> int:
+    """Подход 2: превратить любое содержимое <description> в одну чистую строку текста.
+       Пустые описания не трогаем. Никаких HTML-тегов не добавляем.
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        d = offer.find("description")
+        if d is None:
+            continue
+        new_text = _flatten_desc_text(d)
+        if new_text is None:
+            # есть description, но пустое — оставим как есть
+            continue
+        # Заменяем текст, удаляем всех детей (чтобы Tree не расставлял отступы внутри)
+        d.text = new_text
+        for ch in list(d):
+            d.remove(ch)
+        touched += 1
+    return touched
+
 # ======================= MAIN =======================
 def main() -> None:
     log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
@@ -980,11 +1016,11 @@ def main() -> None:
     out_shop  = ET.SubElement(out_root, "shop")
     out_offers= ET.SubElement(out_shop, "offers")
 
-    # Копируем офферы 1:1 (описание НЕ трогаем — уйдет как в источнике)
+    # 1) Копируем офферы 1:1 (дальше работаем только над полями, описание пока не трогаем)
     for o in src_offers:
         out_offers.append(deepcopy(o))
 
-    # Фильтр категорий (include/exclude по ID/названию)
+    # 2) Фильтр категорий
     removed_count = 0
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         id2name,id2parent,parent2children = parse_categories_tree(shop_in)
@@ -1011,51 +1047,54 @@ def main() -> None:
     else:
         log("Category rules (off): removed=0")
 
-    # Удаляем исходные categoryId (позже поставим 0 первым тегом)
+    # 3) Удаляем исходные categoryId (позже поставим 0 первым тегом)
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId")) + list(off.findall("CategoryId")):
                 off.remove(node)
 
-    # Флаг/форсирование цен
+    # 4) Флаг/форсирование цен
     flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
-    # Бренды
+    # 5) Бренды
     ensure_vendor(out_shop)
     filled = ensure_vendor_auto_fill(out_shop); log(f"Vendors auto-filled: {filled}")
 
-    # vendorCode/id
+    # 6) vendorCode/id
     ensure_vendorcode_with_article(out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=True)
     sync_offer_id_with_vendorcode(out_shop)
 
-    # Пересчёт розницы + принудительные цены
+    # 7) Пересчёт розницы + принудительные цены
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price={PRICE_CAP_VALUE}: {forced}")
 
-    # Чистим мусорные <param>
+    # 8) Чистим мусорные <param>
     removed_params = remove_specific_params(out_shop); log(f"Params removed: {removed_params}")
 
-    # Фото-заглушки (если нет ни одной картинки)
+    # 9) Фото-заглушки (если нет ни одной картинки)
     ph_added, _ = ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
 
-    # available → в атрибут оффера, удаляем складские поля
+    # 10) available -> в атрибут оффера, удаляем складские поля
     t_true, t_false, _, _ = normalize_available_field(out_shop)
 
-    # Валюта
+    # 11) Валюта
     fix_currency_id(out_shop, default_code="KZT")
 
-    # Чистка служебных тегов/атрибутов
+    # 12) Чистка служебных тегов/атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
-    # Порядок тегов + categoryId=0 первым
+    # 13) Порядок тегов + categoryId=0 первым
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
-    # Ключевые слова (НЕ трогаем description, только читаем при необходимости)
+    # 14) Ключевые слова (описание только ЧИТАЕМ при извлечении моделей)
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
-    # Красивые отступы (Python 3.9+)
+    # 15) ПЛОСКАЯ нормализация описаний (ПОДХОД 2): одна строка, без HTML-тегов
+    desc_touched = flatten_all_descriptions(out_shop); log(f"Descriptions flattened: {desc_touched}")
+
+    # Красивые отступы (Python 3.9+). На плоский текст внутри <description> это не влияет.
     try:
         ET.indent(out_root, space="  ")
     except Exception:
@@ -1092,6 +1131,7 @@ def main() -> None:
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
     except UnicodeEncodeError as e:
+        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
         warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
@@ -1105,7 +1145,7 @@ def main() -> None:
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS")
+    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=DESC-FLAT")
 
 if __name__ == "__main__":
     try:
