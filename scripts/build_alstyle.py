@@ -1,13 +1,19 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML (NO-DESCRIPTION-TOUCH edition)
+AlStyle → YML (DESC-CLEAN-LAST edition)
 
-Задача: полностью отключить любые изменения содержимого тега <description>.
-Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
-Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords, порядок полей и т.д.) сохранён.
+Задача: оставить всю существующую логику БЕЗ изменений и добавить ОДИН шаг в САМОМ КОНЦЕ,
+который аккуратно чистит уже имеющееся «родное» описание в <description>:
+— убирает мусорные/дублирующиеся заголовки,
+— схлопывает лишние переносы и пробелы,
+— чинит типовые разрывы пунктов списков (например, «2×» и «Thunderbolt…» в соседних <li>),
+— правит тройные точки в заголовках товара перед двоеточием,
+— НЕ добавляет/не удаляет блоки FAQ/Отзывы и т.п.,
+— НЕ создаёт description там, где его не было,
+— НЕ меняет другие теги оффера и весь остальной пайплайн.
 
-Версия: alstyle-2025-10-30.ndt-1
+Версия: alstyle-2025-10-31.desc-clean-1
 Python: 3.11+
 """
 
@@ -85,9 +91,6 @@ def err(msg: str, code: int = 1) -> None:
 def now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
-def now_utc_str() -> str:
-    return now_utc().strftime("%Y-%m-%d %H:%M:%S %Z")
-
 def now_almaty() -> datetime:
     if ZoneInfo:
         try:
@@ -149,7 +152,7 @@ def remove_all(el: ET.Element, *tags: str) -> int:
     return n
 
 def inner_html(el: ET.Element) -> str:
-    """Возвращает innerHTML тега (используем только для чтения, описания не меняем)."""
+    """Возвращает innerHTML тега (для чтения)."""
     if el is None:
         return ""
     parts: List[str] = []
@@ -278,7 +281,7 @@ COMMON_BRANDS = [
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # ← добавил LG
+    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # LG включён
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -348,7 +351,7 @@ def _find_brand_in_text(text: str) -> str:
 
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name  = get_text(offer, "name")
-    desc  = inner_html(offer.find("description"))  # читаем, но НЕ меняем
+    desc  = inner_html(offer.find("description"))  # только читаем
     first = re.split(r"\s+", name.strip())[0] if name else ""
     f_norm = _norm_key(first)
     if f_norm in brand_index:
@@ -959,6 +962,102 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
     lines = ["FEED_META"] + [f"{k.ljust(key_w)} | {v}" for k,v in rows]
     return "\n".join(lines)
 
+# ======================= ЧИСТКА ОПИСАНИЙ (ТОЛЬКО В КОНЦЕ) =======================
+ELLIPSIS_BEFORE_COLON_RE = re.compile(r"\s*\.\.\.\s*:")
+DUP_H3_RE = re.compile(r"(?:<h3>\s*([^<]+?)\s*</h3>\s*){2,}", re.I)
+H3_ONLY_WHITESPACE_RE = re.compile(r"<h3>\s*</h3>", re.I)
+
+def _merge_count_item_pairs(html: str) -> str:
+    """
+    Сшивает пары <li>кол-во×</li><li>Текст</li> → <li>кол-во× Текст</li>.
+    Также чинит RJ-45 (2.5 Гбит/с + LAN) разрезанные на две <li>.
+    """
+    # 1) «2×» + «Thunderbolt …»
+    html = re.sub(
+        r"<li>\s*((?:\d+\s*(?:×|x|&#215;)))\s*</li>\s*<li>\s*([^<][^<]*?)\s*</li>",
+        r"<li>\1 \2</li>",
+        html,
+        flags=re.I
+    )
+    # 2) RJ-45 ( …  +  LAN)
+    html = re.sub(
+        r"<li>\s*RJ-45\s*\(\s*([^<\)]*?)\s*</li>\s*<li>\s*LAN\s*\)\s*</li>",
+        r"<li>RJ-45 (\1 LAN)</li>",
+        html,
+        flags=re.I
+    )
+    return html
+
+def _fix_short_headings(html: str) -> str:
+    # «и подключения» → «Порты и подключения»
+    html = re.sub(r"<h3>\s*и подключения\s*</h3>", r"<h3>Порты и подключения</h3>", html, flags=re.I)
+    # Дубли заголовков подряд (оставляем один)
+    def _dedup_h3(m: re.Match) -> str:
+        text = m.group(1)
+        return f"<h3>{text}</h3>"
+    html = DUP_H3_RE.sub(_dedup_h3, html)
+    # Пустые заголовки
+    html = H3_ONLY_WHITESPACE_RE.sub("", html)
+    # Специальные дубли «Размеры и вес»
+    html = re.sub(
+        r"(?:<h3>\s*Размеры и вес\s*</h3>\s*){2,}",
+        r"<h3>Размеры и вес</h3>",
+        html,
+        flags=re.I
+    )
+    return html
+
+def _normalize_spaces_newlines(html: str) -> str:
+    # Убираем тройные точки перед двоеточием в H3 названиях товара
+    html = ELLIPSIS_BEFORE_COLON_RE.sub(":", html)
+    # Схлопываем множественные пустые строки внутри CDATA/HTML
+    html = re.sub(r"[ \t]+\n", "\n", html)
+    html = re.sub(r"\n{3,}", "\n\n", html)
+    # Убираем пустые <li>
+    html = re.sub(r"<li>\s*</li>", "", html, flags=re.I)
+    # Аккуратные пробелы вокруг тегов
+    html = re.sub(r">\s+<", "><", html)  # плотнее тэги
+    html = re.sub(r"\s{2,}", " ", html)  # длинные пробелы
+    return html.strip()
+
+def tidy_description_html(html: str) -> str:
+    """Ненавязчивая чистка родного HTML-описания (без добавления новых блоков)."""
+    if not html or not html.strip():
+        return html
+    s = html
+    s = _merge_count_item_pairs(s)
+    s = _fix_short_headings(s)
+    s = _normalize_spaces_newlines(s)
+    return s
+
+def finalize_descriptions(shop_el: ET.Element) -> int:
+    """
+    Проходим все офферы и ЧИСТИМ ТОЛЬКО содержимое <description>,
+    ничего не создаём, если описания нет.
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        d = offer.find("description")
+        if d is None:
+            continue
+        raw = inner_html(d)
+        if not raw:
+            continue
+        cleaned = tidy_description_html(raw)
+        if cleaned == raw:
+            continue
+        # ВНИМАНИЕ: не пересобираем узлы, оставляем как текст внутри <description>,
+        # чтобы не затрагивать остальную структуру. HTML останется внутри CDATA/текста.
+        # Если у description были дочерние элементы — сначала удалим их и положим чистый HTML как текст.
+        for ch in list(d):
+            d.remove(ch)
+        d.text = cleaned
+        touched += 1
+    return touched
+
 # ======================= MAIN =======================
 def main() -> None:
     log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
@@ -980,7 +1079,7 @@ def main() -> None:
     out_shop  = ET.SubElement(out_root, "shop")
     out_offers= ET.SubElement(out_shop, "offers")
 
-    # Копируем офферы 1:1 (описание НЕ трогаем — уйдет как в источнике)
+    # Копируем офферы 1:1
     for o in src_offers:
         out_offers.append(deepcopy(o))
 
@@ -1052,8 +1151,11 @@ def main() -> None:
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
-    # Ключевые слова (НЕ трогаем description, только читаем при необходимости)
+    # Ключевые слова
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
+
+    # === ТОЛЬКО ТЕПЕРЬ — ФИНАЛЬНАЯ ЧИСТКА РОДНОГО ОПИСАНИЯ ===
+    desc_fixed = finalize_descriptions(out_shop); log(f"Descriptions cleaned: {desc_fixed}")
 
     # Красивые отступы (Python 3.9+)
     try:
@@ -1092,7 +1194,6 @@ def main() -> None:
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
     except UnicodeEncodeError as e:
-        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
         warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
@@ -1106,7 +1207,7 @@ def main() -> None:
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS")
+    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=CLEANED")
 
 if __name__ == "__main__":
     try:
