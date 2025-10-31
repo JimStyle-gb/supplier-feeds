@@ -1,19 +1,17 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML (NO-DESCRIPTION-TOUCH edition)
+AlStyle → YML (plain-description cleanup only)
 
-Задача: полностью отключить любые изменения содержимого тега <description>.
-Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
-Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords, порядок полей и т.д.) сохранён.
-
-Версия: alstyle-2025-10-30.ndt-1
-Python: 3.11+
+Требование пользователя:
+— НЕ менять общую логику пайплайна (цены, вендор, категории, порядок тегов и т.д.).
+— В самом конце сделать мягкую чистку ТОЛЬКО содержимого <description> без HTML-оформления
+  (убрать лишние пустые строки, хвосты-обрубки, декодировать HTML-сущности, нормализовать 'x' → '×' между цифрами).
 """
 
 from __future__ import annotations
-import os, sys, re, time, 
-random, hashlib, urllib.parse, requests, html
+
+import os, sys, re, time, random, hashlib, urllib.parse, requests, html
 from typing import Dict, List, Tuple, Optional, Set
 from copy import deepcopy
 from xml.etree import ElementTree as ET
@@ -269,7 +267,6 @@ def collect_descendants(seed: Set[str], parent2children: Dict[str,Set[str]]) -> 
 
 # ======================= ВЕНДОР =======================
 UNKNOWN_VENDOR_MARKERS = {"no brand","noname","unknown","неизвест","без бренда","none","—","-"}
-
 SUPPLIER_BLOCKLIST = {"alstyle","al-style","copyline","vtt","akcent","ak-cent"}
 COMMON_BRANDS = [
     "HP","Hewlett Packard","Canon","Epson","Brother","Ricoh","Kyocera","Xerox","Lexmark","Panasonic","OKI",
@@ -285,8 +282,7 @@ COMMON_BRANDS = [
     "Logitech","Razer","SteelSeries","HyperX","Edifier","JBL","Sony Audio",
     "Bosch","Makita","DeWalt","Metabo",
     "TSC","Zebra",
-    "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # ← добавил LG
+    "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga"
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -346,6 +342,12 @@ def _find_brand_in_text(txt: str) -> str:
                 return b
     return ""
 
+def build_brand_index(shop_el: ET.Element) -> Dict[str,str]:
+    idx: Dict[str,str] = {}
+    for b in COMMON_BRANDS:
+        idx[_norm_key(b)] = b
+    return idx
+
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name  = get_text(offer, "name")
     desc  = inner_html(offer.find("description"))  # читаем, но НЕ меняем
@@ -380,14 +382,8 @@ def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
             touched += 1
     return touched
 
-def build_brand_index(shop_el: ET.Element) -> Dict[str,str]:
-    idx: Dict[str,str] = {}
-    for b in COMMON_BRANDS:
-        idx[_norm_key(b)] = b
-    return idx
-
 # ======================= ЦЕНЫ =======================
-class PriceRule(Tuple[int,int,float,int]): pass
+PriceRule = Tuple[int,int,float,int]
 
 PRICE_RULES: List[PriceRule] = [
     (101,        10000,     4.0,  3000),
@@ -605,8 +601,8 @@ def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
     return (added, skipped)
 
 # ======================= НАЛИЧИЕ/ID/ПОРЯДОК/ВАЛЮТА =======================
-TRUE_WORDS = {"true","1","yes","y","да","есть","in stock","available"}
-FALSE_WORDS= {"false","0","no","n","нет","отсутствует","нет в на..."out of stock","unavailable","под заказ","ожидается","на заказ"}
+TRUE_WORDS  = {"true","1","yes","y","да","есть","in stock","available"}
+FALSE_WORDS = {"false","0","no","n","нет","отсутствует","нет в наличии","out of stock","unavailable","под заказ","ожидается","на заказ"}
 
 def _parse_bool_str(s: str) -> Optional[bool]:
     v = _norm_text(s or "")
@@ -760,7 +756,6 @@ def reorder_offer_children(shop_el: ET.Element) -> None:
                 i = order.index(tag)
             except Exception:
                 i = 999
-            # чтобы несколько <picture> шли ближе к началу своего блока
             if tag == "picture":
                 return (i, 0)
             return (i, 1)
@@ -771,7 +766,7 @@ def reorder_offer_children(shop_el: ET.Element) -> None:
             off.append(k)
 
 def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
-    """Вставляем <categoryId>0</categoryId> первым элементом оффера (по требованию пользователя)."""
+    """Вставляем <categoryId>0</categoryId> первым элементом оффера."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -809,7 +804,6 @@ def _clean_desc_text(s: str) -> str:
         for ln in lines:
             ln_stripped = ln.strip().strip(":").strip()
             if ln_stripped.lower() in _CLEAN_STOPLINES and ln_stripped.lower() == ln.strip().lower():
-                # строка состоит только из стоп-фразы — пропускаем
                 continue
             out_lines.append(ln)
         s = "\n".join(out_lines)
@@ -822,9 +816,7 @@ def _clean_desc_text(s: str) -> str:
         return s
 
 def post_clean_descriptions(shop_el: ET.Element) -> int:
-    """Мягкая чистка <description>: без HTML-оформления, только текстовая нормализация.
-    Никаких изменений вне тега <description>.
-    """
+    """Мягкая чистка <description>: без HTML-оформления, только текстовая нормализация."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -836,8 +828,7 @@ def post_clean_descriptions(shop_el: ET.Element) -> int:
         raw = inner_html(d)  # читаем как есть
         cleaned = _clean_desc_text(raw)
         if cleaned != raw:
-            # перезаписываем содержимое description как простой текст (сохраним существующие вложенные теги, если были)
-            # удаляем всех детей и текст, затем ставим новый текст
+            # перезаписываем содержимое description как простой текст
             for child in list(d):
                 d.remove(child)
             d.text = cleaned
@@ -846,7 +837,7 @@ def post_clean_descriptions(shop_el: ET.Element) -> int:
 
 # ======================= КЛЮЧЕВЫЕ СЛОВА =======================
 WORD_RE = re.compile(r"[A-Za-zА-Яа-яЁё0-9\-]{2,}")
-STOPWORDS_RU = {"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","при","между","между","из-за","из-под","поэтому","также","же","ли","да","нет","бы","были","был","была","быть","есть","будет","будут","у","во","со","ко","ну","а","но","же","же","то","же","то","ещё","еще","такое","такой","такая","такие","этот","эта","эти","тот","та","те","и т.д.","и др.","др.","т.д.","и пр.","прочее","разное","разн.","все","всё","всего","всем","всеми","всех","раз","раза","разов","штук","шт","штука","штуки","штук","в комплекте","комплект","набор","тип","модель","модели","формат","новый","новинка"}
+STOPWORDS_RU = {"для","и","или","на","в","из","от","по","с","к","до","при","через","над","под","при","между","из-за","из-под","поэтому","также","же","ли","да","нет","бы","были","был","была","быть","есть","будет","будут","у","во","со","ко","ну","а","но","же","то","же","то","ещё","еще","такое","такой","такая","такие","этот","эта","эти","тот","та","те","и т.д.","и др.","др.","т.д.","и пр.","прочее","разное","разн.","все","всё","всего","всем","всеми","всех","раз","раза","разов","штук","шт","штука","штуки","штук","в комплекте","комплект","набор","тип","модель","модели","формат","новый","новинка"}
 STOPWORDS_EN = {"for","and","or","with","of","the","a","an","to","in","on","by","is","are","be","this","that","these","those","new","original","type","model","set","kit","pack"}
 GENERIC_DROP = {"изделие","товар","продукция","аксессуар","устройство","оборудование"}
 
@@ -883,7 +874,7 @@ def color_tokens(name: str) -> List[str]:
     out: List[str] = []
     low = (name or "").lower()
     mapping = {"жёлт":"желтый","желт":"желтый","yellow":"yellow","черн":"черный","black":"black","син":"синий","blue":"blue",
-               "красн":"красный","red":"red","зелен":"зеленый","green":"green","бел":"белый","white":"white","сер":"серый","grey":"grey","silver":"silver","серебр":"серебряный","silver":"silver","циан":"cyan","магент":"magenta"}
+               "красн":"красный","red":"red","зелен":"зеленый","green":"green","бел":"белый","white":"white","сер":"серый","grey":"grey","silver":"silver","серебр":"серебряный","cyan":"cyan","magenta":"magenta"}
     for k,val in mapping.items():
         if k in low:
             out.append(val)
@@ -1004,7 +995,7 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
 
 # ======================= MAIN =======================
 def main() -> None:
-    log("Run set - e")
+    log("Run set -e")
     log(f"Source: {SUPPLIER_URL}")
 
     # 1) загрузка исходника
@@ -1030,7 +1021,7 @@ def main() -> None:
     out_offers = ET.SubElement(out_shop, "offers")
 
     # 4) Копируем офферы 1:1 (описание НЕ трогаем — уйдет как в источнике)
-    for o in src_offers:
+    for o in src_offers_list:
         out_offers.append(deepcopy(o))
 
     # 5) Фильтр категорий (include/exclude по ID/названию)
@@ -1091,7 +1082,7 @@ def main() -> None:
     # 13) Ключевые слова (НЕ трогаем description, только читаем при необходимости)
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
-    # Пост-очистка описаний (только текст, без HTML-оформления)
+    # 14) Пост-очистка описаний (только текст, без HTML-оформления) — САМЫЙ КОНЕЦ
     desc_touched = post_clean_descriptions(out_shop)
     log(f"Descriptions cleaned (plain): {desc_touched}")
 
