@@ -1,13 +1,22 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-AlStyle → YML (NO-DESCRIPTION-TOUCH edition)
+AlStyle → YML (NO-DESCRIPTION-TOUCH edition + CDATA post-format)
 
-Задача: полностью отключить любые изменения содержимого тега <description>.
-Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
-Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords, порядок полей и т.д.) сохранён.
+Задача: НЕ трогаем описание при работе с деревом XML (ElementTree),
+а только в самом конце — в уже собранной строке xml_text — аккуратно
+причёсываем содержимое CDATA внутри <description>:
+- чистим лишние пробелы/переносы,
+- исправляем заголовок «и подключения» → «Порты и подключения»,
+- склеиваем соседние <ul>…</ul><ul>…</ul> в один список,
+- убираем пустые <ul></ul>,
+- устраняем дубль соседних одинаковых <h3>,
+- нормализуем знак умножения между цифрами: 2x → 2×.
 
-Версия: alstyle-2025-10-30.ndt-1
+Всё остальное (цены, бренды, available, порядок тегов, keywords, vendorCode/id и т.п.)
+не меняется.
+
+Версия: alstyle-2025-10-31.cdata-post-1
 Python: 3.11+
 """
 
@@ -278,7 +287,7 @@ COMMON_BRANDS = [
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # ← добавил LG
+    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # важно: LG есть
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -959,6 +968,73 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
     lines = ["FEED_META"] + [f"{k.ljust(key_w)} | {v}" for k,v in rows]
     return "\n".join(lines)
 
+# ======================= POST: форматирование CDATA-описаний в xml_text =======================
+def _clean_once_desc_html(s: str) -> str:
+    # Нормализуем переводы строк/пробелы
+    s = s.replace("\r\n", "\n").replace("\r", "\n")
+    s = re.sub(r"[ \t]+\n", "\n", s)
+    s = re.sub(r"\n{3,}", "\n\n", s)
+
+    # 2x → 2× между цифрами
+    s = re.sub(r"(?<=\d)\s*[x×]\s*(?=\d)", "×", s)
+
+    # <h3>и подключения</h3> → <h3>Порты и подключения</h3>
+    s = re.sub(r"<h3>\s*и подключения\s*</h3>", "<h3>Порты и подключения</h3>", s, flags=re.I)
+
+    # Убираем дубль одинаковых соседних <h3>
+    s = re.sub(r"(<h3>\s*([^<]{1,80}?)\s*</h3>)(\s*<h3>\s*\2\s*</h3>)+", r"\1", s, flags=re.I)
+
+    # Склейка соседних списков: ...</ul>\s*<ul>... → ...
+    while True:
+        new_s = re.sub(r"</ul>\s*<ul>", "", s, flags=re.I)
+        if new_s == s:
+            break
+        s = new_s
+
+    # Удаляем пустые списки
+    s = re.sub(r"<ul>\s*</ul>", "", s, flags=re.I)
+
+    # Случай, когда <li> только с числителем, а следующий <li> — текст: склеиваем "2× " + текст
+    # Пример: <li>2×</li><li>Thunderbolt™ 5 ...</li> → <li>2× Thunderbolt™ 5 ...</li>
+    while True:
+        new_s = re.sub(r"<li>\s*(\d+)\s*×?\s*</li>\s*<li>\s*([^<][\s\S]*?)\s*</li>",
+                       r"<li>\1× \2</li>", s, flags=re.I)
+        if new_s == s:
+            break
+        s = new_s
+
+    # Корректируем дубль блоков "Размеры и вес"
+    # <h3>Размеры и вес</h3><p>...</p><h3>Размеры и вес</h3> → один заголовок + абзац
+    s = re.sub(r"(<h3>\s*Размеры и вес\s*</h3>)\s*(<p>[\s\S]*?</p>)\s*<h3>\s*Размеры и вес\s*</h3>",
+               r"\1\2", s, flags=re.I)
+
+    # Чистка лишних пробелов между тегами
+    s = re.sub(r">\s+<", "><", s)
+    s = re.sub(r"\s{2,}", " ", s)
+    return s.strip()
+
+def format_descriptions_in_xml_text(xml_text: str) -> Tuple[str, int]:
+    """Ищем все <![CDATA[...]]> внутри <description> и чистим содержимое по правилам выше."""
+    cnt = 0
+
+    def _repl(m: re.Match) -> str:
+        nonlocal cnt
+        inner = m.group(1)
+        fixed = _clean_once_desc_html(inner)
+        if fixed != inner:
+            cnt += 1
+        # возвращаем с переносами для читабельности
+        return "<![CDATA[\n" + fixed + "\n]]>"
+
+    # Только description-CDATA
+    xml_text = re.sub(
+        r"<!\[CDATA\[(.*?)\]\]>",
+        _repl,
+        xml_text,
+        flags=re.S
+    )
+    return xml_text, cnt
+
 # ======================= MAIN =======================
 def main() -> None:
     log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
@@ -1083,6 +1159,10 @@ def main() -> None:
     xml_text = re.sub(r"(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
 
+    # === POST: форматирование CDATA-описаний в xml_text ===
+    xml_text, desc_fmt_cnt = format_descriptions_in_xml_text(xml_text)
+    log(f"Descriptions (CDATA) formatted: {desc_fmt_cnt}")
+
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
         return
@@ -1106,7 +1186,7 @@ def main() -> None:
     except Exception as e:
         warn(f".nojekyll create warn: {e}")
 
-    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS")
+    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS + CDATA post-format")
 
 if __name__ == "__main__":
     try:
