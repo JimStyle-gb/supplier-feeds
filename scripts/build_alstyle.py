@@ -45,6 +45,132 @@ def _desc_normalize_multi_punct(s: str) -> str:
     return s
 
 def fix_all_descriptions_end(out_root):
+
+# ================== BEGIN: HTML Description Beautifier (append-only) ==================
+import html as _html
+import re as _re
+
+def _desc_strip_markup(s: str) -> str:
+    if s is None:
+        return ""
+    s = s.replace("\r\n", "\n").replace("\r", "\n")
+    s = _re.sub(r'(?i)<\s*br\s*/?\s*>', '\n', s)
+    s = _re.sub(r'(?is)</?\s*(?:span|div)\b[^>]*>', '', s)
+    s = _re.sub(r'(?is)</?\s*p\b[^>]*>', '\n', s)
+    s = _re.sub(r'[ \t]+\n', '\n', s)
+    s = _re.sub(r'\n{3,}', '\n\n', s)
+    return s.strip()
+
+def _desc_clean_text(s: str) -> str:
+    s = _re.sub(r'[\u00A0\u2009\u200A\u202F]+', ' ', s)          # nbsp & co
+    s = _re.sub(r'\s+([,.;:!?])', r'\1', s)                     # space before punctuation
+    s = _re.sub(r'[!?.]{4,}', lambda m: m.group(0)[-3:], s)     # clamp repeats
+    s = _re.sub(r'…+', '...', s)
+    s = '\n'.join(line.strip() for line in s.splitlines())
+    s = _re.sub(r'\n{3,}', '\n\n', s)
+    return s.strip()
+
+def _desc_extract_pairs(s: str):
+    if not s:
+        return []
+    # split by line/semicolon/bullet
+    raw = _re.split(r'\n|[;•\u2022]', s)
+    out = []
+    for ch in raw:
+        ch = ch.strip(' -\t')
+        if not ch: continue
+        m = _re.match(r'([^:：]{2,60})\s*[:：]\s*(.+)$', ch)
+        if m:
+            k = m.group(1).strip()
+            v = m.group(2).strip()
+            out.append((k, v))
+    # unique
+    seen = set(); uniq = []
+    for k,v in out:
+        key = (k.lower(), v.lower())
+        if key not in seen:
+            seen.add(key); uniq.append((k,v))
+    return uniq[:50]
+
+def _desc_quick_facts(offer):
+    prio = ["Вес","Ресурс","Гарантия","Диагональ экрана","Частота обновления экрана","Тип матрицы экрана",
+            "Цвет","Тип накопителя","Объем накопителя","Процессор","Видеокарта"]
+    lookup = {}
+    for p in offer.findall("param"):
+        n = (p.get("name") or "").strip(); v = (p.text or "").strip()
+        if n and v and n not in lookup: lookup[n] = v
+    items = [(k, lookup[k]) for k in prio if k in lookup][:5]
+    if not items: return ""
+    return "<ul>\n" + "\n".join(f"  <li>&#9989; {_html.escape(k)}: {_html.escape(v)}</li>" for k,v in items) + "\n</ul>"
+
+def beautify_descriptions_html(out_root):
+    for offer in out_root.findall(".//offer"):
+        d = offer.find("description")
+        if d is None: 
+            continue
+        raw = (d.text or "").strip()
+        if not raw or len(raw) < 40:
+            # keep as-is (or empty stays empty)
+            continue
+        txt = _desc_strip_markup(raw)
+        txt = _desc_clean_text(txt)
+
+        # split into intro + possible KV
+        m = _re.search(r'(?i)\b(характеристики|технические\s+характеристики)\b[:：]?', txt)
+        if m:
+            intro = txt[:m.start()].strip()
+            rest  = txt[m.end():].strip()
+        else:
+            # try to split by first long list of pairs
+            parts = txt.split("\n")
+            pivot = None
+            for i, ln in enumerate(parts):
+                if _re.search(r'.+[:：]\s+.+', ln):
+                    pivot = i; break
+            intro = "\n".join(parts[:pivot]).strip() if pivot is not None else txt
+            rest  = "\n".join(parts[pivot:]).strip() if pivot is not None else ""
+
+        pairs = _desc_extract_pairs(rest)
+        name = offer.findtext("name", "").strip() or "Описание"
+
+        html_parts = []
+        html_parts.append(f"<h3>{_html.escape(name, quote=False)}</h3>")
+
+        if intro:
+            paras = [p for p in (p.strip() for p in intro.split("\n")) if p]
+            if len(paras) <= 2:
+                html_parts.append(f"<p>{_html.escape(' '.join(paras), quote=False)}</p>")
+            else:
+                html_parts.append(f"<p>{_html.escape(paras[0], quote=False)}</p>")
+                for p in paras[1:5]:
+                    html_parts.append(f"<p>{_html.escape(p, quote=False)}</p>")
+
+        quick = _desc_quick_facts(offer)
+        if quick:
+            html_parts.append(quick)
+
+        if pairs:
+            html_parts.append("<h3>Характеристики</h3>")
+            html_parts.append("<table><tbody>")
+            for k,v in pairs:
+                html_parts.append(f"<tr><th>{_html.escape(k, quote=False)}</th><td>{_html.escape(v, quote=False)}</td></tr>")
+            html_parts.append("</tbody></table>")
+
+        new_html = "\n".join(html_parts).strip()
+        # apply only if result is meaningful
+        text_only_len = len(_re.sub(r'<[^>]+>', '', new_html))
+        if text_only_len >= 40:
+            d.text = new_html
+
+def _desc_expand_selfclosing(xml_bytes, enc):
+    try:
+        t = xml_bytes.decode(enc, errors="replace")
+        t = _re.sub(r'<description\s*/\s*>', '<description></description>', t)
+        return t.encode(enc, errors="replace")
+    except Exception:
+        return xml_bytes
+# =================== END: HTML Description Beautifier (append-only) ===================
+
     """Run at the very end, just before ET.tostring(): spacing + multi-punct cleanup."""
     for offer in out_root.findall(".//offer"):
         d = offer.find("description")
@@ -1163,7 +1289,19 @@ def main() -> None:
         fix_all_descriptions_end(out_root)
     except Exception as _e:
         print(f"desc_end_fix_warn: {_e}")
+
+# Beautify HTML descriptions at the very end (safe)
+try:
+    beautify_descriptions_html(out_root)
+except Exception as e:
+    print(f"desc_html_beautify_warn: {e}")
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
+
+# Expand self-closing <description /> to explicit open/close
+try:
+    xml_bytes = _desc_expand_selfclosing(xml_bytes, ENC)
+except Exception as e:
+    print(f"desc_selfclose_fix_warn: {e}")
     # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
     try:
         _enc = ENC if 'ENC' in globals() else 'windows-1251'
