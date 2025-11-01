@@ -17,7 +17,7 @@ from xml.etree import ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
 
-# === Minimal post-step: fix spaces before punctuation inside <description> (added) ===
+# === Minimal post-steps for <description> (added) ===
 def _desc_fix_punct_spacing(s: str) -> str:
     """
     Keep supplier text AS-IS, only remove spaces (incl. NBSP/thin spaces)
@@ -26,21 +26,45 @@ def _desc_fix_punct_spacing(s: str) -> str:
     if s is None:
         return s
     import re as _re
-    # collapse any unicode spaces BEFORE punctuation into nothing
     s = _re.sub(r'[\u00A0\u2009\u200A\u202F\s]+([,.;:!?])', r'\1', s)
     return s
 
-def fix_all_descriptions_punct(out_root):
-    """Run at the very end, just before ET.tostring(): only punctuation spacing is adjusted."""
+def _desc_normalize_multi_punct(s: str) -> str:
+    """
+    Normalize runs of punctuation to marketplace-friendly, ASCII-safe form:
+      - three or more dots (or any ellipsis chars) -> '...'
+      - three or more of the same in [! ? ; :] -> a single last punctuation char
+      - mixed sequences of length >=3 from [! ? ; :] -> collapse to the LAST char
+    Does not touch ordinary text.
+    """
+    if s is None:
+        return s
+    import re as _re
+    # 1) Mixed / repeated runs (>=3) of ! ? ; : -> reduce to the last char
+    def _reduce_mixed(m):
+        seq = m.group(0)
+        return seq[-1]
+    s = _re.sub(r'[!?:;]{3,}', _reduce_mixed, s)
+
+    # 2) Ellipsis: convert unicode ellipsis and 3+ dots to exactly three dots
+    s = _re.sub(r'…+', '...', s)          # any number of unicode ellipsis -> '...'
+    s = _re.sub(r'\.{3,}', '...', s)     # 3 or more dots -> '...'
+    return s
+
+def fix_all_descriptions_end(out_root):
+    """Run at the very end, just before ET.tostring(): spacing + multi-punct cleanup."""
     for offer in out_root.findall(".//offer"):
         d = offer.find("description")
         if d is not None and d.text:
             try:
-                d.text = _desc_fix_punct_spacing(d.text)
-            except Exception as e:
-                # Failsafe: keep original on error
+                t = d.text
+                t = _desc_fix_punct_spacing(t)
+                t = _desc_normalize_multi_punct(t)
+                d.text = t
+            except Exception:
+                # Failsafe: keep original on any error
                 pass
-# === End of minimal post-step (added) ===
+# === End of minimal post-steps (added) ===
 
 
 try:
@@ -1142,18 +1166,18 @@ def main() -> None:
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
     # Сериализация
-    # FINAL STEP (safe): fix spaces before punctuation in <description>
+
+    # FINAL STEP (safe): description spacing & multi-punct normalization
 
     try:
 
-        fix_all_descriptions_punct(out_root)
+        fix_all_descriptions_end(out_root)
 
     except Exception as e:
 
-        print(f"desc_punct_fix_warn: {e}")
+        print(f"desc_end_fix_warn: {e}")
 
-    
-    xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
+    xml_bytes = ET.tostring(out_root0>
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
     # Лёгкая косметика: перенос после FEED_META и пустая строка между офферами
