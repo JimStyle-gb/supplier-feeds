@@ -33,175 +33,16 @@ def _normalize_ws(_t: str) -> str:
     return _t.strip()
 
 def _extract_kv_specs(_t: str):
-    """
-    Распознаёт пары ключ—значение в свободном тексте описания, причём:
-      • поддерживаются явные разделители (: — – - =)
-      • понимает записи без двоеточия: «Ключ 2000 Вт», «2 л Вес», «200×300×50 мм»
-      • агрегирует и нормализует единицы (мА·ч, × и пр.)
-      • удаляет дубли; сортирует по полезному порядку
-    Возвращает список [(Key, Value), ...]
-    """
-    import re as _rx
-
-    def _canon_spec_key(k: str) -> str:
-        k_raw = (k or "").strip().strip(" .,:;—-")
-        if not k_raw:
-            return ""
-        syn = {
-            "емкость": "Ёмкость",
-            "ёмикость": "Ёмкость",
-            "емкость батареи": "Ёмкость батареи",
-            "ёмкость батареи": "Ёмкость батареи",
-            "battery": "Ёмкость батареи",
-            "питание": "Напряжение",
-            "напряжение": "Напряжение",
-            "ток": "Ток",
-            "частота": "Частота",
-            "скорость печати": "Скорость печати",
-            "разъемы": "Интерфейсы",
-            "разъёмы": "Интерфейсы",
-            "порты": "Интерфейсы",
-            "интерфейсы": "Интерфейсы",
-            "габариты": "Размеры",
-            "размеры": "Размеры",
-            "масса": "Вес",
-            "вес": "Вес",
-            "давление": "Давление",
-            "давление помпы": "Давление",
-            "диагональ": "Диагональ",
-            "объем": "Объём",
-            "объём": "Объём",
-            "тип": "Тип",
-            "модель": "Модель",
-            "бренд": "Бренд",
-            "гарантия": "Гарантия",
-        }
-        canon = syn.get(k_raw.lower())
-        return canon if canon else (k_raw[:1].upper() + k_raw[1:])
-
-    def _normalize_units(v: str) -> str:
-        s = (v or "").strip()
-        if not s:
-            return s
-        s = _rx.sub(r'[\u00A0\u2009\u200A\u202F]', " ", s)       # тонкие пробелы → обычный
-        s = s.replace("мАч", "мА·ч").replace("mAh", "мА·ч")          # емкость
-        s = _rx.sub(r'(?<=\d)[xх](?=\d)', "×", s)                  # 2x3 → 2×3
-        s = _rx.sub(r'\s*×\s*', "×", s)                            # пробелы вокруг ×
-        s = _rx.sub(r'\s{2,}', " ", s)
-        return s.strip(" ;,.")
-
-    def _parse_size_kv(t: str):
-        # 200x300x50 мм / 200×300×50 cm
-        m = _rx.search(r'(?i)\b(\d+(?:[.,]\d+)?)\s*[x×х]\s*(\d+(?:[.,]\d+)?)\s*[x×х]\s*(\d+(?:[.,]\d+)?)(?:\s*(мм|см|mm|cm))?', t or "")
-        if not m:
-            return None
-        a,b,c,unit = m.groups()
-        unit = (unit or "мм").lower()
-        unit = {"mm":"мм","cm":"см"}.get(unit, unit)
-        return ("Размеры", _normalize_units(f"{a}×{b}×{c} {unit}"))
-
-    # Ключевой порядок (для сортировки в выводе)
-    _KEY_ORDER = [
-        "Бренд","Модель","Тип","Мощность","Ёмкость батареи","Ёмкость","Диагональ",
-        "Размеры","Вес","Интерфейсы","Совместимость","Напряжение","Ток","Частота",
-        "Скорость печати","Давление","Объём","Гарантия"
-    ]
-    order_index = {k:i for i,k in enumerate(_KEY_ORDER)}
-
-    # Набор ключевых слов для распознавания «без двоеточия»
-    _KEY_WORDS = [
-        "Мощность","Вес","Ёмкость батареи","Ёмкость","Давление","Диагональ","Напряжение",
-        "Ток","Частота","Скорость печати","Объём","Объем","Размеры","Габариты",
-        "Ёмкость резервуара","Емкость резервуара","Ёмкость чаши","Емкость чаши",
-        "Интерфейсы","Порты","Разъёмы","Разъемы","Совместимость"
-    ]
-    _KEY_WORDS_RE = "(?:" + "|".join([_rx.escape(k) for k in _KEY_WORDS]) + ")"
-    _UNIT_WORD = r'(?:Вт|ВА|В|А|мА·ч|мАч|Гц|ГГц|кг|г|л|бар|мм|см|дюйм|"|%|rpm|об/мин|мин|сек|с)'
-
-    t = _t.replace("\r","\n")
     specs = []
-    seen = {}
-
-    # 0) размерность 200×300×50
-    sz = _parse_size_kv(t)
-    if sz:
-        k,v = sz
-        k = _canon_spec_key(k); v = _normalize_units(v)
-        seen[k] = len(specs); specs.append((k,v))
-
-    for ln in t.split("\n"):
-        s = ln.strip().strip("-•").strip()
-        if not s:
+    for m in _re_desc.finditer(r"(?m)\b([А-ЯЁA-Za-z0-9 _./()«»\-]{2,30})\s*:\s*([^\n]+)", _t):
+        key = m.group(1).strip(" .-")
+        val = m.group(2).strip(" .;")
+        if len(key) <= 2:
             continue
-
-        # 1) Явные разделители
-        m = _rx.match(r'(?i)^([А-ЯЁA-Za-z0-9 _./()«»\-]{2,30})\s*(?:[:=]|—|–|-)\s*([^\n]+)$', s)
-        if m:
-            k_raw, v_raw = m.group(1), m.group(2)
-            k = _canon_spec_key(k_raw)
-            v = _normalize_units(v_raw)
-            if k and v:
-                if k in seen:
-                    idx = seen[k]
-                    if len(v) > len(specs[idx][1]):
-                        specs[idx] = (k, v)
-                else:
-                    seen[k] = len(specs); specs.append((k, v))
+        if len(val) > 300:
             continue
-
-        # 2) «Ключ 2000 Вт»
-        m2 = _rx.search(fr'(?i)\b({_KEY_WORDS_RE})\s+(\d+(?:[.,]\d+)?)\s*({_UNIT_WORD})\b', s)
-        if m2:
-            k_raw, num, unit = m2.group(1), m2.group(2), m2.group(3)
-            k = _canon_spec_key(k_raw)
-            v = _normalize_units(f"{num} {unit}")
-            if k and v:
-                if k in seen:
-                    idx = seen[k]
-                    if len(v) > len(specs[idx][1]):
-                        specs[idx] = (k, v)
-                else:
-                    seen[k] = len(specs); specs.append((k, v))
-
-        # 3) «2000 Вт Ключ»
-        m3 = _rx.search(fr'(?i)\b(\d+(?:[.,]\d+)?)\s*({_UNIT_WORD})\s+({_KEY_WORDS_RE})\b', s)
-        if m3:
-            num, unit, k_raw = m3.group(1), m3.group(2), m3.group(3)
-            k = _canon_spec_key(k_raw)
-            v = _normalize_units(f"{num} {unit}")
-            if k and v:
-                if k in seen:
-                    idx = seen[k]
-                    if len(v) > len(specs[idx][1]):
-                        specs[idx] = (k, v)
-                else:
-                    seen[k] = len(specs); specs.append((k, v))
-
-        # 4) «Интерфейсы USB, HDMI ...» без двоеточия
-        m4 = _rx.search(r'(?i)\b(Интерфейсы|Порты|Разъёмы|Разъемы)\b\s+(.+)', s)
-        if m4:
-            k = _canon_spec_key(m4.group(1))
-            v = _normalize_units(_rx.sub(r'[\s,;]+$', "", m4.group(2)))
-            if k and v:
-                if k in seen:
-                    idx = seen[k]
-                    if len(v) > len(specs[idx][1]):
-                        specs[idx] = (k, v)
-                else:
-                    seen[k] = len(specs); specs.append((k, v))
-
-    # Фильтр «да/есть» (оставляем только если это очевидная бинарная фича)
-    cleaned = []
-    for k,v in specs:
-        vv = (v or "").strip().lower()
-        kk = (k or "").strip().lower()
-        if vv in {"да","есть","true","yes"} and kk not in {"наличие","wi-fi","bluetooth"}:
-            continue
-        cleaned.append((k,v))
-
-    # Сортировка: по полезному порядку; остальные в конец
-    cleaned.sort(key=lambda kv: order_index.get(kv[0], 10_000))
-    return cleaned
+        specs.append((key, val))
+    return specs
 
 def _extract_ports(_t: str):
     ports = []
@@ -233,84 +74,32 @@ def _split_sentences(_t: str):
     return [p.strip() for p in parts if p.strip()]
 
 def _build_html_from_plain(_t: str) -> str:
-    t = _normalize_ws(_t)
-    t = _re_desc.sub(r"(?mi)^Характеристики\s*:?", "", t).strip()
-    ports = _extract_ports(t)
-    specs = _extract_kv_specs(t)
-    if specs:
-        for k, v in specs[:50]:
-            t = t.replace(k + ": " + v, "").replace(k + ":" + v, "")
-        t = _re_desc.sub(r"(\n){2,}", "\n\n", t).strip()
-    sents = _split_sentences(t)
-    intro = " ".join(sents[:2]) if sents else t
-    rest = " ".join(sents[2:]) if len(sents) > 2 else ""
-    html = []
-    if intro:
-        html.append("<h3>Описание</h3>")
-        html.append("<p>" + intro + "</p>")
-    features = []
-    for frag in _re_desc.split(r"[\n]+", rest):
-        frag = frag.strip()
-        if not frag:
-            continue
-        if "•" in frag or ";" in frag or "—" in frag:
-            parts = _re_desc.split(r"[;•]|\s—\s", frag)
-            cand = [p.strip(" .;,-") for p in parts if len(p.strip(" .;,-")) >= 3]
-            for c in cand:
-                if 3 <= len(c) <= 180:
-                    features.append(c)
-    if features:
-        html.append("<h3>Особенности</h3>")
-        html.append("<ul>")
-        for f in features[:12]:
-            html.append("  <li>" + f + "</li>")
-        html.append("</ul>")
-    if ports:
-        html.append("<h3>Порты и подключения</h3>")
-        html.append("<ul>")
-        for p in ports[:20]:
-            html.append("  <li>" + p + "</li>")
-        html.append("</ul>")
-    if specs:
-        html.append("<h3>Характеристики</h3>")
-        html.append("<ul>")
-        seen = set()
-        for k, v in specs[:20]:
-            kv = (k.lower(), v)
-            if kv in seen:
-                continue
-            seen.add(kv)
-            html.append("  <li><strong>" + str(k) + ":</strong> " + str(v) + "</li>")
-        html.append("</ul>")
-    if not html:
-        tmp_para = _re_desc.sub(r"\n{2,}", "</p><p>", t)
-        return "<p>" + tmp_para + "</p>"
-    return "\n".join(html)
-
-def _beautify_description_inner(inner: str) -> str:
-    if _has_html_tags(inner):
-        t = _normalize_ws(inner)
-        lines = [ln.strip() for ln in t.split("\n")]
-        if any(ln.startswith("•") for ln in lines):
-            items = [ln.lstrip("• ").strip() for ln in lines if ln.startswith("•")]
-            others = [ln for ln in lines if not ln.startswith("•")]
-            if items:
-                t = "\n".join(others + ["<ul>"] + ["  <li>" + it + "</li>" for it in items] + ["</ul>"])
-        return t
-    return _build_html_from_plain(inner)
-
-def _expand_description_selfclose_text(xml_text: str) -> str:
-    return _re_desc.sub(r"<description\s*/\s*>", "<description></description>", xml_text)
-
-def _wrap_and_beautify_description_text(xml_text: str) -> str:
-    def repl(m):
-        inner = m.group(2)
-        if inner.strip() == "":
-            return m.group(1) + "" + m.group(3)
-        pretty = _beautify_description_inner(inner)
-        pretty_safe = pretty.replace("]]>", "]]]]><![CDATA[>")
-        return m.group(1) + "<![CDATA[" + pretty_safe + "]]>" + m.group(3)
-    return _re_desc.sub(r"(<description>)(.*?)(</description>)", repl, xml_text, flags=_re_desc.S)
+    """
+    PASSTHROUGH-HTML (без авто-аналитики):
+      • Оставляем структуру поставщика,
+      • NBSP/узкие/тонкие пробелы → обычный пробел,
+      • Удаляем нулевой ширины символы,
+      • Схлопываем повтор пробелов и пустых строк,
+      • Переводим переносы строк в <br>,
+      • Ничего не группируем (без <h3>, <ul> и т.п.).
+    """
+    import re as _rx
+    t = _t if isinstance(_t, str) else str(_t or "")
+    # Нормализация переносов
+    t = t.replace("\r\n", "\n").replace("\r", "\n")
+    # NBSP/узкие/тонкие пробелы → обычный пробел
+    t = _rx.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    # Удалить символы нулевой ширины/служебные (BOM/ZWSP/ZWNJ/ZWJ/WORD JOINER)
+    t = _rx.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
+    # Удалить хвостовые пробелы в конце строк
+    t = _rx.sub(r"[ \t]+\n", "\n", t)
+    # Схлопнуть последовательности пробелов и табов
+    t = _rx.sub(r"[ \t]{2,}", " ", t)
+    # Схлопнуть пустые строки (оставить одну)
+    t = _rx.sub(r"\n{2,}", "\n", t).strip()
+    # Перевод переносов строк в <br>
+    t = t.replace("\n", "<br>")
+    return t
 
 def _postprocess_descriptions_beautify_cdata(xml_bytes, enc):
     try:
@@ -1511,79 +1300,6 @@ def main() -> None:
         warn(f".nojekyll create warn: {e}")
 
     log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=DESC-FLAT")
-
-
-
-def _build_html_from_plain(_t: str) -> str:
-    t = _normalize_ws(_t)
-    # убрать заголовок "Характеристики" из исходника (если пришёл в сыром тексте)
-    t = _re_desc.sub(r"(?mi)^Характеристики\s*:?", "", t).strip()
-    ports = _extract_ports(t) if "_extract_ports" in globals() else []
-    specs = _extract_kv_specs(t)
-
-    # убрать найденные пары из текста, чтобы не было дублей между "Описание" и "Характеристики"
-    if specs:
-        for k, v in specs[:50]:
-            t = (t.replace(k + ": " + v, "")
-                   .replace(k + ":" + v, "")
-                   .replace(k + " — " + v, "")
-                   .replace(k + " – " + v, "")
-                   .replace(k + " - " + v, "")
-                   .replace(k + " = " + v, ""))
-        t = _re_desc.sub(r"(\n){2,}", "\n\n", t).strip()
-
-    sents = _split_sentences(t) if "_split_sentences" in globals() else [t]
-    intro = " ".join(sents[:2]) if sents else t
-    rest  = " ".join(sents[2:]) if len(sents) > 2 else ""
-
-    html = []
-    if intro:
-        html.append("<h3>Описание</h3>")
-        html.append("<p>" + intro + "</p>")
-
-    # простая эвристика для "Особенностей"
-    features = []
-    for frag in _re_desc.split(r"[\n]+", rest):
-        frag = frag.strip()
-        if not frag:
-            continue
-        if "•" in frag or ";" in frag or "—" in frag:
-            parts = _re_desc.split(r"[;•]|\s—\s", frag)
-            cand = [p.strip(" .;,-") for p in parts if len(p.strip(" .;,-")) >= 3]
-            for c in cand:
-                if 3 <= len(c) <= 180:
-                    features.append(c)
-
-    if features:
-        html.append("<h3>Особенности</h3>")
-        html.append("<ul>")
-        for f in features[:12]:
-            html.append("  <li>" + f + "</li>")
-        html.append("</ul>")
-
-    if ports:
-        html.append("<h3>Порты и подключения</h3>")
-        html.append("<ul>")
-        for p in ports[:20]:
-            html.append("  <li>" + p + "</li>")
-        html.append("</ul>")
-
-    if specs:
-        html.append("<h3>Характеристики</h3>")
-        html.append("<ul>")
-        seen = set()
-        for k, v in specs[:50]:
-            kv = (k.lower(), v)
-            if kv in seen:
-                continue
-            seen.add(kv)
-            html.append("  <li><strong>" + str(k) + ":</strong> " + str(v) + "</li>")
-        html.append("</ul>")
-
-    if not html:
-        tmp_para = _re_desc.sub(r"\n{2,}", "</p><p>", t)
-        return "<p>" + tmp_para + "</p>"
-    return "\n".join(html)
 
 if __name__ == "__main__":
     try:
