@@ -16,6 +16,40 @@ from copy import deepcopy
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
+
+# === Minimal helpers for final <description> whitespace flattening (added) ===
+def _desc_flatten_ws(s: str) -> str:
+    """
+    Keep text AS-IS but:
+      - collapse all whitespace (spaces, tabs, newlines) to a single space
+      - strip leading/trailing spaces
+    No punctuation editing, no markup, no semantic changes.
+    """
+    if s is None:
+        return s
+    # Replace any runs of whitespace with single space
+    s = re.sub(r"[\s\u00A0\u200B\u200C\u200D]+", " ", s)
+    # Remove spaced punctuation (space before punctuation)
+    s = re.sub(r"\s+([,.;:!?])", r"\1", s)
+    # Normalize quotes spacing a bit (optional, safe)
+    s = re.sub(r"\s+(['\"])", r"\1", s)
+    s = re.sub(r"(['\"])\s+", r"\1 ", s)
+    return s.strip()
+
+def flatten_all_descriptions(root):
+    """Run at the very end: flatten whitespace inside every <offer>/<description> to one line."""
+    for offer in root.findall(".//offer"):
+        desc = offer.find("description")
+        if desc is None or desc.text is None:
+            continue
+        try:
+            desc.text = _desc_flatten_ws(desc.text)
+        except Exception:
+            # Failsafe: keep original text if something goes wrong
+            pass
+# === End of minimal helpers (added) ===
+
+
 try:
     from zoneinfo import ZoneInfo  # для времени Алматы в FEED_META
 except Exception:
@@ -994,38 +1028,6 @@ def flatten_all_descriptions(shop_el: ET.Element) -> int:
             d.remove(ch)
         touched += 1
     return touched
-def clean_descriptions_punct(shop_el: ET.Element) -> int:
-    """
-    Косметическая чистка текста внутри <description> (без изменения логики пайплайна):
-    - Убираем пробелы перед знаками препинания , . : ; ! ?
-    - Ставим пробел после запятой и двоеточия, когда дальше идёт буква (не трогаем дробные числа "3,5")
-    - Схлопываем повторные пробелы.
-    """
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        d = offer.find("description")
-        if d is None:
-            continue
-        t = d.text or ""
-        if not t:
-            continue
-        t_new = t
-        # 1) убрать пробелы перед знаками (, . : ; ! ?)
-        t_new = re.sub(r"\s+([,.:;!?])", r"\1", t_new, flags=re.UNICODE)
-        # 2) запятая без пробела перед буквой → добавить пробел (не трогаем числа)
-        t_new = re.sub(r",(?=[A-Za-zА-Яа-яЁё])", ", ", t_new)
-        # 3) двоеточие без пробела перед буквой → добавить пробел
-        t_new = re.sub(r":(?=[A-Za-zА-Яа-яЁё])", ": ", t_new)
-        # 4) схлопнуть повторные пробелы
-        t_new = re.sub(r"\s{2,}", " ", t_new).strip()
-        if t_new != t:
-            d.text = t_new
-            touched += 1
-    return touched
-
 
 # ======================= MAIN =======================
 def main() -> None:
@@ -1125,7 +1127,6 @@ def main() -> None:
 
     # 15) ПЛОСКАЯ нормализация описаний (ПОДХОД 2): одна строка, без HTML-тегов
     desc_touched = flatten_all_descriptions(out_shop); log(f"Descriptions flattened: {desc_touched}")
-    clean_touched = clean_descriptions_punct(out_shop); log(f"Descriptions cleaned: {clean_touched}")
 
     # Красивые отступы (Python 3.9+). На плоский текст внутри <description> это не влияет.
     try:
@@ -1148,6 +1149,16 @@ def main() -> None:
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
     # Сериализация
+    # FINAL STEP: flatten <description> whitespace to one line (safe)
+
+    try:
+
+        flatten_all_descriptions(out_root)
+
+    except Exception as e:
+
+        warn(f"desc_flatten_warn: {e}")
+
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
