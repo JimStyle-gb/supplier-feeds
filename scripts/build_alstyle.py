@@ -107,8 +107,8 @@ def _build_html_from_plain(_t: str) -> str:
     # Build HTML
     html = []
     if intro:
-        html.append(f"<h3>Описание</h3>")
-        html.append(f"<p>{intro}</p>")
+        html.append("<h3>Описание</h3>")
+        html.append("<p>"+intro+"</p>")
     # Try to collect bullet-like features from the rest by looking for semicolon-separated fragments
     features = []
     for frag in _re_desc.split(r"[\\n]+", rest):
@@ -126,13 +126,13 @@ def _build_html_from_plain(_t: str) -> str:
         html.append("<h3>Особенности</h3>")
         html.append("<ul>")
         for f in features[:12]:
-            html.append(f"  <li>{f}</li>")
+            html.append("  <li>"+f+"</li>")
         html.append("</ul>")
     if ports:
         html.append("<h3>Порты и подключения</h3>")
         html.append("<ul>")
         for p in ports[:20]:
-            html.append(f"  <li>{p}</li>")
+            html.append("  <li>"+p+"</li>")
         html.append("</ul>")
     if specs:
         html.append("<h3>Характеристики</h3>")
@@ -143,11 +143,13 @@ def _build_html_from_plain(_t: str) -> str:
             if kv in seen: 
                 continue
             seen.add(kv)
-            html.append(f"  <li><strong>{k}:</strong> {v}</li>")
+            html.append("  <li><strong>"+str(k)+":</strong> "+str(v)+"</li>")
         html.append("</ul>")
     if not html:
         # fallback: single paragraph
-        return f"<p>{_re_desc.sub(r'\\n{2,}', '</p><p>', t)}</p>"
+        tmp_para = _re_desc.sub(r"
+{2,}", "</p><p>", t)
+        return "<p>" + tmp_para + "</p>"
     return "\\n".join(html)
 
 def _beautify_description_inner(inner: str) -> str:
@@ -160,7 +162,7 @@ def _beautify_description_inner(inner: str) -> str:
             items = [ln.lstrip("• ").strip() for ln in lines if ln.startswith("•")]
             others = [ln for ln in lines if not ln.startswith("•")]
             if items:
-                t = "\\n".join(others + ["<ul>"] + [f"  <li>{it}</li>" for it in items] + ["</ul>"])
+                t = "\\n".join(others + ["<ul>"] + ["  <li>"+it+"</li>" for it in items] + ["</ul>"])
         return t
     # otherwise, build structured HTML
     return _build_html_from_plain(inner)
@@ -179,7 +181,7 @@ def _wrap_and_beautify_description_text(xml_text: str) -> str:
         pretty = _beautify_description_inner(inner)
         # Guard against ]]> in content
         pretty_safe = pretty.replace("]]>", "]]]]><![CDATA[>")
-        return f"{m.group(1)}<![CDATA[{pretty_safe}]]>{m.group(3)}"
+        return m.group(1) + "<![CDATA[" + pretty_safe + "]]>" + m.group(3)
     return _re_desc.sub(r"(<description>)(.*?)(</description>)", repl, xml_text, flags=_re_desc.S)
 
 def _postprocess_descriptions_beautify_cdata(xml_bytes, enc):
