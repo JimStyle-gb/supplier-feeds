@@ -45,6 +45,157 @@ def _desc_normalize_multi_punct(s: str) -> str:
     return s
 
 def fix_all_descriptions_end(out_root):
+
+# ========== BEGIN: HTML Description Beautifier (append-only) ==========
+import html as _html
+import re as _re
+
+def _strip_span_like_html(s: str) -> str:
+    if s is None:
+        return s
+    s = s.replace("\r\n", "\n").replace("\r", "\n")
+    s = _re.sub(r'(?i)<\s*br\s*/?\s*>', '\n', s)
+    s = _re.sub(r'(?is)<\s*(?:span|div)[^>]*>', '', s)
+    s = _re.sub(r'(?is)</\s*(?:span|div)\s*>', '', s)
+    s = _re.sub(r'(?is)<\s*(?:p)\s*>', '\n', s)
+    s = _re.sub(r'(?is)</\s*(?:p)\s*>', '\n', s)
+    s = _re.sub(r'\n{3,}', '\n\n', s)
+    return s
+
+def _clean_spaces_punct(s: str) -> str:
+    if s is None:
+        return s
+    s = _re.sub(r'[\u00A0\u2009\u200A\u202F\s]+([,.;:!?])', r'\1', s)
+    s = _re.sub(r'[!?:;]{3,}', lambda m: m.group(0)[-1], s)
+    s = _re.sub(r'…+', '...', s)
+    s = _re.sub(r'\.{3,}', '...', s)
+    s = '\n'.join(line.strip() for line in s.splitlines())
+    s = _re.sub(r'\n{3,}', '\n\n', s)
+    return s
+
+def _extract_intro_and_kv(s: str):
+    if s is None:
+        return "", ""
+    s = s.strip()
+    m = _re.search(r'(?i)\b(технические\s+характеристики|характеристики)\b[:,]?', s)
+    if not m:
+        return s, ""
+    intro = s[:m.start()].strip()
+    kv = s[m.end():].strip()
+    return intro, kv
+
+def _kv_pairs_from_text(s: str):
+    pairs = []
+    if not s:
+        return pairs
+    s = _re.sub(r'[ \t]{2,}', '\n', s)
+    chunks = _re.split(r'\n|(?:\s*[;|\u2022]\s*)', s)
+    for ch in chunks:
+        ch = ch.strip(' \u00A0-•\t')
+        if not ch:
+            continue
+        m = _re.match(r'([^:：]{2,}?)\s*[:：]\s*(.+)$', ch)
+        if m:
+            key = m.group(1).strip()
+            val = m.group(2).strip()
+            if len(key) > 60 and ' ' in key:
+                continue
+            pairs.append((key, val))
+    seen = set()
+    uniq = []
+    for k, v in pairs:
+        low = (k.lower(), v.lower())
+        if low not in seen:
+            seen.add(low)
+            uniq.append((k, v))
+    return uniq
+
+def _html_ul_from_pairs(pairs):
+    if not pairs:
+        return ""
+    out = ["<ul>"]
+    for k, v in pairs[:40]:
+        out.append('  <li><strong>{}:</strong> {}</li>'.format(_html.escape(k, quote=False), _html.escape(v, quote=False)))
+    out.append("</ul>")
+    return "\n".join(out)
+
+def _quick_facts_from_params(offer_elem):
+    prio = ["Вес", "Ресурс", "Гарантия", "Диагональ экрана", "Частота обновления экрана", "Тип матрицы экрана",
+            "Цвет", "Тип накопителя", "Объем накопителя", "Процессор", "Видеокарта"]
+    values = []
+    lookup = {}
+    for p in list(offer_elem.findall("param")):
+        nm = (p.get("name") or "").strip()
+        val = (p.text or "").strip()
+        if nm and val and nm not in lookup:
+            lookup[nm] = val
+    for key in prio:
+        if key in lookup:
+            values.append((key, lookup[key]))
+        if len(values) >= 5:
+            break
+    if not values:
+        return ""
+    out = ["<ul>"]
+    for k, v in values:
+        out.append('  <li>&#9989; {}: {}</li>'.format(_html.escape(k), _html.escape(v)))
+    out.append("</ul>")
+    return "\n".join(out)
+
+def beautify_descriptions_html(root):
+    for offer in root.findall(".//offer"):
+        d = offer.find("description")
+        if d is None:
+            continue
+        raw = (d.text or "").strip()
+        if len(raw) < 40:
+            continue
+        txt = _strip_span_like_html(raw)
+        txt = _clean_spaces_punct(txt)
+        intro, kv_block = _extract_intro_and_kv(txt)
+
+        name_el = offer.findtext("name", "").strip()
+        title = _html.escape(name_el) if name_el else "Описание"
+
+        html_parts = []
+        html_parts.append('<h3>{}</h3>'.format(title))
+
+        if intro:
+            intro_html = _html.escape(intro)
+            paras = [p.strip() for p in intro_html.split("\n") if p.strip()]
+            if len(paras) <= 2:
+                html_parts.append("<p>{}</p>".format(' '.join(paras)))
+            else:
+                html_parts.append("<p>{}</p>".format(paras[0]))
+                for p_ in paras[1:5]:
+                    html_parts.append("<p>{}</p>".format(p_))
+
+        quick = _quick_facts_from_params(offer)
+        if quick:
+            html_parts.append(quick)
+
+        pairs = _kv_pairs_from_text(kv_block)
+        if pairs:
+            html_parts.append("<h3>Характеристики</h3>")
+            html_parts.append(_html_ul_from_pairs(pairs))
+
+        html_text = "\n".join(html_parts).strip()
+        if len(_re.sub(r'<[^>]+>', '', html_text)) >= 40:
+            d.text = html_text
+
+def _expand_empty_description_after_serialize(xml_bytes, enc="windows-1251"):
+    try:
+        _t = xml_bytes.decode(enc, errors="replace")
+        _t = _re.sub(r'<description\s*/\s*>', '<description></description>', _t)
+        return _t.encode(enc, errors="replace")
+    except Exception:
+        return xml_bytes
+# ========== END: HTML Description Beautifier ==========
+    # HTML beautify for <description> (safe, end-of-pipeline)
+    try:
+        beautify_descriptions_html(out_root)
+    except Exception as e:
+        print(f"desc_html_beautify_warn: {e}")
     """Run at the very end, just before ET.tostring(): spacing + multi-punct cleanup."""
     for offer in out_root.findall(".//offer"):
         d = offer.find("description")
@@ -1164,6 +1315,12 @@ def main() -> None:
     except Exception as _e:
         print(f"desc_end_fix_warn: {_e}")
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
+
+    # expand self-closing <description /> to explicit open/close
+    try:
+        xml_bytes = _expand_empty_description_after_serialize(xml_bytes, ENC)
+    except Exception as e:
+        print(f"desc_selfclose_fix_warn: {e}")
     # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
     try:
         _enc = ENC if 'ENC' in globals() else 'windows-1251'
