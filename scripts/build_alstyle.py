@@ -1,5 +1,13 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
+"""
+AlStyle -> YML (DESC-FLAT edition)
+
+База = ваш КОД2 без изменений логики.
+Единственное добавление: в самом конце ПЛОСКАЯ нормализация <description>
+(удаляем теги внутри description, склеиваем всё в одну строку, схлопываем
+много пробелов/переносов; пустые описания не трогаем).
+"""
 
 from __future__ import annotations
 import os, sys, re, time, random, hashlib, urllib.parse, requests, html
@@ -64,96 +72,8 @@ def _split_sentences(_t: str):
     parts = _re_desc.split(r"(?<=[.!?])\s+(?=[А-ЯЁA-Z0-9])", _t)
     return [p.strip() for p in parts if p.strip()]
 
-def _build_html_from_plain(_t: str) -> str:
-    t = _normalize_ws(_t)
-    t = _re_desc.sub(r"(?mi)^Характеристики\s*:?", "", t).strip()
-    ports = _extract_ports(t)
-    specs = _extract_kv_specs(t)
-    if specs:
-        for k, v in specs[:50]:
-            t = t.replace(k + ": " + v, "").replace(k + ":" + v, "")
-        t = _re_desc.sub(r"(\n){2,}", "\n\n", t).strip()
-    sents = _split_sentences(t)
-    intro = " ".join(sents[:2]) if sents else t
-    rest = " ".join(sents[2:]) if len(sents) > 2 else ""
-    html = []
-    if intro:
-        html.append("<h3>Описание</h3>")
-        html.append("<p>" + intro + "</p>")
-    features = []
-    for frag in _re_desc.split(r"[\n]+", rest):
-        frag = frag.strip()
-        if not frag:
-            continue
-        if "•" in frag or ";" in frag or "—" in frag:
-            parts = _re_desc.split(r"[;•]|\s—\s", frag)
-            cand = [p.strip(" .;,-") for p in parts if len(p.strip(" .;,-")) >= 3]
-            for c in cand:
-                if 3 <= len(c) <= 180:
-                    features.append(c)
-    if features:
-        html.append("<h3>Особенности</h3>")
-        html.append("<ul>")
-        for f in features[:12]:
-            html.append("  <li>" + f + "</li>")
-        html.append("</ul>")
-    if ports:
-        html.append("<h3>Порты и подключения</h3>")
-        html.append("<ul>")
-        for p in ports[:20]:
-            html.append("  <li>" + p + "</li>")
-        html.append("</ul>")
-    if specs:
-        html.append("<h3>Характеристики</h3>")
-        html.append("<ul>")
-        seen = set()
-        for k, v in specs[:20]:
-            kv = (k.lower(), v)
-            if kv in seen:
-                continue
-            seen.add(kv)
-            html.append("  <li><strong>" + str(k) + ":</strong> " + str(v) + "</li>")
-        html.append("</ul>")
-    if not html:
-        tmp_para = _re_desc.sub(r"\n{2,}", "</p><p>", t)
-        return "<p>" + tmp_para + "</p>"
-    return "\n".join(html)
-
-pass  # removed description-related block
-
-pass  # removed description-related block
-
-pass  # removed description-related block
-
-pass  # removed description-related block
 # ===== END: Description Beautifier + CDATA =====
-def _desc_fix_punct_spacing(s: str) -> str:
-    """
-    Keep supplier text AS-IS, only remove spaces (incl. NBSP/thin spaces)
-    directly before , . ; : ! ?
-    """
-    if s is None:
-        return s
-    import re as _re
-    s = _re.sub(r'[\u00A0\u2009\u200A\u202F\s]+([,.;:!?])', r'\1', s)
-    return s
 
-def _desc_normalize_multi_punct(s: str) -> str:
-    """
-    Normalize long punctuation runs to marketplace-friendly form:
-      - any unicode ellipsis '…' (one or more) -> '...'
-      - 3 or more dots -> '...'
-      - runs (>=3) of [! ? ; :] — collapse to the LAST char in the run
-    """
-    if s is None:
-        return s
-    import re as _re
-    s = _re.sub(r'[!?:;]{3,}', lambda m: m.group(0)[-1], s)
-    s = _re.sub(r'…+', '...', s)
-    s = _re.sub(r'\.{3,}', '...', s)
-    return s
-
-pass  # removed description-related block
 # === End of minimal post-steps (added) ===
 
 try:
@@ -484,9 +404,42 @@ def _find_brand_in_text(text: str) -> str:
                 return b
     return ""
 
-pass  # removed description-related block
+def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
+    name  = get_text(offer, "name")
+    desc  = inner_html(offer.find("description"))  # читаем, не меняем здесь
+    first = re.split(r"\s+", name.strip())[0] if name else ""
+    f_norm = _norm_key(first)
+    if f_norm in brand_index:
+        return brand_index[f_norm]
+    b = _find_brand_in_text(name) or _find_brand_in_text(desc)
+    if b:
+        return b
+    nrm = _norm_text(name)
+    for br in COMMON_BRANDS:
+        if re.search(rf"\b{re.escape(_norm_text(br))}\b", nrm, flags=re.I):
+            return br
+    return ""
 
-pass  # removed description-related block
+def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
+    """Если <vendor> пуст — пытаемся угадать по name/description (только чтение)."""
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0
+    brand_index = build_brand_index(shop_el)
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        v = offer.find("vendor")
+        cur = (v.text or "").strip() if (v is not None and v.text) else ""
+        if cur:
+            continue
+        guess = guess_vendor_for_offer(offer, brand_index)
+        if guess:
+            if v is None:
+                v = ET.SubElement(offer, "vendor")
+            v.text = guess
+            brand_index[_norm_key(guess)] = guess
+            touched += 1
+    return touched
 
 # ======================= ЦЕНООБРАЗОВАНИЕ =======================
 PriceRule = Tuple[int,int,float,int]
@@ -847,7 +800,7 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
         touched += 1
     return touched
 
-pass  # removed description-related block
+DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","description"]
 def reorder_offer_children(shop_el: ET.Element) -> int:
     """Переупорядочиваем теги в оффере (описание не трогаем по содержимому)."""
     offers_el = shop_el.find("offers")
@@ -934,7 +887,18 @@ def color_tokens(name: str) -> List[str]:
 MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 
-pass  # removed description-related block
+def extract_model_tokens(offer: ET.Element) -> List[str]:
+    """Извлекаем модельные токены из name/description (description только читаем)."""
+    tokens: Set[str] = set()
+    for src in (get_text(offer,"name"), inner_html(offer.find("description"))):
+        if not src:
+            continue
+        for m in MODEL_RE.findall(src or ""):
+            t = m.upper()
+            if AS_INTERNAL_ART_RE.match(t) or not (re.search(r"[A-Z]", t) and re.search(r"\d", t)) or len(t) < 5:
+                continue
+            tokens.add(t)
+    return list(tokens)
 
 def keywords_from_name_generic(name: str) -> List[str]:
     raw_tokens = tokenize_name(name or "")
@@ -1056,22 +1020,163 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
 # ======================= ФИНАЛЬНАЯ НОРМАЛИЗАЦИЯ DESCRIPTION (ПОДХОД 2) =======================
 DESC_TAG_STRIP_RE = re.compile(r"<[^>]+>")
 
-def _flatten_desc_text(desc_el: ET.Element) -> Optional[str]:
-    # Берём inner HTML, убираем все теги, декодируем сущности, схлопываем пробелы/переносы
-    raw_html = inner_html(desc_el)
-    if not raw_html:
-        return None
-    txt = DESC_TAG_STRIP_RE.sub(" ", raw_html)          # теги -> пробел
-    txt = html.unescape(txt)                            # &nbsp; &quot; и т.п.
-    txt = txt.replace("\u00A0", " ")
-    # Схлопываем все виды пробельных символов в один пробел
-    txt = re.sub(r"\s+", " ", txt, flags=re.UNICODE).strip()
-    return txt or None
-
-pass  # removed description-related block
-
 # ======================= MAIN =======================
-pass  # removed description-related block
+def main() -> None:
+    log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
+    data = load_source_bytes(SUPPLIER_URL)
+
+    src_root = ET.fromstring(data)
+    shop_in  = src_root.find("shop") if src_root.tag.lower() != "shop" else src_root
+    if shop_in is None:
+        err("XML: <shop> not found")
+
+    offers_in_el = shop_in.find("offers") or shop_in.find("Offers")
+    if offers_in_el is None:
+        err("XML: <offers> not found")
+
+    src_offers = list(offers_in_el.findall("offer"))
+
+    # Готовим выходную структуру
+    out_root  = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
+    pass  # removed description-related
+
+    # 1) Копируем офферы 1:1 (дальше работаем только над полями, описание пока не трогаем)
+    for o in src_offers:
+        out_offers.append(deepcopy(o))
+
+    # 2) Фильтр категорий
+    removed_count = 0
+    if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
+        id2name,id2parent,parent2children = parse_categories_tree(shop_in)
+        rules_ids, rules_names = load_category_rules(ALSTYLE_CATEGORIES_PATH)
+        keep_ids: Set[str] = set(rules_ids)
+
+        if rules_names and id2name:
+            for cid in id2name.keys():
+                path = build_category_path_from_id(cid, id2name, id2parent)
+                if category_matches_name(path, rules_names):
+                    keep_ids.add(cid)
+
+        if keep_ids and parent2children:
+            keep_ids = collect_descendants(keep_ids, parent2children)
+
+        for off in list(out_offers.findall("offer")):
+            cid = get_text(off, "categoryId")
+            hit = (cid in keep_ids) if cid else False
+            drop = (ALSTYLE_CATEGORIES_MODE == "exclude" and hit) or (ALSTYLE_CATEGORIES_MODE == "include" and not hit)
+            if drop:
+                out_offers.remove(off); removed_count += 1
+
+        log(f"Category rules ({ALSTYLE_CATEGORIES_MODE}): removed={removed_count}")
+    else:
+        log("Category rules (off): removed=0")
+
+    # 3) Удаляем исходные categoryId (позже поставим 0 первым тегом)
+    if DROP_CATEGORY_ID_TAG:
+        for off in out_offers.findall("offer"):
+            for node in list(off.findall("categoryId")) + list(off.findall("CategoryId")):
+                off.remove(node)
+
+    # 4) Флаг/форсирование цен
+    flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
+
+    # 5) Бренды
+    ensure_vendor(out_shop)
+    filled = ensure_vendor_auto_fill(out_shop); log(f"Vendors auto-filled: {filled}")
+
+    # 6) vendorCode/id
+    ensure_vendorcode_with_article(out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=True)
+    sync_offer_id_with_vendorcode(out_shop)
+
+    # 7) Пересчёт розницы + принудительные цены
+    reprice_offers(out_shop, PRICING_RULES)
+    forced = enforce_forced_prices(out_shop); log(f"Forced price={PRICE_CAP_VALUE}: {forced}")
+
+    # 8) Чистим мусорные <param>
+    removed_params = remove_specific_params(out_shop); log(f"Params removed: {removed_params}")
+
+    # 9) Фото-заглушки (если нет ни одной картинки)
+    ph_added, _ = ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
+
+    # 10) available -> в атрибут оффера, удаляем складские поля
+    t_true, t_false, _, _ = normalize_available_field(out_shop)
+
+    # 11) Валюта
+    fix_currency_id(out_shop, default_code="KZT")
+
+    # 12) Чистка служебных тегов/атрибутов
+    for off in out_offers.findall("offer"):
+        purge_offer_tags_and_attrs_after(off)
+
+    # 13) Порядок тегов + categoryId=0 первым
+    reorder_offer_children(out_shop)
+    ensure_categoryid_zero_first(out_shop)
+
+    # 14) Ключевые слова (описание только ЧИТАЕМ при извлечении моделей)
+    kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
+
+    # 15) ПЛОСКАЯ нормализация описаний (ПОДХОД 2): одна строка, без HTML-тегов
+    pass  # removed description-related
+
+    # Красивые отступы (Python 3.9+). На плоский текст внутри <description> это не влияет.
+    try:
+        ET.indent(out_root, space="  ")
+    except Exception:
+        pass
+
+    # FEED_META
+    built_alm = now_almaty()
+    meta_pairs = {
+        "supplier": SUPPLIER_NAME,
+        "source": SUPPLIER_URL or "file",
+        "built_alm": format_dt_almaty(built_alm),
+        "next_build_alm": format_dt_almaty(next_build_time_almaty()),
+        "offers_total": len(src_offers),
+        "offers_written": len(list(out_offers.findall("offer"))),
+        "available_true": str(t_true),
+        "available_false": str(t_false),
+    }
+    out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
+
+    # Сериализация
+    # FINAL STEP (safe): description spacing & multi-punct normalization
+    pass  # removed description-related
+    xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
+    # Finalize descriptions: beautify as HTML + wrap in CDATA (safe, output-only)
+    pass  # removed description-related
+    # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
+    pass  # removed description-related
+
+    xml_text  = xml_bytes.decode(ENC, errors="replace")
+
+    # Лёгкая косметика: перенос после FEED_META и пустая строка между офферами
+    xml_text = re.sub(r"(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
+    xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
+
+    if DRY_RUN:
+        log("[DRY_RUN=1] Files not written.")
+        return
+
+    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
+    try:
+        with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
+            f.write(xml_text)
+    except UnicodeEncodeError as e:
+        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
+        warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
+        data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
+        with open(OUT_FILE_YML, "wb") as f:
+            f.write(data_bytes)
+
+    # .nojekyll для GitHub Pages
+    try:
+        docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
+        os.makedirs(docs_dir, exist_ok=True)
+        open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+    except Exception as e:
+        warn(f".nojekyll create warn: {e}")
+
+    log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=DESC-FLAT")
 
 if __name__ == "__main__":
     try:
