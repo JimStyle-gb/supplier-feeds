@@ -73,70 +73,12 @@ def _split_sentences(_t: str):
     parts = _re_desc.split(r"(?<=[.!?])\s+(?=[А-ЯЁA-Z0-9])", _t)
     return [p.strip() for p in parts if p.strip()]
 
-def _build_html_from_plain(_t: str) -> str:
-    """
-    PASSTHROUGH-HTML (без авто-аналитики):
-      • Оставляем структуру поставщика,
-      • NBSP/узкие/тонкие пробелы → обычный пробел,
-      • Удаляем нулевой ширины символы,
-      • Схлопываем повтор пробелов и пустых строк,
-      • Переводим переносы строк в <br>,
-      • Ничего не группируем (без <h3>, <ul> и т.п.).
-    """
-    import re as _rx
-    t = _t if isinstance(_t, str) else str(_t or "")
-    # Нормализация переносов
-    t = t.replace("\r\n", "\n").replace("\r", "\n")
-    # NBSP/узкие/тонкие пробелы → обычный пробел
-    t = _rx.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
-    # Удалить символы нулевой ширины/служебные (BOM/ZWSP/ZWNJ/ZWJ/WORD JOINER)
-    t = _rx.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
-    # Удалить хвостовые пробелы в конце строк
-    t = _rx.sub(r"[ \t]+\n", "\n", t)
-    # Схлопнуть последовательности пробелов и табов
-    t = _rx.sub(r"[ \t]{2,}", " ", t)
-    # Схлопнуть пустые строки (оставить одну)
-    t = _rx.sub(r"\n{2,}", "\n", t).strip()
-    # Перевод переносов строк в <br>
-    t = t.replace("\n", "<br>")
-    return t
 
-def _postprocess_descriptions_beautify_cdata(xml_bytes, enc):
-    try:
-        enc_use = enc or "windows-1251"
-        text = xml_bytes.decode(enc_use, errors="replace")
-        text = _expand_description_selfclose_text(text)
-        text = _wrap_and_beautify_description_text(text)
-        return text.encode(enc_use, errors="replace")
-    except Exception as _e:
-        print("desc_beautify_post_warn:", _e)
-        return xml_bytes
+
+
+
 # ===== END: Description Beautifier + CDATA =====
-def _desc_fix_punct_spacing(s: str) -> str:
-    """
-    Keep supplier text AS-IS, only remove spaces (incl. NBSP/thin spaces)
-    directly before , . ; : ! ?
-    """
-    if s is None:
-        return s
-    import re as _re
-    s = _re.sub(r'[\u00A0\u2009\u200A\u202F\s]+([,.;:!?])', r'\1', s)
-    return s
 
-def _desc_normalize_multi_punct(s: str) -> str:
-    """
-    Normalize long punctuation runs to marketplace-friendly form:
-      - any unicode ellipsis '…' (one or more) -> '...'
-      - 3 or more dots -> '...'
-      - runs (>=3) of [! ? ; :] — collapse to the LAST char in the run
-    """
-    if s is None:
-        return s
-    import re as _re
-    s = _re.sub(r'[!?:;]{3,}', lambda m: m.group(0)[-1], s)
-    s = _re.sub(r'…+', '...', s)
-    s = _re.sub(r'\.{3,}', '...', s)
-    return s
 
 def fix_all_descriptions_end(out_root):
     """Run at the very end, just before ET.tostring(): spacing + multi-punct cleanup."""
@@ -1097,40 +1039,7 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
 # ======================= ФИНАЛЬНАЯ НОРМАЛИЗАЦИЯ DESCRIPTION (ПОДХОД 2) =======================
 DESC_TAG_STRIP_RE = re.compile(r"<[^>]+>")
 
-def _flatten_desc_text(desc_el: ET.Element) -> Optional[str]:
-    # Берём inner HTML, убираем все теги, декодируем сущности, схлопываем пробелы/переносы
-    raw_html = inner_html(desc_el)
-    if not raw_html:
-        return None
-    txt = DESC_TAG_STRIP_RE.sub(" ", raw_html)          # теги -> пробел
-    txt = html.unescape(txt)                            # &nbsp; &quot; и т.п.
-    txt = txt.replace("\u00A0", " ")
-    # Схлопываем все виды пробельных символов в один пробел
-    txt = re.sub(r"\s+", " ", txt, flags=re.UNICODE).strip()
-    return txt or None
 
-def flatten_all_descriptions(shop_el: ET.Element) -> int:
-    """Подход 2: превратить любое содержимое <description> в одну чистую строку текста.
-       Пустые описания не трогаем. Никаких HTML-тегов не добавляем.
-    """
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        d = offer.find("description")
-        if d is None:
-            continue
-        new_text = _flatten_desc_text(d)
-        if new_text is None:
-            # есть description, но пустое — оставим как есть
-            continue
-        # Заменяем текст, удаляем всех детей (чтобы Tree не расставлял отступы внутри)
-        d.text = new_text
-        for ch in list(d):
-            d.remove(ch)
-        touched += 1
-    return touched
 
 # ======================= MAIN =======================
 def main() -> None:
