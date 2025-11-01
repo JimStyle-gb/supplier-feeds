@@ -1,5 +1,6 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
+from __future__ import annotations
 import sys
 """
 AlStyle -> YML (DESC-FLAT edition)
@@ -10,7 +11,6 @@ AlStyle -> YML (DESC-FLAT edition)
 много пробелов/переносов; пустые описания не трогаем).
 """
 
-from __future__ import annotations
 import os, sys, re, time, random, hashlib, urllib.parse, requests, html
 from typing import Dict, List, Tuple, Optional, Set
 from copy import deepcopy
