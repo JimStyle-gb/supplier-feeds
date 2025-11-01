@@ -16,7 +16,6 @@ from copy import deepcopy
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
-
 # === Minimal post-steps for <description> (added) ===
 
 # ===== BEGIN: Description Beautifier + CDATA (append-only, safe) =====
@@ -73,137 +72,9 @@ def _split_sentences(_t: str):
     parts = _re_desc.split(r"(?<=[.!?])\s+(?=[А-ЯЁA-Z0-9])", _t)
     return [p.strip() for p in parts if p.strip()]
 
-def _build_html_from_plain(_t: str) -> str:
-    t = _normalize_ws(_t)
-    t = _re_desc.sub(r"(?mi)^Характеристики\s*:?", "", t).strip()
-    ports = _extract_ports(t)
-    specs = _extract_kv_specs(t)
-    if specs:
-        for k, v in specs[:50]:
-            t = t.replace(k + ": " + v, "").replace(k + ":" + v, "")
-        t = _re_desc.sub(r"(\n){2,}", "\n\n", t).strip()
-    sents = _split_sentences(t)
-    intro = " ".join(sents[:2]) if sents else t
-    rest = " ".join(sents[2:]) if len(sents) > 2 else ""
-    html = []
-    if intro:
-        html.append("<h3>Описание</h3>")
-        html.append("<p>" + intro + "</p>")
-    features = []
-    for frag in _re_desc.split(r"[\n]+", rest):
-        frag = frag.strip()
-        if not frag:
-            continue
-        if "•" in frag or ";" in frag or "—" in frag:
-            parts = _re_desc.split(r"[;•]|\s—\s", frag)
-            cand = [p.strip(" .;,-") for p in parts if len(p.strip(" .;,-")) >= 3]
-            for c in cand:
-                if 3 <= len(c) <= 180:
-                    features.append(c)
-    if features:
-        html.append("<h3>Особенности</h3>")
-        html.append("<ul>")
-        for f in features[:12]:
-            html.append("  <li>" + f + "</li>")
-        html.append("</ul>")
-    if ports:
-        html.append("<h3>Порты и подключения</h3>")
-        html.append("<ul>")
-        for p in ports[:20]:
-            html.append("  <li>" + p + "</li>")
-        html.append("</ul>")
-    if specs:
-        html.append("<h3>Характеристики</h3>")
-        html.append("<ul>")
-        seen = set()
-        for k, v in specs[:20]:
-            kv = (k.lower(), v)
-            if kv in seen:
-                continue
-            seen.add(kv)
-            html.append("  <li><strong>" + str(k) + ":</strong> " + str(v) + "</li>")
-        html.append("</ul>")
-    if not html:
-        tmp_para = _re_desc.sub(r"\n{2,}", "</p><p>", t)
-        return "<p>" + tmp_para + "</p>"
-    return "\n".join(html)
-
-def _beautify_description_inner(inner: str) -> str:
-    if _has_html_tags(inner):
-        t = _normalize_ws(inner)
-        lines = [ln.strip() for ln in t.split("\n")]
-        if any(ln.startswith("•") for ln in lines):
-            items = [ln.lstrip("• ").strip() for ln in lines if ln.startswith("•")]
-            others = [ln for ln in lines if not ln.startswith("•")]
-            if items:
-                t = "\n".join(others + ["<ul>"] + ["  <li>" + it + "</li>" for it in items] + ["</ul>"])
-        return t
-    return _build_html_from_plain(inner)
-
-def _expand_description_selfclose_text(xml_text: str) -> str:
-    return _re_desc.sub(r"<description\s*/\s*>", "<description></description>", xml_text)
-
-def _wrap_and_beautify_description_text(xml_text: str) -> str:
-    def repl(m):
-        inner = m.group(2)
-        if inner.strip() == "":
-            return m.group(1) + "" + m.group(3)
-        pretty = _beautify_description_inner(inner)
-        pretty_safe = pretty.replace("]]>", "]]]]><![CDATA[>")
-        return m.group(1) + "<![CDATA[" + pretty_safe + "]]>" + m.group(3)
-    return _re_desc.sub(r"(<description>)(.*?)(</description>)", repl, xml_text, flags=_re_desc.S)
-
-def _postprocess_descriptions_beautify_cdata(xml_bytes, enc):
-    try:
-        enc_use = enc or "windows-1251"
-        text = xml_bytes.decode(enc_use, errors="replace")
-        text = _expand_description_selfclose_text(text)
-        text = _wrap_and_beautify_description_text(text)
-        return text.encode(enc_use, errors="replace")
-    except Exception as _e:
-        print("desc_beautify_post_warn:", _e)
-        return xml_bytes
 # ===== END: Description Beautifier + CDATA =====
-def _desc_fix_punct_spacing(s: str) -> str:
-    """
-    Keep supplier text AS-IS, only remove spaces (incl. NBSP/thin spaces)
-    directly before , . ; : ! ?
-    """
-    if s is None:
-        return s
-    import re as _re
-    s = _re.sub(r'[\u00A0\u2009\u200A\u202F\s]+([,.;:!?])', r'\1', s)
-    return s
 
-def _desc_normalize_multi_punct(s: str) -> str:
-    """
-    Normalize long punctuation runs to marketplace-friendly form:
-      - any unicode ellipsis '…' (one or more) -> '...'
-      - 3 or more dots -> '...'
-      - runs (>=3) of [! ? ; :] — collapse to the LAST char in the run
-    """
-    if s is None:
-        return s
-    import re as _re
-    s = _re.sub(r'[!?:;]{3,}', lambda m: m.group(0)[-1], s)
-    s = _re.sub(r'…+', '...', s)
-    s = _re.sub(r'\.{3,}', '...', s)
-    return s
-
-def fix_all_descriptions_end(out_root):
-    """Run at the very end, just before ET.tostring(): spacing + multi-punct cleanup."""
-    for offer in out_root.findall(".//offer"):
-        d = offer.find("description")
-        if d is not None and d.text:
-            try:
-                t = d.text
-                t = _desc_fix_punct_spacing(t)
-                t = _desc_normalize_multi_punct(t)
-                d.text = t
-            except Exception:
-                pass
 # === End of minimal post-steps (added) ===
-
 
 try:
     from zoneinfo import ZoneInfo  # для времени Алматы в FEED_META
@@ -1148,41 +1019,6 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
 
 # ======================= ФИНАЛЬНАЯ НОРМАЛИЗАЦИЯ DESCRIPTION (ПОДХОД 2) =======================
 DESC_TAG_STRIP_RE = re.compile(r"<[^>]+>")
-
-def _flatten_desc_text(desc_el: ET.Element) -> Optional[str]:
-    # Берём inner HTML, убираем все теги, декодируем сущности, схлопываем пробелы/переносы
-    raw_html = inner_html(desc_el)
-    if not raw_html:
-        return None
-    txt = DESC_TAG_STRIP_RE.sub(" ", raw_html)          # теги -> пробел
-    txt = html.unescape(txt)                            # &nbsp; &quot; и т.п.
-    txt = txt.replace("\u00A0", " ")
-    # Схлопываем все виды пробельных символов в один пробел
-    txt = re.sub(r"\s+", " ", txt, flags=re.UNICODE).strip()
-    return txt or None
-
-def flatten_all_descriptions(shop_el: ET.Element) -> int:
-    """Подход 2: превратить любое содержимое <description> в одну чистую строку текста.
-       Пустые описания не трогаем. Никаких HTML-тегов не добавляем.
-    """
-    offers_el = shop_el.find("offers")
-    if offers_el is None:
-        return 0
-    touched = 0
-    for offer in offers_el.findall("offer"):
-        d = offer.find("description")
-        if d is None:
-            continue
-        new_text = _flatten_desc_text(d)
-        if new_text is None:
-            # есть description, но пустое — оставим как есть
-            continue
-        # Заменяем текст, удаляем всех детей (чтобы Tree не расставлял отступы внутри)
-        d.text = new_text
-        for ch in list(d):
-            d.remove(ch)
-        touched += 1
-    return touched
 
 # ======================= MAIN =======================
 def main() -> None:
