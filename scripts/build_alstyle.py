@@ -1116,7 +1116,7 @@ if __name__ == "__main__":
 
 
 # =============================================================
-# Appended: <description> normalizer + CDATA wrapper (encoding-safe)
+# Appended: <description> normalizer + CDATA wrapper (safe v2)
 # Runs AFTER main via atexit; base logic untouched.
 # =============================================================
 import atexit as _al_atexit
@@ -1127,12 +1127,22 @@ def _al_desc_normalize(txt: str) -> str:
     if txt is None:
         return ""
     t = txt.replace("\r\n", "\n").replace("\r", "\n")
-    t = _al_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)            # NBSP & narrow spaces -> ' '
-    t = _al_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)             # zero-width chars
-    t = _al_re.sub(r"[ \t]+\n", "\n", t)                                   # trim EOL spaces
-    t = _al_re.sub(r"[ \t]{2,}", " ", t)                                   # collapse multi-spaces
-    t = _al_re.sub(r"\n{2,}", "\n", t).strip()                             # collapse blank lines
-    t = t.replace("\n", "<br>")                                            # newline -> <br>
+    # NBSP / narrow spaces -> regular space
+    t = _al_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    # Remove zero-width / hidden chars
+    t = _al_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
+    # Trim trailing spaces before newline
+    t = _al_re.sub(r"[ \t]+\n", "\n", t)
+    # Remove leading tabs/spaces at start of each line
+    t = _al_re.sub(r"^[ \t]+", "", t, flags=_al_re.M)
+    # Collapse multi-spaces/tabs
+    t = _al_re.sub(r"[ \t]{2,}", " ", t)
+    # Collapse extra blank lines
+    t = _al_re.sub(r"\n{2,}", "\n", t).strip()
+    # Convert newlines to <br>
+    t = t.replace("\n", "<br>")
+    # Remove spaces immediately after <br>
+    t = _al_re.sub(r"(<br>)[ \t]+", r"\1", t)
     return t
 
 def _al_cdata_safe(s: str) -> str:
