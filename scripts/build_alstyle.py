@@ -19,36 +19,180 @@ from datetime import datetime, timezone, timedelta
 
 # === Minimal post-steps for <description> (added) ===
 
-# ===== BEGIN: CDATA wrap for <description> (append-only, safe) =====
-import re as _re_cdata
+# ===== BEGIN: Description Beautifier + CDATA (append-only, safe) =====
+import re as _re_desc
+
+def _has_html_tags(_t: str) -> bool:
+    return bool(_re_desc.search(r"<(p|ul|ol|li|h1|h2|h3)\\b", _t, flags=_re_desc.I))
+
+def _normalize_ws(_t: str) -> str:
+    _t = _t.replace("\\r", "\\n")
+    # collapse mixed spaces around newlines
+    _t = _re_desc.sub(r"[ \\t]*\\n[ \\t]*", "\\n", _t)
+    # normalize multiple blank lines to one
+    _t = _re_desc.sub(r"\\n{3,}", "\\n\\n", _t)
+    # unify bullets
+    _t = _t.replace("&#9679;", "•").replace("●", "•")
+    # normalize times sign entities
+    _t = _t.replace("&#215;", "×")
+    return _t.strip()
+
+def _extract_kv_specs(_t: str):
+    # Find "Характеристики" block or loose KV pairs "Ключ: Значение"
+    specs = []
+    # Prefer pairs "Ключ: Значение" (russian keys)
+    for m in _re_desc.finditer(r"(?m)\\b([A-ЯЁA-Za-z0-9 _./()«»\\-]{2,30})\\s*:\\s*([^\\n]+)", _t):
+        key = m.group(1).strip(" .-")
+        val = m.group(2).strip(" .;")
+        # filter obvious non-keys
+        if len(key) <= 2: 
+            continue
+        # avoid capturing full sentences with many spaces
+        if len(val) > 300: 
+            continue
+        specs.append((key, val))
+    return specs
+
+def _extract_ports(_t: str):
+    ports = []
+    # Look for phrase leading to port list
+    m = _re_desc.search(r"(Панель[^\\n]{0,120}включает[^:]*:|Порты[^:]{0,40}:)\\s*(.+)", _t, flags=_re_desc.I)
+    if m:
+        tail = m.group(2)
+        # cut at sentence end or section heading
+        cut_m = _re_desc.search(r"(?:(?:\\.|!|\\?)\\s+|\\n\\n|\\Z)", tail)
+        if cut_m:
+            tail = tail[:cut_m.start()].strip()
+        # split into items by common separators
+        parts = _re_desc.split(r"[;•\\n\\t]|\\s{2,}|\\s,\\s", tail)
+        for p in parts:
+            p = p.strip(" .;,-")
+            if p:
+                ports.append(p)
+    # also parse compact "2× USB-A ..." chains
+    if not ports:
+        chain = _re_desc.search(r"(?:^|\\n)(?:[0-9]+\\s*×[^\\n]+?)(?:\\.|\\n|$)", _t)
+        if chain:
+            chunk = chain.group(0)
+            # split when a number-times appears
+            items = _re_desc.split(r"(?=(?:[0-9]+\\s*×)|(?:\\bHDMI\\b)|(?:\\bUSB\\b)|(?:\\bRJ-45\\b)|(?:\\bType[- ]?[AC]\\b))", chunk)
+            for it in items:
+                it = it.strip(" .;,-")
+                if len(it) > 1:
+                    ports.append(it)
+    return ports
+
+def _split_sentences(_t: str):
+    # lightweight sentence splitter for ru
+    _t = _t.replace("..", ".")
+    parts = _re_desc.split(r"(?<=[.!?])\\s+(?=[А-ЯЁA-Z0-9])", _t)
+    return [p.strip() for p in parts if p.strip()]
+
+def _build_html_from_plain(_t: str) -> str:
+    t = _normalize_ws(_t)
+    # Quick remove duplicated "Характеристики" word-only lines
+    t = _re_desc.sub(r"(?mi)^Характеристики\\s*:?", "", t).strip()
+    # Extract blocks
+    ports = _extract_ports(t)
+    specs = _extract_kv_specs(t)
+    # Remove extracted KV lines from body to avoid duplication
+    if specs:
+        for k, v in specs[:50]:
+            t = t.replace(f"{k}: {v}", "").replace(f"{k}:{v}", "")
+        t = _re_desc.sub(r"(\\n){2,}", "\\n\\n", t).strip()
+    # Split into sentences for intro
+    sents = _split_sentences(t)
+    intro = " ".join(sents[:2]) if sents else t
+    rest = " ".join(sents[2:]) if len(sents) > 2 else ""
+    # Build HTML
+    html = []
+    if intro:
+        html.append(f"<h3>Описание</h3>")
+        html.append(f"<p>{intro}</p>")
+    # Try to collect bullet-like features from the rest by looking for semicolon-separated fragments
+    features = []
+    for frag in _re_desc.split(r"[\\n]+", rest):
+        frag = frag.strip()
+        if not frag:
+            continue
+        if "•" in frag or ";" in frag or "—" in frag:
+            parts = _re_desc.split(r"[;•]|\\s—\\s", frag)
+            cand = [p.strip(" .;,-") for p in parts if len(p.strip(" .;,-")) >= 3]
+            # keep items shortish
+            for c in cand:
+                if 3 <= len(c) <= 180:
+                    features.append(c)
+    if features:
+        html.append("<h3>Особенности</h3>")
+        html.append("<ul>")
+        for f in features[:12]:
+            html.append(f"  <li>{f}</li>")
+        html.append("</ul>")
+    if ports:
+        html.append("<h3>Порты и подключения</h3>")
+        html.append("<ul>")
+        for p in ports[:20]:
+            html.append(f"  <li>{p}</li>")
+        html.append("</ul>")
+    if specs:
+        html.append("<h3>Характеристики</h3>")
+        html.append("<ul>")
+        seen = set()
+        for k, v in specs[:20]:
+            kv = (k.lower(), v)
+            if kv in seen: 
+                continue
+            seen.add(kv)
+            html.append(f"  <li><strong>{k}:</strong> {v}</li>")
+        html.append("</ul>")
+    if not html:
+        # fallback: single paragraph
+        return f"<p>{_re_desc.sub(r'\\n{2,}', '</p><p>', t)}</p>"
+    return "\\n".join(html)
+
+def _beautify_description_inner(inner: str) -> str:
+    # if already HTML-y, leave as is (but normalize whitespace a bit)
+    if _has_html_tags(inner):
+        t = _normalize_ws(inner)
+        # small fixes: wrap naked bullet lines into <ul>
+        lines = [ln.strip() for ln in t.split("\\n")]
+        if any(ln.startswith("•") for ln in lines):
+            items = [ln.lstrip("• ").strip() for ln in lines if ln.startswith("•")]
+            others = [ln for ln in lines if not ln.startswith("•")]
+            if items:
+                t = "\\n".join(others + ["<ul>"] + [f"  <li>{it}</li>" for it in items] + ["</ul>"])
+        return t
+    # otherwise, build structured HTML
+    return _build_html_from_plain(inner)
 
 def _expand_description_selfclose_text(xml_text: str) -> str:
     # <description /> -> <description></description>
-    return _re_cdata.sub(r"<description\s*/\s*>", "<description></description>", xml_text)
+    return _re_desc.sub(r"<description\\s*/\\s*>", "<description></description>", xml_text)
 
-def _wrap_description_cdata_text(xml_text: str) -> str:
-    # Обернуть все НЕпустые description в CDATA, если ещё не CDATA
+def _wrap_and_beautify_description_text(xml_text: str) -> str:
+    # Transform each description; then CDATA-wrap non-empty
     def repl(m):
         inner = m.group(2)
         if inner.strip() == "":
-            return m.group(1) + "" + m.group(3)  # оставить пустым
-        if inner.lstrip().startswith("<![CDATA["):
-            return m.group(0)  # уже CDATA
-        safe = inner.replace("]]>", "]]]]><![CDATA[>")
-        return f"{m.group(1)}<![CDATA[{safe}]]>{m.group(3)}"
-    return _re_cdata.sub(r"(<description>)(.*?)(</description>)", repl, xml_text, flags=_re_cdata.S)
+            return m.group(1) + "" + m.group(3)
+        # Beautify
+        pretty = _beautify_description_inner(inner)
+        # Guard against ]]> in content
+        pretty_safe = pretty.replace("]]>", "]]]]><![CDATA[>")
+        return f"{m.group(1)}<![CDATA[{pretty_safe}]]>{m.group(3)}"
+    return _re_desc.sub(r"(<description>)(.*?)(</description>)", repl, xml_text, flags=_re_desc.S)
 
-def _postprocess_descriptions_as_cdata(xml_bytes, enc):
+def _postprocess_descriptions_beautify_cdata(xml_bytes, enc):
     try:
         enc_use = enc or "windows-1251"
         text = xml_bytes.decode(enc_use, errors="replace")
         text = _expand_description_selfclose_text(text)
-        text = _wrap_description_cdata_text(text)
+        text = _wrap_and_beautify_description_text(text)
         return text.encode(enc_use, errors="replace")
     except Exception as _e:
-        print("desc_cdata_post_warn:", _e)
+        print("desc_beautify_post_warn:", _e)
         return xml_bytes
-# ===== END: CDATA wrap for <description> =====
+# ===== END: Description Beautifier + CDATA =====
 def _desc_fix_punct_spacing(s: str) -> str:
     """
     Keep supplier text AS-IS, only remove spaces (incl. NBSP/thin spaces)
@@ -1195,8 +1339,8 @@ def main() -> None:
     except Exception as _e:
         print(f"desc_end_fix_warn: {_e}")
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
-    # Finalize: wrap all non-empty <description> into CDATA (debug-friendly & safe)
-    xml_bytes = _postprocess_descriptions_as_cdata(xml_bytes, ENC if 'ENC' in globals() else 'windows-1251')
+    # Finalize descriptions: beautify HTML and wrap non-empty <description> in CDATA
+    xml_bytes = _postprocess_descriptions_beautify_cdata(xml_bytes, ENC if 'ENC' in globals() else 'windows-1251')
     # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
     try:
         _enc = ENC if 'ENC' in globals() else 'windows-1251'
