@@ -17,37 +17,30 @@ from xml.etree import ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
 
-# === Minimal helpers for final <description> whitespace flattening (added) ===
-def _desc_flatten_ws(s: str) -> str:
+# === Minimal post-step: fix spaces before punctuation inside <description> (added) ===
+def _desc_fix_punct_spacing(s: str) -> str:
     """
-    Keep text AS-IS but:
-      - collapse all whitespace (spaces, tabs, newlines) to a single space
-      - strip leading/trailing spaces
-    No punctuation editing, no markup, no semantic changes.
+    Keep supplier text AS-IS, only remove spaces (incl. NBSP/thin spaces)
+    directly before , . ; : ! ?
     """
     if s is None:
         return s
-    # Replace any runs of whitespace with single space
-    s = re.sub(r"[\s\u00A0\u200B\u200C\u200D]+", " ", s)
-    # Remove spaced punctuation (space before punctuation)
-    s = re.sub(r"\s+([,.;:!?])", r"\1", s)
-    # Normalize quotes spacing a bit (optional, safe)
-    s = re.sub(r"\s+(['\"])", r"\1", s)
-    s = re.sub(r"(['\"])\s+", r"\1 ", s)
-    return s.strip()
+    import re as _re
+    # collapse any unicode spaces BEFORE punctuation into nothing
+    s = _re.sub(r'[\u00A0\u2009\u200A\u202F\s]+([,.;:!?])', r'\1', s)
+    return s
 
-def flatten_all_descriptions(root):
-    """Run at the very end: flatten whitespace inside every <offer>/<description> to one line."""
-    for offer in root.findall(".//offer"):
-        desc = offer.find("description")
-        if desc is None or desc.text is None:
-            continue
-        try:
-            desc.text = _desc_flatten_ws(desc.text)
-        except Exception:
-            # Failsafe: keep original text if something goes wrong
-            pass
-# === End of minimal helpers (added) ===
+def fix_all_descriptions_punct(out_root):
+    """Run at the very end, just before ET.tostring(): only punctuation spacing is adjusted."""
+    for offer in out_root.findall(".//offer"):
+        d = offer.find("description")
+        if d is not None and d.text:
+            try:
+                d.text = _desc_fix_punct_spacing(d.text)
+            except Exception as e:
+                # Failsafe: keep original on error
+                pass
+# === End of minimal post-step (added) ===
 
 
 try:
@@ -1149,16 +1142,17 @@ def main() -> None:
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
     # Сериализация
-    # FINAL STEP: flatten <description> whitespace to one line (safe)
+    # FINAL STEP (safe): fix spaces before punctuation in <description>
 
     try:
 
-        flatten_all_descriptions(out_root)
+        fix_all_descriptions_punct(out_root)
 
     except Exception as e:
 
-        warn(f"desc_flatten_warn: {e}")
+        print(f"desc_punct_fix_warn: {e}")
 
+    
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
