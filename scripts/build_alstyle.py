@@ -1113,3 +1113,88 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         err(str(e))
+
+
+# =============================================================
+# Appended: <description> passthrough normalizer + CDATA wrapper
+# (runs AFTER the main script via atexit; base logic untouched)
+# =============================================================
+import atexit as _al_atexit
+import re as _al_re
+import xml.etree.ElementTree as _al_ET
+
+def _al_desc_normalize(txt: str) -> str:
+    if txt is None:
+        return ""
+    t = txt.replace("\r\n", "\n").replace("\r", "\n")
+    t = _al_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)            # NBSP & narrow spaces -> ' '
+    t = _al_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)             # zero-width chars
+    t = _al_re.sub(r"[ \t]+\n", "\n", t)                                   # trim EOL spaces
+    t = _al_re.sub(r"[ \t]{2,}", " ", t)                                   # collapse multi-spaces
+    t = _al_re.sub(r"\n{2,}", "\n", t).strip()                             # collapse blank lines
+    t = t.replace("\n", "<br>")                                            # newline -> <br>
+    return t
+
+def _al_cdata_safe(s: str) -> str:
+    return s.replace("]]>", "]]]]><![CDATA[>")
+
+def _al_inject_cdata_descriptions(xml_text: str, desc_map: dict[str, str]) -> str:
+    # Replace only the inner part of <description> ... </description> for offers present in desc_map
+    _offer_re = _al_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _al_re.S | _al_re.I)
+    _desc_re  = _al_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _al_re.S | _al_re.I)
+    def _repl_off(m):
+        oid = m.group(1)
+        block = m.group(0)
+        if oid not in desc_map:
+            return block
+        return _desc_re.sub(lambda mm: mm.group(1) + desc_map[oid] + mm.group(3), block, count=1)
+    return _offer_re.sub(_repl_off, xml_text)
+
+def _al_desc_postprocess() -> None:
+    try:
+        _out = globals().get("OUT_FILE", "docs/alstyle.yml")
+        _enc = globals().get("OUTPUT_ENCODING", "windows-1251")
+        with open(_out, "rb") as f:
+            data = f.read()
+        try:
+            xml_text = data.decode(_enc)
+        except Exception:
+            xml_text = data.decode("utf-8", errors="replace")
+
+        # Build desc_map from the CURRENT output (we do not alter base logic)
+        desc_map = {}
+        try:
+            root = _al_ET.fromstring(xml_text)
+            shop = root.find("shop")
+            offers = shop.find("offers") if shop is not None else None
+            if offers is not None:
+                for off in offers.findall("offer"):
+                    oid = off.get("id") or ""
+                    d = off.find("description")
+                    if d is None:
+                        continue
+                    parts = []
+                    if d.text:
+                        parts.append(d.text)
+                    for ch in d:
+                        parts.append(_al_ET.tostring(ch, encoding="unicode", method="xml"))
+                        if ch.tail:
+                            parts.append(ch.tail)
+                    raw = "".join(parts)
+                    norm = _al_desc_normalize(raw)
+                    desc_map[oid] = "<![CDATA[" + _al_cdata_safe(norm) + "]]>"
+        except Exception as e:
+            print("WARN: desc-post: parse failed, skipping CDATA:", e)
+            return
+
+        new_text = _al_inject_cdata_descriptions(xml_text, desc_map)
+        if new_text != xml_text:
+            with open(_out, "w", encoding=_enc, newline="") as f:
+                f.write(new_text if new_text.endswith("\n") else new_text + "\n")
+            print(f"Description CDATA: updated {len(desc_map)} offers")
+        else:
+            print("Description CDATA: no changes")
+    except Exception as e:
+        print("WARN: desc-post:", e)
+
+_al_atexit.register(_al_desc_postprocess)
