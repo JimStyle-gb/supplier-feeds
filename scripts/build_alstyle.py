@@ -23,59 +23,45 @@ from datetime import datetime, timezone, timedelta
 import re as _re_desc
 
 def _has_html_tags(_t: str) -> bool:
-    return bool(_re_desc.search(r"<(p|ul|ol|li|h1|h2|h3)\\b", _t, flags=_re_desc.I))
+    return bool(_re_desc.search(r"<(p|ul|ol|li|h1|h2|h3)\b", _t, flags=_re_desc.I))
 
 def _normalize_ws(_t: str) -> str:
-    _t = _t.replace("\\r", "\\n")
-    # collapse mixed spaces around newlines
-    _t = _re_desc.sub(r"[ \\t]*\\n[ \\t]*", "\\n", _t)
-    # normalize multiple blank lines to one
-    _t = _re_desc.sub(r"\\n{3,}", "\\n\\n", _t)
-    # unify bullets
-    _t = _t.replace("&#9679;", "•").replace("●", "•")
-    # normalize times sign entities
-    _t = _t.replace("&#215;", "×")
+    _t = _t.replace("\r", "\n")
+    _t = _re_desc.sub(r"[ \t]*\n[ \t]*", "\n", _t)
+    _t = _re_desc.sub(r"\n{3,}", "\n\n", _t)
+    _t = _t.replace("&#9679;", "•").replace("●", "•").replace("&#215;", "×")
     return _t.strip()
 
 def _extract_kv_specs(_t: str):
-    # Find "Характеристики" block or loose KV pairs "Ключ: Значение"
     specs = []
-    # Prefer pairs "Ключ: Значение" (russian keys)
-    for m in _re_desc.finditer(r"(?m)\\b([A-ЯЁA-Za-z0-9 _./()«»\\-]{2,30})\\s*:\\s*([^\\n]+)", _t):
+    for m in _re_desc.finditer(r"(?m)\b([А-ЯЁA-Za-z0-9 _./()«»\-]{2,30})\s*:\s*([^\n]+)", _t):
         key = m.group(1).strip(" .-")
         val = m.group(2).strip(" .;")
-        # filter obvious non-keys
-        if len(key) <= 2: 
+        if len(key) <= 2:
             continue
-        # avoid capturing full sentences with many spaces
-        if len(val) > 300: 
+        if len(val) > 300:
             continue
         specs.append((key, val))
     return specs
 
 def _extract_ports(_t: str):
     ports = []
-    # Look for phrase leading to port list
-    m = _re_desc.search(r"(Панель[^\\n]{0,120}включает[^:]*:|Порты[^:]{0,40}:)\\s*(.+)", _t, flags=_re_desc.I)
+    m = _re_desc.search(r"(Панель[^\n]{0,120}включает[^:]*:|Порты[^:]{0,40}:)\s*(.+)", _t, flags=_re_desc.I)
     if m:
         tail = m.group(2)
-        # cut at sentence end or section heading
-        cut_m = _re_desc.search(r"(?:(?:\\.|!|\\?)\\s+|\\n\\n|\\Z)", tail)
+        cut_m = _re_desc.search(r"(?:(?:\.|!|\?)\s+|\n\n|\Z)", tail)
         if cut_m:
             tail = tail[:cut_m.start()].strip()
-        # split into items by common separators
-        parts = _re_desc.split(r"[;•\\n\\t]|\\s{2,}|\\s,\\s", tail)
+        parts = _re_desc.split(r"[;•\n\t]|\s{2,}|\s,\s", tail)
         for p in parts:
             p = p.strip(" .;,-")
             if p:
                 ports.append(p)
-    # also parse compact "2× USB-A ..." chains
     if not ports:
-        chain = _re_desc.search(r"(?:^|\\n)(?:[0-9]+\\s*×[^\\n]+?)(?:\\.|\\n|$)", _t)
+        chain = _re_desc.search(r"(?:^|\n)(?:[0-9]+\s*×[^\n]+?)(?:\.|\n|$)", _t)
         if chain:
             chunk = chain.group(0)
-            # split when a number-times appears
-            items = _re_desc.split(r"(?=(?:[0-9]+\\s*×)|(?:\\bHDMI\\b)|(?:\\bUSB\\b)|(?:\\bRJ-45\\b)|(?:\\bType[- ]?[AC]\\b))", chunk)
+            items = _re_desc.split(r"(?=(?:[0-9]+\s*×)|(?:\bHDMI\b)|(?:\bUSB\b)|(?:\bRJ-45\b)|(?:\bType[- ]?[AC]\b))", chunk)
             for it in items:
                 it = it.strip(" .;,-")
                 if len(it) > 1:
@@ -83,42 +69,34 @@ def _extract_ports(_t: str):
     return ports
 
 def _split_sentences(_t: str):
-    # lightweight sentence splitter for ru
     _t = _t.replace("..", ".")
-    parts = _re_desc.split(r"(?<=[.!?])\\s+(?=[А-ЯЁA-Z0-9])", _t)
+    parts = _re_desc.split(r"(?<=[.!?])\s+(?=[А-ЯЁA-Z0-9])", _t)
     return [p.strip() for p in parts if p.strip()]
 
 def _build_html_from_plain(_t: str) -> str:
     t = _normalize_ws(_t)
-    # Quick remove duplicated "Характеристики" word-only lines
-    t = _re_desc.sub(r"(?mi)^Характеристики\\s*:?", "", t).strip()
-    # Extract blocks
+    t = _re_desc.sub(r"(?mi)^Характеристики\s*:?", "", t).strip()
     ports = _extract_ports(t)
     specs = _extract_kv_specs(t)
-    # Remove extracted KV lines from body to avoid duplication
     if specs:
         for k, v in specs[:50]:
-            t = t.replace(f"{k}: {v}", "").replace(f"{k}:{v}", "")
-        t = _re_desc.sub(r"(\\n){2,}", "\\n\\n", t).strip()
-    # Split into sentences for intro
+            t = t.replace(k + ": " + v, "").replace(k + ":" + v, "")
+        t = _re_desc.sub(r"(\n){2,}", "\n\n", t).strip()
     sents = _split_sentences(t)
     intro = " ".join(sents[:2]) if sents else t
     rest = " ".join(sents[2:]) if len(sents) > 2 else ""
-    # Build HTML
     html = []
     if intro:
         html.append("<h3>Описание</h3>")
-        html.append("<p>"+intro+"</p>")
-    # Try to collect bullet-like features from the rest by looking for semicolon-separated fragments
+        html.append("<p>" + intro + "</p>")
     features = []
-    for frag in _re_desc.split(r"[\\n]+", rest):
+    for frag in _re_desc.split(r"[\n]+", rest):
         frag = frag.strip()
         if not frag:
             continue
         if "•" in frag or ";" in frag or "—" in frag:
-            parts = _re_desc.split(r"[;•]|\\s—\\s", frag)
+            parts = _re_desc.split(r"[;•]|\s—\s", frag)
             cand = [p.strip(" .;,-") for p in parts if len(p.strip(" .;,-")) >= 3]
-            # keep items shortish
             for c in cand:
                 if 3 <= len(c) <= 180:
                     features.append(c)
@@ -126,13 +104,13 @@ def _build_html_from_plain(_t: str) -> str:
         html.append("<h3>Особенности</h3>")
         html.append("<ul>")
         for f in features[:12]:
-            html.append("  <li>"+f+"</li>")
+            html.append("  <li>" + f + "</li>")
         html.append("</ul>")
     if ports:
         html.append("<h3>Порты и подключения</h3>")
         html.append("<ul>")
         for p in ports[:20]:
-            html.append("  <li>"+p+"</li>")
+            html.append("  <li>" + p + "</li>")
         html.append("</ul>")
     if specs:
         html.append("<h3>Характеристики</h3>")
@@ -140,46 +118,37 @@ def _build_html_from_plain(_t: str) -> str:
         seen = set()
         for k, v in specs[:20]:
             kv = (k.lower(), v)
-            if kv in seen: 
+            if kv in seen:
                 continue
             seen.add(kv)
-            html.append("  <li><strong>"+str(k)+":</strong> "+str(v)+"</li>")
+            html.append("  <li><strong>" + str(k) + ":</strong> " + str(v) + "</li>")
         html.append("</ul>")
     if not html:
-        # fallback: single paragraph
-        tmp_para = _re_desc.sub(r"
-{2,}", "</p><p>", t)
+        tmp_para = _re_desc.sub(r"\n{2,}", "</p><p>", t)
         return "<p>" + tmp_para + "</p>"
-    return "\\n".join(html)
+    return "\n".join(html)
 
 def _beautify_description_inner(inner: str) -> str:
-    # if already HTML-y, leave as is (but normalize whitespace a bit)
     if _has_html_tags(inner):
         t = _normalize_ws(inner)
-        # small fixes: wrap naked bullet lines into <ul>
-        lines = [ln.strip() for ln in t.split("\\n")]
+        lines = [ln.strip() for ln in t.split("\n")]
         if any(ln.startswith("•") for ln in lines):
             items = [ln.lstrip("• ").strip() for ln in lines if ln.startswith("•")]
             others = [ln for ln in lines if not ln.startswith("•")]
             if items:
-                t = "\\n".join(others + ["<ul>"] + ["  <li>"+it+"</li>" for it in items] + ["</ul>"])
+                t = "\n".join(others + ["<ul>"] + ["  <li>" + it + "</li>" for it in items] + ["</ul>"])
         return t
-    # otherwise, build structured HTML
     return _build_html_from_plain(inner)
 
 def _expand_description_selfclose_text(xml_text: str) -> str:
-    # <description /> -> <description></description>
-    return _re_desc.sub(r"<description\\s*/\\s*>", "<description></description>", xml_text)
+    return _re_desc.sub(r"<description\s*/\s*>", "<description></description>", xml_text)
 
 def _wrap_and_beautify_description_text(xml_text: str) -> str:
-    # Transform each description; then CDATA-wrap non-empty
     def repl(m):
         inner = m.group(2)
         if inner.strip() == "":
             return m.group(1) + "" + m.group(3)
-        # Beautify
         pretty = _beautify_description_inner(inner)
-        # Guard against ]]> in content
         pretty_safe = pretty.replace("]]>", "]]]]><![CDATA[>")
         return m.group(1) + "<![CDATA[" + pretty_safe + "]]>" + m.group(3)
     return _re_desc.sub(r"(<description>)(.*?)(</description>)", repl, xml_text, flags=_re_desc.S)
@@ -1341,7 +1310,7 @@ def main() -> None:
     except Exception as _e:
         print(f"desc_end_fix_warn: {_e}")
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
-    # Finalize descriptions: beautify HTML and wrap non-empty <description> in CDATA
+    # Finalize descriptions: beautify as HTML + wrap in CDATA (safe, output-only)
     xml_bytes = _postprocess_descriptions_beautify_cdata(xml_bytes, ENC if 'ENC' in globals() else 'windows-1251')
     # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
     try:
