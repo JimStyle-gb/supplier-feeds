@@ -1183,26 +1183,26 @@ except Exception as e:
 
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
-sys.exit(0)
+        sys.exit(0)
 
-    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-    try:
-        with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
-            f.write(xml_text)
-    except UnicodeEncodeError as e:
-        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
-        warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
-        data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
-        with open(OUT_FILE_YML, "wb") as f:
-            f.write(data_bytes)
+os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
+try:
+    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
+        f.write(xml_text)
+except UnicodeEncodeError as e:
+    # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
+    warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
+    data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
+    with open(OUT_FILE_YML, "wb") as f:
+        f.write(data_bytes)
 
-    # .nojekyll для GitHub Pages
-    try:
-        docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
-        os.makedirs(docs_dir, exist_ok=True)
-        open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
-    except Exception as e:
-        warn(f".nojekyll create warn: {e}")
+# .nojekyll для GitHub Pages
+try:
+    docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
+    os.makedirs(docs_dir, exist_ok=True)
+    open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+except Exception as e:
+    warn(f".nojekyll create warn: {e}")
 
     log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=DESC-FLAT")
 
