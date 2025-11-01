@@ -34,7 +34,7 @@ def _desc_normalize_multi_punct(s: str) -> str:
     Normalize long punctuation runs to marketplace-friendly form:
       - any unicode ellipsis '…' (one or more) -> '...'
       - 3 or more dots -> '...'
-      - runs (>=3) of [! ? ; :] — collapse to the LAST char in the run
+      - runs (>=3) of [! ? ; :] collapse to the LAST char of the run
     """
     if s is None:
         return s
@@ -1158,21 +1158,21 @@ def main() -> None:
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
     # Сериализация
-    # FINAL STEP (safe): description spacing & multi-punct normalization
-    try:
-        fix_all_descriptions_end(out_root)
-    except Exception as _e:
-        print(f"desc_end_fix_warn: {_e}")
+# FINAL STEP (safe): description spacing & multi-punct normalization
+try:
+    fix_all_descriptions_end(out_root)
+except Exception as e:
+    print(f"desc_end_fix_warn: {e}")
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
     try:
         _enc = ENC if 'ENC' in globals() else 'windows-1251'
         _txt = xml_bytes.decode(_enc, errors='replace')
         import re as _re
-        _txt = _re.sub(r'<description\s*/>', '<description></description>', _txt)
+        _txt = _re.sub(r'<description\s*/\s*>', '<description></description>', _txt)
         xml_bytes = _txt.encode(_enc, errors='replace')
-    except Exception as _e:
-        print(f"desc_selfclose_fix_warn: {_e}")
+    except Exception as e:
+        print(f"desc_selfclose_fix_warn: {e}")
 
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
