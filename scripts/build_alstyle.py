@@ -1,8 +1,5 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
-from __future__ import annotations
-
-import sys
 """
 AlStyle -> YML (DESC-FLAT edition)
 
@@ -12,6 +9,7 @@ AlStyle -> YML (DESC-FLAT edition)
 много пробелов/переносов; пустые описания не трогаем).
 """
 
+from __future__ import annotations
 import os, sys, re, time, random, hashlib, urllib.parse, requests, html
 from typing import Dict, List, Tuple, Optional, Set
 from copy import deepcopy
@@ -36,7 +34,7 @@ def _desc_normalize_multi_punct(s: str) -> str:
     Normalize long punctuation runs to marketplace-friendly form:
       - any unicode ellipsis '…' (one or more) -> '...'
       - 3 or more dots -> '...'
-      - runs (>=3) of [! ? ; :] collapse to the LAST char of the run
+      - runs (>=3) of [! ? ; :] — collapse to the LAST char in the run
     """
     if s is None:
         return s
@@ -1163,19 +1161,19 @@ def main() -> None:
     # FINAL STEP (safe): description spacing & multi-punct normalization
     try:
         fix_all_descriptions_end(out_root)
-    except Exception as e:
-        print(f"desc_end_fix_warn: {e}")
-    # Serialize after normalization
+    except Exception as _e:
+        print(f"desc_end_fix_warn: {_e}")
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
     try:
         _enc = ENC if 'ENC' in globals() else 'windows-1251'
         _txt = xml_bytes.decode(_enc, errors='replace')
         import re as _re
-        _txt = _re.sub(r'<description\s*/\s*>', '<description></description>', _txt)
+        _txt = _re.sub(r'<description\s*/>', '<description></description>', _txt)
         xml_bytes = _txt.encode(_enc, errors='replace')
-    except Exception as e:
-        print(f"desc_selfclose_fix_warn: {e}")
+    except Exception as _e:
+        print(f"desc_selfclose_fix_warn: {_e}")
+
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
     # Лёгкая косметика: перенос после FEED_META и пустая строка между офферами
@@ -1184,26 +1182,26 @@ def main() -> None:
 
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
-        sys.exit(0)
+        return
 
-os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
-try:
-    with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
-        f.write(xml_text)
-except UnicodeEncodeError as e:
-    # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
-    warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
-    data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
-    with open(OUT_FILE_YML, "wb") as f:
-        f.write(data_bytes)
+    os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
+    try:
+        with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
+            f.write(xml_text)
+    except UnicodeEncodeError as e:
+        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
+        warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
+        data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
+        with open(OUT_FILE_YML, "wb") as f:
+            f.write(data_bytes)
 
-# .nojekyll для GitHub Pages
-try:
-    docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
-    os.makedirs(docs_dir, exist_ok=True)
-    open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
-except Exception as e:
-    warn(f".nojekyll create warn: {e}")
+    # .nojekyll для GitHub Pages
+    try:
+        docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
+        os.makedirs(docs_dir, exist_ok=True)
+        open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+    except Exception as e:
+        warn(f".nojekyll create warn: {e}")
 
     log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=DESC-FLAT")
 
