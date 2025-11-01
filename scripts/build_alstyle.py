@@ -19,229 +19,36 @@ from datetime import datetime, timezone, timedelta
 
 # === Minimal post-steps for <description> (added) ===
 
-# ========== BEGIN: HTML Description Beautifier (append-only, safe) ==========
-import re as _re
+# ===== BEGIN: CDATA wrap for <description> (append-only, safe) =====
+import re as _re_cdata
 
-def _esc_html_min(s: str) -> str:
-    if s is None:
-        return ""
-    return (s.replace("&", "&amp;")
-             .replace("<", "&lt;")
-             .replace(">", "&gt;")
-             .replace('"', "&quot;"))
+def _expand_description_selfclose_text(xml_text: str) -> str:
+    # <description /> -> <description></description>
+    return _re_cdata.sub(r"<description\s*/\s*>", "<description></description>", xml_text)
 
-def _strip_span_like_html(s: str) -> str:
-    if s is None:
-        return ""
-    s = s.replace("\r\n", "\n").replace("\r", "\n")
-    # переносы
-    s = _re.sub(r'(?i)<\s*br\s*/?\s*>', '\n', s)
-    # убрать контейнеры поставщика
-    s = _re.sub(r'(?is)<\s*(?:span|div)[^>]*>', '', s)
-    s = _re.sub(r'(?is)</\s*(?:span|div)\s*>', '', s)
-    # параграфы в переносы
-    s = _re.sub(r'(?is)<\s*p[^>]*>', '\n', s)
-    s = _re.sub(r'(?is)</\s*p\s*>', '\n', s)
-    # схлопнуть
-    s = _re.sub(r'\n{3,}', '\n\n', s)
-    return s
-
-def _clean_spaces_punct(s: str) -> str:
-    if s is None:
-        return ""
-    # убрать неразрывные/узкие пробелы
-    s = s.replace("\u00A0"," ").replace("\u202F"," ").replace("\u2009"," ").replace("\u200A"," ")
-    # пробелы перед знаками
-    s = _re.sub(r'\s+([,.;:!?])', r'\1', s)
-    # нормализовать многократные знаки
-    s = _re.sub(r'[!?:;]{3,}', lambda m: m.group(0)[-1], s)
-    s = _re.sub(r'…+', '...', s)
-    s = _re.sub(r'\.{3,}', '...', s)
-    # обрезать хвостовые пробелы
-    s = '\n'.join(line.rstrip() for line in s.splitlines())
-    # схлопнуть лишние пустые строки
-    s = _re.sub(r'\n{3,}', '\n\n', s)
-    return s
-
-def _extract_intro_and_kv(s: str):
-    if not s:
-        return "", ""
-    txt = s.strip()
-    m = _re.search(r'(?i)\b(технические\s+характеристики|характеристики)\b[:,]?', txt)
-    if not m:
-        return txt, ""
-    return txt[:m.start()].strip(), txt[m.end():].strip()
-
-def _kv_pairs_from_text(s: str):
-    pairs = []
-    if not s:
-        return pairs
-    # разрывы между строками/точками с запятой/маркерами
-    s = _re.sub(r'[ \t]{2,}', '\n', s)
-    chunks = _re.split(r'\n|(?:\s*[;|\u2022]\s*)', s)
-    for ch in chunks:
-        ch = ch.strip(' \u00A0-•\t')
-        if not ch:
-            continue
-        m = _re.match(r'([^:：]{2,}?)\s*[:：]\s*(.+)$', ch)
-        if m:
-            key = m.group(1).strip()
-            val = m.group(2).strip()
-            if len(key) > 60 and ' ' in key:
-                continue
-            pairs.append((key, val))
-    # уникализация
-    seen = set()
-    uniq = []
-    for k, v in pairs:
-        low = (k.lower(), v.lower())
-        if low not in seen:
-            seen.add(low)
-            uniq.append((k, v))
-    return uniq[:40]
-
-def _html_ul_from_pairs(pairs):
-    if not pairs:
-        return ""
-    out = ["<ul>"]
-    for k, v in pairs:
-        out.append(f'  <li><strong>{_esc_html_min(k)}:</strong> {_esc_html_min(v)}</li>')
-    out.append("</ul>")
-    return "\n".join(out)
-
-def _quick_facts_from_params(offer_elem):
-    prio = ["Вес", "Ресурс", "Гарантия", "Диагональ экрана", "Частота обновления экрана", "Тип матрицы экрана",
-            "Цвет", "Тип накопителя", "Объем накопителя", "Процессор", "Видеокарта"]
-    lookup = {}
-    for p in list(offer_elem.findall("param")):
-        nm = (p.get("name") or "").strip()
-        val = (p.text or "").strip()
-        if nm and val and nm not in lookup:
-            lookup[nm] = val
-    values = [(k, lookup[k]) for k in prio if k in lookup][:5]
-    if not values:
-        return ""
-    out = ["<ul>"]
-    for k, v in values:
-        out.append(f'  <li>&#9989; {_esc_html_min(k)}: {_esc_html_min(v)}</li>')
-    out.append("</ul>")
-    return "\n".join(out)
-
-def _fix_double_quot(html_text: str) -> str:
-    return html_text.replace("&amp;quot;", "&quot;")
-
-def _wrap_bullets(html_text: str) -> str:
-    # Превращаем последовательности <p>• ...</p> в <ul><li>…</li>…</ul>
-    lines = html_text.split("\n")
-    out = []
-    buf = []
-    def flush_buf():
-        nonlocal out, buf
-        if buf:
-            out.append("<ul>")
-            for item in buf:
-                txt = _re.sub(r'^<p>\s*•\s*', '', item).rstrip()
-                txt = txt[:-4] if txt.lower().endswith("</p>") else txt
-                out.append(f"  <li>{txt}</li>")
-            out.append("</ul>")
-            buf = []
-    for ln in lines:
-        if _re.match(r'^\s*<p>\s*•\s+.+</p>\s*$', ln):
-            buf.append(ln)
-        else:
-            flush_buf()
-            out.append(ln)
-    flush_buf()
-    return "\n".join(out)
-
-def _split_ports_paragraphs(html_text: str) -> str:
-    # Ищем абзацы с шаблоном "2× Thunderbolt ... 2× USB-A ... 1× HDMI ..."
+def _wrap_description_cdata_text(xml_text: str) -> str:
+    # Обернуть все НЕпустые description в CDATA, если ещё не CDATA
     def repl(m):
-        whole = m.group(1)
-        items = _re.findall(r'(\d+\s*&\#215;\s*[^<]+?)(?=(?:\s+\d+\s*&\#215;)|$)', whole)
-        if len(items) >= 2:
-            lis = "\n".join(f"  <li>{it.strip()}</li>" for it in items)
-            return f"<ul>\n{lis}\n</ul>"
-        return m.group(0)
-    return _re.sub(r"<p>([^<]*\d+\s*&\#215;[^<]+)</p>", repl, html_text)
+        inner = m.group(2)
+        if inner.strip() == "":
+            return m.group(1) + "" + m.group(3)  # оставить пустым
+        if inner.lstrip().startswith("<![CDATA["):
+            return m.group(0)  # уже CDATA
+        safe = inner.replace("]]>", "]]]]><![CDATA[>")
+        return f"{m.group(1)}<![CDATA[{safe}]]>{m.group(3)}"
+    return _re_cdata.sub(r"(<description>)(.*?)(</description>)", repl, xml_text, flags=_re_cdata.S)
 
-def _trim_trailing_heading(html_text: str) -> str:
-    return _re.sub(r"(?:\s*<h3>[^<]+</h3>\s*)+$", "", html_text).strip()
-
-def _split_long_paragraphs(html_text: str) -> str:
-    # Дробим абзацы > 900 символов на два по первому полному предложению.
-    def split_p(m):
-        content = m.group(1)
-        plain = _re.sub(r"<[^>]+>", "", content)
-        if len(plain.strip()) <= 900:
-            return m.group(0)
-        sp = _re.split(r"(?<=\.)\s+", content, maxsplit=1)
-        if len(sp) == 2:
-            return f"<p>{sp[0].strip()}</p>\n<p>{sp[1].strip()}</p>"
-        return m.group(0)
-    return _re.sub(r"<p>(.*?)</p>", split_p, html_text, flags=_re.S)
-
-def beautify_descriptions_html(root):
-    for offer in root.findall(".//offer"):
-        d = offer.find("description")
-        if d is None:
-            continue
-        raw = (d.text or "").strip()
-        if raw == "":
-            # явный пустой тег по требованию
-            d.text = ""
-            continue
-        if len(raw) < 40:
-            # короткие описания оставляем как есть
-            continue
-
-        txt = _strip_span_like_html(raw)
-        txt = _clean_spaces_punct(txt)
-        intro, kv_block = _extract_intro_and_kv(txt)
-
-        title = _esc_html_min((offer.findtext("name") or "").strip()) or "Описание"
-
-        parts = [f"<h3>{title}</h3>"]
-
-        if intro:
-            intro_html = _esc_html_min(intro)
-            paras = [p.strip() for p in intro_html.split("\n") if p.strip()]
-            if len(paras) <= 2:
-                parts.append(f"<p>{' '.join(paras)}</p>")
-            else:
-                parts.append(f"<p>{paras[0]}</p>")
-                for p_ in paras[1:5]:
-                    parts.append(f"<p>{p_}</p>")
-
-        quick = _quick_facts_from_params(offer)
-        if quick:
-            parts.append(quick)
-
-        pairs = _kv_pairs_from_text(kv_block)
-        if pairs:
-            parts.append("<h3>Характеристики</h3>")
-            parts.append(_html_ul_from_pairs(pairs))
-
-        html_text = "\n".join(parts).strip()
-        # пост-обработка: исправления из аудита
-        html_text = _fix_double_quot(html_text)
-        html_text = _wrap_bullets(html_text)
-        html_text = _split_ports_paragraphs(html_text)
-        html_text = _split_long_paragraphs(html_text)
-        html_text = _trim_trailing_heading(html_text)
-        html_text = _re.sub(r"[ \t]+\n", "\n", html_text)
-
-        if len(_re.sub(r"<[^>]+>", "", html_text)) >= 40:
-            d.text = html_text
-
-def expand_description_selfclose(xml_bytes, enc):
+def _postprocess_descriptions_as_cdata(xml_bytes, enc):
     try:
-        t = xml_bytes.decode(enc or "windows-1251", errors="replace")
-        t = _re.sub(r"<description\s*/\s*>", "<description></description>", t)
-        return t.encode(enc or "windows-1251", errors="replace")
-    except Exception:
+        enc_use = enc or "windows-1251"
+        text = xml_bytes.decode(enc_use, errors="replace")
+        text = _expand_description_selfclose_text(text)
+        text = _wrap_description_cdata_text(text)
+        return text.encode(enc_use, errors="replace")
+    except Exception as _e:
+        print("desc_cdata_post_warn:", _e)
         return xml_bytes
-# ========== END: HTML Description Beautifier ==========
+# ===== END: CDATA wrap for <description> =====
 def _desc_fix_punct_spacing(s: str) -> str:
     """
     Keep supplier text AS-IS, only remove spaces (incl. NBSP/thin spaces)
@@ -269,11 +76,6 @@ def _desc_normalize_multi_punct(s: str) -> str:
     return s
 
 def fix_all_descriptions_end(out_root):
-    # HTML beautify for <description> (final step)
-    try:
-        beautify_descriptions_html(out_root)
-    except Exception as _e:
-        print('desc_html_beautify_warn:', _e)
     """Run at the very end, just before ET.tostring(): spacing + multi-punct cleanup."""
     for offer in out_root.findall(".//offer"):
         d = offer.find("description")
@@ -1393,11 +1195,8 @@ def main() -> None:
     except Exception as _e:
         print(f"desc_end_fix_warn: {_e}")
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
-    # Ensure <description /> expanded to explicit tag
-    try:
-        xml_bytes = expand_description_selfclose(xml_bytes, ENC if 'ENC' in globals() else 'windows-1251')
-    except Exception as _e:
-        print('desc_selfclose_fix_warn:', _e)
+    # Finalize: wrap all non-empty <description> into CDATA (debug-friendly & safe)
+    xml_bytes = _postprocess_descriptions_as_cdata(xml_bytes, ENC if 'ENC' in globals() else 'windows-1251')
     # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
     try:
         _enc = ENC if 'ENC' in globals() else 'windows-1251'
