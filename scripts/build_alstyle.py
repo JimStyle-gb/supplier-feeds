@@ -14,60 +14,6 @@ import os, sys, re, time, random, hashlib, urllib.parse, requests, html
 from typing import Dict, List, Tuple, Optional, Set
 from copy import deepcopy
 from xml.etree import ElementTree as ET
-
-# === PATCH: safe desc flattener (defines only if missing) ===
-try:
-    flatten_descriptions_end  # noqa: F401
-except NameError:
-    from xml.etree import ElementTree as _ET_patch  # keep isolated
-    import re as _re_mod
-    import html as _html_mod
-
-    def _flatten_desc_text(_desc_node: _ET_patch.Element):
-        """Вернуть плоский текст без HTML-тегов; None, если реально пусто."""
-        pieces = []
-        if _desc_node.text and _desc_node.text.strip():
-            pieces.append(_desc_node.text)
-        for _ch in _desc_node.iter():
-            if _ch is _desc_node:
-                continue
-            if _ch.text and _ch.text.strip():
-                pieces.append(_ch.text)
-            if _ch.tail and _ch.tail.strip():
-                pieces.append(_ch.tail)
-        if not pieces:
-            t = (_desc_node.text or "").strip()
-            if not t:
-                return None
-            return _re_mod.sub(r"\s+", " ", t)
-        flat = " ".join(pieces)
-        flat = _html_mod.unescape(flat).replace("\xa0", " ")
-        flat = _re_mod.sub(r"\s+", " ", flat).strip()
-        return flat if flat else None
-
-    def flatten_descriptions_end(_shop_el: _ET_patch.Element) -> int:
-        """Финально «сплющить» <description> в одну строку без HTML-тегов/переносов.
-           Пустые описания не трогаем.
-        """
-        if _shop_el is None:
-            return 0
-        offers_el = _shop_el.find("offers")
-        if offers_el is None:
-            return 0
-        touched = 0
-        for _offer in offers_el.findall("offer"):
-            _d = _offer.find("description")
-            if _d is None:
-                continue
-            _new = _flatten_desc_text(_d)
-            if _new is None:
-                continue
-            _d.text = _new
-            for _child in list(_d):
-                _d.remove(_child)
-            touched += 1
-        return touched
-# === END PATCH ===
 from datetime import datetime, timezone, timedelta
 
 try:
@@ -1048,6 +994,38 @@ def flatten_all_descriptions(shop_el: ET.Element) -> int:
             d.remove(ch)
         touched += 1
     return touched
+def clean_descriptions_punct(shop_el: ET.Element) -> int:
+    """
+    Косметическая чистка текста внутри <description> (без изменения логики пайплайна):
+    - Убираем пробелы перед знаками препинания , . : ; ! ?
+    - Ставим пробел после запятой и двоеточия, когда дальше идёт буква (не трогаем дробные числа "3,5")
+    - Схлопываем повторные пробелы.
+    """
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return 0
+    touched = 0
+    for offer in offers_el.findall("offer"):
+        d = offer.find("description")
+        if d is None:
+            continue
+        t = d.text or ""
+        if not t:
+            continue
+        t_new = t
+        # 1) убрать пробелы перед знаками (, . : ; ! ?)
+        t_new = re.sub(r"\s+([,.:;!?])", r"\1", t_new, flags=re.UNICODE)
+        # 2) запятая без пробела перед буквой → добавить пробел (не трогаем числа)
+        t_new = re.sub(r",(?=[A-Za-zА-Яа-яЁё])", ", ", t_new)
+        # 3) двоеточие без пробела перед буквой → добавить пробел
+        t_new = re.sub(r":(?=[A-Za-zА-Яа-яЁё])", ": ", t_new)
+        # 4) схлопнуть повторные пробелы
+        t_new = re.sub(r"\s{2,}", " ", t_new).strip()
+        if t_new != t:
+            d.text = t_new
+            touched += 1
+    return touched
+
 
 # ======================= MAIN =======================
 def main() -> None:
@@ -1147,6 +1125,7 @@ def main() -> None:
 
     # 15) ПЛОСКАЯ нормализация описаний (ПОДХОД 2): одна строка, без HTML-тегов
     desc_touched = flatten_all_descriptions(out_shop); log(f"Descriptions flattened: {desc_touched}")
+    clean_touched = clean_descriptions_punct(out_shop); log(f"Descriptions cleaned: {clean_touched}")
 
     # Красивые отступы (Python 3.9+). На плоский текст внутри <description> это не влияет.
     try:
@@ -1167,13 +1146,6 @@ def main() -> None:
         "available_false": str(t_false),
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
-
-    # DESC-FLAT: финальная нормализация описаний
-    try:
-        cnt_flat = flatten_descriptions_end(out_shop)
-        log(f"Descriptions flattened: {cnt_flat}")
-    except Exception as e:
-        warn(f"Descriptions flatten warn: {e}")
 
     # Сериализация
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
