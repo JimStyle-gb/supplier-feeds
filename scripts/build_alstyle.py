@@ -1038,7 +1038,19 @@ def main() -> None:
 
     # Готовим выходную структуру
     out_root  = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
-    pass  # removed description-related
+    out_shop = ET.SubElement(out_root, "shop")
+    ET.SubElement(out_shop, "name").text = SHOP_NAME
+    ET.SubElement(out_shop, "company").text = SHOP_COMPANY
+    if SHOP_URL:
+        ET.SubElement(out_shop, "url").text = SHOP_URL
+    out_currencies = ET.SubElement(out_shop, "currencies")
+    _cur = ET.SubElement(out_currencies, "currency"); _cur.set("id", "KZT"); _cur.set("rate", "1")
+    out_categories = ET.SubElement(out_shop, "categories")
+    _in_cats = shop_in.find("categories")
+    if _in_cats is not None:
+        for _cat in _in_cats.findall("category"):
+            out_categories.append(deepcopy(_cat))
+    out_offers = ET.SubElement(out_shop, "offers")
 
     # 1) Копируем офферы 1:1 (дальше работаем только над полями, описание пока не трогаем)
     for o in src_offers:
