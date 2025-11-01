@@ -1116,10 +1116,10 @@ if __name__ == "__main__":
 
 
 # =============================================================
-# Appended: <description> post-processor (SAFE_v2 + PRETTY via flag)
+# Appended: <description> post-processor (PRETTY default; SAFE_v2 via flag)
 # Usage:
-#   DESC_PRETTY=1  -> enable pretty mode (headings + <ul><li> + units)
-#   default        -> SAFE_v2 (newline→<br>, clean, CDATA, enc-safe)
+#   DESC_PRETTY=0|false|off|no  -> force SAFE_v2 (newline→<br>, clean, CDATA, enc-safe)
+#   (unset or any other value)  -> PRETTY (headings + <ul><li> + units)
 # =============================================================
 import atexit as _al_atexit
 import os as _al_os
@@ -1190,7 +1190,7 @@ def _al_post_safe_v2(xml_text: str, enc: str) -> str:
         return _desc_re.sub(lambda mm: mm.group(1) + desc_map[oid] + mm.group(3), block, count=1)
     return _offer_re.sub(_repl_off, xml_text)
 
-# ---------- PRETTY mode (optional) ----------
+# ---------- PRETTY mode (default) ----------
 _al_key_rx = _al_re.compile(
     r'^\s*(?P<k>(Модель|Совместим\w* модели|Совместим\w*|Цвет|Ресурс( картриджа)?|Ё?мкост\w*|Объ[её]м|Гарант\w*|Вес|Размер\w*|Формат|Тип|Серия|Чип|Кол-во|Количество|Материал|Срок службы))\s*[:：]?\s*(?P<v>.+?)\s*$',
     _al_re.I
@@ -1346,7 +1346,7 @@ def _al_post_pretty(xml_text: str, enc: str) -> str:
         return _desc_re.sub(lambda mm: mm.group(1) + desc_map[oid] + mm.group(3), block, count=1)
     return _offer_re.sub(_repl_off, xml_text)
 
-# ---------- single entry (decides which mode to run) ----------
+# ---------- single entry (PRETTY by default) ----------
 def _al_desc_postprocess_combo() -> None:
     try:
         _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
@@ -1358,13 +1358,16 @@ def _al_desc_postprocess_combo() -> None:
         except Exception:
             xml_text = data.decode("utf-8", errors="replace")
 
-        pretty_flag = str(_al_os.getenv("DESC_PRETTY", "0")).strip().lower() in {"1","true","on","yes"}
-        new_text = _al_post_pretty(xml_text, _enc) if pretty_flag else _al_post_safe_v2(xml_text, _enc)
+        # PRETTY by default; SAFE_v2 only if DESC_PRETTY explicitly disables it
+        pretty_env = str(_al_os.getenv("DESC_PRETTY", "")).strip().lower()
+        use_pretty = pretty_env not in {"0", "false", "off", "no"}
+
+        new_text = _al_post_pretty(xml_text, _enc) if use_pretty else _al_post_safe_v2(xml_text, _enc)
 
         if new_text != xml_text:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
                 f.write(new_text if new_text.endswith("\n") else new_text + "\n")
-            mode = "PRETTY" if pretty_flag else "SAFE_v2"
+            mode = "PRETTY(default)" if use_pretty else "SAFE_v2"
             print(f"Description postprocess ({mode}): updated")
         else:
             print("Description postprocess: no changes")
