@@ -45,6 +45,7 @@ def _desc_normalize_multi_punct(s: str) -> str:
     return s
 
 def fix_all_descriptions_end(out_root):
+    pass
 
 # ========== BEGIN: HTML Description Beautifier (append-only) ==========
 import html as _html
