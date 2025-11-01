@@ -14,6 +14,60 @@ import os, sys, re, time, random, hashlib, urllib.parse, requests, html
 from typing import Dict, List, Tuple, Optional, Set
 from copy import deepcopy
 from xml.etree import ElementTree as ET
+
+# === PATCH: safe desc flattener (defines only if missing) ===
+try:
+    flatten_descriptions_end  # noqa: F401
+except NameError:
+    from xml.etree import ElementTree as _ET_patch  # keep isolated
+    import re as _re_mod
+    import html as _html_mod
+
+    def _flatten_desc_text(_desc_node: _ET_patch.Element):
+        """Вернуть плоский текст без HTML-тегов; None, если реально пусто."""
+        pieces = []
+        if _desc_node.text and _desc_node.text.strip():
+            pieces.append(_desc_node.text)
+        for _ch in _desc_node.iter():
+            if _ch is _desc_node:
+                continue
+            if _ch.text and _ch.text.strip():
+                pieces.append(_ch.text)
+            if _ch.tail and _ch.tail.strip():
+                pieces.append(_ch.tail)
+        if not pieces:
+            t = (_desc_node.text or "").strip()
+            if not t:
+                return None
+            return _re_mod.sub(r"\s+", " ", t)
+        flat = " ".join(pieces)
+        flat = _html_mod.unescape(flat).replace("\xa0", " ")
+        flat = _re_mod.sub(r"\s+", " ", flat).strip()
+        return flat if flat else None
+
+    def flatten_descriptions_end(_shop_el: _ET_patch.Element) -> int:
+        """Финально «сплющить» <description> в одну строку без HTML-тегов/переносов.
+           Пустые описания не трогаем.
+        """
+        if _shop_el is None:
+            return 0
+        offers_el = _shop_el.find("offers")
+        if offers_el is None:
+            return 0
+        touched = 0
+        for _offer in offers_el.findall("offer"):
+            _d = _offer.find("description")
+            if _d is None:
+                continue
+            _new = _flatten_desc_text(_d)
+            if _new is None:
+                continue
+            _d.text = _new
+            for _child in list(_d):
+                _d.remove(_child)
+            touched += 1
+        return touched
+# === END PATCH ===
 from datetime import datetime, timezone, timedelta
 
 try:
@@ -1114,9 +1168,14 @@ def main() -> None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # Сериализация
-    flatten_descriptions_end(out_shop)  # <-- only change: final description flatten
+    # DESC-FLAT: финальная нормализация описаний
+    try:
+        cnt_flat = flatten_descriptions_end(out_shop)
+        log(f"Descriptions flattened: {cnt_flat}")
+    except Exception as e:
+        warn(f"Descriptions flatten warn: {e}")
 
+    # Сериализация
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
@@ -1154,52 +1213,3 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         err(str(e))
-
-
-# === APPENDED: FINAL DESCRIPTION NORMALIZER (text-only, one line) ===
-import html as _html_mod
-
-def _flatten_desc_text(_desc_node):
-    # Return flat, tagless string; None if empty
-    pieces = []
-    if _desc_node.text and _desc_node.text.strip():
-        pieces.append(_desc_node.text)
-    for _ch in _desc_node.iter():
-        if _ch is _desc_node:
-            continue
-        if _ch.text and _ch.text.strip():
-            pieces.append(_ch.text)
-        if _ch.tail and _ch.tail.strip():
-            pieces.append(_ch.tail)
-    if not pieces:
-        t = (_desc_node.text or "").strip()
-        if not t:
-            return None
-        return re.sub(r"\\s+", " ", t)
-    flat = " ".join(pieces)
-    flat = _html_mod.unescape(flat).replace("\\xa0", " ")
-    flat = re.sub(r"\\s+", " ", flat).strip()
-    return flat if flat else None
-
-def flatten_descriptions_end(_shop_el):
-    """Make <description> a single plain line, without tags/spans/br and without extra spaces.
-       If description is empty/missing, leave as is.
-    """
-    offers_el = _shop_el.find("offers") if _shop_el is not None else None
-    if offers_el is None:
-        return 0
-    touched = 0
-    for _offer in offers_el.findall("offer"):
-        _d = _offer.find("description")
-        if _d is None: 
-            continue
-        _new = _flatten_desc_text(_d)
-        if _new is None:
-            continue
-        _d.text = _new
-        # remove children to avoid pretty-printer inserting newlines
-        for _child in list(_d):
-            _d.remove(_child)
-        touched += 1
-    return touched
-# === END APPENDED ===
