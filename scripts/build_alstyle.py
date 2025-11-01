@@ -1,5 +1,6 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
+import sys
 """
 AlStyle -> YML (DESC-FLAT edition)
 
@@ -15,10 +16,6 @@ from typing import Dict, List, Tuple, Optional, Set
 from copy import deepcopy
 from xml.etree import ElementTree as ET
 from datetime import datetime, timezone, timedelta
-
-try:
-    from zoneinfo import ZoneInfo  # для времени Алматы в FEED_META
-import sys
 
 
 # === Minimal post-steps for <description> (added) ===
@@ -62,6 +59,9 @@ def fix_all_descriptions_end(out_root):
                 pass
 # === End of minimal post-steps (added) ===
 
+
+try:
+    from zoneinfo import ZoneInfo  # для времени Алматы в FEED_META
 except Exception:
     ZoneInfo = None
 
