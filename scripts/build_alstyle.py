@@ -1161,9 +1161,19 @@ def main() -> None:
     # FINAL STEP (safe): description spacing & multi-punct normalization
     try:
         fix_all_descriptions_end(out_root)
-    except Exception as e:
-        print(f"desc_end_fix_warn: {e}")
+    except Exception as _e:
+        print(f"desc_end_fix_warn: {_e}")
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
+    # POST-SERIALIZATION: expand self-closing <description /> to <description></description>
+    try:
+        _enc = ENC if 'ENC' in globals() else 'windows-1251'
+        _txt = xml_bytes.decode(_enc, errors='replace')
+        import re as _re
+        _txt = _re.sub(r'<description\s*/>', '<description></description>', _txt)
+        xml_bytes = _txt.encode(_enc, errors='replace')
+    except Exception as _e:
+        print(f"desc_selfclose_fix_warn: {_e}")
+
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
     # Лёгкая косметика: перенос после FEED_META и пустая строка между офферами
