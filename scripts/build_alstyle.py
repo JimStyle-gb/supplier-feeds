@@ -1116,47 +1116,70 @@ if __name__ == "__main__":
 
 
 # =============================================================
-# Appended: <description> normalizer + CDATA wrapper (safe v2)
-# Runs AFTER main via atexit; base logic untouched.
+# Appended: <description> post-processor (SAFE_v2 + PRETTY via flag)
+# Usage:
+#   DESC_PRETTY=1  -> enable pretty mode (headings + <ul><li> + units)
+#   default        -> SAFE_v2 (newline→<br>, clean, CDATA, enc-safe)
 # =============================================================
 import atexit as _al_atexit
+import os as _al_os
 import re as _al_re
+import html as _al_html
 import xml.etree.ElementTree as _al_ET
 
-def _al_desc_normalize(txt: str) -> str:
-    if txt is None:
-        return ""
-    t = txt.replace("\r\n", "\n").replace("\r", "\n")
-    # NBSP / narrow spaces -> regular space
-    t = _al_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
-    # Remove zero-width / hidden chars
-    t = _al_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
-    # Trim trailing spaces before newline
-    t = _al_re.sub(r"[ \t]+\n", "\n", t)
-    # Remove leading tabs/spaces at start of each line
-    t = _al_re.sub(r"^[ \t]+", "", t, flags=_al_re.M)
-    # Collapse multi-spaces/tabs
-    t = _al_re.sub(r"[ \t]{2,}", " ", t)
-    # Collapse extra blank lines
-    t = _al_re.sub(r"\n{2,}", "\n", t).strip()
-    # Convert newlines to <br>
-    t = t.replace("\n", "<br>")
-    # Remove spaces immediately after <br>
-    t = _al_re.sub(r"(<br>)[ \t]+", r"\1", t)
-    return t
-
+# ---------- shared helpers ----------
 def _al_cdata_safe(s: str) -> str:
-    # Ensure ']]>' doesn't break CDATA sections
     return s.replace("]]>", "]]]]><![CDATA[>")
 
 def _al_make_encodable(text: str, enc: str) -> str:
-    # Drop non-encodable characters to guarantee file write in enc (cp1251)
     try:
         return text.encode(enc, errors="ignore").decode(enc, errors="ignore")
     except Exception:
-        return text  # fallback
+        return text
 
-def _al_inject_cdata_descriptions(xml_text: str, desc_map: dict[str, str]) -> str:
+def _al_extract_raw_desc(el: _al_ET.Element) -> str:
+    parts = []
+    if el.text:
+        parts.append(el.text)
+    for ch in el:
+        parts.append(_al_ET.tostring(ch, encoding="unicode", method="xml"))
+        if ch.tail:
+            parts.append(ch.tail)
+    return "".join(parts)
+
+# ---------- SAFE_v2 (baseline) ----------
+def _al_norm_safe_v2(txt: str) -> str:
+    if txt is None:
+        return ""
+    t = txt.replace("\r\n", "\n").replace("\r", "\n")
+    t = _al_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)      # NBSP / narrow -> space
+    t = _al_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)       # zero-width chars
+    t = _al_re.sub(r"[ \t]+\n", "\n", t)                             # trim EOL spaces
+    t = _al_re.sub(r"^[ \t]+", "", t, flags=_al_re.M)                # drop leading tabs/spaces per line
+    t = _al_re.sub(r"[ \t]{2,}", " ", t)                             # collapse multi-spaces/tabs
+    t = _al_re.sub(r"\n{2,}", "\n", t).strip()                       # collapse blank lines
+    t = t.replace("\n", "<br>")                                      # newline -> <br>
+    t = _al_re.sub(r"(<br>)[ \t]+", r"\1", t)                        # trim spaces right after <br>
+    return t
+
+def _al_post_safe_v2(xml_text: str, enc: str) -> str:
+    root = _al_ET.fromstring(xml_text)
+    shop = root.find("shop")
+    offers = shop.find("offers") if shop is not None else None
+    if offers is None:
+        return xml_text
+
+    desc_map = {}
+    for off in offers.findall("offer"):
+        d = off.find("description")
+        if d is None:
+            continue
+        raw = _al_extract_raw_desc(d)
+        norm = _al_norm_safe_v2(raw)
+        norm = _al_make_encodable(norm, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + _al_cdata_safe(norm) + "]]>"
+
+    # Replace descriptions
     _offer_re = _al_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _al_re.S | _al_re.I)
     _desc_re  = _al_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _al_re.S | _al_re.I)
     def _repl_off(m):
@@ -1167,7 +1190,164 @@ def _al_inject_cdata_descriptions(xml_text: str, desc_map: dict[str, str]) -> st
         return _desc_re.sub(lambda mm: mm.group(1) + desc_map[oid] + mm.group(3), block, count=1)
     return _offer_re.sub(_repl_off, xml_text)
 
-def _al_desc_postprocess() -> None:
+# ---------- PRETTY mode (optional) ----------
+_al_key_rx = _al_re.compile(
+    r'^\s*(?P<k>(Модель|Совместим\w* модели|Совместим\w*|Цвет|Ресурс( картриджа)?|Ё?мкост\w*|Объ[её]м|Гарант\w*|Вес|Размер\w*|Формат|Тип|Серия|Чип|Кол-во|Количество|Материал|Срок службы))\s*[:：]?\s*(?P<v>.+?)\s*$',
+    _al_re.I
+)
+
+def _al_drop_invisibles(t: str) -> str:
+    if not t:
+        return ""
+    t = _al_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    t = _al_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
+    return t
+
+def _al_collapse_lines(t: str) -> str:
+    t = t.replace("\r\n", "\n").replace("\r", "\n")
+    t = _al_re.sub(r"[ \t]+\n", "\n", t)
+    t = _al_re.sub(r"\n{2,}", "\n", t)
+    return t.strip()
+
+def _al_split_sections(lines):
+    intro, chars, feats = [], [], []
+    mode = "intro"
+    for ln in lines:
+        lns = ln.strip()
+        if not lns:
+            if mode == "intro": intro.append("")
+            elif mode == "chars": chars.append("")
+            else: feats.append("")
+            continue
+        tag = lns.lower().rstrip(":")
+        if tag == "характеристики":
+            mode = "chars"; continue
+        if tag == "особенности":
+            mode = "feats"; continue
+        if mode == "intro": intro.append(lns)
+        elif mode == "chars": chars.append(lns)
+        else: feats.append(lns)
+    return intro, chars, feats
+
+def _al_parse_kv(lines):
+    kv, other = [], []
+    for ln in lines:
+        if not ln.strip():
+            continue
+        m = _al_key_rx.match(ln)
+        if m:
+            k = m.group("k").strip()
+            v = m.group("v").strip()
+            kv.append((k, v))
+        else:
+            other.append(ln.strip())
+    return kv, other
+
+def _al_clean_num_spaces(s: str) -> str:
+    return _al_re.sub(r"\s+", " ", s).strip()
+
+def _al_chunk_compat(value: str, per=6) -> str:
+    parts = [p.strip() for p in _al_re.split(r"[;,]", value) if p.strip()]
+    if len(parts) <= per:
+        return value
+    chunks = []
+    for i in range(0, len(parts), per):
+        chunks.append(", ".join(parts[i:i+per]))
+    return "<br>".join(chunks)
+
+def _al_norm_units(v: str) -> str:
+    s = v
+    def _fmt_ints(m):
+        num = _al_re.sub(r"\s+", "", m.group(1))
+        try:
+            n = int(num)
+            return f"{n:,}".replace(",", " ")
+        except Exception:
+            return m.group(1)
+    s = _al_re.sub(r"\b(\d{4,})\b", _fmt_ints, s)
+    def _fmt_watts(m):
+        num = _al_clean_num_spaces(m.group(1))
+        return f"{num} Вт"
+    s = _al_re.sub(r"\b(\d[\d\s]*)(?:\s*)(вт|w|ватт)\b", _fmt_watts, s, flags=_al_re.I)
+    def _fmt_liters(m):
+        num = _al_clean_num_spaces(m.group(1))
+        return f"{num} л"
+    s = _al_re.sub(r"\b(\d[\d\s]*)\s*(л)\b", _fmt_liters, s, flags=_al_re.I)
+    def _fmt_pages(m):
+        num = _al_clean_num_spaces(m.group(1))
+        return f"{num} стр."
+    s = _al_re.sub(r"\b(\d[\d\s]*)\s*(стр(?:аниц[аы])?)\b", _fmt_pages, s, flags=_al_re.I)
+    s = _al_re.sub(r"\b(ISO/IEC)\s*(\d{4,6})\b", r"\1 \2", s)
+    return s.strip()
+
+def _al_build_html(intro_lines, kv_pairs, feats_lines):
+    parts = []
+    intro_txt = " ".join([ln for ln in intro_lines if ln.strip()])
+    if intro_txt:
+        parts.append("<p>{}</p>".format(_al_html.escape(intro_txt, quote=False)))
+    if kv_pairs:
+        parts.append("<h3>Характеристики</h3>")
+        parts.append("<ul>")
+        for k, v in kv_pairs:
+            key = k.strip().capitalize().rstrip(":")
+            val = v.strip()
+            if key.lower().startswith("совместим"):
+                val = _al_chunk_compat(val, per=6)
+            val = _al_norm_units(val)
+            parts.append("<li><strong>{}:</strong> {}</li>".format(_al_html.escape(key, quote=False), val))
+        parts.append("</ul>")
+    feats_clean = [ln.strip() for ln in feats_lines if ln.strip()]
+    if feats_clean:
+        parts.append("<h3>Особенности</h3>")
+        parts.append("<ul>")
+        for ln in feats_clean:
+            parts.append("<li>{}</li>".format(_al_html.escape(ln, quote=False)))
+        parts.append("</ul>")
+    return "".join(parts).strip()
+
+def _al_post_pretty(xml_text: str, enc: str) -> str:
+    root = _al_ET.fromstring(xml_text)
+    shop = root.find("shop")
+    offers = shop.find("offers") if shop is not None else None
+    if offers is None:
+        return xml_text
+
+    desc_map = {}
+    for off in offers.findall("offer"):
+        d = off.find("description")
+        if d is None:
+            continue
+        raw = _al_extract_raw_desc(d)
+        # Recover line structure
+        raw = _al_re.sub(r'(?i)<br\s*/?>', "\n", raw)
+        raw = _al_re.sub(r"</?(p|div|span|ul|ol|li|h[1-6])[^>]*>", "", raw)
+        t = _al_drop_invisibles(raw)
+        t = _al_collapse_lines(t)
+        t = _al_re.sub(r"^[ \t]+", "", t, flags=_al_re.M)
+        lines = t.split("\n") if t else []
+        intro, chars, feats = _al_split_sections(lines)
+        kv, other = _al_parse_kv(chars)
+        feats = feats + other
+        html = _al_build_html(intro, kv, feats)
+        if not html and t:
+            fb = _al_html.escape(t, quote=False).replace("\n", "<br>")
+            fb = _al_re.sub(r"(<br>)[ \t]+", r"\1", fb)
+            html = "<p>{}</p>".format(fb)
+        html = _al_make_encodable(html, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + _al_cdata_safe(html) + "]]>"
+
+    _offer_re = _al_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _al_re.S | _al_re.I)
+    _desc_re  = _al_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _al_re.S | _al_re.I)
+    def _repl_off(m):
+        oid = m.group(1)
+        block = m.group(0)
+        if oid not in desc_map:
+            return block
+        return _desc_re.sub(lambda mm: mm.group(1) + desc_map[oid] + mm.group(3), block, count=1)
+    return _offer_re.sub(_repl_off, xml_text)
+
+# ---------- single entry (decides which mode to run) ----------
+def _al_desc_postprocess_combo() -> None:
     try:
         _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
         _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
@@ -1178,41 +1358,286 @@ def _al_desc_postprocess() -> None:
         except Exception:
             xml_text = data.decode("utf-8", errors="replace")
 
-        # Build desc_map from CURRENT output
-        desc_map = {}
-        try:
-            root = _al_ET.fromstring(xml_text)
-            shop = root.find("shop")
-            offers = shop.find("offers") if shop is not None else None
-            if offers is not None:
-                for off in offers.findall("offer"):
-                    oid = off.get("id") or ""
-                    d = off.find("description")
-                    if d is None:
-                        continue
-                    parts = []
-                    if d.text:
-                        parts.append(d.text)
-                    for ch in d:
-                        parts.append(_al_ET.tostring(ch, encoding="unicode", method="xml"))
-                        if ch.tail:
-                            parts.append(ch.tail)
-                    raw = "".join(parts)
-                    norm = _al_desc_normalize(raw)
-                    norm = _al_make_encodable(norm, _enc)                   # ensure encodable
-                    desc_map[oid] = "<![CDATA[" + _al_cdata_safe(norm) + "]]>"
-        except Exception as e:
-            print("WARN: desc-post: parse failed, skipping CDATA:", e)
-            return
+        pretty_flag = str(_al_os.getenv("DESC_PRETTY", "0")).strip().lower() in {"1","true","on","yes"}
+        new_text = _al_post_pretty(xml_text, _enc) if pretty_flag else _al_post_safe_v2(xml_text, _enc)
 
-        new_text = _al_inject_cdata_descriptions(xml_text, desc_map)
         if new_text != xml_text:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
                 f.write(new_text if new_text.endswith("\n") else new_text + "\n")
-            print(f"Description CDATA: updated {len(desc_map)} offers")
+            mode = "PRETTY" if pretty_flag else "SAFE_v2"
+            print(f"Description postprocess ({mode}): updated")
         else:
-            print("Description CDATA: no changes")
+            print("Description postprocess: no changes")
     except Exception as e:
-        print("WARN: desc-post:", e)
+        print("WARN: postprocess:", e)
 
-_al_atexit.register(_al_desc_postprocess)
+_al_atexit.register(_al_desc_postprocess_combo)
+
+
+# =============================================================
+# FINAL Post-Processor: PRETTY by default + self-closed <description/> fix
+# Replaces older _al_desc_postprocess_combo if present.
+# Toggle SAFE mode explicitly via DESC_PRETTY=0|false|off|no
+# =============================================================
+import atexit as __alpp_atexit
+import os as __alpp_os
+import re as __alpp_re
+import html as __alpp_html
+import xml.etree.ElementTree as __alpp_ET
+
+# Try to unregister any earlier post-processor to avoid double-write
+try:
+    _old = globals().get("_al_desc_postprocess_combo")
+    if _old:
+        try:
+            __alpp_atexit.unregister(_old)
+        except Exception:
+            pass
+except Exception:
+    pass
+
+# -------- shared helpers --------
+def __alpp_cdata_safe(s: str) -> str:
+    return s.replace("]]>", "]]]]><![CDATA[>")
+
+def __alpp_make_encodable(text: str, enc: str) -> str:
+    try:
+        return text.encode(enc, errors="ignore").decode(enc, errors="ignore")
+    except Exception:
+        return text
+
+def __alpp_extract_raw_desc(el: __alpp_ET.Element) -> str:
+    parts = []
+    if el.text:
+        parts.append(el.text)
+    for ch in el:
+        parts.append(__alpp_ET.tostring(ch, encoding="unicode", method="xml"))
+        if ch.tail:
+            parts.append(ch.tail)
+    return "".join(parts)
+
+# -------- SAFE_v2 (baseline) --------
+def __alpp_norm_safe_v2(txt: str) -> str:
+    if txt is None:
+        return ""
+    t = txt.replace("\r\n", "\n").replace("\r", "\n")
+    t = __alpp_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)   # NBSP/narrow -> space
+    t = __alpp_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)    # zero-width
+    t = __alpp_re.sub(r"[ \t]+\n", "\n", t)                          # trim EOL spaces
+    t = __alpp_re.sub(r"^[ \t]+", "", t, flags=__alpp_re.M)          # drop leading tabs/spaces per line
+    t = __alpp_re.sub(r"[ \t]{2,}", " ", t)                          # collapse multi-spaces
+    t = __alpp_re.sub(r"\n{2,}", "\n", t).strip()                    # collapse blank lines
+    t = t.replace("\n", "<br>")                                      # newline -> <br>
+    t = __alpp_re.sub(r"(<br>)[ \t]+", r"\1", t)                     # trim spaces after <br>
+    return t
+
+def __alpp_post_safe_v2(xml_text: str, enc: str) -> str:
+    root = __alpp_ET.fromstring(xml_text)
+    shop = root.find("shop")
+    offers = shop.find("offers") if shop is not None else None
+    if offers is None:
+        return xml_text
+
+    desc_map = {}
+    for off in offers.findall("offer"):
+        d = off.find("description")
+        if d is None:
+            continue
+        raw = __alpp_extract_raw_desc(d)
+        norm = __alpp_norm_safe_v2(raw)
+        norm = __alpp_make_encodable(norm, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + __alpp_cdata_safe(norm) + "]]>"
+
+    return __alpp_inject_desc(xml_text, desc_map)
+
+# -------- PRETTY (default) --------
+__alpp_key_rx = __alpp_re.compile(
+    r'^\s*(?P<k>(Модель|Совместим\w* модели|Совместим\w*|Цвет|Ресурс( картриджа)?|Ё?мкост\w*|Объ[её]м|Гарант\w*|Вес|Размер\w*|Формат|Тип|Серия|Чип|Кол-во|Количество|Материал|Срок службы))\s*[:：]?\s*(?P<v>.+?)\s*$',
+    __alpp_re.I
+)
+
+def __alpp_drop_invis(t: str) -> str:
+    if not t:
+        return ""
+    t = __alpp_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    t = __alpp_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
+    return t
+
+def __alpp_collapse_lines(t: str) -> str:
+    t = t.replace("\r\n", "\n").replace("\r", "\n")
+    t = __alpp_re.sub(r"[ \t]+\n", "\n", t)
+    t = __alpp_re.sub(r"\n{2,}", "\n", t)
+    return t.strip()
+
+def __alpp_split_sections(lines):
+    intro, chars, feats = [], [], []
+    mode = "intro"
+    for ln in lines:
+        lns = ln.strip()
+        if not lns:
+            if mode == "intro": intro.append("")
+            elif mode == "chars": chars.append("")
+            else: feats.append("")
+            continue
+        tag = lns.lower().rstrip(":")
+        if tag in {"характеристики", "технические характеристики", "основные характеристики", "параметры"}:
+            mode = "chars"; continue
+        if tag == "особенности":
+            mode = "feats"; continue
+        if mode == "intro": intro.append(lns)
+        elif mode == "chars": chars.append(lns)
+        else: feats.append(lns)
+    return intro, chars, feats
+
+def __alpp_parse_kv(lines):
+    kv, other = [], []
+    for ln in lines:
+        if not ln.strip():
+            continue
+        m = __alpp_key_rx.match(ln)
+        if m:
+            k = m.group("k").strip()
+            v = m.group("v").strip()
+            kv.append((k, v))
+        else:
+            other.append(ln.strip())
+    return kv, other
+
+def __alpp_clean_num_spaces(s: str) -> str:
+    return __alpp_re.sub(r"\s+", " ", s).strip()
+
+def __alpp_chunk_compat(value: str, per=6) -> str:
+    parts = [p.strip() for p in __alpp_re.split(r"[;,]", value) if p.strip()]
+    if len(parts) <= per:
+        return value
+    chunks = []
+    for i in range(0, len(parts), per):
+        chunks.append(", ".join(parts[i:i+per]))
+    return "<br>".join(chunks)
+
+def __alpp_norm_units(v: str) -> str:
+    s = v
+    def _fmt_ints(m):
+        num = __alpp_re.sub(r"\s+", "", m.group(1))
+        try:
+            n = int(num)
+            return f"{n:,}".replace(",", " ")
+        except Exception:
+            return m.group(1)
+    s = __alpp_re.sub(r"\b(\d{4,})\b", _fmt_ints, s)
+    def _fmt_watts(m):
+        num = __alpp_clean_num_spaces(m.group(1))
+        return f"{num} Вт"
+    s = __alpp_re.sub(r"\b(\d[\d\s]*)(?:\s*)(вт|w|ватт)\b", _fmt_watts, s, flags=__alpp_re.I)
+    def _fmt_liters(m):
+        num = __alpp_clean_num_spaces(m.group(1))
+        return f"{num} л"
+    s = __alpp_re.sub(r"\b(\d[\d\s]*)\s*(л)\b", _fmt_liters, s, flags=__alpp_re.I)
+    def _fmt_pages(m):
+        num = __alpp_clean_num_spaces(m.group(1))
+        return f"{num} стр."
+    s = __alpp_re.sub(r"\b(\d[\d\s]*)\s*(стр(?:аниц[аы])?)\b", _fmt_pages, s, flags=__alpp_re.I)
+    s = __alpp_re.sub(r"\b(ISO/IEC)\s*(\d{4,6})\b", r"\1 \2", s)
+    return s.strip()
+
+def __alpp_build_html(intro_lines, kv_pairs, feats_lines):
+    parts = []
+    intro_txt = " ".join([ln for ln in intro_lines if ln.strip()])
+    if intro_txt:
+        parts.append("<p>{}</p>".format(__alpp_html.escape(intro_txt, quote=False)))
+    if kv_pairs:
+        parts.append("<h3>Характеристики</h3>")
+        parts.append("<ul>")
+        for k, v in kv_pairs:
+            key = k.strip().capitalize().rstrip(":")
+            val = v.strip()
+            if key.lower().startswith("совместим"):
+                val = __alpp_chunk_compat(val, per=6)
+            val = __alpp_norm_units(val)
+            parts.append("<li><strong>{}:</strong> {}</li>".format(__alpp_html.escape(key, quote=False), val))
+        parts.append("</ul>")
+    feats_clean = [ln.strip() for ln in feats_lines if ln.strip()]
+    if feats_clean:
+        parts.append("<h3>Особенности</h3>")
+        parts.append("<ul>")
+        for ln in feats_clean:
+            parts.append("<li>{}</li>".format(__alpp_html.escape(ln, quote=False)))
+        parts.append("</ul>")
+    return "".join(parts).strip()
+
+def __alpp_inject_desc(xml_text: str, desc_map: dict) -> str:
+    _offer_re = __alpp_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', __alpp_re.S | __alpp_re.I)
+    _desc_pair = __alpp_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', __alpp_re.S | __alpp_re.I)
+    _desc_self = __alpp_re.compile(r'<description\b[^>]*/\s*>', __alpp_re.I)
+
+    def _repl_off(m):
+        oid = m.group(1)
+        block = m.group(0)
+        cdata = desc_map.get(oid)
+        if not cdata:
+            return block
+        if _desc_pair.search(block):
+            return _desc_pair.sub(lambda mm: mm.group(1) + cdata + mm.group(3), block, count=1)
+        return _desc_self.sub("<description>" + cdata + "</description>", block, count=1)
+
+    return _offer_re.sub(_repl_off, xml_text)
+
+def __alpp_post_pretty(xml_text: str, enc: str) -> str:
+    root = __alpp_ET.fromstring(xml_text)
+    shop = root.find("shop")
+    offers = shop.find("offers") if shop is not None else None
+    if offers is None:
+        return xml_text
+
+    desc_map = {}
+    for off in offers.findall("offer"):
+        d = off.find("description")
+        if d is None:
+            continue
+        raw = __alpp_extract_raw_desc(d)
+        raw = __alpp_re.sub(r'(?i)<br\s*/?>', "\n", raw)
+        raw = __alpp_re.sub(r"</?(p|div|span|ul|ol|li|h[1-6])[^>]*>", "", raw)
+        t = __alpp_drop_invis(raw)
+        t = __alpp_collapse_lines(t)
+        t = __alpp_re.sub(r"^[ \t]+", "", t, flags=__alpp_re.M)
+        lines = t.split("\n") if t else []
+        intro, chars, feats = __alpp_split_sections(lines)
+        kv, other = __alpp_parse_kv(chars)
+        feats = feats + other
+        html = __alpp_build_html(intro, kv, feats)
+        if not html and t:
+            fb = __alpp_html.escape(t, quote=False).replace("\n", "<br>")
+            fb = __alpp_re.sub(r"(<br>)[ \t]+", r"\1", fb)
+            html = "<p>{}</p>".format(fb)
+        html = __alpp_make_encodable(html, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + __alpp_cdata_safe(html) + "]]>"
+
+    return __alpp_inject_desc(xml_text, desc_map)
+
+def __alpp_postprocess() -> None:
+    try:
+        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
+        _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
+        with open(_out, "rb") as f:
+            data = f.read()
+        try:
+            xml_text = data.decode(_enc)
+        except Exception:
+            xml_text = data.decode("utf-8", errors="replace")
+
+        pretty_env = str(__alpp_os.getenv("DESC_PRETTY", "")).strip().lower()
+        use_pretty = pretty_env not in {"0", "false", "off", "no"}
+
+        new_text = __alpp_post_pretty(xml_text, _enc) if use_pretty else __alpp_post_safe_v2(xml_text, _enc)
+
+        if new_text != xml_text:
+            with open(_out, "w", encoding=_enc, newline="\n") as f:
+                f.write(new_text if new_text.endswith("\n") else new_text + "\n")
+            mode = "PRETTY(default)" if use_pretty else "SAFE_v2"
+            print(f"Description postprocess ({mode}): updated")
+        else:
+            print("Description postprocess: no changes")
+    except Exception as e:
+        print("WARN: postprocess:", e)
+
+__alpp_atexit.register(__alpp_postprocess)
