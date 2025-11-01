@@ -1183,7 +1183,7 @@ except Exception as e:
 
     if DRY_RUN:
         log("[DRY_RUN=1] Files not written.")
-        return
+sys.exit(0)
 
     os.makedirs(os.path.dirname(OUT_FILE_YML) or ".", exist_ok=True)
     try:
