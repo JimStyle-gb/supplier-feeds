@@ -10,6 +10,12 @@ AlStyle -> YML (DESC-FLAT edition)
 """
 
 from __future__ import annotations
+
+# === Injected defaults to fix missing shop meta ===
+SHOP_NAME    = "Alstyle"
+SHOP_COMPANY = "Alstyle"
+SHOP_URL     = "https://al-style.kz"
+
 import os, sys, re, time, random, hashlib, urllib.parse, requests, html
 from typing import Dict, List, Tuple, Optional, Set
 from copy import deepcopy
