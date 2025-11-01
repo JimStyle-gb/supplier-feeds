@@ -1116,8 +1116,8 @@ if __name__ == "__main__":
 
 
 # =============================================================
-# Appended: <description> passthrough normalizer + CDATA wrapper
-# (runs AFTER the main script via atexit; base logic untouched)
+# Appended: <description> normalizer + CDATA wrapper (encoding-safe)
+# Runs AFTER main via atexit; base logic untouched.
 # =============================================================
 import atexit as _al_atexit
 import re as _al_re
@@ -1136,10 +1136,17 @@ def _al_desc_normalize(txt: str) -> str:
     return t
 
 def _al_cdata_safe(s: str) -> str:
+    # Ensure ']]>' doesn't break CDATA sections
     return s.replace("]]>", "]]]]><![CDATA[>")
 
+def _al_make_encodable(text: str, enc: str) -> str:
+    # Drop non-encodable characters to guarantee file write in enc (cp1251)
+    try:
+        return text.encode(enc, errors="ignore").decode(enc, errors="ignore")
+    except Exception:
+        return text  # fallback
+
 def _al_inject_cdata_descriptions(xml_text: str, desc_map: dict[str, str]) -> str:
-    # Replace only the inner part of <description> ... </description> for offers present in desc_map
     _offer_re = _al_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _al_re.S | _al_re.I)
     _desc_re  = _al_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _al_re.S | _al_re.I)
     def _repl_off(m):
@@ -1152,8 +1159,8 @@ def _al_inject_cdata_descriptions(xml_text: str, desc_map: dict[str, str]) -> st
 
 def _al_desc_postprocess() -> None:
     try:
-        _out = globals().get("OUT_FILE", "docs/alstyle.yml")
-        _enc = globals().get("OUTPUT_ENCODING", "windows-1251")
+        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
+        _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
         with open(_out, "rb") as f:
             data = f.read()
         try:
@@ -1161,7 +1168,7 @@ def _al_desc_postprocess() -> None:
         except Exception:
             xml_text = data.decode("utf-8", errors="replace")
 
-        # Build desc_map from the CURRENT output (we do not alter base logic)
+        # Build desc_map from CURRENT output
         desc_map = {}
         try:
             root = _al_ET.fromstring(xml_text)
@@ -1182,6 +1189,7 @@ def _al_desc_postprocess() -> None:
                             parts.append(ch.tail)
                     raw = "".join(parts)
                     norm = _al_desc_normalize(raw)
+                    norm = _al_make_encodable(norm, _enc)                   # ensure encodable
                     desc_map[oid] = "<![CDATA[" + _al_cdata_safe(norm) + "]]>"
         except Exception as e:
             print("WARN: desc-post: parse failed, skipping CDATA:", e)
@@ -1189,7 +1197,7 @@ def _al_desc_postprocess() -> None:
 
         new_text = _al_inject_cdata_descriptions(xml_text, desc_map)
         if new_text != xml_text:
-            with open(_out, "w", encoding=_enc, newline="") as f:
+            with open(_out, "w", encoding=_enc, newline="\n") as f:
                 f.write(new_text if new_text.endswith("\n") else new_text + "\n")
             print(f"Description CDATA: updated {len(desc_map)} offers")
         else:
