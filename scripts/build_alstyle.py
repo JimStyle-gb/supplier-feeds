@@ -1458,3 +1458,148 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
+
+# ============================================================================
+# ⬇⬇⬇  ДОБАВЛЕНО: безопасный пост‑процессор «<param> → блок <h3>Характеристики</h3>»  ⬇⬇⬇
+# ВАЖНО:
+# • НИЧЕГО в основной логике не меняем.
+# • Работает ТОЛЬКО «в одну сторону»: из <param> → в <description>.
+# • Срабатывает ТОЛЬКО если в описании ещё НЕТ блока <h3>Характеристики</h3>.
+# • Кодировка файла — Windows‑1251; путь берём из OUT_FILE или docs/alstyle.yml.
+# ----------------------------------------------------------------------------
+import re as _alpp_re, atexit as _alpp_atexit, os as _alpp_os
+from pathlib import Path as _alpp_Path
+
+def _alpp__normalize_key(s):
+    return _alpp_re.sub(r"\s+", " ", (s or "")).strip().lower()
+
+# Белый список мэппинга: имя param → ключ в «Характеристики»
+_ALPP_PARAM_TO_KEY = [
+    (r"^(для\s*принтеров|принтеры|совместим(ость|ость\s*с\s*моделями)|совместимостьс-моделями|совместимостьсмоделями)$", "Совместимость"),
+    (r"^(кол-во\s*страниц\s*при\s*5%.*|ресурс(\s*при\s*5%)?|ресурс\s*картриджа)$", "Ресурс"),
+    (r"^тип\s*печати$", "Тип печати"),
+    (r"^тип\s*ибп$", "Тип"),
+    (r"^габариты(\s*\(.+?\))?$", "Габариты"),
+    (r"^вес$", "Вес"),
+    (r"^цвет$", "Цвет"),
+    (r"^гарантия$", "Гарантия"),
+    (r"^ёмкость\s*батареи$|^емкость\s*батареи$", "Ёмкость батареи"),
+    (r"^выходная\s*частота$", "Выходная частота"),
+    (r"^мощность(\s*\(в[тт]\))?$", "Мощность"),
+]
+
+_ALPP_KEY_ORDER = [
+    "Модель","Совместимость","Ресурс","Тип печати","Цвет","Вес","Габариты","Тип","Ёмкость батареи","Выходная частота","Гарантия","EAN",
+]
+
+_ALPP_RE_OFFER = _alpp_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>(?P<body>.*?)</offer>', _alpp_re.S|_alpp_re.I)
+_ALPP_RE_DESC  = _alpp_re.compile(r'(?P<open><description\b[^>]*>)(?P<d>.*?)</description>', _alpp_re.S|_alpp_re.I)
+_ALPP_RE_PARAM = _alpp_re.compile(r'<param\b[^>]*\bname="([^"]+)"[^>]*>([^<]*)</param>', _alpp_re.S|_alpp_re.I)
+
+def _alpp__map_param_name(src_name):
+    key = _alpp__normalize_key(src_name)
+    for rx, target in _ALPP_PARAM_TO_KEY:
+        if _alpp_re.search(rx, key, flags=_alpp_re.I):
+            return target
+    return None
+
+def _alpp__cleanup_value(v):
+    t = (v or "").replace("\xa0", " ")
+    t = _alpp_re.sub(r"\s+", " ", t).strip(" \t\r\n;,:")
+    return t
+
+def _alpp__has_chars_block(desc_html):
+    return bool(_alpp_re.search(r"<h3>\s*Характеристики\s*</h3>\s*<ul>", desc_html or "", flags=_alpp_re.I))
+
+def _alpp__is_cdata_wrapped(s):
+    s2 = (s or "").strip()
+    return s2.startswith("<![CDATA[") and s2.endswith("]]>")
+
+def _alpp__unwrap_cdata(s):
+    m = _alpp_re.match(r'^\s*<!\[CDATA\[(.*)]]>\s*$', s or "", flags=_alpp_re.S)
+    return m.group(1) if m else (s or "")
+
+def _alpp__wrap_cdata(s):
+    return "<![CDATA[" + (s or "") + "]]>"
+
+def _alpp__build_chars_block(pairs):
+    # pairs: list[ (key, value) ] — ключи нормализованы, значения очищены
+    seen = set()
+    filtered = []
+    for k,v in pairs:
+        if not v: 
+            continue
+        if k in seen:
+            continue
+        seen.add(k)
+        filtered.append((k,v))
+    # сортировка по заданному порядку
+    order_index = {k:i for i,k in enumerate(_ALPP_KEY_ORDER)}
+    filtered.sort(key=lambda kv: order_index.get(kv[0], 999))
+
+    lines = ['<h3>Характеристики</h3>', '<ul>']
+    for k,v in filtered:
+        vv = (v.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;"))
+        lines.append(f'<li><strong>{k}:</strong> {vv}</li>')
+    lines.append('</ul>')
+    return "".join(lines)
+
+def _alpp__enrich_file(path):
+    # Чтение/запись строго в CP1251 (как у тебя в пайплайне)
+    txt = _alpp_Path(path).read_text(encoding="cp1251", errors="strict")
+    out, pos, changed = [], 0, 0
+    for m in _ALPP_RE_OFFER.finditer(txt):
+        out.append(txt[pos:m.start()])
+        oid, body = m.group(1), m.group("body")
+        dm = _ALPP_RE_DESC.search(body)
+        if not dm:
+            out.append(body); pos = m.end(); continue
+
+        open_tag = dm.group("open")
+        desc_raw = dm.group("d")
+        is_cdata = _alpp__is_cdata_wrapped(desc_raw)
+        desc_inner = _alpp__unwrap_cdata(desc_raw) if is_cdata else desc_raw
+
+        if _alpp__has_chars_block(desc_inner):
+            out.append(body)
+        else:
+            params = _ALPP_RE_PARAM.findall(body)
+            mapped = []
+            for src_name, val in params:
+                tgt = _alpp__map_param_name(src_name)
+                if not tgt: 
+                    continue
+                vv = _alpp__cleanup_value(val)
+                if not vv: 
+                    continue
+                mapped.append((tgt, vv))
+            if mapped:
+                block = _alpp__build_chars_block(mapped)
+                new_inner = desc_inner + block
+                new_desc = _alpp__wrap_cdata(new_inner) if is_cdata else new_inner
+                new_body = body[:dm.start()] + open_tag + new_desc + "</description>" + body[dm.end():]
+                out.append(new_body)
+                changed += 1
+            else:
+                out.append(body)
+        pos = m.end()
+    out.append(txt[pos:])
+    if changed:
+        _alpp_Path(path).write_text("".join(out), encoding="cp1251")
+    return changed
+
+def _alpp__run_postproc():
+    out_path = _alpp_os.environ.get("OUT_FILE", "docs/alstyle.yml")
+    try:
+        if _alpp_Path(out_path).exists():
+            n = _alpp__enrich_file(out_path)
+            print(f"[alpp] params→Характеристики: добавлено в {n} оффер(ов); файл: {out_path}")
+        else:
+            print(f"[alpp] предупреждение: файл не найден: {out_path}")
+    except Exception as e:
+        print(f"[alpp] ошибка пост‑процессора: {e}")
+
+# Регистрируем на выходе скрипта — сработает ПОСЛЕ записи YML
+_alpp_atexit.register(_alpp__run_postproc)
+# ⬆⬆⬆  КОНЕЦ ДОБАВЛЕННОГО БЛОКА  ⬆⬆⬆
+# ============================================================================
