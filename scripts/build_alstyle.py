@@ -1117,7 +1117,7 @@ if __name__ == "__main__":
 
 
 # =============================================================
-# Post-Processor v3.4 (ONLY "Характеристики" + tidy keys/values)
+# Post-Processor v34 (ONLY "Характеристики"; tidy keys; fix 'Безопасность и гарантия')
 # =============================================================
 import atexit as _pp8_atexit
 import os as _pp8_os
@@ -1125,7 +1125,6 @@ import re as _pp8_re
 import html as _pp8_html
 import xml.etree.ElementTree as _pp8_ET
 
-# Unregister earlier hooks
 for _old_name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess","_pp2_postprocess","_pp3_postprocess","_pp4_postprocess","_pp5_postprocess","_pp6_postprocess","_pp7_postprocess","_pp8_postprocess"):
     try:
         _old = globals().get(_old_name)
@@ -1152,7 +1151,6 @@ def _pp8_extract_raw_desc(el: _pp8_ET.Element) -> str:
         if ch.tail: parts.append(ch.tail)
     return "".join(parts)
 
-# ---------------- SAFE_v2 ----------------
 def _pp8_norm_safe_v2(txt: str) -> str:
     if txt is None: return ""
     t = txt.replace("\r\n", "\n").replace("\r", "\n")
@@ -1180,7 +1178,6 @@ def _pp8_post_safe_v2(xml_text: str, enc: str) -> str:
         desc_map[off.get("id") or ""] = "<![CDATA[" + _pp8_cdata_safe(norm) + "]]>"
     return _pp8_inject_desc(xml_text, desc_map)
 
-# ---------------- PRETTY ONLY Характеристики ----------------
 _pp8_key_tokens = [
     "Модель", "Модель / Part No", "Model", "Part No",
     "Дисплей", "Экран", "Процессор", "CPU",
@@ -1249,11 +1246,10 @@ def _pp8_collapse_lines(t: str) -> str:
 def _pp8_norm_punct(s: str) -> str:
     if not s: return s
     s = s.replace("**", "")
-    # protect decimals like 5.4
-    s = _pp8_re.sub(r'(\d)\.(\d)', r'\1<DEC_DOT>\2', s)
+    s = _pp8_re.sub(r'(\d)\.(\d)', r'\1<DEC_DOT>\2', s)  # protect decimals
     s = _pp8_re.sub(r"\bт\s*д\b\.?", "и т. д.", s, flags=_pp8_re.I)
     s = _pp8_re.sub(r"\bт\s*п\b\.?", "и т. п.", s, flags=_pp8_re.I)
-    s = _pp8_re.sub(r"([,;:!?])(?![\s</])", r"\1 ", s)  # NB: dot excluded to avoid side effects
+    s = _pp8_re.sub(r"([,;:!?])(?![\s</])", r"\1 ", s)
     s = _pp8_re.sub(r"[ \t]{2,}", " ", s)
     s = s.replace("WiFi", "Wi-Fi")
     s = _pp8_re.sub(r"\bUSB[ -]?C\b", "USB-C", s, flags=_pp8_re.I)
@@ -1262,7 +1258,6 @@ def _pp8_norm_punct(s: str) -> str:
 
 def _pp8_norm_units(v: str, key_hint: str = "") -> str:
     s = _pp8_norm_punct(v)
-    # thousands for 4+ digits
     def _fmt_ints(m):
         num = _pp8_re.sub(r"\s+", "", m.group(1))
         try:
@@ -1270,23 +1265,19 @@ def _pp8_norm_units(v: str, key_hint: str = "") -> str:
         except Exception:
             return m.group(1)
     s = _pp8_re.sub(r"\b(\d{4,})\b", _fmt_ints, s)
-    # pages
     def _fmt_pages(m):
         num = _pp8_re.sub(r"\s+", "", m.group(1))
         return f"{int(num):,}".replace(",", " ") + " стр." if num.isdigit() else m.group(0)
     s = _pp8_re.sub(r"\b(\d{3,6})\s*(стр(?:аниц[аы])?)\b", _fmt_pages, s, flags=_pp8_re.I)
-    # dash between digits
     s = _pp8_re.sub(r"(?<=\d)-(?=\d)", "–", s)
     return s.strip().rstrip(" :;.,")
 
 def _pp8_merge_split_heading(k: str, v: str):
-    """Merge patterns like key='Порты', value startswith 'и подключения: ...'"""
     m = _pp8_re.match(r'^\s*и\s+([A-Za-zА-Яа-яёЁ \-]+)\s*:\s*(.*)$', v or "", flags=_pp8_re.I)
     if not m:
         return k, v
     tail_key = m.group(1).strip()
     rest = m.group(2).strip()
-    # title-case the tail while preserving 'и'
     tail_key = tail_key[:1].upper() + tail_key[1:]
     new_key = f"{k} и {tail_key}"
     return new_key, rest
@@ -1294,24 +1285,18 @@ def _pp8_merge_split_heading(k: str, v: str):
 def _pp8_canon_key(k: str) -> str:
     s = k.strip().rstrip(":")
     s_low = s.lower().replace("ё","е")
-    # abbreviations exact
     if s_low in {"ос"}: return "ОС"
     if s_low in {"озу"}: return "ОЗУ"
-    # ports group
     if s_low in {"порты","интерфейсы","разъемы","разьмы","разъмы","порты и интерфейсы","разъемы и интерфейсы","интерфейсы и порты","порты и подключения"}:
         return "Порты и интерфейсы"
-    # compatibility
-    if s_low.startswith("совместимост"):
+    if s_low.startswith("совместимост") or s_low in {"совместимые модели","совместимость"}:
         return "Совместимость"
-    if s_low in {"совместимые модели","совместимость"}:
-        return "Совместимость"
-    # size
     if s_low in {"размер","размеры","габариты"}:
         return "Размеры"
-    # resource
     if s_low.startswith("ресурс картриджа") or s_low == "ресурс":
         return "Ресурс"
-    # default: capitalize first letter
+    if s_low.startswith("гарант"):
+        return "Гарантия"
     return s[:1].upper() + s[1:]
 
 def _pp8_expand_kv_inline(text: str):
@@ -1349,19 +1334,35 @@ def _pp8_build_html(intro_lines, char_lines):
         intro_html = _pp8_re.sub(r"\n{2,}", "\n", intro_html)
         parts.append("<p>{}</p>".format(intro_html.replace("\n", "<br>")))
 
-    # Parse then tidy
     raw_pairs = _pp8_parse_kv(char_lines)
-    tidy_map = {}  # canonical_key -> list of values (merged)
-    order = []     # keep appearance order
+
+    # v34 patch: merge '... Безопасность и' tail with next 'Гарантия'
+    def _merge_bg_pairs(pairs):
+        merged = []
+        i = 0
+        while i < len(pairs):
+            k, v = pairs[i]
+            if v and _pp8_re.search(r'\bБезопасност\w*\s+и\s*$', v, flags=_pp8_re.I) and i + 1 < len(pairs):
+                k2, v2 = pairs[i+1]
+                if _pp8_canon_key(k2).lower() == "гарантия":
+                    v_clean = _pp8_re.sub(r'\s*Безопасност\w*\s+и\s*$', '', v, flags=_pp8_re.I).strip()
+                    if v_clean:
+                        merged.append((k, v_clean))
+                    merged.append(("Безопасность и гарантия", v2))
+                    i += 2
+                    continue
+            merged.append((k, v))
+            i += 1
+        return merged
+
+    raw_pairs = _merge_bg_pairs(raw_pairs)
+
+    tidy_map = {}
+    order = []
     for k, v in raw_pairs:
         k, v = _pp8_merge_split_heading(k, v)
         ck = _pp8_canon_key(k)
-        # uppercase abbreviations explicitly
-        if ck in {"ОС","ОЗУ","SSD","HDD","CPU","GPU","RAM","DTS"}:
-            key_out = ck
-        else:
-            key_out = ck
-        val_out = _pp8_norm_units(v, key_hint=key_out)
+        val_out = _pp8_norm_units(v, key_hint=ck)
         if ck not in tidy_map:
             tidy_map[ck] = []
             order.append(ck)
@@ -1374,8 +1375,6 @@ def _pp8_build_html(intro_lines, char_lines):
         for ck in order:
             vals = tidy_map.get(ck, [])
             if not vals:
-                # still print key with no value to keep structure
-                parts.append("<li><strong>{}:</strong></li>".format(_pp8_html.escape(ck, quote=False)))
                 continue
             value_text = "; ".join(vals)
             parts.append("<li><strong>{}:</strong> {}</li>".format(_pp8_html.escape(ck, quote=False), _pp8_html.escape(value_text, quote=False)))
@@ -1452,7 +1451,7 @@ def _pp8_postprocess() -> None:
         if new_text != xml_text:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
                 f.write(new_text if new_text.endswith("\n") else new_text + "\n")
-            print(f"Description postprocess ({'PRETTY ONLY Характеристики + tidy'} if use_pretty else 'SAFE_v2'): updated")
+            print("Description postprocess (" + ("PRETTY ONLY Характеристики v34+fixBG" if use_pretty else "SAFE_v2") + "): updated")
         else:
             print("Description postprocess: no changes")
     except Exception as e:
