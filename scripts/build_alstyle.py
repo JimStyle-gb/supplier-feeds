@@ -278,7 +278,7 @@ COMMON_BRANDS = [
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # ← добавил LG
+    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -293,7 +293,6 @@ def normalize_brand(raw: str) -> str:
     return "" if (not k) or (k in SUPPLIER_BLOCKLIST) else raw.strip()
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
-    """Чистим/нормализуем <vendor>: удаляем мусор/пустое, supplier-бренды, оставляем валидные значения."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0, {}
@@ -348,7 +347,7 @@ def _find_brand_in_text(text: str) -> str:
 
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name  = get_text(offer, "name")
-    desc  = inner_html(offer.find("description"))  # читаем, но НЕ меняем
+    desc  = inner_html(offer.find("description"))
     first = re.split(r"\s+", name.strip())[0] if name else ""
     f_norm = _norm_key(first)
     if f_norm in brand_index:
@@ -363,7 +362,6 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     return ""
 
 def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
-    """Если <vendor> пуст — пытаемся угадать по name/description (только чтение)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -514,7 +512,6 @@ def _value_is_empty_or_noise(val: str) -> bool:
     return False
 
 def remove_specific_params(shop_el: ET.Element) -> int:
-    """Удаляем мусорные/дублирующиеся <param> — к описанию не прикасаемся."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -575,7 +572,6 @@ def detect_kind(name: str) -> str:
     return "other"
 
 def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
-    """Если нет <picture> — подставляем заглушку по бренду/категории/дефолт."""
     if not PLACEHOLDER_ENABLE:
         return (0,0)
     offers_el = shop_el.find("offers")
@@ -744,7 +740,6 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
 
 DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","description"]
 def reorder_offer_children(shop_el: ET.Element) -> int:
-    """Переупорядочиваем теги в оффере (описание не трогаем по содержимому)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -767,7 +762,6 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
     return changed
 
 def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
-    """Вставляем <categoryId>0</categoryId> первым элементом оффера (по требованию пользователя)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -830,7 +824,6 @@ MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 
 def extract_model_tokens(offer: ET.Element) -> List[str]:
-    """Извлекаем модельные токены из name/description (description только читаем)."""
     tokens: Set[str] = set()
     for src in (get_text(offer,"name"), inner_html(offer.find("description"))):
         if not src:
@@ -915,7 +908,6 @@ def ensure_keywords(shop_el: ET.Element) -> int:
 
 # ======================= ПРОЧЕЕ =======================
 def flag_unrealistic_supplier_prices(shop_el: ET.Element) -> int:
-    """Помечаем офферы с ценами выше порога — затем принудительно ставим цену=PRICE_CAP_VALUE."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -975,16 +967,13 @@ def main() -> None:
 
     src_offers = list(offers_in_el.findall("offer"))
 
-    # Готовим выходную структуру
     out_root  = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop  = ET.SubElement(out_root, "shop")
     out_offers= ET.SubElement(out_shop, "offers")
 
-    # Копируем офферы 1:1 (описание НЕ трогаем — уйдет как в источнике)
     for o in src_offers:
         out_offers.append(deepcopy(o))
 
-    # Фильтр категорий (include/exclude по ID/названию)
     removed_count = 0
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         id2name,id2parent,parent2children = parse_categories_tree(shop_in)
@@ -1011,57 +1000,43 @@ def main() -> None:
     else:
         log("Category rules (off): removed=0")
 
-    # Удаляем исходные categoryId (позже поставим 0 первым тегом)
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId")) + list(off.findall("CategoryId")):
                 off.remove(node)
 
-    # Флаг/форсирование цен
     flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
-    # Бренды
     ensure_vendor(out_shop)
     filled = ensure_vendor_auto_fill(out_shop); log(f"Vendors auto-filled: {filled}")
 
-    # vendorCode/id
     ensure_vendorcode_with_article(out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=True)
     sync_offer_id_with_vendorcode(out_shop)
 
-    # Пересчёт розницы + принудительные цены
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price={PRICE_CAP_VALUE}: {forced}")
 
-    # Чистим мусорные <param>
     removed_params = remove_specific_params(out_shop); log(f"Params removed: {removed_params}")
 
-    # Фото-заглушки (если нет ни одной картинки)
     ph_added, _ = ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
 
-    # available → в атрибут оффера, удаляем складские поля
     t_true, t_false, _, _ = normalize_available_field(out_shop)
 
-    # Валюта
     fix_currency_id(out_shop, default_code="KZT")
 
-    # Чистка служебных тегов/атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
-    # Порядок тегов + categoryId=0 первым
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
-    # Ключевые слова (НЕ трогаем description, только читаем при необходимости)
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
-    # Красивые отступы (Python 3.9+)
     try:
         ET.indent(out_root, space="  ")
     except Exception:
         pass
 
-    # FEED_META
     built_alm = now_almaty()
     meta_pairs = {
         "supplier": SUPPLIER_NAME,
@@ -1075,11 +1050,9 @@ def main() -> None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
-    # Сериализация
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
-    # Лёгкая косметика: перенос после FEED_META и пустая строка между офферами
     xml_text = re.sub(r"(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
 
@@ -1092,13 +1065,11 @@ def main() -> None:
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
     except UnicodeEncodeError as e:
-        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
         warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
             f.write(data_bytes)
 
-    # .nojekyll для GitHub Pages
     try:
         docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True)
@@ -1117,8 +1088,7 @@ if __name__ == "__main__":
 
 
 # =============================================================
-# Post-Processor v34 (PRETTY ONLY «Характеристики») + fix "Безопасность и гарантия"
-# Then v36: safe enrichment from <param> -> <description> only
+# Post-Processor v34 + v36 + v36b (описание: «Характеристики», merge «Безопасность и гарантия», params→desc)
 # =============================================================
 import atexit as _ppX_ax
 import os as _ppX_os
@@ -1182,7 +1152,6 @@ def _ppX_norm_units(v: str) -> str:
     s = _ppX_re.sub(r"(?<=\d)-(?=\d)", "–", s)
     return s.strip().rstrip(" :;.,")
 
-# ----- v34 patterns -----
 _X_keys = [
     "Модель","Модель / Part No","Model","Part No",
     "Дисплей","Экран","Процессор","CPU",
@@ -1191,7 +1160,7 @@ _X_keys = [
     "Накопитель","SSD","HDD","Хранилище","Макс. хранение",
     "ОС","Операционная система","Цвет",
     "Порты и интерфейсы","Порты","Интерфейсы","Разъёмы","Разъемы",
-    "Беспроводная связь","Связь","Wi‑Fi/Bluetooth",
+    "Беспроводная связь","Связь","Wi-Fi/Bluetooth",
     "Клавиатура","Веб-камера","Камера","Аудио","Звук",
     "Система охлаждения","Охлаждение",
     "Адаптер питания","Блок питания","Питание",
@@ -1312,7 +1281,6 @@ def _X_post_pretty(xml_text: str, enc: str) -> str:
 
         raw_pairs = _X_parse_kv(char_lines)
 
-        # fix '... Безопасность и' + next 'Гарантия'
         merged = []
         i = 0
         while i < len(raw_pairs):
@@ -1353,7 +1321,6 @@ def _X_post_pretty(xml_text: str, enc: str) -> str:
         html = _ppX_make_encodable(html, enc)
         desc_map[off.get("id") or ""] = "<![CDATA[" + _ppX_cdata_safe(html) + "]]>"
 
-    # inject
     _offer_re = _ppX_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _ppX_re.S|_ppX_re.I)
     _desc_pair = _ppX_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _ppX_re.S|_ppX_re.I)
     _desc_self = _ppX_re.compile(r'<description\b[^>]*/\s*>', _ppX_re.I)
@@ -1366,7 +1333,6 @@ def _X_post_pretty(xml_text: str, enc: str) -> str:
         return _desc_self.sub("<description>"+cdata+"</description>", block, count=1)
     return _offer_re.sub(_repl, xml_text)
 
-# ---------- v36: params → description (whitelist) ----------
 _WL = {"Цвет","Вес","Размеры","Совместимость","Ресурс","EAN"}
 _desc_ul_re = _ppX_re.compile(r'(<h3>\s*Характеристики\s*</h3>\s*<ul>)(.*?)(</ul>)', _ppX_re.S|_ppX_re.I)
 _li_kv_re = _ppX_re.compile(r'<li>\s*<strong>\s*([^<:]+?)\s*:\s*</strong>\s*(.*?)\s*</li>', _ppX_re.S)
@@ -1379,9 +1345,10 @@ def _canon_key(k: str) -> str:
     if low in {"цвет"}: return "Цвет"
     if low in {"вес"}: return "Вес"
     if low in {"размер","размеры","габариты"}: return "Размеры"
-    if low.startswith("совместим"): return "Совместимость"
+    if low.startswith("совместим") or low.startswith("для принтеров"): return "Совместимость"
     if low.startswith("ресурс"): return "Ресурс"
     if low in {"ean","штрихкод","штрих-код"}: return "EAN"
+    if low in {"тип печати"}: return "Тип печати"
     return s[:1].upper() + s[1:] if s else s
 
 def _enrich_params2desc(block: str) -> str:
@@ -1420,6 +1387,59 @@ def _enrich_params2desc(block: str) -> str:
     new_ul_inner = ul_inner.rstrip() + addition + ("\n" if not ul_inner.endswith("\n") else "")
     return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
 
+_WL_CREATE = {"Цвет","Вес","Размеры","Совместимость","Ресурс","EAN","Тип печати"}
+
+_desc_pair_re = _ppX_re.compile(r'(<description\b[^>]*>)(?P<inner>.*?)(</description>)', _ppX_re.S|_ppX_re.I)
+_hdr_exists_re = _ppX_re.compile(r'<h3>\s*Характеристики\s*</h3>', _ppX_re.I)
+
+def _build_ul_from_params(block: str, enc: str) -> Optional[str]:
+    pairs: Dict[str,List[str]] = {}
+    order: List[str] = []
+    for m in _param_re.finditer(block):
+        k = _canon_key(_ppX_re.sub(r'\s+', ' ', m.group(1)))
+        v = _ppX_re.sub(r'\s+', ' ', (m.group(2) or '')).strip().rstrip(' :;.,')
+        if not k or not v: continue
+        if k not in _WL_CREATE: 
+            if k != "Совместимость": 
+                continue
+        if k not in pairs:
+            pairs[k] = []; order.append(k)
+        if v not in pairs[k]:
+            pairs[k].append(v)
+    if not order:
+        return None
+    lis = []
+    for k in order:
+        vals = "; ".join(pairs[k]).strip()
+        if not vals: continue
+        lis.append(f"<li><strong>{_ppX_html.escape(k, quote=False)}:</strong> {_ppX_html.escape(vals, quote=False)}</li>")
+    if not lis:
+        return None
+    ul_html = "<h3>Характеристики</h3><ul>" + "".join(lis) + "</ul>"
+    return _ppX_make_encodable(ul_html, enc)
+
+def _create_params_block_if_missing(xml_text: str, enc: str) -> str:
+    def _repl_offer(mo):
+        body = mo.group('body')
+        if _hdr_exists_re.search(body):
+            return mo.group(0)
+        if not _param_re.search(body):
+            return mo.group(0)
+        ul = _build_ul_from_params(body, enc)
+        if not ul:
+            return mo.group(0)
+        def _repl_desc(md):
+            inner = md.group('inner') or ""
+            insert_pos = inner.rfind("</p>")
+            if insert_pos != -1:
+                new_inner = inner[:insert_pos+4] + ul + inner[insert_pos+4:]
+            else:
+                new_inner = inner + ul
+            return md.group(1) + new_inner + md.group(3)
+        new_body = _desc_pair_re.sub(_repl_desc, body, count=1)
+        return mo.group(0).replace(body, new_body, 1)
+    return _offer_re.sub(_repl_offer, xml_text)
+
 def _v34_then_v36() -> None:
     try:
         _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
@@ -1428,24 +1448,24 @@ def _v34_then_v36() -> None:
         try: xml = data.decode(_enc)
         except Exception: xml = data.decode("utf-8", errors="replace")
 
-        # v34 first
         xml2 = _X_post_pretty(xml, _enc)
-        # v36 afterwards
+
         def _repl_off(m):
             body = m.group('body'); body2 = _enrich_params2desc(body)
             return m.group(0) if body2 == body else m.group(0).replace(body, body2, 1)
         xml3 = _offer_re.sub(_repl_off, xml2)
 
-        if xml3 != xml:
-            with open(_out, "w", encoding=_enc, newline="\n") as f:
-                f.write(xml3 if xml3.endswith("\n") else xml3 + "\n")
-            print("v34 + v36: updated (<param> → «Характеристики»).")
-        else:
-            print("v34 + v36: no changes.")
-    except Exception as e:
-        print("WARN v34+v36:", e)
+        xml4 = _create_params_block_if_missing(xml3, _enc)
 
-# Unregister any previous postprocessors to avoid double-run
+        if xml4 != xml:
+            with open(_out, "w", encoding=_enc, newline="\n") as f:
+                f.write(xml4 if xml4.endswith("\n") else xml4 + "\n")
+            print("v34 + v36 + v36b: updated (<param> → «Характеристики», +create if missing).")
+        else:
+            print("v34 + v36 + v36b: no changes.")
+    except Exception as e:
+        print("WARN v34+v36+v36b:", e)
+
 for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess","_pp2_postprocess","_pp3_postprocess","_pp4_postprocess",
               "_pp5_postprocess","_pp6_postprocess","_pp7_postprocess","_pp8_postprocess","_pp9_postprocess"):
     try:
@@ -1457,149 +1477,4 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
         pass
 
 _ppX_ax.register(_v34_then_v36)
-# ========================= end v34+v36 =========================
-
-# ============================================================================
-# ⬇⬇⬇  ДОБАВЛЕНО: безопасный пост‑процессор «<param> → блок <h3>Характеристики</h3>»  ⬇⬇⬇
-# ВАЖНО:
-# • НИЧЕГО в основной логике не меняем.
-# • Работает ТОЛЬКО «в одну сторону»: из <param> → в <description>.
-# • Срабатывает ТОЛЬКО если в описании ещё НЕТ блока <h3>Характеристики</h3>.
-# • Кодировка файла — Windows‑1251; путь берём из OUT_FILE или docs/alstyle.yml.
-# ----------------------------------------------------------------------------
-import re as _alpp_re, atexit as _alpp_atexit, os as _alpp_os
-from pathlib import Path as _alpp_Path
-
-def _alpp__normalize_key(s):
-    return _alpp_re.sub(r"\s+", " ", (s or "")).strip().lower()
-
-# Белый список мэппинга: имя param → ключ в «Характеристики»
-_ALPP_PARAM_TO_KEY = [
-    (r"^(для\s*принтеров|принтеры|совместим(ость|ость\s*с\s*моделями)|совместимостьс-моделями|совместимостьсмоделями)$", "Совместимость"),
-    (r"^(кол-во\s*страниц\s*при\s*5%.*|ресурс(\s*при\s*5%)?|ресурс\s*картриджа)$", "Ресурс"),
-    (r"^тип\s*печати$", "Тип печати"),
-    (r"^тип\s*ибп$", "Тип"),
-    (r"^габариты(\s*\(.+?\))?$", "Габариты"),
-    (r"^вес$", "Вес"),
-    (r"^цвет$", "Цвет"),
-    (r"^гарантия$", "Гарантия"),
-    (r"^ёмкость\s*батареи$|^емкость\s*батареи$", "Ёмкость батареи"),
-    (r"^выходная\s*частота$", "Выходная частота"),
-    (r"^мощность(\s*\(в[тт]\))?$", "Мощность"),
-]
-
-_ALPP_KEY_ORDER = [
-    "Модель","Совместимость","Ресурс","Тип печати","Цвет","Вес","Габариты","Тип","Ёмкость батареи","Выходная частота","Гарантия","EAN",
-]
-
-_ALPP_RE_OFFER = _alpp_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>(?P<body>.*?)</offer>', _alpp_re.S|_alpp_re.I)
-_ALPP_RE_DESC  = _alpp_re.compile(r'(?P<open><description\b[^>]*>)(?P<d>.*?)</description>', _alpp_re.S|_alpp_re.I)
-_ALPP_RE_PARAM = _alpp_re.compile(r'<param\b[^>]*\bname="([^"]+)"[^>]*>([^<]*)</param>', _alpp_re.S|_alpp_re.I)
-
-def _alpp__map_param_name(src_name):
-    key = _alpp__normalize_key(src_name)
-    for rx, target in _ALPP_PARAM_TO_KEY:
-        if _alpp_re.search(rx, key, flags=_alpp_re.I):
-            return target
-    return None
-
-def _alpp__cleanup_value(v):
-    t = (v or "").replace("\xa0", " ")
-    t = _alpp_re.sub(r"\s+", " ", t).strip(" \t\r\n;,:")
-    return t
-
-def _alpp__has_chars_block(desc_html):
-    return bool(_alpp_re.search(r"<h3>\s*Характеристики\s*</h3>\s*<ul>", desc_html or "", flags=_alpp_re.I))
-
-def _alpp__is_cdata_wrapped(s):
-    s2 = (s or "").strip()
-    return s2.startswith("<![CDATA[") and s2.endswith("]]>")
-
-def _alpp__unwrap_cdata(s):
-    m = _alpp_re.match(r'^\s*<!\[CDATA\[(.*)]]>\s*$', s or "", flags=_alpp_re.S)
-    return m.group(1) if m else (s or "")
-
-def _alpp__wrap_cdata(s):
-    return "<![CDATA[" + (s or "") + "]]>"
-
-def _alpp__build_chars_block(pairs):
-    # pairs: list[ (key, value) ] — ключи нормализованы, значения очищены
-    seen = set()
-    filtered = []
-    for k,v in pairs:
-        if not v: 
-            continue
-        if k in seen:
-            continue
-        seen.add(k)
-        filtered.append((k,v))
-    # сортировка по заданному порядку
-    order_index = {k:i for i,k in enumerate(_ALPP_KEY_ORDER)}
-    filtered.sort(key=lambda kv: order_index.get(kv[0], 999))
-
-    lines = ['<h3>Характеристики</h3>', '<ul>']
-    for k,v in filtered:
-        vv = (v.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;"))
-        lines.append(f'<li><strong>{k}:</strong> {vv}</li>')
-    lines.append('</ul>')
-    return "".join(lines)
-
-def _alpp__enrich_file(path):
-    # Чтение/запись строго в CP1251 (как у тебя в пайплайне)
-    txt = _alpp_Path(path).read_text(encoding="cp1251", errors="strict")
-    out, pos, changed = [], 0, 0
-    for m in _ALPP_RE_OFFER.finditer(txt):
-        out.append(txt[pos:m.start()])
-        oid, body = m.group(1), m.group("body")
-        dm = _ALPP_RE_DESC.search(body)
-        if not dm:
-            out.append(body); pos = m.end(); continue
-
-        open_tag = dm.group("open")
-        desc_raw = dm.group("d")
-        is_cdata = _alpp__is_cdata_wrapped(desc_raw)
-        desc_inner = _alpp__unwrap_cdata(desc_raw) if is_cdata else desc_raw
-
-        if _alpp__has_chars_block(desc_inner):
-            out.append(body)
-        else:
-            params = _ALPP_RE_PARAM.findall(body)
-            mapped = []
-            for src_name, val in params:
-                tgt = _alpp__map_param_name(src_name)
-                if not tgt: 
-                    continue
-                vv = _alpp__cleanup_value(val)
-                if not vv: 
-                    continue
-                mapped.append((tgt, vv))
-            if mapped:
-                block = _alpp__build_chars_block(mapped)
-                new_inner = desc_inner + block
-                new_desc = _alpp__wrap_cdata(new_inner) if is_cdata else new_inner
-                new_body = body[:dm.start()] + open_tag + new_desc + "</description>" + body[dm.end():]
-                out.append(new_body)
-                changed += 1
-            else:
-                out.append(body)
-        pos = m.end()
-    out.append(txt[pos:])
-    if changed:
-        _alpp_Path(path).write_text("".join(out), encoding="cp1251")
-    return changed
-
-def _alpp__run_postproc():
-    out_path = _alpp_os.environ.get("OUT_FILE", "docs/alstyle.yml")
-    try:
-        if _alpp_Path(out_path).exists():
-            n = _alpp__enrich_file(out_path)
-            print(f"[alpp] params→Характеристики: добавлено в {n} оффер(ов); файл: {out_path}")
-        else:
-            print(f"[alpp] предупреждение: файл не найден: {out_path}")
-    except Exception as e:
-        print(f"[alpp] ошибка пост‑процессора: {e}")
-
-# Регистрируем на выходе скрипта — сработает ПОСЛЕ записи YML
-_alpp_atexit.register(_alpp__run_postproc)
-# ⬆⬆⬆  КОНЕЦ ДОБАВЛЕННОГО БЛОКА  ⬆⬆⬆
-# ============================================================================
+# ========================= end v34+v36+v36b =========================
