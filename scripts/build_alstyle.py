@@ -1375,101 +1375,90 @@ _al_atexit.register(_al_desc_postprocess_combo)
 
 
 # =============================================================
-# FINAL Post-Processor: PRETTY by default + self-closed <description/> fix
-# Replaces older _al_desc_postprocess_combo if present.
-# Toggle SAFE mode explicitly via DESC_PRETTY=0|false|off|no
+# Post-Processor: PRETTY (default) preserving supplier newlines in intro
+# SAFE_v2 via DESC_PRETTY=0|false|off|no
+# Includes self-closed <description/> fix.
 # =============================================================
-import atexit as __alpp_atexit
-import os as __alpp_os
-import re as __alpp_re
-import html as __alpp_html
-import xml.etree.ElementTree as __alpp_ET
+import atexit as _pp_atexit
+import os as _pp_os
+import re as _pp_re
+import html as _pp_html
+import xml.etree.ElementTree as _pp_ET
 
-# Try to unregister any earlier post-processor to avoid double-write
+# Unregister older combo hook if present
 try:
     _old = globals().get("_al_desc_postprocess_combo")
     if _old:
-        try:
-            __alpp_atexit.unregister(_old)
-        except Exception:
-            pass
+        try: _pp_atexit.unregister(_old)
+        except Exception: pass
 except Exception:
     pass
 
-# -------- shared helpers --------
-def __alpp_cdata_safe(s: str) -> str:
+# ---------- shared helpers ----------
+def _pp_cdata_safe(s: str) -> str:
     return s.replace("]]>", "]]]]><![CDATA[>")
 
-def __alpp_make_encodable(text: str, enc: str) -> str:
+def _pp_make_encodable(text: str, enc: str) -> str:
     try:
         return text.encode(enc, errors="ignore").decode(enc, errors="ignore")
     except Exception:
         return text
 
-def __alpp_extract_raw_desc(el: __alpp_ET.Element) -> str:
+def _pp_extract_raw_desc(el: _pp_ET.Element) -> str:
     parts = []
-    if el.text:
-        parts.append(el.text)
+    if el.text: parts.append(el.text)
     for ch in el:
-        parts.append(__alpp_ET.tostring(ch, encoding="unicode", method="xml"))
-        if ch.tail:
-            parts.append(ch.tail)
+        parts.append(_pp_ET.tostring(ch, encoding="unicode", method="xml"))
+        if ch.tail: parts.append(ch.tail)
     return "".join(parts)
 
-# -------- SAFE_v2 (baseline) --------
-def __alpp_norm_safe_v2(txt: str) -> str:
-    if txt is None:
-        return ""
+# ---------- SAFE_v2 ----------
+def _pp_norm_safe_v2(txt: str) -> str:
+    if txt is None: return ""
     t = txt.replace("\r\n", "\n").replace("\r", "\n")
-    t = __alpp_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)   # NBSP/narrow -> space
-    t = __alpp_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)    # zero-width
-    t = __alpp_re.sub(r"[ \t]+\n", "\n", t)                          # trim EOL spaces
-    t = __alpp_re.sub(r"^[ \t]+", "", t, flags=__alpp_re.M)          # drop leading tabs/spaces per line
-    t = __alpp_re.sub(r"[ \t]{2,}", " ", t)                          # collapse multi-spaces
-    t = __alpp_re.sub(r"\n{2,}", "\n", t).strip()                    # collapse blank lines
-    t = t.replace("\n", "<br>")                                      # newline -> <br>
-    t = __alpp_re.sub(r"(<br>)[ \t]+", r"\1", t)                     # trim spaces after <br>
+    t = _pp_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    t = _pp_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
+    t = _pp_re.sub(r"[ \t]+\n", "\n", t)
+    t = _pp_re.sub(r"^[ \t]+", "", t, flags=_pp_re.M)
+    t = _pp_re.sub(r"[ \t]{2,}", " ", t)
+    t = _pp_re.sub(r"\n{2,}", "\n", t).strip()
+    t = t.replace("\n", "<br>")
+    t = _pp_re.sub(r"(<br>)[ \t]+", r"\1", t)
     return t
 
-def __alpp_post_safe_v2(xml_text: str, enc: str) -> str:
-    root = __alpp_ET.fromstring(xml_text)
-    shop = root.find("shop")
-    offers = shop.find("offers") if shop is not None else None
-    if offers is None:
-        return xml_text
-
+def _pp_post_safe_v2(xml_text: str, enc: str) -> str:
+    root = _pp_ET.fromstring(xml_text)
+    shop = root.find("shop"); offers = shop.find("offers") if shop is not None else None
+    if offers is None: return xml_text
     desc_map = {}
     for off in offers.findall("offer"):
         d = off.find("description")
-        if d is None:
-            continue
-        raw = __alpp_extract_raw_desc(d)
-        norm = __alpp_norm_safe_v2(raw)
-        norm = __alpp_make_encodable(norm, enc)
-        desc_map[off.get("id") or ""] = "<![CDATA[" + __alpp_cdata_safe(norm) + "]]>"
+        if d is None: continue
+        raw = _pp_extract_raw_desc(d)
+        norm = _pp_norm_safe_v2(raw)
+        norm = _pp_make_encodable(norm, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + _pp_cdata_safe(norm) + "]]>"
+    return _pp_inject_desc(xml_text, desc_map)
 
-    return __alpp_inject_desc(xml_text, desc_map)
-
-# -------- PRETTY (default) --------
-__alpp_key_rx = __alpp_re.compile(
+# ---------- PRETTY (default) ----------
+_pp_key_rx = _pp_re.compile(
     r'^\s*(?P<k>(Модель|Совместим\w* модели|Совместим\w*|Цвет|Ресурс( картриджа)?|Ё?мкост\w*|Объ[её]м|Гарант\w*|Вес|Размер\w*|Формат|Тип|Серия|Чип|Кол-во|Количество|Материал|Срок службы))\s*[:：]?\s*(?P<v>.+?)\s*$',
-    __alpp_re.I
+    _pp_re.I
 )
 
-def __alpp_drop_invis(t: str) -> str:
-    if not t:
-        return ""
-    t = __alpp_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
-    t = __alpp_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
+def _pp_drop_invis(t: str) -> str:
+    if not t: return ""
+    t = _pp_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    t = _pp_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
     return t
 
-def __alpp_collapse_lines(t: str) -> str:
+def _pp_collapse_lines(t: str) -> str:
     t = t.replace("\r\n", "\n").replace("\r", "\n")
-    t = __alpp_re.sub(r"[ \t]+\n", "\n", t)
-    t = __alpp_re.sub(r"\n{2,}", "\n", t)
+    t = _pp_re.sub(r"[ \t]+\n", "\n", t)
+    t = _pp_re.sub(r"\n{2,}", "\n", t)
     return t.strip()
 
-def __alpp_split_sections(lines):
+def _pp_split_sections(lines):
     intro, chars, feats = [], [], []
     mode = "intro"
     for ln in lines:
@@ -1489,62 +1478,63 @@ def __alpp_split_sections(lines):
         else: feats.append(lns)
     return intro, chars, feats
 
-def __alpp_parse_kv(lines):
+def _pp_parse_kv(lines):
     kv, other = [], []
     for ln in lines:
-        if not ln.strip():
-            continue
-        m = __alpp_key_rx.match(ln)
+        if not ln.strip(): continue
+        m = _pp_key_rx.match(ln)
         if m:
-            k = m.group("k").strip()
-            v = m.group("v").strip()
+            k = m.group("k").strip(); v = m.group("v").strip()
             kv.append((k, v))
         else:
             other.append(ln.strip())
     return kv, other
 
-def __alpp_clean_num_spaces(s: str) -> str:
-    return __alpp_re.sub(r"\s+", " ", s).strip()
+def _pp_clean_num_spaces(s: str) -> str:
+    return _pp_re.sub(r"\s+", " ", s).strip()
 
-def __alpp_chunk_compat(value: str, per=6) -> str:
-    parts = [p.strip() for p in __alpp_re.split(r"[;,]", value) if p.strip()]
-    if len(parts) <= per:
-        return value
+def _pp_chunk_compat(value: str, per=6) -> str:
+    parts = [p.strip() for p in _pp_re.split(r"[;,]", value) if p.strip()]
+    if len(parts) <= per: return value
     chunks = []
     for i in range(0, len(parts), per):
         chunks.append(", ".join(parts[i:i+per]))
     return "<br>".join(chunks)
 
-def __alpp_norm_units(v: str) -> str:
+def _pp_norm_units(v: str) -> str:
     s = v
     def _fmt_ints(m):
-        num = __alpp_re.sub(r"\s+", "", m.group(1))
+        num = _pp_re.sub(r"\s+", "", m.group(1))
         try:
-            n = int(num)
-            return f"{n:,}".replace(",", " ")
+            n = int(num); return f"{n:,}".replace(",", " ")
         except Exception:
             return m.group(1)
-    s = __alpp_re.sub(r"\b(\d{4,})\b", _fmt_ints, s)
+    s = _pp_re.sub(r"\b(\d{4,})\b", _fmt_ints, s)
     def _fmt_watts(m):
-        num = __alpp_clean_num_spaces(m.group(1))
-        return f"{num} Вт"
-    s = __alpp_re.sub(r"\b(\d[\d\s]*)(?:\s*)(вт|w|ватт)\b", _fmt_watts, s, flags=__alpp_re.I)
+        num = _pp_clean_num_spaces(m.group(1)); return f"{num} Вт"
+    s = _pp_re.sub(r"\b(\d[\d\s]*)(?:\s*)(вт|w|ватт)\b", _fmt_watts, s, flags=_pp_re.I)
     def _fmt_liters(m):
-        num = __alpp_clean_num_spaces(m.group(1))
-        return f"{num} л"
-    s = __alpp_re.sub(r"\b(\d[\d\s]*)\s*(л)\b", _fmt_liters, s, flags=__alpp_re.I)
+        num = _pp_clean_num_spaces(m.group(1)); return f"{num} л"
+    s = _pp_re.sub(r"\b(\d[\d\s]*)\s*(л)\b", _fmt_liters, s, flags=_pp_re.I)
     def _fmt_pages(m):
-        num = __alpp_clean_num_spaces(m.group(1))
-        return f"{num} стр."
-    s = __alpp_re.sub(r"\b(\d[\d\s]*)\s*(стр(?:аниц[аы])?)\b", _fmt_pages, s, flags=__alpp_re.I)
-    s = __alpp_re.sub(r"\b(ISO/IEC)\s*(\d{4,6})\b", r"\1 \2", s)
+        num = _pp_clean_num_spaces(m.group(1)); return f"{num} стр."
+    s = _pp_re.sub(r"\b(\d[\d\s]*)\s*(стр(?:аниц[аы])?)\b", _fmt_pages, s, flags=_pp_re.I)
+    s = _pp_re.sub(r"\b(ISO/IEC)\s*(\d{4,6})\b", r"\1 \2", s)
     return s.strip()
 
-def __alpp_build_html(intro_lines, kv_pairs, feats_lines):
+# *** CHANGED: preserve supplier newlines in intro ***
+def _pp_build_html(intro_lines, kv_pairs, feats_lines):
     parts = []
-    intro_txt = " ".join([ln for ln in intro_lines if ln.strip()])
-    if intro_txt:
-        parts.append("<p>{}</p>".format(__alpp_html.escape(intro_txt, quote=False)))
+
+    # Intro -> keep original line breaks, show as <br> inside one <p>
+    intro_compact = [ln for ln in intro_lines if ln.strip()]
+    if intro_compact:
+        intro_raw = "\n".join(intro_compact)
+        intro_html = _pp_html.escape(intro_raw, quote=False)
+        intro_html = _pp_re.sub(r"\n{2,}", "\n", intro_html)  # collapse multi-blank lines to single
+        parts.append("<p>{}</p>".format(intro_html.replace("\n", "<br>")))
+
+    # Характеристики
     if kv_pairs:
         parts.append("<h3>Характеристики</h3>")
         parts.append("<ul>")
@@ -1552,92 +1542,84 @@ def __alpp_build_html(intro_lines, kv_pairs, feats_lines):
             key = k.strip().capitalize().rstrip(":")
             val = v.strip()
             if key.lower().startswith("совместим"):
-                val = __alpp_chunk_compat(val, per=6)
-            val = __alpp_norm_units(val)
-            parts.append("<li><strong>{}:</strong> {}</li>".format(__alpp_html.escape(key, quote=False), val))
+                val = _pp_chunk_compat(val, per=6)
+            val = _pp_norm_units(val)
+            parts.append("<li><strong>{}:</strong> {}</li>".format(_pp_html.escape(key, quote=False), val))
         parts.append("</ul>")
+
+    # Особенности
     feats_clean = [ln.strip() for ln in feats_lines if ln.strip()]
     if feats_clean:
         parts.append("<h3>Особенности</h3>")
         parts.append("<ul>")
         for ln in feats_clean:
-            parts.append("<li>{}</li>".format(__alpp_html.escape(ln, quote=False)))
+            parts.append("<li>{}</li>".format(_pp_html.escape(ln, quote=False)))
         parts.append("</ul>")
+
     return "".join(parts).strip()
 
-def __alpp_inject_desc(xml_text: str, desc_map: dict) -> str:
-    _offer_re = __alpp_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', __alpp_re.S | __alpp_re.I)
-    _desc_pair = __alpp_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', __alpp_re.S | __alpp_re.I)
-    _desc_self = __alpp_re.compile(r'<description\b[^>]*/\s*>', __alpp_re.I)
+# ---------- injector (paired + self-closed) ----------
+def _pp_inject_desc(xml_text: str, desc_map: dict) -> str:
+    _offer_re = _pp_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _pp_re.S | _pp_re.I)
+    _desc_pair = _pp_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _pp_re.S | _pp_re.I)
+    _desc_self = _pp_re.compile(r'<description\b[^>]*/\s*>', _pp_re.I)
 
     def _repl_off(m):
-        oid = m.group(1)
-        block = m.group(0)
+        oid = m.group(1); block = m.group(0)
         cdata = desc_map.get(oid)
-        if not cdata:
-            return block
+        if not cdata: return block
         if _desc_pair.search(block):
             return _desc_pair.sub(lambda mm: mm.group(1) + cdata + mm.group(3), block, count=1)
         return _desc_self.sub("<description>" + cdata + "</description>", block, count=1)
 
     return _offer_re.sub(_repl_off, xml_text)
 
-def __alpp_post_pretty(xml_text: str, enc: str) -> str:
-    root = __alpp_ET.fromstring(xml_text)
-    shop = root.find("shop")
-    offers = shop.find("offers") if shop is not None else None
-    if offers is None:
-        return xml_text
+def _pp_post_pretty(xml_text: str, enc: str) -> str:
+    root = _pp_ET.fromstring(xml_text)
+    shop = root.find("shop"); offers = shop.find("offers") if shop is not None else None
+    if offers is None: return xml_text
 
     desc_map = {}
     for off in offers.findall("offer"):
         d = off.find("description")
-        if d is None:
-            continue
-        raw = __alpp_extract_raw_desc(d)
-        raw = __alpp_re.sub(r'(?i)<br\s*/?>', "\n", raw)
-        raw = __alpp_re.sub(r"</?(p|div|span|ul|ol|li|h[1-6])[^>]*>", "", raw)
-        t = __alpp_drop_invis(raw)
-        t = __alpp_collapse_lines(t)
-        t = __alpp_re.sub(r"^[ \t]+", "", t, flags=__alpp_re.M)
+        if d is None: continue
+        raw = _pp_extract_raw_desc(d)
+        raw = _pp_re.sub(r'(?i)<br\s*/?>', "\n", raw)
+        raw = _pp_re.sub(r"</?(p|div|span|ul|ol|li|h[1-6])[^>]*>", "", raw)
+        t = _pp_drop_invis(raw)
+        t = _pp_collapse_lines(t)
+        t = _pp_re.sub(r"^[ \t]+", "", t, flags=_pp_re.M)
         lines = t.split("\n") if t else []
-        intro, chars, feats = __alpp_split_sections(lines)
-        kv, other = __alpp_parse_kv(chars)
+        intro, chars, feats = _pp_split_sections(lines)
+        kv, other = _pp_parse_kv(chars)
         feats = feats + other
-        html = __alpp_build_html(intro, kv, feats)
+        html = _pp_build_html(intro, kv, feats)
         if not html and t:
-            fb = __alpp_html.escape(t, quote=False).replace("\n", "<br>")
-            fb = __alpp_re.sub(r"(<br>)[ \t]+", r"\1", fb)
+            fb = _pp_html.escape(t, quote=False).replace("\n", "<br>")
+            fb = _pp_re.sub(r"(<br>)[ \t]+", r"\1", fb)
             html = "<p>{}</p>".format(fb)
-        html = __alpp_make_encodable(html, enc)
-        desc_map[off.get("id") or ""] = "<![CDATA[" + __alpp_cdata_safe(html) + "]]>"
+        html = _pp_make_encodable(html, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + _pp_cdata_safe(html) + "]]>"
+    return _pp_inject_desc(xml_text, desc_map)
 
-    return __alpp_inject_desc(xml_text, desc_map)
-
-def __alpp_postprocess() -> None:
+def _pp_postprocess() -> None:
     try:
         _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
         _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
-        with open(_out, "rb") as f:
-            data = f.read()
-        try:
-            xml_text = data.decode(_enc)
-        except Exception:
-            xml_text = data.decode("utf-8", errors="replace")
+        with open(_out, "rb") as f: data = f.read()
+        try: xml_text = data.decode(_enc)
+        except Exception: xml_text = data.decode("utf-8", errors="replace")
 
-        pretty_env = str(__alpp_os.getenv("DESC_PRETTY", "")).strip().lower()
-        use_pretty = pretty_env not in {"0", "false", "off", "no"}
-
-        new_text = __alpp_post_pretty(xml_text, _enc) if use_pretty else __alpp_post_safe_v2(xml_text, _enc)
+        use_pretty = str(_pp_os.getenv("DESC_PRETTY", "")).strip().lower() not in {"0","false","off","no"}
+        new_text = _pp_post_pretty(xml_text, _enc) if use_pretty else _pp_post_safe_v2(xml_text, _enc)
 
         if new_text != xml_text:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
                 f.write(new_text if new_text.endswith("\n") else new_text + "\n")
-            mode = "PRETTY(default)" if use_pretty else "SAFE_v2"
-            print(f"Description postprocess ({mode}): updated")
+            print(f"Description postprocess ({'PRETTY-keep-nl' if use_pretty else 'SAFE_v2'}): updated")
         else:
             print("Description postprocess: no changes")
     except Exception as e:
         print("WARN: postprocess:", e)
 
-__alpp_atexit.register(__alpp_postprocess)
+_pp_atexit.register(_pp_postprocess)
