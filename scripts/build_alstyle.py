@@ -1115,82 +1115,82 @@ if __name__ == "__main__":
         err(str(e))
 
 
-# =============================================================
-# Post-Processor: PRETTY (default) + keep supplier newlines in intro
-# + extra readability: headings, bullets, spacing, units, Wi‑Fi/USB‑C,
-#   lists splitting for ports/compat/bundle, punctuation normalization.
-# SAFE_v2 via DESC_PRETTY=0|false|off|no.
-# Only touches <description>.
-# =============================================================
-import atexit as _pp2_atexit
-import os as _pp2_os
-import re as _pp2_re
-import html as _pp2_html
-import xml.etree.ElementTree as _pp2_ET
 
-# Unregister any older hooks to avoid double work
-for _old_name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess","_pp2_postprocess"):
+# =============================================================
+# Post-Processor v2: PRETTY (default) + keep supplier newlines in intro
+# + readability++ (headings, bullets, spacing, units, Wi‑Fi/USB‑C, list splitting)
+# + inline heading detection + bullet extraction from intro.
+# SAFE_v2 via DESC_PRETTY=0|false|off|no. Only touches <description>.
+# =============================================================
+import atexit as _pp3_atexit
+import os as _pp3_os
+import re as _pp3_re
+import html as _pp3_html
+import xml.etree.ElementTree as _pp3_ET
+
+# Unregister any earlier hooks to avoid double processing
+for _old_name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess","_pp2_postprocess","_pp3_postprocess"):
     try:
         _old = globals().get(_old_name)
         if _old:
-            try: _pp2_atexit.unregister(_old)
+            try: _pp3_atexit.unregister(_old)
             except Exception: pass
     except Exception:
         pass
 
 # ---------------- Shared helpers ----------------
-def _pp2_cdata_safe(s: str) -> str:
+def _pp3_cdata_safe(s: str) -> str:
     return s.replace("]]>", "]]]]><![CDATA[>")
 
-def _pp2_make_encodable(text: str, enc: str) -> str:
+def _pp3_make_encodable(text: str, enc: str) -> str:
     try:
         return text.encode(enc, errors="ignore").decode(enc, errors="ignore")
     except Exception:
         return text
 
-def _pp2_extract_raw_desc(el: _pp2_ET.Element) -> str:
+def _pp3_extract_raw_desc(el: _pp3_ET.Element) -> str:
     parts = []
     if el.text: parts.append(el.text)
     for ch in el:
-        parts.append(_pp2_ET.tostring(ch, encoding="unicode", method="xml"))
+        parts.append(_pp3_ET.tostring(ch, encoding="unicode", method="xml"))
         if ch.tail: parts.append(ch.tail)
     return "".join(parts)
 
 # ---------------- SAFE_v2 (unchanged) ----------------
-def _pp2_norm_safe_v2(txt: str) -> str:
+def _pp3_norm_safe_v2(txt: str) -> str:
     if txt is None: return ""
     t = txt.replace("\r\n", "\n").replace("\r", "\n")
-    t = _pp2_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
-    t = _pp2_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
-    t = _pp2_re.sub(r"[ \t]+\n", "\n", t)
-    t = _pp2_re.sub(r"^[ \t]+", "", t, flags=_pp2_re.M)
-    t = _pp2_re.sub(r"[ \t]{2,}", " ", t)
-    t = _pp2_re.sub(r"\n{2,}", "\n", t).strip()
+    t = _pp3_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    t = _pp3_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
+    t = _pp3_re.sub(r"[ \t]+\n", "\n", t)
+    t = _pp3_re.sub(r"^[ \t]+", "", t, flags=_pp3_re.M)
+    t = _pp3_re.sub(r"[ \t]{2,}", " ", t)
+    t = _pp3_re.sub(r"\n{2,}", "\n", t).strip()
     t = t.replace("\n", "<br>")
-    t = _pp2_re.sub(r"(<br>)[ \t]+", r"\1", t)
+    t = _pp3_re.sub(r"(<br>)[ \t]+", r"\1", t)
     return t
 
-def _pp2_post_safe_v2(xml_text: str, enc: str) -> str:
-    root = _pp2_ET.fromstring(xml_text)
+def _pp3_post_safe_v2(xml_text: str, enc: str) -> str:
+    root = _pp3_ET.fromstring(xml_text)
     shop = root.find("shop"); offers = shop.find("offers") if shop is not None else None
     if offers is None: return xml_text
     desc_map = {}
     for off in offers.findall("offer"):
         d = off.find("description")
         if d is None: continue
-        raw = _pp2_extract_raw_desc(d)
-        norm = _pp2_norm_safe_v2(raw)
-        norm = _pp2_make_encodable(norm, enc)
-        desc_map[off.get("id") or ""] = "<![CDATA[" + _pp2_cdata_safe(norm) + "]]>"
-    return _pp2_inject_desc(xml_text, desc_map)
+        raw = _pp3_extract_raw_desc(d)
+        norm = _pp3_norm_safe_v2(raw)
+        norm = _pp3_make_encodable(norm, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + _pp3_cdata_safe(norm) + "]]>"
+    return _pp3_inject_desc(xml_text, desc_map)
 
 # ---------------- PRETTY (default) with extras ----------------
-_pp2_key_rx = _pp2_re.compile(
+_pp3_key_rx = _pp3_re.compile(
     r'^\s*(?P<k>(Модель|Совместим\w* модели|Совместим\w*|Цвет|Ресурс( картриджа)?|Ё?мкост\w*|Объ[её]м|Гарант\w*|Вес|Размер\w*|Габарит\w*|Формат|Тип|Серия|Чип|Порты|Интерфейсы|Разъ[её]мы|Комплектац\w*|Содержимое комплекта|Срок службы|Поддержка формат\w*|Напряжение|Мощность|Частота|Форма сигнала|Аккумулятор|Ёмкость аккумулятора|Время автономной работы|Время зарядки))\s*[:：]?\s*(?P<v>.+?)\s*$',
-    _pp2_re.I
+    _pp3_re.I
 )
 
-_pp2_heading_tags = {
+_pp3_heading_tags = {
     "характеристики": "Характеристики",
     "технические характеристики": "Характеристики",
     "основные характеристики": "Характеристики",
@@ -1202,74 +1202,75 @@ _pp2_heading_tags = {
     "основные возможности": "Основные возможности",
 }
 
-def _pp2_drop_invis(t: str) -> str:
+def _pp3_drop_invis(t: str) -> str:
     if not t: return ""
-    t = _pp2_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
-    t = _pp2_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
+    t = _pp3_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    t = _pp3_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
     return t
 
-def _pp2_collapse_lines(t: str) -> str:
+def _pp3_collapse_lines(t: str) -> str:
     t = t.replace("\r\n", "\n").replace("\r", "\n")
-    t = _pp2_re.sub(r"[ \t]+\n", "\n", t)
-    t = _pp2_re.sub(r"\n{2,}", "\n", t)
+    t = _pp3_re.sub(r"[ \t]+\n", "\n", t)
+    t = _pp3_re.sub(r"\n{2,}", "\n", t)
     return t.strip()
 
-def _pp2_norm_punct(s: str) -> str:
+def _pp3_norm_punct(s: str) -> str:
     if not s: return s
     s = s.replace("**", "")                                     # drop markdown bold
-    s = _pp2_re.sub(r"\bт\s*д\b\.?", "и т. д.", s, flags=_pp2_re.I)
-    s = _pp2_re.sub(r"\bт\s*п\b\.?", "и т. п.", s, flags=_pp2_re.I)
-    s = _pp2_re.sub(r"([,.;:!?])(?![\s</])", r"\1 ", s)         # space after punctuation
-    s = _pp2_re.sub(r"[ \t]{2,}", " ", s)                       # collapse spaces
+    s = _pp3_re.sub(r"\bт\s*д\b\.?", "и т. д.", s, flags=_pp3_re.I)
+    s = _pp3_re.sub(r"\bт\s*п\b\.?", "и т. п.", s, flags=_pp3_re.I)
+    s = _pp3_re.sub(r"([,.;:!?])(?![\s</])", r"\1 ", s)         # space after punctuation
+    s = _pp3_re.sub(r"[ \t]{2,}", " ", s)                       # collapse spaces
     s = s.replace("WiFi", "Wi-Fi")
-    s = _pp2_re.sub(r"\bUSB[ -]?C\b", "USB-C", s, flags=_pp2_re.I)
+    s = _pp3_re.sub(r"\bUSB[ -]?C\b", "USB-C", s, flags=_pp3_re.I)
     return s.strip()
 
-def _pp2_norm_units(v: str, key_hint: str = "") -> str:
-    s = _pp2_norm_punct(v)
+def _pp3_norm_units(v: str, key_hint: str = "") -> str:
+    s = _pp3_norm_punct(v)
     def _fmt_ints(m):
-        num = _pp2_re.sub(r"\s+", "", m.group(1))
+        num = _pp3_re.sub(r"\s+", "", m.group(1))
         try:
             n = int(num); return f"{n:,}".replace(",", " ")
         except Exception:
             return m.group(1)
-    s = _pp2_re.sub(r"\b(\d{4,})\b", _fmt_ints, s)
+    s = _pp3_re.sub(r"\b(\d{4,})\b", _fmt_ints, s)
     def _fmt_watts(m):
-        num = _pp2_re.sub(r"\s+", "", m.group(1))
+        num = _pp3_re.sub(r"\s+", "", m.group(1))
         return f"{int(num):,}".replace(",", " ") + " Вт" if num.isdigit() else m.group(0)
-    s = _pp2_re.sub(r"\b(\d{3,5})\s*(вт|w|ватт)\b", _fmt_watts, s, flags=_pp2_re.I)
+    s = _pp3_re.sub(r"\b(\d{3,5})\s*(вт|w|ватт)\b", _fmt_watts, s, flags=_pp3_re.I)
     def _fmt_liters(m):
-        num = _pp2_re.sub(r"\s+", "", m.group(1))
+        num = _pp3_re.sub(r"\s+", "", m.group(1))
         return f"{int(num):,}".replace(",", " ") + " л" if num.isdigit() else m.group(0)
-    s = _pp2_re.sub(r"\b(\d{1,4})\s*(л)\b", _fmt_liters, s, flags=_pp2_re.I)
+    s = _pp3_re.sub(r"\b(\d{1,4})\s*(л)\b", _fmt_liters, s, flags=_pp3_re.I)
     def _fmt_pages(m):
-        num = _pp2_re.sub(r"\s+", "", m.group(1))
+        num = _pp3_re.sub(r"\s+", "", m.group(1))
         return f"{int(num):,}".replace(",", " ") + " стр." if num.isdigit() else m.group(0)
-    s = _pp2_re.sub(r"\b(\d{3,6})\s*(стр(?:аниц[аы])?)\b", _fmt_pages, s, flags=_pp2_re.I)
-    s = _pp2_re.sub(r"\b(ISO/IEC)\s*(\d{4,6})\b", r"\1 \2", s)
-    if key_hint and _pp2_re.search(r"(размер|габарит)", key_hint, flags=_pp2_re.I):
-        s = _pp2_re.sub(r"\b(\d{1,4})\s*[x×X*]\s*(\d{1,4})\s*[x×X*]\s*(\d{1,4})\b(?!\s*мм)",
+    s = _pp3_re.sub(r"\b(\d{3,6})\s*(стр(?:аниц[аы])?)\b", _fmt_pages, s, flags=_pp3_re.I)
+    s = _pp3_re.sub(r"\b(ISO/IEC)\s*(\d{4,6})\b", r"\1 \2", s)
+    if key_hint and _pp3_re.search(r"(размер|габарит)", key_hint, flags=_pp3_re.I):
+        s = _pp3_re.sub(r"\b(\d{1,4})\s*[x×X*]\s*(\d{1,4})\s*[x×X*]\s*(\d{1,4})\b(?!\s*мм)",
                         r"\1 × \2 × \3 мм", s)
-    s = _pp2_re.sub(r"(?<=\d)-(?=\d)", "–", s)  # range dash
+    s = _pp3_re.sub(r"(?<=\d)-(?=\d)", "–", s)  # range dash
     return s.strip()
 
-def _pp2_split_list_value(val: str, per=6) -> str:
-    parts = [p.strip() for p in _pp2_re.split(r"[;,]", val) if p.strip()]
+def _pp3_split_list_value(val: str, per=6) -> str:
+    parts = [p.strip() for p in _pp3_re.split(r"[;,]", val) if p.strip()]
     if len(parts) <= per: return val
     chunks = []
     for i in range(0, len(parts), per):
         chunks.append(", ".join(parts[i:i+per]))
     return "<br>".join(chunks)
 
-def _pp2_split_bullets(line: str) -> list:
+def _pp3_split_bullets(line: str) -> list:
     l = line.strip()
-    l = _pp2_re.sub(r"^[\-\—•]\s*", "", l)   # drop bullet marker
+    l = _pp3_re.sub(r"^[\-\—•]\s*", "", l)   # drop bullet marker
     if ";" in l and len(l) > 60:
         parts = [p.strip() for p in l.split(";") if p.strip()]
         return parts
     return [l] if l else []
 
-def _pp2_split_sections(lines):
+def _pp3_split_sections(lines):
+    # Enhanced: detect inline headings "Преимущества: ..." and extract bullets from intro
     blocks = {"intro": [], "Характеристики": [], "Особенности": [], "Преимущества": [], "Комплектация": [], "Условия гарантии": [], "Основные возможности": []}
     current = "intro"
     for ln in lines:
@@ -1277,18 +1278,43 @@ def _pp2_split_sections(lines):
         if not raw:
             blocks[current].append("")
             continue
+        # Inline heading "Заголовок: текст"
+        m = _pp3_re.match(r'^\s*([А-Яа-яA-Za-z ]{3,40})\s*:\s*(.+)$', raw)
+        if m:
+            h = m.group(1).lower().strip()
+            rest = m.group(2).strip()
+            if h in _pp3_heading_tags:
+                current = _pp3_heading_tags[h]
+                if rest:
+                    blocks[current].append(rest)
+                continue
+        # Standalone heading line
         key = raw.lower().rstrip(":")
-        if key in _pp2_heading_tags:
-            current = _pp2_heading_tags[key]
+        if key in _pp3_heading_tags:
+            current = _pp3_heading_tags[key]
             continue
         blocks[current].append(raw)
+
+    # Extract bullet-looking lines from intro into "Особенности"
+    intro = blocks["intro"]
+    bullet_idx = [i for i, s in enumerate(intro) if _pp3_re.match(r'^\s*[\-\—•]\s*', s or "")]
+    if len(bullet_idx) >= 2:
+        new_intro = []
+        for i, s in enumerate(intro):
+            if i in bullet_idx:
+                for it in _pp3_split_bullets(s):
+                    blocks["Особенности"].append(it)
+            else:
+                new_intro.append(s)
+        blocks["intro"] = new_intro
+
     return blocks
 
-def _pp2_parse_kv(lines):
+def _pp3_parse_kv(lines):
     kv, other = [], []
     for ln in lines:
         if not ln.strip(): continue
-        m = _pp2_key_rx.match(ln)
+        m = _pp3_key_rx.match(ln)
         if m:
             k = m.group("k").strip()
             v = m.group("v").strip()
@@ -1297,43 +1323,48 @@ def _pp2_parse_kv(lines):
             other.append(ln.strip())
     return kv, other
 
-def _pp2_build_html(blocks):
+def _pp3_build_html(blocks):
     parts = []
-    intro_compact = [ _pp2_norm_punct(ln) for ln in blocks["intro"] if ln.strip() ]
+    intro_compact = [ _pp3_norm_punct(ln) for ln in blocks["intro"] if ln.strip() ]
     if intro_compact:
         intro_raw = "\n".join(intro_compact)
-        intro_html = _pp2_html.escape(intro_raw, quote=False)
-        intro_html = _pp2_re.sub(r"\n{2,}", "\n", intro_html)
+        intro_html = _pp3_html.escape(intro_raw, quote=False)
+        intro_html = _pp3_re.sub(r"\n{2,}", "\n", intro_html)
         parts.append("<p>{}</p>".format(intro_html.replace("\n", "<br>")))
-    kv_pairs, leftover = _pp2_parse_kv(blocks["Характеристики"])
+
+    # Характеристики
+    kv_pairs, leftover = _pp3_parse_kv(blocks["Характеристики"])
     if kv_pairs:
         parts.append("<h3>Характеристики</h3>")
         parts.append("<ul>")
         for k, v in kv_pairs:
             key = k.strip().capitalize().rstrip(":")
-            val = _pp2_norm_units(v, key_hint=key)
+            val = _pp3_norm_units(v, key_hint=key)
             if key.lower().startswith(("совместим", "порты", "интерфейс", "разъём", "разъем", "поддержка")):
-                val = _pp2_split_list_value(val, per=6)
-            parts.append("<li><strong>{}:</strong> {}</li>".format(_pp2_html.escape(key, quote=False), val))
+                val = _pp3_split_list_value(val, per=6)
+            parts.append("<li><strong>{}:</strong> {}</li>".format(_pp3_html.escape(key, quote=False), val))
         parts.append("</ul>")
+
+    # Named blocks as bullet lists
     for title in ("Основные возможности","Преимущества","Особенности","Комплектация","Условия гарантии"):
         lines = blocks[title]
         items = []
         for ln in lines:
-            items.extend(_pp2_split_bullets(_pp2_norm_punct(ln)))
+            items.extend(_pp3_split_bullets(_pp3_norm_punct(ln)))
         items = [i for i in (it.strip() for it in items) if i]
         if not items: continue
         parts.append(f"<h3>{title}</h3>")
         parts.append("<ul>")
         for it in items:
-            parts.append("<li>{}</li>".format(_pp2_html.escape(it, quote=False)))
+            parts.append("<li>{}</li>".format(_pp3_html.escape(it, quote=False)))
         parts.append("</ul>")
+
     return "".join(parts).strip()
 
-def _pp2_inject_desc(xml_text: str, desc_map: dict) -> str:
-    _offer_re = _pp2_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _pp2_re.S | _pp2_re.I)
-    _desc_pair = _pp2_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _pp2_re.S | _pp2_re.I)
-    _desc_self = _pp2_re.compile(r'<description\b[^>]*/\s*>', _pp2_re.I)
+def _pp3_inject_desc(xml_text: str, desc_map: dict) -> str:
+    _offer_re = _pp3_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _pp3_re.S | _pp3_re.I)
+    _desc_pair = _pp3_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _pp3_re.S | _pp3_re.I)
+    _desc_self = _pp3_re.compile(r'<description\b[^>]*/\s*>', _pp3_re.I)
     def _repl_off(m):
         oid = m.group(1); block = m.group(0)
         cdata = desc_map.get(oid)
@@ -1343,47 +1374,48 @@ def _pp2_inject_desc(xml_text: str, desc_map: dict) -> str:
         return _desc_self.sub("<description>" + cdata + "</description>", block, count=1)
     return _offer_re.sub(_repl_off, xml_text)
 
-def _pp2_post_pretty(xml_text: str, enc: str) -> str:
-    root = _pp2_ET.fromstring(xml_text)
+def _pp3_post_pretty(xml_text: str, enc: str) -> str:
+    root = _pp3_ET.fromstring(xml_text)
     shop = root.find("shop"); offers = shop.find("offers") if shop is not None else None
     if offers is None: return xml_text
     desc_map = {}
     for off in offers.findall("offer"):
         d = off.find("description")
         if d is None: continue
-        raw = _pp2_extract_raw_desc(d)
-        raw = _pp2_re.sub(r'(?i)<br\s*/?>', "\n", raw)
-        raw = _pp2_re.sub(r"</?(p|div|span|ul|ol|li|h[1-6])[^>]*>", "", raw)
-        t = _pp2_drop_invis(raw)
-        t = _pp2_collapse_lines(t)
-        t = _pp2_re.sub(r"^[ \t]+", "", t, flags=_pp2_re.M)
+        raw = _pp3_extract_raw_desc(d)
+        # Drop legacy supplier html, keep line breaks as \n
+        raw = _pp3_re.sub(r'(?i)<br\s*/?>', "\n", raw)
+        raw = _pp3_re.sub(r"</?(p|div|span|ul|ol|li|h[1-6])[^>]*>", "", raw)
+        t = _pp3_drop_invis(raw)
+        t = _pp3_collapse_lines(t)
+        t = _pp3_re.sub(r"^[ \t]+", "", t, flags=_pp3_re.M)
         lines = t.split("\n") if t else []
-        blocks = _pp2_split_sections(lines)
-        html = _pp2_build_html(blocks)
+        blocks = _pp3_split_sections(lines)
+        html = _pp3_build_html(blocks)
         if not html and t:
-            fb = _pp2_html.escape(_pp2_norm_punct(t), quote=False).replace("\n", "<br>")
-            fb = _pp2_re.sub(r"(<br>)[ \t]+", r"\1", fb)
+            fb = _pp3_html.escape(_pp3_norm_punct(t), quote=False).replace("\n", "<br>")
+            fb = _pp3_re.sub(r"(<br>)[ \t]+", r"\1", fb)
             html = "<p>{}</p>".format(fb)
-        html = _pp2_make_encodable(html, enc)
-        desc_map[off.get("id") or ""] = "<![CDATA[" + _pp2_cdata_safe(html) + "]]>"
-    return _pp2_inject_desc(xml_text, desc_map)
+        html = _pp3_make_encodable(html, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + _pp3_cdata_safe(html) + "]]>"
+    return _pp3_inject_desc(xml_text, desc_map)
 
-def _pp2_postprocess() -> None:
+def _pp3_postprocess() -> None:
     try:
         _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
         _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
         with open(_out, "rb") as f: data = f.read()
         try: xml_text = data.decode(_enc)
         except Exception: xml_text = data.decode("utf-8", errors="replace")
-        use_pretty = str(_pp2_os.getenv("DESC_PRETTY", "")).strip().lower() not in {"0","false","off","no"}
-        new_text = _pp2_post_pretty(xml_text, _enc) if use_pretty else _pp2_post_safe_v2(xml_text, _enc)
+        use_pretty = str(_pp3_os.getenv("DESC_PRETTY", "")).strip().lower() not in {"0","false","off","no"}
+        new_text = _pp3_post_pretty(xml_text, _enc) if use_pretty else _pp3_post_safe_v2(xml_text, _enc)
         if new_text != xml_text:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
                 f.write(new_text if new_text.endswith("\n") else new_text + "\n")
-            print(f"Description postprocess ({'PRETTY+keep-nl+extras' if use_pretty else 'SAFE_v2'}): updated")
+            print(f"Description postprocess ({'PRETTY+keep-nl+inline-headings+bullets' if use_pretty else 'SAFE_v2'}): updated")
         else:
             print("Description postprocess: no changes")
     except Exception as e:
         print("WARN: postprocess:", e)
 
-_pp2_atexit.register(_pp2_postprocess)
+_pp3_atexit.register(_pp3_postprocess)
