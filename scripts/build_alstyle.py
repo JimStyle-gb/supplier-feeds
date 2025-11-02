@@ -278,7 +278,7 @@ COMMON_BRANDS = [
     "Europrint","Katun","NV Print","Hi-Black","ProfiLine","Cactus","G&G","Static Control","Lomond","WWM","Uniton",
     "TSC","Zebra",
     "SVC","APC","Powercom","PCM","Ippon","Eaton","Vinga",
-    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"
+    "MSI","ASUS","Acer","Lenovo","Dell","Apple","LG"   # ← добавил LG
 ]
 BRAND_ALIASES = {
     "hewlett packard":"HP","konica":"Konica Minolta","konica-minolta":"Konica Minolta",
@@ -293,6 +293,7 @@ def normalize_brand(raw: str) -> str:
     return "" if (not k) or (k in SUPPLIER_BLOCKLIST) else raw.strip()
 
 def ensure_vendor(shop_el: ET.Element) -> Tuple[int, Dict[str,int]]:
+    """Чистим/нормализуем <vendor>: удаляем мусор/пустое, supplier-бренды, оставляем валидные значения."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0, {}
@@ -347,7 +348,7 @@ def _find_brand_in_text(text: str) -> str:
 
 def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str:
     name  = get_text(offer, "name")
-    desc  = inner_html(offer.find("description"))
+    desc  = inner_html(offer.find("description"))  # читаем, но НЕ меняем
     first = re.split(r"\s+", name.strip())[0] if name else ""
     f_norm = _norm_key(first)
     if f_norm in brand_index:
@@ -362,6 +363,7 @@ def guess_vendor_for_offer(offer: ET.Element, brand_index: Dict[str,str]) -> str
     return ""
 
 def ensure_vendor_auto_fill(shop_el: ET.Element) -> int:
+    """Если <vendor> пуст — пытаемся угадать по name/description (только чтение)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -512,6 +514,7 @@ def _value_is_empty_or_noise(val: str) -> bool:
     return False
 
 def remove_specific_params(shop_el: ET.Element) -> int:
+    """Удаляем мусорные/дублирующиеся <param> — к описанию не прикасаемся."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -572,6 +575,7 @@ def detect_kind(name: str) -> str:
     return "other"
 
 def ensure_placeholder_pictures(shop_el: ET.Element) -> Tuple[int,int]:
+    """Если нет <picture> — подставляем заглушку по бренду/категории/дефолт."""
     if not PLACEHOLDER_ENABLE:
         return (0,0)
     offers_el = shop_el.find("offers")
@@ -740,6 +744,7 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
 
 DESIRED_ORDER = ["vendorCode","name","price","picture","vendor","currencyId","description"]
 def reorder_offer_children(shop_el: ET.Element) -> int:
+    """Переупорядочиваем теги в оффере (описание не трогаем по содержимому)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -762,6 +767,7 @@ def reorder_offer_children(shop_el: ET.Element) -> int:
     return changed
 
 def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
+    """Вставляем <categoryId>0</categoryId> первым элементом оффера (по требованию пользователя)."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -824,6 +830,7 @@ MODEL_RE = re.compile(r"\b([A-Z][A-Z0-9\-]{2,})\b", re.I)
 AS_INTERNAL_ART_RE = re.compile(r"^AS\d+", re.I)
 
 def extract_model_tokens(offer: ET.Element) -> List[str]:
+    """Извлекаем модельные токены из name/description (description только читаем)."""
     tokens: Set[str] = set()
     for src in (get_text(offer,"name"), inner_html(offer.find("description"))):
         if not src:
@@ -908,6 +915,7 @@ def ensure_keywords(shop_el: ET.Element) -> int:
 
 # ======================= ПРОЧЕЕ =======================
 def flag_unrealistic_supplier_prices(shop_el: ET.Element) -> int:
+    """Помечаем офферы с ценами выше порога — затем принудительно ставим цену=PRICE_CAP_VALUE."""
     offers_el = shop_el.find("offers")
     if offers_el is None:
         return 0
@@ -967,13 +975,16 @@ def main() -> None:
 
     src_offers = list(offers_in_el.findall("offer"))
 
+    # Готовим выходную структуру
     out_root  = ET.Element("yml_catalog"); out_root.set("date", time.strftime("%Y-%m-%d %H:%M"))
     out_shop  = ET.SubElement(out_root, "shop")
     out_offers= ET.SubElement(out_shop, "offers")
 
+    # Копируем офферы 1:1 (описание НЕ трогаем — уйдет как в источнике)
     for o in src_offers:
         out_offers.append(deepcopy(o))
 
+    # Фильтр категорий (include/exclude по ID/названию)
     removed_count = 0
     if ALSTYLE_CATEGORIES_MODE in {"include","exclude"}:
         id2name,id2parent,parent2children = parse_categories_tree(shop_in)
@@ -1000,43 +1011,57 @@ def main() -> None:
     else:
         log("Category rules (off): removed=0")
 
+    # Удаляем исходные categoryId (позже поставим 0 первым тегом)
     if DROP_CATEGORY_ID_TAG:
         for off in out_offers.findall("offer"):
             for node in list(off.findall("categoryId")) + list(off.findall("CategoryId")):
                 off.remove(node)
 
+    # Флаг/форсирование цен
     flagged = flag_unrealistic_supplier_prices(out_shop); log(f"Flagged by PRICE_CAP >= {PRICE_CAP_THRESHOLD}: {flagged}")
 
+    # Бренды
     ensure_vendor(out_shop)
     filled = ensure_vendor_auto_fill(out_shop); log(f"Vendors auto-filled: {filled}")
 
+    # vendorCode/id
     ensure_vendorcode_with_article(out_shop, prefix=VENDORCODE_PREFIX, create_if_missing=True)
     sync_offer_id_with_vendorcode(out_shop)
 
+    # Пересчёт розницы + принудительные цены
     reprice_offers(out_shop, PRICING_RULES)
     forced = enforce_forced_prices(out_shop); log(f"Forced price={PRICE_CAP_VALUE}: {forced}")
 
+    # Чистим мусорные <param>
     removed_params = remove_specific_params(out_shop); log(f"Params removed: {removed_params}")
 
+    # Фото-заглушки (если нет ни одной картинки)
     ph_added, _ = ensure_placeholder_pictures(out_shop); log(f"Placeholders added: {ph_added}")
 
+    # available → в атрибут оффера, удаляем складские поля
     t_true, t_false, _, _ = normalize_available_field(out_shop)
 
+    # Валюта
     fix_currency_id(out_shop, default_code="KZT")
 
+    # Чистка служебных тегов/атрибутов
     for off in out_offers.findall("offer"):
         purge_offer_tags_and_attrs_after(off)
 
+    # Порядок тегов + categoryId=0 первым
     reorder_offer_children(out_shop)
     ensure_categoryid_zero_first(out_shop)
 
+    # Ключевые слова (НЕ трогаем description, только читаем при необходимости)
     kw_touched = ensure_keywords(out_shop); log(f"Keywords updated: {kw_touched}")
 
+    # Красивые отступы (Python 3.9+)
     try:
         ET.indent(out_root, space="  ")
     except Exception:
         pass
 
+    # FEED_META
     built_alm = now_almaty()
     meta_pairs = {
         "supplier": SUPPLIER_NAME,
@@ -1050,9 +1075,11 @@ def main() -> None:
     }
     out_root.insert(0, ET.Comment(render_feed_meta_comment(meta_pairs)))
 
+    # Сериализация
     xml_bytes = ET.tostring(out_root, encoding=ENC, xml_declaration=True)
     xml_text  = xml_bytes.decode(ENC, errors="replace")
 
+    # Лёгкая косметика: перенос после FEED_META и пустая строка между офферами
     xml_text = re.sub(r"(-->)\s*(<shop\b)", r"\1\n\2", xml_text, count=1)
     xml_text = re.sub(r"(</offer>)\s*\n\s*(<offer\b)", r"\1\n\n\2", xml_text)
 
@@ -1065,11 +1092,13 @@ def main() -> None:
         with open(OUT_FILE_YML, "w", encoding=ENC, newline="\n") as f:
             f.write(xml_text)
     except UnicodeEncodeError as e:
+        # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
         warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
             f.write(data_bytes)
 
+    # .nojekyll для GitHub Pages
     try:
         docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True)
@@ -1088,7 +1117,8 @@ if __name__ == "__main__":
 
 
 # =============================================================
-# Post-Processor v34 + v36 + v36b (описание: «Характеристики», merge «Безопасность и гарантия», params→desc)
+# Post-Processor v34 (PRETTY ONLY «Характеристики») + fix "Безопасность и гарантия"
+# Then v36: safe enrichment from <param> -> <description> only
 # =============================================================
 import atexit as _ppX_ax
 import os as _ppX_os
@@ -1152,6 +1182,7 @@ def _ppX_norm_units(v: str) -> str:
     s = _ppX_re.sub(r"(?<=\d)-(?=\d)", "–", s)
     return s.strip().rstrip(" :;.,")
 
+# ----- v34 patterns -----
 _X_keys = [
     "Модель","Модель / Part No","Model","Part No",
     "Дисплей","Экран","Процессор","CPU",
@@ -1160,7 +1191,7 @@ _X_keys = [
     "Накопитель","SSD","HDD","Хранилище","Макс. хранение",
     "ОС","Операционная система","Цвет",
     "Порты и интерфейсы","Порты","Интерфейсы","Разъёмы","Разъемы",
-    "Беспроводная связь","Связь","Wi-Fi/Bluetooth",
+    "Беспроводная связь","Связь","Wi‑Fi/Bluetooth",
     "Клавиатура","Веб-камера","Камера","Аудио","Звук",
     "Система охлаждения","Охлаждение",
     "Адаптер питания","Блок питания","Питание",
@@ -1281,6 +1312,7 @@ def _X_post_pretty(xml_text: str, enc: str) -> str:
 
         raw_pairs = _X_parse_kv(char_lines)
 
+        # fix '... Безопасность и' + next 'Гарантия'
         merged = []
         i = 0
         while i < len(raw_pairs):
@@ -1321,6 +1353,7 @@ def _X_post_pretty(xml_text: str, enc: str) -> str:
         html = _ppX_make_encodable(html, enc)
         desc_map[off.get("id") or ""] = "<![CDATA[" + _ppX_cdata_safe(html) + "]]>"
 
+    # inject
     _offer_re = _ppX_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _ppX_re.S|_ppX_re.I)
     _desc_pair = _ppX_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _ppX_re.S|_ppX_re.I)
     _desc_self = _ppX_re.compile(r'<description\b[^>]*/\s*>', _ppX_re.I)
@@ -1333,6 +1366,7 @@ def _X_post_pretty(xml_text: str, enc: str) -> str:
         return _desc_self.sub("<description>"+cdata+"</description>", block, count=1)
     return _offer_re.sub(_repl, xml_text)
 
+# ---------- v36: params → description (whitelist) ----------
 _WL = {"Цвет","Вес","Размеры","Совместимость","Ресурс","EAN"}
 _desc_ul_re = _ppX_re.compile(r'(<h3>\s*Характеристики\s*</h3>\s*<ul>)(.*?)(</ul>)', _ppX_re.S|_ppX_re.I)
 _li_kv_re = _ppX_re.compile(r'<li>\s*<strong>\s*([^<:]+?)\s*:\s*</strong>\s*(.*?)\s*</li>', _ppX_re.S)
@@ -1345,10 +1379,9 @@ def _canon_key(k: str) -> str:
     if low in {"цвет"}: return "Цвет"
     if low in {"вес"}: return "Вес"
     if low in {"размер","размеры","габариты"}: return "Размеры"
-    if low.startswith("совместим") or low.startswith("для принтеров"): return "Совместимость"
+    if low.startswith("совместим"): return "Совместимость"
     if low.startswith("ресурс"): return "Ресурс"
     if low in {"ean","штрихкод","штрих-код"}: return "EAN"
-    if low in {"тип печати"}: return "Тип печати"
     return s[:1].upper() + s[1:] if s else s
 
 def _enrich_params2desc(block: str) -> str:
@@ -1387,59 +1420,6 @@ def _enrich_params2desc(block: str) -> str:
     new_ul_inner = ul_inner.rstrip() + addition + ("\n" if not ul_inner.endswith("\n") else "")
     return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
 
-_WL_CREATE = {"Цвет","Вес","Размеры","Совместимость","Ресурс","EAN","Тип печати"}
-
-_desc_pair_re = _ppX_re.compile(r'(<description\b[^>]*>)(?P<inner>.*?)(</description>)', _ppX_re.S|_ppX_re.I)
-_hdr_exists_re = _ppX_re.compile(r'<h3>\s*Характеристики\s*</h3>', _ppX_re.I)
-
-def _build_ul_from_params(block: str, enc: str) -> Optional[str]:
-    pairs: Dict[str,List[str]] = {}
-    order: List[str] = []
-    for m in _param_re.finditer(block):
-        k = _canon_key(_ppX_re.sub(r'\s+', ' ', m.group(1)))
-        v = _ppX_re.sub(r'\s+', ' ', (m.group(2) or '')).strip().rstrip(' :;.,')
-        if not k or not v: continue
-        if k not in _WL_CREATE: 
-            if k != "Совместимость": 
-                continue
-        if k not in pairs:
-            pairs[k] = []; order.append(k)
-        if v not in pairs[k]:
-            pairs[k].append(v)
-    if not order:
-        return None
-    lis = []
-    for k in order:
-        vals = "; ".join(pairs[k]).strip()
-        if not vals: continue
-        lis.append(f"<li><strong>{_ppX_html.escape(k, quote=False)}:</strong> {_ppX_html.escape(vals, quote=False)}</li>")
-    if not lis:
-        return None
-    ul_html = "<h3>Характеристики</h3><ul>" + "".join(lis) + "</ul>"
-    return _ppX_make_encodable(ul_html, enc)
-
-def _create_params_block_if_missing(xml_text: str, enc: str) -> str:
-    def _repl_offer(mo):
-        body = mo.group('body')
-        if _hdr_exists_re.search(body):
-            return mo.group(0)
-        if not _param_re.search(body):
-            return mo.group(0)
-        ul = _build_ul_from_params(body, enc)
-        if not ul:
-            return mo.group(0)
-        def _repl_desc(md):
-            inner = md.group('inner') or ""
-            insert_pos = inner.rfind("</p>")
-            if insert_pos != -1:
-                new_inner = inner[:insert_pos+4] + ul + inner[insert_pos+4:]
-            else:
-                new_inner = inner + ul
-            return md.group(1) + new_inner + md.group(3)
-        new_body = _desc_pair_re.sub(_repl_desc, body, count=1)
-        return mo.group(0).replace(body, new_body, 1)
-    return _offer_re.sub(_repl_offer, xml_text)
-
 def _v34_then_v36() -> None:
     try:
         _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
@@ -1448,24 +1428,24 @@ def _v34_then_v36() -> None:
         try: xml = data.decode(_enc)
         except Exception: xml = data.decode("utf-8", errors="replace")
 
+        # v34 first
         xml2 = _X_post_pretty(xml, _enc)
-
+        # v36 afterwards
         def _repl_off(m):
             body = m.group('body'); body2 = _enrich_params2desc(body)
             return m.group(0) if body2 == body else m.group(0).replace(body, body2, 1)
         xml3 = _offer_re.sub(_repl_off, xml2)
 
-        xml4 = _create_params_block_if_missing(xml3, _enc)
-
-        if xml4 != xml:
+        if xml3 != xml:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
-                f.write(xml4 if xml4.endswith("\n") else xml4 + "\n")
-            print("v34 + v36 + v36b: updated (<param> → «Характеристики», +create if missing).")
+                f.write(xml3 if xml3.endswith("\n") else xml3 + "\n")
+            print("v34 + v36: updated (<param> → «Характеристики»).")
         else:
-            print("v34 + v36 + v36b: no changes.")
+            print("v34 + v36: no changes.")
     except Exception as e:
-        print("WARN v34+v36+v36b:", e)
+        print("WARN v34+v36:", e)
 
+# Unregister any previous postprocessors to avoid double-run
 for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess","_pp2_postprocess","_pp3_postprocess","_pp4_postprocess",
               "_pp5_postprocess","_pp6_postprocess","_pp7_postprocess","_pp8_postprocess","_pp9_postprocess"):
     try:
@@ -1477,4 +1457,144 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
         pass
 
 _ppX_ax.register(_v34_then_v36)
-# ========================= end v34+v36+v36b =========================
+# ========================= end v34+v36 =========================
+
+
+# ========================= v36 OVERRIDE (params → «Характеристики» only when block is missing) =========================
+try:
+    # Extended whitelist for safe enrichment
+    _WL = {
+        "Вес","Объём","Гарантия","Цвет","Размеры","Габариты",
+        "Тип печати","Кол-во страниц при 5% заполнении А4","Для принтеров","Совместимость",
+        "Тип ИБП","Мощность (Вт)","Ёмкость батареи","Время полной зарядки",
+        "Диапазон работы AVR","Выходная частота","Количество и тип выходных разъёмов",
+        "Интерфейс для связи с ПК","Форма выходного сигнала","Время переключения режимов",
+        "Рабочий диапазон температур","Рабочая влажность","Бесшумный режим","Автоматическое включение",
+        "Лицевая панель","Состав","EAN"
+    }
+
+    # Detect description HTML inside offer
+    _desc_html_re = _ppX_re.compile(r'(<description\\b[^>]*><!\\[CDATA\\[)(.*?)(\\]\\]></description>)', _ppX_re.S|_ppX_re.I)
+
+    def _canon_key_override(k: str) -> str:
+        s = (k or "").strip().rstrip(":")
+        low = s.lower().replace("ё","е")
+        if low in {"цвет"}: return "Цвет"
+        if low in {"вес"}: return "Вес"
+        if low in {"размер","размеры","габариты"}: return "Размеры"
+        if low.startswith("совместим"): return "Совместимость"
+        if low.startswith("ресурс"): return "Ресурс"
+        if "мощн" in low and ("вт" in low or "w" in low): return "Мощность (Вт)"
+        if "емк" in low and ("ач" in low or "aч" in low or "ah" in low): return "Ёмкость батареи"
+        if "время полной зарядки" in low or "заряд" in low and "время" in low: return "Время полной зарядки"
+        if "интерфейс" in low: return "Интерфейс для связи с ПК"
+        if "разъем" in low or "разъём" in low or "выходн" in low and ("schuko" in low or "usb" in low): return "Количество и тип выходных разъёмов"
+        if "форма выходного сигнала" in low or "синус" in low: return "Форма выходного сигнала"
+        if "частота" in low: return "Выходная частота"
+        if "avr" in low: return "Диапазон работы AVR"
+        if "тип ибп" in low or ("тип" in low and "ибп" in low): return "Тип ИБП"
+        if "температур" in low: return "Рабочий диапазон температур"
+        if "влажност" in low: return "Рабочая влажность"
+        if "бесшум" in low: return "Бесшумный режим"
+        if "автоматическ" in low and "включ" in low: return "Автоматическое включение"
+        if "лицевая панел" in low: return "Лицевая панель"
+        if "состав" in low: return "Состав"
+        if low in {"ean","штрихкод","штрих-код"}: return "EAN"
+        return s[:1].upper() + s[1:] if s else s
+
+    def _normalize_value_override(k: str, v: str) -> str:
+        # Collapse spaces and fix units
+        v2 = _ppX_re.sub(r"\\s+", " ", (v or "").strip())
+        v2 = v2.replace("Bт", "Вт").replace("ватт", "Вт")
+        v2 = v2.replace("WiFi", "Wi-Fi")
+        v2 = _ppX_re.sub(r"\\bUSB[ -]?C\\b", "USB-C", v2, flags=_ppX_re.I)
+        v2 = v2.replace("Schuko", "Schuko")
+        # Truncate long lists for printers
+        if k in {"Для принтеров","Совместимость"} and len(v2) > 250:
+            v2 = v2[:247].rstrip(",; ") + "..."
+        return v2
+
+    def _build_block_from_params(params: list[tuple[str,str]]) -> str:
+        # Filter to whitelist + normalize + deduplicate order-preserving
+        tidy = {}
+        order = []
+        for name, val in params:
+            ck = _canon_key_override(name)
+            if ck not in _WL: 
+                continue
+            vv = _normalize_value_override(ck, val)
+            if not vv:
+                continue
+            if ck not in tidy:
+                tidy[ck] = []
+                order.append(ck)
+            if vv not in tidy[ck]:
+                tidy[ck].append(vv)
+        if not order:
+            return ""
+        # Render UL
+        li = []
+        for ck in order:
+            vals = tidy.get(ck, [])
+            if not vals:
+                continue
+            li.append(f"<li><strong>{_ppX_html.escape(ck, False)}:</strong> {_ppX_html.escape('; '.join(vals), False)}</li>")
+        if not li:
+            return ""
+        return "<h3>Характеристики</h3><ul>" + "".join(li) + "</ul>"
+
+    def _enrich_params2desc(block: str) -> str:  # override
+        # 1) Collect params from this offer
+        params = []
+        for m in _param_re.finditer(block):
+            name = _ppX_re.sub(r'\\s+', ' ', m.group(1))
+            val = (m.group(2) or '').strip()
+            if name and val:
+                params.append((name, val))
+
+        if not params:
+            return block
+
+        # 2) If block exists → keep original behavior (add missing whitelist keys)
+        dm = _desc_ul_re.search(block)
+        if dm:
+            ul_head, ul_inner, ul_tail = dm.group(1), dm.group(2), dm.group(3)
+            existing = set()
+            for km in _li_kv_re.finditer(ul_inner):
+                k = _canon_key_override(km.group(1))
+                if k: existing.add(k)
+            add_items = []
+            for k, v in params:
+                ck = _canon_key_override(k)
+                if ck in _WL and ck not in existing:
+                    vv = _normalize_value_override(ck, v)
+                    if vv:
+                        add_items.append(f'<li><strong>{_ppX_html.escape(ck, False)}:</strong> {_ppX_html.escape(vv, False)}</li>')
+                        existing.add(ck)
+            if not add_items:
+                return block
+            indent = ""
+            m_ind = _ppX_re.search(r'(\\n[ \\t]*)</ul>', ul_inner)
+            if m_ind: indent = m_ind.group(1)
+            addition = "".join((indent + itm) for itm in ("\\n" + a for a in add_items))
+            new_ul_inner = ul_inner.rstrip() + addition + ("\\n" if not ul_inner.endswith("\\n") else "")
+            return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
+
+        # 3) No block → create one at the end of description HTML
+        dh = _desc_html_re.search(block)
+        if not dh:
+            return block  # safety
+        head, html, tail = dh.group(1), dh.group(2), dh.group(3)
+        new_ul = _build_block_from_params(params)
+        if not new_ul:
+            return block
+        # Ensure newline before insertion if not present
+        if not html.endswith("\n"):
+            html2 = html + "\n" + new_ul
+        else:
+            html2 = html + new_ul
+        return block[:dh.start()] + head + html2 + tail + block[dh.end():]
+
+except Exception as _ovr_e:
+    print("WARN v36 override:", _ovr_e)
+# ========================= end v36 OVERRIDE =========================
