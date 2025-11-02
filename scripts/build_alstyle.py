@@ -1385,40 +1385,90 @@ def _canon_key(k: str) -> str:
     return s[:1].upper() + s[1:] if s else s
 
 def _enrich_params2desc(block: str) -> str:
+    # 1) Собираем пары из <param name="...">value</param>
     params = []
     for m in _param_re.finditer(block):
         name = _canon_key(_ppX_re.sub(r'\s+', ' ', m.group(1)))
         val = _ppX_re.sub(r'\s+', ' ', (m.group(2) or '').strip())
-        if name and val: params.append((name, val))
+        if name and val:
+            params.append((name, val))
 
-    if not params: return block
+    if not params:
+        return block
+
+    # 2) Если блок «Характеристики» уже есть — добавляем только недостающие whitelisted ключи
     dm = _desc_ul_re.search(block)
-    if not dm: return block
+    if dm:
+        ul_head, ul_inner, ul_tail = dm.group(1), dm.group(2), dm.group(3)
 
-    ul_head, ul_inner, ul_tail = dm.group(1), dm.group(2), dm.group(3)
+        existing = set()
+        for km in _li_kv_re.finditer(ul_inner):
+            k = _canon_key(km.group(1))
+            if k:
+                existing.add(k)
 
-    existing = set()
-    for km in _li_kv_re.finditer(ul_inner):
-        k = _canon_key(km.group(1)); 
-        if k: existing.add(k)
+        add_items = []
+        for k, v in params:
+            ck = _canon_key(k)
+            if ck in _WL and ck not in existing:
+                vv = _ppX_re.sub(r'\s+', ' ', v).strip().rstrip(' :;.,')
+                if vv:
+                    add_items.append(f"<li><strong>{ck}:</strong> {vv}</li>")
+                    existing.add(ck)
 
-    add_items = []
+        if not add_items:
+            return block
+
+        indent = ""
+        m_ind = _ppX_re.search(r'(\n[ \t]*)</ul>', ul_inner)
+        if m_ind:
+            indent = m_ind.group(1)
+        addition = "".join((indent + itm) for itm in ("\n" + a for a in add_items))
+        new_ul_inner = ul_inner.rstrip() + addition + ("\n" if not ul_inner.endswith("\n") else "")
+        return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
+
+    # 3) Если блока ещё нет — СОЗДАЁМ его из whitelist <param>, не трогая остальной текст
+    wl_items = []
+    seen = set()
     for k, v in params:
         ck = _canon_key(k)
-        if ck in _WL and ck not in existing:
+        if ck in _WL and ck not in seen:
             vv = _ppX_re.sub(r'\s+', ' ', v).strip().rstrip(' :;.,')
             if vv:
-                add_items.append(f"<li><strong>{ck}:</strong> {vv}</li>")
-                existing.add(ck)
+                wl_items.append((ck, vv))
+                seen.add(ck)
 
-    if not add_items: return block
+    if not wl_items:
+        return block
 
-    indent = ""
-    m_ind = _ppX_re.search(r'(\n[ \t]*)</ul>', ul_inner)
-    if m_ind: indent = m_ind.group(1)
-    addition = "".join((indent + itm) for itm in ("\n" + a for a in add_items))
-    new_ul_inner = ul_inner.rstrip() + addition + ("\n" if not ul_inner.endswith("\n") else "")
-    return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
+    ul_html = "<h3>Характеристики</h3><ul>" + "".join(f"<li><strong>{ck}:</strong> {vv}</li>" for ck, vv in wl_items) + "</ul>"
+
+    # Вставка внутрь CDATA в <description>
+    desc_cdata_rx = _ppX_re.compile(r'(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)', _ppX_re.S|_ppX_re.I)
+    m_cd = desc_cdata_rx.search(block)
+    if m_cd:
+        head, content, tail = m_cd.group(1), m_cd.group(2), m_cd.group(3)
+        if _ppX_re.search(r'<h3>\s*Характеристики\s*</h3>', content, _ppX_re.I):
+            return block
+        new_content = content.rstrip() + ("\n" if not content.endswith("\n") else "") + ul_html
+        return block[:m_cd.start()] + head + new_content + tail + block[m_cd.end():]
+
+    # Обычный <description> без CDATA
+    desc_pair_rx = _ppX_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _ppX_re.S|_ppX_re.I)
+    m_dp = desc_pair_rx.search(block)
+    if m_dp:
+        head, content, tail = m_dp.group(1), m_dp.group(2), m_dp.group(3)
+        if _ppX_re.search(r'<h3>\s*Характеристики\s*</h3>', content, _ppX_re.I):
+            return block
+        new_content = content + ("" if content.endswith("\n") else "\n") + ul_html
+        return block[:m_dp.start()] + head + new_content + tail + block[m_dp.end():]
+
+    # Если <description> отсутствует — создаём с CDATA перед </offer>
+    if not _ppX_re.search(r'<description\b', block, _ppX_re.I):
+        addition_full = f'<description><![CDATA[{ul_html}]]></description>'
+        return _ppX_re.sub(r'</offer>\s*$', addition_full + '\n</offer>', block, count=1)
+
+    return block
 
 def _v34_then_v36() -> None:
     try:
@@ -1458,108 +1508,3 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
-
-
-# ========================= v36 OVERRIDE v2 (append params → «Характеристики» when missing; robust CDATA splice) =========================
-try:
-    import re as __re, html as __html
-
-    __WL = {
-        "Вес","Объём","Гарантия","Цвет","Размеры","Габариты (ШхГхВ)","Габариты",
-        "Тип печати","Кол-во страниц при 5% заполнении А4","Для принтеров","Совместимость",
-        "Тип ИБП","Мощность (Вт)","Ёмкость батареи","Время полной зарядки",
-        "Диапазон работы AVR","Выходная частота","Количество и тип выходных разъёмов",
-        "Интерфейс для связи с ПК","Форма выходного сигнала","Время переключения режимов",
-        "Рабочий диапазон температур","Рабочая влажность","Бесшумный режим","Автоматическое включение",
-        "Лицевая панель","Состав","EAN"
-    }
-
-    __offer_re = __re.compile(r'(?P<head><offer\b[^>]*\bid="[^"]+"[^>]*>)(?P<body>.*?)(?P<tail></offer>)', __re.S|__re.I)
-    __param_re_local = __re.compile(r'<param\s+name="([^"]+)">(.*?)</param>', __re.S|__re.I)
-    __desc_cdata_re = __re.compile(r'(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)', __re.S|__re.I)
-    __has_block_re = __re.compile(r'<h3>\s*Характеристики\s*</h3>\s*<ul>', __re.S|__re.I)
-
-    def __canon_key2(k: str) -> str:
-        s = (k or "").strip().rstrip(":")
-        low = s.lower().replace("ё","е")
-        if low in {"цвет"}: return "Цвет"
-        if low in {"вес"}: return "Вес"
-        if "габарит" in low: return "Габариты"
-        if low.startswith("совместим"): return "Совместимость"
-        if low.startswith("ресурс"): return "Ресурс"
-        if "мощн" in low: return "Мощность (Вт)"
-        if "емк" in low or "ёмк" in low: return "Ёмкость батареи"
-        if "интерфейс" in low: return "Интерфейс для связи с ПК"
-        if "разъем" in low or "разъём" in low: return "Количество и тип выходных разъёмов"
-        if "форма выходного сигнала" in low or "синус" in low: return "Форма выходного сигнала"
-        if "частота" in low: return "Выходная частота"
-        if "avr" in low: return "Диапазон работы AVR"
-        if "тип ибп" in low or ("тип" in low and "ибп" in low): return "Тип ИБП"
-        if "температур" in low: return "Рабочий диапазон температур"
-        if "влажност" in low: return "Рабочая влажность"
-        if "бесшум" in low: return "Бесшумный режим"
-        if "автоматическ" in low and "включ" in low: return "Автоматическое включение"
-        if "лицевая панел" in low: return "Лицевая панель"
-        if "состав" in low: return "Состав"
-        if low in {"ean","штрихкод","штрих-код"}: return "EAN"
-        return s[:1].upper() + s[1:] if s else s
-
-    def __norm_val2(k: str, v: str) -> str:
-        v2 = __re.sub(r'\s+', ' ', (v or '').strip())
-        v2 = v2.replace("Bт","Вт").replace("ватт","Вт")
-        v2 = v2.replace("WiFi","Wi-Fi")
-        v2 = __re.sub(r'\bUSB[ -]?C\b', 'USB-C', v2, flags=__re.I)
-        if k in {"Для принтеров","Совместимость"} and len(v2) > 250:
-            v2 = v2[:247].rstrip(",; ") + "..."
-        return v2
-
-    def __build_ul2(pairs):
-        tidy = {}
-        order = []
-        for k,v in pairs:
-            ck = __canon_key2(k)
-            if ck not in __WL: 
-                continue
-            vv = __norm_val2(ck, v)
-            if not vv: 
-                continue
-            if ck not in tidy:
-                tidy[ck] = []
-                order.append(ck)
-            if vv not in tidy[ck]:
-                tidy[ck].append(vv)
-        if not order: 
-            return ""
-        li = []
-        for ck in order:
-            vals = tidy.get(ck, [])
-            if not vals: continue
-            li.append(f"<li><strong>{__html.escape(ck, quote=False)}:</strong> {__html.escape('; '.join(vals), quote=False)}</li>")
-        if not li: return ""
-        return "<h3>Характеристики</h3><ul>" + "".join(li) + "</ul>"
-
-    def _enrich_params2desc(block: str) -> str:  # hard override (final)
-        # If block already has Характеристики — leave as is (no touching at all)
-        if __has_block_re.search(block):
-            return block
-        # Collect params
-        params = __param_re_local.findall(block)
-        if not params:
-            return block
-        # Build new UL
-        ul = __build_ul2(params)
-        if not ul:
-            return block
-        # Insert at end of CDATA in <description>
-        dm = __desc_cdata_re.search(block)
-        if not dm:
-            return block
-        head, html, tail = dm.group(1), dm.group(2), dm.group(3)
-        # Ensure newline before appending
-        joiner = "" if html.endswith("\n") else "\n"
-        new_html = html + joiner + ul
-        return block[:dm.start()] + head + new_html + tail + block[dm.end():]
-
-except Exception as __e2:
-    print("WARN v36 override v2:", __e2)
-# ========================= end v36 OVERRIDE v2 =========================
