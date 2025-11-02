@@ -1117,102 +1117,75 @@ if __name__ == "__main__":
 
 
 # =============================================================
-# v34 (PRETTY ONLY «Характеристики», tidy) + fixes
-# v36 (params → description, whitelist only)
-# Safe: touches only <description> and reads <param>; never writes <param>.
+# Post-Processor v34 (PRETTY ONLY «Характеристики») + fix "Безопасность и гарантия"
+# Then v36: safe enrichment from <param> -> <description> only
 # =============================================================
-import atexit as _ppY_ax
-import os as _ppY_os
-import re as _ppY_re
-import html as _ppY_html
-import xml.etree.ElementTree as _ppY_ET
+import atexit as _ppX_ax
+import os as _ppX_os
+import re as _ppX_re
+import html as _ppX_html
+import xml.etree.ElementTree as _ppX_ET
 
-def _ppY_cdata_safe(s: str) -> str:
+def _ppX_cdata_safe(s: str) -> str:
     return s.replace("]]>", "]]]]><![CDATA[>")
 
-def _ppY_make_encodable(text: str, enc: str) -> str:
+def _ppX_make_encodable(text: str, enc: str) -> str:
     try: return text.encode(enc, errors="ignore").decode(enc, errors="ignore")
     except Exception: return text
 
-def _ppY_extract_raw_desc(el: _ppY_ET.Element) -> str:
+def _ppX_extract_raw_desc(el: _ppX_ET.Element) -> str:
     parts = []
     if el.text: parts.append(el.text)
     for ch in el:
-        parts.append(_ppY_ET.tostring(ch, encoding="unicode", method="xml"))
+        parts.append(_ppX_ET.tostring(ch, encoding="unicode", method="xml"))
         if ch.tail: parts.append(ch.tail)
     return "".join(parts)
 
-def _ppY_drop_invis(t: str) -> str:
+def _ppX_drop_invis(t: str) -> str:
     if not t: return ""
-    t = _ppY_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)  # NBSP family -> space
-    t = _ppY_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)  # zero-width -> remove
+    t = _ppX_re.sub(r"[\u00A0\u202F\u2009\u200A\u2007]", " ", t)
+    t = _ppX_re.sub(r"[\u200B\u200C\u200D\u2060\uFEFF]", "", t)
     return t
 
-def _ppY_collapse_lines(t: str) -> str:
+def _ppX_collapse_lines(t: str) -> str:
     t = t.replace("\r\n", "\n").replace("\r", "\n")
-    t = _ppY_re.sub(r"[ \t]+\n", "\n", t)   # strip trailing spaces
-    t = _ppY_re.sub(r"\n{2,}", "\n", t)     # collapse blank lines
+    t = _ppX_re.sub(r"[ \t]+\n", "\n", t)
+    t = _ppX_re.sub(r"\n{2,}", "\n", t)
     return t.strip()
 
-# ---------------- number/text normalization with key context -----------------
-def _ppY_norm_units(v: str, key_hint: str = "") -> str:
-    s = v or ""
-    # Basic punctuation/typo fixes
+def _ppX_norm_punct(s: str) -> str:
+    if not s: return s
     s = s.replace("**", "")
-    s = _ppY_re.sub(r'(\d)\.(\d)', r'\1<DEC_DOT>\2', s)  # protect decimals 5.4
-    s = _ppY_re.sub(r"\bт\s*д\b\.?", "и т. д.", s, flags=_ppY_re.I)
-    s = _ppY_re.sub(r"\bт\s*п\b\.?", "и т. п.", s, flags=_ppY_re.I)
-    s = _ppY_re.sub(r"([,;:!?])(?![\s</])", r"\1 ", s)
-    s = _ppY_re.sub(r"[ \t]{2,}", " ", s)
+    s = _ppX_re.sub(r'(\d)\.(\d)', r'\1<DEC_DOT>\2', s)
+    s = _ppX_re.sub(r"\bт\s*д\b\.?", "и т. д.", s, flags=_ppX_re.I)
+    s = _ppX_re.sub(r"\bт\s*п\b\.?", "и т. п.", s, flags=_ppX_re.I)
+    s = _ppX_re.sub(r"([,;:!?])(?![\s</])", r"\1 ", s)
+    s = _ppX_re.sub(r"[ \t]{2,}", " ", s)
     s = s.replace("WiFi", "Wi-Fi")
-    s = _ppY_re.sub(r"\bUSB[ -]?C\b", "USB-C", s, flags=_ppY_re.I)
-    # EAN / barcode: keep digits only
-    if key_hint.lower() == "ean":
-        s = _ppY_re.sub(r"\D+", "", s)
-    # Ports: cut tail after alien subheads (Доп. возможности, ПО и т.п.)
-    if key_hint.lower() == "порты и интерфейсы":
-        cut_rx = _ppY_re.compile(r'(?:^|\s)(Дополнительн\w+\s+возможност\w+|Программ\w+\s+обеспеч\w+|Установленн\w+\s+ПО|ПО|Software|Smart\s+Auto)\b.*', _ppY_re.I)
-        s = cut_rx.sub("", s).strip(" ;.")
+    s = _ppX_re.sub(r"\bUSB[ -]?C\b", "USB-C", s, flags=_ppX_re.I)
+    s = s.replace("<DEC_DOT>", ".")
+    return s.strip()
 
-    # Display/Screen: normalize resolutions like 1920x1080, 1920 1080, 19201080 -> 1920×1080
-    def _fix_res(txt: str) -> str:
-        # x / × / * separators
-        txt = _ppY_re.sub(r'\b(\d{3,4})\s*[xX×*]\s*(\d{3,4})\b', r'\1×\2', txt)
-        # joined 7-8 digits: 19201080, 25601440 etc.
-        def _join_fix(m):
-            a, b = m.group(1), m.group(2)
-            return f"{a}×{b}"
-        joined = _ppY_re.compile(r'\b(1366|1600|1920|2000|2048|2160|2240|2304|2400|2560|2732|2880|2960|3000|3200|3440|3456|3840|4096|5120|5760|6016|6144|6400|6820|6880|6912|7680)(720|800|900|1024|1050|1080|1200|1440|1500|1600|1620|1800|2160|2400|2880|3000|3200|3240|4320)\b')
-        txt = joined.sub(_join_fix, txt)
-        return txt
-    if key_hint.lower() in {"дисплей","экран","разрешение"}:
-        s = _fix_res(s)
-
-    # Fix M.2 2 280 -> M.2 2280; normalize M.2 spacing
-    s = _ppY_re.sub(r'\bM\.?\s*2\s+2\s*280\b', 'M.2 2280', s, flags=_ppY_re.I)
-    s = _ppY_re.sub(r'\bM\.?\s*2\s*2280\b', 'M.2 2280', s, flags=_ppY_re.I)
-
-    # Avoid thousands spacing inside model/part codes; compress spaces around "–####"
-    sens_keys = {"модель","модель / part no","model","part no","part number","артикул"}
-    if key_hint.lower() in sens_keys:
-        s = _ppY_re.sub(r'([–-])\s*(\d{1,6})(?!\d)', r'\1\2', s)
-
-    # Thousands spacing only for plain numbers (not adjacent to letters, slash, dash)
+def _ppX_norm_units(v: str) -> str:
+    s = _ppX_norm_punct(v)
     def _fmt_ints(m):
-        num = _ppY_re.sub(r"\s+", "", m.group(1))
+        num = _ppX_re.sub(r"\s+", "", m.group(1))
         try:
             n = int(num); return f"{n:,}".replace(",", " ")
         except Exception:
             return m.group(1)
-    s = _ppY_re.sub(r'(?<![A-Za-zА-Яа-яЁё/\-])\b(\d{4,})\b(?![A-Za-zА-Яа-яЁё/\-])', _fmt_ints, s)
+    s = _ppX_re.sub(r"\b(\d{4,})\b", _fmt_ints, s)
+    def _fmt_pages(m):
+        num = _ppX_re.sub(r"\s+", "", m.group(1))
+        return f"{int(num):,}".replace(",", " ") + " стр." if num.isdigit() else m.group(0)
+    s = _ppX_re.sub(r"\b(\d{3,6})\s*(стр(?:аниц[аы])?)\b", _fmt_pages, s, flags=_ppX_re.I)
+    s = _ppX_re.sub(r"(?<=\d)-(?=\d)", "–", s)
+    return s.strip().rstrip(" :;.,")
 
-    s = s.replace("<DEC_DOT>", ".").strip().rstrip(" :;.,")
-    return s
-
-# -------- keys & parsing (with strict word boundaries to avoid "цветной") --------
-_Y_keys = [
+# ----- v34 patterns -----
+_X_keys = [
     "Модель","Модель / Part No","Model","Part No",
-    "Дисплей","Экран","Разрешение","Процессор","CPU",
+    "Дисплей","Экран","Процессор","CPU",
     "Видеокарта","Графика","GPU",
     "Оперативная память","ОЗУ","Память",
     "Накопитель","SSD","HDD","Хранилище","Макс. хранение",
@@ -1230,19 +1203,15 @@ _Y_keys = [
     "Поддержка форматов",
     "EAN","Артикул","Part Number"
 ]
-_Y_union = "|".join(sorted(set([_ppY_re.escape(k) for k in _Y_keys]), key=lambda s: -len(s)))
-# require non-word boundary around key to avoid partial matches like "цветной"
-_Y_kv_inline = _ppY_re.compile(rf'(?<!\w)(?P<k>{_Y_union})(?!\w)\s*[:：]\s*(?P<v>.*?)(?=(?<!\w)(?:{_Y_union})(?!\w)\s*[:：]|$)', _ppY_re.I|_ppY_re.S)
-# line-start variant
-_Y_keyline = _ppY_re.compile(
-    r'^\s*(?P<k>(?:Модель|Совместим\w* модели|Совместим\w*|Совместимост|Цвет|Ресурс(?: картриджа)?|Ё?мкост\w*|Объ[её]м|Гарант\w*|Вес|Размер\w*|Габарит\w*|Формат|Тип|Серия|Чип|Порты(?: и интерфейсы)?|Интерфейсы|Разъ[её]мы|Комплектац\w*|Содержимое комплекта|Срок службы|Поддержка формат\w*|Напряжение|Мощность|Частота|Аккумулятор|Ёмкость аккумулятора|Время автономной работы|Время зарядки|Дисплей|Экран|Разрешение|Процессор|Видеокарта|Графика|Оперативная память|ОЗУ|Накопитель|ОС|Питание|Батарея|Безопасность|Клавиатура|Веб-камера|Камера|Аудио|Звук|Размеры|Габариты|Поддержка форматов|Совместимые модели|Совместимость|Макс\. хранение|EAN|Артикул|Part Number))\b\s*(?:(?P<delim>[:：\-—])\s*|(?=(?P<val>.+)))$',
-    _ppY_re.I
-)
+_X_union = "|".join(sorted(set([_ppX_re.escape(k) for k in _X_keys]), key=lambda s: -len(s)))
+_X_kv_inline = _ppX_re.compile(rf'(?P<k>{_X_union})\s*[:：]\s*(?P<v>.*?)(?=(?:{_X_union})\s*[:：]|$)', _ppX_re.I|_ppX_re.S)
+_X_key_rx = _ppX_re.compile(r'^\s*(?P<k>(Модель|Совместим\w* модели|Совместим\w*|Совместимост|Цвет|Ресурс( картриджа)?|Ё?мкост\w*|Объ[её]м|Гарант\w*|Вес|Размер\w*|Габарит\w*|Формат|Тип|Серия|Чип|Порты|Интерфейсы|Разъ[её]мы|Комплектац\w*|Содержимое комплекта|Срок службы|Поддержка формат\w*|Напряжение|Мощность|Частота|Аккумулятор|Ёмкость аккумулятора|Время автономной работы|Время зарядки|Дисплей|Экран|Процессор|Видеокарта|Графика|Оперативная память|ОЗУ|Накопитель|ОС|Питание|Батарея|Безопасность|Клавиатура|Веб-камера|Камера|Аудио|Звук|Размеры|Габариты|Размер|Порты и интерфейсы|Порты и подключения|Поддержка форматов|Совместимые модели|Совместимость|Макс\. хранение|EAN|Артикул|Part Number))(?=$|[:：\s\-–—])\s*[:：]?\s*(?P<v>.+?)\s*$', _ppX_re.I)
 
-def _Y_split_hdr_only(raw: str):
+def _X_split_hdr_only(raw: str):
     if not raw: return [raw]
-    out, s = [], raw
-    rx = _ppY_re.compile(r'(?i)\b((?:\w+[ \t]+){0,3}?(?:техническ\w+[ \t]+)?(?:основн\w+[ \t]+|ключев\w+[ \t]+|главн\w+[ \t]+|важн\w+[ \t]+|кратк\w+[ \t]+)?характеристик\w+)\s*:\s*')
+    out = []
+    s = raw
+    rx = _ppX_re.compile(r'(?i)\b((?:\w+[ \t]+){0,3}?(?:техническ\w+[ \t]+)?(?:основн\w+[ \t]+|ключев\w+[ \t]+|главн\w+[ \t]+|важн\w+[ \t]+|кратк\w+[ \t]+)?характеристик\w+)\s*:\s*')
     while True:
         m = rx.search(s)
         if not m:
@@ -1256,53 +1225,67 @@ def _Y_split_hdr_only(raw: str):
         if not s: break
     return out
 
-def _Y_expand_inline(text: str):
+def _X_merge_split_heading(k: str, v: str):
+    m = _ppX_re.match(r'^\s*и\s+([A-Za-zА-Яа-яёЁ \-]+)\s*:\s*(.*)$', v or "", flags=_ppX_re.I)
+    if not m: return k, v
+    tail_key = m.group(1).strip()
+    rest = m.group(2).strip()
+    tail_key = tail_key[:1].upper() + tail_key[1:]
+    return f"{k} и {tail_key}", rest
+
+def _X_canon_key(k: str) -> str:
+    s = (k or "").strip().rstrip(":")
+    low = s.lower().replace("ё","е")
+    if low == "ос": return "ОС"
+    if low == "озу": return "ОЗУ"
+    if low in {"порты","интерфейсы","разъемы","разьмы","разъмы","порты и интерфейсы","разъемы и интерфейсы","интерфейсы и порты","порты и подключения"}:
+        return "Порты и интерфейсы"
+    if low.startswith("совместимост") or low in {"совместимые модели","совместимость"}:
+        return "Совместимость"
+    if low in {"размер","размеры","габариты"}:
+        return "Размеры"
+    if low.startswith("ресурс картриджа") or low == "ресурс":
+        return "Ресурс"
+    if low.startswith("гарант"):
+        return "Гарантия"
+    return s[:1].upper() + s[1:] if s else s
+
+def _X_expand_inline(text: str):
     res = []
-    for m in _Y_kv_inline.finditer(text):
+    for m in _X_kv_inline.finditer(text):
         k = m.group("k").strip().rstrip(":")
         v = m.group("v").strip().rstrip(" :;,.")
         if k and v: res.append(f"{k}: {v}")
     return res
 
-def _Y_parse_kv(lines):
+def _X_parse_kv(lines):
     kv = []
     for ln in lines:
         if not ln or not ln.strip(): continue
-        many = _Y_expand_inline(ln)
+        many = _X_expand_inline(ln)
         if many:
             for s in many:
-                m = _Y_keyline.match(s)
-                if m:
-                    k = m.group("k").strip()
-                    val = m.group("val") or s.split(":",1)[1] if ":" in s else ""
-                    if ":" in s:
-                        val = s.split(":",1)[1].strip()
-                    kv.append((k, val))
+                m = _X_key_rx.match(s)
+                if m: kv.append((m.group("k").strip(), m.group("v").strip()))
             continue
-        m = _Y_keyline.match(ln)
-        if m:
-            k = m.group("k").strip()
-            delim = m.group("delim")
-            val = m.group("val") or ""
-            if not delim and _ppY_re.match(r'(?i)^(ной|и|или|для)\b', val.strip()):
-                continue
-            kv.append((k, val.strip()))
+        m = _X_key_rx.match(ln)
+        if m: kv.append((m.group("k").strip(), m.group("v").strip()))
     return kv
 
-def _Y_post_pretty(xml_text: str, enc: str) -> str:
-    root = _ppY_ET.fromstring(xml_text)
+def _X_post_pretty(xml_text: str, enc: str) -> str:
+    root = _ppX_ET.fromstring(xml_text)
     offers = root.find("shop").find("offers") if root.find("shop") is not None else None
     if offers is None: return xml_text
     desc_map = {}
     for off in offers.findall("offer"):
         d = off.find("description")
         if d is None: continue
-        raw = _ppY_extract_raw_desc(d)
-        raw = _ppY_re.sub(r'(?i)<br\s*/?>', "\n", raw)
-        raw = _ppY_re.sub(r"</?(p|div|span|ul|ol|li|h[1-6])[^>]*>", "", raw)
-        t = _ppY_drop_invis(raw)
-        t = _ppY_collapse_lines(t)
-        t = _ppY_re.sub(r"^[ \t]+", "", t, flags=_ppY_re.M)
+        raw = _ppX_extract_raw_desc(d)
+        raw = _ppX_re.sub(r'(?i)<br\s*/?>', "\n", raw)
+        raw = _ppX_re.sub(r"</?(p|div|span|ul|ol|li|h[1-6])[^>]*>", "", raw)
+        t = _ppX_drop_invis(raw)
+        t = _ppX_collapse_lines(t)
+        t = _ppX_re.sub(r"^[ \t]+", "", t, flags=_ppX_re.M)
         lines = t.split("\n") if t else []
 
         intro_lines, char_lines = [], []
@@ -1312,7 +1295,7 @@ def _Y_post_pretty(xml_text: str, enc: str) -> str:
             if not s:
                 (intro_lines if cur=="intro" else char_lines).append("")
                 continue
-            tokens = _Y_split_hdr_only(s)
+            tokens = _X_split_hdr_only(s)
             for tok in tokens:
                 if not tok: continue
                 low = tok.lower().rstrip(":")
@@ -1322,51 +1305,32 @@ def _Y_post_pretty(xml_text: str, enc: str) -> str:
 
         parts = []
         if [x for x in intro_lines if x.strip()]:
-            raw_intro = "\n".join(_ppY_norm_units(x, key_hint="intro") for x in intro_lines if x and x.strip())
-            html_intro = _ppY_html.escape(raw_intro, quote=False).replace("\n", "<br>")
-            html_intro = _ppY_re.sub(r"(<br>)[ \t]+", r"\1", html_intro)
+            raw_intro = "\n".join(_ppX_norm_punct(x) for x in intro_lines if x and x.strip())
+            html_intro = _ppX_html.escape(raw_intro, quote=False).replace("\n", "<br>")
+            html_intro = _ppX_re.sub(r"(<br>)[ \t]+", r"\1", html_intro)
             parts.append(f"<p>{html_intro}</p>")
 
-        raw_pairs = _Y_parse_kv(char_lines)
+        raw_pairs = _X_parse_kv(char_lines)
 
-        # Merge '... Безопасность и' + next 'Гарантия'
-        merged, i = [], 0
+        # fix '... Безопасность и' + next 'Гарантия'
+        merged = []
+        i = 0
         while i < len(raw_pairs):
             k, v = raw_pairs[i]
-            if v and _ppY_re.search(r'\bБезопасност\w*\s+и\s*$', v, flags=_ppY_re.I) and i+1 < len(raw_pairs):
+            if v and _ppX_re.search(r'\bБезопасност\w*\s+и\s*$', v, flags=_ppX_re.I) and i+1 < len(raw_pairs):
                 k2, v2 = raw_pairs[i+1]
-                if k2.strip().lower().startswith("гарант"):
-                    v_clean = _ppY_re.sub(r'\s*Безопасност\w*\s+и\s*$', '', v, flags=_ppY_re.I).strip()
+                if _X_canon_key(k2).lower() == "гарантия":
+                    v_clean = _ppX_re.sub(r'\s*Безопасност\w*\s+и\s*$', '', v, flags=_ppX_re.I).strip()
                     if v_clean: merged.append((k, v_clean))
                     merged.append(("Безопасность и гарантия", v2)); i += 2; continue
             merged.append((k, v)); i += 1
         raw_pairs = merged
 
-        def _canon_key(k: str) -> str:
-            s = (k or "").strip().rstrip(":"); low = s.lower().replace("ё","е")
-            if low == "ос": return "ОС"
-            if low == "озу": return "ОЗУ"
-            if low in {"порты","интерфейсы","разъемы","разьмы","разъмы","порты и интерфейсы","разъемы и интерфейсы","интерфейсы и порты","порты и подключения"}:
-                return "Порты и интерфейсы"
-            if low.startswith("совместимост") or low in {"совместимые модели","совместимость"}:
-                return "Совместимость"
-            if low in {"размер","размеры","габариты"}:
-                return "Размеры"
-            if low.startswith("ресурс картриджа") or low == "ресурс":
-                return "Ресурс"
-            if low.startswith("гарант"):
-                return "Гарантия"
-            return s[:1].upper() + s[1:] if s else s
-
         tidy, order = {}, []
         for k, v in raw_pairs:
-            m = _ppY_re.match(r'^\s*и\s+([A-Za-zА-Яа-яёЁ \-]+)\s*:\s*(.*)$', v or "", flags=_ppY_re.I)
-            if m:
-                v = m.group(2).strip()
-            ck = _canon_key(k)
-            vv = _ppY_norm_units(v, key_hint=ck)
-            if ck.lower() == "ресурс" and not _ppY_re.search(r'\d', vv or ""):
-                continue
+            k, v = _X_merge_split_heading(k, v)
+            ck = _X_canon_key(k)
+            vv = _ppX_norm_units(v)
             if not ck: continue
             if ck not in tidy: tidy[ck] = []; order.append(ck)
             if vv and vv not in tidy[ck]: tidy[ck].append(vv)
@@ -1377,38 +1341,39 @@ def _Y_post_pretty(xml_text: str, enc: str) -> str:
             for ck in order:
                 vals = tidy.get(ck, [])
                 if not vals: continue
-                parts.append(f"<li><strong>{_ppY_html.escape(ck, False)}:</strong> {_ppY_html.escape('; '.join(vals), False)}</li>")
+                parts.append(f"<li><strong>{_ppX_html.escape(ck, False)}:</strong> {_ppX_html.escape('; '.join(vals), False)}</li>")
             parts.append("</ul>")
 
         html = "".join(parts).strip()
         if not html and t:
-            fb = _ppY_html.escape(_ppY_norm_units(t, key_hint="intro"), quote=False).replace("\n","<br>")
-            fb = _ppY_re.sub(r"(<br>)[ \t]+", r"\1", fb)
+            fb = _ppX_html.escape(_ppX_norm_punct(t), quote=False).replace("\n","<br>")
+            fb = _ppX_re.sub(r"(<br>)[ \t]+", r"\1", fb)
             html = f"<p>{fb}</p>"
 
-        html = _ppY_make_encodable(html, enc)
-        desc_map[off.get("id") or ""] = "<![CDATA[" + _ppY_cdata_safe(html) + "]]>"
+        html = _ppX_make_encodable(html, enc)
+        desc_map[off.get("id") or ""] = "<![CDATA[" + _ppX_cdata_safe(html) + "]]>"
 
-    _offer_re = _ppY_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _ppY_re.S|_ppY_re.I)
-    _desc_pair = _ppY_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _ppY_re.S|_ppY_re.I)
-    _desc_self = _ppY_re.compile(r'<description\b[^>]*/\s*>', _ppY_re.I)
+    # inject
+    _offer_re = _ppX_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>.*?</offer>', _ppX_re.S|_ppX_re.I)
+    _desc_pair = _ppX_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _ppX_re.S|_ppX_re.I)
+    _desc_self = _ppX_re.compile(r'<description\b[^>]*/\s*>', _ppX_re.I)
     def _repl(m):
         oid = m.group(1); block = m.group(0)
         cdata = desc_map.get(oid)
         if not cdata: return block
         if _desc_pair.search(block):
-            return _ppY_re.sub(_desc_pair, lambda mm: mm.group(1)+cdata+mm.group(3), block, count=1)
+            return _ppX_re.sub(_desc_pair, lambda mm: mm.group(1)+cdata+mm.group(3), block, count=1)
         return _desc_self.sub("<description>"+cdata+"</description>", block, count=1)
     return _offer_re.sub(_repl, xml_text)
 
 # ---------- v36: params → description (whitelist) ----------
 _WL = {"Цвет","Вес","Размеры","Совместимость","Ресурс","EAN"}
-_desc_ul_re = _ppY_re.compile(r'(<h3>\s*Характеристики\s*</h3>\s*<ul>)(.*?)(</ul>)', _ppY_re.S|_ppY_re.I)
-_li_kv_re = _ppY_re.compile(r'<li>\s*<strong>\s*([^<:]+?)\s*:\s*</strong>\s*(.*?)\s*</li>', _ppY_re.S)
-_offer_re = _ppY_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>(?P<body>.*?)</offer>', _ppY_re.S|_ppY_re.I)
-_param_re = _ppY_re.compile(r'<param\s+name="([^"]+)"\s*>(.*?)</param>', _ppY_re.S)
+_desc_ul_re = _ppX_re.compile(r'(<h3>\s*Характеристики\s*</h3>\s*<ul>)(.*?)(</ul>)', _ppX_re.S|_ppX_re.I)
+_li_kv_re = _ppX_re.compile(r'<li>\s*<strong>\s*([^<:]+?)\s*:\s*</strong>\s*(.*?)\s*</li>', _ppX_re.S)
+_offer_re = _ppX_re.compile(r'<offer\b[^>]*\bid="([^"]+)"[^>]*>(?P<body>.*?)</offer>', _ppX_re.S|_ppX_re.I)
+_param_re = _ppX_re.compile(r'<param\s+name="([^"]+)"\s*>(.*?)</param>', _ppX_re.S)
 
-def _canon_key_v36(k: str) -> str:
+def _canon_key(k: str) -> str:
     s = (k or "").strip().rstrip(":")
     low = s.lower().replace("ё","е")
     if low in {"цвет"}: return "Цвет"
@@ -1422,8 +1387,8 @@ def _canon_key_v36(k: str) -> str:
 def _enrich_params2desc(block: str) -> str:
     params = []
     for m in _param_re.finditer(block):
-        name = _canon_key_v36(_ppY_re.sub(r'\s+', ' ', m.group(1)))
-        val = _ppY_re.sub(r'\s+', ' ', (m.group(2) or '').strip())
+        name = _canon_key(_ppX_re.sub(r'\s+', ' ', m.group(1)))
+        val = _ppX_re.sub(r'\s+', ' ', (m.group(2) or '').strip())
         if name and val: params.append((name, val))
 
     if not params: return block
@@ -1434,16 +1399,14 @@ def _enrich_params2desc(block: str) -> str:
 
     existing = set()
     for km in _li_kv_re.finditer(ul_inner):
-        k = _canon_key_v36(km.group(1)); 
+        k = _canon_key(km.group(1)); 
         if k: existing.add(k)
 
     add_items = []
     for k, v in params:
-        ck = _canon_key_v36(k)
+        ck = _canon_key(k)
         if ck in _WL and ck not in existing:
-            vv = _ppY_re.sub(r'\s+', ' ', v).strip().rstrip(' :;.,')
-            if ck == "EAN":
-                vv = _ppY_re.sub(r'\D+', '', vv)
+            vv = _ppX_re.sub(r'\s+', ' ', v).strip().rstrip(' :;.,')
             if vv:
                 add_items.append(f"<li><strong>{ck}:</strong> {vv}</li>")
                 existing.add(ck)
@@ -1451,7 +1414,7 @@ def _enrich_params2desc(block: str) -> str:
     if not add_items: return block
 
     indent = ""
-    m_ind = _ppY_re.search(r'(\n[ \t]*)</ul>', ul_inner)
+    m_ind = _ppX_re.search(r'(\n[ \t]*)</ul>', ul_inner)
     if m_ind: indent = m_ind.group(1)
     addition = "".join((indent + itm) for itm in ("\n" + a for a in add_items))
     new_ul_inner = ul_inner.rstrip() + addition + ("\n" if not ul_inner.endswith("\n") else "")
@@ -1465,20 +1428,22 @@ def _v34_then_v36() -> None:
         try: xml = data.decode(_enc)
         except Exception: xml = data.decode("utf-8", errors="replace")
 
-        xml2 = _Y_post_pretty(xml, _enc)   # v34 improved
+        # v34 first
+        xml2 = _X_post_pretty(xml, _enc)
+        # v36 afterwards
         def _repl_off(m):
             body = m.group('body'); body2 = _enrich_params2desc(body)
             return m.group(0) if body2 == body else m.group(0).replace(body, body2, 1)
-        xml3 = _offer_re.sub(_repl_off, xml2)  # v36
+        xml3 = _offer_re.sub(_repl_off, xml2)
 
         if xml3 != xml:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
                 f.write(xml3 if xml3.endswith("\n") else xml3 + "\n")
-            print("v34 + v36 SAFE+: updated.")
+            print("v34 + v36: updated (<param> → «Характеристики»).")
         else:
-            print("v34 + v36 SAFE+: no changes.")
+            print("v34 + v36: no changes.")
     except Exception as e:
-        print("WARN v34+v36 SAFE+:", e)
+        print("WARN v34+v36:", e)
 
 # Unregister any previous postprocessors to avoid double-run
 for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess","_pp2_postprocess","_pp3_postprocess","_pp4_postprocess",
@@ -1486,10 +1451,10 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
     try:
         fn = globals().get(_name)
         if fn:
-            try: _ppY_ax.unregister(fn)
+            try: _ppX_ax.unregister(fn)
             except Exception: pass
     except Exception:
         pass
 
-_ppY_ax.register(_v34_then_v36)
-# ========================= end v34+v36 SAFE+ =========================
+_ppX_ax.register(_v34_then_v36)
+# ========================= end v34+v36 =========================
