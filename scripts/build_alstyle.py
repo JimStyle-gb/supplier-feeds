@@ -1460,11 +1460,12 @@ _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
 
-# ========================= v36 OVERRIDE (params → «Характеристики» only when block is missing) =========================
+# ========================= v36 OVERRIDE v2 (append params → «Характеристики» when missing; robust CDATA splice) =========================
 try:
-    # Extended whitelist for safe enrichment
-    _WL = {
-        "Вес","Объём","Гарантия","Цвет","Размеры","Габариты",
+    import re as __re, html as __html
+
+    __WL = {
+        "Вес","Объём","Гарантия","Цвет","Размеры","Габариты (ШхГхВ)","Габариты",
         "Тип печати","Кол-во страниц при 5% заполнении А4","Для принтеров","Совместимость",
         "Тип ИБП","Мощность (Вт)","Ёмкость батареи","Время полной зарядки",
         "Диапазон работы AVR","Выходная частота","Количество и тип выходных разъёмов",
@@ -1473,22 +1474,23 @@ try:
         "Лицевая панель","Состав","EAN"
     }
 
-    # Detect description HTML inside offer
-    _desc_html_re = _ppX_re.compile(r'(<description\\b[^>]*><!\\[CDATA\\[)(.*?)(\\]\\]></description>)', _ppX_re.S|_ppX_re.I)
+    __offer_re = __re.compile(r'(?P<head><offer\b[^>]*\bid="[^"]+"[^>]*>)(?P<body>.*?)(?P<tail></offer>)', __re.S|__re.I)
+    __param_re_local = __re.compile(r'<param\s+name="([^"]+)">(.*?)</param>', __re.S|__re.I)
+    __desc_cdata_re = __re.compile(r'(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)', __re.S|__re.I)
+    __has_block_re = __re.compile(r'<h3>\s*Характеристики\s*</h3>\s*<ul>', __re.S|__re.I)
 
-    def _canon_key_override(k: str) -> str:
+    def __canon_key2(k: str) -> str:
         s = (k or "").strip().rstrip(":")
         low = s.lower().replace("ё","е")
         if low in {"цвет"}: return "Цвет"
         if low in {"вес"}: return "Вес"
-        if low in {"размер","размеры","габариты"}: return "Размеры"
+        if "габарит" in low: return "Габариты"
         if low.startswith("совместим"): return "Совместимость"
         if low.startswith("ресурс"): return "Ресурс"
-        if "мощн" in low and ("вт" in low or "w" in low): return "Мощность (Вт)"
-        if "емк" in low and ("ач" in low or "aч" in low or "ah" in low): return "Ёмкость батареи"
-        if "время полной зарядки" in low or "заряд" in low and "время" in low: return "Время полной зарядки"
+        if "мощн" in low: return "Мощность (Вт)"
+        if "емк" in low or "ёмк" in low: return "Ёмкость батареи"
         if "интерфейс" in low: return "Интерфейс для связи с ПК"
-        if "разъем" in low or "разъём" in low or "выходн" in low and ("schuko" in low or "usb" in low): return "Количество и тип выходных разъёмов"
+        if "разъем" in low or "разъём" in low: return "Количество и тип выходных разъёмов"
         if "форма выходного сигнала" in low or "синус" in low: return "Форма выходного сигнала"
         if "частота" in low: return "Выходная частота"
         if "avr" in low: return "Диапазон работы AVR"
@@ -1502,99 +1504,62 @@ try:
         if low in {"ean","штрихкод","штрих-код"}: return "EAN"
         return s[:1].upper() + s[1:] if s else s
 
-    def _normalize_value_override(k: str, v: str) -> str:
-        # Collapse spaces and fix units
-        v2 = _ppX_re.sub(r"\\s+", " ", (v or "").strip())
-        v2 = v2.replace("Bт", "Вт").replace("ватт", "Вт")
-        v2 = v2.replace("WiFi", "Wi-Fi")
-        v2 = _ppX_re.sub(r"\\bUSB[ -]?C\\b", "USB-C", v2, flags=_ppX_re.I)
-        v2 = v2.replace("Schuko", "Schuko")
-        # Truncate long lists for printers
+    def __norm_val2(k: str, v: str) -> str:
+        v2 = __re.sub(r'\s+', ' ', (v or '').strip())
+        v2 = v2.replace("Bт","Вт").replace("ватт","Вт")
+        v2 = v2.replace("WiFi","Wi-Fi")
+        v2 = __re.sub(r'\bUSB[ -]?C\b', 'USB-C', v2, flags=__re.I)
         if k in {"Для принтеров","Совместимость"} and len(v2) > 250:
             v2 = v2[:247].rstrip(",; ") + "..."
         return v2
 
-    def _build_block_from_params(params: list[tuple[str,str]]) -> str:
-        # Filter to whitelist + normalize + deduplicate order-preserving
+    def __build_ul2(pairs):
         tidy = {}
         order = []
-        for name, val in params:
-            ck = _canon_key_override(name)
-            if ck not in _WL: 
+        for k,v in pairs:
+            ck = __canon_key2(k)
+            if ck not in __WL: 
                 continue
-            vv = _normalize_value_override(ck, val)
-            if not vv:
+            vv = __norm_val2(ck, v)
+            if not vv: 
                 continue
             if ck not in tidy:
                 tidy[ck] = []
                 order.append(ck)
             if vv not in tidy[ck]:
                 tidy[ck].append(vv)
-        if not order:
+        if not order: 
             return ""
-        # Render UL
         li = []
         for ck in order:
             vals = tidy.get(ck, [])
-            if not vals:
-                continue
-            li.append(f"<li><strong>{_ppX_html.escape(ck, False)}:</strong> {_ppX_html.escape('; '.join(vals), False)}</li>")
-        if not li:
-            return ""
+            if not vals: continue
+            li.append(f"<li><strong>{__html.escape(ck, quote=False)}:</strong> {__html.escape('; '.join(vals), quote=False)}</li>")
+        if not li: return ""
         return "<h3>Характеристики</h3><ul>" + "".join(li) + "</ul>"
 
-    def _enrich_params2desc(block: str) -> str:  # override
-        # 1) Collect params from this offer
-        params = []
-        for m in _param_re.finditer(block):
-            name = _ppX_re.sub(r'\\s+', ' ', m.group(1))
-            val = (m.group(2) or '').strip()
-            if name and val:
-                params.append((name, val))
-
+    def _enrich_params2desc(block: str) -> str:  # hard override (final)
+        # If block already has Характеристики — leave as is (no touching at all)
+        if __has_block_re.search(block):
+            return block
+        # Collect params
+        params = __param_re_local.findall(block)
         if not params:
             return block
-
-        # 2) If block exists → keep original behavior (add missing whitelist keys)
-        dm = _desc_ul_re.search(block)
-        if dm:
-            ul_head, ul_inner, ul_tail = dm.group(1), dm.group(2), dm.group(3)
-            existing = set()
-            for km in _li_kv_re.finditer(ul_inner):
-                k = _canon_key_override(km.group(1))
-                if k: existing.add(k)
-            add_items = []
-            for k, v in params:
-                ck = _canon_key_override(k)
-                if ck in _WL and ck not in existing:
-                    vv = _normalize_value_override(ck, v)
-                    if vv:
-                        add_items.append(f'<li><strong>{_ppX_html.escape(ck, False)}:</strong> {_ppX_html.escape(vv, False)}</li>')
-                        existing.add(ck)
-            if not add_items:
-                return block
-            indent = ""
-            m_ind = _ppX_re.search(r'(\\n[ \\t]*)</ul>', ul_inner)
-            if m_ind: indent = m_ind.group(1)
-            addition = "".join((indent + itm) for itm in ("\\n" + a for a in add_items))
-            new_ul_inner = ul_inner.rstrip() + addition + ("\\n" if not ul_inner.endswith("\\n") else "")
-            return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
-
-        # 3) No block → create one at the end of description HTML
-        dh = _desc_html_re.search(block)
-        if not dh:
-            return block  # safety
-        head, html, tail = dh.group(1), dh.group(2), dh.group(3)
-        new_ul = _build_block_from_params(params)
-        if not new_ul:
+        # Build new UL
+        ul = __build_ul2(params)
+        if not ul:
             return block
-        # Ensure newline before insertion if not present
-        if not html.endswith("\n"):
-            html2 = html + "\n" + new_ul
-        else:
-            html2 = html + new_ul
-        return block[:dh.start()] + head + html2 + tail + block[dh.end():]
+        # Insert at end of CDATA in <description>
+        dm = __desc_cdata_re.search(block)
+        if not dm:
+            return block
+        head, html, tail = dm.group(1), dm.group(2), dm.group(3)
+        # Ensure newline before appending
+        joiner = "" if html.endswith("\n") else "\n"
+        new_html = html + joiner + ul
+        return block[:dm.start()] + head + new_html + tail + block[dm.end():]
 
-except Exception as _ovr_e:
-    print("WARN v36 override:", _ovr_e)
-# ========================= end v36 OVERRIDE =========================
+except Exception as __e2:
+    print("WARN v36 override v2:", __e2)
+# ========================= end v36 OVERRIDE v2 =========================
