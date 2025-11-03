@@ -1459,7 +1459,7 @@ def _enrich_params2desc(block: str) -> str:
         if "клавиатур" in low: return "Клавиатура"
         if "веб-камер" in low or "камера" in low: return "Веб-камера"
         if "аудио" in low or "динамик" in low: return "Аудио"
-        if "батаре" in low или "аккумулят" in low: return "Батарея"
+        if "батаре" in low or "аккумулят" in low: return "Батарея"
         if "порт" in low: return "Порты и интерфейсы"
         return k[:1].upper() + k[1:]
 
