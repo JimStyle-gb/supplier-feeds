@@ -1385,88 +1385,179 @@ def _canon_key(k: str) -> str:
     return s[:1].upper() + s[1:] if s else s
 
 def _enrich_params2desc(block: str) -> str:
-    # 1) Собираем пары из <param name="...">value</param>
+    """
+    Обогащает описание из <param>:
+    - Если блок <h3>Характеристики</h3><ul> уже есть — добавляет недостающие КЛЮЧИ из <param> (без дублей по ключам).
+    - Если блока нет — создаёт новый блок из <param> и вставляет в конец <description> (внутрь CDATA, если есть).
+    Никакой другой текст описания не меняется.
+    """
+    WL = {
+        "Модель","Совместимость","Для принтеров","Тип печати","Ресурс","Кол-во страниц при 5% заполнении А4",
+        "Цвет","Вес","Габариты (ШхГхВ)","Габариты","Объём","Гарантия","EAN",
+        "Тип ИБП","Мощность (Вт)","Ёмкость батареи","Диапазон работы AVR","Время полной зарядки",
+        "Время переключения режимов","Длина кабеля","Форма выходного сигнала","Выходная частота",
+        "Количество и тип выходных разъёмов","Интерфейс для связи с ПК","Лицевая панель",
+        "Защита телефонной линии","Рабочий диапазон температур","Рабочая влажность",
+        "Бесшумный режим","Автоматическое включение","Состав",
+        "Процессор","Графика","Видеокарта","Экран","Дисплей","Оперативная память","ОЗУ","Накопитель","ОС",
+        "Клавиатура","Веб-камера","Аудио","Батарея","Порты и интерфейсы","Порты","Порты и подключения",
+    }
+
+    def canon_key_local(k: str) -> str:
+        k = (k or "").strip().rstrip(":")
+        if not k: return k
+        low = k.lower().replace("ё","е")
+        repl = {
+            "мощность (bт)": "Мощность (Вт)",
+            "мощность (вт)": "Мощность (Вт)",
+            "габариты (шxгxв)": "Габариты (ШхГхВ)",
+            "габариты (шхгхв)": "Габариты (ШхГхВ)",
+            "порты и подключения": "Порты и интерфейсы",
+            "порты и интерфейсы": "Порты и интерфейсы",
+            "порты": "Порты и интерфейсы",
+            "оперативная память": "ОЗУ",
+            "видеокарта": "Графика",
+        }
+        if low in repl:
+            return repl[low]
+        if low.startswith("совместим"): return "Совместимость"
+        if low.startswith("для принтеров"): return "Для принтеров"
+        if low.startswith("тип печати"): return "Тип печати"
+        if low.startswith("ресурс"): return "Ресурс"
+        if low.startswith("кол-во страниц"): return "Кол-во страниц при 5% заполнении А4"
+        if low in {"цвет"}: return "Цвет"
+        if low in {"вес"}: return "Вес"
+        if "габарит" in low: return "Габариты (ШхГхВ)"
+        if low in {"объем","объём"}: return "Объём"
+        if low in {"ean","штрихкод","штрих-код"}: return "EAN"
+        if "тип ибп" in low or ("тип" in low and "ибп" in low): return "Тип ИБП"
+        if "емк" in low or "ёмк" in low: return "Ёмкость батареи"
+        if "авr" in low or "avr" in low: return "Диапазон работы AVR"
+        if "время полной зарядки" in low: return "Время полной зарядки"
+        if "время переключения" in low: return "Время переключения режимов"
+        if "длина кабел" in low: return "Длина кабеля"
+        if "форма выходного сигнала" in low or "синус" in low: return "Форма выходного сигнала"
+        if "частот" in low: return "Выходная частота"
+        if ("разъем" in low or "разъём" in low) and ("выходн" in low or "тип" in low):
+            return "Количество и тип выходных разъёмов"
+        if "интерфейс" in low and "пк" in low:
+            return "Интерфейс для связи с ПК"
+        if "лицевая панел" in low: return "Лицевая панель"
+        if "защита телефонной" in low: return "Защита телефонной линии"
+        if "температур" in low and ("диапазон" in low or "рабоч" in low):
+            return "Рабочий диапазон температур"
+        if "влажност" in low: return "Рабочая влажность"
+        if "бесшум" in low: return "Бесшумный режим"
+        if "автоматическ" in low and "включ" in low: return "Автоматическое включение"
+        if "состав" in low: return "Состав"
+        if "процессор" in low: return "Процессор"
+        if "видеокарт" in low or "график" in low: return "Графика"
+        if "экран" in low or "диспле" in low: return "Дисплей"
+        if "оперативн" in low or "озу" in low: return "ОЗУ"
+        if "накопител" in low or "ssd" in low or "hdd" in low: return "Накопитель"
+        if low in {"ос","oс","o.s"} or "операционн" in low: return "ОС"
+        if "клавиатур" in low: return "Клавиатура"
+        if "веб-камер" in low or "камера" in low: return "Веб-камера"
+        if "аудио" in low or "динамик" in low: return "Аудио"
+        if "батаре" in low или "аккумулят" in low: return "Батарея"
+        if "порт" in low: return "Порты и интерфейсы"
+        return k[:1].upper() + k[1:]
+
+    def norm_val(k: str, v: str) -> str:
+        v2 = _ppX_re.sub(r"\s+", " ", (v or "").strip())
+        v2 = (v2.replace("Bт", "Вт").replace("ватт", "Вт").replace("WiFi", "Wi-Fi"))
+        v2 = _ppX_re.sub(r"\bUSB[ -]?C\b", "USB-C", v2)
+        if k in {"Для принтеров","Совместимость"} and len(v2) > 300:
+            v2 = v2[:297].rstrip(",; ") + "..."
+        return v2
+
+    # Собираем пары из <param>
     params = []
     for m in _param_re.finditer(block):
-        name = _canon_key(_ppX_re.sub(r'\s+', ' ', m.group(1)))
-        val = _ppX_re.sub(r'\s+', ' ', (m.group(2) or '').strip())
-        if name and val:
-            params.append((name, val))
+        raw_k = _ppX_re.sub(r"\s+", " ", (m.group(1) or "").strip())
+        raw_v = _ppX_re.sub(r"\s+", " ", (m.group(2) or "").strip())
+        if not raw_k or not raw_v:
+            continue
+        try:
+            ck = _canon_key(raw_k)
+        except Exception:
+            ck = raw_k
+        ck = canon_key_local(ck)
+        cv = norm_val(ck, raw_v)
+        if ck and cv:
+            params.append((ck, cv))
 
     if not params:
         return block
 
-    # 2) Если блок «Характеристики» уже есть — добавляем только недостающие whitelisted ключи
-    dm = _desc_ul_re.search(block)
-    if dm:
-        ul_head, ul_inner, ul_tail = dm.group(1), dm.group(2), dm.group(3)
+    # Отбираем по whitelist
+    wl_items = []
+    seen = set()
+    for k, v in params:
+        if k not in WL: 
+            continue
+        if k in seen:
+            continue
+        seen.add(k)
+        wl_items.append((k, v))
 
+    if not wl_items:
+        return block
+
+    dm = _desc_ul_re.search(block)
+
+    if dm:
+        # есть блок — дополняем недостающие ключи
+        ul_head, ul_inner, ul_tail = dm.group(1), dm.group(2), dm.group(3)
         existing = set()
         for km in _li_kv_re.finditer(ul_inner):
-            k = _canon_key(km.group(1))
-            if k:
-                existing.add(k)
-
+            k0 = km.group(1)
+            try:
+                k0 = _canon_key(k0)
+            except Exception:
+                pass
+            k0 = canon_key_local(k0)
+            if k0:
+                existing.add(k0)
         add_items = []
-        for k, v in params:
-            ck = _canon_key(k)
-            if ck in _WL and ck not in existing:
-                vv = _ppX_re.sub(r'\s+', ' ', v).strip().rstrip(' :;.,')
-                if vv:
-                    add_items.append(f"<li><strong>{ck}:</strong> {vv}</li>")
-                    existing.add(ck)
-
+        for k, v in wl_items:
+            if k in existing:
+                continue
+            add_items.append(f"<li><strong>{k}:</strong> {v}</li>")
+            existing.add(k)
         if not add_items:
             return block
-
         indent = ""
-        m_ind = _ppX_re.search(r'(\n[ \t]*)</ul>', ul_inner)
+        m_ind = _ppX_re.search(r"(\n[ \t]*)</ul>", ul_inner)
         if m_ind:
             indent = m_ind.group(1)
         addition = "".join((indent + itm) for itm in ("\n" + a for a in add_items))
         new_ul_inner = ul_inner.rstrip() + addition + ("\n" if not ul_inner.endswith("\n") else "")
         return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
 
-    # 3) Если блока ещё нет — СОЗДАЁМ его из whitelist <param>, не трогая остальной текст
-    wl_items = []
-    seen = set()
-    for k, v in params:
-        ck = _canon_key(k)
-        if ck in _WL and ck not in seen:
-            vv = _ppX_re.sub(r'\s+', ' ', v).strip().rstrip(' :;.,')
-            if vv:
-                wl_items.append((ck, vv))
-                seen.add(ck)
-
-    if not wl_items:
-        return block
-
-    ul_html = "<h3>Характеристики</h3><ul>" + "".join(f"<li><strong>{ck}:</strong> {vv}</li>" for ck, vv in wl_items) + "</ul>"
-
-    # Вставка внутрь CDATA в <description>
-    desc_cdata_rx = _ppX_re.compile(r'(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)', _ppX_re.S|_ppX_re.I)
+    # блока нет — создаём
+    ul_html = "<h3>Характеристики</h3><ul>" + "".join(f"<li><strong>{k}:</strong> {v}</li>" for k, v in wl_items) + "</ul>"
+    desc_cdata_rx = _ppX_re.compile(r"(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)", _ppX_re.S|_ppX_re.I)
     m_cd = desc_cdata_rx.search(block)
     if m_cd:
         head, content, tail = m_cd.group(1), m_cd.group(2), m_cd.group(3)
-        if _ppX_re.search(r'<h3>\s*Характеристики\s*</h3>', content, _ppX_re.I):
+        if _ppX_re.search(r"<h3>\s*Характеристики\s*</h3>", content, _ppX_re.I):
             return block
         new_content = content.rstrip() + ("\n" if not content.endswith("\n") else "") + ul_html
         return block[:m_cd.start()] + head + new_content + tail + block[m_cd.end():]
 
-    # Обычный <description> без CDATA
-    desc_pair_rx = _ppX_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _ppX_re.S|_ppX_re.I)
+    desc_pair_rx = _ppX_re.compile(r"(<description\b[^>]*>)(.*?)(</description>)", _ppX_re.S|_ppX_re.I)
     m_dp = desc_pair_rx.search(block)
     if m_dp:
         head, content, tail = m_dp.group(1), m_dp.group(2), m_dp.group(3)
-        if _ppX_re.search(r'<h3>\s*Характеристики\s*</h3>', content, _ppX_re.I):
+        if _ppX_re.search(r"<h3>\s*Характеристики\s*</h3>", content, _ppX_re.I):
             return block
         new_content = content + ("" if content.endswith("\n") else "\n") + ul_html
         return block[:m_dp.start()] + head + new_content + tail + block[m_dp.end():]
 
-    # Если <description> отсутствует — создаём с CDATA перед </offer>
-    if not _ppX_re.search(r'<description\b', block, _ppX_re.I):
-        addition_full = f'<description><![CDATA[{ul_html}]]></description>'
-        return _ppX_re.sub(r'</offer>\s*$', addition_full + '\n</offer>', block, count=1)
+    if not _ppX_re.search(r"<description\b", block, _ppX_re.I):
+        addition_full = f"<description><![CDATA[{ul_html}]]></description>"
+        return _ppX_re.sub(r"</offer>\s*$", addition_full + "\n</offer>", block, count=1)
 
     return block
 
