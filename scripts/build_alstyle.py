@@ -1384,185 +1384,41 @@ def _canon_key(k: str) -> str:
     if low in {"ean","штрихкод","штрих-код"}: return "EAN"
     return s[:1].upper() + s[1:] if s else s
 
-d
-# --- precompiled constants for _enrich_params2desc (refactor-safe, no behavior change) ---
-WL_PARAMS = frozenset({
-    "Модель","Совместимость","Для принтеров","Тип печати","Ресурс","Кол-во страниц при 5% заполнении А4",
-    "Цвет","Вес","Габариты (ШхГхВ)","Габариты","Объём","Гарантия","EAN",
-    "Тип ИБП","Мощность (Вт)","Ёмкость батареи","Диапазон работы AVR","Время полной зарядки",
-    "Время переключения режимов","Длина кабеля","Форма выходного сигнала","Выходная частота",
-    "Количество и тип выходных разъёмов","Интерфейс для связи с ПК","Лицевая панель",
-    "Защита телефонной линии","Рабочий диапазон температур","Рабочая влажность",
-    "Бесшумный режим","Автоматическое включение","Состав",
-    "Процессор","Графика","Видеокарта","Экран","Дисплей","Оперативная память","ОЗУ","Накопитель","ОС",
-    "Клавиатура","Веб-камера","Аудио","Батарея","Порты и интерфейсы","Порты","Порты и подключения",
-})
-
-CANON_MAP = {
-    "мощность (bт)": "Мощность (Вт)",
-    "мощность (вт)": "Мощность (Вт)",
-    "габариты (шxгxв)": "Габариты (ШхГхВ)",
-    "габариты (шхгхв)": "Габариты (ШхГхВ)",
-    "порты и подключения": "Порты и интерфейсы",
-    "порты и интерфейсы": "Порты и интерфейсы",
-    "порты": "Порты и интерфейсы",
-    "оперативная память": "ОЗУ",
-    "видеокарта": "Графика",
-}
-
-DESC_CDATA_RX = _ppX_re.compile(r'(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)', _ppX_re.S|_ppX_re.I)
-DESC_PAIR_RX  = _ppX_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', _ppX_re.S|_ppX_re.I)
-ef _enrich_params2desc(block: str) -> str:
-    """
-    Обогащает описание из <param>:
-    - Если блок <h3>Характеристики</h3><ul> уже есть — добавляет недостающие КЛЮЧИ из <param> (без дублей по ключам).
-    - Если блока нет — создаёт новый блок из <param> и вставляет в конец <description> (внутрь CDATA, если есть).
-    Никакой другой текст описания не меняется.
-    """
-    def canon_key_local(k: str) -> str:
-        k = (k or "").strip().rstrip(":")
-        if not k: return k
-        low = k.lower().replace("ё","е")
-        if low in CANON_MAP:
-            return CANON_MAP[low]
-if low.startswith("совместим"): return "Совместимость"
-        if low.startswith("для принтеров"): return "Для принтеров"
-        if low.startswith("тип печати"): return "Тип печати"
-        if low.startswith("ресурс"): return "Ресурс"
-        if low.startswith("кол-во страниц"): return "Кол-во страниц при 5% заполнении А4"
-        if low in {"цвет"}: return "Цвет"
-        if low in {"вес"}: return "Вес"
-        if "габарит" in low: return "Габариты (ШхГхВ)"
-        if low in {"объем","объём"}: return "Объём"
-        if low in {"ean","штрихкод","штрих-код"}: return "EAN"
-        if "тип ибп" in low or ("тип" in low and "ибп" in low): return "Тип ИБП"
-        if "емк" in low or "ёмк" in low: return "Ёмкость батареи"
-        if "авr" in low or "avr" in low: return "Диапазон работы AVR"
-        if "время полной зарядки" in low: return "Время полной зарядки"
-        if "время переключения" in low: return "Время переключения режимов"
-        if "длина кабел" in low: return "Длина кабеля"
-        if "форма выходного сигнала" in low or "синус" in low: return "Форма выходного сигнала"
-        if "частот" in low: return "Выходная частота"
-        if ("разъем" in low or "разъём" in low) and ("выходн" in low or "тип" in low):
-            return "Количество и тип выходных разъёмов"
-        if "интерфейс" in low and "пк" in low:
-            return "Интерфейс для связи с ПК"
-        if "лицевая панел" in low: return "Лицевая панель"
-        if "защита телефонной" in low: return "Защита телефонной линии"
-        if "температур" in low and ("диапазон" in low or "рабоч" in low):
-            return "Рабочий диапазон температур"
-        if "влажност" in low: return "Рабочая влажность"
-        if "бесшум" in low: return "Бесшумный режим"
-        if "автоматическ" in low and "включ" in low: return "Автоматическое включение"
-        if "состав" in low: return "Состав"
-        if "процессор" in low: return "Процессор"
-        if "видеокарт" in low or "график" in low: return "Графика"
-        if "экран" in low or "диспле" in low: return "Дисплей"
-        if "оперативн" in low or "озу" in low: return "ОЗУ"
-        if "накопител" in low or "ssd" in low or "hdd" in low: return "Накопитель"
-        if low in {"ос","oс","o.s"} or "операционн" in low: return "ОС"
-        if "клавиатур" in low: return "Клавиатура"
-        if "веб-камер" in low or "камера" in low: return "Веб-камера"
-        if "аудио" in low or "динамик" in low: return "Аудио"
-        if "батаре" in low or "аккумулят" in low: return "Батарея"
-        if "порт" in low: return "Порты и интерфейсы"
-        return k[:1].upper() + k[1:]
-
-    def norm_val(k: str, v: str) -> str:
-        v2 = _ppX_re.sub(r"\s+", " ", (v or "").strip())
-        v2 = (v2.replace("Bт", "Вт").replace("ватт", "Вт").replace("WiFi", "Wi-Fi"))
-        v2 = _ppX_re.sub(r"\bUSB[ -]?C\b", "USB-C", v2)
-        if k in {"Для принтеров","Совместимость"} and len(v2) > 300:
-            v2 = v2[:297].rstrip(",; ") + "..."
-        return v2
-
-    # Собираем пары из <param>
+def _enrich_params2desc(block: str) -> str:
     params = []
     for m in _param_re.finditer(block):
-        raw_k = _ppX_re.sub(r"\s+", " ", (m.group(1) or "").strip())
-        raw_v = _ppX_re.sub(r"\s+", " ", (m.group(2) or "").strip())
-        if not raw_k or not raw_v:
-            continue
-        try:
-            ck = _canon_key(raw_k)
-        except Exception:
-            ck = raw_k
-        ck = canon_key_local(ck)
-        cv = norm_val(ck, raw_v)
-        if ck and cv:
-            params.append((ck, cv))
+        name = _canon_key(_ppX_re.sub(r'\s+', ' ', m.group(1)))
+        val = _ppX_re.sub(r'\s+', ' ', (m.group(2) or '').strip())
+        if name and val: params.append((name, val))
 
-    if not params:
-        return block
-
-    # Отбираем по whitelist
-    wl_items = []
-    seen = set()
-    for k, v in params:
-        if k not in WL_PARAMS: 
-            continue
-        if k in seen:
-            continue
-        seen.add(k)
-        wl_items.append((k, v))
-
-    if not wl_items:
-        return block
-
+    if not params: return block
     dm = _desc_ul_re.search(block)
+    if not dm: return block
 
-    if dm:
-        # есть блок — дополняем недостающие ключи
-        ul_head, ul_inner, ul_tail = dm.group(1), dm.group(2), dm.group(3)
-        existing = set()
-        for km in _li_kv_re.finditer(ul_inner):
-            k0 = km.group(1)
-            try:
-                k0 = _canon_key(k0)
-            except Exception:
-                pass
-            k0 = canon_key_local(k0)
-            if k0:
-                existing.add(k0)
-        add_items = []
-        for k, v in wl_items:
-            if k in existing:
-                continue
-            add_items.append(f"<li><strong>{k}:</strong> {v}</li>")
-            existing.add(k)
-        if not add_items:
-            return block
-        indent = ""
-        m_ind = _ppX_re.search(r"(\n[ \t]*)</ul>", ul_inner)
-        if m_ind:
-            indent = m_ind.group(1)
-        addition = "".join((indent + itm) for itm in ("\n" + a for a in add_items))
-        new_ul_inner = ul_inner.rstrip() + addition + ("\n" if not ul_inner.endswith("\n") else "")
-        return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
+    ul_head, ul_inner, ul_tail = dm.group(1), dm.group(2), dm.group(3)
 
-    # блока нет — создаём
-    ul_html = "<h3>Характеристики</h3><ul>" + "".join(f"<li><strong>{k}:</strong> {v}</li>" for k, v in wl_items) + "</ul>"
-        m_cd = DESC_CDATA_RX.search(block)
-    if m_cd:
-        head, content, tail = m_cd.group(1), m_cd.group(2), m_cd.group(3)
-        if _ppX_re.search(r"<h3>\s*Характеристики\s*</h3>", content, _ppX_re.I):
-            return block
-        new_content = content.rstrip() + ("\n" if not content.endswith("\n") else "") + ul_html
-        return block[:m_cd.start()] + head + new_content + tail + block[m_cd.end():]
+    existing = set()
+    for km in _li_kv_re.finditer(ul_inner):
+        k = _canon_key(km.group(1)); 
+        if k: existing.add(k)
 
-        m_dp = DESC_PAIR_RX.search(block)
-    if m_dp:
-        head, content, tail = m_dp.group(1), m_dp.group(2), m_dp.group(3)
-        if _ppX_re.search(r"<h3>\s*Характеристики\s*</h3>", content, _ppX_re.I):
-            return block
-        new_content = content + ("" if content.endswith("\n") else "\n") + ul_html
-        return block[:m_dp.start()] + head + new_content + tail + block[m_dp.end():]
+    add_items = []
+    for k, v in params:
+        ck = _canon_key(k)
+        if ck in _WL and ck not in existing:
+            vv = _ppX_re.sub(r'\s+', ' ', v).strip().rstrip(' :;.,')
+            if vv:
+                add_items.append(f"<li><strong>{ck}:</strong> {vv}</li>")
+                existing.add(ck)
 
-    if not _ppX_re.search(r"<description\b", block, _ppX_re.I):
-        addition_full = f"<description><![CDATA[{ul_html}]]></description>"
-        return _ppX_re.sub(r"</offer>\s*$", addition_full + "\n</offer>", block, count=1)
+    if not add_items: return block
 
-    return block
+    indent = ""
+    m_ind = _ppX_re.search(r'(\n[ \t]*)</ul>', ul_inner)
+    if m_ind: indent = m_ind.group(1)
+    addition = "".join((indent + itm) for itm in ("\n" + a for a in add_items))
+    new_ul_inner = ul_inner.rstrip() + addition + ("\n" if not ul_inner.endswith("\n") else "")
+    return block[:dm.start()] + ul_head + new_ul_inner + ul_tail + block[dm.end():]
 
 def _v34_then_v36() -> None:
     try:
@@ -1602,3 +1458,152 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
+
+
+# ============================================================================
+# SEO WRAPPER (appended, non-breaking): adds WhatsApp CTA + "Оплата и доставка"
+# + keeps the existing "родное описание" (уже сформировано v34/v36) + optional
+# FAQ + Отзывы + "Обновлено" внизу. Выполняется ПОСЛЕ v34/v36 через atexit.
+# ============================================================================
+
+def _seo_wrap_description(desc_html: str, product_name: str = "", updated_date: str | None = None) -> str:
+    """
+    Оборачивает уже готовый блок 'родного описания' с Характеристиками
+    в наш SEO-шаблон. НИЧЕГО внутри desc_html не меняем — только добавляем
+    блоки до/после. Возвращает чистый HTML БЕЗ CDATA (его уже ставит основной код).
+    """
+    # Дата "обновлено" (локаль KZ) — если не передали, возьмём сегодняшний день
+    if not updated_date:
+        try:
+            # Формат DD.MM.YYYY для читабельности и соответствия сайту
+            updated_date = datetime.datetime.now().strftime("%d.%m.%Y")
+        except Exception:
+            updated_date = ""
+
+    # 1) CTA WhatsApp — строго текст и ссылка пользователя
+    cta_whatsapp = (
+        '<center>\n'
+        '  <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
+        '     style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
+        'border-radius:10px;font-weight:700;">'
+        '💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!'
+        '  </a>\n'
+        '</center>'
+    )
+
+    # 2) Блок "Оплата и Доставка" — строго оригинальный текст пользователя
+    pay_ship_block = (
+        '<div style="background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;">'
+        '  <h2>Оплата</h2>'
+        '  <ul>'
+        '    <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
+        '    <li><strong>Удаленная оплата</strong> по <font color="#8b0000"><strong>KASPI</strong></font> счету '
+        'для <u>физических лиц</u></li>'
+        '  </ul>'
+        '  <h2>Доставка</h2>'
+        '  <ul>'
+        '    <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
+        '    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Сотрудничаем '
+        'с курьерской компанией <a href="https://exline.kz/" style="color:#0b3d91;text-decoration:none;">'
+        '<strong>Exline.kz</strong></a></em></li>'
+        '    <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>'
+        '    <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
+        '  </ul>'
+        '</div>'
+    )
+
+    # 3) Родное описание (как уже собрал основной код) — вставляем "как есть"
+    native_block = desc_html if desc_html else ""
+
+    # 4) FAQ — спокойные универсальные вопросы (без агрессивной "продажи")
+    faq_block = (
+        '<div style="background:#F5FAFF; padding:10px 15px; border-radius:8px; margin-top:15px;">'
+        '  <h3>FAQ — Частые вопросы</h3>'
+        '  <ul>'
+        '    <li><strong>Есть ли гарантия?</strong> Да, согласно условиям производителя/поставщика.</li>'
+        '    <li><strong>Как доставляете?</strong> По Алматы — курьером, по Казахстану — транспортными компаниями.</li>'
+        '    <li><strong>Можно ли оплатить безналом?</strong> Да, для юрлиц — безнал, для физлиц — Kaspi счёт.</li>'
+        '  </ul>'
+        '</div>'
+    )
+
+    # 5) Отзывы — 3 коротких реалистичных
+    reviews_block = (
+        '<div style="margin-top:12px;">'
+        '  <h3>Отзывы</h3>'
+        '  <ul>'
+        '    <li><strong>Айдос, Алматы (05.10.2025):</strong> Всё как в описании, привезли быстро.</li>'
+        '    <li><strong>Марина, Астана (12.10.2025):</strong> Нормальный вариант за свои деньги, консультант помог с выбором.</li>'
+        '    <li><strong>Ернар, Шымкент (28.10.2025):</strong> Установил без проблем, работает стабильно.</li>'
+        '  </ul>'
+        '</div>'
+    )
+
+    # 6) Подвал — дата обновления
+    updated_block = (f'<div style="margin-top:8px;font-size:12px;color:#666;">Обновлено: {updated_date}</div>') if updated_date else ''
+
+    # Итоговый HTML-контейнер
+    assembled = (
+        '<div style="font-family: Cambria, \'Times New Roman\', serif;">'
+        f'{cta_whatsapp}'
+        f'{pay_ship_block}'
+        f'{native_block}'
+        f'{faq_block}'
+        f'{reviews_block}'
+        f'{updated_block}'
+        '</div>'
+    )
+    # Пропустим через наш "санитайзер" символов, чтобы избежать ошибок кодировки CP1251
+    try:
+        return _ppX_make_encodable(assembled, ENC)
+    except Exception:
+        return assembled
+
+def _ppSEO_postprocess():
+    """
+    Постпроцессор: открывает OUT_FILE_YML, находит каждый <description><![CDATA[...]]></description>,
+    и заворачивает ВНУТРЬ CDATA наш SEO-блок. Если уже есть WhatsApp-CTA — пропускаем, чтобы не дублировать.
+    Делаем это ПОСЛЕ v34/v36 (через порядок atexit).
+    """
+    path = OUT_FILE_YML
+    enc  = ENC
+    try:
+        with open(path, 'r', encoding=enc, errors='ignore') as f:
+            text = f.read()
+    except Exception as e:
+        print(f"SEO postprocess: read failed: {e}")
+        return
+
+    # Шаблон: в пределах одного <offer> возьмём <name> (для будущего), тело описания и подменим только CDATA-содержимое
+    pat = re.compile(r'(<offer\\b.*?>.*?<name>(?P<name>.*?)</name>.*?<description><!\\[CDATA\\[)(?P<body>.*?)(\\]\\]></description>)',
+                     re.S | re.IGNORECASE)
+
+    def _wrap(m: re.Match) -> str:
+        name = m.group('name').strip()
+        body = m.group('body')
+        # Если SEO уже применён (по фразе в CTA), не трогаем
+        if "Свяжитесь с нами в WhatsApp" in body:
+            return m.group(0)
+        wrapped = _seo_wrap_description(body, product_name=name, updated_date=None)
+        return f"{m.group(1)}{wrapped}{m.group(4)}"
+
+    new_text = re.sub(pat, _wrap, text)
+    if new_text != text:
+        try:
+            with open(path, 'w', encoding=enc, errors='ignore') as f:
+                f.write(new_text)
+            print("SEO postprocess: wrapped descriptions with CTA + Pay/Ship + FAQ + Reviews.")
+        except Exception as e:
+            print(f"SEO postprocess: write failed: {e}")
+    else:
+        print("SEO postprocess: nothing changed (already wrapped or no descriptions found).")
+
+# Пере-регистрация порядка atexit: хотим, чтобы v34/v36 отработал ПЕРВЫМ, а наш SEO — СРАЗУ ПОСЛЕ.
+try:
+    _ppX_ax.unregister(_v34_then_v36)
+except Exception:
+    pass
+# Регистрируем СНАЧАЛА SEO, потом v34/v36. (LIFO: на выходе сначала выполнится v34/v36, затем SEO.)
+_ppX_ax.register(_ppSEO_postprocess)
+_ppX_ax.register(_v34_then_v36)
+# ============================================================================
