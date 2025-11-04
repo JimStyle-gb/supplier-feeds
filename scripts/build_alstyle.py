@@ -1601,139 +1601,130 @@ _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
 
-# ========================= SEO WRAP (SAFE TAGS ONLY) =========================
-# This block runs strictly after the feed is written and only wraps existing
-# <description> with header (WhatsApp + Payment/Delivery + H2 Title) and
-# footer (FAQ + Reviews). It does NOT modify the original content: NEW = HDR + OLD + FTR.
-# It never creates <description> if missing and is idempotent.
-import re as _sre
-import html as _shtml
+# ======================================================================
+# ALSTYLE SEO APPENDIX (idempotent, post-write)
+# - Does not modify the core logic.
+# - Runs at process exit via atexit to wrap each <description><![CDATA[...]]></description>
+#   with CTA WhatsApp + Оплата/Доставка + <h2>Название</h2> + (родной блок уже внутри) + FAQ + Отзывы.
+# - Skips offers already wrapped (marker <!-- ALSTYLE_SEO_V1 -->).
+# - Keeps CP1251 of the OUT_FILE content; only rewrites the file in-place.
+# ======================================================================
 
-def _seo_safe_header(_title: str|None) -> str:
-    """Build SEO header using only whitelisted tags."""
-    parts = []
-    parts.append('<p><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
-                 'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;border-radius:10px;font-weight:700;">'
-                 'НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p>')
-    parts.append('<h3>Оплата</h3><ul>'
-                 '<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
-                 '<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>'
-                 '</ul>')
-    parts.append('<h3>Доставка</h3><ul>'
-                 '<li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
-                 '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3-7 рабочих дней | '
-                 'Сотрудничаем с <a href="https://exline.kz/"><strong>Exline.kz</strong></a></em></li>'
-                 '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>'
-                 '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
-                 '</ul>')
-    if _title:
-        _t = _shtml.escape(_title.strip())
-        if _t:
-            parts.append('<h2>'+_t+'</h2>')
-    return ''.join(parts)
+import atexit as _alstyle_atexit
+import os as _alstyle_os
+import re as _alstyle_re
 
-def _seo_safe_footer() -> str:
-    """Build SEO footer using only whitelisted tags (no details/summary/div/hr)."""
+_ALSTYLE_SEO_MARK = "<!-- ALSTYLE_SEO_V1 -->"
+
+def _alstyle_min_html(text: str) -> str:
+    # Minimal escaping for title text injected into <h2> to be safe inside HTML
+    return (text
+            .replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;"))
+
+def _alstyle_cta_block() -> str:
+    # WhatsApp CTA + Оплата/Доставка (strictly as approved by the user)
     return (
-        '<h3>FAQ</h3><ul>'
-        '<li><strong>Есть ли товар в наличии?</strong> Наличие указано на странице. Если статус "в наличии" — отправим в тот же или следующий рабочий день.</li>'
-        '<li><strong>Как оформить заказ?</strong> Нажмите «Купить» и оформите. Вопросы — пишите в WhatsApp, отвечаем за несколько минут.</li>'
-        '<li><strong>Доставка по РК</strong> По Алматы — курьером, по регионам — Exline или любая удобная вам ТК.</li>'
-        '</ul>'
-        '<h3>Отзывы</h3><ul>'
-        '<li><strong>Алия, Алматы (09.2024):</strong> Всё быстро, товар качественный. Спасибо!</li>'
-        '<li><strong>Данияр, Астана (10.2024):</strong> Упаковано отлично, консультация помогла с выбором.</li>'
-        '<li><strong>Марина, Шымкент (11.2024):</strong> Заказ пришёл вовремя, рекомендую магазин.</li>'
-        '</ul>'
+        '<center>\n'
+        '  <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"\n'
+        '     style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
+        'border-radius:10px;font-weight:700;">\n'
+        '    НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!\n'
+        '  </a>\n'
+        '</center>\n'
+        '\n'
+        '<div style="background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;">\n'
+        '  <h2>Оплата</h2>\n'
+        '  <ul>\n'
+        '    <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>\n'
+        '    <li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>\n'
+        '  </ul>\n'
+        '\n'
+        '  <h2>Доставка</h2>\n'
+        '  <ul>\n'
+        '    <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>\n'
+        '    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3-7 рабочих дней | Сотрудничаем с '
+        '<a href="https://exline.kz/" style="color:#0b3d91;text-decoration:none;"><strong>Exline.kz</strong></a></em></li>\n'
+        '    <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>\n'
+        '    <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>\n'
+        '  </ul>\n'
+        '</div>\n'
     )
 
-def _seo_wrap_concat(_old: str, _title: str|None) -> str:
-    """Return HEADER + OLD + FOOTER with no other changes."""
-    return _seo_safe_header(_title) + _old + _seo_safe_footer()
+def _alstyle_faq_reviews_block() -> str:
+    # FAQ (light-blue) + 3 short reviews (no duplicates, realistic)
+    return (
+        '<div style="background:#EAF4FF; padding:1px 15px; border-radius:0px; margin-top:12px;">\n'
+        '  <h3>FAQ — Частые вопросы</h3>\n'
+        '  <p><strong>Есть ли товар в наличии?</strong> Наличие указано на странице. Если статус «в наличии» — отправим в тот же или следующий рабочий день.</p>\n'
+        '  <p><strong>Как оформить заказ?</strong> Нажмите «Купить» и следуйте шагам. Вопросы — пишите в WhatsApp, отвечаем за несколько минут.</p>\n'
+        '  <p><strong>Доставка по РК</strong> По Алматы — курьером, по регионам — Exline или любая удобная вам ТК.</p>\n'
+        '</div>\n'
+        '<div style="margin-top:10px;">\n'
+        '  <h3>Отзывы покупателей</h3>\n'
+        '  <ul>\n'
+        '    <li><strong>Алия, Алматы (09.2024):</strong> Всё быстро, товар качественный. Спасибо!</li>\n'
+        '    <li><strong>Данияр, Астана (10.2024):</strong> Упаковано отлично, консультация помогла с выбором.</li>\n'
+        '    <li><strong>Марина, Шымкент (11.2024):</strong> Заказ пришёл вовремя, рекомендую магазин.</li>\n'
+        '  </ul>\n'
+        '</div>\n'
+    )
 
-def _seo_postprocess_apply() -> None:
-    """Read OUT_FILE and wrap each <description> safely. Never create new ones."""
+def _alstyle_build_seo(name_text: str, inner_html: str) -> str:
+    """Assemble final HTML that will go inside CDATA."""
+    parts = []
+    parts.append(_ALSTYLE_SEO_MARK)
+    parts.append(_alstyle_cta_block())
+    if name_text.strip():
+        parts.append(f'<h2 style="margin:12px 0 6px 0;">{_alstyle_min_html(name_text)}</h2>')
+    # Keep the existing "родное" HTML (already pretty + Характеристики)
+    parts.append(inner_html.strip())
+    # Append FAQ+Отзывы
+    parts.append(_alstyle_faq_reviews_block())
+    return "\n".join(parts)
+
+def _alstyle_wrap_in_offer(offer_html: str) -> str:
+    """Wrap one <offer>...</offer> chunk if not already wrapped."""
+    # Extract <name> and <description><![CDATA[...]]></description>
+    name_m = _alstyle_re.search(r"<name>(.*?)</name>", offer_html, flags=_alstyle_re.DOTALL|_alstyle_re.IGNORECASE)
+    desc_m = _alstyle_re.search(r"<description><!\[CDATA\[(.*?)\]\]></description>", offer_html, flags=_alstyle_re.DOTALL|_alstyle_re.IGNORECASE)
+    if not desc_m:
+        return offer_html  # nothing to do
+    inner = desc_m.group(1)
+    if _ALSTYLE_SEO_MARK in inner or "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP" in inner:
+        return offer_html  # already wrapped
+    name_text = name_m.group(1).strip() if name_m else ""
+    assembled = _alstyle_build_seo(name_text, inner)
+    new_desc = f"<description><![CDATA[{assembled}]]></description>"
+    return offer_html[:desc_m.start()] + new_desc + offer_html[desc_m.end():]
+
+def _alstyle_seo_wrap_file():
+    # Pick output path from ENV (default: docs/alstyle.yml)
+    path = _alstyle_os.getenv("OUT_FILE", "docs/alstyle.yml")
+    # Read as CP1251 per pipeline
     try:
-        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
-        _enc = globals().get("OUTPUT_ENCODING", "windows-1251")
-        # Load text with declared encoding, fallback to utf-8
-        with open(_out, "rb") as f:
-            raw = f.read()
-        try:
-            text = raw.decode(_enc)
-        except Exception:
-            text = raw.decode("utf-8", errors="replace")
+        data = open(path, "rb").read().decode("cp1251", errors="strict")
+    except Exception:
+        # Fallback to lenient decode but keep bytes preserved
+        data = open(path, "rb").read().decode("cp1251", errors="replace")
 
-        offer_re   = _sre.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", _sre.S|_sre.I)
-        name_re    = _sre.compile(r"<name>(.*?)</name>", _sre.S|_sre.I)
-        desc_cdata = _sre.compile(r"(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)", _sre.S|_sre.I)
-        desc_pair  = _sre.compile(r"(<description\b[^>]*>)(.*?)(</description>)", _sre.S|_sre.I)
+    # Split by <offer> ... </offer> and process each chunk
+    pattern = _alstyle_re.compile(r"(<offer\b.*?</offer>)", flags=_alstyle_re.DOTALL|_alstyle_re.IGNORECASE)
+    out_parts = []
+    last = 0
+    for m in pattern.finditer(data):
+        out_parts.append(data[last:m.start()])
+        out_parts.append(_alstyle_wrap_in_offer(m.group(1)))
+        last = m.end()
+    out_parts.append(data[last:])
 
-        # Signal that header is already present (idempotency)
-        def _already_wrapped(s: str) -> bool:
-            return ('НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!' in s) or ('<h3>Оплата</h3>' in s)
+    new_data = "".join(out_parts)
+    if new_data != data:
+        # Write back with CP1251
+        with open(path, "wb") as wf:
+            wf.write(new_data.encode("cp1251", errors="replace"))
 
-        def _repl_offer(mo):
-            head, body, tail = mo.group(1), mo.group(2), mo.group(3)
-            nm = name_re.search(body)
-            title = nm.group(1).strip() if nm else None
-
-            # Description in CDATA
-            mcd = desc_cdata.search(body)
-            if mcd:
-                old_inner = mcd.group(2)
-                if _already_wrapped(old_inner):
-                    return head + body + tail
-                # Safety: preserve "Характеристики"
-                had_char = "<h3>Характеристики</h3>" in old_inner
-                new_inner = _seo_wrap_concat(old_inner, title)
-                if had_char and "<h3>Характеристики</h3>" not in new_inner:
-                    # Should never happen since we only concat. Fail-safe: keep original.
-                    return head + body + tail
-                body = body[:mcd.start(2)] + new_inner + body[mcd.end(2):]
-                return head + body + tail
-
-            # Description as plain text (no CDATA)
-            mp = desc_pair.search(body)
-            if mp:
-                old_inner = mp.group(2)
-                if _already_wrapped(old_inner):
-                    return head + body + tail
-                had_char = "<h3>Характеристики</h3>" in old_inner
-                new_inner = _seo_wrap_concat(old_inner, title)
-                if had_char and "<h3>Характеристики</h3>" not in new_inner:
-                    return head + body + tail
-                body = body[:mp.start(2)] + new_inner + body[mp.end(2):]
-                return head + body + tail
-
-            # If no <description> — do nothing (never create new one)
-            return head + body + tail
-
-        new_text = offer_re.sub(_repl_offer, text)
-
-        if new_text != text:
-            try:
-                with open(_out, "w", encoding=_enc, newline="\n") as f:
-                    f.write(new_text)
-            except UnicodeEncodeError:
-                with open(_out, "wb") as f:
-                    f.write(new_text.encode(_enc, errors="xmlcharrefreplace"))
-            print("SEO wrap (safe): applied.")
-        else:
-            print("SEO wrap (safe): no changes.")
-    except Exception as _e:
-        print("WARN: SEO postprocess failed:", _e)
-
-# Ensure this runs at the very end
-try:
-    import atexit as _satexit
-    _satexit.register(_seo_postprocess_apply)
-except Exception:
-    pass
-
-# Also call once immediately, in case script finishes earlier or atexit is skipped.
-try:
-    _seo_postprocess_apply()
-except Exception as _se:
-    print("WARN: SEO postprocess immediate call failed:", _se)
-# ========================= /SEO WRAP =========================
+# Register as atexit hook so it runs after the main script finishes writing the OUT_FILE.
+_alstyle_atexit.register(_alstyle_seo_wrap_file)
+# ======================================================================
