@@ -1600,11 +1600,22 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
-# ======================= SEO WRAP (CTA + Оплата/Доставка + FAQ + Отзывы) =======================
+# ======================= SEO WRAP (HEADER with product H2 + footer) =======================
 import atexit as _seo_ax
 import re as _seo_re
+import html as _seo_html
 
-def _seo_get_header() -> str:
+def _seo_get_header(product_title: str | None) -> str:
+    title_html = ""
+    if product_title:
+        safe_title = _seo_html.escape(product_title.strip())
+        if safe_title and "<!-- SEO_TITLE_INSERTED -->" not in safe_title:
+            title_html = (
+                "<!-- SEO_TITLE_INSERTED -->"
+                "<h2 style=\"margin:14px 0 6px 0;padding:0;font-size:18px;line-height:1.25;\">"
+                + safe_title +
+                "</h2>"
+            )
     return (
         "<!-- SEO_BLOCK_HEADER_START -->"
         "<div style=\"font-family: Cambria, 'Times New Roman', serif;\">"
@@ -1624,12 +1635,13 @@ def _seo_get_header() -> str:
         "<h2>Доставка</h2>"
         "<ul>"
         "<li><em><strong>ДОСТАВКА</strong> в \"квадрате\" г. Алматы — БЕСПЛАТНО!</em></li>"
-        "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3-7 рабочих дней | Сотрудничаем с курьерской компанией "
+        "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3-7 рабочих дней | Сотрудничаем с "
         "<a href=\"https://exline.kz/\" style=\"color:#0b3d91;text-decoration:none;\"><strong>Exline.kz</strong></a></em></li>"
         "<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>"
         "<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал \"САЙРАН\"</em></li>"
         "</ul>"
         "</div>"
+        + title_html +
         "</div>"
         "<!-- SEO_BLOCK_HEADER_END -->"
     )
@@ -1658,10 +1670,10 @@ def _seo_get_footer() -> str:
         "<!-- SEO_BLOCK_FOOTER_END -->"
     )
 
-def _seo_wrap_html(content: str) -> str:
+def _seo_wrap_html(content: str, product_title: str | None) -> str:
     if "<!-- SEO_BLOCK_HEADER_START -->" in content or "<!-- SEO_BLOCK_FOOTER_START -->" in content:
         return content
-    return _seo_get_header() + content + _seo_get_footer()
+    return _seo_get_header(product_title) + content + _seo_get_footer()
 
 def _seo_postprocess() -> None:
     try:
@@ -1677,14 +1689,18 @@ def _seo_postprocess() -> None:
         desc_cdata = _seo_re.compile(r"(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)", _seo_re.S | _seo_re.I)
         desc_pair  = _seo_re.compile(r"(<description\b[^>]*>)(.*?)(</description>)", _seo_re.S | _seo_re.I)
         offer_re   = _seo_re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", _seo_re.S | _seo_re.I)
+        name_re    = _seo_re.compile(r"<name>(.*?)</name>", _seo_re.S | _seo_re.I)
 
         def _repl_offer(m):
             head, body, tail = m.group(1), m.group(2), m.group(3)
 
+            name_m = name_re.search(body)
+            prod_name = name_m.group(1).strip() if name_m else None
+
             mc = desc_cdata.search(body)
             if mc:
                 inner = mc.group(2)
-                new_inner = _seo_wrap_html(inner)
+                new_inner = _seo_wrap_html(inner, prod_name)
                 if new_inner != inner:
                     body = body[:mc.start(2)] + new_inner + body[mc.end(2):]
                 return head + body + tail
@@ -1692,12 +1708,12 @@ def _seo_postprocess() -> None:
             mp = desc_pair.search(body)
             if mp:
                 inner = mp.group(2)
-                new_inner = _seo_wrap_html(inner)
+                new_inner = _seo_wrap_html(inner, prod_name)
                 if new_inner != inner:
                     body = body[:mp.start(2)] + new_inner + body[mp.end(2):]
                 return head + body + tail
 
-            new_desc = "<description><![CDATA[" + _seo_wrap_html("") + "]]></description>"
+            new_desc = "<description><![CDATA[" + _seo_wrap_html("", prod_name) + "]]></description>"
             body2 = new_desc + ("\n" if not body.startswith("\n") else "") + body
             return head + body2 + tail
 
@@ -1716,7 +1732,8 @@ def _seo_postprocess() -> None:
     except Exception as e:
         print("WARN SEO wrap:", e)
 
-_seo_ax.register(_seo_postprocess)
+import atexit as _seo_ax2
+_seo_ax2.register(_seo_postprocess)
 try:
     _seo_postprocess()
 except Exception as _e:
