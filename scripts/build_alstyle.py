@@ -1601,11 +1601,6 @@ _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
 # ======================= SEO WRAP (CTA + Оплата/Доставка + FAQ + Отзывы) =======================
-# Этот постпроцесс запускается ПОСЛЕ существующих (v34 + v36) и не трогает «родное описание»,
-# а только ДОБАВЛЯЕТ блоки: сверху — CTA + «Оплата и доставка», снизу — FAQ + «Отзывы».
-# Помечается маркерами <!-- SEO_BLOCK_HEADER_START/END --> и <!-- SEO_BLOCK_FOOTER_START/END -->,
-# повторное выполнение не создаст дублей.
-
 import atexit as _seo_ax
 import re as _seo_re
 
@@ -1664,7 +1659,6 @@ def _seo_get_footer() -> str:
     )
 
 def _seo_wrap_html(content: str) -> str:
-    # Не дублируем, если уже есть
     if "<!-- SEO_BLOCK_HEADER_START -->" in content or "<!-- SEO_BLOCK_FOOTER_START -->" in content:
         return content
     return _seo_get_header() + content + _seo_get_footer()
@@ -1680,36 +1674,38 @@ def _seo_postprocess() -> None:
         except Exception:
             text = data.decode("utf-8", errors="replace")
 
-        desc_cdata = _seo_re.compile(r"(<description\\b[^>]*><!\\[CDATA\\[)(.*?)(\\]\\]></description>)", _seo_re.S|_seo_re.I)
-        desc_pair  = _seo_re.compile(r"(<description\\b[^>]*>)(.*?)(</description>)", _seo_re.S|_seo_re.I)
-        offer_re   = _seo_re.compile(r"(<offer\\b[^>]*>)(.*?)(</offer>)", _seo_re.S|_seo_re.I)
+        desc_cdata = _seo_re.compile(r"(<description\b[^>]*><!\[CDATA\[)(.*?)(\]\]></description>)", _seo_re.S | _seo_re.I)
+        desc_pair  = _seo_re.compile(r"(<description\b[^>]*>)(.*?)(</description>)", _seo_re.S | _seo_re.I)
+        offer_re   = _seo_re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", _seo_re.S | _seo_re.I)
 
-        def repl_offer(m):
+        def _repl_offer(m):
             head, body, tail = m.group(1), m.group(2), m.group(3)
+
             mc = desc_cdata.search(body)
             if mc:
-                h, inner, t = mc.group(1), mc.group(2), mc.group(3)
+                inner = mc.group(2)
                 new_inner = _seo_wrap_html(inner)
                 if new_inner != inner:
                     body = body[:mc.start(2)] + new_inner + body[mc.end(2):]
                 return head + body + tail
+
             mp = desc_pair.search(body)
             if mp:
-                h, inner, t = mp.group(1), mp.group(2), mp.group(3)
+                inner = mp.group(2)
                 new_inner = _seo_wrap_html(inner)
                 if new_inner != inner:
                     body = body[:mp.start(2)] + new_inner + body[mp.end(2):]
                 return head + body + tail
-            # Если описания нет — создаём
+
             new_desc = "<description><![CDATA[" + _seo_wrap_html("") + "]]></description>"
-            body2 = new_desc + ("\\n" if not body.startswith("\\n") else "") + body
+            body2 = new_desc + ("\n" if not body.startswith("\n") else "") + body
             return head + body2 + tail
 
-        new_text = offer_re.sub(repl_offer, text)
+        new_text = offer_re.sub(_repl_offer, text)
 
         if new_text != text:
             try:
-                with open(_out, "w", encoding=_enc, newline="\\n") as f:
+                with open(_out, "w", encoding=_enc, newline="\n") as f:
                     f.write(new_text)
             except UnicodeEncodeError:
                 with open(_out, "wb") as f:
@@ -1721,4 +1717,8 @@ def _seo_postprocess() -> None:
         print("WARN SEO wrap:", e)
 
 _seo_ax.register(_seo_postprocess)
+try:
+    _seo_postprocess()
+except Exception as _e:
+    print("WARN SEO wrap direct:", _e)
 # ======================= /SEO WRAP =======================
