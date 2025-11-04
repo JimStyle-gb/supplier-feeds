@@ -1607,3 +1607,7 @@ except Exception:
 _ppX_ax.register(_ppSEO_postprocess)
 _ppX_ax.register(_v34_then_v36)
 # ============================================================================
+
+# --- atexit order: writer first, SEO last ---
+_seo_ax.register(_seo_postprocess)
+_seo_ax.register(_v34_then_v36)
