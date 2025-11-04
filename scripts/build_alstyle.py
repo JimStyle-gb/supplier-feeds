@@ -1601,130 +1601,152 @@ _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
 
-# ======================================================================
-# ALSTYLE SEO APPENDIX (idempotent, post-write)
-# - Does not modify the core logic.
-# - Runs at process exit via atexit to wrap each <description><![CDATA[...]]></description>
-#   with CTA WhatsApp + Оплата/Доставка + <h2>Название</h2> + (родной блок уже внутри) + FAQ + Отзывы.
-# - Skips offers already wrapped (marker <!-- ALSTYLE_SEO_V1 -->).
-# - Keeps CP1251 of the OUT_FILE content; only rewrites the file in-place.
-# ======================================================================
+# =============================================================
+# SEO WRAP v2 — добавляет SEO-блоки, не трогая "родное описание"
+# Порядок внутри <description>:
+#   1) CTA WhatsApp + "Оплата и Доставка" + <h2>SEO-заголовок с названием товара</h2>
+#   2) (РОДНОЕ ОПИСАНИЕ — как есть)
+#   3) Блок FAQ (с голубым фоном) + Блок отзывов
+#
+# Идемпотентно: повторный запуск не дублирует блоки (ищем маркеры).
+# Запускается ПОСЛЕ всех предыдущих постпроцессоров через atexit.
+# =============================================================
+import atexit as _seoX_ax
+import re as _seoX_re
+import html as _seoX_html
 
-import atexit as _alstyle_atexit
-import os as _alstyle_os
-import re as _alstyle_re
+def _seoX_cdata_safe(s: str) -> str:
+    return s.replace("]]>", "]]]]><![CDATA[>")
 
-_ALSTYLE_SEO_MARK = "<!-- ALSTYLE_SEO_V1 -->"
+# Готовые фрагменты (дизайн — как согласовано ранее)
+_SEOX_CTA = (
+    '<center>'
+    '<a href="https://api.whatsapp.com/send/?phone=77073270501&text&type=phone_number&app_absent=0" '
+    'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
+    'border-radius:10px;font-weight:700;">'
+    'НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!'
+    '</a>'
+    '</center>'
+)
 
-def _alstyle_min_html(text: str) -> str:
-    # Minimal escaping for title text injected into <h2> to be safe inside HTML
-    return (text
-            .replace("&", "&amp;")
-            .replace("<", "&lt;")
-            .replace(">", "&gt;"))
+_SEOX_PAYDEL = (
+    '<div style="background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;">'
+    '<h2>Оплата</h2>'
+    '<ul>'
+    '<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
+    '<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>'
+    '</ul>'
+    '<h2>Доставка</h2>'
+    '<ul>'
+    '<li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
+    '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3-7 рабочих дней | '
+    'Сотрудничаем с <a href="https://exline.kz/" style="color:#0b3d91;text-decoration:none;"><strong>Exline.kz</strong></a></em></li>'
+    '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>'
+    '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
+    '</ul>'
+    '</div>'
+)
 
-def _alstyle_cta_block() -> str:
-    # WhatsApp CTA + Оплата/Доставка (strictly as approved by the user)
+def _seoX_faq_block() -> str:
     return (
-        '<center>\n'
-        '  <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"\n'
-        '     style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
-        'border-radius:10px;font-weight:700;">\n'
-        '    НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!\n'
-        '  </a>\n'
-        '</center>\n'
-        '\n'
-        '<div style="background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;">\n'
-        '  <h2>Оплата</h2>\n'
-        '  <ul>\n'
-        '    <li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>\n'
-        '    <li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>\n'
-        '  </ul>\n'
-        '\n'
-        '  <h2>Доставка</h2>\n'
-        '  <ul>\n'
-        '    <li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>\n'
-        '    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3-7 рабочих дней | Сотрудничаем с '
-        '<a href="https://exline.kz/" style="color:#0b3d91;text-decoration:none;"><strong>Exline.kz</strong></a></em></li>\n'
-        '    <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>\n'
-        '    <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>\n'
-        '  </ul>\n'
-        '</div>\n'
+        '<div style="background:#EAF4FF; padding:1px 15px; border-radius:0px; margin-top:12px;">'
+        '<h3>FAQ — частые вопросы</h3>'
+        '<ul>'
+        '<li><strong>Есть ли товар в наличии?</strong> Наличие указано на странице. '
+        'Если статус «в наличии» — отправим в тот же или следующий рабочий день.</li>'
+        '<li><strong>Как оформить заказ?</strong> Нажмите «Купить» и оформите. '
+        'Вопросы — пишите в WhatsApp, отвечаем за несколько минут.</li>'
+        '<li><strong>Доставка по РК</strong> По Алматы — курьером, по регионам — Exline или любая удобная вам ТК.</li>'
+        '</ul>'
+        '</div>'
     )
 
-def _alstyle_faq_reviews_block() -> str:
-    # FAQ (light-blue) + 3 short reviews (no duplicates, realistic)
+def _seoX_reviews_block() -> str:
     return (
-        '<div style="background:#EAF4FF; padding:1px 15px; border-radius:0px; margin-top:12px;">\n'
-        '  <h3>FAQ — Частые вопросы</h3>\n'
-        '  <p><strong>Есть ли товар в наличии?</strong> Наличие указано на странице. Если статус «в наличии» — отправим в тот же или следующий рабочий день.</p>\n'
-        '  <p><strong>Как оформить заказ?</strong> Нажмите «Купить» и следуйте шагам. Вопросы — пишите в WhatsApp, отвечаем за несколько минут.</p>\n'
-        '  <p><strong>Доставка по РК</strong> По Алматы — курьером, по регионам — Exline или любая удобная вам ТК.</p>\n'
-        '</div>\n'
-        '<div style="margin-top:10px;">\n'
-        '  <h3>Отзывы покупателей</h3>\n'
-        '  <ul>\n'
-        '    <li><strong>Алия, Алматы (09.2024):</strong> Всё быстро, товар качественный. Спасибо!</li>\n'
-        '    <li><strong>Данияр, Астана (10.2024):</strong> Упаковано отлично, консультация помогла с выбором.</li>\n'
-        '    <li><strong>Марина, Шымкент (11.2024):</strong> Заказ пришёл вовремя, рекомендую магазин.</li>\n'
-        '  </ul>\n'
-        '</div>\n'
+        '<div style="margin-top:10px;">'
+        '<h3>Отзывы</h3>'
+        '<p><strong>Алия, Алматы (09.2024):</strong> Всё быстро, товар качественный. Спасибо!</p>'
+        '<p><strong>Данияр, Астана (10.2024):</strong> Упаковано отлично, консультация помогла с выбором.</p>'
+        '<p><strong>Марина, Шымкент (11.2024):</strong> Заказ пришёл вовремя, рекомендую магазин.</p>'
+        '</div>'
     )
 
-def _alstyle_build_seo(name_text: str, inner_html: str) -> str:
-    """Assemble final HTML that will go inside CDATA."""
-    parts = []
-    parts.append(_ALSTYLE_SEO_MARK)
-    parts.append(_alstyle_cta_block())
-    if name_text.strip():
-        parts.append(f'<h2 style="margin:12px 0 6px 0;">{_alstyle_min_html(name_text)}</h2>')
-    # Keep the existing "родное" HTML (already pretty + Характеристики)
-    parts.append(inner_html.strip())
-    # Append FAQ+Отзывы
-    parts.append(_alstyle_faq_reviews_block())
-    return "\n".join(parts)
+# Регексы
+_seoX_offer_re = _seoX_re.compile(r'<offer\\b[^>]*\\bid="([^"]+)"[^>]*>(?P<body>.*?)</offer>', _seoX_re.S|_seoX_re.I)
+_seoX_name_re  = _seoX_re.compile(r'<name>(.*?)</name>', _seoX_re.S|_seoX_re.I)
+_seoX_desc_cdata_re = _seoX_re.compile(r'(<description\\b[^>]*><!\\[CDATA\\[)(.*?)(\\]\\]></description>)', _seoX_re.S|_seoX_re.I)
+_seoX_desc_pair_re  = _seoX_re.compile(r'(<description\\b[^>]*>)(.*?)(</description>)', _seoX_re.S|_seoX_re.I)
 
-def _alstyle_wrap_in_offer(offer_html: str) -> str:
-    """Wrap one <offer>...</offer> chunk if not already wrapped."""
-    # Extract <name> and <description><![CDATA[...]]></description>
-    name_m = _alstyle_re.search(r"<name>(.*?)</name>", offer_html, flags=_alstyle_re.DOTALL|_alstyle_re.IGNORECASE)
-    desc_m = _alstyle_re.search(r"<description><!\[CDATA\[(.*?)\]\]></description>", offer_html, flags=_alstyle_re.DOTALL|_alstyle_re.IGNORECASE)
-    if not desc_m:
-        return offer_html  # nothing to do
-    inner = desc_m.group(1)
-    if _ALSTYLE_SEO_MARK in inner or "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP" in inner:
-        return offer_html  # already wrapped
-    name_text = name_m.group(1).strip() if name_m else ""
-    assembled = _alstyle_build_seo(name_text, inner)
-    new_desc = f"<description><![CDATA[{assembled}]]></description>"
-    return offer_html[:desc_m.start()] + new_desc + offer_html[desc_m.end():]
+def _seoX_make_top(name_text: str) -> str:
+    title = (name_text or "").strip()
+    # Без экранирования внутри CDATA
+    h2 = f'<h2 style="margin:12px 0 6px 0;">{_seoX_html.escape(title, quote=False)}</h2>'
+    return '<!--SEO_TOP_BEGIN-->' + _SEOX_CTA + _SEOX_PAYDEL + h2 + '<!--SEO_TOP_END-->'
 
-def _alstyle_seo_wrap_file():
-    # Pick output path from ENV (default: docs/alstyle.yml)
-    path = _alstyle_os.getenv("OUT_FILE", "docs/alstyle.yml")
-    # Read as CP1251 per pipeline
+def _seoX_make_bottom() -> str:
+    return '<!--SEO_BOTTOM_BEGIN-->' + _seoX_faq_block() + _seoX_reviews_block() + '<!--SEO_BOTTOM_END-->'
+
+def _seoX_wrap_block(offer_body: str, prod_name: str) -> str:
+    # Уже обёрнуто?
+    if "SEO_TOP_BEGIN" in offer_body or "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP" in offer_body:
+        return offer_body
+
+    top = _seoX_make_top(prod_name)
+    bottom = _seoX_make_bottom()
+
+    # 1) CDATA-вариант
+    m = _seoX_desc_cdata_re.search(offer_body)
+    if m:
+        head, content, tail = m.group(1), m.group(2), m.group(3)
+        new_content = top + content + bottom
+        return offer_body[:m.start()] + head + _seoX_cdata_safe(new_content) + tail + offer_body[m.end():]
+
+    # 2) Пара <description>...</description> без CDATA — конвертим в CDATA
+    m2 = _seoX_desc_pair_re.search(offer_body)
+    if m2:
+        head, content, tail = m2.group(1), m2.group(2), m2.group(3)
+        new_cdata = "<![CDATA[" + _seoX_cdata_safe(top + content + bottom) + "]]>"
+        return offer_body[:m2.start()] + "<description>" + new_cdata + "</description>" + offer_body[m2.end():]
+
+    # 3) Описания вовсе нет — создаём
+    insert_html = "<description><![CDATA[" + _seoX_cdata_safe(top + bottom) + "]]></description>"
+    return _seoX_re.sub(r"</offer>\\s*$", insert_html + "\\n</offer>", offer_body, count=1)
+
+def _seoX_apply(xml_text: str, enc: str) -> str:
+    def repl(m):
+        body = m.group('body')
+        # Извлекаем name внутри оффера
+        nm = ""
+        nm_m = _seoX_name_re.search(body)
+        if nm_m:
+            nm = _seoX_html.unescape(nm_m.group(1)).strip()
+        body2 = _seoX_wrap_block(body, nm)
+        return m.group(0) if body2 == body else m.group(0).replace(body, body2, 1)
+
+    return _seoX_offer_re.sub(repl, xml_text)
+
+def _seoX_run() -> None:
     try:
-        data = open(path, "rb").read().decode("cp1251", errors="strict")
-    except Exception:
-        # Fallback to lenient decode but keep bytes preserved
-        data = open(path, "rb").read().decode("cp1251", errors="replace")
+        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
+        _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
+        with open(_out, "rb") as f:
+            data = f.read()
+        try:
+            xml = data.decode(_enc)
+        except Exception:
+            xml = data.decode("utf-8", errors="replace")
 
-    # Split by <offer> ... </offer> and process each chunk
-    pattern = _alstyle_re.compile(r"(<offer\b.*?</offer>)", flags=_alstyle_re.DOTALL|_alstyle_re.IGNORECASE)
-    out_parts = []
-    last = 0
-    for m in pattern.finditer(data):
-        out_parts.append(data[last:m.start()])
-        out_parts.append(_alstyle_wrap_in_offer(m.group(1)))
-        last = m.end()
-    out_parts.append(data[last:])
+        new_xml = _seoX_apply(xml, _enc)
 
-    new_data = "".join(out_parts)
-    if new_data != data:
-        # Write back with CP1251
-        with open(path, "wb") as wf:
-            wf.write(new_data.encode("cp1251", errors="replace"))
+        if new_xml != xml:
+            with open(_out, "w", encoding=_enc, newline="\\n") as f:
+                f.write(new_xml if new_xml.endswith("\\n") else new_xml + "\\n")
+            print("SEO WRAP v2: applied.")
+        else:
+            print("SEO WRAP v2: no changes.")
+    except Exception as e:
+        print("WARN SEO WRAP v2:", e)
 
-# Register as atexit hook so it runs after the main script finishes writing the OUT_FILE.
-_alstyle_atexit.register(_alstyle_seo_wrap_file)
-# ======================================================================
+# Регистрируем ПОСЛЕ всех прошлых постпроцессоров
+_seoX_ax.register(_seoX_run)
+# ========================= end SEO WRAP v2 =========================
