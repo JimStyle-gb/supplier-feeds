@@ -1599,3 +1599,126 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
+
+# ======================= SEO WRAP (CTA + Оплата/Доставка + FAQ + Отзывы) =======================
+# Этот постпроцесс запускается ПОСЛЕ существующих (v34 + v36) и не трогает «родное описание»,
+# а только ДОБАВЛЯЕТ блоки: сверху — CTA + «Оплата и доставка», снизу — FAQ + «Отзывы».
+# Помечается маркерами <!-- SEO_BLOCK_HEADER_START/END --> и <!-- SEO_BLOCK_FOOTER_START/END -->,
+# повторное выполнение не создаст дублей.
+
+import atexit as _seo_ax
+import re as _seo_re
+
+def _seo_get_header() -> str:
+    return (
+        "<!-- SEO_BLOCK_HEADER_START -->"
+        "<div style=\"font-family: Cambria, 'Times New Roman', serif;\">"
+        "<center>"
+        "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
+        "style=\"display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;border-radius:10px;font-weight:700;\">"
+        "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!"
+        "</a>"
+        "</center>"
+        "<div style=\"background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;\">"
+        "<h2>Оплата</h2>"
+        "<ul>"
+        "<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>"
+        "<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>"
+        "</ul>"
+        "<hr style=\"border:none;border-top:1px solid #e0d6c4;margin:10px 0;\">"
+        "<h2>Доставка</h2>"
+        "<ul>"
+        "<li><em><strong>ДОСТАВКА</strong> в \"квадрате\" г. Алматы — БЕСПЛАТНО!</em></li>"
+        "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3-7 рабочих дней | Сотрудничаем с курьерской компанией "
+        "<a href=\"https://exline.kz/\" style=\"color:#0b3d91;text-decoration:none;\"><strong>Exline.kz</strong></a></em></li>"
+        "<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>"
+        "<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал \"САЙРАН\"</em></li>"
+        "</ul>"
+        "</div>"
+        "</div>"
+        "<!-- SEO_BLOCK_HEADER_END -->"
+    )
+
+def _seo_get_footer() -> str:
+    return (
+        "<!-- SEO_BLOCK_FOOTER_START -->"
+        "<div style=\"background:#E8F4FF; padding:1px 15px; border-radius:0px; margin-top:10px;\">"
+        "<h2>FAQ</h2>"
+        "<details><summary><strong>Есть ли этот товар в наличии?</strong></summary>"
+        "<p>Наличие указано на странице товара. Если статус \"в наличии\" — отправим в тот же или следующий рабочий день.</p>"
+        "</details>"
+        "<details><summary><strong>Как оформить заказ?</strong></summary>"
+        "<p>Нажмите «Купить» и оформите заказ. Если есть вопросы — напишите нам в WhatsApp, ответим за несколько минут.</p>"
+        "</details>"
+        "<details><summary><strong>Доставка по Казахстану</strong></summary>"
+        "<p>Отправляем по всей РК. По Алматы — курьером, по регионам — Exline или любая удобная вам ТК.</p>"
+        "</details>"
+        "</div>"
+        "<div style=\"padding:1px 15px; margin-top:10px;\">"
+        "<h2>Отзывы</h2>"
+        "<div><p><strong>Алия, Алматы (09.2024):</strong> Всё быстро, товар качественный. Спасибо!</p></div>"
+        "<div><p><strong>Данияр, Астана (10.2024):</strong> Упаковано отлично, консультация помогла с выбором.</p></div>"
+        "<div><p><strong>Марина, Шымкент (11.2024):</strong> Заказ пришёл вовремя, рекомендую магазин.</p></div>"
+        "</div>"
+        "<!-- SEO_BLOCK_FOOTER_END -->"
+    )
+
+def _seo_wrap_html(content: str) -> str:
+    # Не дублируем, если уже есть
+    if "<!-- SEO_BLOCK_HEADER_START -->" in content or "<!-- SEO_BLOCK_FOOTER_START -->" in content:
+        return content
+    return _seo_get_header() + content + _seo_get_footer()
+
+def _seo_postprocess() -> None:
+    try:
+        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
+        _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
+        with open(_out, "rb") as f:
+            data = f.read()
+        try:
+            text = data.decode(_enc)
+        except Exception:
+            text = data.decode("utf-8", errors="replace")
+
+        desc_cdata = _seo_re.compile(r"(<description\\b[^>]*><!\\[CDATA\\[)(.*?)(\\]\\]></description>)", _seo_re.S|_seo_re.I)
+        desc_pair  = _seo_re.compile(r"(<description\\b[^>]*>)(.*?)(</description>)", _seo_re.S|_seo_re.I)
+        offer_re   = _seo_re.compile(r"(<offer\\b[^>]*>)(.*?)(</offer>)", _seo_re.S|_seo_re.I)
+
+        def repl_offer(m):
+            head, body, tail = m.group(1), m.group(2), m.group(3)
+            mc = desc_cdata.search(body)
+            if mc:
+                h, inner, t = mc.group(1), mc.group(2), mc.group(3)
+                new_inner = _seo_wrap_html(inner)
+                if new_inner != inner:
+                    body = body[:mc.start(2)] + new_inner + body[mc.end(2):]
+                return head + body + tail
+            mp = desc_pair.search(body)
+            if mp:
+                h, inner, t = mp.group(1), mp.group(2), mp.group(3)
+                new_inner = _seo_wrap_html(inner)
+                if new_inner != inner:
+                    body = body[:mp.start(2)] + new_inner + body[mp.end(2):]
+                return head + body + tail
+            # Если описания нет — создаём
+            new_desc = "<description><![CDATA[" + _seo_wrap_html("") + "]]></description>"
+            body2 = new_desc + ("\\n" if not body.startswith("\\n") else "") + body
+            return head + body2 + tail
+
+        new_text = offer_re.sub(repl_offer, text)
+
+        if new_text != text:
+            try:
+                with open(_out, "w", encoding=_enc, newline="\\n") as f:
+                    f.write(new_text)
+            except UnicodeEncodeError:
+                with open(_out, "wb") as f:
+                    f.write(new_text.encode(_enc, errors="xmlcharrefreplace"))
+            print("SEO wrap: applied.")
+        else:
+            print("SEO wrap: no changes.")
+    except Exception as e:
+        print("WARN SEO wrap:", e)
+
+_seo_ax.register(_seo_postprocess)
+# ======================= /SEO WRAP =======================
