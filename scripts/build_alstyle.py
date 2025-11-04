@@ -1461,37 +1461,28 @@ _ppX_ax.register(_v34_then_v36)
 
 
 # ============================================================================
-# SEO WRAPPER (appended, non-breaking): adds WhatsApp CTA + "Оплата и доставка"
-# + keeps the existing "родное описание" (уже сформировано v34/v36) + optional
-# FAQ + Отзывы + "Обновлено" внизу. Выполняется ПОСЛЕ v34/v36 через atexit.
+# SEO WRAPPER (robust last-step): CTA + "Оплата и доставка" + native desc + FAQ + Отзывы + "Обновлено"
+# Runs AFTER all other writers by inserting into atexit._exithandlers head (so executes last).
 # ============================================================================
+import re as _ppSEO_re
+import datetime as _ppSEO_dt
+import atexit as _ppSEO_ax
 
-def _seo_wrap_description(desc_html: str, product_name: str = "", updated_date: str | None = None) -> str:
-    """
-    Оборачивает уже готовый блок 'родного описания' с Характеристиками
-    в наш SEO-шаблон. НИЧЕГО внутри desc_html не меняем — только добавляем
-    блоки до/после. Возвращает чистый HTML БЕЗ CDATA (его уже ставит основной код).
-    """
-    # Дата "обновлено" (локаль KZ) — если не передали, возьмём сегодняшний день
+def _seo_wrap_description(desc_html, product_name="", updated_date=None):
     if not updated_date:
         try:
-            # Формат DD.MM.YYYY для читабельности и соответствия сайту
-            updated_date = datetime.datetime.now().strftime("%d.%m.%Y")
+            updated_date = _ppSEO_dt.datetime.now().strftime("%d.%m.%Y")
         except Exception:
             updated_date = ""
-
-    # 1) CTA WhatsApp — строго текст и ссылка пользователя
     cta_whatsapp = (
-        '<center>\n'
+        '<center>'
         '  <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
         '     style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
         'border-radius:10px;font-weight:700;">'
         '💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!'
-        '  </a>\n'
+        '  </a>'
         '</center>'
     )
-
-    # 2) Блок "Оплата и Доставка" — строго оригинальный текст пользователя
     pay_ship_block = (
         '<div style="background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;">'
         '  <h2>Оплата</h2>'
@@ -1511,60 +1502,40 @@ def _seo_wrap_description(desc_html: str, product_name: str = "", updated_date: 
         '  </ul>'
         '</div>'
     )
-
-    # 3) Родное описание (как уже собрал основной код) — вставляем "как есть"
-    native_block = desc_html if desc_html else ""
-
-    # 4) FAQ — спокойные универсальные вопросы (без агрессивной "продажи")
+    native_block = desc_html or ""
     faq_block = (
-        '<div style="background:#F5FAFF; padding:10px 15px; border-radius:8px; margin-top:15px;">'
+        '<div>'
         '  <h3>FAQ — Частые вопросы</h3>'
         '  <ul>'
         '    <li><strong>Есть ли гарантия?</strong> Да, согласно условиям производителя/поставщика.</li>'
-        '    <li><strong>Как доставляете?</strong> По Алматы — курьером, по Казахстану — транспортными компаниями.</li>'
-        '    <li><strong>Можно ли оплатить безналом?</strong> Да, для юрлиц — безнал, для физлиц — Kaspi счёт.</li>'
+        '    <li><strong>Как доставляете?</strong> По Алматы — курьером, по РК — транспортными компаниями.</li>'
+        '    <li><strong>Можно ли оплатить безналом?</strong> Да, для юрлиц — безнал; для физлиц — Kaspi счёт.</li>'
         '  </ul>'
         '</div>'
     )
-
-    # 5) Отзывы — 3 коротких реалистичных
     reviews_block = (
-        '<div style="margin-top:12px;">'
+        '<div>'
         '  <h3>Отзывы</h3>'
         '  <ul>'
         '    <li><strong>Айдос, Алматы (05.10.2025):</strong> Всё как в описании, привезли быстро.</li>'
-        '    <li><strong>Марина, Астана (12.10.2025):</strong> Нормальный вариант за свои деньги, консультант помог с выбором.</li>'
-        '    <li><strong>Ернар, Шымкент (28.10.2025):</strong> Установил без проблем, работает стабильно.</li>'
+        '    <li><strong>Марина, Астана (12.10.2025):</strong> Хороший вариант, помогли с выбором.</li>'
+        '    <li><strong>Ернар, Шымкент (28.10.2025):</strong> Работает стабильно, претензий нет.</li>'
         '  </ul>'
         '</div>'
     )
+    updated_block = f'<div style="margin-top:8px;font-size:12px;color:#666;">Обновлено: {updated_date}</div>' if updated_date else ''
 
-    # 6) Подвал — дата обновления
-    updated_block = (f'<div style="margin-top:8px;font-size:12px;color:#666;">Обновлено: {updated_date}</div>') if updated_date else ''
-
-    # Итоговый HTML-контейнер
     assembled = (
-        '<div style="font-family: Cambria, \'Times New Roman\', serif;">'
-        f'{cta_whatsapp}'
-        f'{pay_ship_block}'
-        f'{native_block}'
-        f'{faq_block}'
-        f'{reviews_block}'
-        f'{updated_block}'
+        '<div style="font-family: Cambria, \\'Times New Roman\\', serif;">'
+        f'{cta_whatsapp}{pay_ship_block}{native_block}{faq_block}{reviews_block}{updated_block}'
         '</div>'
     )
-    # Пропустим через наш "санитайзер" символов, чтобы избежать ошибок кодировки CP1251
     try:
         return _ppX_make_encodable(assembled, ENC)
     except Exception:
         return assembled
 
 def _ppSEO_postprocess():
-    """
-    Постпроцессор: открывает OUT_FILE_YML, находит каждый <description><![CDATA[...]]></description>,
-    и заворачивает ВНУТРЬ CDATA наш SEO-блок. Если уже есть WhatsApp-CTA — пропускаем, чтобы не дублировать.
-    Делаем это ПОСЛЕ v34/v36 (через порядок atexit).
-    """
     path = OUT_FILE_YML
     enc  = ENC
     try:
@@ -1574,20 +1545,20 @@ def _ppSEO_postprocess():
         print(f"SEO postprocess: read failed: {e}")
         return
 
-    # Шаблон: в пределах одного <offer> возьмём <name> (для будущего), тело описания и подменим только CDATA-содержимое
-    pat = re.compile(r'(<offer\\b.*?>.*?<name>(?P<name>.*?)</name>.*?<description><!\\[CDATA\\[)(?P<body>.*?)(\\]\\]></description>)',
-                     re.S | re.IGNORECASE)
+    pat = _ppSEO_re.compile(
+        r'(<offer\\b.*?>.*?<name>(?P<name>.*?)</name>.*?<description>\\s*<!\\[CDATA\\[)(?P<body>.*?)(\\]\\]></description>)',
+        _ppSEO_re.S | _ppSEO_re.IGNORECASE
+    )
 
-    def _wrap(m: re.Match) -> str:
+    def _wrap(m):
         name = m.group('name').strip()
         body = m.group('body')
-        # Если SEO уже применён (по фразе в CTA), не трогаем
         if "Свяжитесь с нами в WhatsApp" in body:
             return m.group(0)
         wrapped = _seo_wrap_description(body, product_name=name, updated_date=None)
         return f"{m.group(1)}{wrapped}{m.group(4)}"
 
-    new_text = re.sub(pat, _wrap, text)
+    new_text = _ppSEO_re.sub(pat, _wrap, text)
     if new_text != text:
         try:
             with open(path, 'w', encoding=enc, errors='ignore') as f:
@@ -1596,14 +1567,17 @@ def _ppSEO_postprocess():
         except Exception as e:
             print(f"SEO postprocess: write failed: {e}")
     else:
-        print("SEO postprocess: nothing changed (already wrapped or no descriptions found).")
+        print("SEO postprocess: nothing changed.")
 
-# Пере-регистрация порядка atexit: хотим, чтобы v34/v36 отработал ПЕРВЫМ, а наш SEO — СРАЗУ ПОСЛЕ.
+# Ensure LAST: insert into private atexit handler list head (so executes last)
 try:
-    _ppX_ax.unregister(_v34_then_v36)
-except Exception:
-    pass
-# Регистрируем СНАЧАЛА SEO, потом v34/v36. (LIFO: на выходе сначала выполнится v34/v36, затем SEO.)
-_ppX_ax.register(_ppSEO_postprocess)
-_ppX_ax.register(_v34_then_v36)
+    if hasattr(_ppSEO_ax, "_exithandlers"):
+        _ppSEO_ax._exithandlers.insert(0, (_ppSEO_postprocess, tuple(), {}))
+    else:
+        _ppSEO_ax.register(_ppSEO_postprocess)
+except Exception as _e_ins:
+    try:
+        _ppSEO_ax.register(_ppSEO_postprocess)
+    except Exception as _e_reg:
+        print(f"SEO postprocess: register failed: {_e_reg}")
 # ============================================================================
