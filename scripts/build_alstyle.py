@@ -1,14 +1,14 @@
 # scripts/build_alstyle.py
 # -*- coding: utf-8 -*-
 """
-# AlStyle -> YML (NO-DESCRIPTION-TOUCH edition)
+AlStyle → YML (NO-DESCRIPTION-TOUCH edition)
 
-# Задача: полностью отключить любые изменения содержимого тега <description>.
-# Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
-# Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords, порядок полей и т.д.) сохранён.
+Задача: полностью отключить любые изменения содержимого тега <description>.
+Мы НЕ создаём/заменяем/форматируем описания — берём их из исходного XML как есть.
+Остальной пайплайн (бренд, цена, available, vendorCode/id, currencyId, keywords, порядок полей и т.д.) сохранён.
 
-# Версия: alstyle-2025-10-30.ndt-1
-# Python: 3.11+
+Версия: alstyle-2025-10-30.ndt-1
+Python: 3.11+
 """
 
 from __future__ import annotations
@@ -131,7 +131,7 @@ def load_source_bytes(src: str) -> bytes:
         except Exception as e:
             last_err = e
             back = RETRY_BACKOFF * i * (1 + random.uniform(-0.2, 0.2))
-#             warn(f"fetch {i}/{RETRIES} failed: {e}; sleep {back:.2f}s")
+            warn(f"fetch {i}/{RETRIES} failed: {e}; sleep {back:.2f}s")
             if i < RETRIES:
                 time.sleep(back)
     raise RuntimeError(f"fetch failed: {last_err}")
@@ -204,11 +204,11 @@ def load_category_rules(path: str) -> Tuple[Set[str], List[CatRule]]:
             ids.add(s); continue
         if len(s) >= 2 and s[0] == "/" and s[-1] == "/":
             try:
-#                 rules.append(CatRule(s, "regex", re.compile(s[1:-1], re.I)))
+                rules.append(CatRule(s, "regex", re.compile(s[1:-1], re.I)))
                 continue
             except Exception:
                 continue
-#         rules.append(CatRule(_norm_text(s), "substr", None))
+        rules.append(CatRule(_norm_text(s), "substr", None))
     return ids, rules
 
 def parse_categories_tree(shop_el: ET.Element) -> Tuple[Dict[str,str], Dict[str,str], Dict[str,Set[str]]]:
@@ -235,7 +235,7 @@ def build_category_path_from_id(cat_id: str, id2name: Dict[str,str], id2parent: 
     seen: Set[str] = set()
     while cur and cur not in seen and cur in id2name:
         seen.add(cur)
-#         names.append(id2name.get(cur, ""))
+        names.append(id2name.get(cur, ""))
         cur = id2parent.get(cur, "")
     names = [n for n in names if n]
     return " ".join(reversed(names)) if names else ""
@@ -401,12 +401,12 @@ def parse_price_number(raw: str) -> Optional[float]:
     if raw is None:
         return None
     s = (raw.strip()
-#            .replace("\xa0", " ")
-#            .replace(" ", "")
-#            .replace("KZT","")
-#            .replace("kzt","")
-#            .replace("₸","")
-#            .replace(",", "."))
+           .replace("\xa0", " ")
+           .replace(" ", "")
+           .replace("KZT","")
+           .replace("kzt","")
+           .replace("₸","")
+           .replace(",", "."))
     if not s:
         return None
     try:
@@ -460,7 +460,7 @@ def _remove_all_price_nodes(offer: ET.Element) -> None:
             offer.remove(node)
 
 def strip_supplier_price_blocks(offer: ET.Element) -> None:
-#     remove_all(offer, "prices", "Prices")
+    remove_all(offer, "prices", "Prices")
     for tag in INTERNAL_PRICE_TAGS:
         remove_all(offer, tag)
 
@@ -495,10 +495,10 @@ def reprice_offers(shop_el: ET.Element, rules: List[PriceRule]) -> Tuple[int,int
 
 # ======================= ПАРАМЕТРЫ/МУСОР =======================
 UNWANTED_PARAM_NAME_RE = re.compile(
-#     r"^(?:\s*(?:благотворительн\w*|снижена\s*цена|новинк\w*|"
-#     r"артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|"
-#     r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|"
-#     r"tn\s*ved|hs\s*code)\s*)$",
+    r"^(?:\s*(?:благотворительн\w*|снижена\s*цена|новинк\w*|"
+    r"артикул(?:\s*/\s*штрихкод)?|оригинальн\w*\s*код|штрихкод|"
+    r"код\s*тн\s*вэд(?:\s*eaeu)?|код\s*тнвэд(?:\s*eaeu)?|тн\s*вэд|тнвэд|"
+    r"tn\s*ved|hs\s*code)\s*)$",
     re.I
 )
 KASPI_CODE_NAME_RE = re.compile(r"^код\s+товара\s+kaspi$", re.I)
@@ -648,14 +648,14 @@ def normalize_available_field(shop_el: ET.Element) -> Tuple[int,int,int,int]:
     t_cnt=f_cnt=st_cnt=ss_cnt=0
     for offer in offers_el.findall("offer"):
         b, src = derive_available(offer)
-#         remove_all(offer, "available")
+        remove_all(offer, "available")
         offer.attrib["available"] = "true" if b else "false"
         if b: t_cnt+=1
         else: f_cnt+=1
         if src=="stock": st_cnt+=1
         if src=="status": ss_cnt+=1
         if DROP_STOCK_TAGS:
-#             remove_all(offer, "quantity_in_stock","quantity","stock","Stock")
+            remove_all(offer, "quantity_in_stock","quantity","stock","Stock")
     return t_cnt, f_cnt, st_cnt, ss_cnt
 
 ARTICUL_RE = re.compile(r"\b([A-Z0-9]{2,}[A-Z0-9\-]{2,})\b", re.I)
@@ -696,9 +696,9 @@ def ensure_vendorcode_with_article(shop_el: ET.Element, prefix: str, create_if_m
                 continue
         if not (vc.text or "").strip() or (vc.text or "").strip().upper() == prefix.upper():
             art = _normalize_code(offer.attrib.get("article") or "") \
-#                or _normalize_code(_extract_article_from_name(get_text(offer,"name"))) \
-#                or _normalize_code(_extract_article_from_url(get_text(offer,"url"))) \
-#                or _normalize_code(offer.attrib.get("id") or "")
+               or _normalize_code(_extract_article_from_name(get_text(offer,"name"))) \
+               or _normalize_code(_extract_article_from_url(get_text(offer,"url"))) \
+               or _normalize_code(offer.attrib.get("id") or "")
             if art:
                 vc.text = art
                 filled_from_art += 1
@@ -737,7 +737,7 @@ def fix_currency_id(shop_el: ET.Element, default_code: str = "KZT") -> int:
         return 0
     touched = 0
     for offer in offers_el.findall("offer"):
-#         remove_all(offer, "currencyId")
+        remove_all(offer, "currencyId")
         ET.SubElement(offer, "currencyId").text = default_code
         touched += 1
     return touched
@@ -773,7 +773,7 @@ def ensure_categoryid_zero_first(shop_el: ET.Element) -> int:
         return 0
     touched = 0
     for offer in offers_el.findall("offer"):
-#         remove_all(offer, "categoryId", "CategoryId")
+        remove_all(offer, "categoryId", "CategoryId")
         cid = ET.Element("categoryId"); cid.text = os.getenv("CATEGORY_ID_DEFAULT","0")
         offer.insert(0, cid)
         touched += 1
@@ -798,7 +798,7 @@ def build_bigrams(words: List[str]) -> List[str]:
     for i in range(len(words)-1):
         a, b = words[i], words[i+1]
         if is_content_word(a) and is_content_word(b):
-#             out.append(f"{a} {b}")
+            out.append(f"{a} {b}")
     return out
 
 def dedup_preserve_order(words: List[str]) -> List[str]:
@@ -940,7 +940,7 @@ def enforce_forced_prices(shop_el: ET.Element) -> int:
         if offer.attrib.get("_force_price"):
             _remove_all_price_nodes(offer)
             ET.SubElement(offer, "price").text = str(PRICE_CAP_VALUE)
-#             offer.attrib.pop("_force_price", None)
+            offer.attrib.pop("_force_price", None)
             touched += 1
     return touched
 
@@ -961,17 +961,17 @@ def render_feed_meta_comment(pairs: Dict[str,str]) -> str:
 
 # ======================= MAIN =======================
 def main() -> None:
-#     log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
+    log(f"Source: {SUPPLIER_URL if SUPPLIER_URL else '(not set)'}")
     data = load_source_bytes(SUPPLIER_URL)
 
     src_root = ET.fromstring(data)
     shop_in  = src_root.find("shop") if src_root.tag.lower() != "shop" else src_root
     if shop_in is None:
-#         err("XML: <shop> not found")
+        err("XML: <shop> not found")
 
     offers_in_el = shop_in.find("offers") or shop_in.find("Offers")
     if offers_in_el is None:
-#         err("XML: <offers> not found")
+        err("XML: <offers> not found")
 
     src_offers = list(offers_in_el.findall("offer"))
 
@@ -1093,7 +1093,7 @@ def main() -> None:
             f.write(xml_text)
     except UnicodeEncodeError as e:
         # Безопасное сохранение с заменой неподдерживаемых символов на XML-референсы
-#         warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
+        warn(f"{ENC} can't encode some characters ({e}); writing with xmlcharrefreplace fallback")
         data_bytes = xml_text.encode(ENC, errors="xmlcharrefreplace")
         with open(OUT_FILE_YML, "wb") as f:
             f.write(data_bytes)
@@ -1102,9 +1102,9 @@ def main() -> None:
     try:
         docs_dir = os.path.dirname(OUT_FILE_YML) or "docs"
         os.makedirs(docs_dir, exist_ok=True)
-#         open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
+        open(os.path.join(docs_dir, ".nojekyll"), "wb").close()
     except Exception as e:
-#         warn(f".nojekyll create warn: {e}")
+        warn(f".nojekyll create warn: {e}")
 
     log(f"Wrote: {OUT_FILE_YML} | encoding={ENC} | description=AS IS")
 
@@ -1220,7 +1220,7 @@ def _X_split_hdr_only(raw: str):
         start, end = m.span()
         prefix = s[:start].strip()
         if prefix: out.append(prefix)
-#         out.append("Характеристики:")
+        out.append("Характеристики:")
         s = s[end:]
         if not s: break
     return out
@@ -1308,7 +1308,7 @@ def _X_post_pretty(xml_text: str, enc: str) -> str:
             raw_intro = "\n".join(_ppX_norm_punct(x) for x in intro_lines if x and x.strip())
             html_intro = _ppX_html.escape(raw_intro, quote=False).replace("\n", "<br>")
             html_intro = _ppX_re.sub(r"(<br>)[ \t]+", r"\1", html_intro)
-#             parts.append(f"<p>{html_intro}</p>")
+            parts.append(f"<p>{html_intro}</p>")
 
         raw_pairs = _X_parse_kv(char_lines)
 
@@ -1336,13 +1336,13 @@ def _X_post_pretty(xml_text: str, enc: str) -> str:
             if vv and vv not in tidy[ck]: tidy[ck].append(vv)
 
         if order:
-#             parts.append("<h3>Характеристики</h3>")
-#             parts.append("<ul>")
+            parts.append("<h3>Характеристики</h3>")
+            parts.append("<ul>")
             for ck in order:
                 vals = tidy.get(ck, [])
                 if not vals: continue
-#                 parts.append(f"<li><strong>{_ppX_html.escape(ck, False)}:</strong> {_ppX_html.escape('; '.join(vals), False)}</li>")
-#             parts.append("</ul>")
+                parts.append(f"<li><strong>{_ppX_html.escape(ck, False)}:</strong> {_ppX_html.escape('; '.join(vals), False)}</li>")
+            parts.append("</ul>")
 
         html = "".join(parts).strip()
         if not html and t:
@@ -1387,9 +1387,9 @@ def _canon_key(k: str) -> str:
 def _enrich_params2desc(block: str) -> str:
     """
     Обогащает описание из <param>:
-#     - Если блок <h3>Характеристики</h3><ul> уже есть — добавляет недостающие КЛЮЧИ из <param> (без дублей по ключам).
-#     - Если блока нет — создаёт новый блок из <param> и вставляет в конец <description> (внутрь CDATA, если есть).
-#     Никакой другой текст описания не меняется.
+    - Если блок <h3>Характеристики</h3><ul> уже есть — добавляет недостающие КЛЮЧИ из <param> (без дублей по ключам).
+    - Если блока нет — создаёт новый блок из <param> и вставляет в конец <description> (внутрь CDATA, если есть).
+    Никакой другой текст описания не меняется.
     """
     WL = {
         "Модель","Совместимость","Для принтеров","Тип печати","Ресурс","Кол-во страниц при 5% заполнении А4",
@@ -1523,7 +1523,7 @@ def _enrich_params2desc(block: str) -> str:
         for k, v in wl_items:
             if k in existing:
                 continue
-#             add_items.append(f"<li><strong>{k}:</strong> {v}</li>")
+            add_items.append(f"<li><strong>{k}:</strong> {v}</li>")
             existing.add(k)
         if not add_items:
             return block
@@ -1579,12 +1579,12 @@ def _v34_then_v36() -> None:
 
         if xml3 != xml:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
-#                 f.write(xml3 if xml3.endswith("\n") else xml3 + "\n")
-#             print("v34 + v36: updated (<param> → «Характеристики»).")
+                f.write(xml3 if xml3.endswith("\n") else xml3 + "\n")
+            print("v34 + v36: updated (<param> → «Характеристики»).")
         else:
-#             print("v34 + v36: no changes.")
+            print("v34 + v36: no changes.")
     except Exception as e:
-#         print("WARN v34+v36:", e)
+        print("WARN v34+v36:", e)
 
 # Unregister any previous postprocessors to avoid double-run
 for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess","_pp2_postprocess","_pp3_postprocess","_pp4_postprocess",
@@ -1600,77 +1600,68 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
+# ========================= FINAL SEO STATIC INJECTOR =========================
+import atexit as __seo_ax
+import re as __seo_re
+import os as __seo_os
 
-# ==========================
-# SEO BLOCK INJECTION (STATIC): WhatsApp + "Оплата и доставка"
-# --------------------------
-# ВАЖНО:
-# • Блок статичный, на русском, не зависит от товара.
-# • Вставляется в НАЧАЛО каждого <description><![CDATA[ ... ]]>, если его ещё нет.
-# • Ничего не экранируем, т.к. блок внутри CDATA.
-# • Повторных вставок избегаем по маркеру "Свяжитесь с нами в WhatsApp".
-# • Запускается в самом конце пайплайна, после записи YML.
-# ==========================
-import atexit
-
-_SEO_HTML_BLOCK = (
-    '<a href="https://api.whatsapp.com/send/?phone=77073270501&text=&type=phone_number&app_absent=0" '
-    'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
-    'border-radius:10px;font-weight:700;">\\n'
-    '  💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!\\n'
-    '</a>\\n'
-    '<div style="background:#FFF6E5;padding:1px 15px;margin-top:10px;">\\n'
-    '  <h2>Оплата</h2>\\n'
-    '  <ul>\\n'
-    '    <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>\\n'
-    '    <li><strong>Удалённая оплата</strong> по <strong>KASPI</strong> счёту для <u>физических лиц</u></li>\\n'
-    '  </ul>\\n'
-    '  <h2>Доставка</h2>\\n'
-    '  <ul>\\n'
-    '    <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>\\n'
-    '    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 дней | Exline.kz</em></li>\\n'
-    '    <li><em><strong>ОТПРАВИМ</strong> любой ТК или автобусом «Сайран»</em></li>\\n'
-    '  </ul>\\n'
-    '</div>\\n'
-)
-
-def _inject_seo_block_into_yml(yml_path: str) -> None:
+def __alstyle_seo_static_inject():
     try:
-        if not os.path.exists(yml_path):
-            # nothing to do
+        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
+        _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
+        if not _out or not __seo_os.path.exists(_out):
             return
-        # YML у нас в windows-1251 по требованиям
-        with open(yml_path, "r", encoding="windows-1251", errors="ignore") as rf:
-            content = rf.read()
+        with open(_out, "rb") as f:
+            data = f.read()
+        try:
+            xml = data.decode(_enc)
+        except Exception:
+            xml = data.decode("utf-8", errors="replace")
 
-        # Если маркер уже есть хотя бы в одном месте — всё равно пробегаем по всем офферам,
-        # но не вставляем в те, где он уже есть.
-        # Паттерн для каждого description CDATA
-        pattern = re.compile(r'(<description><!\[CDATA\[)(.*?)(\]\]></description>)', re.DOTALL | re.IGNORECASE)
+        SEO_HTML = (
+            '<a href="https://api.whatsapp.com/send/?phone=77073270501&text=&type=phone_number&app_absent=0" '
+            'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
+            'border-radius:10px;font-weight:700;"> '
+            '💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут! '
+            '</a>'
+            '<div style="background:#FFF6E5;padding:1px 15px;margin-top:10px;">'
+            '<h2>Оплата</h2>'
+            '<ul>'
+            '<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>'
+            '<li><strong>Удалённая оплата</strong> по <strong>KASPI</strong> счёту для <u>физических лиц</u></li>'
+            '</ul>'
+            '<h2>Доставка</h2>'
+            '<ul>'
+            '<li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>'
+            '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 дней | Exline.kz</em></li>'
+            '<li><em><strong>ОТПРАВИМ</strong> любой ТК или автобусом «Сайран»</em></li>'
+            '</ul>'
+            '</div>'
+        )
 
-        def _one(m: re.Match) -> str:
-            head, inner, tail = m.group(1), m.group(2), m.group(3)
-            # Если блок уже присутствует — оставляем как есть
-            if "Свяжитесь с нами в WhatsApp" in inner:
-                return head + inner + tail
-            # Вставляем в начало, затем перенос строки, затем исходный HTML как есть
-            return head + _SEO_HTML_BLOCK + inner + tail
+        desc_pair_rx = __seo_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', __seo_re.S|__seo_re.I)
+        changed = False
+        def _inject_once(m):
+            nonlocal changed
+            head, mid, tail = m.group(1), m.group(2), m.group(3)
+            if "https://api.whatsapp.com/send/?phone=77073270501" in mid:
+                return m.group(0)
+            if "<![CDATA[" in mid:
+                changed = True
+                return head + SEO_HTML + mid + tail
+            changed = True
+            return head + SEO_HTML + mid + tail
 
-        new_content = pattern.sub(_one, content)
+        new_xml = desc_pair_rx.sub(_inject_once, xml)
+        if new_xml != xml and changed:
+            try:
+                with open(_out, "w", encoding=_enc, newline="\n") as f:
+                    f.write(new_xml if new_xml.endswith("\n") else new_xml + "\n")
+            except UnicodeEncodeError:
+                with open(_out, "wb") as f:
+                    f.write(new_xml.encode(_enc, errors="xmlcharrefreplace"))
+    except Exception as e:
+        print("WARN SEO_INJECT:", e)
 
-        if new_content != content:
-            with open(yml_path, "w", encoding="windows-1251", errors="ignore") as wf:
-                wf.write(new_content)
-    except Exception as _e:
-        # Без фатала: если что-то пошло не так — лучше молча не рушить весь пайплайн
-        # (логи в stdout/stderr на Actions всё равно попадут)
-#         sys.stderr.write(f"[SEO-INJECT] WARN: {_e}\\n")
-
-def _seo_postprocess_atexit():
-    # OUT_FILE из env или дефолт
-    yml_out = os.environ.get("OUT_FILE", "docs/alstyle.yml")
-    _inject_seo_block_into_yml(yml_out)
-
-# Выполняем после завершения основного пайплайна
-atexit.register(_seo_postprocess_atexit)
-# ========================== END SEO BLOCK INJECTION ==========================
+__seo_ax.register(__alstyle_seo_static_inject)
+# ======================= END FINAL SEO STATIC INJECTOR ======================
