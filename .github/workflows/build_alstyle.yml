@@ -1,4 +1,4 @@
-name: Build AlStyle feed
+name: Build_AlStyle
 
 on:
   workflow_dispatch:
@@ -44,7 +44,7 @@ jobs:
           git add docs/alstyle.yml
           if git diff --staged --quiet; then
             echo "No changes to commit."
-          else
-            git commit -m "build: update docs/alstyle.yml from supplier feed"
+          else:
+            git commit -m "build: update docs/alstyle.yml from supplier feed (filtered by categoryId)"
             git push
           fi
