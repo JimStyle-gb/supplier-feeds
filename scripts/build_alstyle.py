@@ -1577,17 +1577,12 @@ def _v34_then_v36() -> None:
             return m.group(0) if body2 == body else m.group(0).replace(body, body2, 1)
         xml3 = _offer_re.sub(_repl_off, xml2)
 
-        # === ВСТАВКА CTA WhatsApp + «Оплата и доставка» КАК САМЫЙ ПОСЛЕДНИЙ ШАГ ===
-        xml_after = _ppX_inject_seo_cta(xml3)
-
-        # Пишем файл, если что-то изменилось (или из-за v34/v36, или из-за CTA)
-        if xml_after != xml:
+        if xml3 != xml:
             with open(_out, "w", encoding=_enc, newline="\n") as f:
-                f.write(xml_after if xml_after.endswith("\n") else xml_after + "\n")
-            print("v34 + v36 + SEO CTA: updated.")
+                f.write(xml3 if xml3.endswith("\n") else xml3 + "\n")
+            print("v34 + v36: updated (<param> → «Характеристики»).")
         else:
-            print("v34 + v36 + SEO CTA: no changes.")
-    
+            print("v34 + v36: no changes.")
     except Exception as e:
         print("WARN v34+v36:", e)
 
@@ -1605,78 +1600,90 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
+# =========================
+# SEO CTA + Оплата/Доставка post-writer (safe for cp1251)
+# =========================
+import io, os, re
 
-# === SEO CTA injector (WhatsApp + "Оплата и доставка"), applied as the very last step ===
-def _ppX_inject_seo_cta(_xml_text: str) -> str:
-    """
-    Добавляет сверху каждого <description> CTA WhatsApp + блок «Оплата и доставка».
-    Ничего не экранируем: HTML вставляется как есть. Повторных вставок избегаем.
-    """
+def _seo_has_cta_block(html: str) -> bool:
+    return "api.whatsapp.com" in html
+
+def _seo_build_cta_block() -> str:
+    return (
+        '<p>'
+        '<a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
+        'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
+        'border-radius:10px;font-weight:700;">'
+        '&#128172; Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!'
+        '</a>'
+        '</p>'
+    )
+
+def _seo_build_payment_delivery_block() -> str:
+    return (
+        '<div style="background:#FFF6E5;padding:10px 12px;border-radius:6px;margin:8px 0;">'
+        '<h3 style="margin:0 0 6px 0;">Оплата</h3>'
+        '<ul style="margin:0 0 8px 18px;padding:0;">'
+        '<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
+        '<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>'
+        '</ul>'
+        '<h3 style="margin:8px 0 6px 0;">Доставка</h3>'
+        '<ul style="margin:0 0 0 18px;padding:0;">'
+        '<li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
+        '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Exline.kz</em></li>'
+        '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией</em></li>'
+        '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
+        '</ul>'
+        '</div>'
+    )
+
+_desc_cdata_pat = re.compile(r'(<description><!\[CDATA\[)(.*?)(\]\]></description>)', re.DOTALL|re.IGNORECASE)
+_desc_plain_pat = re.compile(r'(<description>)(.*?)(</description>)', re.DOTALL|re.IGNORECASE)
+
+def _seo_inject_into_desc_html(desc_html: str) -> str:
+    if _seo_has_cta_block(desc_html):
+        return desc_html
+    prefix = _seo_build_cta_block() + _seo_build_payment_delivery_block()
+    return prefix + desc_html
+
+def inject_seo_blocks_into_xml_text(xml_text: str) -> str:
+    def repl_cdata(m):
+        start, inner, end = m.group(1), m.group(2), m.group(3)
+        new_inner = _seo_inject_into_desc_html(inner)
+        return f"{start}{new_inner}{end}"
+    out = _desc_cdata_pat.sub(repl_cdata, xml_text)
+    def repl_plain(m):
+        start, inner, end = m.group(1), m.group(2), m.group(3)
+        if '<![CDATA[' in inner:
+            return m.group(0)
+        new_inner = _seo_inject_into_desc_html(inner)
+        return f"{start}<![CDATA[{new_inner}]]>{end}"
+    out2 = _desc_plain_pat.sub(repl_plain, out)
+    return out2
+
+def _seo_postprocess_output_file():
+    out_file = os.environ.get('OUT_FILE') or 'docs/alstyle.yml'
     try:
-        _re = __import__("re")
-        # Маркер, чтобы не дублировать
-        _marker = "<!-- CTA_WHATSAPP_OPLATA_BEGIN -->"
-        # Готовый HTML-блок по макету пользователя
-        _cta = (
-            _marker +
-            '<div style="font-family: Cambria, \\'Times New Roman\\', serif;">'
-            '<center>'
-            '<a href="https://api.whatsapp.com/send/?phone=77073270501&text&type=phone_number&app_absent=0" '
-            'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
-            'border-radius:10px;font-weight:700;">'
-            'НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!'
-            '</a>'
-            '</center>'
-            '<div style="background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;">'
-            '<h2>Оплата</h2>'
-            '<ul>'
-            '<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
-            '<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>'
-            '</ul>'
-            '<h2>Доставка</h2>'
-            '<ul>'
-            '<li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
-            '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 дней | '
-            'Сотрудничаем с '
-            '<a href="https://exline.kz/" style="color:#0b3d91;text-decoration:none;"><strong>Exline.kz</strong></a></em></li>'
-            '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>'
-            '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
-            '</ul>'
-            '</div>'
-            '</div>'
-            '<!-- CTA_WHATSAPP_OPLATA_END -->'
-        )
-        # Вариант с CDATA
-        _re_cdata = _re.compile(r'(<description[^>]*><!\\[CDATA\\[)(.*?)(\\]\\]></description>)', _re.S)
-        # Вариант без CDATA
-        _re_plain = _re.compile(r'(<description[^>]*>)(.*?)(</description>)', _re.S)
+        enc = globals().get('OUTPUT_ENCODING', 'windows-1251')
+        with open(out_file, 'r', encoding=enc, errors='strict') as f:
+            xml_text = f.read()
+        if 'api.whatsapp.com' in xml_text:
+            return
+        updated = inject_seo_blocks_into_xml_text(xml_text)
+        with open(out_file, 'w', encoding=enc, errors='strict') as f:
+            f.write(updated)
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        try:
+            print(f"SEO_POSTPROCESS_WARN: {e}")
+        except Exception:
+            pass
 
-        def _inject(body: str) -> str:
-            if _marker in body or "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP" in body:
-                return body
-            # Если уже сверху есть <div> с CTA — пропустим (перестраховка)
-            if "Оплата</h2>" in body and "Доставка</h2>" in body and "api.whatsapp.com" in body:
-                return body
-            # Иначе — добавляем сверху
-            # Небольшая защита: если тело начинается с пробелов/переводов, вставим после них
-            head_ws = ""
-            m_ws = _re.match(r"^([\\s\\uFEFF\\ufeff]+)", body)
-            if m_ws:
-                head_ws = m_ws.group(1)
-                body = body[len(head_ws):]
-            return head_ws + _cta + body
-
-        def _repl_cdata(m):
-            return m.group(1) + _inject(m.group(2)) + m.group(3)
-
-        def _repl_plain(m):
-            return m.group(1) + _inject(m.group(2)) + m.group(3)
-
-        # Сначала пытаемся для CDATA, затем — для обычных
-        _new = _re_cdata.sub(_repl_cdata, _xml_text)
-        if _new == _xml_text:
-            _new = _re_plain.sub(_repl_plain, _xml_text)
-        return _new
-    except Exception as _e:
-        # Если что-то пошло не так — возвращаем как есть (без падения всего пайплайна)
-        return _xml_text
+try:
+    _seo_postprocess_output_file()
+except Exception as _e:
+    try:
+        print(f"SEO_POSTPROCESS_WARN_OUTER: {_e}")
+    except Exception:
+        pass
