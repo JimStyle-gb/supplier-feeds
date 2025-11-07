@@ -1688,16 +1688,12 @@ except Exception as _e:
     except Exception:
         pass
 
-
-if __name__ == '__main__':
+# --- Ensure SEO postprocess runs at very end via atexit (LIFO) ---
+try:
+    import atexit as _ax
+    _ax.register(_seo_postprocess_output_file)
+except Exception as _e:
     try:
-        main()
-    finally:
-        try:
-            _seo_postprocess_output_file()
-        except Exception as _e:
-            try:
-                print(f'SEO_POSTPROCESS_WARN_FINAL: {_e}')
-            except Exception:
-                pass
-
+        print(f'SEO_POSTPROCESS_WARN_ATEXIT: {_e}')
+    except Exception:
+        pass
