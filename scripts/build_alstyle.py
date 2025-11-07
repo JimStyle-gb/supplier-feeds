@@ -1600,98 +1600,77 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
-# ======================= STATIC SEO INJECTION (CTA + Оплата/Доставка) =======================
-# ВАЖНО: Ничего не меняем в логике сборки. Только ПРИ ВЫХОДЕ (atexit) переоткрываем уже записанный YML
-# и добавляем статичный SEO-блок в НАЧАЛО <description> каждого оффера.
-# Блок вставляется ТОЛЬКО если его там ещё нет (по подписи "Свяжитесь с нами в WhatsApp").
 
-import atexit as __seo_ax
-import re as __seo_re
+# ==========================
+# SEO BLOCK INJECTION (STATIC): WhatsApp + "Оплата и доставка"
+# --------------------------
+# ВАЖНО:
+# • Блок статичный, на русском, не зависит от товара.
+# • Вставляется в НАЧАЛО каждого <description><![CDATA[ ... ]]>, если его ещё нет.
+# • Ничего не экранируем, т.к. блок внутри CDATA.
+# • Повторных вставок избегаем по маркеру "Свяжитесь с нами в WhatsApp".
+# • Запускается в самом конце пайплайна, после записи YML.
+# ==========================
+import atexit
 
-__SEO_BLOCK = (
+_SEO_HTML_BLOCK = (
     '<a href="https://api.whatsapp.com/send/?phone=77073270501&text=&type=phone_number&app_absent=0" '
-    'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;'
-    'padding:10px 20px;border-radius:10px;font-weight:700;">'
-    '💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!'
-    '</a>'
-    '<div style="background:#FFF6E5;padding:1px 15px;margin-top:10px;">'
-      '<h2>Оплата</h2><ul>'
-        '<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>'
-        '<li><strong>Удалённая оплата</strong> по <strong>KASPI</strong> счёту для <u>физических лиц</u></li>'
-      '</ul>'
-      '<h2>Доставка</h2><ul>'
-        '<li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>'
-        '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 дней | Exline.kz</em></li>'
-        '<li><em><strong>ОТПРАВИМ</strong> любой ТК или автобусом «Сайран»</em></li>'
-      '</ul>'
-    '</div>'
+    'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
+    'border-radius:10px;font-weight:700;">\\n'
+    '  💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!\\n'
+    '</a>\\n'
+    '<div style="background:#FFF6E5;padding:1px 15px;margin-top:10px;">\\n'
+    '  <h2>Оплата</h2>\\n'
+    '  <ul>\\n'
+    '    <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>\\n'
+    '    <li><strong>Удалённая оплата</strong> по <strong>KASPI</strong> счёту для <u>физических лиц</u></li>\\n'
+    '  </ul>\\n'
+    '  <h2>Доставка</h2>\\n'
+    '  <ul>\\n'
+    '    <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>\\n'
+    '    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 дней | Exline.kz</em></li>\\n'
+    '    <li><em><strong>ОТПРАВИМ</strong> любой ТК или автобусом «Сайран»</em></li>\\n'
+    '  </ul>\\n'
+    '</div>\\n'
 )
 
-# Регексы для различных форм <description>
-__RE_OFF   = __seo_re.compile(r'<offer\\b[^>]*\\bid="[^"]+"[^>]*>(?P<body>.*?)</offer>', __seo_re.S|__seo_re.I)
-__RE_CDATA = __seo_re.compile(r'(<description\\b[^>]*><!\\[CDATA\\[)(?P<content>.*?)(\\]\\]></description>)', __seo_re.S|__seo_re.I)
-__RE_PAIR  = __seo_re.compile(r'(<description\\b[^>]*>)(?P<content>.*?)(</description>)', __seo_re.S|__seo_re.I)
-__RE_SELF  = __seo_re.compile(r'<description\\b[^>]*/\\s*>', __seo_re.I)
-
-def __inject_seo_block_into_offer_html(html: str) -> str:
-    # Если уже есть наш CTA по сигнатуре — ничего не делаем
-    if "Свяжитесь с нами в WhatsApp" in html:
-        return html
-
-    m = __RE_CDATA.search(html)
-    if m:
-        head, content, tail = m.group(1), m.group("content"), m.group(3)
-        new_content = __SEO_BLOCK + (("" if content.startswith("\\n") else "\\n") + content if content else "")
-        return html[:m.start()] + head + new_content + tail + html[m.end():]
-
-    m = __RE_PAIR.search(html)
-    if m:
-        head, content, tail = m.group(1), m.group("content"), m.group(3)
-        new_content = __SEO_BLOCK + (("" if content.startswith("\\n") else "\\n") + content if content else "")
-        return html[:m.start()] + head + new_content + tail + html[m.end():]
-
-    # Самозакрывающийся <description/> → разворачиваем
-    if __RE_SELF.search(html):
-        return __RE_SELF.sub('<description><![CDATA[' + __SEO_BLOCK + ']]></description>', html, count=1)
-
-    # Если вообще нет <description> — добавим его перед </offer>
-    if "<description" not in html.lower():
-        return __seo_re.sub(r"</offer>\\s*$", '<description><![CDATA[' + __SEO_BLOCK + ']]></description></offer>', html, count=1)
-
-    return html
-
-def __alstyle_static_seo_postprocess():
+def _inject_seo_block_into_yml(yml_path: str) -> None:
     try:
-        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
-        _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
-        # читаем как есть
-        with open(_out, "rb") as f:
-            data = f.read()
-        try:
-            xml = data.decode(_enc)
-        except Exception:
-            xml = data.decode("utf-8", errors="replace")
+        if not os.path.exists(yml_path):
+            # nothing to do
+            return
+        # YML у нас в windows-1251 по требованиям
+        with open(yml_path, "r", encoding="windows-1251", errors="ignore") as rf:
+            content = rf.read()
 
-        # Пробегаем по офферам и подставляем блок
-        def _repl(m):
-            body = m.group("body")
-            new_body = __inject_seo_block_into_offer_html(body)
-            return m.group(0) if new_body == body else m.group(0).replace(body, new_body, 1)
+        # Если маркер уже есть хотя бы в одном месте — всё равно пробегаем по всем офферам,
+        # но не вставляем в те, где он уже есть.
+        # Паттерн для каждого description CDATA
+        pattern = re.compile(r'(<description><!\[CDATA\[)(.*?)(\]\]></description>)', re.DOTALL | re.IGNORECASE)
 
-        new_xml = __RE_OFF.sub(_repl, xml)
+        def _one(m: re.Match) -> str:
+            head, inner, tail = m.group(1), m.group(2), m.group(3)
+            # Если блок уже присутствует — оставляем как есть
+            if "Свяжитесь с нами в WhatsApp" in inner:
+                return head + inner + tail
+            # Вставляем в начало, затем перенос строки, затем исходный HTML как есть
+            return head + _SEO_HTML_BLOCK + inner + tail
 
-        if new_xml != xml:
-            # Пишем в той же кодировке; emoji/«кавычки» замены допустимы (xmlcharrefreplace)
-            try:
-                with open(_out, "w", encoding=_enc, newline="\\n") as f:
-                    f.write(new_xml)
-            except UnicodeEncodeError:
-                with open(_out, "wb") as f:
-                    f.write(new_xml.encode(_enc, errors="xmlcharrefreplace"))
-    except Exception as e:
-        # Молча, чтобы не ронять пайплайн
-        pass
+        new_content = pattern.sub(_one, content)
 
-# Регистрируем на выходе, чтобы гарантированно сработало ПОСЛЕ основного сохранения файла
-__seo_ax.register(__alstyle_static_seo_postprocess)
-# ===================== END STATIC SEO INJECTION =====================
+        if new_content != content:
+            with open(yml_path, "w", encoding="windows-1251", errors="ignore") as wf:
+                wf.write(new_content)
+    except Exception as _e:
+        # Без фатала: если что-то пошло не так — лучше молча не рушить весь пайплайн
+        # (логи в stdout/stderr на Actions всё равно попадут)
+        sys.stderr.write(f"[SEO-INJECT] WARN: {_e}\\n")
+
+def _seo_postprocess_atexit():
+    # OUT_FILE из env или дефолт
+    yml_out = os.environ.get("OUT_FILE", "docs/alstyle.yml")
+    _inject_seo_block_into_yml(yml_out)
+
+# Выполняем после завершения основного пайплайна
+atexit.register(_seo_postprocess_atexit)
+# ========================== END SEO BLOCK INJECTION ==========================
