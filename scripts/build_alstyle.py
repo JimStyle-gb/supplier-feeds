@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-scripts/build_alstyle.py — генератор docs/alstyle.yml из фида поставщика Al-Style
-с двумя важными шагами обработки:
-1) ФИЛЬТР по <categoryId> (используем ID ПОСТАВЩИКА из заданного списка).
-2) МИГРАЦИЯ доступности: перенос значения <available>true/false</available> внутрь атрибута
-   самого оффера <offer ... available="true|false"> и удаление дочернего тега <available>,
-   как требует Satu.
+scripts/build_alstyle.py — генератор docs/alstyle.yml из фида поставщика Al-Style.
 
-Выход: docs/alstyle.yml в кодировке Windows-1251 с сохранением исходной структуры YML,
-за исключением удаления лишних <offer> и переноса <available> в атрибут.
-Внешних пояснений минимум — подробные комментарии внутри кода.
+Шаги обработки (в нужном порядке):
+  1) ФИЛЬТР по <categoryId> (используем список ID ПОСТАВЩИКА).
+  2) МИГРАЦИЯ доступности: перенос <available> внутрь атрибута <offer available="true|false">,
+     удаление самого тега <available>.
+  3) ЧИСТКА shop-префикса: удалить всё, что находится внутри <shop> ДО тега <offers>
+     (например, <currencies>, <categories> и т.п.). Оставляем <offers> и всё ПОСЛЕ него.
+  4) ЧИСТКА офферов: удалить из каждого <offer> теги <price>, <url>, <quantity>, <quantity_in_stock>.
+
+Выход: docs/alstyle.yml в кодировке Windows-1251. Структура YML сохраняется,
+кроме описанных удалений/переносов.
 '''
 from __future__ import annotations
 
@@ -42,7 +44,6 @@ TIMEOUT_S = 45
 RETRY = 2
 SLEEP_BETWEEN_RETRY = 2
 HEADERS = {"User-Agent": "AlStyleFeedBot/1.0 (+github-actions; python-requests)"}
-
 
 # ------------------------ Вспомогательные функции ------------------------
 def _ensure_dirs(path: pathlib.Path) -> None:
@@ -120,35 +121,28 @@ def _filter_offers_inplace(root: ET.Element) -> tuple[int, int, int]:
 
 
 # ------------------------ Миграция available → атрибут ------------------------
-_TRUE_WORDS = {
-    "true", "1", "yes", "y", "да", "есть", "в наличии", "наличие", "есть в наличии", "true/false:true"
-}
-_FALSE_WORDS = {
-    "false", "0", "no", "n", "нет", "отсутствует", "нет в наличии", "под заказ", "ожидается", "true/false:false"
-}
+_TRUE_WORDS = {"true", "1", "yes", "y", "да", "есть", "в наличии", "наличие", "есть в наличии"}
+_FALSE_WORDS = {"false", "0", "no", "n", "нет", "отсутствует", "нет в наличии", "под заказ", "ожидается"}
 
 def _to_bool_text(v: str) -> str:
-    """Нормализовать текст в 'true'/'false' для атрибута offer@available."""
+    """Нормализовать строку к 'true'/'false' для offer@available."""
     s = (v or "").strip().lower()
-    # убираем лишние пробелы и двоеточия
     s = s.replace(":", " ").replace("\u00a0", " ").strip()
-    # пробуем маппинг на известные формы
-    if s in _TRUE_WORDS:
+    if s in _TRUE_WORDS:  # явные маркеры «в наличии»
         return "true"
-    if s in _FALSE_WORDS:
+    if s in _FALSE_WORDS:  # явные маркеры «нет»
         return "false"
-    # эвристика: любые 'true'/'false' внутри строки
+    # эвристика на случай произвольных формулировок
     if "true" in s or "да" in s:
         return "true"
     if "false" in s or "нет" in s or "под заказ" in s:
         return "false"
-    # по умолчанию — не доступен (безопасно для маркетплейса)
-    return "false"
+    return "false"  # по умолчанию осторожно считаем «нет»
 
 
 def _migrate_available_inplace(root: ET.Element) -> tuple[int, int, int, int]:
-    """Перенести <available> внутрь атрибута offer@available и удалить сам тег.
-    Возвращает кортеж: (offers_seen, attrs_set, attrs_overridden, tags_removed)."""
+    """Перенести <available> в атрибут offer@available и удалить тег.
+    Возвращает: (offers_seen, attrs_set, attrs_overridden, tags_removed)."""
     shop = root.find("./shop")
     if shop is None:
         return (0, 0, 0, 0)
@@ -164,19 +158,12 @@ def _migrate_available_inplace(root: ET.Element) -> tuple[int, int, int, int]:
 
     for offer in list(offers_el):
         offers_seen += 1
-
-        # найдём дочерний <available>, если есть
         av_el = offer.find("available")
-        av_text = None
-        if av_el is not None:
-            av_text = (av_el.text or "").strip()
-        # вычислим целевое значение атрибута
+        av_text = (av_el.text or "").strip() if av_el is not None else None
         new_attr = _to_bool_text(av_text) if av_text is not None else None
 
-        # если атрибут уже есть — решаем, переопределять ли его
         if new_attr is not None:
             if "available" in offer.attrib:
-                # переопределяем значением из дочернего тега — так просил пользователь
                 if offer.attrib.get("available") != new_attr:
                     attrs_overridden += 1
                 offer.set("available", new_attr)
@@ -184,12 +171,55 @@ def _migrate_available_inplace(root: ET.Element) -> tuple[int, int, int, int]:
                 offer.set("available", new_attr)
                 attrs_set += 1
 
-        # удалить дочерний тег <available>, если он был
         if av_el is not None:
             offer.remove(av_el)
             tags_removed += 1
 
     return (offers_seen, attrs_set, attrs_overridden, tags_removed)
+
+
+# ------------------------ Чистка shop-префикса ------------------------
+def _prune_shop_before_offers(root: ET.Element) -> int:
+    """Удалить все дочерние элементы внутри <shop> ДО <offers>.
+    Возвращает количество удалённых узлов."""
+    shop = root.find("./shop")
+    if shop is None:
+        return 0
+    offers_el = shop.find("offers")
+    if offers_el is None:
+        return 0
+
+    removed = 0
+    # Идём по копии списка детей shop и удаляем, пока не дошли до offers
+    for child in list(shop):
+        if child is offers_el:
+            break  # остановились ровно на offers — его и всё после оставляем
+        shop.remove(child)
+        removed += 1
+    return removed
+
+
+# ------------------------ Чистка офферов от полей ------------------------
+STRIP_OFFER_TAGS = {"price", "url", "quantity", "quantity_in_stock"}
+
+def _strip_offer_fields_inplace(root: ET.Element) -> int:
+    """Удалить из каждого <offer> перечисленные дочерние теги.
+    Возвращает суммарное количество удалений."""
+    shop = root.find("./shop")
+    if shop is None:
+        return 0
+    offers_el = shop.find("offers")
+    if offers_el is None:
+        return 0
+
+    removed = 0
+    for offer in list(offers_el):
+        # собираем в отдельный список, чтобы не путаться при удалении
+        to_remove = [el for el in list(offer) if el.tag in STRIP_OFFER_TAGS]
+        for el in to_remove:
+            offer.remove(el)
+            removed += 1
+    return removed
 
 
 # ------------------------ Основной сценарий ------------------------
@@ -215,9 +245,17 @@ def main() -> int:
     total, kept, dropped = _filter_offers_inplace(root)
     print(f">> Offers total: {total}, kept: {kept}, dropped: {dropped}")
 
-    # 2) Перенос <available> в offer@available
-    seen, set_cnt, overr_cnt, removed_cnt = _migrate_available_inplace(root)
-    print(f">> Offers processed for available: seen={seen}, set={set_cnt}, overridden={overr_cnt}, tags_removed={removed_cnt}")
+    # 2) Перенос <available> в offer@available и удаление тега
+    seen, set_cnt, overr_cnt, removed_av = _migrate_available_inplace(root)
+    print(f">> Available migrated: seen={seen}, set={set_cnt}, overridden={overr_cnt}, tags_removed={removed_av}")
+
+    # 3) Удалить всё в <shop> до <offers>
+    pruned = _prune_shop_before_offers(root)
+    print(f">> Shop prefix pruned: removed_nodes={pruned}")
+
+    # 4) Удалить из офферов теги price/url/quantity/quantity_in_stock
+    stripped = _strip_offer_fields_inplace(root)
+    print(f">> Offer fields stripped: removed_tags_total={stripped}")
 
     # Преобразуем дерево обратно в текст (без декларации) и сохраняем в cp1251
     xml_unicode = ET.tostring(root, encoding="unicode")
