@@ -1600,153 +1600,90 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
+# =========================
+# SEO CTA + Оплата/Доставка post-writer (safe for cp1251)
+# =========================
+import io, os, re
 
-# =============================================================
-# SEO WRAP v2 — добавляет SEO-блоки, не трогая "родное описание"
-# Порядок внутри <description>:
-#   1) CTA WhatsApp + "Оплата и Доставка" + <h2>SEO-заголовок с названием товара</h2>
-#   2) (РОДНОЕ ОПИСАНИЕ — как есть)
-#   3) Блок FAQ (с голубым фоном) + Блок отзывов
-#
-# Идемпотентно: повторный запуск не дублирует блоки (ищем маркеры).
-# Запускается ПОСЛЕ всех предыдущих постпроцессоров через atexit.
-# =============================================================
-import atexit as _seoX_ax
-import re as _seoX_re
-import html as _seoX_html
+def _seo_has_cta_block(html: str) -> bool:
+    return "api.whatsapp.com" in html
 
-def _seoX_cdata_safe(s: str) -> str:
-    return s.replace("]]>", "]]]]><![CDATA[>")
-
-# Готовые фрагменты (дизайн — как согласовано ранее)
-_SEOX_CTA = (
-    '<center>'
-    '<a href="https://api.whatsapp.com/send/?phone=77073270501&text&type=phone_number&app_absent=0" '
-    'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
-    'border-radius:10px;font-weight:700;">'
-    'НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!'
-    '</a>'
-    '</center>'
-)
-
-_SEOX_PAYDEL = (
-    '<div style="background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;">'
-    '<h2>Оплата</h2>'
-    '<ul>'
-    '<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
-    '<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>'
-    '</ul>'
-    '<h2>Доставка</h2>'
-    '<ul>'
-    '<li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
-    '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3-7 рабочих дней | '
-    'Сотрудничаем с <a href="https://exline.kz/" style="color:#0b3d91;text-decoration:none;"><strong>Exline.kz</strong></a></em></li>'
-    '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>'
-    '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
-    '</ul>'
-    '</div>'
-)
-
-def _seoX_faq_block() -> str:
+def _seo_build_cta_block() -> str:
     return (
-        '<div style="background:#EAF4FF; padding:1px 15px; border-radius:0px; margin-top:12px;">'
-        '<h3>FAQ — частые вопросы</h3>'
-        '<ul>'
-        '<li><strong>Есть ли товар в наличии?</strong> Наличие указано на странице. '
-        'Если статус «в наличии» — отправим в тот же или следующий рабочий день.</li>'
-        '<li><strong>Как оформить заказ?</strong> Нажмите «Купить» и оформите. '
-        'Вопросы — пишите в WhatsApp, отвечаем за несколько минут.</li>'
-        '<li><strong>Доставка по РК</strong> По Алматы — курьером, по регионам — Exline или любая удобная вам ТК.</li>'
+        '<p>'
+        '<a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
+        'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
+        'border-radius:10px;font-weight:700;">'
+        '&#128172; Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!'
+        '</a>'
+        '</p>'
+    )
+
+def _seo_build_payment_delivery_block() -> str:
+    return (
+        '<div style="background:#FFF6E5;padding:10px 12px;border-radius:6px;margin:8px 0;">'
+        '<h3 style="margin:0 0 6px 0;">Оплата</h3>'
+        '<ul style="margin:0 0 8px 18px;padding:0;">'
+        '<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
+        '<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>'
+        '</ul>'
+        '<h3 style="margin:8px 0 6px 0;">Доставка</h3>'
+        '<ul style="margin:0 0 0 18px;padding:0;">'
+        '<li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
+        '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Exline.kz</em></li>'
+        '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией</em></li>'
+        '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
         '</ul>'
         '</div>'
     )
 
-def _seoX_reviews_block() -> str:
-    return (
-        '<div style="margin-top:10px;">'
-        '<h3>Отзывы</h3>'
-        '<p><strong>Алия, Алматы (09.2024):</strong> Всё быстро, товар качественный. Спасибо!</p>'
-        '<p><strong>Данияр, Астана (10.2024):</strong> Упаковано отлично, консультация помогла с выбором.</p>'
-        '<p><strong>Марина, Шымкент (11.2024):</strong> Заказ пришёл вовремя, рекомендую магазин.</p>'
-        '</div>'
-    )
+_desc_cdata_pat = re.compile(r'(<description><!\[CDATA\[)(.*?)(\]\]></description>)', re.DOTALL|re.IGNORECASE)
+_desc_plain_pat = re.compile(r'(<description>)(.*?)(</description>)', re.DOTALL|re.IGNORECASE)
 
-# Регексы
-_seoX_offer_re = _seoX_re.compile(r'<offer\\b[^>]*\\bid="([^"]+)"[^>]*>(?P<body>.*?)</offer>', _seoX_re.S|_seoX_re.I)
-_seoX_name_re  = _seoX_re.compile(r'<name>(.*?)</name>', _seoX_re.S|_seoX_re.I)
-_seoX_desc_cdata_re = _seoX_re.compile(r'(<description\\b[^>]*><!\\[CDATA\\[)(.*?)(\\]\\]></description>)', _seoX_re.S|_seoX_re.I)
-_seoX_desc_pair_re  = _seoX_re.compile(r'(<description\\b[^>]*>)(.*?)(</description>)', _seoX_re.S|_seoX_re.I)
+def _seo_inject_into_desc_html(desc_html: str) -> str:
+    if _seo_has_cta_block(desc_html):
+        return desc_html
+    prefix = _seo_build_cta_block() + _seo_build_payment_delivery_block()
+    return prefix + desc_html
 
-def _seoX_make_top(name_text: str) -> str:
-    title = (name_text or "").strip()
-    # Без экранирования внутри CDATA
-    h2 = f'<h2 style="margin:12px 0 6px 0;">{_seoX_html.escape(title, quote=False)}</h2>'
-    return '<!--SEO_TOP_BEGIN-->' + _SEOX_CTA + _SEOX_PAYDEL + h2 + '<!--SEO_TOP_END-->'
+def inject_seo_blocks_into_xml_text(xml_text: str) -> str:
+    def repl_cdata(m):
+        start, inner, end = m.group(1), m.group(2), m.group(3)
+        new_inner = _seo_inject_into_desc_html(inner)
+        return f"{start}{new_inner}{end}"
+    out = _desc_cdata_pat.sub(repl_cdata, xml_text)
+    def repl_plain(m):
+        start, inner, end = m.group(1), m.group(2), m.group(3)
+        if '<![CDATA[' in inner:
+            return m.group(0)
+        new_inner = _seo_inject_into_desc_html(inner)
+        return f"{start}<![CDATA[{new_inner}]]>{end}"
+    out2 = _desc_plain_pat.sub(repl_plain, out)
+    return out2
 
-def _seoX_make_bottom() -> str:
-    return '<!--SEO_BOTTOM_BEGIN-->' + _seoX_faq_block() + _seoX_reviews_block() + '<!--SEO_BOTTOM_END-->'
-
-def _seoX_wrap_block(offer_body: str, prod_name: str) -> str:
-    # Уже обёрнуто?
-    if "SEO_TOP_BEGIN" in offer_body or "НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP" in offer_body:
-        return offer_body
-
-    top = _seoX_make_top(prod_name)
-    bottom = _seoX_make_bottom()
-
-    # 1) CDATA-вариант
-    m = _seoX_desc_cdata_re.search(offer_body)
-    if m:
-        head, content, tail = m.group(1), m.group(2), m.group(3)
-        new_content = top + content + bottom
-        return offer_body[:m.start()] + head + _seoX_cdata_safe(new_content) + tail + offer_body[m.end():]
-
-    # 2) Пара <description>...</description> без CDATA — конвертим в CDATA
-    m2 = _seoX_desc_pair_re.search(offer_body)
-    if m2:
-        head, content, tail = m2.group(1), m2.group(2), m2.group(3)
-        new_cdata = "<![CDATA[" + _seoX_cdata_safe(top + content + bottom) + "]]>"
-        return offer_body[:m2.start()] + "<description>" + new_cdata + "</description>" + offer_body[m2.end():]
-
-    # 3) Описания вовсе нет — создаём
-    insert_html = "<description><![CDATA[" + _seoX_cdata_safe(top + bottom) + "]]></description>"
-    return _seoX_re.sub(r"</offer>\\s*$", insert_html + "\\n</offer>", offer_body, count=1)
-
-def _seoX_apply(xml_text: str, enc: str) -> str:
-    def repl(m):
-        body = m.group('body')
-        # Извлекаем name внутри оффера
-        nm = ""
-        nm_m = _seoX_name_re.search(body)
-        if nm_m:
-            nm = _seoX_html.unescape(nm_m.group(1)).strip()
-        body2 = _seoX_wrap_block(body, nm)
-        return m.group(0) if body2 == body else m.group(0).replace(body, body2, 1)
-
-    return _seoX_offer_re.sub(repl, xml_text)
-
-def _seoX_run() -> None:
+def _seo_postprocess_output_file():
+    out_file = os.environ.get('OUT_FILE') or 'docs/alstyle.yml'
     try:
-        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
-        _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
-        with open(_out, "rb") as f:
-            data = f.read()
-        try:
-            xml = data.decode(_enc)
-        except Exception:
-            xml = data.decode("utf-8", errors="replace")
-
-        new_xml = _seoX_apply(xml, _enc)
-
-        if new_xml != xml:
-            with open(_out, "w", encoding=_enc, newline="\\n") as f:
-                f.write(new_xml if new_xml.endswith("\\n") else new_xml + "\\n")
-            print("SEO WRAP v2: applied.")
-        else:
-            print("SEO WRAP v2: no changes.")
+        enc = globals().get('OUTPUT_ENCODING', 'windows-1251')
+        with open(out_file, 'r', encoding=enc, errors='strict') as f:
+            xml_text = f.read()
+        if 'api.whatsapp.com' in xml_text:
+            return
+        updated = inject_seo_blocks_into_xml_text(xml_text)
+        with open(out_file, 'w', encoding=enc, errors='strict') as f:
+            f.write(updated)
+    except FileNotFoundError:
+        pass
     except Exception as e:
-        print("WARN SEO WRAP v2:", e)
+        try:
+            print(f"SEO_POSTPROCESS_WARN: {e}")
+        except Exception:
+            pass
 
-# Регистрируем ПОСЛЕ всех прошлых постпроцессоров
-_seoX_ax.register(_seoX_run)
-# ========================= end SEO WRAP v2 =========================
+try:
+    _seo_postprocess_output_file()
+except Exception as _e:
+    try:
+        print(f"SEO_POSTPROCESS_WARN_OUTER: {_e}")
+    except Exception:
+        pass
