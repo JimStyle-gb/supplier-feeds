@@ -221,7 +221,7 @@ def _prune_shop_before_offers(root: ET.Element) -> int:
 
 
 # ------------------------ Шаг 4. Удаление тегов из <offer> ------------------------
-STRIP_OFFER_TAGS = {"price", "url", "quantity", "quantity_in_stock"}
+STRIP_OFFER_TAGS = {"url", "quantity", "quantity_in_stock"}
 
 def _strip_offer_fields_inplace(root: ET.Element) -> int:
     """Удалить из каждого <offer> перечисленные дочерние теги. Вернуть общее количество удалённых тегов."""
@@ -311,6 +311,97 @@ def _apply_vendorcode_prefix_and_id(root: ET.Element, prefix: str = "AS") -> tup
     return (offers_updated, vcodes_changed)
 
 
+
+# ------------------------ Шаг 8. Сортировка тегов внутри <offer> ------------------------
+def _reorder_offer_children_inplace(root: ET.Element) -> int:
+    """
+    Отсортировать дочерние элементы в каждом <offer> в точном порядке:
+      <categoryId>, <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <description>, <param>.
+    Несуществующие теги игнорируются. Повторяющиеся теги (<picture>, <param>) сохраняют свой внутренний порядок.
+    Прочие теги (если есть) будут добавлены в конце, сохранив исходный порядок.
+    Вернёт количество обработанных офферов.
+    """
+    shop = root.find("./shop")
+    if shop is None:
+        return 0
+    offers_el = shop.find("offers")
+    if offers_el is None:
+        return 0
+
+    ORDER = ["categoryId","vendorCode","name","price","picture","vendor","currencyId","description","param"]
+    processed = 0
+
+    for offer in list(offers_el):
+        children = list(offer)
+        if not children:
+            continue
+
+        # Карта: тег -> список элементов (в исходном порядке)
+        tag_map = {}
+        for ch in children:
+            tag_map.setdefault(ch.tag, []).append(ch)
+
+        # Новый порядок
+        new_children = []
+        for t in ORDER:
+            if t in tag_map:
+                new_children.extend(tag_map.pop(t))
+
+        # Остальные теги — в конце, строго в исходном порядке появления
+        # Для этого пройдём исходный список и добавим те, чьё имя ещё осталось в tag_map
+        for ch in children:
+            if ch.tag in tag_map and tag_map[ch.tag]:
+                new_children.append(ch)
+                tag_map[ch.tag].pop(0)
+                if not tag_map[ch.tag]:
+                    tag_map.pop(ch.tag, None)
+
+        # Пересобираем узлы
+        for ch in list(offer):
+            offer.remove(ch)
+        offer.extend(new_children)
+        processed += 1
+
+    return processed
+
+# ------------------------ Шаг 7. Переименование <purchase_price> в <price> ------------------------
+def _rename_purchase_price_to_price(root: ET.Element) -> int:
+    """
+    Во всех <offer> переименовать тег <purchase_price> в <price>.
+    Если у оффера уже есть <price>, сперва удаляем его и затем создаём новый <price> из <purchase_price>.
+    Возвращает количество преобразованных вхождений (сколько тегов purchase_price заменено).
+    """
+    shop = root.find("./shop")
+    if shop is None:
+        return 0
+    offers_el = shop.find("offers")
+    if offers_el is None:
+        return 0
+
+    converted = 0
+    for offer in list(offers_el):
+        pp_list = offer.findall("purchase_price")
+        if not pp_list:
+            continue
+
+        # Удалим все существующие <price>, чтобы не было дублей
+        for old_price in offer.findall("price"):
+            offer.remove(old_price)
+
+        # Заменим каждый <purchase_price> на <price>
+        for pp in pp_list:
+            new_price = ET.Element("price")
+            new_price.text = pp.text or ""
+            # перенесём атрибуты при их наличии
+            for k, v in pp.attrib.items():
+                new_price.set(k, v)
+            # вставим новый <price> рядом — порядок выправит шаг сортировки
+            offer.append(new_price)
+            # удалим исходный <purchase_price>
+            offer.remove(pp)
+            converted += 1
+
+    return converted
 # ------------------------ Основной сценарий ------------------------
 def main() -> int:
     print(">> Скачивание фида поставщика...")
@@ -350,10 +441,15 @@ def main() -> int:
     print(f">> Params removed by name: {params_removed}")
 
     # 6) Префикс AS в vendorCode и установка offer@id
-    offers_upd, vcodes_chg = _apply_vendorcode_prefix_and_id(root, prefix="AS")
-    print(f">> VendorCode prefixed and id synced: offers={offers_upd}, vendorCodes_changed={vcodes_chg}")
+    offers_upd, vcodes_chg = _apply_vendorcode_prefix_and_id(root, prefix="AS")\1
+    # 7) Переименовываем <purchase_price> в <price>
+    converted = _rename_purchase_price_to_price(root)
+    print(f">> purchase_price→price converted: {converted}")
 
-    # Сохранение результата
+# 8) Сортируем дочерние теги внутри каждого <offer>
+    reordered = _reorder_offer_children_inplace(root)
+    print(f">> Offers reordered: {reordered}")
+# Сохранение результата
     xml_unicode = ET.tostring(root, encoding="unicode")
     _ensure_dirs(OUT_FILE)
     _write_windows_1251(OUT_FILE, xml_unicode)
