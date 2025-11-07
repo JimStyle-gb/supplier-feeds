@@ -1,191 +1,181 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Генератор docs/alstyle.yml из поставщика Al-Style.
-Требование пользователя: "скопировать все офферы из файла поставщика".
-Реализация: скачиваем исходный YML (XML) целиком и пересохраняем в docs/alstyle.yml
-с кодировкой Windows-1251, не меняя структуру и содержимое.
+'''
+Генератор docs/alstyle.yml из поставщика Al-Style c фильтрацией по <categoryId>.
+Требование: вшить список категорий прямо в код (через запятую) и оставить только офферы,
+у которых <categoryId> входит в список.
 
-⚠️ ЛОГИН/ПАРОЛЬ ВШИТЫ ПО ПРОСЬБЕ ПОЛЬЗОВАТЕЛЯ.
-Если позже понадобится безопасно хранить — переносим в GitHub Secrets.
+ЛОГИН/ПАРОЛЬ ВШИТЫ ПО ПРОСЬБЕ ПОЛЬЗОВАТЕЛЯ.
+Если понадобится безопасное хранение — перенести в GitHub Secrets.
 
-Поведение:
-1) Пытаемся скачать по прямой ссылке.
-2) Если контент не получен, пробуем HTTP Basic Auth.
-3) Если заголовок XML содержит encoding, переписываем его на windows-1251.
-4) Записываем файл docs/alstyle.yml (создаём каталоги при необходимости).
-"""
-
+Выход: docs/alstyle.yml в кодировке Windows-1251.
+'''
 from __future__ import annotations
-import os
-import re
+
+import pathlib
 import sys
 import time
-import pathlib
-import typing as t
+import xml.etree.ElementTree as ET
+from typing import Iterable
 
 import requests
 from requests.auth import HTTPBasicAuth
 
-# ---------- Настройки ----------
+# ------------------------ Конфигурация ------------------------
 SUPPLIER_URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 
 # Вшитые креды (по запросу пользователя)
 USERNAME = "info@complex-solutions.kz"
 PASSWORD = "Aa123456"
 
-# Выход
+# Список categoryId, вшитый одной строкой (через запятую), чтобы не занимать много места в коде
+ALLOWED_CATEGORY_IDS_CSV = (
+    "3540,3541,3542,3543,3544,3545,3566,3567,3569,3570,3580,3688,3708,3721,3722,"
+    "4889,4890,4895,5017,5075,5649,5710,5711,5712,5713,21279,21281,21291,21356,"
+    "21367,21368,21369,21370,21371,21372,21451,21498,21500,21501,21572,21573,"
+    "21574,21575,21576,21578,21580,21581,21583,21584,21585,21586,21588,21591,"
+    "21640,21664,21665,21666,21698"
+)
+
+# Преобразуем CSV-строку в множество строк-идентификаторов (strip для надёжности)
+ALLOWED_CATEGORY_IDS = {x.strip() for x in ALLOWED_CATEGORY_IDS_CSV.split(",") if x.strip()}
+
+# Выходной файл и кодировка
 OUT_FILE = pathlib.Path("docs/alstyle.yml")
 OUTPUT_ENCODING = "windows-1251"
 
 # Сетевые параметры
 TIMEOUT_S = 45
-RETRY = 2                # лёгкий ретрай на случай нестабильности
-SLEEP_BETWEEN_RETRY = 2  # сек между ретраями
-HEADERS = {
-    "User-Agent": "AlStyleFeedBot/1.0 (+github-actions; python-requests)"
-}
+RETRY = 2                # число повторов при неудаче
+SLEEP_BETWEEN_RETRY = 2  # пауза между попытками
+HEADERS = {"User-Agent": "AlStyleFeedBot/1.0 (+github-actions; python-requests)"}
 
 
-# ---------- Вспомогательные функции ----------
+# ------------------------ Утилиты ------------------------
 def _ensure_dirs(path: pathlib.Path) -> None:
     """Создать родительские каталоги для файла, если их нет."""
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
-def _try_fetch(url: str) -> requests.Response | None:
+def _fetch(url: str) -> bytes | None:
     """
-    Попытаться скачать URL без авторизации.
-    Возвращает Response при 200 и непустом теле, иначе None.
+    Скачивание фида.
+    1) Пытаемся без авторизации.
+    2) Если не получилось — с Basic Auth.
+    Возвращаем байты XML при успехе, иначе None.
     """
-    try:
-        resp = requests.get(url, headers=HEADERS, timeout=TIMEOUT_S)
-        if resp.status_code == 200 and resp.content and b"<yml_catalog" in resp.content:
-            return resp
-    except requests.RequestException:
-        return None
-    return None
-
-
-def _try_fetch_basic(url: str, user: str, pwd: str) -> requests.Response | None:
-    """
-    Попытаться скачать URL с HTTP Basic Auth.
-    Возвращает Response при 200 и непустом теле, иначе None.
-    """
-    try:
-        resp = requests.get(url, headers=HEADERS, timeout=TIMEOUT_S,
-                            auth=HTTPBasicAuth(user, pwd))
-        if resp.status_code == 200 and resp.content and b"<yml_catalog" in resp.content:
-            return resp
-    except requests.RequestException:
-        return None
-    return None
-
-
-def _decode_best_effort(data: bytes) -> str:
-    """
-    Аккуратно декодировать байты в текст.
-    Пробуем UTF-8, затем cp1251, затем iso-8859-1. В крайнем случае — 'latin-1'.
-    """
-    for enc in ("utf-8", "cp1251", "windows-1251", "iso-8859-1", "latin-1"):
+    # 1) Без авторизации
+    for attempt in range(1, RETRY + 2):
         try:
-            return data.decode(enc)
-        except UnicodeDecodeError:
-            continue
-    # Последний шанс: декодируем игнорируя ошибки (чтобы ничего не потерять — ниже заменим спецсимволами)
-    return data.decode("utf-8", errors="ignore")
+            r = requests.get(url, headers=HEADERS, timeout=TIMEOUT_S)
+            if r.status_code == 200 and r.content:
+                return r.content
+        except requests.RequestException:
+            pass
+        if attempt <= RETRY:
+            time.sleep(SLEEP_BETWEEN_RETRY)
+
+    # 2) Basic Auth
+    auth = HTTPBasicAuth(USERNAME, PASSWORD)
+    for attempt in range(1, RETRY + 2):
+        try:
+            r = requests.get(url, headers=HEADERS, timeout=TIMEOUT_S, auth=auth)
+            if r.status_code == 200 and r.content:
+                return r.content
+        except requests.RequestException:
+            pass
+        if attempt <= RETRY:
+            time.sleep(SLEEP_BETWEEN_RETRY)
+
+    return None
 
 
-def _force_xml_decl_encoding(xml_text: str, target_enc: str = "windows-1251") -> str:
+def _xml_to_unicode(root: ET.Element) -> str:
     """
-    Заменить/добавить XML декларацию на windows-1251.
-    Сохраняем остальной контент 1:1.
+    Преобразовать XML-дерево в unicode-строку без декларации.
+    Декларацию с encoding добавим вручную.
     """
-    xml_decl_re = re.compile(r'^<\?xml[^>]*\?>', flags=re.IGNORECASE | re.DOTALL)
-    enc_re = re.compile(r'encoding\s*=\s*["\'][^"\']+["\']', flags=re.IGNORECASE)
-
-    if xml_decl_re.search(xml_text):
-        # Уже есть декларация — приводим encoding к нужному
-        def _repl(m: re.Match) -> str:
-            decl = m.group(0)
-            if enc_re.search(decl):
-                decl = enc_re.sub(f'encoding="{target_enc}"', decl)
-            else:
-                # Добавляем encoding, если вдруг его не было
-                decl = decl[:-2] + f' encoding="{target_enc}"?>'
-            return decl
-
-        return xml_decl_re.sub(_repl, xml_text, count=1)
-    else:
-        # Добавляем декларацию в начало
-        return f'<?xml version="1.0" encoding="{target_enc}"?>\n' + xml_text.lstrip()
+    return ET.tostring(root, encoding="unicode")
 
 
-def _encode_windows_1251(xml_text: str) -> bytes:
+def _write_windows_1251(path: pathlib.Path, xml_body_unicode: str) -> None:
     """
-    Закодировать текст в Windows-1251 максимально безопасно.
-    Символы вне диапазона заменяем числовыми ссылками (xmlcharrefreplace),
-    чтобы не потерять информацию и сохранить валидный XML.
+    Записать XML с декларацией и кодировкой Windows-1251.
+    Символы вне cp1251 заменяются на числовые ссылки (xmlcharrefreplace).
     """
-    return xml_text.encode(OUTPUT_ENCODING, errors="xmlcharrefreplace")
-
-
-def _write_bytes(path: pathlib.Path, data: bytes) -> None:
-    """Записать байты в файл."""
+    decl = '<?xml version="1.0" encoding="windows-1251"?>\n'
+    data = (decl + xml_body_unicode).encode(OUTPUT_ENCODING, errors="xmlcharrefreplace")
     with open(path, "wb") as f:
         f.write(data)
 
 
-# ---------- Основная логика ----------
+def _iter_offers(shop_el: ET.Element):
+    """Итератор по <offer> внутри <shop>/<offers>."""
+    offers_el = shop_el.find("offers")
+    if offers_el is None:
+        return []
+    return list(offers_el)  # возвращаем копию списка для безопасного удаления
+
+
+def _filter_offers_inplace(root: ET.Element):
+    """
+    Удалить из дерева все <offer>, у которых <categoryId> не в ALLOWED_CATEGORY_IDS.
+    Возвращает (total, kept, dropped).
+    """
+    shop = root.find("./shop")
+    if shop is None:
+        return (0, 0, 0)
+
+    offers_el = shop.find("offers")
+    if offers_el is None:
+        return (0, 0, 0)
+
+    total = 0
+    kept = 0
+    dropped = 0
+
+    # Проходим по копии, чтобы безопасно удалять из исходного родителя
+    for offer in list(offers_el):
+        total += 1
+        cat_el = offer.find("categoryId")
+        cat_text = (cat_el.text or "").strip() if cat_el is not None else ""
+        if cat_text in ALLOWED_CATEGORY_IDS:
+            kept += 1
+        else:
+            offers_el.remove(offer)
+            dropped += 1
+
+    return (total, kept, dropped)
+
+
+# ------------------------ Основной сценарий ------------------------
 def main() -> int:
     print(">> Fetching supplier feed...")
-
-    resp: requests.Response | None = None
-
-    # 1) Пытаемся скачать напрямую
-    for attempt in range(1, RETRY + 2):  # первая + ретраи
-        resp = _try_fetch(SUPPLIER_URL)
-        if resp:
-            break
-        if attempt <= RETRY:
-            time.sleep(SLEEP_BETWEEN_RETRY)
-
-    # 2) Если не вышло — пробуем Basic Auth
-    if not resp:
-        for attempt in range(1, RETRY + 2):
-            resp = _try_fetch_basic(SUPPLIER_URL, USERNAME, PASSWORD)
-            if resp:
-                break
-            if attempt <= RETRY:
-                time.sleep(SLEEP_BETWEEN_RETRY)
-
-    if not resp:
+    raw = _fetch(SUPPLIER_URL)
+    if not raw:
         print("!! Не удалось скачать фид поставщика. Проверьте доступ/креды/URL.", file=sys.stderr)
         return 2
 
-    # Декодируем текст максимально бережно
-    raw = resp.content
-    text = _decode_best_effort(raw)
-
-    # Быстрая sanity-проверка на наличие корня YML
-    if "<yml_catalog" not in text:
-        print("!! Ответ получен, но не похож на YML/XML Yandex Market (нет <yml_catalog>).", file=sys.stderr)
+    try:
+        # Парсим напрямую байты — ElementTree сам учтёт декларацию encoding
+        root = ET.fromstring(raw)
+    except ET.ParseError as e:
+        print(f"!! Ошибка парсинга XML: {e}", file=sys.stderr)
         return 3
 
-    # Принудительно ставим encoding=windows-1251 в декларации
-    text = _force_xml_decl_encoding(text, target_enc=OUTPUT_ENCODING)
+    if root.tag.lower() != "yml_catalog":
+        print("!! Корневой тег не <yml_catalog>. Проверьте формат поставщика.", file=sys.stderr)
+        return 4
 
-    # Кодируем в CP1251 c заменой нерепрезентируемых символов на &#...;
-    out_bytes = _encode_windows_1251(text)
+    total, kept, dropped = _filter_offers_inplace(root)
+    print(f">> Offers total: {total}, kept: {kept}, dropped: {dropped}")
 
-    # Гарантируем наличие каталогов и записываем файл
+    # Преобразуем обратно в текст и записываем Windows-1251
+    xml_unicode = _xml_to_unicode(root)
     _ensure_dirs(OUT_FILE)
-    _write_bytes(OUT_FILE, out_bytes)
+    _write_windows_1251(OUT_FILE, xml_unicode)
 
-    # Короткая сводка в лог
-    size_kb = len(out_bytes) / 1024.0
-    print(f">> Wrote {OUT_FILE} ({size_kb:.1f} KiB)")
-
+    print(f">> Written: {OUT_FILE}")
     return 0
 
 
