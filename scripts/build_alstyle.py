@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-scripts/build_alstyle.py — генератор docs/alstyle.yml из фида поставщика Al-Style.
+scripts/build_alstyle.py — generator of docs/alstyle.yml from Al-Style supplier feed.
 
-Шаги обработки (в нужном порядке):
-  1) ФИЛЬТР по <categoryId> (используем список ID ПОСТАВЩИКА).
-  2) МИГРАЦИЯ доступности: перенос <available> внутрь атрибута <offer available="true|false">,
-     удаление самого тега <available>.
-  3) ЧИСТКА shop-префикса: удалить всё, что находится внутри <shop> ДО тега <offers>
-     (например, <currencies>, <categories> и т.п.). Оставляем <offers> и всё ПОСЛЕ него.
-  4) ЧИСТКА офферов: удалить из каждого <offer> теги <price>, <url>, <quantity>, <quantity_in_stock>.
+Processing steps (in order):
+  1) Category filter by <categoryId> (supplier IDs).
+  2) Move <available> value into offer@available attribute and remove <available> tag.
+  3) Prune everything under <shop> before <offers> (keep <offers> and what follows).
+  4) Remove from each <offer> the tags: <price>, <url>, <quantity>, <quantity_in_stock>.
 
-Выход: docs/alstyle.yml в кодировке Windows-1251. Структура YML сохраняется,
-кроме описанных удалений/переносов.
+Output: docs/alstyle.yml encoded as Windows-1251. Keeps overall structure except listed edits.
 '''
 from __future__ import annotations
 
@@ -24,36 +21,36 @@ import xml.etree.ElementTree as ET
 import requests
 from requests.auth import HTTPBasicAuth
 
-# ------------------------ Конфигурация ------------------------
+# ------------------------ Config ------------------------
 SUPPLIER_URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 
-# Жёстко вшитые логин/пароль (по просьбе пользователя)
+# Hard-coded credentials (per user request)
 USERNAME = "info@complex-solutions.kz"
 PASSWORD = "Aa123456"
 
-# Список categoryId ПОСТАВЩИКА (ОДНА CSV-строка, компактно)
+# Supplier category IDs as one CSV string
 ALLOWED_CATEGORY_IDS_CSV = "3540,3541,3542,3543,3544,3545,3566,3567,3569,3570,3580,3688,3708,3721,3722,4889,4890,4895,5017,5075,5649,5710,5711,5712,5713,21279,21281,21291,21356,21367,21368,21369,21370,21371,21372,21451,21498,21500,21501,21572,21573,21574,21575,21576,21578,21580,21581,21583,21584,21585,21586,21588,21591,21640,21664,21665,21666,21698"
 ALLOWED_CATEGORY_IDS = {x.strip() for x in ALLOWED_CATEGORY_IDS_CSV.split(",") if x.strip()}
 
-# Выходной файл и кодировка
+# Output file and encoding
 OUT_FILE = pathlib.Path("docs/alstyle.yml")
 OUTPUT_ENCODING = "windows-1251"
 
-# Сетевые параметры
+# Network
 TIMEOUT_S = 45
 RETRY = 2
 SLEEP_BETWEEN_RETRY = 2
 HEADERS = {"User-Agent": "AlStyleFeedBot/1.0 (+github-actions; python-requests)"}
 
-# ------------------------ Вспомогательные функции ------------------------
+# ------------------------ Helpers ------------------------
 def _ensure_dirs(path: pathlib.Path) -> None:
-    """Создать каталоги назначения, если их ещё нет."""
+    """Create target dirs if missing."""
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
 def _fetch(url: str) -> bytes | None:
-    """Скачать фид: пробуем без авторизации, затем с Basic Auth; возвращаем байты либо None."""
-    # 1) Без авторизации
+    """Fetch feed: try w/o auth, then with Basic Auth."""
+    # 1) No auth
     for attempt in range(1, RETRY + 2):
         try:
             r = requests.get(url, headers=HEADERS, timeout=TIMEOUT_S)
@@ -80,16 +77,16 @@ def _fetch(url: str) -> bytes | None:
 
 
 def _write_windows_1251(path: pathlib.Path, xml_body_unicode: str) -> None:
-    """Записать XML с декларацией и Windows-1251; вне-диапазонные символы → числовые сущности."""
+    """Write XML with windows-1251 declaration; out-of-range chars use numeric entities."""
     decl = '<?xml version="1.0" encoding="windows-1251"?>\n'
     data = (decl + xml_body_unicode).encode(OUTPUT_ENCODING, errors="xmlcharrefreplace")
     with open(path, "wb") as f:
         f.write(data)
 
 
-# ------------------------ Фильтрация по категориям ------------------------
+# ------------------------ Category filter ------------------------
 def _filter_offers_inplace(root: ET.Element) -> tuple[int, int, int]:
-    """Удалить все <offer>, у которых <categoryId> НЕ входит в ALLOWED_CATEGORY_IDS. Возвращает (total, kept, dropped)."""
+    """Remove offers whose <categoryId> is not in ALLOWED_CATEGORY_IDS. Return (total, kept, dropped)."""
     shop = root.find("./shop")
     if shop is None:
         return (0, 0, 0)
@@ -102,12 +99,12 @@ def _filter_offers_inplace(root: ET.Element) -> tuple[int, int, int]:
     kept = 0
     dropped = 0
 
-    for offer in list(offers_el):  # идём по копии, чтобы безопасно удалять
+    for offer in list(offers_el):
         total += 1
         cat_el = offer.find("categoryId")
         cat_text = (cat_el.text or "").strip() if cat_el is not None else ""
 
-        # Нормализуем числовые строки (например, "021" -> "21") для надёжного сравнения
+        # normalize numeric strings (e.g., "021" -> "21")
         if cat_text.isdigit():
             cat_text = str(int(cat_text))
 
@@ -120,29 +117,26 @@ def _filter_offers_inplace(root: ET.Element) -> tuple[int, int, int]:
     return (total, kept, dropped)
 
 
-# ------------------------ Миграция available → атрибут ------------------------
+# ------------------------ available -> attribute ------------------------
 _TRUE_WORDS = {"true", "1", "yes", "y", "да", "есть", "в наличии", "наличие", "есть в наличии"}
 _FALSE_WORDS = {"false", "0", "no", "n", "нет", "отсутствует", "нет в наличии", "под заказ", "ожидается"}
 
 def _to_bool_text(v: str) -> str:
-    """Нормализовать строку к 'true'/'false' для offer@available."""
     s = (v or "").strip().lower()
     s = s.replace(":", " ").replace("\u00a0", " ").strip()
-    if s in _TRUE_WORDS:  # явные маркеры «в наличии»
+    if s in _TRUE_WORDS:
         return "true"
-    if s in _FALSE_WORDS:  # явные маркеры «нет»
+    if s in _FALSE_WORDS:
         return "false"
-    # эвристика на случай произвольных формулировок
     if "true" in s or "да" in s:
         return "true"
     if "false" in s or "нет" in s or "под заказ" in s:
         return "false"
-    return "false"  # по умолчанию осторожно считаем «нет»
+    return "false"
 
 
 def _migrate_available_inplace(root: ET.Element) -> tuple[int, int, int, int]:
-    """Перенести <available> в атрибут offer@available и удалить тег.
-    Возвращает: (offers_seen, attrs_set, attrs_overridden, tags_removed)."""
+    """Move <available> into offer@available and drop the tag. Return (seen, set, overridden, removed)."""
     shop = root.find("./shop")
     if shop is None:
         return (0, 0, 0, 0)
@@ -178,10 +172,9 @@ def _migrate_available_inplace(root: ET.Element) -> tuple[int, int, int, int]:
     return (offers_seen, attrs_set, attrs_overridden, tags_removed)
 
 
-# ------------------------ Чистка shop-префикса ------------------------
+# ------------------------ Prune <shop> before <offers> ------------------------
 def _prune_shop_before_offers(root: ET.Element) -> int:
-    """Удалить все дочерние элементы внутри <shop> ДО <offers>.
-    Возвращает количество удалённых узлов."""
+    """Remove all children of <shop> before <offers>. Return count removed."""
     shop = root.find("./shop")
     if shop is None:
         return 0
@@ -190,21 +183,19 @@ def _prune_shop_before_offers(root: ET.Element) -> int:
         return 0
 
     removed = 0
-    # Идём по копии списка детей shop и удаляем, пока не дошли до offers
     for child in list(shop):
         if child is offers_el:
-            break  # остановились ровно на offers — его и всё после оставляем
+            break
         shop.remove(child)
         removed += 1
     return removed
 
 
-# ------------------------ Чистка офферов от полей ------------------------
+# ------------------------ Strip tags from each offer ------------------------
 STRIP_OFFER_TAGS = {"price", "url", "quantity", "quantity_in_stock"}
 
 def _strip_offer_fields_inplace(root: ET.Element) -> int:
-    """Удалить из каждого <offer> перечисленные дочерние теги.
-    Возвращает суммарное количество удалений."""
+    """Remove specified child tags from each <offer>. Return total removed."""
     shop = root.find("./shop")
     if shop is None:
         return 0
@@ -214,7 +205,6 @@ def _strip_offer_fields_inplace(root: ET.Element) -> int:
 
     removed = 0
     for offer in list(offers_el):
-        # собираем в отдельный список, чтобы не путаться при удалении
         to_remove = [el for el in list(offer) if el.tag in STRIP_OFFER_TAGS]
         for el in to_remove:
             offer.remove(el)
@@ -222,45 +212,42 @@ def _strip_offer_fields_inplace(root: ET.Element) -> int:
     return removed
 
 
-# ------------------------ Основной сценарий ------------------------
+# ------------------------ Main ------------------------
 def main() -> int:
     print(">> Fetching supplier feed...")
     raw = _fetch(SUPPLIER_URL)
     if not raw:
-        print("!! Не удалось скачать фид поставщика. Проверьте доступ/креды/URL.", file=sys.stderr)
+        print("!! Failed to fetch supplier feed.", file=sys.stderr)
         return 2
 
     try:
-        # Парсим байты напрямую — ElementTree учитывает исходную XML-декларацию encoding
         root = ET.fromstring(raw)
     except ET.ParseError as e:
-        print(f"!! Ошибка парсинга XML: {e}", file=sys.stderr)
+        print(f"!! XML parse error: {e}", file=sys.stderr)
         return 3
 
     if root.tag.lower() != "yml_catalog":
-        print("!! Корневой тег не <yml_catalog>.", file=sys.stderr)
+        print("!! Root tag is not <yml_catalog>.", file=sys.stderr)
         return 4
 
-    # 1) Фильтрация по категориям
     total, kept, dropped = _filter_offers_inplace(root)
     print(f">> Offers total: {total}, kept: {kept}, dropped: {dropped}")
 
-    # 2) Перенос <available> в offer@available и удаление тега
     seen, set_cnt, overr_cnt, removed_av = _migrate_available_inplace(root)
     print(f">> Available migrated: seen={seen}, set={set_cnt}, overridden={overr_cnt}, tags_removed={removed_av}")
 
-    # 3) Удалить всё в <shop> до <offers>
     pruned = _prune_shop_before_offers(root)
     print(f">> Shop prefix pruned: removed_nodes={pruned}")
 
-    # 4) Удалить из офферов теги price/url/quantity/quantity_in_stock
     stripped = _strip_offer_fields_inplace(root)
     print(f">> Offer fields stripped: removed_tags_total={stripped}")
 
-    # Преобразуем дерево обратно в текст (без декларации) и сохраняем в cp1251
     xml_unicode = ET.tostring(root, encoding="unicode")
     _ensure_dirs(OUT_FILE)
-    _write_windows_1251(OUT_FILE, xml_unicode)
+    decl = '<?xml version="1.0" encoding="windows-1251"?>\n'
+    data = (decl + xml_unicode).encode(OUTPUT_ENCODING, errors="xmlcharrefreplace")
+    with open(OUT_FILE, "wb") as f:
+        f.write(data)
     print(f">> Written: {OUT_FILE}")
     return 0
 
