@@ -1600,68 +1600,98 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
-# ========================= FINAL SEO STATIC INJECTOR =========================
-import atexit as __seo_ax
-import re as __seo_re
-import os as __seo_os
 
-def __alstyle_seo_static_inject():
+# =========================
+# SEO CTA injector (static)
+# =========================
+# ВАЖНО: ничего не трогаем внутри CDATA — только добавляем статичный блок
+# ПЕРЕД <![CDATA[...]]> в <description>, чтобы теги не экранировались ElementTree.
+# Работает ПОСЛЕ записи YML: читаем файл, патчим строкой и сохраняем обратно.
+
+import re as _cta_re
+import atexit as _cta_ax
+
+# Статичный блок (как дал пользователь). Эмодзи будет преобразован в числовую ссылку в windows-1251,
+# это нормально; сами HTML-теги останутся НЕэкранированными, т.к. мы вставляем их уже в готовый XML.
+_SEO_BLOCK = (
+    '<a href="https://api.whatsapp.com/send/?phone=77073270501&text=&type=phone_number&app_absent=0" '
+    'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
+    'border-radius:10px;font-weight:700;"> '
+    '💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут! '
+    '</a>\n'
+    '<div style="background:#FFF6E5;padding:1px 15px;margin-top:10px;">\n'
+    '  <h2>Оплата</h2>\n'
+    '  <ul>\n'
+    '    <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>\n'
+    '    <li><strong>Удалённая оплата</strong> по <strong>KASPI</strong> счёту для <u>физических лиц</u></li>\n'
+    '  </ul>\n'
+    '  <h2>Доставка</h2>\n'
+    '  <ul>\n'
+    '    <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>\n'
+    '    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 дней | Exline.kz</em></li>\n'
+    '    <li><em><strong>ОТПРАВИМ</strong> любой ТК или автобусом «Сайран»</em></li>\n'
+    '  </ul>\n'
+    '</div>\n'
+)
+
+# Регексы для разных форм <description>
+_cta_desc_cdata_rx = _cta_re.compile(r'(<description\\b[^>]*>)(\\s*<!\\[CDATA\\[)', _cta_re.I)
+_cta_desc_pair_rx  = _cta_re.compile(r'(<description\\b[^>]*>)(?!\\s*<!\\[CDATA\\[)(?P<body>.*?)(</description>)', _cta_re.I | _cta_re.S)
+_cta_desc_self_rx  = _cta_re.compile(r'<description\\b[^>]*/\\s*>', _cta_re.I)
+
+# Эвристика «уже вставлено» — проверяем по домену WhatsApp внутри конкретного блока description
+_cta_has_marker_rx = _cta_re.compile(r'api\\.whatsapp\\.com/send/\\?phone=77073270501', _cta_re.I)
+
+def _cta_inject_text(xml_text: str) -> str:
+    # 1) Вариант с CDATA: <description> <![CDATA[ ... ]]>
+    def _repl_cdata(m):
+        head, cdata = m.group(1), m.group(2)
+        return head + _SEO_BLOCK + cdata
+
+    new_text = _cta_desc_cdata_rx.sub(_repl_cdata, xml_text)
+
+    # 2) Парный <description> ... </description> без CDATA — добавляем в начало, если ещё не было
+    def _repl_pair(m):
+        head, body, tail = m.group(1), m.group('body'), m.group(4)
+        if _cta_has_marker_rx.search(body):
+            return m.group(0)
+        return head + _SEO_BLOCK + body + tail
+
+    new_text = _cta_desc_pair_rx.sub(_repl_pair, new_text)
+
+    # 3) Самозакрывающийся: <description/>
+    new_text = _cta_desc_self_rx.sub("<description>"+_SEO_BLOCK+"</description>", new_text)
+
+    return new_text
+
+def _cta_postprocess():
     try:
         _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
         _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
-        if not _out or not __seo_os.path.exists(_out):
-            return
         with open(_out, "rb") as f:
             data = f.read()
         try:
-            xml = data.decode(_enc)
+            xml_text = data.decode(_enc)
         except Exception:
-            xml = data.decode("utf-8", errors="replace")
+            xml_text = data.decode("utf-8", errors="replace")
 
-        SEO_HTML = (
-            '<a href="https://api.whatsapp.com/send/?phone=77073270501&text=&type=phone_number&app_absent=0" '
-            'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
-            'border-radius:10px;font-weight:700;"> '
-            '💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут! '
-            '</a>'
-            '<div style="background:#FFF6E5;padding:1px 15px;margin-top:10px;">'
-            '<h2>Оплата</h2>'
-            '<ul>'
-            '<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>'
-            '<li><strong>Удалённая оплата</strong> по <strong>KASPI</strong> счёту для <u>физических лиц</u></li>'
-            '</ul>'
-            '<h2>Доставка</h2>'
-            '<ul>'
-            '<li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>'
-            '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 дней | Exline.kz</em></li>'
-            '<li><em><strong>ОТПРАВИМ</strong> любой ТК или автобусом «Сайран»</em></li>'
-            '</ul>'
-            '</div>'
-        )
+        patched = _cta_inject_text(xml_text)
 
-        desc_pair_rx = __seo_re.compile(r'(<description\b[^>]*>)(.*?)(</description>)', __seo_re.S|__seo_re.I)
-        changed = False
-        def _inject_once(m):
-            nonlocal changed
-            head, mid, tail = m.group(1), m.group(2), m.group(3)
-            if "https://api.whatsapp.com/send/?phone=77073270501" in mid:
-                return m.group(0)
-            if "<![CDATA[" in mid:
-                changed = True
-                return head + SEO_HTML + mid + tail
-            changed = True
-            return head + SEO_HTML + mid + tail
-
-        new_xml = desc_pair_rx.sub(_inject_once, xml)
-        if new_xml != xml and changed:
+        if patched != xml_text:
+            # Запись с сохранением кодировки; эмодзи -> числовые сущности при необходимости
             try:
-                with open(_out, "w", encoding=_enc, newline="\n") as f:
-                    f.write(new_xml if new_xml.endswith("\n") else new_xml + "\n")
+                with open(_out, "w", encoding=_enc, newline="\\n") as f:
+                    f.write(patched)
             except UnicodeEncodeError:
                 with open(_out, "wb") as f:
-                    f.write(new_xml.encode(_enc, errors="xmlcharrefreplace"))
+                    f.write(patched.encode(_enc, errors="xmlcharrefreplace"))
+            print("CTA/Оплата/Доставка: вставлено в <description>.")
+        else:
+            print("CTA/Оплата/Доставка: изменений нет (вероятно, уже вставлено).")
     except Exception as e:
-        print("WARN SEO_INJECT:", e)
+        print("WARN CTA injector:", e)
 
-__seo_ax.register(__alstyle_seo_static_inject)
-# ======================= END FINAL SEO STATIC INJECTOR ======================
+# Выполнится ПОСЛЕ основного run(), когда файл уже записан
+_cta_ax.register(_cta_postprocess)
+# ======================= /SEO CTA injector =======================
+
