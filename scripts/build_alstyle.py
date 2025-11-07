@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-scripts/build_alstyle.py - генератор docs/alstyle.yml из фида поставщика Al-Style.
+scripts/build_alstyle.py — генератор docs/alstyle.yml из фида поставщика Al-Style.
 
-ПОВЕДЕНИЕ (выполняется по порядку):
-  1) Фильтрация офферов по <categoryId> - оставляем только ID поставщика из заданного списка.
+ПОВЕДЕНИЕ (по порядку):
+  1) Фильтрация офферов по <categoryId> — оставляем только ID поставщика из заданного списка.
   2) Перенос доступности: значение <available>true/false</available> переносим в атрибут <offer available="...">,
      сам тег <available> удаляем.
   3) Чистка префикса <shop>: удаляем всё, что внутри <shop> ДО узла <offers> (например, currencies, categories и т.п.).
   4) Чистка офферов: удаляем теги <price>, <url>, <quantity>, <quantity_in_stock> внутри каждого <offer>.
   5) Чистка параметров: удаляем <param> с именами из списка пользователя (Артикул, Благотворительность, Код ТН ВЭД,
-     Код товара Kaspi, Новинка, Снижена цена, Штрихкод, Назначение, Объем/Объём). Сравнение без регистра и с нормализацией
-     пробелов/знаков препинания; поддержана форма «Штрих-код» и замена 'ё' -> 'е'.
+     Код товара Kaspi, Новинка, Снижена цена, Штрихкод, Назначение). Сравнение без регистра и с нормализацией.
+  6) Префикс AS: добавляем префикс "AS" к значению <vendorCode> (без дефиса) и копируем это значение в атрибут
+     <offer id="...">. Требование проекта — префикс добавляется всегда (даже если похожий префикс уже есть).
 """
 from __future__ import annotations
 
@@ -35,8 +36,7 @@ PASSWORD = "Aa123456"
 ALLOWED_CATEGORY_IDS_CSV = "3540,3541,3542,3543,3544,3545,3566,3567,3569,3570,3580,3688,3708,3721,3722,4889,4890,4895,5017,5075,5649,5710,5711,5712,5713,21279,21281,21291,21356,21367,21368,21369,21370,21371,21372,21451,21498,21500,21501,21572,21573,21574,21575,21576,21578,21580,21581,21583,21584,21585,21586,21588,21591,21640,21664,21665,21666,21698"
 ALLOWED_CATEGORY_IDS = {x.strip() for x in ALLOWED_CATEGORY_IDS_CSV.split(",") if x.strip()}
 
-# Список имён <param>, которые НУЖНО удалить во всех товарах (нормализуем и сравниваем без регистра)
-# Добавлены варианты написания («Штрих-код»/«Штрихкод») и «Объем/Объём».
+# Удаляемые имена <param> (нормализуем и сравниваем без регистра)
 PARAMS_TO_DROP = {
     "артикул",
     "благотворительность",
@@ -46,8 +46,9 @@ PARAMS_TO_DROP = {
     "снижена цена",
     "штрихкод",
     "штрих-код",
-    "назначение",
-    "объем",  # 'объём' тоже попадёт после нормализации 'ё'->'е'
+    "назначение"
+    "объем"
+    "объём",
 }
 
 # Выходной файл и кодировка
@@ -104,17 +105,8 @@ def _write_windows_1251(path: pathlib.Path, xml_body_unicode: str) -> None:
 
 
 def _norm_param_name(name: str) -> str:
-    """
-    Нормализовать имя параметра для сравнения:
-      - заменить 'ё' -> 'е'
-      - привести к нижнему регистру
-      - убрать неразрывные пробелы
-      - схлопнуть повторные пробелы
-      - обрезать хвостовые запятые/точки/двоеточия/точки с запятой
-    """
-    s = (name or "").replace("\u00a0", " ").strip()
-    s = s.replace("ё", "е").replace("Ё", "Е")  # унификация 'ё' -> 'е'
-    s = s.lower()
+    """Нормализовать имя параметра: нижний регистр, схлопывание пробелов, обрезка запятых/двоеточий/точек."""
+    s = (name or "").replace("\u00a0", " ").strip().lower()
     s = re.sub(r"[,\.;:]+$", "", s).strip()
     s = re.sub(r"\s+", " ", s)
     return s
@@ -283,6 +275,42 @@ def _strip_params_by_name_inplace(root: ET.Element) -> int:
     return removed
 
 
+# ------------------------ Шаг 6. Префикс AS в vendorCode и синхронизация offer@id ------------------------
+def _apply_vendorcode_prefix_and_id(root: ET.Element, prefix: str = "AS") -> tuple[int, int]:
+    """
+    Для каждого <offer>:
+      - к значению <vendorCode> добавляем префикс prefix (без дефиса), независимо от текущего содержимого;
+      - атрибут id у <offer> устанавливаем равным этому же значению.
+    Возвращает (offers_updated, vendorcodes_changed).
+    """
+    shop = root.find("./shop")
+    if shop is None:
+        return (0, 0)
+    offers_el = shop.find("offers")
+    if offers_el is None:
+        return (0, 0)
+
+    offers_updated = 0
+    vcodes_changed = 0
+
+    for offer in list(offers_el):
+        vc_el = offer.find("vendorCode")
+        if vc_el is None:
+            # Если у оффера нет vendorCode — пропускаем (чтобы не создавать пустые коды)
+            continue
+        original = (vc_el.text or "").strip()
+        # По требованию: всегда добавляем префикс, даже если он уже был
+        new_vc = f"{prefix}{original}"
+        if new_vc != original:
+            vc_el.text = new_vc
+            vcodes_changed += 1
+        # Синхронизируем атрибут id
+        offer.set("id", new_vc)
+        offers_updated += 1
+
+    return (offers_updated, vcodes_changed)
+
+
 # ------------------------ Основной сценарий ------------------------
 def main() -> int:
     print(">> Скачивание фида поставщика...")
@@ -320,6 +348,10 @@ def main() -> int:
     # 5) Удаление <param> по именам пользователя
     params_removed = _strip_params_by_name_inplace(root)
     print(f">> Params removed by name: {params_removed}")
+
+    # 6) Префикс AS в vendorCode и установка offer@id
+    offers_upd, vcodes_chg = _apply_vendorcode_prefix_and_id(root, prefix="AS")
+    print(f">> VendorCode prefixed and id synced: offers={offers_upd}, vendorCodes_changed={vcodes_chg}")
 
     # Сохранение результата
     xml_unicode = ET.tostring(root, encoding="unicode")
