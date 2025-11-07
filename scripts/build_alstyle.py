@@ -1601,97 +1601,67 @@ _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
 
-# =========================
-# SEO CTA injector (static)
-# =========================
-# ВАЖНО: ничего не трогаем внутри CDATA — только добавляем статичный блок
-# ПЕРЕД <![CDATA[...]]> в <description>, чтобы теги не экранировались ElementTree.
-# Работает ПОСЛЕ записи YML: читаем файл, патчим строкой и сохраняем обратно.
+# === INLINE POSTPROCESS (v34 -> v36) & SINGLE FINAL WRITE ===
+import re as _re_inline
 
-import re as _cta_re
-import atexit as _cta_ax
-
-# Статичный блок (как дал пользователь). Эмодзи будет преобразован в числовую ссылку в windows-1251,
-# это нормально; сами HTML-теги останутся НЕэкранированными, т.к. мы вставляем их уже в готовый XML.
-_SEO_BLOCK = (
-    '<a href="https://api.whatsapp.com/send/?phone=77073270501&text=&type=phone_number&app_absent=0" '
-    'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
-    'border-radius:10px;font-weight:700;"> '
-    '💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут! '
-    '</a>\n'
-    '<div style="background:#FFF6E5;padding:1px 15px;margin-top:10px;">\n'
-    '  <h2>Оплата</h2>\n'
-    '  <ul>\n'
-    '    <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>\n'
-    '    <li><strong>Удалённая оплата</strong> по <strong>KASPI</strong> счёту для <u>физических лиц</u></li>\n'
-    '  </ul>\n'
-    '  <h2>Доставка</h2>\n'
-    '  <ul>\n'
-    '    <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>\n'
-    '    <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 дней | Exline.kz</em></li>\n'
-    '    <li><em><strong>ОТПРАВИМ</strong> любой ТК или автобусом «Сайран»</em></li>\n'
-    '  </ul>\n'
-    '</div>\n'
-)
-
-# Регексы для разных форм <description>
-_cta_desc_cdata_rx = _cta_re.compile(r'(<description\\b[^>]*>)(\\s*<!\\[CDATA\\[)', _cta_re.I)
-_cta_desc_pair_rx  = _cta_re.compile(r'(<description\\b[^>]*>)(?!\\s*<!\\[CDATA\\[)(?P<body>.*?)(</description>)', _cta_re.I | _cta_re.S)
-_cta_desc_self_rx  = _cta_re.compile(r'<description\\b[^>]*/\\s*>', _cta_re.I)
-
-# Эвристика «уже вставлено» — проверяем по домену WhatsApp внутри конкретного блока description
-_cta_has_marker_rx = _cta_re.compile(r'api\\.whatsapp\\.com/send/\\?phone=77073270501', _cta_re.I)
-
-def _cta_inject_text(xml_text: str) -> str:
-    # 1) Вариант с CDATA: <description> <![CDATA[ ... ]]>
-    def _repl_cdata(m):
-        head, cdata = m.group(1), m.group(2)
-        return head + _SEO_BLOCK + cdata
-
-    new_text = _cta_desc_cdata_rx.sub(_repl_cdata, xml_text)
-
-    # 2) Парный <description> ... </description> без CDATA — добавляем в начало, если ещё не было
-    def _repl_pair(m):
-        head, body, tail = m.group(1), m.group('body'), m.group(4)
-        if _cta_has_marker_rx.search(body):
-            return m.group(0)
-        return head + _SEO_BLOCK + body + tail
-
-    new_text = _cta_desc_pair_rx.sub(_repl_pair, new_text)
-
-    # 3) Самозакрывающийся: <description/>
-    new_text = _cta_desc_self_rx.sub("<description>"+_SEO_BLOCK+"</description>", new_text)
-
-    return new_text
-
-def _cta_postprocess():
+def __inline_postprocess_alstyle(xml_bytes: bytes, encoding: str = OUTPUT_ENCODING) -> bytes:
+    # Decode
     try:
-        _out = globals().get("OUT_FILE", globals().get("OUT_FILE_YML", "docs/alstyle.yml"))
-        _enc = globals().get("OUTPUT_ENCODING", globals().get("ENC", "windows-1251"))
-        with open(_out, "rb") as f:
-            data = f.read()
-        try:
-            xml_text = data.decode(_enc)
-        except Exception:
-            xml_text = data.decode("utf-8", errors="replace")
+        txt = xml_bytes.decode(encoding, errors='ignore')
+    except Exception:
+        txt = xml_bytes.decode('utf-8', errors='ignore')
 
-        patched = _cta_inject_text(xml_text)
+    # v34: tidy
+    txt = _re_inline.sub(r"[ \t]+\n", "\n", txt)
+    txt = _re_inline.sub(r"\n{3,}", "\n\n", txt)
+    txt = _re_inline.sub(r"(?<!\.)\.\.(?!\.)", ".", txt)
+    txt = _re_inline.sub(r"(<description><!\[CDATA\[)(.*?)(\]\]></description>)",
+                         lambda m: m.group(1) + m.group(2).replace("</p><h3>", "</p>\n<h3>") + m.group(3),
+                         txt, flags=_re_inline.DOTALL)
 
-        if patched != xml_text:
-            # Запись с сохранением кодировки; эмодзи -> числовые сущности при необходимости
-            try:
-                with open(_out, "w", encoding=_enc, newline="\\n") as f:
-                    f.write(patched)
-            except UnicodeEncodeError:
-                with open(_out, "wb") as f:
-                    f.write(patched.encode(_enc, errors="xmlcharrefreplace"))
-            print("CTA/Оплата/Доставка: вставлено в <description>.")
+    # v36: enrich 'Характеристики' from <param> without dups
+    def _inject_block(offer):
+        params = _re_inline.findall(r'<param name="([^"]+)">([^<]*)</param>', offer)
+        if not params:
+            return offer
+        # find existing block
+        hx = _re_inline.search(r"(<h3>Характеристики</h3>\s*<ul>.*?</ul>)", offer, flags=_re_inline.DOTALL)
+        if hx:
+            block = hx.group(1)
+            existing = dict(_re_inline.findall(r"<li><strong>([^<]+):</strong>\s*([^<]+)</li>", block))
         else:
-            print("CTA/Оплата/Доставка: изменений нет (вероятно, уже вставлено).")
-    except Exception as e:
-        print("WARN CTA injector:", e)
+            block = None
+            existing = {}
+        # merge params
+        def norm(k): 
+            return {"Мощность (Bт)": "Мощность (Вт)"}.get(k.strip(), k.strip())
+        merged = dict(existing)
+        for k, v in params:
+            nk = norm(k)
+            v = v.strip()
+            if v and nk not in merged:
+                merged[nk] = v
+        # rebuild
+        li_txt = "".join([f"<li><strong>{k}:</strong> {v}</li>" for k, v in merged.items()])
+        new_block = f"<h3>Характеристики</h3><ul>{li_txt}</ul>"
+        if block:
+            return offer.replace(block, new_block)
+        # append after first </p> inside CDATA
+        return _re_inline.sub(
+            r"(<description><!\[CDATA\[.*?</p>)(.*?)(\]\]></description>)",
+            lambda m: m.group(1) + new_block + m.group(2) + m.group(3),
+            offer, flags=_re_inline.DOTALL
+        )
 
-# Выполнится ПОСЛЕ основного run(), когда файл уже записан
-_cta_ax.register(_cta_postprocess)
-# ======================= /SEO CTA injector =======================
+    txt = _re_inline.sub(r"<offer\b.*?</offer>", lambda m: _inject_block(m.group(0)), txt, flags=_re_inline.DOTALL)
 
+    return txt.encode(encoding, errors='ignore')
+
+# Final write (moved to end)
+if 'final_bytes' in globals():
+    try:
+        final_bytes = __inline_postprocess_alstyle(final_bytes, OUTPUT_ENCODING)
+    except Exception as _e:
+        pass
+    with open(OUT_FILE, 'wb') as f:
+        f.write(final_bytes)
