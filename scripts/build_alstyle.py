@@ -1687,3 +1687,17 @@ except Exception as _e:
         print(f"SEO_POSTPROCESS_WARN_OUTER: {_e}")
     except Exception:
         pass
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    finally:
+        try:
+            _seo_postprocess_output_file()
+        except Exception as _e:
+            try:
+                print(f'SEO_POSTPROCESS_WARN_FINAL: {_e}')
+            except Exception:
+                pass
+
