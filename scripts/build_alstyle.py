@@ -1556,6 +1556,12 @@ def _enrich_params2desc(block: str) -> str:
         return block[:m_dp.start()] + head + new_content + tail + block[m_dp.end():]
 
     if not _ppX_re.search(r"<description\b", block, _ppX_re.I):
+
+# [SEO] вставка перед записью description
+try:
+    desc_html = _seo_wrap_supplier(desc_html)
+except Exception:
+    pass
         addition_full = f"<description><![CDATA[{ul_html}]]></description>"
         return _ppX_re.sub(r"</offer>\s*$", addition_full + "\n</offer>", block, count=1)
 
@@ -1599,91 +1605,3 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
-
-# =========================
-# SEO CTA + Оплата/Доставка post-writer (safe for cp1251)
-# =========================
-import io, os, re
-
-def _seo_has_cta_block(html: str) -> bool:
-    return "api.whatsapp.com" in html
-
-def _seo_build_cta_block() -> str:
-    return (
-        '<p>'
-        '<a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
-        'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
-        'border-radius:10px;font-weight:700;">'
-        '&#128172; Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!'
-        '</a>'
-        '</p>'
-    )
-
-def _seo_build_payment_delivery_block() -> str:
-    return (
-        '<div style="background:#FFF6E5;padding:10px 12px;border-radius:6px;margin:8px 0;">'
-        '<h3 style="margin:0 0 6px 0;">Оплата</h3>'
-        '<ul style="margin:0 0 8px 18px;padding:0;">'
-        '<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
-        '<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>'
-        '</ul>'
-        '<h3 style="margin:8px 0 6px 0;">Доставка</h3>'
-        '<ul style="margin:0 0 0 18px;padding:0;">'
-        '<li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
-        '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Exline.kz</em></li>'
-        '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией</em></li>'
-        '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
-        '</ul>'
-        '</div>'
-    )
-
-_desc_cdata_pat = re.compile(r'(<description><!\[CDATA\[)(.*?)(\]\]></description>)', re.DOTALL|re.IGNORECASE)
-_desc_plain_pat = re.compile(r'(<description>)(.*?)(</description>)', re.DOTALL|re.IGNORECASE)
-
-def _seo_inject_into_desc_html(desc_html: str) -> str:
-    if _seo_has_cta_block(desc_html):
-        return desc_html
-    prefix = _seo_build_cta_block() + _seo_build_payment_delivery_block()
-    return prefix + desc_html
-
-def inject_seo_blocks_into_xml_text(xml_text: str) -> str:
-    def repl_cdata(m):
-        start, inner, end = m.group(1), m.group(2), m.group(3)
-        new_inner = _seo_inject_into_desc_html(inner)
-        return f"{start}{new_inner}{end}"
-    out = _desc_cdata_pat.sub(repl_cdata, xml_text)
-    def repl_plain(m):
-        start, inner, end = m.group(1), m.group(2), m.group(3)
-        if '<![CDATA[' in inner:
-            return m.group(0)
-        new_inner = _seo_inject_into_desc_html(inner)
-        return f"{start}<![CDATA[{new_inner}]]>{end}"
-    out2 = _desc_plain_pat.sub(repl_plain, out)
-    return out2
-
-def _seo_postprocess_output_file():
-    out_file = os.environ.get('OUT_FILE') or 'docs/alstyle.yml'
-    try:
-        enc = globals().get('OUTPUT_ENCODING', 'windows-1251')
-        with open(out_file, 'r', encoding=enc, errors='strict') as f:
-            xml_text = f.read()
-        if 'api.whatsapp.com' in xml_text:
-            return
-        updated = inject_seo_blocks_into_xml_text(xml_text)
-        with open(out_file, 'w', encoding=enc, errors='strict') as f:
-            f.write(updated)
-    except FileNotFoundError:
-        pass
-    except Exception as e:
-        try:
-            print(f"SEO_POSTPROCESS_WARN: {e}")
-        except Exception:
-            pass
-
-try:
-    _seo_postprocess_output_file()
-except Exception as _e:
-    try:
-        print(f"SEO_POSTPROCESS_WARN_OUTER: {_e}")
-    except Exception:
-        pass
