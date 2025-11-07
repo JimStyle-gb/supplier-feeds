@@ -3,17 +3,16 @@
 '''
 scripts/build_alstyle.py — генератор docs/alstyle.yml из фида поставщика Al-Style.
 
-Шаги обработки (в порядке выполнения):
+Шаги обработки (в нужном порядке):
   1) ФИЛЬТР по <categoryId> (используем список ID ПОСТАВЩИКА).
   2) МИГРАЦИЯ доступности: перенос <available> внутрь атрибута <offer available="true|false">,
      удаление самого тега <available>.
-  3) ЧИСТКА shop-префикса: удалить всё, что находится внутри <shop> ДО тега <offers>.
+  3) ЧИСТКА shop-префикса: удалить всё, что находится внутри <shop> ДО тега <offers>
+     (например, <currencies>, <categories> и т.п.). Оставляем <offers> и всё ПОСЛЕ него.
   4) ЧИСТКА офферов: удалить из каждого <offer> теги <price>, <url>, <quantity>, <quantity_in_stock>.
-  5) ВЕНДОРКОД/ID: добавить префикс "AS" к <vendorCode> (без дефиса) и записать то же значение
-     в атрибут <offer id="...">.
 
-Выход: docs/alstyle.yml в Windows-1251. Структура YML сохраняется за исключением описанных правок.
-Внешние пояснения минимальны — подробные комментарии внутри кода.
+Выход: docs/alstyle.yml в кодировке Windows-1251. Структура YML сохраняется,
+кроме описанных удалений/переносов.
 '''
 from __future__ import annotations
 
@@ -133,6 +132,7 @@ def _to_bool_text(v: str) -> str:
         return "true"
     if s in _FALSE_WORDS:  # явные маркеры «нет»
         return "false"
+    # эвристика на случай произвольных формулировок
     if "true" in s or "да" in s:
         return "true"
     if "false" in s or "нет" in s or "под заказ" in s:
@@ -180,7 +180,8 @@ def _migrate_available_inplace(root: ET.Element) -> tuple[int, int, int, int]:
 
 # ------------------------ Чистка shop-префикса ------------------------
 def _prune_shop_before_offers(root: ET.Element) -> int:
-    """Удалить все дочерние элементы внутри <shop> ДО <offers>."""
+    """Удалить все дочерние элементы внутри <shop> ДО <offers>.
+    Возвращает количество удалённых узлов."""
     shop = root.find("./shop")
     if shop is None:
         return 0
@@ -189,9 +190,10 @@ def _prune_shop_before_offers(root: ET.Element) -> int:
         return 0
 
     removed = 0
+    # Идём по копии списка детей shop и удаляем, пока не дошли до offers
     for child in list(shop):
         if child is offers_el:
-            break
+            break  # остановились ровно на offers — его и всё после оставляем
         shop.remove(child)
         removed += 1
     return removed
@@ -201,7 +203,8 @@ def _prune_shop_before_offers(root: ET.Element) -> int:
 STRIP_OFFER_TAGS = {"price", "url", "quantity", "quantity_in_stock"}
 
 def _strip_offer_fields_inplace(root: ET.Element) -> int:
-    """Удалить из каждого <offer> перечисленные дочерние теги."""
+    """Удалить из каждого <offer> перечисленные дочерние теги.
+    Возвращает суммарное количество удалений."""
     shop = root.find("./shop")
     if shop is None:
         return 0
@@ -211,56 +214,12 @@ def _strip_offer_fields_inplace(root: ET.Element) -> int:
 
     removed = 0
     for offer in list(offers_el):
+        # собираем в отдельный список, чтобы не путаться при удалении
         to_remove = [el for el in list(offer) if el.tag in STRIP_OFFER_TAGS]
         for el in to_remove:
             offer.remove(el)
             removed += 1
     return removed
-
-
-# ------------------------ Префикс vendorCode и offer@id ------------------------
-def _prefix_vendor_and_set_offer_id(root: ET.Element, prefix: str = "AS") -> tuple[int, int, int, int]:
-    """
-    Для каждого <offer>:
-      - Берём <vendorCode>, добавляем префикс 'AS' в начало (без дефиса).
-      - Записываем то же значение в атрибут offer@id.
-    Возвращает: (offers_seen, vendor_updated, id_set, missing_vendor).
-    """
-    shop = root.find("./shop")
-    if shop is None:
-        return (0, 0, 0, 0)
-    offers_el = shop.find("offers")
-    if offers_el is None:
-        return (0, 0, 0, 0)
-
-    offers_seen = 0
-    vendor_updated = 0
-    id_set = 0
-    missing_vendor = 0
-
-    for offer in list(offers_el):
-        offers_seen += 1
-        v_el = offer.find("vendorCode")
-        if v_el is None:
-            missing_vendor += 1
-            continue
-
-        base = (v_el.text or "").strip()
-        if not base:
-            missing_vendor += 1
-            continue
-
-        # префикс без дефиса; внешние пробелы убираем
-        new_code = f"{prefix}{base}"
-        v_el.text = new_code
-        vendor_updated += 1
-
-        # выставляем атрибут id ровно в это значение
-        if offer.get("id") != new_code:
-            offer.set("id", new_code)
-            id_set += 1
-
-    return (offers_seen, vendor_updated, id_set, missing_vendor)
 
 
 # ------------------------ Основной сценарий ------------------------
@@ -272,6 +231,7 @@ def main() -> int:
         return 2
 
     try:
+        # Парсим байты напрямую — ElementTree учитывает исходную XML-декларацию encoding
         root = ET.fromstring(raw)
     except ET.ParseError as e:
         print(f"!! Ошибка парсинга XML: {e}", file=sys.stderr)
@@ -285,7 +245,7 @@ def main() -> int:
     total, kept, dropped = _filter_offers_inplace(root)
     print(f">> Offers total: {total}, kept: {kept}, dropped: {dropped}")
 
-    # 2) Перенос <available> в offer@available
+    # 2) Перенос <available> в offer@available и удаление тега
     seen, set_cnt, overr_cnt, removed_av = _migrate_available_inplace(root)
     print(f">> Available migrated: seen={seen}, set={set_cnt}, overridden={overr_cnt}, tags_removed={removed_av}")
 
@@ -293,15 +253,11 @@ def main() -> int:
     pruned = _prune_shop_before_offers(root)
     print(f">> Shop prefix pruned: removed_nodes={pruned}")
 
-    # 4) Удалить теги price/url/quantity/quantity_in_stock из офферов
+    # 4) Удалить из офферов теги price/url/quantity/quantity_in_stock
     stripped = _strip_offer_fields_inplace(root)
     print(f">> Offer fields stripped: removed_tags_total={stripped}")
 
-    # 5) Префикс vendorCode и offer@id
-    seen2, vend_upd, id_set, miss_v = _prefix_vendor_and_set_offer_id(root, prefix="AS")
-    print(f">> Vendor/id: offers_seen={seen2}, vendor_updated={vend_upd}, id_set={id_set}, missing_vendor={miss_v}")
-
-    # Сохранение результата
+    # Преобразуем дерево обратно в текст (без декларации) и сохраняем в cp1251
     xml_unicode = ET.tostring(root, encoding="unicode")
     _ensure_dirs(OUT_FILE)
     _write_windows_1251(OUT_FILE, xml_unicode)
