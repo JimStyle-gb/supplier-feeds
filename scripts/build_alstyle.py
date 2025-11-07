@@ -1661,6 +1661,19 @@ def inject_seo_blocks_into_xml_text(xml_text: str) -> str:
     out2 = _desc_plain_pat.sub(repl_plain, out)
     return out2
 
+
+# --- NEW: ensure HTML tags inside CDATA are not entity-escaped (e.g., &lt;a&gt; -> <a>) ---
+def _seo_unescape_entities_inside_cdata(xml_text: str) -> str:
+    def _unesc(m):
+        inner = m.group(1)
+        try:
+            # Only unescape standard HTML entities; CDATA boundary stays intact
+            inner_fixed = html.unescape(inner)
+        except Exception:
+            inner_fixed = inner
+        return "<description><![CDATA[" + inner_fixed + "]]></description>"
+    return re.sub(r"<description><!\[CDATA\[(.*?)\]\]></description>", _unesc, xml_text, flags=re.S)
+
 def _seo_postprocess_output_file():
     out_file = os.environ.get('OUT_FILE') or 'docs/alstyle.yml'
     try:
@@ -1687,14 +1700,3 @@ except Exception as _e:
         print(f"SEO_POSTPROCESS_WARN_OUTER: {_e}")
     except Exception:
         pass
-
-
-# Fallback: ensure SEO pass runs after everything
-try:
-    _seo_postprocess_output_file()
-except Exception as _e:
-    try:
-        print(f'SEO_POSTPROCESS_WARN_FALLBACK: {_e}')
-    except Exception:
-        pass
-
