@@ -1661,39 +1661,49 @@ def inject_seo_blocks_into_xml_text(xml_text: str) -> str:
     out2 = _desc_plain_pat.sub(repl_plain, out)
     return out2
 
+def _seo_postprocess_output_file() -> None:
+    """
+    Post-process the already-written YML file and replace SEO placeholders with RAW HTML inside CDATA.
+    Uses binary-safe read/write to avoid Windows-1251 decoding problems and accidental entity-escaping.
+    """
+    import os
+    from pathlib import Path
 
-# --- NEW: ensure HTML tags inside CDATA are not entity-escaped (e.g., &lt;a&gt; -> <a>) ---
-def _seo_unescape_entities_inside_cdata(xml_text: str) -> str:
-    def _unesc(m):
-        inner = m.group(1)
-        try:
-            # Only unescape standard HTML entities; CDATA boundary stays intact
-            inner_fixed = html.unescape(inner)
-        except Exception:
-            inner_fixed = inner
-        return "<description><![CDATA[" + inner_fixed + "]]></description>"
-    return re.sub(r"<description><!\[CDATA\[(.*?)\]\]></description>", _unesc, xml_text, flags=re.S)
+    out_file = os.environ.get("OUT_FILE", "docs/alstyle.yml")  # exact same path the main writer used
+    enc = os.environ.get("OUTPUT_ENCODING", "windows-1251")    # keep user's target encoding
 
-def _seo_postprocess_output_file():
-    out_file = os.environ.get('OUT_FILE') or 'docs/alstyle.yml'
     try:
-        enc = globals().get('OUTPUT_ENCODING', 'windows-1251')
-        with open(out_file, 'r', encoding=enc, errors='strict') as f:
-            xml_text = f.read()
-        if 'api.whatsapp.com' in xml_text:
-            return
-        updated = inject_seo_blocks_into_xml_text(xml_text)
-        with open(out_file, 'w', encoding=enc, errors='strict') as f:
-            f.write(updated)
-    except FileNotFoundError:
-        pass
+        raw = Path(out_file).read_bytes()                      # read as bytes to avoid decode errors
     except Exception as e:
-        try:
-            print(f"SEO_POSTPROCESS_WARN: {e}")
-        except Exception:
-            pass
+        print(f"SEO_POSTPROCESS_WARN: failed to read file: {e}")
+        return
 
-try:
+    # Helper: encode a string to the target encoding, replacing unencodable chars safely.
+    def B(s: str) -> bytes:
+        return s.encode(enc, errors="replace")
+
+    # Placeholders that were injected into the first/last CDATA earlier.
+    HEAD = B('<![CDATA[__SEO_CTA__PLACEHOLDER__BEGIN__]]>')
+    TAIL = B('<![CDATA[__SEO_TAIL__PLACEHOLDER__BEGIN__]]>')
+
+    # Build raw HTML blocks (already proper HTML, not escaped).
+    try:
+        cta_html = _seo_build_cta_block()
+        tail_html = _seo_build_tail_block()
+    except Exception as e:
+        print(f"SEO_POSTPROCESS_WARN: failed to build SEO blocks: {e}")
+        return
+
+    # Replace placeholders with real CDATA-wrapped HTML blocks (no extra escaping).
+    raw = raw.replace(HEAD, B('<![CDATA[') + B(cta_html) + B(']]>'))
+    raw = raw.replace(TAIL, B('<![CDATA[') + B(tail_html) + B(']]>'))
+
+    try:
+        Path(out_file).write_bytes(raw)                         # write back atomically
+        print("SEO_POSTPROCESS: injected CTA/OpDost successfully.")
+    except Exception as e:
+        print(f"SEO_POSTPROCESS_WARN: failed to write file: {e}")
+        return
     _seo_postprocess_output_file()
 except Exception as _e:
     try:
