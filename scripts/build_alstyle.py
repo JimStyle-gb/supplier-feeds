@@ -1600,87 +1600,90 @@ for _name in ("_al_desc_postprocess_combo","__alpp_postprocess","_pp_postprocess
 _ppX_ax.register(_v34_then_v36)
 # ========================= end v34+v36 =========================
 
+# =========================
+# SEO CTA + Оплата/Доставка post-writer (safe for cp1251)
+# =========================
+import io, os, re
 
-# ========================= Supplier-level SEO CTA + "Оплата и доставка" (postprocessor) =========================
-# This block is intentionally appended at the very end so it runs after v34/v36 and doesn't interfere with earlier logic.
-# It prepends a fixed CTA WhatsApp + "Оплата и доставка" panel BEFORE the existing description content (inside the CDATA),
-# only if it's not already present. It NEVER removes or rewrites the "родное описание" or "Характеристики".
-import re as _seo_re
-from pathlib import Path as _seo_Path
+def _seo_has_cta_block(html: str) -> bool:
+    return "api.whatsapp.com" in html
 
-def _seo_supplier_header_block() -> str:
-    # Exact CTA (as per user's canonical text) + payment/delivery block. Keep it simple, inline-style, and SEO-friendly.
+def _seo_build_cta_block() -> str:
     return (
-        '<div style="font-family: Cambria, \\\'Times New Roman\\\', serif;">'
-        '<center>'
-        '<a href="https://api.whatsapp.com/send/?phone=77073270501&text&type=phone_number&app_absent=0" '
+        '<p>'
+        '<a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
         'style="display:inline-block;background:#27ae60;color:#ffffff;text-decoration:none;padding:10px 20px;'
         'border-radius:10px;font-weight:700;">'
-        '💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!'
+        '&#128172; Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!'
         '</a>'
-        '</center>'
-        '<div style="background:#FFF6E5; padding:1px 15px; border-radius:0px; margin-top:10px;">'
-        '<h2>Оплата</h2>'
-        '<ul>'
+        '</p>'
+    )
+
+def _seo_build_payment_delivery_block() -> str:
+    return (
+        '<div style="background:#FFF6E5;padding:10px 12px;border-radius:6px;margin:8px 0;">'
+        '<h3 style="margin:0 0 6px 0;">Оплата</h3>'
+        '<ul style="margin:0 0 8px 18px;padding:0;">'
         '<li><strong>Безналичный</strong> расчет для <u>юридических лиц</u></li>'
         '<li><strong>Удаленная оплата</strong> по <strong>KASPI</strong> счету для <u>физических лиц</u></li>'
         '</ul>'
-        '<hr>'
-        '<h2>Доставка</h2>'
-        '<ul>'
+        '<h3 style="margin:8px 0 6px 0;">Доставка</h3>'
+        '<ul style="margin:0 0 0 18px;padding:0;">'
         '<li><em><strong>ДОСТАВКА</strong> в "квадрате" г. Алматы — БЕСПЛАТНО!</em></li>'
-        '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | '
-        'Сотрудничаем с курьерской компанией '
-        '<a href="https://exline.kz/" style="color:#0b3d91;text-decoration:none;"><strong>Exline.kz</strong></a></em></li>'
-        '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>'
+        '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тенге | 3–7 рабочих дней | Exline.kz</em></li>'
+        '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией</em></li>'
         '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал "САЙРАН"</em></li>'
         '</ul>'
         '</div>'
-        '</div>'
     )
 
-def _seo_wrap_block_supplier(offer_block: str) -> str:
-    # Skip if already has our CTA link (idempotent)
-    if 'api.whatsapp.com/send/?phone=77073270501' in offer_block:
-        return offer_block
-    # Find description CDATA
-    m = _seo_re.search(r'<description>\\s*<!\\[CDATA\\[(.*?)\\]\\]>\\s*</description>', offer_block, flags=_seo_re.S)
-    if not m:
-        # No description: do nothing
-        return offer_block
-    inner = m.group(1)
-    header = _seo_supplier_header_block()
-    new_inner = header + inner  # prepend header BEFORE existing content
-    new_desc = '<description><![CDATA[' + new_inner + ']]></description>'
-    # Replace first description only
-    start, end = m.span()
-    return offer_block[:start] + new_desc + offer_block[end:]
+_desc_cdata_pat = re.compile(r'(<description><!\[CDATA\[)(.*?)(\]\]></description>)', re.DOTALL|re.IGNORECASE)
+_desc_plain_pat = re.compile(r'(<description>)(.*?)(</description>)', re.DOTALL|re.IGNORECASE)
 
-def _pp_seo_supplier_cta_and_delivery() -> None:
+def _seo_inject_into_desc_html(desc_html: str) -> str:
+    if _seo_has_cta_block(desc_html):
+        return desc_html
+    prefix = _seo_build_cta_block() + _seo_build_payment_delivery_block()
+    return prefix + desc_html
+
+def inject_seo_blocks_into_xml_text(xml_text: str) -> str:
+    def repl_cdata(m):
+        start, inner, end = m.group(1), m.group(2), m.group(3)
+        new_inner = _seo_inject_into_desc_html(inner)
+        return f"{start}{new_inner}{end}"
+    out = _desc_cdata_pat.sub(repl_cdata, xml_text)
+    def repl_plain(m):
+        start, inner, end = m.group(1), m.group(2), m.group(3)
+        if '<![CDATA[' in inner:
+            return m.group(0)
+        new_inner = _seo_inject_into_desc_html(inner)
+        return f"{start}<![CDATA[{new_inner}]]>{end}"
+    out2 = _desc_plain_pat.sub(repl_plain, out)
+    return out2
+
+def _seo_postprocess_output_file():
+    out_file = os.environ.get('OUT_FILE') or 'docs/alstyle.yml'
     try:
-        t = _seo_Path(OUT_FILE).read_text(encoding=OUTPUT_ENCODING, errors="ignore")
-    except Exception:
-        # Fallback UTF-8 read
-        t = _seo_Path(OUT_FILE).read_text(encoding="utf-8", errors="ignore")
-    # Replace in every offer block
-    def repl(m):
-        block = m.group(0)
+        enc = globals().get('OUTPUT_ENCODING', 'windows-1251')
+        with open(out_file, 'r', encoding=enc, errors='strict') as f:
+            xml_text = f.read()
+        if 'api.whatsapp.com' in xml_text:
+            return
+        updated = inject_seo_blocks_into_xml_text(xml_text)
+        with open(out_file, 'w', encoding=enc, errors='strict') as f:
+            f.write(updated)
+    except FileNotFoundError:
+        pass
+    except Exception as e:
         try:
-            return _seo_wrap_block_supplier(block)
+            print(f"SEO_POSTPROCESS_WARN: {e}")
         except Exception:
-            return block
-    t2 = _seo_re.sub(r'<offer\\b[^>]*?>.*?</offer>', repl, t, flags=_seo_re.S)
-    try:
-        _seo_Path(OUT_FILE).write_text(t2, encoding=OUTPUT_ENCODING)
-    except Exception:
-        _seo_Path(OUT_FILE).write_text(t2, encoding="utf-8")
+            pass
 
-# Register to run AFTER v34+v36 (append order matters)
 try:
-    _ppX_ax.unregister(_v34_then_v36)
-except Exception:
-    pass
-_ppX_ax.register(_v34_then_v36)
-_ppX_ax.register(_pp_seo_supplier_cta_and_delivery)
-# ========================= end Supplier-level SEO CTA =========================
-
+    _seo_postprocess_output_file()
+except Exception as _e:
+    try:
+        print(f"SEO_POSTPROCESS_WARN_OUTER: {_e}")
+    except Exception:
+        pass
