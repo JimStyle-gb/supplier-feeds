@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v26
-# Новое: перерасчёт <price> по правилам (4% + надбавка по диапазону, хвост 900 вверх, спец.: base>=9_000_000 -> 100).
-# Остальное — как в v25 (сортировка, перенос available, чистки, префикс AS и id, отступы).
+# build_alstyle.py v27-soft
+# Орфография (мягкий режим): декод HTML-сущностей, ::/.., пробелы, единицы (Вт/В/Гц/мм/см/кг/л),
+# размеры 10x20 -> 10 × 20, температуры "50 C" -> "50 °C", mAh -> мА·ч.
+# Остальное: как v26 — перенос <available> в атрибут, purchase_price→price, чистки тегов,
+# сортировка тегов, префикс AS + id, правила цены, пустые строки.
 
-import re, sys, pathlib, requests, math
+import re, sys, pathlib, requests, math, html
 
 URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 LOGIN = "info@complex-solutions.kz"
@@ -94,29 +96,25 @@ def _sort_offer_tags(body: str) -> str:
     def pop_all(text, rx):
         items = []
         def repl(m):
-            items.append(m.group(0))
-            return ""
+            items.append(m.group(0)); return ""
         return rx.sub(repl, text), items
     def pop_one(text, rx):
         m = rx.search(text)
         if not m: return text, ""
         return text[:m.start()] + text[m.end():], m.group(0)
-
     rx_tag = lambda n: re.compile(rf"(?is)<\s*{n}\b[^>]*>.*?</\s*{n}\s*>")
     rx_picture = re.compile(r"(?is)<\s*picture\b[^>]*>.*?</\s*picture\s*>")
     rx_param = re.compile(r"(?is)<\s*param\b[^>]*?(?:/?>.*?</\s*param\s*>|/\s*>)")
-
     text = body
     text, categoryId = pop_one(text, rx_tag("categoryId"))
-    text, vendorCode = pop_one(text, rx_tag("vendorCode"))
-    text, name = pop_one(text, rx_tag("name"))
-    text, price = pop_one(text, rx_tag("price"))
-    text, pictures = pop_all(text, rx_picture)
-    text, vendor = pop_one(text, rx_tag("vendor"))
-    text, currencyId = pop_one(text, rx_tag("currencyId"))
+    text, vendorCode  = pop_one(text, rx_tag("vendorCode"))
+    text, name        = pop_one(text, rx_tag("name"))
+    text, price       = pop_one(text, rx_tag("price"))
+    text, pictures    = pop_all(text, rx_picture)
+    text, vendor      = pop_one(text, rx_tag("vendor"))
+    text, currencyId  = pop_one(text, rx_tag("currencyId"))
     text, description = pop_one(text, rx_tag("description"))
-    text, params = pop_all(text, rx_param)
-
+    text, params      = pop_all(text, rx_param)
     pieces = []
     for part in [categoryId, vendorCode, name, price]:
         if part: pieces.append(part.strip())
@@ -126,19 +124,14 @@ def _sort_offer_tags(body: str) -> str:
         if part: pieces.append(part.strip())
     for prm in params:
         if prm: pieces.append(prm.strip())
-
     tail = text.strip()
-    if tail:
-        pieces.append(tail)
-
+    if tail: pieces.append(tail)
     return "\n".join(pieces) + ("\n" if pieces else "")
 
 def _ensure_prefix_and_id(attrs: str, body: str):
     m = re.search(r"(?is)(<\s*vendorCode\s*>\s*)(.*?)(\s*<\s*/\s*vendorCode\s*>)", body)
-    if not m:
-        return attrs, body
-    prefix = "AS"
-    raw = m.group(2).strip()
+    if not m: return attrs, body
+    prefix = "AS"; raw = m.group(2).strip()
     prefixed = raw if raw.startswith(prefix) else prefix + raw
     body = body[:m.start()] + m.group(1) + prefixed + m.group(3) + body[m.end():]
     if re.search(r'\bid\s*=\s*"(.*?)"', attrs, flags=re.I):
@@ -154,13 +147,10 @@ def _digits_int(s: str):
     return int(t) if t else None
 
 def _price_adjust(base: int) -> int:
-    # спец-правило: сверхдорогие -> 100
-    if base is None:
-        return None
-    if base >= 9_000_000:
-        return 100
+    if base is None: return None
+    if base >= 9_000_000: return 100
     add = 0
-    if 101 <= base <= 10_000: add = 3_000
+    if   101 <= base <= 10_000: add = 3_000
     elif 10_001 <= base <= 25_000: add = 4_000
     elif 25_001 <= base <= 50_000: add = 5_000
     elif 50_001 <= base <= 75_000: add = 7_000
@@ -173,23 +163,64 @@ def _price_adjust(base: int) -> int:
     elif 500_001 <= base <= 750_000: add = 40_000
     elif 750_001 <= base <= 1_000_000: add = 50_000
     elif 1_000_001 <= base <= 1_500_000: add = 70_000
-    elif 1_500_001 <= base <= 2_000_000: add = 90_000
+    elif 1,500,001 <= base <= 2_000_000: add = 90_000
     elif 2_000_001 <= base <= 100_000_000: add = 100_000
-    # 4%
     v = base * 1.04 + add
-    # хвост 900, округление ВВЕРХ
     k = math.ceil((v - 900) / 1000.0)
     return int(1000 * k + 900)
 
 def _apply_price_rules(body: str) -> str:
     m = re.search(r"(?is)(<\s*price\s*>\s*)(.*?)(\s*<\s*/\s*price\s*>)", body)
-    if not m:
-        return body
+    if not m: return body
     base = _digits_int(m.group(2))
     newv = _price_adjust(base)
-    if newv is None:
-        return body
+    if newv is None: return body
     return body[:m.start()] + m.group(1) + str(newv) + m.group(3) + body[m.end():]
+
+# ---------- Орфография (мягкий) ----------
+_re_multi_spaces = re.compile(r" {2,}")
+_re_space_before_punct = re.compile(r"\s+([,.;:!?])")
+_re_double_colon = re.compile(r"::")
+_re_double_dot = re.compile(r"(?<!\.)\.\.(?!\.)")
+_re_temp_C = re.compile(r"(?<!°)\b(\d+)\s*C\b")
+_re_dims_x = re.compile(r"\b(\d+)\s*[xхX]\s*(\d+)\b")
+_re_no_space_unit = re.compile(r"(\d)(Вт|В|А|Гц|см|мм|кг|л)\b")
+_re_lower_units = re.compile(r"\b(\d+)\s*(вт|в|гц|мм|см|кг|л)\b")
+_re_mAh = re.compile(r"\b(\d+)\s*mAh\b", re.I)
+
+def _clean_text_soft(s: str) -> str:
+    if not s: return s
+    s = html.unescape(s)
+    s = _re_double_colon.sub(":", s)
+    s = _re_double_dot.sub("…", s)
+    s = _re_space_before_punct.sub(r"\1", s)
+    s = _re_multi_spaces.sub(" ", s)
+    s = _re_temp_C.sub(lambda m: f"{m.group(1)} °C", s)
+    s = _re_dims_x.sub(lambda m: f"{m.group(1)} × {m.group(2)}", s)
+    s = _re_no_space_unit.sub(lambda m: f"{m.group(1)} {m.group(2)}", s)
+    s = _re_lower_units.sub(lambda m: f"{m.group(1)} {m.group(2).upper()}", s)
+    s = _re_mAh.sub(lambda m: f"{m.group(1)} мА·ч", s)
+    # trim per-line
+    s = "\n".join(line.strip() for line in s.splitlines())
+    # collapse many empty lines
+    s = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", s)
+    return s
+
+def _apply_orthography(body: str) -> str:
+    # name
+    def fix_tag(text, tag):
+        rx = re.compile(rf"(?is)(<\s*{tag}\s*>)(.*?)(</\s*{tag}\s*>)")
+        def repl(m):
+            return m.group(1) + _clean_text_soft(m.group(2)) + m.group(3)
+        return rx.sub(repl, text, count=1)
+    body = fix_tag(body, "name")
+    body = fix_tag(body, "description")
+    # params (many)
+    rx_param = re.compile(r'(?is)(<\s*param\b[^>]*>)(.*?)(</\s*param\s*>)')
+    def prm_repl(m):
+        return m.group(1) + _clean_text_soft(m.group(2)) + m.group(3)
+    body = rx_param.sub(prm_repl, body)
+    return body
 
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
@@ -199,21 +230,18 @@ def _transform_offer(chunk: str) -> str:
     body = _copy_purchase_into_price(body)
     body = _remove_simple_tags(body)
     body = _remove_param_by_name(body)
-    # применяем правила цен ДО сортировки
     body = _apply_price_rules(body)
     body = _sort_offer_tags(body)
     attrs, body = _ensure_prefix_and_id(attrs, body)
-    if not body.startswith("\n"):
-        body = "\n" + body
+    body = _apply_orthography(body)  # мягкая орфография
+    if not body.startswith("\n"): body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
     m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
     m_offers = re.search(r"(?is)<\s*offers\b", src)
-    if not m_shop or not m_offers or m_offers.start() <= m_shop.end():
-        return src
-    left = src[:m_shop.end()]
-    right = src[m_offers.start():]
+    if not m_shop or not m_offers or m_offers.start() <= m_shop.end(): return src
+    left = src[:m_shop.end()]; right = src[m_offers.start():]
     if not (left.endswith("\n") or right.startswith("\n") or left.endswith("\r") or right.startswith("\r")):
         return left + "\n" + right
     return left + right
@@ -225,27 +253,21 @@ def main() -> int:
         print(f"[ERROR] download failed: {e}", file=sys.stderr); return 1
     if r.status_code != 200:
         print(f"[ERROR] HTTP {r.status_code}", file=sys.stderr); return 1
-
     src = _dec(r.content, getattr(r, "encoding", None))
     src = _strip_shop_header(src)
-
     m_off = re.search(r"(?s)<offers>(.*?)</offers>", src)
     if not m_off:
         _save(src); print("[WARN] <offers> не найден — файл сохранён без изменений"); return 0
-
     offers_block = m_off.group(1)
     offers = re.findall(r"(?s)<offer\b.*?</offer>", offers_block)
     total = len(offers)
-
     re_cat = re.compile(r"<categoryId>\s*(\d+)\s*</categoryId>", flags=re.I)
     kept = []
     for ch in offers:
         m = re_cat.search(ch)
         if m and m.group(1) in ALLOWED_CATS:
             kept.append(_transform_offer(ch))
-
-    sep = "\n\n"
-    prefix = "<offers>\n\n" if kept else "<offers>\n"
+    sep = "\n\n"; prefix = "<offers>\n\n" if kept else "<offers>\n"
     new_block = prefix + sep.join(kept) + ("\n" if kept else "") + "</offers>"
     out = re.sub(r"(?s)<offers>.*?</offers>", lambda _: new_block, src, count=1)
     _save(out)
