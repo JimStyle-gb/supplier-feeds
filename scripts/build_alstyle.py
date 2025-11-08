@@ -185,18 +185,20 @@ def _apply_price_rules(body: str) -> str:
 
 # --- ТОЛЬКО описание: сплющивание в один абзац ---
 def _flatten_description(body: str) -> str:
+    # Сплющиваем в один абзац + УДАЛЯЕМ ВСЕ HTML-ТЕГИ внутри description
     rx = re.compile(r"(?is)(<\s*description\s*>)(.*?)(</\s*description\s*>)")
     def repl(m):
         txt = m.group(2)
         txt = html.unescape(txt)                  # декод HTML-сущностей
         txt = txt.replace("\u00A0", " ")          # NBSP -> пробел
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)  # zero-width + BOM
-        txt = re.sub(r"\s+", " ", txt)            # весь whitespace -> 1 пробел
+        txt = re.sub(r"(?is)<[^>]+>", " ", txt)   # СТРЕПИМ ВСЕ HTML-ТЕГИ ВНУТРИ ОПИСАНИЯ
+        txt = re.sub(r"\s+", " ", txt)           # весь whitespace -> 1 пробел
         txt = txt.strip()
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
 
-# --- Трансформация одного <offer> ---
+
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
     if not m: return chunk
