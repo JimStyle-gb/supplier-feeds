@@ -4,15 +4,12 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "scripts/build_alstyle.py"
-      - ".github/workflows/build_alstyle.yml"
+      - 'scripts/**'
+      - '.github/workflows/**'
+      - 'docs/**'
 
 permissions:
   contents: write
-
-concurrency:
-  group: build-alstyle
-  cancel-in-progress: false
 
 jobs:
   build:
@@ -21,30 +18,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python 3.11
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
-      - name: Install deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
+      - name: Install dependencies
+        run: pip install requests
 
-      - name: Build feed (docs/alstyle.yml)
-        run: |
-          set -e
-          python scripts/build_alstyle.py
+      - name: Build AlStyle feed
+        run: python scripts/build_alstyle.py
 
-      - name: Commit & push changes (if any)
+      - name: Commit & push if docs/alstyle.yml changed
         run: |
-          set -e
-          git config user.name  "alstyle-bot"
-          git config user.email "alstyle-bot@example.com"
-          git add docs/alstyle.yml
-          if git diff --staged --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "build: update docs/alstyle.yml from supplier feed (category filter)"
+          if [[ -n "$(git status --porcelain docs/alstyle.yml)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add docs/alstyle.yml
+            git commit -m "Build AlStyle: update docs/alstyle.yml"
             git push
+          else
+            echo "No changes in docs/alstyle.yml"
           fi
