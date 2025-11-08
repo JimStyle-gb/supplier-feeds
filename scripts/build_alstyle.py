@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v24
-# Change: avoid sticking "<offer ...><categoryId>" by inserting exactly one newline
-# after the opening <offer> tag. Rest logic from v23 (sorting + blank lines).
+# build_alstyle.py v25
+# Новое: в <vendorCode> добавляем префикс "AS" (если его нет) и копируем это значение в атрибут id у <offer>.
 
 import re, sys, pathlib, requests
 
@@ -133,6 +132,25 @@ def _sort_offer_tags(body: str) -> str:
 
     return "\n".join(pieces) + ("\n" if pieces else "")
 
+def _ensure_prefix_and_id(attrs: str, body: str):
+    """Добавить префикс AS к <vendorCode> (если нет) и проставить id= тому же значению."""
+    m = re.search(r"(?is)(<\s*vendorCode\s*>\s*)(.*?)(\s*<\s*/\s*vendorCode\s*>)", body)
+    if not m:
+        return attrs, body  # нечего делать
+    prefix = "AS"
+    raw = m.group(2).strip()
+    prefixed = raw if raw.startswith(prefix) else prefix + raw
+    # заменить содержимое vendorCode на prefixed (только первое вхождение)
+    body = body[:m.start()] + m.group(1) + prefixed + m.group(3) + body[m.end():]
+    # обновить/добавить id="..."
+    if re.search(r'\bid\s*=\s*"(.*?)"', attrs, flags=re.I):
+        attrs = re.sub(r'(\bid\s*=\s*")([^"]*)(")', lambda g: g.group(1)+prefixed+g.group(3), attrs, flags=re.I)
+    elif re.search(r"\bid\s*=\s*'(.*?)'", attrs, flags=re.I):
+        attrs = re.sub(r"(\bid\s*=\s*')([^']*)(')", lambda g: g.group(1)+prefixed+g.group(3), attrs, flags=re.I)
+    else:
+        attrs = f' id="{prefixed}"' + attrs
+    return attrs, body
+
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
     if not m: return chunk
@@ -142,6 +160,8 @@ def _transform_offer(chunk: str) -> str:
     body = _remove_simple_tags(body)
     body = _remove_param_by_name(body)
     body = _sort_offer_tags(body)
+    # + префикс и id
+    attrs, body = _ensure_prefix_and_id(attrs, body)
     # ensure exactly one newline after opening <offer ...>
     if not body.startswith("\n"):
         body = "\n" + body
