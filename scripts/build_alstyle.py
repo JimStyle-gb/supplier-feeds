@@ -184,69 +184,35 @@ def _apply_price_rules(body: str) -> str:
     return body[:m.start()] + m.group(1) + str(newv) + m.group(3) + body[m.end():]
 
 # --- ТОЛЬКО описание: сплющивание в один абзац ---
-def _desc_plain(body: str) -> str:
-    import re, html
+def _flatten_description(body: str) -> str:
     rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
     def repl(m):
         txt = m.group(2)
-        # CDATA unwrap
+        # CDATA -> текст
         if txt.lstrip().startswith("<![CDATA["):
             txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
-        # Multi-unescape (catch &#10; -> \n, &amp;quot; -> " и т.п.)
+        # Несколько unescape до стабилизации (ловим двойное/тройное кодирование)
         for _ in range(3):
-            nt = html.unescape(txt)
-            if nt == txt: break
-            txt = nt
-        # Normalize NBSP/zero-width
+            new_txt = html.unescape(txt)
+            if new_txt == txt:
+                break
+            txt = new_txt
+        # NBSP/zero-width после финального unescape
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # Existing <br> -> visible marker
-        marker = ")br("
-        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", marker, txt)
-        # Normalize real newlines, collapse multiple blank lines
-        txt = re.sub(r"\r\n|\r|\n", "\n", txt)
-        txt = re.sub(r"\n\s*\n+", "\n", txt)
-        # Newlines -> visible marker
-        txt = txt.replace("\n", marker)
-        # Remove any other HTML tags
+        # Нормализуем переносы -> пробел (plain режим)
+        txt = re.sub(r"\r\n|\r|\n", " ", txt)
+        # Убираем ВСЕ HTML-теги
         txt = re.sub(r"(?is)<[^>]+>", " ", txt)
-        # Collapse spaces
+        # Схлопываем пробелы
         txt = re.sub(r"\s+", " ", txt).strip()
-        # Tighten spaces around markers
-        txt = re.sub(r"\s*%s\s*" % re.escape(marker), marker, txt)
+        # Финальная защита: ещё раз схлопнуть (на случай появившихся пробелов после unescape)
+        txt = re.sub(r"\s+", " ", txt).strip()
+        # Пустым не оставляем
         if not txt:
             txt = "Описание недоступно"
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
-
-def _add_br_after_plain(body: str) -> str:
-    import re
-    rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
-    def repl(m):
-        txt = m.group(2)
-        # Convert visible markers to <br>
-        txt = txt.replace(")br(", "<br>")
-        # Remove any stray tags except <br> (safety)
-        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)
-        txt = re.sub(r"(?is)<[^>]+>", " ", txt)
-        # Normalize spaces around/dedupe <br>
-        txt = re.sub(r"\s*<br>\s*", "<br>", txt)
-        txt = re.sub(r"(?:<br>){2,}", "<br>", txt)
-        # Trim leading/trailing <br> and spaces
-        txt = re.sub(r"^(?:<br>)+", "", txt)
-        txt = re.sub(r"(?:<br>)+$", "", txt)
-        txt = re.sub(r"\s+", " ", txt).strip()
-        if not txt:
-            txt = "Описание недоступно"
-        return m.group(1) + txt + m.group(3)
-    return rx.sub(repl, body, count=1)
-
-def _flatten_description(body: str) -> str:
-    # этап 1: plain (чистим до одного абзаца, без тегов)
-    body = _desc_plain(body)
-    # этап 2: новый этап — возвращаем <br> (только он), по безопасным границам предложений
-    body = _add_br_after_plain(body)
-    return body
 
 # --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
@@ -274,8 +240,8 @@ def _strip_shop_header(src: str) -> str:
         return left + "\n" + right
     return left + right
 
-def main():
-    print('[VER] build_alstyle v41 plain→)br(→<br>')
+def main() -> int:
+    print('[VER] build_alstyle v42 plain-only (no <br>)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
