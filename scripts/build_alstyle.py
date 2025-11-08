@@ -201,17 +201,19 @@ def _desc_plain(body: str) -> str:
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
         # Existing <br> -> visible marker
-        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", "|br|", txt)
+        marker = ")br("
+        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", marker, txt)
         # Normalize real newlines, collapse multiple blank lines
         txt = re.sub(r"\r\n|\r|\n", "\n", txt)
         txt = re.sub(r"\n\s*\n+", "\n", txt)
         # Newlines -> visible marker
-        txt = txt.replace("\n", "|br|")
+        txt = txt.replace("\n", marker)
         # Remove any other HTML tags
         txt = re.sub(r"(?is)<[^>]+>", " ", txt)
-        # Collapse spaces, but keep markers tight
+        # Collapse spaces
         txt = re.sub(r"\s+", " ", txt).strip()
-        txt = re.sub(r"\s*\|br\|\s*", "|br|", txt)
+        # Tighten spaces around markers
+        txt = re.sub(r"\s*%s\s*" % re.escape(marker), marker, txt)
         if not txt:
             txt = "Описание недоступно"
         return m.group(1) + txt + m.group(3)
@@ -223,7 +225,7 @@ def _add_br_after_plain(body: str) -> str:
     def repl(m):
         txt = m.group(2)
         # Convert visible markers to <br>
-        txt = txt.replace("|br|", "<br>")
+        txt = txt.replace(")br(", "<br>")
         # Remove any stray tags except <br> (safety)
         txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)
         txt = re.sub(r"(?is)<[^>]+>", " ", txt)
@@ -273,7 +275,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main():
-    print('[VER] build_alstyle v40 plain→|br|→<br>')
+    print('[VER] build_alstyle v41 plain→)br(→<br>')
     print('[VER] build_alstyle v40 plain→|br|→<br>') -> int:
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
