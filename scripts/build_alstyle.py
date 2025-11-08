@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v23
-# Добавлено: пустая строка между <offers> и первым <offer id="...">.
-# Остальное = v22 (сортировка тегов и пустая строка между офферами).
+# build_alstyle.py v24
+# Change: avoid sticking "<offer ...><categoryId>" by inserting exactly one newline
+# after the opening <offer> tag. Rest logic from v23 (sorting + blank lines).
 
 import re, sys, pathlib, requests
 
@@ -71,7 +71,6 @@ def _remove_param_by_name(body: str) -> str:
         "Артикул","Штрихкод","Штрих-код","Снижена цена","Благотворительность",
         "Назначение","Код ТН ВЭД","Объём","Объем","Код товара Kaspi","Новинка"
     ]}
-    # line-anchored
     rx_line_pair = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>[ \t]*\r?\n?")
     rx_line_self = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)/\s*>[ \t]*\r?\n?")
     def _line_cb(m):
@@ -80,7 +79,6 @@ def _remove_param_by_name(body: str) -> str:
         return m.group(0)
     body = rx_line_pair.sub(_line_cb, body)
     body = rx_line_self.sub(_line_cb, body)
-    # inline anywhere
     rx_inline_pair = re.compile(r"(?is)<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>")
     rx_inline_self = re.compile(r"(?is)<\s*param\b(?P<attrs>[^>]*)/\s*>")
     def _inline_cb(m):
@@ -89,7 +87,6 @@ def _remove_param_by_name(body: str) -> str:
         return m.group(0)
     body = rx_inline_pair.sub(_inline_cb, body)
     body = rx_inline_self.sub(_inline_cb, body)
-    # collapse multiple blank lines
     body = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", body)
     return body
 
@@ -145,6 +142,9 @@ def _transform_offer(chunk: str) -> str:
     body = _remove_simple_tags(body)
     body = _remove_param_by_name(body)
     body = _sort_offer_tags(body)
+    # ensure exactly one newline after opening <offer ...>
+    if not body.startswith("\n"):
+        body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
@@ -184,7 +184,6 @@ def main() -> int:
         if m and m.group(1) in ALLOWED_CATS:
             kept.append(_transform_offer(ch))
 
-    # пустая строка между <offers> и первым <offer>, и между офферами
     sep = "\n\n"
     prefix = "<offers>\n\n" if kept else "<offers>\n"
     new_block = prefix + sep.join(kept) + ("\n" if kept else "") + "</offers>"
