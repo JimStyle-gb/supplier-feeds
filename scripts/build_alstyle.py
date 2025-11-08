@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v21
-# Fix: _remove_param_by_name removes target <param> nodes even if inline or split across lines.
-# - Two-pass: (1) whole-line params (Excel-style line delete), (2) inline params.
-# - Supports paired <param>...</param> and self-closed <param .../>.
-# - Collapses multiple blank lines to a single newline after deletions.
+# build_alstyle.py v22
+# Новое: сортировка тегов внутри <offer> в порядке:
+# <categoryId> <vendorCode> <name> <price> <picture*> <vendor> <currencyId> <description> <param*>
+# + пустая строка между офферами в <offers>.
 
 import re, sys, pathlib, requests
 
@@ -47,6 +46,7 @@ def _copy_purchase_into_price(body: str) -> str:
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
+    # удаляем: url, quantity, quantity_in_stock, available, purchase_price (сохраняем читаемость)
     def rm(text, name_regex):
         rx = re.compile(
             rf"(?is)"
@@ -66,51 +66,83 @@ def _remove_simple_tags(body: str) -> str:
     return body
 
 def _remove_param_by_name(body: str) -> str:
-    # Normalize helper
+    # Удаляем целевые <param> в любом положении (линия/inline/разбитые), затем схлопываем пустые строки
     def _norm(s: str) -> str:
         s = s.lower().replace("ё", "е")
         return re.sub(r"[\s\-]+", "", s)
-
     to_drop = {_norm(x) for x in [
         "Артикул","Штрихкод","Штрих-код","Снижена цена","Благотворительность",
         "Назначение","Код ТН ВЭД","Объём","Объем","Код товара Kaspi","Новинка"
     ]}
-
-    # 1) Whole-line removal (Excel-style). Handles paired and self-closed.
-    rx_line_pair = re.compile(
-        r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>[ \t]*\r?\n?"
-    )
-    rx_line_self = re.compile(
-        r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)/\s*>[ \t]*\r?\n?"
-    )
+    # 1) line-anchored
+    rx_line_pair = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>[ \t]*\r?\n?")
+    rx_line_self = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)/\s*>[ \t]*\r?\n?")
     def _line_cb(m):
-        attrs = m.group("attrs")
-        m_attr = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', attrs)
-        if m_attr and _norm(m_attr.group(2)) in to_drop:
-            return ""  # delete the whole line
+        a = m.group("attrs"); ma = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', a)
+        if ma and _norm(ma.group(2)) in to_drop: return ""
         return m.group(0)
     body = rx_line_pair.sub(_line_cb, body)
     body = rx_line_self.sub(_line_cb, body)
-
-    # 2) Inline removal anywhere in text (not line-anchored).
-    rx_inline_pair = re.compile(
-        r"(?is)<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>"
-    )
-    rx_inline_self = re.compile(
-        r"(?is)<\s*param\b(?P<attrs>[^>]*)/\s*>"
-    )
+    # 2) inline anywhere
+    rx_inline_pair = re.compile(r"(?is)<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>")
+    rx_inline_self = re.compile(r"(?is)<\s*param\b(?P<attrs>[^>]*)/\s*>")
     def _inline_cb(m):
-        attrs = m.group("attrs")
-        m_attr = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', attrs)
-        if m_attr and _norm(m_attr.group(2)) in to_drop:
-            return ""  # delete node, no newlines inserted
+        a = m.group("attrs"); ma = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', a)
+        if ma and _norm(ma.group(2)) in to_drop: return ""
         return m.group(0)
     body = rx_inline_pair.sub(_inline_cb, body)
     body = rx_inline_self.sub(_inline_cb, body)
-
-    # 3) Collapse multiple blank lines to a single newline at the end
+    # 3) collapse multiple blank lines
     body = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", body)
     return body
+
+def _sort_offer_tags(body: str) -> str:
+    """Пересобираем тело оффера в заданном порядке; сохраняем найденные picture* и param* в исходном порядке."""
+    def pop_all(text, rx):
+        items = []
+        def repl(m):
+            items.append(m.group(0))
+            return ""
+        return rx.sub(repl, text), items
+    def pop_one(text, rx):
+        m = rx.search(text)
+        if not m: return text, ""
+        return text[:m.start()] + text[m.end():], m.group(0)
+
+    # regexes
+    rx_tag = lambda n: re.compile(rf"(?is)<\s*{n}\b[^>]*>.*?</\s*{n}\s*>")
+    rx_picture = re.compile(r"(?is)<\s*picture\b[^>]*>.*?</\s*picture\s*>")
+    rx_param = re.compile(r"(?is)<\s*param\b[^>]*?(?:/?>.*?</\s*param\s*>|/\s*>)")
+
+    text = body
+
+    text, categoryId = pop_one(text, rx_tag("categoryId"))
+    text, vendorCode = pop_one(text, rx_tag("vendorCode"))
+    text, name = pop_one(text, rx_tag("name"))
+    text, price = pop_one(text, rx_tag("price"))
+    text, pictures = pop_all(text, rx_picture)
+    text, vendor = pop_one(text, rx_tag("vendor"))
+    text, currencyId = pop_one(text, rx_tag("currencyId"))
+    text, description = pop_one(text, rx_tag("description"))
+    text, params = pop_all(text, rx_param)
+
+    pieces = []
+    for part in [categoryId, vendorCode, name, price]:
+        if part: pieces.append(part.strip())
+    for pic in pictures:
+        if pic: pieces.append(pic.strip())
+    for part in [vendor, currencyId, description]:
+        if part: pieces.append(part.strip())
+    for prm in params:
+        if prm: pieces.append(prm.strip())
+
+    # остаток (редко) добавим в конец как есть, чтобы ничего не потерять
+    tail = text.strip()
+    if tail:
+        pieces.append(tail)
+
+    # один тег на строку
+    return "\n".join(pieces) + ("\n" if pieces else "")
 
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
@@ -120,6 +152,7 @@ def _transform_offer(chunk: str) -> str:
     body = _copy_purchase_into_price(body)
     body = _remove_simple_tags(body)
     body = _remove_param_by_name(body)
+    body = _sort_offer_tags(body)  # сортировка по заданному порядку
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
@@ -159,7 +192,9 @@ def main() -> int:
         if m and m.group(1) in ALLOWED_CATS:
             kept.append(_transform_offer(ch))
 
-    new_block = "<offers>\n" + "\n".join(kept) + ("\n" if kept else "") + "</offers>"
+    # пустая строка между офферами
+    sep = "\n\n"
+    new_block = "<offers>\n" + sep.join(kept) + ("\n" if kept else "") + "</offers>"
     out = re.sub(r"(?s)<offers>.*?</offers>", lambda _: new_block, src, count=1)
     _save(out)
     print(f"[OK] offers kept: {len(kept)} / {total}")
