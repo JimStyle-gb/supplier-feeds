@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'scripts/**'                     # триггерим только по скриптам
-      - '.github/workflows/Build_AlStyle.yml'  # и самому workflow
+      - 'scripts/**'
+      - '.github/workflows/Build_AlStyle.yml'
 
 permissions:
   contents: write
 
 concurrency:
-  group: alstyle-${{ github.ref }}       # один ран на ветку; новые отменяют старые
+  group: alstyle-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    if: github.actor != 'github-actions[bot]'  # не запускать повторно от коммита бота
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,15 +34,18 @@ jobs:
         run: |
           python scripts/build_alstyle.py
 
-      - name: Commit & push if docs/alstyle.yml changed
+      - name: Commit & push if docs/alstyle.yml changed (safe rebase)
         run: |
           if [[ -n "$(git status --porcelain docs/alstyle.yml)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git fetch --prune
-            git pull --rebase origin "${GITHUB_REF_NAME:-${GITHUB_REF##*/}}"
+            # 1) Сначала фиксируем локальные изменения в коммит
             git add docs/alstyle.yml
-            git commit -m "Build AlStyle: update docs/alstyle.yml"
+            git commit -m "Build AlStyle: update docs/alstyle.yml" || echo "No changes to commit"
+            # 2) Подтягиваем удалёнку с ребейзом (автостэш на случай посторонних изменений)
+            git fetch --prune
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME:-${GITHUB_REF##*/}}"
+            # 3) Пушим
             git push
           else
             echo "No changes in docs/alstyle.yml"
