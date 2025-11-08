@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-build_alstyle.py — v13 (точечный фикс: удалять ТОЛЬКО заданные <param>)
-Изменена ТОЛЬКО _remove_simple_tags:
-• Простые теги (url, quantity, quantity_in_stock, available, purchase_price) — как в v11 (сохранение переносов).
-• Для <param> теперь используем callback: извлекаем значение name/param/label, НОРМАЛИЗУЕМ и сравниваем
-  с белым списком на удаление. Удаляются ТОЛЬКО совпадения; остальные <param> остаются.
-Остальное поведение без изменений.
+build_alstyle.py — v14
+Правки по ТЗ:
+1) Вернул поведение _remove_simple_tags как раньше (удаляет только: url, quantity, quantity_in_stock, available, purchase_price)
+   и аккуратно сохраняет переносы строк. Параметры здесь НЕ трогаем.
+2) Добавил отдельную функцию _remove_param_by_name — удаляет ТОЛЬКО <param ...> с именами:
+   "артикул","благотворительность","код тн вэд","код товара kaspi","новинка","снижена цена",
+   "штрихкод","штрих-код","назначение","объем","объём".
+Остальное без изменений: фильтр categoryId, перенос available в атрибут, копирование purchase_price -> price,
+вырезание блока между <shop> и <offers> с одним переводом строки.
 """
 
 import re, sys, pathlib, requests
@@ -50,10 +53,10 @@ def _copy_purchase_into_price(body: str) -> str:
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
-    """Удаляем указанные простые теги и ТОЛЬКО некоторые <param> по точным именам.
-    Сохраняем читаемую разметку: если вокруг удалённого блока был перенос строки — оставляем один \n.
+    """Удаляем только простые теги (url, quantity, quantity_in_stock, available, purchase_price),
+    сохраняя читаемость: если вокруг удалённого блока был перенос строки — оставляем один \\n.
+    Параметры <param ...> здесь НЕ трогаем.
     """
-    # 1) Простые теги на удаление (как в v11): url, quantity, quantity_in_stock, available, purchase_price
     def rm(text, name_regex):
         rx = re.compile(
             rf"(?is)"
@@ -70,22 +73,17 @@ def _remove_simple_tags(body: str) -> str:
     body = rm(body, r"available")
     body = rm(body, r"url")
     body = rm(body, r"quantity")
+    return body
 
-    # 2) Удаление ТОЛЬКО нужных <param ...>
-    # Нормализатор для сравнения (без добавления новых функций на верхнем уровне)
+def _remove_param_by_name(body: str) -> str:
+    """Удаляем ТОЛЬКО <param ...> с конкретными именами; переносы строк сохраняем аккуратно."""
     def _norm(s: str) -> str:
-        s = s.lower()
-        s = s.replace("ё", "е")
-        s = re.sub(r"[\s\-]+", "", s)  # убрать пробелы и дефисы
-        return s
-
+        s = s.lower().replace("ё", "е")
+        return re.sub(r"[\s\-]+", "", s)
     to_drop = {_norm(x) for x in [
-        "артикул", "благотворительность", "код тн вэд", "код товара kaspi",
-        "новинка", "снижена цена", "штрихкод", "штрих-код", "назначение",
-        "объем", "объём"
+        "артикул","благотворительность","код тн вэд","код товара kaspi",
+        "новинка","снижена цена","штрихкод","штрих-код","назначение","объем","объём"
     ]}
-
-    # Совместный шаблон для парных и самозакрывающихся param
     rx_param_any = re.compile(
         r"(?is)"
         r"(?P<pre_ws>[ \t]*)"
@@ -94,20 +92,14 @@ def _remove_simple_tags(body: str) -> str:
         r"(?P<post_nl>\r?\n)?"
         r"(?P<post_ws>[ \t]*)"
     )
-
-    def _param_cb(m):
+    def _cb(m):
         tag = m.group("tag")
-        # извлечь атрибут name/param/label="..."
         m_attr = re.search(r'(?is)\b(?:name|param|label)\s*=\s*(["\'])(.*?)\1', tag)
-        if not m_attr:
-            return m.group(0)  # не трогаем
-        val = _norm(m_attr.group(2))
-        if val in to_drop:
+        if not m_attr: return m.group(0)
+        if _norm(m_attr.group(2)) in to_drop:
             return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
-        return m.group(0)  # оставить как есть
-
-    body = rx_param_any.sub(_param_cb, body)
-    return body
+        return m.group(0)
+    return rx_param_any.sub(_cb, body)
 
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
@@ -115,10 +107,12 @@ def _transform_offer(chunk: str) -> str:
     attrs, body = m.group(1), m.group(2)
     attrs, body = _move_available_attr(attrs, body)
     body = _copy_purchase_into_price(body)
-    body = _remove_simple_tags(body)
+    body = _remove_simple_tags(body)     # базовые теги
+    body = _remove_param_by_name(body)   # отдельная чистка param
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
+    """Удаляем всё между <shop> и <offers>, оставляя ОДИН перевод строки между ними (если его не было)."""
     m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
     m_offers = re.search(r"(?is)<\s*offers\b", src)
     if not m_shop or not m_offers or m_offers.start() <= m_shop.end():
