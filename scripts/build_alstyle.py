@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-build_alstyle.py — v12 (точечный апдейт чистки)
+build_alstyle.py — v13 (точечный фикс: удалять ТОЛЬКО заданные <param>)
 Изменена ТОЛЬКО _remove_simple_tags:
-• Дополнительно удаляем <param ...> по именам: "артикул","благотворительность","код тн вэд","код товара kaspi",
-  "новинка","снижена цена","штрихкод","штрих-код","назначение","объем","объём".
-• Сохраняем разрывы строк: если вокруг был \n — оставляем ровно один \n.
-Остальное поведение v11 без изменений.
+• Простые теги (url, quantity, quantity_in_stock, available, purchase_price) — как в v11 (сохранение переносов).
+• Для <param> теперь используем callback: извлекаем значение name/param/label, НОРМАЛИЗУЕМ и сравниваем
+  с белым списком на удаление. Удаляются ТОЛЬКО совпадения; остальные <param> остаются.
+Остальное поведение без изменений.
 """
 
 import re, sys, pathlib, requests
@@ -50,9 +50,10 @@ def _copy_purchase_into_price(body: str) -> str:
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
-    """Удаляем теги, аккуратно сохраняя разрывы строк.
-    Также удаляем <param ...> по запрещённым именам (см. список ниже).
+    """Удаляем указанные простые теги и ТОЛЬКО некоторые <param> по точным именам.
+    Сохраняем читаемую разметку: если вокруг удалённого блока был перенос строки — оставляем один \n.
     """
+    # 1) Простые теги на удаление (как в v11): url, quantity, quantity_in_stock, available, purchase_price
     def rm(text, name_regex):
         rx = re.compile(
             rf"(?is)"
@@ -64,42 +65,48 @@ def _remove_simple_tags(body: str) -> str:
         )
         def repl(m): return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
         return rx.sub(repl, text)
-
-    # 1) Простые теги на удаление
     body = rm(body, r"quantity_in_stock")
     body = rm(body, r"purchase_?price")
     body = rm(body, r"available")
     body = rm(body, r"url")
     body = rm(body, r"quantity")
 
-    # 2) Удаление <param ...> по имени
-    # Поддерживаем: name= / param= / label= ; кавычки ' или "; регистр не важен; допускаем варианты ё/е, пробелы и дефисы.
-    NAMES = r"(?:артикул|благотворительность|код\s*тн\s*в[еэ]д|код\s*товара\s*kaspi|новинка|снижена\s*цена|штрих-?код|назначение|объ[её]м)"
-    # парные <param>...</param>
-    rx_param_pair = re.compile(
-        rf"(?is)"
-        rf"(?P<pre_ws>[ \t]*)"
-        rf"(?P<pre_nl>\r?\n)?"
-        rf"<\s*param\b(?=[^>]*\b(?:name|param|label)\s*=\s*(['\"]).*?(?:{NAMES}).*?\1)[^>]*>"
-        rf".*?"
-        rf"<\s*/\s*param\s*>"
-        rf"(?P<post_nl>\r?\n)?"
-        rf"(?P<post_ws>[ \t]*)"
-    )
-    # самозакрывающиеся <param .../>
-    rx_param_self = re.compile(
-        rf"(?is)"
-        rf"(?P<pre_ws>[ \t]*)"
-        rf"(?P<pre_nl>\r?\n)?"
-        rf"<\s*param\b(?=[^>]*\b(?:name|param|label)\s*=\s*(['\"]).*?(?:{NAMES}).*?\1)[^>]*/\s*>"
-        rf"(?P<post_nl>\r?\n)?"
-        rf"(?P<post_ws>[ \t]*)"
-    )
-    def _repl(m): return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
+    # 2) Удаление ТОЛЬКО нужных <param ...>
+    # Нормализатор для сравнения (без добавления новых функций на верхнем уровне)
+    def _norm(s: str) -> str:
+        s = s.lower()
+        s = s.replace("ё", "е")
+        s = re.sub(r"[\s\-]+", "", s)  # убрать пробелы и дефисы
+        return s
 
-    body = rx_param_pair.sub(_repl, body)
-    body = rx_param_self.sub(_repl, body)
+    to_drop = {_norm(x) for x in [
+        "артикул", "благотворительность", "код тн вэд", "код товара kaspi",
+        "новинка", "снижена цена", "штрихкод", "штрих-код", "назначение",
+        "объем", "объём"
+    ]}
 
+    # Совместный шаблон для парных и самозакрывающихся param
+    rx_param_any = re.compile(
+        r"(?is)"
+        r"(?P<pre_ws>[ \t]*)"
+        r"(?P<pre_nl>\r?\n)?"
+        r"(?P<tag><\s*param\b[^>]*(?:/?>).*?(?:</\s*param\s*>)?)"
+        r"(?P<post_nl>\r?\n)?"
+        r"(?P<post_ws>[ \t]*)"
+    )
+
+    def _param_cb(m):
+        tag = m.group("tag")
+        # извлечь атрибут name/param/label="..."
+        m_attr = re.search(r'(?is)\b(?:name|param|label)\s*=\s*(["\'])(.*?)\1', tag)
+        if not m_attr:
+            return m.group(0)  # не трогаем
+        val = _norm(m_attr.group(2))
+        if val in to_drop:
+            return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
+        return m.group(0)  # оставить как есть
+
+    body = rx_param_any.sub(_param_cb, body)
     return body
 
 def _transform_offer(chunk: str) -> str:
