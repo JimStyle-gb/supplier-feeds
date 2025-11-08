@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v20
-# Изм.: _remove_param_by_name удаляет строку параметра целиком (с переводом строки) — как удаление строки в Excel.
+# build_alstyle.py v21
+# Fix: _remove_param_by_name removes target <param> nodes even if inline or split across lines.
+# - Two-pass: (1) whole-line params (Excel-style line delete), (2) inline params.
+# - Supports paired <param>...</param> and self-closed <param .../>.
+# - Collapses multiple blank lines to a single newline after deletions.
 
 import re, sys, pathlib, requests
 
@@ -63,23 +66,50 @@ def _remove_simple_tags(body: str) -> str:
     return body
 
 def _remove_param_by_name(body: str) -> str:
+    # Normalize helper
     def _norm(s: str) -> str:
         s = s.lower().replace("ё", "е")
         return re.sub(r"[\s\-]+", "", s)
+
     to_drop = {_norm(x) for x in [
-        "Артикул","Штрихкод","Снижена цена","Благотворительность","Назначение",
-        "Код ТН ВЭД","Объём","Объем","Код товара Kaspi","Новинка","Штрих-код"
+        "Артикул","Штрихкод","Штрих-код","Снижена цена","Благотворительность",
+        "Назначение","Код ТН ВЭД","Объём","Объем","Код товара Kaspi","Новинка"
     ]}
-    rx_pair = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>[ \t]*\r?\n?")
-    rx_self = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)/\s*>[ \t]*\r?\n?")
-    def _cb(m):
+
+    # 1) Whole-line removal (Excel-style). Handles paired and self-closed.
+    rx_line_pair = re.compile(
+        r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>[ \t]*\r?\n?"
+    )
+    rx_line_self = re.compile(
+        r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)/\s*>[ \t]*\r?\n?"
+    )
+    def _line_cb(m):
         attrs = m.group("attrs")
         m_attr = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', attrs)
         if m_attr and _norm(m_attr.group(2)) in to_drop:
-            return ""
+            return ""  # delete the whole line
         return m.group(0)
-    body = rx_pair.sub(_cb, body)
-    body = rx_self.sub(_cb, body)
+    body = rx_line_pair.sub(_line_cb, body)
+    body = rx_line_self.sub(_line_cb, body)
+
+    # 2) Inline removal anywhere in text (not line-anchored).
+    rx_inline_pair = re.compile(
+        r"(?is)<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>"
+    )
+    rx_inline_self = re.compile(
+        r"(?is)<\s*param\b(?P<attrs>[^>]*)/\s*>"
+    )
+    def _inline_cb(m):
+        attrs = m.group("attrs")
+        m_attr = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', attrs)
+        if m_attr and _norm(m_attr.group(2)) in to_drop:
+            return ""  # delete node, no newlines inserted
+        return m.group(0)
+    body = rx_inline_pair.sub(_inline_cb, body)
+    body = rx_inline_self.sub(_inline_cb, body)
+
+    # 3) Collapse multiple blank lines to a single newline at the end
+    body = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", body)
     return body
 
 def _transform_offer(chunk: str) -> str:
