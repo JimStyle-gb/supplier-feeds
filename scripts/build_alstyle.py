@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v17
-# Change: _remove_param_by_name now collapses multiple blank lines to a single newline after deletions.
+# build_alstyle.py v18
+# Change: after both removals in _transform_offer, collapse multiple blank lines to a single newline (robust fix).
 
 import re, sys, pathlib, requests
 
@@ -63,7 +63,6 @@ def _remove_simple_tags(body: str) -> str:
     return body
 
 def _remove_param_by_name(body: str) -> str:
-    # delete ONLY selected <param>, remove whole node (paired or self-closed), preserve layout
     def _norm(s: str) -> str:
         s = s.lower().replace("ё", "е")
         return re.sub(r"[\s\-]+", "", s)
@@ -100,8 +99,6 @@ def _remove_param_by_name(body: str) -> str:
         return _cb(m.group("attrs"), m.group("pre_nl"), m.group("post_nl"), m.group(0))
     body = rx_pair.sub(_cb_pair, body)
     body = rx_self.sub(_cb_self, body)
-    # collapse consecutive blank lines to a single newline
-    body = re.sub(r"(?m)(?:^[ \t]*\r?\n){2,}", "\n", body)
     return body
 
 def _transform_offer(chunk: str) -> str:
@@ -112,6 +109,8 @@ def _transform_offer(chunk: str) -> str:
     body = _copy_purchase_into_price(body)
     body = _remove_simple_tags(body)
     body = _remove_param_by_name(body)
+    # Final sweep: collapse 2+ blank lines (spaces/tabs/nbsp) to a single newline
+    body = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", body)
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
