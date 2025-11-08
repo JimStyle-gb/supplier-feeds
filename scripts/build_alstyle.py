@@ -185,31 +185,35 @@ def _apply_price_rules(body: str) -> str:
 
 # --- ТОЛЬКО описание: сплющивание в один абзац ---
 def _flatten_description(body: str) -> str:
-    rx = re.compile(r"(?is)(<\s*description\s*>)(.*?)(</\s*description\s*>)")
+    rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
     def repl(m):
         txt = m.group(2)
-        # 1) Декод сущностей (в т.ч. &#10; -> \n)
-        txt = html.unescape(txt)
-        # 2) NBSP -> пробел, убираем zero-width/BOM
+        # CDATA unwrap
+        txt_strip = txt.lstrip()
+        if txt_strip.startswith("<![CDATA["):
+            txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
+        # Double unescape (handles cases like &amp;gt; -> &gt; -> >)
+        txt = html.unescape(html.unescape(txt))
+        # NBSP -> space, remove zero-width/BOM
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # 3) Нормализуем переводы строк из исходника -> один <br>
-        #    Любая последовательность \r\n/\r/\n -> <br>
-        txt = re.sub(r"\r\n|\r|\n", "\n", txt)     # сначала к единому \n
-        txt = re.sub(r"\n\s*\n+", "\n", txt)        # схлопываем пустые строки
-        txt = txt.replace("\n", "<br>")
-        # 4) Удаляем прочие HTML-теги, но <br> оставляем
-        #    Ставим временный маркер, чтобы не потерять <br> при чистке
+        # Normalize raw line breaks to \n, collapse blank lines, then mark as <br>
+        txt = re.sub(r"\r\n|\r|\n", "\n", txt)
+        txt = re.sub(r"\n\s*\n+", "\n", txt)
+        # Preserve any existing <br> variants via sentinel
         sentinel = "\uFFFFBR\uFFFF"
         txt = re.sub(r"(?is)<\s*br\s*/?\s*>", sentinel, txt)
-        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)  # снять все теги кроме br
-        # 5) Схлопываем пробелы и восстанавливаем <br>
+        # Remove all other HTML tags
+        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)
+        # Convert remaining \n to sentinel (each \n => one <br>)
+        txt = txt.replace("\n", sentinel)
+        # Collapse whitespace
         txt = re.sub(r"\s+", " ", txt)
+        # Restore <br>, normalize spacing and duplicates
         txt = txt.replace(sentinel, "<br>")
-        # 6) Убираем лишние пробелы вокруг <br> и повторяющиеся <br>
         txt = re.sub(r"\s*<br>\s*", "<br>", txt)
         txt = re.sub(r"(?:<br>){2,}", "<br>", txt)
-        # 7) Финальный trim
+        # Final trim
         txt = txt.strip("<br> ").strip()
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
