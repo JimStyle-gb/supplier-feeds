@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v16
-# Changes: removed unicode docstring to avoid SyntaxError in some runners.
-# Logic is identical to v15.
+# build_alstyle.py v17
+# Change: _remove_param_by_name now collapses multiple blank lines to a single newline after deletions.
 
 import re, sys, pathlib, requests
 
@@ -45,7 +44,6 @@ def _copy_purchase_into_price(body: str) -> str:
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
-    # remove only url, quantity, quantity_in_stock, available, purchase_price; keep layout
     def rm(text, name_regex):
         rx = re.compile(
             rf"(?is)"
@@ -102,6 +100,8 @@ def _remove_param_by_name(body: str) -> str:
         return _cb(m.group("attrs"), m.group("pre_nl"), m.group("post_nl"), m.group(0))
     body = rx_pair.sub(_cb_pair, body)
     body = rx_self.sub(_cb_self, body)
+    # collapse consecutive blank lines to a single newline
+    body = re.sub(r"(?m)(?:^[ \t]*\r?\n){2,}", "\n", body)
     return body
 
 def _transform_offer(chunk: str) -> str:
@@ -115,7 +115,6 @@ def _transform_offer(chunk: str) -> str:
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
-    # remove everything between <shop> and <offers>, ensure exactly one newline boundary if none existed
     m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
     m_offers = re.search(r"(?is)<\s*offers\b", src)
     if not m_shop or not m_offers or m_offers.start() <= m_shop.end():
