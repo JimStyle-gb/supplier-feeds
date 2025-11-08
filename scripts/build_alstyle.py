@@ -200,14 +200,25 @@ def _flatten_description(body: str) -> str:
         # NBSP/zero-width после финального unescape
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # Нормализуем переносы -> пробел (plain режим)
-        txt = re.sub(r"\r\n|\r|\n", " ", txt)
-        # Убираем ВСЕ HTML-теги
-        txt = re.sub(r"(?is)<[^>]+>", " ", txt)
+        # Нормализуем переносы строк -> \n и схлопываем пустые строки
+        txt = re.sub(r"\r\n|\r|\n", "\n", txt)
+        txt = re.sub(r"\n\s*\n+", "\n", txt)
+        # Сохраняем существующие <br> как маркеры
+        sentinel = "\uFFFFBR\uFFFF"
+        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", sentinel, txt)
+        # Убираем ВСЕ остальные HTML-теги
+        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)  # на случай редких конструкций
+        txt = re.sub(r"(?is)<[^>]+>", " ", txt)                 # добиваем нестандартные <> блоки
+        # Переводы строк заменяем на <br> через маркер
+        txt = txt.replace("\n", sentinel)
         # Схлопываем пробелы
         txt = re.sub(r"\s+", " ", txt).strip()
-        # Финальная защита: ещё раз схлопнуть (на случай появившихся пробелов после unescape)
-        txt = re.sub(r"\s+", " ", txt).strip()
+        # Восстанавливаем <br>, чистим пробелы вокруг, убираем дубликаты
+        txt = txt.replace(sentinel, "<br>")
+        txt = re.sub(r"\s*<br>\s*", "<br>", txt)
+        txt = re.sub(r"(?:<br>){2,}", "<br>", txt)
+        # Финальный трим без ведущих/замыкающих <br>
+        txt = txt.strip("<br> ").strip()
         # Пустым не оставляем
         if not txt:
             txt = "Описание недоступно"
