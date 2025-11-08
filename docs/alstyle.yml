@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-08 17:50">
+<yml_catalog date="2025-11-08 18:50">
 <shop>
 <offers>
+
 <offer id="12568" available="false"><categoryId>3542</categoryId>
 <vendorCode>20888</vendorCode>
 <name>Источник бесперебойного питания SVC U-650-L</name>
