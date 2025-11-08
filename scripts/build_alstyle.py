@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v19
-# Добавлено: точечное удаление только указанных <param name="...">...</param> (или <param .../>).
-# Остальная логика — как в v11.
+# build_alstyle.py v20
+# Изм.: _remove_param_by_name удаляет строку параметра целиком (с переводом строки) — как удаление строки в Excel.
 
 import re, sys, pathlib, requests
 
@@ -45,8 +44,6 @@ def _copy_purchase_into_price(body: str) -> str:
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
-    # Удаляем только: url, quantity, quantity_in_stock, available, purchase_price
-    # Сохраняем разрывы строк: если вокруг был перенос — оставляем один \n
     def rm(text, name_regex):
         rx = re.compile(
             rf"(?is)"
@@ -66,58 +63,23 @@ def _remove_simple_tags(body: str) -> str:
     return body
 
 def _remove_param_by_name(body: str) -> str:
-    # Удаляем ТОЛЬКО <param name="..."> и <param .../> с именами из списка; узел удаляем целиком.
     def _norm(s: str) -> str:
         s = s.lower().replace("ё", "е")
         return re.sub(r"[\s\-]+", "", s)
     to_drop = {_norm(x) for x in [
-        "Артикул",
-        "Штрихкод",
-        "Снижена цена",
-        "Благотворительность",
-        "Назначение",
-        "Код ТН ВЭД",
-        "Объём",
-        "Код товара Kaspi",
-        "Новинка",
-        # страховка на вариант "Штрих-код"
-        "Штрих-код",
-        # страховка на вариант "Объем"
-        "Объем",
+        "Артикул","Штрихкод","Снижена цена","Благотворительность","Назначение",
+        "Код ТН ВЭД","Объём","Объем","Код товара Kaspi","Новинка","Штрих-код"
     ]}
-
-    rx_pair = re.compile(
-        r"(?is)"
-        r"(?P<pre_ws>[ \t]*)"
-        r"(?P<pre_nl>\r?\n)?"
-        r"<\s*param\b(?P<attrs>[^>]*)>"
-        r".*?"
-        r"</\s*param\s*>"
-        r"(?P<post_nl>\r?\n)?"
-        r"(?P<post_ws>[ \t]*)"
-    )
-    rx_self = re.compile(
-        r"(?is)"
-        r"(?P<pre_ws>[ \t]*)"
-        r"(?P<pre_nl>\r?\n)?"
-        r"<\s*param\b(?P<attrs>[^>]*)/\s*>"
-        r"(?P<post_nl>\r?\n)?"
-        r"(?P<post_ws>[ \t]*)"
-    )
-    def _cb(attrs, pre_nl, post_nl, whole):
-        m_attr = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', attrs)  # работаем по name="..."
-        if not m_attr:
-            return whole
-        if _norm(m_attr.group(2)) in to_drop:
-            return "\n" if (pre_nl or post_nl) else ""
-        return whole
-    def _cb_pair(m): return _cb(m.group("attrs"), m.group("pre_nl"), m.group("post_nl"), m.group(0))
-    def _cb_self(m): return _cb(m.group("attrs"), m.group("pre_nl"), m.group("post_nl"), m.group(0))
-
-    body = rx_pair.sub(_cb_pair, body)
-    body = rx_self.sub(_cb_self, body)
-    # Схлопываем несколько пустых строк, которые могли остаться от подряд удалённых параметров
-    body = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", body)
+    rx_pair = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>[ \t]*\r?\n?")
+    rx_self = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)/\s*>[ \t]*\r?\n?")
+    def _cb(m):
+        attrs = m.group("attrs")
+        m_attr = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', attrs)
+        if m_attr and _norm(m_attr.group(2)) in to_drop:
+            return ""
+        return m.group(0)
+    body = rx_pair.sub(_cb, body)
+    body = rx_self.sub(_cb, body)
     return body
 
 def _transform_offer(chunk: str) -> str:
@@ -127,11 +89,10 @@ def _transform_offer(chunk: str) -> str:
     attrs, body = _move_available_attr(attrs, body)
     body = _copy_purchase_into_price(body)
     body = _remove_simple_tags(body)
-    body = _remove_param_by_name(body)  # новая точечная чистка параметров по name
+    body = _remove_param_by_name(body)
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
-    # Удаляем всё между <shop> и <offers>, при необходимости добавляем один \n на стыке
     m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
     m_offers = re.search(r"(?is)<\s*offers\b", src)
     if not m_shop or not m_offers or m_offers.start() <= m_shop.end():
