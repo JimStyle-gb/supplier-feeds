@@ -4,15 +4,19 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'scripts/**'
-      - '.github/workflows/**'
-      - 'docs/**'
+      - 'scripts/**'                     # триггерим только по скриптам
+      - '.github/workflows/Build_AlStyle.yml'  # и самому workflow
 
 permissions:
   contents: write
 
+concurrency:
+  group: alstyle-${{ github.ref }}       # один ран на ветку; новые отменяют старые
+  cancel-in-progress: true
+
 jobs:
   build:
+    if: github.actor != 'github-actions[bot]'  # не запускать повторно от коммита бота
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,13 +31,16 @@ jobs:
         run: pip install requests
 
       - name: Build AlStyle feed
-        run: python scripts/build_alstyle.py
+        run: |
+          python scripts/build_alstyle.py
 
       - name: Commit & push if docs/alstyle.yml changed
         run: |
           if [[ -n "$(git status --porcelain docs/alstyle.yml)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git fetch --prune
+            git pull --rebase origin "${GITHUB_REF_NAME:-${GITHUB_REF##*/}}"
             git add docs/alstyle.yml
             git commit -m "Build AlStyle: update docs/alstyle.yml"
             git push
