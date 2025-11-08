@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v25
-# Новое: в <vendorCode> добавляем префикс "AS" (если его нет) и копируем это значение в атрибут id у <offer>.
+# build_alstyle.py v26
+# Новое: перерасчёт <price> по правилам (4% + надбавка по диапазону, хвост 900 вверх, спец.: base>=9_000_000 -> 100).
+# Остальное — как в v25 (сортировка, перенос available, чистки, префикс AS и id, отступы).
 
-import re, sys, pathlib, requests
+import re, sys, pathlib, requests, math
 
 URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 LOGIN = "info@complex-solutions.kz"
@@ -133,16 +134,13 @@ def _sort_offer_tags(body: str) -> str:
     return "\n".join(pieces) + ("\n" if pieces else "")
 
 def _ensure_prefix_and_id(attrs: str, body: str):
-    """Добавить префикс AS к <vendorCode> (если нет) и проставить id= тому же значению."""
     m = re.search(r"(?is)(<\s*vendorCode\s*>\s*)(.*?)(\s*<\s*/\s*vendorCode\s*>)", body)
     if not m:
-        return attrs, body  # нечего делать
+        return attrs, body
     prefix = "AS"
     raw = m.group(2).strip()
     prefixed = raw if raw.startswith(prefix) else prefix + raw
-    # заменить содержимое vendorCode на prefixed (только первое вхождение)
     body = body[:m.start()] + m.group(1) + prefixed + m.group(3) + body[m.end():]
-    # обновить/добавить id="..."
     if re.search(r'\bid\s*=\s*"(.*?)"', attrs, flags=re.I):
         attrs = re.sub(r'(\bid\s*=\s*")([^"]*)(")', lambda g: g.group(1)+prefixed+g.group(3), attrs, flags=re.I)
     elif re.search(r"\bid\s*=\s*'(.*?)'", attrs, flags=re.I):
@@ -150,6 +148,48 @@ def _ensure_prefix_and_id(attrs: str, body: str):
     else:
         attrs = f' id="{prefixed}"' + attrs
     return attrs, body
+
+def _digits_int(s: str):
+    t = re.sub(r"[^\d]", "", s or "")
+    return int(t) if t else None
+
+def _price_adjust(base: int) -> int:
+    # спец-правило: сверхдорогие -> 100
+    if base is None:
+        return None
+    if base >= 9_000_000:
+        return 100
+    add = 0
+    if 101 <= base <= 10_000: add = 3_000
+    elif 10_001 <= base <= 25_000: add = 4_000
+    elif 25_001 <= base <= 50_000: add = 5_000
+    elif 50_001 <= base <= 75_000: add = 7_000
+    elif 75_001 <= base <= 100_000: add = 10_000
+    elif 100_001 <= base <= 150_000: add = 12_000
+    elif 150_001 <= base <= 200_000: add = 15_000
+    elif 200_001 <= base <= 300_000: add = 20_000
+    elif 300_001 <= base <= 400_000: add = 25_000
+    elif 400_001 <= base <= 500_000: add = 30_000
+    elif 500_001 <= base <= 750_000: add = 40_000
+    elif 750_001 <= base <= 1_000_000: add = 50_000
+    elif 1_000_001 <= base <= 1_500_000: add = 70_000
+    elif 1_500_001 <= base <= 2_000_000: add = 90_000
+    elif 2_000_001 <= base <= 100_000_000: add = 100_000
+    # 4%
+    v = base * 1.04 + add
+    # хвост 900, округление ВВЕРХ
+    k = math.ceil((v - 900) / 1000.0)
+    return int(1000 * k + 900)
+
+def _apply_price_rules(body: str) -> str:
+    m = re.search(r"(?is)(<\s*price\s*>\s*)(.*?)(\s*<\s*/\s*price\s*>)", body)
+    if not m:
+        return body
+    base = _digits_int(m.group(2))
+    newv = _price_adjust(base)
+    if newv is None:
+        return body
+    return body[:m.start()] + m.group(1) + str(newv) + m.group(3) + body[m.end():]
 
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
@@ -159,10 +199,10 @@ def _transform_offer(chunk: str) -> str:
     body = _copy_purchase_into_price(body)
     body = _remove_simple_tags(body)
     body = _remove_param_by_name(body)
+    # применяем правила цен ДО сортировки
+    body = _apply_price_rules(body)
     body = _sort_offer_tags(body)
-    # + префикс и id
     attrs, body = _ensure_prefix_and_id(attrs, body)
-    # ensure exactly one newline after opening <offer ...>
     if not body.startswith("\n"):
         body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
