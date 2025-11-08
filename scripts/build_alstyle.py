@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-build_alstyle.py — v10 (фикс удаления тегов без склейки строк)
-Изменена ТОЛЬКО функция _remove_simple_tags:
-• Удаляем указанные теги, аккуратно сохраняя хотя бы ОДИН перевод строки между соседними элементами.
-• Никакой глобальной чистки "пустых строк" больше нет.
-Остальное поведение v9 без изменений.
+build_alstyle.py — v11 (фикс <shop><offers> слитно)
+Изменил ТОЛЬКО _strip_shop_header: после вырезания содержимого между <shop> и <offers>
+вставляю РОВНО один перевод строки между тегами (если его не было).
+Остальное — как в v10.
 """
 
 import re, sys, pathlib, requests
@@ -49,24 +48,18 @@ def _copy_purchase_into_price(body: str) -> str:
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
-    """Удаляем теги, аккуратно сохраняя разрывы строк.
-    Логика: если вокруг удаляемого блока был хотя бы один \n, оставляем ровно один \n.
-    Иначе (встроенный тег в одной строке) — не вставляем лишних переносов.
-    """
     def rm(text, name_regex):
         rx = re.compile(
             rf"(?is)"
-            rf"(?P<pre_ws>[ \t]*)"         # пробелы слева
-            rf"(?P<pre_nl>\r?\n)?"         # возможный перевод строки слева
-            rf"<\s*(?:{name_regex})\b[^>]*>.*?<\s*/\s*(?:{name_regex})\s*>"  # сам тег
-            rf"(?P<post_nl>\r?\n)?"        # возможный перевод строки справа
-            rf"(?P<post_ws>[ \t]*)"        # пробелы справа
+            rf"(?P<pre_ws>[ \t]*)"
+            rf"(?P<pre_nl>\r?\n)?"
+            rf"<\s*(?:{name_regex})\b[^>]*>.*?<\s*/\s*(?:{name_regex})\s*>"
+            rf"(?P<post_nl>\r?\n)?"
+            rf"(?P<post_ws>[ \t]*)"
         )
         def repl(m):
-            # если с любой стороны был перенос строки — вернём один \n, иначе ничего
             return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
         return rx.sub(repl, text)
-
     body = rm(body, r"quantity_in_stock")
     body = rm(body, r"purchase_?price")
     body = rm(body, r"available")
@@ -84,11 +77,17 @@ def _transform_offer(chunk: str) -> str:
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
+    """Удаляем всё между <shop> и <offers>, оставляя ОДИН перевод строки между ними (если его не было)."""
     m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
     m_offers = re.search(r"(?is)<\s*offers\b", src)
     if not m_shop or not m_offers or m_offers.start() <= m_shop.end():
         return src
-    return src[:m_shop.end()] + src[m_offers.start():]
+    left = src[:m_shop.end()]
+    right = src[m_offers.start():]
+    # если уже есть перенос на стыке — ничего не добавляем; иначе добавляем один \n
+    if not (left.endswith("\n") or right.startswith("\n") or left.endswith("\r") or right.startswith("\r")):
+        return left + "\n" + right
+    return left + right
 
 def main() -> int:
     try:
