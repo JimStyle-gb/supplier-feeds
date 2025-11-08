@@ -273,6 +273,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main():
+    print('[VER] build_alstyle v40 plain→|br|→<br>')
     print('[VER] build_alstyle v40 plain→|br|→<br>') -> int:
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
