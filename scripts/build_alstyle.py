@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-build_alstyle.py — v8
-Изменения:
-• Удаляем всё содержимое между <shop> и <offers> (оставляем <shop><offers>...).
-• Удаляем теги: <url>, <quantity>, <quantity_in_stock>, <available>, <purchase_price> (также purchasePrice/purchaseprice).
-Сохраняем:
-• Фильтр по <categoryId> (ID поставщика из списка).
-• Перенос значения <available>…</available> в атрибут offer available="…".
-• Копирование значения из <purchase_price> в первый <price> (потом удаляем <purchase_price>-теги).
-Выход: docs/alstyle.yml в windows-1251.
+build_alstyle.py — v9 (точечный фикс пустых строк)
+Изменено ТОЛЬКО в _remove_simple_tags: 
+• Регэксп теперь «съедает» окружающие пробелы/переводы строк вокруг удаляемых тегов.
+• После удаления чистим пустые строки.
+Остальное поведение v8 без изменений.
 """
 
 import re, sys, pathlib, requests
@@ -37,7 +33,6 @@ def _move_available_attr(attrs: str, body: str):
     m_av = re.search(r"(?is)<\s*available\s*>\s*(.*?)\s*<\s*/\s*available\s*>", body)
     if not m_av: return attrs, body
     val = m_av.group(1)
-    # Переносим в атрибут (поддержим ' и ")
     if re.search(r'\savailable\s*=\s*"(?:[^"]*)"', attrs, flags=re.I):
         attrs = re.sub(r'(\savailable\s*=\s*")([^"]*)(")', lambda g: g.group(1)+val+g.group(3), attrs, flags=re.I)
     elif re.search(r"\savailable\s*=\s*'(?:[^']*)'", attrs, flags=re.I):
@@ -47,49 +42,39 @@ def _move_available_attr(attrs: str, body: str):
     return attrs, body
 
 def _copy_purchase_into_price(body: str) -> str:
-    # Найти purchase_price / purchasePrice / purchaseprice
     m_pp = re.search(r"(?is)<\s*purchase_?price\s*>\s*(.*?)\s*<\s*/\s*purchase_?price\s*>", body)
     if not m_pp: return body
     val = m_pp.group(1)
-    # Подменить содержимое первого <price>…</price>
     def _repl(m): return m.group(1) + val + m.group(3)
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
-    """Удаляем теги по списку в пределах одного оффера."""
+    # Удаляем указанные теги вместе с окружающими пробелами/переносами строк
     def rm(text, name_regex):
-        # удаляем <tag ...>...</tag> (без самозакрывающихся)
-        pattern = rf"(?is)<\s*(?:{name_regex})\b[^>]*>.*?<\s*/\s*(?:{name_regex})\s*>"
+        pattern = rf"(?is)\s*<\s*(?:{name_regex})\b[^>]*>.*?<\s*/\s*(?:{name_regex})\s*>\s*"
         return re.sub(pattern, "", text)
-    # порядок важен: сначала более длинные
     body = rm(body, r"quantity_in_stock")
-    body = rm(body, r"purchase_?price")   # обе формы purchase_price / purchaseprice
+    body = rm(body, r"purchase_?price")
     body = rm(body, r"available")
     body = rm(body, r"url")
     body = rm(body, r"quantity")
+    # Чистим пустые строки, которые могли остаться
+    body = re.sub(r"(?m)^[ \t]*\r?\n", "", body)
     return body
 
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
     if not m: return chunk
     attrs, body = m.group(1), m.group(2)
-
-    # 1) перенос available в атрибут
     attrs, body = _move_available_attr(attrs, body)
-    # 2) копирование purchase_price -> price (если есть)
     body = _copy_purchase_into_price(body)
-    # 3) удаление тегов: url, quantity, quantity_in_stock, available, purchase_price
     body = _remove_simple_tags(body)
-
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
-    """Удаляем всё между закрывающим > тега <shop...> и началом <offers>."""
     m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
     m_offers = re.search(r"(?is)<\s*offers\b", src)
-    if not m_shop or not m_offers: 
-        return src
-    if m_offers.start() <= m_shop.end():
+    if not m_shop or not m_offers or m_offers.start() <= m_shop.end():
         return src
     return src[:m_shop.end()] + src[m_offers.start():]
 
@@ -102,11 +87,8 @@ def main() -> int:
         print(f"[ERROR] HTTP {r.status_code}", file=sys.stderr); return 1
 
     src = _dec(r.content, getattr(r, "encoding", None))
-
-    # Сначала убираем шапку между <shop> и <offers>
     src = _strip_shop_header(src)
 
-    # Достаём блок <offers>
     m_off = re.search(r"(?s)<offers>(.*?)</offers>", src)
     if not m_off:
         _save(src); print("[WARN] <offers> не найден — файл сохранён без изменений"); return 0
