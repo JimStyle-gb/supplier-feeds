@@ -185,20 +185,36 @@ def _apply_price_rules(body: str) -> str:
 
 # --- ТОЛЬКО описание: сплющивание в один абзац ---
 def _flatten_description(body: str) -> str:
-    # Сплющиваем в один абзац + УДАЛЯЕМ ВСЕ HTML-ТЕГИ внутри description
     rx = re.compile(r"(?is)(<\s*description\s*>)(.*?)(</\s*description\s*>)")
     def repl(m):
         txt = m.group(2)
-        txt = html.unescape(txt)                  # декод HTML-сущностей
-        txt = txt.replace("\u00A0", " ")          # NBSP -> пробел
-        txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)  # zero-width + BOM
-        txt = re.sub(r"(?is)<[^>]+>", " ", txt)   # СТРЕПИМ ВСЕ HTML-ТЕГИ ВНУТРИ ОПИСАНИЯ
-        txt = re.sub(r"\s+", " ", txt)           # весь whitespace -> 1 пробел
-        txt = txt.strip()
+        # 1) Декод сущностей (в т.ч. &#10; -> \n)
+        txt = html.unescape(txt)
+        # 2) NBSP -> пробел, убираем zero-width/BOM
+        txt = txt.replace("\u00A0", " ")
+        txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
+        # 3) Нормализуем переводы строк из исходника -> один <br>
+        #    Любая последовательность \r\n/\r/\n -> <br>
+        txt = re.sub(r"\r\n|\r|\n", "\n", txt)     # сначала к единому \n
+        txt = re.sub(r"\n\s*\n+", "\n", txt)        # схлопываем пустые строки
+        txt = txt.replace("\n", "<br>")
+        # 4) Удаляем прочие HTML-теги, но <br> оставляем
+        #    Ставим временный маркер, чтобы не потерять <br> при чистке
+        sentinel = "\uFFFFBR\uFFFF"
+        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", sentinel, txt)
+        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)  # снять все теги кроме br
+        # 5) Схлопываем пробелы и восстанавливаем <br>
+        txt = re.sub(r"\s+", " ", txt)
+        txt = txt.replace(sentinel, "<br>")
+        # 6) Убираем лишние пробелы вокруг <br> и повторяющиеся <br>
+        txt = re.sub(r"\s*<br>\s*", "<br>", txt)
+        txt = re.sub(r"(?:<br>){2,}", "<br>", txt)
+        # 7) Финальный trim
+        txt = txt.strip("<br> ").strip()
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
 
-
+# --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
     if not m: return chunk
