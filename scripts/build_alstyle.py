@@ -191,22 +191,26 @@ def _flatten_description(body: str) -> str:
         # CDATA -> текст
         if txt.lstrip().startswith("<![CDATA["):
             txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
-        # Два unescape (ловим двойное кодирование)
-        txt = html.unescape(html.unescape(txt))
-        # NBSP -> пробел, убрать zero-width/BOM
+        # Несколько unescape до стабилизации (ловим двойное/тройное кодирование)
+        for _ in range(3):
+            new_txt = html.unescape(txt)
+            if new_txt == txt:
+                break
+            txt = new_txt
+        # NBSP/zero-width после финального unescape
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # Нормализуем переносы в \n
-        txt = re.sub(r"\r\n|\r|\n", "\n", txt)
-        txt = re.sub(r"\n\s*\n+", "\n", txt)
-        # Сначала превращаем любые <br> в перевод строки (теряем HTML смысл — оставим как разделитель)
-        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", "\n", txt)
-        # Убираем ВСЕ оставшиеся HTML-теги
+        # Нормализуем переносы -> пробел (plain режим)
+        txt = re.sub(r"\r\n|\r|\n", " ", txt)
+        # Убираем ВСЕ HTML-теги
         txt = re.sub(r"(?is)<[^>]+>", " ", txt)
-        # Переводы строк -> пробел
-        txt = txt.replace("\n", " ")
         # Схлопываем пробелы
         txt = re.sub(r"\s+", " ", txt).strip()
+        # Финальная защита: ещё раз схлопнуть (на случай появившихся пробелов после unescape)
+        txt = re.sub(r"\s+", " ", txt).strip()
+        # Пустым не оставляем
+        if not txt:
+            txt = "Описание недоступно"
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
 
