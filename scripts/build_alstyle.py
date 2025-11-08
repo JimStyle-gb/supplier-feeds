@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-build_alstyle.py — v11 (фикс <shop><offers> слитно)
-Изменил ТОЛЬКО _strip_shop_header: после вырезания содержимого между <shop> и <offers>
-вставляю РОВНО один перевод строки между тегами (если его не было).
-Остальное — как в v10.
+build_alstyle.py — v12 (точечный апдейт чистки)
+Изменена ТОЛЬКО _remove_simple_tags:
+• Дополнительно удаляем <param ...> по именам: "артикул","благотворительность","код тн вэд","код товара kaspi",
+  "новинка","снижена цена","штрихкод","штрих-код","назначение","объем","объём".
+• Сохраняем разрывы строк: если вокруг был \n — оставляем ровно один \n.
+Остальное поведение v11 без изменений.
 """
 
 import re, sys, pathlib, requests
@@ -48,6 +50,9 @@ def _copy_purchase_into_price(body: str) -> str:
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
+    """Удаляем теги, аккуратно сохраняя разрывы строк.
+    Также удаляем <param ...> по запрещённым именам (см. список ниже).
+    """
     def rm(text, name_regex):
         rx = re.compile(
             rf"(?is)"
@@ -57,14 +62,44 @@ def _remove_simple_tags(body: str) -> str:
             rf"(?P<post_nl>\r?\n)?"
             rf"(?P<post_ws>[ \t]*)"
         )
-        def repl(m):
-            return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
+        def repl(m): return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
         return rx.sub(repl, text)
+
+    # 1) Простые теги на удаление
     body = rm(body, r"quantity_in_stock")
     body = rm(body, r"purchase_?price")
     body = rm(body, r"available")
     body = rm(body, r"url")
     body = rm(body, r"quantity")
+
+    # 2) Удаление <param ...> по имени
+    # Поддерживаем: name= / param= / label= ; кавычки ' или "; регистр не важен; допускаем варианты ё/е, пробелы и дефисы.
+    NAMES = r"(?:артикул|благотворительность|код\s*тн\s*в[еэ]д|код\s*товара\s*kaspi|новинка|снижена\s*цена|штрих-?код|назначение|объ[её]м)"
+    # парные <param>...</param>
+    rx_param_pair = re.compile(
+        rf"(?is)"
+        rf"(?P<pre_ws>[ \t]*)"
+        rf"(?P<pre_nl>\r?\n)?"
+        rf"<\s*param\b(?=[^>]*\b(?:name|param|label)\s*=\s*(['\"]).*?(?:{NAMES}).*?\1)[^>]*>"
+        rf".*?"
+        rf"<\s*/\s*param\s*>"
+        rf"(?P<post_nl>\r?\n)?"
+        rf"(?P<post_ws>[ \t]*)"
+    )
+    # самозакрывающиеся <param .../>
+    rx_param_self = re.compile(
+        rf"(?is)"
+        rf"(?P<pre_ws>[ \t]*)"
+        rf"(?P<pre_nl>\r?\n)?"
+        rf"<\s*param\b(?=[^>]*\b(?:name|param|label)\s*=\s*(['\"]).*?(?:{NAMES}).*?\1)[^>]*/\s*>"
+        rf"(?P<post_nl>\r?\n)?"
+        rf"(?P<post_ws>[ \t]*)"
+    )
+    def _repl(m): return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
+
+    body = rx_param_pair.sub(_repl, body)
+    body = rx_param_self.sub(_repl, body)
+
     return body
 
 def _transform_offer(chunk: str) -> str:
@@ -77,14 +112,12 @@ def _transform_offer(chunk: str) -> str:
     return f"<offer{attrs}>{body}</offer>"
 
 def _strip_shop_header(src: str) -> str:
-    """Удаляем всё между <shop> и <offers>, оставляя ОДИН перевод строки между ними (если его не было)."""
     m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
     m_offers = re.search(r"(?is)<\s*offers\b", src)
     if not m_shop or not m_offers or m_offers.start() <= m_shop.end():
         return src
     left = src[:m_shop.end()]
     right = src[m_offers.start():]
-    # если уже есть перенос на стыке — ничего не добавляем; иначе добавляем один \n
     if not (left.endswith("\n") or right.startswith("\n") or left.endswith("\r") or right.startswith("\r")):
         return left + "\n" + right
     return left + right
