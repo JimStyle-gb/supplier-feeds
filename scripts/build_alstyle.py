@@ -185,40 +185,51 @@ def _apply_price_rules(body: str) -> str:
 
 # --- ТОЛЬКО описание: сплющивание в один абзац ---
 def _desc_plain(body: str) -> str:
-    # (из v34) полностью убираем теги, скрытые символы, сущности; получаем один абзац
+    import re, html
     rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
     def repl(m):
         txt = m.group(2)
-        if txt.lstrip().startswith("<![CDATA[]"):
+        if txt.lstrip().startswith("<![CDATA["):
             txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
-        # multi-unescape
         for _ in range(3):
             new_txt = html.unescape(txt)
             if new_txt == txt: break
             txt = new_txt
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        txt = re.sub(r"\r\n|\r|\n", " ", txt)
+        sentinel = "\uFFFFBR\uFFFF"
+        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", sentinel, txt)
+        txt = re.sub(r"\r\n|\r|\n", "\n", txt)
+        txt = re.sub(r"\n\s*\n+", "\n", txt)
+        txt = txt.replace("\n", sentinel)
         txt = re.sub(r"(?is)<[^>]+>", " ", txt)
         txt = re.sub(r"\s+", " ", txt).strip()
-        txt = re.sub(r"\s+", " ", txt).strip()
-        if not txt: txt = "Описание недоступно"
+        txt = re.sub(r"\s*%s\s*" % re.escape(sentinel), sentinel, txt)
+        if not txt:
+            txt = "Описание недоступно"
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
+
 def _add_br_after_plain(body: str) -> str:
-    # добавляем <br> по безопасным границам предложений из уже "plain" описания
+    import re
     rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
-    def sentenize(s: str) -> str:
-        # после [.?!;] + пробел + заглавная/цифра — вставляем <br>
-        s = re.sub(r"([.!?;])\s+(?=[A-ZА-ЯЁ0-9])", r"\1<br>", s)
-        # чистим пробелы вокруг и дубляжи
-        s = re.sub(r"\s*<br>\s*", "<br>", s)
-        s = re.sub(r"(?:<br>){2,}", "<br>", s)
-        s = s.strip("<br> ").strip()
-        return s or "Описание недоступно"
+    sentinel = "\uFFFFBR\uFFFF"
     def repl(m):
-        return m.group(1) + sentenize(m.group(2)) + m.group(3)
+        txt = m.group(2)
+        txt = txt.replace(sentinel, "<br>")
+        txt = re.sub(r"\s*<br>\s*", "<br>", txt)
+        txt = re.sub(r"(?:<br>){2,}", "<br>", txt)
+        txt = re.sub(r"^(?:<br>)+", "", txt)
+        txt = re.sub(r"(?:<br>)+$", "", txt)
+        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)
+        txt = re.sub(r"(?is)<[^>]+>", " ", txt)
+        txt = re.sub(r"\s+", " ", txt).strip()
+        txt = re.sub(r"\s*<br>\s*", "<br>", txt)
+        if not txt:
+            txt = "Описание недоступно"
+        return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
+
 def _flatten_description(body: str) -> str:
     # этап 1: plain (чистим до одного абзаца, без тегов)
     body = _desc_plain(body)
