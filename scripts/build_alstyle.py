@@ -188,33 +188,25 @@ def _flatten_description(body: str) -> str:
     rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
     def repl(m):
         txt = m.group(2)
-        # CDATA unwrap
-        txt_strip = txt.lstrip()
-        if txt_strip.startswith("<![CDATA["):
+        # CDATA -> текст
+        if txt.lstrip().startswith("<![CDATA["):
             txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
-        # Double unescape (handles cases like &amp;gt; -> &gt; -> >)
+        # Два unescape (ловим двойное кодирование)
         txt = html.unescape(html.unescape(txt))
-        # NBSP -> space, remove zero-width/BOM
+        # NBSP -> пробел, убрать zero-width/BOM
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # Normalize raw line breaks to \n, collapse blank lines, then mark as <br>
+        # Нормализуем переносы в \n
         txt = re.sub(r"\r\n|\r|\n", "\n", txt)
         txt = re.sub(r"\n\s*\n+", "\n", txt)
-        # Preserve any existing <br> variants via sentinel
-        sentinel = "\uFFFFBR\uFFFF"
-        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", sentinel, txt)
-        # Remove all other HTML tags
-        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)
-        # Convert remaining \n to sentinel (each \n => one <br>)
-        txt = txt.replace("\n", sentinel)
-        # Collapse whitespace
-        txt = re.sub(r"\s+", " ", txt)
-        # Restore <br>, normalize spacing and duplicates
-        txt = txt.replace(sentinel, "<br>")
-        txt = re.sub(r"\s*<br>\s*", "<br>", txt)
-        txt = re.sub(r"(?:<br>){2,}", "<br>", txt)
-        # Final trim
-        txt = txt.strip("<br> ").strip()
+        # Сначала превращаем любые <br> в перевод строки (теряем HTML смысл — оставим как разделитель)
+        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", "\n", txt)
+        # Убираем ВСЕ оставшиеся HTML-теги
+        txt = re.sub(r"(?is)<[^>]+>", " ", txt)
+        # Переводы строк -> пробел
+        txt = txt.replace("\n", " ")
+        # Схлопываем пробелы
+        txt = re.sub(r"\s+", " ", txt).strip()
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
 
