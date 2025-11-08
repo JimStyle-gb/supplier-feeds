@@ -1,42 +1,41 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-scripts/build_alstyle.py — генератор docs/alstyle.yml из фида поставщика Al-Style.
 
-ПОВЕДЕНИЕ (по порядку):
-  1) Фильтрация офферов по <categoryId> — оставляем только ID поставщика из заданного списка.
-  2) Перенос доступности: значение <available>true/false</available> переносим в атрибут <offer available="...">,
-     сам тег <available> удаляем.
-  3) Чистка префикса <shop>: удаляем всё, что внутри <shop> ДО узла <offers> (например, currencies, categories и т.п.).
-  4) Чистка офферов: удаляем теги <price>, <url>, <quantity>, <quantity_in_stock> внутри каждого <offer>.
-  5) Чистка параметров: удаляем <param> с именами из списка пользователя (Артикул, Благотворительность, Код ТН ВЭД,
-     Код товара Kaspi, Новинка, Снижена цена, Штрихкод, Назначение). Сравнение без регистра и с нормализацией.
-  6) Префикс AS: добавляем префикс "AS" к значению <vendorCode> (без дефиса) и копируем это значение в атрибут
-     <offer id="...">. Требование проекта — префикс добавляется всегда (даже если похожий префикс уже есть).
-"""
+# ===============================
+#  build_alstyle.py (v12, simplified without changing behavior)
+#  Purpose: download Al-Style feed, filter & clean offers,
+#  add AS prefix, rename purchase_price->price, reorder tags, save as cp1251.
+# ===============================
+
 from __future__ import annotations
 
-import pathlib
 import sys
 import time
 import re
 import xml.etree.ElementTree as ET
-
+from typing import Optional, Tuple
+import pathlib
 import requests
 from requests.auth import HTTPBasicAuth
 
-# ------------------------ Конфигурация ------------------------
+# ------------------------ Config ------------------------
 SUPPLIER_URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 
-# Жёстко вшитые доступы (по просьбе пользователя)
+# Credentials embedded by user request
 USERNAME = "info@complex-solutions.kz"
 PASSWORD = "Aa123456"
 
-# Список categoryId ПОСТАВЩИКА (ОДНА CSV-строка, компактно)
-ALLOWED_CATEGORY_IDS_CSV = "3540,3541,3542,3543,3544,3545,3566,3567,3569,3570,3580,3688,3708,3721,3722,4889,4890,4895,5017,5075,5649,5710,5711,5712,5713,21279,21281,21291,21356,21367,21368,21369,21370,21371,21372,21451,21498,21500,21501,21572,21573,21574,21575,21576,21578,21580,21581,21583,21584,21585,21586,21588,21591,21640,21664,21665,21666,21698"
+# Supplier categoryId list (CSV in one line)
+ALLOWED_CATEGORY_IDS_CSV = (
+    "3540,3541,3542,3543,3544,3545,3566,3567,3569,3570,3580,3688,3708,3721,3722,"
+    "4889,4890,4895,5017,5075,5649,5710,5711,5712,5713,21279,21281,21291,21356,"
+    "21367,21368,21369,21370,21371,21372,21451,21498,21500,21501,21572,21573,21574,"
+    "21575,21576,21578,21580,21581,21583,21584,21585,21586,21588,21591,21640,21664,"
+    "21665,21666,21698"
+)
 ALLOWED_CATEGORY_IDS = {x.strip() for x in ALLOWED_CATEGORY_IDS_CSV.split(",") if x.strip()}
 
-# Удаляемые имена <param> (нормализуем и сравниваем без регистра)
+# Param names to delete (normalized compare, case-insensitive)
 PARAMS_TO_DROP = {
     "артикул",
     "благотворительность",
@@ -47,30 +46,41 @@ PARAMS_TO_DROP = {
     "штрихкод",
     "штрих-код",
     "назначение",
-    "объём",
     "объем",
+    "объём",
 }
 
-# Выходной файл и кодировка
-OUT_FILE = pathlib.Path("docs/alstyle.yml")
-OUTPUT_ENCODING = "windows-1251"
+# Offer-level tags to remove (do NOT remove <price>)
+STRIP_OFFER_TAGS = {"url", "quantity", "quantity_in_stock"}
 
-# Сети/ретраи
+# Desired order inside <offer>
+OFFER_TAG_ORDER = ["categoryId", "vendorCode", "name", "price", "picture", "vendor", "currencyId", "description", "param"]
+
+# Network
 TIMEOUT_S = 45
 RETRY = 2
 SLEEP_BETWEEN_RETRY = 2
 HEADERS = {"User-Agent": "AlStyleFeedBot/1.0 (+github-actions; python-requests)"}
 
+# Output
+OUT_FILE = pathlib.Path("docs/alstyle.yml")
+OUTPUT_ENCODING = "windows-1251"
 
-# ------------------------ Вспомогательные функции ------------------------
+
+# ------------------------ Utils ------------------------
 def _ensure_dirs(path: pathlib.Path) -> None:
-    """Создать каталоги назначения, если их ещё нет."""
+    """Ensure destination directories exist."""
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
-def _fetch(url: str) -> bytes | None:
-    """Скачать фид: сперва без авторизации, затем повторить с Basic Auth. Вернуть байты XML или None."""
-    # 1) Без авторизации
+def _offers(root: ET.Element) -> Optional[ET.Element]:
+    """Return <offers> node or None."""
+    shop = root.find("./shop")
+    return None if shop is None else shop.find("offers")
+
+
+def _fetch(url: str) -> Optional[bytes]:
+    """Download feed: first without auth, then with BasicAuth. Return bytes or None."""
     for attempt in range(1, RETRY + 2):
         try:
             r = requests.get(url, headers=HEADERS, timeout=TIMEOUT_S)
@@ -81,7 +91,6 @@ def _fetch(url: str) -> bytes | None:
         if attempt <= RETRY:
             time.sleep(SLEEP_BETWEEN_RETRY)
 
-    # 2) Basic Auth
     auth = HTTPBasicAuth(USERNAME, PASSWORD)
     for attempt in range(1, RETRY + 2):
         try:
@@ -92,364 +101,248 @@ def _fetch(url: str) -> bytes | None:
             pass
         if attempt <= RETRY:
             time.sleep(SLEEP_BETWEEN_RETRY)
-
     return None
 
 
-def _write_windows_1251(path: pathlib.Path, xml_body_unicode: str) -> None:
-    """Записать XML с декларацией и кодировкой Windows-1251; вне-диапазонные символы → числовые сущности."""
+def _write_windows_1251(path: pathlib.Path, xml_unicode: str) -> None:
+    """Write XML with cp1251 header; out-of-range chars -> numeric entities."""
     decl = '<?xml version="1.0" encoding="windows-1251"?>\n'
-    data = (decl + xml_body_unicode).encode(OUTPUT_ENCODING, errors="xmlcharrefreplace")
+    data = (decl + xml_unicode).encode(OUTPUT_ENCODING, errors="xmlcharrefreplace")
     with open(path, "wb") as f:
         f.write(data)
 
 
 def _norm_param_name(name: str) -> str:
-    """Нормализовать имя параметра: нижний регистр, схлопывание пробелов, обрезка запятых/двоеточий/точек."""
-    s = (name or "").replace("\u00a0", " ").strip().lower()
-    s = re.sub(r"[,\.;:]+$", "", s).strip()
+    """Normalize param name: lowercase, collapse spaces, strip trailing , . ; :"""
+    s = (name or "").replace("\u00A0", " ").strip().lower()
+    s = re.sub(r"[,.;:]+$", "", s).strip()
     s = re.sub(r"\s+", " ", s)
     return s
 
 
-# ------------------------ Шаг 1. Фильтрация по категориям ------------------------
-def _filter_offers_inplace(root: ET.Element) -> tuple[int, int, int]:
-    """Удалить все <offer>, у которых <categoryId> НЕ входит в ALLOWED_CATEGORY_IDS. Вернуть (total, kept, dropped)."""
-    shop = root.find("./shop")
-    if shop is None:
+# ------------------------ Steps ------------------------
+def step_filter_by_category(root: ET.Element) -> tuple[int, int, int]:
+    """Drop <offer> where <categoryId> not in ALLOWED_CATEGORY_IDS. Return total, kept, dropped."""
+    offers = _offers(root)
+    if offers is None:
         return (0, 0, 0)
 
-    offers_el = shop.find("offers")
-    if offers_el is None:
-        return (0, 0, 0)
-
-    total = 0
-    kept = 0
-    dropped = 0
-
-    for offer in list(offers_el):  # итерация по копии — безопасно удаляем
+    total = kept = dropped = 0
+    for offer in list(offers):
         total += 1
         cat_el = offer.find("categoryId")
-        cat_text = (cat_el.text or "").strip() if cat_el is not None else ""
-
-        # Нормализуем числовые строки (например, "021" -> "21")
-        if cat_text.isdigit():
-            cat_text = str(int(cat_text))
-
-        if cat_text in ALLOWED_CATEGORY_IDS:
+        cat = (cat_el.text or "").strip() if cat_el is not None else ""
+        if cat.isdigit():
+            cat = str(int(cat))  # "021" -> "21"
+        if cat in ALLOWED_CATEGORY_IDS:
             kept += 1
         else:
-            offers_el.remove(offer)
+            offers.remove(offer)
             dropped += 1
-
     return (total, kept, dropped)
 
 
-# ------------------------ Шаг 2. Перенос available → атрибут ------------------------
 _TRUE_WORDS = {"true", "1", "yes", "y", "да", "есть", "в наличии", "наличие", "есть в наличии"}
 _FALSE_WORDS = {"false", "0", "no", "n", "нет", "отсутствует", "нет в наличии", "под заказ", "ожидается"}
 
 def _to_bool_text(v: str) -> str:
-    """Нормализовать строку к 'true'/'false' для offer@available (простая эвристика)."""
-    s = (v or "").strip().lower()
-    s = s.replace(":", " ").replace("\u00a0", " ").strip()
-    if s in _TRUE_WORDS:
+    """Normalize string to 'true'/'false' for offer@available (simple heuristic)."""
+    s = (v or "").strip().lower().replace(":", " ").replace("\u00A0", " ")
+    if s in _TRUE_WORDS or "true" in s or "да" in s:
         return "true"
-    if s in _FALSE_WORDS:
+    if s in _FALSE_WORDS or "false" in s or "нет" in s or "под заказ" in s:
         return "false"
-    if "true" in s or "да" in s:
-        return "true"
-    if "false" in s or "нет" in s or "под заказ" in s:
-        return "false"
-    return "false"  # по умолчанию считаем «нет» (безопасно для маркетплейса)
+    return "false"  # safe default
 
 
-def _migrate_available_inplace(root: ET.Element) -> tuple[int, int, int, int]:
-    """Перенести <available> в атрибут offer@available и удалить тег. Вернуть (seen, set, overridden, removed)."""
-    shop = root.find("./shop")
-    if shop is None:
+def step_migrate_available(root: ET.Element) -> tuple[int, int, int, int]:
+    """Move <available> into offer@available and remove the tag. Return seen, set, overridden, removed."""
+    offers = _offers(root)
+    if offers is None:
         return (0, 0, 0, 0)
 
-    offers_el = shop.find("offers")
-    if offers_el is None:
-        return (0, 0, 0, 0)
-
-    offers_seen = 0
-    attrs_set = 0
-    attrs_overridden = 0
-    tags_removed = 0
-
-    for offer in list(offers_el):
-        offers_seen += 1
+    seen = set_cnt = overridden = removed = 0
+    for offer in list(offers):
+        seen += 1
         av_el = offer.find("available")
         av_text = (av_el.text or "").strip() if av_el is not None else None
-        new_attr = _to_bool_text(av_text) if av_text is not None else None
-
-        if new_attr is not None:
-            if "available" in offer.attrib:
-                if offer.attrib.get("available") != new_attr:
-                    attrs_overridden += 1
-                offer.set("available", new_attr)
-            else:
-                offer.set("available", new_attr)
-                attrs_set += 1
-
-        if av_el is not None:
+        if av_text is not None:
+            new_val = _to_bool_text(av_text)
+            if offer.get("available") and offer.get("available") != new_val:
+                overridden += 1
+            elif not offer.get("available"):
+                set_cnt += 1
+            offer.set("available", new_val)
             offer.remove(av_el)
-            tags_removed += 1
+            removed += 1
+    return (seen, set_cnt, overridden, removed)
 
-    return (offers_seen, attrs_set, attrs_overridden, tags_removed)
 
-
-# ------------------------ Шаг 3. Чистка <shop> до <offers> ------------------------
-def _prune_shop_before_offers(root: ET.Element) -> int:
-    """Удалить всех детей <shop>, расположенных ДО узла <offers>. Вернуть количество удалённых узлов."""
+def step_prune_shop_prefix(root: ET.Element) -> int:
+    """Remove all children of <shop> that appear before <offers>. Return count removed."""
     shop = root.find("./shop")
     if shop is None:
         return 0
-    offers_el = shop.find("offers")
-    if offers_el is None:
+    offers = shop.find("offers")
+    if offers is None:
         return 0
-
     removed = 0
     for child in list(shop):
-        if child is offers_el:
+        if child is offers:
             break
         shop.remove(child)
         removed += 1
     return removed
 
 
-# ------------------------ Шаг 4. Удаление тегов из <offer> ------------------------
-STRIP_OFFER_TAGS = {"url", "quantity", "quantity_in_stock"}
-
-def _strip_offer_fields_inplace(root: ET.Element) -> int:
-    """Удалить из каждого <offer> перечисленные дочерние теги. Вернуть общее количество удалённых тегов."""
-    shop = root.find("./shop")
-    if shop is None:
+def step_strip_offer_fields(root: ET.Element) -> int:
+    """Delete unwanted tags from each <offer>. Return count of removed tags."""
+    offers = _offers(root)
+    if offers is None:
         return 0
-    offers_el = shop.find("offers")
-    if offers_el is None:
-        return 0
-
     removed = 0
-    for offer in list(offers_el):
-        to_remove = [el for el in list(offer) if el.tag in STRIP_OFFER_TAGS]
-        for el in to_remove:
-            offer.remove(el)
-            removed += 1
+    for offer in list(offers):
+        for el in list(offer):
+            if el.tag in STRIP_OFFER_TAGS:
+                offer.remove(el)
+                removed += 1
     return removed
 
 
-# ------------------------ Шаг 5. Удаление <param> по именам ------------------------
-def _strip_params_by_name_inplace(root: ET.Element) -> int:
-    """
-    Удалить <param name="..."> во всех офферах, если имя входит в PARAMS_TO_DROP.
-    Сравнение по _norm_param_name(name): игнорируем регистр, лишние пробелы и хвостовые знаки.
-    Вернуть количество удалённых параметров.
-    """
-    shop = root.find("./shop")
-    if shop is None:
+def step_strip_params_by_name(root: ET.Element) -> int:
+    """Delete <param name="..."> when normalized name is in PARAMS_TO_DROP. Return count removed."""
+    offers = _offers(root)
+    if offers is None:
         return 0
-    offers_el = shop.find("offers")
-    if offers_el is None:
-        return 0
-
+    bad = {_norm_param_name(x) for x in PARAMS_TO_DROP}
     removed = 0
-    bad = {_norm_param_name(n) for n in PARAMS_TO_DROP}
-
-    for offer in list(offers_el):
-        to_delete = []
-        for p in offer.findall("param"):
-            name = p.attrib.get("name")
-            if not name:
-                continue
-            norm = _norm_param_name(name)
-            if norm in bad:
-                to_delete.append(p)
-
-        for p in to_delete:
-            offer.remove(p)
-            removed += 1
-
+    for offer in list(offers):
+        for p in list(offer.findall("param")):
+            nm = p.attrib.get("name") or ""
+            if _norm_param_name(nm) in bad:
+                offer.remove(p)
+                removed += 1
     return removed
 
 
-# ------------------------ Шаг 6. Префикс AS в vendorCode и синхронизация offer@id ------------------------
-def _apply_vendorcode_prefix_and_id(root: ET.Element, prefix: str = "AS") -> tuple[int, int]:
-    """
-    Для каждого <offer>:
-      - к значению <vendorCode> добавляем префикс prefix (без дефиса), независимо от текущего содержимого;
-      - атрибут id у <offer> устанавливаем равным этому же значению.
-    Возвращает (offers_updated, vendorcodes_changed).
-    """
-    shop = root.find("./shop")
-    if shop is None:
+def step_prefix_vendorcode_and_sync_id(root: ET.Element, prefix: str = "AS") -> tuple[int, int]:
+    """Prefix <vendorCode> with AS (always), and set offer@id to the same value. Return (offers_updated, changed_count)."""
+    offers = _offers(root)
+    if offers is None:
         return (0, 0)
-    offers_el = shop.find("offers")
-    if offers_el is None:
-        return (0, 0)
-
-    offers_updated = 0
-    vcodes_changed = 0
-
-    for offer in list(offers_el):
+    offers_upd = vc_changed = 0
+    for offer in list(offers):
         vc_el = offer.find("vendorCode")
         if vc_el is None:
-            # Если у оффера нет vendorCode — пропускаем (чтобы не создавать пустые коды)
             continue
-        original = (vc_el.text or "").strip()
-        # По требованию: всегда добавляем префикс, даже если он уже был
-        new_vc = f"{prefix}{original}"
-        if new_vc != original:
-            vc_el.text = new_vc
-            vcodes_changed += 1
-        # Синхронизируем атрибут id
-        offer.set("id", new_vc)
-        offers_updated += 1
-
-    return (offers_updated, vcodes_changed)
+        old = (vc_el.text or "").strip()
+        new = f"{prefix}{old}"
+        if new != old:
+            vc_el.text = new
+            vc_changed += 1
+        offer.set("id", new)
+        offers_upd += 1
+    return (offers_upd, vc_changed)
 
 
-
-# ------------------------ Шаг 8. Сортировка тегов внутри <offer> ------------------------
-def _reorder_offer_children_inplace(root: ET.Element) -> int:
-    """
-    Отсортировать дочерние элементы в каждом <offer> в точном порядке:
-      <categoryId>, <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <description>, <param>.
-    Несуществующие теги игнорируются. Повторяющиеся теги (<picture>, <param>) сохраняют свой внутренний порядок.
-    Прочие теги (если есть) будут добавлены в конце, сохранив исходный порядок.
-    Вернёт количество обработанных офферов.
-    """
-    shop = root.find("./shop")
-    if shop is None:
+def step_rename_purchase_price(root: ET.Element) -> int:
+    """Rename <purchase_price> to <price>. If <price> existed, remove it first, then create from purchase_price."""
+    offers = _offers(root)
+    if offers is None:
         return 0
-    offers_el = shop.find("offers")
-    if offers_el is None:
-        return 0
+    converted = 0
+    for offer in list(offers):
+        pp_list = offer.findall("purchase_price")
+        if not pp_list:
+            continue
+        # remove all existing <price> to avoid duplicates
+        for old_price in offer.findall("price"):
+            offer.remove(old_price)
+        # replace each <purchase_price> with <price>
+        for pp in pp_list:
+            new_price = ET.Element("price")
+            new_price.text = pp.text or ""
+            for k, v in pp.attrib.items():
+                new_price.set(k, v)
+            offer.append(new_price)
+            offer.remove(pp)
+            converted += 1
+    return converted
 
-    ORDER = ["categoryId","vendorCode","name","price","picture","vendor","currencyId","description","param"]
+
+def step_reorder_offer_children(root: ET.Element) -> int:
+    """Reorder children of each <offer> according to OFFER_TAG_ORDER. Others go to the end with original order."""
+    offers = _offers(root)
+    if offers is None:
+        return 0
     processed = 0
-
-    for offer in list(offers_el):
+    order = OFFER_TAG_ORDER
+    for offer in list(offers):
         children = list(offer)
         if not children:
             continue
-
-        # Карта: тег -> список элементов (в исходном порядке)
-        tag_map = {}
+        buckets = {}
         for ch in children:
-            tag_map.setdefault(ch.tag, []).append(ch)
-
-        # Новый порядок
+            buckets.setdefault(ch.tag, []).append(ch)
         new_children = []
-        for t in ORDER:
-            if t in tag_map:
-                new_children.extend(tag_map.pop(t))
-
-        # Остальные теги — в конце, строго в исходном порядке появления
-        # Для этого пройдём исходный список и добавим те, чьё имя ещё осталось в tag_map
+        for t in order:
+            if t in buckets:
+                new_children.extend(buckets.pop(t))
         for ch in children:
-            if ch.tag in tag_map and tag_map[ch.tag]:
-                new_children.append(ch)
-                tag_map[ch.tag].pop(0)
-                if not tag_map[ch.tag]:
-                    tag_map.pop(ch.tag, None)
-
-        # Пересобираем узлы
+            lst = buckets.get(ch.tag)
+            if lst:
+                new_children.append(lst.pop(0))
+                if not lst:
+                    buckets.pop(ch.tag, None)
         for ch in list(offer):
             offer.remove(ch)
         offer.extend(new_children)
         processed += 1
-
     return processed
 
-# ------------------------ Шаг 7. Переименование <purchase_price> в <price> ------------------------
-def _rename_purchase_price_to_price(root: ET.Element) -> int:
-    """
-    Во всех <offer> переименовать тег <purchase_price> в <price>.
-    Если у оффера уже есть <price>, сперва удаляем его и затем создаём новый <price> из <purchase_price>.
-    Возвращает количество преобразованных вхождений (сколько тегов purchase_price заменено).
-    """
-    shop = root.find("./shop")
-    if shop is None:
-        return 0
-    offers_el = shop.find("offers")
-    if offers_el is None:
-        return 0
 
-    converted = 0
-    for offer in list(offers_el):
-        pp_list = offer.findall("purchase_price")
-        if not pp_list:
-            continue
-
-        # Удалим все существующие <price>, чтобы не было дублей
-        for old_price in offer.findall("price"):
-            offer.remove(old_price)
-
-        # Заменим каждый <purchase_price> на <price>
-        for pp in pp_list:
-            new_price = ET.Element("price")
-            new_price.text = pp.text or ""
-            # перенесём атрибуты при их наличии
-            for k, v in pp.attrib.items():
-                new_price.set(k, v)
-            # вставим новый <price> рядом — порядок выправит шаг сортировки
-            offer.append(new_price)
-            # удалим исходный <purchase_price>
-            offer.remove(pp)
-            converted += 1
-
-    return converted
-# ------------------------ Основной сценарий ------------------------
+# ------------------------ Main ------------------------
 def main() -> int:
-    print(">> Скачивание фида поставщика...")
+    print(">> Downloading supplier feed...")
     raw = _fetch(SUPPLIER_URL)
     if not raw:
-        print("!! Не удалось скачать фид поставщика. Проверьте доступ/креды/URL.", file=sys.stderr)
+        print("!! Failed to download supplier feed.", file=sys.stderr)
         return 2
 
     try:
-        root = ET.fromstring(raw)  # ElementTree сам учитывает исходную XML-декларацию encoding
+        root = ET.fromstring(raw)
     except ET.ParseError as e:
-        print(f"!! Ошибка парсинга XML: {e}", file=sys.stderr)
+        print(f"!! XML parse error: {e}", file=sys.stderr)
         return 3
 
     if root.tag.lower() != "yml_catalog":
-        print("!! Корневой тег не <yml_catalog>.", file=sys.stderr)
+        print("!! Root tag is not <yml_catalog>.", file=sys.stderr)
         return 4
 
-    # 1) Фильтрация по категориям
-    total, kept, dropped = _filter_offers_inplace(root)
+    total, kept, dropped = step_filter_by_category(root)
     print(f">> Offers total: {total}, kept: {kept}, dropped: {dropped}")
 
-    # 2) Перенос <available> → offer@available
-    seen, set_cnt, overr_cnt, removed_av = _migrate_available_inplace(root)
+    seen, set_cnt, overr_cnt, removed_av = step_migrate_available(root)
     print(f">> Available migrated: seen={seen}, set={set_cnt}, overridden={overr_cnt}, tags_removed={removed_av}")
 
-    # 3) Чистка <shop> до <offers>
-    pruned = _prune_shop_before_offers(root)
+    pruned = step_prune_shop_prefix(root)
     print(f">> Shop prefix pruned: removed_nodes={pruned}")
 
-    # 4) Удаление price/url/quantity/quantity_in_stock
-    stripped = _strip_offer_fields_inplace(root)
+    stripped = step_strip_offer_fields(root)
     print(f">> Offer fields stripped: removed_tags_total={stripped}")
 
-    # 5) Удаление <param> по именам пользователя
-    params_removed = _strip_params_by_name_inplace(root)
+    params_removed = step_strip_params_by_name(root)
     print(f">> Params removed by name: {params_removed}")
 
-    # 6) Префикс AS в vendorCode и установка offer@id
-    offers_upd, vcodes_chg = _apply_vendorcode_prefix_and_id(root, prefix="AS")\1
-    # 7) Переименовываем <purchase_price> в <price>
-    converted = _rename_purchase_price_to_price(root)
-    print(f">> purchase_price→price converted: {converted}")
+    offers_upd, vcodes_chg = step_prefix_vendorcode_and_sync_id(root, prefix="AS")
+    print(f">> VendorCode prefixed and id synced: offers={offers_upd}, vendorCodes_changed={vcodes_chg}")
 
-# 8) Сортируем дочерние теги внутри каждого <offer>
-    reordered = _reorder_offer_children_inplace(root)
+    converted = step_rename_purchase_price(root)
+    print(f">> purchase_price->price converted: {converted}")
+
+    reordered = step_reorder_offer_children(root)
     print(f">> Offers reordered: {reordered}")
-# Сохранение результата
+
     xml_unicode = ET.tostring(root, encoding="unicode")
     _ensure_dirs(OUT_FILE)
     _write_windows_1251(OUT_FILE, xml_unicode)
