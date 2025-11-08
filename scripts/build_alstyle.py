@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-build_alstyle.py — v9 (точечный фикс пустых строк)
-Изменено ТОЛЬКО в _remove_simple_tags: 
-• Регэксп теперь «съедает» окружающие пробелы/переводы строк вокруг удаляемых тегов.
-• После удаления чистим пустые строки.
-Остальное поведение v8 без изменений.
+build_alstyle.py — v10 (фикс удаления тегов без склейки строк)
+Изменена ТОЛЬКО функция _remove_simple_tags:
+• Удаляем указанные теги, аккуратно сохраняя хотя бы ОДИН перевод строки между соседними элементами.
+• Никакой глобальной чистки "пустых строк" больше нет.
+Остальное поведение v9 без изменений.
 """
 
 import re, sys, pathlib, requests
@@ -49,17 +49,29 @@ def _copy_purchase_into_price(body: str) -> str:
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
 def _remove_simple_tags(body: str) -> str:
-    # Удаляем указанные теги вместе с окружающими пробелами/переносами строк
+    """Удаляем теги, аккуратно сохраняя разрывы строк.
+    Логика: если вокруг удаляемого блока был хотя бы один \n, оставляем ровно один \n.
+    Иначе (встроенный тег в одной строке) — не вставляем лишних переносов.
+    """
     def rm(text, name_regex):
-        pattern = rf"(?is)\s*<\s*(?:{name_regex})\b[^>]*>.*?<\s*/\s*(?:{name_regex})\s*>\s*"
-        return re.sub(pattern, "", text)
+        rx = re.compile(
+            rf"(?is)"
+            rf"(?P<pre_ws>[ \t]*)"         # пробелы слева
+            rf"(?P<pre_nl>\r?\n)?"         # возможный перевод строки слева
+            rf"<\s*(?:{name_regex})\b[^>]*>.*?<\s*/\s*(?:{name_regex})\s*>"  # сам тег
+            rf"(?P<post_nl>\r?\n)?"        # возможный перевод строки справа
+            rf"(?P<post_ws>[ \t]*)"        # пробелы справа
+        )
+        def repl(m):
+            # если с любой стороны был перенос строки — вернём один \n, иначе ничего
+            return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
+        return rx.sub(repl, text)
+
     body = rm(body, r"quantity_in_stock")
     body = rm(body, r"purchase_?price")
     body = rm(body, r"available")
     body = rm(body, r"url")
     body = rm(body, r"quantity")
-    # Чистим пустые строки, которые могли остаться
-    body = re.sub(r"(?m)^[ \t]*\r?\n", "", body)
     return body
 
 def _transform_offer(chunk: str) -> str:
