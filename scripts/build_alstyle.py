@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-build_alstyle.py — v5 (минимум логики)
-• Скачиваем фид по Basic Auth.
-• Фильтруем офферы по <categoryId> из списка ALLOWED_CATS (ID поставщика).
-• ЛИШЬ переносим значение <available>…</available> в атрибут offer available="…". Сам тег НЕ удаляем.
-• Сохраняем docs/alstyle.yml в windows-1251.
+build_alstyle.py — v6
+Изменения: добавлен обмен тегов <price> ↔ <purchase_price> внутри каждого <offer>.
+Сохранил: фильтр по <categoryId> (ваш список), перенос available в атрибут (тег не удаляю).
 """
 
 import re, sys, pathlib, requests
@@ -29,20 +27,33 @@ def _save(text):
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_bytes(text.encode(ENC_OUT, errors="replace"))
 
-def _move_available(chunk: str) -> str:
-    # <offer ...attrs...>body</offer>
+def _swap_price_tags(body: str) -> str:
+    # Меняем теги без коллизий через плейсхолдер
+    body = re.sub(r"(?is)<\s*purchase_price\s*>", "<__PP__>", body)
+    body = re.sub(r"(?is)<\s*/\s*purchase_price\s*>", "</__PP__>", body)
+    body = re.sub(r"(?is)<\s*price\s*>", "<purchase_price>", body)
+    body = re.sub(r"(?is)<\s*/\s*price\s*>", "</purchase_price>", body)
+    body = re.sub(r"(?is)<\s*__PP__\s*>", "<price>", body)
+    body = re.sub(r"(?is)<\s*/\s*__PP__\s*>", "</price>", body)
+    return body
+
+def _move_available_and_swap(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
     if not m: return chunk
     attrs, body = m.group(1), m.group(2)
+
+    # swap price tags в теле
+    body = _swap_price_tags(body)
+
+    # перенос available в атрибут (тег оставляем)
     m_av = re.search(r"(?is)<\s*available\s*>\s*(.*?)\s*<\s*/\s*available\s*>", body)
-    if not m_av: 
-        return chunk  # ничего не трогаем
-    val = m_av.group(1)  # переносим как есть
-    if re.search(r'\savailable\s*=', attrs, flags=re.I):
-        # заменим существующее значение
-        attrs = re.sub(r'(\savailable\s*=\s*")([^"]*)(")', lambda g: g.group(1)+val+g.group(3), attrs, flags=re.I)
-    else:
-        attrs = attrs.rstrip() + f' available="{val}"'
+    if m_av:
+        val = m_av.group(1)
+        if re.search(r'\savailable\s*=', attrs, flags=re.I):
+            attrs = re.sub(r'(\savailable\s*=\s*")([^"]*)(")', lambda g: g.group(1)+val+g.group(3), attrs, flags=re.I)
+        else:
+            attrs = attrs.rstrip() + f' available="{val}"'
+
     return f"<offer{attrs}>{body}</offer>"
 
 def main() -> int:
@@ -68,7 +79,7 @@ def main() -> int:
     for ch in offers:
         m = re_cat.search(ch)
         if m and m.group(1) in ALLOWED_CATS:
-            kept.append(_move_available(ch))
+            kept.append(_move_available_and_swap(ch))
 
     new_block = "<offers>\n" + "\n".join(kept) + ("\n" if kept else "") + "</offers>"
     out = re.sub(r"(?s)<offers>.*?</offers>", lambda _: new_block, src, count=1)
