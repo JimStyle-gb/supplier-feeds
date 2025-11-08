@@ -184,35 +184,144 @@ def _apply_price_rules(body: str) -> str:
     return body[:m.start()] + m.group(1) + str(newv) + m.group(3) + body[m.end():]
 
 # --- ТОЛЬКО описание: сплющивание в один абзац ---
+
 def _flatten_description(body: str) -> str:
-    rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
-    def repl(m):
-        txt = m.group(2)
-        # CDATA -> текст
+    """
+    Строит «богатое» описание в <description> для Satu:
+    - CTA WhatsApp
+    - Короткое интро (из очищенного текста поставщика)
+    - Преимущества (первые 2–3 короткие фразы, если есть)
+    - Характеристики (из <param>, отфильтрованные)
+    - Оплата и доставка (из ENV или дефолт)
+    - (Опционально) Отзывы (если заданы в ENV)
+    - Скрытый SEO-блок (уникальный по бренду/модели)
+    В остальных тегах оффера порядок/содержимое не меняем.
+    """
+    import re, html, os
+
+    # helpers
+    def _tag(name: str, src: str) -> str:
+        m = re.search(rf"(?is)<\s*{name}\s*>(.*?)</\s*{name}\s*>", src)
+        return m.group(1).strip() if m else ""
+
+    def _clean_text(txt: str) -> str:
+        # распаковать CDATA
         if txt.lstrip().startswith("<![CDATA["):
             txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
-        # Несколько unescape до стабилизации (ловим двойное/тройное кодирование)
+        # multi-unescape (ловим &#10;, &amp;quot; и т.п.)
         for _ in range(3):
-            new_txt = html.unescape(txt)
-            if new_txt == txt:
-                break
-            txt = new_txt
-        # NBSP/zero-width после финального unescape
+            nt = html.unescape(txt)
+            if nt == txt: break
+            txt = nt
+        # NBSP/zero-width
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # Нормализуем переносы -> пробел (plain режим)
+        # нормализация переводов -> пробел
         txt = re.sub(r"\r\n|\r|\n", " ", txt)
-        # Убираем ВСЕ HTML-теги
+        # снять любые теги
         txt = re.sub(r"(?is)<[^>]+>", " ", txt)
-        # Схлопываем пробелы
+        # схлоп пробелов
         txt = re.sub(r"\s+", " ", txt).strip()
-        # Финальная защита: ещё раз схлопнуть (на случай появившихся пробелов после unescape)
-        txt = re.sub(r"\s+", " ", txt).strip()
-        # Пустым не оставляем
-        if not txt:
-            txt = "Описание недоступно"
-        return m.group(1) + txt + m.group(3)
-    return rx.sub(repl, body, count=1)
+        return txt
+
+    def _intro_and_bullets(plain: str):
+        # пытаемся выделить 2–3 короткие фразы для "Преимущества"
+        # безопасно: делим по точке/восклиц./вопросит. и по ; если коротко
+        parts = re.split(r"(?<=[\.\!\?])\s+|;\s+", plain)
+        parts = [p.strip() for p in parts if p.strip()]
+        intro = parts[0] if parts else plain
+        # буллеты — из следующих предложений, ограничим до 3
+        bullets = []
+        for p in parts[1:4]:
+            # отбросим слишком длинные (>140 симв.) и слишком короткие (<6 симв.)
+            if 6 <= len(p) <= 140:
+                bullets.append(p)
+        return intro, bullets
+
+    def _collect_params(src: str):
+        # соберём пары (name,value) из <param name="*">value</param>
+        items = re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', src)
+        out = []
+        deny = {"артикул","благотворительность","код тн вэд","код товара kaspi",
+                "новинка","снижена цена","штрихкод","штрих-код","назначение",
+                "объем","объём"}
+        for k, v in items:
+            k_clean = _clean_text(k).strip().strip(":").lower()
+            if k_clean in deny: 
+                continue
+            val = _clean_text(v)
+            if not val: 
+                continue
+            # нормализуем регистр ключа (первая буква заглавная)
+            key = k.strip().strip(":")
+            if key:
+                key = key[0].upper() + key[1:]
+            out.append((key, val))
+        return out
+
+    # 1) достаём исходные куски
+    m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
+    if not m:
+        return body
+    prefix, desc_raw, suffix = m.group(1), m.group(2), m.group(3)
+
+    vendor = _tag("vendor", body)
+    name   = _tag("name", body)
+    brand_model = (vendor + " " + name).strip() if vendor else name
+
+    # 2) plain из исходника
+    plain = _clean_text(desc_raw)
+
+    # 3) intro + bullets
+    intro, bullets = _intro_and_bullets(plain)
+
+    # 4) характеристики из <param>
+    params = _collect_params(body)
+
+    # 5) Оплата/Доставка из ENV или дефолты
+    pay_html = os.environ.get("AL_PAYMENT_HTML") or (
+        "<ul>"
+        "<li><strong>Безналичный</strong> расчет для юридических лиц</li>"
+        "<li><strong>Удаленная оплата</strong> по KASPI счету для физических лиц</li>"
+        "</ul>"
+    )
+    deliv_html = os.environ.get("AL_DELIVERY_HTML") or (
+        "<p>Доставка по Казахстану: курьером/ТК. Срок обычно 1–5 рабочих дней.</p>"
+    )
+
+    # 6) отзывы (опционально, только если есть AL_REVIEWS_HTML)
+    reviews_html = os.environ.get("AL_REVIEWS_HTML", "").strip()
+
+    # 7) собрать HTML
+    parts = []
+    # CTA
+    parts.append('<p><a href="https://api.whatsapp.com/send/?phone=77073270501&text&type=phone_number&app_absent=0"><strong>💬 Свяжитесь с нами в WhatsApp — отвечаем за несколько минут!</strong></a></p>')
+    # Интро
+    head = (f"<strong>{html.escape(brand_model)}</strong> — {html.escape(intro)}.") if intro else f"<strong>{html.escape(brand_model)}</strong>"
+    parts.append(f"<p>{head}</p>")
+    # Преимущества
+    if bullets:
+        parts.append("<h3>Преимущества</h3>")
+        parts.append("<ul>" + "".join(f"<li>{html.escape(b)}</li>" for b in bullets) + "</ul>")
+    # Характеристики
+    if params:
+        parts.append("<h3>Характеристики</h3>")
+        parts.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
+    # Оплата и доставка
+    parts.append("<h3>Оплата и доставка</h3>")
+    parts.append("<div><h4>Оплата</h4>" + pay_html + "<hr><h4>Доставка</h4>" + deliv_html + "</div>")
+    # Отзывы (если заданы)
+    if reviews_html:
+        parts.append("<h3>Отзывы</h3>")
+        parts.append(reviews_html)
+    # Скрытый SEO
+    seo = f"Купить {brand_model} в Казахстане. Доставка по РК. {('Бренд: ' + vendor) if vendor else ''}."
+    parts.append(f'<div style="display:none">{html.escape(seo)}</div>')
+
+    html_desc = "".join(parts)
+
+    # 8) вернуть в обёртке description (без CDATA, чтобы избежать проблем с переносами/энкодингом)
+    return re.sub(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>", prefix + html_desc + suffix, body, count=1)
 
 # --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
