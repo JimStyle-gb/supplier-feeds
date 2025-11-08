@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v27-soft
+# build_alstyle.py v27-hard
 # Орфография (мягкий режим): декод HTML-сущностей, ::/.., пробелы, единицы (Вт/В/Гц/мм/см/кг/л),
 # размеры 10x20 -> 10 × 20, температуры "50 C" -> "50 °C", mAh -> мА·ч.
 # Остальное: как v26 — перенос <available> в атрибут, purchase_price→price, чистки тегов,
@@ -188,7 +188,7 @@ _re_no_space_unit = re.compile(r"(\d)(Вт|В|А|Гц|см|мм|кг|л)\b")
 _re_lower_units = re.compile(r"\b(\d+)\s*(вт|в|гц|мм|см|кг|л)\b")
 _re_mAh = re.compile(r"\b(\d+)\s*mAh\b", re.I)
 
-def _clean_text_soft(s: str) -> str:
+def _clean_text_hard(s: str) -> str:
     if not s: return s
     s = html.unescape(s)
     s = _re_double_colon.sub(":", s)
@@ -211,14 +211,14 @@ def _apply_orthography(body: str) -> str:
     def fix_tag(text, tag):
         rx = re.compile(rf"(?is)(<\s*{tag}\s*>)(.*?)(</\s*{tag}\s*>)")
         def repl(m):
-            return m.group(1) + _clean_text_soft(m.group(2)) + m.group(3)
+            return m.group(1) + _clean_text_hard(m.group(2)) + m.group(3)
         return rx.sub(repl, text, count=1)
     body = fix_tag(body, "name")
     body = fix_tag(body, "description")
     # params (many)
     rx_param = re.compile(r'(?is)(<\s*param\b[^>]*>)(.*?)(</\s*param\s*>)')
     def prm_repl(m):
-        return m.group(1) + _clean_text_soft(m.group(2)) + m.group(3)
+        return m.group(1) + _clean_text_hard(m.group(2)) + m.group(3)
     body = rx_param.sub(prm_repl, body)
     return body
 
@@ -233,7 +233,7 @@ def _transform_offer(chunk: str) -> str:
     body = _apply_price_rules(body)
     body = _sort_offer_tags(body)
     attrs, body = _ensure_prefix_and_id(attrs, body)
-    body = _apply_orthography(body)  # мягкая орфография
+    body = _apply_orthography(body)  # жёсткая орфография
     if not body.startswith("\n"): body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
@@ -275,4 +275,35 @@ def main() -> int:
     return 0
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main())# Доп.регексы для жёсткого режима
+_re_multi_exclaim = re.compile(r"!{2,}")
+_re_multi_question = re.compile(r"\?{2,}")
+_re_repeat_word = re.compile(r"(?i)\b(\w{3,})\b(?:\s+\1\b){1,}")  # повторы слов: "очень очень" -> "очень"
+
+def _clean_text_hard(s: str) -> str:
+    if not s: return s
+    # базовые мягкие правки
+    s = _clean_text_soft(s)
+    # усиленные правки
+    s = _re_multi_exclaim.sub("!", s)
+    s = _re_multi_question.sub("?", s)
+    s = _re_repeat_word.sub(lambda m: m.group(1), s)
+    # осторожная замена латинской 'c'/'o' внутри русских слов (между кириллическими)
+    def _fix_mix(token):
+        def swap_chars(ch, prev_cyr, next_cyr):
+            if ch in "cC" and prev_cyr and next_cyr: return "с" if ch=="c" else "С"
+            if ch in "oO" and prev_cyr and next_cyr: return "о" if ch=="o" else "О"
+            return ch
+        out = []
+        for i,ch in enumerate(token):
+            prev_cyr = i>0 and ('А'<=token[i-1]<='я' or token[i-1] in "Ёё")
+            next_cyr = i+1<len(token) and ('А'<=token[i+1]<='я' or token[i+1] in "Ёё")
+            out.append(swap_chars(ch, prev_cyr, next_cyr))
+        return "".join(out)
+    parts = re.split(r"(\w+)", s, flags=re.UNICODE)
+    for i in range(1, len(parts), 2):
+        parts[i] = _fix_mix(parts[i])
+    s = "".join(parts)
+    return s
+
+
