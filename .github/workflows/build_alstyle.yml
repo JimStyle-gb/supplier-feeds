@@ -7,36 +7,59 @@ on:
       - 'scripts/**'
       - '.github/workflows/**'
       - 'docs/**'
-
-permissions:
-  contents: write
+  schedule:
+    - cron: '0 3 * * *'  # daily
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    permissions:
+      contents: write
 
-      - name: Setup Python
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install deps
         run: pip install requests
 
       - name: Build AlStyle feed
-        run: python scripts/build_alstyle.py
-
-      - name: Commit & push if docs/alstyle.yml changed
+        env:
+          # при необходимости добавьте сюда переменные окружения
+          # OUTPUT_ENCODING: windows-1251
+          # другие переменные не требуются — скрипт берёт логин/пароль внутри
+          PYTHONUTF8: '1'
         run: |
-          if [[ -n "$(git status --porcelain docs/alstyle.yml)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python scripts/build_alstyle.py
+
+      - name: Commit result (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git status --porcelain | grep -E '^( M|M |A |A|\?\?)\s+docs/alstyle\.yml' >/dev/null; then
             git add docs/alstyle.yml
-            git commit -m "Build AlStyle: update docs/alstyle.yml"
-            git push
+            git commit -m "build(alstyle): update docs/alstyle.yml [skip ci]" || true
           else
             echo "No changes in docs/alstyle.yml"
           fi
+
+      - name: Rebase & safe push
+        if: always()
+        run: |
+          # гарантируем, что удалённый URL настроен на push с токеном Actions
+          git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          # подтянуть удалённые изменения и ПОВЕРХ них накатить наш коммит
+          git fetch origin main
+          # если ребейз невозможен — аккуратно отменим и продолжим с push --force-with-lease
+          if ! git pull --rebase origin main; then
+            git rebase --abort || true
+          fi
+          # безопасный пуш (не перепишет чужую работу, если ветка изменилась за это время)
+          git push --force-with-lease origin HEAD:main
