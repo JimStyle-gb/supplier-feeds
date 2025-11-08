@@ -188,38 +188,48 @@ def _flatten_description(body: str) -> str:
     rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
     def repl(m):
         txt = m.group(2)
-        # CDATA -> текст
+        # 0) CDATA -> текст
         if txt.lstrip().startswith("<![CDATA["):
             txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
-        # Несколько unescape до стабилизации (ловим двойное/тройное кодирование)
+        # 1) Несколько unescape до стабилизации (ловим двойное/тройное кодирование)
         for _ in range(3):
             new_txt = html.unescape(txt)
             if new_txt == txt:
                 break
             txt = new_txt
-        # NBSP/zero-width после финального unescape
+        # 2) NBSP/zero-width после финального unescape
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # Нормализуем переносы строк -> \n и схлопываем пустые строки
+        # 3) Нормализуем переносы строк -> \n и схлопываем пустые строки
         txt = re.sub(r"\r\n|\r|\n", "\n", txt)
         txt = re.sub(r"\n\s*\n+", "\n", txt)
-        # Сохраняем существующие <br> как маркеры
+        # 4) Сохраняем любые уже имеющиеся <br> как маркеры
         sentinel = "\uFFFFBR\uFFFF"
         txt = re.sub(r"(?is)<\s*br\s*/?\s*>", sentinel, txt)
-        # Убираем ВСЕ остальные HTML-теги
-        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)  # на случай редких конструкций
-        txt = re.sub(r"(?is)<[^>]+>", " ", txt)                 # добиваем нестандартные <> блоки
-        # Переводы строк заменяем на <br> через маркер
+        # 5) ЖЁСТКО: убираем вообще все остальные HTML-теги (любые конструкции <>)
+        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)  # нормальные теги кроме br
+        txt = re.sub(r"(?is)<[^>]+>", " ", txt)                 # экзотические, незакрытые, с мусором
+        # 6) Переводим оставшиеся \n в <br> через маркер
         txt = txt.replace("\n", sentinel)
-        # Схлопываем пробелы
+        # 7) Схлопываем пробелы
         txt = re.sub(r"\s+", " ", txt).strip()
-        # Восстанавливаем <br>, чистим пробелы вокруг, убираем дубликаты
+        # 8) Восстанавливаем <br>, чистим пробелы вокруг, убираем дубликаты
         txt = txt.replace(sentinel, "<br>")
         txt = re.sub(r"\s*<br>\s*", "<br>", txt)
         txt = re.sub(r"(?:<br>){2,}", "<br>", txt)
-        # Финальный трим без ведущих/замыкающих <br>
-        txt = txt.strip("<br> ").strip()
-        # Пустым не оставляем
+        # 9) Финальные правки: трим краёв от пробелов и крайних <br>
+        txt = txt.strip()
+        txt = re.sub(r"^(?:<br>)+", "", txt)
+        txt = re.sub(r"(?:<br>)+$", "", txt)
+        # 10) Повторная чистка сущностей/пробелов на всякий
+        for _ in range(2):
+            new_txt = html.unescape(txt)
+            if new_txt == txt:
+                break
+            txt = new_txt
+        txt = txt.replace("\u00A0", " ")
+        txt = re.sub(r"\s+", " ", txt).strip()
+        # 11) Пустым не оставляем
         if not txt:
             txt = "Описание недоступно"
         return m.group(1) + txt + m.group(3)
