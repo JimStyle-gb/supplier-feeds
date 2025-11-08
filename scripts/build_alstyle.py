@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-# build_alstyle.py v27-hard
-# Орфография (мягкий режим): декод HTML-сущностей, ::/.., пробелы, единицы (Вт/В/Гц/мм/см/кг/л),
-# размеры 10x20 -> 10 × 20, температуры "50 C" -> "50 °C", mAh -> мА·ч.
-# Остальное: как v26 — перенос <available> в атрибут, purchase_price→price, чистки тегов,
-# сортировка тегов, префикс AS + id, правила цены, пустые строки.
+# build_alstyle.py v29-hard (desc-flatten)
+# Новое: работаем ТОЛЬКО с <description> — сплющиваем в один абзац (без трогания других тегов).
+# Остальной функционал из v28-hard сохранён: перенос available→attr, purchase_price→price, чистки,
+# сортировка, префикс AS + id, правила цен, пустые строки между офферами и т.д.
 
 import re, sys, pathlib, requests, math, html
 
@@ -27,6 +26,7 @@ def _save(text):
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUT_PATH.write_bytes(text.encode(ENC_OUT, errors="replace"))
 
+# --- Перенос <available> в атрибут offer ---
 def _move_available_attr(attrs: str, body: str):
     m_av = re.search(r"(?is)<\s*available\s*>\s*(.*?)\s*<\s*/\s*available\s*>", body)
     if not m_av: return attrs, body
@@ -39,6 +39,7 @@ def _move_available_attr(attrs: str, body: str):
         attrs = attrs.rstrip() + f' available="{val}"'
     return attrs, body
 
+# --- Копируем purchase_price → price (только значение) ---
 def _copy_purchase_into_price(body: str) -> str:
     m_pp = re.search(r"(?is)<\s*purchase_?price\s*>\s*(.*?)\s*<\s*/\s*purchase_?price\s*>", body)
     if not m_pp: return body
@@ -46,6 +47,7 @@ def _copy_purchase_into_price(body: str) -> str:
     def _repl(m): return m.group(1) + val + m.group(3)
     return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
 
+# --- Удаляем ненужные простые теги ---
 def _remove_simple_tags(body: str) -> str:
     def rm(text, name_regex):
         rx = re.compile(
@@ -65,6 +67,7 @@ def _remove_simple_tags(body: str) -> str:
     body = rm(body, r"quantity")
     return body
 
+# --- Удаляем параметры по имени ---
 def _remove_param_by_name(body: str) -> str:
     def _norm(s: str) -> str:
         s = s.lower().replace("ё", "е")
@@ -92,6 +95,7 @@ def _remove_param_by_name(body: str) -> str:
     body = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", body)
     return body
 
+# --- Сортировка тегов внутри оффера ---
 def _sort_offer_tags(body: str) -> str:
     def pop_all(text, rx):
         items = []
@@ -128,6 +132,7 @@ def _sort_offer_tags(body: str) -> str:
     if tail: pieces.append(tail)
     return "\n".join(pieces) + ("\n" if pieces else "")
 
+# --- Префикс AS и id синхронизация ---
 def _ensure_prefix_and_id(attrs: str, body: str):
     m = re.search(r"(?is)(<\s*vendorCode\s*>\s*)(.*?)(\s*<\s*/\s*vendorCode\s*>)", body)
     if not m: return attrs, body
@@ -142,6 +147,7 @@ def _ensure_prefix_and_id(attrs: str, body: str):
         attrs = f' id="{prefixed}"' + attrs
     return attrs, body
 
+# --- Ценообразование ---
 def _digits_int(s: str):
     t = re.sub(r"[^\d]", "", s or "")
     return int(t) if t else None
@@ -177,51 +183,20 @@ def _apply_price_rules(body: str) -> str:
     if newv is None: return body
     return body[:m.start()] + m.group(1) + str(newv) + m.group(3) + body[m.end():]
 
-# ---------- Орфография (мягкий) ----------
-_re_multi_spaces = re.compile(r" {2,}")
-_re_space_before_punct = re.compile(r"\s+([,.;:!?])")
-_re_double_colon = re.compile(r"::")
-_re_double_dot = re.compile(r"(?<!\.)\.\.(?!\.)")
-_re_temp_C = re.compile(r"(?<!°)\b(\d+)\s*C\b")
-_re_dims_x = re.compile(r"\b(\d+)\s*[xхX]\s*(\d+)\b")
-_re_no_space_unit = re.compile(r"(\d)(Вт|В|А|Гц|см|мм|кг|л)\b")
-_re_lower_units = re.compile(r"\b(\d+)\s*(вт|в|гц|мм|см|кг|л)\b")
-_re_mAh = re.compile(r"\b(\d+)\s*mAh\b", re.I)
+# --- ТОЛЬКО описание: сплющивание в один абзац ---
+def _flatten_description(body: str) -> str:
+    rx = re.compile(r"(?is)(<\s*description\s*>)(.*?)(</\s*description\s*>)")
+    def repl(m):
+        txt = m.group(2)
+        txt = html.unescape(txt)                  # декод HTML-сущностей
+        txt = txt.replace("\u00A0", " ")          # NBSP -> пробел
+        txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)  # zero-width + BOM
+        txt = re.sub(r"\s+", " ", txt)            # весь whitespace -> 1 пробел
+        txt = txt.strip()
+        return m.group(1) + txt + m.group(3)
+    return rx.sub(repl, body, count=1)
 
-def _clean_text_hard(s: str) -> str:
-    if not s: return s
-    s = html.unescape(s)
-    s = _re_double_colon.sub(":", s)
-    s = _re_double_dot.sub("…", s)
-    s = _re_space_before_punct.sub(r"\1", s)
-    s = _re_multi_spaces.sub(" ", s)
-    s = _re_temp_C.sub(lambda m: f"{m.group(1)} °C", s)
-    s = _re_dims_x.sub(lambda m: f"{m.group(1)} × {m.group(2)}", s)
-    s = _re_no_space_unit.sub(lambda m: f"{m.group(1)} {m.group(2)}", s)
-    s = _re_lower_units.sub(lambda m: f"{m.group(1)} {m.group(2).upper()}", s)
-    s = _re_mAh.sub(lambda m: f"{m.group(1)} мА·ч", s)
-    # trim per-line
-    s = "\n".join(line.strip() for line in s.splitlines())
-    # collapse many empty lines
-    s = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", s)
-    return s
-
-def _apply_orthography(body: str) -> str:
-    # name
-    def fix_tag(text, tag):
-        rx = re.compile(rf"(?is)(<\s*{tag}\s*>)(.*?)(</\s*{tag}\s*>)")
-        def repl(m):
-            return m.group(1) + _clean_text_hard(m.group(2)) + m.group(3)
-        return rx.sub(repl, text, count=1)
-    body = fix_tag(body, "name")
-    body = fix_tag(body, "description")
-    # params (many)
-    rx_param = re.compile(r'(?is)(<\s*param\b[^>]*>)(.*?)(</\s*param\s*>)')
-    def prm_repl(m):
-        return m.group(1) + _clean_text_hard(m.group(2)) + m.group(3)
-    body = rx_param.sub(prm_repl, body)
-    return body
-
+# --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
     if not m: return chunk
@@ -233,10 +208,11 @@ def _transform_offer(chunk: str) -> str:
     body = _apply_price_rules(body)
     body = _sort_offer_tags(body)
     attrs, body = _ensure_prefix_and_id(attrs, body)
-    body = _apply_orthography(body)  # жёсткая орфография
+    body = _flatten_description(body)  # только description
     if not body.startswith("\n"): body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
+# --- Срез между <shop> и <offers> ---
 def _strip_shop_header(src: str) -> str:
     m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
     m_offers = re.search(r"(?is)<\s*offers\b", src)
@@ -275,35 +251,4 @@ def main() -> int:
     return 0
 
 if __name__ == "__main__":
-    raise SystemExit(main())# Доп.регексы для жёсткого режима
-_re_multi_exclaim = re.compile(r"!{2,}")
-_re_multi_question = re.compile(r"\?{2,}")
-_re_repeat_word = re.compile(r"(?i)\b(\w{3,})\b(?:\s+\1\b){1,}")  # повторы слов: "очень очень" -> "очень"
-
-def _clean_text_hard(s: str) -> str:
-    if not s: return s
-    # базовые мягкие правки
-    s = _clean_text_soft(s)
-    # усиленные правки
-    s = _re_multi_exclaim.sub("!", s)
-    s = _re_multi_question.sub("?", s)
-    s = _re_repeat_word.sub(lambda m: m.group(1), s)
-    # осторожная замена латинской 'c'/'o' внутри русских слов (между кириллическими)
-    def _fix_mix(token):
-        def swap_chars(ch, prev_cyr, next_cyr):
-            if ch in "cC" and prev_cyr and next_cyr: return "с" if ch=="c" else "С"
-            if ch in "oO" and prev_cyr and next_cyr: return "о" if ch=="o" else "О"
-            return ch
-        out = []
-        for i,ch in enumerate(token):
-            prev_cyr = i>0 and ('А'<=token[i-1]<='я' or token[i-1] in "Ёё")
-            next_cyr = i+1<len(token) and ('А'<=token[i+1]<='я' or token[i+1] in "Ёё")
-            out.append(swap_chars(ch, prev_cyr, next_cyr))
-        return "".join(out)
-    parts = re.split(r"(\w+)", s, flags=re.UNICODE)
-    for i in range(1, len(parts), 2):
-        parts[i] = _fix_mix(parts[i])
-    s = "".join(parts)
-    return s
-
-
+    raise SystemExit(main())
