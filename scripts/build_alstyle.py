@@ -184,56 +184,47 @@ def _apply_price_rules(body: str) -> str:
     return body[:m.start()] + m.group(1) + str(newv) + m.group(3) + body[m.end():]
 
 # --- ТОЛЬКО описание: сплющивание в один абзац ---
-def _flatten_description(body: str) -> str:
+def _desc_plain(body: str) -> str:
+    # (из v34) полностью убираем теги, скрытые символы, сущности; получаем один абзац
     rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
     def repl(m):
         txt = m.group(2)
-        # 0) CDATA -> текст
-        if txt.lstrip().startswith("<![CDATA["):
+        if txt.lstrip().startswith("<![CDATA[]"):
             txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
-        # 1) Несколько unescape до стабилизации (ловим двойное/тройное кодирование)
+        # multi-unescape
         for _ in range(3):
             new_txt = html.unescape(txt)
-            if new_txt == txt:
-                break
+            if new_txt == txt: break
             txt = new_txt
-        # 2) NBSP/zero-width после финального unescape
         txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # 3) Нормализуем переносы строк -> \n и схлопываем пустые строки
-        txt = re.sub(r"\r\n|\r|\n", "\n", txt)
-        txt = re.sub(r"\n\s*\n+", "\n", txt)
-        # 4) Сохраняем любые уже имеющиеся <br> как маркеры
-        sentinel = "\uFFFFBR\uFFFF"
-        txt = re.sub(r"(?is)<\s*br\s*/?\s*>", sentinel, txt)
-        # 5) ЖЁСТКО: убираем вообще все остальные HTML-теги (любые конструкции <>)
-        txt = re.sub(r"(?is)</?(?!br\b)[a-z][^>]*>", " ", txt)  # нормальные теги кроме br
-        txt = re.sub(r"(?is)<[^>]+>", " ", txt)                 # экзотические, незакрытые, с мусором
-        # 6) Переводим оставшиеся \n в <br> через маркер
-        txt = txt.replace("\n", sentinel)
-        # 7) Схлопываем пробелы
+        txt = re.sub(r"\r\n|\r|\n", " ", txt)
+        txt = re.sub(r"(?is)<[^>]+>", " ", txt)
         txt = re.sub(r"\s+", " ", txt).strip()
-        # 8) Восстанавливаем <br>, чистим пробелы вокруг, убираем дубликаты
-        txt = txt.replace(sentinel, "<br>")
-        txt = re.sub(r"\s*<br>\s*", "<br>", txt)
-        txt = re.sub(r"(?:<br>){2,}", "<br>", txt)
-        # 9) Финальные правки: трим краёв от пробелов и крайних <br>
-        txt = txt.strip()
-        txt = re.sub(r"^(?:<br>)+", "", txt)
-        txt = re.sub(r"(?:<br>)+$", "", txt)
-        # 10) Повторная чистка сущностей/пробелов на всякий
-        for _ in range(2):
-            new_txt = html.unescape(txt)
-            if new_txt == txt:
-                break
-            txt = new_txt
-        txt = txt.replace("\u00A0", " ")
         txt = re.sub(r"\s+", " ", txt).strip()
-        # 11) Пустым не оставляем
-        if not txt:
-            txt = "Описание недоступно"
+        if not txt: txt = "Описание недоступно"
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
+def _add_br_after_plain(body: str) -> str:
+    # добавляем <br> по безопасным границам предложений из уже "plain" описания
+    rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
+    def sentenize(s: str) -> str:
+        # после [.?!;] + пробел + заглавная/цифра — вставляем <br>
+        s = re.sub(r"([.!?;])\s+(?=[A-ZА-ЯЁ0-9])", r"\1<br>", s)
+        # чистим пробелы вокруг и дубляжи
+        s = re.sub(r"\s*<br>\s*", "<br>", s)
+        s = re.sub(r"(?:<br>){2,}", "<br>", s)
+        s = s.strip("<br> ").strip()
+        return s or "Описание недоступно"
+    def repl(m):
+        return m.group(1) + sentenize(m.group(2)) + m.group(3)
+    return rx.sub(repl, body, count=1)
+def _flatten_description(body: str) -> str:
+    # этап 1: plain (чистим до одного абзаца, без тегов)
+    body = _desc_plain(body)
+    # этап 2: новый этап — возвращаем <br> (только он), по безопасным границам предложений
+    body = _add_br_after_plain(body)
+    return body
 
 # --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
