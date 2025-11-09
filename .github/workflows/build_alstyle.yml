@@ -5,19 +5,19 @@ on:
   push:
     paths:
       - 'scripts/**'
-      - '.github/workflows/Build_AlStyle.yml'
+      - '.github/workflows/**'
+      - 'docs/**'
 
 permissions:
   contents: write
 
-concurrency:
-  group: alstyle-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
+    env:
+      ALSTYLE_LOGIN: ${{ secrets.ALSTYLE_LOGIN }}
+      ALSTYLE_PASSWORD: ${{ secrets.ALSTYLE_PASSWORD }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,21 +31,15 @@ jobs:
         run: pip install requests
 
       - name: Build AlStyle feed
-        run: |
-          python scripts/build_alstyle.py
+        run: python scripts/build_alstyle.py
 
-      - name: Commit & push if docs/alstyle.yml changed (safe rebase)
+      - name: Commit & push if docs/alstyle.yml changed
         run: |
           if [[ -n "$(git status --porcelain docs/alstyle.yml)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            # 1) Сначала фиксируем локальные изменения в коммит
             git add docs/alstyle.yml
-            git commit -m "Build AlStyle: update docs/alstyle.yml" || echo "No changes to commit"
-            # 2) Подтягиваем удалёнку с ребейзом (автостэш на случай посторонних изменений)
-            git fetch --prune
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME:-${GITHUB_REF##*/}}"
-            # 3) Пушим
+            git commit -m "Build AlStyle: update docs/alstyle.yml"
             git push
           else
             echo "No changes in docs/alstyle.yml"
