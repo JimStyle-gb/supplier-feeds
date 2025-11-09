@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date='2025-10-31 22:27'>
+<yml_catalog date='2025-11-09 22:29'>
 <!--FEED_META
 Поставщик                                  | Copyline
 URL поставщика                             | https://copyline.kz/files/price-CLA.xlsx
-Время сборки (Алматы)                      | 01:11:2025 - 03:27:26
-Ближайшее время сборки (Алматы)            | 10:11:2025 - 03:00:00
+Время сборки (Алматы)                      | 10:11:2025 - 03:29:57
+Ближайшее время сборки (Алматы)            | 20:11:2025 - 03:00:00
 Сколько товаров у поставщика до фильтра    | 1221
 Сколько товаров у поставщика после фильтра | 1213
 Сколько товаров есть в наличии (true)      | 1213
@@ -122,7 +122,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL103831">
       <vendorCode>CL103831</vendorCode>
       <name>Девелопер Panasonic DP-1520/1820 400 гр</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dq-z60j.jpg</picture>
       <vendor>Panasonic</vendor>
       <currencyId>KZT</currencyId>
@@ -242,7 +242,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL103705">
       <vendorCode>CL103705</vendorCode>
       <name>Drum Unit Brother DR-1075</name>
-      <price>6900</price>
+      <price>5900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-1075.jpg</picture>
       <vendor>Brother</vendor>
       <currencyId>KZT</currencyId>
@@ -266,7 +266,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL103999">
       <vendorCode>CL103999</vendorCode>
       <name>Drum Unit Brother DR-2275 для HL-2200/2230/2240/2250/2270 Euro Print</name>
-      <price>7900</price>
+      <price>6900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-2275.jpg</picture>
       <vendor>Brother</vendor>
       <currencyId>KZT</currencyId>
@@ -362,7 +362,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL100868">
       <vendorCode>CL100868</vendorCode>
       <name>Drum Unit Canon C-EXV33 для IR 2520/2525/2535/2545</name>
-      <price>22900</price>
+      <price>21900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_C-EXV33.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -374,7 +374,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL100017">
       <vendorCode>CL100017</vendorCode>
       <name>Drum Unit Canon C-EXV34 BLACK для IR C2020/2025/2030/2220/2225/2230 OEM</name>
-      <price>111900</price>
+      <price>110900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV34.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -386,7 +386,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL100018">
       <vendorCode>CL100018</vendorCode>
       <name>Drum Unit Canon C-EXV34 CYAN для IR C2020/2025/2030/2220/2225/2230 OEM</name>
-      <price>111900</price>
+      <price>110900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV341.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -398,7 +398,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL102974">
       <vendorCode>CL102974</vendorCode>
       <name>Drum Unit Canon C-EXV34 MAGENTA для IR C2020/2025/2030/2220/2225/2230 OEM</name>
-      <price>111900</price>
+      <price>110900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV342.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -410,7 +410,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL102975">
       <vendorCode>CL102975</vendorCode>
       <name>Drum Unit Canon C-EXV34 YELLOW для IR C2020/2025/2030/2220/2225/2230 OEM</name>
-      <price>111900</price>
+      <price>110900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV343.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -446,7 +446,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL104215">
       <vendorCode>CL104215</vendorCode>
       <name>Drum Unit Canon C-EXV49 для IR C3025/C3330/C3320/C3325/C3320L BLACK/COLOR</name>
-      <price>25900</price>
+      <price>24900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_drum-Canon-IR-3300.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -482,7 +482,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL101235">
       <vendorCode>CL101235</vendorCode>
       <name>Drum Unit Canon C-EXV7/GPR-10 для IR 1200/1210/1230/1270/1310/1330/1370/1510/1530/1570/1630/1670</name>
-      <price>43900</price>
+      <price>42900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_C-EXV7.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -494,7 +494,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL101238">
       <vendorCode>CL101238</vendorCode>
       <name>Drum Unit Canon NPG-1 для NP-1015/1215/1218/1318/1510/1520/1530/1550/1820/2010/2020/2120</name>
-      <price>43900</price>
+      <price>42900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_npg-1.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -626,7 +626,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL102335">
       <vendorCode>CL102335</vendorCode>
       <name>Drum Unit Kyocera DK-130 для FS-1100/1300</name>
-      <price>103900</price>
+      <price>102900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DK130.jpg</picture>
       <vendor>Kyocera</vendor>
       <currencyId>KZT</currencyId>
@@ -650,7 +650,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105281">
       <vendorCode>CL105281</vendorCode>
       <name>Drum Unit Kyocera DK-3170 для P3045/M3145dn (302T993060) БУЛАТ s-Line Восстановленный</name>
-      <price>102900</price>
+      <price>101900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DK-3170-302T993060-bulat.jpg</picture>
       <vendor>Kyocera</vendor>
       <currencyId>KZT</currencyId>
@@ -674,7 +674,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105055">
       <vendorCode>CL105055</vendorCode>
       <name>Drum Unit Lexmark MS310/312/317/410/415/417/510/517/610/617/MX310/317/410/417/510/511/517/611/617 (50F0Z00) оригинал</name>
-      <price>74900</price>
+      <price>73900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_50F0Z00-1.jpg</picture>
       <vendor>Lexmark</vendor>
       <currencyId>KZT</currencyId>
@@ -854,7 +854,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL103918">
       <vendorCode>CL103918</vendorCode>
       <name>Драм-картридж Samsung (CLT-R406) для CLP-360/365/368/CLX-3300/3305 OEM</name>
-      <price>43900</price>
+      <price>42900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CLT-R406.jpg</picture>
       <vendor>Samsung</vendor>
       <currencyId>KZT</currencyId>
@@ -878,7 +878,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL103919">
       <vendorCode>CL103919</vendorCode>
       <name>Драм-картридж Samsung (CLT-R409) для CLP-310/315/CLX-3170/3175 ОЕМ</name>
-      <price>39900</price>
+      <price>38900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CLT-R409.jpg</picture>
       <vendor>Samsung</vendor>
       <currencyId>KZT</currencyId>
@@ -902,7 +902,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL102468">
       <vendorCode>CL102468</vendorCode>
       <name>Драм-картридж Xerox (013R00591) WC 5325/5330/5335</name>
-      <price>48900</price>
+      <price>47900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00591.JPG</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -986,7 +986,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL102720">
       <vendorCode>CL102720</vendorCode>
       <name>Драм-картридж Xerox (013R00662) WC 7525/7530/7535/7545/7556/7830/7835/7845/7855 Black/Cyan/Magenta/Yellow (125k)</name>
-      <price>31900</price>
+      <price>29900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00662.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1000,7 +1000,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL104439">
       <vendorCode>CL104439</vendorCode>
       <name>Драм-картридж Xerox (013R00669) WC 5945/5955 (200K) Euro Print</name>
-      <price>107900</price>
+      <price>106900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00669-oem.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1011,7 +1011,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL103711">
       <vendorCode>CL103711</vendorCode>
       <name>Драм-картридж Xerox (013R00670) WC 5019/5021/5022/5024</name>
-      <price>55900</price>
+      <price>54900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00670-3.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1265,7 +1265,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105073">
       <vendorCode>CL105073</vendorCode>
       <name>Драм-картридж Xerox (108R01148) Phaser 7100 Color (24K)</name>
-      <price>43900</price>
+      <price>42900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-For-Xerox-108R01148.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1277,7 +1277,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105072">
       <vendorCode>CL105072</vendorCode>
       <name>Драм-картридж Xerox (108R01151) Phaser 7100 Black (24K)</name>
-      <price>43900</price>
+      <price>42900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-For-Xerox-108R01151.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1301,7 +1301,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105528">
       <vendorCode>CL105528</vendorCode>
       <name>Драм-картридж Xerox (108R01417) Phaser 6510/WC6515 Cyan</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01417.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1325,7 +1325,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105527">
       <vendorCode>CL105527</vendorCode>
       <name>Драм-картридж Xerox (108R01418) Phaser 6510/WC6515 Magenta</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01418.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1349,7 +1349,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105526">
       <vendorCode>CL105526</vendorCode>
       <name>Драм-картридж Xerox (108R01419) Phaser 6510/WC6515 Yellow</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01419.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1373,7 +1373,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105412">
       <vendorCode>CL105412</vendorCode>
       <name>Драм-картридж Xerox (108R01420) Phaser 6510/WC6515 (80k)</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01420.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1433,7 +1433,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL100024">
       <vendorCode>CL100024</vendorCode>
       <name>Драм-картридж Xerox (113R00670) Phaser 5500/5550</name>
-      <price>40900</price>
+      <price>39900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00670.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1445,7 +1445,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL103913">
       <vendorCode>CL103913</vendorCode>
       <name>Драм-картридж Xerox (113R00773) Phaser 3610/WC 3615 (85k)</name>
-      <price>40900</price>
+      <price>39900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_xerox-imaging-drum-cartridge-phaser-3610-workcentre-3615-113r00773.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1469,7 +1469,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL105147">
       <vendorCode>CL105147</vendorCode>
       <name>Драм-картридж Xerox (113R00779) VersaLink B7025/B7030/B7035 (80k) Euro Print</name>
-      <price>78900</price>
+      <price>77900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00779-ep.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -1905,7 +1905,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL103510">
       <vendorCode>CL103510</vendorCode>
       <name>Картридж HP C7115X Black Print Cartridge for LaserJet 1000/1200/3380/1000w/1005w/1220, 2500 pages OEM</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C7115x-oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -2103,7 +2103,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL102999">
       <vendorCode>CL102999</vendorCode>
       <name>Картридж HP CC364X for LJP4014/4015/4515 (24K) Euro Print Premium</name>
-      <price>19900</price>
+      <price>18900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_cc364x.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -2167,7 +2167,7 @@ URL поставщика                             | https://copyline.kz/files/price-CLA
     <offer id="CL101831">
       <vendorCode>CL101831</vendorCode>
       <name>Картридж HP CE255X for LJ P3015 (12.5K) Euro Print</name>
-      <price>11900</price>
+      <price>10900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce255x.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -2442,7 +2442,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL102686">
       <vendorCode>CL102686</vendorCode>
       <name>Картридж HP CE505Х Black Print Cartridge for LaserJet P2035 /P2055, up to 6,500 pages ОЕМ</name>
-      <price>9900</price>
+      <price>8900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_hp-ce505x_oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -2828,7 +2828,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL104756">
       <vendorCode>CL104756</vendorCode>
       <name>Картридж HP CF230X (С ЧИПОМ) for LJ Pro M203dn/203dw/MFP M227fdw/227sdn OEM</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF230X-oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -3390,7 +3390,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL103940">
       <vendorCode>CL103940</vendorCode>
       <name>Картридж HP CF287A OEM</name>
-      <price>18900</price>
+      <price>17900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_cf287a-oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -3486,7 +3486,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL102358">
       <vendorCode>CL102358</vendorCode>
       <name>Картридж HP CZ192А (№93A) for LJPro M435/701/706 (12K) Euro Print</name>
-      <price>16900</price>
+      <price>15900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CZ192__.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -3598,7 +3598,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101944">
       <vendorCode>CL101944</vendorCode>
       <name>Картридж HP Q5942X Black Print Cartridge for LaserJet 4250/4350 20 000 pages Euro Print</name>
-      <price>21900</price>
+      <price>20900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_q5942x1.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -3758,7 +3758,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL105016">
       <vendorCode>CL105016</vendorCode>
       <name>Картридж HP Q7553X P2015/P2014/M2727 (7K) Euro Print</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-Q7553X.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -3870,7 +3870,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL104749">
       <vendorCode>CL104749</vendorCode>
       <name>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) OEM</name>
-      <price>11900</price>
+      <price>10900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1106A-oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -4624,7 +4624,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL104006">
       <vendorCode>CL104006</vendorCode>
       <name>Картридж RICOH SP201HE for Aficio SP211/SP213/SP220Nw/SP220SNw/SP220SFNw (2,6K) Euro Print</name>
-      <price>11900</price>
+      <price>10900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_SP201_euro.jpg</picture>
       <vendor>Ricoh</vendor>
       <currencyId>KZT</currencyId>
@@ -4880,7 +4880,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL100414">
       <vendorCode>CL100414</vendorCode>
       <name>Картридж SAMSUNG MLT-D105S for ML-1910/1915/2525/2540/2580/SCX-4600/4623 (1,5K) Euro Print</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ml-d105s-.jpg</picture>
       <vendor>Samsung</vendor>
       <currencyId>KZT</currencyId>
@@ -5088,7 +5088,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL100236">
       <vendorCode>CL100236</vendorCode>
       <name>Картридж SAMSUNG SCX-D4200A for SCX-4200/4220/ (3K) Euro Print</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_4200_euro.jpg</picture>
       <vendor>Samsung</vendor>
       <currencyId>KZT</currencyId>
@@ -5328,7 +5328,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101151">
       <vendorCode>CL101151</vendorCode>
       <name>Картридж (106R01487) Xerox WC 3210/3220DN Euro Print</name>
-      <price>11900</price>
+      <price>10900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R01487.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -5552,7 +5552,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL105539">
       <vendorCode>CL105539</vendorCode>
       <name>Картридж Canon 067 Black для i-SENSYS MF655Cdw/LBP633Cdw/MF657Cw (1,35K) Euro Print</name>
-      <price>10900</price>
+      <price>9900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-067bk-ep.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -5744,7 +5744,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL104815">
       <vendorCode>CL104815</vendorCode>
       <name>Картридж (оригинал) HP CE410A (№305A) Black for CLJ Pro 300/M375/M475/Pro 400/M451/M471</name>
-      <price>63900</price>
+      <price>62900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE410A1.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5759,7 +5759,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL104817">
       <vendorCode>CL104817</vendorCode>
       <name>Картридж (оригинал) HP CE411A (№305A) Cyan for CLJ Pro 300/M375/M475/Pro 400/M451/M471</name>
-      <price>93900</price>
+      <price>92900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE411A1.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5774,7 +5774,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL104818">
       <vendorCode>CL104818</vendorCode>
       <name>Картридж (оригинал) HP CE412A (№305A) Yellow for CLJ Pro 300/M375/M475/Pro 400/M451/M471</name>
-      <price>93900</price>
+      <price>92900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE412A1.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5789,7 +5789,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL104819">
       <vendorCode>CL104819</vendorCode>
       <name>Картридж (оригинал) HP CE413A (№305A) Magenta for CLJ Pro 300/M375/M475/Pro 400/M451/M471</name>
-      <price>93900</price>
+      <price>92900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE413A1.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5849,7 +5849,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101847">
       <vendorCode>CL101847</vendorCode>
       <name>Картридж HP C9730A (№645A) Black для CLJ 5500/5550 (13K) Euro Print</name>
-      <price>48900</price>
+      <price>47900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C9730A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5865,7 +5865,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101173">
       <vendorCode>CL101173</vendorCode>
       <name>Картридж HP C9730A (№645A) Black для CLJ 5500/5550 (13K) OEM</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c9730a-oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5881,7 +5881,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101848">
       <vendorCode>CL101848</vendorCode>
       <name>Картридж HP C9731A (№645A) Cyan для CLJ 5500/5550 (12K) Euro Print</name>
-      <price>48900</price>
+      <price>47900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C9731A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5897,7 +5897,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101174">
       <vendorCode>CL101174</vendorCode>
       <name>Картридж HP C9731A (№645A) Cyan для CLJ 5500/5550 (12K) OEM</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c9731a-oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5913,7 +5913,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101849">
       <vendorCode>CL101849</vendorCode>
       <name>Картридж HP C9732A (№645A) Yellow для CLJ 5500/5550 (12K) Euro Print</name>
-      <price>48900</price>
+      <price>47900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C9732A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5929,7 +5929,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101175">
       <vendorCode>CL101175</vendorCode>
       <name>Картридж HP C9732A (№645A) Yellow для CLJ 5500/5550 (12K) OEM</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c9732a-oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5945,7 +5945,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101850">
       <vendorCode>CL101850</vendorCode>
       <name>Картридж HP C9733A (№645A) Magenta для CLJ 5500/5550 (12K) Euro Print</name>
-      <price>48900</price>
+      <price>47900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C9733A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -5961,7 +5961,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101176">
       <vendorCode>CL101176</vendorCode>
       <name>Картридж HP C9733A (№645A) Magenta для CLJ 5500/5550 (12K) OEM</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c9733a-oem.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6121,7 +6121,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL100704">
       <vendorCode>CL100704</vendorCode>
       <name>Картридж HP CE251A (№504A) Cyan для CLJ CP3525/CM3530 (7K) Euro Print</name>
-      <price>17900</price>
+      <price>16900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE251A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6137,7 +6137,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL100705">
       <vendorCode>CL100705</vendorCode>
       <name>Картридж HP CE252A (№504A) Yellow для CLJ CP3525/CM3530 (7K) Euro Print</name>
-      <price>17900</price>
+      <price>16900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE252A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6153,7 +6153,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL100706">
       <vendorCode>CL100706</vendorCode>
       <name>Картридж HP CE253A (№504A) Magenta для CLJ CP3525/CM3530 (7K) Euro Print</name>
-      <price>17900</price>
+      <price>16900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_r-ce253a-.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6169,7 +6169,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL100411">
       <vendorCode>CL100411</vendorCode>
       <name>Картридж HP CE260A (№647A) Black для CLJ CM4540/CP4025/4525 (8,5K) Euro Print</name>
-      <price>16900</price>
+      <price>15900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce260a-.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6249,7 +6249,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL101019">
       <vendorCode>CL101019</vendorCode>
       <name>Картридж HP CE270A (№650A) Black для СLJ 5520/5525 Euro Print</name>
-      <price>32900</price>
+      <price>31900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE270A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6265,7 +6265,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL103854">
       <vendorCode>CL103854</vendorCode>
       <name>Картридж HP CE270A (№650A) Black для СLJ 5520/5525 OEM</name>
-      <price>49900</price>
+      <price>48900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE270A-2.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6297,7 +6297,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL103855">
       <vendorCode>CL103855</vendorCode>
       <name>Картридж HP CE271A (№650A) Cyan для CLJ 5520/5525 OEM</name>
-      <price>49900</price>
+      <price>48900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE271A-2.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6329,7 +6329,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL103856">
       <vendorCode>CL103856</vendorCode>
       <name>Картридж HP CE272A (№650A) Yellow для CLJ 5520/5525 OEM</name>
-      <price>49900</price>
+      <price>48900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE272A-2.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6361,7 +6361,7 @@ Canon i-SENSYS LBP6000, LBP6020, LBP6020B, LBP6030, LBP6030B, LBP6030w, MF3010, 
     <offer id="CL103857">
       <vendorCode>CL103857</vendorCode>
       <name>Картридж HP CE273A (№650A) Magenta для CLJ 5520/5525 OEM</name>
-      <price>49900</price>
+      <price>48900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE273A-2.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6809,7 +6809,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
     <offer id="CL101718">
       <vendorCode>CL101718</vendorCode>
       <name>Картридж HP CE401A (№507A) Cyan для CLJ Enterprise 500/M551n/M551dn/M551xh (6K) Euro Print</name>
-      <price>16900</price>
+      <price>15900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE401A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6825,7 +6825,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
     <offer id="CL101719">
       <vendorCode>CL101719</vendorCode>
       <name>Картридж HP CE402A (№507A) Yellow для CLJ Enterprise 500/M551n/M551dn/M551xh (6K) Euro Print</name>
-      <price>16900</price>
+      <price>15900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE402A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -6857,7 +6857,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
     <offer id="CL101720">
       <vendorCode>CL101720</vendorCode>
       <name>Картридж HP CE403A (№507A) Magenta для CLJ Enterprise 500/M551n/M551dn/M551xh (6K) Euro Print</name>
-      <price>16900</price>
+      <price>15900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE403A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -7369,7 +7369,7 @@ Canon i-SENSYS LBP7010C, LBP7018C.
     <offer id="CL103865">
       <vendorCode>CL103865</vendorCode>
       <name>Картридж HP CF310A (№826A) Black для CLJ M855 (29K) OEM</name>
-      <price>43900</price>
+      <price>42900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF310A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -7418,7 +7418,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL103866">
       <vendorCode>CL103866</vendorCode>
       <name>Картридж HP CF311A (№826A) Cyan для CLJ M855 (31.5K) OEM</name>
-      <price>43900</price>
+      <price>42900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF311A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -7484,7 +7484,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL103868">
       <vendorCode>CL103868</vendorCode>
       <name>Картридж HP CF313A (№826A) Magenta для CLJ M855 (31.5K) OEM</name>
-      <price>43900</price>
+      <price>42900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF313A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -7725,7 +7725,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL100035">
       <vendorCode>CL100035</vendorCode>
       <name>Картридж HP CF360A (№508A) Black для CLJ Enterprise M552/553 Euro Print</name>
-      <price>15900</price>
+      <price>14900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_cf360a.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -9012,7 +9012,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105732">
       <vendorCode>CL105732</vendorCode>
       <name>Картридж HP W2000X (№658X) Black для CLJ M751 (33K) Euro Print</name>
-      <price>68900</price>
+      <price>67900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2000X-ep.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -9028,7 +9028,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105733">
       <vendorCode>CL105733</vendorCode>
       <name>Картридж HP W2001X (№658X) Cyan для CLJ M751 (28K) Euro Print</name>
-      <price>64900</price>
+      <price>63900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2001X-ep.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -9044,7 +9044,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105734">
       <vendorCode>CL105734</vendorCode>
       <name>Картридж HP W2002X (№658X) Yellow для CLJ M751 (28K) Euro Print</name>
-      <price>64900</price>
+      <price>63900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2002X-ep.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -9060,7 +9060,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105735">
       <vendorCode>CL105735</vendorCode>
       <name>Картридж HP W2003X (№658X) Magenta для CLJ M751 (28K) Euro Print</name>
-      <price>64900</price>
+      <price>63900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W2003X-ep.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -9332,7 +9332,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105432">
       <vendorCode>CL105432</vendorCode>
       <name>Картридж HP W2120A (№212A) (без чипа) Black для CLJ M554/M555/M578 (5.5K) Euro Print</name>
-      <price>17900</price>
+      <price>16900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_HP212XBK.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -9476,7 +9476,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105494">
       <vendorCode>CL105494</vendorCode>
       <name>Картридж HP W2211A (№207A) (С ЧИПОМ) Cyan для CLJ M255/MFP M282/M283 (1.25K) Euro Print</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W2211A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -9524,7 +9524,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105495">
       <vendorCode>CL105495</vendorCode>
       <name>Картридж HP W2212A (№207A) (С ЧИПОМ) Yellow для CLJ M255/MFP M282/M283 (1.25K) Euro Print</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W2212A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -9572,7 +9572,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105496">
       <vendorCode>CL105496</vendorCode>
       <name>Картридж HP W2213A (№207A) (С ЧИПОМ) Magenta для CLJ M255/MFP M282/M283 (1.25K) Euro Print</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W2213A.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10132,7 +10132,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101184">
       <vendorCode>CL101184</vendorCode>
       <name>Термоблок Canon 4018 (FM3-4106-000)</name>
-      <price>75900</price>
+      <price>74900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FM3-4106.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -10143,7 +10143,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101588">
       <vendorCode>CL101588</vendorCode>
       <name>Термоблок Canon IR-2018</name>
-      <price>160900</price>
+      <price>159900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Fuser-Assembly-Unit-for-Canon-IR2018-FM00159.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -10154,7 +10154,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105254">
       <vendorCode>CL105254</vendorCode>
       <name>Термоблок Canon IR-2204 (FM1-V232/FM1-F160)</name>
-      <price>185900</price>
+      <price>183900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FM1-V232.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -10187,7 +10187,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL102370">
       <vendorCode>CL102370</vendorCode>
       <name>Термоблок HP CLJ 5500 (RG5-6701)</name>
-      <price>113900</price>
+      <price>112900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RG5-6701.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10198,7 +10198,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL103904">
       <vendorCode>CL103904</vendorCode>
       <name>Термоблок HP CLJ 5525/M750 (RM1-6181-/CE707-67913)</name>
-      <price>112900</price>
+      <price>111900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-6181-HP-CP5225.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10209,7 +10209,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101589">
       <vendorCode>CL101589</vendorCode>
       <name>Термоблок HP CLJ 5550</name>
-      <price>106900</price>
+      <price>105900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Fuser-Assembly-Unit-for-HP-5500.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10220,7 +10220,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105093">
       <vendorCode>CL105093</vendorCode>
       <name>Термоблок HP CLJ M377/M452/M477/M454/M454/M479/Canon MF735/734/732 (RM2-6461/RM2-6435)</name>
-      <price>301900</price>
+      <price>298900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-6461.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10275,7 +10275,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101391">
       <vendorCode>CL101391</vendorCode>
       <name>Термоблок HP LJ 1200/1220/1000W/1005/3300/3330 (RG9-1494/RG0-1026)</name>
-      <price>27900</price>
+      <price>26900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CTGHP1200.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10297,7 +10297,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL102419">
       <vendorCode>CL102419</vendorCode>
       <name>Термоблок HP LJ 2030/2035/P2050/P2055 (RM1-6406)</name>
-      <price>38900</price>
+      <price>37900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-6406.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10308,7 +10308,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101409">
       <vendorCode>CL101409</vendorCode>
       <name>Термоблок HP LJ 2400/2410/2420/2430 (RM1-1537/RM1-1531)</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CTGHP2400.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10330,7 +10330,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL102135">
       <vendorCode>CL102135</vendorCode>
       <name>Термоблок HP LJ 4014/4015 (RM1-4579/CB506-67902)</name>
-      <price>94900</price>
+      <price>93900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-45791.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10341,7 +10341,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101411">
       <vendorCode>CL101411</vendorCode>
       <name>Термоблок HP LJ 4250/4350 (RM1-1083)</name>
-      <price>46900</price>
+      <price>45900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-1083.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10352,7 +10352,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL102348">
       <vendorCode>CL102348</vendorCode>
       <name>Термоблок HP LJ 4345 (RM1-1044)</name>
-      <price>74900</price>
+      <price>73900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-1044.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10363,7 +10363,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL100896">
       <vendorCode>CL100896</vendorCode>
       <name>Термоблок HP LJ Enterprise M601/M602/M603 (CE988-67902/RM1-8396)</name>
-      <price>97900</price>
+      <price>96900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-8396.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10374,7 +10374,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL103636">
       <vendorCode>CL103636</vendorCode>
       <name>Термоблок HP LJ Enterprise M604/M605/M606 (E6B67-67902/RM2-6342-000)</name>
-      <price>97900</price>
+      <price>96900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-6342.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10385,7 +10385,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL104014">
       <vendorCode>CL104014</vendorCode>
       <name>Термоблок HP LJ Enterprise M607/M608/M609/M632/M633 (RM2-1257-000)</name>
-      <price>200900</price>
+      <price>198900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-1257.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10418,7 +10418,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105829">
       <vendorCode>CL105829</vendorCode>
       <name>Термоблок HP LJ M15/M17/M28/M30 (RM2-2107)</name>
-      <price>22900</price>
+      <price>21900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-2107_1.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10429,7 +10429,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL102340">
       <vendorCode>CL102340</vendorCode>
       <name>Термоблок HP LJ M1536/P1566/P1606/CP1525/Canon MF4410/4430/4450/4550/4570/4580 (RM1-7577/RM1-7547)</name>
-      <price>40900</price>
+      <price>39900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-7577.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10440,7 +10440,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105011">
       <vendorCode>CL105011</vendorCode>
       <name>Термоблок HP LJ M203/M227/M206/M230 (RM2-0836)</name>
-      <price>127900</price>
+      <price>126900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-0836.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10462,7 +10462,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL103653">
       <vendorCode>CL103653</vendorCode>
       <name>Термоблок HP LJ M4555 (RM1-7397/CE502-67913)</name>
-      <price>102900</price>
+      <price>101900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-7397.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10473,7 +10473,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL104610">
       <vendorCode>CL104610</vendorCode>
       <name>Термоблок HP LJ M501/M506/M527 (RM2-2586/RM2-5692)</name>
-      <price>101900</price>
+      <price>100900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-5692.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10484,7 +10484,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL104609">
       <vendorCode>CL104609</vendorCode>
       <name>Термоблок HP LJ M525/Pro M521 (RM1-8508)</name>
-      <price>101900</price>
+      <price>100900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-8508.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10517,7 +10517,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101410">
       <vendorCode>CL101410</vendorCode>
       <name>Термоблок HP LJ P3005/M3027/M3035 (RM1-3741)</name>
-      <price>42900</price>
+      <price>41900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-3741.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10561,7 +10561,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105221">
       <vendorCode>CL105221</vendorCode>
       <name>Термоблок HP LJ Pro M435/M701 (RM2-0639)</name>
-      <price>77900</price>
+      <price>76900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-0639.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10572,7 +10572,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101634">
       <vendorCode>CL101634</vendorCode>
       <name>Термоблок Samsung CLP-300/CLX-2160N/Xerox Phaser 6110 (JC96-03609A)</name>
-      <price>48900</price>
+      <price>47900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_JC96-03609A.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -10594,7 +10594,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101401">
       <vendorCode>CL101401</vendorCode>
       <name>Термоблок Samsung ML-1510/1710/4100/4200/Xerox 3120/3121/3115/3119 (JC81-01690A/JC96-02661A)</name>
-      <price>32900</price>
+      <price>31900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_JC81-01690A-JC96-02661A.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -10605,7 +10605,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL103168">
       <vendorCode>CL103168</vendorCode>
       <name>Термоблок Samsung ML-1610/2015/Xerox Phaser 3116/3117/3122 (JC96-03401A/126N00245/126N00318)</name>
-      <price>32900</price>
+      <price>31900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_JC96-03401A.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -10660,7 +10660,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL101730">
       <vendorCode>CL101730</vendorCode>
       <name>Термоблок Samsung SCX-4824/4828 (JC91-01004A/JC96-05132A)</name>
-      <price>38900</price>
+      <price>37900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_JC96-05132A.jpg</picture>
       <vendor>Samsung</vendor>
       <currencyId>KZT</currencyId>
@@ -10913,7 +10913,7 @@ HP Color LaserJet Enterprise M855dn , M855x+ , M855xh .
     <offer id="CL105119">
       <vendorCode>CL105119</vendorCode>
       <name>Термоэлемент HP LJ M402/M403/M426/M427/M404/M428/M405/M429/M329/M305/M304/Canon MF 426/428/429/MF421/LBP212/214/215/MF441/MF442/MF443dw/MF445dw/MF446x/MF449x</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_heater_HP-LJ-M402.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10925,7 +10925,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105041">
       <vendorCode>CL105041</vendorCode>
       <name>Термоэлемент HP LJ M521/M525 (RM1-8508)</name>
-      <price>11900</price>
+      <price>10900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-8508-he.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10936,7 +10936,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104992">
       <vendorCode>CL104992</vendorCode>
       <name>Термоэлемент HP LJ M607/M608/M609/M632/M633</name>
-      <price>17900</price>
+      <price>16900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Heater_m607.jpg</picture>
       <vendor>HP</vendor>
       <currencyId>KZT</currencyId>
@@ -10969,7 +10969,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL100884">
       <vendorCode>CL100884</vendorCode>
       <name>Тонер-картридж Brother TN-1075 for DCP-1510/DCP-1512/DCP-1610/DCP-1612/HL-1110/HL-1112/HL-1210/HL-1212/MFC-1810/MFC-1815/MFC-1912 (1K) Euro Print</name>
-      <price>5900</price>
+      <price>4900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-1075.jpg</picture>
       <vendor>Brother</vendor>
       <currencyId>KZT</currencyId>
@@ -11097,7 +11097,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104160">
       <vendorCode>CL104160</vendorCode>
       <name>Тонер-картридж Brother TN-3230 for HL-5340D/5350DN/5370DW/5380DN/DCP8085/8070/MFC8370/8880 (3K) Euro Print</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-3230-ep.jpg</picture>
       <vendor>Brother</vendor>
       <currencyId>KZT</currencyId>
@@ -11401,7 +11401,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104617">
       <vendorCode>CL104617</vendorCode>
       <name>Тонер-картридж Canon 054H for LBP-620/640 (2,3K) Cyan Euro Print</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-CRG054HC.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -11417,7 +11417,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104618">
       <vendorCode>CL104618</vendorCode>
       <name>Тонер-картридж Canon 054H for LBP-620/640 (2,3K) Magenta Euro Print</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-CRG054HM.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -11433,7 +11433,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104619">
       <vendorCode>CL104619</vendorCode>
       <name>Тонер-картридж Canon 054H for LBP-620/640 (2,3K) Yellow Euro Print</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-CRG054HY.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -11657,7 +11657,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL101812">
       <vendorCode>CL101812</vendorCode>
       <name>Тонер-картридж Canon C-EXV21 for IR C2380/2880/3080/3580/3880 Black</name>
-      <price>42900</price>
+      <price>41900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV21-black.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -11673,7 +11673,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL101813">
       <vendorCode>CL101813</vendorCode>
       <name>Тонер-картридж Canon C-EXV21 for IR C2380/2880/3080/3580/3880 Cyan</name>
-      <price>42900</price>
+      <price>41900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV21-cyan.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -11689,7 +11689,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL101814">
       <vendorCode>CL101814</vendorCode>
       <name>Тонер-картридж Canon C-EXV21 for IR C2380/2880/3080/3580/3880 Magenta</name>
-      <price>42900</price>
+      <price>41900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV21-magenta.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -11705,7 +11705,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL101815">
       <vendorCode>CL101815</vendorCode>
       <name>Тонер-картридж Canon C-EXV21 for IR C2380/2880/3080/3580/3880 Yellow</name>
-      <price>42900</price>
+      <price>41900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV21-yellow.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -11897,7 +11897,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL101778">
       <vendorCode>CL101778</vendorCode>
       <name>Тонер-картридж Canon C-EXV33 for IR 2520/2525/2530 (14,6K) (11500099) INTEGRAL</name>
-      <price>14900</price>
+      <price>13900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1544_WEB.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -12297,7 +12297,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL103796">
       <vendorCode>CL103796</vendorCode>
       <name>Тонер-картридж Canon C-EXV50 for IR 1435 (17,6K) (11500157) 689 гр INTEGRAL</name>
-      <price>8900</price>
+      <price>7900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500157-11500062_IR1435.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -12473,7 +12473,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104693">
       <vendorCode>CL104693</vendorCode>
       <name>Тонер-картридж Canon C-EXV55 for IR С256i/356i/356P (18K) Cyan Euro Print</name>
-      <price>37900</price>
+      <price>36900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_c_exv55_c.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -12489,7 +12489,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104694">
       <vendorCode>CL104694</vendorCode>
       <name>Тонер-картридж Canon C-EXV55 for IR С256i/356i/356P (18K) Magenta Euro Print</name>
-      <price>37900</price>
+      <price>36900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_c_exv55_m.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -12505,7 +12505,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104695">
       <vendorCode>CL104695</vendorCode>
       <name>Тонер-картридж Canon C-EXV55 for IR С256i/356i/356P (18K) Yellow Euro Print</name>
-      <price>37900</price>
+      <price>36900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_c_exv55_y.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -12521,7 +12521,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104692">
       <vendorCode>CL104692</vendorCode>
       <name>Тонер-картридж Canon C-EXV55 for IR С256i/356i/356P (23K) Black Euro Print</name>
-      <price>37900</price>
+      <price>36900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_c_exv55_k.jpg</picture>
       <vendor>Canon</vendor>
       <currencyId>KZT</currencyId>
@@ -13417,7 +13417,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105280">
       <vendorCode>CL105280</vendorCode>
       <name>Тонер-картридж Konica-Minolta TN-328B для bizhub C250/C300/C360 Black (28k) БУЛАТ s-Line</name>
-      <price>17900</price>
+      <price>16900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-328K-bulat.jpg</picture>
       <vendor>Konica Minolta</vendor>
       <currencyId>KZT</currencyId>
@@ -13561,7 +13561,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102737">
       <vendorCode>CL102737</vendorCode>
       <name>Тонер-картридж Konica-Minolta TN-611C для bizhub C451/550/650 Cyan</name>
-      <price>46900</price>
+      <price>45900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y.jpg</picture>
       <vendor>Konica Minolta</vendor>
       <currencyId>KZT</currencyId>
@@ -13593,7 +13593,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102736">
       <vendorCode>CL102736</vendorCode>
       <name>Тонер-картридж Konica-Minolta TN-611M для bizhub C451/550/650 Magenta</name>
-      <price>46900</price>
+      <price>45900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y1.jpg</picture>
       <vendor>Konica Minolta</vendor>
       <currencyId>KZT</currencyId>
@@ -13625,7 +13625,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102738">
       <vendorCode>CL102738</vendorCode>
       <name>Тонер-картридж Konica-Minolta TN-611Y для bizhub C451/550/650 Yellow</name>
-      <price>46900</price>
+      <price>45900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_konica_minolta_c550_c650_toner_tn611k_c_m_y2.jpg</picture>
       <vendor>Konica Minolta</vendor>
       <currencyId>KZT</currencyId>
@@ -13657,7 +13657,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102785">
       <vendorCode>CL102785</vendorCode>
       <name>Тонер-картридж Konica-Minolta TN-710 для bizhub 600/601/750/751 (55k)</name>
-      <price>27900</price>
+      <price>26900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TN-710.jpg</picture>
       <vendor>Konica Minolta</vendor>
       <currencyId>KZT</currencyId>
@@ -13801,7 +13801,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102745">
       <vendorCode>CL102745</vendorCode>
       <name>Тонер-картридж Kyocera TK-1140 for FS-1035/1135/2035/2535 Euro Print</name>
-      <price>6900</price>
+      <price>5900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-1140-epb.jpg</picture>
       <vendor>Kyocera</vendor>
       <currencyId>KZT</currencyId>
@@ -14153,7 +14153,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL103835">
       <vendorCode>CL103835</vendorCode>
       <name>Тонер-картридж Kyocera TK-3150 for M3040/M3540 (14.5K)</name>
-      <price>20900</price>
+      <price>19900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tk-3150.jpg</picture>
       <vendor>Kyocera</vendor>
       <currencyId>KZT</currencyId>
@@ -14217,7 +14217,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102336">
       <vendorCode>CL102336</vendorCode>
       <name>Тонер-картридж Kyocera TK-320 for FS-3900DTN/4000DTN (15K)</name>
-      <price>11900</price>
+      <price>10900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-320.jpg</picture>
       <vendor>Kyocera</vendor>
       <currencyId>KZT</currencyId>
@@ -14873,7 +14873,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL100073">
       <vendorCode>CL100073</vendorCode>
       <name>Тонер-картридж Kyocera TK-715 for KM-5050/KM-3050/KM-4050 (34K)</name>
-      <price>37900</price>
+      <price>36900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-715.jpg</picture>
       <vendor>Kyocera</vendor>
       <currencyId>KZT</currencyId>
@@ -15097,7 +15097,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL104978">
       <vendorCode>CL104978</vendorCode>
       <name>Тонер-картридж Kyocera TK-8800B for P8060cdn Black (30K)</name>
-      <price>37900</price>
+      <price>36900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK-8800K.jpg</picture>
       <vendor>Kyocera</vendor>
       <currencyId>KZT</currencyId>
@@ -15609,7 +15609,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL103706">
       <vendorCode>CL103706</vendorCode>
       <name>Тонер-картридж Ricoh type MP C6003 for MP C4503/5503/6003/6004 Black (33K)</name>
-      <price>34900</price>
+      <price>33900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ricoh_mp_c6003_toner_bk.jpg</picture>
       <vendor>Ricoh</vendor>
       <currencyId>KZT</currencyId>
@@ -15801,7 +15801,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102173">
       <vendorCode>CL102173</vendorCode>
       <name>Тонер-картридж Toshiba T-2340E для E-Studio 202L/232 (23K)</name>
-      <price>15900</price>
+      <price>14900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_T-2340E.jpg</picture>
       <vendor>Toshiba</vendor>
       <currencyId>KZT</currencyId>
@@ -16078,7 +16078,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL101530">
       <vendorCode>CL101530</vendorCode>
       <name>Тонер-картридж 006R01179 Xerox C118/118i OEM</name>
-      <price>13900</price>
+      <price>12900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R01179-oem.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -16158,7 +16158,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102792">
       <vendorCode>CL102792</vendorCode>
       <name>Тонер-картридж 006R01319 Xerox WC 7132/7232/7242 (21K) Black Euro Print</name>
-      <price>47900</price>
+      <price>46900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-wc-7132bk.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -16174,7 +16174,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102716">
       <vendorCode>CL102716</vendorCode>
       <name>Тонер-картридж 006R01399 Xerox WC 7425/7428/7435 (25K) Black Euro Print</name>
-      <price>24900</price>
+      <price>23900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-wc-7425-bk.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -16526,7 +16526,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105150">
       <vendorCode>CL105150</vendorCode>
       <name>Тонер-картридж 006R01701 Xerox AltaLink C8030 (26K) Black Euro Print</name>
-      <price>32900</price>
+      <price>31900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R01701-oem.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -16686,7 +16686,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105669">
       <vendorCode>CL105669</vendorCode>
       <name>Тонер-картридж 006R01759 Xerox AltaLink C8145/8155/8170 (28K) Cyan Euro Print</name>
-      <price>33900</price>
+      <price>32900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R01759-ep.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -16702,7 +16702,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105670">
       <vendorCode>CL105670</vendorCode>
       <name>Тонер-картридж 006R01760 Xerox AltaLink C8145/8155/8170 (28K) Magenta Euro Print</name>
-      <price>33900</price>
+      <price>32900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R01760-ep.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -16718,7 +16718,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105671">
       <vendorCode>CL105671</vendorCode>
       <name>Тонер-картридж 006R01761 Xerox AltaLink C8145/8155/8170 (28K) Yellow Euro Print</name>
-      <price>33900</price>
+      <price>32900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R01761-ep.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -16734,7 +16734,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105667">
       <vendorCode>CL105667</vendorCode>
       <name>Тонер-картридж 006R01772 Xerox AltaLink B8145/B8155 (52K) Euro Print</name>
-      <price>51900</price>
+      <price>50900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R01772-ep.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -16830,7 +16830,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105724">
       <vendorCode>CL105724</vendorCode>
       <name>Тонер-картридж 006R04368 Xerox C310/C315 (8K) Black Euro Print</name>
-      <price>16900</price>
+      <price>15900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04368.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -17006,7 +17006,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105771">
       <vendorCode>CL105771</vendorCode>
       <name>Тонер-картридж 006R04403 (С ЧИПОМ) Xerox B230/B225/B235 (3K) Euro Print</name>
-      <price>31900</price>
+      <price>29900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_006R04403-ep1.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -17134,7 +17134,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL100076">
       <vendorCode>CL100076</vendorCode>
       <name>Тонер-картридж 106R01163 Xerox Phaser 7760 (32K) Black</name>
-      <price>36900</price>
+      <price>35900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-xerox-phaser-7760-bk.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -17438,7 +17438,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL102710">
       <vendorCode>CL102710</vendorCode>
       <name>Тонер-картридж 106R01573 Xerox Phaser 7800 (24K) Black Euro Print</name>
-      <price>29900</price>
+      <price>28900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R01573.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -17788,7 +17788,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105187">
       <vendorCode>CL105187</vendorCode>
       <name>Тонер-картридж 106R02609 Xerox Phaser 7100N Cyan OEM</name>
-      <price>33900</price>
+      <price>32900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R02609.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -18012,7 +18012,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105061">
       <vendorCode>CL105061</vendorCode>
       <name>Тонер-картридж 106R03396 Xerox VersaLink B7025/B7030/B7035 (31K) Black Euro Print</name>
-      <price>13900</price>
+      <price>12900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106R03396.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -18124,7 +18124,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105182">
       <vendorCode>CL105182</vendorCode>
       <name>Тонер-картридж 106R03488 Xerox Phaser 6510/WC6515 (5.5K) Black OEM</name>
-      <price>12900</price>
+      <price>11900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-phaser-6510-bk.jpg</picture>
       <vendor>Xerox</vendor>
       <currencyId>KZT</currencyId>
@@ -18636,7 +18636,7 @@ Canon MF426, MF428, MF429, MF421, LBP-212, LBP214, LBP215, MF441, MF442, MF443dw
     <offer id="CL105822">
       <vendorCode>CL105822</vendorCode>
       <name>Тонер-картридж КАТЮША P133/M133 Euro Print</name>
-      <price>11900</price>
+      <price>10900</price>
       <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK133_ep1.jpg</picture>
       <vendor>Euro Print</vendor>
       <currencyId>KZT</currencyId>
