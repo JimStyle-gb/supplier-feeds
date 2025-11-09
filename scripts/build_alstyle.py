@@ -90,7 +90,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('build_alstyle v43-min (Intro+Особенности+Характеристики)')
+    print('build_alstyle v44-ext (расширенные блоки)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
@@ -127,12 +127,11 @@ if __name__ == "__main__":
 
 
 def _flatten_description(body: str) -> str:
-    # Мини: Вступление + Особенности + Характеристики
+    # Расшир.: Вступление, Особенности, Характеристики + опциональные блоки по сигналам текста
     import re, html
     def _find_desc(b): return re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", b)
     def _tag(name,b): m=re.search(rf"(?is)<\s*{name}\s*>(.*?)</\s*{name}\s*>", b); return m.group(1).strip() if m else ""
     def _clean(txt):
-        if txt.lstrip().startswith("<![CDATA[]"): pass
         if txt.lstrip().startswith("<![CDATA["):
             txt=re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
         for _ in range(3):
@@ -153,17 +152,28 @@ def _flatten_description(body: str) -> str:
             key=k.strip().strip(": "); key=key[:1].upper()+key[1:]
             out.append((key,vv))
         return out
-    def _feats(plain):
+    def _sent(plain): return [p.strip() for p in re.split(r"(?<=[\.\!\?])\s+|;\s+", plain) if p.strip()]
+    def _feats(parts):
         kw=r"(особенн|функц|режим|подсвет|защит|фильтр|индикатор|автомат|эргоном|тихий|компакт|удобн)"
-        parts=re.split(r"(?<=[\.\!\?])\s+|;\s+|,\s+(?=[А-ЯA-Z])", plain)
-        return [p for p in parts if re.search(kw,(p or "").lower()) and 6<=len(p)<=140][:8]
+        return [p for p in parts if re.search(kw,p.lower()) and 6<=len(p)<=140][:8]
+    def _has(rx,s): return bool(re.search(rx, s.lower())) if s else False
 
     m=_find_desc(body)
     if not m: return body
     head,raw,tail=m.group(1),m.group(2),m.group(3)
     vendor=_tag("vendor",body); name=_tag("name",body); title=(vendor+" "+name).strip() if vendor else name
-    plain=_clean(raw); intro=" ".join([p for p in re.split(r"(?<=[\.\!\?])\s+",plain)[:2] if p]).strip() or plain
-    feats=_feats(plain); params=_params(body)
+    plain=_clean(raw); parts=_sent(plain); intro=" ".join(parts[:2]) if parts else plain
+
+    params=_params(body); feats=_feats(parts); txt=plain.lower()
+
+    want_dims=_has(r"(габарит|размер|длина|ширина|высот|вес)", txt)
+    want_mats=_has(r"(материал|корпус|сталь|пластик|алюм|металл)", txt)
+    want_power=_has(r"(мощност|потреблени|энерг|ватт|вт\b|напряжен)", txt)
+    want_compat=_has(r"(совместим|подходит\s+для|для\s+модел(ей|и)|для\s+(принтер|мфу|ноутбук|телефон|пылесос))", txt)
+    want_kit=_has(r"(комплект|в\s+комплекте|поставк|идет\s+вместе)", txt)
+    want_usage=_has(r"(использовани|применени|как\s+использ|настрой|установк|монтаж)", txt)
+    want_warn=_has(r"(вниман|предостор|не\s+использ|запрещ|не\s+допуск)", txt)
+
     html_parts=[]
     if title or intro:
         t=(f"<strong>{html.escape(title)}</strong>. " if title else "")+html.escape(intro)
@@ -172,5 +182,28 @@ def _flatten_description(body: str) -> str:
         html_parts.append("<h3>Особенности</h3>"); html_parts.append("<ul>"+ "".join(f"<li>{html.escape(x)}</li>" for x in feats) + "</ul>")
     if params:
         html_parts.append("<h3>Характеристики</h3>"); html_parts.append("<ul>"+ "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
+
+    def _take(keys):
+        return [(k,v) for (k,v) in params if any(k.lower().startswith(x.lower()) for x in keys)]
+    if want_dims:
+        items=_take(("Размер","Размеры","Габариты","Размер ШхВхГ","Вес"))
+        if items: html_parts.append("<h3>Габариты и вес</h3>"); html_parts.append("<ul>"+ "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
+    if want_mats:
+        items=_take(("Материал","Материал корпуса","Покрытие","Корпус"))
+        if items: html_parts.append("<h3>Материалы и конструкция</h3>"); html_parts.append("<ul>"+ "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
+    if want_power:
+        items=_take(("Мощность","Питание","Напряжение","Энергопотребление"))
+        if items: html_parts.append("<h3>Питание и мощность</h3>"); html_parts.append("<ul>"+ "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
+    if want_compat:
+        items=_take(("Совместимость","Совместимые модели","Для моделей","Подходит для"))
+        if items: html_parts.append("<h3>Совместимость</h3>"); html_parts.append("<ul>"+ "".join(f"<li>{html.escape(v)}</li>" for k,v in items) + "</ul>")
+    if want_kit:
+        items=_take(("Комплектация","В комплекте","Поставка"))
+        if items: html_parts.append("<h3>Комплектация</h3>"); html_parts.append("<ul>"+ "".join(f"<li>{html.escape(v)}</li>" for k,v in items) + "</ul>")
+    if want_usage:
+        html_parts.append("<h3>Использование</h3>"); html_parts.append("<ul><li>Перед первым использованием ознакомьтесь с инструкцией и соблюдайте рекомендации производителя.</li></ul>")
+    if want_warn:
+        html_parts.append("<h3>Важно</h3>"); html_parts.append("<ul><li>Соблюдайте меры безопасности и условия эксплуатации, указанные в документации производителя.</li></ul>")
+
     html_desc="".join(html_parts) if html_parts else html.escape(plain or "Описание недоступно")
     return re.sub(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>", head+html_desc+tail, body, count=1)
