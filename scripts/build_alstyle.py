@@ -1,11 +1,11 @@
 # coding: utf-8
-# build_alstyle.py — v66 params-original-order + attr-order fix + constants + price_fallback + sorted_specs + h3(name) + smart<br>
+# build_alstyle.py — v67 params-sorted + attr-order fix + constants + price_fallback + sorted_specs + h3(name) + smart<br>
 
 import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v66 params-original-order + attr-order fix')
+print('[VER] build_alstyle v67 params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -204,6 +204,7 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
 
     # Характеристики из <param>
     params = _collect_params(offer_xml)
+    params = _sort_params(params)
     blocks = []
     if name_h3: blocks.append(name_h3)
     blocks.append('<p>' + desc_html + '</p>')
