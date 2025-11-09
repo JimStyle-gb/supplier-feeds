@@ -1,483 +1,368 @@
-# --- Secrets via env with fallback ---
-import os
+# coding: utf-8
+# build_alstyle.py — v63 fix-indent + constants + price_fallback + sorted_specs + h3(name) + smart<br>
+# Короткие русские комментарии. Логика — как согласовано.
+
+import os, re, html, sys, time, hashlib
+import requests
+
+print('[VER] build_alstyle v63 fix-indent constants+price_fallback+sorted_specs')
+
+# --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
 PASSWORD = os.getenv('ALSTYLE_PASSWORD', 'Aa123456')
-# Все requests.get(...) должны использовать auth=(LOGIN, PASSWORD)
 
-# -*- coding: utf-8 -*-
-# build_alstyle.py v29-hard (desc-flatten)
-# Новое: работаем ТОЛЬКО с <description> — сплющиваем в один абзац (без трогания других тегов).
-# Остальной функционал из v28-hard сохранён: перенос available→attr, purchase_price→price, чистки,
-# сортировка, префикс AS + id, правила цен, пустые строки между офферами и т.д.
+# --- Константы для описаний и форматирования ---
+GOAL = 1000       # целевая длина описания
+GOAL_LOW = 900    # минимально приемлемая
+MAX_HARD = 1200   # жёсткий потолок (по предложениям)
+LMAX = 220        # макс длина строки для «умного» <br>
+MAX_BR = 3        # максимум переносов
 
-import re, sys, pathlib, requests, math, html
+# --- Фильтр категорий поставщика (по <categoryId>) ---
+ALLOW_CATS = set(map(str, [
+  3540, 3541, 3542, 3543, 3544, 3545, 3566, 3567, 3569, 3570,
+  3580, 3688, 3708, 3721, 3722, 4889, 4890, 4895, 5017, 5075,
+  5649, 5710, 5711, 5712, 5713, 21279, 21281, 21291, 21356, 21367,
+  21368, 21369, 21370, 21371, 21372, 21451, 21498, 21500, 21501,
+  21572, 21573, 21574, 21575, 21576, 21578, 21580, 21581, 21583, 21584,
+  21585, 21586, 21588, 21591, 21640, 21664, 21665, 21666, 21698
+]))
 
-URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
-LOGIN = "info@complex-solutions.kz"
-PASSWORD = "Aa123456"
-OUT_PATH = pathlib.Path("docs/alstyle.yml")
-ENC_OUT = "windows-1251"
+# --- Чёрный список параметров ---
+DENY_PARAMS = {s.lower() for s in [
+  "Артикул", "Благотворительность", "Код ТН ВЭД", "Код товара Kaspi",
+  "Новинка", "Снижена цена", "Штрихкод", "Штрих-код", "Назначение",
+  "Объем", "Объём"
+]}
 
-CAT_ALLOW_STR = "3540,3541,3542,3543,3544,3545,3566,3567,3569,3570,3580,3688,3708,3721,3722,4889,4890,4895,5017,5075,5649,5710,5711,5712,5713,21279,21281,21291,21356,21367,21368,21369,21370,21371,21372,21451,21498,21500,21501,21572,21573,21574,21575,21576,21578,21580,21581,21583,21584,21585,21586,21588,21591,21640,21664,21665,21666,21698"
-ALLOWED_CATS = {s.strip() for s in CAT_ALLOW_STR.split(",") if s.strip()}
+# --- Утилиты текста ---
+_re_tag = re.compile(r'(?is)<[^>]+>')
+def _clean_plain(txt: str) -> str:
+    # HTML → текст: убираем теги, спецсимволы, юникод-пробелы, складываем пробелы.
+    for _ in range(2):
+        nt = html.unescape(txt)
+        if nt == txt: break
+        txt = nt
+    txt = txt.replace('\u00A0', ' ')
+    txt = re.sub(r'[\u200B-\u200D\uFEFF]', '', txt)
+    txt = re.sub(r'\r\n|\r|\n', ' ', txt)
+    txt = _re_tag.sub(' ', txt)
+    txt = re.sub(r'\s+', ' ', txt).strip()
+    return txt
 
-def _dec(data, enc):
-    for e in [enc, "utf-8", "windows-1251", "cp1251", "latin-1"]:
-        if not e: continue
-        try: return data.decode(e)
-        except Exception: pass
-    return data.decode("utf-8", errors="replace")
+def _sentences(plain: str):
+    parts = re.split(r'(?<=[\.\!\?])\s+|;\s+', plain)
+    return [p.strip() for p in parts if p.strip()]
 
-def _save(text):
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUT_PATH.write_bytes(text.encode(ENC_OUT, errors="replace"))
+def _norm(s: str) -> str:
+    s = s.lower()
+    s = re.sub(r'[^a-zа-я0-9%°\.,\- ]+', ' ', s, flags=re.I)
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s
+
+def _build_desc_text(plain: str) -> str:
+    # Сжатие до ~1000 по предложениям (сохранить «плотную» выжимку)
+    if len(plain) <= GOAL:
+        return plain
+    parts = _sentences(plain)
+    # 1) берём первое предложение как вводное
+    selected, total = [], 0
+    if parts:
+        selected.append(parts[0]); total = len(parts[0])
+    # 2) добавляем дальше по очереди до GOAL_LOW, не перепрыгивая MAX_HARD
+    for p in parts[1:]:
+        add = (1 if total else 0) + len(p)
+        if total + add > MAX_HARD: break
+        selected.append(p); total += add
+        if total >= GOAL_LOW: break
+    # если мало — ещё чуть доберём
+    if total < GOAL_LOW:
+        for p in parts[len(selected):]:
+            add = (1 if total else 0) + len(p)
+            if total + add > MAX_HARD: break
+            selected.append(p); total += add
+            if total >= GOAL_LOW: break
+    return ' '.join(selected).strip()
+
+# --- Цена ---
+def _price_adders(base: int) -> int:
+    # Диапазоны из ТЗ
+    if 101 <= base <= 10_000: return 3_000
+    elif 10_001 <= base <= 25_000: return 4_000
+    elif 25_001 <= base <= 50_000: return 5_000
+    elif 50_001 <= base <= 75_000: return 7_000
+    elif 75_001 <= base <= 100_000: return 10_000
+    elif 100_001 <= base <= 150_000: return 12_000
+    elif 150_001 <= base <= 200_000: return 15_000
+    elif 200_001 <= base <= 300_000: return 20_000
+    elif 300_001 <= base <= 400_000: return 25_000
+    elif 400_001 <= base <= 500_000: return 30_000
+    elif 500_001 <= base <= 750_000: return 40_000
+    elif 750_001 <= base <= 1_000_000: return 50_000
+    elif 1_000_001 <= base <= 1_500_000: return 70_000
+    elif 1_500_001 <= base <= 2_000_000: return 90_000
+    elif 2_000_001 <= base <= 100_000_000: return 100_000
+    else: return 0
+
+def _retail_price_from_base(base: int) -> int:
+    # 4% + фикс, затем округление вверх к 1000 и хвост 900; спец-правило ≥9e6 → 100
+    if base >= 9_000_000: return 100
+    add = _price_adders(base)
+    tmp = int(base * 1.04 + add + 0.9999)  # слегка вверх
+    thousands = (tmp + 999) // 1000        # вверх к тысяче
+    retail = thousands * 1000 - 100        # хвост 900
+    if retail % 1000 != 900:
+        retail = (retail // 1000 + 1) * 1000 - 100
+    return max(retail, 900)
+
+# --- Параметры ---
+def _collect_params(block: str):
+    out = []
+    for name, val in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', block):
+        key = _clean_plain(name).strip(': ')
+        if not key or key.lower() in DENY_PARAMS: 
+            continue
+        vv = _clean_plain(val)
+        if not vv: continue
+        key = key[:1].upper() + key[1:]
+        out.append((key, vv))
+    return out
+
+PRIOR_KEYS = ['Диагональ экрана','Яркость','Операционная система','Объем встроенной памяти',
+              'Память','Точек касания','Интерфейсы','Вес','Размеры']
+
+def _sort_params(params):
+    def _pkey(item):
+        k = item[0]
+        try: return (0, PRIOR_KEYS.index(k))
+        except ValueError: return (1, k.lower())
+    return sorted(params, key=_pkey)
 
 # --- Перенос <available> в атрибут offer ---
-def _move_available_attr(attrs: str, body: str):
-    m_av = re.search(r"(?is)<\s*available\s*>\s*(.*?)\s*<\s*/\s*available\s*>", body)
-    if not m_av: return attrs, body
-    val = m_av.group(1)
-    if re.search(r'\savailable\s*=\s*"(?:[^"]*)"', attrs, flags=re.I):
-        attrs = re.sub(r'(\savailable\s*=\s*")([^"]*)(")', lambda g: g.group(1)+val+g.group(3), attrs, flags=re.I)
-    elif re.search(r"\savailable\s*=\s*'(?:[^']*)'", attrs, flags=re.I):
-        attrs = re.sub(r"(\savailable\s*=\s*')([^']*)(')", lambda g: g.group(1)+val+g.group(3), attrs, flags=re.I)
-    else:
-        attrs = attrs.rstrip() + f' available="{val}"'
-    return attrs, body
+def _move_available_attr(header: str, body: str):
+    m = re.search(r'(?is)<\s*available\s*>\s*(true|false)\s*</\s*available\s*>', body)
+    if not m: return header, body
+    avail = m.group(1)
+    header = re.sub(r'(?is)<offer\b', lambda mm: mm.group(0)+f' available="{avail}"', header, count=1)
+    body = re.sub(r'(?is)<\s*available\s*>.*?</\s*available\s*>', '', body, count=1)
+    return header, body
 
-# --- Копируем purchase_price → price (только значение) ---
-def _copy_purchase_into_price(body: str) -> str:
-    m_pp = re.search(r"(?is)<\s*purchase_?price\s*>\s*(.*?)\s*<\s*/\s*purchase_?price\s*>", body)
-    if not m_pp: return body
-    val = m_pp.group(1)
-    def _repl(m): return m.group(1) + val + m.group(3)
-    return re.sub(r"(?is)(<\s*price\s*>)(.*?)(<\s*/\s*price\s*>)", _repl, body, count=1)
-
-# --- Удаляем ненужные простые теги ---
+# --- Удаление простых тегов (после переноса) ---
+FORBIDDEN_TAGS = ('url','quantity','quantity_in_stock','purchase_price')  # <available> уже убрали ранее
 def _remove_simple_tags(body: str) -> str:
-    def rm(text, name_regex):
-        rx = re.compile(
-            rf"(?is)"
-            rf"(?P<pre_ws>[ \t]*)"
-            rf"(?P<pre_nl>\r?\n)?"
-            rf"<\s*(?:{name_regex})\b[^>]*>.*?<\s*/\s*(?:{name_regex})\s*>"
-            rf"(?P<post_nl>\r?\n)?"
-            rf"(?P<post_ws>[ \t]*)"
-        )
-        def repl(m): return "\n" if (m.group('pre_nl') or m.group('post_nl')) else ""
-        return rx.sub(repl, text)
-    body = rm(body, r"quantity_in_stock")
-    body = rm(body, r"purchase_?price")
-    body = rm(body, r"available")
-    body = rm(body, r"url")
-    body = rm(body, r"quantity")
-    return body
+    for t in FORBIDDEN_TAGS:
+        body = re.sub(rf'(?is)<\s*{t}\s*>.*?</\s*{t}\s*>', '', body)
+    # чистим пустые строки
+    body = re.sub(r'[ \t]+\n', '\n', body)
+    body = re.sub(r'\n{3,}', '\n\n', body)
+    return body.strip()
 
-# --- Удаляем параметры по имени ---
-def _remove_param_by_name(body: str) -> str:
-    def _norm(s: str) -> str:
-        s = s.lower().replace("ё", "е")
-        return re.sub(r"[\s\-]+", "", s)
-    to_drop = {_norm(x) for x in [
-        "Артикул","Штрихкод","Штрих-код","Снижена цена","Благотворительность",
-        "Назначение","Код ТН ВЭД","Объём","Объем","Код товара Kaspi","Новинка"
-    ]}
-    rx_line_pair = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>[ \t]*\r?\n?")
-    rx_line_self = re.compile(r"(?im)^[ \t]*<\s*param\b(?P<attrs>[^>]*)/\s*>[ \t]*\r?\n?")
-    def _line_cb(m):
-        a = m.group("attrs"); ma = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', a)
-        if ma and _norm(ma.group(2)) in to_drop: return ""
-        return m.group(0)
-    body = rx_line_pair.sub(_line_cb, body)
-    body = rx_line_self.sub(_line_cb, body)
-    rx_inline_pair = re.compile(r"(?is)<\s*param\b(?P<attrs>[^>]*)>.*?</\s*param\s*>")
-    rx_inline_self = re.compile(r"(?is)<\s*param\b(?P<attrs>[^>]*)/\s*>")
-    def _inline_cb(m):
-        a = m.group("attrs"); ma = re.search(r'(?is)\bname\s*=\s*(["\'])(.*?)\1', a)
-        if ma and _norm(ma.group(2)) in to_drop: return ""
-        return m.group(0)
-    body = rx_inline_pair.sub(_inline_cb, body)
-    body = rx_inline_self.sub(_inline_cb, body)
-    body = re.sub(r"(?m)(?:^[ \t\u00A0]*\r?\n){2,}", "\n", body)
-    return body
-
-# --- Сортировка тегов внутри оффера ---
-def _sort_offer_tags(body: str) -> str:
-    def pop_all(text, rx):
-        items = []
-        def repl(m):
-            items.append(m.group(0)); return ""
-        return rx.sub(repl, text), items
-    def pop_one(text, rx):
-        m = rx.search(text)
-        if not m: return text, ""
-        return text[:m.start()] + text[m.end():], m.group(0)
-    rx_tag = lambda n: re.compile(rf"(?is)<\s*{n}\b[^>]*>.*?</\s*{n}\s*>")
-    rx_picture = re.compile(r"(?is)<\s*picture\b[^>]*>.*?</\s*picture\s*>")
-    rx_param = re.compile(r"(?is)<\s*param\b[^>]*?(?:/?>.*?</\s*param\s*>|/\s*>)")
-    text = body
-    text, categoryId = pop_one(text, rx_tag("categoryId"))
-    text, vendorCode  = pop_one(text, rx_tag("vendorCode"))
-    text, name        = pop_one(text, rx_tag("name"))
-    text, price       = pop_one(text, rx_tag("price"))
-    text, pictures    = pop_all(text, rx_picture)
-    text, vendor      = pop_one(text, rx_tag("vendor"))
-    text, currencyId  = pop_one(text, rx_tag("currencyId"))
-    text, description = pop_one(text, rx_tag("description"))
-    text, params      = pop_all(text, rx_param)
-    pieces = []
-    for part in [categoryId, vendorCode, name, price]:
-        if part: pieces.append(part.strip())
-    for pic in pictures:
-        if pic: pieces.append(pic.strip())
-    for part in [vendor, currencyId, description]:
-        if part: pieces.append(part.strip())
-    for prm in params:
-        if prm: pieces.append(prm.strip())
-    tail = text.strip()
-    if tail: pieces.append(tail)
-    return "\n".join(pieces) + ("\n" if pieces else "")
-
-# --- Префикс AS и id синхронизация ---
-def _ensure_prefix_and_id(attrs: str, body: str):
-    m = re.search(r"(?is)(<\s*vendorCode\s*>\s*)(.*?)(\s*<\s*/\s*vendorCode\s*>)", body)
-    if not m: return attrs, body
-    prefix = "AS"; raw = m.group(2).strip()
-    prefixed = raw if raw.startswith(prefix) else prefix + raw
-    body = body[:m.start()] + m.group(1) + prefixed + m.group(3) + body[m.end():]
-    if re.search(r'\bid\s*=\s*"(.*?)"', attrs, flags=re.I):
-        attrs = re.sub(r'(\bid\s*=\s*")([^"]*)(")', lambda g: g.group(1)+prefixed+g.group(3), attrs, flags=re.I)
-    elif re.search(r"\bid\s*=\s*'(.*?)'", attrs, flags=re.I):
-        attrs = re.sub(r"(\bid\s*=\s*')([^']*)(')", lambda g: g.group(1)+prefixed+g.group(3), attrs, flags=re.I)
-    else:
-        attrs = f' id="{prefixed}"' + attrs
-    return attrs, body
-
-# --- Ценообразование ---
-def _digits_int(s: str):
-    t = re.sub(r"[^\d]", "", s or "")
-    return int(t) if t else None
-
-def _price_adjust(base: int) -> int:
-    if base is None: return None
-    if base >= 9_000_000: return 100
-    add = 0
-    if   101 <= base <= 10_000: add = 3_000
-    elif 10_001 <= base <= 25_000: add = 4_000
-    elif 25_001 <= base <= 50_000: add = 5_000
-    elif 50_001 <= base <= 75_000: add = 7_000
-    elif 75_001 <= base <= 100_000: add = 10_000
-    elif 100_001 <= base <= 150_000: add = 12_000
-    elif 150_001 <= base <= 200_000: add = 15_000
-    elif 200_001 <= base <= 300_000: add = 20_000
-    elif 300_001 <= base <= 400_000: add = 25_000
-    elif 400_001 <= base <= 500_000: add = 30_000
-    elif 500_001 <= base <= 750_000: add = 40_000
-    elif 750_001 <= base <= 1_000_000: add = 50_000
-    elif 1_000_001 <= base <= 1_500_000: add = 70_000
-    elif 1_500_001 <= base <= 2_000_000: add = 90_000
-    elif 2_000_001 <= base <= 100_000_000: add = 100_000
-    v = base * 1.04 + add
-    k = math.ceil((v - 900) / 1000.0)
-    return int(1000 * k + 900)
-
-def _apply_price_rules(body: str) -> str:
-    m = re.search(r"(?is)(<\s*price\s*>\s*)(.*?)(\s*<\s*/\s*price\s*>)", body)
-    if not m: return body
-    base = _digits_int(m.group(2))
-    newv = _price_adjust(base)
-    if newv is None: return body
-    return body[:m.start()] + m.group(1) + str(newv) + m.group(3) + body[m.end():]
-
-# --- ТОЛЬКО описание: сплющивание в один абзац ---
-def _flatten_description(body: str) -> str:
-    rx = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
-    def repl(m):
-        txt = m.group(2)
-        # CDATA -> текст
-        if txt.lstrip().startswith("<![CDATA["):
-            txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
-        # Несколько unescape до стабилизации (ловим двойное/тройное кодирование)
-        for _ in range(3):
-            new_txt = html.unescape(txt)
-            if new_txt == txt:
-                break
-            txt = new_txt
-        # NBSP/zero-width после финального unescape
-        txt = txt.replace("\u00A0", " ")
-        txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        # Нормализуем переносы -> пробел (plain режим)
-        txt = re.sub(r"\r\n|\r|\n", " ", txt)
-        # Убираем ВСЕ HTML-теги
-        txt = re.sub(r"(?is)<[^>]+>", " ", txt)
-        # Схлопываем пробелы
-        txt = re.sub(r"\s+", " ", txt).strip()
-        # Финальная защита: ещё раз схлопнуть (на случай появившихся пробелов после unescape)
-        txt = re.sub(r"\s+", " ", txt).strip()
-        # Пустым не оставляем
-        if not txt:
-            txt = "Описание недоступно"
-        return m.group(1) + txt + m.group(3)
-    return rx.sub(repl, body, count=1)
-
-
-def _desc_postprocess_native_specs(body: str) -> str:
-    """Родное описание; если >1000 — сжать до ~1000 по границе предложения; Характеристики добавлять всегда.
-       Внутри <p> добавляем «умный» <br> ТОЛЬКО для длинных описаний (>1000).
-       В начало описания вставляем <h3>{name}</h3> из тега <name>.
-    """
-    import re, html, difflib
-
-    m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
-    if not m:
+# --- Fallback: создать <price> из <purchase_price> если <price> отсутствует ---
+def _ensure_price_from_purchase(body: str) -> str:
+    if re.search(r'(?is)<\s*price\s*>', body): 
         return body
-    head, raw, tail = m.group(1), m.group(2), m.group(3)
+    m = re.search(r'(?is)<\s*purchase_price\s*>\s*(.*?)\s*</\s*purchase_price\s*>', body)
+    if not m: return body
+    digits = re.sub(r'[^\d]', '', m.group(1))
+    if not digits: return body
+    tag = f'<price>{digits}</price>'
+    m2 = re.search(r'(?is)<\s*currencyId\s*>', body)
+    if m2: return body[:m2.start()] + tag + body[m2.start():]
+    m3 = re.search(r'(?is)</\s*name\s*>', body)
+    if m3: return body[:m3.end()] + tag + body[m3.end():]
+    m4 = re.search(r'(?is)</\s*offer\s*>', body)
+    if m4: return body[:m4.start()] + tag + body[m4.start():]
+    return body
 
-    # --- утилиты ---
-    def _clean_plain(txt: str) -> str:
-        for _ in range(2):
-            nt = html.unescape(txt)
-            if nt == txt: break
-            txt = nt
-        txt = txt.replace("\u00A0"," ")
-        txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
-        txt = re.sub(r"\r\n|\r|\n", " ", txt)
-        txt = re.sub(r"(?is)<[^>]+>", " ", txt)
-        txt = re.sub(r"\s+", " ", txt).strip()
-        return txt
+# --- Перестройка описания ---
+def _desc_postprocess_native_specs(offer_xml: str) -> str:
+    m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', offer_xml)
+    head, raw, tail = (m.group(1), m.group(2), m.group(3)) if m else ('<description>', '', '</description>')
 
-    def _sentences(plain: str):
-        parts = re.split(r"(?<=[\.\!\?])\s+|;\s+", plain)
-        return [p.strip() for p in parts if p.strip()]
+    plain_full = _clean_plain(raw)
+    desc_text = _build_desc_text(plain_full)
 
-    def _is_facty(s: str) -> bool:
-        return bool(re.search(r"\b\d[\d\s\.,]*\s?(Вт|W|В|V|мм|cm|см|м|кг|г|л|L|мАч|А·ч|Ah|%|Гц|Hz|дБ|°C|dpi|ГБ|МБ|TB|fps|м³/ч|м/с|Нм)\b", s))
+    # Заголовок из <name>
+    mname = re.search(r'(?is)<\s*name\s*>\s*(.*?)\s*</\s*name\s*>', offer_xml)
+    name_h3 = ''
+    if mname:
+        nm = _clean_plain(mname.group(1))
+        if nm: name_h3 = '<h3>' + html.escape(nm) + '</h3>'
 
-    def _is_key(s: str) -> bool:
-        if _is_facty(s):
-            return True
-        extra = r"(android|ops|hdmi|dp\b|type[-\s]?c|vga|lan|usb|4k|3840|2160|герц|ghz|ядр|a73|a53|mali|ram|rom|гб|ёмкостн|емкостн|сенсор|подсвет|od20|без\s+склеив|защит|блокировк|экран|узк[ао]й?\s*рамк|тонк(ий|ая)|контраст|яркост|матриц|срок\s+службы)"
-        base  = r"(мощност|напряжен|размер|вес|материал|скорост|объ[её]м|режим|функц|индикатор|фильтр|питани|давлен|частот|класс|стандарт|интерфейс|корпус|сенсор)"
-        return bool(re.search(f"{base}|{extra}", s.lower()))
-
-    def _norm(s: str) -> str:
-        s = s.lower()
-        s = re.sub(r"[^a-zа-я0-9%°\.,\- ]+", " ", s, flags=re.I)
-        s = re.sub(r"\s+", " ", s).strip()
-        return s
-
-    def _pick_important(parts):
-        if not parts:
-            return [], []
-        out, seen = [], []
-        out.append(parts[0]); seen.append(_norm(parts[0]))  # всегда интро
-        for p in parts[1:]:
-            if len(p) < 12 or len(p) > 300:
-                continue
-            if not _is_key(p):
-                continue
-            np = _norm(p)
-            if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
-                continue
-            out.append(p); seen.append(np)
-            if len(out) >= 12:
-                break
-        return out, seen
-
-    def _build_desc_text(plain: str) -> str:
-        GOAL = 1000
-        GOAL_LOW = 900
-        MAX_HARD = 1200
-        if len(plain) <= GOAL:
-            return plain
-        parts = _sentences(plain)
-        important, seen = _pick_important(parts)
-        selected = important[:]
-        norm_selected = set(seen)
-        total = len(" ".join(selected)) if selected else 0
-        # добираем до ~1000 последовательно
-        for p in parts:
-            np = _norm(p)
-            if np in norm_selected:
-                continue
-            add_len = (1 if total > 0 else 0) + len(p)
-            if total + add_len > MAX_HARD:
-                break
-            selected.append(p); norm_selected.add(np); total += add_len
-            if total >= GOAL_LOW:
-                break
-        if total < GOAL_LOW:
-            for p in parts:
-                np = _norm(p)
-                if np in norm_selected:
-                    continue
-                add_len = (1 if total > 0 else 0) + len(p)
-                if total + add_len > MAX_HARD:
-                    break
-                selected.append(p); norm_selected.add(np); total += add_len
-                if total >= GOAL_LOW:
-                    break
-        while selected and len(" ".join(selected)) > MAX_HARD:
-            selected.pop()
-        if not selected:
-            acc, t = [], 0
-            for p in parts:
-                add_len = (1 if t > 0 else 0) + len(p)
-                if t + add_len > MAX_HARD: break
-                acc.append(p); t += add_len
-                if t >= GOAL_LOW: break
-            return " ".join(acc).strip()
-        return " ".join(selected).strip()
-
-    PRIOR_KEYS = ['Диагональ экрана','Яркость','Операционная система','Объем встроенной памяти','Память','Точек касания','Интерфейсы','Вес','Размеры']
-def _collect_params(b: str):
-        deny = {"артикул","благотворительность","код тн вэд","код товара kaspi",
-                "новинка","снижена цена","штрихкод","штрих-код","назначение",
-                "объем","объём"}
-        out = []
-        for k,v in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', b):
-            kk = _clean_plain(k).strip(": ").lower()
-            if kk in deny: 
-                continue
-            vv = _clean_plain(v)
-            if not vv:
-                continue
-            key = k.strip().strip(": ")
-            key = key[:1].upper() + key[1:] if key else ""
-            out.append((key, vv))
-        return out
-
-    # --- основное ---
-    plain = _clean_plain(raw)
-    desc_text = _build_desc_text(plain)
-
-    # HTML: Заголовок <h3>{name}</h3> + <p> (умный <br> только для длинных) + Характеристики
-    # 1) Заголовок с <name>
-    name_m = re.search(r"(?is)<\s*name\s*>\s*(.*?)\s*</\s*name\s*>", body)
-    name_h3 = ""
-    if name_m:
-        nm = _clean_plain(name_m.group(1))
-        if nm:
-            name_h3 = "<h3>" + html.escape(nm) + "</h3>"
-
-    # 2) Основной абзац
-    if len(plain) > GOAL:
-        sent_parts = _sentences(desc_text)
-        lines, cur = [], ""
-        for s in sent_parts:
-            cand = (cur + (" " if cur else "") + s)
+    # Основной абзац: <br> только если исходник был длинный (> GOAL)
+    if len(plain_full) > GOAL:
+        parts = _sentences(desc_text)
+        lines, cur = [], ''
+        for s in parts:
+            cand = (cur + (' ' if cur else '') + s)
             if cur and len(cand) > LMAX and len(lines) < MAX_BR:
                 lines.append(cur); cur = s
             else:
                 cur = cand
         if cur: lines.append(cur)
-        if len(lines) > MAX_BR + 1:
-            head = lines[:MAX_BR]
-            tail = " ".join(lines[MAX_BR:])
-            lines = head + [tail]
-        desc_html = "<br>".join(html.escape(x) for x in lines)
+        if len(lines) > MAX_BR + 1:  # склеим хвост
+            head_lines = lines[:MAX_BR]
+            tail_line = ' '.join(lines[MAX_BR:])
+            lines = head_lines + [tail_line]
+        desc_html = '<br>'.join(html.escape(x) for x in lines)
     else:
         desc_html = html.escape(desc_text)
 
+    # Характеристики из <param> (после фильтра)
+    params = _collect_params(offer_xml)
+    params = _sort_params(params)
+
     blocks = []
-    if name_h3:
-        blocks.append(name_h3)
-    blocks.append("<p>" + desc_html + "</p>")
-
-    params = _collect_params(body)
+    if name_h3: blocks.append(name_h3)
+    blocks.append('<p>' + desc_html + '</p>')
     if params:
-        blocks.append("<h3>Характеристики</h3>")
-        def _pkey(item):
-            k = item[0]
-            try:
-                return (0, PRIOR_KEYS.index(k))
-            except ValueError:
-                return (1, k.lower())
-        params_sorted = sorted(params, key=_pkey)
-        blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params_sorted) + "</ul>")
+        blocks.append('<h3>Характеристики</h3>')
+        ul = '<ul>' + ''.join(f'<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>' for k,v in params) + '</ul>'
+        blocks.append(ul)
 
-    html_desc = "".join(blocks)
-    return re.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>").sub(lambda _m: head + html_desc + tail, body, 1)
+    new_html = ''.join(blocks)
+    if m:
+        return offer_xml[:m.start(1)] + head + new_html + tail + offer_xml[m.end(3):]
+    else:
+        # добавим <description> если его не было
+        insert_at = re.search(r'(?is)</\s*currencyId\s*>', offer_xml)
+        ins = insert_at.end() if insert_at else len(offer_xml)
+        return offer_xml[:ins] + '<description>' + new_html + '</description>' + offer_xml[ins:]
 
-def _ensure_price_from_purchase(body: str) -> str:
-    """Если <price> отсутствует — создать его из <purchase_price> (до наценки)."""
-    import re
-    if re.search(r"(?is)<\s*price\s*>", body):
-        return body
-    m = re.search(r"(?is)<\s*purchase_price\s*>\s*(.*?)\s*</\s*purchase_price\s*>", body)
-    if not m: return body
-    val = m.group(1).strip()
-    digits = re.sub(r"[^\d]", "", val)
-    if not digits: return body
-    price_tag = f"<price>{digits}</price>"
-    ins = re.search(r"(?is)<\s*currencyId\s*>", body)
-    if ins:
-        pos = ins.start(); return body[:pos] + price_tag + body[pos:]
-    ins2 = re.search(r"(?is)</\s*name\s*>", body)
-    if ins2:
-        pos = ins2.end(); return body[:pos] + price_tag + body[pos:]
-    end_offer = re.search(r"(?is)</\s*offer\s*>", body)
-    if end_offer:
-        pos = end_offer.start(); return body[:pos] + price_tag + body[pos:]
-    return body
+# --- Сортировка тегов в offer и сбор финального блока ---
+WANT_ORDER = ('categoryId','vendorCode','name','price','picture','vendor','currencyId','description','param')
+def _rebuild_offer(offer_xml: str) -> str:
+    # Заголовок <offer ...> и тело
+    m = re.match(r'(?is)^\s*(<offer\b[^>]*>)(.*)</offer>\s*$', offer_xml)
+    if not m: return offer_xml.strip() + '\n\n'
+    header, body = m.group(1), m.group(2)
 
-# --- Трансформация одного <offer> ---
-def _transform_offer(chunk: str) -> str:
-    m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
-    if not m: return chunk
-    attrs, body = m.group(1), m.group(2)
-    attrs, body = _move_available_attr(attrs, body)
-    body = _copy_purchase_into_price(body)
+    # available → атрибут
+    header, body = _move_available_attr(header, body)
+
+    # price fallback (до копирования purchase→price и наценки)
     body = _ensure_price_from_purchase(body)
+
+    # Меняем значение: price ← purchase_price (если есть)
+    mp = re.search(r'(?is)<\s*purchase_price\s*>\s*(.*?)\s*</\s*purchase_price\s*>', body)
+    if mp:
+        val = mp.group(1)
+        if re.search(r'(?is)<\s*price\s*>', body):
+            body = re.sub(r'(?is)(<\s*price\s*>).*(</\s*price\s*>)', r'\g<1>'+val+r'\g<2>', body, count=1)
+        else:
+            body = '<price>'+val+'</price>' + body
+
+    # Удаляем простые теги
     body = _remove_simple_tags(body)
-    body = _remove_param_by_name(body)
-    body = _apply_price_rules(body)
-    body = _sort_offer_tags(body)
-    attrs, body = _ensure_prefix_and_id(attrs, body)
-    body = _flatten_description(body)  # только description
-    body = _desc_postprocess_native_specs(body)
-    # ↑ NEW: native+specs, ~1000, smart <br> only for long, prepend <h3>{name}>
-    if not body.startswith("\n"): body = "\n" + body
-    return f"<offer{attrs}>{body}</offer>"
 
-# --- Срез между <shop> и <offers> ---
-def _strip_shop_header(src: str) -> str:
-    m_shop = re.search(r"(?is)<\s*shop\b[^>]*>", src)
-    m_offers = re.search(r"(?is)<\s*offers\b", src)
-    if not m_shop or not m_offers or m_offers.start() <= m_shop.end(): return src
-    left = src[:m_shop.end()]; right = src[m_offers.start():]
-    if not (left.endswith("\n") or right.startswith("\n") or left.endswith("\r") or right.startswith("\r")):
-        return left + "\n" + right
-    return left + right
+    # vendorCode + id + префикс AS
+    mv = re.search(r'(?is)<\s*vendorCode\s*>\s*(.*?)\s*</\s*vendorCode\s*>', body)
+    if mv:
+        v = _clean_plain(mv.group(1))
+    else:
+        # fallback из id атрибута
+        mi = re.search(r'(?is)\bid="([^"]+)"', header)
+        v = mi.group(1) if mi else 'AS' + hashlib.md5(body.encode('utf-8')).hexdigest()[:8].upper()
+        body = '<vendorCode>'+html.escape(v)+'</vendorCode>' + body
+    if not v.startswith('AS'):
+        v_new = 'AS' + v
+        body = re.sub(r'(?is)(<\s*vendorCode\s*>\s*).*(\s*</\s*vendorCode\s*>)', r'\g<1>'+html.escape(v_new)+r'\g<2>', body, count=1)
+        v = v_new
+    # id = vendorCode
+    header = re.sub(r'(?is)\bid="[^"]*"', f'id="{v}"', header, count=1)
 
+    # Наценка и хвост 900
+    mprice = re.search(r'(?is)<\s*price\s*>\s*(.*?)\s*</\s*price\s*>', body)
+    if mprice:
+        digits = re.sub(r'[^\d]', '', mprice.group(1))
+        base = int(digits) if digits else 0
+        newp = _retail_price_from_base(base) if base else 0
+        body = re.sub(r'(?is)(<\s*price\s*>\s*).*(\s*</\s*price\s*>)', r'\g<1>'+str(newp)+r'\g<2>', body, count=1)
+
+    # Описание
+    full_offer = header + body + '</offer>'
+    full_offer = _desc_postprocess_native_specs(full_offer)
+
+    # Сбор по порядку тегов
+    parts = {}
+    for t in WANT_ORDER:
+        parts[t] = re.findall(rf'(?is)<\s*{t}\b[^>]*>.*?</\s*{t}\s*>', full_offer)
+        full_offer = re.sub(rf'(?is)<\s*{t}\b[^>]*>.*?</\s*{t}\s*>', '', full_offer)
+
+    # Картинки множественные оставляем как есть
+    out_lines = []
+    for t in ('categoryId','vendorCode','name','price'):
+        out_lines += parts.get(t, [])
+
+    # picture (все)
+    for pic in parts.get('picture', []):
+        out_lines.append(pic)
+
+    for t in ('vendor','currencyId','description'):
+        out_lines += parts.get(t, [])
+
+    # param (все параметры)
+    for prm in parts.get('param', []):
+        # удаляем deny ещё раз на всякий случай (если вдруг просочится)
+        mname = re.search(r'(?is)name\s*=\s*"([^"]+)"', prm or '')
+        if mname and mname.group(1).strip().lower() in DENY_PARAMS:
+            continue
+        out_lines.append(prm)
+
+    # Чистим хвост
+    out = header + '\n' + '\n'.join(x.strip() for x in out_lines if x.strip()) + '\n</offer>\n\n'
+    # Перенос между <offers> и <offer ...> потом обеспечим при сборке всего блока
+    return out
+
+# --- Главный поток ---
 def main() -> int:
-    print('[VER] build_alstyle v62 constants+price_fallback+sorted_specs')
+    # 1) Скачиваем исходник
+    url = 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'
+    r = requests.get(url, auth=(LOGIN, PASSWORD), timeout=60)
+    r.raise_for_status()
+    src = r.content
+
+    # 2) Декод CP1251 → str
     try:
-        r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
-    except Exception as e:
-        print(f"[ERROR] download failed: {e}", file=sys.stderr); return 1
-    if r.status_code != 200:
-        print(f"[ERROR] HTTP {r.status_code}", file=sys.stderr); return 1
-    src = _dec(r.content, getattr(r, "encoding", None))
-    src = _strip_shop_header(src)
-    m_off = re.search(r"(?s)<offers>(.*?)</offers>", src)
-    if not m_off:
-        _save(src); print("[WARN] <offers> не найден — файл сохранён без изменений"); return 0
-    offers_block = m_off.group(1)
-    offers = re.findall(r"(?s)<offer\b.*?</offer>", offers_block)
-    total = len(offers)
-    re_cat = re.compile(r"<categoryId>\s*(\d+)\s*</categoryId>", flags=re.I)
+        text = src.decode('windows-1251')
+    except UnicodeDecodeError:
+        text = src.decode('utf-8', errors='replace')
+
+    # 3) Вырезаем offers
+    m = re.search(r'(?is)^(.*?<offers\s*>)(.*?)(</\s*offers\s*>.*)$', text)
+    if not m:
+        # запасной вариант: ищем блок иначе
+        m = re.search(r'(?is)(.*?<offers\s*>)(.*)(</\s*offers\s*>.*)', text)
+        if not m:
+            raise SystemExit('Не найден блок <offers>')
+    head, offers_block, tail = m.group(1), m.group(2), m.group(3)
+
+    # 4) Удаляем всё между <shop> и <offers> (как просил пользователь): оставляем <shop><offers>
+    head = re.sub(r'(?is)<shop\s*>.*?<offers\s*>', '<shop><offers>', head, count=1)
+
+    # 5) Собираем офферы с фильтром по categoryId
+    offers = re.findall(r'(?is)<offer\b.*?</offer>', offers_block)
     kept = []
-    for ch in offers:
-        m = re_cat.search(ch)
-        if m and m.group(1) in ALLOWED_CATS:
-            kept.append(_transform_offer(ch))
-    sep = "\n\n"; prefix = "<offers>\n\n" if kept else "<offers>\n"
-    new_block = prefix + sep.join(kept) + ("\n" if kept else "") + "</offers>"
-    out = re.sub(r"(?s)<offers>.*?</offers>", lambda _: new_block, src, count=1)
-    _save(out)
-    print(f"[OK] offers kept: {len(kept)} / {total}")
+    for off in offers:
+        mcat = re.search(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>', off)
+        if not mcat or mcat.group(1) not in ALLOW_CATS:
+            continue
+        kept.append(_rebuild_offer(off))
+
+    # 6) Сборка финального файла
+    new_offers = '\n'.join(x.strip() for x in kept)
+    out_text = head + '\n' + new_offers + '\n' + tail
+
+    # 7) Мини-очистка лишних пустых строк и склейка <shop><offers>
+    out_text = re.sub(r'[ \t]+\n', '\n', out_text)
+    out_text = re.sub(r'\n{3,}', '\n\n', out_text)
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
+
+    # 8) Запись
+    Path('docs').mkdir(exist_ok=True)
+    Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
+    print('OK: docs/alstyle.yml, offers:', len(kept))
     return 0
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     raise SystemExit(main())
