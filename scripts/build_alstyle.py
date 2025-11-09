@@ -1,3 +1,9 @@
+# --- Secrets via env with fallback ---
+import os  # читать из Actions secrets, иначе использовать дефолт
+LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
+PASSWORD = os.getenv('ALSTYLE_PASSWORD', 'Aa123456')
+# Вызовы requests.get(...) должны использовать auth=(LOGIN, PASSWORD)
+
 # -*- coding: utf-8 -*-
 # build_alstyle.py v29-hard (desc-flatten)
 # Новое: работаем ТОЛЬКО с <description> — сплющиваем в один абзац (без трогания других тегов).
@@ -5,29 +11,10 @@
 # сортировка, префикс AS + id, правила цен, пустые строки между офферами и т.д.
 
 import re, sys, pathlib, requests, math, html
-import os
-
-# --- Module constants ---
-GOAL_CHARS = 1000       # целевой размер описания
-GOAL_LOW_CHARS = 900    # нижняя граница
-MAX_HARD_CHARS = 1200   # жёсткий потолок (по границе предложений)
-LMAX_LINE = 220         # макс длина одной визуальной строки для умного <br>
-MAX_BR_LINES = 3        # не больше 3 переносов (<br>)
-
-# --- Secrets via ENV with fallback to hardcoded (по твоей просьбе логика не ломается) ---
-ALSTYLE_LOGIN = os.getenv("ALSTYLE_LOGIN", "info@complex-solutions.kz")
-ALSTYLE_PASSWORD = os.getenv("ALSTYLE_PASSWORD", "Aa123456")
-
-# --- Precompiled regexes ---
-_RE_DESCRIPTION_BLOCK = re.compile(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)")
-_RE_TAG = re.compile(r"(?is)<[^>]+>")
-_RE_SENT_SPLIT = re.compile(r"(?<=[\.\!\?])\s+|;\s+")
-_RE_PARAM = re.compile(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>');
-
 
 URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
-LOGIN = ALSTYLE_LOGIN
-PASSWORD = ALSTYLE_PASSWORD
+LOGIN = "info@complex-solutions.kz"
+PASSWORD = "Aa123456"
 OUT_PATH = pathlib.Path("docs/alstyle.yml")
 ENC_OUT = "windows-1251"
 
@@ -241,7 +228,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
     """
     import re, html, difflib
 
-    m = _RE_DESCRIPTION_BLOCK.search(body)
+    m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
     if not m:
         return body
     head, raw, tail = m.group(1), m.group(2), m.group(3)
@@ -255,12 +242,12 @@ def _desc_postprocess_native_specs(body: str) -> str:
         txt = txt.replace("\u00A0"," ")
         txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
         txt = re.sub(r"\r\n|\r|\n", " ", txt)
-        txt = _RE_TAG.sub(" ", txt)
+        txt = re.sub(r"(?is)<[^>]+>", " ", txt)
         txt = re.sub(r"\s+", " ", txt).strip()
         return txt
 
     def _sentences(plain: str):
-        parts = _RE_SENT_SPLIT.split(plain)
+        parts = re.split(r"(?<=[\.\!\?])\s+|;\s+", plain)
         return [p.strip() for p in parts if p.strip()]
 
     def _is_facty(s: str) -> bool:
@@ -298,9 +285,9 @@ def _desc_postprocess_native_specs(body: str) -> str:
         return out, seen
 
     def _build_desc_text(plain: str) -> str:
-        GOAL = GOAL_CHARS
-        GOAL_LOW = GOAL_LOW_CHARS
-        MAX_HARD = MAX_HARD_CHARS
+        GOAL = 1000
+        GOAL_LOW = 900
+        MAX_HARD = 1200
         if len(plain) <= GOAL:
             return plain
         parts = _sentences(plain)
@@ -347,7 +334,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
                 "новинка","снижена цена","штрихкод","штрих-код","назначение",
                 "объем","объём"}
         out = []
-        for k,v in _RE_PARAM.findall(b):
+        for k,v in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', b):
             kk = _clean_plain(k).strip(": ").lower()
             if kk in deny: 
                 continue
@@ -373,10 +360,10 @@ def _desc_postprocess_native_specs(body: str) -> str:
             name_h3 = "<h3>" + html.escape(nm) + "</h3>"
 
     # 2) Основной абзац
-    if len(plain) > GOAL_CHARS:
+    if len(plain) > 1000:
         sent_parts = _sentences(desc_text)
-        LMAX = LMAX_LINE
-        MAX_BR = MAX_BR_LINES
+        LMAX = 220
+        MAX_BR = 3
         lines, cur = [], ""
         for s in sent_parts:
             cand = (cur + (" " if cur else "") + s)
@@ -400,31 +387,11 @@ def _desc_postprocess_native_specs(body: str) -> str:
 
     params = _collect_params(body)
     if params:
-    # сортируем параметры: приоритетные первыми, затем алфавит
-    PRIO = {k:i for i,k in enumerate(['Диагональ', 'Диагональ экрана', 'Яркость', 'Разрешение', 'Операционная система', 'Объем встроенной памяти', 'Объём встроенной памяти', 'Память', 'Точек касания', 'Процессор', 'Мощность', 'Вес', 'Размер', 'Интерфейсы'])}
-    params = sorted(params, key=lambda kv: (PRIO.get(kv[0], 10_000), kv[0].lower()))
         blocks.append("<h3>Характеристики</h3>")
         blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
 
     html_desc = "".join(blocks)
-    return _RE_DESCRIPTION_BLOCK.sub(lambda _m: head + html_desc + tail, body, 1)
-
-def _ensure_price_from_purchase(body: str) -> str:
-    """Если <price> отсутствует — создать его из <purchase_price> (числа без пробелов).
-    """
-    import re
-    if not re.search(r'(?is)<\s*price\s*>', body):
-        m = re.search(r'(?is)<\s*purchase_price\s*>\s*([0-9][0-9\.\,\s]*)\s*</\s*purchase_price\s*>', body)
-        if m:
-            val = re.sub(r'[^\d]', '', m.group(1))
-            if val:
-                # Вставим сразу после </vendorCode> если есть, иначе в начало тела
-                ins = 0
-                m2 = re.search(r'(?is)</\s*vendorCode\s*>', body)
-                if m2:
-                    ins = m2.end()
-                body = body[:ins] + f"<price>{val}</price>" + body[ins:]
-    return body
+    return re.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>").sub(lambda _m: head + html_desc + tail, body, 1)
 
 # --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
@@ -433,7 +400,6 @@ def _transform_offer(chunk: str) -> str:
     attrs, body = m.group(1), m.group(2)
     attrs, body = _move_available_attr(attrs, body)
     body = _copy_purchase_into_price(body)
-    body = _ensure_price_from_purchase(body)
     body = _remove_simple_tags(body)
     body = _remove_param_by_name(body)
     body = _apply_price_rules(body)
@@ -456,7 +422,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v61 native+specs+h3name+consts+env (1000, smart <br> for long)')
+    print('[VER] build_alstyle v60 native+specs+h3name (1000, smart <br> for long)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
