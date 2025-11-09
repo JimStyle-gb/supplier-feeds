@@ -335,10 +335,28 @@ def _desc_postprocess_native_specs(body: str) -> str:
     # HTML: <p>описание c <br></p> + Характеристики (всегда)
     blocks = []
     sent_parts = _sentences(desc_text)
-    if len(sent_parts) > 1:
-        desc_html = "<br>".join(html.escape(s) for s in sent_parts)
-    else:
+    if len(desc_text) <= 400 or len(sent_parts) <= 2:
         desc_html = html.escape(desc_text)
+    else:
+        LMAX = 220
+        MAX_BR = 3
+        lines = []
+        cur = ""
+        for s in sent_parts:
+            candidate = (cur + (" " if cur else "") + s)
+            if cur and len(candidate) > LMAX and len(lines) < MAX_BR:
+                lines.append(cur)
+                cur = s
+            else:
+                cur = candidate
+        if cur:
+            lines.append(cur)
+        # Если всё же получилось слишком много линий, схлопнем хвост
+        if len(lines) > MAX_BR + 1:
+            head = lines[:MAX_BR]
+            tail = " ".join(lines[MAX_BR:])
+            lines = head + [tail]
+        desc_html = "<br>".join(html.escape(x) for x in lines)
     blocks.append("<p>" + desc_html + "</p>")
 
     params = _collect_params(body)
@@ -378,7 +396,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v54 native+specs+br (fill to ~1000)')
+    print('[VER] build_alstyle v55 native+specs+br_smart')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
