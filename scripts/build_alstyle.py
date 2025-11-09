@@ -216,8 +216,8 @@ def _flatten_description(body: str) -> str:
 
 
 def _desc_postprocess_native_specs(body: str) -> str:
-    """Родное описание; если >1000 символов — сжать до ~1000 по границе предложения; Характеристики добавлять всегда.
-       Добавляет <br> между предложениями внутри <p>.
+    """Родное описание; если >2000 символов — сжать до ~2000 по границе предложения; Характеристики добавлять всегда.
+       Внутри <p> применяем «умный» <br>: переносим на строки до ~220 символов, максимум 3 брейка.
     """
     import re, html, difflib
 
@@ -249,7 +249,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
     def _is_key(s: str) -> bool:
         if _is_facty(s):
             return True
-        extra = r"(android|ops|hdmi|dp\b|type[-\s]?c|vga|lan|usb|4k|3840|2160|герц|ghz|ядр|a73|a53|mali|ram|rom|гб|емкостн|сенсор|подсвет|od20|склеиван|защит|блокировк|экран|узк[ао]й?\s*рамк|тонк(ий|ая)|контраст|яркост|матриц|срок\s+службы)"
+        extra = r"(android|ops|hdmi|dp\b|type[-\s]?c|vga|lan|usb|4k|3840|2160|герц|ghz|ядр|a73|a53|mali|ram|rom|гб|ёмкостн|емкостн|сенсор|подсвет|od20|без\s+склеив|защит|блокировк|экран|узк[ао]й?\s*рамк|тонк(ий|ая)|контраст|яркост|матриц|срок\s+службы)"
         base  = r"(мощност|напряжен|размер|вес|материал|скорост|объ[её]м|режим|функц|индикатор|фильтр|питани|давлен|частот|класс|стандарт|интерфейс|корпус|сенсор)"
         return bool(re.search(f"{base}|{extra}", s.lower()))
 
@@ -265,7 +265,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
         out, seen = [], []
         out.append(parts[0]); seen.append(_norm(parts[0]))  # всегда интро
         for p in parts[1:]:
-            if len(p) < 15 or len(p) > 300:
+            if len(p) < 12 or len(p) > 300:
                 continue
             if not _is_key(p):
                 continue
@@ -273,42 +273,66 @@ def _desc_postprocess_native_specs(body: str) -> str:
             if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
                 continue
             out.append(p); seen.append(np)
-            if len(out) >= 12:
+            if len(out) >= 20:  # позволим больше «важных»
                 break
         return out, seen
 
     def _build_desc_text(plain: str) -> str:
         GOAL = 2000
-        GOAL_LOW = 1900
-        MAX_HARD = 2200
+        GOAL_LOW = 1950
+        MAX_HARD = 2300  # запас с завершением по предложению
+
         if len(plain) <= GOAL:
             return plain
+
         parts = _sentences(plain)
         important, seen = _pick_important(parts)
         selected = important[:]
+        norm_selected = set(seen)
         total = len(" ".join(selected)) if selected else 0
+
+        # добор до ~2000 последовательно
+        for p in parts:
+            np = _norm(p)
+            if np in norm_selected:
+                continue
+            add_len = (1 if total > 0 else 0) + len(p)
+            if total + add_len > MAX_HARD:
+                break
+            selected.append(p)
+            norm_selected.add(np)
+            total += add_len
+            if total >= GOAL_LOW:
+                break
+
         if total < GOAL_LOW:
             for p in parts:
-                if p in selected:
-                    continue
                 np = _norm(p)
-                if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
+                if np in norm_selected:
                     continue
-                if len(p) < 12:
-                    continue
-                cand_len = len(p) + (1 if total else 0)
-                selected.append(p); seen.append(np); total += cand_len
+                add_len = (1 if total > 0 else 0) + len(p)
+                if total + add_len > MAX_HARD:
+                    break
+                selected.append(p)
+                norm_selected.add(np)
+                total += add_len
                 if total >= GOAL_LOW:
                     break
+
         while selected and len(" ".join(selected)) > MAX_HARD:
             selected.pop()
+
         if not selected:
             acc, t = [], 0
             for p in parts:
-                if t + len(p) + 1 > MAX_HARD: break
-                acc.append(p); t += len(p) + 1
-                if t >= GOAL_LOW: break
+                add_len = (1 if t > 0 else 0) + len(p)
+                if t + add_len > MAX_HARD:
+                    break
+                acc.append(p); t += add_len
+                if t >= GOAL_LOW:
+                    break
             return " ".join(acc).strip()
+
         return " ".join(selected).strip()
 
     def _collect_params(b: str):
@@ -332,33 +356,29 @@ def _desc_postprocess_native_specs(body: str) -> str:
     plain = _clean_plain(raw)
     desc_text = _build_desc_text(plain)
 
-    # HTML: <p>описание c <br></p> + Характеристики (всегда)
-    blocks = []
+    # HTML: «умный» <br> внутри <p>
     sent_parts = _sentences(desc_text)
     if len(desc_text) <= 400 or len(sent_parts) <= 2:
         desc_html = html.escape(desc_text)
     else:
         LMAX = 220
         MAX_BR = 3
-        lines = []
-        cur = ""
+        lines, cur = [], ""
         for s in sent_parts:
-            candidate = (cur + (" " if cur else "") + s)
-            if cur and len(candidate) > LMAX and len(lines) < MAX_BR:
-                lines.append(cur)
-                cur = s
+            cand = (cur + (" " if cur else "") + s)
+            if cur and len(cand) > LMAX and len(lines) < MAX_BR:
+                lines.append(cur); cur = s
             else:
-                cur = candidate
-        if cur:
-            lines.append(cur)
-        # Если всё же получилось слишком много линий, схлопнем хвост
+                cur = cand
+        if cur: lines.append(cur)
         if len(lines) > MAX_BR + 1:
             head = lines[:MAX_BR]
             tail = " ".join(lines[MAX_BR:])
             lines = head + [tail]
         desc_html = "<br>".join(html.escape(x) for x in lines)
-    blocks.append("<p>" + desc_html + "</p>")
 
+    blocks = []
+    blocks.append("<p>" + desc_html + "</p>")
     params = _collect_params(body)
     if params:
         blocks.append("<h3>Характеристики</h3>")
@@ -381,7 +401,7 @@ def _transform_offer(chunk: str) -> str:
     attrs, body = _ensure_prefix_and_id(attrs, body)
     body = _flatten_description(body)  # только description
     body = _desc_postprocess_native_specs(body)
-    # ↑ NEW: родное+спеки, ~1000 и <br>
+    # ↑ NEW: native+specs, ~2000, smart <br>
     if not body.startswith("\n"): body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
@@ -396,7 +416,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v56 native+specs+br_smart (2000 limit)')
+    print('[VER] build_alstyle v57 native+specs+br_smart (2000)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
