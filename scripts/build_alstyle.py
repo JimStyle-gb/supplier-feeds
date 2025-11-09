@@ -215,11 +215,10 @@ def _flatten_description(body: str) -> str:
     return rx.sub(repl, body, count=1)
 
 
-
-
 def _desc_postprocess_native_specs(body: str) -> str:
     """Родное описание; если >1000 символов — сжать до ~1000 по границе предложения; Характеристики добавлять всегда.
-       Улучшено: если «важных» фраз мало, добираем предложения из оригинала (по убыванию важности) до 1000±."""
+       Добавляет <br> между предложениями внутри <p>.
+    """
     import re, html, difflib
 
     m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
@@ -250,8 +249,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
     def _is_key(s: str) -> bool:
         if _is_facty(s):
             return True
-        # расширенные термины для техники/панелей/интерфейсов
-        extra = r"(android|ops|hdmi|dp\b|type[-\s]?c|vga|lan|usb|4k|3840|2160|герц|ghz|ядр|a73|a53|mali|ram|rom|гб|емкостн|сенсор|подсвет|od20|склеиван|защит|блокировк|экран|узк[ао]й?\s*рамк|тонк(ий|ая)|констраст|яркост|матриц|срок\s+службы)"
+        extra = r"(android|ops|hdmi|dp\b|type[-\s]?c|vga|lan|usb|4k|3840|2160|герц|ghz|ядр|a73|a53|mali|ram|rom|гб|емкостн|сенсор|подсвет|od20|склеиван|защит|блокировк|экран|узк[ао]й?\s*рамк|тонк(ий|ая)|контраст|яркост|матриц|срок\s+службы)"
         base  = r"(мощност|напряжен|размер|вес|материал|скорост|объ[её]м|режим|функц|индикатор|фильтр|питани|давлен|частот|класс|стандарт|интерфейс|корпус|сенсор)"
         return bool(re.search(f"{base}|{extra}", s.lower()))
 
@@ -263,11 +261,9 @@ def _desc_postprocess_native_specs(body: str) -> str:
 
     def _pick_important(parts):
         if not parts:
-            return []
+            return [], []
         out, seen = [], []
-        # всегда берём интро
-        out.append(parts[0]); seen.append(_norm(parts[0]))
-        # далее только важные
+        out.append(parts[0]); seen.append(_norm(parts[0]))  # всегда интро
         for p in parts[1:]:
             if len(p) < 15 or len(p) > 300:
                 continue
@@ -283,57 +279,36 @@ def _desc_postprocess_native_specs(body: str) -> str:
 
     def _build_desc_text(plain: str) -> str:
         GOAL = 1000
-        GOAL_LOW = 900     # минимум, к которому стремимся
-        MAX_HARD = 1200    # потолок, но по границе предложения
-
+        GOAL_LOW = 900
+        MAX_HARD = 1200
         if len(plain) <= GOAL:
             return plain
-
         parts = _sentences(plain)
         important, seen = _pick_important(parts)
-        # если выбранных фраз мало — добираем по исходному порядку
-        def _score(p):
-            # приоритизируем фактные, потом ключевые, затем обычные
-            if _is_facty(p): return 3
-            if _is_key(p):   return 2
-            return 1
-
         selected = important[:]
         total = len(" ".join(selected)) if selected else 0
-
         if total < GOAL_LOW:
             for p in parts:
-                if p in selected:  # точное совпадение уже добавлено
+                if p in selected:
                     continue
                 np = _norm(p)
                 if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
                     continue
-                # берем предложения разумной длины
                 if len(p) < 12:
                     continue
-                cand_len = len(p) + (1 if total > 0 else 0)
-                # добавляем самое приоритетное, но в исходном порядке прохода — сохраняем связность
-                selected.append(p)
-                seen.append(np)
-                total += cand_len
+                cand_len = len(p) + (1 if total else 0)
+                selected.append(p); seen.append(np); total += cand_len
                 if total >= GOAL_LOW:
                     break
-
-        # теперь, если всё ещё выше жесткого потолка — обрежем по предложению
         while selected and len(" ".join(selected)) > MAX_HARD:
             selected.pop()
-
         if not selected:
-            # fallback — первые фразы до GOAL
             acc, t = [], 0
             for p in parts:
-                if t + len(p) + 1 > MAX_HARD:
-                    break
+                if t + len(p) + 1 > MAX_HARD: break
                 acc.append(p); t += len(p) + 1
-                if t >= GOAL_LOW: 
-                    break
+                if t >= GOAL_LOW: break
             return " ".join(acc).strip()
-
         return " ".join(selected).strip()
 
     def _collect_params(b: str):
@@ -343,7 +318,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
         out = []
         for k,v in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', b):
             kk = _clean_plain(k).strip(": ").lower()
-            if kk in deny:
+            if kk in deny: 
                 continue
             vv = _clean_plain(v)
             if not vv:
@@ -357,9 +332,15 @@ def _desc_postprocess_native_specs(body: str) -> str:
     plain = _clean_plain(raw)
     desc_text = _build_desc_text(plain)
 
-    # HTML: <p>описание</p> + Характеристики (всегда)
+    # HTML: <p>описание c <br></p> + Характеристики (всегда)
     blocks = []
-    blocks.append("<p>" + html.escape(desc_text) + "</p>")
+    sent_parts = _sentences(desc_text)
+    if len(sent_parts) > 1:
+        desc_html = "<br>".join(html.escape(s) for s in sent_parts)
+    else:
+        desc_html = html.escape(desc_text)
+    blocks.append("<p>" + desc_html + "</p>")
+
     params = _collect_params(body)
     if params:
         blocks.append("<h3>Характеристики</h3>")
@@ -368,6 +349,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
     html_desc = "".join(blocks)
     return re.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>").sub(lambda _m: head + html_desc + tail, body, 1)
 
+# --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
     if not m: return chunk
@@ -381,7 +363,7 @@ def _transform_offer(chunk: str) -> str:
     attrs, body = _ensure_prefix_and_id(attrs, body)
     body = _flatten_description(body)  # только description
     body = _desc_postprocess_native_specs(body)
-    # ↑ NEW: родное/укороченное + Характеристики при длинном тексте
+    # ↑ NEW: родное+спеки, ~1000 и <br>
     if not body.startswith("\n"): body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
@@ -396,7 +378,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v53 native+specs (fill to ~1000)')
+    print('[VER] build_alstyle v54 native+specs+br (fill to ~1000)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
