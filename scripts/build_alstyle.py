@@ -1,8 +1,8 @@
 # --- Secrets via env with fallback ---
-import os  # читать из Actions secrets, иначе использовать дефолт
+import os
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
 PASSWORD = os.getenv('ALSTYLE_PASSWORD', 'Aa123456')
-# Вызовы requests.get(...) должны использовать auth=(LOGIN, PASSWORD)
+# Все requests.get(...) должны использовать auth=(LOGIN, PASSWORD)
 
 # -*- coding: utf-8 -*-
 # build_alstyle.py v29-hard (desc-flatten)
@@ -329,7 +329,8 @@ def _desc_postprocess_native_specs(body: str) -> str:
             return " ".join(acc).strip()
         return " ".join(selected).strip()
 
-    def _collect_params(b: str):
+    PRIOR_KEYS = ['Диагональ экрана','Яркость','Операционная система','Объем встроенной памяти','Память','Точек касания','Интерфейсы','Вес','Размеры']
+def _collect_params(b: str):
         deny = {"артикул","благотворительность","код тн вэд","код товара kaspi",
                 "новинка","снижена цена","штрихкод","штрих-код","назначение",
                 "объем","объём"}
@@ -360,10 +361,8 @@ def _desc_postprocess_native_specs(body: str) -> str:
             name_h3 = "<h3>" + html.escape(nm) + "</h3>"
 
     # 2) Основной абзац
-    if len(plain) > 1000:
+    if len(plain) > GOAL:
         sent_parts = _sentences(desc_text)
-        LMAX = 220
-        MAX_BR = 3
         lines, cur = [], ""
         for s in sent_parts:
             cand = (cur + (" " if cur else "") + s)
@@ -388,10 +387,39 @@ def _desc_postprocess_native_specs(body: str) -> str:
     params = _collect_params(body)
     if params:
         blocks.append("<h3>Характеристики</h3>")
-        blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
+        def _pkey(item):
+            k = item[0]
+            try:
+                return (0, PRIOR_KEYS.index(k))
+            except ValueError:
+                return (1, k.lower())
+        params_sorted = sorted(params, key=_pkey)
+        blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params_sorted) + "</ul>")
 
     html_desc = "".join(blocks)
     return re.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>").sub(lambda _m: head + html_desc + tail, body, 1)
+
+def _ensure_price_from_purchase(body: str) -> str:
+    """Если <price> отсутствует — создать его из <purchase_price> (до наценки)."""
+    import re
+    if re.search(r"(?is)<\s*price\s*>", body):
+        return body
+    m = re.search(r"(?is)<\s*purchase_price\s*>\s*(.*?)\s*</\s*purchase_price\s*>", body)
+    if not m: return body
+    val = m.group(1).strip()
+    digits = re.sub(r"[^\d]", "", val)
+    if not digits: return body
+    price_tag = f"<price>{digits}</price>"
+    ins = re.search(r"(?is)<\s*currencyId\s*>", body)
+    if ins:
+        pos = ins.start(); return body[:pos] + price_tag + body[pos:]
+    ins2 = re.search(r"(?is)</\s*name\s*>", body)
+    if ins2:
+        pos = ins2.end(); return body[:pos] + price_tag + body[pos:]
+    end_offer = re.search(r"(?is)</\s*offer\s*>", body)
+    if end_offer:
+        pos = end_offer.start(); return body[:pos] + price_tag + body[pos:]
+    return body
 
 # --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
@@ -400,6 +428,7 @@ def _transform_offer(chunk: str) -> str:
     attrs, body = m.group(1), m.group(2)
     attrs, body = _move_available_attr(attrs, body)
     body = _copy_purchase_into_price(body)
+    body = _ensure_price_from_purchase(body)
     body = _remove_simple_tags(body)
     body = _remove_param_by_name(body)
     body = _apply_price_rules(body)
@@ -422,7 +451,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v60 native+specs+h3name (1000, smart <br> for long)')
+    print('[VER] build_alstyle v62 constants+price_fallback+sorted_specs')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
