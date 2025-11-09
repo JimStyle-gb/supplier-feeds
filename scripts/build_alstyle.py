@@ -215,16 +215,13 @@ def _flatten_description(body: str) -> str:
     return rx.sub(repl, body, count=1)
 
 
+
 def _desc_postprocess_native_specs(body: str) -> str:
-    """
-    Родное описание по умолчанию.
-    Если очень длинное — оставляем ключевые предложения и добавляем блок <h3>Характеристики</h3> из <param>.
-    Старые функции не трогаем.
-    """
+    """Родное описание; если >1000 символов — сжать до ~1000 по границе предложения; Характеристики добавлять всегда."""
     import re, html, difflib
 
     m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
-    if not m: 
+    if not m:
         return body
     head, raw, tail = m.group(1), m.group(2), m.group(3)
 
@@ -248,31 +245,67 @@ def _desc_postprocess_native_specs(body: str) -> str:
     def _is_facty(s: str) -> bool:
         return bool(re.search(r"\b\d[\d\s\.,]*\s?(Вт|W|В|V|мм|cm|см|м|кг|г|л|L|мАч|А·ч|Ah|%|Гц|Hz|дБ|°C|dpi|ГБ|МБ|TB|fps|м³/ч|м/с|Нм)\b", s))
 
+    def _is_key(s: str) -> bool:
+        if _is_facty(s): 
+            return True
+        return bool(re.search(r"(мощност|напряжен|размер|вес|материал|скорост|объ[её]м|режим|функц|индикатор|фильтр|питани|давлен|частот|класс|стандарт|интерфейс|корпус|сенсор)", s.lower()))
+
     def _norm(s: str) -> str:
         s = s.lower()
         s = re.sub(r"[^a-zа-я0-9%°\.,\- ]+", " ", s, flags=re.I)
         s = re.sub(r"\s+", " ", s).strip()
         return s
 
-    def _pick_key_sentences(parts):
-        # Интро + предложения с фактами/терминами; без дублей (>=0.92)
-        if not parts: 
+    def _pick_important(parts):
+        if not parts:
             return []
         out, seen = [], []
+        # всегда берём интро
         out.append(parts[0]); seen.append(_norm(parts[0]))
-        kw = r"(мощност|напряжен|размер|вес|материал|скорост|объ[её]м|режим|функц|индикатор|фильтр|питани|давлен|частот|класс|стандарт|интерфейс|корпус|сенсор)"
+        # далее только важные
         for p in parts[1:]:
-            if len(p) < 25 or len(p) > 240: 
+            if len(p) < 25 or len(p) > 300: 
                 continue
-            if not (_is_facty(p) or re.search(kw, p.lower())):
+            if not _is_key(p):
                 continue
             np = _norm(p)
             if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
                 continue
-            out.append(p); seen.append(np)
-            if len(out) >= 6:
-                break
+            out.append(p)
+            seen.append(np)
         return out
+
+    def _build_desc_text(plain: str) -> str:
+        MAX_GOAL = 1000
+        MAX_HARD = 1200  # допускаем небольшой перерасход, но завершаем по точке
+        if len(plain) <= MAX_GOAL:
+            return plain
+        parts = _sentences(plain)
+        key = _pick_important(parts)
+        # если ключевых мало, возьмём столько, сколько есть; не добавляем "лишнее", чтобы сохранить смысл
+        text = " ".join(key).strip()
+        if not text:
+            # fallback — первые предложения до ~1000
+            acc, total = [], 0
+            for p in parts:
+                if not p: continue
+                if total + len(p) + 1 > MAX_HARD:
+                    break
+                acc.append(p); total += len(p) + 1
+                if total >= MAX_GOAL:
+                    break
+            return " ".join(acc).strip()
+        if len(text) <= MAX_HARD:
+            # если превышает цель >1000, но меньше 1200 — оставляем как есть
+            return text
+        # ужмём: постепенно обрежем последние предложения, пока не впишемся
+        sel = key[:]
+        while sel and len(" ".join(sel)) > MAX_HARD:
+            sel.pop()  # убираем последний
+        if not sel:
+            return key[0]
+        # если всё ещё больше цели, но в пределах — ок; если меньше — тоже ок
+        return " ".join(sel).strip()
 
     def _collect_params(b: str):
         deny = {"артикул","благотворительность","код тн вэд","код товара kaspi",
@@ -293,23 +326,11 @@ def _desc_postprocess_native_specs(body: str) -> str:
 
     # --- основное ---
     plain = _clean_plain(raw)
-    parts = _sentences(plain)
+    desc_text = _build_desc_text(plain)
 
-    # Порог "очень длинного" описания
-    LONG_LEN = 1000
-    LONG_SENT = 7
-    is_long = (len(plain) > LONG_LEN) or (len(parts) > LONG_SENT)
-
-    if not is_long:
-        # Небольшие тексты — оставляем родное описание как есть (в <p>)
-        html_desc = "<p>" + html.escape(plain) + "</p>"
-        return re.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>").sub(lambda _m: head + html_desc + tail, body, 1)
-
-    # Длинные тексты — сокращаем до ключевых фраз и добавляем характеристики
-    key_sents = _pick_key_sentences(parts) or parts[:4]
+    # HTML: <p>описание</p> + Характеристики (всегда)
     blocks = []
-    blocks.append("<p>" + " ".join(html.escape(s) for s in key_sents) + "</p>")
-
+    blocks.append("<p>" + html.escape(desc_text) + "</p>")
     params = _collect_params(body)
     if params:
         blocks.append("<h3>Характеристики</h3>")
@@ -318,7 +339,6 @@ def _desc_postprocess_native_specs(body: str) -> str:
     html_desc = "".join(blocks)
     return re.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>").sub(lambda _m: head + html_desc + tail, body, 1)
 
-# --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
     m = re.match(r"(?s)\s*<offer\b([^>]*)>(.*)</offer>\s*", chunk)
     if not m: return chunk
@@ -347,7 +367,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v51 native+specs (auto-long, lambda-sub)')
+    print('[VER] build_alstyle v52 native+specs (always specs, ~1000 cut)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
