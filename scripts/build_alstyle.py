@@ -214,9 +214,18 @@ def _flatten_description(body: str) -> str:
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
 
-def _desc_postprocess_blocks_ext(body: str) -> str:
-    """EXT: Мини-версия + опциональные блоки по сигналам текста (Габариты, Материалы, Питание, Совместимость, Комплектация, Использование, Важно)."""
-    import re, html
+
+def _desc_postprocess_blocks_min(body: str) -> str:
+    """
+    MIN+ (refined): Вступление + Особенности + Характеристики.
+    Улучшения:
+      • Берём больше «особенностей»: не только по ключам, но и факты с единицами измерения.
+      • Дедупликация похожих предложений (SequenceMatcher ≥ 0.92) + нормализация.
+      • Дополнительные факты (если остались информативные предложения) — короткий блок «Дополнительно».
+      • Сохраняем параметры из <param>, без чёрного списка: артикул/штрихкод/новинка/назначение/объём и т.п. фильтруются.
+    """
+    import re, html, difflib
+
     m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
     if not m: return body
     head, raw, tail = m.group(1), m.group(2), m.group(3)
@@ -226,6 +235,9 @@ def _desc_postprocess_blocks_ext(body: str) -> str:
         return mm.group(1).strip() if mm else ""
 
     def _clean(txt: str) -> str:
+        # Плейн без HTML/переносов/невидимых символов
+        if txt.lstrip().startswith("<![CDATA["):
+            txt = re.sub(r"(?is)^\s*<!\[CDATA\[(.*)\]\]>\s*$", r"\1", txt.strip())
         for _ in range(2):
             nt = html.unescape(txt)
             if nt == txt: break
@@ -255,12 +267,57 @@ def _desc_postprocess_blocks_ext(body: str) -> str:
     def _sentences(plain: str):
         return [p.strip() for p in re.split(r"(?<=[\.\!\?])\s+|;\s+", plain) if p.strip()]
 
-    def _feats(parts):
-        kw = r"(особенн|функц|режим|подсвет|защит|фильтр|индикатор|автомат|эргоном|тихий|компакт|удобн)"
-        return [p for p in parts if re.search(kw, p.lower()) and 6 <= len(p) <= 140][:8]
+    def _norm(s: str) -> str:
+        s = s.lower()
+        s = re.sub(r"[^a-zа-я0-9%°\.\-, ]+", " ", s, flags=re.I)
+        s = re.sub(r"\s+", " ", s).strip()
+        return s
 
-    def _has(rx, s): 
-        return bool(re.search(rx, s.lower())) if s else False
+    def _is_facty(s: str) -> bool:
+        # предложения с числами/единицами: Вт, В, мм, см, мАч, %, Гц, дБ, °C, dpi, ГБ и пр.
+        return bool(re.search(r"\b\d[\d\s\.,]*\s?(Вт|W|В|V|мм|cm|см|м|кг|г|л|L|мАч|А·ч|Ah|%|Гц|Hz|дБ|°C|dpi|ГБ|МБ|TB|fps|м³/ч|м/с|Нм)\b", s))
+
+    def _feats(parts):
+        kw = r"(особенн|функц|режим|подсвет|защит|фильтр|индикатор|автомат|эргоном|тихий|компакт|удобн|настройк|сенсор|система)"
+        cand = []
+        for p in parts:
+            if not (6 <= len(p) <= 220): 
+                continue
+            if re.search(kw, p.lower()) or _is_facty(p):
+                cand.append(p.strip())
+        # дедуп по нормализованному тексту + SequenceMatcher
+        out = []
+        seen = []
+        for c in cand:
+            nc = _norm(c)
+            dup = False
+            for s0 in seen:
+                if difflib.SequenceMatcher(a=nc, b=s0).ratio() >= 0.92:
+                    dup = True; break
+            if not dup:
+                out.append(c)
+                seen.append(nc)
+            if len(out) >= 12:  # позволим до 12 пунктов
+                break
+        return out
+
+    def _extra(parts, already):
+        # добираем ещё информативные фразы, которые не попали в feats и не равны интро
+        out = []
+        seen = [ _norm(x) for x in already ]
+        for p in parts:
+            if len(p) < 20 or len(p) > 240: 
+                continue
+            np = _norm(p)
+            if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
+                continue
+            # отбрасываем слишком общие фразы
+            if re.fullmatch(r"[А-Яа-яA-Za-z0-9\s,.\-]+", p) and len(p.split()) >= 3:
+                out.append(p)
+                seen.append(np)
+            if len(out) >= 6:
+                break
+        return out
 
     vendor = _tag("vendor", body)
     name   = _tag("name", body)
@@ -273,58 +330,25 @@ def _desc_postprocess_blocks_ext(body: str) -> str:
     params = _params(body)
     feats  = _feats(parts)
 
+    # Сборка HTML
     blocks = []
     if title or intro:
         t = (f"<strong>{html.escape(title)}</strong>. " if title else "") + html.escape(intro)
         blocks.append(f"<p>{t}</p>")
+
     if feats:
         blocks.append("<h3>Особенности</h3>")
         blocks.append("<ul>" + "".join(f"<li>{html.escape(x)}</li>" for x in feats) + "</ul>")
+
     if params:
         blocks.append("<h3>Характеристики</h3>")
         blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
 
-    txt = plain.lower()
-    def _take(keys):
-        return [(k,v) for (k,v) in params if any(k.lower().startswith(x.lower()) for x in keys)]
-
-    if _has(r"(габарит|размер|длина|ширина|высот|вес)", txt):
-        items = _take(("Размер","Размеры","Габариты","Размер ШхВхГ","Вес"))
-        if items:
-            blocks.append("<h3>Габариты и вес</h3>")
-            blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
-
-    if _has(r"(материал|корпус|сталь|пластик|алюм|металл)", txt):
-        items = _take(("Материал","Материал корпуса","Покрытие","Корпус"))
-        if items:
-            blocks.append("<h3>Материалы и конструкция</h3>")
-            blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
-
-    if _has(r"(мощност|потреблени|энерг|ватт|вт\b|напряжен)", txt):
-        items = _take(("Мощность","Питание","Напряжение","Энергопотребление"))
-        if items:
-            blocks.append("<h3>Питание и мощность</h3>")
-            blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
-
-    if _has(r"(совместим|подходит\s+для|для\s+модел(ей|и)|для\s+(принтер|мфу|ноутбук|телефон|пылесос))", txt):
-        items = _take(("Совместимость","Совместимые модели","Для моделей","Подходит для"))
-        if items:
-            blocks.append("<h3>Совместимость</h3>")
-            blocks.append("<ul>" + "".join(f"<li>{html.escape(v)}</li>" for k,v in items) + "</ul>")
-
-    if _has(r"(комплект|в\s+комплекте|поставк|идет\s+вместе)", txt):
-        items = _take(("Комплектация","В комплекте","Поставка"))
-        if items:
-            blocks.append("<h3>Комплектация</h3>")
-            blocks.append("<ul>" + "".join(f"<li>{html.escape(v)}</li>" for k,v in items) + "</ul>")
-
-    if _has(r"(использовани|применени|как\s+использ|настрой|установк|монтаж)", txt):
-        blocks.append("<h3>Использование</h3>")
-        blocks.append("<ul><li>Перед первым использованием ознакомьтесь с инструкцией и соблюдайте рекомендации производителя.</li></ul>")
-
-    if _has(r"(вниман|предостор|не\s+использ|запрещ|не\s+допуск)", txt):
-        blocks.append("<h3>Важно</h3>")
-        blocks.append("<ul><li>Соблюдайте меры безопасности и условия эксплуатации, указанные в документации производителя.</li></ul>")
+    # Дополнительные факты (если осталось что добавить и чтобы не «резать» контент)
+    extra = _extra(parts, feats + [intro])
+    if extra:
+        blocks.append("<h3>Дополнительно</h3>")
+        blocks.append("<ul>" + "".join(f"<li>{html.escape(x)}</li>" for x in extra) + "</ul>")
 
     html_desc = "".join(blocks) if blocks else html.escape(plain or "Описание недоступно")
     return re.sub(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>", head + html_desc + tail, body, count=1)
@@ -342,8 +366,8 @@ def _transform_offer(chunk: str) -> str:
     body = _sort_offer_tags(body)
     attrs, body = _ensure_prefix_and_id(attrs, body)
     body = _flatten_description(body)  # только description
-    body = _desc_postprocess_blocks_ext(body)
-    # ↑ NEW: пост-обработка description (_desc_postprocess_blocks_ext)
+    body = _desc_postprocess_blocks_min(body)
+    # ↑ NEW: refined MIN post-process
     if not body.startswith("\n"): body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
@@ -358,7 +382,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v42 plain-only (no <br>)')
+    print('[VER] build_alstyle v42 plain-only (no <br>) + MIN+')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
