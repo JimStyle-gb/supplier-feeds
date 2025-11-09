@@ -1,11 +1,11 @@
 # coding: utf-8
-# build_alstyle.py — v64 import-Path fix + constants + price_fallback + sorted_specs + h3(name) + smart<br>
+# build_alstyle.py — v66 params-original-order + attr-order fix + constants + price_fallback + sorted_specs + h3(name) + smart<br>
 
 import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v64 import-Path fix constants+price_fallback+sorted_specs')
+print('[VER] build_alstyle v66 params-original-order + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -130,12 +130,18 @@ def _sort_params(params):
 # --- Перенос <available> в атрибут offer ---
 def _move_available_attr(header: str, body: str):
     m = re.search(r'(?is)<\s*available\s*>\s*(true|false)\s*</\s*available\s*>', body)
-    if not m: return header, body
+    if not m: 
+        return header, body
     avail = m.group(1)
-    header = re.sub(r'(?is)<offer\b', lambda mm: mm.group(0)+f' available="{avail}"', header, count=1)
+    # удалить тег <available>…</available> из body
     body = re.sub(r'(?is)<\s*available\s*>.*?</\s*available\s*>', '', body, count=1)
+    # если атрибут уже есть — обновим на месте
+    if re.search(r'(?is)\bavailable\s*=\s*"(?:true|false)"', header):
+        header = re.sub(r'(?is)\bavailable\s*=\s*"(?:true|false)"', f'available="{avail}"', header, count=1)
+    else:
+        # иначе добавим перед закрывающей '>' — так сохраняем исходный порядок id и прочих атрибутов
+        header = re.sub(r'>\s*$', f' available="{avail}">', header, count=1)
     return header, body
-
 # --- Удаление простых тегов ---
 FORBIDDEN_TAGS = ('url','quantity','quantity_in_stock','purchase_price')
 def _remove_simple_tags(body: str) -> str:
@@ -198,8 +204,6 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
 
     # Характеристики из <param>
     params = _collect_params(offer_xml)
-    params = _sort_params(params)
-
     blocks = []
     if name_h3: blocks.append(name_h3)
     blocks.append('<p>' + desc_html + '</p>')
