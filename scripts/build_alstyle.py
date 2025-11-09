@@ -218,64 +218,59 @@ def _flatten_description(body: str) -> str:
 def _desc_postprocess_native_specs(body: str) -> str:
     """
     Родное описание по умолчанию.
-    Если текст очень большой — оставляем ключевые предложения и добавляем блок <h3>Характеристики</h3> из <param>.
+    Если очень длинное — оставляем ключевые предложения и добавляем блок <h3>Характеристики</h3> из <param>.
     Старые функции не трогаем.
     """
     import re, html, difflib
 
     m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
-    if not m:
+    if not m: 
         return body
     head, raw, tail = m.group(1), m.group(2), m.group(3)
 
-    # --- helpers ---
+    # --- утилиты ---
     def _clean_plain(txt: str) -> str:
-        # На вход приходит уже plain, но подстрахуемся: убираем HTML/энтити/переносы/невидимые
         for _ in range(2):
             nt = html.unescape(txt)
             if nt == txt: break
             txt = nt
-        txt = txt.replace("\\u00A0"," ")
-        txt = re.sub(r"[\\u200B-\\u200D\\uFEFF]", "", txt)
-        txt = re.sub(r"\\r\\n|\\r|\\n", " ", txt)
+        txt = txt.replace("\u00A0"," ")
+        txt = re.sub(r"[\u200B-\u200D\uFEFF]", "", txt)
+        txt = re.sub(r"\r\n|\r|\n", " ", txt)
         txt = re.sub(r"(?is)<[^>]+>", " ", txt)
-        txt = re.sub(r"\\s+", " ", txt).strip()
+        txt = re.sub(r"\s+", " ", txt).strip()
         return txt
 
     def _sentences(plain: str):
-        parts = re.split(r"(?<=[\\.!?])\\s+|;\\s+", plain)
+        parts = re.split(r"(?<=[\.\!\?])\s+|;\s+", plain)
         return [p.strip() for p in parts if p.strip()]
 
     def _is_facty(s: str) -> bool:
-        return bool(re.search(r"\\b\\d[\\d\\s\\.,]*\\s?(Вт|W|В|V|мм|cm|см|м|кг|г|л|L|мАч|А·ч|Ah|%|Гц|Hz|дБ|°C|dpi|ГБ|МБ|TB|fps|м³/ч|м/с|Нм)\\b", s))
+        return bool(re.search(r"\b\d[\d\s\.,]*\s?(Вт|W|В|V|мм|cm|см|м|кг|г|л|L|мАч|А·ч|Ah|%|Гц|Hz|дБ|°C|dpi|ГБ|МБ|TB|fps|м³/ч|м/с|Нм)\b", s))
 
     def _norm(s: str) -> str:
         s = s.lower()
-        s = re.sub(r"[^a-zа-я0-9%°\\.,\\- ]+", " ", s, flags=re.I)
-        s = re.sub(r"\\s+", " ", s).strip()
+        s = re.sub(r"[^a-zа-я0-9%°\.,\- ]+", " ", s, flags=re.I)
+        s = re.sub(r"\s+", " ", s).strip()
         return s
 
     def _pick_key_sentences(parts):
-        # 1 — интро, затем предложения с фактами/терминами; убираем дубли (>=0.92)
-        if not parts:
+        # Интро + предложения с фактами/терминами; без дублей (>=0.92)
+        if not parts: 
             return []
-        out = []
-        seen = []
-        out.append(parts[0])
-        seen.append(_norm(parts[0]))
+        out, seen = [], []
+        out.append(parts[0]); seen.append(_norm(parts[0]))
         kw = r"(мощност|напряжен|размер|вес|материал|скорост|объ[её]м|режим|функц|индикатор|фильтр|питани|давлен|частот|класс|стандарт|интерфейс|корпус|сенсор)"
         for p in parts[1:]:
             if len(p) < 25 or len(p) > 240: 
                 continue
-            cond = _is_facty(p) or re.search(kw, p.lower())
-            if not cond: 
+            if not (_is_facty(p) or re.search(kw, p.lower())):
                 continue
             np = _norm(p)
             if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
                 continue
-            out.append(p)
-            seen.append(np)
-            if len(out) >= 6:    # максимум 6 предложений
+            out.append(p); seen.append(np)
+            if len(out) >= 6:
                 break
         return out
 
@@ -284,37 +279,34 @@ def _desc_postprocess_native_specs(body: str) -> str:
                 "новинка","снижена цена","штрихкод","штрих-код","назначение",
                 "объем","объём"}
         out = []
-        for k,v in re.findall(r'(?is)<\\s*param\\b[^>]*\\bname\\s*=\\s*"([^"]+)"[^>]*>(.*?)</\\s*param\\s*>', b):
-            key_clean = _clean_plain(k).strip(": ").lower()
-            if key_clean in deny:
+        for k,v in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', b):
+            kk = _clean_plain(k).strip(": ").lower()
+            if kk in deny: 
                 continue
-            val = _clean_plain(v)
-            if not val:
+            vv = _clean_plain(v)
+            if not vv: 
                 continue
-            key_disp = k.strip().strip(": ")
-            key_disp = key_disp[:1].upper() + key_disp[1:] if key_disp else ""
-            out.append((key_disp, val))
+            key = k.strip().strip(": ")
+            key = key[:1].upper() + key[1:] if key else ""
+            out.append((key, vv))
         return out
 
-    # --- main ---
+    # --- основное ---
     plain = _clean_plain(raw)
     parts = _sentences(plain)
 
+    # Порог "очень длинного" описания
     LONG_LEN = 1000
     LONG_SENT = 7
     is_long = (len(plain) > LONG_LEN) or (len(parts) > LONG_SENT)
 
     if not is_long:
-        # Малые/средние описания — оставляем «как есть» (родное), оборачиваем в <p>
+        # Небольшие тексты — оставляем родное описание как есть (в <p>)
         html_desc = "<p>" + html.escape(plain) + "</p>"
-        return re.sub(r"(?is)<\\s*description\\b[^>]*>.*?</\\s*description\\s*>", head + html_desc + tail, body, count=1)
+        return re.sub(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>", head + html_desc + tail, body, count=1)
 
-    # Длинные — берём ключевые предложения + добавляем Характеристики из <param>
-    key_sents = _pick_key_sentences(parts)
-    if not key_sents:
-        key_sents = parts[:4]  # fallback
-
-    # Сборка
+    # Длинные тексты — сокращаем до ключевых фраз и добавляем характеристики
+    key_sents = _pick_key_sentences(parts) or parts[:4]
     blocks = []
     blocks.append("<p>" + " ".join(html.escape(s) for s in key_sents) + "</p>")
 
@@ -324,7 +316,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
         blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
 
     html_desc = "".join(blocks)
-    return re.sub(r"(?is)<\\s*description\\b[^>]*>.*?</\\s*description\\s*>", head + html_desc + tail, body, count=1)
+    return re.sub(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>", head + html_desc + tail, body, count=1)
 
 # --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
@@ -355,7 +347,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v48 native+specs (auto for long)')
+    print('[VER] build_alstyle v49 native+specs (auto-long)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
