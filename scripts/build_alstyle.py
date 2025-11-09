@@ -357,7 +357,7 @@ def _desc_postprocess_native_specs(body: str) -> str:
     desc_text = _build_desc_text(plain)
 
     # HTML: для длинных (>GOAL) — «умный» <br>, иначе — без <br>
-    if len(plain) > GOAL:
+    if len(plain) > 1000:
         sent_parts = _sentences(desc_text)
         LMAX = 220
         MAX_BR = 3
@@ -415,7 +415,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v58 native+specs+br_smart (1000, br only for long)')
+    print('[VER] build_alstyle v59 native+specs+br_smart (1000, br only for long, GOAL fix)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
