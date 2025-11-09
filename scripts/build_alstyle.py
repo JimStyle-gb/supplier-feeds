@@ -216,8 +216,9 @@ def _flatten_description(body: str) -> str:
 
 
 def _desc_postprocess_native_specs(body: str) -> str:
-    """Родное описание; если >2000 символов — сжать до ~2000 по границе предложения; Характеристики добавлять всегда.
-       Внутри <p> применяем «умный» <br>: переносим на строки до ~220 символов, максимум 3 брейка.
+    """Родное описание; если >1000 — сжать до ~1000 по границе предложения; Характеристики добавлять всегда.
+       Внутри <p> добавляем «умный» <br> ТОЛЬКО для длинных описаний (>1000).
+       В начало описания вставляем <h3>{name}</h3> из тега <name>.
     """
     import re, html, difflib
 
@@ -273,25 +274,22 @@ def _desc_postprocess_native_specs(body: str) -> str:
             if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
                 continue
             out.append(p); seen.append(np)
-            if len(out) >= 20:  # позволим больше «важных»
+            if len(out) >= 12:
                 break
         return out, seen
 
     def _build_desc_text(plain: str) -> str:
         GOAL = 1000
         GOAL_LOW = 900
-        MAX_HARD = 1200  # запас с завершением по предложению
-
+        MAX_HARD = 1200
         if len(plain) <= GOAL:
             return plain
-
         parts = _sentences(plain)
         important, seen = _pick_important(parts)
         selected = important[:]
         norm_selected = set(seen)
         total = len(" ".join(selected)) if selected else 0
-
-        # добор до ~2000 последовательно
+        # добираем до ~1000 последовательно
         for p in parts:
             np = _norm(p)
             if np in norm_selected:
@@ -299,12 +297,9 @@ def _desc_postprocess_native_specs(body: str) -> str:
             add_len = (1 if total > 0 else 0) + len(p)
             if total + add_len > MAX_HARD:
                 break
-            selected.append(p)
-            norm_selected.add(np)
-            total += add_len
+            selected.append(p); norm_selected.add(np); total += add_len
             if total >= GOAL_LOW:
                 break
-
         if total < GOAL_LOW:
             for p in parts:
                 np = _norm(p)
@@ -313,26 +308,19 @@ def _desc_postprocess_native_specs(body: str) -> str:
                 add_len = (1 if total > 0 else 0) + len(p)
                 if total + add_len > MAX_HARD:
                     break
-                selected.append(p)
-                norm_selected.add(np)
-                total += add_len
+                selected.append(p); norm_selected.add(np); total += add_len
                 if total >= GOAL_LOW:
                     break
-
         while selected and len(" ".join(selected)) > MAX_HARD:
             selected.pop()
-
         if not selected:
             acc, t = [], 0
             for p in parts:
                 add_len = (1 if t > 0 else 0) + len(p)
-                if t + add_len > MAX_HARD:
-                    break
+                if t + add_len > MAX_HARD: break
                 acc.append(p); t += add_len
-                if t >= GOAL_LOW:
-                    break
+                if t >= GOAL_LOW: break
             return " ".join(acc).strip()
-
         return " ".join(selected).strip()
 
     def _collect_params(b: str):
@@ -356,7 +344,16 @@ def _desc_postprocess_native_specs(body: str) -> str:
     plain = _clean_plain(raw)
     desc_text = _build_desc_text(plain)
 
-    # HTML: для длинных (>GOAL) — «умный» <br>, иначе — без <br>
+    # HTML: Заголовок <h3>{name}</h3> + <p> (умный <br> только для длинных) + Характеристики
+    # 1) Заголовок с <name>
+    name_m = re.search(r"(?is)<\s*name\s*>\s*(.*?)\s*</\s*name\s*>", body)
+    name_h3 = ""
+    if name_m:
+        nm = _clean_plain(name_m.group(1))
+        if nm:
+            name_h3 = "<h3>" + html.escape(nm) + "</h3>"
+
+    # 2) Основной абзац
     if len(plain) > 1000:
         sent_parts = _sentences(desc_text)
         LMAX = 220
@@ -376,8 +373,12 @@ def _desc_postprocess_native_specs(body: str) -> str:
         desc_html = "<br>".join(html.escape(x) for x in lines)
     else:
         desc_html = html.escape(desc_text)
+
     blocks = []
+    if name_h3:
+        blocks.append(name_h3)
     blocks.append("<p>" + desc_html + "</p>")
+
     params = _collect_params(body)
     if params:
         blocks.append("<h3>Характеристики</h3>")
@@ -400,7 +401,7 @@ def _transform_offer(chunk: str) -> str:
     attrs, body = _ensure_prefix_and_id(attrs, body)
     body = _flatten_description(body)  # только description
     body = _desc_postprocess_native_specs(body)
-    # ↑ NEW: native+specs, ~2000, smart <br>
+    # ↑ NEW: native+specs, ~1000, smart <br> only for long, prepend <h3>{name}>
     if not body.startswith("\n"): body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
@@ -415,7 +416,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v59 native+specs+br_smart (1000, br only for long, GOAL fix)')
+    print('[VER] build_alstyle v60 native+specs+h3name (1000, smart <br> for long)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
