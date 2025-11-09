@@ -214,8 +214,8 @@ def _flatten_description(body: str) -> str:
         return m.group(1) + txt + m.group(3)
     return rx.sub(repl, body, count=1)
 
-def _desc_postprocess_blocks_min(body: str) -> str:
-    """MIN: Вступление + <h3>Особенности</h3> + <h3>Характеристики</h3>. Старые функции не трогаем."""
+def _desc_postprocess_blocks_ext(body: str) -> str:
+    """EXT: Мини-версия + опциональные блоки по сигналам текста (Габариты, Материалы, Питание, Совместимость, Комплектация, Использование, Важно)."""
     import re, html
     m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
     if not m: return body
@@ -252,33 +252,81 @@ def _desc_postprocess_blocks_min(body: str) -> str:
             out.append((key, vv))
         return out
 
-    def _feats(plain: str):
+    def _sentences(plain: str):
+        return [p.strip() for p in re.split(r"(?<=[\.\!\?])\s+|;\s+", plain) if p.strip()]
+
+    def _feats(parts):
         kw = r"(особенн|функц|режим|подсвет|защит|фильтр|индикатор|автомат|эргоном|тихий|компакт|удобн)"
-        parts = re.split(r"(?<=[\.\!\?])\s+|;\s+|,\s+(?=[А-ЯA-Z])", plain)
-        feats = [p.strip() for p in parts if p and re.search(kw, p.lower()) and 6 <= len(p) <= 140]
-        return feats[:8]
+        return [p for p in parts if re.search(kw, p.lower()) and 6 <= len(p) <= 140][:8]
+
+    def _has(rx, s): 
+        return bool(re.search(rx, s.lower())) if s else False
 
     vendor = _tag("vendor", body)
     name   = _tag("name", body)
     title  = (vendor + " " + name).strip() if vendor else name
 
     plain = _clean(raw)
-    intro = " ".join([p for p in re.split(r"(?<=[\.\!\?])\s+", plain)[:2] if p]).strip() or plain
-    feats = _feats(plain)
-    params = _params(body)
+    parts = _sentences(plain)
+    intro = " ".join(parts[:2]) if parts else plain
 
-    parts = []
+    params = _params(body)
+    feats  = _feats(parts)
+
+    blocks = []
     if title or intro:
         t = (f"<strong>{html.escape(title)}</strong>. " if title else "") + html.escape(intro)
-        parts.append(f"<p>{t}</p>")
+        blocks.append(f"<p>{t}</p>")
     if feats:
-        parts.append("<h3>Особенности</h3>")
-        parts.append("<ul>" + "".join(f"<li>{html.escape(x)}</li>" for x in feats) + "</ul>")
+        blocks.append("<h3>Особенности</h3>")
+        blocks.append("<ul>" + "".join(f"<li>{html.escape(x)}</li>" for x in feats) + "</ul>")
     if params:
-        parts.append("<h3>Характеристики</h3>")
-        parts.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
+        blocks.append("<h3>Характеристики</h3>")
+        blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
 
-    html_desc = "".join(parts) if parts else html.escape(plain or "Описание недоступно")
+    txt = plain.lower()
+    def _take(keys):
+        return [(k,v) for (k,v) in params if any(k.lower().startswith(x.lower()) for x in keys)]
+
+    if _has(r"(габарит|размер|длина|ширина|высот|вес)", txt):
+        items = _take(("Размер","Размеры","Габариты","Размер ШхВхГ","Вес"))
+        if items:
+            blocks.append("<h3>Габариты и вес</h3>")
+            blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
+
+    if _has(r"(материал|корпус|сталь|пластик|алюм|металл)", txt):
+        items = _take(("Материал","Материал корпуса","Покрытие","Корпус"))
+        if items:
+            blocks.append("<h3>Материалы и конструкция</h3>")
+            blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
+
+    if _has(r"(мощност|потреблени|энерг|ватт|вт\b|напряжен)", txt):
+        items = _take(("Мощность","Питание","Напряжение","Энергопотребление"))
+        if items:
+            blocks.append("<h3>Питание и мощность</h3>")
+            blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in items) + "</ul>")
+
+    if _has(r"(совместим|подходит\s+для|для\s+модел(ей|и)|для\s+(принтер|мфу|ноутбук|телефон|пылесос))", txt):
+        items = _take(("Совместимость","Совместимые модели","Для моделей","Подходит для"))
+        if items:
+            blocks.append("<h3>Совместимость</h3>")
+            blocks.append("<ul>" + "".join(f"<li>{html.escape(v)}</li>" for k,v in items) + "</ul>")
+
+    if _has(r"(комплект|в\s+комплекте|поставк|идет\s+вместе)", txt):
+        items = _take(("Комплектация","В комплекте","Поставка"))
+        if items:
+            blocks.append("<h3>Комплектация</h3>")
+            blocks.append("<ul>" + "".join(f"<li>{html.escape(v)}</li>" for k,v in items) + "</ul>")
+
+    if _has(r"(использовани|применени|как\s+использ|настрой|установк|монтаж)", txt):
+        blocks.append("<h3>Использование</h3>")
+        blocks.append("<ul><li>Перед первым использованием ознакомьтесь с инструкцией и соблюдайте рекомендации производителя.</li></ul>")
+
+    if _has(r"(вниман|предостор|не\s+использ|запрещ|не\s+допуск)", txt):
+        blocks.append("<h3>Важно</h3>")
+        blocks.append("<ul><li>Соблюдайте меры безопасности и условия эксплуатации, указанные в документации производителя.</li></ul>")
+
+    html_desc = "".join(blocks) if blocks else html.escape(plain or "Описание недоступно")
     return re.sub(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>", head + html_desc + tail, body, count=1)
 
 # --- Трансформация одного <offer> ---
@@ -294,8 +342,8 @@ def _transform_offer(chunk: str) -> str:
     body = _sort_offer_tags(body)
     attrs, body = _ensure_prefix_and_id(attrs, body)
     body = _flatten_description(body)  # только description
-    body = _desc_postprocess_blocks_min(body)
-    # ↑ NEW: пост-обработка description (_desc_postprocess_blocks_min)
+    body = _desc_postprocess_blocks_ext(body)
+    # ↑ NEW: пост-обработка description (_desc_postprocess_blocks_ext)
     if not body.startswith("\n"): body = "\n" + body
     return f"<offer{attrs}>{body}</offer>"
 
