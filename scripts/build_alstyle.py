@@ -216,8 +216,10 @@ def _flatten_description(body: str) -> str:
 
 
 
+
 def _desc_postprocess_native_specs(body: str) -> str:
-    """Родное описание; если >1000 символов — сжать до ~1000 по границе предложения; Характеристики добавлять всегда."""
+    """Родное описание; если >1000 символов — сжать до ~1000 по границе предложения; Характеристики добавлять всегда.
+       Улучшено: если «важных» фраз мало, добираем предложения из оригинала (по убыванию важности) до 1000±."""
     import re, html, difflib
 
     m = re.search(r"(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)", body)
@@ -246,9 +248,12 @@ def _desc_postprocess_native_specs(body: str) -> str:
         return bool(re.search(r"\b\d[\d\s\.,]*\s?(Вт|W|В|V|мм|cm|см|м|кг|г|л|L|мАч|А·ч|Ah|%|Гц|Hz|дБ|°C|dpi|ГБ|МБ|TB|fps|м³/ч|м/с|Нм)\b", s))
 
     def _is_key(s: str) -> bool:
-        if _is_facty(s): 
+        if _is_facty(s):
             return True
-        return bool(re.search(r"(мощност|напряжен|размер|вес|материал|скорост|объ[её]м|режим|функц|индикатор|фильтр|питани|давлен|частот|класс|стандарт|интерфейс|корпус|сенсор)", s.lower()))
+        # расширенные термины для техники/панелей/интерфейсов
+        extra = r"(android|ops|hdmi|dp\b|type[-\s]?c|vga|lan|usb|4k|3840|2160|герц|ghz|ядр|a73|a53|mali|ram|rom|гб|емкостн|сенсор|подсвет|od20|склеиван|защит|блокировк|экран|узк[ао]й?\s*рамк|тонк(ий|ая)|констраст|яркост|матриц|срок\s+службы)"
+        base  = r"(мощност|напряжен|размер|вес|материал|скорост|объ[её]м|режим|функц|индикатор|фильтр|питани|давлен|частот|класс|стандарт|интерфейс|корпус|сенсор)"
+        return bool(re.search(f"{base}|{extra}", s.lower()))
 
     def _norm(s: str) -> str:
         s = s.lower()
@@ -264,48 +269,72 @@ def _desc_postprocess_native_specs(body: str) -> str:
         out.append(parts[0]); seen.append(_norm(parts[0]))
         # далее только важные
         for p in parts[1:]:
-            if len(p) < 25 or len(p) > 300: 
+            if len(p) < 15 or len(p) > 300:
                 continue
             if not _is_key(p):
                 continue
             np = _norm(p)
             if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
                 continue
-            out.append(p)
-            seen.append(np)
-        return out
+            out.append(p); seen.append(np)
+            if len(out) >= 12:
+                break
+        return out, seen
 
     def _build_desc_text(plain: str) -> str:
-        MAX_GOAL = 1000
-        MAX_HARD = 1200  # допускаем небольшой перерасход, но завершаем по точке
-        if len(plain) <= MAX_GOAL:
+        GOAL = 1000
+        GOAL_LOW = 900     # минимум, к которому стремимся
+        MAX_HARD = 1200    # потолок, но по границе предложения
+
+        if len(plain) <= GOAL:
             return plain
+
         parts = _sentences(plain)
-        key = _pick_important(parts)
-        # если ключевых мало, возьмём столько, сколько есть; не добавляем "лишнее", чтобы сохранить смысл
-        text = " ".join(key).strip()
-        if not text:
-            # fallback — первые предложения до ~1000
-            acc, total = [], 0
+        important, seen = _pick_important(parts)
+        # если выбранных фраз мало — добираем по исходному порядку
+        def _score(p):
+            # приоритизируем фактные, потом ключевые, затем обычные
+            if _is_facty(p): return 3
+            if _is_key(p):   return 2
+            return 1
+
+        selected = important[:]
+        total = len(" ".join(selected)) if selected else 0
+
+        if total < GOAL_LOW:
             for p in parts:
-                if not p: continue
-                if total + len(p) + 1 > MAX_HARD:
+                if p in selected:  # точное совпадение уже добавлено
+                    continue
+                np = _norm(p)
+                if any(difflib.SequenceMatcher(a=np, b=s0).ratio() >= 0.92 for s0 in seen):
+                    continue
+                # берем предложения разумной длины
+                if len(p) < 12:
+                    continue
+                cand_len = len(p) + (1 if total > 0 else 0)
+                # добавляем самое приоритетное, но в исходном порядке прохода — сохраняем связность
+                selected.append(p)
+                seen.append(np)
+                total += cand_len
+                if total >= GOAL_LOW:
                     break
-                acc.append(p); total += len(p) + 1
-                if total >= MAX_GOAL:
+
+        # теперь, если всё ещё выше жесткого потолка — обрежем по предложению
+        while selected and len(" ".join(selected)) > MAX_HARD:
+            selected.pop()
+
+        if not selected:
+            # fallback — первые фразы до GOAL
+            acc, t = [], 0
+            for p in parts:
+                if t + len(p) + 1 > MAX_HARD:
+                    break
+                acc.append(p); t += len(p) + 1
+                if t >= GOAL_LOW: 
                     break
             return " ".join(acc).strip()
-        if len(text) <= MAX_HARD:
-            # если превышает цель >1000, но меньше 1200 — оставляем как есть
-            return text
-        # ужмём: постепенно обрежем последние предложения, пока не впишемся
-        sel = key[:]
-        while sel and len(" ".join(sel)) > MAX_HARD:
-            sel.pop()  # убираем последний
-        if not sel:
-            return key[0]
-        # если всё ещё больше цели, но в пределах — ок; если меньше — тоже ок
-        return " ".join(sel).strip()
+
+        return " ".join(selected).strip()
 
     def _collect_params(b: str):
         deny = {"артикул","благотворительность","код тн вэд","код товара kaspi",
@@ -314,10 +343,10 @@ def _desc_postprocess_native_specs(body: str) -> str:
         out = []
         for k,v in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', b):
             kk = _clean_plain(k).strip(": ").lower()
-            if kk in deny: 
+            if kk in deny:
                 continue
             vv = _clean_plain(v)
-            if not vv: 
+            if not vv:
                 continue
             key = k.strip().strip(": ")
             key = key[:1].upper() + key[1:] if key else ""
@@ -367,7 +396,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v52 native+specs (always specs, ~1000 cut)')
+    print('[VER] build_alstyle v53 native+specs (fill to ~1000)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
