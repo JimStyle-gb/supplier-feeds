@@ -278,9 +278,9 @@ def _desc_postprocess_native_specs(body: str) -> str:
         return out, seen
 
     def _build_desc_text(plain: str) -> str:
-        GOAL = 1000
-        GOAL_LOW = 900
-        MAX_HARD = 1200
+        GOAL = 2000
+        GOAL_LOW = 1900
+        MAX_HARD = 2200
         if len(plain) <= GOAL:
             return plain
         parts = _sentences(plain)
@@ -396,7 +396,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v55 native+specs+br_smart')
+    print('[VER] build_alstyle v56 native+specs+br_smart (2000 limit)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
