@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-08 21:50">
+<yml_catalog date="2025-11-09 13:50">
 <shop>
 <offers>
 
@@ -25263,7 +25263,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS61401" available="true">
+<offer id="AS61401" available="false">
 <categoryId>3545</categoryId>
 <vendorCode>AS61401</vendorCode>
 <name>Источник бесперебойного питания Schneider Electric Easy UPS SRVS1KRIRK</name>
@@ -33316,7 +33316,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">1 мс</param>
 </offer>
 
-<offer id="AS73513" available="false">
+<offer id="AS73513" available="true">
 <categoryId>5649</categoryId>
 <vendorCode>AS73513</vendorCode>
 <name>Монитор 25&quot; Dahua DHI-LM25-B200BS</name>
