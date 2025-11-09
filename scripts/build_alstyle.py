@@ -303,7 +303,9 @@ def _desc_postprocess_native_specs(body: str) -> str:
     if not is_long:
         # Небольшие тексты — оставляем родное описание как есть (в <p>)
         html_desc = "<p>" + html.escape(plain) + "</p>"
-        return re.sub(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>", head + html_desc + tail, body, count=1)
+        import re as _re_fix
+    _patt = _re_fix.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>")
+    return _patt.sub(lambda _m: head + html_desc + tail, body, 1)
 
     # Длинные тексты — сокращаем до ключевых фраз и добавляем характеристики
     key_sents = _pick_key_sentences(parts) or parts[:4]
@@ -316,7 +318,9 @@ def _desc_postprocess_native_specs(body: str) -> str:
         blocks.append("<ul>" + "".join(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>" for k,v in params) + "</ul>")
 
     html_desc = "".join(blocks)
-    return re.sub(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>", head + html_desc + tail, body, count=1)
+    import re as _re_fix
+    _patt = _re_fix.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>")
+    return _patt.sub(lambda _m: head + html_desc + tail, body, 1)
 
 # --- Трансформация одного <offer> ---
 def _transform_offer(chunk: str) -> str:
@@ -347,7 +351,7 @@ def _strip_shop_header(src: str) -> str:
     return left + right
 
 def main() -> int:
-    print('[VER] build_alstyle v49 native+specs (auto-long)')
+    print('[VER] build_alstyle v50 native+specs (auto-long, repl-fix)')
     try:
         r = requests.get(URL, timeout=90, auth=(LOGIN, PASSWORD))
     except Exception as e:
