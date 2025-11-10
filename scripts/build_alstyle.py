@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 # build_alstyle.py — v68 feed_meta + params-sorted + attr-order fix
-# (Компактно, с русскими комментариями; базовая логика не изменена, добавлен FEED_META)
+# База: v67 (ничего не трогаем), добавлен блок FEED_META в конец YML.
 
 import os, re, html, sys, time, hashlib
 from pathlib import Path
@@ -68,8 +68,7 @@ def _price_retail(base: int) -> int:
     elif 1_500_001 <= base <= 2_000_000: add = 90_000
     elif 2_000_001 <= base: add = 100_000
     retail = int((base * 1.04) + add + 0.9999)  # вверх
-    # хвост 900
-    retail = (retail // 1000) * 1000 + 900
+    retail = (retail // 1000) * 1000 + 900  # хвост 900
     return retail
 
 def _move_available_attr(header: str, body: str):
@@ -100,7 +99,6 @@ def _fix_vendorcode_and_id(body: str, header: str):
     m = _re_vendorCode.search(body)
     vc = m.group(1).strip() if m else ""
     if not vc:
-        # если нет vendorCode — попробуем из name сделать хэш (крайний случай)
         n = _re_name.search(body)
         vc = ("AS" + hashlib.md5((n.group(1).strip() if n else "X").encode('utf-8')).hexdigest()[:6].upper())
         body = re.sub(r'(?is)</vendorCode>', '', body) if m else f"<vendorCode>{vc}</vendorCode>\n" + body
@@ -114,45 +112,41 @@ def _fix_vendorcode_and_id(body: str, header: str):
     return body, header, vc
 
 def _swap_price_tags(body: str) -> str:
-    """Меняем местами <price> и <purchase_price>, затем удаляем <purchase_price>"""
+    """Меняем местами <price> и <purchase_price>, затем удаляем <purchase_price> и считаем розничную"""
     price = _re_price.search(body)
     pprice = _re_pprice.search(body)
     if price and pprice:
-        # Поменять содержимое местами
         b = body
         b = _re_price.sub(f"<price>{pprice.group(1)}</price>", b, count=1)
         b = _re_pprice.sub(f"<purchase_price>{price.group(1)}</purchase_price>", b, count=1)
         body = b
-    # Розничная на основе новой <price>
     price = _re_price.search(body)
     if price:
         base = int(price.group(1))
         retail = _price_retail(base)
         body = _re_price.sub(f"<price>{retail}</price>", body, count=1)
-    # Удаляем purchase_price как тег
     body = _re_pprice.sub("", body)
     return body
 
 def _clean_description_text(raw: str) -> str:
     """Чистим «родное» описание до плоского текста"""
-    t = re.sub(r'(?is)<[^>]+>', ' ', raw)  # убрать html
+    t = re.sub(r'(?is)<[^>]+>', ' ', raw)
     t = html.unescape(t)
     t = re.sub(r'\s+', ' ', t).strip()
     return t
 
 def _build_description(name: str, raw_desc: str, params_html: str) -> str:
-    """Формируем <description>: <h3>{name}</h3> + <p>…≤1000 символов…</p> + <h3>Характеристики</h3><ul>…</ul>"""
+    """<h3>{name}</h3> + <p>…≤1000…</p> + <h3>Характеристики</h3><ul>…</ul>; <br> — только для длинных"""
     plain = _clean_description_text(raw_desc)
     GOAL = 1000
     if len(plain) > GOAL:
-        # обрезаем по предложению, умный <br> для длинных
         sents = re.split(r'(?<=[.!?])\s+', plain)
         acc, L = [], 0
         for s in sents:
             if L + len(s) > 1200: break
             acc.append(s); L += len(s) + 1
         text = ' '.join(acc).strip()
-        text = re.sub(r'\s*\.\s*', '.<br>', text)  # мягкие разрывы между предложениями
+        text = re.sub(r'\s*\.\s*', '.<br>', text)  # мягкие разрывы только для длинных
     else:
         text = plain
     return f"<description><h3>{html.escape(name)}</h3><p>{text}</p>{params_html}</description>"
@@ -185,12 +179,11 @@ def _params_to_html(items):
 
 # --- FEED_META ---
 def _append_feed_meta(text_out: str, *, supplier_url: str, total_before: int, total_after: int, avail_true: int, avail_false: int) -> str:
-    """В конец файла добавляет HTML-комментарий FEED_META с пустыми строками до и после."""
+    """Добавляет HTML-комментарий FEED_META с пустыми строками до и после (в конец файла)."""
     try:
         now = datetime.now(ZoneInfo("Asia/Almaty"))
     except Exception:
         now = datetime.utcnow()
-    # ближайшая сборка — 01:00 по Алматы (сегодня, если ещё не было; иначе завтра)
     target = now.replace(hour=1, minute=0, second=0, microsecond=0)
     if now >= target:
         target = target + timedelta(days=1)
@@ -249,30 +242,30 @@ def main() -> int:
         for tg in ("url", "quantity", "quantity_in_stock", "available", "purchase_price"):
             body = _re_tag(tg).sub("", body)
 
-        # чистка чёрных параметров
+        # чёрные параметры
         body = _strip_black_params(body)
 
         # vendorCode + id
         body, hdr, vc = _fix_vendorcode_and_id(body, hdr)
 
-        # Сбор характеристик (после чистки)
+        # характеристики
         params = _collect_params(body)
         params = _sort_params(params)
         params_html = _params_to_html(params)
 
-        # name + описание (из исходного <description> или пусто)
+        # name + описание
         nm = (_re_name.search(body).group(1).strip() if _re_name.search(body) else vc)
         dm = re.search(r'(?is)<\s*description\s*>(.*?)</\s*description\s*>', body)
         raw_desc = dm.group(1) if dm else ""
         desc = _build_description(nm, raw_desc, params_html)
 
-        # вырезаем старый <description> и вставляем наш
+        # заменить/вставить <description>
         if dm:
             body = re.sub(r'(?is)<\s*description\s*>.*?</\s*description\s*>', desc, body, count=1)
         else:
             body = desc + "\n" + body
 
-        # порядок тегов внутри оффера
+        # порядок тегов
         def _pick(tag, s):
             m = re.search(rf'(?is)<\s*{tag}\b.*?</\s*{tag}\s*>', s)
             return (m.group(0) if m else "")
@@ -287,19 +280,18 @@ def main() -> int:
             _pick("description", body) +
             ''.join(re.findall(r'(?is)<\s*param\b[^>]*>.*?</\s*param\s*>', body))
         )
-        # финальный оффер
         kept.append(f"{hdr}{ordered}</offer>")
 
     # 5) Сборка результата
     new_offers = '\n'.join(x.strip() for x in kept)
     out_text = head + '\n' + new_offers + '\n' + tail
 
-    # Нормализация переноса и лишних пустых строк
+    # Нормализация
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
     out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
 
-    # 6) FEED_META (статистика по готовому файлу)
+    # 6) FEED_META (по готовому списку)
     joined = ''.join(kept)
     avail_true = len(re.findall(r'(?is)<offer\b[^>]*\bavailable="true"', joined))
     avail_false = len(re.findall(r'(?is)<offer\b[^>]*\bavailable="false"', joined))
