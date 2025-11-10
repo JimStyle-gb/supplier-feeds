@@ -1,5 +1,5 @@
 # coding: utf-8
-# build_alstyle.py — v71 params-sorted + attr-order fix + FEED_META(top)
+# build_alstyle.py — v72 params-sorted + attr-order fix + FEED_META(top) + spacing-fix
 # БАЗА: v67 (ничего не меняем), добавлен только блок FEED_META в самый верх итогового файла.
 
 import os, re, html, sys, time, hashlib
@@ -7,7 +7,7 @@ from pathlib import Path
 import requests
 from datetime import datetime, timedelta, timezone
 
-print('[VER] build_alstyle v71 params-sorted + attr-order fix + FEED_META(top)')
+print('[VER] build_alstyle v72 params-sorted + attr-order fix + FEED_META(top) + spacing-fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -350,10 +350,21 @@ def main() -> int:
     new_offers = '\n'.join(x.strip() for x in kept)
     out_text = head + '\n' + new_offers + '\n' + tail
 
-    # Нормализация
+    # Нормализация (spacing-only; правим существующий блок)
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
-    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
+
+    # 1) Разрыв между <shop> и <offers>
+    out_text = re.sub(r'<shop>\s*<offers>', '<shop>\n<offers>', out_text, count=1)
+
+    # 2) Пустая строка между офферами: </offer>\n\n<offer ...>
+    out_text = re.sub(r'</offer>\s*<offer\b', '</offer>\n\n<offer ', out_text)
+
+    # 3) Разрыв перед закрывающим </offers>
+    out_text = re.sub(r'</offer>\s*</offers>', '</offer>\n</offers>', out_text, count=1)
+
+    # 4) Финальная нормализация кратных переносов
+    out_text = re.sub(r'\n{3,}', '\n\n', out_text)
 
     # FEED_META в САМЫЙ ВЕРХ (без изменения остальной структуры)
     feed_meta = _make_feed_meta(url, total_before, len(kept), avail_true, avail_false)
