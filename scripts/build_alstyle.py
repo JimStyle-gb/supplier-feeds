@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
-# build_alstyle.py — v68 feed_meta + params-sorted + attr-order fix
+# build_alstyle.py — v69 feed_meta + desc-repl-fix + params-sorted + attr-order fix
 # База: v67 (ничего не трогаем), добавлен блок FEED_META в конец YML.
 
 import os, re, html, sys, time, hashlib
@@ -38,6 +38,7 @@ PRIOR = ['Диагональ экрана','Яркость','Операцион�
          'Память','Точек касания','Интерфейсы','Вес','Размеры']
 
 # --- Утилиты ---
+_re_desc_tag = re.compile(r"(?is)<\s*description\b[^>]*>.*?</\s*description\s*>")
 _re_offers_block = re.compile(r"(?is)(.*?<offers>)(.*?)(</offers>.*)", re.S)
 _re_offer = re.compile(r"(?is)(<offer\b[^>]*>)(.*?)(</offer>)")
 _re_cat = re.compile(r"(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>")
@@ -205,7 +206,7 @@ def _append_feed_meta(text_out: str, *, supplier_url: str, total_before: int, to
 
 # --- Главный поток ---
 def main() -> int:
-    print('[VER] build_alstyle v68 feed_meta + params-sorted + attr-order fix')
+    print('[VER] build_alstyle v69 feed_meta + desc-repl-fix + params-sorted + attr-order fix')
     # 1) Скачиваем исходник
     r = requests.get(URL, auth=AUTH, timeout=60)
     r.raise_for_status()
@@ -261,7 +262,7 @@ def main() -> int:
 
         # заменить/вставить <description>
         if dm:
-            body = re.sub(r'(?is)<\s*description\s*>.*?</\s*description\s*>', desc, body, count=1)
+            body = _re_desc_tag.sub(lambda _m: desc, body, count=1)
         else:
             body = desc + "\n" + body
 
