@@ -1,16 +1,16 @@
 <!--FEED_META
 Поставщик                                  | AlStyle
 URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
-Время сборки (Алматы)                      | 2025-11-10 17:08:42
-Ближайшая сборка (Алматы)                  | 2025-11-11 01:00:00
-Сколько товаров у поставщика до фильтра    | 15698
-Сколько товаров у поставщика после фильтра | 2039
-Сколько товаров есть в наличии (true)      | 1394
-Сколько товаров нет в наличии (false)      | 645
+Время сборки (Алматы)                      | 2025-11-11 13:16:02
+Ближайшая сборка (Алматы)                  | 2025-11-12 01:00:00
+Сколько товаров у поставщика до фильтра    | 15666
+Сколько товаров у поставщика после фильтра | 2037
+Сколько товаров есть в наличии (true)      | 1384
+Сколько товаров нет в наличии (false)      | 653
 -->
 
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-10 16:50">
+<yml_catalog date="2025-11-11 12:50">
 <shop>
 <offers>
 <offer id="AS20888" available="false">
@@ -1008,7 +1008,7 @@ URL поставщика                             | https://al-style.kz/upload/catalog_
 <param name="Цвет">Синий</param>
 </offer>
 
-<offer  id="AS19661" available="true">
+<offer  id="AS19661" available="false">
 <categoryId>5710</categoryId>
 <vendorCode>AS19661</vendorCode>
 <name>Экран Deluxe DLS-M203xW (80&quot;х80&quot;), ? - 113&quot;, Раб. поверхность 195х195 см., 1:1</name>
@@ -1326,7 +1326,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Серый</param>
 </offer>
 
-<offer  id="AS9473" available="true">
+<offer  id="AS9473" available="false">
 <categoryId>3708</categoryId>
 <vendorCode>AS9473</vendorCode>
 <name>Кабель сетевой SHIP D147-P Cat.5e FTP 30В LSZH</name>
@@ -1440,7 +1440,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Фиолетовый</param>
 </offer>
 
-<offer  id="AS4426" available="false">
+<offer  id="AS4426" available="true">
 <categoryId>3708</categoryId>
 <vendorCode>AS4426</vendorCode>
 <name>Кабель сетевой SHIP D175S-P Cat.6 FTP 30В PVC</name>
@@ -2588,7 +2588,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer  id="AS14042" available="false">
+<offer  id="AS14042" available="true">
 <categoryId>21664</categoryId>
 <vendorCode>AS14042</vendorCode>
 <name>Картридж Europrint EPC-737</name>
@@ -3189,7 +3189,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Комбинированный</param>
 </offer>
 
-<offer  id="AS14649" available="true">
+<offer  id="AS14649" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS14649</vendorCode>
 <name>Источник бесперебойного питания SVC PTL-2K-LCD</name>
@@ -13171,7 +13171,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer  id="AS42045" available="true">
+<offer  id="AS42045" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS42045</vendorCode>
 <name>Источник бесперебойного питания CyberPower PR3000ELCDSL</name>
@@ -13253,7 +13253,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3540</categoryId>
 <vendorCode>AS42059</vendorCode>
 <name>Батарейный блок CyberPower BPE144VL2U01</name>
-<price>725900</price>
+<price>719900</price>
 <picture>https://img.al-style.kz/42059_1.jpg</picture>
 <picture>https://img.al-style.kz/42059_2.jpg</picture>
 <picture>https://img.al-style.kz/42059_3.jpg</picture>
@@ -13689,7 +13689,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3540</categoryId>
 <vendorCode>AS42094</vendorCode>
 <name>Батарейный блок CyberPower BP48VP2U03EU</name>
-<price>413900</price>
+<price>386900</price>
 <picture>https://img.al-style.kz/42094_1.jpg</picture>
 <picture>https://img.al-style.kz/42094_2.jpg</picture>
 <picture>https://img.al-style.kz/42094_3.jpg</picture>
@@ -13752,7 +13752,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3545</categoryId>
 <vendorCode>AS42097</vendorCode>
 <name>Источник бесперебойного питания CyberPower PR6000ELCDRTXL5U</name>
-<price>1371900</price>
+<price>1391900</price>
 <picture>https://img.al-style.kz/42097_1.jpg</picture>
 <picture>https://img.al-style.kz/42097_2.jpg</picture>
 <picture>https://img.al-style.kz/42097_3.jpg</picture>
@@ -13788,7 +13788,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer  id="AS42098" available="true">
+<offer  id="AS42098" available="false">
 <categoryId>3545</categoryId>
 <vendorCode>AS42098</vendorCode>
 <name>Источник бесперебойного питания CyberPower OLS1500ERT2U</name>
@@ -15686,7 +15686,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS44476" available="true">
+<offer  id="AS44476" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS44476</vendorCode>
 <name>Монитор 31,5&quot; Gigabyte M32QC-EK</name>
@@ -15843,39 +15843,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Диаметр проводника">0,56 мм</param>
 <param name="Стандарты">Категория 6</param>
 <param name="Цвет">Синий</param>
-</offer>
-
-<offer  id="AS46287" available="false">
-<categoryId>5649</categoryId>
-<vendorCode>AS46287</vendorCode>
-<name>Монитор 27&quot; ZOWIE XL2746K Dark Grey</name>
-<price>325900</price>
-<picture>https://img.al-style.kz/46287_1.jpg</picture>
-<picture>https://img.al-style.kz/46287_2.jpg</picture>
-<picture>https://img.al-style.kz/46287_3.jpg</picture>
-<vendor>Zowie</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Монитор 27&quot; ZOWIE XL2746K Dark Grey</h3><p>Монитор 27&quot; ZOWIE XL2746K Dark Grey Игровой монитор для киберспорта ZOWIE XL2746K 27-дюймов с частотой 240 Гц и технологией DyAc? .<br>Особенности и преимущества: Плавная и гибкая регулировка игровое пространство и игровой комфорт. Новая подставка разработана таким образом, чтобы занимать меньше места на столе при сохранении той же устойчивости.<br>Это предоставляет геймерам больше пространства для движений во время игрового процесса и обеспечивает более комфортную игру. XL Setting to Share .<br>Поделитесь своими настройками с товарищем по команде, другом или фанатами. Быстро сохраняйте видео-профили и делитесь ими с удобством через простой пользовательский интерфейс. Быстрый доступ к настройкам. Обновленный интерфейс и переключатель S-Switch обеспечивает быстрый доступ в меню монитора и позволяет преключаться между режимами одним касанием. Теперь настройка изображения перед игрой или во время раунда стала намного удобнее.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 27</li><li><strong>Яркость:</strong> 320 кд/кв. м</li><li><strong>Вес:</strong> 14.5</li><li><strong>USB-порт:</strong> USB тип A только для обслуживания и инструмента настройки LAN</li><li><strong>Видеовыход:</strong> HDMI / DP</li><li><strong>Время отклика:</strong> 1 мс</li><li><strong>Габариты (ШхГхВ):</strong> 562,2/407,2х628,6x217,9</li><li><strong>Гарантия:</strong> 3 года</li><li><strong>Дополнительная информация:</strong> DyAc?™, XL Setting to Share™, Козырек, Переключатель S Switch, Функция Black eQualizer, Функция Colo</li><li><strong>Контрастность:</strong> 1000:1</li><li><strong>Материал:</strong> Металл, пластик</li><li><strong>Подсветка:</strong> LED</li><li><strong>Размер VESA:</strong> 100x100 мм</li><li><strong>Размер экрана:</strong> 597.6 x 336.2</li><li><strong>Разрешение:</strong> 1920x1080</li><li><strong>Состав:</strong> Металл, пластик</li><li><strong>Тип матрицы экрана:</strong> TN</li><li><strong>Угол обзора:</strong> 170/160°</li><li><strong>Цвет:</strong> Чёрный</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
-<param name="Вес">14.5</param>
-<param name="Гарантия">3 года</param>
-<param name="Частота обновления экрана">240 Гц</param>
-<param name="USB-порт">USB тип A только для обслуживания и инструмента настройки LAN</param>
-<param name="Контрастность">1000:1</param>
-<param name="Тип матрицы экрана">TN</param>
-<param name="Яркость">320 кд/кв. м</param>
-<param name="Размер VESA">100x100 мм</param>
-<param name="Видеовыход">HDMI / DP</param>
-<param name="Угол обзора">170/160°</param>
-<param name="Подсветка">LED</param>
-<param name="Дополнительная информация">DyAc?™, XL Setting to Share™, Козырек, Переключатель S Switch, Функция Black eQualizer, Функция Colo</param>
-<param name="Габариты (ШхГхВ)">562,2/407,2х628,6x217,9</param>
-<param name="Материал">Металл, пластик</param>
-<param name="Состав">Металл, пластик</param>
-<param name="Разрешение">1920x1080</param>
-<param name="Размер экрана">597.6 x 336.2</param>
-<param name="Диагональ экрана">27</param>
-<param name="Время отклика">1 мс</param>
-<param name="Цвет">Чёрный</param>
 </offer>
 
 <offer  id="AS44045" available="true">
@@ -16315,7 +16282,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS32430" available="false">
+<offer  id="AS32430" available="true">
 <categoryId>21372</categoryId>
 <vendorCode>AS32430</vendorCode>
 <name>Тонер-картридж Xerox 006R01635 (голубой)</name>
@@ -16330,7 +16297,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS32431" available="false">
+<offer  id="AS32431" available="true">
 <categoryId>21372</categoryId>
 <vendorCode>AS32431</vendorCode>
 <name>Тонер-картридж Xerox 006R01636 (малиновый)</name>
@@ -16963,7 +16930,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS42428" available="false">
+<offer  id="AS42428" available="true">
 <categoryId>21574</categoryId>
 <vendorCode>AS42428</vendorCode>
 <name>Жесткий диск Xerox 497K23610 320 ГБ</name>
@@ -17746,7 +17713,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer  id="AS44042" available="false">
+<offer  id="AS44042" available="true">
 <categoryId>3566</categoryId>
 <vendorCode>AS44042</vendorCode>
 <name>Картридж Europrint EPC-W2030A</name>
@@ -18389,6 +18356,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <name>Монитор 21,5&quot; Dahua DHI-LM22-B200</name>
 <price>38900</price>
 <picture>https://img.al-style.kz/36776_1.jpg</picture>
+<picture>https://img.al-style.kz/36776_2.jpg</picture>
+<picture>https://img.al-style.kz/36776_3.jpg</picture>
 <vendor>Dahua</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Монитор 21,5&quot; Dahua DHI-LM22-B200</h3><p>Монитор 21,45&quot; Dahua DHI-LM22-B200 Особенности и преимущества: Легкий и экономичный пластиковый корпус Сверхузкая рамка, элегантный дизайн, металлическая подставка Сверхширокий угол обзора 178 /178 для удобства просмотра изображения Цифровая обработка высокой точности для яркого и реалистичного видео Поддержка разнообразных интерфейсов, таких как HDMI, VGA Низкое энергопотребление, длительный срок службы Конструкция с защитой от синего света, защита глаз Порты: VGA 1 HDMI 1 Аудиовыход 1 Комплектация: HDMI кабель Блок питания Подставка</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 3.3</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
@@ -19588,7 +19557,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3545</categoryId>
 <vendorCode>AS52856</vendorCode>
 <name>Источник бесперебойного питания CyberPower OLS6KERT5U</name>
-<price>1418900</price>
+<price>1420900</price>
 <picture>https://img.al-style.kz/52856_1.jpg</picture>
 <picture>https://img.al-style.kz/52856_2.jpg</picture>
 <picture>https://img.al-style.kz/52856_3.jpg</picture>
@@ -19684,7 +19653,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3545</categoryId>
 <vendorCode>AS52860</vendorCode>
 <name>Источник бесперебойного питания CyberPower OL8KERTHD</name>
-<price>1873900</price>
+<price>1756900</price>
 <picture>https://img.al-style.kz/52860_1.jpg</picture>
 <picture>https://img.al-style.kz/52860_2.jpg</picture>
 <picture>https://img.al-style.kz/52860_3.jpg</picture>
@@ -19720,7 +19689,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3545</categoryId>
 <vendorCode>AS52861</vendorCode>
 <name>Источник бесперебойного питания CyberPower OL10KERTHD</name>
-<price>2096900</price>
+<price>1965900</price>
 <picture>https://img.al-style.kz/52861_1.jpg</picture>
 <picture>https://img.al-style.kz/52861_2.jpg</picture>
 <picture>https://img.al-style.kz/52861_3.jpg</picture>
@@ -19757,7 +19726,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3540</categoryId>
 <vendorCode>AS52862</vendorCode>
 <name>Батарейный блок CyberPower BPE192VL2U01</name>
-<price>750900</price>
+<price>730900</price>
 <picture>https://img.al-style.kz/52862_1.jpg</picture>
 <picture>https://img.al-style.kz/52862_2.jpg</picture>
 <picture>https://img.al-style.kz/52862_3.jpg</picture>
@@ -19775,7 +19744,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer  id="AS53242" available="false">
+<offer  id="AS53242" available="true">
 <categoryId>5649</categoryId>
 <vendorCode>AS53242</vendorCode>
 <name>Монитор Xiaomi A22i A22FAB-RAGL 21.5&quot;</name>
@@ -21405,7 +21374,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Скорость выхода первой страницы">7.1 сек. (моно) / 7.1 сек. (цвет)</param>
 </offer>
 
-<offer  id="AS59326" available="true">
+<offer  id="AS59326" available="false">
 <categoryId>21576</categoryId>
 <vendorCode>AS59326</vendorCode>
 <name>Цветное лазерное МФУ Canon I-S MF754CDW</name>
@@ -24862,7 +24831,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer  id="AS61370" available="true">
+<offer  id="AS61370" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS61370</vendorCode>
 <name>Источник бесперебойного питания APC Easy UPS SRV6KI</name>
@@ -25554,7 +25523,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer  id="AS61383" available="true">
+<offer  id="AS61383" available="false">
 <categoryId>3542</categoryId>
 <vendorCode>AS61383</vendorCode>
 <name>Источник бесперебойного питания APC Easy UPS BV1000I-GR</name>
@@ -25775,7 +25744,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS61566" available="true">
+<offer  id="AS61566" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS61566</vendorCode>
 <name>Монитор 43&quot; Dahua DHI-LM43-F400</name>
@@ -27642,7 +27611,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Скорость выхода первой страницы">5.2 сек. (моно)</param>
 </offer>
 
-<offer  id="AS63299" available="false">
+<offer  id="AS63299" available="true">
 <categoryId>21665</categoryId>
 <vendorCode>AS63299</vendorCode>
 <name>Тонер-картридж Canon TONER T07 CYAN 3642C001AA</name>
@@ -29132,8 +29101,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/65077_3.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Монохромное лазерное МФУ Canon MF272dw</h3><p>Монохромное лазерное МФУ Canon MF272dw Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики Оптимизируйте процессы печати и повысьте эффективность работы дома или в небольших офисах с помощью этих быстрых и надежных черно-белых лазерных МФУ.<br>Преимущества Повышенная производительность. Обеспечьте максимальную производительность благодаря печати, копированию и сканированию документов на надежных устройствах.<br>Отправляйте факсы с моделью MF272dw, экономьте время благодаря двусторонней печати и используйте разнообразные носители малого формата для изготовления печатных документов формата A5 и A6R.<br>Защитите конфиденциальные документы. Защитите свои документы, устройства и сеть от вирусов и кражи данных с помощью комплексной системы безопасности. В список функций входят безопасный запуск и руководство по навигации и безопасности. Простота использования.</p><h3>Характеристики</h3><ul><li><strong>Интерфейсы:</strong> USB 2.0, Ethernet 10/100, Wi-Fi</li><li><strong>Вес:</strong> 12.904</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Емкость выходных лотков:</strong> 50 листов</li><li><strong>Емкость лотков подачи:</strong> 151 лист</li><li><strong>Максимальная нагрузка:</strong> 20 000 стр./мес.</li><li><strong>Объём оперативной памяти:</strong> 256 Мб</li><li><strong>Разрешение печати:</strong> 2400x600 dpi</li><li><strong>Рекомендуемая нагрузка:</strong> 2 000 стр./мес.</li><li><strong>Скорость выхода первой страницы:</strong> 5.4 сек. (моно)</li><li><strong>Скорость печати, А4:</strong> 29 стр./мин.</li><li><strong>Тип сканера:</strong> Планшетный</li><li><strong>Частота процессора:</strong> 1.2 ГГц</li></ul></description>
-<param name="Вес">12.904</param>
+<description><h3>Монохромное лазерное МФУ Canon MF272dw</h3><p>Монохромное лазерное МФУ Canon MF272dw Товар предназначен только для продажи на территориях Республики Казахстан и Кыргызской Республики Оптимизируйте процессы печати и повысьте эффективность работы дома или в небольших офисах с помощью этих быстрых и надежных черно-белых лазерных МФУ.<br>Преимущества Повышенная производительность. Обеспечьте максимальную производительность благодаря печати, копированию и сканированию документов на надежных устройствах.<br>Отправляйте факсы с моделью MF272dw, экономьте время благодаря двусторонней печати и используйте разнообразные носители малого формата для изготовления печатных документов формата A5 и A6R.<br>Защитите конфиденциальные документы. Защитите свои документы, устройства и сеть от вирусов и кражи данных с помощью комплексной системы безопасности. В список функций входят безопасный запуск и руководство по навигации и безопасности. Простота использования.</p><h3>Характеристики</h3><ul><li><strong>Интерфейсы:</strong> USB 2.0, Ethernet 10/100, Wi-Fi</li><li><strong>Вес:</strong> 12.812</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Емкость выходных лотков:</strong> 50 листов</li><li><strong>Емкость лотков подачи:</strong> 151 лист</li><li><strong>Максимальная нагрузка:</strong> 20 000 стр./мес.</li><li><strong>Объём оперативной памяти:</strong> 256 Мб</li><li><strong>Разрешение печати:</strong> 2400x600 dpi</li><li><strong>Рекомендуемая нагрузка:</strong> 2 000 стр./мес.</li><li><strong>Скорость выхода первой страницы:</strong> 5.4 сек. (моно)</li><li><strong>Скорость печати, А4:</strong> 29 стр./мин.</li><li><strong>Тип сканера:</strong> Планшетный</li><li><strong>Частота процессора:</strong> 1.2 ГГц</li></ul></description>
+<param name="Вес">12.812</param>
 <param name="Гарантия">1 год</param>
 <param name="Максимальная нагрузка">20 000 стр./мес.</param>
 <param name="Объём оперативной памяти">256 Мб</param>
@@ -29580,18 +29549,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <currencyId>KZT</currencyId>
 <description><h3>Струйный картридж Canon CLI-36 Color</h3><p>Струйный картридж Canon CLI-36 Color Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики Основные характеристики Производитель Canon Устройство Картридж Цвет печати Голубой, пурпурный, желтый Ресурс картриджа, cтр. 249 Технология печати Струйная Объем картриджа, мл 12 Совместимость Устройства Canon PIXMA iP100Canon PIXMA iP110Canon PIXMA iP110 WBCanon PIXMA iP100 with Battery WBCanon PIXMA TR150Canon PIXMA TR150 with Battery</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 0.047</li><li><strong>Гарантия:</strong> Нет</li></ul></description>
 <param name="Вес">0.047</param>
-<param name="Гарантия">Нет</param>
-</offer>
-
-<offer  id="AS65506" available="true">
-<categoryId>21279</categoryId>
-<vendorCode>AS65506</vendorCode>
-<name>Струйный картридж Canon CLI-36 Color (Twin Pack)</name>
-<price>23900</price>
-<vendor>Canon</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Струйный картридж Canon CLI-36 Color (Twin Pack)</h3><p>Струйный картридж Canon PG-46 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики Черный струйный картридж Canon PG-46 с пигментными чернилами емкостью 15 мл. Основные характеристики Производитель Canon Устройство Картридж Цвет печати Черный Ресурс картриджа, cтр. 400 Технология печати Струйная Объем картриджа, мл 15 Совместимость Устройства Canon Pixma E404Canon Pixma E464Canon Pixma E484</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 0.089</li><li><strong>Гарантия:</strong> Нет</li></ul></description>
-<param name="Вес">0.089</param>
 <param name="Гарантия">Нет</param>
 </offer>
 
@@ -30600,7 +30557,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer  id="AS68080" available="true">
+<offer  id="AS68080" available="false">
 <categoryId>3542</categoryId>
 <vendorCode>AS68080</vendorCode>
 <name>Источник бесперебойного питания APC Back-UPS BGM2200-GR</name>
@@ -32423,7 +32380,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Версия Bluetooth">5.0 BLE </param>
 </offer>
 
-<offer  id="AS70415" available="false">
+<offer  id="AS70415" available="true">
 <categoryId>5649</categoryId>
 <vendorCode>AS70415</vendorCode>
 <name>Монитор 32&quot; Gigabyte GS32Q EU</name>
@@ -33394,7 +33351,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">5 мс</param>
 </offer>
 
-<offer  id="AS73515" available="true">
+<offer  id="AS73515" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS73515</vendorCode>
 <name>Монитор 24&quot; Dahua DHI-LM24-B200S</name>
@@ -33592,12 +33549,12 @@ SCX-3400, 3401, 3405, 3406</param>
 <offer  id="AS73740" available="true">
 <categoryId>5712</categoryId>
 <vendorCode>AS73740</vendorCode>
-<name>Экран моторизированный (с пультом Д/У) XG DLS-ERC300x180W (118&quot;х70&quot;), ? - 137&quot;, 16:9</name>
+<name>Экран моторизированный (с пультом Д/У) XG DLS-ERC300x180W (115&quot;х65&quot;), ? - 137&quot;, 16:9</name>
 <price>62900</price>
 <picture>https://img.al-style.kz/73740_1.jpg</picture>
 <vendor>XG</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Экран моторизированный (с пультом Д/У) XG DLS-ERC300x180W (118&quot;х70&quot;), ? - 137&quot;, 16:9</h3><p>Моторизированный проекционный экран XG DLS-ERC300x180W с пультом Д/У для комфортного просмотра в высоком качестве Производитель: XGТип экрана: Моторизированный (с пультом Д/У)Формат: 16:9Размер рабочей поверхности: 118&quot; 70&quot;Диагональ: 137&quot;Коэффициент яркости: 1.0Вес нетто: 11,5 кгГарантия: 1 год Проекционный экран XG DLS-ERC300x180W сочетает в себе элегантный дизайн и надёжность, обеспечивая чёткое и яркое изображение. Он идеально подходит для дома, офиса или учебных заведений. Моторизованный механизм с управлением через пульт Д/У позволяет с легкостью опускать и фиксировать экран на необходимой высоте. Моторизованный механизм с пультом Д/У удобное управление Формат 16:9 идеально подходит для HD и 4K контента Покрытие с коэффициентом яркости 1.0 чёткие и яркие изображения Универсальный монтаж можно установить на стену или потолок</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 15.6</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
+<description><h3>Экран моторизированный (с пультом Д/У) XG DLS-ERC300x180W (115&quot;х65&quot;), ? - 137&quot;, 16:9</h3><p>Моторизированный проекционный экран XG DLS-ERC300x180W с пультом Д/У для комфортного просмотра в высоком качестве Производитель: XGТип экрана: Моторизированный (с пультом Д/У)Формат: 16:9Размер рабочей поверхности: 115&quot; 65&quot;Диагональ: 137&quot;Коэффициент яркости: 1.0Вес нетто: 11,5 кгГарантия: 1 год Проекционный экран XG DLS-ERC300x180W сочетает в себе элегантный дизайн и надёжность, обеспечивая чёткое и яркое изображение. Он идеально подходит для дома, офиса или учебных заведений. Моторизованный механизм с управлением через пульт Д/У позволяет с легкостью опускать и фиксировать экран на необходимой высоте. Моторизованный механизм с пультом Д/У удобное управление Формат 16:9 идеально подходит для HD и 4K контента Покрытие с коэффициентом яркости 1.0 чёткие и яркие изображения Универсальный монтаж можно установить на стену или потолок</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 15.6</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
 <param name="Вес">15.6</param>
 <param name="Гарантия">1 год</param>
 </offer>
@@ -34134,7 +34091,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Точек касания">50</param>
 </offer>
 
-<offer  id="AS76152" available="true">
+<offer  id="AS76152" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS76152</vendorCode>
 <name>Монитор 34&quot; LG 34WR50QK-B Black</name>
@@ -34382,7 +34339,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS76744" available="true">
+<offer  id="AS76744" available="false">
 <categoryId>21664</categoryId>
 <vendorCode>AS76744</vendorCode>
 <name>Драм-юнит CET C-EXV32/33/38/39 (CET5663)</name>
@@ -34720,7 +34677,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS76974" available="true">
+<offer  id="AS76974" available="false">
 <categoryId>5075</categoryId>
 <vendorCode>AS76974</vendorCode>
 <name>Тонер-картридж CET 006R01693 (CET141589)</name>
@@ -34733,7 +34690,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS76976" available="true">
+<offer  id="AS76976" available="false">
 <categoryId>5075</categoryId>
 <vendorCode>AS76976</vendorCode>
 <name>Тонер-картридж CET 006R01694 (CET141590)</name>
@@ -34746,7 +34703,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS76977" available="true">
+<offer  id="AS76977" available="false">
 <categoryId>5075</categoryId>
 <vendorCode>AS76977</vendorCode>
 <name>Тонер-картридж CET 006R01695 (CET141591)</name>
@@ -34759,7 +34716,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer  id="AS76978" available="true">
+<offer  id="AS76978" available="false">
 <categoryId>5075</categoryId>
 <vendorCode>AS76978</vendorCode>
 <name>Тонер-картридж CET 006R01696 (CET141592)</name>
@@ -35434,7 +35391,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Процессор">AMD Ryzen AI 7 350</param>
 </offer>
 
-<offer  id="AS78707" available="false">
+<offer  id="AS78707" available="true">
 <categoryId>21291</categoryId>
 <vendorCode>AS78707</vendorCode>
 <name>Ноутбук Gigabyte Gaming A16 FHD 165Hz i7-13620H 16GB 1TB RTX5060 DOS</name>
@@ -36203,6 +36160,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS80848</vendorCode>
 <name>Интерактивная панель XG 65TDS148128</name>
 <price>456900</price>
+<picture>https://img.al-style.kz/80848_1.jpg</picture>
+<picture>https://img.al-style.kz/80848_2.jpg</picture>
 <vendor>XG</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Интерактивная панель XG 65TDS148128</h3><p>Интерактивная панель XG 65TDS148128 XG 65TDS148128- это современная интерактивная панель, разработанная для применения в образовании и бизнесе.<br>Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.<br>Основные возможности: Интерактивная панель XG 65TDS148128 позволяет пользователям взаимодействовать с документами, изображениями и видеофайлами, проводить виртуальные презентации и конференции.<br>Кроме того, панель обеспечивает возможность создания и редактирования материалов в реальном времени, записи аудио и видео собраний. Для подключения к внешним устройствам доступны различные порты, такие как HDMI, USB, USB-C, Bluetooth, Ethernet и Wi-Fi, что обеспечивает подключение к компьютерам, ноутбукам, планшетам и другим электронным устройствам. Помимо этого, панель может подключаться к облачным сервисам для обмена данными, а также предлагает использовать QR для быстрого обмена информацией с мобильными устройствами, например такими, как смартфоны и планшеты.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 65</li><li><strong>Вес:</strong> 56.8</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
@@ -36216,6 +36175,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS80850</vendorCode>
 <name>Интерактивная панель XG 75TDS148128</name>
 <price>611900</price>
+<picture>https://img.al-style.kz/80850_1.jpg</picture>
+<picture>https://img.al-style.kz/80850_2.jpg</picture>
 <vendor>XG</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Интерактивная панель XG 75TDS148128</h3><p>Интерактивная панель XG 75TDS148128 XG 75TDS148128- это современная интерактивная панель, разработанная для применения в образовании и бизнесе.<br>Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.<br>Основные возможности: Интерактивная панель XG 75TDS148128 позволяет пользователям взаимодействовать с документами, изображениями и видеофайлами, проводить виртуальные презентации и конференции.<br>Кроме того, панель обеспечивает возможность создания и редактирования материалов в реальном времени, записи аудио и видео собраний. Для подключения к внешним устройствам доступны различные порты, такие как HDMI, USB, USB-C, Bluetooth, Ethernet и Wi-Fi, что обеспечивает подключение к компьютерам, ноутбукам, планшетам и другим электронным устройствам. Помимо этого, панель может подключаться к облачным сервисам для обмена данными, а также предлагает использовать QR для быстрого обмена информацией с мобильными устройствами, например такими, как смартфоны и планшеты.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 75</li><li><strong>Вес:</strong> 56.8</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
@@ -36229,6 +36190,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS80851</vendorCode>
 <name>Интерактивная панель XG 86TDS148128</name>
 <price>871900</price>
+<picture>https://img.al-style.kz/80851_1.jpg</picture>
+<picture>https://img.al-style.kz/80851_2.jpg</picture>
 <vendor>XG</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Интерактивная панель XG 86TDS148128</h3><p>Интерактивная панель XG 86TDS148128 XG 86TDS148128- это современная интерактивная панель, разработанная для применения в образовании и бизнесе.<br>Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.<br>Основные возможности: Интерактивная панель XG 86TDS148128позволяет пользователям взаимодействовать с документами, изображениями и видеофайлами, проводить виртуальные презентации и конференции.<br>Кроме того, панель обеспечивает возможность создания и редактирования материалов в реальном времени, записи аудио и видео собраний. Для подключения к внешним устройствам доступны различные порты, такие как HDMI, USB, USB-C, Bluetooth, Ethernet и Wi-Fi, что обеспечивает подключение к компьютерам, ноутбукам, планшетам и другим электронным устройствам. Помимо этого, панель может подключаться к облачным сервисам для обмена данными, а также предлагает использовать QR для быстрого обмена информацией с мобильными устройствами, например такими, как смартфоны и планшеты.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 86</li><li><strong>Вес:</strong> 56.8</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
@@ -36242,6 +36205,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS80852</vendorCode>
 <name>Интерактивная панель XG 75TDFMAX21316256</name>
 <price>736900</price>
+<picture>https://img.al-style.kz/80852_1.jpg</picture>
+<picture>https://img.al-style.kz/80852_2.jpg</picture>
 <vendor>XG</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Интерактивная панель XG 75TDFMAX21316256</h3><p>Интерактивная панель XG 75TDFMAX21316256 XG 75TDFMAX21316256- это современная интерактивная панель, разработанная для применения в образовании и бизнесе.<br>Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.<br>Основные возможности: Интерактивная панель XG 75TDFMAX21316256 позволяет пользователям взаимодействовать с документами, изображениями и видеофайлами, проводить виртуальные презентации и конференции.<br>Кроме того, панель обеспечивает возможность создания и редактирования материалов в реальном времени, записи аудио и видео собраний. Для подключения к внешним устройствам доступны различные порты, такие как HDMI, USB, USB-C, Bluetooth, Ethernet и Wi-Fi, что обеспечивает подключение к компьютерам, ноутбукам, планшетам и другим электронным устройствам. Помимо этого, панель может подключаться к облачным сервисам для обмена данными, а также предлагает использовать QR для быстрого обмена информацией с мобильными устройствами, например такими, как смартфоны и планшеты.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 75</li><li><strong>Вес:</strong> 87</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
@@ -36255,6 +36220,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS80853</vendorCode>
 <name>Интерактивная панель XG 86TDFMAX21316256</name>
 <price>954900</price>
+<picture>https://img.al-style.kz/80853_1.jpg</picture>
+<picture>https://img.al-style.kz/80853_2.jpg</picture>
 <vendor>XG</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Интерактивная панель XG 86TDFMAX21316256</h3><p>Интерактивная панель XG 86TDFMAX21316256 XG 86TDFMAX21316256- это современная интерактивная панель, разработанная для применения в образовании и бизнесе.<br>Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.<br>Основные возможности: Интерактивная панель XG 86TDFMAX21316256 позволяет пользователям взаимодействовать с документами, изображениями и видеофайлами, проводить виртуальные презентации и конференции.<br>Кроме того, панель обеспечивает возможность создания и редактирования материалов в реальном времени, записи аудио и видео собраний. Для подключения к внешним устройствам доступны различные порты, такие как HDMI, USB, USB-C, Bluetooth, Ethernet и Wi-Fi, что обеспечивает подключение к компьютерам, ноутбукам, планшетам и другим электронным устройствам. Помимо этого, панель может подключаться к облачным сервисам для обмена данными, а также предлагает использовать QR для быстрого обмена информацией с мобильными устройствами, например такими, как смартфоны и планшеты.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 86</li><li><strong>Вес:</strong> 87</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
@@ -36268,6 +36235,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS80854</vendorCode>
 <name>Интерактивная панель XG 98TDFMAX21316256</name>
 <price>1805900</price>
+<picture>https://img.al-style.kz/80854_1.jpg</picture>
+<picture>https://img.al-style.kz/80854_2.jpg</picture>
 <vendor>XG</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Интерактивная панель XG 98TDFMAX21316256</h3><p>Интерактивная панель XG 98TDFMAX21316256 XG 898TDFMAX213162566- это современная интерактивная панель, разработанная для применения в образовании и бизнесе.<br>Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.<br>Основные возможности: Интерактивная панель XG 98TDFMAX21316256 позволяет пользователям взаимодействовать с документами, изображениями и видеофайлами, проводить виртуальные презентации и конференции.<br>Кроме того, панель обеспечивает возможность создания и редактирования материалов в реальном времени, записи аудио и видео собраний. Для подключения к внешним устройствам доступны различные порты, такие как HDMI, USB, USB-C, Bluetooth, Ethernet и Wi-Fi, что обеспечивает подключение к компьютерам, ноутбукам, планшетам и другим электронным устройствам. Помимо этого, панель может подключаться к облачным сервисам для обмена данными, а также предлагает использовать QR для быстрого обмена информацией с мобильными устройствами, например такими, как смартфоны и планшеты.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 98</li><li><strong>Вес:</strong> 87</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
@@ -36638,6 +36607,9 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS82210</vendorCode>
 <name>Интерактивная панель XG 65AIVTBTM1416256</name>
 <price>622900</price>
+<picture>https://img.al-style.kz/82210_1.jpg</picture>
+<picture>https://img.al-style.kz/82210_2.jpg</picture>
+<picture>https://img.al-style.kz/82210_3.jpg</picture>
 <vendor>XG</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Интерактивная панель XG 65AIVTBTM1416256</h3><p>Интерактивная панель XG 65AIVTBTM1416256 Образование и бизнес нового поколения XG 65AIVTBTM1416256 — это интерактивная панель нового поколения, предназначенная для эффективного взаимодействия в учебной аудитории, офисе или конференц-зале.<br>Модель сочетает передовые технологии, функции совместной работы и уникальные AI-инструменты, кардинально улучшающие процессы обучения, презентации и коммуникации.<br>Интеллектуальные функции на базе AI: Обведи и узнай: система определяет выделенные объекты, даёт описания, находит иллюстрации и видеоматериалы, генерирует контрольные вопросы.<br>Интеллектуальная карта: автоматически создает интеллект-карты на основе изображений или текста. Цифровой художник: превращает наброски в проработанные изображения в одном из трёх художественных стилей. Умный калькулятор: решает уравнения, строит графики, рассчитывает геометрию. Субтитры в реальном времени: генерация субтитров на любом языке, включая онлайн-видео.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 69</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
@@ -36645,7 +36617,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
-<offer  id="AS82455" available="false">
+<offer  id="AS82455" available="true">
 <categoryId>5649</categoryId>
 <vendorCode>AS82455</vendorCode>
 <name>Монитор Xiaomi Gaming Monitor G27i 2026 27&quot;</name>
@@ -36680,6 +36652,9 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS82466</vendorCode>
 <name>Монитор 24&quot; Dahua DHI-LM24-P301A</name>
 <price>100900</price>
+<picture>https://img.al-style.kz/82466_1.jpg</picture>
+<picture>https://img.al-style.kz/82466_2.jpg</picture>
+<picture>https://img.al-style.kz/82466_3.jpg</picture>
 <vendor>Dahua</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Монитор 24&quot; Dahua DHI-LM24-P301A</h3><p>Монитор 24&quot; Dahua DHI-LM24-P301A Особенности и преимущества: Разрешение 2560 1440 обеспечивает более четкое и яркое изображение; IPS-панель с широкими углами обзора и безрамочным дизайном с трёх сторон; Экстраширокие углы обзора 178 по горизонтали и вертикали обеспечивают отличное качество изображения под любым углом; Широкий цветовой охват: 99% sRGB, 120% NTSC, 98% DCI-P3; Богатый набор интерфейсов, порт Type-C (65 Вт) поддерживает обратную зарядку; Быстрая скорость отклика 6 мс без размытия или шлейфов на изображении; Поддержка функций PIP/PBP для одновременного отображения экранов двух устройств; Угол наклона регулируется для удобства под разные нужды. Порты: DP 1.4 1 HDMI 2.0 1 Type-C 1 Аудиовыход 1 Комплектация: HDMI кабель Блок питания Type-C кабель Подставка</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 7.499</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
@@ -36692,6 +36667,9 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS82535</vendorCode>
 <name>Проектор портативный Wanbo Cube 2 Pro, Dark Blue</name>
 <price>104900</price>
+<picture>https://img.al-style.kz/82535_1.jpg</picture>
+<picture>https://img.al-style.kz/82535_2.jpg</picture>
+<picture>https://img.al-style.kz/82535_3.jpg</picture>
 <vendor>Wanbo</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Проектор портативный Wanbo Cube 2 Pro, Dark Blue</h3><p>Wanbo Cube 2 Pro (Dark Blue) — это стильный портативный проектор с поддержкой Android TV 11 и встроенными современными технологиями, созданный для удобства дома и в офисе.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 1.85</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
@@ -36704,6 +36682,9 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS82536</vendorCode>
 <name>Проектор портативный Wanbo Cube 2 Pro, Green</name>
 <price>104900</price>
+<picture>https://img.al-style.kz/82536_1.jpg</picture>
+<picture>https://img.al-style.kz/82536_2.jpg</picture>
+<picture>https://img.al-style.kz/82536_3.jpg</picture>
 <vendor>Wanbo</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Проектор портативный Wanbo Cube 2 Pro, Green</h3><p>Wanbo Cube 2 Pro (Green) — это стильный портативный проектор с поддержкой Android TV 11 и встроенными современными технологиями, созданный для удобства дома и в офисе.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 1.85</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
@@ -36746,6 +36727,9 @@ SCX-3400, 3401, 3405, 3406</param>
 <vendorCode>AS83076</vendorCode>
 <name>Проектор портативный Wanbo Mozart 1 Pro 2025</name>
 <price>248900</price>
+<picture>https://img.al-style.kz/83076_1.jpg</picture>
+<picture>https://img.al-style.kz/83076_2.jpg</picture>
+<picture>https://img.al-style.kz/83076_3.jpg</picture>
 <vendor>Wanbo</vendor>
 <currencyId>KZT</currencyId>
 <description><h3>Проектор портативный Wanbo Mozart 1 Pro 2025</h3><p>Wanbo Mozart 1 Pro NEW 2025 — обновлённая версия легендарного проектора Mozart 1 Pro. Теперь он стал ярче, умнее и мощнее — с интерфейсом Google TV и улучшенным звучанием.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 5.603</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
@@ -36835,7 +36819,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Процессор">Intel Core 5 210H</param>
 </offer>
 
-<offer  id="AS82672" available="true">
+<offer  id="AS82672" available="false">
 <categoryId>21291</categoryId>
 <vendorCode>AS82672</vendorCode>
 <name>Ноутбук MSI Cyborg 17 B2RWEKG-206XKZ 17,3&quot; FHD 144Hz Core 7 240H 16GB 512GB RTX5050 DOS</name>
@@ -36991,7 +36975,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Процессор">Intel Core Ultra 9 275HX</param>
 </offer>
 
-<offer  id="AS82675" available="true">
+<offer  id="AS82675" available="false">
 <categoryId>21291</categoryId>
 <vendorCode>AS82675</vendorCode>
 <name>Ноутбук MSI Thin 15 B13VE-3408XKZ 15,6&quot; FHD 144Hz i7-13620H 16GB 512GB RTX4050 DOS</name>
