@@ -255,7 +255,7 @@ def _rebuild_offer(offer_xml: str) -> str:
         body = re.sub(r'(?is)(<\s*vendorCode\s*>\s*).*(\s*</\s*vendorCode\s*>)', r'\g<1>'+html.escape(v_new)+r'\g<2>', body, count=1)
         v = v_new
     header = re.sub(r'(?is)\bid="[^"]*"', f'id="{v}"', header, count=1)
-    # fix: убрать лишние пробелы в заголовке <offer ...> (2+ подряд → 1)
+    # fix: убрать лишние пробелы в заголовке <offer ...>
     header = re.sub(r'\s{2,}', ' ', header)
 
     # цена с наценкой
@@ -319,7 +319,7 @@ def main() -> int:
             continue
         kept.append(_rebuild_offer(off))
 
-    new_offers = '\n'.join(x.strip() for x in kept)
+    new_offers = '\n\n'.join(x.strip() for x in kept)
     out_text = head + '\n' + new_offers + '\n' + tail
 
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
