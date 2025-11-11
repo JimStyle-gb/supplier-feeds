@@ -1,13 +1,11 @@
 # coding: utf-8
-# build_alstyle.py — v72 params-sorted + attr-order fix + FEED_META(top) + spacing-fix3
-# БАЗА: v67 (ничего не меняем), добавлен только блок FEED_META в самый верх итогового файла.
+# build_alstyle.py — v67 params-sorted + attr-order fix + constants + price_fallback + sorted_specs + h3(name) + smart<br>
 
 import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
-from datetime import datetime, timedelta, timezone
 
-print('[VER] build_alstyle v75 params-sorted + attr-order fix + FEED_META(top) + spacing-fix3')
+print('[VER] build_alstyle v67 params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -144,7 +142,6 @@ def _move_available_attr(header: str, body: str):
         # иначе добавим перед закрывающей '>' — так сохраняем исходный порядок id и прочих атрибутов
         header = re.sub(r'>\s*$', f' available="{avail}">', header, count=1)
     return header, body
-
 # --- Удаление простых тегов ---
 FORBIDDEN_TAGS = ('url','quantity','quantity_in_stock','purchase_price')
 def _remove_simple_tags(body: str) -> str:
@@ -258,6 +255,8 @@ def _rebuild_offer(offer_xml: str) -> str:
         body = re.sub(r'(?is)(<\s*vendorCode\s*>\s*).*(\s*</\s*vendorCode\s*>)', r'\g<1>'+html.escape(v_new)+r'\g<2>', body, count=1)
         v = v_new
     header = re.sub(r'(?is)\bid="[^"]*"', f'id="{v}"', header, count=1)
+    # fix: убрать лишние пробелы в заголовке <offer ...> (2+ подряд → 1)
+    header = re.sub(r'\s{2,}', ' ', header)
 
     # цена с наценкой
     mprice = re.search(r'(?is)<\s*price\s*>\s*(.*?)\s*</\s*price\s*>', body)
@@ -291,28 +290,6 @@ def _rebuild_offer(offer_xml: str) -> str:
     out = header + '\n' + '\n'.join(x.strip() for x in out_lines if x.strip()) + '\n</offer>\n\n'
     return out
 
-# --- FEED_META (только добавление в самый верх результата) ---
-def _make_feed_meta(supplier_url: str, total_before: int, total_after: int, avail_true: int, avail_false: int) -> str:
-    """Формирует многострочный HTML-комментарий FEED_META. Часовой пояс Алматы (UTC+5)."""
-    tz = timezone(timedelta(hours=5))  # Asia/Almaty
-    now = datetime.now(tz)
-    target = now.replace(hour=1, minute=0, second=0, microsecond=0)
-    if now >= target:
-        target = target + timedelta(days=1)
-    meta = (
-        "<!--FEED_META\n"
-        f"Поставщик                                  | AlStyle\n"
-        f"URL поставщика                             | {supplier_url}\n"
-        f"Время сборки (Алматы)                      | {now:%Y-%m-%d %H:%M:%S}\n"
-        f"Ближайшая сборка (Алматы)                  | {target:%Y-%m-%d %H:%M:%S}\n"
-        f"Сколько товаров у поставщика до фильтра    | {total_before}\n"
-        f"Сколько товаров у поставщика после фильтра | {total_after}\n"
-        f"Сколько товаров есть в наличии (true)      | {avail_true}\n"
-        f"Сколько товаров нет в наличии (false)      | {avail_false}\n"
-        "-->\n"
-    )
-    return meta + "\n"  # разрыв после FEED_META
-
 # --- Главный поток ---
 def main() -> int:
     url = 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'
@@ -335,7 +312,6 @@ def main() -> int:
     head = re.sub(r'(?is)<shop\s*>.*?<offers\s*>', '<shop><offers>', head, count=1)
 
     offers = re.findall(r'(?is)<offer\b.*?</offer>', offers_block)
-    total_before = len(offers)  # для FEED_META
     kept = []
     for off in offers:
         mcat = re.search(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>', off)
@@ -343,34 +319,12 @@ def main() -> int:
             continue
         kept.append(_rebuild_offer(off))
 
-    joined = ''.join(kept)
-    avail_true = len(re.findall(r'(?is)<offer\b[^>]*\bavailable="true"', joined))
-    avail_false = len(re.findall(r'(?is)<offer\b[^>]*\bavailable="false"', joined))
-
     new_offers = '\n'.join(x.strip() for x in kept)
     out_text = head + '\n' + new_offers + '\n' + tail
 
-    # Нормализация (spacing-only; правим существующий блок)
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
-
-    # 1) Разрыв между <shop> и <offers>
-    out_text = re.sub(r'<shop>\s*<offers>', '<shop>\n<offers>', out_text, count=1)
-    # 1a) Перенос сразу после <offers> перед первым <offer>
-    out_text = re.sub(r'(<offers>)\s*(?=<offer\b)', r'\1\n', out_text, count=1)
-
-    # 2) Пустая строка между офферами: </offer>\n\n<offer ...>
-    out_text = re.sub(r'</offer>\s*<offer\b', '</offer>\n\n<offer ', out_text)
-
-    # 3) Разрыв перед закрывающим </offers>
-    out_text = re.sub(r'</offer>\s*</offers>', '</offer>\n</offers>', out_text, count=1)
-
-    # 4) Финальная нормализация кратных переносов
-    out_text = re.sub(r'\n{3,}', '\n\n', out_text)
-
-    # FEED_META в САМЫЙ ВЕРХ (без изменения остальной структуры)
-    feed_meta = _make_feed_meta(url, total_before, len(kept), avail_true, avail_false)
-    out_text = feed_meta + out_text
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
 
     Path('docs').mkdir(exist_ok=True)
     Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
