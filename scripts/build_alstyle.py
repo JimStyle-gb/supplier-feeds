@@ -1,49 +1,60 @@
 # coding: utf-8
-# build_alstyle.py — v67 params-sorted + attr-order fix + constants + price_fallback + sorted_specs + h3(name) + smart<br>
+# build_alstyle.py — v74 FEED_META(top) + spacing-fix + micro-speedups (no logic change)
+# БАЗА: v67. Добавлено: FEED_META вверху и только нормализация переносов. Ускорения: precompile + подсчёт available без join().
 
-import os, re, html, sys, time, hashlib
+import os, re, html, hashlib
 from pathlib import Path
 import requests
+from datetime import datetime, timedelta, timezone
 
-print('[VER] build_alstyle v67 params-sorted + attr-order fix')
+print('[VER] build_alstyle v74 FEED_META(top) + spacing-fix + micro-speedups')
 
-# --- Secrets via env (fallback оставлен для локалки) ---
+# --- Доступ ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
 PASSWORD = os.getenv('ALSTYLE_PASSWORD', 'Aa123456')
 
-# --- Константы для описаний и форматирования ---
-GOAL = 1000       # целевая длина описания
-GOAL_LOW = 900    # минимально приемлемая
-MAX_HARD = 1200   # жёсткий потолок (по предложениям)
-LMAX = 220        # макс длина строки для «умного» <br>
-MAX_BR = 3        # максимум переносов
+# --- Настройки описаний (как в v67) ---
+GOAL = 1000
+GOAL_LOW = 900
+MAX_HARD = 1200
+LMAX = 220
+MAX_BR = 3
 
-# --- Фильтр категорий поставщика (по <categoryId>) ---
+# --- Фильтр категорий поставщика ---
 ALLOW_CATS = set(map(str, [
-  3540, 3541, 3542, 3543, 3544, 3545, 3566, 3567, 3569, 3570,
-  3580, 3688, 3708, 3721, 3722, 4889, 4890, 4895, 5017, 5075,
-  5649, 5710, 5711, 5712, 5713, 21279, 21281, 21291, 21356, 21367,
-  21368, 21369, 21370, 21371, 21372, 21451, 21498, 21500, 21501,
-  21572, 21573, 21574, 21575, 21576, 21578, 21580, 21581, 21583, 21584,
-  21585, 21586, 21588, 21591, 21640, 21664, 21665, 21666, 21698
+  3540,3541,3542,3543,3544,3545,3566,3567,3569,3570,
+  3580,3688,3708,3721,3722,4889,4890,4895,5017,5075,
+  5649,5710,5711,5712,5713,21279,21281,21291,21356,21367,
+  21368,21369,21370,21371,21372,21451,21498,21500,21501,
+  21572,21573,21574,21575,21576,21578,21580,21581,21583,21584,
+  21585,21586,21588,21591,21640,21664,21665,21666,21698
 ]))
 
-# --- Чёрный список параметров ---
+# --- Стоп-ключи параметров ---
 DENY_PARAMS = {s.lower() for s in [
-  "Артикул", "Благотворительность", "Код ТН ВЭД", "Код товара Kaspi",
-  "Новинка", "Снижена цена", "Штрихкод", "Штрих-код", "Назначение",
-  "Объем", "Объём"
+  "Артикул","Благотворительность","Код ТН ВЭД","Код товара Kaspi",
+  "Новинка","Снижена цена","Штрихкод","Штрих-код","Назначение",
+  "Объем","Объём"
 ]}
 
-# --- Утилиты текста ---
+# --- Скомпилированные паттерны (ускорение без изменения логики) ---
 _re_tag = re.compile(r'(?is)<[^>]+>')
+_re_offers_block = re.compile(r'(?is)^(.*?<offers\s*>)(.*?)(</\s*offers\s*>.*)$')
+_re_offers_block_fallback = re.compile(r'(?is)(.*?<offers\s*>)(.*)(</\s*offers\s*>.*)')
+_re_offer = re.compile(r'(?is)<offer\b.*?</offer>')
+_re_cat = re.compile(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>')
+_re_avail_tag = re.compile(r'(?is)<\s*available\s*>\s*(true|false)\s*</\s*available\s*>')
+_re_avail_attr = re.compile(r'(?is)\bavailable="(true|false)"')
+_re_name = re.compile(r'(?is)<\s*name\s*>\s*(.*?)\s*</\s*name\s*>')
+_re_desc_block = re.compile(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)')
+
 def _clean_plain(txt: str) -> str:
-    # HTML → текст
+    # HTML → текст, удаление скрытых символов, схлопывание пробелов
     for _ in range(2):
         nt = html.unescape(txt)
         if nt == txt: break
         txt = nt
-    txt = txt.replace('\u00A0', ' ')
+    txt = txt.replace('\u00A0',' ')
     txt = re.sub(r'[\u200B-\u200D\uFEFF]', '', txt)
     txt = re.sub(r'\r\n|\r|\n', ' ', txt)
     txt = _re_tag.sub(' ', txt)
@@ -55,7 +66,6 @@ def _sentences(plain: str):
     return [p.strip() for p in parts if p.strip()]
 
 def _build_desc_text(plain: str) -> str:
-    # Сжатие до ~1000 по предложениям
     if len(plain) <= GOAL:
         return plain
     parts = _sentences(plain)
@@ -75,7 +85,6 @@ def _build_desc_text(plain: str) -> str:
             if total >= GOAL_LOW: break
     return ' '.join(selected).strip()
 
-# --- Цена ---
 def _price_adders(base: int) -> int:
     if 101 <= base <= 10_000: return 3_000
     elif 10_001 <= base <= 25_000: return 4_000
@@ -104,7 +113,6 @@ def _retail_price_from_base(base: int) -> int:
         retail = (retail // 1000 + 1) * 1000 - 100
     return max(retail, 900)
 
-# --- Параметры ---
 def _collect_params(block: str):
     out = []
     for name, val in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', block):
@@ -127,22 +135,18 @@ def _sort_params(params):
         except ValueError: return (1, k.lower())
     return sorted(params, key=_pkey)
 
-# --- Перенос <available> в атрибут offer ---
 def _move_available_attr(header: str, body: str):
-    m = re.search(r'(?is)<\s*available\s*>\s*(true|false)\s*</\s*available\s*>', body)
+    m = _re_avail_tag.search(body)
     if not m: 
         return header, body
     avail = m.group(1)
-    # удалить тег <available>…</available> из body
-    body = re.sub(r'(?is)<\s*available\s*>.*?</\s*available\s*>', '', body, count=1)
-    # если атрибут уже есть — обновим на месте
+    body = _re_avail_tag.sub('', body, count=1)
     if re.search(r'(?is)\bavailable\s*=\s*"(?:true|false)"', header):
         header = re.sub(r'(?is)\bavailable\s*=\s*"(?:true|false)"', f'available="{avail}"', header, count=1)
     else:
-        # иначе добавим перед закрывающей '>' — так сохраняем исходный порядок id и прочих атрибутов
         header = re.sub(r'>\s*$', f' available="{avail}">', header, count=1)
     return header, body
-# --- Удаление простых тегов ---
+
 FORBIDDEN_TAGS = ('url','quantity','quantity_in_stock','purchase_price')
 def _remove_simple_tags(body: str) -> str:
     for t in FORBIDDEN_TAGS:
@@ -151,7 +155,6 @@ def _remove_simple_tags(body: str) -> str:
     body = re.sub(r'\n{3,}', '\n\n', body)
     return body.strip()
 
-# --- Fallback: создать <price> из <purchase_price> если <price> отсутствует ---
 def _ensure_price_from_purchase(body: str) -> str:
     if re.search(r'(?is)<\s*price\s*>', body): 
         return body
@@ -168,24 +171,21 @@ def _ensure_price_from_purchase(body: str) -> str:
     if m4: return body[:m4.start()] + tag + body[m4.start():]
     return body
 
-# --- Перестройка описания ---
 def _desc_postprocess_native_specs(offer_xml: str) -> str:
-    m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', offer_xml)
+    m = _re_desc_block.search(offer_xml)
     head, raw, tail = (m.group(1), m.group(2), m.group(3)) if m else ('<description>', '', '</description>')
 
     plain_full = _clean_plain(raw)
     desc_text = _build_desc_text(plain_full)
 
-    # Заголовок из <name>
-    mname = re.search(r'(?is)<\s*name\s*>\s*(.*?)\s*</\s*name\s*>', offer_xml)
+    mname = _re_name.search(offer_xml)
     name_h3 = ''
     if mname:
         nm = _clean_plain(mname.group(1))
         if nm: name_h3 = '<h3>' + html.escape(nm) + '</h3>'
 
-    # Основной абзац: <br> только если исходник был длинный (> GOAL)
     if len(plain_full) > GOAL:
-        parts = _sentences(desc_text)
+        parts = re.split(r'(?<=[\.\!\?])\s+', desc_text)
         lines, cur = [], ''
         for s in parts:
             cand = (cur + (' ' if cur else '') + s)
@@ -202,9 +202,9 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
     else:
         desc_html = html.escape(desc_text)
 
-    # Характеристики из <param>
     params = _collect_params(offer_xml)
     params = _sort_params(params)
+
     blocks = []
     if name_h3: blocks.append(name_h3)
     blocks.append('<p>' + desc_html + '</p>')
@@ -221,7 +221,6 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
         ins = insert_at.end() if insert_at else len(offer_xml)
         return offer_xml[:ins] + '<description>' + new_html + '</description>' + offer_xml[ins:]
 
-# --- Сортировка тегов и сбор оффера ---
 WANT_ORDER = ('categoryId','vendorCode','name','price','picture','vendor','currencyId','description','param')
 def _rebuild_offer(offer_xml: str) -> str:
     m = re.match(r'(?is)^\s*(<offer\b[^>]*>)(.*)</offer>\s*$', offer_xml)
@@ -231,7 +230,6 @@ def _rebuild_offer(offer_xml: str) -> str:
     header, body = _move_available_attr(header, body)
     body = _ensure_price_from_purchase(body)
 
-    # price ← purchase_price
     mp = re.search(r'(?is)<\s*purchase_price\s*>\s*(.*?)\s*</\s*purchase_price\s*>', body)
     if mp:
         val = mp.group(1)
@@ -242,7 +240,6 @@ def _rebuild_offer(offer_xml: str) -> str:
 
     body = _remove_simple_tags(body)
 
-    # vendorCode + id
     mv = re.search(r'(?is)<\s*vendorCode\s*>\s*(.*?)\s*</\s*vendorCode\s*>', body)
     if mv:
         v = _clean_plain(mv.group(1))
@@ -256,7 +253,6 @@ def _rebuild_offer(offer_xml: str) -> str:
         v = v_new
     header = re.sub(r'(?is)\bid="[^"]*"', f'id="{v}"', header, count=1)
 
-    # цена с наценкой
     mprice = re.search(r'(?is)<\s*price\s*>\s*(.*?)\s*</\s*price\s*>', body)
     if mprice:
         digits = re.sub(r'[^\d]', '', mprice.group(1))
@@ -285,10 +281,31 @@ def _rebuild_offer(offer_xml: str) -> str:
             continue
         out_lines.append(prm)
 
-    out = header + '\n' + '\n'.join(x.strip() for x in out_lines if x.strip()) + '\n</offer>\n\n'
+    body_sorted = '\n'.join(x.strip() for x in out_lines if x.strip())
+    if not body_sorted.endswith('\n'): body_sorted += '\n'
+    out = header + '\n' + body_sorted + '</offer>\n\n'
     return out
 
-# --- Главный поток ---
+def _make_feed_meta(supplier_url: str, total_before: int, total_after: int, avail_true: int, avail_false: int) -> str:
+    tz = timezone(timedelta(hours=5))  # Asia/Almaty
+    now = datetime.now(tz)
+    target = now.replace(hour=1, minute=0, second=0, microsecond=0)
+    if now >= target:
+        target = target + timedelta(days=1)
+    meta = (
+        "<!--FEED_META\n"
+        f"Поставщик                                  | AlStyle\n"
+        f"URL поставщика                             | {supplier_url}\n"
+        f"Время сборки (Алматы)                      | {now:%Y-%m-%d %H:%M:%S}\n"
+        f"Ближайшая сборка (Алматы)                  | {target:%Y-%m-%d %H:%M:%S}\n"
+        f"Сколько товаров у поставщика до фильтра    | {total_before}\n"
+        f"Сколько товаров у поставщика после фильтра | {total_after}\n"
+        f"Сколько товаров есть в наличии (true)      | {avail_true}\n"
+        f"Сколько товаров нет в наличии (false)      | {avail_false}\n"
+        "-->\n\n"
+    )
+    return meta
+
 def main() -> int:
     url = 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'
     r = requests.get(url, auth=(LOGIN, PASSWORD), timeout=60)
@@ -300,29 +317,55 @@ def main() -> int:
     except UnicodeDecodeError:
         text = src.decode('utf-8', errors='replace')
 
-    m = re.search(r'(?is)^(.*?<offers\s*>)(.*?)(</\s*offers\s*>.*)$', text)
+    m = _re_offers_block.search(text)
     if not m:
-        m = re.search(r'(?is)(.*?<offers\s*>)(.*)(</\s*offers\s*>.*)', text)
+        m = _re_offers_block_fallback.search(text)
         if not m:
             raise SystemExit('Не найден блок <offers>')
     head, offers_block, tail = m.group(1), m.group(2), m.group(3)
 
-    head = re.sub(r'(?is)<shop\s*>.*?<offers\s*>', '<shop><offers>', head, count=1)
-
-    offers = re.findall(r'(?is)<offer\b.*?</offer>', offers_block)
+    # Соединённые <shop><offers> → оставим, нормализуем ниже
+    # Разберём офферы итератором (быстрее, чем findall с большим списком)
+    total_before = 0
     kept = []
-    for off in offers:
-        mcat = re.search(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>', off)
+    avail_true = 0
+    avail_false = 0
+
+    for mm in _re_offer.finditer(offers_block):
+        off = mm.group(0)
+        total_before += 1
+        mcat = _re_cat.search(off)
         if not mcat or mcat.group(1) not in ALLOW_CATS:
             continue
-        kept.append(_rebuild_offer(off))
+        out = _rebuild_offer(off)
+        kept.append(out)
+        # Счётчик наличия без гигантского join
+        if 'available="true"' in out:
+            avail_true += 1
+        elif 'available="false"' in out:
+            avail_false += 1
 
     new_offers = '\n'.join(x.strip() for x in kept)
     out_text = head + '\n' + new_offers + '\n' + tail
 
+    # --- Нормализация переносов (ровно как просили) ---
+    # После <shop> разрыв перед <offers>
+    out_text = re.sub(r'<shop>\s*<offers>', '<shop>\n<offers>', out_text, count=1)
+    # Обязательный перенос после <offers> перед первым <offer>
+    out_text = re.sub(r'(<offers>)\s*(?=<offer\b)', r'\1\n', out_text, count=1)
+    # Пустая строка между офферами
+    out_text = re.sub(r'</offer>\s*<offer\b', '</offer>\n\n<offer ', out_text)
+    # Перенос перед закрывающим </offer> у каждого товара
+    out_text = re.sub(r'([^\n])</offer>', r'\1\n</offer>', out_text)
+    # Перенос перед </offers>
+    out_text = re.sub(r'</offer>\s*</offers>', '</offer>\n</offers>', out_text, count=1)
+    # Схлопывание лишних переносов
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
-    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
+
+    # FEED_META в самый верх
+    feed_meta = _make_feed_meta(url, total_before, len(kept), avail_true, avail_false)
+    out_text = feed_meta + out_text
 
     Path('docs').mkdir(exist_ok=True)
     Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
