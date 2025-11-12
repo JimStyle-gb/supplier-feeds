@@ -369,15 +369,9 @@ def main() -> int:
     out_text = feed_meta + out_text
     out_text = _ensure_footer_spacing(out_text)
 
-    out_text = re.sub(r'[ 	]+
-', '
-', out_text)
-    out_text = re.sub(r'
-{3,}', '
-
-', out_text)
-    out_text = out_text.replace('<shop><offers>', '<shop><offers>
-')
+    out_text = re.sub(r'[ \t]+\n', '\n', out_text)
+    out_text = re.sub(r'\n{3,}', '\n\n', out_text)
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
 
 
     Path('docs').mkdir(exist_ok=True)
