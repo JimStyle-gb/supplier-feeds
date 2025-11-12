@@ -321,6 +321,8 @@ def main() -> int:
 
     new_offers = '\n\n'.join(x.strip() for x in kept)
     out_text = head + '\n' + new_offers + '\n' + tail
+    # fix: гарантировать перенос строки перед закрывающим </offers>
+    out_text = re.sub(r'([^\n])</offers>', r'\1\n</offers>', out_text, count=1)
 
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
