@@ -5,7 +5,7 @@ import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v84 (double last </offer> newline) params-sorted + attr-order fix')
+print('[VER] build_alstyle v85 (feed_meta top + double last </offer> newline) (double last </offer> newline) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -320,7 +320,18 @@ def main() -> int:
         kept.append(_rebuild_offer(off))
 
     new_offers = '\n\n'.join(x.strip() for x in kept)
+    # feed_meta: статистика по фиду в шапке файла
+    total = len(kept)
+    avail_true = sum('available="true"' in k for k in kept)
+    avail_false = sum('available="false"' in k for k in kept)
+    ts = __import__('datetime').datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')
+    feed_meta = (
+        f'<!-- feed_meta: supplier=AlStyle; generated={ts}; '
+        f'total_offers={total}; available_true={avail_true}; available_false={avail_false}; '
+        f'encoding=windows-1251 -->\n\n'
+    )
     out_text = head + '\n' + new_offers + '\n' + tail
+    out_text = feed_meta + out_text
     # fix: РОВНО один перевод строки между последним </offer> и </offers>
         # fix: РОВНО два перевода строки между последним </offer> и </offers>
     out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
