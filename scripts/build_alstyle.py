@@ -5,7 +5,7 @@ import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v94 (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v98 (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
