@@ -19,7 +19,7 @@ def _ensure_footer_spacing(out_text: str) -> str:
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v104 (param deny: collect+emit) (param_kv+cleanup) (mini‑patch: use compiled + drop dead func) (cleanup+precompiled) (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v105 (tidy+kv+deny+whitespace) (param deny: collect+emit) (param_kv+cleanup) (mini‑patch: use compiled + drop dead func) (cleanup+precompiled) (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
