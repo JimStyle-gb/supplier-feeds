@@ -367,24 +367,18 @@ def main() -> int:
     )
     out_text = head + '\n' + new_offers + '\n' + tail
     out_text = feed_meta + out_text
-    # fix: перенос перед </shop>
-        # fix: перенос перед </yml_catalog>
-    
-
-def _ensure_footer_spacing(out_text: str) -> str:
-    """Единое применение всех переносов внизу фида: 
-    - ровно 2 перевода строки между последним </offer> и </offers>
-    - перенос перед </shop> и перед </yml_catalog>
-    Поведение идентично текущим вызовам, просто централизовано.
-    """
-    out_text = _ensure_footer_spacing(out_text)
-            return out_text
-    # fix: РОВНО два перевода строки между последним </offer> и </offers>
     out_text = _ensure_footer_spacing(out_text)
 
-    out_text = re.sub(r'[ \t]+\n', '\n', out_text)
-    out_text = re.sub(r'\n{3,}', '\n\n', out_text)
-    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
+    out_text = re.sub(r'[ 	]+
+', '
+', out_text)
+    out_text = re.sub(r'
+{3,}', '
+
+', out_text)
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>
+')
+
 
     Path('docs').mkdir(exist_ok=True)
     Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
