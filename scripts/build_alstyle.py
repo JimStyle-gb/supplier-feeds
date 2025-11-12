@@ -340,8 +340,8 @@ def main() -> int:
     avail_false = sum('available="false"' in k for k in kept)
     # src может быть bytes — декодируем для подсчёта исходных офферов
     # faster: считаем офферы по уже декодированному тексту
-    source_total = len(re.findall(r'(?is)<offer', text))
-from datetime import datetime, timedelta
+    source_total = text.lower().count('<offer')
+    from datetime import datetime, timedelta
     try:
         from zoneinfo import ZoneInfo
         _tz = ZoneInfo('Asia/Almaty')
