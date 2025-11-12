@@ -8,6 +8,7 @@ import os, re, html, sys, time, hashlib
 RX_OFFER_BLOCK = re.compile(r'(?is)<offer\b.*?</offer>')
 RX_PARAM_BLOCK = re.compile(r'(?is)<\s*param\b[^>]*>.*?</\s*param\s*>')
 RX_CATEGORY_ID = re.compile(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>')
+RX_PARAM_KV = re.compile(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>')
 # --- spacing helper (always present) ---
 def _ensure_footer_spacing(out_text: str) -> str:
     """Переносы внизу: 2 NL перед </offers>, перенос перед </shop> и </yml_catalog>."""
@@ -18,7 +19,7 @@ def _ensure_footer_spacing(out_text: str) -> str:
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v100 (cleanup+precompiled) (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v101 (mini‑patch: use compiled + drop dead func) (cleanup+precompiled) (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -337,10 +338,10 @@ def main() -> int:
 
     head = re.sub(r'(?is)<shop\s*>.*?<offers\s*>', '<shop><offers>', head, count=1)
 
-    offers = re.findall(r'(?is)<offer\b.*?</offer>', offers_block)
+    offers = RX_OFFER_BLOCK.findall(offers_block)
     kept = []
     for off in offers:
-        mcat = re.search(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>', off)
+        mcat = RX_CATEGORY_ID.search(off)
         if not mcat or mcat.group(1) not in ALLOW_CATS:
             continue
         kept.append(_rebuild_offer(off))
