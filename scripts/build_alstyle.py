@@ -5,7 +5,7 @@ import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v93 (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v94 (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -368,11 +368,19 @@ from datetime import datetime, timedelta
     out_text = head + '\n' + new_offers + '\n' + tail
     out_text = feed_meta + out_text
     # fix: перенос перед </shop>
-    out_text = _RX_PRE_END_SHOP.sub(r'\1\n</shop>', out_text, count=1)
-    # fix: перенос перед </yml_catalog>
-    out_text = _RX_PRE_END_YML.sub(r'\1\n</yml_catalog>', out_text, count=1)
+        # fix: перенос перед </yml_catalog>
+    
+
+def _ensure_footer_spacing(out_text: str) -> str:
+    """Единое применение всех переносов внизу фида: 
+    - ровно 2 перевода строки между последним </offer> и </offers>
+    - перенос перед </shop> и перед </yml_catalog>
+    Поведение идентично текущим вызовам, просто централизовано.
+    """
+    out_text = _ensure_footer_spacing(out_text)
+            return out_text
     # fix: РОВНО два перевода строки между последним </offer> и </offers>
-    out_text = _RX_LAST_OFFER_BEFORE_OFFERS.sub('</offer>\n\n', out_text, count=1)
+    out_text = _ensure_footer_spacing(out_text)
 
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
