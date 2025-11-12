@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-12 13:50">
+<yml_catalog date="2025-11-12 17:50">
 <shop><offers>
 
 <offer id="AS20888" available="false">
@@ -1406,7 +1406,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS6443" available="false">
+<offer id="AS6443" available="true">
 <categoryId>3708</categoryId>
 <vendorCode>AS6443</vendorCode>
 <name>Кабель сетевой SHIP D165A-L Cat.6 UTP 30В LSZH</name>
@@ -1475,7 +1475,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS1295" available="false">
+<offer id="AS1295" available="true">
 <categoryId>3708</categoryId>
 <vendorCode>AS1295</vendorCode>
 <name>Кабель сетевой SHIP D175A-P Cat.6A S-FTP 30В PVC</name>
@@ -1630,7 +1630,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>5075</categoryId>
 <vendorCode>AS12978</vendorCode>
 <name>Тонер-картридж Europrint WC M118/M118i</name>
-<price>8900</price>
+<price>3900</price>
 <picture>https://img.al-style.kz/12978_1.jpg</picture>
 <picture>https://img.al-style.kz/12978_2.jpg</picture>
 <picture>https://img.al-style.kz/12978_3.jpg</picture>
@@ -1703,7 +1703,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS5153</vendorCode>
 <name>Картридж Europrint EPC-CB542A</name>
-<price>6900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/5153_1.jpg</picture>
 <picture>https://img.al-style.kz/5153_2.jpg</picture>
 <picture>https://img.al-style.kz/5153_3.jpg</picture>
@@ -2353,7 +2353,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS6220</vendorCode>
 <name>Картридж Europrint EPC-C7115X</name>
-<price>5900</price>
+<price>3900</price>
 <picture>https://img.al-style.kz/6220_1.jpg</picture>
 <picture>https://img.al-style.kz/6220_2.jpg</picture>
 <picture>https://img.al-style.kz/6220_3.jpg</picture>
@@ -2467,7 +2467,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS11927</vendorCode>
 <name>Картридж Katun CB400A</name>
-<price>20900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/11927_1.jpg</picture>
 <picture>https://img.al-style.kz/11927_2.jpg</picture>
 <picture>https://img.al-style.kz/11927_3.jpg</picture>
@@ -2486,7 +2486,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS11930</vendorCode>
 <name>Картридж Katun CB402A</name>
-<price>20900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/11930_1.jpg</picture>
 <picture>https://img.al-style.kz/11930_2.jpg</picture>
 <picture>https://img.al-style.kz/11930_3.jpg</picture>
@@ -2505,7 +2505,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS13736</vendorCode>
 <name>Картридж Katun CE403A</name>
-<price>8900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/13736_1.jpg</picture>
 <picture>https://img.al-style.kz/13736_2.jpg</picture>
 <picture>https://img.al-style.kz/13736_3.jpg</picture>
@@ -3178,7 +3178,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Комбинированный</param>
 </offer>
 
-<offer id="AS14649" available="true">
+<offer id="AS14649" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS14649</vendorCode>
 <name>Источник бесперебойного питания SVC PTL-2K-LCD</name>
@@ -4823,11 +4823,11 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS24666" available="true">
+<offer id="AS24666" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS24666</vendorCode>
 <name>Картридж Europrint EPC-CF321A</name>
-<price>11900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/24666_1.jpg</picture>
 <picture>https://img.al-style.kz/24666_2.jpg</picture>
 <picture>https://img.al-style.kz/24666_3.jpg</picture>
@@ -4841,11 +4841,11 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Синий</param>
 </offer>
 
-<offer id="AS24667" available="true">
+<offer id="AS24667" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS24667</vendorCode>
 <name>Картридж Europrint EPC-CF322A</name>
-<price>11900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/24667_1.jpg</picture>
 <picture>https://img.al-style.kz/24667_2.jpg</picture>
 <picture>https://img.al-style.kz/24667_3.jpg</picture>
@@ -4859,11 +4859,11 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Жёлтый</param>
 </offer>
 
-<offer id="AS24668" available="true">
+<offer id="AS24668" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS24668</vendorCode>
 <name>Картридж Europrint EPC-CF323A</name>
-<price>11900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/24668_1.jpg</picture>
 <picture>https://img.al-style.kz/24668_2.jpg</picture>
 <picture>https://img.al-style.kz/24668_3.jpg</picture>
@@ -5101,7 +5101,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS25233" available="false">
+<offer id="AS25233" available="true">
 <categoryId>3542</categoryId>
 <vendorCode>AS25233</vendorCode>
 <name>Источник бесперебойного питания SVC V-2000-L</name>
@@ -5483,7 +5483,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>5075</categoryId>
 <vendorCode>AS27021</vendorCode>
 <name>Тонер-картридж Europrint EPC-106R01601 (WC 6500)</name>
-<price>4900</price>
+<price>3900</price>
 <picture>https://img.al-style.kz/27021_1.jpg</picture>
 <picture>https://img.al-style.kz/27021_2.jpg</picture>
 <picture>https://img.al-style.kz/27021_3.jpg</picture>
@@ -5502,7 +5502,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>5075</categoryId>
 <vendorCode>AS27023</vendorCode>
 <name>Тонер-картридж Europrint EPC-106R01602 (WC 6500)</name>
-<price>4900</price>
+<price>3900</price>
 <picture>https://img.al-style.kz/27023_1.jpg</picture>
 <picture>https://img.al-style.kz/27023_2.jpg</picture>
 <picture>https://img.al-style.kz/27023_3.jpg</picture>
@@ -5632,7 +5632,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS28225</vendorCode>
 <name>Картридж Europrint EPC-CF330X</name>
-<price>11900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/28225_1.jpg</picture>
 <picture>https://img.al-style.kz/28225_2.jpg</picture>
 <picture>https://img.al-style.kz/28225_3.jpg</picture>
@@ -5651,7 +5651,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS28226</vendorCode>
 <name>Картридж Europrint EPC-CF331A</name>
-<price>10900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/28226_1.jpg</picture>
 <picture>https://img.al-style.kz/28226_2.jpg</picture>
 <picture>https://img.al-style.kz/28226_3.jpg</picture>
@@ -5670,7 +5670,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS28227</vendorCode>
 <name>Картридж Europrint EPC-CF332A</name>
-<price>10900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/28227_1.jpg</picture>
 <picture>https://img.al-style.kz/28227_2.jpg</picture>
 <picture>https://img.al-style.kz/28227_3.jpg</picture>
@@ -5689,7 +5689,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS28228</vendorCode>
 <name>Картридж Europrint EPC-CF333A</name>
-<price>10900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/28228_1.jpg</picture>
 <picture>https://img.al-style.kz/28228_2.jpg</picture>
 <picture>https://img.al-style.kz/28228_3.jpg</picture>
@@ -5814,7 +5814,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS28781</vendorCode>
 <name>Картридж Europrint EPC-CF231A</name>
-<price>5900</price>
+<price>3900</price>
 <picture>https://img.al-style.kz/28781_1.jpg</picture>
 <picture>https://img.al-style.kz/28781_2.jpg</picture>
 <picture>https://img.al-style.kz/28781_3.jpg</picture>
@@ -5870,26 +5870,11 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
-<offer id="AS28810" available="false">
-<categoryId>3566</categoryId>
-<vendorCode>AS28810</vendorCode>
-<name>Картридж Europrint EPC-CE270A</name>
-<price>23900</price>
-<picture>https://img.al-style.kz/28810_1.jpg</picture>
-<picture>https://img.al-style.kz/28810_2.jpg</picture>
-<picture>https://img.al-style.kz/28810_3.jpg</picture>
-<vendor>Europrint</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Картридж Europrint EPC-CE270A</h3><p>Картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.<br>Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала.<br>Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.<br>Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером. Характеристики Модель: EPC-CE270A Аналог модели: CE270A Совместимость: Для принтеров HP Color LaserJet Enterprise CP5520/5525 Цвет: Чёрный Ресурс: 13500 страниц (А4) Наличие чипа: Да Картриджи EUROPRINT: Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 2.313</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
-<param name="Вес">2.313</param>
-<param name="Гарантия">2 года</param>
-</offer>
-
 <offer id="AS28812" available="true">
 <categoryId>3566</categoryId>
 <vendorCode>AS28812</vendorCode>
 <name>Картридж Europrint EPC-CE271A</name>
-<price>23900</price>
+<price>21900</price>
 <picture>https://img.al-style.kz/28812_1.jpg</picture>
 <picture>https://img.al-style.kz/28812_2.jpg</picture>
 <picture>https://img.al-style.kz/28812_3.jpg</picture>
@@ -5897,36 +5882,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <currencyId>KZT</currencyId>
 <description><h3>Картридж Europrint EPC-CE271A</h3><p>Картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.<br>Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала.<br>Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.<br>Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером. Характеристики Модель: EPC-CE271A Аналог модели: CE271A Совместимость: Для принтеров HP Color LaserJet Enterprise CP5520/5525 Цвет: Синий Ресурс: 15000 страниц (А4) Наличие чипа: Да Картриджи EUROPRINT: Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 2.67</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
 <param name="Вес">2.67</param>
-<param name="Гарантия">2 года</param>
-</offer>
-
-<offer id="AS28813" available="false">
-<categoryId>3566</categoryId>
-<vendorCode>AS28813</vendorCode>
-<name>Картридж Europrint EPC-CE272A</name>
-<price>23900</price>
-<picture>https://img.al-style.kz/28813_1.jpg</picture>
-<picture>https://img.al-style.kz/28813_2.jpg</picture>
-<picture>https://img.al-style.kz/28813_3.jpg</picture>
-<vendor>Europrint</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Картридж Europrint EPC-CE272A</h3><p>Картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.<br>Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала.<br>Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.<br>Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером. Характеристики Модель: EPC-CE272A Аналог модели: CE272A Совместимость: Для принтеров HP Color LaserJet Enterprise CP5520/5525 Цвет: Жёлтый Ресурс: 15000 страниц (А4) Наличие чипа: Да Картриджи EUROPRINT: Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 0.917</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
-<param name="Вес">0.917</param>
-<param name="Гарантия">2 года</param>
-</offer>
-
-<offer id="AS28814" available="false">
-<categoryId>3566</categoryId>
-<vendorCode>AS28814</vendorCode>
-<name>Картридж Europrint EPC-CE273A</name>
-<price>23900</price>
-<picture>https://img.al-style.kz/28814_1.jpg</picture>
-<picture>https://img.al-style.kz/28814_2.jpg</picture>
-<picture>https://img.al-style.kz/28814_3.jpg</picture>
-<vendor>Europrint</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Картридж Europrint EPC-CE273A</h3><p>Картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии.<br>Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала.<br>Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном.<br>Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером. Характеристики Модель: EPC-CE273A Аналог модели: CE273A Совместимость: Для принтеров HP Color LaserJet Enterprise CP5520/5525 Цвет: Пурпурный Ресурс: 15000 страниц (А4) Наличие чипа: Да Картриджи EUROPRINT: Соответствуют всем стандартам качества, отвечают всем техническим и экологическим требованиям к расходным материалам.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 0.917</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
-<param name="Вес">0.917</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
@@ -6064,7 +6019,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS30810</vendorCode>
 <name>Картридж Europrint EPC-CF450A</name>
-<price>19900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/30810_1.jpg</picture>
 <picture>https://img.al-style.kz/30810_2.jpg</picture>
 <picture>https://img.al-style.kz/30810_3.jpg</picture>
@@ -6079,7 +6034,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS30811</vendorCode>
 <name>Картридж Europrint EPC-CF451A</name>
-<price>18900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/30811_1.jpg</picture>
 <picture>https://img.al-style.kz/30811_2.jpg</picture>
 <picture>https://img.al-style.kz/30811_3.jpg</picture>
@@ -6094,7 +6049,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS30812</vendorCode>
 <name>Картридж Europrint EPC-CF452A</name>
-<price>18900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/30812_1.jpg</picture>
 <picture>https://img.al-style.kz/30812_2.jpg</picture>
 <picture>https://img.al-style.kz/30812_3.jpg</picture>
@@ -6109,7 +6064,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS30813</vendorCode>
 <name>Картридж Europrint EPC-CF453A</name>
-<price>18900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/30813_1.jpg</picture>
 <picture>https://img.al-style.kz/30813_2.jpg</picture>
 <picture>https://img.al-style.kz/30813_3.jpg</picture>
@@ -7728,7 +7683,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS34256" available="true">
+<offer id="AS34256" available="false">
 <categoryId>21370</categoryId>
 <vendorCode>AS34256</vendorCode>
 <name>Тонер-картридж Xerox 006R01772</name>
@@ -7946,11 +7901,11 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
-<offer id="AS33662" available="true">
+<offer id="AS33662" available="false">
 <categoryId>5075</categoryId>
 <vendorCode>AS33662</vendorCode>
 <name>Картридж Europrint EPC-106R03941 (B600/605)</name>
-<price>7900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/33662_1.jpg</picture>
 <picture>https://img.al-style.kz/33662_2.jpg</picture>
 <picture>https://img.al-style.kz/33662_3.jpg</picture>
@@ -8489,7 +8444,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS35970" available="true">
+<offer id="AS35970" available="false">
 <categoryId>21370</categoryId>
 <vendorCode>AS35970</vendorCode>
 <name>Тонер-картридж стандартной емкости Xerox 006R01756 (малиновый)</name>
@@ -8561,7 +8516,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>5075</categoryId>
 <vendorCode>AS23803</vendorCode>
 <name>Тонер-картридж Europrint EPC-106R01446 (P7500)</name>
-<price>13900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/23803_1.jpg</picture>
 <picture>https://img.al-style.kz/23803_2.jpg</picture>
 <picture>https://img.al-style.kz/23803_3.jpg</picture>
@@ -8580,7 +8535,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>5075</categoryId>
 <vendorCode>AS23804</vendorCode>
 <name>Тонер-картридж Europrint EPC-106R01444 (P7500)</name>
-<price>13900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/23804_1.jpg</picture>
 <picture>https://img.al-style.kz/23804_2.jpg</picture>
 <picture>https://img.al-style.kz/23804_3.jpg</picture>
@@ -8599,7 +8554,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>5075</categoryId>
 <vendorCode>AS23805</vendorCode>
 <name>Тонер-картридж Europrint EPC-106R01443 (P7500)</name>
-<price>13900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/23805_1.jpg</picture>
 <picture>https://img.al-style.kz/23805_2.jpg</picture>
 <picture>https://img.al-style.kz/23805_3.jpg</picture>
@@ -8618,7 +8573,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>5075</categoryId>
 <vendorCode>AS23806</vendorCode>
 <name>Тонер-картридж Europrint EPC-106R01445 (P7500)</name>
-<price>13900</price>
+<price>4900</price>
 <picture>https://img.al-style.kz/23806_1.jpg</picture>
 <picture>https://img.al-style.kz/23806_2.jpg</picture>
 <picture>https://img.al-style.kz/23806_3.jpg</picture>
@@ -9491,7 +9446,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS38078" available="false">
+<offer id="AS38078" available="true">
 <categoryId>21371</categoryId>
 <vendorCode>AS38078</vendorCode>
 <name>Картридж повышенной емкости Xerox 106R02732</name>
@@ -11296,7 +11251,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS37487" available="false">
+<offer id="AS37487" available="true">
 <categoryId>3566</categoryId>
 <vendorCode>AS37487</vendorCode>
 <name>Картридж Colorfix CF543A/054M</name>
@@ -14008,7 +13963,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS42108" available="true">
+<offer id="AS42108" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS42108</vendorCode>
 <name>Источник бесперебойного питания CyberPower OLS3000E</name>
@@ -16246,7 +16201,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS32430" available="true">
+<offer id="AS32430" available="false">
 <categoryId>21372</categoryId>
 <vendorCode>AS32430</vendorCode>
 <name>Тонер-картридж Xerox 006R01635 (голубой)</name>
@@ -19695,6 +19650,21 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
+<offer id="AS53138" available="true">
+<categoryId>21356</categoryId>
+<vendorCode>AS53138</vendorCode>
+<name>Персональный компьютер XG Basic XG710</name>
+<price>155900</price>
+<picture>https://img.al-style.kz/53138_1.jpg</picture>
+<picture>https://img.al-style.kz/53138_2.jpg</picture>
+<picture>https://img.al-style.kz/53138_3.jpg</picture>
+<vendor>XG</vendor>
+<currencyId>KZT</currencyId>
+<description><h3>Персональный компьютер XG Basic XG710</h3><p>Комплектующие: Материнская плата Gigabyte H510M K Модуль памяти Apacer EL.08G2V.GNH DDR4 8GBX2 Процессор (CPU) Intel Core i3 Processor 10105 Твердотельный накопитель SSD Apacer AS340X 240GB SATA Компьютерный корпус Delux DLC-DW701PS с Б/П 400W Кулер для процессора Deepcool GAMMA ARCHER Компьютер XG Basic XG710 удовлетворит базовые потребности современного пользователя и отлично подойдёт для работы, учёбы, интернет-сёрфинга и просмотра видеоконтента.<br>За высокую производительность отвечает современный процессор Intel Core i3 10105, а высокоскоростная оперативная память DDR4 объёмом 16 GB обеспечивает ускоренную обработку данных.<br>Твердотельный накопитель на 240 GB гарантирует быстрый запуск операционной системы и основных программ, а также надёжное хранение файлов.<br>За корректную работоспособность всех компонентов ПК отвечает блок питания на 400 Вт. Дизайн корпуса, продуманная система воздушного охлаждения и аккуратная укладка кабелей способствуют лучшей циркуляции воздуха внутри системного блока, меньшему накоплению пыли и предотвращают перегрев компонентов.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 5.4</li></ul></description>
+<param name="Вес">5.4</param>
+<param name="Гарантия"></param>
+</offer>
+
 <offer id="AS53242" available="true">
 <categoryId>5649</categoryId>
 <vendorCode>AS53242</vendorCode>
@@ -20928,7 +20898,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS59205" available="true">
+<offer id="AS59205" available="false">
 <categoryId>21580</categoryId>
 <vendorCode>AS59205</vendorCode>
 <name>Широкоформатный принтер Canon imagePROGRAF TM-240</name>
@@ -21325,7 +21295,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Скорость выхода первой страницы">7.1 сек. (моно) / 7.1 сек. (цвет)</param>
 </offer>
 
-<offer id="AS59326" available="false">
+<offer id="AS59326" available="true">
 <categoryId>21576</categoryId>
 <vendorCode>AS59326</vendorCode>
 <name>Цветное лазерное МФУ Canon I-S MF754CDW</name>
@@ -22447,8 +22417,8 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/59828_1.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Напольный пьедестал Canon Plain Pedestal Type-S3</h3><p>Напольный пъедестал Canon Plain Pedestal Type-S3 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики Напольный пъедестал Canon оснащен не только прочными ножками для надежной фиксации на месте, но и эргономичными колесиками благодаря которым в сборе с МФУ легко перемещать в пространстве избегая физических нагрузок. ВНИМАНИЕ! Тумба Canon Plain Pedestal Type-S3 не может быть установлена совместно с: Canon Cassette Feeding Unit-AW1. Дополнительный модуль кассетной подачи с двумя кассетами. Основные характеристики Производитель Canon Устройство Тумба Совместимость Устройства Canon imageRUNNER 2925iCanon imageRUNNER C3226iCanon imageRUNNER C3326iCanon imageRUNNER ADVANCE DX C3822iCanon imageRUNNER ADVANCE DX C3826iCanon imageRUNNER ADVANCE DX C3830iCanon imageRUNNER ADVANCE DX C3835i</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 11.2</li><li><strong>Гарантия:</strong> Нет</li><li><strong>Состав:</strong> Металл, пластик</li></ul></description>
-<param name="Вес">11.2</param>
+<description><h3>Напольный пьедестал Canon Plain Pedestal Type-S3</h3><p>Напольный пъедестал Canon Plain Pedestal Type-S3 Товар предназначен только для продажи на территории Республики Казахстан и Кыргызской Республики Напольный пъедестал Canon оснащен не только прочными ножками для надежной фиксации на месте, но и эргономичными колесиками благодаря которым в сборе с МФУ легко перемещать в пространстве избегая физических нагрузок. ВНИМАНИЕ! Тумба Canon Plain Pedestal Type-S3 не может быть установлена совместно с: Canon Cassette Feeding Unit-AW1. Дополнительный модуль кассетной подачи с двумя кассетами. Основные характеристики Производитель Canon Устройство Тумба Совместимость Устройства Canon imageRUNNER 2925iCanon imageRUNNER C3226iCanon imageRUNNER C3326iCanon imageRUNNER ADVANCE DX C3822iCanon imageRUNNER ADVANCE DX C3826iCanon imageRUNNER ADVANCE DX C3830iCanon imageRUNNER ADVANCE DX C3835i</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 12.296</li><li><strong>Гарантия:</strong> Нет</li><li><strong>Состав:</strong> Металл, пластик</li></ul></description>
+<param name="Вес">12.296</param>
 <param name="Гарантия">Нет</param>
 <param name="Состав">Металл, пластик</param>
 </offer>
@@ -24422,7 +24392,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS61357" available="true">
+<offer id="AS61357" available="false">
 <categoryId>3545</categoryId>
 <vendorCode>AS61357</vendorCode>
 <name>Источник бесперебойного питания APC Easy UPS SRV10KRILRK</name>
@@ -25472,7 +25442,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS61385" available="true">
+<offer id="AS61385" available="false">
 <categoryId>3542</categoryId>
 <vendorCode>AS61385</vendorCode>
 <name>Источник бесперебойного питания APC Easy UPS BV650I-GR</name>
@@ -27592,7 +27562,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>21664</categoryId>
 <vendorCode>AS63535</vendorCode>
 <name>Картридж Europrint EPC-056H</name>
-<price>37900</price>
+<price>34900</price>
 <picture>https://img.al-style.kz/63535_1.jpg</picture>
 <picture>https://img.al-style.kz/63535_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -28416,7 +28386,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">1 мс</param>
 </offer>
 
-<offer id="AS64533" available="true">
+<offer id="AS64533" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS64533</vendorCode>
 <name>Картридж Europrint EPC-W1510X</name>
@@ -28630,7 +28600,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
-<offer id="AS64667" available="true">
+<offer id="AS64667" available="false">
 <categoryId>21664</categoryId>
 <vendorCode>AS64667</vendorCode>
 <name>Картридж Europrint EPC-069C</name>
@@ -28658,7 +28628,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
-<offer id="AS64670" available="true">
+<offer id="AS64670" available="false">
 <categoryId>21664</categoryId>
 <vendorCode>AS64670</vendorCode>
 <name>Картридж Europrint EPC-069Y</name>
@@ -28821,7 +28791,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">Нет</param>
 </offer>
 
-<offer id="AS64785" available="true">
+<offer id="AS64785" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS64785</vendorCode>
 <name>Монитор Xiaomi G Pro 27i P27QBA-RGPGL 27&quot;</name>
@@ -31020,7 +30990,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">Нет</param>
 </offer>
 
-<offer id="AS68726" available="true">
+<offer id="AS68726" available="false">
 <categoryId>21291</categoryId>
 <vendorCode>AS68726</vendorCode>
 <name>Ноутбук Huawei MateBook X Pro 14 14&quot; Ultra 7 155H 16GB 1TB Win 11 VanGoghH-7611TM 53014ANN</name>
@@ -31331,7 +31301,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <categoryId>3566</categoryId>
 <vendorCode>AS69725</vendorCode>
 <name>Картридж Europrint EPC-W1360A (Без чипа)</name>
-<price>6900</price>
+<price>5900</price>
 <picture>https://img.al-style.kz/69725_1.jpg</picture>
 <picture>https://img.al-style.kz/69725_2.jpg</picture>
 <vendor>Europrint</vendor>
@@ -33020,7 +32990,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">1 мс</param>
 </offer>
 
-<offer id="AS73236" available="true">
+<offer id="AS73236" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS73236</vendorCode>
 <name>Монитор iiyama ProLite PL2493H XU2493HS-B6 A 24&quot;</name>
@@ -33234,7 +33204,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
-<offer id="AS73661" available="false">
+<offer id="AS73661" available="true">
 <categoryId>3566</categoryId>
 <vendorCode>AS73661</vendorCode>
 <name>Картридж Europrint EPC-CF226A/CRG-052</name>
@@ -33764,7 +33734,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">5 мс</param>
 </offer>
 
-<offer id="AS75907" available="false">
+<offer id="AS75907" available="true">
 <categoryId>5649</categoryId>
 <vendorCode>AS75907</vendorCode>
 <name>Монитор Samsung 24&quot; LS24D304GAIXCI</name>
@@ -33924,7 +33894,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Точек касания">50</param>
 </offer>
 
-<offer id="AS76152" available="true">
+<offer id="AS76152" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS76152</vendorCode>
 <name>Монитор 34&quot; LG 34WR50QK-B Black</name>
@@ -34471,7 +34441,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS76963" available="true">
+<offer id="AS76963" available="false">
 <categoryId>5075</categoryId>
 <vendorCode>AS76963</vendorCode>
 <name>Тонер-картридж CET 106R03767 (CET141696)</name>
@@ -36763,6 +36733,19 @@ SCX-3400, 3401, 3405, 3406</param>
 <currencyId>KZT</currencyId>
 <description><h3>Монитор Samsung 24&quot; S3 LS24F320GAIXCI</h3><p>Монитор Samsung 24&quot; S3 LS24D364GAIXCI Особенности и преимущества: Экран с изгибом 1800R. Эффект погружения стал еще сильнее.<br>Экран с изгибом точнее повторяет ваше поле зрения, увеличивая угол обзора и ощущение глубины и уменьшая периферийные раздражители, чтобы вы могли полностью сфокусироваться на изображении.<br>Плавное воспроизведение контента. Вы не пропустите ни кадра из вашей игры, видео или творческого проекта.<br>Частота обновления 100 Гц снижает задержки и размытие, чтобы вы не упустили ничего важного даже на большой скорости. Увеличенная игровая мощность. Оптимизация настроек игры даст вам преимущества. Цвет и контраст мгновенно регулируются для четкого представления сцен и выслеживания противников в темноте, а игровой режим настраивает картинку под ваш экран, позволяя разглядеть все детали. Режим защиты глаз Eye Saver и сниженное мерцание экрана. Позаботьтесь о вашем зрении и играйте с комфортом даже в течение длительного времени.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 6</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
 <param name="Вес">6</param>
+<param name="Гарантия">1 год</param>
+</offer>
+
+<offer id="AS84104" available="false">
+<categoryId>3708</categoryId>
+<vendorCode>AS84104</vendorCode>
+<name>Кабель витая пара DKC RN5EFUK01GY кат. 5E F/UTP нг(А)-HF</name>
+<price>3900</price>
+<picture>https://img.al-style.kz/84104_1.jpg</picture>
+<vendor>ДКС</vendor>
+<currencyId>KZT</currencyId>
+<description><h3>Кабель витая пара DKC RN5EFUK01GY кат. 5E F/UTP нг(А)-HF</h3><p>Кабель витая пара, DKC, RN5EFUK01GY, кат. 5E, F/UTP, 4 пары, нг(А)-HF, 4x2x1/0.51мм, экранированный, цвет внешней оболочки серый, коробка 305 м, для групповой прокладки внутри помещений, внешняя оболочка из полиолефина</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 0.035</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
+<param name="Вес">0.035</param>
 <param name="Гарантия">1 год</param>
 </offer>
 </offers>
