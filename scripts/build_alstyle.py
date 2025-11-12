@@ -5,7 +5,7 @@ import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v92 (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v93 (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -223,6 +223,19 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
 
 # --- Сортировка тегов и сбор оффера ---
 WANT_ORDER = ('categoryId','vendorCode','name','price','picture','vendor','currencyId','description','param')
+
+def _swap_price_nodes(xml: str) -> str:
+    """Меняет местами значения узлов <price> и <purchase_price> в пределах одного offer за 1 проход."""
+    xml = re.sub(r'(?is)<\s*price\s*>', '<_TMP_PRICE_>', xml)
+    xml = re.sub(r'(?is)</\s*price\s*>', '</_TMP_PRICE_>', xml)
+    xml = re.sub(r'(?is)<\s*purchase_price\s*>', '<_TMP_PPRICE_>', xml)
+    xml = re.sub(r'(?is)</\s*purchase_price\s*>', '</_TMP_PPRICE_>', xml)
+    xml = xml.replace('<_TMP_PRICE_>', '<purchase_price>')
+    xml = xml.replace('</_TMP_PRICE_>', '</purchase_price>')
+    xml = xml.replace('<_TMP_PPRICE_>', '<price>')
+    xml = xml.replace('</_TMP_PPRICE_>', '</price>')
+    return xml
+
 def _rebuild_offer(offer_xml: str) -> str:
     m = re.match(r'(?is)^\s*(<offer\b[^>]*>)(.*)</offer>\s*$', offer_xml)
     if not m: return offer_xml.strip() + '\n\n'
@@ -326,9 +339,9 @@ def main() -> int:
     avail_true = sum('available="true"' in k for k in kept)
     avail_false = sum('available="false"' in k for k in kept)
     # src может быть bytes — декодируем для подсчёта исходных офферов
-    _src_text = src if isinstance(src, str) else src.decode('windows-1251', errors='ignore')
-    source_total = len(re.findall(r'(?is)<offer\b', _src_text))
-    from datetime import datetime, timedelta
+    # faster: считаем офферы по уже декодированному тексту
+    source_total = len(re.findall(r'(?is)<offer', text))
+from datetime import datetime, timedelta
     try:
         from zoneinfo import ZoneInfo
         _tz = ZoneInfo('Asia/Almaty')
@@ -355,11 +368,11 @@ def main() -> int:
     out_text = head + '\n' + new_offers + '\n' + tail
     out_text = feed_meta + out_text
     # fix: перенос перед </shop>
-    out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
+    out_text = _RX_PRE_END_SHOP.sub(r'\1\n</shop>', out_text, count=1)
     # fix: перенос перед </yml_catalog>
-    out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
+    out_text = _RX_PRE_END_YML.sub(r'\1\n</yml_catalog>', out_text, count=1)
     # fix: РОВНО два перевода строки между последним </offer> и </offers>
-    out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
+    out_text = _RX_LAST_OFFER_BEFORE_OFFERS.sub('</offer>\n\n', out_text, count=1)
 
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
