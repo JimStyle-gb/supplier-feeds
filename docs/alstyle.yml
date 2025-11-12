@@ -1,7 +1,16 @@
-<!-- feed_meta: supplier=AlStyle; generated=2025-11-12 14:28:34 UTC; total_offers=2025; available_true=1378; available_false=647; encoding=windows-1251 -->
+<!--FEED_META
+Поставщик                                  | AlStyle
+URL поставщика                             | https://al-style.kz/upload/catalog_export/al_style_catalog.php
+Время сборки (Алматы)                      | 2025-11-13 00:50:27
+Ближайшая сборка (Алматы)                  | 2025-11-13 01:00:00
+Сколько товаров у поставщика до фильтра    | 15625
+Сколько товаров у поставщика после фильтра | 2025
+Сколько товаров есть в наличии (true)      | 1375
+Сколько товаров нет в наличии (false)      | 650
+-->
 
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-12 18:50">
+<yml_catalog date="2025-11-12 21:50">
 <shop><offers>
 
 <offer id="AS20888" available="false">
@@ -15702,7 +15711,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Серый</param>
 </offer>
 
-<offer id="AS45708" available="true">
+<offer id="AS45708" available="false">
 <categoryId>3708</categoryId>
 <vendorCode>AS45708</vendorCode>
 <name>Кабель сетевой Legrand Cat.5e U/UTP PVC</name>
@@ -21297,7 +21306,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Скорость выхода первой страницы">7.1 сек. (моно) / 7.1 сек. (цвет)</param>
 </offer>
 
-<offer id="AS59326" available="true">
+<offer id="AS59326" available="false">
 <categoryId>21576</categoryId>
 <vendorCode>AS59326</vendorCode>
 <name>Цветное лазерное МФУ Canon I-S MF754CDW</name>
@@ -33588,7 +33597,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS74067" available="true">
+<offer id="AS74067" available="false">
 <categoryId>21279</categoryId>
 <vendorCode>AS74067</vendorCode>
 <name>Струйный картридж Canon CL-461</name>
