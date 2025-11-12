@@ -325,7 +325,9 @@ def main() -> int:
     total = len(kept)
     avail_true = sum('available="true"' in k for k in kept)
     avail_false = sum('available="false"' in k for k in kept)
-    source_total = len(re.findall(r'(?is)<offer\b', src))
+    # fix: src может быть bytes — декодируем в Windows-1251 перед подсчётом
+    _src_text = src if isinstance(src, str) else src.decode('windows-1251', errors='ignore')
+    source_total = len(re.findall(r'(?is)<offer\b', _src_text))
     from datetime import datetime, timedelta
     try:
         from zoneinfo import ZoneInfo
