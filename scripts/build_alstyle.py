@@ -5,7 +5,7 @@ import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v82 (last-offer newline) params-sorted + attr-order fix')
+print('[VER] build_alstyle v84 (double last </offer> newline) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -321,8 +321,9 @@ def main() -> int:
 
     new_offers = '\n\n'.join(x.strip() for x in kept)
     out_text = head + '\n' + new_offers + '\n' + tail
-    # fix: перевод строки после последнего </offer> (перед </offers>)
-    out_text = re.sub(r'</offer>\s*</offers>', '</offer>\n</offers>', out_text, count=1)
+    # fix: РОВНО один перевод строки между последним </offer> и </offers>
+        # fix: РОВНО два перевода строки между последним </offer> и </offers>
+    out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
     # fix: перенос перед </shop>
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     # fix: перенос перед </yml_catalog>
