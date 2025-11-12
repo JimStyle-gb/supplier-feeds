@@ -19,9 +19,7 @@ def _ensure_footer_spacing(out_text: str) -> str:
 from pathlib import Path
 import requests
 
-SUPPLIER_URL = 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'
-
-print('[VER] build_alstyle v103 (tidy: drop dead func, compiled param KV, normalize helper) (param_kv+cleanup) (mini‑patch: use compiled + drop dead func) (cleanup+precompiled) (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v104 (param deny: collect+emit) (param_kv+cleanup) (mini‑patch: use compiled + drop dead func) (cleanup+precompiled) (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -311,21 +309,22 @@ def _rebuild_offer(offer_xml: str) -> str:
     for t in ('vendor','currencyId','description'):
         out_lines += parts.get(t, [])
     for prm in parts.get('param', []):
+        mname = re.search(r'(?is)name\s*=\s*"([^"]+)"', prm or '')
+        if mname and mname.group(1).strip().lower() in DENY_PARAMS:
+            continue
+        mname = re.search(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"', prm)
+        if mname:
+            nm = re.sub(r'[\s\-]+', ' ', mname.group(1).strip().lower()).replace('ё','е')
+            if nm in DENY_PARAMS:
+                continue
         out_lines.append(prm)
+
     out = header + '\n' + '\n'.join(x.strip() for x in out_lines if x.strip()) + '\n</offer>\n\n'
     return out
 
-
-def _normalize_whitespace(text: str) -> str:
-    """Убираем лишние пробелы/пустые строки, добавляем перенос после <offers>."""
-    text = re.sub(r'[ \t]+\n', '\n', text)
-    text = re.sub(r'\n{3,}', '\n\n', text)
-    text = text.replace('<shop><offers>', '<shop><offers>\n')
-    return text
-
 # --- Главный поток ---
 def main() -> int:
-    url = SUPPLIER_URL
+    url = 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'
     r = requests.get(url, auth=(LOGIN, PASSWORD), timeout=60)
     r.raise_for_status()
     src = r.content
@@ -376,7 +375,7 @@ def main() -> int:
     feed_meta = (
         "<!--FEED_META\n"
         f"{_line('Поставщик', 'AlStyle')}\n"
-        f"{_line('URL поставщика', SUPPLIER_URL)}\n"
+        f"{_line('URL поставщика', globals().get('SUPPLIER_URL', 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'))}\n"
         f"{_line('Время сборки (Алматы)', _now_local.strftime('%Y-%m-%d %H:%M:%S'))}\n"
         f"{_line('Ближайшая сборка (Алматы)', _next.strftime('%Y-%m-%d %H:%M:%S'))}\n"
         f"{_line('Сколько товаров у поставщика до фильтра', source_total)}\n"
@@ -389,7 +388,9 @@ def main() -> int:
     out_text = feed_meta + out_text
     out_text = _ensure_footer_spacing(out_text)
 
-    out_text = _normalize_whitespace(out_text)
+    out_text = re.sub(r'[ \t]+\n', '\n', out_text)
+    out_text = re.sub(r'\n{3,}', '\n\n', out_text)
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
 
 
     Path('docs').mkdir(exist_ok=True)
