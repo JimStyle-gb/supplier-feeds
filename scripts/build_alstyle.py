@@ -5,7 +5,7 @@ import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v86 (FEED_META + last </offer> = 2 NL) params-sorted + attr-order fix')
+print('[VER] build_alstyle v92 (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -321,11 +321,11 @@ def main() -> int:
 
     new_offers = '\n\n'.join(x.strip() for x in kept)
 
-    # FEED_META: многострочная шапка на русском, времена — Asia/Almaty
+    # FEED_META: многострочная шапка (Asia/Almaty)
     total = len(kept)
     avail_true = sum('available="true"' in k for k in kept)
     avail_false = sum('available="false"' in k for k in kept)
-    # fix: src может быть bytes — декодируем в Windows-1251 перед подсчётом
+    # src может быть bytes — декодируем для подсчёта исходных офферов
     _src_text = src if isinstance(src, str) else src.decode('windows-1251', errors='ignore')
     source_total = len(re.findall(r'(?is)<offer\b', _src_text))
     from datetime import datetime, timedelta
@@ -343,7 +343,7 @@ def main() -> int:
     feed_meta = (
         "<!--FEED_META\n"
         f"{_line('Поставщик', 'AlStyle')}\n"
-        f"{_line('URL поставщика', SUPPLIER_URL)}\n"
+        f"{_line('URL поставщика', globals().get('SUPPLIER_URL', 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'))}\n"
         f"{_line('Время сборки (Алматы)', _now_local.strftime('%Y-%m-%d %H:%M:%S'))}\n"
         f"{_line('Ближайшая сборка (Алматы)', _next.strftime('%Y-%m-%d %H:%M:%S'))}\n"
         f"{_line('Сколько товаров у поставщика до фильтра', source_total)}\n"
