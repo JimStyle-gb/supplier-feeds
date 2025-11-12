@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-11 14:50">
+<yml_catalog date="2025-11-12 13:50">
 <shop><offers>
 
 <offer id="AS20888" available="false">
@@ -2026,7 +2026,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS13495" available="true">
+<offer id="AS13495" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS13495</vendorCode>
 <name>Картридж Europrint EPC-CF214A</name>
@@ -2995,7 +2995,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS3310" available="false">
+<offer id="AS3310" available="true">
 <categoryId>3542</categoryId>
 <vendorCode>AS3310</vendorCode>
 <name>Источник бесперебойного питания SVC V-1200-F-LCD</name>
@@ -3400,7 +3400,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS7011" available="true">
+<offer id="AS7011" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS7011</vendorCode>
 <name>Источник бесперебойного питания SVC PT-10K-LCD</name>
@@ -3513,7 +3513,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS14654" available="true">
+<offer id="AS14654" available="false">
 <categoryId>3545</categoryId>
 <vendorCode>AS14654</vendorCode>
 <name>Источник бесперебойного питания SVC RTL-2K-LCD</name>
@@ -3969,7 +3969,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS592" available="false">
+<offer id="AS592" available="true">
 <categoryId>3708</categoryId>
 <vendorCode>AS592</vendorCode>
 <name>Кабель сетевой SHIP D155-P Cat.5e SF/UTP 30В PVC</name>
@@ -5354,7 +5354,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS26781" available="true">
+<offer id="AS26781" available="false">
 <categoryId>3688</categoryId>
 <vendorCode>AS26781</vendorCode>
 <name>Уничтожитель бумаг (Шредер) COMIX S3306</name>
@@ -8544,7 +8544,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS36023" available="true">
+<offer id="AS36023" available="false">
 <categoryId>21367</categoryId>
 <vendorCode>AS36023</vendorCode>
 <name>Комплект проявки (узел + проявитель) Xerox 607K07290 (чёрный)</name>
@@ -9491,7 +9491,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS38078" available="true">
+<offer id="AS38078" available="false">
 <categoryId>21371</categoryId>
 <vendorCode>AS38078</vendorCode>
 <name>Картридж повышенной емкости Xerox 106R02732</name>
@@ -9584,7 +9584,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS37163" available="false">
+<offer id="AS37163" available="true">
 <categoryId>21370</categoryId>
 <vendorCode>AS37163</vendorCode>
 <name>Тонер-картридж повышенной емкости Xerox 006R01760 (малиновый)</name>
@@ -10032,7 +10032,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS34495" available="false">
+<offer id="AS34495" available="true">
 <categoryId>21371</categoryId>
 <vendorCode>AS34495</vendorCode>
 <name>Фьюзерный модуль Xerox 126K36852 / 126K36850 / 126K36851</name>
@@ -11296,7 +11296,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS37487" available="true">
+<offer id="AS37487" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS37487</vendorCode>
 <name>Картридж Colorfix CF543A/054M</name>
@@ -13160,7 +13160,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS42045" available="true">
+<offer id="AS42045" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS42045</vendorCode>
 <name>Источник бесперебойного питания CyberPower PR3000ELCDSL</name>
@@ -14008,7 +14008,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS42108" available="false">
+<offer id="AS42108" available="true">
 <categoryId>3544</categoryId>
 <vendorCode>AS42108</vendorCode>
 <name>Источник бесперебойного питания CyberPower OLS3000E</name>
@@ -14177,7 +14177,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS42272" available="true">
+<offer id="AS42272" available="false">
 <categoryId>21371</categoryId>
 <vendorCode>AS42272</vendorCode>
 <name>Тонер-картридж стандартной емкости Xerox 006R04363 (жёлтый)</name>
@@ -15675,31 +15675,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS44476" available="false">
-<categoryId>5649</categoryId>
-<vendorCode>AS44476</vendorCode>
-<name>Монитор 31,5&quot; Gigabyte M32QC-EK</name>
-<price>177900</price>
-<picture>https://img.al-style.kz/44476_1.jpg</picture>
-<picture>https://img.al-style.kz/44476_2.jpg</picture>
-<picture>https://img.al-style.kz/44476_3.jpg</picture>
-<vendor>Gigabyte</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Монитор 31,5&quot; Gigabyte M32QC-EK</h3><p>Монитор 31,5&quot; Gigabyte M32QC-EK Роль монитора в игровом процессе, зачастую, недооценивают.<br>Правда заключается в том, что благодаря дисплеям достигается синергетический эффект и визуальное восприятие реальной производительности ПК.<br>Игровые мониторы GIGABYTE это востребованная функциональность и безупречное качество исполнения.<br>Владельцы таких дисплеев могут наслаждаться качеством картинки и реальным быстродействием игрового процесса без излишней экстравагантности имиджевой составляющей изделия. Особенности и преимущества: Качественная VA-матрица с диагональю 31,5-дюйм и радиусом кривизны 1500R создает необходимые условия для полного погружения в атмосферу кинофильма или игрового процесса, комфортный просмотр и быструю адаптацию зрения (по сравнению с плоским экраном дисплея). Функция KVM позволяет управлять несколькими устройствами с помощью одного набора клавиатуры, мыши и устройства отображения информации.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 31</li><li><strong>Яркость:</strong> 350 кд/м2</li><li><strong>Вес:</strong> 11.03</li><li><strong>Время отклика:</strong> 1 мс</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Контрастность:</strong> 3000:1</li><li><strong>Размер VESA:</strong> 100x100 мм</li><li><strong>Разрешение экрана:</strong> 2560х1440</li><li><strong>Тип матрицы экрана:</strong> VA</li><li><strong>Угол обзора:</strong> 178/178°</li><li><strong>Цвет:</strong> Чёрный</li><li><strong>Частота обновления экрана:</strong> 165 Гц</li></ul></description>
-<param name="Вес">11.03</param>
-<param name="Гарантия">1 год</param>
-<param name="Частота обновления экрана">165 Гц</param>
-<param name="Контрастность">3000:1</param>
-<param name="Тип матрицы экрана">VA</param>
-<param name="Яркость">350 кд/м2</param>
-<param name="Размер VESA">100x100 мм</param>
-<param name="Угол обзора">178/178°</param>
-<param name="Диагональ экрана">31</param>
-<param name="Разрешение экрана">2560х1440</param>
-<param name="Время отклика">1 мс</param>
-<param name="Цвет">Чёрный</param>
-</offer>
-
 <offer id="AS44900" available="false">
 <categoryId>21367</categoryId>
 <vendorCode>AS44900</vendorCode>
@@ -15748,7 +15723,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Серый</param>
 </offer>
 
-<offer id="AS45707" available="false">
+<offer id="AS45707" available="true">
 <categoryId>3708</categoryId>
 <vendorCode>AS45707</vendorCode>
 <name>Кабель сетевой Legrand Cat.5e U/UTP LSZH</name>
@@ -15770,7 +15745,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Серый</param>
 </offer>
 
-<offer id="AS45708" available="false">
+<offer id="AS45708" available="true">
 <categoryId>3708</categoryId>
 <vendorCode>AS45708</vendorCode>
 <name>Кабель сетевой Legrand Cat.5e U/UTP PVC</name>
@@ -15792,7 +15767,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Серый</param>
 </offer>
 
-<offer id="AS45709" available="false">
+<offer id="AS45709" available="true">
 <categoryId>3708</categoryId>
 <vendorCode>AS45709</vendorCode>
 <name>Кабель сетевой Legrand Cat.6 U/UTP LSZH</name>
@@ -17702,7 +17677,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS44042" available="true">
+<offer id="AS44042" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS44042</vendorCode>
 <name>Картридж Europrint EPC-W2030A</name>
@@ -18418,19 +18393,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS48881" available="false">
-<categoryId>21370</categoryId>
-<vendorCode>AS48881</vendorCode>
-<name>Тонер-картридж с дозированным расходом тонера (Metered) Xerox 006R01744 (малиновый)</name>
-<price>164900</price>
-<picture>https://img.al-style.kz/48881_1.jpg</picture>
-<vendor>Xerox</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Тонер-картридж с дозированным расходом тонера (Metered) Xerox 006R01744 (малиновый)</h3><p>Тонер-картридж — расходный материал, используемый принтером или МФУ. Содержит тонер — порошок для лазерной печати, который используется для формирования изображения в процессе ксерографии. Ресурс расходных материалов — максимальное количество отпечатков, которое можно произвести при использовании данного расходного материала. Ресурс указывается в страницах формата А4 при определенном заполнении их тонером, как правило, 5-процентном. Процентное заполнение страницы — отношение площади участков страницы, заполненных тонером или чернилами, ко всей площади поверхности страницы. Так, 100% заполнение — это черная страница А4, полностью заполненная тонером. Характеристики Модель 006R01744 Совместимые модели Xerox AltaLink C8130/C8135/C8145/C8155/C8170 Цвет Малиновый Ресурс картриджа 28 000 стандартных страниц в среднем. Ресурс указан в соответствии со стандартом ISO/IEC19752. Ресурс может отличаться в зависимости от изображений, области покрытия и режимов печати</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 1</li><li><strong>Гарантия:</strong> 1 год</li></ul></description>
-<param name="Вес">1</param>
-<param name="Гарантия">1 год</param>
-</offer>
-
 <offer id="AS49308" available="false">
 <categoryId>21368</categoryId>
 <vendorCode>AS49308</vendorCode>
@@ -18596,7 +18558,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">1 мс</param>
 </offer>
 
-<offer id="AS51679" available="true">
+<offer id="AS51679" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS51679</vendorCode>
 <name>Картридж Europrint EPC-W1500A</name>
@@ -19759,7 +19721,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">5 мс</param>
 </offer>
 
-<offer id="AS53288" available="true">
+<offer id="AS53288" available="false">
 <categoryId>21498</categoryId>
 <vendorCode>AS53288</vendorCode>
 <name>Интерактивная доска (панель) Dahua 75&quot; DHI-LCH75-MC410-B</name>
@@ -21667,7 +21629,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Скорость выхода первой страницы">5.4 сек. (моно)</param>
 </offer>
 
-<offer id="AS59644" available="true">
+<offer id="AS59644" available="false">
 <categoryId>21665</categoryId>
 <vendorCode>AS59644</vendorCode>
 <name>Картридж Canon LBP CARTRIDGE 056L</name>
@@ -23357,7 +23319,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">1 мс</param>
 </offer>
 
-<offer id="AS60613" available="true">
+<offer id="AS60613" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS60613</vendorCode>
 <name>Монитор Xiaomi Monitor A24i EU</name>
@@ -24195,7 +24157,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS61347" available="true">
+<offer id="AS61347" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS61347</vendorCode>
 <name>Источник бесперебойного питания APC Smart-UPS SMT750IC</name>
@@ -25049,36 +25011,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS61390" available="false">
-<categoryId>3545</categoryId>
-<vendorCode>AS61390</vendorCode>
-<name>Источник бесперебойного питания Schneider Electric Easy UPS SRVS6KRILRK</name>
-<price>1083900</price>
-<picture>https://img.al-style.kz/61390_1.jpg</picture>
-<picture>https://img.al-style.kz/61390_2.jpg</picture>
-<picture>https://img.al-style.kz/61390_3.jpg</picture>
-<vendor>Schneider Electric</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Источник бесперебойного питания Schneider Electric Easy UPS SRVS6KRILRK</h3><p>Источник бесперебойного питания Schneider Electric Easy UPS SRVS6KRILRK Schneider Electric Easy UPS SRVS6KRILRK высококачественный онлайн-ИБП с двойным преобразованием, предназначенный для обеспечения необходимой защиты электропитания даже в самых нестабильных условиях электропитания. В комплект поставки входит: 1 USB кабель 1 Кабель для конфигурирования через порт RS-232 2 Кронштейны для монтажа в аппаратурные стойки 2 Направляющие для монтажа в аппаратурные стойки 1 external battery pack 1 батарейный кабель руководство по эксплуатации</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 119.66</li><li><strong>Автоматическое включение:</strong> Есть</li><li><strong>Время переключения режимов:</strong> 0 мс</li><li><strong>Время полной зарядки:</strong> 5 ч</li><li><strong>Вход:</strong> 230 В</li><li><strong>Высота в монтажной стойке:</strong> 5U</li><li><strong>Выход:</strong> 230В</li><li><strong>Гарантия:</strong> 2 года</li><li><strong>Количество и тип выходных разъёмов:</strong> Клеммная колодка</li><li><strong>Лицевая панель:</strong> ЖК-дисплей</li><li><strong>Мощность (Bт):</strong> 6кВА/6кВт</li><li><strong>Рабочая влажность:</strong> 0-90% (без конденсации)</li><li><strong>Рабочий диапазон температур:</strong> от 0 до 40 °С</li><li><strong>Состав:</strong> Металл, пластик</li><li><strong>Тип ИБП:</strong> Онлайн</li><li><strong>Форма выходного сигнала:</strong> Синусоида</li><li><strong>Цвет:</strong> Чёрный</li></ul></description>
-<param name="Вес">119.66</param>
-<param name="Гарантия">2 года</param>
-<param name="Время полной зарядки">5 ч</param>
-<param name="Мощность (Bт)">6кВА/6кВт</param>
-<param name="Тип ИБП">Онлайн</param>
-<param name="Время переключения режимов">0 мс</param>
-<param name="Форма выходного сигнала">Синусоида</param>
-<param name="Автоматическое включение">Есть</param>
-<param name="Вход">230 В</param>
-<param name="Выход">230В</param>
-<param name="Рабочий диапазон температур">от 0 до 40 °С</param>
-<param name="Состав">Металл, пластик</param>
-<param name="Количество и тип выходных разъёмов">Клеммная колодка</param>
-<param name="Лицевая панель">ЖК-дисплей </param>
-<param name="Высота в монтажной стойке">5U</param>
-<param name="Рабочая влажность">0-90% (без конденсации)</param>
-<param name="Цвет">Чёрный</param>
-</offer>
-
 <offer id="AS61392" available="true">
 <categoryId>3544</categoryId>
 <vendorCode>AS61392</vendorCode>
@@ -25225,36 +25157,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS61401" available="false">
-<categoryId>3545</categoryId>
-<vendorCode>AS61401</vendorCode>
-<name>Источник бесперебойного питания Schneider Electric Easy UPS SRVS1KRIRK</name>
-<price>228900</price>
-<picture>https://img.al-style.kz/61401_1.jpg</picture>
-<picture>https://img.al-style.kz/61401_2.jpg</picture>
-<picture>https://img.al-style.kz/61401_3.jpg</picture>
-<vendor>Schneider Electric</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Источник бесперебойного питания Schneider Electric Easy UPS SRVS1KRIRK</h3><p>Источник бесперебойного питания Schneider Electric Easy UPS SRVS1KRIRK Schneider Electric Easy UPS SRVS1KRIRK высококачественный онлайн-ИБП с двойным преобразованием, предназначенный для обеспечения необходимой защиты электропитания даже в самых нестабильных условиях электропитания. В комплект поставки входит: 1 IEC 60320 C19 to Schuko силовой кабель 1 IEC 60320 C13 to C14 силовой кабель 1 USB кабель 1 Кабель для конфигурирования через порт RS-232 1 Направляющие для монтажа в аппаратурные стойки руководство по эксплуатации</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 15.66</li><li><strong>Автоматическое включение:</strong> Есть</li><li><strong>Время переключения режимов:</strong> 0 мс</li><li><strong>Время полной зарядки:</strong> 4 ч</li><li><strong>Вход:</strong> 230 В</li><li><strong>Высота в монтажной стойке:</strong> 2U</li><li><strong>Выход:</strong> 230В</li><li><strong>Гарантия:</strong> 2 года</li><li><strong>Длина кабеля:</strong> 1,5 м</li><li><strong>Лицевая панель:</strong> ЖК-дисплей</li><li><strong>Мощность (Bт):</strong> 800 Вт.</li><li><strong>Рабочая влажность:</strong> 0-90% (без конденсации)</li><li><strong>Рабочий диапазон температур:</strong> от 0 до 40 °С</li><li><strong>Состав:</strong> Металл, пластик</li><li><strong>Тип ИБП:</strong> Онлайн</li><li><strong>Форма выходного сигнала:</strong> Синусоида</li><li><strong>Цвет:</strong> Чёрный</li></ul></description>
-<param name="Вес">15.66</param>
-<param name="Гарантия">2 года</param>
-<param name="Время полной зарядки">4 ч</param>
-<param name="Мощность (Bт)">800 Вт.</param>
-<param name="Тип ИБП">Онлайн</param>
-<param name="Время переключения режимов">0 мс</param>
-<param name="Длина кабеля">1,5 м</param>
-<param name="Форма выходного сигнала">Синусоида</param>
-<param name="Автоматическое включение">Есть</param>
-<param name="Вход">230 В</param>
-<param name="Выход">230В</param>
-<param name="Рабочий диапазон температур">от 0 до 40 °С</param>
-<param name="Состав">Металл, пластик</param>
-<param name="Лицевая панель">ЖК-дисплей </param>
-<param name="Высота в монтажной стойке">2U</param>
-<param name="Рабочая влажность">0-90% (без конденсации)</param>
-<param name="Цвет">Чёрный</param>
-</offer>
-
 <offer id="AS61402" available="true">
 <categoryId>3544</categoryId>
 <vendorCode>AS61402</vendorCode>
@@ -25369,7 +25271,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS61378" available="false">
+<offer id="AS61378" available="true">
 <categoryId>3542</categoryId>
 <vendorCode>AS61378</vendorCode>
 <name>Источник бесперебойного питания APC Back-UPS BX750MI-GR</name>
@@ -27007,7 +26909,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
-<offer id="AS62625" available="true">
+<offer id="AS62625" available="false">
 <categoryId>3544</categoryId>
 <vendorCode>AS62625</vendorCode>
 <name>Источник бесперебойного питания Eaton 9E20Ki</name>
@@ -27161,44 +27063,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Напряжение батарейного блока">±72В</param>
 <param name="Высота в монтажной стойке">2U</param>
 <param name="Рабочая влажность">0-90% (без конденсации)</param>
-<param name="Цвет">Чёрный</param>
-</offer>
-
-<offer id="AS62620" available="false">
-<categoryId>3545</categoryId>
-<vendorCode>AS62620</vendorCode>
-<name>Источник бесперебойного питания Eaton 9SX11KiRT</name>
-<price>2761900</price>
-<picture>https://img.al-style.kz/62620_1.jpg</picture>
-<picture>https://img.al-style.kz/62620_2.jpg</picture>
-<picture>https://img.al-style.kz/62620_3.jpg</picture>
-<vendor>EATON</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Источник бесперебойного питания Eaton 9SX11KiRT</h3><p>EATON 9SX11KiRT Высокопроизводительный онлайн-ИБП с двойным преобразованием Производительность и доступность • Топология двойного преобразования.<br>Eaton 9SX постоянно контролирует состояние электропитания и регулирует напряжение и частоту.<br>• Благодаря эффективности до 95 % в онлайн-режиме двойного преобразования 9SX обеспечивает самый высокий уровень эффективности в своем классе, что позволяет снизить затраты на электроэнергию и охлаждение.<br>• Благодаря коэффициенту мощности 0,9, 9SX обеспечивает на 28 % больше мощности, чем другие ИБП в своем классе. Он питает больше серверов, чем другие ИБП с эквивалентной номинальной мощностью и более низким коэффициентом мощности. Доступность и гибкость • Внутренний байпас обеспечивает непрерывность работы в случае внутренней неисправности. Батареи можно заменять в горячем режиме с передней панели без отключения питания критически важных систем. • Благодаря универсальному форм-фактору «башня» или «стойка/башня», 9SX может быть установлен в любой среде.</p><h3>Характеристики</h3><ul><li><strong>Вес:</strong> 89</li><li><strong>Автоматическое включение:</strong> Есть</li><li><strong>Безопасность:</strong> Есть</li><li><strong>Бесшумный режим:</strong> Есть</li><li><strong>Время переключения режимов:</strong> 0 мс</li><li><strong>Время полной зарядки:</strong> 6 ч</li><li><strong>Высота в монтажной стойке:</strong> 6U</li><li><strong>Выходная частота:</strong> 50/60 ±0.5Гц</li><li><strong>Габариты (ШхГхВ):</strong> 44х70х26</li><li><strong>Гарантия:</strong> 2 года</li><li><strong>Диапазон работы AVR:</strong> 176-276В</li><li><strong>Защита от полного разряда батареи:</strong> Есть</li><li><strong>Интерфейс для связи с ПК:</strong> USB/RS-232</li><li><strong>Количество и тип выходных разъёмов:</strong> Клеммная колодка</li><li><strong>Комплектация:</strong> Модуль питания + батарейный модуль + набор для монтажа + кабель RS232 + кабель USB</li><li><strong>Лицевая панель:</strong> LCD-дисплей</li><li><strong>Мощность (Bт):</strong> 11000ВА / 10000Вт</li><li><strong>Рабочая влажность:</strong> 0-95% (без конденсации)</li><li><strong>Рабочий диапазон температур:</strong> от 0 до 40 °С</li><li><strong>Состав:</strong> Металл, пластик</li><li><strong>Тип ИБП:</strong> Онлайн</li><li><strong>Установка аккумуляторов:</strong> Внутренняя</li><li><strong>Форма выходного сигнала:</strong> Чистая синусоида</li><li><strong>Цвет:</strong> Чёрный</li><li><strong>Ёмкость батареи:</strong> 12В/7Ач х 20</li></ul></description>
-<param name="Вес">89</param>
-<param name="Гарантия">2 года</param>
-<param name="Безопасность">Есть</param>
-<param name="Время полной зарядки">6 ч</param>
-<param name="Габариты (ШхГхВ)">44х70х26</param>
-<param name="Мощность (Bт)">11000ВА / 10000Вт</param>
-<param name="Диапазон работы AVR">176-276В</param>
-<param name="Ёмкость батареи">12В/7Ач х 20</param>
-<param name="Тип ИБП">Онлайн</param>
-<param name="Время переключения режимов">0 мс</param>
-<param name="Интерфейс для связи с ПК">USB/RS-232</param>
-<param name="Форма выходного сигнала">Чистая синусоида </param>
-<param name="Автоматическое включение">Есть</param>
-<param name="Комплектация">Модуль питания + батарейный модуль + набор для монтажа + кабель RS232 + кабель USB</param>
-<param name="Рабочий диапазон температур">от 0 до 40 °С</param>
-<param name="Защита от полного разряда батареи">Есть</param>
-<param name="Бесшумный режим">Есть</param>
-<param name="Состав">Металл, пластик</param>
-<param name="Выходная частота">50/60 ±0.5Гц</param>
-<param name="Количество и тип выходных разъёмов">Клеммная колодка</param>
-<param name="Лицевая панель">LCD-дисплей</param>
-<param name="Высота в монтажной стойке">6U</param>
-<param name="Установка аккумуляторов">Внутренняя </param>
-<param name="Рабочая влажность">0-95% (без конденсации)</param>
 <param name="Цвет">Чёрный</param>
 </offer>
 
@@ -28552,7 +28416,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">1 мс</param>
 </offer>
 
-<offer id="AS64533" available="false">
+<offer id="AS64533" available="true">
 <categoryId>3566</categoryId>
 <vendorCode>AS64533</vendorCode>
 <name>Картридж Europrint EPC-W1510X</name>
@@ -28780,7 +28644,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
-<offer id="AS64669" available="true">
+<offer id="AS64669" available="false">
 <categoryId>21664</categoryId>
 <vendorCode>AS64669</vendorCode>
 <name>Картридж Europrint EPC-069M</name>
@@ -29153,7 +29017,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Состав">Пластик</param>
 </offer>
 
-<offer id="AS65101" available="false">
+<offer id="AS65101" available="true">
 <categoryId>21279</categoryId>
 <vendorCode>AS65101</vendorCode>
 <name>Струйный картридж Canon CL-441XL</name>
@@ -29248,7 +29112,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Состав">Пластик</param>
 </offer>
 
-<offer id="AS65138" available="false">
+<offer id="AS65138" available="true">
 <categoryId>21279</categoryId>
 <vendorCode>AS65138</vendorCode>
 <name>Струйный картридж Canon CL-461XL</name>
@@ -29405,7 +29269,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Точек касания">20</param>
 </offer>
 
-<offer id="AS65440" available="false">
+<offer id="AS65440" available="true">
 <categoryId>21498</categoryId>
 <vendorCode>AS65440</vendorCode>
 <name>Интерактивная панель XG 86TLS148128</name>
@@ -30107,26 +29971,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 <param name="Яркость">450 кд/м?</param>
 <param name="Диагональ экрана">75</param>
-<param name="Объем встроенной памяти">128 Гб</param>
-<param name="Операционная система">Android 13</param>
-<param name="Точек касания">20</param>
-</offer>
-
-<offer id="AS67117" available="false">
-<categoryId>21498</categoryId>
-<vendorCode>AS67117</vendorCode>
-<name>Интерактивная панель XG 86BCDB138128</name>
-<price>809900</price>
-<picture>https://img.al-style.kz/67117_1.jpg</picture>
-<picture>https://img.al-style.kz/67117_2.jpg</picture>
-<picture>https://img.al-style.kz/67117_3.jpg</picture>
-<vendor>XG</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Интерактивная панель XG 86BCDB138128</h3><p>Интерактивная панель XG 86BCDB138128 XG 86BCDB138128 - это современная интерактивная панель, разработанная для применения в образовании и бизнесе.<br>Эта панель предоставляет вам удобные и востребованные функции и средства для взаимодействия, обучения и совместной работы.<br>Основные возможности: Интерактивная панель XG 86BCDB138128 позволяет пользователям взаимодействовать с документами, изображениями и видеофайлами, проводить виртуальные презентации и конференции.<br>Кроме того, панель обеспечивает возможность создания и редактирования материалов в реальном времени, записи аудио и видео собраний. Для подключения к внешним устройствам доступны различные порты, такие как HDMI, USB, USB-C, Bluetooth, Ethernet и Wi-Fi, что обеспечивает подключение к компьютерам, ноутбукам, планшетам и другим электронным устройствам. Помимо этого, панель может подключаться к облачным сервисам для обмена данными, а также предлагает использовать QR для быстрого обмена информацией с мобильными устройствами, например такими, как смартфоны и планшеты.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 86</li><li><strong>Яркость:</strong> 450 кд/м?</li><li><strong>Операционная система:</strong> Android 13</li><li><strong>Объем встроенной памяти:</strong> 128 Гб</li><li><strong>Точек касания:</strong> 20</li><li><strong>Вес:</strong> 111.6</li><li><strong>Гарантия:</strong> 2 года</li></ul></description>
-<param name="Вес">111.6</param>
-<param name="Гарантия">2 года</param>
-<param name="Яркость">450 кд/м?</param>
-<param name="Диагональ экрана">86</param>
 <param name="Объем встроенной памяти">128 Гб</param>
 <param name="Операционная система">Android 13</param>
 <param name="Точек касания">20</param>
@@ -31939,7 +31783,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">5 мс</param>
 </offer>
 
-<offer id="AS70252" available="true">
+<offer id="AS70252" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS70252</vendorCode>
 <name>Монитор Samsung 27&quot; ViewFinity S8 LS27D804UAIXCI</name>
@@ -32369,7 +32213,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Версия Bluetooth">5.0 BLE </param>
 </offer>
 
-<offer id="AS70415" available="true">
+<offer id="AS70415" available="false">
 <categoryId>5649</categoryId>
 <vendorCode>AS70415</vendorCode>
 <name>Монитор 32&quot; Gigabyte GS32Q EU</name>
@@ -33054,7 +32898,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS72683" available="false">
+<offer id="AS72683" available="true">
 <categoryId>5649</categoryId>
 <vendorCode>AS72683</vendorCode>
 <name>Монитор Xiaomi 2K Monitor A27Qi</name>
@@ -33125,7 +32969,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Время отклика">5 мс</param>
 </offer>
 
-<offer id="AS73230" available="false">
+<offer id="AS73230" available="true">
 <categoryId>5649</categoryId>
 <vendorCode>AS73230</vendorCode>
 <name>Монитор iiyama ProLite PL2293H XU2293HSU-B7 21.5&quot;</name>
@@ -33390,7 +33234,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">2 года</param>
 </offer>
 
-<offer id="AS73661" available="true">
+<offer id="AS73661" available="false">
 <categoryId>3566</categoryId>
 <vendorCode>AS73661</vendorCode>
 <name>Картридж Europrint EPC-CF226A/CRG-052</name>
@@ -33535,7 +33379,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS73740" available="true">
+<offer id="AS73740" available="false">
 <categoryId>5712</categoryId>
 <vendorCode>AS73740</vendorCode>
 <name>Экран моторизированный (с пультом Д/У) XG DLS-ERC300x180W (115&quot;х65&quot;), ? - 137&quot;, 16:9</name>
@@ -34601,7 +34445,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS76961" available="false">
+<offer id="AS76961" available="true">
 <categoryId>5075</categoryId>
 <vendorCode>AS76961</vendorCode>
 <name>Тонер-картридж CET 106R03765 (CET141694)</name>
@@ -34614,7 +34458,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS76962" available="false">
+<offer id="AS76962" available="true">
 <categoryId>5075</categoryId>
 <vendorCode>AS76962</vendorCode>
 <name>Тонер-картридж CET 106R03768 (CET141695)</name>
@@ -34627,7 +34471,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS76963" available="false">
+<offer id="AS76963" available="true">
 <categoryId>5075</categoryId>
 <vendorCode>AS76963</vendorCode>
 <name>Тонер-картридж CET 106R03767 (CET141696)</name>
@@ -34744,7 +34588,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">Нет</param>
 </offer>
 
-<offer id="AS76965" available="false">
+<offer id="AS76965" available="true">
 <categoryId>5075</categoryId>
 <vendorCode>AS76965</vendorCode>
 <name>Тонер-картридж CET 106R03766 (CET141697)</name>
@@ -35009,32 +34853,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS77880" available="false">
-<categoryId>21291</categoryId>
-<vendorCode>AS77880</vendorCode>
-<name>Ноутбук Tecno MEGABOOK T1 15.6&quot; FHD i5-13420H 16GB 512GB Win 11</name>
-<price>301900</price>
-<picture>https://img.al-style.kz/77880_1.jpg</picture>
-<picture>https://img.al-style.kz/77880_2.jpg</picture>
-<picture>https://img.al-style.kz/77880_3.jpg</picture>
-<vendor>TECNO</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Ноутбук Tecno MEGABOOK T1 15.6&quot; FHD i5-13420H 16GB 512GB Win 11</h3><p>Ноутбук Tecno Megabook T1 i5-13420H / 16 ГБ / SSD 512 ГБ / Win11 Элегантный. Мощный. Ультратонкий. Лёгкий и стильный ноутбук в алюминиевом корпусе — отличный выбор для учебы, работы и повседневного использования.<br>Отличается высокой производительностью, тихой работой и качественным экраном.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 15</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 2.5</li><li><strong>Видеокарта:</strong> Intel UHD Graphics</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core i5-13420H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Ультрабук</li><li><strong>Тип оперативной памяти:</strong> DDR4</li><li><strong>Частота обновления экрана:</strong> 60 Гц</li></ul></description>
-<param name="Вес">2.5</param>
-<param name="Гарантия">1 год</param>
-<param name="Частота обновления экрана">60 Гц</param>
-<param name="Тип матрицы экрана">IPS</param>
-<param name="Диагональ экрана">15</param>
-<param name="Разрешение экрана">1920x1080</param>
-<param name="Тип ноутбука">Ультрабук</param>
-<param name="Тип оперативной памяти">DDR4</param>
-<param name="Объем накопителя">512 Гб</param>
-<param name="Тип накопителя">SSD</param>
-<param name="Видеокарта">Intel UHD Graphics</param>
-<param name="Операционная система">Windows 11 Home</param>
-<param name="Процессор">Intel Core i5-13420H</param>
-</offer>
-
 <offer id="AS77911" available="false">
 <categoryId>3708</categoryId>
 <vendorCode>AS77911</vendorCode>
@@ -35047,7 +34865,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS78315" available="true">
+<offer id="AS78315" available="false">
 <categoryId>21291</categoryId>
 <vendorCode>AS78315</vendorCode>
 <name>Ноутбук Gigabyte AERO X16 16&quot; QHD 165Hz Ryzen AI 7 350 32GB 1TB RTX5070 Win11</name>
@@ -35096,59 +34914,6 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">1 TB</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5070</param>
-<param name="Объем видеопамяти">8 Гб</param>
-<param name="Операционная система">DOS</param>
-<param name="Процессор">Intel Core i7-13620H</param>
-</offer>
-
-<offer id="AS78325" available="false">
-<categoryId>21291</categoryId>
-<vendorCode>AS78325</vendorCode>
-<name>Ноутбук Gigabyte Gaming A16 FHD 165Hz i7-13620H 32GB 1TB RTX5060 DOS</name>
-<price>765900</price>
-<picture>https://img.al-style.kz/78325_1.jpg</picture>
-<picture>https://img.al-style.kz/78325_2.jpg</picture>
-<picture>https://img.al-style.kz/78325_3.jpg</picture>
-<vendor>Gigabyte</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Ноутбук Gigabyte Gaming A16 FHD 165Hz i7-13620H 32GB 1TB RTX5060 DOS</h3><p>Gigabyte Gaming A16 CVHI3KZ864SD Ноутбук Gigabyte Gaming A16 CVHI3KZ864SD / i7-13620H / 32 ГБ / SSD 1 ТБ / RTX 5060 / DOS / 9RGA6I76VHFHJH0KZ000 ? Готов к бою. Играй, создавай, побеждай.<br>Игровой ноутбук GIGABYTE Gaming A16 создан для тех, кто требует от техники максимум. Он сочетает производительность, современный дизайн и функциональность для геймеров, креаторов и энтузиастов.<br>Ключевые характеристики: Процессор: Intel® Core™ i7-13620H (10 ядер / 16 потоков) — высокая производительность для игр и тяжёлых задач.<br>Графика: NVIDIA® GeForce RTX™ 5060 Laptop GPU, 8 ГБ GDDR7 — поддержка трассировки лучей, MUX Switch для максимального FPS. Экран: 16? IPS, WUXGA (1920?1200), 165 Гц, 16:10 — широкая область обзора, плавный геймплей. Оперативная память: 32ГБ DDR5 5200 МГц , 2 плашки по 16ГБ SO-DIMM, расширяется до 64 ГБ. Накопитель: 1 ТБ SSD PCIe Gen4 — высокая скорость работы системы. Порты и подключения: Слева: DC-in, RJ-45 LAN, HDMI 2.1, USB-A 3.2 Gen1, USB-C 3.2 Gen1 (DisplayPort 1.4 + Power Delivery).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.05</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5060</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 8 Гб</li><li><strong>Процессор:</strong> Intel Core i7-13620H</li><li><strong>Разрешение экрана:</strong> 1920х1200</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 165 Гц</li></ul></description>
-<param name="Вес">4.05</param>
-<param name="Гарантия">1 год</param>
-<param name="Частота обновления экрана">165 Гц</param>
-<param name="Тип матрицы экрана">IPS</param>
-<param name="Диагональ экрана">16</param>
-<param name="Разрешение экрана">1920х1200</param>
-<param name="Тип ноутбука">Игровой ноутбук</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Тип накопителя">SSD</param>
-<param name="Видеокарта">Nvidia GeForce RTX5060</param>
-<param name="Объем видеопамяти">8 Гб</param>
-<param name="Операционная система">DOS</param>
-<param name="Процессор">Intel Core i7-13620H</param>
-</offer>
-
-<offer id="AS78326" available="false">
-<categoryId>21291</categoryId>
-<vendorCode>AS78326</vendorCode>
-<name>Ноутбук Gigabyte Gaming A16 FHD 165Hz i7-13620H 16GB 512GB RTX5050 DOS</name>
-<price>630900</price>
-<picture>https://img.al-style.kz/78326_1.jpg</picture>
-<picture>https://img.al-style.kz/78326_2.jpg</picture>
-<picture>https://img.al-style.kz/78326_3.jpg</picture>
-<vendor>Gigabyte</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Ноутбук Gigabyte Gaming A16 FHD 165Hz i7-13620H 16GB 512GB RTX5050 DOS</h3><p>Gigabyte Gaming A16 CTHI3KZ893SD Ноутбук Gigabyte Gaming A16 CTHI3KZ893SD / i7-13620H / 16 ГБ / SSD 512 ГБ / RTX 5050 / DOS (9RGA6I75THFHIK0KZ000) ? Новый уровень мобильного гейминга.<br>Игровой ноутбук GIGABYTE Gaming A16 создан для пользователей, которым важны производительность, комфорт и новейшие технологии. Подходит для игр, работы с графикой и мультимедиа.<br>Ключевые характеристики: Процессор: Intel® Core™ i7-13620H (10 ядер / 16 потоков) — мощный чип для задач любой сложности.<br>Графика: NVIDIA® GeForce RTX™ 5050 Laptop GPU, 8 ГБ GDDR7 — поддержка MUX Switch для прямого вывода изображения и высокой производительности. Экран: 16? IPS, WUXGA (1920?1200), 165 Гц, 16:10 — увеличенное рабочее пространство и высокая частота обновления. ОЗУ: 16 ГБ DDR5 5200 МГц (1 планка) — можно расширить до 64 ГБ через 2 слота SO-DIMM. Накопитель: 512 ГБ SSD PCIe Gen4 — высокие скорости загрузки и возможность расширения до 4 ТБ.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.05</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 8 Гб</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core i7-13620H</li><li><strong>Разрешение экрана:</strong> 1920х1200</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 165 Гц</li></ul></description>
-<param name="Вес">4.05</param>
-<param name="Гарантия">1 год</param>
-<param name="Частота обновления экрана">165 Гц</param>
-<param name="Тип матрицы экрана">IPS</param>
-<param name="Диагональ экрана">16</param>
-<param name="Разрешение экрана">1920х1200</param>
-<param name="Тип ноутбука">Игровой ноутбук</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Объем накопителя">512 Гб</param>
-<param name="Тип накопителя">SSD</param>
-<param name="Видеокарта">Nvidia GeForce RTX5050</param>
 <param name="Объем видеопамяти">8 Гб</param>
 <param name="Операционная система">DOS</param>
 <param name="Процессор">Intel Core i7-13620H</param>
@@ -35234,7 +34999,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Гарантия">1 год</param>
 </offer>
 
-<offer id="AS78372" available="false">
+<offer id="AS78372" available="true">
 <categoryId>21580</categoryId>
 <vendorCode>AS78372</vendorCode>
 <name>Широкоформатный принтер Canon imagePROGRAF TC-21</name>
@@ -36458,7 +36223,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82022_3.jpg</picture>
 <vendor>Razer</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук Razer Blade 16 16&quot; QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11</h3><p>Ноутбук Razer Blade 16 16&quot; QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11 body { font-family: Arial, Helvetica, sans-serif line-height: 1.5 color:#111 padding:20px } h1 { font-size:1.25rem margin-bottom:0.5rem } h2 { font-size:1rem margin-top:1rem } ul { margin:0.5rem 0 1rem 1.25rem } p.lead { margin-top:0 } .specs li { margin-bottom:0.4rem } Ноутбук Razer Blade 16 16&quot; QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11 Razer Blade 16 объединяет новейшие технологии в ультратонком корпусе, обеспечивая баланс между производительностью, дисплеем премиум-класса и портативностью.<br>OLED-панель с высоким разрешением и частотой 240 Гц идеально подойдёт для геймеров и профессионалов, работающих с графикой.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 4.45</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> AMD Ryzen AI 9 365</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> OLED</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> LPDDR5x</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
+<description><h3>Ноутбук Razer Blade 16 16&quot; QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11</h3><p>Ноутбук Razer Blade 16 16&quot; QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11 body { font-family: Arial, Helvetica, sans-serif line-height: 1.5 color:#111 padding:20px } h1 { font-size:1.25rem margin-bottom:0.5rem } h2 { font-size:1rem margin-top:1rem } ul { margin:0.5rem 0 1rem 1.25rem } p.lead { margin-top:0 } .specs li { margin-bottom:0.4rem } Ноутбук Razer Blade 16 16&quot; QHD+ OLED 240Hz Ryzen AI 9 365 32GB 1TB RTX5070 Win11 Razer Blade 16 объединяет новейшие технологии в ультратонком корпусе, обеспечивая баланс между производительностью, дисплеем премиум-класса и портативностью.<br>OLED-панель с высоким разрешением и частотой 240 Гц идеально подойдёт для геймеров и профессионалов, работающих с графикой.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 4.45</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 8 Гб</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> AMD Ryzen AI 9 365</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> OLED</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> LPDDR5x</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
 <param name="Вес">4.45</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">240 Гц</param>
@@ -36470,6 +36235,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">1 TB</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5070</param>
+<param name="Объем видеопамяти">8 Гб</param>
 <param name="Операционная система">Windows 11 Home</param>
 <param name="Процессор">AMD Ryzen AI 9 365</param>
 </offer>
@@ -36484,7 +36250,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82023_3.jpg</picture>
 <vendor>Razer</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук Razer Blade 18 18&quot; Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti Win11</h3><p>Ноутбук Razer Blade 18 (K11) RZ09-05298ER3-R3E1 Ноутбук Razer Blade 18 18&quot; Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti Win11Home Razer Blade 18 — самый мощный ноутбук компании, сочетающий в себе экран с уникальной Dual Mode технологией, топовый процессор Intel, графику NVIDIA нового поколения и премиальный корпус из анодированного алюминия.<br>Идеальное решение для геймеров, креаторов и профессионалов, которым нужна замена полноценному десктопу.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 18</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 5.925</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070Ti</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> Intel Core Ultra 9 275HX</li><li><strong>Разрешение экрана:</strong> UHD+ 3840x2400</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
+<description><h3>Ноутбук Razer Blade 18 18&quot; Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti Win11</h3><p>Ноутбук Razer Blade 18 (K11) RZ09-05298ER3-R3E1 Ноутбук Razer Blade 18 18&quot; Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti Win11Home Razer Blade 18 — самый мощный ноутбук компании, сочетающий в себе экран с уникальной Dual Mode технологией, топовый процессор Intel, графику NVIDIA нового поколения и премиальный корпус из анодированного алюминия.<br>Идеальное решение для геймеров, креаторов и профессионалов, которым нужна замена полноценному десктопу.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 18</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 5.925</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070Ti</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 12 Гб</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> Intel Core Ultra 9 275HX</li><li><strong>Разрешение экрана:</strong> UHD+ 3840x2400</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
 <param name="Вес">5.925</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">240 Гц</param>
@@ -36496,6 +36262,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">1 TB</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5070Ti</param>
+<param name="Объем видеопамяти">12 Гб</param>
 <param name="Операционная система">Windows 11 Home</param>
 <param name="Процессор">Intel Core Ultra 9 275HX</param>
 </offer>
@@ -36510,7 +36277,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82024_3.jpg</picture>
 <vendor>Razer</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук Razer Blade 18 18&quot; Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5080 Win11</h3><p>Ноутбук Razer Blade 18 (K11) RZ09-05298ER3-R3E1 Ноутбук Razer Blade 18 18&quot; Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5080 Win11 Razer Blade 18 — самый мощный ноутбук компании, сочетающий в себе экран с уникальной Dual Mode технологией, топовый процессор Intel, графику NVIDIA нового поколения и премиальный корпус из анодированного алюминия.<br>Идеальное решение для геймеров, креаторов и профессионалов, которым нужна замена полноценному десктопу.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 18</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 5.925</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5080</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> Intel Core Ultra 9 275HX</li><li><strong>Разрешение экрана:</strong> UHD+ 3840x2400</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
+<description><h3>Ноутбук Razer Blade 18 18&quot; Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5080 Win11</h3><p>Ноутбук Razer Blade 18 (K11) RZ09-05298ER3-R3E1 Ноутбук Razer Blade 18 18&quot; Dual UHD+ 240Hz | FHD+ 440Hz Ultra 9 275HX 32GB 1TB RTX5080 Win11 Razer Blade 18 — самый мощный ноутбук компании, сочетающий в себе экран с уникальной Dual Mode технологией, топовый процессор Intel, графику NVIDIA нового поколения и премиальный корпус из анодированного алюминия.<br>Идеальное решение для геймеров, креаторов и профессионалов, которым нужна замена полноценному десктопу.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 18</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 5.925</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5080</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 16 Гб</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> Intel Core Ultra 9 275HX</li><li><strong>Разрешение экрана:</strong> UHD+ 3840x2400</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
 <param name="Вес">5.925</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">240 Гц</param>
@@ -36522,6 +36289,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">1 TB</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5080</param>
+<param name="Объем видеопамяти">16 Гб</param>
 <param name="Операционная система">Windows 11 Home</param>
 <param name="Процессор">Intel Core Ultra 9 275HX</param>
 </offer>
@@ -36536,7 +36304,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82025_3.jpg</picture>
 <vendor>Razer</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук Razer Blade 14 14&quot; 2.8K OLED 120Hz Ryzen AI 9 365 64GB 2TB RTX5070 Win11</h3><p>Ноутбук Razer Blade 14 (P11-NT) RZ09-05306ES4-R3E1 Ноутбук Razer Blade 14 14&quot; 2.8K OLED 120Hz Ryzen AI 9 365 64GB 2TB RTX5070 Win11Home Razer Blade 14 — флагманский 14-дюймовый ноутбук, сочетающий ультракомпактный корпус, топовую производительность и премиальные материалы.<br>Создан для геймеров, разработчиков и креаторов, которым нужна максимальная мощь в портативном формате.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 14</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 3.283</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 2 TB</li><li><strong>Процессор:</strong> AMD Ryzen AI 9 365</li><li><strong>Разрешение экрана:</strong> 2880х1800</li><li><strong>Тип матрицы экрана:</strong> OLED</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> LPDDR5x</li><li><strong>Частота обновления экрана:</strong> 120 Гц</li></ul></description>
+<description><h3>Ноутбук Razer Blade 14 14&quot; 2.8K OLED 120Hz Ryzen AI 9 365 64GB 2TB RTX5070 Win11</h3><p>Ноутбук Razer Blade 14 (P11-NT) RZ09-05306ES4-R3E1 Ноутбук Razer Blade 14 14&quot; 2.8K OLED 120Hz Ryzen AI 9 365 64GB 2TB RTX5070 Win11Home Razer Blade 14 — флагманский 14-дюймовый ноутбук, сочетающий ультракомпактный корпус, топовую производительность и премиальные материалы.<br>Создан для геймеров, разработчиков и креаторов, которым нужна максимальная мощь в портативном формате.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 14</li><li><strong>Операционная система:</strong> Windows 11 Home</li><li><strong>Вес:</strong> 3.283</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 8 Гб</li><li><strong>Объем накопителя:</strong> 2 TB</li><li><strong>Процессор:</strong> AMD Ryzen AI 9 365</li><li><strong>Разрешение экрана:</strong> 2880х1800</li><li><strong>Тип матрицы экрана:</strong> OLED</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> LPDDR5x</li><li><strong>Частота обновления экрана:</strong> 120 Гц</li></ul></description>
 <param name="Вес">3.283</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">120 Гц</param>
@@ -36548,6 +36316,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">2 TB</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5070</param>
+<param name="Объем видеопамяти">8 Гб</param>
 <param name="Операционная система">Windows 11 Home</param>
 <param name="Процессор">AMD Ryzen AI 9 365</param>
 </offer>
@@ -36788,7 +36557,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82670_3.jpg</picture>
 <vendor>MSI</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Crosshair A16 HX D8WFKG-203XKZ 16&quot; QHD+ 240Hz Ryzen 9 8940HX 16GB 1TB RTX5060 DOS</h3><p>Ноутбук MSI Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Ноутбук MSI Crosshair A16 HX D8WFKG-203XKZ 16&quot; QHD+ 240Hz Ryzen 9 8940HX 16GB 1TB RTX5060 DOS MSI Crosshair A16 HX D8WFKG-203XKZ — мощный 16-дюймовый игровой ноутбук нового поколения, созданный на базе процессора AMD Ryzen™ 9 8940HX и видеокарты NVIDIA® GeForce RTX™ 5060.<br>Он сочетает высокую производительность, передовую систему охлаждения и плавное изображение на экране QHD+ 240 Гц, обеспечивая комфортную игру и продуктивную работу в ресурсоёмких приложениях.<br>Основные характеристики: Модель / Part No: Crosshair A16 HX D8WFKG-203XKZ — 9S7-15PL21-203 Дисплей: 16&quot; IPS-Level QHD+ (2560?1600), 240 Гц, 100% DCI-P3, антибликовое покрытие, соотношение сторон 16:10 Процессор: AMD Ryzen™ 9 8940HX (16 ядер / 32 потока, частота до 5.3 ГГц, архитектура Zen 4) Видеокарта: NVIDIA® GeForce RTX™ 5060 Laptop GPU, 8 ГБ GDDR7 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 64 ГБ Накопитель: 1 ТБ NVMe PCIe Gen4 SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.52</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5060</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> AMD Ryzen 9 8940HX</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
+<description><h3>Ноутбук MSI Crosshair A16 HX D8WFKG-203XKZ 16&quot; QHD+ 240Hz Ryzen 9 8940HX 16GB 1TB RTX5060 DOS</h3><p>Ноутбук MSI Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Ноутбук MSI Crosshair A16 HX D8WFKG-203XKZ 16&quot; QHD+ 240Hz Ryzen 9 8940HX 16GB 1TB RTX5060 DOS MSI Crosshair A16 HX D8WFKG-203XKZ — мощный 16-дюймовый игровой ноутбук нового поколения, созданный на базе процессора AMD Ryzen™ 9 8940HX и видеокарты NVIDIA® GeForce RTX™ 5060.<br>Он сочетает высокую производительность, передовую систему охлаждения и плавное изображение на экране QHD+ 240 Гц, обеспечивая комфортную игру и продуктивную работу в ресурсоёмких приложениях.<br>Основные характеристики: Модель / Part No: Crosshair A16 HX D8WFKG-203XKZ — 9S7-15PL21-203 Дисплей: 16&quot; IPS-Level QHD+ (2560?1600), 240 Гц, 100% DCI-P3, антибликовое покрытие, соотношение сторон 16:10 Процессор: AMD Ryzen™ 9 8940HX (16 ядер / 32 потока, частота до 5.3 ГГц, архитектура Zen 4) Видеокарта: NVIDIA® GeForce RTX™ 5060 Laptop GPU, 8 ГБ GDDR7 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 64 ГБ Накопитель: 1 ТБ NVMe PCIe Gen4 SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.52</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5060</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 8 Гб</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> AMD Ryzen 9 8940HX</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
 <param name="Вес">4.52</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">240 Гц</param>
@@ -36800,6 +36569,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">1 TB</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5060</param>
+<param name="Объем видеопамяти">8 Гб</param>
 <param name="Операционная система">DOS</param>
 <param name="Процессор">AMD Ryzen 9 8940HX</param>
 </offer>
@@ -36814,7 +36584,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82671_3.jpg</picture>
 <vendor>MSI</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Cyborg 15 B2RWFKG-640XKZ 15,6&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5060 DOS</h3><p>Ноутбук MSI Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Ноутбук MSI Cyborg 15 B2RWFKG-640XKZ 15,6&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5060 DOS MSI Cyborg 15 B2RWFKG-640XKZ — Шагните в будущее гейминга, где киберпанк-эстетика сочетается с научно-фантастическим стилем.<br>Оснаститесь передовыми технологиями, которые выведут вас вперёд конкурентов.<br>Cyborg 15 B2RW, с футуристичным дизайном, вдохновлённым механическими формами, переопределяет внешний вид и ощущения от игровых ноутбуков нового поколения.<br>Основные характеристики: Модель / Part No: MSI Cyborg 15 B2RWFKG-640XKZ — 9S7-15Q342-640 Дисплей: 15,6&quot; IPS Full HD (1920?1080), 144 Гц, антибликовое покрытие. Процессор: Intel Core 5 210H (8 ядер / 12 потока, частота до 4.8 ГГц, архитектура Raptor Lake Refresh) Видеокарта: NVIDIA® GeForce RTX™ 5060 Laptop GPU, 8 ГБ GDDR7 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 64 ГБ Накопитель: 512 ГБ SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 15</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 3.68</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5060</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core 5 210H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
+<description><h3>Ноутбук MSI Cyborg 15 B2RWFKG-640XKZ 15,6&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5060 DOS</h3><p>Ноутбук MSI Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Ноутбук MSI Cyborg 15 B2RWFKG-640XKZ 15,6&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5060 DOS MSI Cyborg 15 B2RWFKG-640XKZ — Шагните в будущее гейминга, где киберпанк-эстетика сочетается с научно-фантастическим стилем.<br>Оснаститесь передовыми технологиями, которые выведут вас вперёд конкурентов.<br>Cyborg 15 B2RW, с футуристичным дизайном, вдохновлённым механическими формами, переопределяет внешний вид и ощущения от игровых ноутбуков нового поколения.<br>Основные характеристики: Модель / Part No: MSI Cyborg 15 B2RWFKG-640XKZ — 9S7-15Q342-640 Дисплей: 15,6&quot; IPS Full HD (1920?1080), 144 Гц, антибликовое покрытие. Процессор: Intel Core 5 210H (8 ядер / 12 потока, частота до 4.8 ГГц, архитектура Raptor Lake Refresh) Видеокарта: NVIDIA® GeForce RTX™ 5060 Laptop GPU, 8 ГБ GDDR7 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 64 ГБ Накопитель: 512 ГБ SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 15</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 3.68</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5060</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 8 Гб</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core 5 210H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
 <param name="Вес">3.68</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">144 Гц</param>
@@ -36826,34 +36596,9 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">512 Гб</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5060</param>
+<param name="Объем видеопамяти">8 Гб</param>
 <param name="Операционная система">DOS</param>
 <param name="Процессор">Intel Core 5 210H</param>
-</offer>
-
-<offer id="AS82672" available="false">
-<categoryId>21291</categoryId>
-<vendorCode>AS82672</vendorCode>
-<name>Ноутбук MSI Cyborg 17 B2RWEKG-206XKZ 17,3&quot; FHD 144Hz Core 7 240H 16GB 512GB RTX5050 DOS</name>
-<price>650900</price>
-<picture>https://img.al-style.kz/82672_1.jpg</picture>
-<picture>https://img.al-style.kz/82672_2.jpg</picture>
-<picture>https://img.al-style.kz/82672_3.jpg</picture>
-<vendor>MSI</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Cyborg 17 B2RWEKG-206XKZ 17,3&quot; FHD 144Hz Core 7 240H 16GB 512GB RTX5050 DOS</h3><p>Ноутбук MSI Cyborg 15 B2RWFKG-640XKZ — 9S7-17U332-206 Ноутбук MSI Cyborg 17 B2RWEKG-206XKZ 17,3&quot; FHD 144Hz Core 7 240H 16GB 512GB RTX5050 DOS MSI Cyborg 17 B2RWEKG-206XKZ — Шагните в будущее гейминга, где киберпанк-эстетика сочетается с научно-фантастическим стилем.<br>Оснаститесь передовыми технологиями, которые выведут вас вперёд конкурентов.<br>Cyborg 17 B2R, с футуристичным дизайном, вдохновлённым механическими формами, переопределяет внешний вид и ощущения от игровых ноутбуков нового поколения.<br>Основные характеристики: Модель / Part No: MSI Cyborg 17 B2RWEKG-206XKZ — 9S7-17U332-206 Дисплей: 17,3&quot; IPS Full HD (1920?1080), 144 Гц, антибликовое покрытие. Процессор: Intel Core 7 240H (10 ядер / 16 потока, частота до 5.2 ГГц, архитектура Raptor Lake Refresh) Видеокарта: NVIDIA® GeForce RTX™ 5050 Laptop GPU, 8 ГБ GDDR7 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 96 ГБ Накопитель: 512 ГБ SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 17</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.35</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core 7 240H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
-<param name="Вес">4.35</param>
-<param name="Гарантия">1 год</param>
-<param name="Частота обновления экрана">144 Гц</param>
-<param name="Тип матрицы экрана">IPS</param>
-<param name="Диагональ экрана">17</param>
-<param name="Разрешение экрана">1920x1080</param>
-<param name="Тип ноутбука">Игровой ноутбук</param>
-<param name="Тип оперативной памяти">DDR5</param>
-<param name="Объем накопителя">512 Гб</param>
-<param name="Тип накопителя">SSD</param>
-<param name="Видеокарта">Nvidia GeForce RTX5050</param>
-<param name="Операционная система">DOS</param>
-<param name="Процессор">Intel Core 7 240H</param>
 </offer>
 
 <offer id="AS82673" available="true">
@@ -36866,7 +36611,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82673_3.jpg</picture>
 <vendor>MSI</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Cyborg 17 B2RWEKG-207XKZ 17,3&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5050 DOS</h3><p>Ноутбук MSI Cyborg 17 B2RWEKG-207XKZ — 9S7-17U332-207 Ноутбук MSI Cyborg 17 B2RWEKG-207XKZ 17,3&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5050 DOS MSI Cyborg 17 B2RWEKG-207XKZ — Шагните в будущее гейминга, где киберпанк-эстетика сочетается с научно-фантастическим стилем.<br>Оснаститесь передовыми технологиями, которые выведут вас вперёд конкурентов.<br>Cyborg 17 B2R, с футуристичным дизайном, вдохновлённым механическими формами, переопределяет внешний вид и ощущения от игровых ноутбуков нового поколения.<br>Основные характеристики: Модель / Part No: MSI Cyborg 17 B2RWEKG-207XKZ — 9S7-17U332-207 Дисплей: 17,3&quot; IPS Full HD (1920?1080), 144 Гц, антибликовое покрытие. Процессор: Intel Core 5 210H (8 ядер / 12 потока, частота до 4.8 ГГц, архитектура Raptor Lake Refresh) Видеокарта: NVIDIA® GeForce RTX™ 5050 Laptop GPU, 8 ГБ GDDR7 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 96 ГБ Накопитель: 512 ГБ SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 17</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.35</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core 5 210H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
+<description><h3>Ноутбук MSI Cyborg 17 B2RWEKG-207XKZ 17,3&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5050 DOS</h3><p>Ноутбук MSI Cyborg 17 B2RWEKG-207XKZ — 9S7-17U332-207 Ноутбук MSI Cyborg 17 B2RWEKG-207XKZ 17,3&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5050 DOS MSI Cyborg 17 B2RWEKG-207XKZ — Шагните в будущее гейминга, где киберпанк-эстетика сочетается с научно-фантастическим стилем.<br>Оснаститесь передовыми технологиями, которые выведут вас вперёд конкурентов.<br>Cyborg 17 B2R, с футуристичным дизайном, вдохновлённым механическими формами, переопределяет внешний вид и ощущения от игровых ноутбуков нового поколения.<br>Основные характеристики: Модель / Part No: MSI Cyborg 17 B2RWEKG-207XKZ — 9S7-17U332-207 Дисплей: 17,3&quot; IPS Full HD (1920?1080), 144 Гц, антибликовое покрытие. Процессор: Intel Core 5 210H (8 ядер / 12 потока, частота до 4.8 ГГц, архитектура Raptor Lake Refresh) Видеокарта: NVIDIA® GeForce RTX™ 5050 Laptop GPU, 8 ГБ GDDR7 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 96 ГБ Накопитель: 512 ГБ SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 17</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.35</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 8 Гб</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core 5 210H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
 <param name="Вес">4.35</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">144 Гц</param>
@@ -36878,6 +36623,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">512 Гб</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5050</param>
+<param name="Объем видеопамяти">8 Гб</param>
 <param name="Операционная система">DOS</param>
 <param name="Процессор">Intel Core 5 210H</param>
 </offer>
@@ -36892,7 +36638,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82674_3.jpg</picture>
 <vendor>MSI</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Cyborg 15 B2RWEKG-643XKZ 15,6&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5050 DOS</h3><p>Ноутбук MSI Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Ноутбук MSI Cyborg 15 B2RWEKG-643XKZ 15,6&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5050 DOS MSI Cyborg 15 B2RWEKG-643XKZ — Шагните в будущее гейминга, где киберпанк-эстетика сочетается с научно-фантастическим стилем.<br>Оснаститесь передовыми технологиями, которые выведут вас вперёд конкурентов.<br>Cyborg 15 B2RW, с футуристичным дизайном, вдохновлённым механическими формами, переопределяет внешний вид и ощущения от игровых ноутбуков нового поколения.<br>Основные характеристики: Модель / Part No: MSI Cyborg 15 B2RWEKG-643XKZ — 9S7-15Q342-643 Дисплей: 15,6&quot; IPS Full HD (1920?1080), 144 Гц, антибликовое покрытие. Процессор: Intel Core 5 210H (8 ядер / 12 потока, частота до 4.8 ГГц, архитектура Raptor Lake Refresh) Видеокарта: NVIDIA® GeForce RTX™ 5050 Laptop GPU, 8 ГБ GDDR6 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 64 ГБ Накопитель: 512 ГБ SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 15</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 3.68</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core 5 210H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
+<description><h3>Ноутбук MSI Cyborg 15 B2RWEKG-643XKZ 15,6&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5050 DOS</h3><p>Ноутбук MSI Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Ноутбук MSI Cyborg 15 B2RWEKG-643XKZ 15,6&quot; FHD 144Hz Core 5 210H 16GB 512GB RTX5050 DOS MSI Cyborg 15 B2RWEKG-643XKZ — Шагните в будущее гейминга, где киберпанк-эстетика сочетается с научно-фантастическим стилем.<br>Оснаститесь передовыми технологиями, которые выведут вас вперёд конкурентов.<br>Cyborg 15 B2RW, с футуристичным дизайном, вдохновлённым механическими формами, переопределяет внешний вид и ощущения от игровых ноутбуков нового поколения.<br>Основные характеристики: Модель / Part No: MSI Cyborg 15 B2RWEKG-643XKZ — 9S7-15Q342-643 Дисплей: 15,6&quot; IPS Full HD (1920?1080), 144 Гц, антибликовое покрытие. Процессор: Intel Core 5 210H (8 ядер / 12 потока, частота до 4.8 ГГц, архитектура Raptor Lake Refresh) Видеокарта: NVIDIA® GeForce RTX™ 5050 Laptop GPU, 8 ГБ GDDR6 Оперативная память: 16 ГБ DDR5-5600 (2?8 ГБ), 2 слота, поддержка до 64 ГБ Накопитель: 512 ГБ SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 15</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 3.68</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 8 Гб</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core 5 210H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
 <param name="Вес">3.68</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">144 Гц</param>
@@ -36904,6 +36650,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">512 Гб</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5050</param>
+<param name="Объем видеопамяти">8 Гб</param>
 <param name="Операционная система">DOS</param>
 <param name="Процессор">Intel Core 5 210H</param>
 </offer>
@@ -36918,7 +36665,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82664_3.jpg</picture>
 <vendor>MSI</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Vector 16 HX AI A2XWJG-666XKZ 16&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5090 DOS</h3><p>MSI Vector 16 HX AI A2XWJG (9S7-15M352-666) Ноутбук MSI Vector 16 HX AI A2XWJG-666XKZ 16&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5090 DOS MSI Vector 16 HX AI A2XWJG — игровой ноутбук нового поколения, созданный для максимальной производительности, искусственного интеллекта и стабильности под любыми нагрузками.<br>Он объединяет мощь процессора Intel® Core™ Ultra 9 и видеокарты NVIDIA® GeForce RTX™ 5090, обеспечивая невероятную графику и скорость работы в играх, 3D-моделировании и профессиональных задачах.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.98</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5090</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> Intel Core Ultra 9 275HX</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
+<description><h3>Ноутбук MSI Vector 16 HX AI A2XWJG-666XKZ 16&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5090 DOS</h3><p>MSI Vector 16 HX AI A2XWJG (9S7-15M352-666) Ноутбук MSI Vector 16 HX AI A2XWJG-666XKZ 16&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5090 DOS MSI Vector 16 HX AI A2XWJG — игровой ноутбук нового поколения, созданный для максимальной производительности, искусственного интеллекта и стабильности под любыми нагрузками.<br>Он объединяет мощь процессора Intel® Core™ Ultra 9 и видеокарты NVIDIA® GeForce RTX™ 5090, обеспечивая невероятную графику и скорость работы в играх, 3D-моделировании и профессиональных задачах.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.98</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5090</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 12 Гб</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> Intel Core Ultra 9 275HX</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
 <param name="Вес">4.98</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">240 Гц</param>
@@ -36930,37 +36677,12 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">1 TB</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5090</param>
+<param name="Объем видеопамяти">12 Гб</param>
 <param name="Операционная система">DOS</param>
 <param name="Процессор">Intel Core Ultra 9 275HX</param>
 </offer>
 
-<offer id="AS82667" available="false">
-<categoryId>21291</categoryId>
-<vendorCode>AS82667</vendorCode>
-<name>Ноутбук MSI Stealth A16 AI+ A3XWHG-202XKZ 16&quot; OLED 240Hz Ryzen AI 9 HX370 32GB 1TB RTX5070 Ti DOS</name>
-<price>1485900</price>
-<picture>https://img.al-style.kz/82667_1.jpg</picture>
-<picture>https://img.al-style.kz/82667_2.jpg</picture>
-<picture>https://img.al-style.kz/82667_3.jpg</picture>
-<vendor>MSI</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Stealth A16 AI+ A3XWHG-202XKZ 16&quot; OLED 240Hz Ryzen AI 9 HX370 32GB 1TB RTX5070 Ti DOS</h3><p>Ноутбук MSI Stealth A16 AI+ A3XWHG-202XKZ — 9S7-15FL35-202 Ноутбук MSI Stealth A16 AI+ A3XWHG-202XKZ 16&quot; OLED 240Hz Ryzen AI 9 HX370 32GB 1TB RTX5070 Ti DOS Ноутбук MSI Stealth A16 AI+ A3XWHG-202XKZ — Представляем ультратонкий и лёгкий игровой ноутбук с искусственным интеллектом — Stealth A16 AI+.<br>Оцените быстродействие и интеллектуальные возможности ПК с ИИ, созданного для превосходства в играх, творчестве и продуктивности, открывающего путь в мир технологий нового поколения.<br>Основные характеристики: Модель / Part No: MSI Cyborg 17 B2RWEKG-207XKZ — 9S7-17U332-207 Дисплей: 16 OLED, IPS-Level, QHD+ (2560?1600), 240 Гц.<br>Процессор: AMD Ryzen™ AI 9 HX 370 (12 ядер / 24 потока, графика на архитектуре RDNA 3.5, Нейронный процессор на архитектуре XDNA 2) Видеокарта: NVIDIA® GeForce RTX™ 5070 Ti Laptop GPU, 12 ГБ GDDR7 Оперативная память: 32 ГБ LPDDR5x-7500 (2?16 ГБ), 2 слота, поддержка до 64 ГБ Накопитель: 1 ТБ SSD (M.2 2280).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 16</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 4.35</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070Ti</li><li><strong>Гарантия:</strong> 2 года</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> AMD Ryzen AI 9 HX 370</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> OLED</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> LPDDR5x</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
-<param name="Вес">4.35</param>
-<param name="Гарантия">2 года</param>
-<param name="Частота обновления экрана">240 Гц</param>
-<param name="Тип матрицы экрана">OLED</param>
-<param name="Диагональ экрана">16</param>
-<param name="Разрешение экрана">2560х1600</param>
-<param name="Тип ноутбука">Игровой ноутбук</param>
-<param name="Тип оперативной памяти">LPDDR5x</param>
-<param name="Объем накопителя">1 TB</param>
-<param name="Тип накопителя">SSD</param>
-<param name="Видеокарта">Nvidia GeForce RTX5070Ti</param>
-<param name="Операционная система">DOS</param>
-<param name="Процессор">AMD Ryzen AI 9 HX 370</param>
-</offer>
-
-<offer id="AS82668" available="false">
+<offer id="AS82668" available="true">
 <categoryId>21291</categoryId>
 <vendorCode>AS82668</vendorCode>
 <name>Ноутбук MSI Vector 17 HX AI A2XWHG-087XKZ 17&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti DOS</name>
@@ -36970,7 +36692,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82668_3.jpg</picture>
 <vendor>MSI</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Vector 17 HX AI A2XWHG-087XKZ 17&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti DOS</h3><p>Ноутбук MSI Vector 17 HX AI A2XWHG-087XKZ 17&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti DOS (9S7-17S372-087) Мощь. Интеллект. Производительность нового уровня.<br>MSI Vector 17 HX AI — это флагманский игровой ноутбук, сочетающий ультимативную производительность, технологии искусственного интеллекта и премиальный дизайн.<br>Создан для геймеров, инженеров, 3D-дизайнеров и тех, кто требует максимум.<br>Ключевые характеристики: Процессор: Intel® Core™ Ultra 9 275HX с Intel® AI Boost (NPU) — 24 ядра (8 P-ядер + 16 E-ядер), 24 потока, кэш 36 МБ, частота до 5.4 ГГц. Графика: NVIDIA® GeForce RTX™ 5070 Ti Laptop GPU — до 992 AI TOPS, поддержка DLSS 3.5, Ray Tracing, AV1-кодек. Общая мощность CPU + GPU: до 215 Вт с технологией MSI OverBoost Ultra — максимум производительности без троттлинга. Экран: 17? IPS-level QHD+ (2560?1600), 240 Гц, антибликовое покрытие, формат 16:10. ОЗУ: 32 ГБ DDR5-5600 (2?16 ГБ), с возможностью расширения до 96 ГБ (DDR5-6400).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 17</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 5.29</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070Ti</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> Intel Core Ultra 9 275HX</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
+<description><h3>Ноутбук MSI Vector 17 HX AI A2XWHG-087XKZ 17&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti DOS</h3><p>Ноутбук MSI Vector 17 HX AI A2XWHG-087XKZ 17&quot; QHD+ 240Hz Ultra 9 275HX 32GB 1TB RTX5070 Ti DOS (9S7-17S372-087) Мощь. Интеллект. Производительность нового уровня.<br>MSI Vector 17 HX AI — это флагманский игровой ноутбук, сочетающий ультимативную производительность, технологии искусственного интеллекта и премиальный дизайн.<br>Создан для геймеров, инженеров, 3D-дизайнеров и тех, кто требует максимум.<br>Ключевые характеристики: Процессор: Intel® Core™ Ultra 9 275HX с Intel® AI Boost (NPU) — 24 ядра (8 P-ядер + 16 E-ядер), 24 потока, кэш 36 МБ, частота до 5.4 ГГц. Графика: NVIDIA® GeForce RTX™ 5070 Ti Laptop GPU — до 992 AI TOPS, поддержка DLSS 3.5, Ray Tracing, AV1-кодек. Общая мощность CPU + GPU: до 215 Вт с технологией MSI OverBoost Ultra — максимум производительности без троттлинга. Экран: 17? IPS-level QHD+ (2560?1600), 240 Гц, антибликовое покрытие, формат 16:10. ОЗУ: 32 ГБ DDR5-5600 (2?16 ГБ), с возможностью расширения до 96 ГБ (DDR5-6400).</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 17</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 5.29</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX5070Ti</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 12 Гб</li><li><strong>Объем накопителя:</strong> 1 TB</li><li><strong>Процессор:</strong> Intel Core Ultra 9 275HX</li><li><strong>Разрешение экрана:</strong> 2560х1600</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 240 Гц</li></ul></description>
 <param name="Вес">5.29</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">240 Гц</param>
@@ -36982,34 +36704,9 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">1 TB</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX5070Ti</param>
+<param name="Объем видеопамяти">12 Гб</param>
 <param name="Операционная система">DOS</param>
 <param name="Процессор">Intel Core Ultra 9 275HX</param>
-</offer>
-
-<offer id="AS82675" available="false">
-<categoryId>21291</categoryId>
-<vendorCode>AS82675</vendorCode>
-<name>Ноутбук MSI Thin 15 B13VE-3408XKZ 15,6&quot; FHD 144Hz i7-13620H 16GB 512GB RTX4050 DOS</name>
-<price>534900</price>
-<picture>https://img.al-style.kz/82675_1.jpg</picture>
-<picture>https://img.al-style.kz/82675_2.jpg</picture>
-<picture>https://img.al-style.kz/82675_3.jpg</picture>
-<vendor>MSI</vendor>
-<currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Thin 15 B13VE-3408XKZ 15,6&quot; FHD 144Hz i7-13620H 16GB 512GB RTX4050 DOS</h3><p>Ноутбук MSI Thin 15 B13VE-3408XKZ 15.6&quot; FHD 144Hz Intel Core i7-13620HH 16GB 512GB RTX4050 DOS — это мощный и стильный 15.6-дюймовый ноутбук, идеально подходящий для работы, учебы и игр.<br>Благодаря тонкому корпусу, высокой производительности и современным технологиям, он станет надежным помощником в любых задачах.<br>Основные характеристики: Экран: 15.6&quot; IPS-дисплей с разрешением 1920x1080 пикселей (Full HD), частотой обновления 144 Гц, яркими цветами и широкими углами обзора.<br>Процессор: Intel Core i7-13620H (10 ядер / 16 потоков, до 4.9 ГГц) — высокая производительность и энергоэффективность. Оперативная память: 16 ГБ DDR4, обеспечивающая быструю работу системы и многозадачность. Накопитель: 512 ГБ SSD M.2 PCIe — молниеносная загрузка ОС и приложений, достаточно места для хранения данных. Графика: NVIDIA GeForce RTX 4050 с 6 ГБ видеопамяти GDDR6 — отличная производительность в играх, рендеринге и дизайне.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 15</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 3.39</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX4050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core i7-13620H</li><li><strong>Разрешение экрана:</strong> 1920x1080</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR4</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
-<param name="Вес">3.39</param>
-<param name="Гарантия">1 год</param>
-<param name="Частота обновления экрана">144 Гц</param>
-<param name="Тип матрицы экрана">IPS</param>
-<param name="Диагональ экрана">15</param>
-<param name="Разрешение экрана">1920x1080</param>
-<param name="Тип ноутбука">Игровой ноутбук</param>
-<param name="Тип оперативной памяти">DDR4</param>
-<param name="Объем накопителя">512 Гб</param>
-<param name="Тип накопителя">SSD</param>
-<param name="Видеокарта">Nvidia GeForce RTX4050</param>
-<param name="Операционная система">DOS</param>
-<param name="Процессор">Intel Core i7-13620H</param>
 </offer>
 
 <offer id="AS82676" available="true">
@@ -37022,7 +36719,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <picture>https://img.al-style.kz/82676_3.jpg</picture>
 <vendor>MSI</vendor>
 <currencyId>KZT</currencyId>
-<description><h3>Ноутбук MSI Thin 15 B13UDX-3409XKZ 15,6&quot; FHD 144Hz i5-13420H 16GB 512GB RTX3050 DOS</h3><p>Ноутбук MSI Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Ноутбук MSI Thin 15 B13UDX-3409XKZ 15,6&quot; FHD 144Hz i5-13420H 16GB 512GB RTX3050 DOS MSI Thin 15 B13UDX (Model 16R8) — лёгкий и компактный игровой/универсальный ноутбук формата 15.6&quot;, сочетающий сбалансированную производительность на базе Intel® Raptor Lake и дискретную графику NVIDIA® GeForce RTX™ 3050.<br>Подходит для гейминга в средних настройках, мультимедийных задач и повседневной работы.<br>Основные характеристики: Модель / Part No: Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Дисплей: 15.6&quot; IPS-Level FHD (1920?1080), 144 Гц, антибликовое покрытие, non-touch Процессор: Intel® Core™ i5-13420H (8 ядер: 4 P-cores + 4 E-cores, Max Turbo до 4.6 ГГц) Видеокарта: NVIDIA® GeForce RTX™ 3050 Laptop GPU, 6 ГБ GDDR6 Оперативная память: 16 ГБ (2?8 ГБ) DDR4-3200, 2 слота, поддержка до 64 ГБ Накопитель: 512 ГБ NVMe PCIe Gen4 (M.2 2280).<br>Возможность апгрейда (обратитесь в сервисный центр) Макс.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 15</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 3.37</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX3050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core i5-13420H</li><li><strong>Разрешение экрана:</strong> 1920х1080 (FHD)</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
+<description><h3>Ноутбук MSI Thin 15 B13UDX-3409XKZ 15,6&quot; FHD 144Hz i5-13420H 16GB 512GB RTX3050 DOS</h3><p>Ноутбук MSI Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Ноутбук MSI Thin 15 B13UDX-3409XKZ 15,6&quot; FHD 144Hz i5-13420H 16GB 512GB RTX3050 DOS MSI Thin 15 B13UDX (Model 16R8) — лёгкий и компактный игровой/универсальный ноутбук формата 15.6&quot;, сочетающий сбалансированную производительность на базе Intel® Raptor Lake и дискретную графику NVIDIA® GeForce RTX™ 3050.<br>Подходит для гейминга в средних настройках, мультимедийных задач и повседневной работы.<br>Основные характеристики: Модель / Part No: Thin 15 B13UDX (16R8) — 9S7-16R831-3409 Дисплей: 15.6&quot; IPS-Level FHD (1920?1080), 144 Гц, антибликовое покрытие, non-touch Процессор: Intel® Core™ i5-13420H (8 ядер: 4 P-cores + 4 E-cores, Max Turbo до 4.6 ГГц) Видеокарта: NVIDIA® GeForce RTX™ 3050 Laptop GPU, 6 ГБ GDDR6 Оперативная память: 16 ГБ (2?8 ГБ) DDR4-3200, 2 слота, поддержка до 64 ГБ Накопитель: 512 ГБ NVMe PCIe Gen4 (M.2 2280).<br>Возможность апгрейда (обратитесь в сервисный центр) Макс.</p><h3>Характеристики</h3><ul><li><strong>Диагональ экрана:</strong> 15</li><li><strong>Операционная система:</strong> DOS</li><li><strong>Вес:</strong> 3.37</li><li><strong>Видеокарта:</strong> Nvidia GeForce RTX3050</li><li><strong>Гарантия:</strong> 1 год</li><li><strong>Объем видеопамяти:</strong> 6 Гб</li><li><strong>Объем накопителя:</strong> 512 Гб</li><li><strong>Процессор:</strong> Intel Core i5-13420H</li><li><strong>Разрешение экрана:</strong> 1920х1080 (FHD)</li><li><strong>Тип матрицы экрана:</strong> IPS</li><li><strong>Тип накопителя:</strong> SSD</li><li><strong>Тип ноутбука:</strong> Игровой ноутбук</li><li><strong>Тип оперативной памяти:</strong> DDR5</li><li><strong>Частота обновления экрана:</strong> 144 Гц</li></ul></description>
 <param name="Вес">3.37</param>
 <param name="Гарантия">1 год</param>
 <param name="Частота обновления экрана">144 Гц</param>
@@ -37034,6 +36731,7 @@ SCX-3400, 3401, 3405, 3406</param>
 <param name="Объем накопителя">512 Гб</param>
 <param name="Тип накопителя">SSD</param>
 <param name="Видеокарта">Nvidia GeForce RTX3050</param>
+<param name="Объем видеопамяти">6 Гб</param>
 <param name="Операционная система">DOS</param>
 <param name="Процессор">Intel Core i5-13420H</param>
 </offer>
