@@ -3,6 +3,11 @@
 
 import os, re, html, sys, time, hashlib
 
+
+# === precompiled regexes (hot paths) ===
+RX_OFFER_BLOCK = re.compile(r'(?is)<offer\b.*?</offer>')
+RX_PARAM_BLOCK = re.compile(r'(?is)<\s*param\b[^>]*>.*?</\s*param\s*>')
+RX_CATEGORY_ID = re.compile(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>')
 # --- spacing helper (always present) ---
 def _ensure_footer_spacing(out_text: str) -> str:
     """Переносы внизу: 2 NL перед </offers>, перенос перед </shop> и </yml_catalog>."""
@@ -13,7 +18,7 @@ def _ensure_footer_spacing(out_text: str) -> str:
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v99 (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v100 (cleanup+precompiled) (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
