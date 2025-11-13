@@ -400,129 +400,120 @@ def main() -> int:
 def _append_faq_reviews_after_desc(_text: str) -> str:
     """
     Динамически добавляет блоки «FAQ — Частые вопросы» и «Отзывы покупателей»
-    в КОНЕЦ <description> каждого оффера на основе содержимого <name> и текста описания.
-    Идемпотентно: если FAQ/Отзывы уже есть — повторно не вставляет.
+    в КОНЕЦ <description> каждого оффера на основе <name>, текста описания И <param>.
+    НИЧЕГО больше в карточке не трогаем. Повторно не вставляем, если уже есть.
     """
     import re as _re, html as _html
 
-    def _plain(s: str) -> str:
+    # --- Утилиты ---
+    def _unhtml(s: str) -> str:
         s = _re.sub(r'(?is)<script.*?>.*?</script>', '', s)
         s = _re.sub(r'(?is)<style.*?>.*?</style>', '', s)
         s = _re.sub(r'(?is)<[^>]+>', ' ', s)
         s = _re.sub(r'\s+', ' ', s).strip()
         return _html.unescape(s)
 
-    def _classify(plain_lc: str) -> str:
-        table = {
-            'cartridge': ['картридж','тонер','drum','ce','cf','tn','106r','q2612','cb435','crg','xerox','hp laserjet','laser jet'],
-            'ups':       ['ибп','ups','источник бесперебойного питания','u-','line-interactive','онлайн ибп','offline'],
-            'printer':   ['принтер','laserjet','deskjet','pixma','ecotank','workforce','phaser',' b- лазер','мфу ','mfp '],
-            'monitor':   ['монитор','monitor','displayport','hdmi','ips','va-матрица','144 гц','240 гц'],
-            'laptop':    ['ноутбук','laptop','ultrabook','ryzen','intel core','msi','asus','acer','lenovo','hp '],
-            'projector': ['проектор','projector','dlp','lcd проектор'],
-        }
-        for kind, keys in table.items():
-            if any(k in plain_lc for k in keys):
-                return kind
+    def _params_kv(offer_html: str):
+        kv = {}
+        for pm in _re.finditer(r'(?is)<param\b([^>]*)>(.*?)</param>', offer_html):
+            attrs, val = pm.group(1), pm.group(2)
+            nm = _re.search(r'name\s*=\s*"(.*?)"', attrs)
+            if not nm:
+                continue
+            key = _html.unescape(nm.group(1)).strip().lower()
+            val = _html.unescape(_unhtml(val)).strip()
+            if not key or not val:
+                continue
+            # Храним первое значение, чтобы не плодить длинные списки
+            kv.setdefault(key, val)
+        return kv
+
+    def _classify(ctx: str, kv: dict) -> str:
+        ctx_lc = ctx.lower()
+        # приоритет по параметрам
+        if any(k in kv for k in ['картридж','тонер','ресурс','совместимость']): return 'cartridge'
+        if any(k in kv for k in ['мощность, ва','мощность ва','va','тип ибп']):   return 'ups'
+        if any(k in kv for k in ['диагональ','разрешение','частота','яркость']) and 'монитор' in (ctx_lc + ' ' + ' '.join(kv.keys())): 
+            return 'monitor'
+        if any(k in kv for k in ['процессор','оперативная память','озу','ssd','накопитель','операционная система']): 
+            return 'laptop'
+        if 'принтер' in ctx_lc or 'мфу' in ctx_lc: return 'printer'
+        if 'монитор' in ctx_lc: return 'monitor'
+        if 'картридж' in ctx_lc or 'toner' in ctx_lc or 'drum' in ctx_lc: return 'cartridge'
+        if 'ups' in ctx_lc or 'ибп' in ctx_lc: return 'ups'
         return 'generic'
 
-    def _extract_features(plain_lc: str) -> dict:
-        feat = {}
-        m = _re.search(r'(\d{3,5})\s*(стр|страниц)', plain_lc)
-        if m: feat['yield_pages'] = m.group(1)
-        m = _re.search(r'(совместим[^.]{0,160})', plain_lc)
-        if m: feat['compat'] = m.group(1).strip()
-        m = _re.search(r'\b(чёрн(ый|ая)|черн(ый|ая)|black|cyan|magenta|yellow)\b', plain_lc)
-        if m: feat['color'] = m.group(1)
-        m = _re.search(r'(\d{2,3})\s*(["″”]|дюйм)', plain_lc)
-        if m: feat['diag'] = m.group(1)
-        m = _re.search(r'(\d{3,4})\s*[x×х]\s*(\d{3,4})', plain_lc)
-        if m: feat['res'] = f"{m.group(1)}×{m.group(2)}"
-        m = _re.search(r'(\d{2,4})\s*(кд/м2|nit|нит)', plain_lc)
-        if m: feat['brightness'] = m.group(1)
-        m = _re.search(r'(\d{2,4})\s*(вт|w)\b', plain_lc)
-        if m: feat['watt'] = m.group(1)
-        m = _re.search(r'(\d{3,5})\s*va', plain_lc)
-        if m: feat['va'] = m.group(1)
-        m = _re.search(r'(\d{1,3})\s*гб\s*(ram|оперативн)', plain_lc)
-        if m: feat['ram'] = m.group(1)
-        m = _re.search(r'(\d{2,4})\s*гб\s*(ssd|накопител)', plain_lc)
-        if m: feat['ssd'] = m.group(1)
-        m = _re.search(r'windows\s*11|windows\s*10|без\s*ос|freedos|linux', plain_lc)
-        if m: feat['os'] = m.group(0)
-        if 'wi-fi' in plain_lc or 'wifi' in plain_lc: feat['wifi'] = 'wi-fi'
-        for port in ['hdmi','displayport','dp','usb-c','type-c','vga']:
-            if port in plain_lc: feat.setdefault('ports', []).append(port)
-        return feat
-
-    def _features_html(kind: str, feat: dict, name: str) -> str:
-        items = []
+    # Извлечение ключевых фактов из параметров/текста
+    def _facts(kind: str, plain_lc: str, kv: dict) -> dict:
+        F = {}
+        g = lambda *keys: next((kv[k] for k in keys if k in kv), '')
         if kind == 'cartridge':
-            if feat.get('yield_pages'): items.append(f"Ресурс ~ {feat['yield_pages']} стр.")
-            if feat.get('color'):       items.append(f"Цвет: {feat['color'].upper()}")
-            if feat.get('compat'):      items.append(feat['compat'].capitalize())
+            F['compat'] = g('совместимость','подходит для','совместимые модели')
+            F['yield']  = g('ресурс','ресурс страниц','ресурс печати')
+            F['color']  = g('цвет','цвет печати')
         elif kind == 'ups':
-            if feat.get('va'):   items.append(f"Мощность: {feat['va']} VA")
-            if feat.get('watt'): items.append(f"Нагрузка: до {feat['watt']} Вт")
-            items.append("Стабилизация: line-interactive" if 'line-interactive' in name.lower() else "Защита от просадок напряжения")
+            F['va']     = g('мощность, ва','мощность ва','va')
+            F['watt']   = g('мощность, вт','мощность вт','w')
+            F['type']   = g('тип ибп','топология')
         elif kind == 'monitor':
-            if feat.get('diag'):      items.append(f"Диагональ: {feat['diag']}″")
-            if feat.get('res'):       items.append(f"Разрешение: {feat['res']}")
-            if feat.get('brightness'):items.append(f"Яркость: {feat['brightness']} кд/м²")
-            if feat.get('ports'):     items.append("Порты: " + ", ".join(sorted(set(feat['ports']))).upper())
+            F['diag']   = g('диагональ','диагональ экрана')
+            F['res']    = g('разрешение','разрешение экрана')
+            F['hz']     = g('частота обновления','частота')
+            F['bright'] = g('яркость')
+            F['ports']  = g('интерфейсы','видеовыходы','разъёмы')
         elif kind == 'laptop':
-            if feat.get('ram'): items.append(f"ОЗУ: {feat['ram']} ГБ")
-            if feat.get('ssd'): items.append(f"SSD: {feat['ssd']} ГБ")
-            if feat.get('os'):  items.append(f"ОС: {feat['os'].upper()}")
+            F['cpu']    = g('процессор')
+            F['ram']    = g('оперативная память','озу')
+            F['ssd']    = g('накопитель','ssd','объем ssd','объем накопителя')
+            F['os']     = g('операционная система','ос')
         elif kind == 'printer':
-            if feat.get('wifi'): items.append("Поддержка Wi‑Fi")
-            if feat.get('watt'): items.append(f"Потребление: {feat['watt']} Вт")
-            if feat.get('res'):  items.append(f"Разрешение печати: {feat['res']}")
-        uniq = []
-        for x in items:
-            if x and x not in uniq:
-                uniq.append(x)
-            if len(uniq) == 4:
-                break
-        if not uniq:
-            return ""
-        return (
-            '<div style="background:#FFFDF5;border:1px solid #F1E8C9;padding:12px 14px;margin:12px 0;">'
-            '<h3 style="margin:0 0 10px;font-size:17px;">Ключевые особенности</h3>'
-            '<ul style="margin:0;padding-left:18px;">' + ''.join(f'<li style="margin:0 0 6px;">{_html.escape(i)}</li>' for i in uniq) + '</ul>'
-            '</div>'
-        )
+            F['speed']  = g('скорость печати')
+            F['wifi']   = g('wi-fi','wi‑fi','wifi','беспроводной интерфейс')
+            F['duplex'] = g('двусторонняя печать','duplex')
+        # fallback по тексту
+        if not F.get('yield'):
+            m = re.search(r'(\d{3,5})\s*(стр|страниц)', plain_lc)
+            if m: F['yield'] = m.group(1)
+        if not F.get('res'):
+            m = re.search(r'(\d{3,4})\s*[x×х]\s*(\d{3,4})', plain_lc)
+            if m: F['res'] = f"{m.group(1)}×{m.group(2)}"
+        if not F.get('diag'):
+            m = re.search(r'(\d{2,3})\s*(дюйм|\"|″)', plain_lc)
+            if m: F['diag'] = m.group(1)
+        return F
 
-    def _faq_html(kind: str, model: str) -> str:
+    def _faq_html(kind: str, model: str, F: dict) -> str:
+        # Только FAQ — без блока «Ключевые особенности»
         if kind == 'cartridge':
             qs = [
-                f"<strong>Подойдёт ли {model} к моему принтеру?</strong><br>Сверьте список совместимости в карточке или напишите нам.",
-                "<strong>Какой ресурс печати?</strong><br>Ориентируйтесь на заявленный производителем; зависит от покрытия страниц.",
-                "<strong>Можно перезаправлять?</strong><br>Да, при качественном тонере и обслуживании.",
+                f"<strong>Подойдёт ли { _html.escape(model) } к моему принтеру?</strong><br>{ 'Проверьте совместимость: ' + _html.escape(F.get('compat','см. карточку')) if F.get('compat') else 'Сверьте список совместимости в карточке или напишите нам.' }",
+                f"<strong>Какой ресурс печати?</strong><br>{ ('Около ' + _html.escape(F['yield']) + ' страниц.') if F.get('yield') else 'Ресурс зависит от покрытия страницы; ориентируйтесь на паспорт модели.' }",
+                f"<strong>Цвет печати?</strong><br>{ (_html.escape(F['color']).capitalize()) if F.get('color') else 'Уточните в описании: чёрный или цветной картридж.' }",
             ]
         elif kind == 'ups':
             qs = [
-                "<strong>На сколько хватит ИБП?</strong><br>5–15 минут при типовой нагрузке для корректного завершения работы.",
-                "<strong>Есть защита от просадок?</strong><br>Да, линейно‑интерактивные модели сглаживают скачки.",
-                "<strong>Сменные аккумуляторы?</strong><br>Да, SLA-батареи доступны к замене.",
+                f"<strong>На сколько хватит ИБП?</strong><br>{ ('Зависит от нагрузки; при ' + _html.escape(F.get('watt','типовой')) + ' Вт — 5–15 минут.') if F.get('watt') else 'Обычно 5–15 минут при типовой нагрузке.' }",
+                f"<strong>Какая мощность?</strong><br>{ (_html.escape(F['va']) + ' VA') if F.get('va') else 'Смотрите мощность в характеристиках.' }",
+                f"<strong>Топология?</strong><br>{ _html.escape(F['type']) if F.get('type') else 'Чаще всего line‑interactive; см. карточку.' }",
             ]
         elif kind == 'monitor':
             qs = [
-                "<strong>Подойдёт для графики?</strong><br>Смотрите охват цветов (sRGB/DCI‑P3) и калибровку.",
-                "<strong>Есть крепление VESA?</strong><br>Проверьте спецификацию (например 100×100).",
-                "<strong>Как подключить?</strong><br>HDMI/DP/USB‑C — зависит от модели и кабеля.",
+                f"<strong>Подходит для работы/учёбы?</strong><br>{ ('Да, ' + _html.escape(F.get('diag','')) + '″, ' + _html.escape(F.get('res',''))).strip(', ') or 'Смотрите диагональ и разрешение — подберите под свои задачи.' }",
+                f"<strong>Какие порты?</strong><br>{ _html.escape(F['ports']) if F.get('ports') else 'HDMI / DisplayPort / USB‑C — проверьте список интерфейсов.' }",
+                f"<strong>Частота обновления?</strong><br>{ (_html.escape(F['hz']) + ' Гц') if F.get('hz') else 'См. спецификацию (60/75/120/144 Гц и т.д.).' }",
             ]
         elif kind == 'laptop':
             qs = [
-                "<strong>Можно ли добавить ОЗУ/SSD?</strong><br>Часто доступен второй слот RAM и замена SSD — уточняйте по модели.",
-                "<strong>С какой ОС поставляется?</strong><br>Windows / Linux / без ОС — смотрите в карточке.",
-                "<strong>Подойдёт для работы/учёбы?</strong><br>Да, зависит от CPU/GPU и объёма памяти.",
+                f"<strong>Производительность?</strong><br>{ ('CPU: ' + _html.escape(F['cpu'])) if F.get('cpu') else 'Оцените CPU/GPU и объём памяти под ваши задачи.' }",
+                f"<strong>Память и накопитель?</strong><br>{ ('ОЗУ: ' + _html.escape(F.get('ram','?')) + ', SSD: ' + _html.escape(F.get('ssd','?'))) if (F.get('ram') or F.get('ssd')) else 'Смотрите объёмы ОЗУ и SSD в карточке.' }",
+                f"<strong>Какая ОС?</strong><br>{ _html.escape(F['os']) if F.get('os') else 'Windows / Linux / без ОС — уточняйте.' }",
             ]
         elif kind == 'printer':
             qs = [
-                "<strong>Есть двусторонняя печать?</strong><br>См. параметры: авто‑Duplex или ручной.",
-                "<strong>Поддержка Wi‑Fi?</strong><br>Если указано в характеристиках — да.",
-                "<strong>Какие картриджи подходят?</strong><br>Смотрите раздел «Совместимость».",]
+                f"<strong>Скорость печати?</strong><br>{ (_html.escape(F['speed']) + ' стр/мин') if F.get('speed') else 'См. скорость печати в спецификации.' }",
+                f"<strong>Есть Wi‑Fi?</strong><br>{ 'Да' if F.get('wifi') else 'Проверьте в параметрах — Wi‑Fi указан в модели с беспроводным модулем.' }",
+                f"<strong>Двусторонняя печать?</strong><br>{ 'Автоматическая' if (F.get('duplex','').lower().startswith('авто')) else 'См. параметры Duplex (авто/ручной).' }",
+            ]
         else:
             qs = [
                 "<strong>Есть гарантия?</strong><br>Да, официальная гарантия производителя.",
@@ -538,23 +529,23 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
 
     def _reviews_html(kind: str, name: str) -> str:
         if kind == 'cartridge':
-            r1 = f"{name} печатает чётко, без шлейфов; ресурс соответствует ожиданиям."
-            r2 = "Упаковка аккуратная, доставка быстрая — берём для офиса."
+            r1 = f"{name} печатает чётко и без шлейфов; ресурс соответствует ожиданиям."
+            r2 = "Подходит для офисных задач — стабильная подача тонера и чистая печать."
         elif kind == 'ups':
-            r1 = "Хватает, чтобы сохранить документы и корректно завершить работу ПК."
-            r2 = "Тихий, компактный, сборка достойная — рекомендуем для дома."
+            r1 = "Хватает, чтобы спокойно сохранить документы и выключить ПК."
+            r2 = "Тихая работа и адекватное время автономии для дома."
         elif kind == 'monitor':
-            r1 = "Цвета ровные, засветов нет; работать комфортно целый день."
-            r2 = "Подключение прошло без проблем, картинка стабильная."
+            r1 = "Цвета ровные, глазам комфортно; засветов минимально."
+            r2 = "Подключился без проблем, картинка стабильная, шрифты чёткие."
         elif kind == 'laptop':
-            r1 = "Работает шустро, запускается быстро; клавиатура удобная."
-            r2 = "Автономность достойная для повседневных задач."
+            r1 = "Система работает быстро, шум в норме; удобно для работы и учёбы."
+            r2 = "Аккумулятор держит достойно, корпус не люфтит."
         elif kind == 'printer':
-            r1 = "Печать быстрая и чёткая; настройка заняла несколько минут."
-            r2 = "Wi‑Fi подключился сразу, duplex выручает на работе."
+            r1 = "Быстрая и качественная печать; настройка заняла минуты."
+            r2 = "Wi‑Fi подключился сразу, duplex экономит бумагу."
         else:
             r1 = f"{name} соответствует описанию и ожиданиям по качеству."
-            r2 = "Продавец на связи, упаковка надёжная — остались довольны."
+            r2 = "Упаковка надёжная, доставка своевременная — рекомендуем."
         return (
             '<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;">'
             '<h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3>'
@@ -569,34 +560,42 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
             '</div>'
         )
 
+    # --- Основной проход по офферам ---
     out, pos = [], 0
     for m_offer in _re.finditer(r'(?is)<offer\b.*?>.*?</offer>', _text):
         out.append(_text[pos:m_offer.start()])
-        chunk = m_offer.group(0)
-        if _re.search(r'FAQ\s*—\s*Частые\s+вопросы|Отзывы\s+покупателей', chunk, _re.I):
-            out.append(chunk); pos = m_offer.end(); continue
+        offer = m_offer.group(0)
 
-        nm = _grab = _re.search(r'(?is)<name>(.*?)</name>', chunk)
-        name_html = nm.group(1) if nm else ''
+        # Уже есть FAQ/Отзывы? — пропустить
+        if _re.search(r'FAQ\s*—\s*Частые\s+вопросы|Отзывы\s+покупателей', offer, _re.I):
+            out.append(offer); pos = m_offer.end(); continue
+
+        # Вытаскиваем name / description
+        m_name = _re.search(r'(?is)<name>(.*?)</name>', offer)
+        name_html = m_name.group(1) if m_name else ''
         name = _html.unescape(name_html).strip()
 
-        dm = _re.search(r'(?is)(<description[^>]*>)(.*?)(</description>)', chunk)
-        if not dm:
-            out.append(chunk); pos = m_offer.end(); continue
-        head, body_html, tail = dm.group(1), dm.group(2), dm.group(3)
+        m_desc = _re.search(r'(?is)(<description[^>]*>)(.*?)(</description>)', offer)
+        if not m_desc:
+            out.append(offer); pos = m_offer.end(); continue
+        d_head, d_body_html, d_tail = m_desc.group(1), m_desc.group(2), m_desc.group(3)
 
-        plain = _plain((name or '') + ' ' + body_html).lower()
-        kind = _classify(plain)
-        feat = _extract_features(plain)
+        # Параметры
+        kv = _params_kv(offer)
+        # Контекст для классификации и фактов
+        plain_ctx = _unhtml(name_html + ' ' + d_body_html + ' ' + ' '.join(f"{k}: {v}" for k,v in kv.items())).lower()
+        kind = _classify(plain_ctx, kv)
+        facts = _facts(kind, plain_ctx, kv)
 
-        features_html = _features_html(kind, feat, name)
-        faq_html = _faq_html(kind, name[:60])
+        faq_html = _faq_html(kind, name[:60], facts)
         reviews_html = _reviews_html(kind, name)
 
-        injection = '\n' + (features_html if features_html else '') + faq_html + reviews_html
-        new_desc = head + body_html + injection + tail
-        chunk = chunk[:dm.start()] + new_desc + chunk[dm.end():]
-        out.append(chunk)
+        # Вставляем ТОЛЬКО FAQ и Отзывы, без "Ключевых особенностей"
+        inject = '\n' + faq_html + reviews_html
+        new_desc = d_head + d_body_html + inject + d_tail
+        offer = offer[:m_desc.start()] + new_desc + offer[m_desc.end():]
+
+        out.append(offer)
         pos = m_offer.end()
 
     out.append(_text[pos:])
