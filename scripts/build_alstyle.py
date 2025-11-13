@@ -1,16 +1,16 @@
 # coding: utf-8
-# build_alstyle.py — v67 params-sorted + attr-order fix + constants + price_fallback + sorted_specs + h3(name) + smart<br>
+# build_alstyle.py — v106 (tidy+kv+deny+whitespace) + CTA block in <description> (at start, unchanged)
 
 import os, re, html, sys, time, hashlib
-
-SUPPLIER_URL = 'SUPPLIER_URL'
-
+from pathlib import Path
+import requests
 
 # === precompiled regexes (hot paths) ===
 RX_OFFER_BLOCK = re.compile(r'(?is)<offer\b.*?</offer>')
 RX_PARAM_BLOCK = re.compile(r'(?is)<\s*param\b[^>]*>.*?</\s*param\s*>')
 RX_CATEGORY_ID = re.compile(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>')
 RX_PARAM_KV = re.compile(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>')
+
 # --- spacing helper (always present) ---
 def _ensure_footer_spacing(out_text: str) -> str:
     """Переносы внизу: 2 NL перед </offers>, перенос перед </shop> и </yml_catalog>."""
@@ -18,10 +18,8 @@ def _ensure_footer_spacing(out_text: str) -> str:
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
     return out_text
-from pathlib import Path
-import requests
 
-print('[VER] build_alstyle v106 (consolidated tidy) (tidy+kv+deny+whitespace) (param deny: collect+emit) (param_kv+cleanup) (mini‑patch: use compiled + drop dead func) (cleanup+precompiled) (helper hardcoded) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v106 (CTA at start of <description>) (tidy+kv+deny+whitespace) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -50,6 +48,34 @@ DENY_PARAMS = {s.lower() for s in [
   "Новинка", "Снижена цена", "Штрихкод", "Штрих-код", "Назначение",
   "Объем", "Объём"
 ]}
+
+# --- Стандартный CTA-блок (без изменений) для вставки в начало <description> каждого товара ---
+CTA_HTML = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;">
+  <p style="text-align:center; margin:0 0 12px;">
+    <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
+       style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">
+      💬 НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
+    </a>
+  </p>
+
+  <div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">
+    <h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>
+    <ul style="margin:0; padding-left:18px;">
+      <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>
+      <li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>
+    </ul>
+
+    <hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;">
+
+    <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0; padding-left:18px;">
+      <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
+      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 рабочих дней</em></li>
+      <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
+      <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
+    </ul>
+  </div>
+</div>'''
 
 # --- Утилиты текста ---
 _re_tag = re.compile(r'(?is)<[^>]+>')
@@ -158,6 +184,7 @@ def _move_available_attr(header: str, body: str):
         # иначе добавим перед закрывающей '>' — так сохраняем исходный порядок id и прочих атрибутов
         header = re.sub(r'>\s*$', f' available="{avail}">', header, count=1)
     return header, body
+
 # --- Удаление простых тегов ---
 FORBIDDEN_TAGS = ('url','quantity','quantity_in_stock','purchase_price')
 def _remove_simple_tags(body: str) -> str:
@@ -184,22 +211,24 @@ def _ensure_price_from_purchase(body: str) -> str:
     if m4: return body[:m4.start()] + tag + body[m4.start():]
     return body
 
-# --- Перестройка описания ---
+# --- Перестройка описания: добавляем CTA_HTML в начало без изменений ---
 def _desc_postprocess_native_specs(offer_xml: str) -> str:
+    # 1) достаём исходный <description>
     m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', offer_xml)
     head, raw, tail = (m.group(1), m.group(2), m.group(3)) if m else ('<description>', '', '</description>')
 
+    # 2) нормализуем «родной» текст
     plain_full = _clean_plain(raw)
     desc_text = _build_desc_text(plain_full)
 
-    # Заголовок из <name>
+    # 3) заголовок из <name>
     mname = re.search(r'(?is)<\s*name\s*>\s*(.*?)\s*</\s*name\s*>', offer_xml)
     name_h3 = ''
     if mname:
         nm = _clean_plain(mname.group(1))
         if nm: name_h3 = '<h3>' + html.escape(nm) + '</h3>'
 
-    # Основной абзац: <br> только если исходник был длинный (> GOAL)
+    # 4) основной абзац (умный <br> только для длинных исходников)
     if len(plain_full) > GOAL:
         parts = _sentences(desc_text)
         lines, cur = [], ''
@@ -214,14 +243,19 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
             head_lines = lines[:MAX_BR]
             tail_line = ' '.join(lines[MAX_BR:])
             lines = head_lines + [tail_line]
-        desc_html = '<br>'.join(html.escape(x) for x in lines)
+        desc_html = '<br>' + '<br>'.join(html.escape(x) for x in lines) if lines else ''
+        if not desc_html:
+            desc_html = html.escape(desc_text)
     else:
         desc_html = html.escape(desc_text)
 
-    # Характеристики из <param>
+    # 5) характеристики из <param>
     params = _collect_params(offer_xml)
     params = _sort_params(params)
+
+    # 6) Сборка HTML: СНАЧАЛА CTA, затем name/описание/характеристики
     blocks = []
+    blocks.append(CTA_HTML)  # << неизменяемый блок
     if name_h3: blocks.append(name_h3)
     blocks.append('<p>' + desc_html + '</p>')
     if params:
@@ -265,7 +299,7 @@ def _rebuild_offer(offer_xml: str) -> str:
     if mp:
         val = mp.group(1)
         if re.search(r'(?is)<\s*price\s*>', body):
-            body = re.sub(r'(?is)(<\s*price\s*>).*(</\s*price\s*>)', r'\g<1>'+val+r'\g<2>', body, count=1)
+            body = re.sub(r'(?is)(<\s*price\s*>).*?(</\s*price\s*>)', r'\g<1>'+val+r'\g<2>', body, count=1)
         else:
             body = '<price>'+val+'</price>' + body
 
@@ -281,7 +315,7 @@ def _rebuild_offer(offer_xml: str) -> str:
         body = '<vendorCode>'+html.escape(v)+'</vendorCode>' + body
     if not v.startswith('AS'):
         v_new = 'AS' + v
-        body = re.sub(r'(?is)(<\s*vendorCode\s*>\s*).*(\s*</\s*vendorCode\s*>)', r'\g<1>'+html.escape(v_new)+r'\g<2>', body, count=1)
+        body = re.sub(r'(?is)(<\s*vendorCode\s*>\s*).*?(\s*</\s*vendorCode\s*>)', r'\g<1>'+html.escape(v_new)+r'\g<2>', body, count=1)
         v = v_new
     header = re.sub(r'(?is)\bid="[^"]*"', f'id="{v}"', header, count=1)
     # fix: убрать лишние пробелы в заголовке <offer ...>
@@ -293,7 +327,7 @@ def _rebuild_offer(offer_xml: str) -> str:
         digits = re.sub(r'[^\d]', '', mprice.group(1))
         base = int(digits) if digits else 0
         newp = _retail_price_from_base(base) if base else 0
-        body = re.sub(r'(?is)(<\s*price\s*>\s*).*(\s*</\s*price\s*>)', r'\g<1>'+str(newp)+r'\g<2>', body, count=1)
+        body = re.sub(r'(?is)(<\s*price\s*>\s*).*?(\s*</\s*price\s*>)', r'\g<1>'+str(newp)+r'\g<2>', body, count=1)
 
     full_offer = header + body + '</offer>'
     full_offer = _desc_postprocess_native_specs(full_offer)
@@ -311,6 +345,9 @@ def _rebuild_offer(offer_xml: str) -> str:
     for t in ('vendor','currencyId','description'):
         out_lines += parts.get(t, [])
     for prm in parts.get('param', []):
+        mname = re.search(r'(?is)name\s*=\s*"([^"]+)"', prm or '')
+        if mname and mname.group(1).strip().lower() in DENY_PARAMS:
+            continue
         mname = re.search(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"', prm)
         if mname:
             nm = re.sub(r'[\s\-]+', ' ', mname.group(1).strip().lower()).replace('ё','е')
@@ -322,15 +359,8 @@ def _rebuild_offer(offer_xml: str) -> str:
     return out
 
 # --- Главный поток ---
-def _normalize_whitespace(text: str) -> str:
-    """Финальная чистка: пробелы, пустые строки, перенос после <offers>."""
-    text = re.sub(r'[ \t]+\n', '\n', text)
-    text = re.sub(r'\n{3,}', '\n\n', text)
-    text = text.replace('<shop><offers>', '<shop><offers>\n')
-    return text
-
 def main() -> int:
-    url = 'SUPPLIER_URL'
+    url = 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'
     r = requests.get(url, auth=(LOGIN, PASSWORD), timeout=60)
     r.raise_for_status()
     src = r.content
@@ -363,8 +393,6 @@ def main() -> int:
     total = len(kept)
     avail_true = sum('available="true"' in k for k in kept)
     avail_false = sum('available="false"' in k for k in kept)
-    # src может быть bytes — декодируем для подсчёта исходных офферов
-    # faster: считаем офферы по уже декодированному тексту
     source_total = text.lower().count('<offer')
     from datetime import datetime, timedelta
     try:
@@ -381,7 +409,7 @@ def main() -> int:
     feed_meta = (
         "<!--FEED_META\n"
         f"{_line('Поставщик', 'AlStyle')}\n"
-        f"{_line('URL поставщика', globals().get('SUPPLIER_URL', 'SUPPLIER_URL'))}\n"
+        f"{_line('URL поставщика', 'https://al-style.kz/upload/catalog_export/al_style_catalog.php')}\n"
         f"{_line('Время сборки (Алматы)', _now_local.strftime('%Y-%m-%d %H:%M:%S'))}\n"
         f"{_line('Ближайшая сборка (Алматы)', _next.strftime('%Y-%m-%d %H:%M:%S'))}\n"
         f"{_line('Сколько товаров у поставщика до фильтра', source_total)}\n"
@@ -394,8 +422,9 @@ def main() -> int:
     out_text = feed_meta + out_text
     out_text = _ensure_footer_spacing(out_text)
 
-    out_text = _normalize_whitespace(out_text)
-
+    out_text = re.sub(r'[ \t]+\n', '\n', out_text)
+    out_text = re.sub(r'\n{3,}', '\n\n', out_text)
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
 
     Path('docs').mkdir(exist_ok=True)
     Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
