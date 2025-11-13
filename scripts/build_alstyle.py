@@ -1,11 +1,11 @@
 # coding: utf-8
-# build_alstyle.py — v105 (tidy+kv+deny+whitespace) + whatsapp_inject_only
+# build_alstyle.py — v105 (tidy+kv+deny+whitespace) + whatsapp_inject_only (entity)
 
 import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
-print('[VER] build_alstyle v105 (tidy+kv+deny+whitespace) + whatsapp_inject_only')
+print('[VER] build_alstyle v105 (tidy+kv+deny+whitespace) + whatsapp_inject_only (entity)')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -222,34 +222,34 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
         ins = insert_at.end() if insert_at else len(offer_xml)
         return offer_xml[:ins] + '<description>' + new_html + '</description>' + offer_xml[ins:]
 
-# === WhatsApp/Оплата/Доставка: стандартный блок (строго без изменений) ===
+# === WhatsApp/Оплата/Доставка: стандартный блок (строго без изменений, эмодзи заменён на HTML-entity) ===
 WHATSAPP_BLOCK = (
-    '<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;">\n'
-    '  <p style="text-align:center; margin:0 0 12px;">\n'
-    '    <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"\n'
-    '       style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">\n'
-    '      💬 НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!\n'
-    '    </a>\n'
-    '  </p>\n'
-    '\n'
-    '  <div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">\n'
-    '    <h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>\n'
-    '    <ul style="margin:0; padding-left:18px;">\n'
-    '      <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>\n'
-    '      <li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>\n'
-    '    </ul>\n'
-    '\n'
-    '    <hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;">\n'
-    '\n'
-    '    <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>\n'
-    '    <ul style="margin:0; padding-left:18px;">\n'
-    '      <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>\n'
-    '      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 рабочих дней</em></li>\n'
-    '      <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>\n'
-    '      <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>\n'
-    '    </ul>\n'
-    '  </div>\n'
-    '</div>\n\n'
+    '<div style="font-family: Cambria, \\'Times New Roman\\', serif; line-height:1.5; color:#222; font-size:15px;">\\n'
+    '  <p style="text-align:center; margin:0 0 12px;">\\n'
+    '    <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"\\n'
+    '       style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">\\n'
+    '      &#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!\\n'
+    '    </a>\\n'
+    '  </p>\\n'
+    '\\n'
+    '  <div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">\\n'
+    '    <h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>\\n'
+    '    <ul style="margin:0; padding-left:18px;">\\n'
+    '      <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>\\n'
+    '      <li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>\\n'
+    '    </ul>\\n'
+    '\\n'
+    '    <hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;">\\n'
+    '\\n'
+    '    <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>\\n'
+    '    <ul style="margin:0; padding-left:18px;">\\n'
+    '      <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>\\n'
+    '      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 рабочих дней</em></li>\\n'
+    '      <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>\\n'
+    '      <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>\\n'
+    '    </ul>\\n'
+    '  </div>\\n'
+    '</div>\\n\\n'
 )
 
 def _inject_whatsapp_block(offer_xml: str) -> str:
@@ -257,7 +257,7 @@ def _inject_whatsapp_block(offer_xml: str) -> str:
        Идемпотентно: если блок уже вставлен — ничего не делает."""
     if 'НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!' in offer_xml:
         return offer_xml
-    m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', offer_xml)
+    m = re.search(r'(?is)(<\\s*description\\b[^>]*>)(.*?)(</\\s*description\\s*>)', offer_xml)
     if not m:
         return offer_xml
     head, body, tail = m.group(1), m.group(2), m.group(3)
@@ -268,47 +268,47 @@ def _inject_whatsapp_block(offer_xml: str) -> str:
 WANT_ORDER = ('categoryId','vendorCode','name','price','picture','vendor','currencyId','description','param')
 
 def _rebuild_offer(offer_xml: str) -> str:
-    m = re.match(r'(?is)^\s*(<offer\b[^>]*>)(.*)</offer>\s*$', offer_xml)
-    if not m: return offer_xml.strip() + '\n\n'
+    m = re.match(r'(?is)^\\s*(<offer\\b[^>]*>)(.*)</offer>\\s*$', offer_xml)
+    if not m: return offer_xml.strip() + '\\n\\n'
     header, body = m.group(1), m.group(2)
 
     header, body = _move_available_attr(header, body)
     body = _ensure_price_from_purchase(body)
 
     # price ← purchase_price
-    mp = re.search(r'(?is)<\s*purchase_price\s*>\s*(.*?)\s*</\s*purchase_price\s*>', body)
+    mp = re.search(r'(?is)<\\s*purchase_price\\s*>\\s*(.*?)\\s*</\\s*purchase_price\\s*>', body)
     if mp:
         val = mp.group(1)
-        if re.search(r'(?is)<\s*price\s*>', body):
-            body = re.sub(r'(?is)(<\s*price\s*>).*(</\s*price\s*>)', r'\g<1>'+val+r'\g<2>', body, count=1)
+        if re.search(r'(?is)<\\s*price\\s*>', body):
+            body = re.sub(r'(?is)(<\\s*price\\s*>).*(</\\s*price\\s*>)', r'\\g<1>'+val+r'\\g<2>', body, count=1)
         else:
             body = '<price>'+val+'</price>' + body
 
     body = _remove_simple_tags(body)
 
     # vendorCode + id
-    mv = re.search(r'(?is)<\s*vendorCode\s*>\s*(.*?)\s*</\s*vendorCode\s*>', body)
+    mv = re.search(r'(?is)<\\s*vendorCode\\s*>\\s*(.*?)\\s*</\\s*vendorCode\\s*>', body)
     if mv:
         v = _clean_plain(mv.group(1))
     else:
-        mi = re.search(r'(?is)\bid="([^"]+)"', header)
+        mi = re.search(r'(?is)\\bid="([^"]+)"', header)
         v = mi.group(1) if mi else 'AS' + hashlib.md5(body.encode('utf-8')).hexdigest()[:8].upper()
         body = '<vendorCode>'+html.escape(v)+'</vendorCode>' + body
     if not v.startswith('AS'):
         v_new = 'AS' + v
-        body = re.sub(r'(?is)(<\s*vendorCode\s*>\s*).*(\s*</\s*vendorCode\s*>)', r'\g<1>'+html.escape(v_new)+r'\g<2>', body, count=1)
+        body = re.sub(r'(?is)(<\\s*vendorCode\\s*>\\s*).*(\\s*</\\s*vendorCode\\s*>)', r'\\g<1>'+html.escape(v_new)+r'\\g<2>', body, count=1)
         v = v_new
-    header = re.sub(r'(?is)\bid="[^"]*"', f'id="{v}"', header, count=1)
+    header = re.sub(r'(?is)\\bid="[^"]*"', f'id="{v}"', header, count=1)
     # fix: убрать лишние пробелы в заголовке <offer ...>
-    header = re.sub(r'\s{2,}', ' ', header)
+    header = re.sub(r'\\s{2,}', ' ', header)
 
     # цена с наценкой
-    mprice = re.search(r'(?is)<\s*price\s*>\s*(.*?)\s*</\s*price\s*>', body)
+    mprice = re.search(r'(?is)<\\s*price\\s*>\\s*(.*?)\\s*</\\s*price\\s*>', body)
     if mprice:
-        digits = re.sub(r'[^\d]', '', mprice.group(1))
+        digits = re.sub(r'[^\\d]', '', mprice.group(1))
         base = int(digits) if digits else 0
         newp = _retail_price_from_base(base) if base else 0
-        body = re.sub(r'(?is)(<\s*price\s*>\s*).*(\s*</\s*price\s*>)', r'\g<1>'+str(newp)+r'\g<2>', body, count=1)
+        body = re.sub(r'(?is)(<\\s*price\\s*>\\s*).*(\\s*</\\s*price\\s*>)', r'\\g<1>'+str(newp)+r'\\g<2>', body, count=1)
 
     full_offer = header + body + '</offer>'
     # базовая перестройка описания (как было)
@@ -318,8 +318,8 @@ def _rebuild_offer(offer_xml: str) -> str:
 
     parts = {}
     for t in WANT_ORDER:
-        parts[t] = re.findall(rf'(?is)<\s*{t}\b[^>]*>.*?</\s*{t}\s*>', full_offer)
-        full_offer = re.sub(rf'(?is)<\s*{t}\b[^>]*>.*?</\s*{t}\s*>', '', full_offer)
+        parts[t] = re.findall(rf'(?is)<\\s*{t}\\b[^>]*>.*?</\\s*{t}\\s*>', full_offer)
+        full_offer = re.sub(rf'(?is)<\\s*{t}\\b[^>]*>.*?</\\s*{t}\\s*>', '', full_offer)
 
     out_lines = []
     for t in ('categoryId','vendorCode','name','price'):
@@ -329,25 +329,25 @@ def _rebuild_offer(offer_xml: str) -> str:
     for t in ('vendor','currencyId','description'):
         out_lines += parts.get(t, [])
     for prm in parts.get('param', []):
-        mname = re.search(r'(?is)name\s*=\s*"([^"]+)"', prm or '')
+        mname = re.search(r'(?is)name\\s*=\\s*"([^"]+)"', prm or '')
         if mname and mname.group(1).strip().lower() in DENY_PARAMS:
             continue
-        mname = re.search(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"', prm)
+        mname = re.search(r'(?is)<\\s*param\\b[^>]*\\bname\\s*=\\s*"([^"]+)"', prm)
         if mname:
-            nm = re.sub(r'[\s\-]+', ' ', mname.group(1).strip().lower()).replace('ё','е')
+            nm = re.sub(r'[\\s\\-]+', ' ', mname.group(1).strip().lower()).replace('ё','е')
             if nm in DENY_PARAMS:
                 continue
         out_lines.append(prm)
 
-    out = header + '\n' + '\n'.join(x.strip() for x in out_lines if x.strip()) + '\n</offer>\n\n'
+    out = header + '\\n' + '\\n'.join(x.strip() for x in out_lines if x.strip()) + '\\n</offer>\\n\\n'
     return out
 
 # --- Хвостовые переносы (оставляем как в базе) ---
 def _ensure_footer_spacing(out_text: str) -> str:
     """Переносы внизу: 2 NL перед </offers>, перенос перед </shop> и </yml_catalog>."""
-    out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
-    out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
-    out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
+    out_text = re.sub(r'</offer>[ \\t]*(?:\\r?\\n){0,10}[ \\t]*(?=</offers>)', '</offer>\\n\\n', out_text, count=1)
+    out_text = re.sub(r'([^\\n])[ \\t]*</shop>', r'\\1\\n</shop>', out_text, count=1)
+    out_text = re.sub(r'([^\\n])[ \\t]*</yml_catalog>', r'\\1\\n</yml_catalog>', out_text, count=1)
     return out_text
 
 # --- Главный поток (как в базе; ничего не меняем, кроме итоговой подстановки) ---
@@ -362,24 +362,24 @@ def main() -> int:
     except UnicodeDecodeError:
         text = src.decode('utf-8', errors='replace')
 
-    m = re.search(r'(?is)^(.*?<offers\s*>)(.*?)(</\s*offers\s*>.*)$', text)
+    m = re.search(r'(?is)^(.*?<offers\\s*>)(.*?)(</\\s*offers\\s*>.*)$', text)
     if not m:
-        m = re.search(r'(?is)(.*?<offers\s*>)(.*)(</\s*offers\s*>.*)', text)
+        m = re.search(r'(?is)(.*?<offers\\s*>)(.*)(</\\s*offers\\s*>.*)', text)
         if not m:
             raise SystemExit('Не найден блок <offers>')
     head, offers_block, tail = m.group(1), m.group(2), m.group(3)
 
-    head = re.sub(r'(?is)<shop\s*>.*?<offers\s*>', '<shop><offers>', head, count=1)
+    head = re.sub(r'(?is)<shop\\s*>.*?<offers\\s*>', '<shop><offers>', head, count=1)
 
-    offers = re.findall(r'(?is)<offer\b.*?</offer>', offers_block)
+    offers = re.findall(r'(?is)<offer\\b.*?</offer>', offers_block)
     kept = []
     for off in offers:
-        mcat = re.search(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>', off)
+        mcat = re.search(r'(?is)<\\s*categoryId\\s*>\\s*(\\d+)\\s*</\\s*categoryId\\s*>', off)
         if not mcat or mcat.group(1) not in ALLOW_CATS:
             continue
         kept.append(_rebuild_offer(off))
 
-    new_offers = '\n\n'.join(x.strip() for x in kept)
+    new_offers = '\\n\\n'.join(x.strip() for x in kept)
 
     # FEED_META (как в рабочем коде)
     total = len(kept)
@@ -399,25 +399,25 @@ def main() -> int:
     def _line(label: str, value) -> str:
         return f"{label:<42} | {value}"
     feed_meta = (
-        "<!--FEED_META\n"
-        f"{_line('Поставщик', 'AlStyle')}\n"
-        f"{_line('URL поставщика', 'https://al-style.kz/upload/catalog_export/al_style_catalog.php')}\n"
-        f"{_line('Время сборки (Алматы)', _now_local.strftime('%Y-%m-%d %H:%M:%S'))}\n"
-        f"{_line('Ближайшая сборка (Алматы)', _next.strftime('%Y-%m-%d %H:%M:%S'))}\n"
-        f"{_line('Сколько товаров у поставщика до фильтра', source_total)}\n"
-        f"{_line('Сколько товаров у поставщика после фильтра', total)}\n"
-        f"{_line('Сколько товаров есть в наличии (true)', avail_true)}\n"
-        f"{_line('Сколько товаров нет в наличии (false)', avail_false)}\n"
-        "-->\n\n"
+        "<!--FEED_META\\n"
+        f"{_line('Поставщик', 'AlStyle')}\\n"
+        f"{_line('URL поставщика', 'https://al-style.kz/upload/catalog_export/al_style_catalog.php')}\\n"
+        f"{_line('Время сборки (Алматы)', _now_local.strftime('%Y-%m-%d %H:%M:%S'))}\\n"
+        f"{_line('Ближайшая сборка (Алматы)', _next.strftime('%Y-%m-%d %H:%M:%S'))}\\n"
+        f"{_line('Сколько товаров у поставщика до фильтра', source_total)}\\n"
+        f"{_line('Сколько товаров у поставщика после фильтра', total)}\\n"
+        f"{_line('Сколько товаров есть в наличии (true)', avail_true)}\\n"
+        f"{_line('Сколько товаров нет в наличии (false)', avail_false)}\\n"
+        "-->\\n\\n"
     )
 
-    out_text = head + '\n' + new_offers + '\n' + tail
+    out_text = head + '\\n' + new_offers + '\\n' + tail
     out_text = feed_meta + out_text
     out_text = _ensure_footer_spacing(out_text)
 
-    out_text = re.sub(r'[ \t]+\n', '\n', out_text)
-    out_text = re.sub(r'\n{3,}', '\n\n', out_text)
-    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
+    out_text = re.sub(r'[ \\t]+\\n', '\\n', out_text)
+    out_text = re.sub(r'\\n{3,}', '\\n\\n', out_text)
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>\\n')
 
     Path('docs').mkdir(exist_ok=True)
     Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
