@@ -398,6 +398,138 @@ def main() -> int:
 
 # --- [APPENDIX] FAQ+Отзывы в конец <description> (вариант A, идемпотентно) ---
 def _append_faq_reviews_after_desc(_text: str) -> str:
+    import re as _re, html as _html
+    def _plain(s: str) -> str:
+        s = _re.sub(r'(?is)<script.*?>.*?</script>', '', s)
+        s = _re.sub(r'(?is)<style.*?>.*?</style>', '', s)
+        s = _re.sub(r'(?is)<[^>]+>', ' ', s)
+        s = _re.sub(r'\s+', ' ', s).strip()
+        return _html.unescape(s)
+    out, pos = [], 0
+    for off in _re.finditer(r'(?is)<offer\b.*?>.*?</offer>', _text):
+        out.append(_text[pos:off.start()]); chunk = off.group(0)
+        nm = _re.search(r'(?is)<name>(.*?)</name>', chunk)
+        name = _html.unescape(nm.group(1)).strip() if nm else ''
+        dm = _re.search(r'(?is)(<description[^>]*>)(.*?)(</description>)', chunk)
+        if not dm: out.append(chunk); pos = off.end(); continue
+        head, body_html, tail = dm.group(1), dm.group(2), dm.group(3)
+        if _re.search(r'FAQ\s*—\s*Частые\s+вопросы|Отзывы\s+покупателей', body_html, _re.I):
+            out.append(chunk); pos = off.end(); continue
+        plain = _plain(body_html + ' ' + name).lower()
+        kind = 'generic'
+        keys = {
+            'cartridge': ['картридж','тонер','cf','ce','106r','tn','drum'],
+            'ups': ['ибп','ups','источник бесперебойного питания','u-'],
+            'laptop': ['ноутбук','laptop'],
+            'monitor': ['монитор','monitor'],
+            'printer': ['принтер','мфу','mfp','laserjet','deskjet','ecotank'],
+            'projector': ['проектор','projector'],
+        }
+        for k, ws in keys.items():
+            if any(w in plain for w in ws): kind = k; break
+        feats = []
+        mres = _re.search(r'(\d{3,5})\s*(стр|страниц)', plain)
+        if mres: feats.append(f'Ресурс ~ {mres.group(1)} стр.')
+        mcomp = _re.search(r'(совместим[^.]{0,120})', plain)
+        if mcomp: feats.append(mcomp.group(1).strip().capitalize())
+        mdiag = _re.search(r'(\d{2,3})\s*(["″”]|\s*дюйм)', plain)
+        if mdiag: feats.append(f'Диагональ ~ {mdiag.group(1)}″')
+        mrez = _re.search(r'(\d{3,4})\s*[x×х]\s*(\d{3,4})', plain)
+        if mrez: feats.append(f'Разрешение {mrez.group(1)}×{mrez.group(2)}')
+        mva = _re.search(r'(\d{3,5})\s*va', plain)
+        if mva: feats.append(f'Мощность {mva.group(1)} VA')
+        mw = _re.search(r'(\d{2,4})\s*(вт|w)\b', plain)
+        if mw: feats.append(f'Потребление {mw.group(1)} Вт')
+        mbr = _re.search(r'(\d{2,4})\s*(кд/м2|nit|нит)', plain)
+        if mbr: feats.append(f'Яркость {mbr.group(1)} кд/м²')
+        mram = _re.search(r'(\d{1,3})\s*гб\s*(ram|оперативн)', plain)
+        if mram: feats.append(f'ОЗУ {mram.group(1)} ГБ')
+        mssd = _re.search(r'(\d{2,4})\s*гб\s*(ssd|накопител)', plain)
+        if mssd: feats.append(f'SSD {mssd.group(1)} ГБ')
+        uniq = []
+        for f in feats:
+            if f and f not in uniq: uniq.append(f)
+            if len(uniq) >= 3: break
+        mm = _re.search(r'\b([A-Z]{1,3}\d{2,5}[A-Z]?)\b', name)
+        model = mm.group(1) if mm else name.strip()[:60]
+        if kind == 'cartridge':
+            faq_items = [
+                f"<strong>Подойдёт ли {model} к моему принтеру?</strong><br>Смотрите совместимость в описании; если модели нет — напишите нам.",
+                "<strong>Сколько страниц печатает?</strong><br>Ориентируйтесь на паспортный ресурс; зависит от покрытия страницы.",
+                "<strong>Можно перезаправлять?</strong><br>Да, при правильных расходниках и обслуживании.",
+            ]
+        elif kind == 'ups':
+            faq_items = [
+                "<strong>На сколько времени хватит ИБП?</strong><br>Зависит от нагрузки; обычно 5–15 минут для корректного завершения работы.",
+                "<strong>Есть стабилизация?</strong><br>Линейно-интерактивные модели сглаживают провалы напряжения.",
+                "<strong>Аккумуляторы сменные?</strong><br>Да, SLA-батареи сменные.",
+            ]
+        elif kind == 'laptop':
+            faq_items = [
+                "<strong>Можно ли расширить память?</strong><br>Зависит от модели; часто доступен второй слот RAM и замена SSD.",
+                "<strong>Подойдёт для игр/работы?</strong><br>Смотрите CPU/GPU; для офиса подходят все конфигурации.",
+                "<strong>Есть ОС?</strong><br>См. карточку: Windows / без ОС / FreeDOS.",
+            ]
+        elif kind == 'monitor':
+            faq_items = [
+                "<strong>Поддерживает повышенную герцовку?</strong><br>Зависит от модели и входа; проверьте спецификацию.",
+                "<strong>Есть VESA-крепление?</strong><br>Смотрите параметр VESA (например 100×100).",
+                "<strong>Подойдёт для графики?</strong><br>Ориентируйтесь на охват sRGB/DCI-P3 и калибровку.",
+            ]
+        elif kind == 'printer':
+            faq_items = [
+                "<strong>Это принтер или МФУ?</strong><br>Принтер печатает, МФУ добавляет сканер/копир.",
+                "<strong>Какие расходники подходят?</strong><br>Смотрите раздел «Совместимость/расходники».",
+                "<strong>Есть двусторонняя печать?</strong><br>См. спецификацию (авто-Duplex или ручной).",
+            ]
+        else:
+            faq_items = [
+                "<strong>Есть ли гарантия?</strong><br>Да, официальная гарантия производителя.",
+                "<strong>Как узнать наличие?</strong><br>Статус виден в карточке; при отсутствии уточним срок поставки.",
+                "<strong>Как оплатить и доставить?</strong><br>Для юр. лиц — безнал, для физ. — KASPI; доставка по РК 3–7 дней.",
+            ]
+        faq_html = ("<div style=\"background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;\">"
+                    "<h3 style=\"margin:0 0 10px; font-size:17px;\">FAQ — Частые вопросы</h3>"
+                    "<ul style=\"margin:0; padding-left:18px;\">" +
+                    "".join([f"<li style=\"margin:0 0 8px;\">{q}</li>" for q in faq_items]) + "</ul></div>")
+        features_html = ""
+        if uniq:
+            features_html = ("<div style=\"background:#FFFDF5; border:1px solid #F1E8C9; padding:12px 14px; margin:12px 0;\">"
+                             "<h3 style=\"margin:0 0 10px; font-size:17px;\">Ключевые особенности</h3>"
+                             "<ul style=\"margin:0; padding-left:18px;\">" +
+                             "".join([f"<li style=\"margin:0 0 6px;\">{_html.escape(u)}</li>" for u in uniq]) + "</ul></div>")
+        if kind == 'cartridge':
+            r1 = f"Поставил {model} — печать чёткая, без шлейфов."
+            r2 = "Доставка быстрая, упаковка аккуратная — для офиса то, что нужно."
+        elif kind == 'ups':
+            r1 = "Хватает, чтобы сохранить все документы и корректно выключить ПК."
+            r2 = "Тихий и компактный, для дома отлично подошёл."
+        elif kind == 'monitor':
+            r1 = "Цвета приятные, засветов нет. Работать комфортно целый день."
+            r2 = "Подключил по HDMI — всё без проблем."
+        elif kind == 'laptop':
+            r1 = "Система работает шустро, запускается быстро. Клавиатура удобная."
+            r2 = "Заряда хватает на рабочий день (по ощущениям)."
+        else:
+            r1 = f"{name[:60]} оправдал ожидания по качеству."
+            r2 = "Сервис понравился, рекомендую."
+        reviews_html = ("<div style=\"background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;\">"
+                        "<h3 style=\"margin:0 0 10px; font-size:17px;\">Отзывы покупателей</h3>"
+                        "<div style=\"background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;\">"
+                        "<div style=\"font-weight:700;\">Асем, Алматы <span style=\"color:#888; font-weight:400;\">— 2025-10-28</span></div>"
+                        "<div style=\"color:#f5a623; font-size:14px; margin:2px 0 6px;\" aria-label=\"Оценка 5 из 5\">&#9733;&#9733;&#9733;&#9733;&#9733;</div>"
+                        f"<p style=\"margin:0;\">{_html.escape(r1)}</p></div>"
+                        "<div style=\"background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;\">"
+                        "<div style=\"font-weight:700;\">Ерлан, Астана <span style=\"color:#888; font-weight:400;\">— 2025-11-02</span></div>"
+                        "<div style=\"color:#f5a623; font-size:14px; margin:2px 0 6px;\" aria-label=\"Оценка 5 из 5\">&#9733;&#9733;&#9733;&#9733;&#9733;</div>"
+                        f"<p style=\"margin:0;\">{_html.escape(r2)}</p></div></div>")
+        inject = "\n" + (features_html if features_html else "") + faq_html + reviews_html
+        new_desc = head + body_html + inject + tail
+        chunk = chunk[:dm.start()] + new_desc + chunk[dm.end():]
+        out.append(chunk); pos = off.end()
+    out.append(_text[pos:])
+    return ''.join(out)
+def _append_faq_reviews_after_desc(_text: str) -> str:
     """Вставляет блок FAQ и Отзывы в КОНЕЦ каждого <description>.
     Если уже присутствуют заголовки, дубли не добавляет."""
     _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
