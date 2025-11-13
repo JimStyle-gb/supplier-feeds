@@ -398,190 +398,209 @@ def main() -> int:
 
 # --- [APPENDIX] FAQ+Отзывы в конец <description> (вариант A, идемпотентно) ---
 def _append_faq_reviews_after_desc(_text: str) -> str:
+    """
+    Динамически добавляет блоки «FAQ — Частые вопросы» и «Отзывы покупателей»
+    в КОНЕЦ <description> каждого оффера на основе содержимого <name> и текста описания.
+    Идемпотентно: если FAQ/Отзывы уже есть — повторно не вставляет.
+    """
     import re as _re, html as _html
+
     def _plain(s: str) -> str:
         s = _re.sub(r'(?is)<script.*?>.*?</script>', '', s)
         s = _re.sub(r'(?is)<style.*?>.*?</style>', '', s)
         s = _re.sub(r'(?is)<[^>]+>', ' ', s)
         s = _re.sub(r'\s+', ' ', s).strip()
         return _html.unescape(s)
-    out, pos = [], 0
-    for off in _re.finditer(r'(?is)<offer\b.*?>.*?</offer>', _text):
-        out.append(_text[pos:off.start()]); chunk = off.group(0)
-        nm = _re.search(r'(?is)<name>(.*?)</name>', chunk)
-        name = _html.unescape(nm.group(1)).strip() if nm else ''
-        dm = _re.search(r'(?is)(<description[^>]*>)(.*?)(</description>)', chunk)
-        if not dm: out.append(chunk); pos = off.end(); continue
-        head, body_html, tail = dm.group(1), dm.group(2), dm.group(3)
-        if _re.search(r'FAQ\s*—\s*Частые\s+вопросы|Отзывы\s+покупателей', body_html, _re.I):
-            out.append(chunk); pos = off.end(); continue
-        plain = _plain(body_html + ' ' + name).lower()
-        kind = 'generic'
-        keys = {
-            'cartridge': ['картридж','тонер','cf','ce','106r','tn','drum'],
-            'ups': ['ибп','ups','источник бесперебойного питания','u-'],
-            'laptop': ['ноутбук','laptop'],
-            'monitor': ['монитор','monitor'],
-            'printer': ['принтер','мфу','mfp','laserjet','deskjet','ecotank'],
-            'projector': ['проектор','projector'],
+
+    def _classify(plain_lc: str) -> str:
+        table = {
+            'cartridge': ['картридж','тонер','drum','ce','cf','tn','106r','q2612','cb435','crg','xerox','hp laserjet','laser jet'],
+            'ups':       ['ибп','ups','источник бесперебойного питания','u-','line-interactive','онлайн ибп','offline'],
+            'printer':   ['принтер','laserjet','deskjet','pixma','ecotank','workforce','phaser',' b- лазер','мфу ','mfp '],
+            'monitor':   ['монитор','monitor','displayport','hdmi','ips','va-матрица','144 гц','240 гц'],
+            'laptop':    ['ноутбук','laptop','ultrabook','ryzen','intel core','msi','asus','acer','lenovo','hp '],
+            'projector': ['проектор','projector','dlp','lcd проектор'],
         }
-        for k, ws in keys.items():
-            if any(w in plain for w in ws): kind = k; break
-        feats = []
-        mres = _re.search(r'(\d{3,5})\s*(стр|страниц)', plain)
-        if mres: feats.append(f'Ресурс ~ {mres.group(1)} стр.')
-        mcomp = _re.search(r'(совместим[^.]{0,120})', plain)
-        if mcomp: feats.append(mcomp.group(1).strip().capitalize())
-        mdiag = _re.search(r'(\d{2,3})\s*(["″”]|\s*дюйм)', plain)
-        if mdiag: feats.append(f'Диагональ ~ {mdiag.group(1)}″')
-        mrez = _re.search(r'(\d{3,4})\s*[x×х]\s*(\d{3,4})', plain)
-        if mrez: feats.append(f'Разрешение {mrez.group(1)}×{mrez.group(2)}')
-        mva = _re.search(r'(\d{3,5})\s*va', plain)
-        if mva: feats.append(f'Мощность {mva.group(1)} VA')
-        mw = _re.search(r'(\d{2,4})\s*(вт|w)\b', plain)
-        if mw: feats.append(f'Потребление {mw.group(1)} Вт')
-        mbr = _re.search(r'(\d{2,4})\s*(кд/м2|nit|нит)', plain)
-        if mbr: feats.append(f'Яркость {mbr.group(1)} кд/м²')
-        mram = _re.search(r'(\d{1,3})\s*гб\s*(ram|оперативн)', plain)
-        if mram: feats.append(f'ОЗУ {mram.group(1)} ГБ')
-        mssd = _re.search(r'(\d{2,4})\s*гб\s*(ssd|накопител)', plain)
-        if mssd: feats.append(f'SSD {mssd.group(1)} ГБ')
-        uniq = []
-        for f in feats:
-            if f and f not in uniq: uniq.append(f)
-            if len(uniq) >= 3: break
-        mm = _re.search(r'\b([A-Z]{1,3}\d{2,5}[A-Z]?)\b', name)
-        model = mm.group(1) if mm else name.strip()[:60]
+        for kind, keys in table.items():
+            if any(k in plain_lc for k in keys):
+                return kind
+        return 'generic'
+
+    def _extract_features(plain_lc: str) -> dict:
+        feat = {}
+        m = _re.search(r'(\d{3,5})\s*(стр|страниц)', plain_lc)
+        if m: feat['yield_pages'] = m.group(1)
+        m = _re.search(r'(совместим[^.]{0,160})', plain_lc)
+        if m: feat['compat'] = m.group(1).strip()
+        m = _re.search(r'\b(чёрн(ый|ая)|черн(ый|ая)|black|cyan|magenta|yellow)\b', plain_lc)
+        if m: feat['color'] = m.group(1)
+        m = _re.search(r'(\d{2,3})\s*(["″”]|дюйм)', plain_lc)
+        if m: feat['diag'] = m.group(1)
+        m = _re.search(r'(\d{3,4})\s*[x×х]\s*(\d{3,4})', plain_lc)
+        if m: feat['res'] = f"{m.group(1)}×{m.group(2)}"
+        m = _re.search(r'(\d{2,4})\s*(кд/м2|nit|нит)', plain_lc)
+        if m: feat['brightness'] = m.group(1)
+        m = _re.search(r'(\d{2,4})\s*(вт|w)\b', plain_lc)
+        if m: feat['watt'] = m.group(1)
+        m = _re.search(r'(\d{3,5})\s*va', plain_lc)
+        if m: feat['va'] = m.group(1)
+        m = _re.search(r'(\d{1,3})\s*гб\s*(ram|оперативн)', plain_lc)
+        if m: feat['ram'] = m.group(1)
+        m = _re.search(r'(\d{2,4})\s*гб\s*(ssd|накопител)', plain_lc)
+        if m: feat['ssd'] = m.group(1)
+        m = _re.search(r'windows\s*11|windows\s*10|без\s*ос|freedos|linux', plain_lc)
+        if m: feat['os'] = m.group(0)
+        if 'wi-fi' in plain_lc or 'wifi' in plain_lc: feat['wifi'] = 'wi-fi'
+        for port in ['hdmi','displayport','dp','usb-c','type-c','vga']:
+            if port in plain_lc: feat.setdefault('ports', []).append(port)
+        return feat
+
+    def _features_html(kind: str, feat: dict, name: str) -> str:
+        items = []
         if kind == 'cartridge':
-            faq_items = [
-                f"<strong>Подойдёт ли {model} к моему принтеру?</strong><br>Смотрите совместимость в описании; если модели нет — напишите нам.",
-                "<strong>Сколько страниц печатает?</strong><br>Ориентируйтесь на паспортный ресурс; зависит от покрытия страницы.",
-                "<strong>Можно перезаправлять?</strong><br>Да, при правильных расходниках и обслуживании.",
+            if feat.get('yield_pages'): items.append(f"Ресурс ~ {feat['yield_pages']} стр.")
+            if feat.get('color'):       items.append(f"Цвет: {feat['color'].upper()}")
+            if feat.get('compat'):      items.append(feat['compat'].capitalize())
+        elif kind == 'ups':
+            if feat.get('va'):   items.append(f"Мощность: {feat['va']} VA")
+            if feat.get('watt'): items.append(f"Нагрузка: до {feat['watt']} Вт")
+            items.append("Стабилизация: line-interactive" if 'line-interactive' in name.lower() else "Защита от просадок напряжения")
+        elif kind == 'monitor':
+            if feat.get('diag'):      items.append(f"Диагональ: {feat['diag']}″")
+            if feat.get('res'):       items.append(f"Разрешение: {feat['res']}")
+            if feat.get('brightness'):items.append(f"Яркость: {feat['brightness']} кд/м²")
+            if feat.get('ports'):     items.append("Порты: " + ", ".join(sorted(set(feat['ports']))).upper())
+        elif kind == 'laptop':
+            if feat.get('ram'): items.append(f"ОЗУ: {feat['ram']} ГБ")
+            if feat.get('ssd'): items.append(f"SSD: {feat['ssd']} ГБ")
+            if feat.get('os'):  items.append(f"ОС: {feat['os'].upper()}")
+        elif kind == 'printer':
+            if feat.get('wifi'): items.append("Поддержка Wi‑Fi")
+            if feat.get('watt'): items.append(f"Потребление: {feat['watt']} Вт")
+            if feat.get('res'):  items.append(f"Разрешение печати: {feat['res']}")
+        uniq = []
+        for x in items:
+            if x and x not in uniq:
+                uniq.append(x)
+            if len(uniq) == 4:
+                break
+        if not uniq:
+            return ""
+        return (
+            '<div style="background:#FFFDF5;border:1px solid #F1E8C9;padding:12px 14px;margin:12px 0;">'
+            '<h3 style="margin:0 0 10px;font-size:17px;">Ключевые особенности</h3>'
+            '<ul style="margin:0;padding-left:18px;">' + ''.join(f'<li style="margin:0 0 6px;">{_html.escape(i)}</li>' for i in uniq) + '</ul>'
+            '</div>'
+        )
+
+    def _faq_html(kind: str, model: str) -> str:
+        if kind == 'cartridge':
+            qs = [
+                f"<strong>Подойдёт ли {model} к моему принтеру?</strong><br>Сверьте список совместимости в карточке или напишите нам.",
+                "<strong>Какой ресурс печати?</strong><br>Ориентируйтесь на заявленный производителем; зависит от покрытия страниц.",
+                "<strong>Можно перезаправлять?</strong><br>Да, при качественном тонере и обслуживании.",
             ]
         elif kind == 'ups':
-            faq_items = [
-                "<strong>На сколько времени хватит ИБП?</strong><br>Зависит от нагрузки; обычно 5–15 минут для корректного завершения работы.",
-                "<strong>Есть стабилизация?</strong><br>Линейно-интерактивные модели сглаживают провалы напряжения.",
-                "<strong>Аккумуляторы сменные?</strong><br>Да, SLA-батареи сменные.",
-            ]
-        elif kind == 'laptop':
-            faq_items = [
-                "<strong>Можно ли расширить память?</strong><br>Зависит от модели; часто доступен второй слот RAM и замена SSD.",
-                "<strong>Подойдёт для игр/работы?</strong><br>Смотрите CPU/GPU; для офиса подходят все конфигурации.",
-                "<strong>Есть ОС?</strong><br>См. карточку: Windows / без ОС / FreeDOS.",
+            qs = [
+                "<strong>На сколько хватит ИБП?</strong><br>5–15 минут при типовой нагрузке для корректного завершения работы.",
+                "<strong>Есть защита от просадок?</strong><br>Да, линейно‑интерактивные модели сглаживают скачки.",
+                "<strong>Сменные аккумуляторы?</strong><br>Да, SLA-батареи доступны к замене.",
             ]
         elif kind == 'monitor':
-            faq_items = [
-                "<strong>Поддерживает повышенную герцовку?</strong><br>Зависит от модели и входа; проверьте спецификацию.",
-                "<strong>Есть VESA-крепление?</strong><br>Смотрите параметр VESA (например 100×100).",
-                "<strong>Подойдёт для графики?</strong><br>Ориентируйтесь на охват sRGB/DCI-P3 и калибровку.",
+            qs = [
+                "<strong>Подойдёт для графики?</strong><br>Смотрите охват цветов (sRGB/DCI‑P3) и калибровку.",
+                "<strong>Есть крепление VESA?</strong><br>Проверьте спецификацию (например 100×100).",
+                "<strong>Как подключить?</strong><br>HDMI/DP/USB‑C — зависит от модели и кабеля.",
+            ]
+        elif kind == 'laptop':
+            qs = [
+                "<strong>Можно ли добавить ОЗУ/SSD?</strong><br>Часто доступен второй слот RAM и замена SSD — уточняйте по модели.",
+                "<strong>С какой ОС поставляется?</strong><br>Windows / Linux / без ОС — смотрите в карточке.",
+                "<strong>Подойдёт для работы/учёбы?</strong><br>Да, зависит от CPU/GPU и объёма памяти.",
             ]
         elif kind == 'printer':
-            faq_items = [
-                "<strong>Это принтер или МФУ?</strong><br>Принтер печатает, МФУ добавляет сканер/копир.",
-                "<strong>Какие расходники подходят?</strong><br>Смотрите раздел «Совместимость/расходники».",
-                "<strong>Есть двусторонняя печать?</strong><br>См. спецификацию (авто-Duplex или ручной).",
-            ]
+            qs = [
+                "<strong>Есть двусторонняя печать?</strong><br>См. параметры: авто‑Duplex или ручной.",
+                "<strong>Поддержка Wi‑Fi?</strong><br>Если указано в характеристиках — да.",
+                "<strong>Какие картриджи подходят?</strong><br>Смотрите раздел «Совместимость».",]
         else:
-            faq_items = [
-                "<strong>Есть ли гарантия?</strong><br>Да, официальная гарантия производителя.",
-                "<strong>Как узнать наличие?</strong><br>Статус виден в карточке; при отсутствии уточним срок поставки.",
-                "<strong>Как оплатить и доставить?</strong><br>Для юр. лиц — безнал, для физ. — KASPI; доставка по РК 3–7 дней.",
+            qs = [
+                "<strong>Есть гарантия?</strong><br>Да, официальная гарантия производителя.",
+                "<strong>Сроки доставки?</strong><br>По РК обычно 3–7 рабочих дней.",
+                "<strong>Способы оплаты?</strong><br>Для юр. лиц — безнал, для физ. — KASPI.",
             ]
-        faq_html = ("<div style=\"background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;\">"
-                    "<h3 style=\"margin:0 0 10px; font-size:17px;\">FAQ — Частые вопросы</h3>"
-                    "<ul style=\"margin:0; padding-left:18px;\">" +
-                    "".join([f"<li style=\"margin:0 0 8px;\">{q}</li>" for q in faq_items]) + "</ul></div>")
-        features_html = ""
-        if uniq:
-            features_html = ("<div style=\"background:#FFFDF5; border:1px solid #F1E8C9; padding:12px 14px; margin:12px 0;\">"
-                             "<h3 style=\"margin:0 0 10px; font-size:17px;\">Ключевые особенности</h3>"
-                             "<ul style=\"margin:0; padding-left:18px;\">" +
-                             "".join([f"<li style=\"margin:0 0 6px;\">{_html.escape(u)}</li>" for u in uniq]) + "</ul></div>")
+        return (
+            '<div style="background:#F7FAFF;border:1px solid #DDE8FF;padding:12px 14px;margin:12px 0;">'
+            '<h3 style="margin:0 0 10px;font-size:17px;">FAQ — Частые вопросы</h3>'
+            '<ul style="margin:0;padding-left:18px;">' + ''.join(f'<li style="margin:0 0 8px;">{q}</li>' for q in qs) + '</ul>'
+            '</div>'
+        )
+
+    def _reviews_html(kind: str, name: str) -> str:
         if kind == 'cartridge':
-            r1 = f"Поставил {model} — печать чёткая, без шлейфов."
-            r2 = "Доставка быстрая, упаковка аккуратная — для офиса то, что нужно."
+            r1 = f"{name} печатает чётко, без шлейфов; ресурс соответствует ожиданиям."
+            r2 = "Упаковка аккуратная, доставка быстрая — берём для офиса."
         elif kind == 'ups':
-            r1 = "Хватает, чтобы сохранить все документы и корректно выключить ПК."
-            r2 = "Тихий и компактный, для дома отлично подошёл."
+            r1 = "Хватает, чтобы сохранить документы и корректно завершить работу ПК."
+            r2 = "Тихий, компактный, сборка достойная — рекомендуем для дома."
         elif kind == 'monitor':
-            r1 = "Цвета приятные, засветов нет. Работать комфортно целый день."
-            r2 = "Подключил по HDMI — всё без проблем."
+            r1 = "Цвета ровные, засветов нет; работать комфортно целый день."
+            r2 = "Подключение прошло без проблем, картинка стабильная."
         elif kind == 'laptop':
-            r1 = "Система работает шустро, запускается быстро. Клавиатура удобная."
-            r2 = "Заряда хватает на рабочий день (по ощущениям)."
+            r1 = "Работает шустро, запускается быстро; клавиатура удобная."
+            r2 = "Автономность достойная для повседневных задач."
+        elif kind == 'printer':
+            r1 = "Печать быстрая и чёткая; настройка заняла несколько минут."
+            r2 = "Wi‑Fi подключился сразу, duplex выручает на работе."
         else:
-            r1 = f"{name[:60]} оправдал ожидания по качеству."
-            r2 = "Сервис понравился, рекомендую."
-        reviews_html = ("<div style=\"background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;\">"
-                        "<h3 style=\"margin:0 0 10px; font-size:17px;\">Отзывы покупателей</h3>"
-                        "<div style=\"background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;\">"
-                        "<div style=\"font-weight:700;\">Асем, Алматы <span style=\"color:#888; font-weight:400;\">— 2025-10-28</span></div>"
-                        "<div style=\"color:#f5a623; font-size:14px; margin:2px 0 6px;\" aria-label=\"Оценка 5 из 5\">&#9733;&#9733;&#9733;&#9733;&#9733;</div>"
-                        f"<p style=\"margin:0;\">{_html.escape(r1)}</p></div>"
-                        "<div style=\"background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;\">"
-                        "<div style=\"font-weight:700;\">Ерлан, Астана <span style=\"color:#888; font-weight:400;\">— 2025-11-02</span></div>"
-                        "<div style=\"color:#f5a623; font-size:14px; margin:2px 0 6px;\" aria-label=\"Оценка 5 из 5\">&#9733;&#9733;&#9733;&#9733;&#9733;</div>"
-                        f"<p style=\"margin:0;\">{_html.escape(r2)}</p></div></div>")
-        inject = "\n" + (features_html if features_html else "") + faq_html + reviews_html
-        new_desc = head + body_html + inject + tail
+            r1 = f"{name} соответствует описанию и ожиданиям по качеству."
+            r2 = "Продавец на связи, упаковка надёжная — остались довольны."
+        return (
+            '<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;">'
+            '<h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3>'
+            '<div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;">'
+            '<div style="font-weight:700;">Асем, Алматы <span style="color:#888;font-weight:400;">— 2025-10-28</span></div>'
+            '<div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>'
+            f'<p style="margin:0;">{_html.escape(r1)}</p></div>'
+            '<div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;">'
+            '<div style="font-weight:700;">Ерлан, Астана <span style="color:#888;font-weight:400;">— 2025-11-02</span></div>'
+            '<div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>'
+            f'<p style="margin:0;">{_html.escape(r2)}</p></div>'
+            '</div>'
+        )
+
+    out, pos = [], 0
+    for m_offer in _re.finditer(r'(?is)<offer\b.*?>.*?</offer>', _text):
+        out.append(_text[pos:m_offer.start()])
+        chunk = m_offer.group(0)
+        if _re.search(r'FAQ\s*—\s*Частые\s+вопросы|Отзывы\s+покупателей', chunk, _re.I):
+            out.append(chunk); pos = m_offer.end(); continue
+
+        nm = _grab = _re.search(r'(?is)<name>(.*?)</name>', chunk)
+        name_html = nm.group(1) if nm else ''
+        name = _html.unescape(name_html).strip()
+
+        dm = _re.search(r'(?is)(<description[^>]*>)(.*?)(</description>)', chunk)
+        if not dm:
+            out.append(chunk); pos = m_offer.end(); continue
+        head, body_html, tail = dm.group(1), dm.group(2), dm.group(3)
+
+        plain = _plain((name or '') + ' ' + body_html).lower()
+        kind = _classify(plain)
+        feat = _extract_features(plain)
+
+        features_html = _features_html(kind, feat, name)
+        faq_html = _faq_html(kind, name[:60])
+        reviews_html = _reviews_html(kind, name)
+
+        injection = '\n' + (features_html if features_html else '') + faq_html + reviews_html
+        new_desc = head + body_html + injection + tail
         chunk = chunk[:dm.start()] + new_desc + chunk[dm.end():]
-        out.append(chunk); pos = off.end()
+        out.append(chunk)
+        pos = m_offer.end()
+
     out.append(_text[pos:])
     return ''.join(out)
-def _append_faq_reviews_after_desc(_text: str) -> str:
-    """Вставляет блок FAQ и Отзывы в КОНЕЦ каждого <description>.
-    Если уже присутствуют заголовки, дубли не добавляет."""
-    _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
-
-  <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">
-    <h3 style="margin:0 0 10px; font-size:17px;">FAQ — Частые вопросы</h3>
-    <ul style="margin:0; padding-left:18px;">
-      <li style="margin:0 0 8px;">
-        <strong>Есть ли гарантия?</strong><br>
-        Да, официальная гарантия производителя. Срок указывается в карточке товара.
-      </li>
-      <li style="margin:0 0 8px;">
-        <strong>Как узнать наличие?</strong><br>
-        Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.
-      </li>
-      <li style="margin:0 0 8px;">
-        <strong>Как оплатить?</strong><br>
-        Для юр. лиц — <strong>безналичный</strong> расчёт, для физ. лиц — <strong>KASPI</strong> (удалённая оплата по счёту).
-      </li>
-      <li style="margin:0;">
-        <strong>Сколько идёт доставка по Казахстану?</strong><br>
-        Обычно <strong>3–7 рабочих дней</strong>. Срок зависит от службы доставки и города.
-      </li>
-    </ul>
-  </div>
-
-  <div style="background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;">
-    <h3 style="margin:0 0 10px; font-size:17px;">Отзывы покупателей</h3>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
-      <div style="font-weight:700;">Асем, Алматы <span style="color:#888; font-weight:400;">— 2025-10-28</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      <p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
-      <div style="font-weight:700;">Ерлан, Астана <span style="color:#888; font-weight:400;">— 2025-11-02</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-      <p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
-      <div style="font-weight:700;">Диана, Шымкент <span style="color:#888; font-weight:400;">— 2025-11-11</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      <p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p>
-    </div>
-
-  </div>
-
-</div>'''
-    import re as _re
-    _p = _re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
     def _repl(m):
         head, body, tail = m.group(1), m.group(2), m.group(3)
         if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
