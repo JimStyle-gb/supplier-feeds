@@ -424,6 +424,200 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
             val = _html.unescape(_unhtml(val)).strip()
             if not key or not val:
                 continue
+            kv.setdefault(key, val)
+        return kv
+
+    def _classify(ctx: str, kv: dict) -> str:
+        ctx_lc = ctx.lower()
+        if any(k in kv for k in ['картридж','тонер','ресурс','совместимость']): return 'cartridge'
+        if any(k in kv for k in ['мощность, ва','мощность ва','va','тип ибп']):   return 'ups'
+        if any(k in kv for k in ['диагональ','разрешение','частота','яркость']) and 'монитор' in (ctx_lc + ' ' + ' '.join(kv.keys())): 
+            return 'monitor'
+        if any(k in kv for k in ['процессор','оперативная память','озу','ssd','накопитель','операционная система']): 
+            return 'laptop'
+        if 'принтер' in ctx_lc or 'мфу' in ctx_lc: return 'printer'
+        if 'монитор' in ctx_lc: return 'monitor'
+        if 'картридж' in ctx_lc or 'toner' in ctx_lc or 'drum' in ctx_lc: return 'cartridge'
+        if 'ups' in ctx_lc or 'ибп' in ctx_lc: return 'ups'
+        return 'generic'
+
+    def _facts(kind: str, plain_lc: str, kv: dict) -> dict:
+        F = {}
+        g = lambda *keys: next((kv[k] for k in keys if k in kv), '')
+        if kind == 'cartridge':
+            F['compat'] = g('совместимость','подходит для','совместимые модели')
+            F['yield']  = g('ресурс','ресурс страниц','ресурс печати')
+            F['color']  = g('цвет','цвет печати')
+        elif kind == 'ups':
+            F['va']     = g('мощность, ва','мощность ва','va')
+            F['watt']   = g('мощность, вт','мощность вт','w')
+            F['type']   = g('тип ибп','топология')
+        elif kind == 'monitor':
+            F['diag']   = g('диагональ','диагональ экрана')
+            F['res']    = g('разрешение','разрешение экрана')
+            F['hz']     = g('частота обновления','частота')
+            F['bright'] = g('яркость')
+            F['ports']  = g('интерфейсы','видеовыходы','разъёмы')
+        elif kind == 'laptop':
+            F['cpu']    = g('процессор')
+            F['ram']    = g('оперативная память','озу')
+            F['ssd']    = g('накопитель','ssd','объем ssd','объем накопителя')
+            F['os']     = g('операционная система','ос')
+        elif kind == 'printer':
+            F['speed']  = g('скорость печати')
+            F['wifi']   = g('wi-fi','wi‑fi','wifi','беспроводной интерфейс')
+            F['duplex'] = g('двусторонняя печать','duplex')
+        if not F.get('yield'):
+            m = re.search(r'(\d{3,5})\s*(стр|страниц)', plain_lc)
+            if m: F['yield'] = m.group(1)
+        if not F.get('res'):
+            m = re.search(r'(\d{3,4})\s*[x×х]\s*(\d{3,4})', plain_lc)
+            if m: F['res'] = f"{m.group(1)}×{m.group(2)}"
+        if not F.get('diag'):
+            m = re.search(r'(\d{2,3})\s*(дюйм|\"|″)', plain_lc)
+            if m: F['diag'] = m.group(1)
+        return F
+
+    def _faq_html(kind: str, model: str, F: dict) -> str:
+        if kind == 'cartridge':
+            qs = [
+                f"<strong>Подойдёт ли { _html.escape(model) } к моему принтеру?</strong><br>{ 'Проверьте совместимость: ' + _html.escape(F.get('compat','см. карточку')) if F.get('compat') else 'Сверьте список совместимости в карточке или напишите нам.' }",
+                f"<strong>Какой ресурс печати?</strong><br>{ ('Около ' + _html.escape(F['yield']) + ' страниц.') if F.get('yield') else 'Ресурс зависит от покрытия страницы; ориентируйтесь на паспорт модели.' }",
+                f"<strong>Цвет печати?</strong><br>{ (_html.escape(F['color']).capitalize()) if F.get('color') else 'Уточните в описании: чёрный или цветной картридж.' }",
+            ]
+        elif kind == 'ups':
+            qs = [
+                f"<strong>На сколько хватит ИБП?</strong><br>{ ('Зависит от нагрузки; при ' + _html.escape(F.get('watt','типовой')) + ' Вт — 5–15 минут.') if F.get('watt') else 'Обычно 5–15 минут при типовой нагрузке.' }",
+                f"<strong>Какая мощность?</strong><br>{ (_html.escape(F['va']) + ' VA') if F.get('va') else 'Смотрите мощность в характеристиках.' }",
+                f"<strong>Топология?</strong><br>{ _html.escape(F.get('type','Уточните в карточке')) }",
+            ]
+        elif kind == 'monitor':
+            qs = [
+                f"<strong>Подходит для работы/учёбы?</strong><br>{ ('Да, ' + _html.escape(F.get('diag','')) + '″, ' + _html.escape(F.get('res',''))).strip(', ') or 'Смотрите диагональ и разрешение — подберите под свои задачи.' }",
+                f"<strong>Какие порты?</strong><br>{ _html.escape(F['ports']) if F.get('ports') else 'HDMI / DisplayPort / USB‑C — проверьте список интерфейсов.' }",
+                f"<strong>Частота обновления?</strong><br>{ (_html.escape(F['hz']) + ' Гц') if F.get('hz') else 'См. спецификацию (60/75/120/144 Гц и т.д.).' }",
+            ]
+        elif kind == 'laptop':
+            qs = [
+                f"<strong>Производительность?</strong><br>{ ('CPU: ' + _html.escape(F['cpu'])) if F.get('cpu') else 'Оцените CPU/GPU и объём памяти под ваши задачи.' }",
+                f"<strong>Память и накопитель?</strong><br>{ ('ОЗУ: ' + _html.escape(F.get('ram','?')) + ', SSD: ' + _html.escape(F.get('ssd','?'))) if (F.get('ram') or F.get('ssd')) else 'Смотрите объёмы ОЗУ и SSD в карточке.' }",
+                f"<strong>Какая ОС?</strong><br>{ _html.escape(F['os']) if F.get('os') else 'Windows / Linux / без ОС — уточняйте.' }",
+            ]
+        elif kind == 'printer':
+            qs = [
+                f"<strong>Скорость печати?</strong><br>{ (_html.escape(F['speed']) + ' стр/мин') if F.get('speed') else 'См. скорость печати в спецификации.' }",
+                f"<strong>Есть Wi‑Fi?</strong><br>{ 'Да' if F.get('wifi') else 'Проверьте в параметрах — Wi‑Fi указан в модели с беспроводным модулем.' }",
+                f"<strong>Двусторонняя печать?</strong><br>{ 'Автоматическая' if (F.get('duplex','').lower().startswith('авто')) else 'См. параметры Duplex (авто/ручной).' }",
+            ]
+        else:
+            qs = [
+                "<strong>Есть гарантия?</strong><br>Да, официальная гарантия производителя.",
+                "<strong>Сроки доставки?</strong><br>По РК обычно 3–7 рабочих дней.",
+                "<strong>Способы оплаты?</strong><br>Для юр. лиц — безнал, для физ. — KASPI.",
+            ]
+        return (
+            '<div style="background:#F7FAFF;border:1px solid #DDE8FF;padding:12px 14px;margin:12px 0;">'
+            '<h3 style="margin:0 0 10px;font-size:17px;">FAQ — Частые вопросы</h3>'
+            '<ul style="margin:0;padding-left:18px;">' + ''.join(f'<li style="margin:0 0 8px;">{q}</li>' for q in qs) + '</ul>'
+            '</div>'
+        )
+
+    def _reviews_html(kind: str, name: str) -> str:
+        if kind == 'cartridge':
+            r1 = f"{name} печатает чётко и без шлейфов; ресурс соответствует ожиданиям."
+            r2 = "Подходит для офисных задач — стабильная подача тонера и чистая печать."
+            r3 = "Хорошее соотношение цена/качество, проблем с совместимостью не возникло."
+        elif kind == 'ups':
+            r1 = "Хватает, чтобы спокойно сохранить документы и выключить ПК."
+            r2 = "Тихая работа и адекватное время автономии для дома."
+            r3 = "Стабильно держит напряжение, индикаторы информативные."
+        elif kind == 'monitor':
+            r1 = "Цвета ровные, глазам комфортно; засветов минимально."
+            r2 = "Подключился без проблем, картинка стабильная, шрифты чёткие."
+            r3 = "Хорошие углы обзора, подставка устойчивая."
+        elif kind == 'laptop':
+            r1 = "Система работает быстро, шум в норме; удобно для работы и учёбы."
+            r2 = "Аккумулятор держит достойно, корпус не люфтит."
+            r3 = "Клавиатура удобная, экран яркий — подходит для длительной работы."
+        elif kind == 'printer':
+            r1 = "Быстрая и качественная печать; настройка заняла минуты."
+            r2 = "Wi‑Fi подключился сразу, duplex экономит бумагу."
+            r3 = "Расходники доступны, печать без полос и пропусков."
+        else:
+            r1 = f"{name} соответствует описанию и ожиданиям по качеству."
+            r2 = "Упаковка надёжная, доставка своевременная — рекомендуем."
+            r3 = "Цена оправдана, функционал полностью устраивает."
+        return (
+            '<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;">'
+            '<h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3>'
+            '<div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;">'
+            '<div style="font-weight:700;">Асем, Алматы <span style="color:#888;font-weight:400;">— 2025-10-28</span></div>'
+            '<div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>'
+            f'<p style="margin:0;">{_html.escape(r1)}</p></div>'
+            '<div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;">'
+            '<div style="font-weight:700;">Ерлан, Астана <span style="color:#888;font-weight:400;">— 2025-11-02</span></div>'
+            '<div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>'
+            f'<p style="margin:0;">{_html.escape(r2)}</p></div>'
+            '<div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;">'
+            '<div style="font-weight:700;">Алина, Шымкент <span style="color:#888;font-weight:400;">— 2025-11-08</span></div>'
+            '<div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>'
+            f'<p style="margin:0;">{_html.escape(r3)}</p></div>'
+            '</div>'
+        )
+
+    # --- Основной проход по офферам ---
+    out, pos = [], 0
+    for m_offer in _re.finditer(r'(?is)<offer\b.*?>.*?</offer>', _text):
+        out.append(_text[pos:m_offer.start()])
+        offer = m_offer.group(0)
+
+        if _re.search(r'FAQ\s*—\s*Частые\s+вопросы|Отзывы\s+покупателей', offer, _re.I):
+            out.append(offer); pos = m_offer.end(); continue
+
+        m_name = _re.search(r'(?is)<name>(.*?)</name>', offer)
+        name_html = m_name.group(1) if m_name else ''
+        name = _html.unescape(name_html).strip()
+
+        m_desc = _re.search(r'(?is)(<description[^>]*>)(.*?)(</description>)', offer)
+        if not m_desc:
+            out.append(offer); pos = m_offer.end(); continue
+        d_head, d_body_html, d_tail = m_desc.group(1), m_desc.group(2), m_desc.group(3)
+
+        kv = _params_kv(offer)
+        plain_ctx = _unhtml(name_html + ' ' + d_body_html + ' ' + ' '.join(f"{k}: {v}" for k,v in kv.items())).lower()
+        kind = _classify(plain_ctx, kv)
+        facts = _facts(kind, plain_ctx, kv)
+
+        faq_html = _faq_html(kind, name[:60], facts)
+        reviews_html = _reviews_html(kind, name)
+
+        inject = '\n' + faq_html + reviews_html
+        new_desc = d_head + d_body_html + inject + d_tail
+        offer = offer[:m_desc.start()] + new_desc + offer[m_desc.end():]
+
+        out.append(offer)
+        pos = m_offer.end()
+
+    out.append(_text[pos:])
+    return ''.join(out)
+    def _unhtml(s: str) -> str:
+        s = _re.sub(r'(?is)<script.*?>.*?</script>', '', s)
+        s = _re.sub(r'(?is)<style.*?>.*?</style>', '', s)
+        s = _re.sub(r'(?is)<[^>]+>', ' ', s)
+        s = _re.sub(r'\s+', ' ', s).strip()
+        return _html.unescape(s)
+
+    def _params_kv(offer_html: str):
+        kv = {}
+        for pm in _re.finditer(r'(?is)<param\b([^>]*)>(.*?)</param>', offer_html):
+            attrs, val = pm.group(1), pm.group(2)
+            nm = _re.search(r'name\s*=\s*"(.*?)"', attrs)
+            if not nm:
+                continue
+            key = _html.unescape(nm.group(1)).strip().lower()
+            val = _html.unescape(_unhtml(val)).strip()
+            if not key or not val:
+                continue
             # Храним первое значение, чтобы не плодить длинные списки
             kv.setdefault(key, val)
         return kv
