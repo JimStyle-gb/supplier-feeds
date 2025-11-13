@@ -387,75 +387,192 @@ def main() -> int:
     out_text = _ensure_footer_spacing(out_text)
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
-    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
-
-    Path('docs').mkdir(exist_ok=True)
-    out_text = _append_faq_reviews_after_desc(out_text)
-    Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
-    print('OK: docs/alstyle.yml, offers:', len(kept))
-    return 0
-
-
-# --- [APPENDIX] FAQ+Отзывы в конец <description> (вариант A, идемпотентно) ---
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>\
+# --- [APPENDIX] FAQ+Отзывы (динамически по товару) ---
 def _append_faq_reviews_after_desc(_text: str) -> str:
-    """Вставляет блок FAQ и Отзывы в КОНЕЦ каждого <description>.
-    Если уже присутствуют заголовки, дубли не добавляет."""
-    _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
+    """
+    Добавляет в конец каждого <description> блок FAQ+Отзывы,
+    подставляя название товара и несколько ключевых характеристик,
+    извлечённых из <param>. Если в описании уже есть такие блоки — ничего не добавляет.
+    """
+    import re as _re
+
+    # Матчим по офферам, чтобы иметь доступ и к <name>, и к <params>
+    _offer_re = _re.compile(r'(?is)(<offer\b[^>]*>)(.*?)(</offer>)')
+    _name_re  = _re.compile(r'(?is)<\s*name\s*>(.*?)</\s*name\s*>')
+    _vend_re  = _re.compile(r'(?is)<\s*vendor\s*>(.*?)</\s*vendor\s*>')
+    _desc_re  = _re.compile(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)')
+    _param_re = _re.compile(r'(?is)<\s*param\b[^>]*name="([^"]+)"[^>]*>(.*?)</\s*param\s*>')
+
+    def _pick_specs(param_pairs):
+        """Берём до 4 самых полезных ключей по эвристикам."""
+        PRIOR = ['Ресурс', 'Ёмкость', 'Емкость', 'Мощность', 'Диагональ', 'Яркость',
+                 'Скорость', 'Формат', 'Разрешение', 'Цвет', 'Объём', 'Объем']
+        norm = [(k.strip(), _re.sub(r'\s+', ' ', v).strip()) for k, v in param_pairs if v.strip()]
+        picked = []
+        used = set()
+        for p in PRIOR:
+            for k, v in norm:
+                if k in used: 
+                    continue
+                if p.lower() in k.lower():
+                    picked.append((k, v))
+                    used.add(k)
+                    break
+        for k, v in norm:
+            if k not in used:
+                picked.append((k, v))
+            if len(picked) >= 4:
+                break
+        return picked[:4]
+
+    def _detect_category(name):
+        n = name.lower()
+        if _re.search(r'(картридж|тонер|toner|crg|q\d{4}|ce\d{3,4}[a-z]?|cf\d{3,4}[a-z]?)', n):
+            return 'cartridge'
+        if any(w in n for w in ['ибп', 'ups', 'u-']):
+            return 'ups'
+        if any(w in n for w in ['монитор', 'monitor']):
+            return 'monitor'
+        if any(w in n for w in ['ноутбук', 'laptop', 'notebook']):
+            return 'laptop'
+        return 'generic'
+
+    def _build_block(name, vendor, specs):
+        specs_html = ''
+        if specs:
+            li = ''.join(f'<li><strong>{{_re.sub(r"[<>]", "", k)}}:</strong> {{_re.sub(r"[<>]", "", v)}}</li>' for k, v in specs)
+            specs_html = f'<ul style="margin:8px 0 0; padding-left:18px;">{{li}}</ul>'
+
+        cat = _detect_category(name)
+
+        if cat == 'cartridge':
+            qas = f"""
+    <ul style="margin:0; padding-left:18px;">
+      <li style="margin:0 0 8px;"><strong>Совместимость {name}?</strong><br>Смотрите список моделей в характеристиках ниже — поставили только проверенные принтеры.</li>
+      <li style="margin:0 0 8px;"><strong>Ресурс печати и тип тонера?</strong><br>Ресурс и тип указаны в параметрах товара; качество стабильно при правильной установке.</li>
+      <li style="margin:0 0 8px;"><strong>Оригинал или совместимый?</strong><br>См. поле «Производитель{(' — ' + vendor) if vendor else ''}» и описание — мы не скрываем тип поставки.</li>
+      <li style="margin:0;"><strong>Как избежать брака при установке?</strong><br>Встряхните картридж, снимите защитные плёнки, установите до щелчка и запустите тестовую печать.</li>
+    </ul>"""
+            revs = f"""
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Али, Караганда <span style="color:#888; font-weight:400;">— 2025-10-21</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="5/5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">{name} печатает чётко, без серого фона. Ресурс соответствует заявленному.</p>
+    </div>
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Светлана, Астана <span style="color:#888; font-weight:400;">— 2025-11-03</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="5/5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">Установили в офисный принтер — всё ок. Цена/качество отличные.</p>
+    </div>
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
+      <div style="font-weight:700;">Руслан, Алматы <span style="color:#888; font-weight:400;">— 2025-11-10</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="4/5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p style="margin:0;">{name} подошёл, печать контрастная. Доставили быстро.</p>
+    </div>"""
+        elif cat == 'ups':
+            qas = f"""
+    <ul style="margin:0; padding-left:18px;">
+      <li style="margin:0 0 8px;"><strong>Какую нагрузку тянет {name}?</strong><br>Смотрите мощность/VA в характеристиках — ориентируйтесь на суммарную потребляемую мощность устройств.</li>
+      <li style="margin:0 0 8px;"><strong>Сколько держит батарея?</strong><br>Время автономии зависит от нагрузки; ориентиры указаны в описании и параметрах.</li>
+      <li style="margin:0 0 8px;"><strong>Есть защита от скачков?</strong><br>Да, предусмотрена фильтрация и базовая стабилизация (см. характеристики).</li>
+      <li style="margin:0;"><strong>Как подобрать модель?</strong><br>Возьмите запас по мощности 20–30% относительно вашей нагрузки.</li>
+    </ul>"""
+            revs = f"""
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Нуржан, Алматы <span style="color:#888; font-weight:400;">— 2025-10-19</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="5/5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">{name} спасает систему при перебоях, тест прошёл без проблем.</p>
+    </div>
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Кайрат, Шымкент <span style="color:#888; font-weight:400;">— 2025-11-04</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="4/5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p style="margin:0;">Адекватный шум, достаточный запас по мощности. Доставили быстро.</p>
+    </div>
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
+      <div style="font-weight:700;">Игорь, Караганда <span style="color:#888; font-weight:400;">— 2025-11-08</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="5/5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">Хорошее соотношение цены и возможностей. Рекомендую.</p>
+    </div>"""
+        else:
+            qas = f"""
+    <ul style="margin:0; padding-left:18px;">
+      <li style="margin:0 0 8px;"><strong>Для чего подойдёт {name}?</strong><br>Кратко: по ключевым задачам из характеристик ниже.</li>
+      <li style="margin:0 0 8px;"><strong>Основные преимущества?</strong><br>Смотрите важные параметры — мы вынесли их в список ниже.</li>
+      <li style="margin:0 0 8px;"><strong>Что по гарантии?</strong><br>Официальная гарантия производителя; подробности в карточке.</li>
+      <li style="margin:0;"><strong>Как выбрать?</strong><br>Сверьте параметры с вашими требованиями — диагональ/мощность/объём и т.п.</li>
+    </ul>"""
+            revs = f"""
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Алия, Астана <span style="color:#888; font-weight:400;">— 2025-10-30</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="5/5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">{name} соответствует описанию, собран аккуратно. Покупкой довольны.</p>
+    </div>
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Павел, Алматы <span style="color:#888; font-weight:400;">— 2025-11-05</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="4/5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p style="margin:0;">Отмечу адекватную цену и быстрый привоз. Работает как нужно.</p>
+    </div>
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
+      <div style="font-weight:700;">Жанна, Тараз <span style="color:#888; font-weight:400;">— 2025-11-09</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="5/5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">Качественный товар. Рекомендую к покупке.</p>
+    </div>"""
+
+        block = f"""<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
 
   <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">
-    <h3 style="margin:0 0 10px; font-size:17px;">FAQ — Частые вопросы</h3>
-    <ul style="margin:0; padding-left:18px;">
-      <li style="margin:0 0 8px;">
-        <strong>Есть ли гарантия?</strong><br>
-        Да, официальная гарантия производителя. Срок указывается в карточке товара.
-      </li>
-      <li style="margin:0 0 8px;">
-        <strong>Как узнать наличие?</strong><br>
-        Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.
-      </li>
-      <li style="margin:0 0 8px;">
-        <strong>Как оплатить?</strong><br>
-        Для юр. лиц — <strong>безналичный</strong> расчёт, для физ. лиц — <strong>KASPI</strong> (удалённая оплата по счёту).
-      </li>
-      <li style="margin:0;">
-        <strong>Сколько идёт доставка по Казахстану?</strong><br>
-        Обычно <strong>3–7 рабочих дней</strong>. Срок зависит от службы доставки и города.
-      </li>
-    </ul>
+    <h3 style="margin:0 0 10px; font-size:17px;">FAQ — Частые вопросы по {name}</h3>
+    {qas}
+  </div>
+
+  <div style="background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;">
+    <h3 style="margin:0 0 6px; font-size:17px;">Ключевые характеристики</h3>
+    {specs_html}
   </div>
 
   <div style="background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;">
     <h3 style="margin:0 0 10px; font-size:17px;">Отзывы покупателей</h3>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
-      <div style="font-weight:700;">Асем, Алматы <span style="color:#888; font-weight:400;">— 2025-10-28</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      <p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
-      <div style="font-weight:700;">Ерлан, Астана <span style="color:#888; font-weight:400;">— 2025-11-02</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-      <p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
-      <div style="font-weight:700;">Диана, Шымкент <span style="color:#888; font-weight:400;">— 2025-11-11</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      <p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p>
-    </div>
-
+    {revs}
   </div>
 
-</div>'''
-    import re as _re
-    _p = _re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
-    def _repl(m):
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-        if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
-            return head + body + tail
-        return head + body + '\n' + _FAQ + tail
-    return _p.sub(_repl, _text)
+</div>"""
+        return block
+
+    def _offer_repl(m):
+        offer_head, inside, offer_tail = m.group(1), m.group(2), m.group(3)
+        name_m  = _name_re.search(inside)
+        name = name_m.group(1).strip() if name_m else ''
+        vend_m = _vend_re.search(inside)
+        vendor = vend_m.group(1).strip() if vend_m else ''
+
+        dsm = _desc_re.search(inside)
+        if not dsm:
+            return m.group(0)
+
+        desc_head, desc_body, desc_tail = dsm.group(1), dsm.group(2), dsm.group(3)
+        if ('FAQ — Частые вопросы' in desc_body) or ('Отзывы покупателей' in desc_body):
+            return m.group(0)
+
+        params = _param_re.findall(inside)
+        specs = _pick_specs(params)
+
+        block = _build_block(name or 'товар', vendor, specs)
+
+        new_inside = inside[:dsm.start()] + desc_head + desc_body + '\n' + block + desc_tail + inside[dsm.end():]
+        return offer_head + new_inside + offer_tail
+
+    return _offer_re.sub(_offer_repl, _text)
 # --- [END APPENDIX] ---
+n')
+
+    Path('docs').mkdir(exist_ok=True)
+    out_text = _append_faq_reviews_after_desc(out_text)
+\g<i>out_text = _append_faq_reviews_after_desc(out_text)
+\g<i>Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
+    print('OK: docs/alstyle.yml, offers:', len(kept))
+    return 0
+
+
 if __name__ == '__main__':
     raise SystemExit(main())
