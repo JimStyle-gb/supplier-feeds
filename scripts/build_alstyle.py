@@ -384,6 +384,7 @@ def main() -> int:
     )
 
     out_text = feed_meta + head + new_offers + '\n' + tail
+out_text = _append_faq_reviews_after_desc(out_text)
     out_text = _ensure_footer_spacing(out_text)
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
@@ -446,12 +447,13 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
   </div>
 
 </div>'''
-    _p = re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
+    _p = re.compile(r'(?is)(<description[^>]*>)(.*?)(</\s*description\s*>)')
     def _repl(m):
         head, body, tail = m.group(1), m.group(2), m.group(3)
         if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
             return head + body + tail
-        return head + body + "\n" + _FAQ + tail
+        return head + body + "
+" + _FAQ + tail
     return _p.sub(_repl, _text)
 # --- [END LAST FUNC] ---
 
