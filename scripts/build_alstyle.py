@@ -236,7 +236,7 @@ WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; 
     <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
     <ul style="margin:0; padding-left:18px;">
       <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
-      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 &#8376; | 3–7 рабочих дней</em></li>
+      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
     </ul>
