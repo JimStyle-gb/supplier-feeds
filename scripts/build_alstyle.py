@@ -327,8 +327,6 @@ def _ensure_footer_spacing(out_text: str) -> str:
     out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
-    out_text = _append_faq_reviews_after_desc(out_text)
-
     return out_text
 
 def main() -> int:
@@ -396,30 +394,66 @@ def main() -> int:
     print('OK: docs/alstyle.yml, offers:', len(kept))
     return 0
 
-if __name__ == '__main__':
-    raise SystemExit(main())
-
-
-
-
-# --- [INJECTED] Append FAQ+Reviews block after existing <description> ---
-import re as _re_faq
-import html as _html_faq
-
-_FAQ_REVIEWS_BLOCK = '<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.55; color:#222; font-size:15px;">\n\n  <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">\n    <h3 style="margin:0 0 10px; font-size:17px;">FAQ — Частые вопросы</h3>\n    <ul style="margin:0; padding-left:18px;">\n      <li style="margin:0 0 8px;">\n        <strong>Есть ли гарантия?</strong><br>\n        Да, официальная гарантия производителя. Срок указывается в карточке товара.\n      </li>\n      <li style="margin:0 0 8px;">\n        <strong>Как узнать наличие?</strong><br>\n        Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.\n      </li>\n      <li style="margin:0 0 8px;">\n        <strong>Как оплатить?</strong><br>\n        Для юр. лиц — <strong>безналичный</strong> расчёт, для физ. лиц — <strong>KASPI</strong> (удалённая оплата по счёту).\n      </li>\n      <li style="margin:0;">\n        <strong>Сколько идёт доставка по Казахстану?</strong><br>\n        Обычно <strong>3–7 рабочих дней</strong>. Срок зависит от службы доставки и города.\n      </li>\n    </ul>\n  </div>\n\n  <div style="background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;">\n    <h3 style="margin:0 0 10px; font-size:17px;">Отзывы покупателей</h3>\n\n    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">\n      <div style="font-weight:700;">Асем, Алматы <span style="color:#888; font-weight:400;">— 2025-10-28</span></div>\n      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>\n      <p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p>\n    </div>\n\n    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">\n      <div style="font-weight:700;">Ерлан, Астана <span style="color:#888; font-weight:400;">— 2025-11-02</span></div>\n      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>\n      <p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p>\n    </div>\n\n    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">\n      <div style="font-weight:700;">Диана, Шымкент <span style="color:#888; font-weight:400;">— 2025-11-11</span></div>\n      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>\n      <p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p>\n    </div>\n  </div>\n\n</div>'
-
+# --- [LAST FUNC] Append FAQ+Reviews block after existing <description> ---
 def _append_faq_reviews_after_desc(_text: str) -> str:
-    """Добавляет комбинированный блок FAQ+Отзывы в КАЖДЫЙ offer, сразу ПОСЛЕ существующего содержимого <description>.
-    Ничего не трогает вне <description>. Если блок уже добавлен — повторно не вставляет.
-    SEO: аккуратно упоминаем ключевые слова (гарантия, наличие, доставка, оплата) без «спама».
-    """
-    _p_offer = _re_faq.compile(r'(?is)(<offer\\b[^>]*>.*?<name>(?P<name>.*?)</name>.*?<description>(?P<desc>.*?)</description>.*?</offer>)')
-    def _repl(m):
-        offer = m.group(1)
-        desc = m.group('desc')
-        if 'FAQ — Частые вопросы' in desc or 'Отзывы покупателей' in desc:
-            return offer
-        new_desc = desc + "\n" + _FAQ_REVIEWS_BLOCK
-        return offer.replace(desc, new_desc, 1)
-    return _p_offer.sub(_repl, _text)
+    # Добавляет блок FAQ+Отзывы (вариант A) в КОНЕЦ каждого <description>.
+    # Защита от дублей по заголовкам.
+    _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
 
+  <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">
+    <h3 style="margin:0 0 10px; font-size:17px;">FAQ — Частые вопросы</h3>
+    <ul style="margin:0; padding-left:18px;">
+      <li style="margin:0 0 8px;">
+        <strong>Есть ли гарантия?</strong><br>
+        Да, официальная гарантия производителя. Срок указывается в карточке товара.
+      </li>
+      <li style="margin:0 0 8px;">
+        <strong>Как узнать наличие?</strong><br>
+        Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.
+      </li>
+      <li style="margin:0 0 8px;">
+        <strong>Как оплатить?</strong><br>
+        Для юр. лиц — <strong>безналичный</strong> расчёт, для физ. лиц — <strong>KASPI</strong> (удалённая оплата по счёту).
+      </li>
+      <li style="margin:0;">
+        <strong>Сколько идёт доставка по Казахстану?</strong><br>
+        Обычно <strong>3–7 рабочих дней</strong>. Срок зависит от службы доставки и города.
+      </li>
+    </ul>
+  </div>
+
+  <div style="background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;">
+    <h3 style="margin:0 0 10px; font-size:17px;">Отзывы покупателей</h3>
+
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Асем, Алматы <span style="color:#888; font-weight:400;">— 2025-10-28</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Ерлан, Астана <span style="color:#888; font-weight:400;">— 2025-11-02</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
+      <div style="font-weight:700;">Диана, Шымкент <span style="color:#888; font-weight:400;">— 2025-11-11</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p>
+    </div>
+
+  </div>
+
+</div>'''
+    _p = re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
+    def _repl(m):
+        head, body, tail = m.group(1), m.group(2), m.group(3)
+        if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
+            return head + body + tail
+        return head + body + "\n" + _FAQ + tail
+    return _p.sub(_repl, _text)
+# --- [END LAST FUNC] ---
+
+if __name__ == "__main__":
+    raise SystemExit(main())
