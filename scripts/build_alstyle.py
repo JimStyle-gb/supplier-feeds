@@ -1,5 +1,7 @@
+
 # coding: utf-8
-# build_alstyle.py — v106 (tidy+kv+deny+whitespace) + CTA block in <description> (at start, unchanged)
+# build_alstyle.py — v107
+# Изменения v107: в CTA заменён эмодзи 💬 на HTML-энтити &#128172; и символ ₸ на &#8376; (чтобы корректно сохранялось в CP1251).
 
 import os, re, html, sys, time, hashlib
 from pathlib import Path
@@ -13,13 +15,13 @@ RX_PARAM_KV = re.compile(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?
 
 # --- spacing helper (always present) ---
 def _ensure_footer_spacing(out_text: str) -> str:
-    """Переносы внизу: 2 NL перед </offers>, перенос перед </shop> и </yml_catalog>."""
+    # Переносы внизу: 2 NL перед </offers>, перенос перед </shop> и </yml_catalog>.
     out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
     return out_text
 
-print('[VER] build_alstyle v106 (CTA at start of <description>) (tidy+kv+deny+whitespace) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v107 (CTA entity) (tidy+kv+deny+whitespace) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -49,12 +51,12 @@ DENY_PARAMS = {s.lower() for s in [
   "Объем", "Объём"
 ]}
 
-# --- Стандартный CTA-блок (без изменений) для вставки в начало <description> каждого товара ---
+# --- Стандартный CTA-блок (с HTML-сущностями для эмодзи и тенге) ---
 CTA_HTML = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;">
   <p style="text-align:center; margin:0 0 12px;">
     <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
        style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">
-      💬 НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
+      &#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
     </a>
   </p>
 
@@ -70,7 +72,7 @@ CTA_HTML = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-h
     <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
     <ul style="margin:0; padding-left:18px;">
       <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
-      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 рабочих дней</em></li>
+      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 &#8376; | 3–7 рабочих дней</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
     </ul>
@@ -132,7 +134,7 @@ def _price_adders(base: int) -> int:
     elif 500_001 <= base <= 750_000: return 40_000
     elif 750_001 <= base <= 1_000_000: return 50_000
     elif 1_000_001 <= base <= 1_500_000: return 70_000
-    elif 1_500_001 <= base <= 2_000_000: return 90_000
+    elif 1_500_001 <= base <= 2,000,000: return 90_000
     elif 2_000_001 <= base <= 100_000_000: return 100_000
     else: return 0
 
@@ -275,7 +277,7 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
 WANT_ORDER = ('categoryId','vendorCode','name','price','picture','vendor','currencyId','description','param')
 
 def _swap_price_nodes(xml: str) -> str:
-    """Меняет местами значения узлов <price> и <purchase_price> в пределах одного offer за 1 проход."""
+    # Меняет местами значения узлов <price> и <purchase_price> в пределах одного offer за 1 проход.
     xml = re.sub(r'(?is)<\s*price\s*>', '<_TMP_PRICE_>', xml)
     xml = re.sub(r'(?is)</\s*price\s*>', '</_TMP_PRICE_>', xml)
     xml = re.sub(r'(?is)<\s*purchase_price\s*>', '<_TMP_PPRICE_>', xml)
