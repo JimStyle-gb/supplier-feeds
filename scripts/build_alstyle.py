@@ -384,23 +384,22 @@ def main() -> int:
     )
 
     out_text = feed_meta + head + new_offers + '\n' + tail
-    out_text = _append_faq_reviews_after_desc(out_text)
     out_text = _ensure_footer_spacing(out_text)
-    out_text = _append_faq_reviews_after_desc(out_text)
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
     out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
 
     Path('docs').mkdir(exist_ok=True)
+    out_text = _append_faq_reviews_after_desc(out_text)
     Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
     print('OK: docs/alstyle.yml, offers:', len(kept))
     return 0
 
 
-# --- [LAST FUNC] Добавление FAQ+Отзывы в конец <description> (идемпотентно) ---
+# --- [APPENDIX] FAQ+Отзывы в конец <description> (вариант A, идемпотентно) ---
 def _append_faq_reviews_after_desc(_text: str) -> str:
-    """Добавляет блок FAQ + Отзывы (вариант A) в КОНЕЦ каждого <description>.
-    Если внутри уже есть эти блоки (по заголовкам), дубли не вставляет."""
+    """Вставляет блок FAQ и Отзывы в КОНЕЦ каждого <description>.
+    Если уже присутствуют заголовки, дубли не добавляет."""
     _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
 
   <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">
@@ -450,17 +449,13 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
 
 </div>'''
     import re as _re
-    _p = _re.compile(r'(?is)(<description[^>]*>)(.*?)(</\s*description\s*>)')
-    _cnt_before = len(_re.findall(r'(?is)<\s*description', _text))
+    _p = _re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
     def _repl(m):
         head, body, tail = m.group(1), m.group(2), m.group(3)
         if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
             return head + body + tail
         return head + body + '\n' + _FAQ + tail
-    _new = _p.sub(_repl, _text)
-    _cnt_after = len(_re.findall(r'FAQ — Частые вопросы', _new))
-    print(f"[FAQ] descriptions_found={_cnt_before}, faq_appended={_cnt_after}")
-    return _new
-# --- [END LAST FUNC] ---
+    return _p.sub(_repl, _text)
+# --- [END APPENDIX] ---
 if __name__ == '__main__':
     raise SystemExit(main())
