@@ -387,9 +387,10 @@ def main() -> int:
     out_text = _ensure_footer_spacing(out_text)
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
+    out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
+
     Path('docs').mkdir(exist_ok=True)
     out_text = _append_faq_reviews_after_desc(out_text)
-    out_text = _ensure_footer_spacing(out_text)
     Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
     print('OK: docs/alstyle.yml, offers:', len(kept))
     return 0
@@ -456,19 +457,5 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
         return head + body + '\n' + _FAQ + tail
     return _p.sub(_repl, _text)
 # --- [END APPENDIX] ---
-
-# --- [SPACING HELPERS] keep footer/shop/offers newlines consistent ---
-def _ensure_footer_spacing(out_text: str) -> str:
-    import re as _re
-    # newline after <offers> opening
-    out_text = _re.sub(r'(?s)(<shop>\s*<offers>)(?!\n)', r'\1\n', out_text)
-    # two newlines after the LAST </offer> before </offers>
-    out_text = _re.sub(r'(?s)</offer>\s*(?=</offers>)', '</offer>\n\n', out_text, count=1)
-    # newline before </shop>
-    out_text = _re.sub(r'(?s)</offers>\s*(?=</shop>)', '</offers>\n', out_text)
-    # newline before </yml_catalog>
-    out_text = _re.sub(r'(?s)</shop>\s*(?=</yml_catalog>)', '</shop>\n', out_text)
-    return out_text
-# --- [END SPACING HELPERS] ---
 if __name__ == '__main__':
     raise SystemExit(main())
