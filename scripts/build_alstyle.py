@@ -384,6 +384,7 @@ def main() -> int:
     )
 
     out_text = feed_meta + head + new_offers + '\n' + tail
+    out_text = _append_faq_reviews_after_desc(out_text)
     out_text = _ensure_footer_spacing(out_text)
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
@@ -394,10 +395,11 @@ def main() -> int:
     print('OK: docs/alstyle.yml, offers:', len(kept))
     return 0
 
-# --- [LAST FUNC] Append FAQ+Reviews block after existing <description> ---
+
+# --- [LAST FUNC] Добавление FAQ+Отзывы в конец <description> ---
 def _append_faq_reviews_after_desc(_text: str) -> str:
-    """Добавляет блок FAQ+Отзывы (вариант A) в КОНЕЦ каждого <description>.
-    Без дублей — если внутри уже есть маркеры заголовков, ничего не добавляет."""
+    """Добавляет блок FAQ + Отзывы (вариант A) в КОНЕЦ каждого <description>.
+    Если внутри уже есть эти блоки (по заголовкам), дубли не вставляет."""
     _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
 
   <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">
@@ -446,14 +448,15 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
   </div>
 
 </div>'''
-    _p = re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
-    def _repl(m):
+    import re as _re
+    _p = _re.compile(r'(?is)(<description[^>]*>)(.*?)(</\s*description\s*>)')
+    def _repl_desc(m):
         head, body, tail = m.group(1), m.group(2), m.group(3)
         if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
             return head + body + tail
-        return head + body + "\n" + _FAQ + tail
-    return _p.sub(_repl, _text)
+        return head + body + "
+" + _FAQ + tail
+    return _p.sub(_repl_desc, _text)
 # --- [END LAST FUNC] ---
-
 if __name__ == '__main__':
     raise SystemExit(main())
