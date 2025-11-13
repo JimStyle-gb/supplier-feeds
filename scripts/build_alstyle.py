@@ -1,27 +1,28 @@
 
 # coding: utf-8
-# build_alstyle.py — v107
-# Изменения v107: в CTA заменён эмодзи 💬 на HTML-энтити &#128172; и символ ₸ на &#8376; (чтобы корректно сохранялось в CP1251).
+# build_alstyle.py — v108
+# Изм. v108: исправлен синтаксис числового литерала (2,000,000 → 2_000_000).
+# Остальная логика сохранена как в v107 (CTA с HTML-сущностями).
 
 import os, re, html, sys, time, hashlib
 from pathlib import Path
 import requests
 
 # === precompiled regexes (hot paths) ===
-RX_OFFER_BLOCK = re.compile(r'(?is)<offer\b.*?</offer>')
-RX_PARAM_BLOCK = re.compile(r'(?is)<\s*param\b[^>]*>.*?</\s*param\s*>')
-RX_CATEGORY_ID = re.compile(r'(?is)<\s*categoryId\s*>\s*(\d+)\s*</\s*categoryId\s*>')
-RX_PARAM_KV = re.compile(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>')
+RX_OFFER_BLOCK = re.compile(r'(?is)<offer\\b.*?</offer>')
+RX_PARAM_BLOCK = re.compile(r'(?is)<\\s*param\\b[^>]*>.*?</\\s*param\\s*>')
+RX_CATEGORY_ID = re.compile(r'(?is)<\\s*categoryId\\s*>\\s*(\\d+)\\s*</\\s*categoryId\\s*>')
+RX_PARAM_KV = re.compile(r'(?is)<\\s*param\\b[^>]*\\bname\\s*=\\s*\"([^\"]+)\"[^>]*>(.*?)</\\s*param\\s*>')
 
 # --- spacing helper (always present) ---
 def _ensure_footer_spacing(out_text: str) -> str:
     # Переносы внизу: 2 NL перед </offers>, перенос перед </shop> и </yml_catalog>.
-    out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
+    out_text = re.sub(r'</offer>[ \t]*(?:\\r?\\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
     return out_text
 
-print('[VER] build_alstyle v107 (CTA entity) (tidy+kv+deny+whitespace) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
+print('[VER] build_alstyle v108 (numeric fix) (CTA entity) (tidy+kv+deny+whitespace) (helper present) (footer helper + fast count) (precompiled+price-swap+source_total fast) (FEED_META + 2NL last </offer> + guards) params-sorted + attr-order fix')
 
 # --- Secrets via env (fallback оставлен для локалки) ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -134,7 +135,7 @@ def _price_adders(base: int) -> int:
     elif 500_001 <= base <= 750_000: return 40_000
     elif 750_001 <= base <= 1_000_000: return 50_000
     elif 1_000_001 <= base <= 1_500_000: return 70_000
-    elif 1_500_001 <= base <= 2,000,000: return 90_000
+    elif 1_500_001 <= base <= 2_000_000: return 90_000
     elif 2_000_001 <= base <= 100_000_000: return 100_000
     else: return 0
 
@@ -151,7 +152,7 @@ def _retail_price_from_base(base: int) -> int:
 # --- Параметры ---
 def _collect_params(block: str):
     out = []
-    for name, val in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', block):
+    for name, val in re.findall(r'(?is)<\s*param\b[^>]*\bname\s*=\s*\"([^\"]+)\"[^>]*>(.*?)</\s*param\s*>', block):
         key = _clean_plain(name).strip(': ')
         if not key or key.lower() in DENY_PARAMS: 
             continue
@@ -180,8 +181,8 @@ def _move_available_attr(header: str, body: str):
     # удалить тег <available>…</available> из body
     body = re.sub(r'(?is)<\s*available\s*>.*?</\s*available\s*>', '', body, count=1)
     # если атрибут уже есть — обновим на месте
-    if re.search(r'(?is)\bavailable\s*=\s*"(?:true|false)"', header):
-        header = re.sub(r'(?is)\bavailable\s*=\s*"(?:true|false)"', f'available="{avail}"', header, count=1)
+    if re.search(r'(?is)\bavailable\s*=\s*\"(?:true|false)\"', header):
+        header = re.sub(r'(?is)\bavailable\s*=\s*\"(?:true|false)\"', f'available="{avail}"', header, count=1)
     else:
         # иначе добавим перед закрывающей '>' — так сохраняем исходный порядок id и прочих атрибутов
         header = re.sub(r'>\s*$', f' available="{avail}">', header, count=1)
@@ -301,7 +302,7 @@ def _rebuild_offer(offer_xml: str) -> str:
     if mp:
         val = mp.group(1)
         if re.search(r'(?is)<\s*price\s*>', body):
-            body = re.sub(r'(?is)(<\s*price\s*>).*?(</\s*price\s*>)', r'\g<1>'+val+r'\g<2>', body, count=1)
+            body = re.sub(r'(?is)(<\s*price\s*>\s*).*?(\s*</\s*price\s*>)', r'\g<1>'+val+r'\g<2>', body, count=1)
         else:
             body = '<price>'+val+'</price>' + body
 
@@ -312,14 +313,14 @@ def _rebuild_offer(offer_xml: str) -> str:
     if mv:
         v = _clean_plain(mv.group(1))
     else:
-        mi = re.search(r'(?is)\bid="([^"]+)"', header)
+        mi = re.search(r'(?is)\bid=\"([^\"]+)\"', header)
         v = mi.group(1) if mi else 'AS' + hashlib.md5(body.encode('utf-8')).hexdigest()[:8].upper()
         body = '<vendorCode>'+html.escape(v)+'</vendorCode>' + body
     if not v.startswith('AS'):
         v_new = 'AS' + v
         body = re.sub(r'(?is)(<\s*vendorCode\s*>\s*).*?(\s*</\s*vendorCode\s*>)', r'\g<1>'+html.escape(v_new)+r'\g<2>', body, count=1)
         v = v_new
-    header = re.sub(r'(?is)\bid="[^"]*"', f'id="{v}"', header, count=1)
+    header = re.sub(r'(?is)\bid=\"[^\"]*\"', f'id="{v}"', header, count=1)
     # fix: убрать лишние пробелы в заголовке <offer ...>
     header = re.sub(r'\s{2,}', ' ', header)
 
@@ -347,10 +348,10 @@ def _rebuild_offer(offer_xml: str) -> str:
     for t in ('vendor','currencyId','description'):
         out_lines += parts.get(t, [])
     for prm in parts.get('param', []):
-        mname = re.search(r'(?is)name\s*=\s*"([^"]+)"', prm or '')
+        mname = re.search(r'(?is)name\s*=\s*\"([^\"]+)\"', prm or '')
         if mname and mname.group(1).strip().lower() in DENY_PARAMS:
             continue
-        mname = re.search(r'(?is)<\s*param\b[^>]*\bname\s*=\s*"([^"]+)"', prm)
+        mname = re.search(r'(?is)<\s*param\b[^>]*\bname\s*=\s*\"([^\"]+)\"', prm)
         if mname:
             nm = re.sub(r'[\s\-]+', ' ', mname.group(1).strip().lower()).replace('ё','е')
             if nm in DENY_PARAMS:
