@@ -450,13 +450,12 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
 </div>'''
     import re as _re
     _p = _re.compile(r'(?is)(<description[^>]*>)(.*?)(</\s*description\s*>)')
-    def _repl_desc(m):
+    def _repl(m):
         head, body, tail = m.group(1), m.group(2), m.group(3)
         if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
             return head + body + tail
-        return head + body + "
-" + _FAQ + tail
-    return _p.sub(_repl_desc, _text)
+        return head + body + '\n' + _FAQ + tail
+    return _p.sub(_repl, _text)
 # --- [END LAST FUNC] ---
 if __name__ == '__main__':
     raise SystemExit(main())
