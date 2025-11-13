@@ -324,9 +324,22 @@ def _rebuild_offer(offer_xml: str) -> str:
     return out
 
 def _ensure_footer_spacing(out_text: str) -> str:
-    out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
-    out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
-    out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
+    """
+    1) После <shop><offers> — ровно два перевода строки.
+    2) Перед </offers> — после последнего </offer> ровно два перевода строки.
+    3) Перед </shop> и </yml_catalog> — по одному переводу.
+    Никакие другие места не меняем.
+    """
+    import re as _re
+    # 1) Нормализуем после <shop><offers>
+    out_text = _re.sub(r'(?s)(<shop>\s*<offers>)(?:[ \t]*(?:\r?\n)){0,10}', r'\1\n\n', out_text, count=1)
+
+    # 2) Два перевода после последнего </offer> перед </offers>
+    out_text = _re.sub(r'(?s)</offer>\s*(?=</offers>)', '</offer>\n\n', out_text, count=1)
+
+    # 3) Один перевод перед </shop> и </yml_catalog>
+    out_text = _re.sub(r'(?s)([^\n])\s*</offers>\s*(?=</shop>)', r'\1\n</offers>\n', out_text, count=1)
+    out_text = _re.sub(r'(?s)([^\n])\s*</shop>\s*(?=</yml_catalog>)', r'\1\n</shop>\n', out_text, count=1)
     return out_text
 
 def main() -> int:
