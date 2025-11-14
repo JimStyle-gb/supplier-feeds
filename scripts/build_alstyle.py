@@ -1,6 +1,6 @@
 # coding: utf-8
 # coding: utf-8
-# build_alstyle.py — v110 (base v105 tidy preserved) + WhatsApp inject (HTML entity) + </u> fix
+# build_alstyle.py — v111 (base v105 tidy preserved) + WhatsApp inject (HTML entity) + </u> fix
 
 import os, re, html, hashlib
 from pathlib import Path
@@ -12,7 +12,7 @@ except Exception:
 
 import requests
 
-print('[VER] build_alstyle v110 (base v105 + whatsapp inject only, entity bubble, </u> fix)')
+print('[VER] build_alstyle v111 (base v105 + whatsapp inject only, entity bubble, </u> fix)')
 
 # --- Credentials ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -235,7 +235,7 @@ def _inject_whatsapp_block(offer_xml: str) -> str:
     m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', offer_xml)
     if not m: return offer_xml
     head, body, tail = m.group(1), m.group(2), m.group(3)
-    new_body = WHATSAPP_BLOCK + "\n\n" + body
+    new_body = "\n\n<!-- WhatsApp -->\n" + WHATSAPP_BLOCK + "\n\n<!-- Описание -->\n" + body + "\n\n"
     return offer_xml[:m.start(1)] + head + new_body + tail + offer_xml[m.end(3):]
 
 WANT_ORDER = ('categoryId','vendorCode','name','price','picture','vendor','currencyId','description','param')
