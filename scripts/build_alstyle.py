@@ -216,7 +216,28 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
         return offer_xml[:ins] + '<description>' + new_html + '</description>' + offer_xml[ins:]
 
 # WhatsApp block — fixed </u>
-WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;"><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
+WHATSAPP_BLOCK = '<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;"><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>'
+
+  <div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">
+    <h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>
+    <ul style="margin:0; padding-left:18px;">
+      <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>
+      <li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>
+    </ul>
+
+    <hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;">
+
+    <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
+    <ul style="margin:0; padding-left:18px;">
+      <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
+      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>
+      <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
+      <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
+    </ul>
+  </div>
+</div>
+
+"""
 
 def _inject_whatsapp_block(offer_xml: str) -> str:
     if 'НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!' in offer_xml:
@@ -581,3 +602,51 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
 # --- [END APPENDIX] ---
 if __name__ == '__main__':
     raise SystemExit(main())
+
+
+def _append_faq_reviews_after_desc(_text: str) -> str:
+    import re
+    m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', _text)
+    if not m:
+        return _text
+    head, inner, tail = m.group(1), m.group(2), m.group(3)
+    # Drop old FAQ/Reviews if present
+    inner = re.sub(r'(?is)<div[^>]*?>\s*<h3[^>]*?>\s*FAQ\s*—\s*Частые вопросы\s*</h3>.*?</div>', '', inner)
+    inner = re.sub(r'(?is)<div[^>]*?>\s*<h3[^>]*?>\s*Отзывы покупателей\s*</h3>.*?</div>', '', inner)
+    # Split whatsapp vs native
+    wa_idx = inner.find('https://api.whatsapp.com/send/?phone=77073270501')
+    if wa_idx != -1:
+        m_end = re.search(r'</div>\s*</div>', inner[wa_idx:], flags=re.I)
+        if m_end:
+            wa_end = wa_idx + m_end.end()
+            wa_block = inner[:wa_end]
+            native_block = inner[wa_end:]
+        else:
+            wa_block = inner[:wa_idx]
+            native_block = inner[wa_idx:]
+    else:
+        wa_block = ''
+        native_block = inner
+    # Compact helpers (inline)
+    one = lambda s: re.sub(r'\s+', ' ', s).strip()
+    wa_one   = one(wa_block) if wa_block else ''
+    native_one = one(native_block)
+    # Use existing generators if present, else safe fallbacks
+    try:
+        faq_html = _generate_faq_block(inner)
+    except Exception:
+        faq_html = '<div style="background:#F7FAFF;border:1px solid #DDE8FF;padding:12px 14px;margin:12px 0;"><h3 style="margin:0 0 10px;font-size:17px;">FAQ — Частые вопросы</h3><ul style="margin:0;padding-left:18px;"><li style="margin:0 0 8px;"><strong>Вопрос:</strong><br>Смотрите характеристики и описание товара выше.</li></ul></div>'
+    try:
+        reviews_html = _generate_reviews_block(inner)
+    except Exception:
+        reviews_html = '<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;"><h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3><div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;"><div style="font-weight:700;">Покупатель, Казахстан <span style="color:#888;font-weight:400;">— 2025-11-15</span></div><div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="margin:0;">Хорошее соотношение цены и качества.</p></div></div>'
+    faq_one     = one(faq_html)
+    reviews_one = one(reviews_html)
+    parts = []
+    if wa_one:
+        parts.append(wa_one)
+    parts.append(native_one)
+    parts.append(faq_one)
+    parts.append(reviews_one)
+    new_inner = ("\n\n").join(parts)
+    return _text[:m.start()] + head + new_inner + tail + _text[m.end():]
