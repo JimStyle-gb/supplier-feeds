@@ -458,22 +458,39 @@ def _ensure_footer_spacing(out_text: str) -> str:
 
     # --- Pretty <description> for readability (as в v128) ---
     def __pp_desc_block(m):
-        head, inner, tail = m.group(1), m.group(2), m.group(3)
-        inner = re.sub(r'>\s*<', '>\n<', inner.strip())
-        inner = re.sub(r'[ \t]*\n[ \t]*', '\n', inner)
-        inner = re.sub(r'\n{3,}', '\n\n', inner)
-        lines = inner.split('\n')
-        out_lines, lvl = [], 0
-        for raw in lines:
-            ln = raw.strip()
-            if re.match(r'</\s*(ul|div)\b', ln, flags=re.I):
-                lvl = max(lvl-1, 0)
-            indent = '  ' * (1 + lvl)
-            out_lines.append(indent + ln)
-            if re.match(r'<\s*(ul|div)\b(?![^>]*?/>)', ln, flags=re.I):
-                lvl += 1
-        pretty = '\n'.join(out_lines)
-        return head + '\n' + pretty + '\n' + tail
+    head, inner, tail = m.group(1), m.group(2), m.group(3)
+
+    # 1) Сжать лишние пробелы и переводы строк внутри блока, но сохранить <br>
+    s = inner
+    s = re.sub(r'\s+', ' ', s)                         # все пробелы/переводы в один пробел
+    s = re.sub(r'\s*<br\s*/?>\s*', '<br>', s, flags=re.I)  # нормализуем <br>
+
+    # 2) Разрывы строк только вокруг блочных тегов
+    block_open = r'(?:div|h[23]|p|ul|ol|li|hr)'
+    s = re.sub(r'(?i)>\s*<(?=' + block_open + r'\b)', '>' + "\n" + '<', s)
+    s = re.sub(r'(?i)</(' + block_open + r')>\s*', r'</\1>' + "\n", s)
+
+    # 3) Сжать содержимое <li> до одной строки (сохраняя <br>)
+    def _squeeze_li(m2):
+        start, cont, end = m2.group(1), m2.group(2), m2.group(3)
+        cont = re.sub(r'\s+', ' ', cont)
+        cont = re.sub(r'\s*<br\s*/?>\s*', '<br>', cont, flags=re.I)
+        return start + cont.strip() + end
+    s = re.sub(r'(?is)(<li\b[^>]*>)(.*?)(</\s*li\s*>)', _squeeze_li, s)
+
+    # 4) Сжать содержимое <p> до одной строки
+    def _squeeze_p(m2):
+        start, cont, end = m2.group(1), m2.group(2), m2.group(3)
+        cont = re.sub(r'\s+', ' ', cont)
+        cont = re.sub(r'\s*<br\s*/?>\s*', '<br>', cont, flags=re.I)
+        return start + cont.strip() + end
+    s = re.sub(r'(?is)(<p\b[^>]*>)(.*?)(</\s*p\s*>)', _squeeze_p, s)
+
+    # 5) Удалить пустые строки, оставить компактный, но читаемый вид
+    lines = [ln.strip() for ln in s.split('\n')]
+    s = "\n".join(l for l in lines if l)
+
+    return head + "\n" + s + "\n" + tail
 
     out_text = re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', __pp_desc_block, out_text)
     return out_text
