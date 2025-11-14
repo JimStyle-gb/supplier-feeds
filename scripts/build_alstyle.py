@@ -328,46 +328,27 @@ def _ensure_footer_spacing(out_text: str) -> str:
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
 
-    # --- Pretty print <description> blocks for readability in YML (без изменения логики) ---
-    def __pretty_desc_html(inner: str) -> str:
-        # put each tag on a new line
-        inner = re.sub(r'>\s*<', '>\n<', inner.strip())
-        # collapse excessive blank lines
-        inner = re.sub(r'\n{3,}', '\n\n', inner)
-        lines = [ln.strip() for ln in inner.splitlines()]
-        out = []
-        level = 0
-        for ln in lines:
-            # crude indent rules for readability only
-            if ln.startswith('</ul'): level = max(level-1, 0)
-            indent = '  ' * (1 + level)  # base indent inside <description>
-            out.append(f"{indent}{ln}")
-            if ln.startswith('<ul'): level += 1
-        return '\n'.join(out)
-
-    # apply to every <description>...</description>
-    def __desc_repl(m):
+    # --- Pretty <description> for readability in YML (forced) ---
+    def __pp_desc_block(m):
         head, inner, tail = m.group(1), m.group(2), m.group(3)
-        # skip if already pretty (has many line breaks)
-        if inner.count('\n') >= 4:
-            return head + inner + tail
-        return head + "\n" + __pretty_desc_html(inner) + "\n" + tail
+        inner = re.sub(r'>\s*<', '>\n<', inner.strip())
+        inner = re.sub(r'[ \t]*\n[ \t]*', '\n', inner)
+        inner = re.sub(r'\n{3,}', '\n\n', inner)
+        lines = inner.split('\n')
+        out_lines, lvl = [], 0
+        for raw in lines:
+            ln = raw.strip()
+            if re.match(r'</\s*(ul|div)\b', ln, flags=re.I):
+                lvl = max(lvl-1, 0)
+            indent = '  ' * (1 + lvl)
+            out_lines.append(indent + ln)
+            if re.match(r'<\s*(ul|div)\b(?![^>]*?/>)', ln, flags=re.I):
+                lvl += 1
+        pretty = '\n'.join(out_lines)
+        return head + '\n' + pretty + '\n' + tail
 
-    out_text = re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', __desc_repl, out_text)
+    out_text = re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', __pp_desc_block, out_text)
     return out_text
-
-
-def _append_faq_reviews_after_desc(_text: str) -> str:
-    """
-    Динамически добавляет блоки «FAQ — Частые вопросы» и «Отзывы покупателей»
-    в КОНЕЦ <description> каждого оффера на основе <name>, текста описания И <param>.
-    НИЧЕГО больше в карточке не трогаем. Повторно не вставляем, если уже есть.
-    """
-    import re as _re, html as _html
-
-    # --- Утилиты ---
-
-
 
 def main() -> int:
     SUPPLIER_URL = 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'
@@ -437,3 +418,65 @@ def main() -> int:
 
 
 # --- [APPENDIX] FAQ+Отзывы в конец <description> (вариант A, идемпотентно) ---
+def _append_faq_reviews_after_desc(_text: str) -> str:
+    """Вставляет блок FAQ и Отзывы в КОНЕЦ каждого <description>.
+    Если уже присутствуют заголовки, дубли не добавляет."""
+    _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
+
+  <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">
+    <h3 style="margin:0 0 10px; font-size:17px;">FAQ — Частые вопросы</h3>
+    <ul style="margin:0; padding-left:18px;">
+      <li style="margin:0 0 8px;">
+        <strong>Есть ли гарантия?</strong><br>
+        Да, официальная гарантия производителя. Срок указывается в карточке товара.
+      </li>
+      <li style="margin:0 0 8px;">
+        <strong>Как узнать наличие?</strong><br>
+        Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.
+      </li>
+      <li style="margin:0 0 8px;">
+        <strong>Как оплатить?</strong><br>
+        Для юр. лиц — <strong>безналичный</strong> расчёт, для физ. лиц — <strong>KASPI</strong> (удалённая оплата по счёту).
+      </li>
+      <li style="margin:0;">
+        <strong>Сколько идёт доставка по Казахстану?</strong><br>
+        Обычно <strong>3–7 рабочих дней</strong>. Срок зависит от службы доставки и города.
+      </li>
+    </ul>
+  </div>
+
+  <div style="background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;">
+    <h3 style="margin:0 0 10px; font-size:17px;">Отзывы покупателей</h3>
+
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Асем, Алматы <span style="color:#888; font-weight:400;">— 2025-10-28</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
+      <div style="font-weight:700;">Ерлан, Астана <span style="color:#888; font-weight:400;">— 2025-11-02</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p>
+    </div>
+
+    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
+      <div style="font-weight:700;">Диана, Шымкент <span style="color:#888; font-weight:400;">— 2025-11-11</span></div>
+      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p>
+    </div>
+
+  </div>
+
+</div>'''
+    import re as _re
+    _p = _re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
+    def _repl(m):
+        head, body, tail = m.group(1), m.group(2), m.group(3)
+        if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
+            return head + body + tail
+        return head + body + '\n' + _FAQ + tail
+    return _p.sub(_repl, _text)
+# --- [END APPENDIX] ---
+if __name__ == '__main__':
+    raise SystemExit(main())
