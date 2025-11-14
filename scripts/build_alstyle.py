@@ -216,21 +216,17 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
         return offer_xml[:ins] + '<description>' + new_html + '</description>' + offer_xml[ins:]
 
 # WhatsApp block — fixed </u>
-WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;"><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
-
-def _inject_whatsapp_block(offer_xml: str) -> str:
-    if 'НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!' in offer_xml:
-        return offer_xml
-    m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', offer_xml)
-    if not m: return offer_xml
-    head, body, tail = m.group(1), m.group(2), m.group(3)
-    new_body = WHATSAPP_BLOCK + "
-
-" + body
-    return offer_xml[:m.start(1)] + head + new_body + tail + offer_xml[m.end(3):]
-
-WANT_ORDER = ('categoryId','vendorCode','name','price','picture','vendor','currencyId','description','param')
-
+WHATSAPP_BLOCK = '<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;"><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>'
+def _inject_whatsapp_block(text: str) -> str:
+    """Вставляет WA-блок в начало <description> и добавляет двойной перенос."""
+    m = re.search(r'(?is)(<description\b[^>]*>)(.*?)(</description>)', text)
+    if not m:
+        return text
+    head, inner, tail = m.group(1), m.group(2), m.group(3)
+    # Сжать родной контент до одной строки (только визуально)
+    inner_one = re.sub(r'\s+', ' ', inner).strip()
+    new_inner = WHATSAPP_BLOCK + '\\n\\n' + inner_one
+    return text.replace(m.group(0), head + new_inner + tail, 1)
 def _rebuild_offer(offer_xml: str) -> str:
     m = re.match(r'(?is)^\s*(<offer\b[^>]*>)(.*)</offer>\s*$', offer_xml)
     if not m: return offer_xml.strip() + '\n\n'
@@ -522,27 +518,34 @@ def main() -> int:
 
 # --- [APPENDIX] FAQ+Отзывы в конец <description> (вариант A, идемпотентно) ---
 def _append_faq_reviews_after_desc(_text: str) -> str:
-    """Добавляет FAQ и Отзывы как ОДНОСТРОЧНЫЕ блоки в конец каждого <description>.
-    Структура: [WA — одна строка]\n\n[родное+характеристики — одна строка]\n\n[FAQ — одна строка]\n\n[Отзывы — одна строка]
-    Идемпотентно: не дублирует уже добавленные блоки."""
-    import re as _re
-    _p = _re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
-    FAQ_ONE = '<div style="background:#F7FAFF;border:1px solid #DDE8FF;padding:12px 14px;margin:12px 0;"><h3 style="margin:0 0 10px;font-size:17px;">FAQ — Частые вопросы</h3><ul style="margin:0;padding-left:18px;"><li style="margin:0 0 8px;"><strong>Есть ли гарантия?</strong><br>Да, официальная гарантия производителя. Срок указывается в карточке товара.</li><li style="margin:0 0 8px;"><strong>Как узнать наличие?</strong><br>Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.</li><li style="margin:0;"><strong>Сколько идёт доставка по Казахстану?</strong><br>Обычно 3–7 рабочих дней. Срок зависит от службы доставки и города.</li></ul></div>'
-    REVIEWS_ONE = '<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;"><h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3><div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;"><div style="font-weight:700;">Асем, Алматы <span style="color:#888;font-weight:400;">— 2025-10-28</span></div><div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p></div><div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;"><div style="font-weight:700;">Ерлан, Астана <span style="color:#888;font-weight:400;">— 2025-11-02</span></div><div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div><p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p></div><div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);"><div style="font-weight:700;">Диана, Шымкент <span style="color:#888;font-weight:400;">— 2025-11-11</span></div><div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p></div></div>'
-    def _repl(m):
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-        if ("FAQ —" in body) or ("Отзывы покупателей" in body):
-            return head + body + tail
-        body = _re.sub(r'[\s\r\n]+$', '', body)
-        return head + body + "\n\n" + FAQ_ONE + "\n\n" + REVIEWS_ONE + tail
-    return _p.sub(_repl, _text)
+    """Добавляет FAQ и Отзывы в конец <description>: по одной строке, с двойными переносами между блоками."""
+    m = re.search(r'(?is)(<description\b[^>]*>)(.*?)(</description>)', _text)
+    if not m:
+        return _text
+    head, inner, tail = m.group(1), m.group(2), m.group(3)
 
-    def _repl(m):
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-        if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
-            return head + body + tail
-        return head + body + '\n' + _FAQ + tail
-    return _p.sub(_repl, _text)
-# --- [END APPENDIX] ---
-if __name__ == '__main__':
-    raise SystemExit(main())
+    # Текущие генераторы (существующие в коде): _build_faq_html(name, params, desc), _build_reviews_html(name)
+    # Добываем подсказки для FAQ/Отзывы
+    name = ''
+    pm = re.search(r'(?is)<name>(.*?)</name>', _text)
+    if pm: 
+        name = re.sub(r'\s+', ' ', pm.group(1)).strip()
+
+    # Соберём параметры из текущего offer (если есть)
+    params = '; '.join(re.findall(r'(?is)<param[^>]*>(.*?)</param>', _text))[:500]
+
+    # Родное описание — уже сжато ранее; но на всякий случай
+    desc_plain = re.sub(r'\s+', ' ', inner)
+
+    # Построить многострочный HTML, затем сжать в одну строку
+    faq_html = _build_faq_html(name, params, desc_plain)
+    reviews_html = _build_reviews_html(name)
+
+    faq_one = re.sub(r'\s+', ' ', faq_html).strip()
+    rev_one = re.sub(r'\s+', ' ', reviews_html).strip()
+
+    # Если FAQ/Отзывы уже присутствуют — не дублировать
+    inner_no_dup = re.sub(r'(?is)<div[^>]*>.*?(FAQ|Отзывы)[\s\S]*?$', lambda x: inner, inner)
+
+    new_inner = inner_no_dup + '\\n\\n' + faq_one + '\\n\\n' + rev_one
+    return _text.replace(m.group(0), head + new_inner + tail, 1)
