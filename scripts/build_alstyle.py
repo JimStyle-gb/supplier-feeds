@@ -216,7 +216,13 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
         return offer_xml[:ins] + '<description>' + new_html + '</description>' + offer_xml[ins:]
 
 # WhatsApp block — fixed </u>
-WHATSAPP_BLOCK = '<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;"><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>'
+WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;">
+  <p style="text-align:center; margin:0 0 12px;">
+    <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
+       style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">
+      &#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
+    </a>
+  </p>
 
   <div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">
     <h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>
@@ -230,7 +236,7 @@ WHATSAPP_BLOCK = '<div style="font-family: Cambria, \'Times New Roman\', serif; 
     <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
     <ul style="margin:0; padding-left:18px;">
       <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
-      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>
+      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 рабочих дней</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
     </ul>
@@ -321,155 +327,6 @@ def _ensure_footer_spacing(out_text: str) -> str:
     out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
-
-    # --- Smart FAQ & Reviews injection per-offer (restores dynamic behavior) ---
-    def __extract_params_dict(block: str):
-        out = {}
-        for k,v in re.findall(r'(?is)<\s*param\b[^>]*name\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', block):
-            k = re.sub(r'\s+', ' ', k.strip())
-            v = re.sub(r'\s+', ' ', html.unescape(v).strip())
-            if k and v:
-                out[k] = v
-        return out
-
-    def __smart_faq_reviews(name: str, desc_text: str, params: dict) -> str:
-        # Simple heuristics by type
-        hay = f"{name} " + ' '.join([f"{k} {v}" for k,v in params.items()]) + " " + desc_text
-        low = hay.lower()
-
-        def get_param(*keys):
-            for kk in keys:
-                for k, v in params.items():
-                    if kk.lower() in k.lower():
-                        return v
-            return ''
-
-        # Defaults
-        faq_items = []
-        revs = []
-
-        if ('картридж' in low) or re.search(r'\b(c[be-f]?|ce|cf)\d{2,4}[a-z]?\b', low):
-            # Cartridge
-            resource = get_param('Ресурс', 'Yield')
-            printers = get_param('Совместим', 'Принтер', 'Модель принтера')
-            chip = get_param('Чип')
-            faq_items = [
-                ("Совместимость", f"Проверьте список совместимых моделей: {printers or 'см. характеристики'}."),
-                ("Ресурс печати", resource or "См. характеристики (обычно 1–2 тыс. стр. при 5% заполнении)."),
-                ("Чип", chip or "Обычно чип установлен и не требует перенастройки."),
-            ]
-            revs = [
-                ("Айдос, Алматы", "Печать чёткая, без полос. Совместился с моим принтером без ошибок."),
-                ("Марина, Астана", f"Хватило примерно на {resource or 'заявленный'} страниц, качество стабильное."),
-                ("Рустем, Шымкент", "Установка заняла минуту, принтер сразу распознал картридж."),
-            ]
-        elif ('ибп' in low) or ('бесперебойн' in low) or ('ups' in low):
-            power = get_param('Мощность', 'Мощность (Вт)', 'Выходная мощность')
-            runtime = get_param('Время работы', 'Время автономной работы')
-            battery = get_param('Ёмкость', 'Емкость', 'Батарея')
-            faq_items = [
-                ("На сколько хватает", runtime or "Обычно 5–15 минут при типовой нагрузке."),
-                ("Подходящая нагрузка", f"{power or 'См. характеристики'} — проверяйте суммарную мощность устройств."),
-                ("Тип топологии", "Линейно‑интерактивный или другой — указан в характеристиках."),
-            ]
-            revs = [
-                ("Асем, Алматы", "Спокойно успеваю сохранить документы и корректно выключить ПК."),
-                ("Ерлан, Астана", f"Тихая работа, {power or 'мощности'} хватает для домашнего сетапа."),
-                ("Алина, Шымкент", f"Держит напряжение стабильно, батарея {battery or 'соответствует заявленной'}."),
-            ]
-        elif ('ноутбук' in low) or ('laptop' in low):
-            ram = get_param('ОЗУ', 'RAM', 'Память')
-            ssd = get_param('SSD', 'накопитель', 'ПЗУ', 'ROM')
-            cpu = get_param('Процессор', 'CPU')
-            faq_items = [
-                ("Можно ли апгрейдить", f"Часть конфигураций поддерживает апгрейд (RAM {ram or 'и SSD'}, уточняйте по модели)."),
-                ("Для каких задач", "Учёба, офис, интернет, мультимедиа — смотрите CPU/GPU в характеристиках."),
-                ("Гарантия", get_param('Гарантия') or "12 месяцев по талону."),
-            ]
-            revs = [
-                ("Светлана, Алматы", f"Шустрo работает, {ssd or 'SSD'} быстрый, шум минимальный."),
-                ("Ерасыл, Караганда", f"{cpu or 'Процессор'} тянет офис и браузер без подвисаний."),
-                ("Айгерим, Астана", f"{ram or 'ОЗУ'} хватает для многозадачности, батареи на день."),
-            ]
-        else:
-            # Generic
-            warranty = get_param('Гарантия')
-            weight = get_param('Вес')
-            color = get_param('Цвет')
-            faq_items = [
-                ("Что в комплекте", "См. раздел Характеристик/Комплектацию."),
-                ("Гарантия", warranty or "12 месяцев по гарантии поставщика."),
-                ("Доставка", "По Казахстану 3–7 рабочих дней, условия в начале описания."),
-            ]
-            revs = [
-                ("Дана, Алматы", "Качество соответствует описанию, доставили вовремя."),
-                ("Медет, Астана", f"Сборка аккуратная, {color or 'цвет'} как на фото."),
-                ("Жанна, Шымкент", f"Удобно пользоваться, вес {weight or 'указан в карточке'}."),
-            ]
-
-        # Build HTML (inline styles, как ранее)
-        faq_html = ['<div style="background:#F7FAFF;border:1px solid #DDE8FF;padding:12px 14px;margin:12px 0;">',
-                    '<h3 style="margin:0 0 10px;font-size:17px;">FAQ — Частые вопросы</h3>',
-                    '<ul style="margin:0;padding-left:18px;">']
-        for q, a in faq_items[:3]:
-            faq_html.append(f'<li style="margin:0 0 8px;"><strong>{html.escape(q)}:</strong><br>{html.escape(a)}</li>')
-        faq_html.append('</ul></div>')
-        faq_html = ''.join(faq_html)
-
-        reviews_html = ['<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;">',
-                        '<h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3>']
-        for who, text in revs[:3]:
-            reviews_html.append('<div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;'
-                                'box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;">'
-                                f'<div style="font-weight:700;">{html.escape(who)} '
-                                f'<span style="color:#888;font-weight:400;">— 2025-11-08</span></div>'
-                                '<div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">'
-                                '&#9733;&#9733;&#9733;&#9733;&#9733;</div>'
-                                f'<p style="margin:0;">{html.escape(text)}</p></div>')
-        reviews_html.append('</div>')
-        return faq_html + ''.join(reviews_html)
-
-    def __inject_smart_blocks(offer: str) -> str:
-        # Skip if blocks already exist
-        if re.search(r'FAQ —|Отзывы покупателей', offer, flags=re.I):
-            return offer
-        name = re.search(r'(?is)<\s*name\s*>(.*?)</\s*name\s*>', offer)
-        name = html.unescape(name.group(1).strip()) if name else ''
-        desc = re.search(r'(?is)<\s*description\b[^>]*>(.*?)</\s*description\s*>', offer)
-        inner = desc.group(1) if desc else ''
-        params = __extract_params_dict(offer)
-        blocks = __smart_faq_reviews(name, html.unescape(inner), params)
-
-        # Append blocks before closing </description> if present, else add a new <description>
-        if desc:
-            return re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)',
-                          lambda m: m.group(1) + m.group(2) + blocks + m.group(3), offer, count=1)
-        else:
-            return re.sub(r'(?is)(</\s*offer\s*>)', f'<description>{blocks}</description>\\1', offer, count=1)
-
-    # Per-offer pass
-    out_text = re.sub(r'(?is)<\s*offer\b.*?</\s*offer\s*>', lambda m: __inject_smart_blocks(m.group(0)), out_text)
-
-    # --- Pretty <description> for readability (as в v128) ---
-    def __pp_desc_block(m):
-        head, inner, tail = m.group(1), m.group(2), m.group(3)
-        inner = re.sub(r'>\s*<', '>\n<', inner.strip())
-        inner = re.sub(r'[ \t]*\n[ \t]*', '\n', inner)
-        inner = re.sub(r'\n{3,}', '\n\n', inner)
-        lines = inner.split('\n')
-        out_lines, lvl = [], 0
-        for raw in lines:
-            ln = raw.strip()
-            if re.match(r'</\s*(ul|div)\b', ln, flags=re.I):
-                lvl = max(lvl-1, 0)
-            indent = '  ' * (1 + lvl)
-            out_lines.append(indent + ln)
-            if re.match(r'<\s*(ul|div)\b(?![^>]*?/>)', ln, flags=re.I):
-                lvl += 1
-        pretty = '\n'.join(out_lines)
-        return head + '\n' + pretty + '\n' + tail
-
-    out_text = re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', __pp_desc_block, out_text)
     return out_text
 
 def main() -> int:
@@ -533,120 +390,9 @@ def main() -> int:
     out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
 
     Path('docs').mkdir(exist_ok=True)
-    out_text = _append_faq_reviews_after_desc(out_text)
     Path('docs/alstyle.yml').write_text(out_text, encoding='windows-1251', errors='replace')
     print('OK: docs/alstyle.yml, offers:', len(kept))
     return 0
 
-
-# --- [APPENDIX] FAQ+Отзывы в конец <description> (вариант A, идемпотентно) ---
-def _append_faq_reviews_after_desc(_text: str) -> str:
-    """Вставляет блок FAQ и Отзывы в КОНЕЦ каждого <description>.
-    Если уже присутствуют заголовки, дубли не добавляет."""
-    _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
-
-  <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">
-    <h3 style="margin:0 0 10px; font-size:17px;">FAQ — Частые вопросы</h3>
-    <ul style="margin:0; padding-left:18px;">
-      <li style="margin:0 0 8px;">
-        <strong>Есть ли гарантия?</strong><br>
-        Да, официальная гарантия производителя. Срок указывается в карточке товара.
-      </li>
-      <li style="margin:0 0 8px;">
-        <strong>Как узнать наличие?</strong><br>
-        Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.
-      </li>
-      <li style="margin:0 0 8px;">
-        <strong>Как оплатить?</strong><br>
-        Для юр. лиц — <strong>безналичный</strong> расчёт, для физ. лиц — <strong>KASPI</strong> (удалённая оплата по счёту).
-      </li>
-      <li style="margin:0;">
-        <strong>Сколько идёт доставка по Казахстану?</strong><br>
-        Обычно <strong>3–7 рабочих дней</strong>. Срок зависит от службы доставки и города.
-      </li>
-    </ul>
-  </div>
-
-  <div style="background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;">
-    <h3 style="margin:0 0 10px; font-size:17px;">Отзывы покупателей</h3>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
-      <div style="font-weight:700;">Асем, Алматы <span style="color:#888; font-weight:400;">— 2025-10-28</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      <p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
-      <div style="font-weight:700;">Ерлан, Астана <span style="color:#888; font-weight:400;">— 2025-11-02</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-      <p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
-      <div style="font-weight:700;">Диана, Шымкент <span style="color:#888; font-weight:400;">— 2025-11-11</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      <p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p>
-    </div>
-
-  </div>
-
-</div>'''
-    import re as _re
-    _p = _re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
-    def _repl(m):
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-        if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
-            return head + body + tail
-        return head + body + '\n' + _FAQ + tail
-    return _p.sub(_repl, _text)
-# --- [END APPENDIX] ---
 if __name__ == '__main__':
     raise SystemExit(main())
-
-
-def _append_faq_reviews_after_desc(_text: str) -> str:
-    import re
-    m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', _text)
-    if not m:
-        return _text
-    head, inner, tail = m.group(1), m.group(2), m.group(3)
-    # Drop old FAQ/Reviews if present
-    inner = re.sub(r'(?is)<div[^>]*?>\s*<h3[^>]*?>\s*FAQ\s*—\s*Частые вопросы\s*</h3>.*?</div>', '', inner)
-    inner = re.sub(r'(?is)<div[^>]*?>\s*<h3[^>]*?>\s*Отзывы покупателей\s*</h3>.*?</div>', '', inner)
-    # Split whatsapp vs native
-    wa_idx = inner.find('https://api.whatsapp.com/send/?phone=77073270501')
-    if wa_idx != -1:
-        m_end = re.search(r'</div>\s*</div>', inner[wa_idx:], flags=re.I)
-        if m_end:
-            wa_end = wa_idx + m_end.end()
-            wa_block = inner[:wa_end]
-            native_block = inner[wa_end:]
-        else:
-            wa_block = inner[:wa_idx]
-            native_block = inner[wa_idx:]
-    else:
-        wa_block = ''
-        native_block = inner
-    # Compact helpers (inline)
-    one = lambda s: re.sub(r'\s+', ' ', s).strip()
-    wa_one   = one(wa_block) if wa_block else ''
-    native_one = one(native_block)
-    # Use existing generators if present, else safe fallbacks
-    try:
-        faq_html = _generate_faq_block(inner)
-    except Exception:
-        faq_html = '<div style="background:#F7FAFF;border:1px solid #DDE8FF;padding:12px 14px;margin:12px 0;"><h3 style="margin:0 0 10px;font-size:17px;">FAQ — Частые вопросы</h3><ul style="margin:0;padding-left:18px;"><li style="margin:0 0 8px;"><strong>Вопрос:</strong><br>Смотрите характеристики и описание товара выше.</li></ul></div>'
-    try:
-        reviews_html = _generate_reviews_block(inner)
-    except Exception:
-        reviews_html = '<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;"><h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3><div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;"><div style="font-weight:700;">Покупатель, Казахстан <span style="color:#888;font-weight:400;">— 2025-11-15</span></div><div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="margin:0;">Хорошее соотношение цены и качества.</p></div></div>'
-    faq_one     = one(faq_html)
-    reviews_one = one(reviews_html)
-    parts = []
-    if wa_one:
-        parts.append(wa_one)
-    parts.append(native_one)
-    parts.append(faq_one)
-    parts.append(reviews_one)
-    new_inner = ("\n\n").join(parts)
-    return _text[:m.start()] + head + new_inner + tail + _text[m.end():]
