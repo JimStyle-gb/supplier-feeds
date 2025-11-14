@@ -216,34 +216,7 @@ def _desc_postprocess_native_specs(offer_xml: str) -> str:
         return offer_xml[:ins] + '<description>' + new_html + '</description>' + offer_xml[ins:]
 
 # WhatsApp block — fixed </u>
-WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;">
-  <p style="text-align:center; margin:0 0 12px;">
-    <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
-       style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">
-      &#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
-    </a>
-  </p>
-
-  <div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">
-    <h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>
-    <ul style="margin:0; padding-left:18px;">
-      <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>
-      <li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>
-    </ul>
-
-    <hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;">
-
-    <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0; padding-left:18px;">
-      <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
-      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>
-      <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
-      <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
-    </ul>
-  </div>
-</div>
-
-"""
+WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;"><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
 def _inject_whatsapp_block(offer_xml: str) -> str:
     if 'НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!' in offer_xml:
@@ -251,7 +224,9 @@ def _inject_whatsapp_block(offer_xml: str) -> str:
     m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', offer_xml)
     if not m: return offer_xml
     head, body, tail = m.group(1), m.group(2), m.group(3)
-    new_body = WHATSAPP_BLOCK + body
+    new_body = WHATSAPP_BLOCK + "
+
+" + body
     return offer_xml[:m.start(1)] + head + new_body + tail + offer_xml[m.end(3):]
 
 WANT_ORDER = ('categoryId','vendorCode','name','price','picture','vendor','currencyId','description','param')
@@ -547,58 +522,21 @@ def main() -> int:
 
 # --- [APPENDIX] FAQ+Отзывы в конец <description> (вариант A, идемпотентно) ---
 def _append_faq_reviews_after_desc(_text: str) -> str:
-    """Вставляет блок FAQ и Отзывы в КОНЕЦ каждого <description>.
-    Если уже присутствуют заголовки, дубли не добавляет."""
-    _FAQ = '''<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.55; color:#222; font-size:15px;">
-
-  <div style="background:#F7FAFF; border:1px solid #DDE8FF; padding:12px 14px; margin:12px 0;">
-    <h3 style="margin:0 0 10px; font-size:17px;">FAQ — Частые вопросы</h3>
-    <ul style="margin:0; padding-left:18px;">
-      <li style="margin:0 0 8px;">
-        <strong>Есть ли гарантия?</strong><br>
-        Да, официальная гарантия производителя. Срок указывается в карточке товара.
-      </li>
-      <li style="margin:0 0 8px;">
-        <strong>Как узнать наличие?</strong><br>
-        Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.
-      </li>
-      <li style="margin:0 0 8px;">
-        <strong>Как оплатить?</strong><br>
-        Для юр. лиц — <strong>безналичный</strong> расчёт, для физ. лиц — <strong>KASPI</strong> (удалённая оплата по счёту).
-      </li>
-      <li style="margin:0;">
-        <strong>Сколько идёт доставка по Казахстану?</strong><br>
-        Обычно <strong>3–7 рабочих дней</strong>. Срок зависит от службы доставки и города.
-      </li>
-    </ul>
-  </div>
-
-  <div style="background:#F8FFF5; border:1px solid #DDEFD2; padding:12px 14px; margin:12px 0;">
-    <h3 style="margin:0 0 10px; font-size:17px;">Отзывы покупателей</h3>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
-      <div style="font-weight:700;">Асем, Алматы <span style="color:#888; font-weight:400;">— 2025-10-28</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      <p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04); margin:0 0 10px;">
-      <div style="font-weight:700;">Ерлан, Астана <span style="color:#888; font-weight:400;">— 2025-11-02</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-      <p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #E4F0DD; padding:10px 12px; border-radius:10px; box-shadow:0 1px 0 rgba(0,0,0,.04);">
-      <div style="font-weight:700;">Диана, Шымкент <span style="color:#888; font-weight:400;">— 2025-11-11</span></div>
-      <div style="color:#f5a623; font-size:14px; margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-      <p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p>
-    </div>
-
-  </div>
-
-</div>'''
+    """Добавляет FAQ и Отзывы как ОДНОСТРОЧНЫЕ блоки в конец каждого <description>.
+    Структура: [WA — одна строка]\n\n[родное+характеристики — одна строка]\n\n[FAQ — одна строка]\n\n[Отзывы — одна строка]
+    Идемпотентно: не дублирует уже добавленные блоки."""
     import re as _re
     _p = _re.compile(r'(?is)(<description\b[^>]*>)(.*?)(</\s*description\s*>)')
+    FAQ_ONE = '<div style="background:#F7FAFF;border:1px solid #DDE8FF;padding:12px 14px;margin:12px 0;"><h3 style="margin:0 0 10px;font-size:17px;">FAQ — Частые вопросы</h3><ul style="margin:0;padding-left:18px;"><li style="margin:0 0 8px;"><strong>Есть ли гарантия?</strong><br>Да, официальная гарантия производителя. Срок указывается в карточке товара.</li><li style="margin:0 0 8px;"><strong>Как узнать наличие?</strong><br>Статус «в наличии/нет» указан в карточке. Если товара нет — оформите заказ, мы уточним срок поставки.</li><li style="margin:0;"><strong>Сколько идёт доставка по Казахстану?</strong><br>Обычно 3–7 рабочих дней. Срок зависит от службы доставки и города.</li></ul></div>'
+    REVIEWS_ONE = '<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;"><h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3><div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;"><div style="font-weight:700;">Асем, Алматы <span style="color:#888;font-weight:400;">— 2025-10-28</span></div><div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="margin:0;">Качественный товар, всё как в описании. Упаковка отличная, отправка быстрая. Рекомендую.</p></div><div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;"><div style="font-weight:700;">Ерлан, Астана <span style="color:#888;font-weight:400;">— 2025-11-02</span></div><div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 4 из 5">&#9733;&#9733;&#9733;&#9733;&#9734;</div><p style="margin:0;">Работает стабильно, соответствует характеристикам. Консультация менеджера помогла определиться.</p></div><div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04);"><div style="font-weight:700;">Диана, Шымкент <span style="color:#888;font-weight:400;">— 2025-11-11</span></div><div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p style="margin:0;">Брала для офиса — все довольны. Цена адекватная, доставка вовремя. Спасибо!</p></div></div>'
+    def _repl(m):
+        head, body, tail = m.group(1), m.group(2), m.group(3)
+        if ("FAQ —" in body) or ("Отзывы покупателей" in body):
+            return head + body + tail
+        body = _re.sub(r'[\s\r\n]+$', '', body)
+        return head + body + "\n\n" + FAQ_ONE + "\n\n" + REVIEWS_ONE + tail
+    return _p.sub(_repl, _text)
+
     def _repl(m):
         head, body, tail = m.group(1), m.group(2), m.group(3)
         if ("FAQ — Частые вопросы" in body) or ("Отзывы покупателей" in body):
