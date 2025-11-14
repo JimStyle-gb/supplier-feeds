@@ -327,6 +327,33 @@ def _ensure_footer_spacing(out_text: str) -> str:
     out_text = re.sub(r'</offer>[ \t]*(?:\r?\n){0,10}[ \t]*(?=</offers>)', '</offer>\n\n', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
+
+    # --- Pretty print <description> blocks for readability in YML (без изменения логики) ---
+    def __pretty_desc_html(inner: str) -> str:
+        # put each tag on a new line
+        inner = re.sub(r'>\s*<', '>\n<', inner.strip())
+        # collapse excessive blank lines
+        inner = re.sub(r'\n{3,}', '\n\n', inner)
+        lines = [ln.strip() for ln in inner.splitlines()]
+        out = []
+        level = 0
+        for ln in lines:
+            # crude indent rules for readability only
+            if ln.startswith('</ul'): level = max(level-1, 0)
+            indent = '  ' * (1 + level)  # base indent inside <description>
+            out.append(f"{indent}{ln}")
+            if ln.startswith('<ul'): level += 1
+        return '\n'.join(out)
+
+    # apply to every <description>...</description>
+    def __desc_repl(m):
+        head, inner, tail = m.group(1), m.group(2), m.group(3)
+        # skip if already pretty (has many line breaks)
+        if inner.count('\n') >= 4:
+            return head + inner + tail
+        return head + "\n" + __pretty_desc_html(inner) + "\n" + tail
+
+    out_text = re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', __desc_repl, out_text)
     return out_text
 
 
