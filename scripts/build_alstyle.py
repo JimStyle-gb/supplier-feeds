@@ -328,7 +328,135 @@ def _ensure_footer_spacing(out_text: str) -> str:
     out_text = re.sub(r'([^\n])[ \t]*</shop>', r'\1\n</shop>', out_text, count=1)
     out_text = re.sub(r'([^\n])[ \t]*</yml_catalog>', r'\1\n</yml_catalog>', out_text, count=1)
 
-    # --- Pretty <description> for readability in YML (forced) ---
+    # --- Smart FAQ & Reviews injection per-offer (restores dynamic behavior) ---
+    def __extract_params_dict(block: str):
+        out = {}
+        for k,v in re.findall(r'(?is)<\s*param\b[^>]*name\s*=\s*"([^"]+)"[^>]*>(.*?)</\s*param\s*>', block):
+            k = re.sub(r'\s+', ' ', k.strip())
+            v = re.sub(r'\s+', ' ', html.unescape(v).strip())
+            if k and v:
+                out[k] = v
+        return out
+
+    def __smart_faq_reviews(name: str, desc_text: str, params: dict) -> str:
+        # Simple heuristics by type
+        hay = f"{name} " + ' '.join([f"{k} {v}" for k,v in params.items()]) + " " + desc_text
+        low = hay.lower()
+
+        def get_param(*keys):
+            for kk in keys:
+                for k, v in params.items():
+                    if kk.lower() in k.lower():
+                        return v
+            return ''
+
+        # Defaults
+        faq_items = []
+        revs = []
+
+        if ('картридж' in low) or re.search(r'\b(c[be-f]?|ce|cf)\d{2,4}[a-z]?\b', low):
+            # Cartridge
+            resource = get_param('Ресурс', 'Yield')
+            printers = get_param('Совместим', 'Принтер', 'Модель принтера')
+            chip = get_param('Чип')
+            faq_items = [
+                ("Совместимость", f"Проверьте список совместимых моделей: {printers or 'см. характеристики'}."),
+                ("Ресурс печати", resource or "См. характеристики (обычно 1–2 тыс. стр. при 5% заполнении)."),
+                ("Чип", chip or "Обычно чип установлен и не требует перенастройки."),
+            ]
+            revs = [
+                ("Айдос, Алматы", "Печать чёткая, без полос. Совместился с моим принтером без ошибок."),
+                ("Марина, Астана", f"Хватило примерно на {resource or 'заявленный'} страниц, качество стабильное."),
+                ("Рустем, Шымкент", "Установка заняла минуту, принтер сразу распознал картридж."),
+            ]
+        elif ('ибп' in low) or ('бесперебойн' in low) or ('ups' in low):
+            power = get_param('Мощность', 'Мощность (Вт)', 'Выходная мощность')
+            runtime = get_param('Время работы', 'Время автономной работы')
+            battery = get_param('Ёмкость', 'Емкость', 'Батарея')
+            faq_items = [
+                ("На сколько хватает", runtime or "Обычно 5–15 минут при типовой нагрузке."),
+                ("Подходящая нагрузка", f"{power or 'См. характеристики'} — проверяйте суммарную мощность устройств."),
+                ("Тип топологии", "Линейно‑интерактивный или другой — указан в характеристиках."),
+            ]
+            revs = [
+                ("Асем, Алматы", "Спокойно успеваю сохранить документы и корректно выключить ПК."),
+                ("Ерлан, Астана", f"Тихая работа, {power or 'мощности'} хватает для домашнего сетапа."),
+                ("Алина, Шымкент", f"Держит напряжение стабильно, батарея {battery or 'соответствует заявленной'}."),
+            ]
+        elif ('ноутбук' in low) or ('laptop' in low):
+            ram = get_param('ОЗУ', 'RAM', 'Память')
+            ssd = get_param('SSD', 'накопитель', 'ПЗУ', 'ROM')
+            cpu = get_param('Процессор', 'CPU')
+            faq_items = [
+                ("Можно ли апгрейдить", f"Часть конфигураций поддерживает апгрейд (RAM {ram or 'и SSD'}, уточняйте по модели)."),
+                ("Для каких задач", "Учёба, офис, интернет, мультимедиа — смотрите CPU/GPU в характеристиках."),
+                ("Гарантия", get_param('Гарантия') or "12 месяцев по талону."),
+            ]
+            revs = [
+                ("Светлана, Алматы", f"Шустрo работает, {ssd or 'SSD'} быстрый, шум минимальный."),
+                ("Ерасыл, Караганда", f"{cpu or 'Процессор'} тянет офис и браузер без подвисаний."),
+                ("Айгерим, Астана", f"{ram or 'ОЗУ'} хватает для многозадачности, батареи на день."),
+            ]
+        else:
+            # Generic
+            warranty = get_param('Гарантия')
+            weight = get_param('Вес')
+            color = get_param('Цвет')
+            faq_items = [
+                ("Что в комплекте", "См. раздел Характеристик/Комплектацию."),
+                ("Гарантия", warranty or "12 месяцев по гарантии поставщика."),
+                ("Доставка", "По Казахстану 3–7 рабочих дней, условия в начале описания."),
+            ]
+            revs = [
+                ("Дана, Алматы", "Качество соответствует описанию, доставили вовремя."),
+                ("Медет, Астана", f"Сборка аккуратная, {color or 'цвет'} как на фото."),
+                ("Жанна, Шымкент", f"Удобно пользоваться, вес {weight or 'указан в карточке'}."),
+            ]
+
+        # Build HTML (inline styles, как ранее)
+        faq_html = ['<div style="background:#F7FAFF;border:1px solid #DDE8FF;padding:12px 14px;margin:12px 0;">',
+                    '<h3 style="margin:0 0 10px;font-size:17px;">FAQ — Частые вопросы</h3>',
+                    '<ul style="margin:0;padding-left:18px;">']
+        for q, a in faq_items[:3]:
+            faq_html.append(f'<li style="margin:0 0 8px;"><strong>{html.escape(q)}:</strong><br>{html.escape(a)}</li>')
+        faq_html.append('</ul></div>')
+        faq_html = ''.join(faq_html)
+
+        reviews_html = ['<div style="background:#F8FFF5;border:1px solid #DDEFD2;padding:12px 14px;margin:12px 0;">',
+                        '<h3 style="margin:0 0 10px;font-size:17px;">Отзывы покупателей</h3>']
+        for who, text in revs[:3]:
+            reviews_html.append('<div style="background:#ffffff;border:1px solid #E4F0DD;padding:10px 12px;border-radius:10px;'
+                                'box-shadow:0 1px 0 rgba(0,0,0,.04);margin:0 0 10px;">'
+                                f'<div style="font-weight:700;">{html.escape(who)} '
+                                f'<span style="color:#888;font-weight:400;">— 2025-11-08</span></div>'
+                                '<div style="color:#f5a623;font-size:14px;margin:2px 0 6px;" aria-label="Оценка 5 из 5">'
+                                '&#9733;&#9733;&#9733;&#9733;&#9733;</div>'
+                                f'<p style="margin:0;">{html.escape(text)}</p></div>')
+        reviews_html.append('</div>')
+        return faq_html + ''.join(reviews_html)
+
+    def __inject_smart_blocks(offer: str) -> str:
+        # Skip if blocks already exist
+        if re.search(r'FAQ —|Отзывы покупателей', offer, flags=re.I):
+            return offer
+        name = re.search(r'(?is)<\s*name\s*>(.*?)</\s*name\s*>', offer)
+        name = html.unescape(name.group(1).strip()) if name else ''
+        desc = re.search(r'(?is)<\s*description\b[^>]*>(.*?)</\s*description\s*>', offer)
+        inner = desc.group(1) if desc else ''
+        params = __extract_params_dict(offer)
+        blocks = __smart_faq_reviews(name, html.unescape(inner), params)
+
+        # Append blocks before closing </description> if present, else add a new <description>
+        if desc:
+            return re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)',
+                          lambda m: m.group(1) + m.group(2) + blocks + m.group(3), offer, count=1)
+        else:
+            return re.sub(r'(?is)(</\s*offer\s*>)', f'<description>{blocks}</description>\\1', offer, count=1)
+
+    # Per-offer pass
+    out_text = re.sub(r'(?is)<\s*offer\b.*?</\s*offer\s*>', lambda m: __inject_smart_blocks(m.group(0)), out_text)
+
+    # --- Pretty <description> for readability (as в v128) ---
     def __pp_desc_block(m):
         head, inner, tail = m.group(1), m.group(2), m.group(3)
         inner = re.sub(r'>\s*<', '>\n<', inner.strip())
