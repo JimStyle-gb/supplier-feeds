@@ -458,39 +458,22 @@ def _ensure_footer_spacing(out_text: str) -> str:
 
     # --- Pretty <description> for readability (as в v128) ---
     def __pp_desc_block(m):
-    head, inner, tail = m.group(1), m.group(2), m.group(3)
-
-    # 1) Сжать лишние пробелы и переводы строк внутри блока, но сохранить <br>
-    s = inner
-    s = re.sub(r'\s+', ' ', s)                         # все пробелы/переводы в один пробел
-    s = re.sub(r'\s*<br\s*/?>\s*', '<br>', s, flags=re.I)  # нормализуем <br>
-
-    # 2) Разрывы строк только вокруг блочных тегов
-    block_open = r'(?:div|h[23]|p|ul|ol|li|hr)'
-    s = re.sub(r'(?i)>\s*<(?=' + block_open + r'\b)', '>' + "\n" + '<', s)
-    s = re.sub(r'(?i)</(' + block_open + r')>\s*', r'</\1>' + "\n", s)
-
-    # 3) Сжать содержимое <li> до одной строки (сохраняя <br>)
-    def _squeeze_li(m2):
-        start, cont, end = m2.group(1), m2.group(2), m2.group(3)
-        cont = re.sub(r'\s+', ' ', cont)
-        cont = re.sub(r'\s*<br\s*/?>\s*', '<br>', cont, flags=re.I)
-        return start + cont.strip() + end
-    s = re.sub(r'(?is)(<li\b[^>]*>)(.*?)(</\s*li\s*>)', _squeeze_li, s)
-
-    # 4) Сжать содержимое <p> до одной строки
-    def _squeeze_p(m2):
-        start, cont, end = m2.group(1), m2.group(2), m2.group(3)
-        cont = re.sub(r'\s+', ' ', cont)
-        cont = re.sub(r'\s*<br\s*/?>\s*', '<br>', cont, flags=re.I)
-        return start + cont.strip() + end
-    s = re.sub(r'(?is)(<p\b[^>]*>)(.*?)(</\s*p\s*>)', _squeeze_p, s)
-
-    # 5) Удалить пустые строки, оставить компактный, но читаемый вид
-    lines = [ln.strip() for ln in s.split('\n')]
-    s = "\n".join(l for l in lines if l)
-
-    return head + "\n" + s + "\n" + tail
+        head, inner, tail = m.group(1), m.group(2), m.group(3)
+        inner = re.sub(r'>\s*<', '>\n<', inner.strip())
+        inner = re.sub(r'[ \t]*\n[ \t]*', '\n', inner)
+        inner = re.sub(r'\n{3,}', '\n\n', inner)
+        lines = inner.split('\n')
+        out_lines, lvl = [], 0
+        for raw in lines:
+            ln = raw.strip()
+            if re.match(r'</\s*(ul|div)\b', ln, flags=re.I):
+                lvl = max(lvl-1, 0)
+            indent = '  ' * (1 + lvl)
+            out_lines.append(indent + ln)
+            if re.match(r'<\s*(ul|div)\b(?![^>]*?/>)', ln, flags=re.I):
+                lvl += 1
+        pretty = '\n'.join(out_lines)
+        return head + '\n' + pretty + '\n' + tail
 
     out_text = re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', __pp_desc_block, out_text)
     return out_text
@@ -625,3 +608,45 @@ def _append_faq_reviews_after_desc(_text: str) -> str:
 # --- [END APPENDIX] ---
 if __name__ == '__main__':
     raise SystemExit(main())
+
+def __pp_desc_block(text: str) -> str:
+    """
+    Компактирует HTML внутри <description>:
+    - Блочные теги переносятся на новую строку (div/h3/p/ul/ol/li/hr и т.п.).
+    - Содержимое <p> и <li> ужимается в одну строку.
+    - <br> сохраняем как есть.
+    - Лишние пробелы и пустые строки убираем.
+    """
+    import re
+
+    # 1) Нормализуем табы/переводы
+    t = text.replace('\t', ' ').replace('\r\n', '\n').replace('\r', '\n')
+
+    # 2) Приводим варианты <br/> к <br>
+    t = t.replace('<br/>', '<br>').replace('<br />', '<br>')
+
+    # 3) Убираем лишние пробелы между тегами
+    t = re.sub(r'>\s+<', '><', t)
+
+    # 4) Добавляем переносы перед/после блочных тегов, чтобы блоки читались
+    block = r'(?:div|h[1-6]|p|ul|ol|li|hr|table|thead|tbody|tr|th|td)'
+    t = re.sub(rf'(<{block}\b[^>]*>)', r'\n\1', t, flags=re.I)
+    t = re.sub(rf'(</{block}>)', r'\1\n', t, flags=re.I)
+
+    # 5) Делаем <p>...</p> и <li>...</li> однострочными
+    def _one_line(m: "re.Match") -> str:
+        open_tag, inner, close_tag = m.group(1), m.group(2), m.group(3)
+        inner = re.sub(r'\s+', ' ', inner.strip())
+        return f"{open_tag}{inner}{close_tag}\n"
+
+    t = re.sub(r'(<p\b[^>]*>)(.*?)(</p>)', _one_line, t, flags=re.I | re.S)
+    t = re.sub(r'(<li\b[^>]*>)(.*?)(</li>)', _one_line, t, flags=re.I | re.S)
+
+    # 6) После </ul> гарантируем перенос
+    t = re.sub(r'(</ul>)', r'\1\n', t, flags=re.I)
+
+    # 7) Трим хвосты пробелов и схлопываем лишние пустые строки
+    t = '\n'.join(line.rstrip() for line in t.splitlines())
+    t = re.sub(r'\n{3,}', '\n\n', t)
+
+    return t
