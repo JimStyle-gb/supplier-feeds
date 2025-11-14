@@ -457,33 +457,26 @@ def _ensure_footer_spacing(out_text: str) -> str:
     out_text = re.sub(r'(?is)<\s*offer\b.*?</\s*offer\s*>', lambda m: __inject_smart_blocks(m.group(0)), out_text)
 
     # --- Pretty <description> for readability (as в v128) ---
-def __pp_desc_block(m):
-    """Сжимает HTML внутри <description>, оставляя ДВОЙНЫЕ переводы строк между крупными блоками:
-    [WhatsApp/Оплата/Доставка] — (пустая строка х2) — [родное описание + Характеристики] — (пустая строка х2) — [FAQ] — (пустая строка х2) — [Отзывы].
-    Остальной HTML делаем компактным в одну строку, чтобы YML читался без «лесенки».
-    """
-    head, inner, tail = m.group(1), m.group(2), m.group(3)
+    def __pp_desc_block(m):
+        head, inner, tail = m.group(1), m.group(2), m.group(3)
+        inner = re.sub(r'>\s*<', '>\n<', inner.strip())
+        inner = re.sub(r'[ \t]*\n[ \t]*', '\n', inner)
+        inner = re.sub(r'\n{3,}', '\n\n', inner)
+        lines = inner.split('\n')
+        out_lines, lvl = [], 0
+        for raw in lines:
+            ln = raw.strip()
+            if re.match(r'</\s*(ul|div)\b', ln, flags=re.I):
+                lvl = max(lvl-1, 0)
+            indent = '  ' * (1 + lvl)
+            out_lines.append(indent + ln)
+            if re.match(r'<\s*(ul|div)\b(?![^>]*?/>)', ln, flags=re.I):
+                lvl += 1
+        pretty = '\n'.join(out_lines)
+        return head + '\n' + pretty + '\n' + tail
 
-    # 1) Удаляем лишние пробелы/переводы строк внутри контента
-    #    и приводим все пробельные последовательности к одному пробелу.
-    inner = inner.replace('\r', '')
-    inner = re.sub(r'\s+', ' ', inner).strip()
-
-    # 2) Восстанавливаем визуальные «разделители» между ключевыми секциями — двойной перевод строки.
-    #    a) после закрытия верхнего контейнера WhatsApp/Оплата/Доставка: ...</div></div>
-    inner = re.sub(r'</div>\s*</div>\s*', '</div></div>\n\n', inner, count=1)
-
-    #    b) перед блоком FAQ
-    inner = re.sub(r'\s*(<div[^>]*background:#F7FAFF[^>]*>)', '\n\n\1', inner, count=1)
-
-    #    c) перед блоком Отзывы
-    inner = re.sub(r'\s*(<div[^>]*background:#F8FFF5[^>]*>)', '\n\n\1', inner, count=1)
-
-    # 3) Подстраховка: заменяем тройные+ переносы на двойные.
-    inner = re.sub(r'(?:\n\s*){3,}', '\n\n', inner)
-
-    # 4) Возвращаем с одним переводом строки вокруг, чтобы не ломать внешний формат файла.
-    return head + '\n' + inner + '\n' + tail
+    out_text = re.sub(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', __pp_desc_block, out_text)
+    return out_text
 
 def main() -> int:
     SUPPLIER_URL = 'https://al-style.kz/upload/catalog_export/al_style_catalog.php'
