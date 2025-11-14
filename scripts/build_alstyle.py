@@ -1,6 +1,6 @@
-
 # coding: utf-8
-# build_alstyle.py — v108 (base v105 tidy preserved) + WhatsApp inject (HTML entity) + </u> fix
+# coding: utf-8
+# build_alstyle.py — v109 (base v105 tidy preserved) + WhatsApp inject (HTML entity) + </u> fix
 
 import os, re, html, hashlib
 from pathlib import Path
@@ -12,7 +12,7 @@ except Exception:
 
 import requests
 
-print('[VER] build_alstyle v108 (base v105 + whatsapp inject only, entity bubble, </u> fix)')
+print('[VER] build_alstyle v109 (base v105 + whatsapp inject only, entity bubble, </u> fix)')
 
 # --- Credentials ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -150,21 +150,6 @@ def _remove_simple_tags(body: str) -> str:
     body = re.sub(r'\n{3,}', '\n\n', body)
     return body.strip()
 
-def _ensure_price_from_purchase(body: str) -> str:
-    if re.search(r'(?is)<\s*price\s*>', body): return body
-    m = re.search(r'(?is)<\s*purchase_price\s*>\s*(.*?)\s*</\s*purchase_price\s*>', body)
-    if not m: return body
-    digits = re.sub(r'[^\d]', '', m.group(1))
-    if not digits: return body
-    tag = f'<price>{digits}</price>'
-    m2 = re.search(r'(?is)<\s*currencyId\s*>', body)
-    if m2: return body[:m2.start()] + tag + body[m2.start():]
-    m3 = re.search(r'(?is)</\s*name\s*>', body)
-    if m3: return body[:m3.end()] + tag + body[m3.end():]
-    m4 = re.search(r'(?is)</\s*offer\s*>', body)
-    if m4: return body[:m4.start()] + tag + body[m4.start():]
-    return body
-
 def _desc_postprocess_native_specs(offer_xml: str) -> str:
     m = re.search(r'(?is)(<\s*description\b[^>]*>)(.*?)(</\s*description\s*>)', offer_xml)
     head, raw, tail = (m.group(1), m.group(2), m.group(3)) if m else ('<description>', '', '</description>')
@@ -236,7 +221,7 @@ WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; 
     <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
     <ul style="margin:0; padding-left:18px;">
       <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
-      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 рабочих дней</em></li>
+      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
     </ul>
@@ -262,7 +247,6 @@ def _rebuild_offer(offer_xml: str) -> str:
     header, body = m.group(1), m.group(2)
 
     header, body = _move_available_attr(header, body)
-    body = _ensure_price_from_purchase(body)
 
     mp = re.search(r'(?is)<\s*purchase_price\s*>\s*(.*?)\s*</\s*purchase_price\s*>', body)
     if mp:
