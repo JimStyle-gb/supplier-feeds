@@ -1,4 +1,4 @@
-name: Build_AlStyle
+name: Build_AkCent
 
 on:
   workflow_dispatch:
@@ -47,3 +47,9 @@ jobs:
           fi
           git commit -m "Update Akcent feed"
           git push
+
+      - name: Upload Akcent feed artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: akcent-feed
+          path: docs/akcent.yml
