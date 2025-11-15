@@ -1,6 +1,6 @@
 # coding: utf-8
 # coding: utf-8
-# build_alstyle.py — v112 (base v105 tidy preserved) + WhatsApp inject (HTML entity) + </u> fix
+# build_alstyle.py — v113 (base v105 tidy preserved) + WhatsApp inject (HTML entity) + </u> fix
 
 import os, re, html, hashlib
 from pathlib import Path
@@ -12,7 +12,7 @@ except Exception:
 
 import requests
 
-print('[VER] build_alstyle v112 (base v105 + whatsapp inject only, entity bubble, </u> fix)')
+print('[VER] build_alstyle v113 (base v105 + whatsapp inject only, entity bubble, </u> fix)')
 
 # --- Credentials ---
 LOGIN = os.getenv('ALSTYLE_LOGIN', 'info@complex-solutions.kz')
@@ -372,6 +372,8 @@ def main() -> int:
     out_text = out_text.replace('encoding="UTF-8"', 'encoding="windows-1251"')
     # Make <br> tags XML-compatible: <br> -> <br /> (but keep existing <br />)
     out_text = re.sub(r'(?i)<br(?!\s*/)>\s*', '<br />', out_text)
+    # Make <hr> tags XML-compatible: <hr> -> <hr /> (but keep existing <hr />)
+    out_text = re.sub(r'(?i)<hr(?!\s*/)([^>]*)>\s*', r'<hr\1 />', out_text)
     out_text = re.sub(r'[ \t]+\n', '\n', out_text)
     out_text = re.sub(r'\n{3,}', '\n\n', out_text)
     out_text = out_text.replace('<shop><offers>', '<shop><offers>\n')
