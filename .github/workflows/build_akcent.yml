@@ -1,0 +1,44 @@
+name: Build_Akcent
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/build_akcent.py'
+      - '.github/workflows/build_akcent.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Build Akcent feed
+        run: |
+          set -e
+          python scripts/build_akcent.py
+
+      - name: Commit and push changes
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add docs/akcent.yml
+            git commit -m "Update Akcent feed"
+            git push
+          else
+            echo "No changes to commit"
+          fi
