@@ -2,37 +2,48 @@ name: Build_AlStyle
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+    paths:
+      - '.github/workflows/build_akcent.yml'
+      - 'scripts/build_akcent.py'
 
 jobs:
   build_akcent:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Download AkCent feed
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Build Akcent feed
+        env:
+          AKCENT_URL: https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
+          OUT_FILE: docs/akcent.yml
         run: |
           set -e
-          python --version
           python scripts/build_akcent.py
 
-      - name: Commit and push feed
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          if [[ -n "$(git status --porcelain docs/alstyle.yml)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add docs/alstyle.yml
-            git commit -m "Update AkCent feed"
-            git push
-          else
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/akcent.yml
+          if git diff --cached --quiet; then
             echo "No changes to commit."
+            exit 0
           fi
+          git commit -m "Update Akcent feed"
+          git push
