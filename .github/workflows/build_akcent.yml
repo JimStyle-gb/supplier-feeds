@@ -1,13 +1,14 @@
 name: Build_AkCent
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:        # ручной запуск из GitHub Actions
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'     # по расписанию (каждый день в 00:00, можно убрать)
   push:
     paths:
       - '.github/workflows/build_akcent.yml'
       - 'scripts/build_akcent.py'
+      - 'docs/akcent.yml'   # если не нужен триггер от правки результата — можно убрать
 
 jobs:
   build_akcent:
