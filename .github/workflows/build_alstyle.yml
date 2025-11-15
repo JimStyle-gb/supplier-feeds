@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'scripts/**'
-      - '.github/workflows/**'
-      - 'docs/**'
+      - '.github/workflows/build_alstyle.yml'
+      - 'scripts/build_alstyle.py'
+      - 'docs/alstyle.yml'
 
 permissions:
   contents: write
