@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 """Простой сборщик для поставщика Akcent.
 
-Вариант v5:
+Вариант v6:
 - скачиваем исходный XML/YML файл поставщика;
 - удаляем весь блок МЕЖДУ тегами <shop> и <offers> (оставляем сами теги);
 - фильтруем офферы по началу текста в теге <name>;
+- приводим теги к виду <shop><offers> + двойной перенос строки,
+  и разделяем офферы пустой строкой между </offer> и <offer>;
 - выравниваем все строки по левому краю (убираем ведущие пробелы и табы);
-- склеиваем <shop><offers> в одну строку и добавляем после них двойной перенос;
-- вставляем пустую строку между каждым </offer> и следующим <offer>;
 - сохраняем результат как docs/akcent.yml.
 """
 
 from __future__ import annotations
 
+import html
 import os
 import re
 import sys
-import html
 from pathlib import Path
 
 import requests
@@ -135,16 +135,6 @@ def _filter_offers_by_name(text: str) -> str:
     return result
 
 
-def _left_align(text: str) -> str:
-    """Убрать все ведущие пробелы/табы у каждой строки.
-
-    Это выравнивает весь XML/YML по левому краю.
-    """
-    lines = text.splitlines()
-    stripped = [line.lstrip(" \t") for line in lines]
-    return "\n".join(stripped)
-
-
 def _format_layout(text: str) -> str:
     """Отформатировать блоки <shop>/<offers> и разделить офферы пустыми строками."""
     # 1) Склеить <shop> и <offers> в одну строку и добавить два перевода строки
@@ -154,6 +144,16 @@ def _format_layout(text: str) -> str:
     text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
 
     return text
+
+
+def _left_align(text: str) -> str:
+    """Убрать все ведущие пробелы/табы у каждой строки.
+
+    Это выравнивает весь XML/YML по левому краю.
+    """
+    lines = text.splitlines()
+    stripped = [line.lstrip(" \t") for line in lines]
+    return "\n".join(stripped)
 
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
@@ -172,11 +172,11 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     # 2) фильтруем офферы по началу <name>
     text = _filter_offers_by_name(text)
 
-    # 3) выравниваем по левому краю
-    text = _left_align(text)
-
-    # 4) приводим <shop><offers> и разделяем офферы
+    # 3) приводим <shop><offers> и разделяем офферы
     text = _format_layout(text)
+
+    # 4) выравниваем по левому краю
+    text = _left_align(text)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
