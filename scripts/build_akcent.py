@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Простой сборщик для поставщика Akcent.
+"""Сборщик YML для поставщика Akcent.
 
-Вариант: базовый v3 + фильтр по <name> + очистка тегов.
-- скачиваем исходный XML/YML файл поставщика;
-- удаляем весь блок МЕЖДУ тегами <shop> и <offers> (оставляем сами теги);
-- оставляем только те <offer>, у которых <name> начинается с нужных слов;
-- удаляем лишние теги (<url>, <Offer_ID>, <delivery>, <local_delivery_cost>,
-  <model>, <manufacturer_warranty>, <Stock>, <prices>, </prices> и блок
-  <price type="RRP" ... </price>);
-- выравниваем все строки по левому краю (убираем ведущие пробелы и табы);
-- сохраняем результат как docs/akcent.yml.
+Логика максимально простая и линейная:
+1. Скачиваем исходный XML/YML файл поставщика.
+2. Вырезаем всё содержимое между <shop> и <offers>, оставляя сами теги.
+3. Оставляем только те <offer>, у которых <name> начинается с наших ключевых слов.
+4. Удаляем служебные теги (url, Offer_ID, delivery, local_delivery_cost, model,
+   manufacturer_warranty, Stock, prices/RRP).
+5. Нормализуем разметку: убираем лишние отступы и ставим аккуратные разрывы:
+   <shop><offers>\n\n<offer...> ... </offer>\n\n</offers>
+6. Сохраняем результат в docs/akcent.yml (UTF‑8).
 """
 
 from __future__ import annotations
@@ -23,8 +23,8 @@ from pathlib import Path
 import requests
 
 
-# Разрешённые префиксы начала тега <name>
-_ALLOWED_NAME_PREFIXES = [
+# Список разрешённых префиксов для <name> (начало строки)
+_ALLOWED_PREFIXES = [
     "C13T55",
     "Ёмкость для отработанных чернил",
     "Интерактивная доска",
@@ -46,21 +46,28 @@ _ALLOWED_NAME_PREFIXES = [
     "Экран",
 ]
 
+# Такой же список, но в верхнем регистре — чтобы не считать .upper() каждый раз
+_ALLOWED_PREFIXES_UPPER = [p.upper() for p in _ALLOWED_PREFIXES]
 
-def _decode_text(raw_bytes: bytes) -> str:
-    """Декодировать байты в строку с попытками utf-8 / cp1251."""
+
+def _decode_bytes(raw: bytes) -> str:
+    """Аккуратно декодировать байты в строку.
+
+    Пробуем UTF‑8, затем Windows‑1251, в крайнем случае — UTF‑8 с игнором.
+    """
     for enc in ("utf-8", "cp1251"):
         try:
-            return raw_bytes.decode(enc)
+            return raw.decode(enc)
         except UnicodeDecodeError:
-            pass
-    return raw_bytes.decode("utf-8", errors="ignore")
+            continue
+    return raw.decode("utf-8", errors="ignore")
 
 
-def _strip_shop_header(raw_bytes: bytes) -> str:
-    """Удалить всё между <shop> и <offers>, оставив сами теги."""
-    text = _decode_text(raw_bytes)
+def _strip_shop_header(text: str) -> str:
+    """Удалить всё между <shop> и <offers>, оставив сами теги.
 
+    Если пара тегов не найдена — возвращаем текст как есть.
+    """
     shop_tag = "<shop>"
     offers_tag = "<offers>"
 
@@ -73,38 +80,36 @@ def _strip_shop_header(raw_bytes: bytes) -> str:
         return text
 
     idx_after_shop = idx_shop + len(shop_tag)
-    new_text = text[:idx_after_shop] + "\n" + text[idx_offers:]
-    return new_text
+    # Оставляем <shop> и сразу приклеиваем <offers> и всё, что ниже
+    return text[:idx_after_shop] + "\n" + text[idx_offers:]
 
 
 def _name_allowed(name_text: str) -> bool:
-    """Проверить, начинается ли name с одного из разрешённых префиксов."""
-    t = name_text.strip()
+    """Проверить, начинается ли имя с одного из разрешённых префиксов."""
+    t = html.unescape(name_text).strip()
     upper = t.upper()
-    for prefix in _ALLOWED_NAME_PREFIXES:
-        if upper.startswith(prefix.upper()):
-            return True
-    return False
+    return any(upper.startswith(prefix) for prefix in _ALLOWED_PREFIXES_UPPER)
 
 
 def _filter_offers_by_name(text: str) -> str:
-    """Оставить только те <offer>, у которых <name> начинается с нужных слов."""
+    """Оставить только те <offer>, где <name> начинается с наших ключей."""
     pattern = re.compile(r"(<offer\b[^>]*>.*?</offer>)", re.DOTALL | re.IGNORECASE)
+
     parts: list[str] = []
     last_end = 0
     kept = 0
     skipped = 0
 
     for match in pattern.finditer(text):
-        parts.append(text[last_end:match.start()])  # кусок до оффера
+        # Фрагмент до текущего оффера оставляем как есть
+        parts.append(text[last_end:match.start()])
 
         block = match.group(1)
         name_match = re.search(r"<name>(.*?)</name>", block, re.DOTALL | re.IGNORECASE)
         if not name_match:
             skipped += 1
         else:
-            raw_name = name_match.group(1)
-            name_text = html.unescape(raw_name).strip()
+            name_text = name_match.group(1)
             if _name_allowed(name_text):
                 parts.append(block)
                 kept += 1
@@ -113,7 +118,8 @@ def _filter_offers_by_name(text: str) -> str:
 
         last_end = match.end()
 
-    parts.append(text[last_end:])  # хвост после последнего оффера
+    # Хвост после последнего оффера
+    parts.append(text[last_end:])
 
     result = "".join(parts)
     print(f"[akcent] Фильтр по name: оставлено {kept}, выкинуто {skipped} офферов.")
@@ -121,21 +127,16 @@ def _filter_offers_by_name(text: str) -> str:
 
 
 def _clean_tags(text: str) -> str:
-    """Удалить лишние теги и блоки (url, Offer_ID, delivery, RRP и т.п.)."""
-    # Простые теги с содержимым
-    simple_patterns = [
-        r"<url>.*?</url>",
-        r"<Offer_ID>.*?</Offer_ID>",
-        r"<delivery>.*?</delivery>",
-        r"<local_delivery_cost>.*?</local_delivery_cost>",
-        r"<model>.*?</model>",
-        r"<manufacturer_warranty>.*?</manufacturer_warranty>",
-        r"<Stock>.*?</Stock>",
-    ]
-    for pat in simple_patterns:
-        text = re.sub(pat, "", text, flags=re.DOTALL)
+    """Удалить служебные теги и аккуратно «подтянуть» содержимое вверх."""
+    # 1) Удаляем простые теги с содержимым
+    text = re.sub(
+        r"<(url|Offer_ID|delivery|local_delivery_cost|model|manufacturer_warranty|Stock)>.*?</\1>",
+        "",
+        text,
+        flags=re.DOTALL,
+    )
 
-    # Блок цены по RRP: <price type="RRP" ...>...</price>
+    # 2) Удаляем блок цены по RRP: <price type="RRP" ...>...</price>
     text = re.sub(
         r'<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>',
         "",
@@ -143,30 +144,26 @@ def _clean_tags(text: str) -> str:
         flags=re.DOTALL | re.IGNORECASE,
     )
 
-    # Удаляем только оболочку <prices> и </prices>
-    text = re.sub(r"</?prices>", "", text)
+    # 3) Удаляем оболочку <prices> и </prices>, внутренние <price> остаются
+    text = re.sub(r"</?prices>", "", text, flags=re.IGNORECASE)
 
-    # Убираем лишние пустые строки, которые остались после удаления тегов
+    # 4) Схлопываем лишние пустые строки, которые появились после удаления тегов
     text = re.sub(r"\n\s*\n", "\n", text)
 
     return text
 
 
-def _left_align(text: str) -> str:
-    """Убрать ведущие пробелы/табы у каждой строки."""
-    lines = text.splitlines()
-    stripped = [line.lstrip(" \t") for line in lines]
-    return "\n".join(stripped)
+def _normalize_layout(text: str) -> str:
+    """Выравнивание слева + аккуратные разрывы между блоками.
 
-
-def _format_layout(text: str) -> str:
-    """Сделать <shop><offers> и разрывы строго по схеме.
-
-    - <shop><offers>\n\n<offer...
-    - </offer>\n\n<offer...
-    - </offer>\n\n</offers>
+    На выходе хотим:
+    <shop><offers>\n\n<offer ...>...</offer>\n\n<offer ...>...</offer>...\n\n</offers>
     """
-    # 1) Нормализуем начало: <shop><offers>\n\n<offer...
+    # 1) Убираем ведущие пробелы/табы у каждой строки
+    lines = text.splitlines()
+    text = "\n".join(line.lstrip(" \t") for line in lines)
+
+    # 2) Нормализуем начало: <shop><offers>\n\n<offer...
     text = re.sub(
         r"<shop>\s*<offers>\s*<offer",
         "<shop><offers>\n\n<offer",
@@ -174,10 +171,10 @@ def _format_layout(text: str) -> str:
         count=1,
     )
 
-    # 2) Между офферами делаем пустую строку
+    # 3) Между офферами делаем пустую строку
     text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
 
-    # 3) Между последним </offer> и </offers> делаем пустую строку
+    # 4) Между последним </offer> и </offers> делаем пустую строку
     text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
 
     return text
@@ -189,24 +186,23 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     resp = requests.get(source_url, timeout=60)
     resp.raise_for_status()
 
-    original = resp.content
-    print(f"[akcent] Получено байт: {len(original)}")
+    raw = resp.content
+    print(f"[akcent] Получено байт: {len(raw)}")
 
+    # 1) Декодируем байты в текст
+    text = _decode_bytes(raw)
 
-    # 1) удаляем блок между <shop> и <offers>
-    text = _strip_shop_header(original)
+    # 2) Режем блок между <shop> и <offers>
+    text = _strip_shop_header(text)
 
-    # 2) фильтруем офферы по началу <name>
+    # 3) Фильтруем офферы по началу <name>
     text = _filter_offers_by_name(text)
 
-    # 3) чистим ненужные теги
+    # 4) Удаляем служебные теги и лишние пустые строки
     text = _clean_tags(text)
 
-    # 4) выравниваем по левому краю
-    text = _left_align(text)
-
-    # 5) приводим <shop><offers> + двойной перенос строки после них
-    text = _format_layout(text)
+    # 5) Выравниваем и нормализуем разметку
+    text = _normalize_layout(text)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -215,7 +211,7 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
 
 
 def main() -> int:
-    """Точка входа."""
+    """Точка входа скрипта."""
     source_url = os.getenv(
         "AKCENT_URL",
         "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml",
