@@ -157,13 +157,17 @@ def _left_align(text: str) -> str:
 
 
 def _format_layout(text: str) -> str:
-    """Сделать <shop><offers> и сразу двойной перенос строки.
+    """Сделать <shop><offers> и разрывы между офферами.
 
     В начале файла приводим последовательность к виду:
-    <shop><offers>\n\n...
+    <shop><offers>\n\n<offer...
+    и добавляем пустую строку между каждым </offer> и следующим <offer>.
     """
-    # Только первое вхождение <shop>...<offers>
-    return re.sub(r"<shop>\s*<offers>", "<shop><offers>\n\n", text, count=1)
+    # 1) Только первое вхождение <shop>...<offers> приводим к <shop><offers>\n\n
+    text = re.sub(r"<shop>\s*<offers>", "<shop><offers>\n\n", text, count=1)
+    # 2) Между </offer> и следующими <offer> вставляем двойной перенос
+    text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
+    return text
 
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
