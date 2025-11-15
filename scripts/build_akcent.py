@@ -7,7 +7,7 @@
 - оставляем только те <offer>, у которых <name> начинается с нужных слов;
 - удаляем лишние теги (<url>, <Offer_ID>, <delivery>, <local_delivery_cost>,
   <model>, <manufacturer_warranty>, <Stock>, <prices>, </prices> и блок
-  <price type="RRP" ... </price>);
+  <price type=\"RRP\" ... </price>);
 - выравниваем все строки по левому краю (убираем ведущие пробелы и табы);
 - приводим теги к виду <shop><offers>, делаем двойные разрывы
   между <shop><offers> и первым <offer>, между офферами и перед </offers>;
@@ -155,7 +155,7 @@ def _clean_tags(text: str) -> str:
 
     # Удаляем блок цены по RRP: <price type="RRP"...>...</price>
     text = re.sub(
-        r"<price[^>]*type=["']RRP["'][^>]*>.*?</price>",
+        r'<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>',
         "",
         text,
         flags=re.DOTALL | re.IGNORECASE,
