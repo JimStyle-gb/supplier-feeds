@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<yml_catalog date="2025-11-15 19:43">
+<yml_catalog date="2025-11-15 20:51">
 <shop><offers>
 
 
@@ -46,231 +46,6 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 
 </offer>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <offer id="00002840" article="C12C890191" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</name>
 
@@ -301,6 +76,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 
 
 </offer>
+
 <offer id="Н0000024889" article="C12C934591" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX</name>
 
@@ -328,6 +104,7 @@ L15150</description>
 
 
 </offer>
+
 <offer id="Н0000020742" article="C13T04D000" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr)</name>
 
@@ -356,6 +133,7 @@ L15150</description>
 
 
 </offer>
+
 <offer id="Н0000019434" article="C13T04D100" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</name>
 
@@ -388,6 +166,7 @@ L15150</description>
 
 
 </offer>
+
 <offer id="00004072" article="C13T619000" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN</name>
 
@@ -417,6 +196,7 @@ Epson WorkForce Pro WP-4535DWF</description>
 
 
 </offer>
+
 <offer id="00012043" article="C13T619300" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200</name>
 
@@ -454,6 +234,7 @@ SC-B6000</description>
 
 
 </offer>
+
 <offer id="Н0000018444" article="C13T671400" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K)</name>
 
@@ -483,6 +264,7 @@ SC-B6000</description>
 
 
 </offer>
+
 <offer id="Н0000014657" article="C13T699700" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</name>
 
@@ -513,6 +295,7 @@ SC-B6000</description>
 
 
 </offer>
+
 <offer id="Н0000029240" article="C33S021601" type="Ёмкость для отработанных чернил" available="true">
 <name>Ёмкость для отработанных чернил Epson C33S021601	SJMB4000 C4000e Maintenance box</name>
 
@@ -534,6 +317,7 @@ SC-B6000</description>
 
 
 </offer>
+
 <offer id="00-00001785" article="C12C937201" type="Картридж EPSON" available="true">
 <name>Ёмкость для отработанных чернил Epson Maintenance Box for AM-C400/550</name>
 
@@ -562,154 +346,6 @@ SC-B6000</description>
 
 
 </offer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <offer id="Н0000023279" article="S102ABK43" type="Интерактивная доска" available="true">
 <name>Интерактивная доска Mr.Pixel S102 BLACK</name>
@@ -771,6 +407,7 @@ SC-B6000</description>
 
 
 </offer>
+
 <offer id="Н0000017225" article="S82ABK43" type="Интерактивная доска" available="true">
 <name>Интерактивная доска Mr.Pixel S82 BLACK</name>
 
@@ -848,6 +485,7 @@ SC-B6000</description>
 
 
 </offer>
+
 <offer id="00-00000111" article="SBID-QX275-P" type="" available="true">
 <name>Интерактивная панель SBID-QX275-P</name>
 
@@ -899,6 +537,7 @@ HDMI вход с поддержкой HDCP 2.3</description>
 
 
 </offer>
+
 <offer id="00-00000110" article="SBID-MX265-V4" type="" available="true">
 <name>Интерактивный дисплей SMART SBID-MX265-V4</name>
 
@@ -959,172 +598,6 @@ HDMI вход с поддержкой HDCP 2.3
 
 </offer>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <offer id="Н0000020697" article="C13T26704010" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W</name>
 
@@ -1152,6 +625,7 @@ HDMI вход с поддержкой HDCP 2.3
 
 
 </offer>
+
 <offer id="Н0000017363" article="C13T27914022" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T27914022 для WF-7620DTWF черный new</name>
 
@@ -1182,6 +656,7 @@ Epson WorkForce WF-7110DTW</description>
 
 
 </offer>
+
 <offer id="Н0000020609" article="C13T40D140" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T40D140 UltraChrome XD2 Black T40D140(80ml)</name>
 
@@ -1214,6 +689,7 @@ Epson SureColor SC-T5100N (без стенда)-C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="Н0000020610" article="C13T40D240" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T40D240 UltraChrome XD2 Cyan T40D240(50ml)</name>
 
@@ -1244,6 +720,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="00-00002994" article="C13T40D34N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T40D34N UltraChrome XD2 Magenta T40D340(50ml)</name>
 
@@ -1275,6 +752,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="Н0000020612" article="C13T40D440" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</name>
 
@@ -1307,6 +785,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="00-00003842" article="C13T41E240" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T41E240 UltraChrome 700 ml голубой</name>
 
@@ -1334,6 +813,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="00-00003948" article="C13T41E34N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T41E34N UltraChrome XD2 T41E340 M 350 ml пурпурный</name>
 
@@ -1361,6 +841,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="00-00003844" article="C13T41E440" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T41E440 700ml жёлтый</name>
 
@@ -1388,6 +869,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="00-00003841" article="C13T41E540" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T41E540 UltraChrome 700ml черный</name>
 
@@ -1416,6 +898,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="00-00003847" article="C13T41F34N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</name>
 
@@ -1445,6 +928,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 
 
 </offer>
+
 <offer id="Н0000020693" article="C13T41F440" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T41F440  UltraChrome XD2 T41F440 Y 350ml жёлтый</name>
 
@@ -1475,6 +959,7 @@ Epson SureColor T-7000</description>
 
 
 </offer>
+
 <offer id="00-00003374" article="C13T50M400" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T50M400 T3000/5000/7000, Т3700/5700/7700 жёлтый</name>
 
@@ -1509,6 +994,7 @@ Epson SC-T7700DM</description>
 
 
 </offer>
+
 <offer id="00-00001858" article="C13T50MF00" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T50MF00 T3000/5000/7000, Т3700/5700/7700 красный</name>
 
@@ -1543,6 +1029,7 @@ Epson SC-T7700DM</description>
 
 
 </offer>
+
 <offer id="00003259" article="C13T606100" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T606100 SP-4880 фото черный</name>
 
@@ -1573,6 +1060,7 @@ Epson Stylus Pro 4880</description>
 
 
 </offer>
+
 <offer id="00004354" article="C13T606300" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T606300 SP-4880 пурпурный</name>
 
@@ -1602,6 +1090,7 @@ Epson Stylus Pro 4880</description>
 
 
 </offer>
+
 <offer id="00003262" article="C13T606400" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T606400 SP-4880 желтый</name>
 
@@ -1631,6 +1120,7 @@ Epson Stylus Pro 4880</description>
 
 
 </offer>
+
 <offer id="00003263" article="C13T606500" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T606500 SP-4880 светло-голубой</name>
 
@@ -1660,6 +1150,7 @@ Epson Stylus Pro 4880</description>
 
 
 </offer>
+
 <offer id="00004764" article="C13T606600" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T606600 SP-4880 светло-пурпурный</name>
 
@@ -1688,6 +1179,7 @@ Epson Stylus Pro 4880</description>
 
 
 </offer>
+
 <offer id="00003265" article="C13T606700" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T606700 SP-4880 серый</name>
 
@@ -1717,6 +1209,7 @@ Epson Stylus Pro 4880</description>
 
 
 </offer>
+
 <offer id="00003266" article="C13T606900" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T606900 SP-4880 светло-серый</name>
 
@@ -1746,6 +1239,7 @@ Epson Stylus Pro 4880</description>
 
 
 </offer>
+
 <offer id="00003261" article="C13T606B00" type="" available="true">
 <name>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</name>
 
@@ -1766,6 +1260,7 @@ Epson Stylus Pro 4800</description>
 
 
 </offer>
+
 <offer id="00003264" article="C13T606C00" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T606C00 SP-4800 пурпурный светлый</name>
 
@@ -1794,6 +1289,7 @@ Epson Stylus Pro 4800</description>
 
 
 </offer>
+
 <offer id="00003268" article="C13T614200" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T614200 SP-4450 голубой</name>
 
@@ -1824,6 +1320,7 @@ Epson Stylus Pro 4450</description>
 
 
 </offer>
+
 <offer id="00003906" article="C13T614300" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T614300 SP-4450 пурпурный</name>
 
@@ -1854,6 +1351,7 @@ Epson Stylus Pro 4450</description>
 
 
 </offer>
+
 <offer id="00003907" article="C13T614400" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T614400 SP-4450 желтый</name>
 
@@ -1883,6 +1381,7 @@ Epson Stylus Pro 4450</description>
 
 
 </offer>
+
 <offer id="00-00000639" article="C13T61480N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T61480N SP-4450  220ml черный матовый</name>
 
@@ -1915,6 +1414,7 @@ Epson Stylus Pro 4450</description>
 
 
 </offer>
+
 <offer id="00012028" article="C13T692100" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T692100 T3000/5000/7000, Т3200/5200/7200  фото черный</name>
 
@@ -1946,6 +1446,7 @@ Epson SureColor T-7000</description>
 
 
 </offer>
+
 <offer id="00012038" article="C13T694100" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
 
@@ -1977,6 +1478,7 @@ Epson SureColor T-7000</description>
 
 
 </offer>
+
 <offer id="00-00000650" article="C13T69430N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный</name>
 
@@ -2008,6 +1510,7 @@ Epson SureColor T-7000</description>
 
 
 </offer>
+
 <offer id="00012042" article="C13T694500" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
 
@@ -2039,6 +1542,7 @@ Epson SureColor T-7000</description>
 
 
 </offer>
+
 <offer id="Н0000014302" article="C13T838140" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T838140 WF-R5190DTW (RIPS)/WF-R5690DTWF (RIPS) черный</name>
 
@@ -2071,6 +1575,7 @@ Epson SureColor T-7000</description>
 
 
 </offer>
+
 <offer id="Н0000021166" article="C13T965140" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</name>
 
@@ -2104,6 +1609,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="Н0000022191" article="C13T966140" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T966140 WF-M52/57xx Series Ink Cartridge XXL BK.</name>
 
@@ -2131,6 +1637,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00002896" article="C13T97410N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T97410N WorkForce Pro WF-C869R черный</name>
 
@@ -2158,6 +1665,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00002895" article="C13T97420N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T97420N WorkForce Pro WF-C869R голубой</name>
 
@@ -2184,6 +1692,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00002894" article="C13T97430N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T97430N WorkForce Pro WF-C869R пурпурный</name>
 
@@ -2210,6 +1719,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00002893" article="C13T97440N" type="Картридж EPSON" available="true">
 <name>Картридж Epson C13T97440N WorkForce Pro WF-C869R желтый</name>
 
@@ -2236,6 +1746,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00001781" article="C13T08N140" type="Картридж EPSON" available="true">
 <name>Картридж Epson WorkForce Enterprise AM-C400 Black Ink</name>
 
@@ -2264,6 +1775,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00001782" article="C13T08N240" type="Картридж EPSON" available="true">
 <name>Картридж Epson WorkForce Enterprise AM-C400 Cyan Ink</name>
 
@@ -2292,6 +1804,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00001783" article="C13T08N340" type="Картридж EPSON" available="true">
 <name>Картридж Epson WorkForce Enterprise AM-C400 Magenta Ink</name>
 
@@ -2320,6 +1833,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00001784" article="C13T08N440" type="Картридж EPSON" available="true">
 <name>Картридж Epson WorkForce Enterprise AM-C400 Yellow Ink</name>
 
@@ -2348,6 +1862,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="Н0000024920" article="AWP286/10" type="Фильтр для воды" available="true">
 <name>Картридж для бутылки Philips AWP286/10</name>
 
@@ -2383,6 +1898,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="Н0000023742" article="AWP201/10" type="Картридж для фильтра" available="true">
 <name>Картридж для фильтра Philips AWP201/10</name>
 
@@ -2429,180 +1945,6 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 </offer>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <offer id="00-00003623" article="8058201" type="Ламинатор А3" available="true">
 <name>Ламинатор Fellowes AMARIS A3 LAMINATOR 230V EU</name>
 
@@ -2639,6 +1981,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 
 
 </offer>
+
 <offer id="00-00000957" article="100016948" type="Ламинатор А3" available="true">
 <name>Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</name>
 
@@ -2702,6 +2045,7 @@ Auto Shut Off (Автоотключение)	да (после 30 минут пр
 
 
 </offer>
+
 <offer id="Н0000023479" article="FS-45700" type="Ламинатор А4" available="true">
 <name>Ламинатор Fellowes Arc A4, 75/80 мкм, 30 см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</name>
 
@@ -2764,6 +2108,7 @@ Auto Shut Off (Автоотключение)	да (после 30 минут пр
 
 
 </offer>
+
 <offer id="00-00001575" article="4560201" type="Ламинатор А3" available="true">
 <name>Ламинатор Fellowes Ion A3, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</name>
 
@@ -2821,6 +2166,7 @@ Auto Shut Off (Автоотключение)	да (30 мин после вклю
 
 
 </offer>
+
 <offer id="Н0000028034" article="4560001" type="Ламинатор А4" available="true">
 <name>Ламинатор Fellowes Ion A4, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</name>
 
@@ -2883,6 +2229,7 @@ Auto Shut Off (Автоотключение)	да (30 мин после вклю
 
 
 </offer>
+
 <offer id="Н0000018305" article="5716701" type="Ламинатор А3" available="true">
 <name>Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин</name>
 
@@ -2930,6 +2277,7 @@ Auto Shut Off (Автоотключение)	да (30 мин после вклю
 
 
 </offer>
+
 <offer id="Н0000018308" article="5715601" type="Ламинатор А4" available="true">
 <name>Ламинатор Fellowes Lunar A4, 2х80 мкм, 30 см/мин</name>
 
@@ -2972,6 +2320,7 @@ Jam Free механизм ClearPath обеспечивает 100% работу �
 
 
 </offer>
+
 <offer id="Н0000023426" article="5742801" type="Ламинатор А4" available="true">
 <name>Ламинатор Fellowes Lunar+ A4, Blue, 75/80,125 мкм, 30 см/мин</name>
 
@@ -3008,70 +2357,6 @@ Fellowes гарантирует непревзойденное качество 
 
 </offer>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <offer id="Н0000027965" article="64V69AA#ABB" type="Монитор" available="true">
 <name>Монитор Hyperx MNTR HX Armada 27 QHD Gaming</name>
 
@@ -3102,6 +2387,7 @@ Quad HD (1440p) VESA DisplayHDR™ 400.
 
 
 </offer>
+
 <offer id="Н0000027711" article="XG320U" type="Монитор" available="true">
 <name>Монитор ViewSonic XG320U</name>
 
@@ -3214,19 +2500,6 @@ Power in: 3-pin Socket (IEC C14 / CEE22)
 
 
 </offer>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <offer id="Н0000025267" article="C11CH96404" type="МФУ  Офис" available="true">
 <name>МФУ Epson L14150 фабрика печати</name>
@@ -3374,6 +2647,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 
 
 </offer>
+
 <offer id="Н0000024243" article="C11CH72404" type="МФУ  Офис" available="true">
 <name>МФУ Epson L15150 фабрика печати</name>
 
@@ -3458,6 +2732,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 
 
 </offer>
+
 <offer id="Н0000028838" article="C11CJ69401" type="МФУ  Дом" available="true">
 <name>МФУ Epson L3200 фабрика печати</name>
 
@@ -3561,6 +2836,7 @@ Black</description>
 
 
 </offer>
+
 <offer id="Н0000027697" article="C11CJ67414" type="МФУ  Дом" available="true">
 <name>МФУ Epson L3256 фабрика печати</name>
 
@@ -3633,6 +2909,7 @@ Black</description>
 
 
 </offer>
+
 <offer id="Н0000027843" article="C11CJ66409" type="МФУ  Офис" available="true">
 <name>МФУ Epson L3260 фабрика печати, Wi-Fi</name>
 
@@ -3749,6 +3026,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 
 
 </offer>
+
 <offer id="Н0000027858" article="C11CJ66411" type="МФУ  Дом" available="true">
 <name>МФУ Epson L3266 фабрика печати, Wi-Fi</name>
 
@@ -3856,6 +3134,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 
 
 </offer>
+
 <offer id="Н0000029536" article="C11CJ63412" type="МФУ  Дом" available="true">
 <name>МФУ Epson L4260 фабрика печати</name>
 
@@ -3959,6 +3238,7 @@ Black
 
 
 </offer>
+
 <offer id="Н0000028968" article="C11CJ63413" type="МФУ  Дом" available="true">
 <name>МФУ Epson L4267 фабрика печати</name>
 
@@ -4071,6 +3351,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 
 
 </offer>
+
 <offer id="Н0000027844" article="C11CJ65407" type="МФУ  Офис" available="true">
 <name>МФУ Epson L5290  фабрика печати, факс,Wi-Fi</name>
 
@@ -4120,6 +3401,7 @@ CD с программным обеспечением и драйверами д
 
 
 </offer>
+
 <offer id="Н0000019019" article="C11CG21404" type="МФУ  Офис" available="true">
 <name>МФУ Epson L6160 фабрика печати, Wi-Fi</name>
 
@@ -4265,6 +3547,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 
 
 </offer>
+
 <offer id="Н0000028966" article="C11CJ61405" type="МФУ  Дом" available="true">
 <name>МФУ Epson L6270 фабрика печати, Wi-Fi</name>
 
@@ -4381,6 +3664,7 @@ Black
 
 
 </offer>
+
 <offer id="Н0000028238" article="C11CJ60406" type="МФУ  Дом" available="true">
 <name>МФУ Epson L6290 фабрика печати, факс.Wi-Fi</name>
 
@@ -4512,6 +3796,7 @@ Black
 
 
 </offer>
+
 <offer id="Н0000025334" article="C11CJ30404" type="МФУ  Офис" available="true">
 <name>МФУ Epson L6550 фабрика печати, факс,Wi-Fi</name>
 
@@ -4574,6 +3859,7 @@ CD с программным обеспечением и драйверами д
 
 
 </offer>
+
 <offer id="Н0000026213" article="C11CJ21403" type="МФУ  Офис" available="true">
 <name>МФУ Epson L8180  фабрика печати</name>
 
@@ -4721,6 +4007,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 
 
 </offer>
+
 <offer id="Н0000024021" article="C11CJ19401" type="МФУ  Дом" available="true">
 <name>МФУ Epson M2110 (CIS) фабрика печати</name>
 
@@ -4790,6 +4077,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 
 
 </offer>
+
 <offer id="Н0000024022" article="C11CJ18404" type="МФУ  Дом" available="true">
 <name>МФУ Epson M2120 (CIS) фабрика печати</name>
 
@@ -4860,6 +4148,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 
 
 </offer>
+
 <offer id="Н0000021159" article="C11CG27405" type="МФУ  Дом" available="true">
 <name>МФУ Epson M2140 (CIS) фабрика печати</name>
 
@@ -4934,488 +4223,6 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 
 </offer>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <offer id="Н0000029020" article="FS-53061" type="пленка для ламинирования" available="true">
 <name>Пленка для ламинирования  А4 Fellowes, 80мкм, 100 шт.</name>
 
@@ -5448,50 +4255,6 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 
 
 </offer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <offer id="00-00002509" article="C11CK39403" type="Принтер для цветной печати" available="true">
 <name>Принтер Epson L11050 фабрика печати</name>
@@ -5567,6 +4330,7 @@ CD с программным обеспечением и драйверами д
 
 
 </offer>
+
 <offer id="Н0000026057" article="C11CD76414" type="Принтер для цветной печати" available="true">
 <name>Принтер Epson L121 фабрика печати</name>
 
@@ -5645,6 +4409,7 @@ Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]</description>
 
 
 </offer>
+
 <offer id="Н0000028836" article="C11CJ71404" type="МФУ  Дом" available="true">
 <name>Принтер Epson L1250 фабрика печати</name>
 
@@ -5744,6 +4509,7 @@ ESC/P-R
 
 
 </offer>
+
 <offer id="Н0000014920" article="C11CE58403" type="Принтер для цветной печати" available="true">
 <name>Принтер Epson L132 фабрика печати</name>
 
@@ -5850,6 +4616,7 @@ USB
 
 
 </offer>
+
 <offer id="00-00000546" article="C11CK38403" type="Принтер для цветной печати" available="true">
 <name>Принтер Epson L18050 фабрика печати</name>
 
@@ -5982,6 +4749,7 @@ ESC/P-R
 
 
 </offer>
+
 <offer id="Н0000021157" article="C11CG95405" type="Принтер для черно-белой печати" available="true">
 <name>Принтер Epson M1100 фабрика печати</name>
 
@@ -6102,6 +4870,7 @@ ESC/P, ESC/P-R
 
 
 </offer>
+
 <offer id="Н0000027838" article="C11CG26405" type="Принтер для черно-белой печати" available="true">
 <name>Принтер Epson M1140 (CIS) фабрика печати</name>
 
@@ -6218,6 +4987,7 @@ GDI
 
 
 </offer>
+
 <offer id="Н0000025928" article="C11CH38402" type="" available="true">
 <name>Принтер Epson SureColor SC-P700</name>
 
@@ -6264,6 +5034,7 @@ CD с программным обеспечением и драйверами
 
 
 </offer>
+
 <offer id="00012320" article="C51CB70080" type="ленточный" available="true">
 <name>Принтер ленточный Epson LW400</name>
 
@@ -6332,6 +5103,7 @@ Tехнология печати	Термотрансферная
 
 
 </offer>
+
 <offer id="00014741" article="C51CA63100" type="ленточный" available="true">
 <name>Принтер ленточный Epson LW700</name>
 
@@ -6401,6 +5173,7 @@ Tехнология печати	Термотрансферная
 
 
 </offer>
+
 <offer id="00-00001684" article="ZD4A042-30EE00EZ" type="" available="true">
 <name>Принтер этикеток Zebra ZD421-30EE чёрный</name>
 
@@ -6433,6 +5206,7 @@ ZD421 — единственный термальный принтер с лен
 
 
 </offer>
+
 <offer id="00-00001685" article="ZD4A042-30EM00EZ" type="" available="true">
 <name>Принтер этикеток Zebra ZD421-30EM чёрный</name>
 
@@ -6457,6 +5231,7 @@ Zebra ZD421 обладает расширенным функционалом, в
 
 
 </offer>
+
 <offer id="00-00001686" article="ZD4A042-D0EE00EZ" type="" available="true">
 <name>Принтер этикеток Zebra ZD421-D0EE чёрный</name>
 
@@ -6489,6 +5264,7 @@ ZD421 — единственный термальный принтер с лен
 
 
 </offer>
+
 <offer id="Н0000029052" article="LS550WH" type="Проектор" available="true">
 <name>Проектор ViewSonic LS550WH</name>
 
@@ -6570,6 +5346,7 @@ RS232:1
 
 
 </offer>
+
 <offer id="00-00001179" article="LS500WH" type="Домашний кинотеатр" available="true">
 <name>Проектор для дом. кино ViewSonic LS500WH</name>
 
@@ -6611,6 +5388,7 @@ RS232:1
 
 
 </offer>
+
 <offer id="Н0000025493" article="PX701-4K" type="Проектор домашний" available="true">
 <name>Проектор для дом. кино ViewSonic PX701-4K</name>
 
@@ -6689,6 +5467,7 @@ ViewSonic PX701-4K — идеальный выбор для тех, кто ищ�
 
 
 </offer>
+
 <offer id="00-00000397" article="V11HA84240" type="Проектор для дома" available="true">
 <name>Проектор для дома  Epson CO-FD01</name>
 
@@ -6746,6 +5525,7 @@ ViewSonic PX701-4K — идеальный выбор для тех, кто ищ�
 
 
 </offer>
+
 <offer id="00-00001406" article="V11HA84040" type="Проектор для дома" available="true">
 <name>Проектор для дома  Epson CO-FH01</name>
 
@@ -6822,6 +5602,7 @@ Offset
 
 
 </offer>
+
 <offer id="Н0000029038" article="V11HA07040" type="Проектор для дома" available="true">
 <name>Проектор для дома  Epson EH-LS300W, лазерный</name>
 
@@ -6848,6 +5629,7 @@ Offset
 
 
 </offer>
+
 <offer id="Н0000027829" article="M2" type="Проектор короткофокусный" available="true">
 <name>Проектор короткофокусный ViewSonic M2</name>
 
@@ -6916,6 +5698,7 @@ ________________________________________
 
 
 </offer>
+
 <offer id="Н0000028228" article="V11HA86040" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Epson CO-W01</name>
 
@@ -6943,6 +5726,7 @@ ________________________________________
 
 
 </offer>
+
 <offer id="Н0000029040" article="V11HA86340" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Epson CO-WX02</name>
 
@@ -7003,6 +5787,7 @@ WXGA3 (1366x7</description>
 
 
 </offer>
+
 <offer id="00-00003846" article="V11HB51042" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Epson EB-E24</name>
 
@@ -7049,6 +5834,7 @@ WXGA3 (1366x7</description>
 
 
 </offer>
+
 <offer id="Н0000024848" article="V11H974040" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Epson EB-FH06</name>
 
@@ -7141,6 +5927,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 
 
 </offer>
+
 <offer id="00-00004296" article="V11HB54042" type="" available="true">
 <name>Проектор универсальный Epson EB-FH08 белый</name>
 
@@ -7316,6 +6103,7 @@ Miracast и Apple AirPlay 2
 
 
 </offer>
+
 <offer id="00-00004293" article="V11HB59042" type="" available="true">
 <name>Проектор универсальный Epson EB-FH54 белый</name>
 
@@ -7416,6 +6204,7 @@ Miracast и Apple AirPlay 2
 
 
 </offer>
+
 <offer id="Н0000024846" article="V11H973040" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Epson EB-W06</name>
 
@@ -7502,6 +6291,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 
 
 </offer>
+
 <offer id="Н0000024936" article="V11H977040" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Epson EB-W51</name>
 
@@ -7592,6 +6382,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 
 
 </offer>
+
 <offer id="00-00004421" article="V11HB57042" type="" available="true">
 <name>Проектор универсальный Epson EB-W53 белый</name>
 
@@ -7617,6 +6408,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 
 
 </offer>
+
 <offer id="00-00004100" article="V11HB35240" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Epson EF-21R розовый кварц</name>
 
@@ -7656,6 +6448,7 @@ Full HD</description>
 
 
 </offer>
+
 <offer id="00-00003069" article="V11HB38140" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Epson EF-22B</name>
 
@@ -7762,6 +6555,7 @@ Warranty
 
 
 </offer>
+
 <offer id="Н0000027327" article="DX273" type="Проектор универсальный" available="true">
 <name>Проектор универсальный Vivitek DX273</name>
 
@@ -7848,101 +6642,6 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество порто�
 
 </offer>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <offer id="Н0000029197" article="B11B268401" type="сканер для дома планшетные" available="true">
 <name>Сканер Epson Perfection V39II</name>
 
@@ -8004,6 +6703,7 @@ Digital Ice, непрозрачные оригиналы	Нет
 
 
 </offer>
+
 <offer id="Н0000029015" article="B11B265401" type="Потоковые для бизнеса" available="true">
 <name>Сканер Epson WorkForce DS-790WN</name>
 
@@ -8030,6 +6730,7 @@ Digital Ice, непрозрачные оригиналы	Нет
 
 
 </offer>
+
 <offer id="00-00001683" article="LI4278-TRBU0100ZER" type="" available="true">
 <name>Сканер штрих-кода Zebra LI4278 чёрный</name>
 
@@ -8052,275 +6753,6 @@ Digital Ice, непрозрачные оригиналы	Нет
 
 
 </offer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <offer id="Н0000020839" article="C13T00Q140" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00Q140 для L7160/L7180 черный пигмент</name>
@@ -8354,6 +6786,7 @@ Epson L7180	C11CG16404</description>
 
 
 </offer>
+
 <offer id="Н0000020836" article="C13T00R140" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00R140  для L7160/L7180 чёрный</name>
 
@@ -8386,6 +6819,7 @@ Epson L7180	C11CG16404</description>
 
 
 </offer>
+
 <offer id="Н0000020835" article="C13T00R240" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00R240 для L7160/L7180 голубой</name>
 
@@ -8418,6 +6852,7 @@ Epson L7180	C11CG16404</description>
 
 
 </offer>
+
 <offer id="Н0000020837" article="C13T00R340" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00R340  для L7160/L7180 пурпурный</name>
 
@@ -8450,6 +6885,7 @@ Epson L7180	C11CG16404</description>
 
 
 </offer>
+
 <offer id="Н0000020838" article="C13T00R440" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00R440  для L7160/L7180 жёлтый</name>
 
@@ -8482,6 +6918,7 @@ Epson L7180	C11CG16404</description>
 
 
 </offer>
+
 <offer id="Н0000020863" article="C13T00S14A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00S14A 103 EcoTank для L3100/L3101/L3110/L3150 черный</name>
 
@@ -8525,6 +6962,7 @@ Epson L1110	C11CG89403</description>
 
 
 </offer>
+
 <offer id="Н0000020864" article="C13T00S24A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой</name>
 
@@ -8566,6 +7004,7 @@ Epson L3151	C11CG86411</description>
 
 
 </offer>
+
 <offer id="Н0000020865" article="C13T00S34A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00S34A 103 EcoTank для L3100/L3101/L3110/L3150 пурпурный</name>
 
@@ -8607,6 +7046,7 @@ Epson L3151	C11CG86411</description>
 
 
 </offer>
+
 <offer id="Н0000020866" article="C13T00S44A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T00S44A 103 EcoTank для L3100/L3101/L3110/L3150  жёлтый</name>
 
@@ -8648,6 +7088,7 @@ Epson L3151	C11CG86411</description>
 
 
 </offer>
+
 <offer id="Н0000022912" article="C13T01L14A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml</name>
 
@@ -8693,6 +7134,7 @@ Epson M2170 C11CH43404</description>
 
 
 </offer>
+
 <offer id="Н0000018701" article="C13T03V24A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</name>
 
@@ -8725,6 +7167,7 @@ L4150/L4160</description>
 
 
 </offer>
+
 <offer id="Н0000018702" article="C13T03V34A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</name>
 
@@ -8757,6 +7200,7 @@ L4150/L4160</description>
 
 
 </offer>
+
 <offer id="Н0000018703" article="C13T03V44A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T03V44A 101 EcoTank 70ml для L4150/L4160 жёлтый</name>
 
@@ -8789,6 +7233,7 @@ L4150/L4160</description>
 
 
 </offer>
+
 <offer id="Н0000024276" article="C13T06C14A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T06C14A для L15150 чёрный</name>
 
@@ -8818,6 +7263,7 @@ L4150/L4160</description>
 
 
 </offer>
+
 <offer id="Н0000024277" article="C13T06C24A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T06C24A  для L15150 голубой</name>
 
@@ -8847,6 +7293,7 @@ L4150/L4160</description>
 
 
 </offer>
+
 <offer id="Н0000024278" article="C13T06C34A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T06C34A для L15150 пурпурный</name>
 
@@ -8876,6 +7323,7 @@ L4150/L4160</description>
 
 
 </offer>
+
 <offer id="Н0000024279" article="C13T06C44A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T06C44A  для L15150 жёлтый</name>
 
@@ -8905,6 +7353,7 @@ L4150/L4160</description>
 
 
 </offer>
+
 <offer id="Н0000026364" article="C13T07D24A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T07D24A для L8160/L8180 голубые</name>
 
@@ -8934,6 +7383,7 @@ L4150/L4160</description>
 
 
 </offer>
+
 <offer id="00-00000177" article="C13T09C14A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T09C14A 108 EcoTank для L8050/18050 чёрный</name>
 
@@ -8973,6 +7423,7 @@ Epson L18050</description>
 
 
 </offer>
+
 <offer id="00-00000181" article="C13T09C64A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный</name>
 
@@ -9003,6 +7454,7 @@ Epson L18050</description>
 
 
 </offer>
+
 <offer id="00008495" article="C13T66414A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный</name>
 
@@ -9046,6 +7498,7 @@ Epson L550</description>
 
 
 </offer>
+
 <offer id="00008584" article="C13T66434A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T66434A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 пурпурный</name>
 
@@ -9089,6 +7542,7 @@ Epson L550</description>
 
 
 </offer>
+
 <offer id="00008585" article="C13T66444A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый</name>
 
@@ -9132,6 +7586,7 @@ Epson L550</description>
 
 
 </offer>
+
 <offer id="00008266" article="C13T67314A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T67314A L800/1800/810/850 черный</name>
 
@@ -9170,6 +7625,7 @@ Epson L800</description>
 
 
 </offer>
+
 <offer id="00008267" article="C13T67324A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T67324A L800/1800/810/850 голубой</name>
 
@@ -9208,6 +7664,7 @@ Epson L800</description>
 
 
 </offer>
+
 <offer id="00008268" article="C13T67334A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T67334A L800/1800/810/850 пурпурный</name>
 
@@ -9246,6 +7703,7 @@ Epson L800</description>
 
 
 </offer>
+
 <offer id="00008269" article="C13T67344A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T67344A L800/1800/810/850 желтый</name>
 
@@ -9284,6 +7742,7 @@ Epson L800</description>
 
 
 </offer>
+
 <offer id="00008270" article="C13T67354A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T67354A L800/1800/810/850 светло-голубой</name>
 
@@ -9322,6 +7781,7 @@ Epson L800</description>
 
 
 </offer>
+
 <offer id="00008271" article="C13T67364A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный</name>
 
@@ -9360,6 +7820,7 @@ Epson L800</description>
 
 
 </offer>
+
 <offer id="00011770" article="C13T77414A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Чернила Epson C13T77414A M100/M105/M200 черный</name>
 
@@ -9400,12 +7861,6 @@ M200</description>
 
 
 </offer>
-
-
-
-
-
-
 
 <offer id="Н0000029268" article="5050101" type="шредеры офисные" available="true">
 <name>Шредер Fellowes Powershred LX201 белый</name>
@@ -9453,6 +7908,7 @@ P-5 уровень секретности, резка листа А4 на 2200+ 
 
 
 </offer>
+
 <offer id="00-00003833" article="5050001" type="шредеры офисные" available="true">
 <name>Шредер Fellowes Powershred LX201 черный</name>
 
@@ -9476,6 +7932,7 @@ P-5 уровень секретности, резка листа А4 на 2200+ 
 
 
 </offer>
+
 <offer id="Н0000022816" article="4629201" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм,автоподача 100 лст., 23 лтр., автореверc</name>
 
@@ -9515,6 +7972,7 @@ Sleep Mode	Sleep Mode™. автоматическое отключение пи
 
 
 </offer>
+
 <offer id="Н0000022088" article="FS-46801*" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</name>
 
@@ -9570,6 +8028,7 @@ Safe</description>
 
 
 </offer>
+
 <offer id="00-00000956" article="4621501" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® AutoMax® 80M, минирезка, DIN P-4, 4х12 мм,автоподача 80 лст., 17 лтр., автореверc</name>
 
@@ -9610,6 +8069,7 @@ Sleep Mode	Sleep Mode™. автоматическое отключение пи
 
 
 </offer>
+
 <offer id="Н0000027931" article="FS-71201" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred® 12C, DIN P-4, 4х40мм, 12лст., 18лтр., Safety Lock</name>
 
@@ -9665,6 +8125,7 @@ P-4 уровень секретности
 
 
 </offer>
+
 <offer id="00-00001581" article="4653101" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred® 53C, DIN P-4</name>
 
@@ -9699,6 +8160,7 @@ P-4 уровень секретности
 
 
 </offer>
+
 <offer id="Н0000029016" article="5502201" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</name>
 
@@ -9745,6 +8207,7 @@ P-4 уровень секретности
 
 
 </offer>
+
 <offer id="Н0000029252" article="5502501" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</name>
 
@@ -9821,6 +8284,7 @@ Sleep Mode (автоотключение)	да
 
 
 </offer>
+
 <offer id="Н0000027932" article="4300701" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred® LX41, DIN P-4,  4х12мм, 8 лст., 17 лтр.,  уничт.: скрепки,скобы,карты</name>
 
@@ -9875,6 +8339,7 @@ SafeSense® Техноло</description>
 
 
 </offer>
+
 <offer id="Н0000027342" article="FS-44075" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred® LX70, DIN P-4, 4х37мм, 11 лст., 18 лтр., уничт.: скрепки,скобы,карты</name>
 
@@ -9929,6 +8394,7 @@ SafeSense® Технолог</description>
 
 
 </offer>
+
 <offer id="Н0000018316" article="4701001" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр.,</name>
 
@@ -10009,6 +8475,7 @@ SafeSense® Технолог</description>
 
 
 </offer>
+
 <offer id="Н0000029251" article="5050501" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred®LX221 WHITE SHREDDER EU/UK</name>
 
@@ -10085,6 +8552,7 @@ Sleep Mode (автоотключение)	да
 
 
 </offer>
+
 <offer id="Н0000029263" article="4170501" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred®LX25 SHREDDER (CROSS CUT) 230V EU</name>
 
@@ -10164,6 +8632,7 @@ Auto-Oil™	нет
 
 
 </offer>
+
 <offer id="00-00003832" article="4170601" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</name>
 
@@ -10190,6 +8659,7 @@ Auto-Oil™	нет
 
 
 </offer>
+
 <offer id="Н0000029261" article="4400501" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU</name>
 
@@ -10271,6 +8741,7 @@ Auto-Oil™	нет
 
 
 </offer>
+
 <offer id="Н0000029262" article="4400701" type="шредеры офисные" available="true">
 <name>Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</name>
 
@@ -10352,6 +8823,7 @@ Auto-Oil™	нет
 
 
 </offer>
+
 <offer id="Н0000026100" article="6008101" type="" available="true">
 <name>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.,</name>
 
@@ -10401,11 +8873,6 @@ P-4 уровень секретности
 
 </offer>
 
-
-
-
-
-
 <offer id="Н0000028241" article="C13T66464A" type="Фабрика печати  (чернила EPSON)" available="true">
 <name>Экономичный набор из четырех контейнеров с чернилами, серия 664</name>
 
@@ -10434,6 +8901,7 @@ P-4 уровень секретности
 
 
 </offer>
+
 <offer id="00017909" article="MSPSAB112V2" type="Экран моторизированный" available="true">
 <name>Экран моторизированный Mr.Pixel 80" X 80" (2,03 X 2,03)</name>
 
@@ -10479,6 +8947,7 @@ P-4 уровень секретности
 
 
 </offer>
+
 <offer id="00-00003504" article="MAGNASDB96V2" type="Экран на треноге" available="true">
 <name>Экран на треноге Mr.Pixel ECO 70" X 70" (1,78 X 1,78)</name>
 
@@ -10528,6 +8997,7 @@ P-4 уровень секретности
 
 
 </offer>
+
 <offer id="00017859" article="MSPSBB96V2" type="Экран настенный" available="true">
 <name>Экран настенный Mr.Pixel 70" X 70" (1,78 X 1,78)</name>
 
@@ -10575,6 +9045,7 @@ P-4 уровень секретности
 
 
 </offer>
+
 <offer id="00-00003501" article="MAGNASBB96V2" type="Экран настенный" available="true">
 <name>Экран настенный Mr.Pixel ECO 70" X 70" (1,78 X 1,78)</name>
 
@@ -10622,6 +9093,7 @@ P-4 уровень секретности
 
 
 </offer>
+
 <offer id="00-00003502" article="MAGNASBB112V2" type="Экран настенный" available="true">
 <name>Экран настенный Mr.Pixel ECO 80" X 80" (2,03 X 2,03)</name>
 
