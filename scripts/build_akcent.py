@@ -9,7 +9,7 @@
   <model>, <manufacturer_warranty>, <Stock>, <prices>, </prices> и блок
   <price type=\"RRP\" ... </price>);
 - выравниваем все строки по левому краю (убираем ведущие пробелы и табы);
-- приводим теги к виду <shop><offers>, делаем двойные разрывы
+- В САМОМ КОНЦЕ приводим теги к виду <shop><offers>, делаем двойные разрывы
   между <shop><offers> и первым <offer>, между офферами и перед </offers>;
 - сохраняем результат как docs/akcent.yml.
 """
@@ -223,7 +223,7 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     # 4) выравниваем по левому краю
     text = _left_align(text)
 
-    # 5) приводим <shop><offers> и разрывы
+    # 5) В САМОМ КОНЦЕ приводим <shop><offers> и разрывы
     text = _format_layout(text)
 
     out_bytes = text.encode("utf-8")
