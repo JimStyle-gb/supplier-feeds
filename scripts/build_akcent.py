@@ -153,9 +153,7 @@ def _format_layout(text: str) -> str:
     - </offer>\n\n<offer...
     - </offer>\n\n</offers>
     """
-    # 1) Нормализуем блок начала: <shop><offers>
-
-<offer...
+    # 1) Нормализуем блок начала: <shop><offers>\n\n<offer...
     text = re.sub(
         r"<shop>\s*<offers>\s*<offer",
         "<shop><offers>\n\n<offer",
