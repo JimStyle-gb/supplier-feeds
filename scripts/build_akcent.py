@@ -157,16 +157,26 @@ def _left_align(text: str) -> str:
 
 
 def _format_layout(text: str) -> str:
-    """Сделать <shop><offers> и разрывы между офферами.
+    """Сделать <shop><offers> и разрывы строго по схеме.
 
-    В начале файла приводим последовательность к виду:
-    <shop><offers>\n\n<offer...
-    и добавляем пустую строку между каждым </offer> и следующим <offer>.
+    - <shop><offers>\n\n<offer...
+    - </offer>\n\n<offer...
+    - </offer>\n\n</offers>
     """
-    # 1) Только первое вхождение <shop>...<offers> приводим к <shop><offers>\n\n
-    text = re.sub(r"<shop>\s*<offers>", "<shop><offers>\n\n", text, count=1)
-    # 2) Между </offer> и следующими <offer> вставляем двойной перенос
+    # 1) Нормализуем начало: <shop><offers>\n\n<offer...
+    text = re.sub(
+        r"<shop>\s*<offers>\s*<offer",
+        "<shop><offers>\n\n<offer",
+        text,
+        count=1,
+    )
+
+    # 2) Между офферами делаем пустую строку
     text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
+
+    # 3) Между последним </offer> и </offers> делаем пустую строку
+    text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
+
     return text
 
 
