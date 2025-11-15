@@ -156,6 +156,16 @@ def _left_align(text: str) -> str:
     return "\n".join(stripped)
 
 
+def _format_layout(text: str) -> str:
+    """Сделать <shop><offers> и сразу двойной перенос строки.
+
+    В начале файла приводим последовательность к виду:
+    <shop><offers>\n\n...
+    """
+    # Только первое вхождение <shop>...<offers>
+    return re.sub(r"<shop>\s*<offers>", "<shop><offers>\n\n", text, count=1)
+
+
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
     """Скачать файл поставщика, обработать и сохранить на диск."""
     print(f"[akcent] Скачиваем файл: {source_url}")
@@ -177,6 +187,9 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
 
     # 4) выравниваем по левому краю
     text = _left_align(text)
+
+    # 5) приводим <shop><offers> + двойной перенос строки после них
+    text = _format_layout(text)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
