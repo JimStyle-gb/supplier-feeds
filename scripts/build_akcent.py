@@ -1,49 +1,23 @@
 #!/usr/bin/env python3
 """Простой сборщик для поставщика Akcent.
 
-Вариант v6:
+Вариант v4:
 - скачиваем исходный XML/YML файл поставщика;
 - удаляем весь блок МЕЖДУ тегами <shop> и <offers> (оставляем сами теги);
-- фильтруем офферы по началу текста в теге <name>;
-- приводим теги к виду <shop><offers> + двойной перенос строки,
-  и разделяем офферы пустой строкой между </offer> и <offer>;
 - выравниваем все строки по левому краю (убираем ведущие пробелы и табы);
+- склеиваем <shop><offers> в одну строку и добавляем после них двойной перенос;
+- вставляем пустую строку между каждым </offer> и следующим <offer>;
 - сохраняем результат как docs/akcent.yml.
 """
 
 from __future__ import annotations
 
-import html
 import os
 import re
 import sys
 from pathlib import Path
 
 import requests
-
-
-# Список допустимых префиксов для <name>
-_ALLOWED_NAME_PREFIXES = [
-    "C13T55",
-    "Ёмкость для отработанных чернил",
-    "Интерактивная доска",
-    "Интерактивная панель",
-    "Интерактивный дисплей",
-    "Картридж",
-    "Ламинатор",
-    "Монитор",
-    "МФУ",
-    "Переплетчик",
-    "Пленка для ламинирования",
-    "Плоттер",
-    "Принтер",
-    "Проектор",
-    "Сканер",
-    "Чернила",
-    "Шредер",
-    "Экономичный набор",
-    "Экран",
-]
 
 
 def _decode_text(raw_bytes: bytes) -> str:
@@ -89,50 +63,14 @@ def _strip_shop_header(raw_bytes: bytes) -> str:
     return new_text
 
 
-def _name_allowed(name_text: str) -> bool:
-    """Проверить, начинается ли name с одного из разрешённых префиксов."""
-    t = name_text.strip()
-    upper = t.upper()
-    for prefix in _ALLOWED_NAME_PREFIXES:
-        if upper.startswith(prefix.upper()):
-            return True
-    return False
+def _left_align(text: str) -> str:
+    """Убрать все ведущие пробелы/табы у каждой строки.
 
-
-def _filter_offers_by_name(text: str) -> str:
-    """Оставить только те <offer>, у которых <name> начинается с нужных слов."""
-    pattern = re.compile(r"(<offer\b[^>]*>.*?</offer>)", re.DOTALL | re.IGNORECASE)
-    parts: list[str] = []
-    last_end = 0
-    kept = 0
-    skipped = 0
-
-    for match in pattern.finditer(text):
-        # добавляем кусок ДО текущего оффера как есть
-        parts.append(text[last_end:match.start()])
-
-        block = match.group(1)
-        name_match = re.search(r"<name>(.*?)</name>", block, re.DOTALL | re.IGNORECASE)
-        if not name_match:
-            skipped += 1
-        else:
-            raw_name = name_match.group(1)
-            # раскодируем сущности на всякий случай (&quot; и т.п.)
-            name_text = html.unescape(raw_name).strip()
-            if _name_allowed(name_text):
-                parts.append(block)
-                kept += 1
-            else:
-                skipped += 1
-
-        last_end = match.end()
-
-    # добавляем хвост после последнего оффера
-    parts.append(text[last_end:])
-
-    result = "".join(parts)
-    print(f"[akcent] Фильтр по name: оставлено {kept}, выкинуто {skipped} офферов.")
-    return result
+    Это выравнивает весь XML/YML по левому краю.
+    """
+    lines = text.splitlines()
+    stripped = [line.lstrip(" \t") for line in lines]
+    return "\n".join(stripped)
 
 
 def _format_layout(text: str) -> str:
@@ -144,16 +82,6 @@ def _format_layout(text: str) -> str:
     text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
 
     return text
-
-
-def _left_align(text: str) -> str:
-    """Убрать все ведущие пробелы/табы у каждой строки.
-
-    Это выравнивает весь XML/YML по левому краю.
-    """
-    lines = text.splitlines()
-    stripped = [line.lstrip(" \t") for line in lines]
-    return "\n".join(stripped)
 
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
@@ -169,14 +97,11 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     # 1) режем блок между <shop> и <offers>
     text = _strip_shop_header(original)
 
-    # 2) фильтруем офферы по началу <name>
-    text = _filter_offers_by_name(text)
+    # 2) выравниваем по левому краю
+    text = _left_align(text)
 
     # 3) приводим <shop><offers> и разделяем офферы
     text = _format_layout(text)
-
-    # 4) выравниваем по левому краю
-    text = _left_align(text)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
