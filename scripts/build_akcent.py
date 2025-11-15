@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Простой сборщик для поставщика Akcent.
 
-Вариант с фильтром по <name>:
+Вариант с фильтром по <name> и форматированием:
 - скачиваем исходный XML/YML файл поставщика;
 - удаляем весь блок МЕЖДУ тегами <shop> и <offers> (оставляем сами теги);
 - оставляем только те <offer>, у которых <name> начинается с нужных слов;
 - выравниваем все строки по левому краю (убираем ведущие пробелы и табы);
+- приводим теги к виду <shop><offers> + двойной перенос строки,
+  и разделяем офферы пустой строкой между </offer> и <offer>;
 - сохраняем результат как docs/akcent.yml.
 """
 
@@ -143,6 +145,17 @@ def _left_align(text: str) -> str:
     return "\n".join(stripped)
 
 
+def _format_layout(text: str) -> str:
+    """Сделать <shop><offers> и пустые строки между офферами."""
+    # 1) Склеить <shop> и <offers> в одну строку и добавить два перевода строки
+    text = re.sub(r"<shop>\s*<offers>", "<shop><offers>\n\n", text, count=1)
+
+    # 2) Вставить пустую строку между </offer> и следующим <offer>
+    text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
+
+    return text
+
+
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
     """Скачать файл поставщика, обработать и сохранить на диск."""
     print(f"[akcent] Скачиваем файл: {source_url}")
@@ -161,6 +174,9 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
 
     # 3) выравниваем по левому краю
     text = _left_align(text)
+
+    # 4) приводим <shop><offers> и разделяем офферы пустой строкой
+    text = _format_layout(text)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
