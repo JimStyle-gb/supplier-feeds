@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 """Простой сборщик для поставщика Akcent.
 
-Вариант с фильтром по <name>, форматированием и очисткой тегов:
+Вариант: базовый v3 + фильтр по <name>.
 - скачиваем исходный XML/YML файл поставщика;
 - удаляем весь блок МЕЖДУ тегами <shop> и <offers> (оставляем сами теги);
 - оставляем только те <offer>, у которых <name> начинается с нужных слов;
-- удаляем лишние теги (<url>, <Offer_ID>, <delivery>, <local_delivery_cost>,
-  <model>, <manufacturer_warranty>, <Stock>, <prices>, </prices> и блок
-  <price type=\"RRP\" ... </price>);
 - выравниваем все строки по левому краю (убираем ведущие пробелы и табы);
-- В САМОМ КОНЦЕ приводим теги к виду <shop><offers>, делаем двойные разрывы
-  между <shop><offers> и первым <offer>, между офферами и перед </offers>;
 - сохраняем результат как docs/akcent.yml.
 """
 
@@ -25,7 +20,7 @@ from pathlib import Path
 import requests
 
 
-# Список допустимых префиксов для <name>
+# Разрешённые префиксы начала тега <name>
 _ALLOWED_NAME_PREFIXES = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -50,24 +45,17 @@ _ALLOWED_NAME_PREFIXES = [
 
 
 def _decode_text(raw_bytes: bytes) -> str:
-    """Аккуратно декодировать байты в строку.
-
-    Пытаемся UTF-8, потом Windows-1251, в крайнем случае — UTF-8 с игнором ошибок.
-    """
+    """Декодировать байты в строку с попытками utf-8 / cp1251."""
     for enc in ("utf-8", "cp1251"):
         try:
             return raw_bytes.decode(enc)
         except UnicodeDecodeError:
             pass
-    # Последний шанс — UTF-8 с игнором ошибок
     return raw_bytes.decode("utf-8", errors="ignore")
 
 
 def _strip_shop_header(raw_bytes: bytes) -> str:
-    """Удалить всё содержимое между <shop> и <offers>, оставив сами теги.
-
-    Возвращаем текст (str). Если теги не найдены — возвращаем исходный текст.
-    """
+    """Удалить всё между <shop> и <offers>, оставив сами теги."""
     text = _decode_text(raw_bytes)
 
     shop_tag = "<shop>"
@@ -75,19 +63,13 @@ def _strip_shop_header(raw_bytes: bytes) -> str:
 
     idx_shop = text.find(shop_tag)
     if idx_shop == -1:
-        # Не нашли <shop> — возвращаем как есть
         return text
 
     idx_offers = text.find(offers_tag, idx_shop)
     if idx_offers == -1:
-        # Не нашли <offers> после <shop> — возвращаем как есть
         return text
 
-    # Позиция сразу после тега <shop>
     idx_after_shop = idx_shop + len(shop_tag)
-
-    # Формируем новый текст:
-    # всё до <shop> включительно + сразу блок, начиная с <offers>...
     new_text = text[:idx_after_shop] + "\n" + text[idx_offers:]
     return new_text
 
@@ -111,8 +93,7 @@ def _filter_offers_by_name(text: str) -> str:
     skipped = 0
 
     for match in pattern.finditer(text):
-        # добавляем кусок ДО текущего оффера как есть
-        parts.append(text[last_end:match.start()])
+        parts.append(text[last_end:match.start()])  # кусок до оффера
 
         block = match.group(1)
         name_match = re.search(r"<name>(.*?)</name>", block, re.DOTALL | re.IGNORECASE)
@@ -120,7 +101,6 @@ def _filter_offers_by_name(text: str) -> str:
             skipped += 1
         else:
             raw_name = name_match.group(1)
-            # раскодируем сущности на всякий случай (&quot; и т.п.)
             name_text = html.unescape(raw_name).strip()
             if _name_allowed(name_text):
                 parts.append(block)
@@ -130,75 +110,18 @@ def _filter_offers_by_name(text: str) -> str:
 
         last_end = match.end()
 
-    # добавляем хвост после последнего оффера
-    parts.append(text[last_end:])
+    parts.append(text[last_end:])  # хвост после последнего оффера
 
     result = "".join(parts)
     print(f"[akcent] Фильтр по name: оставлено {kept}, выкинуто {skipped} офферов.")
     return result
 
 
-def _clean_tags(text: str) -> str:
-    """Удалить ненужные теги и блоки из текста."""
-    # Простые теги с содержимым
-    simple_patterns = [
-        r"<url>.*?</url>",
-        r"<Offer_ID>.*?</Offer_ID>",
-        r"<delivery>.*?</delivery>",
-        r"<local_delivery_cost>.*?</local_delivery_cost>",
-        r"<model>.*?</model>",
-        r"<manufacturer_warranty>.*?</manufacturer_warranty>",
-        r"<Stock>.*?</Stock>",
-    ]
-    for pat in simple_patterns:
-        text = re.sub(pat, "", text, flags=re.DOTALL)
-
-    # Удаляем блок цены по RRP: <price type="RRP"...>...</price>
-    text = re.sub(
-        r'<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>',
-        "",
-        text,
-        flags=re.DOTALL | re.IGNORECASE,
-    )
-
-    # Удаляем только сами теги <prices> и </prices>, оставляя вложенные <price> (кроме RRP, они уже удалены)
-    text = re.sub(r"</?prices>", "", text)
-
-    return text
-
-
 def _left_align(text: str) -> str:
-    """Убрать все ведущие пробелы/табы у каждой строки.
-
-    Это выравнивает весь XML/YML по левому краю.
-    """
+    """Убрать ведущие пробелы/табы у каждой строки."""
     lines = text.splitlines()
     stripped = [line.lstrip(" \t") for line in lines]
     return "\n".join(stripped)
-
-
-def _format_layout(text: str) -> str:
-    """Сделать <shop><offers> и двойные разрывы как нужно.
-
-    - <shop><offers>\n\n<offer...
-    - </offer>\n\n<offer...
-    - </offer>\n\n</offers>
-    """
-    # 1) Нормализуем блок начала: <shop><offers>\n\n<offer...
-    text = re.sub(
-        r"<shop>\s*<offers>\s*<offer",
-        "<shop><offers>\n\n<offer",
-        text,
-        count=1,
-    )
-
-    # 2) Вставить пустую строку между </offer> и следующим <offer>
-    text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
-
-    # 3) Вставить двойной перенос строки перед </offers>
-    text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
-
-    return text
 
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
@@ -211,20 +134,14 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     print(f"[akcent] Получено байт: {len(original)}")
 
 
-    # 1) режем блок между <shop> и <offers>
+    # 1) удаляем блок между <shop> и <offers>
     text = _strip_shop_header(original)
 
     # 2) фильтруем офферы по началу <name>
     text = _filter_offers_by_name(text)
 
-    # 3) чистим ненужные теги
-    text = _clean_tags(text)
-
-    # 4) выравниваем по левому краю
+    # 3) выравниваем по левому краю
     text = _left_align(text)
-
-    # 5) В САМОМ КОНЦЕ приводим <shop><offers> и разрывы
-    text = _format_layout(text)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -233,7 +150,7 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
 
 
 def main() -> int:
-    """Точка входа: читаем переменные окружения и запускаем скачивание."""
+    """Точка входа."""
     source_url = os.getenv(
         "AKCENT_URL",
         "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml",
