@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Простой сборщик для поставщика Akcent.
 
-Вариант: базовый v3 + фильтр по <name>.
+Вариант: базовый v3 + фильтр по <name> + очистка тегов.
 - скачиваем исходный XML/YML файл поставщика;
 - удаляем весь блок МЕЖДУ тегами <shop> и <offers> (оставляем сами теги);
 - оставляем только те <offer>, у которых <name> начинается с нужных слов;
+- удаляем лишние теги (<url>, <Offer_ID>, <delivery>, <local_delivery_cost>,
+  <model>, <manufacturer_warranty>, <Stock>, <prices>, </prices> и блок
+  <price type="RRP" ... </price>);
 - выравниваем все строки по левому краю (убираем ведущие пробелы и табы);
 - сохраняем результат как docs/akcent.yml.
 """
@@ -117,6 +120,35 @@ def _filter_offers_by_name(text: str) -> str:
     return result
 
 
+def _clean_tags(text: str) -> str:
+    """Удалить лишние теги и блоки (url, Offer_ID, delivery, RRP и т.п.)."""
+    # Простые теги с содержимым
+    simple_patterns = [
+        r"<url>.*?</url>",
+        r"<Offer_ID>.*?</Offer_ID>",
+        r"<delivery>.*?</delivery>",
+        r"<local_delivery_cost>.*?</local_delivery_cost>",
+        r"<model>.*?</model>",
+        r"<manufacturer_warranty>.*?</manufacturer_warranty>",
+        r"<Stock>.*?</Stock>",
+    ]
+    for pat in simple_patterns:
+        text = re.sub(pat, "", text, flags=re.DOTALL)
+
+    # Блок цены по RRP: <price type="RRP" ...>...</price>
+    text = re.sub(
+        r'<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>',
+        "",
+        text,
+        flags=re.DOTALL | re.IGNORECASE,
+    )
+
+    # Удаляем только оболочку <prices> и </prices>
+    text = re.sub(r"</?prices>", "", text)
+
+    return text
+
+
 def _left_align(text: str) -> str:
     """Убрать ведущие пробелы/табы у каждой строки."""
     lines = text.splitlines()
@@ -140,7 +172,10 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     # 2) фильтруем офферы по началу <name>
     text = _filter_offers_by_name(text)
 
-    # 3) выравниваем по левому краю
+    # 3) чистим ненужные теги
+    text = _clean_tags(text)
+
+    # 4) выравниваем по левому краю
     text = _left_align(text)
 
     out_bytes = text.encode("utf-8")
