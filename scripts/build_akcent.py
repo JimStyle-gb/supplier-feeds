@@ -146,6 +146,9 @@ def _clean_tags(text: str) -> str:
     # Удаляем только оболочку <prices> и </prices>
     text = re.sub(r"</?prices>", "", text)
 
+    # Убираем лишние пустые строки, которые остались после удаления тегов
+    text = re.sub(r"\n\s*\n", "\n", text)
+
     return text
 
 
