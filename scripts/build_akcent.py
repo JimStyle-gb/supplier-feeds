@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
 """Сборщик YML для поставщика Akcent.
 
-Логика максимально простая и линейная:
+Логика пайплайна:
 1. Скачиваем исходный XML/YML файл поставщика.
 2. Вырезаем всё содержимое между <shop> и <offers>, оставляя сами теги.
 3. Оставляем только те <offer>, у которых <name> начинается с наших ключевых слов.
 4. Удаляем служебные теги (url, Offer_ID, delivery, local_delivery_cost, model,
    manufacturer_warranty, Stock, prices/RRP).
-5. Нормализуем разметку: убираем лишние отступы и ставим аккуратные разрывы:
+5. Приводим каждый <offer> к нужному виду:
+   - в <offer> оставляем только атрибуты id и available;
+   - id формируем как "AK" + article;
+   - внутри создаём <vendorCode> с тем же значением, что и id;
+   - <categoryId type="..."> превращаем в <categoryId>значение</categoryId>,
+     при отсутствии значения делаем <categoryId></categoryId>;
+   - в каждом оффере добавляем <currencyId>KZT</currencyId>.
+6. Нормализуем разметку: убираем лишние отступы и ставим аккуратные разрывы:
    <shop><offers>\n\n<offer...> ... </offer>\n\n</offers>
-6. Сохраняем результат в docs/akcent.yml (UTF‑8).
+7. Сохраняем результат в docs/akcent.yml (UTF-8).
 """
 
 from __future__ import annotations
@@ -23,7 +30,7 @@ from pathlib import Path
 import requests
 
 
-# Список разрешённых префиксов для <name> (начало строки)
+# Ключевые префиксы для начала тега <name>
 _ALLOWED_PREFIXES = [
     "C13T55",
     "Ёмкость для отработанных чернил",
@@ -46,15 +53,11 @@ _ALLOWED_PREFIXES = [
     "Экран",
 ]
 
-# Такой же список, но в верхнем регистре — чтобы не считать .upper() каждый раз
 _ALLOWED_PREFIXES_UPPER = [p.upper() for p in _ALLOWED_PREFIXES]
 
 
 def _decode_bytes(raw: bytes) -> str:
-    """Аккуратно декодировать байты в строку.
-
-    Пробуем UTF‑8, затем Windows‑1251, в крайнем случае — UTF‑8 с игнором.
-    """
+    """Аккуратно декодировать байты в строку (UTF-8 / CP1251)."""
     for enc in ("utf-8", "cp1251"):
         try:
             return raw.decode(enc)
@@ -64,10 +67,7 @@ def _decode_bytes(raw: bytes) -> str:
 
 
 def _strip_shop_header(text: str) -> str:
-    """Удалить всё между <shop> и <offers>, оставив сами теги.
-
-    Если пара тегов не найдена — возвращаем текст как есть.
-    """
+    """Удалить всё между <shop> и <offers>, оставив сами теги."""
     shop_tag = "<shop>"
     offers_tag = "<offers>"
 
@@ -80,19 +80,18 @@ def _strip_shop_header(text: str) -> str:
         return text
 
     idx_after_shop = idx_shop + len(shop_tag)
-    # Оставляем <shop> и сразу приклеиваем <offers> и всё, что ниже
     return text[:idx_after_shop] + "\n" + text[idx_offers:]
 
 
 def _name_allowed(name_text: str) -> bool:
-    """Проверить, начинается ли имя с одного из разрешённых префиксов."""
+    """Проверить, начинается ли name с одного из разрешённых префиксов."""
     t = html.unescape(name_text).strip()
     upper = t.upper()
     return any(upper.startswith(prefix) for prefix in _ALLOWED_PREFIXES_UPPER)
 
 
 def _filter_offers_by_name(text: str) -> str:
-    """Оставить только те <offer>, где <name> начинается с наших ключей."""
+    """Оставить только те <offer>, у которых <name> начинается с нужных слов."""
     pattern = re.compile(r"(<offer\b[^>]*>.*?</offer>)", re.DOTALL | re.IGNORECASE)
 
     parts: list[str] = []
@@ -101,11 +100,12 @@ def _filter_offers_by_name(text: str) -> str:
     skipped = 0
 
     for match in pattern.finditer(text):
-        # Фрагмент до текущего оффера оставляем как есть
+        # фрагмент до текущего оффера
         parts.append(text[last_end:match.start()])
 
         block = match.group(1)
         name_match = re.search(r"<name>(.*?)</name>", block, re.DOTALL | re.IGNORECASE)
+
         if not name_match:
             skipped += 1
         else:
@@ -118,8 +118,7 @@ def _filter_offers_by_name(text: str) -> str:
 
         last_end = match.end()
 
-    # Хвост после последнего оффера
-    parts.append(text[last_end:])
+    parts.append(text[last_end:])  # хвост после последнего оффера
 
     result = "".join(parts)
     print(f"[akcent] Фильтр по name: оставлено {kept}, выкинуто {skipped} офферов.")
@@ -127,16 +126,20 @@ def _filter_offers_by_name(text: str) -> str:
 
 
 def _clean_tags(text: str) -> str:
-    """Удалить служебные теги и аккуратно «подтянуть» содержимое вверх."""
-    # 1) Удаляем простые теги с содержимым
-    text = re.sub(
-        r"<(url|Offer_ID|delivery|local_delivery_cost|model|manufacturer_warranty|Stock)>.*?</\1>",
-        "",
-        text,
-        flags=re.DOTALL,
-    )
+    """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)."""
+    simple_patterns = [
+        r"<url>.*?</url>",
+        r"<Offer_ID>.*?</Offer_ID>",
+        r"<delivery>.*?</delivery>",
+        r"<local_delivery_cost>.*?</local_delivery_cost>",
+        r"<model>.*?</model>",
+        r"<manufacturer_warranty>.*?</manufacturer_warranty>",
+        r"<Stock>.*?</Stock>",
+    ]
+    for pat in simple_patterns:
+        text = re.sub(pat, "", text, flags=re.DOTALL)
 
-    # 2) Удаляем блок цены по RRP: <price type="RRP" ...>...</price>
+    # Удаляем блок цены по RRP: <price type="RRP" ...>...</price>
     text = re.sub(
         r'<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>',
         "",
@@ -144,22 +147,75 @@ def _clean_tags(text: str) -> str:
         flags=re.DOTALL | re.IGNORECASE,
     )
 
-    # 3) Удаляем оболочку <prices> и </prices>, внутренние <price> остаются
-    text = re.sub(r"</?prices>", "", text, flags=re.IGNORECASE)
+    # Удаляем только оболочку <prices> и </prices>
+    text = re.sub(r"</?prices>", "", text)
 
-    # 4) Схлопываем лишние пустые строки, которые появились после удаления тегов
-    text = re.sub(r"\n\s*\n", "\n", text)
+    # Схлопываем лишние пустые строки
+    text = re.sub(r"\n\s*\n+", "\n", text)
 
     return text
 
 
-def _normalize_layout(text: str) -> str:
-    """Выравнивание слева + аккуратные разрывы между блоками.
+def _transform_offers(text: str) -> str:
+    """Привести <offer> к нужному виду (id/available, vendorCode, categoryId, currencyId)."""
 
-    На выходе хотим:
-    <shop><offers>\n\n<offer ...>...</offer>\n\n<offer ...>...</offer>...\n\n</offers>
+    def _process_offer(match: re.Match) -> str:
+        header = match.group(1)
+        body = match.group(2)
+        footer = match.group(3)
+
+        # 1) Достаём article и available
+        article_match = re.search(r'\barticle="([^"]*)"', header)
+        art = (article_match.group(1).strip() if article_match else "").strip()
+
+        # если article вдруг пустой, пробуем старый id как fallback
+        if not art:
+            id_match = re.search(r'\bid="([^"]*)"', header)
+            if id_match:
+                art = id_match.group(1).strip()
+
+        new_id = f"AK{art}" if art else ""
+        avail_match = re.search(r'\bavailable="([^"]*)"', header)
+        available = avail_match.group(1).strip() if avail_match else "true"
+
+        # 2) Новый заголовок: только id и available
+        new_header = f'<offer id="{new_id}" available="{available}">'
+
+        # 3) Достаём значение categoryId, если оно было в виде <categoryId ...>VALUE</categoryId>
+        cat_val = ""
+        cat_val_match = re.search(r"<categoryId[^>]*>(.*?)</categoryId>", body, re.DOTALL | re.IGNORECASE)
+        if cat_val_match:
+            cat_val = cat_val_match.group(1).strip()
+
+        # 4) Удаляем все старые теги categoryId (и с содержимым, и самозакрывающиеся)
+        body = re.sub(r"<categoryId[^>]*>.*?</categoryId>", "", body, flags=re.DOTALL | re.IGNORECASE)
+        body = re.sub(r"<categoryId[^>]*/>", "", body, flags=re.IGNORECASE)
+
+        # 5) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
+        prefix = (
+            f"<categoryId>{cat_val}</categoryId>\n"
+            f"<vendorCode>{new_id}</vendorCode>\n"
+            "<currencyId>KZT</currencyId>\n"
+        )
+        body = prefix + body
+
+        return new_header + body + footer
+
+    pattern = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL | re.IGNORECASE)
+    new_text, count = pattern.subn(_process_offer, text)
+    print(f"[akcent] Трансформация offer: обработано {count} офферов.")
+    return new_text
+
+
+def _normalize_layout(text: str) -> str:
+    """Привести разметку к ровному виду и расставить разрывы.
+
+    - выровнять всё по левому краю;
+    - сделать начало: <shop><offers>\\n\\n<offer...;
+    - поставить пустую строку между офферами;
+    - поставить пустую строку перед </offers>.
     """
-    # 1) Убираем ведущие пробелы/табы у каждой строки
+    # 1) Выравниваем по левому краю
     lines = text.splitlines()
     text = "\n".join(line.lstrip(" \t") for line in lines)
 
@@ -186,22 +242,22 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     resp = requests.get(source_url, timeout=60)
     resp.raise_for_status()
 
-    raw = resp.content
-    print(f"[akcent] Получено байт: {len(raw)}")
+    text = _decode_bytes(resp.content)
+    print(f"[akcent] Получено байт: {len(resp.content)}")
 
-    # 1) Декодируем байты в текст
-    text = _decode_bytes(raw)
-
-    # 2) Режем блок между <shop> и <offers>
+    # 1) режем блок между <shop> и <offers>
     text = _strip_shop_header(text)
 
-    # 3) Фильтруем офферы по началу <name>
+    # 2) фильтруем офферы по началу <name>
     text = _filter_offers_by_name(text)
 
-    # 4) Удаляем служебные теги и лишние пустые строки
+    # 3) чистим ненужные теги
     text = _clean_tags(text)
 
-    # 5) Выравниваем и нормализуем разметку
+    # 4) приводим офферы к нужному виду (id, vendorCode, categoryId, currencyId)
+    text = _transform_offers(text)
+
+    # 5) нормализуем разметку и разрывы
     text = _normalize_layout(text)
 
     out_bytes = text.encode("utf-8")
