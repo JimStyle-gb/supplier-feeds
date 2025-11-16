@@ -126,10 +126,7 @@ def _filter_offers_by_name(text: str) -> str:
 
 
 def _clean_tags(text: str) -> str:
-    """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)
-    и сразу «подтянуть» остальные теги вверх (убрать пустые строки).
-    """
-    # Теги, которые у поставщика почти всегда стоят отдельной строкой
+    """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)."""
     simple_patterns = [
         r"<url>.*?</url>",
         r"<Offer_ID>.*?</Offer_ID>",
@@ -139,33 +136,25 @@ def _clean_tags(text: str) -> str:
         r"<manufacturer_warranty>.*?</manufacturer_warranty>",
         r"<Stock>.*?</Stock>",
     ]
-
     for pat in simple_patterns:
-        # Вырезаем тег вместе с возможными пробелами вокруг и переводом строки
-        text = re.sub(
-            rf"[ \t]*{pat}[ \t]*\r?\n?",
-            "\n",
-            text,
-            flags=re.DOTALL | re.IGNORECASE,
-        )
+        text = re.sub(pat, "", text, flags=re.DOTALL)
 
     # Удаляем блок цены по RRP: <price type="RRP" ...>...</price>
     text = re.sub(
-        r'[ \t]*<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>[ \t]*\r?\n?',
-        "\n",
+        r'<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>',
+        "",
         text,
         flags=re.DOTALL | re.IGNORECASE,
     )
 
-    # Удаляем только оболочку <prices> и </prices>, внутренние <price> оставляем
-    text = re.sub(r"</?prices>", "", text, flags=re.IGNORECASE)
+    # Удаляем только оболочку <prices> и </prices>
+    text = re.sub(r"</?prices>", "", text)
 
-    # Полностью убираем пустые строки, чтобы шёл плотный список тегов
-    lines = text.splitlines()
-    non_empty = [ln for ln in lines if ln.strip()]
-    text = "\n".join(non_empty)
+    # Схлопываем лишние пустые строки
+    text = re.sub(r"\n\s*\n+", "\n", text)
 
     return text
+
 
 def _transform_offers(text: str) -> str:
     """Привести <offer> к нужному виду (id/available, vendorCode, categoryId, currencyId)."""
@@ -202,7 +191,10 @@ def _transform_offers(text: str) -> str:
         body = re.sub(r"<categoryId[^>]*>.*?</categoryId>", "", body, flags=re.DOTALL | re.IGNORECASE)
         body = re.sub(r"<categoryId[^>]*/>", "", body, flags=re.IGNORECASE)
 
-        # 5) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
+        # 5) После удаления старого categoryId убираем пустые строки в начале тела
+        body = body.lstrip()
+
+        # 6) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
         prefix = (
             f"<categoryId>{cat_val}</categoryId>\n"
             f"<vendorCode>{new_id}</vendorCode>\n"
@@ -226,35 +218,26 @@ def _normalize_layout(text: str) -> str:
     - поставить пустую строку между офферами;
     - поставить пустую строку перед </offers>.
     """
-    # 1) Выровнять по левому краю (убираем начальные пробелы/табы)
+    # 1) Выравниваем по левому краю
     lines = text.splitlines()
     text = "\n".join(line.lstrip(" \t") for line in lines)
 
-    # 2) Нормализовать начало: <shop><offers>\n\n<offer...
+    # 2) Нормализуем начало: <shop><offers>\n\n<offer...
     text = re.sub(
         r"<shop>\s*<offers>\s*<offer",
         "<shop><offers>\n\n<offer",
         text,
-        flags=re.DOTALL | re.IGNORECASE,
+        count=1,
     )
 
-    # 3) Пустая строка между офферами
-    text = re.sub(
-        r"</offer>\s*<offer",
-        "</offer>\n\n<offer",
-        text,
-        flags=re.DOTALL | re.IGNORECASE,
-    )
+    # 3) Между офферами делаем пустую строку
+    text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
 
-    # 4) Пустая строка перед </offers>
-    text = re.sub(
-        r"</offer>\s*</offers>",
-        "</offer>\n\n</offers>",
-        text,
-        flags=re.DOTALL | re.IGNORECASE,
-    )
+    # 4) Между последним </offer> и </offers> делаем пустую строку
+    text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
 
     return text
+
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
     """Скачать файл поставщика, обработать и сохранить на диск."""
