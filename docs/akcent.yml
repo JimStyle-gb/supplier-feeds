@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<yml_catalog date="2025-11-16 07:05">
+<yml_catalog date="2025-11-16 16:18">
 <shop><offers>
 
 <offer id="AKC13T55KD00" available="true">
@@ -8,7 +8,7 @@
 <currencyId>KZT</currencyId>
 <name>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/923/0p8oyvwd4ts90r6c77nk7geyql2ycozc.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Картридж Epson C13T55KD00 Singlepack с фиолетовыми чернилами обеспечит высококачетсвенную печать для приентеров Epson.
 Вид
 струйный
@@ -117,7 +117,7 @@ L15150</description>
 <currencyId>KZT</currencyId>
 <name>Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/7a2/t3mhkx005q12c1m0c8ygptfcq5nfpgtl.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Емкость для отработанных чернил для:
 Epson Stylus Pro 4900 Designer Edition
 Epson Stylus Pro 4900
@@ -213,7 +213,7 @@ SC-B6000</description>
 <currencyId>KZT</currencyId>
 <name>Ёмкость для отработанных чернил Epson C33S021601	SJMB4000 C4000e Maintenance box</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e58/0dyfqwrr96c2b8mcgerhrdco84qaujhg.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Ёмкость для отработанных чернил Epson C33S021601SJMB4000 C4000e Maintenance box</description>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Ёмкость для отработанных чернил</Param>
@@ -936,7 +936,7 @@ Epson Stylus Pro 4880</description>
 <currencyId>KZT</currencyId>
 <name>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5db/qp7toj65zlupdhzpp5dy5mj6rg379for.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Пурпурный картридж для:
 Epson Stylus Pro 4800</description>
 <Param name="Гарантия">12 мес</Param>
@@ -2120,7 +2120,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 <currencyId>KZT</currencyId>
 <name>МФУ Epson L3200 фабрика печати</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/763/qu9kcxpvv8la732hqigmmskkstop1d2j.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Домашний струйный принтер
 Цветное многофункциональное устройство 3-в-1 формата A4
 Печать, сканирование и копирование
@@ -2390,7 +2390,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 <currencyId>KZT</currencyId>
 <name>МФУ Epson L3266 фабрика печати, Wi-Fi</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/bdf/yxuyni7ere3oo3k9zufca04nm485001t.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Домашний струйный принтер
 Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct и ЖК-экраном
 Печать, сканирование и копирование
@@ -2490,7 +2490,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 <currencyId>KZT</currencyId>
 <name>МФУ Epson L4260 фабрика печати</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5ca/yaiold1tr1bvmyxglpkybuho3kerlaw5.png</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Домашний струйный принтер
 Двустороннее многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct и ЖК-экраном
 Печать, сканирование и копирование
@@ -2586,7 +2586,7 @@ Black
 <currencyId>KZT</currencyId>
 <name>МФУ Epson L4267 фабрика печати</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b33/hl082vr3037lcti1wjma4iq539u9lyj2.png</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Домашний струйный принтер
 Двустороннее многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct и ЖК-экраном
 Печать, сканирование и копирование
@@ -2691,7 +2691,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 <currencyId>KZT</currencyId>
 <name>МФУ Epson L5290  фабрика печати, факс,Wi-Fi</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ca7/nf3rr4pa3rockbljc48gyy3o0zv4dku9.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Принтер-сканер-копир-факс с фронтальными чернильными емкостями, Wi-Fi, Ethernet и автоподатчиком для сканирования документов
 Принтер – Сканер – Копир - Факс для сверхэкономичной печати документов
 Возможность печати c проводами и без по Wi-Fi Direct, Epson Connect, Ethernet
@@ -2871,7 +2871,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 <currencyId>KZT</currencyId>
 <name>МФУ Epson L6270 фабрика печати, Wi-Fi</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/fa0/44ylv2r0a4fre7t6n35qef8sop2nfaw4.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Офисный струйный принтер
 Двустороннее многофункциональное устройство 3-в-1 для цветной печати формата A4 с автоподатчиком, Wi-Fi Direct и Ethernet
 Печать, копирование и сканирование
@@ -2980,7 +2980,7 @@ Black
 <currencyId>KZT</currencyId>
 <name>МФУ Epson L6290 фабрика печати, факс.Wi-Fi</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/acd/kq7jt6fbnoeppbrk212038h5my5bboaz.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Офисный струйный принтер
 Двустороннее многофункциональное устройство 4-в-1 для цветной печати формата A4 с автоподатчиком, Wi-Fi Direct и Ethernet
 Принтер, копир, сканер и факс
@@ -3650,7 +3650,7 @@ Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]</description>
 <currencyId>KZT</currencyId>
 <name>Принтер Epson L1250 фабрика печати</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a10/4836119mtcr18cmgpopdiw26fo71y1x6.png</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Домашний струйный принтер
 Цветной принтер формата A4 с Wi-Fi
 Принтер
@@ -4779,7 +4779,7 @@ ________________________________________
 <currencyId>KZT</currencyId>
 <name>Проектор универсальный Epson CO-WX02</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/040/xpmja09iz0aal0a8243c42jb0gj12ip8.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Доступный яркий WXGA проектор
 Технология: LCD: 3 х 0.59" P-Si TFT
 Разрешение: WXGA (1280х800)
@@ -4944,7 +4944,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 <currencyId>KZT</currencyId>
 <name>Проектор универсальный Epson EB-FH08 белый</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/159/jj07cni20mrpjxwjzx62blx7ea853g6m.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Epson EB-FH08 — мультимедийный проектор
 Класс устройства: мультимедийный проектор
 Тип: широкоформатный
@@ -5040,7 +5040,7 @@ Miracast и Apple AirPlay 2
 <currencyId>KZT</currencyId>
 <name>Проектор универсальный Epson EB-FH54 белый</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/fc7/t7d2lncfavd7zmy11w86ihwcr7bpi5eb.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Epson EB-FH54 — универсальный Full HD проектор
 Основные характеристики
 Технология: 3LCD
@@ -5244,7 +5244,7 @@ USB Display 3-в-1 – передача изображения, звука и с
 <currencyId>KZT</currencyId>
 <name>Проектор универсальный Epson EB-W53 белый</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/bdb/ghgv80o5zrtkm91xl21bol945b37nu3e.png</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Проектор Epson EB-W53 — надёжное решение для офиса, учебных классов и домашних презентаций. Благодаря технологии 3LCD изображение получается ярким и реалистичным. Разрешение WXGA (1280×800) и яркость 4000 люмен позволяют выводить чёткую картинку даже в хорошо освещённом помещении.
 Контрастность 16 000:1 обеспечивает глубокие тёмные и насыщенные светлые оттенки. Лампа рассчитана на долгий срок службы — до 12 000 часов в экономичном режиме. Размер изображения может достигать 375 дюймов, что делает проектор удобным для демонстрации на большой аудитории.
 В устройстве есть два HDMI-входа и USB-разъёмы для подключения различных источников. Встроенный динамик мощностью 2 Вт подойдёт для простого звукового сопровождения. Поддерживается коррекция трапецеидальных искажений и функция разделения экрана, что облегчает настройку и расширяет возможности использования.
@@ -5468,7 +5468,7 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество порто�
 <currencyId>KZT</currencyId>
 <name>Сканер Epson Perfection V39II</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/cf6/s6b251wzwuckych5x78795z6x330h6u0.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Технические характеристики Epson Perfection V39II Photo
 Состав поставки
 Сканер
@@ -5522,7 +5522,7 @@ Digital Ice, непрозрачные оригиналы	Нет
 <currencyId>KZT</currencyId>
 <name>Сканер Epson WorkForce DS-790WN</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/c31/05qwm6rmsyog25bn4v0rc0xtbim3gw0t.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Сетевой сканер премиум-класса
 Широкие возможности аутентификации Локальная или удаленная настройка для нескольких пользователей (поддержка протокола LDAP)
 Автономное сканирование ScanWay Прямое сканирование в сеть, облако, электронную почту или на USB-накопитель без использования ПК
@@ -7245,7 +7245,7 @@ P-4 уровень секретности
 <currencyId>KZT</currencyId>
 <name>Экономичный набор из четырех контейнеров с чернилами, серия 664</name>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ac1/n0qqf3iwn8mynu6hkm97h7soqkislcwf.jpg</picture>
-<vendor/>
+<vendor>Epson</vendor>
 <description>Чернила Epson серии 664
 Сведите затраты на печать к минимуму с чернилами EcoTank. Ресурса комплекта чернил хватит на печать 4 500 черно-белых и 7 500 цветных страниц¹ – отличное решение для тех, кто привык много печатать. Четырехцветные водорастворимые чернила обеспечивают качественный результат и рекордно низкую себестоимость печати.
 Для повседневной печати
