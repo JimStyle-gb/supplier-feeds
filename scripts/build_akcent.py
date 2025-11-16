@@ -191,10 +191,7 @@ def _transform_offers(text: str) -> str:
         body = re.sub(r"<categoryId[^>]*>.*?</categoryId>", "", body, flags=re.DOTALL | re.IGNORECASE)
         body = re.sub(r"<categoryId[^>]*/>", "", body, flags=re.IGNORECASE)
 
-        # 5) После удаления старого categoryId убираем пустые строки в начале тела
-        body = body.lstrip()
-
-        # 6) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
+        # 5) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
         prefix = (
             f"<categoryId>{cat_val}</categoryId>\n"
             f"<vendorCode>{new_id}</vendorCode>\n"
@@ -214,9 +211,10 @@ def _normalize_layout(text: str) -> str:
     """Привести разметку к ровному виду и расставить разрывы.
 
     - выровнять всё по левому краю;
-    - сделать начало: <shop><offers>\\n\\n<offer...;
+    - сделать начало: <shop><offers>\n\n<offer...;
     - поставить пустую строку между офферами;
-    - поставить пустую строку перед </offers>.
+    - поставить пустую строку перед </offers>;
+    - убрать пустые строки ВНУТРИ каждого <offer>...</offer> (после удаления тегов делаем "сдвиг вверх").
     """
     # 1) Выравниваем по левому краю
     lines = text.splitlines()
@@ -236,7 +234,32 @@ def _normalize_layout(text: str) -> str:
     # 4) Между последним </offer> и </offers> делаем пустую строку
     text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
 
-    return text
+    # 5) Убираем пустые строки внутри блоков <offer>...</offer>,
+    #    чтобы после удаления тегов не оставались "дырки".
+    lines = text.splitlines()
+    out_lines: list[str] = []
+    inside_offer = False
+
+    for line in lines:
+        stripped = line.strip()
+
+        if stripped.startswith("<offer "):
+            inside_offer = True
+            out_lines.append(line)
+            continue
+
+        if stripped == "</offer>":
+            inside_offer = False
+            out_lines.append(line)
+            continue
+
+        # Пустые строки внутри офферов пропускаем
+        if inside_offer and not stripped:
+            continue
+
+        out_lines.append(line)
+
+    return "\n".join(out_lines)
 
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
