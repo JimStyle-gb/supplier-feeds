@@ -126,7 +126,10 @@ def _filter_offers_by_name(text: str) -> str:
 
 
 def _clean_tags(text: str) -> str:
-    """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)."""
+    """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)
+    и сразу «подтянуть» остальные теги вверх (убрать пустые строки).
+    """
+    # Теги, которые у поставщика почти всегда стоят отдельной строкой
     simple_patterns = [
         r"<url>.*?</url>",
         r"<Offer_ID>.*?</Offer_ID>",
@@ -136,8 +139,15 @@ def _clean_tags(text: str) -> str:
         r"<manufacturer_warranty>.*?</manufacturer_warranty>",
         r"<Stock>.*?</Stock>",
     ]
+
     for pat in simple_patterns:
-        text = re.sub(pat, "", text, flags=re.DOTALL)
+        # Вырезаем тег вместе с возможными пробелами вокруг и переводом строки
+        text = re.sub(
+            rf"[ \t]*{pat}[ \t]*\r?\n?",
+            "\n",
+            text,
+            flags=re.DOTALL | re.IGNORECASE,
+        )
 
     # Удаляем блок цены по RRP: <price type="RRP" ...>...</price>
     text = re.sub(
@@ -147,11 +157,13 @@ def _clean_tags(text: str) -> str:
         flags=re.DOTALL | re.IGNORECASE,
     )
 
-    # Удаляем только оболочку <prices> и </prices>
-    text = re.sub(r"</?prices>", "", text)
+    # Удаляем только оболочку <prices> и </prices>, внутренние <price> оставляем
+    text = re.sub(r"</?prices>", "", text, flags=re.IGNORECASE)
 
-    # Схлопываем лишние пустые строки
-    text = re.sub(r"\n\s*\n+", "\n", text)
+    # Полностью убираем пустые строки, чтобы шёл плотный список тегов
+    lines = text.splitlines()
+    non_empty = [ln for ln in lines if ln.strip()]
+    text = "\n".join(non_empty)
 
     return text
 
@@ -179,7 +191,7 @@ def _transform_offers(text: str) -> str:
         available = avail_match.group(1).strip() if avail_match else "true"
 
         # 2) Новый заголовок: только id и available
-        new_header = f'<offer id="{new_id}" available="{available}">'
+        new_header = f'<offer id="{new_id}" available="{available}">\n'
 
         # 3) Достаём значение categoryId, если оно было в виде <categoryId ...>VALUE</categoryId>
         cat_val = ""
@@ -191,7 +203,10 @@ def _transform_offers(text: str) -> str:
         body = re.sub(r"<categoryId[^>]*>.*?</categoryId>", "", body, flags=re.DOTALL | re.IGNORECASE)
         body = re.sub(r"<categoryId[^>]*/>", "", body, flags=re.IGNORECASE)
 
-        # 5) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
+        # 5) После удаления старого categoryId убираем пустые строки в начале тела
+        body = body.lstrip()
+
+        # 6) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
         prefix = (
             f"<categoryId>{cat_val}</categoryId>\n"
             f"<vendorCode>{new_id}</vendorCode>\n"
