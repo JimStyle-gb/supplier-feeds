@@ -5,8 +5,8 @@
 1. Скачиваем исходный XML/YML файл поставщика.
 2. Вырезаем всё содержимое между <shop> и <offers>, оставляя сами теги.
 3. Оставляем только те <offer>, у которых <name> начинается с наших ключевых слов.
-4. Удаляем служебные теги (url, Offer_ID, delivery, local_delivery_cost, model,
-   manufacturer_warranty, Stock, prices/RRP, а также самозакрывающийся <url/>).
+4. Удаляем служебные теги (url, url/ , Offer_ID, delivery, local_delivery_cost, model,
+   manufacturer_warranty, Stock, prices/RRP).
 5. Приводим каждый <offer> к нужному виду:
    - в <offer> оставляем только атрибуты id и available;
    - id формируем как "AK" + article (или старый id, если article пустой);
@@ -19,7 +19,13 @@
      по правилам (4% + диапазон, хвост 900, >= 9 000 000 -> 100) и записываем
      как <price>XXX</price> без атрибутов;
    - все Param name="Сопутствующие товары" убираем из характеристик и в конец
-     description добавляем текстовый блок "Сопутствующие товары и совместимые устройства".
+     description добавляем текстовый блок
+     "Сопутствующие товары и совместимые устройства:" со списком;
+   - выкидываем из Param мусорные:
+       * Наименование производителя
+       * Оригинальное разрешение
+       * Сопутствующие товары
+       * Совместимые продукты.
 6. Нормализуем разметку: убираем лишние отступы и пустые строки внутри <offer>,
    аккуратно расставляем разрывы:
    <shop><offers>\n\n<offer ...>\n<categoryId>...\n...\n</offer>\n\n</offers>
@@ -187,6 +193,7 @@ def _clean_tags(text: str) -> str:
     for pat in simple_patterns:
         text = re.sub(pat, "", text, flags=re.DOTALL | re.IGNORECASE)
 
+    # Удаляем RRP-цену
     text = re.sub(
         r'<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>',
         "",
@@ -194,8 +201,10 @@ def _clean_tags(text: str) -> str:
         flags=re.DOTALL | re.IGNORECASE,
     )
 
+    # Удаляем обёртку <prices>
     text = re.sub(r"</?prices>", "", text, flags=re.IGNORECASE)
 
+    # Убираем пустые строки
     lines = text.splitlines()
     non_empty = [ln for ln in lines if ln.strip()]
     text = "\n".join(non_empty)
@@ -217,6 +226,7 @@ def _normalize_brand_name(raw: str) -> str:
 
 def _extract_brand_from_block(body: str) -> str:
     """Попробовать вытащить бренд из Param/имени/описания."""
+    # Специальные параметры про производителя
     for pattern in (
         r'<Param\s+name="Производитель">(.*?)</Param>',
         r'<Param\s+name="Наименование производителя">(.*?)</Param>',
@@ -228,6 +238,7 @@ def _extract_brand_from_block(body: str) -> str:
             if brand:
                 return brand
 
+    # Пытаемся найти бренд в name/description
     name_text = ""
     desc_text = ""
 
@@ -247,6 +258,7 @@ def _extract_brand_from_block(body: str) -> str:
             if norm:
                 return norm
 
+    # Частный случай для интерактивных панелей SBID-...
     if "SBID-" in name_text:
         return "SBID"
 
@@ -268,6 +280,7 @@ def _fill_empty_vendor(body: str) -> str:
             return False
         return True
 
+    # Если уже есть нормальный бренд — ничего не делаем
     if _has_good_vendor(body):
         return body
 
@@ -279,6 +292,7 @@ def _fill_empty_vendor(body: str) -> str:
         indent = match.group(1) or ""
         return f"{indent}<vendor>{brand}</vendor>"
 
+    # <vendor/>
     new_body = re.sub(
         r"(\s*)<vendor\s*/>",
         repl_empty,
@@ -289,6 +303,7 @@ def _fill_empty_vendor(body: str) -> str:
     if new_body != body:
         return new_body
 
+    # <vendor>   </vendor>
     new_body2 = re.sub(
         r"(\s*)<vendor>\s*</vendor>",
         repl_empty,
@@ -299,6 +314,7 @@ def _fill_empty_vendor(body: str) -> str:
     if new_body2 != body:
         return new_body2
 
+    # Если внутри vendor что-то из блок-листа — заменяем на найденный бренд
     def repl_blocked(match: re.Match) -> str:
         indent = match.group(1) or ""
         val = html.unescape(match.group(2) or "").strip()
@@ -351,13 +367,16 @@ def _apply_price_rules(base: int) -> int:
     if bonus == 0:
         return base
 
+    # 4% + фиксированный бонус
     value = base * 1.04 + bonus
 
+    # Хвост 900 + округление вверх
     thousands = int(value) // 1000
     price = thousands * 1000 + 900
     if price < value:
         price += 1000
 
+    # Если стало слишком дорого — ставим 100
     if price >= 9_000_000:
         return 100
 
@@ -383,6 +402,7 @@ def _move_related_products_to_description(body: str) -> str:
         if text not in items:
             items.append(text)
 
+    # Удаляем все такие Param из тела
     body = pattern.sub("", body)
 
     if not items:
@@ -393,6 +413,7 @@ def _move_related_products_to_description(body: str) -> str:
         block_lines.append(f"- {item}")
     block_text = "\n".join(block_lines)
 
+    # Вставляем блок в конец description
     desc_pattern = re.compile(
         r"(<description>)(.*?)(</description>)",
         re.DOTALL | re.IGNORECASE,
@@ -409,8 +430,41 @@ def _move_related_products_to_description(body: str) -> str:
         body = body[: m.start()] + new_desc + body[m.end() :]
         return body
 
+    # Если description не было вообще — создаём
     body = body.rstrip() + "\n<description>" + block_text + "</description>\n"
     return body
+
+
+def _filter_params(body: str) -> str:
+    """Выкинуть из Param заведомо мусорные/служебные параметры."""
+
+    def repl(match: re.Match) -> str:
+        name = html.unescape(match.group(1) or "").strip()
+        value = html.unescape(match.group(2) or "").strip()
+
+        if not name:
+            return match.group(0)
+
+        # Полностью выкидываем параметры, не нужные покупателю/SEO
+        if name in {
+            "Наименование производителя",
+            "Сопутствующие товары",
+            "Совместимые продукты",
+        }:
+            return ""
+
+        if name == "Оригинальное разрешение":
+            # У поставщика тут обычно просто "Оригинальное" — смысла нет
+            return ""
+
+        return match.group(0)
+
+    return re.sub(
+        r'<Param\s+name="([^"]*)">(.*?)</Param>',
+        repl,
+        body,
+        flags=re.DOTALL,
+    )
 
 
 def _transform_offers(text: str) -> str:
@@ -421,6 +475,7 @@ def _transform_offers(text: str) -> str:
         body = match.group(2)
         footer = match.group(3)
 
+        # Берём article, если есть, иначе старый id
         article_match = re.search(r'\barticle="([^"]*)"', header)
         art = (article_match.group(1).strip() if article_match else "").strip()
 
@@ -433,8 +488,10 @@ def _transform_offers(text: str) -> str:
         avail_match = re.search(r'\bavailable="([^"]*)"', header)
         available = avail_match.group(1).strip() if avail_match else "true"
 
+        # Новый заголовок оффера
         new_header = f'<offer id="{new_id}" available="{available}">\n'
 
+        # Вытаскиваем categoryId
         cat_val = ""
         cat_val_match = re.search(
             r"<categoryId[^>]*>(.*?)</categoryId>",
@@ -444,6 +501,7 @@ def _transform_offers(text: str) -> str:
         if cat_val_match:
             cat_val = cat_val_match.group(1).strip()
 
+        # Удаляем любые старые categoryId
         body = re.sub(
             r"<categoryId[^>]*>.*?</categoryId>",
             "",
@@ -454,6 +512,7 @@ def _transform_offers(text: str) -> str:
 
         body = body.lstrip()
 
+        # Строгий порядок первых трёх тегов
         prefix = (
             f"<categoryId>{cat_val}</categoryId>\n"
             f"<vendorCode>{new_id}</vendorCode>\n"
@@ -461,8 +520,10 @@ def _transform_offers(text: str) -> str:
         )
         body = prefix + body
 
+        # Бренд
         body = _fill_empty_vendor(body)
 
+        # Пересчёт цены
         def _reprice(match_price: re.Match) -> str:
             base_str = match_price.group(1)
             try:
@@ -479,7 +540,11 @@ def _transform_offers(text: str) -> str:
             flags=re.IGNORECASE,
         )
 
+        # Сопутствующие товары → в описание
         body = _move_related_products_to_description(body)
+
+        # Фильтрация мусорных Param
+        body = _filter_params(body)
 
         return new_header + body + footer
 
@@ -491,9 +556,11 @@ def _transform_offers(text: str) -> str:
 
 def _normalize_layout(text: str) -> str:
     """Привести разметку к ровному виду и расставить разрывы."""
+    # Убираем начальные пробелы у строк
     lines = text.splitlines()
     text = "\n".join(line.lstrip(" \t") for line in lines)
 
+    # <shop><offers> + пустая строка + первый offer
     text = re.sub(
         r"<shop>\s*<offers>\s*<offer",
         "<shop><offers>\n\n<offer",
@@ -501,6 +568,7 @@ def _normalize_layout(text: str) -> str:
         count=1,
     )
 
+    # Перенос после заголовка offer перед categoryId
     text = re.sub(
         r"(<offer\b[^>]*>)\s*<categoryId>",
         r"\1\n<categoryId>",
@@ -508,10 +576,12 @@ def _normalize_layout(text: str) -> str:
         flags=re.IGNORECASE,
     )
 
+    # Пустая строка между офферами
     text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
-
+    # Пустая строка перед </offers>
     text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
 
+    # Убираем пустые строки ВНУТРИ offer
     lines = text.splitlines()
     out_lines: list[str] = []
     inside_offer = False
@@ -530,6 +600,7 @@ def _normalize_layout(text: str) -> str:
             continue
 
         if inside_offer and not stripped:
+            # пропускаем пустые строки внутри <offer>...</offer>
             continue
 
         out_lines.append(line)
