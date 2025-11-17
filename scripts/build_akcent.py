@@ -14,10 +14,12 @@
    - <categoryId type="..."> превращаем в <categoryId>значение</categoryId>,
      при отсутствии значения делаем <categoryId></categoryId>;
    - в каждом оффере добавляем <currencyId>KZT</currencyId>;
-   - если <vendor/> пустой (или заблокированный), пытаемся найти бренд
-     в Param'ах и в тексте name/description.
+   - если <vendor/> пустой или служебный, пытаемся найти бренд в Param/name/description;
+   - цену берём из <price type="Цена дилерского портала KZT" ...>, пересчитываем
+     по правилам (4% + диапазон, хвост 900, >= 9 000 000 -> 100) и записываем
+     как <price>XXX</price> без атрибутов.
 6. Нормализуем разметку: убираем лишние отступы и пустые строки внутри <offer>,
-   расставляем разрывы:
+   аккуратно расставляем разрывы:
    <shop><offers>\n\n<offer ...>\n<categoryId>...\n...\n</offer>\n\n</offers>
 7. Сохраняем результат в docs/akcent.yml (UTF-8).
 """
@@ -171,7 +173,7 @@ def _clean_tags(text: str) -> str:
     """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)
     и сразу «подтянуть» остальные теги вверх (убрать пустые строки).
     """
-    # Теги, которые почти всегда стоят отдельной строкой
+    # Теги, которые обычно стоят отдельной строкой
     simple_patterns = [
         r"<url>.*?</url>",
         r"<Offer_ID>.*?</Offer_ID>",
@@ -216,8 +218,13 @@ def _normalize_brand_name(raw: str) -> str:
 
 
 def _extract_brand_from_block(body: str) -> str:
-    """Попробовать вытащить бренд из Param/имени/описания."""
+    """Попробовать вытащить бренд из Param/имени/описания.
 
+    Логика:
+    1) Param "Производитель", "Наименование производителя", "Для бренда";
+    2) Поиск известных брендов в <name>/<description>;
+    3) Спец-правило: если в name есть SBID-***, то бренд SBID.
+    """
     # 1) Явный производитель в Param'ах
     for pattern in (
         r'<Param\s+name="Производитель">(.*?)</Param>',
@@ -250,7 +257,7 @@ def _extract_brand_from_block(body: str) -> str:
             if norm:
                 return norm
 
-    # 3) Спец-правило под твой кейс: SBID-QX275-P → бренд SBID
+    # 3) Спец-правило под кейс SBID-QX275-P → бренд SBID
     if "SBID-" in name_text:
         return "SBID"
 
@@ -324,8 +331,63 @@ def _fill_empty_vendor(body: str) -> str:
     return new_body3
 
 
+def _apply_price_rules(base: int) -> int:
+    """Применить наценку 4% + фиксированный диапазон и хвост 900.
+
+    Если итоговая цена >= 9 000 000 — вернуть 100.
+    """
+    if base <= 0:
+        return base
+
+    tiers = [
+        (101, 10_000, 3_000),
+        (10_001, 25_000, 4_000),
+        (25_001, 50_000, 5_000),
+        (50_001, 75_000, 7_000),
+        (75_001, 100_000, 10_000),
+        (100_001, 150_000, 12_000),
+        (150_001, 200_000, 15_000),
+        (200_001, 300_000, 20_000),
+        (300_001, 400_000, 25_000),
+        (400_001, 500_000, 30_000),
+        (500_001, 750_000, 40_000),
+        (750_001, 1_000_000, 50_000),
+        (1_000_001, 1_500_000, 70_000),
+        (1_500_001, 2_000_000, 90_000),
+        (2_000_001, 100_000_000, 100_000),
+    ]
+
+    bonus = 0
+    for lo, hi, add in tiers:
+        if lo <= base <= hi:
+            bonus = add
+            break
+
+    if bonus == 0:
+        # База вне диапазонов (например, <=100) — возвращаем как есть
+        return base
+
+    value = base * 1.04 + bonus
+
+    # Округление вверх до ближайшего значения с хвостом 900
+    thousands = int(value) // 1000
+    price = thousands * 1000 + 900
+    if price < value:
+        price += 1000
+
+    if price >= 9_000_000:
+        return 100
+
+    return price
+
+
 def _transform_offers(text: str) -> str:
-    """Привести <offer> к нужному виду (id/available, vendorCode, categoryId, currencyId, vendor)."""
+    """Привести <offer> к нужному виду:
+    - атрибуты только id и available;
+    - новые <categoryId>, <vendorCode>, <currencyId>;
+    - попытаться заполнить <vendor> реальным брендом;
+    - пересчитать цену по правилам (4% + диапазон, хвост 900).
+    """
 
     def _process_offer(match: re.Match) -> str:
         header = match.group(1)
@@ -336,7 +398,7 @@ def _transform_offers(text: str) -> str:
         article_match = re.search(r'\barticle="([^"]*)"', header)
         art = (article_match.group(1).strip() if article_match else "").strip()
 
-        # если article пустой, пробуем старый id как fallback
+        # если article вдруг пустой, пробуем старый id как fallback
         if not art:
             id_match = re.search(r'\bid="([^"]*)"', header)
             if id_match:
@@ -346,18 +408,20 @@ def _transform_offers(text: str) -> str:
         avail_match = re.search(r'\bavailable="([^"]*)"', header)
         available = avail_match.group(1).strip() if avail_match else "true"
 
-        # 2) Новый заголовок: только id и available
+        # 2) Новый заголовок: только id и available + перевод строки
         new_header = f'<offer id="{new_id}" available="{available}">\n'
 
-        # 3) Достаём исходный categoryId
+        # 3) Достаём значение categoryId, если оно было в виде <categoryId ...>VALUE</categoryId>
         cat_val = ""
         cat_val_match = re.search(
-            r"<categoryId[^>]*>(.*?)</categoryId>", body, re.DOTALL | re.IGNORECASE
+            r"<categoryId[^>]*>(.*?)</categoryId>",
+            body,
+            re.DOTALL | re.IGNORECASE,
         )
         if cat_val_match:
             cat_val = cat_val_match.group(1).strip()
 
-        # 4) Удаляем все старые теги categoryId
+        # 4) Удаляем все старые теги categoryId (и с содержимым, и самозакрывающиеся)
         body = re.sub(
             r"<categoryId[^>]*>.*?</categoryId>",
             "",
@@ -380,6 +444,25 @@ def _transform_offers(text: str) -> str:
         # 7) Пытаемся заполнить пустой/служебный <vendor>
         body = _fill_empty_vendor(body)
 
+        # 8) Находим и пересчитываем цену:
+        #    <price type="Цена дилерского портала KZT" currencyId="KZT">X</price>
+        #    → <price>RETAIL</price>
+        def _reprice(match_price: re.Match) -> str:
+            base_str = match_price.group(1)
+            try:
+                base = int(base_str)
+            except ValueError:
+                return match_price.group(0)
+            new_price = _apply_price_rules(base)
+            return f"<price>{new_price}</price>"
+
+        body = re.sub(
+            r'<price[^>]*type=["\']Цена дилерского портала KZT["\'][^>]*>(\d+)</price>',
+            _reprice,
+            body,
+            flags=re.IGNORECASE,
+        )
+
         return new_header + body + footer
 
     pattern = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL | re.IGNORECASE)
@@ -393,6 +476,7 @@ def _normalize_layout(text: str) -> str:
 
     - выровнять всё по левому краю;
     - сделать начало: <shop><offers>\n\n<offer...;
+    - поставить перенос между <offer ...> и <categoryId>;
     - поставить пустую строку между офферами;
     - поставить пустую строку перед </offers>;
     - убрать пустые строки ВНУТРИ каждого <offer>...</offer>.
@@ -468,7 +552,7 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     # 3) чистим ненужные теги
     text = _clean_tags(text)
 
-    # 4) приводим офферы к нужному виду (id, vendorCode, categoryId, currencyId, vendor)
+    # 4) приводим офферы к нужному виду (id, vendorCode, categoryId, currencyId, vendor, price)
     text = _transform_offers(text)
 
     # 5) нормализуем разметку и разрывы
