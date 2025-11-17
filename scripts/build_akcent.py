@@ -9,16 +9,16 @@
    manufacturer_warranty, Stock, prices/RRP).
 5. Приводим каждый <offer> к нужному виду:
    - в <offer> оставляем только атрибуты id и available;
-   - id формируем как "AK" + article;
+   - id формируем как "AK" + article (или старый id, если article пустой);
    - внутри создаём <vendorCode> с тем же значением, что и id;
    - <categoryId type="..."> превращаем в <categoryId>значение</categoryId>,
      при отсутствии значения делаем <categoryId></categoryId>;
    - в каждом оффере добавляем <currencyId>KZT</currencyId>;
-   - если тег <vendor/> пустой или содержит заблокированное значение,
-     пытаемся найти бренд в <Param name="Производитель">, <Param name="Для бренда">,
-     либо в тексте <name>/<description> (Epson, Philips, Fellowes и т.п.).
-6. Нормализуем разметку: убираем лишние отступы и ставим аккуратные разрывы:
-   <shop><offers>\n\n<offer...> ... </offer>\n\n</offers>
+   - если <vendor/> пустой (или заблокированный), пытаемся найти бренд
+     в Param'ах и в тексте name/description.
+6. Нормализуем разметку: убираем лишние отступы и пустые строки внутри <offer>,
+   расставляем разрывы:
+   <shop><offers>\n\n<offer ...>\n<categoryId>...\n...\n</offer>\n\n</offers>
 7. Сохраняем результат в docs/akcent.yml (UTF-8).
 """
 
@@ -94,6 +94,7 @@ _KNOWN_BRANDS = [
     "OKI",
     "Xerox",
     "Lexmark",
+    "Vivitek",  # важно для DX273
 ]
 
 
@@ -167,7 +168,10 @@ def _filter_offers_by_name(text: str) -> str:
 
 
 def _clean_tags(text: str) -> str:
-    """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)."""
+    """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)
+    и сразу «подтянуть» остальные теги вверх (убрать пустые строки).
+    """
+    # Теги, которые почти всегда стоят отдельной строкой
     simple_patterns = [
         r"<url>.*?</url>",
         r"<Offer_ID>.*?</Offer_ID>",
@@ -178,27 +182,29 @@ def _clean_tags(text: str) -> str:
         r"<Stock>.*?</Stock>",
     ]
     for pat in simple_patterns:
-        text = re.sub(pat, "", text, flags=re.DOTALL)
+        text = re.sub(pat, "", text, flags=re.DOTALL | re.IGNORECASE)
 
     # Удаляем блок цены по RRP: <price type="RRP" ...>...</price>
     text = re.sub(
-        r'<price[^>]*type["\']RRP["\'][^>]*>.*?</price>',
+        r'<price[^>]*type=["\']RRP["\'][^>]*>.*?</price>',
         "",
         text,
         flags=re.DOTALL | re.IGNORECASE,
     )
 
     # Удаляем только оболочку <prices> и </prices>
-    text = re.sub(r"</?prices>", "", text)
+    text = re.sub(r"</?prices>", "", text, flags=re.IGNORECASE)
 
-    # Схлопываем лишние пустые строки (сдвиг вверх после удаления)
-    text = re.sub(r"\n\s*\n+", "\n", text)
+    # Полностью убираем пустые строки (сдвиг вверх)
+    lines = text.splitlines()
+    non_empty = [ln for ln in lines if ln.strip()]
+    text = "\n".join(non_empty)
 
     return text
 
 
 def _normalize_brand_name(raw: str) -> str:
-    """Простая очистка названия бренда и фильтр по блоклисту."""
+    """Очистить название бренда и отфильтровать служебные значения."""
     s = html.unescape(raw or "").strip()
     if not s:
         return ""
@@ -210,24 +216,24 @@ def _normalize_brand_name(raw: str) -> str:
 
 
 def _extract_brand_from_block(body: str) -> str:
-    """Попробовать вытащить бренд из Param/Для бренда/имени/описания."""
-    # 1) Явный производитель
-    m = re.search(r'<Param\s+name="Производитель">(.*?)</Param>', body, flags=re.DOTALL)
-    if m:
-        brand = _normalize_brand_name(m.group(1))
-        if brand:
-            return brand
+    """Попробовать вытащить бренд из Param/имени/описания."""
 
-    # 2) Для бренда (например, расходники)
-    m = re.search(r'<Param\s+name="Для бренда">(.*?)</Param>', body, flags=re.DOTALL)
-    if m:
-        brand = _normalize_brand_name(m.group(1))
-        if brand:
-            return brand
+    # 1) Явный производитель в Param'ах
+    for pattern in (
+        r'<Param\s+name="Производитель">(.*?)</Param>',
+        r'<Param\s+name="Наименование производителя">(.*?)</Param>',
+        r'<Param\s+name="Для бренда">(.*?)</Param>',
+    ):
+        m = re.search(pattern, body, flags=re.DOTALL | re.IGNORECASE)
+        if m:
+            brand = _normalize_brand_name(m.group(1))
+            if brand:
+                return brand
 
-    # 3) Ищем по тексту name/description среди известных брендов
+    # 2) Ищем по тексту name/description среди известных брендов
     name_text = ""
     desc_text = ""
+
     m = re.search(r"<name>(.*?)</name>", body, flags=re.DOTALL | re.IGNORECASE)
     if m:
         name_text = html.unescape(m.group(1))
@@ -244,11 +250,15 @@ def _extract_brand_from_block(body: str) -> str:
             if norm:
                 return norm
 
+    # 3) Спец-правило под твой кейс: SBID-QX275-P → бренд SBID
+    if "SBID-" in name_text:
+        return "SBID"
+
     return ""
 
 
 def _fill_empty_vendor(body: str) -> str:
-    """Заполнить пустой <vendor/>, если возможно, не трогая корректные бренды."""
+    """Заполнить пустой <vendor/>, если возможно, не трогая нормальные бренды."""
 
     def _has_good_vendor(s: str) -> bool:
         m = re.search(r"<vendor>(.*?)</vendor>", s, flags=re.DOTALL | re.IGNORECASE)
@@ -262,7 +272,7 @@ def _fill_empty_vendor(body: str) -> str:
             return False
         return True
 
-    # Если уже есть нормальный бренд — выходим
+    # Уже есть нормальный бренд — ничего не трогаем
     if _has_good_vendor(body):
         return body
 
@@ -274,7 +284,7 @@ def _fill_empty_vendor(body: str) -> str:
         indent = match.group(1) or ""
         return f"{indent}<vendor>{brand}</vendor>"
 
-    # 1) Пытаемся заменить <vendor/>
+    # 1) <vendor/>
     new_body = re.sub(
         r"(\s*)<vendor\s*/>",
         repl_empty,
@@ -285,7 +295,7 @@ def _fill_empty_vendor(body: str) -> str:
     if new_body != body:
         return new_body
 
-    # 2) Пытаемся заменить <vendor></vendor>
+    # 2) <vendor></vendor> или <vendor>   </vendor>
     new_body2 = re.sub(
         r"(\s*)<vendor>\s*</vendor>",
         repl_empty,
@@ -296,16 +306,17 @@ def _fill_empty_vendor(body: str) -> str:
     if new_body2 != body:
         return new_body2
 
-    # 3) Если вдруг был заблокированный бренд — заменим его
+    # 3) Если был заблокированный бренд — заменяем его на нормальный
     def repl_blocked(match: re.Match) -> str:
         indent = match.group(1) or ""
-        return f"{indent}<vendor>{brand}</vendor>"
+        val = html.unescape(match.group(2) or "").strip()
+        if any(bad in val.lower() for bad in _BRAND_BLOCKLIST):
+            return f"{indent}<vendor>{brand}</vendor>"
+        return match.group(0)
 
     new_body3 = re.sub(
         r"(\s*)<vendor>(.*?)</vendor>",
-        lambda m: repl_blocked(m)
-        if any(bad in html.unescape(m.group(2) or "").lower() for bad in _BRAND_BLOCKLIST)
-        else m.group(0),
+        repl_blocked,
         body,
         count=1,
         flags=re.DOTALL | re.IGNORECASE,
@@ -325,7 +336,7 @@ def _transform_offers(text: str) -> str:
         article_match = re.search(r'\barticle="([^"]*)"', header)
         art = (article_match.group(1).strip() if article_match else "").strip()
 
-        # если article вдруг пустой, пробуем старый id как fallback
+        # если article пустой, пробуем старый id как fallback
         if not art:
             id_match = re.search(r'\bid="([^"]*)"', header)
             if id_match:
@@ -336,9 +347,9 @@ def _transform_offers(text: str) -> str:
         available = avail_match.group(1).strip() if avail_match else "true"
 
         # 2) Новый заголовок: только id и available
-        new_header = f'<offer id="{new_id}" available="{available}">'
+        new_header = f'<offer id="{new_id}" available="{available}">\n'
 
-        # 3) Достаём значение categoryId, если оно было в виде <categoryId ...>VALUE</categoryId>
+        # 3) Достаём исходный categoryId
         cat_val = ""
         cat_val_match = re.search(
             r"<categoryId[^>]*>(.*?)</categoryId>", body, re.DOTALL | re.IGNORECASE
@@ -346,7 +357,7 @@ def _transform_offers(text: str) -> str:
         if cat_val_match:
             cat_val = cat_val_match.group(1).strip()
 
-        # 4) Удаляем все старые теги categoryId (и с содержимым, и самозакрывающиеся)
+        # 4) Удаляем все старые теги categoryId
         body = re.sub(
             r"<categoryId[^>]*>.*?</categoryId>",
             "",
@@ -355,7 +366,10 @@ def _transform_offers(text: str) -> str:
         )
         body = re.sub(r"<categoryId[^>]*/>", "", body, flags=re.IGNORECASE)
 
-        # 5) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
+        # 5) Убираем пустоту в начале тела
+        body = body.lstrip()
+
+        # 6) Добавляем новый блок categoryId + vendorCode + currencyId в начало тела
         prefix = (
             f"<categoryId>{cat_val}</categoryId>\n"
             f"<vendorCode>{new_id}</vendorCode>\n"
@@ -363,7 +377,7 @@ def _transform_offers(text: str) -> str:
         )
         body = prefix + body
 
-        # 6) Пытаемся заполнить пустой или заблокированный <vendor>
+        # 7) Пытаемся заполнить пустой/служебный <vendor>
         body = _fill_empty_vendor(body)
 
         return new_header + body + footer
@@ -380,7 +394,8 @@ def _normalize_layout(text: str) -> str:
     - выровнять всё по левому краю;
     - сделать начало: <shop><offers>\n\n<offer...;
     - поставить пустую строку между офферами;
-    - поставить пустую строку перед </offers>.
+    - поставить пустую строку перед </offers>;
+    - убрать пустые строки ВНУТРИ каждого <offer>...</offer>.
     """
     # 1) Выравниваем по левому краю
     lines = text.splitlines()
@@ -408,7 +423,31 @@ def _normalize_layout(text: str) -> str:
     # 5) Между последним </offer> и </offers> делаем пустую строку
     text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
 
-    return text
+    # 6) Убираем пустые строки ВНУТРИ офферов (после всех вставок)
+    lines = text.splitlines()
+    out_lines: list[str] = []
+    inside_offer = False
+
+    for line in lines:
+        stripped = line.strip()
+
+        if stripped.startswith("<offer "):
+            inside_offer = True
+            out_lines.append(line)
+            continue
+
+        if stripped == "</offer>":
+            inside_offer = False
+            out_lines.append(line)
+            continue
+
+        # Пустые строки внутри офферов пропускаем
+        if inside_offer and not stripped:
+            continue
+
+        out_lines.append(line)
+
+    return "\n".join(out_lines)
 
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
