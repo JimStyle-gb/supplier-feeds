@@ -6,7 +6,7 @@
 2. Вырезаем всё содержимое между <shop> и <offers>, оставляя сами теги.
 3. Оставляем только те <offer>, у которых <name> начинается с наших ключевых слов.
 4. Удаляем служебные теги (url, Offer_ID, delivery, local_delivery_cost, model,
-   manufacturer_warranty, Stock, prices/RRP).
+   manufacturer_warranty, Stock, prices/RRP, а также самозакрывающийся <url/>).
 5. Приводим каждый <offer> к нужному виду:
    - в <offer> оставляем только атрибуты id и available;
    - id формируем как "AK" + article (или старый id, если article пустой);
@@ -19,7 +19,7 @@
      по правилам (4% + диапазон, хвост 900, >= 9 000 000 -> 100) и записываем
      как <price>XXX</price> без атрибутов;
    - все Param name="Сопутствующие товары" убираем из характеристик и в конец
-     description добавляем текстовый блок "Рекомендуемые аксессуары".
+     description добавляем текстовый блок "Сопутствующие товары и совместимые устройства".
 6. Нормализуем разметку: убираем лишние отступы и пустые строки внутри <offer>,
    аккуратно расставляем разрывы:
    <shop><offers>\n\n<offer ...>\n<categoryId>...\n...\n</offer>\n\n</offers>
@@ -176,6 +176,7 @@ def _clean_tags(text: str) -> str:
     """
     simple_patterns = [
         r"<url>.*?</url>",
+        r"<url\s*/>",
         r"<Offer_ID>.*?</Offer_ID>",
         r"<delivery>.*?</delivery>",
         r"<local_delivery_cost>.*?</local_delivery_cost>",
@@ -387,7 +388,7 @@ def _move_related_products_to_description(body: str) -> str:
     if not items:
         return body
 
-    block_lines = ["Рекомендуемые аксессуары:"]
+    block_lines = ["Сопутствующие товары и совместимые устройства:"]
     for item in items:
         block_lines.append(f"- {item}")
     block_text = "\n".join(block_lines)
