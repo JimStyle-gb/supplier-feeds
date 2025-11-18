@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<yml_catalog date="2025-11-17 22:02">
+<yml_catalog date="2025-11-18 20:51">
 <shop><offers>
 
 <offer id="AKC13T55KD00" available="true">
@@ -55,6 +55,8 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 <description>Емкость для отработанных чернил
 L15150</description>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Ёмкость для отработанных чернил C12C934591 для WF-78XX/ET-166XX MAINTENANCE BOX</Param>
+<Param name="Совместимые продукты">C11CJ04404,C11CH72404,C11CH71404,C11CJ30404,C11CJ41404,C11CJ28404,C11CJ20404,C11CJ21403</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
@@ -75,6 +77,7 @@ L15150</description>
 - МФУ Epson L7160 фабрика печати
 - МФУ Epson L7180 фабрика печати</description>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Ёмкость для отработанных чернил Epson C13T04D000</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
@@ -100,6 +103,8 @@ L15150</description>
 - МФУ Epson M2140 (CIS) фабрика печати</description>
 <Param name="Страна происхождения">Япония</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Ёмкость для отработанных чернил C13T04D100</Param>
+<Param name="Совместимые продукты">C11CG21404,C11CG20404,C11CG19404,C11CH96404,C11CH43404,C11CG92405,</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
@@ -151,37 +156,13 @@ SC-B6000
 - Плоттер Epson SureColor SC-T7200</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Ёмкость для отработанных чернил для T3000/5000/7000, Т3200/5200/7200</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">Ёмкость для отработанных чернил</Param>
 <Param name="Для бренда">Epson</Param>
 <price>59900</price>
-</offer>
-
-<offer id="AKC13T671100" available="true">
-<categoryId>000002672</categoryId>
-<vendorCode>AKC13T671100</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Ёмкость для отработанных чернил Epson C13T671100 для  WForce 3000/7100/7600</name>
-<picture/>
-<vendor>Epson</vendor>
-<description>Основные преимущества:
-Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управление принтера.
-Сопутствующие товары и совместимые устройства:
-- МФУ Epson L1455 фабрика печати
-- Принтер Epson WorkForce WF-7110DTW
-- МФУ Epson WorkForce WF-7710DWF
-- МФУ Epson WorkForce WF-7720D
-- МФУ Epson WorkForce WF-7620DTWF</description>
-<Param name="Страна происхождения">Япония</Param>
-<Param name="Производитель">Epson</Param>
-<Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
-<Param name="Тип печати">струйная</Param>
-<Param name="Вид">Ёмкость для отработанных чернил</Param>
-<Param name="Для бренда">Epson</Param>
-<price>18900</price>
 </offer>
 
 <offer id="AKC13T671400" available="true">
@@ -197,6 +178,8 @@ SC-B6000
 - МФУ Epson WorkForce Pro WF-C869RDTWF</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Индонезия, Япония</Param>
+<Param name="Наименование производителя">Epson Ёмкость для отработанных чернил C13T671400 для WorkForce Pro WF-C869R</Param>
+<Param name="Совместимые продукты">C11CG70401,C11CG68401,C11CH60401BX,C11CH35401BX</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
@@ -220,7 +203,6 @@ SC-B6000
 - Плоттер Epson SureColor SC-P6000</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Гарантия">нет</Param>
-<Param name="Объем">0,003</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
@@ -255,6 +237,7 @@ SC-B6000
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
+<Param name="Наименование производителя">Epson Картридж C13T08054011 для P50/PX660</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -491,6 +474,7 @@ HDMI вход с поддержкой HDCP 2.3
 <Param name="Гарантия">нет</Param>
 <Param name="Цвет">голубой*пурпурный*желтый</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Картридж C13T26704010 набор из 3 картриджей для WorkForce WF-100W</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -511,6 +495,7 @@ Epson WorkForce WF-7110DTW</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson C13T27914022 для WF-7620DTW</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -537,6 +522,7 @@ Epson SureColor SC-T5100N (без стенда)-C11CF12302A0</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T40D140 UltraChrome XD2 для T40D140(80ml)</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -607,6 +593,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -687,57 +674,13 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T41F540 UltraChrome XD2 для T41F540 B 350ml</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
 <Param name="Ресурс">700 мл</Param>
 <Param name="Для бренда">Epson</Param>
 <price>218900</price>
-</offer>
-
-<offer id="AKC13T41F34N" available="true">
-<categoryId>000002673</categoryId>
-<vendorCode>AKC13T41F34N</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/df2/uklvh1v3fddx68kdgryaxefb9hl8ue1j.png</picture>
-<vendor>Epson</vendor>
-<description>Объем, мл: 350 мл
-Количество в упаковке, шт.: 1 шт.
-Совместимые модели техники: SureColor SC-T3400/SC-T3400N/SC-T3405/SC-T3405N/SC-T5400/SC-T5400M/SC-T5405</description>
-<Param name="Страна происхождения">Индонезия</Param>
-<Param name="Гарантия">нет</Param>
-<Param name="Производитель">Epson</Param>
-<Param name="Цвет">пурпурный</Param>
-<Param name="Тип">Картридж EPSON</Param>
-<Param name="Тип печати">струйная</Param>
-<Param name="Вид">картридж</Param>
-<Param name="Ресурс">350 мл</Param>
-<Param name="Для бренда">Epson</Param>
-<price>126900</price>
-</offer>
-
-<offer id="AKC13T41F440" available="true">
-<categoryId>000002673</categoryId>
-<vendorCode>AKC13T41F440</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Картридж Epson C13T41F440  UltraChrome XD2 T41F440 Y 350ml жёлтый</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/036/0muav07pep31608slkpjvyqved8ch8i7.jpg</picture>
-<vendor>Epson</vendor>
-<description>Фото черный картридж 110ml, для:
-Epson SureColor T-3000
-Epson SureColor T-5000
-Epson SureColor T-7000</description>
-<Param name="Страна происхождения">Индонезия</Param>
-<Param name="Гарантия">нет</Param>
-<Param name="Производитель">Epson</Param>
-<Param name="Тип">Картридж EPSON</Param>
-<Param name="Тип печати">струйная</Param>
-<Param name="Вид">картридж</Param>
-<Param name="Ресурс">350 мл</Param>
-<Param name="Для бренда">Epson</Param>
-<Param name="Цвет">Желтый</Param>
-<price>116900</price>
 </offer>
 
 <offer id="AKC13T50M400" available="true">
@@ -757,6 +700,7 @@ Epson SC-T7700DM</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Картридж C13T693500 для T3000/5000/7000, Т3200/5200/7200</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -784,6 +728,7 @@ Epson SC-T7700DM</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Красный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T693500 для T3000/5000/7000, Т3200/5200/7200</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -805,6 +750,7 @@ Epson Stylus Pro 4880</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T606100 для SP-4880</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -826,6 +772,7 @@ Epson Stylus Pro 4880</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T606300 для  SP-4880</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -991,6 +938,7 @@ Epson Stylus Pro 4450</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
+<Param name="Наименование производителя">Epson Картридж C13T614200 SP-4450 голубой</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1013,6 +961,7 @@ Epson Stylus Pro 4450</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
+<Param name="Наименование производителя">Epson КартриджC13T614300 SP-4450 пурпурный</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1059,6 +1008,7 @@ Epson Stylus Pro 4450</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson C13T614800 SP-4450  220ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1082,6 +1032,7 @@ Epson SureColor T-7000</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T692100 для T3000/5000/7000, Т3200/5200/7200</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1105,6 +1056,7 @@ Epson SureColor T-7000</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1128,6 +1080,7 @@ Epson SureColor T-7000</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T694300 для T3000/5000/7000, Т3200/5200/7200</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1151,6 +1104,7 @@ Epson SureColor T-7000</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T694500 для T3000/5000/7000, Т3200/5200/7200</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1175,6 +1129,7 @@ Epson SureColor T-7000</description>
 <Param name="Страна происхождения">Япония</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T838140 для WF-R5190DTW (RIPS)/WF-R5690DTWF (RIPS)</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1201,6 +1156,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Китай,Индонезия</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T965140 для WF-M52xx/57xx Series Ink Cartridge XL Bl.</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -1219,6 +1175,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Китай,Индонезия</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T966140 для WF-M52/57xx Series Ink Cartridge XXL BK.</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
@@ -1239,6 +1196,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Картридж C13T974100 для  WorkForce Pro WF-C869R черный</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -1315,6 +1273,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
+<Param name="Наименование производителя">Epson Картридж C13T08054011 для P50/PX660</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -1335,6 +1294,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
+<Param name="Наименование производителя">Epson Картридж C13T08054011 для P50/PX660</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -1355,6 +1315,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
+<Param name="Наименование производителя">Epson Картридж C13T08054011 для P50/PX660</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -1375,6 +1336,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
+<Param name="Наименование производителя">Epson Картридж C13T08054011 для P50/PX660</Param>
 <Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Вид">картридж</Param>
@@ -1462,62 +1424,6 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <price>104900</price>
 </offer>
 
-<offer id="AK100016948" available="true">
-<categoryId>000005448</categoryId>
-<vendorCode>AK100016948</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/60a/bu1412bsrvsztqapjj32pnoc13ijdl5e.jpg</picture>
-<vendor>Fellowes</vendor>
-<description>Ламинатор Arc А3
-Диапазон плёнок 75 – 125 мкм
-Скорость ламинирования 30 см/мин.
-Время нагрева 4 мин.
-Гарантия 1 год
-Артикул	FS-10001
-Макс. формат	A3
-Рекомендуемое количество ламинирований в день	25 листов, неинтенсивное использование
-Максимальная толщина ламинирования (лист+пленка), мм	0,4
-Толщина пленки, мкм	75/125
-Ширина входа, мм	230
-Система нагрева	нагреваемые валы
-Кол-во валов	2
-Время нагрева, мин	4
-Регулировка температуры	нет
-Макс. скорость, см/мин	30
-Регулировка скорости	нет
-AutoSense	нет
-InstaHeat	нет
-HeatGuard™	нет
-Easi-Access механизм	нет
-Освобождение	да
-Реверс	нет
-Auto Shut Off (Автоотключение)	да (после 30 минут простоя)
-Сигнал готовности	свет
-Персональные настройки	нет
-Холодное ламинирование	нет
-Съемный сетевой кабель	нет
-Выходной лоток	нет
-Гарантия, лет	1
-Стартовый набор для 10 документов	да
-Габаритные размеры, мм (ВxШxГ)	62 x 459 x 113
-Вес, кг	1
-Размеры розничной упаковки, мм (ВxШxГ)	157 x 405 x 101
-Вес розничной упаковки, кг	1,5
-Размеры транспортной упаковки, мм (ВxШxГ)	171 x 390 x 412
-Вес транспортной упаковки, кг	6,7
-Количество в транспортной упаковке	4
-Сопутствующие товары и совместимые устройства:
-- Пленка для ламинирования Lamirel А4, 75мкм, 100 шт.
-- Пленка для ламинирования Fellowes Lamirel А4, 75мкм, 100 шт.</description>
-<Param name="Страна происхождения">Китай</Param>
-<Param name="Производитель">Fellowes</Param>
-<Param name="Тип">Ламинатор А3</Param>
-<Param name="Вид">Ламинатор А3</Param>
-<Param name="Гарантия">12 мес</Param>
-<price>25900</price>
-</offer>
-
 <offer id="AKFS-45700" available="true">
 <categoryId>000005450</categoryId>
 <vendorCode>AKFS-45700</vendorCode>
@@ -1572,57 +1478,6 @@ Auto Shut Off (Автоотключение)	да (после 30 минут пр
 <Param name="Вид">Ламинатор А4</Param>
 <Param name="Гарантия">12 мес</Param>
 <price>20900</price>
-</offer>
-
-<offer id="AK4560201" available="true">
-<categoryId>000005448</categoryId>
-<vendorCode>AK4560201</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Ламинатор Fellowes Ion A3, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/df1/xnx4igtori5je6x8ttn2suykpsbd7k10.jpg</picture>
-<vendor>Fellowes</vendor>
-<description>Артикул	fs-45602
-Макс. формат	A3
-Рекомендуемое количество ламинирований в день	25 листов, неинтенсивное использование
-Максимальная толщина ламинирования (лист+пленка), мм	0,4
-Толщина пленки, мкм	75/80, 100, 125
-Ширина входа, мм	320
-Система нагрева	нагреваемые валы
-Кол-во валов	2
-Время нагрева, мин	4
-Регулировка температуры	нет
-Макс. скорость, см/мин	30
-Регулировка скорости	нет
-AutoSense	нет
-InstaHeat	нет
-HeatGuard™	нет
-Easi-Access механизм	нет
-Освобождение	да
-Реверс	нет
-Auto Shut Off (Автоотключение)	да (30 мин после включения)
-Сигнал готовности	свет
-Персональные настройки	нет
-Холодное ламинирование	нет
-Съемный сетевой кабель	нет
-Выходной лоток	нет
-Гарантия, лет	1
-Стартовый набор для 10 документов	да
-Габаритные размеры, мм (ВxШxГ)	66 x 450 x 158
-Вес, кг	2
-Размеры розничной упаковки, мм (ВxШxГ)	91 x 480 x 185
-Вес розничной упаковки, кг	2,4
-Размеры транспортной упаковки, мм (ВxШxГ)	375 x 210 x 495
-Вес транспортной упаковки, кг	9,6
-Количество в транспортной упаковке	4
-Сопутствующие товары и совместимые устройства:
-- Пленка для ламинирования Lamirel А4, 100мкм, 100 шт.</description>
-<Param name="Страна происхождения">Китай</Param>
-<Param name="Цвет">Белый</Param>
-<Param name="Производитель">Fellowes</Param>
-<Param name="Тип">Ламинатор А3</Param>
-<Param name="Вид">Ламинатор А3</Param>
-<Param name="Гарантия">12 мес</Param>
-<price>55900</price>
 </offer>
 
 <offer id="AK4560001" available="true">
@@ -2023,6 +1878,8 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 <Param name="Разрешение печати,dpi">4800 x 1200</Param>
 <Param name="Максимальная скорость печати А4 стр/мин">17</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson L14150</Param>
+<Param name="Совместимые продукты">C13T04D100,C13T03V24A,C13T03V44A,C13T03V34A,C13T03V14A</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">МФУ  Офис</Param>
 <Param name="Тип печати">струйная</Param>
@@ -2038,12 +1895,108 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 <price>500900</price>
 </offer>
 
+<offer id="AKC11CJ69401" available="true">
+<categoryId>000002652</categoryId>
+<vendorCode>AKC11CJ69401</vendorCode>
+<currencyId>KZT</currencyId>
+<name>МФУ Epson L3200 фабрика печати</name>
+<picture/>
+<vendor>Epson</vendor>
+<description>Домашний струйный принтер
+Цветное многофункциональное устройство 3-в-1 формата A4
+Печать, сканирование и копирование
+Компактный дизайн
+Черный
+Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту¹ вы с легкостью сможете выполнять различные задачи.
+Попрощайтесь с дорогостоящими картриджами
+EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета.
+Постоянная экономия
+Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет², обеспечивает значительную экономию средств при печати. Сменный набор чернильных флаконов может использоваться для печати до 4500 страниц в черном цвете и до 7500 страниц в цвете³.
+Многочисленные функции
+Благодаря функциям печати, сканирования и копирования, печати фотографий без полей (до 10 x 15 см) вы сможете с легкостью выполнять различные задачи.
+Технология Heat-Free
+Благодаря технологии Epson Micro Piezo Heat-Free вы можете наслаждаться быстрой и высококачественной печатью. Надежная и долговечная печатающая головка также поставляется предварительно установленной, поэтому настройка принтера не требует дополнительных усилий.
+Метод печати
+Epson Micro Piezo™ print head
+Конфигурация сопла
+180 Сопла (черный), 59 Сопла (цвет)
+Минимальный размер капли
+3 капли(ей), Технология капель с переменным размером
+Технология чернил
+Чернила на красителях
+Разрешение при печати
+5.760 x 1.440 DPI (точек на дюйм)
+Выработка
+Для дома, Для домашнего офиса
+Многофункциональный
+Печать, сканирование, Копия
+Количество цветов
+4 colour
+Скорость печати ISO/IEC 24734
+9,2 Стр./мин. Монохромная печать, 4,5 Стр./мин. Colour
+Максимальная скорость печати
+15 Стр./мин. Colour (plain paper 75 g/m²), 33 Стр./мин. Монохромная печать (plain paper 75 g/m²), 27 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper)
+Цвета
+Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]
+Скорость одностороннего сканирования (A4, черный)
+200 DPI (точек на дюйм); , 11 sec. with flatbed scan
+Single-sided scan speed (A4 colour)
+200 DPI (точек на дюйм); , 32 sec. with flatbed scan
+Разрешение сканирования
+600 DPI (точек на дюйм) x 1.200 DPI (точек на дюйм) (горизонтальный x вертикальный)
+Формат выводимых данных
+BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG
+Тип сканера
+Контактный датчик изображения (CIS)
+Optical Resolution
+600 DPI (точек на дюйм) x 1.200 DPI (точек на дюйм) (горизонтальный x вертикальный
+Количество бумажных ящиков
+1
+Формат бумаги
+C6 (Конверт)  , B5  , A6 (10,5x14,8 см)  , A5 (14,8x21,0 см)  , A4 (21,0x29,7 см) , Legal, Выбрать формат, 13 x 18 см  , 10 x 15 см  , Letter  , No. 10 (Конверт)  , DL (Конверт), 16:9  
+Дуплекс
+Вручную
+Емкость отделения подачи бумаги
+30 Листы
+Paper Tray Capacity
+100 Листы Стандарт
+Подходящий вес бумаги
+64 - 300г/м2
+Обработка мультимедиа
+Печать без полей
+Энергопотребление
+12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,4 Ватт (sleep mode), 4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,04 kWh/week
+Напряжение питания
+AC 100 V - 240 V, 50 Hz - 60 Hz
+Габариты
+375 x 347 x 179 мм (Ширина x Глубина x Высота)
+Вес
+3,9 кг
+Уровень шума
+6,5 B (A) with Epson Premium Glossy Photo Paper / Photo RPM mode - 52 dB (A) with Epson Premium Glossy Photo Paper / Photo RPM mode
+Совместимые операционные системы
+Mac OS X 10.6.8 or later, Windows 10, Windows 7, Windows 8, Windows 8.1, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later
+Встроенное программное обеспечение
+Epson Scan
+Интерфейсы
+USB
+Комплект поставки
+4 x 65ml individual ink bottles (Bk, C,Y,M), Драйвер и вспомогательная программа (CD), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы
+Цвет
+Black</description>
+<Param name="Страна происхождения">Филипины</Param>
+<Param name="Гарантия">12 мес</Param>
+<Param name="Тип">МФУ  Дом</Param>
+<Param name="Вид">МФУ  Дом</Param>
+<price>104900</price>
+</offer>
+
 <offer id="AKC11CJ67412" available="true">
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ67412</vendorCode>
 <currencyId>KZT</currencyId>
 <name>МФУ Epson L3250 фабрика печати. Wi-Fi</name>
-<picture/>
+<picture>https://b2b.ak-cent.kz/upload/iblock/358/lxtmcj0imiles090hfyrgv2ks9sybtum.jpg</picture>
 <vendor>Epson</vendor>
 <description>Домашний струйный принтер
 Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct
@@ -2125,6 +2078,8 @@ Epson Smart Panel App
 4 x 65ml individual ink bottles (Bk, C,Y,M), Драйвер и вспомогательная программа (CD), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы
 Цвет
 Black</description>
+<Param name="Наименование производителя">Epson L3250</Param>
+<Param name="Совместимые продукты">C13T00S14A, C13T00S24A, C13T00S34A, C13T00S44A</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Филипины</Param>
 <Param name="Гарантия">12 мес</Param>
@@ -2181,6 +2136,7 @@ Black</description>
 <Param name="Страна происхождения">Филиппины</Param>
 <Param name="Минимальная плотность бумаги, г/м2">64</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson L3256</Param>
 <Param name="Интерфейс">USB* тип B</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">МФУ  Дом</Param>
@@ -2290,6 +2246,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver), Apple AirPrint, Google
 <Param name="Двусторонняя печать">нет</Param>
 <Param name="ЖК дисплей">нет</Param>
 <Param name="Интерфейс">USB, тип B</Param>
+<Param name="Наименование производителя">Epson L3260</Param>
 <Param name="Минимальная плотность бумаги, г/м2">64</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">12 мес</Param>
@@ -2771,6 +2728,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 <Param name="Минимальная плотность бумаги, г/м2">64</Param>
 <Param name="Разрешение печати,dpi">4800 x 1200</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Совместимые продукты">C13T04D100,C13T03V24A,C13T03V44A,C13T03V34A,C13T03V14A</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">МФУ  Офис</Param>
 <Param name="Тип печати">струйная</Param>
@@ -2782,6 +2740,7 @@ Epson Connect (iPrint, Email Print, Remote Print Driver, Scan-to-Cloud), Apple A
 <Param name="Максимальная плотность бумаги, г/м2">256</Param>
 <Param name="Область применения">Для офиса</Param>
 <Param name="Тип расходных материалов">чернила</Param>
+<Param name="Наименование производителя">Epson L6160</Param>
 <Param name="Вид">МФУ  Офис</Param>
 <price>350900</price>
 </offer>
@@ -3055,6 +3014,7 @@ CD с программным обеспечением и драйверами д
 <Param name="Минимальная плотность бумаги, г/м2">64</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Факс">да</Param>
+<Param name="Совместимые продукты">C12C934591,C13T06C14A,C13T06C34A,C13T06C44A,C13T06C24A</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">МФУ  Офис</Param>
 <Param name="Тип печати">струйная</Param>
@@ -3066,6 +3026,7 @@ CD с программным обеспечением и драйверами д
 <Param name="Максимальная плотность бумаги, г/м2">256</Param>
 <Param name="Область применения">Для офиса</Param>
 <Param name="Тип расходных материалов">чернила</Param>
+<Param name="Наименование производителя">Epson L6550</Param>
 <Param name="Вид">МФУ  Офис</Param>
 <Param name="Разрешение печати,dpi">4800x2400</Param>
 <price>735900</price>
@@ -3195,6 +3156,8 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 <Param name="Производитель">Epson</Param>
 <Param name="Печать фото">да</Param>
 <Param name="Разрешение сканера,dpi">1200x4800</Param>
+<Param name="Наименование производителя">Epson L8180</Param>
+<Param name="Совместимые продукты">C13T07D14A,C13T07D24A,C13T07D44A,C13T07D34A,C13T07D54A,C13T07C14A,C12C934591</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">МФУ  Офис</Param>
 <Param name="Тип печати">струйная</Param>
@@ -3257,6 +3220,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 <Param name="Минимальная плотность бумаги, г/м2">64</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Максимальная плотность бумаги, г/м2">90</Param>
+<Param name="Наименование производителя">Epson M2110</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">МФУ  Дом</Param>
 <Param name="Тип печати">струйная</Param>
@@ -3319,6 +3283,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 <Param name="Производитель">Epson</Param>
 <Param name="Максимальная плотность бумаги, г/м2">90</Param>
 <Param name="Интерфейс">USB* тип B*Wi-Fi</Param>
+<Param name="Совместимые продукты">C13T01L14A,C13T03P14A</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">МФУ  Дом</Param>
 <Param name="Тип печати">струйная</Param>
@@ -3329,6 +3294,7 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 <Param name="Тип чернил">пигментные</Param>
 <Param name="Область применения">Для дома</Param>
 <Param name="Тип расходных материалов">чернила</Param>
+<Param name="Наименование производителя">Epson M2120</Param>
 <Param name="Вид">МФУ  Дом</Param>
 <price>189900</price>
 </offer>
@@ -3380,6 +3346,8 @@ SD, SDHC, SDXC, MicroSD*, MicroSDHC*, MicroSDXC*, MiniSD*, MiniSDHC*, Mini SDXC*
 <Param name="Производитель">Epson</Param>
 <Param name="Максимальная скорость печати А4 стр/мин">39</Param>
 <Param name="Максимальная плотность бумаги, г/м2">90</Param>
+<Param name="Наименование производителя">Epson M2140</Param>
+<Param name="Совместимые продукты">C13T04D100,C13T01L14A,C13T03P14A</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">МФУ  Дом</Param>
 <Param name="Тип печати">струйная</Param>
@@ -3469,6 +3437,7 @@ CD с программным обеспечением и драйверами д
 <Param name="Минимальная плотность бумаги, г/м2">64</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Печать фото">да</Param>
+<Param name="Совместимые продукты">C13T66414A,C13T66424A,C13T66434A,C13T66444A</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">Принтер для цветной печати</Param>
 <Param name="Тип печати">струйная</Param>
@@ -3481,6 +3450,7 @@ CD с программным обеспечением и драйверами д
 <Param name="Максимальная плотность бумаги, г/м2">255</Param>
 <Param name="Область применения">Фотопечать</Param>
 <Param name="Тип расходных материалов">чернила</Param>
+<Param name="Наименование производителя">Epson L1300</Param>
 <Param name="Вид">Принтер для цветной печати</Param>
 <price>474900</price>
 </offer>
@@ -3539,6 +3509,7 @@ Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]
 <Param name="ЖК дисплей">нет</Param>
 <Param name="Страна происхождения">Филиппины</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Совместимые продукты">C13T66414A,C13T66424A,C13T66434A,C13T66444A</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">Принтер для цветной печати</Param>
 <Param name="Тип печати">струйная</Param>
@@ -3550,6 +3521,7 @@ Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]
 <Param name="Максимальная плотность бумаги, г/м2">95</Param>
 <Param name="Тип расходных материалов">чернила</Param>
 <Param name="Максимальная скорость печати А4 стр/мин">9</Param>
+<Param name="Наименование производителя">Epson L121</Param>
 <Param name="Вид">Принтер для цветной печати</Param>
 <price>79900</price>
 </offer>
@@ -3729,6 +3701,7 @@ USB
 <Param name="ЖК дисплей">нет</Param>
 <Param name="Страна происхождения">Филиппины</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Совместимые продукты">C13T66414A,C13T66424A,C13T66434A,C13T66444A</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип">Принтер для цветной печати</Param>
 <Param name="Тип печати">струйная</Param>
@@ -3740,6 +3713,7 @@ USB
 <Param name="Тип чернил">водорастворимые</Param>
 <Param name="Максимальная плотность бумаги, г/м2">255</Param>
 <Param name="Тип расходных материалов">чернила</Param>
+<Param name="Наименование производителя">Epson L132</Param>
 <Param name="Вид">Принтер для цветной печати</Param>
 <price>93900</price>
 </offer>
@@ -3851,6 +3825,7 @@ ESC/P-R
 <Param name="Двусторонняя печать">нет</Param>
 <Param name="ЖК дисплей">нет</Param>
 <Param name="Страна происхождения">Индонезия</Param>
+<Param name="Наименование производителя">Epson L18050</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Печать фото">да</Param>
 <Param name="Гарантия">12 мес</Param>
@@ -3874,7 +3849,7 @@ ESC/P-R
 <vendorCode>AKC11CK37403</vendorCode>
 <currencyId>KZT</currencyId>
 <name>Принтер Epson L8050 фабрика печати, Wi-Fi</name>
-<picture/>
+<picture>https://b2b.ak-cent.kz/upload/iblock/01e/6e61mbcc0f2lp5lxktm1203y8ejfjm9k.png</picture>
 <vendor>Epson</vendor>
 <description>Фотопринтер для большого объема печати
 Шестицветный фотопринтер формата A4 позволяет быстро и просто печатать в больших объемах с рекордно низкой себестоимостью.
@@ -4072,6 +4047,7 @@ ESC/P, ESC/P-R
 <Param name="Тип чернил">пигментные</Param>
 <Param name="Область применения">Для дома</Param>
 <Param name="Тип расходных материалов">чернила</Param>
+<Param name="Наименование производителя">Epson M1100</Param>
 <price>133900</price>
 </offer>
 
@@ -4170,6 +4146,7 @@ GDI
 Гарантия
 12 месяца(ев) Мобильная (гарантия), 100.000 Страницы</description>
 <Param name="Автоподатчик">нет</Param>
+<Param name="Наименование производителя">Epson M1140</Param>
 <Param name="Цвет">Белый</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Филипины</Param>
@@ -4270,8 +4247,9 @@ Tехнология печати	Термотрансферная
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Минимальная плотность бумаги, г/м2">0,07</Param>
 <Param name="Производитель">Epson</Param>
-<Param name="Количество игл">лента</Param>
+<Param name="Наименование производителя">Epson LW400</Param>
 <Param name="Тип расходных материалов">термотрансферная лента</Param>
+<Param name="Совместимые продукты">C53S654009,C53S653005,C53S653007</Param>
 <Param name="Формат бумаги">лента</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Тип печати">ленточный</Param>
@@ -4332,7 +4310,7 @@ Tехнология печати	Термотрансферная
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Гарантия">1 год</Param>
 <Param name="Производитель">Epson</Param>
-<Param name="Количество игл">лента</Param>
+<Param name="Наименование производителя">Epson LW700</Param>
 <Param name="Формат бумаги">лента</Param>
 <Param name="Тип печати">ленточный</Param>
 <Param name="Ширина носителя, мм">6; 9; 12; 18;24</Param>
@@ -4739,6 +4717,7 @@ ________________________________________
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Видео вход HDMI">Есть</Param>
 <Param name="Тип">Проектор короткофокусный</Param>
+<Param name="Наименование производителя">ViewSonic Europe Ltd.</Param>
 <Param name="Вид">Проектор</Param>
 <Param name="Производитель">ViewSonic</Param>
 <Param name="Яркость (ANSI) лмн">1 200</Param>
@@ -4918,7 +4897,10 @@ USB Display 3-в-1 – передача изображения, звука и с
 <Param name="Видео вход S-video">Нет</Param>
 <Param name="Вид">Проектор</Param>
 <Param name="Уровень шума (норм./эконом.) Дб">28</Param>
+<Param name="Оригинальное разрешение">Оригинальное</Param>
 <Param name="Источник света">Лампа</Param>
+<Param name="Наименование производителя">Epson EB-FH06</Param>
+<Param name="Совместимые продукты">V12H005A01,V12H757040,V12H758040,V13H010L97,V13H134A32,V12H003B23,V12H003P13,V12H003P14</Param>
 <Param name="Тип источника света">Ламповый источник света</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Разрешение">FullHD (1920x1080)</Param>
@@ -5140,6 +5122,9 @@ USB Display 3-в-1 – передача изображения, звука и с
 <Param name="Вид">Проектор</Param>
 <Param name="Уровень шума (норм./эконом.) Дб">28</Param>
 <Param name="Разрешение">1280х800</Param>
+<Param name="Оригинальное разрешение">Оригинальное</Param>
+<Param name="Наименование производителя">Epson EB-W06</Param>
+<Param name="Совместимые продукты">V12H005A01,V12H003B23,V12H003P13,V12H003P14,V13H134A32,V13H010L97</Param>
 <Param name="Тип источника света">Ламповый источник света</Param>
 <Param name="Гарантия">24</Param>
 <Param name="Технология">3LCD</Param>
@@ -5213,7 +5198,10 @@ USB Display 3-в-1 – передача изображения, звука и с
 <Param name="Вид">Проектор</Param>
 <Param name="Уровень шума (норм./эконом.) Дб">28</Param>
 <Param name="Разрешение">1280х800</Param>
+<Param name="Оригинальное разрешение">Оригинальное</Param>
 <Param name="Источник света">Лампа</Param>
+<Param name="Наименование производителя">Epson EB-W51</Param>
+<Param name="Совместимые продукты">V12H005A01,V12H757040,V12H758040,V13H010L97,V13H134A32,V12H003B23,V12H003P13,V12H003P14</Param>
 <Param name="Тип источника света">Ламповый источник света</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Технология">3LCD</Param>
@@ -5430,12 +5418,14 @@ I/O порты	VGA-вход (15pin D-Sub) (x2), Количество порто�
 <Param name="Срок службы лампы (норм./ эконом.) ч.">5500/10000</Param>
 <Param name="Видео вход S-video">Есть</Param>
 <Param name="Видео вход VGA">Есть</Param>
+<Param name="Наименование производителя">Vivitek</Param>
 <Param name="Уровень шума (норм./эконом.) Дб">32/29</Param>
 <Param name="Видео вход HDMI">2</Param>
 <Param name="Видео вход DVI-D">Нет</Param>
 <Param name="Видео вход DisplayPort">Нет</Param>
 <Param name="Тип источника света">UHE</Param>
 <Param name="Вид">Проектор</Param>
+<Param name="Оригинальное разрешение">Оригинальное</Param>
 <Param name="Яркость (ANSI) лмн">4 000</Param>
 <Param name="Гарантия">12 мес</Param>
 <Param name="Разрешение">XGA (1024х768)</Param>
@@ -5553,6 +5543,7 @@ Epson L7180	C11CG16404
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Чернила 105 EcoTank BK Ink Bottle</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5577,6 +5568,7 @@ Epson L7180	C11CG16404
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Чернила 106 EcoTank Photo BK Ink Bottle</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5601,6 +5593,7 @@ Epson L7180	C11CG16404
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Голубой</Param>
+<Param name="Наименование производителя">Epson Чернила 106 EcoTank CY Ink Bottle</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5625,6 +5618,7 @@ Epson L7180	C11CG16404
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">пурпурный</Param>
+<Param name="Наименование производителя">Epson Чернила 106 EcoTank MA Ink Bottle</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5648,6 +5642,7 @@ Epson L7180	C11CG16404
 - МФУ Epson L7160 фабрика печати</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
+<Param name="Наименование производителя">Epson Чернила 106 EcoTank YE Ink Bottle</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5655,40 +5650,6 @@ Epson L7180	C11CG16404
 <Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>12900</price>
-</offer>
-
-<offer id="AKC13T00S24A" available="true">
-<categoryId>000002677</categoryId>
-<vendorCode>AKC13T00S24A</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Чернила Epson C13T00S24A для 103 EcoTank L3100/L3101/L3110/L3150 голубой</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/1c3/ul3vtp797mlmfocm523eysi522s3ajcx.jpg</picture>
-<vendor>Epson</vendor>
-<description>Совместимые продукты
-Epson L3100	C11CG88401	
-Epson L3101	C11CG88402	-	 
-Epson L3110	C11CG87405		
-Epson L3150	C11CG86409		
-Epson L3151	C11CG86411
-Сопутствующие товары и совместимые устройства:
-- МФУ Epson L3100 фабрика печати
-- МФУ Epson L3101 фабрика печати
-- МФУ Epson L3110 фабрика печати
-- МФУ Epson L3150 фабрика печати. Wi-Fi
-- МФУ Epson L3151 фабрика печати
-- МФУ Epson L3156 фабрика печати
-- МФУ Epson L3160 фабрика печати, Wi-Fi
-- Принтер Epson L1110 фабрика печати
-- МФУ Epson L5190 фабрика печати, факс,Wi-Fi</description>
-<Param name="Производитель">Epson</Param>
-<Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
-<Param name="Цвет">Голубой</Param>
-<Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
-<Param name="Тип печати">струйная</Param>
-<Param name="Вид">чернила</Param>
-<Param name="Для бренда">Epson</Param>
-<price>7900</price>
 </offer>
 
 <offer id="AKC13T00S34A" available="true">
@@ -5717,6 +5678,7 @@ Epson L3151	C11CG86411
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">пурпурный</Param>
+<Param name="Наименование производителя">Epson Чернила 103 EcoTank Magenta ink bottle</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5750,6 +5712,7 @@ Epson L3151	C11CG86411
 - МФУ Epson M2140 (CIS) фабрика печати</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
+<Param name="Наименование производителя">Epson Чернила 103 EcoTank Yellow ink bottle</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5784,10 +5747,10 @@ Epson M2170 C11CH43404
 - МФУ Epson M2110 (CIS) фабрика печати
 - МФУ Epson M2120 (CIS) фабрика печати
 - Принтер Epson M1100 фабрика печати</description>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Чернила EcoTank MX1XX Series Black Bottle L</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5795,30 +5758,6 @@ Epson M2170 C11CH43404
 <Param name="Ресурс">2000 стр</Param>
 <Param name="Для бренда">Epson</Param>
 <price>10900</price>
-</offer>
-
-<offer id="AKC13T03V14A" available="true">
-<categoryId>000002677</categoryId>
-<vendorCode>AKC13T03V14A</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</name>
-<picture/>
-<vendor>Epson</vendor>
-<description>Контейнер с голубыми чернилами для:
-L4150/L4160
-Сопутствующие товары и совместимые устройства:
-- МФУ Epson L4160 фабрика печати
-- МФУ Epson L4150 фабрика печати</description>
-<Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
-<Param name="Производитель">Epson</Param>
-<Param name="Цвет">Черный</Param>
-<Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
-<Param name="Тип печати">струйная</Param>
-<Param name="Вид">чернила</Param>
-<Param name="Для бренда">Epson</Param>
-<price>8900</price>
 </offer>
 
 <offer id="AKC13T03V24A" available="true">
@@ -5834,9 +5773,9 @@ L4150/L4160
 - МФУ Epson L4160 фабрика печати
 - МФУ Epson L4150 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
+<Param name="Наименование производителя">Epson Чернила 101 EcoTank Cyan ink bottle 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5858,9 +5797,9 @@ L4150/L4160
 - МФУ Epson L4160 фабрика печати
 - МФУ Epson L4150 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
+<Param name="Наименование производителя">Epson Чернила 101 EcoTank Magenta ink bottle 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5882,8 +5821,8 @@ L4150/L4160
 - МФУ Epson L4160 фабрика печати
 - МФУ Epson L4150 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Чернила 101 EcoTank Yellow ink bottle 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5904,9 +5843,9 @@ L4150/L4160
 Сопутствующие товары и совместимые устройства:
 - МФУ Epson L15150 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Цвет">Чёрный</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Чернила для L65**/L15***</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5926,9 +5865,9 @@ L4150/L4160
 Сопутствующие товары и совместимые устройства:
 - МФУ Epson L15150 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
+<Param name="Наименование производителя">Epson Чернила для L65**/L15***</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5948,8 +5887,8 @@ L4150/L4160
 Сопутствующие товары и совместимые устройства:
 - МФУ Epson L15150 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Чернила для L65**/L15***</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5964,15 +5903,15 @@ L4150/L4160
 <vendorCode>AKC13T07C14A</vendorCode>
 <currencyId>KZT</currencyId>
 <name>Чернила Epson C13T07C14A для L8160/L8180 черный пигмент</name>
-<picture/>
+<picture>https://b2b.ak-cent.kz/upload/iblock/507/np5ot8ocjpa3g6x2gp3j6rzlcyanvtvm.jpg</picture>
 <vendor>Epson</vendor>
 <description>Контейнер с черными пигментными чернилами
 Сопутствующие товары и совместимые устройства:
 - МФУ Epson L8180 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Чернила C13T07C14A для L8160/L8180</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -5992,9 +5931,9 @@ L4150/L4160
 Сопутствующие товары и совместимые устройства:
 - МФУ Epson L8180 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">голубые</Param>
+<Param name="Наименование производителя">Epson Чернила C13T07C14A для L8160/L8180</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6026,6 +5965,7 @@ Epson L18050
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Чернила 103 EcoTank Black ink bottle</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6046,6 +5986,7 @@ Epson L8050
 Epson L18050</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
+<Param name="Наименование производителя">Чернила Epson 108 Eco Tank</Param>
 <Param name="Цвет">Голубой</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
@@ -6077,9 +6018,9 @@ Epson L550
 - МФУ Epson L566 фабрика печати, факс,Wi-Fi
 - МФУ Epson L222 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Чернила L100  черные 70 ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6111,9 +6052,9 @@ Epson L550
 - МФУ Epson L566 фабрика печати, факс,Wi-Fi
 - МФУ Epson L222 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
+<Param name="Наименование производителя">Epson Чернила L100  пурпурные 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6145,8 +6086,8 @@ Epson L550
 - МФУ Epson L566 фабрика печати, факс,Wi-Fi
 - МФУ Epson L222 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,000</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Чернила L100 желтые 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6173,9 +6114,9 @@ Epson L800
 - Принтер Epson L1800 фабрика печати
 - Принтер Epson L800 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,000</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Epson Чернила L800 черные 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6201,9 +6142,9 @@ Epson L800
 - Принтер Epson L1800 фабрика печати
 - Принтер Epson L800 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,000</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
+<Param name="Наименование производителя">Epson Чернила L800 голубые 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6229,9 +6170,9 @@ Epson L800
 - Принтер Epson L1800 фабрика печати
 - Принтер Epson L800 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,000</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
+<Param name="Наименование производителя">Epson Чернила L800 пурпурные 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6257,8 +6198,8 @@ Epson L800
 - Принтер Epson L1800 фабрика печати
 - Принтер Epson L800 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,000</Param>
 <Param name="Производитель">Epson</Param>
+<Param name="Наименование производителя">Epson Чернила L800 желтые 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6285,9 +6226,9 @@ Epson L800
 - Принтер Epson L1800 фабрика печати
 - Принтер Epson L800 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,000</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
+<Param name="Наименование производителя">Epson Чернила L800 светоло-голубые 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6313,9 +6254,9 @@ Epson L800
 - Принтер Epson L1800 фабрика печати
 - Принтер Epson L800 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,000</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-пурпурный</Param>
+<Param name="Наименование производителя">Epson Чернила L800 светло-пурпурные 70ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6343,9 +6284,9 @@ M200
 - Принтер Epson L1800 фабрика печати
 - Принтер Epson L800 фабрика печати</description>
 <Param name="Страна происхождения">Индонезия</Param>
-<Param name="Объем">0,001</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
+<Param name="Наименование производителя">Ink bottle for M100. M200. M105 140ml</Param>
 <Param name="Гарантия">3</Param>
 <Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
@@ -6753,53 +6694,6 @@ SafeSense® Техноло</description>
 <price>55900</price>
 </offer>
 
-<offer id="AKFS-44075" available="true">
-<categoryId>000005456</categoryId>
-<vendorCode>AKFS-44075</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Шредер Fellowes® Powershred® LX70, DIN P-4, 4х37мм, 11 лст., 18 лтр., уничт.: скрепки,скобы,карты</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/652/e36urpfp3g4yntyqtbbq823iwrapuo74.jpg</picture>
-<vendor>Fellowes</vendor>
-<description>Шредер Powershred® LX70
-Высокая производительность, до 11 листов одновременно
-Перекрестная резка - 4 х 40 мм, P-4 уровень секретности
-Корзина 18 литров ≈ 220 листов А4
-Гарантия 2 года на устройство и 3 года на ножи
-Возможности уничтожения - скобы, карты, скрепки
-Артикул	fs-44075
-Количество пользователей	1 пользователь
-Рекомендуемое количество листов в день	100
-Рекомендуемое количество кредитных карт в день	25
-Рекомендуемое количество CD дисков в день	нет
-Загрузка, листов (A4, 70гр/м²)	11
-Тип Резки	Перекрест.
-Размер резки, мм	4 x 40
-Уровень секретности, DIN 66399	P-4
-Количество фрагментов при резке листа А4, шт.	≥390
-Уровень секретности для кредитных карт, DIN 66399	T-3
-Ширина входа, мм	224
-Скорость резки, м/мин	3
-Рабочий цикл, мин	5 / 30
-Уничтожение степлерных скоб	да
-Уничтожение скрепок	да
-Уничтожение кредитных карт	да
-Уничтожение CD или Blu-Ray DVD (1,2 слоя)	нет
-100% Jam-Proof Технология предотвращения заторов	нет
-Другие технологии предотвращения заторов	Реверс
-SafeSense® Технолог</description>
-<Param name="Страна происхождения">Китай</Param>
-<Param name="Уровень секретности">P-4</Param>
-<Param name="Уничтожение">скобы, карты, скрепки</Param>
-<Param name="Гарантия">2 года на устройство и 3 года на ножи</Param>
-<Param name="Тип резки">Перекрестная резка - 4 х 40 мм</Param>
-<Param name="Производительность уничтожителя">до 11 листов одновременно</Param>
-<Param name="Емкость корзины, литров">18 л ≈ 220 листов А4</Param>
-<Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
-<Param name="Вид">шредеры офисные</Param>
-<price>89900</price>
-</offer>
-
 <offer id="AK4701001" available="true">
 <categoryId>000005456</categoryId>
 <vendorCode>AK4701001</vendorCode>
@@ -6934,96 +6828,6 @@ Sleep Mode (автоотключение)	да
 <price>264900</price>
 </offer>
 
-<offer id="AK4170501" available="true">
-<categoryId>000005456</categoryId>
-<vendorCode>AK4170501</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Шредер Fellowes® Powershred®LX25 SHREDDER (CROSS CUT) 230V EU</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/0e5/9iba0n6whth8839q5dzrqecbp6ymrf69.jpg</picture>
-<vendor>Fellowes</vendor>
-<description>Шредер Powershred® LX25
-Привлекательный дизайн с окном для контроля наполняемости
-Перекрестная резка - 4 х 37 мм, P-4 уровень секретности
-Корзина 11,5 литров ≈ 60 листов А4
-Гарантия 2 года на устройство и 3 года на ножи
-Возможности уничтожения - скобы, карты, скрепки
-Артикул	fs-41705
-Количество пользователей	1 пользователь
-Рекомендуемое количество листов в день	30
-Рекомендуемое количество кредитных карт в день	5
-Рекомендуемое количество CD дисков в день	нет
-Загрузка, листов (A4, 70гр/м²)	6
-Тип Резки	Перекрест.
-Размер резки, мм	4 x 37
-Уровень секретности, DIN 66399	P-4
-Количество фрагментов при резке листа А4, шт.	≥421
-Уровень секретности для кредитных карт, DIN 66399	T-4
-Ширина входа, мм	220
-Скорость резки, м/мин	2
-Рабочий цикл, мин	3 / 30
-Уничтожение степлерных скоб	да
-Уничтожение скрепок	да
-Уничтожение кредитных карт	да
-Уничтожение CD или Blu-Ray DVD (1,2 слоя)	нет
-100% Jam-Proof Технология предотвращения заторов	нет
-Другие технологии предотвращения заторов	Реверс
-SafeSense® Технология	нет
-Safety Lock	да
-SilentShred®	нет
-Energy Savings System	нет
-Sleep Mode (автоотключение)	нет
-Auto-Oil™	нет
-Селектор количества листов	нет
-Тип корзины	стандартная (съемный режущий блок)
-Емкость корзины, л	11,5
-Емкость корзины в листах А4, приближенно	60
-Наличие колес для перемещения	нет
-Кабель питания	несъемный
-Датчик пуска при подаче бумаги	механический
-Индикатор возникновения затора	нет
-Индикатор наполнения корзины	нет
-Автостоп при заполнении корзины	нет
-Индикатор открытой дверцы	нет
-Автоматическая защита от перегрева	да
-Индикатор перегрева	да
-Автоотключение при снятой корзине	да
-Тип электродвигателя	универсальный
-Сила тока, А	1
-Мощность, Вт	230
-Уровень шума без загрузки, дБ	70
-Уровень шума под нагрузкой, дБ	70
-Гарантия, лет	2
-Гарантия на ножи, лет	3
-Габаритные размеры, мм (ВxШxГ)	361 x 310 x 220
-Вес, кг	3,6
-Размеры розничной упаковки, мм (ВxШxГ)	373 x 330 x 240
-Вес розничной упаковки, кг	4,3
-Размеры транспортной упаковки, мм (ВxШxГ)	400 x 495 x 350
-Вес транспортной упаковки, кг	9,5
-Количество в транспортной упаковке	2</description>
-<manufacturer_warranty/>
-<Param name="Тип">шредеры офисные</Param>
-<Param name="Вид">шредеры офисные</Param>
-<price>40900</price>
-</offer>
-
-<offer id="AK4170601" available="true">
-<categoryId>000005456</categoryId>
-<vendorCode>AK4170601</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Шредер Fellowes® Powershred®LX25M SHREDDER (CROSS CUT) 230V EU</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/dd4/lmjm3y0h5e9p0ksgtbxjz2kgxakgh4x7.jpg</picture>
-<vendor>Fellowes</vendor>
-<description>Шредер Fellowes LX25M - персональный шредер в новом фирменном стиле с повышенной секретностью. Шредер уничтожает лист A4 на более чем 1300 фрагментов размером 4х12мм. Оптимальная производительность для персонального использования – 6 листов, рекомендуемая нагрузка до 30 листов в день.
-Модель является уникальной на рынке и наиболее доступной по цене среди шредеров Fellowes, которые предназначены для уничтожения конфиденциальных документов повышенного уровня секретности.
-Процесс измельчения  запускается автоматически при подаче бумаги в слот.  Функция реверса может эффективно предотвращать бумажные заторы.
-Шредер Powershred  LX25M обеспечивается увеличенной гарантией на 2 года на устройство и 3 года на ножи.</description>
-<Param name="Тип">шредеры офисные</Param>
-<Param name="Вид">шредеры офисные</Param>
-<Param name="Гарантия">24 мес</Param>
-<price>47900</price>
-</offer>
-
 <offer id="AK4400501" available="true">
 <categoryId>000005456</categoryId>
 <vendorCode>AK4400501</vendorCode>
@@ -7097,80 +6901,6 @@ Auto-Oil™	нет
 <Param name="Тип">шредеры офисные</Param>
 <Param name="Вид">шредеры офисные</Param>
 <price>54900</price>
-</offer>
-
-<offer id="AK4400701" available="true">
-<categoryId>000005456</categoryId>
-<vendorCode>AK4400701</vendorCode>
-<currencyId>KZT</currencyId>
-<name>Шредер Fellowes® Powershred®LX65 SHREDDER (CROSS CUT) 230V EU</name>
-<picture>https://b2b.ak-cent.kz/upload/iblock/b52/tos2pcisigwk3d37br2vxym1xpbt4a30.jpg</picture>
-<vendor>Fellowes</vendor>
-<description>Шредер Powershred® LX65
-Самый доступный уничтожитель с технологией безопасности SafeSense
-Высокая скорость уничтожения 4 м/мин, одновременное уничтожение до 10 листов
-Перекрестная резка - 4х40 мм, P-4 уровень секретности
-Корзина 22 литра ≈ 300 листов А4
-Гарантия 2 года на устройство и 5 лет на ножи
-Возможности уничтожения - скобы, карты, скрепки
-Артикул	fs-44007
-Количество пользователей	1-3 Пользователя
-Рекомендуемое количество листов в день	100
-Рекомендуемое количество кредитных карт в день	5
-Рекомендуемое количество CD дисков в день	нет
-Загрузка, листов (A4, 70гр/м²)	10
-Тип Резки	Перекрест.
-Размер резки, мм	4 x 40
-Уровень секретности, DIN 66399	P-4
-Количество фрагментов при резке листа А4, шт.	≥380
-Уровень секретности для кредитных карт, DIN 66399	T-4
-Ширина входа, мм	222
-Скорость резки, м/мин	4
-Рабочий цикл, мин	6 / 20
-Уничтожение степлерных скоб	да
-Уничтожение скрепок	да
-Уничтожение кредитных карт	да
-Уничтожение CD или Blu-Ray DVD (1,2 слоя)	нет
-100% Jam-Proof Технология предотвращения заторов	нет
-Другие технологии предотвращения заторов	Реверс
-SafeSense® Технология	да
-Safety Lock	нет
-SilentShred®	нет
-Energy Savings System	нет
-Sleep Mode (автоотключение)	нет
-Auto-Oil™	нет
-Селектор количества листов	нет
-Тип корзины	стандартная (съемный режущий блок)
-Емкость корзины, л	22
-Емкость корзины в листах А4, приближенно	300
-Наличие колес для перемещения	нет
-Кабель питания	несъемный
-Датчик пуска при подаче бумаги	электронный
-Индикатор возникновения затора	нет
-Индикатор наполнения корзины	нет
-Автостоп при заполнении корзины	нет
-Индикатор открытой дверцы	нет
-Автоматическая защита от перегрева	да
-Индикатор перегрева	да
-Автоотключение при снятой корзине	да
-Тип электродвигателя	универсальный
-Сила тока, А	1,3
-Мощность, Вт	299
-Уровень шума без загрузки, дБ	70
-Уровень шума под нагрузкой, дБ	70
-Гарантия, лет	2
-Гарантия на ножи, лет	5
-Габаритные размеры, мм (ВxШxГ)	407 x 233 x 371
-Вес, кг	5,3
-Размеры розничной упаковки, мм (ВxШxГ)	425 x 260 x 390
-Вес розничной упаковки, кг	6,6
-Размеры транспортной упаковки, мм (ВxШxГ)	443 x 535 x 403
-Вес транспортной упаковки, кг	14
-Количество в транспортной упаковке	2</description>
-<Param name="Тип">шредеры офисные</Param>
-<Param name="Вид">шредеры офисные</Param>
-<Param name="Гарантия">24</Param>
-<price>72900</price>
 </offer>
 
 <offer id="AK6008101" available="true">
