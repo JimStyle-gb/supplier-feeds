@@ -38,9 +38,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>27900</price>
 </offer>
 
@@ -55,9 +53,7 @@ Epson SureColor SC-P6000, Epson SureColor SC-P7000, Epson SureColor  SC- P8000, 
 L15150</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>22900</price>
 </offer>
 
@@ -74,9 +70,7 @@ L15150</description>
 - МФУ Epson L7180 фабрика печати</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Страна происхождения">Япония,Индонезия,Филиппины</Param>
 <price>10900</price>
 </offer>
@@ -98,9 +92,7 @@ L15150</description>
 <Param name="Страна происхождения">Япония</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -120,8 +112,6 @@ Epson B-510DN
 Epson WorkForce Pro WP-4025DW 
 Epson WorkForce Pro WP-4535DWF</description>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
-<Param name="Для бренда">Epson</Param>
 <price>26900</price>
 </offer>
 
@@ -147,9 +137,7 @@ SC-B6000
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>59900</price>
 </offer>
 
@@ -167,9 +155,7 @@ SC-B6000
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Индонезия, Япония</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>42900</price>
 </offer>
 
@@ -189,9 +175,7 @@ SC-B6000
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>31900</price>
 </offer>
 
@@ -204,7 +188,6 @@ SC-B6000
 <vendor>Epson</vendor>
 <description>Ёмкость для отработанных чернил Epson C33S021601SJMB4000 C4000e Maintenance box</description>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Ёмкость для отработанных чернил</Param>
 <price>25900</price>
 </offer>
 
@@ -220,10 +203,8 @@ SC-B6000
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">330  стр.</Param>
-<Param name="Для бренда">Epson</Param>
 <price>61900</price>
 </offer>
 
@@ -453,9 +434,7 @@ HDMI вход с поддержкой HDCP 2.3
 <Param name="Гарантия">нет</Param>
 <Param name="Цвет">голубой*пурпурный*желтый</Param>
 <Param name="Производитель">Epson</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>16900</price>
 </offer>
 
@@ -473,9 +452,7 @@ Epson WorkForce WF-7110DTW</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Ресурс">Около 2200 стр.</Param>
 <price>36900</price>
 </offer>
@@ -497,9 +474,7 @@ Epson SureColor SC-T5100N (без стенда)-C11CF12302A0</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>66900</price>
 </offer>
 
@@ -519,9 +494,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>46900</price>
 </offer>
 
@@ -542,9 +515,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>46900</price>
 </offer>
 
@@ -564,9 +535,7 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>46900</price>
 </offer>
@@ -583,10 +552,8 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">350 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>218900</price>
 </offer>
 
@@ -602,10 +569,8 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">350 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>218900</price>
 </offer>
 
@@ -620,10 +585,8 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">700 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>218900</price>
 </offer>
@@ -640,10 +603,8 @@ Epson SureColor SC-T5100N (без стенда)	C11CF12302A0</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">700 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>218900</price>
 </offer>
 
@@ -664,10 +625,8 @@ Epson SC-T7700DM</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">350 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">жёлтый</Param>
 <price>210900</price>
 </offer>
@@ -690,10 +649,8 @@ Epson SC-T7700DM</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Красный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">350 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>210900</price>
 </offer>
 
@@ -711,10 +668,8 @@ Epson Stylus Pro 4880</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -731,10 +686,8 @@ Epson Stylus Pro 4880</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -751,10 +704,8 @@ Epson Stylus Pro 4880</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>95900</price>
 </offer>
@@ -773,10 +724,8 @@ Epson Stylus Pro 4880</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -793,10 +742,8 @@ Epson Stylus Pro 4880</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -814,10 +761,8 @@ Epson Stylus Pro 4880</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Серый</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -834,10 +779,8 @@ Epson Stylus Pro 4880</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Светло-серый</Param>
 <price>95900</price>
 </offer>
@@ -869,9 +812,7 @@ Epson Stylus Pro 4800</description>
 <Param name="Ресурс">221 мл</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -889,10 +830,8 @@ Epson Stylus Pro 4450</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -910,10 +849,8 @@ Epson Stylus Pro 4450</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -930,10 +867,8 @@ Epson Stylus Pro 4450</description>
 <Param name="Страна происхождения">Китай</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>95900</price>
 </offer>
@@ -954,10 +889,8 @@ Epson Stylus Pro 4450</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">220 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>95900</price>
 </offer>
 
@@ -976,10 +909,8 @@ Epson SureColor T-7000</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">110 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>49900</price>
 </offer>
 
@@ -998,10 +929,8 @@ Epson SureColor T-7000</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">700 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>210900</price>
 </offer>
 
@@ -1020,10 +949,8 @@ Epson SureColor T-7000</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">700 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>193900</price>
 </offer>
 
@@ -1042,10 +969,8 @@ Epson SureColor T-7000</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">700 мл</Param>
-<Param name="Для бренда">Epson</Param>
 <price>210900</price>
 </offer>
 
@@ -1065,10 +990,8 @@ Epson SureColor T-7000</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">20000 стр.</Param>
-<Param name="Для бренда">Epson</Param>
 <price>116900</price>
 </offer>
 
@@ -1089,9 +1012,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Китай,Индонезия</Param>
 <Param name="Цвет">Черный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>181900</price>
 </offer>
 
@@ -1107,9 +1028,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Страна происхождения">Китай,Индонезия</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>325900</price>
 </offer>
 
@@ -1125,9 +1044,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>315900</price>
 </offer>
 
@@ -1143,9 +1060,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>545900</price>
 </offer>
 
@@ -1161,9 +1076,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>545900</price>
 </offer>
 
@@ -1178,9 +1091,7 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>545900</price>
 </offer>
@@ -1197,10 +1108,8 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">330  стр.</Param>
-<Param name="Для бренда">Epson</Param>
 <price>292900</price>
 </offer>
 
@@ -1216,10 +1125,8 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">330  стр.</Param>
-<Param name="Для бренда">Epson</Param>
 <price>369900</price>
 </offer>
 
@@ -1235,10 +1142,8 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">330  стр.</Param>
-<Param name="Для бренда">Epson</Param>
 <price>369900</price>
 </offer>
 
@@ -1254,10 +1159,8 @@ Epson WorkForce Pro WF-M5799DWFMV</description>
 <Param name="Гарантия">нет</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
-<Param name="Тип">Картридж EPSON</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">330  стр.</Param>
-<Param name="Для бренда">Epson</Param>
 <price>369900</price>
 </offer>
 
@@ -5359,9 +5262,7 @@ Epson L7180	C11CG16404
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>17900</price>
 </offer>
 
@@ -5382,9 +5283,7 @@ Epson L7180	C11CG16404
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>12900</price>
 </offer>
 
@@ -5405,9 +5304,7 @@ Epson L7180	C11CG16404
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Голубой</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>12900</price>
 </offer>
 
@@ -5428,9 +5325,7 @@ Epson L7180	C11CG16404
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>12900</price>
 </offer>
 
@@ -5450,9 +5345,7 @@ Epson L7180	C11CG16404
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Япония/Жапония. Индонезия. Филиппин/Филиппины</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>12900</price>
 </offer>
@@ -5484,9 +5377,7 @@ Epson L3151	C11CG86411
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>7900</price>
 </offer>
 
@@ -5516,9 +5407,7 @@ Epson L3151	C11CG86411
 <Param name="Производитель">Epson</Param>
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>7900</price>
 </offer>
@@ -5552,10 +5441,8 @@ Epson M2170 C11CH43404
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">2000 стр</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -5575,9 +5462,7 @@ L4150/L4160
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>6900</price>
 </offer>
 
@@ -5597,9 +5482,7 @@ L4150/L4160
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>6900</price>
 </offer>
 
@@ -5618,9 +5501,7 @@ L4150/L4160
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>6900</price>
 </offer>
@@ -5639,9 +5520,7 @@ L4150/L4160
 <Param name="Цвет">Чёрный</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>17900</price>
 </offer>
 
@@ -5659,9 +5538,7 @@ L4150/L4160
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>13900</price>
 </offer>
 
@@ -5678,9 +5555,7 @@ L4150/L4160
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">жёлтый</Param>
 <price>13900</price>
 </offer>
@@ -5699,9 +5574,7 @@ L4150/L4160
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>14900</price>
 </offer>
 
@@ -5719,9 +5592,7 @@ L4150/L4160
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">голубые</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>14900</price>
 </offer>
 
@@ -5749,9 +5620,7 @@ Epson L18050
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -5769,9 +5638,7 @@ Epson L18050</description>
 <Param name="Страна происхождения">Индонезия. Филиппин/Филиппины</Param>
 <Param name="Цвет">Голубой</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -5800,10 +5667,8 @@ Epson L550
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">4000 – 7100 страниц формата A4*</Param>
-<Param name="Для бренда">Epson</Param>
 <price>6900</price>
 </offer>
 
@@ -5832,10 +5697,8 @@ Epson L550
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">5700 – 6500 страниц формата A4*</Param>
-<Param name="Для бренда">Epson</Param>
 <price>7900</price>
 </offer>
 
@@ -5863,10 +5726,8 @@ Epson L550
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">5700 – 6500 страниц формата A4*</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>7900</price>
 </offer>
@@ -5890,10 +5751,8 @@ Epson L800
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">1500 – 1800 фотографий формата 10х15*</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -5916,10 +5775,8 @@ Epson L800
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Голубой</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">1500 – 1800 фотографий формата 10х15*</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -5942,10 +5799,8 @@ Epson L800
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">1500 – 1800 фотографий формата 10х15*</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -5967,10 +5822,8 @@ Epson L800
 <Param name="Страна происхождения">Индонезия</Param>
 <Param name="Производитель">Epson</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">1500 – 1800 фотографий формата 10х15*</Param>
-<Param name="Для бренда">Epson</Param>
 <Param name="Цвет">Желтый</Param>
 <price>10900</price>
 </offer>
@@ -5994,10 +5847,8 @@ Epson L800
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-голубой</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">1500 – 1800 фотографий формата 10х15*</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -6020,10 +5871,8 @@ Epson L800
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">светло-пурпурный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">1500 – 1800 фотографий формата 10х15*</Param>
-<Param name="Для бренда">Epson</Param>
 <price>10900</price>
 </offer>
 
@@ -6048,10 +5897,8 @@ M200
 <Param name="Производитель">Epson</Param>
 <Param name="Цвет">Черный</Param>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <Param name="Тип печати">струйная</Param>
 <Param name="Ресурс">6000 страниц формата A4*</Param>
-<Param name="Для бренда">Epson</Param>
 <price>13900</price>
 </offer>
 
@@ -6088,7 +5935,6 @@ P-5 уровень секретности, резка листа А4 на 2200+ 
 Уничтожение степлерных скоб	да
 Уничтожение скрепок	да
 Уничтожение кредитных карт	да</description>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Гарантия">24</Param>
 <price>206900</price>
 </offer>
@@ -6103,7 +5949,6 @@ P-5 уровень секретности, резка листа А4 на 2200+ 
 <description>Новая серия шредеров LX представляет собой следующее поколение шредеров благодаря совершенно новому дизайну, несравнимому удобству в использовании и недосягаемому уровню эффективности уничтожения.
 Удобство пользования шредером вышло на новый уровень благодаря применению новой многофункциональной панели IntelliBAR:</description>
 <Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Гарантия">24</Param>
 <price>184900</price>
 </offer>
@@ -6132,7 +5977,6 @@ Sleep Mode	Sleep Mode™. автоматическое отключение пи
 <Param name="Уровень секретности">P-4</Param>
 <Param name="Уничтожение">скобы, карты, скрепки</Param>
 <Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Производительность уничтожителя">100 (10 вручную)</Param>
 <Param name="Емкость корзины, литров">23 л</Param>
 <Param name="Гарантия">24</Param>
@@ -6180,7 +6024,6 @@ Safe</description>
 <Param name="Уничтожение">Листы бумаги, скрепленные скобами и скрепками;
 Глянцевую бумагу и документы с двусторонней печатью;</Param>
 <Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Гарантия">24</Param>
 <Param name="Емкость корзины, литров">32 л</Param>
 <price>180900</price>
@@ -6212,7 +6055,6 @@ Sleep Mode	Sleep Mode™. автоматическое отключение пи
 <Param name="Автоподатчик">да</Param>
 <Param name="Производительность уничтожителя">80 листов</Param>
 <Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Емкость корзины, литров">17 л</Param>
 <Param name="Гарантия">24</Param>
 <price>101900</price>
@@ -6258,7 +6100,6 @@ P-4 уровень секретности
 <Param name="Емкость корзины, литров">18 л</Param>
 <Param name="Уровень секретности">P-4</Param>
 <Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Производительность уничтожителя">до 12 листов одновременно</Param>
 <Param name="Уничтожение">скобы, скрепки, карты</Param>
 <Param name="Гарантия">12 мес</Param>
@@ -6287,7 +6128,6 @@ P-4 уровень секретности
 <Param name="Уровень секретности">P-4</Param>
 <Param name="Уничтожение">cкобкы, карты, скрепки</Param>
 <Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
 <price>53900</price>
 </offer>
 
@@ -6324,7 +6164,6 @@ P-4 уровень секретности
 Уничтожение скрепок	да
 Уничтожение кредитных карт	да
 Уничтожение CD или Blu-Ray DVD (1,</description>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Гарантия">24</Param>
 <price>176900</price>
 </offer>
@@ -6392,7 +6231,6 @@ Sleep Mode (автоотключение)	да
 Размеры транспортной упаковки, мм (ВxШxГ)	620 x 430 x 350
 Вес транспортной упаковки, кг	15,2
 Количество в транспортной упаковке	1</description>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Гарантия">24</Param>
 <price>181900</price>
 </offer>
@@ -6435,7 +6273,6 @@ SafeSense® Техноло</description>
 <Param name="Уровень секретности">P-4</Param>
 <Param name="Уничтожение">скобы, карты, скрепки</Param>
 <Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Тип резки">Перекрестная резка - 4 х 12 мм, измельчает 1 лист А4 на 1300 фрагментов</Param>
 <Param name="Производительность уничтожителя">50</Param>
 <Param name="Емкость корзины, литров">17 л</Param>
@@ -6502,7 +6339,6 @@ SafeSense® Техноло</description>
 <Param name="Уничтожение">бумага</Param>
 <Param name="Емкость корзины, литров">11 л</Param>
 <Param name="Производитель">Fellowes</Param>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Гарантия">12 мес</Param>
 <price>21900</price>
 </offer>
@@ -6570,7 +6406,6 @@ Sleep Mode (автоотключение)	да
 Размеры транспортной упаковки, мм (ВxШxГ)	650 x 461 x 334
 Вес транспортной упаковки, кг	20
 Количество в транспортной упаковке	1</description>
-<Param name="Тип">шредеры офисные</Param>
 <Param name="Гарантия">24</Param>
 <price>264900</price>
 </offer>
@@ -6645,7 +6480,6 @@ Auto-Oil™	нет
 Вес транспортной упаковки, кг	10,5
 Количество в транспортной упаковке	2</description>
 <manufacturer_warranty/>
-<Param name="Тип">шредеры офисные</Param>
 <price>54900</price>
 </offer>
 
@@ -6706,7 +6540,6 @@ P-4 уровень секретности
 Оригинальные расходные материалы
 Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество.</description>
 <Param name="Гарантия">3</Param>
-<Param name="Тип">Фабрика печати  (чернила EPSON)</Param>
 <price>20900</price>
 </offer>
 
