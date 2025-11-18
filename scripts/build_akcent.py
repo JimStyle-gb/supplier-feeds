@@ -437,7 +437,25 @@ def _move_related_products_to_description(body: str) -> str:
 
 def _filter_params(body: str) -> str:
     """Выкинуть из Param заведомо мусорные/служебные параметры."""
+    # Чёрный список названий параметров, которые не несут пользы покупателю
+    # или выглядят как явная ошибка поставщика.
+    blacklist = [
+        "Объем",          # логистический объём коробки вида 0,003 — ни о чём не говорит
+        "Количество игл", # в исходнике там значение "лента" — явная ерунда
+    ]
 
+    # Регулярка: находим <Param name="...">...</Param> с такими именами и выкидываем
+    pattern = re.compile(
+        r'\s*<Param\s+name="(?:' + "|".join(re.escape(n) for n in blacklist) + r')"[^>]*>.*?</Param>',
+        flags=re.DOTALL | re.IGNORECASE,
+    )
+
+    body, _ = pattern.subn("", body)
+
+    # Чуть подчистим лишние пустые строки, если вдруг образовались «дыры»
+    body = re.sub(r"\n{3,}", "\n\n", body)
+
+    return body
     def repl(match: re.Match) -> str:
         name = html.unescape(match.group(1) or "").strip()
         value = html.unescape(match.group(2) or "").strip()
