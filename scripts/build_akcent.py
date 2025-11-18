@@ -1,35 +1,8 @@
 #!/usr/bin/env python3
 """Сборщик YML для поставщика Akcent.
 
-Логика пайплайна:
-1. Скачиваем исходный XML/YML файл поставщика.
-2. Вырезаем всё содержимое между <shop> и <offers>, оставляя сами теги.
-3. Оставляем только те <offer>, у которых <name> начинается с наших ключевых слов.
-4. Удаляем служебные теги (url, url/ , Offer_ID, delivery, local_delivery_cost, model,
-   manufacturer_warranty, Stock, prices/RRP).
-5. Приводим каждый <offer> к нужному виду:
-   - в <offer> оставляем только атрибуты id и available;
-   - id формируем как "AK" + article (или старый id, если article пустой);
-   - внутри создаём <vendorCode> с тем же значением, что и id;
-   - <categoryId type="..."> превращаем в <categoryId>значение</categoryId>,
-     при отсутствии значения делаем <categoryId></categoryId>;
-   - в каждом оффере добавляем <currencyId>KZT</currencyId>;
-   - если <vendor/> пустой или служебный, пытаемся найти бренд в Param/name/description;
-   - цену берём из <price type="Цена дилерского портала KZT" ...>, пересчитываем
-     по правилам (4% + диапазон, хвост 900, >= 9 000 000 -> 100) и записываем
-     как <price>XXX</price> без атрибутов;
-   - все Param name="Сопутствующие товары" убираем из характеристик и в конец
-     description добавляем текстовый блок
-     "Сопутствующие товары и совместимые устройства:" со списком;
-   - выкидываем из Param мусорные:
-       * Наименование производителя
-       * Оригинальное разрешение
-       * Сопутствующие товары
-       * Совместимые продукты.
-6. Нормализуем разметку: убираем лишние отступы и пустые строки внутри <offer>,
-   аккуратно расставляем разрывы:
-   <shop><offers>\n\n<offer ...>\n<categoryId>...\n...\n</offer>\n\n</offers>
-7. Сохраняем результат в docs/akcent.yml (UTF-8).
+Кратко: скачиваем исходный XML, чистим служебные теги, правим id/vendor/цену,
+фильтруем/нормализуем параметры и сохраняем аккуратный YML для Satu/Kaspi.
 """
 
 from __future__ import annotations
@@ -41,7 +14,6 @@ import sys
 from pathlib import Path
 
 import requests
-
 
 # Ключевые префиксы для начала тега <name>
 _ALLOWED_PREFIXES = [
@@ -107,7 +79,6 @@ _KNOWN_BRANDS = [
     "Vivitek",  # важно для DX273
 ]
 
-
 def _decode_bytes(raw: bytes) -> str:
     """Аккуратно декодировать байты в строку (UTF-8 / CP1251)."""
     for enc in ("utf-8", "cp1251"):
@@ -116,7 +87,6 @@ def _decode_bytes(raw: bytes) -> str:
         except UnicodeDecodeError:
             continue
     return raw.decode("utf-8", errors="ignore")
-
 
 def _strip_shop_header(text: str) -> str:
     """Удалить всё между <shop> и <offers>, оставив сами теги."""
@@ -134,13 +104,11 @@ def _strip_shop_header(text: str) -> str:
     idx_after_shop = idx_shop + len(shop_tag)
     return text[:idx_after_shop] + "\n" + text[idx_offers:]
 
-
 def _name_allowed(name_text: str) -> bool:
     """Проверить, начинается ли name с одного из разрешённых префиксов."""
     t = html.unescape(name_text).strip()
     upper = t.upper()
     return any(upper.startswith(prefix) for prefix in _ALLOWED_PREFIXES_UPPER)
-
 
 def _filter_offers_by_name(text: str) -> str:
     """Оставить только те <offer>, у которых <name> начинается с нужных слов."""
@@ -174,7 +142,6 @@ def _filter_offers_by_name(text: str) -> str:
     result = "".join(parts)
     print(f"[akcent] Фильтр по name: оставлено {kept}, выкинуто {skipped} офферов.")
     return result
-
 
 def _clean_tags(text: str) -> str:
     """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)
@@ -224,7 +191,6 @@ def _clean_tags(text: str) -> str:
 
     return text
 
-
 def _normalize_brand_name(raw: str) -> str:
     """Очистить название бренда и отфильтровать служебные значения."""
     s = html.unescape(raw or "").strip()
@@ -235,7 +201,6 @@ def _normalize_brand_name(raw: str) -> str:
     if any(bad in lower for bad in _BRAND_BLOCKLIST):
         return ""
     return s
-
 
 def _extract_brand_from_block(body: str) -> str:
     """Попробовать вытащить бренд из Param/имени/описания."""
@@ -276,7 +241,6 @@ def _extract_brand_from_block(body: str) -> str:
         return "SBID"
 
     return ""
-
 
 def _fill_empty_vendor(body: str) -> str:
     """Заполнить пустой <vendor/>, если возможно, не трогая нормальные бренды."""
@@ -344,7 +308,6 @@ def _fill_empty_vendor(body: str) -> str:
     )
     return new_body3
 
-
 def _apply_price_rules(base: int) -> int:
     """Применить наценку 4% + фиксированный диапазон и хвост 900.
 
@@ -394,7 +357,6 @@ def _apply_price_rules(base: int) -> int:
         return 100
 
     return price
-
 
 def _move_related_products_to_description(body: str) -> str:
     """Перенести Param name="Сопутствующие товары" из характеристик в конец description."""
@@ -447,7 +409,6 @@ def _move_related_products_to_description(body: str) -> str:
     body = body.rstrip() + "\n<description>" + block_text + "</description>\n"
     return body
 
-
 def _filter_params(body: str) -> str:
     """Выкинуть из Param заведомо мусорные/служебные параметры."""
 
@@ -496,7 +457,6 @@ def _filter_params(body: str) -> str:
         body,
         flags=re.DOTALL,
     )
-
 
 def _transform_offers(text: str) -> str:
     """Привести <offer> к нужному виду."""
@@ -584,7 +544,6 @@ def _transform_offers(text: str) -> str:
     print(f"[akcent] Трансформация offer: обработано {count} офферов.")
     return new_text
 
-
 def _normalize_layout(text: str) -> str:
     """Привести разметку к ровному виду и расставить разрывы."""
     # Убираем начальные пробелы у строк
@@ -638,7 +597,6 @@ def _normalize_layout(text: str) -> str:
 
     return "\n".join(out_lines)
 
-
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
     """Скачать файл поставщика, обработать и сохранить на диск."""
     print(f"[akcent] Скачиваем файл: {source_url}")
@@ -659,7 +617,6 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     out_path.write_bytes(out_bytes)
     print(f"[akcent] Записано байт: {len(out_bytes)} в {out_path}")
 
-
 def main() -> int:
     """Точка входа скрипта."""
     source_url = os.getenv(
@@ -675,7 +632,6 @@ def main() -> int:
         return 1
 
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
