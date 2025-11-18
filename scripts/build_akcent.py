@@ -187,11 +187,24 @@ def _clean_tags(text: str) -> str:
         r"<delivery>.*?</delivery>",
         r"<local_delivery_cost>.*?</local_delivery_cost>",
         r"<model>.*?</model>",
-        r"<manufacturer_warranty>.*?</manufacturer_warranty>",
         r"<Stock>.*?</Stock>",
     ]
     for pat in simple_patterns:
         text = re.sub(pat, "", text, flags=re.DOTALL | re.IGNORECASE)
+
+    # Удаляем только пустые manufacturer_warranty, если вдруг остались
+    text = re.sub(
+        r"<manufacturer_warranty>\s*</manufacturer_warranty>",
+        "",
+        text,
+        flags=re.DOTALL | re.IGNORECASE,
+    )
+    text = re.sub(
+        r"<manufacturer_warranty\s*/>",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
 
     # Удаляем RRP-цену
     text = re.sub(
