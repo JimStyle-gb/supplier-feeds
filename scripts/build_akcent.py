@@ -460,6 +460,21 @@ def _filter_params(body: str) -> str:
             # У поставщика тут обычно просто "Оригинальное" — смысла нет
             return ""
 
+        # Чистим заведомо бесполезные значения "Тип"
+        if name == "Тип":
+            v = value.strip().lower()
+            if v in {
+                "шредеры офисные",
+                "ёмкость для отработанных чернил",
+                "емкость для отработанных чернил",
+            } or "картридж epson" in v or "фабрика печати" in v:
+                return ""
+
+        # "Для бренда" = Epson дублирует vendor/производителя — выкидываем
+        if name == "Для бренда":
+            if value.strip().lower() == "epson":
+                return ""
+
         return match.group(0)
 
     return re.sub(
