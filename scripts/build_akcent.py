@@ -58,12 +58,12 @@ WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; 
       <li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>
     </ul>
 
-    <hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;">
+    <hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" />
 
     <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
     <ul style="margin:0; padding-left:18px;">
       <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
-      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 ₸ | 3–7 рабочих дней</em></li>
+      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
       <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
     </ul>
@@ -220,9 +220,9 @@ def _clean_tags(text: str) -> str:
     for pat in simple_patterns:
         text = re.sub(pat, "", text, flags=re.DOTALL | re.IGNORECASE)
 
-    # Удаляем только пустые manufacturer_warranty, если вдруг остались
+    # Удаляем любые manufacturer_warranty (этот тег нам не нужен в итоговом YML)
     text = re.sub(
-        r"<manufacturer_warranty>\s*</manufacturer_warranty>",
+        r"<manufacturer_warranty>.*?</manufacturer_warranty>",
         "",
         text,
         flags=re.DOTALL | re.IGNORECASE,
