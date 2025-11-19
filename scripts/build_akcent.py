@@ -644,11 +644,11 @@ def _build_description_akcent(body: str) -> str:
     inner = ""
 
     # После <description> должны быть два переноса, потом <!-- WhatsApp --> и один перенос
-    inner += "\n\n<!-- WhatsApp -->\n"
+    inner += "\n\n\n<!-- WhatsApp -->\n"
     inner += WHATSAPP_BLOCK
 
     # Потом двойной перенос, потом <!-- Описание --> и перенос строки
-    inner += "\n\n<!-- Описание -->\n"
+    inner += "\n\n\n<!-- Описание -->\n"
 
     # Заголовок и абзацы
     if name_text:
@@ -683,7 +683,7 @@ def _build_description_akcent(body: str) -> str:
         inner += "<ul>" + "".join(li_c) + "</ul>"
 
     # В конце перед </description> тоже оставляем двойной перенос
-    inner += "\n\n"
+    inner += "\n\n\n"
 
     if desc_match:
         start, end = desc_match.span(1)
