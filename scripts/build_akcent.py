@@ -42,7 +42,7 @@ from pathlib import Path
 
 import requests
 
-# Фиксированный блок WhatsApp + Оплата/Доставка (одна строка, как в AlStyle)
+# Фиксированный блок WhatsApp + Оплата/Доставка (одна строка, как у AlStyle)
 WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
 
@@ -196,7 +196,7 @@ def _clean_tags(text: str) -> str:
     for pat in simple_patterns:
         text = re.sub(pat, "", text, flags=re.DOTALL | re.IGNORECASE)
 
-    # Удаляем любые manufacturer_warranty (этот тег нам не нужен в итоговом YML)
+    # Удаляем любые manufacturer_warranty (этот тег не нужен в итоговом YML)
     text = re.sub(
         r"<manufacturer_warranty>.*?</manufacturer_warranty>",
         "",
@@ -209,7 +209,6 @@ def _clean_tags(text: str) -> str:
         text,
         flags=re.IGNORECASE,
     )
-
 
     # Удаляем RRP-цену
     text = re.sub(
@@ -504,7 +503,7 @@ def _filter_params(body: str) -> str:
 
 
 def _build_description_akcent(body: str) -> str:
-    """Собрать <description> для Akcent: WhatsApp + Описание + Характеристики, с такими же переносами, как у AlStyle."""
+    """Собрать <description> для Akcent: WhatsApp + Описание + Характеристики с такими же переносами, как у AlStyle."""
 
     def _parse_params(block: str) -> list[tuple[str, str]]:
         out: list[tuple[str, str]] = []
@@ -543,7 +542,6 @@ def _build_description_akcent(body: str) -> str:
         main = "\n".join(new_lines).strip()
         return main, compat
 
-    # упрощённое сокращение текста
     def _shorten(text_: str, max_len: int = 700) -> str:
         text_ = re.sub(r"\s+", " ", text_).strip()
         if len(text_) <= max_len:
@@ -553,7 +551,6 @@ def _build_description_akcent(body: str) -> str:
             cut = max_len
         return text_[:cut].rstrip()
 
-    # Вытаскиваем name, vendor и исходный description
     name_match = re.search(r"<name>(.*?)</name>", body, flags=re.DOTALL | re.IGNORECASE)
     name_text = html.unescape(name_match.group(1).strip()) if name_match else ""
 
@@ -575,28 +572,24 @@ def _build_description_akcent(body: str) -> str:
     if main_text:
         main_text = _shorten(main_text)
 
-    # Если описание совсем пустое/короткое — простая заготовка на основе name
     if len(main_text) < 40 and name_text:
         main_text = f"{name_text} — решение для повседневной работы и задач в офисе или дома."
 
-    # === Сборка HTML с переносами, как у AlStyle ===
     inner = ""
 
-    # После <description> — два переноса строки, затем <!-- WhatsApp --> и один перенос
+    # После <description> — двойной перенос строки, затем <!-- WhatsApp --> и перенос
     inner += "\n\n<!-- WhatsApp -->\n"
     inner += WHATSAPP_BLOCK
 
-    # Между блоком WhatsApp и <!-- Описание --> — два переноса, затем комментарий и перенос
+    # Между блоком WhatsApp и <!-- Описание --> — двойной перенос и перенос после комментария
     inner += "\n\n<!-- Описание -->\n"
 
-    # Заголовок и абзац(ы)
     if name_text:
         inner += f"<h3>{html.escape(name_text)}</h3>"
 
     if main_text:
         inner += f"<p>{html.escape(main_text)}</p>"
 
-    # Характеристики
     if params:
         inner += "<h3>Характеристики</h3>"
         li_items = []
@@ -604,7 +597,6 @@ def _build_description_akcent(body: str) -> str:
             li_items.append(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>")
         inner += "<ul>" + "".join(li_items) + "</ul>"
 
-    # Совместимые устройства, если есть
     if compat_items:
         inner += "<h3>Совместимые устройства</h3>"
         li_c = []
@@ -612,20 +604,18 @@ def _build_description_akcent(body: str) -> str:
             li_c.append(f"<li>{html.escape(item)}</li>")
         inner += "<ul>" + "".join(li_c) + "</ul>"
 
-    # В конце перед </description> — два переноса строки
+    # В конце — двойной перенос перед </description>
     inner += "\n\n"
 
-    # Полная замена всего блока <description>...</description>
+    # Полностью заменяем существующий блок <description>...</description>
     if desc_match:
         start, end = desc_match.span(0)
-        new_desc_block = "<description>" + inner + "</description>"
-        body = body[:start] + new_desc_block + body[end:]
+        new_block = "<description>" + inner + "</description>"
+        body = body[:start] + new_block + body[end:]
     else:
-        # Если description не было — создаём в конце
         body = body.rstrip() + "\n<description>" + inner + "</description>\n"
 
     return body
-
 
 
 def _transform_offers(text: str) -> str:
@@ -745,10 +735,11 @@ def _normalize_layout(text: str) -> str:
     # Пустая строка перед </offers>
     text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
 
-    # Убираем пустые строки ВНУТРИ offer
+    # Убираем пустые строки ВНУТРИ offer, НО не трогаем их внутри <description>...</description>
     lines = text.splitlines()
     out_lines: list[str] = []
     inside_offer = False
+    inside_description = False
 
     for line in lines:
         stripped = line.strip()
@@ -763,8 +754,18 @@ def _normalize_layout(text: str) -> str:
             out_lines.append(line)
             continue
 
-        if inside_offer and not stripped:
-            # пропускаем пустые строки внутри <offer>...</offer>
+        if stripped.startswith("<description>"):
+            inside_description = True
+            out_lines.append(line)
+            continue
+
+        if stripped == "</description>":
+            inside_description = False
+            out_lines.append(line)
+            continue
+
+        if inside_offer and not inside_description and not stripped:
+            # пропускаем пустые строки внутри <offer>...</offer>, кроме блока <description>
             continue
 
         out_lines.append(line)
