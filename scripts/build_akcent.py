@@ -43,32 +43,9 @@ from pathlib import Path
 import requests
 
 
-WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;">
-  <p style="text-align:center; margin:0 0 12px;">
-    <a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0"
-       style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">
-      💬 НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!
-    </a>
-  </p>
+# Фиксированный блок WhatsApp + Оплата/Доставка (одна строка, как в AlStyle)
+WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
-  <div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">
-    <h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>
-    <ul style="margin:0; padding-left:18px;">
-      <li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>
-      <li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>
-    </ul>
-
-    <hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" />
-
-    <h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>
-    <ul style="margin:0; padding-left:18px;">
-      <li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>
-      <li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>
-      <li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>
-      <li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>
-    </ul>
-  </div>
-</div>"""
 
 
 # Ключевые префиксы для начала тега <name>
@@ -529,8 +506,9 @@ def _filter_params(body: str) -> str:
 
 
 def _build_description_akcent(body: str) -> str:
-    """Собрать HTML-описание Akcent: WhatsApp-блок, текст и характеристики."""
+    """Собрать <description> для Akcent в формате, как у AlStyle (одна строка, блоки WhatsApp/Описание/Характеристики)."""
 
+    # Собираем список Param из тела оффера
     def _parse_params(block: str) -> list[tuple[str, str]]:
         out: list[tuple[str, str]] = []
         for m in re.finditer(r'<Param\s+name="([^"]*)">(.*?)</Param>', block, flags=re.DOTALL):
@@ -542,6 +520,7 @@ def _build_description_akcent(body: str) -> str:
             out.append((name, val))
         return out
 
+    # Вырезаем из описания блок "Сопутствующие товары и совместимые устройства"
     def _extract_compat(desc: str) -> tuple[str, list[str]]:
         lines = [ln.rstrip() for ln in desc.splitlines()]
         new_lines: list[str] = []
@@ -568,6 +547,7 @@ def _build_description_akcent(body: str) -> str:
         main = "\n".join(new_lines).strip()
         return main, compat
 
+    # Укорачиваем слишком длинный текст
     def _shorten(text_: str, max_len: int = 700) -> str:
         text_ = re.sub(r"\s+", " ", text_).strip()
         if len(text_) <= max_len:
@@ -577,6 +557,7 @@ def _build_description_akcent(body: str) -> str:
             cut = max_len
         return text_[:cut].rstrip()
 
+    # Грубая классификация товара по name/param
     def _classify(name: str, params_map: dict[str, str]) -> str:
         n = name.lower()
         t = (params_map.get("Тип") or params_map.get("Тип устройства") or "").lower()
@@ -590,6 +571,7 @@ def _build_description_akcent(body: str) -> str:
             return "shredder"
         return "other"
 
+    # Фоллбек-текст, если родное описание слабое
     def _build_fallback_paragraph(name: str, vendor: str, params_map: dict[str, str], compat: list[str]) -> str:
         n = name.strip()
         v = vendor.strip()
@@ -663,36 +645,49 @@ def _build_description_akcent(body: str) -> str:
     if len(main_text) < 80:
         main_text = _build_fallback_paragraph(name_text, vendor_text, params_map, compat_items)
 
+    # === СБОРКА HTML В ОДНУ СТРОКУ, КАК У ALSTYLE ===
     parts: list[str] = []
+
+    # Комментарий и WhatsApp-блок
+    parts.append("<!-- WhatsApp -->")
     parts.append(WHATSAPP_BLOCK)
 
+    # Комментарий и блок описания
+    parts.append("\n\n<!-- Описание -->")
+
     if name_text:
-        parts.append(f"\n<h3>{html.escape(name_text)}</h3>")
+        parts.append(f"<h3>{html.escape(name_text)}</h3>")
 
     if main_text:
-        # один или два абзаца максимум
+        # максимум два абзаца
         paras = re.split(r"\n{2,}", main_text)
+        used = 0
         for p in paras:
             p = p.strip()
             if not p:
                 continue
             parts.append(f"<p>{html.escape(p)}</p>")
+            used += 1
+            if used >= 2:
+                break
 
+    # Блок характеристик
     if params:
-        parts.append("\n<h3>Характеристики</h3>")
-        parts.append("<ul>")
+        parts.append("<h3>Характеристики</h3>")
+        li_items = []
         for k, v in params:
-            parts.append(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>")
-        parts.append("</ul>")
+            li_items.append(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>")
+        parts.append("<ul>" + "".join(li_items) + "</ul>")
 
+    # Блок совместимых устройств
     if compat_items:
-        parts.append("\n<h3>Совместимые устройства</h3>")
-        parts.append("<ul>")
+        parts.append("<h3>Совместимые устройства</h3>")
+        li_c = []
         for item in compat_items[:10]:
-            parts.append(f"<li>{html.escape(item)}</li>")
-        parts.append("</ul>")
+            li_c.append(f"<li>{html.escape(item)}</li>")
+        parts.append("<ul>" + "".join(li_c) + "</ul>")
 
-    new_inner = "\n".join(parts)
+    new_inner = "".join(parts)
 
     if desc_match:
         start, end = desc_match.span(1)
@@ -781,7 +776,7 @@ def _transform_offers(text: str) -> str:
         # Фильтрация мусорных Param
         body = _filter_params(body)
 
-        # Перестраиваем description под Akcent
+        # Перестроить description под Akcent (структура как у AlStyle)
         body = _build_description_akcent(body)
 
         return new_header + body + footer
