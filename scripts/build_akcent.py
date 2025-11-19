@@ -42,8 +42,7 @@ from pathlib import Path
 
 import requests
 
-
-# Фиксированный блок WhatsApp + Оплата/Доставка (в одну строку, как у AlStyle)
+# Фиксированный блок WhatsApp + Оплата/Доставка (одна строка, как в AlStyle)
 WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
 
@@ -210,6 +209,7 @@ def _clean_tags(text: str) -> str:
         text,
         flags=re.IGNORECASE,
     )
+
 
     # Удаляем RRP-цену
     text = re.sub(
@@ -503,10 +503,8 @@ def _filter_params(body: str) -> str:
     )
 
 
-
-
 def _build_description_akcent(body: str) -> str:
-    """Собрать <description> для Akcent с такой же структурой и переносами, как у AlStyle."""
+    """Собрать <description> для Akcent: WhatsApp + Описание + Характеристики, с такими же переносами, как у AlStyle."""
 
     def _parse_params(block: str) -> list[tuple[str, str]]:
         out: list[tuple[str, str]] = []
@@ -545,6 +543,7 @@ def _build_description_akcent(body: str) -> str:
         main = "\n".join(new_lines).strip()
         return main, compat
 
+    # упрощённое сокращение текста
     def _shorten(text_: str, max_len: int = 700) -> str:
         text_ = re.sub(r"\s+", " ", text_).strip()
         if len(text_) <= max_len:
@@ -553,68 +552,6 @@ def _build_description_akcent(body: str) -> str:
         if cut == -1:
             cut = max_len
         return text_[:cut].rstrip()
-
-    def _classify(name: str, params_map: dict[str, str]) -> str:
-        n = name.lower()
-        t = (params_map.get("Тип") or params_map.get("Тип устройства") or "").lower()
-        if any(w in n for w in ("картридж", "чернил", "емкость для отработанных чернил", "ёмкость для отработанных чернил")) or "картридж" in t:
-            return "consumable"
-        if any(w in n for w in ("принтер", "мфу", "многофункцион")) or "принтер" in t or "мфу" in t:
-            return "printer"
-        if "проектор" in n or "projector" in n or "proj" in (params_map.get("Производитель") or "").lower():
-            return "projector"
-        if "шредер" in n or "уничтожитель" in n:
-            return "shredder"
-        return "other"
-
-    def _build_fallback_paragraph(name: str, vendor: str, params_map: dict[str, str], compat: list[str]) -> str:
-        n = name.strip()
-        v = vendor.strip()
-        cat = _classify(n or "", params_map)
-        parts: list[str] = []
-        base = n or params_map.get("Тип") or ""
-        if not base:
-            return ""
-        if cat == "consumable":
-            color = params_map.get("Цвет печати") or params_map.get("Цвет чернил")
-            res = params_map.get("Ресурс") or params_map.get("Объём") or params_map.get("Объем")
-            sent = f"{base} — расходный материал"
-            if v:
-                sent += f" {v}"
-            sent += " для устройств соответствующей серии."
-            if color:
-                sent += f" Обеспечивает печать в цвете {color.lower()}."
-            if res:
-                sent += f" Ресурс: {res}."
-            parts.append(sent)
-        elif cat == "printer":
-            fmt = params_map.get("Формат") or params_map.get("Формат печати")
-            tech = params_map.get("Технология печати") or params_map.get("Тип печати")
-            sent = f"{base} подходит для печати документов и материалов в офисе или дома."
-            if fmt:
-                sent += f" Поддерживает печать до формата {fmt}."
-            if tech:
-                sent += f" Используется технология печати: {tech.lower()}."
-            parts.append(sent)
-        elif cat == "projector":
-            bright = params_map.get("Яркость,ANSI люмен") or params_map.get("Яркость, ANSI люмен") or params_map.get("Яркость")
-            sent = f"{base} предназначен для презентаций и демонстрации контента в переговорных комнатах, учебных классах или небольших залах."
-            if bright:
-                sent += f" Яркость до {bright} обеспечивает чёткое изображение."
-            parts.append(sent)
-        elif cat == "shredder":
-            level = params_map.get("Уровень секретности") or params_map.get("Уровень секретности DIN")
-            sent = f"{base} используется для безопасного уничтожения документов в офисе."
-            if level:
-                sent += f" Уровень секретности: {level}."
-            parts.append(sent)
-        else:
-            sent = f"{base} — решение для повседневной работы и задач в офисе или дома."
-            parts.append(sent)
-        if compat:
-            few = ", ".join(compat[:3])
-            parts.append(f"Подходит для использования с моделями: {few}.")
-        return " ".join(parts).strip()
 
     # Вытаскиваем name, vendor и исходный description
     name_match = re.search(r"<name>(.*?)</name>", body, flags=re.DOTALL | re.IGNORECASE)
@@ -637,34 +574,27 @@ def _build_description_akcent(body: str) -> str:
     main_text = main_text.strip()
     if main_text:
         main_text = _shorten(main_text)
-    if len(main_text) < 80:
-        main_text = _build_fallback_paragraph(name_text, vendor_text, params_map, compat_items)
 
-    # Сборка HTML: переносы как у AlStyle
+    # Если описание совсем пустое/короткое — простая заготовка на основе name
+    if len(main_text) < 40 and name_text:
+        main_text = f"{name_text} — решение для повседневной работы и задач в офисе или дома."
+
+    # === Сборка HTML с переносами, как у AlStyle ===
     inner = ""
 
-    # После <description> должны быть два переноса, потом <!-- WhatsApp --> и один перенос
-    inner += "\n\n\n<!-- WhatsApp -->\n"
+    # После <description> — два переноса строки, затем <!-- WhatsApp --> и один перенос
+    inner += "\n\n<!-- WhatsApp -->\n"
     inner += WHATSAPP_BLOCK
 
-    # Потом двойной перенос, потом <!-- Описание --> и перенос строки
-    inner += "\n\n\n<!-- Описание -->\n"
+    # Между блоком WhatsApp и <!-- Описание --> — два переноса, затем комментарий и перенос
+    inner += "\n\n<!-- Описание -->\n"
 
-    # Заголовок и абзацы
+    # Заголовок и абзац(ы)
     if name_text:
         inner += f"<h3>{html.escape(name_text)}</h3>"
 
     if main_text:
-        paras = re.split(r"\n{2,}", main_text)
-        used = 0
-        for p in paras:
-            p = p.strip()
-            if not p:
-                continue
-            inner += f"<p>{html.escape(p)}</p>"
-            used += 1
-            if used >= 2:
-                break
+        inner += f"<p>{html.escape(main_text)}</p>"
 
     # Характеристики
     if params:
@@ -674,7 +604,7 @@ def _build_description_akcent(body: str) -> str:
             li_items.append(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>")
         inner += "<ul>" + "".join(li_items) + "</ul>"
 
-    # Совместимые устройства
+    # Совместимые устройства, если есть
     if compat_items:
         inner += "<h3>Совместимые устройства</h3>"
         li_c = []
@@ -682,16 +612,20 @@ def _build_description_akcent(body: str) -> str:
             li_c.append(f"<li>{html.escape(item)}</li>")
         inner += "<ul>" + "".join(li_c) + "</ul>"
 
-    # В конце перед </description> тоже оставляем двойной перенос
-    inner += "\n\n\n"
+    # В конце перед </description> — два переноса строки
+    inner += "\n\n"
 
+    # Полная замена всего блока <description>...</description>
     if desc_match:
-        start, end = desc_match.span(1)
-        body = body[:start] + inner + body[end:]
+        start, end = desc_match.span(0)
+        new_desc_block = "<description>" + inner + "</description>"
+        body = body[:start] + new_desc_block + body[end:]
     else:
+        # Если description не было — создаём в конце
         body = body.rstrip() + "\n<description>" + inner + "</description>\n"
 
     return body
+
 
 
 def _transform_offers(text: str) -> str:
