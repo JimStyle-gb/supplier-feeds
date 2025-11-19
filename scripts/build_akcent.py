@@ -506,7 +506,7 @@ def _filter_params(body: str) -> str:
 
 
 def _build_description_akcent(body: str) -> str:
-    """Собрать <description> для Akcent с той же структурой, что у AlStyle."""
+    """Собрать <description> для Akcent с такой же структурой и переносами, как у AlStyle."""
 
     def _parse_params(block: str) -> list[tuple[str, str]]:
         out: list[tuple[str, str]] = []
@@ -616,6 +616,7 @@ def _build_description_akcent(body: str) -> str:
             parts.append(f"Подходит для использования с моделями: {few}.")
         return " ".join(parts).strip()
 
+    # Вытаскиваем name, vendor и исходный description
     name_match = re.search(r"<name>(.*?)</name>", body, flags=re.DOTALL | re.IGNORECASE)
     name_text = html.unescape(name_match.group(1).strip()) if name_match else ""
 
@@ -639,18 +640,19 @@ def _build_description_akcent(body: str) -> str:
     if len(main_text) < 80:
         main_text = _build_fallback_paragraph(name_text, vendor_text, params_map, compat_items)
 
-    # === СБОРКА HTML С ТАКИМИ ЖЕ ПЕРЕНОСАМИ, КАК У ALSTYLE ===
-    parts: list[str] = []
+    # Сборка HTML: переносы как у AlStyle
+    inner = ""
 
-    # Двойной перенос, комментарий, перенос, затем блок WhatsApp
-    parts.append("\n\n<!-- WhatsApp -->\n")
-    parts.append(WHATSAPP_BLOCK)
+    # После <description> должны быть два переноса, потом <!-- WhatsApp --> и один перенос
+    inner += "\n\n<!-- WhatsApp -->\n"
+    inner += WHATSAPP_BLOCK
 
-    # Двойной перенос и комментарий "Описание"
-    parts.append("\n\n<!-- Описание -->")
+    # Потом двойной перенос, потом <!-- Описание --> и перенос строки
+    inner += "\n\n<!-- Описание -->\n"
 
+    # Заголовок и абзацы
     if name_text:
-        parts.append(f"<h3>{html.escape(name_text)}</h3>")
+        inner += f"<h3>{html.escape(name_text)}</h3>"
 
     if main_text:
         paras = re.split(r"\n{2,}", main_text)
@@ -659,34 +661,38 @@ def _build_description_akcent(body: str) -> str:
             p = p.strip()
             if not p:
                 continue
-            parts.append(f"<p>{html.escape(p)}</p>")
+            inner += f"<p>{html.escape(p)}</p>"
             used += 1
             if used >= 2:
                 break
 
+    # Характеристики
     if params:
-        parts.append("<h3>Характеристики</h3>")
+        inner += "<h3>Характеристики</h3>"
         li_items = []
         for k, v in params:
             li_items.append(f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>")
-        parts.append("<ul>" + "".join(li_items) + "</ul>")
+        inner += "<ul>" + "".join(li_items) + "</ul>"
 
+    # Совместимые устройства
     if compat_items:
-        parts.append("<h3>Совместимые устройства</h3>")
+        inner += "<h3>Совместимые устройства</h3>"
         li_c = []
         for item in compat_items[:10]:
             li_c.append(f"<li>{html.escape(item)}</li>")
-        parts.append("<ul>" + "".join(li_c) + "</ul>")
+        inner += "<ul>" + "".join(li_c) + "</ul>"
 
-    new_inner = "".join(parts) + "\n\n"
+    # В конце перед </description> тоже оставляем двойной перенос
+    inner += "\n\n"
 
     if desc_match:
         start, end = desc_match.span(1)
-        body = body[:start] + new_inner + body[end:]
+        body = body[:start] + inner + body[end:]
     else:
-        body = body.rstrip() + "\n<description>" + new_inner + "</description>\n"
+        body = body.rstrip() + "\n<description>" + inner + "</description>\n"
 
     return body
+
 
 def _transform_offers(text: str) -> str:
     """Привести <offer> к нужному виду."""
