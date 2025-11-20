@@ -39,11 +39,12 @@ import os
 import re
 import sys
 from pathlib import Path
+from datetime import datetime, timedelta, timezone
 
 import requests
 
 # Фиксированный блок WhatsApp + Оплата/Доставка (одна строка, как у AlStyle)
-WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
+WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
 
 
@@ -113,6 +114,12 @@ _KNOWN_BRANDS = [
     "HyperX",  # для мониторов HyperX
 ]
 
+META_TOTAL_RAW = 0
+META_TOTAL_FILTERED = 0
+META_AVAIL_TRUE = 0
+META_AVAIL_FALSE = 0
+
+
 
 def _decode_bytes(raw: bytes) -> str:
     """Аккуратно декодировать байты в строку (UTF-8 / CP1251)."""
@@ -150,6 +157,7 @@ def _name_allowed(name_text: str) -> bool:
 
 def _filter_offers_by_name(text: str) -> str:
     """Оставить только те <offer>, у которых <name> начинается с нужных слов."""
+    global META_TOTAL_RAW, META_TOTAL_FILTERED
     pattern = re.compile(r"(<offer\b[^>]*>.*?</offer>)", re.DOTALL | re.IGNORECASE)
 
     parts: list[str] = []
@@ -178,8 +186,11 @@ def _filter_offers_by_name(text: str) -> str:
     parts.append(text[last_end:])
 
     result = "".join(parts)
+    META_TOTAL_RAW = kept + skipped
+    META_TOTAL_FILTERED = kept
     print(f"[akcent] Фильтр по name: оставлено {kept}, выкинуто {skipped} офферов.")
     return result
+
 
 
 def _clean_tags(text: str) -> str:
@@ -250,7 +261,6 @@ def _normalize_brand_name(raw: str) -> str:
     if any(bad in lower for bad in _BRAND_BLOCKLIST):
         return ""
     return s
-
 
 
 def _extract_brand_from_block(body: str) -> str:
@@ -364,7 +374,6 @@ def _fill_empty_vendor(body: str) -> str:
         flags=re.DOTALL | re.IGNORECASE,
     )
     return new_body3
-
 
 
 def _apply_price_rules(base: int) -> int:
@@ -530,7 +539,6 @@ def _filter_params(body: str) -> str:
     )
 
 
-
 def _build_description_akcent(body: str) -> str:
     """Собрать <description> для Akcent: WhatsApp + Описание + Характеристики с такими же переносами, как у AlStyle."""
 
@@ -651,6 +659,7 @@ def _transform_offers(text: str) -> str:
     """Привести <offer> к нужному виду."""
 
     def _process_offer(match: re.Match) -> str:
+        global META_AVAIL_TRUE, META_AVAIL_FALSE
         header = match.group(1)
         body = match.group(2)
         footer = match.group(3)
@@ -667,6 +676,12 @@ def _transform_offers(text: str) -> str:
         new_id = f"AK{art}" if art else ""
         avail_match = re.search(r'\bavailable="([^"]*)"', header)
         available = avail_match.group(1).strip() if avail_match else "true"
+
+        # Считаем наличие для FEED_META
+        if available.lower() == "true":
+            META_AVAIL_TRUE += 1
+        else:
+            META_AVAIL_FALSE += 1
 
         # Новый заголовок оффера
         new_header = f'<offer id="{new_id}" available="{available}">\n'
@@ -876,9 +891,17 @@ def _sort_offer_tags(text: str) -> str:
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
     """Скачать файл поставщика, обработать и сохранить на диск."""
+    global META_TOTAL_RAW, META_TOTAL_FILTERED, META_AVAIL_TRUE, META_AVAIL_FALSE
+
     print(f"[akcent] Скачиваем файл: {source_url}")
     resp = requests.get(source_url, timeout=60)
     resp.raise_for_status()
+
+    # Сбрасываем счётчики для FEED_META
+    META_TOTAL_RAW = 0
+    META_TOTAL_FILTERED = 0
+    META_AVAIL_TRUE = 0
+    META_AVAIL_FALSE = 0
 
     text = _decode_bytes(resp.content)
     print(f"[akcent] Получено байт: {len(resp.content)}")
@@ -889,14 +912,49 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     text = _transform_offers(text)
     text = _normalize_layout(text)
     text = _sort_offer_tags(text)
+
     # Приводим Param -> param уже в финальном тексте, чтобы не ломать внутреннюю логику
     text = re.sub(r"<Param\b", "<param", text)
     text = re.sub(r"</Param>", "</param>", text)
+
+    # Встраиваем блок FEED_META сразу после <shop><offers>
+    try:
+        # Время сборки и ближайшая сборка в часовом поясе Алматы (UTC+5)
+        tz_almaty = timezone(timedelta(hours=5))
+        now_almaty = datetime.now(tz_almaty)
+        next_build = now_almaty.replace(hour=1, minute=0, second=0, microsecond=0)
+        if next_build <= now_almaty:
+            next_build = next_build + timedelta(days=1)
+
+        meta_lines = [
+            "<!--FEED_META",
+            "Поставщик                                  | AkCent",
+            f"URL поставщика                             | {source_url}",
+            f"Время сборки (Алматы)                      | {now_almaty.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"Ближайшая сборка (Алматы)                  | {next_build.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"Сколько товаров у поставщика до фильтра    | {META_TOTAL_RAW}",
+            f"Сколько товаров у поставщика после фильтра | {META_TOTAL_FILTERED}",
+            f"Сколько товаров есть в наличии (true)      | {META_AVAIL_TRUE}",
+            f"Сколько товаров нет в наличии (false)      | {META_AVAIL_FALSE}",
+            "-->",
+            "",
+        ]
+        meta_block = "\n".join(meta_lines)
+
+        text = re.sub(
+            r"(<shop><offers>)(\s*\n)",
+            lambda m: m.group(1) + m.group(2) + meta_block + "\n",
+            text,
+            count=1,
+        )
+    except Exception as meta_exc:  # noqa: BLE001
+        print(f"[akcent] Не удалось встроить FEED_META: {meta_exc}", file=sys.stderr)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_bytes(out_bytes)
     print(f"[akcent] Записано байт: {len(out_bytes)} в {out_path}")
+
 
 
 def main() -> int:
