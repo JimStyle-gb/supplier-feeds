@@ -223,6 +223,10 @@ def _clean_tags(text: str) -> str:
     # Удаляем обёртку <prices>
     text = re.sub(r"</?prices>", "", text, flags=re.IGNORECASE)
 
+    # Удаляем пустые/пустые по смыслу картинки <picture/> или <picture></picture>
+    text = re.sub(r"<picture\s*/>", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"<picture>\s*</picture>", "", text, flags=re.DOTALL | re.IGNORECASE)
+
     # Убираем пустые строки
     lines = text.splitlines()
     non_empty = [ln for ln in lines if ln.strip()]
@@ -885,8 +889,8 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     text = _transform_offers(text)
     text = _normalize_layout(text)
     text = _sort_offer_tags(text)
-    # Привести Param -> param уже в финальном тексте, чтобы не ломать внутреннюю лексику
-    text = re.sub(r"<Param\\b", "<param", text)
+    # Приводим Param -> param уже в финальном тексте, чтобы не ломать внутреннюю логику
+    text = re.sub(r"<Param\b", "<param", text)
     text = re.sub(r"</Param>", "</param>", text)
 
     out_bytes = text.encode("utf-8")
