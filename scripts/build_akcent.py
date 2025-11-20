@@ -79,21 +79,8 @@ _KNOWN_BRANDS = (
     "Zebra",
 )
 
-# Фиксированный блок WhatsApp + доставка/оплата (одна строка)
-WHATSAPP_BLOCK = (
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; "
-    "line-height:1.5; color:#222; font-size:15px;\">"
-    "<p style=\"text-align:center; margin:0 0 12px;\">"
-    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
-    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; "
-    "padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);\">"
-    "💬 НАПИСАТЬ В WHATSAPP</a></p>"
-    "<ul style='margin:0; padding:0 0 0 18px;'>"
-    "<li>Оплата: наличными, картой, переводом, по счету для юр. лиц</li>"
-    "<li>Доставка по Алматы: курьером до двери</li>"
-    "<li>Доставка по Казахстану: транспортными компаниями и почтой</li>"
-    "</ul></div>"
-)
+# Фиксированный блок WhatsApp + доставка/оплата (как в старом YML Akcent)
+WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 @dataclass
 class OfferData:
     id: str
@@ -260,10 +247,11 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
 
     inner: list[str] = []
 
-    inner.append("")
+    # Блок WhatsApp
     inner.append("<!-- WhatsApp -->")
     inner.append(WHATSAPP_BLOCK)
-    inner.append("")
+
+    # Описание товара
     inner.append("<!-- Описание -->")
     inner.append(f"<h3>{name_html}</h3><p>{html.escape(desc_text)}</p>")
 
@@ -284,9 +272,9 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
         li2 = [f"<li>{html.escape(v)}</li>" for v in compat[:10]]
         inner.append("<ul>" + "".join(li2) + "</ul>")
 
-    # Оборачиваем переносами, как у alstyle/akcent
+    # Оборачиваем переносами: один перевод строки до и после блока
     html_block = "\n".join(inner)
-    return f"\n\n{html_block}\n\n"
+    return f"\n{html_block}\n"
 
 
 def _guess_brand(name: str, raw_desc: str, body: str) -> str:
