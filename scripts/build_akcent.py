@@ -80,6 +80,7 @@ _BRAND_BLOCKLIST = (
     "vtt",
     "akcent",
     "ak-cent",
+    "китай",
 )
 
 # Подборка типичных брендов в этой номенклатуре
@@ -109,6 +110,7 @@ _KNOWN_BRANDS = [
     "Xerox",
     "Lexmark",
     "Vivitek",  # важно для DX273
+    "HyperX",  # для мониторов HyperX
 ]
 
 
@@ -234,11 +236,17 @@ def _normalize_brand_name(raw: str) -> str:
     s = html.unescape(raw or "").strip()
     if not s:
         return ""
+    # Базовая очистка
     s = s.replace("®", "").replace("™", "").strip(" ,.;")
+    # Убираем хвост "proj"/"Proj"/"PROJ" и подобные
+    s = re.sub(r"\s+proj\b", "", s, flags=re.IGNORECASE).strip()
+    if not s:
+        return ""
     lower = s.lower()
     if any(bad in lower for bad in _BRAND_BLOCKLIST):
         return ""
     return s
+
 
 
 def _extract_brand_from_block(body: str) -> str:
@@ -292,8 +300,11 @@ def _fill_empty_vendor(body: str) -> str:
         val = html.unescape(m.group(1)).strip()
         if not val:
             return False
-        lower = val.lower()
-        if any(bad in lower for bad in _BRAND_BLOCKLIST):
+        norm = _normalize_brand_name(val)
+        # Если после нормализации бренд пустой или изменился (Epson Proj -> Epson) — считаем, что его нужно поправить
+        if not norm:
+            return False
+        if norm != val:
             return False
         return True
 
@@ -331,11 +342,13 @@ def _fill_empty_vendor(body: str) -> str:
     if new_body2 != body:
         return new_body2
 
-    # Если внутри vendor что-то из блок-листа — заменяем на найденный бренд
+    # Если внутри vendor что-то из блок-листа или нормализация меняет значение — заменяем на найденный бренд
     def repl_blocked(match: re.Match) -> str:
         indent = match.group(1) or ""
         val = html.unescape(match.group(2) or "").strip()
-        if any(bad in val.lower() for bad in _BRAND_BLOCKLIST):
+        lower = val.lower()
+        norm = _normalize_brand_name(val)
+        if any(bad in lower for bad in _BRAND_BLOCKLIST) or (norm and norm != val):
             return f"{indent}<vendor>{brand}</vendor>"
         return match.group(0)
 
@@ -347,6 +360,7 @@ def _fill_empty_vendor(body: str) -> str:
         flags=re.DOTALL | re.IGNORECASE,
     )
     return new_body3
+
 
 
 def _apply_price_rules(base: int) -> int:
@@ -462,6 +476,16 @@ def _filter_params(body: str) -> str:
         if not name:
             return match.group(0)
 
+        # Нормализуем производителя, чтобы убрать хвосты "Proj" и т.п. и не оставлять "Китай"
+        if name == "Производитель":
+            norm = _normalize_brand_name(value)
+            if not norm:
+                # Если бренд служебный (например, "Китай") — просто убираем параметр
+                return ""
+            if norm != value:
+                return f'<Param name="Производитель">{html.escape(norm)}</Param>'
+            return match.group(0)
+
         # Полностью выкидываем параметры, не нужные покупателю/SEO
         if name in {
             "Наименование производителя",
@@ -500,6 +524,7 @@ def _filter_params(body: str) -> str:
         body,
         flags=re.DOTALL,
     )
+
 
 
 def _build_description_akcent(body: str) -> str:
@@ -860,8 +885,8 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     text = _transform_offers(text)
     text = _normalize_layout(text)
     text = _sort_offer_tags(text)
-    # Привести Param -> param уже в финальном тексте, чтобы не ломать внутреннюю логику
-    text = re.sub(r"<Param\b", "<param", text)
+    # Привести Param -> param уже в финальном тексте, чтобы не ломать внутреннюю лексику
+    text = re.sub(r"<Param\\b", "<param", text)
     text = re.sub(r"</Param>", "</param>", text)
 
     out_bytes = text.encode("utf-8")
