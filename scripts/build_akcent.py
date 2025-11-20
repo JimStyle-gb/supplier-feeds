@@ -487,9 +487,7 @@ def _filter_params(body: str) -> str:
         value = html.unescape(match.group(2) or "").strip()
 
         if not name:
-            if normalized_name:
-            return f'<Param name="{html.escape(normalized_name)}">{html.escape(value)}</Param>'
-        return match.group(0)
+            return match.group(0)
 
         # Нормализация некоторых заголовков Param прямо в XML (для читабельности и SEO)
         name_map = {
@@ -501,6 +499,7 @@ def _filter_params(body: str) -> str:
             "Размер дм.(м.)": "Размер экрана, дюймы/м",
         }
         normalized_name = name_map.get(name)
+
         # Нормализуем производителя, чтобы убрать хвосты "Proj" и т.п. и не оставлять "Китай"
         if name == "Производитель":
             norm = _normalize_brand_name(value)
@@ -509,7 +508,7 @@ def _filter_params(body: str) -> str:
                 return ""
             if norm != value:
                 return f'<Param name="Производитель">{html.escape(norm)}</Param>'
-            return match.group(0)
+            # если бренд не поменялся, продолжаем дальше и в конце можем применить normalized_name
 
         # Полностью выкидываем параметры, не нужные покупателю/SEO
         if name in {
@@ -540,6 +539,10 @@ def _filter_params(body: str) -> str:
         if name == "Для бренда":
             if value.strip().lower() == "epson":
                 return ""
+
+        # Если название параметра попадает под нормализацию — возвращаем Param с исправленным name
+        if normalized_name:
+            return f'<Param name="{html.escape(normalized_name)}">{html.escape(value)}</Param>'
 
         return match.group(0)
 
