@@ -700,47 +700,6 @@ def _transform_offers(text: str) -> str:
         # Перестроить description под Akcent (структура как у AlStyle)
         body = _build_description_akcent(body)
 
-        # Переупорядочить основные теги внутри <offer>:
-        # <categoryId>, <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <description>, <param>
-        # При этом <description> трогаем как единый блок, чтобы не ломать HTML.
-        desc_match = re.search(r"\s*<description>.*?</description>", body, flags=re.DOTALL | re.IGNORECASE)
-        desc_block = ""
-        if desc_match:
-            ds, de = desc_match.span(0)
-            desc_block = body[ds:de]
-            body_wo_desc = body[:ds] + body[de:]
-        else:
-            body_wo_desc = body
-
-        order_tags = ["categoryId", "vendorCode", "name", "price", "picture", "vendor", "currencyId"]
-        ordered_chunks = []
-        text_rest = body_wo_desc
-
-        for tag in order_tags:
-            pattern = re.compile(rf"\s*<{tag}\\b[^>]*>.*?</{tag}>", re.DOTALL | re.IGNORECASE)
-            chunks = pattern.findall(text_rest)
-            if chunks:
-                ordered_chunks.extend(chunks)
-                text_rest = pattern.sub("", text_rest)
-
-        # Собираем все Param/param (оставляем оригинальный регистр тега)
-        param_pattern = re.compile(r"\s*<(?:[Pp]aram)\\b[^>]*>.*?</(?:[Pp]aram)>", re.DOTALL)
-        param_chunks = param_pattern.findall(text_rest)
-        if param_chunks:
-            text_rest = param_pattern.sub("", text_rest)
-
-        # Собираем новое тело оффера в нужном порядке
-        new_body_parts = []
-        for ch in ordered_chunks:
-            new_body_parts.append(ch)
-        if desc_block:
-            new_body_parts.append(desc_block)
-        for ch in param_chunks:
-            new_body_parts.append(ch)
-        new_body_parts.append(text_rest)
-
-        body = "".join(new_body_parts)
-
         return new_header + body + footer
 
     pattern = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL | re.IGNORECASE)
@@ -814,6 +773,78 @@ def _normalize_layout(text: str) -> str:
     return "\n".join(out_lines)
 
 
+
+def _sort_offer_tags(text: str) -> str:
+    """Упорядочить теги внутри каждого <offer> в фиксированном порядке:
+    <categoryId>, <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <description>, <Param>/<param>.
+    Логику заполнения тегов и HTML внутри <description> не трогаем.
+    """
+
+    def _sort_single_offer(m: re.Match) -> str:
+        header = m.group(1)
+        body = m.group(2)
+        footer = m.group(3)
+
+        # Вырезаем <description> как единый блок, чтобы не ломать HTML внутри
+        desc_match = re.search(
+            r"\s*<description>.*?</description>",
+            body,
+            flags=re.DOTALL | re.IGNORECASE,
+        )
+        desc_block = ""
+        if desc_match:
+            ds, de = desc_match.span(0)
+            desc_block = body[ds:de]
+            body_wo_desc = body[:ds] + body[de:]
+        else:
+            body_wo_desc = body
+
+        # Собираем теги в нужном порядке
+        order_tags = ["categoryId", "vendorCode", "name", "price", "picture", "vendor", "currencyId"]
+        ordered_chunks: list[str] = []
+        rest = body_wo_desc
+
+        for tag in order_tags:
+            pattern = re.compile(
+                rf"\s*<{tag}\\b[^>]*>.*?</{tag}>",
+                re.DOTALL | re.IGNORECASE,
+            )
+            chunks = pattern.findall(rest)
+            if chunks:
+                ordered_chunks.extend(chunks)
+                rest = pattern.sub("", rest)
+
+        # Собираем все Param/param (оставляем исходный регистр тега)
+        param_pattern = re.compile(
+            r"\s*<(?:[Pp]aram)\\b[^>]*>.*?</(?:[Pp]aram)>",
+            re.DOTALL,
+        )
+        param_chunks = param_pattern.findall(rest)
+        if param_chunks:
+            rest = param_pattern.sub("", rest)
+
+        # Склеиваем тело оффера в новом порядке
+        parts: list[str] = []
+        for ch in ordered_chunks:
+            parts.append(ch)
+        if desc_block:
+            parts.append(desc_block)
+        for ch in param_chunks:
+            parts.append(ch)
+        parts.append(rest)
+
+        new_body = "".join(parts)
+        return header + new_body + footer
+
+    pattern = re.compile(
+        r"(<offer\b[^>]*>)(.*?)(</offer>)",
+        re.DOTALL | re.IGNORECASE,
+    )
+    new_text, count = pattern.subn(_sort_single_offer, text)
+    print(f"[akcent] Сортировка тегов в offer: обработано {count} офферов.")
+    return new_text
+
+
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
     """Скачать файл поставщика, обработать и сохранить на диск."""
     print(f"[akcent] Скачиваем файл: {source_url}")
@@ -828,6 +859,7 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     text = _clean_tags(text)
     text = _transform_offers(text)
     text = _normalize_layout(text)
+    text = _sort_offer_tags(text)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
