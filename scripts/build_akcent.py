@@ -700,6 +700,43 @@ def _transform_offers(text: str) -> str:
         # Перестроить description под Akcent (структура как у AlStyle)
         body = _build_description_akcent(body)
 
+        # Переупорядочить теги внутри <offer> в фиксированном порядке:
+        # <categoryId>, <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <description>, <Param>
+        # (Param позже будет переименован в <param> на этапе нормализации)
+        desc_match2 = re.search(r"\s*<description>.*?</description>", body, flags=re.DOTALL | re.IGNORECASE)
+        desc_block = ""
+        if desc_match2:
+            ds, de = desc_match2.span(0)
+            desc_block = body[ds:de]
+            body = body[:ds] + body[de:]
+
+        order_tags = ["categoryId", "vendorCode", "name", "price", "picture", "vendor", "currencyId"]
+        ordered_chunks: list[str] = []
+        for tag in order_tags:
+            pattern = re.compile(rf"\s*<{tag}\\b[^>]*>.*?</{tag}>", re.DOTALL | re.IGNORECASE)
+            matches = pattern.findall(body)
+            if matches:
+                ordered_chunks.extend(matches)
+                body = pattern.sub("", body)
+
+        param_pattern = re.compile(r"\s*<Param\\b[^>]*>.*?</Param>", re.DOTALL | re.IGNORECASE)
+        param_chunks = param_pattern.findall(body)
+        if param_chunks:
+            body = param_pattern.sub("", body)
+
+        tail = body
+
+        new_body = ""
+        for ch in ordered_chunks:
+            new_body += ch
+        if desc_block:
+            new_body += desc_block
+        for ch in param_chunks:
+            new_body += ch
+        new_body += tail
+
+        body = new_body
+
         return new_header + body + footer
 
     pattern = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL | re.IGNORECASE)
@@ -734,6 +771,10 @@ def _normalize_layout(text: str) -> str:
     text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
     # Пустая строка перед </offers>
     text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
+    # Привести Param → param
+    text = re.sub(r"<Param\b", "<param", text)
+    text = re.sub(r"</Param>", "</param>", text)
+
 
     # Убираем пустые строки ВНУТРИ offer, НО не трогаем их внутри <description>...</description>
     lines = text.splitlines()
