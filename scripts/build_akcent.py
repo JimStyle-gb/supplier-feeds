@@ -860,6 +860,9 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     text = _transform_offers(text)
     text = _normalize_layout(text)
     text = _sort_offer_tags(text)
+    # Привести Param -> param уже в финальном тексте, чтобы не ломать внутреннюю логику
+    text = re.sub(r"<Param\b", "<param", text)
+    text = re.sub(r"</Param>", "</param>", text)
 
     out_bytes = text.encode("utf-8")
     out_path.parent.mkdir(parents=True, exist_ok=True)
