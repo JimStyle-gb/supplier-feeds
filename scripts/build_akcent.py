@@ -73,6 +73,15 @@ _ALLOWED_PREFIXES = [
 
 _ALLOWED_PREFIXES_UPPER = [p.upper() for p in _ALLOWED_PREFIXES]
 
+PARAM_TITLE_MAP: dict[str, str] = {
+    "Разрешение печати,dpi": "Разрешение печати, dpi",
+    "Разрешение сканера,dpi": "Разрешение сканера, dpi",
+    "Уровень шума (норм./эконом.) Дб": "Уровень шума (норм./эконом.), дБ",
+    "Яркость (ANSI) лмн": "Яркость (ANSI), лм",
+    "Проекционный коэффицент (Throw ratio)": "Проекционный коэффициент (throw ratio)",
+    "Размер дм.(м.)": "Размер экрана, дюймы/м",
+}
+
 # Не допускаем, чтобы эти значения попадали в <vendor>
 _BRAND_BLOCKLIST = (
     "alstyle",
@@ -490,15 +499,7 @@ def _filter_params(body: str) -> str:
             return match.group(0)
 
         # Нормализация некоторых заголовков Param прямо в XML (для читабельности и SEO)
-        name_map = {
-            "Разрешение печати,dpi": "Разрешение печати, dpi",
-            "Разрешение сканера,dpi": "Разрешение сканера, dpi",
-            "Уровень шума (норм./эконом.) Дб": "Уровень шума (норм./эконом.), дБ",
-            "Яркость (ANSI) лмн": "Яркость (ANSI), лм",
-            "Проекционный коэффицент (Throw ratio)": "Проекционный коэффициент (throw ratio)",
-            "Размер дм.(м.)": "Размер экрана, дюймы/м",
-        }
-        normalized_name = name_map.get(name)
+        normalized_name = PARAM_TITLE_MAP.get(name)
 
         # Нормализуем производителя, чтобы убрать хвосты "Proj" и т.п. и не оставлять "Китай"
         if name == "Производитель":
@@ -559,15 +560,7 @@ def _build_description_akcent(body: str) -> str:
 
     def _normalize_param_title(name: str) -> str:
         """Нормализовать заголовки Param только для вывода в блоке Характеристики (фильтры Satu не трогаем)."""
-        mapping = {
-            "Разрешение печати,dpi": "Разрешение печати, dpi",
-            "Разрешение сканера,dpi": "Разрешение сканера, dpi",
-            "Уровень шума (норм./эконом.) Дб": "Уровень шума (норм./эконом.), дБ",
-            "Яркость (ANSI) лмн": "Яркость (ANSI), лм",
-            "Проекционный коэффицент (Throw ratio)": "Проекционный коэффициент (throw ratio)",
-            "Размер дм.(м.)": "Размер экрана, дюймы/м",
-        }
-        return mapping.get(name, name)
+        return PARAM_TITLE_MAP.get(name, name)
 
     def _parse_params(block: str) -> list[tuple[str, str]]:
         out: list[tuple[str, str]] = []
@@ -618,9 +611,6 @@ def _build_description_akcent(body: str) -> str:
 
     name_match = re.search(r"<name>(.*?)</name>", body, flags=re.DOTALL | re.IGNORECASE)
     name_text = html.unescape(name_match.group(1).strip()) if name_match else ""
-
-    vendor_match = re.search(r"<vendor>(.*?)</vendor>", body, flags=re.DOTALL | re.IGNORECASE)
-    vendor_text = html.unescape(vendor_match.group(1).strip()) if vendor_match else ""
 
     desc_match = re.search(r"<description>(.*?)</description>", body, flags=re.DOTALL | re.IGNORECASE)
     raw_desc = html.unescape(desc_match.group(1)) if desc_match else ""
