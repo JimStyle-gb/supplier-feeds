@@ -637,99 +637,100 @@ def _build_description_akcent(body: str) -> str:
 
     return body
 
+def _rebuild_offer_akcent(match: re.Match) -> str:
+    global META_AVAIL_TRUE, META_AVAIL_FALSE
+    header = match.group(1)
+    body = match.group(2)
+    footer = match.group(3)
+
+    # Берём article, если есть, иначе старый id
+    article_match = re.search(r'\barticle="([^"]*)"', header)
+    art = (article_match.group(1).strip() if article_match else "").strip()
+
+    if not art:
+        id_match = re.search(r'\bid="([^"]*)"', header)
+        if id_match:
+            art = id_match.group(1).strip()
+
+    new_id = f"AK{art}" if art else ""
+    avail_match = re.search(r'\bavailable="([^"]*)"', header)
+    available = avail_match.group(1).strip() if avail_match else "true"
+
+    # Считаем наличие для FEED_META
+    if available.lower() == "true":
+        META_AVAIL_TRUE += 1
+    else:
+        META_AVAIL_FALSE += 1
+
+    # Новый заголовок оффера
+    new_header = f'<offer id="{new_id}" available="{available}">\n'
+
+    # Вытаскиваем categoryId
+    cat_val = ""
+    cat_val_match = re.search(
+        r"<categoryId[^>]*>(.*?)</categoryId>",
+        body,
+        re.DOTALL | re.IGNORECASE,
+    )
+    if cat_val_match:
+        cat_val = cat_val_match.group(1).strip()
+
+    # Удаляем любые старые categoryId
+    body = re.sub(
+        r"<categoryId[^>]*>.*?</categoryId>",
+        "",
+        body,
+        flags=re.DOTALL | re.IGNORECASE,
+    )
+    body = re.sub(r"<categoryId[^>]*/>", "", body, flags=re.IGNORECASE)
+
+    body = body.lstrip()
+
+    # Строгий порядок первых трёх тегов
+    prefix = (
+        f"<categoryId>{cat_val}</categoryId>\n"
+        f"<vendorCode>{new_id}</vendorCode>\n"
+        "<currencyId>KZT</currencyId>\n"
+    )
+    body = prefix + body
+
+    # Бренд
+    body = _fill_empty_vendor(body)
+
+    # Пересчёт цены
+    def _reprice(match_price: re.Match) -> str:
+        base_str = match_price.group(1)
+        try:
+            base = int(base_str)
+        except ValueError:
+            return match_price.group(0)
+        new_price = _apply_price_rules(base)
+        return f"<price>{new_price}</price>"
+
+    body = re.sub(
+        r'<price[^>]*type=["\']Цена дилерского портала KZT["\'][^>]*>(\d+)</price>',
+        _reprice,
+        body,
+        flags=re.IGNORECASE,
+    )
+
+    # Сопутствующие товары → в описание
+    body = _move_related_products_to_description(body)
+
+    # Фильтрация мусорных Param
+    body = _filter_params(body)
+
+    # Перестроить description под Akcent (структура как у AlStyle)
+    body = _build_description_akcent(body)
+
+    return new_header + body + footer
+
+
 def _transform_offers(text: str) -> str:
     """Привести <offer> к нужному виду."""
 
-    def _process_offer(match: re.Match) -> str:
-        global META_AVAIL_TRUE, META_AVAIL_FALSE
-        header = match.group(1)
-        body = match.group(2)
-        footer = match.group(3)
-
-        # Берём article, если есть, иначе старый id
-        article_match = re.search(r'\barticle="([^"]*)"', header)
-        art = (article_match.group(1).strip() if article_match else "").strip()
-
-        if not art:
-            id_match = re.search(r'\bid="([^"]*)"', header)
-            if id_match:
-                art = id_match.group(1).strip()
-
-        new_id = f"AK{art}" if art else ""
-        avail_match = re.search(r'\bavailable="([^"]*)"', header)
-        available = avail_match.group(1).strip() if avail_match else "true"
-
-        # Считаем наличие для FEED_META
-        if available.lower() == "true":
-            META_AVAIL_TRUE += 1
-        else:
-            META_AVAIL_FALSE += 1
-
-        # Новый заголовок оффера
-        new_header = f'<offer id="{new_id}" available="{available}">\n'
-
-        # Вытаскиваем categoryId
-        cat_val = ""
-        cat_val_match = re.search(
-            r"<categoryId[^>]*>(.*?)</categoryId>",
-            body,
-            re.DOTALL | re.IGNORECASE,
-        )
-        if cat_val_match:
-            cat_val = cat_val_match.group(1).strip()
-
-        # Удаляем любые старые categoryId
-        body = re.sub(
-            r"<categoryId[^>]*>.*?</categoryId>",
-            "",
-            body,
-            flags=re.DOTALL | re.IGNORECASE,
-        )
-        body = re.sub(r"<categoryId[^>]*/>", "", body, flags=re.IGNORECASE)
-
-        body = body.lstrip()
-
-        # Строгий порядок первых трёх тегов
-        prefix = (
-            f"<categoryId>{cat_val}</categoryId>\n"
-            f"<vendorCode>{new_id}</vendorCode>\n"
-            "<currencyId>KZT</currencyId>\n"
-        )
-        body = prefix + body
-
-        # Бренд
-        body = _fill_empty_vendor(body)
-
-        # Пересчёт цены
-        def _reprice(match_price: re.Match) -> str:
-            base_str = match_price.group(1)
-            try:
-                base = int(base_str)
-            except ValueError:
-                return match_price.group(0)
-            new_price = _apply_price_rules(base)
-            return f"<price>{new_price}</price>"
-
-        body = re.sub(
-            r'<price[^>]*type=["\']Цена дилерского портала KZT["\'][^>]*>(\d+)</price>',
-            _reprice,
-            body,
-            flags=re.IGNORECASE,
-        )
-
-        # Сопутствующие товары → в описание
-        body = _move_related_products_to_description(body)
-
-        # Фильтрация мусорных Param
-        body = _filter_params(body)
-
-        # Перестроить description под Akcent (структура как у AlStyle)
-        body = _build_description_akcent(body)
-
-        return new_header + body + footer
-
     pattern = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL | re.IGNORECASE)
-    new_text, count = pattern.subn(_process_offer, text)
+    new_text, count = pattern.subn(_rebuild_offer_akcent, text)
     print(f"[akcent] Трансформация offer: обработано {count} офферов.")
     return new_text
 
