@@ -403,15 +403,15 @@ def _apply_price_rules(base: int) -> int:
 
     return price
 
-def _move_related_products_to_description(body: str) -> str:
-    """Перенести Param name="Сопутствующие товары" из характеристик в конец description."""
+def _extract_related_items_from_params(body: str) -> tuple[str, list[str]]:
+    """Забрать Param "Сопутствующие товары" и вернуть тело без них + список устройств."""
     pattern = re.compile(
         r'<Param\s+name="Сопутствующие товары">(.*?)</Param>',
         re.DOTALL | re.IGNORECASE,
     )
     matches = pattern.findall(body)
     if not matches:
-        return body
+        return body, []
 
     items: list[str] = []
     for raw_val in matches:
@@ -422,37 +422,12 @@ def _move_related_products_to_description(body: str) -> str:
         if text not in items:
             items.append(text)
 
-    # Удаляем все такие Param из тела
+    # Удаляем эти Param из тела
     body = pattern.sub("", body)
+    return body, items
 
-    if not items:
-        return body
 
-    block_lines = ["Сопутствующие товары и совместимые устройства:"]
-    for item in items:
-        block_lines.append(f"- {item}")
-    block_text = "\n".join(block_lines)
 
-    # Вставляем блок в конец description
-    desc_pattern = re.compile(
-        r"(<description>)(.*?)(</description>)",
-        re.DOTALL | re.IGNORECASE,
-    )
-    m = desc_pattern.search(body)
-    if m:
-        prefix, inner, suffix = m.groups()
-        inner_clean = inner.rstrip()
-        if inner_clean:
-            new_inner = inner_clean + "\n\n" + block_text
-        else:
-            new_inner = block_text
-        new_desc = prefix + new_inner + suffix
-        body = body[: m.start()] + new_desc + body[m.end() :]
-        return body
-
-    # Если description не было вообще — создаём
-    body = body.rstrip() + "\n<description>" + block_text + "</description>\n"
-    return body
 
 def _filter_params(body: str) -> str:
     """Выкинуть из Param заведомо мусорные/служебные параметры."""
@@ -520,7 +495,7 @@ def _filter_params(body: str) -> str:
         flags=re.DOTALL,
     )
 
-def _build_description_akcent(body: str) -> str:
+def _build_description_akcent(body: str, compat_items: list[str]) -> str:
     """Собрать <description> для Akcent: WhatsApp + Описание + Характеристики с такими же переносами, как у AlStyle."""
 
     def _normalize_param_title(name: str) -> str:
@@ -539,32 +514,7 @@ def _build_description_akcent(body: str) -> str:
             out.append((name, val))
         return out
 
-    def _extract_compat(desc: str) -> tuple[str, list[str]]:
-        lines = [ln.rstrip() for ln in desc.splitlines()]
-        new_lines: list[str] = []
-        compat: list[str] = []
-        i = 0
-        while i < len(lines):
-            raw = lines[i]
-            line = raw.strip()
-            if "Сопутствующие товары и совместимые устройства" in line:
-                i += 1
-                while i < len(lines):
-                    l = lines[i].strip()
-                    if not l:
-                        i += 1
-                        break
-                    if l.startswith(("-", "•")):
-                        compat.append(l.lstrip("-• ").strip())
-                    else:
-                        compat.append(l)
-                    i += 1
-            else:
-                new_lines.append(raw)
-                i += 1
-        main = "\n".join(new_lines).strip()
-        return main, compat
-
+    
     def _shorten(text_: str, max_len: int = 700) -> str:
         text_ = re.sub(r"\s+", " ", text_).strip()
         if len(text_) <= max_len:
@@ -581,7 +531,7 @@ def _build_description_akcent(body: str) -> str:
     raw_desc = html.unescape(desc_match.group(1)) if desc_match else ""
     raw_desc = raw_desc.replace("\r\n", "\n")
 
-    main_text, compat_items = _extract_compat(raw_desc)
+    main_text = raw_desc
     params = _parse_params(body)
     params_map: dict[str, str] = {}
     for k, v in params:
@@ -714,14 +664,14 @@ def _rebuild_offer_akcent(match: re.Match) -> str:
         flags=re.IGNORECASE,
     )
 
-    # Сопутствующие товары → в описание
-    body = _move_related_products_to_description(body)
+    # Сопутствующие товары: собираем список и удаляем Param
+    body, compat_items = _extract_related_items_from_params(body)
 
     # Фильтрация мусорных Param
     body = _filter_params(body)
 
     # Перестроить description под Akcent (структура как у AlStyle)
-    body = _build_description_akcent(body)
+    body = _build_description_akcent(body, compat_items)
 
     return new_header + body + footer
 
