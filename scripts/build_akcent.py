@@ -542,6 +542,18 @@ def _filter_params(body: str) -> str:
 def _build_description_akcent(body: str) -> str:
     """Собрать <description> для Akcent: WhatsApp + Описание + Характеристики с такими же переносами, как у AlStyle."""
 
+    def _normalize_param_title(name: str) -> str:
+        """Нормализовать заголовки Param только для вывода в блоке Характеристики (фильтры Satu не трогаем)."""
+        mapping = {
+            "Разрешение печати,dpi": "Разрешение печати, dpi",
+            "Разрешение сканера,dpi": "Разрешение сканера, dpi",
+            "Уровень шума (норм./эконом.) Дб": "Уровень шума (норм./эконом.), дБ",
+            "Яркость (ANSI) лмн": "Яркость (ANSI), лм",
+            "Проекционный коэффицент (Throw ratio)": "Проекционный коэффициент (throw ratio)",
+            "Размер дм.(м.)": "Размер экрана, дюймы/м",
+        }
+        return mapping.get(name, name)
+
     def _parse_params(block: str) -> list[tuple[str, str]]:
         out: list[tuple[str, str]] = []
         for m in re.finditer(r'<Param\s+name="([^"]*)">(.*?)</Param>', block, flags=re.DOTALL):
@@ -549,6 +561,7 @@ def _build_description_akcent(body: str) -> str:
             val = html.unescape(m.group(2) or "").strip()
             if not name or not val:
                 continue
+            name = _normalize_param_title(name)
             val = re.sub(r"\s+", " ", val)
             out.append((name, val))
         return out
