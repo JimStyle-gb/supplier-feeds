@@ -137,43 +137,6 @@ def _name_allowed(name_text: str) -> bool:
     upper = t.upper()
     return any(upper.startswith(prefix) for prefix in _ALLOWED_PREFIXES_UPPER)
 
-def _filter_offers_by_name(text: str) -> str:
-    """Оставить только те <offer>, у которых <name> начинается с нужных слов."""
-    global META_TOTAL_RAW, META_TOTAL_FILTERED
-    pattern = re.compile(r"(<offer\b[^>]*>.*?</offer>)", re.DOTALL | re.IGNORECASE)
-
-    parts: list[str] = []
-    last_end = 0
-    kept = 0
-    skipped = 0
-
-    for match in pattern.finditer(text):
-        parts.append(text[last_end:match.start()])
-
-        block = match.group(1)
-        name_match = re.search(r"<name>(.*?)</name>", block, re.DOTALL | re.IGNORECASE)
-
-        if not name_match:
-            skipped += 1
-        else:
-            name_text = name_match.group(1)
-            if _name_allowed(name_text):
-                parts.append(block)
-                kept += 1
-            else:
-                skipped += 1
-
-        last_end = match.end()
-
-    parts.append(text[last_end:])
-
-    result = "".join(parts)
-    META_TOTAL_RAW = kept + skipped
-    META_TOTAL_FILTERED = kept
-    print(f"[akcent] Фильтр по name: оставлено {kept}, выкинуто {skipped} офферов.")
-    return result
-
-
 def _clean_tags(text: str) -> str:
     """Удалить служебные теги и блоки (url, Offer_ID, delivery, RRP и т.п.)
     и сразу «подтянуть» остальные теги вверх (убрать пустые строки).
@@ -678,12 +641,45 @@ def _rebuild_offer_akcent(match: re.Match) -> str:
 
 
 def _transform_offers(text: str) -> str:
-    """Привести <offer> к нужному виду."""
+    """Отфильтровать и перестроить <offer> в одном проходе."""
+    global META_TOTAL_RAW, META_TOTAL_FILTERED
 
-    pattern = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL | re.IGNORECASE)
-    new_text, count = pattern.subn(_rebuild_offer_akcent, text)
-    print(f"[akcent] Трансформация offer: обработано {count} офферов.")
-    return new_text
+    pattern = re.compile(r"(<offer\b[^>]*>.*?</offer>)", re.DOTALL | re.IGNORECASE)
+    parts: list[str] = []
+    last_end = 0
+    kept = 0
+    skipped = 0
+
+    for m in pattern.finditer(text):
+        parts.append(text[last_end:m.start()])
+        block = m.group(1)
+
+        name_match = re.search(r"<name>(.*?)</name>", block, re.DOTALL | re.IGNORECASE)
+        if not name_match:
+            skipped += 1
+        else:
+            name_text = name_match.group(1)
+            if _name_allowed(name_text):
+                # Перестраиваем только нужные офферы
+                m2 = re.match(r"(<offer\b[^>]*>)(.*?)(</offer>)", block, flags=re.DOTALL | re.IGNORECASE)
+                if m2:
+                    parts.append(_rebuild_offer_akcent(m2))
+                    kept += 1
+                else:
+                    # На всякий случай, если не сматчилось как надо — оставляем как есть
+                    parts.append(block)
+                    kept += 1
+            else:
+                skipped += 1
+
+        last_end = m.end()
+
+    parts.append(text[last_end:])
+
+    META_TOTAL_RAW = kept + skipped
+    META_TOTAL_FILTERED = kept
+    print(f"[akcent] Фильтр+трансформация: оставлено {kept}, выкинуто {skipped} офферов.")
+    return "".join(parts)
 
 def _normalize_layout(text: str) -> str:
     """Привести разметку к ровному виду и расставить разрывы."""
@@ -864,7 +860,6 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     print(f"[akcent] Получено байт: {len(resp.content)}")
 
     text = _strip_shop_header(text)
-    text = _filter_offers_by_name(text)
     text = _clean_tags(text)
     text = _transform_offers(text)
     text = _normalize_layout(text)
