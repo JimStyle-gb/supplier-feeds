@@ -29,7 +29,7 @@
 6. Нормализуем разметку: убираем лишние отступы и пустые строки внутри <offer>,
    аккуратно расставляем разрывы:
    <shop><offers>\n\n<offer ...>\n<categoryId>...\n...\n</offer>\n\n</offers>
-7. Сохраняем результат в docs/akcent.yml (UTF-8).
+7. Сохраняем результат в docs/akcent.yml (Windows-1251).
 """
 
 from __future__ import annotations
@@ -889,6 +889,37 @@ def _sort_offer_tags(text: str) -> str:
     return new_text
 
 
+def _ensure_xml_header_and_doctype(text: str) -> str:
+    """Привести заголовок XML к единому виду:
+    - encoding="windows-1251"
+    - добавить <!DOCTYPE yml_catalog SYSTEM "shops.dtd">, если его нет.
+    """
+    # Гарантируем XML-декларацию с нужной кодировкой
+    stripped = text.lstrip()
+    if stripped.startswith("<?xml"):
+        text = re.sub(
+            r'^<\?xml[^>]*\?>',
+            '<?xml version="1.0" encoding="windows-1251"?>',
+            text,
+            count=1,
+            flags=re.MULTILINE,
+        )
+    else:
+        text = '<?xml version="1.0" encoding="windows-1251"?>\n' + text
+
+    # Вставляем DOCTYPE, если его нет
+    if "<!DOCTYPE yml_catalog" not in text:
+        text = re.sub(
+            r'(<\?xml[^>]*\?>\s*)',
+            r'\1<!DOCTYPE yml_catalog SYSTEM "shops.dtd">\n',
+            text,
+            count=1,
+        )
+    return text
+
+
+
+
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
     """Скачать файл поставщика, обработать и сохранить на диск."""
     global META_TOTAL_RAW, META_TOTAL_FILTERED, META_AVAIL_TRUE, META_AVAIL_FALSE
@@ -912,6 +943,7 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     text = _transform_offers(text)
     text = _normalize_layout(text)
     text = _sort_offer_tags(text)
+    text = _ensure_xml_header_and_doctype(text)
 
     # Приводим Param -> param уже в финальном тексте, чтобы не ломать внутреннюю логику
     text = re.sub(r"<Param\b", "<param", text)
@@ -950,7 +982,7 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     except Exception as meta_exc:  # noqa: BLE001
         print(f"[akcent] Не удалось встроить FEED_META: {meta_exc}", file=sys.stderr)
 
-    out_bytes = text.encode("utf-8")
+    out_bytes = text.encode("windows-1251", errors="ignore")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_bytes(out_bytes)
     print(f"[akcent] Записано байт: {len(out_bytes)} в {out_path}")
