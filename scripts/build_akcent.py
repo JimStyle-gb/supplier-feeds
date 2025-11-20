@@ -79,6 +79,168 @@ _KNOWN_BRANDS = (
     "Zebra",
 )
 
+
+_CITY_KEYWORDS = [
+    "Казахстан",
+    "Алматы",
+    "Астана",
+    "Шымкент",
+    "Караганда",
+    "Актобе",
+    "Павлодар",
+    "Атырау",
+    "Тараз",
+    "Оскемен",
+    "Семей",
+    "Костанай",
+    "Кызылорда",
+    "Орал",
+    "Петропавловск",
+    "Талдыкорган",
+    "Актау",
+    "Темиртау",
+    "Экибастуз",
+    "Кокшетау",
+]
+
+
+def _translit_to_slug(text: str) -> str:
+    """Грубая транслитерация RU->латиница + слаг для keywords."""
+    mapping = {
+        "а": "a",
+        "б": "b",
+        "в": "v",
+        "г": "g",
+        "д": "d",
+        "е": "e",
+        "ё": "e",
+        "ж": "zh",
+        "з": "z",
+        "и": "i",
+        "й": "y",
+        "к": "k",
+        "л": "l",
+        "м": "m",
+        "н": "n",
+        "о": "o",
+        "п": "p",
+        "р": "r",
+        "с": "s",
+        "т": "t",
+        "у": "u",
+        "ф": "f",
+        "х": "h",
+        "ц": "c",
+        "ч": "ch",
+        "ш": "sh",
+        "щ": "sch",
+        "ъ": "",
+        "ы": "y",
+        "ь": "",
+        "э": "e",
+        "ю": "yu",
+        "я": "ya",
+    }
+    text = (text or "").lower()
+    res: list[str] = []
+    prev_dash = False
+    for ch in text:
+        if ch in mapping:
+            res.append(mapping[ch])
+            prev_dash = False
+        elif ch.isalnum():
+            res.append(ch)
+            prev_dash = False
+        else:
+            if not prev_dash:
+                res.append("-")
+                prev_dash = True
+    slug = "".join(res).strip("-")
+    return slug
+
+
+def _make_keywords(name: str, vendor: str) -> str:
+    """Собрать строку keywords из вендора, названия и городов РК."""
+    parts: list[str] = []
+    seen: set[str] = set()
+
+    def add(token: str) -> None:
+        token = (token or "").strip()
+        if not token:
+            return
+        if token in seen:
+            return
+        seen.add(token)
+        parts.append(token)
+
+    name = (name or "").strip()
+    vendor = (vendor or "").strip()
+
+    # Вендор
+    if vendor:
+        add(vendor)
+
+    # Полное название
+    if name:
+        add(name)
+
+    # Разбиваем имя на слова (простое разбиение по пробелам и пунктуации)
+    tokens = re.split(r"[\s,;:!\?()\[\]\"/\+]+", name)
+    words = [t for t in tokens if t and len(t) >= 3]
+
+    for w in words:
+        add(w)
+
+    # Пытаемся найти модель (последнее слово с цифрами)
+    model = None
+    for t in reversed(tokens):
+        if any(ch.isdigit() for ch in t):
+            model = t.strip()
+            break
+
+    if vendor and model:
+        add(model)
+        add(f"{vendor} {model}")
+
+    # Транслитерация пары/тройки ключевых слов
+    base_words = [w for w in words if not re.fullmatch(r"\d+[%]?", w)]
+    if base_words:
+        phrase2 = " ".join(base_words[:2])
+        phrase3 = " ".join(base_words[:3])
+        add(_translit_to_slug(phrase2))
+        add(_translit_to_slug(phrase3))
+        # отдельные слова
+        for w in base_words[:3]:
+            add(_translit_to_slug(w))
+
+    # Транслитерация «vendor + model»
+    if vendor and model:
+        add(_translit_to_slug(f"{vendor} {model}"))
+
+    # Города РК
+    for city in _CITY_KEYWORDS:
+        add(city)
+
+    # Склеиваем и ограничиваем по длине
+    if not parts:
+        return ""
+
+    result = ", ".join(parts)
+    if len(result) > 2000:
+        out: list[str] = []
+        length = 0
+        for p in parts:
+            add_len = len(p) + 2 if out else len(p)
+            if length + add_len > 2000:
+                break
+            out.append(p)
+            length += add_len
+        result = ", ".join(out)
+
+    return result
+
+
+
 # Фиксированный блок WhatsApp + доставка/оплата (как в старом YML Akcent)
 WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 @dataclass
@@ -463,6 +625,10 @@ def _build_yml(offers: list[OfferData], total_raw: int) -> str:
         lines.append("</description>")
         for pname, pvalue in off.params:
             lines.append(f'<param name="{html.escape(pname)}">{html.escape(pvalue)}</param>')
+        # keywords в самом конце оффера
+        kw = _make_keywords(off.name, off.vendor)
+        if kw:
+            lines.append(f"<keywords>{html.escape(kw)}</keywords>")
         lines.append("</offer>")
         parts.append("\n".join(lines))
 
