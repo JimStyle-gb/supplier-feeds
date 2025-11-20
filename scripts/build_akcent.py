@@ -487,8 +487,20 @@ def _filter_params(body: str) -> str:
         value = html.unescape(match.group(2) or "").strip()
 
         if not name:
-            return match.group(0)
+            if normalized_name:
+            return f'<Param name="{html.escape(normalized_name)}">{html.escape(value)}</Param>'
+        return match.group(0)
 
+        # Нормализация некоторых заголовков Param прямо в XML (для читабельности и SEO)
+        name_map = {
+            "Разрешение печати,dpi": "Разрешение печати, dpi",
+            "Разрешение сканера,dpi": "Разрешение сканера, dpi",
+            "Уровень шума (норм./эконом.) Дб": "Уровень шума (норм./эконом.), дБ",
+            "Яркость (ANSI) лмн": "Яркость (ANSI), лм",
+            "Проекционный коэффицент (Throw ratio)": "Проекционный коэффициент (throw ratio)",
+            "Размер дм.(м.)": "Размер экрана, дюймы/м",
+        }
+        normalized_name = name_map.get(name)
         # Нормализуем производителя, чтобы убрать хвосты "Proj" и т.п. и не оставлять "Китай"
         if name == "Производитель":
             norm = _normalize_brand_name(value)
