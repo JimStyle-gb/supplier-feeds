@@ -806,7 +806,7 @@ def _sort_offer_tags(text: str) -> str:
 
         for tag in order_tags:
             pattern = re.compile(
-                rf"\s*<{tag}\\b[^>]*>.*?</{tag}>",
+                rf"\s*<{tag}\b[^>]*>.*?</{tag}>",
                 re.DOTALL | re.IGNORECASE,
             )
             chunks = pattern.findall(rest)
@@ -816,7 +816,7 @@ def _sort_offer_tags(text: str) -> str:
 
         # Собираем все Param/param (оставляем исходный регистр тега)
         param_pattern = re.compile(
-            r"\s*<(?:[Pp]aram)\\b[^>]*>.*?</(?:[Pp]aram)>",
+            r"\s*<(?:[Pp]aram)\b[^>]*>.*?</(?:[Pp]aram)>",
             re.DOTALL,
         )
         param_chunks = param_pattern.findall(rest)
