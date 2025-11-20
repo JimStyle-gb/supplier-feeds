@@ -250,6 +250,7 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
     # Блок WhatsApp
     inner.append("<!-- WhatsApp -->")
     inner.append(WHATSAPP_BLOCK)
+    inner.append("")  # пустая строка даёт двойной перенос перед <!-- Описание -->
 
     # Описание товара
     inner.append("<!-- Описание -->")
@@ -257,26 +258,24 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
 
     # Характеристики
     if params:
-        inner.append("<h3>Характеристики</h3>")
         li: list[str] = []
         for pname, pvalue in params:
             if not pvalue.strip():
                 continue
             li.append(f"<li><strong>{html.escape(pname)}:</strong> {html.escape(pvalue)}</li>")
         if li:
-            inner.append("<ul>" + "".join(li) + "</ul>")
+            inner.append("<h3>Характеристики</h3><ul>" + "".join(li) + "</ul>")
 
     # Совместимые устройства
     if compat:
-        inner.append("<h3>Совместимые устройства</h3>")
         li2 = [f"<li>{html.escape(v)}</li>" for v in compat[:10]]
-        inner.append("<ul>" + "".join(li2) + "</ul>")
+        if li2:
+            inner.append("<h3>Совместимые устройства</h3><ul>" + "".join(li2) + "</ul>")
 
-    # Оборачиваем переносами: один перевод строки до и после блока
+    # Оборачиваем переносами: один перевод строки до и после блока,
+    # а дополнительные пустые строки задаём через пустые элементы inner.
     html_block = "\n".join(inner)
     return f"\n{html_block}\n"
-
-
 def _guess_brand(name: str, raw_desc: str, body: str) -> str:
     """Попробовать угадать бренд по Param/имени/описанию."""
     # 1) Явные параметры про производителя
