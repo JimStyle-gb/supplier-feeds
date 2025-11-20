@@ -125,8 +125,8 @@ def _normalize_brand_name(raw: str) -> str:
             return ""
 
     # Убираем типичные хвосты
-    t = re.sub(r"\\s*proj$", "", t, flags=re.IGNORECASE)
-    t = re.sub(r"\\s*projector$", "", t, flags=re.IGNORECASE)
+    t = re.sub(r"\s*proj$", "", t, flags=re.IGNORECASE)
+    t = re.sub(r"\s*projector$", "", t, flags=re.IGNORECASE)
     return t.strip()
 
 
@@ -149,7 +149,7 @@ def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
     params: list[tuple[str, str]] = []
     compat: list[str] = []
 
-    for m in re.finditer(r'<Param\\s+name="([^"]*)">(.*?)</Param>', block, flags=re.DOTALL | re.IGNORECASE):
+    for m in re.finditer(r'<Param\s+name="([^"]*)">(.*?)</Param>', block, flags=re.DOTALL | re.IGNORECASE):
         name = html.unescape(m.group(1) or "").strip()
         value = html.unescape(m.group(2) or "").strip()
 
@@ -175,7 +175,7 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
     name_html = html.escape(name.strip())
     desc_text = (raw_desc or "").strip()
     desc_text = html.unescape(desc_text)
-    desc_text = re.sub(r"\\s+", " ", desc_text)
+    desc_text = re.sub(r"\s+", " ", desc_text)
 
     if not desc_text:
         desc_text = f"{name_html} — качественное решение для повседневной работы и учебы."
@@ -215,14 +215,14 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
         inner.append("<ul>" + "".join(li2) + "</ul>")
 
     # Оборачиваем переносами, как у alstyle/akcent
-    html_block = "\\n".join(inner)
-    return f"\\n\\n{html_block}\\n\\n"
+    html_block = "\n".join(inner)
+    return f"\n\n{html_block}\n\n"
 
 
 def _parse_offer(block: str) -> OfferData | None:
     """Разобрать один исходный <offer> в структуру OfferData или вернуть None, если выкидываем."""
     # Заголовок offer
-    m_head = re.match(r"<offer\\b([^>]*)>(.*)</offer>", block, flags=re.DOTALL | re.IGNORECASE)
+    m_head = re.match(r"<offer\b([^>]*)>(.*)</offer>", block, flags=re.DOTALL | re.IGNORECASE)
     if not m_head:
         return None
 
@@ -239,11 +239,11 @@ def _parse_offer(block: str) -> OfferData | None:
         return None
 
     # article / старый id
-    m_article = re.search(r'\\barticle="([^"]*)"', header_attrs)
+    m_article = re.search(r'\barticle="([^"]*)"', header_attrs)
     article = (m_article.group(1).strip() if m_article else "")
 
     if not article:
-        m_old_id = re.search(r'\\bid="([^"]*)"', header_attrs)
+        m_old_id = re.search(r'\bid="([^"]*)"', header_attrs)
         if m_old_id:
             article = m_old_id.group(1).strip()
 
@@ -253,7 +253,7 @@ def _parse_offer(block: str) -> OfferData | None:
     new_id = "AK" + article
 
     # available
-    m_av = re.search(r'\\bavailable="([^"]*)"', header_attrs)
+    m_av = re.search(r'\bavailable="([^"]*)"', header_attrs)
     available = (m_av.group(1).strip().lower() if m_av else "true")
     available = "true" if available in {"true", "1", "yes"} else "false"
 
@@ -281,7 +281,7 @@ def _parse_offer(block: str) -> OfferData | None:
         flags=re.DOTALL | re.IGNORECASE,
     )
     if m_price:
-        value = re.sub(r"\\s", "", m_price.group(1))
+        value = re.sub(r"\s", "", m_price.group(1))
         if value.isdigit():
             raw_price = int(value)
 
@@ -378,9 +378,9 @@ def _build_yml(offers: list[OfferData], total_raw: int) -> str:
         for pname, pvalue in off.params:
             lines.append(f'<param name="{html.escape(pname)}">{html.escape(pvalue)}</param>')
         lines.append("</offer>")
-        parts.append("\\n".join(lines))
+        parts.append("\n".join(lines))
 
-    body = "\\n\\n".join(parts)
+    body = "\n\n".join(parts)
 
     footer_lines = [
         "",
@@ -388,7 +388,7 @@ def _build_yml(offers: list[OfferData], total_raw: int) -> str:
         "</yml_catalog>",
     ]
 
-    full = "\\n".join(header_lines) + "\\n" + body + "\\n" + "\\n".join(footer_lines)
+    full = "\n".join(header_lines) + "\n" + body + "\n" + "\n".join(footer_lines)
     return full
 
 
@@ -397,7 +397,7 @@ def build_akcent_yml(output_path: str | Path = OUTPUT_PATH) -> None:
     raw_text = _download_raw_text()
 
     # Находим все исходные <offer>...</offer>
-    blocks = re.findall(r"<offer\\b[^>]*>.*?</offer>", raw_text, flags=re.DOTALL | re.IGNORECASE)
+    blocks = re.findall(r"<offer\b[^>]*>.*?</offer>", raw_text, flags=re.DOTALL | re.IGNORECASE)
     total_raw = len(blocks)
     print(f"[akcent] Найдено офферов у поставщика: {total_raw}")
 
