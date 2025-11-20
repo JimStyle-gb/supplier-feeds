@@ -892,22 +892,20 @@ def _sort_offer_tags(text: str) -> str:
 def _ensure_xml_header_and_doctype(text: str) -> str:
     """Привести заголовок XML к единому виду:
     - encoding="windows-1251"
-    - добавить <!DOCTYPE yml_catalog SYSTEM "shops.dtd">, если его нет.
+    - добавить <!DOCTYPE yml_catalog SYSTEM "shops.dtd"> сразу после декларации.
+    Гарантируем, что в итоге будет только ОДНА xml-декларация и ОДНА строка DOCTYPE.
     """
-    # Гарантируем XML-декларацию с нужной кодировкой
-    stripped = text.lstrip()
-    if stripped.startswith("<?xml"):
-        text = re.sub(
-            r'^<\?xml[^>]*\?>',
-            '<?xml version="1.0" encoding="windows-1251"?>',
-            text,
-            count=1,
-            flags=re.MULTILINE,
-        )
-    else:
-        text = '<?xml version="1.0" encoding="windows-1251"?>\n' + text
+    # Убираем BOM, если есть
+    if text.startswith("\ufeff"):
+        text = text[1:]
 
-    # Вставляем DOCTYPE, если его нет
+    # Удаляем все существующие XML-декларации в тексте
+    text = re.sub(r'<\?xml[^>]*\?>\s*', '', text)
+
+    # Добавляем нашу стандартную декларацию в самое начало
+    text = '<?xml version="1.0" encoding="windows-1251"?>\n' + text.lstrip()
+
+    # Вставляем DOCTYPE сразу после xml-декларации
     if "<!DOCTYPE yml_catalog" not in text:
         text = re.sub(
             r'(<\?xml[^>]*\?>\s*)',
@@ -916,8 +914,6 @@ def _ensure_xml_header_and_doctype(text: str) -> str:
             count=1,
         )
     return text
-
-
 
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
