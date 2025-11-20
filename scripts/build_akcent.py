@@ -64,6 +64,21 @@ _BRAND_BLOCKLIST = (
     "китай",
 )
 
+# Бренды, которые чаще всего встречаются у Akcent — используем для подстановки vendor,
+# если в исходном фиде он пустой.
+_KNOWN_BRANDS = (
+    "Epson",
+    "Fellowes",
+    "HyperX",
+    "Mr.Pixel",
+    "Philips",
+    "SBID",
+    "Smart",
+    "ViewSonic",
+    "Vivitek",
+    "Zebra",
+)
+
 # Фиксированный блок WhatsApp + доставка/оплата (одна строка)
 WHATSAPP_BLOCK = (
     "<div style=\"font-family: Cambria, 'Times New Roman', serif; "
@@ -131,18 +146,55 @@ def _normalize_brand_name(raw: str) -> str:
 
 
 def _apply_price_rules(raw_price: int) -> int:
-    """Наценка 4% + диапазоны, хвост 900, >= 9 000 000 -> 100."""
-    base = int(raw_price)
-    price = int(round(base * 1.04))
+    """Применить наценку 4% + фиксированный диапазон и хвост 900.
 
-    # Диапазоны можно упростить как в alstyle: остаётся место под донастройку
-    # Здесь оставим просто 4% + хвост 900
+    Если итоговая цена >= 9 000 000 — вернуть 100.
+    """
+    base = int(raw_price)
+    if base <= 0:
+        return base
+
+    tiers = [
+        (101, 10_000, 3_000),
+        (10_001, 25_000, 4_000),
+        (25_001, 50_000, 5_000),
+        (50_001, 75_000, 7_000),
+        (75_001, 100_000, 10_000),
+        (100_001, 150_000, 12_000),
+        (150_001, 200_000, 15_000),
+        (200_001, 300_000, 20_000),
+        (300_001, 400_000, 25_000),
+        (400_001, 500_000, 30_000),
+        (500_001, 750_000, 40_000),
+        (750_001, 1_000_000, 50_000),
+        (1_000_001, 1_500_000, 70_000),
+        (1_500_001, 2_000_000, 90_000),
+        (2_000_001, 100_000_000, 100_000),
+    ]
+
+    bonus = 0
+    for lo, hi, add in tiers:
+        if lo <= base <= hi:
+            bonus = add
+            break
+
+    if bonus == 0:
+        return base
+
+    # 4% + фиксированный бонус
+    value = base * 1.04 + bonus
+
+    # Хвост 900 + округление вверх
+    thousands = int(value) // 1000
+    price = thousands * 1000 + 900
+    if price < value:
+        price += 1000
+
+    # Если стало слишком дорого — ставим 100
     if price >= 9_000_000:
         return 100
 
-    thousands = price // 1000
-    return thousands * 1000 + 900
-
+    return price
 
 def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
     """Достать пары (name, value) из Param и список сопутствующих устройств."""
@@ -156,11 +208,30 @@ def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
         if not name:
             continue
 
-        # Сопутствующие товары в отдельный список
+        # Сопутствующие товары — только в совместимые устройства, из Param убираем
         if name == "Сопутствующие товары":
             v = value.strip()
             if v and v.lower() not in {"нет", "none", "n/a"}:
                 compat.append(v)
+            continue
+
+        # Явный мусор/служебные параметры — полностью выкидываем
+        if name in {
+            "Наименование производителя",
+            "Совместимые продукты",
+            "Оригинальное разрешение",
+        }:
+            continue
+
+        # Нормализуем производителя, чтобы не тянуть «китай», хвосты и т.п.
+        if name == "Производитель":
+            norm_val = _normalize_brand_name(value)
+            if not norm_val:
+                continue
+            value = norm_val
+
+        # Параметры типа "Тип", "Вид", "Для бренда" не несут пользы для фильтров Сату — пропускаем
+        if name in {"Тип", "Вид", "Для бренда"}:
             continue
 
         # Немного чистки заголовков
@@ -168,7 +239,6 @@ def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
         params.append((norm_name, value))
 
     return params, compat
-
 
 def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], compat: list[str]) -> str:
     """Собрать HTML <description>."""
@@ -219,6 +289,33 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
     return f"\n\n{html_block}\n\n"
 
 
+def _guess_brand(name: str, raw_desc: str, body: str) -> str:
+    """Попробовать угадать бренд по Param/имени/описанию."""
+    # 1) Явные параметры про производителя
+    for pattern in (
+        r'<Param\s+name="Производитель">(.*?)</Param>',
+        r'<Param\s+name="Наименование производителя">(.*?)</Param>',
+        r'<Param\s+name="Для бренда">(.*?)</Param>',
+    ):
+        m = re.search(pattern, body, flags=re.DOTALL | re.IGNORECASE)
+        if m:
+            brand = _normalize_brand_name(m.group(1))
+            if brand:
+                return brand
+
+    # 2) Пытаемся найти бренд по известным названиям в name/description
+    text = f"{name} {html.unescape(raw_desc or '')}"
+    low = text.lower()
+    for b in _KNOWN_BRANDS:
+        if b.lower() in low:
+            return b
+
+    # Частный случай для интерактивных панелей SBID-...
+    if "SBID-" in text:
+        return "SBID"
+
+    return ""
+
 def _parse_offer(block: str) -> OfferData | None:
     """Разобрать один исходный <offer> в структуру OfferData или вернуть None, если выкидываем."""
     # Заголовок offer
@@ -261,10 +358,16 @@ def _parse_offer(block: str) -> OfferData | None:
     m_cat = re.search(r"<categoryId[^>]*>(.*?)</categoryId>", body, flags=re.DOTALL | re.IGNORECASE)
     cat_id = html.unescape(m_cat.group(1).strip()) if m_cat else ""
 
-    # vendor (может быть пустым)
+    # raw description (понадобится и для vendor, и для финального <description>)
+    m_desc = re.search(r"<description>(.*?)</description>", body, flags=re.DOTALL | re.IGNORECASE)
+    raw_desc = html.unescape(m_desc.group(1)) if m_desc else ""
+
+    # vendor: сначала берём из тега, затем, если пусто/мусор, пробуем угадать по Param/имени/описанию
     m_vendor = re.search(r"<vendor>(.*?)</vendor>", body, flags=re.DOTALL | re.IGNORECASE)
     vendor = html.unescape(m_vendor.group(1).strip()) if m_vendor else ""
     vendor = _normalize_brand_name(vendor)
+    if not vendor:
+        vendor = _guess_brand(name, raw_desc, body)
 
     # картинки
     pictures: list[str] = []
@@ -274,7 +377,7 @@ def _parse_offer(block: str) -> OfferData | None:
             pictures.append(url)
 
     # цена: берём "Цена дилерского портала KZT"
-    raw_price = None
+    raw_price_val = None
     m_price = re.search(
         r'<price[^>]*type="Цена дилерского портала KZT"[^>]*>(.*?)</price>',
         body,
@@ -283,22 +386,19 @@ def _parse_offer(block: str) -> OfferData | None:
     if m_price:
         value = re.sub(r"\s", "", m_price.group(1))
         if value.isdigit():
-            raw_price = int(value)
+            raw_price_val = int(value)
 
-    if raw_price is None:
+    if raw_price_val is None or raw_price_val <= 0:
+        # Без закупочной цены смысла в оффере нет
         return None
 
-    price = _apply_price_rules(raw_price)
+    price = _apply_price_rules(raw_price_val)
 
-    # описание из исходного description
-    m_desc = re.search(r"<description>(.*?)</description>", body, flags=re.DOTALL | re.IGNORECASE)
-    raw_desc = html.unescape(m_desc.group(1)) if m_desc else ""
-
-    # параметры
+    # Параметры и сопутствующие товары
     params, compat = _extract_params(body)
 
-    # Собираем HTML описания
-    description_html = _build_description(name, raw_desc, params, compat)
+    # Описание
+    desc_html = _build_description(name, raw_desc, params, compat)
 
     return OfferData(
         id=new_id,
@@ -309,10 +409,9 @@ def _parse_offer(block: str) -> OfferData | None:
         price=price,
         pictures=pictures,
         vendor=vendor,
-        description_html=description_html,
+        description_html=desc_html,
         params=params,
     )
-
 
 def _download_raw_text() -> str:
     """Скачать исходный XML от поставщика."""
