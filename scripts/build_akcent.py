@@ -700,42 +700,46 @@ def _transform_offers(text: str) -> str:
         # Перестроить description под Akcent (структура как у AlStyle)
         body = _build_description_akcent(body)
 
-        # Переупорядочить теги внутри <offer> в фиксированном порядке:
-        # <categoryId>, <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <description>, <Param>
-        # (Param позже будет переименован в <param> на этапе нормализации)
-        desc_match2 = re.search(r"\s*<description>.*?</description>", body, flags=re.DOTALL | re.IGNORECASE)
+        # Переупорядочить основные теги внутри <offer>:
+        # <categoryId>, <vendorCode>, <name>, <price>, <picture>, <vendor>, <currencyId>, <description>, <param>
+        # При этом <description> трогаем как единый блок, чтобы не ломать HTML.
+        desc_match = re.search(r"\s*<description>.*?</description>", body, flags=re.DOTALL | re.IGNORECASE)
         desc_block = ""
-        if desc_match2:
-            ds, de = desc_match2.span(0)
+        if desc_match:
+            ds, de = desc_match.span(0)
             desc_block = body[ds:de]
-            body = body[:ds] + body[de:]
+            body_wo_desc = body[:ds] + body[de:]
+        else:
+            body_wo_desc = body
 
         order_tags = ["categoryId", "vendorCode", "name", "price", "picture", "vendor", "currencyId"]
-        ordered_chunks: list[str] = []
+        ordered_chunks = []
+        text_rest = body_wo_desc
+
         for tag in order_tags:
             pattern = re.compile(rf"\s*<{tag}\\b[^>]*>.*?</{tag}>", re.DOTALL | re.IGNORECASE)
-            matches = pattern.findall(body)
-            if matches:
-                ordered_chunks.extend(matches)
-                body = pattern.sub("", body)
+            chunks = pattern.findall(text_rest)
+            if chunks:
+                ordered_chunks.extend(chunks)
+                text_rest = pattern.sub("", text_rest)
 
-        param_pattern = re.compile(r"\s*<Param\\b[^>]*>.*?</Param>", re.DOTALL | re.IGNORECASE)
-        param_chunks = param_pattern.findall(body)
+        # Собираем все Param/param (оставляем оригинальный регистр тега)
+        param_pattern = re.compile(r"\s*<(?:[Pp]aram)\\b[^>]*>.*?</(?:[Pp]aram)>", re.DOTALL)
+        param_chunks = param_pattern.findall(text_rest)
         if param_chunks:
-            body = param_pattern.sub("", body)
+            text_rest = param_pattern.sub("", text_rest)
 
-        tail = body
-
-        new_body = ""
+        # Собираем новое тело оффера в нужном порядке
+        new_body_parts = []
         for ch in ordered_chunks:
-            new_body += ch
+            new_body_parts.append(ch)
         if desc_block:
-            new_body += desc_block
+            new_body_parts.append(desc_block)
         for ch in param_chunks:
-            new_body += ch
-        new_body += tail
+            new_body_parts.append(ch)
+        new_body_parts.append(text_rest)
 
-        body = new_body
+        body = "".join(new_body_parts)
 
         return new_header + body + footer
 
@@ -771,10 +775,6 @@ def _normalize_layout(text: str) -> str:
     text = re.sub(r"</offer>\s*<offer", "</offer>\n\n<offer", text)
     # Пустая строка перед </offers>
     text = re.sub(r"</offer>\s*</offers>", "</offer>\n\n</offers>", text)
-    # Привести Param → param
-    text = re.sub(r"<Param\b", "<param", text)
-    text = re.sub(r"</Param>", "</param>", text)
-
 
     # Убираем пустые строки ВНУТРИ offer, НО не трогаем их внутри <description>...</description>
     lines = text.splitlines()
