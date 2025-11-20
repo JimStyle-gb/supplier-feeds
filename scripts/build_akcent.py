@@ -66,12 +66,12 @@ _BRAND_BLOCKLIST = (
 
 # Фиксированный блок WhatsApp + доставка/оплата (одна строка)
 WHATSAPP_BLOCK = (
-    '<div style="font-family: Cambria, \\'Times New Roman\\', serif; '
+    "<div style=\"font-family: Cambria, 'Times New Roman', serif; "
     "line-height:1.5; color:#222; font-size:15px;\">"
-    '<p style="text-align:center; margin:0 0 12px;">'
-    '<a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
-    'style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; '
-    'padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">'
+    "<p style=\"text-align:center; margin:0 0 12px;\">"
+    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
+    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; "
+    "padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);\">"
     "💬 НАПИСАТЬ В WHATSAPP</a></p>"
     "<ul style='margin:0; padding:0 0 0 18px;'>"
     "<li>Оплата: наличными, картой, переводом, по счету для юр. лиц</li>"
@@ -79,8 +79,6 @@ WHATSAPP_BLOCK = (
     "<li>Доставка по Казахстану: транспортными компаниями и почтой</li>"
     "</ul></div>"
 )
-
-
 @dataclass
 class OfferData:
     id: str
