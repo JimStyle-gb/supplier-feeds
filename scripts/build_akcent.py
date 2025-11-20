@@ -1,35 +1,13 @@
 #!/usr/bin/env python3
 """Сборщик YML для поставщика Akcent.
 
-Логика пайплайна:
-1. Скачиваем исходный XML/YML файл поставщика.
-2. Вырезаем всё содержимое между <shop> и <offers>, оставляя сами теги.
-3. Оставляем только те <offer>, у которых <name> начинается с наших ключевых слов.
-4. Удаляем служебные теги (url, url/ , Offer_ID, delivery, local_delivery_cost, model,
-   manufacturer_warranty, Stock, prices/RRP).
-5. Приводим каждый <offer> к нужному виду:
-   - в <offer> оставляем только атрибуты id и available;
-   - id формируем как "AK" + article (или старый id, если article пустой);
-   - внутри создаём <vendorCode> с тем же значением, что и id;
-   - <categoryId type="..."> превращаем в <categoryId>значение</categoryId>,
-     при отсутствии значения делаем <categoryId></categoryId>;
-   - в каждом оффере добавляем <currencyId>KZT</currencyId>;
-   - если <vendor/> пустой или служебный, пытаемся найти бренд в Param/name/description;
-   - цену берём из <price type="Цена дилерского портала KZT" ...>, пересчитываем
-     по правилам (4% + диапазон, хвост 900, >= 9 000 000 -> 100) и записываем
-     как <price>XXX</price> без атрибутов;
-   - все Param name="Сопутствующие товары" убираем из характеристик и в конец
-     description добавляем текстовый блок
-     "Сопутствующие товары и совместимые устройства:" со списком;
-   - выкидываем из Param мусорные:
-       * Наименование производителя
-       * Оригинальное разрешение
-       * Сопутствующие товары
-       * Совместимые продукты.
-6. Нормализуем разметку: убираем лишние отступы и пустые строки внутри <offer>,
-   аккуратно расставляем разрывы:
-   <shop><offers>\n\n<offer ...>\n<categoryId>...\n...\n</offer>\n\n</offers>
-7. Сохраняем результат в docs/akcent.yml (Windows-1251).
+Кратко:
+- Скачиваем исходный YML поставщика.
+- Фильтруем только нужные товары по <name>.
+- Чистим служебные теги и мусорные параметры.
+- Нормализуем <offer>, цену, <vendorCode>, <categoryId>, <currencyId>.
+- Строим описание с блоком WhatsApp и характеристиками.
+- Сохраняем готовый YML в docs/akcent.yml (Windows-1251).
 """
 
 from __future__ import annotations
@@ -45,7 +23,6 @@ import requests
 
 # Фиксированный блок WhatsApp + Оплата/Доставка (одна строка, как у AlStyle)
 WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
-
 
 
 # Ключевые префиксы для начала тега <name>
@@ -129,7 +106,6 @@ META_AVAIL_TRUE = 0
 META_AVAIL_FALSE = 0
 
 
-
 def _decode_bytes(raw: bytes) -> str:
     """Аккуратно декодировать байты в строку (UTF-8 / CP1251)."""
     for enc in ("utf-8", "cp1251"):
@@ -138,7 +114,6 @@ def _decode_bytes(raw: bytes) -> str:
         except UnicodeDecodeError:
             continue
     return raw.decode("utf-8", errors="ignore")
-
 
 def _strip_shop_header(text: str) -> str:
     """Удалить всё между <shop> и <offers>, оставив сами теги."""
@@ -156,13 +131,11 @@ def _strip_shop_header(text: str) -> str:
     idx_after_shop = idx_shop + len(shop_tag)
     return text[:idx_after_shop] + "\n" + text[idx_offers:]
 
-
 def _name_allowed(name_text: str) -> bool:
     """Проверить, начинается ли name с одного из разрешённых префиксов."""
     t = html.unescape(name_text).strip()
     upper = t.upper()
     return any(upper.startswith(prefix) for prefix in _ALLOWED_PREFIXES_UPPER)
-
 
 def _filter_offers_by_name(text: str) -> str:
     """Оставить только те <offer>, у которых <name> начинается с нужных слов."""
@@ -199,7 +172,6 @@ def _filter_offers_by_name(text: str) -> str:
     META_TOTAL_FILTERED = kept
     print(f"[akcent] Фильтр по name: оставлено {kept}, выкинуто {skipped} офферов.")
     return result
-
 
 
 def _clean_tags(text: str) -> str:
@@ -254,7 +226,6 @@ def _clean_tags(text: str) -> str:
 
     return text
 
-
 def _normalize_brand_name(raw: str) -> str:
     """Очистить название бренда и отфильтровать служебные значения."""
     s = html.unescape(raw or "").strip()
@@ -270,7 +241,6 @@ def _normalize_brand_name(raw: str) -> str:
     if any(bad in lower for bad in _BRAND_BLOCKLIST):
         return ""
     return s
-
 
 def _extract_brand_from_block(body: str) -> str:
     """Попробовать вытащить бренд из Param/имени/описания."""
@@ -311,7 +281,6 @@ def _extract_brand_from_block(body: str) -> str:
         return "SBID"
 
     return ""
-
 
 def _fill_empty_vendor(body: str) -> str:
     """Заполнить пустой <vendor/>, если возможно, не трогая нормальные бренды."""
@@ -384,7 +353,6 @@ def _fill_empty_vendor(body: str) -> str:
     )
     return new_body3
 
-
 def _apply_price_rules(base: int) -> int:
     """Применить наценку 4% + фиксированный диапазон и хвост 900.
 
@@ -434,7 +402,6 @@ def _apply_price_rules(base: int) -> int:
         return 100
 
     return price
-
 
 def _move_related_products_to_description(body: str) -> str:
     """Перенести Param name="Сопутствующие товары" из характеристик в конец description."""
@@ -486,7 +453,6 @@ def _move_related_products_to_description(body: str) -> str:
     # Если description не было вообще — создаём
     body = body.rstrip() + "\n<description>" + block_text + "</description>\n"
     return body
-
 
 def _filter_params(body: str) -> str:
     """Выкинуть из Param заведомо мусорные/служебные параметры."""
@@ -553,7 +519,6 @@ def _filter_params(body: str) -> str:
         body,
         flags=re.DOTALL,
     )
-
 
 def _build_description_akcent(body: str) -> str:
     """Собрать <description> для Akcent: WhatsApp + Описание + Характеристики с такими же переносами, как у AlStyle."""
@@ -672,7 +637,6 @@ def _build_description_akcent(body: str) -> str:
 
     return body
 
-
 def _transform_offers(text: str) -> str:
     """Привести <offer> к нужному виду."""
 
@@ -769,7 +733,6 @@ def _transform_offers(text: str) -> str:
     print(f"[akcent] Трансформация offer: обработано {count} офферов.")
     return new_text
 
-
 def _normalize_layout(text: str) -> str:
     """Привести разметку к ровному виду и расставить разрывы."""
     # Убираем начальные пробелы у строк
@@ -833,7 +796,6 @@ def _normalize_layout(text: str) -> str:
         out_lines.append(line)
 
     return "\n".join(out_lines)
-
 
 
 def _sort_offer_tags(text: str) -> str:
@@ -906,7 +868,6 @@ def _sort_offer_tags(text: str) -> str:
     print(f"[akcent] Сортировка тегов в offer: обработано {count} офферов.")
     return new_text
 
-
 def _ensure_xml_header_and_doctype(text: str) -> str:
     """Привести заголовок XML к единому виду:
     - encoding="windows-1251"
@@ -932,7 +893,6 @@ def _ensure_xml_header_and_doctype(text: str) -> str:
             count=1,
         )
     return text
-
 
 def download_akcent_feed(source_url: str, out_path: Path) -> None:
     """Скачать файл поставщика, обработать и сохранить на диск."""
@@ -1002,7 +962,6 @@ def download_akcent_feed(source_url: str, out_path: Path) -> None:
     print(f"[akcent] Записано байт: {len(out_bytes)} в {out_path}")
 
 
-
 def main() -> int:
     """Точка входа скрипта."""
     source_url = os.getenv(
@@ -1018,7 +977,6 @@ def main() -> int:
         return 1
 
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
