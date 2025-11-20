@@ -588,6 +588,7 @@ def _build_description_akcent(body: str, compat_items: list[str]) -> str:
     return body
 
 def _rebuild_offer_akcent(match: re.Match) -> str:
+    """Полностью перестроить один <offer>: id/vendorCode/цена/описание/param."""
     global META_AVAIL_TRUE, META_AVAIL_FALSE
     header = match.group(1)
     body = match.group(2)
