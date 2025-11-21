@@ -390,16 +390,27 @@ def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
     return params, compat
 
 def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], compat: list[str]) -> str:
-    """Собрать HTML <description>."""
+    """Собрать HTML <description> на основе родного описания поставщика.
+
+    Логика:
+    - берём исходное описание, чистим пробелы;
+    - если описания нет — используем только название товара;
+    - обрезаем по длине (900 символов);
+    - заворачиваем в стандартный HTML-блок с WhatsApp, описанием, характеристиками и совместимыми устройствами.
+    """
     name_html = html.escape(name.strip())
     desc_text = (raw_desc or "").strip()
     desc_text = html.unescape(desc_text)
     desc_text = re.sub(r"\s+", " ", desc_text)
 
-    if not desc_text:
-        desc_text = f"{name_html} — качественное решение для повседневной работы и учебы."
+    plain_name = name.strip()
 
-    # Ограничим длину описания, чтобы не раздувать карточку
+    # Если у поставщика вообще нет описания — используем просто название
+    if not desc_text:
+        desc_text = plain_name
+
+    # Ограничим длину описания, чтобы не раздувать карточку,
+    # но не придумываем новых "умных" фраз
     max_len = 900
     if len(desc_text) > max_len:
         cut = desc_text.rfind(".", 0, max_len)
@@ -414,7 +425,7 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
     inner.append(WHATSAPP_BLOCK)
     inner.append("")  # пустая строка даёт двойной перенос перед <!-- Описание -->
 
-    # Описание товара
+    # Описание товара (только родной текст, без искусственных дополнений)
     inner.append("<!-- Описание -->")
     inner.append(f"<h3>{name_html}</h3><p>{html.escape(desc_text)}</p>")
 
@@ -571,6 +582,11 @@ def _download_raw_text() -> str:
     return text
 
 
+def _escape_text(text: str) -> str:
+    """Экранировать текст для тела XML-тега, не трогая кавычки."""
+    return html.escape(text or "", quote=False)
+
+
 def _build_yml(offers: list[OfferData], total_raw: int) -> str:
     """Собрать финальный YML как строку."""
     # Время по Алматы (UTC+5)
@@ -613,7 +629,7 @@ def _build_yml(offers: list[OfferData], total_raw: int) -> str:
         lines.append(f'<offer id="{off.id}" available="{off.available}">')
         lines.append(f"<categoryId>{html.escape(off.category_id)}</categoryId>")
         lines.append(f"<vendorCode>{html.escape(off.vendor_code)}</vendorCode>")
-        lines.append(f"<name>{html.escape(off.name)}</name>")
+        lines.append(f"<name>{_escape_text(off.name)}</name>")
         lines.append(f"<price>{off.price}</price>")
         for pic in off.pictures:
             lines.append(f"<picture>{html.escape(pic)}</picture>")
@@ -628,7 +644,7 @@ def _build_yml(offers: list[OfferData], total_raw: int) -> str:
         # keywords в самом конце оффера
         kw = _make_keywords(off.name, off.vendor)
         if kw:
-            lines.append(f"<keywords>{html.escape(kw)}</keywords>")
+            lines.append(f"<keywords>{_escape_text(kw)}</keywords>")
         lines.append("</offer>")
         parts.append("\n".join(lines))
 
