@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-21 04:56">
+<yml_catalog date="2025-11-21 05:28">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-11-21 04:56:37
+Время сборки (Алматы)                      | 2025-11-21 05:28:00
 Ближайшая сборка (Алматы)                  | 2025-11-22 01:00:00
 Сколько товаров у поставщика до фильтра    | 1815
 Сколько товаров у поставщика после фильтра | 152
@@ -4098,7 +4098,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <offer id="AKMAGNASDB96V2" available="true">
 <categoryId>565241</categoryId>
 <vendorCode>AKMAGNASDB96V2</vendorCode>
-<name>Экран на треноге Mr.Pixel ECO 70&quot; X 70&quot; (1,78 X 1,78)</name>
+<name>Экран на треноге Mr.Pixel ECO 70" X 70" (1,78 X 1,78)</name>
 <price>25900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ae7/17vjki228x0jep5rhnt8upif1q7r3pjk.jpg</picture>
 <vendor>Mr.Pixel</vendor>
@@ -4120,13 +4120,13 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Гарантия">12 мес</param>
 <param name="Формат">1X1</param>
 <param name="Размер дм.(м.)">70&quot; X 70&quot; (1,78 X 1,78)</param>
-<keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 70&quot; X 70&quot; (1,78 X 1,78), Экран, треноге, ECO, 78, Mr.Pixel 78, ekran-trenoge, ekran-trenoge-mr-pixel, ekran, trenoge, mr-pixel, mr-pixel-78, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+<keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 70" X 70" (1,78 X 1,78), Экран, треноге, ECO, 78, Mr.Pixel 78, ekran-trenoge, ekran-trenoge-mr-pixel, ekran, trenoge, mr-pixel, mr-pixel-78, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKMSPSBB96V2" available="true">
 <categoryId>565240</categoryId>
 <vendorCode>AKMSPSBB96V2</vendorCode>
-<name>Экран настенный Mr.Pixel 70&quot; X 70&quot; (1,78 X 1,78)</name>
+<name>Экран настенный Mr.Pixel 70" X 70" (1,78 X 1,78)</name>
 <price>23900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/4bd/flilm1tnyshbhewxdf053tbe4l3s3bty.jpg</picture>
 <vendor>Mr.Pixel</vendor>
@@ -4148,13 +4148,13 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Гарантия">12 мес</param>
 <param name="Формат">1X1</param>
 <param name="Размер дм.(м.)">70&quot; X 70&quot; (1,78 X 1,78)</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel 70&quot; X 70&quot; (1,78 X 1,78), Экран, настенный, 78, Mr.Pixel 78, ekran-nastennyy, ekran-nastennyy-mr-pixel, ekran, nastennyy, mr-pixel, mr-pixel-78, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel 70" X 70" (1,78 X 1,78), Экран, настенный, 78, Mr.Pixel 78, ekran-nastennyy, ekran-nastennyy-mr-pixel, ekran, nastennyy, mr-pixel, mr-pixel-78, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKMAGNASBB96V2" available="true">
 <categoryId>565240</categoryId>
 <vendorCode>AKMAGNASBB96V2</vendorCode>
-<name>Экран настенный Mr.Pixel ECO 70&quot; X 70&quot; (1,78 X 1,78)</name>
+<name>Экран настенный Mr.Pixel ECO 70" X 70" (1,78 X 1,78)</name>
 <price>16900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/4bd/flilm1tnyshbhewxdf053tbe4l3s3bty.jpg</picture>
 <vendor>Mr.Pixel</vendor>
@@ -4176,13 +4176,13 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Гарантия">12 мес</param>
 <param name="Формат">1X1</param>
 <param name="Размер дм.(м.)">70&quot; X 70&quot; (1,78 X 1,78)</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel ECO 70&quot; X 70&quot; (1,78 X 1,78), Экран, настенный, ECO, 78, Mr.Pixel 78, ekran-nastennyy, ekran-nastennyy-mr-pixel, ekran, nastennyy, mr-pixel, mr-pixel-78, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel ECO 70" X 70" (1,78 X 1,78), Экран, настенный, ECO, 78, Mr.Pixel 78, ekran-nastennyy, ekran-nastennyy-mr-pixel, ekran, nastennyy, mr-pixel, mr-pixel-78, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKMAGNASBB112V2" available="true">
 <categoryId>565240</categoryId>
 <vendorCode>AKMAGNASBB112V2</vendorCode>
-<name>Экран настенный Mr.Pixel ECO 80&quot; X 80&quot; (2,03 X 2,03)</name>
+<name>Экран настенный Mr.Pixel ECO 80" X 80" (2,03 X 2,03)</name>
 <price>26900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/4bd/flilm1tnyshbhewxdf053tbe4l3s3bty.jpg</picture>
 <vendor>Mr.Pixel</vendor>
@@ -4204,7 +4204,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Гарантия">12 мес</param>
 <param name="Формат">1X1</param>
 <param name="Размер дм.(м.)">80&quot; X 80&quot; (2,03 X 2,03)</param>
-<keywords>Mr.Pixel, Экран настенный Mr.Pixel ECO 80&quot; X 80&quot; (2,03 X 2,03), Экран, настенный, ECO, 03, Mr.Pixel 03, ekran-nastennyy, ekran-nastennyy-mr-pixel, ekran, nastennyy, mr-pixel, mr-pixel-03, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+<keywords>Mr.Pixel, Экран настенный Mr.Pixel ECO 80" X 80" (2,03 X 2,03), Экран, настенный, ECO, 03, Mr.Pixel 03, ekran-nastennyy, ekran-nastennyy-mr-pixel, ekran, nastennyy, mr-pixel, mr-pixel-03, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 </offers></shop>
