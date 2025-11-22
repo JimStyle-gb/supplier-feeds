@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-21 06:23">
+<yml_catalog date="2025-11-22 06:20">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-11-21 06:23:27
-Ближайшая сборка (Алматы)                  | 2025-11-22 01:00:00
-Сколько товаров у поставщика до фильтра    | 1815
-Сколько товаров у поставщика после фильтра | 152
-Сколько товаров есть в наличии (true)      | 152
+Время сборки (Алматы)                      | 2025-11-22 06:20:52
+Ближайшая сборка (Алматы)                  | 2025-11-23 01:00:00
+Сколько товаров у поставщика до фильтра    | 1806
+Сколько товаров у поставщика после фильтра | 147
+Сколько товаров есть в наличии (true)      | 147
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -2009,48 +2009,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, МФУ Epson L6550 фабрика печати, факс,Wi-Fi, МФУ, L6550, фабрика, печати, факс, Wi-Fi, Epson L6550, mfu-epson, mfu-epson-l6550, mfu, epson, l6550, epson-l6550, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
-<offer id="AKC11CJ21403" available="true">
-<categoryId>000002653</categoryId>
-<vendorCode>AKC11CJ21403</vendorCode>
-<name>МФУ Epson L8180  фабрика печати</name>
-<price>504900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/620/lt3dvkdj5lpeuxyceyp1mzs58sfjcurb.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>МФУ Epson L8180  фабрика печати</h3><p>Фотопринтер EcoTank A3+ Печатайте великолепные фотографии в формате A3+ с беспроводным шестицветным многофункциональным принтером для творчества 6-цветная система подачи чернил Работа с 5 типами носителей Рекордно низкая стоимость печати в формате A3+ Раскройте свой творческий потенциал благодаря печати великолепных фото и документов в формате A3+ с невероятно низкой стоимостью печати страницы. Печать, копирование и сканирование просты как никогда благодаря впечатляющему цветному сенсорному экрану с диагональю 10,9 см, поддержке 5 видов носителей и инновационной шестицветной системе подачи чернил. Отсутствие необходимости замены картриджей и гибкие возможности подключения делают эту модель идеальным выбором для современных художников</p>
-<h3>Характеристики</h3><ul><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Тип чернил:</strong> водорастворимые и
-пигментные</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 32</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Производитель:</strong> Epson</li><li><strong>Печать фото:</strong> да</li><li><strong>Разрешение сканера, dpi:</strong> 1200x4800</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> А3</li><li><strong>Интерфейс:</strong> Wi-Fi*Ethernet*USB</li><li><strong>Цветность:</strong> 6 цветов</li><li><strong>Разрешение печати, dpi:</strong> 5760x1440</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 300</li><li><strong>Область применения:</strong> Для офиса</li><li><strong>Тип расходных материалов:</strong> чернила</li></ul>
-
-</description>
-<param name="Автоподатчик">нет</param>
-<param name="Двусторонняя печать">нет</param>
-<param name="ЖК дисплей">нет</param>
-<param name="Страна происхождения">Филиппины</param>
-<param name="Тип чернил">водорастворимые и
-пигментные</param>
-<param name="Максимальная скорость печати А4 стр/мин">32</param>
-<param name="Минимальная плотность бумаги, г/м2">64</param>
-<param name="Производитель">Epson</param>
-<param name="Печать фото">да</param>
-<param name="Разрешение сканера, dpi">1200x4800</param>
-<param name="Гарантия">12 мес</param>
-<param name="Тип печати">струйная</param>
-<param name="Формат">А3</param>
-<param name="Интерфейс">Wi-Fi*Ethernet*USB</param>
-<param name="Цветность">6 цветов</param>
-<param name="Разрешение печати, dpi">5760x1440</param>
-<param name="Максимальная плотность бумаги, г/м2">300</param>
-<param name="Область применения">Для офиса</param>
-<param name="Тип расходных материалов">чернила</param>
-<keywords>Epson, МФУ Epson L8180  фабрика печати, МФУ, L8180, фабрика, печати, Epson L8180, mfu-epson, mfu-epson-l8180, mfu, epson, l8180, epson-l8180, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
 <offer id="AKC11CJ19401" available="true">
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ19401</vendorCode>
@@ -2270,28 +2228,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, Принтер Epson L121 фабрика печати, Принтер, L121, фабрика, печати, Epson L121, printer-epson, printer-epson-l121, printer, epson, l121, epson-l121, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
-<offer id="AKC11CJ71404" available="true">
-<categoryId>000002652</categoryId>
-<vendorCode>AKC11CJ71404</vendorCode>
-<name>Принтер Epson L1250 фабрика печати</name>
-<price>107900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a10/4836119mtcr18cmgpopdiw26fo71y1x6.png</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Принтер Epson L1250 фабрика печати</h3><p>Домашний струйный принтер Цветной принтер формата A4 с Wi-Fi Принтер Wi-Fi Direct Компактный дизайн Благодаря отсутствию необходимости в замене картриджей этот принтер подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту вы с легкостью сможете выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li></ul>
-
-</description>
-<param name="Гарантия">12 мес</param>
-<keywords>Epson, Принтер Epson L1250 фабрика печати, Принтер, L1250, фабрика, печати, Epson L1250, printer-epson, printer-epson-l1250, printer, epson, l1250, epson-l1250, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
 <offer id="AKC11CE58403" available="true">
 <categoryId>000002656</categoryId>
 <vendorCode>AKC11CE58403</vendorCode>
@@ -2327,74 +2263,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Максимальная плотность бумаги, г/м2">255</param>
 <param name="Тип расходных материалов">чернила</param>
 <keywords>Epson, Принтер Epson L132 фабрика печати, Принтер, L132, фабрика, печати, Epson L132, printer-epson, printer-epson-l132, printer, epson, l132, epson-l132, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
-<offer id="AKC11CG95405" available="true">
-<categoryId>000007816</categoryId>
-<vendorCode>AKC11CG95405</vendorCode>
-<name>Принтер Epson M1100 фабрика печати</name>
-<price>132900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/0e2/6olpz4ot8cok9ssapqrwg6nfffzfewvg.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Принтер Epson M1100 фабрика печати</h3><p>Монохромный принтер EcoTank Сократите время и затраты на печать с этим надежным и энергоэффективным устройством EcoTank. Используйте лоток на 150 листов и подключение по USB. Экономия до 90 % стоимости печати 1 контейнер с чернилами = 5 картриджей с тонером Надежный и долговечный Этот надежный, быстрый и экономичный принтер EcoTank с заправляемой емкостью для чернил поможет снизить затраты на печать. Черных пигментных чернил в комплекте этого недорогого решения достаточно для печати до 6000 страниц. Принтер не требует времени на прогрев и печатает со скоростью 15 страниц в минуту, позволяя быстро получить результат. Устройство M1100 оснащено лотком на 150 листов и поддерживает подключение к ПК по USB. Надежность Насладитесь превосходным качеством и надежностью принтера EcoTank с годичной гарантией и дополнительной гарантией до трех лет</p>
-<h3>Характеристики</h3><ul><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 32</li><li><strong>Производитель:</strong> Epson</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 90</li><li><strong>Страна происхождения:</strong> Индонезия,Филиппины</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> A4</li><li><strong>Интерфейс:</strong> USB</li><li><strong>Цветность:</strong> 1 цвет</li><li><strong>Разрешение печати, dpi:</strong> 1440x720</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Область применения:</strong> Для дома</li><li><strong>Тип расходных материалов:</strong> чернила</li></ul>
-<h3>Совместимые устройства</h3><ul><li>Кабель DEFENDER USB04-17 USB2.0 AM-BM, 5.0м (ДЛЯ ПРИНТЕРА)</li><li>Кабель DEFENDER USB04-10 USB2.0 AM-BM, 3.0м (ДЛЯ ПРИНТЕРА)</li><li>Чернила Epson C13T03P14A  EcoTank MX1XX Series Black Bottle XL</li><li>Ёмкость для отработанных чернил Epson C13T04D100 EcoTank Maintenance Box (4clr)</li><li>Фотобумага A4 Epson C13S041256 50 Л. 167 Г/М2 Matte -Heavyweight</li><li>Фотобумага A4 Epson C13S041256 50 Л. 167 Г/М2 Matte -Heavyweight</li><li>Фотобумага А4 Epson C13S041342 Archival Matte Paper A4</li></ul>
-
-</description>
-<param name="Автоподатчик">нет</param>
-<param name="Двусторонняя печать">нет</param>
-<param name="ЖК дисплей">нет</param>
-<param name="Максимальная скорость печати А4 стр/мин">32</param>
-<param name="Производитель">Epson</param>
-<param name="Максимальная плотность бумаги, г/м2">90</param>
-<param name="Страна происхождения">Индонезия,Филиппины</param>
-<param name="Гарантия">12 мес</param>
-<param name="Тип печати">струйная</param>
-<param name="Формат">A4</param>
-<param name="Интерфейс">USB</param>
-<param name="Цветность">1 цвет</param>
-<param name="Разрешение печати, dpi">1440x720</param>
-<param name="Тип чернил">пигментные</param>
-<param name="Область применения">Для дома</param>
-<param name="Тип расходных материалов">чернила</param>
-<keywords>Epson, Принтер Epson M1100 фабрика печати, Принтер, M1100, фабрика, печати, Epson M1100, printer-epson, printer-epson-m1100, printer, epson, m1100, epson-m1100, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
-<offer id="AKC11CG26405" available="true">
-<categoryId>000007816</categoryId>
-<vendorCode>AKC11CG26405</vendorCode>
-<name>Принтер Epson M1140 (CIS) фабрика печати</name>
-<price>181900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/bce/hh0ymfdfd2m4t234v4cvmxg8gcl6zt0y.png</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Принтер Epson M1140 (CIS) фабрика печати</h3><p>Монохромный принтер EcoTank Сократите затраты на печать с EcoTank и печатайте до 11 000 страниц с черными чернилами в комплекте. Печать до 11 000 страниц Печать со скоростью 20 страниц в минуту, время на прогрев не требуется Фронтальный лоток на 250 листов Принтер EcoTank с заправляемой емкостью для чернил поможет снизить затраты на печать. Это надежное, быстрое и энергоэффективное решение. Чернил в комплекте этого недорогого решения достаточно для печати до 11 000 страниц. Скорость печати 20 страниц в минуту экономит время, а функция двусторонней печати позволит сократить расход бумаги. Устройство M1140 оснащено лотком на 250 листов и поддерживает подключение к ПК по USB. Недорогие расходные материалы Сократите затраты на печать до 90% благодаря большим емкостям для чернил EcoTank и контейнерам для долива чернил</p>
-<h3>Характеристики</h3><ul><li><strong>Автоподатчик:</strong> нет</li><li><strong>Цвет:</strong> Белый</li><li><strong>Производитель:</strong> Epson</li><li><strong>Страна происхождения:</strong> Филипины</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> A4</li><li><strong>Интерфейс:</strong> USB</li><li><strong>Цветность:</strong> 1 цвет</li></ul>
-
-</description>
-<param name="Автоподатчик">нет</param>
-<param name="Цвет">Белый</param>
-<param name="Производитель">Epson</param>
-<param name="Страна происхождения">Филипины</param>
-<param name="Гарантия">12 мес</param>
-<param name="Тип печати">струйная</param>
-<param name="Формат">A4</param>
-<param name="Интерфейс">USB</param>
-<param name="Цветность">1 цвет</param>
-<keywords>Epson, Принтер Epson M1140 (CIS) фабрика печати, Принтер, M1140, CIS, фабрика, печати, Epson M1140, printer-epson, printer-epson-m1140, printer, epson, m1140, epson-m1140, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKC11CH38402" available="true">
@@ -2918,6 +2786,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKV11HB58042</vendorCode>
 <name>Проектор универсальный Epson EB-W55 белый</name>
 <price>577900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a75/93jxofb0xkuy6j62ht9bvw8zji9uu07f.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -4071,28 +3940,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Гарантия">12 месяцев</param>
 <param name="Производитель">Fellowes</param>
 <keywords>Fellowes, Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.,, Шредер, Fellowes®, Powershred®P-30C, DIN, P-4, 4х34, лст., лтр., 15, Fellowes 15, shreder-fellowes, shreder-fellowes-powershred-p-30c, shreder, fellowes, powershred-p-30c, fellowes-15, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
-<offer id="AKC13T66464A" available="true">
-<categoryId>000002677</categoryId>
-<vendorCode>AKC13T66464A</vendorCode>
-<name>Экономичный набор из четырех контейнеров с чернилами, серия 664</name>
-<price>20900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/ac1/n0qqf3iwn8mynu6hkm97h7soqkislcwf.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Экономичный набор из четырех контейнеров с чернилами, серия 664</h3><p>Чернила Epson серии 664 Сведите затраты на печать к минимуму с чернилами EcoTank. Ресурса комплекта чернил хватит на печать 4 500 черно-белых и 7 500 цветных страниц – отличное решение для тех, кто привык много печатать. Четырехцветные водорастворимые чернила обеспечивают качественный результат и рекордно низкую себестоимость печати. Для повседневной печати Линейка чернил четырех цветов прекрасно подходит для повседневной печати документов. Радикальное снижение затрат на чернила Ищете самое выгодное решение для печати? Уже со стартовым набором чернил в комплекте с устройством Epson вы сократите средние расходы на чернила до 90 %. Доступная цена и высокий ресурс чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3</li></ul>
-
-</description>
-<param name="Гарантия">3</param>
-<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 664, Экономичный, набор, четырех, контейнеров, чернилами, серия, 664, Epson 664, ekonomichnyy-nabor, ekonomichnyy-nabor-chetyreh, ekonomichnyy, nabor, chetyreh, epson-664, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKMAGNASDB96V2" available="true">
