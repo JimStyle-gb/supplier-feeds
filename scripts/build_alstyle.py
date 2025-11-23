@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle feed builder v123_cp1251_embedcats_xmlsafe
+AlStyle feed builder v124_br_trim_embedcats_xmlsafe
 
 Строит docs/alstyle.yml из XML поставщика AlStyle.
-Кодировка вывода: windows-1251, безопасная (xmlcharrefreplace для неподдерживаемых символов).
-Вшитый список категорий (без файла docs/alstyle_categories.txt) и экранирование спецсимволов (&, <, >, ").
+
+Особенности этой версии:
+- Кодировка вывода windows-1251 с xmlcharrefreplace (без падения по UnicodeEncodeError).
+- Вшитый список categoryId (без файла docs/alstyle_categories.txt).
+- Экранит спецсимволы в текстах/атрибутах (&, <, >, ").
+- Блок WhatsApp взят из эталонного YML (21.11) без изменений.
+- Описание:
+    * умная обрезка до ~1000 символов;
+    * разбиение на части и вставка <br /> внутри <p>;
+    * вся HTML-часть после <!-- Описание --> в одну строку, как в старом идеальном файле.
+- Параметры 'Назначение', 'Новинка', 'Благотворительность' вырезаются.
 """
 
 from __future__ import annotations
@@ -43,6 +52,8 @@ PARAM_BLACKLIST = {
     "Объём",
     "Снижена цена",
     "Благотворительность",
+    "Назначение",
+    "Новинка",
 }
 
 # Приоритет важнейших параметров в блоке характеристик
@@ -125,6 +136,7 @@ WHATSAPP_BLOCK = """
 
 
 def _now_almaty() -> dt.datetime:
+    """Текущее время в Алматы (UTC+5)."""
     return dt.datetime.utcnow() + dt.timedelta(hours=TIMEZONE_OFFSET_HOURS)
 
 
@@ -133,6 +145,7 @@ def _read_text(path: Path, encoding: str) -> str:
 
 
 def _make_encoding_safe(text: str, encoding: str) -> str:
+    """Делает строку безопасной для записи в encoding (xmlcharrefreplace)."""
     return text.encode(encoding, errors="xmlcharrefreplace").decode(encoding)
 
 
@@ -166,6 +179,7 @@ def _parse_float(value: str) -> float:
 
 
 def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
+    """Формула наценки с хвостом 900 и страховкой от слишком низкой цены."""
     purchase = _parse_float(purchase_raw)
     supplier_price = _parse_float(supplier_raw)
 
@@ -305,6 +319,73 @@ def _normalize_description_text(text: str) -> str:
     return joined.strip()
 
 
+def _smart_trim(text: str, limit: int = 1000) -> str:
+    """Обрезает текст до ~limit символов, стараясь резать по предложению/слову и добавляя многоточие."""
+    if len(text) <= limit:
+        return text
+
+    # сначала ищем знак конца предложения (., !, ?) ближе к концу
+    cut = -1
+    for i in range(limit, max(limit - 200, 0), -1):
+        if text[i] in ".!?":
+            cut = i + 1
+            break
+    # если не нашли, ищем пробел
+    if cut == -1:
+        for i in range(limit, max(limit - 200, 0), -1):
+            if text[i].isspace():
+                cut = i
+                break
+    if cut == -1:
+        cut = limit
+
+    trimmed = text[:cut].rstrip()
+    if not trimmed.endswith("…"):
+        trimmed = trimmed + "…"
+    return trimmed
+
+
+def _split_for_br(text: str, max_chunk_len: int = 250) -> List[str]:
+    """Делит текст на части для <br />, стараясь резать по предложениям."""
+    text = text.strip()
+    if len(text) <= max_chunk_len:
+        return [text]
+
+    # Делим по предложениям
+    sentences = re.split(r"(?<=[.!?])\s+", text)
+    chunks: List[str] = []
+    cur = ""
+
+    for s in sentences:
+        if not s:
+            continue
+        if not cur:
+            cur = s
+        elif len(cur) + 1 + len(s) <= max_chunk_len:
+            cur = cur + " " + s
+        else:
+            chunks.append(cur)
+            cur = s
+    if cur:
+        chunks.append(cur)
+
+    # Если всё равно только один кусок – вернём его
+    if len(chunks) == 1:
+        return chunks
+
+    return chunks
+
+
+def _make_br_paragraph(text: str) -> str:
+    """Формирует <p>...</p> с разумными <br /> внутри."""
+    if not text:
+        return "<p></p>"
+    trimmed = _smart_trim(text, 1000)
+    chunks = _split_for_br(trimmed, max_chunk_len=250)
+    html_parts = [_xml_escape_text(ch) for ch in chunks]
+    return "<p>" + "<br />".join(html_parts) + "</p>"
+
+
 def _build_description_html(name: str, original_desc: str, params_block: List[Dict[str, str]]) -> str:
     parts: List[str] = []
     parts.append("<description>")
@@ -315,20 +396,24 @@ def _build_description_html(name: str, original_desc: str, params_block: List[Di
 
     norm = _normalize_description_text(original_desc)
     name_html = _xml_escape_text(name)
+
+    # Собираем хвост (описание + характеристики) В ОДНУ СТРОКУ
+    tail = ""
+
     if norm:
-        norm_html = _xml_escape_text(norm)
-        parts.append(f"<h3>{name_html}</h3><p>{norm_html}</p>")
+        tail += f"<h3>{name_html}</h3>" + _make_br_paragraph(norm)
     else:
-        parts.append(f"<h3>{name_html}</h3>")
+        tail += f"<h3>{name_html}</h3>"
 
     if params_block:
-        parts.append("<h3>Характеристики</h3><ul>")
+        tail += "<h3>Характеристики</h3><ul>"
         for item in params_block:
             pname = _xml_escape_text(item["name"])
             pvalue = _xml_escape_text(item["value"])
-            parts.append(f"<li><strong>{pname}:</strong> {pvalue}</li>")
-        parts.append("</ul>")
+            tail += f"<li><strong>{pname}:</strong> {pvalue}</li>"
+        tail += "</ul>"
 
+    parts.append(tail)
     parts.append("")
     parts.append("</description>")
     return "\n".join(parts)
