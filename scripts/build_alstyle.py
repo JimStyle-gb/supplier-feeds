@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle feed builder v125_desc_enrich
+AlStyle feed builder v126_desc_enrich_norm
 
 Строит docs/alstyle.yml из XML поставщика AlStyle.
 
@@ -17,7 +17,9 @@ AlStyle feed builder v125_desc_enrich
 - Блок характеристик и <param> формируются:
     * из тегов <param> поставщика (после фильтра и сортировки);
     * + дополняются характеристиками, распознанными из родного описания
-      (Тип, Цвет печати, Производитель, Объем картриджа, Совместимость и т.п.).
+      (Производитель, Устройство, Цвет печати, Тип чернил, Совместимость и т.п.).
+- Значения параметров нормализуются (убираем лишние переносы строк/пробелы),
+  чтобы и <param>, и список <li> были в одну строку.
 """
 
 from __future__ import annotations
@@ -91,6 +93,26 @@ PARAM_PRIORITY = [
     "Размеры",
 ]
 
+# Подсказки для вычленения характеристик из текста описания
+DESC_PARAM_HINTS = [
+    "Производитель",
+    "Устройство",
+    "Цвет печати",
+    "Тип чернил",
+    "Технология печати",
+    "Объем картриджа, мл",
+    "Объём картриджа, мл",
+    "Объем картриджа",
+    "Объём картриджа",
+    "Совместимость",
+    "Ресурс картриджа",
+    "Ресурс",
+    "Объем, л",
+    "Объем, мл",
+    "Объём, л",
+    "Объём, мл",
+]
+
 ALLOWED_CATEGORY_IDS: Set[str] = {
     "3540",
     "3541",
@@ -151,31 +173,10 @@ ALLOWED_CATEGORY_IDS: Set[str] = {
     "21698",
 }
 
-# Подсказки для вычленения характеристик из текста описания
-DESC_PARAM_HINTS = [
-    "Производитель",
-    "Устройство",
-    "Цвет печати",
-    "Тип чернил",
-    "Технология печати",
-    "Объем картриджа, мл",
-    "Объём картриджа, мл",
-    "Объем картриджа",
-    "Объём картриджа",
-    "Совместимость",
-    "Ресурс картриджа",
-    "Ресурс",
-    "Объем, л",
-    "Объем, мл",
-    "Объём, л",
-    "Объём, мл",
-]
-
 WHATSAPP_BLOCK = """
 <!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
 """
-
 
 def _now_almaty() -> dt.datetime:
     """Текущее время в Алматы (UTC+5)."""
@@ -354,7 +355,7 @@ def _build_desc_text(plain: str) -> str:
     if len(plain) <= GOAL:
         return plain
 
-    parts = re.split(r"(?<=[\.!?])\s+|;\s+", plain)
+    parts = re.split(r"(?<=[\.\!?])\s+|;\s+", plain)
     parts = [p.strip() for p in parts if p.strip()]
     if not parts:
         return plain[:GOAL]
@@ -393,7 +394,7 @@ def _split_for_br(text: str, max_chunk_len: int = 220, max_br: int = 3) -> List[
     if len(text) <= max_chunk_len:
         return [text]
 
-    parts = re.split(r"(?<=[\.!?])\s+|;\s+", text)
+    parts = re.split(r"(?<=[\.\!?])\s+|;\s+", text)
     parts = [p.strip() for p in parts if p.strip()]
     if not parts:
         return [text]
@@ -432,6 +433,14 @@ def _make_br_paragraph(text: str) -> str:
     return "<p>" + "<br />".join(html_lines) + "</p>"
 
 
+def _normalize_param_value(value: str) -> str:
+    """Нормализует значение параметра: убирает лишние пробелы/переносы строк."""
+    if not value:
+        return ""
+    value = re.sub(r"\s+", " ", value)
+    return value.strip()
+
+
 def _sort_params(params: List[Dict[str, str]]) -> List[Dict[str, str]]:
     def _pkey(item: Dict[str, str]) -> tuple:
         name = item["name"]
@@ -458,7 +467,10 @@ def _collect_params_from_xml(src_offer: ET.Element) -> List[Dict[str, str]]:
             continue
         if any(p["name"].lower() == key_lower for p in items):
             continue
-        items.append({"name": key_clean, "value": value.strip()})
+        norm_val = _normalize_param_value(value)
+        if not norm_val:
+            continue
+        items.append({"name": key_clean, "value": norm_val})
 
     return items
 
@@ -472,8 +484,7 @@ def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) ->
     if not tokens:
         return []
 
-    # Подготовим токенизированные подсказки
-    hint_tokens = [ (h, h.split()) for h in DESC_PARAM_HINTS ]
+    hint_tokens = [(h, h.split()) for h in DESC_PARAM_HINTS]
 
     extra: List[Dict[str, str]] = []
     n = len(tokens)
@@ -506,7 +517,6 @@ def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) ->
         val_tokens: List[str] = []
         k = j
         while k < n:
-            # если на этом месте начинается следующий ключ — останавливаемся
             next_match = False
             for name2, htoks2 in hint_tokens:
                 L2 = len(htoks2)
@@ -520,15 +530,15 @@ def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) ->
 
             tok = tokens[k]
             val_tokens.append(tok)
-            # если в токене есть конец предложения и уже что-то набрали — можно остановиться
             if any(ch in tok for ch in [".", "!", "?"]) and len(val_tokens) > 2:
                 k += 1
                 break
             k += 1
 
-        value = " ".join(val_tokens).strip(" .,:;")
-        if value:
-            extra.append({"name": key_clean, "value": value})
+        raw_value = " ".join(val_tokens).strip(" .,:;")
+        norm_value = _normalize_param_value(raw_value)
+        if norm_value:
+            extra.append({"name": key_clean, "value": norm_value})
             existing_names_lower.add(key_lower)
 
         i = k
@@ -587,7 +597,6 @@ def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build:
 
 
 def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str]:
-
     stats["total_before"] += 1
 
     def g(tag: str) -> str:
@@ -631,9 +640,8 @@ def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str
         if url and url not in pictures:
             pictures.append(url)
 
-    # Собираем параметры из XML + добираем из описания
     params_block = _collect_params_from_xml(src_offer)
-    existing_names_lower = {p["name"].lower() for p in params_block}
+    existing_names_lower: Set[str] = {p["name"].lower() for p in params_block}
     extra_params = _extract_params_from_desc(original_desc, existing_names_lower)
     if extra_params:
         params_block.extend(extra_params)
