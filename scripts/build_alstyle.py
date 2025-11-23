@@ -1,427 +1,447 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-build_alstyle_120_simplified.py
-Переписанный с нуля пайплайн для AlStyle.
+AlStyle feed builder v121_cp1251_fix
+
+Строит docs/alstyle.yml из XML поставщика AlStyle.
+Кодировка вывода: windows-1251, безопасная (xmlcharrefreplace для неподдерживаемых символов).
 """
 
 from __future__ import annotations
 
-import os
 import sys
 import math
 import datetime as dt
 from pathlib import Path
+from typing import Optional, Iterable, List, Dict, Set
+import re
 import xml.etree.ElementTree as ET
 
-# Константы пайплайна
+try:
+    import requests  # type: ignore
+except Exception:  # pragma: no cover - в рантайме на GitHub Actions requests есть
+    requests = None  # type: ignore
+
+SUPPLIER_NAME = "AlStyle"
 SUPPLIER_URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
-OUTPUT_REL_PATH = Path("docs") / "alstyle.yml"
-CATEGORIES_REL_PATH = Path("docs") / "alstyle_categories.txt"
+ENCODING_SUPPLIER = "utf-8"
 ENCODING_OUT = "windows-1251"
+
+DEFAULT_OUTPUT = Path("docs/alstyle.yml")
+DEFAULT_CATEGORIES = Path("docs/alstyle_categories.txt")
+
 VENDOR_PREFIX = "AS"
+DEFAULT_CURRENCY = "KZT"
+TIMEZONE_OFFSET_HOURS = 5  # Алматы
 
-# Готовый HTML-блок WhatsApp / оплата / доставка
-WHATSAPP_BLOCK = """
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-"""
-
-# Параметры, которые точно не нужны покупателю
+# Параметры, которые не нужны покупателю / SEO
 PARAM_BLACKLIST = {
     "Артикул",
     "Штрихкод",
-    "Благотворительность",
-    "Код ТН ВЭД",
     "Код товара Kaspi",
+    "Код ТН ВЭД",
     "Объём",
     "Снижена цена",
 }
 
-# Приоритет сортировки характеристик (сначала важные, потом остальные по алфавиту)
+# Приоритет важнейших параметров в блоке характеристик
 PARAM_PRIORITY = [
     "Бренд",
-    "Производитель",
-    "Серия",
     "Модель",
+    "Серия",
     "Тип",
     "Назначение",
-    "Совместимость",
     "Цвет",
-    "Формат печати",
-    "Ресурс",
+    "Мощность",
+    "Напряжение",
     "Ёмкость батареи",
-    "Мощность (Bт)",
-    "Интерфейсы",
-    "Разъёмы",
-    "Диагональ экрана",
-    "Разрешение",
 ]
 
-
-class Stats:
-    """Простая статистика для FEED_META."""
-
-    def __init__(self) -> None:
-        self.total_before = 0
-        self.total_after = 0
-        self.available_true = 0
-        self.available_false = 0
-
-    def mark_after(self, available: bool) -> None:
-        self.total_after += 1
-        if available:
-            self.available_true += 1
-        else:
-            self.available_false += 1
+# Сюда подставим реальный блок из эталонного YML
+WHATSAPP_BLOCK = """\n<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>\n"""
 
 
 def _now_almaty() -> dt.datetime:
-    """Возвращает текущее время в Алматы (UTC+5)."""
-    return dt.datetime.utcnow() + dt.timedelta(hours=5)
+    """Текущее время в Алматы (UTC+5)."""
+    return dt.datetime.utcnow() + dt.timedelta(hours=TIMEZONE_OFFSET_HOURS)
 
 
-def _read_text(path: Path, encoding: str = "utf-8") -> str:
-    with path.open("r", encoding=encoding) as f:
-        return f.read()
+def _read_text(path: Path, encoding: str) -> str:
+    return path.read_text(encoding=encoding, errors="replace")
+
+
+def _make_encoding_safe(text: str, encoding: str) -> str:
+    """
+    Делает строку безопасной для записи в encoding.
+    Неподдерживаемые символы заменяются на XML-ссылки вида &#NNNN;.
+    """
+    return text.encode(encoding, errors="xmlcharrefreplace").decode(encoding)
 
 
 def _write_text(path: Path, data: str, encoding: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    safe = _make_encoding_safe(data, encoding)
     with path.open("w", encoding=encoding, newline="\n") as f:
-        f.write(data)
+        f.write(safe)
+
+
+def _download_xml(url: str) -> str:
+    if requests is None:
+        raise RuntimeError("Модуль requests недоступен, не могу скачать XML поставщика")
+    resp = requests.get(url, timeout=60)
+    resp.raise_for_status()
+    # Берём текст как есть; поставщик отдаёт UTF-8
+    return resp.text
+
+
+def _load_categories(path: Path) -> Optional[Set[str]]:
+    if not path.is_file():
+        return None
+    raw = path.read_text(encoding="utf-8", errors="ignore")
+    result: Set[str] = set()
+    for line in raw.splitlines():
+        s = line.strip()
+        if not s or s.startswith("#"):
+            continue
+        result.add(s)
+    return result or None
 
 
 def _strip_doctype(xml_text: str) -> str:
-    """Убираем <!DOCTYPE ...>, чтобы ET не ругался."""
-    return xml_text.replace('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">', "")
+    return re.sub(r"<!DOCTYPE[^>]*>", "", xml_text, flags=re.IGNORECASE | re.DOTALL)
 
 
-def _parse_supplier_xml(xml_text: str) -> ET.Element:
-    xml_clean = _strip_doctype(xml_text)
-    root = ET.fromstring(xml_clean)
-    if root.tag != "yml_catalog":
-        raise RuntimeError("Ожидался корень <yml_catalog>")
-    return root
+def _parse_float(value: str) -> float:
+    value = (value or "").strip().replace(" ", "").replace(",", ".")
+    if not value:
+        return 0.0
+    try:
+        return float(value)
+    except ValueError:
+        return 0.0
 
 
-def _load_categories(path: Path) -> set[str]:
-    """Читаем список categoryId (один id на строку)."""
-    if not path.exists():
-        # Если файла нет — не фильтруем по категориям
-        return set()
-    allowed: set[str] = set()
-    for line in _read_text(path).splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        allowed.add(line)
-    return allowed
+def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
+    """
+    Формула наценки:
+    - базово +4%,
+    - далее надбавка по ступеням закупочной цены,
+    - округление вверх до *900,
+    - защита от слишком низкой цены.
+    """
+    purchase = _parse_float(purchase_raw)
+    supplier_price = _parse_float(supplier_raw)
 
-
-def _get_child_text(elem: ET.Element, tag: str) -> str | None:
-    child = elem.find(tag)
-    if child is None or child.text is None:
-        return None
-    text = child.text.strip()
-    return text or None
-
-
-def _bool_from_text(text: str | None) -> bool:
-    if text is None:
-        return False
-    return text.strip().lower() in {"1", "true", "yes", "y"}
-
-
-def _calc_price(purchase: float, supplier_price: float) -> int:
-    """Расчёт новой цены: базовая наценка + ступени + окончание 900."""
-    if purchase >= 9_000_000 or purchase <= 0:
+    if purchase <= 0 and supplier_price > 0:
+        purchase = supplier_price
+    if purchase <= 0:
+        return 100
+    if purchase >= 9_000_000:
         return 100
 
-    # Базовый коэффициент (4%)
-    coeff = 1.04
+    base = 1.04
+    add = 0.0
 
-    # Дополнительные ступени по закупочной цене
-    if purchase < 1_000:
-        coeff += 8.0
-    elif purchase < 3_000:
-        coeff += 3.0
-    elif purchase < 5_000:
-        coeff += 1.0
-    elif purchase < 8_000:
-        coeff += 0.55
-    elif purchase < 12_000:
-        coeff += 0.4
-    elif purchase < 20_000:
-        coeff += 0.3
-    elif purchase < 30_000:
-        coeff += 0.22
-    elif purchase < 50_000:
-        coeff += 0.16
-    elif purchase < 80_000:
-        coeff += 0.14
-    elif purchase < 120_000:
-        coeff += 0.13
-    elif purchase < 200_000:
-        coeff += 0.12
-    elif purchase < 300_000:
-        coeff += 0.11
-    elif purchase < 500_000:
-        coeff += 0.10
-    elif purchase < 800_000:
-        coeff += 0.09
+    if purchase < 1000:
+        add = 8.0
+    elif purchase < 3000:
+        add = 3.0
+    elif purchase < 5000:
+        add = 1.0
+    elif purchase < 8000:
+        add = 0.55
+    elif purchase < 12000:
+        add = 0.40
+    elif purchase < 20000:
+        add = 0.30
+    elif purchase < 30000:
+        add = 0.22
+    elif purchase < 50000:
+        add = 0.16
+    elif purchase < 80000:
+        add = 0.14
+    elif purchase < 120000:
+        add = 0.13
+    elif purchase < 200000:
+        add = 0.12
+    elif purchase < 300000:
+        add = 0.11
+    elif purchase < 500000:
+        add = 0.10
+    elif purchase < 800000:
+        add = 0.09
     elif purchase < 1_200_000:
-        coeff += 0.08
+        add = 0.08
     else:
-        coeff += 0.07
+        add = 0.07
 
-    raw = purchase * coeff
+    coeff = base + add
+    raw_price = purchase * coeff
 
-    # Подстраховка: не ниже закупочной и не ниже цены поставщика * 0.9
-    raw = max(raw, purchase * 1.04, supplier_price * 0.9)
+    candidates = [raw_price, purchase * 1.04]
+    if supplier_price > 0:
+        candidates.append(supplier_price * 0.9)
 
-    # Хвост 900: округляем вверх до тысячи и отнимаем 100
-    rounded = int(math.ceil(raw / 1000.0) * 1000 - 100)
-    return max(100, rounded)
+    raw_price = max(candidates)
 
-
-def _param_sort_key(name: str) -> tuple[int, str]:
-    try:
-        idx = PARAM_PRIORITY.index(name)
-    except ValueError:
-        idx = len(PARAM_PRIORITY)
-    return (idx, name)
+    rounded = math.ceil(raw_price / 1000.0) * 1000 - 100
+    if rounded < 100:
+        rounded = 100
+    return int(rounded)
 
 
-def _collect_params(offer: ET.Element) -> list[tuple[str, str]]:
-    result: list[tuple[str, str]] = []
-    for p in offer.findall("param"):
-        name = (p.get("name") or "").strip()
-        if not name:
+def _parse_available(value: str) -> bool:
+    v = (value or "").strip().lower()
+    if v in {"1", "true", "yes", "да"}:
+        return True
+    if v in {"0", "false", "no", "нет"}:
+        return False
+    return False
+
+
+def _collect_params(src_offer: ET.Element) -> List[Dict[str, str]]:
+    items: List[Dict[str, str]] = []
+
+    for param in src_offer.findall("param"):
+        name = (param.get("name") or "").strip()
+        value = (param.text or "").strip()
+        if not name or not value:
             continue
         if name in PARAM_BLACKLIST:
             continue
-        value = (p.text or "").strip()
-        if not value:
+
+        key_lower = name.lower()
+        if any(p["name"].lower() == key_lower for p in items):
             continue
-        result.append((name, value))
 
-    # Удаляем дубликаты (по name, оставляем первое значение)
-    seen: set[str] = set()
-    unique: list[tuple[str, str]] = []
-    for name, value in result:
-        if name in seen:
-            continue
-        seen.add(name)
-        unique.append((name, value))
+        items.append({"name": name, "value": value})
 
-    unique.sort(key=lambda nv: _param_sort_key(nv[0]))
-    return unique
+    def sort_key(item: Dict[str, str]) -> tuple:
+        name = item["name"]
+        try:
+            idx = PARAM_PRIORITY.index(name)
+        except ValueError:
+            idx = 10**6
+        return (idx, name)
+
+    items.sort(key=sort_key)
+    return items
 
 
-def _normalize_description_text(text: str | None) -> str:
+_re_ws = re.compile(r"\s+", re.U)
+
+
+def _normalize_description_text(text: str) -> str:
     if not text:
         return ""
-    # Сглаживаем лишние пробелы и переносы
-    lines = [line.strip() for line in text.splitlines()]
-    compact = " ".join(ln for ln in lines if ln)
-    return compact
+    lines = []
+    for line in text.splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        lines.append(s)
+    if not lines:
+        return ""
+    joined = " ".join(lines)
+    joined = _re_ws.sub(" ", joined)
+    return joined.strip()
 
 
-def _build_description(name: str, raw_desc: str | None, params: list[tuple[str, str]]) -> str:
-    """Формируем `<description>`: WhatsApp + Описание + Характеристики."""
-    desc_text = _normalize_description_text(raw_desc)
-
-    parts: list[str] = []
+def _build_description_html(name: str, original_desc: str, params_block: List[Dict[str, str]]) -> str:
+    parts: List[str] = []
     parts.append("<description>")
-    parts.append("")  # пустая строка после <description>
-
-    # Блок WhatsApp / оплата / доставка — как готовый HTML
-    if WHATSAPP_BLOCK:
-        parts.append(WHATSAPP_BLOCK)
-        parts.append("")  # пустая строка
-
-    # Блок описания
+    parts.append("")
+    parts.append(WHATSAPP_BLOCK.strip("\n"))
+    parts.append("")
     parts.append("<!-- Описание -->")
-    if desc_text:
-        parts.append(f"<h3>{name}</h3><p>{desc_text}</p>")
+
+    norm = _normalize_description_text(original_desc)
+    if norm:
+        parts.append(f"<h3>{name}</h3><p>{norm}</p>")
     else:
         parts.append(f"<h3>{name}</h3>")
 
-    # Блок характеристик
-    if params:
+    if params_block:
         parts.append("<h3>Характеристики</h3><ul>")
-        for pname, val in params:
-            parts.append(f"<li><strong>{pname}:</strong> {val}</li>")
+        for item in params_block:
+            pname = item["name"]
+            pvalue = item["value"]
+            parts.append(f"<li><strong>{pname}:</strong> {pvalue}</li>")
         parts.append("</ul>")
 
-    parts.append("")  # пустая строка перед </description>
+    parts.append("")
     parts.append("</description>")
     return "\n".join(parts)
 
 
-def _transform_offer(offer: ET.Element, allowed_categories: set[str], stats: Stats) -> str | None:
-    stats.total_before += 1
+def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build: dt.datetime) -> str:
+    lines = [
+        "<!--FEED_META",
+        f"Поставщик                                  | {SUPPLIER_NAME}",
+        f"URL поставщика                             | {SUPPLIER_URL}",
+        f"Время сборки (Алматы)                      | {build_time.strftime('%Y-%m-%d %H:%M:%S')}",
+        f"Ближайшая сборка (Алматы)                  | {next_build.strftime('%Y-%m-%d %H:%M:%S')}",
+        f"Сколько товаров у поставщика до фильтра    | {stats['total_before']}",
+        f"Сколько товаров у поставщика после фильтра | {stats['after_filter']}",
+        f"Сколько товаров есть в наличии (true)      | {stats['available_true']}",
+        f"Сколько товаров нет в наличии (false)      | {stats['available_false']}",
+        "-->",
+    ]
+    return "\n".join(lines)
 
-    category_id = _get_child_text(offer, "categoryId") or "0"
-    if allowed_categories and category_id not in allowed_categories:
+
+def _convert_offer(src_offer: ET.Element, allowed_categories: Optional[Set[str]], stats: Dict[str, int]) -> Optional[str]:
+    stats["total_before"] += 1
+
+    def g(tag: str) -> str:
+        return (src_offer.findtext(tag) or "").strip()
+
+    category_id = g("categoryId")
+    if allowed_categories and category_id and category_id not in allowed_categories:
         return None
 
-    vendor_raw = _get_child_text(offer, "vendorCode") or _get_child_text(offer, "id") or "0"
-    vendor_raw = vendor_raw.strip()
-    vendor_code = f"{VENDOR_PREFIX}{vendor_raw}"
+    article = (src_offer.get("id") or "").strip()
+    vendor_code_raw = g("vendorCode")
+    base_code = vendor_code_raw or article
+    if not base_code:
+        return None
 
-    name = _get_child_text(offer, "name") or vendor_code
+    vendor_code = f"{VENDOR_PREFIX}{base_code}"
+    offer_id = vendor_code
 
-    available_tag = _bool_from_text(_get_child_text(offer, "available"))
-    available = available_tag
+    purchase_raw = g("purchase_price")
+    supplier_price_raw = g("price")
+    price_int = _calc_price(purchase_raw, supplier_price_raw)
 
-    price_supplier = float(_get_child_text(offer, "price") or "0")
-    purchase = float(_get_child_text(offer, "purchase_price") or "0")
-    new_price = _calc_price(purchase, price_supplier)
+    currency_id = g("currencyId") or DEFAULT_CURRENCY
 
-    # Картинки
-    pictures = [
-        (p.text or "").strip()
-        for p in offer.findall("picture")
-        if (p.text or "").strip()
-    ]
+    available_raw = g("available")
+    is_avail = _parse_available(available_raw)
 
-    vendor = _get_child_text(offer, "vendor") or ""
-    currency = _get_child_text(offer, "currencyId") or "KZT"
+    stats["after_filter"] += 1
+    if is_avail:
+        stats["available_true"] += 1
+    else:
+        stats["available_false"] += 1
 
-    # Характеристики
-    params = _collect_params(offer)
+    vendor = g("vendor")
+    name = g("name")
+    original_desc = g("description")
 
-    # Описание
-    raw_desc = _get_child_text(offer, "description")
-    description_html = _build_description(name, raw_desc, params)
+    pictures: List[str] = []
+    for pic in src_offer.findall("picture"):
+        url = (pic.text or "").strip()
+        if url and url not in pictures:
+            pictures.append(url)
 
-    stats.mark_after(available)
+    params_block = _collect_params(src_offer)
+    desc_html = _build_description_html(name=name, original_desc=original_desc, params_block=params_block)
 
-    lines: list[str] = []
-    lines.append(f'<offer id="{vendor_code}" available="{"true" if available else "false"}">')
+    lines: List[str] = []
+    avail_str = "true" if is_avail else "false"
+    lines.append(f'<offer id="{offer_id}" available="{avail_str}">')
     lines.append(f"<categoryId>{category_id}</categoryId>")
     lines.append(f"<vendorCode>{vendor_code}</vendorCode>")
     lines.append(f"<name>{name}</name>")
-    lines.append(f"<price>{int(new_price)}</price>")
-    for url in pictures:
-        lines.append(f"<picture>{url}</picture>")
+    lines.append(f"<price>{price_int}</price>")
+    for u in pictures:
+        lines.append(f"<picture>{u}</picture>")
     if vendor:
         lines.append(f"<vendor>{vendor}</vendor>")
-    lines.append(f"<currencyId>{currency}</currencyId>")
-    lines.append(description_html)
-    for pname, val in params:
-        lines.append(f'<param name="{pname}">{val}</param>')
+    lines.append(f"<currencyId>{currency_id}</currencyId>")
+    lines.append(desc_html)
+    for p in params_block:
+        lines.append(f'<param name="{p["name"]}">{p["value"]}</param>')
     lines.append("</offer>")
+
     return "\n".join(lines)
 
 
-def _build_feed_meta(stats: Stats, total_before: int, now_local: dt.datetime) -> str:
-    """Строим блок FEED_META (как многострочный комментарий)."""
-    next_build = (now_local + dt.timedelta(days=1)).replace(
-        hour=1, minute=0, second=0, microsecond=0
-    )
+def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT_OUTPUT, categories_path: Path = DEFAULT_CATEGORIES) -> None:
+    if source_xml is None:
+        xml_text = _download_xml(SUPPLIER_URL)
+    else:
+        xml_text = _read_text(source_xml, ENCODING_SUPPLIER)
 
-    lines = [
-        "<!--FEED_META",
-        f"Поставщик                                  | AlStyle",
-        f"URL поставщика                             | {SUPPLIER_URL}",
-        f"Время сборки (Алматы)                      | {now_local.strftime('%Y-%m-%d %H:%M:%S')}",
-        f"Ближайшая сборка (Алматы)                  | {next_build.strftime('%Y-%m-%d %H:%M:%S')}",
-        f"Сколько товаров у поставщика до фильтра    | {total_before}",
-        f"Сколько товаров у поставщика после фильтра | {stats.total_after}",
-        f"Сколько товаров есть в наличии (true)      | {stats.available_true}",
-        f"Сколько товаров нет в наличии (false)      | {stats.available_false}",
-        "-->",
-        "",
-    ]
-    return "\n".join(lines)
+    xml_text = _strip_doctype(xml_text)
 
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError as e:
+        raise RuntimeError(f"Ошибка парсинга XML поставщика: {e}") from e
 
-def build_alstyle(
-    source_xml: str,
-    output_path: Path,
-    categories_path: Path,
-) -> None:
-    """Главная функция: принимает текст XML и пишет готовый alstyle.yml."""
-    root = _parse_supplier_xml(source_xml)
     shop = root.find("shop")
-    if shop is None:
-        raise RuntimeError("Не найден тег <shop> у поставщика")
+    offers_container = None
+    if shop is not None:
+        offers_container = shop.find("offers")
+    if offers_container is None:
+        offers_container = root.find("shop/offers")
+    if offers_container is None:
+        raise RuntimeError("Не найден блок <offers> в XML поставщика")
 
-    offers_parent = shop.find("offers")
-    if offers_parent is None:
-        raise RuntimeError("Не найден блок <offers> у поставщика")
-
-    offers_src = list(offers_parent.findall("offer"))
+    all_offers = list(offers_container.findall("offer"))
 
     allowed_categories = _load_categories(categories_path)
 
-    stats = Stats()
-    offer_blocks: list[str] = []
+    stats: Dict[str, int] = {
+        "total_before": 0,
+        "after_filter": 0,
+        "available_true": 0,
+        "available_false": 0,
+    }
 
-    for off in offers_src:
-        block = _transform_offer(off, allowed_categories, stats)
-        if block is None:
-            continue
-        offer_blocks.append(block)
+    converted_offers: List[str] = []
+    for src_offer in all_offers:
+        converted = _convert_offer(src_offer, allowed_categories, stats)
+        if converted:
+            converted_offers.append(converted)
 
-    now_local = _now_almaty()
-    yml_date = now_local.strftime("%Y-%m-%d %H:%M")
+    build_time = _now_almaty()
+    next_build = (build_time + dt.timedelta(days=1)).replace(hour=1, minute=0, second=0, microsecond=0)
 
-    feed_meta = _build_feed_meta(stats, total_before=len(offers_src), now_local=now_local)
+    feed_meta = _build_feed_meta(build_time, stats, next_build)
 
-    parts: list[str] = []
-    parts.append('<?xml version="1.0" encoding="windows-1251"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
-    parts.append(f'<yml_catalog date="{yml_date}">')
-    parts.append("<shop><offers>")
-    parts.append("")  # пустая строка
-    parts.append(feed_meta)
+    lines: List[str] = []
+    lines.append(f'<?xml version="1.0" encoding="{ENCODING_OUT}"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
+    lines.append(f'<yml_catalog date="{build_time.strftime("%Y-%m-%d %H:%M")}">')
+    lines.append("<shop><offers>")
+    lines.append("")
+    lines.append(feed_meta)
+    lines.append("")
 
-    for block in offer_blocks:
-        parts.append(block)
-        parts.append("")  # пустая строка между офферами
+    for idx, offer_text in enumerate(converted_offers):
+        lines.append(offer_text)
+        if idx != len(converted_offers) - 1:
+            lines.append("")
 
-    parts.append("</offers>")
-    parts.append("</shop>")
-    parts.append("</yml_catalog>")
-    final_text = "\n".join(parts) + "\n"
+    lines.append("")
+    lines.append("</offers>")
+    lines.append("</shop>")
+    lines.append("</yml_catalog>")
 
+    final_text = "\n".join(lines)
     _write_text(output_path, final_text, ENCODING_OUT)
 
 
-def _download_source_from_url(url: str) -> str:
-    """Простой загрузчик XML по URL (можно выключить в GitHub Actions)."""
-    try:
-        import requests  # type: ignore
-    except Exception as exc:  # pragma: no cover
-        raise RuntimeError("Модуль requests не установлен, не могу скачать XML") from exc
+def main(argv: Optional[List[str]] = None) -> None:
+    if argv is None:
+        argv = sys.argv[1:]
 
-    resp = requests.get(url, timeout=60)
-    resp.raise_for_status()
-    resp.encoding = "utf-8"
-    return resp.text
+    source_xml: Optional[Path] = None
+    output_path: Path = DEFAULT_OUTPUT
+    categories_path: Path = DEFAULT_CATEGORIES
 
-
-def main(argv: list[str] | None = None) -> None:
-    """CLI: python scripts/build_alstyle_120_simplified.py [source.xml]."""
-    argv = list(sys.argv[1:] if argv is None else argv)
-
-    repo_root = Path(__file__).resolve().parents[1]
-    output_path = repo_root / OUTPUT_REL_PATH
-    categories_path = repo_root / CATEGORIES_REL_PATH
-
-    if argv:
-        # Если указан путь до файла — читаем его.
-        source_path = Path(argv[0])
-        source_xml = _read_text(source_path, encoding="utf-8")
-    else:
-        # Иначе пробуем скачать с сайта поставщика.
-        source_xml = _download_source_from_url(SUPPLIER_URL)
+    if len(argv) >= 1 and argv[0]:
+        source_xml = Path(argv[0])
+    if len(argv) >= 2 and argv[1]:
+        output_path = Path(argv[1])
+    if len(argv) >= 3 and argv[2]:
+        categories_path = Path(argv[2])
 
     build_alstyle(source_xml=source_xml, output_path=output_path, categories_path=categories_path)
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main()
+
