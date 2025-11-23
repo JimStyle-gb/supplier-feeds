@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle feed builder v124_br_trim_embedcats_xmlsafe
+AlStyle feed builder v125_desc_enrich
 
 Строит docs/alstyle.yml из XML поставщика AlStyle.
 
-Особенности этой версии:
-- Кодировка вывода windows-1251 с xmlcharrefreplace (без падения по UnicodeEncodeError).
+Особенности:
+- Кодировка вывода windows-1251 с xmlcharrefreplace (без UnicodeEncodeError).
 - Вшитый список categoryId (без файла docs/alstyle_categories.txt).
 - Экранит спецсимволы в текстах/атрибутах (&, <, >, ").
 - Блок WhatsApp взят из эталонного YML (21.11) без изменений.
 - Описание:
-    * умная обрезка до ~1000 символов;
-    * разбиение на части и вставка <br /> внутри <p>;
-    * вся HTML-часть после <!-- Описание --> в одну строку, как в старом идеальном файле.
-- Параметры 'Назначение', 'Новинка', 'Благотворительность' вырезаются.
+    * умная обрезка до ~1000 символов по предложениям;
+    * вставка <br /> внутри <p> для длинных описаний;
+    * вся HTML-часть после <!-- Описание --> в одну строку.
+- Блок характеристик и <param> формируются:
+    * из тегов <param> поставщика (после фильтра и сортировки);
+    * + дополняются характеристиками, распознанными из родного описания
+      (Тип, Цвет печати, Производитель, Объем картриджа, Совместимость и т.п.).
 """
 
 from __future__ import annotations
@@ -26,6 +29,7 @@ from pathlib import Path
 from typing import Optional, List, Dict, Set
 import re
 import xml.etree.ElementTree as ET
+import html as html_module
 
 try:
     import requests  # type: ignore
@@ -45,28 +49,46 @@ TIMEZONE_OFFSET_HOURS = 5  # Алматы
 
 # Параметры, которые не нужны покупателю / SEO
 PARAM_BLACKLIST = {
-    "Артикул",
-    "Штрихкод",
-    "Код товара Kaspi",
-    "Код ТН ВЭД",
-    "Объём",
-    "Снижена цена",
-    "Благотворительность",
-    "Назначение",
-    "Новинка",
+    "артикул",
+    "штрихкод",
+    "штрих-код",
+    "код товара kaspi",
+    "код тн вэд",
+    "объем",
+    "объём",
+    "объём, л",
+    "объём, мл",
+    "объем, л",
+    "объем, мл",
+    "снижена цена",
+    "благотворительность",
+    "назначение",
+    "новинка",
 }
 
 # Приоритет важнейших параметров в блоке характеристик
 PARAM_PRIORITY = [
     "Бренд",
+    "Производитель",
     "Модель",
     "Серия",
     "Тип",
-    "Назначение",
+    "Тип чернил",
+    "Технология печати",
+    "Устройство",
+    "Совместимость",
     "Цвет",
-    "Мощность",
-    "Напряжение",
+    "Цвет печати",
+    "Диагональ экрана",
+    "Яркость",
+    "Объем картриджа, мл",
+    "Объём картриджа, мл",
+    "Объем, л",
+    "Объем, мл",
     "Ёмкость батареи",
+    "Память",
+    "Вес",
+    "Размеры",
 ]
 
 ALLOWED_CATEGORY_IDS: Set[str] = {
@@ -128,6 +150,26 @@ ALLOWED_CATEGORY_IDS: Set[str] = {
     "21666",
     "21698",
 }
+
+# Подсказки для вычленения характеристик из текста описания
+DESC_PARAM_HINTS = [
+    "Производитель",
+    "Устройство",
+    "Цвет печати",
+    "Тип чернил",
+    "Технология печати",
+    "Объем картриджа, мл",
+    "Объём картриджа, мл",
+    "Объем картриджа",
+    "Объём картриджа",
+    "Совместимость",
+    "Ресурс картриджа",
+    "Ресурс",
+    "Объем, л",
+    "Объем, мл",
+    "Объём, л",
+    "Объём, мл",
+]
 
 WHATSAPP_BLOCK = """
 <!-- WhatsApp -->
@@ -271,35 +313,6 @@ def _xml_escape_attr(s: str) -> str:
     )
 
 
-def _collect_params(src_offer: ET.Element) -> List[Dict[str, str]]:
-    items: List[Dict[str, str]] = []
-
-    for param in src_offer.findall("param"):
-        name = (param.get("name") or "").strip()
-        value = (param.text or "").strip()
-        if not name or not value:
-            continue
-        if name in PARAM_BLACKLIST:
-            continue
-
-        key_lower = name.lower()
-        if any(p["name"].lower() == key_lower for p in items):
-            continue
-
-        items.append({"name": name, "value": value})
-
-    def sort_key(item: Dict[str, str]) -> tuple:
-        name = item["name"]
-        try:
-            idx = PARAM_PRIORITY.index(name)
-        except ValueError:
-            idx = 10**6
-        return (idx, name)
-
-    items.sort(key=sort_key)
-    return items
-
-
 _re_ws = re.compile(r"\s+", re.U)
 
 
@@ -319,71 +332,208 @@ def _normalize_description_text(text: str) -> str:
     return joined.strip()
 
 
-def _smart_trim(text: str, limit: int = 1000) -> str:
-    """Обрезает текст до ~limit символов, стараясь резать по предложению/слову и добавляя многоточие."""
-    if len(text) <= limit:
-        return text
+def _plain_from_html(html_text: str) -> str:
+    """Преобразует HTML описания в обычный текст: убирает теги, декодирует сущности."""
+    if not html_text:
+        return ""
+    txt = html_module.unescape(html_text)
+    txt = re.sub(r"(?i)<br\s*/?>", " ", txt)
+    txt = re.sub(r"<[^>]+>", " ", txt)
+    txt = txt.replace("\u00A0", " ")
+    txt = _re_ws.sub(" ", txt)
+    return txt.strip()
 
-    # сначала ищем знак конца предложения (., !, ?) ближе к концу
-    cut = -1
-    for i in range(limit, max(limit - 200, 0), -1):
-        if text[i] in ".!?":
-            cut = i + 1
+
+GOAL = 1000
+GOAL_LOW = 900
+MAX_HARD = 1200
+
+
+def _build_desc_text(plain: str) -> str:
+    """Умная обрезка plain-текста до ~1000 символов по предложениям."""
+    if len(plain) <= GOAL:
+        return plain
+
+    parts = re.split(r"(?<=[\.!?])\s+|;\s+", plain)
+    parts = [p.strip() for p in parts if p.strip()]
+    if not parts:
+        return plain[:GOAL]
+
+    selected: List[str] = []
+    total = 0
+
+    selected.append(parts[0])
+    total = len(parts[0])
+
+    for p in parts[1:]:
+        add = (1 if total else 0) + len(p)
+        if total + add > MAX_HARD:
             break
-    # если не нашли, ищем пробел
-    if cut == -1:
-        for i in range(limit, max(limit - 200, 0), -1):
-            if text[i].isspace():
-                cut = i
+        selected.append(p)
+        total += add
+        if total >= GOAL_LOW:
+            break
+
+    if total < GOAL_LOW:
+        for p in parts[len(selected):]:
+            add = (1 if total else 0) + len(p)
+            if total + add > MAX_HARD:
                 break
-    if cut == -1:
-        cut = limit
+            selected.append(p)
+            total += add
+            if total >= GOAL_LOW:
+                break
 
-    trimmed = text[:cut].rstrip()
-    if not trimmed.endswith("…"):
-        trimmed = trimmed + "…"
-    return trimmed
+    return " ".join(selected).strip()
 
 
-def _split_for_br(text: str, max_chunk_len: int = 250) -> List[str]:
-    """Делит текст на части для <br />, стараясь резать по предложениям."""
+def _split_for_br(text: str, max_chunk_len: int = 220, max_br: int = 3) -> List[str]:
+    """Делит текст на части для <br />, стараясь резать по предложениям, как в v113."""
     text = text.strip()
     if len(text) <= max_chunk_len:
         return [text]
 
-    # Делим по предложениям
-    sentences = re.split(r"(?<=[.!?])\s+", text)
-    chunks: List[str] = []
+    parts = re.split(r"(?<=[\.!?])\s+|;\s+", text)
+    parts = [p.strip() for p in parts if p.strip()]
+    if not parts:
+        return [text]
+
+    lines: List[str] = []
     cur = ""
 
-    for s in sentences:
-        if not s:
-            continue
-        if not cur:
+    for s in parts:
+        cand = cur + (" " if cur else "") + s
+        if cur and len(cand) > max_chunk_len and len(lines) < max_br:
+            lines.append(cur)
             cur = s
-        elif len(cur) + 1 + len(s) <= max_chunk_len:
-            cur = cur + " " + s
         else:
-            chunks.append(cur)
-            cur = s
+            cur = cand
+
     if cur:
-        chunks.append(cur)
+        lines.append(cur)
 
-    # Если всё равно только один кусок – вернём его
-    if len(chunks) == 1:
-        return chunks
+    if len(lines) > max_br + 1:
+        head = lines[:max_br]
+        tail = " ".join(lines[max_br:])
+        lines = head + [tail]
 
-    return chunks
+    return lines
 
 
 def _make_br_paragraph(text: str) -> str:
     """Формирует <p>...</p> с разумными <br /> внутри."""
     if not text:
         return "<p></p>"
-    trimmed = _smart_trim(text, 1000)
-    chunks = _split_for_br(trimmed, max_chunk_len=250)
-    html_parts = [_xml_escape_text(ch) for ch in chunks]
-    return "<p>" + "<br />".join(html_parts) + "</p>"
+    trimmed = _build_desc_text(text)
+    lines = _split_for_br(trimmed, max_chunk_len=220, max_br=3)
+    html_lines = [_xml_escape_text(x) for x in lines]
+    if len(html_lines) == 1:
+        return "<p>" + html_lines[0] + "</p>"
+    return "<p>" + "<br />".join(html_lines) + "</p>"
+
+
+def _sort_params(params: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    def _pkey(item: Dict[str, str]) -> tuple:
+        name = item["name"]
+        try:
+            idx = PARAM_PRIORITY.index(name)
+        except ValueError:
+            idx = 10**6
+        return (idx, name.lower())
+
+    return sorted(params, key=_pkey)
+
+
+def _collect_params_from_xml(src_offer: ET.Element) -> List[Dict[str, str]]:
+    items: List[Dict[str, str]] = []
+
+    for param in src_offer.findall("param"):
+        name = (param.get("name") or "").strip()
+        value = (param.text or "").strip()
+        if not name or not value:
+            continue
+        key_clean = name.strip().strip(":")
+        key_lower = key_clean.lower()
+        if key_lower in PARAM_BLACKLIST:
+            continue
+        if any(p["name"].lower() == key_lower for p in items):
+            continue
+        items.append({"name": key_clean, "value": value.strip()})
+
+    return items
+
+
+def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) -> List[Dict[str, str]]:
+    """Вытаскивает пары ключ-значение из родного описания по словам-подсказкам."""
+    plain = _plain_from_html(desc_html)
+    if not plain:
+        return []
+    tokens = plain.split()
+    if not tokens:
+        return []
+
+    # Подготовим токенизированные подсказки
+    hint_tokens = [ (h, h.split()) for h in DESC_PARAM_HINTS ]
+
+    extra: List[Dict[str, str]] = []
+    n = len(tokens)
+    i = 0
+
+    while i < n:
+        match_name = None
+        match_len = 0
+
+        for name, htoks in hint_tokens:
+            L = len(htoks)
+            if L == 0 or i + L > n:
+                continue
+            if tokens[i:i+L] == htoks:
+                if L > match_len:
+                    match_name = name
+                    match_len = L
+
+        if not match_name:
+            i += 1
+            continue
+
+        key_clean = match_name.strip()
+        key_lower = key_clean.lower()
+        if key_lower in PARAM_BLACKLIST or key_lower in existing_names_lower:
+            i += match_len
+            continue
+
+        j = i + match_len
+        val_tokens: List[str] = []
+        k = j
+        while k < n:
+            # если на этом месте начинается следующий ключ — останавливаемся
+            next_match = False
+            for name2, htoks2 in hint_tokens:
+                L2 = len(htoks2)
+                if L2 == 0 or k + L2 > n:
+                    continue
+                if tokens[k:k+L2] == htoks2:
+                    next_match = True
+                    break
+            if next_match:
+                break
+
+            tok = tokens[k]
+            val_tokens.append(tok)
+            # если в токене есть конец предложения и уже что-то набрали — можно остановиться
+            if any(ch in tok for ch in [".", "!", "?"]) and len(val_tokens) > 2:
+                k += 1
+                break
+            k += 1
+
+        value = " ".join(val_tokens).strip(" .,:;")
+        if value:
+            extra.append({"name": key_clean, "value": value})
+            existing_names_lower.add(key_lower)
+
+        i = k
+
+    return extra
 
 
 def _build_description_html(name: str, original_desc: str, params_block: List[Dict[str, str]]) -> str:
@@ -394,16 +544,17 @@ def _build_description_html(name: str, original_desc: str, params_block: List[Di
     parts.append("")
     parts.append("<!-- Описание -->")
 
-    norm = _normalize_description_text(original_desc)
-    name_html = _xml_escape_text(name)
-
-    # Собираем хвост (описание + характеристики) В ОДНУ СТРОКУ
-    tail = ""
-
-    if norm:
-        tail += f"<h3>{name_html}</h3>" + _make_br_paragraph(norm)
+    norm_plain = _normalize_description_text(original_desc)
+    if not norm_plain:
+        name_html = _xml_escape_text(name)
+        tail = f"<h3>{name_html}</h3>"
     else:
-        tail += f"<h3>{name_html}</h3>"
+        desc_plain = _plain_from_html(original_desc)
+        if not desc_plain:
+            desc_plain = norm_plain
+        desc_html_p = _make_br_paragraph(desc_plain)
+        name_html = _xml_escape_text(name)
+        tail = f"<h3>{name_html}</h3>" + desc_html_p
 
     if params_block:
         tail += "<h3>Характеристики</h3><ul>"
@@ -436,6 +587,7 @@ def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build:
 
 
 def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str]:
+
     stats["total_before"] += 1
 
     def g(tag: str) -> str:
@@ -479,7 +631,15 @@ def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str
         if url and url not in pictures:
             pictures.append(url)
 
-    params_block = _collect_params(src_offer)
+    # Собираем параметры из XML + добираем из описания
+    params_block = _collect_params_from_xml(src_offer)
+    existing_names_lower = {p["name"].lower() for p in params_block}
+    extra_params = _extract_params_from_desc(original_desc, existing_names_lower)
+    if extra_params:
+        params_block.extend(extra_params)
+    if params_block:
+        params_block = _sort_params(params_block)
+
     desc_html = _build_description_html(name=name, original_desc=original_desc, params_block=params_block)
 
     lines: List[str] = []
