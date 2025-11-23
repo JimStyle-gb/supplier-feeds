@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle feed builder v121_cp1251_fix
+AlStyle feed builder v123_cp1251_embedcats_xmlsafe
 
 Строит docs/alstyle.yml из XML поставщика AlStyle.
 Кодировка вывода: windows-1251, безопасная (xmlcharrefreplace для неподдерживаемых символов).
+Вшитый список категорий (без файла docs/alstyle_categories.txt) и экранирование спецсимволов (&, <, >, ").
 """
 
 from __future__ import annotations
@@ -28,12 +29,12 @@ ENCODING_SUPPLIER = "utf-8"
 ENCODING_OUT = "windows-1251"
 
 DEFAULT_OUTPUT = Path("docs/alstyle.yml")
-DEFAULT_CATEGORIES = Path("docs/alstyle_categories.txt")
 
 VENDOR_PREFIX = "AS"
 DEFAULT_CURRENCY = "KZT"
 TIMEZONE_OFFSET_HOURS = 5  # Алматы
 
+# Параметры, которые не нужны покупателю / SEO
 PARAM_BLACKLIST = {
     "Артикул",
     "Штрихкод",
@@ -41,8 +42,10 @@ PARAM_BLACKLIST = {
     "Код ТН ВЭД",
     "Объём",
     "Снижена цена",
+    "Благотворительность",
 }
 
+# Приоритет важнейших параметров в блоке характеристик
 PARAM_PRIORITY = [
     "Бренд",
     "Модель",
@@ -115,9 +118,10 @@ ALLOWED_CATEGORY_IDS: Set[str] = {
     "21698",
 }
 
-
-WHATSAPP_BLOCK = """\n<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>\n"""
+WHATSAPP_BLOCK = """
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+"""
 
 
 def _now_almaty() -> dt.datetime:
@@ -145,19 +149,6 @@ def _download_xml(url: str) -> str:
     resp = requests.get(url, timeout=60)
     resp.raise_for_status()
     return resp.text
-
-
-def _load_categories(path: Path) -> Optional[Set[str]]:
-    if not path.is_file():
-        return None
-    raw = path.read_text(encoding="utf-8", errors="ignore")
-    result: Set[str] = set()
-    for line in raw.splitlines():
-        s = line.strip()
-        if not s or s.startswith("#"):
-            continue
-        result.add(s)
-    return result or None
 
 
 def _strip_doctype(xml_text: str) -> str:
@@ -245,6 +236,27 @@ def _parse_available(value: str) -> bool:
     return False
 
 
+def _xml_escape_text(s: str) -> str:
+    if not s:
+        return ""
+    return (
+        s.replace("&", "&amp;")
+         .replace("<", "&lt;")
+         .replace(">", "&gt;")
+    )
+
+
+def _xml_escape_attr(s: str) -> str:
+    if not s:
+        return ""
+    return (
+        s.replace("&", "&amp;")
+         .replace('"', "&quot;")
+         .replace("<", "&lt;")
+         .replace(">", "&gt;")
+    )
+
+
 def _collect_params(src_offer: ET.Element) -> List[Dict[str, str]]:
     items: List[Dict[str, str]] = []
 
@@ -302,16 +314,18 @@ def _build_description_html(name: str, original_desc: str, params_block: List[Di
     parts.append("<!-- Описание -->")
 
     norm = _normalize_description_text(original_desc)
+    name_html = _xml_escape_text(name)
     if norm:
-        parts.append(f"<h3>{name}</h3><p>{norm}</p>")
+        norm_html = _xml_escape_text(norm)
+        parts.append(f"<h3>{name_html}</h3><p>{norm_html}</p>")
     else:
-        parts.append(f"<h3>{name}</h3>")
+        parts.append(f"<h3>{name_html}</h3>")
 
     if params_block:
         parts.append("<h3>Характеристики</h3><ul>")
         for item in params_block:
-            pname = item["name"]
-            pvalue = item["value"]
+            pname = _xml_escape_text(item["name"])
+            pvalue = _xml_escape_text(item["value"])
             parts.append(f"<li><strong>{pname}:</strong> {pvalue}</li>")
         parts.append("</ul>")
 
@@ -336,14 +350,14 @@ def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build:
     return "\n".join(lines)
 
 
-def _convert_offer(src_offer: ET.Element, allowed_categories: Optional[Set[str]], stats: Dict[str, int]) -> Optional[str]:
+def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str]:
     stats["total_before"] += 1
 
     def g(tag: str) -> str:
         return (src_offer.findtext(tag) or "").strip()
 
     category_id = g("categoryId")
-    if allowed_categories and category_id and category_id not in allowed_categories:
+    if category_id and category_id not in ALLOWED_CATEGORY_IDS:
         return None
 
     article = (src_offer.get("id") or "").strip()
@@ -385,25 +399,27 @@ def _convert_offer(src_offer: ET.Element, allowed_categories: Optional[Set[str]]
 
     lines: List[str] = []
     avail_str = "true" if is_avail else "false"
-    lines.append(f'<offer id="{offer_id}" available="{avail_str}">')
+    lines.append(f'<offer id="{_xml_escape_attr(offer_id)}" available="{avail_str}">')
     lines.append(f"<categoryId>{category_id}</categoryId>")
-    lines.append(f"<vendorCode>{vendor_code}</vendorCode>")
-    lines.append(f"<name>{name}</name>")
+    lines.append(f"<vendorCode>{_xml_escape_text(vendor_code)}</vendorCode>")
+    lines.append(f"<name>{_xml_escape_text(name)}</name>")
     lines.append(f"<price>{price_int}</price>")
     for u in pictures:
-        lines.append(f"<picture>{u}</picture>")
+        lines.append(f"<picture>{_xml_escape_text(u)}</picture>")
     if vendor:
-        lines.append(f"<vendor>{vendor}</vendor>")
+        lines.append(f"<vendor>{_xml_escape_text(vendor)}</vendor>")
     lines.append(f"<currencyId>{currency_id}</currencyId>")
     lines.append(desc_html)
     for p in params_block:
-        lines.append(f'<param name="{p["name"]}">{p["value"]}</param>')
+        pname_attr = _xml_escape_attr(p["name"])
+        pvalue_text = _xml_escape_text(p["value"])
+        lines.append(f'<param name="{pname_attr}">{pvalue_text}</param>')
     lines.append("</offer>")
 
     return "\n".join(lines)
 
 
-def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT_OUTPUT, categories_path: Path = DEFAULT_CATEGORIES) -> None:
+def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT_OUTPUT) -> None:
     if source_xml is None:
         xml_text = _download_xml(SUPPLIER_URL)
     else:
@@ -427,8 +443,6 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
 
     all_offers = list(offers_container.findall("offer"))
 
-    allowed_categories = ALLOWED_CATEGORY_IDS
-
     stats: Dict[str, int] = {
         "total_before": 0,
         "after_filter": 0,
@@ -438,7 +452,7 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
 
     converted_offers: List[str] = []
     for src_offer in all_offers:
-        converted = _convert_offer(src_offer, allowed_categories, stats)
+        converted = _convert_offer(src_offer, stats)
         if converted:
             converted_offers.append(converted)
 
@@ -475,16 +489,13 @@ def main(argv: Optional[List[str]] = None) -> None:
 
     source_xml: Optional[Path] = None
     output_path: Path = DEFAULT_OUTPUT
-    categories_path: Path = DEFAULT_CATEGORIES
 
     if len(argv) >= 1 and argv[0]:
         source_xml = Path(argv[0])
     if len(argv) >= 2 and argv[1]:
         output_path = Path(argv[1])
-    if len(argv) >= 3 and argv[2]:
-        categories_path = Path(argv[2])
 
-    build_alstyle(source_xml=source_xml, output_path=output_path, categories_path=categories_path)
+    build_alstyle(source_xml=source_xml, output_path=output_path)
 
 
 if __name__ == "__main__":
