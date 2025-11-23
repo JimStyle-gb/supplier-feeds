@@ -55,6 +55,67 @@ PARAM_PRIORITY = [
     "Ёмкость батареи",
 ]
 
+ALLOWED_CATEGORY_IDS: Set[str] = {
+    "3540",
+    "3541",
+    "3542",
+    "3543",
+    "3544",
+    "3545",
+    "3566",
+    "3567",
+    "3569",
+    "3570",
+    "3580",
+    "3688",
+    "3708",
+    "3721",
+    "3722",
+    "4889",
+    "4890",
+    "4895",
+    "5017",
+    "5075",
+    "5649",
+    "5710",
+    "5711",
+    "5712",
+    "5713",
+    "21279",
+    "21281",
+    "21291",
+    "21356",
+    "21367",
+    "21368",
+    "21369",
+    "21370",
+    "21371",
+    "21372",
+    "21451",
+    "21498",
+    "21500",
+    "21572",
+    "21573",
+    "21574",
+    "21575",
+    "21576",
+    "21578",
+    "21580",
+    "21581",
+    "21583",
+    "21584",
+    "21585",
+    "21586",
+    "21588",
+    "21591",
+    "21640",
+    "21664",
+    "21665",
+    "21666",
+    "21698",
+}
+
+
 WHATSAPP_BLOCK = """\n<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>\n"""
 
@@ -366,7 +427,7 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
 
     all_offers = list(offers_container.findall("offer"))
 
-    allowed_categories = _load_categories(categories_path)
+    allowed_categories = ALLOWED_CATEGORY_IDS
 
     stats: Dict[str, int] = {
         "total_before": 0,
