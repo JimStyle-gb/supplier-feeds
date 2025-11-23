@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle feed builder v126_desc_enrich_norm
+AlStyle feed builder v127_desc_enrich_norm_res
 
 Строит docs/alstyle.yml из XML поставщика AlStyle.
 
@@ -16,8 +16,9 @@ AlStyle feed builder v126_desc_enrich_norm
     * вся HTML-часть после <!-- Описание --> в одну строку.
 - Блок характеристик и <param> формируются:
     * из тегов <param> поставщика (после фильтра и сортировки);
-    * + дополняются характеристиками, распознанными из родного описания
-      (Производитель, Устройство, Цвет печати, Тип чернил, Совместимость и т.п.).
+    * дополняются характеристиками, распознанными из родного описания
+      (Производитель, Устройство, Цвет печати, Тип чернил, Совместимость и т.п.);
+    * для параметров "Ресурс"/"Ресурс картриджа" оставляем только значения, где есть цифры.
 - Значения параметров нормализуются (убираем лишние переносы строк/пробелы),
   чтобы и <param>, и список <li> были в одну строку.
 """
@@ -173,10 +174,10 @@ ALLOWED_CATEGORY_IDS: Set[str] = {
     "21698",
 }
 
-WHATSAPP_BLOCK = """
-<!-- WhatsApp -->
+WHATSAPP_BLOCK = """<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
 """
+
 
 def _now_almaty() -> dt.datetime:
     """Текущее время в Алматы (UTC+5)."""
@@ -278,10 +279,10 @@ def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
 
     raw_price = max(candidates)
 
-    rounded = math.ceil(raw_price / 1000.0) * 1000 - 100
+    rounded = int(math.ceil(raw_price / 1000.0) * 1000 - 100)
     if rounded < 100:
         rounded = 100
-    return int(rounded)
+    return rounded
 
 
 def _parse_available(value: str) -> bool:
@@ -355,7 +356,7 @@ def _build_desc_text(plain: str) -> str:
     if len(plain) <= GOAL:
         return plain
 
-    parts = re.split(r"(?<=[\.\!?])\s+|;\s+", plain)
+    parts = re.split(r"(?<=[\.!?])\s+|;\s+", plain)
     parts = [p.strip() for p in parts if p.strip()]
     if not parts:
         return plain[:GOAL]
@@ -389,12 +390,12 @@ def _build_desc_text(plain: str) -> str:
 
 
 def _split_for_br(text: str, max_chunk_len: int = 220, max_br: int = 3) -> List[str]:
-    """Делит текст на части для <br />, стараясь резать по предложениям, как в v113."""
+    """Делит текст на части для <br />, стараясь резать по предложениям."""
     text = text.strip()
     if len(text) <= max_chunk_len:
         return [text]
 
-    parts = re.split(r"(?<=[\.\!?])\s+|;\s+", text)
+    parts = re.split(r"(?<=[\.!?])\s+|;\s+", text)
     parts = [p.strip() for p in parts if p.strip()]
     if not parts:
         return [text]
@@ -470,6 +471,9 @@ def _collect_params_from_xml(src_offer: ET.Element) -> List[Dict[str, str]]:
         norm_val = _normalize_param_value(value)
         if not norm_val:
             continue
+        # для параметров "Ресурс"/"Ресурс картриджа" оставляем только значения с цифрами
+        if key_lower in {"ресурс", "ресурс картриджа"} and not any(ch.isdigit() for ch in norm_val):
+            continue
         items.append({"name": key_clean, "value": norm_val})
 
     return items
@@ -537,6 +541,10 @@ def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) ->
 
         raw_value = " ".join(val_tokens).strip(" .,:;")
         norm_value = _normalize_param_value(raw_value)
+        # для "Ресурс"/"Ресурс картриджа" сохраняем только, если в значении есть цифры
+        if key_lower in {"ресурс", "ресурс картриджа"} and (not norm_value or not any(ch.isdigit() for ch in norm_value)):
+            i = k
+            continue
         if norm_value:
             extra.append({"name": key_clean, "value": norm_value})
             existing_names_lower.add(key_lower)
@@ -557,21 +565,21 @@ def _build_description_html(name: str, original_desc: str, params_block: List[Di
     norm_plain = _normalize_description_text(original_desc)
     if not norm_plain:
         name_html = _xml_escape_text(name)
-        tail = f"<h3>{name_html}</h3>"
+        tail = "<h3>" + name_html + "</h3>"
     else:
         desc_plain = _plain_from_html(original_desc)
         if not desc_plain:
             desc_plain = norm_plain
         desc_html_p = _make_br_paragraph(desc_plain)
         name_html = _xml_escape_text(name)
-        tail = f"<h3>{name_html}</h3>" + desc_html_p
+        tail = "<h3>" + name_html + "</h3>" + desc_html_p
 
     if params_block:
         tail += "<h3>Характеристики</h3><ul>"
         for item in params_block:
             pname = _xml_escape_text(item["name"])
             pvalue = _xml_escape_text(item["value"])
-            tail += f"<li><strong>{pname}:</strong> {pvalue}</li>"
+            tail += "<li><strong>" + pname + ":</strong> " + pvalue + "</li>"
         tail += "</ul>"
 
     parts.append(tail)
@@ -583,14 +591,14 @@ def _build_description_html(name: str, original_desc: str, params_block: List[Di
 def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build: dt.datetime) -> str:
     lines = [
         "<!--FEED_META",
-        f"Поставщик                                  | {SUPPLIER_NAME}",
-        f"URL поставщика                             | {SUPPLIER_URL}",
-        f"Время сборки (Алматы)                      | {build_time.strftime('%Y-%m-%d %H:%M:%S')}",
-        f"Ближайшая сборка (Алматы)                  | {next_build.strftime('%Y-%m-%d %H:%M:%S')}",
-        f"Сколько товаров у поставщика до фильтра    | {stats['total_before']}",
-        f"Сколько товаров у поставщика после фильтра | {stats['after_filter']}",
-        f"Сколько товаров есть в наличии (true)      | {stats['available_true']}",
-        f"Сколько товаров нет в наличии (false)      | {stats['available_false']}",
+        "Поставщик                                  | " + SUPPLIER_NAME,
+        "URL поставщика                             | " + SUPPLIER_URL,
+        "Время сборки (Алматы)                      | " + build_time.strftime("%Y-%m-%d %H:%M:%S"),
+        "Ближайшая сборка (Алматы)                  | " + next_build.strftime("%Y-%m-%d %H:%M:%S"),
+        "Сколько товаров у поставщика до фильтра    | " + str(stats["total_before"]),
+        "Сколько товаров у поставщика после фильтра | " + str(stats["after_filter"]),
+        "Сколько товаров есть в наличии (true)      | " + str(stats["available_true"]),
+        "Сколько товаров нет в наличии (false)      | " + str(stats["available_false"]),
         "-->",
     ]
     return "\n".join(lines)
@@ -612,7 +620,7 @@ def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str
     if not base_code:
         return None
 
-    vendor_code = f"{VENDOR_PREFIX}{base_code}"
+    vendor_code = VENDOR_PREFIX + base_code
     offer_id = vendor_code
 
     purchase_raw = g("purchase_price")
@@ -641,7 +649,7 @@ def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str
             pictures.append(url)
 
     params_block = _collect_params_from_xml(src_offer)
-    existing_names_lower: Set[str] = {p["name"].lower() for p in params_block}
+    existing_names_lower: Set[str] = set(p["name"].lower() for p in params_block)
     extra_params = _extract_params_from_desc(original_desc, existing_names_lower)
     if extra_params:
         params_block.extend(extra_params)
@@ -652,21 +660,21 @@ def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str
 
     lines: List[str] = []
     avail_str = "true" if is_avail else "false"
-    lines.append(f'<offer id="{_xml_escape_attr(offer_id)}" available="{avail_str}">')
-    lines.append(f"<categoryId>{category_id}</categoryId>")
-    lines.append(f"<vendorCode>{_xml_escape_text(vendor_code)}</vendorCode>")
-    lines.append(f"<name>{_xml_escape_text(name)}</name>")
-    lines.append(f"<price>{price_int}</price>")
+    lines.append('<offer id="' + _xml_escape_attr(offer_id) + '" available="' + avail_str + '">')
+    lines.append("<categoryId>" + category_id + "</categoryId>")
+    lines.append("<vendorCode>" + _xml_escape_text(vendor_code) + "</vendorCode>")
+    lines.append("<name>" + _xml_escape_text(name) + "</name>")
+    lines.append("<price>" + str(price_int) + "</price>")
     for u in pictures:
-        lines.append(f"<picture>{_xml_escape_text(u)}</picture>")
+        lines.append("<picture>" + _xml_escape_text(u) + "</picture>")
     if vendor:
-        lines.append(f"<vendor>{_xml_escape_text(vendor)}</vendor>")
-    lines.append(f"<currencyId>{currency_id}</currencyId>")
+        lines.append("<vendor>" + _xml_escape_text(vendor) + "</vendor>")
+    lines.append("<currencyId>" + currency_id + "</currencyId>")
     lines.append(desc_html)
     for p in params_block:
         pname_attr = _xml_escape_attr(p["name"])
         pvalue_text = _xml_escape_text(p["value"])
-        lines.append(f'<param name="{pname_attr}">{pvalue_text}</param>')
+        lines.append('<param name="' + pname_attr + '">' + pvalue_text + "</param>")
     lines.append("</offer>")
 
     return "\n".join(lines)
@@ -683,7 +691,7 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
     try:
         root = ET.fromstring(xml_text)
     except ET.ParseError as e:
-        raise RuntimeError(f"Ошибка парсинга XML поставщика: {e}") from e
+        raise RuntimeError("Ошибка парсинга XML поставщика: %s" % e) from e
 
     shop = root.find("shop")
     offers_container = None
@@ -715,8 +723,8 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
     feed_meta = _build_feed_meta(build_time, stats, next_build)
 
     lines: List[str] = []
-    lines.append(f'<?xml version="1.0" encoding="{ENCODING_OUT}"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
-    lines.append(f'<yml_catalog date="{build_time.strftime("%Y-%m-%d %H:%M")}">')
+    lines.append('<?xml version="1.0" encoding="' + ENCODING_OUT + '"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
+    lines.append('<yml_catalog date="' + build_time.strftime("%Y-%m-%d %H:%M") + '">')
     lines.append("<shop><offers>")
     lines.append("")
     lines.append(feed_meta)
