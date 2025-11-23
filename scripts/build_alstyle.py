@@ -13,13 +13,13 @@ import sys
 import math
 import datetime as dt
 from pathlib import Path
-from typing import Optional, Iterable, List, Dict, Set
+from typing import Optional, List, Dict, Set
 import re
 import xml.etree.ElementTree as ET
 
 try:
     import requests  # type: ignore
-except Exception:  # pragma: no cover - в рантайме на GitHub Actions requests есть
+except Exception:  # pragma: no cover
     requests = None  # type: ignore
 
 SUPPLIER_NAME = "AlStyle"
@@ -34,7 +34,6 @@ VENDOR_PREFIX = "AS"
 DEFAULT_CURRENCY = "KZT"
 TIMEZONE_OFFSET_HOURS = 5  # Алматы
 
-# Параметры, которые не нужны покупателю / SEO
 PARAM_BLACKLIST = {
     "Артикул",
     "Штрихкод",
@@ -44,7 +43,6 @@ PARAM_BLACKLIST = {
     "Снижена цена",
 }
 
-# Приоритет важнейших параметров в блоке характеристик
 PARAM_PRIORITY = [
     "Бренд",
     "Модель",
@@ -57,13 +55,11 @@ PARAM_PRIORITY = [
     "Ёмкость батареи",
 ]
 
-# Сюда подставим реальный блок из эталонного YML
 WHATSAPP_BLOCK = """\n<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>\n"""
 
 
 def _now_almaty() -> dt.datetime:
-    """Текущее время в Алматы (UTC+5)."""
     return dt.datetime.utcnow() + dt.timedelta(hours=TIMEZONE_OFFSET_HOURS)
 
 
@@ -72,10 +68,6 @@ def _read_text(path: Path, encoding: str) -> str:
 
 
 def _make_encoding_safe(text: str, encoding: str) -> str:
-    """
-    Делает строку безопасной для записи в encoding.
-    Неподдерживаемые символы заменяются на XML-ссылки вида &#NNNN;.
-    """
     return text.encode(encoding, errors="xmlcharrefreplace").decode(encoding)
 
 
@@ -91,7 +83,6 @@ def _download_xml(url: str) -> str:
         raise RuntimeError("Модуль requests недоступен, не могу скачать XML поставщика")
     resp = requests.get(url, timeout=60)
     resp.raise_for_status()
-    # Берём текст как есть; поставщик отдаёт UTF-8
     return resp.text
 
 
@@ -123,13 +114,6 @@ def _parse_float(value: str) -> float:
 
 
 def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
-    """
-    Формула наценки:
-    - базово +4%,
-    - далее надбавка по ступеням закупочной цены,
-    - округление вверх до *900,
-    - защита от слишком низкой цены.
-    """
     purchase = _parse_float(purchase_raw)
     supplier_price = _parse_float(supplier_raw)
 
@@ -444,4 +428,3 @@ def main(argv: Optional[List[str]] = None) -> None:
 
 if __name__ == "__main__":
     main()
-
