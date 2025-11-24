@@ -288,15 +288,84 @@ PRICING_RULES: List[PriceRule] = [
     PriceRule(1500001, 2000000, 4.0, 90000),
     PriceRule(2000001,100000000,4.0,100000),
 ]
+def _parse_float(value: str) -> float:
+    value = (value or "").strip().replace(" ", "").replace(",", ".")
+    if not value:
+        return 0.0
+    try:
+        return float(value)
+    except ValueError:
+        return 0.0
+
+
+def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
+    """Наценка 4% + фиксированный диапазон и хвост 900 (единая логика для CopyLine)."""
+    purchase = _parse_float(purchase_raw)
+    supplier_price = _parse_float(supplier_raw)
+
+    base = 0.0
+    if purchase > 0:
+        base = purchase
+    elif supplier_price > 0:
+        base = supplier_price
+    else:
+        return 100
+
+    base_int = int(base)
+    if base_int <= 0:
+        return 100
+
+    tiers = [
+        (101, 10_000, 3_000),
+        (10_001, 25_000, 4_000),
+        (25_001, 50_000, 5_000),
+        (50_001, 75_000, 7_000),
+        (75_001, 100_000, 10_000),
+        (100_001, 150_000, 12_000),
+        (150_001, 200_000, 15_000),
+        (200_001, 300_000, 20_000),
+        (300_001, 400_000, 25_000),
+        (400_001, 500_000, 30_000),
+        (500_001, 750_000, 40_000),
+        (750_001, 1_000_000, 50_000),
+        (1_000_001, 1_500_000, 70_000),
+        (1_500_001, 2_000_000, 90_000),
+        (2_000_001, 100_000_000, 100_000),
+    ]
+
+    bonus = 0
+    for lo, hi, add in tiers:
+        if lo <= base_int <= hi:
+            bonus = add
+            break
+
+    if bonus == 0:
+        value = base_int * 1.04
+    else:
+        value = base_int * 1.04 + bonus
+
+    thousands = int(value) // 1000
+    price = thousands * 1000 + 900
+    if price < value:
+        price += 1000
+
+    if price >= 9_000_000:
+        return 100
+
+    return int(price)
+
+
 def _force_tail_900(n: float) -> int:
-    i = int(n); k = max(i // 1000, 0)
-    out = k*1000 + 900
+    i = int(n)
+    k = max(i // 1000, 0)
+    out = k * 1000 + 900
     return out if out >= 900 else 900
+
+
 def compute_retail(dealer: float) -> Optional[int]:
-    for r in PRICING_RULES:
-        if r.lo <= dealer <= r.hi:
-            return _force_tail_900(dealer * (1 + r.pct/100.0) + r.add)
-    return None
+    if dealer is None or dealer <= 0:
+        return None
+    return _calc_price("", str(dealer))
 
 # -------------------- FEED_META --------------------
 
@@ -363,39 +432,268 @@ def clean_article_mentions(text: str) -> str:
     out = re.sub(r"(\n\s*){3,}", "\n\n", out)
     return out.strip()
 
+
+def _xml_escape_text(s: str) -> str:
+    if not s:
+        return ""
+    return (
+        s.replace("&", "&amp;")
+         .replace("<", "&lt;")
+         .replace(">", "&gt;")
+    )
+
+
+_re_ws_norm = re.compile(r"\s+", re.U)
+
+
+def _normalize_description_text(text: str) -> str:
+    if not text:
+        return ""
+    lines = []
+    for line in text.splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        lines.append(s)
+    if not lines:
+        return ""
+    joined = " ".join(lines)
+    joined = _re_ws_norm.sub(" ", joined)
+    return joined.strip()
+
+
+GOAL = 1000
+GOAL_LOW = 900
+MAX_HARD = 1200
+
+
+def _build_desc_text(plain: str) -> str:
+    if len(plain) <= GOAL:
+        return plain
+
+    parts = re.split(r"(?<=[\.!?])\s+|;\s+", plain)
+    parts = [p.strip() for p in parts if p.strip()]
+
+    if not parts:
+        return plain[:GOAL]
+
+    selected: List[str] = []
+    selected.append(parts[0])
+    total = len(parts[0])
+
+    for p in parts[1:]:
+        add = (1 if total else 0) + len(p)
+        if total + add > MAX_HARD:
+            break
+        selected.append(p)
+        total += add
+        if total >= GOAL_LOW:
+            break
+
+    if total < GOAL_LOW:
+        for p in parts[len(selected):]:
+            add = (1 if total else 0) + len(p)
+            if total + add > MAX_HARD:
+                break
+            selected.append(p)
+            total += add
+            if total >= GOAL_LOW:
+                break
+
+    return " ".join(selected).strip()
+
+
+_CITY_KEYWORDS = [
+    "Казахстан",
+    "Алматы",
+    "Астана",
+    "Шымкент",
+    "Караганда",
+    "Актобе",
+    "Павлодар",
+    "Атырау",
+    "Тараз",
+    "Оскемен",
+    "Семей",
+    "Костанай",
+    "Кызылорда",
+    "Орал",
+    "Петропавловск",
+    "Темиртау",
+    "Актау",
+    "Туркестан",
+    "Талдыкорган",
+    "Экибастуз",
+    "Жезказган",
+    "Рудный",
+    "Балхаш",
+    "Жанаозен",
+    "Кокшетау",
+]
+
+
+def _translit_to_slug(text: str) -> str:
+    mapping = {
+        "а": "a", "б": "b", "в": "v", "г": "g", "д": "d",
+        "е": "e", "ё": "e", "ж": "zh", "з": "z", "и": "i",
+        "й": "y", "к": "k", "л": "l", "м": "m", "н": "n",
+        "о": "o", "п": "p", "р": "r", "с": "s", "т": "t",
+        "у": "u", "ф": "f", "х": "h", "ц": "c", "ч": "ch",
+        "ш": "sh", "щ": "sch", "ъ": "", "ы": "y", "ь": "",
+        "э": "e", "ю": "yu", "я": "ya",
+    }
+    text = (text or "").lower()
+    res: List[str] = []
+    prev_dash = False
+    for ch in text:
+        if ch in mapping:
+            res.append(mapping[ch])
+            prev_dash = False
+        elif ch.isalnum():
+            res.append(ch)
+            prev_dash = False
+        else:
+            if not prev_dash:
+                res.append("-")
+                prev_dash = True
+    slug = "".join(res).strip("-")
+    return slug
+
+
+def _make_keywords(name: str, vendor: str) -> str:
+    parts: List[str] = []
+    seen: Set[str] = set()
+
+    def add(token: str) -> None:
+        token = (token or "").strip()
+        if not token:
+            return
+        if token in seen:
+            return
+        seen.add(token)
+        parts.append(token)
+
+    name = (name or "").strip()
+    vendor = (vendor or "").strip()
+
+    if vendor:
+        add(vendor)
+    if name:
+        add(name)
+
+    tokens = re.split(r"[\s,;:!\?()\[\]/\+]+", name)
+    words = [t for t in tokens if t and len(t) >= 3]
+
+    for w in words:
+        add(w)
+
+    model = None
+    for t in reversed(tokens):
+        if any(ch.isdigit() for ch in t):
+            model = t.strip()
+            break
+
+    if vendor and model:
+        add(model)
+        add(f"{vendor} {model}")
+
+    base_words = [w for w in words if not re.fullmatch(r"\d+[%]?", w)]
+    if base_words:
+        phrase2 = " ".join(base_words[:2])
+        phrase3 = " ".join(base_words[:3])
+        add(_translit_to_slug(phrase2))
+        add(_translit_to_slug(phrase3))
+        for w in base_words[:3]:
+            add(_translit_to_slug(w))
+
+    if vendor and model:
+        add(_translit_to_slug(f"{vendor} {model}"))
+
+    for city in _CITY_KEYWORDS:
+        add(city)
+
+    if not parts:
+        return ""
+    result = ", ".join(parts)
+    if len(result) > 2000:
+        out: List[str] = []
+        length = 0
+        for p in parts:
+            add_len = len(p) + 2 if out else len(p)
+            if length + add_len > 2000:
+                break
+            out.append(p)
+            length += add_len
+        result = ", ".join(out)
+    return result
+
+
+WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
+
+
+def _render_description_html(name: str, desc_plain: str) -> str:
+    base = (desc_plain or "").strip()
+    if not base:
+        base = (name or "").strip()
+    base = clean_article_mentions(base)
+    base = _normalize_description_text(base)
+    cut = _build_desc_text(base)
+    text_html = _xml_escape_text(cut)
+    name_html = _xml_escape_text(name or "")
+    return f"<h3>{name_html}</h3><p>{text_html}</p>"
+
 # -------------------- Сборка YML --------------------
+
 
 def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     lines: List[str] = []
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
-    lines.append(f"<?xml version='1.0' encoding='{XML_ENCODING}'?>")
-    lines.append(f"<yml_catalog date='{ts}'>")
-    lines.append(feed_meta_str)
-    lines.append("<shop>")
-    lines.append("  <offers>")
+    lines.append(f'<?xml version="1.0" encoding="{XML_ENCODING}"?>')
+    lines.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
+    lines.append(f'<yml_catalog date="{ts}">')
+    lines.append("<shop><offers>")
+    lines.append("")
+    if feed_meta_str:
+        lines.append(feed_meta_str)
+        lines.append("")
     first = True
     for it in offers:
-        if not first: lines.append("")  # пустая строка между офферами
+        if not first:
+            lines.append("")
         first = False
-        # ВНИМАНИЕ: id = vendorCode
         offer_id = it["vendorCode"]
-        lines.append(f"    <offer id=\"{yml_escape(offer_id)}\">")
-        # порядок тегов:
-        lines.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
-        lines.append(f"      <name>{yml_escape(it['title'])}</name>")
-        lines.append(f"      <price>{int(it['price'])}</price>")
+        lines.append(f'<offer id="{yml_escape(offer_id)}" available="true">')
+        lines.append(f'<vendorCode>{yml_escape(it["vendorCode"])}</vendorCode>')
+        lines.append(f'<name>{yml_escape(it["title"])}</name>')
+        lines.append(f'<price>{int(it["price"])}</price>')
         if it.get("picture"):
-            lines.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
+            lines.append(f'<picture>{yml_escape(it["picture"])}</picture>')
         if it.get("brand"):
-            lines.append(f"      <vendor>{yml_escape(it['brand'])}</vendor>")
-        lines.append(f"      <currencyId>{CURRENCY}</currencyId>")
-        lines.append(f"      <available>true</available>")
-        desc = clean_article_mentions(it.get("description") or it["title"])
-        lines.append(f"      <description>{yml_escape(desc)}</description>")
-        lines.append(f"    </offer>")
-    lines.append("  </offers>")
-    lines.append("</shop></yml_catalog>")
+            lines.append(f'<vendor>{yml_escape(it["brand"])}</vendor>')
+        kw = _make_keywords(it["title"], it.get("brand") or "")
+        if kw:
+            lines.append(f'<keywords>{yml_escape(kw)}</keywords>')
+        lines.append(f'<currencyId>{CURRENCY}</currencyId>')
+        desc_plain = it.get("description") or it["title"]
+        body_html = _render_description_html(it["title"], desc_plain)
+        lines.append("<description>")
+        lines.append("")
+        lines.append("<!-- WhatsApp -->")
+        lines.append(WHATSAPP_BLOCK)
+        lines.append("")
+        lines.append("<!-- Описание -->")
+        lines.append(body_html)
+        lines.append("")
+        lines.append("</description>")
+        lines.append("</offer>")
+    lines.append("")
+    lines.append("</offers>")
+    lines.append("</shop>")
+    lines.append("</yml_catalog>")
     return "\n".join(lines)
+
+
+# -------------------- Главная логика --------------------
 
 # -------------------- Главная логика --------------------
 
