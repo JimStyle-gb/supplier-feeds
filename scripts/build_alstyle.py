@@ -215,7 +215,7 @@ def _make_keywords(name: str, vendor: str) -> str:
     if name:
         add(name)
 
-    tokens = re.split(r"[\s,;:!\?()\[\]\""/\+]+", name)
+    tokens = re.split(r'[\s,;:!?()\[\]"/+]+' , name)
     words = [t for t in tokens if t and len(t) >= 3]
 
     for w in words:
