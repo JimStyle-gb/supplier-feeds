@@ -7,6 +7,7 @@ import html
 import os
 import re
 import sys
+import math
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -294,56 +295,87 @@ def _normalize_brand_name(raw: str) -> str:
     return t.strip()
 
 
-def _apply_price_rules(raw_price: int) -> int:
-    """Применить наценку 4% + фиксированный диапазон и хвост 900.
 
-    Если итоговая цена >= 9 000 000 — вернуть 100.
-    """
-    base = int(raw_price)
-    if base <= 0:
-        return base
 
-    tiers = [
-        (101, 10_000, 3_000),
-        (10_001, 25_000, 4_000),
-        (25_001, 50_000, 5_000),
-        (50_001, 75_000, 7_000),
-        (75_001, 100_000, 10_000),
-        (100_001, 150_000, 12_000),
-        (150_001, 200_000, 15_000),
-        (200_001, 300_000, 20_000),
-        (300_001, 400_000, 25_000),
-        (400_001, 500_000, 30_000),
-        (500_001, 750_000, 40_000),
-        (750_001, 1_000_000, 50_000),
-        (1_000_001, 1_500_000, 70_000),
-        (1_500_001, 2_000_000, 90_000),
-        (2_000_001, 100_000_000, 100_000),
-    ]
+def _parse_float(value: str) -> float:
+    value = (value or "").strip().replace(" ", "").replace(",", ".")
+    if not value:
+        return 0.0
+    try:
+        return float(value)
+    except ValueError:
+        return 0.0
 
-    bonus = 0
-    for lo, hi, add in tiers:
-        if lo <= base <= hi:
-            bonus = add
-            break
 
-    if bonus == 0:
-        return base
+def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
+    """Формула наценки с хвостом 900 и страховкой от слишком низкой цены."""
+    purchase = _parse_float(purchase_raw)
+    supplier_price = _parse_float(supplier_raw)
 
-    # 4% + фиксированный бонус
-    value = base * 1.04 + bonus
-
-    # Хвост 900 + округление вверх
-    thousands = int(value) // 1000
-    price = thousands * 1000 + 900
-    if price < value:
-        price += 1000
-
-    # Если стало слишком дорого — ставим 100
-    if price >= 9_000_000:
+    if purchase <= 0 and supplier_price > 0:
+        purchase = supplier_price
+    if purchase <= 0:
+        return 100
+    if purchase >= 9_000_000:
         return 100
 
-    return price
+    base = 1.04
+    add = 0.0
+
+    if purchase < 1000:
+        add = 8.0
+    elif purchase < 3000:
+        add = 3.0
+    elif purchase < 5000:
+        add = 1.0
+    elif purchase < 8000:
+        add = 0.55
+    elif purchase < 12000:
+        add = 0.40
+    elif purchase < 20000:
+        add = 0.30
+    elif purchase < 30000:
+        add = 0.22
+    elif purchase < 50000:
+        add = 0.16
+    elif purchase < 80000:
+        add = 0.14
+    elif purchase < 120000:
+        add = 0.13
+    elif purchase < 200000:
+        add = 0.12
+    elif purchase < 300000:
+        add = 0.11
+    elif purchase < 500000:
+        add = 0.10
+    elif purchase < 800000:
+        add = 0.09
+    elif purchase < 1_200_000:
+        add = 0.08
+    else:
+        add = 0.07
+
+    coeff = base + add
+    raw_price = purchase * coeff
+
+    candidates = [raw_price, purchase * 1.04]
+    if supplier_price > 0:
+        candidates.append(supplier_price * 0.9)
+
+    raw_price = max(candidates)
+
+    rounded = int(math.ceil(raw_price / 1000.0) * 1000 - 100)
+    if rounded < 100:
+        rounded = 100
+    return rounded
+
+def _apply_price_rules(raw_price: int) -> int:
+    """Применить общую формулу наценки (как у AlStyle) к цене Akcent.
+
+    Берём raw_price как закупочную и цену поставщика одновременно.
+    """
+    return _calc_price(str(raw_price), str(raw_price))
+
 
 def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
     """Достать пары (name, value) из Param и список сопутствующих устройств."""
@@ -389,6 +421,50 @@ def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
 
     return params, compat
 
+
+
+GOAL = 1000
+GOAL_LOW = 900
+MAX_HARD = 1200
+
+
+def _build_desc_text(plain: str) -> str:
+    """Умная обрезка plain-текста до ~1000 символов по предложениям."""
+    if len(plain) <= GOAL:
+        return plain
+
+    parts = re.split(r"(?<=[\.!?])\s+|;\s+", plain)
+    parts = [p.strip() for p in parts if p.strip()]
+    if not parts:
+        return plain[:GOAL]
+
+    selected: List[str] = []
+    total = 0
+
+    selected.append(parts[0])
+    total = len(parts[0])
+
+    for p in parts[1:]:
+        add = (1 if total else 0) + len(p)
+        if total + add > MAX_HARD:
+            break
+        selected.append(p)
+        total += add
+        if total >= GOAL_LOW:
+            break
+
+    if total < GOAL_LOW:
+        for p in parts[len(selected):]:
+            add = (1 if total else 0) + len(p)
+            if total + add > MAX_HARD:
+                break
+            selected.append(p)
+            total += add
+            if total >= GOAL_LOW:
+                break
+
+    return " ".join(selected).strip()
+
 def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], compat: list[str]) -> str:
     """Собрать HTML <description> на основе родного описания поставщика.
 
@@ -409,14 +485,8 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
     if not desc_text:
         desc_text = plain_name
 
-    # Ограничим длину описания, чтобы не раздувать карточку,
-    # но не придумываем новых "умных" фраз
-    max_len = 900
-    if len(desc_text) > max_len:
-        cut = desc_text.rfind(".", 0, max_len)
-        if cut == -1:
-            cut = max_len
-        desc_text = desc_text[:cut].rstrip()
+    # Умная обрезка до ~1000 символов по предложениям (как у AlStyle)
+    desc_text = _build_desc_text(desc_text)
 
     inner: list[str] = []
 
