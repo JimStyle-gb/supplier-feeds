@@ -50,3 +50,4 @@ jobs:
             git push
           else
             echo "No changes in docs/akcent.yml"
+          fi
