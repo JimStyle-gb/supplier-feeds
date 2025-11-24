@@ -134,18 +134,28 @@ def to_number(x: Any) -> Optional[float]:
 
 # -------------------- keywords --------------------
 
+KEYWORD_TERMS = [
+    "drum",
+    "девелопер",
+    "драм",
+    "кабель сетевой",
+    "картридж",
+    "термоблок",
+    "термоэлемент",
+    "тонер-картридж",
+]
+
+
 def load_keywords(path: str) -> List[str]:
-    if not os.path.isfile(path): return []
-    data = None
-    for enc in ("utf-8-sig","utf-8","utf-16","utf-16-le","utf-16-be","windows-1251"):
-        try:
-            with open(path,"r",encoding=enc) as f: data = f.read()
-            data = data.replace("\ufeff","").replace("\x00",""); break
-        except Exception: continue
-    if data is None:
-        with open(path,"r",encoding="utf-8",errors="ignore") as f:
-            data = f.read().replace("\x00","")
-    return [ln.strip() for ln in data.splitlines() if ln.strip() and not ln.startswith("#")]
+    """Фильтр по фиксированному списку ключевых слов (без внешнего файла)."""
+    out: List[str] = []
+    for kw in KEYWORD_TERMS:
+        kw = kw.strip()
+        if not kw or kw.startswith("#"):
+            continue
+        out.append(kw)
+    return out
+
 
 def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
     return [re.compile(r"^\s*"+re.escape(kw).replace(r"\ "," ")+r"(?!\w)", re.I) for kw in kws]
