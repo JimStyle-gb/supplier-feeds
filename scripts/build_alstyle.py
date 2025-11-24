@@ -113,6 +113,157 @@ DESC_PARAM_HINTS = [
     "Объём, л",
     "Объём, мл",
 ]
+_CITY_KEYWORDS = [
+    "Казахстан",
+    "Алматы",
+    "Астана",
+    "Шымкент",
+    "Караганда",
+    "Актобе",
+    "Павлодар",
+    "Атырау",
+    "Тараз",
+    "Оскемен",
+    "Семей",
+    "Костанай",
+    "Кызылорда",
+    "Орал",
+    "Петропавловск",
+    "Талдыкорган",
+    "Актау",
+    "Темиртау",
+    "Экибастуз",
+    "Кокшетау",
+]
+
+
+def _translit_to_slug(text: str) -> str:
+    """Грубая транслитерация RU->латиница + слаг для keywords (как в Akcent)."""
+    mapping = {
+        "а": "a",
+        "б": "b",
+        "в": "v",
+        "г": "g",
+        "д": "d",
+        "е": "e",
+        "ё": "e",
+        "ж": "zh",
+        "з": "z",
+        "и": "i",
+        "й": "y",
+        "к": "k",
+        "л": "l",
+        "м": "m",
+        "н": "n",
+        "о": "o",
+        "п": "p",
+        "р": "r",
+        "с": "s",
+        "т": "t",
+        "у": "u",
+        "ф": "f",
+        "х": "h",
+        "ц": "c",
+        "ч": "ch",
+        "ш": "sh",
+        "щ": "sch",
+        "ъ": "",
+        "ы": "y",
+        "ь": "",
+        "э": "e",
+        "ю": "yu",
+        "я": "ya",
+    }
+    text = (text or "").lower()
+    res: List[str] = []
+    prev_dash = False
+    for ch in text:
+        if ch in mapping:
+            res.append(mapping[ch])
+            prev_dash = False
+        elif ch.isalnum():
+            res.append(ch)
+            prev_dash = False
+        else:
+            if not prev_dash:
+                res.append("-")
+                prev_dash = True
+    slug = "".join(res).strip("-")
+    return slug
+
+
+def _make_keywords(name: str, vendor: str) -> str:
+    """Собрать строку keywords из вендора, названия и городов РК (как в Akcent)."""
+    parts: List[str] = []
+    seen: Set[str] = set()
+
+    def add(token: str) -> None:
+        token = (token or "").strip()
+        if not token:
+            return
+        if token in seen:
+            return
+        seen.add(token)
+        parts.append(token)
+
+    name = (name or "").strip()
+    vendor = (vendor or "").strip()
+
+    if vendor:
+        add(vendor)
+
+    if name:
+        add(name)
+
+    tokens = re.split(r"[\s,;:!\?()\[\]\""/\+]+", name)
+    words = [t for t in tokens if t and len(t) >= 3]
+
+    for w in words:
+        add(w)
+
+    model = None
+    for t in reversed(tokens):
+        if any(ch.isdigit() for ch in t):
+            model = t.strip()
+            break
+
+    if vendor and model:
+        add(model)
+        add(f"{vendor} {model}")
+
+    base_words = [w for w in words if not re.fullmatch(r"\d+[%]?", w)]
+    if base_words:
+        phrase2 = " ".join(base_words[:2])
+        phrase3 = " ".join(base_words[:3])
+        add(_translit_to_slug(phrase2))
+        add(_translit_to_slug(phrase3))
+        for w in base_words[:3]:
+            add(_translit_to_slug(w))
+
+    if vendor and model:
+        add(_translit_to_slug(f"{vendor} {model}"))
+
+    for city in _CITY_KEYWORDS:
+        add(city)
+
+    if not parts:
+        return ""
+
+    result = ", ".join(parts)
+    if len(result) > 2000:
+        out: List[str] = []
+        length = 0
+        for p in parts:
+            add_len = len(p) + 2 if out else len(p)
+            if length + add_len > 2000:
+                break
+            out.append(p)
+            length += add_len
+        result = ", ".join(out)
+
+    return result
+
+
 
 ALLOWED_CATEGORY_IDS: Set[str] = {
     "3540",
@@ -423,15 +574,11 @@ def _split_for_br(text: str, max_chunk_len: int = 220, max_br: int = 3) -> List[
 
 
 def _make_br_paragraph(text: str) -> str:
-    """Формирует <p>...</p> с разумными <br /> внутри."""
+    """Формирует <p>...</p> для описания без <br /> внутри (как в Akcent)."""
     if not text:
         return "<p></p>"
     trimmed = _build_desc_text(text)
-    lines = _split_for_br(trimmed, max_chunk_len=220, max_br=3)
-    html_lines = [_xml_escape_text(x) for x in lines]
-    if len(html_lines) == 1:
-        return "<p>" + html_lines[0] + "</p>"
-    return "<p>" + "<br />".join(html_lines) + "</p>"
+    return "<p>" + _xml_escape_text(trimmed) + "</p>"
 
 
 def _normalize_param_value(value: str) -> str:
@@ -675,6 +822,9 @@ def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str
         pname_attr = _xml_escape_attr(p["name"])
         pvalue_text = _xml_escape_text(p["value"])
         lines.append('<param name="' + pname_attr + '">' + pvalue_text + "</param>")
+    kw = _make_keywords(name, vendor)
+    if kw:
+        lines.append("<keywords>" + _xml_escape_text(kw) + "</keywords>")
     lines.append("</offer>")
 
     return "\n".join(lines)
@@ -723,7 +873,8 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
     feed_meta = _build_feed_meta(build_time, stats, next_build)
 
     lines: List[str] = []
-    lines.append('<?xml version="1.0" encoding="' + ENCODING_OUT + '"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
+    lines.append('<?xml version="1.0" encoding="' + ENCODING_OUT + '">')
+    lines.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
     lines.append('<yml_catalog date="' + build_time.strftime("%Y-%m-%d %H:%M") + '">')
     lines.append("<shop><offers>")
     lines.append("")
