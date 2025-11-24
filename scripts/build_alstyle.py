@@ -1,32 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-AlStyle feed builder v127_desc_enrich_norm_res_fix
+"""Сборка итогового файла docs/alstyle.yml из XML поставщика AlStyle.
 
-Строит docs/alstyle.yml из XML поставщика AlStyle.
-
-Особенности:
-- Кодировка вывода windows-1251 с xmlcharrefreplace (без UnicodeEncodeError).
-- Вшитый список categoryId (без файла docs/alstyle_categories.txt).
-- Экранит спецсимволы в текстах и атрибутах (&, <, >).
-- Блок WhatsApp взят из эталонного YML (21.11) без изменений.
-- Описание:
-    * умная обрезка до ~1000 символов по предложениям;
-    * вставка <br /> внутри <p> для длинных описаний;
-    * вся HTML-часть после <!-- Описание --> в одну строку.
-- Блок характеристик и <param> формируются:
-    * из тегов <param> поставщика (после фильтра и сортировки);
-    * дополняются характеристиками, распознанными из родного описания
-      (Производитель, Устройство, Цвет печати, Тип чернил, Совместимость и т.п.);
-    * для параметров "Ресурс"/"Ресурс картриджа" оставляем только значения, где есть цифры.
-- Значения параметров нормализуются (убираем лишние переносы строк/пробелы),
-  чтобы и <param>, и список <li> были в одну строку.
+Кодировка вывода windows-1251; описания и характеристики уже нормализованы под маркетплейсы.
 """
 
 from __future__ import annotations
 
 import sys
-import math
 import datetime as dt
 from pathlib import Path
 from typing import Optional, List, Dict, Set
@@ -538,39 +519,6 @@ def _build_desc_text(plain: str) -> str:
                 break
 
     return " ".join(selected).strip()
-
-
-def _split_for_br(text: str, max_chunk_len: int = 220, max_br: int = 3) -> List[str]:
-    """Делит текст на части для <br />, стараясь резать по предложениям."""
-    text = text.strip()
-    if len(text) <= max_chunk_len:
-        return [text]
-
-    parts = re.split(r"(?<=[\.!?])\s+|;\s+", text)
-    parts = [p.strip() for p in parts if p.strip()]
-    if not parts:
-        return [text]
-
-    lines: List[str] = []
-    cur = ""
-
-    for s in parts:
-        cand = cur + (" " if cur else "") + s
-        if cur and len(cand) > max_chunk_len and len(lines) < max_br:
-            lines.append(cur)
-            cur = s
-        else:
-            cur = cand
-
-    if cur:
-        lines.append(cur)
-
-    if len(lines) > max_br + 1:
-        head = lines[:max_br]
-        tail = " ".join(lines[max_br:])
-        lines = head + [tail]
-
-    return lines
 
 
 def _make_br_paragraph(text: str) -> str:
