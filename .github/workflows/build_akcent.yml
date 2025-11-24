@@ -1,17 +1,21 @@
 name: Build_AkCent
 
 on:
-  workflow_dispatch:        # ручной запуск из GitHub Actions
+  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'     # по расписанию (каждый день в 00:00, можно убрать)
+    # 02:00 Asia/Almaty (UTC+5) = 21:00 UTC предыдущего дня
+    - cron: '0 21 * * *'
   push:
     paths:
       - '.github/workflows/build_akcent.yml'
       - 'scripts/build_akcent.py'
-      - 'docs/akcent.yml'   # если не нужен триггер от правки результата — можно убрать
+      - 'docs/akcent.yml'
+
+permissions:
+  contents: write
 
 jobs:
-  build_akcent:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,23 +38,15 @@ jobs:
           set -e
           python scripts/build_akcent.py
 
-      - name: Commit and push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit & push if docs/akcent.yml changed
         run: |
           set -e
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/akcent.yml
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "Update Akcent feed"
-          git push
-
-      - name: Upload Akcent feed artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: akcent-feed
-          path: docs/akcent.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain docs/akcent.yml)" ]]; then
+            git add docs/akcent.yml
+            git commit -m "Build Akcent: update docs/akcent.yml"
+            git pull --rebase --autostash
+            git push
+          else
+            echo "No changes in docs/akcent.yml"
