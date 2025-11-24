@@ -7,7 +7,6 @@ import html
 import os
 import re
 import sys
-import math
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -295,87 +294,56 @@ def _normalize_brand_name(raw: str) -> str:
     return t.strip()
 
 
-
-
-def _parse_float(value: str) -> float:
-    value = (value or "").strip().replace(" ", "").replace(",", ".")
-    if not value:
-        return 0.0
-    try:
-        return float(value)
-    except ValueError:
-        return 0.0
-
-
-def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
-    """Формула наценки с хвостом 900 и страховкой от слишком низкой цены."""
-    purchase = _parse_float(purchase_raw)
-    supplier_price = _parse_float(supplier_raw)
-
-    if purchase <= 0 and supplier_price > 0:
-        purchase = supplier_price
-    if purchase <= 0:
-        return 100
-    if purchase >= 9_000_000:
-        return 100
-
-    base = 1.04
-    add = 0.0
-
-    if purchase < 1000:
-        add = 8.0
-    elif purchase < 3000:
-        add = 3.0
-    elif purchase < 5000:
-        add = 1.0
-    elif purchase < 8000:
-        add = 0.55
-    elif purchase < 12000:
-        add = 0.40
-    elif purchase < 20000:
-        add = 0.30
-    elif purchase < 30000:
-        add = 0.22
-    elif purchase < 50000:
-        add = 0.16
-    elif purchase < 80000:
-        add = 0.14
-    elif purchase < 120000:
-        add = 0.13
-    elif purchase < 200000:
-        add = 0.12
-    elif purchase < 300000:
-        add = 0.11
-    elif purchase < 500000:
-        add = 0.10
-    elif purchase < 800000:
-        add = 0.09
-    elif purchase < 1_200_000:
-        add = 0.08
-    else:
-        add = 0.07
-
-    coeff = base + add
-    raw_price = purchase * coeff
-
-    candidates = [raw_price, purchase * 1.04]
-    if supplier_price > 0:
-        candidates.append(supplier_price * 0.9)
-
-    raw_price = max(candidates)
-
-    rounded = int(math.ceil(raw_price / 1000.0) * 1000 - 100)
-    if rounded < 100:
-        rounded = 100
-    return rounded
-
 def _apply_price_rules(raw_price: int) -> int:
-    """Применить общую формулу наценки (как у AlStyle) к цене Akcent.
+    """Применить наценку 4% + фиксированный диапазон и хвост 900.
 
-    Берём raw_price как закупочную и цену поставщика одновременно.
+    Если итоговая цена >= 9 000 000 — вернуть 100.
     """
-    return _calc_price(str(raw_price), str(raw_price))
+    base = int(raw_price)
+    if base <= 0:
+        return base
 
+    tiers = [
+        (101, 10_000, 3_000),
+        (10_001, 25_000, 4_000),
+        (25_001, 50_000, 5_000),
+        (50_001, 75_000, 7_000),
+        (75_001, 100_000, 10_000),
+        (100_001, 150_000, 12_000),
+        (150_001, 200_000, 15_000),
+        (200_001, 300_000, 20_000),
+        (300_001, 400_000, 25_000),
+        (400_001, 500_000, 30_000),
+        (500_001, 750_000, 40_000),
+        (750_001, 1_000_000, 50_000),
+        (1_000_001, 1_500_000, 70_000),
+        (1_500_001, 2_000_000, 90_000),
+        (2_000_001, 100_000_000, 100_000),
+    ]
+
+    bonus = 0
+    for lo, hi, add in tiers:
+        if lo <= base <= hi:
+            bonus = add
+            break
+
+    if bonus == 0:
+        return base
+
+    # 4% + фиксированный бонус
+    value = base * 1.04 + bonus
+
+    # Хвост 900 + округление вверх
+    thousands = int(value) // 1000
+    price = thousands * 1000 + 900
+    if price < value:
+        price += 1000
+
+    # Если стало слишком дорого — ставим 100
+    if price >= 9_000_000:
+        return 100
+
+    return price
 
 def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
     """Достать пары (name, value) из Param и список сопутствующих устройств."""
