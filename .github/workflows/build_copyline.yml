@@ -1,7 +1,12 @@
-name: build_copyline
+name: Build_CopyLine
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build_copyline.yml'
+      - 'scripts/build_copyline.py'
+      - 'docs/copyline.yml'
   schedule:
     # Для 10 и 20 числа в 03:00 по Алматы:
     - cron: "0 22 9 * *"   # 22:00 UTC => 03:00 Asia/Almaty (на 10-е)
