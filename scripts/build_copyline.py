@@ -412,7 +412,7 @@ def render_feed_meta_for_copyline(pairs: Dict[str, str]) -> str:
         ("Поставщик", pairs.get("supplier","")),
         ("URL поставщика", pairs.get("source","")),
         ("Время сборки (Алматы)", _fmt_dt_alm(now_alm)),
-        ("Ближайшее время сборки (Алматы)", _fmt_dt_alm(next_alm)),
+        ("Ближайшая сборка (Алматы)", _fmt_dt_alm(next_alm)),
         ("Сколько товаров у поставщика до фильтра", str(pairs.get("offers_total","0"))),
         ("Сколько товаров у поставщика после фильтра", str(pairs.get("offers_written","0"))),
         ("Сколько товаров есть в наличии (true)", str(pairs.get("available_true","0"))),
@@ -420,10 +420,11 @@ def render_feed_meta_for_copyline(pairs: Dict[str, str]) -> str:
     ]
     key_w = max(len(k) for k,_ in rows)
     lines = ["<!--FEED_META"]
-    for i,(k,v) in enumerate(rows):
-        tail = " -->" if i == len(rows)-1 else ""
-        lines.append(f"{k.ljust(key_w)} | {v}{tail}")
-    return "\n".join(lines)
+    for (k, v) in rows:
+        lines.append(f"{k.ljust(key_w)} | {v}")
+    lines.append("-->")
+    return "
+".join(lines)
 
 # -------------------- Чистка описаний --------------------
 
@@ -686,7 +687,7 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
         lines.append(f'<currencyId>{CURRENCY}</currencyId>')
         desc_plain = it.get("description") or it["title"]
         body_html = _render_description_html(it["title"], desc_plain)
-        lines.append("<description>")
+        lines.append("<description><![CDATA[")
         lines.append("")
         lines.append("<!-- WhatsApp -->")
         lines.append(WHATSAPP_BLOCK)
@@ -694,7 +695,7 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
         lines.append("<!-- Описание -->")
         lines.append(body_html)
         lines.append("")
-        lines.append("</description>")
+        lines.append("]]></description>")
         lines.append("</offer>")
     lines.append("")
     lines.append("</offers>")
