@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-25 02:11">
+<yml_catalog date="2025-11-26 02:10">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-11-25 02:11:02
-Ближайшая сборка (Алматы)                  | 2025-11-26 01:00:00
-Сколько товаров у поставщика до фильтра    | 1811
-Сколько товаров у поставщика после фильтра | 162
-Сколько товаров есть в наличии (true)      | 162
+Время сборки (Алматы)                      | 2025-11-26 02:10:50
+Ближайшая сборка (Алматы)                  | 2025-11-27 01:00:00
+Сколько товаров у поставщика до фильтра    | 1797
+Сколько товаров у поставщика после фильтра | 157
+Сколько товаров есть в наличии (true)      | 157
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -659,6 +659,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC13T49H20N</vendorCode>
 <name>Картридж Epson C13T49H20N Контейнер с голубыми чернилами для SC-T3100x</name>
 <price>22900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/94c/fii2qroc7d0srqybah4zzdklv6l2y97v.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -684,6 +685,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC13T49H300</vendorCode>
 <name>Картридж Epson C13T49H300 Контейнер с пурпурными чернилами для SC-T3100x</name>
 <price>22900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/236/yti967gfw4qtk6rhbx7fj3krnwpdzt93.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -1136,6 +1138,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC13T69230N</vendorCode>
 <name>Картридж Epson C13T69230N T3000/5000/7000, Т3200/5200/7200 пурпурный</name>
 <price>48900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/74c/vi3hweiwqodw02f1yqf9n6ax0ixt2w1h.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -1162,6 +1165,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC13T69240N</vendorCode>
 <name>Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый</name>
 <price>48900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/de9/36c2zgvz4emnvyp6pwm4otykefl7m33a.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -1188,6 +1192,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC13T692500</vendorCode>
 <name>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
 <price>48900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/f32/d6kc9861zmzsv9tdipqapk7yhso4p8qz.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -1478,6 +1483,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC13T69220N</vendorCode>
 <name>Картридж Epson Singlepack UltraChrome XD CyanT69220N (110ml)</name>
 <price>48900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/b9a/ph1ogqk715elc7530uftr9edi3fk1mjq.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -1868,6 +1874,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC11CH72404</vendorCode>
 <name>МФУ Epson L15150 фабрика печати</name>
 <price>900900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/850/htr5v7efov1369os0yacsrphvrryff1u.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -2120,71 +2127,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, МФУ Epson L5290  фабрика печати, факс,Wi-Fi, МФУ, L5290, фабрика, печати, факс, Wi-Fi, Epson L5290, mfu-epson, mfu-epson-l5290, mfu, epson, l5290, epson-l5290, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
-<offer id="AKC11CG21404" available="true">
-<categoryId>000002653</categoryId>
-<vendorCode>AKC11CG21404</vendorCode>
-<name>МФУ Epson L6160 фабрика печати, Wi-Fi</name>
-<price>348900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/4b9/tlhtfc43v012br00cwxmujef5klere3p.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>МФУ Epson L6160 фабрика печати, Wi-Fi</h3><p>Печать без картриджей Устройство 3-в-1 нового поколения без картриджей имеет широкие возможности подключения, поддерживает двустороннюю печать и оснащено ЖК-экраном с диагональю 6,1 см. Сокращение стоимости печати до 90 % Печать без картриджей Создан для бизнеса Узнайте, как сэкономить на печати до 90 % со струйным принтером 3-в-1 без картриджей с поддержкой Wi-Fi, Wi-Fi Direct и Ethernet. Затраты на печать страницы рекордно низкие благодаря тому, что чернил в комплекте хватит до трех лет для печати до 14 000 черно-белых или 11 200 цветных страниц. Устройство оптимально подойдет для офисного использования благодаря печатающей головке PrecisionCore, скорости печати 15 страниц в минуту, двусторонней печати и фронтальному лотку на 150 листов. Рекордно низкая стоимость печати EcoTank с емкостями для чернил позволяет сократить затраты на печать до 90 % благодаря инновационной конструкции.</p>
-<h3>Характеристики</h3><ul><li><strong>Автоподатчик:</strong> нет</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Двусторонняя печать:</strong> да</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Тип чернил:</strong> водорастворимые и
-пигментные</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Разрешение печати, dpi:</strong> 4800 x 1200</li><li><strong>Производитель:</strong> Epson</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> A4</li><li><strong>Интерфейс:</strong> Wi-Fi*Ethernet*USB</li><li><strong>Цветность:</strong> 4 цвета</li><li><strong>Разрешение сканера, dpi:</strong> 1200x2400</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 33</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 256</li><li><strong>Область применения:</strong> Для офиса</li><li><strong>Тип расходных материалов:</strong> чернила</li></ul>
-<h3>Совместимые устройства</h3><ul><li>Кабель DEFENDER USB04-10 USB2.0 AM-BM, 3.0м (ДЛЯ ПРИНТЕРА)</li><li>Кабель DEFENDER USB04-17 USB2.0 AM-BM, 5.0м (ДЛЯ ПРИНТЕРА)</li><li>Чернила Epson C13T03V24A 101 EcoTank 70ml для L4150/L4160 голубой</li><li>Чернила Epson C13T03V44A 101 EcoTank 70ml для L4150/L4160 жёлтый</li><li>Чернила Epson C13T03V34A 101 EcoTank 70ml для L4150/L4160 пурпурный</li><li>Чернила Epson C13T03V14A 101 EcoTank 127ml для L4150/L4160 черный</li><li>Фотобумага 10х15 GIANT IMAGE GI-4R200100G 100 Л. 200 Г/М2 глянц.</li><li>Фотобумага 10х15 GIANT IMAGE GI-4R180100G 100 Л. 180 Г/М2 глянц.</li><li>Фотобумага A4 Epson Фотобумага 13х18 GIANT IMAGE GI-5R20050G 50 Л. 200 Г/М2 глянц.  Value Glossy Pho</li><li>Фотобумага 13х18 GIANT IMAGE GI-5R20050G 50 Л. 200 Г/М2 глянц.</li></ul>
-
-</description>
-<param name="Автоподатчик">нет</param>
-<param name="Страна происхождения">Филиппины</param>
-<param name="Двусторонняя печать">да</param>
-<param name="ЖК дисплей">да</param>
-<param name="Тип чернил">водорастворимые и
-пигментные</param>
-<param name="Минимальная плотность бумаги, г/м2">64</param>
-<param name="Разрешение печати, dpi">4800 x 1200</param>
-<param name="Производитель">Epson</param>
-<param name="Гарантия">12 мес</param>
-<param name="Тип печати">струйная</param>
-<param name="Формат">A4</param>
-<param name="Интерфейс">Wi-Fi*Ethernet*USB</param>
-<param name="Цветность">4 цвета</param>
-<param name="Разрешение сканера, dpi">1200x2400</param>
-<param name="Максимальная скорость печати А4 стр/мин">33</param>
-<param name="Максимальная плотность бумаги, г/м2">256</param>
-<param name="Область применения">Для офиса</param>
-<param name="Тип расходных материалов">чернила</param>
-<keywords>Epson, МФУ Epson L6160 фабрика печати, Wi-Fi, МФУ, L6160, фабрика, печати, Wi-Fi, Epson L6160, mfu-epson, mfu-epson-l6160, mfu, epson, l6160, epson-l6160, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
-<offer id="AKC11CJ60406" available="true">
-<categoryId>000002652</categoryId>
-<vendorCode>AKC11CJ60406</vendorCode>
-<name>МФУ Epson L6290 фабрика печати, факс.Wi-Fi</name>
-<price>384900</price>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>МФУ Epson L6290 фабрика печати, факс.Wi-Fi</h3><p>Офисный струйный принтер Двустороннее многофункциональное устройство 4-в-1 для цветной печати формата A4 с автоподатчиком, Wi-Fi Direct и Ethernet Принтер, копир, сканер и факс Wi-Fi Direct и Ethernet ЖК-экран, автоподатчик и двусторонн Благодаря отсутствию необходимости в замене картриджей это двустороннее многофункциональное устройство (печать, сканирование, копирование, факс) с Wi-Fi Direct, Ethernet и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. Благодаря 30-страничному автоподатчику документов (ADF), 250-листовому переднему лотку для бумаги, высококачественной лазерной печати документов черными пигментными чернилами и скорости печати до 15,5 страницы в минуту вы можете с легкостью выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета.</p>
-<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Филипины</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Тип печати:</strong> струйная</li></ul>
-
-</description>
-<param name="Страна происхождения">Филипины</param>
-<param name="Гарантия">12 мес</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, МФУ Epson L6290 фабрика печати, факс.Wi-Fi, МФУ, L6290, фабрика, печати, факс.Wi-Fi, Epson L6290, mfu-epson, mfu-epson-l6290, mfu, epson, l6290, epson-l6290, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
 <offer id="AKC11CJ30404" available="true">
 <categoryId>000002653</categoryId>
 <vendorCode>AKC11CJ30404</vendorCode>
@@ -2230,6 +2172,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC11CJ21403</vendorCode>
 <name>МФУ Epson L8180  фабрика печати</name>
 <price>504900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/620/lt3dvkdj5lpeuxyceyp1mzs58sfjcurb.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -2490,6 +2433,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC11CJ71404</vendorCode>
 <name>Принтер Epson L1250 фабрика печати</name>
 <price>107900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a10/4836119mtcr18cmgpopdiw26fo71y1x6.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -2603,6 +2547,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC51CA63100</vendorCode>
 <name>Принтер ленточный Epson LW700</name>
 <price>77900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/632/90bfat3qgqy9r1plezn746kmlggyiheh.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -2835,6 +2780,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKV11HA84040</vendorCode>
 <name>Проектор для дома  Epson CO-FH01</name>
 <price>386900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/af1/97a1vgcpviwp02bosk7ef0jgjzxlqiiv.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -3040,6 +2986,48 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 </description>
 <param name="Гарантия">12 мес</param>
 <keywords>Epson, Проектор универсальный Epson EB-FH54 белый, Проектор, универсальный, EB-FH54, белый, Epson EB-FH54, proektor-universalnyy, proektor-universalnyy-epson, proektor, universalnyy, epson, epson-eb-fh54, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
+<offer id="AKV11H973040" available="true">
+<categoryId>565214</categoryId>
+<vendorCode>AKV11H973040</vendorCode>
+<name>Проектор универсальный Epson EB-W06</name>
+<price>392900</price>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description>
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Проектор универсальный Epson EB-W06</h3><p>Проектор Epson EB-W06 создавался с расчетом, чтобы установка и настройка были как можно более быстрыми. Набор функциональных возможностей проектора включает быструю коррекцию трапецеидальных искажений, долгий ресурс лампы и опциональную поддержку Wi-Fi, которая позволяет отображать контент с мобильных устройств с помощью приложения iProjection.</p>
+<h3>Характеристики</h3><ul><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Яркость (ANSI), лм:</strong> 3700</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Проекционный коэффициент (throw ratio):</strong> 1 - 1.2</li><li><strong>Производитель:</strong> Epson</li><li><strong>Видео вход VGA:</strong> 1</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Уровень шума (норм./эконом.), дБ:</strong> 28</li><li><strong>Разрешение:</strong> 1280х800</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Гарантия:</strong> 24</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>Страна происхождения:</strong> Китай, Филиппины</li><li><strong>Срок службы лампы (норм./ эконом.) ч.:</strong> 6000/12000</li></ul>
+<h3>Совместимые устройства</h3><ul><li>Крепление для проектора на потолок Mr. Pixel PRB-2</li><li>Экран моторизированный Mr.Pixel 120&quot; X 120&quot; (3,05 X 3,05)</li><li>Экран моторизированный Mr.Pixel 96&quot; X 96&quot; (2,44 X 2,44)</li><li>Экран моторизированный Mr.Pixel 90&quot; X 120&quot; (2,29 X 3,05)</li><li>Экран на треноге Mr.Pixel 80&quot; X 80&quot; (2,03 X 2,03)</li></ul>
+
+</description>
+<param name="Контрастность">16 000 : 1</param>
+<param name="Яркость (ANSI), лм">3700</param>
+<param name="Видео вход HDMI">Есть</param>
+<param name="Проекционный коэффициент (throw ratio)">1 - 1.2</param>
+<param name="Производитель">Epson</param>
+<param name="Видео вход VGA">1</param>
+<param name="Интерфейс HDBaseT/DIGITAL LINK">Нет</param>
+<param name="Видео вход DVI-D">Нет</param>
+<param name="USB">Тип A и B</param>
+<param name="Видео вход DisplayPort">Нет</param>
+<param name="Видео вход S-video">Нет</param>
+<param name="Уровень шума (норм./эконом.), дБ">28</param>
+<param name="Разрешение">1280х800</param>
+<param name="Тип источника света">Ламповый источник света</param>
+<param name="Гарантия">24</param>
+<param name="Технология">3LCD</param>
+<param name="Wi-Fi">Опция</param>
+<param name="Интерактивный">Нет</param>
+<param name="Ethernet (RJ-45)">Нет</param>
+<param name="Страна происхождения">Китай, Филиппины</param>
+<param name="Срок службы лампы (норм./ эконом.) ч.">6000/12000</param>
+<keywords>Epson, Проектор универсальный Epson EB-W06, Проектор, универсальный, EB-W06, Epson EB-W06, proektor-universalnyy, proektor-universalnyy-epson, proektor, universalnyy, epson, epson-eb-w06, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKV11H977040" available="true">
@@ -3521,6 +3509,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKC13T03V44A</vendorCode>
 <name>Чернила Epson C13T03V44A 101 EcoTank 70ml для L4150/L4160 жёлтый</name>
 <price>6900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/b6a/r1dta6v7ccxev403hxh7auxv6jck57z7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -3571,61 +3560,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, Чернила Epson C13T06C14A для L15150 чёрный, Чернила, C13T06C14A, для, L15150, чёрный, Epson L15150, chernila-epson, chernila-epson-c13t06c14a, chernila, epson, c13t06c14a, epson-l15150, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
-<offer id="AKC13T06C34A" available="true">
-<categoryId>000002677</categoryId>
-<vendorCode>AKC13T06C34A</vendorCode>
-<name>Чернила Epson C13T06C34A для L15150 пурпурный</name>
-<price>13900</price>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Чернила Epson C13T06C34A для L15150 пурпурный</h3><p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Объем:</strong> 0,001</li><li><strong>Производитель:</strong> Epson</li><li><strong>Цвет:</strong> пурпурный</li><li><strong>Гарантия:</strong> 3</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<h3>Совместимые устройства</h3><ul><li>МФУ Epson L15150 фабрика печати</li></ul>
-
-</description>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Объем">0,001</param>
-<param name="Производитель">Epson</param>
-<param name="Цвет">пурпурный</param>
-<param name="Гарантия">3</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Чернила Epson C13T06C34A для L15150 пурпурный, Чернила, C13T06C34A, для, L15150, пурпурный, Epson L15150, chernila-epson, chernila-epson-c13t06c34a, chernila, epson, c13t06c34a, epson-l15150, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
-<offer id="AKC13T06C44A" available="true">
-<categoryId>000002677</categoryId>
-<vendorCode>AKC13T06C44A</vendorCode>
-<name>Чернила Epson C13T06C44A  для L15150 жёлтый</name>
-<price>13900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/5ac/6n2qe98dchu0scr2sy19v18ldjcrz4mp.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Чернила Epson C13T06C44A  для L15150 жёлтый</h3><p>Контейнер с черными чернилами</p>
-<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Объем:</strong> 0,001</li><li><strong>Производитель:</strong> Epson</li><li><strong>Гарантия:</strong> 3</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Цвет:</strong> жёлтый</li></ul>
-<h3>Совместимые устройства</h3><ul><li>МФУ Epson L15150 фабрика печати</li></ul>
-
-</description>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Объем">0,001</param>
-<param name="Производитель">Epson</param>
-<param name="Гарантия">3</param>
-<param name="Тип печати">струйная</param>
-<param name="Цвет">жёлтый</param>
-<keywords>Epson, Чернила Epson C13T06C44A  для L15150 жёлтый, Чернила, C13T06C44A, для, L15150, жёлтый, Epson L15150, chernila-epson, chernila-epson-c13t06c44a, chernila, epson, c13t06c44a, epson-l15150, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
 <offer id="AKC13T07D24A" available="true">
 <categoryId>000002677</categoryId>
 <vendorCode>AKC13T07D24A</vendorCode>
@@ -3652,32 +3586,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Гарантия">3</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T07D24A для L8160/L8180 голубые, Чернила, C13T07D24A, для, L8160, L8180, голубые, Epson L8180, chernila-epson, chernila-epson-c13t07d24a, chernila, epson, c13t07d24a, epson-l8180, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
-<offer id="AKC13T09C64A" available="true">
-<categoryId>000002677</categoryId>
-<vendorCode>AKC13T09C64A</vendorCode>
-<name>Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный</name>
-<price>10900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a93/mzpzbizytnn2r0vgj1f7iksyrrre3zcc.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный</h3><p>Совместимые продукты: Epson L8050 Epson L18050</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Гарантия:</strong> 3</li><li><strong>Тип печати:</strong> струйная</li></ul>
-
-</description>
-<param name="Производитель">Epson</param>
-<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
-<param name="Цвет">Голубой</param>
-<param name="Гарантия">3</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный, Чернила, C13T09C64A, 108, EcoTank, для, L8050, 18050, светло-пурпурный, Epson 18050, chernila-epson, chernila-epson-c13t09c64a, chernila, epson, c13t09c64a, epson-18050, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKC13T66414A" available="true">
@@ -4232,6 +4140,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AK4170501</vendorCode>
 <name>Шредер Fellowes® Powershred®LX25 SHREDDER (CROSS CUT) 230V EU</name>
 <price>39900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/0e5/9iba0n6whth8839q5dzrqecbp6ymrf69.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -4289,32 +4198,12 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Fellowes, Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.,, Шредер, Fellowes®, Powershred®P-30C, DIN, P-4, 4х34, лст., лтр., 15, Fellowes 15, shreder-fellowes, shreder-fellowes-powershred-p-30c, shreder, fellowes, powershred-p-30c, fellowes-15, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
-<offer id="AKC13T66464A" available="true">
-<categoryId>000002677</categoryId>
-<vendorCode>AKC13T66464A</vendorCode>
-<name>Экономичный набор из четырех контейнеров с чернилами, серия 664</name>
-<price>20900</price>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Экономичный набор из четырех контейнеров с чернилами, серия 664</h3><p>Чернила Epson серии 664 Сведите затраты на печать к минимуму с чернилами EcoTank. Ресурса комплекта чернил хватит на печать 4 500 черно-белых и 7 500 цветных страниц – отличное решение для тех, кто привык много печатать. Четырехцветные водорастворимые чернила обеспечивают качественный результат и рекордно низкую себестоимость печати. Для повседневной печати Линейка чернил четырех цветов прекрасно подходит для повседневной печати документов. Радикальное снижение затрат на чернила Ищете самое выгодное решение для печати? Уже со стартовым набором чернил в комплекте с устройством Epson вы сократите средние расходы на чернила до 90 %. Доступная цена и высокий ресурс чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3</li></ul>
-
-</description>
-<param name="Гарантия">3</param>
-<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 664, Экономичный, набор, четырех, контейнеров, чернилами, серия, 664, Epson 664, ekonomichnyy-nabor, ekonomichnyy-nabor-chetyreh, ekonomichnyy, nabor, chetyreh, epson-664, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
 <offer id="AKMSPSAB112V2" available="true">
 <categoryId>565239</categoryId>
 <vendorCode>AKMSPSAB112V2</vendorCode>
 <name>Экран моторизированный Mr.Pixel 80" X 80" (2,03 X 2,03)</name>
 <price>56900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/825/ep82w9j8e3mc96iy6agwe0cchxkv3lv9.jpg</picture>
 <vendor>Mr.Pixel</vendor>
 <currencyId>KZT</currencyId>
 <description>
