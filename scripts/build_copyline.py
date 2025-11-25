@@ -423,8 +423,7 @@ def render_feed_meta_for_copyline(pairs: Dict[str, str]) -> str:
     for (k, v) in rows:
         lines.append(f"{k.ljust(key_w)} | {v}")
     lines.append("-->")
-    return "
-".join(lines)
+    return "\n".join(lines)
 
 # -------------------- Чистка описаний --------------------
 
