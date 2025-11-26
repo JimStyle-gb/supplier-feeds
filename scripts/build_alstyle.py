@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Сборка итогового файла docs/alstyle.yml из XML поставщика AlStyle.
-
-Кодировка вывода windows-1251; описания и характеристики уже нормализованы под маркетплейсы.
-"""
 
 from __future__ import annotations
 
@@ -31,7 +27,6 @@ VENDOR_PREFIX = "AS"
 DEFAULT_CURRENCY = "KZT"
 TIMEZONE_OFFSET_HOURS = 5  # Алматы
 
-# Параметры, которые не нужны покупателю / SEO
 PARAM_BLACKLIST = {
     "артикул",
     "штрихкод",
@@ -50,7 +45,6 @@ PARAM_BLACKLIST = {
     "новинка",
 }
 
-# Приоритет важнейших параметров в блоке характеристик
 PARAM_PRIORITY = [
     "Бренд",
     "Производитель",
@@ -75,7 +69,6 @@ PARAM_PRIORITY = [
     "Размеры",
 ]
 
-# Подсказки для вычленения характеристик из текста описания
 DESC_PARAM_HINTS = [
     "Производитель",
     "Устройство",
@@ -117,9 +110,8 @@ _CITY_KEYWORDS = [
     "Кокшетау",
 ]
 
-
+# Делает: Грубая транслитерация RU->латиница + слаг для keywords (как в Akcent).
 def _translit_to_slug(text: str) -> str:
-    """Грубая транслитерация RU->латиница + слаг для keywords (как в Akcent)."""
     mapping = {
         "а": "a",
         "б": "b",
@@ -172,12 +164,12 @@ def _translit_to_slug(text: str) -> str:
     slug = "".join(res).strip("-")
     return slug
 
-
+# Делает: Собрать строку keywords из вендора, названия и городов РК (как в Akcent).
 def _make_keywords(name: str, vendor: str) -> str:
-    """Собрать строку keywords из вендора, названия и городов РК (как в Akcent)."""
     parts: List[str] = []
     seen: Set[str] = set()
 
+    # Делает: выполняет add.
     def add(token: str) -> None:
         token = (token or "").strip()
         if not token:
@@ -244,8 +236,6 @@ def _make_keywords(name: str, vendor: str) -> str:
 
     return result
 
-
-
 ALLOWED_CATEGORY_IDS: Set[str] = {
     "3540",
     "3541",
@@ -308,28 +298,26 @@ ALLOWED_CATEGORY_IDS: Set[str] = {
 
 WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
-
+# Делает: Текущее время в Алматы (UTC+5).
 def _now_almaty() -> dt.datetime:
-    """Текущее время в Алматы (UTC+5)."""
     return dt.datetime.utcnow() + dt.timedelta(hours=TIMEZONE_OFFSET_HOURS)
 
-
+# Делает: читает данные из файла.
 def _read_text(path: Path, encoding: str) -> str:
     return path.read_text(encoding=encoding, errors="replace")
 
-
+# Делает: Делает строку безопасной для записи в encoding (xmlcharrefreplace).
 def _make_encoding_safe(text: str, encoding: str) -> str:
-    """Делает строку безопасной для записи в encoding (xmlcharrefreplace)."""
     return text.encode(encoding, errors="xmlcharrefreplace").decode(encoding)
 
-
+# Делает: записывает результат в файл.
 def _write_text(path: Path, data: str, encoding: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     safe = _make_encoding_safe(data, encoding)
     with path.open("w", encoding=encoding, newline="\n") as f:
         f.write(safe)
 
-
+# Делает: скачивает исходный файл поставщика.
 def _download_xml(url: str) -> str:
     if requests is None:
         raise RuntimeError("Модуль requests недоступен, не могу скачать XML поставщика")
@@ -337,11 +325,11 @@ def _download_xml(url: str) -> str:
     resp.raise_for_status()
     return resp.text
 
-
+# Делает: выполняет doctype.
 def _strip_doctype(xml_text: str) -> str:
     return re.sub(r"<!DOCTYPE[^>]*>", "", xml_text, flags=re.IGNORECASE | re.DOTALL)
 
-
+# Делает: парсит исходный XML и извлекает данные.
 def _parse_float(value: str) -> float:
     value = (value or "").strip().replace(" ", "").replace(",", ".")
     if not value:
@@ -351,17 +339,11 @@ def _parse_float(value: str) -> float:
     except ValueError:
         return 0.0
 
-
+# Делает: Наценка 4% + фиксированный диапазон и хвост 900 (общая для всех поставщиков).
 def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
-    """Наценка 4% + фиксированный диапазон и хвост 900 (общая для всех поставщиков).
-
-    Логика полностью совпадает с _apply_price_rules из Akcent, но базовая
-    цена берётся из purchase_raw, а при его отсутствии — из supplier_raw.
-    """
     purchase = _parse_float(purchase_raw)
     supplier_price = _parse_float(supplier_raw)
 
-    # Выбираем базовую цену
     base = 0.0
     if purchase > 0:
         base = purchase
@@ -398,25 +380,22 @@ def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
             bonus = add
             break
 
-    # 4% + фиксированный бонус (если диапазон найден)
     if bonus == 0:
         value = base_int * 1.04
     else:
         value = base_int * 1.04 + bonus
 
-    # Хвост 900 + округление вверх
     thousands = int(value) // 1000
     price = thousands * 1000 + 900
     if price < value:
         price += 1000
 
-    # Если стало слишком дорого — ставим 100
     if price >= 9_000_000:
         return 100
 
     return int(price)
 
-
+# Делает: парсит исходный XML и извлекает данные.
 def _parse_available(value: str) -> bool:
     v = (value or "").strip().lower()
     if v in {"1", "true", "yes", "да"}:
@@ -425,7 +404,7 @@ def _parse_available(value: str) -> bool:
         return False
     return False
 
-
+# Делает: выполняет escape text.
 def _xml_escape_text(s: str) -> str:
     if not s:
         return ""
@@ -435,7 +414,7 @@ def _xml_escape_text(s: str) -> str:
          .replace(">", "&gt;")
     )
 
-
+# Делает: выполняет escape attr.
 def _xml_escape_attr(s: str) -> str:
     if not s:
         return ""
@@ -446,10 +425,9 @@ def _xml_escape_attr(s: str) -> str:
          .replace(">", "&gt;")
     )
 
-
 _re_ws = re.compile(r"\s+", re.U)
 
-
+# Делает: чистит и нормализует описание товара.
 def _normalize_description_text(text: str) -> str:
     if not text:
         return ""
@@ -465,9 +443,8 @@ def _normalize_description_text(text: str) -> str:
     joined = _re_ws.sub(" ", joined)
     return joined.strip()
 
-
+# Делает: Преобразует HTML описания в обычный текст: убирает теги, декодирует сущности.
 def _plain_from_html(html_text: str) -> str:
-    """Преобразует HTML описания в обычный текст: убирает теги, декодирует сущности."""
     if not html_text:
         return ""
     txt = html_module.unescape(html_text)
@@ -477,14 +454,12 @@ def _plain_from_html(html_text: str) -> str:
     txt = _re_ws.sub(" ", txt)
     return txt.strip()
 
-
 GOAL = 1000
 GOAL_LOW = 900
 MAX_HARD = 1200
 
-
+# Делает: Умная обрезка plain-текста до ~1000 символов по предложениям.
 def _build_desc_text(plain: str) -> str:
-    """Умная обрезка plain-текста до ~1000 символов по предложениям."""
     if len(plain) <= GOAL:
         return plain
 
@@ -520,24 +495,23 @@ def _build_desc_text(plain: str) -> str:
 
     return " ".join(selected).strip()
 
-
+# Делает: Формирует <p>...</p> для описания без <br /> внутри (как в Akcent).
 def _make_br_paragraph(text: str) -> str:
-    """Формирует <p>...</p> для описания без <br /> внутри (как в Akcent)."""
     if not text:
         return "<p></p>"
     trimmed = _build_desc_text(text)
     return "<p>" + _xml_escape_text(trimmed) + "</p>"
 
-
+# Делает: Нормализует значение параметра: убирает лишние пробелы/переносы строк.
 def _normalize_param_value(value: str) -> str:
-    """Нормализует значение параметра: убирает лишние пробелы/переносы строк."""
     if not value:
         return ""
     value = re.sub(r"\s+", " ", value)
     return value.strip()
 
-
+# Делает: сортирует params.
 def _sort_params(params: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    # Делает: выполняет pkey.
     def _pkey(item: Dict[str, str]) -> tuple:
         name = item["name"]
         try:
@@ -548,7 +522,7 @@ def _sort_params(params: List[Dict[str, str]]) -> List[Dict[str, str]]:
 
     return sorted(params, key=_pkey)
 
-
+# Делает: выполняет params from XML.
 def _collect_params_from_xml(src_offer: ET.Element) -> List[Dict[str, str]]:
     items: List[Dict[str, str]] = []
 
@@ -566,16 +540,14 @@ def _collect_params_from_xml(src_offer: ET.Element) -> List[Dict[str, str]]:
         norm_val = _normalize_param_value(value)
         if not norm_val:
             continue
-        # для параметров "Ресурс"/"Ресурс картриджа" оставляем только значения с цифрами
         if key_lower in {"ресурс", "ресурс картриджа"} and not any(ch.isdigit() for ch in norm_val):
             continue
         items.append({"name": key_clean, "value": norm_val})
 
     return items
 
-
+# Делает: Вытаскивает пары ключ-значение из родного описания по словам-подсказкам.
 def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) -> List[Dict[str, str]]:
-    """Вытаскивает пары ключ-значение из родного описания по словам-подсказкам."""
     plain = _plain_from_html(desc_html)
     if not plain:
         return []
@@ -636,7 +608,6 @@ def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) ->
 
         raw_value = " ".join(val_tokens).strip(" .,:;")
         norm_value = _normalize_param_value(raw_value)
-        # для "Ресурс"/"Ресурс картриджа" сохраняем только, если в значении есть цифры
         if key_lower in {"ресурс", "ресурс картриджа"} and (not norm_value or not any(ch.isdigit() for ch in norm_value)):
             i = k
             continue
@@ -648,7 +619,7 @@ def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) ->
 
     return extra
 
-
+# Делает: собирает HTML-описание товара.
 def _build_description_html(name: str, original_desc: str, params_block: List[Dict[str, str]]) -> str:
     parts: List[str] = []
     parts.append("<description><![CDATA[")
@@ -683,7 +654,7 @@ def _build_description_html(name: str, original_desc: str, params_block: List[Di
     parts.append("]]></description>")
     return "\n".join(parts)
 
-
+# Делает: формирует блок FEED_META.
 def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build: dt.datetime) -> str:
     lines = [
         "<!--FEED_META",
@@ -699,10 +670,11 @@ def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build:
     ]
     return "\n".join(lines)
 
-
+# Делает: выполняет offer.
 def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str]:
     stats["total_before"] += 1
 
+    # Делает: выполняет g.
     def g(tag: str) -> str:
         return (src_offer.findtext(tag) or "").strip()
 
@@ -778,7 +750,7 @@ def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str
 
     return "\n".join(lines)
 
-
+# Делает: собирает alstyle.
 def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT_OUTPUT) -> None:
     if source_xml is None:
         xml_text = _download_xml(SUPPLIER_URL)
@@ -843,7 +815,7 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
     final_text = "\n".join(lines)
     _write_text(output_path, final_text, ENCODING_OUT)
 
-
+# Делает: точка входа скрипта.
 def main(argv: Optional[List[str]] = None) -> None:
     if argv is None:
         argv = sys.argv[1:]
@@ -857,7 +829,6 @@ def main(argv: Optional[List[str]] = None) -> None:
         output_path = Path(argv[1])
 
     build_alstyle(source_xml=source_xml, output_path=output_path)
-
 
 if __name__ == "__main__":
     main()
