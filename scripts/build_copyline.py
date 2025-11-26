@@ -657,7 +657,7 @@ def _render_description_html(name: str, desc_plain: str) -> str:
 
 def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     lines: List[str] = []
-    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+    ts = datetime.now(timezone(timedelta(hours=5))).strftime("%Y-%m-%d %H:%M")
     lines.append(f'<?xml version="1.0" encoding="{XML_ENCODING}"?>')
     lines.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
     lines.append(f'<yml_catalog date="{ts}">')
@@ -673,6 +673,7 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
         first = False
         offer_id = it["vendorCode"]
         lines.append(f'<offer id="{yml_escape(offer_id)}" available="true">')
+        lines.append("<categoryId></categoryId>")
         lines.append(f'<vendorCode>{yml_escape(it["vendorCode"])}</vendorCode>')
         lines.append(f'<name>{yml_escape(it["title"])}</name>')
         lines.append(f'<price>{int(it["price"])}</price>')
