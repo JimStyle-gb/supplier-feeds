@@ -633,8 +633,8 @@ def _build_yml(offers: list[OfferData], total_raw: int) -> str:
     today_str = now.strftime("%Y-%m-%d %H:%M")
     meta_now = now.strftime("%Y-%m-%d %H:%M:%S")
 
-    # Следующая сборка в 01:00 завтрашнего дня
-    next_run = (now + timedelta(days=1)).replace(hour=1, minute=0, second=0, microsecond=0)
+    # Следующая сборка в 02:00 завтрашнего дня
+    next_run = (now + timedelta(days=1)).replace(hour=2, minute=0, second=0, microsecond=0)
     meta_next = next_run.strftime("%Y-%m-%d %H:%M:%S")
 
     total_filtered = len(offers)
@@ -674,9 +674,9 @@ def _build_yml(offers: list[OfferData], total_raw: int) -> str:
         if off.vendor:
             lines.append(f"<vendor>{html.escape(off.vendor)}</vendor>")
         lines.append("<currencyId>KZT</currencyId>")
-        lines.append("<description>")
+        lines.append("<description><![CDATA[")
         lines.append(off.description_html)
-        lines.append("</description>")
+        lines.append("]]></description>")
         for pname, pvalue in off.params:
             lines.append(f'<param name="{html.escape(pname)}">{html.escape(pvalue)}</param>')
         # keywords в самом конце оффера
