@@ -3,72 +3,140 @@ name: Build_CopyLine
 on:
   workflow_dispatch:
   push:
+    branches: [ "main", "master" ]
     paths:
       - ".github/workflows/build_copyline.yml"
       - "scripts/build_copyline.py"
       - "docs/copyline_keywords.txt"
-      - "docs/copyline.yml"
+      - "requirements.txt"
+      - "pyproject.toml"
+      - "poetry.lock"
   schedule:
     # 03:00 Asia/Almaty (UTC+5) = 22:00 UTC предыдущего дня
+    # Запускаем каждый день, но сборку делаем только 1/10/20 числа (гейт ниже).
     - cron: "0 22 * * *"
 
 permissions:
   contents: write
 
+concurrency:
+  group: build_${{ github.workflow }}_${{ github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Almaty
+      # gate config (Almaty time)
+      SCHEDULE_DOM: "1,10,20"
+      SCHEDULE_HOUR_ALMATY: "3"
+
+      # deps fallback
+      PIP_PACKAGES: "requests beautifulsoup4 openpyxl"
+
+      # script env
+      XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
+      KEYWORDS_FILE: "docs/copyline_keywords.txt"
+      OUT_FILE: "docs/copyline.yml"
+      OUTPUT_ENCODING: "windows-1251"
+      HTTP_TIMEOUT: "25"
+      REQUEST_DELAY_MS: "120"
+      MIN_BYTES: "900"
+      MAX_CRAWL_MINUTES: "60"
+      MAX_CATEGORY_PAGES: "1200"
+      MAX_WORKERS: "6"
+      VENDORCODE_PREFIX: "CL"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Gate schedule (only 1/10/20 @ 03:00 Almaty)
+      - name: Check Almaty schedule gate
         id: gate
-        shell: bash
         run: |
-          set -e
-          # На push / manual запускаем всегда
-          if [[ "${GITHUB_EVENT_NAME}" != "schedule" ]]; then
-            echo "run=yes" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          python - <<'PY'
+          from datetime import datetime, timedelta
+          import os
 
-          d=$(TZ=Asia/Almaty date +%d)
-          if [[ "$d" == "01" || "$d" == "10" || "$d" == "20" ]]; then
-            echo "run=yes" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=no" >> "$GITHUB_OUTPUT"
-          fi
+          dom = os.getenv("SCHEDULE_DOM", "*").strip()
+          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "0"))
+
+          now_utc = datetime.utcnow()
+          now_alm = now_utc + timedelta(hours=5)
+
+          if dom == "*":
+            day_ok = True
+          else:
+            allowed = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
+            day_ok = now_alm.day in allowed
+
+          hour_ok = (now_alm.hour == hour)
+          should = "yes" if (day_ok and hour_ok) else "no"
+
+          print(f"::notice::Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"run={should}\n")
+          PY
 
       - name: Setup Python
-        if: ${{ steps.gate.outputs.run == 'yes' }}
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install deps
-        if: ${{ steps.gate.outputs.run == 'yes' }}
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         run: |
+          set -e
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml openpyxl
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          pip install $PIP_PACKAGES
 
-      - name: Build feed
-        if: ${{ steps.gate.outputs.run == 'yes' }}
+      # docs/copyline.yml — генерируемый файл.
+      # Чтобы не получать merge/rebase conflict, всегда коммитим поверх актуального origin/<branch>.
+      - name: Build + commit + push docs/copyline.yml (no conflicts)
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         run: |
-          set -e
-          python scripts/build_copyline.py
+          set -euo pipefail
 
-      - name: Commit & push
-        if: ${{ steps.gate.outputs.run == 'yes' }}
-        run: |
-          set -e
+          BRANCH="${GITHUB_REF_NAME}"
+
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/copyline.yml || true
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
-          git pull --rebase || true
-          git push
+
+          for attempt in 1 2 3; do
+            echo "Attempt $attempt: sync -> build -> commit -> push"
+
+            git fetch origin "$BRANCH"
+
+            # гарантированно на ветке (иначе бывает detached HEAD после ошибок)
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+
+            # сборка (каждый раз после синка, чтобы файл был рассчитан от актуального HEAD)
+            python scripts/build_copyline.py
+
+            git add docs/copyline.yml || true
+
+            if git diff --cached --quiet; then
+              echo "No changes to commit."
+              exit 0
+            fi
+
+            git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
+
+            if git push origin "HEAD:$BRANCH"; then
+              echo "Pushed successfully."
+              exit 0
+            fi
+
+            echo "Push failed (non-fast-forward). Will retry..."
+            sleep 2
+          done
+
+          echo "Failed to push after 3 attempts."
+          exit 1
