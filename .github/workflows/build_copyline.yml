@@ -35,7 +35,7 @@ jobs:
       # deps fallback
       PIP_PACKAGES: "requests beautifulsoup4 openpyxl"
 
-      # script env (как у тебя было)
+      # script env
       XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
       KEYWORDS_FILE: "docs/copyline_keywords.txt"
       OUT_FILE: "docs/copyline.yml"
@@ -104,7 +104,8 @@ jobs:
           python scripts/build_copyline.py
 
       - name: Commit & push docs/copyline.yml
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+        # Не коммитим в pull_request; коммитим только в main/master
+        if: ${{ (github.event_name != 'pull_request') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && (github.event_name != 'schedule' || steps.gate.outputs.run == 'yes') }}
         run: |
           set -e
           git config user.name  "github-actions[bot]"
@@ -119,3 +120,4 @@ jobs:
           git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
           git pull --rebase --autostash || true
           git push
+
