@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-26 02:10">
+<yml_catalog date="2025-11-26 13:04">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-11-26 02:10:50
+Время сборки (Алматы)                      | 2025-11-26 13:04:09
 Ближайшая сборка (Алматы)                  | 2025-11-27 01:00:00
-Сколько товаров у поставщика до фильтра    | 1797
-Сколько товаров у поставщика после фильтра | 157
-Сколько товаров есть в наличии (true)      | 157
+Сколько товаров у поставщика до фильтра    | 1769
+Сколько товаров у поставщика после фильтра | 161
+Сколько товаров есть в наличии (true)      | 161
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -652,6 +652,58 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Тип печати">струйная</param>
 <param name="Ресурс">700 мл</param>
 <keywords>Epson, Картридж Epson C13T41E540 UltraChrome 700ml черный, Картридж, C13T41E540, UltraChrome, 700ml, черный, Epson 700ml, kartridzh-epson, kartridzh-epson-c13t41e540, kartridzh, epson, c13t41e540, epson-700ml, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
+<offer id="AKC13T41F34N" available="true">
+<categoryId>000002673</categoryId>
+<vendorCode>AKC13T41F34N</vendorCode>
+<name>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</name>
+<price>125900</price>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description>
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</h3><p>Объем, мл: 350 мл Количество в упаковке, шт.: 1 шт. Совместимые модели техники: SureColor SC-T3400/SC-T3400N/SC-T3405/SC-T3405N/SC-T5400/SC-T5400M/SC-T5405</p>
+<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Гарантия:</strong> нет</li><li><strong>Производитель:</strong> Epson</li><li><strong>Цвет:</strong> пурпурный</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Ресурс:</strong> 350 мл</li></ul>
+
+</description>
+<param name="Страна происхождения">Индонезия</param>
+<param name="Гарантия">нет</param>
+<param name="Производитель">Epson</param>
+<param name="Цвет">пурпурный</param>
+<param name="Тип печати">струйная</param>
+<param name="Ресурс">350 мл</param>
+<keywords>Epson, Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный, Картридж, C13T41F34N, UltraChrome, XD2, T41F340, 350, пурпурный, Epson 350, kartridzh-epson, kartridzh-epson-c13t41f34n, kartridzh, epson, c13t41f34n, epson-350, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
+<offer id="AKC13T41F440" available="true">
+<categoryId>000002673</categoryId>
+<vendorCode>AKC13T41F440</vendorCode>
+<name>Картридж Epson C13T41F440  UltraChrome XD2 T41F440 Y 350ml жёлтый</name>
+<price>113900</price>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description>
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Картридж Epson C13T41F440  UltraChrome XD2 T41F440 Y 350ml жёлтый</h3><p>Фото черный картридж 110ml, для: Epson SureColor T-3000 Epson SureColor T-5000 Epson SureColor T-7000</p>
+<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Гарантия:</strong> нет</li><li><strong>Производитель:</strong> Epson</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Ресурс:</strong> 350 мл</li><li><strong>Цвет:</strong> Желтый</li></ul>
+
+</description>
+<param name="Страна происхождения">Индонезия</param>
+<param name="Гарантия">нет</param>
+<param name="Производитель">Epson</param>
+<param name="Тип печати">струйная</param>
+<param name="Ресурс">350 мл</param>
+<param name="Цвет">Желтый</param>
+<keywords>Epson, Картридж Epson C13T41F440  UltraChrome XD2 T41F440 Y 350ml жёлтый, Картридж, C13T41F440, UltraChrome, XD2, T41F440, 350ml, жёлтый, Epson 350ml, kartridzh-epson, kartridzh-epson-c13t41f440, kartridzh, epson, c13t41f440, epson-350ml, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKC13T49H20N" available="true">
@@ -2060,6 +2112,27 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, МФУ Epson L3266 фабрика печати, Wi-Fi, МФУ, L3266, фабрика, печати, Wi-Fi, Epson L3266, mfu-epson, mfu-epson-l3266, mfu, epson, l3266, epson-l3266, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
+<offer id="AKC11CK58404" available="true">
+<categoryId>000002652</categoryId>
+<vendorCode>AKC11CK58404</vendorCode>
+<name>МФУ Epson L3560 фабрика печати, Wi-Fi</name>
+<price>161900</price>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description>
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>МФУ Epson L3560 фабрика печати, Wi-Fi</h3><p>МФУ с чернильными емкостями для печати дома Высокоскоростной цветной принтер 3-в-1 формата A4 с поддержкой Wi-Fi Direct и ЖК-экраном Печать, сканирование, копирование Поддержка Wi-Fi Direct ЖК-экран Благодаря отсутствию картриджей МФУ (принтер-копир-скан) с поддержкой Wi-Fi Direct и ЖК-экраном подойдет тем, кому необходимо высокое качество при низкой себестоимости печати. Решайте разнообразные задачи благодаря заднему лотку на 100 листов, функции печати фотографий без полей (размером до 1015 см), а также скорости печати до 15 страниц в минуту. При необходимости емкость для отработанных чернил легко заменить самостоятельно без обращения в сервисный центр. Забудьте о дорогих картриджах Устройства серии EcoTank с чернильными емкостями большого объема — это удобное решение для печати дома. Модели оснащены усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li></ul>
+
+</description>
+<param name="Гарантия">12 мес</param>
+<keywords>Epson, МФУ Epson L3560 фабрика печати, Wi-Fi, МФУ, L3560, фабрика, печати, Wi-Fi, Epson L3560, mfu-epson, mfu-epson-l3560, mfu, epson, l3560, epson-l3560, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
 <offer id="AKC11CJ63412" available="true">
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ63412</vendorCode>
@@ -2349,6 +2422,40 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 </description>
 <param name="Гарантия">0</param>
 <keywords>Fellowes, Пленка для ламинирования  А4 Fellowes, 80мкм, 100 шт., Пленка, для, ламинирования, 80мкм, 100, шт., Fellowes 100, plenka-dlya, plenka-dlya-laminirovaniya, plenka, dlya, laminirovaniya, fellowes-100, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
+<offer id="AKC11CJ36301A0" available="true">
+<categoryId>000002654</categoryId>
+<vendorCode>AKC11CJ36301A0</vendorCode>
+<name>Плоттер Epson SureColor SC-T3100M-MFP</name>
+<price>1305900</price>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description>
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Плоттер Epson SureColor SC-T3100M-MFP</h3><p>Универсальное инженерное МФУ Универсальный инженерный принтер с шириной печати 24 дюйма Решение 3-в-1 (печать, копирование и сканирование) Лаконичный эргономичный дизайн Сдержанный дизайн для любого интерьера Контроль и производительность Epson Cloud Solution PORT Возможности подключения Встроенный Wi-Fi, AirPrint, USB/LAN Безопасность Сканирование зашифрованных файлов в защищенное назначение</p>
+<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Производитель:</strong> Epson</li><li><strong>Тип чернил:</strong> пигментные (K), водорастворимые (CMY)</li><li><strong>Разрешение печати, dpi:</strong> 2400x1200</li><li><strong>Интерфейс:</strong> USB 3.0* Gigabit ethernet interface* Wireless LAN IEEE 802.11b/g/n* Wi-Fi Direct</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> A1+</li><li><strong>Цветность:</strong> 4 цвета</li><li><strong>Ширина печати, мм:</strong> 610</li><li><strong>Ширина печати, дюймы:</strong> 24</li><li><strong>Количество слотов для картриджей:</strong> 4</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Область применения:</strong> CAD</li></ul>
+
+</description>
+<param name="Страна происхождения">Индонезия</param>
+<param name="Производитель">Epson</param>
+<param name="Тип чернил">пигментные (K), водорастворимые (CMY)</param>
+<param name="Разрешение печати, dpi">2400x1200</param>
+<param name="Интерфейс">USB 3.0* Gigabit ethernet interface* Wireless LAN IEEE 802.11b/g/n* Wi-Fi Direct</param>
+<param name="Гарантия">12 мес</param>
+<param name="Тип печати">струйная</param>
+<param name="Формат">A1+</param>
+<param name="Цветность">4 цвета</param>
+<param name="Ширина печати, мм">610</param>
+<param name="Ширина печати, дюймы">24</param>
+<param name="Количество слотов для картриджей">4</param>
+<param name="Тип расходных материалов">чернила</param>
+<param name="Область применения">CAD</param>
+<keywords>Epson, Плоттер Epson SureColor SC-T3100M-MFP, Плоттер, SureColor, SC-T3100M-MFP, Epson SC-T3100M-MFP, plotter-epson, plotter-epson-surecolor, plotter, epson, surecolor, epson-sc-t3100m-mfp, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKC11CK39403" available="true">
@@ -2993,6 +3100,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <vendorCode>AKV11H973040</vendorCode>
 <name>Проектор универсальный Epson EB-W06</name>
 <price>392900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/312/n1t34vas6qnssi61q4evp3zszgzeqawj.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description>
@@ -3791,35 +3899,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, Чернила, C13T67364A, L800, 1800, 810, 850, светло-пурпурный, Epson 850, chernila-epson, chernila-epson-c13t67364a, chernila, epson, c13t67364a, epson-850, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
-<offer id="AKC13T77414A" available="true">
-<categoryId>000002677</categoryId>
-<vendorCode>AKC13T77414A</vendorCode>
-<name>Чернила Epson C13T77414A M100/M105/M200 черный</name>
-<price>13900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/d0b/94n3m1goh5d906q26cpjzfc0hmozhh76.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description>
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Чернила Epson C13T77414A M100/M105/M200 черный</h3><p>Контейнер T7741 серии с черными пигментными чернилами для: M100 M105 M200</p>
-<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Объем:</strong> 0,001</li><li><strong>Производитель:</strong> Epson</li><li><strong>Цвет:</strong> Черный</li><li><strong>Гарантия:</strong> 3</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Ресурс:</strong> 6000 страниц формата A4*</li></ul>
-<h3>Совместимые устройства</h3><ul><li>Принтер Epson L805 фабрика печати, Wi-Fi</li><li>МФУ Epson L850 фабрика печати</li><li>Принтер Epson L810 фабрика печати</li><li>Принтер Epson L1800 фабрика печати</li><li>Принтер Epson L805 фабрика печати, Wi-Fi</li><li>Принтер Epson L810 фабрика печати</li><li>МФУ Epson L850 фабрика печати</li><li>Принтер Epson L800 фабрика печати</li></ul>
-
-</description>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Объем">0,001</param>
-<param name="Производитель">Epson</param>
-<param name="Цвет">Черный</param>
-<param name="Гарантия">3</param>
-<param name="Тип печати">струйная</param>
-<param name="Ресурс">6000 страниц формата A4*</param>
-<keywords>Epson, Чернила Epson C13T77414A M100/M105/M200 черный, Чернила, C13T77414A, M100, M105, M200, черный, Epson M200, chernila-epson, chernila-epson-c13t77414a, chernila, epson, c13t77414a, epson-m200, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
 <offer id="AK5050101" available="true">
 <categoryId>000005456</categoryId>
 <vendorCode>AK5050101</vendorCode>
@@ -4196,6 +4275,27 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Гарантия">12 месяцев</param>
 <param name="Производитель">Fellowes</param>
 <keywords>Fellowes, Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.,, Шредер, Fellowes®, Powershred®P-30C, DIN, P-4, 4х34, лст., лтр., 15, Fellowes 15, shreder-fellowes, shreder-fellowes-powershred-p-30c, shreder, fellowes, powershred-p-30c, fellowes-15, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
+<offer id="AKC13T66464A" available="true">
+<categoryId>000002677</categoryId>
+<vendorCode>AKC13T66464A</vendorCode>
+<name>Экономичный набор из четырех контейнеров с чернилами, серия 664</name>
+<price>20900</price>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description>
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Экономичный набор из четырех контейнеров с чернилами, серия 664</h3><p>Чернила Epson серии 664 Сведите затраты на печать к минимуму с чернилами EcoTank. Ресурса комплекта чернил хватит на печать 4 500 черно-белых и 7 500 цветных страниц – отличное решение для тех, кто привык много печатать. Четырехцветные водорастворимые чернила обеспечивают качественный результат и рекордно низкую себестоимость печати. Для повседневной печати Линейка чернил четырех цветов прекрасно подходит для повседневной печати документов. Радикальное снижение затрат на чернила Ищете самое выгодное решение для печати? Уже со стартовым набором чернил в комплекте с устройством Epson вы сократите средние расходы на чернила до 90 %. Доступная цена и высокий ресурс чернил позволят напечатать до 4 500 черно-белых страниц и до 7 500 цветных. Оригинальные расходные материалы Наслаждайтесь качественной печатью с оригинальными чернилами Epson. Мы используем высокие технологии в производстве и тестируем нашу продукцию, чтобы обеспечить идеальное качество.</p>
+<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 3</li></ul>
+
+</description>
+<param name="Гарантия">3</param>
+<keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 664, Экономичный, набор, четырех, контейнеров, чернилами, серия, 664, Epson 664, ekonomichnyy-nabor, ekonomichnyy-nabor-chetyreh, ekonomichnyy, nabor, chetyreh, epson-664, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKMSPSAB112V2" available="true">
