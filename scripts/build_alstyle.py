@@ -651,7 +651,7 @@ def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) ->
 
 def _build_description_html(name: str, original_desc: str, params_block: List[Dict[str, str]]) -> str:
     parts: List[str] = []
-    parts.append("<description>")
+    parts.append("<description><![CDATA[")
     parts.append("")
     parts.append("<!-- WhatsApp -->")
     parts.append(WHATSAPP_BLOCK)
@@ -680,7 +680,7 @@ def _build_description_html(name: str, original_desc: str, params_block: List[Di
 
     parts.append(tail)
     parts.append("")
-    parts.append("</description>")
+    parts.append("]]></description>")
     return "\n".join(parts)
 
 
@@ -822,7 +822,7 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
     feed_meta = _build_feed_meta(build_time, stats, next_build)
 
     lines: List[str] = []
-    lines.append('<?xml version="1.0" encoding="' + ENCODING_OUT + '">')
+    lines.append('<?xml version="1.0" encoding="' + ENCODING_OUT + '"?>')
     lines.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
     lines.append('<yml_catalog date="' + build_time.strftime("%Y-%m-%d %H:%M") + '">')
     lines.append("<shop><offers>")
