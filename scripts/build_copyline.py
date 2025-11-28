@@ -660,9 +660,6 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
             lines.append(f'<picture>{yml_escape(it["picture"])}</picture>')
         if it.get("brand"):
             lines.append(f'<vendor>{yml_escape(it["brand"])}</vendor>')
-        kw = _make_keywords(it["title"], it.get("brand") or "")
-        if kw:
-            lines.append(f'<keywords>{yml_escape(kw)}</keywords>')
         lines.append(f'<currencyId>{CURRENCY}</currencyId>')
         desc_plain = it.get("description") or it["title"]
         body_html = _render_description_html(it["title"], desc_plain)
@@ -675,6 +672,9 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
         lines.append(body_html)
         lines.append("")
         lines.append("]]></description>")
+        kw = _make_keywords(it["title"], it.get("brand") or "")
+        if kw:
+            lines.append(f'<keywords>{yml_escape(kw)}</keywords>')
         lines.append("</offer>")
     lines.append("")
     lines.append("</offers>")
