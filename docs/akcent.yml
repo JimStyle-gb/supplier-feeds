@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-28 07:32">
+<yml_catalog date="2025-11-29 02:10">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-11-28 07:32:27
-Ближайшая сборка (Алматы)                  | 2025-11-29 01:00:00
-Сколько товаров у поставщика до фильтра    | 1756
-Сколько товаров у поставщика после фильтра | 155
-Сколько товаров есть в наличии (true)      | 155
+Время сборки (Алматы)                      | 2025-11-29 02:10:05
+Ближайшая сборка (Алматы)                  | 2025-11-30 01:00:00
+Сколько товаров у поставщика до фильтра    | 1797
+Сколько товаров у поставщика после фильтра | 156
+Сколько товаров есть в наличии (true)      | 156
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -40,7 +40,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002672</categoryId>
 <vendorCode>AKC12C890191</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</name>
-<price>27900</price>
+<price>26900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f41/svpxn6fco5180u9l7l6hp8z17jr9p3p7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -189,7 +189,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002672</categoryId>
 <vendorCode>AKC13T671400</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K)</name>
-<price>42900</price>
+<price>41900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/94b/23nc7h0t6dsigfnw39h01wamhjk05rkj.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -242,7 +242,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002672</categoryId>
 <vendorCode>AKC33S021601</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C33S021601	SJMB4000 C4000e Maintenance box</name>
-<price>25900</price>
+<price>24900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e58/0dyfqwrr96c2b8mcgerhrdco84qaujhg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -291,7 +291,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002643</categoryId>
 <vendorCode>AKS102ABK43</vendorCode>
 <name>Интерактивная доска Mr.Pixel S102 BLACK</name>
-<price>244900</price>
+<price>242900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/8a1/xztzsh0z3lnubxwrilghnufahyjf6zqc.png</picture>
 <vendor>Mr.Pixel</vendor>
 <currencyId>KZT</currencyId>
@@ -320,7 +320,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002643</categoryId>
 <vendorCode>AKS82ABK43</vendorCode>
 <name>Интерактивная доска Mr.Pixel S82 BLACK</name>
-<price>140900</price>
+<price>139900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5fe/irb3ewgi10rslia1z3029m14pg0gpmjn.jpg</picture>
 <vendor>Mr.Pixel</vendor>
 <currencyId>KZT</currencyId>
@@ -350,7 +350,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKSBID-QX275-P</vendorCode>
 <name>Интерактивная панель SBID-QX275-P</name>
-<price>3379900</price>
+<price>3354900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5cf/3d47p1503uahkwh8jvxprf56q68luj78.jpg</picture>
 <vendor>SBID</vendor>
 <currencyId>KZT</currencyId>
@@ -370,7 +370,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKSBID-MX265-V4</vendorCode>
 <name>Интерактивный дисплей SMART SBID-MX265-V4</name>
-<price>1064900</price>
+<price>1057900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ab1/ad3k0f074bg9yi9tbpkkqcl6vnje1jr4.jpg</picture>
 <vendor>Smart</vendor>
 <currencyId>KZT</currencyId>
@@ -472,7 +472,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T40D240</vendorCode>
 <name>Картридж Epson C13T40D240 UltraChrome XD2 Cyan T40D240(50ml)</name>
-<price>46900</price>
+<price>45900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/0ce/w9qa3jwmjsck3c54ehu1ony9bsm8luz0.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -498,7 +498,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T40D34N</vendorCode>
 <name>Картридж Epson C13T40D34N UltraChrome XD2 Magenta T40D340(50ml)</name>
-<price>46900</price>
+<price>45900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/3a0/6c7sl4blrwmypfoa1v0uglqixutj7xe8.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -524,7 +524,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T40D440</vendorCode>
 <name>Картридж Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</name>
-<price>46900</price>
+<price>45900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/134/gj92y6ngwgx4a2mk8vguo42xjl555jea.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -550,7 +550,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T41E240</vendorCode>
 <name>Картридж Epson C13T41E240 UltraChrome 700 ml голубой</name>
-<price>217900</price>
+<price>215900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/3be/eqmxmwqqut7bv5j5uat08z502tnppesl.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -577,7 +577,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T41E34N</vendorCode>
 <name>Картридж Epson C13T41E34N UltraChrome XD2 T41E340 M 350 ml пурпурный</name>
-<price>217900</price>
+<price>215900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/7ee/jov15kzowlxxb6vryltcz1qpihpwsijh.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -604,7 +604,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T41E440</vendorCode>
 <name>Картридж Epson C13T41E440 700ml жёлтый</name>
-<price>217900</price>
+<price>215900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/090/8pzl0rutpft80x0541lu4bkvqv8u30ne.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -631,7 +631,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T41E540</vendorCode>
 <name>Картридж Epson C13T41E540 UltraChrome 700ml черный</name>
-<price>217900</price>
+<price>215900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/2ec/9192747v2u3iploo72fnxpslcdmadbqs.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -658,7 +658,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T41F34N</vendorCode>
 <name>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</name>
-<price>125900</price>
+<price>124900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/df2/uklvh1v3fddx68kdgryaxefb9hl8ue1j.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -685,7 +685,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T41F440</vendorCode>
 <name>Картридж Epson C13T41F440  UltraChrome XD2 T41F440 Y 350ml жёлтый</name>
-<price>113900</price>
+<price>112900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/036/0muav07pep31608slkpjvyqved8ch8i7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -764,7 +764,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T50M400</vendorCode>
 <name>Картридж Epson C13T50M400 T3000/5000/7000, Т3700/5700/7700 жёлтый</name>
-<price>208900</price>
+<price>207900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/9ae/ctu9zwaw9iv3yd5tc67mkshsvecuhp88.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -791,7 +791,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T50MF00</vendorCode>
 <name>Картридж Epson C13T50MF00 T3000/5000/7000, Т3700/5700/7700 красный</name>
-<price>208900</price>
+<price>207900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/d45/sv4gmol13r3sco835hmnk1kgz6jey6j4.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1245,7 +1245,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T694100</vendorCode>
 <name>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
-<price>208900</price>
+<price>207900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f6b/tc1jcv3quat1vv5xtm2vl3z0vkhx4ju1.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1272,7 +1272,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T69430N</vendorCode>
 <name>Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный</name>
-<price>192900</price>
+<price>190900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/376/ekuy4ocvzyl60ruii4q0p0cvmew7688i.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1299,7 +1299,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T694500</vendorCode>
 <name>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
-<price>208900</price>
+<price>207900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/860/sprl22huykjcd4jt6m78i3su9rqt9ddg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1326,7 +1326,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T838140</vendorCode>
 <name>Картридж Epson C13T838140 WF-R5190DTW (RIPS)/WF-R5690DTWF (RIPS) черный</name>
-<price>113900</price>
+<price>112900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ecf/ysyeyfkc940849xfpwxrl7ak3yn800h3.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1353,7 +1353,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T965140</vendorCode>
 <name>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</name>
-<price>180900</price>
+<price>179900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/488/lwkbadjsdfpr0g8t4bvbd01g5k7zz08w.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1379,7 +1379,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T966140</vendorCode>
 <name>Картридж Epson C13T966140 WF-M52/57xx Series Ink Cartridge XXL BK.</name>
-<price>323900</price>
+<price>321900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/697/8rwae6l9pntpvomy19katired4mfigox.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1405,7 +1405,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T97410N</vendorCode>
 <name>Картридж Epson C13T97410N WorkForce Pro WF-C869R черный</name>
-<price>313900</price>
+<price>310900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5e7/jv3mwq7s1q18gs57bnguv3g1vdz1d6h4.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1431,7 +1431,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T97420N</vendorCode>
 <name>Картридж Epson C13T97420N WorkForce Pro WF-C869R голубой</name>
-<price>541900</price>
+<price>537900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/7b0/63pnrhjjkjqbdc98xzcq1lzikfwofww4.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1457,7 +1457,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T97430N</vendorCode>
 <name>Картридж Epson C13T97430N WorkForce Pro WF-C869R пурпурный</name>
-<price>541900</price>
+<price>537900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/550/4ynk21nx0cc31w6030irwh5fsi1zuck3.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1483,7 +1483,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T97440N</vendorCode>
 <name>Картридж Epson C13T97440N WorkForce Pro WF-C869R желтый</name>
-<price>541900</price>
+<price>537900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/286/ejkdara2zlw4nzamqzvrwu65bi9iipjr.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1536,7 +1536,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T08N140</vendorCode>
 <name>Картридж Epson WorkForce Enterprise AM-C400 Black Ink</name>
-<price>290900</price>
+<price>288900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/235/m5qjfel9x7elkm2uyuikazvt32zihao0.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1563,7 +1563,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T08N240</vendorCode>
 <name>Картридж Epson WorkForce Enterprise AM-C400 Cyan Ink</name>
-<price>366900</price>
+<price>363900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ef5/jrpm9jk0lemsuelv139vivdm78u7xsip.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1590,7 +1590,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T08N340</vendorCode>
 <name>Картридж Epson WorkForce Enterprise AM-C400 Magenta Ink</name>
-<price>366900</price>
+<price>363900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a65/g6o3xv6n5ud9p67uluhjaa5z1d0942oo.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1617,7 +1617,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002673</categoryId>
 <vendorCode>AKC13T08N440</vendorCode>
 <name>Картридж Epson WorkForce Enterprise AM-C400 Yellow Ink</name>
-<price>366900</price>
+<price>363900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5c4/k0h9496ezcb8u31z4f0rvfelvq9zf6am.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1691,7 +1691,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005448</categoryId>
 <vendorCode>AK8058201</vendorCode>
 <name>Ламинатор Fellowes AMARIS A3 LAMINATOR 230V EU</name>
-<price>103900</price>
+<price>102900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/720/ynkwplasxbu7ibndqz3ixud4xhvhomyp.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -1815,7 +1815,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565204</categoryId>
 <vendorCode>AK64V69AA#ABB</vendorCode>
 <name>Монитор Hyperx MNTR HX Armada 27 QHD Gaming</name>
-<price>260900</price>
+<price>258900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ba6/gjwt933m48lr8s6preq8yzmwxnxui78t.jpg</picture>
 <vendor>HyperX</vendor>
 <currencyId>KZT</currencyId>
@@ -1839,7 +1839,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565204</categoryId>
 <vendorCode>AKXG320U</vendorCode>
 <name>Монитор ViewSonic XG320U</name>
-<price>398900</price>
+<price>396900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/41a/svh2khyx7lpqfglsinpihlbiv5ux06tz.jpg</picture>
 <vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
@@ -1861,7 +1861,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002653</categoryId>
 <vendorCode>AKC11CH96404</vendorCode>
 <name>МФУ Epson L14150 фабрика печати</name>
-<price>496900</price>
+<price>493900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e01/i7xpt3gv7ue9szoaw0zmrh90in3ra05i.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1900,7 +1900,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002653</categoryId>
 <vendorCode>AKC11CH72404</vendorCode>
 <name>МФУ Epson L15150 фабрика печати</name>
-<price>900900</price>
+<price>894900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/850/htr5v7efov1369os0yacsrphvrryff1u.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1940,7 +1940,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ69401</vendorCode>
 <name>МФУ Epson L3200 фабрика печати</name>
-<price>103900</price>
+<price>102900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/763/qu9kcxpvv8la732hqigmmskkstop1d2j.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2091,7 +2091,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CK58404</vendorCode>
 <name>МФУ Epson L3560 фабрика печати, Wi-Fi</name>
-<price>161900</price>
+<price>160900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/4d8/9eqfmm5vyrfsk1wyd9e1hfjxori99vvi.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2113,7 +2113,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ63412</vendorCode>
 <name>МФУ Epson L4260 фабрика печати</name>
-<price>231900</price>
+<price>230900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/5ca/yaiold1tr1bvmyxglpkybuho3kerlaw5.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2135,7 +2135,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ63413</vendorCode>
 <name>МФУ Epson L4267 фабрика печати</name>
-<price>231900</price>
+<price>230900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b33/hl082vr3037lcti1wjma4iq539u9lyj2.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2157,7 +2157,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002653</categoryId>
 <vendorCode>AKC11CJ30404</vendorCode>
 <name>МФУ Epson L6550 фабрика печати, факс,Wi-Fi</name>
-<price>730900</price>
+<price>724900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/680/nvb5fdpe1l4oynjy9v2sffifrz59m604.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2197,7 +2197,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002653</categoryId>
 <vendorCode>AKC11CJ21403</vendorCode>
 <name>МФУ Epson L8180  фабрика печати</name>
-<price>504900</price>
+<price>500900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/620/lt3dvkdj5lpeuxyceyp1mzs58sfjcurb.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2239,7 +2239,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ19401</vendorCode>
 <name>МФУ Epson M2110 (CIS) фабрика печати</name>
-<price>188900</price>
+<price>187900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/c03/1tswvi050zi9d6mic9pco398415txyfo.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2279,7 +2279,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ18404</vendorCode>
 <name>МФУ Epson M2120 (CIS) фабрика печати</name>
-<price>188900</price>
+<price>187900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/9b8/wuiq6fpcq6d8nu3oechtw7kz81anpy5l.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2319,7 +2319,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CG27405</vendorCode>
 <name>МФУ Epson M2140 (CIS) фабрика печати</name>
-<price>211900</price>
+<price>209900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e0d/bn6m3i1h06u0cgpwpcpc2tuwxbptwnip.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2381,7 +2381,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002654</categoryId>
 <vendorCode>AKC11CJ36301A0</vendorCode>
 <name>Плоттер Epson SureColor SC-T3100M-MFP</name>
-<price>1305900</price>
+<price>1296900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/895/on71x8xqvgu6tqmsy353osl8r7bye0qg.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2412,11 +2412,47 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, Плоттер Epson SureColor SC-T3100M-MFP, Плоттер, SureColor, SC-T3100M-MFP, Epson SC-T3100M-MFP, plotter-epson, plotter-epson-surecolor, plotter, epson, surecolor, epson-sc-t3100m-mfp, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
+<offer id="AKC11CH81301A0" available="true">
+<categoryId>000002654</categoryId>
+<vendorCode>AKC11CH81301A0</vendorCode>
+<name>Плоттер Epson SureColor SC-T5700D</name>
+<price>3601900</price>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Плоттер Epson SureColor SC-T5700D</h3><p>Высокопроизводительный принтер формата А0 для инженерных задач и печати рекламных материалов Скорость печати до 28 сек на отпечаток А1 Печатающая головка нового поколения Epson PrecisionCore TFP Картриджи емкостью 110,350 или 700 мл Пигментные чернила Epson UltraChrome XD Печать на листовых и рулонных носителях шириной печати 36 дюймов (914 мм.) Опциональный сканер формата 36” Поддержка PostScript 3 Опциональный жесткий диск емкостью 320 Гб Компактный дизайн, полностью фронтальное управление Качественные, яркие отпечатки, устойчивые к смазыванию и попаданию воды Технические характеристики Epson SureColor SC-T5200 Состав поставки •Принтер •Подставка •Руководство пользователя •CD диск с программным обеспечением и драйверами •Сетевой кабель •Набор чернильных картриджей •Гарантийный талон •Адаптеры для рулона Основные свойства Устройство Широкоформатный принтер Применение •Для ГИС •Для КАД •Для презентационных материалов •Для точек продаж Основные характеристики Формат печати A</p>
+<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 210</li><li><strong>Производитель:</strong> Epson</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> A0</li><li><strong>Интерфейс:</strong> USB*Ethernet/Fast Ethernet</li><li><strong>Цветность:</strong> 4 цвета</li><li><strong>Разрешение печати, dpi:</strong> 2880x1440</li><li><strong>Ширина печати, мм:</strong> 914</li><li><strong>Ширина печати, дюймы:</strong> 36</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Количество слотов для картриджей:</strong> 5</li><li><strong>Тип расходных материалов:</strong> Картриджи</li><li><strong>Область применения:</strong> CAD</li></ul>
+<h3>Совместимые устройства</h3><ul><li>Картридж Epson C13T692300 T3000/5000/7000, Т3200/5200/7200 пурпурный</li><li>Картридж Epson C13T692100 T3000/5000/7000, Т3200/5200/7200  фото черный</li><li>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</li><li>Картридж Epson C13T694200 T3000/5000/7000, Т3200/5200/7200 голубой</li><li>Картридж Epson C13T694400 T3000/5000/7000, Т3200/5200/7200 желтый</li><li>Картридж Epson C13T694300 T3000/5000/7000, Т3200/5200/7200 пурпурный</li><li>Картридж Epson C13T692200 T3000/5000/7000, Т3200/5200/7200 голубой</li><li>Картридж Epson C13T692400 T3000/5000/7000, Т3200/5200/7200 желтый</li><li>Кабель DEFENDER USB04-10 USB2.0 AM-BM, 3.0м (ДЛЯ ПРИНТЕРА)</li><li>Кабель DEFENDER USB04-17 USB2.0 AM-BM, 5.0м (ДЛЯ ПРИНТЕРА)</li></ul>
+
+]]></description>
+<param name="Страна происхождения">Китай</param>
+<param name="Минимальная плотность бумаги, г/м2">210</param>
+<param name="Производитель">Epson</param>
+<param name="Гарантия">12 мес</param>
+<param name="Тип печати">струйная</param>
+<param name="Формат">A0</param>
+<param name="Интерфейс">USB*Ethernet/Fast Ethernet</param>
+<param name="Цветность">4 цвета</param>
+<param name="Разрешение печати, dpi">2880x1440</param>
+<param name="Ширина печати, мм">914</param>
+<param name="Ширина печати, дюймы">36</param>
+<param name="Тип чернил">пигментные</param>
+<param name="Количество слотов для картриджей">5</param>
+<param name="Тип расходных материалов">Картриджи</param>
+<param name="Область применения">CAD</param>
+<keywords>Epson, Плоттер Epson SureColor SC-T5700D, Плоттер, SureColor, SC-T5700D, Epson SC-T5700D, plotter-epson, plotter-epson-surecolor, plotter, epson, surecolor, epson-sc-t5700d, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
 <offer id="AKC11CK39403" available="true">
 <categoryId>000002656</categoryId>
 <vendorCode>AKC11CK39403</vendorCode>
 <name>Принтер Epson L11050 фабрика печати</name>
-<price>470900</price>
+<price>467900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/40b/0kqkc0mhgn3q9c4w4qjzf7v3jyvufpcf.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2456,7 +2492,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002656</categoryId>
 <vendorCode>AKC11CD76414</vendorCode>
 <name>Принтер Epson L121 фабрика печати</name>
-<price>79900</price>
+<price>78900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/380/9fout16gc0krsfqlgsqvirbj543gk6rb.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2493,7 +2529,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002652</categoryId>
 <vendorCode>AKC11CJ71404</vendorCode>
 <name>Принтер Epson L1250 фабрика печати</name>
-<price>107900</price>
+<price>106900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a10/4836119mtcr18cmgpopdiw26fo71y1x6.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2552,7 +2588,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKC11CH38402</vendorCode>
 <name>Принтер Epson SureColor SC-P700</name>
-<price>688900</price>
+<price>683900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/90a/0swudkvmn3wdhde1s5a7d1v5cpx0p3a2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2607,7 +2643,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005101</categoryId>
 <vendorCode>AKC51CA63100</vendorCode>
 <name>Принтер ленточный Epson LW700</name>
-<price>77900</price>
+<price>76900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/632/90bfat3qgqy9r1plezn746kmlggyiheh.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2637,7 +2673,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKZD4A042-30EE00EZ</vendorCode>
 <name>Принтер этикеток Zebra ZD421-30EE чёрный</name>
-<price>309900</price>
+<price>306900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/135/bu100ihp7p0yc96h5ft5qkbjfacx49o9.jpg</picture>
 <vendor>Zebra</vendor>
 <currencyId>KZT</currencyId>
@@ -2661,7 +2697,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKZD4A042-30EM00EZ</vendorCode>
 <name>Принтер этикеток Zebra ZD421-30EM чёрный</name>
-<price>248900</price>
+<price>247900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/073/v31m7e9dlijzdmukj01tib83et4rb8tz.jpg</picture>
 <vendor>Zebra</vendor>
 <currencyId>KZT</currencyId>
@@ -2685,7 +2721,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKZD4A042-D0EE00EZ</vendorCode>
 <name>Принтер этикеток Zebra ZD421-D0EE чёрный</name>
-<price>281900</price>
+<price>279900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/9bc/2bp37iuc0ow1vt7bv0mcasgdtr9mvzn6.jpg</picture>
 <vendor>Zebra</vendor>
 <currencyId>KZT</currencyId>
@@ -2709,7 +2745,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565213</categoryId>
 <vendorCode>AKLS550WH</vendorCode>
 <name>Проектор ViewSonic LS550WH</name>
-<price>415900</price>
+<price>412900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/886/ef5686ti1z1eqx93924ddit6xhj2rw8c.jpg</picture>
 <vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
@@ -2732,7 +2768,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000002644</categoryId>
 <vendorCode>AKLS500WH</vendorCode>
 <name>Проектор для дом. кино ViewSonic LS500WH</name>
-<price>385900</price>
+<price>382900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/375/6a8yn6nnl79k70zmdoukzytlb50v3020.jpg</picture>
 <vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
@@ -2774,7 +2810,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565244</categoryId>
 <vendorCode>AKPX701-4K</vendorCode>
 <name>Проектор для дом. кино ViewSonic PX701-4K</name>
-<price>619900</price>
+<price>614900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/6a7/rqlyy6fu4xgmsmoucolejffhwwn8dnjo.jpg</picture>
 <vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
@@ -2817,7 +2853,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565232</categoryId>
 <vendorCode>AKV11HA84240</vendorCode>
 <name>Проектор для дома  Epson CO-FD01</name>
-<price>386900</price>
+<price>383900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/af1/97a1vgcpviwp02bosk7ef0jgjzxlqiiv.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2840,7 +2876,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565232</categoryId>
 <vendorCode>AKV11HA84040</vendorCode>
 <name>Проектор для дома  Epson CO-FH01</name>
-<price>386900</price>
+<price>383900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/af1/97a1vgcpviwp02bosk7ef0jgjzxlqiiv.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2863,7 +2899,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565238</categoryId>
 <vendorCode>AKM2</vendorCode>
 <name>Проектор короткофокусный ViewSonic M2</name>
-<price>501900</price>
+<price>497900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/da0/6warmlfsc2snl1nwpfkkzt402snu9lx4.jpg</picture>
 <vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
@@ -2895,7 +2931,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565214</categoryId>
 <vendorCode>AKV11HA86040</vendorCode>
 <name>Проектор универсальный Epson CO-W01</name>
-<price>254900</price>
+<price>252900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/af1/97a1vgcpviwp02bosk7ef0jgjzxlqiiv.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2918,7 +2954,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565214</categoryId>
 <vendorCode>AKV11HA86340</vendorCode>
 <name>Проектор универсальный Epson CO-WX02</name>
-<price>254900</price>
+<price>252900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/040/xpmja09iz0aal0a8243c42jb0gj12ip8.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2940,7 +2976,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565214</categoryId>
 <vendorCode>AKV11HB51042</vendorCode>
 <name>Проектор универсальный Epson EB-E24</name>
-<price>341900</price>
+<price>339900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/1f3/0612v5losjub6yw05onlvslb671e5ibd.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2963,7 +2999,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565214</categoryId>
 <vendorCode>AKV11H974040</vendorCode>
 <name>Проектор универсальный Epson EB-FH06</name>
-<price>659900</price>
+<price>654900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/17c/ru9l3fwau9o76cnwf3h8o0zsqnd28fzt.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3009,7 +3045,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKV11HB54042</vendorCode>
 <name>Проектор универсальный Epson EB-FH08 белый</name>
-<price>867900</price>
+<price>861900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/159/jj07cni20mrpjxwjzx62blx7ea853g6m.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3031,7 +3067,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKV11HB59042</vendorCode>
 <name>Проектор универсальный Epson EB-FH54 белый</name>
-<price>961900</price>
+<price>954900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/fc7/t7d2lncfavd7zmy11w86ihwcr7bpi5eb.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3053,7 +3089,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565214</categoryId>
 <vendorCode>AKV11H973040</vendorCode>
 <name>Проектор универсальный Epson EB-W06</name>
-<price>392900</price>
+<price>389900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/312/n1t34vas6qnssi61q4evp3zszgzeqawj.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3096,7 +3132,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565214</categoryId>
 <vendorCode>AKV11H977040</vendorCode>
 <name>Проектор универсальный Epson EB-W51</name>
-<price>482900</price>
+<price>478900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e28/u3dfpp3gk98bu9rz5i6v9agrx6xcjkq7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3142,7 +3178,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKV11HB57042</vendorCode>
 <name>Проектор универсальный Epson EB-W53 белый</name>
-<price>509900</price>
+<price>505900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/bdb/ghgv80o5zrtkm91xl21bol945b37nu3e.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3164,7 +3200,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKV11HB58042</vendorCode>
 <name>Проектор универсальный Epson EB-W55 белый</name>
-<price>577900</price>
+<price>573900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a75/93jxofb0xkuy6j62ht9bvw8zji9uu07f.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3186,7 +3222,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565214</categoryId>
 <vendorCode>AKDX273</vendorCode>
 <name>Проектор универсальный Vivitek DX273</name>
-<price>241900</price>
+<price>240900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/27c/gihvoghhjscmu103lz5gmmcqevrqartp.jpg</picture>
 <vendor>Vivitek</vendor>
 <currencyId>KZT</currencyId>
@@ -3250,7 +3286,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId></categoryId>
 <vendorCode>AKLI4278-TRBU0100ZER</vendorCode>
 <name>Сканер штрих-кода Zebra LI4278 чёрный</name>
-<price>111900</price>
+<price>110900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/22a/0lrr9c84pgwecq0bjo5c0ihh1ksop0ip.jpg</picture>
 <vendor>Zebra</vendor>
 <currencyId>KZT</currencyId>
@@ -3861,7 +3897,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005456</categoryId>
 <vendorCode>AK5050101</vendorCode>
 <name>Шредер Fellowes Powershred LX201 белый</name>
-<price>205900</price>
+<price>203900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a68/usz4wz1cne5zlblzfc47qwsbh4s2kwob.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -3883,7 +3919,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005456</categoryId>
 <vendorCode>AK5050001</vendorCode>
 <name>Шредер Fellowes Powershred LX201 черный</name>
-<price>182900</price>
+<price>181900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/bc1/v9z7uba2vdyl7qewxlewy9ggf2dlotpt.png</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -3906,7 +3942,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005456</categoryId>
 <vendorCode>AK4629201</vendorCode>
 <name>Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм,автоподача 100 лст., 23 лтр., автореверc</name>
-<price>150900</price>
+<price>149900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a0e/bwypzsvo4u6av2bh97a3bbx9v6fl3xd9.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -3935,7 +3971,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005456</categoryId>
 <vendorCode>AKFS-46801*</vendorCode>
 <name>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</name>
-<price>179900</price>
+<price>177900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a5a/uklx406upxia1g71iar7kykzvzueywsg.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -3966,7 +4002,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005456</categoryId>
 <vendorCode>AK4621501</vendorCode>
 <name>Шредер Fellowes® AutoMax® 80M, минирезка, DIN P-4, 4х12 мм,автоподача 80 лст., 17 лтр., автореверc</name>
-<price>100900</price>
+<price>99900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f8b/nusef3b3xj66hyif8h6mg4giun15vd62.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -4025,7 +4061,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005456</categoryId>
 <vendorCode>AK4653101</vendorCode>
 <name>Шредер Fellowes® Powershred® 53C, DIN P-4</name>
-<price>53900</price>
+<price>52900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/c86/lmpxkqlqfn6nog2opu48f89vnnyauvzi.png</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -4052,7 +4088,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005456</categoryId>
 <vendorCode>AK5502201</vendorCode>
 <name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</name>
-<price>174900</price>
+<price>173900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/3ba/zocsytqj3uedaezqsmfpxilassmxif0z.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -4074,7 +4110,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>000005456</categoryId>
 <vendorCode>AK5502501</vendorCode>
 <name>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</name>
-<price>180900</price>
+<price>178900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/281/1a1og9zpxrw1qbsutii9i9elydc1jk82.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
@@ -4266,7 +4302,7 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <categoryId>565241</categoryId>
 <vendorCode>AKMAGNASDB96V2</vendorCode>
 <name>Экран на треноге Mr.Pixel ECO 70" X 70" (1,78 X 1,78)</name>
-<price>25900</price>
+<price>24900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ae7/17vjki228x0jep5rhnt8upif1q7r3pjk.jpg</picture>
 <vendor>Mr.Pixel</vendor>
 <currencyId>KZT</currencyId>
