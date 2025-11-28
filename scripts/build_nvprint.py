@@ -57,7 +57,8 @@ class Cfg:
     RETRY_BACKOFF_S = float(_env("RETRY_BACKOFF_S", "2"))
 
     NV_LOGIN = _env("NVPRINT_LOGIN", _env("NVPRINT_XML_USER", ""))
-    NV_PASSWORD = _env("NVPRINT_PASSWORD", _env("NVPRINT_XML_PASS", ""))# Делает: экранирует значения для XML/YML.
+    NV_PASSWORD = _env("NVPRINT_PASSWORD", _env("NVPRINT_XML_PASS", ""))
+# Делает: экранирует значения для XML/YML.
 def yml_escape(s: str) -> str:
     return html.escape((s or "").strip())
 
@@ -148,7 +149,7 @@ def read_source_bytes(cfg: Cfg) -> bytes:
 
 # Делает: читает текстовый файл, перебирая кодировки.
 def get_keywords(cfg: Cfg) -> List[str]:
-    # Файл с keywords больше не используется: берём вшитый список DEFAULT_KEYWORDS.
+    # Файл keywords не используется: берём вшитый список DEFAULT_KEYWORDS.
     out: List[str] = []
     seen = set()
     for k in DEFAULT_KEYWORDS:
@@ -159,7 +160,6 @@ def get_keywords(cfg: Cfg) -> List[str]:
     return out
 
 
-# Делает: нормализует строку для сравнения.
 def norm_for_match(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
 
