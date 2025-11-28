@@ -1,4 +1,4 @@
-name: build_nvprint
+name: Build_NVPrint
 on:
   workflow_dispatch:
   schedule:
@@ -64,7 +64,7 @@ jobs:
           path = "docs/nvprint_keywords.txt"
           if not os.path.isfile(path):
               data = "\n".join([
-                  "Блок фотобарабарана",
+                  "Блок фотобарабана",
                   "Картридж",
                   "Печатающая головка",
                   "Струйный картридж",
