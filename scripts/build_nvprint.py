@@ -14,7 +14,6 @@ NVPrint -> YML (KZT) — переписано "с нуля", но поведен
 Переменные окружения:
 - NVPRINT_XML_URL (или NVPRINT_URL): URL источника
 - NVPRINT_LOGIN / NVPRINT_PASSWORD (или NVPRINT_XML_USER / NVPRINT_XML_PASS): basic auth
-- NVPRINT_KEYWORDS_FILE: путь к keywords (default docs/nvprint_keywords.txt)
 - OUT_FILE: путь результата (default docs/nvprint.yml)
 - OUT_ENCODING: кодировка результата (default windows-1251)
 - HTTP_TIMEOUT, RETRIES, RETRY_BACKOFF_S
@@ -59,10 +58,6 @@ class Cfg:
 
     NV_LOGIN = _env("NVPRINT_LOGIN", _env("NVPRINT_XML_USER", ""))
     NV_PASSWORD = _env("NVPRINT_PASSWORD", _env("NVPRINT_XML_PASS", ""))
-
-    KEYWORDS_FILE = _env("NVPRINT_KEYWORDS_FILE", "docs/nvprint_keywords.txt")
-
-
 # Делает: экранирует значения для XML/YML.
 def yml_escape(s: str) -> str:
     return html.escape((s or "").strip())
@@ -153,86 +148,19 @@ def read_source_bytes(cfg: Cfg) -> bytes:
 
 
 # Делает: читает текстовый файл, перебирая кодировки.
-def read_text_with_encodings(path: str, encodings: List[str]) -> Optional[str]:
-    if not os.path.isfile(path):
-        return None
-    for enc in encodings:
-        try:
-            with io.open(path, "r", encoding=enc) as f:
-                return f.read()
-        except Exception:
-            continue
-    try:
-        with io.open(path, "rb") as f:
-            raw = f.read()
-        return raw.decode("latin-1", errors="ignore")
-    except Exception:
-        return None
-
-
 # Делает: грузит ключевые слова и нормализует их (lower, пробелы, uniq).
-def load_keywords(path: str) -> List[str]:
-    txt = read_text_with_encodings(
-        path,
-        ["utf-8-sig", "utf-8", "utf-16", "cp1251", "koi8-r", "iso-8859-5", "cp866"],
-    )
-    if not txt:
-        return []
-    kws: List[str] = []
-    for line in txt.splitlines():
-        ln = line.strip()
-        if not ln or ln.startswith("#") or ln.startswith(";"):
-            continue
-        ln = re.sub(r"\s+", " ", ln).strip().lower()
-        if ln:
-            kws.append(ln)
-    seen = set()
-    out: List[str] = []
-    for k in kws:
-        if k not in seen:
-            seen.add(k)
-            out.append(k)
-    return out
-
 # Делает: дефолтные keywords (если файла нет/пустой).
-DEFAULT_KEYWORDS: List[str] = [
-    "Блок фотобарабана",
-    "Картридж",
-    "Печатающая головка",
-    "Струйный картридж",
-    "Тонер-картридж",
-    "Тонер-туба",
+KEYWORDS: List[str] = [
+    "шлейф",
+    "блок фотобарабана",
+    "картридж",
+    "печатающая головка",
+    "струйный картридж",
+    "тонер-картридж",
+    "тонер-туба",
 ]
 
-
 # Делает: грузит keywords из файла или берёт DEFAULT_KEYWORDS.
-
-def ensure_keywords_file(path: str) -> None:
-    # Создаёт файл keywords (если его нет) — чтобы можно было править руками.
-    try:
-        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-        if os.path.isfile(path):
-            return
-        data = "\n".join(DEFAULT_KEYWORDS) + "\n"
-        with io.open(path, "w", encoding="utf-8") as f:
-            f.write(data)
-    except Exception:
-        # Не мешаем сборке, если файл создать нельзя.
-        return
-
-def get_keywords(cfg: Cfg) -> List[str]:
-    ensure_keywords_file(cfg.KEYWORDS_FILE)
-    kws = load_keywords(cfg.KEYWORDS_FILE)
-    if kws:
-        return kws
-    out: List[str] = []
-    seen = set()
-    for k in DEFAULT_KEYWORDS:
-        kk = re.sub(r"\s+", " ", (k or "").strip()).lower()
-        if kk and kk not in seen:
-            seen.add(kk)
-            out.append(kk)
-    return out
 
 
 # Делает: нормализует строку для сравнения.
@@ -477,26 +405,40 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
 
 # Делает: находит кандидатов-узлы товаров (максимально терпимо к структуре XML).
 def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
+    # Быстрый поиск узлов товаров: проверяем только детей и внуков, без .iter() по поддереву.
+    want_art = {"артикул", "articul", "sku", "article", "partnumber"}
+    want_name = {"номенклатуракратко"}
     items: List[ET.Element] = []
-    seen: set[int] = set()
 
     for node in root.iter():
-        art = find_descendant(node, ["Артикул", "articul", "sku", "article", "PartNumber"])
-        if art is None:
-            continue
-        nmk = find_descendant(node, ["НоменклатураКратко"])
-        if nmk is None:
-            continue
+        has_art = False
+        has_name = False
 
-        key = id(node)
-        if key in seen:
-            continue
-        seen.add(key)
-        items.append(node)
+        for ch in list(node):
+            t = strip_ns(ch.tag).lower()
+            if t in want_art:
+                has_art = True
+            elif t in want_name:
+                has_name = True
+
+            # 1 уровень глубже (внуки) — на случай, если у поставщика вложено
+            if not (has_art and has_name):
+                for g in list(ch):
+                    tt = strip_ns(g.tag).lower()
+                    if tt in want_art:
+                        has_art = True
+                    elif tt in want_name:
+                        has_name = True
+                    if has_art and has_name:
+                        break
+
+            if has_art and has_name:
+                break
+
+        if has_art and has_name:
+            items.append(node)
 
     return items
-
-
 # Делает: возвращает "сейчас" по Алматы (UTC+5).
 def almaty_now() -> datetime:
     return datetime.utcnow() + timedelta(hours=5)
@@ -554,8 +496,7 @@ def render_feed_meta_comment(pairs: Dict[str, Any]) -> str:
 # Делает: парсит xml -> items, фильтрует по keywords, собирает yml в текущем формате.
 def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
     root = ET.fromstring(xml_bytes)
-
-    keywords = get_keywords(cfg)
+    keywords = KEYWORDS
     nodes = guess_item_nodes(root)
     offers_total = len(nodes)
 
