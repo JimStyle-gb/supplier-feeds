@@ -39,23 +39,6 @@ except Exception:
 
 
 # Делает: читает переменную окружения и возвращает непустое значение или default.
-# Делает: ключевые слова для фильтра (вшито в код; файла keywords НЕТ).
-KEYWORDS: List[str] = [
-    "шлейф",
-    "блок фотобарабана",
-    "картридж",
-    "печатающая головка",
-    "струйный картридж",
-    "тонер-картридж",
-    "тонер-туба",
-]
-
-# Делает: постоянный список городов для keywords (как у остальных поставщиков).
-CITIES_KEYWORDS = "Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Усть-Каменогорск, Семей, Кызылорда, Костанай, Уральск, Петропавловск, Актау, Туркестан, Талдыкорган, Темиртау, Экибастуз, Жезказган, Рудный, Балхаш, Жанаозен, Кокшетау"
-
-# Делает: WhatsApp/доставка/оплата блок (как в остальных фидах) — вставляется в CDATA.
-WHATSAPP_BLOCK_HTML = '<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>'
-
 def _env(name: str, default: str = "") -> str:
     v = os.getenv(name)
     return (v.strip() if v and v.strip() else default)
@@ -74,126 +57,10 @@ class Cfg:
     RETRY_BACKOFF_S = float(_env("RETRY_BACKOFF_S", "2"))
 
     NV_LOGIN = _env("NVPRINT_LOGIN", _env("NVPRINT_XML_USER", ""))
-    NV_PASSWORD = _env("NVPRINT_PASSWORD", _env("NVPRINT_XML_PASS", ""))
-# Делает: экранирует значения для XML/YML.
+    NV_PASSWORD = _env("NVPRINT_PASSWORD", _env("NVPRINT_XML_PASS", ""))# Делает: экранирует значения для XML/YML.
 def yml_escape(s: str) -> str:
     return html.escape((s or "").strip())
 
-
-def almaty_now() -> datetime:
-    try:
-        from zoneinfo import ZoneInfo
-        return datetime.now(ZoneInfo("Asia/Almaty"))
-    except Exception:
-        return datetime.now()
-
-def fmt_dt(dt: datetime) -> str:
-    try:
-        from zoneinfo import ZoneInfo
-        if getattr(dt, "tzinfo", None) is not None:
-            dt = dt.astimezone(ZoneInfo("Asia/Almaty"))
-    except Exception:
-        pass
-    return dt.strftime("%Y-%m-%d %H:%M:%S")
-
-def fmt_date_attr(dt: datetime) -> str:
-    try:
-        from zoneinfo import ZoneInfo
-        if getattr(dt, "tzinfo", None) is not None:
-            dt = dt.astimezone(ZoneInfo("Asia/Almaty"))
-    except Exception:
-        pass
-    return dt.strftime("%Y-%m-%d %H:%M")
-
-def next_run_nvprint(now_alm: datetime) -> datetime:
-    # NVPrint: 1/10/20 числа в 04:00 Алматы (как в workflow-гейте).
-    # Важно: сравнение времени делаем в "наивном" виде, чтобы не ловить
-    # mix offset-aware/offset-naive на GitHub runner'ах.
-    base = now_alm
-    tz = getattr(base, "tzinfo", None)
-
-    if tz is None:
-        try:
-            from zoneinfo import ZoneInfo
-            tz = ZoneInfo("Asia/Almaty")
-        except Exception:
-            tz = None
-
-    # base_cmp — время "по Алматы" (если tz есть), иначе просто base
-    if tz is not None:
-        try:
-            base_cmp = base.astimezone(tz)
-        except Exception:
-            base_cmp = base
-    else:
-        base_cmp = base
-
-    base_naive = base_cmp.replace(tzinfo=None)
-
-    y, m = base_naive.year, base_naive.month
-    for add_m in range(0, 6):
-        yy = y + (m - 1 + add_m) // 12
-        mm = (m - 1 + add_m) % 12 + 1
-        for d in (1, 10, 20):
-            try:
-                cand_naive = datetime(yy, mm, d, 4, 0, 0)
-            except Exception:
-                continue
-            if cand_naive > base_naive:
-                return cand_naive.replace(tzinfo=tz) if tz is not None else cand_naive
-
-    return base
-
-def html_escape(txt: str) -> str:
-    if txt is None:
-        return ""
-    return (
-        txt.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-    )
-
-def extract_params(item: ET.Element) -> List[Dict[str, str]]:
-    params: List[Dict[str, str]] = []
-
-    def add(name: str, val: str) -> None:
-        v = (val or "").strip()
-        if not v or v == "0":
-            return
-        params.append({"name": name, "value": v})
-
-    add("Ресурс", find_descendant_text(item, ["Ресурс"]) or "")
-    add("Тип печати", find_descendant_text(item, ["ТипПечати"]) or "")
-    add("Цвет", find_descendant_text(item, ["Цвет"]) or "")
-    add("Совместимость", find_descendant_text(item, ["Совместимость"]) or "")
-    add("Вес", find_descendant_text(item, ["Вес"]) or "")
-
-    prn_list = collect_printers(item)
-    if prn_list:
-        add("Принтеры", ", ".join(prn_list))
-
-    return params
-
-def build_desc_html(title: str, nom_full: str, params: List[Dict[str, str]]) -> str:
-    t = html_escape(title)
-    p = html_escape(nom_full).strip()
-    out = [f"<h3>{t}</h3>"]
-    if p and p.lower() != title.lower():
-        out.append(f"<p>{p}</p>")
-    if params:
-        out.append("<h3>Характеристики</h3><ul>" + "".join(
-            [f"<li><strong>{html_escape(x['name'])}:</strong> {html_escape(x['value'])}</li>" for x in params]
-        ) + "</ul>")
-    return "".join(out)
-
-def build_keywords(vendor: str, title: str) -> str:
-    v = (vendor or "").strip()
-    t = (title or "").strip()
-    base = ", ".join([x for x in [v, t] if x])
-    if base:
-        return f"{base}, {CITIES_KEYWORDS}"
-    return CITIES_KEYWORDS
 
 # Делает: убирает namespace из tag, если он есть.
 def strip_ns(tag: str) -> str:
@@ -280,9 +147,18 @@ def read_source_bytes(cfg: Cfg) -> bytes:
 
 
 # Делает: читает текстовый файл, перебирая кодировки.
-# Делает: грузит ключевые слова и нормализует их (lower, пробелы, uniq).
-# Делает: дефолтные keywords (если файла нет/пустой).
-# Делает: грузит keywords из файла или берёт DEFAULT_KEYWORDS.
+def get_keywords(cfg: Cfg) -> List[str]:
+    # Файл с keywords больше не используется: берём вшитый список DEFAULT_KEYWORDS.
+    out: List[str] = []
+    seen = set()
+    for k in DEFAULT_KEYWORDS:
+        kk = re.sub(r"\s+", " ", (k or "").strip()).lower()
+        if kk and kk not in seen:
+            seen.add(kk)
+            out.append(kk)
+    return out
+
+
 # Делает: нормализует строку для сравнения.
 def norm_for_match(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
@@ -500,7 +376,6 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
     final_price = compute_price_from_supplier(base_int)
 
     vendor = first_child_text(elem, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or ""
-    vendor = vendor.strip() or "NVP"
     picture = (
         first_child_text(
             elem,
@@ -509,12 +384,7 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
         or ""
     ).strip()
 
-    nom_full = find_descendant_text(elem, ["Номенклатура"]) or ""
-    nom_full = re.sub(r"\s+", " ", nom_full).strip()
-
-    params = extract_params(elem)
-    desc_html = build_desc_html(name_short, nom_full, params)
-    keywords_str = build_keywords(vendor, name_short)
+    description = build_description(elem)
 
     oid, vcode = make_ids_from_article(article)
 
@@ -525,11 +395,11 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
         "price": final_price,
         "picture": picture,
         "vendor": vendor,
-        "desc_html": desc_html,
-        "params": params,
-        "keywords": keywords_str,
+        "description": description,
     }
 
+
+# Делает: находит кандидатов-узлы товаров (максимально терпимо к структуре XML).
 def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
     items: List[ET.Element] = []
     seen: set[int] = set()
@@ -609,106 +479,72 @@ def render_feed_meta_comment(pairs: Dict[str, Any]) -> str:
 def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
     root = ET.fromstring(xml_bytes)
 
-    keywords = KEYWORDS
+    keywords = get_keywords(cfg)
     nodes = guess_item_nodes(root)
     offers_total = len(nodes)
 
     offers: List[Dict[str, Any]] = []
     for node in nodes:
-        name_short = find_descendant_text(node, ["НomenклатураКратко", "НоменклатураКратко"]) or ""
+        name_short = find_descendant_text(node, ["НоменклатураКратко"]) or ""
         if not name_starts_with_keywords(name_short, keywords):
             continue
         it = parse_item(node)
         if it:
             offers.append(it)
 
-    offers_written = len(offers)
-    av_true = offers_written
-    av_false = 0
-
-    now_al = almaty_now()
-    date_attr = fmt_date_attr(now_al)
-    meta_pairs = {
-        "supplier_name": "NVPrint",
-        "source": cfg.SUPPLIER_URL,
-        "built_at": fmt_dt(now_al),
-        "next_run": fmt_dt(next_run_nvprint(now_al)),
-        "offers_total": offers_total,
-        "offers_written": offers_written,
-        "available_true": av_true,
-        "available_false": av_false,
-    }
-
+    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
     out: List[str] = []
-    out.append('<?xml version="1.0" encoding="windows-1251"?>')
-    out.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
-    out.append(f'<yml_catalog date="{date_attr}">')
-    out.append("<shop><offers>")
-    out.append("")
+    out.append("<?xml version='1.0' encoding='windows-1251'?>")
+    out.append(f"<yml_catalog date=\"{date_attr}\">")
+
+    meta_pairs = {
+        "source": cfg.SUPPLIER_URL,
+        "offers_total": offers_total,
+        "offers_written": len(offers),
+        "available_true": len(offers),  # всем true
+        "available_false": 0,
+    }
     out.append(render_feed_meta_comment(meta_pairs))
-    out.append("")
 
+    out.append("<shop>")
+    out.append("  <offers>")
     for it in offers:
-        out.append(f'<offer id="{yml_escape(it["id"])}" available="true">')
-        out.append("<categoryId></categoryId>")
-        out.append(f'<vendorCode>{yml_escape(it["vendorCode"])}</vendorCode>')
-        out.append(f'<name>{yml_escape(it["title"])}</name>')
-        out.append(f'<price>{int(it["price"])}</price>')
+        out.append(f"    <offer id=\"{yml_escape(it['id'])}\">")
+        out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
+        out.append(f"      <name>{yml_escape(it['title'])}</name>")
+        out.append(f"      <price>{int(it['price'])}</price>")
         if it.get("picture"):
-            out.append(f'<picture>{yml_escape(it["picture"])}</picture>')
-        out.append(f'<vendor>{yml_escape(it.get("vendor") or "NVP")}</vendor>')
-        out.append("<currencyId>KZT</currencyId>")
-
-        out.append("<description><![CDATA[")
-        out.append("")
-        out.append("<!-- WhatsApp -->")
-        out.append(WHATSAPP_BLOCK_HTML)
-        out.append("")
-        out.append("<!-- Описание -->")
-        out.append(it.get("desc_html") or "")
-        out.append("")
-        out.append("]]></description>")
-
-        for p in it.get("params") or []:
-            out.append(f'<param name="{yml_escape(p["name"])}">{yml_escape(p["value"])}</param>')
-
-        out.append(f'<keywords>{yml_escape(it.get("keywords") or "")}</keywords>')
-        out.append("</offer>")
-        out.append("")
-
-    out.append("</offers>")
-    out.append("</shop>")
-    out.append("</yml_catalog>")
+            out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
+        if it.get("vendor"):
+            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
+        out.append("      <currencyId>KZT</currencyId>")
+        out.append("      <available>true</available>")
+        if it.get("description"):
+            desc_clean = re.sub(r"\s+", " ", it["description"]).strip()
+            out.append(f"      <description>{yml_escape(desc_clean)}</description>")
+        out.append("    </offer>\n")
+    out.append("  </offers>")
+    out.append("</shop></yml_catalog>")
     return "\n".join(out)
+
 
 # Делает: пишет пустой фид (как сейчас) при ошибке скачивания/парсинга.
 def empty_yml(cfg: Cfg) -> str:
-    now_al = almaty_now()
-    date_attr = fmt_date_attr(now_al)
-    meta_pairs = {
-        "supplier_name": "NVPrint",
-        "source": cfg.SUPPLIER_URL,
-        "built_at": fmt_dt(now_al),
-        "next_run": fmt_dt(next_run_nvprint(now_al)),
-        "offers_total": 0,
-        "offers_written": 0,
-        "available_true": 0,
-        "available_false": 0,
-    }
+    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
+    meta_pairs = {"source": cfg.SUPPLIER_URL, "offers_total": 0, "offers_written": 0, "available_true": 0, "available_false": 0}
     out = [
-        '<?xml version="1.0" encoding="windows-1251"?>',
-        '<!DOCTYPE yml_catalog SYSTEM "shops.dtd">',
-        f'<yml_catalog date="{date_attr}">',
-        "<shop><offers>",
-        "",
+        "<?xml version='1.0' encoding='windows-1251'?>",
+        f"<yml_catalog date=\"{date_attr}\">",
         render_feed_meta_comment(meta_pairs),
-        "",
-        "</offers>",
-        "</shop>",
-        "</yml_catalog>",
+        "<shop>",
+        "  <offers>",
+        "  </offers>",
+        "</shop></yml_catalog>",
     ]
     return "\n".join(out)
 
+
+# Делает: точка входа.
 def main() -> int:
     cfg = Cfg()
     try:
