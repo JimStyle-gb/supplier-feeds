@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <!DOCTYPE yml_catalog SYSTEM "shops.dtd">
-<yml_catalog date="2025-11-28 07:44">
+<yml_catalog date="2025-11-28 18:15">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | Copyline
 URL поставщика                             | https://copyline.kz/files/price-CLA.xlsx
-Время сборки (Алматы)                      | 2025-11-28 07:44:06
+Время сборки (Алматы)                      | 2025-11-28 18:15:18
 Ближайшая сборка (Алматы)                  | 2025-12-01 03:00:00
 Сколько товаров у поставщика до фильтра    | 1221
 Сколько товаров у поставщика после фильтра | 1213
