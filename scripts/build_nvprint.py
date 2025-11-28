@@ -206,7 +206,22 @@ DEFAULT_KEYWORDS: List[str] = [
 
 
 # Делает: грузит keywords из файла или берёт DEFAULT_KEYWORDS.
+
+def ensure_keywords_file(path: str) -> None:
+    # Создаёт файл keywords (если его нет) — чтобы можно было править руками.
+    try:
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        if os.path.isfile(path):
+            return
+        data = "\n".join(DEFAULT_KEYWORDS) + "\n"
+        with io.open(path, "w", encoding="utf-8") as f:
+            f.write(data)
+    except Exception:
+        # Не мешаем сборке, если файл создать нельзя.
+        return
+
 def get_keywords(cfg: Cfg) -> List[str]:
+    ensure_keywords_file(cfg.KEYWORDS_FILE)
     kws = load_keywords(cfg.KEYWORDS_FILE)
     if kws:
         return kws
