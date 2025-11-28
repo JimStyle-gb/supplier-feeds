@@ -61,7 +61,6 @@ jobs:
           python - <<'PY'
           import os, io
           os.makedirs("docs", exist_ok=True)
-          path = "docs/nvprint_keywords.txt"
           if not os.path.isfile(path):
               data = "\n".join([
                   "Блок фотобарабарана",
