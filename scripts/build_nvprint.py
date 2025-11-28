@@ -148,7 +148,25 @@ def read_source_bytes(cfg: Cfg) -> bytes:
 
 
 # Делает: читает текстовый файл, перебирая кодировки.
-def get_keywords(cfg: Cfg) -> List[str]:
+def read_text_with_encodings(path: str, encodings: List[str]) -> Optional[str]:
+    if not os.path.isfile(path):
+        return None
+    for enc in encodings:
+        try:
+            with io.open(path, "r", encoding=enc) as f:
+                return f.read()
+        except Exception:
+            continue
+    try:
+        with io.open(path, "rb") as f:
+            raw = f.read()
+        return raw.decode("latin-1", errors="ignore")
+    except Exception:
+        return None
+
+
+# Делает: грузит ключевые слова и нормализует их (lower, пробелы, uniq).
+def load_keywords(cfg: Cfg) -> List[str]:
     # Файл keywords не используется: берём вшитый список DEFAULT_KEYWORDS.
     out: List[str] = []
     seen = set()
@@ -158,6 +176,21 @@ def get_keywords(cfg: Cfg) -> List[str]:
             seen.add(kk)
             out.append(kk)
     return out
+
+
+DEFAULT_KEYWORDS: List[str] = [
+    "Шлейф",
+    "Блок фотобарабана",
+    "Картридж",
+    "Печатающая головка",
+    "Струйный картридж",
+    "Тонер-картридж",
+    "Тонер-туба",
+]
+
+# Делает: грузит keywords из файла или берёт DEFAULT_KEYWORDS.
+def get_keywords(cfg: Cfg) -> List[str]:
+    return load_keywords(cfg)
 
 
 def norm_for_match(s: str) -> str:
