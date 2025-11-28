@@ -429,7 +429,7 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
             inner.append("<h3>Совместимые устройства</h3><ul>" + "".join(li2) + "</ul>")
 
     html_block = "\n".join(inner)
-    return f"\n{html_block}\n"
+    return html_block
 
 # Делает:  guess brand
 def _guess_brand(name: str, raw_desc: str, body: str) -> str:
