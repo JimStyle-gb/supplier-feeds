@@ -1,16 +1,96 @@
 <?xml version='1.0' encoding='windows-1251'?>
-<yml_catalog date="2025-11-28 12:56">
+<yml_catalog date="2025-11-28 15:53">
 <!--FEED_META
 Поставщик                                  | NVPrint
 URL поставщика                             | https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true
-Время сборки (Алматы)                      | 28:11:2025 - 17:56:09
+Время сборки (Алматы)                      | 28:11:2025 - 20:53:34
 Ближайшее время сборки (Алматы)            | 01:12:2025 - 04:00:00
 Сколько товаров у поставщика до фильтра    | 3611
-Сколько товаров у поставщика после фильтра | 1594
-Сколько товаров есть в наличии (true)      | 1594
+Сколько товаров у поставщика после фильтра | 1740
+Сколько товаров есть в наличии (true)      | 1740
 Сколько товаров нет в наличии (false)      | 0 -->
 <shop>
   <offers>
+    <offer id="NP013R00669DU">
+      <vendorCode>NP013R00669DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00669 DU</name>
+      <price>101900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00669DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00669 DU для Xerox WorkCentre 5945/5955 (200000k) Технические характеристики: - Ресурс: 200000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WorkCentre 5945/5955 - Вес: 2.71 - Принтеры: Xerox WorkCentre 5945, Xerox WorkCentre 5955</description>
+    </offer>
+
+    <offer id="NPCF232A-SET10">
+      <vendorCode>NPCF232A-SET10</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF232A-SET10</name>
+      <price>32900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF232A-SET10 для HP LaserJet Pro M227fdn/ M227fdw/ M227sdn/ M230sdn/ M203dn/ M203dw (23000k) (10 шт) Технические характеристики: - Вес: 0</description>
+    </offer>
+
+    <offer id="NPCF232A-SET2">
+      <vendorCode>NPCF232A-SET2</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF232A-SET2</name>
+      <price>8900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF232A-SET2 для HP LaserJet Pro M227fdn/ M227fdw/ M227sdn/ M230sdn/ M203dn/ M203dw (23000k) (2 шт) Технические характеристики: - Вес: 0</description>
+    </offer>
+
+    <offer id="NPCF232A-SET4">
+      <vendorCode>NPCF232A-SET4</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF232A-SET4</name>
+      <price>12900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF232A-SET4 для HP LaserJet Pro M227fdn/ M227fdw/ M227sdn/ M230sdn/ M203dn/ M203dw (23000k) (4 шт) Технические характеристики: - Вес: 0</description>
+    </offer>
+
+    <offer id="NPDR-2335-SET10">
+      <vendorCode>NPDR-2335-SET10</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2335-SET10</name>
+      <price>38900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2335-SET10 для Brother HL-L2300DR/ HL-L2340DWR/ HL-L2360DNR/ HL-L2365DWR/ DCP-L2500DR/ DCP-L2520DWR/ DCP-L2540DNR/ DCP-L2560DWR/ MFC-L2700DWR/ MFC-L2720DWR/ MFC-L2740DWR (12000k) (10 шт) Технические характеристики: - Вес: 0</description>
+    </offer>
+
+    <offer id="NPDR-2335-SET2">
+      <vendorCode>NPDR-2335-SET2</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2335-SET2</name>
+      <price>9900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2335-SET2 для Brother HL-L2300DR/ HL-L2340DWR/ HL-L2360DNR/ HL-L2365DWR/ DCP-L2500DR/ DCP-L2520DWR/ DCP-L2540DNR/ DCP-L2560DWR/ MFC-L2700DWR/ MFC-L2720DWR/ MFC-L2740DWR (12000k) (2 шт) Технические характеристики: - Вес: 0</description>
+    </offer>
+
+    <offer id="NPDR-2335-SET4">
+      <vendorCode>NPDR-2335-SET4</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2335-SET4</name>
+      <price>17900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2335-SET4 для Brother HL-L2300DR/ HL-L2340DWR/ HL-L2360DNR/ HL-L2365DWR/ DCP-L2500DR/ DCP-L2520DWR/ DCP-L2540DNR/ DCP-L2560DWR/ MFC-L2700DWR/ MFC-L2720DWR/ MFC-L2740DWR (12000k) (4 шт) Технические характеристики: - Вес: 0</description>
+    </offer>
+
+    <offer id="NPD0BN2227-RE">
+      <vendorCode>NPD0BN2227-RE</vendorCode>
+      <name>Блок фотобарабана и проявки желтый NVP совместимый с Ricoh IMC3000/3000A/3500/3500A/4500/4500A/5500/5500A/6000 (D0BN2227) восстановл</name>
+      <price>166900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-D0BN2227-RE.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана и проявки желтый NVP совместимый с Ricoh IMC3000/3000A/3500/3500A/4500/4500A/5500/5500A/6000 (D0BN2227) восстановл Технические характеристики: - Вес: 4.7</description>
+    </offer>
+
     <offer id="NP047-SET2">
       <vendorCode>NP047-SET2</vendorCode>
       <name>Картридж NVP совместимый NV-047-SET2</name>
@@ -1611,6 +1691,16 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Картридж NVP совместимый NV-106R01481 Cyan для Xerox Phaser 6140 (2000k) Технические характеристики: - Ресурс: 2000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: Xerox Phaser 6140 - Вес: 0.156 - Принтеры: Xerox Phaser 6140</description>
     </offer>
 
+    <offer id="NPDR-1070UDU">
+      <vendorCode>NPDR-1070UDU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-1070U DU</name>
+      <price>9900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-1070UDU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-1070U DU для Avision AP30A/AM30A (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Avision AP30A/AM30A - Вес: 0.444 - Принтеры: Avision AP30A, Avision AM30A</description>
+    </offer>
+
     <offer id="NPTK-1060">
       <vendorCode>NPTK-1060</vendorCode>
       <name>Картридж NVP совместимый NV-TK-1060</name>
@@ -1629,6 +1719,166 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <currencyId>KZT</currencyId>
       <available>true</available>
       <description>Картридж NVP совместимый NV-TN-1070 для Avision AP30A/AM30A (3000k) Технические характеристики: - Ресурс: 3000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Avision AP30A/AM30A - Вес: 0.7 - Принтеры: Avision AP30A, Avision AM30A</description>
+    </offer>
+
+    <offer id="NPDR1075">
+      <vendorCode>NPDR1075</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-1075</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR1075.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-1075 для Brother HL-1110R/ HL-1112R/ DCP-1510R/ DCP-1512R/ MFC-1810R/ MFC-1815R/ HL-1210WR/ HL-1212WR/ DCP-1610WR/ DCP-1612WR/ MFC-1912WR (10000k) Технические характеристики: - Ресурс: 10000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-1110R/1112/1210WR/212/DCP-1510R/1512/1610WR/1612/MFC-1810R/1815/1912WR - Вес: 0.44 - Принтеры: Brother HL-1110R, Brother HL-1112, Brother HL-1212WR, Brother HL-1210WR, Brother DCP-1510R, Brother DCP-1512, Brother DCP-1610WR, Brother DCP-1612WR, Brother MFC-1810R, Brother MFC-1815, Brother MFC-1912WR, Brother DCP-1510, Brother DCP-1512R, Brother HL-1110, Brother HL-1112R, Brother MFC-1810, Brother MFC-1815R, Brother MFC-1910, Brother MFC-1910W</description>
+    </offer>
+
+    <offer id="NPDR1095">
+      <vendorCode>NPDR1095</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-1095</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR1095.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-1095 для Brother HL-1202R/ DCP-1602R (10000k) Технические характеристики: - Ресурс: 10000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-1202R/DCP-1602R - Вес: 0.45 - Принтеры: Brother HL-1202R, Brother DCP-1602R, Brother HL-1223WR, Brother DCP-1623WR, Brother DCP-1602, Brother HL-1202</description>
+    </offer>
+
+    <offer id="NPDR-12">
+      <vendorCode>NPDR-12</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-12</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-12.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-12 для Brother HL-L2371DN/DCP-L2551DN/MFC-L2751DW (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-L2371DN/DCP-L2551DN/MFC-L2751DW - Вес: 0.6 - Принтеры: Brother HL-L2371DN, Brother MFC-L2751DW, Brother DCP-L2551DN</description>
+    </offer>
+
+    <offer id="NPDR2075">
+      <vendorCode>NPDR2075</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2075</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR2075.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2075 для Brother HL-2030R/ HL-2040R/ HL-2070NR/ FAX-2920R/ FAX-2825R/ DCP-7010R/ DCP-7025R/ MFC-7420R/ MFC-7820NR (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-2030R/40R/70NR/FAX-2825R/2920R/DCP-7010R/25R/MFC-7420R/7820NR - Вес: 0.776 - Принтеры: Brother HL-2070N, Brother HL-2030R, Brother HL-2040R, Brother HL-2070NR, Brother FAX-2825R, Brother FAX-2920R, Brother DCP-7010R, Brother DCP-7025R, Brother MFC-7420R, Brother MFC-7820NR, Brother HL-2040, Brother DCP-7010, Brother DCP-7010L, Brother DCP-7020, Brother DCP-7025, Brother FAX-2820, Brother FAX-2825, Brother FAX-2920, Brother HL-2030, Brother HL-2050, Brother HL-2070, Brother MFC-7225, Brother MFC-7225N, Brother MFC-7420, Brother MFC-7820, Brother MFC-7820N, Brother MFC-7820R</description>
+    </offer>
+
+    <offer id="NPDR2080">
+      <vendorCode>NPDR2080</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2080</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR2080.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2080 для Brother HL-2130R/ DCP-7055R/ DCP-7055W (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-2130R/DCP-7055R/WR - Вес: 0.8 - Принтеры: Brother DCP-7055W, Brother HL-2132R, Brother HL-2130R, Brother DCP-7055R, Brother DCP-7055WR, Brother DCP-7055, Brother HL-2130, Brother HL-2132</description>
+    </offer>
+
+    <offer id="NPDR2085">
+      <vendorCode>NPDR2085</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2085</name>
+      <price>7900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR2085.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2085 для Brother HL-2035R (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-2035R - Вес: 0.79 - Принтеры: Brother HL-2035R, Brother HL-2035, Brother HL-2037</description>
+    </offer>
+
+    <offer id="NPDR-213CL">
+      <vendorCode>NPDR-213CL</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-213CL</name>
+      <price>7900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-213CL.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-213CL для Brother HL-L3230CDW/DCP-L3550CDW/MFC-L3770CDW (18000k) Технические характеристики: - Ресурс: 18000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-L3230CDW/DCP-L3550CDW/MFC-L3770CDW - Вес: 0.445 - Принтеры: Brother HL-L3230, Brother HL-L3230CDW, Brother DCP-L3550, Brother MFC-L3770, Brother MFC-L3770CDW, Brother DCP-L3550CDW</description>
+    </offer>
+
+    <offer id="NPDR2175">
+      <vendorCode>NPDR2175</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2175</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR2175.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2175 для Brother HL-2140R/ HL-2142R/ HL-2150NR/ HL-2170WR/ DCP-7030R/ DCP-7032R/ DCP-7040R/ DCP-7045NR/ MFC-7320R/ MFC-7440NR/ MFC-7840WR (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-2140R/2142/2150NR/2170WR/DCP-7030R/7032/7040/7045NR/MFC-7320R/7440NR/7840WR - Вес: 0.827 - Принтеры: Brother HL-2140R, Brother HL-2142, Brother HL-2150NR, Brother HL-2170WR, Brother DCP-7030R, Brother DCP-7032, Brother DCP-7040, Brother DCP-7045NR, Brother MFC-7320R, Brother MFC-7440NR, Brother MFC-7840WR, Brother DCP-7030, Brother DCP-7032R, Brother DCP-7040NR, Brother DCP-7040R, Brother DCP-7045, Brother HL-2120, Brother HL-2140, Brother HL-2142R, Brother HL-2150, Brother HL-2150N, Brother HL-2170, Brother HL-2170W, Brother MFC-7320, Brother MFC-7340, Brother MFC-7345DN, Brother MFC-7345N, Brother MFC-7440, Brother MFC-7440N, Brother MFC-7840, Brother MFC-7840W</description>
+    </offer>
+
+    <offer id="NPDR2275">
+      <vendorCode>NPDR2275</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2275</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR2275.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2275 для Brother HL-2240R/ HL-2240DR/ HL-2250DNR/ DCP-7060DR/ DCP-7065DNR/ DCP-7070DWR/ MFC-7360NR/ MFC-7860DWR/ FAX-2845R/ FAX-2940R (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-2240R/2240DR/2250DNR/FAX-2940R/DCP-7057R/7057WR/7060DR/7065DNR/7070DWR/MFC-7360NR/7860DWR - Вес: 0.834 - Принтеры: Brother DCP-7060D, Brother DCP-7065DN, Brother HL-2220, Brother HL-2230, Brother HL-2270, Brother HL-2280, Brother HL-2132R, Brother DCP-7057R, Brother HL-2240R, Brother HL-2250DNR, Brother DCP-7060DR, Brother DCP-7065DNR, Brother DCP-7070DWR, Brother MFC-7360NR, Brother MFC-7860DWR, Brother FAX-2845R, Brother FAX-2940R, Brother HL-2240DR, Brother DCP-7057WR, Brother DCP-7057, Brother DCP-7060, Brother DCP-7065, Brother DCP-7070, Brother FAX-2840, Brother FAX-2845, Brother FAX-2940, Brother HL-2132, Brother HL-2135, Brother HL-2135W, Brother HL-2240, Brother HL-2250, Brother HL-2250DN, Brother HL-2270DW, Brother MFC-7360, Brother MFC-7460DN, Brother MFC-7460N, Brother MFC-7860</description>
+    </offer>
+
+    <offer id="NPDR2335">
+      <vendorCode>NPDR2335</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2335</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR2335.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2335 для Brother HL-L2300DR/ HL-L2340DWR/ HL-L2360DNR/ HL-L2365DWR/ DCP-L2500DR/ DCP-L2520DWR/ DCP-L2540DNR/ DCP-L2560DWR/ MFC-L2700DWR/ MFC-L2720DWR/ MFC-L2740DWR (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-L2300DR/2340DWR/2360DNR/2365DWR/DCP-L2500DR/2520DWR/2540DNR/2560DWR/MFC-L2700DWR/2720DWR/2740DWR - Вес: 0.68 - Принтеры: Brother HL-L2300DR, Brother HL-L2340DWR, Brother HL-L2360DNR, Brother HL-L2365DWR, Brother DCP-L2500DR, Brother DCP-L2520DWR, Brother DCP-L2540DNR, Brother DCP-L2560DWR, Brother MFC-L2700DWR, Brother MFC-L2720DWR, Brother MFC-L2740DWR, Brother DCP-L2500, Brother DCP-L2500D, Brother DCP-L2520, Brother DCP-L2540, Brother DCP-L2540DN, Brother DCP-L2560, Brother DCP-L2560DW, Brother DCP-L2520DW, Brother HL-L2300, Brother HL-L2300D, Brother HL-L2340, Brother HL-L2340DW, Brother HL-L2360, Brother HL-L2360DN, Brother HL-L2365, Brother HL-L2365DW, Brother MFC-L2700, Brother MFC-L2700DNR, Brother MFC-L2700DW, Brother MFC-L2720, Brother MFC-L2720DW, Brother MFC-L2740, Brother MFC-L2740DW</description>
+    </offer>
+
+    <offer id="NPDR-241CL">
+      <vendorCode>NPDR-241CL</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-241CL CMYK</name>
+      <price>7900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-241CL.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-241CL CMYK для Brother HL-3140CW/HL-3150/HL-3170CDW /DCP-9020CDW/MFC-9130/MFC-9140 /MFC-9320/MFC-9330CDW/MFC-9340 (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-3140CW/HL-3150/HL-3170CDW /DCP-9020CDW/MFC-9130/MFC-9140 /MFC-9320/MFC-9330CDW/MFC-9340 - Вес: 0.525 - Принтеры: Brother MFC-9140CDW, Brother HL-3140, Brother HL-3140CW, Brother HL-3170CDW, Brother HL-3150CDW, Brother DCP-9020CDW, Brother MFC-9140CDN, Brother MFC-9330CDW, Brother MFC-9340CDW</description>
+    </offer>
+
+    <offer id="NPDR-2510DU">
+      <vendorCode>NPDR-2510DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-2510 DU</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-2510DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-2510 DU для Brother HL-L2400/HL-L2445/HL-L2447/HL-L2865/DCP-L2620/DCP-L2627/DCP-L2660/DCP-L2665/MFC-L2800/MFC-L2827/MFC-L2835/MFC-L2860/MFC-L2960/MFC-L2980 (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-L2400/HL-L2445/HL-L2447/HL-L2865/DCP-L2620/DCP-L2627/DCP-L2660/DCP-L2665/MFC-L2800/MFC-L2827/MFC-L2835/MFC-L2860/MFC-L2960/MFC-L2980 - Вес: 0.61 - Принтеры: Brother HL-L2400, Brother HL-L2445, Brother HL-L2447, Brother HL-L2865, Brother DCP-L2620, Brother DCP-2627, Brother DCP-L2660, Brother DCP-L2665, Brother MFC-L2800, Brother MFC-L2827, Brother MFC-L2835, Brother MFC-L2860, Brother MFC-L2960, Brother MFC-L2980</description>
+    </offer>
+
+    <offer id="NPDR3100">
+      <vendorCode>NPDR3100</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-3100</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR3100.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-3100 для Brother HL-5240L/ HL-5240/ HL-5250DN/ HL-5270DN/ HL-5280DW/ DCP-8060/ MFC-8460N/ DCP-8065DN/ MFC-8860DN/ MFC-8870DW (25000k) Технические характеристики: - Ресурс: 25000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-5240L/5240/5250DN/5270DN/5280DW/DCP-8060/8065DN/MFC-8460N/8860DN/8870DW - Вес: 0.83 - Принтеры: Brother HL-5240L, Brother HL-5240, Brother HL-5250DN, Brother HL-5270DN, Brother HL-5280DW, Brother DCP-8065DN, Brother MFC-8460N, Brother MFC-8860DN, Brother MFC-8870DW, Brother HL-5340D, Brother HL-5350DN, Brother HL-5370DW, Brother MFC-8880DN, Brother MFC-8890DW, Brother MFC-8860N, Brother DCP-8060, Brother DCP-8065, Brother HL-5200, Brother HL-5250, Brother HL-5250D, Brother HL-5270, Brother HL-5270D, Brother HL-5280, Brother MFC-8460, Brother MFC-8860, Brother MFC-8870</description>
+    </offer>
+
+    <offer id="NPDR3200">
+      <vendorCode>NPDR3200</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-3200</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR3200.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-3200 для Brother HL-5350DN/ HL-5370DW/ HL-5380DN/ MFC-8880DN/ MFC-8370DN/ MFC-8380DN/ MFC-8890DW/ HL-5340DL/ HL-5340D (25000k) Технические характеристики: - Ресурс: 25000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-5340DL/5340D/5350DN/5370DW/5380DN/MFC-8880DN/8370/8380/8890DW/DCP-8085DN - Вес: 0.854 - Принтеры: Brother DCP-8080, Brother DCP-8080DN, Brother HL-5340DL, Brother HL-5340D, Brother HL-5350DN, Brother HL-5370DW, Brother HL-5380DN, Brother MFC-8880DN, Brother MFC-8370DN, Brother MFC-8380DN, Brother MFC-8890DW, Brother DCP-8085DN, Brother DCP-8070D, Brother DCP-8070, Brother DCP-8085, Brother HL-5340, Brother HL-5350, Brother HL-5350DNLT, Brother HL-5370, Brother HL-5370DWT, Brother MFC-8370, Brother MFC-8380DNLT, Brother MFC-8480DN, Brother MFC-8880, Brother MFC-8881DNHY</description>
+    </offer>
+
+    <offer id="NPDR3300">
+      <vendorCode>NPDR3300</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-3300</name>
+      <price>8900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR3300.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-3300 для Brother DCP-8110DN/ DCP-8250DN/ HL-5440D/ HL-5450DN/ HL-5450DNT/ HL-5470DW/ HL-6180DW/ MFC-8520DN/ MFC-8950DW (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-5440D/5450DN/5450DNT/5470DW/6180DW/DCP-8110DN/8250DN/MFC-8520DN/8950DW - Вес: 1.089 - Принтеры: Brother MFC-8510, Brother HL-5440D, Brother HL-5450DN, Brother HL-5450DNT, Brother HL-5470DW, Brother HL-6180DW, Brother DCP-8110DN, Brother DCP-8250DN, Brother MFC-8950DW, Brother MFC-8520DN, Brother DCP-8110, Brother DCP-8250, Brother HL-5440, Brother HL-5450, Brother HL-5470, Brother HL-6180, Brother HL-6180DWT, Brother MFC-8510DN, Brother MFC-8520, Brother MFC-8950, Brother MFC-8950DWT</description>
+    </offer>
+
+    <offer id="NPDR3400">
+      <vendorCode>NPDR3400</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-3400</name>
+      <price>7900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR3400.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-3400 для Brother HL-L5000D/ HL-L5100DN/ HL-L5100DNT/ HL-L5200DW/ HL-L5200DWT/ HL-L6250DN/ HL-L6300DW/ HL-L6300DWT/ HL-L6400DW/ HL-L6400DWT/ DCP-L5500DN/ DCP-L6600DW/ MFC-L5700DN/ MFC-L5750DW/ MFC-L6800DW/ MFC-L6800DWT/ MFC-L6900DW/ MFC-L6900DWT (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Brother HL-L5000D/L5100DN/L5100DNT/L5200DW/L5200DWT/L6250DN/L6300DW/L6300DWT/L6400DW/L6400DWT/DCP-L5500DN/L6600DW/MFC-L5700DN/L5750DW/L680 - Вес: 0.845 - Принтеры: Brother HL-L5200, Brother HL-L5100, Brother HL-L6200, Brother HL-L6200DW, Brother MFC-L5700, Brother HL-L5000, Brother HL-L6300, Brother HL-L6400, Brother MFC-L6800, Brother MFC-L6900, Brother DCP-L6600, Brother DCP-L5500, Brother MFC-L5750, Brother HL-L5000D, Brother HL-L5100DN, Brother HL-L5100DNT, Brother HL-L5200DW, Brother HL-L5200DWT, Brother HL-L6250DN, Brother HL-L6300DWT, Brother HL-L6400DW, Brother HL-L6400DWT, Brother DCP-L5500DN, Brother DCP-L6600DW, Brother MFC-L5700DN, Brother MFC-L5750DW, Brother MFC-L6800DW, Brother MFC-L6800DWT, Brother MFC-L6900DW, Brother MFC-L6900DWT</description>
     </offer>
 
     <offer id="NPTN1075T">
@@ -2119,6 +2369,136 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <currencyId>KZT</currencyId>
       <available>true</available>
       <description>Струйный картридж NVP LC-1280XLY (NV-LC1280XLY) Yellow для Brother MFCJ5910/6510/6910 (19 мл) совместимый Технические характеристики: - Вес: 0.05 - Принтеры: Brother MFC-J5910DW, Brother MFC-J6510, Brother MFC-J6510DW, Brother MFC-J5910, Brother MFC-J6710, Brother MFC-J6710DW, Brother MFC-J6910DW, Brother MFC-J6910</description>
+    </offer>
+
+    <offer id="NP034CDUС">
+      <vendorCode>NP034CDUС</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-034C DU Cyan</name>
+      <price>64900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-034CDUС.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-034C DU Cyan для Canon iR C1225 (34000k) Технические характеристики: - Ресурс: 34000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: Canon iR C1225 - Вес: 1.454 - Принтеры: Canon imageRUNNER C1225, Canon imageRUNNER C1225iF</description>
+    </offer>
+
+    <offer id="NP034KDUBk">
+      <vendorCode>NP034KDUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-034K DU Black</name>
+      <price>64900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-034KDUBk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-034K DU Black для Canon iR C1225 (34000k) Технические характеристики: - Ресурс: 34000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon iR C1225 - Вес: 1.454 - Принтеры: Canon imageRUNNER C1225, Canon imageRUNNER C1225iF</description>
+    </offer>
+
+    <offer id="NP034MDUM">
+      <vendorCode>NP034MDUM</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-034M DU Magenta</name>
+      <price>64900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-034MDUM.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-034M DU Magenta для Canon iR C1225 (34000k) Технические характеристики: - Ресурс: 34000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: Canon iR C1225 - Вес: 1.454 - Принтеры: Canon imageRUNNER C1225, Canon imageRUNNER C1225iF</description>
+    </offer>
+
+    <offer id="NP034YDUY">
+      <vendorCode>NP034YDUY</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-034Y DU Yellow</name>
+      <price>64900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-034YDUY.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-034Y DU Yellow для Canon iR C1225 (34000k) Технические характеристики: - Ресурс: 34000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Canon iR C1225 - Вес: 1.454 - Принтеры: Canon imageRUNNER C1225, Canon imageRUNNER C1225iF</description>
+    </offer>
+
+    <offer id="NP049DU">
+      <vendorCode>NP049DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-049DU</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-049DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-049 DU для Canon i-SENSYS LBP-112w LBP-113w MF-112 MF-113w (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon i-SENSYS LBP-112w LBP-113w MF-112 MF-113w - Вес: 0.32 - Принтеры: Canon i-SENSYS LBP112, Canon i-SENSYS LBP113w, Canon i-SENSYS MF112, Canon i-SENSYS MF113w</description>
+    </offer>
+
+    <offer id="NP051DU">
+      <vendorCode>NP051DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-051 DU</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-051DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-051 DU для Canon LBP162/MF264/MF267/MF269 (23000k) Технические характеристики: - Ресурс: 23000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon LBP162/MF264/MF267/MF269 - Вес: 0.33 - Принтеры: Canon i-SENSYS LBP162dw, Canon i-SENSYS MF264dw, Canon i-SENSYS MF267dw, Canon i-SENSYS MF269dw</description>
+    </offer>
+
+    <offer id="NPCEXV14DU">
+      <vendorCode>NPCEXV14DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-C-EXV14 DU</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CEXV14DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-C-EXV14 DU для Canon iR2016i/ iR2020i/ iR2016/ iR2016J/ iR2020 (50000k) Технические характеристики: - Ресурс: 50000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon iR2016/iR2020 - Вес: 1.14 - Принтеры: Canon imageRUNNER 2016i, Canon imageRUNNER 2020i, Canon imageRUNNER 2016J, Canon imageRUNNER 1600F, Canon imageRUNNER 1600FL, Canon imageRUNNER 1610, Canon imageRUNNER 1630, Canon imageRUNNER 1670, Canon imageRUNNER 1670F, Canon imageRUNNER 2010, Canon imageRUNNER 2420, Canon imageRUNNER 2016, Canon imageRUNNER 2020, Canon imageRUNNER 2018, Canon imageRUNNER 2022, Canon imageRUNNER 2025, Canon imageRUNNER 2030, Canon imageRUNNER 2318, Canon imageRUNNER 2320, Canon imageRUNNER 2422, Canon imageRUNNER 1600, Canon imageRUNNER 1605, Canon imageRUNNER 1610F, Canon imageRUNNER 2000, Canon imageRUNNER 2010F</description>
+    </offer>
+
+    <offer id="NPCEXV18DU">
+      <vendorCode>NPCEXV18DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-C-EXV18 DU</name>
+      <price>17900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CEXV18DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-C-EXV18 DU для Canon iR1018/ iR1020/ iR1022/ iR1024 (26900k) Технические характеристики: - Ресурс: 26900 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon iR1018/iR1018J/iR1020/iR1020J/iR1022/iR1022F/iR1022i/iR1022iF/iR1024A/iR1024i/iR1024iF - Вес: 0.82 - Принтеры: Canon imageRUNNER 1024, Canoni mageRUNNER 1020if, Canoni imageRUNNER 1024J, Canon imageRUNNER 1020, Canon imageRUNNER 1025, Canon imageRUNNER 1022, Canon imageRUNNER 1018J, Canon imageRUNNER 1018, Canon imageRUNNER 1022A, Canon imageRUNNER 1022F, Canon imageRUNNER 1022i, Canon imageRUNNER 1022iF, Canon imageRUNNER 1024A</description>
+    </offer>
+
+    <offer id="NPCEXV32/CEXV33DU">
+      <vendorCode>NPCEXV32/CEXV33DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-C-EXV32/C-EXV33 DU</name>
+      <price>28900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CEXV32-CEXV33DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-C-EXV32/C-EXV33 DU для Canon iR2520/ iR2525/ iR2530/ iR2535/ iR2545 (169000k) Технические характеристики: - Ресурс: 169000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon iR2520/iR2525/ iR2530/iR2535/ iR2545 - Вес: 1.255 - Принтеры: Canon imageRUNNER 2535i, Canon imageRUNNER 2520, Canon imageRUNNER 2525, Canon imageRUNNER 2530, Canon imageRUNNER 2535, Canon imageRUNNER 2545, Canon imageRUNNER 2545i, Canon imageRUNNER 2520i, Canon imageRUNNER 2525i, Canon imageRUNNER 2530i</description>
+    </offer>
+
+    <offer id="NPC-EXV42DU">
+      <vendorCode>NPC-EXV42DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-C-EXV42 DU</name>
+      <price>20900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-C-EXV42DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVР совместимый NV-C-EXV42 DU для Canon iR 2202/2204 (66000k) Технические характеристики: - Ресурс: 66000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon iR 2202/2204 - Вес: 1.045 - Принтеры: Canon imageRUNNER 2204, Canon imageRUNNER 2204F, Canon imageRUNNER 2204N, Canon imageRUNNER 2202, Canon imageRUNNER 2202N</description>
+    </offer>
+
+    <offer id="NPC-EXV49CMYKDU">
+      <vendorCode>NPC-EXV49CMYKDU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-C-EXV49 CMYK DU</name>
+      <price>21900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-C-EXV49CMYKDU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVР совместимый NV-C-EXV49 CMYK DU для Canon iR ADV C3025/C3320/C3325/C3330/C3520/C3525/C3530 (86300k) Технические характеристики: - Ресурс: 86300 - Тип печати: Лазерная - Цвет печати: CMYK - Совместимость с моделями: Canon iR ADV C3025/C3320/C3325/C3330/C3520/C3525/C3530 - Вес: 0.945 - Принтеры: Canon imageRUNNER ADVANCE C3320i, Canon imageRUNNER ADVANCE C3330i, Canon imageRUNNER ADVANCE C3530i, Canon imageRUNNER ADVANCE C3520i, Canon imageRUNNER ADVANCE C3525i, Canon imageRUNNER ADVANCE C3320, Canon imageRUNNER ADVANCE DX C3720i, Canon imageRUNNER ADVANCE DX C3725i, Canon imageRUNNER ADVANCE DX C3730i, Canon imageRUNNER C3025, Canon imageRUNNER C3025i, Canon imageRUNNER ADVANCE C3525, Canon imageRUNNER ADVANCE DX C3720, Canon imageRUNNER ADVANCE DX C3725, Canon imageRUNNER ADVANCE DX C3730</description>
+    </offer>
+
+    <offer id="NPC-EXV50DU">
+      <vendorCode>NPC-EXV50DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-C-EXV50 DU</name>
+      <price>27900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-C-EXV50DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVР совместимый NV-C-EXV50 DU для Canon iR 1430/1435 (35500k) Технические характеристики: - Ресурс: 35500 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon iR 1430/1435 - Вес: 0.82 - Принтеры: Canon imageRUNNER 1435P, Canon imageRUNNER 1430, Canon imageRUNNER 1435, Canon imageRUNNER 1435i, Canon imageRUNNER 1435iF</description>
+    </offer>
+
+    <offer id="NPС-EXV38/39DU">
+      <vendorCode>NPС-EXV38/39DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-С-EXV38/39 DU</name>
+      <price>21900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-С-EXV38-39DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-С-EXV38/39 DU для Canon IR Advance 4045/4051/4245/4251/4025/4035/4225/4235i (150000k) Технические характеристики: - Ресурс: 150000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Canon IR Advance 4045/4051/4245/4251/4025/4035/4225/4235i - Вес: 1.36 - Принтеры: Canon imageRUNNER ADVANCE 4045i, Canon imageRUNNER ADVANCE 4051i, Canon imageRUNNER ADVANCE 4035i, Canon imageRUNNER ADVANCE 4025i, Canon imageRUNNER ADVANCE 4225i, Canon imageRUNNER ADVANCE 4235i, Canon imageRUNNER ADVANCE 4245i, Canon imageRUNNER ADVANCE 4251i</description>
     </offer>
 
     <offer id="NP034Bk">
@@ -4569,6 +4949,156 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <currencyId>KZT</currencyId>
       <available>true</available>
       <description>Струйный картридж NV Print T9734 (NV-C13T973400) Yellow для Epson WorkForce Pro WF-C869RDTWF (RIPS), WF-C869RDTWFSW (22 000 стр) совместимый Технические характеристики: - Тип печати: Струйная - Цвет печати: Yellow - Вес: 0.71 - Принтеры: Epson WorkForce Pro WF-C869RDTWF, Epson WorkForce Pro WF-C869RDTWFSW</description>
+    </offer>
+
+    <offer id="NPCE314ADU">
+      <vendorCode>NPCE314ADU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CE314A DU</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CE314ADU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CE314A DU для HP LaserJet Pro CP1025/ CP1025nw/ M175a/ M175nw/ M275/ M176n/ M177fw/ CP1025/ CP1025nw (14000k) Технические характеристики: - Ресурс: 14000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Pro CP1025/CP1025nw/M275/M175a/M175nw/M176n/M177fw - Вес: 0.85 - Принтеры: HP LaserJet Pro CP1025, HP LaserJet Pro CP1025nw, HP Color LaserJet Pro M275, HP Color LaserJet Pro CP1020, HP LaserJet Pro 100 M175, HP Color LaserJet Pro M275nw, HP Color LaserJet Pro MFP M176, HP LaserJet Pro 100 M175a, HP LaserJet Pro 100 M175nw, HP Color LaserJet Pro MFP M177, HP Color LaserJet Pro MFP M177fw, HP Color LaserJet Pro MFP M176n</description>
+    </offer>
+
+    <offer id="NPCF219A">
+      <vendorCode>NPCF219A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF219A</name>
+      <price>4900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CF219A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF219A для HP LaserJet Pro M132a/ M132fn/ M132fw/ M132nw/ M104a/ M104w (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Pro M104a/M104w/M132a/M132fn/M132fw/M132nw - Вес: 0.305 - Принтеры: HP LaserJet Pro M102, HP LaserJet Pro MFP M130, HP LaserJet Pro M102a, HP LaserJet Pro MFP M130a, HP LaserJet Pro MFP M132, HP LaserJet Pro M104a, HP LaserJet Pro M104w, HP LaserJet Pro MFP M132a, HP LaserJet Pro MFP M132fn, HP LaserJet Pro MFP M132fw, HP LaserJet Pro MFP M132nw</description>
+    </offer>
+
+    <offer id="NPCF219ANC">
+      <vendorCode>NPCF219ANC</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF219A (БЕЗ ЧИПА)</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CF219ANC.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF219A (БЕЗ ЧИПА) для HP LaserJet Pro M132a/ M132fn/ M132fw/ M132nw/ M104a/ M104w (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Pro M104a/M104w/M132a/M132fn/M132fw/M132nw - Вес: 0.31 - Принтеры: HP LaserJet Pro MFP M130, HP LaserJet Pro M104, HP LaserJet Pro M102a, HP LaserJet Pro MFP M130a, HP LaserJet Pro MFP M132, HP LaserJet Pro M104a, HP LaserJet Pro M104w, HP LaserJet Pro MFP M132a, HP LaserJet Pro MFP M132fn, HP LaserJet Pro MFP M132fw, HP LaserJet Pro MFP M132nw</description>
+    </offer>
+
+    <offer id="NPCF232A">
+      <vendorCode>NPCF232A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF232A</name>
+      <price>4900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CF232A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF232A для HP LaserJet Pro M227fdn/ M227fdw/ M227sdn/ M230sdn/ M203dn/ M203dw (23000k) Технические характеристики: - Ресурс: 23000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP M206dn/M230fdw/M227fdn/M227fdw/M227sdn/M230sdn/M203dn/M203dw - Вес: 0.35 - Принтеры: HP LaserJet Ultra M206, HP LaserJet Ultra M206d, HP LaserJet Pro MFP M227sdn, HP LaserJet Pro MFP M227fdw, HP LaserJet Pro MFP M227, HP LaserJet Ultra MFP M230, HP LaserJet Pro M227fdn, HP LaserJet Pro M203, HP LaserJet Ultra M206dn, HP LaserJet Ultra MFP M230sdn, HP LaserJet Ultra MFP M230fdw, HP LaserJet Pro M203dn, HP LaserJet Pro M203dw</description>
+    </offer>
+
+    <offer id="NPCF232ANC">
+      <vendorCode>NPCF232ANC</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF232A (БЕЗ ЧИПА)</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CF232ANC.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF232A (БЕЗ ЧИПА) для HP LaserJet Pro M227fdn/ M227fdw/ M227sdn/ M230sdn/ M203dn/ M203dw (23000k) Технические характеристики: - Ресурс: 23000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP M206dn/M230fdw/M227fdn/M227fdw/M227sdn/M230sdn/M203dn/M203dw - Вес: 0.35 - Принтеры: HP LaserJet Ultra M206, HP LaserJet Ultra M206d, HP LaserJet Pro MFP M227sdn, HP LaserJet Pro MFP M227fdw, HP LaserJet Pro MFP M227fdn, HP LaserJet Pro MFP M227, HP LaserJet Ultra MFP M230, HP LaserJet Pro M203, HP LaserJet Ultra M206dn, HP LaserJet Ultra MFP M230sdn, HP LaserJet Ultra MFP M230fdw, HP LaserJet Pro M203dn, HP LaserJet Pro M203dw</description>
+    </offer>
+
+    <offer id="NPCF234A">
+      <vendorCode>NPCF234A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF234A</name>
+      <price>10900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CF234A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF234A для HP LaserJet Pro M134a/ M134fn/ M106w (9200k) Технические характеристики: - Ресурс: 9200 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Ultra M134a/M134fn/M106w - Вес: 0.635 - Принтеры: HP LaserJet Ultra MFP M134a, HP LaserJet Ultra MFP M134fn, HP LaserJet Ultra M106, HP LaserJet M105, HP LaserJet M133, HP LaserJet Ultra MFP M134, HP LaserJet Ultra M106w</description>
+    </offer>
+
+    <offer id="NPCF257A">
+      <vendorCode>NPCF257A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CF257A</name>
+      <price>48900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CF257A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CF257A для HP LaserJet M436dn/M436n/M436nda (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet M436dn/M436n/M436nda - Вес: 2.03 - Принтеры: HP LaserJet MFP M433a, HP LaserJet M436n Pro, HP LaserJet M436nda Pro, HP LaserJet M436n, HP LaserJet M433a, HP LaserJet M436dn, HP LaserJet M436nda, HP LaserJet MFP M436, HP LaserJet MFP M438, HP LaserJet MFP M442, HP LaserJet MFP M443</description>
+    </offer>
+
+    <offer id="NPW1104ADU">
+      <vendorCode>NPW1104ADU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-W1104A DU</name>
+      <price>21900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-W1104A DU для HP Neverstop Laser 1000w/1000a/1200w/1200a (20000k) Технические характеристики: - Ресурс: 20000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP Neverstop Laser 1000w/1000a/1200w/1200a - Вес: 2.25</description>
+    </offer>
+
+    <offer id="NPW1332A332A">
+      <vendorCode>NPW1332A332A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-W1332A 332A</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-W1332A332A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-W1332A 332A для HP Laser 408dn/MFP432 (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP Laser 408dn/MFP432 - Вес: 0.785 - Принтеры: HP Laser 408dn, HP Laser MFP 432fdn</description>
+    </offer>
+
+    <offer id="NPW2004ADU">
+      <vendorCode>NPW2004ADU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-W2004A DU</name>
+      <price>62900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-W2004ADU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-W2004A DU для HP M751dn/M751/M856dn/M856/M776dn/M776/M776z/M776zs (65000k) Технические характеристики: - Ресурс: 65000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP M751dn/M751/M856dn/M856/M776dn/M776/M776z/M776zs - Вес: 0.78 - Принтеры: HP Color LaserJet Enterprise M856dn, HP Color LaserJet Enterprise M856x, HP Color LaserJet Enterprise MFP M776dn, HP Color LaserJet Enterprise flow MFP M776zs, HP Color LaserJet Enterprise flow MFP M776z, HP Color LaserJet Enterprise M751dn, HP Color LaserJet Enterprise M751, HP Color LaserJet Enterprise M856, HP Color LaserJet Enterprise MFP M776</description>
+    </offer>
+
+    <offer id="NPW9006MCDU">
+      <vendorCode>NPW9006MCDU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-W9006MC DU</name>
+      <price>102900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-W9006MCDU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-W9006MC DU для HP Managed LJ MFP E72525dn/E72530dn/E72535dn (200000k) Технические характеристики: - Ресурс: 200000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP Managed LJ MFP E72525dn/E72530dn/E72535dn - Вес: 2.5 - Принтеры: HP LaserJet Managed MFP E72525, HP LaserJet Managed MFP E72535, HP LaserJet Managed MFP E72530, HP LaserJet Managed MFP E72540</description>
+    </offer>
+
+    <offer id="NPW9015MCDU">
+      <vendorCode>NPW9015MCDU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-W9015MC DU</name>
+      <price>101900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-W9015MCDU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-W9015MC DU для HP LaserJet Managed MFP E82540du/E82560du (396000k) Технические характеристики: - Ресурс: 396000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Managed MFP E82540du/E82560du - Вес: 2</description>
+    </offer>
+
+    <offer id="NPW9044MCBCMYDU">
+      <vendorCode>NPW9044MCBCMYDU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-W9044MC BCMY DU</name>
+      <price>67900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-W9044MCBCMY DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVР совместимый NV-W9044MC BCMY DU для HP Managed LJ Imaging Drum CLJ E77830 (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: CMYK - Совместимость с моделями: HP Managed LJ Imaging Drum CLJ E77830 - Вес: 1.45 - Принтеры: HP Color LaserJet Managed MFP E77822, HP Color LaserJet Managed MFP E77825, HP Color LaserJet Managed MFP E77830</description>
+    </offer>
+
+    <offer id="NPW9054MCBDU">
+      <vendorCode>NPW9054MCBDU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-W9054MC Black DU</name>
+      <price>72900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-W9054MCBDU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-W9054MC Black для HP LJ Managed E87640/ E87650/ E87660 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LJ Managed E87640/ E87650/ E87660 - Вес: 1.327 - Принтеры: HP Color LaserJet Managed MFP E87640, HP Color LaserJet Managed MFP E87650, HP Color LaserJet Managed MFP E87660</description>
+    </offer>
+
+    <offer id="NPW9055MCCMYDU">
+      <vendorCode>NPW9055MCCMYDU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-W9055MC CMY DU</name>
+      <price>72900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-W9055MCCMYDU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-W9055MC CMY для HP LJ Managed E87640/ E87650/ E87660 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: CMY - Совместимость с моделями: HP LJ Managed E87640/ E87650/ E87660 - Вес: 1.33 - Принтеры: HP Color LaserJet Managed MFP E87640, HP Color LaserJet Managed MFP E87650, HP Color LaserJet Managed MFP E87660</description>
     </offer>
 
     <offer id="NPC8543X">
@@ -9251,6 +9781,16 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Тонер-картридж NVP совместимый NV-W1470X (БЕЗ ЧИПА) для HP LJ M611/M612/M634/M635/M636 (25200k) Технические характеристики: - Ресурс: 25200 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LJ M611/M612/M634/M635/M636 - Вес: 2.34 - Принтеры: HP LaserJet Enterprise MFP M636fh, HP LaserJet Enterprise MFP M634z, HP LaserJet Enterprise M611dn, HP LaserJet Enterprise M612dn, HP LaserJet Enterprise MFP M634dn, HP LaserJet Enterprise MFP M634h, HP LaserJet Enterprise MFP M635fht, HP LaserJet Enterprise MFP M635h, HP LaserJet Enterprise flow MFP M635z, HP LaserJet Enterprise flow MFP M636z, HP LaserJet Enterprise MFP M636, HP LaserJet Enterprise M611, HP LaserJet Enterprise MFP M634, HP LaserJet Enterprise MFP M635, HP LaserJet Enterprise M612</description>
     </offer>
 
+    <offer id="NP049/CF219A">
+      <vendorCode>NP049/CF219A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-049/CF219A</name>
+      <price>4900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-049-CF219A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-049/CF219A для HP LaserJet Pro: M104A, M104W, M132A, M132FN, M132FW, M132NW (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP LaserJet Pro: M104A, M104W, M132A, M132FN, M132FW, M132NW - Вес: 0.31 - Принтеры: HP LaserJet Pro M102, HP LaserJet Pro MFP M130, Canon i-SENSYS LBP112, Canon i-SENSYS LBP113w, Canon i-SENSYS MF113w, HP LaserJet Pro MFP M130a, HP LaserJet Pro MFP M132, HP LaserJet Pro M104a, HP LaserJet Pro M104w, HP LaserJet Pro MFP M132fn, HP LaserJet Pro MFP M132fw, HP LaserJet Pro MFP M132nw</description>
+    </offer>
+
     <offer id="NP051HT/CF230XT">
       <vendorCode>NP051HT/CF230XT</vendorCode>
       <name>Картридж NVP совместимый NV-051HT/CF230XT</name>
@@ -9841,6 +10381,56 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Картридж NVP совместимый NV-Q6511A/NV-710 универсальные для HP/Canon LaserJet 2400/2410/2420/2430/LBP-3460 (6000k) Технические характеристики: - Ресурс: 6000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: HP/Canon LaserJet 2400/2410/2420/2430/LBP-3460 - Вес: 1.57 - Принтеры: HP LaserJet 2400, HP LaserJet 2410n, HP LaserJet 2430, HP LaserJet 2430n, Canon i-SENSYS LBP3460, HP LaserJet 2420dn, HP LaserJet 2410, HP LaserJet 2420, HP LaserJet 2420d, HP LaserJet 2420n, HP LaserJet 2430dtn, HP LaserJet 2430t, HP LaserJet 2430tn</description>
     </offer>
 
+    <offer id="NPDR-214Bk">
+      <vendorCode>NPDR-214Bk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-214 Black</name>
+      <price>21900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-214Bk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-214 Black для Konica Minolta bizhub C227/C287 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Konica Minolta bizhub C227/C287 - Вес: 0.07 - Принтеры: Konica Minolta bizhub 227, Konica Minolta bizhub 287</description>
+    </offer>
+
+    <offer id="NPDR-313Bk">
+      <vendorCode>NPDR-313Bk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-313 Black</name>
+      <price>21900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-313Bk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-313 Black для Konica Minolta bizhub C258/308/C308/368/C368/458/C458/558/C558/C658 (120000k) Технические характеристики: - Ресурс: 120000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Konica Minolta bizhub C258/308/C308/368/C368/458/C458/558/C558/C658 - Вес: 1.15 - Принтеры: Konica Minolta bizhub C258, Konica Minolta bizhub C308, Konica Minolta bizhub 308, Konica Minolta bizhub C368, Konica Minolta bizhub 368, Konica Minolta bizhub C458, Konica Minolta bizhub 458, Konica Minolta bizhub C558, Konica Minolta bizhub 558, Konica Minolta bizhub 558e, Konica Minolta bizhub C658, Konica Minolta bizhub 458e, Konica Minolta bizhub 368e, Konica Minolta bizhub 308e</description>
+    </offer>
+
+    <offer id="NPDR-313YMC">
+      <vendorCode>NPDR-313YMC</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-313 Cyan/Magenta/Yellow</name>
+      <price>21900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-313YMC.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-313 Cyan/Magenta/Yellow для Konica Minolta bizhub C258/C308/C368/C458/C558/C658 (75000k) Технические характеристики: - Ресурс: 75000 - Тип печати: Лазерная - Цвет печати: CMY - Совместимость с моделями: Konica Minolta bizhub C258/C308/C368/C458/C558/C658 - Вес: 1.12 - Принтеры: Konica Minolta bizhub C258, Konica Minolta bizhub C308, Konica Minolta bizhub 308, Konica Minolta bizhub C368, Konica Minolta bizhub 368, Konica Minolta bizhub C458, Konica Minolta bizhub C558, Konica Minolta bizhub 558, Konica Minolta bizhub 558e, Konica Minolta bizhub C658, Konica Minolta bizhub 458e, Konica Minolta bizhub 368e, Konica Minolta bizhub 308e</description>
+    </offer>
+
+    <offer id="NPDR-512Bk">
+      <vendorCode>NPDR-512Bk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-512 Black</name>
+      <price>20900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-512Bk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-512 Black для Konica Minolta bizhub 224e/C224/C224e/284e/C284/C284e/364e/C364/C364e/454e/C454/C454e/554e/C554/C554e (120000k) Технические характеристики: - Ресурс: 120000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Konica Minolta bizhub 224e/C224/C224e/284e/C284/C284e/364e/C364/C364e/454e/C454/C454e/554e/C554/C554e - Вес: 0.84 - Принтеры: Konica Minolta bizhub 224, Konica Minolta bizhub 224e, Konica Minolta bizhub 284, Konica Minolta bizhub 284e, Konica Minolta bizhub 364, Konica Minolta bizhub 364e, Konica Minolta bizhub 454, Konica Minolta bizhub 454e, Konica Minolta bizhub 554, Konica Minolta bizhub 554e, Konica Minolta bizhub C224, Konica Minolta bizhub C224e, Konica Minolta bizhub C284, Konica Minolta bizhub C284e, Konica Minolta bizhub C364, Konica Minolta bizhub C364e, Konica Minolta bizhub C454, Konica Minolta bizhub C454e, Konica Minolta bizhub C554, Konica Minolta bizhub C554e</description>
+    </offer>
+
+    <offer id="NPDR-512YMC">
+      <vendorCode>NPDR-512YMC</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR-512 Cyan/Magenta/Yellow</name>
+      <price>21900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR-512YMC.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR-512 Cyan/Magenta/Yellow для Konica Minolta bizhub C224/C224e/C284/C284e/C364/C364e/C454/C454e/C554/C554e (95000k) Технические характеристики: - Ресурс: 95000 - Тип печати: Лазерная - Цвет печати: CMY - Совместимость с моделями: Konica Minolta bizhub C224/C224e/C284/C284e/C364/C364e/C454/C454e/C554/C554e - Вес: 0.84 - Принтеры: Konica Minolta bizhub 224, Konica Minolta bizhub 224e, Konica Minolta bizhub 284, Konica Minolta bizhub 284e, Konica Minolta bizhub 364, Konica Minolta bizhub 364e, Konica Minolta bizhub 454, Konica Minolta bizhub 454e, Konica Minolta bizhub 554, Konica Minolta bizhub 554e, Konica Minolta bizhub C224, Konica Minolta bizhub C224e, Konica Minolta bizhub C284, Konica Minolta bizhub C284e, Konica Minolta bizhub C364, Konica Minolta bizhub C364e, Konica Minolta bizhub C454, Konica Minolta bizhub C454e, Konica Minolta bizhub C554, Konica Minolta bizhub C554e</description>
+    </offer>
+
     <offer id="NPTN-812">
       <vendorCode>NPTN-812</vendorCode>
       <name>Картридж NVP совместимый NV-TN-812</name>
@@ -10289,6 +10879,216 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <currencyId>KZT</currencyId>
       <available>true</available>
       <description>Тонер-картридж NVP совместимый NV-TNP-46 для Konica-Minolta bizhub 4050/4750 (20000k) Технические характеристики: - Ресурс: 20000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Konica-Minolta bizhub 4050/4750 - Вес: 1.005 - Принтеры: Konica Minolta Bizhub 4050, Konica Minolta Bizhub 4750</description>
+    </offer>
+
+    <offer id="NPDK-895">
+      <vendorCode>NPDK-895</vendorCode>
+      <name>Блок фотобарабана NVP совмеcтимый NV-DK-895</name>
+      <price>60900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-895.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совмеcтимый NV-DK-895 для KYOCERA FS-C8020/FS-C8025/FS-C8520/FS-C8525/TASKalfa-205c/TASKalfa-255c (200000k) (восстановленый) (DK-895) Технические характеристики: - Ресурс: 200000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera FS-C8020/FS-C8025/FS-C8520/FS-C8525/TASKalfa-205c/TASKalfa-255c - Вес: 1.3 - Принтеры: Kyocera TASKalfa 205c, Kyocera TASKalfa 255c, Kyocera FS-C8020MFP, Kyocera FS-C8025MFP, Kyocera FS-C8520MFP, Kyocera FS-C8525MFP</description>
+    </offer>
+
+    <offer id="NPDK-1110DU">
+      <vendorCode>NPDK-1110DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-1110 DU</name>
+      <price>12900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-1110DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-1110 DU для Kyocera FS-1040/ FS-1060DN/ FS-1020MFP/ FS-1120MFP/ FS-1025MFP/ FS-1125MFP. (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera FS-1040/1060DN/1020MFP/1120MFP/1025MFP/1125MFP - Вес: 0.525 - Принтеры: Kyocera FS-1025, Kyocera FS-1060, Kyocera FS-1125, Kyocera FS-1020D, Kyocera FS-1040, Kyocera FS-1020MFP, Kyocera FS-1120MFP, Kyocera FS-1041, Kyocera FS-1320MFP, Kyocera FS-1060DN, Kyocera FS-1025MFP, Kyocera FS-1125MFP</description>
+    </offer>
+
+    <offer id="NPDK-1150DU">
+      <vendorCode>NPDK-1150DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-1150 DU</name>
+      <price>18900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-1150DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-1150 DU для Kyocera EcoSys-M2040/P2040/M2135/P2235/M2540/M2635/M2640/M2735/M2835 dw (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera EcoSys-M2040/P2040/M2135/P2235/M2540/M2635/M2640/M2735/M2835 dw - Вес: 0.89 - Принтеры: Kyocera Ecosys M2040, Kyocera Ecosys M2135, Kyocera Ecosys M2540, Kyocera Ecosys M2635, Kyocera Ecosys M2640, Kyocera Ecosys P2040, Kyocera Ecosys M2635dw, Kyocera Ecosys P2235, Kyocera Ecosys P2235dn, Kyocera Ecosys P2235dw, Kyocera Ecosys M2135dn, Kyocera Ecosys M2635dn, Kyocera Ecosys M2735dw, Kyocera Ecosys P2040dn, Kyocera Ecosys P2040dw, Kyocera Ecosys M2040dn, Kyocera Ecosys M2540dn, Kyocera Ecosys M2640idw</description>
+    </offer>
+
+    <offer id="NPDK-1200">
+      <vendorCode>NPDK-1200</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-1200</name>
+      <price>21900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-1200.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-1200 для Kyocera M2235/M2735/P2335 (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera M2235/M2735/P2335 - Вес: 0.88 - Принтеры: Kyocera Ecosys M2235, Kyocera Ecosys P2335, Kyocera Ecosys M2735dn, Kyocera Ecosys M2235dn, Kyocera Ecosys P2335d, Kyocera Ecosys M2835dw, Kyocera Ecosys P2335dw, Kyocera Ecosys P2335dn, Kyocera Ecosys M2735</description>
+    </offer>
+
+    <offer id="NPDK-150DU">
+      <vendorCode>NPDK-150DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-150 DU</name>
+      <price>17900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-150DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-150 DU для Kyocera EcoSys-M2030/P2035/M2530/FS-1028/1030 MFP/1120/1128/1130/1350 (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera EcoSys-M2030/P2035/M2530/FS-1028/1030 MFP/1120/1128/1130/1350 - Вес: 0.87 - Принтеры: Kyocera Ecosys P2035dn, Kyocera Ecosys P2135dn, Kyocera Ecosys P2135, Kyocera Ecosys P2035, Kyocera FS-1300, Kyocera FS-1350, Kyocera FS-1320, Kyocera FS-1370, Kyocera FS-1135, Kyocera Ecosys M2030, Kyocera Ecosys M3530, Kyocera FS-1035MFP_DP, Kyocera FS-1035MFP, Kyocera FS-1028MFP, Kyocera FS-1128MFP, Kyocera FS-1030MFP, Kyocera FS-1030MFP_ DP, Kyocera FS-1130MFP, Kyocera FS-1135MFP, Kyocera Ecosys M2035dn, Kyocera FS-1100, Kyocera FS-1120D, Kyocera FS-1120DN, Kyocera Ecosys P2035d, Kyocera FS-1320D, Kyocera FS-1370DN, Kyocera Ecosys P2135d</description>
+    </offer>
+
+    <offer id="NPDK-170DU">
+      <vendorCode>NPDK-170DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-170 DU</name>
+      <price>17900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-170DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-170 DU для Kyocera FS-1320D/ FS-1320DN/ FS-1370DN/ FS-1035MFP/DP/ FS-1135MFP/ ECOSYS P2035d/ P2035dn/ P2135d/ P2135dn/ M2035dn/ M2535dn (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera ECOSYS P2035d/P2035dn/FS-1320D/P2135d/FS-1320DN/FS-1370DN/P2135dn/FS-1035MFP/DP/FS-1135MFP/M2035dn/M2535dn - Вес: 0.86 - Принтеры: Kyocera FS-1320DN, Kyocera Ecosys P2035dn, Kyocera Ecosys P2135dn, Kyocera Ecosys P2135, Kyocera Ecosys P2035, Kyocera FS-1300, Kyocera FS-1350, Kyocera FS-1320, Kyocera FS-1370, Kyocera Ecosys M2035, Kyocera FS-1135, Kyocera Ecosys M2030, Kyocera Ecosys M3530, Kyocera FS-1035MFP_DP, Kyocera FS-1035MFP, Kyocera FS-1028MFP, Kyocera FS-1128MFP, Kyocera FS-1030MFP, Kyocera FS-1030MFP_ DP, Kyocera FS-1130MFP, Kyocera Ecosys M2535, Kyocera FS-1135MFP, Kyocera Ecosys M2035dn, Kyocera Ecosys M2535dn, Kyocera FS-1100, Kyocera FS-1120D, Kyocera Ecosys P2035d, Kyocera FS-1320D, Kyocera FS-1370DN, Kyocera Ecosys P2135d</description>
+    </offer>
+
+    <offer id="NPDK-3100">
+      <vendorCode>NPDK-3100</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-3100</name>
+      <price>119900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-3100.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-3100 для Kyocera FS-2100/ECOSYS M3040dn (300000c) Технические характеристики: - Ресурс: 300000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera FS-2100/ECOSYS M3040dn - Вес: 1.69 - Принтеры: Kyocera FS-2100DN, Kyocera FS-2100, Kyocera Ecosys M3040, Kyocera Ecosys M3540, Kyocera Ecosys M3040idn, Kyocera Ecosys M3540idn, Kyocera Ecosys M3040dn, Kyocera Ecosys M3540dn</description>
+    </offer>
+
+    <offer id="NPDK-3130DU">
+      <vendorCode>NPDK-3130DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-3130 DU</name>
+      <price>116900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-3130 DU для Kyocera FS-4100/FS-4200/FS-4300 (500000k) Технические характеристики: - Ресурс: 500000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera FS-4100/FS-4200/FS-4300 - Вес: 1.17</description>
+    </offer>
+
+    <offer id="NPDK-3150DU">
+      <vendorCode>NPDK-3150DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-3150 DU</name>
+      <price>117900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-3150 DU для Kyocera Ecosys M3040idn/M3040/M3540idn/M3540 (300000k) Технические характеристики: - Ресурс: 300000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera Ecosys M3040idn/M3040/M3540idn/M3540 - Вес: 2.03</description>
+    </offer>
+
+    <offer id="NPDK-3170DU">
+      <vendorCode>NPDK-3170DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-3170 DU</name>
+      <price>117900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-3170DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-3170 DU для Kyocera ECOSYS P3045/M3145dn (300000k) Технические характеристики: - Ресурс: 300000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera ECOSYS P3045/M3145dn - Вес: 1.664</description>
+    </offer>
+
+    <offer id="NPDK-3190">
+      <vendorCode>NPDK-3190</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-3190</name>
+      <price>123900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-3190.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-3190 для Kyocera ECOSYS P3050/3055/3060/3150/3155/3260/M3655/3660/3860 (500000k) Технические характеристики: - Ресурс: 500000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera ECOSYS P3050/M3655idn - Вес: 1.615 - Принтеры: Kyocera Ecosys M3655idn, Kyocera Ecosys P3050, Kyocera Ecosys M3860idnf, Kyocera Ecosys P3150dn, Kyocera Ecosys P3155dn, Kyocera Ecosys M3660idn, Kyocera Ecosys P3155, Kyocera Ecosys P3055, Kyocera Ecosys P3150, Kyocera Ecosys M3655, Kyocera Ecosys M3660, Kyocera Ecosys P3050dn, Kyocera Ecosys P3055dn, Kyocera Ecosys P3060dn, Kyocera Ecosys P3060</description>
+    </offer>
+
+    <offer id="NPDK-320DU">
+      <vendorCode>NPDK-320DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-320 DU</name>
+      <price>111900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-320 DU для Kyocera FS-2020D/3920DN/4020DN/3040MFP/3140MFP (300000k) Технические характеристики: - Ресурс: 300000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera FS-2020D/3920DN/4020DN/3040MFP/3140MFP - Вес: 1.13</description>
+    </offer>
+
+    <offer id="NPDK-475DU">
+      <vendorCode>NPDK-475DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-475 DU</name>
+      <price>109900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-475DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-475 DU для Kyocera FS-6025/6030/6525/6530/TAKSalfa 255/305 (300000k) Технические характеристики: - Ресурс: 300000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera FS-6025/6030/6525/6530/TAKSalfa 255/305 - Вес: 2.13</description>
+    </offer>
+
+    <offer id="NPDK-5140DU">
+      <vendorCode>NPDK-5140DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-5140 DU</name>
+      <price>44900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-5140DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-5140 DU для Kyocera ECOSYS P6130/P6230/P6235/M6030cdn/M6230/M6530/M6630/P6035/M6035/M6235/M6535/M6635 (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera ECOSYS P6130/P6230/P6235/M6030cdn/M6230/M6530/M6630/P6035/M6035/M6235/M6535/M6635 - Вес: 1.1</description>
+    </offer>
+
+    <offer id="NPDK-5195">
+      <vendorCode>NPDK-5195</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-5195</name>
+      <price>113900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-5195.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-5195 для Kyocera TASKalfa 306ci/406ci/356ci (200000k) Технические характеристики: - Ресурс: 200000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera TASKalfa 306ci/406ci/356ci - Вес: 0.945 - Принтеры: Kyocera TASKalfa 306ci, Kyocera TASKalfa 307ci, Kyocera TASKalfa 308ci</description>
+    </offer>
+
+    <offer id="NPDK-5230DUBk">
+      <vendorCode>NPDK-5230DUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-5230 DU Black</name>
+      <price>52900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-5230DUBk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-5230 DU Black для Kyocera Mita P5021cdn/P5021cdw/P5026cdn/M5521cdn/M5526cdw (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera Mita P5021cdn/P5021cdw/P5026cdn/M5521cdn/M5526cdw - Вес: 0.545 - Принтеры: Kyocera Ecosys M5521, Kyocera Ecosys P5021, Kyocera Ecosys M5526, Kyocera Ecosys P5021cdw, Kyocera Ecosys P5021cdn, Kyocera Ecosys M5521cdw, Kyocera Ecosys M5521cdn, Kyocera Ecosys M5526cdn, Kyocera Ecosys M5526cdw</description>
+    </offer>
+
+    <offer id="NPDK-5231DU">
+      <vendorCode>NPDK-5231DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-5231 DU CMY</name>
+      <price>52900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-5231DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-5231 DU CMY для Kyocera Mita P5021cdn/P5021cdw/P5026cdn/M5521cdn/M5526cdw (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Цветной - Совместимость с моделями: Kyocera Mita P5021cdn/P5021cdw/P5026cdn/M5521cdn/M5526cdw - Вес: 0.545 - Принтеры: Kyocera Ecosys M5521, Kyocera Ecosys P5021, Kyocera Ecosys P5026, Kyocera Ecosys M5526, Kyocera Ecosys P5021cdw, Kyocera Ecosys P5021cdn, Kyocera Ecosys M5521cdw, Kyocera Ecosys M5521cdn, Kyocera Ecosys M5526cdn, Kyocera Ecosys M5526cdw</description>
+    </offer>
+
+    <offer id="NPDK-6115DU">
+      <vendorCode>NPDK-6115DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-6115 DU</name>
+      <price>112900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-6115DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-6115 DU для Kyocera Ecosys M4125idn/M4132idn (300000k) Технические характеристики: - Ресурс: 300000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera Ecosys M4125idn/M4132idn - Вес: 2.13</description>
+    </offer>
+
+    <offer id="NPDK-8115DU">
+      <vendorCode>NPDK-8115DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-8115 DU</name>
+      <price>70900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-8115DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-8115 DU для Kyocera ECOSYS M8124cidn/M8130cidn (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera ECOSYS M8124cidn/M8130cidn - Вес: 1.13</description>
+    </offer>
+
+    <offer id="NPDK-8350DU">
+      <vendorCode>NPDK-8350DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-8350 DU</name>
+      <price>68900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-8350DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-8350 DU для Kyocera TASKalfa 2552ci/3252ci/2553ci/3253ci/2554ci/3554ci (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera TASKalfa 2552ci/3252ci/2553ci/3253ci/2554ci/3554c - Вес: 1.15</description>
+    </offer>
+
+    <offer id="NPDK-8550DU">
+      <vendorCode>NPDK-8550DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DK-8550 DU</name>
+      <price>106900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DK-8550DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DK-8550 DU для Kyocera ECOSYS P4060/P8060/TASKalfa 5002i/6002i/5003i/6003i/3552ci/4052ci/5052ci/6052ci/4053ci/5053ci/6053ci (400000k) Технические характеристики: - Ресурс: 400000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Kyocera ECOSYS P4060/P8060/TASKalfa 5002i/6002i/5003i/6003i/3552ci/4052ci/5052ci/6052ci/4053ci/5053ci/6053ci - Вес: 1.97</description>
     </offer>
 
     <offer id="NPTK1100">
@@ -11831,6 +12631,56 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Тонер-картридж NVP совместимый NV-TK-8525 Yellow для Kyocera TASKalfa 4052ci/4053ci (20000k) Технические характеристики: - Ресурс: 20000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Kyocera TASKalfa 4052ci/4053c - Вес: 0.53 - Принтеры: Kyocera TASKalfa 4052ci, Kyocera TASKalfa 4053ci</description>
     </offer>
 
+    <offer id="NP50F0Z00DU">
+      <vendorCode>NP50F0Z00DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-50F0Z00</name>
+      <price>16900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-50F0Z00DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-50F0Z00 для Lexmark MS310/MS410/MS510/MS610/MX310/MX317/MX410/MX417/MX510/MX511/MX611 (60000K) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Lexmark MS310/MS410/MS510/MS610/MX310/MX317/MX410/MX417/MX510/MX511/MX611 - Вес: 1.575 - Принтеры: Lexmark MS410, Lexmark MS415, Lexmark MS312, Lexmark MX511de, Lexmark MS310, Lexmark MS510, Lexmark MS610, Lexmark MX317dn, Lexmark MX417, Lexmark MX517, Lexmark MX617, Lexmark MS317, Lexmark MS417, Lexmark MS517, Lexmark MS617, Lexmark MX510, Lexmark MX310, Lexmark MX410, Lexmark MX511, Lexmark MX611, Lexmark MS315dn, Lexmark MX417dn, Lexmark MS315, Lexmark MX310dn, Lexmark MX410de, Lexmark MX510de, Lexmark MX611de</description>
+    </offer>
+
+    <offer id="NP52D0ZA0DU">
+      <vendorCode>NP52D0ZA0DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-52D0ZA0 DU</name>
+      <price>20900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-52D0ZA0DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-52D0ZA0 DU для Lexmark LaserPrinter-MS710/MX710/MS711/MX711/MX717/MX718/MS810/MX810/MS811/MX811/MS812/MX812/MS817/MS818 (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Lexmark LaserPrinter-MS710/MX710/MS711/MX711/MX717/MX718/MS810/MX810/MS811/MX811/MS812/MX812/MS817/MS818 - Вес: 1.895 - Принтеры: Lexmark MS812, Lexmark MS810, Lexmark MS811, Lexmark MX710, Lexmark MX711, Lexmark MS711, Lexmark MS710, Lexmark MX717, Lexmark MX810, Lexmark MX710de, Lexmark MX710dhe, Lexmark MS710dn, Lexmark MX711de, Lexmark MX711dhe, Lexmark MS711dn, Lexmark MX717de, Lexmark MX718de, Lexmark MX718, Lexmark MX810dfe, Lexmark MX810dme, Lexmark MX810dxfe, Lexmark MX810dxme, Lexmark MX810dxpe, Lexmark MX811dfe, Lexmark MX811, Lexmark MX811dme, Lexmark MX811dpe, Lexmark MX811dxfe, Lexmark MX811dxme, Lexmark MX811dxpe, Lexmark MX812dfe, Lexmark MX812dme, Lexmark MX812dpe, Lexmark MX812dxfe, Lexmark MX812dxme, Lexmark MX812dxpe, Lexmark MS817, Lexmark MS817dn, Lexmark MX810dpe, Lexmark MS818dn, Lexmark MX812, Lexmark MS810dtn, Lexmark MS810n, Lexmark MS810de, Lexmark MS810dn, Lexmark MS811dn, Lexmark MS811dtn, Lexmark MS811n, Lexmark MS812de, Lexmark MS812dn, Lexmark MS812dtn</description>
+    </offer>
+
+    <offer id="NP56F0Z00DU">
+      <vendorCode>NP56F0Z00DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-56F0Z00 DU</name>
+      <price>36900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-56F0Z00 DU для Lexmark MX321adn/421ade/521de/622ade/MS321dn/421dn/521dn/621dn/622de (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Lexmark MX321adn/421ade/521de/622ade/MS321dn/421dn/521dn/621dn/622de - Вес: 1.65 - Принтеры: Lexmark MS622, Lexmark MS621, Lexmark MS521, Lexmark MX622, Lexmark MX522, Lexmark MX521, Lexmark MX421, Lexmark MS421, Lexmark MX321, Lexmark MB2650, Lexmark B2650, Lexmark MB2546, Lexmark B2546, Lexmark MB2442, Lexmark B2442, Lexmark MB23, Lexmark MX521ade, Lexmark MX321adw, Lexmark MX321adn, Lexmark MX521de, Lexmark MX421ade, Lexmark MS421dn, Lexmark MS421dw, Lexmark MS321dn, Lexmark MB2442adwe, Lexmark MB2546ade, Lexmark MS321, Lexmark B2442dw</description>
+    </offer>
+
+    <offer id="NP76C0PK0DUBk">
+      <vendorCode>NP76C0PK0DUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-76C0PK0 DU Black</name>
+      <price>23900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-76C0PK0DUBk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-76C0PK0 DU Black для Lexmark CS921/CS923/CX921/CX922/CX923/CX924 (100000k) Технические характеристики: - Ресурс: 100000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Lexmark MS911de/MS911/MX910/MX910de/MX911de/MX911/MX912de/MX912 - Вес: 1 - Принтеры: Lexmark CS921, Lexmark CS921de, Lexmark CS923, Lexmark CS923de, Lexmark CX921, Lexmark CX921de, Lexmark CX922, Lexmark CX922de, Lexmark CX923, Lexmark CX923dte, Lexmark CX923dxe, Lexmark CX924, Lexmark CX924dte, Lexmark CX924dxe</description>
+    </offer>
+
+    <offer id="NP76C0PV0DUCMY">
+      <vendorCode>NP76C0PV0DUCMY</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-76C0PV0 DU CMY</name>
+      <price>35900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-76C0PV0DUCMY.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-76C0PV0 DU CMY для Lexmark Lexmark CS921/CS923/CX921/CX922/CX923/CX924 (90000k) Технические характеристики: - Ресурс: 90000 - Тип печати: Лазерная - Цвет печати: CMY - Совместимость с моделями: Lexmark MS911de/MS911/MX910/MX910de/MX911de/MX911/MX912de/MX912 - Вес: 1 - Принтеры: Lexmark CS921, Lexmark CS921de, Lexmark CS923, Lexmark CS923de, Lexmark CX921, Lexmark CX921de, Lexmark CX922, Lexmark CX922de, Lexmark CX923, Lexmark CX923dte, Lexmark CX923dxe, Lexmark CX924, Lexmark CX924dte, Lexmark CX924dxe</description>
+    </offer>
+
     <offer id="NPC950X2CG">
       <vendorCode>NPC950X2CG</vendorCode>
       <name>Картридж NVP совместимый Lexmark C950X2CG Cyan (ОГРАНИЧЕНИЕ ПО ПРОШИВКАМ)</name>
@@ -12031,6 +12881,16 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Картридж NVP совместимый NV-76C0HY0 Yellow для Lexmark CS921de/CS921/CS923de/CS923/CX920de/CX920/CX921de/CX921/CX922de/CX922/CX923dte/CX923/CX924dte/CX924 (34000k) Технические характеристики: - Ресурс: 34000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Lexmark CS921de/CS921/CS923de/CS923/CX920de/CX920/CX921de/CX921/CX922de/CX922/CX923dte/CX923/CX924dte/CX924 - Вес: 1 - Принтеры: Lexmark CS921, Lexmark CS921de, Lexmark CS923, Lexmark CS923de, Lexmark CX921, Lexmark CX921de, Lexmark CX922, Lexmark CX922de, Lexmark CX923, Lexmark CX923dte, Lexmark CX923dxe, Lexmark CX924, Lexmark CX924dte, Lexmark CX924dxe</description>
     </offer>
 
+    <offer id="NP44574302DU">
+      <vendorCode>NP44574302DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-44574302 DU</name>
+      <price>16900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-44574302DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-44574302 DU для Oki B411/431/MB461/471/497/B512DN (25000k) Технические характеристики: - Ресурс: 25000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: B411/431/MB461/471/497/B512DN - Вес: 1.51 - Принтеры: Oki B401, Toshiba e-STUDIO 332P, Toshiba e-STUDIO 382P, Toshiba e-STUDIO 383P, Toshiba e-STUDIO 332S, Toshiba e-STUDIO 403S, Toshiba e-STUDIO 445, OKI B412, OKI MB472, OKI MB492, OKI MB562, OKI MB491, OKI MB441, OKI MB451, OKI B411, OKI B431, OKI MB461, OKI MB471, OKI B432</description>
+    </offer>
+
     <offer id="NP42127408Bk">
       <vendorCode>NP42127408Bk</vendorCode>
       <name>Картридж NVP совместимый NV-42127408 Black</name>
@@ -12141,6 +13001,56 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Тонер-картридж NVP совместимый NV-44574805 для Oki MB461/471/491/B431 (7000k) Технические характеристики: - Ресурс: 7000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Oki MB461/47/49/B431 - Вес: 0.465 - Принтеры: OKI B431d, OKI MB471dnw, OKI MB471w, OKI MB491dn, OKI MB491, OKI B431dn, OKI B431, OKI MB461, OKI MB471</description>
     </offer>
 
+    <offer id="NPKXFAD412A">
+      <vendorCode>NPKXFAD412A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-KX-FAD412A</name>
+      <price>13900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-KXFAD412A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-KX-FAD412A для Panasonic KX-MB2000RU/ MB2020RU/ MB2030RU/ MB1900RU/ MB2051RU/ MB2061RU (6000k) Технические характеристики: - Ресурс: 6000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Panasonic KX-MB1900RU/2000/2020/2030/2051/2061 - Вес: 1.194 - Принтеры: Panasonic KX-MB2010, Panasonic KX-MB2020, Panasonic KX-MB2000RU, Panasonic KX-MB2030RU, Panasonic KX-MB1900RU, Panasonic KX-MB2051RU, Panasonic KX-MB2061RU</description>
+    </offer>
+
+    <offer id="NPKX-FAD422A7">
+      <vendorCode>NPKX-FAD422A7</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-KX-FAD422A7</name>
+      <price>20900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-KX-FAD422A7.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-KX-FAD422A7 для Panasonic KX-MB2230RU/ MB2270RU/ MB2510RU/ MB2540RU/ MB2571RU (18000k) Технические характеристики: - Ресурс: 18000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Panasonic KX-MB2230RU/MB2270RU/MB2510RU/MB2540RU - Вес: 0.585 - Принтеры: Panasonic KX-MB2571RU, Panasonic KX-MB2230RU, Panasonic KX-MB2270RU, Panasonic KX-MB2510RU, Panasonic KX-MB2540RU</description>
+    </offer>
+
+    <offer id="NPKXFAD473A7">
+      <vendorCode>NPKXFAD473A7</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-KX-FAD473A7</name>
+      <price>17900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-KXFAD473A7.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-KX-FAD473A7 для Panasonic KX-MB2110RU/ MB2117RU/ MB2130RU/ MB2137RU/ MB2170RU/ MB2177RU (10000k) Технические характеристики: - Ресурс: 10000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Panasonic KX-MB2110RU/2117RU/2130RU/2137RU/2170RU/2177RU - Вес: 0.915 - Принтеры: Panasonic KX-MB2110RU, Panasonic KX-MB2117RU, Panasonic KX-MB2130RU, Panasonic KX-MB2137RU, Panasonic KX-MB2170RU, Panasonic KX-MB2177RU</description>
+    </offer>
+
+    <offer id="NPKXFAD89A">
+      <vendorCode>NPKXFAD89A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-KX-FAD89A</name>
+      <price>14900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-KXFAD89A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-KX-FAD89A для Panasonic KX-FL401RU/ FL403RU/ FLC412RU/ FL422RU/ FL402RU/ FLC411RU/ FLC413RU/ FL423RU (10000k) Технические характеристики: - Ресурс: 10000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Panasonic KX-FL401/FL402/FL403/FL422/FLC411/FLC412/FLC413/FL423 - Вес: 1.152 - Принтеры: Panasonic KX-FL403, Panasonic KX-FLC413, Panasonic KX-FL418, Panasonic KX-FL401, Panasonic KX-FL402, Panasonic KX-FLC411, Panasonic KX-FLC412, Panasonic KX-FL423</description>
+    </offer>
+
+    <offer id="NPKXFAD93A">
+      <vendorCode>NPKXFAD93A</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-KX-FAD93A</name>
+      <price>13900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-KXFAD93A.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-KX-FAD93A для Panasonic KX-MB262RU/ MB271RU/ MB763RU/ MB773RU/ MB783RU/ MB263RU/ MB283RU/ MB772RU/ MB781RU (6000k) Технические характеристики: - Ресурс: 6000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Panasonic KX-MB263RU/MB283RU/MB763RU/MB773RU/MB783RU - Вес: 1.433 - Принтеры: Panasonic KX-MB262, Panasonic KX-MB271, Panasonic KX-MB283, Panasonic KX-MB772, Panasonic KX-MB773, Panasonic KX-MB781, Panasonic KX-MB263, Panasonic KX-MB763, Panasonic KX-MB783</description>
+    </offer>
+
     <offer id="NPKXFA83A/E">
       <vendorCode>NPKXFA83A/E</vendorCode>
       <name>Картридж NVP совместимый NV-KX-FA83A/E</name>
@@ -12239,6 +13149,46 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <currencyId>KZT</currencyId>
       <available>true</available>
       <description>Картридж NVP совместимый NV-KX-FAT92A для Panasonic KX-MB262RU/ MB271RU/ MB773RU/ MB263RU/ MB763RU/ MB781RU/ MB283RU/ MB772RU/ MB783RU (2000k) Технические характеристики: - Ресурс: 2000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Panasonic KX-MB262/MB263/MB271/MB283/MB763/MB772/MB773/MB781/MB783 - Вес: 0.245 - Принтеры: Panasonic KX-MB262, Panasonic KX-MB271, Panasonic KX-MB283, Panasonic KX-MB772, Panasonic KX-MB773, Panasonic KX-MB781, Panasonic KX-MB263, Panasonic KX-MB763, Panasonic KX-MB783</description>
+    </offer>
+
+    <offer id="NPDL-420">
+      <vendorCode>NPDL-420</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DL-420</name>
+      <price>7900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DL-420.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DL-420 для Pantum P3010/P3300/M6700/M6800/M7100/M7200 (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Pantum P3010/P3300/M6700/M6800/M7100/M7200 - Вес: 0.735 - Принтеры: Pantum P3010D, Pantum P3010DW, Pantum P3300DN, Pantum P3300DW, Pantum M6700D, Pantum M7100DN, Pantum M7100DW, Pantum M6800FDW, Pantum P3300D, Pantum M7200FD, Pantum M7200FDN, Pantum M7200, Pantum M7300, Pantum M7100, Pantum M6800, Pantum M6700, Pantum P3300, Pantum P3010</description>
+    </offer>
+
+    <offer id="NPDL-425X">
+      <vendorCode>NPDL-425X</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DL-425X</name>
+      <price>7900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DL-425X.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DL-425X для Pantum P3305DN/P3305DW/M7105DN/M7105DW (25000k) Технические характеристики: - Ресурс: 25000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Pantum P3305DN/P3305DW/M7105DN/M7105DW - Вес: 0.663 - Принтеры: Pantum P3305DN, Pantum M7105DN, Pantum M7105, Pantum M7105DW, Pantum P3305DW, Pantum P3305</description>
+    </offer>
+
+    <offer id="NPDL-5120">
+      <vendorCode>NPDL-5120</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DL-5120</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DL-5120.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DL-5120 для Pantum BP5100DN/BP5100DW/BM5100ADN/BM5100ADW/BM5100FDN/BM5100FDW (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Pantum BP5100DN/BP5100DW/BM5100ADN/BM5100ADW/BM5100FDN/BM5100FDW - Вес: 0.645 - Принтеры: Pantum BP5100DN, Pantum BP5100DW, Pantum BM5100ADN, Pantum BM5100ADW, Pantum BM5100FDN, Pantum BM5100FDW, Pantum BP5100, Pantum BM5100</description>
+    </offer>
+
+    <offer id="NPDL-5126DU">
+      <vendorCode>NPDL-5126DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DL-5126 DU</name>
+      <price>10900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DL-5126 DU для Pantum BP5106DN/BP5106DW/BM5106ADN/BM5106ADW (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Pantum BP5106DN/BP5106DW/BM5106ADN/BM5106ADW - Вес: 0.658 - Принтеры: Pantum BP5106, Pantum BM5106ADN, Pantum BP5106DN, Pantum BP5106DW, Pantum BM5106ADW, Pantum BM5106</description>
     </offer>
 
     <offer id="NPCTL-1100XC">
@@ -12489,6 +13439,56 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <currencyId>KZT</currencyId>
       <available>true</available>
       <description>Картридж NVP совместимый NV-TL-5126X для Pantum BP5106DN/BP5106DW/BM5106ADN/BM5106ADW (15000k) Технические характеристики: - Ресурс: 15000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Pantum BP5106DN/BP5106DW/BM5106ADN/BM5106ADW - Вес: 1.135 - Принтеры: Pantum BP5106, Pantum BM5106ADN, Pantum BP5106DN, Pantum BP5106DW, Pantum BM5106ADW, Pantum BM5106FD, Pantum BM5106FDN, Pantum BM5106</description>
+    </offer>
+
+    <offer id="NPD1272110DUBk">
+      <vendorCode>NPD1272110DUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-D1272110 DU Black</name>
+      <price>61900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-D1272110DUBk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-D1272110 DU Black для RICOH Aficio MP301 (45000k) Технические характеристики: - Ресурс: 45000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: RICOH Aficio MP301 - Вес: 1.6 - Принтеры: Ricoh Aficio MP 301S, Ricoh Aficio MP 301SPF</description>
+    </offer>
+
+    <offer id="NPD1882264DUBk">
+      <vendorCode>NPD1882264DUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-D1882264 DU Black</name>
+      <price>52900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-D1882264DUBk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-D1882264 DU Black для RICOH MP C2003/C2503 (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: RICOH MP C2003/C2503 - Вес: 1.45 - Принтеры: Ricoh Aficio MP С2003, Ricoh Aficio MP С2503</description>
+    </offer>
+
+    <offer id="NPD2392279DUCMY">
+      <vendorCode>NPD2392279DUCMY</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-D2392279 DU CMY</name>
+      <price>52900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-D2392279DUCMY.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-D2392279 DU CMY для RICOH MPC3004/C3504/С5500/С4504 (175000k) Технические характеристики: - Ресурс: 175000 - Тип печати: Лазерная - Цвет печати: CMY - Совместимость с моделями: RICOH MPC3004/C3504/С5500/С4504 - Вес: 2.2 - Принтеры: Ricoh Aficio MP С3004, Ricoh Aficio MP С3504, Ricoh Aficio MP С4504, Ricoh Aficio MP С5500</description>
+    </offer>
+
+    <offer id="NPSP230DU">
+      <vendorCode>NPSP230DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-SP230 DU</name>
+      <price>6900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-SP230DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-SP230 DU для Ricoh 230DNw/230SFNw (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Ricoh 230DNw/230SFNw - Вес: 0.62</description>
+    </offer>
+
+    <offer id="NPSP4500DU">
+      <vendorCode>NPSP4500DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-SP4500 DU</name>
+      <price>28900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-SP4500 DU для Ricoh Aficio SP 3600DN/3600SF/3610SF/4510DN/4510SF (20000k) Технические характеристики: - Ресурс: 20000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Ricoh Aficio SP 3600DN/3600SF/3610SF/4510DN/4510SF - Вес: 1.45</description>
     </offer>
 
     <offer id="NPIM600H">
@@ -13471,6 +14471,36 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Картридж NVP для Riso ComColor GD9630/7330 (NV-S-7284E, совместимый), Gray Технические характеристики: - Вес: 1.17</description>
     </offer>
 
+    <offer id="NPCLT-R404/406">
+      <vendorCode>NPCLT-R404/406</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CLT-R404/406</name>
+      <price>25900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CLT-R404-406.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CLT-R404/406 для Samsung CLP-360/365/368/CLX-3300/05/SL-C401/406/404 (1600k/4000k) Технические характеристики: - Ресурс: 24000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Samsung CLP-360/365/368/CLX-3300/05/SL-C401/406/404 - Вес: 1.045 - Принтеры: Samsung CLP-365W, Samsung CLX-3305FN, Samsung CLX-3305FW, Samsung CLX-3305N, Samsung CLX-3305W, Samsung Xpress C410W, Samsung Xpress C460W, Samsung Xpress SL-C432, Samsung Xpress SL-C432W, Samsung Xpress SL-C433, Samsung Xpress SL-C433W, Samsung Xpress SL-C482, Samsung Xpress SL-C482W, Samsung Xpress SL-C483W, Samsung Xpress SL-C483, Samsung Xpress SL-C482FW, Samsung Xpress C460FW, Samsung CLP-360, Samsung CLP-365, Samsung CLX-3300, Samsung CLX-3305, Samsung Xpress SL-C430, Samsung Xpress SL-C430W, Samsung Xpress SL-C480, Samsung Xpress SL-C480W, Samsung Xpress SL-C480FW</description>
+    </offer>
+
+    <offer id="NPCLT-R407/409">
+      <vendorCode>NPCLT-R407/409</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CLT-R407/409</name>
+      <price>29900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CLT-R407-409.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CLT-R407/409 для Samsung CLP-310/315/CLX-3170/3175/320/325/CLX-3185 (24000k) Технические характеристики: - Ресурс: 24000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Samsung CLP-310/315/CLX-3170/3175/320/325/CLX-3185 - Вес: 1.25 - Принтеры: Samsung CLP-315N, Samsung CLP-315W, Samsung CLX-3170, Samsung CLX-3170N, Samsung CLX-3170FN, Samsung CLX-3175, Samsung CLX-3175FN, Samsung CLX-3175N, Samsung CLX-3175FW, Samsung CLP-325W, Samsung CLX-3185FW, Samsung CLX-3185N, Samsung CLX-3185FN, Samsung CLX-3185W, Samsung CLX-3180, Samsung CLX-3180FN, Samsung CLX-3180FW, Samsung CLP-320N, Samsung CLP-320K, Samsung CLP-321, Samsung CLP-325K, Samsung CLP-326, Samsung CLP-321N, Samsung CLP-320NK, Samsung CLP-325WK, Samsung CLP-326W, Samsung CLX-3185WK, Samsung CLP-310, Samsung CLP-310N, Samsung CLP-315, Samsung CLP-320, Samsung CLP-325, Samsung CLX-3185</description>
+    </offer>
+
+    <offer id="NPCLT-R809BCMYDU">
+      <vendorCode>NPCLT-R809BCMYDU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-CLT-R809 BCMY DU</name>
+      <price>34900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-CLT-R809BCMYDU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-CLT-R809 BCMY DU для Samsung CLX-9201/9251/9301NA (50000k) Технические характеристики: - Ресурс: 50000 - Тип печати: Лазерная - Цвет печати: CMYK - Совместимость с моделями: Samsung CLX-9201/9251/9301NA - Вес: 1</description>
+    </offer>
+
     <offer id="NPCLPK350ABk">
       <vendorCode>NPCLPK350ABk</vendorCode>
       <name>Картридж NVP совместимый NV-CLP-K350A Black</name>
@@ -13991,6 +15021,46 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Картридж NVP совместимый NV-AR168LT для Sharp AR 122/ 122E/ 122EN/ 123/ 152/ 152E/ 152EN/ 153/ 153E/ 5012/ 5415/ M150/ M155 (6000k) Технические характеристики: - Ресурс: 6000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Sharp 122/152/153/5012/5415/M150/M155 - Вес: 1.591 - Принтеры: Sharp AR-122, Sharp AR-122E, Sharp AR-122EN, Sharp AR-123, Sharp AR-152E, Sharp AR-152EN, Sharp AR-153E, Sharp AR-153, Sharp AR-152, Sharp AR-5012, Sharp AR-5415, Sharp AR-M150, Sharp AR-M155</description>
     </offer>
 
+    <offer id="NPD320IU90KDUC">
+      <vendorCode>NPD320IU90KDUC</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-D320IU90K DU Cyan</name>
+      <price>72900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-D320IU90KDUC.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-D320IU90K DU Cyan для Sindoh D330e/D332e (70000k) Технические характеристики: - Ресурс: 70000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: Sindoh D330e/D332e - Вес: 2.09 - Принтеры: Sindoh D330e, Sindoh D332e</description>
+    </offer>
+
+    <offer id="NPD320IU90KDUM">
+      <vendorCode>NPD320IU90KDUM</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-D320IU90K DU Magenta</name>
+      <price>72900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-D320IU90KDUM.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-D320IU90K DU Magenta для Sindoh D330e/D332e (70000k) Технические характеристики: - Ресурс: 70000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: Sindoh D330e/D332e - Вес: 2.09 - Принтеры: Sindoh D330e, Sindoh D332e</description>
+    </offer>
+
+    <offer id="NPD320IU90KDUY">
+      <vendorCode>NPD320IU90KDUY</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-D320IU90K DU Yellow</name>
+      <price>72900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-D320IU90KDUY.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-D320IU90K DU Yellow для Sindoh D330e/D332e (70000k) Технические характеристики: - Ресурс: 70000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Sindoh D330e/D332e - Вес: 2.09 - Принтеры: Sindoh D330e, Sindoh D332e</description>
+    </offer>
+
+    <offer id="NPD320R105KDUBk">
+      <vendorCode>NPD320R105KDUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-D320R105K DU Black</name>
+      <price>51900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-D320R105KDUBk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-D320R105K DU Black для Sindoh D330e/D332e (70000k) Технические характеристики: - Ресурс: 70000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Sindoh D330e/D332e - Вес: 1.03 - Принтеры: Sindoh D330e, Sindoh D332e</description>
+    </offer>
+
     <offer id="NPD320T24KC">
       <vendorCode>NPD320T24KC</vendorCode>
       <name>Картридж NVP совместимый NV-D320T24KC Cyan</name>
@@ -14039,6 +15109,366 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <currencyId>KZT</currencyId>
       <available>true</available>
       <description>Картридж NVP совместимый NV-N610T30K для Sindoh N612/N613 (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Sindoh N612/N613 - Вес: 0.9 - Принтеры: Sindoh N612, Sindoh N613</description>
+    </offer>
+
+    <offer id="NP013R00681-RE">
+      <vendorCode>NP013R00681-RE</vendorCode>
+      <name>Блок фотобарабана NVP совмеcтимый NV-013R00681 DU</name>
+      <price>34900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00681-RE.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совмеcтимый NV-013R00681 DU для Xerox AltaLink-C8130/AltaLink-C8135/AltaLink-C8145/AltaLink-C8155/AltaLink-C8170 (180000k) Технические характеристики: - Ресурс: 180000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox AltaLink-C8130/AltaLink-C8135/AltaLink-C8145/AltaLink-C8155/AltaLink-C8170 - Вес: 0.995 - Принтеры: Xerox AltaLink C8170, Xerox AltaLink C8130, Xerox AltaLink C8135, Xerox AltaLink C8145, Xerox AltaLink C8155</description>
+    </offer>
+
+    <offer id="NP013R00670DU">
+      <vendorCode>NP013R00670DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV- 013R00670 DU</name>
+      <price>48900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00670DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00670 DU для Xerox WC 5019/5021/5022/5024 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WorkCentre 5019B/5021B/5021D - Вес: 1.08 - Принтеры: Xerox WorkCentre 5019, Xerox WorkCentre 5021, Xerox WorkCentre 5022D, Xerox WorkCentre 5024, Xerox WorkCentre 5022, Xerox WorkCentre 5021D</description>
+    </offer>
+
+    <offer id="NP013R00589DU">
+      <vendorCode>NP013R00589DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00589 DU</name>
+      <price>32900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00589DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00589 DU для Xerox WorkCentre C118/M118/M118i/ Pro 123/128/133 (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Хerox WorkCentre M118/M118i/M123/M128/CopyCentre C118 - Вес: 1.66 - Принтеры: Xerox CopyCentre C118, Xerox CopyCentre 133, Xerox CopyCentre C123, Xerox CopyCentre C128, Xerox WorkCentre Pro 133, Xerox WorkCentre M123, Xerox WorkCentre M128, Xerox WorkCentre Pro 123, Xerox WorkCentre Pro 128, Xerox WorkCentre M118, Xerox WorkCentre M118i, Xerox WorkCentre C118</description>
+    </offer>
+
+    <offer id="NP013R00591DU">
+      <vendorCode>NP013R00591DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00591DU</name>
+      <price>32900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00591DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00591 DU для Xerox WC 5325/5330/5335 (90000k) Технические характеристики: - Ресурс: 90000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WorkCentre 5325/5330/5335 - Вес: 1.95 - Принтеры: Xerox WorkCentre 5325, Xerox WorkCentre 5330, Xerox WorkCentre 5335</description>
+    </offer>
+
+    <offer id="NP013R00647DU">
+      <vendorCode>NP013R00647DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00647 DU</name>
+      <price>27900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00647DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00647 DU для Xerox WorkCentre 7425/7428/7435 (61000k) Технические характеристики: - Ресурс: 61000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WorkCentre 7425/7428/7435 - Вес: 1.18 - Принтеры: Xerox WorkCentre 7425, Xerox WorkCentre 7428, Xerox WorkCentre 7435</description>
+    </offer>
+
+    <offer id="NP013R00657DUBk">
+      <vendorCode>NP013R00657DUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00657 DU Black</name>
+      <price>35900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00657DUBk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00657 DU Black для Xerox WorkCentre/WC-7120/WC-7125/WC-7220/WC-7225 (67000k) Технические характеристики: - Ресурс: 67000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WorkCentre/WC-7120/WC-7125/WC-7220/WC-7225 - Вес: 1.97 - Принтеры: Xerox WorkCentre 7220, Xerox WorkCentre 7225, Xerox WorkCentre 7120, Xerox WorkCentre 7125</description>
+    </offer>
+
+    <offer id="NP013R00658DUY">
+      <vendorCode>NP013R00658DUY</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00658 DU Yellow</name>
+      <price>35900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00658DUY.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00658 DU Yellow для Xerox WorkCentre/WC-7120/WC-7125/WC-7220/WC-7225 (51000k) Технические характеристики: - Ресурс: 51000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Xerox WorkCentre/WC-7120/WC-7125/WC-7220/WC-7225 - Вес: 1.97 - Принтеры: Xerox WorkCentre 7220, Xerox WorkCentre 7225, Xerox WorkCentre 7120, Xerox WorkCentre 7125</description>
+    </offer>
+
+    <offer id="NP013R00659DUM">
+      <vendorCode>NP013R00659DUM</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00659 DU Magenta</name>
+      <price>35900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00659DUM.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00659 DU Magenta для Xerox WorkCentre/WC-7120/WC-7125/WC-7220/WC-7225 (51000k) Технические характеристики: - Ресурс: 51000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: Xerox WorkCentre/WC-7120/WC-7125/WC-7220/WC-7225 - Вес: 1.97 - Принтеры: Xerox WorkCentre 7220, Xerox WorkCentre 7225, Xerox WorkCentre 7120, Xerox WorkCentre 7125</description>
+    </offer>
+
+    <offer id="NP013R00660DUC">
+      <vendorCode>NP013R00660DUC</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00660 DU Cyan</name>
+      <price>35900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00660DUC.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00660 DU Cyan для Xerox WorkCentre/WC-7120/WC-7125/WC-7220/WC-7225 (51000k) Технические характеристики: - Ресурс: 51000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: Xerox WorkCentre/WC-7120/WC-7125/WC-7220/WC-7225 - Вес: 1.97 - Принтеры: Xerox WorkCentre 7220, Xerox WorkCentre 7225, Xerox WorkCentre 7120, Xerox WorkCentre 7125</description>
+    </offer>
+
+    <offer id="NP013R00662DU">
+      <vendorCode>NP013R00662DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00662 DU</name>
+      <price>29900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00662DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00662 DU для Xerox WorkCentre7525/7530/7535/7545/7556/7830/7835/7845/7855/7970 AltaLink C8030/C8035/C8045/C8055/C8070 (125000k) Технические характеристики: - Ресурс: 125000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WorkCentre7525/7530/7535/7545/7556/7830/7835/7845/7855/7970 AltaLink C8030/C8035/C8045/C8055/C8070 - Вес: 1.005 - Принтеры: Xerox AltaLink C8045, Xerox AltaLink C8035, Xerox AltaLink C8030, Xerox AltaLink C8055, Xerox AltaLink C8, Xerox WorkCentre 7525, Xerox WorkCentre 7530, Xerox WorkCentre 7535, Xerox WorkCentre 7545, Xerox WorkCentre 7556, Xerox WorkCentre 7830, Xerox WorkCentre 7835, Xerox WorkCentre 7845, Xerox WorkCentre 7855, Xerox WorkCentre 7970</description>
+    </offer>
+
+    <offer id="NP013R00675">
+      <vendorCode>NP013R00675</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00675</name>
+      <price>91900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00675.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00675 для Xerox AltaLink-B8045/AltaLink-B8055 / AltaLink-B8065 /AltaLink-B8075/AltaLink-B8090/WorkCentre / WC-5945/WorkCentre / WC-5955 (155000k) Технические характеристики: - Ресурс: 155000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox AltaLink-B8045/AltaLink-B8055 / AltaLink-B8065 /AltaLink-B8075/AltaLink-B8090/WorkCentre / WC-5945/WorkCentre / WC-5955 - Вес: 2.775 - Принтеры: Xerox Altalink B8065, Xerox Altalink B8045, Xerox Altalink B8055, Xerox Altalink B8075, Xerox Altalink B8090, Xerox WorkCentre 5945, Xerox WorkCentre 5955</description>
+    </offer>
+
+    <offer id="NP013R00688DU">
+      <vendorCode>NP013R00688DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00688 BCMY DU</name>
+      <price>38900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00688DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00688 BCMY DU для Xerox VersaLink C7120/C7125/C7130 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox VersaLink C7120/C7125/C7130 - Вес: 1.31</description>
+    </offer>
+
+    <offer id="NP013R00690DU">
+      <vendorCode>NP013R00690DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00690 DU</name>
+      <price>25900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00690DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00690 DU для Xerox B315/B310/B305 (40000k) Технические характеристики: - Ресурс: 40000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox B315/B310/B305 - Вес: 0.91</description>
+    </offer>
+
+    <offer id="NP013R00691DU">
+      <vendorCode>NP013R00691DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-013R00691 DU</name>
+      <price>9900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-013R00691DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-013R00691 DU для Xerox B225/B230/B235 (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox B225/B230/B235 - Вес: 0.72 - Принтеры: Xerox B225, Xerox B230, Xerox B235</description>
+    </offer>
+
+    <offer id="NP101R00432DU">
+      <vendorCode>NP101R00432DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-101R00432 DU</name>
+      <price>29900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-101R00432DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-101R00432 DU для Xerox WorkCentre 5020/ 5016/ 5020B (22000k) Технические характеристики: - Ресурс: 22000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WC 5016/5020 - Вес: 1.765 - Принтеры: Xerox WorkCentre 5020, Xerox WorkCentre 5020B, Xerox WorkCentre 5016</description>
+    </offer>
+
+    <offer id="NP101R00434">
+      <vendorCode>NP101R00434</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-101R00434</name>
+      <price>32900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-101R00434.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-101R00434 для Xerox WorkCentre 5222/ 5222c /5222cd /5225 /5222p /5222pd /5222sd /5222k /5222ku /5230 /5222xd /pro 5225 (50000k) Технические характеристики: - Ресурс: 50000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WorkCentre 5222/5225/5230 - Вес: 2.21 - Принтеры: Xerox WorkCentre 5222C, Xerox WorkCentre 5222CD, Xerox WorkCentre 5222P, Xerox WorkCentre 5222PD, Xerox WorkCentre 5222SD, Xerox WorkCentre 5222K, Xerox WorkCentre 5222KU, Xerox WorkCentre 5222XD, Xerox WorkCentre 5222, Xerox WorkCentre 5230, Xerox WorkCentre 5225</description>
+    </offer>
+
+    <offer id="NP101R00435">
+      <vendorCode>NP101R00435</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-101R00435</name>
+      <price>27900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-101R00435.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-101R00435 для Xerox WorkCentre 5222/ 5222c /5222cd /5225 /5222p /5222pd /5222sd /5222k /5222ku /5230 /5222xd /pro 5225 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox WorkCentre 5222/5225/5230 - Вес: 2.33 - Принтеры: Xerox WorkCentre 5222C, Xerox WorkCentre 5222CD, Xerox WorkCentre 5222P, Xerox WorkCentre 5222PD, Xerox WorkCentre 5222SD, Xerox WorkCentre 5222K, Xerox WorkCentre 5222KU, Xerox WorkCentre 5222XD, Xerox WorkCentre 5222, Xerox WorkCentre 5230, Xerox WorkCentre 5225</description>
+    </offer>
+
+    <offer id="NP101R00474DU">
+      <vendorCode>NP101R00474DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-101R00474 DU</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-101R00474DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-101R00474 DU для Xerox Phaser 3052/ 3260DI/ 3260DNI/ WorkCentre 3215DI/ 3225DNI (10000k) Технические характеристики: - Ресурс: 10000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox Phaser 3052/3260/WorkCentre 3215/3225 - Вес: 0.74 - Принтеры: Xerox Phaser 3260DI, Xerox WorkCentre 3215DI, Xerox WorkCentre 3225DNI, Xerox Phaser 3052, Xerox WorkCentre 3225, Xerox Phaser 3260DNI</description>
+    </offer>
+
+    <offer id="NP101R00554DU">
+      <vendorCode>NP101R00554DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-101R00554 DU</name>
+      <price>34900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-101R00554DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-101R00554 DU для Xerox VersaLink B400/B405 (65000k) Технические характеристики: - Ресурс: 65000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox VersaLink B400/B405 - Вес: 1.88 - Принтеры: Xerox VersaLink B400, Xerox VersaLink B405</description>
+    </offer>
+
+    <offer id="NP101R00555DU">
+      <vendorCode>NP101R00555DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-101R00555 DU</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-101R00555DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-101R00555 DU для Xerox WorkCentre 3335/3345 (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox Phaser 3330/WorkCentre 3335/3345 - Вес: 0.805 - Принтеры: Xerox WorkCentre 3335, Xerox WorkCentre 3345, Xerox Phaser 3330</description>
+    </offer>
+
+    <offer id="NP101R00582DU">
+      <vendorCode>NP101R00582DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-101R00582 DU</name>
+      <price>45900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-101R00582DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-101R00582 DU для Xerox VersaLink-B600/B605/B610/B615 (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox VersaLink B600/B605/B610/B615 - Вес: 1.87 - Принтеры: Xerox VersaLink B605, Xerox VersaLink B600, Xerox VersaLink B600DN, Xerox VersaLink B600DT, Xerox VersaLink B600DX, Xerox VersaLink B600DXF, Xerox VersaLink B605S, Xerox VersaLink B605SF, Xerox VersaLink B605X, Xerox VersaLink B605XF, Xerox VersaLink B605XP, Xerox VersaLink B605XTF, Xerox VersaLink B605XTP, Xerox VersaLink B610DN, Xerox VersaLink B610DT, Xerox VersaLink B610DX, Xerox VersaLink B610DXF, Xerox VersaLink B610DXP, Xerox VersaLink B615, Xerox VersaLink B615SL, Xerox VersaLink B615XL, Xerox VersaLink B615XP, Xerox VersaLink B615XTP</description>
+    </offer>
+
+    <offer id="NP101R00664">
+      <vendorCode>NP101R00664</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-101R00664</name>
+      <price>5900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-101R00664.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-101R00664 для Xerox B205/B210/B215 (10000k) Технические характеристики: - Ресурс: 10000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox B205/B210/B215 - Вес: 0.7 - Принтеры: Xerox B210, Xerox B205, Xerox B215</description>
+    </offer>
+
+    <offer id="NP108R00861">
+      <vendorCode>NP108R00861</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R00861</name>
+      <price>24900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-108R00861.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R00861 для Xerox Phaser 7500 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox Phaser 7500 - Вес: 1.005 - Принтеры: Xerox Phaser 7500</description>
+    </offer>
+
+    <offer id="NP108R01121DUBk">
+      <vendorCode>NP108R01121DUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R01121 DU Black</name>
+      <price>37900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R01121 DU Black для Xerox Phaser 6600N/WC6605dn (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox Phaser 6600N/WC6605dn - Вес: 1 - Принтеры: Xerox VersaLink C400, Xerox VersaLink C405, Xerox WorkCentre 6655, Xerox Phaser 6600DN, Xerox WorkCentre 6605DN, Xerox WorkCentre 6605N, Xerox WorkCentre 6605, Xerox VersaLink C400DN, Xerox VersaLink C400N, Xerox VersaLink C405DN, Xerox VersaLink C405N, Xerox Phaser 6600, Xerox Phaser 6600N</description>
+    </offer>
+
+    <offer id="NP108R01121DUC">
+      <vendorCode>NP108R01121DUC</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R01121 DU Cyan</name>
+      <price>37900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R01121 DU Cyan для Xerox Phaser 6600N/WC6605dn (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: Xerox Phaser 6600N/WC6605dn - Вес: 1 - Принтеры: Xerox VersaLink C400, Xerox VersaLink C405, Xerox WorkCentre 6655, Xerox Phaser 6600DN, Xerox WorkCentre 6605DN, Xerox WorkCentre 6605N, Xerox WorkCentre 6605, Xerox VersaLink C400DN, Xerox VersaLink C400N, Xerox VersaLink C405DN, Xerox VersaLink C405N, Xerox Phaser 6600, Xerox Phaser 6600N</description>
+    </offer>
+
+    <offer id="NP108R01121DUM">
+      <vendorCode>NP108R01121DUM</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R01121 DU Magenta</name>
+      <price>37900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R01121 DU Magenta для Xerox Phaser 6600N/WC6605dn (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: Xerox Phaser 6600N/WC6605dn - Вес: 1 - Принтеры: Xerox VersaLink C400, Xerox VersaLink C405, Xerox WorkCentre 6655, Xerox Phaser 6600DN, Xerox WorkCentre 6605DN, Xerox WorkCentre 6605N, Xerox WorkCentre 6605, Xerox VersaLink C400DN, Xerox VersaLink C400N, Xerox VersaLink C405DN, Xerox VersaLink C405N, Xerox Phaser 6600, Xerox Phaser 6600N</description>
+    </offer>
+
+    <offer id="NP108R01121DUY">
+      <vendorCode>NP108R01121DUY</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R01121 DU Yellow</name>
+      <price>37900</price>
+      <picture>http://nvprint.ru/promo/photo/nophoto.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R01121 DU Yellow для Xerox Phaser 6600N/WC6605dn (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Xerox Phaser 6600N/WC6605dn - Вес: 1 - Принтеры: Xerox VersaLink C400, Xerox VersaLink C405, Xerox WorkCentre 6655, Xerox Phaser 6600DN, Xerox WorkCentre 6605DN, Xerox WorkCentre 6605N, Xerox WorkCentre 6605, Xerox VersaLink C400DN, Xerox VersaLink C400N, Xerox VersaLink C405DN, Xerox VersaLink C405N, Xerox Phaser 6600, Xerox Phaser 6600N</description>
+    </offer>
+
+    <offer id="NP108R01417DUC">
+      <vendorCode>NP108R01417DUC</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R01417 DU Cyan</name>
+      <price>53900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-108R01417DUC.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R01417 DU Cyan для Xerox Phaser 6510DN/6510N / WorkCentre 6515DN/6515DNI/6515N (48000k) Технические характеристики: - Ресурс: 48000 - Тип печати: Лазерная - Цвет печати: Cyan - Совместимость с моделями: Xerox Phaser 6510/WorkCentre 6515 - Вес: 1 - Принтеры: Xerox Phaser 6510N, Xerox Phaser 6510DN, Xerox Phaser 6510DNI, Xerox WorkCentre 6515N, Xerox WorkCentre 6515DN, Xerox WorkCentre 6515DNI, Xerox Phaser 6510, Xerox WorkCentre 6515</description>
+    </offer>
+
+    <offer id="NP108R01418DUM">
+      <vendorCode>NP108R01418DUM</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R01418 DU Magenta</name>
+      <price>53900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-108R01418DUM.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R01418 DU Magenta для Xerox Phaser 6510DN/6510N / WorkCentre 6515DN/6515DNI/6515N (48000k) Технические характеристики: - Ресурс: 48000 - Тип печати: Лазерная - Цвет печати: Magenta - Совместимость с моделями: Xerox Phaser 6510/WorkCentre 6515 - Вес: 1 - Принтеры: Xerox Phaser 6510N, Xerox Phaser 6510DN, Xerox Phaser 6510DNI, Xerox WorkCentre 6515N, Xerox WorkCentre 6515DN, Xerox WorkCentre 6515DNI, Xerox Phaser 6510, Xerox WorkCentre 6515</description>
+    </offer>
+
+    <offer id="NP108R01419DUY">
+      <vendorCode>NP108R01419DUY</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R01419 DU Yellow</name>
+      <price>53900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-108R01419DUY.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R01419 DU Yellow для Xerox Phaser 6510DN/6510N / WorkCentre 6515DN/6515DNI/6515N (48000k) Технические характеристики: - Ресурс: 48000 - Тип печати: Лазерная - Цвет печати: Yellow - Совместимость с моделями: Xerox Phaser 6510/WorkCentre 6515 - Вес: 1 - Принтеры: Xerox Phaser 6510N, Xerox Phaser 6510DN, Xerox Phaser 6510DNI, Xerox WorkCentre 6515N, Xerox WorkCentre 6515DN, Xerox WorkCentre 6515DNI, Xerox Phaser 6510, Xerox WorkCentre 6515</description>
+    </offer>
+
+    <offer id="NP108R01420DUBk">
+      <vendorCode>NP108R01420DUBk</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-108R01420 DU Black</name>
+      <price>53900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-108R01420DUBk.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-108R01420 DU Black для Xerox Phaser 6510DN/6510N / WorkCentre 6515DN/6515DNI/6515N (48000k) Технические характеристики: - Ресурс: 48000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox Phaser 6510/WorkCentre 6515 - Вес: 0.885 - Принтеры: Xerox Phaser 6510N, Xerox Phaser 6510DN, Xerox Phaser 6510DNI, Xerox WorkCentre 6515N, Xerox WorkCentre 6515DN, Xerox WorkCentre 6515DNI, Xerox Phaser 6510, Xerox WorkCentre 6515</description>
+    </offer>
+
+    <offer id="NP113R00670">
+      <vendorCode>NP113R00670</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-113R00670</name>
+      <price>33900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-113R00670.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-113R00670 для Xerox Phaser 5500/5550 (60000k) Технические характеристики: - Ресурс: 60000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox Phaser 5500/5550 - Вес: 1.45 - Принтеры: Xerox Phaser 5550, Xerox Phaser 5500</description>
+    </offer>
+
+    <offer id="NP113R00762">
+      <vendorCode>NP113R00762</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-113R00762</name>
+      <price>34900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-113R00762.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-113R00762 для Xerox Phaser 4600/4620 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox Phaser 4600/4620/4622 - Вес: 0.74 - Принтеры: Xerox Phaser 4600DN, Xerox Phaser 4620DN, Xerox Phaser 4620DT, Xerox Phaser 4600DT, Xerox Phaser 4600N, Xerox Phaser 4622DN, Xerox Phaser 4622DT, Xerox Phaser 4622A</description>
+    </offer>
+
+    <offer id="NP113R00773">
+      <vendorCode>NP113R00773</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-113R00773</name>
+      <price>26900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-113R00773.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-113R00773 для Xerox Phaser 3610/ WC 3615 (85000k) Технические характеристики: - Ресурс: 85000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox Phaser 3610/WorkCentre 3615/3655/3655i - Вес: 1.765 - Принтеры: Xerox WorkCentre 3655S, Xerox Phaser 3610, Xerox Phaser 3610N, Xerox WorkCentre 3655iX, Xerox WorkCentre 3615, Xerox Phaser 3610DN, Xerox WorkCentre 3615DN, Xerox WorkCentre 3655i, Xerox WorkCentre 3655X</description>
+    </offer>
+
+    <offer id="NP113R00779DU">
+      <vendorCode>NP113R00779DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-113R00779 DU</name>
+      <price>51900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-113R00779DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-113R00779 DU для Xerox VersaLink B7025/7030/7035 (80000k) Технические характеристики: - Ресурс: 80000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox VersaLink B7025/B7030/B7035 - Вес: 2.095 - Принтеры: Xerox VersaLink B7025, Xerox VersaLink B7035, Xerox VersaLink B7030</description>
+    </offer>
+
+    <offer id="NP113R00780DU">
+      <vendorCode>NP113R00780DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-113R00780 DU</name>
+      <price>27900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-113R00780DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-113R00780 DU для Xerox VersaLink C7020/C7025/C7030 (109000k) Технические характеристики: - Ресурс: 109000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox VersaLink C7020/C7025/C7030 - Вес: 0.917 - Принтеры: Xerox VersaLink C7020, Xerox VersaLink C7025, Xerox VersaLink C7030</description>
     </offer>
 
     <offer id="NP006R01044">
@@ -15831,6 +17261,36 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
       <description>Тонер-картридж NVP совместимый NV-106R03945 для Xerox VersaLink B600/605/610/615 XHI (46700k) Технические характеристики: - Ресурс: 46700 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Xerox VersaLink B600/605/610/615 XHI - Вес: 1.125 - Принтеры: Xerox VersaLink B605, Xerox VersaLink B600, Xerox VersaLink B600DN, Xerox VersaLink B600DT, Xerox VersaLink B600DX, Xerox VersaLink B600DXF, Xerox VersaLink B605S, Xerox VersaLink B605SF, Xerox VersaLink B605SP, Xerox VersaLink B605X, Xerox VersaLink B605XF, Xerox VersaLink B605XP, Xerox VersaLink B605XTF, Xerox VersaLink B605XTP, Xerox VersaLink B610, Xerox VersaLink B610DN, Xerox VersaLink B610DT, Xerox VersaLink B610DX, Xerox VersaLink B610DXF, Xerox VersaLink B610DXP, Xerox VersaLink B615, Xerox VersaLink B615SL, Xerox VersaLink B615XL, Xerox VersaLink B615XP, Xerox VersaLink B615XTP</description>
     </offer>
 
+    <offer id="NPDR133DU">
+      <vendorCode>NPDR133DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-DR133 DU</name>
+      <price>11900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-DR133DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-DR133 DU для Катюша P133/M133 (30000k) Технические характеристики: - Ресурс: 30000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Катюша P133/M133 - Вес: 0.44 - Принтеры: Катюша М133, Катюша Р133</description>
+    </offer>
+
+    <offer id="NPPCM130DU">
+      <vendorCode>NPPCM130DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-PCM130 DU</name>
+      <price>9900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-PCM130DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-PCM130 DU для Катюша M130/Р130 (12000k) Технические характеристики: - Ресурс: 12000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Катюша M130/Р130 - Вес: 0.456 - Принтеры: Катюша М130, Катюша Р130</description>
+    </offer>
+
+    <offer id="NPPCM247DU">
+      <vendorCode>NPPCM247DU</vendorCode>
+      <name>Блок фотобарабана NVP совместимый NV-PCM247 DU</name>
+      <price>25900</price>
+      <picture>http://nvprint.ru/promo/photo/NV-PCM247DU.jpg</picture>
+      <currencyId>KZT</currencyId>
+      <available>true</available>
+      <description>Блок фотобарабана NVP совместимый NV-PCM247 DU для Катюша Р247/М247 (45000k) Технические характеристики: - Ресурс: 45000 - Тип печати: Лазерная - Цвет печати: Black - Совместимость с моделями: Катюша Р247/М247 - Вес: 1.383 - Принтеры: Катюша Р247, Катюша М247</description>
+    </offer>
+
     <offer id="NPTHM130">
       <vendorCode>NPTHM130</vendorCode>
       <name>Картридж NVP совместимый NV-THM130</name>
@@ -15844,7 +17304,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTHM348">
       <vendorCode>NPTHM348</vendorCode>
       <name>Картридж NVP совместимый NV-THM348</name>
-      <price>16900</price>
+      <price>18900</price>
       <picture>http://nvprint.ru/promo/photo/NV-THM348.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
@@ -15854,7 +17314,7 @@ URL поставщика                             | https://api.nvprint.ru/api/hs/getpr
     <offer id="NPTHM348A">
       <vendorCode>NPTHM348A</vendorCode>
       <name>Картридж NVP совместимый NV-THM348A</name>
-      <price>22900</price>
+      <price>16900</price>
       <picture>http://nvprint.ru/promo/photo/NV-THM348A.jpg</picture>
       <currencyId>KZT</currencyId>
       <available>true</available>
