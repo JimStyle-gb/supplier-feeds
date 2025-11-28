@@ -55,6 +55,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
+      - name: Ensure keywords file
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
+        run: |
+          python - <<'PY'
+          import os, io
+          os.makedirs("docs", exist_ok=True)
+          path = "docs/nvprint_keywords.txt"
+          if not os.path.isfile(path):
+              data = "\n".join([
+                  "Блок фотобарабарана",
+                  "Картридж",
+                  "Печатающая головка",
+                  "Струйный картридж",
+                  "Тонер-картридж",
+                  "Тонер-туба",
+              ]) + "\n"
+              with io.open(path, "w", encoding="utf-8") as f:
+                  f.write(data)
+          with io.open(path, "r", encoding="utf-8") as f:
+              print("Using keywords:\\n" + f.read())
+          PY
 
       - name: Build NVPrint feed
         if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
