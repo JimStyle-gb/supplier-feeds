@@ -88,32 +88,60 @@ def almaty_now() -> datetime:
         return datetime.now()
 
 def fmt_dt(dt: datetime) -> str:
+    try:
+        from zoneinfo import ZoneInfo
+        if getattr(dt, "tzinfo", None) is not None:
+            dt = dt.astimezone(ZoneInfo("Asia/Almaty"))
+    except Exception:
+        pass
     return dt.strftime("%Y-%m-%d %H:%M:%S")
 
 def fmt_date_attr(dt: datetime) -> str:
+    try:
+        from zoneinfo import ZoneInfo
+        if getattr(dt, "tzinfo", None) is not None:
+            dt = dt.astimezone(ZoneInfo("Asia/Almaty"))
+    except Exception:
+        pass
     return dt.strftime("%Y-%m-%d %H:%M")
 
 def next_run_nvprint(now_alm: datetime) -> datetime:
-    # NVPrint: 1/10/20 числа в 04:00 Алматы (как в workflow-гейте)
-    try:
-        from zoneinfo import ZoneInfo
-        tz = ZoneInfo("Asia/Almaty")
-    except Exception:
-        tz = None
+    # NVPrint: 1/10/20 числа в 04:00 Алматы (как в workflow-гейте).
+    # Важно: сравнение времени делаем в "наивном" виде, чтобы не ловить
+    # mix offset-aware/offset-naive на GitHub runner'ах.
     base = now_alm
-    y, m = base.year, base.month
+    tz = getattr(base, "tzinfo", None)
+
+    if tz is None:
+        try:
+            from zoneinfo import ZoneInfo
+            tz = ZoneInfo("Asia/Almaty")
+        except Exception:
+            tz = None
+
+    # base_cmp — время "по Алматы" (если tz есть), иначе просто base
+    if tz is not None:
+        try:
+            base_cmp = base.astimezone(tz)
+        except Exception:
+            base_cmp = base
+    else:
+        base_cmp = base
+
+    base_naive = base_cmp.replace(tzinfo=None)
+
+    y, m = base_naive.year, base_naive.month
     for add_m in range(0, 6):
         yy = y + (m - 1 + add_m) // 12
         mm = (m - 1 + add_m) % 12 + 1
         for d in (1, 10, 20):
             try:
-                cand = datetime(yy, mm, d, 4, 0, 0)
+                cand_naive = datetime(yy, mm, d, 4, 0, 0)
             except Exception:
                 continue
-            if tz is not None:
-                cand = cand.replace(tzinfo=tz)
-            if cand > base:
-                return cand
+            if cand_naive > base_naive:
+                return cand_naive.replace(tzinfo=tz) if tz is not None else cand_naive
+
     return base
 
 def html_escape(txt: str) -> str:
