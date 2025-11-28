@@ -148,6 +148,23 @@ def read_source_bytes(cfg: Cfg) -> bytes:
 
 
 # Делает: читает текстовый файл, перебирая кодировки.
+def read_text_with_encodings(path: str, encodings: List[str]) -> Optional[str]:
+    if not os.path.isfile(path):
+        return None
+    for enc in encodings:
+        try:
+            with io.open(path, "r", encoding=enc) as f:
+                return f.read()
+        except Exception:
+            continue
+    try:
+        with io.open(path, "rb") as f:
+            raw = f.read()
+        return raw.decode("latin-1", errors="ignore")
+    except Exception:
+        return None
+
+
 # Делает: грузит ключевые слова и нормализует их (lower, пробелы, uniq).
 # Делает: дефолтные keywords (если файла нет/пустой).
 KEYWORDS: List[str] = [
@@ -161,8 +178,6 @@ KEYWORDS: List[str] = [
 ]
 
 # Делает: грузит keywords из файла или берёт DEFAULT_KEYWORDS.
-
-
 # Делает: нормализует строку для сравнения.
 def norm_for_match(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip()).lower()
@@ -405,38 +420,29 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
 
 # Делает: находит кандидатов-узлы товаров (максимально терпимо к структуре XML).
 def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
-    # Быстрый поиск узлов товаров: проверяем только детей и внуков, без .iter() по поддереву.
+    # Быстрый и надёжный поиск товаров:
+    # - строим parent_map (O(N))
+    # - находим все теги "Артикул" и берём их родителя
+    # - проверяем, что у узла есть "НоменклатураКратко"
     want_art = {"артикул", "articul", "sku", "article", "partnumber"}
-    want_name = {"номенклатуракратко"}
+    parent_map = {c: p for p in root.iter() for c in list(p)}
+
     items: List[ET.Element] = []
+    seen: set[int] = set()
 
-    for node in root.iter():
-        has_art = False
-        has_name = False
-
-        for ch in list(node):
-            t = strip_ns(ch.tag).lower()
-            if t in want_art:
-                has_art = True
-            elif t in want_name:
-                has_name = True
-
-            # 1 уровень глубже (внуки) — на случай, если у поставщика вложено
-            if not (has_art and has_name):
-                for g in list(ch):
-                    tt = strip_ns(g.tag).lower()
-                    if tt in want_art:
-                        has_art = True
-                    elif tt in want_name:
-                        has_name = True
-                    if has_art and has_name:
-                        break
-
-            if has_art and has_name:
-                break
-
-        if has_art and has_name:
-            items.append(node)
+    for el in root.iter():
+        if strip_ns(el.tag).lower() not in want_art:
+            continue
+        item = parent_map.get(el)
+        if item is None:
+            continue
+        key = id(item)
+        if key in seen:
+            continue
+        if find_descendant(item, ["НоменклатураКратко"]) is None:
+            continue
+        seen.add(key)
+        items.append(item)
 
     return items
 # Делает: возвращает "сейчас" по Алматы (UTC+5).
