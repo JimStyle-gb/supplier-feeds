@@ -1,10 +1,6 @@
 name: Build_NVPrint
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "scripts/build_nvprint.py"
-      - ".github/workflows/build_nvprint.yml"
   schedule:
     # Ровно 3 окна в месяц с минимальными вызовами:
     - cron: "0 23 9 * *"   # 10 число 04:00 (Алматы)
@@ -36,28 +32,17 @@ jobs:
         id: check
         run: |
           python - <<'PY'
-from datetime import datetime, timedelta
-import os
-
-event = os.environ.get("GITHUB_EVENT_NAME", "")
-
-# Для push / workflow_dispatch — всегда запускаем сборку.
-if event != "schedule":
-    should = "yes"
-    now_utc = datetime.utcnow()
-    now_alm = now_utc + timedelta(hours=5)
-else:
-    now_utc = datetime.utcnow()
-    now_alm = now_utc + timedelta(hours=5)  # Asia/Almaty ~ UTC+5
-    day  = now_alm.day
-    hour = now_alm.hour
-    should = "yes" if (day in (1, 10, 20) and hour == 4) else "no"
-
-print(f"::notice::event={event}, Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
-with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-    f.write(f"run={should}
-")
-PY
+          from datetime import datetime, timedelta
+          import os
+          now_utc = datetime.utcnow()
+          now_alm = now_utc + timedelta(hours=5)  # Asia/Almaty ~ UTC+5
+          day  = now_alm.day
+          hour = now_alm.hour
+          should = 'yes' if (day in (1,10,20) and hour == 4) else 'no'
+          print(f"::notice::Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"run={should}\n")
+          PY
 
       - uses: actions/setup-python@v5
         if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
@@ -74,28 +59,23 @@ PY
         if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
         run: |
           python - <<'PY'
-from datetime import datetime, timedelta
-import os
-
-event = os.environ.get("GITHUB_EVENT_NAME", "")
-
-# Для push / workflow_dispatch — всегда запускаем сборку.
-if event != "schedule":
-    should = "yes"
-    now_utc = datetime.utcnow()
-    now_alm = now_utc + timedelta(hours=5)
-else:
-    now_utc = datetime.utcnow()
-    now_alm = now_utc + timedelta(hours=5)  # Asia/Almaty ~ UTC+5
-    day  = now_alm.day
-    hour = now_alm.hour
-    should = "yes" if (day in (1, 10, 20) and hour == 4) else "no"
-
-print(f"::notice::event={event}, Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
-with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-    f.write(f"run={should}
-")
-PY
+          import os, io
+          os.makedirs("docs", exist_ok=True)
+          path = "docs/nvprint_keywords.txt"
+          if not os.path.isfile(path):
+              data = "\n".join([
+                  "Блок фотобарабарана",
+                  "Картридж",
+                  "Печатающая головка",
+                  "Струйный картридж",
+                  "Тонер-картридж",
+                  "Тонер-туба",
+              ]) + "\n"
+              with io.open(path, "w", encoding="utf-8") as f:
+                  f.write(data)
+          with io.open(path, "r", encoding="utf-8") as f:
+              print("Using keywords:\\n" + f.read())
+          PY
 
       - name: Build NVPrint feed
         if: ${{ github.event_name == 'workflow_dispatch' || steps.check.outputs.run == 'yes' }}
