@@ -1,186 +1,43 @@
 # scripts/build_nvprint.py
 # -*- coding: utf-8 -*-
-'''
-NVPrint -> YML (KZT) — переписано "с нуля", но поведение/результат сохранены.
-
-Цель: выдавать nvprint.yml в той же структуре, что и текущий пайплайн:
-- <?xml version='1.0' encoding='windows-1251'?>
-- <yml_catalog date="UTC YYYY-MM-DD HH:MM">
-- <!--FEED_META ... --> (дд:мм:гггг - чч:мм:сс по Алматы)
-- <shop><offers> ... </offers></shop></yml_catalog>
-- offer: vendorCode, name, price, picture?, vendor?, currencyId, available, description?
-- available всегда true (как сейчас)
-
-Переменные окружения:
-- NVPRINT_XML_URL (или NVPRINT_URL): URL источника
-- NVPRINT_LOGIN / NVPRINT_PASSWORD (или NVPRINT_XML_USER / NVPRINT_XML_PASS): basic auth
-- OUT_FILE: путь результата (default docs/nvprint.yml)
-- OUT_ENCODING: кодировка результата (default windows-1251)
-- HTTP_TIMEOUT, RETRIES, RETRY_BACKOFF_S
-'''
-from __future__ import annotations
 
 import io
 import math
 import os
 import re
 import sys
-import time
-import html
-from datetime import datetime, timedelta
-from decimal import Decimal, InvalidOperation
-from typing import Any, Dict, List, Optional, Tuple
 import xml.etree.ElementTree as ET
-
-try:
-    import requests
-except Exception:
-    requests = None
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Tuple
 
 
-# Делает: читает переменную окружения и возвращает непустое значение или default.
-def _env(name: str, default: str = "") -> str:
-    v = os.getenv(name)
-    return (v.strip() if v and v.strip() else default)
+# Делает: читает переменную окружения (строка) с дефолтом.
+def _env(key: str, default: str = "") -> str:
+    v = os.getenv(key)
+    return default if v is None or v == "" else v
 
 
-# Делает: хранит настройки пайплайна (с дефолтами как в текущей версии).
+# Делает: конфиг пайплайна (env -> поля).
 class Cfg:
-    DEFAULT_URL = "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
+    def __init__(self) -> None:
+        self.SUPPLIER_URL = _env("NVPRINT_XML_URL", _env("NVPRINT_URL", ""))
+        self.NV_LOGIN = _env("NVPRINT_LOGIN", _env("NVPRINT_XML_USER", ""))
+        self.NV_PASSWORD = _env("NVPRINT_PASSWORD", _env("NVPRINT_XML_PASS", ""))
 
-    SUPPLIER_URL = _env("NVPRINT_XML_URL", _env("NVPRINT_URL", DEFAULT_URL))
-    OUT_FILE = _env("OUT_FILE", "docs/nvprint.yml")
-    OUTPUT_ENCODING = _env("OUT_ENCODING", "windows-1251")
+        self.OUT_FILE = _env("OUT_FILE", "docs/nvprint.yml")
+        self.OUTPUT_ENCODING = _env("OUT_ENCODING", "windows-1251")
 
-    HTTP_TIMEOUT = float(_env("HTTP_TIMEOUT", "45"))
-    RETRIES = int(_env("RETRIES", "4"))
-    RETRY_BACKOFF_S = float(_env("RETRY_BACKOFF_S", "2"))
+        self.HTTP_TIMEOUT = int(_env("HTTP_TIMEOUT", "80"))
+        self.RETRIES = int(_env("RETRIES", "3"))
 
-    NV_LOGIN = _env("NVPRINT_LOGIN", _env("NVPRINT_XML_USER", ""))
-    NV_PASSWORD = _env("NVPRINT_PASSWORD", _env("NVPRINT_XML_PASS", ""))
-# Делает: экранирует значения для XML/YML.
-def yml_escape(s: str) -> str:
-    return html.escape((s or "").strip())
+        self.OFFER_PREFIX = "NP"
 
 
-# Делает: убирает namespace из tag, если он есть.
-def strip_ns(tag: str) -> str:
-    if not tag:
-        return tag
-    if tag.startswith("{"):
-        i = tag.rfind("}")
-        if i != -1:
-            return tag[i + 1 :]
-    return tag
-
-
-# Делает: парсит число из строки (с запятой/пробелами), возвращает float или None.
-def parse_number(txt: Optional[str]) -> Optional[float]:
-    if not txt:
-        return None
-    t = txt.strip().replace("\u00A0", "").replace(" ", "").replace(",", ".")
-    m = re.search(r"-?\d+(?:\.\d+)?", t)
-    if not m:
-        return None
-    try:
-        return float(Decimal(m.group(0)))
-    except (InvalidOperation, ValueError):
-        return None
-
-
-# Делает: берёт текст первого прямого ребёнка по набору имён тегов.
-def first_child_text(item: ET.Element, tag_names: List[str]) -> Optional[str]:
-    names = {t.lower() for t in tag_names}
-    for ch in item:
-        if strip_ns(ch.tag).lower() in names:
-            val = (ch.text or "").strip()
-            if val:
-                return val
-    return None
-
-
-# Делает: находит первого потомка (в глубину) по набору имён тегов.
-def find_descendant(item: ET.Element, tag_names: List[str]) -> Optional[ET.Element]:
-    names = {t.lower() for t in tag_names}
-    for node in item.iter():
-        if strip_ns(node.tag).lower() in names:
-            return node
-    return None
-
-
-# Делает: возвращает текст найденного потомка по набору имён тегов.
-def find_descendant_text(item: ET.Element, tag_names: List[str]) -> Optional[str]:
-    node = find_descendant(item, tag_names)
-    if node is not None:
-        txt = (node.text or "").strip()
-        if txt:
-            return txt
-    return None
-
-
-# Делает: скачивает XML байты с ретраями и опциональным BasicAuth.
-def read_source_bytes(cfg: Cfg) -> bytes:
-    if not cfg.SUPPLIER_URL:
-        raise RuntimeError("SUPPLIER_URL пуст")
-    if requests is None:
-        raise RuntimeError("requests недоступен")
-
-    auth = (cfg.NV_LOGIN, cfg.NV_PASSWORD) if (cfg.NV_LOGIN or cfg.NV_PASSWORD) else None
-    last_err: Optional[Exception] = None
-
-    for attempt in range(1, cfg.RETRIES + 1):
-        try:
-            r = requests.get(cfg.SUPPLIER_URL, timeout=cfg.HTTP_TIMEOUT, auth=auth)
-            if r.status_code == 401:
-                raise RuntimeError("401 Unauthorized: проверь NVPRINT_LOGIN/NVPRINT_PASSWORD в secrets")
-            r.raise_for_status()
-            b = r.content
-            if not b:
-                raise RuntimeError("Источник вернул пустой ответ")
-            return b
-        except Exception as e:
-            last_err = e
-            if attempt >= cfg.RETRIES or ("401" in str(e)):
-                break
-            time.sleep(cfg.RETRY_BACKOFF_S * attempt)
-
-    raise RuntimeError(str(last_err) if last_err else "Не удалось скачать источник")
-
-
-# Делает: читает текстовый файл, перебирая кодировки.
-def read_text_with_encodings(path: str, encodings: List[str]) -> Optional[str]:
-    if not os.path.isfile(path):
-        return None
-    for enc in encodings:
-        try:
-            with io.open(path, "r", encoding=enc) as f:
-                return f.read()
-        except Exception:
-            continue
-    try:
-        with io.open(path, "rb") as f:
-            raw = f.read()
-        return raw.decode("latin-1", errors="ignore")
-    except Exception:
-        return None
-
-
-# Делает: грузит ключевые слова и нормализует их (lower, пробелы, uniq).
-def load_keywords(cfg: Cfg) -> List[str]:
-    # Файл keywords не используется: берём вшитый список DEFAULT_KEYWORDS.
-    out: List[str] = []
-    seen = set()
-    for k in DEFAULT_KEYWORDS:
-        kk = re.sub(r"\s+", " ", (k or "").strip()).lower()
-        if kk and kk not in seen:
-            seen.add(kk)
-            out.append(kk)
-    return out
-
-
-DEFAULT_KEYWORDS: List[str] = [
+# Делает: список ключевых слов (фильтр по началу названия).
+KEYWORDS: List[str] = [
     "Шлейф",
     "Блок фотобарабана",
+    "Блок фотобарабарана",  # на всякий случай (как в старом workflow)
     "Картридж",
     "Печатающая головка",
     "Струйный картридж",
@@ -188,66 +45,88 @@ DEFAULT_KEYWORDS: List[str] = [
     "Тонер-туба",
 ]
 
-# Делает: грузит keywords из файла или берёт DEFAULT_KEYWORDS.
-def get_keywords(cfg: Cfg) -> List[str]:
-    return load_keywords(cfg)
+
+PriceRule = Tuple[int, int, float, int]
+
+# Делает: правила расчёта цены (4% + надбавки, затем хвост 900).
+PRICING_RULES: List[PriceRule] = [
+    (0, 10000, 4.0, 300),
+    (10001, 20000, 4.0, 600),
+    (20001, 40000, 4.0, 1000),
+    (40001, 80000, 4.0, 2000),
+    (80001, 120000, 4.0, 3000),
+    (120001, 160000, 4.0, 4000),
+    (160001, 200000, 4.0, 5000),
+    (200001, 300000, 4.0, 12000),
+    (300001, 400000, 4.0, 20000),
+    (400001, 500000, 4.0, 30000),
+    (500001, 750000, 4.0, 40000),
+    (750001, 1000000, 4.0, 50000),
+    (1000001, 1500000, 4.0, 70000),
+    (1500001, 2000000, 4.0, 90000),
+    (2000001, 100000000, 4.0, 100000),
+]
 
 
-def norm_for_match(s: str) -> str:
-    return re.sub(r"\s+", " ", (s or "").strip()).lower()
+# Делает: убирает namespace у тега.
+def strip_ns(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1] if "}" in tag else tag
 
 
-# Делает: проверяет, что короткое имя начинается с одного из keywords.
-def name_starts_with_keywords(name_short: str, keywords: List[str]) -> bool:
-    if not keywords:
-        return True
-    base = norm_for_match(name_short)
-    for kw in keywords:
-        if base.startswith(kw):
-            return True
-    return False
+# Делает: находит первого прямого ребёнка по списку имён и возвращает его text.
+def first_child_text(elem: ET.Element, names: List[str]) -> Optional[str]:
+    want = {n.strip().lower() for n in names}
+    for ch in list(elem):
+        if strip_ns(ch.tag).lower() in want:
+            if ch.text is None:
+                return None
+            return ch.text.strip()
+    return None
 
 
-# Делает: нормализует номер договора (рус/анг смешение, пробелы/дефисы).
-def _norm_contract(s: str) -> str:
+# Делает: находит первого потомка по списку имён.
+def find_descendant(elem: ET.Element, names: List[str]) -> Optional[ET.Element]:
+    want = {n.strip().lower() for n in names}
+    for node in elem.iter():
+        if strip_ns(node.tag).lower() in want:
+            return node
+    return None
+
+
+# Делает: возвращает text первого найденного потомка.
+def find_descendant_text(elem: ET.Element, names: List[str]) -> Optional[str]:
+    el = find_descendant(elem, names)
+    if el is None or el.text is None:
+        return None
+    t = el.text.strip()
+    return t if t != "" else None
+
+
+# Делает: парсит число из строки (поддержка "12 345,67").
+def parse_number(s: Optional[str]) -> Optional[float]:
     if not s:
-        return ""
-    tr = str.maketrans(
-        {
-            "А": "A",
-            "В": "B",
-            "Е": "E",
-            "К": "K",
-            "М": "M",
-            "Н": "H",
-            "О": "O",
-            "Р": "P",
-            "С": "C",
-            "Т": "T",
-            "Х": "X",
-            "У": "Y",
-            "а": "A",
-            "в": "B",
-            "е": "E",
-            "к": "K",
-            "м": "M",
-            "н": "H",
-            "о": "O",
-            "р": "P",
-            "с": "C",
-            "т": "T",
-            "х": "X",
-            "у": "Y",
-            "Ё": "E",
-            "ё": "e",
-        }
-    )
-    u = s.translate(tr).upper()
-    u = re.sub(r"[\s\-\_]+", "", u)
-    return u
+        return None
+    t = str(s).strip().replace("\u00a0", " ").replace(" ", "")
+    t = t.replace(",", ".")
+    m = re.search(r"[-+]?\d+(?:\.\d+)?", t)
+    if not m:
+        return None
+    try:
+        return float(m.group(0))
+    except Exception:
+        return None
 
 
-# Делает: вытаскивает цену из договоров, приоритет Казахстан (не MSK) над Москвой.
+# Делает: нормализует номер договора (чтобы ловить 000079 + MSK/МСК).
+def _norm_contract(s: str) -> str:
+    t = (s or "").upper()
+    t = t.replace(" ", "")
+    t = t.replace("-", "")
+    t = t.replace("_", "")
+    return t
+
+
+# Делает: вытаскивает цену из договоров с номером 000079 (приоритет KZ, затем MSK).
 def extract_price_from_contracts(item: ET.Element) -> Optional[float]:
     price_kz: Optional[float] = None
     price_msk: Optional[float] = None
@@ -278,33 +157,13 @@ def extract_price_from_contracts(item: ET.Element) -> Optional[float]:
     return None
 
 
-PriceRule = Tuple[int, int, float, int]
-PRICING_RULES: List[PriceRule] = [
-    (101, 10000, 4.0, 3000),
-    (10001, 25000, 4.0, 4000),
-    (25001, 50000, 4.0, 5000),
-    (50001, 75000, 4.0, 7000),
-    (75001, 100000, 4.0, 10000),
-    (100001, 150000, 4.0, 12000),
-    (150001, 200000, 4.0, 15000),
-    (200001, 300000, 4.0, 20000),
-    (300001, 400000, 4.0, 25000),
-    (400001, 500000, 4.0, 30000),
-    (500001, 750000, 4.0, 40000),
-    (750001, 1000000, 4.0, 50000),
-    (1000001, 1500000, 4.0, 70000),
-    (1500001, 2000000, 4.0, 90000),
-    (2000001, 100000000, 4.0, 100000),
-]
-
-
-# Делает: округляет вверх до "…900" (1000-100, 2000-100, ...).
+# Делает: округляет вверх до хвоста 900.
 def round_up_tail_900(n: int) -> int:
     thousands = (n + 999) // 1000
     return thousands * 1000 - 100
 
 
-# Делает: применяет PRICING_RULES к базовой цене (включая fallback 100).
+# Делает: применяет PRICING_RULES к базовой цене.
 def compute_price_from_supplier(base_price: Optional[int]) -> int:
     if base_price is None or base_price < 100:
         return 100
@@ -316,7 +175,7 @@ def compute_price_from_supplier(base_price: Optional[int]) -> int:
     return round_up_tail_900(int(math.ceil(raw)))
 
 
-# Делает: чистит артикул (убирает NV- и пробелы), как в текущем пайплайне.
+# Делает: чистит артикул (убирает NV- и пробелы).
 def clean_article(raw: str) -> str:
     s = (raw or "").strip()
     s = re.sub(r"^\s*NV[\-\_\s]+", "", s, flags=re.IGNORECASE)
@@ -324,24 +183,34 @@ def clean_article(raw: str) -> str:
     return s
 
 
-# Делает: формирует id и vendorCode из артикула (NP + cleaned).
-def make_ids_from_article(article: str) -> Tuple[str, str]:
-    ac = clean_article(article)
-    pref = "NP" + ac
-    return pref, pref
+# Делает: формирует id/vendorCode (offer id = vendorCode).
+def make_ids_from_article(article: str, cfg: Cfg) -> Tuple[str, str]:
+    c = clean_article(article)
+    oid = f"{cfg.OFFER_PREFIX}{c}"
+    return oid, oid
 
 
-# Делает: вытаскивает список принтеров (уникальный, в исходном порядке).
-def collect_printers(item: ET.Element) -> List[str]:
+# Делает: фильтр "название начинается с одного из KEYWORDS".
+def name_starts_with_keywords(name: str, keywords: List[str]) -> bool:
+    t = (name or "").strip()
+    if not t:
+        return False
+    tt = t.casefold()
+    for kw in keywords:
+        if tt.startswith((kw or "").strip().casefold()):
+            return True
+    return False
+
+
+# Делает: вытаскивает список принтеров из "Для_устройств/Принтер".
+def extract_compatible_printers(item: ET.Element) -> List[str]:
     printers: List[str] = []
-    node = find_descendant(item, ["Принтеры"])
-    if node is not None:
-        for ch in node.iter():
-            if strip_ns(ch.tag).lower() == "принтер":
-                t = (ch.text or "").strip()
-                if t:
-                    printers.append(t)
-    seen = set()
+    for node in item.iter():
+        if strip_ns(node.tag).lower() != "принтер":
+            continue
+        if node.text and node.text.strip():
+            printers.append(re.sub(r"\s+", " ", node.text.strip()))
+    seen: set[str] = set()
     uniq: List[str] = []
     for p in printers:
         if p not in seen:
@@ -367,34 +236,48 @@ def build_description(item: ET.Element) -> str:
 
     tip = find_descendant_text(item, ["ТипПечати"])
     if tip:
-        specs.append(f"- Тип печати: {tip.strip()}")
+        tip = tip.strip()
+        if tip:
+            specs.append(f"- Тип печати: {tip}")
 
-    color = find_descendant_text(item, ["ЦветПечати"])
-    if color:
-        specs.append(f"- Цвет печати: {color.strip()}")
+    cvet = find_descendant_text(item, ["Цвет"])
+    if cvet:
+        cvet = cvet.strip()
+        if cvet:
+            specs.append(f"- Цвет: {cvet}")
 
-    compat = find_descendant_text(item, ["СовместимостьСМоделями"])
-    if compat:
-        compat = re.sub(r"\s+", " ", compat).strip()
-        specs.append(f"- Совместимость с моделями: {compat}")
+    type_rash = find_descendant_text(item, ["ТипРасходника"])
+    if type_rash:
+        type_rash = type_rash.strip()
+        if type_rash:
+            specs.append(f"- Тип расходника: {type_rash}")
 
-    weight = find_descendant_text(item, ["Вес"])
-    if weight:
-        specs.append(f"- Вес: {weight.strip()}")
+    kod_factory = find_descendant_text(item, ["КодЗаводской"])
+    if kod_factory:
+        kod_factory = kod_factory.strip()
+        if kod_factory:
+            specs.append(f"- Заводской код: {kod_factory}")
 
-    prn_list = collect_printers(item)
-    if prn_list:
-        specs.append(f"- Принтеры: {', '.join(prn_list)}")
+    ean = find_descendant_text(item, ["EAN"])
+    if ean:
+        ean = ean.strip()
+        if ean:
+            specs.append(f"- EAN: {ean}")
+
+    printers = extract_compatible_printers(item)
+    if printers:
+        specs.append("- Совместимые устройства: " + ", ".join(printers))
 
     if specs:
-        parts.append("Технические характеристики:")
+        if parts:
+            parts.append("Технические характеристики:")
         parts.extend(specs)
 
     return "\n".join(parts).strip()
 
 
-# Делает: парсит один товарный узел в dict.
-def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
+# Делает: парсит один товарный узел.
+def parse_item(elem: ET.Element, cfg: Cfg) -> Optional[Dict[str, Any]]:
     article = first_child_text(elem, ["Артикул", "articul", "sku", "article", "PartNumber"])
     if not article:
         return None
@@ -418,8 +301,7 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
     ).strip()
 
     description = build_description(elem)
-
-    oid, vcode = make_ids_from_article(article)
+    oid, vcode = make_ids_from_article(article, cfg)
 
     return {
         "id": oid,
@@ -432,162 +314,200 @@ def parse_item(elem: ET.Element) -> Optional[Dict[str, Any]]:
     }
 
 
-# Делает: находит кандидатов-узлы товаров (максимально терпимо к структуре XML).
-def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
-    items: List[ET.Element] = []
-    seen: set[int] = set()
-
-    for node in root.iter():
-        art = find_descendant(node, ["Артикул", "articul", "sku", "article", "PartNumber"])
-        if art is None:
-            continue
-        nmk = find_descendant(node, ["НоменклатураКратко"])
-        if nmk is None:
-            continue
-
-        key = id(node)
-        if key in seen:
-            continue
-        seen.add(key)
-        items.append(node)
-
-    return items
-
-
-# Делает: возвращает "сейчас" по Алматы (UTC+5).
+# Делает: возвращает подписанный сейчас Алматы (UTC+5).
 def almaty_now() -> datetime:
     return datetime.utcnow() + timedelta(hours=5)
 
 
-# Делает: находит ближайшее 1/10/20 число в 04:00 Алматы.
-def next_build_1_10_20_at_04() -> datetime:
-    now = almaty_now()
+# Делает: считает ближайшее (1/10/20) в 04:00 Алматы.
+def next_build_1_10_20_at_04(now_alm: datetime) -> datetime:
     targets = [1, 10, 20]
-    cands: List[datetime] = []
     for d in targets:
         try:
-            cands.append(now.replace(day=d, hour=4, minute=0, second=0, microsecond=0))
+            cand = now_alm.replace(day=d, hour=4, minute=0, second=0, microsecond=0)
+            if cand > now_alm:
+                return cand
         except ValueError:
             pass
 
-    future = [t for t in cands if t > now]
-    if future:
-        return min(future)
-
-    if now.month == 12:
-        return now.replace(year=now.year + 1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
-
-    first_next = (now.replace(day=1, hour=4, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
+    if now_alm.month == 12:
+        return now_alm.replace(year=now_alm.year + 1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
+    first_next = (now_alm.replace(day=1, hour=4, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
     return first_next
 
 
-# Делает: формат дд:мм:гггг - чч:мм:сс (как сейчас в meta).
+# Делает: форматирует время Алматы в YYYY-MM-DD HH:MM:SS (как у других поставщиков).
 def fmt_alm(dt: datetime) -> str:
-    return dt.strftime("%d:%m:%Y - %H:%M:%S")
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
-# Делает: рендерит FEED_META блок в точном формате.
-def render_feed_meta_comment(pairs: Dict[str, Any]) -> str:
+# Делает: рендерит FEED_META блок в стиле остальных поставщиков.
+def render_feed_meta_comment(cfg: Cfg, offers_total: int, offers_written: int) -> str:
     now_alm = almaty_now()
-    next_alm = next_build_1_10_20_at_04()
+    next_alm = next_build_1_10_20_at_04(now_alm)
+
     rows = [
         ("Поставщик", "NVPrint"),
-        ("URL поставщика", str(pairs.get("source", ""))),
+        ("URL поставщика", cfg.SUPPLIER_URL),
         ("Время сборки (Алматы)", fmt_alm(now_alm)),
-        ("Ближайшее время сборки (Алматы)", fmt_alm(next_alm)),
-        ("Сколько товаров у поставщика до фильтра", str(pairs.get("offers_total", "0"))),
-        ("Сколько товаров у поставщика после фильтра", str(pairs.get("offers_written", "0"))),
-        ("Сколько товаров есть в наличии (true)", str(pairs.get("available_true", "0"))),
-        ("Сколько товаров нет в наличии (false)", str(pairs.get("available_false", "0"))),
+        ("Ближайшая сборка (Алматы)", fmt_alm(next_alm)),
+        ("Сколько товаров у поставщика до фильтра", str(offers_total)),
+        ("Сколько товаров у поставщика после фильтра", str(offers_written)),
+        ("Сколько товаров есть в наличии (true)", str(offers_written)),
+        ("Сколько товаров нет в наличии (false)", "0"),
     ]
     key_w = max(len(k) for k, _ in rows)
-    lines = ["<!--FEED_META"]
-    for i, (k, v) in enumerate(rows):
-        end = " -->" if i == len(rows) - 1 else ""
-        lines.append(f"{k.ljust(key_w)} | {v}{end}")
-    return "\n".join(lines)
+    out = ["<!--FEED_META"]
+    for k, v in rows:
+        out.append(f"{k.ljust(key_w)} | {v}")
+    out.append("-->")
+    return "\n".join(out)
 
 
-# Делает: парсит xml -> items, фильтрует по keywords, собирает yml в текущем формате.
+# Делает: скачивает XML (requests + basic auth).
+def read_source_bytes(cfg: Cfg) -> bytes:
+    if not cfg.SUPPLIER_URL:
+        raise RuntimeError("NVPRINT_XML_URL (или NVPRINT_URL) пустой")
+
+    try:
+        import requests  # type: ignore
+    except Exception:
+        raise RuntimeError("requests недоступен")
+
+    auth = (cfg.NV_LOGIN, cfg.NV_PASSWORD) if (cfg.NV_LOGIN or cfg.NV_PASSWORD) else None
+    last_err: Optional[Exception] = None
+
+    for _ in range(max(1, cfg.RETRIES)):
+        try:
+            r = requests.get(cfg.SUPPLIER_URL, timeout=cfg.HTTP_TIMEOUT, auth=auth)
+            if r.status_code == 401:
+                raise RuntimeError("401 Unauthorized: проверь secrets NVPRINT_LOGIN/NVPRINT_PASSWORD")
+            r.raise_for_status()
+            if not r.content:
+                raise RuntimeError("Источник вернул пустой ответ")
+            return r.content
+        except Exception as e:
+            last_err = e
+
+    raise RuntimeError(str(last_err) if last_err else "Не удалось скачать XML")
+
+
+# Делает: угадывает узлы товаров (берём родителя всех <Артикул>, у кого есть НоменклатураКратко).
+def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
+    want_art = {"артикул", "articul", "sku", "article", "partnumber"}
+    parent_map = {c: p for p in root.iter() for c in list(p)}
+
+    items: List[ET.Element] = []
+    seen: set[int] = set()
+
+    for el in root.iter():
+        if strip_ns(el.tag).lower() not in want_art:
+            continue
+        item = parent_map.get(el)
+        if item is None:
+            continue
+        key = id(item)
+        if key in seen:
+            continue
+        if find_descendant(item, ["НоменклатураКратко"]) is None:
+            continue
+        seen.add(key)
+        items.append(item)
+
+    return items
+
+
+# Делает: экранирует текст для XML.
+def yml_escape(s: str) -> str:
+    t = "" if s is None else str(s)
+    t = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", t)
+    t = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    t = t.replace('"', "&quot;").replace("'", "&apos;")
+    return t
+
+
+# Делает: собирает итоговый YML в стиле остальных поставщиков.
 def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
     root = ET.fromstring(xml_bytes)
 
-    keywords = get_keywords(cfg)
     nodes = guess_item_nodes(root)
     offers_total = len(nodes)
 
     offers: List[Dict[str, Any]] = []
     for node in nodes:
         name_short = find_descendant_text(node, ["НоменклатураКратко"]) or ""
-        if not name_starts_with_keywords(name_short, keywords):
+        if not name_starts_with_keywords(name_short, KEYWORDS):
             continue
-        it = parse_item(node)
+        it = parse_item(node, cfg)
         if it:
             offers.append(it)
 
-    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
+    now_alm = almaty_now()
+    date_attr = now_alm.strftime("%Y-%m-%d %H:%M")
+
     out: List[str] = []
-    out.append("<?xml version='1.0' encoding='windows-1251'?>")
-    out.append(f"<yml_catalog date=\"{date_attr}\">")
-
-    meta_pairs = {
-        "source": cfg.SUPPLIER_URL,
-        "offers_total": offers_total,
-        "offers_written": len(offers),
-        "available_true": len(offers),  # всем true
-        "available_false": 0,
-    }
-    out.append(render_feed_meta_comment(meta_pairs))
-
-    out.append("<shop>")
-    out.append("  <offers>")
+    out.append('<?xml version="1.0" encoding="windows-1251"?>')
+    out.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
+    out.append(f'<yml_catalog date="{date_attr}">')
+    out.append("<shop><offers>")
+    out.append("")
+    out.append(render_feed_meta_comment(cfg, offers_total, len(offers)))
+    out.append("")
     for it in offers:
-        out.append(f"    <offer id=\"{yml_escape(it['id'])}\">")
-        out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
-        out.append(f"      <name>{yml_escape(it['title'])}</name>")
-        out.append(f"      <price>{int(it['price'])}</price>")
+        out.append(f'<offer id="{yml_escape(it["id"])}" available="true">')
+        out.append("<categoryId></categoryId>")
+        out.append(f"<vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
+        out.append(f"<name>{yml_escape(it['title'])}</name>")
+        out.append(f"<price>{int(it['price'])}</price>")
         if it.get("picture"):
-            out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
+            out.append(f"<picture>{yml_escape(it['picture'])}</picture>")
         if it.get("vendor"):
-            out.append(f"      <vendor>{yml_escape(it['vendor'])}</vendor>")
-        out.append("      <currencyId>KZT</currencyId>")
-        out.append("      <available>true</available>")
+            out.append(f"<vendor>{yml_escape(it['vendor'])}</vendor>")
+        out.append("<currencyId>KZT</currencyId>")
         if it.get("description"):
             desc_clean = re.sub(r"\s+", " ", it["description"]).strip()
-            out.append(f"      <description>{yml_escape(desc_clean)}</description>")
-        out.append("    </offer>\n")
-    out.append("  </offers>")
-    out.append("</shop></yml_catalog>")
-    return "\n".join(out)
+            out.append(f"<description>{yml_escape(desc_clean)}</description>")
+        out.append("</offer>")
+        out.append("")
+
+    out.append("</offers>")
+    out.append("</shop>")
+    out.append("</yml_catalog>")
+    return "\n".join(out) + "\n"
 
 
-# Делает: пишет пустой фид (как сейчас) при ошибке скачивания/парсинга.
+# Делает: строит пустой фид (если ошибка скачивания/парсинга) в таком же формате.
 def empty_yml(cfg: Cfg) -> str:
-    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
-    meta_pairs = {"source": cfg.SUPPLIER_URL, "offers_total": 0, "offers_written": 0, "available_true": 0, "available_false": 0}
-    out = [
-        "<?xml version='1.0' encoding='windows-1251'?>",
-        f"<yml_catalog date=\"{date_attr}\">",
-        render_feed_meta_comment(meta_pairs),
-        "<shop>",
-        "  <offers>",
-        "  </offers>",
-        "</shop></yml_catalog>",
-    ]
-    return "\n".join(out)
+    now_alm = almaty_now()
+    date_attr = now_alm.strftime("%Y-%m-%d %H:%M")
+    meta = render_feed_meta_comment(cfg, 0, 0)
+
+    out: List[str] = []
+    out.append('<?xml version="1.0" encoding="windows-1251"?>')
+    out.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
+    out.append(f'<yml_catalog date="{date_attr}">')
+    out.append("<shop><offers>")
+    out.append("")
+    out.append(meta)
+    out.append("")
+    out.append("</offers>")
+    out.append("</shop>")
+    out.append("</yml_catalog>")
+    return "\n".join(out) + "\n"
 
 
-# Делает: точка входа.
+# Делает: точка входа (пишет docs/nvprint.yml windows-1251).
 def main() -> int:
     cfg = Cfg()
     try:
         data = read_source_bytes(cfg)
         yml = parse_xml_to_yml(data, cfg)
     except Exception as e:
-        yml = empty_yml(cfg)
         print(f"ERROR: {e}", file=sys.stderr)
+        yml = empty_yml(cfg)
 
-    os.makedirs(os.path.dirname(cfg.OUT_FILE), exist_ok=True)
+    out_dir = os.path.dirname(cfg.OUT_FILE) or "."
+    os.makedirs(out_dir, exist_ok=True)
     with io.open(cfg.OUT_FILE, "w", encoding=cfg.OUTPUT_ENCODING, errors="ignore") as f:
         f.write(yml)
 
