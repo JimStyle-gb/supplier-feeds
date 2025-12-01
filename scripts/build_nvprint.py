@@ -483,19 +483,22 @@ WHATSAPP_BLOCK = (
     "<p style=\"text-align:center; margin:0 0 12px;\">"
     "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
     "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
-    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,08);\">"
+    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
     "&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!"
     "</a></p>"
     "<div style=\"background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;\">"
     "<h3 style=\"margin:0 0 8px; font-size:17px;\">Оплата</h3>"
     "<ul style=\"margin:0; padding-left:18px;\">"
-    "<li>Kaspi QR / Kaspi Pay</li>"
-    "<li>Наличные</li>"
+    "<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>"
+    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#8b0000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
     "</ul>"
-    "<h3 style=\"margin:12px 0 8px; font-size:17px;\">Доставка</h3>"
+    "<hr style=\"border:none; border-top:1px solid #E7D6B7; margin:12px 0;\" />"
+    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Доставка по Алматы и Казахстану</h3>"
     "<ul style=\"margin:0; padding-left:18px;\">"
-    "<li>По Алматы и Казахстану</li>"
-    "<li>Самовывоз</li>"
+    "<li><em><strong>ДОСТАВКА</strong> в \"квадрате\" г. Алматы — БЕСПЛАТНО!</em></li>"
+    "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>"
+    "<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>"
+    "<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал \"САЙРАН\"</em></li>"
     "</ul>"
     "</div></div>"
 )
@@ -721,14 +724,14 @@ def almaty_now() -> datetime:
     return datetime.utcnow() + timedelta(hours=5)
 
 
-# Делает: ближайшая 1/10/20 дата в 04:00 по Алматы.
-def next_build_1_10_20_at_04() -> datetime:
+# Делает: ближайшая 1/10/20 дата в 01:00 по Алматы.
+def next_build_1_10_20_at_01() -> datetime:
     now = almaty_now()
     targets = [1, 10, 20]
     cands: List[datetime] = []
     for d in targets:
         try:
-            cands.append(now.replace(day=d, hour=4, minute=0, second=0, microsecond=0))
+            cands.append(now.replace(day=d, hour=1, minute=0, second=0, microsecond=0))
         except ValueError:
             pass
 
@@ -737,9 +740,9 @@ def next_build_1_10_20_at_04() -> datetime:
         return min(future)
 
     if now.month == 12:
-        return now.replace(year=now.year + 1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
+        return now.replace(year=now.year + 1, month=1, day=1, hour=1, minute=0, second=0, microsecond=0)
 
-    first_next = (now.replace(day=1, hour=4, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
+    first_next = (now.replace(day=1, hour=1, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
     return first_next
 
 
@@ -754,7 +757,7 @@ def render_feed_meta_comment(source_url: str, offers_total: int, offers_written:
         ("Поставщик", "NVPrint"),
         ("URL поставщика", source_url),
         ("Время сборки (Алматы)", fmt_dt(almaty_now())),
-        ("Ближайшая сборка (Алматы)", fmt_dt(next_build_1_10_20_at_04())),
+        ("Ближайшая сборка (Алматы)", fmt_dt(next_build_1_10_20_at_01())),
         ("Сколько товаров у поставщика до фильтра", str(offers_total)),
         ("Сколько товаров у поставщика после фильтра", str(offers_written)),
         ("Сколько товаров есть в наличии (true)", str(avail_true)),
@@ -790,7 +793,7 @@ def build_yml(cfg: Cfg, xml_bytes: bytes) -> str:
     avail_true = sum(1 for o in offers if o["available"])
     avail_false = sum(1 for o in offers if not o["available"])
 
-    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
+    date_attr = almaty_now().strftime("%Y-%m-%d %H:%M")
     out: List[str] = []
     out.append('<?xml version="1.0" encoding="windows-1251"?>')
     out.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
@@ -828,13 +831,15 @@ def build_yml(cfg: Cfg, xml_bytes: bytes) -> str:
         out.append("</offer>")
         out.append("")
 
-    out.append("</offers></shop></yml_catalog>")
+    out.append("</offers>")
+    out.append("</shop>")
+    out.append("</yml_catalog>")
     return ensure_footer_spacing("\n".join(out))
 
 
 # Делает: пишет пустой корректный YML (если источник недоступен/ошибка парсинга).
 def empty_yml(cfg: Cfg) -> str:
-    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
+    date_attr = almaty_now().strftime("%Y-%m-%d %H:%M")
     out = [
         '<?xml version="1.0" encoding="windows-1251"?>',
         '<!DOCTYPE yml_catalog SYSTEM "shops.dtd">',
@@ -842,7 +847,9 @@ def empty_yml(cfg: Cfg) -> str:
         "<shop><offers>",
         render_feed_meta_comment(cfg.SRC_URL, 0, 0, 0, 0),
         "",
-        "</offers></shop></yml_catalog>",
+        "</offers>",
+        "</shop>",
+        "</yml_catalog>",
     ]
     return ensure_footer_spacing("\n".join(out))
 
