@@ -47,6 +47,8 @@ KEYWORDS: List[str] = [
 
 
 PriceRule = Tuple[int, int, float, int]
+ParamList = List[Tuple[str, str]]
+
 
 # Делает: правила расчёта цены (4% + надбавки, затем хвост 900).
 PRICING_RULES: List[PriceRule] = [
@@ -66,6 +68,22 @@ PRICING_RULES: List[PriceRule] = [
     (1500001, 2000000, 4.0, 90000),
     (2000001, 100000000, 4.0, 100000),
 ]
+
+
+# Делает: HTML-блок WhatsApp для описания.
+WHATSAPP_BLOCK = (
+    "<!-- WhatsApp -->\n"
+    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; "
+    "color:#222; font-size:15px;\">"
+    "<p style=\"text-align:center; margin:0 0 12px;\">"
+    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
+    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; "
+    "padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);\">"
+    "💬 НАЖМИ, ЧТОБЫ НАПИСАТЬ В WHATSAPP"
+    "</a>"
+    "</p>"
+    "</div>"
+)
 
 
 # Делает: убирает namespace у тега.
@@ -178,7 +196,7 @@ def compute_price_from_supplier(base_price: Optional[int]) -> int:
 # Делает: чистит артикул (убирает NV- и пробелы).
 def clean_article(raw: str) -> str:
     s = (raw or "").strip()
-    s = re.sub(r"^\s*NV[\-\_\s]+", "", s, flags=re.IGNORECASE)
+    s = re.sub(r"^\s*NV[-_\s]+", "", s, flags=re.IGNORECASE)
     s = s.replace(" ", "")
     return s
 
@@ -219,61 +237,74 @@ def extract_compatible_printers(item: ET.Element) -> List[str]:
     return uniq
 
 
-# Делает: строит description (Номенклатура + "Технические характеристики" + пункты).
-def build_description(item: ET.Element) -> str:
-    parts: List[str] = []
-
-    nom_full = find_descendant_text(item, ["Номенклатура"]) or ""
-    nom_full = re.sub(r"\s+", " ", nom_full).strip()
-    if nom_full:
-        parts.append(nom_full)
-
-    specs: List[str] = []
+# Делает: собирает характеристики в ParamList.
+def collect_params(item: ET.Element) -> ParamList:
+    params: ParamList = []
 
     resurs = find_descendant_text(item, ["Ресурс"])
     if resurs and resurs.strip() and resurs.strip() != "0":
-        specs.append(f"- Ресурс: {resurs.strip()}")
+        params.append(("Ресурс", resurs.strip()))
 
     tip = find_descendant_text(item, ["ТипПечати"])
-    if tip:
-        tip = tip.strip()
-        if tip:
-            specs.append(f"- Тип печати: {tip}")
+    if tip and tip.strip():
+        params.append(("Тип печати", tip.strip()))
 
     cvet = find_descendant_text(item, ["Цвет"])
-    if cvet:
-        cvet = cvet.strip()
-        if cvet:
-            specs.append(f"- Цвет: {cvet}")
+    if cvet and cvet.strip():
+        params.append(("Цвет", cvet.strip()))
 
     type_rash = find_descendant_text(item, ["ТипРасходника"])
-    if type_rash:
-        type_rash = type_rash.strip()
-        if type_rash:
-            specs.append(f"- Тип расходника: {type_rash}")
+    if type_rash and type_rash.strip():
+        params.append(("Тип расходника", type_rash.strip()))
 
     kod_factory = find_descendant_text(item, ["КодЗаводской"])
-    if kod_factory:
-        kod_factory = kod_factory.strip()
-        if kod_factory:
-            specs.append(f"- Заводской код: {kod_factory}")
+    if kod_factory and kod_factory.strip():
+        params.append(("Заводской код", kod_factory.strip()))
 
     ean = find_descendant_text(item, ["EAN"])
-    if ean:
-        ean = ean.strip()
-        if ean:
-            specs.append(f"- EAN: {ean}")
+    if ean and ean.strip():
+        params.append(("EAN", ean.strip()))
 
     printers = extract_compatible_printers(item)
     if printers:
-        specs.append("- Совместимые устройства: " + ", ".join(printers))
+        params.append(("Совместимые устройства", ", ".join(printers)))
 
-    if specs:
-        if parts:
-            parts.append("Технические характеристики:")
-        parts.extend(specs)
+    # Удаляем дубли по имени.
+    seen: set[str] = set()
+    uniq_params: ParamList = []
+    for name, value in params:
+        key = name.strip()
+        if key in seen:
+            continue
+        seen.add(key)
+        uniq_params.append((name, value))
 
-    return "\n".join(parts).strip()
+    return uniq_params
+
+
+# Делает: собирает текстовую часть описания (1–2 предложения).
+def build_body_text(item: ET.Element, name_short: str) -> str:
+    # Пытаемся взять "Номенклатура" или "Описание" из исходного XML.
+    desc = (
+        find_descendant_text(item, ["Описание"])
+        or find_descendant_text(item, ["Description"])
+        or find_descendant_text(item, ["Номенклатура"])
+    )
+    if desc:
+        desc = re.sub(r"\s+", " ", desc).strip()
+        return desc
+
+    # Фолбэк — просто короткое имя.
+    return re.sub(r"\s+", " ", name_short).strip()
+
+
+# Делает: экранирует текст для HTML внутри CDATA.
+def html_escape_text(s: str) -> str:
+    t = "" if s is None else str(s)
+    t = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", t)
+    t = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    t = t.replace('"', "&quot;")
+    return t
 
 
 # Делает: парсит один товарный узел.
@@ -300,7 +331,9 @@ def parse_item(elem: ET.Element, cfg: Cfg) -> Optional[Dict[str, Any]]:
         or ""
     ).strip()
 
-    description = build_description(elem)
+    params = collect_params(elem)
+    body_text = build_body_text(elem, name_short)
+
     oid, vcode = make_ids_from_article(article, cfg)
 
     return {
@@ -310,8 +343,31 @@ def parse_item(elem: ET.Element, cfg: Cfg) -> Optional[Dict[str, Any]]:
         "price": final_price,
         "picture": picture,
         "vendor": vendor,
-        "description": description,
+        "body": body_text,
+        "params": params,
     }
+
+
+# Делает: собирает keywords для <keywords>.
+def build_keywords(it: Dict[str, Any], params: ParamList) -> str:
+    parts: List[str] = []
+    title = (it.get("title") or "").strip()
+    vendor = (it.get("vendor") or "").strip()
+    if title:
+        parts.append(title)
+    if vendor:
+        parts.append(vendor)
+
+    for name, value in params:
+        n = name.strip()
+        if n in {"Ресурс", "Тип печати", "Цвет", "Тип расходника"}:
+            v = value.strip()
+            if v:
+                parts.append(v)
+
+    text = "; ".join(parts)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
 
 
 # Делает: возвращает подписанный сейчас Алматы (UTC+5).
@@ -426,6 +482,39 @@ def yml_escape(s: str) -> str:
     return t
 
 
+# Делает: рендерит <description><![CDATA[...]]></description> с WhatsApp и блоком характеристик.
+def render_description_block(it: Dict[str, Any], params: ParamList) -> List[str]:
+    title = html_escape_text(it.get("title") or "")
+    body = html_escape_text((it.get("body") or "").strip())
+
+    lines: List[str] = []
+    lines.append("<description><![CDATA[")
+    lines.append("")
+    lines.extend(WHATSAPP_BLOCK.splitlines())
+    lines.append("")
+    lines.append("<!-- Описание -->")
+    lines.append(
+        "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; "
+        "color:#222; font-size:15px;\">"
+    )
+    if title:
+        lines.append(f"<h3>{title}</h3>")
+    if body:
+        lines.append(f"<p>{body}</p>")
+    if params:
+        lines.append("<h3>Характеристики</h3>")
+        lines.append("<ul>")
+        for name, value in params:
+            n = html_escape_text(name)
+            v = html_escape_text(value)
+            lines.append(f"<li><strong>{n}:</strong> {v}</li>")
+        lines.append("</ul>")
+    lines.append("</div>")
+    lines.append("")
+    lines.append("]]></description>")
+    return lines
+
+
 # Делает: собирает итоговый YML в стиле остальных поставщиков.
 def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
     root = ET.fromstring(xml_bytes)
@@ -453,6 +542,7 @@ def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
     out.append("")
     out.append(render_feed_meta_comment(cfg, offers_total, len(offers)))
     out.append("")
+
     for it in offers:
         out.append(f'<offer id="{yml_escape(it["id"])}" available="true">')
         out.append("<categoryId></categoryId>")
@@ -464,9 +554,18 @@ def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
         if it.get("vendor"):
             out.append(f"<vendor>{yml_escape(it['vendor'])}</vendor>")
         out.append("<currencyId>KZT</currencyId>")
-        if it.get("description"):
-            desc_clean = re.sub(r"\s+", " ", it["description"]).strip()
-            out.append(f"<description>{yml_escape(desc_clean)}</description>")
+
+        params: ParamList = it.get("params") or []
+        desc_lines = render_description_block(it, params)
+        out.extend(desc_lines)
+
+        for name, value in params:
+            out.append(f'<param name="{yml_escape(name)}">{yml_escape(value)}</param>')
+
+        kw = build_keywords(it, params)
+        if kw:
+            out.append(f"<keywords>{yml_escape(kw)}</keywords>")
+
         out.append("</offer>")
         out.append("")
 
