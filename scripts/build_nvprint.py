@@ -11,6 +11,10 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 
 
+# Делает: версия скрипта (чтобы в логах было видно, что запустился новый код).
+SCRIPT_VERSION = "build_nvprint_10_cdata_params_keywords"
+
+
 # Делает: читает переменную окружения (строка) с дефолтом.
 def _env(key: str, default: str = "") -> str:
     v = os.getenv(key)
@@ -37,7 +41,7 @@ class Cfg:
 KEYWORDS: List[str] = [
     "Шлейф",
     "Блок фотобарабана",
-    "Блок фотобарабарана",  # на всякий случай (как в старом workflow)
+    "Блок фотобарабарана",
     "Картридж",
     "Печатающая головка",
     "Струйный картридж",
@@ -70,16 +74,15 @@ PRICING_RULES: List[PriceRule] = [
 ]
 
 
-# Делает: HTML-блок WhatsApp для описания.
+# Делает: HTML-блок WhatsApp для описания (без эмодзи, чтобы windows-1251 не резал).
 WHATSAPP_BLOCK = (
     "<!-- WhatsApp -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; "
-    "color:#222; font-size:15px;\">"
+    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
     "<p style=\"text-align:center; margin:0 0 12px;\">"
     "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
-    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; "
-    "padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);\">"
-    "💬 НАЖМИ, ЧТОБЫ НАПИСАТЬ В WHATSAPP"
+    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
+    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);\">"
+    "&#128172; НАЖМИ, ЧТОБЫ НАПИСАТЬ В WHATSAPP"
     "</a>"
     "</p>"
     "</div>"
@@ -237,65 +240,110 @@ def extract_compatible_printers(item: ET.Element) -> List[str]:
     return uniq
 
 
-# Делает: собирает характеристики в ParamList.
-def collect_params(item: ET.Element) -> ParamList:
-    params: ParamList = []
+# Делает: парсит характеристики из текста описания и добавляет (если в XML нет).
+def extract_params_from_text(text: str) -> Dict[str, str]:
+    t = re.sub(r"\s+", " ", (text or "")).strip()
+    if not t:
+        return {}
 
-    resurs = find_descendant_text(item, ["Ресурс"])
-    if resurs and resurs.strip() and resurs.strip() != "0":
-        params.append(("Ресурс", resurs.strip()))
+    out: Dict[str, str] = {}
 
-    tip = find_descendant_text(item, ["ТипПечати"])
-    if tip and tip.strip():
-        params.append(("Тип печати", tip.strip()))
+    m = re.search(r"(?:Ресурс)\s*[:\-]\s*([0-9][0-9\s]*)(?:\s*(?:стр|str|коп)\.?)*", t, flags=re.IGNORECASE)
+    if m:
+        v = re.sub(r"\s+", " ", m.group(1)).strip()
+        if v:
+            out["Ресурс"] = v
 
-    cvet = find_descendant_text(item, ["Цвет"])
-    if cvet and cvet.strip():
-        params.append(("Цвет", cvet.strip()))
+    m = re.search(r"(?:Тип\s*печати)\s*[:\-]\s*([^;,.]+)", t, flags=re.IGNORECASE)
+    if m:
+        v = m.group(1).strip()
+        if v:
+            out["Тип печати"] = v
 
-    type_rash = find_descendant_text(item, ["ТипРасходника"])
-    if type_rash and type_rash.strip():
-        params.append(("Тип расходника", type_rash.strip()))
+    m = re.search(r"(?:Цвет)\s*[:\-]\s*([^;,.]+)", t, flags=re.IGNORECASE)
+    if m:
+        v = m.group(1).strip()
+        if v:
+            out["Цвет"] = v
 
-    kod_factory = find_descendant_text(item, ["КодЗаводской"])
-    if kod_factory and kod_factory.strip():
-        params.append(("Заводской код", kod_factory.strip()))
+    m = re.search(r"(?:Тип\s*расходника)\s*[:\-]\s*([^;,.]+)", t, flags=re.IGNORECASE)
+    if m:
+        v = m.group(1).strip()
+        if v:
+            out["Тип расходника"] = v
 
-    ean = find_descendant_text(item, ["EAN"])
-    if ean and ean.strip():
-        params.append(("EAN", ean.strip()))
+    m = re.search(r"(?:EAN)\s*[:\-]?\s*([0-9]{8,14})", t, flags=re.IGNORECASE)
+    if m:
+        out["EAN"] = m.group(1).strip()
+
+    m = re.search(r"(?:Код\s*(?:заводской|производителя))\s*[:\-]\s*([A-Z0-9\-\_]+)", t, flags=re.IGNORECASE)
+    if m:
+        out["Заводской код"] = m.group(1).strip()
+
+    return out
+
+
+# Делает: сортирует характеристики (приоритетные сверху, затем по алфавиту).
+def sort_params(params: ParamList) -> ParamList:
+    pr = {
+        "Ресурс": 1,
+        "Тип печати": 2,
+        "Цвет": 3,
+        "Тип расходника": 4,
+        "EAN": 5,
+        "Заводской код": 6,
+        "Совместимые устройства": 99,
+    }
+
+    def key_fn(p: Tuple[str, str]) -> Tuple[int, str]:
+        n = p[0].strip()
+        return (pr.get(n, 50), n.casefold())
+
+    return sorted(params, key=key_fn)
+
+
+# Делает: собирает характеристики (XML + обогащение из текста).
+def collect_params(item: ET.Element, body_text: str) -> ParamList:
+    params: Dict[str, str] = {}
+
+    def put(name: str, value: Optional[str]) -> None:
+        if not value:
+            return
+        v = value.strip()
+        if v == "" or v == "0":
+            return
+        if name not in params:
+            params[name] = v
+
+    put("Ресурс", find_descendant_text(item, ["Ресурс"]))
+    put("Тип печати", find_descendant_text(item, ["ТипПечати"]))
+    put("Цвет", find_descendant_text(item, ["Цвет"]))
+    put("Тип расходника", find_descendant_text(item, ["ТипРасходника"]))
+    put("Заводской код", find_descendant_text(item, ["КодЗаводской"]))
+    put("EAN", find_descendant_text(item, ["EAN"]))
 
     printers = extract_compatible_printers(item)
     if printers:
-        params.append(("Совместимые устройства", ", ".join(printers)))
+        put("Совместимые устройства", ", ".join(printers))
 
-    # Удаляем дубли по имени.
-    seen: set[str] = set()
-    uniq_params: ParamList = []
-    for name, value in params:
-        key = name.strip()
-        if key in seen:
-            continue
-        seen.add(key)
-        uniq_params.append((name, value))
+    extra = extract_params_from_text(body_text)
+    for k, v in extra.items():
+        put(k, v)
 
-    return uniq_params
+    out: ParamList = [(k, v) for k, v in params.items()]
+    return sort_params(out)
 
 
 # Делает: собирает текстовую часть описания (1–2 предложения).
 def build_body_text(item: ET.Element, name_short: str) -> str:
-    # Пытаемся взять "Номенклатура" или "Описание" из исходного XML.
     desc = (
         find_descendant_text(item, ["Описание"])
         or find_descendant_text(item, ["Description"])
         or find_descendant_text(item, ["Номенклатура"])
     )
     if desc:
-        desc = re.sub(r"\s+", " ", desc).strip()
-        return desc
-
-    # Фолбэк — просто короткое имя.
-    return re.sub(r"\s+", " ", name_short).strip()
+        return re.sub(r"\s+", " ", desc).strip()
+    return re.sub(r"\s+", " ", (name_short or "")).strip()
 
 
 # Делает: экранирует текст для HTML внутри CDATA.
@@ -309,7 +357,9 @@ def html_escape_text(s: str) -> str:
 
 # Делает: парсит один товарный узел.
 def parse_item(elem: ET.Element, cfg: Cfg) -> Optional[Dict[str, Any]]:
-    article = first_child_text(elem, ["Артикул", "articul", "sku", "article", "PartNumber"])
+    article = first_child_text(elem, ["Артикул", "articul", "sku", "article", "PartNumber"]) or find_descendant_text(
+        elem, ["Артикул", "articul", "sku", "article", "PartNumber"]
+    )
     if not article:
         return None
 
@@ -322,17 +372,13 @@ def parse_item(elem: ET.Element, cfg: Cfg) -> Optional[Dict[str, Any]]:
     base_int = 100 if (base is None or base <= 0) else int(math.ceil(base))
     final_price = compute_price_from_supplier(base_int)
 
-    vendor = first_child_text(elem, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or ""
-    picture = (
-        first_child_text(
-            elem,
-            ["СсылкаНаКартинку", "Картинка", "Изображение", "Фото", "Picture", "Image", "ФотоURL", "PictureURL"],
-        )
-        or ""
-    ).strip()
+    vendor = find_descendant_text(elem, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or ""
+    picture = find_descendant_text(
+        elem, ["СсылкаНаКартинку", "Картинка", "Изображение", "Фото", "Picture", "Image", "ФотоURL", "PictureURL"]
+    ) or ""
 
-    params = collect_params(elem)
     body_text = build_body_text(elem, name_short)
+    params = collect_params(elem, body_text)
 
     oid, vcode = make_ids_from_article(article, cfg)
 
@@ -341,8 +387,8 @@ def parse_item(elem: ET.Element, cfg: Cfg) -> Optional[Dict[str, Any]]:
         "vendorCode": vcode,
         "title": name_short,
         "price": final_price,
-        "picture": picture,
-        "vendor": vendor,
+        "picture": (picture or "").strip(),
+        "vendor": (vendor or "").strip(),
         "body": body_text,
         "params": params,
     }
@@ -359,15 +405,13 @@ def build_keywords(it: Dict[str, Any], params: ParamList) -> str:
         parts.append(vendor)
 
     for name, value in params:
-        n = name.strip()
-        if n in {"Ресурс", "Тип печати", "Цвет", "Тип расходника"}:
-            v = value.strip()
+        if name in {"Ресурс", "Тип печати", "Цвет", "Тип расходника"}:
+            v = (value or "").strip()
             if v:
                 parts.append(v)
 
     text = "; ".join(parts)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
+    return re.sub(r"\s+", " ", text).strip()
 
 
 # Делает: возвращает подписанный сейчас Алматы (UTC+5).
@@ -392,7 +436,7 @@ def next_build_1_10_20_at_04(now_alm: datetime) -> datetime:
     return first_next
 
 
-# Делает: форматирует время Алматы в YYYY-MM-DD HH:MM:SS (как у других поставщиков).
+# Делает: форматирует время Алматы в YYYY-MM-DD HH:MM:SS.
 def fmt_alm(dt: datetime) -> str:
     return dt.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -493,10 +537,7 @@ def render_description_block(it: Dict[str, Any], params: ParamList) -> List[str]
     lines.extend(WHATSAPP_BLOCK.splitlines())
     lines.append("")
     lines.append("<!-- Описание -->")
-    lines.append(
-        "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; "
-        "color:#222; font-size:15px;\">"
-    )
+    lines.append("<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">")
     if title:
         lines.append(f"<h3>{title}</h3>")
     if body:
@@ -515,7 +556,7 @@ def render_description_block(it: Dict[str, Any], params: ParamList) -> List[str]
     return lines
 
 
-# Делает: собирает итоговый YML в стиле остальных поставщиков.
+# Делает: собирает итоговый YML.
 def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
     root = ET.fromstring(xml_bytes)
 
@@ -556,8 +597,7 @@ def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
         out.append("<currencyId>KZT</currencyId>")
 
         params: ParamList = it.get("params") or []
-        desc_lines = render_description_block(it, params)
-        out.extend(desc_lines)
+        out.extend(render_description_block(it, params))
 
         for name, value in params:
             out.append(f'<param name="{yml_escape(name)}">{yml_escape(value)}</param>')
@@ -575,7 +615,7 @@ def parse_xml_to_yml(xml_bytes: bytes, cfg: Cfg) -> str:
     return "\n".join(out) + "\n"
 
 
-# Делает: строит пустой фид (если ошибка скачивания/парсинга) в таком же формате.
+# Делает: строит пустой фид (если ошибка скачивания/парсинга).
 def empty_yml(cfg: Cfg) -> str:
     now_alm = almaty_now()
     date_attr = now_alm.strftime("%Y-%m-%d %H:%M")
@@ -597,6 +637,7 @@ def empty_yml(cfg: Cfg) -> str:
 
 # Делает: точка входа (пишет docs/nvprint.yml windows-1251).
 def main() -> int:
+    print(f"NVPRINT_SCRIPT_VERSION={SCRIPT_VERSION}")
     cfg = Cfg()
     try:
         data = read_source_bytes(cfg)
