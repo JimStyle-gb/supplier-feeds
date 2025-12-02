@@ -30,6 +30,8 @@ jobs:
         env:
           VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
           VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+          # FIX SSL: сайт b2b.vtt.ru на Actions может падать с CERT_VERIFY_FAILED, поэтому отключаем проверку
+          VTT_SSL_VERIFY: "0"
           OUT_FILE: docs/vtt.yml
           OUTPUT_ENCODING: windows-1251
           HTTP_TIMEOUT: "60"
