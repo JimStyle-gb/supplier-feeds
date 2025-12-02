@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # build_vtt.py — v11 (output style = AkCent)
 # Правки:
-# - v11: фикс смешения кириллицы/латиницы в кодовых токенах (только там, где есть латиница) — name/article/param/совместимость.
-# - v11: если «Ресурс» найден в name — он приоритетнее значения из характеристик (исправление конфликтов).
+# - v11: фиксы смешения RU/EN букв в id/vendorCode/name (латиница вместо русских букв в кодах), чистка (О)->(O), /HP, и мелкие орфо-фиксы.
 # - v10: "умное описание" — если meta-description пустое/короткое/равно name, собираем <p> из типа/бренда/ключевых характеристик.
 # - v9: чистка пунктуации в name (убираем пробелы перед запятыми/точками/двоеточием).
 # - v8: фикс Ресурс из name (не берём из кодов вроде TK-8345K / 8600,1K) + чистка двойных пробелов в name.
@@ -272,43 +271,68 @@ def norm_spaces(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "")).strip()
 
 
+# -------------------- Фиксы смешения RU/EN букв --------------------
 
-# -------------------- Смешение кириллицы/латиницы в кодах --------------------
+# Важно: трогаем только те "токены", где уже есть латиница или цифры.
+# Русские слова (полностью кириллица) не меняем.
 
-# Меняем только «похожие» буквы и только внутри токенов, где уже есть латиница (чтобы не ломать русский текст).
-_HOMO_CYR_TO_LAT = str.maketrans({
-    "А": "A", "В": "B", "Е": "E", "Ё": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "У": "Y", "Х": "X",
-    "а": "a", "в": "b", "е": "e", "ё": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t", "у": "y", "х": "x",
-    "І": "I", "і": "i",
+_CONFUSABLE_MAP = str.maketrans({
+    # Кириллица -> латиница (визуальные двойники)
+    "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P",
+    "С": "C", "Т": "T", "Х": "X",
+    "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p",
+    "с": "c", "т": "t", "х": "x",
+    # Частые "хвосты" в артикулах (уценка)
+    "Ц": "C", "ц": "c",
 })
 
-_CODE_TOKEN_RE = re.compile(r"[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё\-\._/]*")
+_TOKEN_RE = re.compile(r"[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё\-\./]*")
 
-def fix_mixed_alphabet(s: str) -> str:
-    """Исправляет смешение алфавитов в модельных/кодовых токенах: 'TN-321С' -> 'TN-321C'."""
+def _fix_mixed_token(token: str) -> str:
+    t = token or ""
+
+    # Простой и безопасный кейс: ресурс типа 15,5К -> 15,5K
+    t = re.sub(r"(?<=\d)[Кк]\b", "K", t)
+
+    # Если есть и латиница/цифры, и кириллица — приводим к латинице.
+    if re.search(r"[A-Za-z0-9]", t) and re.search(r"[А-Яа-яЁё]", t):
+        # уц / УЦ -> uc / UC (чтобы не было кириллицы в id)
+        t = re.sub(r"[Уу][Цц]", lambda m: "UC" if m.group(0).isupper() else "uc", t)
+        t = t.translate(_CONFUSABLE_MAP)
+        if re.search(r"[А-Яа-яЁё]", t):
+            t = translit_ru(t)
+    return t
+
+def fix_mixed_text(text: str) -> str:
+    s = (text or "").replace("\xa0", " ").strip()
     if not s:
-        return s or ""
+        return s
 
-    def _repl(m: re.Match) -> str:
-        tok = m.group(0)
-        if re.search(r"[A-Za-z]", tok) and re.search(r"[А-Яа-яЁё]", tok):
-            return tok.translate(_HOMO_CYR_TO_LAT)
-        return tok
+    # Точечные орфо/смысловые фиксы
+    s = s.replace("(О)", "(O)")  # (О) -> (O)
+    s = re.sub(r"\(c\s+", "(с ", s)  # (c ... ) -> (с ... )
+    s = re.sub(r"\s*/\s*HP\s*,", ",", s, flags=re.IGNORECASE)  # /HP,
+    s = re.sub(r"уцен\.\s*срок", "уцен. срок", s, flags=re.IGNORECASE)
+    s = re.sub(r"уц\.\s*срок", "уцен. срок", s, flags=re.IGNORECASE)
 
-    return _CODE_TOKEN_RE.sub(_repl, s)
+    # По токенам: если внутри есть латиница/цифры + кириллица — поправим на латиницу
+    def repl(m: re.Match) -> str:
+        return _fix_mixed_token(m.group(0))
 
-def pages_int(s: str) -> Optional[int]:
-    """Достаёт число страниц из '11000 стр.' / '11 000 стр' / '11000'."""
-    if not s:
-        return None
-    m = re.search(r"(\d[\d\s]{0,12})", s)
-    if not m:
-        return None
-    digits = re.sub(r"\s+", "", m.group(1))
-    try:
-        return int(digits)
-    except Exception:
-        return None
+    s = _TOKEN_RE.sub(repl, s)
+
+    # финальная чистка пробелов/пунктуации
+    s = re.sub(r"\s{2,}", " ", s).strip()
+    s = re.sub(r"\s+([,.;:])", r"\1", s)
+    return s
+
+def normalize_code_ascii(code: str) -> str:
+    c = (code or "").replace("\xa0", "").strip()
+    if not c:
+        return ""
+    c = _fix_mixed_token(c)
+    c = re.sub(r"[^A-Za-z0-9_\-]+", "", c)
+    return c
 
 
 # -------------------- Правило цены (НЕ меняем) --------------------
@@ -762,7 +786,6 @@ def extract_compatibility(text: str) -> str:
     val = m.group(1).strip()
     val = re.sub(r"\s+", " ", val)
     val = re.split(r"(?:Гарантия|Условия|Доставка)\s*[:\-]", val, maxsplit=1, flags=re.IGNORECASE)[0].strip()
-    val = fix_mixed_alphabet(val)
     if 10 <= len(val) <= 220:
         return val
     return ""
@@ -789,7 +812,6 @@ def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, 
         if "ресурс" in kl:
             vv = normalize_resource_value(vv)
 
-        vv = fix_mixed_alphabet(vv)
         cleaned[k] = vv
 
     # 2) из name
@@ -803,20 +825,9 @@ def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, 
     if (not has_ml) and extra.get("Объем"):
         cleaned["Объем"] = extra["Объем"]
 
-    name_resource = extra.get("Ресурс")
-    if name_resource:
-        r_key = None
-        for kk in cleaned.keys():
-            if "ресурс" in kk.lower():
-                r_key = kk
-                break
-        if not r_key:
-            cleaned["Ресурс"] = name_resource
-        else:
-            old_pages = pages_int(cleaned.get(r_key, ""))
-            new_pages = pages_int(name_resource)
-            if new_pages and (not old_pages or new_pages != old_pages):
-                cleaned[r_key] = name_resource
+    has_resource = any("ресурс" in k.lower() for k in cleaned.keys())
+    if (not has_resource) and extra.get("Ресурс"):
+        cleaned["Ресурс"] = extra["Ресурс"]
 
     # 3) тип по категории
     if type_hint:
@@ -997,15 +1008,12 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     soup = soup_of(b)
 
     name = get_title(soup)
-    name = re.sub(r"\s{2,}", " ", name).strip()
-    name = re.sub(r"\s+([,.;:])", r"\1", name)  # v9: убираем пробелы перед пунктуацией
-    name = fix_mixed_alphabet(name)
+    name = fix_mixed_text(name)
     if not name:
         return None
 
     pairs = parse_pairs(soup)
     article = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
-    article = fix_mixed_alphabet(article)
     if not article:
         return None
 
@@ -1016,6 +1024,7 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     picture = first_image_url(soup) or ""
 
     article_clean = clean_article(article)
+    article_clean = normalize_code_ascii(article_clean)
     if not article_clean:
         return None
 
@@ -1027,8 +1036,6 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     short_desc = get_meta_description(soup) or ""
     if _is_poor_desc(short_desc, name):
         short_desc = make_smart_desc(name=name, vendor=vendor, type_hint=type_hint, params=params)
-
-    short_desc = fix_mixed_alphabet(short_desc)
 
     descr_cdata = build_description_cdata(
         name=name,
