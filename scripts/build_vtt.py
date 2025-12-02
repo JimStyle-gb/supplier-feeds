@@ -694,9 +694,9 @@ def render_feed_meta(offers_total: int, offers_written: int, avail_true: int, av
     ]
     key_w = max(len(k) for k, _ in rows)
     lines = ["<!--FEED_META"]
-    for i, (k, v) in enumerate(rows):
-        end = " -->" if i == len(rows) - 1 else ""
-        lines.append(f"{k.ljust(key_w)} | {v}{end}")
+    for k, v in rows:
+        lines.append(f"{k.ljust(key_w)} | {v}")
+    lines.append("-->")
     return "\n".join(lines)
 
 
