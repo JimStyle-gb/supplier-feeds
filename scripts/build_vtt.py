@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-# build_vtt.py — v2 (from scratch, output style = AkCent)
-# Fix: SSL verify configurable (VTT_SSL_VERIFY / VTT_CA_BUNDLE) to обходить CERT_VERIFY_FAILED на GitHub Actions.
+# build_vtt.py — v4 (from scratch, output style = AkCent)
+# Fixes:
+# 1) <param> и блок "Характеристики" в <description> теперь 1-в-1 (добавлен "Производитель").
+# 2) Цена: добавлены fallback-способы парсинга (меньше price=100 из-за "не нашли цену").
+# 3) SSL verify управляется env (VTT_SSL_VERIFY / VTT_CA_BUNDLE) — для GitHub Actions.
 
 from __future__ import annotations
 
-import hashlib
 import os
 import random
 import re
@@ -405,10 +407,36 @@ def parse_pairs(soup: BeautifulSoup) -> Dict[str, str]:
 
 
 def parse_supplier_price(soup: BeautifulSoup) -> Optional[int]:
+    """Цена: пробуем несколько вариантов (на сайте иногда меняется разметка)."""
+    # 1) классический вариант
     b = soup.select_one("span.price_main b")
-    if not b:
-        return None
-    return parse_int_from_text(b.get_text(" ", strip=True))
+    if b:
+        v = parse_int_from_text(b.get_text(" ", strip=True))
+        if v is not None:
+            return v
+
+    # 2) весь блок price_main (бывает без <b>)
+    el = soup.select_one("span.price_main")
+    if el:
+        v = parse_int_from_text(el.get_text(" ", strip=True))
+        if v is not None:
+            return v
+
+    # 3) meta/structured price (если есть)
+    meta = soup.find("meta", attrs={"itemprop": "price"})
+    if meta and meta.get("content"):
+        v = parse_int_from_text(str(meta.get("content")))
+        if v is not None:
+            return v
+
+    # 4) data-price атрибут (если есть)
+    any_dp = soup.find(attrs={"data-price": True})
+    if any_dp:
+        v = parse_int_from_text(str(any_dp.get("data-price", "")))
+        if v is not None:
+            return v
+
+    return None
 
 
 def first_image_url(soup: BeautifulSoup) -> Optional[str]:
@@ -441,10 +469,6 @@ def get_meta_description(soup: BeautifulSoup) -> str:
 
 def clean_article(article: str) -> str:
     return re.sub(r"[^\w\-]+", "", (article or "").strip())
-
-
-def stable_hash6(s: str) -> str:
-    return hashlib.sha1((s or "").encode("utf-8", "ignore")).hexdigest()[:6]
 
 
 def split_tokens(text: str, limit: int = 14) -> List[str]:
@@ -503,13 +527,12 @@ def make_keywords(vendor: str, name: str) -> str:
     return ", ".join([x.strip() for x in base if x and x.strip()])
 
 
-def build_description_cdata(name: str, short_desc: str, characteristics: List[Tuple[str, str]], vendor: str) -> str:
+def build_description_cdata(name: str, short_desc: str, characteristics: List[Tuple[str, str]]) -> str:
+    """CDATA описание как у AkCent (WhatsApp + Описание + Характеристики)."""
     name_e = (name or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     desc_e = (short_desc or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
     items = []
-    if vendor:
-        items.append(("<strong>Производитель:</strong>", vendor.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")))
     for k, v in characteristics:
         if not k or not v:
             continue
@@ -539,14 +562,26 @@ def build_description_cdata(name: str, short_desc: str, characteristics: List[Tu
 DROP_KEYS = {"Артикул", "Партс-номер", "Вендор"}
 
 
-def normalize_characteristics(pairs: Dict[str, str]) -> List[Tuple[str, str]]:
+def normalize_characteristics(pairs: Dict[str, str], vendor: str) -> List[Tuple[str, str]]:
+    """Собрать характеристики для <param> и для блока 'Характеристики' в описании.
+    Важно: список 1-в-1 используется и в <param>, и в <description>.
+    """
     out: List[Tuple[str, str]] = []
+
+    # Производитель (чтобы совпадало 1-в-1)
+    v = (vendor or "").strip()
+    if v:
+        existing = {k.strip().lower() for k in pairs.keys()}
+        if "производитель" not in existing and "бренд" not in existing and "торговая марка" not in existing:
+            out.append(("Производитель", v))
+
     for k, v in pairs.items():
         if not k or not v:
             continue
         if k in DROP_KEYS:
             continue
         out.append((k.strip(), v.strip()))
+
     out.sort(key=lambda x: x[0].lower())
     return out
 
@@ -562,56 +597,6 @@ class Offer:
     description_cdata: str
     params: List[Tuple[str, str]]
     keywords: str
-
-
-def parse_product(s: requests.Session, url: str) -> Optional[Offer]:
-    b = http_get(s, url)
-    if not b:
-        return None
-    soup = soup_of(b)
-
-    name = get_title(soup)
-    if not name:
-        return None
-
-    pairs = parse_pairs(soup)
-    article = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
-    if not article:
-        return None
-
-    vendor = normalize_vendor((pairs.get("Вендор") or "").strip())
-    dealer_price = parse_supplier_price(soup)
-    price = compute_price_from_supplier(dealer_price)
-
-    picture = first_image_url(soup) or ""
-    short_desc = get_meta_description(soup) or name
-
-    article_clean = clean_article(article)
-    if not article_clean:
-        return None
-
-    offer_id = OFFER_PREFIX + article_clean
-    params = normalize_characteristics(pairs)
-
-    descr_cdata = build_description_cdata(
-        name=name,
-        short_desc=short_desc,
-        characteristics=params[:25],
-        vendor=vendor,
-    )
-    keywords = make_keywords(vendor=vendor, name=name)
-
-    return Offer(
-        id=offer_id,
-        vendorCode=offer_id,
-        name=name,
-        price=int(price),
-        picture=picture,
-        vendor=vendor,
-        description_cdata=descr_cdata,
-        params=params,
-        keywords=keywords,
-    )
 
 
 # -------------------- Сбор ссылок --------------------
@@ -642,7 +627,6 @@ def collect_product_links(s: requests.Session, category_url: str) -> List[str]:
 
             if href.startswith("http"):
                 p = urlparse(href)
-                # только наш домен
                 if p.netloc and p.netloc != urlparse(BASE_URL).netloc:
                     continue
                 href = p.path
@@ -677,6 +661,58 @@ def collect_all_products_links(s: requests.Session) -> List[str]:
             seen.add(u)
             all_links.append(u)
     return all_links
+
+
+# -------------------- Парс товара --------------------
+
+def parse_product(s: requests.Session, url: str) -> Optional[Offer]:
+    b = http_get(s, url)
+    if not b:
+        return None
+    soup = soup_of(b)
+
+    name = get_title(soup)
+    if not name:
+        return None
+
+    pairs = parse_pairs(soup)
+    article = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
+    if not article:
+        return None
+
+    vendor = normalize_vendor((pairs.get("Вендор") or "").strip())
+    dealer_price = parse_supplier_price(soup)
+    price = compute_price_from_supplier(dealer_price)
+
+    picture = first_image_url(soup) or ""
+    short_desc = get_meta_description(soup) or name
+
+    article_clean = clean_article(article)
+    if not article_clean:
+        return None
+
+    offer_id = OFFER_PREFIX + article_clean
+
+    # ВАЖНО: один список и в <param>, и в description->Характеристики
+    params = normalize_characteristics(pairs, vendor)
+    descr_cdata = build_description_cdata(
+        name=name,
+        short_desc=short_desc,
+        characteristics=params,
+    )
+    keywords = make_keywords(vendor=vendor, name=name)
+
+    return Offer(
+        id=offer_id,
+        vendorCode=offer_id,
+        name=name,
+        price=int(price),
+        picture=picture,
+        vendor=vendor,
+        description_cdata=descr_cdata,
+        params=params,
+        keywords=keywords,
+    )
 
 
 # -------------------- FEED_META --------------------
@@ -732,6 +768,7 @@ def offer_to_xml(o: Offer) -> str:
 
 
 def build_yml(offers: List[Offer], offers_total: int) -> str:
+    # Пока доступность не парсим — все available="true"
     avail_true = len(offers)
     avail_false = 0
 
@@ -764,7 +801,7 @@ def build_yml(offers: List[Offer], offers_total: int) -> str:
     return "\n".join(head + body + tail)
 
 
-# -------------------- Main --------------------
+# -------------------- Вывод пустого --------------------
 
 def write_empty_yml(reason: str) -> None:
     ensure_dir(OUT_FILE)
@@ -789,6 +826,8 @@ def write_empty_yml(reason: str) -> None:
     print(f"[WARN] wrote empty feed: {OUT_FILE} | {reason}")
 
 
+# -------------------- Main --------------------
+
 def main() -> int:
     s = make_session()
 
@@ -809,16 +848,20 @@ def main() -> int:
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
         futs = {ex.submit(parse_product, s, u): u for u in product_urls}
         for fut in as_completed(futs):
+            url = futs[fut]
             try:
                 o = fut.result()
             except Exception as e:
-                print(f"[WARN] parse crash: {futs[fut]} | {e}", file=sys.stderr)
+                print(f"[WARN] parse crash: {url} | {e}", file=sys.stderr)
                 continue
             if not o:
                 continue
 
+            # (на всякий) уникальность id
             if o.id in seen_ids:
-                oid2 = f"{o.id}-{stable_hash6(o.name)}"
+                # добавим суффикс по короткому хэшу URL
+                suf = re.sub(r"[^0-9a-f]+", "", format(abs(hash(url)) % (16**6), "06x"))
+                oid2 = f"{o.id}-{suf}"
                 o = Offer(
                     id=oid2,
                     vendorCode=oid2,
