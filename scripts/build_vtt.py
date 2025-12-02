@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# build_vtt.py — v8 (output style = AkCent)
+# build_vtt.py — v10 (output style = AkCent)
 # Правки:
+# - v10: "умное описание" — если meta-description пустое/короткое/равно name, собираем <p> из типа/бренда/ключевых характеристик.
+# - v9: чистка пунктуации в name (убираем пробелы перед запятыми/точками/двоеточием).
 # - v8: фикс Ресурс из name (не берём из кодов вроде TK-8345K / 8600,1K) + чистка двойных пробелов в name.
-# - Удаление param: "Штрих-код/Штрихкод/EAN/GTIN/Barcode", "Категория/Подкатегория",
-#   "Каталожный номер", "OEM-номер" (и варианты).
-# - Нормализация значений: Цвет -> "Русский (English)", Ресурс -> "#### стр."
-# - Обогащение: добираем из name (цвет/мл/ресурс) + добавляем "Тип" по источнику категории.
-# - Параметры <param> и блок "Характеристики" в <description> = один список (1-в-1).
+# - Удаление param: штрихкоды, Категория/Подкатегория, Каталожный номер, OEM-номер.
+# - Нормализация: Цвет -> "Русский (English)", Ресурс -> "#### стр."
+# - Обогащение: добираем из name (цвет/мл/ресурс) + добавляем "Тип" по категории.
 # ВАЖНО: логика бренда (<vendor>) и логика цены НЕ менялись.
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from decimal import Decimal, InvalidOperation
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlunparse
 
 import requests
@@ -264,6 +264,10 @@ def type_from_category(code: str) -> str:
     if c.startswith("CARTMAT"):
         return "Расходные материалы"
     return ""
+
+
+def norm_spaces(s: str) -> str:
+    return re.sub(r"\s+", " ", (s or "")).strip()
 
 
 # -------------------- Правило цены (НЕ меняем) --------------------
@@ -615,7 +619,7 @@ def normalize_resource_value(v: str) -> str:
         return s
 
     # 1) 1,1К / 7K (но НЕ из кодов типа TK-8345K)
-    #     - берём только 1–3 цифры перед K и только если К стоит после пробела/запятой/начала строки
+    #     - берём только 1–3 цифры перед K и только если K стоит после пробела/запятой/начала строки
     m = re.search(r"(?:(?<=^)|(?<=\s)|(?<=,))\s*(\d{1,3}(?:[.,]\d+)?)\s*[kк]\b", s, flags=re.IGNORECASE)
     if m:
         num = m.group(1).replace(",", ".")
@@ -786,6 +790,36 @@ def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, 
 
 # -------------------- Описание --------------------
 
+def _ensure_sentence(s: str) -> str:
+    t = norm_spaces(s)
+    if not t:
+        return ""
+    return t if t.endswith((".", "!", "?")) else (t + ".")
+
+def make_smart_desc(name: str, vendor: str, type_hint: str, params: List[Tuple[str, str]]) -> str:
+    """Описание без 'воды' — только то, что реально есть в характеристиках."""
+    pmap = {k: v for k, v in params if k and v}
+
+    base = type_hint or ""
+    if base and vendor:
+        head = f"{base} {vendor}"
+    elif base:
+        head = base
+    elif vendor:
+        head = vendor
+    else:
+        head = name
+
+    pieces = [_ensure_sentence(head)]
+
+    for k in ("Цвет", "Ресурс", "Объем", "Совместимость"):
+        v = pmap.get(k, "")
+        if v:
+            pieces.append(_ensure_sentence(f"{k}: {v}"))
+
+    out = " ".join([p for p in pieces if p]).strip()
+    return out or name
+
 def build_description_cdata(name: str, short_desc: str, characteristics: List[Tuple[str, str]]) -> str:
     name_e = (name or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     desc_e = (short_desc or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
@@ -897,6 +931,11 @@ def collect_all_products_links(s: requests.Session) -> List[Tuple[str, str]]:
 
 # -------------------- Парс товара --------------------
 
+def _is_poor_desc(desc: str, name: str) -> bool:
+    d = norm_spaces(desc)
+    n = norm_spaces(name)
+    return (not d) or (len(d) < 25) or (d == n)
+
 def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offer]:
     b = http_get(s, url)
     if not b:
@@ -905,6 +944,7 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
 
     name = get_title(soup)
     name = re.sub(r"\s{2,}", " ", name).strip()
+    name = re.sub(r"\s+([,.;:])", r"\1", name)  # v9: убираем пробелы перед пунктуацией
     if not name:
         return None
 
@@ -918,7 +958,6 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     price = compute_price_from_supplier(dealer_price)
 
     picture = first_image_url(soup) or ""
-    short_desc = get_meta_description(soup) or name
 
     article_clean = clean_article(article)
     if not article_clean:
@@ -928,6 +967,10 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
 
     type_hint = type_from_category(cat_code)
     params = normalize_characteristics(pairs, name, type_hint, soup)
+
+    short_desc = get_meta_description(soup) or ""
+    if _is_poor_desc(short_desc, name):
+        short_desc = make_smart_desc(name=name, vendor=vendor, type_hint=type_hint, params=params)
 
     descr_cdata = build_description_cdata(
         name=name,
