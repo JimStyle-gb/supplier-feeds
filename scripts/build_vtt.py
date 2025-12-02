@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-# build_vtt.py — v4 (from scratch, output style = AkCent)
-# Fixes:
-# 1) <param> и блок "Характеристики" в <description> теперь 1-в-1 (добавлен "Производитель").
-# 2) Цена: добавлены fallback-способы парсинга (меньше price=100 из-за "не нашли цену").
-# 3) SSL verify управляется env (VTT_SSL_VERIFY / VTT_CA_BUNDLE) — для GitHub Actions.
+# build_vtt.py — v5 (from scratch, output style = AkCent)
+# Changes requested:
+# - Удалить "Штрих-код" из param/описания полностью.
+# - Удалить "Категория" и "Подкатегория" из param/описания полностью.
+# - Нормализовать цвета: русский + (English) где возможно.
+# - Нормализовать ресурс: единый вид "#### стр." (1,1К / 7K -> 1100/7000 стр.)
+# - Обогащение: description/Характеристики и param = один и тот же список,
+#   + добираем недостающие характеристики из <name> (цвет/мл/ресурс).
+# ВАЖНО: бренд (vendor) и логика цены НЕ менялись.
 
 from __future__ import annotations
 
@@ -17,20 +21,20 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from decimal import Decimal, InvalidOperation
 from typing import Dict, List, Optional, Tuple
-from urllib.parse import urlencode, urljoin, urlparse, urlunparse, parse_qsl
+from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlunparse
 
 import requests
 from bs4 import BeautifulSoup
 
 try:
     from zoneinfo import ZoneInfo  # py3.9+
-except Exception:  # pragma: no cover
+except Exception:
     ZoneInfo = None  # type: ignore
 
 try:
     import urllib3  # type: ignore
     from urllib3.exceptions import InsecureRequestWarning  # type: ignore
-except Exception:  # pragma: no cover
+except Exception:
     urllib3 = None  # type: ignore
     InsecureRequestWarning = None  # type: ignore
 
@@ -60,7 +64,7 @@ USER_AGENT = os.getenv(
 LOGIN = os.getenv("VTT_LOGIN", "")
 PASSWORD = os.getenv("VTT_PASSWORD", "")
 
-# SSL: если на Actions падает CERT_VERIFY_FAILED, поставь VTT_SSL_VERIFY=0
+# SSL: если на Actions падает CERT_VERIFY_FAILED, ставь VTT_SSL_VERIFY=0 (как в workflow)
 VTT_SSL_VERIFY = os.getenv("VTT_SSL_VERIFY", "1")  # 1/0 true/false
 VTT_CA_BUNDLE = os.getenv("VTT_CA_BUNDLE", "")      # путь до .pem (если есть)
 
@@ -121,7 +125,7 @@ WHATSAPP_HTML = (
 )
 
 
-# -------------------- Утилиты --------------------
+# -------------------- Время (Алматы) --------------------
 
 def _tz_alm():
     if ZoneInfo:
@@ -172,6 +176,8 @@ def next_1_10_20_at_05() -> datetime:
     return datetime(y, m, 1, 5, 0, 0)
 
 
+# -------------------- Утилиты --------------------
+
 def ensure_dir(path: str) -> None:
     d = os.path.dirname(path)
     if d:
@@ -180,14 +186,6 @@ def ensure_dir(path: str) -> None:
 
 def jitter_sleep() -> None:
     time.sleep(random.uniform(SLEEP_MIN, SLEEP_MAX))
-
-
-def set_query_param(url: str, key: str, value: str) -> str:
-    p = urlparse(url)
-    q = dict(parse_qsl(p.query, keep_blank_values=True))
-    q[key] = value
-    new_q = urlencode(q, doseq=True)
-    return urlunparse((p.scheme, p.netloc, p.path, p.params, new_q, p.fragment))
 
 
 def abs_url(href: str) -> str:
@@ -212,17 +210,6 @@ def safe_cdata_text(s: str) -> str:
     return (s or "").replace("]]>", "]]&gt;")
 
 
-def parse_int_from_text(s: str) -> Optional[int]:
-    if not s:
-        return None
-    norm = re.sub(r"[^\d.,]+", "", s).replace(",", ".")
-    try:
-        val = Decimal(norm)
-    except InvalidOperation:
-        return None
-    return int(val)
-
-
 def parse_bool(s: str, default: bool = True) -> bool:
     if s is None:
         return default
@@ -234,7 +221,30 @@ def parse_bool(s: str, default: bool = True) -> bool:
     return default
 
 
-# -------------------- Правило цены --------------------
+def parse_int_from_text(s: str) -> Optional[int]:
+    if not s:
+        return None
+    norm = re.sub(r"[^\d.,]+", "", s).replace(",", ".")
+    try:
+        val = Decimal(norm)
+    except InvalidOperation:
+        return None
+    return int(val)
+
+
+def clean_article(article: str) -> str:
+    return re.sub(r"[^\w\-]+", "", (article or "").strip())
+
+
+def set_query_param(url: str, key: str, value: str) -> str:
+    p = urlparse(url)
+    q = dict(parse_qsl(p.query, keep_blank_values=True))
+    q[key] = value
+    new_q = urlencode(q, doseq=True)
+    return urlunparse((p.scheme, p.netloc, p.path, p.params, new_q, p.fragment))
+
+
+# -------------------- Правило цены (НЕ меняем) --------------------
 
 PRICING_RULES: List[Tuple[int, int]] = [
     (5_000, 1_000),
@@ -380,6 +390,7 @@ def log_in(s: requests.Session) -> bool:
 # -------------------- Парсинг --------------------
 
 def normalize_vendor(v: str) -> str:
+    """Бренд (НЕ трогаем, как просил)."""
     v = (v or "").strip()
     if not v:
         return ""
@@ -407,36 +418,11 @@ def parse_pairs(soup: BeautifulSoup) -> Dict[str, str]:
 
 
 def parse_supplier_price(soup: BeautifulSoup) -> Optional[int]:
-    """Цена: пробуем несколько вариантов (на сайте иногда меняется разметка)."""
-    # 1) классический вариант
+    """Цена (НЕ меняем)."""
     b = soup.select_one("span.price_main b")
-    if b:
-        v = parse_int_from_text(b.get_text(" ", strip=True))
-        if v is not None:
-            return v
-
-    # 2) весь блок price_main (бывает без <b>)
-    el = soup.select_one("span.price_main")
-    if el:
-        v = parse_int_from_text(el.get_text(" ", strip=True))
-        if v is not None:
-            return v
-
-    # 3) meta/structured price (если есть)
-    meta = soup.find("meta", attrs={"itemprop": "price"})
-    if meta and meta.get("content"):
-        v = parse_int_from_text(str(meta.get("content")))
-        if v is not None:
-            return v
-
-    # 4) data-price атрибут (если есть)
-    any_dp = soup.find(attrs={"data-price": True})
-    if any_dp:
-        v = parse_int_from_text(str(any_dp.get("data-price", "")))
-        if v is not None:
-            return v
-
-    return None
+    if not b:
+        return None
+    return parse_int_from_text(b.get_text(" ", strip=True))
 
 
 def first_image_url(soup: BeautifulSoup) -> Optional[str]:
@@ -465,10 +451,6 @@ def get_meta_description(soup: BeautifulSoup) -> str:
     out = (meta.get("content") if meta else "") or ""
     out = re.sub(r"\s+", " ", out).strip()
     return out
-
-
-def clean_article(article: str) -> str:
-    return re.sub(r"[^\w\-]+", "", (article or "").strip())
 
 
 def split_tokens(text: str, limit: int = 14) -> List[str]:
@@ -527,8 +509,192 @@ def make_keywords(vendor: str, name: str) -> str:
     return ", ".join([x.strip() for x in base if x and x.strip()])
 
 
+# -------------------- Нормализация/обогащение характеристик --------------------
+
+DROP_KEYS = {
+    "Артикул",
+    "Партс-номер",
+    "Вендор",
+    "Категория",
+    "Подкатегория",
+    "Штрих-код",
+    "Штрихкод",
+    "EAN",
+    "Barcode",
+}
+
+_COLOR_MAP = {
+    "black": "Черный",
+    "cyan": "Голубой",
+    "magenta": "Пурпурный",
+    "yellow": "Желтый",
+    "grey": "Серый",
+    "gray": "Серый",
+    "white": "Белый",
+    "red": "Красный",
+    "blue": "Синий",
+    "green": "Зеленый",
+    "orange": "Оранжевый",
+    "brown": "Коричневый",
+    "pink": "Розовый",
+    "violet": "Фиолетовый",
+    "purple": "Фиолетовый",
+}
+
+def normalize_color_value(v: str) -> str:
+    s = (v or "").strip()
+    if not s:
+        return s
+    parts = [p.strip() for p in re.split(r"[,/;]+", s) if p.strip()]
+    out = []
+    for p in parts:
+        low = p.lower().strip()
+        low = re.sub(r"\b(color|colour)\b", "", low).strip()
+        ru = None
+        if low in _COLOR_MAP:
+            ru = _COLOR_MAP[low]
+        else:
+            for k, ruv in _COLOR_MAP.items():
+                if re.search(rf"\b{k}\b", low):
+                    ru = ruv
+                    break
+        has_cyr = bool(re.search(r"[А-Яа-яЁё]", p))
+        if ru and not has_cyr:
+            out.append(f"{ru} ({p})")
+        else:
+            out.append(p)
+    return ", ".join(out)
+
+def normalize_resource_value(v: str) -> str:
+    s = (v or "").strip()
+    if not s:
+        return s
+
+    # 1) 1,1К / 7K
+    m = re.search(r"(\d+(?:[.,]\d+)?)\s*[kк]\b", s, flags=re.IGNORECASE)
+    if m:
+        num = m.group(1).replace(",", ".")
+        try:
+            pages = int((Decimal(num) * Decimal(1000)).to_integral_value(rounding="ROUND_HALF_UP"))
+            return f"{pages} стр."
+        except Exception:
+            pass
+
+    # 2) "1234 стр" / "1234 pages"
+    m2 = re.search(r"(\d[\d\s]*)\s*(?:стр\.?|страниц|pages?|p\.)", s, flags=re.IGNORECASE)
+    if m2:
+        digits = re.sub(r"\s+", "", m2.group(1))
+        try:
+            pages = int(digits)
+            return f"{pages} стр."
+        except Exception:
+            pass
+
+    # 3) просто число
+    m3 = re.search(r"(\d[\d\s]*)", s)
+    if m3:
+        digits = re.sub(r"\s+", "", m3.group(1))
+        try:
+            pages = int(digits)
+            return f"{pages} стр."
+        except Exception:
+            pass
+
+    return s
+
+def extract_from_name(name: str) -> Dict[str, str]:
+    n = name or ""
+    out: Dict[str, str] = {}
+
+    # объем
+    m_ml = re.search(r"(\d+(?:[.,]\d+)?)\s*мл\b", n, flags=re.IGNORECASE)
+    if m_ml:
+        x = m_ml.group(1).replace(",", ".")
+        out["Объем"] = f"{x.rstrip('0').rstrip('.') if '.' in x else x} мл"
+
+    # цвет
+    lows = n.lower()
+    found = []
+    for k in _COLOR_MAP.keys():
+        if re.search(rf"\b{k}\b", lows):
+            found.append(k)
+    if found:
+        uniq = []
+        for k in found:
+            if k not in uniq:
+                uniq.append(k)
+        out["Цвет"] = ", ".join([f"{_COLOR_MAP[k]} ({k.title()})" for k in uniq])
+
+    # ресурс
+    m_k = re.search(r"(\d+(?:[.,]\d+)?)\s*[kк]\b", n, flags=re.IGNORECASE)
+    if m_k:
+        out["Ресурс"] = normalize_resource_value(m_k.group(0))
+    else:
+        m_pages = re.search(r"(\d[\d\s]*)\s*(?:стр\.?|страниц|pages?)", n, flags=re.IGNORECASE)
+        if m_pages:
+            out["Ресурс"] = normalize_resource_value(m_pages.group(0))
+
+    return out
+
+def normalize_characteristics(pairs: Dict[str, str], name: str) -> List[Tuple[str, str]]:
+    """Один общий набор характеристик:
+    - чистим мусорные поля
+    - нормализуем значения (цвет/ресурс)
+    - добираем недостающее из name (цвет/мл/ресурс)
+    - возвращаем список для <param> и description->Характеристики (1-в-1)
+    """
+    cleaned: Dict[str, str] = {}
+
+    # 1) из страницы
+    for k, v in (pairs or {}).items():
+        if not k or not v:
+            continue
+        k = k.strip()
+        if not k or k in DROP_KEYS:
+            continue
+
+        vv = (v or "").strip()
+        if not vv:
+            continue
+
+        kl = k.lower()
+        if "цвет" in kl:
+            vv = normalize_color_value(vv)
+        if "ресурс" in kl:
+            vv = normalize_resource_value(vv)
+
+        cleaned[k] = vv
+
+    # 2) из имени
+    extra = extract_from_name(name or "")
+
+    has_color = any("цвет" in k.lower() for k in cleaned.keys())
+    if (not has_color) and extra.get("Цвет"):
+        cleaned["Цвет"] = extra["Цвет"]
+
+    has_ml = any(("мл" in (v or "").lower()) or ("объем" in k.lower()) for k, v in cleaned.items())
+    if (not has_ml) and extra.get("Объем"):
+        cleaned["Объем"] = extra["Объем"]
+
+    has_resource = any("ресурс" in k.lower() for k in cleaned.keys())
+    if (not has_resource) and extra.get("Ресурс"):
+        cleaned["Ресурс"] = extra["Ресурс"]
+
+    out: List[Tuple[str, str]] = []
+    for k, v in cleaned.items():
+        if not k or not v:
+            continue
+        if k in DROP_KEYS:
+            continue
+        out.append((k, v))
+
+    out.sort(key=lambda x: x[0].lower())
+    return out
+
+
+# -------------------- Описание --------------------
+
 def build_description_cdata(name: str, short_desc: str, characteristics: List[Tuple[str, str]]) -> str:
-    """CDATA описание как у AkCent (WhatsApp + Описание + Характеристики)."""
     name_e = (name or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     desc_e = (short_desc or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
@@ -557,33 +723,6 @@ def build_description_cdata(name: str, short_desc: str, characteristics: List[Tu
         "",
     ]
     return safe_cdata_text("\n".join(parts))
-
-
-DROP_KEYS = {"Артикул", "Партс-номер", "Вендор"}
-
-
-def normalize_characteristics(pairs: Dict[str, str], vendor: str) -> List[Tuple[str, str]]:
-    """Собрать характеристики для <param> и для блока 'Характеристики' в описании.
-    Важно: список 1-в-1 используется и в <param>, и в <description>.
-    """
-    out: List[Tuple[str, str]] = []
-
-    # Производитель (чтобы совпадало 1-в-1)
-    v = (vendor or "").strip()
-    if v:
-        existing = {k.strip().lower() for k in pairs.keys()}
-        if "производитель" not in existing and "бренд" not in existing and "торговая марка" not in existing:
-            out.append(("Производитель", v))
-
-    for k, v in pairs.items():
-        if not k or not v:
-            continue
-        if k in DROP_KEYS:
-            continue
-        out.append((k.strip(), v.strip()))
-
-    out.sort(key=lambda x: x[0].lower())
-    return out
 
 
 @dataclass
@@ -693,8 +832,8 @@ def parse_product(s: requests.Session, url: str) -> Optional[Offer]:
 
     offer_id = OFFER_PREFIX + article_clean
 
-    # ВАЖНО: один список и в <param>, и в description->Характеристики
-    params = normalize_characteristics(pairs, vendor)
+    # ВАЖНО: один общий список => и <param>, и блок "Характеристики" в <description>
+    params = normalize_characteristics(pairs, name)
     descr_cdata = build_description_cdata(
         name=name,
         short_desc=short_desc,
@@ -768,7 +907,7 @@ def offer_to_xml(o: Offer) -> str:
 
 
 def build_yml(offers: List[Offer], offers_total: int) -> str:
-    # Пока доступность не парсим — все available="true"
+    # доступность пока не парсим — оставляем как есть (true)
     avail_true = len(offers)
     avail_false = 0
 
@@ -801,7 +940,7 @@ def build_yml(offers: List[Offer], offers_total: int) -> str:
     return "\n".join(head + body + tail)
 
 
-# -------------------- Вывод пустого --------------------
+# -------------------- Пустой файл --------------------
 
 def write_empty_yml(reason: str) -> None:
     ensure_dir(OUT_FILE)
@@ -859,7 +998,6 @@ def main() -> int:
 
             # (на всякий) уникальность id
             if o.id in seen_ids:
-                # добавим суффикс по короткому хэшу URL
                 suf = re.sub(r"[^0-9a-f]+", "", format(abs(hash(url)) % (16**6), "06x"))
                 oid2 = f"{o.id}-{suf}"
                 o = Offer(
