@@ -1,232 +1,398 @@
-# scripts/build_vtt.py
-# -*- coding: utf-8 -*-
-"""
-VTT (b2b.vtt.ru) -> YML (KZT) в стиле alstyle/akcent.
-
-ЦЕНА:
-- Берём из <span class="price_main"><b>11121.48</b>...</span>
-- Если цены нет или < 100 -> price = 100
-- Иначе применяем PRICING_RULES (процент + фикс) и округляем вверх до ...900
-
-ВЫВОД:
-- Без <categories>, <categoryId>, <url>, любых *quantity*
-- <available>true</available> для всех
-- id = VT + нормализованный артикул (как и vendorCode)
-- vendorCode = VT + нормализованный артикул
-- Кодировка: windows-1251
-"""
+#!/usr/bin/env python3
+# build_vtt.py — v1 (from scratch, output style = AkCent)
+# Задача: собрать товары VTT (b2b.vtt.ru) и сформировать docs/vtt.yml в стиле AkCent.
 
 from __future__ import annotations
-import os, re, io, time, html, hashlib, math
-from typing import Any, Dict, List, Optional, Tuple, Set
-from urllib.parse import urljoin, urlparse, parse_qsl, urlencode, urlunparse
+
+import hashlib
+import html
+import os
+import random
+import re
+import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from decimal import Decimal, InvalidOperation
+from typing import Any, Dict, Iterable, List, Optional, Tuple
+from urllib.parse import urlencode, urljoin, urlparse, urlunparse, parse_qsl
 
 import requests
 from bs4 import BeautifulSoup
 
-# ---------------- ПАРАМЕТРЫ ОКРУЖЕНИЯ ----------------
-BASE_URL        = os.getenv("BASE_URL", "https://b2b.vtt.ru").rstrip("/")
-START_URL       = os.getenv("START_URL", f"{BASE_URL}/catalog/")
-OUT_FILE        = os.getenv("OUT_FILE", "docs/vtt.yml")
+try:
+    from zoneinfo import ZoneInfo  # py3.9+
+except Exception:  # pragma: no cover
+    ZoneInfo = None  # type: ignore
+
+
+# -------------------- Настройки (env) --------------------
+
+BASE_URL = os.getenv("VTT_BASE_URL", "https://b2b.vtt.ru").rstrip("/")
+START_URL = os.getenv("VTT_START_URL", f"{BASE_URL}/catalog/")
+
+OUT_FILE = os.getenv("OUT_FILE", "docs/vtt.yml")
 OUTPUT_ENCODING = os.getenv("OUTPUT_ENCODING", "windows-1251")
 
-VTT_LOGIN       = os.getenv("VTT_LOGIN", "").strip()
-VTT_PASSWORD    = os.getenv("VTT_PASSWORD", "").strip()
+HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "60"))
+MAX_PAGES = int(os.getenv("MAX_PAGES", "200"))
+MAX_WORKERS = int(os.getenv("MAX_WORKERS", "16"))
+MAX_RETRIES = int(os.getenv("MAX_RETRIES", "3"))
 
-CATEGORIES_FILE = os.getenv("CATEGORIES_FILE", "docs/categories_vtt.txt")
+SLEEP_MIN = float(os.getenv("SLEEP_MIN", "0.05"))
+SLEEP_MAX = float(os.getenv("SLEEP_MAX", "0.20"))
 
-DISABLE_SSL_VERIFY = os.getenv("DISABLE_SSL_VERIFY", "0") == "1"
-ALLOW_SSL_FALLBACK = os.getenv("ALLOW_SSL_FALLBACK", "0") == "1"
+USER_AGENT = os.getenv(
+    "USER_AGENT",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+)
 
-HTTP_TIMEOUT    = float(os.getenv("HTTP_TIMEOUT", "25"))
-REQUEST_DELAY_MS= int(os.getenv("REQUEST_DELAY_MS", "120"))
-MIN_BYTES       = int(os.getenv("MIN_BYTES", "600"))
+LOGIN = os.getenv("VTT_LOGIN", "")
+PASSWORD = os.getenv("VTT_PASSWORD", "")
 
-MAX_PAGES       = int(os.getenv("MAX_PAGES", "800"))
-MAX_CRAWL_MIN   = int(os.getenv("MAX_CRAWL_MINUTES", "60"))
-MAX_WORKERS     = int(os.getenv("MAX_WORKERS", "6"))
-
-UA = {"User-Agent": "Mozilla/5.0 (compatible; VTT-Feed/akcent-style-1.0)"}
-
-# ---------------- ЦЕНООБРАЗОВАНИЕ ----------------
-PriceRule = Tuple[int, int, float, int]
-PRICING_RULES: List[PriceRule] = [
-    (   101,    10000, 4.0,  3000),
-    ( 10001,    25000, 4.0,  4000),
-    ( 25001,    50000, 4.0,  5000),
-    ( 50001,    75000, 4.0,  7000),
-    ( 75001,   100000, 4.0, 10000),
-    (100001,   150000, 4.0, 12000),
-    (150001,   200000, 4.0, 15000),
-    (200001,   300000, 4.0, 20000),
-    (300001,   400000, 4.0, 25000),
-    (400001,   500000, 4.0, 30000),
-    (500001,   750000, 4.0, 40000),
-    (750001,  1000000, 4.0, 50000),
-    (1000001, 1500000, 4.0, 70000),
-    (1500001, 2000000, 4.0, 90000),
-    (2000001,100000000,4.0,100000),
+# Категории — зашиты в код (как ты просил)
+CATEGORIES: List[str] = [
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR",
+    "https://b2b.vtt.ru/catalog/?category=CARTMAT_CART",
+    "https://b2b.vtt.ru/catalog/?category=DEV_DEV",
+    "https://b2b.vtt.ru/catalog/?category=DRM_CRT",
+    "https://b2b.vtt.ru/catalog/?category=DRM_UNIT",
+    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC",
+    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT",
 ]
 
-def _round_up_tail_900(n: int) -> int:
-    """Округление вверх до ближайшего значения с окончанием ...900."""
-    thousands = (n + 999) // 1000
-    return thousands * 1000 - 100
+# Константы под стиль AkCent
+SUPPLIER_NAME = "VTT"
+SUPPLIER_URL = BASE_URL
+OFFER_PREFIX = "VT"
+DEFAULT_AVAILABLE = "true"
+DEFAULT_CURRENCY = "KZT"
 
-def compute_price_from_supplier(base_price: Optional[int]) -> int:
-    """Если base_price отсутствует или <100 -> 100. Иначе применяем правило и округляем вверх до ...900."""
-    if base_price is None or base_price < 100:
-        return 100
-    for lo, hi, pct, add in PRICING_RULES:
-        if lo <= base_price <= hi:
-            raw = base_price * (1.0 + pct/100.0) + add
-            return _round_up_tail_900(int(math.ceil(raw)))
-    raw = base_price * (1.0 + PRICING_RULES[-1][2]/100.0) + PRICING_RULES[-1][3]
-    return _round_up_tail_900(int(math.ceil(raw)))
+CITY_TAIL = (
+    "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, "
+    "Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, "
+    "Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау"
+)
 
-# ---------------- УТИЛИТЫ ----------------
-def jitter_sleep() -> None:
-    time.sleep(max(0.0, REQUEST_DELAY_MS/1000.0))
+WHATSAPP_HTML = (
+    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
+    "<p style=\"text-align:center; margin:0 0 12px;\">"
+    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
+    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
+    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
+    "&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!"
+    "</a></p>"
+    "<div style=\"background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;\">"
+    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Оплата</h3>"
+    "<ul style=\"margin:0; padding-left:18px;\">"
+    "<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>"
+    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#8b0000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
+    "</ul>"
+    "<hr style=\"border:none; border-top:1px solid #E7D6B7; margin:12px 0;\" />"
+    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Доставка по Алматы и Казахстану</h3>"
+    "<ul style=\"margin:0; padding-left:18px;\">"
+    "<li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>"
+    "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>"
+    "<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>"
+    "<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>"
+    "</ul>"
+    "</div></div>"
+)
 
-def yml_escape(s: str) -> str:
-    return html.escape(s or "")
 
-def sha1(s: str) -> str:
-    return hashlib.sha1((s or "").encode("utf-8", errors="ignore")).hexdigest()
+# -------------------- Утилиты --------------------
 
-def abs_url(u: str) -> str:
-    return urljoin(BASE_URL + "/", (u or "").strip())
-
-# ---------------- HTTP ----------------
-def make_session() -> requests.Session:
-    s = requests.Session()
-    s.headers.update(UA)
-    s.verify = not DISABLE_SSL_VERIFY
-    return s
-
-def http_get(s: requests.Session, url: str) -> Optional[bytes]:
-    try:
-        r = s.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True)
-        if r.status_code != 200:
-            return None
-        b = r.content
-        if len(b) < MIN_BYTES:
-            return b if b else None
-        return b
-    except requests.exceptions.SSLError:
-        if ALLOW_SSL_FALLBACK:
-            try:
-                r = s.get(url, timeout=HTTP_TIMEOUT, allow_redirects=True, verify=False)
-                if r.status_code == 200:
-                    return r.content
-            except Exception:
-                return None
-        return None
-    except Exception:
-        return None
-
-def soup_of(b: bytes) -> BeautifulSoup:
-    return BeautifulSoup(b or b"", "html.parser")
-
-# ---------------- LOGIN ----------------
-def login_vtt(s: requests.Session) -> bool:
-    b = http_get(s, BASE_URL + "/")
-    if not b:
-        return False
-    soup = soup_of(b)
-    csrf = None
-    m = soup.find("meta", attrs={"name":"csrf-token"})
-    if m and m.get("content"):
-        csrf = m["content"].strip()
-    data = {"login": VTT_LOGIN, "password": VTT_PASSWORD, "remember": "1"}
-    headers: Dict[str, str] = {}
-    if csrf:
-        headers["X-CSRF-TOKEN"] = csrf
-    try:
-        r = s.post(BASE_URL + "/validateLogin", data=data, headers=headers, timeout=HTTP_TIMEOUT)
-        if r.status_code not in (200, 302):
-            return False
-    except requests.exceptions.SSLError:
-        if not ALLOW_SSL_FALLBACK:
-            return False
+def _tz_alm():
+    """Asia/Almaty (если ZoneInfo нет — фикс UTC+5)."""
+    if ZoneInfo:
         try:
-            r = s.post(BASE_URL + "/validateLogin", data=data, headers=headers, timeout=HTTP_TIMEOUT, verify=False)
-            if r.status_code not in (200, 302):
-                return False
+            return ZoneInfo("Asia/Almaty")
         except Exception:
-            return False
-    except Exception:
-        return False
-    return bool(http_get(s, START_URL))
+            pass
+    return None
 
-# ---------------- КАТАЛОГ ----------------
-def load_categories(path: str) -> List[str]:
-    urls: List[str] = []
-    if os.path.isfile(path):
-        with io.open(path, "r", encoding="utf-8") as f:
-            for line in f:
-                u = (line or "").strip()
-                if u and not u.startswith("#"):
-                    urls.append(u)
-    return urls
 
-def add_or_replace_page_param(u: str, page: int) -> str:
-    pr = urlparse(u)
-    q = dict(parse_qsl(pr.query, keep_blank_values=True))
-    q["page"] = str(page)
-    return urlunparse((pr.scheme, pr.netloc, pr.path, pr.params, urlencode(q, doseq=True), pr.fragment))
+_TZ_ALM = _tz_alm()
 
-A_PROD = re.compile(r"^https?://[^/]+/catalog/[^/?#]+")
 
-def collect_product_urls_from_category(s: requests.Session, cat_url: str, max_pages: int, deadline: datetime) -> List[str]:
-    urls: List[str] = []
-    seen: Set[str] = set()
-    for i in range(1, max_pages+1):
-        if datetime.utcnow() > deadline:
-            break
-        page_url = add_or_replace_page_param(cat_url, i)
-        jitter_sleep()
-        b = http_get(s, page_url)
-        if not b:
-            break
-        soup = soup_of(b)
-        found_here = 0
-        for a in soup.find_all("a", href=True):
-            href = a["href"].strip()
-            if not href:
-                continue
-            classes = a.get("class") or []
-            if isinstance(classes, list) and any("btn_pic" in c for c in classes):
-                continue
-            absu = abs_url(href)
-            if A_PROD.match(absu) and absu not in seen:
-                seen.add(absu)
-                urls.append(absu)
-                found_here += 1
-        if found_here == 0:
-            break
-    return urls
+def now_alm() -> datetime:
+    """Текущее время Алматы (aware, если можно)."""
+    if _TZ_ALM:
+        return datetime.now(tz=_TZ_ALM)
+    # fallback: UTC + 5
+    return datetime.utcnow().replace(tzinfo=None) + timedelta(hours=5)
 
-# ---------------- ПАРСИНГ ТОВАРА ----------------
-def parse_supplier_price_from_soup(soup: BeautifulSoup) -> Optional[int]:
-    btag = soup.select_one("span.price_main > b")
-    if not btag:
+
+def fmt_alm(dt: datetime) -> str:
+    """Формат как в AkCent: YYYY-MM-DD HH:MM:SS"""
+    if getattr(dt, "tzinfo", None) is not None:
+        dt = dt.astimezone(_TZ_ALM) if _TZ_ALM else dt.replace(tzinfo=None)
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def yml_catalog_date() -> str:
+    """<yml_catalog date="YYYY-MM-DD HH:MM"> в стиле AkCent (по Алматы)."""
+    return now_alm().strftime("%Y-%m-%d %H:%M")
+
+
+def next_1_10_20_at_05() -> datetime:
+    """Следующая сборка 1/10/20 числа в 05:00 Алматы."""
+    n = now_alm()
+    # работаем в локальном времени
+    base = n
+    candidates = []
+    for d in (1, 10, 20):
+        try:
+            candidates.append(base.replace(day=d, hour=5, minute=0, second=0, microsecond=0))
+        except ValueError:
+            pass
+    future = [t for t in candidates if t > n]
+    if future:
+        return min(future)
+
+    # следующий месяц, день 1 05:00
+    y = base.year
+    m = base.month + 1
+    if m == 13:
+        y, m = y + 1, 1
+    # tz сохраняем если есть
+    if getattr(base, "tzinfo", None) is not None:
+        return datetime(y, m, 1, 5, 0, 0, tzinfo=base.tzinfo)
+    return datetime(y, m, 1, 5, 0, 0)
+
+
+def ensure_dir(path: str) -> None:
+    """Создать папку под файл, если нужно."""
+    d = os.path.dirname(path)
+    if d:
+        os.makedirs(d, exist_ok=True)
+
+
+def jitter_sleep() -> None:
+    """Небольшой джиттер, чтобы не долбить сайт как бот."""
+    time.sleep(random.uniform(SLEEP_MIN, SLEEP_MAX))
+
+
+def set_query_param(url: str, key: str, value: str) -> str:
+    """Обновить/добавить параметр query в URL."""
+    p = urlparse(url)
+    q = dict(parse_qsl(p.query, keep_blank_values=True))
+    q[key] = value
+    new_q = urlencode(q, doseq=True)
+    return urlunparse((p.scheme, p.netloc, p.path, p.params, new_q, p.fragment))
+
+
+def abs_url(href: str) -> str:
+    """Сделать абсолютный URL от BASE_URL."""
+    return urljoin(BASE_URL + "/", href)
+
+
+def soup_of(content: bytes) -> BeautifulSoup:
+    """BeautifulSoup парсер."""
+    return BeautifulSoup(content, "html.parser")
+
+
+def xml_escape(s: str) -> str:
+    """Экранирование текста для XML."""
+    return (
+        (s or "")
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def safe_cdata_text(s: str) -> str:
+    """Защита от закрывающей последовательности CDATA."""
+    return (s or "").replace("]]>", "]]&gt;")
+
+
+def parse_int_from_text(s: str) -> Optional[int]:
+    """Вытащить число из строки."""
+    if not s:
         return None
-    raw = btag.get_text("", strip=True)
-    if not raw:
-        return None
-    norm = raw.replace("\u00A0", "").replace(" ", "").replace(",", ".")
+    norm = re.sub(r"[^\d.,]+", "", s).replace(",", ".")
     try:
         val = Decimal(norm)
     except InvalidOperation:
         return None
     return int(val)
 
-def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
-    out: Dict[str,str] = {}
+
+# -------------------- Правило цены (как у текущего VTT) --------------------
+
+PRICING_RULES: List[Tuple[int, int]] = [
+    (5_000, 1_000),     # до 5k -> +1000
+    (10_000, 1_500),    # до 10k -> +1500
+    (20_000, 2_000),
+    (50_000, 3_000),
+    (100_000, 4_000),
+    (200_000, 6_000),
+    (500_000, 10_000),
+    (1_000_000, 15_000),
+    (2_000_000, 25_000),
+    (5_000_000, 50_000),
+    (9_000_000, 75_000),
+]
+
+
+def round_to_900(x: Decimal) -> int:
+    """Округлить вверх до ...900."""
+    if x <= 0:
+        return 100
+    xi = int(x.to_integral_value(rounding="ROUND_CEILING"))
+    # приводим к ближайшему числу, заканчивающемуся на 900
+    # пример: 13124 -> 13900
+    thousands = xi // 1000
+    target = thousands * 1000 + 900
+    if target < xi:
+        target = (thousands + 1) * 1000 + 900
+    return int(target)
+
+
+def compute_price_from_supplier(dealer_price: Optional[int]) -> int:
+    """Цена = dealer * 1.04 + надбавка по диапазону, затем округление до ...900."""
+    if not dealer_price or dealer_price < 100:
+        return 100
+    p = Decimal(dealer_price) * Decimal("1.04")
+    add = 0
+    for limit, plus in PRICING_RULES:
+        if dealer_price <= limit:
+            add = plus
+            break
+    if add == 0:
+        # если выше всех диапазонов
+        add = 100_000
+    out = p + Decimal(add)
+    # спец-правило: если >= 9,000,000 — округление до 100 (как у твоих остальных)
+    if int(out) >= 9_000_000:
+        return int((out / Decimal(100)).to_integral_value(rounding="ROUND_CEILING") * 100)
+    return round_to_900(out)
+
+
+# -------------------- Сеть и логин --------------------
+
+def make_session() -> requests.Session:
+    """Session с заголовками."""
+    s = requests.Session()
+    s.headers.update(
+        {
+            "User-Agent": USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.6",
+            "Connection": "keep-alive",
+        }
+    )
+    return s
+
+
+def http_get(s: requests.Session, url: str) -> Optional[bytes]:
+    """GET с ретраями."""
+    last_err = None
+    for _ in range(MAX_RETRIES):
+        try:
+            jitter_sleep()
+            r = s.get(url, timeout=HTTP_TIMEOUT)
+            if r.status_code in (429, 500, 502, 503, 504):
+                last_err = RuntimeError(f"HTTP {r.status_code}")
+                time.sleep(0.8)
+                continue
+            r.raise_for_status()
+            return r.content
+        except Exception as e:
+            last_err = e
+            time.sleep(0.8)
+    print(f"[WARN] GET failed: {url} | {last_err}", file=sys.stderr)
+    return None
+
+
+def http_post(s: requests.Session, url: str, data: Dict[str, str], headers: Dict[str, str]) -> bool:
+    """POST с ретраями."""
+    last_err = None
+    for _ in range(MAX_RETRIES):
+        try:
+            jitter_sleep()
+            r = s.post(url, data=data, headers=headers, timeout=HTTP_TIMEOUT)
+            if r.status_code in (429, 500, 502, 503, 504):
+                last_err = RuntimeError(f"HTTP {r.status_code}")
+                time.sleep(0.8)
+                continue
+            r.raise_for_status()
+            return True
+        except Exception as e:
+            last_err = e
+            time.sleep(0.8)
+    print(f"[WARN] POST failed: {url} | {last_err}", file=sys.stderr)
+    return False
+
+
+def extract_csrf_token(html_bytes: bytes) -> str:
+    """CSRF из <meta name="csrf-token" content="...">."""
+    soup = soup_of(html_bytes)
+    m = soup.find("meta", attrs={"name": "csrf-token"})
+    v = m.get("content") if m else ""
+    return (v or "").strip()
+
+
+def log_in(s: requests.Session) -> bool:
+    """Авторизация на b2b.vtt.ru по VTT_LOGIN/VTT_PASSWORD."""
+    if not LOGIN or not PASSWORD:
+        print("[WARN] VTT_LOGIN/VTT_PASSWORD are empty", file=sys.stderr)
+        return False
+
+    home = http_get(s, BASE_URL + "/")
+    if not home:
+        return False
+
+    csrf = extract_csrf_token(home)
+    headers = {
+        "Referer": BASE_URL + "/",
+    }
+    if csrf:
+        headers["X-CSRF-TOKEN"] = csrf
+
+    ok = http_post(
+        s,
+        BASE_URL + "/validateLogin",
+        data={"login": LOGIN, "password": PASSWORD},
+        headers=headers,
+    )
+    if not ok:
+        return False
+
+    # проверка: доступ к каталогу
+    cat = http_get(s, START_URL)
+    return bool(cat)
+
+
+# -------------------- Парсинг --------------------
+
+def normalize_vendor(v: str) -> str:
+    """Нормализация бренда (минимум)."""
+    v = (v or "").strip()
+    if not v:
+        return ""
+    key = re.sub(r"[^\w]+", "", v, flags=re.IGNORECASE).lower()
+    alias = {
+        "kyoceramita": "Kyocera",
+        "samsungbyhp": "Samsung",
+    }
+    return alias.get(key, v)
+
+
+def parse_pairs(soup: BeautifulSoup) -> Dict[str, str]:
+    """Считать характеристики dt/dd из карточки товара."""
+    out: Dict[str, str] = {}
     box = soup.select_one("div.description.catalog_item_descr")
     if not box:
         return out
@@ -239,12 +405,22 @@ def parse_pairs(soup: BeautifulSoup) -> Dict[str,str]:
             out[k] = v
     return out
 
+
+def parse_supplier_price(soup: BeautifulSoup) -> Optional[int]:
+    """Цена из span.price_main > b."""
+    b = soup.select_one("span.price_main b")
+    if not b:
+        return None
+    return parse_int_from_text(b.get_text(" ", strip=True))
+
+
 def first_image_url(soup: BeautifulSoup) -> Optional[str]:
-    og = soup.find("meta", attrs={"property":"og:image"})
+    """Картинка: og:image -> любая /images/ .jpg/.png."""
+    og = soup.find("meta", attrs={"property": "og:image"})
     if og and og.get("content"):
-        return abs_url(og["content"])
+        return abs_url(str(og["content"]))
     for tag in soup.find_all(True):
-        for attr in ("src","data-src","href","data-img","content","data-large"):
+        for attr in ("src", "data-src", "href", "data-img", "content", "data-large"):
             v = tag.get(attr)
             if not v or not isinstance(v, str):
                 continue
@@ -253,28 +429,166 @@ def first_image_url(soup: BeautifulSoup) -> Optional[str]:
                 return abs_url(v)
     return None
 
-# --- НОРМАЛИЗАЦИЯ БРЕНДА ---
-def normalize_vendor(v: str) -> str:
-    v = (v or "").strip()
-    if not v:
-        return v
-    key = re.sub(r"[^\w]+", "", v, flags=re.IGNORECASE).lower()
-    alias = {
-        "kyoceramita": "Kyocera",
-        "samsungbyhp": "Samsung",
-    }
-    return alias.get(key, v)
 
-def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
-    jitter_sleep()
+def get_title(soup: BeautifulSoup) -> str:
+    """Название товара."""
+    el = soup.select_one(".page_title") or soup.title or soup.find("h1")
+    txt = el.get_text(" ", strip=True) if el else ""
+    return txt.strip()
+
+
+def get_meta_description(soup: BeautifulSoup) -> str:
+    """Meta description."""
+    meta = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
+    out = (meta.get("content") if meta else "") or ""
+    out = re.sub(r"\s+", " ", out).strip()
+    return out
+
+
+def clean_article(article: str) -> str:
+    """Оставить безопасные символы для id."""
+    return re.sub(r"[^\w\-]+", "", (article or "").strip())
+
+
+def stable_hash6(s: str) -> str:
+    """Короткий sha1(6) для уникализации."""
+    return hashlib.sha1((s or "").encode("utf-8", "ignore")).hexdigest()[:6]
+
+
+def split_tokens(text: str, limit: int = 14) -> List[str]:
+    """Токены для keywords."""
+    raw = re.split(r"[^0-9A-Za-zА-Яа-яЁё]+", text or "")
+    out = []
+    seen = set()
+    for t in raw:
+        t = t.strip()
+        if not t:
+            continue
+        if t.lower() in seen:
+            continue
+        seen.add(t.lower())
+        out.append(t)
+        if len(out) >= limit:
+            break
+    return out
+
+
+_CYR = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+_LAT = ["a","b","v","g","d","e","e","zh","z","i","y","k","l","m","n","o","p","r","s","t","u","f","h","ts","ch","sh","sch","","y","","e","yu","ya"]
+_TR = {c: l for c, l in zip(_CYR, _LAT)}
+_TR.update({c.upper(): l for c, l in zip(_CYR, _LAT)})
+
+
+def translit_ru(s: str) -> str:
+    """Простая транслитерация."""
+    return "".join(_TR.get(ch, ch) for ch in (s or ""))
+
+
+def slugify(s: str) -> str:
+    """slug: латиница+цифры, дефисы."""
+    s = translit_ru(s).lower()
+    s = re.sub(r"[^a-z0-9]+", "-", s)
+    s = re.sub(r"-{2,}", "-", s).strip("-")
+    return s
+
+
+def make_keywords(vendor: str, name: str) -> str:
+    """Keywords в стиле AkCent (но проще)."""
+    tokens = split_tokens(name, limit=12)
+    slug_full = slugify(name)
+    slug_2 = slugify(" ".join(tokens[:2])) if len(tokens) >= 2 else slug_full
+    slug_3 = slugify(" ".join(tokens[:3])) if len(tokens) >= 3 else slug_full
+    base = []
+    if vendor:
+        base.append(vendor)
+    base.append(name)
+    base.extend(tokens)
+    if vendor and tokens:
+        base.append(f"{vendor} {tokens[-1]}")
+    if slug_2:
+        base.append(slug_2)
+    if slug_3 and slug_3 != slug_2:
+        base.append(slug_3)
+    if slug_full and slug_full not in (slug_2, slug_3):
+        base.append(slug_full)
+    base.append(CITY_TAIL)
+    # чистим лишние пробелы
+    return ", ".join([x.strip() for x in base if x and x.strip()])
+
+
+def build_description_cdata(name: str, short_desc: str, characteristics: List[Tuple[str, str]], vendor: str) -> str:
+    """Собрать CDATA описание как у AkCent (WhatsApp + Описание + Характеристики)."""
+    name_e = html.escape(name or "", quote=False)
+    desc_e = html.escape(short_desc or "", quote=False)
+
+    # Характеристики: если пусто — хотя бы производитель
+    items = []
+    if vendor:
+        items.append(("<strong>Производитель:</strong>", html.escape(vendor, quote=False)))
+    for k, v in characteristics:
+        if not k or not v:
+            continue
+        items.append((f"<strong>{html.escape(k, quote=False)}:</strong>", html.escape(v, quote=False)))
+
+    # склеиваем в один <ul>...
+    if items:
+        li = "".join([f"<li>{kk} {vv}</li>" for kk, vv in items])
+        specs = f"<h3>Характеристики</h3><ul>{li}</ul>"
+    else:
+        specs = "<h3>Характеристики</h3><ul></ul>"
+
+    parts = [
+        "",  # пустая строка после <![CDATA[
+        "<!-- WhatsApp -->",
+        WHATSAPP_HTML,
+        "",
+        "<!-- Описание -->",
+        f"<h3>{name_e}</h3><p>{desc_e}</p>",
+        specs,
+        "",
+    ]
+    return safe_cdata_text("\n".join(parts))
+
+
+DROP_KEYS = {"Артикул", "Партс-номер", "Вендор"}
+
+
+def normalize_characteristics(pairs: Dict[str, str]) -> List[Tuple[str, str]]:
+    """Список характеристик для <param> и для описания."""
+    out: List[Tuple[str, str]] = []
+    for k, v in pairs.items():
+        if not k or not v:
+            continue
+        if k in DROP_KEYS:
+            continue
+        out.append((k.strip(), v.strip()))
+    # сортировка — по алфавиту (стабильно)
+    out.sort(key=lambda x: x[0].lower())
+    return out
+
+
+@dataclass
+class Offer:
+    id: str
+    vendorCode: str
+    name: str
+    price: int
+    picture: str
+    vendor: str
+    description_cdata: str
+    params: List[Tuple[str, str]]
+    keywords: str
+
+
+def parse_product(s: requests.Session, url: str) -> Optional[Offer]:
+    """Разобрать карточку товара."""
     b = http_get(s, url)
     if not b:
         return None
     soup = soup_of(b)
 
-    title_el = (soup.select_one(".page_title") or soup.title or soup.find("h1"))
-    title = title_el.get_text(" ", strip=True) if title_el else None
-    if not title:
+    name = get_title(soup)
+    if not name:
         return None
 
     pairs = parse_pairs(soup)
@@ -282,74 +596,121 @@ def parse_product(s: requests.Session, url: str) -> Optional[Dict[str,Any]]:
     if not article:
         return None
 
-    brand = normalize_vendor((pairs.get("Вендор") or "").strip())
-    dealer_price = parse_supplier_price_from_soup(soup)
-    final_price = compute_price_from_supplier(dealer_price)
+    vendor = normalize_vendor((pairs.get("Вендор") or "").strip())
+    dealer_price = parse_supplier_price(soup)
+    price = compute_price_from_supplier(dealer_price)
 
-    picture = first_image_url(soup)
-    meta = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
-    descr = meta.get("content").strip() if (meta and meta.get("content")) else ""
+    picture = first_image_url(soup) or ""
+    short_desc = get_meta_description(soup) or name
 
-    article_clean = re.sub(r"[^\w\-]+", "", article)
-    prefixed = "VT" + article_clean
+    article_clean = clean_article(article)
+    if not article_clean:
+        return None
 
-    return {
-        "id": prefixed,           # id совпадает с vendorCode
-        "vendorCode": prefixed,
-        "title": title,
-        "brand": brand or "",
-        "price": int(final_price),
-        "picture": picture,
-        "description": re.sub(r"\s+", " ", descr),
-        "dealer_price": dealer_price,
-    }
+    offer_id = OFFER_PREFIX + article_clean
 
-# ---------------- FEED_META (только формат «Поле | значение») ----------------
-def _alm_now() -> datetime:
-    return datetime.utcnow() + timedelta(hours=5)  # Asia/Almaty ~ UTC+5
+    # характеристики
+    params = normalize_characteristics(pairs)
 
-def _next_1_10_20_at_05() -> datetime:
-    now = _alm_now()
-    cands = []
-    for d in (1,10,20):
-        try:
-            cands.append(now.replace(day=d, hour=5, minute=0, second=0, microsecond=0))
-        except ValueError:
-            pass
-    future = [t for t in cands if t > now]
-    if future:
-        return min(future)
-    # 1-е след. месяца 05:00
-    y, m = now.year, now.month
-    if m == 12: y, m = y+1, 1
-    return datetime(y, m, 1, 5, 0, 0)
+    # описание и keywords
+    descr_cdata = build_description_cdata(name=name, short_desc=short_desc, characteristics=params[:25], vendor=vendor)
+    keywords = make_keywords(vendor=vendor, name=name)
 
-def _fmt_alm(dt: datetime) -> str:
-    return dt.strftime("%d:%m:%Y - %H:%M:%S")
+    return Offer(
+        id=offer_id,
+        vendorCode=offer_id,
+        name=name,
+        price=int(price),
+        picture=picture,
+        vendor=vendor,
+        description_cdata=descr_cdata,
+        params=params,
+        keywords=keywords,
+    )
 
-def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
-    """
-    Ровно как в feed.txt:
-      Поставщик | ...
-      URL поставщика | ...
-      Время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
-      Ближайшее время сборки (Алматы) | дд:мм:гггг - чч:мм:сс
-      Сколько товаров у поставщика до фильтра | ...
-      Сколько товаров у поставщика после фильтра | ...
-      Сколько товаров есть в наличии (true) | ...
-      Сколько товаров нет в наличии (false) | ...
-    """
-    now_alm  = _alm_now()
-    next_alm = _next_1_10_20_at_05()
+
+# -------------------- Сбор ссылок --------------------
+
+_PRODUCT_HREF_RE = re.compile(r"^/catalog/[^?]+/?$")
+
+
+def collect_product_links(s: requests.Session, category_url: str) -> List[str]:
+    """Собрать ссылки на товары из одной категории (постранично)."""
+    found: List[str] = []
+    seen: set[str] = set()
+
+    for page in range(1, MAX_PAGES + 1):
+        page_url = set_query_param(category_url, "page", str(page))
+        b = http_get(s, page_url)
+        if not b:
+            break
+        soup = soup_of(b)
+
+        links: List[str] = []
+        for a in soup.find_all("a", href=True):
+            # отсекаем кликабельные картинки превьюшек
+            cls = a.get("class") or []
+            if isinstance(cls, list) and "btn_pic" in cls:
+                continue
+            href = str(a["href"]).strip()
+            if not href or href.startswith("#"):
+                continue
+            if href.startswith("http"):
+                # иногда могут быть абсолютные ссылки
+                p = urlparse(href)
+                if p.netloc and p.netloc != urlparse(BASE_URL).netloc:
+                    continue
+                href = p.path
+
+            # интересуют только карточки /catalog/.... (не список категорий)
+            if "category=" in href or "page=" in href:
+                continue
+            if not _PRODUCT_HREF_RE.match(href):
+                continue
+
+            u = abs_url(href)
+            if u in seen:
+                continue
+            seen.add(u)
+            links.append(u)
+
+        if not links:
+            break
+
+        found.extend(links)
+
+    return found
+
+
+def collect_all_products_links(s: requests.Session) -> List[str]:
+    """Собрать ссылки по всем категориям."""
+    all_links: List[str] = []
+    seen: set[str] = set()
+
+    for cat in CATEGORIES:
+        links = collect_product_links(s, cat)
+        for u in links:
+            if u in seen:
+                continue
+            seen.add(u)
+            all_links.append(u)
+
+    return all_links
+
+
+# -------------------- FEED_META --------------------
+
+def render_feed_meta(offers_total: int, offers_written: int, avail_true: int, avail_false: int) -> str:
+    """FEED_META — ровно формат AkCent (ключи + выравнивание)."""
     rows = [
-        ("Поставщик", "vtt"),
-        ("URL поставщика", pairs.get("source", "")),
-        ("Время сборки (Алматы)", _fmt_alm(now_alm)),
-        ("Ближайшее время сборки (Алматы)", _fmt_alm(next_alm)),
-        ("Сколько товаров у поставщика до фильтра", str(pairs.get("offers_total", "0"))),
-        ("Сколько товаров у поставщика после фильтра", str(pairs.get("offers_written", "0"))),
-        ("Сколько товаров есть в наличии (true)", str(pairs.get("available_true", "0"))),
-        ("Сколько товаров нет в наличии (false)", str(pairs.get("available_false", "0"))),
+        ("Поставщик", SUPPLIER_NAME),
+        ("URL поставщика", SUPPLIER_URL),
+        ("Время сборки (Алматы)", fmt_alm(now_alm())),
+        ("Ближайшая сборка (Алматы)", fmt_alm(next_1_10_20_at_05())),
+        ("Сколько товаров у поставщика до фильтра", str(offers_total)),
+        ("Сколько товаров у поставщика после фильтра", str(offers_written)),
+        ("Сколько товаров есть в наличии (true)", str(avail_true)),
+        ("Сколько товаров нет в наличии (false)", str(avail_false)),
     ]
     key_w = max(len(k) for k, _ in rows)
     lines = ["<!--FEED_META"]
@@ -358,135 +719,162 @@ def render_feed_meta_comment(pairs: Dict[str, str]) -> str:
         lines.append(f"{k.ljust(key_w)} | {v}{end}")
     return "\n".join(lines)
 
-# ---------------- СБОР YML ----------------
-def build_yml(offers: List[Dict[str,Any]],
-              source: str,
-              offers_total: int,
-              prices_updated: int) -> str:
-    date_attr = datetime.utcnow().strftime("%Y-%m-%d %H:%M")
-    out: List[str] = []
-    out.append("<?xml version='1.0' encoding='windows-1251'?>")
-    out.append(f"<yml_catalog date=\"{date_attr}\">")
 
-    # FEED_META (только видимый блок «Поле | значение»)
-    offers_written = len(offers)
-    meta_pairs = {
-        "source": source,
-        "offers_total": offers_total,
-        "offers_written": offers_written,
-        "available_true": offers_written,  # всем ставим true
-        "available_false": 0,
-    }
-    out.append(render_feed_meta_comment(meta_pairs))
+# -------------------- Рендер YML (как AkCent) --------------------
 
-    out.append("<shop>")
-    out.append("  <offers>")
-    for it in offers:
-        out.append(f"    <offer id=\"{yml_escape(it['id'])}\">")
-        # === СТРОГИЙ ПОРЯДОК ТЕГОВ ===
-        out.append(f"      <vendorCode>{yml_escape(it['vendorCode'])}</vendorCode>")
-        out.append(f"      <name>{yml_escape(it['title'])}</name>")
-        out.append(f"      <price>{int(it['price'])}</price>")
-        if it.get("picture"):
-            out.append(f"      <picture>{yml_escape(it['picture'])}</picture>")
-        if it.get("brand"):
-            out.append(f"      <vendor>{yml_escape(it['brand'])}</vendor>")
-        out.append("      <currencyId>KZT</currencyId>")
-        out.append("      <available>true</available>")
-        if it.get("description"):
-            out.append(f"      <description>{yml_escape(it['description'])}</description>")
-        # =============================
-        out.append("    </offer>\n")
-    out.append("  </offers>")
-    out.append("</shop></yml_catalog>")
-    return "\n".join(out)
+def offer_to_xml(o: Offer) -> str:
+    """Один <offer> (стиль AkCent: available атрибут, categoryId, CDATA, param, keywords)."""
+    lines: List[str] = []
+    lines.append(f"<offer id=\"{xml_escape(o.id)}\" available=\"{DEFAULT_AVAILABLE}\">")
+    lines.append("<categoryId></categoryId>")
+    lines.append(f"<vendorCode>{xml_escape(o.vendorCode)}</vendorCode>")
+    lines.append(f"<name>{xml_escape(o.name)}</name>")
+    lines.append(f"<price>{int(o.price)}</price>")
+    if o.picture:
+        lines.append(f"<picture>{xml_escape(o.picture)}</picture>")
+    if o.vendor:
+        lines.append(f"<vendor>{xml_escape(o.vendor)}</vendor>")
+    lines.append(f"<currencyId>{DEFAULT_CURRENCY}</currencyId>")
 
-# ---------------- ОСНОВНОЙ КОНТУР ----------------
-def collect_all_product_urls(s: requests.Session, cats: List[str], deadline: datetime) -> List[str]:
-    prod_urls: List[str] = []
-    seen: Set[str] = set()
-    for cu in cats:
-        if datetime.utcnow() > deadline:
-            break
-        for u in collect_product_urls_from_category(s, cu, MAX_PAGES, deadline):
-            if u not in seen:
-                seen.add(u)
-                prod_urls.append(u)
-    return prod_urls
+    # CDATA
+    lines.append("<description><![CDATA[")
+    lines.append(o.description_cdata)
+    lines.append("]]></description>")
+
+    # params
+    for k, v in o.params:
+        if not k or not v:
+            continue
+        lines.append(f"<param name=\"{xml_escape(k)}\">{xml_escape(v)}</param>")
+
+    # keywords
+    if o.keywords:
+        lines.append(f"<keywords>{xml_escape(o.keywords)}</keywords>")
+
+    lines.append("</offer>")
+    return "\n".join(lines)
+
+
+def build_yml(offers: List[Offer], offers_total: int) -> str:
+    """Полный XML."""
+    avail_true = len(offers)
+    avail_false = 0
+
+    head = [
+        "<?xml version=\"1.0\" encoding=\"windows-1251\"?>",
+        "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">",
+        f"<yml_catalog date=\"{yml_catalog_date()}\">",
+        "<shop><offers>",
+        "",
+        render_feed_meta(
+            offers_total=offers_total,
+            offers_written=len(offers),
+            avail_true=avail_true,
+            avail_false=avail_false,
+        ),
+        "",
+    ]
+
+    body: List[str] = []
+    for o in offers:
+        body.append(offer_to_xml(o))
+        body.append("")  # пустая строка между offer
+
+    tail = [
+        "</offers>",
+        "</shop>",
+        "</yml_catalog>",
+    ]
+
+    return "\n".join(head + body + tail)
+
+
+# -------------------- Main --------------------
+
+def write_empty_yml(reason: str) -> None:
+    """Если что-то пошло не так — пишем пустой, но валидный YML."""
+    ensure_dir(OUT_FILE)
+    meta = render_feed_meta(offers_total=0, offers_written=0, avail_true=0, avail_false=0)
+    xml = "\n".join(
+        [
+            "<?xml version=\"1.0\" encoding=\"windows-1251\"?>",
+            "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">",
+            f"<yml_catalog date=\"{yml_catalog_date()}\">",
+            "<shop><offers>",
+            "",
+            meta,
+            "",
+            "</offers>",
+            "</shop>",
+            "</yml_catalog>",
+            "",
+        ]
+    )
+    with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="xmlcharrefreplace", newline="\n") as f:
+        f.write(xml)
+    print(f"[WARN] wrote empty feed: {OUT_FILE} | {reason}")
+
 
 def main() -> int:
     s = make_session()
 
-    if not VTT_LOGIN or not VTT_PASSWORD:
-        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-            f.write(build_yml([], START_URL, 0, 0))
-        print("[warn] login/password not set; wrote empty feed.")
+    if not log_in(s):
+        write_empty_yml("login_failed")
         return 0
 
-    if not login_vtt(s):
-        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-            f.write(build_yml([], START_URL, 0, 0))
-        print("Error: login failed; wrote empty feed.")
+    # 1) ссылки на товары
+    product_urls = collect_all_products_links(s)
+    offers_total = len(product_urls)
+
+    if offers_total == 0:
+        write_empty_yml("no_products_found")
         return 0
 
-    cats = load_categories(CATEGORIES_FILE)
-    if not cats:
-        os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-        with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-            f.write(build_yml([], START_URL, 0, 0))
-        print("[error] categories file is empty; wrote empty feed.")
-        return 0
-
-    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MIN)
-
-    prod_urls = collect_all_product_urls(s, cats, deadline)
-    offers_total = len(prod_urls)
-    print(f"[discover] product urls: {offers_total}")
-
-    offers: List[Dict[str,Any]] = []
-    seen_ids: Set[str] = set()
-    prices_updated = 0
-
-    def worker(u: str) -> Optional[Dict[str,Any]]:
-        if datetime.utcnow() > deadline:
-            return None
-        try:
-            return parse_product(s, u)
-        except Exception:
-            return None
+    # 2) парсим товары параллельно
+    offers: List[Offer] = []
+    seen_ids: set[str] = set()
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-        for fut in as_completed([ex.submit(worker, u) for u in prod_urls]):
-            it = fut.result()
-            if not it:
+        futs = {ex.submit(parse_product, s, u): u for u in product_urls}
+        for fut in as_completed(futs):
+            try:
+                o = fut.result()
+            except Exception as e:
+                print(f"[WARN] parse crash: {futs[fut]} | {e}", file=sys.stderr)
                 continue
-            if it.get("dealer_price") is not None and it["dealer_price"] >= 100:
-                prices_updated += 1
-            oid = it["id"]
-            if oid in seen_ids:
-                oid = f"{oid}-{sha1(it['title'])[:6]}"
-                it["id"] = oid
-            seen_ids.add(oid)
-            offers.append(it)
+            if not o:
+                continue
 
-    os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-    with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-        f.write(build_yml(offers, START_URL, offers_total, prices_updated))
-    print(f"[done] items: {len(offers)} -> {OUT_FILE}")
+            oid = o.id
+            if oid in seen_ids:
+                # уникализируем
+                oid2 = f"{oid}-{stable_hash6(o.name)}"
+                o = Offer(
+                    id=oid2,
+                    vendorCode=oid2,
+                    name=o.name,
+                    price=o.price,
+                    picture=o.picture,
+                    vendor=o.vendor,
+                    description_cdata=o.description_cdata,
+                    params=o.params,
+                    keywords=o.keywords,
+                )
+            seen_ids.add(o.id)
+            offers.append(o)
+
+    # 3) сортировка для стабильности (как у остальных)
+    offers.sort(key=lambda x: x.id)
+
+    # 4) записать файл
+    ensure_dir(OUT_FILE)
+    xml = build_yml(offers=offers, offers_total=offers_total)
+    with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="xmlcharrefreplace", newline="\n") as f:
+        f.write(xml)
+
+    print(f"Wrote: {OUT_FILE} | encoding={OUTPUT_ENCODING} | offers={len(offers)} (from {offers_total})")
     return 0
 
+
 if __name__ == "__main__":
-    import sys
-    try:
-        sys.exit(main())
-    except Exception as e:
-        print("[fatal]", e)
-        try:
-            os.makedirs(os.path.dirname(OUT_FILE), exist_ok=True)
-            with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
-                f.write(build_yml([], START_URL, 0, 0))
-        except Exception:
-            pass
-        sys.exit(0)
+    raise SystemExit(main())
