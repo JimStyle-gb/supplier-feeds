@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# build_vtt.py — v6 (output style = AkCent)
+# build_vtt.py — v8 (output style = AkCent)
 # Правки:
+# - v8: фикс Ресурс из name (не берём из кодов вроде TK-8345K / 8600,1K) + чистка двойных пробелов в name.
 # - Удаление param: "Штрих-код/Штрихкод/EAN/GTIN/Barcode", "Категория/Подкатегория",
 #   "Каталожный номер", "OEM-номер" (и варианты).
 # - Нормализация значений: Цвет -> "Русский (English)", Ресурс -> "#### стр."
@@ -19,7 +20,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from decimal import Decimal, InvalidOperation
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlunparse
 
 import requests
@@ -411,7 +412,7 @@ def log_in(s: requests.Session) -> bool:
 # -------------------- Парсинг --------------------
 
 def normalize_vendor(v: str) -> str:
-    """Бренд (НЕ трогаем, как просил)."""
+    """Бренд (НЕ трогаем)."""
     v = (v or "").strip()
     if not v:
         return ""
@@ -613,8 +614,9 @@ def normalize_resource_value(v: str) -> str:
     if not s:
         return s
 
-    # 1) 1,1К / 7K
-    m = re.search(r"(\d+(?:[.,]\d+)?)\s*[kк]\b", s, flags=re.IGNORECASE)
+    # 1) 1,1К / 7K (но НЕ из кодов типа TK-8345K)
+    #     - берём только 1–3 цифры перед K и только если К стоит после пробела/запятой/начала строки
+    m = re.search(r"(?:(?<=^)|(?<=\s)|(?<=,))\s*(\d{1,3}(?:[.,]\d+)?)\s*[kк]\b", s, flags=re.IGNORECASE)
     if m:
         num = m.group(1).replace(",", ".")
         try:
@@ -669,13 +671,20 @@ def extract_from_name(name: str) -> Dict[str, str]:
         out["Цвет"] = ", ".join([f"{_COLOR_MAP[k]} ({k.title()})" for k in uniq])
 
     # ресурс
-    m_k = re.search(r"(\d+(?:[.,]\d+)?)\s*[kк]\b", n, flags=re.IGNORECASE)
-    if m_k:
-        out["Ресурс"] = normalize_resource_value(m_k.group(0))
-    else:
-        m_pages = re.search(r"(\d[\d\s]*)\s*(?:стр\.?|страниц|pages?)", n, flags=re.IGNORECASE)
-        if m_pages:
-            out["Ресурс"] = normalize_resource_value(m_pages.group(0))
+    # 1) "100 стр" / "100стр"
+    m_pages = re.search(r"(?:(?<=,)|(?<=\s))\s*(\d[\d\s]{0,10})\s*стр\.?", n, flags=re.IGNORECASE)
+    if m_pages:
+        digits = re.sub(r"\s+", "", m_pages.group(1))
+        try:
+            out["Ресурс"] = f"{int(digits)} стр."
+            return out
+        except Exception:
+            pass
+
+    # 2) "20K / 3,5K" только когда число стоит отдельно (и реально похоже на ресурс)
+    m_k_all = re.findall(r"(?:(?<=,)|(?<=\s))\s*(\d{1,3}(?:[.,]\d+)?)\s*[kк]\b", n, flags=re.IGNORECASE)
+    if m_k_all:
+        out["Ресурс"] = normalize_resource_value(m_k_all[-1] + "K")
 
     return out
 
@@ -702,26 +711,18 @@ def extract_compatibility(text: str) -> str:
     t = (text or "").strip()
     if not t:
         return ""
-    # Совместимость: ...
     m = re.search(r"(?:Подходит\s*для|Совместим(?:ость)?|Для\s*принтеров)\s*[:\-]\s*(.+)", t, flags=re.IGNORECASE)
     if not m:
         return ""
     val = m.group(1).strip()
     val = re.sub(r"\s+", " ", val)
-    # чуть чистим хвост
     val = re.split(r"(?:Гарантия|Условия|Доставка)\s*[:\-]", val, maxsplit=1, flags=re.IGNORECASE)[0].strip()
     if 10 <= len(val) <= 220:
         return val
     return ""
 
 def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, soup: BeautifulSoup) -> List[Tuple[str, str]]:
-    """Один общий набор характеристик:
-    - чистим мусорные поля (в т.ч. Каталожный номер / OEM-номер / Штрих-код / Категория)
-    - нормализуем значения (цвет/ресурс)
-    - добираем из name (цвет/мл/ресурс)
-    - добираем из описания на странице (совместимость, если присутствует)
-    - добавляем "Тип" по категории (если нет)
-    """
+    """Один общий набор характеристик."""
     cleaned: Dict[str, str] = {}
 
     # 1) dt/dd
@@ -903,6 +904,7 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     soup = soup_of(b)
 
     name = get_title(soup)
+    name = re.sub(r"\s{2,}", " ", name).strip()
     if not name:
         return None
 
@@ -1079,7 +1081,7 @@ def main() -> int:
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
         futs = {ex.submit(parse_product, s, u, code): (u, code) for (u, code) in product_urls}
         for fut in as_completed(futs):
-            url, code = futs[fut]
+            url, _code = futs[fut]
             try:
                 o = fut.result()
             except Exception as e:
@@ -1088,7 +1090,6 @@ def main() -> int:
             if not o:
                 continue
 
-            # (на всякий) уникальность id
             if o.id in seen_ids:
                 suf = re.sub(r"[^0-9a-f]+", "", format(abs(hash(url)) % (16**6), "06x"))
                 oid2 = f"{o.id}-{suf}"
