@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-# build_vtt.py — v5 (from scratch, output style = AkCent)
-# Changes requested:
-# - Удалить "Штрих-код" из param/описания полностью.
-# - Удалить "Категория" и "Подкатегория" из param/описания полностью.
-# - Нормализовать цвета: русский + (English) где возможно.
-# - Нормализовать ресурс: единый вид "#### стр." (1,1К / 7K -> 1100/7000 стр.)
-# - Обогащение: description/Характеристики и param = один и тот же список,
-#   + добираем недостающие характеристики из <name> (цвет/мл/ресурс).
-# ВАЖНО: бренд (vendor) и логика цены НЕ менялись.
+# build_vtt.py — v6 (output style = AkCent)
+# Правки:
+# - Удаление param: "Штрих-код/Штрихкод/EAN/GTIN/Barcode", "Категория/Подкатегория",
+#   "Каталожный номер", "OEM-номер" (и варианты).
+# - Нормализация значений: Цвет -> "Русский (English)", Ресурс -> "#### стр."
+# - Обогащение: добираем из name (цвет/мл/ресурс) + добавляем "Тип" по источнику категории.
+# - Параметры <param> и блок "Характеристики" в <description> = один список (1-в-1).
+# ВАЖНО: логика бренда (<vendor>) и логика цены НЕ менялись.
 
 from __future__ import annotations
 
@@ -242,6 +241,28 @@ def set_query_param(url: str, key: str, value: str) -> str:
     q[key] = value
     new_q = urlencode(q, doseq=True)
     return urlunparse((p.scheme, p.netloc, p.path, p.params, new_q, p.fragment))
+
+
+def category_code_from_url(url: str) -> str:
+    q = dict(parse_qsl(urlparse(url).query, keep_blank_values=True))
+    return (q.get("category") or "").strip()
+
+
+def type_from_category(code: str) -> str:
+    c = (code or "").upper()
+    if c.startswith("CARTINJ"):
+        return "Струйный картридж"
+    if c.startswith("CARTLAS"):
+        return "Лазерный картридж"
+    if c.startswith("DRM"):
+        return "Фотобарабан"
+    if c.startswith("DEV"):
+        return "Девелопер"
+    if c.startswith("PARTSPRINT_THER"):
+        return "Деталь термоблока"
+    if c.startswith("CARTMAT"):
+        return "Расходные материалы"
+    return ""
 
 
 # -------------------- Правило цены (НЕ меняем) --------------------
@@ -515,13 +536,35 @@ DROP_KEYS = {
     "Артикул",
     "Партс-номер",
     "Вендор",
+
     "Категория",
     "Подкатегория",
     "Штрих-код",
     "Штрихкод",
     "EAN",
     "Barcode",
+    "GTIN",
+
+    "Каталожный номер",
+    "Каталожный №",
+    "Каталожный N",
+    "OEM-номер",
+    "OEM номер",
+    "OEM No",
+    "OEM",
 }
+
+def _norm_key(k: str) -> str:
+    s = (k or "").strip().lower()
+    s = s.replace("ё", "е")
+    s = re.sub(r"[\s\-\._]+", "", s)
+    return s
+
+_DROP_NORM = {_norm_key(x) for x in DROP_KEYS}
+
+def should_drop_key(k: str) -> bool:
+    return _norm_key(k) in _DROP_NORM
+
 
 _COLOR_MAP = {
     "black": "Черный",
@@ -612,7 +655,7 @@ def extract_from_name(name: str) -> Dict[str, str]:
         x = m_ml.group(1).replace(",", ".")
         out["Объем"] = f"{x.rstrip('0').rstrip('.') if '.' in x else x} мл"
 
-    # цвет
+    # цвет (по англ словам)
     lows = n.lower()
     found = []
     for k in _COLOR_MAP.keys():
@@ -636,21 +679,57 @@ def extract_from_name(name: str) -> Dict[str, str]:
 
     return out
 
-def normalize_characteristics(pairs: Dict[str, str], name: str) -> List[Tuple[str, str]]:
+def parse_product_text(soup: BeautifulSoup) -> str:
+    selectors = [
+        "div.catalog_item_text",
+        "div.catalog_item_descr_text",
+        "div.catalog_item_descr",
+        "div.item_desc",
+        "div.description_text",
+        "div.tab-content",
+    ]
+    for sel in selectors:
+        el = soup.select_one(sel)
+        if el:
+            t = el.get_text("\n", strip=True)
+            t = re.sub(r"[ \t]+", " ", t)
+            t = re.sub(r"\n{3,}", "\n\n", t)
+            if len(t) >= 40:
+                return t
+    return ""
+
+def extract_compatibility(text: str) -> str:
+    t = (text or "").strip()
+    if not t:
+        return ""
+    # Совместимость: ...
+    m = re.search(r"(?:Подходит\s*для|Совместим(?:ость)?|Для\s*принтеров)\s*[:\-]\s*(.+)", t, flags=re.IGNORECASE)
+    if not m:
+        return ""
+    val = m.group(1).strip()
+    val = re.sub(r"\s+", " ", val)
+    # чуть чистим хвост
+    val = re.split(r"(?:Гарантия|Условия|Доставка)\s*[:\-]", val, maxsplit=1, flags=re.IGNORECASE)[0].strip()
+    if 10 <= len(val) <= 220:
+        return val
+    return ""
+
+def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, soup: BeautifulSoup) -> List[Tuple[str, str]]:
     """Один общий набор характеристик:
-    - чистим мусорные поля
+    - чистим мусорные поля (в т.ч. Каталожный номер / OEM-номер / Штрих-код / Категория)
     - нормализуем значения (цвет/ресурс)
-    - добираем недостающее из name (цвет/мл/ресурс)
-    - возвращаем список для <param> и description->Характеристики (1-в-1)
+    - добираем из name (цвет/мл/ресурс)
+    - добираем из описания на странице (совместимость, если присутствует)
+    - добавляем "Тип" по категории (если нет)
     """
     cleaned: Dict[str, str] = {}
 
-    # 1) из страницы
+    # 1) dt/dd
     for k, v in (pairs or {}).items():
         if not k or not v:
             continue
         k = k.strip()
-        if not k or k in DROP_KEYS:
+        if not k or should_drop_key(k):
             continue
 
         vv = (v or "").strip()
@@ -665,7 +744,7 @@ def normalize_characteristics(pairs: Dict[str, str], name: str) -> List[Tuple[st
 
         cleaned[k] = vv
 
-    # 2) из имени
+    # 2) из name
     extra = extract_from_name(name or "")
 
     has_color = any("цвет" in k.lower() for k in cleaned.keys())
@@ -680,11 +759,23 @@ def normalize_characteristics(pairs: Dict[str, str], name: str) -> List[Tuple[st
     if (not has_resource) and extra.get("Ресурс"):
         cleaned["Ресурс"] = extra["Ресурс"]
 
+    # 3) тип по категории
+    if type_hint:
+        has_type = any(_norm_key(k) == _norm_key("Тип") for k in cleaned.keys())
+        if not has_type:
+            cleaned["Тип"] = type_hint
+
+    # 4) из описания (если есть)
+    text = parse_product_text(soup)
+    compat = extract_compatibility(text)
+    if compat:
+        cleaned.setdefault("Совместимость", compat)
+
     out: List[Tuple[str, str]] = []
     for k, v in cleaned.items():
         if not k or not v:
             continue
-        if k in DROP_KEYS:
+        if should_drop_key(k):
             continue
         out.append((k, v))
 
@@ -789,22 +880,23 @@ def collect_product_links(s: requests.Session, category_url: str) -> List[str]:
     return found
 
 
-def collect_all_products_links(s: requests.Session) -> List[str]:
-    all_links: List[str] = []
+def collect_all_products_links(s: requests.Session) -> List[Tuple[str, str]]:
+    all_links: List[Tuple[str, str]] = []
     seen: set[str] = set()
-    for cat in CATEGORIES:
-        links = collect_product_links(s, cat)
+    for cat_url in CATEGORIES:
+        code = category_code_from_url(cat_url)
+        links = collect_product_links(s, cat_url)
         for u in links:
             if u in seen:
                 continue
             seen.add(u)
-            all_links.append(u)
+            all_links.append((u, code))
     return all_links
 
 
 # -------------------- Парс товара --------------------
 
-def parse_product(s: requests.Session, url: str) -> Optional[Offer]:
+def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offer]:
     b = http_get(s, url)
     if not b:
         return None
@@ -832,8 +924,9 @@ def parse_product(s: requests.Session, url: str) -> Optional[Offer]:
 
     offer_id = OFFER_PREFIX + article_clean
 
-    # ВАЖНО: один общий список => и <param>, и блок "Характеристики" в <description>
-    params = normalize_characteristics(pairs, name)
+    type_hint = type_from_category(cat_code)
+    params = normalize_characteristics(pairs, name, type_hint, soup)
+
     descr_cdata = build_description_cdata(
         name=name,
         short_desc=short_desc,
@@ -907,7 +1000,6 @@ def offer_to_xml(o: Offer) -> str:
 
 
 def build_yml(offers: List[Offer], offers_total: int) -> str:
-    # доступность пока не парсим — оставляем как есть (true)
     avail_true = len(offers)
     avail_false = 0
 
@@ -985,9 +1077,9 @@ def main() -> int:
     seen_ids: set[str] = set()
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
-        futs = {ex.submit(parse_product, s, u): u for u in product_urls}
+        futs = {ex.submit(parse_product, s, u, code): (u, code) for (u, code) in product_urls}
         for fut in as_completed(futs):
-            url = futs[fut]
+            url, code = futs[fut]
             try:
                 o = fut.result()
             except Exception as e:
