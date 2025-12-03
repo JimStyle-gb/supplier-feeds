@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-# build_vtt.py — v13 (output style = AkCent)
+# build_vtt.py — v14 (output style = AkCent)
 # Правки:
 # - v10: "умное описание" — если meta-description пустое/короткое/равно name, собираем <p> из типа/бренда/ключевых характеристик.
 # - v12: фиксируем найденные косяки в новых товарах автоматически: кириллица в id/vendorCode (ASCII-only);
 # - v13: добиваем остатки: e-cepия/cepия -> seriya; ahaлoг -> analog; усиливаем Color-склейки; и смешанные токены переводим в ASCII полностью.
-#         (О)->(O); пробелы вокруг (O); '(c двухслойным'->'(с двухслойным'; ',8,3K' -> ', 8,3K';
-#         '10m'->'10 м'; '/HP,'->' HP,'; лечим смешение кириллицы/латиницы в модельных токенах.
-#         Ресурс/Объем: если в name есть — ставим в params по name (приоритет).
+#         '(c двухслойным'->'(с двухслойным'; ',8,3K' -> ', 8,3K'; '10m'->'10 м'; '/HP,'->' HP,';
+#         лечим смешение кириллицы/латиницы в модельных токенах. Ресурс/Объем: если в name есть — ставим в params по name (приоритет).
+# - v14: (О)/(O) -> Оригинал (и в name, и в meta-description); аккуратные пробелы вокруг слова.
+
 # - v9: чистка пунктуации в name (убираем пробелы перед запятыми/точками/двоеточием).
 # - v8: фикс Ресурс из name (не берём из кодов вроде TK-8345K / 8600,1K) + чистка двойных пробелов в name.
 # - Удаление param: штрихкоды, Категория/Подкатегория, Каталожный номер, OEM-номер.
@@ -335,6 +336,21 @@ def fix_mixed_alphabet(s: str) -> str:
     )
 
 
+def replace_original_marker(s: str) -> str:
+    """(О)/(O) => 'Оригинал' (в т.ч. склеенные случаи без пробелов)."""
+    if not s:
+        return ""
+    # если маркер прилеплен к словам — разлепляем пробелами
+    s = re.sub(r"(?<=\S)\(\s*[ОOoо]\s*\)(?=\S)", " Оригинал ", s)
+    s = re.sub(r"(?<=\S)\(\s*[ОOoо]\s*\)", " Оригинал", s)
+    s = re.sub(r"\(\s*[ОOoо]\s*\)(?=\S)", "Оригинал ", s)
+    # обычный случай
+    s = re.sub(r"\(\s*[ОOoо]\s*\)", "Оригинал", s)
+    # добиваем двойные пробелы
+    s = re.sub(r"[ \t]{2,}", " ", s)
+    return s
+
+
 def _dedupe_slash_segments(s: str) -> str:
     # Убираем только точные повторы сегментов в списке через "/"
     if "/" not in s:
@@ -362,8 +378,8 @@ def normalize_name(name: str) -> str:
     s = re.sub(r"\s{2,}", " ", s).strip()
     s = re.sub(r"\s+([,.;:])", r"\1", s)
 
-    # (О) -> (O)
-    s = s.replace("(О)", "(O)").replace("(о)", "(O)")
+    # (О)/(O) -> Оригинал
+    s = replace_original_marker(s)  # (О)/(O) -> Оригинал
 
     # пробелы вокруг (O)
     s = re.sub(r"(?<=\w)\(O\)", r" (O)", s)
@@ -1127,6 +1143,9 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     short_desc = get_meta_description(soup) or ""
     if _is_poor_desc(short_desc, name):
         short_desc = make_smart_desc(name=name, vendor=vendor, type_hint=type_hint, params=params)
+
+    short_desc = replace_original_marker(short_desc)
+(name=name, vendor=vendor, type_hint=type_hint, params=params)
 
     descr_cdata = build_description_cdata(
         name=name,
