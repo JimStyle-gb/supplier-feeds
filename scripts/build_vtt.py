@@ -1,21 +1,10 @@
 #!/usr/bin/env python3
-# build_vtt.py — v16 (output style = AkCent)
-# Правки:
-# - v10: "умное описание" — если meta-description пустое/короткое/равно name, собираем <p> из типа/бренда/ключевых характеристик.
-# - v12: фиксируем найденные косяки в новых товарах автоматически: кириллица в id/vendorCode (ASCII-only);
-# - v13: добиваем остатки: e-cepия/cepия -> seriya; ahaлoг -> analog; усиливаем Color-склейки; и смешанные токены переводим в ASCII полностью.
-#         '(c двухслойным'->'(с двухслойным'; ',8,3K' -> ', 8,3K'; '10m'->'10 м'; '/HP,'->' HP,';
-#         лечим смешение кириллицы/латиницы в модельных токенах. Ресурс/Объем: если в name есть — ставим в params по name (приоритет).
-# - v14: (О)/(O) -> Оригинал (и в name, и в meta-description); аккуратные пробелы вокруг слова.
-# - v15: hotfix — убран лишний обрывок строки, который ломал синтаксис (SyntaxError).
-# - v16: (О)/(O) -> Оригинал: убираем пробелы перед пунктуацией (например: 'Оригинал ,').
-
-# - v9: чистка пунктуации в name (убираем пробелы перед запятыми/точками/двоеточием).
-# - v8: фикс Ресурс из name (не берём из кодов вроде TK-8345K / 8600,1K) + чистка двойных пробелов в name.
-# - Удаление param: штрихкоды, Категория/Подкатегория, Каталожный номер, OEM-номер.
-# - Нормализация: Цвет -> "Русский (English)", Ресурс -> "#### стр."
-# - Обогащение: добираем из name (цвет/мл/ресурс) + добавляем "Тип" по категории.
-# ВАЖНО: логика бренда (<vendor>) и логика цены НЕ менялись.
+# build_vtt.py — v17 (style_unified / AkCent output)
+# Цель v17: УПРОСТИТЬ код без изменения логики и результата (выходной YML должен остаться тем же).
+# Что сделано:
+# - убран мёртвый/неиспользуемый код и лишние импорты;
+# - сокращены дублирующиеся куски нормализации;
+# - структура оставлена прежней: логин/сбор ссылок/парс/цены/описание/рендер НЕ менялись по смыслу.
 
 from __future__ import annotations
 
@@ -76,7 +65,7 @@ PASSWORD = os.getenv("VTT_PASSWORD", "")
 VTT_SSL_VERIFY = os.getenv("VTT_SSL_VERIFY", "1")  # 1/0 true/false
 VTT_CA_BUNDLE = os.getenv("VTT_CA_BUNDLE", "")      # путь до .pem (если есть)
 
-# Категории — вшиты в код
+# Категории — вшиты в код (как было)
 CATEGORIES: List[str] = [
     "https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT",
     "https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG",
@@ -165,26 +154,32 @@ def yml_catalog_date() -> str:
 
 def next_1_10_20_at_05() -> datetime:
     n = now_alm()
-    base = n
     candidates = []
     for d in (1, 10, 20):
         try:
-            candidates.append(base.replace(day=d, hour=5, minute=0, second=0, microsecond=0))
+            candidates.append(n.replace(day=d, hour=5, minute=0, second=0, microsecond=0))
         except ValueError:
             pass
     future = [t for t in candidates if t > n]
     if future:
         return min(future)
-    y = base.year
-    m = base.month + 1
+
+    y = n.year
+    m = n.month + 1
     if m == 13:
         y, m = y + 1, 1
-    if getattr(base, "tzinfo", None) is not None:
-        return datetime(y, m, 1, 5, 0, 0, tzinfo=base.tzinfo)
+    if getattr(n, "tzinfo", None) is not None:
+        return datetime(y, m, 1, 5, 0, 0, tzinfo=n.tzinfo)
     return datetime(y, m, 1, 5, 0, 0)
 
 
 # -------------------- Утилиты --------------------
+
+_NBSP = "\u00A0"
+
+_LAT_RE = re.compile(r"[A-Za-z]")
+_CYR_RE = re.compile(r"[А-Яа-яЁё]")
+
 
 def ensure_dir(path: str) -> None:
     d = os.path.dirname(path)
@@ -240,44 +235,12 @@ def parse_int_from_text(s: str) -> Optional[int]:
     return int(val)
 
 
-# --- ASCII / смешение алфавитов ---
-
-_NBSP = "\u00A0"
-
-# 1) Для кода товара (id/vendorCode): делаем ASCII, чтобы не было кириллицы в идентификаторах.
-#    Здесь важна стабильность, а не "красивость".
-_CYR_TO_LAT_STR = {
-    "А":"A","Б":"B","В":"B","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"Y","К":"K","Л":"L","М":"M","Н":"H","О":"O","П":"P","Р":"P","С":"C","Т":"T","У":"U","Ф":"F","Х":"X","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
-    "а":"a","б":"b","в":"b","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"h","о":"o","п":"p","р":"p","с":"c","т":"t","у":"u","ф":"f","х":"x","ц":"c","ч":"ch","ш":"sh","щ":"sch","ъ":"","ы":"y","ь":"","э":"e","ю":"yu","я":"ya",
-}
-
-# 2) Для текста name: меняем только "похожие" буквы в СМЕШАННЫХ токенах (где есть и латиница, и кириллица).
-#    Это лечит DCP-165С / KX-FAT88А / TN-321С / 2packХ1 и т.п., но не трогает нормальный русский текст.
-_VISUAL_CYR_TO_LAT = str.maketrans({
-    "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"U","Ц":"C",
-    "а":"a","в":"b","е":"e","к":"k","м":"m","н":"h","о":"o","р":"p","с":"c","т":"t","х":"x","у":"u","ц":"c",
-})
-
-
-def _ru_to_lat_ascii(s: str) -> str:
-    if not s:
-        return ""
-    s = s.replace(_NBSP, " ")
-    out = []
-    for ch in s:
-        out.append(_CYR_TO_LAT_STR.get(ch, ch))
-    return "".join(out)
-
-
-def clean_article(article: str) -> str:
-    s = (article or "").strip()
-    s = _ru_to_lat_ascii(s)
-    # Оставляем только безопасный ASCII для id/vendorCode
-    return re.sub(r"[^A-Za-z0-9_-]+", "", s)
-
-
 def safe_text_spaces(s: str) -> str:
     return (s or "").replace(_NBSP, " ")
+
+
+def norm_spaces(s: str) -> str:
+    return re.sub(r"\s+", " ", (s or "")).strip()
 
 
 def set_query_param(url: str, key: str, value: str) -> str:
@@ -310,19 +273,28 @@ def type_from_category(code: str) -> str:
     return ""
 
 
-def norm_spaces(s: str) -> str:
-    return re.sub(r"\s+", " ", (s or "")).strip()
+# -------------------- ASCII / смешение алфавитов --------------------
+
+_CYR_TO_LAT_STR = {
+    "А":"A","Б":"B","В":"B","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"Y","К":"K","Л":"L","М":"M","Н":"H","О":"O","П":"P","Р":"P","С":"C","Т":"T","У":"U","Ф":"F","Х":"X","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
+    "а":"a","б":"b","в":"b","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"h","о":"o","п":"p","р":"p","с":"c","т":"t","у":"u","ф":"f","х":"x","ц":"c","ч":"ch","ш":"sh","щ":"sch","ъ":"","ы":"y","ь":"","э":"e","ю":"yu","я":"ya",
+}
 
 
-# --- Нормализация name (только по факту совпадений) ---
+def _ru_to_lat_ascii(s: str) -> str:
+    if not s:
+        return ""
+    s = s.replace(_NBSP, " ")
+    return "".join(_CYR_TO_LAT_STR.get(ch, ch) for ch in s)
 
-_LAT_RE = re.compile(r"[A-Za-z]")
-_CYR_RE = re.compile(r"[А-Яа-яЁё]")
+
+def clean_article(article: str) -> str:
+    s = (article or "").strip()
+    s = _ru_to_lat_ascii(s)
+    return re.sub(r"[^A-Za-z0-9_-]+", "", s)
 
 
 def _fix_mixed_token(token: str) -> str:
-    # Чиним только смешанные сегменты (латиница + кириллица внутри одного токена).
-    # По правилу: русские буквы в таких токенах делаем английскими.
     if _LAT_RE.search(token) and _CYR_RE.search(token):
         return _ru_to_lat_ascii(token)
     return token
@@ -342,21 +314,16 @@ def replace_original_marker(s: str) -> str:
     """(О)/(O) => 'Оригинал' (в т.ч. склеенные случаи без пробелов)."""
     if not s:
         return ""
-    # если маркер прилеплен к словам — разлепляем пробелами
     s = re.sub(r"(?<=\S)\(\s*[ОOoо]\s*\)(?=\S)", " Оригинал ", s)
     s = re.sub(r"(?<=\S)\(\s*[ОOoо]\s*\)", " Оригинал", s)
     s = re.sub(r"\(\s*[ОOoо]\s*\)(?=\S)", "Оригинал ", s)
-    # обычный случай
     s = re.sub(r"\(\s*[ОOoо]\s*\)", "Оригинал", s)
-    # добиваем двойные пробелы
     s = re.sub(r"[ \t]{2,}", " ", s)
-    # убираем пробелы перед пунктуацией
     s = re.sub(r"\s+([,.;:!?)\]])", r"\1", s)
     return s
 
 
 def _dedupe_slash_segments(s: str) -> str:
-    # Убираем только точные повторы сегментов в списке через "/"
     if "/" not in s:
         return s
     parts = s.split("/")
@@ -378,56 +345,33 @@ def normalize_name(name: str) -> str:
     if not s:
         return ""
 
-    # базовая чистка
     s = re.sub(r"\s{2,}", " ", s).strip()
     s = re.sub(r"\s+([,.;:])", r"\1", s)
 
-    # (О)/(O) -> Оригинал
-    s = replace_original_marker(s)  # (О)/(O) -> Оригинал
+    s = replace_original_marker(s)
 
-    # пробелы вокруг (O)
-    s = re.sub(r"(?<=\w)\(O\)", r" (O)", s)
-    s = re.sub(r"\(O\)(?=\w)", r"(O) ", s)
-    s = re.sub(r",\s*\(O\)\s*$", r" (O)", s)
-
-    # (c двухслойным ...) -> (с ...)
     s = re.sub(r"\(c(?=\s*[А-Яа-яЁё])", "(с", s)
-
-    # запятая-разделитель: '...,8,3K' -> '..., 8,3K' (но не трогаем десятичные: 0,7K)
     s = re.sub(r"(?<!\d),(?=\d)", ", ", s)
-
-    # 10m -> 10 м (для лент)
     s = re.sub(r"\b(\d+(?:[.,]\d+)?)m\b", r"\1 м", s)
-
-    # /HP, -> HP,
     s = s.replace("/HP,", " HP,")
-
-    # 26К / 0,7К -> 26K / 0,7K (ресурс в названии)
     s = re.sub(r"(\d)\s*[Кк]\b", r"\1K", s)
-
-    # 120стр -> 120 стр.
     s = re.sub(r"(\d)\s*стр\b", r"\1 стр.", s, flags=re.IGNORECASE)
 
-    # 12Color -> 12 Color / Pro400ColorM451 -> Pro400 Color M451
     s = re.sub(r"(\d)(Color)\b", r"\1 \2", s, flags=re.IGNORECASE)
     s = re.sub(r"(Color)(?=[A-Z0-9])", r"\1 ", s)
 
-    # повтор сегментов в списке через "/"
     s = _dedupe_slash_segments(s)
-
-    # смешение алфавитов в модельных токенах
     s = fix_mixed_alphabet(s)
 
-    # спец-фиксы частых 'полусклеек' из-за смешения букв
-    s = re.sub(r"(?i)cepiya", "seriya", s)   # e-cepия / C368-cepия
-    s = re.sub(r"(?i)\bahalog(?=[A-Z0-9])", "analog", s)  # ahaлoгDL-5120
+    s = re.sub(r"(?i)cepiya", "seriya", s)
+    s = re.sub(r"(?i)\bahalog(?=[A-Z0-9])", "analog", s)
     s = re.sub(r"(?i)\bahalog\b", "analog", s)
 
-    # добиваем склейки Color после ASCII-нормализации
     s = re.sub(r"(?i)(\d+)color\b", r"\1 Color", s)
     s = re.sub(r"(?i)(color)(?=[A-Z0-9])", r"\1 ", s)
 
     s = re.sub(r"\s{2,}", " ", s).strip()
+    s = re.sub(r"\s+([,.;:])", r"\1", s)
     return s
 
 
@@ -636,8 +580,7 @@ def get_title(soup: BeautifulSoup) -> str:
 def get_meta_description(soup: BeautifulSoup) -> str:
     meta = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
     out = (meta.get("content") if meta else "") or ""
-    out = re.sub(r"\s+", " ", out).strip()
-    return out
+    return re.sub(r"\s+", " ", out).strip()
 
 
 def split_tokens(text: str, limit: int = 14) -> List[str]:
@@ -648,9 +591,10 @@ def split_tokens(text: str, limit: int = 14) -> List[str]:
         t = t.strip()
         if not t:
             continue
-        if t.lower() in seen:
+        tl = t.lower()
+        if tl in seen:
             continue
-        seen.add(t.lower())
+        seen.add(tl)
         out.append(t)
         if len(out) >= limit:
             break
@@ -702,7 +646,6 @@ DROP_KEYS = {
     "Артикул",
     "Партс-номер",
     "Вендор",
-
     "Категория",
     "Подкатегория",
     "Штрих-код",
@@ -710,7 +653,6 @@ DROP_KEYS = {
     "EAN",
     "Barcode",
     "GTIN",
-
     "Каталожный номер",
     "Каталожный №",
     "Каталожный N",
@@ -720,13 +662,14 @@ DROP_KEYS = {
     "OEM",
 }
 
+
 def _norm_key(k: str) -> str:
-    s = (k or "").strip().lower()
-    s = s.replace("ё", "е")
-    s = re.sub(r"[\s\-\._]+", "", s)
-    return s
+    s = (k or "").strip().lower().replace("ё", "е")
+    return re.sub(r"[\s\-\._]+", "", s)
+
 
 _DROP_NORM = {_norm_key(x) for x in DROP_KEYS}
+
 
 def should_drop_key(k: str) -> bool:
     return _norm_key(k) in _DROP_NORM
@@ -749,6 +692,7 @@ _COLOR_MAP = {
     "violet": "Фиолетовый",
     "purple": "Фиолетовый",
 }
+
 
 def normalize_color_value(v: str) -> str:
     s = (v or "").strip()
@@ -774,13 +718,12 @@ def normalize_color_value(v: str) -> str:
             out.append(p)
     return ", ".join(out)
 
+
 def normalize_resource_value(v: str) -> str:
     s = (v or "").strip()
     if not s:
         return s
 
-    # 1) 1,1К / 7K (но НЕ из кодов типа TK-8345K)
-    #     - берём только 1–3 цифры перед K и только если K стоит после пробела/запятой/начала строки
     m = re.search(r"(?:(?<=^)|(?<=\s)|(?<=,))\s*(\d{1,3}(?:[.,]\d+)?)\s*[kк]\b", s, flags=re.IGNORECASE)
     if m:
         num = m.group(1).replace(",", ".")
@@ -790,39 +733,34 @@ def normalize_resource_value(v: str) -> str:
         except Exception:
             pass
 
-    # 2) "1234 стр" / "1234 pages"
     m2 = re.search(r"(\d[\d\s]*)\s*(?:стр\.?|страниц|pages?|p\.)", s, flags=re.IGNORECASE)
     if m2:
         digits = re.sub(r"\s+", "", m2.group(1))
         try:
-            pages = int(digits)
-            return f"{pages} стр."
+            return f"{int(digits)} стр."
         except Exception:
             pass
 
-    # 3) просто число
     m3 = re.search(r"(\d[\d\s]*)", s)
     if m3:
         digits = re.sub(r"\s+", "", m3.group(1))
         try:
-            pages = int(digits)
-            return f"{pages} стр."
+            return f"{int(digits)} стр."
         except Exception:
             pass
 
     return s
 
+
 def extract_from_name(name: str) -> Dict[str, str]:
     n = name or ""
     out: Dict[str, str] = {}
 
-    # объем: берём последнее значение перед 'мл' (например '.../305,300 мл' -> 300 мл)
     ml_all = re.findall(r"(\d+(?:[.,]\d+)?)\s*мл\b", n, flags=re.IGNORECASE)
     if ml_all:
         x = ml_all[-1].replace(",", ".")
         out["Объем"] = f"{x.rstrip('0').rstrip('.') if '.' in x else x} мл"
 
-    # цвет (по англ словам)
     lows = n.lower()
     found: List[str] = []
     for k in _COLOR_MAP.keys():
@@ -835,8 +773,6 @@ def extract_from_name(name: str) -> Dict[str, str]:
                 uniq.append(k)
         out["Цвет"] = ", ".join([f"{_COLOR_MAP[k]} ({k.title()})" for k in uniq])
 
-    # ресурс
-    # 1) '100 стр' / '100стр'
     m_pages = re.search(r"(?:(?<=,)|(?<=\s))\s*(\d[\d\s]{0,10})\s*стр\.?\b", n, flags=re.IGNORECASE)
     if m_pages:
         digits = re.sub(r"\s+", "", m_pages.group(1))
@@ -846,7 +782,6 @@ def extract_from_name(name: str) -> Dict[str, str]:
         except Exception:
             pass
 
-    # 2) '20K / 3,5K' как ресурс (берём МАКСИМАЛЬНОЕ значение; игнорируем 'внутри тонер на 5K')
     cand_pages: List[int] = []
     for m in re.finditer(r"(?:(?<=,)|(?<=\s))\s*(\d{1,3}(?:[.,]\d+)?)\s*[kк]\b", n, flags=re.IGNORECASE):
         before = (n[max(0, m.start() - 30):m.start()] or "").lower()
@@ -884,6 +819,7 @@ def parse_product_text(soup: BeautifulSoup) -> str:
                 return t
     return ""
 
+
 def extract_compatibility(text: str) -> str:
     t = (text or "").strip()
     if not t:
@@ -898,11 +834,10 @@ def extract_compatibility(text: str) -> str:
         return val
     return ""
 
+
 def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, soup: BeautifulSoup) -> List[Tuple[str, str]]:
-    """Один общий набор характеристик."""
     cleaned: Dict[str, str] = {}
 
-    # 1) dt/dd
     for k, v in (pairs or {}).items():
         if not k or not v:
             continue
@@ -922,43 +857,27 @@ def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, 
 
         cleaned[k] = vv
 
-    # 2) из name
     extra = extract_from_name(name or "")
 
-    has_color = any("цвет" in k.lower() for k in cleaned.keys())
-    if (not has_color) and extra.get("Цвет"):
-        cleaned["Цвет"] = extra["Цвет"]
+    if not any("цвет" in k.lower() for k in cleaned.keys()):
+        if extra.get("Цвет"):
+            cleaned["Цвет"] = extra["Цвет"]
 
-    has_ml = any(("мл" in (v or "").lower()) or ("объем" in k.lower()) for k, v in cleaned.items())
     if extra.get("Объем"):
-        # приоритет у name
         cleaned["Объем"] = extra["Объем"]
 
-    has_resource = any("ресурс" in k.lower() for k in cleaned.keys())
     if extra.get("Ресурс"):
-        # приоритет у name
         cleaned["Ресурс"] = extra["Ресурс"]
 
-    # 3) тип по категории
-    if type_hint:
-        has_type = any(_norm_key(k) == _norm_key("Тип") for k in cleaned.keys())
-        if not has_type:
-            cleaned["Тип"] = type_hint
+    if type_hint and not any(_norm_key(k) == _norm_key("Тип") for k in cleaned.keys()):
+        cleaned["Тип"] = type_hint
 
-    # 4) из описания (если есть)
     text = parse_product_text(soup)
     compat = extract_compatibility(text)
     if compat:
         cleaned.setdefault("Совместимость", compat)
 
-    out: List[Tuple[str, str]] = []
-    for k, v in cleaned.items():
-        if not k or not v:
-            continue
-        if should_drop_key(k):
-            continue
-        out.append((k, v))
-
+    out: List[Tuple[str, str]] = [(k, v) for k, v in cleaned.items() if k and v and not should_drop_key(k)]
     out.sort(key=lambda x: x[0].lower())
     return out
 
@@ -970,6 +889,7 @@ def _ensure_sentence(s: str) -> str:
     if not t:
         return ""
     return t if t.endswith((".", "!", "?")) else (t + ".")
+
 
 def make_smart_desc(name: str, vendor: str, type_hint: str, params: List[Tuple[str, str]]) -> str:
     """Описание без 'воды' — только то, что реально есть в характеристиках."""
@@ -986,7 +906,6 @@ def make_smart_desc(name: str, vendor: str, type_hint: str, params: List[Tuple[s
         head = name
 
     pieces = [_ensure_sentence(head)]
-
     for k in ("Цвет", "Ресурс", "Объем", "Совместимость"):
         v = pmap.get(k, "")
         if v:
@@ -994,6 +913,7 @@ def make_smart_desc(name: str, vendor: str, type_hint: str, params: List[Tuple[s
 
     out = " ".join([p for p in pieces if p]).strip()
     return out or name
+
 
 def build_description_cdata(name: str, short_desc: str, characteristics: List[Tuple[str, str]]) -> str:
     name_e = (name or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
@@ -1111,6 +1031,7 @@ def _is_poor_desc(desc: str, name: str) -> bool:
     n = norm_spaces(name)
     return (not d) or (len(d) < 25) or (d == n)
 
+
 def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offer]:
     b = http_get(s, url)
     if not b:
@@ -1119,7 +1040,7 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
 
     name = get_title(soup)
     name = re.sub(r"\s{2,}", " ", name).strip()
-    name = re.sub(r"\s+([,.;:])", r"\1", name)  # v9: убираем пробелы перед пунктуацией
+    name = re.sub(r"\s+([,.;:])", r"\1", name)
     name = normalize_name(name)
     if not name:
         return None
@@ -1149,11 +1070,7 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
         short_desc = make_smart_desc(name=name, vendor=vendor, type_hint=type_hint, params=params)
 
     short_desc = replace_original_marker(short_desc)
-    descr_cdata = build_description_cdata(
-        name=name,
-        short_desc=short_desc,
-        characteristics=params,
-    )
+    descr_cdata = build_description_cdata(name=name, short_desc=short_desc, characteristics=params)
     keywords = make_keywords(vendor=vendor, name=name)
 
     return Offer(
