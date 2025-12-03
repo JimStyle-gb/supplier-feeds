@@ -288,7 +288,7 @@ def collect_printers(item: ET.Element) -> List[str]:
     return uniq
 
 
-def build_params(item: ET.Element, name_short: str) -> List[Tuple[str, str]]:
+def build_params(item: ET.Element, name_short: str, printers: Optional[List[str]] = None) -> List[Tuple[str, str]]:
     params: List[Tuple[str, str]] = []
     params.append(("Тип", detect_type(name_short)))
 
@@ -312,7 +312,7 @@ def build_params(item: ET.Element, name_short: str) -> List[Tuple[str, str]]:
     if weight:
         params.append(("Вес", _norm_spaces(weight)))
 
-    printers = collect_printers(item)
+    printers = printers if printers is not None else collect_printers(item)
     if printers:
         params.append(("Принтеры", ", ".join(printers)))
 
@@ -340,6 +340,74 @@ def build_description_html(title: str, short_desc: str, params: List[Tuple[str, 
         "]]></description>"
     )
 
+
+
+def _latinize_like(s: str) -> str:
+    """Заменяет похожие кириллические символы на латиницу для устойчивого распознавания бренда/артикула."""
+    tr = str.maketrans({
+        "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
+        "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
+        "Ё":"E","ё":"e",
+    })
+    return (s or "").translate(tr)
+
+
+BRAND_PATTERNS: List[Tuple[str, str]] = [
+    ("HP", r"\bHP\b|\bHEWLETT\s*PACKARD\b"),
+    ("Canon", r"\bCANON\b|\bCANNON\b"),
+    ("Epson", r"\bEPSON\b"),
+    ("Brother", r"\bBROTHER\b"),
+    ("Xerox", r"\bXEROX\b"),
+    ("Samsung", r"\bSAMSUNG\b"),
+    ("Kyocera", r"\bKYOCERA\b|\bKYOCERA\s*MITA\b"),
+    ("Ricoh", r"\bRICOH\b|\bAFICIO\b"),
+    ("Konica Minolta", r"\bKONICA\s*MINOLTA\b|\bMINOLTA\b"),
+    ("Oki", r"\bOKI\b"),
+    ("Lexmark", r"\bLEXMARK\b"),
+    ("Pantum", r"\bPANTUM\b"),
+    ("Sharp", r"\bSHARP\b"),
+    ("Toshiba", r"\bTOSHIBA\b"),
+    ("Dell", r"\bDELL\b"),
+]
+
+
+def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, printers: List[str]) -> str:
+    """Пытается определить vendor по названию/описанию/совместимости. Если не уверены — возвращаем пусто."""
+    blob = " ".join(x for x in [article_raw, name_short, nom_full, " ".join(printers or [])] if x).strip()
+    if not blob:
+        return ""
+
+    up = _latinize_like(blob).upper()
+
+    # 1) Явные бренды словами
+    for vendor, pat in BRAND_PATTERNS:
+        if re.search(pat, up, flags=re.IGNORECASE):
+            return vendor
+
+    # 2) Артикульные/модельные сигнатуры (консервативно)
+    # Canon
+    if re.search(r"\b(C-EXV|NPG|GPR|CRG)\b", up):
+        return "Canon"
+    # Epson
+    if re.search(r"\bC13T\d+\b", up):
+        return "Epson"
+    # Samsung
+    if re.search(r"\b(MLT-|CLT-)\w+", up):
+        return "Samsung"
+    # Xerox
+    if re.search(r"\b(106R|013R|006R)\w*", up):
+        return "Xerox"
+    # Kyocera
+    if re.search(r"\b(TK-|DV-|DK-)\w+", up):
+        return "Kyocera"
+    # Brother (после Canon/Epson/Samsung/Xerox/Kyocera)
+    if re.search(r"\b(TN-|DR-|LC-|BU-|DK-)\w+", up):
+        return "Brother"
+    # HP
+    if re.search(r"\b(Q|CB|CC|CE|CF)\d{2,5}\w*\b", up):
+        return "HP"
+
+    return ""
 
 def build_keywords(vendor: str, title: str, vendor_code: str, params: List[Tuple[str, str]]) -> str:
     parts: List[str] = []
@@ -382,14 +450,18 @@ def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
     base_int = 100 if (base is None or base <= 0) else int(math.ceil(base))
     price = compute_price(base_int)
 
-    vendor = _norm_spaces(_find_desc_text(node, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or "")
+        vendor = _norm_spaces(_find_desc_text(node, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or "")
+    if not vendor:
+        vendor = detect_vendor_from_text(article, name_short, nom_full, printers)
 
     picture = _norm_spaces(_find_desc_text(node, ["СсылкаНаКартинку", "Картинка", "Изображение", "Фото", "Picture", "Image", "ФотоURL", "PictureURL"]) or "")
 
     nom_full = _norm_spaces(_find_desc_text(node, ["Номенклатура"]) or "")
 
+    printers = collect_printers(node)
+
     oid = make_id(article)
-    params = build_params(node, name_short)
+    params = build_params(node, name_short, printers)
     desc = build_description_html(name_short, nom_full, params)
     keywords = build_keywords(vendor, name_short, oid, params)
 
