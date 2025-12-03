@@ -438,6 +438,41 @@ def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
     return items
 
 
+def ensure_unique_offer_ids(offers: List[Dict[str, Any]]) -> None:
+    """Делает id/vendorCode уникальными ТОЛЬКО при дублях, чтобы импорт не конфликтовал."""
+    used: set[str] = set()
+    counters: Dict[str, int] = {}
+
+    for it in offers:
+        base = str(it.get("id") or "")
+        if not base:
+            continue
+
+        if base not in used:
+            used.add(base)
+            counters.setdefault(base, 1)
+            continue
+
+        n = counters.get(base, 1) + 1
+        while True:
+            new_id = f"{base}-{n}"
+            if new_id not in used:
+                break
+            n += 1
+
+        counters[base] = n
+        old_id = base
+
+        it["id"] = new_id
+        it["vendorCode"] = new_id
+
+        kw = it.get("keywords") or ""
+        if kw:
+            it["keywords"] = re.sub(rf"(?<!\w){re.escape(old_id)}(?!\w)", new_id, kw)
+
+        used.add(new_id)
+
+
 # ---------------- FEED_META ----------------
 def render_feed_meta(source_url: str, total: int, written: int, true_cnt: int, false_cnt: int) -> str:
     now_alm = _almaty_now()
@@ -515,6 +550,7 @@ def main() -> int:
             if it:
                 offers.append(it)
 
+        ensure_unique_offer_ids(offers)
         yml = build_yml(offers, SUPPLIER_URL, total_before_filter)
 
     except Exception as e:
