@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-# build_vtt.py — v11 (output style = AkCent)
+# build_vtt.py — v12 (output style = AkCent)
 # Правки:
-# - v11: фиксы смешения RU/EN букв в id/vendorCode/name (латиница вместо русских букв в кодах), чистка (О)->(O), /HP, и мелкие орфо-фиксы.
 # - v10: "умное описание" — если meta-description пустое/короткое/равно name, собираем <p> из типа/бренда/ключевых характеристик.
+# - v12: фиксируем найденные косяки в новых товарах автоматически: кириллица в id/vendorCode (ASCII-only);
+#         (О)->(O); пробелы вокруг (O); '(c двухслойным'->'(с двухслойным'; ',8,3K' -> ', 8,3K';
+#         '10m'->'10 м'; '/HP,'->' HP,'; лечим смешение кириллицы/латиницы в модельных токенах.
+#         Ресурс/Объем: если в name есть — ставим в params по name (приоритет).
 # - v9: чистка пунктуации в name (убираем пробелы перед запятыми/точками/двоеточием).
 # - v8: фикс Ресурс из name (не берём из кодов вроде TK-8345K / 8600,1K) + чистка двойных пробелов в name.
 # - Удаление param: штрихкоды, Категория/Подкатегория, Каталожный номер, OEM-номер.
@@ -233,8 +236,44 @@ def parse_int_from_text(s: str) -> Optional[int]:
     return int(val)
 
 
+# --- ASCII / смешение алфавитов ---
+
+_NBSP = "\u00A0"
+
+# 1) Для кода товара (id/vendorCode): делаем ASCII, чтобы не было кириллицы в идентификаторах.
+#    Здесь важна стабильность, а не "красивость".
+_CYR_TO_LAT_STR = {
+    "А":"A","Б":"B","В":"B","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"Y","К":"K","Л":"L","М":"M","Н":"H","О":"O","П":"P","Р":"P","С":"C","Т":"T","У":"U","Ф":"F","Х":"X","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
+    "а":"a","б":"b","в":"b","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"h","о":"o","п":"p","р":"p","с":"c","т":"t","у":"u","ф":"f","х":"x","ц":"c","ч":"ch","ш":"sh","щ":"sch","ъ":"","ы":"y","ь":"","э":"e","ю":"yu","я":"ya",
+}
+
+# 2) Для текста name: меняем только "похожие" буквы в СМЕШАННЫХ токенах (где есть и латиница, и кириллица).
+#    Это лечит DCP-165С / KX-FAT88А / TN-321С / 2packХ1 и т.п., но не трогает нормальный русский текст.
+_VISUAL_CYR_TO_LAT = str.maketrans({
+    "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"U","Ц":"C",
+    "а":"a","в":"b","е":"e","к":"k","м":"m","н":"h","о":"o","р":"p","с":"c","т":"t","х":"x","у":"u","ц":"c",
+})
+
+
+def _ru_to_lat_ascii(s: str) -> str:
+    if not s:
+        return ""
+    s = s.replace(_NBSP, " ")
+    out = []
+    for ch in s:
+        out.append(_CYR_TO_LAT_STR.get(ch, ch))
+    return "".join(out)
+
+
 def clean_article(article: str) -> str:
-    return re.sub(r"[^\w\-]+", "", (article or "").strip())
+    s = (article or "").strip()
+    s = _ru_to_lat_ascii(s)
+    # Оставляем только безопасный ASCII для id/vendorCode
+    return re.sub(r"[^A-Za-z0-9_-]+", "", s)
+
+
+def safe_text_spaces(s: str) -> str:
+    return (s or "").replace(_NBSP, " ")
 
 
 def set_query_param(url: str, key: str, value: str) -> str:
@@ -271,68 +310,94 @@ def norm_spaces(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "")).strip()
 
 
-# -------------------- Фиксы смешения RU/EN букв --------------------
+# --- Нормализация name (только по факту совпадений) ---
 
-# Важно: трогаем только те "токены", где уже есть латиница или цифры.
-# Русские слова (полностью кириллица) не меняем.
+_LAT_RE = re.compile(r"[A-Za-z]")
+_CYR_RE = re.compile(r"[А-Яа-яЁё]")
 
-_CONFUSABLE_MAP = str.maketrans({
-    # Кириллица -> латиница (визуальные двойники)
-    "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P",
-    "С": "C", "Т": "T", "Х": "X",
-    "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p",
-    "с": "c", "т": "t", "х": "x",
-    # Частые "хвосты" в артикулах (уценка)
-    "Ц": "C", "ц": "c",
-})
-
-_TOKEN_RE = re.compile(r"[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё\-\./]*")
 
 def _fix_mixed_token(token: str) -> str:
-    t = token or ""
+    # Чиним только "смешанные" сегменты, чтобы не ломать русский текст.
+    if _LAT_RE.search(token) and _CYR_RE.search(token):
+        return token.translate(_VISUAL_CYR_TO_LAT)
+    return token
 
-    # Простой и безопасный кейс: ресурс типа 15,5К -> 15,5K
-    t = re.sub(r"(?<=\d)[Кк]\b", "K", t)
 
-    # Если есть и латиница/цифры, и кириллица — приводим к латинице.
-    if re.search(r"[A-Za-z0-9]", t) and re.search(r"[А-Яа-яЁё]", t):
-        # уц / УЦ -> uc / UC (чтобы не было кириллицы в id)
-        t = re.sub(r"[Уу][Цц]", lambda m: "UC" if m.group(0).isupper() else "uc", t)
-        t = t.translate(_CONFUSABLE_MAP)
-        if re.search(r"[А-Яа-яЁё]", t):
-            t = translit_ru(t)
-    return t
-
-def fix_mixed_text(text: str) -> str:
-    s = (text or "").replace("\xa0", " ").strip()
+def fix_mixed_alphabet(s: str) -> str:
     if not s:
+        return ""
+    return re.sub(
+        r"[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё\-_]*",
+        lambda mm: _fix_mixed_token(mm.group(0)),
+        s,
+    )
+
+
+def _dedupe_slash_segments(s: str) -> str:
+    # Убираем только точные повторы сегментов в списке через "/"
+    if "/" not in s:
         return s
+    parts = s.split("/")
+    seen = set()
+    out = []
+    for p in parts:
+        key = re.sub(r"\s+", " ", p).strip(" ,;.")
+        low = key.lower()
+        if len(low) >= 6:
+            if low in seen:
+                continue
+            seen.add(low)
+        out.append(p.strip())
+    return "/".join(out)
 
-    # Точечные орфо/смысловые фиксы
-    s = s.replace("(О)", "(O)")  # (О) -> (O)
-    s = re.sub(r"\(c\s+", "(с ", s)  # (c ... ) -> (с ... )
-    s = re.sub(r"\s*/\s*HP\s*,", ",", s, flags=re.IGNORECASE)  # /HP,
-    s = re.sub(r"уцен\.\s*срок", "уцен. срок", s, flags=re.IGNORECASE)
-    s = re.sub(r"уц\.\s*срок", "уцен. срок", s, flags=re.IGNORECASE)
 
-    # По токенам: если внутри есть латиница/цифры + кириллица — поправим на латиницу
-    def repl(m: re.Match) -> str:
-        return _fix_mixed_token(m.group(0))
+def normalize_name(name: str) -> str:
+    s = safe_text_spaces(name).strip()
+    if not s:
+        return ""
 
-    s = _TOKEN_RE.sub(repl, s)
-
-    # финальная чистка пробелов/пунктуации
+    # базовая чистка
     s = re.sub(r"\s{2,}", " ", s).strip()
     s = re.sub(r"\s+([,.;:])", r"\1", s)
-    return s
 
-def normalize_code_ascii(code: str) -> str:
-    c = (code or "").replace("\xa0", "").strip()
-    if not c:
-        return ""
-    c = _fix_mixed_token(c)
-    c = re.sub(r"[^A-Za-z0-9_\-]+", "", c)
-    return c
+    # (О) -> (O)
+    s = s.replace("(О)", "(O)").replace("(о)", "(O)")
+
+    # пробелы вокруг (O)
+    s = re.sub(r"(?<=\w)\(O\)", r" (O)", s)
+    s = re.sub(r"\(O\)(?=\w)", r"(O) ", s)
+    s = re.sub(r",\s*\(O\)\s*$", r" (O)", s)
+
+    # (c двухслойным ...) -> (с ...)
+    s = re.sub(r"\(c(?=\s*[А-Яа-яЁё])", "(с", s)
+
+    # запятая-разделитель: '...,8,3K' -> '..., 8,3K' (но не трогаем десятичные: 0,7K)
+    s = re.sub(r"(?<!\d),(?=\d)", ", ", s)
+
+    # 10m -> 10 м (для лент)
+    s = re.sub(r"\b(\d+(?:[.,]\d+)?)m\b", r"\1 м", s)
+
+    # /HP, -> HP,
+    s = s.replace("/HP,", " HP,")
+
+    # 26К / 0,7К -> 26K / 0,7K (ресурс в названии)
+    s = re.sub(r"(\d)\s*[Кк]\b", r"\1K", s)
+
+    # 120стр -> 120 стр.
+    s = re.sub(r"(\d)\s*стр\b", r"\1 стр.", s, flags=re.IGNORECASE)
+
+    # 12Color -> 12 Color / Pro400ColorM451 -> Pro400 Color M451
+    s = re.sub(r"(\d)(Color)\b", r"\1 \2", s, flags=re.IGNORECASE)
+    s = re.sub(r"(Color)(?=[A-Z0-9])", r"\1 ", s)
+
+    # повтор сегментов в списке через "/"
+    s = _dedupe_slash_segments(s)
+
+    # смешение алфавитов в модельных токенах
+    s = fix_mixed_alphabet(s)
+
+    s = re.sub(r"\s{2,}", " ", s).strip()
+    return s
 
 
 # -------------------- Правило цены (НЕ меняем) --------------------
@@ -720,28 +785,28 @@ def extract_from_name(name: str) -> Dict[str, str]:
     n = name or ""
     out: Dict[str, str] = {}
 
-    # объем
-    m_ml = re.search(r"(\d+(?:[.,]\d+)?)\s*мл\b", n, flags=re.IGNORECASE)
-    if m_ml:
-        x = m_ml.group(1).replace(",", ".")
+    # объем: берём последнее значение перед 'мл' (например '.../305,300 мл' -> 300 мл)
+    ml_all = re.findall(r"(\d+(?:[.,]\d+)?)\s*мл\b", n, flags=re.IGNORECASE)
+    if ml_all:
+        x = ml_all[-1].replace(",", ".")
         out["Объем"] = f"{x.rstrip('0').rstrip('.') if '.' in x else x} мл"
 
     # цвет (по англ словам)
     lows = n.lower()
-    found = []
+    found: List[str] = []
     for k in _COLOR_MAP.keys():
         if re.search(rf"\b{k}\b", lows):
             found.append(k)
     if found:
-        uniq = []
+        uniq: List[str] = []
         for k in found:
             if k not in uniq:
                 uniq.append(k)
         out["Цвет"] = ", ".join([f"{_COLOR_MAP[k]} ({k.title()})" for k in uniq])
 
     # ресурс
-    # 1) "100 стр" / "100стр"
-    m_pages = re.search(r"(?:(?<=,)|(?<=\s))\s*(\d[\d\s]{0,10})\s*стр\.?", n, flags=re.IGNORECASE)
+    # 1) '100 стр' / '100стр'
+    m_pages = re.search(r"(?:(?<=,)|(?<=\s))\s*(\d[\d\s]{0,10})\s*стр\.?\b", n, flags=re.IGNORECASE)
     if m_pages:
         digits = re.sub(r"\s+", "", m_pages.group(1))
         try:
@@ -750,12 +815,24 @@ def extract_from_name(name: str) -> Dict[str, str]:
         except Exception:
             pass
 
-    # 2) "20K / 3,5K" только когда число стоит отдельно (и реально похоже на ресурс)
-    m_k_all = re.findall(r"(?:(?<=,)|(?<=\s))\s*(\d{1,3}(?:[.,]\d+)?)\s*[kк]\b", n, flags=re.IGNORECASE)
-    if m_k_all:
-        out["Ресурс"] = normalize_resource_value(m_k_all[-1] + "K")
+    # 2) '20K / 3,5K' как ресурс (берём МАКСИМАЛЬНОЕ значение; игнорируем 'внутри тонер на 5K')
+    cand_pages: List[int] = []
+    for m in re.finditer(r"(?:(?<=,)|(?<=\s))\s*(\d{1,3}(?:[.,]\d+)?)\s*[kк]\b", n, flags=re.IGNORECASE):
+        before = (n[max(0, m.start() - 30):m.start()] or "").lower()
+        if re.search(r"(внутри|тонер)\s+на\s*$", before) or re.search(r"\bна\s*$", before):
+            continue
+        num = m.group(1).replace(",", ".")
+        try:
+            pages = int(round(float(num) * 1000))
+            cand_pages.append(pages)
+        except Exception:
+            continue
+
+    if cand_pages:
+        out["Ресурс"] = f"{max(cand_pages)} стр."
 
     return out
+
 
 def parse_product_text(soup: BeautifulSoup) -> str:
     selectors = [
@@ -822,11 +899,13 @@ def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, 
         cleaned["Цвет"] = extra["Цвет"]
 
     has_ml = any(("мл" in (v or "").lower()) or ("объем" in k.lower()) for k, v in cleaned.items())
-    if (not has_ml) and extra.get("Объем"):
+    if extra.get("Объем"):
+        # приоритет у name
         cleaned["Объем"] = extra["Объем"]
 
     has_resource = any("ресурс" in k.lower() for k in cleaned.keys())
-    if (not has_resource) and extra.get("Ресурс"):
+    if extra.get("Ресурс"):
+        # приоритет у name
         cleaned["Ресурс"] = extra["Ресурс"]
 
     # 3) тип по категории
@@ -1008,7 +1087,9 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     soup = soup_of(b)
 
     name = get_title(soup)
-    name = fix_mixed_text(name)
+    name = re.sub(r"\s{2,}", " ", name).strip()
+    name = re.sub(r"\s+([,.;:])", r"\1", name)  # v9: убираем пробелы перед пунктуацией
+    name = normalize_name(name)
     if not name:
         return None
 
@@ -1024,7 +1105,6 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     picture = first_image_url(soup) or ""
 
     article_clean = clean_article(article)
-    article_clean = normalize_code_ascii(article_clean)
     if not article_clean:
         return None
 
