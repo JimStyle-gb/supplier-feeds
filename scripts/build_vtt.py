@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# build_vtt.py — v14 (output style = AkCent)
+# build_vtt.py — v15 (output style = AkCent)
 # Правки:
 # - v10: "умное описание" — если meta-description пустое/короткое/равно name, собираем <p> из типа/бренда/ключевых характеристик.
 # - v12: фиксируем найденные косяки в новых товарах автоматически: кириллица в id/vendorCode (ASCII-only);
@@ -7,6 +7,7 @@
 #         '(c двухслойным'->'(с двухслойным'; ',8,3K' -> ', 8,3K'; '10m'->'10 м'; '/HP,'->' HP,';
 #         лечим смешение кириллицы/латиницы в модельных токенах. Ресурс/Объем: если в name есть — ставим в params по name (приоритет).
 # - v14: (О)/(O) -> Оригинал (и в name, и в meta-description); аккуратные пробелы вокруг слова.
+# - v15: hotfix — убран лишний обрывок строки, который ломал синтаксис (SyntaxError).
 
 # - v9: чистка пунктуации в name (убираем пробелы перед запятыми/точками/двоеточием).
 # - v8: фикс Ресурс из name (не берём из кодов вроде TK-8345K / 8600,1K) + чистка двойных пробелов в name.
@@ -1145,8 +1146,6 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
         short_desc = make_smart_desc(name=name, vendor=vendor, type_hint=type_hint, params=params)
 
     short_desc = replace_original_marker(short_desc)
-(name=name, vendor=vendor, type_hint=type_hint, params=params)
-
     descr_cdata = build_description_cdata(
         name=name,
         short_desc=short_desc,
