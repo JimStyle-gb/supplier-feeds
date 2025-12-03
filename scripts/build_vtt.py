@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-# build_vtt.py — v12 (output style = AkCent)
+# build_vtt.py — v13 (output style = AkCent)
 # Правки:
 # - v10: "умное описание" — если meta-description пустое/короткое/равно name, собираем <p> из типа/бренда/ключевых характеристик.
 # - v12: фиксируем найденные косяки в новых товарах автоматически: кириллица в id/vendorCode (ASCII-only);
+# - v13: добиваем остатки: e-cepия/cepия -> seriya; ahaлoг -> analog; усиливаем Color-склейки; и смешанные токены переводим в ASCII полностью.
 #         (О)->(O); пробелы вокруг (O); '(c двухслойным'->'(с двухслойным'; ',8,3K' -> ', 8,3K';
 #         '10m'->'10 м'; '/HP,'->' HP,'; лечим смешение кириллицы/латиницы в модельных токенах.
 #         Ресурс/Объем: если в name есть — ставим в params по name (приоритет).
@@ -317,9 +318,10 @@ _CYR_RE = re.compile(r"[А-Яа-яЁё]")
 
 
 def _fix_mixed_token(token: str) -> str:
-    # Чиним только "смешанные" сегменты, чтобы не ломать русский текст.
+    # Чиним только смешанные сегменты (латиница + кириллица внутри одного токена).
+    # По правилу: русские буквы в таких токенах делаем английскими.
     if _LAT_RE.search(token) and _CYR_RE.search(token):
-        return token.translate(_VISUAL_CYR_TO_LAT)
+        return _ru_to_lat_ascii(token)
     return token
 
 
@@ -395,6 +397,15 @@ def normalize_name(name: str) -> str:
 
     # смешение алфавитов в модельных токенах
     s = fix_mixed_alphabet(s)
+
+    # спец-фиксы частых 'полусклеек' из-за смешения букв
+    s = re.sub(r"(?i)cepiya", "seriya", s)   # e-cepия / C368-cepия
+    s = re.sub(r"(?i)\bahalog(?=[A-Z0-9])", "analog", s)  # ahaлoгDL-5120
+    s = re.sub(r"(?i)\bahalog\b", "analog", s)
+
+    # добиваем склейки Color после ASCII-нормализации
+    s = re.sub(r"(?i)(\d+)color\b", r"\1 Color", s)
+    s = re.sub(r"(?i)(color)(?=[A-Z0-9])", r"\1 ", s)
 
     s = re.sub(r"\s{2,}", " ", s).strip()
     return s
