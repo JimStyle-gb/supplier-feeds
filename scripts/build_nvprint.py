@@ -446,19 +446,20 @@ def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
     if not name_starts_with_prefixes(name_short):
         return None
 
-    base = _extract_base_price(node)
-    base_int = 100 if (base is None or base <= 0) else int(math.ceil(base))
-    price = compute_price(base_int)
+    # Описание/совместимость (для vendor-fallback + карточки)
+    nom_full = _norm_spaces(_find_desc_text(node, ["Номенклатура"]) or "")
+    printers = collect_printers(node)
 
-        vendor = _norm_spaces(_find_desc_text(node, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or "")
+    # Vendor: сначала из полей, если пусто — пытаемся определить по тексту
+    vendor = _norm_spaces(_find_desc_text(node, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or "")
     if not vendor:
         vendor = detect_vendor_from_text(article, name_short, nom_full, printers)
 
     picture = _norm_spaces(_find_desc_text(node, ["СсылкаНаКартинку", "Картинка", "Изображение", "Фото", "Picture", "Image", "ФотоURL", "PictureURL"]) or "")
 
-    nom_full = _norm_spaces(_find_desc_text(node, ["Номенклатура"]) or "")
-
-    printers = collect_printers(node)
+    base = _extract_base_price(node)
+    base_int = 100 if (base is None or base <= 0) else int(math.ceil(base))
+    price = compute_price(base_int)
 
     oid = make_id(article)
     params = build_params(node, name_short, printers)
