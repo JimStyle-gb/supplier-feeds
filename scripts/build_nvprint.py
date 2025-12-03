@@ -2,13 +2,10 @@
 # -*- coding: utf-8 -*-
 """NVPrint -> YML (KZT) под общий шаблон (как AkCent/VTT).
 
-Что делает:
-- Скачивает XML NVPrint (Basic-Auth из secrets).
-- Фильтрует товары по префиксам названия (вшито в код).
-- Берёт базовую цену из договора TA-000079 (KZ приоритет), иначе TA-000079Msk, иначе 100.
-- Применяет правила наценки (НЕ ТРОГАТЬ) и округление вверх до ...900.
-- Генерирует YML в едином формате: windows-1251 + DOCTYPE + FEED_META + offers без иерархии категорий.
-- Внутри <offer>: available атрибут, <categoryId></categoryId>, description в CDATA с WhatsApp/Оплата/Доставка.
+- Фильтр товаров по префиксам (вшито в код, без nvprint_keywords.txt).
+- Цена: берём из договора TA-000079 (приоритет KZ), иначе TA-000079MSK, иначе 100.
+- Правила наценки НЕ ТРОГАТЬ.
+- Выход: windows-1251 + DOCTYPE + FEED_META, единый порядок тегов в offer.
 """
 
 from __future__ import annotations
@@ -100,7 +97,6 @@ def _next_build_1_10_20_at_04() -> datetime:
                 return t
         except ValueError:
             pass
-    # Следующий месяц, 1-е число 04:00
     if now.month == 12:
         return now.replace(year=now.year + 1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
     first_next = (now.replace(day=1, hour=4, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
@@ -178,7 +174,6 @@ def _download_bytes() -> bytes:
 def _norm_contract(s: str) -> str:
     if not s:
         return ""
-    # TA/ТА (кириллица) приводим к латинице
     tr = str.maketrans({
         "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
         "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
@@ -220,13 +215,11 @@ def _extract_base_price(item: ET.Element) -> Optional[float]:
 
 
 def _round_up_tail_900(n: int) -> int:
-    # вверх до тысячи, но конец всегда ...900
     thousands = (n + 999) // 1000
     return thousands * 1000 - 100
 
 
 def compute_price(base_price: Optional[int]) -> int:
-    # правила не трогать
     if base_price is None or base_price < 100:
         return 100
     for lo, hi, pct, add in PRICING_RULES:
@@ -341,9 +334,8 @@ def build_description_html(title: str, short_desc: str, params: List[Tuple[str, 
     )
 
 
-
 def _latinize_like(s: str) -> str:
-    """Заменяет похожие кириллические символы на латиницу для устойчивого распознавания бренда/артикула."""
+    """Заменяет похожие кириллические символы на латиницу (для устойчивого распознавания брендов)."""
     tr = str.maketrans({
         "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
         "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
@@ -352,62 +344,63 @@ def _latinize_like(s: str) -> str:
     return (s or "").translate(tr)
 
 
-BRAND_PATTERNS: List[Tuple[str, str]] = [
-    ("HP", r"\bHP\b|\bHEWLETT\s*PACKARD\b"),
-    ("Canon", r"\bCANON\b|\bCANNON\b"),
-    ("Epson", r"\bEPSON\b"),
-    ("Brother", r"\bBROTHER\b"),
-    ("Xerox", r"\bXEROX\b"),
-    ("Samsung", r"\bSAMSUNG\b"),
-    ("Kyocera", r"\bKYOCERA\b|\bKYOCERA\s*MITA\b"),
-    ("Ricoh", r"\bRICOH\b|\bAFICIO\b"),
-    ("Konica Minolta", r"\bKONICA\s*MINOLTA\b|\bMINOLTA\b"),
-    ("Oki", r"\bOKI\b"),
-    ("Lexmark", r"\bLEXMARK\b"),
-    ("Pantum", r"\bPANTUM\b"),
-    ("Sharp", r"\bSHARP\b"),
-    ("Toshiba", r"\bTOSHIBA\b"),
-    ("Dell", r"\bDELL\b"),
-]
-
-
 def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, printers: List[str]) -> str:
-    """Пытается определить vendor по названию/описанию/совместимости. Если не уверены — возвращаем пусто."""
+    """Определяем vendor из названия/описания/совместимости. Консервативно."""
     blob = " ".join(x for x in [article_raw, name_short, nom_full, " ".join(printers or [])] if x).strip()
     if not blob:
         return ""
 
-    up = _latinize_like(blob).upper()
+    raw_up = blob.upper()
+    lat_up = _latinize_like(blob).upper()
+
+    # 0) Катюша / Katyusha (важно)
+    if "КАТЮША" in raw_up or re.search(r"\bKATYUSHA\b", lat_up):
+        return "Катюша"
+
+    # 0.1) NV Print / NVP (если нужно, чтобы vendor был заполнен)
+    if re.search(r"\bNV\s*PRINT\b|\bNVPRINT\b|\bNVP\b", lat_up):
+        return "NV Print"
 
     # 1) Явные бренды словами
-    for vendor, pat in BRAND_PATTERNS:
-        if re.search(pat, up, flags=re.IGNORECASE):
+    brand_words: List[Tuple[str, str]] = [
+        ("HP", r"\bHP\b|\bHEWLETT\s*PACKARD\b"),
+        ("Canon", r"\bCANON\b"),
+        ("Epson", r"\bEPSON\b"),
+        ("Brother", r"\bBROTHER\b"),
+        ("Xerox", r"\bXEROX\b"),
+        ("Samsung", r"\bSAMSUNG\b"),
+        ("Kyocera", r"\bKYOCERA\b|\bKYOCERA\s*MITA\b"),
+        ("Ricoh", r"\bRICOH\b|\bAFICIO\b"),
+        ("Konica Minolta", r"\bKONICA\s*MINOLTA\b|\bMINOLTA\b"),
+        ("Oki", r"\bOKI\b"),
+        ("Lexmark", r"\bLEXMARK\b"),
+        ("Pantum", r"\bPANTUM\b"),
+        ("Sharp", r"\bSHARP\b"),
+        ("Toshiba", r"\bTOSHIBA\b"),
+        ("Dell", r"\bDELL\b"),
+    ]
+    for vendor, pat in brand_words:
+        if re.search(pat, lat_up):
             return vendor
 
-    # 2) Артикульные/модельные сигнатуры (консервативно)
-    # Canon
-    if re.search(r"\b(C-EXV|NPG|GPR|CRG)\b", up):
+    # 2) Сигнатуры артикулов/серий (консервативно)
+    if re.search(r"\b(C-EXV|NPG|GPR|CRG)\b", lat_up):
         return "Canon"
-    # Epson
-    if re.search(r"\bC13T\d+\b", up):
+    if re.search(r"\bC13T\d+\b", lat_up):
         return "Epson"
-    # Samsung
-    if re.search(r"\b(MLT-|CLT-)\w+", up):
+    if re.search(r"\b(MLT-|CLT-)\w+", lat_up):
         return "Samsung"
-    # Xerox
-    if re.search(r"\b(106R|013R|006R)\w*", up):
+    if re.search(r"\b(106R|013R|006R)\w*", lat_up):
         return "Xerox"
-    # Kyocera
-    if re.search(r"\b(TK-|DV-|DK-)\w+", up):
+    if re.search(r"\b(TK-|DV-|DK-)\w+", lat_up):
         return "Kyocera"
-    # Brother (после Canon/Epson/Samsung/Xerox/Kyocera)
-    if re.search(r"\b(TN-|DR-|LC-|BU-|DK-)\w+", up):
+    if re.search(r"\b(TN-|DR-|LC-|BU-)\w+", lat_up):
         return "Brother"
-    # HP
-    if re.search(r"\b(Q|CB|CC|CE|CF)\d{2,5}\w*\b", up):
+    if re.search(r"\b(Q|CB|CC|CE|CF)\d{2,5}\w*\b", lat_up):
         return "HP"
 
     return ""
+
 
 def build_keywords(vendor: str, title: str, vendor_code: str, params: List[Tuple[str, str]]) -> str:
     parts: List[str] = []
@@ -446,22 +439,21 @@ def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
     if not name_starts_with_prefixes(name_short):
         return None
 
-    # Описание/совместимость (для vendor-fallback + карточки)
-    nom_full = _norm_spaces(_find_desc_text(node, ["Номенклатура"]) or "")
-    printers = collect_printers(node)
-
-    # Vendor: сначала из полей, если пусто — пытаемся определить по тексту
-    vendor = _norm_spaces(_find_desc_text(node, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or "")
-    if not vendor:
-        vendor = detect_vendor_from_text(article, name_short, nom_full, printers)
-
-    picture = _norm_spaces(_find_desc_text(node, ["СсылкаНаКартинку", "Картинка", "Изображение", "Фото", "Picture", "Image", "ФотоURL", "PictureURL"]) or "")
-
     base = _extract_base_price(node)
     base_int = 100 if (base is None or base <= 0) else int(math.ceil(base))
     price = compute_price(base_int)
 
+    picture = _norm_spaces(_find_desc_text(node, ["СсылкаНаКартинку", "Картинка", "Изображение", "Фото", "Picture", "Image", "ФотоURL", "PictureURL"]) or "")
+    nom_full = _norm_spaces(_find_desc_text(node, ["Номенклатура"]) or "")
+
+    printers = collect_printers(node)
+
+    vendor = _norm_spaces(_find_desc_text(node, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or "")
+    if not vendor:
+        vendor = detect_vendor_from_text(article, name_short, nom_full, printers)
+
     oid = make_id(article)
+
     params = build_params(node, name_short, printers)
     desc = build_description_html(name_short, nom_full, params)
     keywords = build_keywords(vendor, name_short, oid, params)
@@ -481,7 +473,6 @@ def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
 
 
 def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
-    # Универсальный поиск "контейнеров" товара: где есть Артикул и НоменклатураКратко
     items: List[ET.Element] = []
     seen: set[int] = set()
 
