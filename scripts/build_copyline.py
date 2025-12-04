@@ -1,6 +1,3 @@
-# scripts/build_copyline.py
-# -*- coding: utf-8 -*-
-
 from __future__ import annotations
 import os, re, io, time, html, hashlib, random
 from typing import Any, Dict, List, Optional, Tuple, Set, NamedTuple
@@ -36,7 +33,7 @@ MAX_WORKERS         = int(os.getenv("MAX_WORKERS", "6"))
 
 SUPPLIER_NAME       = "Copyline"
 CURRENCY            = "KZT"
-VENDORCODE_PREFIX   = os.getenv("VENDORCODE_PREFIX", "CL")  # префикс для <vendorCode>
+VENDORCODE_PREFIX   = os.getenv("VENDORCODE_PREFIX", "CL")
 
 UA = {"User-Agent": "Mozilla/5.0 (compatible; Copyline-XLSX-Site/3.0)"}
 
@@ -78,11 +75,11 @@ STOPWORDS_BRAND = {
     "cartridge","toner","drum","developer","fuser","kit","unit","laser","inkjet",
 }
 
-# Делает: jitter sleep
+
 def jitter_sleep(ms: int) -> None:
     time.sleep(max(0.0, ms/1000.0) * (1 + random.uniform(-0.15, 0.15)))
 
-# Делает: скачивает исходные данные
+
 def http_get(url: str, tries: int = 3) -> Optional[bytes]:
     delay = max(0.05, REQUEST_DELAY_MS / 1000.0)
     last = None
@@ -97,22 +94,22 @@ def http_get(url: str, tries: int = 3) -> Optional[bytes]:
         time.sleep(delay); delay *= 1.6
     return None
 
-# Делает: soup of
+
 def soup_of(b: bytes) -> BeautifulSoup: return BeautifulSoup(b, "html.parser")
 
-# Делает: экранирует текст для XML
+
 def yml_escape(s: str) -> str: return html.escape(s or "")
 
-# Делает: norm ascii
+
 def norm_ascii(s: str) -> str: return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
 
-# Делает: title clean
+
 def title_clean(s: str) -> str:
     if not s: return ""
     s = re.sub(r"\s*\((?:Артикул|SKU|Код)\s*[:#]?\s*[^)]+\)\s*$", "", s, flags=re.I)
     return re.sub(r"\s{2,}", " ", s).strip()[:200]
 
-# Делает: to number
+
 def to_number(x: Any) -> Optional[float]:
     if x is None: return None
     s = str(x).replace("\xa0"," ").strip().replace(" ", "").replace(",", ".")
@@ -133,7 +130,7 @@ KEYWORD_TERMS = [
     "тонер-картридж",
 ]
 
-# Делает: собирает ключевые слова
+
 def load_keywords(path: str) -> List[str]:
     out: List[str] = []
     for kw in KEYWORD_TERMS:
@@ -143,21 +140,21 @@ def load_keywords(path: str) -> List[str]:
         out.append(kw)
     return out
 
-# Делает: compile startswith patterns
+
 def compile_startswith_patterns(kws: List[str]) -> List[re.Pattern]:
     return [re.compile(r"^\s*"+re.escape(kw).replace(r"\ "," ")+r"(?!\w)", re.I) for kw in kws]
 
-# Делает: title startswith strict
+
 def title_startswith_strict(title: str, patterns: List[re.Pattern]) -> bool:
     return bool(title) and any(p.search(title) for p in patterns)
 
-# Делает: fetch xlsx bytes
+
 def fetch_xlsx_bytes(url: str) -> bytes:
     b = http_get(url, tries=3)
     if not b: raise RuntimeError("Не удалось скачать XLSX.")
     return b
 
-# Делает: detect header two row
+
 def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60):
     def low(x): return str(x or "").strip().lower()
     for i in range(min(scan_rows, len(rows)-1)):
@@ -173,7 +170,7 @@ def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60):
 
 PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
 
-# Делает: нормализует значения
+
 def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
     if not url: return None
     u = url.strip()
@@ -186,7 +183,7 @@ def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
         fname = "full_"+fname.replace("thumb_","")
     return f"{host}{path}{fname}"
 
-# Делает: извлекает нужные поля
+
 def extract_specs_and_text(block: BeautifulSoup) -> Tuple[str, Dict[str,str]]:
     parts, specs, kv = [], [], {}
     for ch in block.find_all(["p","h3","h4","h5","ul","ol"], recursive=False):
@@ -212,14 +209,14 @@ def extract_specs_and_text(block: BeautifulSoup) -> Tuple[str, Dict[str,str]]:
     parts.extend(specs)
     return "\n".join([p for p in parts if p]).strip(), kv
 
-# Делает: извлекает нужные поля
+
 def extract_brand_from_specs_kv(kv: Dict[str,str]) -> Optional[str]:
     for k, v in kv.items():
         if k.strip().lower() in {"производитель","бренд","торговая марка","brand","manufacturer"} and v.strip():
             return v.strip()
     return None
 
-# Делает: collect brand candidates
+
 def collect_brand_candidates(text: str) -> List[str]:
     if not text: return []
     hay = text.lower()
@@ -232,7 +229,7 @@ def collect_brand_candidates(text: str) -> List[str]:
                 found.append(display)
     return found
 
-# Делает: choose brand oem first
+
 def choose_brand_oem_first(candidates: List[str]) -> Optional[str]:
     if not candidates:
         return None
@@ -244,13 +241,13 @@ def choose_brand_oem_first(candidates: List[str]) -> Optional[str]:
             return am
     return candidates[0]
 
-# Делает: sanitize brand
+
 def sanitize_brand(b: Optional[str]) -> Optional[str]:
     if not b: return None
     out = BRAND_ALIASES.get(norm_ascii(b), re.sub(r"\s{2,}"," ", b).strip())
     return None if norm_ascii(out) in BLOCK_SUPPLIER_BRANDS else out
 
-# Делает: brand soft fallback
+
 def brand_soft_fallback(title: str, desc: str) -> Optional[str]:
     text = f"{title or ''} {desc or ''}"
     words = re.findall(r"[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё\-]{1,20}", text)
@@ -286,7 +283,7 @@ PRICING_RULES: List[PriceRule] = [
     PriceRule(2000001,100000000,4.0,100000),
 ]
 
-# Делает: извлекает нужные поля
+
 def _parse_float(value: str) -> float:
     value = (value or "").strip().replace(" ", "").replace(",", ".")
     if not value:
@@ -296,7 +293,7 @@ def _parse_float(value: str) -> float:
     except ValueError:
         return 0.0
 
-# Делает: считает цену
+
 def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
     purchase = _parse_float(purchase_raw)
     supplier_price = _parse_float(supplier_raw)
@@ -352,20 +349,20 @@ def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
 
     return int(price)
 
-# Делает:  force tail 900
+
 def _force_tail_900(n: float) -> int:
     i = int(n)
     k = max(i // 1000, 0)
     out = k * 1000 + 900
     return out if out >= 900 else 900
 
-# Делает: compute retail
+
 def compute_retail(dealer: float) -> Optional[int]:
     if dealer is None or dealer <= 0:
         return None
     return _calc_price("", str(dealer))
 
-# Делает:  next build time almaty 1 10 20 03
+
 def _next_build_time_almaty_1_10_20_03() -> datetime:
     tz = ZoneInfo("Asia/Almaty") if ZoneInfo else None
     now = datetime.now(tz) if tz else datetime.utcnow()
@@ -383,11 +380,11 @@ def _next_build_time_almaty_1_10_20_03() -> datetime:
         y2, m2 = y, m+1
     return datetime(y2, m2, 1, 3, 0, 0, tzinfo=tz)
 
-# Делает:  fmt dt alm
+
 def _fmt_dt_alm(dt: datetime) -> str:
     return dt.strftime("%Y-%m-%d %H:%M:%S")
 
-# Делает: формирует блок FEED_META
+
 def render_feed_meta_for_copyline(pairs: Dict[str, str]) -> str:
     tz = ZoneInfo("Asia/Almaty") if ZoneInfo else None
     now_alm = datetime.now(tz) if tz else datetime.utcnow()
@@ -415,7 +412,7 @@ ART_PATTS = [
     re.compile(r"\bАртикул\s*[:#]?\s*[A-Za-z0-9\-\._/]+", re.IGNORECASE),
 ]
 
-# Делает: clean article mentions
+
 def clean_article_mentions(text: str) -> str:
     if not text: return text
     out = text
@@ -427,7 +424,7 @@ def clean_article_mentions(text: str) -> str:
     out = re.sub(r"(\n\s*){3,}", "\n\n", out)
     return out.strip()
 
-# Делает: экранирует текст для XML
+
 def _xml_escape_text(s: str) -> str:
     if not s:
         return ""
@@ -439,7 +436,7 @@ def _xml_escape_text(s: str) -> str:
 
 _re_ws_norm = re.compile(r"\s+", re.U)
 
-# Делает: нормализует значения
+
 def _normalize_description_text(text: str) -> str:
     if not text:
         return ""
@@ -459,7 +456,7 @@ GOAL = 1000
 GOAL_LOW = 900
 MAX_HARD = 1200
 
-# Делает: собирает YML текст
+
 def _build_desc_text(plain: str) -> str:
     if len(plain) <= GOAL:
         return plain
@@ -523,7 +520,7 @@ _CITY_KEYWORDS = [
     "Кокшетау",
 ]
 
-# Делает: транслитерация/slug
+
 def _translit_to_slug(text: str) -> str:
     mapping = {
         "а": "a", "б": "b", "в": "v", "г": "g", "д": "d",
@@ -551,7 +548,7 @@ def _translit_to_slug(text: str) -> str:
     slug = "".join(res).strip("-")
     return slug
 
-# Делает: собирает ключевые слова
+
 def _make_keywords(name: str, vendor: str) -> str:
     parts: List[str] = []
     seen: Set[str] = set()
@@ -944,4 +941,3 @@ if __name__ == "__main__":
         sys.exit(main())
     except Exception as e:
         print("[fatal]", e, flush=True); sys.exit(2)
-
