@@ -1151,7 +1151,6 @@ def build_yml(offers: List[Offer], offers_total: int) -> str:
 
     head = [
         "<?xml version=\"1.0\" encoding=\"windows-1251\"?>",
-        "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">",
         f"<yml_catalog date=\"{yml_catalog_date()}\">",
         "<shop><offers>",
         "",
@@ -1186,8 +1185,7 @@ def write_empty_yml(reason: str) -> None:
     xml = "\n".join(
         [
             "<?xml version=\"1.0\" encoding=\"windows-1251\"?>",
-            "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">",
-            f"<yml_catalog date=\"{yml_catalog_date()}\">",
+                f"<yml_catalog date=\"{yml_catalog_date()}\">",
             "<shop><offers>",
             "",
             meta,
