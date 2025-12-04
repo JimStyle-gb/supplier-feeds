@@ -292,7 +292,6 @@ def fix_mixed_alphabet(s: str) -> str:
 
 
 def replace_original_marker(s: str) -> str:
-    """(О)/(O) => 'Оригинал' (в т.ч. склеенные случаи без пробелов)."""
     if not s:
         return ""
     s = re.sub(r"(?<=\S)\(\s*[ОOoо]\s*\)(?=\S)", " Оригинал ", s)
@@ -404,8 +403,6 @@ def compute_price_from_supplier(dealer_price: Optional[int]) -> int:
     return round_to_900(out)
 
 
-# -------------------- Сеть и логин --------------------
-
 def make_session() -> requests.Session:
     s = requests.Session()
     s.headers.update(
@@ -502,10 +499,7 @@ def log_in(s: requests.Session) -> bool:
     return bool(cat)
 
 
-# -------------------- Парсинг --------------------
-
 def normalize_vendor(v: str) -> str:
-    """Бренд (НЕ трогаем)."""
     v = (v or "").strip()
     if not v:
         return ""
@@ -533,7 +527,6 @@ def parse_pairs(soup: BeautifulSoup) -> Dict[str, str]:
 
 
 def parse_supplier_price(soup: BeautifulSoup) -> Optional[int]:
-    """Цена (НЕ меняем)."""
     b = soup.select_one("span.price_main b")
     if not b:
         return None
@@ -864,8 +857,6 @@ def normalize_characteristics(pairs: Dict[str, str], name: str, type_hint: str, 
     return out
 
 
-# -------------------- Описание --------------------
-
 def _ensure_sentence(s: str) -> str:
     t = norm_spaces(s)
     if not t:
@@ -874,7 +865,6 @@ def _ensure_sentence(s: str) -> str:
 
 
 def make_smart_desc(name: str, vendor: str, type_hint: str, params: List[Tuple[str, str]]) -> str:
-    """Описание без 'воды' — только то, что реально есть в характеристиках."""
     pmap = {k: v for k, v in params if k and v}
 
     base = type_hint or ""
@@ -1224,4 +1214,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main() or 0)
