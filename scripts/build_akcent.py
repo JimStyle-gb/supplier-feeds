@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from __future__ import annotations
 
 import html
@@ -95,7 +93,7 @@ _CITY_KEYWORDS = [
     "Кокшетау",
 ]
 
-# Делает: транслитерация/slug
+
 def _translit_to_slug(text: str) -> str:
     mapping = {
         "а": "a",
@@ -149,7 +147,7 @@ def _translit_to_slug(text: str) -> str:
     slug = "".join(res).strip("-")
     return slug
 
-# Делает: собирает ключевые слова
+
 def _make_keywords(name: str, vendor: str) -> str:
     parts: list[str] = []
     seen: set[str] = set()
@@ -661,4 +659,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
