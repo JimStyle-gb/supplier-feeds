@@ -168,6 +168,7 @@ def _make_keywords(name: str, vendor: str) -> str:
     parts: List[str] = []
     seen: Set[str] = set()
 
+
     def add(token: str) -> None:
         token = (token or "").strip()
         if not token:
@@ -296,26 +297,26 @@ ALLOWED_CATEGORY_IDS: Set[str] = {
 
 WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
-# Делает: возвращает текущее время Алматы
+# Делает: now_almaty
 def _now_almaty() -> dt.datetime:
     return dt.datetime.utcnow() + dt.timedelta(hours=TIMEZONE_OFFSET_HOURS)
 
-# Делает:  read text
+# Делает: read_text
 def _read_text(path: Path, encoding: str) -> str:
     return path.read_text(encoding=encoding, errors="replace")
 
-# Делает:  make encoding safe
+# Делает: make_encoding_safe
 def _make_encoding_safe(text: str, encoding: str) -> str:
     return text.encode(encoding, errors="xmlcharrefreplace").decode(encoding)
 
-# Делает:  write text
+# Делает: write_text
 def _write_text(path: Path, data: str, encoding: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     safe = _make_encoding_safe(data, encoding)
     with path.open("w", encoding=encoding, newline="\n") as f:
         f.write(safe)
 
-# Делает: скачивает исходные данные
+# Делает: download_xml
 def _download_xml(url: str) -> str:
     if requests is None:
         raise RuntimeError("Модуль requests недоступен, не могу скачать XML поставщика")
@@ -323,11 +324,11 @@ def _download_xml(url: str) -> str:
     resp.raise_for_status()
     return resp.text
 
-# Делает:  strip doctype
+# Делает: strip_doctype
 def _strip_doctype(xml_text: str) -> str:
     return re.sub(r"<!DOCTYPE[^>]*>", "", xml_text, flags=re.IGNORECASE | re.DOTALL)
 
-# Делает: извлекает нужные поля
+# Делает: parse_float
 def _parse_float(value: str) -> float:
     value = (value or "").strip().replace(" ", "").replace(",", ".")
     if not value:
@@ -337,7 +338,7 @@ def _parse_float(value: str) -> float:
     except ValueError:
         return 0.0
 
-# Делает: считает цену
+# Делает: calc_price
 def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
     purchase = _parse_float(purchase_raw)
     supplier_price = _parse_float(supplier_raw)
@@ -393,7 +394,7 @@ def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
 
     return int(price)
 
-# Делает: извлекает нужные поля
+# Делает: parse_available
 def _parse_available(value: str) -> bool:
     v = (value or "").strip().lower()
     if v in {"1", "true", "yes", "да"}:
@@ -402,7 +403,7 @@ def _parse_available(value: str) -> bool:
         return False
     return False
 
-# Делает: экранирует текст для XML
+# Делает: xml_escape_text
 def _xml_escape_text(s: str) -> str:
     if not s:
         return ""
@@ -412,7 +413,7 @@ def _xml_escape_text(s: str) -> str:
          .replace(">", "&gt;")
     )
 
-# Делает: экранирует текст для XML
+# Делает: xml_escape_attr
 def _xml_escape_attr(s: str) -> str:
     if not s:
         return ""
@@ -425,7 +426,7 @@ def _xml_escape_attr(s: str) -> str:
 
 _re_ws = re.compile(r"\s+", re.U)
 
-# Делает: нормализует значения
+# Делает: normalize_description_text
 def _normalize_description_text(text: str) -> str:
     if not text:
         return ""
@@ -441,7 +442,7 @@ def _normalize_description_text(text: str) -> str:
     joined = _re_ws.sub(" ", joined)
     return joined.strip()
 
-# Делает:  plain from html
+# Делает: plain_from_html
 def _plain_from_html(html_text: str) -> str:
     if not html_text:
         return ""
@@ -456,7 +457,7 @@ GOAL = 1000
 GOAL_LOW = 900
 MAX_HARD = 1200
 
-# Делает: собирает YML текст
+# Делает: build_desc_text
 def _build_desc_text(plain: str) -> str:
     if len(plain) <= GOAL:
         return plain
@@ -493,22 +494,23 @@ def _build_desc_text(plain: str) -> str:
 
     return " ".join(selected).strip()
 
-# Делает:  make br paragraph
+# Делает: make_br_paragraph
 def _make_br_paragraph(text: str) -> str:
     if not text:
         return "<p></p>"
     trimmed = _build_desc_text(text)
     return "<p>" + _xml_escape_text(trimmed) + "</p>"
 
-# Делает: нормализует значения
+# Делает: normalize_param_value
 def _normalize_param_value(value: str) -> str:
     if not value:
         return ""
     value = re.sub(r"\s+", " ", value)
     return value.strip()
 
-# Делает:  sort params
+# Делает: sort_params
 def _sort_params(params: List[Dict[str, str]]) -> List[Dict[str, str]]:
+    # Делает: pkey
     def _pkey(item: Dict[str, str]) -> tuple:
         name = item["name"]
         try:
@@ -519,7 +521,7 @@ def _sort_params(params: List[Dict[str, str]]) -> List[Dict[str, str]]:
 
     return sorted(params, key=_pkey)
 
-# Делает:  collect params from xml
+# Делает: collect_params_from_xml
 def _collect_params_from_xml(src_offer: ET.Element) -> List[Dict[str, str]]:
     items: List[Dict[str, str]] = []
 
@@ -543,7 +545,7 @@ def _collect_params_from_xml(src_offer: ET.Element) -> List[Dict[str, str]]:
 
     return items
 
-# Делает: извлекает нужные поля
+# Делает: extract_params_from_desc
 def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) -> List[Dict[str, str]]:
     plain = _plain_from_html(desc_html)
     if not plain:
@@ -616,7 +618,7 @@ def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) ->
 
     return extra
 
-# Делает: собирает YML текст
+# Делает: build_description_html
 def _build_description_html(name: str, original_desc: str, params_block: List[Dict[str, str]]) -> str:
     parts: List[str] = []
     parts.append("<description><![CDATA[")
@@ -651,7 +653,7 @@ def _build_description_html(name: str, original_desc: str, params_block: List[Di
     parts.append("]]></description>")
     return "\n".join(parts)
 
-# Делает: собирает YML текст
+# Делает: build_feed_meta
 def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build: dt.datetime) -> str:
     lines = [
         "<!--FEED_META",
@@ -667,10 +669,11 @@ def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build:
     ]
     return "\n".join(lines)
 
-# Делает: формирует offer
+# Делает: convert_offer
 def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str]:
     stats["total_before"] += 1
 
+    # Делает: g
     def g(tag: str) -> str:
         return (src_offer.findtext(tag) or "").strip()
 
@@ -746,7 +749,7 @@ def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str
 
     return "\n".join(lines)
 
-# Делает: собирает итоговый YML
+# Делает: build_alstyle
 def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT_OUTPUT) -> None:
     if source_xml is None:
         xml_text = _download_xml(SUPPLIER_URL)
@@ -811,7 +814,7 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
     final_text = "\n".join(lines)
     _write_text(output_path, final_text, ENCODING_OUT)
 
-# Делает: точка входа
+# Делает: Запускает сборку и запись YML
 def main(argv: Optional[List[str]] = None) -> None:
     if argv is None:
         argv = sys.argv[1:]
@@ -826,5 +829,6 @@ def main(argv: Optional[List[str]] = None) -> None:
 
     build_alstyle(source_xml=source_xml, output_path=output_path)
 
+
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main() or 0)
