@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# build_vtt.py — v17 (style_unified / AkCent output)
-# Цель v17: УПРОСТИТЬ код без изменения логики и результата (выходной YML должен остаться тем же).
-# Что сделано:
-# - убран мёртвый/неиспользуемый код и лишние импорты;
-# - сокращены дублирующиеся куски нормализации;
-# - структура оставлена прежней: логин/сбор ссылок/парс/цены/описание/рендер НЕ менялись по смыслу.
-
 from __future__ import annotations
 
 import os
@@ -24,19 +16,17 @@ import requests
 from bs4 import BeautifulSoup
 
 try:
-    from zoneinfo import ZoneInfo  # py3.9+
+    from zoneinfo import ZoneInfo
 except Exception:
-    ZoneInfo = None  # type: ignore
+    ZoneInfo = None
 
 try:
-    import urllib3  # type: ignore
-    from urllib3.exceptions import InsecureRequestWarning  # type: ignore
+    import urllib3
+    from urllib3.exceptions import InsecureRequestWarning
 except Exception:
-    urllib3 = None  # type: ignore
-    InsecureRequestWarning = None  # type: ignore
+    urllib3 = None
+    InsecureRequestWarning = None
 
-
-# -------------------- Настройки (env) --------------------
 
 BASE_URL = os.getenv("VTT_BASE_URL", "https://b2b.vtt.ru").rstrip("/")
 START_URL = os.getenv("VTT_START_URL", f"{BASE_URL}/catalog/")
@@ -61,11 +51,9 @@ USER_AGENT = os.getenv(
 LOGIN = os.getenv("VTT_LOGIN", "")
 PASSWORD = os.getenv("VTT_PASSWORD", "")
 
-# SSL: если на Actions падает CERT_VERIFY_FAILED, ставь VTT_SSL_VERIFY=0 (как в workflow)
-VTT_SSL_VERIFY = os.getenv("VTT_SSL_VERIFY", "1")  # 1/0 true/false
-VTT_CA_BUNDLE = os.getenv("VTT_CA_BUNDLE", "")      # путь до .pem (если есть)
+VTT_SSL_VERIFY = os.getenv("VTT_SSL_VERIFY", "1")
+VTT_CA_BUNDLE = os.getenv("VTT_CA_BUNDLE", "")
 
-# Категории — вшиты в код (как было)
 CATEGORIES: List[str] = [
     "https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT",
     "https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG",
@@ -83,7 +71,6 @@ CATEGORIES: List[str] = [
     "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT",
 ]
 
-# Константы под стиль AkCent
 SUPPLIER_NAME = "VTT"
 SUPPLIER_URL = BASE_URL
 OFFER_PREFIX = "VT"
@@ -121,8 +108,6 @@ WHATSAPP_HTML = (
     "</div></div>"
 )
 
-
-# -------------------- Время (Алматы) --------------------
 
 def _tz_alm():
     if ZoneInfo:
@@ -172,8 +157,6 @@ def next_1_10_20_at_05() -> datetime:
         return datetime(y, m, 1, 5, 0, 0, tzinfo=n.tzinfo)
     return datetime(y, m, 1, 5, 0, 0)
 
-
-# -------------------- Утилиты --------------------
 
 _NBSP = "\u00A0"
 
@@ -273,8 +256,6 @@ def type_from_category(code: str) -> str:
     return ""
 
 
-# -------------------- ASCII / смешение алфавитов --------------------
-
 _CYR_TO_LAT_STR = {
     "А":"A","Б":"B","В":"B","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"Y","К":"K","Л":"L","М":"M","Н":"H","О":"O","П":"P","Р":"P","С":"C","Т":"T","У":"U","Ф":"F","Х":"X","Ц":"C","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
     "а":"a","б":"b","в":"b","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"h","о":"o","п":"p","р":"p","с":"c","т":"t","у":"u","ф":"f","х":"x","ц":"c","ч":"ch","ш":"sh","щ":"sch","ъ":"","ы":"y","ь":"","э":"e","ю":"yu","я":"ya",
@@ -318,7 +299,6 @@ def replace_original_marker(s: str) -> str:
     s = re.sub(r"(?<=\S)\(\s*[ОOoо]\s*\)", " Оригинал", s)
     s = re.sub(r"\(\s*[ОOoо]\s*\)(?=\S)", "Оригинал ", s)
     s = re.sub(r"\(\s*[ОOoо]\s*\)", "Оригинал", s)
-    # Нормализуем "стр" (страниц): "700стр", "700 стр", "700стр.", "700 стр.." => "700 стр."
     s = re.sub(r"\b(\d+)\s*стр\.{0,2}(?=(?:\s|$|[,\);:!?\]\-–—]))", r"\1 стр.", s, flags=re.IGNORECASE)
     s = re.sub(r"[ \t]{2,}", " ", s)
     s = re.sub(r"\s+([,.;:!?)\]])", r"\1", s)
@@ -357,7 +337,6 @@ def normalize_name(name: str) -> str:
     s = re.sub(r"\b(\d+(?:[.,]\d+)?)m\b", r"\1 м", s)
     s = s.replace("/HP,", " HP,")
     s = re.sub(r"(\d)\s*[Кк]\b", r"\1K", s)
-    # Нормализуем "стр" (страниц): "700стр", "700 стр", "700стр.", "700 стр.." => "700 стр."
     s = re.sub(r"\b(\d+)\s*стр\.{0,2}(?=(?:\s|$|[,\);:!?\]\-–—]))", r"\1 стр.", s, flags=re.IGNORECASE)
 
     s = re.sub(r"(\d)(Color)\b", r"\1 \2", s, flags=re.IGNORECASE)
@@ -377,8 +356,6 @@ def normalize_name(name: str) -> str:
     s = re.sub(r"\s+([,.;:])", r"\1", s)
     return s
 
-
-# -------------------- Правило цены (ТЗ пользователя) --------------------
 
 PRICING_RULES: List[Tuple[int, int]] = [
     (10_000, 3_000),
@@ -646,8 +623,6 @@ def make_keywords(vendor: str, name: str) -> str:
     base.append(CITY_TAIL)
     return ", ".join([x.strip() for x in base if x and x.strip()])
 
-
-# -------------------- Нормализация/обогащение характеристик --------------------
 
 DROP_KEYS = {
     "Артикул",
@@ -966,8 +941,6 @@ class Offer:
     keywords: str
 
 
-# -------------------- Сбор ссылок --------------------
-
 _PRODUCT_HREF_RE = re.compile(r"^/catalog/[^?]+/?$")
 
 
@@ -1031,8 +1004,6 @@ def collect_all_products_links(s: requests.Session) -> List[Tuple[str, str]]:
     return all_links
 
 
-# -------------------- Парс товара --------------------
-
 def _is_poor_desc(desc: str, name: str) -> bool:
     d = norm_spaces(desc)
     n = norm_spaces(name)
@@ -1093,8 +1064,6 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> Optional[Offe
     )
 
 
-# -------------------- FEED_META --------------------
-
 def render_feed_meta(offers_total: int, offers_written: int, avail_true: int, avail_false: int) -> str:
     rows = [
         ("Поставщик", SUPPLIER_NAME),
@@ -1113,8 +1082,6 @@ def render_feed_meta(offers_total: int, offers_written: int, avail_true: int, av
     lines.append("-->")
     return "\n".join(lines)
 
-
-# -------------------- Рендер YML (как AkCent) --------------------
 
 def offer_to_xml(o: Offer) -> str:
     lines: List[str] = []
@@ -1177,8 +1144,6 @@ def build_yml(offers: List[Offer], offers_total: int) -> str:
     return "\n".join(head + body + tail)
 
 
-# -------------------- Пустой файл --------------------
-
 def write_empty_yml(reason: str) -> None:
     ensure_dir(OUT_FILE)
     meta = render_feed_meta(offers_total=0, offers_written=0, avail_true=0, avail_false=0)
@@ -1200,8 +1165,6 @@ def write_empty_yml(reason: str) -> None:
         f.write(xml)
     print(f"[WARN] wrote empty feed: {OUT_FILE} | {reason}")
 
-
-# -------------------- Main --------------------
 
 def main() -> int:
     s = make_session()
