@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from __future__ import annotations
 
 import os
@@ -14,9 +11,9 @@ import xml.etree.ElementTree as ET
 import html as html_module
 
 try:
-    import requests  # type: ignore
-except Exception:  # pragma: no cover
-    requests = None  # type: ignore
+    import requests
+except Exception:
+    requests = None
 
 SUPPLIER_NAME = "AlStyle"
 SUPPLIER_URL = os.getenv("ALSTYLE_URL", "https://al-style.kz/upload/catalog_export/al_style_catalog.php")
@@ -27,7 +24,7 @@ ENCODING_OUT = "windows-1251"
 DEFAULT_OUTPUT = Path(os.getenv("OUT_FILE", "docs/alstyle.yml"))
 VENDOR_PREFIX = "AS"
 DEFAULT_CURRENCY = "KZT"
-TIMEZONE_OFFSET_HOURS = 5  # Алматы
+TIMEZONE_OFFSET_HOURS = 5
 
 PARAM_BLACKLIST = {
     "артикул",
@@ -112,7 +109,7 @@ _CITY_KEYWORDS = [
     "Кокшетау",
 ]
 
-# Делает: транслитерация/slug
+
 def _translit_to_slug(text: str) -> str:
     mapping = {
         "а": "a",
@@ -166,7 +163,7 @@ def _translit_to_slug(text: str) -> str:
     slug = "".join(res).strip("-")
     return slug
 
-# Делает: собирает ключевые слова
+
 def _make_keywords(name: str, vendor: str) -> str:
     parts: List[str] = []
     seen: Set[str] = set()
@@ -831,4 +828,3 @@ def main(argv: Optional[List[str]] = None) -> None:
 
 if __name__ == "__main__":
     main()
-
