@@ -1,12 +1,3 @@
-# scripts/build_nvprint.py
-# -*- coding: utf-8 -*-
-"""NVPrint -> YML (KZT) под общий шаблон (как AkCent/VTT).
-
-- Фильтр товаров по префиксам (вшито в код, без nvprint_keywords.txt).
-- Цена: берём из договора TA-000079 (приоритет KZ), иначе TA-000079MSK, иначе 100.
-- Правила наценки НЕ ТРОГАТЬ.
-- Выход: windows-1251 + DOCTYPE + FEED_META, единый порядок тегов в offer.
-"""
 
 from __future__ import annotations
 
@@ -26,7 +17,6 @@ try:
 except Exception:
     requests = None
 
-# ---------------- ОБЩИЕ ТАБЛИЦЫ (НЕ МЕНЯТЬ) ----------------
 _LAT_TR = str.maketrans({
     "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
     "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
@@ -34,7 +24,6 @@ _LAT_TR = str.maketrans({
 })
 
 
-# ---------------- НАСТРОЙКИ ----------------
 SUPPLIER_URL = (os.getenv("NVPRINT_XML_URL") or "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true").strip()
 OUT_FILE     = (os.getenv("OUT_FILE") or "docs/nvprint.yml").strip()
 
@@ -46,7 +35,6 @@ BACKOFF_S       = 2.0
 NV_LOGIN    = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
 NV_PASSWORD = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
 
-# ---------------- ФИЛЬТР ПО ТИПАМ (ВШИТО В КОД) ----------------
 KEYWORD_PREFIXES: List[str] = [
     "Блок фотобарабана",
     "Картридж",
@@ -62,10 +50,8 @@ CITIES: List[str] = [
     "Талдыкорган", "Актау", "Темиртау", "Экибастуз", "Кокшетау",
 ]
 
-# ---------------- ОПИСАНИЕ (ШАБЛОН КАК В AkCent) ----------------
 DESC_PREFIX = '\n\n<!-- WhatsApp -->\n<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>\n\n'
 
-# ---------------- ЦЕНООБРАЗОВАНИЕ (НЕ МЕНЯТЬ) ----------------
 PriceRule = Tuple[int, int, float, int]
 PRICING_RULES: List[PriceRule] = [
     (   101,    10000, 4.0,   3000),
@@ -85,9 +71,9 @@ PRICING_RULES: List[PriceRule] = [
     (2000001,100000000,4.0, 100000),
 ]
 
-# ---------------- ВРЕМЯ (АЛМАТЫ) ----------------
+
 def _almaty_now() -> datetime:
-    return datetime.utcnow() + timedelta(hours=5)  # Asia/Almaty ~ UTC+5
+    return datetime.utcnow() + timedelta(hours=5)
 
 def _next_build_1_10_20_at_04() -> datetime:
     now = _almaty_now()
@@ -103,7 +89,7 @@ def _next_build_1_10_20_at_04() -> datetime:
     first_next = (now.replace(day=1, hour=4, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
     return first_next
 
-# ---------------- УТИЛИТЫ ----------------
+
 def _strip_ns(tag: str) -> str:
     if not tag:
         return tag
@@ -127,7 +113,6 @@ def _fix_picture_url(url: str) -> str:
     if " " in u:
         u = u.replace(" ", "%20")
     return u
-
 
 
 def _unique_keep_order(xs: List[str]) -> List[str]:
@@ -340,19 +325,15 @@ def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, pr
     raw_up = blob.upper()
     lat_up = _latinize_like(blob).upper()
 
-    # 0) Катюша / Katyusha (важно)
     if "КАТЮША" in raw_up or re.search(r"\bKATYUSHA\b", lat_up):
         return "Катюша"
 
-    # 0.5) Panasonic по сигнатурам KX-FAD / KX-FAT (важно)
     if "KX-FAD" in lat_up or "KX-FAT" in lat_up:
         return "Panasonic"
 
-    # 0.6) HP DesignJet (часто бренд не указан)
     if "DESIGNJET" in lat_up:
         return "HP"
 
-    # 1) Явные бренды словами
     brand_words: List[Tuple[str, str]] = [
         ("HP", r"\bHP\b|\bHEWLETT\s*PACKARD\b"),
         ("Canon", r"\bCANON\b"),
@@ -377,7 +358,6 @@ def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, pr
         if re.search(pat, lat_up):
             return vendor
 
-    # 2) Сигнатуры артикулов/серий (консервативно)
     if re.search(r"\b(C-EXV|NPG|GPR|CRG)\b", lat_up):
         return "Canon"
     if re.search(r"\bC13T\d+\b", lat_up):
@@ -529,7 +509,7 @@ def ensure_unique_offer_ids(offers: List[Dict[str, Any]]) -> None:
 
         used.add(new_id)
 
-# ---------------- FEED_META ----------------
+
 def render_feed_meta(source_url: str, total: int, written: int, true_cnt: int, false_cnt: int) -> str:
     now_alm = _almaty_now()
     next_alm = _next_build_1_10_20_at_04()
@@ -552,7 +532,7 @@ def render_feed_meta(source_url: str, total: int, written: int, true_cnt: int, f
     lines.append("-->")
     return "\n".join(lines)
 
-# ---------------- СБОРКА YML ----------------
+
 def build_yml(offers: List[Dict[str, Any]], source_url: str, total_before_filter: int) -> str:
     now_alm = _almaty_now()
 
@@ -561,11 +541,11 @@ def build_yml(offers: List[Dict[str, Any]], source_url: str, total_before_filter
     out.append('')
     out.append(f'<yml_catalog date="{now_alm:%Y-%m-%d %H:%M}">')
     out.append("<shop><offers>")
-    out.append("")  # пустая строка после <shop><offers>
+    out.append("")
 
     written = len(offers)
     out.append(render_feed_meta(source_url, total_before_filter, written, written, 0))
-    out.append("")  # пустая строка после FEED_META
+    out.append("")
 
     for it in offers:
         out.append(f'<offer id="{it["id"]}" available="true">')
@@ -583,7 +563,7 @@ def build_yml(offers: List[Dict[str, Any]], source_url: str, total_before_filter
             out.append(f'<param name="{html.escape(k)}">{html.escape(v)}</param>')
         out.append(f'<keywords>{html.escape(it["keywords"])}</keywords>')
         out.append("</offer>")
-        out.append("")  # пустая строка между offer'ами
+        out.append("")
 
     out.append("</offers>")
     out.append("</shop>")
@@ -620,4 +600,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
