@@ -1,670 +1,600 @@
-#!/usr/bin/env python3
-# build_nvprint.py — генератор YML для NVPrint (windows-1251)
+# scripts/build_nvprint.py
+# -*- coding: utf-8 -*-
+"""NVPrint -> YML (KZT) под общий шаблон (как AkCent/VTT).
+
+- Фильтр товаров по префиксам (вшито в код, без nvprint_keywords.txt).
+- Цена: берём из договора TA-000079 (приоритет KZ), иначе TA-000079MSK, иначе 100.
+- Правила наценки НЕ ТРОГАТЬ.
+- Выход: windows-1251 + DOCTYPE + FEED_META, единый порядок тегов в offer.
+"""
 
 from __future__ import annotations
 
-import html
 import os
+import io
 import re
+import html
+import math
 import sys
-import urllib.request
-import urllib.parse
-import xml.etree.ElementTree as ET
-from dataclasses import dataclass
+import time
 from datetime import datetime, timedelta
-from typing import Dict, Iterable, List, Optional, Tuple
-from zoneinfo import ZoneInfo
+from decimal import Decimal, InvalidOperation
+from typing import Any, Dict, List, Optional, Tuple
+import xml.etree.ElementTree as ET
 
+try:
+    import requests
+except Exception:
+    requests = None
 
-TZ = ZoneInfo("Asia/Almaty")
+# ---------------- НАСТРОЙКИ ----------------
+SUPPLIER_URL = (os.getenv("NVPRINT_XML_URL") or "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true").strip()
+OUT_FILE     = (os.getenv("OUT_FILE") or "docs/nvprint.yml").strip()
 
+OUTPUT_ENCODING = "windows-1251"
+HTTP_TIMEOUT    = float(os.getenv("HTTP_TIMEOUT") or "60")
+RETRIES         = 4
+BACKOFF_S       = 2.0
 
-# ---- Константы оформления (как в результате) ----
+NV_LOGIN    = (os.getenv("NVPRINT_LOGIN") or os.getenv("NVPRINT_XML_USER") or "").strip()
+NV_PASSWORD = (os.getenv("NVPRINT_PASSWORD") or os.getenv("NVPRINT_XML_PASS") or "").strip()
 
-WHATSAPP_BLOCK = (
-    '<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;">'
-    '<p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" '
-    'style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">'
-    '&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p>'
-    '<div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">'
-    '<h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>'
-    '<ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>'
-    '<li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul>'
-    '<hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" />'
-    '<h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>'
-    '<ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>'
-    '<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li>'
-    '<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>'
-    '<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul>'
-    '</div></div>'
-)
+# ---------------- ФИЛЬТР ПО ТИПАМ (ВШИТО В КОД) ----------------
+KEYWORD_PREFIXES: List[str] = [
+    "Блок фотобарабана",
+    "Картридж",
+    "Печатающая головка",
+    "Струйный картридж",
+    "Тонер-картридж",
+    "Тонер-туба",
+]
 
-CITIES = [
-    "Алматы", "Астана", "Шымкент", "Караганда", "Актобе",
-    "Павлодар", "Атырау", "Тараз", "Оскемен", "Семей",
-    "Костанай", "Кызылорда", "Орал", "Петропавловск",
+CITIES: List[str] = [
+    "Алматы", "Астана", "Шымкент", "Караганда", "Актобе", "Павлодар", "Атырау", "Тараз",
+    "Оскемен", "Семей", "Костанай", "Кызылорда", "Орал", "Петропавловск",
     "Талдыкорган", "Актау", "Темиртау", "Экибастуз", "Кокшетау",
 ]
 
-PARAM_PRIORITY = [
-    "Тип", "Ресурс", "Тип печати", "Цвет печати", "Цвет", "Совместимость", "Вес", "Принтеры",
+# ---------------- ОПИСАНИЕ (ШАБЛОН КАК В AkCent) ----------------
+DESC_PREFIX = '\n\n<!-- WhatsApp -->\n<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>\n\n'
+
+# ---------------- ЦЕНООБРАЗОВАНИЕ (НЕ МЕНЯТЬ) ----------------
+PriceRule = Tuple[int, int, float, int]
+PRICING_RULES: List[PriceRule] = [
+    (   101,    10000, 4.0,   3000),
+    ( 10001,    25000, 4.0,   4000),
+    ( 25001,    50000, 4.0,   5000),
+    ( 50001,    75000, 4.0,   7000),
+    ( 75001,   100000, 4.0,  10000),
+    (100001,   150000, 4.0,  12000),
+    (150001,   200000, 4.0,  15000),
+    (200001,   300000, 4.0,  20000),
+    (300001,   400000, 4.0,  25000),
+    (400001,   500000, 4.0,  30000),
+    (500001,   750000, 4.0,  40000),
+    (750001,  1000000, 4.0,  50000),
+    (1000001, 1500000, 4.0,  70000),
+    (1500001, 2000000, 4.0,  90000),
+    (2000001,100000000,4.0, 100000),
 ]
 
-GENERIC_VENDORS = {
-    "", "NVP", "NV PRINT", "NVPRINT", "NV-PRINT", "NVPrint", "NV Print", "N V P",
-}
+# ---------------- ВРЕМЯ (АЛМАТЫ) ----------------
+def _almaty_now() -> datetime:
+    return datetime.utcnow() + timedelta(hours=5)  # Asia/Almaty ~ UTC+5
 
-# Бренды (включая Sindoh). Логика: ищем в name/desc/params; используем как нормальный детектор.
-BRAND_PATTERNS: List[Tuple[re.Pattern, str]] = [
-    (re.compile(r"\bHP\b", re.I), "HP"),
-    (re.compile(r"\bHewlett[\s-]*Packard\b", re.I), "HP"),
-    (re.compile(r"\bCanon\b", re.I), "Canon"),
-    (re.compile(r"\bEpson\b", re.I), "Epson"),
-    (re.compile(r"\bRicoh\b", re.I), "Ricoh"),
-    (re.compile(r"\bXerox\b", re.I), "Xerox"),
-    (re.compile(r"\bKyocera\b", re.I), "Kyocera"),
-    (re.compile(r"\bBrother\b", re.I), "Brother"),
-    (re.compile(r"\bSamsung\b", re.I), "Samsung"),
-    (re.compile(r"\bLexmark\b", re.I), "Lexmark"),
-    (re.compile(r"\bPanasonic\b", re.I), "Panasonic"),
-    (re.compile(r"\bKonica\s*Minolta\b", re.I), "Konica Minolta"),
-    (re.compile(r"\bOKI\b", re.I), "OKI"),
-    (re.compile(r"\bSharp\b", re.I), "Sharp"),
-    (re.compile(r"\bToshiba\b", re.I), "Toshiba"),
-    (re.compile(r"\bDell\b", re.I), "Dell"),
-    (re.compile(r"\bRiso\b", re.I), "Riso"),
-    (re.compile(r"\bFplus\b", re.I), "Fplus"),
-    (re.compile(r"\bSindoh\b", re.I), "Sindoh"),
-    (re.compile(r"\bКатюша\b", re.I), "Катюша"),
-]
+def _next_build_1_10_20_at_04() -> datetime:
+    now = _almaty_now()
+    for d in (1, 10, 20):
+        try:
+            t = now.replace(day=d, hour=4, minute=0, second=0, microsecond=0)
+            if t > now:
+                return t
+        except ValueError:
+            pass
+    if now.month == 12:
+        return now.replace(year=now.year + 1, month=1, day=1, hour=4, minute=0, second=0, microsecond=0)
+    first_next = (now.replace(day=1, hour=4, minute=0, second=0, microsecond=0) + timedelta(days=32)).replace(day=1)
+    return first_next
 
+# ---------------- УТИЛИТЫ ----------------
+def _strip_ns(tag: str) -> str:
+    if not tag:
+        return tag
+    if tag.startswith("{"):
+        return tag.rsplit("}", 1)[-1]
+    return tag
 
-@dataclass
-class Item:
-    vid: str
-    name: str
-    base_price: float
-    picture: str
-    vendor_raw: str
-    desc_raw: str
-    available: bool
-    params: Dict[str, str]
-
-
-# ---- Утилиты ----
-
-def _now_almaty() -> datetime:
-    return datetime.now(TZ)
-
-
-def _fmt_dt(dt: datetime, with_seconds: bool) -> str:
-    return dt.strftime("%Y-%m-%d %H:%M:%S" if with_seconds else "%Y-%m-%d %H:%M")
-
-
-def _next_wed_0400(now: datetime) -> datetime:
-    # Следующая среда 04:00 (Алматы)
-    target_wd = 2  # Mon=0, Tue=1, Wed=2
-    base = now.replace(second=0, microsecond=0)
-    days_ahead = (target_wd - base.weekday()) % 7
-    candidate = (base + timedelta(days=days_ahead)).replace(hour=4, minute=0)
-    if candidate <= base:
-        candidate = candidate + timedelta(days=7)
-    return candidate
-
-
-def _xml_escape(s: str) -> str:
-    return html.escape(s, quote=False)
-
+def _tag_lower(node: ET.Element) -> str:
+    return _strip_ns(node.tag).lower()
 
 def _norm_spaces(s: str) -> str:
-    s = s.replace("\xa0", " ")
-    s = re.sub(r"[ \t\r\f\v]+", " ", s)
-    s = re.sub(r"\n{3,}", "\n\n", s)
-    return s.strip()
+    return re.sub(r"\s+", " ", (s or "").strip())
 
-
-def _safe_cdata(s: str) -> str:
-    # В CDATA нельзя ']]>'
-    return s.replace("]]>", "]]&gt;")
-
-
-def _to_float(s: str) -> Optional[float]:
-    if s is None:
+def _parse_number(txt: Optional[str]) -> Optional[float]:
+    if not txt:
         return None
-    s2 = _norm_spaces(str(s))
-    s2 = s2.replace(",", ".")
-    s2 = re.sub(r"[^0-9.]+", "", s2)
-    if not s2:
+    t = (txt or "").strip().replace("\u00A0", "").replace(" ", "").replace(",", ".")
+    m = re.search(r"-?\d+(?:\.\d+)?", t)
+    if not m:
         return None
     try:
-        return float(s2)
-    except ValueError:
+        return float(Decimal(m.group(0)))
+    except (InvalidOperation, ValueError):
         return None
 
+def _find_desc_text(elem: ET.Element, names: List[str]) -> Optional[str]:
+    wanted = {n.lower() for n in names}
+    for node in elem.iter():
+        if _tag_lower(node) in wanted:
+            t = (node.text or "").strip()
+            if t:
+                return t
+    return None
 
-def _detect_brand(text: str) -> str:
-    t = text or ""
-    for rx, brand in BRAND_PATTERNS:
-        if rx.search(t):
-            return brand
-    return ""
+def _download_bytes() -> bytes:
+    if not SUPPLIER_URL:
+        raise RuntimeError("NVPRINT_XML_URL пуст")
+    if requests is None:
+        raise RuntimeError("Модуль requests недоступен (pip install requests)")
 
+    auth = (NV_LOGIN, NV_PASSWORD) if (NV_LOGIN or NV_PASSWORD) else None
+    last_err: Optional[Exception] = None
 
-def _clean_vendor(v: str) -> str:
-    v = _norm_spaces(v or "")
-    v_up = v.upper()
-    if v_up in (x.upper() for x in GENERIC_VENDORS):
-        return ""
-    return v
-
-
-# ---- Ценообразование (4% + надбавка + округление хвостом 900/100) ----
-
-def _adder_for_price(base: float) -> int:
-    p = int(round(base))
-    if 101 <= p <= 10000:
-        return 3000
-    if 10001 <= p <= 25000:
-        return 4000
-    if 25001 <= p <= 50000:
-        return 5000
-    if 50001 <= p <= 75000:
-        return 7000
-    if 75001 <= p <= 100000:
-        return 10000
-    if 100001 <= p <= 150000:
-        return 12000
-    if 150001 <= p <= 200000:
-        return 15000
-    if 200001 <= p <= 300000:
-        return 20000
-    if 300001 <= p <= 400000:
-        return 25000
-    return 30000
-
-
-def _round_tail(price: int) -> int:
-    # < 9 000 000 -> ближайшее вверх ...900; >= 9 000 000 -> ...100
-    if price >= 9000000:
-        base = (price // 1000) * 1000 + 100
-        return base if base >= price else base + 1000
-    base = (price // 1000) * 1000 + 900
-    return base if base >= price else base + 1000
-
-
-def calc_price_kzt(base_price: float) -> int:
-    if base_price <= 0:
-        return 0
-    add = _adder_for_price(base_price)
-    raw = int(round(base_price * 1.04 + add))
-    return _round_tail(raw)
-
-
-# ---- Парсинг XML (делаем максимально терпимо к схеме) ----
-
-ID_KEYS = {"id", "xml_id", "code", "sku", "article", "articul", "vendorcode", "kod", "код", "артикул"}
-NAME_KEYS = {"name", "title", "fullname", "наименование", "наименованиеполное", "именование"}
-PRICE_KEYS = {"price", "цена", "стоимость", "price_kzt", "saleprice"}
-QTY_KEYS = {"quantity", "qty", "stock", "остаток", "количество", "quantity_in_stock"}
-VENDOR_KEYS = {"vendor", "brand", "производитель", "бренд", "вендор"}
-DESC_KEYS = {"description", "desc", "описание", "text"}
-PIC_KEYS = {"picture", "image", "photo", "url", "картинка", "изображение"}
-
-
-def _tag_l(el: ET.Element) -> str:
-    return (el.tag or "").strip().lower()
-
-
-def _first_text_by_keys(el: ET.Element, keys: set) -> str:
-    # 1) атрибуты
-    for k, v in el.attrib.items():
-        if str(k).strip().lower() in keys and v:
-            return str(v)
-    # 2) дочерние
-    for d in el.iter():
-        tl = _tag_l(d)
-        if tl in keys and (d.text or "").strip():
-            return d.text or ""
-        # 3) property/param with name="..."
-        name_attr = (d.get("name") or d.get("title") or "").strip()
-        if name_attr and name_attr.lower() in keys and (d.text or "").strip():
-            return d.text or ""
-    return ""
-
-
-def _collect_params(el: ET.Element) -> Dict[str, str]:
-    params: Dict[str, str] = {}
-    # собираем param/property/characteristic
-    for d in el.iter():
-        key = (d.get("name") or d.get("title") or "").strip()
-        val = (d.text or "").strip()
-        if key and val:
-            params[_norm_spaces(key)] = _norm_spaces(val)
-    return params
-
-
-def _looks_like_item(el: ET.Element) -> bool:
-    vid = _first_text_by_keys(el, ID_KEYS)
-    name = _first_text_by_keys(el, NAME_KEYS)
-    price = _first_text_by_keys(el, PRICE_KEYS)
-    return bool(vid and name and price)
-
-
-def _iter_items(root: ET.Element) -> Iterable[ET.Element]:
-    # Пытаемся взять "товарные" узлы по популярным тегам, иначе — эвристикой
-    preferred = {"item", "good", "product", "offer", "товар", "nomenclature", "позиция"}
-    first_pass = [el for el in root.iter() if _tag_l(el) in preferred]
-    picked = [el for el in first_pass if _looks_like_item(el)]
-    if picked:
-        return picked
-    # fallback: все узлы, похожие на товар
-    return [el for el in root.iter() if _looks_like_item(el)]
-
-
-def _parse_available(el: ET.Element) -> bool:
-    s = _first_text_by_keys(el, QTY_KEYS) or _first_text_by_keys(el, {"available"})
-    s = _norm_spaces(s)
-    if not s:
-        return True
-    if s.lower() in {"true", "yes", "y", "да"}:
-        return True
-    if s.lower() in {"false", "no", "n", "нет"}:
-        return False
-    v = _to_float(s)
-    if v is None:
-        return True
-    return v > 0
-
-
-def _parse_picture(el: ET.Element) -> str:
-    # Берём первый похожий URL
-    pic = _first_text_by_keys(el, PIC_KEYS)
-    pic = _norm_spaces(pic)
-    if pic and ("http://" in pic or "https://" in pic):
-        return pic
-    # Иногда фото в атрибуте
-    for k, v in el.attrib.items():
-        if "http" in str(v):
-            return str(v).strip()
-    return "http://nvprint.ru/promo/photo/nophoto.jpg"
-
-
-def _http_get_xml(url: str, login: str, password: str, timeout: int) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "supplier-feeds/1.0"})
-    if login and password:
-        mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-        mgr.add_password(None, url, login, password)
-        handler = urllib.request.HTTPBasicAuthHandler(mgr)
-        opener = urllib.request.build_opener(handler)
-        with opener.open(req, timeout=timeout) as resp:
-            return resp.read()
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read()
-
-
-# ---- Обогащение (описание ↔ характеристики ↔ param) ----
-
-COLOR_WORDS = {
-    "black": "Black",
-    "cyan": "Cyan",
-    "magenta": "Magenta",
-    "yellow": "Yellow",
-    "gray": "Gray",
-    "grey": "Gray",
-    "photo black": "Photo Black",
-    "light cyan": "Light Cyan",
-    "light magenta": "Light Magenta",
-}
-
-def _guess_type(name: str) -> str:
-    n = name.lower()
-    if "печатающая головка" in n:
-        return "Печатающая головка"
-    if "блок фотобарабана" in n:
-        return "Блок фотобарабана"
-    if "струй" in n and "картридж" in n:
-        return "Струйный картридж"
-    if "тонер" in n and "картридж" in n:
-        return "Тонер-картридж"
-    if "картридж" in n:
-        return "Картридж"
-    return ""
-
-
-def _extract_resource_k(desc: str) -> str:
-    # "(2300k)" -> "2300"
-    m = re.search(r"\((\d{3,7})\s*k\)", desc, flags=re.I)
-    if m:
-        return m.group(1)
-    return ""
-
-
-def _extract_compatibility(text: str) -> str:
-    # Берём то, что после "для", но аккуратно режем хвосты.
-    t = _norm_spaces(text)
-    m = re.search(r"\bдля\b\s+(.+)", t, flags=re.I)
-    if not m:
-        return ""
-    tail = m.group(1)
-    # стоп-слова/границы
-    tail = re.split(r"\s*\(|\s*\bсовместим|\s*\bуниверсаль|\s*\b\(\d", tail, flags=re.I)[0]
-    tail = tail.strip(" .;,:")
-    # не берём слишком короткое
-    if len(tail) < 6:
-        return ""
-    return tail
-
-
-def _compat_to_printers(compat: str) -> str:
-    c = _norm_spaces(compat)
-    # / и ; превращаем в запятые, лишние пробелы убираем
-    c = re.sub(r"\s*/\s*", "/", c)
-    c = c.replace(" /", "/").replace("/ ", "/")
-    c = c.replace(";", ",")
-    # "A/B/C" -> "A, B, C"
-    c = re.sub(r"\s*/\s*", ", ", c)
-    c = re.sub(r",\s*,+", ", ", c)
-    return c.strip(" ,")
-
-
-def _enrich(item: Item) -> Item:
-    params = dict(item.params)
-
-    # 1) Тип (если пусто)
-    if not params.get("Тип"):
-        t = _guess_type(item.name)
-        if t:
-            params["Тип"] = t
-
-    # 2) Тип печати
-    if not params.get("Тип печати"):
-        if "струй" in item.name.lower():
-            params["Тип печати"] = "Струйная"
-        elif "лазер" in item.name.lower():
-            params["Тип печати"] = "Лазерная"
-
-    # 3) Цвет печати (англ. цвета встречаются часто)
-    if not params.get("Цвет печати"):
-        s = (item.name + " " + item.desc_raw).lower()
-        found = ""
-        for key, val in COLOR_WORDS.items():
-            if key in s:
-                found = val
+    for attempt in range(1, RETRIES + 1):
+        try:
+            r = requests.get(SUPPLIER_URL, timeout=HTTP_TIMEOUT, auth=auth)
+            if r.status_code == 401:
+                raise RuntimeError("401 Unauthorized: проверь NVPRINT_LOGIN/NVPRINT_PASSWORD (secrets)")
+            r.raise_for_status()
+            if not r.content:
+                raise RuntimeError("Источник вернул пустой ответ")
+            return r.content
+        except Exception as e:
+            last_err = e
+            if attempt >= RETRIES or "401" in str(e):
                 break
-        if found:
-            params["Цвет печати"] = found
+            time.sleep(BACKOFF_S * attempt)
 
-    # 4) Ресурс
-    if not params.get("Ресурс"):
-        r = _extract_resource_k(item.desc_raw) or _extract_resource_k(item.name)
-        if r:
-            params["Ресурс"] = r
+    raise RuntimeError(str(last_err) if last_err else "Не удалось скачать источник")
 
-    # 5) Совместимость/Принтеры из названия или описания
-    text_for_compat = item.desc_raw if item.desc_raw else item.name
-    compat = params.get("Совместимость", "")
-    if not compat:
-        compat = _extract_compatibility(text_for_compat) or _extract_compatibility(item.name)
-        if compat:
-            params["Совместимость"] = compat
-
-    if not params.get("Принтеры"):
-        base = params.get("Совместимость", "")
-        if base:
-            params["Принтеры"] = _compat_to_printers(base)
-        else:
-            # иногда "для ..." есть, но мы не смогли выделить — попробуем тупо
-            c2 = _extract_compatibility(text_for_compat)
-            if c2:
-                params["Принтеры"] = _compat_to_printers(c2)
-
-    # 6) Обогащение "обратно": если params важные, а в описании их нет — добавим коротко
-    desc = _norm_spaces(item.desc_raw)
-    if not desc:
-        desc = item.name
-
-    if params.get("Совместимость") and "для " not in desc.lower() and "совмест" not in desc.lower():
-        desc = f"{desc} Совместимость: {params['Совместимость']}."
-    elif params.get("Принтеры") and "для " not in desc.lower() and "совмест" not in desc.lower():
-        desc = f"{desc} Совместимые устройства: {params['Принтеры']}."
-
-    # vendor логика отдельно (ниже), но текст обновили
-    return Item(
-        vid=item.vid,
-        name=item.name,
-        base_price=item.base_price,
-        picture=item.picture,
-        vendor_raw=item.vendor_raw,
-        desc_raw=desc,
-        available=item.available,
-        params=params,
-    )
-
-
-def _final_vendor(item: Item) -> str:
-    # Берём исходный vendor, чистим мусор
-    vendor = _clean_vendor(item.vendor_raw)
-
-    # Общее поле для детектора
-    blob = " ".join([
-        item.name or "",
-        item.desc_raw or "",
-        " ".join([f"{k}:{v}" for k, v in item.params.items()]),
-    ])
-
-    # Частное правило: Designjet -> HP, но только если vendor пустой
-    if not vendor and re.search(r"\bdesignjet\b", blob, flags=re.I):
-        return "HP"
-
-    # Нормальная логика брендов (включая Sindoh)
-    det = _detect_brand(blob)
-
-    def _vendor_by_code() -> str:
-        s = (item.vid + " " + item.name + " " + item.desc_raw).upper()
-        # Avision часто идёт как модель, а реальный бренд читается по коду расходника
-        if re.search(r"\bTK-\d", s):
-            return "Kyocera"
-        if re.search(r"\bTN-\d", s) or re.search(r"\bDR-\d", s):
-            return "Brother"
-        if "55B5" in s:
-            return "Lexmark"
+# ---------------- ЦЕНА ИЗ ДОГОВОРОВ ----------------
+def _norm_contract(s: str) -> str:
+    if not s:
         return ""
+    tr = str.maketrans({
+        "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
+        "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
+        "Ё":"E","ё":"e",
+    })
+    u = s.translate(tr).upper()
+    u = re.sub(r"[\s\-\_]+", "", u)
+    return u
 
-    if not vendor:
-        return det or _vendor_by_code()
+def _extract_base_price(item: ET.Element) -> Optional[float]:
+    price_kz: Optional[float] = None
+    price_msk: Optional[float] = None
 
-    # Если vendor у нас мусор/поставщик, но не пустой — всё равно отдадим детектор/код
-    if vendor.upper() in (x.upper() for x in GENERIC_VENDORS):
-        return det or _vendor_by_code()
-
-    return vendor
-
-
-# ---- Сборка YML ----
-
-def _order_params(params: Dict[str, str]) -> List[Tuple[str, str]]:
-    used = set()
-    out: List[Tuple[str, str]] = []
-    for k in PARAM_PRIORITY:
-        if k in params and params[k]:
-            out.append((k, params[k]))
-            used.add(k)
-    rest = sorted(((k, v) for k, v in params.items() if k not in used and v), key=lambda x: x[0].lower())
-    out.extend(rest)
-    return out
-
-
-def _build_chars_html(params: List[Tuple[str, str]]) -> str:
-    if not params:
-        return "<h3>Характеристики</h3><ul></ul>"
-    li = "".join([f"<li><strong>{_xml_escape(k)}:</strong> {_xml_escape(v)}</li>" for k, v in params])
-    return f"<h3>Характеристики</h3><ul>{li}</ul>"
-
-
-def _build_keywords(vendor: str, name: str, vendor_code: str, params: Dict[str, str]) -> str:
-    parts: List[str] = []
-    if vendor:
-        parts.append(vendor)
-    parts.append(name)
-    parts.append(vendor_code)
-
-    t = params.get("Тип")
-    if t:
-        parts.append(t)
-
-    comp = params.get("Совместимость")
-    if comp:
-        parts.append(comp)
-
-    res = params.get("Ресурс")
-    if res:
-        parts.append(res)
-
-    col = params.get("Цвет печати") or params.get("Цвет")
-    if col:
-        parts.append(col)
-
-    parts.extend(CITIES)
-    # убираем пустые и лишние пробелы
-    parts = [_norm_spaces(x) for x in parts if _norm_spaces(x)]
-    return ", ".join(parts)
-
-
-def build_yml(items: List[Item], src_url: str, out_file: str) -> str:
-    now = _now_almaty()
-    next_run = _next_wed_0400(now)
-
-    before = len(items)
-    kept = [x for x in items if x.available]
-    after = len(kept)
-    in_true = after
-    in_false = before - after
-
-    yml_date = _fmt_dt(now, with_seconds=False)
-    build_time = _fmt_dt(now, with_seconds=True)
-
-    src_url_meta = src_url
-    if len(src_url_meta) > 60:
-        src_url_meta = src_url_meta[:18] + "..." + src_url_meta[-60:]
-
-    feed_meta = "\n".join([
-        "<!--FEED_META",
-        f"Поставщик                                  | NVPrint",
-        f"URL поставщика                             | {src_url_meta}",
-        f"Время сборки (Алматы)                      | {build_time}",
-        f"Ближайшая сборка (Алматы)                  | {_fmt_dt(next_run, with_seconds=True)}",
-        f"Сколько товаров у поставщика до фильтра    | {before}",
-        f"Сколько товаров у поставщика после фильтра | {after}",
-        f"Сколько товаров есть в наличии (true)      | {in_true}",
-        f"Сколько товаров нет в наличии (false)      | {in_false}",
-        "-->",
-    ])
-
-    out: List[str] = []
-    out.append('<?xml version="1.0" encoding="windows-1251"?>\n')
-    out.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">\n')
-    out.append(f'<yml_catalog date="{yml_date}">\n')
-    out.append('<shop><offers>\n\n')
-    out.append(feed_meta + "\n\n")
-
-    for it in kept:
-        # обогащаем
-        it2 = _enrich(it)
-        vendor = _final_vendor(it2)
-
-        # последний шанс: если vendor пустой и есть Designjet — HP (после enrich тоже)
-        if not vendor and re.search(r"\bdesignjet\b", (it2.name + " " + it2.desc_raw), flags=re.I):
-            vendor = "HP"
-
-        params_ordered = _order_params(it2.params)
-
-        # price
-        price = calc_price_kzt(it2.base_price)
-
-        # offer
-        out.append(f'<offer id="{_xml_escape(it2.vid)}" available="true">\n')
-        out.append('<categoryId></categoryId>\n')
-        out.append(f'<vendorCode>{_xml_escape(it2.vid)}</vendorCode>\n')
-        out.append(f'<name>{_xml_escape(it2.name)}</name>\n')
-        out.append(f'<price>{price}</price>\n')
-        out.append(f'<picture>{_xml_escape(it2.picture)}</picture>\n')
-        if vendor:
-            out.append(f'<vendor>{_xml_escape(vendor)}</vendor>\n')
-        out.append('<currencyId>KZT</currencyId>\n')
-
-        # description CDATA
-        desc_html = (
-            "\n\n<!-- WhatsApp -->\n"
-            f"{WHATSAPP_BLOCK}\n\n"
-            "<!-- Описание -->\n"
-            f"<h3>{_xml_escape(it2.name)}</h3><p>{_xml_escape(it2.desc_raw)}</p>\n"
-            f"{_build_chars_html(params_ordered)}\n"
-        )
-        out.append("<description><![CDATA[" + _safe_cdata(desc_html) + "\n]]></description>\n")
-
-        # params (в том же порядке, что и блок характеристик)
-        for k, v in params_ordered:
-            out.append(f'<param name="{_xml_escape(k)}">{_xml_escape(v)}</param>\n')
-
-        # keywords
-        kw = _build_keywords(vendor, it2.name, it2.vid, it2.params)
-        out.append(f'<keywords>{_xml_escape(kw)}</keywords>\n')
-        out.append("</offer>\n\n")
-
-    out.append("</offers>\n</shop>\n</yml_catalog>\n")
-    return "".join(out)
-
-
-def main() -> int:
-    url = os.environ.get("NVPRINT_XML_URL", "").strip()
-    login = os.environ.get("NVPRINT_LOGIN", "").strip()
-    password = os.environ.get("NVPRINT_PASSWORD", "").strip()
-    out_file = os.environ.get("OUT_FILE", "docs/nvprint.yml").strip()
-    timeout = int(os.environ.get("HTTP_TIMEOUT", "60").strip() or "60")
-
-    if not url:
-        print("ERROR: NVPRINT_XML_URL is not set", file=sys.stderr)
-        return 2
-
-    xml_bytes = _http_get_xml(url, login, password, timeout=timeout)
-    root = ET.fromstring(xml_bytes)
-
-    items: List[Item] = []
-    for el in _iter_items(root):
-        vid = _norm_spaces(_first_text_by_keys(el, ID_KEYS))
-        name = _norm_spaces(_first_text_by_keys(el, NAME_KEYS))
-        price_s = _first_text_by_keys(el, PRICE_KEYS)
-        base = _to_float(price_s) or 0.0
-        if not vid or not name or base <= 0:
+    for node in item.iter():
+        if _tag_lower(node) != "договор":
+            continue
+        num = (node.attrib.get("НомерДоговора") or node.attrib.get("Номердоговора") or "").strip()
+        num_n = _norm_contract(num)
+        if "000079" not in num_n:
             continue
 
-        vendor_raw = _first_text_by_keys(el, VENDOR_KEYS)
-        desc_raw = _first_text_by_keys(el, DESC_KEYS)
-        params = _collect_params(el)
+        price_el = None
+        for sub in node.iter():
+            if _tag_lower(sub) in ("цена", "price", "amount", "value"):
+                price_el = sub
+                break
 
-        pic = _parse_picture(el)
-        available = _parse_available(el)
+        val = _parse_number(price_el.text if price_el is not None else None)
+        if val is None or val <= 0:
+            continue
 
-        items.append(Item(
-            vid=vid,
-            name=name,
-            base_price=base,
-            picture=pic,
-            vendor_raw=vendor_raw,
-            desc_raw=_norm_spaces(desc_raw),
-            available=available,
-            params=params,
-        ))
+        if "MSK" in num_n or "МСК" in num_n:
+            price_msk = val
+        else:
+            price_kz = val
 
-    yml = build_yml(items, src_url=url, out_file=out_file)
+    return price_kz if (price_kz is not None and price_kz > 0) else (price_msk if (price_msk is not None and price_msk > 0) else None)
 
-    os.makedirs(os.path.dirname(out_file) or ".", exist_ok=True)
-    with open(out_file, "wb") as f:
-        f.write(yml.encode("cp1251", errors="xmlcharrefreplace"))
+def _round_up_tail_900(n: int) -> int:
+    thousands = (n + 999) // 1000
+    return thousands * 1000 - 100
 
-    print(f"Wrote: {out_file} | encoding=windows-1251 | items={len(items)}")
+def compute_price(base_price: Optional[int]) -> int:
+    if base_price is None or base_price < 100:
+        return 100
+    for lo, hi, pct, add in PRICING_RULES:
+        if lo <= base_price <= hi:
+            raw = base_price * (1.0 + pct / 100.0) + add
+            return _round_up_tail_900(int(math.ceil(raw)))
+    raw = base_price * (1.0 + PRICING_RULES[-1][2] / 100.0) + PRICING_RULES[-1][3]
+    return _round_up_tail_900(int(math.ceil(raw)))
+
+# ---------------- ТОВАР: ПОЛЯ + ПАРАМЕТРЫ ----------------
+def _clean_article(raw: str) -> str:
+    s = (raw or "").strip()
+    s = re.sub(r"^\s*NV[\-\_\s]+", "", s, flags=re.IGNORECASE)
+    s = s.replace(" ", "")
+    return s
+
+def make_id(article: str) -> str:
+    return "NP" + _clean_article(article)
+
+def name_starts_with_prefixes(name_short: str) -> bool:
+    base = _norm_spaces(name_short).lower()
+    for kw in KEYWORD_PREFIXES:
+        if base.startswith(_norm_spaces(kw).lower()):
+            return True
+    return False
+
+def detect_type(name_short: str) -> str:
+    base = _norm_spaces(name_short).lower()
+    for kw in KEYWORD_PREFIXES:
+        if base.startswith(_norm_spaces(kw).lower()):
+            return kw
+    return KEYWORD_PREFIXES[0] if KEYWORD_PREFIXES else "Товар"
+
+def collect_printers(item: ET.Element) -> List[str]:
+    out: List[str] = []
+    printers_node = None
+    for n in item.iter():
+        if _tag_lower(n) == "принтеры":
+            printers_node = n
+            break
+    if printers_node is not None:
+        for n in printers_node.iter():
+            if _tag_lower(n) == "принтер":
+                t = (n.text or "").strip()
+                if t:
+                    out.append(t)
+
+    seen = set()
+    uniq: List[str] = []
+    for x in out:
+        if x not in seen:
+            seen.add(x)
+            uniq.append(x)
+    return uniq
+
+def build_params(item: ET.Element, name_short: str, printers: Optional[List[str]] = None) -> List[Tuple[str, str]]:
+    params: List[Tuple[str, str]] = []
+    params.append(("Тип", detect_type(name_short)))
+
+    resurs = _find_desc_text(item, ["Ресурс"])
+    if resurs and resurs.strip() and resurs.strip() != "0":
+        params.append(("Ресурс", _norm_spaces(resurs)))
+
+    tip = _find_desc_text(item, ["ТипПечати"])
+    if tip:
+        params.append(("Тип печати", _norm_spaces(tip)))
+
+    color = _find_desc_text(item, ["ЦветПечати"])
+    if color:
+        params.append(("Цвет печати", _norm_spaces(color)))
+
+    compat = _find_desc_text(item, ["СовместимостьСМоделями"])
+    if compat:
+        params.append(("Совместимость", _norm_spaces(compat)))
+
+    weight = _find_desc_text(item, ["Вес"])
+    if weight:
+        params.append(("Вес", _norm_spaces(weight)))
+
+    printers = printers if printers is not None else collect_printers(item)
+    if printers:
+        params.append(("Принтеры", ", ".join(printers)))
+
+    return params
+
+def _html_li(k: str, v: str) -> str:
+    return f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>"
+
+def build_description_html(title: str, short_desc: str, params: List[Tuple[str, str]]) -> str:
+    title_h = html.escape(title)
+    sd = _norm_spaces((short_desc or "").strip())
+    if not sd:
+        sd = title
+    sd_h = html.escape(sd)
+
+    lis = "".join(_html_li(k, v) for k, v in params)
+    return (
+        "<description><![CDATA[" +
+        DESC_PREFIX +
+        "<!-- Описание -->\n"
+        f"<h3>{title_h}</h3><p>{sd_h}</p>\n"
+        "<h3>Характеристики</h3><ul>" + lis + "</ul>\n\n"
+        "]]></description>"
+    )
+
+def _latinize_like(s: str) -> str:
+    """Заменяет похожие кириллические символы на латиницу (для устойчивого распознавания брендов)."""
+    tr = str.maketrans({
+        "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
+        "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
+        "Ё":"E","ё":"e",
+    })
+    return (s or "").translate(tr)
+
+def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, printers: List[str]) -> str:
+    """Определяем vendor из названия/описания/совместимости. Консервативно."""
+    blob = " ".join(x for x in [article_raw, name_short, nom_full, " ".join(printers or [])] if x).strip()
+    if not blob:
+        return ""
+
+    raw_up = blob.upper()
+    lat_up = _latinize_like(blob).upper()
+
+    # 0) Катюша / Katyusha (важно)
+    if "КАТЮША" in raw_up or re.search(r"\bKATYUSHA\b", lat_up):
+        return "Катюша"
+
+    # 0.5) HP DesignJet (линейка плоттеров)
+    if re.search(r"\bDESIGNJET\b", lat_up):
+        return "HP"
+
+    # 1) Явные бренды словами
+    brand_words: List[Tuple[str, str]] = [
+        ("HP", r"\bHP\b|\bHEWLETT\s*PACKARD\b"),
+        ("Canon", r"\bCANON\b"),
+        ("Epson", r"\bEPSON\b"),
+        ("Brother", r"\bBROTHER\b"),
+        ("Xerox", r"\bXEROX\b"),
+        ("Samsung", r"\bSAMSUNG\b"),
+        ("Kyocera", r"\bKYOCERA\b|\bKYOCERA\s*MITA\b"),
+        ("Ricoh", r"\bRICOH\b|\bAFICIO\b"),
+        ("Konica Minolta", r"\bKONICA\s*MINOLTA\b|\bMINOLTA\b"),
+        ("Oki", r"\bOKI\b"),
+        ("Lexmark", r"\bLEXMARK\b"),
+        ("Pantum", r"\bPANTUM\b"),
+        ("Sindoh", r"\bSINDOH\b"),
+        ("Sharp", r"\bSHARP\b"),
+        ("Toshiba", r"\bTOSHIBA\b"),
+        ("Dell", r"\bDELL\b"),
+    ]
+    for vendor, pat in brand_words:
+        if re.search(pat, lat_up):
+            return vendor
+
+    # 2) Сигнатуры артикулов/серий (консервативно)
+    if re.search(r"\b(C-EXV|NPG|GPR|CRG)\b", lat_up):
+        return "Canon"
+    if re.search(r"\bC13T\d+\b", lat_up):
+        return "Epson"
+    if re.search(r"\b(MLT-|CLT-)\w+", lat_up):
+        return "Samsung"
+    if re.search(r"\b(106R|013R|006R)\w*", lat_up):
+        return "Xerox"
+    if re.search(r"\b(TK-|DV-|DK-)\w+", lat_up):
+        return "Kyocera"
+    if re.search(r"\b(TN-|DR-|LC-|BU-)\w+", lat_up):
+        return "Brother"
+    if re.search(r"\b(Q|CB|CC|CE|CF)\d{2,5}\w*\b", lat_up):
+        return "HP"
+
+    return ""
+
+def build_keywords(vendor: str, title: str, vendor_code: str, params: List[Tuple[str, str]]) -> str:
+    parts: List[str] = []
+    for s in (vendor, title, vendor_code):
+        s = _norm_spaces(s)
+        if s:
+            parts.append(s)
+
+    pmap = {k: v for k, v in params}
+    for k in ("Тип", "Совместимость", "Ресурс", "Цвет печати"):
+        v = _norm_spaces(pmap.get(k, ""))
+        if v:
+            parts.append(v)
+
+    seen = set()
+    uniq: List[str] = []
+    for x in parts:
+        if x not in seen:
+            seen.add(x)
+            uniq.append(x)
+
+    uniq.extend(CITIES)
+    return ", ".join(uniq)
+
+def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
+    article = _find_desc_text(node, ["Артикул", "articul", "sku", "article", "PartNumber"])
+    if not article:
+        return None
+
+    name_short = _find_desc_text(node, ["НоменклатураКратко"])
+    if not name_short:
+        return None
+    name_short = _norm_spaces(name_short)
+
+    if not name_starts_with_prefixes(name_short):
+        return None
+
+    base = _extract_base_price(node)
+    base_int = 100 if (base is None or base <= 0) else int(math.ceil(base))
+    price = compute_price(base_int)
+
+    picture = _norm_spaces(_find_desc_text(node, ["СсылкаНаКартинку", "Картинка", "Изображение", "Фото", "Picture", "Image", "ФотоURL", "PictureURL"]) or "")
+    nom_full = _norm_spaces(_find_desc_text(node, ["Номенклатура"]) or "")
+
+    printers = collect_printers(node)
+
+    vendor = _norm_spaces(_find_desc_text(node, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or "")
+    if not vendor:
+        vendor = detect_vendor_from_text(article, name_short, nom_full, printers)
+
+    oid = make_id(article)
+
+    params = build_params(node, name_short, printers)
+    desc = build_description_html(name_short, nom_full, params)
+    keywords = build_keywords(vendor, name_short, oid, params)
+
+    return {
+        "id": oid,
+        "vendorCode": oid,
+        "name": name_short,
+        "price": price,
+        "picture": picture,
+        "vendor": vendor,
+        "description": desc,
+        "params": params,
+        "keywords": keywords,
+        "available": True,
+    }
+
+def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
+    items: List[ET.Element] = []
+    seen: set[int] = set()
+
+    for n in root.iter():
+        has_art = False
+        has_name = False
+
+        for sub in n.iter():
+            tl = _tag_lower(sub)
+            if not has_art and tl in ("артикул", "articul", "sku", "article", "partnumber") and (sub.text or "").strip():
+                has_art = True
+            if not has_name and tl == "номенклатуракратко" and (sub.text or "").strip():
+                has_name = True
+            if has_art and has_name:
+                break
+
+        if not (has_art and has_name):
+            continue
+
+        key = id(n)
+        if key in seen:
+            continue
+
+        seen.add(key)
+        items.append(n)
+
+    return items
+
+def ensure_unique_offer_ids(offers: List[Dict[str, Any]]) -> None:
+    """Делает id/vendorCode уникальными ТОЛЬКО при дублях, чтобы импорт не конфликтовал."""
+    used: set[str] = set()
+    counters: Dict[str, int] = {}
+
+    for it in offers:
+        base = str(it.get("id") or "")
+        if not base:
+            continue
+
+        if base not in used:
+            used.add(base)
+            counters.setdefault(base, 1)
+            continue
+
+        n = counters.get(base, 1) + 1
+        while True:
+            new_id = f"{base}-{n}"
+            if new_id not in used:
+                break
+            n += 1
+
+        counters[base] = n
+        old_id = base
+
+        it["id"] = new_id
+        it["vendorCode"] = new_id
+
+        kw = it.get("keywords") or ""
+        if kw:
+            it["keywords"] = re.sub(rf"(?<!\w){re.escape(old_id)}(?!\w)", new_id, kw)
+
+        used.add(new_id)
+
+# ---------------- FEED_META ----------------
+def render_feed_meta(source_url: str, total: int, written: int, true_cnt: int, false_cnt: int) -> str:
+    now_alm = _almaty_now()
+    next_alm = _next_build_1_10_20_at_04()
+
+    rows = [
+        ("Поставщик", "NVPrint"),
+        ("URL поставщика", source_url),
+        ("Время сборки (Алматы)", now_alm.strftime("%Y-%m-%d %H:%M:%S")),
+        ("Ближайшая сборка (Алматы)", next_alm.strftime("%Y-%m-%d %H:%M:%S")),
+        ("Сколько товаров у поставщика до фильтра", str(total)),
+        ("Сколько товаров у поставщика после фильтра", str(written)),
+        ("Сколько товаров есть в наличии (true)", str(true_cnt)),
+        ("Сколько товаров нет в наличии (false)", str(false_cnt)),
+    ]
+    key_w = max(len(k) for k, _ in rows)
+
+    lines = ["<!--FEED_META"]
+    for k, v in rows:
+        lines.append(f"{k.ljust(key_w)} | {v}")
+    lines.append("-->")
+    return "\n".join(lines)
+
+# ---------------- СБОРКА YML ----------------
+def build_yml(offers: List[Dict[str, Any]], source_url: str, total_before_filter: int) -> str:
+    now_alm = _almaty_now()
+
+    out: List[str] = []
+    out.append('<?xml version="1.0" encoding="windows-1251"?>')
+    out.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
+    out.append(f'<yml_catalog date="{now_alm:%Y-%m-%d %H:%M}">')
+    out.append("<shop><offers>")
+    out.append("")  # пустая строка после <shop><offers>
+
+    written = len(offers)
+    out.append(render_feed_meta(source_url, total_before_filter, written, written, 0))
+    out.append("")  # пустая строка после FEED_META
+
+    for it in offers:
+        out.append(f'<offer id="{it["id"]}" available="true">')
+        out.append("<categoryId></categoryId>")
+        out.append(f'<vendorCode>{it["vendorCode"]}</vendorCode>')
+        out.append(f'<name>{html.escape(it["name"])}</name>')
+        out.append(f'<price>{int(it["price"])}</price>')
+        if it.get("picture"):
+            out.append(f'<picture>{html.escape(it["picture"])}</picture>')
+        if it.get("vendor"):
+            out.append(f'<vendor>{html.escape(it["vendor"])}</vendor>')
+        out.append("<currencyId>KZT</currencyId>")
+        out.append(it["description"])
+        for k, v in it.get("params") or []:
+            out.append(f'<param name="{html.escape(k)}">{html.escape(v)}</param>')
+        out.append(f'<keywords>{html.escape(it["keywords"])}</keywords>')
+        out.append("</offer>")
+        out.append("")  # пустая строка между offer'ами
+
+    out.append("</offers>")
+    out.append("</shop>")
+    out.append("</yml_catalog>")
+    return "\n".join(out)
+
+def main() -> int:
+    try:
+        xml_bytes = _download_bytes()
+        root = ET.fromstring(xml_bytes)
+
+        nodes = guess_item_nodes(root)
+        total_before_filter = len(nodes)
+
+        offers: List[Dict[str, Any]] = []
+        for node in nodes:
+            it = parse_item(node)
+            if it:
+                offers.append(it)
+
+        ensure_unique_offer_ids(offers)
+        yml = build_yml(offers, SUPPLIER_URL, total_before_filter)
+
+    except Exception as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        yml = build_yml([], SUPPLIER_URL, 0)
+
+    os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
+    with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
+        f.write(yml)
+
+    print(f"Wrote: {OUT_FILE} | encoding={OUTPUT_ENCODING}")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
