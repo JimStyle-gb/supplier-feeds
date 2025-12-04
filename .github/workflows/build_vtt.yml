@@ -2,54 +2,130 @@ name: Build_VTT
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ "main", "master" ]
+    paths:
+      - ".github/workflows/build_vtt.yml"
+      - "scripts/build_vtt.py"
+      - "requirements.txt"
+      - "pyproject.toml"
+      - "poetry.lock"
   schedule:
-    # 05:00 Asia/Almaty == 00:00 UTC
-    - cron: "0 0 1,10,20 * *"
+    # 05:00 Asia/Almaty (UTC+5) = 00:00 UTC
+    # Запускаем каждый день, но сборку делаем только 1/10/20 числа (гейт ниже).
+    - cron: "0 0 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: feeds_${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
-  build_vtt:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    timeout-minutes: 120
+    env:
+      TZ: Asia/Almaty
+      SCHEDULE_DOM: "1,10,20"
+      SCHEDULE_HOUR_ALMATY: "5"
+
+      PIP_PACKAGES: "requests beautifulsoup4"
+
+      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+      VTT_SSL_VERIFY: "0"
+      OUT_FILE: "docs/vtt.yml"
+      OUTPUT_ENCODING: "windows-1251"
+      HTTP_TIMEOUT: "60"
+      MAX_WORKERS: "16"
+      MAX_PAGES: "200"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check Almaty schedule gate
+        id: gate
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timedelta
+          import os
+
+          dom = os.getenv("SCHEDULE_DOM", "*").strip()
+          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "0"))
+
+          now_utc = datetime.utcnow()
+          now_alm = now_utc + timedelta(hours=5)
+
+          if dom == "*":
+            day_ok = True
+          else:
+            allowed = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
+            day_ok = now_alm.day in allowed
+
+          hour_ok = (now_alm.hour == hour)
+          should = "yes" if (day_ok and hour_ok) else "no"
+
+          print(f"::notice::Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"run={should}\n")
+          PY
 
       - name: Setup Python
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install deps
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         run: |
+          set -e
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
-
-      - name: Build VTT
-        env:
-          VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
-          VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
-          # FIX SSL: сайт b2b.vtt.ru на Actions может падать с CERT_VERIFY_FAILED, поэтому отключаем проверку
-          VTT_SSL_VERIFY: "0"
-          OUT_FILE: docs/vtt.yml
-          OUTPUT_ENCODING: windows-1251
-          HTTP_TIMEOUT: "60"
-          MAX_WORKERS: "16"
-          MAX_PAGES: "200"
-        run: |
-          set -euo pipefail
-          python scripts/build_vtt.py
-
-      - name: Commit and push
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/vtt.yml
-          if git diff --cached --quiet; then
-            echo "No changes."
-            exit 0
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
           fi
-          git commit -m "Build VTT feed"
-          git push
+          pip install $PIP_PACKAGES
+
+      - name: Build + commit + push docs/vtt.yml (no conflicts)
+        if: ${{ (github.event_name != 'pull_request') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && (github.event_name != 'schedule' || steps.gate.outputs.run == 'yes') }}
+        run: |
+          set -euo pipefail
+
+          BRANCH="${GITHUB_REF_NAME}"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          for attempt in 1 2 3; do
+            echo "Attempt $attempt: sync -> build -> commit -> push"
+
+            git fetch origin "$BRANCH"
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+
+            python scripts/build_vtt.py
+
+            git add docs/vtt.yml || true
+
+            if git diff --cached --quiet; then
+              echo "No changes to commit."
+              exit 0
+            fi
+
+            git commit -m "chore(vtt): update docs/vtt.yml [skip ci]"
+
+            if git push origin "HEAD:$BRANCH"; then
+              echo "Pushed successfully."
+              exit 0
+            fi
+
+            echo "Push failed (non-fast-forward). Will retry..."
+            sleep 2
+          done
+
+          echo "Failed to push after 3 attempts."
+          exit 1
