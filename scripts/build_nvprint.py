@@ -117,6 +117,18 @@ def _tag_lower(node: ET.Element) -> str:
 def _norm_spaces(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
 
+def _fix_picture_url(url: str) -> str:
+    """Только для <picture>: http->https и пробелы -> %20."""
+    if not url:
+        return ""
+    u = (url or "").strip()
+    if u.startswith("http://"):
+        u = "https://" + u[len("http://"):]
+    if " " in u:
+        u = u.replace(" ", "%20")
+    return u
+
+
 
 def _unique_keep_order(xs: List[str]) -> List[str]:
     seen: set[str] = set()
@@ -419,6 +431,7 @@ def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
     price = compute_price(base_int)
 
     picture = _norm_spaces(_find_desc_text(node, ["СсылкаНаКартинку", "Картинка", "Изображение", "Фото", "Picture", "Image", "ФотоURL", "PictureURL"]) or "")
+    picture = _fix_picture_url(picture)
     nom_full = _norm_spaces(_find_desc_text(node, ["Номенклатура"]) or "")
 
     printers = collect_printers(node)
