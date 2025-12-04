@@ -11,7 +11,6 @@
 from __future__ import annotations
 
 import os
-import io
 import re
 import html
 import math
@@ -26,6 +25,14 @@ try:
     import requests
 except Exception:
     requests = None
+
+# ---------------- ОБЩИЕ ТАБЛИЦЫ (НЕ МЕНЯТЬ) ----------------
+_LAT_TR = str.maketrans({
+    "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
+    "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
+    "Ё":"E","ё":"e",
+})
+
 
 # ---------------- НАСТРОЙКИ ----------------
 SUPPLIER_URL = (os.getenv("NVPRINT_XML_URL") or "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true").strip()
@@ -110,6 +117,16 @@ def _tag_lower(node: ET.Element) -> str:
 def _norm_spaces(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
 
+
+def _unique_keep_order(xs: List[str]) -> List[str]:
+    seen: set[str] = set()
+    out: List[str] = []
+    for x in xs:
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
+
 def _parse_number(txt: Optional[str]) -> Optional[float]:
     if not txt:
         return None
@@ -161,12 +178,7 @@ def _download_bytes() -> bytes:
 def _norm_contract(s: str) -> str:
     if not s:
         return ""
-    tr = str.maketrans({
-        "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
-        "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
-        "Ё":"E","ё":"e",
-    })
-    u = s.translate(tr).upper()
+    u = s.translate(_LAT_TR).upper()
     u = re.sub(r"[\s\-\_]+", "", u)
     return u
 
@@ -251,13 +263,7 @@ def collect_printers(item: ET.Element) -> List[str]:
                 if t:
                     out.append(t)
 
-    seen = set()
-    uniq: List[str] = []
-    for x in out:
-        if x not in seen:
-            seen.add(x)
-            uniq.append(x)
-    return uniq
+    return _unique_keep_order(out)
 
 def build_params(item: ET.Element, name_short: str, printers: Optional[List[str]] = None) -> List[Tuple[str, str]]:
     params: List[Tuple[str, str]] = []
@@ -311,12 +317,7 @@ def build_description_html(title: str, short_desc: str, params: List[Tuple[str, 
 
 def _latinize_like(s: str) -> str:
     """Заменяет похожие кириллические символы на латиницу (для устойчивого распознавания брендов)."""
-    tr = str.maketrans({
-        "А":"A","В":"B","Е":"E","К":"K","М":"M","Н":"H","О":"O","Р":"P","С":"C","Т":"T","Х":"X","У":"Y",
-        "а":"A","в":"B","е":"E","к":"K","м":"M","н":"H","о":"O","р":"P","с":"C","т":"T","х":"X","у":"Y",
-        "Ё":"E","ё":"e",
-    })
-    return (s or "").translate(tr)
+    return (s or "").translate(_LAT_TR)
 
 def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, printers: List[str]) -> str:
     """Определяем vendor из названия/описания/совместимости. Консервативно."""
@@ -395,12 +396,7 @@ def build_keywords(vendor: str, title: str, vendor_code: str, params: List[Tuple
         if v:
             parts.append(v)
 
-    seen = set()
-    uniq: List[str] = []
-    for x in parts:
-        if x not in seen:
-            seen.add(x)
-            uniq.append(x)
+    uniq = _unique_keep_order(parts)
 
     uniq.extend(CITIES)
     return ", ".join(uniq)
@@ -603,7 +599,7 @@ def main() -> int:
         yml = build_yml([], SUPPLIER_URL, 0)
 
     os.makedirs(os.path.dirname(OUT_FILE) or ".", exist_ok=True)
-    with io.open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore") as f:
+    with open(OUT_FILE, "w", encoding=OUTPUT_ENCODING, errors="ignore", newline="\n") as f:
         f.write(yml)
 
     print(f"Wrote: {OUT_FILE} | encoding={OUTPUT_ENCODING}")
