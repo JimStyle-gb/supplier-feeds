@@ -331,8 +331,12 @@ def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, pr
     if "КАТЮША" in raw_up or re.search(r"\bKATYUSHA\b", lat_up):
         return "Катюша"
 
-    # 0.5) HP DesignJet (линейка плоттеров)
-    if re.search(r"\bDESIGNJET\b", lat_up):
+    # 0.5) Panasonic по сигнатурам KX-FAD / KX-FAT (важно)
+    if "KX-FAD" in lat_up or "KX-FAT" in lat_up:
+        return "Panasonic"
+
+    # 0.6) HP DesignJet (часто бренд не указан)
+    if "DESIGNJET" in lat_up:
         return "HP"
 
     # 1) Явные бренды словами
@@ -349,10 +353,12 @@ def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, pr
         ("Oki", r"\bOKI\b"),
         ("Lexmark", r"\bLEXMARK\b"),
         ("Pantum", r"\bPANTUM\b"),
-        ("Sindoh", r"\bSINDOH\b"),
         ("Sharp", r"\bSHARP\b"),
         ("Toshiba", r"\bTOSHIBA\b"),
         ("Dell", r"\bDELL\b"),
+        ("Panasonic", r"\bPANASONIC\b"),
+        ("Riso", r"\bRISO\b"),
+        ("Sindoh", r"\bSINDOH\b"),
     ]
     for vendor, pat in brand_words:
         if re.search(pat, lat_up):
@@ -422,8 +428,15 @@ def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
     printers = collect_printers(node)
 
     vendor = _norm_spaces(_find_desc_text(node, ["Бренд", "Производитель", "Вендор", "Brand", "Vendor"]) or "")
+    hint_up = _latinize_like(" ".join([article, name_short, nom_full, " ".join(printers or [])])).upper()
+    if "KX-FAD" in hint_up or "KX-FAT" in hint_up:
+        vendor = "Panasonic"
+
     if not vendor:
         vendor = detect_vendor_from_text(article, name_short, nom_full, printers)
+
+    if not vendor:
+        vendor = "NVPrint"
 
     oid = make_id(article)
 
