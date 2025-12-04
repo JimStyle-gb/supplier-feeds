@@ -1,831 +1,132 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+name: Build_AlStyle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main", "master" ]
+    paths:
+      - ".github/workflows/build_alstyle.yml"
+      - "scripts/build_alstyle.py"
+      - "docs/alstyle_categories.txt"
+      - "requirements.txt"
+      - "pyproject.toml"
+      - "poetry.lock"
+  schedule:
+    # Asia/Almaty (UTC+5) schedule; restriction by day-of-month is enforced via gate (SCHEDULE_DOM).
+    - cron: "0 20 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: feeds_${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      TZ: Asia/Almaty
+      SCHEDULE_DOM: "*"
+      SCHEDULE_HOUR_ALMATY: "1"
+
+      PIP_PACKAGES: "requests"
+
+      ALSTYLE_LOGIN: ${{ secrets.ALSTYLE_LOGIN }}
+      ALSTYLE_PASSWORD: ${{ secrets.ALSTYLE_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check Almaty schedule gate
+        id: gate
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timedelta
+          import os
+
+          dom = os.getenv("SCHEDULE_DOM", "*").strip()
+          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "0"))
+          event = os.getenv("GITHUB_EVENT_NAME", "").strip()
+
+          now_utc = datetime.utcnow()
+          now_alm = now_utc + timedelta(hours=5)
+
+          if dom == "*":
+            day_ok = True
+            allowed = "*"
+          else:
+            allowed_set = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
+            day_ok = now_alm.day in allowed_set
+            allowed = ",".join(str(x) for x in sorted(allowed_set)) if allowed_set else "(empty)"
+
+          # Для schedule ограничение (если нужно) делаем только по дню месяца в Алматы.
+          # Час задается самим cron, поэтому не режем запуск из-за редких задержек GitHub.
+          if event != "schedule":
+            should = "yes"
+          else:
+            should = "yes" if day_ok else "no"
+
+          print(f"::notice::Event={event}; Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; should_run={should}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"run={should}\n")
+          PY
+
+      - name: Setup Python
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+        run: |
+          set -e
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          pip install $PIP_PACKAGES
+
+      - name: Build + commit + push docs/alstyle.yml (no conflicts)
+        if: ${{ (github.event_name != 'pull_request') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && (github.event_name != 'schedule' || steps.gate.outputs.run == 'yes') }}
+        run: |
+          set -euo pipefail
+
+          BRANCH="${GITHUB_REF_NAME}"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-from __future__ import annotations
+          for attempt in 1 2 3; do
+            echo "Attempt $attempt: sync -> build -> commit -> push"
 
-import sys
-import datetime as dt
-from pathlib import Path
-from typing import Optional, List, Dict, Set
-import re
-import xml.etree.ElementTree as ET
-import html as html_module
+            git fetch origin "$BRANCH"
+            git checkout -B "$BRANCH" "origin/$BRANCH"
 
-try:
-    import requests  # type: ignore
-except Exception:  # pragma: no cover
-    requests = None  # type: ignore
+            python scripts/build_alstyle.py
 
-SUPPLIER_NAME = "AlStyle"
-SUPPLIER_URL = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
-ENCODING_SUPPLIER = "utf-8"
-ENCODING_OUT = "windows-1251"
+            git add docs/alstyle.yml || true
 
-DEFAULT_OUTPUT = Path("docs/alstyle.yml")
+            if git diff --cached --quiet; then
+              echo "No changes to commit."
+              exit 0
+            fi
 
-VENDOR_PREFIX = "AS"
-DEFAULT_CURRENCY = "KZT"
-TIMEZONE_OFFSET_HOURS = 5  # Алматы
+            git commit -m "chore(alstyle): update docs/alstyle.yml [skip ci]"
 
-PARAM_BLACKLIST = {
-    "артикул",
-    "штрихкод",
-    "штрих-код",
-    "код товара kaspi",
-    "код тн вэд",
-    "объем",
-    "объём",
-    "объём, л",
-    "объём, мл",
-    "объем, л",
-    "объем, мл",
-    "снижена цена",
-    "благотворительность",
-    "назначение",
-    "новинка",
-}
+            if git push origin "HEAD:$BRANCH"; then
+              echo "Pushed successfully."
+              exit 0
+            fi
 
-PARAM_PRIORITY = [
-    "Бренд",
-    "Производитель",
-    "Модель",
-    "Серия",
-    "Тип",
-    "Тип чернил",
-    "Технология печати",
-    "Устройство",
-    "Совместимость",
-    "Цвет",
-    "Цвет печати",
-    "Диагональ экрана",
-    "Яркость",
-    "Объем картриджа, мл",
-    "Объём картриджа, мл",
-    "Объем, л",
-    "Объем, мл",
-    "Ёмкость батареи",
-    "Память",
-    "Вес",
-    "Размеры",
-]
+            echo "Push failed (non-fast-forward). Will retry..."
+            sleep 2
+          done
 
-DESC_PARAM_HINTS = [
-    "Производитель",
-    "Устройство",
-    "Цвет печати",
-    "Тип чернил",
-    "Технология печати",
-    "Объем картриджа, мл",
-    "Объём картриджа, мл",
-    "Объем картриджа",
-    "Объём картриджа",
-    "Совместимость",
-    "Ресурс картриджа",
-    "Ресурс",
-    "Объем, л",
-    "Объем, мл",
-    "Объём, л",
-    "Объём, мл",
-]
-_CITY_KEYWORDS = [
-    "Казахстан",
-    "Алматы",
-    "Астана",
-    "Шымкент",
-    "Караганда",
-    "Актобе",
-    "Павлодар",
-    "Атырау",
-    "Тараз",
-    "Оскемен",
-    "Семей",
-    "Костанай",
-    "Кызылорда",
-    "Орал",
-    "Петропавловск",
-    "Талдыкорган",
-    "Актау",
-    "Темиртау",
-    "Экибастуз",
-    "Кокшетау",
-]
-
-# Делает: транслитерация/slug
-def _translit_to_slug(text: str) -> str:
-    mapping = {
-        "а": "a",
-        "б": "b",
-        "в": "v",
-        "г": "g",
-        "д": "d",
-        "е": "e",
-        "ё": "e",
-        "ж": "zh",
-        "з": "z",
-        "и": "i",
-        "й": "y",
-        "к": "k",
-        "л": "l",
-        "м": "m",
-        "н": "n",
-        "о": "o",
-        "п": "p",
-        "р": "r",
-        "с": "s",
-        "т": "t",
-        "у": "u",
-        "ф": "f",
-        "х": "h",
-        "ц": "c",
-        "ч": "ch",
-        "ш": "sh",
-        "щ": "sch",
-        "ъ": "",
-        "ы": "y",
-        "ь": "",
-        "э": "e",
-        "ю": "yu",
-        "я": "ya",
-    }
-    text = (text or "").lower()
-    res: List[str] = []
-    prev_dash = False
-    for ch in text:
-        if ch in mapping:
-            res.append(mapping[ch])
-            prev_dash = False
-        elif ch.isalnum():
-            res.append(ch)
-            prev_dash = False
-        else:
-            if not prev_dash:
-                res.append("-")
-                prev_dash = True
-    slug = "".join(res).strip("-")
-    return slug
-
-# Делает: собирает ключевые слова
-def _make_keywords(name: str, vendor: str) -> str:
-    parts: List[str] = []
-    seen: Set[str] = set()
-
-    def add(token: str) -> None:
-        token = (token or "").strip()
-        if not token:
-            return
-        if token in seen:
-            return
-        seen.add(token)
-        parts.append(token)
-
-    name = (name or "").strip()
-    vendor = (vendor or "").strip()
-
-    if vendor:
-        add(vendor)
-
-    if name:
-        add(name)
-
-    tokens = re.split(r'[\s,;:!?()\[\]"/+]+' , name)
-    words = [t for t in tokens if t and len(t) >= 3]
-
-    for w in words:
-        add(w)
-
-    model = None
-    for t in reversed(tokens):
-        if any(ch.isdigit() for ch in t):
-            model = t.strip()
-            break
-
-    if vendor and model:
-        add(model)
-        add(f"{vendor} {model}")
-
-    base_words = [w for w in words if not re.fullmatch(r"\d+[%]?", w)]
-    if base_words:
-        phrase2 = " ".join(base_words[:2])
-        phrase3 = " ".join(base_words[:3])
-        add(_translit_to_slug(phrase2))
-        add(_translit_to_slug(phrase3))
-        for w in base_words[:3]:
-            add(_translit_to_slug(w))
-
-    if vendor and model:
-        add(_translit_to_slug(f"{vendor} {model}"))
-
-    for city in _CITY_KEYWORDS:
-        add(city)
-
-    if not parts:
-        return ""
-
-    result = ", ".join(parts)
-    if len(result) > 2000:
-        out: List[str] = []
-        length = 0
-        for p in parts:
-            add_len = len(p) + 2 if out else len(p)
-            if length + add_len > 2000:
-                break
-            out.append(p)
-            length += add_len
-        result = ", ".join(out)
-
-    return result
-
-ALLOWED_CATEGORY_IDS: Set[str] = {
-    "3540",
-    "3541",
-    "3542",
-    "3543",
-    "3544",
-    "3545",
-    "3566",
-    "3567",
-    "3569",
-    "3570",
-    "3580",
-    "3688",
-    "3708",
-    "3721",
-    "3722",
-    "4889",
-    "4890",
-    "4895",
-    "5017",
-    "5075",
-    "5649",
-    "5710",
-    "5711",
-    "5712",
-    "5713",
-    "21279",
-    "21281",
-    "21291",
-    "21356",
-    "21367",
-    "21368",
-    "21369",
-    "21370",
-    "21371",
-    "21372",
-    "21451",
-    "21498",
-    "21500",
-    "21572",
-    "21573",
-    "21574",
-    "21575",
-    "21576",
-    "21578",
-    "21580",
-    "21581",
-    "21583",
-    "21584",
-    "21585",
-    "21586",
-    "21588",
-    "21591",
-    "21640",
-    "21664",
-    "21665",
-    "21666",
-    "21698",
-}
-
-WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
-
-# Делает: возвращает текущее время Алматы
-def _now_almaty() -> dt.datetime:
-    return dt.datetime.utcnow() + dt.timedelta(hours=TIMEZONE_OFFSET_HOURS)
-
-# Делает:  read text
-def _read_text(path: Path, encoding: str) -> str:
-    return path.read_text(encoding=encoding, errors="replace")
-
-# Делает:  make encoding safe
-def _make_encoding_safe(text: str, encoding: str) -> str:
-    return text.encode(encoding, errors="xmlcharrefreplace").decode(encoding)
-
-# Делает:  write text
-def _write_text(path: Path, data: str, encoding: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    safe = _make_encoding_safe(data, encoding)
-    with path.open("w", encoding=encoding, newline="\n") as f:
-        f.write(safe)
-
-# Делает: скачивает исходные данные
-def _download_xml(url: str) -> str:
-    if requests is None:
-        raise RuntimeError("Модуль requests недоступен, не могу скачать XML поставщика")
-    resp = requests.get(url, timeout=60)
-    resp.raise_for_status()
-    return resp.text
-
-# Делает:  strip doctype
-def _strip_doctype(xml_text: str) -> str:
-    return re.sub(r"<!DOCTYPE[^>]*>", "", xml_text, flags=re.IGNORECASE | re.DOTALL)
-
-# Делает: извлекает нужные поля
-def _parse_float(value: str) -> float:
-    value = (value or "").strip().replace(" ", "").replace(",", ".")
-    if not value:
-        return 0.0
-    try:
-        return float(value)
-    except ValueError:
-        return 0.0
-
-# Делает: считает цену
-def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
-    purchase = _parse_float(purchase_raw)
-    supplier_price = _parse_float(supplier_raw)
-
-    base = 0.0
-    if purchase > 0:
-        base = purchase
-    elif supplier_price > 0:
-        base = supplier_price
-    else:
-        return 100
-
-    base_int = int(base)
-    if base_int <= 0:
-        return 100
-
-    tiers = [
-        (101, 10_000, 3_000),
-        (10_001, 25_000, 4_000),
-        (25_001, 50_000, 5_000),
-        (50_001, 75_000, 7_000),
-        (75_001, 100_000, 10_000),
-        (100_001, 150_000, 12_000),
-        (150_001, 200_000, 15_000),
-        (200_001, 300_000, 20_000),
-        (300_001, 400_000, 25_000),
-        (400_001, 500_000, 30_000),
-        (500_001, 750_000, 40_000),
-        (750_001, 1_000_000, 50_000),
-        (1_000_001, 1_500_000, 70_000),
-        (1_500_001, 2_000_000, 90_000),
-        (2_000_001, 100_000_000, 100_000),
-    ]
-
-    bonus = 0
-    for lo, hi, add in tiers:
-        if lo <= base_int <= hi:
-            bonus = add
-            break
-
-    if bonus == 0:
-        value = base_int * 1.04
-    else:
-        value = base_int * 1.04 + bonus
-
-    thousands = int(value) // 1000
-    price = thousands * 1000 + 900
-    if price < value:
-        price += 1000
-
-    if price >= 9_000_000:
-        return 100
-
-    return int(price)
-
-# Делает: извлекает нужные поля
-def _parse_available(value: str) -> bool:
-    v = (value or "").strip().lower()
-    if v in {"1", "true", "yes", "да"}:
-        return True
-    if v in {"0", "false", "no", "нет"}:
-        return False
-    return False
-
-# Делает: экранирует текст для XML
-def _xml_escape_text(s: str) -> str:
-    if not s:
-        return ""
-    return (
-        s.replace("&", "&amp;")
-         .replace("<", "&lt;")
-         .replace(">", "&gt;")
-    )
-
-# Делает: экранирует текст для XML
-def _xml_escape_attr(s: str) -> str:
-    if not s:
-        return ""
-    return (
-        s.replace("&", "&amp;")
-         .replace('"', "&quot;")
-         .replace("<", "&lt;")
-         .replace(">", "&gt;")
-    )
-
-_re_ws = re.compile(r"\s+", re.U)
-
-# Делает: нормализует значения
-def _normalize_description_text(text: str) -> str:
-    if not text:
-        return ""
-    lines = []
-    for line in text.splitlines():
-        s = line.strip()
-        if not s:
-            continue
-        lines.append(s)
-    if not lines:
-        return ""
-    joined = " ".join(lines)
-    joined = _re_ws.sub(" ", joined)
-    return joined.strip()
-
-# Делает:  plain from html
-def _plain_from_html(html_text: str) -> str:
-    if not html_text:
-        return ""
-    txt = html_module.unescape(html_text)
-    txt = re.sub(r"(?i)<br\s*/?>", " ", txt)
-    txt = re.sub(r"<[^>]+>", " ", txt)
-    txt = txt.replace("\u00A0", " ")
-    txt = _re_ws.sub(" ", txt)
-    return txt.strip()
-
-GOAL = 1000
-GOAL_LOW = 900
-MAX_HARD = 1200
-
-# Делает: собирает YML текст
-def _build_desc_text(plain: str) -> str:
-    if len(plain) <= GOAL:
-        return plain
-
-    parts = re.split(r"(?<=[\.!?])\s+|;\s+", plain)
-    parts = [p.strip() for p in parts if p.strip()]
-    if not parts:
-        return plain[:GOAL]
-
-    selected: List[str] = []
-    total = 0
-
-    selected.append(parts[0])
-    total = len(parts[0])
-
-    for p in parts[1:]:
-        add = (1 if total else 0) + len(p)
-        if total + add > MAX_HARD:
-            break
-        selected.append(p)
-        total += add
-        if total >= GOAL_LOW:
-            break
-
-    if total < GOAL_LOW:
-        for p in parts[len(selected):]:
-            add = (1 if total else 0) + len(p)
-            if total + add > MAX_HARD:
-                break
-            selected.append(p)
-            total += add
-            if total >= GOAL_LOW:
-                break
-
-    return " ".join(selected).strip()
-
-# Делает:  make br paragraph
-def _make_br_paragraph(text: str) -> str:
-    if not text:
-        return "<p></p>"
-    trimmed = _build_desc_text(text)
-    return "<p>" + _xml_escape_text(trimmed) + "</p>"
-
-# Делает: нормализует значения
-def _normalize_param_value(value: str) -> str:
-    if not value:
-        return ""
-    value = re.sub(r"\s+", " ", value)
-    return value.strip()
-
-# Делает:  sort params
-def _sort_params(params: List[Dict[str, str]]) -> List[Dict[str, str]]:
-    def _pkey(item: Dict[str, str]) -> tuple:
-        name = item["name"]
-        try:
-            idx = PARAM_PRIORITY.index(name)
-        except ValueError:
-            idx = 10**6
-        return (idx, name.lower())
-
-    return sorted(params, key=_pkey)
-
-# Делает:  collect params from xml
-def _collect_params_from_xml(src_offer: ET.Element) -> List[Dict[str, str]]:
-    items: List[Dict[str, str]] = []
-
-    for param in src_offer.findall("param"):
-        name = (param.get("name") or "").strip()
-        value = (param.text or "").strip()
-        if not name or not value:
-            continue
-        key_clean = name.strip().strip(":")
-        key_lower = key_clean.lower()
-        if key_lower in PARAM_BLACKLIST:
-            continue
-        if any(p["name"].lower() == key_lower for p in items):
-            continue
-        norm_val = _normalize_param_value(value)
-        if not norm_val:
-            continue
-        if key_lower in {"ресурс", "ресурс картриджа"} and not any(ch.isdigit() for ch in norm_val):
-            continue
-        items.append({"name": key_clean, "value": norm_val})
-
-    return items
-
-# Делает: извлекает нужные поля
-def _extract_params_from_desc(desc_html: str, existing_names_lower: Set[str]) -> List[Dict[str, str]]:
-    plain = _plain_from_html(desc_html)
-    if not plain:
-        return []
-    tokens = plain.split()
-    if not tokens:
-        return []
-
-    hint_tokens = [(h, h.split()) for h in DESC_PARAM_HINTS]
-
-    extra: List[Dict[str, str]] = []
-    n = len(tokens)
-    i = 0
-
-    while i < n:
-        match_name = None
-        match_len = 0
-
-        for name, htoks in hint_tokens:
-            L = len(htoks)
-            if L == 0 or i + L > n:
-                continue
-            if tokens[i:i+L] == htoks:
-                if L > match_len:
-                    match_name = name
-                    match_len = L
-
-        if not match_name:
-            i += 1
-            continue
-
-        key_clean = match_name.strip()
-        key_lower = key_clean.lower()
-        if key_lower in PARAM_BLACKLIST or key_lower in existing_names_lower:
-            i += match_len
-            continue
-
-        j = i + match_len
-        val_tokens: List[str] = []
-        k = j
-        while k < n:
-            next_match = False
-            for name2, htoks2 in hint_tokens:
-                L2 = len(htoks2)
-                if L2 == 0 or k + L2 > n:
-                    continue
-                if tokens[k:k+L2] == htoks2:
-                    next_match = True
-                    break
-            if next_match:
-                break
-
-            tok = tokens[k]
-            val_tokens.append(tok)
-            if any(ch in tok for ch in [".", "!", "?"]) and len(val_tokens) > 2:
-                k += 1
-                break
-            k += 1
-
-        raw_value = " ".join(val_tokens).strip(" .,:;")
-        norm_value = _normalize_param_value(raw_value)
-        if key_lower in {"ресурс", "ресурс картриджа"} and (not norm_value or not any(ch.isdigit() for ch in norm_value)):
-            i = k
-            continue
-        if norm_value:
-            extra.append({"name": key_clean, "value": norm_value})
-            existing_names_lower.add(key_lower)
-
-        i = k
-
-    return extra
-
-# Делает: собирает YML текст
-def _build_description_html(name: str, original_desc: str, params_block: List[Dict[str, str]]) -> str:
-    parts: List[str] = []
-    parts.append("<description><![CDATA[")
-    parts.append("")
-    parts.append("<!-- WhatsApp -->")
-    parts.append(WHATSAPP_BLOCK)
-    parts.append("")
-    parts.append("<!-- Описание -->")
-
-    norm_plain = _normalize_description_text(original_desc)
-    if not norm_plain:
-        name_html = _xml_escape_text(name)
-        tail = "<h3>" + name_html + "</h3>"
-    else:
-        desc_plain = _plain_from_html(original_desc)
-        if not desc_plain:
-            desc_plain = norm_plain
-        desc_html_p = _make_br_paragraph(desc_plain)
-        name_html = _xml_escape_text(name)
-        tail = "<h3>" + name_html + "</h3>" + desc_html_p
-
-    if params_block:
-        tail += "<h3>Характеристики</h3><ul>"
-        for item in params_block:
-            pname = _xml_escape_text(item["name"])
-            pvalue = _xml_escape_text(item["value"])
-            tail += "<li><strong>" + pname + ":</strong> " + pvalue + "</li>"
-        tail += "</ul>"
-
-    parts.append(tail)
-    parts.append("")
-    parts.append("]]></description>")
-    return "\n".join(parts)
-
-# Делает: собирает YML текст
-def _build_feed_meta(build_time: dt.datetime, stats: Dict[str, int], next_build: dt.datetime) -> str:
-    lines = [
-        "<!--FEED_META",
-        "Поставщик                                  | " + SUPPLIER_NAME,
-        "URL поставщика                             | " + SUPPLIER_URL,
-        "Время сборки (Алматы)                      | " + build_time.strftime("%Y-%m-%d %H:%M:%S"),
-        "Ближайшая сборка (Алматы)                  | " + next_build.strftime("%Y-%m-%d %H:%M:%S"),
-        "Сколько товаров у поставщика до фильтра    | " + str(stats["total_before"]),
-        "Сколько товаров у поставщика после фильтра | " + str(stats["after_filter"]),
-        "Сколько товаров есть в наличии (true)      | " + str(stats["available_true"]),
-        "Сколько товаров нет в наличии (false)      | " + str(stats["available_false"]),
-        "-->",
-    ]
-    return "\n".join(lines)
-
-# Делает: формирует offer
-def _convert_offer(src_offer: ET.Element, stats: Dict[str, int]) -> Optional[str]:
-    stats["total_before"] += 1
-
-    def g(tag: str) -> str:
-        return (src_offer.findtext(tag) or "").strip()
-
-    category_id = g("categoryId")
-    if category_id and category_id not in ALLOWED_CATEGORY_IDS:
-        return None
-
-    article = (src_offer.get("id") or "").strip()
-    vendor_code_raw = g("vendorCode")
-    base_code = vendor_code_raw or article
-    if not base_code:
-        return None
-
-    vendor_code = VENDOR_PREFIX + base_code
-    offer_id = vendor_code
-
-    purchase_raw = g("purchase_price")
-    supplier_price_raw = g("price")
-    price_int = _calc_price(purchase_raw, supplier_price_raw)
-
-    currency_id = g("currencyId") or DEFAULT_CURRENCY
-
-    available_raw = g("available")
-    is_avail = _parse_available(available_raw)
-
-    stats["after_filter"] += 1
-    if is_avail:
-        stats["available_true"] += 1
-    else:
-        stats["available_false"] += 1
-
-    vendor = g("vendor")
-    name = g("name")
-    original_desc = g("description")
-
-    pictures: List[str] = []
-    for pic in src_offer.findall("picture"):
-        url = (pic.text or "").strip()
-        if url and url not in pictures:
-            pictures.append(url)
-
-    params_block = _collect_params_from_xml(src_offer)
-    existing_names_lower: Set[str] = set(p["name"].lower() for p in params_block)
-    extra_params = _extract_params_from_desc(original_desc, existing_names_lower)
-    if extra_params:
-        params_block.extend(extra_params)
-    if params_block:
-        params_block = _sort_params(params_block)
-
-    desc_html = _build_description_html(name=name, original_desc=original_desc, params_block=params_block)
-
-    lines: List[str] = []
-    avail_str = "true" if is_avail else "false"
-    lines.append('<offer id="' + _xml_escape_attr(offer_id) + '" available="' + avail_str + '">')
-    lines.append("<categoryId>" + category_id + "</categoryId>")
-    lines.append("<vendorCode>" + _xml_escape_text(vendor_code) + "</vendorCode>")
-    lines.append("<name>" + _xml_escape_text(name) + "</name>")
-    lines.append("<price>" + str(price_int) + "</price>")
-    for u in pictures:
-        lines.append("<picture>" + _xml_escape_text(u) + "</picture>")
-    if vendor:
-        lines.append("<vendor>" + _xml_escape_text(vendor) + "</vendor>")
-    lines.append("<currencyId>" + currency_id + "</currencyId>")
-    lines.append(desc_html)
-    for p in params_block:
-        pname_attr = _xml_escape_attr(p["name"])
-        pvalue_text = _xml_escape_text(p["value"])
-        lines.append('<param name="' + pname_attr + '">' + pvalue_text + "</param>")
-    kw = _make_keywords(name, vendor)
-    if kw:
-        lines.append("<keywords>" + _xml_escape_text(kw) + "</keywords>")
-    lines.append("</offer>")
-
-    return "\n".join(lines)
-
-# Делает: собирает итоговый YML
-def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT_OUTPUT) -> None:
-    if source_xml is None:
-        xml_text = _download_xml(SUPPLIER_URL)
-    else:
-        xml_text = _read_text(source_xml, ENCODING_SUPPLIER)
-
-    xml_text = _strip_doctype(xml_text)
-
-    try:
-        root = ET.fromstring(xml_text)
-    except ET.ParseError as e:
-        raise RuntimeError("Ошибка парсинга XML поставщика: %s" % e) from e
-
-    shop = root.find("shop")
-    offers_container = None
-    if shop is not None:
-        offers_container = shop.find("offers")
-    if offers_container is None:
-        offers_container = root.find("shop/offers")
-    if offers_container is None:
-        raise RuntimeError("Не найден блок <offers> в XML поставщика")
-
-    all_offers = list(offers_container.findall("offer"))
-
-    stats: Dict[str, int] = {
-        "total_before": 0,
-        "after_filter": 0,
-        "available_true": 0,
-        "available_false": 0,
-    }
-
-    converted_offers: List[str] = []
-    for src_offer in all_offers:
-        converted = _convert_offer(src_offer, stats)
-        if converted:
-            converted_offers.append(converted)
-
-    build_time = _now_almaty()
-    next_build = (build_time + dt.timedelta(days=1)).replace(hour=1, minute=0, second=0, microsecond=0)
-
-    feed_meta = _build_feed_meta(build_time, stats, next_build)
-
-    lines: List[str] = []
-    lines.append('<?xml version="1.0" encoding="' + ENCODING_OUT + '"?>')
-    lines.append('<!DOCTYPE yml_catalog SYSTEM "shops.dtd">')
-    lines.append('<yml_catalog date="' + build_time.strftime("%Y-%m-%d %H:%M") + '">')
-    lines.append("<shop><offers>")
-    lines.append("")
-    lines.append(feed_meta)
-    lines.append("")
-
-    for idx, offer_text in enumerate(converted_offers):
-        lines.append(offer_text)
-        if idx != len(converted_offers) - 1:
-            lines.append("")
-
-    lines.append("")
-    lines.append("</offers>")
-    lines.append("</shop>")
-    lines.append("</yml_catalog>")
-
-    final_text = "\n".join(lines)
-    _write_text(output_path, final_text, ENCODING_OUT)
-
-# Делает: точка входа
-def main(argv: Optional[List[str]] = None) -> None:
-    if argv is None:
-        argv = sys.argv[1:]
-
-    source_xml: Optional[Path] = None
-    output_path: Path = DEFAULT_OUTPUT
-
-    if len(argv) >= 1 and argv[0]:
-        source_xml = Path(argv[0])
-    if len(argv) >= 2 and argv[1]:
-        output_path = Path(argv[1])
-
-    build_alstyle(source_xml=source_xml, output_path=output_path)
-
-if __name__ == "__main__":
-    main()
+          echo "Failed to push after 3 attempts."
+          exit 1
