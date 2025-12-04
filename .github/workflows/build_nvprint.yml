@@ -11,8 +11,7 @@ on:
       - "pyproject.toml"
       - "poetry.lock"
   schedule:
-    # 04:00 Asia/Almaty (UTC+5) = 23:00 UTC предыдущего дня
-    # Запускаем каждый день, но сборку делаем только 1/10/20 числа (гейт ниже).
+    # Asia/Almaty (UTC+5) schedule; restriction by day-of-month is enforced via gate (SCHEDULE_DOM).
     - cron: "0 23 * * *"
 
 permissions:
@@ -54,20 +53,27 @@ jobs:
 
           dom = os.getenv("SCHEDULE_DOM", "*").strip()
           hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "0"))
+          event = os.getenv("GITHUB_EVENT_NAME", "").strip()
 
           now_utc = datetime.utcnow()
           now_alm = now_utc + timedelta(hours=5)
 
           if dom == "*":
             day_ok = True
+            allowed = "*"
           else:
-            allowed = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
-            day_ok = now_alm.day in allowed
+            allowed_set = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
+            day_ok = now_alm.day in allowed_set
+            allowed = ",".join(str(x) for x in sorted(allowed_set)) if allowed_set else "(empty)"
 
-          hour_ok = (now_alm.hour == hour)
-          should = "yes" if (day_ok and hour_ok) else "no"
+          # Для schedule ограничение (если нужно) делаем только по дню месяца в Алматы.
+          # Час задается самим cron, поэтому не режем запуск из-за редких задержек GitHub.
+          if event != "schedule":
+            should = "yes"
+          else:
+            should = "yes" if day_ok else "no"
 
-          print(f"::notice::Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}, should_run={should}")
+          print(f"::notice::Event={event}; Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; should_run={should}")
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
             f.write(f"run={should}\n")
           PY
