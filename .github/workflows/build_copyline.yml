@@ -20,22 +20,20 @@ permissions:
   contents: write
 
 concurrency:
-  group: build_${{ github.workflow }}_${{ github.ref_name }}
-  cancel-in-progress: true
+  group: feeds_${{ github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     env:
       TZ: Asia/Almaty
-      # gate config (Almaty time)
       SCHEDULE_DOM: "1,10,20"
       SCHEDULE_HOUR_ALMATY: "3"
 
-      # deps fallback
       PIP_PACKAGES: "requests beautifulsoup4 openpyxl"
 
-      # script env
       XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
       KEYWORDS_FILE: "docs/copyline_keywords.txt"
       OUT_FILE: "docs/copyline.yml"
@@ -97,10 +95,8 @@ jobs:
           fi
           pip install $PIP_PACKAGES
 
-      # docs/copyline.yml — генерируемый файл.
-      # Чтобы не получать merge/rebase conflict, всегда коммитим поверх актуального origin/<branch>.
       - name: Build + commit + push docs/copyline.yml (no conflicts)
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+        if: ${{ (github.event_name != 'pull_request') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && (github.event_name != 'schedule' || steps.gate.outputs.run == 'yes') }}
         run: |
           set -euo pipefail
 
@@ -113,11 +109,8 @@ jobs:
             echo "Attempt $attempt: sync -> build -> commit -> push"
 
             git fetch origin "$BRANCH"
-
-            # гарантированно на ветке (иначе бывает detached HEAD после ошибок)
             git checkout -B "$BRANCH" "origin/$BRANCH"
 
-            # сборка (каждый раз после синка, чтобы файл был рассчитан от актуального HEAD)
             python scripts/build_copyline.py
 
             git add docs/copyline.yml || true
