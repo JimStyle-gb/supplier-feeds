@@ -75,6 +75,7 @@ PRICING_RULES: List[PriceRule] = [
 def _almaty_now() -> datetime:
     return datetime.utcnow() + timedelta(hours=5)
 
+
 def _next_build_1_10_20_at_04() -> datetime:
     now = _almaty_now()
     for d in (1, 10, 20):
@@ -97,14 +98,16 @@ def _strip_ns(tag: str) -> str:
         return tag.rsplit("}", 1)[-1]
     return tag
 
+
 def _tag_lower(node: ET.Element) -> str:
     return _strip_ns(node.tag).lower()
+
 
 def _norm_spaces(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").strip())
 
+
 def _fix_picture_url(url: str) -> str:
-    """Только для <picture>: http->https и пробелы -> %20."""
     if not url:
         return ""
     u = (url or "").strip()
@@ -124,6 +127,7 @@ def _unique_keep_order(xs: List[str]) -> List[str]:
             out.append(x)
     return out
 
+
 def _parse_number(txt: Optional[str]) -> Optional[float]:
     if not txt:
         return None
@@ -136,6 +140,7 @@ def _parse_number(txt: Optional[str]) -> Optional[float]:
     except (InvalidOperation, ValueError):
         return None
 
+
 def _find_desc_text(elem: ET.Element, names: List[str]) -> Optional[str]:
     wanted = {n.lower() for n in names}
     for node in elem.iter():
@@ -144,6 +149,7 @@ def _find_desc_text(elem: ET.Element, names: List[str]) -> Optional[str]:
             if t:
                 return t
     return None
+
 
 def _download_bytes() -> bytes:
     if not SUPPLIER_URL:
@@ -171,13 +177,14 @@ def _download_bytes() -> bytes:
 
     raise RuntimeError(str(last_err) if last_err else "Не удалось скачать источник")
 
-# ---------------- ЦЕНА ИЗ ДОГОВОРОВ ----------------
+
 def _norm_contract(s: str) -> str:
     if not s:
         return ""
     u = s.translate(_LAT_TR).upper()
     u = re.sub(r"[\s\-\_]+", "", u)
     return u
+
 
 def _extract_base_price(item: ET.Element) -> Optional[float]:
     price_kz: Optional[float] = None
@@ -208,9 +215,11 @@ def _extract_base_price(item: ET.Element) -> Optional[float]:
 
     return price_kz if (price_kz is not None and price_kz > 0) else (price_msk if (price_msk is not None and price_msk > 0) else None)
 
+
 def _round_up_tail_900(n: int) -> int:
     thousands = (n + 999) // 1000
     return thousands * 1000 - 100
+
 
 def compute_price(base_price: Optional[int]) -> int:
     if base_price is None or base_price < 100:
@@ -222,15 +231,17 @@ def compute_price(base_price: Optional[int]) -> int:
     raw = base_price * (1.0 + PRICING_RULES[-1][2] / 100.0) + PRICING_RULES[-1][3]
     return _round_up_tail_900(int(math.ceil(raw)))
 
-# ---------------- ТОВАР: ПОЛЯ + ПАРАМЕТРЫ ----------------
+
 def _clean_article(raw: str) -> str:
     s = (raw or "").strip()
     s = re.sub(r"^\s*NV[\-\_\s]+", "", s, flags=re.IGNORECASE)
     s = s.replace(" ", "")
     return s
 
+
 def make_id(article: str) -> str:
     return "NP" + _clean_article(article)
+
 
 def name_starts_with_prefixes(name_short: str) -> bool:
     base = _norm_spaces(name_short).lower()
@@ -239,12 +250,14 @@ def name_starts_with_prefixes(name_short: str) -> bool:
             return True
     return False
 
+
 def detect_type(name_short: str) -> str:
     base = _norm_spaces(name_short).lower()
     for kw in KEYWORD_PREFIXES:
         if base.startswith(_norm_spaces(kw).lower()):
             return kw
     return KEYWORD_PREFIXES[0] if KEYWORD_PREFIXES else "Товар"
+
 
 def collect_printers(item: ET.Element) -> List[str]:
     out: List[str] = []
@@ -261,6 +274,7 @@ def collect_printers(item: ET.Element) -> List[str]:
                     out.append(t)
 
     return _unique_keep_order(out)
+
 
 def build_params(item: ET.Element, name_short: str, printers: Optional[List[str]] = None) -> List[Tuple[str, str]]:
     params: List[Tuple[str, str]] = []
@@ -292,8 +306,10 @@ def build_params(item: ET.Element, name_short: str, printers: Optional[List[str]
 
     return params
 
+
 def _html_li(k: str, v: str) -> str:
     return f"<li><strong>{html.escape(k)}:</strong> {html.escape(v)}</li>"
+
 
 def build_description_html(title: str, short_desc: str, params: List[Tuple[str, str]]) -> str:
     title_h = html.escape(title)
@@ -312,12 +328,12 @@ def build_description_html(title: str, short_desc: str, params: List[Tuple[str, 
         "]]></description>"
     )
 
+
 def _latinize_like(s: str) -> str:
-    """Заменяет похожие кириллические символы на латиницу (для устойчивого распознавания брендов)."""
     return (s or "").translate(_LAT_TR)
 
+
 def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, printers: List[str]) -> str:
-    """Определяем vendor из названия/описания/совместимости. Консервативно."""
     blob = " ".join(x for x in [article_raw, name_short, nom_full, " ".join(printers or [])] if x).strip()
     if not blob:
         return ""
@@ -375,6 +391,7 @@ def detect_vendor_from_text(article_raw: str, name_short: str, nom_full: str, pr
 
     return ""
 
+
 def build_keywords(vendor: str, title: str, vendor_code: str, params: List[Tuple[str, str]]) -> str:
     parts: List[str] = []
     for s in (vendor, title, vendor_code):
@@ -392,6 +409,7 @@ def build_keywords(vendor: str, title: str, vendor_code: str, params: List[Tuple
 
     uniq.extend(CITIES)
     return ", ".join(uniq)
+
 
 def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
     article = _find_desc_text(node, ["Артикул", "articul", "sku", "article", "PartNumber"])
@@ -446,6 +464,7 @@ def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
         "available": True,
     }
 
+
 def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
     items: List[ET.Element] = []
     seen: set[int] = set()
@@ -475,8 +494,8 @@ def guess_item_nodes(root: ET.Element) -> List[ET.Element]:
 
     return items
 
+
 def ensure_unique_offer_ids(offers: List[Dict[str, Any]]) -> None:
-    """Делает id/vendorCode уникальными ТОЛЬКО при дублях, чтобы импорт не конфликтовал."""
     used: set[str] = set()
     counters: Dict[str, int] = {}
 
@@ -570,6 +589,7 @@ def build_yml(offers: List[Dict[str, Any]], source_url: str, total_before_filter
     out.append("</yml_catalog>")
     return "\n".join(out)
 
+
 def main() -> int:
     try:
         xml_bytes = _download_bytes()
@@ -598,5 +618,6 @@ def main() -> int:
     print(f"Wrote: {OUT_FILE} | encoding={OUTPUT_ENCODING}")
     return 0
 
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main() or 0)
