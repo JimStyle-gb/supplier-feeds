@@ -794,7 +794,6 @@ def build_alstyle(source_xml: Optional[Path] = None, output_path: Path = DEFAULT
 
     lines: List[str] = []
     lines.append('<?xml version="1.0" encoding="' + ENCODING_OUT + '"?>')
-    lines.append('')
     lines.append('<yml_catalog date="' + build_time.strftime("%Y-%m-%d %H:%M") + '">')
     lines.append("<shop><offers>")
     lines.append("")
