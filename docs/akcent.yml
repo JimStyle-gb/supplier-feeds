@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="windows-1251"?>
-<yml_catalog date="2025-12-05 09:15">
+<yml_catalog date="2025-12-05 11:35">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-12-05 09:15:44
-Ближайшая сборка (Алматы)                  | 2025-12-06 01:00:00
-Сколько товаров у поставщика до фильтра    | 1809
-Сколько товаров у поставщика после фильтра | 168
-Сколько товаров есть в наличии (true)      | 168
+Время сборки (Алматы)                      | 2025-12-05 11:35:58
+Ближайшая сборка (Алматы)                  | 2025-12-06 02:00:00
+Сколько товаров у поставщика до фильтра    | 1808
+Сколько товаров у поставщика после фильтра | 170
+Сколько товаров есть в наличии (true)      | 170
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1866,32 +1866,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, МФУ Epson L3200 фабрика печати, МФУ, L3200, фабрика, печати, Epson L3200, mfu-epson, mfu-epson-l3200, mfu, epson, l3200, epson-l3200, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
-<offer id="AKC11CJ67412" available="true">
-<categoryId></categoryId>
-<vendorCode>AKC11CJ67412</vendorCode>
-<name>МФУ Epson L3250 фабрика печати. Wi-Fi</name>
-<price>107900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/358/lxtmcj0imiles090hfyrgv2ks9sybtum.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>МФУ Epson L3250 фабрика печати. Wi-Fi</h3><p>Домашний струйный принтер Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct Печать, сканирование и копирование Wi-Fi Direct Черный Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту вы с легкостью сможете выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета. Постоянная экономия Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет, обеспечивает значительную экономию средств при печати.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Страна происхождения:</strong> Филипины</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Формат:</strong> A4</li></ul>
-
-]]></description>
-<param name="Производитель">Epson</param>
-<param name="Страна происхождения">Филипины</param>
-<param name="Гарантия">12 мес</param>
-<param name="Тип печати">струйная</param>
-<param name="Формат">A4</param>
-<keywords>Epson, МФУ Epson L3250 фабрика печати. Wi-Fi, МФУ, L3250, фабрика, печати., Wi-Fi, Epson L3250, mfu-epson, mfu-epson-l3250, mfu, epson, l3250, epson-l3250, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
 <offer id="AKC11CJ67414" available="true">
 <categoryId></categoryId>
 <vendorCode>AKC11CJ67414</vendorCode>
@@ -2455,28 +2429,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Тип расходных материалов">чернила</param>
 <param name="Максимальная скорость печати А4 стр/мин">9</param>
 <keywords>Epson, Принтер Epson L121 фабрика печати, Принтер, L121, фабрика, печати, Epson L121, printer-epson, printer-epson-l121, printer, epson, l121, epson-l121, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
-<offer id="AKC11CJ71404" available="true">
-<categoryId></categoryId>
-<vendorCode>AKC11CJ71404</vendorCode>
-<name>Принтер Epson L1250 фабрика печати</name>
-<price>103900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a10/4836119mtcr18cmgpopdiw26fo71y1x6.png</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Принтер Epson L1250 фабрика печати</h3><p>Домашний струйный принтер Цветной принтер формата A4 с Wi-Fi Принтер Wi-Fi Direct Компактный дизайн Благодаря отсутствию необходимости в замене картриджей этот принтер подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту вы с легкостью сможете выполнять различные задачи. Попрощайтесь с дорогостоящими картриджами EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета. Постоянная экономия Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет, обеспечивает значительную экономию средств при печати.</p>
-<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 12 мес</li></ul>
-
-]]></description>
-<param name="Гарантия">12 мес</param>
-<keywords>Epson, Принтер Epson L1250 фабрика печати, Принтер, L1250, фабрика, печати, Epson L1250, printer-epson, printer-epson-l1250, printer, epson, l1250, epson-l1250, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKC11CE58403" available="true">
@@ -3887,6 +3839,36 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Fellowes, Шредер Fellowes® AutoMax® 100M, минирезка, DIN P-4, 4х10 мм,автоподача 100 лст., 23 лтр., автореверc, Шредер, Fellowes®, AutoMax®, 100M, минирезка, DIN, P-4, 4х10, автоподача, 100, лст., лтр., автореверc, 23, Fellowes 23, shreder-fellowes, shreder-fellowes-automax, shreder, fellowes, automax, fellowes-23, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
+<offer id="AKFS-46801*" available="true">
+<categoryId></categoryId>
+<vendorCode>AKFS-46801*</vendorCode>
+<name>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</name>
+<price>172900</price>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</h3><p>Шредер с автоподачей AutoMax™ 150C Компактный уничтожитель с автоподачей и инновационной технологией accufeed Загрузка лотка до 150 листов Перекрестная резка - 4х38 мм P-4 уровень секретности Удобная выдвижная корзина 32 литра  200 листов А4 Гарантия 2 года на устройство и 5 лет на ножи Возможности уничтожения - скобы, карты, скрепки, диски Артикул fs-46801* Количество пользователей 1-3 Пользователя Рекомендуемое количество CD дисков в день 10 Производительность, листов (A4, 70 гр./м) 150 (8 вручную) Тип Резки Перекрестная Размер резки, мм 4 x 38 Уровень секретности, DIN 66399 P-4 Количество фрагментов при резке листа А4, шт. 410 Уровень секретности для кредитных карт, DIN 66399 T-4 Ширина входа, мм 230 Скорость резки, м/мин 3 Рабочий цикл, мин 12 / 25 Уничтожение степлерных скоб да Уничтожение скрепок да Уничтожение кредитных карт да (ручная загрузка) Уничтожение CD или Blu-Ray DVD (1,2 слоя) да 100% Jam-Proof Технология нет Другие технологии предотвращения заторов Автореверс Safe</p>
+<h3>Характеристики</h3><ul><li><strong>Производительность уничтожителя:</strong> 150 (8 вручную)</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> перекрестная</li><li><strong>Уровень секретности:</strong> P-4</li><li><strong>Уничтожение:</strong> Листы бумаги, скрепленные скобами и скрепками;
+Глянцевую бумагу и документы с двусторонней печатью;</li><li><strong>Производитель:</strong> Fellowes</li><li><strong>Гарантия:</strong> 24</li><li><strong>Емкость корзины, литров:</strong> 32 л</li></ul>
+
+]]></description>
+<param name="Производительность уничтожителя">150 (8 вручную)</param>
+<param name="Страна происхождения">Китай</param>
+<param name="Тип резки">перекрестная</param>
+<param name="Уровень секретности">P-4</param>
+<param name="Уничтожение">Листы бумаги, скрепленные скобами и скрепками;
+Глянцевую бумагу и документы с двусторонней печатью;</param>
+<param name="Производитель">Fellowes</param>
+<param name="Гарантия">24</param>
+<param name="Емкость корзины, литров">32 л</param>
+<keywords>Fellowes, Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев, Шредер, Fellowes®, AutoMax®, 150C, автоподача, DIN, P-4, 4х38мм, 150лст., авто, ручн., лтр., авторев, 32, Fellowes 32, shreder-fellowes, shreder-fellowes-automax, shreder, fellowes, automax, fellowes-32, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
 <offer id="AK4621501" available="true">
 <categoryId></categoryId>
 <vendorCode>AK4621501</vendorCode>
@@ -4272,6 +4254,58 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 96" X 96" (2,44 X 2,44), Экран, моторизированный, 44, Mr.Pixel 44, ekran-motorizirovannyy, ekran-motorizirovannyy-mr-pixel, ekran, motorizirovannyy, mr-pixel, mr-pixel-44, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
+<offer id="AKMAGNASAB112V2" available="true">
+<categoryId></categoryId>
+<vendorCode>AKMAGNASAB112V2</vendorCode>
+<name>Экран моторизированный Mr.Pixel ECO  80" X 80" (2,03 X 2,03)</name>
+<price>40900</price>
+<vendor>Mr.Pixel</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Экран моторизированный Mr.Pixel ECO  80&quot; X 80&quot; (2,03 X 2,03)</h3><p>Экран моторизированный Mr.Pixel ECO 80&quot; X 80&quot; (2,03  2,03 м) Моторизированный экран Mr.Pixel ECO — современное решение для удобного и качественного отображения изображения. Управление осуществляется при помощи электропривода, что позволяет легко разворачивать и сворачивать экран одним нажатием кнопки. Белое матовое полотно обеспечивает равномерную яркость, чёткую цветопередачу и комфортный просмотр.  Диагональ экрана: 80&quot; (2,03  2,03 м)  Формат: 1:1 (квадратный)  Тип: моторизированный (с электроприводом)  Управление: настенная клавиша / пульт (опционально)  Полотно: матовое белое, для любых типов проекторов  Корпус: металлический, компактный и надёжный Идеально подходит для офиса, учебных аудиторий и домашнего кинотеатра.</p>
+<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Размер дм.(м.):</strong> 80&quot; X 80&quot; (2,03 x 2,03)</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Формат:</strong> 1X1</li></ul>
+<h3>Совместимые устройства</h3><ul><li>Проектор универсальный Epson EB-W05</li><li>Проектор универсальный Epson EB-W39</li><li>Проектор универсальный Epson EB-W41</li><li>Проектор универсальный Epson EB-W42</li><li>Проектор универсальный ViewSonic PA503X</li><li>Проектор универсальный ViewSonic PA503W</li><li>Проектор универсальный Epson EB-2255U*</li><li>Проектор универсальный Epson EB-U05</li><li>Проектор универсальный Epson EB-U42</li><li>Проектор инсталяционный ViewSonic PRO8800WUL</li></ul>
+
+]]></description>
+<param name="Страна происхождения">Китай</param>
+<param name="Производитель">Mr.Pixel</param>
+<param name="Размер дм.(м.)">80&quot; X 80&quot; (2,03 x 2,03)</param>
+<param name="Гарантия">12 мес</param>
+<param name="Формат">1X1</param>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel ECO  80" X 80" (2,03 X 2,03), Экран, моторизированный, ECO, 03, Mr.Pixel 03, ekran-motorizirovannyy, ekran-motorizirovannyy-mr-pixel, ekran, motorizirovannyy, mr-pixel, mr-pixel-03, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
+<offer id="AKMAGNASAB135V2" available="true">
+<categoryId></categoryId>
+<vendorCode>AKMAGNASAB135V2</vendorCode>
+<name>Экран моторизированный Mr.Pixel ECO  96" X 96" (2,44 X 2,44)</name>
+<price>56900</price>
+<vendor>Mr.Pixel</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Экран моторизированный Mr.Pixel ECO  96&quot; X 96&quot; (2,44 X 2,44)</h3><p>Экран моторизированный Mr.Pixel ECO 96&quot; X 96&quot; (2,44  2,44 м) Моторизированный экран Mr.Pixel ECO — надёжное решение для комфортного просмотра и проведения презентаций. Электропривод обеспечивает лёгкое управление разворачиванием и сворачиванием экрана, а белое матовое полотно гарантирует равномерное распределение яркости и чёткую цветопередачу.  Диагональ экрана: 96&quot; (2,44  2,44 м)  Формат: 1:1 (квадратный)  Тип: моторизированный (с электроприводом)  Управление: настенная клавиша / пульт (опционально)  Полотно: матовое белое, подходит для любых типов проекторов  Корпус: металлический, прочный и компактный Подходит для офисных презентаций, учебных аудиторий и домашнего кинотеатра.</p>
+<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Формат:</strong> 1X1</li><li><strong>Размер дм.(м.):</strong> 96&quot; X 96&quot; (2,44 X 2,44)</li></ul>
+<h3>Совместимые устройства</h3><ul><li>Проектор универсальный Epson EB-W05</li><li>Проектор универсальный Epson EB-W39</li><li>Проектор универсальный Epson EB-W41</li><li>Проектор универсальный Epson EB-W42</li><li>Проектор универсальный ViewSonic PA503X</li><li>Проектор универсальный ViewSonic PA503W</li><li>Проектор универсальный Epson EB-2255U*</li><li>Проектор универсальный Epson EB-U05</li><li>Проектор универсальный Epson EB-U42</li><li>Проектор инсталяционный ViewSonic PRO8800WUL</li></ul>
+
+]]></description>
+<param name="Страна происхождения">Китай</param>
+<param name="Производитель">Mr.Pixel</param>
+<param name="Гарантия">12 мес</param>
+<param name="Формат">1X1</param>
+<param name="Размер дм.(м.)">96&quot; X 96&quot; (2,44 X 2,44)</param>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel ECO  96" X 96" (2,44 X 2,44), Экран, моторизированный, ECO, 44, Mr.Pixel 44, ekran-motorizirovannyy, ekran-motorizirovannyy-mr-pixel, ekran, motorizirovannyy, mr-pixel, mr-pixel-44, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
 <offer id="AKMAGNASAB167V2" available="true">
 <categoryId></categoryId>
 <vendorCode>AKMAGNASAB167V2</vendorCode>
@@ -4402,6 +4436,32 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Формат">1X1</param>
 <param name="Размер дм.(м.)">70&quot; X 70&quot; (1,78 X 1,78)</param>
 <keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 70" X 70" (1,78 X 1,78), Экран, треноге, ECO, 78, Mr.Pixel 78, ekran-trenoge, ekran-trenoge-mr-pixel, ekran, trenoge, mr-pixel, mr-pixel-78, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
+<offer id="AKMAGNASDB112V2" available="true">
+<categoryId></categoryId>
+<vendorCode>AKMAGNASDB112V2</vendorCode>
+<name>Экран на треноге Mr.Pixel ECO 80" X 80" (2,03 X 2,03)</name>
+<price>28900</price>
+<vendor>Mr.Pixel</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Экран на треноге Mr.Pixel ECO 80&quot; X 80&quot; (2,03 X 2,03)</h3><p>&quot;Экран на треноге Mr.Pixel ECO 80&quot; X 80&quot; (2,03 x 2,03 м) Экран Mr.Pixel ECO — удобное и практичное решение для проведения презентаций, занятий и просмотра фильмов. Благодаря складной конструкции на треноге он легко устанавливается и транспортируется, что делает его универсальным вариантом для офиса, учебного класса или домашнего использования.  Диагональ экрана: 80&quot; (2,03 x 2,03 м)  Формат: 1:1 (квадратный)  Поверхность: матовое белое полотно с чёткой цветопередачей и равномерным распределением яркости  Механизм: надёжная система фиксации высоты  Основание: устойчивая тренога, обеспечивающая стабильность при установке  Мобильность: лёгкий вес и компактные габариты в сложенном виде&quot;</p>
+<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Размер дм.(м.):</strong> 80&quot; X 80&quot; (2,03 x 2,03)</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Формат:</strong> 1X1</li></ul>
+<h3>Совместимые устройства</h3><ul><li>Проектор универсальный Epson EB-X41</li><li>Проектор универсальный ViewSonic PA503X</li><li>Проектор портативный Epson EB-1781W</li><li>Проектор универсальный ViewSonic PA503S</li><li>Проектор универсальный Epson EB-X04</li><li>Проектор универсальный Epson EB-X05</li><li>Проектор универсальный Epson EB-S41</li><li>Проектор универсальный ViewSonic PJD5255</li><li>Проектор универсальный Epson EB-X05</li><li>Проектор портативный Epson EB-1780W</li></ul>
+
+]]></description>
+<param name="Страна происхождения">Китай</param>
+<param name="Производитель">Mr.Pixel</param>
+<param name="Размер дм.(м.)">80&quot; X 80&quot; (2,03 x 2,03)</param>
+<param name="Гарантия">12 мес</param>
+<param name="Формат">1X1</param>
+<keywords>Mr.Pixel, Экран на треноге Mr.Pixel ECO 80" X 80" (2,03 X 2,03), Экран, треноге, ECO, 03, Mr.Pixel 03, ekran-trenoge, ekran-trenoge-mr-pixel, ekran, trenoge, mr-pixel, mr-pixel-03, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKMAGNASDB135V2" available="true">
