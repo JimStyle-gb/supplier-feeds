@@ -556,7 +556,6 @@ def build_yml(offers: List[Dict[str, Any]], source_url: str, total_before_filter
 
     out: List[str] = []
     out.append('<?xml version="1.0" encoding="windows-1251"?>')
-    out.append('')
     out.append(f'<yml_catalog date="{now_alm:%Y-%m-%d %H:%M}">')
     out.append("<shop><offers>")
     out.append("")
