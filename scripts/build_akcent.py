@@ -152,7 +152,6 @@ def _make_keywords(name: str, vendor: str) -> str:
     parts: list[str] = []
     seen: set[str] = set()
 
-
     def add(token: str) -> None:
         token = (token or "").strip()
         if not token:
@@ -233,7 +232,7 @@ class OfferData:
     description_html: str
     params: list[tuple[str, str]]
 
-# Делает: decode_bytes
+# Делает:  decode bytes
 def _decode_bytes(data: bytes) -> str:
     for enc in ("utf-8-sig", "utf-8", "cp1251"):
         try:
@@ -242,7 +241,7 @@ def _decode_bytes(data: bytes) -> str:
             continue
     return data.decode("utf-8", errors="ignore")
 
-# Делает: name_allowed
+# Делает:  name allowed
 def _name_allowed(name: str) -> bool:
     n = name.strip()
     for prefix in _ALLOWED_PREFIXES:
@@ -250,7 +249,7 @@ def _name_allowed(name: str) -> bool:
             return True
     return False
 
-# Делает: normalize_brand_name
+# Делает: нормализует значения
 def _normalize_brand_name(raw: str) -> str:
     t = raw.strip()
     if not t:
@@ -265,7 +264,7 @@ def _normalize_brand_name(raw: str) -> str:
     t = re.sub(r"\s*projector$", "", t, flags=re.IGNORECASE)
     return t.strip()
 
-# Делает: apply_price_rules
+# Делает: считает цену
 def _apply_price_rules(raw_price: int) -> int:
     base = int(raw_price)
     if base <= 0:
@@ -310,7 +309,7 @@ def _apply_price_rules(raw_price: int) -> int:
 
     return price
 
-# Делает: extract_params
+# Делает: извлекает нужные поля
 def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
     params: list[tuple[str, str]] = []
     compat: list[str] = []
@@ -353,7 +352,7 @@ GOAL = 1000
 GOAL_LOW = 900
 MAX_HARD = 1200
 
-# Делает: build_desc_text
+# Делает: собирает YML текст
 def _build_desc_text(plain: str) -> str:
     if len(plain) <= GOAL:
         return plain
@@ -390,7 +389,7 @@ def _build_desc_text(plain: str) -> str:
 
     return " ".join(selected).strip()
 
-# Делает: build_description
+# Делает: собирает YML текст
 def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], compat: list[str]) -> str:
     name_html = html.escape(name.strip())
     desc_text = (raw_desc or "").strip()
@@ -430,7 +429,7 @@ def _build_description(name: str, raw_desc: str, params: list[tuple[str, str]], 
     html_block = "\n".join(inner)
     return html_block
 
-# Делает: guess_brand
+# Делает:  guess brand
 def _guess_brand(name: str, raw_desc: str, body: str) -> str:
     for pattern in (
         r'<Param\s+name="Производитель">(.*?)</Param>',
@@ -454,7 +453,7 @@ def _guess_brand(name: str, raw_desc: str, body: str) -> str:
 
     return ""
 
-# Делает: parse_offer
+# Делает: извлекает нужные поля
 def _parse_offer(block: str) -> OfferData | None:
     m_head = re.match(r"<offer\b([^>]*)>(.*)</offer>", block, flags=re.DOTALL | re.IGNORECASE)
     if not m_head:
@@ -539,7 +538,7 @@ def _parse_offer(block: str) -> OfferData | None:
         params=params,
     )
 
-# Делает: download_raw_text
+# Делает: скачивает исходные данные
 def _download_raw_text() -> str:
     print(f"[akcent] Скачиваем фид: {SUPPLIER_URL}")
     resp = requests.get(SUPPLIER_URL, timeout=HTTP_TIMEOUT)
@@ -547,20 +546,21 @@ def _download_raw_text() -> str:
     text = _decode_bytes(resp.content)
     return text
 
-# Делает: escape_text
+# Делает: экранирует текст для XML
 def _escape_text(text: str) -> str:
     return html.escape(text or "", quote=False)
 
-# Делает: build_yml
+# Делает: собирает YML текст
 def _build_yml(offers: list[OfferData], total_raw: int) -> str:
     tz_almaty = timezone(timedelta(hours=5))
     now = datetime.now(tz=tz_almaty)
     today_str = now.strftime("%Y-%m-%d %H:%M")
     meta_now = now.strftime("%Y-%m-%d %H:%M:%S")
 
-    next_run = (now + timedelta(days=1)).replace(hour=1, minute=0, second=0, microsecond=0)
+    next_run = now.replace(hour=2, minute=0, second=0, microsecond=0)
+    if next_run <= now:
+        next_run = next_run + timedelta(days=1)
     meta_next = next_run.strftime("%Y-%m-%d %H:%M:%S")
-
     total_filtered = len(offers)
     avail_true = sum(1 for o in offers if o.available == "true")
     avail_false = total_filtered - avail_true
@@ -622,7 +622,7 @@ def _build_yml(offers: list[OfferData], total_raw: int) -> str:
     full = "\n".join(header_lines) + "\n" + body + "\n" + "\n".join(footer_lines)
     return full
 
-# Делает: build_akcent_yml
+# Делает: собирает итоговый YML
 def build_akcent_yml(output_path: str | Path = OUTPUT_PATH) -> None:
     raw_text = _download_raw_text()
 
@@ -648,7 +648,7 @@ def build_akcent_yml(output_path: str | Path = OUTPUT_PATH) -> None:
     out_path.write_bytes(out_bytes)
     print(f"[akcent] Готовый YML сохранён в {out_path}")
 
-# Делает: Запускает сборку и запись YML
+# Делает: точка входа
 def main(argv: list[str] | None = None) -> int:
     _ = argv or sys.argv[1:]
     try:
@@ -658,6 +658,5 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[akcent] Ошибка: {exc}", file=sys.stderr)
         return 1
 
-
 if __name__ == "__main__":
-    raise SystemExit(main() or 0)
+    raise SystemExit(main())
