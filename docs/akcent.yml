@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="windows-1251"?>
-<yml_catalog date="2025-12-05 15:59">
+<yml_catalog date="2025-12-06 02:11">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-12-05 15:59:41
-Ближайшая сборка (Алматы)                  | 2025-12-06 02:00:00
-Сколько товаров у поставщика до фильтра    | 1805
-Сколько товаров у поставщика после фильтра | 168
-Сколько товаров есть в наличии (true)      | 168
+Время сборки (Алматы)                      | 2025-12-06 02:11:01
+Ближайшая сборка (Алматы)                  | 2025-12-07 02:00:00
+Сколько товаров у поставщика до фильтра    | 1801
+Сколько товаров у поставщика после фильтра | 167
+Сколько товаров есть в наличии (true)      | 167
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -3597,35 +3597,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, Чернила Epson C13T67324A L800/1800/810/850 голубой, Чернила, C13T67324A, L800, 1800, 810, 850, голубой, Epson 850, chernila-epson, chernila-epson-c13t67324a, chernila, epson, c13t67324a, epson-850, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
-<offer id="AKC13T67334A" available="true">
-<categoryId></categoryId>
-<vendorCode>AKC13T67334A</vendorCode>
-<name>Чернила Epson C13T67334A L800/1800/810/850 пурпурный</name>
-<price>10900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/634/q90d6gfzv6wfhkxqqcis8rabbrjnpjfp.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Чернила Epson C13T67334A L800/1800/810/850 пурпурный</h3><p>Контейнер с пурпурными чернилами для: Epson L800</p>
-<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Объем:</strong> 0,000</li><li><strong>Производитель:</strong> Epson</li><li><strong>Цвет:</strong> пурпурный</li><li><strong>Гарантия:</strong> 3</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li></ul>
-<h3>Совместимые устройства</h3><ul><li>Принтер Epson L805 фабрика печати, Wi-Fi</li><li>МФУ Epson L850 фабрика печати</li><li>Принтер Epson L810 фабрика печати</li><li>Принтер Epson L1800 фабрика печати</li><li>Принтер Epson L805 фабрика печати, Wi-Fi</li><li>Принтер Epson L810 фабрика печати</li><li>МФУ Epson L850 фабрика печати</li><li>Принтер Epson L800 фабрика печати</li></ul>
-
-]]></description>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Объем">0,000</param>
-<param name="Производитель">Epson</param>
-<param name="Цвет">пурпурный</param>
-<param name="Гарантия">3</param>
-<param name="Тип печати">струйная</param>
-<param name="Ресурс">1500 – 1800 фотографий формата 10х15*</param>
-<keywords>Epson, Чернила Epson C13T67334A L800/1800/810/850 пурпурный, Чернила, C13T67334A, L800, 1800, 810, 850, пурпурный, Epson 850, chernila-epson, chernila-epson-c13t67334a, chernila, epson, c13t67334a, epson-850, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
 <offer id="AKC13T67344A" available="true">
 <categoryId></categoryId>
 <vendorCode>AKC13T67344A</vendorCode>
@@ -4070,6 +4041,32 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <keywords>Epson, Экономичный набор из четырех контейнеров с чернилами, серия 664, Экономичный, набор, четырех, контейнеров, чернилами, серия, 664, Epson 664, ekonomichnyy-nabor, ekonomichnyy-nabor-chetyreh, ekonomichnyy, nabor, chetyreh, epson-664, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
+<offer id="AKMSPSAB167V2" available="true">
+<categoryId></categoryId>
+<vendorCode>AKMSPSAB167V2</vendorCode>
+<name>Экран моторизированный Mr.Pixel 120" X 120" (3,05 X 3,05)</name>
+<price>81900</price>
+<vendor>Mr.Pixel</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
+
+<!-- Описание -->
+<h3>Экран моторизированный Mr.Pixel 120&quot; X 120&quot; (3,05 X 3,05)</h3><p>Моторизованный экран Mr.Pixel 120&quot; x 120&quot; (MSPSAB167V2) Высота: 3.05 м Ширина: 3.05 м Соотношение сторон: 1:1 Основные преимущества: - Идеально подходит для многофункциональных помещений таких, как конфернец-залы, комнаты переговоров и учебные классы. - Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке. - Чёрные границы по краям экрана для лучшего отображения изображения - Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана. - Синхронизированный мотор плавный и тихий в работе. - Активная поверхность полотна 2390*2390</p>
+<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Формат:</strong> 1X1</li><li><strong>Размер дм.(м.):</strong> 120&quot; X 120&quot; (3,05 X 3,05)</li></ul>
+<h3>Совместимые устройства</h3><ul><li>Проектор универсальный Epson EB-W05</li><li>Проектор универсальный Epson EB-W39</li><li>Проектор универсальный Epson EB-W41</li><li>Проектор универсальный Epson EB-W42</li><li>Проектор универсальный ViewSonic PA503X</li><li>Проектор универсальный ViewSonic PA503W</li><li>Проектор универсальный Epson EB-2255U*</li><li>Проектор универсальный Epson EB-U05</li><li>Проектор универсальный Epson EB-U42</li><li>Проектор инсталяционный ViewSonic PRO8800WUL</li></ul>
+
+]]></description>
+<param name="Страна происхождения">Китай</param>
+<param name="Производитель">Mr.Pixel</param>
+<param name="Гарантия">12 мес</param>
+<param name="Формат">1X1</param>
+<param name="Размер дм.(м.)">120&quot; X 120&quot; (3,05 X 3,05)</param>
+<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 120" X 120" (3,05 X 3,05), Экран, моторизированный, 120, 05, Mr.Pixel 05, ekran-motorizirovannyy, ekran-motorizirovannyy-mr-pixel, ekran, motorizirovannyy, mr-pixel, mr-pixel-05, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
+</offer>
+
 <offer id="AKMSPSAC200V2" available="true">
 <categoryId></categoryId>
 <vendorCode>AKMSPSAC200V2</vendorCode>
@@ -4252,32 +4249,6 @@ URL поставщика                             | https://ak-cent.kz/export/Exchange/
 <param name="Формат">1X1</param>
 <param name="Размер дм.(м.)">96&quot; X 96&quot; (2,44 X 2,44)</param>
 <keywords>Mr.Pixel, Экран моторизированный Mr.Pixel ECO  96" X 96" (2,44 X 2,44), Экран, моторизированный, ECO, 44, Mr.Pixel 44, ekran-motorizirovannyy, ekran-motorizirovannyy-mr-pixel, ekran, motorizirovannyy, mr-pixel, mr-pixel-44, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
-</offer>
-
-<offer id="AKMAGNASAB167V2" available="true">
-<categoryId></categoryId>
-<vendorCode>AKMAGNASAB167V2</vendorCode>
-<name>Экран моторизированный Mr.Pixel ECO 120" X 120" (3,05 X 3,05)</name>
-<price>68900</price>
-<vendor>Mr.Pixel</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-
-<!-- Описание -->
-<h3>Экран моторизированный Mr.Pixel ECO 120&quot; X 120&quot; (3,05 X 3,05)</h3><p>Моторизованный экран Mr.Pixel 120&quot; x 120&quot; (MSPSAB167V2) Высота: 3.05 м Ширина: 3.05 м Соотношение сторон: 1:1 Основные преимущества: - Идеально подходит для многофункциональных помещений таких, как конфернец-залы, комнаты переговоров и учебные классы. - Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке. - Чёрные границы по краям экрана для лучшего отображения изображения - Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана. - Синхронизированный мотор плавный и тихий в работе.</p>
-<h3>Характеристики</h3><ul><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Формат:</strong> 1X1</li><li><strong>Размер дм.(м.):</strong> 120&quot; X 120&quot; (3,05 X 3,05)</li></ul>
-<h3>Совместимые устройства</h3><ul><li>Проектор универсальный Epson EB-W05</li><li>Проектор универсальный Epson EB-W39</li><li>Проектор универсальный Epson EB-W41</li><li>Проектор универсальный Epson EB-W42</li><li>Проектор универсальный ViewSonic PA503X</li><li>Проектор универсальный ViewSonic PA503W</li><li>Проектор универсальный Epson EB-2255U*</li><li>Проектор универсальный Epson EB-U05</li><li>Проектор универсальный Epson EB-U42</li><li>Проектор инсталяционный ViewSonic PRO8800WUL</li></ul>
-
-]]></description>
-<param name="Страна происхождения">Китай</param>
-<param name="Производитель">Mr.Pixel</param>
-<param name="Гарантия">12 мес</param>
-<param name="Формат">1X1</param>
-<param name="Размер дм.(м.)">120&quot; X 120&quot; (3,05 X 3,05)</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel ECO 120" X 120" (3,05 X 3,05), Экран, моторизированный, ECO, 120, 05, Mr.Pixel 05, ekran-motorizirovannyy, ekran-motorizirovannyy-mr-pixel, ekran, motorizirovannyy, mr-pixel, mr-pixel-05, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Оскемен, Семей, Костанай, Кызылорда, Орал, Петропавловск, Талдыкорган, Актау, Темиртау, Экибастуз, Кокшетау</keywords>
 </offer>
 
 <offer id="AKMSPSDB96V2" available="true">
