@@ -387,9 +387,20 @@ def round_to_900(x: Decimal) -> int:
 
 
 def compute_price_from_supplier(dealer_price: Optional[int]) -> int:
-    if not dealer_price or dealer_price < 100:
+    # Цена по правилам: 4% + надбавка по диапазону, хвост 900 (вверх).
+    # Нет цены / не нашли / <101 → 100. Итог >= 9 000 000 → 100.
+    if dealer_price is None:
         return 100
-    p = Decimal(dealer_price) * Decimal("1.04")
+    try:
+        dealer_price = int(dealer_price)
+    except Exception:
+        return 100
+
+    if dealer_price < 101:
+        return 100
+    if dealer_price >= 9_000_000:
+        return 100
+
     add = 0
     for limit, plus in PRICING_RULES:
         if dealer_price <= limit:
@@ -397,11 +408,10 @@ def compute_price_from_supplier(dealer_price: Optional[int]) -> int:
             break
     if add == 0:
         add = 100_000
-    out = p + Decimal(add)
-    if int(out) >= 9_000_000:
-        return int((out / Decimal(100)).to_integral_value(rounding="ROUND_CEILING") * 100)
-    return round_to_900(out)
 
+    raw = Decimal(dealer_price) * Decimal("1.04") + Decimal(add)
+    out = round_to_900(raw)
+    return 100 if out >= 9_000_000 else int(out)
 
 def make_session() -> requests.Session:
     s = requests.Session()
