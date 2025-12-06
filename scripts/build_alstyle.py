@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle post-process (v119)
-Fix: UnicodeDecodeError при чтении docs/alstyle.yml после восстановления через GitHub (файл часто получается UTF-8).
+AlStyle post-process (v120)
 
-1) Чтение: пробуем windows-1251, если не получилось — пробуем utf-8, иначе читаем с заменой.
-2) Запись: всегда сохраняем в windows-1251, неподдерживаемые символы -> XML-сущности (&#...;), чтобы не падать.
-3) Опционально форсим “diff” для коммита (чтобы не было "No changes to commit"):
+Что делает (точечно, без переформатирования XML):
+1) Читает docs/alstyle.yml устойчиво:
+   - сначала windows-1251
+   - если не получилось — utf-8
+   - если совсем плохо — utf-8(errors="replace")
+   - убирает UTF-8 BOM, если он есть
+2) Пишет обратно строго windows-1251:
+   - неподдерживаемые символы -> XML-сущности (&#...;)
+3) Исправляет “шапку” файла:
+   - убирает пустые строки перед <?xml ...?>
+   - убирает пустую строку между <?xml ...?> и <yml_catalog ...>
+4) Унификация WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
+5) Добавляет picture-заглушку, если <picture> отсутствует в offer (вставка сразу после </price>)
+6) Форсит diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
    - workflow_dispatch: да
    - FORCE_YML_REFRESH=1: да
    - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
-   (schedule не форсим)
-4) Унификация WhatsApp rgba + picture-заглушка, как в v118.
+   - schedule: нет
 
-Важно: скрипт делает ТОЛЬКО точечные правки по тексту файла (без XML-переформатирования).
+Входной файл: OUT_FILE или docs/alstyle.yml
 """
 
 from __future__ import annotations
@@ -49,7 +58,7 @@ def _now_almaty_str() -> str:
     return _now_almaty_dt().strftime("%Y-%m-%d %H:%M:%S")
 
 
-# Нужно ли форсить обновление YML (ставим diff для коммита)
+# Нужно ли форсить обновление YML (чтобы появился diff для коммита)
 def _should_force_refresh() -> bool:
     v = os.environ.get("FORCE_YML_REFRESH", "").strip().lower()
     if v in ("1", "true", "yes", "y"):
@@ -69,27 +78,69 @@ def _should_force_refresh() -> bool:
     return False
 
 
-# Читает файл: сначала windows-1251, потом utf-8, иначе с заменой
-def _read_text(path: Path) -> tuple[str, str]:
+# Читает файл устойчиво (cp1251 -> utf8 -> utf8 replace), убирает BOM
+def _read_text(path: Path) -> tuple[str, str, int]:
     data = path.read_bytes()
+    bom = 0
+    if data.startswith(b"\xef\xbb\xbf"):
+        data = data[3:]
+        bom = 1
 
     try:
-        return data.decode("windows-1251"), "windows-1251"
+        return data.decode("windows-1251"), "windows-1251", bom
     except UnicodeDecodeError:
         pass
 
     try:
-        return data.decode("utf-8"), "utf-8"
+        return data.decode("utf-8"), "utf-8", bom
     except UnicodeDecodeError:
-        txt = data.decode("utf-8", errors="replace")
-        return txt, "utf-8(replace)"
+        return data.decode("utf-8", errors="replace"), "utf-8(replace)", bom
 
 
-# Пишет файл в windows-1251, неподдерживаемые символы -> XML-сущности
+# Пишет файл строго windows-1251, неподдерживаемые символы -> XML-сущности
 def _write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    data = text.encode("windows-1251", errors="xmlcharrefreplace")
-    path.write_bytes(data)
+    path.write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
+
+
+# Чинит верх файла: убирает пустые строки до <?xml> и после него
+def _normalize_header(src: str) -> tuple[str, int]:
+    s = src.lstrip("\ufeff")
+
+    # Срежем пустые строки в самом начале
+    prefix_trimmed = 0
+    while s.startswith("\n") or s.startswith("\r") or s.startswith(" " ) or s.startswith("\t"):
+        # но не срезаем пробелы внутри строки, только ведущие пустые
+        if s.startswith((" ", "\t")):
+            # если это пробелы перед <?xml — убираем их
+            # если же это пробелы в обычном тексте (маловероятно в начале) — тоже убираем
+            s = s.lstrip(" \t")
+            prefix_trimmed = 1
+            continue
+        s = s.lstrip("\r\n")
+        prefix_trimmed = 1
+
+    # Нормализуем пустые строки между <?xml ...?> и первым контентом
+    lines = s.splitlines(True)
+    if not lines:
+        return s, prefix_trimmed
+
+    first = lines[0]
+    if first.lstrip().startswith("<?xml"):
+        # гарантируем один перевод строки после декларации
+        if not first.endswith("\n"):
+            first = first.rstrip("\r\n") + "\n"
+
+        i = 1
+        # выкидываем только пустые строки сразу после декларации
+        while i < len(lines) and lines[i].strip() == "":
+            i += 1
+            prefix_trimmed = 1
+
+        out = first + "".join(lines[i:])
+        return out, prefix_trimmed
+
+    return s, prefix_trimmed
 
 
 # Форс-обновление времени: сначала “Время сборки…”, иначе date="..." у <yml_catalog>
@@ -120,8 +171,7 @@ def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
     indent = m.group(1) if m else "\n            "
 
     insert = f"{indent}<picture>{PLACEHOLDER_PICTURE_URL}</picture>"
-    new_body = offer_body[: idx + len("</price>")] + insert + offer_body[idx + len("</price>") :]
-    return new_body, 1
+    return offer_body[: idx + len("</price>")] + insert + offer_body[idx + len("</price>") :], 1
 
 
 # Применяет точечные правки
@@ -132,15 +182,23 @@ def _process_text(src: str) -> tuple[str, dict]:
         "rgba_fixed": 0,
         "build_time_bumped_meta": 0,
         "build_time_bumped_date": 0,
+        "header_fixed": 0,
     }
 
-    src0, n_meta, n_date = _bump_build_time_if_needed(src)
+    # 0) шапка
+    src_h, header_fixed = _normalize_header(src)
+    stats["header_fixed"] = header_fixed
+
+    # 0.5) форс-время (если надо)
+    src0, n_meta, n_date = _bump_build_time_if_needed(src_h)
     stats["build_time_bumped_meta"] = n_meta
     stats["build_time_bumped_date"] = n_date
 
+    # 1) WhatsApp rgba
     src2, n = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src0)
     stats["rgba_fixed"] = n
 
+    # 2) picture заглушка по offer-блокам
     def repl(m: re.Match) -> str:
         head, body, tail = m.group(1), m.group(2), m.group(3)
         stats["offers_scanned"] += 1
@@ -172,16 +230,21 @@ def main(argv: list[str]) -> int:
         print(f"[postprocess_alstyle] ERROR: file not found: {path}", file=sys.stderr)
         return 2
 
-    src, enc = _read_text(path)
-    if enc != "windows-1251":
-        print(f"[postprocess_alstyle] WARN: input encoding={enc} (будет сохранено как windows-1251)", file=sys.stderr)
+    src, enc, bom = _read_text(path)
+    if enc != "windows-1251" or bom:
+        info = []
+        if enc != "windows-1251":
+            info.append(f"encoding={enc}")
+        if bom:
+            info.append("bom=stripped")
+        print(f"[postprocess_alstyle] WARN: input {'; '.join(info)} (сохраним как windows-1251)", file=sys.stderr)
 
     out, stats = _process_text(src)
 
-    # Всегда переписываем, если:
+    # Переписываем, если:
     # - были правки
-    # - или вход был не cp1251 (нормализуем)
-    if out != src or enc != "windows-1251":
+    # - или вход был не cp1251 / был BOM (нормализуем)
+    if out != src or enc != "windows-1251" or bom:
         _write_text(path, out)
 
     bumped = stats["build_time_bumped_meta"] + stats["build_time_bumped_date"]
@@ -190,6 +253,7 @@ def main(argv: list[str]) -> int:
         f"offers={stats['offers_scanned']} | "
         f"pictures_added={stats['offers_pictures_added']} | "
         f"rgba_fixed={stats['rgba_fixed']} | "
+        f"header_fixed={stats['header_fixed']} | "
         f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
         f"file={path}"
     )
