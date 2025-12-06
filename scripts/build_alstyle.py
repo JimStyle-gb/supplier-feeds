@@ -1,28 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle post-process (v120)
+AlStyle post-process (v121)
 
-Что делает (точечно, без переформатирования XML):
-1) Читает docs/alstyle.yml устойчиво:
-   - сначала windows-1251
-   - если не получилось — utf-8
-   - если совсем плохо — utf-8(errors="replace")
-   - убирает UTF-8 BOM, если он есть
-2) Пишет обратно строго windows-1251:
-   - неподдерживаемые символы -> XML-сущности (&#...;)
-3) Исправляет “шапку” файла:
-   - убирает пустые строки перед <?xml ...?>
-   - убирает пустую строку между <?xml ...?> и <yml_catalog ...>
-4) Унификация WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
-5) Добавляет picture-заглушку, если <picture> отсутствует в offer (вставка сразу после </price>)
-6) Форсит diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
+Фиксы и унификация (точечно, без переформатирования XML):
+1) Устойчивое чтение docs/alstyle.yml:
+   - windows-1251 -> utf-8 -> utf-8(errors="replace")
+   - удаляем UTF-8 BOM, если есть
+2) Всегда сохраняем обратно в windows-1251:
+   - неподдерживаемые символы -> XML-сущности (&#...;) через xmlcharrefreplace
+3) Шапка файла:
+   - убираем пустые строки/пробелы перед <?xml ...?>
+   - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
+4) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
+5) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
+6) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
    - workflow_dispatch: да
    - FORCE_YML_REFRESH=1: да
    - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
    - schedule: нет
 
 Входной файл: OUT_FILE или docs/alstyle.yml
+Если файла нет — выходим с code=2 (ничего не “создаём”).
 """
 
 from __future__ import annotations
@@ -107,55 +106,52 @@ def _write_text(path: Path, text: str) -> None:
 def _normalize_header(src: str) -> tuple[str, int]:
     s = src.lstrip("\ufeff")
 
-    # Срежем пустые строки в самом начале
-    prefix_trimmed = 0
-    while s.startswith("\n") or s.startswith("\r") or s.startswith(" " ) or s.startswith("\t"):
-        # но не срезаем пробелы внутри строки, только ведущие пустые
-        if s.startswith((" ", "\t")):
-            # если это пробелы перед <?xml — убираем их
-            # если же это пробелы в обычном тексте (маловероятно в начале) — тоже убираем
-            s = s.lstrip(" \t")
-            prefix_trimmed = 1
-            continue
-        s = s.lstrip("\r\n")
-        prefix_trimmed = 1
+    changed = 0
 
-    # Нормализуем пустые строки между <?xml ...?> и первым контентом
+    # 1) срезаем всё пустое/пробельное в самом начале до первого непустого
+    s2 = s.lstrip(" \t\r\n")
+    if s2 != s:
+        changed = 1
+        s = s2
+
+    # 2) убираем пустые строки сразу после <?xml ...?>
     lines = s.splitlines(True)
     if not lines:
-        return s, prefix_trimmed
+        return s, changed
 
     first = lines[0]
     if first.lstrip().startswith("<?xml"):
-        # гарантируем один перевод строки после декларации
-        if not first.endswith("\n"):
-            first = first.rstrip("\r\n") + "\n"
-
+        first = first.rstrip("\r\n") + "\n"
         i = 1
-        # выкидываем только пустые строки сразу после декларации
         while i < len(lines) and lines[i].strip() == "":
             i += 1
-            prefix_trimmed = 1
+            changed = 1
+        return first + "".join(lines[i:]), changed
 
-        out = first + "".join(lines[i:])
-        return out, prefix_trimmed
-
-    return s, prefix_trimmed
+    return s, changed
 
 
-# Форс-обновление времени: сначала “Время сборки…”, иначе date="..." у <yml_catalog>
+# Форс-обновление времени (обновляем и FEED_META, и date="..." у yml_catalog)
 def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
     if not _should_force_refresh():
         return src, 0, 0
 
     now_s = _now_almaty_str()
 
+    # 1) FEED_META всегда с секундами
     out, n_meta = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
-    if n_meta:
-        return out, n_meta, 0
 
-    out2, n_date = RE_YML_CATALOG_DATE.subn(rf'\1{now_s}\3', out, count=1)
-    return out2, 0, n_date
+    # 2) date="..." сохраняем формат: если было без секунд — пишем без секунд
+    def _date_repl(m: re.Match) -> str:
+        old = m.group(2)
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", old):
+            new = now_s[:16]
+        else:
+            new = now_s
+        return m.group(1) + new + m.group(3)
+
+    out2, n_date = RE_YML_CATALOG_DATE.subn(_date_repl, out, count=1)
+    return out2, n_meta, n_date
 
 
 # Вставляет <picture> заглушку в offer, если picture отсутствует
@@ -180,9 +176,9 @@ def _process_text(src: str) -> tuple[str, dict]:
         "offers_scanned": 0,
         "offers_pictures_added": 0,
         "rgba_fixed": 0,
+        "header_fixed": 0,
         "build_time_bumped_meta": 0,
         "build_time_bumped_date": 0,
-        "header_fixed": 0,
     }
 
     # 0) шапка
