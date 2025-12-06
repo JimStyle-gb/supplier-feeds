@@ -217,6 +217,37 @@ def extract_brand_from_specs_kv(kv: Dict[str,str]) -> Optional[str]:
     return None
 
 
+
+
+# Делает: достаёт KV (key:value) из текста описания (в т.ч. блока "Технические характеристики")
+def _specs_kv_from_description(desc: str) -> Dict[str, str]:
+    out: Dict[str, str] = {}
+    if not desc:
+        return out
+
+    s = desc
+    m = re.search(r"(?i)технические\s+характеристики\s*:", s)
+    if m:
+        s = s[m.end():]
+
+    for raw in s.splitlines():
+        line = (raw or "").strip()
+        if not line:
+            continue
+        if line.startswith(("•", "-", "—", "–")):
+            line = line[1:].strip()
+        if ":" not in line:
+            continue
+        k, v = line.split(":", 1)
+        k = re.sub(r"\s+", " ", k).strip().strip("-").strip()
+        v = re.sub(r"\s+", " ", v).strip()
+        if not k or not v:
+            continue
+        if len(k) > 80 or len(v) > 240:
+            continue
+        out[k.lower()] = v
+
+    return out
 def collect_brand_candidates(text: str) -> List[str]:
     if not text: return []
     hay = text.lower()
@@ -616,7 +647,7 @@ def _make_keywords(name: str, vendor: str) -> str:
         result = ", ".join(out)
     return result
 
-WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
+WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
 # Делает:  render description html
 def _render_description_html(name: str, desc_plain: str) -> str:
@@ -955,6 +986,19 @@ def main() -> int:
             vendorCode = f"{vendorCode}-{hashlib.sha1(title.encode('utf-8')).hexdigest()[:6]}"
         seen_vendorcodes.add(vendorCode)
 
+        specs_kv = dict(found.get("specs_kv") or {})
+        desc_kv = _specs_kv_from_description(desc)
+        for k, v in desc_kv.items():
+            if k not in specs_kv:
+                specs_kv[k] = v
+
+        if not brand:
+            b2 = extract_brand_from_specs_kv(specs_kv)
+            if b2:
+                brand = sanitize_brand(b2)
+
+        params_final = _params_from_specs_kv(specs_kv)
+
         offers.append({
             "vendorCode": vendorCode,
             "title":      title,
@@ -962,7 +1006,7 @@ def main() -> int:
             "brand":      brand,
             "picture":    found["pic"],
             "description": desc,
-            "params": _params_from_specs_kv(found.get("specs_kv") or {}),
+            "params": params_final,
         })
 
     offers_written = len(offers)
@@ -991,3 +1035,4 @@ if __name__ == "__main__":
         sys.exit(main())
     except Exception as e:
         print("[fatal]", e, flush=True); sys.exit(2)
+
