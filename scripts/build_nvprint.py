@@ -49,14 +49,7 @@ CITIES: List[str] = [
     "Талдыкорган", "Актау", "Темиртау", "Экибастуз", "Кокшетау",
 ]
 
-WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
-
-DESC_PREFIX = [
-
-<!-- WhatsApp -->
-" + WHATSAPP_BLOCK + "
-
-"
+DESC_PREFIX = '\n\n<!-- WhatsApp -->\n<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>\n\n'
 
 PriceRule = Tuple[int, int, float, int]
 PRICING_RULES: List[PriceRule] = [
@@ -223,29 +216,35 @@ def _extract_base_price(item: ET.Element) -> Optional[float]:
 
 
 def _round_up_tail_900(n: int) -> int:
-    k = n // 1000
-    cand = k * 1000 + 900
+    # Округление вверх до хвоста 900 (пример: 18679→18900, 18995→19900).
+    n = int(n or 0)
+    thousands = n // 1000
+    cand = thousands * 1000 + 900
     if cand < n:
-        cand = (k + 1) * 1000 + 900
+        cand += 1000
     return cand
 
 def compute_price(base_price: Optional[int]) -> int:
+    # Расчёт розничной цены: 4% + надбавка по диапазону, хвост 900, округление вверх.
+    # Нет цены / не нашли / <101 → 100. Итог >= 9 000 000 → 100.
     if base_price is None:
         return 100
-
-    bp = int(base_price)
-    if bp < 101:
+    base_price = int(base_price)
+    if base_price < 101:
         return 100
-    if bp >= 9_000_000:
+    if base_price >= 9000000:
         return 100
 
     for lo, hi, pct, add in PRICING_RULES:
-        if lo <= bp <= hi:
-            raw = bp * (1.0 + pct / 100.0) + add
-            return _round_up_tail_900(int(math.ceil(raw)))
+        if lo <= base_price <= hi:
+            raw = base_price * (1.0 + pct / 100.0) + add
+            out = _round_up_tail_900(int(math.ceil(raw)))
+            return 100 if out >= 9000000 else out
 
-    raw = bp * (1.0 + PRICING_RULES[-1][2] / 100.0) + PRICING_RULES[-1][3]
-    return _round_up_tail_900(int(math.ceil(raw)))
+    pct, add = PRICING_RULES[-1][2], PRICING_RULES[-1][3]
+    raw = base_price * (1.0 + pct / 100.0) + add
+    out = _round_up_tail_900(int(math.ceil(raw)))
+    return 100 if out >= 9000000 else out
 
 def _clean_article(raw: str) -> str:
     s = (raw or "").strip()
@@ -291,31 +290,7 @@ def collect_printers(item: ET.Element) -> List[str]:
     return _unique_keep_order(out)
 
 
-_KV_LINE_RE = re.compile(r"(?m)^\s*([A-Za-zА-Яа-яЁё0-9][^:\n]{1,60})\s*[:\-]\s*([^\n]{1,160})\s*$")
-
-
-def _extract_kv_pairs(text: str) -> List[Tuple[str, str]]:
-    out: List[Tuple[str, str]] = []
-    t = (text or "").strip()
-    if not t:
-        return out
-
-    for m in _KV_LINE_RE.finditer(t):
-        k = _norm_spaces(m.group(1)).strip()
-        v = _norm_spaces(m.group(2)).strip()
-        if not k or not v:
-            continue
-        lk = k.lower()
-        if lk in {"описание", "характеристики", "keywords"}:
-            continue
-        if len(k) > 64 or len(v) > 180:
-            continue
-        out.append((k, v))
-
-    return _unique_keep_order(out)
-
-
-def build_params(item: ET.Element, name_short: str, printers: Optional[List[str]] = None, desc_hint: str = "") -> List[Tuple[str, str]]:
+def build_params(item: ET.Element, name_short: str, printers: Optional[List[str]] = None) -> List[Tuple[str, str]]:
     params: List[Tuple[str, str]] = []
     params.append(("Тип", detect_type(name_short)))
 
@@ -342,15 +317,6 @@ def build_params(item: ET.Element, name_short: str, printers: Optional[List[str]
     printers = printers if printers is not None else collect_printers(item)
     if printers:
         params.append(("Принтеры", ", ".join(printers)))
-# добор параметров из текстового описания (key: value)
-if desc_hint:
-    seen = {k.lower() for k, _ in params}
-    for k, v in _extract_kv_pairs(desc_hint):
-        lk = k.lower()
-        if lk in seen:
-            continue
-        params.append((k, v))
-        seen.add(lk)
 
     return params
 
@@ -495,7 +461,7 @@ def parse_item(node: ET.Element) -> Optional[Dict[str, Any]]:
 
     oid = make_id(article)
 
-    params = build_params(node, name_short, printers, nom_full)
+    params = build_params(node, name_short, printers)
     desc = build_description_html(name_short, nom_full, params)
     keywords = build_keywords(vendor, name_short, oid, params)
 
