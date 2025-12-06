@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle post-process (v118)
+AlStyle post-process (v119)
 1) Унификация WhatsApp-блока (rgba(0,0,0,.08) -> rgba(0,0,0,0.08))
 2) Добавление picture-заглушки, если <picture> отсутствует в offer
 
 Важно: скрипт делает ТОЛЬКО точечные правки по тексту файла (без XML-переформатирования).
+
+Fix v119:
+- Исправлены regex-паттерны: убраны лишние "\\" (из-за них offers=0 и rgba_fixed=0).
+- Исправлен fallback-отступ: "\n..." вместо литерала "\\n..."
 """
 
 from __future__ import annotations
@@ -20,9 +24,10 @@ PLACEHOLDER_PICTURE_URL = (
     "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
 )
 
-RE_OFFER_BLOCK = re.compile(r"(<offer\\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
-RE_RGBA_BAD = re.compile(r"rgba\\(0,0,0,\\.08\\)")
-RE_PRICE_LINE = re.compile(r"(\\n[ \\t]*)<price>")
+# ВАЖНО: тут должны быть ОДИНОЧНЫЕ слэши в raw-string, иначе regex ищет литералы "\b", "\(" и "\n"
+RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
+RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
+RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
 
 
 # Читает текст файла в windows-1251 (как в ваших фидах)
@@ -43,12 +48,11 @@ def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
     # Найдём место вставки — сразу после закрытия первого </price>
     idx = offer_body.find("</price>")
     if idx == -1:
-        # Если вдруг price нет (не должно быть), ничего не делаем
         return offer_body, 0
 
-    # Определим отступ по строке price
+    # Определим отступ по строке price (включая перевод строки)
     m = RE_PRICE_LINE.search(offer_body)
-    indent = m.group(1) if m else "\\n            "  # запасной отступ как в типичном формате
+    indent = m.group(1) if m else "\n            "  # запасной отступ (как в типичном формате)
 
     insert = f"{indent}<picture>{PLACEHOLDER_PICTURE_URL}</picture>"
     new_body = offer_body[: idx + len("</price>")] + insert + offer_body[idx + len("</price>") :]
@@ -87,7 +91,12 @@ def _resolve_infile(cli_path: str | None) -> Path:
 
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--in", dest="infile", default=None, help="Путь к alstyle.yml (по умолчанию OUT_FILE или docs/alstyle.yml)")
+    ap.add_argument(
+        "--in",
+        dest="infile",
+        default=None,
+        help="Путь к alstyle.yml (по умолчанию OUT_FILE или docs/alstyle.yml)",
+    )
     args = ap.parse_args(argv)
 
     path = _resolve_infile(args.infile)
