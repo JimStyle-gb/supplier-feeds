@@ -31,6 +31,9 @@ jobs:
       SCHEDULE_DOM: "*"
       SCHEDULE_HOUR_ALMATY: "1"
 
+      # ВАЖНО: фиксируем путь вывода, чтобы build и postprocess смотрели в одно место
+      OUT_FILE: "docs/alstyle.yml"
+
       PIP_PACKAGES: "requests"
 
       ALSTYLE_LOGIN: ${{ secrets.ALSTYLE_LOGIN }}
@@ -108,7 +111,20 @@ jobs:
             git fetch origin "$BRANCH"
             git checkout -B "$BRANCH" "origin/$BRANCH"
 
+            # На всякий случай (папки могут отсутствовать, если их удаляли)
+            mkdir -p docs
+
             python scripts/build_alstyle.py
+
+            echo "---- DEBUG: docs/ after build ----"
+            ls -la docs || true
+            echo "----------------------------------"
+
+            # Если build не создал файл — это не «глюк гитхаба», это ошибка сборки
+            if [ ! -f "docs/alstyle.yml" ]; then
+              echo "ERROR: docs/alstyle.yml was not created by scripts/build_alstyle.py"
+              exit 2
+            fi
 
             git add docs/alstyle.yml || true
 
