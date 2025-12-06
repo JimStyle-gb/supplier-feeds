@@ -355,6 +355,9 @@ def _calc_price(purchase_raw: str, supplier_raw: str) -> int:
     if base_int <= 0:
         return 100
 
+    if base_int < 101:
+        return 100
+
     tiers = [
         (101, 10_000, 3_000),
         (10_001, 25_000, 4_000),
@@ -831,3 +834,4 @@ def main(argv: Optional[List[str]] = None) -> None:
 
 if __name__ == "__main__":
     raise SystemExit(main() or 0)
+
