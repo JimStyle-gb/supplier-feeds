@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-CopyLine post-process (v16)
+CopyLine post-process (v17)
 1) Унификация WhatsApp-блока (rgba(0,0,0,.08) -> rgba(0,0,0,0.08))
 2) Добавление picture-заглушки, если <picture> отсутствует в offer
 3) Если у offer нет <param>, добавляем минимум 1 параметр:
@@ -11,6 +11,8 @@ CopyLine post-process (v16)
      <h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> ...
 
 Важно: скрипт делает ТОЛЬКО точечные правки по тексту файла (без XML-переформатирования).
+
+Fix v17: убраны ошибочные экранирования (SyntaxError на вставке param + корректные regex/backref).
 """
 
 from __future__ import annotations
@@ -26,25 +28,31 @@ PLACEHOLDER_PICTURE_URL = (
     "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
 )
 
-RE_OFFER_BLOCK = re.compile(r"(<offer\\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
-RE_RGBA_BAD = re.compile(r"rgba\\(0,0,0,\\.08\\)")
-RE_PRICE_LINE = re.compile(r"(\\n[ \\t]*)<price>")
+RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
+RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
+RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
 
 RE_NAME = re.compile(r"<name>(.*?)</name>", re.DOTALL)
-RE_VENDOR = re.compile(r"<vendor>(.*?)</vendor>", re.DOTALL)
-RE_DESC_CDATA = re.compile(r"<description><!\\[CDATA\\[(.*?)\\]\\]></description>", re.DOTALL | re.IGNORECASE)
-
-RE_WHATSAPP_BLOCK = re.compile(
-    r"<!--\\s*WhatsApp\\s*-->.*?<!--\\s*Описание\\s*-->",
+RE_DESC_CDATA = re.compile(
+    r"<description><!\[CDATA\[(.*?)\]\]></description>",
     re.DOTALL | re.IGNORECASE,
 )
-RE_DESC_MARK = re.compile(r"<!--\\s*Описание\\s*-->", re.IGNORECASE)
-RE_HAS_CHAR = re.compile(r"\\bХарактеристики\\b", re.IGNORECASE)
 
-RE_INSERT_PARAM_BEFORE_KEYWORDS = re.compile(r"(\\]\\]></description>\\s*\\n)(<keywords\\b)", re.IGNORECASE)
+RE_WHATSAPP_BLOCK = re.compile(
+    r"<!--\s*WhatsApp\s*-->.*?<!--\s*Описание\s*-->",
+    re.DOTALL | re.IGNORECASE,
+)
+RE_DESC_MARK = re.compile(r"<!--\s*Описание\s*-->", re.IGNORECASE)
+RE_HAS_CHAR = re.compile(r"\bХарактеристики\b", re.IGNORECASE)
+
+# group1: конец description+перенос, group2: отступ перед <keywords>, group3: <keywords...
+RE_INSERT_PARAM_BEFORE_KEYWORDS = re.compile(
+    r"(\]\]></description>\s*\n)([ \t]*)(<keywords\b)",
+    re.IGNORECASE,
+)
 
 TYPE_PREFIX = re.compile(
-    r"^(девелопер|драм[- ]картридж|термоблок|термоэлемент|drum\\s+unit|drum)\\s+",
+    r"^(девелопер|драм[- ]картридж|термоблок|термоэлемент|drum\s+unit|drum)\s+",
     re.IGNORECASE,
 )
 
@@ -76,20 +84,20 @@ def _compat_from_name(name: str) -> str:
     s = TYPE_PREFIX.sub("", s).strip()
 
     # если явно есть "для/for" — берём хвост после этого
-    m = re.search(r"\\bдля\\s+(.+)$", s, flags=re.IGNORECASE)
+    m = re.search(r"\bдля\s+(.+)$", s, flags=re.IGNORECASE)
     if m:
         s = m.group(1).strip()
     else:
-        m = re.search(r"\\bfor\\s+(.+)$", s, flags=re.IGNORECASE)
+        m = re.search(r"\bfor\s+(.+)$", s, flags=re.IGNORECASE)
         if m:
             s = m.group(1).strip()
 
     # убрать цвета (как правило это не совместимость)
-    s = re.sub(r"\\s+(black|cyan|magenta|yellow)\\b.*$", "", s, flags=re.IGNORECASE)
+    s = re.sub(r"\s+(black|cyan|magenta|yellow)\b.*$", "", s, flags=re.IGNORECASE)
 
     # убрать вес/фасовку
-    s = re.sub(r"\\s+foil\\s+bags\\b.*$", "", s, flags=re.IGNORECASE)
-    s = re.sub(r"\\s+\\d+\\s*(?:г|гр|g|кг|kg)\\b.*$", "", s, flags=re.IGNORECASE)
+    s = re.sub(r"\s+foil\s+bags\b.*$", "", s, flags=re.IGNORECASE)
+    s = re.sub(r"\s+\d+\s*(?:г|гр|g|кг|kg)\b.*$", "", s, flags=re.IGNORECASE)
 
     s = " ".join(s.split()).strip()
     if len(s) > 180:
@@ -107,7 +115,7 @@ def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
         return offer_body, 0
 
     m = RE_PRICE_LINE.search(offer_body)
-    indent = m.group(1) if m else "\\n"
+    indent = m.group(1) if m else "\n"
 
     insert = f"{indent}<picture>{PLACEHOLDER_PICTURE_URL}</picture>"
     new_body = offer_body[: idx + len("</price>")] + insert + offer_body[idx + len("</price>") :]
@@ -124,8 +132,8 @@ def _inject_desc_compat(inner: str, compat_html: str) -> tuple[str, int]:
     if not m:
         # если вдруг маркера нет — аккуратно добавим в конец перед закрытием CDATA
         add = (
-            f"\\n<p><strong>Совместимость:</strong> {compat_html}</p>"
-            f"\\n<h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> {compat_html}</li></ul>\\n"
+            f"\n<p><strong>Совместимость:</strong> {compat_html}</p>"
+            f"\n<h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> {compat_html}</li></ul>\n"
         )
         return inner + add, 1
 
@@ -140,8 +148,8 @@ def _inject_desc_compat(inner: str, compat_html: str) -> tuple[str, int]:
         insert_pos = start
 
     add = (
-        f"\\n<p><strong>Совместимость:</strong> {compat_html}</p>"
-        f"\\n<h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> {compat_html}</li></ul>\\n"
+        f"\n<p><strong>Совместимость:</strong> {compat_html}</p>"
+        f"\n<h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> {compat_html}</li></ul>\n"
     )
     return inner[:insert_pos] + add + inner[insert_pos:], 1
 
@@ -164,8 +172,7 @@ def _inject_param_and_desc_if_missing(offer_body: str) -> tuple[str, int, int]:
     if descm:
         inner = descm.group(1)
 
-        # уберём WhatsApp-блок перед анализом? не нужно — мы ВСТАВЛЯЕМ в конец описания, маркер есть
-        # совместимость для HTML внутри CDATA — безопасно экранируем только спецсимволы
+        # совместимость для HTML внутри CDATA — экранируем <>&
         compat_html = _html.escape(compat, quote=False)
 
         inner2, desc_added = _inject_desc_compat(inner, compat_html)
@@ -175,12 +182,18 @@ def _inject_param_and_desc_if_missing(offer_body: str) -> tuple[str, int, int]:
 
     # 2) param — вставим сразу после </description> перед <keywords>
     param_xml = _xml_escape(compat)
-    insert_line = f"<param name=\\"Совместимость\\">{param_xml}</param>\\n"
+    insert_line = f'<param name="Совместимость">{param_xml}</param>\n'
 
-    new_body, n = RE_INSERT_PARAM_BEFORE_KEYWORDS.subn(rf"\\1{insert_line}\\2", offer_body, count=1)
+    def _repl(m: re.Match) -> str:
+        after_desc = m.group(1)
+        indent = m.group(2)
+        kw = m.group(3)
+        return f"{after_desc}{indent}{insert_line}{indent}{kw}"
+
+    new_body, n = RE_INSERT_PARAM_BEFORE_KEYWORDS.subn(_repl, offer_body, count=1)
     if n == 0:
         # если вдруг keywords нет — просто добавим в конец offer-body
-        new_body = offer_body + "\\n" + insert_line
+        new_body = offer_body + "\n" + insert_line
 
     return new_body, 1, desc_added
 
@@ -229,7 +242,12 @@ def _resolve_infile(cli_path: str | None) -> Path:
 
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--in", dest="infile", default=None, help="Путь к copyline.yml (по умолчанию OUT_FILE или docs/copyline.yml)")
+    ap.add_argument(
+        "--in",
+        dest="infile",
+        default=None,
+        help="Путь к copyline.yml (по умолчанию OUT_FILE или docs/copyline.yml)",
+    )
     args = ap.parse_args(argv)
 
     path = _resolve_infile(args.infile)
