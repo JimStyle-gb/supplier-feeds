@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle post-process (v121)
+AlStyle post-process (v122)
 1) Унификация WhatsApp-блока (rgba(0,0,0,.08) -> rgba(0,0,0,0.08))
 2) Добавление picture-заглушки, если <picture> отсутствует в offer
-3) При workflow_dispatch (ручной запуск) принудительно обновляет строку:
-   "Время сборки (Алматы) | YYYY-MM-DD HH:MM:SS"
-   чтобы docs/alstyle.yml всегда менялся и коммит проходил даже без изменений офферов.
+3) Форс-обновление "Время сборки (Алматы) | ..." для коммита:
+   - workflow_dispatch: всегда
+   - push: только если сейчас hour==SCHEDULE_HOUR_ALMATY
+   - schedule: не форсим (чтобы не коммитить лишнее)
 
-Важно: скрипт делает ТОЛЬКО точечные правки по тексту файла (без XML-переформатирования).
+Важно: только точечные правки по тексту (без XML-переформатирования).
 """
 
 from __future__ import annotations
@@ -18,7 +19,6 @@ import os
 import re
 import sys
 from pathlib import Path
-
 from datetime import datetime, timedelta
 
 RE_BUILD_TIME_LINE = re.compile(
@@ -27,17 +27,39 @@ RE_BUILD_TIME_LINE = re.compile(
 )
 
 # Текущее время Алматы (UTC+5)
+def _now_almaty_dt() -> datetime:
+    return datetime.utcnow() + timedelta(hours=5)
+
+
 def _now_almaty_str() -> str:
-    return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S")
+    return _now_almaty_dt().strftime("%Y-%m-%d %H:%M:%S")
 
 
-# Обновляет строку времени сборки ТОЛЬКО при ручном запуске workflow_dispatch (или FORCE_YML_REFRESH=1)
+# Нужно ли форсить обновление YML (ставим diff для коммита)
+# Правило:
+# - workflow_dispatch: ДА (ручной запуск)
+# - push: ДА, но ТОЛЬКО если сейчас в Алматы "наш час" (SCHEDULE_HOUR_ALMATY)
+# - schedule: НЕТ (чтобы не коммитить каждый день без изменений)
+# - FORCE_YML_REFRESH=1: ДА (ручной флаг)
 def _should_force_refresh() -> bool:
     ev = os.environ.get("GITHUB_EVENT_NAME", "").strip().lower()
+
+    v = os.environ.get("FORCE_YML_REFRESH", "").strip().lower()
+    if v in ("1", "true", "yes", "y"):
+        return True
+
     if ev == "workflow_dispatch":
         return True
-    v = os.environ.get("FORCE_YML_REFRESH", "").strip().lower()
-    return v in ("1", "true", "yes", "y")
+
+    if ev == "push":
+        try:
+            want_h = int(os.environ.get("SCHEDULE_HOUR_ALMATY", "0").strip() or "0")
+        except Exception:
+            want_h = 0
+        now_h = _now_almaty_dt().hour
+        return now_h == want_h
+
+    return False
 
 
 # Обновляет строку времени сборки (если она есть)
@@ -85,7 +107,7 @@ def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
     return new_body, 1
 
 
-# Применяет точечные правки без изменения общего форматирования
+# Применяет точечные правки
 def _process_text(src: str) -> tuple[str, dict]:
     stats = {"offers_scanned": 0, "offers_pictures_added": 0, "rgba_fixed": 0, "build_time_bumped": 0}
 
