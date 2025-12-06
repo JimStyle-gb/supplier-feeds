@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AkCent post-process (v53)
-1) Унификация WhatsApp-блока (на случай если где-то попадётся rgba(0,0,0,.08))
+AkCent post-process (v54)
+1) Унификация WhatsApp-блока (rgba(0,0,0,.08) -> rgba(0,0,0,0.08))
 2) Добавление picture-заглушки, если <picture> отсутствует в offer
+3) При workflow_dispatch (ручной запуск) обновляет "Время сборки (Алматы) | ...", чтобы файл менялся и коммит проходил.
 
 Важно: скрипт делает ТОЛЬКО точечные правки по тексту файла (без XML-переформатирования).
+
+Fix v54:
+- Убраны лишние "\\" в regex (иначе offers=0).
+- Fallback отступ = "\n            " (а не литерал "\\n ...").
 """
 
 from __future__ import annotations
@@ -16,26 +21,53 @@ import re
 import sys
 from pathlib import Path
 
+from datetime import datetime, timedelta
+
+RE_BUILD_TIME_LINE = re.compile(
+    r"(Время сборки\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
+    re.IGNORECASE,
+)
+
+# Текущее время Алматы (UTC+5)
+def _now_almaty_str() -> str:
+    return (datetime.utcnow() + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S")
+
+
+# Обновляет строку времени сборки ТОЛЬКО при ручном запуске workflow_dispatch (или FORCE_YML_REFRESH=1)
+def _should_force_refresh() -> bool:
+    ev = os.environ.get("GITHUB_EVENT_NAME", "").strip().lower()
+    if ev == "workflow_dispatch":
+        return True
+    v = os.environ.get("FORCE_YML_REFRESH", "").strip().lower()
+    return v in ("1", "true", "yes", "y")
+
+
+# Обновляет строку времени сборки (если она есть)
+def _bump_build_time_if_needed(src: str) -> tuple[str, int]:
+    if not _should_force_refresh():
+        return src, 0
+    now_s = _now_almaty_str()
+    out, n = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
+    return out, n
+
+
 PLACEHOLDER_PICTURE_URL = (
     "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
 )
 
-RE_OFFER_BLOCK = re.compile(r"(<offer\\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
-RE_RGBA_BAD = re.compile(r"rgba\\(0,0,0,\\.08\\)")
-RE_PRICE_LINE = re.compile(r"(\\n[ \\t]*)<price>")
+RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
+RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
+RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
 
 
-# Читает файл в windows-1251
 def _read_text(path: Path) -> str:
     return path.read_text(encoding="windows-1251")
 
 
-# Пишет файл в windows-1251
 def _write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="windows-1251")
 
 
-# Вставляет <picture> заглушку в offer, если picture отсутствует
 def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
     if "<picture>" in offer_body:
         return offer_body, 0
@@ -45,18 +77,20 @@ def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
         return offer_body, 0
 
     m = RE_PRICE_LINE.search(offer_body)
-    indent = m.group(1) if m else "\\n            "
+    indent = m.group(1) if m else "\n            "
 
     insert = f"{indent}<picture>{PLACEHOLDER_PICTURE_URL}</picture>"
     new_body = offer_body[: idx + len("</price>")] + insert + offer_body[idx + len("</price>") :]
     return new_body, 1
 
 
-# Применяет правки без изменения общего форматирования
 def _process_text(src: str) -> tuple[str, dict]:
-    stats = {"offers_scanned": 0, "offers_pictures_added": 0, "rgba_fixed": 0}
+    stats = {"offers_scanned": 0, "offers_pictures_added": 0, "rgba_fixed": 0, "build_time_bumped": 0}
 
-    src2, n = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src)
+    src0, n0 = _bump_build_time_if_needed(src)
+    stats["build_time_bumped"] = n0
+
+    src2, n = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src0)
     stats["rgba_fixed"] = n
 
     def repl(m: re.Match) -> str:
@@ -70,7 +104,6 @@ def _process_text(src: str) -> tuple[str, dict]:
     return out, stats
 
 
-# Определяет входной файл по OUT_FILE или docs/akcent.yml
 def _resolve_infile(cli_path: str | None) -> Path:
     if cli_path:
         return Path(cli_path)
@@ -101,6 +134,7 @@ def main(argv: list[str]) -> int:
         f"offers={stats['offers_scanned']} | "
         f"pictures_added={stats['offers_pictures_added']} | "
         f"rgba_fixed={stats['rgba_fixed']} | "
+        f"build_time_bumped={stats['build_time_bumped']} | "
         f"file={path}"
     )
     return 0
