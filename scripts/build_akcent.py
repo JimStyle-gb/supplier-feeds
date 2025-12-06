@@ -265,10 +265,19 @@ def _normalize_brand_name(raw: str) -> str:
     return t.strip()
 
 # Делает: считает цену
-def _apply_price_rules(raw_price: int) -> int:
-    base = int(raw_price)
-    if base <= 0:
-        return base
+def _apply_price_rules(raw_price: int | None) -> int:
+    # raw_price: цена поставщика в KZT (может отсутствовать)
+    if raw_price is None:
+        return 100
+
+    try:
+        base = int(raw_price)
+    except Exception:
+        return 100
+
+    # по правилам: если цены нет / меньше 101 -> 100
+    if base < 101:
+        return 100
 
     tiers = [
         (101, 10_000, 3_000),
@@ -288,28 +297,29 @@ def _apply_price_rules(raw_price: int) -> int:
         (2_000_001, 100_000_000, 100_000),
     ]
 
-    bonus = 0
+    bonus = None
     for lo, hi, add in tiers:
         if lo <= base <= hi:
             bonus = add
             break
 
-    if bonus == 0:
-        return base
+    if bonus is None:
+        return 100
 
     value = base * 1.04 + bonus
 
+    # хвост 900 + округление вверх
     thousands = int(value) // 1000
     price = thousands * 1000 + 900
     if price < value:
         price += 1000
 
+    # отсечка больших цен
     if price >= 9_000_000:
         return 100
 
-    return price
+    return int(price)
 
-# Делает: извлекает нужные поля
 def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
     params: list[tuple[str, str]] = []
     compat: list[str] = []
@@ -347,6 +357,75 @@ def _extract_params(block: str) -> tuple[list[tuple[str, str]], list[str]]:
         params.append((norm_name, value))
 
     return params, compat
+
+# Делает: достаёт характеристики из описания (формат "Ключ: Значение")
+def _extract_params_from_desc(raw_desc: str) -> list[tuple[str, str]]:
+    if not raw_desc:
+        return []
+
+    text = html.unescape(raw_desc)
+
+    # сохранение переносов
+    text = re.sub(r"<\s*br\s*/?\s*>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"</\s*p\s*>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"<\s*p\b[^>]*>", "", text, flags=re.IGNORECASE)
+
+    # убрать остальные теги
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = text.replace("&nbsp;", " ")
+
+    chunks: list[str] = []
+    for line in text.splitlines():
+        for part in line.split(";"):
+            v = part.strip()
+            if v:
+                chunks.append(v)
+
+    if not chunks:
+        return []
+
+    bad_keys = {
+        "описание",
+        "примечание",
+        "комплектация",
+        "гарантия",
+        "доставка",
+        "оплата",
+        "условия",
+    }
+
+    out: list[tuple[str, str]] = []
+    seen: set[str] = set()
+
+    for c in chunks:
+        c = re.sub(r"\s+", " ", c).strip()
+        if not c or len(c) > 160:
+            continue
+
+        m = re.match(r"^([A-Za-zА-Яа-яЁё0-9][A-Za-zА-Яа-яЁё0-9 /().,+-]{1,40})\s*[:\-]\s*(.{1,90})$", c)
+        if not m:
+            continue
+
+        k = m.group(1).strip()
+        v = m.group(2).strip()
+
+        if not k or not v:
+            continue
+
+        k_low = k.lower()
+        if k_low in bad_keys:
+            continue
+
+        # защита от мусора
+        if "http" in v.lower():
+            continue
+
+        if k_low in seen:
+            continue
+        seen.add(k_low)
+        out.append((k, v))
+
+    return out
 
 GOAL = 1000
 GOAL_LOW = 900
@@ -516,12 +595,22 @@ def _parse_offer(block: str) -> OfferData | None:
         if value.isdigit():
             raw_price_val = int(value)
 
-    if raw_price_val is None or raw_price_val <= 0:
-        return None
-
     price = _apply_price_rules(raw_price_val)
 
     params, compat = _extract_params(body)
+
+    desc_params = _extract_params_from_desc(raw_desc)
+    if desc_params:
+        existing = {pname.strip().lower() for pname, _ in params if (pname or "").strip()}
+        for k, v in desc_params:
+            k_norm = (k or "").strip()
+            if not k_norm:
+                continue
+            k_low = k_norm.lower()
+            if k_low in existing:
+                continue
+            params.append((k_norm, (v or "").strip()))
+            existing.add(k_low)
 
     desc_html = _build_description(name, raw_desc, params, compat)
 
@@ -660,3 +749,4 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
