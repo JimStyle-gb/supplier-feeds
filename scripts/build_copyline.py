@@ -1,23 +1,39 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-CopyLine post-process (v17)
-1) Унификация WhatsApp-блока (rgba(0,0,0,.08) -> rgba(0,0,0,0.08))
-2) Добавление picture-заглушки, если <picture> отсутствует в offer
-3) Если у offer нет <param>, добавляем минимум 1 параметр:
+CopyLine post-process (v18)
+
+Что делает (точечно, без переформатирования XML):
+1) Устойчивое чтение docs/copyline.yml:
+   - windows-1251 -> utf-8 -> utf-8(errors="replace")
+   - удаляем UTF-8 BOM, если есть
+2) Всегда сохраняем обратно в windows-1251:
+   - неподдерживаемые символы -> XML-сущности (&#...;) через xmlcharrefreplace
+3) Шапка файла:
+   - убираем пустые строки/пробелы перед <?xml ...?>
+   - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
+4) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
+5) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
+6) Если у offer нет <param>, добавляем минимум 1 параметр:
    <param name="Совместимость">...</param>
-   + в <description> добавляем блок:
+   + в <description> добавляем:
      <p><strong>Совместимость:</strong> ...</p>
      <h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> ...
+   (делаем только если в описании ещё нет блока "Характеристики")
+7) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
+   - workflow_dispatch: да
+   - FORCE_YML_REFRESH=1: да
+   - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
+   - schedule: нет
 
-Важно: скрипт делает ТОЛЬКО точечные правки по тексту файла (без XML-переформатирования).
-
-Fix v17: убраны ошибочные экранирования (SyntaxError на вставке param + корректные regex/backref).
+Входной файл: OUT_FILE или docs/copyline.yml
+Если файла нет — code=2 (ничего не создаём).
 """
 
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timedelta
 import html as _html
 import os
 import re
@@ -33,38 +49,123 @@ RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
 RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
 
 RE_NAME = re.compile(r"<name>(.*?)</name>", re.DOTALL)
-RE_DESC_CDATA = re.compile(
-    r"<description><!\[CDATA\[(.*?)\]\]></description>",
-    re.DOTALL | re.IGNORECASE,
-)
-
-RE_WHATSAPP_BLOCK = re.compile(
-    r"<!--\s*WhatsApp\s*-->.*?<!--\s*Описание\s*-->",
-    re.DOTALL | re.IGNORECASE,
-)
+RE_DESC_CDATA = re.compile(r"<description><!\[CDATA\[(.*?)\]\]></description>", re.DOTALL)
 RE_DESC_MARK = re.compile(r"<!--\s*Описание\s*-->", re.IGNORECASE)
 RE_HAS_CHAR = re.compile(r"\bХарактеристики\b", re.IGNORECASE)
 
-# group1: конец description+перенос, group2: отступ перед <keywords>, group3: <keywords...
-RE_INSERT_PARAM_BEFORE_KEYWORDS = re.compile(
-    r"(\]\]></description>\s*\n)([ \t]*)(<keywords\b)",
+RE_INSERT_PARAM_BEFORE_KEYWORDS = re.compile(r"(</description>\n)([ \t]*)(<keywords>)", re.DOTALL)
+
+RE_BUILD_TIME_LINE = re.compile(
+    r"(Время сборки\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
     re.IGNORECASE,
 )
+RE_YML_CATALOG_DATE = re.compile(r'(<yml_catalog\b[^>]*\bdate=")([^"]*)(")', re.IGNORECASE)
 
 TYPE_PREFIX = re.compile(
-    r"^(девелопер|драм[- ]картридж|термоблок|термоэлемент|drum\s+unit|drum)\s+",
+    r"^(Картридж|Тонер|Драм|Фотобарабан|Девелопер|Чип|Лента|Ролик|Печатающая головка|Заправка)\b[:\- ]*",
     re.IGNORECASE,
 )
 
 
-# Читает файл в windows-1251
-def _read_text(path: Path) -> str:
-    return path.read_text(encoding="windows-1251")
+# Текущее время Алматы (UTC+5)
+def _now_almaty_dt() -> datetime:
+    return datetime.utcnow() + timedelta(hours=5)
 
 
-# Пишет файл в windows-1251
+def _now_almaty_str() -> str:
+    return _now_almaty_dt().strftime("%Y-%m-%d %H:%M:%S")
+
+
+# Нужно ли форсить обновление YML (чтобы появился diff для коммита)
+def _should_force_refresh() -> bool:
+    v = os.environ.get("FORCE_YML_REFRESH", "").strip().lower()
+    if v in ("1", "true", "yes", "y"):
+        return True
+
+    ev = os.environ.get("GITHUB_EVENT_NAME", "").strip().lower()
+    if ev == "workflow_dispatch":
+        return True
+
+    if ev == "push":
+        try:
+            want_h = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "0") or "0").strip())
+        except Exception:
+            want_h = 0
+        return _now_almaty_dt().hour == want_h
+
+    return False
+
+
+# Читает файл устойчиво (cp1251 -> utf8 -> utf8 replace), убирает BOM
+def _read_text(path: Path) -> tuple[str, str, int]:
+    data = path.read_bytes()
+    bom = 0
+    if data.startswith(b"\xef\xbb\xbf"):
+        data = data[3:]
+        bom = 1
+
+    try:
+        return data.decode("windows-1251"), "windows-1251", bom
+    except UnicodeDecodeError:
+        pass
+
+    try:
+        return data.decode("utf-8"), "utf-8", bom
+    except UnicodeDecodeError:
+        return data.decode("utf-8", errors="replace"), "utf-8(replace)", bom
+
+
+# Пишет файл строго windows-1251, неподдерживаемые символы -> XML-сущности
 def _write_text(path: Path, text: str) -> None:
-    path.write_text(text, encoding="windows-1251")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
+
+
+# Чинит верх файла: убирает пустые строки до <?xml> и после него
+def _normalize_header(src: str) -> tuple[str, int]:
+    s = src.lstrip("\ufeff")
+    changed = 0
+
+    s2 = s.lstrip(" \t\r\n")
+    if s2 != s:
+        changed = 1
+        s = s2
+
+    lines = s.splitlines(True)
+    if not lines:
+        return s, changed
+
+    first = lines[0]
+    if first.lstrip().startswith("<?xml"):
+        first = first.rstrip("\r\n") + "\n"
+        i = 1
+        while i < len(lines) and lines[i].strip() == "":
+            i += 1
+            changed = 1
+        return first + "".join(lines[i:]), changed
+
+    return s, changed
+
+
+# Форс-обновление времени (обновляем и FEED_META, и date="..." у yml_catalog)
+def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
+    if not _should_force_refresh():
+        return src, 0, 0
+
+    now_s = _now_almaty_str()
+
+    out, n_meta = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
+
+    def _date_repl(m: re.Match) -> str:
+        old = m.group(2)
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", old):
+            new = now_s[:16]
+        else:
+            new = now_s
+        return m.group(1) + new + m.group(3)
+
+    out2, n_date = RE_YML_CATALOG_DATE.subn(_date_repl, out, count=1)
+    return out2, n_meta, n_date
 
 
 # XML-экранирование текста для <param> значений
@@ -82,26 +183,8 @@ def _xml_escape(s: str) -> str:
 def _compat_from_name(name: str) -> str:
     s = " ".join(name.split()).strip()
     s = TYPE_PREFIX.sub("", s).strip()
-
-    # если явно есть "для/for" — берём хвост после этого
-    m = re.search(r"\bдля\s+(.+)$", s, flags=re.IGNORECASE)
-    if m:
-        s = m.group(1).strip()
-    else:
-        m = re.search(r"\bfor\s+(.+)$", s, flags=re.IGNORECASE)
-        if m:
-            s = m.group(1).strip()
-
-    # убрать цвета (как правило это не совместимость)
-    s = re.sub(r"\s+(black|cyan|magenta|yellow)\b.*$", "", s, flags=re.IGNORECASE)
-
-    # убрать вес/фасовку
-    s = re.sub(r"\s+foil\s+bags\b.*$", "", s, flags=re.IGNORECASE)
-    s = re.sub(r"\s+\d+\s*(?:г|гр|g|кг|kg)\b.*$", "", s, flags=re.IGNORECASE)
-
-    s = " ".join(s.split()).strip()
-    if len(s) > 180:
-        s = s[:180].rstrip()
+    # лёгкая чистка скобок/хвостов
+    s = re.sub(r"\s{2,}", " ", s).strip()
     return s
 
 
@@ -127,54 +210,40 @@ def _inject_desc_compat(inner: str, compat_html: str) -> tuple[str, int]:
     if RE_HAS_CHAR.search(inner):
         return inner, 0
 
-    # найдём маркер Описание
     m = RE_DESC_MARK.search(inner)
-    if not m:
-        # если вдруг маркера нет — аккуратно добавим в конец перед закрытием CDATA
-        add = (
-            f"\n<p><strong>Совместимость:</strong> {compat_html}</p>"
-            f"\n<h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> {compat_html}</li></ul>\n"
-        )
-        return inner + add, 1
-
-    start = m.end()
-    tail = inner[start:]
-
-    # вставим после последнего </p> в описании
-    lp = tail.lower().rfind("</p>")
-    if lp != -1:
-        insert_pos = start + lp + len("</p>")
-    else:
-        insert_pos = start
-
     add = (
         f"\n<p><strong>Совместимость:</strong> {compat_html}</p>"
         f"\n<h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> {compat_html}</li></ul>\n"
     )
-    return inner[:insert_pos] + add + inner[insert_pos:], 1
+
+    if not m:
+        return inner + add, 1
+
+    # вставим сразу после маркера Описание
+    pos = m.end()
+    return inner[:pos] + add + inner[pos:], 1
 
 
-# Если нет param — добавляет param "Совместимость" + чинит description
-def _inject_param_and_desc_if_missing(offer_body: str) -> tuple[str, int, int]:
-    if "<param " in offer_body:
+# Если <param> нет — добавляем совместимость и в description, и в param
+def _ensure_min_param(offer_body: str) -> tuple[str, int, int]:
+    if "<param" in offer_body:
         return offer_body, 0, 0
 
-    m_name = RE_NAME.search(offer_body)
-    name = m_name.group(1).strip() if m_name else ""
+    nm = RE_NAME.search(offer_body)
+    name = nm.group(1).strip() if nm else ""
+    if not name:
+        return offer_body, 0, 0
 
     compat = _compat_from_name(name)
     if not compat:
         return offer_body, 0, 0
 
-    # 1) description (CDATA) — добавим блок, если нет характеристик
-    descm = RE_DESC_CDATA.search(offer_body)
+    # 1) description — найдём CDATA
     desc_added = 0
+    descm = RE_DESC_CDATA.search(offer_body)
     if descm:
         inner = descm.group(1)
-
-        # совместимость для HTML внутри CDATA — экранируем <>&
         compat_html = _html.escape(compat, quote=False)
-
         inner2, desc_added = _inject_desc_compat(inner, compat_html)
         if desc_added:
             new_desc = f"<description><![CDATA[{inner2}]]></description>"
@@ -192,7 +261,6 @@ def _inject_param_and_desc_if_missing(offer_body: str) -> tuple[str, int, int]:
 
     new_body, n = RE_INSERT_PARAM_BEFORE_KEYWORDS.subn(_repl, offer_body, count=1)
     if n == 0:
-        # если вдруг keywords нет — просто добавим в конец offer-body
         new_body = offer_body + "\n" + insert_line
 
     return new_body, 1, desc_added
@@ -206,27 +274,36 @@ def _process_text(src: str) -> tuple[str, dict]:
         "offers_params_added": 0,
         "offers_desc_fixed": 0,
         "rgba_fixed": 0,
+        "header_fixed": 0,
+        "build_time_bumped_meta": 0,
+        "build_time_bumped_date": 0,
     }
 
-    # 1) WhatsApp rgba
-    src2, n = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src)
-    stats["rgba_fixed"] = n
+    src_h, header_fixed = _normalize_header(src)
+    stats["header_fixed"] = header_fixed
 
-    # 2-3) по offer-блокам
+    src0, n_meta, n_date = _bump_build_time_if_needed(src_h)
+    stats["build_time_bumped_meta"] = n_meta
+    stats["build_time_bumped_date"] = n_date
+
+    src1, n_rgba = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src0)
+    stats["rgba_fixed"] = n_rgba
+
     def repl(m: re.Match) -> str:
         head, body, tail = m.group(1), m.group(2), m.group(3)
+
         stats["offers_scanned"] += 1
 
-        body2, added_pic = _inject_picture_if_missing(body)
-        stats["offers_pictures_added"] += added_pic
+        body2, pic_added = _inject_picture_if_missing(body)
+        stats["offers_pictures_added"] += pic_added
 
-        body3, added_param, desc_fixed = _inject_param_and_desc_if_missing(body2)
-        stats["offers_params_added"] += added_param
-        stats["offers_desc_fixed"] += desc_fixed
+        body3, param_added, desc_added = _ensure_min_param(body2)
+        stats["offers_params_added"] += param_added
+        stats["offers_desc_fixed"] += desc_added
 
         return head + body3 + tail
 
-    out = RE_OFFER_BLOCK.sub(repl, src2)
+    out = RE_OFFER_BLOCK.sub(repl, src1)
     return out, stats
 
 
@@ -242,12 +319,7 @@ def _resolve_infile(cli_path: str | None) -> Path:
 
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument(
-        "--in",
-        dest="infile",
-        default=None,
-        help="Путь к copyline.yml (по умолчанию OUT_FILE или docs/copyline.yml)",
-    )
+    ap.add_argument("--in", dest="infile", default=None, help="Путь к copyline.yml (по умолчанию OUT_FILE или docs/copyline.yml)")
     args = ap.parse_args(argv)
 
     path = _resolve_infile(args.infile)
@@ -255,12 +327,21 @@ def main(argv: list[str]) -> int:
         print(f"[postprocess_copyline] ERROR: file not found: {path}", file=sys.stderr)
         return 2
 
-    src = _read_text(path)
+    src, enc, bom = _read_text(path)
+    if enc != "windows-1251" or bom:
+        info = []
+        if enc != "windows-1251":
+            info.append(f"encoding={enc}")
+        if bom:
+            info.append("bom=stripped")
+        print(f"[postprocess_copyline] WARN: input {'; '.join(info)} (сохраним как windows-1251)", file=sys.stderr)
+
     out, stats = _process_text(src)
 
-    if out != src:
+    if out != src or enc != "windows-1251" or bom:
         _write_text(path, out)
 
+    bumped = stats["build_time_bumped_meta"] + stats["build_time_bumped_date"]
     print(
         "[postprocess_copyline] OK | "
         f"offers={stats['offers_scanned']} | "
@@ -268,6 +349,8 @@ def main(argv: list[str]) -> int:
         f"params_added={stats['offers_params_added']} | "
         f"desc_fixed={stats['offers_desc_fixed']} | "
         f"rgba_fixed={stats['rgba_fixed']} | "
+        f"header_fixed={stats['header_fixed']} | "
+        f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
         f"file={path}"
     )
     return 0
