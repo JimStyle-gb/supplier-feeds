@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-VTT post-process (v58)
+VTT post-process (v59)
 
 Фиксы (точечно, без XML-переформатирования):
 1) Устойчивое чтение docs/vtt.yml:
@@ -12,18 +12,20 @@ VTT post-process (v58)
 3) Шапка файла:
    - убираем пустые строки/пробелы перед <?xml ...?>
    - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
-4) FEED_META: если строка "Время сборки (Алматы)" повреждена (например "P25-12-07 05:27:12"),
-   то восстанавливаем её как у остальных поставщиков:
-   "Время сборки (Алматы)                      | 2025-12-07 05:27:12"
-5) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
-6) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
-7) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
+4) FEED_META: если строка "Время сборки (Алматы)" повреждена (например "P25-12-07 ..."),
+   то восстанавливаем её как у остальных поставщиков
+   + синхронизируем "Время сборки" с <yml_catalog date="..."> (чтобы как у других совпадало по минутам)
+5) Описание (CDATA): выравниваем как у большинства:
+   - ровно 2 перевода строки в начале и в конце CDATA (для каждого offer)
+6) WhatsApp-кнопка: чтобы блок был как у остальных —
+   - добавляем "&#128172; " перед текстом "НАЖМИТЕ..." если его нет
+7) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
+8) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
+9) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
    - workflow_dispatch: да
    - FORCE_YML_REFRESH=1: да
    - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
    - schedule: нет
-
-ВАЖНО: двойные переносы строк внутри CDATA НЕ трогаем (оставляем как есть).
 
 Входной файл: OUT_FILE или docs/vtt.yml
 Если файла нет — code=2.
@@ -54,6 +56,9 @@ RE_BUILD_TIME_LINE = re.compile(
 )
 RE_YML_CATALOG_DATE = re.compile(r'(<yml_catalog\b[^>]*\bdate=")([^"]*)(")', re.IGNORECASE)
 
+RE_DESC_CDATA = re.compile(r"(<description><!\[CDATA\[)(.*?)(\]\]></description>)", re.DOTALL)
+RE_WA_BTN_NO_EMOJI = re.compile(r'(">\s*)(НАЖМИТЕ,\s*ЧТОБЫ\s*НАПИС)', re.IGNORECASE)
+
 
 # Текущее время Алматы (UTC+5)
 def _now_almaty_dt() -> datetime:
@@ -62,6 +67,10 @@ def _now_almaty_dt() -> datetime:
 
 def _now_almaty_str() -> str:
     return _now_almaty_dt().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _now_almaty_str_min() -> str:
+    return _now_almaty_dt().strftime("%Y-%m-%d %H:%M")
 
 
 # Нужно ли форсить обновление YML (чтобы появился diff для коммита)
@@ -139,18 +148,24 @@ def _normalize_header(src: str) -> tuple[str, int]:
 def _parse_weird_dt(line: str) -> str | None:
     s = line.strip()
 
-    # 2025-12-07 05:27:12
     m = re.fullmatch(r"\D*(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
     if m:
         return f"{m.group(1)}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
 
-    # 25-12-07 05:27:12
     m = re.fullmatch(r"\D*(\d{2})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
     if m:
         yy = int(m.group(1))
         return f"20{yy:02d}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
 
     return None
+
+
+# Берём yml_catalog date (минуты)
+def _get_yml_date(src: str) -> str | None:
+    m = RE_YML_CATALOG_DATE.search(src)
+    if not m:
+        return None
+    return m.group(2)
 
 
 # Восстанавливает строку "Время сборки (Алматы)" в FEED_META, если она повреждена/отсутствует
@@ -162,7 +177,6 @@ def _fix_feed_meta_build_time(src: str) -> tuple[str, int]:
     body = m.group(1)
     lines = body.splitlines()
 
-    # Если уже есть строка "Время сборки" — ничего не делаем
     for ln in lines:
         if "Время сборки" in ln:
             return src, 0
@@ -190,10 +204,45 @@ def _fix_feed_meta_build_time(src: str) -> tuple[str, int]:
     if cand_i is None:
         return src, 0
 
-    # Как у остальных поставщиков: фиксированная колонка
     lines[cand_i] = f"Время сборки (Алматы)                      | {dt}"
     new_body = "\n".join(lines)
+    new_block = "<!--FEED_META\n" + new_body + "\n-->"
+    out = src[: m.start()] + new_block + src[m.end() :]
+    return out, 1
 
+
+# Синхронизирует "Время сборки" с yml_catalog date (чтобы совпадало по минутам)
+def _sync_feed_meta_time_with_yml_date(src: str) -> tuple[str, int]:
+    y = _get_yml_date(src)
+    if not y:
+        return src, 0
+
+    # y обычно "YYYY-MM-DD HH:MM"
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", y):
+        y_full = y + ":00"
+    else:
+        # если уже с секундами
+        y_full = y
+
+    m = RE_FEED_META_BLOCK.search(src)
+    if not m:
+        return src, 0
+
+    body = m.group(1)
+    lines = body.splitlines()
+
+    changed = 0
+    for i, ln in enumerate(lines):
+        mm = RE_BUILD_TIME_LINE.search(ln)
+        if mm:
+            lines[i] = "Время сборки (Алматы)                      | " + y_full
+            changed = 1
+            break
+
+    if not changed:
+        return src, 0
+
+    new_body = "\n".join(lines)
     new_block = "<!--FEED_META\n" + new_body + "\n-->"
     out = src[: m.start()] + new_block + src[m.end() :]
     return out, 1
@@ -205,19 +254,36 @@ def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
         return src, 0, 0
 
     now_s = _now_almaty_str()
+    now_min = _now_almaty_str_min()
 
     out, n_meta = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
-
-    def _date_repl(mm: re.Match) -> str:
-        old = mm.group(2)
-        if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", old):
-            new = now_s[:16]
-        else:
-            new = now_s
-        return mm.group(1) + new + mm.group(3)
-
-    out2, n_date = RE_YML_CATALOG_DATE.subn(_date_repl, out, count=1)
+    out2, n_date = RE_YML_CATALOG_DATE.subn(lambda mm: mm.group(1) + now_min + mm.group(3), out, count=1)
     return out2, n_meta, n_date
+
+
+# Нормализуем CDATA: ровно 2 \n в начале и в конце
+def _normalize_description_cdata_2nl(src: str) -> tuple[str, int]:
+    fixed = 0
+
+    def repl(m: re.Match) -> str:
+        nonlocal fixed
+        head, body, tail = m.group(1), m.group(2), m.group(3)
+        b = body.replace("\r\n", "\n")
+        core = b.lstrip("\n").rstrip("\n")
+        out = "\n\n" + core + "\n\n"
+        if out != b:
+            fixed += 1
+        return head + out + tail
+
+    out = RE_DESC_CDATA.sub(repl, src)
+    return out, fixed
+
+
+# Добавляем эмодзи-энтити в кнопку WhatsApp, если нет
+def _ensure_wa_emoji(src: str) -> tuple[str, int]:
+    # только если есть кнопка без эмодзи
+    out, n = RE_WA_BTN_NO_EMOJI.subn(r"\1&#128172; \2", src)
+    return out, n
 
 
 # Вставляет <picture> заглушку в offer, если picture отсутствует
@@ -244,22 +310,40 @@ def _process_text(src: str) -> tuple[str, dict]:
         "offers_pictures_added": 0,
         "rgba_fixed": 0,
         "header_fixed": 0,
-        "feed_meta_build_time_fixed": 0,
+        "feed_meta_time_fixed": 0,
+        "feed_meta_time_synced": 0,
+        "desc_cdata_fixed": 0,
+        "wa_emoji_added": 0,
         "build_time_bumped_meta": 0,
         "build_time_bumped_date": 0,
     }
 
-    src_h, header_fixed = _normalize_header(src)
-    stats["header_fixed"] = header_fixed
+    s, hf = _normalize_header(src)
+    stats["header_fixed"] = hf
 
-    src_m, fm_fixed = _fix_feed_meta_build_time(src_h)
-    stats["feed_meta_build_time_fixed"] = fm_fixed
+    s, fm = _fix_feed_meta_build_time(s)
+    stats["feed_meta_time_fixed"] = fm
 
-    src0, n_meta, n_date = _bump_build_time_if_needed(src_m)
+    # сначала синхронизация с yml_catalog (как у других)
+    s, sync = _sync_feed_meta_time_with_yml_date(s)
+    stats["feed_meta_time_synced"] = sync
+
+    s, n_meta, n_date = _bump_build_time_if_needed(s)
     stats["build_time_bumped_meta"] = n_meta
     stats["build_time_bumped_date"] = n_date
 
-    src1, n_rgba = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src0)
+    # если bump был — снова синхронизация (чтобы было 1:1)
+    if n_date or n_meta:
+        s, sync2 = _sync_feed_meta_time_with_yml_date(s)
+        stats["feed_meta_time_synced"] = stats["feed_meta_time_synced"] or sync2
+
+    s, n_cdata = _normalize_description_cdata_2nl(s)
+    stats["desc_cdata_fixed"] = n_cdata
+
+    s, n_wa = _ensure_wa_emoji(s)
+    stats["wa_emoji_added"] = n_wa
+
+    s, n_rgba = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", s)
     stats["rgba_fixed"] = n_rgba
 
     def repl(mo: re.Match) -> str:
@@ -269,7 +353,7 @@ def _process_text(src: str) -> tuple[str, dict]:
         stats["offers_pictures_added"] += added
         return head + body2 + tail
 
-    out = RE_OFFER_BLOCK.sub(repl, src1)
+    out = RE_OFFER_BLOCK.sub(repl, s)
     return out, stats
 
 
@@ -314,7 +398,10 @@ def main(argv: list[str]) -> int:
         f"pictures_added={stats['offers_pictures_added']} | "
         f"rgba_fixed={stats['rgba_fixed']} | "
         f"header_fixed={stats['header_fixed']} | "
-        f"feed_meta_time_fixed={stats['feed_meta_build_time_fixed']} | "
+        f"feed_meta_time_fixed={stats['feed_meta_time_fixed']} | "
+        f"feed_meta_time_synced={stats['feed_meta_time_synced']} | "
+        f"desc_cdata_fixed={stats['desc_cdata_fixed']} | "
+        f"wa_emoji_added={stats['wa_emoji_added']} | "
         f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
         f"file={path}"
     )
