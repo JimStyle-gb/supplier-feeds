@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AlStyle post-process (v120)
+AlStyle post-process (v121)
 
 Фиксы (точечно, без XML-переформатирования):
 1) Устойчивое чтение docs/alstyle.yml:
@@ -13,12 +13,13 @@ AlStyle post-process (v120)
    - убираем пустые строки/пробелы перед <?xml ...?>
    - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
 4) FEED_META:
-   - если строка "Время сборки (Алматы)" повреждена (например "P25-12-07 04:44:05"),
-     то восстанавливаем её как у других поставщиков
-   - исправляем "Ближайшая сборка (Алматы)" так, чтобы это была будущая дата
+   - фиксит повреждённую строку времени вида "P25-12-07 07:34:39"
+     (или любой "мусор + YY-MM-DD HH:MM:SS") и превращает в:
+     "Время сборки (Алматы)                      | 2025-12-07 07:34:39"
+   - если строки времени вообще нет — вставляет после "URL поставщика"
+   - исправляет "Ближайшая сборка (Алматы)" так, чтобы это была будущая дата
      (считаем по env: SCHEDULE_DOM и SCHEDULE_HOUR_ALMATY, TZ=Asia/Almaty)
-5) Описание (CDATA): приводим к единообразию как у большинства поставщиков:
-   - ровно 2 перевода строки в начале и в конце CDATA (для каждого offer)
+5) Описание (CDATA): ровно 2 перевода строки в начале и в конце CDATA (для каждого offer)
 6) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
 7) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
 8) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
@@ -48,7 +49,8 @@ RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
 RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
 RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
 
-RE_FEED_META_BLOCK = re.compile(r"<!--FEED_META\n(.*?)\n-->", re.DOTALL)
+# Толерантный FEED_META: допускаем \r\n и пробелы после -->
+RE_FEED_META_BLOCK = re.compile(r"(<!--FEED_META\r?\n)(.*?)(\r?\n-->)([ \t]*)", re.DOTALL)
 
 RE_BUILD_TIME_LINE = re.compile(
     r"(Время сборки\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
@@ -73,7 +75,6 @@ def _now_almaty_str() -> str:
 
 
 def _now_almaty_str_min() -> str:
-    # для <yml_catalog date="YYYY-MM-DD HH:MM">
     return _now_almaty_dt().strftime("%Y-%m-%d %H:%M")
 
 
@@ -148,14 +149,16 @@ def _normalize_header(src: str) -> tuple[str, int]:
     return s, changed
 
 
-# Парсит дату из кривой строки типа "P25-12-07 04:44:05" -> "2025-12-07 04:44:05"
+# Парсит дату из кривой строки типа "P25-12-07 07:34:39" -> "2025-12-07 07:34:39"
 def _parse_weird_dt(line: str) -> str | None:
     s = line.strip()
 
+    # 2025-12-07 07:34:39
     m = re.fullmatch(r"\D*(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
     if m:
         return f"{m.group(1)}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
 
+    # 25-12-07 07:34:39
     m = re.fullmatch(r"\D*(\d{2})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
     if m:
         yy = int(m.group(1))
@@ -176,18 +179,16 @@ def _get_build_dt_from_feed_meta(lines: list[str]) -> datetime | None:
     return None
 
 
-# Берём yml_catalog date как datetime (минуты)
+# Берём yml_catalog date как datetime (минуты/секунды)
 def _get_yml_date_dt(src: str) -> datetime | None:
     m = RE_YML_CATALOG_DATE.search(src)
     if not m:
         return None
     val = m.group(2)
-    # чаще всего: YYYY-MM-DD HH:MM
     try:
         return datetime.strptime(val, "%Y-%m-%d %H:%M")
     except Exception:
         pass
-    # иногда: YYYY-MM-DD HH:MM:SS
     try:
         return datetime.strptime(val, "%Y-%m-%d %H:%M:%S")
     except Exception:
@@ -205,14 +206,12 @@ def _compute_next_run(base_dt: datetime) -> datetime:
     def at_hour(d: datetime) -> datetime:
         return d.replace(hour=hour, minute=0, second=0, microsecond=0)
 
-    # daily
     if dom_raw == "*" or dom_raw == "":
         cand = at_hour(base_dt)
         if base_dt < cand:
             return cand
         return cand + timedelta(days=1)
 
-    # list of days in month
     dom = []
     for part in dom_raw.split(","):
         part = part.strip()
@@ -231,33 +230,39 @@ def _compute_next_run(base_dt: datetime) -> datetime:
             return cand
         return cand + timedelta(days=1)
 
-    # brute-force search forward up to ~14 months
     d = base_dt
     for _ in range(0, 430):
         cand = at_hour(d)
         if cand.day in dom and base_dt < cand:
             return cand
-        d = (d + timedelta(days=1)).replace(hour=base_dt.hour, minute=base_dt.minute, second=base_dt.second, microsecond=0)
+        d = (d + timedelta(days=1)).replace(
+            hour=base_dt.hour, minute=base_dt.minute, second=base_dt.second, microsecond=0
+        )
 
-    # fallback
-    cand = at_hour(base_dt) + timedelta(days=1)
-    return cand
+    return at_hour(base_dt) + timedelta(days=1)
 
 
 # Восстанавливает строку "Время сборки (Алматы)" в FEED_META, если она повреждена/отсутствует
-def _fix_feed_meta_build_time(src: str) -> tuple[str, int]:
+def _ensure_feed_meta_build_time(src: str) -> tuple[str, int]:
     m = RE_FEED_META_BLOCK.search(src)
     if not m:
         return src, 0
 
-    body = m.group(1)
+    body = m.group(2)
     lines = body.splitlines()
 
-    # если строка уже есть — ок
-    for ln in lines:
-        if "Время сборки" in ln:
-            return src, 0
+    # 1) Если есть строка "Время сборки" — но вдруг криво, приведём к нормальному виду
+    for i, ln in enumerate(lines):
+        if ln.startswith("Время сборки"):
+            mm = RE_BUILD_TIME_LINE.search(ln)
+            if mm:
+                return src, 0
+            # попытаемся вытащить дату из строки
+            dt = _parse_weird_dt(ln) or _now_almaty_str()
+            lines[i] = f"Время сборки (Алматы)                      | {dt}"
+            return _replace_feed_meta(src, m, lines), 1
 
+    # 2) Ищем "голую" дату (типа P25-12-07 ...) между URL и Ближайшая сборка
     url_idx = None
     next_idx = None
     for i, ln in enumerate(lines):
@@ -269,23 +274,22 @@ def _fix_feed_meta_build_time(src: str) -> tuple[str, int]:
     lo = (url_idx + 1) if url_idx is not None else 0
     hi = next_idx if next_idx is not None else len(lines)
 
-    cand_i = None
-    dt = None
     for i in range(lo, hi):
-        dt2 = _parse_weird_dt(lines[i])
-        if dt2:
-            cand_i = i
-            dt = dt2
-            break
+        dt = _parse_weird_dt(lines[i])
+        if dt:
+            lines[i] = f"Время сборки (Алматы)                      | {dt}"
+            return _replace_feed_meta(src, m, lines), 1
 
-    if cand_i is None:
-        return src, 0
+    # 3) Вообще нет времени — вставим после URL
+    dt = _now_almaty_str()
+    ins = (url_idx + 1) if url_idx is not None else 2
+    lines.insert(ins, f"Время сборки (Алматы)                      | {dt}")
+    return _replace_feed_meta(src, m, lines), 1
 
-    lines[cand_i] = f"Время сборки (Алматы)                      | {dt}"
+
+def _replace_feed_meta(src: str, m: re.Match, lines: list[str]) -> str:
     new_body = "\n".join(lines)
-    new_block = "<!--FEED_META\n" + new_body + "\n-->"
-    out = src[: m.start()] + new_block + src[m.end() :]
-    return out, 1
+    return src[: m.start()] + m.group(1) + new_body + m.group(3) + m.group(4) + src[m.end() :]
 
 
 # Обновляет "Ближайшая сборка" в FEED_META, чтобы она всегда была в будущем
@@ -294,10 +298,9 @@ def _fix_feed_meta_next_run(src: str) -> tuple[str, int]:
     if not m:
         return src, 0
 
-    body = m.group(1)
+    body = m.group(2)
     lines = body.splitlines()
 
-    # база: build_time из meta или yml_catalog date или now
     base_dt = _get_build_dt_from_feed_meta(lines)
     if base_dt is None:
         yd = _get_yml_date_dt(src)
@@ -309,13 +312,13 @@ def _fix_feed_meta_next_run(src: str) -> tuple[str, int]:
     changed = 0
     for i, ln in enumerate(lines):
         if ln.startswith("Ближайшая сборка"):
-            # заменить полностью, как у других
+            if RE_NEXT_RUN_LINE.search(ln) and RE_NEXT_RUN_LINE.search(ln).group(2) == nxt_s:
+                return src, 0
             lines[i] = f"Ближайшая сборка (Алматы)                  | {nxt_s}"
             changed = 1
             break
 
     if not changed:
-        # если вдруг нет строки — вставим после "Время сборки"
         ins = None
         for i, ln in enumerate(lines):
             if ln.startswith("Время сборки"):
@@ -326,10 +329,7 @@ def _fix_feed_meta_next_run(src: str) -> tuple[str, int]:
         lines.insert(ins, f"Ближайшая сборка (Алматы)                  | {nxt_s}")
         changed = 1
 
-    new_body = "\n".join(lines)
-    new_block = "<!--FEED_META\n" + new_body + "\n-->"
-    out = src[: m.start()] + new_block + src[m.end() :]
-    return out, changed
+    return _replace_feed_meta(src, m, lines), changed
 
 
 # Форс-обновление времени (обновляем FEED_META и date="..." у yml_catalog)
@@ -341,8 +341,6 @@ def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
     now_min = _now_almaty_str_min()
 
     out, n_meta = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
-
-    # yml_catalog date всегда до минут
     out2, n_date = RE_YML_CATALOG_DATE.subn(lambda mm: mm.group(1) + now_min + mm.group(3), out, count=1)
     return out2, n_meta, n_date
 
@@ -399,7 +397,7 @@ def _process_text(src: str) -> tuple[str, dict]:
     s, hf = _normalize_header(src)
     stats["header_fixed"] = hf
 
-    s, fm = _fix_feed_meta_build_time(s)
+    s, fm = _ensure_feed_meta_build_time(s)
     stats["feed_meta_time_fixed"] = fm
 
     s, fr = _fix_feed_meta_next_run(s)
@@ -409,7 +407,6 @@ def _process_text(src: str) -> tuple[str, dict]:
     stats["build_time_bumped_meta"] = n_meta
     stats["build_time_bumped_date"] = n_date
 
-    # после bump — ещё раз next run (чтобы был в будущем от нового времени)
     if n_meta or n_date:
         s, fr2 = _fix_feed_meta_next_run(s)
         stats["feed_meta_next_run_fixed"] = stats["feed_meta_next_run_fixed"] or fr2
