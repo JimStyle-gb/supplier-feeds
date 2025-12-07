@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-VTT post-process (v57)
+VTT post-process (v58)
 
 Фиксы (точечно, без XML-переформатирования):
 1) Устойчивое чтение docs/vtt.yml:
@@ -12,16 +12,18 @@ VTT post-process (v57)
 3) Шапка файла:
    - убираем пустые строки/пробелы перед <?xml ...?>
    - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
-4) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
-5) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
-6) Чистим CDATA в <description>:
-   - убираем лишние пустые строки в начале/конце (оставляем максимум 1 перевод строки)
-   - убираем эмодзи-энтити &#128172; (и похожие) в тексте кнопки WhatsApp
+4) FEED_META: если строка "Время сборки (Алматы)" повреждена (например "P25-12-07 05:27:12"),
+   то восстанавливаем её как у остальных поставщиков:
+   "Время сборки (Алматы)                      | 2025-12-07 05:27:12"
+5) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
+6) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
 7) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
    - workflow_dispatch: да
    - FORCE_YML_REFRESH=1: да
    - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
    - schedule: нет
+
+ВАЖНО: двойные переносы строк внутри CDATA НЕ трогаем (оставляем как есть).
 
 Входной файл: OUT_FILE или docs/vtt.yml
 Если файла нет — code=2.
@@ -44,16 +46,13 @@ RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
 RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
 RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
 
+RE_FEED_META_BLOCK = re.compile(r"<!--FEED_META\n(.*?)\n-->", re.DOTALL)
+
 RE_BUILD_TIME_LINE = re.compile(
     r"(Время сборки\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
     re.IGNORECASE,
 )
 RE_YML_CATALOG_DATE = re.compile(r'(<yml_catalog\b[^>]*\bdate=")([^"]*)(")', re.IGNORECASE)
-
-RE_DESC_CDATA = re.compile(r"(<description><!\[CDATA\[)(.*?)(\]\]></description>)", re.DOTALL)
-RE_LEADING_BLANKS = re.compile(r"^(?:\r?\n){2,}")
-RE_TRAILING_BLANKS = re.compile(r"(?:\r?\n){2,}$")
-RE_WA_EMOJI_ENTITY = re.compile(r"(?:&#128172;|&#x1F4AC;|&#x1f4ac;)\s*", re.IGNORECASE)
 
 
 # Текущее время Алматы (UTC+5)
@@ -136,7 +135,71 @@ def _normalize_header(src: str) -> tuple[str, int]:
     return s, changed
 
 
-# Форс-обновление времени (date="..." у yml_catalog)
+# Парсит дату из кривой строки типа "P25-12-07 05:27:12" -> "2025-12-07 05:27:12"
+def _parse_weird_dt(line: str) -> str | None:
+    s = line.strip()
+
+    # 2025-12-07 05:27:12
+    m = re.fullmatch(r"\D*(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
+
+    # 25-12-07 05:27:12
+    m = re.fullmatch(r"\D*(\d{2})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
+    if m:
+        yy = int(m.group(1))
+        return f"20{yy:02d}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
+
+    return None
+
+
+# Восстанавливает строку "Время сборки (Алматы)" в FEED_META, если она повреждена/отсутствует
+def _fix_feed_meta_build_time(src: str) -> tuple[str, int]:
+    m = RE_FEED_META_BLOCK.search(src)
+    if not m:
+        return src, 0
+
+    body = m.group(1)
+    lines = body.splitlines()
+
+    # Если уже есть строка "Время сборки" — ничего не делаем
+    for ln in lines:
+        if "Время сборки" in ln:
+            return src, 0
+
+    url_idx = None
+    next_idx = None
+    for i, ln in enumerate(lines):
+        if url_idx is None and ln.startswith("URL поставщика"):
+            url_idx = i
+        if next_idx is None and ln.startswith("Ближайшая сборка"):
+            next_idx = i
+
+    lo = (url_idx + 1) if url_idx is not None else 0
+    hi = next_idx if next_idx is not None else len(lines)
+
+    cand_i = None
+    dt = None
+    for i in range(lo, hi):
+        dt2 = _parse_weird_dt(lines[i])
+        if dt2:
+            cand_i = i
+            dt = dt2
+            break
+
+    if cand_i is None:
+        return src, 0
+
+    # Как у остальных поставщиков: фиксированная колонка
+    lines[cand_i] = f"Время сборки (Алматы)                      | {dt}"
+    new_body = "\n".join(lines)
+
+    new_block = "<!--FEED_META\n" + new_body + "\n-->"
+    out = src[: m.start()] + new_block + src[m.end() :]
+    return out, 1
+
+
+# Форс-обновление времени (обновляем FEED_META и date="..." у yml_catalog)
 def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
     if not _should_force_refresh():
         return src, 0, 0
@@ -145,42 +208,16 @@ def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
 
     out, n_meta = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
 
-    def _date_repl(m: re.Match) -> str:
-        old = m.group(2)
+    def _date_repl(mm: re.Match) -> str:
+        old = mm.group(2)
         if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", old):
             new = now_s[:16]
         else:
             new = now_s
-        return m.group(1) + new + m.group(3)
+        return mm.group(1) + new + mm.group(3)
 
     out2, n_date = RE_YML_CATALOG_DATE.subn(_date_repl, out, count=1)
     return out2, n_meta, n_date
-
-
-# Чистим CDATA: лишние пустые строки + эмодзи-энтити
-def _normalize_description_cdata(src: str) -> tuple[str, int, int]:
-    blanks_fixed = 0
-    emoji_removed = 0
-
-    def repl(m: re.Match) -> str:
-        nonlocal blanks_fixed, emoji_removed
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-
-        body2, n_emoji = RE_WA_EMOJI_ENTITY.subn("", body)
-        emoji_removed += n_emoji
-
-        body3 = RE_LEADING_BLANKS.sub("\n", body2)
-        if body3 != body2:
-            blanks_fixed += 1
-
-        body4 = RE_TRAILING_BLANKS.sub("\n", body3)
-        if body4 != body3:
-            blanks_fixed += 1
-
-        return head + body4 + tail
-
-    out = RE_DESC_CDATA.sub(repl, src)
-    return out, blanks_fixed, emoji_removed
 
 
 # Вставляет <picture> заглушку в offer, если picture отсутствует
@@ -207,8 +244,7 @@ def _process_text(src: str) -> tuple[str, dict]:
         "offers_pictures_added": 0,
         "rgba_fixed": 0,
         "header_fixed": 0,
-        "desc_blanks_fixed": 0,
-        "wa_emoji_removed": 0,
+        "feed_meta_build_time_fixed": 0,
         "build_time_bumped_meta": 0,
         "build_time_bumped_date": 0,
     }
@@ -216,25 +252,24 @@ def _process_text(src: str) -> tuple[str, dict]:
     src_h, header_fixed = _normalize_header(src)
     stats["header_fixed"] = header_fixed
 
-    src0, n_meta, n_date = _bump_build_time_if_needed(src_h)
+    src_m, fm_fixed = _fix_feed_meta_build_time(src_h)
+    stats["feed_meta_build_time_fixed"] = fm_fixed
+
+    src0, n_meta, n_date = _bump_build_time_if_needed(src_m)
     stats["build_time_bumped_meta"] = n_meta
     stats["build_time_bumped_date"] = n_date
 
-    src1, blanks_fixed, emoji_removed = _normalize_description_cdata(src0)
-    stats["desc_blanks_fixed"] = blanks_fixed
-    stats["wa_emoji_removed"] = emoji_removed
-
-    src2, n_rgba = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src1)
+    src1, n_rgba = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src0)
     stats["rgba_fixed"] = n_rgba
 
-    def repl(m: re.Match) -> str:
-        head, body, tail = m.group(1), m.group(2), m.group(3)
+    def repl(mo: re.Match) -> str:
+        head, body, tail = mo.group(1), mo.group(2), mo.group(3)
         stats["offers_scanned"] += 1
         body2, added = _inject_picture_if_missing(body)
         stats["offers_pictures_added"] += added
         return head + body2 + tail
 
-    out = RE_OFFER_BLOCK.sub(repl, src2)
+    out = RE_OFFER_BLOCK.sub(repl, src1)
     return out, stats
 
 
@@ -279,8 +314,7 @@ def main(argv: list[str]) -> int:
         f"pictures_added={stats['offers_pictures_added']} | "
         f"rgba_fixed={stats['rgba_fixed']} | "
         f"header_fixed={stats['header_fixed']} | "
-        f"desc_blanks_fixed={stats['desc_blanks_fixed']} | "
-        f"wa_emoji_removed={stats['wa_emoji_removed']} | "
+        f"feed_meta_time_fixed={stats['feed_meta_build_time_fixed']} | "
         f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
         f"file={path}"
     )
