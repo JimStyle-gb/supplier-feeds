@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
-# AlStyle post-process (v13)
-# - Безопасная перекодировка в windows-1251 (чтобы workflow/commit не падал)
-# - Единый стиль CDATA (убрать 1 пустую строку в начале)
+# AlStyle post-process (v14)
+# - Исправление формата CDATA под эталон:
+#   <description><![CDATA[
+#   <!-- WhatsApp -->
+#   ...
+#   <!-- Описание -->
+#   ...
+#   <!-- Оплата и доставка -->
+#   ...
+#   ]]></description>
 # - WhatsApp: текст кнопки "Написать в WhatsApp"
 # - SEO: кнопка сверху -> родное описание/характеристики -> блок оплаты/доставки
 # - Доставка: 5000 тг. -> 5 000 тг.
 # - Keywords: убрать города (Темиртау, Экибастуз, Орал, Оскемен, Кокшетау, Семей)
+# - Безопасная запись в windows-1251 (чтобы workflow/commit не падал)
 
 import os
 import re
@@ -42,12 +50,11 @@ def _write_cp1251_safe(path: str, text: str) -> None:
     Path(path).write_bytes(data)
 
 
-def _strip_one_leading_blank_line(cdata: str) -> str:
-    "Убираем только 1 лишний перенос в начале CDATA (если их 2+)."
+def _normalize_cdata_prefix(cdata: str) -> str:
+    "Всегда делаем ровно 1 перенос строки сразу после <![CDATA[."
     cdata = cdata.replace("\r\n", "\n")
-    if cdata.startswith("\n\n"):
-        return cdata[1:]
-    return cdata
+    cdata = cdata.lstrip("\n")
+    return "\n" + cdata
 
 
 def _update_whatsapp_button_text(html: str) -> str:
@@ -88,6 +95,7 @@ def _reorder_desc_blocks(cdata: str) -> str:
     wa = m.group("wa").strip()
     body = m.group("body").strip()
 
+    # WA блок должен быть оберткой <div ...> ... </div>
     m2 = re.match(r"(?s)^(?P<open><div\b[^>]*>)(?P<inner>.*)(?P<close></div>)\s*$", wa)
     if not m2:
         return cdata
@@ -96,11 +104,12 @@ def _reorder_desc_blocks(cdata: str) -> str:
     inner = m2.group("inner")
     close_div = m2.group("close")
 
+    # Кнопка — это первый <p>..</p> внутри WA блока
     p_end = inner.find("</p>")
     if p_end == -1:
         return cdata
-
     p_end += len("</p>")
+
     btn_inner = inner[:p_end].strip()
     rest_inner = inner[p_end:].strip()
 
@@ -110,14 +119,18 @@ def _reorder_desc_blocks(cdata: str) -> str:
     parts = []
     parts.append("<!-- WhatsApp -->")
     parts.append(btn_block)
-    parts.append("")
     parts.append("<!-- Описание -->")
     parts.append(body)
     if pay_block:
-        parts.append("")
+        parts.append("<!-- Оплата и доставка -->")
         parts.append(pay_block)
 
-    return "\n".join(parts)
+    out = "\n".join(parts)
+
+    # В конце CDATA оставляем 1 перенос для красивого закрытия ]]>
+    if not out.endswith("\n"):
+        out += "\n"
+    return out
 
 
 def _process_description_blocks(text: str) -> str:
@@ -126,10 +139,12 @@ def _process_description_blocks(text: str) -> str:
 
     def repl(m: re.Match) -> str:
         head, cdata, tail = m.group(1), m.group(2), m.group(3)
-        cdata = _strip_one_leading_blank_line(cdata)
-        cdata = _reorder_desc_blocks(cdata)
+
+        cdata = _normalize_cdata_prefix(cdata)
         cdata = _update_whatsapp_button_text(cdata)
         cdata = _format_delivery_numbers(cdata)
+        cdata = _reorder_desc_blocks(cdata)
+
         return f"{head}{cdata}{tail}"
 
     return rx.sub(repl, text)
@@ -175,7 +190,7 @@ def main() -> int:
 
     _write_cp1251_safe(out_file, text)
 
-    print(f"[alstyle post] ok: seo/desc/keywords + windows-1251 safe -> {out_file}")
+    print(f"[alstyle post] ok: cdata/seo/keywords + windows-1251 safe -> {out_file}")
     return 0
 
 
