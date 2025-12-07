@@ -71,6 +71,10 @@ RE_DESC_CDATA_ONLY = re.compile(r"<description><!\[CDATA\[(.*?)\]\]></descriptio
 RE_DESC_CDATA_WRAP = re.compile(r"(<description><!\[CDATA\[)(.*?)(\]\]></description>)", re.DOTALL)
 RE_DESC_MARK = re.compile(r"<!--\s*Описание\s*-->", re.IGNORECASE)
 RE_HAS_CHAR = re.compile(r"\bХарактеристики\b", re.IGNORECASE)
+RE_COMP_PARA = re.compile(r"(?is)\n<p>\s*<strong>\s*Совместимость\s*:\s*</strong>.*?</p>\s*")
+RE_COMP_LI = re.compile(r"(?is)<li>\s*<strong>\s*Совместимость\s*:\s*</strong>")
+RE_CHAR_HDR = re.compile(r"(?is)<h3>\s*Характеристики\s*</h3>")
+
 
 RE_INSERT_PARAM_BEFORE_KEYWORDS = re.compile(r"(</description>\n)([ \t]*)(<keywords>)", re.DOTALL)
 
@@ -515,6 +519,42 @@ def _inject_desc_compat(inner: str, compat_html: str) -> tuple[str, int]:
 
 
 # Если <param> нет — добавляем совместимость и в description, и в param
+
+# Убирает дубли "Совместимость" в CDATA: если есть в блоке "Характеристики",
+# то удаляем отдельный <p><strong>Совместимость:</strong> ...</p> до блока.
+def _dedupe_desc_compat(inner: str) -> tuple[str, int]:
+    m = RE_CHAR_HDR.search(inner)
+    if not m:
+        return inner, 0
+
+    prefix = inner[: m.start()]
+    suffix = inner[m.start() :]
+
+    if not RE_COMP_LI.search(suffix):
+        return inner, 0
+
+    prefix2, n = RE_COMP_PARA.subn("", prefix)
+    if n == 0:
+        return inner, 0
+
+    return prefix2 + suffix, n
+
+
+def _dedupe_offer_desc_compat(offer_body: str) -> tuple[str, int]:
+    m = RE_DESC_CDATA_ONLY.search(offer_body)
+    if not m:
+        return offer_body, 0
+
+    inner = m.group(1)
+    inner2, n = _dedupe_desc_compat(inner)
+    if n == 0:
+        return offer_body, 0
+
+    new_desc = f"<description><![CDATA[{inner2}]]></description>"
+    out = offer_body[: m.start()] + new_desc + offer_body[m.end() :]
+    return out, n
+
+
 def _ensure_min_param(offer_body: str) -> tuple[str, int, int]:
     if "<param" in offer_body:
         return offer_body, 0, 0
@@ -579,6 +619,7 @@ def _process_text(src: str) -> tuple[str, dict]:
         "offers_pictures_added": 0,
         "offers_params_added": 0,
         "offers_desc_fixed": 0,
+        "offers_desc_deduped": 0,
         "desc_cdata_fixed": 0,
         "rgba_fixed": 0,
         "header_fixed": 0,
@@ -625,7 +666,11 @@ def _process_text(src: str) -> tuple[str, dict]:
         stats["offers_params_added"] += param_added
         stats["offers_desc_fixed"] += desc_added
 
-        return head + body3 + tail
+        body4, n_ded = _dedupe_offer_desc_compat(body3)
+        if n_ded:
+            stats["offers_desc_deduped"] += 1
+
+        return head + body4 + tail
 
     out = RE_OFFER_BLOCK.sub(repl, src1)
 
