@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-NVPrint post-process (v57)
+NVPrint post-process (v58)
 
 Точечные правки (без XML-переформатирования):
 1) Устойчивое чтение docs/nvprint.yml:
@@ -46,6 +46,13 @@ RE_BUILD_TIME_LINE = re.compile(
     re.IGNORECASE,
 )
 RE_YML_CATALOG_DATE = re.compile(r'(<yml_catalog\b[^>]*\bdate=")([^"]*)(")', re.IGNORECASE)
+
+RE_FEED_META_BLOCK = re.compile(r"<!--FEED_META.*?-->", re.DOTALL)
+RE_BROKEN_TIME_P = re.compile(r"^\s*P(\d{2})-(\d{2})-(\d{2})\s+(\d{2}:\d{2}:\d{2})\s*$")
+RE_NEXT_RUN_LINE = re.compile(
+    r"(Ближайшая сборка\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
+    re.IGNORECASE,
+)
 
 
 # Текущее время Алматы (UTC+5)
@@ -125,6 +132,146 @@ def _normalize_header(src: str) -> tuple[str, int]:
             changed = 1
         return first + "".join(lines[i:]), changed
 
+
+# Чинит FEED_META:
+# - строку времени вида "P25-12-07 07:53:29" -> "Время сборки (Алматы) | 2025-12-07 07:53:29"
+# - "Ближайшая сборка (Алматы)" если она оказалась в прошлом (по SCHEDULE_DOM и SCHEDULE_HOUR_ALMATY)
+def _fix_feed_meta(src: str) -> tuple[str, int]:
+    m = RE_FEED_META_BLOCK.search(src)
+    if not m:
+        return src, 0
+
+    block = m.group(0)
+    lines = block.splitlines()
+
+    # Позиция колонки "|" (чтобы выровнять как в других строках FEED_META)
+    pipe_pos = None
+    for ln in lines:
+        if "|" in ln:
+            pipe_pos = ln.index("|")
+            break
+    if pipe_pos is None:
+        pipe_pos = 42
+
+    # Достаём время сборки (после фикса) — нужно для проверки "Ближайшая сборка"
+    build_dt: datetime | None = None
+
+    changed = 0
+    out_lines: list[str] = []
+    for ln in lines:
+        mm = RE_BROKEN_TIME_P.match(ln)
+        if mm:
+            yy, mo, dd, t = mm.group(1), mm.group(2), mm.group(3), mm.group(4)
+            ts = f"20{yy}-{mo}-{dd} {t}"
+            left = "Время сборки (Алматы)"
+            out_lines.append(left.ljust(pipe_pos) + "| " + ts)
+            changed = 1
+            try:
+                build_dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+            except Exception:
+                build_dt = None
+            continue
+
+        out_lines.append(ln)
+
+        if build_dt is None and "Время сборки" in ln and "|" in ln:
+            try:
+                ts = ln.split("|", 1)[1].strip()
+                build_dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
+            except Exception:
+                build_dt = None
+
+    # Если время сборки не нашли, пробуем взять из <yml_catalog date="...">
+    if build_dt is None:
+        ym = RE_YML_CATALOG_DATE.search(src)
+        if ym:
+            raw = (ym.group(2) or "").strip()
+            try:
+                if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", raw):
+                    build_dt = datetime.strptime(raw + ":00", "%Y-%m-%d %H:%M:%S")
+                else:
+                    build_dt = datetime.strptime(raw, "%Y-%m-%d %H:%M:%S")
+            except Exception:
+                build_dt = None
+
+    # Фикс "Ближайшая сборка" только если она оказалась <= времени сборки (то есть в прошлом)
+    if build_dt is not None:
+        for i, ln in enumerate(out_lines):
+            mm = RE_NEXT_RUN_LINE.search(ln)
+            if not mm:
+                continue
+            try:
+                nxt = datetime.strptime(mm.group(2), "%Y-%m-%d %H:%M:%S")
+            except Exception:
+                continue
+            if nxt <= build_dt:
+                new_dt = _calc_next_run(build_dt)
+                if new_dt is None:
+                    continue
+                left = "Ближайшая сборка (Алматы)"
+                out_lines[i] = left.ljust(pipe_pos) + "| " + new_dt.strftime("%Y-%m-%d %H:%M:%S")
+                changed = 1
+            break
+
+    if not changed:
+        return src, 0
+
+    new_block = "\n".join(out_lines)
+    out = src[: m.start()] + new_block + src[m.end() :]
+    return out, 1
+
+
+# Считает ближайшую сборку в Алматы по переменным окружения:
+# - SCHEDULE_HOUR_ALMATY (час)
+# - SCHEDULE_DOM (например "1,10,20"; если пусто — ежедневно)
+def _calc_next_run(build_dt: datetime) -> datetime | None:
+    try:
+        hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "") or "").strip())
+    except Exception:
+        return None
+
+    dom_raw = (os.environ.get("SCHEDULE_DOM", "") or "").strip()
+    doms: list[int] = []
+    if dom_raw:
+        for x in dom_raw.split(","):
+            x = x.strip()
+            if not x:
+                continue
+            try:
+                v = int(x)
+                if 1 <= v <= 31:
+                    doms.append(v)
+            except Exception:
+                continue
+        doms = sorted(set(doms))
+
+    # Ежедневно
+    if not doms:
+        cand = build_dt.replace(hour=hour, minute=0, second=0, microsecond=0)
+        if cand <= build_dt:
+            cand = cand + timedelta(days=1)
+        return cand
+
+    # По дням месяца (1/10/20 и т.п.)
+    y = build_dt.year
+    m = build_dt.month
+
+    best: datetime | None = None
+    for step in range(0, 3):  # хватит пары месяцев вперёд
+        mm = m + step
+        yy = y + (mm - 1) // 12
+        mm = ((mm - 1) % 12) + 1
+        for d in doms:
+            try:
+                cand = datetime(yy, mm, d, hour, 0, 0)
+            except Exception:
+                continue
+            if cand <= build_dt:
+                continue
+            if best is None or cand < best:
+                best = cand
+    return best
+
     return s, changed
 
 
@@ -173,6 +320,7 @@ def _process_text(src: str) -> tuple[str, dict]:
         "offers_pictures_added": 0,
         "rgba_fixed": 0,
         "header_fixed": 0,
+        "feed_meta_fixed": 0,
         "build_time_bumped_meta": 0,
         "build_time_bumped_date": 0,
     }
@@ -180,7 +328,10 @@ def _process_text(src: str) -> tuple[str, dict]:
     src_h, header_fixed = _normalize_header(src)
     stats["header_fixed"] = header_fixed
 
-    src0, n_meta, n_date = _bump_build_time_if_needed(src_h)
+    src_m, meta_fixed = _fix_feed_meta(src_h)
+    stats["feed_meta_fixed"] = meta_fixed
+
+    src0, n_meta, n_date = _bump_build_time_if_needed(src_m)
     stats["build_time_bumped_meta"] = n_meta
     stats["build_time_bumped_date"] = n_date
 
@@ -239,6 +390,7 @@ def main(argv: list[str]) -> int:
         f"pictures_added={stats['offers_pictures_added']} | "
         f"rgba_fixed={stats['rgba_fixed']} | "
         f"header_fixed={stats['header_fixed']} | "
+        f"feed_meta_fixed={stats['feed_meta_fixed']} | "
         f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
         f"file={path}"
     )
