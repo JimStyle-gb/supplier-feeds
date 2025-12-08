@@ -1,28 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-build_akcent.py (v61 style-unified)
+build_akcent.py (v67 style-unified)
 
-Фикс: ты прав — нельзя "чинить одно, ломая другое".
-Эта версия НЕ трогает структуру, только:
-- чинит повреждённый <yml_catalog date="..."> (когда вместо него "P25-.. ..:..">")
-- чинит FEED_META (когда вместо "Ближайшая сборка ..." осталась строка "P25-...")
-- приводит <description> строго к эталону AlStyle (WhatsApp+HR+Описание+Характеристики+Оплата/Доставка)
-- приводит хвост городов в <keywords> строго к AlStyle
+Fix: Syntax-safe константы + полная структура description как у AlStyle.
 """
 
 import os
 import re
 from pathlib import Path
 from datetime import datetime, timedelta
+from typing import Optional
 
 OUT_DEFAULT = "docs/akcent.yml"
 
-ALSTYLE_CITY_TAIL = "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау"
+ALSTYLE_CITY_TAIL = (
+    "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, "
+    "Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау"
+)
 
 AL_WA_BLOCK = """<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>"""
-AL_HR_2PX = "<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />"
+AL_HR_2PX = '<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />'
 AL_PAY_BLOCK = """<!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
@@ -47,7 +46,7 @@ def _write_text(path: str, text: str) -> None:
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
 
-def _parse_weird_dt(s: str) -> str | None:
+def _parse_weird_dt(s: str) -> Optional[str]:
     s = s.strip().strip('"').strip()
     s = s.lstrip("P")
     m = re.match(r"^(\d{2})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})(?::(\d{2}))?$", s)
@@ -60,7 +59,7 @@ def _parse_weird_dt(s: str) -> str | None:
         return f"{yyyy}-{mm}-{dd} {hh}:{mi}:{ss or '00'}"
     return None
 
-def _parse_build_time(src: str) -> datetime | None:
+def _parse_build_time(src: str) -> Optional[datetime]:
     m = re.search(r"Время сборки \(Алматы\)\s*\|\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", src)
     if not m:
         return None
@@ -119,7 +118,6 @@ def _fix_feed_meta_next_run(src: str) -> str:
         lines = block.splitlines(True)
         out = []
         inserted = False
-
         for ln in lines:
             st = ln.strip()
             if re.match(r"^P?\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s*$", st):
@@ -217,6 +215,7 @@ def _normalize_desc_tag(offer_body: str) -> str:
     name = nm.group(1).strip() if nm else ""
     dm = RE_DESC.search(offer_body)
     cdata = dm.group(1) if dm else ""
+
     native = _fix_text_common(_extract_native_desc(cdata, name))
     chars = _fix_text_common(_build_chars_from_params(offer_body))
 
@@ -239,6 +238,9 @@ def fix_akcent(src: str) -> str:
     bt = _parse_build_time(s)
     if bt:
         s = re.sub(r'(<yml_catalog\s+date=")[^"]+(")', r"\1" + bt.strftime("%Y-%m-%d %H:%M") + r"\2", s, count=1)
+        nxt = _next_daily(bt, 2).strftime("%Y-%m-%d %H:%M:%S")
+        s = re.sub(r"(Ближайшая сборка \(Алматы\)\s*\|\s*)\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}",
+                   r"\1" + nxt, s, count=1)
 
     def offer_repl(m: re.Match) -> str:
         head, body, tail = m.group(1), m.group(2), m.group(3)
