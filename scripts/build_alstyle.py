@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-# AlStyle post-process (v14)
-# - Исправление формата CDATA под эталон:
+# AlStyle post-process (v15)
+# - Формат CDATA под эталон:
 #   <description><![CDATA[
 #   <!-- WhatsApp -->
-#   ...
+#   <div>...кнопка...</div>
+#   <hr ... />
 #   <!-- Описание -->
-#   ...
+#   ...описание + характеристики...
 #   <!-- Оплата и доставка -->
-#   ...
+#   <div>...оплата/доставка...</div>
 #   ]]></description>
 # - WhatsApp: текст кнопки "Написать в WhatsApp"
 # - SEO: кнопка сверху -> родное описание/характеристики -> блок оплаты/доставки
@@ -22,6 +23,9 @@ from pathlib import Path
 
 
 _CITIES_DROP = {"Темиртау", "Экибастуз", "Орал", "Оскемен", "Кокшетау", "Семей"}
+
+# Линия-разделитель между кнопкой и описанием (визуально отделяет блоки)
+_SEP_LINE = '<hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" />'
 
 
 def _read_text_safely(path: str) -> str:
@@ -50,11 +54,14 @@ def _write_cp1251_safe(path: str, text: str) -> None:
     Path(path).write_bytes(data)
 
 
-def _normalize_cdata_prefix(cdata: str) -> str:
-    "Всегда делаем ровно 1 перенос строки сразу после <![CDATA[."
+def _ensure_cdata_edges(cdata: str) -> str:
+    "Ровно 1 перенос сразу после <![CDATA[ и 1 перенос перед ]]>"
     cdata = cdata.replace("\r\n", "\n")
     cdata = cdata.lstrip("\n")
-    return "\n" + cdata
+    cdata = "\n" + cdata
+    if not cdata.endswith("\n"):
+        cdata += "\n"
+    return cdata
 
 
 def _update_whatsapp_button_text(html: str) -> str:
@@ -81,7 +88,7 @@ def _format_delivery_numbers(html: str) -> str:
 
 
 def _reorder_desc_blocks(cdata: str) -> str:
-    "Кнопка сверху -> описание/характеристики -> блок оплаты/доставки."
+    "Кнопка сверху -> описание/характеристики -> оплата/доставка. Плюс линия-разделитель."
     if "<!-- WhatsApp -->" not in cdata or "<!-- Описание -->" not in cdata:
         return cdata
 
@@ -119,18 +126,14 @@ def _reorder_desc_blocks(cdata: str) -> str:
     parts = []
     parts.append("<!-- WhatsApp -->")
     parts.append(btn_block)
+    parts.append(_SEP_LINE)
     parts.append("<!-- Описание -->")
     parts.append(body)
     if pay_block:
         parts.append("<!-- Оплата и доставка -->")
         parts.append(pay_block)
 
-    out = "\n".join(parts)
-
-    # В конце CDATA оставляем 1 перенос для красивого закрытия ]]>
-    if not out.endswith("\n"):
-        out += "\n"
-    return out
+    return "\n".join(parts)
 
 
 def _process_description_blocks(text: str) -> str:
@@ -140,10 +143,11 @@ def _process_description_blocks(text: str) -> str:
     def repl(m: re.Match) -> str:
         head, cdata, tail = m.group(1), m.group(2), m.group(3)
 
-        cdata = _normalize_cdata_prefix(cdata)
+        cdata = cdata.replace("\r\n", "\n")
         cdata = _update_whatsapp_button_text(cdata)
         cdata = _format_delivery_numbers(cdata)
         cdata = _reorder_desc_blocks(cdata)
+        cdata = _ensure_cdata_edges(cdata)
 
         return f"{head}{cdata}{tail}"
 
