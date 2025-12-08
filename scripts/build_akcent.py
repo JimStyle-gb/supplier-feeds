@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AkCent post-process (v55)
+AkCent post-process (v56)
 
 Фиксы и унификация (точечно, без переформатирования XML):
 1) Устойчивое чтение docs/akcent.yml:
@@ -31,6 +31,14 @@ AkCent post-process (v55)
 Входной файл: OUT_FILE или docs/akcent.yml
 Если файла нет — выходим с code=2.
 
+
+5) Keywords:
+   - хвост городов приводим к эталону AlStyle (строго один список и порядок)
+6) Описания/параметры:
+   - точечные правки опечаток (инсталяционный→инсталляционный и т.п.)
+   - формат размеров: "2,03  2,03 м" → "2,03 x 2,03 м", "2,44м" → "2,44 м"
+7) Дата yml_catalog:
+   - синхронизация date="..." с "Время сборки (Алматы)" (до минут)
 """
 
 from __future__ import annotations
@@ -46,6 +54,12 @@ PLACEHOLDER_PICTURE_URL = (
     "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
 )
 
+
+# Эталонный хвост городов (как в AlStyle)
+_KEYWORDS_CITIES_TAIL = (
+    "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, "
+    "Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау"
+)
 RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
 RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
 RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
@@ -63,6 +77,12 @@ RE_BUILD_TIME_LINE = re.compile(
     re.IGNORECASE,
 )
 RE_YML_CATALOG_DATE = re.compile(r'(<yml_catalog\b[^>]*\bdate=")([^"]*)(")', re.IGNORECASE)
+RE_KEYWORDS = re.compile(r"(<keywords>)(.*?)(</keywords>)", re.DOTALL)
+RE_PARAM_BLOCK = re.compile(r"(<param\b[^>]*>)(.*?)(</param>)", re.DOTALL)
+RE_CYR_COMMA = re.compile(r",(?=[А-Яа-яЁё])")
+RE_DIM_DOUBLE_SPACE = re.compile(r"(\d+,\d+)\s{2,}(\d+,\d+)\s*м\b")
+RE_M_NO_SPACE = re.compile(r"(\d+[\.,]\d+)м\b")
+
 
 RE_DESC_CDATA = re.compile(r"(<description><!\[CDATA\[)(.*?)(\]\]></description>)", re.DOTALL)
 RE_QUOT_ENTITY = re.compile(r"&quot;|&#34;")
@@ -357,6 +377,134 @@ def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
     return out2, n_meta, n_date
 
 
+
+# Синхронизирует date="..." у <yml_catalog> с "Время сборки" из FEED_META (до минут)
+def _sync_yml_date_to_build_time(src: str) -> tuple[str, int]:
+    m = RE_FEED_META_BLOCK.search(src)
+    if not m:
+        return src, 0
+    dt = _get_build_dt_from_feed_meta(m.group(2).splitlines())
+    if dt is None:
+        return src, 0
+
+    want = dt.strftime("%Y-%m-%d %H:%M")
+    md = RE_YML_CATALOG_DATE.search(src)
+    if not md:
+        return src, 0
+    if md.group(2) == want:
+        return src, 0
+
+    out, n = RE_YML_CATALOG_DATE.subn(lambda mm: mm.group(1) + want + mm.group(3), src, count=1)
+    return out, 1 if n else 0
+
+
+def _normalize_keywords_cities(val: str) -> tuple[str, int]:
+    v = (val or "").strip()
+    if not v:
+        return v, 0
+
+    # убираем старый хвост городов, если он есть
+    if "Казахстан" in v:
+        head = v.split("Казахстан", 1)[0].rstrip(" ,")
+        v2 = (head + ", " if head else "") + _KEYWORDS_CITIES_TAIL
+    else:
+        v2 = (v.rstrip(" ,") + ", ") + _KEYWORDS_CITIES_TAIL
+
+    return v2, 1 if v2 != v else 0
+
+
+# Правки опечаток и формата внутри CDATA-описаний (без изменения структуры HTML)
+def _fix_desc_typos(cdata: str) -> tuple[str, int]:
+    cnt = 0
+    s = cdata
+
+    # инсталяционный -> инсталляционный (оба регистра)
+    s2, n = re.subn(r"\bИнсталяц", "Инсталляц", s)
+    cnt += n
+    s = s2
+    s2, n = re.subn(r"\bинсталяц", "инсталляц", s)
+    cnt += n
+    s = s2
+
+    # частные опечатки
+    s2, n = re.subn(r"высококачетсвенную", "высококачественную", s, flags=re.IGNORECASE)
+    cnt += n
+    s = s2
+    s2, n = re.subn(r"приентеров", "принтеров", s, flags=re.IGNORECASE)
+    cnt += n
+    s = s2
+
+    # размеры: "2,03  2,03 м" -> "2,03 x 2,03 м"
+    s2, n = RE_DIM_DOUBLE_SPACE.subn(r"\1 x \2 м", s)
+    cnt += n
+    s = s2
+
+    # "2,44м" -> "2,44 м"
+    s2, n = RE_M_NO_SPACE.subn(r"\1 м", s)
+    cnt += n
+    s = s2
+
+    # пробел после запятой, если дальше кириллица (Япония,Индонезия -> Япония, Индонезия)
+    s2, n = RE_CYR_COMMA.subn(", ", s)
+    cnt += n
+    s = s2
+
+    return s, cnt
+
+
+def _fix_keywords_in_offer(offer_body: str) -> tuple[str, int]:
+    changed = 0
+
+    def repl(m: re.Match) -> str:
+        nonlocal changed
+        head, val, tail = m.group(1), m.group(2), m.group(3)
+        v2, ch = _normalize_keywords_cities(val)
+        changed += ch
+        return head + v2 + tail
+
+    out = RE_KEYWORDS.sub(repl, offer_body, count=1)
+    return out, changed
+
+
+def _fix_params_spacing_in_offer(offer_body: str) -> tuple[str, int]:
+    cnt = 0
+
+    def repl(m: re.Match) -> str:
+        nonlocal cnt
+        head, val, tail = m.group(1), m.group(2), m.group(3)
+        v = val
+
+        v2, n = RE_DIM_DOUBLE_SPACE.subn(r"\1 x \2 м", v)
+        cnt += n
+        v = v2
+
+        v2, n = RE_M_NO_SPACE.subn(r"\1 м", v)
+        cnt += n
+        v = v2
+
+        v2, n = RE_CYR_COMMA.subn(", ", v)
+        cnt += n
+        v = v2
+
+        return head + v + tail
+
+    out = RE_PARAM_BLOCK.sub(repl, offer_body)
+    return out, cnt
+
+
+def _fix_description_in_offer(offer_body: str) -> tuple[str, int]:
+    cnt = 0
+
+    def repl(m: re.Match) -> str:
+        nonlocal cnt
+        head, body, tail = m.group(1), m.group(2), m.group(3)
+        body2, n = _fix_desc_typos(body)
+        cnt += n
+        return head + body2 + tail
+
+    out = RE_DESC_CDATA.sub(repl, offer_body)
+    return out, cnt
+
 # Чистим &quot; в CDATA внутри <description>
 def _fix_quot_in_description(src: str) -> tuple[str, int]:
     cnt = 0
@@ -400,6 +548,10 @@ def _process_text(src: str) -> tuple[str, dict]:
         "build_time_bumped_meta": 0,
         "build_time_bumped_date": 0,
         "quot_fixed_in_desc": 0,
+        "keywords_cities_fixed": 0,
+        "desc_typos_fixed": 0,
+        "params_spacing_fixed": 0,
+        "yml_date_synced": 0,
     }
 
     src_h, header_fixed = _normalize_header(src)
@@ -419,6 +571,10 @@ def _process_text(src: str) -> tuple[str, dict]:
         src0, fr2 = _fix_feed_meta_next_run(src0)
         stats["feed_meta_next_run_fixed"] = stats["feed_meta_next_run_fixed"] or fr2
 
+    
+    src0, ys = _sync_yml_date_to_build_time(src0)
+    stats["yml_date_synced"] = ys
+
     src1, qn = _fix_quot_in_description(src0)
     stats["quot_fixed_in_desc"] = qn
 
@@ -430,6 +586,16 @@ def _process_text(src: str) -> tuple[str, dict]:
         stats["offers_scanned"] += 1
         body2, added = _inject_picture_if_missing(body)
         stats["offers_pictures_added"] += added
+
+        body2, k = _fix_keywords_in_offer(body2)
+        stats["keywords_cities_fixed"] += k
+
+        body2, p = _fix_params_spacing_in_offer(body2)
+        stats["params_spacing_fixed"] += p
+
+        body2, d = _fix_description_in_offer(body2)
+        stats["desc_typos_fixed"] += d
+
         return head + body2 + tail
 
     out = RE_OFFER_BLOCK.sub(repl, src2)
@@ -481,6 +647,10 @@ def main(argv: list[str]) -> int:
         f"feed_meta_time_fixed={stats['feed_meta_time_fixed']} | "
         f"feed_meta_next_run_fixed={stats['feed_meta_next_run_fixed']} | "
         f"quot_fixed_in_desc={stats['quot_fixed_in_desc']} | "
+        f"keywords_cities_fixed={stats['keywords_cities_fixed']} | "
+        f"params_spacing_fixed={stats['params_spacing_fixed']} | "
+        f"desc_typos_fixed={stats['desc_typos_fixed']} | "
+        f"yml_date_synced={stats['yml_date_synced']} | "
         f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
         f"file={path}"
     )
@@ -489,4 +659,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-
