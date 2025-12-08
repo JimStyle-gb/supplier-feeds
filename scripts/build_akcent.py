@@ -1,684 +1,229 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AkCent post-process (v57)
+build_akcent.py (v58 style-unified)
 
-Фиксы и унификация (точечно, без переформатирования XML):
-1) Устойчивое чтение docs/akcent.yml:
-   - windows-1251 -> utf-8 -> utf-8(errors="replace")
-   - удаляем UTF-8 BOM, если есть
-2) Всегда сохраняем обратно в windows-1251:
-   - неподдерживаемые символы -> XML-сущности (&#...;) через xmlcharrefreplace
-3) Шапка файла:
-   - убираем пустые строки/пробелы перед <?xml ...?>
-   - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
-4) FEED_META:
-   - фиксит повреждённую строку времени вида "P25-12-07 07:51:27"
-     и превращает в:
-     "Время сборки (Алматы)                      | 2025-12-07 07:51:27"
-   - если строки времени вообще нет — вставляет после "URL поставщика"
-   - исправляет "Ближайшая сборка (Алматы)" так, чтобы это была будущая дата
-     (считаем по env: SCHEDULE_DOM и SCHEDULE_HOUR_ALMATY, TZ=Asia/Almaty)
-5) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
-6) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
-7) Чистим &quot; внутри CDATA в <description> (в AkCent это в основном дюймы 75&quot;)
-8) Унификация WhatsApp/описания как у AlStyle (кнопка + hr 2px, без блока Оплата/Доставка)
-9) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
-   - workflow_dispatch: да
-   - FORCE_YML_REFRESH=1: да
-   - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
-   - schedule: нет
-
-Входной файл: OUT_FILE или docs/akcent.yml
-Если файла нет — выходим с code=2.
-
-
-5) Keywords:
-   - хвост городов приводим к эталону AlStyle (строго один список и порядок)
-6) Описания/параметры:
-   - точечные правки опечаток (инсталяционный→инсталляционный и т.п.)
-   - формат размеров: "2,03  2,03 м" → "2,03 x 2,03 м", "2,44м" → "2,44 м"
-7) Дата yml_catalog:
-   - синхронизация date="..." с "Время сборки (Алматы)" (до минут)
+Цель: привести AkCent под эталон AlStyle:
+1) FEED_META: даты должны быть логичны (yml_catalog date и ближайшая сборка).
+2) <description>: одинаковая структура у всех:
+   <!-- WhatsApp --> + HR 2px + <!-- Описание --> + родное описание + <h3>Характеристики</h3> + <!-- Оплата и доставка -->
+3) <keywords>: хвост городов строго как в AlStyle (список + порядок).
 """
 
-from __future__ import annotations
-
-import argparse
-from datetime import datetime, timedelta
 import os
 import re
-import sys
 from pathlib import Path
-
-PLACEHOLDER_PICTURE_URL = (
-    "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
-)
+from datetime import datetime, timedelta
 
 
-# Эталонный хвост городов (как в AlStyle)
-_KEYWORDS_CITIES_TAIL = (
-    "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, "
-    "Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау"
-)
-RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
-RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
-RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
+OUT_DEFAULT = "docs/akcent.yml"
 
-# Толерантный FEED_META: допускаем \r\n и пробелы после -->
-RE_FEED_META_BLOCK = re.compile(r"(<!--FEED_META\r?\n)(.*?)(\r?\n-->)([ \t]*)", re.DOTALL)
+ALSTYLE_CITY_TAIL = "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау"
 
-RE_NEXT_RUN_LINE = re.compile(
-    r"(Ближайшая сборка\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
-    re.IGNORECASE,
-)
+# Эталонные блоки из AlStyle (не меняем)
+AL_WA_BLOCK = '<!-- WhatsApp -->'
+AL_HR_2PX = '<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />'
+AL_PAY_BLOCK = '<!-- Оплата и доставка -->\n<div style="font-family: Cambria, \'Times New Roman\', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>'
 
-RE_BUILD_TIME_LINE = re.compile(
-    r"(Время сборки\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
-    re.IGNORECASE,
-)
-RE_YML_CATALOG_DATE = re.compile(r'(<yml_catalog\b[^>]*\bdate=")([^"]*)(")', re.IGNORECASE)
-RE_KEYWORDS = re.compile(r"(<keywords>)(.*?)(</keywords>)", re.DOTALL)
-RE_PARAM_BLOCK = re.compile(r"(<param\b[^>]*>)(.*?)(</param>)", re.DOTALL)
-RE_CYR_COMMA = re.compile(r",(?=[А-Яа-яЁё])")
-RE_DIM_DOUBLE_SPACE = re.compile(r"(\d+,\d+)\s{2,}(\d+,\d+)\s*м\b")
-RE_M_NO_SPACE = re.compile(r"(\d+[\.,]\d+)м\b")
+RE_OFFER = re.compile(r"(?s)(<offer\b[^>]*>)(.*?)(</offer>)")
+RE_NAME = re.compile(r"(?s)<name>(.*?)</name>")
+RE_DESC = re.compile(r"(?s)<description><!\[CDATA\[(.*?)\]\]></description>")
+RE_PARAM = re.compile(r'(?s)<param\s+name="([^"]+)">(.*?)</param>')
+RE_KEYWORDS = re.compile(r"(?s)<keywords>(.*?)</keywords>")
 
 
-RE_DESC_CDATA = re.compile(r"(<description><!\[CDATA\[)(.*?)(\]\]></description>)", re.DOTALL)
-RE_QUOT_ENTITY = re.compile(r"&quot;|&#34;")
-
-# Канонический префикс description (как у AlStyle)
-_ALSTYLE_DESC_PREFIX = (
-    "\n<!-- WhatsApp -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<p style=\"text-align:center; margin:0 0 12px;\">"
-    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
-    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
-    "&#128172; Написать в WhatsApp</a></p></div>\n"
-    "<hr style=\"border:none; border-top:2px solid #E7D6B7; margin:12px 0;\" />\n"
-    "<!-- Описание -->\n"
-)
-
-
-RE_DESC_PREFIX = re.compile(
-    r"(?s)^\s*\n*<!--\s*WhatsApp\s*-->.*?<!--\s*Описание\s*-->\s*\n*"
-)
-
-
-# Текущее время Алматы (UTC+5)
-def _now_almaty_dt() -> datetime:
-    return datetime.utcnow() + timedelta(hours=5)
-
-
-def _now_almaty_str() -> str:
-    return _now_almaty_dt().strftime("%Y-%m-%d %H:%M:%S")
-
-
-# Нужно ли форсить обновление YML (чтобы появился diff для коммита)
-def _should_force_refresh() -> bool:
-    v = os.environ.get("FORCE_YML_REFRESH", "").strip().lower()
-    if v in ("1", "true", "yes", "y"):
-        return True
-
-    ev = os.environ.get("GITHUB_EVENT_NAME", "").strip().lower()
-    if ev == "workflow_dispatch":
-        return True
-
-    if ev == "push":
-        try:
-            want_h = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "0") or "0").strip())
-        except Exception:
-            want_h = 0
-        return _now_almaty_dt().hour == want_h
-
-    return False
-
-
-# Читает файл устойчиво (cp1251 -> utf8 -> utf8 replace), убирает BOM
-def _read_text(path: Path) -> tuple[str, str, int]:
-    data = path.read_bytes()
-    bom = 0
+# Читаем максимально устойчиво
+def _read_text(path: str) -> str:
+    data = Path(path).read_bytes()
     if data.startswith(b"\xef\xbb\xbf"):
         data = data[3:]
-        bom = 1
-
-    try:
-        return data.decode("windows-1251"), "windows-1251", bom
-    except UnicodeDecodeError:
-        pass
-
-    try:
-        return data.decode("utf-8"), "utf-8", bom
-    except UnicodeDecodeError:
-        return data.decode("utf-8", errors="replace"), "utf-8(replace)", bom
+    for enc in ("windows-1251", "utf-8"):
+        try:
+            return data.decode(enc)
+        except UnicodeDecodeError:
+            pass
+    return data.decode("utf-8", errors="replace")
 
 
-# Пишет файл строго windows-1251, неподдерживаемые символы -> XML-сущности
-def _write_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
+# Пишем всегда windows-1251
+def _write_text(path: str, text: str) -> None:
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    Path(path).write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
 
 
-# Чинит верх файла: убирает пустые строки до <?xml> и после него
-def _normalize_header(src: str) -> tuple[str, int]:
-    s = src.lstrip("\ufeff")
-    changed = 0
-
-    s2 = s.lstrip(" \t\r\n")
-    if s2 != s:
-        changed = 1
-        s = s2
-
-    lines = s.splitlines(True)
-    if not lines:
-        return s, changed
-
-    first = lines[0]
-    if first.lstrip().startswith("<?xml"):
-        first = first.rstrip("\r\n") + "\n"
-        i = 1
-        while i < len(lines) and lines[i].strip() == "":
-            i += 1
-            changed = 1
-        return first + "".join(lines[i:]), changed
-
-    return s, changed
-
-
-
-# Парсит дату из кривой строки типа "P25-12-07 07:51:27" -> "2025-12-07 07:51:27"
-def _parse_weird_dt(line: str) -> str | None:
-    s = line.strip()
-
-    # 2025-12-07 07:51:27
-    m = re.fullmatch(r"\D*(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
-    if m:
-        return f"{m.group(1)}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
-
-    # 25-12-07 07:51:27
-    m = re.fullmatch(r"\D*(\d{2})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
-    if m:
-        yy = int(m.group(1))
-        return f"20{yy:02d}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
-
-    return None
-
-
-# Берём build_dt из FEED_META, если есть
-def _get_build_dt_from_feed_meta(lines: list[str]) -> datetime | None:
-    for ln in lines:
-        m = RE_BUILD_TIME_LINE.search(ln)
-        if m:
-            try:
-                return datetime.strptime(m.group(2), "%Y-%m-%d %H:%M:%S")
-            except Exception:
-                return None
-    return None
-
-
-# Берём yml_catalog date как datetime (минуты/секунды)
-def _get_yml_date_dt(src: str) -> datetime | None:
-    m = RE_YML_CATALOG_DATE.search(src)
+# Парсим время сборки из FEED_META
+def _parse_build_time(src: str):
+    m = re.search(r"Время сборки \(Алматы\)\s*\|\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})", src)
     if not m:
         return None
-    val = m.group(2)
     try:
-        return datetime.strptime(val, "%Y-%m-%d %H:%M")
-    except Exception:
-        pass
-    try:
-        return datetime.strptime(val, "%Y-%m-%d %H:%M:%S")
+        return datetime.strptime(m.group(1), "%Y-%m-%d %H:%M:%S")
     except Exception:
         return None
 
 
-# Считает следующую сборку по SCHEDULE_DOM / SCHEDULE_HOUR_ALMATY относительно base_dt (Алматы)
-def _compute_next_run(base_dt: datetime) -> datetime:
-    dom_raw = (os.environ.get("SCHEDULE_DOM", "*") or "*").strip()
-    try:
-        hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "0") or "0").strip())
-    except Exception:
-        hour = 0
+# Следующий запуск ежедневно в hour:00
+def _next_daily(dt: datetime, hour: int) -> datetime:
+    cand = dt.replace(hour=hour, minute=0, second=0, microsecond=0)
+    if cand <= dt:
+        cand += timedelta(days=1)
+    return cand
 
-    def at_hour(d: datetime) -> datetime:
-        return d.replace(hour=hour, minute=0, second=0, microsecond=0)
 
-    if dom_raw == "*" or dom_raw == "":
-        cand = at_hour(base_dt)
-        if base_dt < cand:
-            return cand
-        return cand + timedelta(days=1)
+# Точечные правки текста (грамматика/типографика)
+def _fix_text_common(html: str) -> str:
+    s = html
+    s = re.sub(r"\bинсталяционн", "инсталляционн", s, flags=re.I)
+    s = re.sub(r",(?=[А-Яа-яЁё])", ", ", s)
+    s = re.sub(r"(\d+,\d+)\s{2,}(\d+,\d+)\s*м\b", r"\1 x \2 м", s)
+    s = re.sub(r"(\d+,\d+)\s*м\b", r"\1 м", s)
+    return s
 
-    dom = []
-    for part in dom_raw.split(","):
-        part = part.strip()
-        if not part:
+
+# Родное описание: вытаскиваем кусок после "<!-- Описание -->" до "Характеристики/Оплата"
+def _extract_native_desc(cdata: str, name: str) -> str:
+    s = cdata.replace("\r\n", "\n").strip()
+    m = re.search(r"(?s)<!--\s*Описание\s*-->\s*(.*)$", s, flags=re.I)
+    if m:
+        s = m.group(1).strip()
+    s = re.split(r"(?is)<h3>\s*Характеристики\s*</h3>|<!--\s*Оплата\s+и\s+доставка\s*-->", s, maxsplit=1)[0].strip()
+    s = re.sub(r"(?is)^\s*<h3>.*?</h3>\s*", "", s, count=1).strip()
+    if not s:
+        return f"<p>{name}</p>"
+    if "<p" not in s.lower():
+        s = f"<p>{s}</p>"
+    return s
+
+
+# Характеристики строим из <param> (с приоритетом)
+def _build_chars_from_params(offer_body: str) -> str:
+    params = []
+    seen = set()
+    for k, v in RE_PARAM.findall(offer_body):
+        k2 = k.strip()
+        if not k2:
             continue
-        try:
-            v = int(part)
-            if 1 <= v <= 31:
-                dom.append(v)
-        except Exception:
+        lk = k2.lower()
+        if lk in seen:
             continue
-    dom = sorted(set(dom))
-    if not dom:
-        cand = at_hour(base_dt)
-        if base_dt < cand:
-            return cand
-        return cand + timedelta(days=1)
+        seen.add(lk)
+        params.append((k2, v.strip()))
 
-    d = base_dt
-    for _ in range(0, 430):
-        cand = at_hour(d)
-        if cand.day in dom and base_dt < cand:
-            return cand
-        d = (d + timedelta(days=1)).replace(
-            hour=base_dt.hour, minute=base_dt.minute, second=base_dt.second, microsecond=0
+    if not params:
+        return "<h3>Характеристики</h3><ul><li><strong>Гарантия:</strong> 0</li></ul>"
+
+    prio = [
+        "Производитель", "Бренд", "Вендор", "Vendor", "Brand",
+        "Модель", "Артикул", "Код производителя",
+        "Совместимость", "Тип", "Тип печати", "Цвет", "Ресурс", "Объем", "Ёмкость",
+        "Гарантия", "Страна происхождения",
+    ]
+    prio_index = {k.lower(): i for i, k in enumerate(prio)}
+
+    def sk(item):
+        k = item[0]
+        return (prio_index.get(k.lower(), 10_000), k.lower())
+
+    params.sort(key=sk)
+
+    items = []
+    for k, v in params:
+        if not v:
+            continue
+        items.append(f"<li><strong>{k}:</strong> {v}</li>")
+
+    if not items:
+        items = ["<li><strong>Гарантия:</strong> 0</li>"]
+
+    return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
+
+
+# Хвост городов в keywords как в AlStyle
+def _normalize_keywords(body: str) -> str:
+    drop = {x.strip() for x in ALSTYLE_CITY_TAIL.split(",")}
+
+    def repl(m: re.Match) -> str:
+        raw = m.group(1)
+        parts = [p.strip() for p in raw.split(",") if p.strip()]
+        kept = [p for p in parts if p not in drop]
+        base = ", ".join(kept).strip(" ,")
+        if base:
+            return f"<keywords>{base}, {ALSTYLE_CITY_TAIL}</keywords>"
+        return f"<keywords>{ALSTYLE_CITY_TAIL}</keywords>"
+
+    return RE_KEYWORDS.sub(repl, body)
+
+
+# Собираем эталонный description
+def _normalize_desc_tag(offer_body: str) -> str:
+    nm = RE_NAME.search(offer_body)
+    name = nm.group(1).strip() if nm else ""
+
+    dm = RE_DESC.search(offer_body)
+    cdata = dm.group(1) if dm else ""
+
+    native = _extract_native_desc(cdata, name)
+    native = _fix_text_common(native)
+
+    chars = _build_chars_from_params(offer_body)
+    chars = _fix_text_common(chars)
+
+    new_cdata = (
+        "\n"
+        + AL_WA_BLOCK.strip()
+        + "\n"
+        + AL_HR_2PX.strip()
+        + "\n<!-- Описание -->\n"
+        + f"<h3>{name}</h3>"
+        + native
+        + "\n"
+        + chars
+        + "\n"
+        + AL_PAY_BLOCK.strip()
+        + "\n"
+    ).replace("\r\n", "\n")
+
+    return RE_DESC.sub(lambda m: f"<description><![CDATA[{new_cdata}]]></description>", offer_body, count=1)
+
+
+# Главная правка файла
+def fix_akcent(src: str) -> str:
+    s = src.lstrip("\ufeff").lstrip()
+    s = re.sub(r"(?s)\A\s*(<\?xml[^>]*\?>)\s*\n\s*(<yml_catalog\b)", r"\1\n\2", s, count=1)
+
+    bt = _parse_build_time(s)
+    if bt:
+        s = re.sub(r'(<yml_catalog\s+date=")[^"]+(")', r"\1" + bt.strftime("%Y-%m-%d %H:%M") + r"\2", s, count=1)
+        nxt = _next_daily(bt, 2)  # AkCent = 02:00
+        s = re.sub(
+            r"(Ближайшая сборка \(Алматы\)\s*\|\s*)\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}",
+            r"\1" + nxt.strftime("%Y-%m-%d %H:%M:%S"),
+            s,
+            count=1,
         )
 
-    return at_hour(base_dt) + timedelta(days=1)
-
-
-def _replace_feed_meta(src: str, m: re.Match, lines: list[str]) -> str:
-    new_body = "\n".join(lines)
-    return src[: m.start()] + m.group(1) + new_body + m.group(3) + m.group(4) + src[m.end() :]
-
-
-# Восстанавливает строку "Время сборки (Алматы)" в FEED_META, если она повреждена/отсутствует
-def _ensure_feed_meta_build_time(src: str) -> tuple[str, int]:
-    m = RE_FEED_META_BLOCK.search(src)
-    if not m:
-        return src, 0
-
-    body = m.group(2)
-    lines = body.splitlines()
-
-    # 1) Если есть строка "Время сборки" — но вдруг криво, приведём к нормальному виду
-    for i, ln in enumerate(lines):
-        if ln.startswith("Время сборки"):
-            mm = RE_BUILD_TIME_LINE.search(ln)
-            if mm:
-                return src, 0
-            dt = _parse_weird_dt(ln)
-            if not dt:
-                yd = _get_yml_date_dt(src)
-                dt = yd.strftime("%Y-%m-%d %H:%M:%S") if yd else _now_almaty_str()
-            lines[i] = f"Время сборки (Алматы)                      | {dt}"
-            return _replace_feed_meta(src, m, lines), 1
-
-    # 2) Ищем "голую" дату (типа P25-12-07 ...) между URL и Ближайшая сборка
-    url_idx = None
-    next_idx = None
-    for i, ln in enumerate(lines):
-        if url_idx is None and ln.startswith("URL поставщика"):
-            url_idx = i
-        if next_idx is None and ln.startswith("Ближайшая сборка"):
-            next_idx = i
-
-    lo = (url_idx + 1) if url_idx is not None else 0
-    hi = next_idx if next_idx is not None else len(lines)
-
-    for i in range(lo, hi):
-        dt = _parse_weird_dt(lines[i])
-        if dt:
-            lines[i] = f"Время сборки (Алматы)                      | {dt}"
-            return _replace_feed_meta(src, m, lines), 1
-
-    # 3) Вообще нет времени — вставим после URL (берём yml_catalog date, если есть)
-    yd = _get_yml_date_dt(src)
-    dt = yd.strftime("%Y-%m-%d %H:%M:%S") if yd else _now_almaty_str()
-    ins = (url_idx + 1) if url_idx is not None else 2
-    lines.insert(ins, f"Время сборки (Алматы)                      | {dt}")
-    return _replace_feed_meta(src, m, lines), 1
-
-
-# Обновляет "Ближайшая сборка" в FEED_META, чтобы она всегда была в будущем
-def _fix_feed_meta_next_run(src: str) -> tuple[str, int]:
-    m = RE_FEED_META_BLOCK.search(src)
-    if not m:
-        return src, 0
-
-    body = m.group(2)
-    lines = body.splitlines()
-
-    base_dt = _get_build_dt_from_feed_meta(lines)
-    if base_dt is None:
-        yd = _get_yml_date_dt(src)
-        base_dt = yd if yd is not None else _now_almaty_dt()
-
-    nxt = _compute_next_run(base_dt)
-    nxt_s = nxt.strftime("%Y-%m-%d %H:%M:%S")
-
-    changed = 0
-    for i, ln in enumerate(lines):
-        if ln.startswith("Ближайшая сборка"):
-            mm = RE_NEXT_RUN_LINE.search(ln)
-            if mm and mm.group(2) == nxt_s:
-                return src, 0
-            lines[i] = f"Ближайшая сборка (Алматы)                  | {nxt_s}"
-            changed = 1
-            break
-
-    if not changed:
-        ins = None
-        for i, ln in enumerate(lines):
-            if ln.startswith("Время сборки"):
-                ins = i + 1
-                break
-        if ins is None:
-            ins = 2
-        lines.insert(ins, f"Ближайшая сборка (Алматы)                  | {nxt_s}")
-        changed = 1
-
-    return _replace_feed_meta(src, m, lines), changed
-
-
-# Форс-обновление времени (обновляем и FEED_META, и date="..." у yml_catalog)
-def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
-    if not _should_force_refresh():
-        return src, 0, 0
-
-    now_s = _now_almaty_str()
-
-    out, n_meta = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
-
-    def _date_repl(m: re.Match) -> str:
-        old = m.group(2)
-        if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", old):
-            new = now_s[:16]
-        else:
-            new = now_s
-        return m.group(1) + new + m.group(3)
-
-    out2, n_date = RE_YML_CATALOG_DATE.subn(_date_repl, out, count=1)
-    return out2, n_meta, n_date
-
-
-
-# Синхронизирует date="..." у <yml_catalog> с "Время сборки" из FEED_META (до минут)
-def _sync_yml_date_to_build_time(src: str) -> tuple[str, int]:
-    m = RE_FEED_META_BLOCK.search(src)
-    if not m:
-        return src, 0
-    dt = _get_build_dt_from_feed_meta(m.group(2).splitlines())
-    if dt is None:
-        return src, 0
-
-    want = dt.strftime("%Y-%m-%d %H:%M")
-    md = RE_YML_CATALOG_DATE.search(src)
-    if not md:
-        return src, 0
-    if md.group(2) == want:
-        return src, 0
-
-    out, n = RE_YML_CATALOG_DATE.subn(lambda mm: mm.group(1) + want + mm.group(3), src, count=1)
-    return out, 1 if n else 0
-
-
-def _normalize_keywords_cities(val: str) -> tuple[str, int]:
-    v = (val or "").strip()
-    if not v:
-        return v, 0
-
-    # убираем старый хвост городов, если он есть
-    if "Казахстан" in v:
-        head = v.split("Казахстан", 1)[0].rstrip(" ,")
-        v2 = (head + ", " if head else "") + _KEYWORDS_CITIES_TAIL
-    else:
-        v2 = (v.rstrip(" ,") + ", ") + _KEYWORDS_CITIES_TAIL
-
-    return v2, 1 if v2 != v else 0
-
-
-# Правки опечаток и формата внутри CDATA-описаний (без изменения структуры HTML)
-def _fix_desc_typos(cdata: str) -> tuple[str, int]:
-    cnt = 0
-    s = cdata
-
-    # Приводим WhatsApp/пролог описания к эталону AlStyle
-    s2, n = RE_DESC_PREFIX.subn(_ALSTYLE_DESC_PREFIX, s)
-    cnt += n
-    s = s2
-
-    # инсталяционный -> инсталляционный (оба регистра)
-    s2, n = re.subn(r"\bИнсталяц", "Инсталляц", s)
-    cnt += n
-    s = s2
-    s2, n = re.subn(r"\bинсталяц", "инсталляц", s)
-    cnt += n
-    s = s2
-
-    # частные опечатки
-    s2, n = re.subn(r"высококачетсвенную", "высококачественную", s, flags=re.IGNORECASE)
-    cnt += n
-    s = s2
-    s2, n = re.subn(r"приентеров", "принтеров", s, flags=re.IGNORECASE)
-    cnt += n
-    s = s2
-
-    # размеры: "2,03  2,03 м" -> "2,03 x 2,03 м"
-    s2, n = RE_DIM_DOUBLE_SPACE.subn(r"\1 x \2 м", s)
-    cnt += n
-    s = s2
-
-    # "2,44м" -> "2,44 м"
-    s2, n = RE_M_NO_SPACE.subn(r"\1 м", s)
-    cnt += n
-    s = s2
-
-    # пробел после запятой, если дальше кириллица (Япония,Индонезия -> Япония, Индонезия)
-    s2, n = RE_CYR_COMMA.subn(", ", s)
-    cnt += n
-    s = s2
-
-    return s, cnt
-
-
-def _fix_keywords_in_offer(offer_body: str) -> tuple[str, int]:
-    changed = 0
-
-    def repl(m: re.Match) -> str:
-        nonlocal changed
-        head, val, tail = m.group(1), m.group(2), m.group(3)
-        v2, ch = _normalize_keywords_cities(val)
-        changed += ch
-        return head + v2 + tail
-
-    out = RE_KEYWORDS.sub(repl, offer_body, count=1)
-    return out, changed
-
-
-def _fix_params_spacing_in_offer(offer_body: str) -> tuple[str, int]:
-    cnt = 0
-
-    def repl(m: re.Match) -> str:
-        nonlocal cnt
-        head, val, tail = m.group(1), m.group(2), m.group(3)
-        v = val
-
-        v2, n = RE_DIM_DOUBLE_SPACE.subn(r"\1 x \2 м", v)
-        cnt += n
-        v = v2
-
-        v2, n = RE_M_NO_SPACE.subn(r"\1 м", v)
-        cnt += n
-        v = v2
-
-        v2, n = RE_CYR_COMMA.subn(", ", v)
-        cnt += n
-        v = v2
-
-        return head + v + tail
-
-    out = RE_PARAM_BLOCK.sub(repl, offer_body)
-    return out, cnt
-
-
-def _fix_description_in_offer(offer_body: str) -> tuple[str, int]:
-    cnt = 0
-
-    def repl(m: re.Match) -> str:
-        nonlocal cnt
+    def offer_repl(m: re.Match) -> str:
         head, body, tail = m.group(1), m.group(2), m.group(3)
-        body2, n = _fix_desc_typos(body)
-        cnt += n
-        return head + body2 + tail
+        body = _normalize_desc_tag(body)
+        body = _normalize_keywords(body)
+        return head + body + tail
 
-    out = RE_DESC_CDATA.sub(repl, offer_body)
-    return out, cnt
+    s = RE_OFFER.sub(offer_repl, s)
 
-# Чистим &quot; в CDATA внутри <description>
-def _fix_quot_in_description(src: str) -> tuple[str, int]:
-    cnt = 0
-
-    def repl(m: re.Match) -> str:
-        nonlocal cnt
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-        body2, n = RE_QUOT_ENTITY.subn('"', body)
-        cnt += n
-        return head + body2 + tail
-
-    out = RE_DESC_CDATA.sub(repl, src)
-    return out, cnt
+    # Форматирование AlStyle
+    s = re.sub(r"(<shop><offers>\n)(?!\n)", r"\1\n", s, count=1)
+    s = re.sub(r"(</offer>\n)(</offers>)", r"\1\n\2", s, count=1)
+    return s
 
 
-# Вставляет <picture> заглушку в offer, если picture отсутствует
-def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
-    if "<picture>" in offer_body:
-        return offer_body, 0
-
-    idx = offer_body.find("</price>")
-    if idx == -1:
-        return offer_body, 0
-
-    m = RE_PRICE_LINE.search(offer_body)
-    indent = m.group(1) if m else "\n            "
-
-    insert = f"{indent}<picture>{PLACEHOLDER_PICTURE_URL}</picture>"
-    return offer_body[: idx + len("</price>")] + insert + offer_body[idx + len("</price>") :], 1
-
-
-# Применяет точечные правки
-def _process_text(src: str) -> tuple[str, dict]:
-    stats = {
-        "offers_scanned": 0,
-        "offers_pictures_added": 0,
-        "rgba_fixed": 0,
-        "header_fixed": 0,
-        "feed_meta_time_fixed": 0,
-        "feed_meta_next_run_fixed": 0,
-        "build_time_bumped_meta": 0,
-        "build_time_bumped_date": 0,
-        "quot_fixed_in_desc": 0,
-        "keywords_cities_fixed": 0,
-        "desc_typos_fixed": 0,
-        "params_spacing_fixed": 0,
-        "yml_date_synced": 0,
-    }
-
-    src_h, header_fixed = _normalize_header(src)
-    stats["header_fixed"] = header_fixed
-
-    src_fm, fm = _ensure_feed_meta_build_time(src_h)
-    stats["feed_meta_time_fixed"] = fm
-
-    src_fr, fr = _fix_feed_meta_next_run(src_fm)
-    stats["feed_meta_next_run_fixed"] = fr
-
-    src0, n_meta, n_date = _bump_build_time_if_needed(src_fr)
-    stats["build_time_bumped_meta"] = n_meta
-    stats["build_time_bumped_date"] = n_date
-
-    if n_meta or n_date:
-        src0, fr2 = _fix_feed_meta_next_run(src0)
-        stats["feed_meta_next_run_fixed"] = stats["feed_meta_next_run_fixed"] or fr2
-
-    
-    src0, ys = _sync_yml_date_to_build_time(src0)
-    stats["yml_date_synced"] = ys
-
-    src1, qn = _fix_quot_in_description(src0)
-    stats["quot_fixed_in_desc"] = qn
-
-    src2, n = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src1)
-    stats["rgba_fixed"] = n
-
-    def repl(m: re.Match) -> str:
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-        stats["offers_scanned"] += 1
-        body2, added = _inject_picture_if_missing(body)
-        stats["offers_pictures_added"] += added
-
-        body2, k = _fix_keywords_in_offer(body2)
-        stats["keywords_cities_fixed"] += k
-
-        body2, p = _fix_params_spacing_in_offer(body2)
-        stats["params_spacing_fixed"] += p
-
-        body2, d = _fix_description_in_offer(body2)
-        stats["desc_typos_fixed"] += d
-
-        return head + body2 + tail
-
-    out = RE_OFFER_BLOCK.sub(repl, src2)
-    return out, stats
-
-
-
-# Определяет входной файл по OUT_FILE или docs/akcent.yml
-def _resolve_infile(cli_path: str | None) -> Path:
-    if cli_path:
-        return Path(cli_path)
-    env_path = os.environ.get("OUT_FILE", "").strip()
-    if env_path:
-        return Path(env_path)
-    return Path("docs/akcent.yml")
-
-
-def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--in", dest="infile", default=None, help="Путь к akcent.yml (по умолчанию OUT_FILE или docs/akcent.yml)")
-    args = ap.parse_args(argv)
-
-    path = _resolve_infile(args.infile)
-    if not path.exists():
-        print(f"[postprocess_akcent] ERROR: file not found: {path}", file=sys.stderr)
-        return 2
-
-    src, enc, bom = _read_text(path)
-    if enc != "windows-1251" or bom:
-        info = []
-        if enc != "windows-1251":
-            info.append(f"encoding={enc}")
-        if bom:
-            info.append("bom=stripped")
-        print(f"[postprocess_akcent] WARN: input {'; '.join(info)} (сохраним как windows-1251)", file=sys.stderr)
-
-    out, stats = _process_text(src)
-
-    if out != src or enc != "windows-1251" or bom:
-        _write_text(path, out)
-
-    bumped = stats["build_time_bumped_meta"] + stats["build_time_bumped_date"]
-    print(
-        "[postprocess_akcent] OK | "
-        f"offers={stats['offers_scanned']} | "
-        f"pictures_added={stats['offers_pictures_added']} | "
-        f"rgba_fixed={stats['rgba_fixed']} | "
-        f"header_fixed={stats['header_fixed']} | "
-        f"feed_meta_time_fixed={stats['feed_meta_time_fixed']} | "
-        f"feed_meta_next_run_fixed={stats['feed_meta_next_run_fixed']} | "
-        f"quot_fixed_in_desc={stats['quot_fixed_in_desc']} | "
-        f"keywords_cities_fixed={stats['keywords_cities_fixed']} | "
-        f"params_spacing_fixed={stats['params_spacing_fixed']} | "
-        f"desc_typos_fixed={stats['desc_typos_fixed']} | "
-        f"yml_date_synced={stats['yml_date_synced']} | "
-        f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
-        f"file={path}"
-    )
+def main() -> int:
+    infile = os.environ.get("OUT_FILE", "").strip() or OUT_DEFAULT
+    src = _read_text(infile)
+    out = fix_akcent(src)
+    _write_text(infile, out)
+    print(f"[akcent] patched: {infile}")
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv[1:]))
+    raise SystemExit(main())
