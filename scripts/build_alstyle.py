@@ -1,16 +1,8 @@
 #!/usr/bin/env python3
-# AlStyle post-process (v21)
-# - Чистит мусор в описании и приводит под эталон:
-#   <![CDATA[
-#   <!-- WhatsApp -->
-#   <div>...кнопка...</div>
-#   <hr ...2px... />
-#   <!-- Описание -->
-#   ...описание + характеристики...
-#   <!-- Оплата и доставка -->
-#   <div>...оплата/доставка...</div>
-#   ]]>
-# - Убирает дубли: HR (1px/2px) и комментарий "<!-- Оплата и доставка -->" (оставляет 1 раз)
+# AlStyle post-process (v22)
+# - Линия между кнопкой и описанием ОБЯЗАТЕЛЬНО есть и всегда "жирность 2" (border-top:2px)
+# - Убирает дубль HR (1px/2px) в верхней зоне: оставляет ровно один HR 2px
+# - Убирает дубли комментария "<!-- Оплата и доставка -->" (оставляет 1 раз)
 # - Если блок оплаты/доставки попал внутрь "Описание" — вырезаем и переносим вниз
 # - WhatsApp: текст кнопки "Написать в WhatsApp"
 # - Доставка: 5000 тг. -> 5 000 тг.
@@ -25,13 +17,13 @@ from pathlib import Path
 
 _CITIES_DROP = {"Темиртау", "Экибастуз", "Орал", "Оскемен", "Кокшетау", "Семей"}
 
-# Одна линия-разделитель (только такая)
+# Одна линия-разделитель (жирность 2)
 _HR_2PX = '<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />'
 
-# Любой HR
+# Любой HR (только для чистки "верхней зоны" вне блока оплаты/доставки)
 _RX_ANY_HR = re.compile(r"(?is)<hr\b[^>]*>")
 
-# Коммент "Оплата и доставка" (любой регистр/пробелы)
+# Коммент "Оплата и доставка"
 _RX_PAY_COMMENT = re.compile(r"(?is)<!--\s*Оплата\s+и\s+доставка\s*-->\s*")
 
 # Кнопка WhatsApp (первый div с кнопкой)
@@ -40,7 +32,7 @@ _RX_WA_BTN = re.compile(
     r'\s*<p\b[^>]*>\s*<a\b[^>]*>.*?</a>\s*</p>\s*</div>)'
 )
 
-# Блок оплаты/доставки (фон/рамка)
+# Блок оплаты/доставки (фон/рамка) — внутри него есть свой HR 1px, его НЕ трогаем
 _RX_PAYBLOCK = re.compile(
     r'(?s)(<div\s+style="font-family:\s*Cambria,\s*\x27Times New Roman\x27,\s*serif;\s*line-height:1\.5;\s*color:#222;\s*font-size:15px;">\s*'
     r'<div\s+style="background:#FFF6E5;\s*border:1px\s+solid\s+#F1E2C6;.*?</div>\s*</div>)'
@@ -117,48 +109,55 @@ def _split_payment_from_body(body: str) -> tuple[str, str]:
 
 
 def _extract_btn_and_pay_from_wa(wa: str) -> tuple[str, str]:
-    'Достаём кнопку и (если есть) оплату/доставку из WhatsApp-зоны, чистим старые HR/комменты.'
+    'Достаём кнопку и (если есть) оплату/доставку из WhatsApp-зоны, не ломая внутренний HR оплаты.'
     wa = wa.replace("\r\n", "\n")
     wa = _RX_PAY_COMMENT.sub("", wa).strip()
 
-    btn = ""
-    pay = ""
-
     m_btn = _RX_WA_BTN.search(wa)
-    if m_btn:
-        btn = m_btn.group(1).strip()
-        rest = (wa[: m_btn.start()] + wa[m_btn.end() :]).strip()
-        # Удаляем любые HR и комменты из "хвоста"
-        rest = _RX_ANY_HR.sub("", rest)
-        rest = _RX_PAY_COMMENT.sub("", rest).strip()
-        m_pay = _RX_PAYBLOCK.search(rest)
-        if m_pay:
-            pay = m_pay.group(1).strip()
-    else:
-        btn = wa.strip()
+    if not m_btn:
+        return wa.strip(), ""
 
-    return btn, pay
+    btn = m_btn.group(1).strip()
+    rest = (wa[: m_btn.start()] + wa[m_btn.end() :]).strip()
+
+    # Сначала ищем блок оплаты/доставки как есть (с внутренним HR)
+    m_pay = _RX_PAYBLOCK.search(rest)
+    if m_pay:
+        pay = m_pay.group(1).strip()
+        return btn, pay
+
+    # Если оплаты нет — просто кнопка
+    return btn, ""
 
 
-def _normalize_hr_area(text: str) -> str:
-    'Верхняя зона: оставляем ровно 1 HR 2px и ровно 0 пустых строк вокруг него (как в эталоне).'
+def _cleanup_top_hrs(text: str) -> str:
+    'Убираем ВСЕ HR сразу после кнопки (старые 1px/2px), оставим один правильный при сборке.'
     text = text.replace("\r\n", "\n")
+    # после </div> в верхней зоне до <!-- Описание -->
+    text = re.sub(
+        r"(?s)(</div>)\s*(?:<hr\b[^>]*>\s*)+(?=<!--\s*Описание\s*-->)",
+        r"\1\n",
+        text,
+    )
+    return text
 
-    # Удаляем любые HR между кнопкой и <!-- Описание -->, потом вставим один нужный
-    # (на всякий случай: и 1px, и 2px)
-    text = re.sub(r"(?s)(</div>)\s*(?:<hr\b[^>]*>\s*)+(?=<!--\s*Описание\s*-->)", r"\1\n", text)
 
-    # Убираем лишние пустые строки перед HR (если где-то остались)
-    text = re.sub(r"(</div>)\n\n+(?=<hr\b)", r"\1\n", text)
+def _dedupe_pay_comments(text: str) -> str:
+    'Оставляем только один "<!-- Оплата и доставка -->" перед блоком оплаты.'
+    text = text.replace("\r\n", "\n")
+    # Схлопнуть повторения подряд
+    text = re.sub(r"(?s)(<!--\s*Оплата\s+и\s+доставка\s*-->\s*){2,}", "<!-- Оплата и доставка -->\n", text)
     return text
 
 
 def _reorder_desc_blocks(cdata: str) -> str:
-    'Сборка под эталон: один HR, один коммент оплаты.'
+    'Сборка под эталон: один HR 2px, один коммент оплаты.'
     if "<!-- WhatsApp -->" not in cdata or "<!-- Описание -->" not in cdata:
         return cdata
 
-    # Убираем все старые комменты оплаты (дубли)
+    cdata = _cleanup_top_hrs(cdata)
+    cdata = _dedupe_pay_comments(cdata)
+    # На всякий случай уберём комменты оплаты внутри текста (потом вставим один правильный)
     cdata = _RX_PAY_COMMENT.sub("", cdata)
 
     m = re.search(
@@ -173,7 +172,6 @@ def _reorder_desc_blocks(cdata: str) -> str:
 
     btn_block, pay_from_wa = _extract_btn_and_pay_from_wa(wa)
 
-    # Вырезаем оплату/доставку из body, если туда попало
     body2, pay_from_body = _split_payment_from_body(body)
 
     pay_block = pay_from_wa or pay_from_body
@@ -183,7 +181,7 @@ def _reorder_desc_blocks(cdata: str) -> str:
     parts = []
     parts.append("<!-- WhatsApp -->")
     parts.append(btn_block.strip())
-    parts.append(_HR_2PX)
+    parts.append(_HR_2PX)  # ОБЯЗАТЕЛЬНО
     parts.append("<!-- Описание -->")
     parts.append(body2.strip())
 
@@ -194,14 +192,18 @@ def _reorder_desc_blocks(cdata: str) -> str:
     out = "\n".join(parts)
     out = _compact_blank_lines(out)
 
-    # Убираем пустую строку перед "<!-- Оплата и доставка -->" (после </ul> должно быть сразу)
+    # Убрать пустую строку перед "<!-- Оплата и доставка -->" (сразу после </ul>)
     out = re.sub(r"(</ul>)\n\n+(<!--\s*Оплата\s+и\s+доставка\s*-->)", r"\1\n\2", out)
 
-    # Нормализуем верхнюю HR-зону (без лишних пустых строк/дублей)
-    out = _normalize_hr_area(out)
+    # Финально: никаких дублей коммента оплаты
+    out = _dedupe_pay_comments(out)
 
-    # На всякий случай: если где-то подряд попали два HR 2px — схлопываем
-    out = re.sub(r"(?s)(%s\s*){2,}" % re.escape(_HR_2PX), _HR_2PX + "\n", out)
+    # Финально: если вдруг где-то вылезли лишние HR между кнопкой и описанием — убрать, и оставить один
+    out = re.sub(
+        r"(?s)(</div>)\n(?:<hr\b[^>]*>\s*)+(?=<!--\s*Описание\s*-->)",
+        r"\1\n" + _HR_2PX + "\n",
+        out,
+    )
 
     return out
 
@@ -262,7 +264,7 @@ def main() -> int:
 
     _write_cp1251_safe(out_file, text)
 
-    print(f"[alstyle post] ok: cdata/hr/comment/keywords + windows-1251 safe -> {out_file}")
+    print(f"[alstyle post] ok: hr2px + dedupe comments + keywords + windows-1251 safe -> {out_file}")
     return 0
 
 
