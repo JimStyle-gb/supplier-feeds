@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AkCent post-process (v56)
+AkCent post-process (v57)
 
 Фиксы и унификация (точечно, без переформатирования XML):
 1) Устойчивое чтение docs/akcent.yml:
@@ -22,7 +22,8 @@ AkCent post-process (v56)
 5) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
 6) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
 7) Чистим &quot; внутри CDATA в <description> (в AkCent это в основном дюймы 75&quot;)
-8) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
+8) Унификация WhatsApp/описания как у AlStyle (кнопка + hr 2px, без блока Оплата/Доставка)
+9) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
    - workflow_dispatch: да
    - FORCE_YML_REFRESH=1: да
    - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
@@ -86,6 +87,23 @@ RE_M_NO_SPACE = re.compile(r"(\d+[\.,]\d+)м\b")
 
 RE_DESC_CDATA = re.compile(r"(<description><!\[CDATA\[)(.*?)(\]\]></description>)", re.DOTALL)
 RE_QUOT_ENTITY = re.compile(r"&quot;|&#34;")
+
+# Канонический префикс description (как у AlStyle)
+_ALSTYLE_DESC_PREFIX = (
+    "\n<!-- WhatsApp -->\n"
+    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
+    "<p style=\"text-align:center; margin:0 0 12px;\">"
+    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
+    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
+    "&#128172; Написать в WhatsApp</a></p></div>\n"
+    "<hr style=\"border:none; border-top:2px solid #E7D6B7; margin:12px 0;\" />\n"
+    "<!-- Описание -->\n"
+)
+
+
+RE_DESC_PREFIX = re.compile(
+    r"(?s)^\s*\n*<!--\s*WhatsApp\s*-->.*?<!--\s*Описание\s*-->\s*\n*"
+)
 
 
 # Текущее время Алматы (UTC+5)
@@ -417,6 +435,11 @@ def _normalize_keywords_cities(val: str) -> tuple[str, int]:
 def _fix_desc_typos(cdata: str) -> tuple[str, int]:
     cnt = 0
     s = cdata
+
+    # Приводим WhatsApp/пролог описания к эталону AlStyle
+    s2, n = RE_DESC_PREFIX.subn(_ALSTYLE_DESC_PREFIX, s)
+    cnt += n
+    s = s2
 
     # инсталяционный -> инсталляционный (оба регистра)
     s2, n = re.subn(r"\bИнсталяц", "Инсталляц", s)
