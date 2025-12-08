@@ -1,301 +1,104 @@
-#!/usr/bin/env python3
-# AlStyle post-process (v23)
-# - Линия между кнопкой и описанием ОБЯЗАТЕЛЬНО есть и всегда "жирность 2" (border-top:2px)
-# - Убирает дубль HR (1px/2px) в верхней зоне: оставляет ровно один HR 2px
-# - Убирает дубли комментария "<!-- Оплата и доставка -->" (оставляет 1 раз)
-# - Если блок оплаты/доставки попал внутрь "Описание" — вырезаем и переносим вниз
-# - WhatsApp: текст кнопки "Написать в WhatsApp"
-# - Доставка: 5000 тг. -> 5 000 тг.
-# - Keywords: убрать города (Темиртау, Экибастуз, Орал, Оскемен, Кокшетау, Семей)
-# - Безопасная запись в windows-1251 (чтобы workflow/commit не падал)
+# ВСТАВКА ДЛЯ build_alstyle.py
+# Задача: авто-фиксы грамматики/опечаток + починка дат в FEED_META (без изменения структуры),
+# и строгое сохранение форматирования (только то, что нужно).
 
-import os
-import re
-import sys
-from pathlib import Path
-from datetime import datetime
-from zoneinfo import ZoneInfo
+def _ensure_footer_spacing(xml_text: str) -> str:
+    """Финальная доводка: фикс дат + точечные правки текста + обязательные пустые строки AlStyle."""
+    import re
+    from datetime import datetime, timedelta
 
-
-_CITIES_DROP = {"Темиртау", "Экибастуз", "Орал", "Оскемен", "Кокшетау", "Семей"}
-
-# Одна линия-разделитель (жирность 2)
-_HR_2PX = '<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />'
-
-# Любой HR (только для чистки "верхней зоны" вне блока оплаты/доставки)
-_RX_ANY_HR = re.compile(r"(?is)<hr\b[^>]*>")
-
-# Коммент "Оплата и доставка"
-_RX_PAY_COMMENT = re.compile(r"(?is)<!--\s*Оплата\s+и\s+доставка\s*-->\s*")
-
-# Кнопка WhatsApp (первый div с кнопкой)
-_RX_WA_BTN = re.compile(
-    r'(?s)(<div\s+style="font-family:\s*Cambria,\s*\x27Times New Roman\x27,\s*serif;\s*line-height:1\.5;\s*color:#222;\s*font-size:15px;">'
-    r'\s*<p\b[^>]*>\s*<a\b[^>]*>.*?</a>\s*</p>\s*</div>)'
-)
-
-# Блок оплаты/доставки (фон/рамка) — внутри него есть свой HR 1px, его НЕ трогаем
-_RX_PAYBLOCK = re.compile(
-    r'(?s)(<div\s+style="font-family:\s*Cambria,\s*\x27Times New Roman\x27,\s*serif;\s*line-height:1\.5;\s*color:#222;\s*font-size:15px;">\s*'
-    r'<div\s+style="background:#FFF6E5;\s*border:1px\s+solid\s+#F1E2C6;.*?</div>\s*</div>)'
-)
-
-
-# Время сборки (Алматы) — ДОЛЖНО быть временем раннера, а не датой поставщика
-_RX_FEED_META_BUILD_TIME = re.compile(r"(?m)^(Время сборки \(Алматы\)\s*\|\s*)(.+)$")
-
-
-def _almaty_now_str() -> str:
-    'Берём ALMATY_NOW из workflow (если задан), иначе считаем локально (Asia/Almaty).'
-    env = (os.getenv("ALMATY_NOW", "") or "").strip()
-    if env:
-        # допускаем "YYYY-MM-DD HH:MM" или "YYYY-MM-DD HH:MM:SS"
-        m = re.match(r"^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}(:\d{2})?$", env)
-        if m:
-            return env if len(env) > 16 else (env + ":00")
-    return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S")
-
-
-def _fix_feed_meta_build_time(text: str) -> str:
-    'Обновляем только значение в строке FEED_META, вид/структуру не меняем.'
-    now_s = _almaty_now_str()
-
-    def repl(m: re.Match) -> str:
-        return f"{m.group(1)}{now_s}"
-
-    return _RX_FEED_META_BUILD_TIME.sub(repl, text, count=1)
-
-
-
-def _read_text_safely(path: str) -> str:
-    'Читаем файл максимально устойчиво (cp1251 -> utf-8 -> utf-8 replace), убираем BOM.'
-    data = Path(path).read_bytes()
-    if data.startswith(b"\xef\xbb\xbf"):
-        data = data[3:]
-    for enc in ("windows-1251", "utf-8"):
+    def _parse_build_time(s: str):
+        m = re.search(r'Время сборки \(Алматы\)\s*\|\s*([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})', s)
+        if not m:
+            return None
         try:
-            return data.decode(enc)
-        except UnicodeDecodeError:
-            pass
-    return data.decode("utf-8", errors="replace")
+            return datetime.strptime(m.group(1), "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            return None
 
+    def _next_daily(dt: datetime, hour: int):
+        cand = dt.replace(hour=hour, minute=0, second=0, microsecond=0)
+        if cand <= dt:
+            cand += timedelta(days=1)
+        return cand
 
-def _write_cp1251_safe(path: str, text: str) -> None:
-    'Пишем строго в windows-1251, но не падаем на символах вне кодировки.'
-    if not text.endswith("\n"):
-        text += "\n"
-    Path(path).write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
+    # 1) Даты/время: yml_catalog date и "Ближайшая сборка" должны быть логичными
+    build_time = _parse_build_time(xml_text)
+    if build_time:
+        # yml_catalog date = время сборки (минуты)
+        xml_text = re.sub(
+            r'(<yml_catalog\s+date=")[^"]+(")',
+            r'\g<1>' + build_time.strftime("%Y-%m-%d %H:%M") + r'\2',
+            xml_text,
+            count=1
+        )
 
+        # Ближайшая сборка = следующий запуск по расписанию AlStyle (ежедневно 01:00 Алматы)
+        nxt = _next_daily(build_time, 1)
+        xml_text = re.sub(
+            r'(Ближайшая сборка \(Алматы\)\s*\|\s*)[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}',
+            r'\1' + nxt.strftime("%Y-%m-%d %H:%M:%S"),
+            xml_text,
+            count=1
+        )
 
-def _ensure_cdata_edges(cdata: str) -> str:
-    'Ровно 1 перенос сразу после <![CDATA[ и 1 перенос перед ]]>.'
-    cdata = cdata.replace("\r\n", "\n")
-    cdata = cdata.lstrip("\n")
-    cdata = "\n" + cdata
-    if not cdata.endswith("\n"):
-        cdata += "\n"
-    return cdata
+    # 2) Точечные правки по офферам (не трогаем порядок тегов)
+    rx_offer = re.compile(r"<offer\b[^>]*>.*?</offer>", re.S)
+    rx_name = re.compile(r"<name>(.*?)</name>", re.S)
+    rx_desc = re.compile(r"<description><!\[CDATA\[(.*?)\]\]></description>", re.S)
 
+    desc_fixes = [
+        (re.compile(r"(\b4)(?:\s|&nbsp;)*[–—\-‑](?:\s|&nbsp;)*(?:х|x)\b", re.I), "4-х"),
+        (re.compile(r"\b100(?:\s|&nbsp;)+метров(ый|ая|ое|ые)\b", re.I), r"100-метров\1"),
+        (re.compile(r"\bили1\b", re.I), "или 1"),
+        (re.compile(r"\b1(?:\s|&nbsp;)*Гигабит/сек\b", re.I), "1 Гигабит/сек"),
+        (re.compile(r"\b1Гигабит/сек\b", re.I), "1 Гигабит/сек"),
+        (re.compile(r"\b2\*USB(?:\s|&nbsp;)+порта\b", re.I), "2 USB-порта"),
+        (re.compile(r"\b2\*USB\b", re.I), "2 USB"),
+        (re.compile(r"\b3(?:\s|&nbsp;)+выходных(?:\s|&nbsp;)+разъёмов\b", re.I), "3 выходных разъёма"),
+    ]
 
-def _compact_blank_lines(s: str) -> str:
-    'Сжимаем только 3+ переносов, чтобы не ломать нужные переносы.'
-    s = s.replace("\r\n", "\n")
-    return re.sub(r"\n{3,}", "\n\n", s)
+    def _fix_cdata(cdata: str, name: str) -> str:
+        s = cdata
 
+        # Локальный фикс модели (PTS-3KLN-LCD vs PTS-3KL-LCD) — только если в name есть N
+        if "PTS-3KLN-LCD" in name and "PTS-3KL-LCD" in s:
+            s = s.replace("PTS-3KL-LCD", "PTS-3KLN-LCD")
 
-def _update_whatsapp_button_text(html: str) -> str:
-    'Меняем текст кнопки, не трогая стили/ссылку.'
-    html = html.replace("НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!", "Написать в WhatsApp")
-    html = html.replace("НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ В WHATSAPP!", "Написать в WhatsApp")
-    html = re.sub(
-        r"(?s)(&#128172;\s*)([^<]{1,180}?)(WHATSAPP!?)(\s*)</a>",
-        r"\1Написать в WhatsApp</a>",
-        html,
-        count=1,
-    )
-    return html
+        for rx, rep in desc_fixes:
+            s = rx.sub(rep, s)
 
+        # Грамматика начала: "{name} Это" -> "{name} — это"
+        if name:
+            s = re.sub(rf"(<p>\s*){re.escape(name)}\s+Это\b", rf"\1{name} — это", s, count=1, flags=re.I)
+            # Если после name сразу слово с заглавной — ставим тире
+            s = re.sub(rf"(<p>\s*){re.escape(name)}\s+(?=[A-ZА-ЯЁ])", rf"\1{name} — ", s, count=1)
 
-def _format_delivery_numbers(html: str) -> str:
-    '5000 тг. -> 5 000 тг. (только в контексте доставки до 5 кг).'
-    return re.sub(
-        r"(до\s*5\s*кг\s*[—-]\s*)5000(\s*тг\.?)(?!\d)",
-        r"\g<1>5 000\g<2>",
-        html,
-    )
+        return s
 
+    def _offer_repl(m: re.Match) -> str:
+        block = m.group(0)
 
-def _split_payment_from_body(body: str) -> tuple[str, str]:
-    'Если внутри body есть блок оплаты/доставки — вырезаем его.'
-    m = _RX_PAYBLOCK.search(body)
-    if not m:
-        return body.strip(), ""
-    pay = m.group(1).strip()
-    body2 = (body[: m.start()] + body[m.end() :]).strip()
-    body2 = _compact_blank_lines(body2)
-    return body2, pay
+        # Латиница/опечатки в параметрах/тексте
+        block = block.replace("Мощность (Bт)", "Мощность (Вт)")
+        block = block.replace("Shuko", "Schuko")
 
+        nm = rx_name.search(block)
+        name = nm.group(1) if nm else ""
 
-def _extract_btn_and_pay_from_wa(wa: str) -> tuple[str, str]:
-    'Достаём кнопку и (если есть) оплату/доставку из WhatsApp-зоны, не ломая внутренний HR оплаты.'
-    wa = wa.replace("\r\n", "\n")
-    wa = _RX_PAY_COMMENT.sub("", wa).strip()
+        dm = rx_desc.search(block)
+        if dm:
+            old = dm.group(1)
+            new = _fix_cdata(old, name)
+            if new != old:
+                block = block[:dm.start(1)] + new + block[dm.end(1):]
 
-    m_btn = _RX_WA_BTN.search(wa)
-    if not m_btn:
-        return wa.strip(), ""
+        return block
 
-    btn = m_btn.group(1).strip()
-    rest = (wa[: m_btn.start()] + wa[m_btn.end() :]).strip()
+    xml_text = rx_offer.sub(_offer_repl, xml_text)
 
-    # Сначала ищем блок оплаты/доставки как есть (с внутренним HR)
-    m_pay = _RX_PAYBLOCK.search(rest)
-    if m_pay:
-        pay = m_pay.group(1).strip()
-        return btn, pay
+    # 3) Строгое форматирование AlStyle
+    xml_text = re.sub(r"(<offers>\n)(?!\n)", r"\1\n", xml_text, count=1)
+    xml_text = re.sub(r"(</offer>\n)(</offers>)", r"\1\n\2", xml_text, count=1)
 
-    # Если оплаты нет — просто кнопка
-    return btn, ""
-
-
-def _cleanup_top_hrs(text: str) -> str:
-    'Убираем ВСЕ HR сразу после кнопки (старые 1px/2px), оставим один правильный при сборке.'
-    text = text.replace("\r\n", "\n")
-    # после </div> в верхней зоне до <!-- Описание -->
-    text = re.sub(
-        r"(?s)(</div>)\s*(?:<hr\b[^>]*>\s*)+(?=<!--\s*Описание\s*-->)",
-        r"\1\n",
-        text,
-    )
-    return text
-
-
-def _dedupe_pay_comments(text: str) -> str:
-    'Оставляем только один "<!-- Оплата и доставка -->" перед блоком оплаты.'
-    text = text.replace("\r\n", "\n")
-    # Схлопнуть повторения подряд
-    text = re.sub(r"(?s)(<!--\s*Оплата\s+и\s+доставка\s*-->\s*){2,}", "<!-- Оплата и доставка -->\n", text)
-    return text
-
-
-def _reorder_desc_blocks(cdata: str) -> str:
-    'Сборка под эталон: один HR 2px, один коммент оплаты.'
-    if "<!-- WhatsApp -->" not in cdata or "<!-- Описание -->" not in cdata:
-        return cdata
-
-    cdata = _cleanup_top_hrs(cdata)
-    cdata = _dedupe_pay_comments(cdata)
-    # На всякий случай уберём комменты оплаты внутри текста (потом вставим один правильный)
-    cdata = _RX_PAY_COMMENT.sub("", cdata)
-
-    m = re.search(
-        r"(?s)<!--\s*WhatsApp\s*-->\s*(?P<wa>.*?)\s*<!--\s*Описание\s*-->\s*(?P<body>.*)$",
-        cdata,
-    )
-    if not m:
-        return cdata
-
-    wa = m.group("wa")
-    body = m.group("body")
-
-    btn_block, pay_from_wa = _extract_btn_and_pay_from_wa(wa)
-
-    body2, pay_from_body = _split_payment_from_body(body)
-
-    pay_block = pay_from_wa or pay_from_body
-    if pay_block:
-        pay_block = _RX_PAY_COMMENT.sub("", pay_block).strip()
-
-    parts = []
-    parts.append("<!-- WhatsApp -->")
-    parts.append(btn_block.strip())
-    parts.append(_HR_2PX)  # ОБЯЗАТЕЛЬНО
-    parts.append("<!-- Описание -->")
-    parts.append(body2.strip())
-
-    if pay_block:
-        parts.append("<!-- Оплата и доставка -->")
-        parts.append(pay_block.strip())
-
-    out = "\n".join(parts)
-    out = _compact_blank_lines(out)
-
-    # Убрать пустую строку перед "<!-- Оплата и доставка -->" (сразу после </ul>)
-    out = re.sub(r"(</ul>)\n\n+(<!--\s*Оплата\s+и\s+доставка\s*-->)", r"\1\n\2", out)
-
-    # Финально: никаких дублей коммента оплаты
-    out = _dedupe_pay_comments(out)
-
-    # Финально: если вдруг где-то вылезли лишние HR между кнопкой и описанием — убрать, и оставить один
-    out = re.sub(
-        r"(?s)(</div>)\n(?:<hr\b[^>]*>\s*)+(?=<!--\s*Описание\s*-->)",
-        r"\1\n" + _HR_2PX + "\n",
-        out,
-    )
-
-    return out
-
-
-def _process_description_blocks(text: str) -> str:
-    'Правки внутри <description><![CDATA[...]]></description>.'
-    rx = re.compile(r"(?s)(<description><!\[CDATA\[)(.*?)(\]\]></description>)")
-
-    def repl(m: re.Match) -> str:
-        head, cdata, tail = m.group(1), m.group(2), m.group(3)
-
-        cdata = cdata.replace("\r\n", "\n")
-        cdata = _update_whatsapp_button_text(cdata)
-        cdata = _format_delivery_numbers(cdata)
-        cdata = _reorder_desc_blocks(cdata)
-        cdata = _ensure_cdata_edges(cdata)
-
-        return f"{head}{cdata}{tail}"
-
-    return rx.sub(repl, text)
-
-
-def _trim_keywords(text: str) -> str:
-    'Убираем города из <keywords> у всех офферов.'
-    rx = re.compile(r"(?s)<keywords>(.*?)</keywords>")
-
-    def repl(m: re.Match) -> str:
-        raw = m.group(1)
-        if not any(city in raw for city in _CITIES_DROP) and "Кокшетау Семей" not in raw:
-            return m.group(0)
-
-        parts = [p.strip() for p in raw.split(",")]
-        filtered = []
-        for p in parts:
-            if not p:
-                continue
-            if p in _CITIES_DROP:
-                continue
-            if p == "Кокшетау Семей":
-                continue
-            filtered.append(p)
-
-        return f"<keywords>{', '.join(filtered)}</keywords>"
-
-    return rx.sub(repl, text)
-
-
-def main() -> int:
-    out_file = os.getenv("OUT_FILE", "docs/alstyle.yml").strip() or "docs/alstyle.yml"
-    if not Path(out_file).exists():
-        print(f"[alstyle post] OUT_FILE not found: {out_file}", file=sys.stderr)
-        return 2
-
-    text = _read_text_safely(out_file)
-
-    text = _fix_feed_meta_build_time(text)
-    text = _process_description_blocks(text)
-    text = _trim_keywords(text)
-
-    _write_cp1251_safe(out_file, text)
-
-    print(f"[alstyle post] ok: hr2px + dedupe comments + keywords + windows-1251 safe -> {out_file}")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+    return xml_text
