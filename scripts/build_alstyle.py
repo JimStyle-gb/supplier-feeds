@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
-# AlStyle post-process (v20)
-# - Исправляет дубль HR (оставляет только 1 линию 2px) и делает отступ как нужно:
-#   </div>\n\n<hr ...2px... />\n<!-- Описание -->
-# - Формат описания:
+# AlStyle post-process (v21)
+# - Чистит мусор в описании и приводит под эталон:
 #   <![CDATA[
 #   <!-- WhatsApp -->
 #   <div>...кнопка...</div>
-#
 #   <hr ...2px... />
 #   <!-- Описание -->
 #   ...описание + характеристики...
 #   <!-- Оплата и доставка -->
 #   <div>...оплата/доставка...</div>
 #   ]]>
+# - Убирает дубли: HR (1px/2px) и комментарий "<!-- Оплата и доставка -->" (оставляет 1 раз)
 # - Если блок оплаты/доставки попал внутрь "Описание" — вырезаем и переносим вниз
 # - WhatsApp: текст кнопки "Написать в WhatsApp"
 # - Доставка: 5000 тг. -> 5 000 тг.
@@ -27,8 +25,14 @@ from pathlib import Path
 
 _CITIES_DROP = {"Темиртау", "Экибастуз", "Орал", "Оскемен", "Кокшетау", "Семей"}
 
-# Одна линия-разделитель (только такая, 2px)
+# Одна линия-разделитель (только такая)
 _HR_2PX = '<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />'
+
+# Любой HR
+_RX_ANY_HR = re.compile(r"(?is)<hr\b[^>]*>")
+
+# Коммент "Оплата и доставка" (любой регистр/пробелы)
+_RX_PAY_COMMENT = re.compile(r"(?is)<!--\s*Оплата\s+и\s+доставка\s*-->\s*")
 
 # Кнопка WhatsApp (первый div с кнопкой)
 _RX_WA_BTN = re.compile(
@@ -42,12 +46,9 @@ _RX_PAYBLOCK = re.compile(
     r'<div\s+style="background:#FFF6E5;\s*border:1px\s+solid\s+#F1E2C6;.*?</div>\s*</div>)'
 )
 
-# Любой HR (для очистки старых линий в WhatsApp-зоне)
-_RX_ANY_HR = re.compile(r'(?is)<hr\b[^>]*>')
-
 
 def _read_text_safely(path: str) -> str:
-    "Читаем файл максимально устойчиво (cp1251 -> utf-8 -> utf-8 replace), убираем BOM."
+    'Читаем файл максимально устойчиво (cp1251 -> utf-8 -> utf-8 replace), убираем BOM.'
     data = Path(path).read_bytes()
     if data.startswith(b"\xef\xbb\xbf"):
         data = data[3:]
@@ -60,14 +61,14 @@ def _read_text_safely(path: str) -> str:
 
 
 def _write_cp1251_safe(path: str, text: str) -> None:
-    "Пишем строго в windows-1251, но не падаем на символах вне кодировки."
+    'Пишем строго в windows-1251, но не падаем на символах вне кодировки.'
     if not text.endswith("\n"):
         text += "\n"
     Path(path).write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
 
 
 def _ensure_cdata_edges(cdata: str) -> str:
-    "Ровно 1 перенос сразу после <![CDATA[ и 1 перенос перед ]]>"
+    'Ровно 1 перенос сразу после <![CDATA[ и 1 перенос перед ]]>.'
     cdata = cdata.replace("\r\n", "\n")
     cdata = cdata.lstrip("\n")
     cdata = "\n" + cdata
@@ -77,13 +78,13 @@ def _ensure_cdata_edges(cdata: str) -> str:
 
 
 def _compact_blank_lines(s: str) -> str:
-    "Сжимаем только 3+ переносов, чтобы не ломать нужные двойные переносы."
+    'Сжимаем только 3+ переносов, чтобы не ломать нужные переносы.'
     s = s.replace("\r\n", "\n")
     return re.sub(r"\n{3,}", "\n\n", s)
 
 
 def _update_whatsapp_button_text(html: str) -> str:
-    "Меняем текст кнопки, не трогая стили/ссылку."
+    'Меняем текст кнопки, не трогая стили/ссылку.'
     html = html.replace("НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!", "Написать в WhatsApp")
     html = html.replace("НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ В WHATSAPP!", "Написать в WhatsApp")
     html = re.sub(
@@ -96,7 +97,7 @@ def _update_whatsapp_button_text(html: str) -> str:
 
 
 def _format_delivery_numbers(html: str) -> str:
-    "5000 тг. -> 5 000 тг. (только в контексте доставки до 5 кг)."
+    '5000 тг. -> 5 000 тг. (только в контексте доставки до 5 кг).'
     return re.sub(
         r"(до\s*5\s*кг\s*[—-]\s*)5000(\s*тг\.?)(?!\d)",
         r"\g<1>5 000\g<2>",
@@ -105,7 +106,7 @@ def _format_delivery_numbers(html: str) -> str:
 
 
 def _split_payment_from_body(body: str) -> tuple[str, str]:
-    "Если внутри body есть блок оплаты/доставки — вырезаем его."
+    'Если внутри body есть блок оплаты/доставки — вырезаем его.'
     m = _RX_PAYBLOCK.search(body)
     if not m:
         return body.strip(), ""
@@ -116,8 +117,9 @@ def _split_payment_from_body(body: str) -> tuple[str, str]:
 
 
 def _extract_btn_and_pay_from_wa(wa: str) -> tuple[str, str]:
-    "Достаём кнопку и (если есть) оплату/доставку из WhatsApp-зоны, чистим старые HR."
-    wa = wa.replace("\r\n", "\n").strip()
+    'Достаём кнопку и (если есть) оплату/доставку из WhatsApp-зоны, чистим старые HR/комменты.'
+    wa = wa.replace("\r\n", "\n")
+    wa = _RX_PAY_COMMENT.sub("", wa).strip()
 
     btn = ""
     pay = ""
@@ -126,23 +128,38 @@ def _extract_btn_and_pay_from_wa(wa: str) -> tuple[str, str]:
     if m_btn:
         btn = m_btn.group(1).strip()
         rest = (wa[: m_btn.start()] + wa[m_btn.end() :]).strip()
-        # Удаляем любые HR, которые могли быть между кнопкой и описанием
-        rest = _RX_ANY_HR.sub("", rest).strip()
-        # Ищем оплату/доставку
+        # Удаляем любые HR и комменты из "хвоста"
+        rest = _RX_ANY_HR.sub("", rest)
+        rest = _RX_PAY_COMMENT.sub("", rest).strip()
         m_pay = _RX_PAYBLOCK.search(rest)
         if m_pay:
             pay = m_pay.group(1).strip()
     else:
-        # На крайний случай: если не смогли распознать — не ломаем
         btn = wa.strip()
 
     return btn, pay
 
 
+def _normalize_hr_area(text: str) -> str:
+    'Верхняя зона: оставляем ровно 1 HR 2px и ровно 0 пустых строк вокруг него (как в эталоне).'
+    text = text.replace("\r\n", "\n")
+
+    # Удаляем любые HR между кнопкой и <!-- Описание -->, потом вставим один нужный
+    # (на всякий случай: и 1px, и 2px)
+    text = re.sub(r"(?s)(</div>)\s*(?:<hr\b[^>]*>\s*)+(?=<!--\s*Описание\s*-->)", r"\1\n", text)
+
+    # Убираем лишние пустые строки перед HR (если где-то остались)
+    text = re.sub(r"(</div>)\n\n+(?=<hr\b)", r"\1\n", text)
+    return text
+
+
 def _reorder_desc_blocks(cdata: str) -> str:
-    "Сборка под эталон, без дублей HR."
+    'Сборка под эталон: один HR, один коммент оплаты.'
     if "<!-- WhatsApp -->" not in cdata or "<!-- Описание -->" not in cdata:
         return cdata
+
+    # Убираем все старые комменты оплаты (дубли)
+    cdata = _RX_PAY_COMMENT.sub("", cdata)
 
     m = re.search(
         r"(?s)<!--\s*WhatsApp\s*-->\s*(?P<wa>.*?)\s*<!--\s*Описание\s*-->\s*(?P<body>.*)$",
@@ -156,14 +173,16 @@ def _reorder_desc_blocks(cdata: str) -> str:
 
     btn_block, pay_from_wa = _extract_btn_and_pay_from_wa(wa)
 
+    # Вырезаем оплату/доставку из body, если туда попало
     body2, pay_from_body = _split_payment_from_body(body)
 
     pay_block = pay_from_wa or pay_from_body
+    if pay_block:
+        pay_block = _RX_PAY_COMMENT.sub("", pay_block).strip()
 
     parts = []
     parts.append("<!-- WhatsApp -->")
     parts.append(btn_block.strip())
-    parts.append("")  # пустая строка как в эталоне
     parts.append(_HR_2PX)
     parts.append("<!-- Описание -->")
     parts.append(body2.strip())
@@ -175,20 +194,20 @@ def _reorder_desc_blocks(cdata: str) -> str:
     out = "\n".join(parts)
     out = _compact_blank_lines(out)
 
-    # Убираем пустую строку перед "<!-- Оплата и доставка -->" (должно быть сразу после </ul>)
+    # Убираем пустую строку перед "<!-- Оплата и доставка -->" (после </ul> должно быть сразу)
     out = re.sub(r"(</ul>)\n\n+(<!--\s*Оплата\s+и\s+доставка\s*-->)", r"\1\n\2", out)
 
-    # На всякий случай: если где-то проскочили два HR подряд в верхней зоне — оставляем только наш 2px
-    out = re.sub(r"(?is)(%s\s*){2,}" % re.escape(_HR_2PX), _HR_2PX + "\n", out)
+    # Нормализуем верхнюю HR-зону (без лишних пустых строк/дублей)
+    out = _normalize_hr_area(out)
 
-    # Если вдруг остался старый 1px HR сразу после кнопки — убираем
-    out = re.sub(r"(?is)(</div>)\n<hr\b[^>]*border-top:1px[^>]*>\n", r"\1\n", out)
+    # На всякий случай: если где-то подряд попали два HR 2px — схлопываем
+    out = re.sub(r"(?s)(%s\s*){2,}" % re.escape(_HR_2PX), _HR_2PX + "\n", out)
 
     return out
 
 
 def _process_description_blocks(text: str) -> str:
-    "Правки внутри <description><![CDATA[...]]></description>."
+    'Правки внутри <description><![CDATA[...]]></description>.'
     rx = re.compile(r"(?s)(<description><!\[CDATA\[)(.*?)(\]\]></description>)")
 
     def repl(m: re.Match) -> str:
@@ -206,7 +225,7 @@ def _process_description_blocks(text: str) -> str:
 
 
 def _trim_keywords(text: str) -> str:
-    "Убираем города из <keywords> у всех офферов."
+    'Убираем города из <keywords> у всех офферов.'
     rx = re.compile(r"(?s)<keywords>(.*?)</keywords>")
 
     def repl(m: re.Match) -> str:
@@ -243,7 +262,7 @@ def main() -> int:
 
     _write_cp1251_safe(out_file, text)
 
-    print(f"[alstyle post] ok: cdata/seo/keywords + windows-1251 safe -> {out_file}")
+    print(f"[alstyle post] ok: cdata/hr/comment/keywords + windows-1251 safe -> {out_file}")
     return 0
 
 
