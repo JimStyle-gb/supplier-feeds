@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# AlStyle post-process (v22)
+# AlStyle post-process (v23)
 # - Линия между кнопкой и описанием ОБЯЗАТЕЛЬНО есть и всегда "жирность 2" (border-top:2px)
 # - Убирает дубль HR (1px/2px) в верхней зоне: оставляет ровно один HR 2px
 # - Убирает дубли комментария "<!-- Оплата и доставка -->" (оставляет 1 раз)
@@ -13,6 +13,8 @@ import os
 import re
 import sys
 from pathlib import Path
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 
 _CITIES_DROP = {"Темиртау", "Экибастуз", "Орал", "Оскемен", "Кокшетау", "Семей"}
@@ -37,6 +39,32 @@ _RX_PAYBLOCK = re.compile(
     r'(?s)(<div\s+style="font-family:\s*Cambria,\s*\x27Times New Roman\x27,\s*serif;\s*line-height:1\.5;\s*color:#222;\s*font-size:15px;">\s*'
     r'<div\s+style="background:#FFF6E5;\s*border:1px\s+solid\s+#F1E2C6;.*?</div>\s*</div>)'
 )
+
+
+# Время сборки (Алматы) — ДОЛЖНО быть временем раннера, а не датой поставщика
+_RX_FEED_META_BUILD_TIME = re.compile(r"(?m)^(Время сборки \(Алматы\)\s*\|\s*)(.+)$")
+
+
+def _almaty_now_str() -> str:
+    'Берём ALMATY_NOW из workflow (если задан), иначе считаем локально (Asia/Almaty).'
+    env = (os.getenv("ALMATY_NOW", "") or "").strip()
+    if env:
+        # допускаем "YYYY-MM-DD HH:MM" или "YYYY-MM-DD HH:MM:SS"
+        m = re.match(r"^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}(:\d{2})?$", env)
+        if m:
+            return env if len(env) > 16 else (env + ":00")
+    return datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _fix_feed_meta_build_time(text: str) -> str:
+    'Обновляем только значение в строке FEED_META, вид/структуру не меняем.'
+    now_s = _almaty_now_str()
+
+    def repl(m: re.Match) -> str:
+        return f"{m.group(1)}{now_s}"
+
+    return _RX_FEED_META_BUILD_TIME.sub(repl, text, count=1)
+
 
 
 def _read_text_safely(path: str) -> str:
@@ -259,6 +287,7 @@ def main() -> int:
 
     text = _read_text_safely(out_file)
 
+    text = _fix_feed_meta_build_time(text)
     text = _process_description_blocks(text)
     text = _trim_keywords(text)
 
