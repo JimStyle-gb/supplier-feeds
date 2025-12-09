@@ -3,12 +3,13 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v120 (2025-12-09):
-- Исправлено: вывод в windows-1251 теперь всегда безопасный (диакритика/экзотика авто-транслитерируется).
-- Исправлено: скрипт по умолчанию НЕ пропускает сборку на событии push (теперь всегда пересобирает). Для старого поведения можно задать ALSTYLE_SKIP_PUSH=1.
-- Добавлено: автоматическая санитаризация текста (кириллица/латиница-двойники, единицы Вт, IEC/С13, дефисы вида "4 - х", корректировка "3/4 ... разъёма", типовая опечатка "и тех устройства которым").
-- Исправлено: _slugify() — сначала транслитерация кириллицы, затем фильтрация (slug-ключи стали стабильнее).
-- Добавлено: защита CDATA от ']]>' и удаление запрещённых управляющих символов XML 1.0.
+v122 (2025-12-09):
+- Исправлено: yml_catalog date = реальное время сборки (Алматы), а не "залипшее" старое
+- Исправлено: FEED_META "Ближайшая сборка" всегда в будущем (01:00 Алматы на следующий день, если текущее время > 01:00)
+- Небольшие правки текста: Shuko -> Schuko, Cтоечные -> Стоечные, 4 - х -> 4-х, Линейно-Интерактивный -> Линейно-интерактивный
+- Исправлено: запись в windows-1251 больше не падает (экзотика авто-упрощается)
+- Добавлено: авто-исправления текста (C/В латинские в русских словах, IEC/С13, 4-парный, разъёмы)
+- Добавлено: защита CDATA от ']]>' и вырезание запрещённых управляющих XML
 
 """
 
@@ -110,7 +111,7 @@ def _norm_spaces(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "")).strip()
 
 
-# --- Санитаризация текста (авто-исправления в новых товарах) ---
+# --- Авто-исправления текста / защита кодировки windows-1251 ---
 _LAT2CYR = str.maketrans({
     "A": "А", "B": "В", "C": "С", "E": "Е", "H": "Н", "K": "К", "M": "М", "O": "О", "P": "Р", "T": "Т", "X": "Х",
     "a": "а", "b": "в", "c": "с", "e": "е", "h": "н", "k": "к", "m": "м", "o": "о", "p": "р", "t": "т", "x": "х",
@@ -126,78 +127,13 @@ def _strip_xml_ctrl(s: str) -> str:
     return re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", s or "")
 
 
-def _fix_mixed_scripts(s: str) -> str:
-    # 1) Латиница-двойники внутри русских слов -> кириллица
-    #    пример: Cтильный, Bт, Cтоечные
-    x = s or ""
-    x = re.sub(r"(?<=\b)[ABCEHKMOPTX](?=[А-Яа-яЁё])", lambda m: m.group(0).translate(_LAT2CYR), x)
-    x = re.sub(r"(?<=[А-Яа-яЁё])[ABCEHKMOPTX](?=[А-Яа-яЁё])", lambda m: m.group(0).translate(_LAT2CYR), x)
-
-    # 2) Кириллица-двойники внутри кодов/стандартов -> латиница
-    #    пример: IEС -> IEC, С13 -> C13
-    x = re.sub(r"(?<=[A-Za-z0-9])[АВЕСНКМОРТХ](?=[A-Za-z0-9])", lambda m: m.group(0).translate(_CYR2LAT), x)
-    x = re.sub(r"(?<=[A-Za-z])[АВЕСНКМОРТХ](?=[^А-Яа-яЁё]|$)", lambda m: m.group(0).translate(_CYR2LAT), x)
-    x = re.sub(r"(^|[^А-Яа-яЁё])([АВЕСНКМОРТХ])(?=\d)", lambda m: m.group(1) + m.group(2).translate(_CYR2LAT), x)
-
-    return x
-
-
-def _fix_numeric_hyphens(s: str) -> str:
-    x = s or ""
-    # 4 - х -> 4-х
-    x = re.sub(r"\b(\d+)\s*-\s*х\b", r"\1-х", x, flags=re.I)
-    # 4-х парный -> 4-парный
-    x = re.sub(r"\b(\d+)-х\s+парн(ый|ая|ое|ые)\b", r"\1-парн\2", x, flags=re.I)
-    return x
-
-
-def _fix_ru_inflections(s: str) -> str:
-    # Корректировка только для "разъём(а/ов)" по числу
-    def repl(m: re.Match) -> str:
-        n = int(m.group(1))
-        # 11-14 -> разъёмов
-        if 11 <= (n % 100) <= 14:
-            form = "разъёмов"
-        else:
-            last = n % 10
-            if last == 1:
-                form = "разъём"
-            elif last in (2, 3, 4):
-                form = "разъёма"
-            else:
-                form = "разъёмов"
-        return f"{m.group(1)} {m.group(2)} {form}"
-
-    return re.sub(r"\b(\d+)\s+(выходн(?:ых|ые))\s+разъёмов\b", repl, s or "", flags=re.I)
-
-
-def _fix_typo_phrases(s: str) -> str:
-    x = s or ""
-    # типовая опечатка из описаний
-    x = re.sub(r"\bи\s+тех\s+устройства\s+которым\b", "и тех устройств, которым", x, flags=re.I)
-    return x
-
-
 def _safe_cdata_payload(s: str) -> str:
     # Защита CDATA от ']]>'
     return (s or "").replace("]]>", "]]]]><![CDATA[>")
 
 
-def _sanitize_text(s: str, *, keep_ws: bool = False) -> str:
-    x = _strip_xml_ctrl(s or "")
-    x = x.replace("﻿", "")
-    x = x.replace("\r\n", "\n").replace("\r", "\n")
-    x = _fix_mixed_scripts(x)
-    x = _fix_numeric_hyphens(x)
-    x = _fix_ru_inflections(x)
-    x = _fix_typo_phrases(x)
-    if not keep_ws:
-        x = _norm_spaces(x)
-    return x
-
-
 def _ensure_encodable(text: str, encoding: str = "windows-1251") -> str:
-    # Делает строку безопасной для windows-1251: убирает диакритику и неподдерживаемые символы.
+    # Делает строку безопасной для windows-1251 (диакритика/экзотика -> ближайший ASCII, остальное режем).
     if not text:
         return ""
     try:
@@ -206,42 +142,15 @@ def _ensure_encodable(text: str, encoding: str = "windows-1251") -> str:
     except UnicodeEncodeError:
         pass
 
-    # Символы, которые NFKD не всегда разлагает (и они часто встречаются в названиях)
-    _special_map = {
-        "ß": "ss",
-        "Ø": "O",
-        "ø": "o",
-        "Æ": "AE",
-        "æ": "ae",
-        "Œ": "OE",
-        "œ": "oe",
-        "Ð": "D",
-        "ð": "d",
-        "Þ": "TH",
-        "þ": "th",
-        "Ł": "L",
-        "ł": "l",
-        "Đ": "D",
-        "đ": "d",
-        "İ": "I",
-        "ı": "i",
-        "Ş": "S",
-        "ş": "s",
-        "Ğ": "G",
-        "ğ": "g",
-        "Ç": "C",
-        "ç": "c",
-        "Ñ": "N",
-        "ñ": "n",
-        "™": "",
+    special = {
+        "ß": "ss", "Ø": "O", "ø": "o", "Æ": "AE", "æ": "ae", "Œ": "OE", "œ": "oe",
+        "Ð": "D", "ð": "d", "Þ": "TH", "þ": "th", "Ł": "L", "ł": "l", "Đ": "D", "đ": "d",
+        "İ": "I", "ı": "i", "Ş": "S", "ş": "s", "Ğ": "G", "ğ": "g", "Ç": "C", "ç": "c",
+        "Ñ": "N", "ñ": "n", "™": "",
     }
-    t = text.translate({ord(k): v for k, v in _special_map.items()})
-
-    # 1) Нормализация: ä->a, ö->o, ü->u и т.п.
+    t = (text or "").translate({ord(k): v for k, v in special.items()})
     t = unicodedata.normalize("NFKD", t)
     t = "".join(ch for ch in t if not unicodedata.combining(ch))
-
-    # 2) Типовые заменители
     t = (
         t.replace(" ", " ")
         .replace(" ", " ")
@@ -250,45 +159,14 @@ def _ensure_encodable(text: str, encoding: str = "windows-1251") -> str:
         .replace("​", "")
         .replace("⁠", "")
         .replace("﻿", "")
-    )
-    t = t.replace("•", "-").replace("●", "-").replace("◦", "-").replace("▪", "-")
-    t = t.replace("×", "x")
+    ).replace("×", "x")
 
-    # 3) Фильтр по символам под целевую кодировку
     out = []
     for ch in t:
         try:
             ch.encode(encoding, errors="strict")
             out.append(ch)
         except UnicodeEncodeError:
-            out.append(" " if ch.isspace() else "")
-    return "".join(out)
-
-    # 1) Нормализация: ä->a, ö->o и т.п.
-    t = unicodedata.normalize("NFKD", text)
-    t = "".join(ch for ch in t if not unicodedata.combining(ch))
-
-    # 2) Типовые заменители
-    t = (
-        t.replace(" ", " ")
-        .replace(" ", " ")
-        .replace(" ", " ")
-        .replace(" ", " ")
-        .replace("​", "")
-        .replace("⁠", "")
-        .replace("﻿", "")
-    )
-    t = t.replace("•", "-").replace("●", "-").replace("◦", "-").replace("▪", "-")
-    t = t.replace("×", "x")
-
-    # 3) Фильтр по символам под целевую кодировку
-    out = []
-    for ch in t:
-        try:
-            ch.encode(encoding, errors="strict")
-            out.append(ch)
-        except UnicodeEncodeError:
-            # Сохраняем пробелы, иначе вырежем
             out.append(" " if ch.isspace() else "")
     return "".join(out)
 
@@ -368,79 +246,17 @@ def _apply_price_rule(supplier_price: Optional[int]) -> int:
     return out
 
 
-def _norm_cat_id(s: str) -> str:
-    t = _norm_spaces(s)
-    if not t:
-        return ""
-    if t.isdigit():
-        try:
-            return str(int(t))
-        except Exception:
-            return t
-    return t
-
-
-def _read_categories(path: str) -> Tuple[set[str], bool]:
-    # Читаем категории (include). ВАЖНО: если файл не найден — НЕ отключаем фильтр молча.
-    raw = (path or "").strip().strip('"').strip("'")
-    raw_norm = raw.replace("\\", "/") if raw else ""
-
-    fname = ""
-    if raw_norm:
-        try:
-            fname = Path(raw_norm).name
-        except Exception:
-            fname = ""
-    if not fname:
-        fname = Path(CATEGORIES_FILE_DEFAULT).name
-
-    candidates: List[str] = []
-    if raw:
-        candidates.append(raw)
-    if raw_norm and raw_norm != raw:
-        candidates.append(raw_norm)
-
-    # Базовый путь по умолчанию
-    if CATEGORIES_FILE_DEFAULT not in candidates:
-        candidates.append(CATEGORIES_FILE_DEFAULT)
-
-    # Частые варианты в репо
-    if fname:
-        if f"docs/{fname}" not in candidates:
-            candidates.append(f"docs/{fname}")
-        if fname not in candidates:
-            candidates.append(fname)
-
-    chosen: Optional[Path] = None
-    for c in candidates:
-        if not c:
-            continue
-        p = Path(c)
-        if p.exists() and p.is_file():
-            chosen = p
-            break
-
-    # Фолбэк: ищем по имени файла в репозитории (на случай неправильного пути в env)
-    if chosen is None and fname:
-        for p in Path(".").rglob(fname):
-            if p.is_file():
-                chosen = p
-                break
-
-    if chosen is None:
-        return set(), False
-
-    out: set[str] = set()
-    for line in chosen.read_text(encoding="utf-8", errors="ignore").splitlines():
+def _read_categories(path: str) -> set[str]:
+    p = Path(path)
+    if not p.exists():
+        return set()
+    out = set()
+    for line in p.read_text(encoding="utf-8", errors="ignore").splitlines():
         s = line.strip()
         if not s or s.startswith("#"):
             continue
-        cid = _norm_cat_id(s)
-        if cid:
-            out.add(cid)
-
-    return out, True
-
+        out.add(s)
+    return out
 
 
 def _sort_params(items: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
@@ -452,12 +268,30 @@ def _sort_params(items: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
 
 
 def _fix_text_common(s: str) -> str:
-    # Мини-правки грамматики/опечаток без "переписывания" смысла
+    # Мини-правки грамматики/опечаток без "переписывания" смысла + авто-исправления (сегодня/завтра новые товары)
     s = s or ""
     s = s.replace("Shuko", "Schuko")
     s = s.replace("Cтоечные", "Стоечные").replace("Cтоечный", "Стоечный")
     s = s.replace("Линейно-Интерактивный", "Линейно-интерактивный")
     s = re.sub(r"\b(\d+)\s*-\s*х\b", r"\1-х", s)
+
+    # Латиница-двойники в русских словах (Cтильный, Bт и т.п.)
+    s = re.sub(r"\b([ABCEHKMOPTXabcehkmoptx])(?=[А-Яа-яЁё])", lambda m: m.group(1).translate(_LAT2CYR), s)
+    s = re.sub(r"(?<=[А-Яа-яЁё])([ABCEHKMOPTXabcehkmoptx])(?=[А-Яа-яЁё])", lambda m: m.group(1).translate(_LAT2CYR), s)
+
+    # Кириллица-двойники в кодах/стандартах (IEС, С13 и т.п.)
+    s = re.sub(r"(?<=[A-Za-z0-9])([АВЕСНКМОРТХавеснкмортх])(?=[A-Za-z0-9])", lambda m: m.group(1).translate(_CYR2LAT), s)
+    s = re.sub(r"(^|[^А-Яа-яЁё])([АВЕСНКМОРТХавеснкмортх])(?=\d)", lambda m: m.group(1) + m.group(2).translate(_CYR2LAT), s)
+
+    # 4-х парный -> 4-парный (как корректный тех. вариант)
+    s = re.sub(r"\b(\d+)-х\s+парн(ый|ая|ое|ые)\b", r"\1-парн\2", s, flags=re.I)
+
+    # Типовая опечатка из описаний
+    s = re.sub(r"\bи\s+тех\s+устройства\s+которым\b", "и тех устройств, которым", s, flags=re.I)
+
+    # 2-4 выходных разъёмов -> 2-4 выходных разъёма
+    s = re.sub(r"\b([234])\s+выходных\s+разъёмов\b", r"\1 выходных разъёма", s, flags=re.I)
+
     return s
 
 
@@ -473,11 +307,11 @@ def _slugify(s: str) -> str:
     s = (s or "").strip().lower()
     out = []
     for ch in s:
-        # Сначала — кириллица (чтобы не попадала в isalnum() и не терялась)
-        if ("а" <= ch <= "я") or ch == "ё":
-            out.append(_RUS2LAT.get(ch, ""))
-        elif ch.isalnum():
+        if ch.isalnum():
             out.append(ch)
+            continue
+        if "а" <= ch <= "я" or ch == "ё":
+            out.append(_RUS2LAT.get(ch, ""))
         else:
             out.append("-")
     x = "".join(out)
@@ -488,8 +322,8 @@ def _slugify(s: str) -> str:
 
 def _build_keywords(vendor: str, name: str) -> str:
     # Простая схема как у вас: бренд + имя + токены + слаги + хвост городов
-    vendor = _sanitize_text(vendor)
-    name = _sanitize_text(name)
+    vendor = _norm_spaces(vendor)
+    name = _norm_spaces(name)
 
     parts: List[str] = []
     if vendor:
@@ -573,8 +407,7 @@ def _build_chars_block(params: List[Tuple[str, str]]) -> str:
 
 
 def _build_description(name: str, native_desc: str, params: List[Tuple[str, str]]) -> str:
-    name = _sanitize_text(name)
-    native_desc = _sanitize_text(native_desc, keep_ws=True)
+    name = _norm_spaces(name)
     native_html = _native_desc_to_p(native_desc, name)
     chars = _build_chars_block(params)
 
@@ -590,8 +423,8 @@ def _build_description(name: str, native_desc: str, params: List[Tuple[str, str]
         + "\n" + AL_PAY_BLOCK
         + "\n"
     )
-    payload = _safe_cdata_payload(cdata)
-    return f"<description><![CDATA[{payload}]]></description>"
+    cdata = _safe_cdata_payload(_strip_xml_ctrl(cdata))
+    return f"<description><![CDATA[{cdata}]]></description>"
 
 
 # --- Модель оффера ---
@@ -608,29 +441,25 @@ class OfferOut:
 
     def to_xml(self) -> str:
         # Порядок тегов строго фиксируем
-        name = _sanitize_text(self.name)
-        vendor = _sanitize_text(self.vendor)
-        native_desc = _sanitize_text(self.native_desc, keep_ws=True)
-        params = [(_sanitize_text(k), _sanitize_text(v)) for (k, v) in (self.params or [])]
         lines: List[str] = []
         lines.append(f'<offer id="{self.oid}" available="{_bool_str(self.available)}">')
         lines.append("<categoryId></categoryId>")
         lines.append(f"<vendorCode>{self.oid}</vendorCode>")
-        lines.append(f"<name>{name}</name>")
+        lines.append(f"<name>{self.name}</name>")
         lines.append(f"<price>{self.price}</price>")
         for pic in self.pictures:
             lines.append(f"<picture>{pic}</picture>")
-        if vendor:
-            lines.append(f"<vendor>{vendor}</vendor>")
+        if self.vendor:
+            lines.append(f"<vendor>{self.vendor}</vendor>")
         lines.append(f"<currencyId>{CURRENCY_ID}</currencyId>")
-        lines.append(_build_description(name, native_desc, params))
-        for k, v in _sort_params(params):
-            k2 = _sanitize_text(k)
-            v2 = _sanitize_text(v)
+        lines.append(_build_description(self.name, self.native_desc, self.params))
+        for k, v in _sort_params(self.params):
+            k2 = _norm_spaces(k)
+            v2 = _norm_spaces(v)
             if not k2 or not v2:
                 continue
             lines.append(f'<param name="{k2}">{v2}</param>')
-        lines.append(f"<keywords>{_build_keywords(vendor, name)}</keywords>")
+        lines.append(f"<keywords>{_build_keywords(self.vendor, self.name)}</keywords>")
         lines.append("</offer>")
         return "\n".join(lines)
 
@@ -771,7 +600,7 @@ def _atomic_write_if_changed(path: str, data: str, encoding: str = "windows-1251
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
-    safe = _ensure_encodable(data, encoding=encoding)
+    safe = _ensure_encodable(_strip_xml_ctrl(data), encoding=encoding)
     new_bytes = safe.encode(encoding, errors="strict")
     if p.exists():
         old_bytes = p.read_bytes()
@@ -794,18 +623,13 @@ def _fetch(url: str) -> bytes:
 
 
 def _should_run_now(build_time: datetime) -> bool:
-    # Запуск по push:
-    # - по умолчанию пересобираем ВСЕГДА (чтобы время сборки и правки сразу попадали в файл)
-    # - для старого поведения можно задать ALSTYLE_SKIP_PUSH=1 (тогда ограничение 01:00 вернётся)
-    if os.getenv("FORCE_YML_REFRESH", "").strip().lower() in {"1", "true", "yes"}:
+    # Скрипт может запускаться по push: тогда пропускаем, если не 01:00, если нет FORCE_YML_REFRESH
+    if os.getenv("FORCE_YML_REFRESH", "").strip() in {"1", "true", "yes"}:
         return True
     ev = (os.getenv("GITHUB_EVENT_NAME") or "").strip().lower()
     if ev == "push":
-        if os.getenv("ALSTYLE_SKIP_PUSH", "").strip().lower() in {"1", "true", "yes"}:
-            return build_time.hour == SCHEDULE_HOUR_ALMATY
-        return True
+        return build_time.hour == SCHEDULE_HOUR_ALMATY
     return True
-
 
 
 def main() -> int:
@@ -818,10 +642,7 @@ def main() -> int:
         print(f"[alstyle] skip: event=push and hour={build_time.hour}, ожидается {SCHEDULE_HOUR_ALMATY} (Алматы).")
         return 0
 
-    allowed_cats, cats_ok = _read_categories(cat_path)
-    if not cats_ok:
-        raise RuntimeError(f"[alstyle] categories file not found: {cat_path}")
-    print(f"[alstyle] Категории (include): {len(allowed_cats)} из файла {cat_path}")
+    allowed_cats = _read_categories(cat_path)
     print(f"[alstyle] Скачиваем фид: {url}")
 
     raw = _fetch(url)
@@ -833,11 +654,8 @@ def main() -> int:
     out_offers: List[OfferOut] = []
     for o in in_offers:
         # фильтр по categoryId (include)
-        cats = [_norm_cat_id(_get_text(x)) for x in o.findall("categoryId")]
-        cats = [c for c in cats if c]
-        if not cats:
-            continue
-        if not any(c in allowed_cats for c in cats):
+        cat = _get_text(o.find("categoryId"))
+        if allowed_cats and cat not in allowed_cats:
             continue
         out_offers.append(_build_offer_out(o))
 
