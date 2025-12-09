@@ -16,7 +16,6 @@ import re
 import sys
 import math
 import hashlib
-import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -203,150 +202,16 @@ def _sort_params(items: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
 
 
 def _fix_text_common(s: str) -> str:
-    # Мини-правки грамматики/опечаток без "переписывания" смысла.
-    # Важно: не меняем логику фида — только чистим текст (для SEO/Satu и чтобы CP1251 не падал).
+    # Мини-правки грамматики/опечаток без "переписывания" смысла
     s = s or ""
-
-    # 1) Нормализуем скрытые/битые символы
-    s = (
-        s.replace("\u200b", "")
-         .replace("\u200c", "")
-         .replace("\u200d", "")
-         .replace("\u2060", "")
-         .replace("\ufeff", "")
-    )
-
-    # 2) Исправляем кириллица/латиница-двойники (только когда рядом кириллица)
-    s = _fix_rus_lat_lookalikes(s)
-
-    # 3) Ваши базовые фиксы (v118)
     s = s.replace("Shuko", "Schuko")
     s = s.replace("Cтоечные", "Стоечные").replace("Cтоечный", "Стоечный")
     s = s.replace("Линейно-Интерактивный", "Линейно-интерактивный")
     s = re.sub(r"\b(\d+)\s*-\s*х\b", r"\1-х", s)
-
-    # 4) Точечные текстовые фиксы (по найденным косякам)
-    s = _fix_iec_tokens(s)
-    s = _fix_razem_plural(s)
-    s = re.sub(r"\b(\d+)-х\s+парн(ый|ая|ое|ые)\b", r"\1-парн\2", s, flags=re.I)
-    s = re.sub(r"\bи\s+тех\s+устройства\s+которым\b", "и тех устройств, которым", s, flags=re.I)
-
     return s
-
-
-def _fix_rus_lat_lookalikes(s: str) -> str:
-    # Меняем латинские буквы на кириллицу ТОЛЬКО если далее идёт кириллица (иначе не трогаем коды/модели).
-    if not s:
-        return ""
-    pairs = {
-        "A": "А", "a": "а",
-        "B": "В", "b": "в",
-        "C": "С", "c": "с",
-        "E": "Е", "e": "е",
-        "H": "Н", "h": "н",
-        "K": "К", "k": "к",
-        "M": "М", "m": "м",
-        "O": "О", "o": "о",
-        "P": "Р", "p": "р",
-        "T": "Т", "t": "т",
-        "X": "Х", "x": "х",
-        "Y": "У", "y": "у",
-    }
-    for lat, rus in pairs.items():
-        s = re.sub(rf"(?<![A-Za-z0-9]){re.escape(lat)}(?=[А-Яа-яЁё])", rus, s)
-    return s
-
-
-def _fix_iec_tokens(s: str) -> str:
-    # IEС (последняя буква кириллицей) -> IEC; "IEC С13" (С кириллицей) -> "IEC C13"
-    if not s:
-        return ""
-    s = s.replace("IEС", "IEC")  # кириллическая 'С' в конце
-    s = re.sub(r"\bIEC\s+С(\d+)\b", r"IEC C\1", s)  # кириллическая 'С' перед числом
-    return s
-
-
-def _fix_razem_plural(s: str) -> str:
-    # "3 выходных разъёмов" -> "3 выходных разъёма" (правильная форма для 2-4)
-    if not s:
-        return ""
-
-    def repl(m: re.Match) -> str:
-        n = int(m.group(1))
-        # 11-14 -> разъёмов
-        if 11 <= (n % 100) <= 14:
-            form = "разъёмов"
-        else:
-            last = n % 10
-            if last == 1:
-                form = "разъём"
-            elif last in (2, 3, 4):
-                form = "разъёма"
-            else:
-                form = "разъёмов"
-        return f"{m.group(1)} {m.group(2)} {form}"
-
-    return re.sub(r"\b(\d+)\s+(выходн(?:ых|ые))\s+разъёмов\b", repl, s, flags=re.I)
-
-
-def _strip_xml_controls(text: str) -> str:
-    # Удаляем запрещённые управляющие символы XML 1.0 (кроме \n \r \t).
-    if not text:
-        return ""
-    out = []
-    for ch in text:
-        o = ord(ch)
-        if o in (9, 10, 13):
-            out.append(ch)
-            continue
-        if o < 32:
-            continue
-        out.append(ch)
-    return "".join(out)
-
-
-def _sanitize_for_cp1251(text: str, encoding: str = "windows-1251") -> str:
-    # Делает строку безопасной для windows-1251:
-    # - сначала пробуем strict (чтобы не менять нормальный текст),
-    # - если не кодируется — NFKD + удаление диакритики + спец-маппинг,
-    # - если всё равно не кодируется — заменяем оставшиеся символы.
-    text = _strip_xml_controls(text or "")
-    if not text:
-        return ""
-
-    try:
-        text.encode(encoding, errors="strict")
-        return text
-    except UnicodeEncodeError:
-        pass
-
-    special_map = {
-        "ß": "ss", "Ø": "O", "ø": "o", "Æ": "AE", "æ": "ae", "Œ": "OE", "œ": "oe",
-        "–": "-", "—": "-", "−": "-", "•": "-", "…": "...",
-        "“": '"', "”": '"', "„": '"', "’": "'", "‘": "'", "´": "'",
-        "№": "No", "€": "EUR",
-    }
-    t = "".join(special_map.get(ch, ch) for ch in text)
-
-    # NFKD + удаляем комбинируемые диакритические знаки
-    t = unicodedata.normalize("NFKD", t)
-    t = "".join(ch for ch in t if not unicodedata.combining(ch))
-
-    try:
-        t.encode(encoding, errors="strict")
-        return t
-    except UnicodeEncodeError:
-        # Последний рубеж: заменяем неизвестные символы
-        return t.encode(encoding, errors="replace").decode(encoding, errors="ignore")
-
-
-def _cdata_safe(s: str) -> str:
-    # Внутри CDATA нельзя ']]>' — заменяем на безопасный вариант.
-    return (s or "").replace("]]>", "]]&gt;")
 
 
 # --- SEO: keywords ---
-
 _RUS2LAT = {
     "а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m",
     "н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch",
@@ -474,7 +339,6 @@ def _build_description(name: str, native_desc: str, params: List[Tuple[str, str]
         + "\n" + AL_PAY_BLOCK
         + "\n"
     )
-    cdata = _cdata_safe(cdata)
     return f"<description><![CDATA[{cdata}]]></description>"
 
 
@@ -651,14 +515,7 @@ def _atomic_write_if_changed(path: str, data: str, encoding: str = "windows-1251
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
-    try:
-        new_bytes = data.encode(encoding, errors="strict")
-    except UnicodeEncodeError:
-        data = _sanitize_for_cp1251(data, encoding=encoding)
-        try:
-            new_bytes = data.encode(encoding, errors="strict")
-        except UnicodeEncodeError:
-            new_bytes = data.encode(encoding, errors="replace")
+    new_bytes = data.encode(encoding, errors="strict")
     if p.exists():
         old_bytes = p.read_bytes()
         if old_bytes == new_bytes:
