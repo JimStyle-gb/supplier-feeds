@@ -3,7 +3,8 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v119 (2025-12-09):
+v120 (2025-12-09):
+- Исправлено: вывод в windows-1251 теперь всегда безопасный (диакритика/экзотика авто-транслитерируется).
 - Исправлено: скрипт по умолчанию НЕ пропускает сборку на событии push (теперь всегда пересобирает). Для старого поведения можно задать ALSTYLE_SKIP_PUSH=1.
 - Добавлено: автоматическая санитаризация текста (кириллица/латиница-двойники, единицы Вт, IEC/С13, дефисы вида "4 - х", корректировка "3/4 ... разъёма", типовая опечатка "и тех устройства которым").
 - Исправлено: _slugify() — сначала транслитерация кириллицы, затем фильтрация (slug-ключи стали стабильнее).
@@ -18,6 +19,7 @@ import re
 import sys
 import math
 import hashlib
+import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -183,7 +185,7 @@ def _safe_cdata_payload(s: str) -> str:
 
 def _sanitize_text(s: str, *, keep_ws: bool = False) -> str:
     x = _strip_xml_ctrl(s or "")
-    x = x.replace("\ufeff", "")
+    x = x.replace("﻿", "")
     x = x.replace("\r\n", "\n").replace("\r", "\n")
     x = _fix_mixed_scripts(x)
     x = _fix_numeric_hyphens(x)
@@ -192,6 +194,103 @@ def _sanitize_text(s: str, *, keep_ws: bool = False) -> str:
     if not keep_ws:
         x = _norm_spaces(x)
     return x
+
+
+def _ensure_encodable(text: str, encoding: str = "windows-1251") -> str:
+    # Делает строку безопасной для windows-1251: убирает диакритику и неподдерживаемые символы.
+    if not text:
+        return ""
+    try:
+        text.encode(encoding, errors="strict")
+        return text
+    except UnicodeEncodeError:
+        pass
+
+    # Символы, которые NFKD не всегда разлагает (и они часто встречаются в названиях)
+    _special_map = {
+        "ß": "ss",
+        "Ø": "O",
+        "ø": "o",
+        "Æ": "AE",
+        "æ": "ae",
+        "Œ": "OE",
+        "œ": "oe",
+        "Ð": "D",
+        "ð": "d",
+        "Þ": "TH",
+        "þ": "th",
+        "Ł": "L",
+        "ł": "l",
+        "Đ": "D",
+        "đ": "d",
+        "İ": "I",
+        "ı": "i",
+        "Ş": "S",
+        "ş": "s",
+        "Ğ": "G",
+        "ğ": "g",
+        "Ç": "C",
+        "ç": "c",
+        "Ñ": "N",
+        "ñ": "n",
+        "™": "",
+    }
+    t = text.translate({ord(k): v for k, v in _special_map.items()})
+
+    # 1) Нормализация: ä->a, ö->o, ü->u и т.п.
+    t = unicodedata.normalize("NFKD", t)
+    t = "".join(ch for ch in t if not unicodedata.combining(ch))
+
+    # 2) Типовые заменители
+    t = (
+        t.replace(" ", " ")
+        .replace(" ", " ")
+        .replace(" ", " ")
+        .replace(" ", " ")
+        .replace("​", "")
+        .replace("⁠", "")
+        .replace("﻿", "")
+    )
+    t = t.replace("•", "-").replace("●", "-").replace("◦", "-").replace("▪", "-")
+    t = t.replace("×", "x")
+
+    # 3) Фильтр по символам под целевую кодировку
+    out = []
+    for ch in t:
+        try:
+            ch.encode(encoding, errors="strict")
+            out.append(ch)
+        except UnicodeEncodeError:
+            out.append(" " if ch.isspace() else "")
+    return "".join(out)
+
+    # 1) Нормализация: ä->a, ö->o и т.п.
+    t = unicodedata.normalize("NFKD", text)
+    t = "".join(ch for ch in t if not unicodedata.combining(ch))
+
+    # 2) Типовые заменители
+    t = (
+        t.replace(" ", " ")
+        .replace(" ", " ")
+        .replace(" ", " ")
+        .replace(" ", " ")
+        .replace("​", "")
+        .replace("⁠", "")
+        .replace("﻿", "")
+    )
+    t = t.replace("•", "-").replace("●", "-").replace("◦", "-").replace("▪", "-")
+    t = t.replace("×", "x")
+
+    # 3) Фильтр по символам под целевую кодировку
+    out = []
+    for ch in t:
+        try:
+            ch.encode(encoding, errors="strict")
+            out.append(ch)
+        except UnicodeEncodeError:
+            # Сохраняем пробелы, иначе вырежем
+            out.append(" " if ch.isspace() else "")
+    return "".join(out)
 
 
 
@@ -312,11 +411,11 @@ def _slugify(s: str) -> str:
     s = (s or "").strip().lower()
     out = []
     for ch in s:
-        if ch.isalnum():
-            out.append(ch)
-            continue
-        if "а" <= ch <= "я" or ch == "ё":
+        # Сначала — кириллица (чтобы не попадала в isalnum() и не терялась)
+        if ("а" <= ch <= "я") or ch == "ё":
             out.append(_RUS2LAT.get(ch, ""))
+        elif ch.isalnum():
+            out.append(ch)
         else:
             out.append("-")
     x = "".join(out)
@@ -610,7 +709,8 @@ def _atomic_write_if_changed(path: str, data: str, encoding: str = "windows-1251
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
-    new_bytes = data.encode(encoding, errors="strict")
+    safe = _ensure_encodable(data, encoding=encoding)
+    new_bytes = safe.encode(encoding, errors="strict")
     if p.exists():
         old_bytes = p.read_bytes()
         if old_bytes == new_bytes:
