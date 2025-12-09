@@ -3,10 +3,10 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v118 (2025-12-09):
-- Исправлено: yml_catalog date = реальное время сборки (Алматы), а не "залипшее" старое
-- Исправлено: FEED_META "Ближайшая сборка" всегда в будущем (01:00 Алматы на следующий день, если текущее время > 01:00)
-- Небольшие правки текста: Shuko -> Schuko, Cтоечные -> Стоечные, 4 - х -> 4-х, Линейно-Интерактивный -> Линейно-интерактивный
+v119 (2025-12-09):
+- Удалено: чтение categoryId из docs/alstyle_categories.txt (все связано с путём/файлом)
+- Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
+- Изменено расписание: 1/10/20 числа в 01:00 (Алматы) + ручной запуск в любое время
 """
 
 from __future__ import annotations
@@ -33,13 +33,18 @@ except Exception:
 SUPPLIER_NAME = "AlStyle"
 SUPPLIER_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 OUT_DEFAULT = "docs/alstyle.yml"
-CATEGORIES_FILE_DEFAULT = "docs/alstyle_categories.txt"
 CURRENCY_ID = "KZT"
 
-# AlStyle — ежедневно в 01:00 по Алматы
+# AlStyle — 1/10/20 числа месяца в 01:00 по Алматы
 SCHEDULE_HOUR_ALMATY = 1
+SCHEDULE_DAYS_MONTH = (1, 10, 20)
 ALMATY_UTC_OFFSET = 5  # Алматы: UTC+5 (без DST)
 
+# Вшитый include-фильтр по categoryId (строки). Если пусто — фильтр выключен.
+# Можно переопределить через env: ALSTYLE_CATEGORY_IDS (через запятую или перевод строки)
+ALSTYLE_ALLOWED_CATEGORY_IDS: set[str] = {
+    # "123",
+}
 # Городской хвост keywords (как в эталонном AlStyle)
 ALSTYLE_CITY_TAIL = "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау"
 
@@ -93,12 +98,32 @@ def _now_almaty() -> datetime:
     return datetime.utcnow().replace(microsecond=0) + timedelta(hours=ALMATY_UTC_OFFSET)
 
 
-def _next_daily_run(build_time: datetime, hour: int) -> datetime:
-    # Следующая ближайшая сборка (всегда в будущем)
-    cand = build_time.replace(hour=hour, minute=0, second=0)
-    if cand <= build_time:
-        cand = cand + timedelta(days=1)
-    return cand
+def _next_scheduled_run(build_time: datetime, hour: int, days: tuple[int, ...]) -> datetime:
+    # Следующая ближайшая сборка по расписанию (всегда в будущем)
+    y, m = build_time.year, build_time.month
+    for _ in range(0, 24):  # хватит на 2 года вперёд
+        for d in sorted(days):
+            try:
+                cand = datetime(y, m, d, hour, 0, 0)
+            except ValueError:
+                continue
+            if cand > build_time:
+                return cand
+        # следующий месяц
+        m += 1
+        if m == 13:
+            m = 1
+            y += 1
+    # fallback (не должен случаться)
+    return build_time.replace(hour=hour, minute=0, second=0) + timedelta(days=1)
+
+
+def _get_allowed_categories() -> set[str]:
+    raw = (os.getenv("ALSTYLE_CATEGORY_IDS") or "").strip()
+    if raw:
+        parts = re.split(r"[\s,;]+", raw)
+        return {p.strip() for p in parts if p.strip()}
+    return set(ALSTYLE_ALLOWED_CATEGORY_IDS)
 
 
 # --- Утилиты ---
@@ -179,18 +204,6 @@ def _apply_price_rule(supplier_price: Optional[int]) -> int:
         return 100
     return out
 
-
-def _read_categories(path: str) -> set[str]:
-    p = Path(path)
-    if not p.exists():
-        return set()
-    out = set()
-    for line in p.read_text(encoding="utf-8", errors="ignore").splitlines():
-        s = line.strip()
-        if not s or s.startswith("#"):
-            continue
-        out.add(s)
-    return out
 
 
 def _sort_params(items: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
@@ -537,26 +550,26 @@ def _fetch(url: str) -> bytes:
 
 
 def _should_run_now(build_time: datetime) -> bool:
-    # Скрипт может запускаться по push: тогда пропускаем, если не 01:00, если нет FORCE_YML_REFRESH
-    if os.getenv("FORCE_YML_REFRESH", "").strip() in {"1", "true", "yes"}:
+    # Условия записи YML:
+    # 1) расписание: 1/10/20 числа месяца в 01:00 (Алматы)
+    # 2) ручной запуск: в любое время (push / workflow_dispatch / и т.п.)
+    if os.getenv("FORCE_YML_REFRESH", "").strip().lower() in {"1", "true", "yes"}:
         return True
     ev = (os.getenv("GITHUB_EVENT_NAME") or "").strip().lower()
-    if ev == "push":
-        return build_time.hour == SCHEDULE_HOUR_ALMATY
+    if ev == "schedule":
+        return (build_time.day in SCHEDULE_DAYS_MONTH) and (build_time.hour == SCHEDULE_HOUR_ALMATY)
     return True
 
 
 def main() -> int:
     url = os.getenv("ALSTYLE_URL", SUPPLIER_URL_DEFAULT).strip() or SUPPLIER_URL_DEFAULT
     out_path = os.getenv("OUT", OUT_DEFAULT).strip() or OUT_DEFAULT
-    cat_path = os.getenv("CATEGORIES_FILE", CATEGORIES_FILE_DEFAULT).strip() or CATEGORIES_FILE_DEFAULT
 
     build_time = _now_almaty()
     if not _should_run_now(build_time):
-        print(f"[alstyle] skip: event=push and hour={build_time.hour}, ожидается {SCHEDULE_HOUR_ALMATY} (Алматы).")
+        print(f"[alstyle] skip: event=schedule, now={build_time.strftime('%Y-%m-%d %H:%M:%S')} (Алматы); ждём дни {SCHEDULE_DAYS_MONTH} и час {SCHEDULE_HOUR_ALMATY}:00.")
         return 0
-
-    allowed_cats = _read_categories(cat_path)
+    allowed_cats = _get_allowed_categories()
     print(f"[alstyle] Скачиваем фид: {url}")
 
     raw = _fetch(url)
@@ -577,7 +590,7 @@ def main() -> int:
     cnt_true = sum(1 for x in out_offers if x.available)
     cnt_false = cnt_after - cnt_true
 
-    next_run = _next_daily_run(build_time, SCHEDULE_HOUR_ALMATY)
+    next_run = _next_scheduled_run(build_time, SCHEDULE_HOUR_ALMATY, SCHEDULE_DAYS_MONTH)
 
     feed_meta = _make_feed_meta(
         build_time=build_time,
