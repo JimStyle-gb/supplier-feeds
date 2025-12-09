@@ -4,7 +4,7 @@
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
 v119 (2025-12-09):
-- Удалено: чтение categoryId из docs/alstyle_categories.txt (все связано с путём/файлом)
+- Удалено: чтение categoryId из файла категорий (все связано с путём/файлом)
 - Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
 - Изменено расписание: 1/10/20 числа в 01:00 (Алматы) + ручной запуск в любое время
 """
@@ -528,7 +528,40 @@ def _atomic_write_if_changed(path: str, data: str, encoding: str = "windows-1251
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
-    new_bytes = data.encode(encoding, errors="strict")
+    try:
+        new_bytes = data.encode(encoding, errors="strict")
+    except UnicodeEncodeError:
+        # Приводим текст к Windows-1251 (без падения сборки)
+        repl = {
+            "\u00a0": " ",  # NBSP
+            "\u202f": " ",  # NNBSP
+            "\u2013": "-",
+            "\u2014": "-",
+            "\u2212": "-",
+            "\u2018": "'",
+            "\u2019": "'",
+            "\u201c": '"',
+            "\u201d": '"',
+            "\u00e4": "a", "\u00c4": "A",
+            "\u00f6": "o", "\u00d6": "O",
+            "\u00fc": "u", "\u00dc": "U",
+            "\u00df": "ss",
+            "\u00e9": "e", "\u00e8": "e", "\u00ea": "e", "\u00eb": "e",
+            "\u00e1": "a", "\u00e0": "a", "\u00e2": "a", "\u00e3": "a",
+            "\u00f3": "o", "\u00f2": "o", "\u00f4": "o", "\u00f5": "o",
+            "\u00fa": "u", "\u00f9": "u", "\u00fb": "u",
+            "\u00ed": "i", "\u00ec": "i", "\u00ee": "i",
+            "\u00e7": "c",
+            "\u00f1": "n",
+            "\u00e5": "a",
+            "\u00f8": "o",
+            "\u00e6": "ae",
+        }
+        for k, v in repl.items():
+            data = data.replace(k, v)
+        data = data.encode(encoding, errors="ignore").decode(encoding)
+        new_bytes = data.encode(encoding, errors="strict")
+
     if p.exists():
         old_bytes = p.read_bytes()
         if old_bytes == new_bytes:
