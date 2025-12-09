@@ -148,6 +148,20 @@ PARAM_PRIO = [
 PARAM_PRIO_INDEX = {k.lower(): i for i, k in enumerate(PARAM_PRIO)}
 
 
+# Ненужные служебные параметры (убираем из <param> и блока характеристик)
+PARAM_DROP_NAMES = {
+    "Благотворительность",
+    "Новинка",
+    "Снижена цена",
+    "Назначение",
+    "Код товара Kaspi",
+    "Код ТН ВЭД",
+    "Объём",
+}
+PARAM_DROP_LC = {x.lower() for x in PARAM_DROP_NAMES}
+
+
+
 # --- Время ---
 def _now_almaty() -> datetime:
     # Время "как в Actions": utcnow + 5
@@ -464,6 +478,8 @@ def _collect_params(offer: ET.Element) -> List[Tuple[str, str]]:
         if not k:
             continue
         lk = k.lower()
+        if lk in PARAM_DROP_LC:
+            continue
         if lk in seen:
             continue
         seen.add(lk)
