@@ -3,10 +3,12 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v118 (2025-12-09):
-- Исправлено: yml_catalog date = реальное время сборки (Алматы), а не "залипшее" старое
-- Исправлено: FEED_META "Ближайшая сборка" всегда в будущем (01:00 Алматы на следующий день, если текущее время > 01:00)
-- Небольшие правки текста: Shuko -> Schuko, Cтоечные -> Стоечные, 4 - х -> 4-х, Линейно-Интерактивный -> Линейно-интерактивный
+v119 (2025-12-09):
+- Исправлено: скрипт по умолчанию НЕ пропускает сборку на событии push (теперь всегда пересобирает). Для старого поведения можно задать ALSTYLE_SKIP_PUSH=1.
+- Добавлено: автоматическая санитаризация текста (кириллица/латиница-двойники, единицы Вт, IEC/С13, дефисы вида "4 - х", корректировка "3/4 ... разъёма", типовая опечатка "и тех устройства которым").
+- Исправлено: _slugify() — сначала транслитерация кириллицы, затем фильтрация (slug-ключи стали стабильнее).
+- Добавлено: защита CDATA от ']]>' и удаление запрещённых управляющих символов XML 1.0.
+
 """
 
 from __future__ import annotations
@@ -104,6 +106,93 @@ def _next_daily_run(build_time: datetime, hour: int) -> datetime:
 # --- Утилиты ---
 def _norm_spaces(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "")).strip()
+
+
+# --- Санитаризация текста (авто-исправления в новых товарах) ---
+_LAT2CYR = str.maketrans({
+    "A": "А", "B": "В", "C": "С", "E": "Е", "H": "Н", "K": "К", "M": "М", "O": "О", "P": "Р", "T": "Т", "X": "Х",
+    "a": "а", "b": "в", "c": "с", "e": "е", "h": "н", "k": "к", "m": "м", "o": "о", "p": "р", "t": "т", "x": "х",
+})
+_CYR2LAT = str.maketrans({
+    "А": "A", "В": "B", "С": "C", "Е": "E", "Н": "H", "К": "K", "М": "M", "О": "O", "Р": "P", "Т": "T", "Х": "X",
+    "а": "a", "в": "b", "с": "c", "е": "e", "н": "h", "к": "k", "м": "m", "о": "o", "р": "p", "т": "t", "х": "x",
+})
+
+
+def _strip_xml_ctrl(s: str) -> str:
+    # Удаляем запрещённые управляющие символы XML 1.0
+    return re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", "", s or "")
+
+
+def _fix_mixed_scripts(s: str) -> str:
+    # 1) Латиница-двойники внутри русских слов -> кириллица
+    #    пример: Cтильный, Bт, Cтоечные
+    x = s or ""
+    x = re.sub(r"(?<=\b)[ABCEHKMOPTX](?=[А-Яа-яЁё])", lambda m: m.group(0).translate(_LAT2CYR), x)
+    x = re.sub(r"(?<=[А-Яа-яЁё])[ABCEHKMOPTX](?=[А-Яа-яЁё])", lambda m: m.group(0).translate(_LAT2CYR), x)
+
+    # 2) Кириллица-двойники внутри кодов/стандартов -> латиница
+    #    пример: IEС -> IEC, С13 -> C13
+    x = re.sub(r"(?<=[A-Za-z0-9])[АВЕСНКМОРТХ](?=[A-Za-z0-9])", lambda m: m.group(0).translate(_CYR2LAT), x)
+    x = re.sub(r"(?<=[A-Za-z])[АВЕСНКМОРТХ](?=[^А-Яа-яЁё]|$)", lambda m: m.group(0).translate(_CYR2LAT), x)
+    x = re.sub(r"(^|[^А-Яа-яЁё])([АВЕСНКМОРТХ])(?=\d)", lambda m: m.group(1) + m.group(2).translate(_CYR2LAT), x)
+
+    return x
+
+
+def _fix_numeric_hyphens(s: str) -> str:
+    x = s or ""
+    # 4 - х -> 4-х
+    x = re.sub(r"\b(\d+)\s*-\s*х\b", r"\1-х", x, flags=re.I)
+    # 4-х парный -> 4-парный
+    x = re.sub(r"\b(\d+)-х\s+парн(ый|ая|ое|ые)\b", r"\1-парн\2", x, flags=re.I)
+    return x
+
+
+def _fix_ru_inflections(s: str) -> str:
+    # Корректировка только для "разъём(а/ов)" по числу
+    def repl(m: re.Match) -> str:
+        n = int(m.group(1))
+        # 11-14 -> разъёмов
+        if 11 <= (n % 100) <= 14:
+            form = "разъёмов"
+        else:
+            last = n % 10
+            if last == 1:
+                form = "разъём"
+            elif last in (2, 3, 4):
+                form = "разъёма"
+            else:
+                form = "разъёмов"
+        return f"{m.group(1)} {m.group(2)} {form}"
+
+    return re.sub(r"\b(\d+)\s+(выходн(?:ых|ые))\s+разъёмов\b", repl, s or "", flags=re.I)
+
+
+def _fix_typo_phrases(s: str) -> str:
+    x = s or ""
+    # типовая опечатка из описаний
+    x = re.sub(r"\bи\s+тех\s+устройства\s+которым\b", "и тех устройств, которым", x, flags=re.I)
+    return x
+
+
+def _safe_cdata_payload(s: str) -> str:
+    # Защита CDATA от ']]>'
+    return (s or "").replace("]]>", "]]]]><![CDATA[>")
+
+
+def _sanitize_text(s: str, *, keep_ws: bool = False) -> str:
+    x = _strip_xml_ctrl(s or "")
+    x = x.replace("\ufeff", "")
+    x = x.replace("\r\n", "\n").replace("\r", "\n")
+    x = _fix_mixed_scripts(x)
+    x = _fix_numeric_hyphens(x)
+    x = _fix_ru_inflections(x)
+    x = _fix_typo_phrases(x)
+    if not keep_ws:
+        x = _norm_spaces(x)
+    return x
+
 
 
 def _bool_str(v: bool) -> str:
@@ -238,8 +327,8 @@ def _slugify(s: str) -> str:
 
 def _build_keywords(vendor: str, name: str) -> str:
     # Простая схема как у вас: бренд + имя + токены + слаги + хвост городов
-    vendor = _norm_spaces(vendor)
-    name = _norm_spaces(name)
+    vendor = _sanitize_text(vendor)
+    name = _sanitize_text(name)
 
     parts: List[str] = []
     if vendor:
@@ -323,7 +412,8 @@ def _build_chars_block(params: List[Tuple[str, str]]) -> str:
 
 
 def _build_description(name: str, native_desc: str, params: List[Tuple[str, str]]) -> str:
-    name = _norm_spaces(name)
+    name = _sanitize_text(name)
+    native_desc = _sanitize_text(native_desc, keep_ws=True)
     native_html = _native_desc_to_p(native_desc, name)
     chars = _build_chars_block(params)
 
@@ -339,7 +429,8 @@ def _build_description(name: str, native_desc: str, params: List[Tuple[str, str]
         + "\n" + AL_PAY_BLOCK
         + "\n"
     )
-    return f"<description><![CDATA[{cdata}]]></description>"
+    payload = _safe_cdata_payload(cdata)
+    return f"<description><![CDATA[{payload}]]></description>"
 
 
 # --- Модель оффера ---
@@ -356,25 +447,29 @@ class OfferOut:
 
     def to_xml(self) -> str:
         # Порядок тегов строго фиксируем
+        name = _sanitize_text(self.name)
+        vendor = _sanitize_text(self.vendor)
+        native_desc = _sanitize_text(self.native_desc, keep_ws=True)
+        params = [(_sanitize_text(k), _sanitize_text(v)) for (k, v) in (self.params or [])]
         lines: List[str] = []
         lines.append(f'<offer id="{self.oid}" available="{_bool_str(self.available)}">')
         lines.append("<categoryId></categoryId>")
         lines.append(f"<vendorCode>{self.oid}</vendorCode>")
-        lines.append(f"<name>{self.name}</name>")
+        lines.append(f"<name>{name}</name>")
         lines.append(f"<price>{self.price}</price>")
         for pic in self.pictures:
             lines.append(f"<picture>{pic}</picture>")
-        if self.vendor:
-            lines.append(f"<vendor>{self.vendor}</vendor>")
+        if vendor:
+            lines.append(f"<vendor>{vendor}</vendor>")
         lines.append(f"<currencyId>{CURRENCY_ID}</currencyId>")
-        lines.append(_build_description(self.name, self.native_desc, self.params))
-        for k, v in _sort_params(self.params):
-            k2 = _norm_spaces(k)
-            v2 = _norm_spaces(v)
+        lines.append(_build_description(name, native_desc, params))
+        for k, v in _sort_params(params):
+            k2 = _sanitize_text(k)
+            v2 = _sanitize_text(v)
             if not k2 or not v2:
                 continue
             lines.append(f'<param name="{k2}">{v2}</param>')
-        lines.append(f"<keywords>{_build_keywords(self.vendor, self.name)}</keywords>")
+        lines.append(f"<keywords>{_build_keywords(vendor, name)}</keywords>")
         lines.append("</offer>")
         return "\n".join(lines)
 
@@ -537,13 +632,18 @@ def _fetch(url: str) -> bytes:
 
 
 def _should_run_now(build_time: datetime) -> bool:
-    # Скрипт может запускаться по push: тогда пропускаем, если не 01:00, если нет FORCE_YML_REFRESH
-    if os.getenv("FORCE_YML_REFRESH", "").strip() in {"1", "true", "yes"}:
+    # Запуск по push:
+    # - по умолчанию пересобираем ВСЕГДА (чтобы время сборки и правки сразу попадали в файл)
+    # - для старого поведения можно задать ALSTYLE_SKIP_PUSH=1 (тогда ограничение 01:00 вернётся)
+    if os.getenv("FORCE_YML_REFRESH", "").strip().lower() in {"1", "true", "yes"}:
         return True
     ev = (os.getenv("GITHUB_EVENT_NAME") or "").strip().lower()
     if ev == "push":
-        return build_time.hour == SCHEDULE_HOUR_ALMATY
+        if os.getenv("ALSTYLE_SKIP_PUSH", "").strip().lower() in {"1", "true", "yes"}:
+            return build_time.hour == SCHEDULE_HOUR_ALMATY
+        return True
     return True
+
 
 
 def main() -> int:
