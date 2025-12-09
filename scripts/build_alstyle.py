@@ -368,17 +368,79 @@ def _apply_price_rule(supplier_price: Optional[int]) -> int:
     return out
 
 
-def _read_categories(path: str) -> set[str]:
-    p = Path(path)
-    if not p.exists():
-        return set()
-    out = set()
-    for line in p.read_text(encoding="utf-8", errors="ignore").splitlines():
+def _norm_cat_id(s: str) -> str:
+    t = _norm_spaces(s)
+    if not t:
+        return ""
+    if t.isdigit():
+        try:
+            return str(int(t))
+        except Exception:
+            return t
+    return t
+
+
+def _read_categories(path: str) -> Tuple[set[str], bool]:
+    # Читаем категории (include). ВАЖНО: если файл не найден — НЕ отключаем фильтр молча.
+    raw = (path or "").strip().strip('"').strip("'")
+    raw_norm = raw.replace("\\", "/") if raw else ""
+
+    fname = ""
+    if raw_norm:
+        try:
+            fname = Path(raw_norm).name
+        except Exception:
+            fname = ""
+    if not fname:
+        fname = Path(CATEGORIES_FILE_DEFAULT).name
+
+    candidates: List[str] = []
+    if raw:
+        candidates.append(raw)
+    if raw_norm and raw_norm != raw:
+        candidates.append(raw_norm)
+
+    # Базовый путь по умолчанию
+    if CATEGORIES_FILE_DEFAULT not in candidates:
+        candidates.append(CATEGORIES_FILE_DEFAULT)
+
+    # Частые варианты в репо
+    if fname:
+        if f"docs/{fname}" not in candidates:
+            candidates.append(f"docs/{fname}")
+        if fname not in candidates:
+            candidates.append(fname)
+
+    chosen: Optional[Path] = None
+    for c in candidates:
+        if not c:
+            continue
+        p = Path(c)
+        if p.exists() and p.is_file():
+            chosen = p
+            break
+
+    # Фолбэк: ищем по имени файла в репозитории (на случай неправильного пути в env)
+    if chosen is None and fname:
+        for p in Path(".").rglob(fname):
+            if p.is_file():
+                chosen = p
+                break
+
+    if chosen is None:
+        return set(), False
+
+    out: set[str] = set()
+    for line in chosen.read_text(encoding="utf-8", errors="ignore").splitlines():
         s = line.strip()
         if not s or s.startswith("#"):
             continue
-        out.add(s)
-    return out
+        cid = _norm_cat_id(s)
+        if cid:
+            out.add(cid)
+
+    return out, True
+
 
 
 def _sort_params(items: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
@@ -756,7 +818,10 @@ def main() -> int:
         print(f"[alstyle] skip: event=push and hour={build_time.hour}, ожидается {SCHEDULE_HOUR_ALMATY} (Алматы).")
         return 0
 
-    allowed_cats = _read_categories(cat_path)
+    allowed_cats, cats_ok = _read_categories(cat_path)
+    if not cats_ok:
+        raise RuntimeError(f"[alstyle] categories file not found: {cat_path}")
+    print(f"[alstyle] Категории (include): {len(allowed_cats)} из файла {cat_path}")
     print(f"[alstyle] Скачиваем фид: {url}")
 
     raw = _fetch(url)
@@ -768,8 +833,11 @@ def main() -> int:
     out_offers: List[OfferOut] = []
     for o in in_offers:
         # фильтр по categoryId (include)
-        cat = _get_text(o.find("categoryId"))
-        if allowed_cats and cat not in allowed_cats:
+        cats = [_norm_cat_id(_get_text(x)) for x in o.findall("categoryId")]
+        cats = [c for c in cats if c]
+        if not cats:
+            continue
+        if not any(c in allowed_cats for c in cats):
             continue
         out_offers.append(_build_offer_out(o))
 
