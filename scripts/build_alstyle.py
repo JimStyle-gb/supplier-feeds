@@ -3,11 +3,12 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v128 (2025-12-12):
+v129 (2025-12-12):
 - Удалено: чтение categoryId из файла категорий (все связано с путём/файлом)
 - Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
 - Изменено расписание: ежедневно в 01:00 (Алматы) + ручной запуск в любое время
 - Изменено: OUTPUT_ENCODING = UTF-8 (выходной фид в UTF-8)
+- Чистка: удалены дубли и неиспользуемый код (логика без изменений)
 """
 
 from __future__ import annotations
@@ -20,7 +21,7 @@ import hashlib
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 import xml.etree.ElementTree as ET
 
@@ -37,9 +38,8 @@ OUT_DEFAULT = "docs/alstyle.yml"
 CURRENCY_ID = "KZT"
 OUTPUT_ENCODING = "utf-8"
 
-# AlStyle — 1/10/20 числа месяца в 01:00 по Алматы
+# AlStyle — ежедневно в 01:00 по времени Алматы
 SCHEDULE_HOUR_ALMATY = 1
-SCHEDULE_DAYS_MONTH = tuple(range(1, 32))  # ежедневный режим: все дни месяца
 ALMATY_UTC_OFFSET = 5  # Алматы: UTC+5 (без DST)
 
 # Вшитый include-фильтр по categoryId (строки). Если пусто — фильтр выключен.
@@ -171,7 +171,7 @@ def _now_almaty() -> datetime:
     return datetime.utcnow().replace(microsecond=0) + timedelta(hours=ALMATY_UTC_OFFSET)
 
 
-def _next_scheduled_run(build_time: datetime, hour: int, days: tuple[int, ...]) -> datetime:
+def _next_scheduled_run(build_time: datetime, hour: int) -> datetime:
     # Ежедневное расписание: ближайшая сборка всегда в 01:00 (Алматы)
     # Если текущее время до указанного часа — сегодня, иначе завтра.
     cand = build_time.replace(hour=hour, minute=0, second=0)
@@ -381,10 +381,6 @@ def _build_keywords(vendor: str, name: str) -> str:
 
 
 # --- Описание ---
-def _html_escape_min(s: str) -> str:
-    # Для CDATA достаточно нормализовать опасные & вне сущностей
-    return s
-
 
 def _native_desc_to_p(desc: str, name: str) -> str:
     d = (desc or "").strip()
@@ -630,14 +626,6 @@ def _collect_pictures(offer: ET.Element) -> List[str]:
     return out
 
 
-def _pick_native_desc(offer: ET.Element) -> str:
-    # Для AlStyle обычно <description> уже есть
-    d = offer.find("description")
-    if d is not None:
-        # description может быть в CDATA — ElementTree отдаст как text
-        return (d.text or "").strip()
-    return ""
-
 
 def _pick_native_desc(offer: ET.Element) -> str:
     # Для AlStyle обычно <description> уже есть
@@ -734,44 +722,16 @@ def _atomic_write_if_changed(path: str, data: str, encoding: str = OUTPUT_ENCODI
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
-    try:
-        new_bytes = data.encode(encoding, errors="strict")
-    except UnicodeEncodeError:
-        # Приводим текст к более совместимому набору символов (без падения сборки)
-        repl = {
-            "\u00a0": " ",  # NBSP
-            "\u202f": " ",  # NNBSP
-            "\u2013": "-",
-            "\u2014": "-",
-            "\u2212": "-",
-            "\u2018": "'",
-            "\u2019": "'",
-            "\u201c": '"',
-            "\u201d": '"',
-            "\u00e4": "a", "\u00c4": "A",
-            "\u00f6": "o", "\u00d6": "O",
-            "\u00fc": "u", "\u00dc": "U",
-            "\u00df": "ss",
-            "\u00e9": "e", "\u00e8": "e", "\u00ea": "e", "\u00eb": "e",
-            "\u00e1": "a", "\u00e0": "a", "\u00e2": "a", "\u00e3": "a",
-            "\u00f3": "o", "\u00f2": "o", "\u00f4": "o", "\u00f5": "o",
-            "\u00fa": "u", "\u00f9": "u", "\u00fb": "u",
-            "\u00ed": "i", "\u00ec": "i", "\u00ee": "i",
-            "\u00e7": "c",
-            "\u00f1": "n",
-            "\u00e5": "a",
-            "\u00f8": "o",
-            "\u00e6": "ae",
-        }
-        for k, v in repl.items():
-            data = data.replace(k, v)
-        data = data.encode(encoding, errors="ignore").decode(encoding)
-        new_bytes = data.encode(encoding, errors="strict")
+    new_bytes = data.encode(encoding, errors="strict")
 
+    old_bytes = b""
     if p.exists():
-        old_bytes = p.read_bytes()
-        if old_bytes == new_bytes:
-            return False
+        try:
+            old_bytes = p.read_bytes()
+        except Exception:
+            old_bytes = b""
+    if old_bytes == new_bytes:
+        return False
 
     tmp = p.with_suffix(p.suffix + ".tmp")
     tmp.write_bytes(new_bytes)
@@ -797,10 +757,6 @@ def _should_run_now(build_time: datetime) -> bool:
     ev = (os.getenv("GITHUB_EVENT_NAME") or "").strip().lower()
     if ev == "schedule":
         return build_time.hour == SCHEDULE_HOUR_ALMATY
-    return True
-    ev = (os.getenv("GITHUB_EVENT_NAME") or "").strip().lower()
-    if ev == "schedule":
-        return (build_time.day in SCHEDULE_DAYS_MONTH) and (build_time.hour == SCHEDULE_HOUR_ALMATY)
     return True
 
 
@@ -833,7 +789,7 @@ def main() -> int:
     cnt_true = sum(1 for x in out_offers if x.available)
     cnt_false = cnt_after - cnt_true
 
-    next_run = _next_scheduled_run(build_time, SCHEDULE_HOUR_ALMATY, SCHEDULE_DAYS_MONTH)
+    next_run = _next_scheduled_run(build_time, SCHEDULE_HOUR_ALMATY)
 
     feed_meta = _make_feed_meta(
         build_time=build_time,
