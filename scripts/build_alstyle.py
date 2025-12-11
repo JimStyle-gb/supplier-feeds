@@ -3,7 +3,7 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v120 (2025-12-11):
+v121 (2025-12-11):
 - Удалено: чтение categoryId из файла категорий (все связано с путём/файлом)
 - Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
 - Изменено расписание: ежедневно в 01:00 (Алматы) + ручной запуск в любое время
@@ -35,7 +35,7 @@ SUPPLIER_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catal
 OUT_DEFAULT = "docs/alstyle.yml"
 CURRENCY_ID = "KZT"
 
-# AlStyle — ежедневно в 01:00 по Алматы
+# AlStyle — 1/10/20 числа месяца в 01:00 по Алматы
 SCHEDULE_HOUR_ALMATY = 1
 SCHEDULE_DAYS_MONTH = tuple(range(1, 32))  # ежедневный режим: все дни месяца
 ALMATY_UTC_OFFSET = 5  # Алматы: UTC+5 (без DST)
@@ -396,8 +396,109 @@ def _build_chars_block(params: List[Tuple[str, str]]) -> str:
 
 
 def _build_description(name: str, native_desc: str, params: List[Tuple[str, str]]) -> str:
+    # Тройное обогащение description / Характеристики / param:
+    # 1) из исходного описания вытягиваем пары "Ключ: значение"
+    # 2) добавляем их в params (если таких ключей ещё нет)
+    # 3) убираем эти строки из текста описания, чтобы не было дублей
+    # 4) блок "Характеристики" и <param> строятся из одного и того же объединённого набора
+
     name = _norm_spaces(name)
-    native_html = _native_desc_to_p(native_desc, name)
+    desc = native_desc or ""
+
+    extra_pairs: List[Tuple[str, str]] = []
+
+    # Если в описании уже есть HTML-абзацы (<p>), не пытаемся вырезать блок "Характеристики:"
+    # — считаем, что это уже подготовленный HTML от поставщика.
+    if desc and not re.search(r"<\s*p\b", desc, flags=re.I):
+        # Нормализуем переводы строк
+        tmp = desc.replace("\r\n", "\n").replace("\r", "\n")
+        tmp = re.sub(r"\n{2,}", "\n", tmp)
+        raw_lines = tmp.split("\n")
+
+        cleaned_lines: List[str] = []
+        heading_keys = {
+            "характеристики",
+            "основные характеристики",
+            "основные характеристики и преимущества",
+            "особенности",
+            "особенности и преимущества",
+            "преимущества",
+            "условия гарантии",
+            "примечание",
+            "внимание",
+        }
+
+        for raw_line in raw_lines:
+            line = raw_line.strip()
+            if not line:
+                # Пустую строку оставляем — она помогает разделять абзацы
+                cleaned_lines.append(raw_line)
+                continue
+
+            # Убираем маркеры списков только для распознавания, но не для сохранения текста
+            cand = re.sub(r"^[\-\•\*\u2013\u2014]\s*", "", line)
+
+            if ":" in cand:
+                key_part, val_part = cand.split(":", 1)
+                key = key_part.strip()
+                val = val_part.strip()
+                lk = key.lower()
+
+                # Явные "служебные" заголовки без значения — просто выкидываем
+                if not val and lk in heading_keys:
+                    continue
+
+                # Классический случай "Ключ: значение" — считаем характеристикой
+                if key and val and (lk not in PARAM_DROP_LC) and (lk not in heading_keys):
+                    extra_pairs.append((key, val))
+                    # строку с характеристикой в основном описании больше не показываем
+                    continue
+
+            # Всё остальное оставляем как есть (маркетинговый текст, заголовки, и т.п.)
+            cleaned_lines.append(raw_line)
+
+        cleaned_text = "\n".join(cleaned_lines).strip()
+    else:
+        # HTML-режим или пустое описание — не трогаем исходный текст
+        cleaned_text = desc
+
+    # Объединяем исходные params и найденные в описании характеристики.
+    if extra_pairs:
+        combined: List[Tuple[str, str]] = []
+        seen = set()
+
+        # 1) сначала берём всё, что уже есть в params
+        for k, v in params:
+            k2 = _norm_spaces(k)
+            v2 = _norm_spaces(v)
+            if not k2 or not v2:
+                continue
+            lk = k2.lower()
+            if lk in PARAM_DROP_LC:
+                continue
+            if lk in seen:
+                continue
+            seen.add(lk)
+            combined.append((k2, v2))
+
+        # 2) добавляем новые пары из описания, если таких ключей ещё нет
+        for key, val in extra_pairs:
+            k2 = _norm_spaces(key)
+            v2 = _norm_spaces(val)
+            if not k2 or not v2:
+                continue
+            lk = k2.lower()
+            if lk in PARAM_DROP_LC or lk in seen:
+                continue
+            seen.add(lk)
+            combined.append((k2, v2))
+
+        # Мутируем params "на месте", чтобы OfferOut.to_xml увидел уже обогащённый набор
+        params.clear()
+        params.extend(combined)
+
+    # Превращаем очищенный текст в HTML, как и раньше
+    native_html = _native_desc_to_p(cleaned_text, name)
     chars = _build_chars_block(params)
 
     # CDATA — как в эталоне: перевод строки сразу после <![CDATA[
@@ -413,6 +514,7 @@ def _build_description(name: str, native_desc: str, params: List[Tuple[str, str]
         + "\n"
     )
     return f"<description><![CDATA[{cdata}]]></description>"
+
 
 
 # --- Модель оффера ---
