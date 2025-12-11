@@ -3,10 +3,11 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v125 (2025-12-11):
+v128 (2025-12-12):
 - Удалено: чтение categoryId из файла категорий (все связано с путём/файлом)
 - Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
 - Изменено расписание: ежедневно в 01:00 (Алматы) + ручной запуск в любое время
+- Изменено: OUTPUT_ENCODING = UTF-8 (выходной фид в UTF-8)
 """
 
 from __future__ import annotations
@@ -34,6 +35,7 @@ SUPPLIER_NAME = "AlStyle"
 SUPPLIER_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catalog.php"
 OUT_DEFAULT = "docs/alstyle.yml"
 CURRENCY_ID = "KZT"
+OUTPUT_ENCODING = "utf-8"
 
 # AlStyle — 1/10/20 числа месяца в 01:00 по Алматы
 SCHEDULE_HOUR_ALMATY = 1
@@ -728,14 +730,14 @@ def _ensure_footer_spacing(s: str) -> str:
     return s
 
 
-def _atomic_write_if_changed(path: str, data: str, encoding: str = "windows-1251") -> bool:
+def _atomic_write_if_changed(path: str, data: str, encoding: str = OUTPUT_ENCODING) -> bool:
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
     try:
         new_bytes = data.encode(encoding, errors="strict")
     except UnicodeEncodeError:
-        # Приводим текст к Windows-1251 (без падения сборки)
+        # Приводим текст к более совместимому набору символов (без падения сборки)
         repl = {
             "\u00a0": " ",  # NBSP
             "\u202f": " ",  # NNBSP
@@ -845,7 +847,7 @@ def main() -> int:
 
     # Сборка тела
     header = [
-        '<?xml version="1.0" encoding="windows-1251"?>',
+        f'<?xml version="1.0" encoding="{OUTPUT_ENCODING}"?>',
         f'<yml_catalog date="{build_time.strftime("%Y-%m-%d %H:%M")}">',
         "<shop><offers>",
         "",
@@ -863,7 +865,7 @@ def main() -> int:
     out = "\n".join(header + body_lines + footer)
     out = _ensure_footer_spacing(out)
 
-    changed = _atomic_write_if_changed(out_path, out, encoding="windows-1251")
+    changed = _atomic_write_if_changed(out_path, out, encoding=OUTPUT_ENCODING)
     print(f"[alstyle] Найдено офферов у поставщика: {cnt_before}")
     print(f"[alstyle] В фид попало офферов: {cnt_after}")
     print(f"[alstyle] В наличии true: {cnt_true}; false: {cnt_false}")
