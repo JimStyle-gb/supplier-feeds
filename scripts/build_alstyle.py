@@ -227,6 +227,14 @@ def _safe_int(s: Optional[str]) -> Optional[int]:
     except Exception:
         return None
 
+def _get_text(node: Optional[ET.Element]) -> str:
+    # Безопасно достаём текст из XML-узла
+    if node is None:
+        return ""
+    return (node.text or "").strip()
+
+
+
 
 def _tail_900(price: int) -> int:
     # Приводим к окончанию **900** (как правило "хвост 900")
