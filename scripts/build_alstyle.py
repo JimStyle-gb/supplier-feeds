@@ -3,7 +3,7 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v123 (2025-12-11):
+v124 (2025-12-11):
 - Удалено: чтение categoryId из файла категорий (все связано с путём/файлом)
 - Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
 - Изменено расписание: ежедневно в 01:00 (Алматы) + ручной запуск в любое время
@@ -193,6 +193,20 @@ def _norm_spaces(s: str) -> str:
 
 def _bool_str(v: bool) -> str:
     return "true" if v else "false"
+
+def _xml_escape_text(s: str) -> str:
+    # Экранируем спецсимволы для текстовых узлов XML
+    s = s.replace("&", "&amp;")
+    s = s.replace("<", "&lt;").replace(">", "&gt;")
+    return s
+
+
+def _xml_escape_attr(s: str) -> str:
+    # Экранируем спецсимволы для значений атрибутов XML
+    s = _xml_escape_text(s)
+    s = s.replace('"', "&quot;")
+    return s
+
 
 
 def _parse_bool(s: Optional[str]) -> bool:
@@ -542,69 +556,32 @@ class OfferOut:
     def to_xml(self) -> str:
         # Порядок тегов строго фиксируем
         lines: List[str] = []
-        lines.append(f'<offer id="{self.oid}" available="{_bool_str(self.available)}">')
+        # id в атрибуте — экранируем как атрибут
+        lines.append(f'<offer id="{_xml_escape_attr(self.oid)}" available="{_bool_str(self.available)}">')
         lines.append("<categoryId></categoryId>")
-        lines.append(f"<vendorCode>{self.oid}</vendorCode>")
-        lines.append(f"<name>{self.name}</name>")
+        # vendorCode и name, vendor, picture, keywords — текстовые узлы
+        lines.append(f"<vendorCode>{_xml_escape_text(self.oid)}</vendorCode>")
+        lines.append(f"<name>{_xml_escape_text(self.name)}</name>")
         lines.append(f"<price>{self.price}</price>")
         for pic in self.pictures:
-            lines.append(f"<picture>{pic}</picture>")
+            lines.append(f"<picture>{_xml_escape_text(pic)}</picture>")
         if self.vendor:
-            lines.append(f"<vendor>{self.vendor}</vendor>")
-        lines.append(f"<currencyId>{CURRENCY_ID}</currencyId>")
+            lines.append(f"<vendor>{_xml_escape_text(self.vendor)}</vendor>")
+        lines.append(f"<currencyId>{_xml_escape_text(CURRENCY_ID)}</currencyId>")
         lines.append(_build_description(self.name, self.native_desc, self.params))
         for k, v in _sort_params(self.params):
             k2 = _norm_spaces(k)
             v2 = _norm_spaces(v)
             if not k2 or not v2:
                 continue
-            lines.append(f'<param name="{k2}">{v2}</param>')
-        lines.append(f"<keywords>{_build_keywords(self.vendor, self.name)}</keywords>")
+            lines.append(f'<param name="{_xml_escape_attr(k2)}">{_xml_escape_text(v2)}</param>')
+        kw = _build_keywords(self.vendor, self.name)
+        lines.append(f"<keywords>{_xml_escape_text(kw)}</keywords>")
         lines.append("</offer>")
         return "\n".join(lines)
 
 
-# --- Парсинг входного фида ---
-def _get_text(node: Optional[ET.Element]) -> str:
-    if node is None:
-        return ""
-    return (node.text or "").strip()
 
-
-def _collect_params(offer: ET.Element) -> List[Tuple[str, str]]:
-    params: List[Tuple[str, str]] = []
-    seen = set()
-    for p in offer.findall("param"):
-        k = (p.get("name") or "").strip()
-        v = (p.text or "").strip()
-        if not k:
-            continue
-        lk = k.lower()
-        if lk in PARAM_DROP_LC:
-            continue
-        if lk in seen:
-            continue
-        seen.add(lk)
-        if v:
-            params.append((k, _fix_text_common(v)))
-    return params
-
-
-def _collect_pictures(offer: ET.Element) -> List[str]:
-    pics = []
-    for p in offer.findall("picture"):
-        u = _norm_spaces(_get_text(p))
-        if u:
-            pics.append(u)
-    # убрать дубли, сохранить порядок
-    out = []
-    seen = set()
-    for u in pics:
-        if u in seen:
-            continue
-        seen.add(u)
-        out.append(u)
-    return out
 
 
 def _pick_native_desc(offer: ET.Element) -> str:
