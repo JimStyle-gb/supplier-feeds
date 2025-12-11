@@ -3,7 +3,7 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v124 (2025-12-11):
+v125 (2025-12-11):
 - Удалено: чтение categoryId из файла категорий (все связано с путём/файлом)
 - Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
 - Изменено расписание: ежедневно в 01:00 (Алматы) + ручной запуск в любое время
@@ -590,6 +590,51 @@ class OfferOut:
 
 
 
+
+
+def _collect_params(offer: ET.Element) -> List[Tuple[str, str]]:
+    params: List[Tuple[str, str]] = []
+    seen = set()
+    for p in offer.findall("param"):
+        k = (p.get("name") or "").strip()
+        v = (p.text or "").strip()
+        if not k:
+            continue
+        lk = k.lower()
+        if lk in PARAM_DROP_LC:
+            continue
+        if lk in seen:
+            continue
+        seen.add(lk)
+        if v:
+            params.append((k, _fix_text_common(v)))
+    return params
+
+
+def _collect_pictures(offer: ET.Element) -> List[str]:
+    pics = []
+    for p in offer.findall("picture"):
+        u = _norm_spaces(_get_text(p))
+        if u:
+            pics.append(u)
+    # убрать дубли, сохранить порядок
+    out = []
+    seen = set()
+    for u in pics:
+        if u in seen:
+            continue
+        seen.add(u)
+        out.append(u)
+    return out
+
+
+def _pick_native_desc(offer: ET.Element) -> str:
+    # Для AlStyle обычно <description> уже есть
+    d = offer.find("description")
+    if d is not None:
+        # description может быть в CDATA — ElementTree отдаст как text
+        return (d.text or "").strip()
+    return ""
 
 
 def _pick_native_desc(offer: ET.Element) -> str:
