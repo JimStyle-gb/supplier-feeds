@@ -3,7 +3,7 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v121 (2025-12-11):
+v122 (2025-12-11):
 - Удалено: чтение categoryId из файла категорий (все связано с путём/файлом)
 - Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
 - Изменено расписание: ежедневно в 01:00 (Алматы) + ручной запуск в любое время
@@ -447,6 +447,17 @@ def _build_description(name: str, native_desc: str, params: List[Tuple[str, str]
                 # Явные "служебные" заголовки без значения — просто выкидываем
                 if not val and lk in heading_keys:
                     continue
+
+                # Ограничение для ключей характеристик:
+                # - не более 2 слов
+                # - не более 40 символов
+                # Иначе считаем, что это не параметр, а обычный текст и оставляем строку в описании.
+                if key:
+                    # считаем слова по пробелам
+                    word_count = len(re.split(r"\s+", key))
+                    if word_count > 2 or len(key) > 40:
+                        cleaned_lines.append(raw_line)
+                        continue
 
                 # Классический случай "Ключ: значение" — считаем характеристикой
                 if key and val and (lk not in PARAM_DROP_LC) and (lk not in heading_keys):
