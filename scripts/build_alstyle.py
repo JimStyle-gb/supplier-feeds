@@ -3,10 +3,10 @@
 """
 build_alstyle.py — сборка фида AlStyle под эталонную структуру (AlStyle как референс).
 
-v119 (2025-12-09):
+v120 (2025-12-11):
 - Удалено: чтение categoryId из файла категорий (все связано с путём/файлом)
 - Добавлено: вшитый список categoryId (include) + опциональный override через env ALSTYLE_CATEGORY_IDS
-- Изменено расписание: 1/10/20 числа в 01:00 (Алматы) + ручной запуск в любое время
+- Изменено расписание: ежедневно в 01:00 (Алматы) + ручной запуск в любое время
 """
 
 from __future__ import annotations
@@ -35,9 +35,9 @@ SUPPLIER_URL_DEFAULT = "https://al-style.kz/upload/catalog_export/al_style_catal
 OUT_DEFAULT = "docs/alstyle.yml"
 CURRENCY_ID = "KZT"
 
-# AlStyle — 1/10/20 числа месяца в 01:00 по Алматы
+# AlStyle — ежедневно в 01:00 по Алматы
 SCHEDULE_HOUR_ALMATY = 1
-SCHEDULE_DAYS_MONTH = (1, 10, 20)
+SCHEDULE_DAYS_MONTH = tuple(range(1, 32))  # ежедневный режим: все дни месяца
 ALMATY_UTC_OFFSET = 5  # Алматы: UTC+5 (без DST)
 
 # Вшитый include-фильтр по categoryId (строки). Если пусто — фильтр выключен.
@@ -170,23 +170,12 @@ def _now_almaty() -> datetime:
 
 
 def _next_scheduled_run(build_time: datetime, hour: int, days: tuple[int, ...]) -> datetime:
-    # Следующая ближайшая сборка по расписанию (всегда в будущем)
-    y, m = build_time.year, build_time.month
-    for _ in range(0, 24):  # хватит на 2 года вперёд
-        for d in sorted(days):
-            try:
-                cand = datetime(y, m, d, hour, 0, 0)
-            except ValueError:
-                continue
-            if cand > build_time:
-                return cand
-        # следующий месяц
-        m += 1
-        if m == 13:
-            m = 1
-            y += 1
-    # fallback (не должен случаться)
-    return build_time.replace(hour=hour, minute=0, second=0) + timedelta(days=1)
+    # Ежедневное расписание: ближайшая сборка всегда в 01:00 (Алматы)
+    # Если текущее время до указанного часа — сегодня, иначе завтра.
+    cand = build_time.replace(hour=hour, minute=0, second=0)
+    if cand <= build_time:
+        cand = cand + timedelta(days=1)
+    return cand
 
 
 def _get_allowed_categories() -> set[str]:
@@ -657,10 +646,14 @@ def _fetch(url: str) -> bytes:
 
 def _should_run_now(build_time: datetime) -> bool:
     # Условия записи YML:
-    # 1) расписание: 1/10/20 числа месяца в 01:00 (Алматы)
+    # 1) расписание: ежедневно в 01:00 (Алматы)
     # 2) ручной запуск: в любое время (push / workflow_dispatch / и т.п.)
     if os.getenv("FORCE_YML_REFRESH", "").strip().lower() in {"1", "true", "yes"}:
         return True
+    ev = (os.getenv("GITHUB_EVENT_NAME") or "").strip().lower()
+    if ev == "schedule":
+        return build_time.hour == SCHEDULE_HOUR_ALMATY
+    return True
     ev = (os.getenv("GITHUB_EVENT_NAME") or "").strip().lower()
     if ev == "schedule":
         return (build_time.day in SCHEDULE_DAYS_MONTH) and (build_time.hour == SCHEDULE_HOUR_ALMATY)
@@ -673,7 +666,7 @@ def main() -> int:
 
     build_time = _now_almaty()
     if not _should_run_now(build_time):
-        print(f"[alstyle] skip: event=schedule, now={build_time.strftime('%Y-%m-%d %H:%M:%S')} (Алматы); ждём дни {SCHEDULE_DAYS_MONTH} и час {SCHEDULE_HOUR_ALMATY}:00.")
+        print(f"[alstyle] skip: event=schedule, now={build_time.strftime('%Y-%m-%d %H:%M:%S')} (Алматы); ждём ежедневный запуск в час {SCHEDULE_HOUR_ALMATY}:00.")
         return 0
     allowed_cats = _get_allowed_categories()
     print(f"[alstyle] Скачиваем фид: {url}")
