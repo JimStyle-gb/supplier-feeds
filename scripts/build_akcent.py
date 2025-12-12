@@ -248,6 +248,8 @@ def _fix_text_common(s: str) -> str:
     s = s.replace("Shuko", "Schuko")
     s = s.replace("Cтоечные", "Стоечные").replace("Cтоечный", "Стоечный")
     s = s.replace("Линейно-Интерактивный", "Линейно-интерактивный")
+    s = s.replace("высококачетсвенную", "высококачественную")
+    s = s.replace("приентеров", "принтеров")
     s = re.sub(r"\b(\d+)\s*-\s*х\b", r"\1-х", s)
     return s
 
@@ -275,6 +277,77 @@ def _slugify(s: str) -> str:
     x = re.sub(r"[^a-z0-9\-]+", "-", x)
     x = re.sub(r"-{2,}", "-", x).strip("-")
     return x
+
+# Пытаемся угадать бренд по названию товара
+def _guess_vendor_from_name(name: str) -> str:
+    s = _norm_spaces(name)
+    if not s:
+        return ""
+    generic = {
+        "картридж",
+        "принтер",
+        "мфу",
+        "монитор",
+        "чернила",
+        "экран",
+        "плоттер",
+        "плоттеры",
+        "проектор",
+        "сканер",
+        "ламинатор",
+        "шредер",
+        "ёмкость",
+        "емкость",
+        "набор",
+        "экономичный",
+        "панель",
+        "доска",
+        "дисплей",
+        "интерактивная",
+        "интерактивный",
+        "интерактивное",
+    }
+    brands = {
+        "Epson",
+        "HP",
+        "Canon",
+        "Brother",
+        "Kyocera",
+        "Ricoh",
+        "Xerox",
+        "Samsung",
+        "OKI",
+        "NEC",
+        "Panasonic",
+        "Lexmark",
+        "Konica",
+        "Konica Minolta",
+        "Sharp",
+        "Dell",
+        "Acer",
+        "Asus",
+        "BenQ",
+        "ViewSonic",
+        "LG",
+    }
+    tokens = re.split(r"[\s,/()\[\]\"'«»“”]+", s)
+    for t in tokens:
+        t = t.strip()
+        if not t:
+            continue
+        if t in brands:
+            return t
+        if any(ch.isdigit() for ch in t):
+            # Похожие на артикул куски пропускаем
+            continue
+        t_low = t.lower()
+        if t_low in generic:
+            continue
+        if re.match(r"^[A-Z][a-z]{2,}$", t):
+            return t
+        if re.match(r"^[А-ЯЁ][а-яё]{2,}$", t):
+            return t
+    return ""
 
 
 # Собираем SEO-ключевые слова для товара
@@ -599,9 +672,16 @@ def _build_offer_out(offer: ET.Element) -> OfferOut:
     if not vendor:
         for p in offer.findall("param"):
             pname = (p.get("name") or "").strip().lower()
-            if pname == "производитель":
+            if (
+                "производитель" in pname
+                or "бренд" in pname
+                or pname in ("brand", "vendor", "manufacturer")
+            ):
                 vendor = _fix_text_common(_norm_spaces(p.text or ""))
-                break
+                if vendor:
+                    break
+    if not vendor:
+        vendor = _fix_text_common(_guess_vendor_from_name(name))
 
     av_attr = offer.get("available")
     av_tag = _get_text(offer.find("available"))
