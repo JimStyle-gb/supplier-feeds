@@ -50,6 +50,31 @@ AKCENT_NAME_PREFIXES: List[str] = [
 ]
 CITY_TAIL = "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау"
 
+BRAND_CANONICAL: dict[str, str] = {
+    "epson": "Epson",
+    "hp": "HP",
+    "canon": "Canon",
+    "brother": "Brother",
+    "kyocera": "Kyocera",
+    "ricoh": "Ricoh",
+    "xerox": "Xerox",
+    "samsung": "Samsung",
+    "oki": "OKI",
+    "nec": "NEC",
+    "panasonic": "Panasonic",
+    "lexmark": "Lexmark",
+    "konica minolta": "Konica Minolta",
+    "konica": "Konica",
+    "sharp": "Sharp",
+    "dell": "Dell",
+    "acer": "Acer",
+    "asus": "Asus",
+    "benq": "BenQ",
+    "viewsonic": "ViewSonic",
+    "lg": "LG",
+}
+
+
 
 AL_WA_BLOCK = (
     '<!-- WhatsApp -->\n'
@@ -118,7 +143,6 @@ def _next_scheduled_run(build_time: datetime, hour: int) -> datetime:
     return cand
 
 
-# Получаем набор разрешённых categoryId с учётом ALSTYLE_CATEGORY_IDS
 
 # Нормализуем пробелы и обрезаем строку
 def _norm_spaces(s: str) -> str:
@@ -284,29 +308,7 @@ def _guess_vendor_from_name(name: str) -> str:
     s = _norm_spaces(name)
     if not s:
         return ""
-    brands = {
-        "Epson",
-        "HP",
-        "Canon",
-        "Brother",
-        "Kyocera",
-        "Ricoh",
-        "Xerox",
-        "Samsung",
-        "OKI",
-        "NEC",
-        "Panasonic",
-        "Lexmark",
-        "Konica",
-        "Konica Minolta",
-        "Sharp",
-        "Dell",
-        "Acer",
-        "Asus",
-        "BenQ",
-        "ViewSonic",
-        "LG",
-    }
+    brands = set(BRAND_CANONICAL.values())
     tokens = re.split(r"[\s,/()\[\]\"\'«»“”]+", s)
     for t in tokens:
         t = t.strip()
@@ -315,43 +317,16 @@ def _guess_vendor_from_name(name: str) -> str:
         if t in brands:
             return t
     return ""
-
-# Пытаемся угадать бренд по произвольному тексту (описание и т.п.)
 def _guess_vendor_from_text(text: str) -> str:
     s = _norm_spaces(text)
     if not s:
         return ""
-    # те же бренды, что и в _guess_vendor_from_name, но в нижнем регистре
-    brands = {
-        "epson": "Epson",
-        "hp": "HP",
-        "canon": "Canon",
-        "brother": "Brother",
-        "kyocera": "Kyocera",
-        "ricoh": "Ricoh",
-        "xerox": "Xerox",
-        "samsung": "Samsung",
-        "oki": "OKI",
-        "nec": "NEC",
-        "panasonic": "Panasonic",
-        "lexmark": "Lexmark",
-        "konica minolta": "Konica Minolta",
-        "konica": "Konica",
-        "sharp": "Sharp",
-        "dell": "Dell",
-        "acer": "Acer",
-        "asus": "Asus",
-        "benq": "BenQ",
-        "viewsonic": "ViewSonic",
-        "lg": "LG",
-    }
     low = s.lower()
-    for key, proper in brands.items():
+    for key, proper in BRAND_CANONICAL.items():
         # ищем как отдельное слово
         if re.search(r"\b" + re.escape(key) + r"\b", low):
             return proper
     return ""
-
 # Собираем SEO-ключевые слова для товара
 def _build_keywords(vendor: str, name: str) -> str:
     vendor = _norm_spaces(vendor)
