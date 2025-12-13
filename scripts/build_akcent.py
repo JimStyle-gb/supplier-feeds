@@ -279,34 +279,11 @@ def _slugify(s: str) -> str:
     return x
 
 # Пытаемся угадать бренд по названию товара
+# Пытаемся угадать бренд по названию товара (строгий режим: только по белому списку брендов)
 def _guess_vendor_from_name(name: str) -> str:
     s = _norm_spaces(name)
     if not s:
         return ""
-    generic = {
-        "картридж",
-        "принтер",
-        "мфу",
-        "монитор",
-        "чернила",
-        "экран",
-        "плоттер",
-        "плоттеры",
-        "проектор",
-        "сканер",
-        "ламинатор",
-        "шредер",
-        "ёмкость",
-        "емкость",
-        "набор",
-        "экономичный",
-        "панель",
-        "доска",
-        "дисплей",
-        "интерактивная",
-        "интерактивный",
-        "интерактивное",
-    }
     brands = {
         "Epson",
         "HP",
@@ -330,26 +307,14 @@ def _guess_vendor_from_name(name: str) -> str:
         "ViewSonic",
         "LG",
     }
-    tokens = re.split(r"[\s,/()\[\]\"'«»“”]+", s)
+    tokens = re.split(r"[\s,/()\[\]\"\'«»“”]+", s)
     for t in tokens:
         t = t.strip()
         if not t:
             continue
         if t in brands:
             return t
-        if any(ch.isdigit() for ch in t):
-            # Похожие на артикул куски пропускаем
-            continue
-        t_low = t.lower()
-        if t_low in generic:
-            continue
-        if re.match(r"^[A-Z][a-z]{2,}$", t):
-            return t
-        if re.match(r"^[А-ЯЁ][а-яё]{2,}$", t):
-            return t
     return ""
-
-
 # Собираем SEO-ключевые слова для товара
 def _build_keywords(vendor: str, name: str) -> str:
     vendor = _norm_spaces(vendor)
