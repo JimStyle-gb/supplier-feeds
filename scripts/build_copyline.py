@@ -7,8 +7,8 @@ CopyLine post-process (v20)
 1) Устойчивое чтение docs/copyline.yml:
    - windows-1251 -> utf-8 -> utf-8(errors="replace")
    - удаляем UTF-8 BOM, если есть
-2) Всегда сохраняем обратно в windows-1251:
-   - неподдерживаемые символы -> XML-сущности (&#...;) через xmlcharrefreplace
+ 2) Всегда сохраняем обратно в utf-8:
+    - без xmlcharrefreplace; все символы пишем как есть (UTF-8)
 3) Шапка файла:
    - убираем пустые строки/пробелы перед <?xml ...?>
    - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
@@ -150,10 +150,10 @@ def _read_text(path: Path) -> tuple[str, str, int]:
         return data.decode("utf-8", errors="replace"), "utf-8(replace)", bom
 
 
-# Пишет файл строго windows-1251, неподдерживаемые символы -> XML-сущности
+# Пишет файл в UTF-8
 def _write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
+    path.write_text(text, encoding="utf-8")
 
 
 # Чинит верх файла: убирает пустые строки до <?xml> и после него
@@ -172,6 +172,11 @@ def _normalize_header(src: str) -> tuple[str, int]:
 
     first = lines[0]
     if first.lstrip().startswith("<?xml"):
+        # Нормализуем encoding в заголовке до utf-8
+        new_first = re.sub(r'encoding="[^"]+"', 'encoding="utf-8"', first)
+        if new_first != first:
+            first = new_first
+            changed = 1
         first = first.rstrip("\r\n") + "\n"
         i = 1
         while i < len(lines) and lines[i].strip() == "":
@@ -701,17 +706,17 @@ def main(argv: list[str]) -> int:
         return 2
 
     src, enc, bom = _read_text(path)
-    if enc != "windows-1251" or bom:
+    if enc != "utf-8" or bom:
         info = []
-        if enc != "windows-1251":
+        if enc != "utf-8":
             info.append(f"encoding={enc}")
         if bom:
             info.append("bom=stripped")
-        print(f"[postprocess_copyline] WARN: input {'; '.join(info)} (сохраним как windows-1251)", file=sys.stderr)
+        print(f"[postprocess_copyline] WARN: input {'; '.join(info)} (сохраним как utf-8)", file=sys.stderr)
 
     out, stats = _process_text(src)
 
-    if out != src or enc != "windows-1251" or bom:
+    if out != src or enc != "utf-8" or bom:
         _write_text(path, out)
 
     bumped = stats["build_time_bumped_meta"] + stats["build_time_bumped_date"]
