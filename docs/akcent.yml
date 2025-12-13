@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2025-12-13 02:10">
+<yml_catalog date="2025-12-13 09:27">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-12-13 02:10:42
+Время сборки (Алматы)                      | 2025-12-13 09:27:26
 Ближайшая сборка (Алматы)                  | 2025-12-14 02:00:00
 Сколько товаров у поставщика до фильтра    | 1818
 Сколько товаров у поставщика после фильтра | 160
@@ -19,7 +19,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</name>
 <price>132900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/923/0p8oyvwd4ts90r6c77nk7geyql2ycozc.jpg</picture>
-<vendor>Singlepack</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -32,7 +31,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
 ]]></description>
 <param name="Гарантия">3</param>
-<keywords>Singlepack, C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml, C13T55KD00, Фиолетовый, T55KD00UltraChrome, HDX, HD, 700ml, Singlepack C13T55KD00, c13t55kd00-singlepack-t55kd00ultrachrome-hdx-hd-700ml, c13t55kd00-singlepack-t55kd00ultrachrome-hdx-hd-700ml-singlepack, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
+<keywords>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml, C13T55KD00, Singlepack, Фиолетовый, T55KD00UltraChrome, HDX, HD, 700ml, c13t55kd00-singlepack-t55kd00ultrachrome-hdx-hd-700ml, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
 </offer>
 
 <offer id="ACC12C890191" available="true">
@@ -1694,7 +1693,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Ламинатор Fellowes AMARIS A3 LAMINATOR 230V EU</name>
 <price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a9e/2ozxaqtoaj1zd1od96pbs4fimhs8180b.jpg</picture>
-<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -1714,7 +1712,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Количество роликов">6</param>
 <param name="Скорость ламинирования">780 мм/мин</param>
 <param name="Формат">A3</param>
-<keywords>Fellowes, Ламинатор Fellowes AMARIS A3 LAMINATOR 230V EU, Ламинатор, AMARIS, A3, LAMINATOR, 230V, EU, Fellowes A3, fellowes-amaris-a3-laminator-230v-eu, fellowes-amaris-a3-laminator-230v-eu-fellowes, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
+<keywords>Ламинатор Fellowes AMARIS A3 LAMINATOR 230V EU, Ламинатор, Fellowes, AMARIS, A3, LAMINATOR, 230V, EU, fellowes-amaris-a3-laminator-230v-eu, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
 </offer>
 
 <offer id="ACFS-45700" available="true">
@@ -2505,7 +2503,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт.</name>
 <price>8900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e64/yhy7fu9gyi4uvpfbpvplt0m50g05kkr0.jpg</picture>
-<vendor>Пленка</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -2520,7 +2517,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">пленка для ламинирования</param>
 <param name="Гарантия">0</param>
 <param name="Вид">пленка для ламинирования</param>
-<keywords>Пленка, Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт., для, ламинирования, А4, Fellowes, 80мкм, 100, шт, Пленка А4, 4-fellowes-80-100, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
+<keywords>Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт., Пленка, для, ламинирования, А4, Fellowes, 80мкм, 100, шт, 4-fellowes-80-100, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
 </offer>
 
 <offer id="ACC11CJ36301A0" available="true">
@@ -3331,7 +3328,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACV11HB59042</vendorCode>
 <name>Проектор универсальный Epson EB-FH54 белый</name>
 <price>495900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/2fe/bz3cxlhlbnnlrg03qoveg8krkpt0n32v.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/292/dj79uleekhjrh91xo5lgsimtayrdo3e1.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3443,7 +3440,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACV11HB58042</vendorCode>
 <name>Проектор универсальный Epson EB-W55 белый</name>
 <price>410900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/890/684z36ziv2izqqpxao4g07oz60agt47t.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/592/j2p1ajrev48g9u3wxjeize85nv5z6x3f.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3520,7 +3517,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Проектор универсальный Vivitek DX273</name>
 <price>242900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/27c/gihvoghhjscmu103lz5gmmcqevrqartp.jpg</picture>
-<vendor>Vivitek</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -3557,7 +3553,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип источника света">UHE</param>
 <param name="Уровень шума (норм./эконом.) Дб">32/29</param>
 <param name="Яркость (ANSI) лмн">4 000</param>
-<keywords>Vivitek, Проектор универсальный Vivitek DX273, Проектор, универсальный, DX273, Vivitek DX273, vivitek-dx273, vivitek-dx273-vivitek, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
+<keywords>Проектор универсальный Vivitek DX273, Проектор, универсальный, Vivitek, DX273, vivitek-dx273, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
 </offer>
 
 <offer id="ACB11B268401" available="true">
@@ -4098,7 +4094,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Шредер Fellowes Powershred LX201 белый</name>
 <price>205900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a68/usz4wz1cne5zlblzfc47qwsbh4s2kwob.jpg</picture>
-<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -4113,7 +4108,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">шредеры офисные</param>
 <param name="Гарантия">24</param>
 <param name="Вид">шредеры офисные</param>
-<keywords>Fellowes, Шредер Fellowes Powershred LX201 белый, Шредер, Powershred, LX201, белый, Fellowes LX201, fellowes-powershred-lx201, fellowes-powershred-lx201-fellowes, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
+<keywords>Шредер Fellowes Powershred LX201 белый, Шредер, Fellowes, Powershred, LX201, белый, fellowes-powershred-lx201, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
 </offer>
 
 <offer id="AC5050001" available="true">
@@ -4238,7 +4233,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</name>
 <price>175900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e5f/uu73lh907da0vymznf0t5pgydsd70n95.jpg</picture>
-<vendor>Jam</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -4253,7 +4247,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">шредеры офисные</param>
 <param name="Гарантия">24</param>
 <param name="Вид">шредеры офисные</param>
-<keywords>Jam, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, Шредер, Fellowes, Powershred, LX200, черный, DIN, 4х12, мм, 12, лст, 22, лтр, Proof, Jam LX200, fellowes-powershred-lx200-din-p-4-4-12-12-22-jam-proof, fellowes-powershred-lx200-din-p-4-4-12-12-22-jam-proof-jam, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
+<keywords>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, Шредер, Fellowes, Powershred, LX200, черный, DIN, 4х12, мм, 12, лст, 22, лтр, Jam, Proof, fellowes-powershred-lx200-din-p-4-4-12-12-22-jam-proof, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
 </offer>
 
 <offer id="AC5502501" available="true">
