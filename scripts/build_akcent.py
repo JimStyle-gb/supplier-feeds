@@ -315,6 +315,43 @@ def _guess_vendor_from_name(name: str) -> str:
         if t in brands:
             return t
     return ""
+
+# Пытаемся угадать бренд по произвольному тексту (описание и т.п.)
+def _guess_vendor_from_text(text: str) -> str:
+    s = _norm_spaces(text)
+    if not s:
+        return ""
+    # те же бренды, что и в _guess_vendor_from_name, но в нижнем регистре
+    brands = {
+        "epson": "Epson",
+        "hp": "HP",
+        "canon": "Canon",
+        "brother": "Brother",
+        "kyocera": "Kyocera",
+        "ricoh": "Ricoh",
+        "xerox": "Xerox",
+        "samsung": "Samsung",
+        "oki": "OKI",
+        "nec": "NEC",
+        "panasonic": "Panasonic",
+        "lexmark": "Lexmark",
+        "konica minolta": "Konica Minolta",
+        "konica": "Konica",
+        "sharp": "Sharp",
+        "dell": "Dell",
+        "acer": "Acer",
+        "asus": "Asus",
+        "benq": "BenQ",
+        "viewsonic": "ViewSonic",
+        "lg": "LG",
+    }
+    low = s.lower()
+    for key, proper in brands.items():
+        # ищем как отдельное слово
+        if re.search(r"\b" + re.escape(key) + r"\b", low):
+            return proper
+    return ""
+
 # Собираем SEO-ключевые слова для товара
 def _build_keywords(vendor: str, name: str) -> str:
     vendor = _norm_spaces(vendor)
@@ -648,13 +685,16 @@ def _build_offer_out(offer: ET.Element) -> OfferOut:
     if not vendor:
         vendor = _fix_text_common(_guess_vendor_from_name(name))
 
+    native_desc = _pick_native_desc(offer)
+    if not vendor:
+        vendor = _fix_text_common(_guess_vendor_from_text(native_desc or ""))
+
     av_attr = offer.get("available")
     av_tag = _get_text(offer.find("available"))
     available = _parse_bool(av_attr) or _parse_bool(av_tag)
 
     pics = _collect_pictures(offer)
     params = _collect_params(offer)
-    native_desc = _pick_native_desc(offer)
 
     src_price = _safe_int(_get_text(offer.find("purchase_price"))) or _safe_int(_get_text(offer.find("price")))
     out_price = _apply_price_rule(src_price)
