@@ -57,6 +57,15 @@ PLACEHOLDER_PICTURE_URL = (
     "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
 )
 
+
+# Блоки шаблона CS для описания (WhatsApp + разделитель + Оплата/Доставка)
+CS_WA_BLOCK = """<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>"""
+CS_HR_2PX = """<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />"""
+CS_PAY_BLOCK = """<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
+
+
 # Дефолты расписания для CopyLine (Алматы, UTC+5)
 DEFAULT_SCHEDULE_DOM = "1,10,20"
 DEFAULT_SCHEDULE_HOUR_ALMATY = 3
@@ -618,6 +627,67 @@ def _normalize_description_cdata_2nl(src: str) -> tuple[str, int]:
 
 
 # Применяет точечные правки без изменения общего форматирования
+def _rebuild_description_inner(inner: str) -> str:
+    """Перестраивает HTML описания в шаблон CS: WhatsApp + hr + Описание + Характеристики + Оплата/Доставка."""
+    body = inner.strip()
+
+    marker = "<!-- Описание -->"
+    if marker in body:
+        _, core = body.split(marker, 1)
+    else:
+        core = body
+
+    core = core.strip()
+
+    h3_char = "<h3>Характеристики</h3>"
+    if h3_char in core:
+        desc_part, char_part = core.split(h3_char, 1)
+        char_part = h3_char + char_part
+    else:
+        desc_part, char_part = core, ""
+
+    desc_part = re.sub(
+        r"(?is)\s*<p>\s*<strong>\s*Совместимость\s*:\s*</strong>.*?</p>\s*",
+        "",
+        desc_part,
+    ).strip()
+
+    if not desc_part and not char_part:
+        core_html = ""
+    else:
+        pieces: list[str] = []
+        pieces.append(marker)
+        if desc_part:
+            pieces.append(desc_part.strip())
+        if char_part:
+            pieces.append(char_part.strip())
+        core_html = "\n".join(pieces)
+
+    parts: list[str] = []
+    parts.append(CS_WA_BLOCK)
+    parts.append(CS_HR_2PX)
+    if core_html:
+        parts.append(core_html)
+    parts.append(CS_PAY_BLOCK)
+    return "\n".join(parts)
+
+
+def _rebuild_offer_description(offer_body: str) -> tuple[str, int]:
+    m = RE_DESC_CDATA_WRAP.search(offer_body)
+    if not m:
+        return offer_body, 0
+
+    prefix, inner, suffix = m.group(1), m.group(2), m.group(3)
+    new_inner = _rebuild_description_inner(inner)
+    if new_inner == inner:
+        return offer_body, 0
+
+    new_desc = prefix + "\n" + new_inner + "\n" + suffix
+    out = offer_body[: m.start()] + new_desc + offer_body[m.end() :]
+    return out, 1
+
+
+# Применяет точечные правки без изменения общего форматирования
 def _process_text(src: str) -> tuple[str, dict]:
     stats = {
         "offers_scanned": 0,
@@ -649,7 +719,6 @@ def _process_text(src: str) -> tuple[str, dict]:
 
     src0, n_meta, n_date = _bump_build_time_if_needed(src_h)
 
-    # если время сборки бампнули — пересчитаем next_run, чтобы был строго в будущем
     src0, n_nr1 = _ensure_feed_meta_next_run(src0)
     stats["feed_meta_next_run_fixed"] += n_nr1
 
@@ -671,11 +740,14 @@ def _process_text(src: str) -> tuple[str, dict]:
         stats["offers_params_added"] += param_added
         stats["offers_desc_fixed"] += desc_added
 
-        body4, n_ded = _dedupe_offer_desc_compat(body3)
+        body4, rebuilt = _rebuild_offer_description(body3)
+        stats["offers_desc_fixed"] += rebuilt
+
+        body5, n_ded = _dedupe_offer_desc_compat(body4)
         if n_ded:
             stats["offers_desc_deduped"] += 1
 
-        return head + body4 + tail
+        return head + body5 + tail
 
     out = RE_OFFER_BLOCK.sub(repl, src1)
 
@@ -683,7 +755,6 @@ def _process_text(src: str) -> tuple[str, dict]:
     stats["desc_cdata_fixed"] = n_cdata
 
     return out2, stats
-
 
 # Определяет входной файл по OUT_FILE или docs/copyline.yml
 def _resolve_infile(cli_path: str | None) -> Path:
