@@ -29,7 +29,7 @@ CopyLine post-process (v20)
      <h3>Характеристики</h3><ul><li><strong>Совместимость:</strong> ...
    (делаем только если в описании ещё нет блока "Характеристики")
 8) Нормализация CDATA в <description> как у остальных:
-   - ровно 2 перевода строки в начале и в конце CDATA (убирает хвосты 
+   - ровно 1 перевод строки в начале и в конце CDATA (убирает хвосты 
 
 
 )
@@ -617,7 +617,7 @@ def _normalize_description_cdata_2nl(src: str) -> tuple[str, int]:
         head, body, tail = m.group(1), m.group(2), m.group(3)
         b = body.replace("\r\n", "\n")
         core = b.lstrip("\n").rstrip("\n")
-        out = "\n\n" + core + "\n\n"
+        out = "\n" + core + "\n"
         if out != b:
             fixed += 1
         return head + out + tail
@@ -638,6 +638,12 @@ def _rebuild_description_inner(inner: str) -> str:
         core = body
 
     core = core.strip()
+
+    # вырезаем старые блоки "Оплата и доставка", если они уже есть в описании
+    pay_marker = "<!-- Оплата и доставка -->"
+    if pay_marker in core:
+        core = core.split(pay_marker, 1)[0].rstrip()
+
 
     h3_char = "<h3>Характеристики</h3>"
     if h3_char in core:
