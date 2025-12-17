@@ -7,7 +7,8 @@ on:
     paths:
       - ".github/workflows/build_alstyle.yml"
       - "scripts/build_alstyle.py"
-      - "docs/alstyle_categories.txt"
+      - "scripts/cs/core.py"
+      - "scripts/cs/__init__.py"
       - "requirements.txt"
       - "pyproject.toml"
       - "poetry.lock"
@@ -35,6 +36,9 @@ jobs:
 
       ALSTYLE_LOGIN: ${{ secrets.ALSTYLE_LOGIN }}
       ALSTYLE_PASSWORD: ${{ secrets.ALSTYLE_PASSWORD }}
+
+      # Публичный vendor (НЕ поставщик). Можно менять без правок кода.
+      PUBLIC_VENDOR: "CS"
 
     steps:
       - name: Checkout
@@ -92,41 +96,22 @@ jobs:
           fi
           pip install $PIP_PACKAGES
 
-      - name: Build + commit + push docs/alstyle.yml (no conflicts)
-        if: ${{ (github.event_name != 'pull_request') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && (github.event_name != 'schedule' || steps.gate.outputs.run == 'yes') }}
+      - name: Build + commit + push docs/alstyle.yml
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         run: |
           set -euo pipefail
+          echo "Attempt 1: sync -> build -> commit -> push"
+          git pull --rebase
 
-          BRANCH="${GITHUB_REF_NAME}"
+          python scripts/build_alstyle.py
 
-          git config user.name  "github-actions[bot]"
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          for attempt in 1 2 3; do
-            echo "Attempt $attempt: sync -> build -> commit -> push"
-
-            git fetch origin "$BRANCH"
-            git checkout -B "$BRANCH" "origin/$BRANCH"
-
-            python scripts/build_alstyle.py
-
-            git add docs/alstyle.yml || true
-
-            if git diff --cached --quiet; then
-              echo "No changes to commit."
-              exit 0
-            fi
-
-            git commit -m "chore(alstyle): update docs/alstyle.yml [skip ci]"
-
-            if git push origin "HEAD:$BRANCH"; then
-              echo "Pushed successfully."
-              exit 0
-            fi
-
-            echo "Push failed (non-fast-forward). Will retry..."
-            sleep 2
-          done
-
-          echo "Failed to push after 3 attempts."
-          exit 1
+          git add docs/alstyle.yml
+          git commit -m "build: alstyle"
+          git push
