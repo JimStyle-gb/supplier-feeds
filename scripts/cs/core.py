@@ -16,7 +16,7 @@ import re
 from typing import Iterable, Sequence
 
 # Константы шаблона CS
-CS_CITY_TAIL = "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау"
+CS_CITY_TAIL = "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Семей, Уральск, Темиртау, Костанай, Кызылорда, Петропавловск, Атырау, Актау, Талдыкорган, Кокшетау"
 
 CS_WA_BLOCK = (
     "<!-- WhatsApp -->\n"
@@ -37,21 +37,18 @@ CS_PAY_BLOCK = (
     "<h3 style=\"margin:0 0 8px; font-size:17px;\">Оплата</h3>"
     "<ul style=\"margin:0; padding-left:18px;\">"
     "<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>"
-    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#8b0000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
+    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#a40000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
     "</ul>"
     "<hr style=\"border:none; border-top:1px solid #E7D6B7; margin:12px 0;\" />"
     "<h3 style=\"margin:0 0 8px; font-size:17px;\">Доставка по Алматы и Казахстану</h3>"
     "<ul style=\"margin:0; padding-left:18px;\">"
+    "<li><em><strong>ДОСТАВКА</strong> в \"квадрате\" г. Алматы — <strong>БЕСПЛАТНО!</strong></em></li>"
     "<li><strong>Самовывоз:</strong> г. Алматы</li>"
     "<li><strong>Курьер:</strong> по Алматы</li>"
     "<li><strong>Казпочта / транспортные компании:</strong> по Казахстану</li>"
     "</ul>"
     "</div></div>"
 )
-
-CURRENCY_ID_DEFAULT = "KZT"
-OUTPUT_ENCODING_DEFAULT = "utf-8"
-ALMATY_UTC_OFFSET_HOURS = 5
 
 # Бренды (минимальный безопасный словарь, можно расширять в адаптерах)
 DEFAULT_BRAND_MAP = {
@@ -88,10 +85,13 @@ STOP_WORDS = {
     "the", "and", "or", "for", "with", "to", "of", "in",
 }
 
+# Параметры, которые нужно удалить из param и характеристик
+DROP_PARAM_NAMES = {"штрихкод"}
+
 RE_WS = re.compile(r"\s+")
-RE_TOKEN = re.compile(r"[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-_/\.]*")
+RE_TOKEN = re.compile(r"[A-Za-zА-Яа-яЁё0-9][A-Za-zА-Яа-яЁё0-9\-_/\.]*")
 RE_SLUG_BAD = re.compile(r"[^a-z0-9]+")
-RE_DESC_KV = re.compile(r"(?im)^\s*([A-Za-zА-Яа-я0-9][^:\n]{0,40})\s*:\s*(.{1,180})\s*$")
+RE_DESC_KV = re.compile(r"(?im)^\s*([A-Za-zА-Яа-яЁё0-9][^:\n]{0,40})\s*:\s*(.{1,180})\s*$")
 
 
 # Текущее время Алматы
@@ -186,9 +186,7 @@ def normalize_cdata_inner(inner: str) -> str:
 
 # price-rule: +4% + tier adders; хвост 900; >=9_000_000 → 100; <=100 → 100
 def compute_price(price_in: int | None) -> int:
-    if price_in is None or price_in <= 0:
-        return 100
-    if price_in < 100:
+    if price_in is None or price_in <= 100:
         return 100
     if price_in >= 9_000_000:
         return 100
@@ -314,7 +312,7 @@ def detect_brand(text: str, brand_map: dict[str, str] | None = None) -> str | No
     for k in sorted(m.keys(), key=len, reverse=True):
         kk = k.lower()
         # match по границам слова/символов
-        if re.search(rf"(?i)(?<![A-Za-zА-Яа-я0-9]){re.escape(kk)}(?![A-Za-zА-Яа-я0-9])", t):
+        if re.search(rf"(?i)(?<![A-Za-zА-Яа-яЁё0-9]){re.escape(kk)}(?![A-Za-zА-Яа-яЁё0-9])", t):
             return m[k]
     return None
 
@@ -336,6 +334,20 @@ def pick_vendor(
     text = f"{name} {joined_params} {desc}"
     b = detect_brand(text, brand_map=brand_map)
     return b or public_vendor
+
+
+# Удаляет запрещённые характеристики (например, Штрихкод)
+def drop_params(params: Sequence[tuple[str, str]], drop: set[str] = DROP_PARAM_NAMES) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for k, v in params:
+        kk = norm_ws(k)
+        vv = norm_ws(v)
+        if not kk or not vv:
+            continue
+        if kk.lower() in drop:
+            continue
+        out.append((kk, vv))
+    return out
 
 
 # Сортировка характеристик: приоритет + алфавит
@@ -378,6 +390,8 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc: str) -> int:
         if len(k.split()) > 4:
             continue
         kl = k.lower()
+        if kl in DROP_PARAM_NAMES:
+            continue
         if kl in existing:
             continue
         existing.add(kl)
@@ -448,7 +462,7 @@ class OfferOut:
         vendor = pick_vendor(self.vendor, name, self.params, self.native_desc, public_vendor=public_vendor)
 
         # тройное обогащение: из описания добавим пару param, затем снова сортируем
-        params = list(self.params)
+        params = drop_params(self.params)
         enrich_params_from_desc(params, self.native_desc)
 
         priority = list(param_priority or [])
@@ -517,17 +531,9 @@ def make_feed_meta(
 # Шапка yml_catalog
 def make_header(build_time: datetime, *, encoding: str = OUTPUT_ENCODING_DEFAULT) -> str:
     return (
-        f"<?xml version=\"1.0\" encoding=\"{encoding}\"?>\n"
+        f"<?xml version=\"1.0\" encoding=\"{encoding}\">\n"
         f"<yml_catalog date=\"{build_time:%Y-%m-%d %H:%M}\">\n"
         f"<shop>\n"
-        f"<name>CS</name>\n"
-        f"<company>Complex Solutions</company>\n"
-        f"<url>https://example.com</url>\n"
-        f"<currencies>\n"
-        f"<currency id=\"KZT\" rate=\"1\"/>\n"
-        f"</currencies>\n"
-        f"<categories>\n"
-        f"</categories>\n"
         f"<offers>\n"
     )
 
