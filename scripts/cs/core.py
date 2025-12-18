@@ -21,6 +21,7 @@ CS_CITY_TAIL = "Казахстан, Алматы, Астана, Шымкент, 
 
 CURRENCY_ID_DEFAULT = "KZT"
 OUTPUT_ENCODING_DEFAULT = "utf-8"
+ALMATY_UTC_OFFSET_HOURS = 5
 CS_WA_BLOCK = (
     "<!-- WhatsApp -->\n"
     "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
