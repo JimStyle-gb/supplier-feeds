@@ -138,7 +138,7 @@ def main() -> int:
 
     for o in offers_in:
         cat = norm_ws(_t(o.find("categoryId")))
-        if allowed and cat and cat not in allowed:
+        if allowed and (not cat or cat not in allowed):
             continue
 
         raw_id = norm_ws(o.get("id") or _t(o.find("vendorCode")))
