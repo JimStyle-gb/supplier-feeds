@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-CS Core — общее ядро для всех поставщиков (шаблон CS).
-Важно: этот модуль не знает, как именно скачивать/парсить товары конкретного поставщика.
-Он содержит общие правила: цены, keywords, описание, сортировка params, FEED_META, форматирование XML.
+CS Core — общее ядро для всех поставщиков.
+
+В этом файле лежит "эталон CS":
+- правила цены (4% + надбавки + хвост 900, но если цена невалидна/<=100 → 100)
+- единый WhatsApp блок, HR, Оплата/Доставка
+- единая сборка description + Характеристики
+- единый keywords + хвост городов
+- стабилизация форматирования (переводы строк, футер)
 """
 
 from __future__ import annotations
@@ -10,18 +15,26 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-import hashlib
-import os
-import re
 from typing import Iterable, Sequence
+from zoneinfo import ZoneInfo
+import hashlib
+import re
 
-# Константы шаблона CS
-CS_CITY_TAIL = "Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Семей, Уральск, Темиртау, Костанай, Кызылорда, Петропавловск, Атырау, Актау, Талдыкорган, Кокшетау"
 
-
-CURRENCY_ID_DEFAULT = "KZT"
+# Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
-ALMATY_UTC_OFFSET_HOURS = 5
+CURRENCY_ID_DEFAULT = "KZT"
+ALMATY_TZ = "Asia/Almaty"
+
+
+# Хвост городов (один и тот же для всех поставщиков)
+CS_CITY_TAIL = (
+    "Казахстан Алматы Нур-Султан Астана Шымкент Караганда Актобе Тараз Павлодар "
+    "Усть-Каменогорск Усть Каменогорск Оскемен Семей Уральск Орал Темиртау Костанай "
+    "Кызылорда Атырау Актау Кокшетау Петропавловск Талдыкорган Туркестан"
+)
+
+# WhatsApp блок (единый)
 CS_WA_BLOCK = (
     "<!-- WhatsApp -->\n"
     "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
@@ -32,8 +45,10 @@ CS_WA_BLOCK = (
     "&#128172; Написать в WhatsApp</a></p></div>"
 )
 
+# Горизонтальная линия (2px)
 CS_HR_2PX = "<hr style=\"border:none; border-top:2px solid #E7D6B7; margin:12px 0;\" />"
 
+# Оплата/Доставка — КАНОНИЧЕСКИЙ текст (как в твоём эталоне)
 CS_PAY_BLOCK = (
     "<!-- Оплата и доставка -->\n"
     "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
@@ -41,330 +56,256 @@ CS_PAY_BLOCK = (
     "<h3 style=\"margin:0 0 8px; font-size:17px;\">Оплата</h3>"
     "<ul style=\"margin:0; padding-left:18px;\">"
     "<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>"
-    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#a40000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
+    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#8b0000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
     "</ul>"
     "<hr style=\"border:none; border-top:1px solid #E7D6B7; margin:12px 0;\" />"
     "<h3 style=\"margin:0 0 8px; font-size:17px;\">Доставка по Алматы и Казахстану</h3>"
     "<ul style=\"margin:0; padding-left:18px;\">"
-    "<li><em><strong>ДОСТАВКА</strong> в \"квадрате\" г. Алматы — <strong>БЕСПЛАТНО!</strong></em></li>"
-    "<li><strong>Самовывоз:</strong> г. Алматы</li>"
-    "<li><strong>Курьер:</strong> по Алматы</li>"
-    "<li><strong>Казпочта / транспортные компании:</strong> по Казахстану</li>"
+    "<li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>"
+    "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li>"
+    "<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>"
+    "<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>"
     "</ul>"
     "</div></div>"
 )
 
-# Бренды (минимальный безопасный словарь, можно расширять в адаптерах)
-DEFAULT_BRAND_MAP = {
-    # латиница
-    "hp": "HP",
-    "hewlett-packard": "HP",
-    "canon": "Canon",
-    "epson": "Epson",
-    "xerox": "Xerox",
-    "brother": "Brother",
-    "samsung": "Samsung",
-    "lenovo": "Lenovo",
-    "dell": "Dell",
-    "asus": "ASUS",
-    "acer": "Acer",
-    "msi": "MSI",
-    "gigabyte": "Gigabyte",
-    "dlink": "D-Link",
-    "tp-link": "TP-Link",
-    "hikvision": "Hikvision",
-    "dahua": "Dahua",
-    "ubiquiti": "Ubiquiti",
-    "mikrotik": "MikroTik",
-    "apc": "APC",
-    "schneider": "Schneider Electric",
-    "yealink": "Yealink",
-    # кириллица
-    "дкс": "ДКС",
-    "комус": "Комус",
+# Параметры, которые нужно выкидывать из <param> и из "Характеристик"
+PARAM_DROP_DEFAULT = {
+    "Штрихкод",
+    "Новинка",
+    "Снижена цена",
+    "Благотворительность",
+    "Код товара Kaspi",
+    "Код ТН ВЭД",
+    "Назначение",
+    "Объём",
+    "Объем",
 }
 
-STOP_WORDS = {
-    "и", "в", "на", "для", "с", "по", "к", "от", "до", "из", "под", "над", "при",
-    "the", "and", "or", "for", "with", "to", "of", "in",
-}
 
-# Параметры, которые нужно удалить из param и характеристик
-DROP_PARAM_NAMES = {"штрихкод"}
-
-RE_WS = re.compile(r"\s+")
-RE_TOKEN = re.compile(r"[A-Za-zА-Яа-яЁё0-9][A-Za-zА-Яа-яЁё0-9\-_/\.]*")
-RE_SLUG_BAD = re.compile(r"[^a-z0-9]+")
-RE_DESC_KV = re.compile(r"(?im)^\s*([A-Za-zА-Яа-яЁё0-9][^:\n]{0,40})\s*:\s*(.{1,180})\s*$")
-
-
-# Текущее время Алматы
+# Возвращает текущее время в Алматы
 def now_almaty() -> datetime:
-    return datetime.utcnow() + timedelta(hours=ALMATY_UTC_OFFSET_HOURS)
+    return datetime.now(ZoneInfo(ALMATY_TZ)).replace(tzinfo=None)
 
 
-# Следующая плановая сборка (для FEED_META)
-def next_run_at_hour(build_time: datetime, hour_almaty: int) -> datetime:
-    base = build_time.replace(minute=0, second=0, microsecond=0)
-    if base.hour < hour_almaty:
-        return base.replace(hour=hour_almaty)
-    if base.hour == hour_almaty and (build_time.minute == 0 and build_time.second == 0):
-        return base
-    nxt = base + timedelta(days=1)
-    return nxt.replace(hour=hour_almaty)
+# Считает ближайший запуск на заданный час (Алматы) — для FEED_META
+def next_run_at_hour(now_local: datetime, hour: int) -> datetime:
+    hour = int(hour)
+    candidate = now_local.replace(hour=hour, minute=0, second=0, microsecond=0)
+    if candidate <= now_local:
+        candidate = candidate + timedelta(days=1)
+    return candidate
 
 
-# Сжатие пробелов
+# Нормализует пробелы/переводы строк в строке
 def norm_ws(s: str) -> str:
-    return RE_WS.sub(" ", (s or "").strip())
+    s2 = (s or "").replace("\u00a0", " ").strip()
+    s2 = re.sub(r"\s+", " ", s2)
+    return s2.strip()
 
 
-# Безопасный int: None/""/не число → None
-def safe_int(src: str | None) -> int | None:
-    if src is None:
-        return None
-    s = str(src).strip().replace(" ", "").replace("\xa0", "")
-    if not s:
-        return None
-    m = re.search(r"-?\d+", s)
-    if not m:
+# Безопасное int из любого значения
+def safe_int(v) -> int | None:
+    if v is None:
         return None
     try:
-        return int(m.group(0))
+        if isinstance(v, (int, float)):
+            return int(v)
+        s = str(v).strip()
+        if not s:
+            return None
+        s = s.replace(" ", "").replace("\u00a0", "")
+        # иногда цена приходит как "12 345.00"
+        s = s.split(".")[0]
+        return int(s)
     except Exception:
         return None
 
 
-# Парсинг множества id из ENV: "1,2 3\n4" → {1,2,3,4}
-def parse_id_set(env_value: str | None, fallback: set[str]) -> set[str]:
-    if not env_value:
-        return set(fallback)
-    parts = re.split(r"[,\s]+", env_value.strip())
-    out = {p.strip() for p in parts if p.strip().isdigit()}
-    return out if out else set(fallback)
+# Парсит множество id из env (например "1,10,20") или из fallback списка
+def parse_id_set(env_value: str | None, fallback: Iterable[int] | None = None) -> set[str]:
+    out: set[str] = set()
+    if env_value:
+        for part in env_value.split(","):
+            p = part.strip()
+            if p:
+                out.add(p)
+    if not out and fallback:
+        out = {str(int(x)) for x in fallback}
+    return out
 
 
-# Экранирование текста XML
+# Генератор стабильного id (если у поставщика нет id)
+def stable_id(prefix: str, seed: str) -> str:
+    h = hashlib.md5((seed or "").encode("utf-8", errors="ignore")).hexdigest()[:10]
+    return f"{prefix}{h.upper()}"
+
+
+# XML escape для текста
 def xml_escape_text(s: str) -> str:
-    if s is None:
-        return ""
-    return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+    return (
+        (s or "")
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+    )
 
 
-# Экранирование атрибутов XML
+# XML escape для атрибутов
 def xml_escape_attr(s: str) -> str:
-    if s is None:
-        return ""
     return xml_escape_text(s).replace('"', "&quot;")
 
 
-# Приведение available к "true/false"
+# bool → "true/false"
 def bool_to_xml(v: bool) -> str:
-    return "true" if v else "false"
+    return "true" if bool(v) else "false"
 
 
-# Слаг из строки (для keywords)
-def slugify(s: str) -> str:
-    s = (s or "").lower()
-    s = s.replace("ё", "е")
-    s = RE_SLUG_BAD.sub("-", s)
-    s = s.strip("-")
-    return s
-
-
-# Удаляет лишнее из строки (не ломая смысл)
-def fix_text(s: str) -> str:
-    s = s or ""
-    s = s.replace("\r\n", "\n")
-    s = re.sub(r"[ \t]+\n", "\n", s)
-    s = re.sub(r"\n{4,}", "\n\n\n", s)
-    return s.strip()
-
-
-# Ровно 2 \n в начале/конце CDATA-части
-def normalize_cdata_inner(inner: str) -> str:
-    b = (inner or "").replace("\r\n", "\n")
-    core = b.lstrip("\n").rstrip("\n")
-    return "\n" + core + "\n"
-
-
-# price-rule: +4% + tier adders; хвост 900; >=9_000_000 → 100; <=100 → 100
+# Каноническое правило цены (4% + надбавки + хвост 900; невалидно/<=100 → 100; >=9,000,000 → 100)
 def compute_price(price_in: int | None) -> int:
-    if price_in is None or price_in <= 100:
+    p = safe_int(price_in)
+    if p is None or p <= 100:
         return 100
-    if price_in >= 9_000_000:
-        return 100
-
-    p = price_in
-
-    # надбавки
-    if 101 <= p <= 10_000:
-        p = int(round(p * 1.04)) + 3000
-    elif 10_001 <= p <= 25_000:
-        p = int(round(p * 1.04)) + 4000
-    elif 25_001 <= p <= 50_000:
-        p = int(round(p * 1.04)) + 5000
-    elif 50_001 <= p <= 75_000:
-        p = int(round(p * 1.04)) + 7000
-    elif 75_001 <= p <= 100_000:
-        p = int(round(p * 1.04)) + 10000
-    elif 100_001 <= p <= 150_000:
-        p = int(round(p * 1.04)) + 12000
-    elif 150_001 <= p <= 200_000:
-        p = int(round(p * 1.04)) + 14000
-    elif 200_001 <= p <= 300_000:
-        p = int(round(p * 1.04)) + 17000
-    elif 300_001 <= p <= 400_000:
-        p = int(round(p * 1.04)) + 20000
-    elif 400_001 <= p <= 600_000:
-        p = int(round(p * 1.04)) + 26000
-    elif 600_001 <= p <= 800_000:
-        p = int(round(p * 1.04)) + 32000
-    elif 800_001 <= p <= 1_200_000:
-        p = int(round(p * 1.04)) + 45000
-    else:
-        p = int(round(p * 1.04)) + 60000
-
-    if p < 100:
-        return 100
-
-    # "хвост 900"
-    p = (p // 1000) * 1000 + 900
-
-    # > 9 млн после округлений — в 100
     if p >= 9_000_000:
         return 100
 
-    return p
+    tiers = [
+        (101, 10_000, 3_000),
+        (10_001, 25_000, 4_000),
+        (25_001, 50_000, 5_000),
+        (50_001, 75_000, 7_000),
+        (75_001, 100_000, 10_000),
+        (100_001, 150_000, 12_000),
+        (150_001, 200_000, 15_000),
+        (200_001, 300_000, 20_000),
+        (300_001, 500_000, 25_000),
+        (500_001, 750_000, 30_000),
+        (750_001, 1_000_000, 35_000),
+        (1_000_001, 1_500_000, 40_000),
+        (1_500_001, 2_000_000, 45_000),
+    ]
+    add = 60_000
+    for lo, hi, a in tiers:
+        if lo <= p <= hi:
+            add = a
+            break
+
+    raw = int(p * 1.04 + add)
+
+    # "хвост 900" (всегда заканчиваем на 900)
+    out = (raw // 1000) * 1000 + 900
+
+    if out >= 9_000_000:
+        return 100
+    if out <= 100:
+        return 100
+    return out
 
 
-# Достает ключевые слова из названия (и чуть из бренда), добавляет слаг и города
-def build_keywords(
-    vendor: str,
-    name: str,
+# Убирает мусорные параметры, пустые значения и дубли (применять всегда!)
+def clean_params(
+    params: Sequence[tuple[str, str]],
     *,
-    city_tail: str = CS_CITY_TAIL,
-    max_tokens_from_name: int = 18,
-    extra_terms: Sequence[str] | None = None,
-) -> str:
-    v = norm_ws(vendor)
-    n = norm_ws(name)
-
-    out: list[str] = []
+    drop: set[str] | None = None,
+) -> list[tuple[str, str]]:
+    drop_set = {norm_ws(x).casefold() for x in (drop or PARAM_DROP_DEFAULT)}
+    out: list[tuple[str, str]] = []
     seen: set[str] = set()
 
-    def add(x: str) -> None:
-        x = norm_ws(x)
-        if not x:
-            return
-        key = x.lower()
-        if key in seen:
-            return
-        seen.add(key)
-        out.append(x)
-
-    if v:
-        add(v)
-    if n:
-        add(n)
-
-    # токены из названия
-    tokens = [t for t in RE_TOKEN.findall(n) if t]
-    cleaned: list[str] = []
-    for t in tokens:
-        tl = t.lower().strip("._-/")
-        if not tl or tl in STOP_WORDS:
-            continue
-        if len(tl) < 2:
-            continue
-        cleaned.append(t)
-
-    # делаем более "богатый" хвост: первые N токенов
-    for t in cleaned[:max_tokens_from_name]:
-        add(t)
-
-    # бренд + короткий хвост
-    if v:
-        # пример: "MSI 17"
-        m = re.search(r"\b(\d{1,3})\b", n)
-        if m:
-            add(f"{v} {m.group(1)}")
-
-    # слаг
-    sl = slugify(f"{v} {n}".strip())
-    if sl:
-        add(sl)
-        if v:
-            add(f"{sl}-{slugify(v)}".strip("-"))
-
-    # доп. термины от адаптера (НЕ ограничено 1-2 словами, можно сколько угодно)
-    if extra_terms:
-        for t in extra_terms:
-            add(t)
-
-    # города (единый список)
-    add(city_tail)
-
-    return ", ".join(out)
-
-
-# Пытается определить бренд по тексту (name/params/desc)
-def detect_brand(text: str, brand_map: dict[str, str] | None = None) -> str | None:
-    m = brand_map or DEFAULT_BRAND_MAP
-    t = " " + (text or "").lower() + " "
-    # приоритет: более длинные ключи сначала
-    for k in sorted(m.keys(), key=len, reverse=True):
-        kk = k.lower()
-        # match по границам слова/символов
-        if re.search(rf"(?i)(?<![A-Za-zА-Яа-яЁё0-9]){re.escape(kk)}(?![A-Za-zА-Яа-яЁё0-9])", t):
-            return m[k]
-    return None
-
-
-# Выбирает vendor: (src vendor) -> detect -> PUBLIC_VENDOR (по умолчанию "CS")
-def pick_vendor(
-    vendor_src: str,
-    name: str,
-    params: Sequence[tuple[str, str]],
-    desc: str,
-    *,
-    public_vendor: str = "CS",
-    brand_map: dict[str, str] | None = None,
-) -> str:
-    v = norm_ws(vendor_src)
-    if v:
-        return v
-    joined_params = " ".join([f"{k} {val}" for k, val in params])
-    text = f"{name} {joined_params} {desc}"
-    b = detect_brand(text, brand_map=brand_map)
-    return b or public_vendor
-
-
-# Удаляет запрещённые характеристики (например, Штрихкод)
-def drop_params(params: Sequence[tuple[str, str]], drop: set[str] = DROP_PARAM_NAMES) -> list[tuple[str, str]]:
-    out: list[tuple[str, str]] = []
-    for k, v in params:
+    for k, v in params or []:
         kk = norm_ws(k)
         vv = norm_ws(v)
         if not kk or not vv:
             continue
-        if kk.lower() in drop:
+        if kk.casefold() in drop_set:
             continue
+        key_norm = kk.casefold()
+        if key_norm in seen:
+            continue
+        seen.add(key_norm)
         out.append((kk, vv))
     return out
 
 
-# Сортировка характеристик: приоритет + алфавит
-def sort_params(params: Sequence[tuple[str, str]], priority: Sequence[str]) -> list[tuple[str, str]]:
-    pr = {p.lower(): i for i, p in enumerate(priority)}
-    def key(kv: tuple[str, str]) -> tuple[int, str]:
-        k = (kv[0] or "").lower()
-        return (pr.get(k, 10_000), k)
+# Сортирует параметры: сначала приоритетные, затем по алфавиту
+def sort_params(params: Sequence[tuple[str, str]], priority: Sequence[str] | None = None) -> list[tuple[str, str]]:
+    pr = [norm_ws(x) for x in (priority or []) if norm_ws(x)]
+    pr_map = {p.casefold(): i for i, p in enumerate(pr)}
+
+    def key(kv):
+        k = norm_ws(kv[0])
+        idx = pr_map.get(k.casefold(), 10_000)
+        return (idx, k.casefold())
+
     return sorted(list(params), key=key)
 
 
-# Строит HTML блока характеристик
-def build_chars_ul(params_sorted: Sequence[tuple[str, str]]) -> str:
+# Пробует извлечь пары "Характеристика: значение" из HTML описания (если поставщик кладёт это в description)
+def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> None:
+    if not desc_html:
+        return
+
+    # <li><strong>Ключ:</strong> Значение</li>
+    for m in re.finditer(r"<li>\s*<strong>([^<:]{1,80}):</strong>\s*([^<]{1,200})</li>", desc_html, flags=re.I):
+        k = norm_ws(m.group(1))
+        v = norm_ws(m.group(2))
+        if k and v:
+            params.append((k, v))
+
+
+# Делает текст описания "без странностей" (убираем лишние пробелы)
+def fix_text(s: str) -> str:
+    t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
+    # убираем тройные пустые строки
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t
+
+
+# Делает аккуратный HTML внутри CDATA (добавляет \n в начале/конце)
+def normalize_cdata_inner(inner: str) -> str:
+    inner = inner.strip()
+    return "\n" + inner + "\n"
+
+
+# Собирает keywords: vendor + name + токены из name + slug + города
+def build_keywords(vendor: str, name: str, *, city_tail: str = CS_CITY_TAIL, max_tokens: int = 18) -> str:
+    v = norm_ws(vendor)
+    n = norm_ws(name)
+
+    base_tokens: list[str] = []
+    if v:
+        base_tokens.append(v)
+    if n:
+        base_tokens.append(n)
+
+    tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", n)
+    tokens = [t for t in tokens if len(t) >= 2]
+    # уникальные, сохраняя порядок
+    seen = set()
+    uniq: list[str] = []
+    for t in tokens:
+        tl = t.lower()
+        if tl in seen:
+            continue
+        seen.add(tl)
+        uniq.append(t)
+        if len(uniq) >= max_tokens:
+            break
+
+    slug = re.sub(r"[^A-Za-zА-Яа-яЁё0-9]+", "-", n).strip("-").lower()
+
+    parts: list[str] = []
+    parts.extend(base_tokens)
+    parts.extend(uniq)
+    if slug:
+        parts.append(slug)
+    parts.append(city_tail)
+
+    return norm_ws(" ".join(parts))
+
+
+# Формирует блок "Характеристики" (HTML)
+def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
     if not params_sorted:
         return ""
     items: list[str] = []
@@ -379,32 +320,7 @@ def build_chars_ul(params_sorted: Sequence[tuple[str, str]]) -> str:
     return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
 
 
-# Тройное обогащение: из описания вытаскивает пары "Ключ: Значение" в params
-def enrich_params_from_desc(params: list[tuple[str, str]], desc: str) -> int:
-    if not desc:
-        return 0
-    existing = {norm_ws(k).lower() for k, _ in params}
-    added = 0
-    for m in RE_DESC_KV.finditer(desc):
-        k = norm_ws(m.group(1))
-        v = norm_ws(m.group(2))
-        if not k or not v:
-            continue
-        # ограничение "ключ" — не слишком длинный (обычно 1–3 слова)
-        if len(k.split()) > 4:
-            continue
-        kl = k.lower()
-        if kl in DROP_PARAM_NAMES:
-            continue
-        if kl in existing:
-            continue
-        existing.add(kl)
-        params.append((k, v))
-        added += 1
-    return added
-
-
-# Собирает описание CS: WhatsApp + hr + (Описание+Характеристики) + Pay
+# Собирает description (WhatsApp + HR + Описание + Характеристики + Оплата/Доставка)
 def build_description(
     name: str,
     native_desc: str,
@@ -417,16 +333,15 @@ def build_description(
     n = norm_ws(name)
     d = fix_text(native_desc)
 
-    # из исходного описания делаем p-часть
     desc_part = ""
     if d:
-        # аккуратные <br> для читабельности
-        d2 = d.replace("\n", "<br>")
+        # читаемость: \n → <br>
+        d2 = xml_escape_text(d).replace("\n", "<br>")
         desc_part = f"<h3>{xml_escape_text(n)}</h3><p>{d2}</p>"
     else:
-        desc_part = f"<h3>{xml_escape_text(n)}</h3>"
+        desc_part = f"<h3>{xml_escape_text(n)}</h3><p></p>"
 
-    chars = build_chars_ul(params_sorted)
+    chars = build_chars_block(params_sorted)
 
     parts: list[str] = []
     parts.append(wa_block)
@@ -437,75 +352,11 @@ def build_description(
         parts.append(chars)
     parts.append(pay_block)
 
-    # В CDATA нам нужен \n в начале/конце
     inner = "\n".join(parts)
     return normalize_cdata_inner(inner)
 
 
-@dataclass
-class OfferOut:
-    oid: str
-    available: bool
-    name: str
-    price: int
-    pictures: list[str]
-    vendor: str
-    params: list[tuple[str, str]]
-    native_desc: str
-
-    # Собирает XML offer (строго фиксированный порядок тегов)
-    def to_xml(
-        self,
-        *,
-        currency_id: str = CURRENCY_ID_DEFAULT,
-        city_tail: str = CS_CITY_TAIL,
-        public_vendor: str = "CS",
-        param_priority: Sequence[str] | None = None,
-    ) -> str:
-        name = norm_ws(self.name)
-        vendor = pick_vendor(self.vendor, name, self.params, self.native_desc, public_vendor=public_vendor)
-
-        # тройное обогащение: из описания добавим пару param, затем снова сортируем
-        params = drop_params(self.params)
-        enrich_params_from_desc(params, self.native_desc)
-
-        priority = list(param_priority or [])
-        params_sorted = sort_params(params, priority) if priority else sorted(params, key=lambda kv: (kv[0] or "").lower())
-
-        desc_cdata = build_description(name, self.native_desc, params_sorted)
-        keywords = build_keywords(vendor, name, city_tail=city_tail)
-
-        pics_xml = ""
-        for p in self.pictures:
-            if p:
-                pics_xml += f"\n<picture>{xml_escape_text(p)}</picture>"
-
-        params_xml = ""
-        for k, v in params_sorted:
-            kk = xml_escape_attr(norm_ws(k))
-            vv = xml_escape_text(norm_ws(v))
-            if not kk or not vv:
-                continue
-            params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
-
-        out = (
-            f"<offer id=\"{xml_escape_attr(self.oid)}\" available=\"{bool_to_xml(bool(self.available))}\">\n"
-            f"<categoryId></categoryId>\n"
-            f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
-            f"<name>{xml_escape_text(name)}</name>\n"
-            f"<price>{int(self.price)}</price>"
-            f"{pics_xml}\n"
-            f"<vendor>{xml_escape_text(vendor)}</vendor>\n"
-            f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
-            f"<description><![CDATA[{desc_cdata}]]></description>"
-            f"{params_xml}\n"
-            f"<keywords>{xml_escape_text(keywords)}</keywords>\n"
-            f"</offer>"
-        )
-        return out
-
-
-# Делает блок FEED_META (строго фиксированный вид)
+# Делает FEED_META (фиксированный вид)
 def make_feed_meta(
     supplier: str,
     supplier_url: str,
@@ -532,26 +383,23 @@ def make_feed_meta(
     return "\n".join(lines)
 
 
-# Шапка yml_catalog
+# Верх файла (минимальный shop+offers; витрина будет в cs_price позже)
 def make_header(build_time: datetime, *, encoding: str = OUTPUT_ENCODING_DEFAULT) -> str:
     return (
-        f"<?xml version=\"1.0\" encoding=\"{encoding}\">\n"
+        f"<?xml version=\"1.0\" encoding=\"{encoding}\"?>\n"
         f"<yml_catalog date=\"{build_time:%Y-%m-%d %H:%M}\">\n"
-        f"<shop>\n"
-        f"<offers>\n"
+        f"<shop><offers>\n"
     )
 
 
-# Низ yml_catalog
+# Низ файла
 def make_footer() -> str:
     return "</offers>\n</shop>\n</yml_catalog>\n"
 
 
-# Футерные пробелы: 2 перевода после <offers> и перед </offers>
+# Гарантирует пустую строку после <offers> и перед </offers>
 def ensure_footer_spacing(xml: str) -> str:
-    # после <offers>
     xml = re.sub(r"(<offers>\n)(\n*)", r"\1\n", xml, count=1)
-    # перед </offers>
     xml = re.sub(r"(</offer>\n)(</offers>)", r"\1\n\2", xml)
     return xml
 
@@ -573,7 +421,110 @@ def write_if_changed(path: str, data: str, *, encoding: str = OUTPUT_ENCODING_DE
     return True
 
 
-# Генератор стабильного id (если у поставщика нет id)
-def stable_id(prefix: str, seed: str) -> str:
-    h = hashlib.md5((seed or "").encode("utf-8", errors="ignore")).hexdigest()[:10]
-    return f"{prefix}{h.upper()}"
+# Пытается определить бренд (vendor) по vendor_src / name / params / description (если пусто — public_vendor)
+def pick_vendor(
+    vendor_src: str,
+    name: str,
+    params: Sequence[tuple[str, str]],
+    desc_html: str,
+    *,
+    public_vendor: str = "CS",
+) -> str:
+    v = norm_ws(vendor_src)
+    if v:
+        return v
+
+    hay = " ".join(
+        [name or "", desc_html or ""]
+        + [f"{k} {val}" for k, val in (params or [])]
+    ).lower()
+
+    # простой словарь брендов (расширим позже при необходимости)
+    brands = {
+        "hp": "HP",
+        "hewlett": "HP",
+        "canon": "Canon",
+        "epson": "Epson",
+        "brother": "Brother",
+        "samsung": "Samsung",
+        "sv": "SVC",
+        "svc": "SVC",
+        "apc": "APC",
+        "schneider": "Schneider Electric",
+        "asus": "ASUS",
+        "lenovo": "Lenovo",
+        "acer": "Acer",
+        "dell": "Dell",
+        "logitech": "Logitech",
+        "xiaomi": "Xiaomi",
+    }
+    for key, canon in brands.items():
+        if re.search(rf"\b{re.escape(key)}\b", hay):
+            return canon
+
+    return norm_ws(public_vendor) or "CS"
+
+
+@dataclass
+class OfferOut:
+    oid: str
+    available: bool
+    name: str
+    price: int
+    pictures: list[str]
+    vendor: str
+    params: list[tuple[str, str]]
+    native_desc: str
+
+    # Собирает XML offer (фиксированный порядок)
+    def to_xml(
+        self,
+        *,
+        currency_id: str = CURRENCY_ID_DEFAULT,
+        city_tail: str = CS_CITY_TAIL,
+        public_vendor: str = "CS",
+        param_priority: Sequence[str] | None = None,
+    ) -> str:
+        name = norm_ws(self.name)
+        vendor = pick_vendor(self.vendor, name, self.params, self.native_desc, public_vendor=public_vendor)
+
+        # тройное обогащение: params + из описания
+        params = list(self.params)
+        enrich_params_from_desc(params, self.native_desc)
+
+        # чистим и сортируем (ВАЖНО: чистить всегда)
+        params = clean_params(params)
+        params_sorted = sort_params(params, priority=list(param_priority or []))
+
+        desc_cdata = build_description(name, self.native_desc, params_sorted)
+        keywords = build_keywords(vendor, name, city_tail=city_tail)
+
+        pics_xml = ""
+        for p in self.pictures:
+            pp = norm_ws(p)
+            if pp:
+                pics_xml += f"\n<picture>{xml_escape_text(pp)}</picture>"
+
+        params_xml = ""
+        for k, v in params_sorted:
+            kk = xml_escape_attr(norm_ws(k))
+            vv = xml_escape_text(norm_ws(v))
+            if not kk or not vv:
+                continue
+            params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
+
+        out = (
+            f"<offer id=\"{xml_escape_attr(self.oid)}\" available=\"{bool_to_xml(bool(self.available))}\">\n"
+            f"<categoryId></categoryId>\n"
+            f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
+            f"<name>{xml_escape_text(name)}</name>\n"
+            f"<price>{int(self.price)}</price>"
+            f"{pics_xml}\n"
+            f"<vendor>{xml_escape_text(vendor)}</vendor>\n"
+            f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
+            f"<description><![CDATA[{desc_cdata}]]></description>"
+            f"{params_xml}\n"
+            f"<keywords>{xml_escape_text(keywords)}</keywords>\n"
+            f"</offer>"
+        )
+        return out
