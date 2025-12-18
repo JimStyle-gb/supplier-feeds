@@ -29,11 +29,8 @@ ALMATY_TZ = "Asia/Almaty"
 
 # Хвост городов (один и тот же для всех поставщиков)
 CS_CITY_TAIL = (
-    "Казахстан Алматы Нур-Султан Астана Шымкент Караганда Актобе Тараз Павлодар "
-    "Усть-Каменогорск Усть Каменогорск Оскемен Семей Уральск Орал Темиртау Костанай "
-    "Кызылорда Атырау Актау Кокшетау Петропавловск Талдыкорган Туркестан"
+    "Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан"
 )
-
 # WhatsApp блок (единый)
 CS_WA_BLOCK = (
     "<!-- WhatsApp -->\n"
@@ -217,15 +214,26 @@ def clean_params(
         vv = norm_ws(v)
         if not kk or not vv:
             continue
+
+        # Срезаем мусорные ведущие символы (например, невидимые emoji/вариации)
+        kk = re.sub(r"^[^0-9A-Za-zА-Яа-яЁё]+", "", kk)
+
+        # Типовые опечатки/кодировки
+        kk = kk.replace("(Bт)", "(Вт)").replace("Bт", "Вт")
+
+        if not kk:
+            continue
         if kk.casefold() in drop_set:
             continue
+
         key_norm = kk.casefold()
         if key_norm in seen:
             continue
         seen.add(key_norm)
-        out.append((kk, vv))
-    return out
 
+        out.append((kk, vv))
+
+    return out
 
 # Сортирует параметры: сначала приоритетные, затем по алфавиту
 def sort_params(params: Sequence[tuple[str, str]], priority: Sequence[str] | None = None) -> list[tuple[str, str]]:
@@ -267,42 +275,53 @@ def normalize_cdata_inner(inner: str) -> str:
     return "\n" + inner + "\n"
 
 
-# Собирает keywords: vendor + name + токены из name + slug + города
-def build_keywords(vendor: str, name: str, *, city_tail: str = CS_CITY_TAIL, max_tokens: int = 18) -> str:
-    v = norm_ws(vendor)
-    n = norm_ws(name)
-
-    base_tokens: list[str] = []
-    if v:
-        base_tokens.append(v)
-    if n:
-        base_tokens.append(n)
-
-    tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", n)
-    tokens = [t for t in tokens if len(t) >= 2]
-    # уникальные, сохраняя порядок
-    seen = set()
-    uniq: list[str] = []
-    for t in tokens:
-        tl = t.lower()
-        if tl in seen:
-            continue
-        seen.add(tl)
-        uniq.append(t)
-        if len(uniq) >= max_tokens:
-            break
-
-    slug = re.sub(r"[^A-Za-zА-Яа-яЁё0-9]+", "-", n).strip("-").lower()
+# Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
+def build_keywords(
+    vendor: str,
+    name: str,
+    *,
+    city_tail: str | None = None,
+    max_tokens: int = 18,
+    extra: list[str] | None = None,
+) -> str:
+    vendor = norm_ws(vendor)
+    name = norm_ws(name)
 
     parts: list[str] = []
-    parts.extend(base_tokens)
-    parts.extend(uniq)
-    if slug:
-        parts.append(slug)
-    parts.append(city_tail)
+    if vendor:
+        parts.append(vendor)
+    if name:
+        parts.append(name)
 
-    return norm_ws(" ".join(parts))
+    # Разбор имени на слова (цифры/буквы, с дефисами)
+    tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+(?:-[A-Za-zА-Яа-яЁё0-9]+)*", name)
+    for t in tokens[: max(0, int(max_tokens))]:
+        tt = norm_ws(t)
+        if tt:
+            parts.append(tt)
 
+    if extra:
+        for x in extra:
+            xx = norm_ws(str(x))
+            if xx:
+                parts.append(xx)
+
+    # Города добавляем единым хвостом (уже с запятыми). Если не передали — берём дефолт.
+    ct = norm_ws(city_tail or CS_CITY_TAIL)
+    if ct:
+        parts.append(ct)
+
+    # Уникализация (без учёта регистра)
+    out: list[str] = []
+    seen: set[str] = set()
+    for p in parts:
+        key = p.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(p)
+
+    return ", ".join(out)
 
 # Формирует блок "Характеристики" (HTML)
 def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
