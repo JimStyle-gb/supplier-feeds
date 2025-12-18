@@ -138,6 +138,7 @@ def main() -> int:
 
     for o in offers_in:
         cat = norm_ws(_t(o.find("categoryId")))
+        # include-режим: если список категорий задан — пропускаем только те, что входят в allowed
         if allowed and (not cat or cat not in allowed):
             continue
 
