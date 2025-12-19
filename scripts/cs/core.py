@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Iterable, Sequence
 from zoneinfo import ZoneInfo
+import os
 import hashlib
 import re
 
@@ -27,6 +28,9 @@ CURRENCY_ID_DEFAULT = "KZT"
 ALMATY_TZ = "Asia/Almaty"
 
 
+
+# Заглушка картинки, если у оффера нет фото (можно переопределить env CS_PICTURE_PLACEHOLDER_URL)
+CS_PICTURE_PLACEHOLDER_URL = (os.getenv("CS_PICTURE_PLACEHOLDER_URL") or "https://placehold.co/800x800/png?text=No+Photo").strip()
 # Хвост городов (один и тот же для всех поставщиков)
 CS_CITY_TAIL = (
     "Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан"
@@ -215,10 +219,23 @@ def clean_params(
         if not kk or not vv:
             continue
 
+        # Убираем нулевой мусор в значениях
+        vv_compact = vv.strip()
+        if re.fullmatch(r"[-–—.]+", vv_compact) or vv_compact in {"..", "..."}:
+            continue
+        # Обрезанные значения вида "Вось..." — выкидываем (кроме числовых диапазонов 10...20)
+        if "..." in vv_compact and not re.search(r"\d+\s*\.\.\.\s*\d+", vv_compact):
+            if vv_compact.endswith("...") or re.search(r"[A-Za-zА-Яа-яЁё]\.\.\.", vv_compact):
+                continue
+
         # Срезаем мусорные ведущие символы (например, невидимые emoji/вариации)
         kk = re.sub(r"^[^0-9A-Za-zА-Яа-яЁё]+", "", kk)
 
+        # Убираем zero-width символы внутри имени параметра
+        kk = re.sub(r"[\u200b\u200c\u200d\ufeff\u2060]", "", kk)
+
         # Типовые опечатки/кодировки
+        kk = re.sub(r"\(\s*B\s*т\s*\)", "(Вт)", kk)
         kk = kk.replace("(Bт)", "(Вт)").replace("Bт", "Вт")
 
         if not kk:
@@ -519,10 +536,11 @@ class OfferOut:
         keywords = build_keywords(vendor, name, city_tail=city_tail)
 
         pics_xml = ""
-        for p in self.pictures:
-            pp = norm_ws(p)
-            if pp:
-                pics_xml += f"\n<picture>{xml_escape_text(pp)}</picture>"
+        pics = [norm_ws(p) for p in (self.pictures or []) if norm_ws(p)]
+        if not pics and CS_PICTURE_PLACEHOLDER_URL:
+            pics = [CS_PICTURE_PLACEHOLDER_URL]
+        for pp in pics:
+            pics_xml += f"\n<picture>{xml_escape_text(pp)}</picture>"
 
         params_xml = ""
         for k, v in params_sorted:
