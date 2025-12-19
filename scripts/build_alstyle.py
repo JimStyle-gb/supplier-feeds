@@ -30,7 +30,8 @@ from cs.core import (
     pick_vendor,
     safe_int,
     stable_id,
-    write_if_changed,
+    write_if_changed,,
+    validate_cs_yml
 )
 
 # Конфиг поставщика AlStyle
@@ -222,6 +223,9 @@ def main() -> int:
 
     full = header + "\n" + feed_meta + "\n\n" + offers_xml + "\n" + footer
     full = ensure_footer_spacing(full)
+
+    # Страховочная валидация (если что-то сломалось — падаем сборкой)
+    validate_cs_yml(full)
 
     changed = write_if_changed(out_file, full, encoding=encoding)
 
