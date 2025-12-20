@@ -30,7 +30,7 @@ from cs.core import (
     pick_vendor,
     safe_int,
     stable_id,
-    write_if_changed,,
+    write_if_changed,
     validate_cs_yml
 )
 
