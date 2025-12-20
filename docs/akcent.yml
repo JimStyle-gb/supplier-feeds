@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2025-12-20 02:12">
+<yml_catalog date="2025-12-21 02:09">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-12-20 02:12:04
-Ближайшая сборка (Алматы)                  | 2025-12-21 02:00:00
-Сколько товаров у поставщика до фильтра    | 1737
-Сколько товаров у поставщика после фильтра | 147
-Сколько товаров есть в наличии (true)      | 147
+Время сборки (Алматы)                      | 2025-12-21 02:09:49
+Ближайшая сборка (Алматы)                  | 2025-12-22 02:00:00
+Сколько товаров у поставщика до фильтра    | 1732
+Сколько товаров у поставщика после фильтра | 146
+Сколько товаров есть в наличии (true)      | 146
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1563,32 +1563,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Ламинатор Fellowes AMARIS A3 LAMINATOR 230V EU, Ламинатор, Fellowes, AMARIS, A3, LAMINATOR, 230V, EU, fellowes-amaris-a3-laminator-230v-eu, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
 </offer>
 
-<offer id="AC100016948" available="true">
-<categoryId></categoryId>
-<vendorCode>AC100016948</vendorCode>
-<name>Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</name>
-<price>25900</price>
-<vendor>Fellowes</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</h3><p>Ламинатор Arc А3<br>Диапазон плёнок 75 – 125 мкм<br>Скорость ламинирования 30 см/мин.<br>Время нагрева 4 мин.<br>Гарантия 1 год<br>Артикул FS-10001<br>Макс. формат A3<br>Рекомендуемое количество ламинирований в день 25 листов, неинтенсивное использование<br>Максимальная толщина ламинирования (лист+пленка), мм 0,4<br>Толщина пленки, мкм 75/125<br>Ширина входа, мм 230<br>Система нагрева нагреваемые валы<br>Кол-во валов 2<br>Время нагрева, мин 4<br>Регулировка температуры нет<br>Макс. скорость, см/мин 30<br>Регулировка скорости нет<br>AutoSense нет<br>InstaHeat нет<br>HeatGuard™ нет<br>Easi-Access механизм нет<br>Освобождение да<br>Реверс нет<br>Auto Shut Off (Автоотключение) да (после 30 минут простоя)<br>Сигнал готовности свет<br>Персональные настройки нет<br>Холодное ламинирование нет<br>Съемный сетевой кабель нет<br>Выходной лоток нет<br>Гарантия, лет 1<br>Стартовый набор для 10 документов да<br>Габаритные размеры, мм (ВxШxГ) 62 x 459 x 113<br>Вес, кг 1<br>Размеры розничной упаковки, мм (ВxШxГ) 157 x 405 x 101<br>Вес розничной упаковки, кг 1,5<br>Размеры транспортной упаковки, мм (ВxШxГ) 171 x 390 x 412<br>Вес транспортной упаковки, кг 6,7<br>Количество в транспортной упаковке 4</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Ламинатор А3</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Вид:</strong> Ламинатор А3</li><li><strong>Сопутствующие товары:</strong> Пленка для ламинирования Lamirel А4, 75мкм, 100 шт.</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
-]]></description>
-<param name="Производитель">Fellowes</param>
-<param name="Тип">Ламинатор А3</param>
-<param name="Гарантия">12 мес</param>
-<param name="Страна происхождения">Китай</param>
-<param name="Вид">Ламинатор А3</param>
-<param name="Сопутствующие товары">Пленка для ламинирования Lamirel А4, 75мкм, 100 шт.</param>
-<keywords>Fellowes, Ламинатор Fellowes Arc A3, 75/125 мкм, 30см/мин, AutoShutOff, механизм освобожд., старт.набор пленок, Ламинатор, Arc, A3, 75, 125, мкм, 30см, мин, AutoShutOff, механизм, освобожд, старт, набор, пленок, Fellowes A3, fellowes-arc-a3-75-125-30-autoshutoff, fellowes-arc-a3-75-125-30-autoshutoff-fellowes, Казахстан, Алматы, Астана, Шымкент, Караганда, Актобе, Павлодар, Атырау, Тараз, Костанай, Кызылорда, Петропавловск, Талдыкорган, Актау</keywords>
-</offer>
-
 <offer id="ACFS-45700" available="true">
 <categoryId></categoryId>
 <vendorCode>ACFS-45700</vendorCode>
@@ -1703,6 +1677,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC64V69AA#ABB</vendorCode>
 <name>Монитор Hyperx MNTR HX Armada 27 QHD Gaming</name>
 <price>259900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/ba6/gjwt933m48lr8s6preq8yzmwxnxui78t.jpg</picture>
 <vendor>Китай</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2431,6 +2406,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CG96405</vendorCode>
 <name>Принтер Epson M1120 фабрика печати</name>
 <price>142900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/7bd/ldx610fp789w1goi24duclp5tsd5gahi.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2519,7 +2495,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACZD4A042-D0EE00EZ</vendorCode>
 <name>Принтер этикеток Zebra ZD421-D0EE чёрный</name>
 <price>280900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/fe5/1ahdpn0s5hizsc4lpse0j44cbmf4v7is.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/4ad/33zyvyj8db37v0avew77xc7ezlwe8zzp.jpg</picture>
 <vendor>Zebra</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2970,6 +2946,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACV11H977040</vendorCode>
 <name>Проектор универсальный Epson EB-W51</name>
 <price>480900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/e28/u3dfpp3gk98bu9rz5i6v9agrx6xcjkq7.jpg</picture>
 <vendor>Epson Proj</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
