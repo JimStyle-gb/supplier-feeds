@@ -7,9 +7,6 @@ AlStyle adapter — сборщик по шаблону CS (использует 
 from __future__ import annotations
 
 import os
-import sys
-from datetime import datetime
-from typing import List, Tuple
 from xml.etree import ElementTree as ET
 
 import requests
