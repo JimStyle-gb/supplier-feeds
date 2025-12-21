@@ -24,8 +24,8 @@ import re
 
 
 # Регексы для fix_text (компилируем один раз)
-_RE_SHUKO = re.compile(r\"Shuko\", flags=re.IGNORECASE)
-_RE_MULTI_NL = re.compile(r\"\n{3,}\")
+_RE_SHUKO = re.compile(r"Shuko", flags=re.IGNORECASE)
+_RE_MULTI_NL = re.compile(r"\n{3,}")
 # Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
