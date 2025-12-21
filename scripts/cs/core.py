@@ -287,7 +287,7 @@ def fix_text(s: str) -> str:
     # убираем тройные пустые строки
     t = _RE_MULTI_NL.sub("\n\n", t)
     # Нормализация частой опечатки в вилках/стандарте (Shuko -> Schuko)
-    t = re.sub(r"\bShuko\b", "Schuko", t, flags=re.I)
+    t = _RE_SHUKO.sub("Schuko", t)
     return t
 
 
@@ -714,4 +714,3 @@ def validate_cs_yml(xml: str) -> None:
 
     if errors:
         raise ValueError("CS-валидация не пройдена:\n- " + "\n- ".join(errors))
-
