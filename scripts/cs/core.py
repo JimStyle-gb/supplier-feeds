@@ -84,6 +84,9 @@ PARAM_DROP_DEFAULT = {
 }
 
 
+# Кеш: drop-set в casefold, чтобы не пересчитывать на каждый offer
+_PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
+
 # Возвращает текущее время в Алматы
 def now_almaty() -> datetime:
     return datetime.now(ZoneInfo(ALMATY_TZ)).replace(tzinfo=None)
@@ -282,7 +285,7 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
 def fix_text(s: str) -> str:
     t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
     # убираем тройные пустые строки
-    t = re.sub(r"\n{3,}", "\n\n", t)
+    t = _RE_MULTI_NL.sub("\n\n", t)
     # Нормализация частой опечатки в вилках/стандарте (Shuko -> Schuko)
     t = re.sub(r"\bShuko\b", "Schuko", t, flags=re.I)
     return t
