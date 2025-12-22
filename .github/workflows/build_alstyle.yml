@@ -13,91 +13,59 @@ on:
       - "pyproject.toml"
       - "poetry.lock"
   schedule:
-    # Asia/Almaty (UTC+5) schedule; restriction by day-of-month is enforced via gate (SCHEDULE_DOM).
+    # 01:00 Asia/Almaty (UTC+5) -> 20:00 UTC
     - cron: "0 20 * * *"
 
 permissions:
   contents: write
 
 concurrency:
-  group: feeds_${{ github.ref_name }}
+  group: build-alstyle
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-    env:
-      TZ: Asia/Almaty
-      SCHEDULE_DOM: "*"
-      SCHEDULE_HOUR_ALMATY: "1"
-
-      PIP_PACKAGES: "requests"
-
-      ALSTYLE_LOGIN: ${{ secrets.ALSTYLE_LOGIN }}
-      ALSTYLE_PASSWORD: ${{ secrets.ALSTYLE_PASSWORD }}
-
-      # Публичный vendor (НЕ поставщик). Можно менять без правок кода.
-      PUBLIC_VENDOR: "CS"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Check Almaty schedule gate
-        id: gate
-        run: |
-          python - <<'PY'
-          from datetime import datetime, timedelta
-          import os
-
-          dom = os.getenv("SCHEDULE_DOM", "*").strip()
-          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "0"))
-          event = os.getenv("GITHUB_EVENT_NAME", "").strip()
-
-          now_utc = datetime.utcnow()
-          now_alm = now_utc + timedelta(hours=5)
-
-          if dom == "*":
-            day_ok = True
-            allowed = "*"
-          else:
-            allowed_set = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
-            day_ok = now_alm.day in allowed_set
-            allowed = ",".join(str(x) for x in sorted(allowed_set)) if allowed_set else "(empty)"
-
-          # Для schedule ограничение (если нужно) делаем только по дню месяца в Алматы.
-          # Час задается самим cron, поэтому не режем запуск из-за редких задержек GitHub.
-          if event != "schedule":
-            should = "yes"
-          else:
-            should = "yes" if day_ok else "no"
-
-          print(f"::notice::Event={event}; Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; should_run={should}")
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
-            f.write(f"run={should}\n")
-          PY
-
       - name: Setup Python
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install deps
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+        shell: bash
         run: |
-          set -e
+          set -euo pipefail
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
-          pip install $PIP_PACKAGES
 
-      - name: Build + commit + push docs/alstyle.yml
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+      - name: Gate + set build time (Almaty)
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          EVENT="${{ github.event_name }}"
+          ALMATY_NOW="$(python - <<'PY'
+from datetime import datetime
+from zoneinfo import ZoneInfo
+print(datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S"))
+PY
+)"
+          echo "CS_FORCE_BUILD_TIME_ALMATY=$ALMATY_NOW" >> "$GITHUB_ENV"
+          echo "Event=$EVENT; Almaty now: $ALMATY_NOW; allowed_dom=*; hour=1; day_ok=True; should_run=yes"
+
+      - name: Sync -> build -> commit -> push
+        shell: bash
+        env:
+          ALSTYLE_LOGIN: ${{ secrets.ALSTYLE_LOGIN }}
+          ALSTYLE_PASSWORD: ${{ secrets.ALSTYLE_PASSWORD }}
         run: |
           set -euo pipefail
           echo "Attempt 1: sync -> build -> commit -> push"
@@ -105,13 +73,10 @@ jobs:
 
           python scripts/build_alstyle.py
 
-          if git diff --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/alstyle.yml
-          git commit -m "build: alstyle"
+
+          # Всегда делаем коммит (даже если diff пустой)
+          git commit --allow-empty -m "build: alstyle ($CS_FORCE_BUILD_TIME_ALMATY)"
           git push
