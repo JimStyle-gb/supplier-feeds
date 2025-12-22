@@ -92,6 +92,12 @@ PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
 
 # Возвращает текущее время в Алматы
 def now_almaty() -> datetime:
+    forced = (os.getenv("CS_FORCE_BUILD_TIME_ALMATY", "") or "").strip()
+    if forced:
+        try:
+            return datetime.strptime(forced, "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            pass
     return datetime.now(ZoneInfo(ALMATY_TZ)).replace(tzinfo=None)
 
 
