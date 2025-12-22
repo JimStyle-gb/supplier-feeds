@@ -42,6 +42,8 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
+          # requests нужен для build_alstyle.py
+          pip install requests
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
