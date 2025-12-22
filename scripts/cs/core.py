@@ -86,6 +86,8 @@ PARAM_DROP_DEFAULT = {
     "Объём",
     "Объем",
 }
+# Кеш: служебные параметры в casefold (для clean_params/валидации)
+PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
 
 
 # Возвращает текущее время в Алматы
