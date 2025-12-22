@@ -24,7 +24,7 @@ import re
 
 
 # Регексы для fix_text (компилируем один раз)
-_RE_SHUKO = re.compile(r"Shuko", flags=re.IGNORECASE)
+_RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
 _RE_MULTI_NL = re.compile(r"\n{3,}")
 # Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
@@ -167,6 +167,23 @@ def bool_to_xml(v: bool) -> str:
 
 
 # Каноническое правило цены (4% + надбавки + хвост 900; невалидно/<=100 → 100; >=9,000,000 → 100)
+# Тарифные пороги для compute_price (как в эталоне)
+CS_PRICE_TIERS = [
+    (101, 10_000, 3_000),
+    (10_001, 25_000, 4_000),
+    (25_001, 50_000, 5_000),
+    (50_001, 75_000, 7_000),
+    (75_001, 100_000, 10_000),
+    (100_001, 150_000, 12_000),
+    (150_001, 200_000, 15_000),
+    (200_001, 300_000, 20_000),
+    (300_001, 500_000, 25_000),
+    (500_001, 750_000, 30_000),
+    (750_001, 1_000_000, 35_000),
+    (1_000_001, 1_500_000, 40_000),
+    (1_500_001, 2_000_000, 45_000),
+]
+
 def compute_price(price_in: int | None) -> int:
     p = safe_int(price_in)
     if p is None or p <= 100:
@@ -174,21 +191,7 @@ def compute_price(price_in: int | None) -> int:
     if p >= 9_000_000:
         return 100
 
-    tiers = [
-        (101, 10_000, 3_000),
-        (10_001, 25_000, 4_000),
-        (25_001, 50_000, 5_000),
-        (50_001, 75_000, 7_000),
-        (75_001, 100_000, 10_000),
-        (100_001, 150_000, 12_000),
-        (150_001, 200_000, 15_000),
-        (200_001, 300_000, 20_000),
-        (300_001, 500_000, 25_000),
-        (500_001, 750_000, 30_000),
-        (750_001, 1_000_000, 35_000),
-        (1_000_001, 1_500_000, 40_000),
-        (1_500_001, 2_000_000, 45_000),
-    ]
+    tiers = CS_PRICE_TIERS
     add = 60_000
     for lo, hi, a in tiers:
         if lo <= p <= hi:
@@ -213,7 +216,7 @@ def clean_params(
     *,
     drop: set[str] | None = None,
 ) -> list[tuple[str, str]]:
-    drop_set = {norm_ws(x).casefold() for x in (drop or PARAM_DROP_DEFAULT)}
+    drop_set = (PARAM_DROP_DEFAULT_CF if drop is None else {norm_ws(x).casefold() for x in drop})
     out: list[tuple[str, str]] = []
     seen: set[str] = set()
 
@@ -286,9 +289,9 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
 def fix_text(s: str) -> str:
     t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
     # убираем тройные пустые строки
-    t = re.sub(r"\n{3,}", "\n\n", t)
+    t = _RE_MULTI_NL.sub("\n\n", t)
     # Нормализация частой опечатки в вилках/стандарте (Shuko -> Schuko)
-    t = re.sub(r"\bShuko\b", "Schuko", t, flags=re.I)
+    t = _RE_SHUKO.sub("Schuko", t)
     return t
 
 
@@ -463,6 +466,26 @@ def write_if_changed(path: str, data: str, *, encoding: str = OUTPUT_ENCODING_DE
     return True
 
 
+# Словарь брендов для pick_vendor (упорядочен, расширяем при необходимости)
+CS_BRANDS_MAP = {
+    "hp": "HP",
+    "hewlett": "HP",
+    "canon": "Canon",
+    "epson": "Epson",
+    "brother": "Brother",
+    "samsung": "Samsung",
+    "sv": "SVC",
+    "svc": "SVC",
+    "apc": "APC",
+    "schneider": "Schneider Electric",
+    "asus": "ASUS",
+    "lenovo": "Lenovo",
+    "acer": "Acer",
+    "dell": "Dell",
+    "logitech": "Logitech",
+    "xiaomi": "Xiaomi",
+}
+
 # Пытается определить бренд (vendor) по vendor_src / name / params / description (если пусто — public_vendor)
 def pick_vendor(
     vendor_src: str,
@@ -481,26 +504,7 @@ def pick_vendor(
         + [f"{k} {val}" for k, val in (params or [])]
     ).lower()
 
-    # простой словарь брендов (расширим позже при необходимости)
-    brands = {
-        "hp": "HP",
-        "hewlett": "HP",
-        "canon": "Canon",
-        "epson": "Epson",
-        "brother": "Brother",
-        "samsung": "Samsung",
-        "sv": "SVC",
-        "svc": "SVC",
-        "apc": "APC",
-        "schneider": "Schneider Electric",
-        "asus": "ASUS",
-        "lenovo": "Lenovo",
-        "acer": "Acer",
-        "dell": "Dell",
-        "logitech": "Logitech",
-        "xiaomi": "Xiaomi",
-    }
-    for key, canon in brands.items():
+    for key, canon in CS_BRANDS_MAP.items():
         if re.search(rf"\b{re.escape(key)}\b", hay):
             return canon
 
@@ -585,7 +589,7 @@ def validate_cs_yml(xml: str) -> None:
         errors.append("Найдено слово 'Shuko' (нужно 'Schuko').")
 
     # Служебные параметры не должны просачиваться
-    drop_names = {norm_ws(x).casefold() for x in PARAM_DROP_DEFAULT}
+    drop_names = PARAM_DROP_DEFAULT_CF
 
     # Прогон по офферам
     in_offer = False
@@ -715,4 +719,3 @@ def validate_cs_yml(xml: str) -> None:
 
     if errors:
         raise ValueError("CS-валидация не пройдена:\n- " + "\n- ".join(errors))
-
