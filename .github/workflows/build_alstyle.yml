@@ -53,11 +53,11 @@ jobs:
           set -euo pipefail
           EVENT="${{ github.event_name }}"
           ALMATY_NOW="$(python - <<'PY'
-from datetime import datetime
-from zoneinfo import ZoneInfo
-print(datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S"))
-PY
-)"
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          print(datetime.now(ZoneInfo("Asia/Almaty")).strftime("%Y-%m-%d %H:%M:%S"))
+          PY
+          )"
           echo "CS_FORCE_BUILD_TIME_ALMATY=$ALMATY_NOW" >> "$GITHUB_ENV"
           echo "Event=$EVENT; Almaty now: $ALMATY_NOW; allowed_dom=*; hour=1; day_ok=True; should_run=yes"
 
