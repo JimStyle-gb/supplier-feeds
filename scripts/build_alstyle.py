@@ -24,7 +24,6 @@ from cs.core import (
     next_run_at_hour,
     norm_ws,
     parse_id_set,
-    pick_vendor,
     safe_int,
     stable_id,
     write_if_changed,
@@ -173,18 +172,12 @@ def main() -> int:
 
         vendor_src = norm_ws(_t(o.find("vendor")))
         desc_src = _t(o.find("description"))  # может быть CDATA — ET вернет как text
-        if desc_src is None:
-            desc_src = ""
-
         # цена: сначала purchase_price, потом price
         price_in = safe_int(_t(o.find("purchase_price")))
         if price_in is None:
             price_in = safe_int(_t(o.find("price")))
 
         price = compute_price(price_in)
-
-        vendor = pick_vendor(vendor_src, name, params, desc_src, public_vendor=public_vendor)
-
         out_offers.append(
             OfferOut(
                 oid=oid,
@@ -192,7 +185,7 @@ def main() -> int:
                 name=name,
                 price=price,
                 pictures=pics,
-                vendor=vendor,
+                vendor=vendor_src,
                 params=params,
                 native_desc=desc_src,
             )
@@ -215,7 +208,8 @@ def main() -> int:
     footer = make_footer()
 
     offers_xml = "\n\n".join(
-        [off.to_xml(currency_id=CURRENCY_ID_DEFAULT, public_vendor=public_vendor, param_priority=ALSTYLE_PARAM_PRIORITY) for off in out_offers]
+        off.to_xml(currency_id=CURRENCY_ID_DEFAULT, public_vendor=public_vendor, param_priority=ALSTYLE_PARAM_PRIORITY)
+        for off in out_offers
     )
 
     full = header + "\n" + feed_meta + "\n\n" + offers_xml + "\n" + footer
