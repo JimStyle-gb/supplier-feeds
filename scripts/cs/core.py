@@ -25,9 +25,9 @@ import re
 
 
 # Регексы: десятичная запятая внутри токена (2,44 -> 2.44)
-_RE_DECIMAL_COMMA = re.compile(r\"(?<=\d),(?=\d)\")
+_RE_DECIMAL_COMMA = re.compile(r"(?<=\d),(?=\d)")
 # Регексы: мусорные имена параметров (цифры/числа/Normal)
-_RE_TRASH_PARAM_NUM = re.compile(r\"^[0-9][0-9\s\.,]*$\")
+_RE_TRASH_PARAM_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
 # Регексы для fix_text (компилируем один раз)
 _RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
 _RE_MULTI_NL = re.compile(r"\n{3,}")
