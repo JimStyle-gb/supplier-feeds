@@ -37,9 +37,9 @@ CURRENCY_ID_DEFAULT = "KZT"
 ALMATY_TZ = "Asia/Almaty"
 
 # Заглушка-картинка (если у оффера нет фото)
-PICTURE_PLACEHOLDER_URL_DEFAULT = \"https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg\"
+PICTURE_PLACEHOLDER_URL_DEFAULT = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
 def picture_placeholder() -> str:
-    return (os.getenv(\"CS_PICTURE_PLACEHOLDER_URL\", \"\") or \"\").strip() or PICTURE_PLACEHOLDER_URL_DEFAULT
+    return (os.getenv("CS_PICTURE_PLACEHOLDER_URL", "") or "").strip() or PICTURE_PLACEHOLDER_URL_DEFAULT
 
 
 
