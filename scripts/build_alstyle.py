@@ -5,8 +5,6 @@ AlStyle adapter — сборщик по шаблону CS (использует 
 """
 
 from __future__ import annotations
-from datetime import datetime
-
 import os
 from xml.etree import ElementTree as ET
 
@@ -25,7 +23,6 @@ from cs.core import (
     next_run_at_hour,
     norm_ws,
     parse_id_set,
-    pick_vendor,
     safe_int,
     stable_id,
     write_if_changed,
@@ -122,21 +119,7 @@ def main() -> int:
 
     allowed = parse_id_set(os.getenv("ALSTYLE_CATEGORY_IDS"), ALSTYLE_ALLOWED_CATEGORY_IDS_FALLBACK)
 
-    forced_bt = (os.getenv("CS_FORCE_BUILD_TIME_ALMATY", "") or "").strip()
-
-    if forced_bt:
-
-        try:
-
-            build_time = datetime.strptime(forced_bt, "%Y-%m-%d %H:%M:%S")
-
-        except Exception:
-
-            build_time = now_almaty()
-
-    else:
-
-        build_time = now_almaty()
+    build_time = now_almaty()
     next_run = next_run_at_hour(build_time, hour)
 
     raw = _fetch_xml(url, timeout=timeout, login=login, password=password)
@@ -198,8 +181,12 @@ def main() -> int:
 
         price = compute_price(price_in)
 
-        vendor = pick_vendor(vendor_src, name, params, desc_src, public_vendor=public_vendor)
 
+
+        # vendor: не раскрываем имя поставщика; если vendor_src совпал с поставщиком — считаем пустым
+        vendor_src_norm = norm_ws(vendor_src)
+        if vendor_src_norm.casefold() == ALSTYLE_SUPPLIER.casefold():
+            vendor_src_norm = ""
         out_offers.append(
             OfferOut(
                 oid=oid,
@@ -207,7 +194,7 @@ def main() -> int:
                 name=name,
                 price=price,
                 pictures=pics,
-                vendor=vendor,
+                vendor=vendor_src_norm,
                 params=params,
                 native_desc=desc_src,
             )
