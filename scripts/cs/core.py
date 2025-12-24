@@ -28,7 +28,7 @@ _RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
 _RE_MULTI_NL = re.compile(r"\n{3,}")
 # Регексы: десятичная запятая внутри чисел (2,44 -> 2.44) — включается через env
 _RE_DECIMAL_COMMA = re.compile(r"(?<=\d),(?=\d)")
-_RE_MULTI_COMMA = re.compile(r\"\s*,\s*,+\")
+_RE_MULTI_COMMA = re.compile(r"\s*,\s*,+")
 # Регексы: мусорные имена параметров (цифры/числа/Normal) — включается через env
 _RE_TRASH_PARAM_NAME_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
 
