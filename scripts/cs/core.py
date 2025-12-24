@@ -361,6 +361,8 @@ def build_keywords(
     out: list[str] = []
     seen: set[str] = set()
     for p in parts:
+        if CS_FIX_KEYWORDS_DECIMAL_COMMA:
+            p = _RE_DECIMAL_COMMA.sub(".", p)
         key = p.lower()
         if key in seen:
             continue
