@@ -35,7 +35,7 @@ _RE_TRASH_PARAM_NAME_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
 # Флаги поведения (по умолчанию выключены, чтобы не ломать AlStyle)
 CS_FIX_KEYWORDS_DECIMAL_COMMA = (os.getenv("CS_FIX_KEYWORDS_DECIMAL_COMMA", "0") or "0").strip() == "1"
 CS_DROP_TRASH_PARAM_NAMES = (os.getenv("CS_DROP_TRASH_PARAM_NAMES", "0") or "0").strip() == "1"
-CS_FIX_KEYWORDS_MULTI_COMMA = (os.getenv(\"CS_FIX_KEYWORDS_MULTI_COMMA\", \"0\") or \"0\").strip() == \"1\"
+CS_FIX_KEYWORDS_MULTI_COMMA = (os.getenv("CS_FIX_KEYWORDS_MULTI_COMMA", "0") or "0").strip() == "1"
 # Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
@@ -52,30 +52,30 @@ CS_CITY_TAIL = (
 # WhatsApp блок (единый)
 CS_WA_BLOCK = (
     "<!-- WhatsApp -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<p style=\"text-align:center; margin:0 0 12px;\">"
-    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
-    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
-    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
+    "<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;">"
+    "<p style="text-align:center; margin:0 0 12px;">"
+    "<a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" "
+    "style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
+    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">"
     "&#128172; Написать в WhatsApp</a></p></div>"
 )
 
 # Горизонтальная линия (2px)
-CS_HR_2PX = "<hr style=\"border:none; border-top:2px solid #E7D6B7; margin:12px 0;\" />"
+CS_HR_2PX = "<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />"
 
 # Оплата/Доставка — КАНОНИЧЕСКИЙ текст (как в твоём эталоне)
 CS_PAY_BLOCK = (
     "<!-- Оплата и доставка -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<div style=\"background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;\">"
-    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Оплата</h3>"
-    "<ul style=\"margin:0; padding-left:18px;\">"
+    "<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;">"
+    "<div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;">"
+    "<h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3>"
+    "<ul style="margin:0; padding-left:18px;">"
     "<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>"
-    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#8b0000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
+    "<li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
     "</ul>"
-    "<hr style=\"border:none; border-top:1px solid #E7D6B7; margin:12px 0;\" />"
-    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Доставка по Алматы и Казахстану</h3>"
-    "<ul style=\"margin:0; padding-left:18px;\">"
+    "<hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" />"
+    "<h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3>"
+    "<ul style="margin:0; padding-left:18px;">"
     "<li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>"
     "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li>"
     "<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>"
@@ -455,8 +455,8 @@ def make_feed_meta(
 # Верх файла (минимальный shop+offers; витрина будет в cs_price позже)
 def make_header(build_time: datetime, *, encoding: str = OUTPUT_ENCODING_DEFAULT) -> str:
     return (
-        f"<?xml version=\"1.0\" encoding=\"{encoding}\"?>\n"
-        f"<yml_catalog date=\"{build_time:%Y-%m-%d %H:%M}\">\n"
+        f"<?xml version="1.0" encoding="{encoding}"?>\n"
+        f"<yml_catalog date="{build_time:%Y-%m-%d %H:%M}">\n"
         f"<shop><offers>\n"
     )
 
@@ -582,10 +582,10 @@ class OfferOut:
             vv = xml_escape_text(norm_ws(v))
             if not kk or not vv:
                 continue
-            params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
+            params_xml += f"\n<param name="{kk}">{vv}</param>"
 
         out = (
-            f"<offer id=\"{xml_escape_attr(self.oid)}\" available=\"{bool_to_xml(bool(self.available))}\">\n"
+            f"<offer id="{xml_escape_attr(self.oid)}" available="{bool_to_xml(bool(self.available))}">\n"
             f"<categoryId></categoryId>\n"
             f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
             f"<name>{xml_escape_text(name)}</name>\n"
@@ -606,7 +606,7 @@ def validate_cs_yml(xml: str) -> None:
 
     # Глобальные запреты
     if "<available>" in xml:
-        errors.append("Найден тег <available> (должен быть только available=\"true/false\" в <offer>).")
+        errors.append("Найден тег <available> (должен быть только available="true/false" в <offer>).")
 
     # Shuko не должно встречаться вообще
     if re.search(r"\bShuko\b", xml, flags=re.I):
