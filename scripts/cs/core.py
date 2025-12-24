@@ -23,24 +23,21 @@ import re
 
 
 
-
-# Регексы: десятичная запятая внутри токена (2,44 -> 2.44)
-_RE_DECIMAL_COMMA = re.compile(r"(?<=\d),(?=\d)")
-# Регексы: мусорные имена параметров (цифры/числа/Normal)
-_RE_TRASH_PARAM_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
 # Регексы для fix_text (компилируем один раз)
 _RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
 _RE_MULTI_NL = re.compile(r"\n{3,}")
+# Регексы: десятичная запятая внутри чисел (2,44 -> 2.44) — включается через env
+_RE_DECIMAL_COMMA = re.compile(r"(?<=\d),(?=\d)")
+# Регексы: мусорные имена параметров (цифры/числа/Normal) — включается через env
+_RE_TRASH_PARAM_NAME_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
+
+# Флаги поведения (по умолчанию выключены, чтобы не ломать AlStyle)
+CS_FIX_KEYWORDS_DECIMAL_COMMA = (os.getenv("CS_FIX_KEYWORDS_DECIMAL_COMMA", "0") or "0").strip() == "1"
+CS_DROP_TRASH_PARAM_NAMES = (os.getenv("CS_DROP_TRASH_PARAM_NAMES", "0") or "0").strip() == "1"
 # Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
 ALMATY_TZ = "Asia/Almaty"
-
-# Заглушка-картинка (если у оффера нет фото)
-PICTURE_PLACEHOLDER_URL_DEFAULT = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"
-def picture_placeholder() -> str:
-    return (os.getenv("CS_PICTURE_PLACEHOLDER_URL", "") or "").strip() or PICTURE_PLACEHOLDER_URL_DEFAULT
-
 
 
 
@@ -244,6 +241,10 @@ def clean_params(
         vv = norm_ws(v)
         if not kk or not vv:
             continue
+        # Мусорные имена параметров: цифры/числа/Normal (включается env, чтобы не ломать AlStyle)
+        if CS_DROP_TRASH_PARAM_NAMES:
+            if _RE_TRASH_PARAM_NAME_NUM.match(kk) or kk.casefold() == "normal":
+                continue
 
         # Убираем нулевой мусор в значениях
         vv_compact = vv.strip()
@@ -321,15 +322,6 @@ def normalize_cdata_inner(inner: str) -> str:
 
 
 # Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
-# Нормализует токен для keywords (чтобы запятые внутри чисел не ломали разделитель)
-def _kw_norm_token(tok: str) -> str:
-    t = norm_ws(tok)
-    if not t:
-        return ""
-    # 2,44 -> 2.44
-    t = _RE_DECIMAL_COMMA.sub(".", t)
-    return t
-
 def build_keywords(
     vendor: str,
     name: str,
