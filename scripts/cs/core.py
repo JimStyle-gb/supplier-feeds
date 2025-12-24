@@ -28,12 +28,14 @@ _RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
 _RE_MULTI_NL = re.compile(r"\n{3,}")
 # Регексы: десятичная запятая внутри чисел (2,44 -> 2.44) — включается через env
 _RE_DECIMAL_COMMA = re.compile(r"(?<=\d),(?=\d)")
+_RE_MULTI_COMMA = re.compile(r\"\s*,\s*,+\")
 # Регексы: мусорные имена параметров (цифры/числа/Normal) — включается через env
 _RE_TRASH_PARAM_NAME_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
 
 # Флаги поведения (по умолчанию выключены, чтобы не ломать AlStyle)
 CS_FIX_KEYWORDS_DECIMAL_COMMA = (os.getenv("CS_FIX_KEYWORDS_DECIMAL_COMMA", "0") or "0").strip() == "1"
 CS_DROP_TRASH_PARAM_NAMES = (os.getenv("CS_DROP_TRASH_PARAM_NAMES", "0") or "0").strip() == "1"
+CS_FIX_KEYWORDS_MULTI_COMMA = (os.getenv(\"CS_FIX_KEYWORDS_MULTI_COMMA\", \"0\") or \"0\").strip() == \"1\"
 # Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
