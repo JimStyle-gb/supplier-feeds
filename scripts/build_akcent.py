@@ -24,7 +24,7 @@ from cs.core import (
 )
 
 SUPPLIER_NAME = "AkCent"
-SUPPLIER_URL = "www.ak-cent.kz"
+SUPPLIER_URL = "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml"
 OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
@@ -50,6 +50,15 @@ AKCENT_NAME_PREFIXES: List[str] = [
     "Экономичный набор",
     "Экран",
 ]
+
+# Нормализуем URL (если вдруг пришёл без схемы)
+def _normalize_url(url: str) -> str:
+    u = (url or "").strip()
+    if not u:
+        return u
+    if u.startswith("http://") or u.startswith("https://"):
+        return u
+    return "https://" + u.lstrip("/")
 
 # Проверяем, что название товара начинается с одного из заданных префиксов
 def _passes_name_prefixes(name: str) -> bool:
@@ -169,7 +178,7 @@ def main() -> int:
     build_time = now_almaty()
     next_run = next_run_at_hour(build_time, SCHEDULE_HOUR_ALMATY)
 
-    r = requests.get(SUPPLIER_URL, timeout=90)
+    r = requests.get(_normalize_url(SUPPLIER_URL), timeout=90)
     r.raise_for_status()
     root = ET.fromstring(r.content)
 
