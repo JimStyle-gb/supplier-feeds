@@ -1,5 +1,5 @@
 # build_akcent.py
-# Адаптер AkCent под CS Core: скачать XML -> фильтр по префиксам -> собрать OfferOut -> отрендерить CS YML
+# AkCent -> CS Core (адаптер): скачать -> распарсить -> фильтр -> собрать OfferOut -> собрать CS YML
 
 from __future__ import annotations
 
@@ -19,12 +19,12 @@ from cs.core import (
     next_run_at_hour,
     now_almaty,
     safe_int,
-    validate_cs_yml,
     write_if_changed,
+    validate_cs_yml,
 )
 
 SUPPLIER_NAME = "AkCent"
-SUPPLIER_URL = "https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml"
+SUPPLIER_URL = "www.ak-cent.kz"
 OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
@@ -72,6 +72,7 @@ def _collect_pictures(offer: ET.Element) -> list[str]:
         t = _get_text(p)
         if t:
             pics.append(t)
+    # уникализация (сохраняем порядок)
     out: list[str] = []
     seen: set[str] = set()
     for u in pics:
@@ -90,13 +91,13 @@ def _collect_params(offer: ET.Element) -> list[tuple[str, str]]:
         if k and v:
             out.append((k, v))
     for p in offer.findall("Param"):
-        k = (p.get("Name") or p.get("name") or "").strip()
+        k = (p.get("name") or p.get("Name") or "").strip()
         v = _get_text(p)
         if k and v:
             out.append((k, v))
     return out
 
-# Достаём vendor из vendor/params (если пусто — CS Core сам определит по имени/описанию)
+# Достаём vendor (если пусто — CS Core сам определит бренд по имени/парам/описанию)
 def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]]) -> str:
     v = _get_text(offer.find("vendor"))
     if v:
@@ -110,8 +111,39 @@ def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]]) -> str:
 def _extract_desc(offer: ET.Element) -> str:
     return _get_text(offer.find("description"))
 
-# Достаём исходную цену (purchase_price -> price)
+# Достаём исходную цену:
+# AkCent кладёт цены в <prices><price type="Цена дилерского портала KZT">41727</price> ...</prices>
 def _extract_price_in(offer: ET.Element) -> int:
+    prices = offer.find("prices")
+    if prices is not None:
+        best_any: int | None = None
+        best_rrp: int | None = None
+        for pe in prices.findall("price"):
+            t = (pe.get("type") or "").casefold()
+            cur = (pe.get("currencyId") or "").strip().upper()
+            v = safe_int(_get_text(pe))
+            if not v:
+                continue
+            if cur and cur != "KZT":
+                continue
+
+            # 1) приоритет — дилерская цена
+            if "дилер" in t or "dealer" in t:
+                return int(v)
+
+            # 2) RRP как запасной приоритет
+            if "rrp" in t:
+                best_rrp = int(v)
+
+            if best_any is None:
+                best_any = int(v)
+
+        if best_rrp is not None:
+            return best_rrp
+        if best_any is not None:
+            return best_any
+
+    # запасные варианты (на случай другого формата)
     p1 = safe_int(_get_text(offer.find("purchase_price")))
     if p1:
         return int(p1)
@@ -145,6 +177,9 @@ def main() -> int:
     before = len(offers_in)
 
     out_offers: list[OfferOut] = []
+
+    price_missing = 0
+
     for offer in offers_in:
         oid = (offer.get("id") or "").strip()
         if not oid:
@@ -160,6 +195,8 @@ def main() -> int:
         params = clean_params(params_raw)
 
         price_in = _extract_price_in(offer)
+        if not price_in or int(price_in) < 1:
+            price_missing += 1
         price = compute_price(price_in)
 
         vendor = _extract_vendor(offer, params)
@@ -193,15 +230,20 @@ def main() -> int:
         in_true=in_true,
         in_false=in_false,
     )
+
+    public_vendor = (os.getenv("CS_PUBLIC_VENDOR") or "CS").strip() or "CS"
+
     offers_xml = "\n\n".join(
-        o.to_xml(currency_id="KZT", public_vendor=(os.getenv("CS_PUBLIC_VENDOR") or "CS")) for o in out_offers
+        o.to_xml(currency_id="KZT", public_vendor=public_vendor) for o in out_offers
     )
-    full = header + "\n" + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
+
+    full = header + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
     full = ensure_footer_spacing(full)
     validate_cs_yml(full)
 
     changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
-    print(f"[akcent] before={before} after={after} changed={changed}")
+    print(f"[akcent] before={before} after={after} price_missing={price_missing} changed={changed}")
+
     return 0
 
 if __name__ == "__main__":
