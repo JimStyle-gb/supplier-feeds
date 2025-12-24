@@ -196,15 +196,7 @@ def main() -> int:
     offers_xml = "\n\n".join(
         o.to_xml(currency_id="KZT", public_vendor=(os.getenv("CS_PUBLIC_VENDOR") or "CS")) for o in out_offers
     )
-    full = (
-        header
-        + f"<yml_catalog date=\"{build_time.strftime('%Y-%m-%d %H:%M')}\">\n"
-        + "<shop><offers>\n\n"
-        + meta
-        + "\n\n"
-        + offers_xml
-        + "\n\n</offers>\n</shop>\n</yml_catalog>\n"
-    )
+    full = header + "\n" + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
     full = ensure_footer_spacing(full)
     validate_cs_yml(full)
 
