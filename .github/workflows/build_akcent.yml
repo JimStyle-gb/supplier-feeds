@@ -2,14 +2,6 @@ name: Build_AkCent
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main", "master" ]
-    paths:
-      - ".github/workflows/build_akcent.yml"
-      - "scripts/build_akcent.py"
-      - "scripts/cs/core.py"
-      - "scripts/cs/__init__.py"
-      - "requirements.txt"
   schedule:
     # 02:00 Asia/Almaty (UTC+5) -> 21:00 UTC
     - cron: "0 21 * * *"
@@ -41,16 +33,11 @@ jobs:
           set -euo pipefail
           python -m pip install --upgrade pip
           pip install requests
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          fi
 
-      - name: Gate + set build time (Almaty)
-        id: gate
+      - name: Set build time (Almaty) + AkCent flags
         shell: bash
         run: |
           set -euo pipefail
-          EVENT="${{ github.event_name }}"
           ALMATY_NOW="$(python - <<'PY'
           from datetime import datetime
           from zoneinfo import ZoneInfo
@@ -58,7 +45,9 @@ jobs:
           PY
           )"
           echo "CS_FORCE_BUILD_TIME_ALMATY=$ALMATY_NOW" >> "$GITHUB_ENV"
-          echo "Event=$EVENT; Almaty now: $ALMATY_NOW; allowed_dom=*; hour=2; day_ok=True; should_run=yes"
+          echo "CS_FIX_KEYWORDS_DECIMAL_COMMA=1" >> "$GITHUB_ENV"
+          echo "CS_DROP_TRASH_PARAM_NAMES=1" >> "$GITHUB_ENV"
+          echo "Event=${{ github.event_name }}; Almaty now: $ALMATY_NOW; should_run=yes"
 
       - name: Sync -> build -> commit -> push
         shell: bash
