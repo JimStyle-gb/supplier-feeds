@@ -50,7 +50,7 @@ jobs:
         id: gate
         shell: bash
         run: |
-          python - <<'PY'
+          python - <<'PY' >> $GITHUB_ENV
           import os
           from datetime import datetime, timedelta
 
@@ -108,9 +108,8 @@ jobs:
             from datetime import timedelta
             now = datetime.utcnow() + timedelta(hours=5)
           print("CS_FORCE_BUILD_TIME_ALMATY=" + now.strftime("%Y-%m-%d %H:%M:%S"))
-          PY >> $GITHUB_ENV
-
-      - name: Build feed
+PY
+- name: Build feed
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         shell: bash
         run: |
