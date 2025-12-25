@@ -19,6 +19,7 @@ from cs.core import (
     next_run_at_hour,
     now_almaty,
     safe_int,
+    stable_id,
     write_if_changed,
     validate_cs_yml,
 )
@@ -51,6 +52,26 @@ AKCENT_NAME_PREFIXES: List[str] = [
     "Экран",
 ]
 
+# Приоритет характеристик (как в AlStyle: сначала важное, потом остальное по алфавиту)
+AKCENT_PARAM_PRIORITY = [
+    "Бренд",
+    "Производитель",
+    "Модель",
+    "Артикул",
+    "Тип",
+    "Назначение",
+    "Совместимость",
+    "Цвет",
+    "Размер",
+    "Материал",
+    "Гарантия",
+    "Интерфейс",
+    "Подключение",
+    "Разрешение",
+    "Мощность",
+    "Напряжение",
+]
+
 # Нормализуем URL (если вдруг пришёл без схемы)
 def _normalize_url(url: str) -> str:
     u = (url or "").strip()
@@ -67,6 +88,28 @@ def _passes_name_prefixes(name: str) -> bool:
         if s.startswith(pref):
             return True
     return False
+
+
+# Генерирует стабильный CS-oid для AkCent (offer id == vendorCode)
+# Основной ключ: AC + offer@article (в XML он есть; в id оставляем только ASCII)
+# Важно: если в article есть символы вроде "*", кодируем их как _2A, чтобы не ловить коллизии.
+def _make_oid(offer: ET.Element, name: str) -> str:
+    art = (offer.get("article") or "").strip()
+    if art:
+        out: list[str] = []
+        for ch in art:
+            if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
+                out.append(ch)
+            else:
+                out.append(f"_{ord(ch):02X}")
+        part = "".join(out)
+        if part:
+            return "AC" + part
+
+    # fallback (на случай если поставщик поломает article)
+    sid = (offer.get("id") or "").strip()
+    seed = f"{sid}|{name}".strip("|")
+    return stable_id("AC", seed or name or sid)
 
 # Берём текст узла (без None)
 def _get_text(el: ET.Element | None) -> str:
@@ -190,12 +233,12 @@ def main() -> int:
     price_missing = 0
 
     for offer in offers_in:
-        oid = (offer.get("id") or "").strip()
-        if not oid:
-            continue
-
         name = _get_text(offer.find("name"))
         if not name or not _passes_name_prefixes(name):
+            continue
+
+        oid = _make_oid(offer, name)
+        if not oid:
             continue
 
         available = _extract_available(offer)
@@ -240,10 +283,10 @@ def main() -> int:
         in_false=in_false,
     )
 
-    public_vendor = (os.getenv("CS_PUBLIC_VENDOR") or "CS").strip() or "CS"
+    public_vendor = (os.getenv("PUBLIC_VENDOR") or os.getenv("CS_PUBLIC_VENDOR") or "CS").strip() or "CS"
 
     offers_xml = "\n\n".join(
-        o.to_xml(currency_id="KZT", public_vendor=public_vendor) for o in out_offers
+        o.to_xml(currency_id="KZT", public_vendor=public_vendor, param_priority=AKCENT_PARAM_PRIORITY) for o in out_offers
     )
 
     full = header + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
