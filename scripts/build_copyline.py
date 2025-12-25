@@ -9,6 +9,7 @@ from __future__ import annotations
 import io
 import os
 import re
+import unicodedata
 import time
 import random
 import hashlib
@@ -546,6 +547,56 @@ def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
 # -----------------------------
 # Main
 # -----------------------------
+
+def _cp1251_sanitize(text: str, encoding: str) -> str:
+    # Делает строку безопасной для windows-1251/cp1251: NFKC + выкидывает/заменяет не кодируемые символы.
+    # Это нужно, чтобы сборка не падала из-за символов с сайта (например, '：' FULLWIDTH COLON).
+    if not encoding:
+        return text
+    enc = encoding.lower()
+    if "1251" not in enc and "cp1251" not in enc:
+        return text
+
+    # NFKC переводит fullwidth-пунктуацию в обычную (： -> :, ＋ -> +, и т.д.).
+    text = unicodedata.normalize("NFKC", text)
+
+    try:
+        text.encode("cp1251", errors="strict")
+        return text
+    except UnicodeEncodeError:
+        pass
+
+    # Точечные маппинги (на всякий, если NFKC не убрал)
+    repl = {
+        "：": ":",
+        "，": ",",
+        "．": ".",
+        "／": "/",
+        "－": "-",
+        "（": "(",
+        "）": ")",
+        "％": "%",
+        "＋": "+",
+        "＝": "=",
+        "＜": "<",
+        "＞": ">",
+        "＂": '"',
+        "＇": "'",
+    }
+
+    out = []
+    for ch in text:
+        if ch in repl:
+            out.append(repl[ch])
+            continue
+        try:
+            ch.encode("cp1251", errors="strict")
+            out.append(ch)
+        except UnicodeEncodeError:
+            # выкидываем эмодзи/иероглифы и прочий мусор, чтобы не падать
+            out.append(" ")
+    return "".join(out)
+
 def main() -> int:
     build_time = now_almaty()
     next_run = next_run_dom_1_10_20_at_hour(build_time, 3)
@@ -642,6 +693,7 @@ def main() -> int:
     full = ensure_footer_spacing(full)
     validate_cs_yml(full)
 
+    full = _cp1251_sanitize(full, OUTPUT_ENCODING)
     changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
 
     print(
