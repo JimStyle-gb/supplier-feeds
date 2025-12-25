@@ -9,7 +9,6 @@ from __future__ import annotations
 import io
 import os
 import re
-import unicodedata
 import time
 import random
 import hashlib
@@ -22,7 +21,6 @@ from openpyxl import load_workbook
 
 from cs.core import (
     CURRENCY_ID_DEFAULT,
-    OUTPUT_ENCODING_DEFAULT,
     OfferOut,
     compute_price,
     ensure_footer_spacing,
@@ -45,7 +43,7 @@ XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 KEYWORDS_FILE = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
 
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
-OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING") or OUTPUT_ENCODING_DEFAULT).strip() or "utf-8"
+OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 
 VENDORCODE_PREFIX = (os.getenv("VENDORCODE_PREFIX") or "CL").strip()
 PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or SUPPLIER_NAME).strip() or SUPPLIER_NAME
@@ -548,54 +546,24 @@ def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
 # Main
 # -----------------------------
 
-def _cp1251_sanitize(text: str, encoding: str) -> str:
-    # Делает строку безопасной для windows-1251/cp1251: NFKC + выкидывает/заменяет не кодируемые символы.
-    # Это нужно, чтобы сборка не падала из-за символов с сайта (например, '：' FULLWIDTH COLON).
-    if not encoding:
-        return text
-    enc = encoding.lower()
-    if "1251" not in enc and "cp1251" not in enc:
-        return text
 
-    # NFKC переводит fullwidth-пунктуацию в обычную (： -> :, ＋ -> +, и т.д.).
-    text = unicodedata.normalize("NFKC", text)
 
-    try:
-        text.encode("cp1251", errors="strict")
-        return text
-    except UnicodeEncodeError:
-        pass
-
-    # Точечные маппинги (на всякий, если NFKC не убрал)
-    repl = {
-        "：": ":",
-        "，": ",",
-        "．": ".",
-        "／": "/",
-        "－": "-",
-        "（": "(",
-        "）": ")",
-        "％": "%",
-        "＋": "+",
-        "＝": "=",
-        "＜": "<",
-        "＞": ">",
-        "＂": '"',
-        "＇": "'",
-    }
-
-    out = []
-    for ch in text:
-        if ch in repl:
-            out.append(repl[ch])
-            continue
-        try:
-            ch.encode("cp1251", errors="strict")
-            out.append(ch)
-        except UnicodeEncodeError:
-            # выкидываем эмодзи/иероглифы и прочий мусор, чтобы не падать
-            out.append(" ")
-    return "".join(out)
+def _normalize_text_simple(s: str) -> str:
+    # Быстрая нормализация мусорной пунктуации из HTML (UTF-8 safe).
+    if not s:
+        return s
+    return (
+        s.replace("：", ":")
+         .replace("，", ",")
+         .replace("．", ".")
+         .replace("／", "/")
+         .replace("－", "-")
+         .replace("（", "(")
+         .replace("）", ")")
+         .replace("％", "%")
+         .replace("＋", "+")
+         .replace("＝", "=")
+    )
 
 def main() -> int:
     build_time = now_almaty()
@@ -692,8 +660,6 @@ def main() -> int:
     full = header + "\n" + feed_meta + "\n\n" + offers_xml + "\n" + footer
     full = ensure_footer_spacing(full)
     validate_cs_yml(full)
-
-    full = _cp1251_sanitize(full, OUTPUT_ENCODING)
     changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
 
     print(
