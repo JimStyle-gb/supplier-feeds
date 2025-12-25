@@ -6,11 +6,9 @@ on:
     paths:
       - "scripts/build_copyline.py"
       - "scripts/cs/**"
-      - ".github/workflows/Build_CopyLine.yml"
-      - "docs/copyline_keywords.txt"
+      - ".github/workflows/build_copyline.yml"
   schedule:
-    # 03:00 Алматы = 22:00 UTC (предыдущий день). Чтобы не мудрить с day-of-month в UTC,
-    # запускаем ежедневно и режем по дню месяца в Алматы в gate шаге.
+    # 03:00 Алматы = 22:00 UTC (предыдущий день). Запускаем ежедневно и режем по дню месяца в Алматы в gate шаге.
     - cron: "0 22 * * *"
 
 concurrency:
@@ -24,21 +22,22 @@ jobs:
       contents: write
 
     env:
-      # Расписание (Алматы)
-      SCHEDULE_DOM: "1,10,20"
-      SCHEDULE_HOUR_ALMATY: "3"
-
-      # Поставщик
-      XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
-      KEYWORDS_FILE: "docs/copyline_keywords.txt"
-      OUT_FILE: "docs/copyline.yml"
-      VENDORCODE_PREFIX: "CL"
       PUBLIC_VENDOR: "CopyLine"
       OUTPUT_ENCODING: "utf-8"
       PYTHONUTF8: "1"
 
-      # Python deps
-      PIP_PACKAGES: "requests beautifulsoup4 openpyxl"
+      # расписание (для gate)
+      SCHEDULE_DOM: "1,10,20"
+      SCHEDULE_HOUR_ALMATY: "3"
+
+      # источник прайса
+      XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
+
+      # подсказка для адаптера (если он умеет подкачивать сайт)
+      SEED_URLS: "https://copyline.kz/,https://copyline.kz/goods.html"
+      NO_CRAWL: "0"
+
+      PIP_PACKAGES: "requests lxml openpyxl"
 
     steps:
       - name: Checkout
@@ -50,7 +49,7 @@ jobs:
         id: gate
         shell: bash
         run: |
-          python - <<'PY' >> $GITHUB_ENV
+          python - <<'PY' >> "$GITHUB_OUTPUT"
           import os
           from datetime import datetime, timedelta
 
@@ -62,23 +61,23 @@ jobs:
           now_alm = now_utc + timedelta(hours=5)
 
           if dom == "*":
-            allowed = "*"
-            day_ok = True
+              allowed_set = None
+              allowed = "*"
+              day_ok = True
           else:
-            allowed_set = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
-            allowed = ",".join(str(x) for x in sorted(allowed_set)) if allowed_set else "(empty)"
-            day_ok = (now_alm.day in allowed_set) if allowed_set else False
+              allowed_set = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
+              allowed = ",".join(str(x) for x in sorted(allowed_set)) if allowed_set else "(empty)"
+              day_ok = (now_alm.day in allowed_set) if allowed_set else False
 
           hour_ok = (now_alm.hour == hour)
 
           if event == "schedule":
-            should = "yes" if (day_ok and hour_ok) else "no"
+              should = "yes" if (day_ok and hour_ok) else "no"
           else:
-            should = "yes"
+              should = "yes"
 
-          print(f"::notice::Event={event}; Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; hour_ok={hour_ok}; should_run={should}")
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
-            f.write(f"run={should}\n")
+          print(f"::notice::Event={event}; Almaty now: {now_alm.strftime('%Y-%m-%d %H:%M:%S')}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; hour_ok={hour_ok}; should_run={should}")
+          print(f"run={should}")
           PY
 
       - name: Setup Python
@@ -91,25 +90,11 @@ jobs:
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
           python -m pip install --upgrade pip
           pip install $PIP_PACKAGES
 
-      - name: Set CS_FORCE_BUILD_TIME_ALMATY
-        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
-        shell: bash
-        run: |
-          python - <<'PY'
-          from datetime import datetime
-          try:
-            from zoneinfo import ZoneInfo
-            now = datetime.now(ZoneInfo("Asia/Almaty"))
-          except Exception:
-            from datetime import timedelta
-            now = datetime.utcnow() + timedelta(hours=5)
-          print("CS_FORCE_BUILD_TIME_ALMATY=" + now.strftime("%Y-%m-%d %H:%M:%S"))
-PY
-- name: Build feed
+      - name: Build feed
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         shell: bash
         run: |
@@ -122,32 +107,26 @@ PY
         run: |
           set -euo pipefail
 
-          BRANCH="${GITHUB_REF_NAME}"
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          for attempt in 1 2 3; do
-            echo "Attempt ${attempt}: sync -> commit -> push"
-            git fetch origin "${BRANCH}"
-            git reset --hard "origin/${BRANCH}"
+          git add docs/copyline.yml
 
-            git add docs/copyline.yml || true
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
 
-            if git diff --cached --quiet; then
-              echo "No changes to commit."
+          git commit -m "CopyLine: update feed"
+
+          for i in 1 2 3; do
+            git pull --rebase origin main || true
+            if git push origin main; then
               exit 0
             fi
-
-            git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
-
-            if git push origin "HEAD:${BRANCH}"; then
-              echo "Pushed successfully."
-              exit 0
-            fi
-
-            echo "Push failed (non-fast-forward). Will retry..."
+            echo "Push failed, retry #$i"
             sleep 2
           done
 
-          echo "Failed to push after 3 attempts."
+          echo "Push failed after retries"
           exit 1
