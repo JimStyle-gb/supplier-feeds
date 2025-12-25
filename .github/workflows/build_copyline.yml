@@ -3,47 +3,40 @@ name: Build_CopyLine
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "master" ]
     paths:
-      - ".github/workflows/build_copyline.yml"
       - "scripts/build_copyline.py"
+      - "scripts/cs/**"
+      - ".github/workflows/Build_CopyLine.yml"
       - "docs/copyline_keywords.txt"
-      - "requirements.txt"
-      - "pyproject.toml"
-      - "poetry.lock"
   schedule:
-    # Asia/Almaty (UTC+5) schedule; restriction by day-of-month is enforced via gate (SCHEDULE_DOM).
+    # 03:00 Алматы = 22:00 UTC (предыдущий день). Чтобы не мудрить с day-of-month в UTC,
+    # запускаем ежедневно и режем по дню месяца в Алматы в gate шаге.
     - cron: "0 22 * * *"
 
-permissions:
-  contents: write
-
 concurrency:
-  group: feeds_${{ github.ref_name }}
+  group: copyline-build
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    permissions:
+      contents: write
+
     env:
-      TZ: Asia/Almaty
+      # Расписание (Алматы)
       SCHEDULE_DOM: "1,10,20"
       SCHEDULE_HOUR_ALMATY: "3"
 
-      PIP_PACKAGES: "requests beautifulsoup4 openpyxl"
-
+      # Поставщик
       XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
       KEYWORDS_FILE: "docs/copyline_keywords.txt"
       OUT_FILE: "docs/copyline.yml"
-      OUTPUT_ENCODING: "windows-1251"
-      HTTP_TIMEOUT: "25"
-      REQUEST_DELAY_MS: "120"
-      MIN_BYTES: "900"
-      MAX_CRAWL_MINUTES: "60"
-      MAX_CATEGORY_PAGES: "1200"
-      MAX_WORKERS: "6"
       VENDORCODE_PREFIX: "CL"
+      PUBLIC_VENDOR: "CopyLine"
+
+      # Python deps
+      PIP_PACKAGES: "requests beautifulsoup4 openpyxl"
 
     steps:
       - name: Checkout
@@ -51,36 +44,37 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check Almaty schedule gate
+      - name: Gate (schedule only)
         id: gate
+        shell: bash
         run: |
           python - <<'PY'
-          from datetime import datetime, timedelta
           import os
+          from datetime import datetime, timedelta
 
-          dom = os.getenv("SCHEDULE_DOM", "*").strip()
-          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "0"))
-          event = os.getenv("GITHUB_EVENT_NAME", "").strip()
+          dom = (os.getenv("SCHEDULE_DOM","*") or "*").strip()
+          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY","0") or "0")
+          event = (os.getenv("GITHUB_EVENT_NAME","") or "").strip()
 
           now_utc = datetime.utcnow()
           now_alm = now_utc + timedelta(hours=5)
 
           if dom == "*":
-            day_ok = True
             allowed = "*"
+            day_ok = True
           else:
             allowed_set = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
-            day_ok = now_alm.day in allowed_set
             allowed = ",".join(str(x) for x in sorted(allowed_set)) if allowed_set else "(empty)"
+            day_ok = (now_alm.day in allowed_set) if allowed_set else False
 
-          # Для schedule ограничение (если нужно) делаем только по дню месяца в Алматы.
-          # Час задается самим cron, поэтому не режем запуск из-за редких задержек GitHub.
-          if event != "schedule":
-            should = "yes"
+          hour_ok = (now_alm.hour == hour)
+
+          if event == "schedule":
+            should = "yes" if (day_ok and hour_ok) else "no"
           else:
-            should = "yes" if day_ok else "no"
+            should = "yes"
 
-          print(f"::notice::Event={event}; Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; should_run={should}")
+          print(f"::notice::Event={event}; Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; hour_ok={hour_ok}; should_run={should}")
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
             f.write(f"run={should}\n")
           PY
@@ -93,31 +87,48 @@ jobs:
 
       - name: Install deps
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+        shell: bash
         run: |
           set -e
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          fi
           pip install $PIP_PACKAGES
 
-      - name: Build + commit + push docs/copyline.yml (no conflicts)
-        if: ${{ (github.event_name != 'pull_request') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && (github.event_name != 'schedule' || steps.gate.outputs.run == 'yes') }}
+      - name: Set CS_FORCE_BUILD_TIME_ALMATY
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          try:
+            from zoneinfo import ZoneInfo
+            now = datetime.now(ZoneInfo("Asia/Almaty"))
+          except Exception:
+            from datetime import timedelta
+            now = datetime.utcnow() + timedelta(hours=5)
+          print("CS_FORCE_BUILD_TIME_ALMATY=" + now.strftime("%Y-%m-%d %H:%M:%S"))
+          PY >> $GITHUB_ENV
+
+      - name: Build feed
+        if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_copyline.py
+
+      - name: Commit + push docs/copyline.yml (retry)
+        if: ${{ github.event_name != 'pull_request' && (github.event_name != 'schedule' || steps.gate.outputs.run == 'yes') }}
+        shell: bash
         run: |
           set -euo pipefail
 
           BRANCH="${GITHUB_REF_NAME}"
-
           git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           for attempt in 1 2 3; do
-            echo "Attempt $attempt: sync -> build -> commit -> push"
-
-            git fetch origin "$BRANCH"
-            git checkout -B "$BRANCH" "origin/$BRANCH"
-
-            python scripts/build_copyline.py
+            echo "Attempt ${attempt}: sync -> commit -> push"
+            git fetch origin "${BRANCH}"
+            git reset --hard "origin/${BRANCH}"
 
             git add docs/copyline.yml || true
 
@@ -128,7 +139,7 @@ jobs:
 
             git commit -m "chore(copyline): update docs/copyline.yml [skip ci]"
 
-            if git push origin "HEAD:$BRANCH"; then
+            if git push origin "HEAD:${BRANCH}"; then
               echo "Pushed successfully."
               exit 0
             fi
