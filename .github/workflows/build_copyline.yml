@@ -37,7 +37,7 @@ jobs:
       SEED_URLS: "https://copyline.kz/,https://copyline.kz/goods.html"
       NO_CRAWL: "0"
 
-      PIP_PACKAGES: "requests lxml openpyxl"
+      PIP_PACKAGES: "requests beautifulsoup4 lxml openpyxl"
 
     steps:
       - name: Checkout
