@@ -42,6 +42,23 @@ BASE_URL = "https://copyline.kz"
 XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 KEYWORDS_FILE = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
 
+# Вариант C: фильтрация CopyLine по префиксам названия (строго с начала строки)
+# Важно для стабильного ассортимента и чтобы не тянуть UPS/прочее из прайса.
+COPYLINE_INCLUDE_PREFIXES = [
+    "drum",
+    "developer",
+    "девелопер",
+    "драм",
+    "кабель сетевой",
+    "картридж",
+    "термоблок",
+    "термоэлемент",
+    "тонер-картридж",
+    "тонер картридж",
+]
+
+
+
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 
@@ -226,10 +243,8 @@ def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
     data_start = row1 + 1
     name_col, vendor_col, price_col = idx["name"], idx["vendor_code"], idx["price"]
     stock_col = idx.get("stock")
-
-    kws = load_keywords(KEYWORDS_FILE)
+    kws = COPYLINE_INCLUDE_PREFIXES
     start_patterns = compile_startswith_patterns(kws)
-
     source_rows = sum(1 for r in rows[data_start:] if any(v is not None and str(v).strip() for v in r))
 
     out: List[Dict[str, Any]] = []
@@ -238,7 +253,7 @@ def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
         if not name_raw:
             continue
         title = title_clean(safe_str(name_raw))
-        if kws and not title_startswith_strict(title, start_patterns):
+        if not title_startswith_strict(title, start_patterns):
             continue
 
         dealer = to_number(r[price_col])
