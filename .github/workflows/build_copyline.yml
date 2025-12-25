@@ -34,6 +34,8 @@ jobs:
       OUT_FILE: "docs/copyline.yml"
       VENDORCODE_PREFIX: "CL"
       PUBLIC_VENDOR: "CopyLine"
+      OUTPUT_ENCODING: "utf-8"
+      PYTHONUTF8: "1"
 
       # Python deps
       PIP_PACKAGES: "requests beautifulsoup4 openpyxl"
