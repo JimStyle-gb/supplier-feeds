@@ -394,24 +394,61 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     # Title
     h = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
     title = title_clean(safe_str(h.get_text(" ", strip=True) if h else ""))
+    # Picture (на сайте почти всегда есть фото; вытаскиваем максимально надёжно)
+    src = ""
+    cand: list[str] = []
 
-    # Picture
-    src = None
-    imgel = s.find("img", id=re.compile(r"^main_image_", re.I))
+    # 1) og:image
+    ogi = s.find("meta", attrs={"property": "og:image"})
+    if ogi and ogi.get("content"):
+        cand.append(safe_str(ogi["content"]))
+
+    # 2) rel=image_src
+    lnk = s.find("link", attrs={"rel": "image_src"})
+    if lnk and lnk.get("href"):
+        cand.append(safe_str(lnk["href"]))
+
+    # 3) явная большая картинка/превью
+    imgel = (
+        s.select_one("img#main-image")
+        or s.select_one("img#product-image")
+        or s.select_one("img.jshop_img")
+        or s.select_one("img.product-image")
+    )
     if imgel:
-        src = imgel.get("src") or imgel.get("data-src")
-    if not src:
-        ogi = s.find("meta", attrs={"property": "og:image"})
-        if ogi and ogi.get("content"):
-            src = safe_str(ogi["content"])
-    if not src:
-        for img in s.find_all("img"):
-            t = safe_str(img.get("src") or img.get("data-src"))
-            if any(k in t for k in ("img_products", "/products/", "/img/")):
-                src = t
+        for a in ("data-src", "data-original", "data-lazy", "src", "srcset"):
+            v = imgel.get(a)
+            if v:
+                cand.append(safe_str(v))
                 break
-    pic = normalize_img_to_full(src)
 
+    # 4) любые img на странице
+    for img in s.find_all("img"):
+        for a in ("data-src", "data-original", "data-lazy", "src", "srcset"):
+            t = safe_str(img.get(a))
+            if not t:
+                continue
+            if any(k in t for k in ("img_products", "jshopping", "/products/", "/img/")) or re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", t, flags=re.I):
+                cand.append(t)
+                break
+
+    # 5) иногда большая картинка лежит в <a href="...img_products...">
+    for a in s.find_all("a"):
+        href = safe_str(a.get("href"))
+        if href and (("img_products" in href) or re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", href, flags=re.I)):
+            cand.append(href)
+
+    # выберем первую нормальную
+    for t in cand:
+        t = t.strip()
+        if not t:
+            continue
+        if t.startswith("data:"):
+            continue
+        src = t
+        break
+
+    pic = normalize_img_to_full(src)
     # Description + params
     desc_txt = ""
     params: List[Tuple[str, str]] = []
@@ -455,7 +492,7 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         "title": title,
         "desc": desc_txt.strip(),
         "pic": pic,
-        "params": params2,
+        "params": [(k, v) for (k, v) in params2 if not re.fullmatch(r"\d{1,4}", k.strip())],
         "url": url,
     }
 
@@ -527,7 +564,7 @@ def collect_product_urls(category_url: str) -> List[str]:
     return urls
 
 
-def build_site_index() -> Dict[str, Dict[str, Any]]:
+def build_site_index() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
     if NO_CRAWL:
         print("[site] NO_CRAWL=1 -> skip site parsing", flush=True)
         return {}
@@ -556,7 +593,8 @@ def build_site_index() -> Dict[str, Dict[str, Any]]:
     # параллельный парсинг карточек
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
-    idx: Dict[str, Dict[str, Any]] = {}
+    sku_idx: Dict[str, Dict[str, Any]] = {}
+    title_idx: Dict[str, Dict[str, Any]] = {}
     with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex:
         futs = [ex.submit(parse_product_page, u) for u in uniq]
         for fut in as_completed(futs):
@@ -579,12 +617,21 @@ def build_site_index() -> Dict[str, Dict[str, Any]]:
                 variants.add("C" + sku)
 
             for v in variants:
-                idx[norm_ascii(v)] = it
-
-    print(f"[site] indexed={len(idx)}", flush=True)
-    return idx
+                sku_idx[norm_ascii(v)] = it
 
 
+            # fallback: индекс по названию (для случаев, когда sku на сайте не вытащили идеально)
+            t = title_clean(safe_str(it.get("title") or ""))
+            if t:
+                k_full = norm_ascii(t)
+                if k_full:
+                    title_idx[k_full] = it
+                k30 = norm_ascii(t[:30])
+                if k30:
+                    title_idx.setdefault(k30, it)
+
+    print(f"[site] indexed={len(sku_idx)}; title_index={len(title_idx)}", flush=True)
+    return sku_idx, title_idx
 # -----------------------------
 # Планировщик для FEED_META
 # -----------------------------
@@ -641,7 +688,7 @@ def main() -> int:
 
     before, items = parse_xlsx_items(xlsx_bytes)
 
-    site_index = build_site_index()
+    site_sku_index, site_title_index = build_site_index()
 
     # Собираем offers (важно: стабильные oid!)
     out_offers: List[OfferOut] = []
@@ -653,7 +700,11 @@ def main() -> int:
 
         # найдём карточку на сайте (если есть)
         found = None
-        candidates = {raw_v, raw_v.replace("-", "")}
+        candidates = {raw_v, raw_v.replace("-", "")} 
+        raw_v0 = raw_v.lstrip("0")
+        if raw_v0 and raw_v0 != raw_v:
+            candidates.add(raw_v0)
+            candidates.add(raw_v0.replace("-", ""))
         if re.fullmatch(r"[Cc]\d+", raw_v):
             candidates.add(raw_v[1:])
         if re.fullmatch(r"\d+", raw_v):
@@ -661,9 +712,18 @@ def main() -> int:
 
         for v in candidates:
             kn = norm_ascii(v)
-            if kn in site_index:
-                found = site_index[kn]
+            if kn in site_sku_index:
+                found = site_sku_index[kn]
                 break
+
+        if not found:
+            tk_full = norm_ascii(title_clean(it["title"]))
+            if tk_full and tk_full in site_title_index:
+                found = site_title_index[tk_full]
+            else:
+                tk30 = norm_ascii(title_clean(it["title"])[:30])
+                if tk30 and tk30 in site_title_index:
+                    found = site_title_index[tk30]
 
         name = it["title"]
         native_desc = it["title"]
@@ -683,15 +743,9 @@ def main() -> int:
         p_min: List[Tuple[str, str]] = []
         if kind:
             p_min.append(("Тип", kind))
-        vraw = safe_str(it.get("vendorCode_raw") or "").strip()
-        if vraw:
-            p_min.append(("Артикул", vraw))
         unit_raw = safe_str(it.get("unit_raw") or "").strip()
         if unit_raw and unit_raw != "-":
             p_min.append(("Ед. изм.", unit_raw))
-        stock_raw = safe_str(it.get("stock_raw") or "").strip()
-        if stock_raw and stock_raw != "-":
-            p_min.append(("Остаток", stock_raw))
         params = _merge_params(params, p_min)
 
         price = compute_price(int(it.get("dealer_price") or 0))
