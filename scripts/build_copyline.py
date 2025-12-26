@@ -410,58 +410,130 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     h = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
     title = title_clean(safe_str(h.get_text(" ", strip=True) if h else ""))
     # Picture (на сайте почти всегда есть фото; вытаскиваем максимально надёжно)
+
     src = ""
+
     cand: list[str] = []
 
-    # 1) og:image
+
+    # 0) основная картинка (как на странице): <a class="lightbox" id="main_image_full_..."> href="...full_*.jpg"
+
+    a_full = s.select_one('a.lightbox[id^="main_image_full_"]')
+
+    if a_full and a_full.get("href"):
+
+        cand.append(safe_str(a_full["href"]))
+
+
+    # 1) og:image (обычно ведёт на img_products/*.jpg)
+
     ogi = s.find("meta", attrs={"property": "og:image"})
+
     if ogi and ogi.get("content"):
+
         cand.append(safe_str(ogi["content"]))
 
+
     # 2) rel=image_src
+
     lnk = s.find("link", attrs={"rel": "image_src"})
+
     if lnk and lnk.get("href"):
+
         cand.append(safe_str(lnk["href"]))
 
-    # 3) явная большая картинка/превью
-    imgel = (
-        s.select_one("img#main-image")
-        or s.select_one("img#product-image")
-        or s.select_one("img.jshop_img")
-        or s.select_one("img.product-image")
-    )
-    if imgel:
+
+    # 3) main_image_* / itemprop=image
+
+    img_main = s.select_one('img[id^="main_image_"]') or s.find("img", attrs={"itemprop": "image"})
+
+    if img_main:
+
         for a in ("data-src", "data-original", "data-lazy", "src", "srcset"):
-            v = imgel.get(a)
+
+            v = img_main.get(a)
+
             if v:
+
                 cand.append(safe_str(v))
+
                 break
 
-    # 4) любые img на странице
+
+    # 4) любые img на странице (отбираем только похожие на фото товара)
+
     for img in s.find_all("img"):
+
         for a in ("data-src", "data-original", "data-lazy", "src", "srcset"):
+
             t = safe_str(img.get(a))
+
             if not t:
+
                 continue
+
+            if "thumb_" in t:
+
+                continue
+
             if any(k in t for k in ("img_products", "jshopping", "/products/", "/img/")) or re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", t, flags=re.I):
+
                 cand.append(t)
+
                 break
 
-    # 5) иногда большая картинка лежит в <a href="...img_products...">
+
+    # 5) иногда большая картинка лежит в <a href="...full_...jpg">
+
     for a in s.find_all("a"):
+
         href = safe_str(a.get("href"))
-        if href and (("img_products" in href) or re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", href, flags=re.I)):
+
+        if not href:
+
+            continue
+
+        if "thumb_" in href:
+
+            continue
+
+        if ("img_products" in href) or re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", href, flags=re.I):
+
             cand.append(href)
 
-    # выберем первую нормальную
+
+    # выберем лучшую: full_ > не-thumb > первая
+
+    src = ""
+
     for t in cand:
-        t = t.strip()
-        if not t:
+
+        t = (t or "").strip()
+
+        if not t or t.startswith("data:"):
+
             continue
-        if t.startswith("data:"):
-            continue
-        src = t
-        break
+
+        if "/full_" in t:
+
+            src = t
+
+            break
+
+    if not src:
+
+        for t in cand:
+
+            t = (t or "").strip()
+
+            if not t or t.startswith("data:") or "thumb_" in t:
+
+                continue
+
+            src = t
+
+            break
+
 
     pic = normalize_img_to_full(src)
     # Description + params
