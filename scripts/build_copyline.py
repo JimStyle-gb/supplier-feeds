@@ -65,6 +65,17 @@ PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or SUPPLIER_NAME).strip() or SUPPLIE
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "60"))
+# HTTP headers (нужно для requests.get; иначе некоторые ответы могут быть урезаны)
+UA = {
+    "User-Agent": os.getenv(
+        "HTTP_UA",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    ),
+    "Accept": "*/*",
+    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.7,en;q=0.5",
+    "Connection": "keep-alive",
+}
+
 
 
 def _sleep_jitter(ms: int) -> None:
