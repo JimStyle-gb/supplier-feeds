@@ -216,6 +216,7 @@ def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60) -> Tuple[i
             name_col = next((j for j, c in enumerate(row0) if "номенклатура" in c), None)
             vendor_col = next((j for j, c in enumerate(row1) if "артикул" in c), None)
             price_col = next((j for j, c in enumerate(row1) if "цена" in c or "опт" in c), None)
+            unit_col = next((j for j, c in enumerate(row1) if c.strip().startswith("ед")), None)
             stock_col = (
                 next((j for j, c in enumerate(row0) if "остаток" in c), None)
                 or next((j for j, c in enumerate(row1) if "остаток" in c), None)
@@ -227,6 +228,53 @@ def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60) -> Tuple[i
                 return i, i + 1, idx
 
     return -1, -1, {}
+
+
+
+def _derive_kind(title: str) -> str:
+    t = (title or "").strip().lower()
+    if not t:
+        return ""
+    if t.startswith("тонер-картридж") or t.startswith("тонер картридж"):
+        return "Тонер-картридж"
+    if t.startswith("картридж"):
+        return "Картридж"
+    if t.startswith("кабель сетевой"):
+        return "Кабель сетевой"
+    if t.startswith("термоблок"):
+        return "Термоблок"
+    if t.startswith("термоэлемент"):
+        return "Термоэлемент"
+    if t.startswith("девелопер") or t.startswith("developer"):
+        return "Девелопер"
+    if t.startswith("драм") or t.startswith("drum"):
+        return "Драм-картридж"
+    return ""
+
+def _merge_params(existing: List[Tuple[str, str]], add: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+    # Склеиваем параметры без дублей, и выкидываем мусорные ключи (например, "3").
+    seen = set()
+    out: List[Tuple[str, str]] = []
+
+    def push(k: str, v: str) -> None:
+        kk = (k or "").strip()
+        vv = (v or "").strip()
+        if not kk or not vv:
+            return
+        if kk.isdigit():
+            return
+        key = (kk.lower(), vv.lower())
+        if key in seen:
+            return
+        seen.add(key)
+        out.append((kk, vv))
+
+    for k, v in (existing or []):
+        push(k, v)
+    for k, v in (add or []):
+        push(k, v)
+
+    return out
 
 
 def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
@@ -243,6 +291,7 @@ def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
     data_start = row1 + 1
     name_col, vendor_col, price_col = idx["name"], idx["vendor_code"], idx["price"]
     stock_col = idx.get("stock")
+    unit_col = idx.get("unit")
     kws = COPYLINE_INCLUDE_PREFIXES
     start_patterns = compile_startswith_patterns(kws)
     source_rows = sum(1 for r in rows[data_start:] if any(v is not None and str(v).strip() for v in r))
@@ -280,6 +329,8 @@ def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
                 "vendorCode_raw": vcode,
                 "dealer_price": int(round(float(dealer))),
                 "available": bool(available),
+                "stock_raw": safe_str(r[stock_col]).strip() if (stock_col is not None and stock_col < len(r)) else "",
+                "unit_raw": safe_str(r[unit_col]).strip() if (unit_col is not None and unit_col < len(r)) else "",
             }
         )
 
@@ -626,6 +677,22 @@ def main() -> int:
             if found.get("pic"):
                 pictures = [safe_str(found.get("pic"))]
             params = list(found.get("params") or [])
+
+        # Минимальные характеристики из прайса (чтобы у всех товаров были params)
+        kind = _derive_kind(name)
+        p_min: List[Tuple[str, str]] = []
+        if kind:
+            p_min.append(("Тип", kind))
+        vraw = safe_str(it.get("vendorCode_raw") or "").strip()
+        if vraw:
+            p_min.append(("Артикул", vraw))
+        unit_raw = safe_str(it.get("unit_raw") or "").strip()
+        if unit_raw and unit_raw != "-":
+            p_min.append(("Ед. изм.", unit_raw))
+        stock_raw = safe_str(it.get("stock_raw") or "").strip()
+        if stock_raw and stock_raw != "-":
+            p_min.append(("Остаток", stock_raw))
+        params = _merge_params(params, p_min)
 
         price = compute_price(int(it.get("dealer_price") or 0))
 
