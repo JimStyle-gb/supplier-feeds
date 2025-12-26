@@ -67,6 +67,21 @@ PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or SUPPLIER_NAME).strip() or SUPPLIE
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "60"))
+
+
+def jitter_sleep(ms: int) -> None:
+    # Небольшая пауза между запросами (с джиттером), чтобы сайт не резал по частоте.
+    try:
+        v = int(ms)
+    except Exception:
+        v = 0
+    if v <= 0:
+        return
+    base = v / 1000.0
+    factor = 0.8 + (random.random() * 0.4)  # +/- 20%
+    time.sleep(base * factor)
+
+
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "10"))
 
 MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "240"))
