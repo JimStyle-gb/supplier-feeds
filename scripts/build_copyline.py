@@ -39,7 +39,6 @@ SUPPLIER_URL_DEFAULT = "https://copyline.kz/goods.html"
 BASE_URL = "https://copyline.kz"
 
 XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
-KEYWORDS_FILE = os.getenv("KEYWORDS_FILE", "docs/copyline_keywords.txt")
 
 # Вариант C: фильтрация CopyLine по префиксам названия (строго с начала строки)
 # Важно для стабильного ассортимента и чтобы не тянуть UPS/прочее из прайса.
@@ -68,40 +67,6 @@ HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "60"))
 
 
-def jitter_sleep(ms: int) -> None:
-    # Небольшая пауза между запросами (с джиттером), чтобы сайт не резал по частоте.
-    try:
-        v = int(ms)
-    except Exception:
-        v = 0
-    if v <= 0:
-        return
-    base = v / 1000.0
-    factor = 0.8 + (random.random() * 0.4)  # +/- 20%
-    time.sleep(base * factor)
-
-
-MAX_WORKERS = int(os.getenv("MAX_WORKERS", "10"))
-
-MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "240"))
-MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "8"))
-# Если сайт будет мешать — можно временно отключить парсинг сайта (останутся товары с placeholder-картинкой и описанием из XLSX)
-NO_CRAWL = (os.getenv("NO_CRAWL", "") or "").strip().lower() in ("1", "true", "yes", "y")
-
-UA = {
-    "User-Agent": os.getenv(
-        "UA",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
-    ),
-    "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.6,en;q=0.4",
-}
-
-PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$", re.I)
-
-
-# -----------------------------
-# Утилиты
-# -----------------------------
 def _sleep_jitter(ms: int) -> None:
     d = max(0.0, ms / 1000.0)
     time.sleep(d * (1.0 + random.uniform(-0.15, 0.15)))
@@ -191,15 +156,6 @@ def oid_from_vendor_code_raw(raw: str) -> str:
         h = hashlib.md5((raw or "empty").encode("utf-8", errors="ignore")).hexdigest()[:10].upper()
         return f"{VENDORCODE_PREFIX}{h}"
     return f"{VENDORCODE_PREFIX}{raw}"
-
-
-def load_keywords(path: str) -> List[str]:
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            kws = [ln.strip() for ln in f.readlines()]
-        return [kw for kw in kws if kw and not kw.startswith("#")]
-    except Exception:
-        return []
 
 
 def compile_startswith_patterns(kws: Sequence[str]) -> List[re.Pattern]:
@@ -676,7 +632,7 @@ def collect_product_urls(category_url: str, limit_pages: int) -> List[str]:
             break
         seen_pages.add(page)
 
-        jitter_sleep(REQUEST_DELAY_MS)
+        _sleep_jitter(REQUEST_DELAY_MS)
         b = http_get(page, tries=3)
         if not b:
             break
@@ -781,23 +737,6 @@ def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
 # -----------------------------
 
 
-
-def _normalize_text_simple(s: str) -> str:
-    # Быстрая нормализация мусорной пунктуации из HTML (UTF-8 safe).
-    if not s:
-        return s
-    return (
-        s.replace("：", ":")
-         .replace("，", ",")
-         .replace("．", ".")
-         .replace("／", "/")
-         .replace("－", "-")
-         .replace("（", "(")
-         .replace("）", ")")
-         .replace("％", "%")
-         .replace("＋", "+")
-         .replace("＝", "=")
-    )
 
 def main() -> int:
     build_time = now_almaty()
