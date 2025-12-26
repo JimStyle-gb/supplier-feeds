@@ -391,6 +391,12 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     skuel = s.find(attrs={"itemprop": "sku"})
     if skuel:
         sku = safe_str(skuel.get_text(" ", strip=True))
+
+    # jshopping: Артикул часто лежит тут: <span id="product_code">101942</span>
+    if not sku:
+        pc = s.find(id="product_code")
+        if pc:
+            sku = safe_str(pc.get_text(" ", strip=True))
     if not sku:
         txt = s.get_text(" ", strip=True)
         m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", txt, flags=re.I)
@@ -700,6 +706,10 @@ def build_site_index() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, A
                     variants.add(sku[1:])
                 if re.fullmatch(r"\d+", sku):
                     variants.add("C" + sku)
+                    sku0 = sku.lstrip(\"0\")
+                    if sku0 and sku0 != sku:
+                        variants.add(sku0)
+                        variants.add(\"C\" + sku0)
 
                 for v in variants:
                     kn = norm_ascii(v)
@@ -786,6 +796,10 @@ def main() -> int:
         # найдём карточку на сайте (если есть)
         found = None
         candidates = {raw_v, raw_v.replace("-", "")} 
+        raw_v0 = raw_v.lstrip("0")
+        if raw_v0 and raw_v0 != raw_v:
+            candidates.add(raw_v0)
+            candidates.add(raw_v0.replace("-", "")) 
         raw_v0 = raw_v.lstrip("0")
         if raw_v0 and raw_v0 != raw_v:
             candidates.add(raw_v0)
