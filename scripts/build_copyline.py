@@ -706,10 +706,10 @@ def build_site_index() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, A
                     variants.add(sku[1:])
                 if re.fullmatch(r"\d+", sku):
                     variants.add("C" + sku)
-                    sku0 = sku.lstrip(\"0\")
+                    sku0 = sku.lstrip("0")
                     if sku0 and sku0 != sku:
                         variants.add(sku0)
-                        variants.add(\"C\" + sku0)
+                        variants.add("C" + sku0)
 
                 for v in variants:
                     kn = norm_ascii(v)
