@@ -703,7 +703,7 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
         print("[site] no category urls found", flush=True)
         return {}
 
-    pages_budget = max(1, MAX_CATEGORY_PAGES // max(1, len(cats)))
+    pages_budget = MAX_CATEGORY_PAGES
 
     product_urls: List[str] = []
     for cu in cats:
