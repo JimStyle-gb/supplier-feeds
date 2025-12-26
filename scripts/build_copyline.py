@@ -69,6 +69,8 @@ HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "60"))
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "10"))
 
+MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "240"))
+MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "8"))
 # Если сайт будет мешать — можно временно отключить парсинг сайта (останутся товары с placeholder-картинкой и описанием из XLSX)
 NO_CRAWL = (os.getenv("NO_CRAWL", "") or "").strip().lower() in ("1", "true", "yes", "y")
 
@@ -403,14 +405,9 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         if m:
             sku = m.group(1)
 
+
     if not sku:
-        # запасной вариант: попробуем вытащить код из URL (часто есть номер/код в slug)
-        slug = url.rsplit("/", 1)[-1]
-        slug = slug.split("?", 1)[0]
-        # берём первые длинные токены/цифры
-        m2 = re.search(r"(\d{4,}|[A-Za-z0-9][A-Za-z0-9\-\._]{3,})", slug)
-        if m2:
-            sku = m2.group(1)
+        return None
 
     # Title
     h = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
@@ -542,6 +539,9 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
 
 
     pic = normalize_img_to_full(src)
+
+    if not pic:
+        return None
     # Description + params
     desc_txt = ""
     params: List[Tuple[str, str]] = []
@@ -591,145 +591,157 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
 
 
 def discover_relevant_category_urls() -> List[str]:
-    # Берём ссылки из /goods.html и главной, фильтруем по ключевым словам в тексте ссылки или в URL
+    # Берём ссылки из /goods.html и главной, фильтруем по словам в тексте ссылки или в URL.
     seeds = [f"{BASE_URL}/", f"{BASE_URL}/goods.html"]
     pages: List[Tuple[str, BeautifulSoup]] = []
     for u in seeds:
-        b = http_get(u)
+        b = http_get(u, tries=3)
         if b:
             pages.append((u, soup_of(b)))
     if not pages:
         return []
 
-    kws = load_keywords(KEYWORDS_FILE)
+    kws = [k.strip() for k in COPYLINE_INCLUDE_PREFIXES if k.strip()]
     urls: List[str] = []
     seen = set()
 
     for base, s in pages:
         for a in s.find_all("a", href=True):
-            txt = safe_str(a.get_text(" ", strip=True))
-            absu = requests.compat.urljoin(base, a["href"])
+            txt = safe_str(a.get_text(" ", strip=True) or "")
+            absu = requests.compat.urljoin(base, safe_str(a["href"]))
             if "copyline.kz" not in absu:
                 continue
             if "/goods/" not in absu and not absu.endswith("/goods.html"):
                 continue
 
             ok = False
-            if kws:
-                ok = any(re.search(r"(?i)(?<!\w)" + re.escape(kw).replace(r"\ ", " ") + r"(?!\w)", txt) for kw in kws)
-                if not ok:
-                    slug = absu.lower()
-                    ok = any(kw.lower().replace(" ", "") in slug.replace("-", "").replace("_", "") for kw in kws)
-            else:
-                ok = True
+            for kw in kws:
+                if re.search(r"(?i)(?<!\w)" + re.escape(kw).replace(r"\ ", " ") + r"(?!\w)", txt):
+                    ok = True
+                    break
 
             if not ok:
-                continue
-            if absu in seen:
-                continue
-            seen.add(absu)
-            urls.append(absu)
+                slug = absu.lower()
+                if any(h in slug for h in [
+                    "drum", "developer", "fuser", "toner", "cartridge",
+                    "драм", "девелопер", "фьюзер", "термоблок", "термоэлемент", "cartridg",
+                    "кабель", "cable",
+                ]):
+                    ok = True
 
-    return urls[:80]
+            if ok and absu not in seen:
+                seen.add(absu)
+                urls.append(absu)
+
+    return list(dict.fromkeys(urls))
 
 
-def collect_product_urls(category_url: str) -> List[str]:
-    b = http_get(category_url, tries=3)
-    if not b:
-        return []
-    s = soup_of(b)
-
-    urls: List[str] = []
-    seen = set()
-
+def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
+    ln = s.find("link", attrs={"rel": "next"})
+    if ln and ln.get("href"):
+        return requests.compat.urljoin(page_url, safe_str(ln["href"]))
+    a = s.find("a", class_=lambda c: c and "next" in safe_str(c).lower())
+    if a and a.get("href"):
+        return requests.compat.urljoin(page_url, safe_str(a["href"]))
     for a in s.find_all("a", href=True):
-        href = safe_str(a["href"])
-        if not href:
-            continue
-        if not PRODUCT_RE.search(href):
-            continue
-        u = requests.compat.urljoin(category_url, href)
-        if u in seen:
-            continue
-        seen.add(u)
-        urls.append(u)
-
-    return urls
+        txt = safe_str(a.get_text(" ", strip=True) or "").lower()
+        if txt in ("следующая", "вперед", "вперёд", "next", ">"):
+            return requests.compat.urljoin(page_url, safe_str(a["href"]))
+    return None
 
 
-def build_site_index() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+def collect_product_urls(category_url: str, limit_pages: int) -> List[str]:
+    # Собирает ссылки на товары внутри категории, проходя пагинацию.
+    urls: List[str] = []
+    seen_pages = set()
+    page = category_url
+    pages_done = 0
+
+    while page and pages_done < limit_pages:
+        if page in seen_pages:
+            break
+        seen_pages.add(page)
+
+        jitter_sleep(REQUEST_DELAY_MS)
+        b = http_get(page, tries=3)
+        if not b:
+            break
+        s = soup_of(b)
+
+        for a in s.find_all("a", href=True):
+            absu = requests.compat.urljoin(page, safe_str(a["href"]))
+            if PRODUCT_RE.search(absu):
+                urls.append(absu)
+
+        page = _category_next_url(s, page)
+        pages_done += 1
+
+    return list(dict.fromkeys(urls))
+
+
+def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Dict[str, Any]], Dict[str, Dict[str, Any]]]:
     if NO_CRAWL:
         print("[site] NO_CRAWL=1 -> skip site parsing", flush=True)
-        return {}, {}
-    cat_urls = discover_relevant_category_urls()
-    if not cat_urls:
+        return {}
+
+    cats = discover_relevant_category_urls()
+    if not cats:
         print("[site] no category urls found", flush=True)
-        return {}, {}
-    # соберём product urls
-    all_urls: List[str] = []
-    for cu in cat_urls:
-        all_urls.extend(collect_product_urls(cu))
+        return {}
 
-    # уникальные
-    seen = set()
-    uniq: List[str] = []
-    for u in all_urls:
-        if u in seen:
-            continue
-        seen.add(u)
-        uniq.append(u)
+    pages_budget = max(1, MAX_CATEGORY_PAGES // max(1, len(cats)))
 
-    print(f"[site] categories={len(cat_urls)} products={len(uniq)}", flush=True)
+    product_urls: List[str] = []
+    for cu in cats:
+        product_urls.extend(collect_product_urls(cu, pages_budget))
+    product_urls = list(dict.fromkeys(product_urls))
+    print(f"[site] categories={len(cats)} product_urls={len(product_urls)} pages_budget={pages_budget}", flush=True)
 
-    # параллельный парсинг карточек
     from concurrent.futures import ThreadPoolExecutor, as_completed
+    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
 
-    sku_idx: Dict[str, Dict[str, Any]] = {}
-    title_idx: Dict[str, Dict[str, Any]] = {}
+    site_index: Dict[str, Dict[str, Any]] = {}
+    matched: Set[str] = set()
+
     with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex:
-        futs = [ex.submit(parse_product_page, u) for u in uniq]
-        for fut in as_completed(futs):
+        futures = {ex.submit(parse_product_page, u): u for u in product_urls}
+        for fut in as_completed(futures):
+            if datetime.utcnow() > deadline:
+                break
             try:
-                it = fut.result()
+                out = fut.result()
             except Exception:
-                it = None
-            if not it:
+                out = None
+            if not out:
                 continue
 
-            sku = safe_str(it.get("sku"))
+            sku = safe_str(out.get("sku")).strip()
             if not sku:
                 continue
-            # ключи под разные варианты артикула
-            if sku:
-                variants = {sku, sku.replace("-", "")}
-                if re.fullmatch(r"[Cc]\d+", sku):
-                    variants.add(sku[1:])
-                if re.fullmatch(r"\d+", sku):
-                    variants.add("C" + sku)
-                    sku0 = sku.lstrip("0")
-                    if sku0 and sku0 != sku:
-                        variants.add(sku0)
-                        variants.add("C" + sku0)
 
-                for v in variants:
-                    kn = norm_ascii(v)
-                    if kn:
-                        sku_idx[kn] = it
-            # fallback: индекс по названию (для случаев, когда sku на сайте не вытащили идеально)
-            t = title_clean(safe_str(it.get("title") or ""))
-            if t:
-                k_full = norm_ascii(t)
-                if k_full:
-                    title_idx[k_full] = it
-                k30 = norm_ascii(t[:30])
-                if k30:
-                    title_idx.setdefault(k30, it)
+            variants = {sku, sku.replace("-", "")}
+            if re.fullmatch(r"[Cc]\d+", sku):
+                variants.add(sku[1:])
+            if re.fullmatch(r"\d+", sku):
+                variants.add("C" + sku)
 
-    print(f"[site] indexed={len(sku_idx)}; title_index={len(title_idx)}", flush=True)
-    return sku_idx, title_idx
-# -----------------------------
-# Планировщик для FEED_META
-# -----------------------------
+            keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
+            if not keys:
+                continue
+
+            if want_keys:
+                useful = [k for k in keys if k in want_keys and k not in matched]
+                if not useful:
+                    continue
+                for k in useful:
+                    matched.add(k)
+                    site_index[k] = out
+            else:
+                for k in keys:
+                    site_index[k] = out
+
+    print(f"[site] indexed={len(site_index)} matched={len(matched) if want_keys else '-'}", flush=True)
+    return site_index, {}
 def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
     # now_local — наивный datetime в Алматы
     y = now_local.year
@@ -783,7 +795,34 @@ def main() -> int:
 
     before, items = parse_xlsx_items(xlsx_bytes)
 
-    site_sku_index, site_title_index = build_site_index()
+    # хотим подтянуть картинки только для наших артикулов (как в старом скрипте)
+
+    want_keys: Set[str] = set()
+
+    for it in items:
+
+        raw_v = safe_str(it.get("vendorCode_raw") or "").strip()
+
+        if not raw_v:
+
+            continue
+
+        variants = {raw_v, raw_v.replace("-", "")}
+
+        if re.fullmatch(r"[Cc]\d+", raw_v):
+
+            variants.add(raw_v[1:])
+
+        if re.fullmatch(r"\d+", raw_v):
+
+            variants.add("C" + raw_v)
+
+        for v in variants:
+
+            want_keys.add(norm_ascii(v))
+
+
+    site_sku_index, site_index = build_site_index(want_keys)
 
     # Собираем offers (важно: стабильные oid!)
     out_offers: List[OfferOut] = []
@@ -817,12 +856,12 @@ def main() -> int:
 
         if not found:
             tk_full = norm_ascii(title_clean(it["title"]))
-            if tk_full and tk_full in site_title_index:
-                found = site_title_index[tk_full]
+            if tk_full and tk_full in site_index:
+                found = site_index[tk_full]
             else:
                 tk30 = norm_ascii(title_clean(it["title"])[:30])
-                if tk30 and tk30 in site_title_index:
-                    found = site_title_index[tk30]
+                if tk30 and tk30 in site_index:
+                    found = site_index[tk30]
 
         name = it["title"]
         if not _is_allowed_prefix(name):
