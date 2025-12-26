@@ -59,6 +59,8 @@ COPYLINE_INCLUDE_PREFIXES = [
 
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
+NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
+
 
 VENDORCODE_PREFIX = (os.getenv("VENDORCODE_PREFIX") or "CL").strip()
 PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or SUPPLIER_NAME).strip() or SUPPLIER_NAME
