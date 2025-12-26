@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2025-12-26 12:53">
+<yml_catalog date="2025-12-26 13:05">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2025-12-26 12:53:57
+Время сборки (Алматы)                      | 2025-12-26 13:05:22
 Ближайшая сборка (Алматы)                  | 2026-01-01 03:00:00
 Сколько товаров у поставщика до фильтра    | 2820
 Сколько товаров у поставщика после фильтра | 1209
@@ -18,7 +18,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105140</vendorCode>
 <name>Девелопер HP M436 (CF257) foil bags 230 гр</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-for-Hp-M436.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-for-Hp-M436.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -40,7 +40,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103826</vendorCode>
 <name>Девелопер Konica-Minolta bizhub 162/210/211 (DV-110, A1UC550) 200 гр</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dv110.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dv110.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -62,7 +62,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103824</vendorCode>
 <name>Девелопер Konica-Minolta bizhub 200/222/250/282/350/362 (DV-310, 8938-451) 300 гр</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dv310.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dv310.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -84,7 +84,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104154</vendorCode>
 <name>Девелопер Konica-Minolta bizhub C220/C280/C360/C224/C284/C364/C455/C554 (DV-311) Yellow 230 гр</name>
 <price>21900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV311y.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV311y.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -106,7 +106,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103827</vendorCode>
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 (DV-512) Black 200 гр</name>
 <price>20900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512k.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512k.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -128,7 +128,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103828</vendorCode>
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 (DV-512) Cyan 200 гр</name>
 <price>20900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512c.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512c.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -150,7 +150,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103829</vendorCode>
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 (DV-512) Magenta 200 гр</name>
 <price>20900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512m.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512m.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -172,7 +172,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103830</vendorCode>
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 (DV-512) Yellow 200 гр</name>
 <price>20900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512y.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512y.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -194,7 +194,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103831</vendorCode>
 <name>Девелопер Panasonic DP-1520/1820 400 гр</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dq-z60j.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dq-z60j.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -216,7 +216,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103879</vendorCode>
 <name>Девелопер Toshiba D4530 для E-STUDIO 350/450/352/353/453/452 500гр</name>
 <price>16900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-Toshiba_D-4530.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-Toshiba_D-4530.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -238,7 +238,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103544</vendorCode>
 <name>Девелопер Xerox DC 240/242/250/252/7655/7665/7675/7755/7765/7775/Colour 550/560/570 CYAN foil bags 440 гр MAGNETONE</name>
 <price>20900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-dc-240-C-440g.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-dc-240-C-440g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -260,7 +260,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103546</vendorCode>
 <name>Девелопер Xerox DC 240/242/250/252/7655/7665/7675/7755/7765/7775/Colour 550/560/570 YELLOW foil bags 440 гр MAGNETONE</name>
 <price>20900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-dc-240-Y-440g.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-dc-240-Y-440g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -282,7 +282,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103551</vendorCode>
 <name>Девелопер Xerox WC 7120/7125 BLACK foil bags 220 гр MAGNETONE</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-BK-220g.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-BK-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -304,7 +304,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103552</vendorCode>
 <name>Девелопер Xerox WC 7120/7125 CYAN foil bags 220 гр MAGNETONE</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-C-220g.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-C-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -326,7 +326,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103553</vendorCode>
 <name>Девелопер Xerox WC 7120/7125 MAGENTA foil bags 220 гр MAGNETONE</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-M-220g.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-M-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -348,7 +348,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103554</vendorCode>
 <name>Девелопер Xerox WC 7120/7125 YELLOW foil bags 220 гр MAGNETONE</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-Y-220g.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-Y-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -370,7 +370,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103563</vendorCode>
 <name>Девелопер Xerox WC 7425/7435/7525/7535/Phaser 7500/7800 YELLOW foil bags 220 гр MAGNETONE</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7425-Y-220g.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7425-Y-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -392,7 +392,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103832</vendorCode>
 <name>Девелопер Xerox Для DCC7500/6550 250 гр</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-5550.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-5550.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -414,7 +414,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103705</vendorCode>
 <name>Drum Unit Brother DR-1075</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR-1075.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-1075.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -436,7 +436,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104243</vendorCode>
 <name>Drum Unit Brother DR-2175 для HL-2140/2150/2170/7030/7040</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR2175-ep-0.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR2175-ep-0.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -458,7 +458,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103999</vendorCode>
 <name>Drum Unit Brother DR-2275 для HL-2200/2230/2240/2250/2270 Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR-2275.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-2275.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -480,7 +480,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105146</vendorCode>
 <name>Drum Unit Brother DR-2335/2375 для HL-L2340/2360/2365/2500/2520/2540/2560/2700/2720/2740 Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR-2335.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-2335.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -502,7 +502,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104159</vendorCode>
 <name>Drum Unit Brother DR-3200 для HL-5340D/5350DN/5370DW/DCP-8070D/8085DN/MFC-8370D/8880DN Euro Print</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR3110-ep-0.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR3110-ep-0.jpg</picture>
 <vendor>Brother</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -524,7 +524,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104709</vendorCode>
 <name>Drum Unit Canon 049 для LBP-112/LBP113W (12K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CRG-049-Drum-Unit-Cartridge-Compatible-for-Canon-imageCLASS-LBP113w-LBP112-ic-MF112.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CRG-049-Drum-Unit-Cartridge-Compatible-for-Canon-imageCLASS-LBP113w-LBP112-ic-MF112.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -546,7 +546,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104710</vendorCode>
 <name>Drum Unit Canon 051 для LBP-162dw/MF269dw/267dw/264dw (23K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-051-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-051-ep.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -568,7 +568,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101241</vendorCode>
 <name>Drum Unit Canon C-EXV11/12/GPR-15/16 для IR 2270/2870/3570/4570/2230/3530/3025/3030/3035/3045</name>
 <price>37900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum_Unit_Canon_GPR-15.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_GPR-15.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -590,7 +590,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101242</vendorCode>
 <name>Drum Unit Canon C-EXV14/GPR-18/NPG-28 для IR 2016/2020/2318</name>
 <price>16900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C_EXV14_GPR18_NPG_28_dlya_iR_2016_2020.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C_EXV14_GPR18_NPG_28_dlya_iR_2016_2020.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -612,7 +612,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101232</vendorCode>
 <name>Drum Unit Canon C-EXV18/GPR-22/NPG-32 для IR 1018/1019/1020/1022/1023/1024/1025</name>
 <price>24900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/canon_ir_1018_1020_drum_unit_npg32.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon_ir_1018_1020_drum_unit_npg32.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -634,7 +634,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100868</vendorCode>
 <name>Drum Unit Canon C-EXV33 для IR 2520/2525/2535/2545</name>
 <price>21900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum_Unit_Canon_C-EXV33.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_C-EXV33.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -656,7 +656,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100017</vendorCode>
 <name>Drum Unit Canon C-EXV34 BLACK для IR C2020/2025/2030/2220/2225/2230 OEM</name>
 <price>109900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum-Unit-Canon-C-EXV34.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV34.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -678,7 +678,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100018</vendorCode>
 <name>Drum Unit Canon C-EXV34 CYAN для IR C2020/2025/2030/2220/2225/2230 OEM</name>
 <price>109900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum-Unit-Canon-C-EXV341.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV341.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -700,7 +700,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102974</vendorCode>
 <name>Drum Unit Canon C-EXV34 MAGENTA для IR C2020/2025/2030/2220/2225/2230 OEM</name>
 <price>109900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum-Unit-Canon-C-EXV342.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV342.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -722,7 +722,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102975</vendorCode>
 <name>Drum Unit Canon C-EXV34 YELLOW для IR C2020/2025/2030/2220/2225/2230 OEM</name>
 <price>109900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum-Unit-Canon-C-EXV343.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Canon-C-EXV343.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -744,7 +744,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105057</vendorCode>
 <name>Drum Unit Canon C-EXV38/39 для IR 4025/4035/4045/4051</name>
 <price>26900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum_Unit_Canon_C-EXV38.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_C-EXV38.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -766,7 +766,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103730</vendorCode>
 <name>Drum Unit Canon C-EXV42 для IR 2202/2204/2425</name>
 <price>17900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/c-exv42_dr.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv42_dr.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -788,7 +788,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104215</vendorCode>
 <name>Drum Unit Canon C-EXV49 для IR C3025/C3330/C3320/C3325/C3320L BLACK/COLOR</name>
 <price>24900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/drum-Canon-IR-3300.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_drum-Canon-IR-3300.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -810,7 +810,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101233</vendorCode>
 <name>Drum Unit Canon C-EXV5/GPR-8 для IR 1600/1605/1610/2000/2010</name>
 <price>35900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/npg-20-cexv5-drumIR1600.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_npg-20-cexv5-drumIR1600.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -832,7 +832,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104330</vendorCode>
 <name>Drum Unit Canon C-EXV50 для IR 1435</name>
 <price>44900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C-EXV50-drum.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV50-drum.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -854,7 +854,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101235</vendorCode>
 <name>Drum Unit Canon C-EXV7/GPR-10 для IR 1200/1210/1230/1270/1310/1330/1370/1510/1530/1570/1630/1670</name>
 <price>42900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum_Unit_Canon_C-EXV7.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum_Unit_Canon_C-EXV7.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -876,7 +876,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101238</vendorCode>
 <name>Drum Unit Canon NPG-1 для NP-1015/1215/1218/1318/1510/1520/1530/1550/1820/2010/2020/2120</name>
 <price>42900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/npg-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_npg-1.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -898,7 +898,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102802</vendorCode>
 <name>Drum Unit Konica Minolta DR-311 bizhub c220/280/360 Black (70k)</name>
 <price>29900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dr-311k-.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dr-311k-.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -920,7 +920,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102801</vendorCode>
 <name>Drum Unit Konica Minolta DR-311 bizhub c220/280/360 C/M/Y (55k)</name>
 <price>34900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR311-drum-unit-for-Konica-Minolta-Bizhub-C220-C280-C360.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR311-drum-unit-for-Konica-Minolta-Bizhub-C220-C280-C360.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -942,7 +942,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105777</vendorCode>
 <name>Drum Unit Konica Minolta DR-313 bizhub c258/308 Black (90k)</name>
 <price>28900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR-313k.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-313k.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -964,7 +964,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105778</vendorCode>
 <name>Drum Unit Konica Minolta DR-313 bizhub c258/308 C/M/Y (55k)</name>
 <price>28900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR-313cmy.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-313cmy.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -986,7 +986,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105720</vendorCode>
 <name>Drum Unit Konica Minolta DR-316 bizhub c250/300/360 Black (170k)</name>
 <price>44900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR-316k.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-316k.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1008,7 +1008,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105721</vendorCode>
 <name>Drum Unit Konica Minolta DR-316 bizhub c250/300/360 C/M/Y (65k)</name>
 <price>44900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR-316-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR-316-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1030,7 +1030,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102803</vendorCode>
 <name>Drum Unit Konica Minolta DR-512 bizhub c224/284/364/454 C/M/Y (55k)</name>
 <price>25900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DRUM-UNIT-C224.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DRUM-UNIT-C224.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1052,7 +1052,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102804</vendorCode>
 <name>Drum Unit Konica Minolta DR-512 bizhub c224/284/364/454 Black (70k)</name>
 <price>26900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum-Unit-Konica-Minolta-Bizhub-C224-k.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Konica-Minolta-Bizhub-C224-k.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1074,7 +1074,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105723</vendorCode>
 <name>Drum Unit Kyocera DK-1110 для FS-1020MFP/1120MFP/1040/1060DN/1125MFP</name>
 <price>16900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DK-1110-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DK-1110-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1096,7 +1096,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105722</vendorCode>
 <name>Drum Unit Kyocera DK-1150 для P2040dn/P2235dn/M2040dn/M2135dn/M2635dn/M2540</name>
 <price>16900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DK-1150.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DK-1150.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1118,7 +1118,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102335</vendorCode>
 <name>Drum Unit Kyocera DK-130 для FS-1100/1300</name>
 <price>101900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DK130.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DK130.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1140,7 +1140,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105647</vendorCode>
 <name>Drum Unit Kyocera DK-170 для FS-1035/1120</name>
 <price>14900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DK-170.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DK-170.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1162,7 +1162,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105281</vendorCode>
 <name>Drum Unit Kyocera DK-3170 для P3045/M3145dn (302T993060) БУЛАТ s-Line Восстановленный</name>
 <price>100900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DK-3170-302T993060-bulat.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DK-3170-302T993060-bulat.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1184,7 +1184,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105054</vendorCode>
 <name>Drum Unit Lexmark MS/MX710/711/810/811/812, 100K (52D0Z00) оригинал</name>
 <price>47900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/52D0Z00.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_52D0Z00.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1206,7 +1206,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105055</vendorCode>
 <name>Drum Unit Lexmark MS310/312/317/410/415/417/510/517/610/617/MX310/317/410/417/510/511/517/611/617 (50F0Z00) оригинал</name>
 <price>73900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/50F0Z00-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_50F0Z00-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1228,7 +1228,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103179</vendorCode>
 <name>Drum Unit Lexmark MS310/410/510/610 (50F0Z00)</name>
 <price>19900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/50F0Z00.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_50F0Z00.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1250,7 +1250,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105312</vendorCode>
 <name>Drum Unit Lexmark MS310/410/510/610 (50F0Z00) OEM</name>
 <price>36900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/50F0Z00.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_50F0Z00.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1272,7 +1272,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101154</vendorCode>
 <name>Drum Unit Panasonic KX-FA412 для KX-MB1900/MB2000/MB2010/MB2020/MB2025/MB2030/MB2051/MB2061</name>
 <price>16900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/kx-fa412-europrint.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kx-fa412-europrint.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1294,7 +1294,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101244</vendorCode>
 <name>Drum Unit Panasonic KX-FA78 для KX-FL501/502/503/521/523/KX-FLM551/553/KX-FLB753/758</name>
 <price>18900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Panasonic-KX-FAD78A.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Panasonic-KX-FAD78A.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1316,7 +1316,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101246</vendorCode>
 <name>Drum Unit Panasonic KX-FA86 для FLB851/852/853/801/802/803/811/812/813</name>
 <price>20900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Panasonic-KX-FAD86A.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Panasonic-KX-FAD86A.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1338,7 +1338,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101247</vendorCode>
 <name>Drum Unit Panasonic KX-FA89 для FL401/402/403/413/KX-FLC411/412/413/418</name>
 <price>19900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/kx_fa89_.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kx_fa89_.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1360,7 +1360,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101248</vendorCode>
 <name>Drum Unit Panasonic KX-FA93 для KX-MB228/262/263/283/763/772/773/778/783</name>
 <price>18900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Panasonic-KX-FAD93A.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Panasonic-KX-FAD93A.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1382,7 +1382,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101249</vendorCode>
 <name>Drum Unit Panasonic KX-FA95 для KX-MB228CN/238CN/258CN/778CN/788CN</name>
 <price>19900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/kx-fad95.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_kx-fad95.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1404,7 +1404,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100426</vendorCode>
 <name>Drum Unit Panasonic KX-FAD473A7 для KX-MB2110/2117/2130/2137/2170/2177</name>
 <price>26900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/panasonic-drum-kx-fad473a7.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_panasonic-drum-kx-fad473a7.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1426,7 +1426,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105785</vendorCode>
 <name>Drum Unit PANTUM DL-420 for M6700/3010 (12K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dl-420-01.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dl-420-01.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1448,7 +1448,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105825</vendorCode>
 <name>Drum Unit PANTUM DL-5120 for BP/BM5100 (30K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DL-5120-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-5120-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1492,7 +1492,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103795</vendorCode>
 <name>Drum Unit Ricoh SP4500E for Aficio SP4510DN/SP4510SF/SP3600DN/SP3600SF/SP3610SF (20k)</name>
 <price>26900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Drum-Unit-Ricoh-SP4500E.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Drum-Unit-Ricoh-SP4500E.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1514,7 +1514,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103917</vendorCode>
 <name>Драм-картридж Samsung (CLT-R404) для SL-C430/SL-C480 OEM</name>
 <price>18900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CLT-R404.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CLT-R404.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1536,7 +1536,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103918</vendorCode>
 <name>Драм-картридж Samsung (CLT-R406) для CLP-360/365/368/CLX-3300/3305 OEM</name>
 <price>42900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CLT-R406.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CLT-R406.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1558,7 +1558,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103920</vendorCode>
 <name>Драм-картридж Samsung (CLT-R407) для CLP-320/325/CLX-3185/3185N/3185FN/3185FW OEM</name>
 <price>28900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CLT-R407.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CLT-R407.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1580,7 +1580,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103919</vendorCode>
 <name>Драм-картридж Samsung (CLT-R409) для CLP-310/315/CLX-3170/3175 ОЕМ</name>
 <price>38900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CLT-R409.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CLT-R409.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1602,7 +1602,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101251</vendorCode>
 <name>Драм-картридж Xerox (013R00589) WC C118/123/128/M118</name>
 <price>41900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00589.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00589.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1624,7 +1624,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102468</vendorCode>
 <name>Драм-картридж Xerox (013R00591) WC 5325/5330/5335</name>
 <price>47900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00591.JPG</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00591.JPG</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1646,7 +1646,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100124</vendorCode>
 <name>Драм-картридж Xerox (013R00624) WC 7228/7235/7245/7328/7345/7346 Black/Cyan/Magenta/Yellow (45k)</name>
 <price>35900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00624-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00624-oem.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1668,7 +1668,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102715</vendorCode>
 <name>Драм-картридж Xerox (013R00647) WC 7425/7428/7435 Black/Cyan/Magenta/Yellow (61k)</name>
 <price>45900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Xerox_013R00647.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Xerox_013R00647.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1690,7 +1690,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100171</vendorCode>
 <name>Драм-картридж Xerox (013R00657) WC 7120/7125 Black</name>
 <price>38900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00657.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00657.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1712,7 +1712,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100174</vendorCode>
 <name>Драм-картридж Xerox (013R00658) WC 7120/7125 Yellow</name>
 <price>38900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00658.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00658.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1734,7 +1734,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100173</vendorCode>
 <name>Драм-картридж Xerox (013R00659) WC 7120/7125 Magenta</name>
 <price>38900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00659.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00659.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1756,7 +1756,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100172</vendorCode>
 <name>Драм-картридж Xerox (013R00660) WC 7120/7125 Cyan</name>
 <price>38900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00660.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00660.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1778,7 +1778,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102720</vendorCode>
 <name>Драм-картридж Xerox (013R00662) WC 7525/7530/7535/7545/7556/7830/7835/7845/7855 Black/Cyan/Magenta/Yellow (125k)</name>
 <price>29900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00662.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00662.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1800,7 +1800,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104439</vendorCode>
 <name>Драм-картридж Xerox (013R00669) WC 5945/5955 (200K) Euro Print</name>
 <price>105900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00669-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00669-oem.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1822,7 +1822,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103711</vendorCode>
 <name>Драм-картридж Xerox (013R00670) WC 5019/5021/5022/5024</name>
 <price>54900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00670-3.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00670-3.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1844,7 +1844,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105602</vendorCode>
 <name>Драм-картридж Xerox (013R00677) SC2020 Bk/C/M/Y (76k) Euro Print</name>
 <price>35900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00677-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00677-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1866,7 +1866,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105529</vendorCode>
 <name>Драм-картридж Xerox (013R00679) B1022/1025 (80K) Euro Print</name>
 <price>68900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00679-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00679-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1910,7 +1910,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105664</vendorCode>
 <name>Драм-картридж Xerox (013R00686) B8145/B8155/B8170 (200K) Euro Print</name>
 <price>40900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00686-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00686-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1976,7 +1976,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105757</vendorCode>
 <name>Драм-картридж Xerox (013R00690) B305/B310/B315 (40K) Euro Print</name>
 <price>15900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00690-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00690-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1998,7 +1998,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105543</vendorCode>
 <name>Драм-картридж Xerox (013R00691) B225/B230/B235 (12K) Euro Print</name>
 <price>15900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/013R00691-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_013R00691-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2020,7 +2020,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101872</vendorCode>
 <name>Драм-картридж Xerox (101R00432) WC 5020/5016</name>
 <price>37900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101R00432-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00432-oem.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2042,7 +2042,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102413</vendorCode>
 <name>Драм-картридж Xerox (101R00435) WC 5222/5220/5225/5230</name>
 <price>36900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101R00435.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00435.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2064,7 +2064,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100851</vendorCode>
 <name>Драм-картридж Xerox (101R00474) Phaser 3052/3260 WC 3215/3225 (10k) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101R00474-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00474-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2086,7 +2086,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104711</vendorCode>
 <name>Драм-картридж Xerox (101R00554) VersaLink-B400/B405 (65k)</name>
 <price>45900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101R00554-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00554-oem.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2108,7 +2108,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103758</vendorCode>
 <name>Драм-картридж Xerox (101R00555) WC 3330/3335/3345 (30K)</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101R00555.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00555.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2130,7 +2130,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105322</vendorCode>
 <name>Драм-картридж Xerox (101R00555) WC 3330/3335/3345 (30K) OEM</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101R00555.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101R00555.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2152,7 +2152,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104599</vendorCode>
 <name>Драм-картридж Xerox (101R00664) B205/B210/B215 (10K) Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101r00664-oem1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101r00664-oem1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2174,7 +2174,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105600</vendorCode>
 <name>Драм-картридж Xerox (101R00664) B205/B210/B215 (10K) OEM</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101r00664-oem1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101r00664-oem1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2218,7 +2218,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102700</vendorCode>
 <name>Драм-картридж Xerox (108R00861) Phaser 7500 Black/Cyan/Magenta/Yellow (80k)</name>
 <price>34900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/108R00861.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R00861.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2240,7 +2240,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105003</vendorCode>
 <name>Драм-картридж Xerox (108R01121) Phaser 6600/WC6605/VersaLink C400 Black (60k)</name>
 <price>36900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/108R01121-Compatible-Imaging-Drum-BK.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-BK.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2262,7 +2262,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105009</vendorCode>
 <name>Драм-картридж Xerox (108R01121) Phaser 6600/WC6605/VersaLink C400 Cyan (60k)</name>
 <price>36900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/108R01121-Compatible-Imaging-Drum-C.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-C.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2284,7 +2284,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105010</vendorCode>
 <name>Драм-картридж Xerox (108R01121) Phaser 6600/WC6605/VersaLink C400 Magenta (60k)</name>
 <price>36900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/108R01121-Compatible-Imaging-Drum-M.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-M.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2306,7 +2306,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105020</vendorCode>
 <name>Драм-картридж Xerox (108R01121) Phaser 6600/WC6605/VersaLink C400 Yellow (60k)</name>
 <price>36900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/108R01121-Compatible-Imaging-Drum-Y.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01121-Compatible-Imaging-Drum-Y.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2548,7 +2548,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105787</vendorCode>
 <name>Драм-картридж Xerox (108R01481) C500/C505 Cyan (40k) Euro Print</name>
 <price>46900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/108R01481.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_108R01481.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2658,7 +2658,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103913</vendorCode>
 <name>Драм-картридж Xerox (113R00773) Phaser 3610/WC 3615 (85k)</name>
 <price>39900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/113R00773.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00773.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2680,7 +2680,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103928</vendorCode>
 <name>Драм-картридж Xerox (113R00773) Phaser 3610/WC 3615 (85k) Euro Print</name>
 <price>45900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/113R00773.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00773.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2702,7 +2702,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105147</vendorCode>
 <name>Драм-картридж Xerox (113R00779) VersaLink B7025/B7030/B7035 (80k) Euro Print</name>
 <price>77900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/113R00779-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00779-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2746,7 +2746,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104996</vendorCode>
 <name>Драм-картридж Xerox (113R00782) VersaLink C7000 Black/Cyan/Magenta/Yellow (82,2k) Euro Print</name>
 <price>39900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/113R00782-Versalink-C7020-C7025-C7030-Drum-Cartridge.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_113R00782-Versalink-C7020-C7025-C7030-Drum-Cartridge.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2768,7 +2768,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105821</vendorCode>
 <name>Drum Unit КАТЮША P133/M133 Euro Print</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR133_ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR133_ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2790,7 +2790,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104319</vendorCode>
 <name>Картридж CANON 039 for LBP-351/352 (11K) Euro Print</name>
 <price>13900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/039_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_039_euro.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2812,7 +2812,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104230</vendorCode>
 <name>Картридж CANON 052 for MF421dw/MF426dw/MF428x/MF429x (3,1K) Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/052_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_052_euro.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2834,7 +2834,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104496</vendorCode>
 <name>Картридж CANON 052 for MF421dw/MF426dw/MF428x/MF429x (3,1K) Euro Print NEW</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/IMG_0787.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_IMG_0787.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2878,7 +2878,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104704</vendorCode>
 <name>Картридж CANON 057H (без чипа) forLBP-220/LBP-223/MF440/MF443/MF449 (10K) Euro Print</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-057-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-057-ep.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2944,7 +2944,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105910</vendorCode>
 <name>Картридж CANON 070 (С ЧИПОМ) for MF240/460 (3K) Euro Print</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/canon-070-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon-070-ep.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3142,7 +3142,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102870</vendorCode>
 <name>Картридж CANON 737/CF283 (1.6K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/283_737_ON.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283_737_ON.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3186,7 +3186,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102224</vendorCode>
 <name>Картридж CANON E-30 Retech</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/E30_retech.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_E30_retech.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3252,7 +3252,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101942</vendorCode>
 <name>Картридж HP C4092A/Canon EP-22 for LJ1100/3200/3220/Canon LBP800/810/1120 (2.5K) Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/4092_EP22_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_4092_EP22_euro.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3274,7 +3274,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101934</vendorCode>
 <name>Картридж HP C7115A/Q2613A/Q2624A/Canon EP-25 Black Print Cartridge for LaserJet 2500 pages Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/7115_2613_2624_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_7115_2613_2624_euro.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3296,7 +3296,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103509</vendorCode>
 <name>Картридж HP C7115A/Q2613A/Q2624A/Canon EP-25 OEM</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C7115A-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C7115A-oem.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3340,7 +3340,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101935</vendorCode>
 <name>Картридж HP C7115X/Q2613X/Q2624X/Canon EP-25 Black Print Cartridge for LaserJet 2500 pages Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/c7115x-ep25-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c7115x-ep25-ep.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3362,7 +3362,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101163</vendorCode>
 <name>Картридж HP C8543X Black Print Cartridge for МФУ LaserJet 9000/N/DN/mfp/9040n/9040dn/9050n/9050dn/9050/9040/, 30.0000 pages ОЕМ</name>
 <price>46900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C8543X-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C8543X-oem.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3384,7 +3384,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100246</vendorCode>
 <name>Картридж HP C8543X Black Print Cartridge for МФУ LaserJet 9000/N/DN/mfp/9040n/9040dn/9050n/9050dn/9050/9040/, 30.0000 pages Euro Print</name>
 <price>34900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C8543X.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C8543X.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3406,7 +3406,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104227</vendorCode>
 <name>Картридж HP CB435A/CB436A (2K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3428,7 +3428,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101728</vendorCode>
 <name>Картридж HP CB435A/CB436A/CC388/Canon 712/713 for LJP1007/1006/1008/1505/M1522/1120/Canon LBP3010/3020/3100/3018/3108 (2K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/cb435a.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_cb435a.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3450,7 +3450,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100919</vendorCode>
 <name>Картридж HP CB435A/CB436A/CC388/Canon 712/713 (2K) TOP PRINT</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_388_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_388_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3472,7 +3472,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101902</vendorCode>
 <name>Картридж HP CB435A/CB436A/CE285A/Canon 712/713/725 (2K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3494,7 +3494,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102602</vendorCode>
 <name>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 for LJ P1007/1006/1008/1505/M1522/1120/P1102/М1132/1212/1214/Canon LBP3010/3020/3100/3018/3108/6000/6020/MF3010 (2K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_euro.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3516,7 +3516,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105211</vendorCode>
 <name>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) OEM</name>
 <price>4900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CB435A-CB436A-CE285A-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CB435A-CB436A-CE285A-oem.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3538,7 +3538,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100918</vendorCode>
 <name>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) TOP PRINT</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3560,7 +3560,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101947</vendorCode>
 <name>Картридж HP CC364A Black Toner Cartridge for LaserJet P4014 /4015/4515, up to 10,000 pages Euro Print</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/364A_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_364A_euro.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3604,7 +3604,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102999</vendorCode>
 <name>Картридж HP CC364X for LJP4014/4015/4515 (24K) Euro Print Premium</name>
 <price>18900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/cc364x.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_cc364x.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3626,7 +3626,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101841</vendorCode>
 <name>Картридж HP CE 390А for LJM4555/M601/602/603 (10K) Euro Print</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/390A_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_390A_euro.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3670,7 +3670,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101945</vendorCode>
 <name>Картридж HP CE255A Black Print Cartridge for LaserJet P3015,(6000 pgs) Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ce255a.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce255a.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3692,7 +3692,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101831</vendorCode>
 <name>Картридж HP CE255X for LJ P3015 (12.5K) Euro Print</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ce255x.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ce255x.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3736,7 +3736,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101630</vendorCode>
 <name>Картридж HP CE278A/Canon 728 LJ P1566/1567/1568//1569/1606/M1536/1537/Canon M4400/4410/4420/4412/4452/4450/4550/4570/D520 (2,1K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/278_728_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_278_728_euro.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3758,7 +3758,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103515</vendorCode>
 <name>Картридж HP CE278A/Canon 728 (2,1K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/278_728_ON.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_278_728_ON.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3780,7 +3780,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100048</vendorCode>
 <name>Картридж HP CE278A/Canon 728 (2,1K) TOP PRINT</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/278_728_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_278_728_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3802,7 +3802,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103517</vendorCode>
 <name>Картридж HP CE285A/725 ОЕМ</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CE285A_2.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CE285A_2.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3824,7 +3824,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103058</vendorCode>
 <name>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214/Canon i-SENSYS LBP-6000/6020/6030/MF3010 (1,6K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/285A_euro.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285A_euro.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3846,7 +3846,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100920</vendorCode>
 <name>Картридж HP CE285A/Canon 725 (1,6K) TOP PRINT</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/285_725_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3868,7 +3868,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103727</vendorCode>
 <name>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214 (1,6K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/285_725_ON.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_ON.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3912,7 +3912,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103518</vendorCode>
 <name>Картридж HP CE505A/Canon 719 (2,3K) TOP PRINT</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/505_719_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_505_719_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3978,7 +3978,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103520</vendorCode>
 <name>Картридж HP CE505A/CF280A/Canon 719 (2,3K) ON</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/505_280_ON.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_505_280_ON.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4000,7 +4000,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103521</vendorCode>
 <name>Картридж HP CE505A/CF280A/Canon 719 (2,3K) TOP PRINT</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/505_280_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_505_280_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4176,7 +4176,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103694</vendorCode>
 <name>Картридж HP CF217A (без чипа) for LJ Pro M102a/102w/ MFP M130a/130nw/130fn/130fw OEM</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CF217A-on.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF217A-on.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4198,7 +4198,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104437</vendorCode>
 <name>Картридж HP CF217A (без чипа) for LJ Pro M102a/102w/ MFP M130a/130nw/130fn/130fw ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CF217A-on.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF217A-on.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5056,7 +5056,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105125</vendorCode>
 <name>Картридж HP CF281A for LJM630 series (10,5K) SAKURA</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sacf281a_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sacf281a_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5144,7 +5144,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101903</vendorCode>
 <name>Картридж HP CF283A (1.6K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/283_ON.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283_ON.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5166,7 +5166,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100921</vendorCode>
 <name>Картридж HP CF283A (1.6K) TOP PRINT</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/283_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_283_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5210,7 +5210,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100922</vendorCode>
 <name>Картридж HP CF283X/Canon737 (2,5K) TOP PRINT</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/cf283x-tp.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_cf283x-tp.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5452,7 +5452,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101904</vendorCode>
 <name>Картридж HP Q2612A/CANON FX-10 (2K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/2612_FX10_ON.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_2612_FX10_ON.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5474,7 +5474,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100917</vendorCode>
 <name>Картридж HP Q2612A/CANON FX-10 (2K) TOP PRINT</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/2612_FX10_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_2612_FX10_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -5496,7 +5496,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102603</vendorCode>
 <name>Картридж HP Q2612A/CANON FX-10 for HP LJ1010/1012/1015/1018/1020/3015/3020/3030/3050/3055/1022/M1005/Canon FAX-L100 /120/140/160/MF-4018/4120/4140/4150/4270 (2K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/2612_FX10_TOP.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_2612_FX10_TOP.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6552,7 +6552,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104750</vendorCode>
 <name>Картридж Lexmark MS 310/410/510/610 с чипом (50F2H00) (регион 2) OEM</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/lexmark-50f5h00.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_lexmark-50f5h00.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6574,7 +6574,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104176</vendorCode>
 <name>Картридж Lexmark MS 310/410/510/610 с чипом (50F5H00) (регион 5 - Азия, Россия, СНГ, 5K) INTEGRAL</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/lexmark-50f5h00.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_lexmark-50f5h00.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6596,7 +6596,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101586</vendorCode>
 <name>Картридж Lexmark MS 310/410/510/610 с чипом (50F5H00) (регион 5 - Азия, Россия, СНГ)</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/lexmark-50f5h00.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_lexmark-50f5h00.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6618,7 +6618,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104307</vendorCode>
 <name>Картридж Lexmark MS/MX/317/417/517/617 с чипом (51B5000) (регион 5 - Азия, Россия, СНГ, 2.5K)</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/51B5H00-sa-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_51B5H00-sa-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6640,7 +6640,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104751</vendorCode>
 <name>Картридж Lexmark MS/MX/317/417/517/617 с чипом (51B5000) (регион 5 - Азия, Россия, СНГ, 2.5K) OEM</name>
 <price>15900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/51B5H00-sa-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_51B5H00-sa-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6662,7 +6662,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103925</vendorCode>
 <name>Картридж Lexmark MS/MX/317/417/517/617 с чипом (51B5H00) (регион 5 - Азия, Россия, СНГ, 5K)</name>
 <price>24900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/51B5H00-sa-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_51B5H00-sa-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6684,7 +6684,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104858</vendorCode>
 <name>Картридж Lexmark MS/MX/417/517/617 с чипом (51B5H00) (регион 5 - Азия, Россия, СНГ, 8.5K) SAKURA</name>
 <price>23900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/51B5H00-sa-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_51B5H00-sa-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6706,7 +6706,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104382</vendorCode>
 <name>Картридж Lexmark MX 310/410/510/610 с чипом (60F1000) (регион 1 , 2.5K)</name>
 <price>22900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/lexmark-50f5h00.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_lexmark-50f5h00.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6728,7 +6728,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104177</vendorCode>
 <name>Картридж Lexmark MX 310/410/510/610 с чипом (60F5H00) (регион 5 - Азия, Россия, СНГ, 10K) INTEGRAL</name>
 <price>22900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/lexmark-50f5h00.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_lexmark-50f5h00.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6794,7 +6794,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105295</vendorCode>
 <name>Картридж PANTUM PC-211EV for P2200/P2207/P2507/P2500W/M6500/6550/6607 Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/PANTUM-PC-211EV-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_PANTUM-PC-211EV-oem.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -6816,7 +6816,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105755</vendorCode>
 <name>Картридж PANTUM TL-5120H for BP5100/BM5100 (6K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/TL-5120H-ep.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TL-5120H-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -7344,7 +7344,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104990</vendorCode>
 <name>Картридж SAMSUNG MLT-D108S for ML-1640/1641/1645/2240/2241 (1.5K) SAKURA</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/samlt-d108s_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_samlt-d108s_1.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -7388,7 +7388,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105126</vendorCode>
 <name>Картридж SAMSUNG MLT-D109S for SCX-4300 (2K) SAKURA</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sa-MLT-D109S.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sa-MLT-D109S.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -9940,7 +9940,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104686</vendorCode>
 <name>Картридж HP CE410A (№305A) Black для CLJ Pro 300/M375/M475/Pro 400/M451/M471 (2,2K) SAKURA</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sace410a_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sace410a_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -10006,7 +10006,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104687</vendorCode>
 <name>Картридж HP CE411A (№305A) Cyan для CLJ Pro 300/M375/M475/Pro 400/M451/M471 (2,6K) SAKURA</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sace411a_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sace411a_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -10050,7 +10050,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104688</vendorCode>
 <name>Картридж HP CE412A (№305A) Yellow для CLJ Pro 300/M375/M475/Pro 400/M451/M471 (2,6K) SAKURA</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sace412a_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sace412a_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -10138,7 +10138,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104689</vendorCode>
 <name>Картридж HP CE413A (№305A) Magenta для CLJ Pro 300/M375/M475/Pro 400/M451/M471 (2,6K) SAKURA</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sace413a_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sace413a_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -11590,7 +11590,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104649</vendorCode>
 <name>Картридж HP CF410X (№410X) Black для CLJ M377/M452/M477 (6,5K) SAKURA</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sacf410x_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sacf410x_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -11722,7 +11722,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104317</vendorCode>
 <name>Картридж HP CF412X (№410X) Yellow для CLJ M377/M452/M477 (5K) Euro Print</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sacf412x_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sacf412x_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -11744,7 +11744,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104651</vendorCode>
 <name>Картридж HP CF412X (№410X) Yellow для CLJ M377/M452/M477 (5K) SAKURA</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sacf412x_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sacf412x_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -12338,7 +12338,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100530</vendorCode>
 <name>Картридж HP Q3960A/Canon 701 (№122A) Black для CLJ 2550/2820/2840 (5K) Retech</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Q3960A-retech.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Q3960A-retech.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -12360,7 +12360,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100531</vendorCode>
 <name>Картридж HP Q3961A/Canon 701 (№122A) Cyan для CLJ 2550/2820/2840 (4K) Retech</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Q3961A-retech.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Q3961A-retech.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -12382,7 +12382,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100532</vendorCode>
 <name>Картридж HP Q3962A/Canon 701 (№122A) Yellow для CLJ 2550/2820/2840 (4K) Retech</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Q3962A-retech.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Q3962A-retech.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -12426,7 +12426,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100533</vendorCode>
 <name>Картридж HP Q3963A/Canon 701 (№122A) Magenta для CLJ 2550/2820/2840 (4K) Retech</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Q3963A-retech.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Q3963A-retech.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14164,7 +14164,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105078</vendorCode>
 <name>Картридж Samsung (CLT-M404) Magenta для SL-C430/SL-C480 SAKURA</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/saclt-m404s_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_saclt-m404s_1.jpg</picture>
 <vendor>Samsung</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14406,7 +14406,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101184</vendorCode>
 <name>Термоблок Canon 4018 (FM3-4106-000)</name>
 <price>73900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FM3-4106.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FM3-4106.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14428,7 +14428,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101588</vendorCode>
 <name>Термоблок Canon IR-2018</name>
 <price>157900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Fuser-Assembly-Unit-for-Canon-IR2018-FM00159.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Fuser-Assembly-Unit-for-Canon-IR2018-FM00159.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14450,7 +14450,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105254</vendorCode>
 <name>Термоблок Canon IR-2204 (FM1-V232/FM1-F160)</name>
 <price>182900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FM1-V232.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FM1-V232.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14472,7 +14472,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101183</vendorCode>
 <name>Термоблок Canon MF3110/MF3228/MF5730/MF5750/MF5770 (FM2-1099-020)</name>
 <price>54900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FM2-1099.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FM2-1099.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14516,7 +14516,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102370</vendorCode>
 <name>Термоблок HP CLJ 5500 (RG5-6701)</name>
 <price>112900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RG5-6701.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RG5-6701.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14538,7 +14538,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103904</vendorCode>
 <name>Термоблок HP CLJ 5525/M750 (RM1-6181-/CE707-67913)</name>
 <price>111900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM1-6181-HP-CP5225.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-6181-HP-CP5225.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14560,7 +14560,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101589</vendorCode>
 <name>Термоблок HP CLJ 5550</name>
 <price>104900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Fuser-Assembly-Unit-for-HP-5500.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Fuser-Assembly-Unit-for-HP-5500.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14582,7 +14582,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105093</vendorCode>
 <name>Термоблок HP CLJ M377/M452/M477/M454/M454/M479/Canon MF735/734/732 (RM2-6461/RM2-6435)</name>
 <price>295900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM2-6461.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-6461.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14626,7 +14626,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101394</vendorCode>
 <name>Термоблок HP LJ 1010 (RC1-2065)</name>
 <price>29900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RC1-2065.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RC1-2065.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14692,7 +14692,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101391</vendorCode>
 <name>Термоблок HP LJ 1200/1220/1000W/1005/3300/3330 (RG9-1494/RG0-1026)</name>
 <price>26900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CTGHP1200.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CTGHP1200.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14758,7 +14758,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101409</vendorCode>
 <name>Термоблок HP LJ 2400/2410/2420/2430 (RM1-1537/RM1-1531)</name>
 <price>46900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CTGHP2400.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CTGHP2400.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14780,7 +14780,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101400</vendorCode>
 <name>Термоблок HP LJ 3050/1319/3055/3052 (RM1-3044-000/RM1-3046)</name>
 <price>32900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM1-3044.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-3044.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14824,7 +14824,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101411</vendorCode>
 <name>Термоблок HP LJ 4250/4350 (RM1-1083)</name>
 <price>45900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM1-1083.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-1083.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14846,7 +14846,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102348</vendorCode>
 <name>Термоблок HP LJ 4345 (RM1-1044)</name>
 <price>72900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM1-1044.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-1044.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14868,7 +14868,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100896</vendorCode>
 <name>Термоблок HP LJ Enterprise M601/M602/M603 (CE988-67902/RM1-8396)</name>
 <price>95900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM1-8396.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-8396.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14890,7 +14890,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103636</vendorCode>
 <name>Термоблок HP LJ Enterprise M604/M605/M606 (E6B67-67902/RM2-6342-000)</name>
 <price>95900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM2-6342.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-6342.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14912,7 +14912,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104014</vendorCode>
 <name>Термоблок HP LJ Enterprise M607/M608/M609/M632/M633 (RM2-1257-000)</name>
 <price>197900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM2-1257.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-1257.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14956,7 +14956,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105012</vendorCode>
 <name>Термоблок HP LJ M102/M104/M106/M130/M132/M134 (RM2-1652/RM2-6948)</name>
 <price>42900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM2-1652-Fuser-for-Lj-PRO-M102-M104-M106-M130-M132-M134.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-1652-Fuser-for-Lj-PRO-M102-M104-M106-M130-M132-M134.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -14978,7 +14978,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105829</vendorCode>
 <name>Термоблок HP LJ M15/M17/M28/M30 (RM2-2107)</name>
 <price>21900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM2-2107_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-2107_1.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15000,7 +15000,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102340</vendorCode>
 <name>Термоблок HP LJ M1536/P1566/P1606/CP1525/Canon MF4410/4430/4450/4550/4570/4580 (RM1-7577/RM1-7547)</name>
 <price>39900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM1-7577.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-7577.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15022,7 +15022,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105011</vendorCode>
 <name>Термоблок HP LJ M203/M227/M206/M230 (RM2-0836)</name>
 <price>125900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM2-0836.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-0836.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15044,7 +15044,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104200</vendorCode>
 <name>Термоблок HP LJ M402/M403/M426/M427 (RM2-5425)</name>
 <price>65900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM2-5425-hp-LaserJet-Pro-M402-M403-M426-M427-220.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM2-5425-hp-LaserJet-Pro-M402-M403-M426-M427-220.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15066,7 +15066,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103653</vendorCode>
 <name>Термоблок HP LJ M4555 (RM1-7397/CE502-67913)</name>
 <price>100900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RM1-7397.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RM1-7397.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15088,7 +15088,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104610</vendorCode>
 <name>Термоблок HP LJ M501/M506/M527 (RM2-2586/RM2-5692)</name>
 <price>99900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/fuser-film-sleeve-hp-m506-527.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_fuser-film-sleeve-hp-m506-527.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15132,7 +15132,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104930</vendorCode>
 <name>Термоблок HP LJ MFP 135a/135w/137fnw/107a/107w</name>
 <price>25900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/fuser-hp-laser-135.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_fuser-hp-laser-135.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15660,7 +15660,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101439</vendorCode>
 <name>Термоэлемент HP LJ 1100</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/HP_Laser_Jet_1100.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_HP_Laser_Jet_1100.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15682,7 +15682,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101441</vendorCode>
 <name>Термоэлемент HP LJ 1200</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/doctor-blade-c7115-q2613-q2624-____27.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_doctor-blade-c7115-q2613-q2624-____27.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15726,7 +15726,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101445</vendorCode>
 <name>Термоэлемент HP LJ 2200</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RB2-6369.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RB2-6369.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15748,7 +15748,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103435</vendorCode>
 <name>Термоэлемент HP LJ 2300</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/RC1-0991.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_RC1-0991.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -15990,7 +15990,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105041</vendorCode>
 <name>Термоэлемент HP LJ M521/M525 (RM1-8508)</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/bushing-rezinovogo-vala-dlya-hp-p3015-m521-m525.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_bushing-rezinovogo-vala-dlya-hp-p3015-m521-m525.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16386,7 +16386,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103989</vendorCode>
 <name>Тонер-картридж Canon 045H for LBP-610/611/612/613/MF-630/631/633/635 (2,2K) Cyan Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-045H-C.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-045H-C.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16408,7 +16408,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104537</vendorCode>
 <name>Тонер-картридж Canon 045H for LBP-610/611/612/613/MF-630/631/633/635 (2,2K) Cyan Euro Print NEW</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/IMG_07861.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_IMG_07861.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16430,7 +16430,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103990</vendorCode>
 <name>Тонер-картридж Canon 045H for LBP-610/611/612/613/MF-630/631/633/635 (2,2K) Magenta Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-045H-M.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-045H-M.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16452,7 +16452,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104538</vendorCode>
 <name>Тонер-картридж Canon 045H for LBP-610/611/612/613/MF-630/631/633/635 (2,2K) Magenta Euro Print NEW</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/IMG_07862.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_IMG_07862.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16474,7 +16474,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103991</vendorCode>
 <name>Тонер-картридж Canon 045H for LBP-610/611/612/613/MF-630/631/633/635 (2,2K) Yellow Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-045H-Y.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-045H-Y.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16496,7 +16496,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104539</vendorCode>
 <name>Тонер-картридж Canon 045H for LBP-610/611/612/613/MF-630/631/633/635 (2,2K) Yellow Euro Print NEW</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/IMG_07863.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_IMG_07863.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16518,7 +16518,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103988</vendorCode>
 <name>Тонер-картридж Canon 045H for LBP-610/611/612/613/MF-630/631/633/635 (2,8K) Black Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-045H-bk.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-045H-bk.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16540,7 +16540,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104101</vendorCode>
 <name>Тонер-картридж Canon 046H for LBP-650/653/654/MF-730/732/734/735 (5K) Cyan Euro Print</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-046H-c.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-046H-c.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16562,7 +16562,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104102</vendorCode>
 <name>Тонер-картридж Canon 046H for LBP-650/653/654/MF-730/732/734/735 (5K) Magenta Euro Print</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-046H-m.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-046H-m.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16584,7 +16584,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104103</vendorCode>
 <name>Тонер-картридж Canon 046H for LBP-650/653/654/MF-730/732/734/735 (5K) Yellow Euro Print</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-046H-y.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-046H-y.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16628,7 +16628,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104554</vendorCode>
 <name>Тонер-картридж Canon 047 for LBP-112/LBP113W (1,6K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-047-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-047-oem.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16650,7 +16650,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104572</vendorCode>
 <name>Тонер-картридж Canon 051H for LBP-162dw/MF269dw/267dw/264dw (4,1K) Euro Print</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-051H-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-051H-oem.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16672,7 +16672,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104617</vendorCode>
 <name>Тонер-картридж Canon 054H for LBP-620/640 (2,3K) Cyan Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/EP-CRG054HC.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-CRG054HC.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16694,7 +16694,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104618</vendorCode>
 <name>Тонер-картридж Canon 054H for LBP-620/640 (2,3K) Magenta Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/EP-CRG054HM.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-CRG054HM.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16716,7 +16716,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104619</vendorCode>
 <name>Тонер-картридж Canon 054H for LBP-620/640 (2,3K) Yellow Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/EP-CRG054HY.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-CRG054HY.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16738,7 +16738,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104620</vendorCode>
 <name>Тонер-картридж Canon 054H for LBP-620/640 (3,1K) Black Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/EP-CRG054HBK.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_EP-CRG054HBK.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16760,7 +16760,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104701</vendorCode>
 <name>Тонер-картридж Canon 055H (без чипа) for MF742/744/746/LBP663/664 (5,9K) Cyan Euro Print</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-055H-ep-c.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-055H-ep-c.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16782,7 +16782,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104703</vendorCode>
 <name>Тонер-картридж Canon 055H (без чипа) for MF742/744/746/LBP663/664 (5,9K) Magenta Euro Print</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-055H-ep-m.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-055H-ep-m.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16804,7 +16804,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104702</vendorCode>
 <name>Тонер-картридж Canon 055H (без чипа) for MF742/744/746/LBP663/664 (5,9K) Yellow Euro Print</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-055H-ep-y.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-055H-ep-y.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16826,7 +16826,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104700</vendorCode>
 <name>Тонер-картридж Canon 055H (без чипа) for MF742/744/746/LBP663/664 (7,6K) Black Euro Print</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/Canon-055H-ep-bk.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_Canon-055H-ep-bk.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16936,7 +16936,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101519</vendorCode>
 <name>Тонер-картридж Canon C-EXV14/NPG-28 for IR 2016/2018/2022/2025/2030</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500077foruse_IR2016_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500077foruse_IR2016_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16958,7 +16958,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101789</vendorCode>
 <name>Тонер-картридж Canon C-EXV14/NPG-28 for IR 2016/2018/2022/2025/2030 (8,3K) (11500077) 460 гр INTEGRAL</name>
 <price>17900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500077foruse_IR2016_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500077foruse_IR2016_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -16980,7 +16980,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101994</vendorCode>
 <name>Тонер-картридж Canon C-EXV14/NPG-28 for IR 2016/2018/2022/2025/2030 Euro Print</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500077foruse_IR2016_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500077foruse_IR2016_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17002,7 +17002,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104541</vendorCode>
 <name>Тонер-картридж Canon C-EXV14/NPG-28 for IR 2016/2018/2022/2025/2030 Euro Print NEW</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500077foruse_IR2016_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500077foruse_IR2016_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17222,7 +17222,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102964</vendorCode>
 <name>Тонер-картридж Canon C-EXV29BK for IR C-5000/5030/5035/5235/5240 BLACK (36K) (11500111) 740 гр INTEGRAL</name>
 <price>25900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500111black_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500111black_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17244,7 +17244,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102965</vendorCode>
 <name>Тонер-картридж Canon C-EXV29C for IR C-5000/5030/5035/5235/5240 CYAN (36K) (11500112) 484 гр INTEGRAL</name>
 <price>26900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500114cyan_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500114cyan_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17266,7 +17266,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102966</vendorCode>
 <name>Тонер-картридж Canon C-EXV29M for IR C-5000/5030/5035/5235/5240 MAGENTA (36K) (11500113) 484 гр INTEGRAL</name>
 <price>26900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500113magenta_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500113magenta_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17288,7 +17288,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102967</vendorCode>
 <name>Тонер-картридж Canon C-EXV29Y for IR C-5000/5030/5035/5235/5240 YELLOW (36K) (11500114) 484 гр INTEGRAL</name>
 <price>26900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500112yellow_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500112yellow_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17354,7 +17354,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101778</vendorCode>
 <name>Тонер-картридж Canon C-EXV33 for IR 2520/2525/2530 (14,6K) (11500099) INTEGRAL</name>
 <price>13900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1544_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1544_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17420,7 +17420,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100561</vendorCode>
 <name>Тонер-картридж Canon C-EXV33 for IR 2520/2525/2530 (14,6K) Retech</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/c-exv33-.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv33-.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17530,7 +17530,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101851</vendorCode>
 <name>Тонер-картридж Canon C-EXV34BK for IR C2020/2025/2030 BLACK (23K) (11500106) 420 гр INTEGRAL</name>
 <price>17900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500106black_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500106black_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17552,7 +17552,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101852</vendorCode>
 <name>Тонер-картридж Canon C-EXV34C for IR C2020/2025/2030 CYAN (19K) (11500109) 270 гр INTEGRAL</name>
 <price>17900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500109cyan_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500109cyan_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17574,7 +17574,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101853</vendorCode>
 <name>Тонер-картридж Canon C-EXV34M for IR C2020/2025/2030 MAGENTA (19K) (11500108) 270 гр INTEGRAL</name>
 <price>17900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500108magenta_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500108magenta_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17596,7 +17596,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101854</vendorCode>
 <name>Тонер-картридж Canon C-EXV34Y for IR C2020/2025/2030 YELLOW (19K) (11500107) 270 гр INTEGRAL</name>
 <price>17900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/11500107yellow_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_11500107yellow_WEB.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17728,7 +17728,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103321</vendorCode>
 <name>Тонер-картридж Canon C-EXV42 for IR 2002/2202/2204 (10,2K) (11500136) INTEGRAL</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C-EXV42_integral.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV42_integral.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17816,7 +17816,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103781</vendorCode>
 <name>Тонер-картридж Canon C-EXV49 for IR C3330/C3320/C3325/C3320L (19k) Cyan Euro Print</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C-EXV49-oem.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV49-oem.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17838,7 +17838,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103782</vendorCode>
 <name>Тонер-картридж Canon C-EXV49 for IR C3330/C3320/C3325/C3320L (19k) Magenta Euro Print</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C-EXV49-oem1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV49-oem1.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17860,7 +17860,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103783</vendorCode>
 <name>Тонер-картридж Canon C-EXV49 for IR C3330/C3320/C3325/C3320L (19k) Yellow Euro Print</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C-EXV49-oem2.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV49-oem2.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -17882,7 +17882,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103780</vendorCode>
 <name>Тонер-картридж Canon C-EXV49 for IR C3330/C3320/C3325/C3320L (36k) Black Euro Print</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/C-EXV49-oem3.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_C-EXV49-oem3.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18036,7 +18036,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104022</vendorCode>
 <name>Тонер-картридж Canon C-EXV54 for IR C3025 (15.5K) Black Euro Print</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/toner-kartridzh-canon-c-exv54bk.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-kartridzh-canon-c-exv54bk.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18058,7 +18058,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104023</vendorCode>
 <name>Тонер-картридж Canon C-EXV54 for IR C3025 (8.5K) Cyan Euro Print</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/toner-kartridzh-canon-c-exv54c.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-kartridzh-canon-c-exv54c.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18080,7 +18080,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104024</vendorCode>
 <name>Тонер-картридж Canon C-EXV54 for IR C3025 (8.5K) Magenta Euro Print</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/toner-kartridzh-canon-c-exv54m.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-kartridzh-canon-c-exv54m.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18102,7 +18102,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104025</vendorCode>
 <name>Тонер-картридж Canon C-EXV54 for IR C3025 (8.5K) Yellow Euro Print</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/toner-kartridzh-canon-c-exv54y.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_toner-kartridzh-canon-c-exv54y.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18344,7 +18344,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104811</vendorCode>
 <name>Тонер-картридж Canon GPR-36/C-EXV34 Жёлтый, Для копиров Canon iR C2020/C2030/C2225/C2230, 14000 страниц.Katun</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/c-exv34-y.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv34-y.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18366,7 +18366,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104812</vendorCode>
 <name>Тонер-картридж Canon GPR-36/C-EXV34 Пурпурный, Для копиров Canon iR C2020/C2030/C2225/C2230, 14000 страниц.Katun,</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/c-exv34-m.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv34-m.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18388,7 +18388,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104813</vendorCode>
 <name>Тонер-картридж Canon GPR-36/C-EXV34 Синий, Для копиров Canon iR C2020/C2030/C2225/C2230, 14000 страниц.Katun,</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/c-exv34-c.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv34-c.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18410,7 +18410,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104814</vendorCode>
 <name>Тонер-картридж Canon GPR-36/C-EXV34 Чёрный, Для копиров Canon iR C2020/C2030/C2225/C2230, 26000 страниц.Katun,</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/c-exv34-bk.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_c-exv34-bk.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -18520,7 +18520,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101797</vendorCode>
 <name>Тонер-картридж Epson AcuLaser- M2400D/2300/mx20 (C13S050582) (3K) (16700006) INTEGRAL</name>
 <price>4900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/m2400d.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_m2400d.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19642,7 +19642,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103595</vendorCode>
 <name>Тонер-картридж Konica-Minolta TN-611C для bizhub C451/550/650 Cyan MAGNETONE</name>
 <price>47900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/tn-611C.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-611C.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19686,7 +19686,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103597</vendorCode>
 <name>Тонер-картридж Konica-Minolta TN-611M для bizhub C451/550/650 Magenta MAGNETONE</name>
 <price>47900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/tn-611M.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_tn-611M.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19774,7 +19774,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101798</vendorCode>
 <name>Тонер-картридж Konica Minolta TN-114 for 152/162/163/180/183/210/211/7516/7521(13100060) 410 гр INTEGRAL</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/13100060foruse_BizhubDi152_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_13100060foruse_BizhubDi152_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19818,7 +19818,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102060</vendorCode>
 <name>Тонер-картридж Kyocera TK-110 for FS-720/820/920/1016/1116 (6K)</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1492_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1492_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19840,7 +19840,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101000</vendorCode>
 <name>Тонер-картридж Kyocera TK-110 for FS-720/FS-820/FS-920/FS-1016/FS-1016MFP/FS-1116/FS-1116MFP (6K) (12100023) INTEGRAL</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1492_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1492_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19906,7 +19906,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101478</vendorCode>
 <name>Тонер-картридж Kyocera TK-1130 for FS-1130/1130 (3K)</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/12100088_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100088_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19928,7 +19928,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101787</vendorCode>
 <name>Тонер-картридж Kyocera TK-1130 for FS1130/1130 (3K) (12100088) INTEGRAL</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/12100088_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100088_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19950,7 +19950,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102745</vendorCode>
 <name>Тонер-картридж Kyocera TK-1140 for FS-1035/1135/2035/2535 Euro Print</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/12100089_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100089_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -19972,7 +19972,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100899</vendorCode>
 <name>Тонер-картридж Kyocera TK-1140/1142 for FS1035/1135 (7,2K) (12100089) INTEGRAL</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/12100089_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_12100089_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -20192,7 +20192,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102059</vendorCode>
 <name>Тонер-картридж Kyocera TK-140 for FS-1100/1100N (4K)</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1495_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1495_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -20214,7 +20214,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101624</vendorCode>
 <name>Тонер-картридж Kyocera TK-140 for FS-1100/1100N (4K) (12100033C) INTEGRAL</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1495_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1495_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -20236,7 +20236,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102331</vendorCode>
 <name>Тонер-картридж Kyocera TK-140 for FS-1100/1100N (4K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1495_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1495_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -20280,7 +20280,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103126</vendorCode>
 <name>Тонер-картридж Kyocera TK-170 for FS-1320D/1370DN (7,2K)</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1497_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1497_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -20302,7 +20302,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103067</vendorCode>
 <name>Тонер-картридж Kyocera TK-170/172 for FS1320/1370 (7,2K) (12100054) 270 гр INTEGRAL</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1497_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1497_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -21996,7 +21996,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105784</vendorCode>
 <name>Тонер-картридж PANTUM TL-420X for M6700/3010 (6K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/TL-420X.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TL-420X.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22326,7 +22326,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104853</vendorCode>
 <name>Тонер-картридж Ricoh SP400LE for Aficio SP400/SP450 (2.5K) SAKURA</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/SP400LE-1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_SP400LE-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22524,7 +22524,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101807</vendorCode>
 <name>Тонер-картридж Toshiba T-1640E for E-studio 163/165/166/203/205 (24K) (15100022) 675 гр INTEGRAL</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/15100022foruse_e-Studio163__WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_15100022foruse_e-Studio163__WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22546,7 +22546,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101969</vendorCode>
 <name>Тонер-картридж Toshiba T-1640E для E-Studio163/164/165/166/167/203/205/206/207/237 (24K)</name>
 <price>12900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/15100022foruse_e-Studio163__WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_15100022foruse_e-Studio163__WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22568,7 +22568,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104546</vendorCode>
 <name>Тонер-картридж Toshiba T-1640E для E-Studio163/164/165/166/167/203/205/206/207/237 (24K) Euro Print NEW</name>
 <price>15900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/15100022foruse_e-Studio163__WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_15100022foruse_e-Studio163__WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22612,7 +22612,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101808</vendorCode>
 <name>Тонер-картридж Toshiba T-1810E for E-studio 181/182/211/212/242 (24K) (15100026) 675 гр INTEGRAL</name>
 <price>13900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1527_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1527_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22634,7 +22634,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101922</vendorCode>
 <name>Тонер-картридж Toshiba T-1810E для E-Studio181/212</name>
 <price>17900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/FRZA1527_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_FRZA1527_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -22832,7 +22832,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101806</vendorCode>
 <name>Тонер-картридж Toshiba T-3500E for E-studio 28/35/45 (12K) (15100016) 450 гр INTEGRAL</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/15100022foruse_e-Studio28_WEB.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_15100022foruse_e-Studio28_WEB.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -25692,7 +25692,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105127</vendorCode>
 <name>Тонер-картридж 106R02778 Xerox Phaser 3052/3260/WC3215/3225 (3K) SAKURA</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sa106r02778_1.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sa106r02778_1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -25824,7 +25824,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105129</vendorCode>
 <name>Тонер-картридж 106R03486 Xerox Phaser 6510/WC6515 (2.4K) Magenta SAKURA</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sa-106R03486.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sa-106R03486.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -26198,7 +26198,7 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105133</vendorCode>
 <name>Тонер-картридж 106R03694 Xerox Phaser 6510/WC6515 (4.3K) Magenta SAKURA</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/sa-106R03694.jpg</picture>
+<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_sa-106R03694.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
