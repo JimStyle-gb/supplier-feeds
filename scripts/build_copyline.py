@@ -201,6 +201,14 @@ def title_startswith_strict(title: str, patterns: Sequence[re.Pattern]) -> bool:
     return bool(title) and any(p.search(title) for p in patterns)
 
 
+def _is_allowed_prefix(title: str) -> bool:
+    # Финальная проверка по префиксам (чтобы после обогащения с сайта не вылезало лишнее)
+    if not title:
+        return False
+    pats = compile_startswith_patterns(COPYLINE_INCLUDE_PREFIXES)
+    return title_startswith_strict(title_clean(title), pats)
+
+
 # -----------------------------
 # XLSX
 # -----------------------------
@@ -388,8 +396,15 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", txt, flags=re.I)
         if m:
             sku = m.group(1)
+
     if not sku:
-        return None
+        # запасной вариант: попробуем вытащить код из URL (часто есть номер/код в slug)
+        slug = url.rsplit("/", 1)[-1]
+        slug = slug.split("?", 1)[0]
+        # берём первые длинные токены/цифры
+        m2 = re.search(r"(\d{4,}|[A-Za-z0-9][A-Za-z0-9\-\._]{3,})", slug)
+        if m2:
+            sku = m2.group(1)
 
     # Title
     h = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
@@ -567,13 +582,11 @@ def collect_product_urls(category_url: str) -> List[str]:
 def build_site_index() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
     if NO_CRAWL:
         print("[site] NO_CRAWL=1 -> skip site parsing", flush=True)
-        return {}
-
+        return {}, {}
     cat_urls = discover_relevant_category_urls()
     if not cat_urls:
         print("[site] no category urls found", flush=True)
-        return {}
-
+        return {}, {}
     # соберём product urls
     all_urls: List[str] = []
     for cu in cat_urls:
@@ -608,18 +621,18 @@ def build_site_index() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, A
             sku = safe_str(it.get("sku"))
             if not sku:
                 continue
-
             # ключи под разные варианты артикула
-            variants = {sku, sku.replace("-", "")}
-            if re.fullmatch(r"[Cc]\d+", sku):
-                variants.add(sku[1:])
-            if re.fullmatch(r"\d+", sku):
-                variants.add("C" + sku)
+            if sku:
+                variants = {sku, sku.replace("-", "")}
+                if re.fullmatch(r"[Cc]\d+", sku):
+                    variants.add(sku[1:])
+                if re.fullmatch(r"\d+", sku):
+                    variants.add("C" + sku)
 
-            for v in variants:
-                sku_idx[norm_ascii(v)] = it
-
-
+                for v in variants:
+                    kn = norm_ascii(v)
+                    if kn:
+                        sku_idx[kn] = it
             # fallback: индекс по названию (для случаев, когда sku на сайте не вытащили идеально)
             t = title_clean(safe_str(it.get("title") or ""))
             if t:
@@ -726,17 +739,19 @@ def main() -> int:
                     found = site_title_index[tk30]
 
         name = it["title"]
+        if not _is_allowed_prefix(name):
+            continue
         native_desc = it["title"]
         pictures: List[str] = []
         params: List[Tuple[str, str]] = []
-
         if found:
-            if found.get("title"):
-                name = title_clean(safe_str(found.get("title"))) or name
             native_desc = safe_str(found.get("desc")) or native_desc
             if found.get("pic"):
                 pictures = [safe_str(found.get("pic"))]
             params = list(found.get("params") or [])
+
+        if not _is_allowed_prefix(name):
+            continue
 
         # Минимальные характеристики из прайса (чтобы у всех товаров были params)
         kind = _derive_kind(name)
