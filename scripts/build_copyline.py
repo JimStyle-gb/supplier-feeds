@@ -12,8 +12,15 @@ import re
 import time
 import random
 import hashlib
-from typing import Any, Dict, List, Optional, Sequence, Tuple
 from datetime import datetime, timedelta
+
+# Логи (можно выключить: VERBOSE=0)
+VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
+
+def log(msg: str) -> None:
+    # Печать логов (в Actions удобно оставлять краткие метки)
+    if VERBOSE:
+        log(msg)
 import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
@@ -107,7 +114,7 @@ def http_get(url: str, tries: int = 3, min_bytes: int = 0) -> Optional[bytes]:
             last = repr(e)
         _sleep_jitter(int(delay * 1000))
         delay *= 1.6
-    print(f"[http] fail: {url} | {last}", flush=True)
+    log(f"[http] fail: {url} | {last}")
     return None
 
 
@@ -284,7 +291,7 @@ def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
     sheet = max(wb.sheetnames, key=lambda n: wb[n].max_row * max(1, wb[n].max_column))
     ws = wb[sheet]
     rows = [[c for c in r] for r in ws.iter_rows(values_only=True)]
-    print(f"[xls] sheet={sheet} rows={len(rows)}", flush=True)
+    log(f"[xls] sheet={sheet} rows={len(rows)}")
 
     row0, row1, idx = detect_header_two_row(rows)
     if row0 < 0:
@@ -336,7 +343,7 @@ def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
             }
         )
 
-    print(f"[xls] source_rows={source_rows} filtered={len(out)}", flush=True)
+    log(f"[xls] source_rows={source_rows} filtered={len(out)}")
     return source_rows, out
 
 
@@ -673,12 +680,12 @@ def collect_product_urls(category_url: str, limit_pages: int) -> List[str]:
 
 def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Dict[str, Any]], Dict[str, Dict[str, Any]]]:
     if NO_CRAWL:
-        print("[site] NO_CRAWL=1 -> skip site parsing", flush=True)
+        log("[site] NO_CRAWL=1 -> skip site parsing")
         return {}
 
     cats = discover_relevant_category_urls()
     if not cats:
-        print("[site] no category urls found", flush=True)
+        log("[site] no category urls found")
         return {}
 
     pages_budget = MAX_CATEGORY_PAGES
@@ -687,7 +694,7 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
     for cu in cats:
         product_urls.extend(collect_product_urls(cu, pages_budget))
     product_urls = list(dict.fromkeys(product_urls))
-    print(f"[site] categories={len(cats)} product_urls={len(product_urls)} pages_budget={pages_budget}", flush=True)
+    log(f"[site] categories={len(cats)} product_urls={len(product_urls)} pages_budget={pages_budget}")
 
     from concurrent.futures import ThreadPoolExecutor, as_completed
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
@@ -732,7 +739,7 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                 for k in keys:
                     site_index[k] = out
 
-    print(f"[site] indexed={len(site_index)} matched={len(matched) if want_keys else '-'}", flush=True)
+    log(f"[site] indexed={len(site_index)} matched={len(matched) if want_keys else '-'}")
     return site_index, {}
 def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
     # now_local — наивный datetime в Алматы
@@ -913,7 +920,7 @@ def main() -> int:
     validate_cs_yml(full)
     changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
 
-    print(
+    log(
         f"[build_copyline] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
         f"crawl={'no' if NO_CRAWL else 'yes'} | changed={'yes' if changed else 'no'} | file={OUT_FILE}",
         flush=True,
