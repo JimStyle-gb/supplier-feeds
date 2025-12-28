@@ -31,7 +31,7 @@ OUT_FILE = "docs/akcent.yml"
 OUTPUT_ENCODING = "utf-8"
 SCHEDULE_HOUR_ALMATY = 2
 
-AKCENT_NAME_PREFIXES: List[str] = [
+AKCENT_NAME_PREFIXES: list[str] = [
     "C13T55",
     "Ёмкость для отработанных чернил",
     "Интерактивная доска",
@@ -52,6 +52,33 @@ AKCENT_NAME_PREFIXES: List[str] = [
     "Экономичный набор",
     "Экран",
 ]
+
+# Префиксы в casefold (для нечувствительности к регистру)
+AKCENT_NAME_PREFIXES_CF = tuple((p or "").casefold() for p in AKCENT_NAME_PREFIXES)
+
+# Параметры AkCent, которые не являются характеристиками (только для этого поставщика)
+AKCENT_PARAM_DROP = {"Сопутствующие товары"}
+
+# Иногда поставщик кладёт страну в vendor/Производитель — такие значения лучше не использовать как бренд
+COUNTRY_VENDOR_BLACKLIST_CF = {
+    "китай", "china",
+    "россия", "russia",
+    "казахстан", "kazakhstan",
+    "турция", "turkey",
+    "сша", "usa", "united states",
+    "германия", "germany",
+    "япония", "japan",
+    "корея", "korea",
+    "великобритания", "uk", "united kingdom",
+    "франция", "france",
+    "италия", "italy",
+    "испания", "spain",
+    "польша", "poland",
+    "тайвань", "taiwan",
+    "таиланд", "thailand",
+    "вьетнам", "vietnam",
+    "индия", "india",
+}
 
 # Приоритет характеристик (как в AlStyle: сначала важное, потом остальное по алфавиту)
 AKCENT_PARAM_PRIORITY = [
@@ -85,8 +112,11 @@ def _normalize_url(url: str) -> str:
 # Проверяем, что название товара начинается с одного из заданных префиксов
 def _passes_name_prefixes(name: str) -> bool:
     s = (name or "").lstrip()
-    for pref in AKCENT_NAME_PREFIXES:
-        if s.startswith(pref):
+    if not s:
+        return False
+    s_cf = s.casefold()
+    for pref_cf in AKCENT_NAME_PREFIXES_CF:
+        if pref_cf and s_cf.startswith(pref_cf):
             return True
     return False
 
@@ -122,7 +152,7 @@ def _get_text(el: ET.Element | None) -> str:
 def _collect_pictures(offer: ET.Element) -> list[str]:
     pics: list[str] = []
     for p in offer.findall("picture"):
-        t = _get_text(p)
+        t = _normalize_url(_get_text(p))
         if t:
             pics.append(t)
     # уникализация (сохраняем порядок)
@@ -245,7 +275,7 @@ def main() -> int:
         available = _extract_available(offer)
         pics = _collect_pictures(offer)
         params_raw = _collect_params(offer)
-        params = clean_params(params_raw)
+        params = clean_params(params_raw, drop=AKCENT_PARAM_DROP)
 
         price_in = _extract_price_in(offer)
         if not price_in or int(price_in) < 1:
@@ -285,6 +315,9 @@ def main() -> int:
     )
 
     public_vendor = (os.getenv("PUBLIC_VENDOR") or os.getenv("CS_PUBLIC_VENDOR") or "CS").strip() or "CS"
+
+    # Стабильный порядок офферов (меньше лишних диффов между коммитами)
+    out_offers.sort(key=lambda x: x.oid)
 
     offers_xml = "\n\n".join(
         o.to_xml(currency_id="KZT", public_vendor=public_vendor, param_priority=AKCENT_PARAM_PRIORITY) for o in out_offers
