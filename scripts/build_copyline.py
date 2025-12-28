@@ -20,7 +20,7 @@ VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no",
 def log(msg: str) -> None:
     # Печать логов (в Actions удобно оставлять краткие метки)
     if VERBOSE:
-        log(msg)
+        print(msg, flush=True)
 import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
