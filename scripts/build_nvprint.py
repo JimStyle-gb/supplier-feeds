@@ -1,401 +1,375 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-NVPrint post-process (v58)
+NVPrint -> CS adapter (v63)
 
-Точечные правки (без XML-переформатирования):
-1) Устойчивое чтение docs/nvprint.yml:
-   - windows-1251 -> utf-8 -> utf-8(errors="replace")
-   - удаляем UTF-8 BOM, если есть
-2) Всегда сохраняем обратно в windows-1251:
-   - неподдерживаемые символы -> XML-сущности (&#...;) через xmlcharrefreplace
-3) Шапка файла:
-   - убираем пустые строки/пробелы перед <?xml ...?>
-   - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
-4) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
-5) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
-6) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
-   - workflow_dispatch: да
-   - FORCE_YML_REFRESH=1: да
-   - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
-   - schedule: нет
-
-Входной файл: OUT_FILE или docs/nvprint.yml
-Если файла нет — code=2 (ничего не создаём).
+Задача: получить XML NVPrint, превратить в CS-оферы через общий core и собрать docs/nvprint.yml.
+Core должен содержать только общее (price/desc/params/feed_meta/валидация/рендер), а здесь — только NVPrint-специфика:
+- откуда скачать XML
+- как достать id/name/price/available/pictures/params/desc
+- (опционально) NVPrint-фильтры/правки входных данных
 """
 
 from __future__ import annotations
 
-import argparse
-from datetime import datetime, timedelta
 import os
 import re
 import sys
-from pathlib import Path
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+import xml.etree.ElementTree as ET
 
-PLACEHOLDER_PICTURE_URL = (
-    "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
+import requests
+
+from cs.core import (
+    OfferOut,
+    compute_price,
+    ensure_footer_spacing,
+    make_feed_meta,
+    make_footer,
+    make_header,
+    norm_ws,
+    stable_id,
+    validate_cs_yml,
+    write_if_changed,
 )
 
-RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
-RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
-RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
+TZ_ALMATY = ZoneInfo("Asia/Almaty")
 
-RE_BUILD_TIME_LINE = re.compile(
-    r"(Время сборки\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
-    re.IGNORECASE,
-)
-RE_YML_CATALOG_DATE = re.compile(r'(<yml_catalog\b[^>]*\bdate=")([^"]*)(")', re.IGNORECASE)
+OUT_FILE = "docs/nvprint.yml"
+OUTPUT_ENCODING = "utf-8"
 
-RE_FEED_META_BLOCK = re.compile(r"<!--FEED_META.*?-->", re.DOTALL)
-RE_BROKEN_TIME_P = re.compile(r"^\s*P(\d{2})-(\d{2})-(\d{2})\s+(\d{2}:\d{2}:\d{2})\s*$")
-RE_NEXT_RUN_LINE = re.compile(
-    r"(Ближайшая сборка\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
-    re.IGNORECASE,
-)
+# Заглушка фото (если у товара нет фото/товара нет на сайте)
+PLACEHOLDER_PIC = "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
 
+# Если описание уже похоже на CS-шаблон — не берём его как native_desc (иначе будет дубль WhatsApp/секций)
+RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
 
-# Текущее время Алматы (UTC+5)
-def _now_almaty_dt() -> datetime:
-    return datetime.utcnow() + timedelta(hours=5)
-
-
-def _now_almaty_str() -> str:
-    return _now_almaty_dt().strftime("%Y-%m-%d %H:%M:%S")
+# NVPrint-мусорные параметры (если встречаются)
+DROP_PARAM_NAMES_CF = {
+    "артикул",
+    "остаток",
+    "наличие",
+    "в наличии",
+    "сопутствующие товары",
+    "sku",
+}
 
 
-# Нужно ли форсить обновление YML (чтобы появился diff для коммита)
-def _should_force_refresh() -> bool:
-    v = os.environ.get("FORCE_YML_REFRESH", "").strip().lower()
-    if v in ("1", "true", "yes", "y"):
-        return True
-
-    ev = os.environ.get("GITHUB_EVENT_NAME", "").strip().lower()
-    if ev == "workflow_dispatch":
-        return True
-
-    if ev == "push":
-        try:
-            want_h = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "0") or "0").strip())
-        except Exception:
-            want_h = 0
-        return _now_almaty_dt().hour == want_h
-
-    return False
+def _almaty_now() -> datetime:
+    return datetime.now(TZ_ALMATY).replace(tzinfo=None)
 
 
-# Читает файл устойчиво (cp1251 -> utf8 -> utf8 replace), убирает BOM
-def _read_text(path: Path) -> tuple[str, str, int]:
-    data = path.read_bytes()
-    bom = 0
-    if data.startswith(b"\xef\xbb\xbf"):
-        data = data[3:]
-        bom = 1
-
-    try:
-        return data.decode("windows-1251"), "windows-1251", bom
-    except UnicodeDecodeError:
-        pass
-
-    try:
-        return data.decode("utf-8"), "utf-8", bom
-    except UnicodeDecodeError:
-        return data.decode("utf-8", errors="replace"), "utf-8(replace)", bom
-
-
-# Пишет файл строго windows-1251, неподдерживаемые символы -> XML-сущности
-def _write_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
-
-
-# Чинит верх файла: убирает пустые строки до <?xml> и после него
-def _normalize_header(src: str) -> tuple[str, int]:
-    s = src.lstrip("\ufeff")
-    changed = 0
-
-    s2 = s.lstrip(" \t\r\n")
-    if s2 != s:
-        changed = 1
-        s = s2
-
-    lines = s.splitlines(True)
-    if not lines:
-        return s, changed
-
-    first = lines[0]
-    if first.lstrip().startswith("<?xml"):
-        first = first.rstrip("\r\n") + "\n"
-        i = 1
-        while i < len(lines) and lines[i].strip() == "":
-            i += 1
-            changed = 1
-        return first + "".join(lines[i:]), changed
-
-
-# Чинит FEED_META:
-# - строку времени вида "P25-12-07 07:53:29" -> "Время сборки (Алматы) | 2025-12-07 07:53:29"
-# - "Ближайшая сборка (Алматы)" если она оказалась в прошлом (по SCHEDULE_DOM и SCHEDULE_HOUR_ALMATY)
-def _fix_feed_meta(src: str) -> tuple[str, int]:
-    m = RE_FEED_META_BLOCK.search(src)
-    if not m:
-        return src, 0
-
-    block = m.group(0)
-    lines = block.splitlines()
-
-    # Позиция колонки "|" (чтобы выровнять как в других строках FEED_META)
-    pipe_pos = None
-    for ln in lines:
-        if "|" in ln:
-            pipe_pos = ln.index("|")
-            break
-    if pipe_pos is None:
-        pipe_pos = 42
-
-    # Достаём время сборки (после фикса) — нужно для проверки "Ближайшая сборка"
-    build_dt: datetime | None = None
-
-    changed = 0
-    out_lines: list[str] = []
-    for ln in lines:
-        mm = RE_BROKEN_TIME_P.match(ln)
-        if mm:
-            yy, mo, dd, t = mm.group(1), mm.group(2), mm.group(3), mm.group(4)
-            ts = f"20{yy}-{mo}-{dd} {t}"
-            left = "Время сборки (Алматы)"
-            out_lines.append(left.ljust(pipe_pos) + "| " + ts)
-            changed = 1
-            try:
-                build_dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
-            except Exception:
-                build_dt = None
+def _parse_dom_list(s: str) -> set[int]:
+    out: set[int] = set()
+    for x in (s or "").split(","):
+        x = x.strip()
+        if not x:
             continue
-
-        out_lines.append(ln)
-
-        if build_dt is None and "Время сборки" in ln and "|" in ln:
-            try:
-                ts = ln.split("|", 1)[1].strip()
-                build_dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S")
-            except Exception:
-                build_dt = None
-
-    # Если время сборки не нашли, пробуем взять из <yml_catalog date="...">
-    if build_dt is None:
-        ym = RE_YML_CATALOG_DATE.search(src)
-        if ym:
-            raw = (ym.group(2) or "").strip()
-            try:
-                if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", raw):
-                    build_dt = datetime.strptime(raw + ":00", "%Y-%m-%d %H:%M:%S")
-                else:
-                    build_dt = datetime.strptime(raw, "%Y-%m-%d %H:%M:%S")
-            except Exception:
-                build_dt = None
-
-    # Фикс "Ближайшая сборка" только если она оказалась <= времени сборки (то есть в прошлом)
-    if build_dt is not None:
-        for i, ln in enumerate(out_lines):
-            mm = RE_NEXT_RUN_LINE.search(ln)
-            if not mm:
-                continue
-            try:
-                nxt = datetime.strptime(mm.group(2), "%Y-%m-%d %H:%M:%S")
-            except Exception:
-                continue
-            if nxt <= build_dt:
-                new_dt = _calc_next_run(build_dt)
-                if new_dt is None:
-                    continue
-                left = "Ближайшая сборка (Алматы)"
-                out_lines[i] = left.ljust(pipe_pos) + "| " + new_dt.strftime("%Y-%m-%d %H:%M:%S")
-                changed = 1
-            break
-
-    if not changed:
-        return src, 0
-
-    new_block = "\n".join(out_lines)
-    out = src[: m.start()] + new_block + src[m.end() :]
-    return out, 1
+        try:
+            out.add(int(x))
+        except Exception:
+            pass
+    return out
 
 
-# Считает ближайшую сборку в Алматы по переменным окружения:
-# - SCHEDULE_HOUR_ALMATY (час)
-# - SCHEDULE_DOM (например "1,10,20"; если пусто — ежедневно)
-def _calc_next_run(build_dt: datetime) -> datetime | None:
+def _should_run() -> bool:
+    # По умолчанию:
+    # - workflow_dispatch / push => всегда
+    # - schedule => только если dom+hour совпадают с env SCHEDULE_DOM/SCHEDULE_HOUR_ALMATY
+    ev = (os.environ.get("GITHUB_EVENT_NAME") or "").strip().lower()
+    now = _almaty_now()
+
+    dom = os.environ.get("SCHEDULE_DOM", "1,10,20")
     try:
-        hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "") or "").strip())
+        hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "4") or "4").strip())
+    except Exception:
+        hour = 4
+
+    allowed = _parse_dom_list(dom) or {1, 10, 20}
+    day_ok = now.day in allowed
+    hour_ok = now.hour == hour
+
+    if ev == "schedule":
+        ok = day_ok and hour_ok
+    else:
+        ok = True
+
+    # диагностическая строка в логах (как у остальных)
+    print(
+        f"Event={ev or 'unknown'}; Almaty now: {now:%Y-%m-%d %H:%M:%S}; "
+        f"allowed_dom={','.join(map(str, sorted(allowed)))}; hour={hour}; "
+        f"day_ok={day_ok}; should_run={'yes' if ok else 'no'}"
+    )
+    return ok
+
+
+def _next_run(now: datetime, *, allowed_dom: set[int], hour: int) -> datetime:
+    # Считаем ближайшую сборку по правилам NVPrint (allowed_dom + фиксированный hour)
+    # now — наивный (Алматы)
+    for add_days in range(0, 370):
+        d = now.date() + timedelta(days=add_days)
+        if d.day not in allowed_dom:
+            continue
+        cand = datetime(d.year, d.month, d.day, hour, 0, 0)
+        if cand > now:
+            return cand
+    # fallback на всякий случай
+    return (now + timedelta(days=1)).replace(hour=hour, minute=0, second=0, microsecond=0)
+
+
+@dataclass
+class _Auth:
+    login: str
+    password: str
+
+
+def _get_auth() -> _Auth | None:
+    login = (os.environ.get("NVPRINT_LOGIN") or "").strip()
+    pw = (os.environ.get("NVPRINT_PASSWORD") or os.environ.get("NVPRINT_PASS") or "").strip()
+    if login and pw:
+        return _Auth(login=login, password=pw)
+    return None
+
+
+def _download_xml(url: str, auth: _Auth | None) -> bytes:
+    headers = {
+        "User-Agent": "Mozilla/5.0 (CS bot; NVPrint adapter)",
+        "Accept": "application/xml,text/xml,*/*",
+    }
+    kwargs = {"timeout": (10, 60), "headers": headers}
+    if auth:
+        kwargs["auth"] = (auth.login, auth.password)
+
+    r = requests.get(url, **kwargs)
+    if r.status_code != 200 or not r.content:
+        raise RuntimeError(f"Не удалось скачать NVPrint XML: http={r.status_code} bytes={len(r.content or b'')}")
+    return r.content
+
+
+def _find_offers(root: ET.Element) -> list[ET.Element]:
+    # Основной ожидаемый вариант: yml_catalog/shop/offers/offer
+    offers = root.findall(".//offer")
+    if offers:
+        return offers
+
+    # fallback: иногда "offers" могут лежать иначе
+    offers = root.findall(".//offers/offer")
+    if offers:
+        return offers
+
+    return []
+
+
+def _get_text(el: ET.Element | None) -> str:
+    if el is None or el.text is None:
+        return ""
+    return el.text.strip()
+
+
+def _pick_first_text(offer: ET.Element, tags: tuple[str, ...]) -> str:
+    for t in tags:
+        v = _get_text(offer.find(t))
+        if v:
+            return v
+    return ""
+
+
+def _make_oid(offer: ET.Element, name: str) -> str:
+    # Главное: oid должен быть стабильный, иначе будут "новые товары".
+    # Берём то, что даёт поставщик: vendorCode -> @id -> article/code -> stable_id(name)
+    oid = _pick_first_text(offer, ("vendorCode", "article", "code", "sku", "id"))
+    if not oid:
+        oid = (offer.get("id") or "").strip()
+
+    oid = oid.strip()
+    if not oid:
+        oid = stable_id(name)
+
+    # Лёгкая нормализация: оставляем безопасные символы
+    out = []
+    for ch in oid:
+        if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
+            out.append(ch)
+        else:
+            out.append("_")
+    return "".join(out)
+
+
+def _parse_price(text: str) -> int | None:
+    t = (text or "").strip()
+    if not t:
+        return None
+    t = t.replace("\xa0", " ").replace(" ", "")
+    t = t.replace(",", ".")
+    m = re.search(r"-?\d+(\.\d+)?", t)
+    if not m:
+        return None
+    try:
+        return int(float(m.group(0)))
     except Exception:
         return None
 
-    dom_raw = (os.environ.get("SCHEDULE_DOM", "") or "").strip()
-    doms: list[int] = []
-    if dom_raw:
-        for x in dom_raw.split(","):
-            x = x.strip()
-            if not x:
-                continue
-            try:
-                v = int(x)
-                if 1 <= v <= 31:
-                    doms.append(v)
-            except Exception:
-                continue
-        doms = sorted(set(doms))
 
-    # Ежедневно
-    if not doms:
-        cand = build_dt.replace(hour=hour, minute=0, second=0, microsecond=0)
-        if cand <= build_dt:
-            cand = cand + timedelta(days=1)
-        return cand
+def _collect_pictures(offer: ET.Element, oid: str) -> list[str]:
+    pics: list[str] = []
+    for p in offer.findall("picture"):
+        u = _get_text(p)
+        if not u:
+            continue
+        u = u.strip()
+        if u.startswith("//"):
+            u = "https:" + u
+        if u.startswith("/"):
+            u = "https://nvprint.ru" + u
+        pics.append(u)
 
-    # По дням месяца (1/10/20 и т.п.)
-    y = build_dt.year
-    m = build_dt.month
+    # если в исходнике нет picture — ставим заглушку
+    if not pics:
+        return [PLACEHOLDER_PIC]
 
-    best: datetime | None = None
-    for step in range(0, 3):  # хватит пары месяцев вперёд
-        mm = m + step
-        yy = y + (mm - 1) // 12
-        mm = ((mm - 1) % 12) + 1
-        for d in doms:
-            try:
-                cand = datetime(yy, mm, d, hour, 0, 0)
-            except Exception:
-                continue
-            if cand <= build_dt:
-                continue
-            if best is None or cand < best:
-                best = cand
-    return best
-
-    return s, changed
+    # дедуп
+    seen = set()
+    out: list[str] = []
+    for u in pics:
+        if u in seen:
+            continue
+        seen.add(u)
+        out.append(u)
+    return out
 
 
-# Форс-обновление времени (обновляем и FEED_META, и date="..." у yml_catalog)
-def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
-    if not _should_force_refresh():
-        return src, 0, 0
+def _collect_params(offer: ET.Element) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for p in offer.findall("param"):
+        k = (p.get("name") or "").strip()
+        v = _get_text(p)
+        if not k or not v:
+            continue
+        if k.casefold() in DROP_PARAM_NAMES_CF:
+            continue
+        # мусор: Гарантия=0
+        if k.casefold() == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
+            continue
+        out.append((k, v))
+    return out
 
-    now_s = _now_almaty_str()
 
-    out, n_meta = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
+def _native_desc(offer: ET.Element) -> str:
+    d = _get_text(offer.find("description"))
+    if not d:
+        return ""
+    if RE_DESC_HAS_CS.search(d):
+        return ""
+    return d
 
-    def _date_repl(m: re.Match) -> str:
-        old = m.group(2)
-        if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", old):
-            new = now_s[:16]
+
+def main() -> int:
+    if not _should_run():
+        return 0
+
+    url = (os.environ.get("NVPRINT_XML_URL") or "").strip()
+    if not url:
+        raise RuntimeError("NVPRINT_XML_URL пустой. Укажи URL в workflow env.")
+
+    auth = _get_auth()
+
+    now = _almaty_now()
+    allowed_dom = _parse_dom_list(os.environ.get("SCHEDULE_DOM", "1,10,20")) or {1, 10, 20}
+    try:
+        hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "4") or "4").strip())
+    except Exception:
+        hour = 4
+    next_run = _next_run(now, allowed_dom=allowed_dom, hour=hour)
+
+    xml_bytes = _download_xml(url, auth)
+
+    try:
+        root = ET.fromstring(xml_bytes)
+    except Exception as e:
+        raise RuntimeError(f"NVPrint XML не парсится: {e}")
+
+    offers_in = _find_offers(root)
+    if not offers_in:
+        raise RuntimeError("Не нашёл <offer> в NVPrint XML. Пришли кусок сырого XML — подстроим парсер.")
+
+    out_offers: list[OfferOut] = []
+    in_true = 0
+    in_false = 0
+
+    for offer in offers_in:
+        name = _pick_first_text(offer, ("name", "title", "Name", "Наименование"))
+        name = norm_ws(name)
+        if not name:
+            continue
+
+        oid = _make_oid(offer, name)
+
+        # available
+        av_raw = (offer.get("available") or "").strip().lower()
+        if av_raw in ("true", "1", "yes", "y"):
+            available = True
+        elif av_raw in ("false", "0", "no", "n"):
+            available = False
         else:
-            new = now_s
-        return m.group(1) + new + m.group(3)
+            # fallback: иногда есть тег available
+            av_tag = _pick_first_text(offer, ("available",))
+            available = av_tag.strip().lower() in ("true", "1", "yes", "y")
 
-    out2, n_date = RE_YML_CATALOG_DATE.subn(_date_repl, out, count=1)
-    return out2, n_meta, n_date
+        if available:
+            in_true += 1
+        else:
+            in_false += 1
 
+        # цена поставщика (вход)
+        pin = _parse_price(_pick_first_text(offer, ("purchase_price", "base_price", "price", "Price")))
+        price = compute_price(pin)
 
-# Вставляет <picture> заглушку в offer, если picture отсутствует
-def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
-    if "<picture>" in offer_body:
-        return offer_body, 0
+        pics = _collect_pictures(offer, oid)
 
-    idx = offer_body.find("</price>")
-    if idx == -1:
-        return offer_body, 0
+        vendor = _pick_first_text(offer, ("vendor", "brand", "Brand", "Производитель"))
+        params = _collect_params(offer)
+        desc = _native_desc(offer)
 
-    m = RE_PRICE_LINE.search(offer_body)
-    indent = m.group(1) if m else "\n"
+        out_offers.append(
+            OfferOut(
+                oid=oid,
+                name=name,
+                price=price,
+                available=available,
+                pictures=pics,
+                vendor=vendor,
+                params=params,
+                native_desc=desc,
+            )
+        )
 
-    insert = f"{indent}<picture>{PLACEHOLDER_PICTURE_URL}</picture>"
-    new_body = offer_body[: idx + len("</price>")] + insert + offer_body[idx + len("</price>") :]
-    return new_body, 1
+    # стабилизируем порядок, чтобы не было случайных диффов
+    out_offers.sort(key=lambda o: o.oid)
 
-
-# Применяет точечные правки
-def _process_text(src: str) -> tuple[str, dict]:
-    stats = {
-        "offers_scanned": 0,
-        "offers_pictures_added": 0,
-        "rgba_fixed": 0,
-        "header_fixed": 0,
-        "feed_meta_fixed": 0,
-        "build_time_bumped_meta": 0,
-        "build_time_bumped_date": 0,
-    }
-
-    src_h, header_fixed = _normalize_header(src)
-    stats["header_fixed"] = header_fixed
-
-    src_m, meta_fixed = _fix_feed_meta(src_h)
-    stats["feed_meta_fixed"] = meta_fixed
-
-    src0, n_meta, n_date = _bump_build_time_if_needed(src_m)
-    stats["build_time_bumped_meta"] = n_meta
-    stats["build_time_bumped_date"] = n_date
-
-    src1, n_rgba = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", src0)
-    stats["rgba_fixed"] = n_rgba
-
-    def repl(m: re.Match) -> str:
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-        stats["offers_scanned"] += 1
-        body2, added = _inject_picture_if_missing(body)
-        stats["offers_pictures_added"] += added
-        return head + body2 + tail
-
-    out = RE_OFFER_BLOCK.sub(repl, src1)
-    return out, stats
-
-
-# Определяет входной файл по OUT_FILE или docs/nvprint.yml
-def _resolve_infile(cli_path: str | None) -> Path:
-    if cli_path:
-        return Path(cli_path)
-    env_path = os.environ.get("OUT_FILE", "").strip()
-    if env_path:
-        return Path(env_path)
-    return Path("docs/nvprint.yml")
-
-
-def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--in", dest="infile", default=None, help="Путь к nvprint.yml (по умолчанию OUT_FILE или docs/nvprint.yml)")
-    args = ap.parse_args(argv)
-
-    path = _resolve_infile(args.infile)
-    if not path.exists():
-        print(f"[postprocess_nvprint] ERROR: file not found: {path}", file=sys.stderr)
-        return 2
-
-    src, enc, bom = _read_text(path)
-    if enc != "windows-1251" or bom:
-        info = []
-        if enc != "windows-1251":
-            info.append(f"encoding={enc}")
-        if bom:
-            info.append("bom=stripped")
-        print(f"[postprocess_nvprint] WARN: input {'; '.join(info)} (сохраним как windows-1251)", file=sys.stderr)
-
-    out, stats = _process_text(src)
-
-    if out != src or enc != "windows-1251" or bom:
-        _write_text(path, out)
-
-    bumped = stats["build_time_bumped_meta"] + stats["build_time_bumped_date"]
-    print(
-        "[postprocess_nvprint] OK | "
-        f"offers={stats['offers_scanned']} | "
-        f"pictures_added={stats['offers_pictures_added']} | "
-        f"rgba_fixed={stats['rgba_fixed']} | "
-        f"header_fixed={stats['header_fixed']} | "
-        f"feed_meta_fixed={stats['feed_meta_fixed']} | "
-        f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
-        f"file={path}"
+    header = make_header(now, encoding=OUTPUT_ENCODING)
+    feed_meta = make_feed_meta(
+        "NVPrint",
+        url,
+        now,
+        next_run,
+        before=len(offers_in),
+        after=len(out_offers),
+        in_true=in_true,
+        in_false=in_false,
     )
+
+    offers_xml = "\n\n".join(o.to_xml(public_vendor="CS") for o in out_offers)
+    full = header + "\n" + feed_meta + "\n\n" + offers_xml + "\n" + make_footer()
+    full = ensure_footer_spacing(full)
+
+    validate_cs_yml(full)
+
+    changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
+    print(f"[nvprint] offers_in={len(offers_in)} offers_out={len(out_offers)} changed={changed} file={OUT_FILE}")
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv[1:]))
+    raise SystemExit(main())
