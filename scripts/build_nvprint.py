@@ -148,18 +148,70 @@ def _download_xml(url: str, auth: _Auth | None) -> bytes:
     return r.content
 
 
+def _local(tag: str) -> str:
+    # Убираем namespace: "{ns}Tag" -> "Tag"
+    if "}" in tag:
+        return tag.split("}", 1)[1]
+    return tag
+
+
+def _xml_head(xml_bytes: bytes, limit: int = 1200) -> str:
+    # Короткий превью для логов, чтобы понять структуру ответа (без огромных дампов)
+    try:
+        s = xml_bytes.decode("utf-8")
+    except Exception:
+        try:
+            s = xml_bytes.decode("cp1251")
+        except Exception:
+            s = xml_bytes.decode("utf-8", errors="replace")
+    s = s.replace("\r", "")
+    return s[:limit]
+
+
+def _detect_item_nodes(root: ET.Element) -> list[ET.Element]:
+    # 1) Быстрый путь: любые *offer* (с любым регистром/namespace)
+    offers = [el for el in root.iter() if _local(el.tag).casefold() == "offer"]
+    if offers:
+        return offers
+
+    # 2) Авто-детект "строки" по частотному тегу, который содержит name+price
+    name_keys = {"name", "title", "наименование"}
+    price_keys = {"price", "base_price", "purchase_price", "cost", "цена", "цена_кзт", "pricekzt"}
+
+    def has_key(el: ET.Element, keys: set[str]) -> bool:
+        for ch in list(el):
+            if _local(ch.tag).casefold() in keys:
+                return True
+        return False
+
+    counts: dict[str, int] = {}
+    candidates: list[ET.Element] = []
+
+    for el in root.iter():
+        kids = list(el)
+        if len(kids) < 2:
+            continue
+        if not has_key(el, name_keys):
+            continue
+        if not has_key(el, price_keys):
+            continue
+        ln = _local(el.tag).casefold()
+        counts[ln] = counts.get(ln, 0) + 1
+        candidates.append(el)
+
+    if not counts:
+        return []
+
+    best_tag, best_cnt = max(counts.items(), key=lambda kv: kv[1])
+    # если всего 1-2 узла — это не "лист товаров"
+    if best_cnt < 5:
+        return []
+
+    out = [el for el in candidates if _local(el.tag).casefold() == best_tag]
+    return out
+
 def _find_offers(root: ET.Element) -> list[ET.Element]:
-    # Основной ожидаемый вариант: yml_catalog/shop/offers/offer
-    offers = root.findall(".//offer")
-    if offers:
-        return offers
-
-    # fallback: иногда "offers" могут лежать иначе
-    offers = root.findall(".//offers/offer")
-    if offers:
-        return offers
-
-    return []
+    return _detect_item_nodes(root)
 
 
 def _get_text(el: ET.Element | None) -> str:
@@ -292,7 +344,7 @@ def main() -> int:
 
     offers_in = _find_offers(root)
     if not offers_in:
-        raise RuntimeError("Не нашёл <offer> в NVPrint XML. Пришли кусок сырого XML — подстроим парсер.")
+        raise RuntimeError("Не нашёл товары в NVPrint XML. Превью ответа:\n" + _xml_head(xml_bytes))
 
     out_offers: list[OfferOut] = []
     in_true = 0
