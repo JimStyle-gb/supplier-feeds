@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2025-12-28 16:50">
+<yml_catalog date="2025-12-28 17:26">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2025-12-28 16:50:30
+Время сборки (Алматы)                      | 2025-12-28 17:26:22
 Ближайшая сборка (Алматы)                  | 2025-12-29 02:00:00
 Сколько товаров у поставщика до фильтра    | 1715
 Сколько товаров у поставщика после фильтра | 142
@@ -332,7 +332,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Монитор Hyperx MNTR HX Armada 27 QHD Gaming</name>
 <price>253900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ba6/gjwt933m48lr8s6preq8yzmwxnxui78t.jpg</picture>
-<vendor>Китай</vendor>
+<vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -350,7 +350,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="VESA">100x100</param>
 <param name="Вид">Монитор</param>
 <param name="Страна происхождения">Китай</param>
-<keywords>Китай, Монитор Hyperx MNTR HX Armada 27 QHD Gaming, Монитор, Hyperx, MNTR, HX, Armada, 27, QHD, Gaming, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>CS, Монитор Hyperx MNTR HX Armada 27 QHD Gaming, Монитор, Hyperx, MNTR, HX, Armada, 27, QHD, Gaming, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="AC8058201" available="true">
@@ -2902,12 +2902,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт.</h3><p>Пленка для ламинирования<br>Толщина 80 мкм<br>Формат А4 (216х303мм)<br>Количество в упаковке 100 шт<br><br>Артикул	fs-53061<br>Формат	А4<br>Толщина (мкм)	80<br>Тип пленки	Глянцевая<br>Дополнительные свойства пленки	Нет<br>Упаковка, шт	100<br>Пленка для горячего ламинирования FS-53061 глянцевая, с высоким содержанием полиэтилентерефталата (50%). Используется для защиты документов от влаги, загрязнения, механических повреждений, придания жесткости и яркости. Обладает высокой прозрачностью.</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> пленка для ламинирования</li><li><strong>Гарантия:</strong> 0</li><li><strong>Вид:</strong> пленка для ламинирования</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> пленка для ламинирования</li><li><strong>Вид:</strong> пленка для ламинирования</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>
 ]]></description>
 <param name="Тип">пленка для ламинирования</param>
-<param name="Гарантия">0</param>
 <param name="Вид">пленка для ламинирования</param>
 <keywords>CS, Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт., Пленка, для, ламинирования, А4, Fellowes, 80мкм, 100, шт, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
