@@ -80,6 +80,19 @@ COUNTRY_VENDOR_BLACKLIST_CF = {
     "индия", "india",
 }
 
+
+def _clean_vendor(v: str) -> str:
+    # vendor = бренд; если туда прилетает страна/общие слова — убираем, чтобы не портить бренд.
+    s = (v or "").strip()
+    if not s:
+        return ""
+    cf = s.casefold()
+    # чистим "made in ..." и явные страны
+    if "made in" in cf or cf in COUNTRY_VENDOR_BLACKLIST_CF:
+        return ""
+    return s
+
+
 # Приоритет характеристик (как в AlStyle: сначала важное, потом остальное по алфавиту)
 AKCENT_PARAM_PRIORITY = [
     "Бренд",
@@ -172,22 +185,30 @@ def _collect_params(offer: ET.Element) -> list[tuple[str, str]]:
         k = (p.get("name") or "").strip()
         v = _get_text(p)
         if k and v:
-            out.append((k, v))
+                # Мусор от поставщика: Гарантия=0 (убираем)
+                if k.casefold() == 'гарантия' and v.strip().casefold() in ('0', '0 мес', '0 месяцев', '0мес'):
+                    continue
+                out.append((k, v))
     for p in offer.findall("Param"):
         k = (p.get("name") or p.get("Name") or "").strip()
         v = _get_text(p)
         if k and v:
-            out.append((k, v))
+                # Мусор от поставщика: Гарантия=0 (убираем)
+                if k.casefold() == 'гарантия' and v.strip().casefold() in ('0', '0 мес', '0 месяцев', '0мес'):
+                    continue
+                out.append((k, v))
     return out
 
 # Достаём vendor (если пусто — CS Core сам определит бренд по имени/парам/описанию)
 def _extract_vendor(offer: ET.Element, params: list[tuple[str, str]]) -> str:
-    v = _get_text(offer.find("vendor"))
+    v = _clean_vendor(_get_text(offer.find("vendor")))
     if v:
         return v
     for k, val in params:
         if k.casefold() in ("производитель", "бренд", "brand", "manufacturer"):
-            return val
+            v2 = _clean_vendor(val)
+            if v2:
+                return v2
     return ""
 
 # Достаём описание
