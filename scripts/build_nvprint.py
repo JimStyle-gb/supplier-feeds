@@ -535,6 +535,18 @@ def _native_desc(item: ET.Element) -> str:
 
 
 
+
+def _normalize_name_prefix(name: str) -> str:
+    s = (name or "").strip()
+    if not s:
+        return ""
+    # единообразие префиксов
+    if s.casefold().startswith("тонер картридж"):
+        s = "Тонер-картридж" + s[len("Тонер картридж"):]
+    if s.casefold().startswith("тонер туба"):
+        s = "Тонер-туба" + s[len("Тонер туба"):]
+    return s
+
 def _normalize_vendor(v: str) -> str:
     v = (v or "").strip()
     if not v:
@@ -603,9 +615,10 @@ def main() -> int:
     in_false = 0
 
     for item in items:
-        name = _pick_first_text(item, ("name", "title", "Номенклатура", "НоменклатураКратко", "Наименование"))
+        name = _get_text(item.find("Номенклатура")) or _get_text(item.find("НоменклатураКратко")) or _pick_first_text(item, ("name", "title", "Наименование"))
         name = _fix_mixed_ru(name)
         name = norm_ws(name)
+        name = _normalize_name_prefix(name)
         # Нормализация префиксов (чтобы категории были единообразны)
         name = re.sub(r"^Тонер\s+картридж\b", "Тонер-картридж", name, flags=re.I)
         if not name:
