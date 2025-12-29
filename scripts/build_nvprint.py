@@ -55,24 +55,83 @@ DROP_PARAM_NAMES_CF = {
 }
 
 
-# Фильтр ассортимента NVPrint: оставляем только товары по ключевым словам в названии.
-# Можно расширить через env NVPRINT_INCLUDE_WORDS (через запятую).
-NVPRINT_INCLUDE_TERMS_CF = [
+# Фильтр ассортимента NVPrint.
+# ВАЖНО: фильтруем по ПРЕФИКСУ названия (а не по наличию слова внутри),
+# иначе почти всё проходит из‑за слов "...для картриджа..." в тексте.
+# Можно расширить через env NVPRINT_INCLUDE_PREFIXES (через запятую).
+NVPRINT_INCLUDE_PREFIXES_CF = [
     "блок фотобарабана",
-    "фотобарабан",
     "картридж",
     "печатающая головка",
     "струйный картридж",
     "тонер-картридж",
+    "тонер картридж",  # бывает без дефиса
     "тонер-туба",
-    "тонер туба",
+    "тонер туба",      # бывает без дефиса
 ]
 
 
+_RE_WS = re.compile(r"\s+")
+
+# Подмена похожих латинских букв на кириллицу, только когда дальше идёт кириллица.
+# Нужно для случаев типа "Cтруйный" (латинская C).
+_LAT2CYR = {
+    "A": "А", "a": "а",
+    "B": "В", "b": "в",
+    "C": "С", "c": "с",
+    "E": "Е", "e": "е",
+    "H": "Н", "h": "н",
+    "K": "К", "k": "к",
+    "M": "М", "m": "м",
+    "O": "О", "o": "о",
+    "P": "Р", "p": "р",
+    "T": "Т", "t": "т",
+    "X": "Х", "x": "х",
+    "Y": "У", "y": "у",
+}
+
+
+def _fix_mixed_ru(s: str) -> str:
+    # Меняем латиницу на кириллицу ТОЛЬКО если следующая буква кириллическая.
+    if not s:
+        return ""
+    out = []
+    n = len(s)
+    for i, ch in enumerate(s):
+        rep = ch
+        if ch in _LAT2CYR and i + 1 < n:
+            nxt = s[i + 1]
+            if "\u0400" <= nxt <= "\u04FF":  # кириллица
+                rep = _LAT2CYR[ch]
+        out.append(rep)
+    return "".join(out)
+
+
+def _name_for_filter(name: str) -> str:
+    s = (name or "").strip()
+    s = _fix_mixed_ru(s)
+    s = s.casefold()
+    s = _RE_WS.sub(" ", s)
+    return s
+
+
 def _include_by_name(name: str) -> bool:
-    cf = (name or "").casefold()
+    cf = _name_for_filter(name)
     if not cf:
         return False
+
+    extra = (os.environ.get("NVPRINT_INCLUDE_PREFIXES") or "").strip()
+    prefixes = list(NVPRINT_INCLUDE_PREFIXES_CF)
+    if extra:
+        for x in extra.split(","):
+            x = x.strip().casefold()
+            if x and x not in prefixes:
+                prefixes.append(x)
+
+    for p in prefixes:
+        if p and cf.startswith(p):
+            return True
+    return False
 
     extra = (os.environ.get("NVPRINT_INCLUDE_WORDS") or "").strip()
     terms = list(NVPRINT_INCLUDE_TERMS_CF)
@@ -285,26 +344,33 @@ def _extract_price(item: ET.Element) -> int | None:
 
 
 def _extract_available(item: ET.Element) -> bool:
+    # 1) yml-атрибут available
     av_raw = (item.get("available") or "").strip().lower()
     if av_raw in ("true", "1", "yes", "y"):
         return True
     if av_raw in ("false", "0", "no", "n"):
         return False
 
+    # 2) 1C: пытаемся найти любые поля, связанные с остатком/количеством.
     qty_kz: float = 0.0
     qty_any: float = 0.0
     has_any = False
 
     for el in item.iter():
         tag = _local(el.tag).casefold()
-        if tag not in ("остаток", "количество", "колво", "кол-во", "qty", "quantity"):
+
+        # Берём только теги, где явно фигурирует остаток/количество.
+        if ("остат" not in tag) and ("колич" not in tag) and (tag not in ("qty", "quantity")):
             continue
+
         n = _parse_num(_get_text(el))
         if n is None:
             continue
+
         has_any = True
         qty_any += n
 
+        # Казахстан — пытаемся определить по атрибутам/тексту рядом
         attrs = " ".join([str(v) for v in el.attrib.values()]).casefold()
         if "казахстан" in attrs:
             qty_kz += n
@@ -313,10 +379,12 @@ def _extract_available(item: ET.Element) -> bool:
         use = qty_kz if qty_kz > 0 else qty_any
         return use > 0
 
+    # 3) fallback: иногда есть отдельное поле "Наличие"
     av_tag = _pick_first_text(item, ("available", "Available", "Наличие"))
     if av_tag:
         return av_tag.strip().lower() in ("true", "1", "yes", "y", "есть", "да")
 
+    # По умолчанию не гасим ассортимент.
     return True
 
 
@@ -434,6 +502,7 @@ def main() -> int:
 
     for item in items:
         name = _pick_first_text(item, ("name", "title", "НоменклатураКратко", "Номенклатура", "Наименование"))
+        name = _fix_mixed_ru(name)
         name = norm_ws(name)
         if not name:
             continue
