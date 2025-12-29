@@ -352,6 +352,44 @@ def _extract_available(item: ET.Element) -> bool:
     if av_raw in ("false", "0", "no", "n"):
         return False
 
+    # 2) 1C-формат NVPrint: <УсловияПродаж>/<Договор>/<Наличие Количество="..."/>
+    # Если теги "Наличие" есть, считаем empty/"0" как 0; >0 значит в наличии.
+    found_any = False
+    total_qty = 0.0
+    for el in item.iter():
+        if _local(el.tag).casefold() != "наличие":
+            continue
+        found_any = True
+        q = (el.get("Количество") or el.get("количество") or "").strip()
+        if not q:
+            continue
+        q = q.replace(",", ".")
+        try:
+            total_qty += float(q)
+        except Exception:
+            continue
+    if found_any:
+        return total_qty > 0
+
+    # 3) Фолбэк: иногда остаток/количество могут быть отдельными тегами
+    for el in item.iter():
+        tag_cf = _local(el.tag).casefold()
+        if ("остат" in tag_cf) or ("колич" in tag_cf):
+            n = _parse_num(_get_text(el))
+            if n is not None:
+                return n > 0
+
+    # 4) fallback: иногда есть тег available/Наличие как текст
+    av_tag = _pick_first_text(item, ("available", "Available", "Наличие"))
+    if av_tag:
+        return av_tag.strip().lower() in ("true", "1", "yes", "y", "есть", "да")
+
+    # по умолчанию: считаем, что доступно (иначе можно "убить" ассортимент)
+    return True
+
+    if av_raw in ("false", "0", "no", "n"):
+        return False
+
     # 2) 1C: пытаемся найти любые поля, связанные с остатком/количеством.
     qty_kz: float = 0.0
     qty_any: float = 0.0
@@ -496,6 +534,40 @@ def _native_desc(item: ET.Element) -> str:
     return d
 
 
+
+def _normalize_vendor(v: str) -> str:
+    v = (v or "").strip()
+    if not v:
+        return ""
+    # Если есть смесь латиницы и кириллицы (часто "Kyoсera" с кириллической 'с') — приводим похожие буквы к латинице.
+    has_lat = any(("A" <= ch <= "Z") or ("a" <= ch <= "z") for ch in v)
+    has_cyr = any(("А" <= ch <= "я") or (ch in "Ёё") for ch in v)
+    if has_lat and has_cyr:
+        table = str.maketrans({
+            "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X", "У": "Y",
+            "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t", "х": "x", "у": "y",
+        })
+        v = v.translate(table)
+    return v.strip()
+
+
+_RE_BRAND_AFTER_DLYA = re.compile(r"\bдля\s+([A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-._]{1,40})", re.I)
+_RE_BRAND_AFTER_FOR = re.compile(r"\bfor\s+([A-Za-z0-9][A-Za-z0-9\-._]{1,40})", re.I)
+
+
+def _derive_vendor_from_name(name: str) -> str:
+    # Берём бренд принтера из "… для Kyocera …" или "… for HP …"
+    s = (name or "").strip()
+    if not s:
+        return ""
+    m = _RE_BRAND_AFTER_DLYA.search(s)
+    if m:
+        return _normalize_vendor(m.group(1))
+    m = _RE_BRAND_AFTER_FOR.search(s)
+    if m:
+        return _normalize_vendor(m.group(1))
+    return ""
+
 def main() -> int:
     if not _should_run():
         return 0
@@ -531,9 +603,11 @@ def main() -> int:
     in_false = 0
 
     for item in items:
-        name = _pick_first_text(item, ("name", "title", "НоменклатураКратко", "Номенклатура", "Наименование"))
+        name = _pick_first_text(item, ("name", "title", "Номенклатура", "НоменклатураКратко", "Наименование"))
         name = _fix_mixed_ru(name)
         name = norm_ws(name)
+        # Нормализация префиксов (чтобы категории были единообразны)
+        name = re.sub(r"^Тонер\s+картридж\b", "Тонер-картридж", name, flags=re.I)
         if not name:
             continue
 
@@ -554,8 +628,20 @@ def main() -> int:
         price = compute_price(pin)
 
         pics = _collect_pictures(item)
-
         vendor = _pick_first_text(item, ("vendor", "brand", "Brand", "Производитель"))
+        if not vendor:
+            vendor = _pick_first_text(item, ("РазделМодели",))
+        if vendor:
+            vendor = _normalize_vendor(vendor)
+        if not vendor:
+            vendor = _derive_vendor_from_name(name)
+        if not vendor:
+            vendor = _pick_first_text(item, ("РазделПрайса",))
+        if vendor:
+            vendor = _normalize_vendor(vendor)
+        if not vendor and "nvp" in name.casefold():
+            vendor = "NVP"
+
         params = _collect_params(item)
         desc = _native_desc(item)
 
