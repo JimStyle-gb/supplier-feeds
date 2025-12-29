@@ -55,6 +55,40 @@ DROP_PARAM_NAMES_CF = {
 }
 
 
+# Фильтр ассортимента NVPrint: оставляем только товары по ключевым словам в названии.
+# Можно расширить через env NVPRINT_INCLUDE_WORDS (через запятую).
+NVPRINT_INCLUDE_TERMS_CF = [
+    "блок фотобарабана",
+    "фотобарабан",
+    "картридж",
+    "печатающая головка",
+    "струйный картридж",
+    "тонер-картридж",
+    "тонер-туба",
+    "тонер туба",
+]
+
+
+def _include_by_name(name: str) -> bool:
+    cf = (name or "").casefold()
+    if not cf:
+        return False
+
+    extra = (os.environ.get("NVPRINT_INCLUDE_WORDS") or "").strip()
+    terms = list(NVPRINT_INCLUDE_TERMS_CF)
+    if extra:
+        for x in extra.split(","):
+            x = x.strip().casefold()
+            if x and x not in terms:
+                terms.append(x)
+
+    for t in terms:
+        if t and t in cf:
+            return True
+    return False
+
+
+
 def _almaty_now() -> datetime:
     return datetime.now(TZ_ALMATY).replace(tzinfo=None)
 
@@ -394,6 +428,7 @@ def main() -> int:
         raise RuntimeError("Не нашёл товары в NVPrint XML.\nПревью:\n" + _xml_head(xml_bytes))
 
     out_offers: list[OfferOut] = []
+    filtered_out = 0
     in_true = 0
     in_false = 0
 
@@ -401,6 +436,11 @@ def main() -> int:
         name = _pick_first_text(item, ("name", "title", "НоменклатураКратко", "Номенклатура", "Наименование"))
         name = norm_ws(name)
         if not name:
+            continue
+
+        # Фильтр по ключевым словам (ассортимент)
+        if not _include_by_name(name):
+            filtered_out += 1
             continue
 
         oid = _make_oid(item, name)
@@ -454,7 +494,7 @@ def main() -> int:
     validate_cs_yml(full)
 
     changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
-    print(f"[nvprint] items_in={len(items)} offers_out={len(out_offers)} in_true={in_true} in_false={in_false} changed={changed} file={OUT_FILE}")
+    print(f"[nvprint] items_in={len(items)} filtered_out={filtered_out} offers_out={len(out_offers)} in_true={in_true} in_false={in_false} changed={changed} file={OUT_FILE}")
     return 0
 
 
