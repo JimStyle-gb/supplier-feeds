@@ -630,13 +630,9 @@ def main() -> int:
             continue
 
         oid = _make_oid(item, name)
-
-        available = _extract_available(item)
-        if available:
-            in_true += 1
-        else:
-            in_false += 1
-
+        # По требованию: всегда считаем товар в наличии
+        available = True
+        in_true += 1
         pin = _extract_price(item)
         price = compute_price(pin)
 
@@ -654,6 +650,7 @@ def main() -> int:
             vendor = _normalize_vendor(vendor)
         if not vendor and "nvp" in name.casefold():
             vendor = "NVP"
+
 
         params = _collect_params(item)
         desc = _native_desc(item)
@@ -692,7 +689,7 @@ def main() -> int:
     validate_cs_yml(full)
 
     changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
-    print(f"[nvprint] items_in={len(items)} filtered_out={filtered_out} offers_out={len(out_offers)} in_true={in_true} in_false={in_false} changed={changed} file={OUT_FILE}")
+    print(f"[nvprint] forced_available=true items_in={len(items)} filtered_out={filtered_out} offers_out={len(out_offers)} in_true={in_true} in_false={in_false} changed={changed} file={OUT_FILE}")
     return 0
 
 
