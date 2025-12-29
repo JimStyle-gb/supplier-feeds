@@ -1,20 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-NVPrint -> CS adapter (v63)
+NVPrint -> CS adapter (v65, 1C-XML "КаталогТоваров/Товары/Товар")
 
-Задача: получить XML NVPrint, превратить в CS-оферы через общий core и собрать docs/nvprint.yml.
-Core должен содержать только общее (price/desc/params/feed_meta/валидация/рендер), а здесь — только NVPrint-специфика:
-- откуда скачать XML
-- как достать id/name/price/available/pictures/params/desc
-- (опционально) NVPrint-фильтры/правки входных данных
+Core (cs/core.py) = только общее: цена/description/params/feed_meta/рендер/валидация/запись.
+Этот файл = только NVPrint-специфика: скачать XML, распарсить "Товар", собрать OfferOut.
 """
 
 from __future__ import annotations
 
 import os
 import re
-import sys
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -40,10 +36,10 @@ TZ_ALMATY = ZoneInfo("Asia/Almaty")
 OUT_FILE = "docs/nvprint.yml"
 OUTPUT_ENCODING = "utf-8"
 
-# Заглушка фото (если у товара нет фото/товара нет на сайте)
+# Заглушка фото (если у товара нет фото/карточки)
 PLACEHOLDER_PIC = "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
 
-# Если описание уже похоже на CS-шаблон — не берём его как native_desc (иначе будет дубль WhatsApp/секций)
+# Если описание уже похоже на CS — не берём native_desc (иначе будет дубль секций)
 RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
 
 # NVPrint-мусорные параметры (если встречаются)
@@ -54,6 +50,8 @@ DROP_PARAM_NAMES_CF = {
     "в наличии",
     "сопутствующие товары",
     "sku",
+    "код",  # код используем для oid, но в params не нужен
+    "guid",
 }
 
 
@@ -75,28 +73,22 @@ def _parse_dom_list(s: str) -> set[int]:
 
 
 def _should_run() -> bool:
-    # По умолчанию:
-    # - workflow_dispatch / push => всегда
-    # - schedule => только если dom+hour совпадают с env SCHEDULE_DOM/SCHEDULE_HOUR_ALMATY
+    # schedule => только если dom+hour совпадают (env SCHEDULE_DOM/SCHEDULE_HOUR_ALMATY)
+    # push/workflow_dispatch => всегда
     ev = (os.environ.get("GITHUB_EVENT_NAME") or "").strip().lower()
     now = _almaty_now()
 
-    dom = os.environ.get("SCHEDULE_DOM", "1,10,20")
+    allowed = _parse_dom_list(os.environ.get("SCHEDULE_DOM", "1,10,20")) or {1, 10, 20}
     try:
         hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "4") or "4").strip())
     except Exception:
         hour = 4
 
-    allowed = _parse_dom_list(dom) or {1, 10, 20}
     day_ok = now.day in allowed
     hour_ok = now.hour == hour
 
-    if ev == "schedule":
-        ok = day_ok and hour_ok
-    else:
-        ok = True
+    ok = (day_ok and hour_ok) if ev == "schedule" else True
 
-    # диагностическая строка в логах (как у остальных)
     print(
         f"Event={ev or 'unknown'}; Almaty now: {now:%Y-%m-%d %H:%M:%S}; "
         f"allowed_dom={','.join(map(str, sorted(allowed)))}; hour={hour}; "
@@ -106,8 +98,6 @@ def _should_run() -> bool:
 
 
 def _next_run(now: datetime, *, allowed_dom: set[int], hour: int) -> datetime:
-    # Считаем ближайшую сборку по правилам NVPrint (allowed_dom + фиксированный hour)
-    # now — наивный (Алматы)
     for add_days in range(0, 370):
         d = now.date() + timedelta(days=add_days)
         if d.day not in allowed_dom:
@@ -115,7 +105,6 @@ def _next_run(now: datetime, *, allowed_dom: set[int], hour: int) -> datetime:
         cand = datetime(d.year, d.month, d.day, hour, 0, 0)
         if cand > now:
             return cand
-    # fallback на всякий случай
     return (now + timedelta(days=1)).replace(hour=hour, minute=0, second=0, microsecond=0)
 
 
@@ -138,7 +127,7 @@ def _download_xml(url: str, auth: _Auth | None) -> bytes:
         "User-Agent": "Mozilla/5.0 (CS bot; NVPrint adapter)",
         "Accept": "application/xml,text/xml,*/*",
     }
-    kwargs = {"timeout": (10, 60), "headers": headers}
+    kwargs = {"timeout": (10, 90), "headers": headers}
     if auth:
         kwargs["auth"] = (auth.login, auth.password)
 
@@ -148,15 +137,7 @@ def _download_xml(url: str, auth: _Auth | None) -> bytes:
     return r.content
 
 
-def _local(tag: str) -> str:
-    # Убираем namespace: "{ns}Tag" -> "Tag"
-    if "}" in tag:
-        return tag.split("}", 1)[1]
-    return tag
-
-
-def _xml_head(xml_bytes: bytes, limit: int = 1200) -> str:
-    # Короткий превью для логов, чтобы понять структуру ответа (без огромных дампов)
+def _xml_head(xml_bytes: bytes, limit: int = 2500) -> str:
     try:
         s = xml_bytes.decode("utf-8")
     except Exception:
@@ -168,50 +149,10 @@ def _xml_head(xml_bytes: bytes, limit: int = 1200) -> str:
     return s[:limit]
 
 
-def _detect_item_nodes(root: ET.Element) -> list[ET.Element]:
-    # 1) Быстрый путь: любые *offer* (с любым регистром/namespace)
-    offers = [el for el in root.iter() if _local(el.tag).casefold() == "offer"]
-    if offers:
-        return offers
-
-    # 2) Авто-детект "строки" по частотному тегу, который содержит name+price
-    name_keys = {"name", "title", "наименование"}
-    price_keys = {"price", "base_price", "purchase_price", "cost", "цена", "цена_кзт", "pricekzt"}
-
-    def has_key(el: ET.Element, keys: set[str]) -> bool:
-        for ch in list(el):
-            if _local(ch.tag).casefold() in keys:
-                return True
-        return False
-
-    counts: dict[str, int] = {}
-    candidates: list[ET.Element] = []
-
-    for el in root.iter():
-        kids = list(el)
-        if len(kids) < 2:
-            continue
-        if not has_key(el, name_keys):
-            continue
-        if not has_key(el, price_keys):
-            continue
-        ln = _local(el.tag).casefold()
-        counts[ln] = counts.get(ln, 0) + 1
-        candidates.append(el)
-
-    if not counts:
-        return []
-
-    best_tag, best_cnt = max(counts.items(), key=lambda kv: kv[1])
-    # если всего 1-2 узла — это не "лист товаров"
-    if best_cnt < 5:
-        return []
-
-    out = [el for el in candidates if _local(el.tag).casefold() == best_tag]
-    return out
-
-def _find_offers(root: ET.Element) -> list[ET.Element]:
-    return _detect_item_nodes(root)
+def _local(tag: str) -> str:
+    if "}" in tag:
+        return tag.split("}", 1)[1]
+    return tag
 
 
 def _get_text(el: ET.Element | None) -> str:
@@ -220,54 +161,137 @@ def _get_text(el: ET.Element | None) -> str:
     return el.text.strip()
 
 
-def _pick_first_text(offer: ET.Element, tags: tuple[str, ...]) -> str:
-    for t in tags:
-        v = _get_text(offer.find(t))
-        if v:
-            return v
+def _pick_first_text(node: ET.Element, names: tuple[str, ...]) -> str:
+    want = {n.casefold() for n in names}
+    for ch in list(node):
+        if _local(ch.tag).casefold() in want:
+            v = _get_text(ch)
+            if v:
+                return v
     return ""
 
 
-def _make_oid(offer: ET.Element, name: str) -> str:
-    # Главное: oid должен быть стабильный, иначе будут "новые товары".
-    # Берём то, что даёт поставщик: vendorCode -> @id -> article/code -> stable_id(name)
-    oid = _pick_first_text(offer, ("vendorCode", "article", "code", "sku", "id"))
-    if not oid:
-        oid = (offer.get("id") or "").strip()
+def _iter_children(node: ET.Element) -> list[ET.Element]:
+    return list(node)
 
-    oid = oid.strip()
-    if not oid:
-        oid = stable_id(name)
 
-    # Лёгкая нормализация: оставляем безопасные символы
+def _find_items(root: ET.Element) -> list[ET.Element]:
+    offers = [el for el in root.iter() if _local(el.tag).casefold() == "offer"]
+    if offers:
+        return offers
+
+    tovar = [el for el in root.iter() if _local(el.tag).casefold() == "товар"]
+    if tovar:
+        return tovar
+
+    return []
+
+
+def _make_oid(item: ET.Element, name: str) -> str:
+    raw = (
+        _pick_first_text(item, ("vendorCode", "article", "Артикул", "sku", "code", "Код", "Guid"))
+        or (item.get("id") or "").strip()
+    )
+    if not raw:
+        raw = stable_id(name)
+
+    raw = raw.strip()
     out = []
-    for ch in oid:
+    for ch in raw:
         if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
             out.append(ch)
         else:
             out.append("_")
-    return "".join(out)
+    oid = "".join(out)
+    if not oid.startswith("NP"):
+        oid = "NP" + oid
+    return oid
 
 
-def _parse_price(text: str) -> int | None:
+def _parse_num(text: str) -> float | None:
     t = (text or "").strip()
     if not t:
         return None
-    t = t.replace("\xa0", " ").replace(" ", "")
-    t = t.replace(",", ".")
+    t = t.replace("\xa0", " ").replace(" ", "").replace(",", ".")
     m = re.search(r"-?\d+(\.\d+)?", t)
     if not m:
         return None
     try:
-        return int(float(m.group(0)))
+        return float(m.group(0))
     except Exception:
         return None
 
 
-def _collect_pictures(offer: ET.Element, oid: str) -> list[str]:
+def _extract_price(item: ET.Element) -> int | None:
+    prefer_keys = {
+        "purchase_price", "base_price", "price",
+        "цена", "цена_кзт", "ценаказахстан", "ценаkzt", "pricekzt",
+        "ценасндс", "ценабезндс",
+    }
+
+    for ch in _iter_children(item):
+        k = _local(ch.tag).casefold()
+        if k in prefer_keys:
+            n = _parse_num(_get_text(ch))
+            if n is not None:
+                return int(n)
+
+    found: list[int] = []
+    for el in item.iter():
+        k = _local(el.tag).casefold()
+        if "цена" in k or k in prefer_keys:
+            n = _parse_num(_get_text(el))
+            if n is not None and n > 0:
+                found.append(int(n))
+
+    if not found:
+        return None
+
+    return min(found)
+
+
+def _extract_available(item: ET.Element) -> bool:
+    av_raw = (item.get("available") or "").strip().lower()
+    if av_raw in ("true", "1", "yes", "y"):
+        return True
+    if av_raw in ("false", "0", "no", "n"):
+        return False
+
+    qty_kz: float = 0.0
+    qty_any: float = 0.0
+    has_any = False
+
+    for el in item.iter():
+        tag = _local(el.tag).casefold()
+        if tag not in ("остаток", "количество", "колво", "кол-во", "qty", "quantity"):
+            continue
+        n = _parse_num(_get_text(el))
+        if n is None:
+            continue
+        has_any = True
+        qty_any += n
+
+        attrs = " ".join([str(v) for v in el.attrib.values()]).casefold()
+        if "казахстан" in attrs:
+            qty_kz += n
+
+    if has_any:
+        use = qty_kz if qty_kz > 0 else qty_any
+        return use > 0
+
+    av_tag = _pick_first_text(item, ("available", "Available", "Наличие"))
+    if av_tag:
+        return av_tag.strip().lower() in ("true", "1", "yes", "y", "есть", "да")
+
+    return True
+
+
+def _collect_pictures(item: ET.Element) -> list[str]:
     pics: list[str] = []
-    for p in offer.findall("picture"):
-        u = _get_text(p)
+    for el in item.iter():
+        if _local(el.tag).casefold() != "picture":
+            continue
+        u = _get_text(el)
         if not u:
             continue
         u = u.strip()
@@ -277,11 +301,9 @@ def _collect_pictures(offer: ET.Element, oid: str) -> list[str]:
             u = "https://nvprint.ru" + u
         pics.append(u)
 
-    # если в исходнике нет picture — ставим заглушку
     if not pics:
         return [PLACEHOLDER_PIC]
 
-    # дедуп
     seen = set()
     out: list[str] = []
     for u in pics:
@@ -292,24 +314,49 @@ def _collect_pictures(offer: ET.Element, oid: str) -> list[str]:
     return out
 
 
-def _collect_params(offer: ET.Element) -> list[tuple[str, str]]:
+def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
-    for p in offer.findall("param"):
+
+    for p in item.findall("param"):
         k = (p.get("name") or "").strip()
         v = _get_text(p)
         if not k or not v:
             continue
         if k.casefold() in DROP_PARAM_NAMES_CF:
             continue
-        # мусор: Гарантия=0
         if k.casefold() == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
             continue
         out.append((k, v))
+
+    if out:
+        return out
+
+    skip_keys = {
+        "код", "артикул", "guid",
+        "номенклатура", "номенклатуракратко", "наименование",
+        "цена", "ценасндс", "ценабезндс", "цена_кзт", "price",
+        "new_reman", "разделпрайса",
+    }
+
+    for ch in _iter_children(item):
+        k = _local(ch.tag).strip()
+        cf = k.casefold()
+        v = _get_text(ch)
+        if not v:
+            continue
+        if cf in skip_keys:
+            continue
+        if cf in DROP_PARAM_NAMES_CF:
+            continue
+        if cf == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
+            continue
+        out.append((k, v))
+
     return out
 
 
-def _native_desc(offer: ET.Element) -> str:
-    d = _get_text(offer.find("description"))
+def _native_desc(item: ET.Element) -> str:
+    d = _pick_first_text(item, ("description", "Описание"))
     if not d:
         return ""
     if RE_DESC_HAS_CS.search(d):
@@ -340,49 +387,38 @@ def main() -> int:
     try:
         root = ET.fromstring(xml_bytes)
     except Exception as e:
-        raise RuntimeError(f"NVPrint XML не парсится: {e}")
+        raise RuntimeError(f"NVPrint XML не парсится: {e}\nПревью:\n{_xml_head(xml_bytes)}")
 
-    offers_in = _find_offers(root)
-    if not offers_in:
-        raise RuntimeError("Не нашёл товары в NVPrint XML. Превью ответа:\n" + _xml_head(xml_bytes))
+    items = _find_items(root)
+    if not items:
+        raise RuntimeError("Не нашёл товары в NVPrint XML.\nПревью:\n" + _xml_head(xml_bytes))
 
     out_offers: list[OfferOut] = []
     in_true = 0
     in_false = 0
 
-    for offer in offers_in:
-        name = _pick_first_text(offer, ("name", "title", "Name", "Наименование"))
+    for item in items:
+        name = _pick_first_text(item, ("name", "title", "НоменклатураКратко", "Номенклатура", "Наименование"))
         name = norm_ws(name)
         if not name:
             continue
 
-        oid = _make_oid(offer, name)
+        oid = _make_oid(item, name)
 
-        # available
-        av_raw = (offer.get("available") or "").strip().lower()
-        if av_raw in ("true", "1", "yes", "y"):
-            available = True
-        elif av_raw in ("false", "0", "no", "n"):
-            available = False
-        else:
-            # fallback: иногда есть тег available
-            av_tag = _pick_first_text(offer, ("available",))
-            available = av_tag.strip().lower() in ("true", "1", "yes", "y")
-
+        available = _extract_available(item)
         if available:
             in_true += 1
         else:
             in_false += 1
 
-        # цена поставщика (вход)
-        pin = _parse_price(_pick_first_text(offer, ("purchase_price", "base_price", "price", "Price")))
+        pin = _extract_price(item)
         price = compute_price(pin)
 
-        pics = _collect_pictures(offer, oid)
+        pics = _collect_pictures(item)
 
-        vendor = _pick_first_text(offer, ("vendor", "brand", "Brand", "Производитель"))
-        params = _collect_params(offer)
-        desc = _native_desc(offer)
+        vendor = _pick_first_text(item, ("vendor", "brand", "Brand", "Производитель"))
+        params = _collect_params(item)
+        desc = _native_desc(item)
 
         out_offers.append(
             OfferOut(
@@ -397,7 +433,6 @@ def main() -> int:
             )
         )
 
-    # стабилизируем порядок, чтобы не было случайных диффов
     out_offers.sort(key=lambda o: o.oid)
 
     header = make_header(now, encoding=OUTPUT_ENCODING)
@@ -406,7 +441,7 @@ def main() -> int:
         url,
         now,
         next_run,
-        before=len(offers_in),
+        before=len(items),
         after=len(out_offers),
         in_true=in_true,
         in_false=in_false,
@@ -419,7 +454,7 @@ def main() -> int:
     validate_cs_yml(full)
 
     changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
-    print(f"[nvprint] offers_in={len(offers_in)} offers_out={len(out_offers)} changed={changed} file={OUT_FILE}")
+    print(f"[nvprint] items_in={len(items)} offers_out={len(out_offers)} in_true={in_true} in_false={in_false} changed={changed} file={OUT_FILE}")
     return 0
 
 
