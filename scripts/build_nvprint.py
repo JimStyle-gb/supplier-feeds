@@ -52,6 +52,7 @@ DROP_PARAM_NAMES_CF = {
     "sku",
     "код",  # код используем для oid, но в params не нужен
     "guid",
+    "ссылканакартинку",
 }
 
 
@@ -389,6 +390,7 @@ def _extract_available(item: ET.Element) -> bool:
 
 
 def _collect_pictures(item: ET.Element) -> list[str]:
+    # 1) yml: <picture>
     pics: list[str] = []
     for el in item.iter():
         if _local(el.tag).casefold() != "picture":
@@ -403,9 +405,33 @@ def _collect_pictures(item: ET.Element) -> list[str]:
             u = "https://nvprint.ru" + u
         pics.append(u)
 
+    # 2) 1C: часто есть поле "СсылкаНаКартинку" (или похожие)
+    if not pics:
+        u = _pick_first_text(
+            item,
+            (
+                "СсылкаНаКартинку",
+                "СсылкаНаКартинку1",
+                "СсылкаНаКартинку2",
+                "СсылкаНаКартинк",
+                "Картинка",
+                "Фото",
+                "Image",
+                "Picture",
+            ),
+        )
+        u = (u or "").strip()
+        if u:
+            if u.startswith("//"):
+                u = "https:" + u
+            if u.startswith("http://"):
+                u = "https://" + u[len("http://") :]
+            pics = [u]
+
     if not pics:
         return [PLACEHOLDER_PIC]
 
+    # уникализация
     seen = set()
     out: list[str] = []
     for u in pics:
@@ -414,7 +440,6 @@ def _collect_pictures(item: ET.Element) -> list[str]:
         seen.add(u)
         out.append(u)
     return out
-
 
 def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
@@ -425,6 +450,8 @@ def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
         if not k or not v:
             continue
         if k.casefold() in DROP_PARAM_NAMES_CF:
+            continue
+        if k.casefold() in ("вес", "высота", "длина", "ширина", "ресурс") and v.strip() in ("0", "0.0", "0,0", "0,00", "0.00"):
             continue
         if k.casefold() == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
             continue
@@ -438,6 +465,7 @@ def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
         "номенклатура", "номенклатуракратко", "наименование",
         "цена", "ценасндс", "ценабезндс", "цена_кзт", "price",
         "new_reman", "разделпрайса",
+        "ссылканакартинку",
     }
 
     for ch in _iter_children(item):
@@ -449,6 +477,8 @@ def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
         if cf in skip_keys:
             continue
         if cf in DROP_PARAM_NAMES_CF:
+            continue
+        if cf in ("вес", "высота", "длина", "ширина", "ресурс") and v.strip() in ("0", "0.0", "0,0", "0,00", "0.00"):
             continue
         if cf == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
             continue
