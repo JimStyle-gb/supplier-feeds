@@ -559,6 +559,8 @@ _RE_DBL_SLASH = re.compile(r"//+")
 _RE_NV_SPACE = re.compile(r"\bNV-\s+")
 _RE_WS = re.compile(r"\s+")
 _RE_SPACE_BEFORE_RP = re.compile(r"\s+\)")
+_RE_SLASH_NOSPACE = re.compile(r"/(?=[A-Za-zА-Яа-я0-9])")
+_RE_SHT = re.compile(r"(\d+)\s*шт\b", re.I)
 
 _STOP_BRAND_CF = {
     "лазерных", "струйных", "принтеров", "мфу", "копиров", "копировальных", "плоттеров",
@@ -581,6 +583,25 @@ def _fix_confusables_to_latin_in_latin_tokens(s: str) -> str:
         out.append(tok)
         last = m.end()
     out.append(s[last:])
+    return "".join(out)
+
+def _fix_confusables_model_tokens(s: str) -> str:
+    # Пример бага поставщика: "C 458/С558/С658" (кириллическая 'С' в модели).
+    # Исправляем только если рядом слева (<=12 символов) есть латиница, чтобы не трогать реальные кириллические модели у русских брендов.
+    if not s:
+        return ""
+    out = []
+    i = 0
+    for m in re.finditer(r"\b([АВЕКМНОРСТХУавекмнорстхуСсХх])([0-9]{2,})\b", s):
+        left = s[max(0, m.start() - 12):m.start()]
+        if not re.search(r"[A-Za-z]", left):
+            continue
+        out.append(s[i:m.start()])
+        tok = m.group(0)
+        tok = "".join(_CYR2LAT.get(ch, ch) for ch in tok)
+        out.append(tok)
+        i = m.end()
+    out.append(s[i:])
     return "".join(out)
 
 def _drop_unmatched_rparens(s: str) -> str:
@@ -609,6 +630,9 @@ def _cleanup_name_nvprint(name: str) -> str:
         return ""
     s = _fix_mixed_ru(s)  # латиница -> кириллица в русских словах
     s = _fix_confusables_to_latin_in_latin_tokens(s)  # кириллица -> латиница в кодах/брендах
+    s = _fix_confusables_model_tokens(s)
+    s = _RE_SLASH_NOSPACE.sub('/ ', s)
+    s = _RE_SHT.sub(r'\1 шт', s)
     s = _RE_NV_SPACE.sub("NV-", s)                    # NV- 0617B025 -> NV-0617B025
     s = _RE_DBL_SLASH.sub("/", s)                     # // -> /
     s = _RE_SPACE_BEFORE_RP.sub(")", s)               # " )" -> ")"
