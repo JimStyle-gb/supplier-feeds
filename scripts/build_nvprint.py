@@ -65,6 +65,18 @@ DROP_PARAM_NAMES_CF = {
 }
 
 
+# Приводим "слитные" имена характеристик к читабельным (без CamelCase)
+RENAME_PARAM_NAMES = {
+    "типпечати": "Тип печати",
+    "цветпечати": "Цвет печати",
+    "совместимостьсмоделями": "Совместимость с моделями",
+}
+
+def _param_key_norm(k: str) -> str:
+    # нормализуем ключ: убираем пробелы/дефисы для сопоставления
+    return re.sub(r"\s+", "", (k or "").casefold()).replace("-", "")
+
+
 # Фильтр ассортимента NVPrint.
 # ВАЖНО: фильтруем по ПРЕФИКСУ названия (а не по наличию слова внутри),
 # иначе почти всё проходит из‑за слов "...для картриджа..." в тексте.
@@ -502,8 +514,8 @@ def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
             continue
         if k.casefold() == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
             continue
-        v = _cleanup_param_value_nvprint(k, v)
-        out.append((k, v))
+        v = _cleanup_param_value_nvprint(k_out, v)
+        out.append((k_out, v))
 
     if out:
         return out
@@ -556,6 +568,8 @@ _CYR2LAT = {
 
 _RE_TOKEN = re.compile(r"[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-._/]+")
 _RE_DBL_SLASH = re.compile(r"//+")
+_RE_SLASH_GLUED = re.compile(r"(?<=\w)/(?!\s)(?=\w)")
+_RE_DLYA_GLUED = re.compile(r"\bдля(?=[A-Za-z])", re.I)
 _RE_NV_SPACE = re.compile(r"\bNV-\s+")
 _RE_WS = re.compile(r"\s+")
 _RE_SPACE_BEFORE_RP = re.compile(r"\s+\)")
@@ -635,6 +649,8 @@ def _cleanup_name_nvprint(name: str) -> str:
     s = _RE_SHT.sub(r'\1 шт', s)
     s = _RE_NV_SPACE.sub("NV-", s)                    # NV- 0617B025 -> NV-0617B025
     s = _RE_DBL_SLASH.sub("/", s)                     # // -> /
+    s = _RE_SLASH_GLUED.sub("/ ", s)                 # M680dn/M680f -> M680dn/ M680f
+    s = _RE_DLYA_GLUED.sub("для ", s)                # дляXerox -> для Xerox
     s = _RE_SPACE_BEFORE_RP.sub(")", s)               # " )" -> ")"
     s = _drop_unmatched_rparens(s)                    # убрать лишние ')'
     s = norm_ws(s)
@@ -667,7 +683,7 @@ def _cleanup_param_value_nvprint(k: str, v: str) -> str:
     vv = (v or "").strip()
     if not kk or not vv:
         return vv
-    cf = kk.casefold()
+    cf = _param_key_norm(kk)
     if cf == "цветпечати":
         vv_cf = vv.casefold().strip()
         return _COLOR_MAP.get(vv_cf, vv.strip())
