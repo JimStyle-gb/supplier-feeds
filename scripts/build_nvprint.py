@@ -65,18 +65,6 @@ DROP_PARAM_NAMES_CF = {
 }
 
 
-# Приводим "слитные" имена характеристик к читабельным (без CamelCase)
-RENAME_PARAM_NAMES = {
-    "типпечати": "Тип печати",
-    "цветпечати": "Цвет печати",
-    "совместимостьсмоделями": "Совместимость с моделями",
-}
-
-def _param_key_norm(k: str) -> str:
-    # нормализуем ключ: убираем пробелы/дефисы для сопоставления
-    return re.sub(r"\s+", "", (k or "").casefold()).replace("-", "")
-
-
 # Фильтр ассортимента NVPrint.
 # ВАЖНО: фильтруем по ПРЕФИКСУ названия (а не по наличию слова внутри),
 # иначе почти всё проходит из‑за слов "...для картриджа..." в тексте.
@@ -514,8 +502,12 @@ def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
             continue
         if k.casefold() == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
             continue
-        v = _cleanup_param_value_nvprint(k_out, v)
-        out.append((k_out, v))
+        k = _rename_param_key_nvprint(k)
+        v = _cleanup_param_value_nvprint(k.replace(" ", ""), v) if k in ("Тип печати","Цвет печати","Совместимость с моделями") else _cleanup_param_value_nvprint(k, v)
+        orig_k = k
+        k = _rename_param_key_nvprint(k)
+        v = _cleanup_param_value_nvprint(orig_k, v)
+        out.append((k, v))
 
     if out:
         return out
@@ -542,7 +534,8 @@ def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
             continue
         if cf == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
             continue
-        v = _cleanup_param_value_nvprint(k, v)
+        k = _rename_param_key_nvprint(k)
+        v = _cleanup_param_value_nvprint(k.replace(" ", ""), v) if k in ("Тип печати","Цвет печати","Совместимость с моделями") else _cleanup_param_value_nvprint(k, v)
         out.append((k, v))
 
     return out
@@ -568,13 +561,9 @@ _CYR2LAT = {
 
 _RE_TOKEN = re.compile(r"[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-._/]+")
 _RE_DBL_SLASH = re.compile(r"//+")
-_RE_SLASH_GLUED = re.compile(r"(?<=\w)/(?!\s)(?=\w)")
-_RE_DLYA_GLUED = re.compile(r"\bдля(?=[A-Za-z])", re.I)
 _RE_NV_SPACE = re.compile(r"\bNV-\s+")
 _RE_WS = re.compile(r"\s+")
 _RE_SPACE_BEFORE_RP = re.compile(r"\s+\)")
-_RE_SLASH_NOSPACE = re.compile(r"/(?=[A-Za-zА-Яа-я0-9])")
-_RE_SHT = re.compile(r"(\d+)\s*шт\b", re.I)
 
 _STOP_BRAND_CF = {
     "лазерных", "струйных", "принтеров", "мфу", "копиров", "копировальных", "плоттеров",
@@ -597,25 +586,6 @@ def _fix_confusables_to_latin_in_latin_tokens(s: str) -> str:
         out.append(tok)
         last = m.end()
     out.append(s[last:])
-    return "".join(out)
-
-def _fix_confusables_model_tokens(s: str) -> str:
-    # Пример бага поставщика: "C 458/С558/С658" (кириллическая 'С' в модели).
-    # Исправляем только если рядом слева (<=12 символов) есть латиница, чтобы не трогать реальные кириллические модели у русских брендов.
-    if not s:
-        return ""
-    out = []
-    i = 0
-    for m in re.finditer(r"\b([АВЕКМНОРСТХУавекмнорстхуСсХх])([0-9]{2,})\b", s):
-        left = s[max(0, m.start() - 12):m.start()]
-        if not re.search(r"[A-Za-z]", left):
-            continue
-        out.append(s[i:m.start()])
-        tok = m.group(0)
-        tok = "".join(_CYR2LAT.get(ch, ch) for ch in tok)
-        out.append(tok)
-        i = m.end()
-    out.append(s[i:])
     return "".join(out)
 
 def _drop_unmatched_rparens(s: str) -> str:
@@ -644,13 +614,8 @@ def _cleanup_name_nvprint(name: str) -> str:
         return ""
     s = _fix_mixed_ru(s)  # латиница -> кириллица в русских словах
     s = _fix_confusables_to_latin_in_latin_tokens(s)  # кириллица -> латиница в кодах/брендах
-    s = _fix_confusables_model_tokens(s)
-    s = _RE_SLASH_NOSPACE.sub('/ ', s)
-    s = _RE_SHT.sub(r'\1 шт', s)
     s = _RE_NV_SPACE.sub("NV-", s)                    # NV- 0617B025 -> NV-0617B025
     s = _RE_DBL_SLASH.sub("/", s)                     # // -> /
-    s = _RE_SLASH_GLUED.sub("/ ", s)                 # M680dn/M680f -> M680dn/ M680f
-    s = _RE_DLYA_GLUED.sub("для ", s)                # дляXerox -> для Xerox
     s = _RE_SPACE_BEFORE_RP.sub(")", s)               # " )" -> ")"
     s = _drop_unmatched_rparens(s)                    # убрать лишние ')'
     s = norm_ws(s)
@@ -678,18 +643,32 @@ _COLOR_MAP = {
     "red": "Red",
 }
 
+
+_PARAM_KEY_MAP_NVPRINT = {
+    "ТипПечати": "Тип печати",
+    "ЦветПечати": "Цвет печати",
+    "СовместимостьСМоделями": "Совместимость с моделями",
+}
+
+def _rename_param_key_nvprint(k: str) -> str:
+    k = (k or "").strip()
+    if not k:
+        return ""
+    return _PARAM_KEY_MAP_NVPRINT.get(k, k)
+
 def _cleanup_param_value_nvprint(k: str, v: str) -> str:
     kk = (k or "").strip()
     vv = (v or "").strip()
     if not kk or not vv:
         return vv
-    cf = _param_key_norm(kk)
+    cf = kk.casefold()
     if cf == "цветпечати":
         vv_cf = vv.casefold().strip()
         return _COLOR_MAP.get(vv_cf, vv.strip())
     if cf in ("совместимостьсмоделями", "модель"):
         vv = _fix_confusables_to_latin_in_latin_tokens(_fix_mixed_ru(vv))
         vv = _RE_DBL_SLASH.sub("/", vv)
+        vv = re.sub(r"/(?=\S)", "/ ", vv)
         vv = _RE_SPACE_BEFORE_RP.sub(")", vv)
         vv = _drop_unmatched_rparens(vv)
         vv = _RE_WS.sub(" ", vv).strip()
