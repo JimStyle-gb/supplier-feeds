@@ -565,6 +565,12 @@ _RE_NV_SPACE = re.compile(r"\bNV-\s+")
 _RE_WS = re.compile(r"\s+")
 _RE_SPACE_BEFORE_RP = re.compile(r"\s+\)")
 
+_RE_SLASH_BEFORE_LETTER = re.compile(r"/(?!\s)(?=[A-Za-zА-Яа-я])")
+_RE_SHT_MISSING_SPACE = re.compile(r"\((\d+)шт\)", re.I)
+_RE_NUM_SHT_WORD = re.compile(r"\b(\d+)шт\b", re.I)
+_RE_WORKCENTRE = re.compile(r"\bWorkcentr(e)?\b", re.I)
+
+
 _STOP_BRAND_CF = {
     "лазерных", "струйных", "принтеров", "мфу", "копиров", "копировальных", "плоттеров",
     "принтера", "устройств", "устройства", "печати", "всех",
@@ -617,6 +623,10 @@ def _cleanup_name_nvprint(name: str) -> str:
     s = _RE_NV_SPACE.sub("NV-", s)                    # NV- 0617B025 -> NV-0617B025
     s = _RE_DBL_SLASH.sub("/", s)                     # // -> /
     s = _RE_SPACE_BEFORE_RP.sub(")", s)               # " )" -> ")"
+    s = _RE_SHT_MISSING_SPACE.sub(r"(\1 шт)", s)  # (2шт) -> (2 шт)
+    s = _RE_NUM_SHT_WORD.sub(r"\1 шт", s)         # 2шт -> 2 шт
+    s = _RE_SLASH_BEFORE_LETTER.sub("/ ", s)       # 3020/WorkCentre -> 3020/ WorkCentre
+    s = _RE_WORKCENTRE.sub("WorkCentre", s)   # Workcentre/Workcentr -> WorkCentre
     s = _drop_unmatched_rparens(s)                    # убрать лишние ')'
     s = norm_ws(s)
     s = _normalize_name_prefix(s)
@@ -662,14 +672,15 @@ def _cleanup_param_value_nvprint(k: str, v: str) -> str:
     if not kk or not vv:
         return vv
     cf = kk.casefold()
-    if cf == "цветпечати":
+    if cf in ("цветпечати", "цвет печати"):
         vv_cf = vv.casefold().strip()
         return _COLOR_MAP.get(vv_cf, vv.strip())
-    if cf in ("совместимостьсмоделями", "модель"):
+    if cf in ("совместимостьсмоделями", "совместимость с моделями", "модель"):
         vv = _fix_confusables_to_latin_in_latin_tokens(_fix_mixed_ru(vv))
         vv = _RE_DBL_SLASH.sub("/", vv)
-        vv = re.sub(r"/(?=\S)", "/ ", vv)
+        vv = _RE_SLASH_BEFORE_LETTER.sub("/ ", vv)
         vv = _RE_SPACE_BEFORE_RP.sub(")", vv)
+        vv = _RE_WORKCENTRE.sub("WorkCentre", vv)
         vv = _drop_unmatched_rparens(vv)
         vv = _RE_WS.sub(" ", vv).strip()
         return vv
