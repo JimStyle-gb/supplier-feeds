@@ -109,6 +109,10 @@ def jitter_sleep(ms: int) -> None:
 
 def make_session() -> requests.Session:
     s = requests.Session()
+if not VTT_SSL_VERIFY:
+    s.verify = False
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
     s.headers.update({
         "User-Agent": UA,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
