@@ -108,6 +108,29 @@ def jitter_sleep(ms: int) -> None:
     time.sleep(base + random.uniform(0, base * 0.35))
 
 
+def _http_request_with_retry(session: requests.Session, method: str, url: str, **kwargs):
+    """HTTP запрос с ретраями на 429/5xx и сетевых ошибках."""
+    max_tries = int(os.getenv("VTT_HTTP_RETRIES", "6"))
+    base_sleep = float(os.getenv("VTT_HTTP_RETRY_SLEEP", "1.5"))
+    timeout = kwargs.pop("timeout", (10, 45))
+    last_exc: Exception | None = None
+    for attempt in range(1, max_tries + 1):
+        try:
+            r = session.request(method, url, timeout=timeout, **kwargs)
+            if r.status_code in (429, 500, 502, 503, 504) and attempt < max_tries:
+                sleep_s = base_sleep * (1.6 ** (attempt - 1)) + random.random() * 0.3
+                time.sleep(min(20.0, sleep_s))
+                continue
+            return r
+        except Exception as e:
+            last_exc = e
+            if attempt < max_tries:
+                sleep_s = base_sleep * (1.6 ** (attempt - 1)) + random.random() * 0.3
+                time.sleep(min(20.0, sleep_s))
+                continue
+            raise
+    raise last_exc or RuntimeError("HTTP: неизвестная ошибка")
+
 def make_session() -> requests.Session:
     s = requests.Session()
 
@@ -152,7 +175,7 @@ def http_get(s: requests.Session, url: str) -> bytes | None:
     last_err: Exception | None = None
     for _ in range(3):
         try:
-            r = s.get(url, timeout=25, verify=_verify_value())
+            r = _http_request_with_retry(s, 'GET', url, timeout=25, verify=_verify_value())
             if r.status_code in (429, 500, 502, 503, 504):
                 last_err = RuntimeError(f"HTTP {r.status_code}")
                 jitter_sleep(800)
@@ -170,7 +193,7 @@ def http_post(s: requests.Session, url: str, data: dict[str, str], headers: dict
     last_err: Exception | None = None
     for _ in range(3):
         try:
-            r = s.post(url, data=data, headers=headers, timeout=25, verify=_verify_value())
+            r = _http_request_with_retry(s, 'POST', url, data=data, headers=headers, timeout=25, verify=_verify_value())
             if r.status_code in (429, 500, 502, 503, 504):
                 last_err = RuntimeError(f"HTTP {r.status_code}")
                 jitter_sleep(800)
@@ -512,7 +535,7 @@ def main() -> int:
 
     s = make_session()
     if not log_in(s):
-        raise RuntimeError("VTT: не удалось авторизоваться (проверь VTT_LOGIN/VTT_PASSWORD).")
+        raise RuntimeError("VTT: авторизация не прошла (проверь VTT_LOGIN/VTT_PASSWORD). Если выше были ошибки HTTP 503/5xx — проблема на стороне сайта.")
 
     links = collect_all_products_links(s, deadline)
     log(f"[site] urls={len(links)} workers={MAX_WORKERS}")
