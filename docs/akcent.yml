@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-01 02:10">
+<yml_catalog date="2026-01-02 02:11">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-01 02:10:46
-Ближайшая сборка (Алматы)                  | 2026-01-02 02:00:00
+Время сборки (Алматы)                      | 2026-01-02 02:11:43
+Ближайшая сборка (Алматы)                  | 2026-01-03 02:00:00
 Сколько товаров у поставщика до фильтра    | 1823
 Сколько товаров у поставщика после фильтра | 174
 Сколько товаров есть в наличии (true)      | 174
@@ -764,7 +764,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CH72404</vendorCode>
 <name>МФУ Epson L15150 фабрика печати</name>
 <price>889900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/850/htr5v7efov1369os0yacsrphvrryff1u.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -975,7 +975,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ20404</vendorCode>
 <name>МФУ Epson L8160 фабрика печати, Wi-Fi</name>
 <price>440900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/9b6/7dmc8v9o676vnt1ejc7r7kmcsgyhu2e2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1336,7 +1336,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ67413</vendorCode>
 <name>МФУ Epson L3251 фабрика печати</name>
 <price>111900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/b98/slzwbmxp3vczcv316l4rtjlp5sfze0qw.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1471,7 +1471,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CK94401</vendorCode>
 <name>МФУ Epson L8100 фабрика печати</name>
 <price>350900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/815/gwksx955vglncgtfd9kf25cnkw54cggz.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1567,7 +1567,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC12C934591</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX</name>
 <price>22900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/245/g5dm2vx8ypcll0npk4ae89s9od8448oo.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1956,7 +1956,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T07D34A</vendorCode>
 <name>Чернила Epson C13T07D34A для L8160/L8180 пурпурные</name>
 <price>14900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/851/z9v31jmzw1z6np3z6gefxxzampq72pe7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2399,7 +2399,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T606200</vendorCode>
 <name>Картридж Epson C13T606200 SP-4880 голубой</name>
 <price>95900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/cd7/kdicu9rqhttusr3jq8dz31ouh2wngc6u.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2461,7 +2461,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T606400</vendorCode>
 <name>Картридж Epson C13T606400 SP-4880 желтый</name>
 <price>95900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/d50/w5rp3l5v37a58pgjho709245w3z4nxly.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2873,7 +2873,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T66444A</vendorCode>
 <name>Чернила Epson C13T66444A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 желтый</name>
 <price>7900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/988/z033wmjmp9ke1sn6vxdzibh85h0xy46b.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3303,7 +3303,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T72510N</vendorCode>
 <name>Картридж Epson C13T72510N черный</name>
 <price>166900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/0c8/cb0zswsn08tab9o3138o00xzzi53ubac.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3330,7 +3330,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T72520N</vendorCode>
 <name>Картридж Epson C13T72520N SURECOLOR SC-F2000 голубой</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3359,7 +3359,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T72530N</vendorCode>
 <name>Картридж Epson C13T72530N SURECOLOR SC-F2000 пурпурный</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3386,7 +3386,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T72540N</vendorCode>
 <name>Картридж Epson C13T72540N SURECOLOR SC-F2000 желтый</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3413,7 +3413,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T913200</vendorCode>
 <name>Картридж Epson C13T913200 SC-P5000 200ml Cyan голубой</name>
 <price>73900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3433,7 +3433,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T91330N</vendorCode>
 <name>Картридж Epson C13T91330N SC-P5000 200ml Magenta пурпурный</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/2f2/7yrb5xaolhxe3zmf6qy86nocde19t450.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3456,7 +3456,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T913400</vendorCode>
 <name>Картридж Epson C13T913400 SC-P5000 200ml Yellow желтый</name>
 <price>73900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3476,7 +3476,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T913500</vendorCode>
 <name>Картридж Epson C13T913500 SC-P5000 200ml Light Cyan светло голубой</name>
 <price>73900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3496,7 +3496,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T91360N</vendorCode>
 <name>Картридж Epson C13T91360N SC-P5000 200ml Vivid Light Magenta</name>
 <price>100</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/51c/kqjirs5sd956pozhxy9l1254gl37jy15.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3519,7 +3519,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T913B00</vendorCode>
 <name>Картридж Epson C13T913B00 SC-P5000 200ml Green зеленый</name>
 <price>73900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
