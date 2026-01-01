@@ -1,412 +1,566 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-VTT post-process (v59)
+CS adapter: VTT (b2b.vtt.ru)
 
-Фиксы (точечно, без XML-переформатирования):
-1) Устойчивое чтение docs/vtt.yml:
-   - windows-1251 -> utf-8 -> utf-8(errors="replace")
-   - удаляем UTF-8 BOM, если есть
-2) Всегда сохраняем обратно в windows-1251:
-   - неподдерживаемые символы -> XML-сущности (&#...;) через xmlcharrefreplace
-3) Шапка файла:
-   - убираем пустые строки/пробелы перед <?xml ...?>
-   - убираем пустую строку между <?xml ...?> и <yml_catalog ...>
-4) FEED_META: если строка "Время сборки (Алматы)" повреждена (например "P25-12-07 ..."),
-   то восстанавливаем её как у остальных поставщиков
-   + синхронизируем "Время сборки" с <yml_catalog date="..."> (чтобы как у других совпадало по минутам)
-5) Описание (CDATA): выравниваем как у большинства:
-   - ровно 2 перевода строки в начале и в конце CDATA (для каждого offer)
-6) WhatsApp-кнопка: чтобы блок был как у остальных —
-   - добавляем "&#128172; " перед текстом "НАЖМИТЕ..." если его нет
-7) WhatsApp rgba: rgba(0,0,0,.08) -> rgba(0,0,0,0.08)
-8) <picture> заглушка, если picture отсутствует в offer (вставка сразу после </price>)
-9) Форс-diff для коммита (чтобы не было "No changes to commit") ТОЛЬКО когда нужно:
-   - workflow_dispatch: да
-   - FORCE_YML_REFRESH=1: да
-   - push: только если сейчас в Алматы hour == SCHEDULE_HOUR_ALMATY
-   - schedule: нет
+Цель: вытащить товары у VTT, а дальше отдать их в CS Core, чтобы:
+- описание/характеристики/keywords/WhatsApp/цены/формат были едины для всех поставщиков
+- OID был стабильным (чтобы в будущих коммитах НЕ создавались новые товары)
 
-Входной файл: OUT_FILE или docs/vtt.yml
-Если файла нет — code=2.
+Окружение (GitHub Actions secrets/env):
+- VTT_LOGIN, VTT_PASSWORD   (логин/пароль b2b.vtt.ru)
+Опционально:
+- VTT_BASE_URL              (по умолчанию https://b2b.vtt.ru)
+- VTT_START_URL             (по умолчанию https://b2b.vtt.ru/catalog/)
+- VTT_MAX_PAGES             (лимит страниц внутри категории, по умолчанию 200)
+- VTT_MAX_WORKERS           (параллельные запросы карточек, по умолчанию 10)
+- VTT_MAX_CRAWL_MINUTES     (тайм‑лимит на обход, по умолчанию 18)
+- VTT_REQUEST_DELAY_MS      (пауза между запросами, по умолчанию 80)
+- VTT_SSL_VERIFY            (1/0; по умолчанию 1)
+- VTT_CA_BUNDLE             (путь к CA bundle; если задан, используется как verify)
 """
 
 from __future__ import annotations
 
-import argparse
-from datetime import datetime, timedelta
 import os
 import re
 import sys
-from pathlib import Path
+import time
+import random
+from datetime import datetime, timedelta
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from urllib.parse import urlencode, urlparse, parse_qs, urlunparse
 
-PLACEHOLDER_PICTURE_URL = (
-    "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
+import requests
+from bs4 import BeautifulSoup
+
+from cs.core import (
+    OfferOut,
+    compute_price,
+    clean_params,
+    now_almaty,
+    next_run_at_hour,
+    make_header,
+    make_footer,
+    make_feed_meta,
+    ensure_footer_spacing,
+    norm_ws,
+    safe_int,
+    write_if_changed,
 )
 
-RE_OFFER_BLOCK = re.compile(r"(<offer\b[^>]*>)(.*?)(</offer>)", re.DOTALL)
-RE_RGBA_BAD = re.compile(r"rgba\(0,0,0,\.08\)")
-RE_PRICE_LINE = re.compile(r"(\n[ \t]*)<price>")
+SUPPLIER = "VTT"
+OUT_FILE = "docs/vtt.yml"
 
-RE_FEED_META_BLOCK = re.compile(r"<!--FEED_META\n(.*?)\n-->", re.DOTALL)
+BASE_URL = (os.getenv("VTT_BASE_URL", "https://b2b.vtt.ru") or "").strip().rstrip("/")
+START_URL = (os.getenv("VTT_START_URL", f"{BASE_URL}/catalog/") or "").strip()
 
-RE_BUILD_TIME_LINE = re.compile(
-    r"(Время сборки\s*\(Алматы\)\s*\|\s*)(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})",
-    re.IGNORECASE,
-)
-RE_YML_CATALOG_DATE = re.compile(r'(<yml_catalog\b[^>]*\bdate=")([^"]*)(")', re.IGNORECASE)
+# Ссылки категорий (взято из последнего рабочего скрипта)
+CATEGORIES: list[str] = [
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG",
+    "https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COMPAT",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_COPY",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_ORIG",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_PRINT",
+    "https://b2b.vtt.ru/catalog/?category=CARTLAS_TNR",
+    "https://b2b.vtt.ru/catalog/?category=CARTMAT_CART",
+    "https://b2b.vtt.ru/catalog/?category=DEV_DEV",
+    "https://b2b.vtt.ru/catalog/?category=DRM_CRT",
+    "https://b2b.vtt.ru/catalog/?category=DRM_UNIT",
+    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC",
+    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT"
+]
 
-RE_DESC_CDATA = re.compile(r"(<description><!\[CDATA\[)(.*?)(\]\]></description>)", re.DOTALL)
-RE_WA_BTN_NO_EMOJI = re.compile(r'(">\s*)(НАЖМИТЕ,\s*ЧТОБЫ\s*НАПИС)', re.IGNORECASE)
+LOGIN = (os.getenv("VTT_LOGIN", "") or "").strip()
+PASSWORD = (os.getenv("VTT_PASSWORD", "") or "").strip()
+
+MAX_PAGES = int(os.getenv("VTT_MAX_PAGES", "200"))
+MAX_WORKERS = int(os.getenv("VTT_MAX_WORKERS", "10"))
+MAX_CRAWL_MINUTES = float(os.getenv("VTT_MAX_CRAWL_MINUTES", "18"))
+REQUEST_DELAY_MS = int(os.getenv("VTT_REQUEST_DELAY_MS", "80"))
+
+SSL_VERIFY = (os.getenv("VTT_SSL_VERIFY", "1") or "1").strip().lower() not in ("0", "false", "no")
+CA_BUNDLE = (os.getenv("VTT_CA_BUNDLE", "") or "").strip()
+
+UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+
+# Стабильный префикс OID для VTT
+OID_PREFIX = "VT"
 
 
-# Текущее время Алматы (UTC+5)
-def _now_almaty_dt() -> datetime:
-    return datetime.utcnow() + timedelta(hours=5)
+def log(msg: str, *, flush: bool = True) -> None:
+    print(msg, file=sys.stderr, flush=flush)
 
 
-def _now_almaty_str() -> str:
-    return _now_almaty_dt().strftime("%Y-%m-%d %H:%M:%S")
+def _verify_value():
+    if CA_BUNDLE:
+        return CA_BUNDLE
+    return SSL_VERIFY
 
 
-def _now_almaty_str_min() -> str:
-    return _now_almaty_dt().strftime("%Y-%m-%d %H:%M")
+def jitter_sleep(ms: int) -> None:
+    if ms <= 0:
+        return
+    base = ms / 1000.0
+    time.sleep(base + random.uniform(0, base * 0.35))
 
 
-# Нужно ли форсить обновление YML (чтобы появился diff для коммита)
-def _should_force_refresh() -> bool:
-    v = os.environ.get("FORCE_YML_REFRESH", "").strip().lower()
-    if v in ("1", "true", "yes", "y"):
-        return True
+def make_session() -> requests.Session:
+    s = requests.Session()
+    s.headers.update({
+        "User-Agent": UA,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.8",
+        "Connection": "keep-alive",
+    })
+    return s
 
-    ev = os.environ.get("GITHUB_EVENT_NAME", "").strip().lower()
-    if ev == "workflow_dispatch":
-        return True
 
-    if ev == "push":
+def abs_url(u: str) -> str:
+    u = (u or "").strip()
+    if not u:
+        return ""
+    if u.startswith("http://") or u.startswith("https://"):
+        return u
+    if u.startswith("//"):
+        return "https:" + u
+    if not u.startswith("/"):
+        u = "/" + u
+    return BASE_URL + u
+
+
+def set_query_param(url: str, key: str, value: str) -> str:
+    pr = urlparse(url)
+    q = parse_qs(pr.query, keep_blank_values=True)
+    q[key] = [value]
+    return urlunparse((pr.scheme, pr.netloc, pr.path, pr.params, urlencode(q, doseq=True), pr.fragment))
+
+
+def soup_of(html_bytes: bytes) -> BeautifulSoup:
+    return BeautifulSoup(html_bytes or b"", "html.parser")
+
+
+def http_get(s: requests.Session, url: str) -> bytes | None:
+    last_err: Exception | None = None
+    for _ in range(3):
         try:
-            want_h = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "0") or "0").strip())
-        except Exception:
-            want_h = 0
-        return _now_almaty_dt().hour == want_h
-
-    return False
-
-
-# Читает файл устойчиво (cp1251 -> utf8 -> utf8 replace), убирает BOM
-def _read_text(path: Path) -> tuple[str, str, int]:
-    data = path.read_bytes()
-    bom = 0
-    if data.startswith(b"\xef\xbb\xbf"):
-        data = data[3:]
-        bom = 1
-
-    try:
-        return data.decode("windows-1251"), "windows-1251", bom
-    except UnicodeDecodeError:
-        pass
-
-    try:
-        return data.decode("utf-8"), "utf-8", bom
-    except UnicodeDecodeError:
-        return data.decode("utf-8", errors="replace"), "utf-8(replace)", bom
-
-
-# Пишет файл строго windows-1251, неподдерживаемые символы -> XML-сущности
-def _write_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(text.encode("windows-1251", errors="xmlcharrefreplace"))
-
-
-# Чинит верх файла: убирает пустые строки до <?xml> и после него
-def _normalize_header(src: str) -> tuple[str, int]:
-    s = src.lstrip("\ufeff")
-    changed = 0
-
-    s2 = s.lstrip(" \t\r\n")
-    if s2 != s:
-        changed = 1
-        s = s2
-
-    lines = s.splitlines(True)
-    if not lines:
-        return s, changed
-
-    first = lines[0]
-    if first.lstrip().startswith("<?xml"):
-        first = first.rstrip("\r\n") + "\n"
-        i = 1
-        while i < len(lines) and lines[i].strip() == "":
-            i += 1
-            changed = 1
-        return first + "".join(lines[i:]), changed
-
-    return s, changed
-
-
-# Парсит дату из кривой строки типа "P25-12-07 05:27:12" -> "2025-12-07 05:27:12"
-def _parse_weird_dt(line: str) -> str | None:
-    s = line.strip()
-
-    m = re.fullmatch(r"\D*(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
-    if m:
-        return f"{m.group(1)}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
-
-    m = re.fullmatch(r"\D*(\d{2})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\D*", s)
-    if m:
-        yy = int(m.group(1))
-        return f"20{yy:02d}-{m.group(2)}-{m.group(3)} {m.group(4)}:{m.group(5)}:{m.group(6)}"
-
+            r = s.get(url, timeout=25, verify=_verify_value())
+            if r.status_code in (429, 500, 502, 503, 504):
+                last_err = RuntimeError(f"HTTP {r.status_code}")
+                jitter_sleep(800)
+                continue
+            r.raise_for_status()
+            return r.content
+        except Exception as e:
+            last_err = e
+            jitter_sleep(800)
+    log(f"[http] GET fail: {url} | {last_err}")
     return None
 
 
-# Берём yml_catalog date (минуты)
-def _get_yml_date(src: str) -> str | None:
-    m = RE_YML_CATALOG_DATE.search(src)
-    if not m:
-        return None
-    return m.group(2)
+def http_post(s: requests.Session, url: str, data: dict[str, str], headers: dict[str, str]) -> bool:
+    last_err: Exception | None = None
+    for _ in range(3):
+        try:
+            r = s.post(url, data=data, headers=headers, timeout=25, verify=_verify_value())
+            if r.status_code in (429, 500, 502, 503, 504):
+                last_err = RuntimeError(f"HTTP {r.status_code}")
+                jitter_sleep(800)
+                continue
+            r.raise_for_status()
+            return True
+        except Exception as e:
+            last_err = e
+            jitter_sleep(800)
+    log(f"[http] POST fail: {url} | {last_err}")
+    return False
 
 
-# Восстанавливает строку "Время сборки (Алматы)" в FEED_META, если она повреждена/отсутствует
-def _fix_feed_meta_build_time(src: str) -> tuple[str, int]:
-    m = RE_FEED_META_BLOCK.search(src)
-    if not m:
-        return src, 0
-
-    body = m.group(1)
-    lines = body.splitlines()
-
-    for ln in lines:
-        if "Время сборки" in ln:
-            return src, 0
-
-    url_idx = None
-    next_idx = None
-    for i, ln in enumerate(lines):
-        if url_idx is None and ln.startswith("URL поставщика"):
-            url_idx = i
-        if next_idx is None and ln.startswith("Ближайшая сборка"):
-            next_idx = i
-
-    lo = (url_idx + 1) if url_idx is not None else 0
-    hi = next_idx if next_idx is not None else len(lines)
-
-    cand_i = None
-    dt = None
-    for i in range(lo, hi):
-        dt2 = _parse_weird_dt(lines[i])
-        if dt2:
-            cand_i = i
-            dt = dt2
-            break
-
-    if cand_i is None:
-        return src, 0
-
-    lines[cand_i] = f"Время сборки (Алматы)                      | {dt}"
-    new_body = "\n".join(lines)
-    new_block = "<!--FEED_META\n" + new_body + "\n-->"
-    out = src[: m.start()] + new_block + src[m.end() :]
-    return out, 1
+def extract_csrf_token(html_bytes: bytes) -> str:
+    soup = soup_of(html_bytes)
+    m = soup.find("meta", attrs={"name": "csrf-token"})
+    v = m.get("content") if m else ""
+    return (v or "").strip()
 
 
-# Синхронизирует "Время сборки" с yml_catalog date (чтобы совпадало по минутам)
-def _sync_feed_meta_time_with_yml_date(src: str) -> tuple[str, int]:
-    y = _get_yml_date(src)
-    if not y:
-        return src, 0
+def log_in(s: requests.Session) -> bool:
+    if not LOGIN or not PASSWORD:
+        log("[WARN] VTT_LOGIN/VTT_PASSWORD пустые")
+        return False
 
-    # y обычно "YYYY-MM-DD HH:MM"
-    if re.fullmatch(r"\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}", y):
-        y_full = y + ":00"
-    else:
-        # если уже с секундами
-        y_full = y
+    home = http_get(s, BASE_URL + "/")
+    if not home:
+        return False
 
-    m = RE_FEED_META_BLOCK.search(src)
-    if not m:
-        return src, 0
+    csrf = extract_csrf_token(home)
+    headers = {"Referer": BASE_URL + "/"}
+    if csrf:
+        headers["X-CSRF-TOKEN"] = csrf
 
-    body = m.group(1)
-    lines = body.splitlines()
-
-    changed = 0
-    for i, ln in enumerate(lines):
-        mm = RE_BUILD_TIME_LINE.search(ln)
-        if mm:
-            lines[i] = "Время сборки (Алматы)                      | " + y_full
-            changed = 1
-            break
-
-    if not changed:
-        return src, 0
-
-    new_body = "\n".join(lines)
-    new_block = "<!--FEED_META\n" + new_body + "\n-->"
-    out = src[: m.start()] + new_block + src[m.end() :]
-    return out, 1
-
-
-# Форс-обновление времени (обновляем FEED_META и date="..." у yml_catalog)
-def _bump_build_time_if_needed(src: str) -> tuple[str, int, int]:
-    if not _should_force_refresh():
-        return src, 0, 0
-
-    now_s = _now_almaty_str()
-    now_min = _now_almaty_str_min()
-
-    out, n_meta = RE_BUILD_TIME_LINE.subn(rf"\1{now_s}", src, count=1)
-    out2, n_date = RE_YML_CATALOG_DATE.subn(lambda mm: mm.group(1) + now_min + mm.group(3), out, count=1)
-    return out2, n_meta, n_date
-
-
-# Нормализуем CDATA: ровно 2 \n в начале и в конце
-def _normalize_description_cdata_2nl(src: str) -> tuple[str, int]:
-    fixed = 0
-
-    def repl(m: re.Match) -> str:
-        nonlocal fixed
-        head, body, tail = m.group(1), m.group(2), m.group(3)
-        b = body.replace("\r\n", "\n")
-        core = b.lstrip("\n").rstrip("\n")
-        out = "\n\n" + core + "\n\n"
-        if out != b:
-            fixed += 1
-        return head + out + tail
-
-    out = RE_DESC_CDATA.sub(repl, src)
-    return out, fixed
-
-
-# Добавляем эмодзи-энтити в кнопку WhatsApp, если нет
-def _ensure_wa_emoji(src: str) -> tuple[str, int]:
-    # только если есть кнопка без эмодзи
-    out, n = RE_WA_BTN_NO_EMOJI.subn(r"\1&#128172; \2", src)
-    return out, n
-
-
-# Вставляет <picture> заглушку в offer, если picture отсутствует
-def _inject_picture_if_missing(offer_body: str) -> tuple[str, int]:
-    if "<picture>" in offer_body:
-        return offer_body, 0
-
-    idx = offer_body.find("</price>")
-    if idx == -1:
-        return offer_body, 0
-
-    m = RE_PRICE_LINE.search(offer_body)
-    indent = m.group(1) if m else "\n"
-
-    insert = f"{indent}<picture>{PLACEHOLDER_PICTURE_URL}</picture>"
-    new_body = offer_body[: idx + len("</price>")] + insert + offer_body[idx + len("</price>") :]
-    return new_body, 1
-
-
-# Применяет точечные правки
-def _process_text(src: str) -> tuple[str, dict]:
-    stats = {
-        "offers_scanned": 0,
-        "offers_pictures_added": 0,
-        "rgba_fixed": 0,
-        "header_fixed": 0,
-        "feed_meta_time_fixed": 0,
-        "feed_meta_time_synced": 0,
-        "desc_cdata_fixed": 0,
-        "wa_emoji_added": 0,
-        "build_time_bumped_meta": 0,
-        "build_time_bumped_date": 0,
-    }
-
-    s, hf = _normalize_header(src)
-    stats["header_fixed"] = hf
-
-    s, fm = _fix_feed_meta_build_time(s)
-    stats["feed_meta_time_fixed"] = fm
-
-    # сначала синхронизация с yml_catalog (как у других)
-    s, sync = _sync_feed_meta_time_with_yml_date(s)
-    stats["feed_meta_time_synced"] = sync
-
-    s, n_meta, n_date = _bump_build_time_if_needed(s)
-    stats["build_time_bumped_meta"] = n_meta
-    stats["build_time_bumped_date"] = n_date
-
-    # если bump был — снова синхронизация (чтобы было 1:1)
-    if n_date or n_meta:
-        s, sync2 = _sync_feed_meta_time_with_yml_date(s)
-        stats["feed_meta_time_synced"] = stats["feed_meta_time_synced"] or sync2
-
-    s, n_cdata = _normalize_description_cdata_2nl(s)
-    stats["desc_cdata_fixed"] = n_cdata
-
-    s, n_wa = _ensure_wa_emoji(s)
-    stats["wa_emoji_added"] = n_wa
-
-    s, n_rgba = RE_RGBA_BAD.subn("rgba(0,0,0,0.08)", s)
-    stats["rgba_fixed"] = n_rgba
-
-    def repl(mo: re.Match) -> str:
-        head, body, tail = mo.group(1), mo.group(2), mo.group(3)
-        stats["offers_scanned"] += 1
-        body2, added = _inject_picture_if_missing(body)
-        stats["offers_pictures_added"] += added
-        return head + body2 + tail
-
-    out = RE_OFFER_BLOCK.sub(repl, s)
-    return out, stats
-
-
-# Определяет входной файл по OUT_FILE или docs/vtt.yml
-def _resolve_infile(cli_path: str | None) -> Path:
-    if cli_path:
-        return Path(cli_path)
-    env_path = os.environ.get("OUT_FILE", "").strip()
-    if env_path:
-        return Path(env_path)
-    return Path("docs/vtt.yml")
-
-
-def main(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--in", dest="infile", default=None, help="Путь к vtt.yml (по умолчанию OUT_FILE или docs/vtt.yml)")
-    args = ap.parse_args(argv)
-
-    path = _resolve_infile(args.infile)
-    if not path.exists():
-        print(f"[postprocess_vtt] ERROR: file not found: {path}", file=sys.stderr)
-        return 2
-
-    src, enc, bom = _read_text(path)
-    if enc != "windows-1251" or bom:
-        info = []
-        if enc != "windows-1251":
-            info.append(f"encoding={enc}")
-        if bom:
-            info.append("bom=stripped")
-        print(f"[postprocess_vtt] WARN: input {'; '.join(info)} (сохраним как windows-1251)", file=sys.stderr)
-
-    out, stats = _process_text(src)
-
-    if out != src or enc != "windows-1251" or bom:
-        _write_text(path, out)
-
-    bumped = stats["build_time_bumped_meta"] + stats["build_time_bumped_date"]
-    print(
-        "[postprocess_vtt] OK | "
-        f"offers={stats['offers_scanned']} | "
-        f"pictures_added={stats['offers_pictures_added']} | "
-        f"rgba_fixed={stats['rgba_fixed']} | "
-        f"header_fixed={stats['header_fixed']} | "
-        f"feed_meta_time_fixed={stats['feed_meta_time_fixed']} | "
-        f"feed_meta_time_synced={stats['feed_meta_time_synced']} | "
-        f"desc_cdata_fixed={stats['desc_cdata_fixed']} | "
-        f"wa_emoji_added={stats['wa_emoji_added']} | "
-        f"build_time_bumped={bumped} (meta={stats['build_time_bumped_meta']}, date={stats['build_time_bumped_date']}) | "
-        f"file={path}"
+    ok = http_post(
+        s,
+        BASE_URL + "/validateLogin",
+        data={"login": LOGIN, "password": PASSWORD},
+        headers=headers,
     )
+    if not ok:
+        return False
+
+    cat = http_get(s, START_URL)
+    return bool(cat)
+
+
+_PRODUCT_HREF_RE = re.compile(r"^/catalog/[^?]+/?$")
+
+
+def collect_product_links(s: requests.Session, category_url: str, deadline: datetime) -> list[str]:
+    found: list[str] = []
+    seen: set[str] = set()
+
+    for page in range(1, MAX_PAGES + 1):
+        if datetime.utcnow() >= deadline:
+            break
+        page_url = set_query_param(category_url, "page", str(page))
+        b = http_get(s, page_url)
+        if not b:
+            break
+        soup = soup_of(b)
+
+        links: list[str] = []
+        for a in soup.find_all("a", href=True):
+            cls = a.get("class") or []
+            if isinstance(cls, list) and "btn_pic" in cls:
+                continue
+
+            href = str(a["href"]).strip()
+            if not href or href.startswith("#"):
+                continue
+            if href.startswith("http://") or href.startswith("https://"):
+                if BASE_URL not in href:
+                    continue
+                pu = urlparse(href)
+                href = pu.path
+
+            if not _PRODUCT_HREF_RE.match(href):
+                continue
+
+            u = abs_url(href)
+            if u in seen:
+                continue
+            seen.add(u)
+            links.append(u)
+
+        if not links:
+            break
+
+        found.extend(links)
+        jitter_sleep(REQUEST_DELAY_MS)
+
+    return found
+
+
+def _category_code(category_url: str) -> str:
+    q = parse_qs(urlparse(category_url).query)
+    return (q.get("category", [""]) or [""])[0].strip()
+
+
+def collect_all_products_links(s: requests.Session, deadline: datetime) -> list[tuple[str, str]]:
+    all_links: list[tuple[str, str]] = []
+    for cu in CATEGORIES:
+        if datetime.utcnow() >= deadline:
+            break
+        code = _category_code(cu)
+        links = collect_product_links(s, cu, deadline)
+        for u in links:
+            all_links.append((u, code))
+        log(f"[site] category={code or '?'} links={len(links)}")
+    return all_links
+
+
+def parse_int_from_text(s: str) -> int | None:
+    if not s:
+        return None
+    s2 = re.sub(r"[^0-9]+", "", s)
+    if not s2:
+        return None
+    try:
+        return int(s2)
+    except Exception:
+        return None
+
+
+def parse_pairs(soup: BeautifulSoup) -> dict[str, str]:
+    out: dict[str, str] = {}
+    box = soup.select_one("div.description.catalog_item_descr")
+    if not box:
+        return out
+    dts = box.find_all("dt")
+    dds = box.find_all("dd")
+    for dt, dd in zip(dts, dds):
+        k = (dt.get_text(" ", strip=True) or "").strip().strip(":")
+        v = (dd.get_text(" ", strip=True) or "").strip()
+        if k and v:
+            out[k] = v
+    return out
+
+
+def parse_supplier_price(soup: BeautifulSoup) -> int | None:
+    b = soup.select_one("span.price_main b")
+    if not b:
+        return None
+    return parse_int_from_text(b.get_text(" ", strip=True))
+
+
+def get_title(soup: BeautifulSoup) -> str:
+    el = soup.select_one(".page_title") or soup.title or soup.find("h1")
+    txt = el.get_text(" ", strip=True) if el else ""
+    return (txt or "").strip()
+
+
+def get_meta_description(soup: BeautifulSoup) -> str:
+    meta = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
+    out = (meta.get("content") if meta else "") or ""
+    return re.sub(r"\s+", " ", out).strip()
+
+
+def get_body_text(soup: BeautifulSoup) -> str:
+    # Пробуем взять текст карточки товара; если селекторы не совпали — вернём пусто
+    for sel in ("div.catalog_item_descr", "div.description", "div.catalog_item", "article"):
+        el = soup.select_one(sel)
+        if not el:
+            continue
+        txt = el.get_text(" ", strip=True)
+        txt = re.sub(r"\s+", " ", txt).strip()
+        if txt and len(txt) >= 40:
+            return txt
+    return ""
+
+
+def collect_pictures(soup: BeautifulSoup, limit: int = 8) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+
+    # og:image в приоритете
+    og = soup.find("meta", attrs={"property": "og:image"})
+    if og and og.get("content"):
+        u = abs_url(str(og["content"]))
+        if u and u not in seen:
+            seen.add(u)
+            out.append(u)
+
+    # любые похожие на картинки ссылки/атрибуты
+    for tag in soup.find_all(True):
+        for attr in ("src", "data-src", "href", "data-img", "content", "data-large"):
+            v = tag.get(attr)
+            if not v or not isinstance(v, str):
+                continue
+            vl = v.lower()
+            if (".jpg" in vl or ".jpeg" in vl or ".png" in vl or ".webp" in vl) and ("/images/" in vl or "/upload/" in vl):
+                u = abs_url(v)
+                if u and u not in seen:
+                    seen.add(u)
+                    out.append(u)
+                    if len(out) >= limit:
+                        return out
+    return out
+
+
+# Мини‑транслит, чтобы OID был стабилен, даже если артикул внезапно в кириллице
+_CYR_TO_LAT = {
+    "А":"A","Б":"B","В":"B","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"Y","К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F","Х":"H","Ц":"TS","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
+    "а":"a","б":"b","в":"b","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ъ":"","ы":"y","ь":"","э":"e","ю":"yu","я":"ya",
+}
+
+
+def _ru_to_lat_ascii(s: str) -> str:
+    if not s:
+        return ""
+    return "".join(_CYR_TO_LAT.get(ch, ch) for ch in s)
+
+
+def clean_article(article: str) -> str:
+    s = (article or "").strip()
+    s = _ru_to_lat_ascii(s)
+    return re.sub(r"[^A-Za-z0-9_-]+", "", s)
+
+
+def normalize_vendor(v: str) -> str:
+    v = (v or "").strip()
+    if not v:
+        return ""
+    key = re.sub(r"[^a-z0-9]+", "", v.lower())
+    alias = {
+        "hewlettpackard": "HP",
+        "hp": "HP",
+        "kyoсera": "Kyocera",
+        "kyocera": "Kyocera",
+        "canon": "Canon",
+        "xerox": "Xerox",
+        "brother": "Brother",
+        "samsung": "Samsung",
+        "samsungbyhp": "Samsung",
+        "epson": "Epson",
+        "ricoh": "Ricoh",
+        "konica": "Konica Minolta",
+        "minolta": "Konica Minolta",
+    }
+    return alias.get(key, v)
+
+
+def parse_product(s: requests.Session, url: str, cat_code: str) -> OfferOut | None:
+    b = http_get(s, url)
+    if not b:
+        return None
+    soup = soup_of(b)
+
+    name = norm_ws(get_title(soup))
+    if not name:
+        return None
+
+    pairs = parse_pairs(soup)
+    article = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
+    if not article:
+        return None
+
+    vendor = normalize_vendor((pairs.get("Вендор") or "").strip())
+
+    supplier_price = parse_supplier_price(soup)
+    price = compute_price(safe_int(supplier_price))
+
+    pics = collect_pictures(soup)
+
+    article_clean = clean_article(article)
+    if not article_clean:
+        return None
+
+    oid = OID_PREFIX + article_clean
+
+    # params: оставляем полезное, убираем служебное
+    drop_keys = {"артикул", "партс-номер", "вендор", "цена", "стоимость"}
+    params: list[tuple[str, str]] = []
+    for k, v in pairs.items():
+        kk = norm_ws(k)
+        vv = norm_ws(v)
+        if not kk or not vv:
+            continue
+        if kk.casefold() in drop_keys:
+            continue
+        params.append((kk, vv))
+
+    params = clean_params(params)
+
+    # native_desc: максимум источников (core сам нормализует/обогащает)
+    meta_desc = get_meta_description(soup)
+    body_txt = get_body_text(soup)
+    native_desc = meta_desc
+    if body_txt and body_txt not in native_desc:
+        native_desc = (native_desc + "\n" + body_txt).strip() if native_desc else body_txt
+
+    return OfferOut(
+        oid=oid,
+        available=True,
+        name=name,
+        price=int(price),
+        pictures=pics,
+        vendor=vendor,
+        params=params,
+        native_desc=native_desc,
+    )
+
+
+def _copy_cookies(src: requests.Session) -> requests.Session:
+    s2 = make_session()
+    try:
+        s2.cookies.update(src.cookies)
+    except Exception:
+        pass
+    return s2
+
+
+def next_run_dom(now_local: datetime, hour: int, allowed_dom: list[int]) -> datetime:
+    # ближайшая дата из allowed_dom в 05:00 (Алматы)
+    candidates: list[datetime] = []
+    for add_months in (0, 1, 2):
+        y = now_local.year
+        m = now_local.month + add_months
+        while m > 12:
+            y += 1
+            m -= 12
+        for d in allowed_dom:
+            try:
+                dt = datetime(y, m, d, hour, 0, 0)
+            except Exception:
+                continue
+            if dt >= now_local:
+                candidates.append(dt)
+        if candidates:
+            break
+    return min(candidates) if candidates else next_run_at_hour(now_local, hour)
+
+
+def main() -> int:
+    now = now_almaty()
+    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
+
+    s = make_session()
+    if not log_in(s):
+        raise RuntimeError("VTT: не удалось авторизоваться (проверь VTT_LOGIN/VTT_PASSWORD).")
+
+    links = collect_all_products_links(s, deadline)
+    log(f"[site] urls={len(links)} workers={MAX_WORKERS}")
+
+    offers: list[OfferOut] = []
+    seen: set[str] = set()
+    dup = 0
+
+    if links:
+        with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex:
+            futs = []
+            for url, code in links:
+                if datetime.utcnow() >= deadline:
+                    break
+                # отдельная session на поток (с теми же cookies)
+                sess = _copy_cookies(s)
+                futs.append(ex.submit(parse_product, sess, url, code))
+            for fut in as_completed(futs):
+                o = fut.result()
+                if not o:
+                    continue
+                if o.oid in seen:
+                    dup += 1
+                    continue
+                seen.add(o.oid)
+                offers.append(o)
+
+    offers.sort(key=lambda x: x.oid)
+
+    # next run (VTT по расписанию 1/10/20 в 05:00 Алматы)
+    next_run = next_run_dom(now, 5, [1, 10, 20])
+
+    feed_meta = make_feed_meta(
+        supplier=SUPPLIER,
+        supplier_url=START_URL,
+        build_time=now,
+        next_run=next_run,
+        before=len(offers),
+        after=len(offers),
+        in_true=len(offers),
+        in_false=0,
+    )
+
+    header = make_header(now, encoding="utf-8")
+    footer = make_footer()
+
+    offers_xml = "\n\n".join([o.to_xml() for o in offers])
+    full = header + feed_meta + "\n" + offers_xml + ("\n" if offers_xml else "") + footer
+    full = ensure_footer_spacing(full)
+
+    changed = write_if_changed(OUT_FILE, full, encoding="utf-8")
+    log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
     return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv[1:]))
+    raise SystemExit(main())
