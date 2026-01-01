@@ -32,6 +32,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlencode, urlparse, parse_qs, urlunparse
 
 import requests
+import urllib3
 from bs4 import BeautifulSoup
 
 from cs.core import (
@@ -81,7 +82,7 @@ MAX_WORKERS = int(os.getenv("VTT_MAX_WORKERS", "10"))
 MAX_CRAWL_MINUTES = float(os.getenv("VTT_MAX_CRAWL_MINUTES", "18"))
 REQUEST_DELAY_MS = int(os.getenv("VTT_REQUEST_DELAY_MS", "80"))
 
-SSL_VERIFY = (os.getenv("VTT_SSL_VERIFY", "1") or "1").strip().lower() not in ("0", "false", "no")
+SSL_VERIFY = (os.getenv("VTT_SSL_VERIFY", "0") or "0").strip().lower() not in ("0", "false", "no")
 CA_BUNDLE = (os.getenv("VTT_CA_BUNDLE", "") or "").strip()
 
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
@@ -109,9 +110,12 @@ def jitter_sleep(ms: int) -> None:
 
 def make_session() -> requests.Session:
     s = requests.Session()
-if not VTT_SSL_VERIFY:
-    s.verify = False
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    # SSL: у b2b.vtt.ru бывает кривая цепочка сертификата на GitHub Runner.
+    # По умолчанию VTT_SSL_VERIFY=0, чтобы сборка не падала.
+    vv = _verify_value()
+    if vv is False:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
     s.headers.update({
         "User-Agent": UA,
@@ -120,8 +124,6 @@ if not VTT_SSL_VERIFY:
         "Connection": "keep-alive",
     })
     return s
-
-
 def abs_url(u: str) -> str:
     u = (u or "").strip()
     if not u:
