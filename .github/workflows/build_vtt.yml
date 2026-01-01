@@ -15,25 +15,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install deps
+      - name: Install dependencies
         run: |
+          set -euo pipefail
           python -m pip install --upgrade pip
-          # core/adapters обычно без внешних зависимостей; оставляем пусто специально
+          python -m pip install requests beautifulsoup4
 
-      - name: Build VTT
+      - name: Build VTT feed
         env:
-          VTT_SOURCE_URL: ${{ secrets.VTT_SOURCE_URL }}
-          VTT_HTTP_USER: ${{ secrets.VTT_HTTP_USER }}
-          VTT_HTTP_PASS: ${{ secrets.VTT_HTTP_PASS }}
-          # для FEED_META:
-          SCHEDULE_DOM: "1,10,20"
-          SCHEDULE_HOUR_ALMATY: "5"
+          VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+          VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
         run: |
           set -euo pipefail
           python scripts/build_vtt.py
