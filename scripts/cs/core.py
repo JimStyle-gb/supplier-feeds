@@ -164,6 +164,86 @@ def stable_id(prefix: str, seed: str) -> str:
     return f"{prefix}{h.upper()}"
 
 
+
+# Строит стабильный CS-oid из стабильного кода поставщика.
+# Возвращает None, если код пустой/невалидный после нормализации.
+#
+# mode:
+#   - "none": без очистки (как есть)
+#   - "drop": выкинуть все символы, кроме [A-Za-z0-9_.-]
+#   - "underscore": неразрешённые символы заменить на "_"
+#   - "hex": неразрешённые символы кодировать как _XX (hex)
+def make_cs_oid(
+    prefix: str,
+    raw_code: str | None,
+    *,
+    already_prefixed: bool = True,
+    mode: str = "none",
+    normalize_separators: bool = False,
+    remove_ws: bool = False,
+    strip_chars: str = "",
+) -> str | None:
+    pref = (prefix or "").strip()
+    if not pref:
+        return None
+
+    code = (raw_code or "").strip()
+    if not code:
+        return None
+
+    if normalize_separators:
+        code = code.replace("–", "-").replace("/", "-").replace("\\", "-")
+
+    if remove_ws:
+        code = re.sub(r"\s+", "", code)
+
+    pref_cf = pref.casefold()
+    code_cf = code.casefold()
+
+    # Если вход уже начинается с префикса — берём хвост как компонент
+    had_pref = False
+    comp = code
+    if already_prefixed and code_cf.startswith(pref_cf):
+        had_pref = True
+        comp = code[len(pref):]
+
+    # Нормализуем компонент
+    if mode == "none":
+        comp2 = comp
+    elif mode == "drop":
+        comp2 = re.sub(r"[^A-Za-z0-9_.-]+", "", comp)
+    elif mode == "underscore":
+        comp2_chars: list[str] = []
+        for ch in comp:
+            if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
+                comp2_chars.append(ch)
+            else:
+                comp2_chars.append("_")
+        comp2 = "".join(comp2_chars)
+    elif mode == "hex":
+        comp2_chars2: list[str] = []
+        for ch in comp:
+            if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
+                comp2_chars2.append(ch)
+            else:
+                comp2_chars2.append(f"_{ord(ch):02X}")
+        comp2 = "".join(comp2_chars2)
+    else:
+        raise ValueError(f"make_cs_oid: unknown mode={mode!r}")
+
+    if strip_chars:
+        comp2 = comp2.strip(strip_chars)
+
+    comp2 = comp2.strip()
+    if not comp2:
+        return None
+
+    # Если вход уже имел префикс и mode=none — сохраняем как было (не трогаем регистр/вид)
+    if had_pref and mode == "none":
+        return code
+
+    # Иначе собираем строго pref + comp
+    return f"{pref}{comp2}"
 # XML escape для текста
 def xml_escape_text(s: str) -> str:
     return (
