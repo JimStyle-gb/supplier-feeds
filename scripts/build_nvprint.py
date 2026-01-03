@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 NVPrint -> CS adapter (v65, 1C-XML "КаталогТоваров/Товары/Товар")
@@ -25,8 +24,8 @@ from cs.core import (
     make_feed_meta,
     make_footer,
     make_header,
+    make_cs_oid,
     norm_ws,
-    stable_id,
     validate_cs_yml,
     write_if_changed,
 )
@@ -295,20 +294,7 @@ def _make_oid(item: ET.Element, name: str) -> str:
         _pick_first_text(item, ("vendorCode", "article", "Артикул", "sku", "code", "Код", "Guid"))
         or (item.get("id") or "").strip()
     )
-    if not raw:
-        raw = stable_id(name)
-
-    raw = raw.strip()
-    out = []
-    for ch in raw:
-        if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
-            out.append(ch)
-        else:
-            out.append("_")
-    oid = "".join(out)
-    if not oid.startswith("NP"):
-        oid = "NP" + oid
-    return oid
+    return make_cs_oid("NP", raw, already_prefixed=True, mode="underscore") or ""
 
 
 def _parse_num(text: str) -> float | None:
@@ -772,6 +758,7 @@ def main() -> int:
         raise RuntimeError("Не нашёл товары в NVPrint XML.\nПревью:\n" + _xml_head(xml_bytes))
 
     out_offers: list[OfferOut] = []
+    seen_oids: set[str] = set()
     filtered_out = 0
     in_true = 0
     in_false = 0
@@ -789,6 +776,11 @@ def main() -> int:
             continue
 
         oid = _make_oid(item, name)
+        if not oid:
+            continue
+        if oid in seen_oids:
+            continue
+        seen_oids.add(oid)
         # По требованию: всегда считаем товар в наличии
         available = True
         in_true += 1
