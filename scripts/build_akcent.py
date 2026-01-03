@@ -1,6 +1,3 @@
-# build_akcent.py
-# AkCent -> CS Core (адаптер): скачать -> распарсить -> фильтр -> собрать OfferOut -> собрать CS YML
-
 from __future__ import annotations
 
 import os
@@ -17,7 +14,6 @@ from cs.core import (
     make_feed_meta,
     make_footer,
     make_header,
-    make_cs_oid,
     next_run_at_hour,
     now_almaty,
     safe_int,
@@ -137,15 +133,24 @@ def _passes_name_prefixes(name: str) -> bool:
 # Генерирует стабильный CS-oid для AkCent (offer id == vendorCode)
 # Основной ключ: AC + offer@article (в XML он есть; в id оставляем только ASCII)
 # Важно: если в article есть символы вроде "*", кодируем их как _2A, чтобы не ловить коллизии.
-def _make_oid(offer: ET.Element, name: str) -> str:
+def _make_oid(offer: ET.Element, name: str) -> str | None:
     art = (offer.get("article") or "").strip()
-    oid = make_cs_oid("AC", art, already_prefixed=False, mode="hex")
-    if oid:
-        return oid
+    if art:
+        out: list[str] = []
+        for ch in art:
+            if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
+                out.append(ch)
+            else:
+                out.append(f"_{ord(ch):02X}")
+        part = "".join(out)
+        if part:
+            return "AC" + part
 
-    # fallback: если поставщик поломает article, пробуем стабильный offer@id (без имени)
+    # fallback (на случай если поставщик поломает article)
     sid = (offer.get("id") or "").strip()
-    return make_cs_oid("AC", sid, already_prefixed=False, mode="hex") or ""
+    seed = f"{sid}|{name}".strip("|")
+    return stable_id("AC", seed or name or sid)
+
 # Берём текст узла (без None)
 def _get_text(el: ET.Element | None) -> str:
     if el is None or el.text is None:
@@ -272,7 +277,6 @@ def main() -> int:
     before = len(offers_in)
 
     out_offers: list[OfferOut] = []
-    seen_oids: set[str] = set()
 
     price_missing = 0
 
@@ -284,9 +288,8 @@ def main() -> int:
         oid = _make_oid(offer, name)
         if not oid:
             continue
-        if oid in seen_oids:
+        if not oid:
             continue
-        seen_oids.add(oid)
 
         available = _extract_available(offer)
         pics = _collect_pictures(offer)
