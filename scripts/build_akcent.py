@@ -17,10 +17,10 @@ from cs.core import (
     make_feed_meta,
     make_footer,
     make_header,
+    make_cs_oid,
     next_run_at_hour,
     now_almaty,
     safe_int,
-    stable_id,
     write_if_changed,
     validate_cs_yml,
 )
@@ -139,22 +139,13 @@ def _passes_name_prefixes(name: str) -> bool:
 # Важно: если в article есть символы вроде "*", кодируем их как _2A, чтобы не ловить коллизии.
 def _make_oid(offer: ET.Element, name: str) -> str:
     art = (offer.get("article") or "").strip()
-    if art:
-        out: list[str] = []
-        for ch in art:
-            if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
-                out.append(ch)
-            else:
-                out.append(f"_{ord(ch):02X}")
-        part = "".join(out)
-        if part:
-            return "AC" + part
+    oid = make_cs_oid("AC", art, already_prefixed=False, mode="hex")
+    if oid:
+        return oid
 
-    # fallback (на случай если поставщик поломает article)
+    # fallback: если поставщик поломает article, пробуем стабильный offer@id (без имени)
     sid = (offer.get("id") or "").strip()
-    seed = f"{sid}|{name}".strip("|")
-    return stable_id("AC", seed or name or sid)
-
+    return make_cs_oid("AC", sid, already_prefixed=False, mode="hex") or ""
 # Берём текст узла (без None)
 def _get_text(el: ET.Element | None) -> str:
     if el is None or el.text is None:
@@ -281,6 +272,7 @@ def main() -> int:
     before = len(offers_in)
 
     out_offers: list[OfferOut] = []
+    seen_oids: set[str] = set()
 
     price_missing = 0
 
@@ -292,6 +284,9 @@ def main() -> int:
         oid = _make_oid(offer, name)
         if not oid:
             continue
+        if oid in seen_oids:
+            continue
+        seen_oids.add(oid)
 
         available = _extract_available(offer)
         pics = _collect_pictures(offer)
