@@ -12,7 +12,7 @@ on:
     - cron: "0 22 * * *"
 
 concurrency:
-  group: copyline-build
+  group: feeds_${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -119,14 +119,16 @@ jobs:
 
           git commit -m "CopyLine: update feed"
 
+          BRANCH="${{ github.ref_name }}"
           for i in 1 2 3; do
-            git pull --rebase origin main || true
-            if git push origin main; then
+            echo "Push attempt $i/3"
+            git fetch origin "$BRANCH"
+            git rebase "origin/$BRANCH" || { git rebase --abort || true; exit 1; }
+            if git push origin "HEAD:$BRANCH"; then
               exit 0
             fi
-            echo "Push failed, retry #$i"
+            echo "Push rejected, retry..."
             sleep 2
           done
-
           echo "Push failed after retries"
           exit 1
