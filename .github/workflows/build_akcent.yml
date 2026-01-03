@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: build-akcent
+  group: feeds_${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -64,4 +64,18 @@ jobs:
           git add docs/akcent.yml
 
           git commit --allow-empty -m "build: akcent ($CS_FORCE_BUILD_TIME_ALMATY)"
-          git push
+          BRANCH="${{ github.ref_name }}"
+          for i in 1 2 3; do
+            echo "Push attempt $i/3"
+            git fetch origin "$BRANCH"
+            git rebase "origin/$BRANCH" || { git rebase --abort || true; exit 1; }
+            if git push origin "HEAD:$BRANCH"; then
+              exit 0
+            fi
+            echo "Push rejected, retry..."
+            sleep 2
+          done
+          echo "Push failed after retries"
+          exit 1
+# build_akcent.py
+# AkCent -> CS Core (адаптер): скачать -> распарсить -> фильтр -> собрать OfferOut -> собрать CS YML
