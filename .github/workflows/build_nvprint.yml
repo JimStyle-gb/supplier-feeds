@@ -76,6 +76,10 @@ jobs:
           print(f"::notice::Event={event}; Almaty now: {now_alm:%Y-%m-%d %H:%M:%S}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; should_run={should}")
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
             f.write(f"run={should}\n")
+
+          # фиксируем build_time для FEED_META:
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
+            f.write(f"CS_FORCE_BUILD_TIME_ALMATY={now_alm:%Y-%m-%d %H:%M:%S}\n")
           PY
 
       - name: Setup Python
