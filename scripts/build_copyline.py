@@ -11,7 +11,6 @@ import os
 import re
 import time
 import random
-import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
@@ -37,6 +36,7 @@ from cs.core import (
     make_feed_meta,
     make_footer,
     make_header,
+    make_cs_oid,
     now_almaty,
     validate_cs_yml,
     write_if_changed,
@@ -178,18 +178,17 @@ def parse_stock_to_bool(x: Any) -> bool:
     return False
 
 
-def oid_from_vendor_code_raw(raw: str) -> str:
-    raw = (raw or "").strip()
-    raw = raw.replace("–", "-").replace("/", "-").replace("\\", "-")
-    raw = re.sub(r"\s+", "", raw)
-    raw = re.sub(r"[^A-Za-z0-9_.-]+", "", raw)
-    raw = raw.strip("-.")
-    if not raw:
-        # аварийный вариант (стабильный, но без исходного кода)
-        h = hashlib.md5((raw or "empty").encode("utf-8", errors="ignore")).hexdigest()[:10].upper()
-        return f"{VENDORCODE_PREFIX}{h}"
-    return f"{VENDORCODE_PREFIX}{raw}"
-
+def oid_from_vendor_code_raw(raw: str) -> str | None:
+    # Только стабильный код поставщика. Если кода нет — товар пропускаем.
+    return make_cs_oid(
+        VENDORCODE_PREFIX,
+        raw,
+        already_prefixed=False,
+        mode="drop",
+        normalize_separators=True,
+        remove_ws=True,
+        strip_chars="-.",
+    )
 
 def compile_startswith_patterns(kws: Sequence[str]) -> List[re.Pattern]:
     # строго с начала строки, чтобы не тянуть мусорные позиции
@@ -817,6 +816,8 @@ def main() -> int:
     for it in items:
         raw_v = safe_str(it.get("vendorCode_raw"))
         base_oid = oid_from_vendor_code_raw(raw_v)
+        if not base_oid:
+            continue
 
         # найдём карточку на сайте (если есть)
         found = None
@@ -875,13 +876,9 @@ def main() -> int:
         params = _merge_params(params, p_min)
 
         price = compute_price(int(it.get("dealer_price") or 0))
-
         oid = base_oid
         if oid in seen_oids:
-            # редкий случай: дубль артикулов — делаем СТАБИЛЬНЫЙ суффикс от URL или имени
-            seed = safe_str(found.get("url") if found else "") or name
-            suf = hashlib.md5(seed.encode("utf-8", errors="ignore")).hexdigest()[:6].upper()
-            oid = f"{base_oid}-{suf}"
+            continue
         seen_oids.add(oid)
 
         out_offers.append(
