@@ -36,7 +36,6 @@ from cs.core import (
     make_feed_meta,
     make_footer,
     make_header,
-    make_cs_oid,
     now_almaty,
     validate_cs_yml,
     write_if_changed,
@@ -178,17 +177,16 @@ def parse_stock_to_bool(x: Any) -> bool:
     return False
 
 
-def oid_from_vendor_code_raw(raw: str) -> str | None:
-    # Только стабильный код поставщика. Если кода нет — товар пропускаем.
-    return make_cs_oid(
-        VENDORCODE_PREFIX,
-        raw,
-        already_prefixed=False,
-        mode="drop",
-        normalize_separators=True,
-        remove_ws=True,
-        strip_chars="-.",
-    )
+def oid_from_vendor_code_raw(raw: str) -> str:
+    raw = (raw or "").strip()
+    raw = raw.replace("–", "-").replace("/", "-").replace("\\", "-")
+    raw = re.sub(r"\s+", "", raw)
+    raw = re.sub(r"[^A-Za-z0-9_.-]+", "", raw)
+    raw = raw.strip("-.")
+    if not raw:
+        return ""
+    return f"{VENDORCODE_PREFIX}{raw}"
+
 
 def compile_startswith_patterns(kws: Sequence[str]) -> List[re.Pattern]:
     # строго с начала строки, чтобы не тянуть мусорные позиции
@@ -816,8 +814,6 @@ def main() -> int:
     for it in items:
         raw_v = safe_str(it.get("vendorCode_raw"))
         base_oid = oid_from_vendor_code_raw(raw_v)
-        if not base_oid:
-            continue
 
         # найдём карточку на сайте (если есть)
         found = None
@@ -877,7 +873,11 @@ def main() -> int:
 
         price = compute_price(int(it.get("dealer_price") or 0))
         oid = base_oid
+        if not oid:
+            # нет стабильного артикула — пропускаем (никаких хэшей)
+            continue
         if oid in seen_oids:
+            # дубль артикула: пропускаем позицию (лучше потерять пару дублей, чем плодить новые id)
             continue
         seen_oids.add(oid)
 
