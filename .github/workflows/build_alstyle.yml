@@ -20,7 +20,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: build-alstyle
+  group: feeds_${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -81,4 +81,16 @@ jobs:
 
           # Всегда делаем коммит (даже если diff пустой)
           git commit --allow-empty -m "build: alstyle ($CS_FORCE_BUILD_TIME_ALMATY)"
-          git push
+          BRANCH="${{ github.ref_name }}"
+          for i in 1 2 3; do
+            echo "Push attempt $i/3"
+            git fetch origin "$BRANCH"
+            git rebase "origin/$BRANCH" || { git rebase --abort || true; exit 1; }
+            if git push origin "HEAD:$BRANCH"; then
+              exit 0
+            fi
+            echo "Push rejected, retry..."
+            sleep 2
+          done
+          echo "Push failed after retries"
+          exit 1
