@@ -19,12 +19,12 @@ from cs.core import (
     make_feed_meta,
     make_footer,
     make_header,
+    make_cs_oid,
     now_almaty,
     next_run_at_hour,
     norm_ws,
     parse_id_set,
     safe_int,
-    stable_id,
     write_if_changed,
     validate_cs_yml
 )
@@ -131,6 +131,7 @@ def main() -> int:
     out_offers: list[OfferOut] = []
     in_true = 0
     in_false = 0
+    seen_oids: set[str] = set()
 
     for o in offers_in:
         cat = norm_ws(_t(o.find("categoryId")))
@@ -144,13 +145,12 @@ def main() -> int:
             # если вообще нет названия — пропустим
             continue
 
-        # stable id если нет id
-        if not raw_id:
-            raw_id = stable_id(ALSTYLE_ID_PREFIX, name)
-
-        # vendorCode/id: AS + id (если не начинается на AS)
-        oid = raw_id if raw_id.upper().startswith(ALSTYLE_ID_PREFIX) else f"{ALSTYLE_ID_PREFIX}{raw_id}"
-
+        oid = make_cs_oid(ALSTYLE_ID_PREFIX, raw_id, already_prefixed=True, mode="none")
+        if not oid:
+            continue
+        if oid in seen_oids:
+            continue
+        seen_oids.add(oid)
         # available: атрибут offer@available (если нет — попробуем <available>)
         av_attr = (o.get("available") or "").strip().lower()
         if av_attr in ("true", "1", "yes"):
