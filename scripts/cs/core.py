@@ -26,7 +26,7 @@ import re
 # Регексы для fix_text (компилируем один раз)
 _RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
 _RE_MULTI_NL = re.compile(r"\n{3,}")
-_RE_MULTI_SPACE = re.compile(r"[ ]{2,}")
+_RE_MULTI_SP = re.compile(r"[ \u00a0]{2,}")
 # Регексы: десятичная запятая внутри чисел (2,44 -> 2.44) — включается через env
 _RE_DECIMAL_COMMA = re.compile(r"(?<=\d),(?=\d)")
 _RE_MULTI_COMMA = re.compile(r"\s*,\s*,+")
@@ -184,39 +184,6 @@ def xml_escape_attr(s: str) -> str:
 def bool_to_xml(v: bool) -> str:
     return "true" if bool(v) else "false"
 
-# Нормализует список картинок: убирает мусор (голый домен/пустой путь), чистит дубли, подставляет placeholder
-def normalize_pictures(pictures: Sequence[str] | None, *, placeholder_url: str = CS_PICTURE_PLACEHOLDER_URL) -> list[str]:
-    pics_in = [norm_ws(p) for p in (pictures or []) if norm_ws(p)]
-    out: list[str] = []
-    seen: set[str] = set()
-
-    def is_bad(u: str) -> bool:
-        uu = (u or "").strip()
-        if not uu:
-            return True
-        if not (uu.startswith("http://") or uu.startswith("https://")):
-            return False  # лишнего не режем
-        # голый домен (https://site.tld или https://site.tld/)
-        if re.match(r"^https?://[^/]+/?$", uu, flags=re.I):
-            return True
-        # путь есть, но заканчивается на "/" (почти всегда не картинка)
-        if uu.endswith("/"):
-            return True
-        return False
-
-    for u in pics_in:
-        if is_bad(u):
-            continue
-        if u in seen:
-            continue
-        seen.add(u)
-        out.append(u)
-
-    if not out and norm_ws(placeholder_url):
-        out = [norm_ws(placeholder_url)]
-    return out
-
-
 
 # Каноническое правило цены (4% + надбавки + хвост 900; невалидно/<=100 → 100; >=9,000,000 → 100)
 # Тарифные пороги для compute_price (как в эталоне)
@@ -263,49 +230,6 @@ def compute_price(price_in: int | None) -> int:
 
 
 # Убирает мусорные параметры, пустые значения и дубли (применять всегда!)
-# Проверки "вес/габариты": держим полезное, отрезаем явный мусор
-def _parse_floats_from_text(s: str) -> list[float]:
-    ss = (s or "").replace(",", ".")
-    return [float(x) for x in re.findall(r"[0-9]+(?:\.[0-9]+)?", ss)]
-
-def _is_sane_weight(v: str) -> bool:
-    vv = (v or "").strip().casefold().replace(",", ".")
-    nums = _parse_floats_from_text(vv)
-    if not nums:
-        return False
-    w = nums[0]
-    # граммы → кг
-    if ("г" in vv or "гр" in vv) and ("кг" not in vv):
-        w = w / 1000.0
-    # 0 < вес <= 5000 кг (чтобы не порезать крупную технику)
-    return (w > 0.0) and (w <= 5000.0)
-
-def _looks_like_dims(v: str) -> bool:
-    vv = (v or "").lower()
-    if any(ch in vv for ch in ["x", "×", "х", "*"]):
-        return True
-    nums = _parse_floats_from_text(vv)
-    return len(nums) >= 2
-
-def _is_sane_dims(v: str) -> bool:
-    vv = (v or "").strip().casefold().replace(",", ".")
-    nums = _parse_floats_from_text(vv)
-    if len(nums) < 2:
-        return False
-    # базовый лимит (мм): до 20000, ниже 0.1 не держим
-    lo_ok = all(x > 0.0 for x in nums)
-    hi = max(nums) if nums else 0.0
-    if not lo_ok:
-        return False
-    # если явно сантиметры/метры — допускаем маленькие числа
-    if "м." in vv or " м" in vv or vv.endswith("м"):
-        return hi <= 20000.0
-    if "см" in vv:
-        return hi <= 20000.0
-    # по умолчанию — тоже до 20000
-    return hi <= 20000.0
-
-
 def clean_params(
     params: Sequence[tuple[str, str]],
     *,
@@ -349,18 +273,6 @@ def clean_params(
         if kk.casefold() in drop_set:
             continue
 
-        # Вес/габариты/размер: оставляем только если значение похоже на адекватное
-        kcf = kk.casefold()
-        if kcf == "вес":
-            if not _is_sane_weight(vv):
-                continue
-        elif "габарит" in kcf or kcf.startswith("габариты"):
-            if _looks_like_dims(vv) and not _is_sane_dims(vv):
-                continue
-        elif kcf == "размер":
-            if _looks_like_dims(vv) and not _is_sane_dims(vv):
-                continue
-
         key_norm = kk.casefold()
         if key_norm in seen:
             continue
@@ -396,44 +308,62 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
             params.append((k, v))
 
 
-# Делает текст описания "без странностей" (убираем лишние пробелы/табы)
+# Делает текст описания "без странностей" (убираем лишние пробелы)
 def fix_text(s: str) -> str:
-    t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
-
-    # NBSP и табы → пробел
-    t = t.replace("\u00A0", " ").replace("\t", " ")
-
-    # Нормализуем строки: обрезаем края и схлопываем "грязные" пробелы
-    lines_in = t.split("\n")
-    norm_lines: list[str] = []
-    for ln in lines_in:
-        ln = _RE_MULTI_SPACE.sub(" ", (ln or "").strip())
-        norm_lines.append(ln)
-
-    # Схлопываем серии пустых строк (максимум 1 пустая строка подряд)
+    t = (s or "").replace("\r\n", "\n").replace("\r", "\n")
+    # табы в исходных описаниях (табличные выгрузки) → убираем
+    t = t.replace("\t", " ")
+    # Построчная нормализация: трим, схлопывание пустых строк и "лишних" пробелов
     out_lines: list[str] = []
-    empty_run = 0
-    for ln in norm_lines:
-        if not ln:
-            empty_run += 1
-            if empty_run <= 1:
+    blank_run = 0
+    for line in t.split("\n"):
+        line = line.strip()
+        if not line:
+            blank_run += 1
+            if blank_run <= 1:
                 out_lines.append("")
             continue
-        empty_run = 0
-        out_lines.append(ln)
-
+        blank_run = 0
+        line = _RE_MULTI_SP.sub(" ", line)
+        out_lines.append(line)
     t = "\n".join(out_lines).strip()
 
     # убираем тройные пустые строки (на всякий случай)
     t = _RE_MULTI_NL.sub("\n\n", t)
 
     # Нормализация частой опечатки в вилках/стандарте (Shuko -> Schuko)
-    t = t.replace("Shuko", "Schuko").replace("SCHUKO", "Schuko")
+    t = _RE_SHUKO.sub("Schuko", t)
     return t
+
+
 
 # Делает аккуратный HTML внутри CDATA (добавляет \n в начале/конце)
 def normalize_cdata_inner(inner: str) -> str:
-    return (inner or "").strip()
+    inner = inner.strip()
+    return "\n" + inner + "\n"
+
+# Нормализует список картинок: чистит пустые и "голый домен" без пути, убирает дубли
+def normalize_pictures(pictures: Sequence[str]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for p in pictures or []:
+        u = norm_ws(p)
+        if not u:
+            continue
+        # если это просто домен без пути — это не картинка
+        try:
+            from urllib.parse import urlparse
+            pr = urlparse(u)
+            if pr.scheme in {"http", "https"} and pr.netloc and pr.path in {"", "/"}:
+                continue
+        except Exception:
+            pass
+        if u in seen:
+            continue
+        seen.add(u)
+        out.append(u)
+    return out
+
 
 
 # Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
@@ -671,21 +601,24 @@ class OfferOut:
         param_priority: Sequence[str] | None = None,
     ) -> str:
         name = norm_ws(self.name)
-        vendor = pick_vendor(self.vendor, name, self.params, self.native_desc, public_vendor=public_vendor)
+        native_desc = fix_text(self.native_desc)
+        vendor = pick_vendor(self.vendor, name, self.params, native_desc, public_vendor=public_vendor)
 
         # тройное обогащение: params + из описания
         params = list(self.params)
-        enrich_params_from_desc(params, self.native_desc)
+        enrich_params_from_desc(params, native_desc)
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
         params_sorted = sort_params(params, priority=list(param_priority or []))
 
-        desc_cdata = build_description(name, self.native_desc, params_sorted)
+        desc_cdata = build_description(name, native_desc, params_sorted)
         keywords = build_keywords(vendor, name, city_tail=city_tail)
 
         pics_xml = ""
-        pics = normalize_pictures(self.pictures)
+        pics = normalize_pictures(self.pictures or [])
+        if not pics and CS_PICTURE_PLACEHOLDER_URL:
+            pics = [CS_PICTURE_PLACEHOLDER_URL]
         for pp in pics:
             pics_xml += f"\n<picture>{xml_escape_text(pp)}</picture>"
 
