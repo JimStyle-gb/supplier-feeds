@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-05 13:13">
+<yml_catalog date="2026-01-06 02:12">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-05 13:13:23
-Ближайшая сборка (Алматы)                  | 2026-01-06 02:00:00
-Сколько товаров у поставщика до фильтра    | 1802
-Сколько товаров у поставщика после фильтра | 165
-Сколько товаров есть в наличии (true)      | 165
+Время сборки (Алматы)                      | 2026-01-06 02:12:21
+Ближайшая сборка (Алматы)                  | 2026-01-07 02:00:00
+Сколько товаров у поставщика до фильтра    | 1792
+Сколько товаров у поставщика после фильтра | 163
+Сколько товаров есть в наличии (true)      | 163
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -223,6 +223,50 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Гарантия">24</param>
 <param name="Вид">шредеры офисные</param>
 <keywords>CS, Шредер Fellowes Powershred LX201 белый, Шредер, Fellowes, Powershred, LX201, белый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="AC5502201" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5502201</vendorCode>
+<name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</name>
+<price>177900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/c93/w4fzdu7hehzz4phh5j4fkslo61qxc2h0.jpg</picture>
+<vendor>CS</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</h3><p>Шредер Powershred® LX200<br>Шредер нового поколения с непревзойденным удобством и эффективностью<br>Уничтожает до 12 листов одновременно<br>Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов<br>Вместительная корзина 22 литра ≈ 350 листов А4<br>Гарантия 2 года на устройство и 5 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-55022<br>Количество пользователей 1-3 Пользователя<br>Рекомендуемое количество листов в день 1000<br>Рекомендуемое количество кредитных карт в день 25<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 12<br>Тип Резки Перекрест.<br>Размер резки, мм 4 x 12<br>Уровень секретности, DIN 66399 P-4<br>Количество фрагментов при резке листа А4, шт. ≥1300<br>Уровень секретности для кредитных карт, DIN 66399 T-4<br>Уровень секретности для CD дисков, DIN 66399 нет<br>Ширина входа, мм 230<br>Скорость резки, м/мин 2<br>Рабочий цикл, мин 10 / 15<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,</p>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Гарантия:</strong> 24</li><li><strong>Вид:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Тип">шредеры офисные</param>
+<param name="Гарантия">24</param>
+<param name="Вид">шредеры офисные</param>
+<keywords>CS, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, Шредер, Fellowes, Powershred, LX200, черный, DIN, P-4, 4х12, мм, 12, лст, 22, лтр, Jam, Proof, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="AC5502501" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5502501</vendorCode>
+<name>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</name>
+<price>182900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/281/1a1og9zpxrw1qbsutii9i9elydc1jk82.jpg</picture>
+<vendor>CS</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</h3><p>Шредер Powershred® LX210<br>Шредер нового поколения с непревзойденным удобством и эффективностью<br>Уничтожает до 16 листов одновременно<br>Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов<br>Вместительная корзина 23 литра ≈ 425 листов А4<br>Гарантия 2 года на устройство и 5 лет на ножи<br>Возможности уничтожения - скобы, карты, скрепки<br>Артикул fs-55025<br>Количество пользователей 1-3 Пользователя<br>Рекомендуемое количество листов в день 1000<br>Рекомендуемое количество кредитных карт в день 25<br>Рекомендуемое количество CD дисков в день нет<br>Загрузка, листов (A4, 70гр/м²) 16<br>Тип Резки Перекрест.<br>Размер резки, мм 4 x 12<br>Уровень секретности, DIN 66399 P-4<br>Количество фрагментов при резке листа А4, шт. &gt;1300<br>Уровень секретности для кредитных карт, DIN 66399 T-4<br>Уровень секретности для CD дисков, DIN 66399 нет<br>Ширина входа, мм 230<br>Скорость резки, м/мин 2<br>Рабочий цикл, мин 20 / 15<br>Уничтожение степлерных скоб да<br>Уничтожение скрепок да<br>Уничтожение кредитных карт да<br>Уничтожение CD или Blu-Ray DVD (1,2 слоя) нет<br>100% Jam-Proof Технология предотвращения заторов да<br>SafeSense® Технология да<br>Sleep Mode (автоотключение) да<br>Тип корзины выдвижная<br>Емкость корзины, л 23<br>Емкость корзины в листах А4, приближенно 425<br>Наличие колес для перемещения да<br>Кабель питания несъемный<br>Датчик пуска при подаче бумаги электронный<br>Индикатор возникновения затора да<br>Индикатор наполнения корзины да<br>Автостоп при заполнении корзины да<br>Индикатор открытой дверцы да<br>Автоматическая защита от перегрева да<br>Индикатор перегрева да<br>Автоотключение при снятой корзине да<br>Тип электродвигателя постоянного тока<br>Сила тока, А 3<br>Мощность, Вт 650<br>Уровень шума без загрузки, дБ 65<br>Уровень шума под нагрузкой, дБ 70<br>Гарантия, лет 2<br>Гарантия на ножи, лет 5<br>Габаритные размеры, мм (ВxШxГ) 535 x 358 x 297<br>Вес, кг 12,2<br>Размеры розничной упаковки, мм (ВxШxГ) 590 x 405 x 335<br>Вес розничной упаковки, кг 14,1<br>Размеры транспортной упаковки, мм (ВxШxГ) 620 x 430 x 350<br>Вес транспортной упаковки, кг 15,2<br>Количество в транспортной упаковке 1</p>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Гарантия:</strong> 24</li><li><strong>Вид:</strong> шредеры офисные</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Тип">шредеры офисные</param>
+<param name="Гарантия">24</param>
+<param name="Вид">шредеры офисные</param>
+<keywords>CS, Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK, Шредер, Fellowes, Powershred, LX210, BLACK, SHREDDER, EU, UK, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="AC5716701" available="true">
@@ -983,42 +1027,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Формат">A4</param>
 <param name="Цветность">4 цвета</param>
 <keywords>Epson, МФУ Epson L6550 фабрика печати, факс,Wi-Fi, МФУ, L6550, фабрика, печати, факс, Wi-Fi, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC11CJ36301A0" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CJ36301A0</vendorCode>
-<name>Плоттер Epson SureColor SC-T3100M-MFP</name>
-<price>1295900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/d79/facehy2u28gu0xowlfx5kn5sqpotat2z.png</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Плоттер Epson SureColor SC-T3100M-MFP</h3><p>Универсальное инженерное МФУ<br>Универсальный инженерный принтер с шириной печати 24 дюйма Решение 3-в-1 (печать, копирование и сканирование)<br>Лаконичный эргономичный дизайн Сдержанный дизайн для любого интерьера<br>Контроль и производительность Epson Cloud Solution PORT<br>Возможности подключения Встроенный Wi-Fi, AirPrint, USB/LAN<br>Безопасность Сканирование зашифрованных файлов в защищенное назначение</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> CAD</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Интерфейс:</strong> USB 3.0* Gigabit ethernet interface* Wireless LAN IEEE 802.11b/g/n* Wi-Fi Direct</li><li><strong>Вид:</strong> CAD</li><li><strong>Количество слотов для картриджей:</strong> 4</li><li><strong>Наименование производителя:</strong> Epson SureColor SC-T3100X</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати,dpi:</strong> 2400x1200</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> пигментные (K), водорастворимые (CMY)</li><li><strong>Формат:</strong> A1+</li><li><strong>Цветность:</strong> 4 цвета</li><li><strong>Ширина печати, дюймы:</strong> 24</li><li><strong>Ширина печати, мм:</strong> 610</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Тип">CAD</param>
-<param name="Гарантия">12 мес</param>
-<param name="Интерфейс">USB 3.0* Gigabit ethernet interface* Wireless LAN IEEE 802.11b/g/n* Wi-Fi Direct</param>
-<param name="Вид">CAD</param>
-<param name="Количество слотов для картриджей">4</param>
-<param name="Наименование производителя">Epson SureColor SC-T3100X</param>
-<param name="Область применения">CAD</param>
-<param name="Разрешение печати,dpi">2400x1200</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип расходных материалов">чернила</param>
-<param name="Тип чернил">пигментные (K), водорастворимые (CMY)</param>
-<param name="Формат">A1+</param>
-<param name="Цветность">4 цвета</param>
-<param name="Ширина печати, дюймы">24</param>
-<param name="Ширина печати, мм">610</param>
-<keywords>Epson, Плоттер Epson SureColor SC-T3100M-MFP, Плоттер, SureColor, SC-T3100M-MFP, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC11CJ61405" available="true">
@@ -2280,34 +2288,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T606400 SP-4880 желтый, Картридж, C13T606400, SP-4880, желтый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T606500" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T606500</vendorCode>
-<name>Картридж Epson C13T606500 SP-4880 светло-голубой</name>
-<price>93900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/eb5/3gcomagb6du43id6yintt3p35e55i0ba.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж Epson C13T606500 SP-4880 светло-голубой</h3><p>Светло-голубой картридж для:<br>Epson Stylus Pro 4800<br>Epson Stylus Pro 4880</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> светло-голубой</li><li><strong>Гарантия:</strong> 3</li><li><strong>Вид:</strong> картридж</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 220 мл</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Тип">Картридж EPSON</param>
-<param name="Цвет">светло-голубой</param>
-<param name="Гарантия">3</param>
-<param name="Вид">картридж</param>
-<param name="Для бренда">Epson</param>
-<param name="Ресурс">220 мл</param>
-<param name="Страна происхождения">Китай</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Картридж Epson C13T606500 SP-4880 светло-голубой, Картридж, C13T606500, SP-4880, светло-голубой, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T606700" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T606700</vendorCode>
@@ -2576,35 +2556,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Индонезия</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный, Чернила, C13T66414A, L100, 110, 120, 1300, 132, 200, 210, 222, 300, 312, 350, 355, 362, 366, 456, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC13T66424A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T66424A</vendorCode>
-<name>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</name>
-<price>7900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/fde/q87nc9md3muxkkrsvwdjxlpg62utdxph.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</h3><p>Контейнер с голубыми чернилами для:<br>Epson L100<br>Epson L200<br>Epson L110<br>Epson L210<br>Epson L300<br>Epson L355<br>Epson L550</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Гарантия:</strong> 3</li><li><strong>Вид:</strong> чернила</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Наименование производителя:</strong> Epson Чернила L100 голубые 70ml</li><li><strong>Ресурс:</strong> 5700 – 6500 страниц формата A4*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Цвет">Голубой</param>
-<param name="Гарантия">3</param>
-<param name="Вид">чернила</param>
-<param name="Для бренда">Epson</param>
-<param name="Наименование производителя">Epson Чернила L100 голубые 70ml</param>
-<param name="Ресурс">5700 – 6500 страниц формата A4*</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой, Чернила, C13T66424A, L100, 110, 120, 1300, 132, 200, 210, 222, 300, 312, 350, 355, 362, 366, 456, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC13T66434A" available="true">
@@ -3722,32 +3673,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Китай</param>
 <param name="Формат">1X1</param>
 <keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 80" X 80" (2.03 X 2.03), Экран, моторизированный, Mr, Pixel, 80, X, 2, 03, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACMSPSAB135V2" available="true">
-<categoryId></categoryId>
-<vendorCode>ACMSPSAB135V2</vendorCode>
-<name>Экран моторизированный Mr.Pixel 96" X 96" (2,44 X 2,44)</name>
-<price>80900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/825/ep82w9j8e3mc96iy6agwe0cchxkv3lv9.jpg</picture>
-<vendor>Mr.Pixel</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Экран моторизированный Mr.Pixel 96" X 96" (2,44 X 2,44)</h3><p>Моторизованный экран Mr.Pixel 96" x 96" (MSPSAB135V2)<br>Высота: 2,44 м<br>Ширина: 2,44 м<br>Соотношение сторон: 1:1<br>Основные преимущества:<br>- Идеально подходит для многофункциональных помещений таких, как конфернец-залы, комнаты переговоров и учебные классы.<br>- Уникальная надежная конструкция подходит как для настенного, так и потолочного монтажа, проста в установке.<br>- Чёрные границы по краям экрана для лучшего отображения изображения<br>- Идеально ровная поверхность экрана благодаря использованию специального утяжелителя для поддержания равномерного вертикального натяжения экрана.<br>- Синхронизированный мотор плавный и тихий в работе.<br>- Активная поверхность полотна 2390*2390</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Экран моторизированный</li><li><strong>Гарантия:</strong> 12 мес</li><li><strong>Вид:</strong> Экран</li><li><strong>Размер дм.(м.):</strong> 96" X 96" (2,44 X 2,44)</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Формат:</strong> 1X1</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Mr.Pixel</param>
-<param name="Тип">Экран моторизированный</param>
-<param name="Гарантия">12 мес</param>
-<param name="Вид">Экран</param>
-<param name="Размер дм.(м.)">96" X 96" (2,44 X 2,44)</param>
-<param name="Страна происхождения">Китай</param>
-<param name="Формат">1X1</param>
-<keywords>Mr.Pixel, Экран моторизированный Mr.Pixel 96" X 96" (2.44 X 2.44), Экран, моторизированный, Mr, Pixel, 96, X, 2, 44, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACMSPSAB167V2" available="true">
