@@ -339,10 +339,11 @@ def fix_text(s: str) -> str:
 
 # Делает аккуратный HTML внутри CDATA (добавляет \n в начале/конце)
 def normalize_cdata_inner(inner: str) -> str:
-    inner = inner.strip()
-    return "\n" + inner + "\n"
+    # Убираем мусорные пробелы/пустые строки внутри CDATA, без лишних ведущих/хвостовых переводов строк
+    inner = (inner or "").strip()
+    inner = _RE_MULTI_NL.sub("\n\n", inner)
+    return inner
 
-# Нормализует список картинок: чистит пустые и "голый домен" без пути, убирает дубли
 def normalize_pictures(pictures: Sequence[str]) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
