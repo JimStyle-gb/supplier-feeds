@@ -12,6 +12,7 @@ import re
 import time
 import random
 from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
 
 # Логи (можно выключить: VERBOSE=0)
 VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
@@ -124,6 +125,33 @@ def http_get(url: str, tries: int = 3, min_bytes: int = 0) -> Optional[bytes]:
 def soup_of(b: bytes) -> BeautifulSoup:
     return BeautifulSoup(b, "html.parser")
 
+
+
+def load_prev_pics(path: str) -> dict[str, list[str]]:
+    # Берём картинки из прошлого результата, чтобы не терять их из-за временных сбоев обхода сайта
+    mp: dict[str, list[str]] = {}
+    try:
+        if not os.path.exists(path):
+            return mp
+        txt = open(path, 'r', encoding='utf-8', errors='ignore').read().lstrip('\ufeff')
+        root = ET.fromstring(txt)
+        for off in root.findall('.//offer'):
+            oid = (off.get('id') or '').strip()
+            if not oid:
+                continue
+            pics: list[str] = []
+            for p in off.findall('picture'):
+                u = (p.text or '').strip()
+                if not u:
+                    continue
+                if 'placehold.co/' in u:
+                    continue
+                pics.append(u)
+            if pics:
+                mp[oid] = pics
+    except Exception:
+        return mp
+    return mp
 
 def norm_ascii(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
@@ -808,6 +836,7 @@ def main() -> int:
     site_sku_index, site_index = build_site_index(want_keys)
 
     # Собираем offers (важно: стабильные oid!)
+    prev_pics = load_prev_pics(OUT_FILE)
     out_offers: List[OfferOut] = []
     seen_oids = set()
 
@@ -857,6 +886,12 @@ def main() -> int:
             if found.get("pic"):
                 pictures = [safe_str(found.get("pic"))]
             params = list(found.get("params") or [])
+
+        # Если обход сайта не дал картинку — берём из прошлого результата (стабильность)
+        if not pictures:
+            prev = prev_pics.get(base_oid)
+            if prev:
+                pictures = prev[:]
 
         if not _is_allowed_prefix(name):
             continue
