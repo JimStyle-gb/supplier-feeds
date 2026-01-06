@@ -207,6 +207,11 @@ def search_and_parse_product(key: str) -> Optional[Dict[str, Any]]:
     except Exception:
         pass
     try:
+        if key.startswith("c") and key[1:].isdigit():
+            key = key[1:]
+    except Exception:
+        pass
+    try:
         su = f"{BASE_URL}/product-search/result.html"
         b = http_post(su, data={"search": key}, tries=2)
         if not b:
@@ -874,6 +879,14 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
     if want_keys:
         missing = [k for k in want_keys if k not in matched]
         if missing:
+            # Дедуп по ключу поиска: 'C123' и '123' ищем одним запросом
+            search_map: dict[str, set[str]] = {}
+            for k in missing:
+                kk = k
+                if kk.startswith('c') and kk[1:].isdigit():
+                    kk = kk[1:]
+                search_map.setdefault(kk, set()).add(k)
+            missing = sorted(search_map.keys())
             if COPYLINE_SEARCH_BUDGET > 0 and len(missing) > COPYLINE_SEARCH_BUDGET:
                 missing = missing[:COPYLINE_SEARCH_BUDGET]
                 log(f"[site] search budget applied: {COPYLINE_SEARCH_BUDGET}")
@@ -887,6 +900,7 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                     if datetime.utcnow() > deadline2:
                         break
                     key = futures2[fut]
+                    orig_keys = search_map.get(key, {key})
                     try:
                         out = fut.result()
                     except Exception:
@@ -903,8 +917,11 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                         variants.add("C" + sku)
                     keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
                     useful = [k for k in keys if k in want_keys and k not in matched]
-                    if not useful and key in want_keys and key not in matched:
-                        useful = [key]
+                    if not useful:
+                        for ok in orig_keys:
+                            if ok in want_keys and ok not in matched:
+                                useful = [ok]
+                                break
                     for k2 in useful:
                         matched.add(k2)
                         site_index[k2] = out
