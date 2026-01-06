@@ -94,8 +94,6 @@ PARAM_DROP_DEFAULT = {
     "Код товара Kaspi",
     "Код ТН ВЭД",
     "Назначение",
-    "Объём",
-    "Объем",
 }
 # Кеш: служебные параметры в casefold (для clean_params/валидации)
 PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
@@ -230,6 +228,61 @@ def compute_price(price_in: int | None) -> int:
 
 
 # Убирает мусорные параметры, пустые значения и дубли (применять всегда!)
+
+# Параметры "вес/габариты/объем" полезны покупателю, но у некоторых поставщиков бывают мусорные значения.
+# Валидируем мягко: оставляем только "похожие на правду".
+_DIM_WORDS = ("габарит", "размер", "длина", "ширина", "высота")
+_VOL_WORDS = ("объем", "объём", "volume")
+_WGT_WORDS = ("вес", "масса", "weight")
+
+_RE_NUM = re.compile(r"(\d+(?:[\.,]\d+)?)")
+_RE_DIM_SEP = re.compile(r"[xх×\*]", re.I)
+
+def _looks_like_weight(name: str) -> bool:
+    nl = (name or "").casefold()
+    return any(w in nl for w in _WGT_WORDS)
+
+def _looks_like_volume(name: str) -> bool:
+    nl = (name or "").casefold()
+    return any(w in nl for w in _VOL_WORDS)
+
+def _looks_like_dims(name: str) -> bool:
+    nl = (name or "").casefold()
+    return any(w in nl for w in _DIM_WORDS)
+
+def _to_float(v: str) -> float | None:
+    m = _RE_NUM.search(v or "")
+    if not m:
+        return None
+    try:
+        return float(m.group(1).replace(",", "."))
+    except Exception:
+        return None
+
+def _is_sane_weight(v: str) -> bool:
+    x = _to_float(v)
+    if x is None:
+        return False
+    vv = (v or "").casefold()
+    # если явно граммы — переводим в кг
+    if ("кг" not in vv) and (re.search(r"\bг\b|гр", vv) is not None):
+        x = x / 1000.0
+    return 0.001 <= x <= 2000.0
+
+def _is_sane_volume(v: str) -> bool:
+    x = _to_float(v)
+    if x is None:
+        return False
+    return 0.001 <= x <= 5000.0
+
+def _is_sane_dims(v: str) -> bool:
+    vv = (v or "").casefold()
+    nums = _RE_NUM.findall(vv)
+    # минимум 2 числа + разделитель или единицы измерения
+    if len(nums) >= 2 and (_RE_DIM_SEP.search(vv) or any(u in vv for u in ("мм", "см", "м", "cm", "mm"))):
+        return True
+    return False
+
 def clean_params(
     params: Sequence[tuple[str, str]],
     *,
@@ -273,6 +326,14 @@ def clean_params(
         if kk.casefold() in drop_set:
             continue
 
+        # Мягкая валидация вес/габариты/объем
+        if _looks_like_weight(kk) and not _is_sane_weight(vv):
+            continue
+        if _looks_like_volume(kk) and not _is_sane_volume(vv):
+            continue
+        if _looks_like_dims(kk) and not _is_sane_dims(vv):
+            continue
+
         key_norm = kk.casefold()
         if key_norm in seen:
             continue
@@ -310,30 +371,20 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
 
 # Делает текст описания "без странностей" (убираем лишние пробелы)
 def fix_text(s: str) -> str:
-    t = (s or "").replace("\r\n", "\n").replace("\r", "\n")
-    # табы в исходных описаниях (табличные выгрузки) → убираем
-    t = t.replace("\t", " ")
-    # Построчная нормализация: трим, схлопывание пустых строк и "лишних" пробелов
-    out_lines: list[str] = []
-    blank_run = 0
-    for line in t.split("\n"):
-        line = line.strip()
-        if not line:
-            blank_run += 1
-            if blank_run <= 1:
-                out_lines.append("")
-            continue
-        blank_run = 0
-        line = _RE_MULTI_SP.sub(" ", line)
-        out_lines.append(line)
-    t = "\n".join(out_lines).strip()
+    # Нормализует переносы строк и убирает мусорные пробелы/табуляции на пустых строках
+    t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
 
-    # убираем тройные пустые строки (на всякий случай)
+    # строки, которые состоят только из пробелов/табов, считаем пустыми
+    if t:
+        t = "\n".join("" if (ln.strip() == "") else ln for ln in t.split("\n"))
+
+    # убираем тройные пустые строки
     t = _RE_MULTI_NL.sub("\n\n", t)
 
-    # Нормализация частой опечатки в вилках/стандарте (Shuko -> Schuko)
+    # Нормализация частой опечатки (Shuko -> Schuko)
     t = _RE_SHUKO.sub("Schuko", t)
     return t
+
 
 
 
