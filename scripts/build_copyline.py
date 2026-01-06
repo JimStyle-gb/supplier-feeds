@@ -11,6 +11,7 @@ import os
 import re
 import time
 import random
+import urllib.parse
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 
@@ -71,6 +72,11 @@ COPYLINE_INCLUDE_PREFIXES = [
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
+COPYLINE_CARRYOVER_PICS = (os.getenv("COPYLINE_CARRYOVER_PICS", "0") or "0").strip().lower() in ("1","true","yes","y","on")
+COPYLINE_SEARCH_FALLBACK = (os.getenv("COPYLINE_SEARCH_FALLBACK", "1") or "1").strip().lower() in ("1","true","yes","y","on")
+COPYLINE_SEARCH_BUDGET = int((os.getenv("COPYLINE_SEARCH_BUDGET", "350") or "350").strip() or "350")
+COPYLINE_SEARCH_DELAY = float((os.getenv("COPYLINE_SEARCH_DELAY", "0.12") or "0.12").strip() or "0.12")
+
 MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "25") or "25")  # лимит страниц на категорию
 MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
@@ -710,14 +716,48 @@ def collect_product_urls(category_url: str, limit_pages: int) -> List[str]:
 def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Dict[str, Any]], Dict[str, Dict[str, Any]]]:
     if NO_CRAWL:
         log("[site] NO_CRAWL=1 -> skip site parsing")
-        return {}
-
+        return ({}, {})
     cats = discover_relevant_category_urls()
     if not cats:
         log("[site] no category urls found")
-        return {}
-
+        return ({}, {})
     pages_budget = MAX_CATEGORY_PAGES
+
+    # Стабильные ключи для сопоставления прайса с сайтом (на случай смены внутреннего product_code)
+    def _variants_for(sku: str, url: str, title: str) -> Set[str]:
+        v: Set[str] = set()
+        sku = (sku or "").strip()
+        if sku:
+            v.add(sku)
+            v.add(sku.replace("-", ""))
+            if re.fullmatch(r"[Cc]\d+", sku):
+                v.add(sku[1:])
+            if re.fullmatch(r"\d+", sku):
+                v.add("C" + sku)
+
+        url = (url or "").strip()
+        slug = ""
+        if url:
+            slug = url.split("/")[-1].split("?", 1)[0].split("#", 1)[0]
+            if slug.endswith(".html"):
+                slug = slug[:-5]
+        if slug:
+            for tok in re.split(r"[-_]+", slug.lower()):
+                tok = re.sub(r"[^a-z0-9]+", "", tok)
+                if len(tok) < 3 or len(tok) > 24:
+                    continue
+                if not re.search(r"\d", tok):
+                    continue
+                v.add(tok.upper())
+
+        title = (title or "")
+        if title:
+            for m in re.findall(r"[A-Za-z]{0,6}\d[A-Za-z0-9\-]{2,18}", title):
+                mm = re.sub(r"[^A-Za-z0-9\-]", "", m).strip("-")
+                if 3 <= len(mm) <= 24 and re.search(r"\d", mm):
+                    v.add(mm.upper())
+
+        return v
 
     product_urls: List[str] = []
     for cu in cats:
@@ -747,12 +787,7 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
             if not sku:
                 continue
 
-            variants = {sku, sku.replace("-", "")}
-            if re.fullmatch(r"[Cc]\d+", sku):
-                variants.add(sku[1:])
-            if re.fullmatch(r"\d+", sku):
-                variants.add("C" + sku)
-
+            variants = _variants_for(sku, safe_str(out.get("url")), safe_str(out.get("title")))
             keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
             if not keys:
                 continue
@@ -767,6 +802,80 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
             else:
                 for k in keys:
                     site_index[k] = out
+
+
+    # Фолбек: если обход категорий дал мало совпадений — добиваем отсутствующие через поиск на сайте
+    if want_keys and COPYLINE_SEARCH_FALLBACK:
+        missing = [k for k in want_keys if k not in site_index]
+        if missing:
+            budget = min(len(missing), max(0, COPYLINE_SEARCH_BUDGET))
+            if budget > 0:
+                log(f"[site] search_fallback missing={len(missing)} budget={budget}")
+                for k in missing[:budget]:
+                    q = urllib.parse.quote_plus(k)
+                    su = f"{BASE_URL}/product-search/result.html?search={q}"
+                    b2 = http_get(su, tries=2)
+                    if not b2:
+                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                        continue
+                    s2 = soup_of(b2)
+
+                    cand_urls: List[str] = []
+                    for a in s2.find_all("a"):
+                        href = safe_str(a.get("href"))
+                        if not href:
+                            continue
+                        if "/goods/" not in href or not href.endswith(".html"):
+                            continue
+                        if href.startswith("//"):
+                            href = "https:" + href
+                        elif href.startswith("/"):
+                            href = BASE_URL + href
+                        elif href.startswith("http://"):
+                            href = "https://" + href[len("http://") :]
+                        elif href.startswith("https://"):
+                            pass
+                        else:
+                            href = BASE_URL + "/" + href.lstrip("/")
+                        cand_urls.append(href)
+
+                    cand_urls = list(dict.fromkeys(cand_urls))
+                    if not cand_urls:
+                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                        continue
+
+                    nk = k.lower()
+                    pick = None
+                    for u in cand_urls:
+                        if nk and nk in u.lower():
+                            pick = u
+                            break
+                    if not pick:
+                        pick = cand_urls[0]
+
+                    out2 = parse_product_page(pick)
+                    if not out2:
+                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                        continue
+
+                    sku2 = safe_str(out2.get("sku")).strip()
+                    if not sku2:
+                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                        continue
+
+                    variants2 = _variants_for(sku2, safe_str(out2.get("url")), safe_str(out2.get("title")))
+                    keys2 = [norm_ascii(v) for v in variants2 if norm_ascii(v)]
+
+                    hit = False
+                    for kk in keys2:
+                        if kk in want_keys:
+                            site_index[kk] = out2
+                            matched.add(kk)
+                            hit = True
+
+                    _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                    if not hit:
+                        continue
 
     log(f"[site] indexed={len(site_index)} matched={len(matched) if want_keys else '-'}")
     return site_index, {}
@@ -836,7 +945,7 @@ def main() -> int:
     site_sku_index, site_index = build_site_index(want_keys)
 
     # Собираем offers (важно: стабильные oid!)
-    prev_pics = load_prev_pics(OUT_FILE)
+    prev_pics = load_prev_pics(OUT_FILE) if COPYLINE_CARRYOVER_PICS else {}
     out_offers: List[OfferOut] = []
     seen_oids = set()
 
