@@ -802,80 +802,66 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
             else:
                 for k in keys:
                     site_index[k] = out
-
-
     # Фолбек: если обход категорий дал мало совпадений — добиваем отсутствующие через поиск на сайте
+    # Важно: после изменений на сайте это может быть основным источником картинок, поэтому делаем параллельно и без жёсткого потолка (budget по умолчанию высокий).
     if want_keys and COPYLINE_SEARCH_FALLBACK:
         missing = [k for k in want_keys if k not in site_index]
         if missing:
             budget = min(len(missing), max(0, COPYLINE_SEARCH_BUDGET))
             if budget > 0:
-                log(f"[site] search_fallback missing={len(missing)} budget={budget}")
-                for k in missing[:budget]:
-                    q = urllib.parse.quote_plus(k)
-                    su = f"{BASE_URL}/product-search/result.html?search={q}"
-                    b2 = http_get(su, tries=2)
-                    if not b2:
-                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
-                        continue
-                    s2 = soup_of(b2)
+                todo = missing[:budget]
+                log(f"[site] search_fallback missing={len(missing)} budget={budget} workers={max(1, MAX_WORKERS)}")
 
-                    cand_urls: List[str] = []
-                    for a in s2.find_all("a"):
-                        href = safe_str(a.get("href"))
-                        if not href:
+                def _search_one(key: str) -> Optional[Dict[str, Any]]:
+                    try:
+                        q = urllib.parse.quote_plus(key)
+                        su = f"{BASE_URL}/product-search/result.html?search={q}"
+                        b2 = http_get(su, tries=2)
+                        if not b2:
+                            _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                            return None
+                        s2 = soup_of(b2)
+                        card = _parse_first_product_card(s2)
+                        if not card:
+                            _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                            return None
+                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                        return card
+                    except Exception:
+                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
+                        return None
+
+                # Параллельный поиск (умеренный), чтобы уложиться во время GitHub Runner и не ловить таймауты на 1000+ товаров
+                with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex2:
+                    futures = {ex2.submit(_search_one, k): k for k in todo}
+                    for fut in as_completed(futures):
+                        key = futures[fut]
+                        out2 = None
+                        try:
+                            out2 = fut.result()
+                        except Exception:
+                            out2 = None
+                        if not out2:
                             continue
-                        if "/goods/" not in href or not href.endswith(".html"):
+
+                        sku2 = safe_str(out2.get("sku")).strip()
+                        if not sku2:
                             continue
-                        if href.startswith("//"):
-                            href = "https:" + href
-                        elif href.startswith("/"):
-                            href = BASE_URL + href
-                        elif href.startswith("http://"):
-                            href = "https://" + href[len("http://") :]
-                        elif href.startswith("https://"):
-                            pass
-                        else:
-                            href = BASE_URL + "/" + href.lstrip("/")
-                        cand_urls.append(href)
 
-                    cand_urls = list(dict.fromkeys(cand_urls))
-                    if not cand_urls:
-                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
-                        continue
+                        variants2 = _variants_for(sku2, safe_str(out2.get("url")), safe_str(out2.get("title")))
+                        keys2 = [norm_ascii(v) for v in variants2 if norm_ascii(v)]
 
-                    nk = k.lower()
-                    pick = None
-                    for u in cand_urls:
-                        if nk and nk in u.lower():
-                            pick = u
-                            break
-                    if not pick:
-                        pick = cand_urls[0]
+                        hit = False
+                        for kk in keys2:
+                            if kk in want_keys:
+                                site_index[kk] = out2
+                                matched.add(kk)
+                                hit = True
 
-                    out2 = parse_product_page(pick)
-                    if not out2:
-                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
-                        continue
+                        if hit:
+                            # лёгкая пауза для "вежливости"
+                            _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
 
-                    sku2 = safe_str(out2.get("sku")).strip()
-                    if not sku2:
-                        _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
-                        continue
-
-                    variants2 = _variants_for(sku2, safe_str(out2.get("url")), safe_str(out2.get("title")))
-                    keys2 = [norm_ascii(v) for v in variants2 if norm_ascii(v)]
-
-                    hit = False
-                    for kk in keys2:
-                        if kk in want_keys:
-                            site_index[kk] = out2
-                            matched.add(kk)
-                            hit = True
-
-                    _sleep_jitter(int(COPYLINE_SEARCH_DELAY * 1000))
-                    if not hit:
-                        continue
 
     log(f"[site] indexed={len(site_index)} matched={len(matched) if want_keys else '-'}")
     return site_index, {}
