@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+CopyLine adapter — сборщик по шаблону CS (использует scripts/cs/core.py).
+Задача адаптера: забрать данные поставщика (XLSX + сайт) и отдать в CS ядро список OfferOut.
+"""
+
 from __future__ import annotations
 
 import io
@@ -8,44 +13,6 @@ import time
 import random
 from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
-
-"""
-CopyLine adapter — сборщик по шаблону CS (использует scripts/cs/core.py).
-Задача адаптера: забрать данные поставщика (XLSX + сайт) и отдать в CS ядро список OfferOut.
-"""
-
-def _pick_search_result_link(html: str, code: str, base_url: str) -> str | None:
-    """# CopyLine: выбрать ссылку на товар из выдачи поиска (предпочитаем точное совпадение артикула)"""
-    code_norm = (code or "").strip()
-    if not html:
-        return None
-
-    # Кандидаты: ссылки на карточки товаров
-    candidates: list[str] = []
-    for href in re.findall(r'href=["\']([^"\']+)["\']', html, flags=re.I):
-        if ("/goods/" in href and ".html" in href) or ("controller=product" in href and "task=view" in href):
-            candidates.append(href)
-
-    if not candidates:
-        return None
-
-    if code_norm:
-        c_up = code_norm.upper()
-
-        # 1) Пытаемся найти артикул рядом со ссылкой (вокруг href)
-        html_up = html.upper()
-        for href in candidates:
-            idx = html_up.find(href.upper())
-            if idx >= 0:
-                snippet = html_up[max(0, idx - 250): idx + 250]
-                if c_up in snippet:
-                    return _abs_url(href, base_url)
-
-        # 2) Если артикул есть на странице в целом — берём первый кандидат
-        if c_up in html_up:
-            return _pick_search_result_link(html, code, base_url)
-    # 3) Фолбэк: первый кандидат
-    return _abs_url(candidates[0], base_url)
 
 # Логи (можно выключить: VERBOSE=0)
 VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
@@ -82,6 +49,10 @@ SUPPLIER_NAME = "CopyLine"
 SUPPLIER_URL_DEFAULT = "https://copyline.kz/goods.html"
 BASE_URL = "https://copyline.kz"
 
+FINDER_SEARCH_URL = f"{BASE_URL}/component/finder/search.html"
+FINDER_ITEMID = os.getenv("COPYLINE_FINDER_ITEMID", "101").strip() or "101"
+
+
 XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 
 # Вариант C: фильтрация CopyLine по префиксам названия (строго с начала строки)
@@ -110,7 +81,7 @@ MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")
 # Лимит запросов к поиску (POST) для добивки фото/карточек
 COPYLINE_SEARCH_BUDGET = int(os.getenv("COPYLINE_SEARCH_BUDGET", "2500") or "2500")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
-PRODUCT_RE = re.compile(r"/goods/.*?\.html(?:\?.*?)?$")
+PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
 
 # Параллелизм обхода сайта
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
@@ -192,15 +163,15 @@ def _parse_first_product_url_from_search(s: "BeautifulSoup") -> str:
         if not href:
             continue
         href_l = href.lower()
-        if "/goods/" in href_l and href_l.endswith(".html"):
+        if "/goods/" in href_l and ".html" in href_l:
             return urllib.parse.urljoin(BASE_URL + "/", href.lstrip("/"))
         if "controller=product" in href_l and "task=view" in href_l:
             return urllib.parse.urljoin(BASE_URL + "/", href.lstrip("/"))
     return ""
 
 def search_and_parse_product(key: str) -> Optional[Dict[str, Any]]:
-    # key уже нормализован (ascii lower).
-    # Если вдруг прилетит префикс CL + цифры — ищем по цифрам.
+    # key уже нормализован (ascii lower) из want_keys.
+    # Снимаем известные префиксы (cl/c) у цифровых кодов.
     try:
         if key.startswith("cl") and key[2:].isdigit():
             key = key[2:]
@@ -211,27 +182,56 @@ def search_and_parse_product(key: str) -> Optional[Dict[str, Any]]:
             key = key[1:]
     except Exception:
         pass
+
+    # 1) jshopping product-search (POST)
     try:
         su = f"{BASE_URL}/product-search/result.html"
         b = http_post(su, data={"search": key}, tries=2)
-        if not b:
-            return None
-        s = soup_of(b)
-        url = _parse_first_product_url_from_search(s)
-        if not url:
-            # fallback regex прямо по HTML
+        html = ""
+        if b:
             try:
                 html = b.decode("utf-8", "ignore")
             except Exception:
                 html = ""
-            m = re.search(r'href=["\']([^"\']*(?:/goods/)[^"\']+?\.html(?:\?[^"\']*)?)["\']', html, flags=re.I)
-            if m:
-                url = urllib.parse.urljoin(BASE_URL + "/", safe_str(m.group(1)).lstrip("/"))
-        if not url:
-            return None
-        return parse_product_page(url)
+            urls = _extract_product_urls_from_html(html)
+
+            # быстрый выбор: если key встречается рядом с href — берём сразу
+            if urls and html:
+                html_up = html.upper()
+                key_up = (key or "").upper()
+                if key_up:
+                    for u in urls:
+                        # ищем любую форму ссылки в html
+                        for needle in (u, u.replace(BASE_URL, ""), u.replace(BASE_URL + "/", "/")):
+                            if not needle:
+                                continue
+                            idx = html_up.find(needle.upper())
+                            if idx >= 0:
+                                snippet = html_up[max(0, idx - 300): idx + 300]
+                                if key_up in snippet:
+                                    out = parse_product_page(u)
+                                    if out and _matches_key(out.get("sku", ""), key):
+                                        return out
+
+            # точная проверка по sku: перебираем первые несколько кандидатов
+            for u in urls[:5]:
+                out = parse_product_page(u)
+                if out and _matches_key(out.get("sku", ""), key):
+                    return out
     except Exception:
-        return None
+        pass
+
+    # 2) Joomla Finder fallback (GET)
+    try:
+        urls = _finder_search_first_urls(key)
+        for u in urls[:5]:
+            out = parse_product_page(u)
+            if out and _matches_key(out.get("sku", ""), key):
+                return out
+    except Exception:
+        pass
+
+    return None
 
 def load_prev_pics(path: str) -> dict[str, list[str]]:
     # Берём картинки из прошлого результата, чтобы не терять их из-за временных сбоев обхода сайта
@@ -879,14 +879,6 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
     if want_keys:
         missing = [k for k in want_keys if k not in matched]
         if missing:
-            # Дедуп по ключу поиска: 'C123' и '123' ищем одним запросом
-            search_map: dict[str, set[str]] = {}
-            for k in missing:
-                kk = k
-                if kk.startswith('c') and kk[1:].isdigit():
-                    kk = kk[1:]
-                search_map.setdefault(kk, set()).add(k)
-            missing = sorted(search_map.keys())
             if COPYLINE_SEARCH_BUDGET > 0 and len(missing) > COPYLINE_SEARCH_BUDGET:
                 missing = missing[:COPYLINE_SEARCH_BUDGET]
                 log(f"[site] search budget applied: {COPYLINE_SEARCH_BUDGET}")
@@ -900,7 +892,6 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                     if datetime.utcnow() > deadline2:
                         break
                     key = futures2[fut]
-                    orig_keys = search_map.get(key, {key})
                     try:
                         out = fut.result()
                     except Exception:
@@ -917,11 +908,8 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                         variants.add("C" + sku)
                     keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
                     useful = [k for k in keys if k in want_keys and k not in matched]
-                    if not useful:
-                        for ok in orig_keys:
-                            if ok in want_keys and ok not in matched:
-                                useful = [ok]
-                                break
+                    if not useful and key in want_keys and key not in matched:
+                        useful = [key]
                     for k2 in useful:
                         matched.add(k2)
                         site_index[k2] = out
