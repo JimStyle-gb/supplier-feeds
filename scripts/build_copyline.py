@@ -1,4 +1,14 @@
 # -*- coding: utf-8 -*-
+from __future__ import annotations
+
+import io
+import os
+import re
+import time
+import random
+from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
+
 """
 CopyLine adapter — сборщик по шаблону CS (использует scripts/cs/core.py).
 Задача адаптера: забрать данные поставщика (XLSX + сайт) и отдать в CS ядро список OfferOut.
@@ -36,16 +46,6 @@ def _pick_search_result_link(html: str, code: str, base_url: str) -> str | None:
             return _pick_search_result_link(html, code, base_url)
     # 3) Фолбэк: первый кандидат
     return _abs_url(candidates[0], base_url)
-
-from __future__ import annotations
-
-import io
-import os
-import re
-import time
-import random
-from datetime import datetime, timedelta
-import xml.etree.ElementTree as ET
 
 # Логи (можно выключить: VERBOSE=0)
 VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
