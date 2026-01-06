@@ -110,7 +110,7 @@ MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")
 # Лимит запросов к поиску (POST) для добивки фото/карточек
 COPYLINE_SEARCH_BUDGET = int(os.getenv("COPYLINE_SEARCH_BUDGET", "2500") or "2500")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
-PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
+PRODUCT_RE = re.compile(r"/goods/.*?\.html(?:\?.*?)?$")
 
 # Параллелизм обхода сайта
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
