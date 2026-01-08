@@ -130,6 +130,30 @@ def norm_ascii(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
 
 
+def _norm_sku_variants(raw: str) -> set[str]:
+    """# CopyLine: нормализация артикула/sku для сравнения (детерминированно)"""
+    r = (raw or "").strip()
+    if not r:
+        return set()
+    r = r.replace(" ", "")
+    variants = {r, r.replace("-", ""), r.replace("_", "")}
+    r0 = r.lstrip("0")
+    if r0 and r0 != r:
+        variants.add(r0)
+        variants.add(r0.replace("-", ""))
+        variants.add(r0.replace("_", ""))
+    if re.fullmatch(r"[Cc]\d+", r):
+        variants.add(r[1:])
+    if re.fullmatch(r"\d+", r):
+        variants.add("C" + r)
+    return {norm_ascii(v) for v in variants if v}
+
+def _sku_matches(raw_v: str, page_sku: str) -> bool:
+    """# CopyLine: страница товара подходит только если sku совпадает с vendorCode_raw"""
+    want = _norm_sku_variants(raw_v)
+    have = _norm_sku_variants(page_sku)
+    return bool(want and have and (want & have))
+
 def title_clean(s: str) -> str:
     s = (s or "").strip()
     s = re.sub(r"\s*\((?:Артикул|SKU|Код)\s*[:#]?\s*[^)]+\)\s*$", "", s, flags=re.I)
@@ -358,6 +382,9 @@ def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
     if not url:
         return None
     u = url.strip()
+    # убрать фрагменты вида #joomlaImage...
+    if "#" in u:
+        u = u.split("#", 1)[0]
     # CopyLine: приводим thumb_* к full_* (на сайте часто есть обе версии)
     if "/img_products/" in u and "thumb_" in u:
         u = u.replace("thumb_", "full_")
@@ -846,12 +873,16 @@ def main() -> int:
 
         if not found:
             tk_full = norm_ascii(title_clean(it["title"]))
-            if tk_full and tk_full in site_index:
-                found = site_index[tk_full]
-            else:
-                tk30 = norm_ascii(title_clean(it["title"])[:30])
-                if tk30 and tk30 in site_index:
-                    found = site_index[tk30]
+            tk30 = norm_ascii(title_clean(it["title"])[:30])
+            for tk in (tk_full, tk30):
+                if tk and tk in site_index:
+                    cand = site_index[tk]
+                    if _sku_matches(raw_v, safe_str(cand.get("sku"))):
+                        found = cand
+                        break
+
+        if found and not _sku_matches(raw_v, safe_str(found.get("sku"))):
+            found = None
 
         name = it["title"]
         if not _is_allowed_prefix(name):
