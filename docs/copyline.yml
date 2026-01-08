@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-08 12:45">
+<yml_catalog date="2026-01-08 13:08">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-01-08 12:45:38
+Время сборки (Алматы)                      | 2026-01-08 13:08:40
 Ближайшая сборка (Алматы)                  | 2026-01-10 03:00:00
 Сколько товаров у поставщика до фильтра    | 2820
 Сколько товаров у поставщика после фильтра | 1209
@@ -21,7 +21,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-for-Hp-M436.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-for-Hp-M436.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -45,7 +44,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dv110.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dv110.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -69,7 +67,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dv310.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dv310.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -93,7 +90,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV311y.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DV311y.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -117,7 +113,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512k.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512k.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -141,7 +136,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512c.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512c.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -165,7 +159,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512m.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512m.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -189,7 +182,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512y.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512y.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -213,7 +205,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dq-z60j.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dq-z60j.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -237,7 +228,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-Toshiba_D-4530.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-Toshiba_D-4530.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -261,7 +251,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-dc-240-C-440g.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-dc-240-C-440g.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -285,7 +274,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-dc-240-Y-440g.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-dc-240-Y-440g.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -309,7 +297,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-BK-220g.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-BK-220g.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -333,7 +320,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-C-220g.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-C-220g.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -357,7 +343,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-M-220g.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-M-220g.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -381,7 +366,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-Y-220g.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-Y-220g.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -405,7 +389,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7425-Y-220g.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7425-Y-220g.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -429,7 +412,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-5550.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-5550.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -1374,7 +1356,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-420-12K.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/dl-420-01.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DL-420-12K.jpg</picture>
 <vendor>CopyLine</vendor>
@@ -1400,7 +1381,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-5120-1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DL-5120-ep.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DL-5120-1.jpg</picture>
 <vendor>CopyLine</vendor>
@@ -2045,7 +2025,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101r00664-oem1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/101r00664-oem1.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -2066,18 +2045,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105600</vendorCode>
 <name>Драм-картридж Xerox (101R00664) B205/B210/B215 (10K) OEM</name>
 <price>10900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101r00664-oem1.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101r00664-oem1.jpg</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Драм-картридж Xerox (101R00664) B205/B210/B215 (10K) OEM</h3><p>Картридж фотобарабана (Drum Unit - блок барабана) Euro Print 101R00664 применяется в многофункциональных принтерах Xerox B205, B210, B215.<br>Ресурс печати - 10 000 страниц.</p>
+<h3>Драм-картридж Xerox (101R00664) B205/B210/B215 (10K) OEM</h3><p>Драм-картридж Xerox (101R00664) B205/B210/B215 (10K) OEM</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Драм-картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -2613,7 +2588,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR133_ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/DR133_ep.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -2779,7 +2753,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_euro-pack.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/canon-070-ep.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/CANON_070-2.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/euro-pack.jpg</picture>
@@ -3288,20 +3261,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL102602</vendorCode>
 <name>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 for LJ P1007/1006/1008/1505/M1522/1120/P1102/М1132/1212/1214/Canon LBP3010/3020/3100/3018/3108/6000/6020/MF3010 (2K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_23.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/23.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 for LJ P1007/1006/1008/1505/M1522/1120/P1102/М1132/1212/1214/Canon LBP3010/3020/3100/3018/3108/6000/6020/MF3010 (2K) Euro Print</h3><p>Для принтеров:<br>HP<br>LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102<br>Canon<br>LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>2100</p>
+<h3>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 for LJ P1007/1006/1008/1505/M1522/1120/P1102/М1132/1212/1214/Canon LBP3010/3020/3100/3018/3108/6000/6020/MF3010 (2K) Euro Print</h3><p>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 for LJ P1007/1006/1008/1505/M1522/1120/P1102/М1132/1212/1214/Canon LBP3010/3020/3100/3018/3108/6000/6020/MF3010 (2K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -3314,20 +3281,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105211</vendorCode>
 <name>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) OEM</name>
 <price>4900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_23.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/23.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) OEM</h3><p>Для принтеров:<br>HP<br>LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102<br>Canon<br>LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>2100</p>
+<h3>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) OEM</h3><p>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) OEM</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -3340,20 +3301,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100918</vendorCode>
 <name>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) TOP PRINT</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_23.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/23.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) TOP PRINT</h3><p>Для принтеров:<br>HP<br>LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102<br>Canon<br>LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>2100</p>
+<h3>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) TOP PRINT</h3><p>Картридж HP CB435A/CB436A/CE285A/CC388/Canon 712/713/725 (2K) TOP PRINT</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -5552,18 +5507,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104749</vendorCode>
 <name>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) OEM</name>
 <price>11900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1106A-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1106A-oem.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-W1106A-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W1106A-oem.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) OEM</h3><p>Картридж Euro Print W1106A используется в принтерах серий HP Laser 107a, 107r, 107w, 135a, 135r, 135w, 137fnw.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1000</p>
+<h3>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) OEM</h3><p>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) OEM</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -5576,18 +5527,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104659</vendorCode>
 <name>Картридж HP W1106A (№106A) (С ЧИПОМ) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1106A-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1106A-oem.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-W1106A-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W1106A-oem.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP W1106A (№106A) (С ЧИПОМ) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</h3><p>Картридж Euro Print W1106A используется в принтерах серий HP Laser 107a, 107r, 107w, 135a, 135r, 135w, 137fnw.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1000</p>
+<h3>Картридж HP W1106A (№106A) (С ЧИПОМ) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</h3><p>Картридж HP W1106A (№106A) (С ЧИПОМ) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -5725,7 +5672,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1360A.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-W1360A.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -5749,7 +5695,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1360x-no-chip.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-w1360x-no-chip.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -5770,18 +5715,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105486</vendorCode>
 <name>Картридж HP W1360X (№136X) (С ЧИПОМ) for LaserJet M211/M236 (2.6K) Euro Print</name>
 <price>9900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1360x-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-w1360x-no-chip.jpg</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP W1360X (№136X) (С ЧИПОМ) for LaserJet M211/M236 (2.6K) Euro Print</h3><p>Картридж без чипа Euro Print W1360X используется в принтерах и МФУ серий HP LaserJet M211, M236.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>2600</p>
+<h3>Картридж HP W1360X (№136X) (С ЧИПОМ) for LaserJet M211/M236 (2.6K) Euro Print</h3><p>Картридж HP W1360X (№136X) (С ЧИПОМ) for LaserJet M211/M236 (2.6K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -5978,18 +5919,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105482</vendorCode>
 <name>Картридж HP W1500A (№150A) (С ЧИПОМ) for LaserJet M111/MFP M141 (0.9K) Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1500a-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1500A-oem.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-w1500a-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W1500A-oem.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP W1500A (№150A) (С ЧИПОМ) for LaserJet M111/MFP M141 (0.9K) Euro Print</h3><p>Картридж без чипа Euro Print W1500A используется в принтерах и МФУ серий HP LaserJet M111, M141.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>975</p>
+<h3>Картридж HP W1500A (№150A) (С ЧИПОМ) for LaserJet M111/MFP M141 (0.9K) Euro Print</h3><p>Картридж HP W1500A (№150A) (С ЧИПОМ) for LaserJet M111/MFP M141 (0.9K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -6366,7 +6303,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_PANTUM-PC-211EV.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/PANTUM-PC-211EV-oem.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/PANTUM-PC-211EV.jpg</picture>
 <vendor>CopyLine</vendor>
@@ -6391,7 +6327,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TL-5120H-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/TL-5120H-ep.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -14274,16 +14209,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105094</vendorCode>
 <name>Термоблок Xerox Phaser 3020/WC 3025 (126N00433)</name>
 <price>24900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106r02773.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/106r02773.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Термоблок Xerox Phaser 3020/WC 3025 (126N00433)</h3><p>Картридж Euro Print 106R02773 используется в принтерах серий Xerox Phaser 3020/ WC3025.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1500</p>
+<h3>Термоблок Xerox Phaser 3020/WC 3025 (126N00433)</h3><p>Термоблок Xerox Phaser 3020/WC 3025 (126N00433)</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Термоблок</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -17099,7 +17032,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W9100MC-k.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/W9100MC-k.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -17123,7 +17055,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W9101MC-c.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/W9101MC-c.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -17147,7 +17078,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W9102MC-y.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/W9102MC-y.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -17171,7 +17101,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W9103MC-m.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/W9103MC-m.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
@@ -20215,7 +20144,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TL-420X.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/TL-420X.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
@@ -24402,7 +24330,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_____133_ep2.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/TK133_ep1.jpg</picture>
 <picture>https://copyline.kz/images/logo-cla-110.png</picture>
-<picture>https://copyline.kz/images/logo-cla-110.png#joomlaImage://local-images/logo-cla-110.png?width=570&amp;height=110</picture>
 <picture>https://copyline.kz/components/com_jshopping/images/print.png</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/____133_ep2.jpg</picture>
 <vendor>CopyLine</vendor>
