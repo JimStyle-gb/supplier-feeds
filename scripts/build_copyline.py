@@ -11,8 +11,8 @@ import os
 import re
 import time
 import random
+import hashlib
 from datetime import datetime, timedelta
-import xml.etree.ElementTree as ET
 
 # Логи (можно выключить: VERBOSE=0)
 VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
@@ -49,10 +49,6 @@ SUPPLIER_NAME = "CopyLine"
 SUPPLIER_URL_DEFAULT = "https://copyline.kz/goods.html"
 BASE_URL = "https://copyline.kz"
 
-FINDER_SEARCH_URL = f"{BASE_URL}/component/finder/search.html"
-FINDER_ITEMID = os.getenv("COPYLINE_FINDER_ITEMID", "101").strip() or "101"
-
-
 XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 
 # Вариант C: фильтрация CopyLine по префиксам названия (строго с начала строки)
@@ -75,13 +71,10 @@ COPYLINE_INCLUDE_PREFIXES = [
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
-CARRYOVER_PICS = os.getenv("COPYLINE_CARRYOVER_PICS", "0").strip() == "1"
 MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "25") or "25")  # лимит страниц на категорию
-MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")
-# Лимит запросов к поиску (POST) для добивки фото/карточек
-COPYLINE_SEARCH_BUDGET = int(os.getenv("COPYLINE_SEARCH_BUDGET", "2500") or "2500")    # общий лимит времени обхода сайта
+MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
-PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
+PRODUCT_RE = re.compile(r"/goods/[^/]+\.html(?:[?#].*)?$", flags=re.I)
 
 # Параллелизм обхода сайта
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
@@ -129,135 +122,9 @@ def http_get(url: str, tries: int = 3, min_bytes: int = 0) -> Optional[bytes]:
     return None
 
 
-
-def http_post(url: str, data: dict, tries: int = 3, min_bytes: int = 0) -> Optional[bytes]:
-    # POST с ретраями (CopyLine search form теперь POST)
-    delay = max(0.1, REQUEST_DELAY_MS / 1000.0)
-    last = None
-    for _ in range(max(1, tries)):
-        try:
-            headers = dict(UA)
-            headers.setdefault("Referer", SUPPLIER_URL_DEFAULT)
-            headers.setdefault("Origin", BASE_URL)
-            r = requests.post(url, data=data, headers=headers, timeout=HTTP_TIMEOUT)
-            if r.status_code == 200 and (len(r.content) >= min_bytes):
-                return r.content
-            last = f"http {r.status_code} size={len(r.content)}"
-        except Exception as e:
-            last = repr(e)
-        _sleep_jitter(int(delay * 1000))
-        delay *= 1.6
-    log(f"[http] fail: {url} | {last}")
-    return None
-
 def soup_of(b: bytes) -> BeautifulSoup:
     return BeautifulSoup(b, "html.parser")
 
-
-
-
-def _parse_first_product_url_from_search(s: "BeautifulSoup") -> str:
-    # На странице поиска могут быть разные шаблоны. Ищем первую ссылку на карточку товара.
-    for a in s.find_all("a", href=True):
-        href = safe_str(a.get("href"))
-        if not href:
-            continue
-        href_l = href.lower()
-        if "/goods/" in href_l and ".html" in href_l:
-            return urllib.parse.urljoin(BASE_URL + "/", href.lstrip("/"))
-        if "controller=product" in href_l and "task=view" in href_l:
-            return urllib.parse.urljoin(BASE_URL + "/", href.lstrip("/"))
-    return ""
-
-def search_and_parse_product(key: str) -> Optional[Dict[str, Any]]:
-    # key уже нормализован (ascii lower) из want_keys.
-    # Снимаем известные префиксы (cl/c) у цифровых кодов.
-    try:
-        if key.startswith("cl") and key[2:].isdigit():
-            key = key[2:]
-    except Exception:
-        pass
-    try:
-        if key.startswith("c") and key[1:].isdigit():
-            key = key[1:]
-    except Exception:
-        pass
-
-    # 1) jshopping product-search (POST)
-    try:
-        su = f"{BASE_URL}/product-search/result.html"
-        b = http_post(su, data={"search": key}, tries=2)
-        html = ""
-        if b:
-            try:
-                html = b.decode("utf-8", "ignore")
-            except Exception:
-                html = ""
-            urls = _extract_product_urls_from_html(html)
-
-            # быстрый выбор: если key встречается рядом с href — берём сразу
-            if urls and html:
-                html_up = html.upper()
-                key_up = (key or "").upper()
-                if key_up:
-                    for u in urls:
-                        # ищем любую форму ссылки в html
-                        for needle in (u, u.replace(BASE_URL, ""), u.replace(BASE_URL + "/", "/")):
-                            if not needle:
-                                continue
-                            idx = html_up.find(needle.upper())
-                            if idx >= 0:
-                                snippet = html_up[max(0, idx - 300): idx + 300]
-                                if key_up in snippet:
-                                    out = parse_product_page(u)
-                                    if out and _matches_key(out.get("sku", ""), key):
-                                        return out
-
-            # точная проверка по sku: перебираем первые несколько кандидатов
-            for u in urls[:5]:
-                out = parse_product_page(u)
-                if out and _matches_key(out.get("sku", ""), key):
-                    return out
-    except Exception:
-        pass
-
-    # 2) Joomla Finder fallback (GET)
-    try:
-        urls = _finder_search_first_urls(key)
-        for u in urls[:5]:
-            out = parse_product_page(u)
-            if out and _matches_key(out.get("sku", ""), key):
-                return out
-    except Exception:
-        pass
-
-    return None
-
-def load_prev_pics(path: str) -> dict[str, list[str]]:
-    # Берём картинки из прошлого результата, чтобы не терять их из-за временных сбоев обхода сайта
-    mp: dict[str, list[str]] = {}
-    try:
-        if not os.path.exists(path):
-            return mp
-        txt = open(path, 'r', encoding='utf-8', errors='ignore').read().lstrip('\ufeff')
-        root = ET.fromstring(txt)
-        for off in root.findall('.//offer'):
-            oid = (off.get('id') or '').strip()
-            if not oid:
-                continue
-            pics: list[str] = []
-            for p in off.findall('picture'):
-                u = (p.text or '').strip()
-                if not u:
-                    continue
-                if 'placehold.co/' in u:
-                    continue
-                pics.append(u)
-            if pics:
-                mp[oid] = pics
-    except Exception:
-        return mp
-    return mp
 
 def norm_ascii(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
@@ -318,7 +185,9 @@ def oid_from_vendor_code_raw(raw: str) -> str:
     raw = re.sub(r"[^A-Za-z0-9_.-]+", "", raw)
     raw = raw.strip("-.")
     if not raw:
-        return ""
+        # аварийный вариант (стабильный, но без исходного кода)
+        h = hashlib.md5((raw or "empty").encode("utf-8", errors="ignore")).hexdigest()[:10].upper()
+        return f"{VENDORCODE_PREFIX}{h}"
     return f"{VENDORCODE_PREFIX}{raw}"
 
 
@@ -489,6 +358,9 @@ def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
     if not url:
         return None
     u = url.strip()
+    # CopyLine: приводим thumb_* к full_* (на сайте часто есть обе версии)
+    if "/img_products/" in u and "thumb_" in u:
+        u = u.replace("thumb_", "full_")
     if not u:
         return None
     if u.startswith("//"):
@@ -639,43 +511,32 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
             cand.append(href)
 
 
-    # выберем лучшую: full_ > не-thumb > первая
-
-    src = ""
-
+    # Соберём все картинки: full_ в приоритете, но не отбрасываем товар без фото
+    pics_raw: list[str] = []
     for t in cand:
-
         t = (t or "").strip()
-
         if not t or t.startswith("data:"):
-
             continue
+        pics_raw.append(t)
 
-        if "/full_" in t:
+    pics: list[str] = []
+    seen: set[str] = set()
+    for t in pics_raw:
+        u = normalize_img_to_full(t)
+        if not u or u.startswith("data:"):
+            continue
+        if u in seen:
+            continue
+        seen.add(u)
+        pics.append(u)
 
-            src = t
+    # full_ вперёд, порядок сохраняем
+    full = [u for u in pics if "full_" in u]
+    rest = [u for u in pics if "full_" not in u]
+    pics = full + rest
 
-            break
+    pic = pics[0] if pics else ""
 
-    if not src:
-
-        for t in cand:
-
-            t = (t or "").strip()
-
-            if not t or t.startswith("data:") or "thumb_" in t:
-
-                continue
-
-            src = t
-
-            break
-
-
-    pic = normalize_img_to_full(src)
-
-    if not pic:
-        return None
     # Description + params
     desc_txt = ""
     params: List[Tuple[str, str]] = []
@@ -719,6 +580,7 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         "title": title,
         "desc": desc_txt.strip(),
         "pic": pic,
+        "pics": pics,
         "params": [(k, v) for (k, v) in params2 if not re.fullmatch(r"\d{1,4}", k.strip())],
         "url": url,
     }
@@ -820,8 +682,8 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
 
     cats = discover_relevant_category_urls()
     if not cats:
-        log("[site] no category urls found; fallback to goods.html as single category")
-        cats = [SUPPLIER_URL_DEFAULT]
+        log("[site] no category urls found")
+        return {}, {}
 
     pages_budget = MAX_CATEGORY_PAGES
 
@@ -829,12 +691,14 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
     for cu in cats:
         product_urls.extend(collect_product_urls(cu, pages_budget))
     product_urls = list(dict.fromkeys(product_urls))
+
     log(f"[site] categories={len(cats)} product_urls={len(product_urls)} pages_budget={pages_budget}")
 
     from concurrent.futures import ThreadPoolExecutor, as_completed
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
 
-    site_index: Dict[str, Dict[str, Any]] = {}
+    sku_index: Dict[str, Dict[str, Any]] = {}
+    title_index: Dict[str, Dict[str, Any]] = {}
     matched: Set[str] = set()
 
     with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex:
@@ -869,54 +733,21 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                     continue
                 for k in useful:
                     matched.add(k)
-                    site_index[k] = out
-            else:
-                for k in keys:
-                    site_index[k] = out
 
+            # индекс по SKU/артикулу
+            for k in keys:
+                sku_index[k] = out
 
-    # Фолбек: если по категориям не нашли все нужные ключи — добиваем через поиск (POST форма)
-    if want_keys:
-        missing = [k for k in want_keys if k not in matched]
-        if missing:
-            if COPYLINE_SEARCH_BUDGET > 0 and len(missing) > COPYLINE_SEARCH_BUDGET:
-                missing = missing[:COPYLINE_SEARCH_BUDGET]
-                log(f"[site] search budget applied: {COPYLINE_SEARCH_BUDGET}")
-            
-            log(f"[site] search fallback missing={len(missing)} (product-search POST)")
-            from concurrent.futures import ThreadPoolExecutor, as_completed
-            deadline2 = datetime.utcnow() + timedelta(minutes=max(1, MAX_CRAWL_MINUTES))
-            with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex2:
-                futures2 = {ex2.submit(search_and_parse_product, k): k for k in missing}
-                for fut in as_completed(futures2):
-                    if datetime.utcnow() > deadline2:
-                        break
-                    key = futures2[fut]
-                    try:
-                        out = fut.result()
-                    except Exception:
-                        out = None
-                    if not out:
-                        continue
-                    sku = safe_str(out.get("sku")).strip()
-                    if not sku:
-                        continue
-                    variants = {sku, sku.replace("-", "")}
-                    if re.fullmatch(r"[Cc]\d+", sku):
-                        variants.add(sku[1:])
-                    if re.fullmatch(r"\d+", sku):
-                        variants.add("C" + sku)
-                    keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
-                    useful = [k for k in keys if k in want_keys and k not in matched]
-                    if not useful and key in want_keys and key not in matched:
-                        useful = [key]
-                    for k2 in useful:
-                        matched.add(k2)
-                        site_index[k2] = out
-            log(f"[site] search fallback done matched={len(matched)}/{len(want_keys)}")
+            # индекс по названию (фолбэк, если SKU не совпал)
+            t_full = norm_ascii(title_clean(safe_str(out.get("title"))))
+            if t_full and t_full not in title_index:
+                title_index[t_full] = out
+            t30 = norm_ascii(title_clean(safe_str(out.get("title"))[:30]))
+            if t30 and t30 not in title_index:
+                title_index[t30] = out
 
-    log(f"[site] indexed={len(site_index)} matched={len(matched) if want_keys else '-'}")
-    return site_index, {}
+    log(f"[site] indexed={len(sku_index)} matched={len(matched) if want_keys else '-'}")
+    return sku_index, title_index
 
 def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
     # now_local — наивный datetime в Алматы
@@ -983,11 +814,7 @@ def main() -> int:
 
     site_sku_index, site_index = build_site_index(want_keys)
 
-    # Если сайт внезапно не отдаёт фото (антибот/503), можно аварийно добрать из прошлого YML
-    # Включается только если COPYLINE_CARRYOVER_PICS=1
-
     # Собираем offers (важно: стабильные oid!)
-    prev_pics = load_prev_pics(OUT_FILE) if CARRYOVER_PICS else {}
     out_offers: List[OfferOut] = []
     seen_oids = set()
 
@@ -1034,15 +861,12 @@ def main() -> int:
         params: List[Tuple[str, str]] = []
         if found:
             native_desc = safe_str(found.get("desc")) or native_desc
-            if found.get("pic"):
+            pics = list(found.get("pics") or [])
+            if pics:
+                pictures = [safe_str(x) for x in pics if safe_str(x)][:10]
+            elif found.get("pic"):
                 pictures = [safe_str(found.get("pic"))]
             params = list(found.get("params") or [])
-
-        # Если обход сайта не дал картинку — берём из прошлого результата (стабильность)
-        if not pictures:
-            prev = prev_pics.get(base_oid)
-            if prev:
-                pictures = prev[:]
 
         if not _is_allowed_prefix(name):
             continue
@@ -1058,13 +882,13 @@ def main() -> int:
         params = _merge_params(params, p_min)
 
         price = compute_price(int(it.get("dealer_price") or 0))
+
         oid = base_oid
-        if not oid:
-            # нет стабильного артикула — пропускаем (никаких хэшей)
-            continue
         if oid in seen_oids:
-            # дубль артикула: пропускаем позицию (лучше потерять пару дублей, чем плодить новые id)
-            continue
+            # редкий случай: дубль артикулов — делаем СТАБИЛЬНЫЙ суффикс от URL или имени
+            seed = safe_str(found.get("url") if found else "") or name
+            suf = hashlib.md5(seed.encode("utf-8", errors="ignore")).hexdigest()[:6].upper()
+            oid = f"{base_oid}-{suf}"
         seen_oids.add(oid)
 
         out_offers.append(
