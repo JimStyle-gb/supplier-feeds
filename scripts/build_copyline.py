@@ -15,6 +15,37 @@ import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
+def _filter_product_pictures(pics: list[str]) -> list[str]:
+    """# CopyLine: оставить только фото товара из img_products; приоритет full_ -> обычное; без logo/print и т.п."""
+    if not pics:
+        return []
+    out: list[str] = []
+    seen = set()
+
+    def norm(u: str) -> str:
+        u = (u or "").strip()
+        # убрать якоря
+        u = u.split("#", 1)[0]
+        return u
+
+    # оставляем только img_products
+    candidates = [norm(u) for u in pics if u and "components/com_jshopping/files/img_products/" in u]
+    # сначала full_
+    for u in candidates:
+        if "/img_products/full_" in u and u not in seen:
+            out.append(u); seen.add(u)
+    # затем остальные img_products (кроме thumb_)
+    for u in candidates:
+        if "/img_products/full_" in u:
+            continue
+        if "/img_products/thumb_" in u:
+            continue
+        if u not in seen:
+            out.append(u); seen.add(u)
+
+    # Если full_ нет, но есть обычное — оставим только обычное (или несколько, если реально несколько разных фото)
+    return out
+
 VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
 
 def log(*args, **kwargs) -> None:
