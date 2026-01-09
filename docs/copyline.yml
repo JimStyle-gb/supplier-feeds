@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-09 10:58">
+<yml_catalog date="2026-01-09 11:24">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-01-09 10:58:53
+Время сборки (Алматы)                      | 2026-01-09 11:24:56
 Ближайшая сборка (Алматы)                  | 2026-01-10 03:00:00
 Сколько товаров у поставщика до фильтра    | 2820
 Сколько товаров у поставщика после фильтра | 1209
@@ -19,7 +19,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер HP M436 (CF257) foil bags 230 гр</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-for-Hp-M436.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-for-Hp-M436.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -40,7 +39,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub 162/210/211 (DV-110, A1UC550) 200 гр</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dv110.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dv110.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -61,7 +59,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub 200/222/250/282/350/362 (DV-310, 8938-451) 300 гр</name>
 <price>13900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dv310.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dv310.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -82,7 +79,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C220/C280/C360/C224/C284/C364/C455/C554 (DV-311) Yellow 230 гр</name>
 <price>22900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV311y.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV311y.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -103,7 +99,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 (DV-512) Black 200 гр</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512k.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512k.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -124,7 +119,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 (DV-512) Cyan 200 гр</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512c.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512c.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -145,7 +139,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 (DV-512) Magenta 200 гр</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512m.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512m.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -166,7 +159,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Konica-Minolta bizhub C224/C284/C364/C454/C554 (DV-512) Yellow 200 гр</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DV-512y.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DV-512y.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -187,7 +179,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Panasonic DP-1520/1820 400 гр</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-dq-z60j.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-dq-z60j.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -208,7 +199,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Toshiba D4530 для E-STUDIO 350/450/352/353/453/452 500гр</name>
 <price>16900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-Toshiba_D-4530.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-Toshiba_D-4530.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -229,7 +219,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Xerox DC 240/242/250/252/7655/7665/7675/7755/7765/7775/Colour 550/560/570 CYAN foil bags 440 гр MAGNETONE</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-dc-240-C-440g.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-dc-240-C-440g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -250,7 +239,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Xerox DC 240/242/250/252/7655/7665/7675/7755/7765/7775/Colour 550/560/570 YELLOW foil bags 440 гр MAGNETONE</name>
 <price>21900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-dc-240-Y-440g.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-dc-240-Y-440g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -271,7 +259,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Xerox WC 7120/7125 BLACK foil bags 220 гр MAGNETONE</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-BK-220g.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-BK-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -292,7 +279,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Xerox WC 7120/7125 CYAN foil bags 220 гр MAGNETONE</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-C-220g.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-C-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -313,7 +299,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Xerox WC 7120/7125 MAGENTA foil bags 220 гр MAGNETONE</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-M-220g.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-M-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -334,7 +319,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Xerox WC 7120/7125 YELLOW foil bags 220 гр MAGNETONE</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7120-Y-220g.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7120-Y-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -355,7 +339,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Xerox WC 7425/7435/7525/7535/Phaser 7500/7800 YELLOW foil bags 220 гр MAGNETONE</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dev-xe-wc-7425-Y-220g.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dev-xe-wc-7425-Y-220g.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -376,7 +359,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Девелопер Xerox Для DCC7500/6550 250 гр</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_developer-5550.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/developer-5550.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -1318,8 +1300,6 @@ URL поставщика                             | https://copyline.kz/goods
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dl-420-01.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-420-12K.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/dl-420-01.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DL-420-12K.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -1341,8 +1321,6 @@ URL поставщика                             | https://copyline.kz/goods
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-5120-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-5120-1.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DL-5120-ep.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DL-5120-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -1983,7 +1961,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Драм-картридж Xerox (101R00664) B205/B210/B215 (10K) Euro Print</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_101r00664-oem1.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/101r00664-oem1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -2544,7 +2521,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Drum Unit КАТЮША P133/M133 Euro Print</name>
 <price>12900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DR133_ep.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/DR133_ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -2707,9 +2683,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon-070-ep.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CANON_070-2.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_euro-pack.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/canon-070-ep.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CANON_070-2.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/euro-pack.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3192,9 +3165,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_23.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/435_436_285_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/23.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3537,9 +3507,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_TOP.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_TOP-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_pack4.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/285_725_TOP.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/285_725_TOP-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/pack4.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3562,9 +3529,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_ON.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_ON-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_24.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/285_725_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/285_725_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/24.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3905,7 +3869,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP CF217A (С ЧИПОМ) for LJ Pro M102a/102w/ MFP M130a/130nw/130fn/130fw OEM</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF217A-oem.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/CF217A-oem.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -4446,7 +4409,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP CF244A for LJ M28A/M28W/M15A/M15W Euro Print</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-CF244A.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-CF244A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -5009,9 +4971,6 @@ URL поставщика                             | https://copyline.kz/goods
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_2612_FX10_ON.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_2612_FX10_ON-.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_22.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/2612_FX10_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/2612_FX10_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/22.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -5433,8 +5392,6 @@ URL поставщика                             | https://copyline.kz/goods
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1106A-no-chip.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1106A-oem.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-W1106A-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W1106A-oem.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -5595,7 +5552,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP W1360A (№136A) (без чипа) for LaserJet M211/M236 (1.15K) Euro Print</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1360a-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-w1360a-no-chip.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -5616,7 +5572,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP W1360A (№136A) (С ЧИПОМ) for LaserJet M211/M236 (1.15K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1360A.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-W1360A.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -5637,7 +5592,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP W1360X (№136X) (без чипа) for LaserJet M211/M236 (2.6K) Euro Print</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1360x-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-w1360x-no-chip.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -5839,8 +5793,6 @@ URL поставщика                             | https://copyline.kz/goods
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1500a-no-chip.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1500A-oem.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/ep-w1500a-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W1500A-oem.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -6242,8 +6194,6 @@ URL поставщика                             | https://copyline.kz/goods
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_PANTUM-PC-211EV-oem.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_PANTUM-PC-211EV.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/PANTUM-PC-211EV-oem.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/PANTUM-PC-211EV.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -6264,7 +6214,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж PANTUM TL-5120H for BP5100/BM5100 (6K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TL-5120H-ep.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/TL-5120H-ep.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -7365,7 +7314,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж (106R02773) Xerox Phaser 3020/WC3025 (1,5K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106r02773.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/106r02773.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -16966,7 +16914,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж HP W9100MC (25K) Black Euro Print</name>
 <price>49900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W9100MC-k.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W9100MC-k.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -16987,7 +16934,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж HP W9101MC (20K) Cyan Euro Print</name>
 <price>55900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W9101MC-c.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W9101MC-c.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -17008,7 +16954,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж HP W9102MC (20K) Yellow Euro Print</name>
 <price>55900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W9102MC-y.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W9102MC-y.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -17029,7 +16974,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж HP W9103MC (20K) Magenta Euro Print</name>
 <price>55900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W9103MC-m.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/W9103MC-m.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -20070,7 +20014,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж PANTUM TL-420X for M6700/3010 (6K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TL-420X.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/TL-420X.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -24211,7 +24154,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж 106R04348 Xerox B205/B210/B215 (3K) Euro Print</name>
 <price>8900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106r04348.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/106r04348.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -24253,8 +24195,6 @@ URL поставщика                             | https://copyline.kz/goods
 <price>11900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK133_ep1.jpg</picture>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_____133_ep2.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/TK133_ep1.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/____133_ep2.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
