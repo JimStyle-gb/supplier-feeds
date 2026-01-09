@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-09 11:24">
+<yml_catalog date="2026-01-09 15:21">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-01-09 11:24:56
+Время сборки (Алматы)                      | 2026-01-09 15:21:25
 Ближайшая сборка (Алматы)                  | 2026-01-10 03:00:00
 Сколько товаров у поставщика до фильтра    | 2820
 Сколько товаров у поставщика после фильтра | 1209
@@ -1299,7 +1299,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Drum Unit PANTUM DL-420 for M6700/3010 (12K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_dl-420-01.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-420-12K.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -1320,7 +1319,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Drum Unit PANTUM DL-5120 for BP/BM5100 (30K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-5120-ep.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_DL-5120-1.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -2681,8 +2679,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж CANON 070 (С ЧИПОМ) for MF240/460 (3K) Euro Print</name>
 <price>10900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_canon-070-ep.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CANON_070-2.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_euro-pack.jpg</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3163,8 +3159,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP CB435A/CB436A/CE285A/Canon 712/713/725 (2K) ON</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_23.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3505,8 +3499,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP CE285A/Canon 725 (1,6K) TOP PRINT</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_TOP.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_TOP-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_pack4.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3527,8 +3519,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214 (1,6K) ON</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_24.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -4969,8 +4959,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP Q2612A/CANON FX-10 (2K) ON</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_2612_FX10_ON.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_2612_FX10_ON-.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_22.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -5391,7 +5379,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</name>
 <price>5900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1106A-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1106A-oem.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -5792,7 +5779,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж HP W1500A (№150A) (без чипа) for LaserJet M111/MFP M141 (0.9K) Euro Print</name>
 <price>6900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1500a-no-chip.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_W1500A-oem.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -6193,7 +6179,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Картридж PANTUM PC-211EV for P2200/P2207/P2507/P2500W/M6500/6550/6607 Euro Print</name>
 <price>7900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_PANTUM-PC-211EV-oem.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_PANTUM-PC-211EV.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -24194,7 +24179,6 @@ URL поставщика                             | https://copyline.kz/goods
 <name>Тонер-картридж КАТЮША P133/M133 Euro Print</name>
 <price>11900</price>
 <picture>https://copyline.kz/components/com_jshopping/files/img_products/full_TK133_ep1.jpg</picture>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_____133_ep2.jpg</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
