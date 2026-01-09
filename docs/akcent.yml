@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-09 02:12">
+<yml_catalog date="2026-01-10 02:12">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-09 02:12:39
-Ближайшая сборка (Алматы)                  | 2026-01-10 02:00:00
-Сколько товаров у поставщика до фильтра    | 1788
+Время сборки (Алматы)                      | 2026-01-10 02:12:34
+Ближайшая сборка (Алматы)                  | 2026-01-11 02:00:00
+Сколько товаров у поставщика до фильтра    | 1822
 Сколько товаров у поставщика после фильтра | 152
 Сколько товаров есть в наличии (true)      | 152
 Сколько товаров нет в наличии (false)      | 0
@@ -225,6 +225,27 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>CS, Шредер Fellowes Powershred LX201 белый, Шредер, Fellowes, Powershred, LX201, белый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
+<offer id="AC5050201" available="true">
+<categoryId></categoryId>
+<vendorCode>AC5050201</vendorCode>
+<name>Шредер Fellowes® POWERSHRED LX211 BLACK SHREDDER(MICRO CUT) 230V EU/UK</name>
+<price>208900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Шредер Fellowes® POWERSHRED LX211 BLACK SHREDDER(MICRO CUT) 230V EU/UK</h3><p></p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Гарантия:</strong> 12 месяцев</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Fellowes</param>
+<param name="Гарантия">12 месяцев</param>
+<keywords>Fellowes, Шредер Fellowes® POWERSHRED LX211 BLACK SHREDDER(MICRO CUT) 230V EU/UK, Шредер, POWERSHRED, LX211, BLACK, SHREDDER, MICRO, CUT, 230V, EU, UK, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
 <offer id="AC5502201" available="true">
 <categoryId></categoryId>
 <vendorCode>AC5502201</vendorCode>
@@ -368,7 +389,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC7MD68A</vendorCode>
 <name>Принтер лазерный HP LaserJet M111w белый</name>
 <price>77900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/639/k8x8otbvrg1pykr7ii61pfjkomkmsxw6.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -2387,34 +2408,34 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200, Ёмкость, для, отработанных, чернил, C13T619300, T3000, 5000, 7000, Т3200, 5200, 7200, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T66414A" available="true">
+<offer id="ACC13T66424A" available="true">
 <categoryId></categoryId>
-<vendorCode>ACC13T66414A</vendorCode>
-<name>Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный</name>
-<price>6900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/b3f/pehmw1vtx06oqazg3ibl4v153m7dyo9v.jpg</picture>
+<vendorCode>ACC13T66424A</vendorCode>
+<name>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</name>
+<price>7900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный</h3><p>Контейнер с черными чернилами для:<br>Epson L100<br>Epson L200<br>Epson L110<br>Epson L210<br>Epson L300<br>Epson L355<br>Epson L550</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> Черный</li><li><strong>Гарантия:</strong> 3</li><li><strong>Вид:</strong> чернила</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Наименование производителя:</strong> Epson Чернила L100 черные 70 ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 4000 – 7100 страниц формата A4*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</h3><p>Контейнер с голубыми чернилами для:<br>Epson L100<br>Epson L200<br>Epson L110<br>Epson L210<br>Epson L300<br>Epson L355<br>Epson L550</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Гарантия:</strong> 3</li><li><strong>Вид:</strong> чернила</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Наименование производителя:</strong> Epson Чернила L100 голубые 70ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 5700 – 6500 страниц формата A4*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Цвет">Черный</param>
+<param name="Цвет">Голубой</param>
 <param name="Гарантия">3</param>
 <param name="Вид">чернила</param>
 <param name="Для бренда">Epson</param>
-<param name="Наименование производителя">Epson Чернила L100 черные 70 ml</param>
+<param name="Наименование производителя">Epson Чернила L100 голубые 70ml</param>
 <param name="Объем">0,001</param>
-<param name="Ресурс">4000 – 7100 страниц формата A4*</param>
+<param name="Ресурс">5700 – 6500 страниц формата A4*</param>
 <param name="Страна происхождения">Индонезия</param>
 <param name="Тип печати">струйная</param>
-<keywords>Epson, Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный, Чернила, C13T66414A, L100, 110, 120, 1300, 132, 200, 210, 222, 300, 312, 350, 355, 362, 366, 456, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>Epson, Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой, Чернила, C13T66424A, L100, 110, 120, 1300, 132, 200, 210, 222, 300, 312, 350, 355, 362, 366, 456, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC13T66434A" available="true">
@@ -3830,27 +3851,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Китай</param>
 <param name="Тип управления">Сенсорное</param>
 <keywords>Mr.Pixel, Интерактивная доска Mr.Pixel S82 BLACK, Интерактивная, доска, Mr, Pixel, S82, BLACK, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACSBID-MX265-V4" available="true">
-<categoryId></categoryId>
-<vendorCode>ACSBID-MX265-V4</vendorCode>
-<name>Интерактивный дисплей SMART SBID-MX265-V4</name>
-<price>898900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/ab1/ad3k0f074bg9yi9tbpkkqcl6vnje1jr4.jpg</picture>
-<vendor>Smart</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Интерактивный дисплей SMART SBID-MX265-V4</h3><p>Обновленная серия имеет все необходимое, что нужно преподавателям для работы даже с учениками, находящимися на дистанционном обучении. Дисплеи с диагоналями от 55” до 86” и разрешением 4K Ultra HD включают программное обеспечение SMART Notebook и стандартную трехлетнюю гарантию. Запатентованная оболочка IQ позволяет студентам использовать свои любимые девайсы в любой учебной среде, а также предоставляет быстрый доступ к инструментам для совместной работы, такие как цифровая доска, веб-браузер и беспроводная трансляция экрана. Функции персонализации делают дисплеи незаменимым помощником. Простой пользовательский интерфейс сокращает время обучения и затраты на техническую поддержку.<br>Специально созданная SMART и простая в использовании ОС на базе Android 11 наполнена ресурсами и инструментами, предназначенными для образования. Благодаря iQ на базе Android 11 вы можете получить мгновенный доступ к настройкам учителей. Одним кликом преподаватели имеют возможность пользоваться приложениями, файлами, инструментами и облачными хранилищами, которые они знают и используют ежедневно, и которые надежно защищены с помощью настраиваемых профилей пользователей.<br><br>Тип дисплея	LED<br>Покрытие экрана	Спец стекло (антитрение, антиблик)<br>Диагональ	65"<br>Яркость (maximum)	≥ 400 cd/m²<br>Соотношение сторон	16:9<br>Разрешение	4K UHD (3840 × 2160)<br>Число касаний	20 (Win, Mac)<br>Технология распознавания	HyPr Touch with Advanced IR<br>Жесты	Мультитач<br>Стилус	Два пассивных<br>Гарантия	3 года<br>Габариты, см	150,7 x 92,8 x 8,9<br>Вес, кг	40<br>Размер упаковки, см	162 × 116.5 × 16<br>Вес брутто, кг	56<br>Панель управления	да<br>Звук	20 Вт динамик (2 шт.)<br>Микрофоны	массив из 6 микрофонов с эхоподавлением<br>Индикатор состояния	есть<br>Встроенный NFC считыватель	есть<br>Время отклика	≤ 5 мс<br>Минимальный размер объекта	2 мм<br>Подключение	USB/HDMI<br>Энергопотребление	124 Вт (0.5 Вт в режиме ожидания)<br>Входы (на задней стороне)	OPS-слот (поддержка OPS-C)<br>MicroSD slot<br>USB-A 2.0<br>USB-A 3.2*2<br>USB-B 3.2 (x2)<br>USB-C (4K@60Гц), 65W<br>RS-232 (DB-9 connector)<br>HDMI вход с поддержкой HDCP 2.3 (x2)<br>RJ45 (LAN In)<br>Входы (на передней стороне)	USB-A 3.0 (x2)<br>USB 3.2 Gen 1 Type-B<br>USB-C (4K@60Гц), 15W<br>HDMI вход с поддержкой HDCP 2.3<br>Выход</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Smart</li><li><strong>Гарантия:</strong> 36</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Smart</param>
-<param name="Гарантия">36</param>
-<keywords>Smart, Интерактивный дисплей SMART SBID-MX265-V4, Интерактивный, дисплей, SBID-MX265-V4, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACSBID-QX275-P" available="true">
