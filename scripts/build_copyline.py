@@ -47,6 +47,8 @@ def _pick_copyline_picture(pics: list[str]) -> list[str]:
 
     return [candidates[0]]
 
+VERBOSE = os.environ.get("VERBOSE", "0") in ("1","true","True","yes","YES")
+
 def log(*args, **kwargs) -> None:
     # Печать логов (в Actions удобно оставлять краткие метки)
     # Поддерживаем kwargs типа flush/end/sep, чтобы не ловить TypeError.
