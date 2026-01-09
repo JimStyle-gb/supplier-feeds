@@ -15,7 +15,6 @@ import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
-import urllib.parse
 def _pick_copyline_picture(pics: list[str]) -> list[str]:
     """# CopyLine: одна картинка на товар — full_ если есть, иначе обычная. Только img_products."""
     if not pics:
@@ -49,6 +48,16 @@ def _pick_copyline_picture(pics: list[str]) -> list[str]:
     return [candidates[0]]
 
 VERBOSE = os.environ.get("VERBOSE", "0") in ("1","true","True","yes","YES")
+
+def _sku_matches_or_unknown(page_sku: str, wanted_sku: str) -> bool:
+    """# CopyLine: если sku на странице отсутствует — не блокируем карточку; если есть — сверяем строго."""
+    ps = (page_sku or "").strip()
+    ws = (wanted_sku or "").strip()
+    if not ws:
+        return True
+    if not ps:
+        return True  # неизвестно — принимаем
+    return ps == ws
 
 def log(*args, **kwargs) -> None:
     # Печать логов (в Actions удобно оставлять краткие метки)
@@ -104,9 +113,6 @@ COPYLINE_INCLUDE_PREFIXES = [
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
-COPYLINE_SEARCH_FALLBACK = (os.getenv("COPYLINE_SEARCH_FALLBACK", "1") or "1").strip().lower() in ("1","true","yes","y","on")
-COPYLINE_SEARCH_MAX = int(os.getenv("COPYLINE_SEARCH_MAX", "1500") or "1500")
-COPYLINE_SEARCH_WORKERS = int(os.getenv("COPYLINE_SEARCH_WORKERS", "6") or "6")
 MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "25") or "25")  # лимит страниц на категорию
 MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
@@ -710,37 +716,6 @@ def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
     return None
 
 
-def _search_goods_urls(query: str) -> List[str]:
-    """# CopyLine: найти ссылки /goods/... по запросу (SKU/код) через внутренний поиск сайта."""
-    q = (query or "").strip()
-    if not q:
-        return []
-
-    urls: List[str] = []
-
-    # 1) Joomla Finder (Smart Search)
-    u1 = f"{BASE_URL}/component/finder/search.html?q=" + urllib.parse.quote(q)
-    b1 = http_get(u1, tries=2)
-    if b1:
-        s1 = soup_of(b1)
-        for a in s1.find_all("a", href=True):
-            absu = requests.compat.urljoin(u1, safe_str(a["href"]))
-            if PRODUCT_RE.search(absu):
-                urls.append(absu)
-
-    # 2) JShopping product search (если включён)
-    u2 = f"{BASE_URL}/product-search/result.html?search=" + urllib.parse.quote(q)
-    b2 = http_get(u2, tries=2)
-    if b2:
-        s2 = soup_of(b2)
-        for a in s2.find_all("a", href=True):
-            absu = requests.compat.urljoin(u2, safe_str(a["href"]))
-            if PRODUCT_RE.search(absu):
-                urls.append(absu)
-
-    # de-dup + keep order
-    return list(dict.fromkeys(urls))
-
 def collect_product_urls(category_url: str, limit_pages: int) -> List[str]:
     # Собирает ссылки на товары внутри категории, проходя пагинацию.
     urls: List[str] = []
@@ -840,97 +815,6 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
             t30 = norm_ascii(title_clean(safe_str(out.get("title"))[:30]))
             if t30 and t30 not in title_index:
                 title_index[t30] = out
-    # -----------------------------
-    # Поисковый фолбэк: если обход категорий не успел найти SKU, пробуем внутренний поиск (Finder/JShopping)
-    # Это критично для покрытия фото: у многих товаров фото есть, но товар не попал в продукт_urls из-за лимитов.
-    # -----------------------------
-    if want_keys and COPYLINE_SEARCH_FALLBACK:
-        missing_keys = [k for k in want_keys if k not in matched]
-        if missing_keys:
-            # Делаем список уникальных запросов (без префикса C для числовых ключей)
-            queries: List[str] = []
-            seen_q = set()
-            for k in missing_keys:
-                q = k
-                if re.fullmatch(r"c\d+", k):
-                    q = k[1:]
-                if q and q not in seen_q:
-                    seen_q.add(q)
-                    queries.append(q)
-
-            if COPYLINE_SEARCH_MAX > 0:
-                queries = queries[:COPYLINE_SEARCH_MAX]
-
-            log(f"[site] search_fallback missing_keys={len(missing_keys)} queries={len(queries)} max={COPYLINE_SEARCH_MAX}")
-
-            def _resolve_one(q: str) -> Optional[Dict[str, Any]]:
-                # ищем кандидатов, затем валидируем по SKU на странице товара
-                cand_urls = _search_goods_urls(q)
-                if not cand_urls:
-                    return None
-
-                qn = norm_ascii(q)
-                for u in cand_urls[:8]:
-                    out = parse_product_page(u)
-                    if not out:
-                        continue
-                    sku = norm_ascii(safe_str(out.get("sku")).strip())
-                    if not sku:
-                        continue
-
-                    # допускаем варианты с/без префикса C и без дефисов
-                    qn2 = qn.replace("-", "")
-                    sku2 = sku.replace("-", "")
-                    if sku2 == qn2:
-                        return out
-                    if sku2 == ("c" + qn2):
-                        return out
-                    if qn2.startswith("c") and sku2 == qn2[1:]:
-                        return out
-                    if sku2.startswith("c") and sku2[1:] == qn2:
-                        return out
-                return None
-
-            from concurrent.futures import ThreadPoolExecutor, as_completed
-
-            with ThreadPoolExecutor(max_workers=max(1, COPYLINE_SEARCH_WORKERS)) as ex2:
-                futures = {ex2.submit(_resolve_one, q): q for q in queries}
-                for fut in as_completed(futures):
-                    if datetime.utcnow() > deadline:
-                        break
-                    try:
-                        out = fut.result()
-                    except Exception:
-                        out = None
-                    if not out:
-                        continue
-
-                    sku = safe_str(out.get("sku")).strip()
-                    if not sku:
-                        continue
-
-                    variants = {sku, sku.replace("-", "")}
-                    if re.fullmatch(r"[Cc]\d+", sku):
-                        variants.add(sku[1:])
-                    if re.fullmatch(r"\d+", sku):
-                        variants.add("C" + sku)
-
-                    keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
-                    if not keys:
-                        continue
-
-                    for k in keys:
-                        sku_index[k] = out
-                        matched.add(k)
-
-                    # индекс по названию (фолбэк)
-                    t_full = norm_ascii(title_clean(safe_str(out.get("title"))))
-                    if t_full and t_full not in title_index:
-                        title_index[t_full] = out
-                    t30 = norm_ascii(title_clean(safe_str(out.get("title"))[:30]))
-                    if t30 and t30 not in title_index:
-                        title_index[t30] = out
-
 
     log(f"[site] indexed={len(sku_index)} matched={len(matched) if want_keys else '-'}")
     return sku_index, title_index
@@ -1055,7 +939,7 @@ def main() -> int:
             if pics:
                 pictures = [safe_str(x) for x in pics if safe_str(x)][:10]
             elif found.get("pic"):
-                pictures = [safe_str(found.get("pic"))]
+                pictures = _pick_copyline_picture([safe_str(found.get("pic"))])
             params = list(found.get("params") or [])
             # Фильтр применится при формировании OfferOut (оставляем только img_products, full_ в приоритете)
 
