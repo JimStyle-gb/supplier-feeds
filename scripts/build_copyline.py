@@ -15,6 +15,33 @@ import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
+def _filter_copyline_pictures(pics: list[str]) -> list[str]:
+    """# CopyLine: оставить только фото товара из img_products; приоритет full_ -> обычные; без logo/print/иконок."""
+    if not pics:
+        return []
+    seen = set()
+    out: list[str] = []
+
+    def norm(u: str) -> str:
+        u = (u or "").strip()
+        u = u.split("#", 1)[0]
+        return u
+
+    candidates = [norm(u) for u in pics if u and "components/com_jshopping/files/img_products/" in u]
+    # full_ first
+    for u in candidates:
+        if "/img_products/full_" in u and u not in seen:
+            out.append(u); seen.add(u)
+    # then other non-thumb
+    for u in candidates:
+        if "/img_products/full_" in u:
+            continue
+        if "/img_products/thumb_" in u:
+            continue
+        if u not in seen:
+            out.append(u); seen.add(u)
+    return out
+
 def _filter_product_pictures(pics: list[str]) -> list[str]:
     """# CopyLine: оставить только фото товара из img_products; приоритет full_ -> обычное; без logo/print и т.п."""
     if not pics:
@@ -925,10 +952,12 @@ def main() -> int:
             native_desc = safe_str(found.get("desc")) or native_desc
             pics = list(found.get("pics") or [])
             if pics:
-                pictures = [safe_str(x) for x in pics if safe_str(x)][:10]
+                pictures = _filter_copyline_pictures([safe_str(x) for x in pics if safe_str(x)][:10])
             elif found.get("pic"):
-                pictures = [safe_str(found.get("pic"))]
+                pictures = _filter_copyline_pictures([safe_str(found.get("pic"))])
             params = list(found.get("params") or [])
+            # Чистим фото: оставляем только img_products (full_ в приоритете), без logo/print
+            pictures = _filter_copyline_pictures(_filter_product_pictures(pictures))
 
         if not _is_allowed_prefix(name):
             continue
@@ -959,7 +988,7 @@ def main() -> int:
                 available=bool(it.get("available", True)),
                 name=name,
                 price=price,
-                pictures=pictures,
+                pictures=_filter_copyline_pictures(pictures),
                 vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
                 params=params,
                 native_desc=native_desc,
