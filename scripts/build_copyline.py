@@ -16,31 +16,47 @@ from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
 def _filter_copyline_pictures(pics: list[str]) -> list[str]:
-    """# CopyLine: оставить только фото товара из img_products; приоритет full_ -> обычные; без logo/print/иконок."""
+    """# CopyLine: 1 фото на картинку: если есть full_ — берём только его, иначе обычное. Только img_products."""
     if not pics:
         return []
-    seen = set()
-    out: list[str] = []
 
     def norm(u: str) -> str:
         u = (u or "").strip()
         u = u.split("#", 1)[0]
         return u
 
-    candidates = [norm(u) for u in pics if u and "components/com_jshopping/files/img_products/" in u]
-    # full_ first
-    for u in candidates:
-        if "/img_products/full_" in u and u not in seen:
-            out.append(u); seen.add(u)
-    # then other non-thumb
-    for u in candidates:
-        if "/img_products/full_" in u:
+    # оставляем только img_products (не thumbs)
+    candidates: list[str] = []
+    for u in pics:
+        u = norm(u)
+        if not u:
+            continue
+        if "components/com_jshopping/files/img_products/" not in u:
             continue
         if "/img_products/thumb_" in u:
             continue
-        if u not in seen:
-            out.append(u); seen.add(u)
-    return out
+        candidates.append(u)
+
+    if not candidates:
+        return []
+
+    # Группируем по "базовому" имени (full_ и обычное считаем одной картинкой)
+    chosen: dict[str, str] = {}
+    order: list[str] = []
+
+    for u in candidates:
+        base = u.rsplit("/", 1)[-1]
+        key = base[5:] if base.startswith("full_") else base
+
+        if key not in chosen:
+            order.append(key)
+            chosen[key] = u
+        else:
+            # если ранее было обычное, а сейчас встретили full_ — заменяем
+            if base.startswith("full_") and not chosen[key].rsplit("/", 1)[-1].startswith("full_"):
+                chosen[key] = u
+
+    return [chosen[k] for k in order]
 
 def _filter_product_pictures(pics: list[str]) -> list[str]:
     """# CopyLine: оставить только фото товара из img_products; приоритет full_ -> обычное; без logo/print и т.п."""
