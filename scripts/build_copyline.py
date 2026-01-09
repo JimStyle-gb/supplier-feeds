@@ -15,8 +15,8 @@ import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
-def _filter_copyline_pictures(pics: list[str]) -> list[str]:
-    """# CopyLine: 1 фото на картинку: если есть full_ — берём только его, иначе обычное. Только img_products."""
+def _pick_copyline_picture(pics: list[str]) -> list[str]:
+    """# CopyLine: одна картинка на товар — full_ если есть, иначе обычная. Только img_products."""
     if not pics:
         return []
 
@@ -25,7 +25,6 @@ def _filter_copyline_pictures(pics: list[str]) -> list[str]:
         u = u.split("#", 1)[0]
         return u
 
-    # оставляем только img_products (не thumbs)
     candidates: list[str] = []
     for u in pics:
         u = norm(u)
@@ -40,56 +39,13 @@ def _filter_copyline_pictures(pics: list[str]) -> list[str]:
     if not candidates:
         return []
 
-    # Группируем по "базовому" имени (full_ и обычное считаем одной картинкой)
-    chosen: dict[str, str] = {}
-    order: list[str] = []
-
+    # full_ приоритет
     for u in candidates:
         base = u.rsplit("/", 1)[-1]
-        key = base[5:] if base.startswith("full_") else base
+        if base.startswith("full_"):
+            return [u]
 
-        if key not in chosen:
-            order.append(key)
-            chosen[key] = u
-        else:
-            # если ранее было обычное, а сейчас встретили full_ — заменяем
-            if base.startswith("full_") and not chosen[key].rsplit("/", 1)[-1].startswith("full_"):
-                chosen[key] = u
-
-    return [chosen[k] for k in order]
-
-def _filter_product_pictures(pics: list[str]) -> list[str]:
-    """# CopyLine: оставить только фото товара из img_products; приоритет full_ -> обычное; без logo/print и т.п."""
-    if not pics:
-        return []
-    out: list[str] = []
-    seen = set()
-
-    def norm(u: str) -> str:
-        u = (u or "").strip()
-        # убрать якоря
-        u = u.split("#", 1)[0]
-        return u
-
-    # оставляем только img_products
-    candidates = [norm(u) for u in pics if u and "components/com_jshopping/files/img_products/" in u]
-    # сначала full_
-    for u in candidates:
-        if "/img_products/full_" in u and u not in seen:
-            out.append(u); seen.add(u)
-    # затем остальные img_products (кроме thumb_)
-    for u in candidates:
-        if "/img_products/full_" in u:
-            continue
-        if "/img_products/thumb_" in u:
-            continue
-        if u not in seen:
-            out.append(u); seen.add(u)
-
-    # Если full_ нет, но есть обычное — оставим только обычное (или несколько, если реально несколько разных фото)
-    return out
-
-VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
+    return [candidates[0]]
 
 def log(*args, **kwargs) -> None:
     # Печать логов (в Actions удобно оставлять краткие метки)
@@ -305,10 +261,13 @@ def title_startswith_strict(title: str, patterns: Sequence[re.Pattern]) -> bool:
 
 
 def _is_allowed_prefix(title: str) -> bool:
-    # Финальная проверка по префиксам (чтобы после обогащения с сайта не вылезало лишнее)
+    # Финальная проверка по префиксам (после обогащения с сайта не должно вылезать лишнее)
     if not title:
         return False
-    pats = compile_startswith_patterns(COPYLINE_INCLUDE_PREFIXES)
+    pats = getattr(_is_allowed_prefix, "_pats", None)
+    if pats is None:
+        pats = compile_startswith_patterns(COPYLINE_INCLUDE_PREFIXES)
+        setattr(_is_allowed_prefix, "_pats", pats)
     return title_startswith_strict(title_clean(title), pats)
 
 
@@ -520,8 +479,6 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     h = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
     title = title_clean(safe_str(h.get_text(" ", strip=True) if h else ""))
     # Picture (на сайте почти всегда есть фото; вытаскиваем максимально надёжно)
-
-    src = ""
 
     cand: list[str] = []
 
@@ -968,12 +925,11 @@ def main() -> int:
             native_desc = safe_str(found.get("desc")) or native_desc
             pics = list(found.get("pics") or [])
             if pics:
-                pictures = _filter_copyline_pictures([safe_str(x) for x in pics if safe_str(x)][:10])
+                pictures = [safe_str(x) for x in pics if safe_str(x)][:10]
             elif found.get("pic"):
-                pictures = _filter_copyline_pictures([safe_str(found.get("pic"))])
+                pictures = [safe_str(found.get("pic"))]
             params = list(found.get("params") or [])
-            # Чистим фото: оставляем только img_products (full_ в приоритете), без logo/print
-            pictures = _filter_copyline_pictures(_filter_product_pictures(pictures))
+            # Фильтр применится при формировании OfferOut (оставляем только img_products, full_ в приоритете)
 
         if not _is_allowed_prefix(name):
             continue
@@ -1004,7 +960,7 @@ def main() -> int:
                 available=bool(it.get("available", True)),
                 name=name,
                 price=price,
-                pictures=_filter_copyline_pictures(pictures),
+                pictures=_pick_copyline_picture(pictures),
                 vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
                 params=params,
                 native_desc=native_desc,
