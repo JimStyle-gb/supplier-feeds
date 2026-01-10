@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-10 18:36">
+<yml_catalog date="2026-01-10 19:06">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | CopyLine
 URL поставщика                             | https://copyline.kz/goods.html
-Время сборки (Алматы)                      | 2026-01-10 18:36:46
+Время сборки (Алматы)                      | 2026-01-10 19:06:46
 Ближайшая сборка (Алматы)                  | 2026-01-20 03:00:00
 Сколько товаров у поставщика до фильтра    | 2820
-Сколько товаров у поставщика после фильтра | 1209
-Сколько товаров есть в наличии (true)      | 1035
-Сколько товаров нет в наличии (false)      | 174
+Сколько товаров у поставщика после фильтра | 1206
+Сколько товаров есть в наличии (true)      | 1034
+Сколько товаров нет в наличии (false)      | 172
 -->
 
 <offer id="CL105140" available="true">
@@ -3158,14 +3158,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101902</vendorCode>
 <name>Картридж HP CB435A/CB436A/CE285A/Canon 712/713/725 (2K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_435_436_285_ON.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP CB435A/CB436A/CE285A/Canon 712/713/725 (2K) ON</h3><p>Для принтеров:<br>HP<br>LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102<br>Canon<br>LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>2100</p>
+<h3>Картридж HP CB435A/CB436A/CE285A/Canon 712/713/725 (2K) ON</h3><p>Картридж HP CB435A/CB436A/CE285A/Canon 712/713/725 (2K) ON</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -3498,14 +3498,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL100920</vendorCode>
 <name>Картридж HP CE285A/Canon 725 (1,6K) TOP PRINT</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_TOP.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP CE285A/Canon 725 (1,6K) TOP PRINT</h3><p>Для принтеров:<br>HP<br>LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102<br>Canon<br>LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.<br>Новый картридж Top print CE285A/Canon 725 по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1600</p>
+<h3>Картридж HP CE285A/Canon 725 (1,6K) TOP PRINT</h3><p>Картридж HP CE285A/Canon 725 (1,6K) TOP PRINT</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -3518,14 +3518,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103727</vendorCode>
 <name>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214 (1,6K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_285_725_ON.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214 (1,6K) ON</h3><p>Для принтеров:<br>HP<br>LaserJet-P1000ser / LaserJet-P1002 / LaserJet-P1003 / LaserJet-P1004 / LaserJet-P1005 / LaserJet-P1006 / LaserJet-P1007 / LaserJet-P1008 / LaserJet-P1009 / LaserJet-M1120 / LaserJet-M1522 / LaserJet-P1505 / LaserJet Pro-M1132 / LaserJet Pro-M1210ser / LaserJet Pro-M1212 / LaserJet Pro-M1214 / LaserJet Pro-M1217 / LaserJet Pro-P1100ser / LaserJet Pro-P1102<br>Canon<br>LBP-3010 / LBP-3100 / LBP-3250 / LBP-6000 / LBP-6020.<br>Новый картридж ON CE285A/Canon 725 по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1600<br>Ваши расходы на печать существенно сократятся благодаря совместимым картриджам, и не приведут к поломке вашего принтера или МФУ.<br>Реальный ресурс совместимого картриджа так-же как и оригинального может отличатся от заявленного производителем, который зависит от совокупности факторов:<br>заполняемость выводимых на печать страниц,<br>состояния принтера или МФУ,<br>качества используемой бумаги,<br>и другие факторы.<br>Вы можете купить картридж в городах Алматы, Нур-Султан, Караганды.<br>Стоимость картриджа для розничного покупателя вы можете уточнить по телефонам нашей компании.<br>Менеджеры компании с удовольствием ответят на все ваши вопросы по картриджам.<br>На продаваемые картриджи наша компания дает гарантию.</p>
+<h3>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214 (1,6K) ON</h3><p>Картридж HP CE285A/Canon 725 for LJP1102/М1132/М1212/М1214 (1,6K) ON</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -3858,14 +3858,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103939</vendorCode>
 <name>Картридж HP CF217A (С ЧИПОМ) for LJ Pro M102a/102w/ MFP M130a/130nw/130fn/130fw OEM</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_CF217A-oem.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP CF217A (С ЧИПОМ) for LJ Pro M102a/102w/ MFP M130a/130nw/130fn/130fw OEM</h3><p>Картридж OEM CF217A используется в принтерах серий HP LaserJet Pro M102a, M102w, M130a, M130fn, M130fw, M130nw.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1600</p>
+<h3>Картридж HP CF217A (С ЧИПОМ) for LJ Pro M102a/102w/ MFP M130a/130nw/130fn/130fw OEM</h3><p>Картридж HP CF217A (С ЧИПОМ) for LJ Pro M102a/102w/ MFP M130a/130nw/130fn/130fw OEM</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -4398,14 +4398,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104339</vendorCode>
 <name>Картридж HP CF244A for LJ M28A/M28W/M15A/M15W Euro Print</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-CF244A.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP CF244A for LJ M28A/M28W/M15A/M15W Euro Print</h3><p>Картридж Euro Print CF244A (№44A) используется в принтерах серий HP LaserJet Pro M15, M16, MFP M28, MFP M29.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1000</p>
+<h3>Картридж HP CF244A for LJ M28A/M28W/M15A/M15W Euro Print</h3><p>Картридж HP CF244A for LJ M28A/M28W/M15A/M15W Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -4958,14 +4958,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL101904</vendorCode>
 <name>Картридж HP Q2612A/CANON FX-10 (2K) ON</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_2612_FX10_ON.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP Q2612A/CANON FX-10 (2K) ON</h3><p>Картридж ON Q2612A/ CANON FX-10 используется в принтерах серий HP LJ 1010, 1012, 1015, 1018, 1020, 3015, 3020, 3030, 3050, 3055, 1022, M1005, Canon FAX-L100, L120, L140.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>2000</p>
+<h3>Картридж HP Q2612A/CANON FX-10 (2K) ON</h3><p>Картридж HP Q2612A/CANON FX-10 (2K) ON</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -5378,14 +5378,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104563</vendorCode>
 <name>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</name>
 <price>5900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-W1106A-no-chip.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</h3><p>Картридж Euro Print W1106A используется в принтерах серий HP Laser 107a, 107r, 107w, 135a, 135r, 135w, 137fnw.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1000</p>
+<h3>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</h3><p>Картридж HP W1106A (№106A) (без чипа) for Laser MFP 135a/135w/137fnw/107a/107w (1K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -5538,14 +5538,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105123</vendorCode>
 <name>Картридж HP W1360A (№136A) (без чипа) for LaserJet M211/M236 (1.15K) Euro Print</name>
 <price>7900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1360a-no-chip.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP W1360A (№136A) (без чипа) for LaserJet M211/M236 (1.15K) Euro Print</h3><p>Картридж без чипа Euro Print W1360A используется в принтерах и МФУ серий HP LaserJet M211, M236.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1150</p>
+<h3>Картридж HP W1360A (№136A) (без чипа) for LaserJet M211/M236 (1.15K) Euro Print</h3><p>Картридж HP W1360A (№136A) (без чипа) for LaserJet M211/M236 (1.15K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -5778,14 +5778,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL105243</vendorCode>
 <name>Картридж HP W1500A (№150A) (без чипа) for LaserJet M111/MFP M141 (0.9K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_ep-w1500a-no-chip.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж HP W1500A (№150A) (без чипа) for LaserJet M111/MFP M141 (0.9K) Euro Print</h3><p>Картридж без чипа Euro Print W1500A используется в принтерах и МФУ серий HP LaserJet M111, M141.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>975</p>
+<h3>Картридж HP W1500A (№150A) (без чипа) for LaserJet M111/MFP M141 (0.9K) Euro Print</h3><p>Картридж HP W1500A (№150A) (без чипа) for LaserJet M111/MFP M141 (0.9K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -6853,26 +6853,6 @@ URL поставщика                             | https://copyline.kz/goods
 <keywords>Samsung, Картридж SAMSUNG MLT-D203E for ProXpress M3820/3870/4020/4070 (10K) Euro Print, Картридж, MLT-D203E, for, ProXpress, M3820, 3870, 4020, 4070, 10K, Euro, Print, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="CLA2E4822A98" available="false">
-<categoryId></categoryId>
-<vendorCode>CLA2E4822A98</vendorCode>
-<name>Картридж SAMSUNG MLT-D203E OEM</name>
-<price>14900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Samsung</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж SAMSUNG MLT-D203E OEM</h3><p>Картридж SAMSUNG MLT-D203E OEM</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Тип">Картридж</param>
-<keywords>Samsung, Картридж SAMSUNG MLT-D203E OEM, Картридж, MLT-D203E, OEM, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="CL103477" available="false">
 <categoryId></categoryId>
 <vendorCode>CL103477</vendorCode>
@@ -7298,14 +7278,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL103180</vendorCode>
 <name>Картридж (106R02773) Xerox Phaser 3020/WC3025 (1,5K) Euro Print</name>
 <price>6900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106r02773.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Картридж (106R02773) Xerox Phaser 3020/WC3025 (1,5K) Euro Print</h3><p>Картридж Euro Print 106R02773 используется в принтерах серий Xerox Phaser 3020/ WC3025.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>1500</p>
+<h3>Картридж (106R02773) Xerox Phaser 3020/WC3025 (1,5K) Euro Print</h3><p>Картридж (106R02773) Xerox Phaser 3020/WC3025 (1,5K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
@@ -11831,26 +11811,6 @@ URL поставщика                             | https://copyline.kz/goods
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">Картридж</param>
 <keywords>HP, Картридж HP W2013A (№659A) (С ЧИПОМ) Magenta для CLJ M776/M856 (13K) Euro Print, Картридж, W2013A, 659A, С, ЧИПОМ, Magenta, для, CLJ, M776, M856, 13K, Euro, Print, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="CLA2E4822A98-7563FF" available="false">
-<categoryId></categoryId>
-<vendorCode>CLA2E4822A98-7563FF</vendorCode>
-<name>Картридж HP W2030A (№415A) (без чипа) Black OEM</name>
-<price>10900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>HP</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж HP W2030A (№415A) (без чипа) Black OEM</h3><p>Картридж HP W2030A (№415A) (без чипа) Black OEM</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Картридж</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Тип">Картридж</param>
-<keywords>HP, Картридж HP W2030A (№415A) (без чипа) Black OEM, Картридж, W2030A, 415A, без, чипа, Black, OEM, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="CL104593" available="false">
@@ -21873,26 +21833,6 @@ URL поставщика                             | https://copyline.kz/goods
 <keywords>CopyLine, Тонер-картридж 006R01829 Xerox VersaLink C7120/C7125/C7130 (18,5K) Cyan Euro Print, Тонер-картридж, 006R01829, Xerox, VersaLink, C7120, C7125, C7130, 18, 5K, Cyan, Euro, Print, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="CLA2E4822A98-B69B84" available="true">
-<categoryId></categoryId>
-<vendorCode>CLA2E4822A98-B69B84</vendorCode>
-<name>Тонер-картридж 006R01829 Xerox VersaLink C7120/C7125/C7130 (18,5K) Cyan OEM</name>
-<price>28900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>CopyLine</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Тонер-картридж 006R01829 Xerox VersaLink C7120/C7125/C7130 (18,5K) Cyan OEM</h3><p>Тонер-картридж 006R01829 Xerox VersaLink C7120/C7125/C7130 (18,5K) Cyan OEM</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Тонер-картридж</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Тип">Тонер-картридж</param>
-<keywords>CopyLine, Тонер-картридж 006R01829 Xerox VersaLink C7120/C7125/C7130 (18,5K) Cyan OEM, Тонер-картридж, 006R01829, Xerox, VersaLink, C7120, C7125, C7130, 18, 5K, Cyan, OEM, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="CL105415" available="false">
 <categoryId></categoryId>
 <vendorCode>CL105415</vendorCode>
@@ -24138,14 +24078,14 @@ URL поставщика                             | https://copyline.kz/goods
 <vendorCode>CL104600</vendorCode>
 <name>Тонер-картридж 106R04348 Xerox B205/B210/B215 (3K) Euro Print</name>
 <price>8900</price>
-<picture>https://copyline.kz/components/com_jshopping/files/img_products/full_106r04348.jpg</picture>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>CopyLine</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Тонер-картридж 106R04348 Xerox B205/B210/B215 (3K) Euro Print</h3><p>Картридж с тонером Euro Print 106R04348 используется в принтерах серий Xerox B205DNI, B210NI, B215DNI.<br>Новый картридж по ресурсу и качеству печати не уступает аналогичному картриджу оригинального производителя.<br>Технические характеристики:<br>Технология печати<br>Лазерная<br>Цвет печати<br>Чёрный<br>Количество страниц (5% заполнение)<br>3000</p>
+<h3>Тонер-картридж 106R04348 Xerox B205/B210/B215 (3K) Euro Print</h3><p>Тонер-картридж 106R04348 Xerox B205/B210/B215 (3K) Euro Print</p>
 <h3>Характеристики</h3><ul><li><strong>Тип:</strong> Тонер-картридж</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
