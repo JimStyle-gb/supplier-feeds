@@ -17,14 +17,10 @@ from datetime import datetime, timedelta
 # Логи (можно выключить: VERBOSE=0)
 VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
 
-def log(*args, **kwargs) -> None:
+def log(msg: str) -> None:
     # Печать логов (в Actions удобно оставлять краткие метки)
-    # Поддерживаем kwargs типа flush/end/sep, чтобы не ловить TypeError.
     if VERBOSE:
-        if "flush" not in kwargs:
-            kwargs["flush"] = True
-        print(*args, **kwargs)
-
+        print(msg, flush=True)
 import requests
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
