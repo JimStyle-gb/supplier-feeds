@@ -11,6 +11,7 @@ import os
 import re
 import time
 import random
+import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
@@ -184,7 +185,9 @@ def oid_from_vendor_code_raw(raw: str) -> str:
     raw = re.sub(r"[^A-Za-z0-9_.-]+", "", raw)
     raw = raw.strip("-.")
     if not raw:
-        return ""
+        # аварийный вариант (стабильный, но без исходного кода)
+        h = hashlib.md5((raw or "empty").encode("utf-8", errors="ignore")).hexdigest()[:10].upper()
+        return f"{VENDORCODE_PREFIX}{h}"
     return f"{VENDORCODE_PREFIX}{raw}"
 
 
@@ -872,13 +875,13 @@ def main() -> int:
         params = _merge_params(params, p_min)
 
         price = compute_price(int(it.get("dealer_price") or 0))
+
         oid = base_oid
-        if not oid:
-            # нет стабильного артикула — пропускаем (никаких хэшей)
-            continue
         if oid in seen_oids:
-            # дубль артикула: пропускаем позицию (лучше потерять пару дублей, чем плодить новые id)
-            continue
+            # редкий случай: дубль артикулов — делаем СТАБИЛЬНЫЙ суффикс от URL или имени
+            seed = safe_str(found.get("url") if found else "") or name
+            suf = hashlib.md5(seed.encode("utf-8", errors="ignore")).hexdigest()[:6].upper()
+            oid = f"{base_oid}-{suf}"
         seen_oids.add(oid)
 
         out_offers.append(
