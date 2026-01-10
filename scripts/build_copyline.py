@@ -11,43 +11,10 @@ import os
 import re
 import time
 import random
-import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
-def _pick_copyline_picture(pics: list[str]) -> list[str]:
-    """# CopyLine: одна картинка на товар — full_ если есть, иначе обычная. Только img_products."""
-    if not pics:
-        return []
-
-    def norm(u: str) -> str:
-        u = (u or "").strip()
-        u = u.split("#", 1)[0]
-        return u
-
-    candidates: list[str] = []
-    for u in pics:
-        u = norm(u)
-        if not u:
-            continue
-        if "components/com_jshopping/files/img_products/" not in u:
-            continue
-        if "/img_products/thumb_" in u:
-            continue
-        candidates.append(u)
-
-    if not candidates:
-        return []
-
-    # full_ приоритет
-    for u in candidates:
-        base = u.rsplit("/", 1)[-1]
-        if base.startswith("full_"):
-            return [u]
-
-    return [candidates[0]]
-
-VERBOSE = os.environ.get("VERBOSE", "0") in ("1","true","True","yes","YES")
+VERBOSE = (os.getenv("VERBOSE", "1") or "1").strip() not in ("0", "false", "no", "off")
 
 def log(*args, **kwargs) -> None:
     # Печать логов (в Actions удобно оставлять краткие метки)
@@ -104,23 +71,9 @@ OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
 MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "25") or "25")  # лимит страниц на категорию
-MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "30") or "30")    # общий лимит времени обхода сайта
+MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
-PRODUCT_RE = re.compile(r"/goods/[^/]+\.html/?(?:[?#].*)?$", flags=re.I)
-
-def normalize_product_url(url: str) -> str:
-    """# CopyLine: нормализация URL товара (новый сайт часто даёт .html/)."""
-    u = (url or "").strip()
-    if not u:
-        return u
-    # убрать фрагменты
-    if "#" in u:
-        u = u.split("#", 1)[0]
-    # /goods/...html/  -> /goods/...html
-    u = re.sub(r"(\.html)/(?=($|[?#]))", r"\1", u, flags=re.I)
-    return u
-
-
+PRODUCT_RE = re.compile(r"/goods/[^/]+\.html$")
 
 # Параллелизм обхода сайта
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
@@ -175,61 +128,6 @@ def soup_of(b: bytes) -> BeautifulSoup:
 def norm_ascii(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
 
-
-def _url_code_keys(url: str) -> list[str]:
-    """
-    CopyLine: иногда в прайсе артикул = код модели (FM3-4106-000),
-    а на сайте product_code = внутренний числовой код.
-    Тогда сопоставление по SKU не сработает, зато этот код почти всегда есть в URL товара.
-    Возвращаем нормализованные ключи, которые можно матчить с vendorCode.
-    """
-    try:
-        from urllib.parse import urlparse
-        p = urlparse(url or "")
-        base = (p.path or "").rsplit("/", 1)[-1].lower()
-    except Exception:
-        base = (url or "").rsplit("/", 1)[-1].lower()
-
-    if not base:
-        return []
-
-    base = re.sub(r"\.html/?$", "", base, flags=re.I)
-
-    # Ищем куски вида "fm3-4106-000", "cf226a", "q2612a-1" и т.п.
-    parts = re.findall(r"[a-z0-9]+(?:-[a-z0-9]+)+", base)
-    out: list[str] = []
-    for p in parts:
-        if not any(ch.isdigit() for ch in p):
-            continue
-        k = norm_ascii(p)
-        if k and k not in out:
-            out.append(k)
-    return out
-
-
-def _norm_sku_variants(raw: str) -> set[str]:
-    """# CopyLine: нормализация артикула/sku для сравнения (детерминированно)"""
-    r = (raw or "").strip()
-    if not r:
-        return set()
-    r = r.replace(" ", "")
-    variants = {r, r.replace("-", ""), r.replace("_", "")}
-    r0 = r.lstrip("0")
-    if r0 and r0 != r:
-        variants.add(r0)
-        variants.add(r0.replace("-", ""))
-        variants.add(r0.replace("_", ""))
-    if re.fullmatch(r"[Cc]\d+", r):
-        variants.add(r[1:])
-    if re.fullmatch(r"\d+", r):
-        variants.add("C" + r)
-    return {norm_ascii(v) for v in variants if v}
-
-def _sku_matches(raw_v: str, page_sku: str) -> bool:
-    """# CopyLine: страница товара подходит только если sku совпадает с vendorCode_raw"""
-    want = _norm_sku_variants(raw_v)
-    have = _norm_sku_variants(page_sku)
-    return bool(want and have and (want & have))
 
 def title_clean(s: str) -> str:
     s = (s or "").strip()
@@ -286,9 +184,7 @@ def oid_from_vendor_code_raw(raw: str) -> str:
     raw = re.sub(r"[^A-Za-z0-9_.-]+", "", raw)
     raw = raw.strip("-.")
     if not raw:
-        # аварийный вариант (стабильный, но без исходного кода)
-        h = hashlib.md5((raw or "empty").encode("utf-8", errors="ignore")).hexdigest()[:10].upper()
-        return f"{VENDORCODE_PREFIX}{h}"
+        return ""
     return f"{VENDORCODE_PREFIX}{raw}"
 
 
@@ -308,13 +204,10 @@ def title_startswith_strict(title: str, patterns: Sequence[re.Pattern]) -> bool:
 
 
 def _is_allowed_prefix(title: str) -> bool:
-    # Финальная проверка по префиксам (после обогащения с сайта не должно вылезать лишнее)
+    # Финальная проверка по префиксам (чтобы после обогащения с сайта не вылезало лишнее)
     if not title:
         return False
-    pats = getattr(_is_allowed_prefix, "_pats", None)
-    if pats is None:
-        pats = compile_startswith_patterns(COPYLINE_INCLUDE_PREFIXES)
-        setattr(_is_allowed_prefix, "_pats", pats)
+    pats = compile_startswith_patterns(COPYLINE_INCLUDE_PREFIXES)
     return title_startswith_strict(title_clean(title), pats)
 
 
@@ -462,12 +355,6 @@ def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
     if not url:
         return None
     u = url.strip()
-    # убрать фрагменты вида #joomlaImage...
-    if "#" in u:
-        u = u.split("#", 1)[0]
-    # CopyLine: приводим thumb_* к full_* (на сайте часто есть обе версии)
-    if "/img_products/" in u and "thumb_" in u:
-        u = u.replace("thumb_", "full_")
     if not u:
         return None
     if u.startswith("//"):
@@ -496,7 +383,6 @@ def extract_kv_pairs_from_text(text: str) -> List[Tuple[str, str]]:
 
 
 def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
-    url = normalize_product_url(url)
     b = http_get(url, tries=3)
     if not b:
         return None
@@ -527,6 +413,8 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     h = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
     title = title_clean(safe_str(h.get_text(" ", strip=True) if h else ""))
     # Picture (на сайте почти всегда есть фото; вытаскиваем максимально надёжно)
+
+    src = ""
 
     cand: list[str] = []
 
@@ -617,32 +505,43 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
             cand.append(href)
 
 
-    # Соберём все картинки: full_ в приоритете, но не отбрасываем товар без фото
-    pics_raw: list[str] = []
+    # выберем лучшую: full_ > не-thumb > первая
+
+    src = ""
+
     for t in cand:
+
         t = (t or "").strip()
+
         if not t or t.startswith("data:"):
+
             continue
-        pics_raw.append(t)
 
-    pics: list[str] = []
-    seen: set[str] = set()
-    for t in pics_raw:
-        u = normalize_img_to_full(t)
-        if not u or u.startswith("data:"):
-            continue
-        if u in seen:
-            continue
-        seen.add(u)
-        pics.append(u)
+        if "/full_" in t:
 
-    # full_ вперёд, порядок сохраняем
-    full = [u for u in pics if "full_" in u]
-    rest = [u for u in pics if "full_" not in u]
-    pics = full + rest
+            src = t
 
-    pic = pics[0] if pics else ""
+            break
 
+    if not src:
+
+        for t in cand:
+
+            t = (t or "").strip()
+
+            if not t or t.startswith("data:") or "thumb_" in t:
+
+                continue
+
+            src = t
+
+            break
+
+
+    pic = normalize_img_to_full(src)
+
+    if not pic:
+        return None
     # Description + params
     desc_txt = ""
     params: List[Tuple[str, str]] = []
@@ -686,7 +585,6 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         "title": title,
         "desc": desc_txt.strip(),
         "pic": pic,
-        "pics": pics,
         "params": [(k, v) for (k, v) in params2 if not re.fullmatch(r"\d{1,4}", k.strip())],
         "url": url,
     }
@@ -739,77 +637,16 @@ def discover_relevant_category_urls() -> List[str]:
 
 
 def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
-    """
-    Пытаемся найти ссылку на "следующую" страницу категории максимально надёжно,
-    потому что в шаблонах Joomla/JShopping это часто меняется.
-    """
-    # 1) rel=next (если есть)
     ln = s.find("link", attrs={"rel": "next"})
     if ln and ln.get("href"):
         return requests.compat.urljoin(page_url, safe_str(ln["href"]))
-
-    # 2) явные элементы пагинации "next"
-    #    (li.pagination-next a / aria-label / class содержит next)
-    a = None
-    li = s.find("li", class_=lambda c: c and "next" in safe_str(c).lower())
-    if li:
-        a = li.find("a", href=True)
-    if not a:
-        a = s.find("a", attrs={"aria-label": lambda v: v and "next" in safe_str(v).lower()}, href=True)
-    if not a:
-        a = s.find("a", class_=lambda c: c and "next" in safe_str(c).lower(), href=True)
+    a = s.find("a", class_=lambda c: c and "next" in safe_str(c).lower())
     if a and a.get("href"):
         return requests.compat.urljoin(page_url, safe_str(a["href"]))
-
-    # 3) по тексту ("следующая", "вперед", "»", "›", ">")
     for a in s.find_all("a", href=True):
         txt = safe_str(a.get_text(" ", strip=True) or "").lower()
-        if txt in ("следующая", "вперед", "вперёд", "next", ">", "»", "›", "→"):
+        if txt in ("следующая", "вперед", "вперёд", "next", ">"):
             return requests.compat.urljoin(page_url, safe_str(a["href"]))
-
-    # 4) если шаблон не даёт явную "next", пытаемся вычислить по параметрам start/page
-    #    Берём из пагинации все ссылки со start/page и выбираем следующий шаг.
-    try:
-        from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
-        u = urlparse(page_url)
-        q = parse_qs(u.query or "")
-        cur_start = int((q.get("start", ["0"])[0] or "0"))
-        cur_page = int((q.get("page", ["0"])[0] or "0"))
-    except Exception:
-        cur_start = 0
-        cur_page = 0
-
-    candidates: list[tuple[str, int, str]] = []
-    for a in s.find_all("a", href=True):
-        href = requests.compat.urljoin(page_url, safe_str(a["href"]))
-        try:
-            pu = urlparse(href)
-            pq = parse_qs(pu.query or "")
-            if "start" in pq:
-                v = int((pq.get("start", ["0"])[0] or "0"))
-                candidates.append(("start", v, href))
-            if "page" in pq:
-                v = int((pq.get("page", ["0"])[0] or "0"))
-                candidates.append(("page", v, href))
-        except Exception:
-            continue
-
-    # выбираем минимальный start/page, который больше текущего
-    best_href = None
-    best_kind = None
-    best_val = None
-    for kind, val, href in candidates:
-        cur = cur_start if kind == "start" else cur_page
-        if val > cur:
-            if best_val is None or val < best_val:
-                best_val = val
-                best_kind = kind
-                best_href = href
-
-    if best_href:
-        return best_href
-
-    # 5) fallback: если вообще нет пагинации — остановимся
     return None
 
 
@@ -832,7 +669,7 @@ def collect_product_urls(category_url: str, limit_pages: int) -> List[str]:
         s = soup_of(b)
 
         for a in s.find_all("a", href=True):
-            absu = normalize_product_url(requests.compat.urljoin(page, safe_str(a["href"])))
+            absu = requests.compat.urljoin(page, safe_str(a["href"]))
             if PRODUCT_RE.search(absu):
                 urls.append(absu)
 
@@ -845,12 +682,12 @@ def collect_product_urls(category_url: str, limit_pages: int) -> List[str]:
 def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Dict[str, Any]], Dict[str, Dict[str, Any]]]:
     if NO_CRAWL:
         log("[site] NO_CRAWL=1 -> skip site parsing")
-        return {}, {}
+        return {}
 
     cats = discover_relevant_category_urls()
     if not cats:
         log("[site] no category urls found")
-        return {}, {}
+        return {}
 
     pages_budget = MAX_CATEGORY_PAGES
 
@@ -858,14 +695,12 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
     for cu in cats:
         product_urls.extend(collect_product_urls(cu, pages_budget))
     product_urls = list(dict.fromkeys(product_urls))
-
     log(f"[site] categories={len(cats)} product_urls={len(product_urls)} pages_budget={pages_budget}")
 
     from concurrent.futures import ThreadPoolExecutor, as_completed
     deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
 
-    sku_index: Dict[str, Dict[str, Any]] = {}
-    title_index: Dict[str, Dict[str, Any]] = {}
+    site_index: Dict[str, Dict[str, Any]] = {}
     matched: Set[str] = set()
 
     with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex:
@@ -891,11 +726,6 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                 variants.add("C" + sku)
 
             keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
-            # Доп.ключи из URL (например FM3-4106-000)
-            for k in _url_code_keys(out.get("url", "")):
-                if k and k not in keys:
-                    keys.append(k)
-
             if not keys:
                 continue
 
@@ -905,22 +735,13 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                     continue
                 for k in useful:
                     matched.add(k)
+                    site_index[k] = out
+            else:
+                for k in keys:
+                    site_index[k] = out
 
-            # индекс по SKU/артикулу
-            for k in keys:
-                sku_index[k] = out
-
-            # индекс по названию (фолбэк, если SKU не совпал)
-            t_full = norm_ascii(title_clean(safe_str(out.get("title"))))
-            if t_full and t_full not in title_index:
-                title_index[t_full] = out
-            t30 = norm_ascii(title_clean(safe_str(out.get("title"))[:30]))
-            if t30 and t30 not in title_index:
-                title_index[t30] = out
-
-    log(f"[site] indexed={len(sku_index)} matched={len(matched) if want_keys else '-'}")
-    return sku_index, title_index
-
+    log(f"[site] indexed={len(site_index)} matched={len(matched) if want_keys else '-'}")
+    return site_index, {}
 def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
     # now_local — наивный datetime в Алматы
     y = now_local.year
@@ -1018,16 +839,12 @@ def main() -> int:
 
         if not found:
             tk_full = norm_ascii(title_clean(it["title"]))
-            tk30 = norm_ascii(title_clean(it["title"])[:30])
-            for tk in (tk_full, tk30):
-                if tk and tk in site_index:
-                    cand = site_index[tk]
-                    if _sku_matches(raw_v, safe_str(cand.get("sku"))):
-                        found = cand
-                        break
-
-        if found and not _sku_matches(raw_v, safe_str(found.get("sku"))):
-            found = None
+            if tk_full and tk_full in site_index:
+                found = site_index[tk_full]
+            else:
+                tk30 = norm_ascii(title_clean(it["title"])[:30])
+                if tk30 and tk30 in site_index:
+                    found = site_index[tk30]
 
         name = it["title"]
         if not _is_allowed_prefix(name):
@@ -1037,13 +854,9 @@ def main() -> int:
         params: List[Tuple[str, str]] = []
         if found:
             native_desc = safe_str(found.get("desc")) or native_desc
-            pics = list(found.get("pics") or [])
-            if pics:
-                pictures = [safe_str(x) for x in pics if safe_str(x)][:10]
-            elif found.get("pic"):
+            if found.get("pic"):
                 pictures = [safe_str(found.get("pic"))]
             params = list(found.get("params") or [])
-            # Фильтр применится при формировании OfferOut (оставляем только img_products, full_ в приоритете)
 
         if not _is_allowed_prefix(name):
             continue
@@ -1059,13 +872,13 @@ def main() -> int:
         params = _merge_params(params, p_min)
 
         price = compute_price(int(it.get("dealer_price") or 0))
-
         oid = base_oid
+        if not oid:
+            # нет стабильного артикула — пропускаем (никаких хэшей)
+            continue
         if oid in seen_oids:
-            # редкий случай: дубль артикулов — делаем СТАБИЛЬНЫЙ суффикс от URL или имени
-            seed = safe_str(found.get("url") if found else "") or name
-            suf = hashlib.md5(seed.encode("utf-8", errors="ignore")).hexdigest()[:6].upper()
-            oid = f"{base_oid}-{suf}"
+            # дубль артикула: пропускаем позицию (лучше потерять пару дублей, чем плодить новые id)
+            continue
         seen_oids.add(oid)
 
         out_offers.append(
@@ -1074,7 +887,7 @@ def main() -> int:
                 available=bool(it.get("available", True)),
                 name=name,
                 price=price,
-                pictures=_pick_copyline_picture(pictures),
+                pictures=pictures,
                 vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
                 params=params,
                 native_desc=native_desc,
