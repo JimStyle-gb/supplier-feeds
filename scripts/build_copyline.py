@@ -49,16 +49,17 @@ jobs:
         id: gate
         shell: bash
         run: |
-          python - <<'PY' >> "$GITHUB_OUTPUT"
+          python - <<'PY'
           import os
           from datetime import datetime, timedelta
 
-          dom = (os.getenv("SCHEDULE_DOM","*") or "*").strip()
-          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY","0") or "0")
-          event = (os.getenv("GITHUB_EVENT_NAME","") or "").strip()
+          dom = (os.getenv("SCHEDULE_DOM", "*") or "*").strip()
+          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "0") or "0")
+          event = (os.getenv("GITHUB_EVENT_NAME", "") or "").strip()
 
           now_utc = datetime.utcnow()
           now_alm = now_utc + timedelta(hours=5)
+          almaty_now = now_alm.strftime("%Y-%m-%d %H:%M:%S")
 
           if dom == "*":
               allowed_set = None
@@ -69,15 +70,22 @@ jobs:
               allowed = ",".join(str(x) for x in sorted(allowed_set)) if allowed_set else "(empty)"
               day_ok = (now_alm.day in allowed_set) if allowed_set else False
 
-          hour_ok = (now_alm.hour == hour)
-
+          # Для schedule ограничение делаем только по дню месяца в Алматы.
+          # Час задается cron, а GitHub может задержать запуск, поэтому hour_ok не проверяем.
           if event == "schedule":
-              should = "yes" if (day_ok and hour_ok) else "no"
+              should = "yes" if day_ok else "no"
           else:
               should = "yes"
 
-          print(f"::notice::Event={event}; Almaty now: {now_alm.strftime('%Y-%m-%d %H:%M:%S')}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; hour_ok={hour_ok}; should_run={should}")
-          print(f"run={should}")
+          print(f"::notice::Event={event}; Almaty now: {almaty_now}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; should_run={should}")
+
+          # output для if:
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write(f"run={should}\n")
+
+          # фиксируем build_time для FEED_META:
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
+              f.write(f"CS_FORCE_BUILD_TIME_ALMATY={almaty_now}\n")
           PY
 
       - name: Setup Python
