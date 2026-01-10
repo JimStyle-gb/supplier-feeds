@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-10 02:12">
+<yml_catalog date="2026-01-11 02:10">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-10 02:12:34
-Ближайшая сборка (Алматы)                  | 2026-01-11 02:00:00
-Сколько товаров у поставщика до фильтра    | 1822
+Время сборки (Алматы)                      | 2026-01-11 02:10:21
+Ближайшая сборка (Алматы)                  | 2026-01-12 02:00:00
+Сколько товаров у поставщика до фильтра    | 1820
 Сколько товаров у поставщика после фильтра | 152
 Сколько товаров есть в наличии (true)      | 152
 Сколько товаров нет в наличии (false)      | 0
@@ -2413,7 +2413,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T66424A</vendorCode>
 <name>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</name>
 <price>7900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/fde/q87nc9md3muxkkrsvwdjxlpg62utdxph.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
