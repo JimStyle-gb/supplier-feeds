@@ -892,7 +892,7 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
 
             keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
             # Доп.ключи из URL (например FM3-4106-000)
-            for k in _url_code_keys(prod.get("url", "")):
+            for k in _url_code_keys(out.get("url", "")):
                 if k and k not in keys:
                     keys.append(k)
 
