@@ -104,7 +104,7 @@ OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
 MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "25") or "25")  # лимит страниц на категорию
-MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")    # общий лимит времени обхода сайта
+MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "30") or "30")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
 PRODUCT_RE = re.compile(r"/goods/[^/]+\.html/?(?:[?#].*)?$", flags=re.I)
 
@@ -174,6 +174,37 @@ def soup_of(b: bytes) -> BeautifulSoup:
 
 def norm_ascii(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
+
+
+def _url_code_keys(url: str) -> list[str]:
+    """
+    CopyLine: иногда в прайсе артикул = код модели (FM3-4106-000),
+    а на сайте product_code = внутренний числовой код.
+    Тогда сопоставление по SKU не сработает, зато этот код почти всегда есть в URL товара.
+    Возвращаем нормализованные ключи, которые можно матчить с vendorCode.
+    """
+    try:
+        from urllib.parse import urlparse
+        p = urlparse(url or "")
+        base = (p.path or "").rsplit("/", 1)[-1].lower()
+    except Exception:
+        base = (url or "").rsplit("/", 1)[-1].lower()
+
+    if not base:
+        return []
+
+    base = re.sub(r"\.html/?$", "", base, flags=re.I)
+
+    # Ищем куски вида "fm3-4106-000", "cf226a", "q2612a-1" и т.п.
+    parts = re.findall(r"[a-z0-9]+(?:-[a-z0-9]+)+", base)
+    out: list[str] = []
+    for p in parts:
+        if not any(ch.isdigit() for ch in p):
+            continue
+        k = norm_ascii(p)
+        if k and k not in out:
+            out.append(k)
+    return out
 
 
 def _norm_sku_variants(raw: str) -> set[str]:
@@ -708,16 +739,77 @@ def discover_relevant_category_urls() -> List[str]:
 
 
 def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
+    """
+    Пытаемся найти ссылку на "следующую" страницу категории максимально надёжно,
+    потому что в шаблонах Joomla/JShopping это часто меняется.
+    """
+    # 1) rel=next (если есть)
     ln = s.find("link", attrs={"rel": "next"})
     if ln and ln.get("href"):
         return requests.compat.urljoin(page_url, safe_str(ln["href"]))
-    a = s.find("a", class_=lambda c: c and "next" in safe_str(c).lower())
+
+    # 2) явные элементы пагинации "next"
+    #    (li.pagination-next a / aria-label / class содержит next)
+    a = None
+    li = s.find("li", class_=lambda c: c and "next" in safe_str(c).lower())
+    if li:
+        a = li.find("a", href=True)
+    if not a:
+        a = s.find("a", attrs={"aria-label": lambda v: v and "next" in safe_str(v).lower()}, href=True)
+    if not a:
+        a = s.find("a", class_=lambda c: c and "next" in safe_str(c).lower(), href=True)
     if a and a.get("href"):
         return requests.compat.urljoin(page_url, safe_str(a["href"]))
+
+    # 3) по тексту ("следующая", "вперед", "»", "›", ">")
     for a in s.find_all("a", href=True):
         txt = safe_str(a.get_text(" ", strip=True) or "").lower()
-        if txt in ("следующая", "вперед", "вперёд", "next", ">"):
+        if txt in ("следующая", "вперед", "вперёд", "next", ">", "»", "›", "→"):
             return requests.compat.urljoin(page_url, safe_str(a["href"]))
+
+    # 4) если шаблон не даёт явную "next", пытаемся вычислить по параметрам start/page
+    #    Берём из пагинации все ссылки со start/page и выбираем следующий шаг.
+    try:
+        from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
+        u = urlparse(page_url)
+        q = parse_qs(u.query or "")
+        cur_start = int((q.get("start", ["0"])[0] or "0"))
+        cur_page = int((q.get("page", ["0"])[0] or "0"))
+    except Exception:
+        cur_start = 0
+        cur_page = 0
+
+    candidates: list[tuple[str, int, str]] = []
+    for a in s.find_all("a", href=True):
+        href = requests.compat.urljoin(page_url, safe_str(a["href"]))
+        try:
+            pu = urlparse(href)
+            pq = parse_qs(pu.query or "")
+            if "start" in pq:
+                v = int((pq.get("start", ["0"])[0] or "0"))
+                candidates.append(("start", v, href))
+            if "page" in pq:
+                v = int((pq.get("page", ["0"])[0] or "0"))
+                candidates.append(("page", v, href))
+        except Exception:
+            continue
+
+    # выбираем минимальный start/page, который больше текущего
+    best_href = None
+    best_kind = None
+    best_val = None
+    for kind, val, href in candidates:
+        cur = cur_start if kind == "start" else cur_page
+        if val > cur:
+            if best_val is None or val < best_val:
+                best_val = val
+                best_kind = kind
+                best_href = href
+
+    if best_href:
+        return best_href
+
+    # 5) fallback: если вообще нет пагинации — остановимся
     return None
 
 
@@ -799,6 +891,11 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                 variants.add("C" + sku)
 
             keys = [norm_ascii(v) for v in variants if norm_ascii(v)]
+            # Доп.ключи из URL (например FM3-4106-000)
+            for k in _url_code_keys(got.get("url", "")):
+                if k and k not in keys:
+                    keys.append(k)
+
             if not keys:
                 continue
 
