@@ -156,7 +156,6 @@ def fetch_xlsx_bytes(url: str) -> bytes:
 
 
 def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60):
-
     def low(x): return str(x or "").strip().lower()
     for i in range(min(scan_rows, len(rows)-1)):
         row0 = [low(c) for c in rows[i]]
@@ -554,7 +553,6 @@ def _make_keywords(name: str, vendor: str) -> str:
     parts: List[str] = []
     seen: Set[str] = set()
 
-
     def add(token: str) -> None:
         token = (token or "").strip()
         if not token:
@@ -620,7 +618,7 @@ def _make_keywords(name: str, vendor: str) -> str:
 
 WHATSAPP_BLOCK = """<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,.08);">&#128172; НАЖМИТЕ, ЧТОБЫ НАПИСАТЬ НАМ В WHATSAPP!</a></p><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>"""
 
-# Делает: render_description_html
+# Делает:  render description html
 def _render_description_html(name: str, desc_plain: str) -> str:
     base = (desc_plain or "").strip()
     if not base:
@@ -632,7 +630,52 @@ def _render_description_html(name: str, desc_plain: str) -> str:
     name_html = _xml_escape_text(name or "")
     return f"<h3>{name_html}</h3><p>{text_html}</p>"
 
-# Делает: build_yml
+
+# Делает: собирает параметры из характеристик страницы
+def _params_from_specs_kv(specs_kv: Dict[str, str]) -> List[Tuple[str, str]]:
+    if not specs_kv:
+        return []
+    out: List[Tuple[str, str]] = []
+    seen: Set[str] = set()
+    for k, v in specs_kv.items():
+        kk = re.sub(r"\s+", " ", (k or "")).strip().strip(":").strip()
+        vv = re.sub(r"\s+", " ", (v or "")).strip()
+        if not kk or not vv:
+            continue
+        kl = kk.lower()
+        if kl in seen:
+            continue
+        seen.add(kl)
+        out.append((kk, vv))
+
+    if not out:
+        return []
+
+    priority = [
+        "тип", "вид", "модель", "артикул", "совместимость", "производитель", "бренд",
+        "цвет", "размер", "вес", "гарантия",
+    ]
+
+    def sort_key(item: Tuple[str, str]) -> Tuple[int, str]:
+        name = item[0].strip().lower()
+        try:
+            idx = priority.index(name)
+        except ValueError:
+            idx = 10**6
+        return (idx, name)
+
+    return sorted(out, key=sort_key)
+
+# Делает: рендерит блок Характеристики (ul) для description
+def _render_chars_ul(params: List[Tuple[str, str]]) -> str:
+    if not params:
+        return ""
+    items: List[str] = []
+    for k, v in params:
+        items.append(f"<li><strong>{_xml_escape_text(k)}:</strong> {_xml_escape_text(v)}</li>")
+    return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
+
+# Делает: собирает итоговый YML
 def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     lines: List[str] = []
     ts = datetime.now(timezone(timedelta(hours=5))).strftime("%Y-%m-%d %H:%M")
@@ -669,8 +712,13 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
         lines.append("")
         lines.append("<!-- Описание -->")
         lines.append(body_html)
+        chars_html = _render_chars_ul(it.get("params") or [])
+        if chars_html:
+            lines.append(chars_html)
         lines.append("")
         lines.append("]]></description>")
+        for k, v in (it.get("params") or []):
+            lines.append(f'<param name="{yml_escape(k)}">{yml_escape(v)}</param>')
         kw = _make_keywords(it["title"], it.get("brand") or "")
         if kw:
             lines.append(f'<keywords>{yml_escape(kw)}</keywords>')
@@ -681,7 +729,7 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     lines.append("</yml_catalog>")
     return "\n".join(lines)
 
-# Делает: Запускает сборку и запись YML
+# Делает: точка входа
 def main() -> int:
     b = fetch_xlsx_bytes(XLSX_URL)
     wb = load_workbook(io.BytesIO(b), read_only=True, data_only=True)
@@ -738,7 +786,6 @@ def main() -> int:
         print("[error] После фильтра по startswith/цене нет позиций.", flush=True); return 2
     print(f"[xls] candidates: {offers_total}, distinct keys: {len(want_keys)}", flush=True)
 
-    # Делает: discover_relevant_category_urls
     def discover_relevant_category_urls() -> List[str]:
         seeds = [f"{BASE_URL}/", f"{BASE_URL}/goods.html"]; pages=[]
         for u in seeds:
@@ -763,7 +810,6 @@ def main() -> int:
                     seen.add(absu); urls.append(absu)
         return list(dict.fromkeys(urls))
 
-    # Делает: category_next_url
     def category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
         ln = s.find("link", attrs={"rel":"next"})
         if ln and ln.get("href"): return urljoin(page_url, ln["href"])
@@ -774,7 +820,6 @@ def main() -> int:
             if txt in ("следующая","вперед","вперёд","next",">"): return urljoin(page_url, a["href"])
         return None
 
-    # Делает: collect_product_urls_from_category
     def collect_product_urls_from_category(cat_url: str, limit_pages: int) -> List[str]:
         urls, seen_pages, page, pages_done = [], set(), cat_url, 0
         while page and pages_done < limit_pages:
@@ -800,7 +845,6 @@ def main() -> int:
     product_urls = list(dict.fromkeys(product_urls))
     print(f"[crawl] product urls: {len(product_urls)}", flush=True)
 
-    # Делает: worker
     def worker(u: str):
         try:
             jitter_sleep(REQUEST_DELAY_MS)
@@ -849,7 +893,7 @@ def main() -> int:
                 { norm_ascii(sku), norm_ascii(sku.replace("-", "")) } |
                 ({ norm_ascii(sku[1:]) } if re.match(r"^[Cc]\d+$", sku) else set()) |
                 ({ norm_ascii('C'+sku) } if re.match(r"^\d+$", sku) else set())
-            ), {"url": u, "pic": pic, "desc": desc_txt or title, "brand": brand}
+            ), {"url": u, "pic": pic, "desc": desc_txt or title, "brand": brand, "specs_kv": specs_kv}
         except Exception:
             return None
 
@@ -919,6 +963,7 @@ def main() -> int:
             "brand":      brand,
             "picture":    found["pic"],
             "description": desc,
+            "params": _params_from_specs_kv(found.get("specs_kv") or {}),
         })
 
     offers_written = len(offers)
@@ -941,6 +986,9 @@ def main() -> int:
     print(f"[done] items: {offers_written} -> {OUT_FILE}", flush=True)
     return 0
 
-
 if __name__ == "__main__":
-    raise SystemExit(main() or 0)
+    import sys
+    try:
+        sys.exit(main())
+    except Exception as e:
+        print("[fatal]", e, flush=True); sys.exit(2)
