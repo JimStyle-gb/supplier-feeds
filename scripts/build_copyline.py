@@ -103,7 +103,7 @@ COPYLINE_INCLUDE_PREFIXES = [
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
-MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "1200") or "1200")  # общий лимит страниц (будет разделён на кол-во категорий)
+MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "1200") or "1200")  # общий бюджет страниц категорий (делится на число категорий)
 MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "60") or "60")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
 PRODUCT_RE = re.compile(r"/goods/[^/]+\.html(?:[?#].*)?$", flags=re.I)
@@ -118,7 +118,7 @@ VENDORCODE_PREFIX = (os.getenv("VENDORCODE_PREFIX") or "CL").strip()
 PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or SUPPLIER_NAME).strip() or SUPPLIER_NAME
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
-REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "120") or "120")
+REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "60"))
 # HTTP headers (нужно для requests.get; иначе некоторые ответы могут быть урезаны)
 UA = {
     "User-Agent": os.getenv(
@@ -451,160 +451,199 @@ def extract_kv_pairs_from_text(text: str) -> List[Tuple[str, str]]:
 
 
 def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
-    """
-    # CopyLine: парсим одну карточку товара.
-    Главный фикс: НЕ использовать внутренний product_code как SKU (он не совпадает с vendorCode из XLSX).
-    SKU/ключи берём из:
-      1) подписи Артикул/SKU/Код товара (если есть)
-      2) URL (slug в /goods/... .html) — обычно содержит реальный код товара
-    """
     b = http_get(url, tries=3)
     if not b:
         return None
     s = soup_of(b)
 
-    # --- SKU (ключ сопоставления с XLSX) ---
+    # SKU
     sku = ""
-
-    # 1) явный SKU на странице
     skuel = s.find(attrs={"itemprop": "sku"})
     if skuel:
-        sku = safe_str(skuel.get_text(" ", strip=True)).strip()
+        sku = safe_str(skuel.get_text(" ", strip=True))
 
-    # 2) по тексту, если размечено
+    # jshopping: Артикул часто лежит тут: <span id="product_code">101942</span>
     if not sku:
-        txt = safe_str(s.get_text(" ", strip=True))
-        m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-\._/]{1,})", txt, flags=re.I)
+        pc = s.find(id="product_code")
+        if pc:
+            sku = safe_str(pc.get_text(" ", strip=True))
+    if not sku:
+        txt = s.get_text(" ", strip=True)
+        m = re.search(r"(?:Артикул|SKU|Код товара|Код)\s*[:#]?\s*([A-Za-z0-9\-\._/]{2,})", txt, flags=re.I)
         if m:
-            sku = safe_str(m.group(1)).strip()
+            sku = m.group(1)
 
-    # 3) фолбэк: достаём код из URL (/goods/<slug>.html)
-    if not sku:
-        try:
-            from urllib.parse import urlparse, unquote
-            path = urlparse(url).path or ""
-            slug = path.rsplit("/", 1)[-1]
-            slug = unquote(slug)
-            if slug.lower().endswith(".html"):
-                slug = slug[:-5]
-            up = slug.replace("_", "-").upper()
-            cand = re.findall(r"[A-ZА-Я]*\d+[A-ZА-Я0-9]*(?:-[A-ZА-Я0-9]+){1,6}", up)
-            if not cand:
-                cand = re.findall(r"[A-ZА-Я0-9]{2,}", up)
-            if cand:
-                cand = sorted(cand, key=len, reverse=True)
-                sku = cand[0].strip("-").strip()
-        except Exception:
-            sku = ""
 
     if not sku:
         return None
 
-    # --- Заголовок ---
-    h1 = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
-    title = safe_str(h1.get_text(" ", strip=True) if h1 else "").strip()
-    if not title:
-        title = safe_str(s.title.get_text(" ", strip=True) if s.title else "").strip()
+    # Title
+    h = s.find(["h1", "h2"], attrs={"itemprop": "name"}) or s.find("h1") or s.find("h2")
+    title = title_clean(safe_str(h.get_text(" ", strip=True) if h else ""))
+    # Picture (на сайте почти всегда есть фото; вытаскиваем максимально надёжно)
 
-    # --- Описание (сырой текст) ---
+    cand: list[str] = []
+
+
+    # 0) основная картинка (как на странице): <a class="lightbox" id="main_image_full_..."> href="...full_*.jpg"
+
+    a_full = s.select_one('a.lightbox[id^="main_image_full_"]')
+
+    if a_full and a_full.get("href"):
+
+        cand.append(safe_str(a_full["href"]))
+
+
+    # 1) og:image (обычно ведёт на img_products/*.jpg)
+
+    ogi = s.find("meta", attrs={"property": "og:image"})
+
+    if ogi and ogi.get("content"):
+
+        cand.append(safe_str(ogi["content"]))
+
+
+    # 2) rel=image_src
+
+    lnk = s.find("link", attrs={"rel": "image_src"})
+
+    if lnk and lnk.get("href"):
+
+        cand.append(safe_str(lnk["href"]))
+
+
+    # 3) main_image_* / itemprop=image
+
+    img_main = s.select_one('img[id^="main_image_"]') or s.find("img", attrs={"itemprop": "image"})
+
+    if img_main:
+
+        for a in ("data-src", "data-original", "data-lazy", "src", "srcset"):
+
+            v = img_main.get(a)
+
+            if v:
+
+                cand.append(safe_str(v))
+
+                break
+
+
+    # 4) любые img на странице (отбираем только похожие на фото товара)
+
+    for img in s.find_all("img"):
+
+        for a in ("data-src", "data-original", "data-lazy", "src", "srcset"):
+
+            t = safe_str(img.get(a))
+
+            if not t:
+
+                continue
+
+            if "thumb_" in t:
+
+                continue
+
+            if any(k in t for k in ("img_products", "jshopping", "/products/", "/img/")) or re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", t, flags=re.I):
+
+                cand.append(t)
+
+                break
+
+
+    # 5) иногда большая картинка лежит в <a href="...full_...jpg">
+
+    for a in s.find_all("a"):
+
+        href = safe_str(a.get("href"))
+
+        if not href:
+
+            continue
+
+        if "thumb_" in href:
+
+            continue
+
+        if ("img_products" in href) or re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", href, flags=re.I):
+
+            cand.append(href)
+
+
+    # Соберём все картинки: full_ в приоритете, но не отбрасываем товар без фото
+    pics_raw: list[str] = []
+    for t in cand:
+        t = (t or "").strip()
+        if not t or t.startswith("data:"):
+            continue
+        pics_raw.append(t)
+
+    pics: list[str] = []
+    seen: set[str] = set()
+    for t in pics_raw:
+        u = normalize_img_to_full(t)
+        if not u or u.startswith("data:"):
+            continue
+        if u in seen:
+            continue
+        seen.add(u)
+        pics.append(u)
+
+    # full_ вперёд, порядок сохраняем
+    full = [u for u in pics if "full_" in u]
+    rest = [u for u in pics if "full_" not in u]
+    pics = full + rest
+
+    pic = pics[0] if pics else ""
+
+    # Description + params
     desc_txt = ""
+    params: List[Tuple[str, str]] = []
+
     block = (
         s.select_one('div[itemprop="description"].jshop_prod_description')
-        or s.select_one('div.jshop_prod_description')
+        or s.select_one("div.jshop_prod_description")
         or s.select_one('[itemprop="description"]')
     )
     if block:
-        desc_txt = safe_str(block.get_text("\n", strip=True)).strip()
+        desc_txt = block.get_text("\n", strip=True)
+        params.extend(extract_kv_pairs_from_text(desc_txt))
 
-    # --- Картинка(и): собираем только img_products, затем ядро выберет одну (full_ если есть) ---
-    pics: List[str] = []
+    # Table specs (если есть)
+    table = s.find("table")
+    if table:
+        for tr in table.find_all("tr"):
+            tds = tr.find_all(["td", "th"])
+            if len(tds) >= 2:
+                k = safe_str(tds[0].get_text(" ", strip=True))
+                v = safe_str(tds[1].get_text(" ", strip=True))
+                if k and v and len(k) <= 80 and len(v) <= 240:
+                    params.append((k, v))
 
-    def _add_pic(u: str) -> None:
-        u = safe_str(u).strip()
-        if not u:
-            return
-        u = u.split("#", 1)[0]
-        u = requests.compat.urljoin(url, u)
-        if "components/com_jshopping/files/img_products/" not in u:
-            return
-        if not re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", u, flags=re.I):
-            return
-        pics.append(u)
-
-    # 1) main image
-    imgel = s.find("img", id=re.compile(r"^main_image_", re.I))
-    if imgel:
-        for a in ("data-src", "data-original", "data-lazy", "src", "srcset"):
-            t = safe_str(imgel.get(a))
-            if not t:
-                continue
-            if a == "srcset":
-                t = t.split(",")[0].strip().split(" ")[0].strip()
-            _add_pic(t)
-            break
-
-    # 2) og:image / image_src
-    ogi = s.find("meta", attrs={"property": "og:image"})
-    if ogi and ogi.get("content"):
-        _add_pic(ogi["content"])
-    ln = s.find("link", attrs={"rel": "image_src"})
-    if ln and ln.get("href"):
-        _add_pic(ln["href"])
-
-    # 3) все img на странице (часто 1 шт.)
-    for img in s.find_all("img"):
-        for a in ("data-src", "data-original", "data-lazy", "src", "srcset"):
-            t = safe_str(img.get(a))
-            if not t:
-                continue
-            if a == "srcset":
-                t = t.split(",")[0].strip().split(" ")[0].strip()
-            _add_pic(t)
-            break
-
-    # 4) ссылки на full_ в <a href>
-    for a in s.find_all("a", href=True):
-        href = safe_str(a.get("href"))
-        if not href:
-            continue
-        if "components/com_jshopping/files/img_products/" not in href:
-            continue
-        if not re.search(r"\.(?:jpg|jpeg|png|webp)(?:\?|$)", href, flags=re.I):
-            continue
-        _add_pic(href)
-
-    # dedupe preserving order
+    # Удалим дубли
     seen = set()
-    pics2: List[str] = []
-    for u in pics:
-        key = u.split("?", 1)[0]
+    params2: List[Tuple[str, str]] = []
+    for k, v in params:
+        kk = k.strip()
+        vv = v.strip()
+        if not kk or not vv:
+            continue
+        key = (kk.lower(), vv.lower())
         if key in seen:
             continue
         seen.add(key)
-        pics2.append(u)
-
-    pic = pics2[0] if pics2 else ""
-
-    # --- Params: берём таблицы/списки (минимально; дальнейшая чистка в core) ---
-    params2: List[Tuple[str, str]] = []
-    for tr in s.find_all("tr"):
-        tds = tr.find_all(["td", "th"])
-        if len(tds) >= 2:
-            k = safe_str(tds[0].get_text(" ", strip=True)).strip()
-            v = safe_str(tds[1].get_text(" ", strip=True)).strip()
-            if k and v:
-                params2.append((k, v))
+        params2.append((kk, vv))
 
     return {
         "sku": sku.strip(),
         "title": title,
         "desc": desc_txt.strip(),
         "pic": pic,
-        "pics": pics2,
+        "pics": pics,
         "params": [(k, v) for (k, v) in params2 if not re.fullmatch(r"\d{1,4}", k.strip())],
         "url": url,
     }
-
 
 
 def discover_relevant_category_urls() -> List[str]:
@@ -706,48 +745,12 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
         log("[site] no category urls found")
         return {}, {}
 
-    # общий бюджет страниц делим на кол-во категорий (как в старом рабочем варианте)
-    pages_budget = max(1, int(MAX_CATEGORY_PAGES) // max(1, len(cats)))
+    pages_budget = MAX_CATEGORY_PAGES
 
     product_urls: List[str] = []
     for cu in cats:
         product_urls.extend(collect_product_urls(cu, pages_budget))
     product_urls = list(dict.fromkeys(product_urls))
-
-    # Предфильтр по коду в URL (ускорение): если хотим только товары из XLSX, нет смысла ходить по чужим карточкам
-    if want_keys and product_urls:
-        try:
-            from urllib.parse import urlparse, unquote
-
-            def url_keys(u: str) -> Set[str]:
-                p = urlparse(u).path or ""
-                slug = unquote(p.rsplit("/", 1)[-1])
-                if slug.lower().endswith(".html"):
-                    slug = slug[:-5]
-                up = slug.replace("_", "-").upper()
-                out: Set[str] = set()
-                for mm in re.findall(r"[A-ZА-Я]*\d+[A-ZА-Я0-9]*(?:-[A-ZА-Я0-9]+){1,6}", up):
-                    out.add(norm_ascii(mm))
-                    out.add(norm_ascii(mm.replace("-", "")))
-                for mm in re.findall(r"[A-ZА-Я0-9]{2,}", up):
-                    out.add(norm_ascii(mm))
-                out.discard("")
-                return out
-
-            filtered: List[str] = []
-            for u in product_urls:
-                ks = url_keys(u)
-                if not ks:
-                    filtered.append(u)
-                    continue
-                if any(k in want_keys for k in ks):
-                    filtered.append(u)
-
-            # если вдруг получилось совсем мало — лучше не фильтровать (безопасность)
-            if len(filtered) >= max(30, int(len(product_urls) * 0.15)):
-                product_urls = filtered
-        except Exception:
-            pass
 
     log(f"[site] categories={len(cats)} product_urls={len(product_urls)} pages_budget={pages_budget}")
 
@@ -791,9 +794,11 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
                 for k in useful:
                     matched.add(k)
 
+            # индекс по SKU/артикулу
             for k in keys:
                 sku_index[k] = out
 
+            # индекс по названию (фолбэк, если SKU не совпал)
             t_full = norm_ascii(title_clean(safe_str(out.get("title"))))
             if t_full and t_full not in title_index:
                 title_index[t_full] = out
@@ -803,7 +808,6 @@ def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Di
 
     log(f"[site] indexed={len(sku_index)} matched={len(matched) if want_keys else '-'}")
     return sku_index, title_index
-
 
 def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
     # now_local — наивный datetime в Алматы
