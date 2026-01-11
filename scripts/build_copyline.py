@@ -680,7 +680,6 @@ def build_yml(offers: List[Dict[str,Any]], feed_meta_str: str) -> str:
     lines: List[str] = []
     ts = datetime.now(timezone(timedelta(hours=5))).strftime("%Y-%m-%d %H:%M")
     lines.append(f'<?xml version="1.0" encoding="{XML_ENCODING}"?>')
-    lines.append('')
     lines.append(f'<yml_catalog date="{ts}">')
     lines.append("<shop><offers>")
     lines.append("")
