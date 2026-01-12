@@ -599,7 +599,7 @@ def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
 # -----------------------------
 # Сайт: индексация карточек (картинки + описание + характеристики)
 # -----------------------------
-def url: Optional[str] -> Optional[str]:
+def normalize_url(url: Optional[str]) -> Optional[str]:
     """Нормализация URL картинки (CopyLine).
     Важно: не превращаем автоматически в full_ (иначе получаем несуществующие ссылки).
     Делаем только: absolute + убираем #/? + режем srcset хвост."""
