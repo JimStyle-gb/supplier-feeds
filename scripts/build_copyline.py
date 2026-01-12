@@ -15,6 +15,40 @@ import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
+def _pick_copyline_best_picture(pics: list[str]) -> list[str]:
+    """# CopyLine: если реально есть full_ — берём его, иначе обычное. Только img_products. 1 картинка."""
+    if not pics:
+        return []
+    cleaned: list[str] = []
+    seen = set()
+
+    def norm(u: str) -> str:
+        u = (u or "").strip()
+        u = u.split("#", 1)[0]
+        return u
+
+    for u in pics:
+        u = norm(u)
+        if not u:
+            continue
+        if "components/com_jshopping/files/img_products/" not in u:
+            continue
+        if "/img_products/thumb_" in u:
+            continue
+        if u in seen:
+            continue
+        seen.add(u)
+        cleaned.append(u)
+
+    if not cleaned:
+        return []
+
+    for u in cleaned:
+        base = u.rsplit("/", 1)[-1]
+        if base.startswith("full_"):
+            return [u]
+    return [cleaned[0]]
+
 def _pick_copyline_picture(pics: list[str]) -> list[str]:
     """# CopyLine: одна картинка на товар — full_ если есть, иначе обычная. Только img_products."""
     if not pics:
@@ -182,7 +216,7 @@ def _pick_best_copyline_pic(urls: List[str]) -> Optional[str]:
     cleaned: List[str] = []
     seen = set()
     for u in urls or []:
-        nu = normalize_img_to_full(u)
+        nu = u
         if not nu:
             continue
         if "/components/com_jshopping/files/img_products/" not in nu:
@@ -565,7 +599,7 @@ def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
 # -----------------------------
 # Сайт: индексация карточек (картинки + описание + характеристики)
 # -----------------------------
-def normalize_img_to_full(url: Optional[str]) -> Optional[str]:
+def url: Optional[str] -> Optional[str]:
     """Нормализация URL картинки (CopyLine).
     Важно: не превращаем автоматически в full_ (иначе получаем несуществующие ссылки).
     Делаем только: absolute + убираем #/? + режем srcset хвост."""
@@ -737,7 +771,7 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     pics: List[str] = []
     seen: Set[str] = set()
     for t in pics_raw:
-        u = normalize_img_to_full(t)
+        u = t
         if not u or u.startswith("data:"):
             continue
         if u in seen:
@@ -1093,7 +1127,7 @@ def main() -> int:
             if pics:
                 pictures = [safe_str(x) for x in pics if safe_str(x)][:10]
             elif found.get("pic"):
-                pictures = [safe_str(found.get("pic"))]
+                pictures = _pick_copyline_best_picture([safe_str(found.get("pic"))])
             params = list(found.get("params") or [])
             # Фильтр применится при формировании OfferOut (оставляем только img_products, full_ в приоритете)
 
@@ -1126,7 +1160,7 @@ def main() -> int:
                 available=bool(it.get("available", True)),
                 name=name,
                 price=price,
-                pictures=_pick_copyline_picture(pictures),
+                pictures=_pick_copyline_best_picture(_pick_copyline_picture(pictures),)
                 vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
                 params=params,
                 native_desc=native_desc,
