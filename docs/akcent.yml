@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-12 02:10">
+<yml_catalog date="2026-01-13 02:12">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-12 02:10:28
-Ближайшая сборка (Алматы)                  | 2026-01-13 02:00:00
-Сколько товаров у поставщика до фильтра    | 1819
-Сколько товаров у поставщика после фильтра | 152
-Сколько товаров есть в наличии (true)      | 152
+Время сборки (Алматы)                      | 2026-01-13 02:12:24
+Ближайшая сборка (Алматы)                  | 2026-01-14 02:00:00
+Сколько товаров у поставщика до фильтра    | 1858
+Сколько товаров у поставщика после фильтра | 151
+Сколько товаров есть в наличии (true)      | 151
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -2406,36 +2406,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Китай</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200, Ёмкость, для, отработанных, чернил, C13T619300, T3000, 5000, 7000, Т3200, 5200, 7200, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC13T66424A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T66424A</vendorCode>
-<name>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</name>
-<price>7900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/fde/q87nc9md3muxkkrsvwdjxlpg62utdxph.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</h3><p>Контейнер с голубыми чернилами для:<br>Epson L100<br>Epson L200<br>Epson L110<br>Epson L210<br>Epson L300<br>Epson L355<br>Epson L550</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Гарантия:</strong> 3</li><li><strong>Вид:</strong> чернила</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Наименование производителя:</strong> Epson Чернила L100 голубые 70ml</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 5700 – 6500 страниц формата A4*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Цвет">Голубой</param>
-<param name="Гарантия">3</param>
-<param name="Вид">чернила</param>
-<param name="Для бренда">Epson</param>
-<param name="Наименование производителя">Epson Чернила L100 голубые 70ml</param>
-<param name="Объем">0,001</param>
-<param name="Ресурс">5700 – 6500 страниц формата A4*</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой, Чернила, C13T66424A, L100, 110, 120, 1300, 132, 200, 210, 222, 300, 312, 350, 355, 362, 366, 456, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC13T66434A" available="true">
