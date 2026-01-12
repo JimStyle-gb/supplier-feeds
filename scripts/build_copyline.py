@@ -1160,7 +1160,7 @@ def main() -> int:
                 available=bool(it.get("available", True)),
                 name=name,
                 price=price,
-                pictures=_pick_copyline_best_picture(_pick_copyline_picture(pictures),)
+                pictures=_pick_copyline_best_picture(pictures),
                 vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
                 params=params,
                 native_desc=native_desc,
