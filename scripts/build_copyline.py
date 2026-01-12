@@ -115,21 +115,15 @@ SUPPLIER_NAME = "CopyLine"
 SUPPLIER_URL_DEFAULT = "https://copyline.kz/goods.html"
 BASE_URL = "https://copyline.kz"
 
+SITEMAP_URL_DEFAULT = f"{BASE_URL}/site-map.html?id=1&view=html"
+SITEMAP_URL = os.getenv("SITEMAP_URL", SITEMAP_URL_DEFAULT)
+
 XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 
 # Вариант C: фильтрация CopyLine по префиксам названия (строго с начала строки)
 # Важно для стабильного ассортимента и чтобы не тянуть UPS/прочее из прайса.
 COPYLINE_INCLUDE_PREFIXES = [
-    "drum",
-    "developer",
-    "девелопер",
-    "драм",
-    "кабель сетевой",
     "картридж",
-    "термоблок",
-    "термоэлемент",
-    "тонер-картридж",
-    "тонер картридж",
 ]
 
 
@@ -138,7 +132,7 @@ OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
 MAX_CATEGORY_PAGES = int(os.getenv("MAX_CATEGORY_PAGES", "25") or "25")  # лимит страниц на категорию
-MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "12") or "12")    # общий лимит времени обхода сайта
+MAX_CRAWL_MINUTES = int(os.getenv("MAX_CRAWL_MINUTES", "60") or "60")    # общий лимит времени обхода сайта
 # Регулярка для карточек товара (не категорий)
 PRODUCT_RE = re.compile(r"/goods/[^/]+\.html(?:[?#].*)?$", flags=re.I)
 
@@ -371,6 +365,20 @@ def _sku_matches(raw_v: str, page_sku: str) -> bool:
     want = _norm_sku_variants(raw_v)
     have = _norm_sku_variants(page_sku)
     return bool(want and have and (want & have))
+
+def parse_price_tenge(text: str) -> int:
+    """Парсинг цены в тг из текста: '7 051 тг.' -> 7051."""
+    if not text:
+        return 0
+    s = str(text)
+    m = re.search(r"(\d[\d\s]{1,15})\s*(?:тг|тенге|₸)", s, flags=re.I)
+    if not m:
+        return 0
+    num = re.sub(r"\s+", "", m.group(1))
+    try:
+        return int(num)
+    except Exception:
+        return 0
 
 def title_clean(s: str) -> str:
     s = (s or "").strip()
@@ -823,6 +831,23 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         seen.add(key)
         params2.append((kk, vv))
 
+    # Price (тг)
+    price_raw = 0
+    # jshopping price block
+    pr = s.select_one("div.jshop_price span") or s.select_one(".jshop_price span") or s.select_one("span.jshop_price") or s.select_one("span.price")
+    if pr:
+        price_raw = parse_price_tenge(pr.get_text(" ", strip=True))
+    if not price_raw:
+        # fallback: find first "NNN тг" on page
+        page_txt = s.get_text(" ", strip=True)
+        price_raw = parse_price_tenge(page_txt)
+
+    # Availability
+    available = True
+    low = s.get_text(" ", strip=True).lower()
+    if "нет в наличии" in low or "отсутств" in low:
+        available = False
+
     return {
         "sku": sku.strip(),
         "title": title,
@@ -831,6 +856,8 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         "pics": pics,
         "params": [(k, v) for (k, v) in params2 if not re.fullmatch(r"\d{1,4}", k.strip())],
         "url": url,
+        "price_raw": int(price_raw or 0),
+        "available": bool(available),
     }
 
 
@@ -1033,139 +1060,166 @@ def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
 
 
 
+def parse_sitemap_xml_urls(xml_bytes: bytes) -> List[Dict[str, str]]:
+    """Fallback: sitemap.xml (urlset). Названий нет — фильтр сделаем уже по title со страницы товара."""
+    txt = (xml_bytes or b"").decode("utf-8", errors="ignore")
+    urls = re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", txt, flags=re.I)
+    out: List[Dict[str, str]] = []
+    seen = set()
+    for u in urls:
+        u = safe_str(u).strip()
+        if not u:
+            continue
+        if "/goods/" not in u or not re.search(r"\.html(?:\?|$)", u, flags=re.I):
+            continue
+        if u in seen:
+            continue
+        seen.add(u)
+        out.append({"url": u, "title": ""})
+    return out
+
+def _abs_url(href: str) -> str:
+    href = safe_str(href).strip()
+    if not href:
+        return ""
+    if href.startswith("http://") or href.startswith("https://"):
+        return href
+    if href.startswith("//"):
+        return "https:" + href
+    if href.startswith("/"):
+        return BASE_URL + href
+    return BASE_URL.rstrip("/") + "/" + href.lstrip("/")
+
+
+def parse_sitemap_products(html_bytes: bytes) -> List[Dict[str, str]]:
+    """Парсим html-sitemap и берём только товары (ссылки /goods/*.html),
+    затем фильтруем по COPYLINE_INCLUDE_PREFIXES (с начала строки).
+    Возвращаем список dict: {url,title}.
+    """
+    s = soup_of(html_bytes)
+    out: List[Dict[str, str]] = []
+    seen = set()
+
+    for a in s.find_all("a"):
+        href = safe_str(a.get("href"))
+        title = title_clean(safe_str(a.get_text(" ", strip=True)))
+        if not href or not title:
+            continue
+
+        url = _abs_url(href)
+        if "/goods/" not in url or not re.search(r"\.html(?:\?|$)", url, flags=re.I):
+            continue
+        if not _is_allowed_prefix(title):
+            continue
+
+        key = url
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append({"url": url, "title": title})
+
+    return out
+
 def main() -> int:
     build_time = now_almaty()
     next_run = next_run_dom_1_10_20_at_hour(build_time, 3)
 
-    xlsx_bytes = http_get(XLSX_URL, tries=3, min_bytes=10_000)
-    if not xlsx_bytes:
-        raise RuntimeError("Не удалось скачать XLSX.")
+    if NO_CRAWL:
+        raise RuntimeError("NO_CRAWL=1: crawl отключён, а режим CopyLine теперь sitemap.")
 
-    before, items = parse_xlsx_items(xlsx_bytes)
-
-    # хотим подтянуть картинки только для наших артикулов (как в старом скрипте)
-
-    want_keys: Set[str] = set()
-
-    for it in items:
-
-        raw_v = safe_str(it.get("vendorCode_raw") or "").strip()
-
-        if not raw_v:
-
-            continue
-
-        variants = {raw_v, raw_v.replace("-", "")}
-
-        if re.fullmatch(r"[Cc]\d+", raw_v):
-
-            variants.add(raw_v[1:])
-
-        if re.fullmatch(r"\d+", raw_v):
-
-            variants.add("C" + raw_v)
-
-        for v in variants:
-
-            want_keys.add(norm_ascii(v))
-
-
-    site_sku_index, site_index = build_site_index(want_keys)
+    sitemap_bytes = http_get(SITEMAP_URL, tries=3, min_bytes=20_000)
+    products: List[Dict[str, str]] = []
+    if sitemap_bytes:
+        products = parse_sitemap_products(sitemap_bytes)
+    else:
+        # fallback: sitemap.xml
+        xml_bytes = http_get(f"{BASE_URL}/sitemap.xml", tries=3, min_bytes=5_000)
+        if not xml_bytes:
+            raise RuntimeError("CopyLine: не удалось скачать sitemap (HTML) и sitemap.xml.")
+        products = parse_sitemap_xml_urls(xml_bytes)
+    before = len(products)
 
     # Собираем offers (важно: стабильные oid!)
     out_offers: List[OfferOut] = []
     seen_oids = set()
 
-    for it in items:
-        raw_v = safe_str(it.get("vendorCode_raw"))
-        base_oid = oid_from_vendor_code_raw(raw_v)
+    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
+    from concurrent.futures import ThreadPoolExecutor, as_completed
 
-        # найдём карточку на сайте (если есть)
-        found = None
-        candidates = {raw_v, raw_v.replace("-", "")} 
-        raw_v0 = raw_v.lstrip("0")
-        if raw_v0 and raw_v0 != raw_v:
-            candidates.add(raw_v0)
-            candidates.add(raw_v0.replace("-", "")) 
-        raw_v0 = raw_v.lstrip("0")
-        if raw_v0 and raw_v0 != raw_v:
-            candidates.add(raw_v0)
-            candidates.add(raw_v0.replace("-", ""))
-        if re.fullmatch(r"[Cc]\d+", raw_v):
-            candidates.add(raw_v[1:])
-        if re.fullmatch(r"\d+", raw_v):
-            candidates.add("C" + raw_v)
+    def _mk_oid(sku: str) -> str:
+        sku = safe_str(sku).strip()
+        sku = re.sub(r"[^A-Za-z0-9\-\._/]", "", sku)
+        return "CL" + sku
 
-        for v in candidates:
-            kn = norm_ascii(v)
-            if kn in site_sku_index:
-                found = site_sku_index[kn]
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
+        futs = {ex.submit(parse_product_page, p["url"]): p for p in products}
+        for fut in as_completed(futs):
+            if datetime.utcnow() > deadline:
+                log("[site] deadline reached -> stop parsing products")
                 break
 
-        if not found:
-            tk_full = norm_ascii(title_clean(it["title"]))
-            tk30 = norm_ascii(title_clean(it["title"])[:30])
-            for tk in (tk_full, tk30):
-                if tk and tk in site_index:
-                    cand = site_index[tk]
-                    if _sku_matches(raw_v, safe_str(cand.get("sku"))):
-                        found = cand
-                        break
+            p = futs[fut]
+            got = None
+            try:
+                got = fut.result()
+            except Exception as e:
+                log(f"[site] parse fail: {p.get('url')} | {e}")
+                continue
 
-        if found and not _sku_matches(raw_v, safe_str(found.get("sku"))):
-            found = None
+            if not got:
+                continue
 
-        name = it["title"]
-        if not _is_allowed_prefix(name):
-            continue
-        native_desc = it["title"]
-        pictures: List[str] = []
-        params: List[Tuple[str, str]] = []
-        if found:
-            native_desc = safe_str(found.get("desc")) or native_desc
-            pics = list(found.get("pics") or [])
-            if pics:
-                pictures = [safe_str(x) for x in pics if safe_str(x)][:10]
-            elif found.get("pic"):
-                pictures = _pick_copyline_best_picture([safe_str(found.get("pic"))])
-            params = list(found.get("params") or [])
-            # Фильтр применится при формировании OfferOut (оставляем только img_products, full_ в приоритете)
+            name = safe_str(got.get("title") or p.get("title") or "").strip()
+            if not _is_allowed_prefix(name):
+                continue
 
-        if not _is_allowed_prefix(name):
-            continue
+            sku = safe_str(got.get("sku") or "").strip()
+            if not sku:
+                continue
 
-        # Минимальные характеристики из прайса (чтобы у всех товаров были params)
-        kind = _derive_kind(name)
-        p_min: List[Tuple[str, str]] = []
-        if kind:
-            p_min.append(("Тип", kind))
-        unit_raw = safe_str(it.get("unit_raw") or "").strip()
-        if unit_raw and unit_raw != "-":
-            p_min.append(("Ед. изм.", unit_raw))
-        params = _merge_params(params, p_min)
+            oid = _mk_oid(sku)
+            if oid in seen_oids:
+                continue
+            seen_oids.add(oid)
 
-        price = compute_price(int(it.get("dealer_price") or 0))
+            native_desc = safe_str(got.get("desc") or "").strip() or name
 
-        oid = base_oid
-        if oid in seen_oids:
-            # редкий случай: дубль артикулов — делаем СТАБИЛЬНЫЙ суффикс от URL или имени
-            seed = safe_str(found.get("url") if found else "") or name
-            suf = hashlib.md5(seed.encode("utf-8", errors="ignore")).hexdigest()[:6].upper()
-            oid = f"{base_oid}-{suf}"
-        seen_oids.add(oid)
+            # Params
+            params: List[Tuple[str, str]] = []
+            for (k, v) in (got.get("params") or []):
+                kk = safe_str(k).strip()
+                vv = safe_str(v).strip()
+                if kk and vv:
+                    params.append((kk, vv))
 
-        out_offers.append(
-            OfferOut(
-                oid=oid,
-                available=bool(it.get("available", True)),
-                name=name,
-                price=price,
-                pictures=_pick_copyline_best_picture(pictures),
-                vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
-                params=params,
-                native_desc=native_desc,
+            # Минимальные характеристики (чтобы было полезно даже если на странице пусто)
+            kind = _derive_kind(name)
+            if kind:
+                params = _merge_params(params, [("Тип", kind)])
+
+            raw_price = int(got.get("price_raw") or 0)
+            price = compute_price(raw_price)
+
+            pic = safe_str(got.get("pic") or "").strip()
+            pictures: List[str] = []
+            if pic:
+                pictures = [pic]
+
+            out_offers.append(
+                OfferOut(
+                    oid=oid,
+                    available=bool(got.get("available", True)),
+                    name=name,
+                    price=price,
+                    pictures=_pick_copyline_best_picture(pictures),
+                    vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
+                    params=params,
+                    native_desc=native_desc,
+                )
             )
-        )
+
+    # стабильный порядок
+    out_offers.sort(key=lambda o: o.oid)
 
     after = len(out_offers)
     in_true = sum(1 for o in out_offers if o.available)
