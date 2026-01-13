@@ -462,13 +462,16 @@ def title_startswith_strict(title: str, patterns: Sequence[re.Pattern]) -> bool:
 
 
 def _is_allowed_prefix(title: str) -> bool:
-    # Финальная проверка по префиксам (после обогащения с сайта не должно вылезать лишнее)
+    """# CopyLine: фильтр по префиксам. Если список пустой — берём все товары."""
+    if not COPYLINE_INCLUDE_PREFIXES:
+        return True
     if not title:
         return False
     pats = getattr(_is_allowed_prefix, "_pats", None)
-    if pats is None:
+    if pats is None or getattr(_is_allowed_prefix, "_src", None) is not COPYLINE_INCLUDE_PREFIXES:
         pats = compile_startswith_patterns(COPYLINE_INCLUDE_PREFIXES)
         setattr(_is_allowed_prefix, "_pats", pats)
+        setattr(_is_allowed_prefix, "_src", COPYLINE_INCLUDE_PREFIXES)
     return title_startswith_strict(title_clean(title), pats)
 
 
