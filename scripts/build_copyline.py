@@ -15,40 +15,47 @@ import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
-def _pick_copyline_best_picture(pics: list[str]) -> list[str]:
-    """# CopyLine: если реально есть full_ — берём его, иначе обычное. Только img_products. 1 картинка."""
-    if not pics:
-        return []
+def _pick_copyline_best_picture(pictures: list[str]) -> list[str]:
+    """CopyLine: оставить только реальные фото товара.
+    Берём только картинки из img_products, чистим мусор, сохраняем порядок (full_* сначала).
+    """
+    if not pictures:
+        return [PLACEHOLDER_PIC]
+
     cleaned: list[str] = []
-    seen = set()
+    seen: set[str] = set()
 
-    def norm(u: str) -> str:
-        u = (u or "").strip()
-        u = u.split("#", 1)[0]
-        return u
+    for p in pictures:
+        if not p:
+            continue
+        p = str(p).strip()
+        if not p:
+            continue
 
-    for u in pics:
-        u = norm(u)
-        if not u:
+        # только реальные фото товаров (без логотипов/иконок/печатных и т.п.)
+        if "/components/com_jshopping/files/img_products/" not in p.replace("\\", "/"):
             continue
-        if "components/com_jshopping/files/img_products/" not in u:
+
+        # нормализуем HTML-экранку
+        p = p.replace("&amp;", "&")
+
+        if p in seen:
             continue
-        if "/img_products/thumb_" in u:
-            continue
-        if u in seen:
-            continue
-        seen.add(u)
-        cleaned.append(u)
+        seen.add(p)
+        cleaned.append(p)
 
     if not cleaned:
-        return []
+        return [PLACEHOLDER_PIC]
 
-    for u in cleaned:
-        base = u.rsplit("/", 1)[-1]
-        if base.startswith("full_"):
-            return [u]
-    return [cleaned[0]]
+    def is_full(u: str) -> bool:
+        base = u.split("/")[-1]
+        return base.startswith("full_") or "/full_" in u
 
+    fulls = [u for u in cleaned if is_full(u)]
+    normals = [u for u in cleaned if not is_full(u)]
+
+    # если на странице есть только обычное фото — его и оставим
+    return (fulls + normals) if (fulls + normals) else [PLACEHOLDER_PIC]
 def _pick_copyline_picture(pics: list[str]) -> list[str]:
     """# CopyLine: одна картинка на товар — full_ если есть, иначе обычная. Только img_products."""
     if not pics:
@@ -122,9 +129,7 @@ XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 
 # Вариант C: фильтрация CopyLine по префиксам названия (строго с начала строки)
 # Важно для стабильного ассортимента и чтобы не тянуть UPS/прочее из прайса.
-COPYLINE_INCLUDE_PREFIXES = [
-    "картридж",
-]
+COPYLINE_INCLUDE_PREFIXES = []  # режим: берём все товары
 
 
 
@@ -787,9 +792,9 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         seen.add(u)
         pics.append(u)
 
-    # 1 картинка по политике CopyLine (img_products + full_ приоритет)
-    best_pic = _pick_best_copyline_pic(pics)
-    pic = best_pic or (pics[0] if pics else "")
+    # все фото (только img_products, full_* приоритет)
+    pics = _pick_copyline_best_picture(pics)
+    pic = (pics[0] if pics else PLACEHOLDER_PIC)
 
 
 
@@ -852,6 +857,7 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         "sku": sku.strip(),
         "title": title,
         "desc": desc_txt.strip(),
+        "pics": pics,
         "pic": pic,
         "pics": pics,
         "params": [(k, v) for (k, v) in params2 if not re.fullmatch(r"\d{1,4}", k.strip())],
@@ -1200,10 +1206,13 @@ def main() -> int:
             raw_price = int(got.get("price_raw") or 0)
             price = compute_price(raw_price)
 
+            pictures = got.get("pics") or []
+            if not isinstance(pictures, list):
+                pictures = [safe_str(pictures)]
             pic = safe_str(got.get("pic") or "").strip()
-            pictures: List[str] = []
-            if pic:
+            if (not pictures) and pic:
                 pictures = [pic]
+            pictures = _pick_copyline_best_picture([safe_str(p).strip() for p in pictures if safe_str(p).strip()])
 
             out_offers.append(
                 OfferOut(
@@ -1211,7 +1220,7 @@ def main() -> int:
                     available=bool(got.get("available", True)),
                     name=name,
                     price=price,
-                    pictures=_pick_copyline_best_picture(pictures),
+                    pictures=pictures,
                     vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
                     params=params,
                     native_desc=native_desc,
