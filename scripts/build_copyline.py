@@ -129,7 +129,7 @@ XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 
 # Вариант C: фильтрация CopyLine по префиксам названия (строго с начала строки)
 # Важно для стабильного ассортимента и чтобы не тянуть UPS/прочее из прайса.
-COPYLINE_INCLUDE_PREFIXES = []  # режим: берём все товары
+COPYLINE_INCLUDE_PREFIXES = ['Drum', 'Девелопер', 'Драм-картридж', 'Драм-юниты', 'Кабель сетевой', 'Картридж', 'Картриджи', 'Термоблок', 'Тонер-картридж', 'Чернила']
 
 
 
@@ -461,23 +461,22 @@ def title_startswith_strict(title: str, patterns: Sequence[re.Pattern]) -> bool:
     return bool(title) and any(p.search(title) for p in patterns)
 
 
-def _is_allowed_prefix(title: str) -> bool:
-    """# CopyLine: фильтр по префиксам. Если список пустой — берём все товары."""
+def _is_allowed_prefix(name: str) -> bool:
+    """# CopyLine: фильтр по первому слову/префиксу из COPYLINE_INCLUDE_PREFIXES."""
+    n = (name or '').strip()
+    if not n:
+        return False
     if not COPYLINE_INCLUDE_PREFIXES:
         return True
-    if not title:
-        return False
-    pats = getattr(_is_allowed_prefix, "_pats", None)
-    if pats is None or getattr(_is_allowed_prefix, "_src", None) is not COPYLINE_INCLUDE_PREFIXES:
-        pats = compile_startswith_patterns(COPYLINE_INCLUDE_PREFIXES)
-        setattr(_is_allowed_prefix, "_pats", pats)
-        setattr(_is_allowed_prefix, "_src", COPYLINE_INCLUDE_PREFIXES)
-    return title_startswith_strict(title_clean(title), pats)
+    low = n.lower()
+    for p in COPYLINE_INCLUDE_PREFIXES:
+        pl = (p or '').strip().lower()
+        if not pl:
+            continue
+        if low == pl or low.startswith(pl + ' ') or low.startswith(pl + '-'):
+            return True
+    return False
 
-
-# -----------------------------
-# XLSX
-# -----------------------------
 def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60) -> Tuple[int, int, Dict[str, int]]:
     def low(x: Any) -> str:
         return safe_str(x).lower()
@@ -656,6 +655,27 @@ def extract_kv_pairs_from_text(text: str) -> List[Tuple[str, str]]:
                 out.append((k, v))
     return out
 
+
+def _copyline_full_only(pics: list[str]) -> list[str]:
+    """# CopyLine: если есть full_ — оставляем только full_ (обычные дублируют)."""
+    if not pics:
+        return []
+    full: list[str] = []
+    other: list[str] = []
+    seen = set()
+    for u in pics:
+        u = (u or "").strip()
+        if not u:
+            continue
+        if u in seen:
+            continue
+        seen.add(u)
+        base = u.rsplit("/", 1)[-1]
+        if base.startswith("full_"):
+            full.append(u)
+        else:
+            other.append(u)
+    return full if full else other
 
 def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     b = http_get(url, tries=3)
@@ -1223,7 +1243,7 @@ def main() -> int:
                     available=bool(got.get("available", True)),
                     name=name,
                     price=price,
-                    pictures=pictures,
+                    pictures=_copyline_full_only(pictures),
                     vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
                     params=params,
                     native_desc=native_desc,
