@@ -1313,7 +1313,7 @@ def main() -> int:
             out_offers.append(
                 OfferOut(
                     oid=oid,
-                    available=bool(got.get("available", True)),
+                    available=True,
                     name=name,
                     price=price,
                     pictures=_copyline_full_only(pictures),
