@@ -3,13 +3,20 @@ name: Build_CopyLine
 on:
   workflow_dispatch:
   push:
+    branches: [ "main", "master" ]
     paths:
+      - ".github/workflows/build_copyline.yml"
       - "scripts/build_copyline.py"
       - "scripts/cs/**"
-      - ".github/workflows/build_copyline.yml"
+      - "requirements.txt"
+      - "pyproject.toml"
+      - "poetry.lock"
   schedule:
-    # 03:00 Алматы = 22:00 UTC (предыдущий день). Запускаем ежедневно и режем по дню месяца в Алматы в gate шаге.
+    # 03:00 Asia/Almaty (UTC+5) -> 22:00 UTC (предыдущий день)
     - cron: "0 22 * * *"
+
+permissions:
+  contents: write
 
 concurrency:
   group: feeds_${{ github.ref_name }}
@@ -18,74 +25,54 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
+    timeout-minutes: 120
     env:
-      PUBLIC_VENDOR: "CopyLine"
+      TZ: "Asia/Almaty"
       OUTPUT_ENCODING: "utf-8"
       PYTHONUTF8: "1"
-
-      # расписание (для gate)
+      PIP_PACKAGES: "requests beautifulsoup4 lxml"
       SCHEDULE_DOM: "1,10,20"
       SCHEDULE_HOUR_ALMATY: "3"
-
-      # источник прайса
-      XLSX_URL: "https://copyline.kz/files/price-CLA.xlsx"
-
-      # подсказка для адаптера (если он умеет подкачивать сайт)
+      PUBLIC_VENDOR: "CopyLine"
       SEED_URLS: "https://copyline.kz/,https://copyline.kz/goods.html"
       NO_CRAWL: "0"
-
-      PIP_PACKAGES: "requests beautifulsoup4 lxml openpyxl"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Gate (schedule only)
+      - name: Gate + set build time (Almaty)
         id: gate
         shell: bash
         run: |
           python - <<'PY'
           import os
-          from datetime import datetime, timedelta
-
-          dom = (os.getenv("SCHEDULE_DOM", "*") or "*").strip()
-          hour = int(os.getenv("SCHEDULE_HOUR_ALMATY", "0") or "0")
-          event = (os.getenv("GITHUB_EVENT_NAME", "") or "").strip()
-
-          now_utc = datetime.utcnow()
-          now_alm = now_utc + timedelta(hours=5)
-          almaty_now = now_alm.strftime("%Y-%m-%d %H:%M:%S")
-
-          if dom == "*":
-              allowed_set = None
-              allowed = "*"
-              day_ok = True
-          else:
-              allowed_set = {int(x.strip()) for x in dom.split(",") if x.strip().isdigit()}
-              allowed = ",".join(str(x) for x in sorted(allowed_set)) if allowed_set else "(empty)"
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          
+          event = (os.getenv('GITHUB_EVENT_NAME','') or '').strip()
+          dom = (os.getenv('SCHEDULE_DOM','') or '').strip()
+          hour = (os.getenv('SCHEDULE_HOUR_ALMATY','') or '').strip()
+          
+          now_alm = datetime.now(ZoneInfo('Asia/Almaty'))
+          almaty_now = now_alm.strftime('%Y-%m-%d %H:%M:%S')
+          
+          run = 'yes'
+          day_ok = True
+          allowed = dom or '*'
+          if event == 'schedule' and dom and dom != '*':
+              allowed_set = {int(x.strip()) for x in dom.split(',') if x.strip().isdigit()}
+              allowed = ','.join(str(x) for x in sorted(allowed_set)) if allowed_set else '(empty)'
               day_ok = (now_alm.day in allowed_set) if allowed_set else False
-
-          # Для schedule ограничение делаем только по дню месяца в Алматы.
-          # Час задается cron, а GitHub может задержать запуск, поэтому hour_ok не проверяем.
-          if event == "schedule":
-              should = "yes" if day_ok else "no"
-          else:
-              should = "yes"
-
-          print(f"::notice::Event={event}; Almaty now: {almaty_now}; allowed_dom={allowed}; hour={hour}; day_ok={day_ok}; should_run={should}")
-
-          # output для if:
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
-              f.write(f"run={should}\n")
-
-          # фиксируем build_time для FEED_META:
-          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
-              f.write(f"CS_FORCE_BUILD_TIME_ALMATY={almaty_now}\n")
+              run = 'yes' if day_ok else 'no'
+          
+          print(f'::notice::Event={event}; Almaty now: {almaty_now}; allowed_dom={allowed}; hour={hour or "-"}; day_ok={day_ok}; should_run={run}')
+          
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as f:
+              f.write(f'run={run}\n')
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as f:
+              f.write(f'CS_FORCE_BUILD_TIME_ALMATY={almaty_now}\n')
           PY
 
       - name: Setup Python
@@ -100,13 +87,17 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
           pip install $PIP_PACKAGES
 
-      - name: Build feed
+      - name: Sync -> build
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         shell: bash
         run: |
           set -euo pipefail
+          git pull --rebase
           python scripts/build_copyline.py
 
       - name: Commit + push docs/copyline.yml (retry)
@@ -114,19 +105,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git add docs/copyline.yml
+          git add docs/copyline.yml || true
 
           if git diff --cached --quiet; then
             echo "No changes."
             exit 0
           fi
-
-          git commit -m "CopyLine: update feed"
-
+          git commit -m "build: copyline ($CS_FORCE_BUILD_TIME_ALMATY) [skip ci]"
           BRANCH="${{ github.ref_name }}"
           for i in 1 2 3; do
             echo "Push attempt $i/3"
