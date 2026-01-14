@@ -388,6 +388,30 @@ def parse_price_tenge(text: str) -> int:
     except Exception:
         return 0
 
+
+def parse_price_digits(text: str) -> int:
+    """Парсинг числа из блока цены.
+    Не привязываемся к 'тг', чтобы не ломаться на кривой кодировке.
+    Поддерживаем варианты '7 051', '7051', '7051.00'.
+    """
+    if not text:
+        return 0
+    s = str(text)
+    # если есть десятичная часть, берём целую
+    m = re.search(r"(\d[\d\s]{0,15})(?:[\.,]\d{1,2})", s)
+    if m:
+        num = re.sub(r"\s+", "", m.group(1))
+        try:
+            return int(num)
+        except Exception:
+            return 0
+    num = re.sub(r"[^0-9]+", "", s)
+    if not num:
+        return 0
+    try:
+        return int(num)
+    except Exception:
+        return 0
 def title_clean(s: str) -> str:
     s = (s or "").strip()
     s = re.sub(r"\s*\((?:Артикул|SKU|Код)\s*[:#]?\s*[^)]+\)\s*$", "", s, flags=re.I)
@@ -868,14 +892,56 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
 
     # Price (тг)
     price_raw = 0
-    # jshopping price block
-    pr = s.select_one("div.jshop_price span") or s.select_one(".jshop_price span") or s.select_one("span.jshop_price") or s.select_one("span.price")
+    price_src = ""
+
+    # Важно: цену берём ТОЛЬКО из основного блока товара (.productfull),
+    # иначе схватим цену из "похожие товары"/"рекомендуемые" (там .jshop_price).
+    main = s.select_one(".productfull") or s
+
+    # 1) Основная цена на CopyLine обычно в <span id="block_price">...</span>
+    pr = main.select_one("#block_price") or main.find(id="block_price")
     if pr:
-        price_raw = parse_price_tenge(pr.get_text(" ", strip=True))
+        price_raw = parse_price_digits(pr.get_text(" ", strip=True))
+        if price_raw:
+            price_src = "block_price"
+
+    # 2) Если структура другая — пробуем блок цены
     if not price_raw:
-        # fallback: find first "NNN тг" on page
-        page_txt = s.get_text(" ", strip=True)
-        price_raw = parse_price_tenge(page_txt)
+        box = main.select_one(".prod_price") or main.select_one(".jshop_prod_price")
+        if box:
+            # текущую цену часто кладут в span с id/классом, старую — в old_price
+            cand = (box.select_one("#block_price")
+                    or box.select_one("span.price")
+                    or box.select_one("span[id*='price']:not(#old_price)")
+                    or box.select_one("span"))
+            if cand:
+                price_raw = parse_price_digits(cand.get_text(" ", strip=True))
+                if price_raw:
+                    price_src = "prod_price_box"
+
+    # 3) meta/itemprop (на случай микроразметки)
+    if not price_raw:
+        mp = main.select_one('[itemprop="price"][content]') or main.find("meta", attrs={"itemprop": "price"})
+        if mp:
+            price_raw = parse_price_digits(mp.get("content") or mp.get_text(" ", strip=True))
+            if price_raw:
+                price_src = "itemprop_price"
+
+    if not price_raw:
+        meta = main.find("meta", attrs={"property": re.compile(r"^(?:product|og):price:amount$", re.I)})
+        if meta and meta.get("content"):
+            price_raw = parse_price_digits(meta["content"])
+            if price_raw:
+                price_src = "meta_price_amount"
+
+    # 4) Последний fallback: ищем "NNN тг" ТОЛЬКО внутри productfull
+    if not price_raw:
+        price_raw = parse_price_tenge(main.get_text(" ", strip=True))
+        if price_raw:
+            price_src = "text_tenge"
+
+    if VERBOSE and price_src:
+        log(f"[price] src={price_src} raw={price_raw} url={url}")
 
     # Availability
     available = True
