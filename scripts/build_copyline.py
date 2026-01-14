@@ -11,7 +11,6 @@ import os
 import re
 import time
 import random
-import hashlib
 from datetime import datetime, timedelta
 
 # Логи (можно выключить: VERBOSE=0)
@@ -150,7 +149,6 @@ MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
 
 
 
-VENDORCODE_PREFIX = (os.getenv("VENDORCODE_PREFIX") or "CL").strip()
 PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or SUPPLIER_NAME).strip() or SUPPLIER_NAME
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
@@ -458,19 +456,6 @@ def parse_stock_to_bool(x: Any) -> bool:
     if "есть" in s_low:
         return True
     return False
-
-
-def oid_from_vendor_code_raw(raw: str) -> str:
-    raw = (raw or "").strip()
-    raw = raw.replace("–", "-").replace("/", "-").replace("\\", "-")
-    raw = re.sub(r"\s+", "", raw)
-    raw = re.sub(r"[^A-Za-z0-9_.-]+", "", raw)
-    raw = raw.strip("-.")
-    if not raw:
-        # аварийный вариант (стабильный, но без исходного кода)
-        h = hashlib.md5((raw or "empty").encode("utf-8", errors="ignore")).hexdigest()[:10].upper()
-        return f"{VENDORCODE_PREFIX}{h}"
-    return f"{VENDORCODE_PREFIX}{raw}"
 
 
 def compile_startswith_patterns(kws: Sequence[str]) -> List[re.Pattern]:
