@@ -123,8 +123,57 @@ def next_run_at_hour(now_local: datetime, hour: int) -> datetime:
 def norm_ws(s: str) -> str:
     s2 = (s or "").replace("\u00a0", " ").strip()
     s2 = re.sub(r"\s+", " ", s2)
+    s2 = fix_mixed_cyr_lat(s2)
     return s2.strip()
 
+
+
+# Нормализация "кириллица внутри латинских слов" (например UСE, Сyan).
+# Меняем только в токенах, где одновременно есть латиница и кириллица.
+_CYR_TO_LAT = str.maketrans(
+    {
+        "А": "A",
+        "В": "B",
+        "Е": "E",
+        "К": "K",
+        "М": "M",
+        "Н": "H",
+        "О": "O",
+        "Р": "P",
+        "С": "C",
+        "Т": "T",
+        "Х": "X",
+        "У": "Y",
+        "а": "a",
+        "е": "e",
+        "о": "o",
+        "р": "p",
+        "с": "c",
+        "х": "x",
+        "у": "y",
+        "к": "k",
+        "м": "m",
+        "т": "t",
+        "в": "b",
+        "н": "h",
+    }
+)
+
+_RE_WORDLIKE = re.compile(r"[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё._\-/+]*")
+
+
+def fix_mixed_cyr_lat(s: str) -> str:
+    t = s or ""
+    if not t:
+        return t
+
+    def _sub(m: re.Match[str]) -> str:
+        w = m.group(0)
+        if re.search(r"[A-Za-z]", w) and re.search(r"[А-Яа-яЁё]", w):
+            return w.translate(_CYR_TO_LAT)
+        return w
+
+    return _RE_WORDLIKE.sub(_sub, t)
 
 # Безопасное int из любого значения
 def safe_int(v) -> int | None:
@@ -383,6 +432,7 @@ def fix_text(s: str) -> str:
 
     # Нормализация частой опечатки (Shuko -> Schuko)
     t = _RE_SHUKO.sub("Schuko", t)
+    t = fix_mixed_cyr_lat(t)
     return t
 
 
@@ -682,8 +732,16 @@ class OfferOut:
                 continue
             params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
 
+        # Политика availability по поставщику:
+        # - AlStyle (AS) и AkCent (AC): как у поставщика
+        # - CopyLine (CL), NVPrint (NP), VTT (VT): всегда true
+        oid_u = (self.oid or "").upper()
+        avail_effective = bool(self.available)
+        if oid_u.startswith(("CL", "NP", "VT")):
+            avail_effective = True
+
         out = (
-            f"<offer id=\"{xml_escape_attr(self.oid)}\" available=\"{bool_to_xml(bool(self.available))}\">\n"
+            f"<offer id=\"{xml_escape_attr(self.oid)}\" available=\"{bool_to_xml(bool(avail_effective))}\">\n"
             f"<categoryId></categoryId>\n"
             f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
             f"<name>{xml_escape_text(name)}</name>\n"
@@ -721,6 +779,8 @@ def validate_cs_yml(xml: str) -> None:
     keywords = ""
     price_ok = True
     ids_seen: set[str] = set()
+    hash_like_ids: list[str] = []
+    _RE_HASH_OID = re.compile(r"^(AC|AS|CL|NP|VT)[0-9A-F]{10}$")
 
     bad_no_pic: list[str] = []
     bad_vendorcode: list[str] = []
@@ -746,6 +806,8 @@ def validate_cs_yml(xml: str) -> None:
                 if offer_id in ids_seen:
                     dup_ids.append(offer_id)
                 ids_seen.add(offer_id)
+                if _RE_HASH_OID.match(offer_id):
+                    hash_like_ids.append(offer_id)
             continue
 
         if not in_offer:
@@ -820,6 +882,13 @@ def validate_cs_yml(xml: str) -> None:
     # Сводка ошибок
     if dup_ids:
         errors.append(f"Дубликаты offer id: {', '.join(dup_ids[:10])}" + ("..." if len(dup_ids) > 10 else ""))
+    if hash_like_ids:
+        errors.append(
+            "Найдены hash-похожие offer id (похоже на stable_id/md5). Это запрещено: "
+            + ", ".join(hash_like_ids[:10])
+            + ("..." if len(hash_like_ids) > 10 else "")
+        )
+
 
     if bad_no_pic:
         errors.append(f"Есть offer без <picture>: {', '.join(bad_no_pic[:10])}" + ("..." if len(bad_no_pic) > 10 else ""))
