@@ -12,7 +12,6 @@ import os
 import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
 import xml.etree.ElementTree as ET
 
 import requests
@@ -24,12 +23,13 @@ from cs.core import (
     make_feed_meta,
     make_footer,
     make_header,
+    next_run_at_hour,
+    now_almaty,
     norm_ws,
     validate_cs_yml,
     write_if_changed,
 )
 
-TZ_ALMATY = ZoneInfo("Asia/Almaty")
 
 OUT_FILE = "docs/nvprint.yml"
 OUTPUT_ENCODING = "utf-8"
@@ -139,7 +139,6 @@ def _include_by_name(name: str) -> bool:
     for p in prefixes:
         if p and cf.startswith(p):
             return True
-    return False
 
     extra = (os.environ.get("NVPRINT_INCLUDE_WORDS") or "").strip()
     terms = list(NVPRINT_INCLUDE_TERMS_CF)
@@ -156,60 +155,6 @@ def _include_by_name(name: str) -> bool:
 
 
 
-def _almaty_now() -> datetime:
-    return datetime.now(TZ_ALMATY).replace(tzinfo=None)
-
-
-def _parse_dom_list(s: str) -> set[int]:
-    out: set[int] = set()
-    for x in (s or "").split(","):
-        x = x.strip()
-        if not x:
-            continue
-        try:
-            out.add(int(x))
-        except Exception:
-            pass
-    return out
-
-
-def _should_run() -> bool:
-    # schedule => только если день месяца разрешён (env SCHEDULE_DOM). Час задает cron.
-    # push/workflow_dispatch => всегда
-    ev = (os.environ.get("GITHUB_EVENT_NAME") or "").strip().lower()
-    now = _almaty_now()
-
-    allowed = _parse_dom_list(os.environ.get("SCHEDULE_DOM", "1,10,20")) or {1, 10, 20}
-    try:
-        hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "4") or "4").strip())
-    except Exception:
-        hour = 4
-
-    day_ok = now.day in allowed
-    hour_ok = True  # cron может задержать запуск, поэтому час не проверяем
-
-    ok = (day_ok and hour_ok) if ev == "schedule" else True
-
-    print(
-        f"Event={ev or 'unknown'}; Almaty now: {now:%Y-%m-%d %H:%M:%S}; "
-        f"allowed_dom={','.join(map(str, sorted(allowed)))}; hour={hour}; "
-        f"day_ok={day_ok}; should_run={'yes' if ok else 'no'}"
-    )
-    return ok
-
-
-def _next_run(now: datetime, *, allowed_dom: set[int], hour: int) -> datetime:
-    for add_days in range(0, 370):
-        d = now.date() + timedelta(days=add_days)
-        if d.day not in allowed_dom:
-            continue
-        cand = datetime(d.year, d.month, d.day, hour, 0, 0)
-        if cand > now:
-            return cand
-    return (now + timedelta(days=1)).replace(hour=hour, minute=0, second=0, microsecond=0)
-
-
-@dataclass
 class _Auth:
     login: str
     password: str
@@ -741,23 +686,18 @@ def _derive_vendor_from_name(name: str) -> str:
     return ""
 
 def main() -> int:
-    if not _should_run():
-        return 0
-
     url = (os.environ.get("NVPRINT_XML_URL") or "").strip()
     if not url:
         raise RuntimeError("NVPRINT_XML_URL пустой. Укажи URL в workflow env.")
 
     auth = _get_auth()
 
-    now = _almaty_now()
-    allowed_dom = _parse_dom_list(os.environ.get("SCHEDULE_DOM", "1,10,20")) or {1, 10, 20}
+    now = now_almaty()
     try:
         hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "4") or "4").strip())
     except Exception:
         hour = 4
-    next_run = _next_run(now, allowed_dom=allowed_dom, hour=hour)
-
+    next_run = next_run_at_hour(now, hour)
     xml_bytes = _download_xml(url, auth)
 
     try:
@@ -842,7 +782,7 @@ def main() -> int:
     validate_cs_yml(full)
 
     changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
-    print(f"[nvprint] forced_available=true items_in={len(items)} filtered_out={filtered_out} offers_out={len(out_offers)} in_true={in_true} in_false={in_false} changed={changed} file={OUT_FILE}")
+    print(f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | filtered_out={filtered_out} | in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={OUT_FILE}")
     return 0
 
 
