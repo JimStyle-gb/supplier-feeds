@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-15 20:13">
+<yml_catalog date="2026-01-16 02:13">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-15 20:13:31
-Ближайшая сборка (Алматы)                  | 2026-01-16 02:00:00
-Сколько товаров у поставщика до фильтра    | 1859
-Сколько товаров у поставщика после фильтра | 174
-Сколько товаров есть в наличии (true)      | 174
+Время сборки (Алматы)                      | 2026-01-16 02:13:19
+Ближайшая сборка (Алматы)                  | 2026-01-17 02:00:00
+Сколько товаров у поставщика до фильтра    | 1870
+Сколько товаров у поставщика после фильтра | 176
+Сколько товаров есть в наличии (true)      | 176
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -2224,6 +2224,34 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Чернила Epson C13T09C34A 108 EcoTank для L8050/18050 пурпурный, Чернила, C13T09C34A, 108, EcoTank, для, L8050, 18050, пурпурный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="ACC13T09C64A" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T09C64A</vendorCode>
+<name>Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный</name>
+<price>10900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный</h3><p>Совместимые продукты:<br><br>Epson L8050		<br>Epson L18050</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Гарантия:</strong> 3</li><li><strong>Вид:</strong> чернила</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Наименование производителя:</strong> Чернила Epson 108 Eco Tank</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson</param>
+<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Цвет">Голубой</param>
+<param name="Гарантия">3</param>
+<param name="Вид">чернила</param>
+<param name="Для бренда">Epson</param>
+<param name="Наименование производителя">Чернила Epson 108 Eco Tank</param>
+<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
+<param name="Тип печати">струйная</param>
+<keywords>Epson, Чернила Epson C13T09C64A 108 EcoTank для L8050/18050 светло-пурпурный, Чернила, C13T09C64A, 108, EcoTank, для, L8050, 18050, светло-пурпурный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC13T26704010" available="true">
@@ -4730,6 +4758,28 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Гарантия">12 мес</param>
 <keywords>Epson, Проектор универсальный Epson EB-FH54 белый, Проектор, универсальный, EB-FH54, белый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="ACXG320U" available="true">
+<categoryId></categoryId>
+<vendorCode>ACXG320U</vendorCode>
+<name>Монитор ViewSonic XG320U</name>
+<price>192900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>CS</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Монитор ViewSonic XG320U</h3><p>Дисплей<br>Размер экрана (дюйм): 32<br>Область отображения (дюйм): 32<br>Тип панели: IPS Technology<br>Разрешение: 3840 x 2160<br>Тип разрешения: UHD<br>Коэффициент контрастности: 1,000:1 (тип.)<br>Коэффициент динамической контрастности: 120M:1<br>Тип подсветки: LED<br>Яркость: 400 кд/м² (тип.)<br>Цвета: 1.07B<br>Цветовое пространство: 10 bit true<br>Соотношение сторон: 16:9<br>Время отклика (GTG): 1мс<br>Углы обзора: 178º по вертикали, 178º по горизонтали<br>Срок жизни ламп подсветки: 30000 часов (мин.)<br>Изгиб панели: Плоская<br>Частота обновления: 150<br>Адаптивная синхронизация: FreeSync<br>Фильтр синего света: Да<br>Уменьшение мерцания: Да<br>X Lighting: Нет<br>Цветовая гамма: Adobe RGB: 99% coverage (Typ)<br>NTSC: 113% size (Typ)<br>sRGB: 159% size (Typ)<br>Размер пикселя: 0.185 мм (Г) x 0.185 мм (В)<br>Покрытие экрана: антибликовое, твердость (3H)<br>Совместимость<br>Разрешение ПК (макс.): 3840x2160<br>Разрешение Mac® (макс.): 3840x2160<br>ОС: Windows 10 certified; macOS tested<br>Разрешение Mac® (мин.): 3840x2160<br>Интерфейсы<br>USB 3.2 Type A Down Stream: 3<br>USB 3.2 Type B Up Stream: 1<br>Micro USB: 1<br>3.5mm Audio Out: 1<br>HDMI 2.1: 1<br>HDMI 2.0 (with HDCP 2.2): 1<br>DisplayPort: 1<br>Power in: 3-pin Socket (IEC C14 / CEE22)<br>Аудио<br>Встроенные динамики: 5Вт x2<br>Питание<br>Эко-режим (станд.): 41.8В<br>Эко-режим (оптим.): 43.9В<br>Потребление (тип.): 46.3В<br>Потребление (макс.): 74В<br>Напряжение: AC 100-240V, 50/60 Hz<br>В режиме ожидания: 0.5В<br>Блок питания: Внутренний<br>Дополнительно<br>Замок Кенсингтон: 1<br>Укладка кабелей: Да<br>Управление<br>Физически: Joystick key: Up, Right, Down, Left, Center; Quick Access; Power<br>на экране: Game Modes, Display, Input Select, ViewMode, Audio Adjust, Setup Menu<br>Условия эксплуатации<br>Температура: 32°F to 104°F (0°C to 40°C)<br>Влажность: 20% to 90%<br>Крепление<br>Совместимое с VESA: 100 x 100 mm<br>Входной сигнал<br>Частота по горизонтали: HDMI (v2.1): 30 ~ 230KHz, HDMI (v2.0): 30 ~ 230KHz, DisplayPort (v1.4): 30 ~ 250KHz<br>Частота по вертикали: HDMI (v2.1): 48 ~ 144Hz, HDMI (v2.0): 48 ~ 60Hz, DisplayPort (v1.4): 48 ~ 150Hz<br>Видео входы<br>Цифровая синхронизация: TMDS - HDMI (v2.1), TMDS - HDMI (v2.0), PCI-E - DisplayPort (v1.4)<br>Эргономика<br>Регулировка по высоте (мм): 120<br>Разворот: 50º<br>Наклон (Вперед/Назад): -5º / 20º<br>Поворот (Вправо/Влево): Нет<br>Вес (фунты)<br>Нетто (фунт): 22.2<br>Нетто без стенда (фунт): 15.6<br>Гросс (фунт): 32.3<br>Вес (кг)<br>Нетто (кг): 10.1<br>Нетто без стенда (кг): 7.1<br>Гросс (кг): 14.7<br>Размеры (дюймы)<br>Упаковка (дюйм): 33.5 x 20.7 x 12.9<br>Физические (дюйм): 28.6 x 18.99~23.71 x 10.4<br>Физические без подставки (дюйм): 28.6 x 17 x 3.4<br>Размеры (мм)<br>Упаковка (мм): 850 x 527 x 327<br>Физические (мм): 726 x 482.3~602.3 x 265<br>Физические без подставки (мм): 726 x 432 x 87<br>Общее<br>Сертификация: cTUVus, FCC-B, ICES003, CEC, NOM, Mexico Energy, CE, CE EMC, CB, RoHS, ErP, REACH, WEEE, EAC, UkrSEPRO, UKCA, CCC, China RoHS, China Energy Label<br>СОСТАВ УПАКОВКИ: XG320U x1, 3-pin Plug (IEC C13 / CEE22) x1, HDMI Cable (v2.1; Male-Male) x1, DisplayPort Cable (v1.4; Male-Male) x1, USB A/B Cable (v3.2; Male-Male) x1, Quick Start Guide x1<br>Переработка: Пожалуйста, утилизируйте в соответствии с местными, государственными или федеральными законами.</p>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Монитор</li><li><strong>Гарантия:</strong> 36</li><li><strong>Вид:</strong> Монитор</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Тип">Монитор</param>
+<param name="Гарантия">36</param>
+<param name="Вид">Монитор</param>
+<keywords>CS, Монитор ViewSonic XG320U, Монитор, ViewSonic, XG320U, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACZD4A042-30EE00EZ" available="true">
