@@ -141,7 +141,7 @@ def _include_by_name(name: str) -> bool:
             return True
 
     extra = (os.environ.get("NVPRINT_INCLUDE_WORDS") or "").strip()
-    terms = list(NVPRINT_INCLUDE_TERMS_CF)
+    terms = list(NVPRINT_INCLUDE_PREFIXES_CF)
     if extra:
         for x in extra.split(","):
             x = x.strip().casefold()
