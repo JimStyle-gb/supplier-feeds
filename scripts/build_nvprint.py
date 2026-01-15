@@ -154,10 +154,11 @@ def _include_by_name(name: str) -> bool:
     return False
 
 
-
+@dataclass
 class _Auth:
     login: str
     password: str
+
 
 
 def _get_auth() -> _Auth | None:
