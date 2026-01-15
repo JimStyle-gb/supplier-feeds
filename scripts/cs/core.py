@@ -438,6 +438,133 @@ def fix_text(s: str) -> str:
 
 
 
+
+def _native_has_specs_text(d: str) -> bool:
+    # Если в "родном" описании есть свой блок технических/основных характеристик — не дублируем CS-блок.
+    # Ставим маркеры узко, чтобы не ловить обычные маркетинговые слова "характеристики".
+    if not d:
+        return False
+    return bool(re.search(r"(?:^|\n)\s*(?:Технические характеристики|Основные характеристики)\b", d, flags=re.IGNORECASE))
+
+
+def _looks_like_section_header(line: str) -> bool:
+    # Заголовок секции внутри характеристик (без табов, не слишком длинный)
+    if not line:
+        return False
+    if "\t" in line:
+        return False
+    s = line.strip()
+    if len(s) < 3 or len(s) > 64:
+        return False
+    # часто секции — 1-3 слова, без точки в конце
+    if s.endswith("."):
+        return False
+    return True
+
+
+def _build_specs_html_from_text(d: str) -> str:
+    # Превращает "текстовую кашу" характеристик (с \n и \t) в читабельный HTML.
+    lines = [ln.strip() for ln in (d or "").split("\n")]
+    lines = [ln for ln in lines if ln != ""]
+
+    # Разделяем: до первого маркера и после него
+    idx = None
+    for i, ln in enumerate(lines):
+        if re.search(r"^(?:Технические характеристики|Основные характеристики)\b", ln, flags=re.IGNORECASE):
+            idx = i
+            break
+
+    if idx is None:
+        # fallback: просто как обычный текст
+        d2 = xml_escape_text(d).replace("\n", "<br>")
+        return f"<p>{d2}</p>"
+
+    pre = lines[:idx]
+    rest = lines[idx:]
+
+    out: list[str] = []
+    if pre:
+        out.append("<p>" + "<br>".join(xml_escape_text(x) for x in pre) + "</p>")
+
+    ul_items: list[str] = []
+    pending_key = ""
+    pending_vals: list[str] = []
+
+    def flush_pending() -> None:
+        nonlocal pending_key, pending_vals, ul_items
+        if pending_key:
+            val = ", ".join(v for v in pending_vals if v)
+            if val:
+                ul_items.append(f"<li><strong>{xml_escape_text(pending_key)}</strong>: {xml_escape_text(val)}</li>")
+            else:
+                ul_items.append(f"<li><strong>{xml_escape_text(pending_key)}</strong></li>")
+            pending_key = ""
+            pending_vals = []
+
+    def flush_ul() -> None:
+        nonlocal ul_items
+        if ul_items:
+            out.append("<ul>" + "".join(ul_items) + "</ul>")
+            ul_items = []
+
+    for ln in rest:
+        if re.search(r"^(?:Технические характеристики|Основные характеристики)\b", ln, flags=re.IGNORECASE):
+            flush_pending()
+            flush_ul()
+            # нормализуем заголовок
+            out.append("<h4>Технические характеристики</h4>")
+            continue
+
+        if _looks_like_section_header(ln):
+            # если следующее — табы или список, считаем заголовком секции
+            flush_pending()
+            flush_ul()
+            out.append(f"<h4>{xml_escape_text(ln)}</h4>")
+            continue
+
+        if "\t" in ln:
+            flush_pending()
+            key, val = ln.split("\t", 1)
+            key = key.strip()
+            val = val.strip()
+            if key:
+                pending_key = key
+                pending_vals = ([val] if val else [])
+            else:
+                # странная строка — просто пункт
+                ul_items.append(f"<li>{xml_escape_text(val or ln)}</li>")
+            continue
+
+        if pending_key:
+            # значения, идущие после строки с ключом без значения (пример: "Применение\t" + "Для дома")
+            pending_vals.append(ln)
+            continue
+
+        # обычный пункт списка (например, состав поставки)
+        ul_items.append(f"<li>{xml_escape_text(ln)}</li>")
+
+    flush_pending()
+    flush_ul()
+
+    return "".join(out)
+
+
+def _build_desc_part(name: str, native_desc: str) -> str:
+    n_esc = xml_escape_text(norm_ws(name))
+    d = fix_text(native_desc)
+    if not d:
+        return f"<h3>{n_esc}</h3>"
+
+    if _native_has_specs_text(d):
+        # Структурируем блок, чтобы не было "каши" и не дублировать CS-блок характеристик.
+        body_html = _build_specs_html_from_text(d)
+        return f"<h3>{n_esc}</h3>{body_html}"
+
+    # обычный режим: читаемость: \n → <br>
+    d2 = xml_escape_text(d).replace("\n", "<br>")
+    return f"<h3>{n_esc}</h3><p>{d2}</p>"
+
+
 # Делает аккуратный HTML внутри CDATA (добавляет \n в начале/конце)
 def normalize_cdata_inner(inner: str) -> str:
     # Убираем мусорные пробелы/пустые строки внутри CDATA, без лишних ведущих/хвостовых переводов строк
@@ -549,15 +676,13 @@ def build_description(
     n = norm_ws(name)
     d = fix_text(native_desc)
 
-    desc_part = ""
-    if d:
-        # читаемость: \n → <br>
-        d2 = xml_escape_text(d).replace("\n", "<br>")
-        desc_part = f"<h3>{xml_escape_text(n)}</h3><p>{d2}</p>"
-    else:
-        desc_part = f"<h3>{xml_escape_text(n)}</h3><p></p>"
+    # Родное описание (с форматированием тех.характеристик, если они там уже есть)
+    desc_part = _build_desc_part(n, d)
 
-    chars = build_chars_block(params_sorted)
+    # Характеристики из params: добавляем только если в родном описании нет своего блока тех.характеристик
+    chars = ""
+    if params_sorted and (not _native_has_specs_text(d)):
+        chars = build_chars_block(params_sorted)
 
     parts: list[str] = []
     parts.append(wa_block)
