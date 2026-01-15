@@ -209,7 +209,7 @@ def parse_id_set(env_value: str | None, fallback: Iterable[int] | None = None) -
 # Генератор стабильного id (если у поставщика нет id)
 def stable_id(prefix: str, seed: str) -> str:
     h = hashlib.md5((seed or "").encode("utf-8", errors="ignore")).hexdigest()[:10]
-    return f"{prefix}{h.upper()}"
+    return f"{prefix}H{h.upper()}"
 
 
 # XML escape для текста
@@ -780,7 +780,7 @@ def validate_cs_yml(xml: str) -> None:
     price_ok = True
     ids_seen: set[str] = set()
     hash_like_ids: list[str] = []
-    _RE_HASH_OID = re.compile(r"^(AC|AS|CL|NP|VT)[0-9A-F]{10}$")
+    _RE_HASH_OID = re.compile(r"^(AC|AS|CL|NP|VT)H[0-9A-F]{10}$")
 
     bad_no_pic: list[str] = []
     bad_vendorcode: list[str] = []
