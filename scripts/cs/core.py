@@ -440,12 +440,23 @@ def fix_text(s: str) -> str:
 
 
 def _native_has_specs_text(d: str) -> bool:
-    # Если в "родном" описании есть свой блок технических/основных характеристик — не дублируем CS-блок.
-    # Ставим маркеры узко, чтобы не ловить обычные маркетинговые слова "характеристики".
+    # Если в "родном" описании уже есть свой блок характеристик/спецификаций — НЕ дублируем CS-блок.
+    # Важно: у части поставщиков характеристики приходят таблично (через "\t") или внутри одной строки
+    # (например: "⚙️ Основные характеристики" или "Основные характеристики: ...").
     if not d:
         return False
-    return bool(re.search(r"(?:^|\n)\s*(?:Технические характеристики|Основные характеристики)\b", d, flags=re.IGNORECASE))
-
+    # 1) Любые табы почти всегда означают таблицу характеристик
+    if "\t" in d:
+        return True
+    # 2) Технические/основные характеристики — ловим В ЛЮБОМ месте, а не только в начале строки
+    if re.search(r"\b(Технические характеристики|Основные характеристики)\b", d, flags=re.IGNORECASE):
+        return True
+    # 3) Секция "Характеристики" как заголовок (часто у AlStyle)
+    if re.search(r"(?:^|\n)\s*Характеристики\b", d, flags=re.IGNORECASE):
+        # чтобы не ловить маркетинг, проверим что рядом есть признаки таблицы/списка
+        if re.search(r"(?:^|\n)\s*(Артикул|Модель|Совместимые|Тип|Разрешение|Цвет)\b", d, flags=re.IGNORECASE):
+            return True
+    return False
 
 def _looks_like_section_header(line: str) -> bool:
     # Заголовок секции внутри характеристик (без табов, не слишком длинный)
@@ -470,14 +481,23 @@ def _build_specs_html_from_text(d: str) -> str:
     # Разделяем: до первого маркера и после него
     idx = None
     for i, ln in enumerate(lines):
-        if re.search(r"^(?:Технические характеристики|Основные характеристики)\b", ln, flags=re.IGNORECASE):
+        if re.search(r"^[^A-Za-zА-Яа-яЁё]*\s*(?:Технические характеристики|Основные характеристики|Характеристики)\b", ln, flags=re.IGNORECASE):
             idx = i
             break
 
     if idx is None:
-        # fallback: просто как обычный текст
-        d2 = xml_escape_text(d).replace("\n", "<br>")
-        return f"<p>{d2}</p>"
+        # fallback: иногда маркер встречается ВНУТРИ строки ("... Основные характеристики: ...").
+        # Попробуем вставить перенос перед первым маркером и распарсить заново.
+        if re.search(r"\b(Технические характеристики|Основные характеристики)\b", d or "", flags=re.IGNORECASE):
+            d_mod = re.sub(r"(?i)\b(Технические характеристики|Основные характеристики)\b", r"\n\1", d, count=1)
+            return _build_specs_html_from_text(d_mod)
+
+        # Если явного заголовка нет, но есть табы — считаем это таблицей характеристик.
+        if "\t" in (d or ""):
+            idx = 0
+        else:
+            d2 = xml_escape_text(d).replace("\n", "<br>")
+            return f"<p>{d2}</p>"
 
     pre = lines[:idx]
     rest = lines[idx:]
@@ -508,7 +528,7 @@ def _build_specs_html_from_text(d: str) -> str:
             ul_items = []
 
     for ln in rest:
-        if re.search(r"^(?:Технические характеристики|Основные характеристики)\b", ln, flags=re.IGNORECASE):
+        if re.search(r"^[^A-Za-zА-Яа-яЁё]*\s*(?:Технические характеристики|Основные характеристики|Характеристики)\b", ln, flags=re.IGNORECASE):
             flush_pending()
             flush_ul()
             # нормализуем заголовок
@@ -524,15 +544,15 @@ def _build_specs_html_from_text(d: str) -> str:
 
         if "\t" in ln:
             flush_pending()
-            key, val = ln.split("\t", 1)
-            key = key.strip()
-            val = val.strip()
-            if key:
+            parts = [p.strip() for p in ln.split("\t") if p.strip() != ""]
+            if len(parts) >= 2:
+                key = parts[0]
+                val = " ".join(parts[1:]).strip()
                 pending_key = key
                 pending_vals = ([val] if val else [])
-            else:
-                # странная строка — просто пункт
-                ul_items.append(f"<li>{xml_escape_text(val or ln)}</li>")
+            elif len(parts) == 1:
+                ul_items.append(f"<li>{xml_escape_text(parts[0])}</li>")
+            # если совсем пусто — просто пропускаем
             continue
 
         if pending_key:
