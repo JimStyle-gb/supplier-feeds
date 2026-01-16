@@ -128,8 +128,11 @@ def norm_ws(s: str) -> str:
 
 
 
-# Нормализация "кириллица внутри латинских слов" (например UСE, Сyan).
-# Меняем только в токенах, где одновременно есть латиница и кириллица.
+# Нормализация "смешанная кириллица/латиница" внутри слов.
+# Правило:
+# - если в буквенной последовательности есть и кириллица, и латиница,
+#   то приводим её к ОДНОМУ алфавиту по большинству букв.
+# - последовательности с цифрами не трогаем (модели/коды).
 _CYR_TO_LAT = str.maketrans(
     {
         "А": "A",
@@ -159,7 +162,37 @@ _CYR_TO_LAT = str.maketrans(
     }
 )
 
+_LAT_TO_CYR = str.maketrans(
+    {
+        "A": "А",
+        "B": "В",
+        "E": "Е",
+        "K": "К",
+        "M": "М",
+        "H": "Н",
+        "O": "О",
+        "P": "Р",
+        "C": "С",
+        "T": "Т",
+        "X": "Х",
+        "Y": "У",
+        "a": "а",
+        "b": "в",
+        "e": "е",
+        "k": "к",
+        "m": "м",
+        "h": "н",
+        "o": "о",
+        "p": "р",
+        "c": "с",
+        "t": "т",
+        "x": "х",
+        "y": "у",
+    }
+)
+
 _RE_WORDLIKE = re.compile(r"[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё._\-/+]*")
+_RE_LETTER_SEQ = re.compile(r"[A-Za-zА-Яа-яЁё]+")
 
 
 def fix_mixed_cyr_lat(s: str) -> str:
@@ -167,11 +200,23 @@ def fix_mixed_cyr_lat(s: str) -> str:
     if not t:
         return t
 
+    def _fix_letters(seq: str) -> str:
+        if not seq:
+            return seq
+        if re.search(r"[A-Za-z]", seq) and re.search(r"[А-Яа-яЁё]", seq):
+            cyr = len(re.findall(r"[А-Яа-яЁё]", seq))
+            lat = len(re.findall(r"[A-Za-z]", seq))
+            if cyr >= lat:
+                return seq.translate(_LAT_TO_CYR)
+            return seq.translate(_CYR_TO_LAT)
+        return seq
+
     def _sub(m: re.Match[str]) -> str:
         w = m.group(0)
-        if re.search(r"[A-Za-z]", w) and re.search(r"[А-Яа-яЁё]", w):
-            return w.translate(_CYR_TO_LAT)
-        return w
+        # если есть цифры — это чаще всего модель/артикул, не трогаем
+        if re.search(r"\d", w):
+            return w
+        return _RE_LETTER_SEQ.sub(lambda mm: _fix_letters(mm.group(0)), w)
 
     return _RE_WORDLIKE.sub(_sub, t)
 
@@ -417,11 +462,72 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
         if k and v:
             params.append((k, v))
 
+# Лёгкое обогащение характеристик из name/description (когда у поставщика params бедные)
+def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, desc_text: str) -> None:
+    name = name or ""
+    desc_text = desc_text or ""
+    keys_cf = {norm_ws(k).casefold() for k, _ in (params or []) if k}
+
+    def _has(k: str) -> bool:
+        return (k or "").casefold() in keys_cf
+
+    hay = f"{name}\n{desc_text}"
+
+    # Тип (первое слово) — только если нет
+    if not _has("Тип"):
+        first = (name.split() or [""])[0].strip()
+        if first and len(first) <= 32 and not re.search(r"\d", first):
+            params.append(("Тип", first))
+            keys_cf.add("тип")
+
+    # Совместимость (простая эвристика по "для ...")
+    if not (_has("Совместимость") or _has("Совместимые модели") or _has("Для") or _has("Применение")):
+        m = re.search(r"(?i)\bдля\s+([^\n\r,;]{3,120})", hay)
+        if m:
+            val = norm_ws(m.group(1))
+            if len(val) > 140:
+                val = val[:140].rstrip(" ,")
+            if val:
+                params.append(("Совместимость", val))
+                keys_cf.add("совместимость")
+
+    # Ресурс
+    if not (_has("Ресурс") or _has("Ресурс, стр")):
+        m = re.search(r"(?i)\b(\d{2,5})\s*(?:стр|страниц\w*|pages?)\b", hay)
+        if m:
+            params.append(("Ресурс", m.group(1)))
+            keys_cf.add("ресурс")
+
+    # Цвет
+    if not _has("Цвет"):
+        m = re.search(r"(?i)\b(черн\w*|black|cyan|magenta|yellow|синий|голуб\w*|пурпур\w*|ж[её]лт\w*)\b", hay)
+        if m:
+            params.append(("Цвет", norm_ws(m.group(1))))
+            keys_cf.add("цвет")
+
 
 # Делает текст описания "без странностей" (убираем лишние пробелы)
 def fix_text(s: str) -> str:
     # Нормализует переносы строк и убирает мусорные пробелы/табуляции на пустых строках
     t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
+
+    # Убираем служебные/паспортные строки (CRC/Barcode/внутренние коды), чтобы не портить описание
+    def _is_service_line(ln: str) -> bool:
+        s2 = (ln or "").strip()
+        if not s2:
+            return False
+        # типичные ключи паспорта/склада
+        if re.search(r"(?i)^(CRC|Retail\s*Bar\s*Code|Retail\s*Barcode|Bar\s*Code|Barcode|EAN|GTIN|SKU)\b", s2):
+            return (":" in s2) or ("\t" in s2)
+        if re.search(r"(?i)^Дата\s*(ввода|вывода|введения|обновления)\b", s2):
+            return (":" in s2) or ("\t" in s2)
+        # строки вида "1.01 ...:" или "2.14 ...\t..."
+        if re.match(r"^\d+\.\d+\b", s2) and ((":" in s2[:60]) or ("\t" in s2)):
+            return True
+        return False
+
+    if t:
+        t = "\n".join([ln for ln in t.split("\n") if not _is_service_line(ln)])
 
     # строки, которые состоят только из пробелов/табов, считаем пустыми
     if t:
@@ -434,6 +540,7 @@ def fix_text(s: str) -> str:
     t = _RE_SHUKO.sub("Schuko", t)
     t = fix_mixed_cyr_lat(t)
     return t
+
 
 
 
@@ -983,6 +1090,7 @@ class OfferOut:
         if _spec_pairs:
             params.extend(_spec_pairs)
         enrich_params_from_desc(params, native_desc)
+        enrich_params_from_name_and_desc(params, name, native_desc)
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
