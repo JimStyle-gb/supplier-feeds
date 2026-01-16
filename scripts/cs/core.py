@@ -568,6 +568,137 @@ def _build_specs_html_from_text(d: str) -> str:
 
     return "".join(out)
 
+_RE_SPECS_HDR_LINE = re.compile(r"^[^A-Za-zА-Яа-яЁё]*\\s*(?:Технические характеристики|Основные характеристики|Характеристики)\\b", re.IGNORECASE)
+_RE_SPECS_HDR_ANY = re.compile(r"\\b(Технические характеристики|Основные характеристики|Характеристики)\\b", re.IGNORECASE)
+
+
+def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str]]]:
+    """Единый CS-подход:
+    - вырезаем блоки тех/осн характеристик из нативного описания
+    - превращаем их в пары (k, v), чтобы затем вывести ОДИН CS-блок <h3>Характеристики</h3>
+
+    Возвращает: (description_without_specs, extracted_pairs)
+    """
+    d = fix_text(d)
+    if not d:
+        return "", []
+
+    lines_raw = d.split("\n")
+
+    idx = None
+    for i, ln in enumerate(lines_raw):
+        if _RE_SPECS_HDR_LINE.search(ln or ""):
+            idx = i
+            break
+
+    if idx is None:
+        # fallback: если заголовок встретился внутри строки — вставим перенос и попробуем снова
+        if _RE_SPECS_HDR_ANY.search(d):
+            d2 = _RE_SPECS_HDR_ANY.sub(lambda m: "\n" + m.group(0), d, count=1)
+            if d2 != d:
+                return extract_specs_pairs_and_strip_desc(d2)
+        # если табы — почти всегда таблица характеристик
+        if "\t" in d:
+            idx = 0
+        else:
+            return d, []
+
+    pre = "\n".join(lines_raw[:idx]).strip()
+    rest = "\n".join(lines_raw[idx:]).strip()
+    pairs = _parse_specs_pairs_from_text(rest)
+    return pre, pairs
+
+
+def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
+    # Парсит блок характеристик в пары key/value.
+    lines = [ln.strip() for ln in (text or "").split("\n")]
+    lines = [ln for ln in lines if ln]
+
+    out: list[tuple[str, str]] = []
+
+    pending_key = ""
+    pending_vals: list[str] = []
+
+    section = ""
+    section_items: list[str] = []
+
+    def flush_pending() -> None:
+        nonlocal pending_key, pending_vals, out
+        if not pending_key:
+            return
+        v = ", ".join([x for x in pending_vals if x]).strip()
+        if v:
+            out.append((pending_key, v))
+        pending_key = ""
+        pending_vals = []
+
+    def flush_section() -> None:
+        nonlocal section, section_items, out
+        if section and section_items:
+            v = ", ".join([x for x in section_items if x]).strip()
+            if v:
+                # мягко ограничим длину, чтобы не было гигантских значений
+                if len(v) > 350:
+                    v = v[:350].rstrip(" ,")
+                out.append((section, v))
+        section = ""
+        section_items = []
+
+    for ln in lines:
+        if _RE_SPECS_HDR_LINE.search(ln):
+            flush_pending()
+            flush_section()
+            continue
+
+        if _looks_like_section_header(ln) and ("\t" not in ln):
+            flush_pending()
+            flush_section()
+            section = ln.strip()
+            continue
+
+        if "\t" in ln:
+            flush_pending()
+            # ВАЖНО: сохраняем пустые столбцы, чтобы поймать кейс "Ключ\t" + значения ниже
+            parts_raw = [p.strip() for p in ln.split("\t")]
+            if not parts_raw:
+                continue
+            key = parts_raw[0] if parts_raw else ""
+            vals = [x for x in parts_raw[1:] if x]
+            val = " ".join(vals).strip()
+
+            if key and val:
+                out.append((key, val))
+                continue
+            if key and not val:
+                pending_key = key
+                pending_vals = []
+                continue
+
+            # если ключа нет — это обычно пункт списка
+            only = " ".join([x for x in parts_raw if x]).strip()
+            if only and section:
+                section_items.append(only)
+            continue
+
+        if pending_key:
+            pending_vals.append(ln)
+            continue
+
+        # строки без табов: попробуем формат "Ключ: значение"
+        m = re.match(r"^([^:]{1,80}):\\s*(.{1,250})$", ln)
+        if m:
+            out.append((m.group(1).strip(), m.group(2).strip()))
+            continue
+
+        # просто пункты — складываем в текущую секцию (например, Комплектация)
+        if section:
+            section_items.append(ln)
+
+    flush_pending()
+    flush_section()
+
+    return out
+
 
 def _build_desc_part(name: str, native_desc: str) -> str:
     n_esc = xml_escape_text(norm_ws(name))
@@ -575,12 +706,7 @@ def _build_desc_part(name: str, native_desc: str) -> str:
     if not d:
         return f"<h3>{n_esc}</h3>"
 
-    if _native_has_specs_text(d):
-        # Структурируем блок, чтобы не было "каши" и не дублировать CS-блок характеристик.
-        body_html = _build_specs_html_from_text(d)
-        return f"<h3>{n_esc}</h3>{body_html}"
-
-    # обычный режим: читаемость: \n → <br>
+    # Единый вид: нативное описание выводим как текст, без встроенных блоков характеристик.
     d2 = xml_escape_text(d).replace("\n", "<br>")
     return f"<h3>{n_esc}</h3><p>{d2}</p>"
 
@@ -669,17 +795,19 @@ def build_keywords(
 
 # Формирует блок "Характеристики" (HTML)
 def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
-    if not params_sorted:
-        return ""
+    # Всегда один и тот же CS-блок характеристик у всех товаров.
+    # Если характеристик нет — оставляем аккуратный placeholder.
     items: list[str] = []
-    for k, v in params_sorted:
+    for k, v in (params_sorted or []):
         kk = xml_escape_text(norm_ws(k))
         vv = xml_escape_text(norm_ws(v))
         if not kk or not vv:
             continue
         items.append(f"<li><strong>{kk}:</strong> {vv}</li>")
+
     if not items:
-        return ""
+        items.append("<li><strong>Характеристики:</strong> уточняйте у менеджера</li>")
+
     return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
 
 
@@ -696,21 +824,18 @@ def build_description(
     n = norm_ws(name)
     d = fix_text(native_desc)
 
-    # Родное описание (с форматированием тех.характеристик, если они там уже есть)
+    # Родное описание (без встроенных секций характеристик — они вынесены в единый CS-блок ниже)
     desc_part = _build_desc_part(n, d)
 
-    # Характеристики из params: добавляем только если в родном описании нет своего блока тех.характеристик
-    chars = ""
-    if params_sorted and (not _native_has_specs_text(d)):
-        chars = build_chars_block(params_sorted)
+    # Единый CS-блок характеристик всегда одного вида
+    chars = build_chars_block(params_sorted)
 
     parts: list[str] = []
     parts.append(wa_block)
     parts.append(hr_2px)
     parts.append("<!-- Описание -->")
     parts.append(desc_part)
-    if chars:
-        parts.append(chars)
+    parts.append(chars)
     parts.append(pay_block)
 
     inner = "\n".join(parts)
@@ -849,10 +974,14 @@ class OfferOut:
     ) -> str:
         name = norm_ws(self.name)
         native_desc = fix_text(self.native_desc)
+        # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
+        native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
         vendor = pick_vendor(self.vendor, name, self.params, native_desc, public_vendor=public_vendor)
 
         # тройное обогащение: params + из описания
         params = list(self.params)
+        if _spec_pairs:
+            params.extend(_spec_pairs)
         enrich_params_from_desc(params, native_desc)
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
