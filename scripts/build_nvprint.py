@@ -9,6 +9,9 @@ Core (cs/core.py) = только общее: цена/description/params/feed_me
 from __future__ import annotations
 
 import os
+import sys
+import time
+import random
 import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -170,18 +173,55 @@ def _get_auth() -> _Auth | None:
 
 
 def _download_xml(url: str, auth: _Auth | None) -> bytes:
+    """Скачать NVPrint XML с ретраями.
+
+    По умолчанию делает несколько попыток с backoff, чтобы не падать на временных сетевых сбоях.
+    Параметры можно переопределить env:
+      - NVPRINT_HTTP_RETRIES (default 4)
+      - NVPRINT_TIMEOUT_CONNECT (default 20)
+      - NVPRINT_TIMEOUT_READ (default 120)
+    """
     headers = {
         "User-Agent": "Mozilla/5.0 (CS bot; NVPrint adapter)",
         "Accept": "application/xml,text/xml,*/*",
     }
-    kwargs = {"timeout": (10, 90), "headers": headers}
+
+    def _env_int(name: str, default: int) -> int:
+        try:
+            v = int((os.environ.get(name, str(default)) or str(default)).strip())
+            return v if v > 0 else default
+        except Exception:
+            return default
+
+    retries = _env_int("NVPRINT_HTTP_RETRIES", 4)
+    t_connect = _env_int("NVPRINT_TIMEOUT_CONNECT", 20)
+    t_read = _env_int("NVPRINT_TIMEOUT_READ", 120)
+
+    kwargs = {"timeout": (t_connect, t_read), "headers": headers}
     if auth:
         kwargs["auth"] = (auth.login, auth.password)
 
-    r = requests.get(url, **kwargs)
-    if r.status_code != 200 or not r.content:
-        raise RuntimeError(f"Не удалось скачать NVPrint XML: http={r.status_code} bytes={len(r.content or b'')}")
-    return r.content
+    last_err: Exception | None = None
+    for attempt in range(1, retries + 1):
+        try:
+            r = requests.get(url, **kwargs)
+            if r.status_code == 200 and r.content:
+                return r.content
+            raise RuntimeError(f"Не удалось скачать NVPrint XML: http={r.status_code} bytes={len(r.content or b'')}")
+        except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError, requests.exceptions.SSLError) as e:
+            last_err = e
+            if attempt >= retries:
+                break
+            # backoff: 1.5^n + небольшой jitter
+            sleep_s = (1.5 ** (attempt - 1)) + random.uniform(0.0, 0.4)
+            print(f"NVPrint: сеть/таймаут, попытка {attempt}/{retries} -> sleep {sleep_s:.1f}s ({type(e).__name__})", file=sys.stderr)
+            time.sleep(sleep_s)
+        except Exception as e:
+            # прочие ошибки (например, странный HTTP ответ) — без ретраев
+            raise
+
+    raise RuntimeError(f"NVPrint: не удалось скачать XML после {retries} попыток: {last_err}")
+
 
 
 def _xml_head(xml_bytes: bytes, limit: int = 2500) -> str:
@@ -699,7 +739,16 @@ def main() -> int:
     except Exception:
         hour = 4
     next_run = next_run_at_hour(now, hour)
-    xml_bytes = _download_xml(url, auth)
+    strict = (os.environ.get("NVPRINT_STRICT") or "").strip().lower() in ("1", "true", "yes")
+    try:
+        xml_bytes = _download_xml(url, auth)
+    except Exception as e:
+        if strict:
+            raise
+        print(f"NVPrint: не удалось скачать XML ({e}). Мягкий выход без падения.\n"
+              "Подсказка: чтобы падало жёстко, поставь NVPRINT_STRICT=1", file=sys.stderr)
+        return 0
+
 
     try:
         root = ET.fromstring(xml_bytes)
