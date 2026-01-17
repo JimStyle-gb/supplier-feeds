@@ -1,1538 +1,840 @@
 # -*- coding: utf-8 -*-
 """
-CS Core — общее ядро для всех поставщиков.
+NVPrint -> CS adapter (v65, 1C-XML "КаталогТоваров/Товары/Товар")
 
-В этом файле лежит "эталон CS":
-- правила цены (4% + надбавки + хвост 900, но если цена невалидна/<=100 → 100)
-- единый WhatsApp блок, HR, Оплата/Доставка
-- единая сборка description + Характеристики
-- единый keywords + хвост городов
-- стабилизация форматирования (переводы строк, футер)
+Core (cs/core.py) = только общее: цена/description/params/feed_meta/рендер/валидация/запись.
+Этот файл = только NVPrint-специфика: скачать XML, распарсить "Товар", собрать OfferOut.
 """
 
 from __future__ import annotations
 
+import os
+import sys
+import time
+import random
+import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from pathlib import Path
-from typing import Iterable, Sequence
-from zoneinfo import ZoneInfo
-import os
-import hashlib
-import re
+import xml.etree.ElementTree as ET
 
+import requests
 
-
-# Регексы для fix_text (компилируем один раз)
-_RE_SHUKO = re.compile(r"\bShuko\b", flags=re.IGNORECASE)
-_RE_MULTI_NL = re.compile(r"\n{3,}")
-_RE_MULTI_SP = re.compile(r"[ \u00a0]{2,}")
-# Регексы: десятичная запятая внутри чисел (2,44 -> 2.44) — включается через env
-_RE_DECIMAL_COMMA = re.compile(r"(?<=\d),(?=\d)")
-_RE_MULTI_COMMA = re.compile(r"\s*,\s*,+")
-# Регексы: мусорные имена параметров (цифры/числа/Normal) — включается через env
-_RE_TRASH_PARAM_NAME_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
-
-# Флаги поведения (по умолчанию выключены, чтобы не ломать AlStyle)
-CS_FIX_KEYWORDS_DECIMAL_COMMA = (os.getenv("CS_FIX_KEYWORDS_DECIMAL_COMMA", "0") or "0").strip() == "1"
-CS_DROP_TRASH_PARAM_NAMES = (os.getenv("CS_DROP_TRASH_PARAM_NAMES", "0") or "0").strip() == "1"
-CS_FIX_KEYWORDS_MULTI_COMMA = (os.getenv("CS_FIX_KEYWORDS_MULTI_COMMA", "0") or "0").strip() == "1"
-CS_DESC_ADD_BRIEF = (os.getenv("CS_DESC_ADD_BRIEF", "1") or "1").strip() == "1"
-CS_DESC_BRIEF_MIN_FIELDS = int((os.getenv("CS_DESC_BRIEF_MIN_FIELDS", "2") or "2").strip() or "2")
-# Дефолты (используются адаптерами)
-OUTPUT_ENCODING_DEFAULT = "utf-8"
-CURRENCY_ID_DEFAULT = "KZT"
-ALMATY_TZ = "Asia/Almaty"
-
-
-
-# Заглушка картинки, если у оффера нет фото (можно переопределить env CS_PICTURE_PLACEHOLDER_URL)
-CS_PICTURE_PLACEHOLDER_URL = (os.getenv("CS_PICTURE_PLACEHOLDER_URL") or "https://placehold.co/800x800/png?text=No+Photo").strip()
-# Хвост городов (один и тот же для всех поставщиков)
-CS_CITY_TAIL = (
-    "Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан"
-)
-# WhatsApp блок (единый)
-CS_WA_BLOCK = (
-    "<!-- WhatsApp -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<p style=\"text-align:center; margin:0 0 12px;\">"
-    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
-    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
-    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
-    "&#128172; Написать в WhatsApp</a></p></div>"
+from cs.core import (
+    OfferOut,
+    compute_price,
+    ensure_footer_spacing,
+    make_feed_meta,
+    make_footer,
+    make_header,
+    next_run_at_hour,
+    now_almaty,
+    norm_ws,
+    validate_cs_yml,
+    write_if_changed,
 )
 
-# Горизонтальная линия (2px)
-CS_HR_2PX = "<hr style=\"border:none; border-top:2px solid #E7D6B7; margin:12px 0;\" />"
 
-# Оплата/Доставка — КАНОНИЧЕСКИЙ текст (как в твоём эталоне)
-CS_PAY_BLOCK = (
-    "<!-- Оплата и доставка -->\n"
-    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
-    "<div style=\"background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;\">"
-    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Оплата</h3>"
-    "<ul style=\"margin:0; padding-left:18px;\">"
-    "<li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li>"
-    "<li><strong>Удалённая оплата</strong> по <span style=\"color:#8b0000;\"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li>"
-    "</ul>"
-    "<hr style=\"border:none; border-top:1px solid #E7D6B7; margin:12px 0;\" />"
-    "<h3 style=\"margin:0 0 8px; font-size:17px;\">Доставка по Алматы и Казахстану</h3>"
-    "<ul style=\"margin:0; padding-left:18px;\">"
-    "<li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li>"
-    "<li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li>"
-    "<li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li>"
-    "<li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li>"
-    "</ul>"
-    "</div></div>"
-)
+OUT_FILE = "docs/nvprint.yml"
+OUTPUT_ENCODING = "utf-8"
 
-# Параметры, которые нужно выкидывать из <param> и из "Характеристик"
-PARAM_DROP_DEFAULT = {
-    "Штрихкод",
-    "Новинка",
-    "Снижена цена",
-    "Благотворительность",
-    "Код товара Kaspi",
-    "Код ТН ВЭД",
-    "Назначение",
+# Заглушка фото (если у товара нет фото/карточки)
+PLACEHOLDER_PIC = "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
+
+# Если описание уже похоже на CS — не берём native_desc (иначе будет дубль секций)
+RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
+
+# NVPrint-мусорные параметры (если встречаются)
+DROP_PARAM_NAMES_CF = {
+    "артикул",
+    "остаток",
+    "наличие",
+    "в наличии",
+    "сопутствующие товары",
+    "sku",
+    "код",  # код используем для oid, но в params не нужен
+    "guid",
+    "ссылканакартинку",
+    "вес",
+    "высота",
+    "длина",
+    "ширина",
+    "объем",
+    "объём",
+    "разделкаталога",
+    "разделмодели",
+
 }
-# Кеш: служебные параметры в casefold (для clean_params/валидации)
-PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
 
 
-# Возвращает текущее время в Алматы
-def now_almaty() -> datetime:
-    forced = (os.getenv("CS_FORCE_BUILD_TIME_ALMATY", "") or "").strip()
-    if forced:
-        try:
-            return datetime.strptime(forced, "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            pass
-    return datetime.now(ZoneInfo(ALMATY_TZ)).replace(tzinfo=None)
-
-
-# Считает ближайший запуск на заданный час (Алматы) — для FEED_META
-def next_run_at_hour(now_local: datetime, hour: int) -> datetime:
-    hour = int(hour)
-    candidate = now_local.replace(hour=hour, minute=0, second=0, microsecond=0)
-    if candidate <= now_local:
-        candidate = candidate + timedelta(days=1)
-    return candidate
-
-
-# Нормализует пробелы/переводы строк в строке
-def norm_ws(s: str) -> str:
-    s2 = (s or "").replace("\u00a0", " ").strip()
-    s2 = re.sub(r"\s+", " ", s2)
-    s2 = fix_mixed_cyr_lat(s2)
-    return s2.strip()
-
-
-
-# Нормализация "смешанная кириллица/латиница" внутри слов.
-# Правило:
-# - если в буквенной последовательности есть и кириллица, и латиница,
-#   то приводим её к ОДНОМУ алфавиту по большинству букв.
-# - последовательности с цифрами не трогаем (модели/коды).
-_CYR_TO_LAT = str.maketrans(
-    {
-        "А": "A",
-        "В": "B",
-        "Е": "E",
-        "К": "K",
-        "М": "M",
-        "Н": "H",
-        "О": "O",
-        "Р": "P",
-        "С": "C",
-        "Т": "T",
-        "Х": "X",
-        "У": "Y",
-        "а": "a",
-        "е": "e",
-        "о": "o",
-        "р": "p",
-        "с": "c",
-        "х": "x",
-        "у": "y",
-        "к": "k",
-        "м": "m",
-        "т": "t",
-        "в": "b",
-        "н": "h",
-    }
-)
-
-_LAT_TO_CYR = str.maketrans(
-    {
-        "A": "А",
-        "B": "В",
-        "E": "Е",
-        "K": "К",
-        "M": "М",
-        "H": "Н",
-        "O": "О",
-        "P": "Р",
-        "C": "С",
-        "T": "Т",
-        "X": "Х",
-        "Y": "У",
-        "a": "а",
-        "b": "в",
-        "e": "е",
-        "k": "к",
-        "m": "м",
-        "h": "н",
-        "o": "о",
-        "p": "р",
-        "c": "с",
-        "t": "т",
-        "x": "х",
-        "y": "у",
-    }
-)
-
-_RE_WORDLIKE = re.compile(r"[0-9A-Za-zА-Яа-яЁё][0-9A-Za-zА-Яа-яЁё._\-/+]*")
-_RE_LETTER_SEQ = re.compile(r"[A-Za-zА-Яа-яЁё]+")
-
-
-def fix_mixed_cyr_lat(s: str) -> str:
-    t = s or ""
-    if not t:
-        return t
-
-    def _fix_letters(seq: str) -> str:
-        if not seq:
-            return seq
-        if re.search(r"[A-Za-z]", seq) and re.search(r"[А-Яа-яЁё]", seq):
-            cyr = len(re.findall(r"[А-Яа-яЁё]", seq))
-            lat = len(re.findall(r"[A-Za-z]", seq))
-            if cyr >= lat:
-                return seq.translate(_LAT_TO_CYR)
-            return seq.translate(_CYR_TO_LAT)
-        return seq
-
-    def _sub(m: re.Match[str]) -> str:
-        w = m.group(0)
-        # Для кодов/моделей (есть цифры) часто бывает 1-2 кириллических "двойника" в латинском коде: CB540А -> CB540A
-        if re.search(r"\d", w) and re.search(r"[A-Za-z]", w) and re.search(r"[А-Яа-яЁё]", w):
-            cyr = len(re.findall(r"[А-Яа-яЁё]", w))
-            lat = len(re.findall(r"[A-Za-z]", w))
-            if lat >= 2 and cyr <= 2:
-                return w.translate(_CYR_TO_LAT)
-            if cyr >= 2 and lat <= 2:
-                return w.translate(_LAT_TO_CYR)
-            return w
-        # Иначе — аккуратно чиним смешанные последовательности букв
-        return _RE_LETTER_SEQ.sub(lambda mm: _fix_letters(mm.group(0)), w)
-
-    return _RE_WORDLIKE.sub(_sub, t)
-
-# Безопасное int из любого значения
-def safe_int(v) -> int | None:
-    if v is None:
-        return None
-    try:
-        if isinstance(v, (int, float)):
-            return int(v)
-        s = str(v).strip()
-        if not s:
-            return None
-        s = s.replace(" ", "").replace("\u00a0", "")
-        # иногда цена приходит как "12 345.00"
-        s = s.split(".")[0]
-        return int(s)
-    except Exception:
-        return None
-
-
-# Парсит множество id из env (например "1,10,20") или из fallback списка
-def parse_id_set(env_value: str | None, fallback: Iterable[int] | None = None) -> set[str]:
-    out: set[str] = set()
-    if env_value:
-        for part in env_value.split(","):
-            p = part.strip()
-            if p:
-                out.add(p)
-    if not out and fallback:
-        out = {str(int(x)) for x in fallback}
-    return out
-
-
-# Генератор стабильного id (если у поставщика нет id)
-def stable_id(prefix: str, seed: str) -> str:
-    h = hashlib.md5((seed or "").encode("utf-8", errors="ignore")).hexdigest()[:10]
-    return f"{prefix}H{h.upper()}"
-
-
-# XML escape для текста
-def xml_escape_text(s: str) -> str:
-    return (
-        (s or "")
-        .replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-    )
-
-
-# XML escape для атрибутов
-def xml_escape_attr(s: str) -> str:
-    return xml_escape_text(s).replace('"', "&quot;")
-
-
-# bool → "true/false"
-def bool_to_xml(v: bool) -> str:
-    return "true" if bool(v) else "false"
-
-
-# Каноническое правило цены (4% + надбавки + хвост 900; невалидно/<=100 → 100; >=9,000,000 → 100)
-# Тарифные пороги для compute_price (как в эталоне)
-CS_PRICE_TIERS = [
-    (101, 10_000, 3_000),
-    (10_001, 25_000, 4_000),
-    (25_001, 50_000, 5_000),
-    (50_001, 75_000, 7_000),
-    (75_001, 100_000, 10_000),
-    (100_001, 150_000, 12_000),
-    (150_001, 200_000, 15_000),
-    (200_001, 300_000, 20_000),
-    (300_001, 500_000, 25_000),
-    (500_001, 750_000, 30_000),
-    (750_001, 1_000_000, 35_000),
-    (1_000_001, 1_500_000, 40_000),
-    (1_500_001, 2_000_000, 45_000),
+# Фильтр ассортимента NVPrint.
+# ВАЖНО: фильтруем по ПРЕФИКСУ названия (а не по наличию слова внутри),
+# иначе почти всё проходит из‑за слов "...для картриджа..." в тексте.
+# Можно расширить через env NVPRINT_INCLUDE_PREFIXES (через запятую).
+NVPRINT_INCLUDE_PREFIXES_CF = [
+    "блок фотобарабана",
+    "картридж",
+    "печатающая головка",
+    "струйный картридж",
+    "тонер-картридж",
+    "тонер картридж",  # бывает без дефиса
+    "тонер-туба",
+    "тонер туба",      # бывает без дефиса
 ]
 
-def compute_price(price_in: int | None) -> int:
-    p = safe_int(price_in)
-    if p is None or p <= 100:
-        return 100
-    if p >= 9_000_000:
-        return 100
 
-    tiers = CS_PRICE_TIERS
-    add = 60_000
-    for lo, hi, a in tiers:
-        if lo <= p <= hi:
-            add = a
-            break
+_RE_WS = re.compile(r"\s+")
 
-    raw = int(p * 1.04 + add)
-
-    # "хвост 900" (всегда заканчиваем на 900)
-    out = (raw // 1000) * 1000 + 900
-
-    if out >= 9_000_000:
-        return 100
-    if out <= 100:
-        return 100
-    return out
+# Подмена похожих латинских букв на кириллицу, только когда дальше идёт кириллица.
+# Нужно для случаев типа "Cтруйный" (латинская C).
+_LAT2CYR = {
+    "A": "А", "a": "а",
+    "B": "В", "b": "в",
+    "C": "С", "c": "с",
+    "E": "Е", "e": "е",
+    "H": "Н", "h": "н",
+    "K": "К", "k": "к",
+    "M": "М", "m": "м",
+    "O": "О", "o": "о",
+    "P": "Р", "p": "р",
+    "T": "Т", "t": "т",
+    "X": "Х", "x": "х",
+    "Y": "У", "y": "у",
+}
 
 
-# Убирает мусорные параметры, пустые значения и дубли (применять всегда!)
+def _fix_mixed_ru(s: str) -> str:
+    # Меняем латиницу на кириллицу ТОЛЬКО если следующая буква кириллическая.
+    if not s:
+        return ""
+    out = []
+    n = len(s)
+    for i, ch in enumerate(s):
+        rep = ch
+        if ch in _LAT2CYR and i + 1 < n:
+            nxt = s[i + 1]
+            if "\u0400" <= nxt <= "\u04FF":  # кириллица
+                rep = _LAT2CYR[ch]
+        out.append(rep)
+    return "".join(out)
 
-# Параметры "вес/габариты/объем" полезны покупателю, но у некоторых поставщиков бывают мусорные значения.
-# Валидируем мягко: оставляем только "похожие на правду".
-_DIM_WORDS = ("габарит", "размер", "длина", "ширина", "высота")
-_VOL_WORDS = ("объем", "объём", "volume")
-_WGT_WORDS = ("вес", "масса", "weight")
 
-_RE_NUM = re.compile(r"(\d+(?:[\.,]\d+)?)")
-_RE_DIM_SEP = re.compile(r"[xх×\*]", re.I)
+def _name_for_filter(name: str) -> str:
+    s = (name or "").strip()
+    s = _fix_mixed_ru(s)
+    s = s.casefold()
+    s = _RE_WS.sub(" ", s)
+    return s
 
-def _looks_like_weight(name: str) -> bool:
-    nl = (name or "").casefold()
-    return any(w in nl for w in _WGT_WORDS)
 
-def _looks_like_volume(name: str) -> bool:
-    nl = (name or "").casefold()
-    return any(w in nl for w in _VOL_WORDS)
+def _include_by_name(name: str) -> bool:
+    cf = _name_for_filter(name)
+    if not cf:
+        return False
 
-def _looks_like_dims(name: str) -> bool:
-    nl = (name or "").casefold()
-    return any(w in nl for w in _DIM_WORDS)
+    extra = (os.environ.get("NVPRINT_INCLUDE_PREFIXES") or "").strip()
+    prefixes = list(NVPRINT_INCLUDE_PREFIXES_CF)
+    if extra:
+        for x in extra.split(","):
+            x = x.strip().casefold()
+            if x and x not in prefixes:
+                prefixes.append(x)
 
-def _to_float(v: str) -> float | None:
-    m = _RE_NUM.search(v or "")
+    for p in prefixes:
+        if p and cf.startswith(p):
+            return True
+
+    extra = (os.environ.get("NVPRINT_INCLUDE_WORDS") or "").strip()
+    terms = list(NVPRINT_INCLUDE_PREFIXES_CF)
+    if extra:
+        for x in extra.split(","):
+            x = x.strip().casefold()
+            if x and x not in terms:
+                terms.append(x)
+
+    for t in terms:
+        if t and t in cf:
+            return True
+    return False
+
+
+@dataclass
+class _Auth:
+    login: str
+    password: str
+
+
+
+def _get_auth() -> _Auth | None:
+    login = (os.environ.get("NVPRINT_LOGIN") or "").strip()
+    pw = (os.environ.get("NVPRINT_PASSWORD") or os.environ.get("NVPRINT_PASS") or "").strip()
+    if login and pw:
+        return _Auth(login=login, password=pw)
+    return None
+
+
+def _download_xml(url: str, auth: _Auth | None) -> bytes:
+    """Скачать NVPrint XML с ретраями.
+
+    По умолчанию делает несколько попыток с backoff, чтобы не падать на временных сетевых сбоях.
+    Параметры можно переопределить env:
+      - NVPRINT_HTTP_RETRIES (default 4)
+      - NVPRINT_TIMEOUT_CONNECT (default 20)
+      - NVPRINT_TIMEOUT_READ (default 120)
+    """
+    headers = {
+        "User-Agent": "Mozilla/5.0 (CS bot; NVPrint adapter)",
+        "Accept": "application/xml,text/xml,*/*",
+    }
+
+    def _env_int(name: str, default: int) -> int:
+        try:
+            v = int((os.environ.get(name, str(default)) or str(default)).strip())
+            return v if v > 0 else default
+        except Exception:
+            return default
+
+    retries = _env_int("NVPRINT_HTTP_RETRIES", 4)
+    t_connect = _env_int("NVPRINT_TIMEOUT_CONNECT", 20)
+    t_read = _env_int("NVPRINT_TIMEOUT_READ", 120)
+
+    kwargs = {"timeout": (t_connect, t_read), "headers": headers}
+    if auth:
+        kwargs["auth"] = (auth.login, auth.password)
+
+    last_err: Exception | None = None
+    for attempt in range(1, retries + 1):
+        try:
+            r = requests.get(url, **kwargs)
+            if r.status_code == 200 and r.content:
+                return r.content
+            raise RuntimeError(f"Не удалось скачать NVPrint XML: http={r.status_code} bytes={len(r.content or b'')}")
+        except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError, requests.exceptions.SSLError) as e:
+            last_err = e
+            if attempt >= retries:
+                break
+            # backoff: 1.5^n + небольшой jitter
+            sleep_s = (1.5 ** (attempt - 1)) + random.uniform(0.0, 0.4)
+            print(f"NVPrint: сеть/таймаут, попытка {attempt}/{retries} -> sleep {sleep_s:.1f}s ({type(e).__name__})", file=sys.stderr)
+            time.sleep(sleep_s)
+        except Exception as e:
+            # прочие ошибки (например, странный HTTP ответ) — без ретраев
+            raise
+
+    raise RuntimeError(f"NVPrint: не удалось скачать XML после {retries} попыток: {last_err}")
+
+
+
+def _xml_head(xml_bytes: bytes, limit: int = 2500) -> str:
+    try:
+        s = xml_bytes.decode("utf-8")
+    except Exception:
+        try:
+            s = xml_bytes.decode("cp1251")
+        except Exception:
+            s = xml_bytes.decode("utf-8", errors="replace")
+    s = s.replace("\r", "")
+    return s[:limit]
+
+
+def _local(tag: str) -> str:
+    if "}" in tag:
+        return tag.split("}", 1)[1]
+    return tag
+
+
+def _get_text(el: ET.Element | None) -> str:
+    if el is None or el.text is None:
+        return ""
+    return el.text.strip()
+
+
+def _pick_first_text(node: ET.Element, names: tuple[str, ...]) -> str:
+    want = {n.casefold() for n in names}
+    for ch in list(node):
+        if _local(ch.tag).casefold() in want:
+            v = _get_text(ch)
+            if v:
+                return v
+    return ""
+
+
+def _iter_children(node: ET.Element) -> list[ET.Element]:
+    return list(node)
+
+
+def _find_items(root: ET.Element) -> list[ET.Element]:
+    offers = [el for el in root.iter() if _local(el.tag).casefold() == "offer"]
+    if offers:
+        return offers
+
+    tovar = [el for el in root.iter() if _local(el.tag).casefold() == "товар"]
+    if tovar:
+        return tovar
+
+    return []
+
+
+def _make_oid(item: ET.Element, name: str) -> str | None:
+    raw = (
+        _pick_first_text(item, ("vendorCode", "article", "Артикул", "sku", "code", "Код", "Guid"))
+        or (item.get("id") or "").strip()
+    )
+    if not raw:
+        return None
+
+    raw = raw.strip()
+    out = []
+    for ch in raw:
+        if re.fullmatch(r"[A-Za-z0-9_.-]", ch):
+            out.append(ch)
+        else:
+            out.append("_")
+    oid = "".join(out)
+    if not oid.startswith("NP"):
+        oid = "NP" + oid
+    return oid
+
+
+def _parse_num(text: str) -> float | None:
+    t = (text or "").strip()
+    if not t:
+        return None
+    t = t.replace("\xa0", " ").replace(" ", "").replace(",", ".")
+    m = re.search(r"-?\d+(\.\d+)?", t)
     if not m:
         return None
     try:
-        return float(m.group(1).replace(",", "."))
+        return float(m.group(0))
     except Exception:
         return None
 
-def _is_sane_weight(v: str) -> bool:
-    x = _to_float(v)
-    if x is None:
-        return False
-    vv = (v or "").casefold()
-    # если явно граммы — переводим в кг
-    if ("кг" not in vv) and (re.search(r"\bг\b|гр", vv) is not None):
-        x = x / 1000.0
-    return 0.001 <= x <= 2000.0
 
-def _is_sane_volume(v: str) -> bool:
-    x = _to_float(v)
-    if x is None:
-        return False
-    return 0.001 <= x <= 5000.0
-
-def _is_sane_dims(v: str) -> bool:
-    vv = (v or "").casefold()
-    nums = _RE_NUM.findall(vv)
-    # минимум 2 числа + разделитель или единицы измерения
-    if len(nums) >= 2 and (_RE_DIM_SEP.search(vv) or any(u in vv for u in ("мм", "см", "м", "cm", "mm"))):
-        return True
-    return False
-
-def clean_params(
-    params: Sequence[tuple[str, str]],
-    *,
-    drop: set[str] | None = None,
-) -> list[tuple[str, str]]:
-    drop_set = (PARAM_DROP_DEFAULT_CF if drop is None else {norm_ws(x).casefold() for x in drop})
-
-    # Нормализация/переименования ключей (унификация между поставщиками)
-    rename_map = {
-        "наименование производителя": "Модель",
-        "модель производителя": "Модель",
-        "совместимость с моделями": "Совместимость",
-        "совместимые модели": "Совместимость",
-        "для": "Совместимость",
-        "ресурс, стр": "Ресурс",
-        "цвет печати": "Цвет",
-        "состав поставки": "Комплектация",
-        "комплектация": "Комплектация",
-        "комплект поставки": "Комплектация",
+def _extract_price(item: ET.Element) -> int | None:
+    prefer_keys = {
+        "purchase_price", "base_price", "price",
+        "цена", "цена_кзт", "ценаказахстан", "ценаkzt", "pricekzt",
+        "ценасндс", "ценабезндс",
     }
 
-    def _normalize_color(v: str) -> str:
-        s = (v or "").strip()
-        if not s:
-            return s
-        s_cf = s.casefold().replace("ё", "е")
-        # простые каноны
-        if "black" in s_cf or s_cf.startswith("черн"):
-            return "черный"
-        if "cyan" in s_cf or "голуб" in s_cf:
-            return "голубой"
-        if "magenta" in s_cf or "пурпур" in s_cf:
-            return "пурпурный"
-        if "yellow" in s_cf or "желт" in s_cf:
-            return "желтый"
-        if "blue" in s_cf or ("син" in s_cf and "голуб" not in s_cf):
-            return "синий"
-        return s.replace("ё", "е")
+    for ch in _iter_children(item):
+        k = _local(ch.tag).casefold()
+        if k in prefer_keys:
+            n = _parse_num(_get_text(ch))
+            if n is not None:
+                return int(n)
 
-    def _norm_key(k: str) -> str:
-        kk = norm_ws(k)
-        if not kk:
-            return ""
-        # Срезаем мусорные ведущие символы (например, невидимые emoji/вариации)
-        kk = re.sub(r"^[^0-9A-Za-zА-Яа-яЁё]+", "", kk)
-        # Убираем zero-width символы внутри имени параметра
-        kk = re.sub(r"[​‌‍﻿⁠]", "", kk)
-        # Типовые опечатки/кодировки
-        kk = re.sub(r"\(\s*B\s*т\s*\)", "(Вт)", kk)
-        kk = kk.replace("(Bт)", "(Вт)").replace("Bт", "Вт")
-        kk = fix_mixed_cyr_lat(kk)
-        base = kk.casefold()
-        kk = rename_map.get(base, kk)
-        return kk
+    found: list[int] = []
+    for el in item.iter():
+        k = _local(el.tag).casefold()
+        if "цена" in k or k in prefer_keys:
+            n = _parse_num(_get_text(el))
+            if n is not None and n > 0:
+                found.append(int(n))
 
-    def _norm_val(key: str, v: str) -> str:
-        vv = norm_ws(v)
-        if not vv:
-            return ""
-        vv = fix_mixed_cyr_lat(vv)
-        if key.casefold() == "цвет":
-            vv = _normalize_color(vv)
-        return vv
+    if not found:
+        return None
 
-    # Сбор значений по ключам (для совместимости допускаем объединение)
-    buckets: dict[str, list[str]] = {}
-    display: dict[str, str] = {}
-    order: list[str] = []
-
-    for k, v in params or []:
-        kk = _norm_key(k)
-        vv = _norm_val(kk, v)
-        if not kk or not vv:
-            continue
-
-        # Мусорные имена параметров: цифры/числа/Normal (включается env, чтобы не ломать AlStyle)
-        if CS_DROP_TRASH_PARAM_NAMES:
-            if _RE_TRASH_PARAM_NAME_NUM.match(kk) or kk.casefold() == "normal":
-                continue
-
-        # Убираем нулевой мусор в значениях
-        vv_compact = vv.strip()
-        if re.fullmatch(r"[-–—.]+", vv_compact) or vv_compact in {"..", "..."}:
-            continue
-        # Обрезанные значения вида "Вось..." — выкидываем (кроме числовых диапазонов 10...20)
-        if "..." in vv_compact and not re.search(r"\d+\s*\.\.\.\s*\d+", vv_compact):
-            if vv_compact.endswith("...") or re.search(r"[A-Za-zА-Яа-яЁё]\.\.\.", vv_compact):
-                continue
-
-        if kk.casefold() in drop_set:
-            continue
-
-        # Мягкая валидация вес/габариты/объем
-        if _looks_like_weight(kk) and not _is_sane_weight(vv):
-            continue
-        if _looks_like_volume(kk) and not _is_sane_volume(vv):
-            continue
-        if _looks_like_dims(kk) and not _is_sane_dims(vv):
-            continue
-
-        key_cf = kk.casefold()
-        if key_cf not in buckets:
-            buckets[key_cf] = []
-            display[key_cf] = kk
-            order.append(key_cf)
-
-        # Совместимость — объединяем, остальное — берём первое значение
-        if key_cf == "совместимость":
-            # уникализация по lower
-            have = {x.casefold() for x in buckets[key_cf]}
-            if vv.casefold() not in have:
-                buckets[key_cf].append(vv)
-        else:
-            if not buckets[key_cf]:
-                buckets[key_cf].append(vv)
-
-    # Пост-правила: AkCent часто даёт "Вид" == "Тип" — убираем дубль
-    if "тип" in buckets and "вид" in buckets:
-        tval = (buckets["тип"][0] if buckets["тип"] else "").casefold()
-        vval = (buckets["вид"][0] if buckets["вид"] else "").casefold()
-        if tval and vval and (tval == vval or tval in vval or vval in tval):
-            buckets.pop("вид", None)
-            display.pop("вид", None)
-            order = [k for k in order if k != "вид"]
-
-    out: list[tuple[str, str]] = []
-    for kcf in order:
-        vals = buckets.get(kcf) or []
-        if not vals:
-            continue
-        name = display.get(kcf, kcf)
-        if kcf == "совместимость":
-            v = ", ".join(vals)
-            if len(v) > 260:
-                v = v[:260].rstrip(" ,")
-            out.append((name, v))
-        else:
-            out.append((name, vals[0]))
-
-    return out
-
-# Сортирует параметры: сначала приоритетные, затем по алфавиту
-def sort_params(params: Sequence[tuple[str, str]], priority: Sequence[str] | None = None) -> list[tuple[str, str]]:
-    pr = [norm_ws(x) for x in (priority or []) if norm_ws(x)]
-    pr_map = {p.casefold(): i for i, p in enumerate(pr)}
-
-    def key(kv):
-        k = norm_ws(kv[0])
-        idx = pr_map.get(k.casefold(), 10_000)
-        return (idx, k.casefold())
-
-    return sorted(list(params), key=key)
+    return min(found)
 
 
-# Пробует извлечь пары "Характеристика: значение" из HTML описания (если поставщик кладёт это в description)
-def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> None:
-    if not desc_html:
-        return
-
-    # <li><strong>Ключ:</strong> Значение</li>
-    for m in re.finditer(r"<li>\s*<strong>([^<:]{1,80}):</strong>\s*([^<]{1,200})</li>", desc_html, flags=re.I):
-        k = norm_ws(m.group(1))
-        v = norm_ws(m.group(2))
-        if k and v:
-            params.append((k, v))
-
-# Лёгкое обогащение характеристик из name/description (когда у поставщика params бедные)
-def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, desc_text: str) -> None:
-    name = name or ""
-    desc_text = desc_text or ""
-    keys_cf = {norm_ws(k).casefold() for k, _ in (params or []) if k}
-
-    def _has(k: str) -> bool:
-        return (k or "").casefold() in keys_cf
-
-    hay = f"{name}\n{desc_text}"
-
-    # Тип (первое слово) — только если нет
-    if not _has("Тип"):
-        first = (name.split() or [""])[0].strip()
-        if first and len(first) <= 32 and not re.search(r"\d", first):
-            params.append(("Тип", first))
-            keys_cf.add("тип")
-
-    # Совместимость (простая эвристика по "для ...")
-    if not (_has("Совместимость") or _has("Совместимые модели") or _has("Для") or _has("Применение")):
-        m = re.search(r"(?i)\bдля\s+([^\n\r,;]{3,120})", hay)
-        if m:
-            val = norm_ws(m.group(1))
-            if len(val) > 140:
-                val = val[:140].rstrip(" ,")
-            if val:
-                params.append(("Совместимость", val))
-                keys_cf.add("совместимость")
-
-    # Ресурс
-    if not (_has("Ресурс") or _has("Ресурс, стр")):
-        m = re.search(r"(?i)\b(\d{2,5})\s*(?:стр|страниц\w*|pages?)\b", hay)
-        if m:
-            params.append(("Ресурс", m.group(1)))
-            keys_cf.add("ресурс")
-
-    # Цвет
-    if not _has("Цвет"):
-        m = re.search(r"(?i)\b(черн\w*|black|cyan|magenta|yellow|синий|голуб\w*|пурпур\w*|ж[её]лт\w*)\b", hay)
-        if m:
-            params.append(("Цвет", norm_ws(m.group(1))))
-            keys_cf.add("цвет")
-
-
-# Делает текст описания "без странностей" (убираем лишние пробелы)
-def fix_text(s: str) -> str:
-    # Нормализует переносы строк и убирает мусорные пробелы/табуляции на пустых строках
-    t = (s or "").replace("\r\n", "\n").replace("\r", "\n").strip()
-
-    # Убираем служебные/паспортные строки (CRC/Barcode/внутренние коды), чтобы не портить описание
-    def _is_service_line(ln: str) -> bool:
-        s2 = (ln or "").strip()
-        if not s2:
-            return False
-        # типичные ключи паспорта/склада
-        if re.search(r"(?i)^(CRC|Retail\s*Bar\s*Code|Retail\s*Barcode|Bar\s*Code|Barcode|EAN|GTIN|SKU)\b", s2):
-            return (":" in s2) or ("\t" in s2)
-        if re.search(r"(?i)^Дата\s*(ввода|вывода|введения|обновления)\b", s2):
-            return (":" in s2) or ("\t" in s2)
-        # строки вида "1.01 ...:" или "2.14 ...\t..."
-        if re.match(r"^\d+\.\d+\b", s2) and ((":" in s2[:60]) or ("\t" in s2)):
-            return True
-        return False
-
-    if t:
-        t = "\n".join([ln for ln in t.split("\n") if not _is_service_line(ln)])
-
-    # строки, которые состоят только из пробелов/табов, считаем пустыми
-    if t:
-        t = "\n".join("" if (ln.strip() == "") else ln for ln in t.split("\n"))
-
-    # убираем тройные пустые строки
-    t = _RE_MULTI_NL.sub("\n\n", t)
-
-    # Нормализация частой опечатки (Shuko -> Schuko)
-    t = _RE_SHUKO.sub("Schuko", t)
-    t = fix_mixed_cyr_lat(t)
-    return t
-
-
-
-
-
-
-def _native_has_specs_text(d: str) -> bool:
-    # Если в "родном" описании уже есть свой блок характеристик/спецификаций — НЕ дублируем CS-блок.
-    # Важно: у части поставщиков характеристики приходят таблично (через "\t") или внутри одной строки
-    # (например: "⚙️ Основные характеристики" или "Основные характеристики: ...").
-    if not d:
-        return False
-    # 1) Любые табы почти всегда означают таблицу характеристик
-    if "\t" in d:
+def _extract_available(item: ET.Element) -> bool:
+    # 1) yml-атрибут available
+    av_raw = (item.get("available") or "").strip().lower()
+    if av_raw in ("true", "1", "yes", "y"):
         return True
-    # 2) Технические/основные характеристики — ловим В ЛЮБОМ месте, а не только в начале строки
-    if re.search(r"\b(Технические характеристики|Основные характеристики)\b", d, flags=re.IGNORECASE):
-        return True
-    # 3) Секция "Характеристики" как заголовок (часто у AlStyle)
-    if re.search(r"(?:^|\n)\s*Характеристики\b", d, flags=re.IGNORECASE):
-        # чтобы не ловить маркетинг, проверим что рядом есть признаки таблицы/списка
-        if re.search(r"(?:^|\n)\s*(Артикул|Модель|Совместимые|Тип|Разрешение|Цвет)\b", d, flags=re.IGNORECASE):
-            return True
-    return False
+    if av_raw in ("false", "0", "no", "n"):
+        return False
 
-def _looks_like_section_header(line: str) -> bool:
-    # Заголовок секции внутри характеристик (без табов, не слишком длинный)
-    if not line:
+    # 2) 1C-формат NVPrint: <УсловияПродаж>/<Договор>/<Наличие Количество="..."/>
+    # Если теги "Наличие" есть, считаем empty/"0" как 0; >0 значит в наличии.
+    found_any = False
+    total_qty = 0.0
+    for el in item.iter():
+        if _local(el.tag).casefold() != "наличие":
+            continue
+        found_any = True
+        q = (el.get("Количество") or el.get("количество") or "").strip()
+        if not q:
+            continue
+        q = q.replace(",", ".")
+        try:
+            total_qty += float(q)
+        except Exception:
+            continue
+    if found_any:
+        return total_qty > 0
+
+    # 3) Фолбэк: иногда остаток/количество могут быть отдельными тегами
+    for el in item.iter():
+        tag_cf = _local(el.tag).casefold()
+        if ("остат" in tag_cf) or ("колич" in tag_cf):
+            n = _parse_num(_get_text(el))
+            if n is not None:
+                return n > 0
+
+    # 4) fallback: иногда есть тег available/Наличие как текст
+    av_tag = _pick_first_text(item, ("available", "Available", "Наличие"))
+    if av_tag:
+        return av_tag.strip().lower() in ("true", "1", "yes", "y", "есть", "да")
+
+    # по умолчанию: считаем, что доступно (иначе можно "убить" ассортимент)
+    return True
+
+    if av_raw in ("false", "0", "no", "n"):
         return False
-    if "\t" in line:
-        return False
-    s = line.strip()
-    if len(s) < 3 or len(s) > 64:
-        return False
-    # часто секции — 1-3 слова, без точки в конце
-    if s.endswith("."):
-        return False
+
+    # 2) 1C: пытаемся найти любые поля, связанные с остатком/количеством.
+    qty_kz: float = 0.0
+    qty_any: float = 0.0
+    has_any = False
+
+    for el in item.iter():
+        tag = _local(el.tag).casefold()
+
+        # Берём только теги, где явно фигурирует остаток/количество.
+        if ("остат" not in tag) and ("колич" not in tag) and (tag not in ("qty", "quantity")):
+            continue
+
+        n = _parse_num(_get_text(el))
+        if n is None:
+            continue
+
+        has_any = True
+        qty_any += n
+
+        # Казахстан — пытаемся определить по атрибутам/тексту рядом
+        attrs = " ".join([str(v) for v in el.attrib.values()]).casefold()
+        if "казахстан" in attrs:
+            qty_kz += n
+
+    if has_any:
+        use = qty_kz if qty_kz > 0 else qty_any
+        return use > 0
+
+    # 3) fallback: иногда есть отдельное поле "Наличие"
+    av_tag = _pick_first_text(item, ("available", "Available", "Наличие"))
+    if av_tag:
+        return av_tag.strip().lower() in ("true", "1", "yes", "y", "есть", "да")
+
+    # По умолчанию не гасим ассортимент.
     return True
 
 
-def _build_specs_html_from_text(d: str) -> str:
-    # Превращает "текстовую кашу" характеристик (с \n и \t) в читабельный HTML.
-    lines = [ln.strip() for ln in (d or "").split("\n")]
-    lines = [ln for ln in lines if ln != ""]
-
-    # Разделяем: до первого маркера и после него
-    idx = None
-    for i, ln in enumerate(lines):
-        if re.search(r"^[^A-Za-zА-Яа-яЁё]*\s*(?:Технические характеристики|Основные характеристики|Характеристики)\b", ln, flags=re.IGNORECASE):
-            idx = i
-            break
-
-    if idx is None:
-        # fallback: иногда маркер встречается ВНУТРИ строки ("... Основные характеристики: ...").
-        # Попробуем вставить перенос перед первым маркером и распарсить заново.
-        if re.search(r"\b(Технические характеристики|Основные характеристики)\b", d or "", flags=re.IGNORECASE):
-            d_mod = re.sub(r"(?i)\b(Технические характеристики|Основные характеристики)\b", r"\n\1", d, count=1)
-            return _build_specs_html_from_text(d_mod)
-
-        # Если явного заголовка нет, но есть табы — считаем это таблицей характеристик.
-        if "\t" in (d or ""):
-            idx = 0
-        else:
-            d2 = xml_escape_text(d).replace("\n", "<br>")
-            return f"<p>{d2}</p>"
-
-    pre = lines[:idx]
-    rest = lines[idx:]
-
-    out: list[str] = []
-    if pre:
-        out.append("<p>" + "<br>".join(xml_escape_text(x) for x in pre) + "</p>")
-
-    ul_items: list[str] = []
-    pending_key = ""
-    pending_vals: list[str] = []
-
-    def flush_pending() -> None:
-        nonlocal pending_key, pending_vals, ul_items
-        if pending_key:
-            val = ", ".join(v for v in pending_vals if v)
-            if val:
-                ul_items.append(f"<li><strong>{xml_escape_text(pending_key)}</strong>: {xml_escape_text(val)}</li>")
-            else:
-                ul_items.append(f"<li><strong>{xml_escape_text(pending_key)}</strong></li>")
-            pending_key = ""
-            pending_vals = []
-
-    def flush_ul() -> None:
-        nonlocal ul_items
-        if ul_items:
-            out.append("<ul>" + "".join(ul_items) + "</ul>")
-            ul_items = []
-
-    for ln in rest:
-        if re.search(r"^[^A-Za-zА-Яа-яЁё]*\s*(?:Технические характеристики|Основные характеристики|Характеристики)\b", ln, flags=re.IGNORECASE):
-            flush_pending()
-            flush_ul()
-            # нормализуем заголовок
-            out.append("<h4>Технические характеристики</h4>")
+def _collect_pictures(item: ET.Element) -> list[str]:
+    # 1) yml: <picture>
+    pics: list[str] = []
+    for el in item.iter():
+        if _local(el.tag).casefold() != "picture":
             continue
-
-        if _looks_like_section_header(ln):
-            # если следующее — табы или список, считаем заголовком секции
-            flush_pending()
-            flush_ul()
-            out.append(f"<h4>{xml_escape_text(ln)}</h4>")
-            continue
-
-        if "\t" in ln:
-            flush_pending()
-            parts = [p.strip() for p in ln.split("\t") if p.strip() != ""]
-            if len(parts) >= 2:
-                key = parts[0]
-                val = " ".join(parts[1:]).strip()
-                pending_key = key
-                pending_vals = ([val] if val else [])
-            elif len(parts) == 1:
-                ul_items.append(f"<li>{xml_escape_text(parts[0])}</li>")
-            # если совсем пусто — просто пропускаем
-            continue
-
-        if pending_key:
-            # значения, идущие после строки с ключом без значения (пример: "Применение\t" + "Для дома")
-            pending_vals.append(ln)
-            continue
-
-        # обычный пункт списка (например, состав поставки)
-        ul_items.append(f"<li>{xml_escape_text(ln)}</li>")
-
-    flush_pending()
-    flush_ul()
-
-    return "".join(out)
-
-_RE_SPECS_HDR_LINE = re.compile(r"^[^A-Za-zА-Яа-яЁё]*\s*(?:Технические характеристики|Основные характеристики|Характеристики)\b", re.IGNORECASE)
-_RE_SPECS_HDR_ANY = re.compile(r"\b(Технические характеристики|Основные характеристики|Характеристики)\b", re.IGNORECASE)
-
-
-
-
-def _htmlish_to_text(s: str) -> str:
-    """Превращает HTML-подобный текст (с <br>, <p>, списками) в текст с \n.
-    Нужно, чтобы корректно вытащить тех/осн характеристики из CopyLine и похожих источников.
-    """
-    raw = s or ""
-    if not raw:
-        return ""
-    # основные разрывы строк
-    raw = re.sub(r"(?i)<br\s*/?>", "\n", raw)
-    raw = re.sub(r"(?i)</?(?:p|div|li|ul|ol|tr|td|th|table|h[1-6])[^>]*>", "\n", raw)
-    # вычищаем остальные теги
-    raw = re.sub(r"<[^>]+>", " ", raw)
-    # html entities
-    try:
-        import html as _html
-        raw = _html.unescape(raw)
-    except Exception:
-        pass
-    raw = raw.replace("\xa0", " ")
-    return raw
-
-
-def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str]]]:
-    """Единый CS-подход:
-    - вырезаем блоки тех/осн характеристик из нативного описания
-    - превращаем их в пары (k, v), чтобы затем вывести ОДИН CS-блок <h3>Характеристики</h3>
-
-    Важно: если пары не удалось распарсить, НЕ режем описание (чтобы не потерять данные).
-
-    Возвращает: (description_without_specs, extracted_pairs)
-    """
-    raw = d or ""
-    # если прилетел HTML — переводим в текст для устойчивого парсинга
-    if "<" in raw and ">" in raw:
-        raw = _htmlish_to_text(raw)
-
-    raw = fix_text(raw)
-    if not raw:
-        return "", []
-
-    lines_raw = raw.split("\n")
-
-    idx = None
-    for i, ln in enumerate(lines_raw):
-        if _RE_SPECS_HDR_LINE.search(ln or ""):
-            idx = i
-            break
-
-    if idx is None:
-        # fallback: если заголовок встретился внутри строки — вставим перенос и попробуем снова
-        if _RE_SPECS_HDR_ANY.search(raw):
-            d2 = _RE_SPECS_HDR_ANY.sub(lambda m: "\n" + m.group(0), raw, count=1)
-            if d2 != raw:
-                return extract_specs_pairs_and_strip_desc(d2)
-        # если табы — почти всегда таблица характеристик
-        if "\t" in raw:
-            idx = 0
-        else:
-            return raw, []
-
-    pre = "\n".join(lines_raw[:idx]).strip()
-    rest = "\n".join(lines_raw[idx:]).strip()
-
-    pairs = _parse_specs_pairs_from_text(rest)
-
-    # страховка: если вообще ничего не распарсили — не трогаем описание
-    if not pairs:
-        return raw, []
-
-    return pre, pairs
-
-
-def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
-    """Парсит блок характеристик в пары key/value.
-
-    Поддерживает:
-    - табличный формат (\t)
-    - "Ключ: значение"
-    - CopyLine-формат: чередование строк "Ключ" / "Значение" после заголовка
-    - секции типа "Состав поставки" -> Комплектация
-    """
-    lines = [ln.strip() for ln in (text or "").split("\n")]
-    lines = [ln for ln in lines if ln]
-
-    out: list[tuple[str, str]] = []
-
-    pending_key = ""
-    pending_vals: list[str] = []
-
-    section = ""
-    section_items: list[str] = []
-    section_is_list = False
-
-    def flush_pending() -> None:
-        nonlocal pending_key, pending_vals, out
-        if not pending_key:
-            return
-        v = ", ".join([x for x in pending_vals if x]).strip()
-        if v:
-            out.append((pending_key, v))
-        pending_key = ""
-        pending_vals = []
-
-    def flush_section() -> None:
-        nonlocal section, section_items, out, section_is_list
-        if section and section_items:
-            v = ", ".join([x for x in section_items if x]).strip()
-            if v:
-                if len(v) > 350:
-                    v = v[:350].rstrip(" ,")
-                out.append((section, v))
-        section = ""
-        section_items = []
-        section_is_list = False
-
-    def _is_kv_key(s: str) -> bool:
-        if not s:
-            return False
-        ss = s.strip()
-        if len(ss) < 2 or len(ss) > 80:
-            return False
-        if ss.casefold() in {"да", "нет"}:
-            return False
-        if ss.endswith(":"):
-            return True
-        # должно быть хоть одно слово/буква
-        if not re.search(r"[A-Za-zА-Яа-яЁё]", ss):
-            return False
-        # избегаем списка вида "USB-кабель" как ключа (обычно это item в Комплектации)
-        return True
-
-    def _is_kv_val(s: str) -> bool:
-        if not s:
-            return False
-        ss = s.strip()
-        if len(ss) < 1 or len(ss) > 250:
-            return False
-        # значение может быть "Да/Нет/4800x4800" и т.п.
-        return True
-
-    i = 0
-    while i < len(lines):
-        ln = lines[i]
-
-        # заголовки тех/осн характеристик
-        if _RE_SPECS_HDR_LINE.search(ln):
-            flush_pending()
-            flush_section()
-            i += 1
-            continue
-
-        # заголовок секции
-        # ВАЖНО: не путать ключи ("Цвет печати") с секциями.
-        # Считаем секцией только если:
-        #  - это "Состав поставки/Комплектация" (ожидаем список), или
-        #  - следующая строка выглядит как табличная (с \t)
-        if ("\t" not in ln) and _looks_like_section_header(ln):
-            nxt = lines[i + 1] if (i + 1 < len(lines)) else ""
-            is_list_hdr = bool(re.search(r"(?i)состав\s+поставки|комплектац", ln))
-            if is_list_hdr or ("\t" in (nxt or "")):
-                flush_pending()
-                flush_section()
-                section = ln.strip()
-                section_is_list = is_list_hdr
-                i += 1
-                continue
-
-        # табличный формат
-        if "\t" in ln:
-            flush_pending()
-            parts_raw = [p.strip() for p in ln.split("\t")]
-            parts_raw = [p for p in parts_raw if p != ""]
-            if not parts_raw:
-                i += 1
-                continue
-            key = parts_raw[0] if parts_raw else ""
-            vals = [x for x in parts_raw[1:] if x]
-            val = " ".join(vals).strip()
-
-            if key and val:
-                out.append((key, val))
-                i += 1
-                continue
-            if key and not val:
-                pending_key = key
-                pending_vals = []
-                i += 1
-                continue
-
-            only = " ".join(parts_raw).strip()
-            if only and section:
-                section_items.append(only)
-            i += 1
-            continue
-
-        # формат "Ключ: значение"
-        m = re.match(r"^([^:]{1,80}):\s*(.{1,250})$", ln)
-        if m:
-            flush_pending()
-            flush_section()
-            out.append((m.group(1).strip(), m.group(2).strip()))
-            i += 1
-            continue
-
-        # если ожидаем список (Комплектация) — не пытаемся делать пары
-        if section and section_is_list:
-            section_items.append(ln)
-            i += 1
-            continue
-
-        # CopyLine-формат: чередование строк ключ/значение
-        if i + 1 < len(lines):
-            nxt = lines[i + 1]
-            # не мешаемся, если следующая строка — заголовок или табличная
-            if ("\t" not in ln) and ("\t" not in nxt) and (not _RE_SPECS_HDR_LINE.search(nxt)) and (not re.search(r"(?i)состав\s+поставки|комплектац", nxt)):
-                k_cf = ln.strip().casefold()
-                keyish = (
-                    bool(re.search(r"\s", ln))
-                    or bool(re.search(r"\d", ln))
-                    or bool(re.search(r"[()/%×x]", ln))
-                    or k_cf in {"тип", "вид", "цвет", "бренд", "марка", "модель", "разрешение", "интерфейс", "скорость", "формат", "размер", "вес", "объем", "объём", "емкость", "ёмкость", "ресурс", "гарантия", "питание"}
-                    or len(ln) >= 15
-                )
-                if keyish and _is_kv_val(nxt):
-                    # избегаем склейки простых списков в пары: пропускаем только если ключ = 1 слово
-                    wcount = len(re.findall(r"[A-Za-zА-Яа-яЁё]+", ln))
-                    if len(ln) <= 12 and len(nxt) <= 12 and (not re.search(r"\d", ln + nxt)) and wcount <= 1:
-                        pass
-                    else:
-                        flush_pending()
-                        flush_section()
-                        out.append((ln.rstrip(":").strip(), nxt.strip()))
-                        i += 2
-                        continue
-        # режим "ключ без значения" (редко, но бывает)
-        if pending_key:
-            pending_vals.append(ln)
-            i += 1
-            continue
-
-        # по умолчанию: кладём как пункт секции (если секция есть)
-        if section:
-            section_items.append(ln)
-        i += 1
-
-    flush_pending()
-    flush_section()
-
-    return out
-
-
-def _build_desc_part(name: str, native_desc: str) -> str:
-    n_esc = xml_escape_text(norm_ws(name))
-    d = fix_text(native_desc)
-    if not d:
-        return f"<h3>{n_esc}</h3>"
-
-    # Единый вид: нативное описание выводим как текст, без встроенных блоков характеристик.
-    d2 = xml_escape_text(d).replace("\n", "<br>")
-    return f"<h3>{n_esc}</h3><p>{d2}</p>"
-
-
-# Делает аккуратный HTML внутри CDATA (добавляет \n в начале/конце)
-def normalize_cdata_inner(inner: str) -> str:
-    # Убираем мусорные пробелы/пустые строки внутри CDATA, без лишних ведущих/хвостовых переводов строк
-    inner = (inner or "").strip()
-    inner = _RE_MULTI_NL.sub("\n\n", inner)
-    return inner
-
-def normalize_pictures(pictures: Sequence[str]) -> list[str]:
-    out: list[str] = []
-    seen: set[str] = set()
-    for p in pictures or []:
-        u = norm_ws(p)
+        u = _get_text(el)
         if not u:
             continue
-        # если это просто домен без пути — это не картинка
-        try:
-            from urllib.parse import urlparse
-            pr = urlparse(u)
-            if pr.scheme in {"http", "https"} and pr.netloc and pr.path in {"", "/"}:
-                continue
-        except Exception:
-            pass
+        u = u.strip()
+        if u.startswith("//"):
+            u = "https:" + u
+        if u.startswith("/"):
+            u = "https://nvprint.ru" + u
+        pics.append(u)
+
+    # 2) 1C: часто есть поле "СсылкаНаКартинку" (или похожие)
+    if not pics:
+        u = _pick_first_text(
+            item,
+            (
+                "СсылкаНаКартинку",
+                "СсылкаНаКартинку1",
+                "СсылкаНаКартинку2",
+                "СсылкаНаКартинк",
+                "Картинка",
+                "Фото",
+                "Image",
+                "Picture",
+            ),
+        )
+        u = (u or "").strip()
+        if u:
+            if u.startswith("//"):
+                u = "https:" + u
+            if u.startswith("http://"):
+                u = "https://" + u[len("http://") :]
+            pics = [u]
+
+    if not pics:
+        return [PLACEHOLDER_PIC]
+
+    # уникализация
+    seen = set()
+    out: list[str] = []
+    for u in pics:
         if u in seen:
             continue
         seen.add(u)
         out.append(u)
     return out
 
+def _collect_params(item: ET.Element) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
 
-
-# Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
-def build_keywords(
-    vendor: str,
-    name: str,
-    *,
-    city_tail: str | None = None,
-    max_tokens: int = 18,
-    extra: list[str] | None = None,
-) -> str:
-    vendor = norm_ws(vendor)
-    name = norm_ws(name)
-
-    parts: list[str] = []
-    if vendor:
-        parts.append(vendor)
-    if name:
-        parts.append(name)
-
-    # Разбор имени на слова (цифры/буквы, с дефисами)
-    tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+(?:-[A-Za-zА-Яа-яЁё0-9]+)*", name)
-    for t in tokens[: max(0, int(max_tokens))]:
-        tt = norm_ws(t)
-        if tt:
-            parts.append(tt)
-
-    if extra:
-        for x in extra:
-            xx = norm_ws(str(x))
-            if xx:
-                parts.append(xx)
-
-    # Города добавляем единым хвостом (уже с запятыми). Если не передали — берём дефолт.
-    ct = norm_ws(city_tail or CS_CITY_TAIL)
-    if ct:
-        parts.append(ct)
-
-    # Уникализация (без учёта регистра)
-    out: list[str] = []
-    seen: set[str] = set()
-    for p in parts:
-        if CS_FIX_KEYWORDS_DECIMAL_COMMA:
-            p = _RE_DECIMAL_COMMA.sub(".", p)
-        if CS_FIX_KEYWORDS_MULTI_COMMA:
-            p = p.strip().strip(" ,")
-        key = p.lower()
-        if key in seen:
+    for p in item.findall("param"):
+        k = (p.get("name") or "").strip()
+        v = _get_text(p)
+        if not k or not v:
             continue
-        seen.add(key)
-        out.append(p)
-
-    return ", ".join(out)
-
-# Формирует блок "Характеристики" (HTML)
-def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
-    # Всегда один и тот же CS-блок характеристик у всех товаров.
-    # Если характеристик нет — оставляем аккуратный placeholder.
-    items: list[str] = []
-    for k, v in (params_sorted or []):
-        kk = xml_escape_text(norm_ws(k))
-        vv = xml_escape_text(norm_ws(v))
-        if not kk or not vv:
+        if k.casefold() in DROP_PARAM_NAMES_CF:
             continue
-        items.append(f"<li><strong>{kk}:</strong> {vv}</li>")
-
-    if not items:
-        items.append("<li><strong>Характеристики:</strong> уточняйте у менеджера</li>")
-
-    return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
-
-
-
-
-# Формирует короткую строку "Кратко" из ключевых характеристик
-def build_brief_line(params_sorted: Sequence[tuple[str, str]]) -> str:
-    if not CS_DESC_ADD_BRIEF:
-        return ""
-    want = ["Тип", "Совместимость", "Ресурс", "Цвет", "Гарантия"]
-    m = {norm_ws(k): norm_ws(v) for k, v in (params_sorted or []) if norm_ws(k) and norm_ws(v)}
-    parts = []
-    for k in want:
-        v = m.get(k)
-        if not v:
+        if k.casefold() in ("вес", "высота", "длина", "ширина", "ресурс") and v.strip() in ("0", "0.0", "0,0", "0,00", "0.00"):
             continue
-        # компактнее
-        if len(v) > 70:
-            v = v[:70].rstrip(" ,")
-        parts.append(f"{k}: {xml_escape_text(v)}")
-    if len(parts) < int(CS_DESC_BRIEF_MIN_FIELDS):
-        return ""
-    txt = "; ".join(parts)
-    if len(txt) > 240:
-        txt = txt[:240].rstrip(" ;")
-    return f"<p><strong>Кратко:</strong> {txt}</p>"
+        if k.casefold() == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
+            continue
+        k = _rename_param_key_nvprint(k)
+        v = _cleanup_param_value_nvprint(k.replace(" ", ""), v) if k in ("Тип печати","Цвет печати","Совместимость с моделями") else _cleanup_param_value_nvprint(k, v)
+        orig_k = k
+        k = _rename_param_key_nvprint(k)
+        v = _cleanup_param_value_nvprint(orig_k, v)
+        out.append((k, v))
 
-# Собирает description (WhatsApp + HR + Описание + Характеристики + Оплата/Доставка)
-def build_description(
-    name: str,
-    native_desc: str,
-    params_sorted: Sequence[tuple[str, str]],
-    *,
-    wa_block: str = CS_WA_BLOCK,
-    hr_2px: str = CS_HR_2PX,
-    pay_block: str = CS_PAY_BLOCK,
-) -> str:
-    n = norm_ws(name)
-    d = fix_text(native_desc)
-
-    # Родное описание (без встроенных секций характеристик — они вынесены в единый CS-блок ниже)
-    desc_part = _build_desc_part(n, d)
-
-    # Краткое резюме по ключевым характеристикам (SEO + удобство клиенту)
-    brief = build_brief_line(params_sorted)
-
-    # Единый CS-блок характеристик всегда одного вида
-    chars = build_chars_block(params_sorted)
-
-    parts: list[str] = []
-    parts.append(wa_block)
-    parts.append(hr_2px)
-    parts.append("<!-- Описание -->")
-    parts.append(desc_part)
-    if brief:
-        parts.append(brief)
-    parts.append(chars)
-    parts.append(pay_block)
-
-    inner = "\n".join(parts)
-    return normalize_cdata_inner(inner)
-
-
-# Делает FEED_META (фиксированный вид)
-def make_feed_meta(
-    supplier: str,
-    supplier_url: str,
-    build_time: datetime,
-    next_run: datetime,
-    *,
-    before: int,
-    after: int,
-    in_true: int,
-    in_false: int,
-) -> str:
-    lines = [
-        "<!--FEED_META",
-        f"Поставщик                                  | {supplier}",
-        f"URL поставщика                             | {supplier_url}",
-        f"Время сборки (Алматы)                      | {build_time:%Y-%m-%d %H:%M:%S}",
-        f"Ближайшая сборка (Алматы)                  | {next_run:%Y-%m-%d %H:%M:%S}",
-        f"Сколько товаров у поставщика до фильтра    | {before}",
-        f"Сколько товаров у поставщика после фильтра | {after}",
-        f"Сколько товаров есть в наличии (true)      | {in_true}",
-        f"Сколько товаров нет в наличии (false)      | {in_false}",
-        "-->",
-    ]
-    return "\n".join(lines)
-
-
-# Верх файла (минимальный shop+offers; витрина будет в cs_price позже)
-def make_header(build_time: datetime, *, encoding: str = OUTPUT_ENCODING_DEFAULT) -> str:
-    return (
-        f"<?xml version=\"1.0\" encoding=\"{encoding}\"?>\n"
-        f"<yml_catalog date=\"{build_time:%Y-%m-%d %H:%M}\">\n"
-        f"<shop><offers>\n"
-    )
-
-
-# Низ файла
-def make_footer() -> str:
-    return "</offers>\n</shop>\n</yml_catalog>\n"
-
-
-# Гарантирует пустую строку после <offers> и перед </offers>
-def ensure_footer_spacing(xml: str) -> str:
-    xml = re.sub(r"(<offers>\n)(\n*)", r"\1\n", xml, count=1)
-    xml = re.sub(r"(</offer>\n)(</offers>)", r"\1\n\2", xml)
-    return xml
-
-
-# Пишет файл только если изменился (атомарно)
-def write_if_changed(path: str, data: str, *, encoding: str = OUTPUT_ENCODING_DEFAULT) -> bool:
-    p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-    new_bytes = data.encode(encoding, errors="strict")
-
-    if p.exists():
-        old = p.read_bytes()
-        if old == new_bytes:
-            return False
-
-    tmp = p.with_suffix(p.suffix + ".tmp")
-    tmp.write_bytes(new_bytes)
-    tmp.replace(p)
-    return True
-
-
-# Словарь брендов для pick_vendor (упорядочен, расширяем при необходимости)
-CS_BRANDS_MAP = {
-    "hp": "HP",
-    "hewlett": "HP",
-    "canon": "Canon",
-    "epson": "Epson",
-    "brother": "Brother",
-    "samsung": "Samsung",
-    "sv": "SVC",
-    "svc": "SVC",
-    "apc": "APC",
-    "schneider": "Schneider Electric",
-    "asus": "ASUS",
-    "lenovo": "Lenovo",
-    "acer": "Acer",
-    "dell": "Dell",
-    "logitech": "Logitech",
-    "xiaomi": "Xiaomi",
-}
-
-# Пытается определить бренд (vendor) по vendor_src / name / params / description (если пусто — public_vendor)
-def pick_vendor(
-    vendor_src: str,
-    name: str,
-    params: Sequence[tuple[str, str]],
-    desc_html: str,
-    *,
-    public_vendor: str = "CS",
-) -> str:
-    v = norm_ws(vendor_src)
-    if v:
-        return v
-
-    hay = " ".join(
-        [name or "", desc_html or ""]
-        + [f"{k} {val}" for k, val in (params or [])]
-    ).lower()
-
-    for key, canon in CS_BRANDS_MAP.items():
-        if re.search(rf"\b{re.escape(key)}\b", hay):
-            return canon
-
-    return norm_ws(public_vendor) or "CS"
-
-
-@dataclass
-class OfferOut:
-    oid: str
-    available: bool
-    name: str
-    price: int
-    pictures: list[str]
-    vendor: str
-    params: list[tuple[str, str]]
-    native_desc: str
-
-    # Собирает XML offer (фиксированный порядок)
-    def to_xml(
-        self,
-        *,
-        currency_id: str = CURRENCY_ID_DEFAULT,
-        city_tail: str = CS_CITY_TAIL,
-        public_vendor: str = "CS",
-        param_priority: Sequence[str] | None = None,
-    ) -> str:
-        name = norm_ws(self.name)
-        native_desc = fix_text(self.native_desc)
-        # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
-        native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
-        vendor = pick_vendor(self.vendor, name, self.params, native_desc, public_vendor=public_vendor)
-
-        # тройное обогащение: params + из описания
-        params = list(self.params)
-        if _spec_pairs:
-            params.extend(_spec_pairs)
-        enrich_params_from_desc(params, native_desc)
-        enrich_params_from_name_and_desc(params, name, native_desc)
-
-        # чистим и сортируем (ВАЖНО: чистить всегда)
-        params = clean_params(params)
-        params_sorted = sort_params(params, priority=list(param_priority or []))
-
-        desc_cdata = build_description(name, native_desc, params_sorted)
-        keywords = build_keywords(vendor, name, city_tail=city_tail)
-
-        pics_xml = ""
-        pics = normalize_pictures(self.pictures or [])
-        if not pics and CS_PICTURE_PLACEHOLDER_URL:
-            pics = [CS_PICTURE_PLACEHOLDER_URL]
-        for pp in pics:
-            pics_xml += f"\n<picture>{xml_escape_text(pp)}</picture>"
-
-        params_xml = ""
-        for k, v in params_sorted:
-            kk = xml_escape_attr(norm_ws(k))
-            vv = xml_escape_text(norm_ws(v))
-            if not kk or not vv:
-                continue
-            params_xml += f"\n<param name=\"{kk}\">{vv}</param>"
-
-        # Политика availability по поставщику:
-        # - AlStyle (AS) и AkCent (AC): как у поставщика
-        # - CopyLine (CL), NVPrint (NP), VTT (VT): всегда true
-        oid_u = (self.oid or "").upper()
-        avail_effective = bool(self.available)
-        if oid_u.startswith(("CL", "NP", "VT")):
-            avail_effective = True
-
-        out = (
-            f"<offer id=\"{xml_escape_attr(self.oid)}\" available=\"{bool_to_xml(bool(avail_effective))}\">\n"
-            f"<categoryId></categoryId>\n"
-            f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
-            f"<name>{xml_escape_text(name)}</name>\n"
-            f"<price>{int(self.price)}</price>"
-            f"{pics_xml}\n"
-            f"<vendor>{xml_escape_text(vendor)}</vendor>\n"
-            f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
-            f"<description><![CDATA[{desc_cdata}]]></description>"
-            f"{params_xml}\n"
-            f"<keywords>{xml_escape_text(keywords)}</keywords>\n"
-            f"</offer>"
-        )
+    if out:
         return out
 
-# Валидирует готовый CS-фид (страховка: если что-то сломалось — падаем сборкой)
-def validate_cs_yml(xml: str) -> None:
-    errors: list[str] = []
+    skip_keys = {
+        "код", "артикул", "guid",
+        "номенклатура", "номенклатуракратко", "наименование",
+        "цена", "ценасндс", "ценабезндс", "цена_кзт", "price",
+        "new_reman", "разделпрайса",
+        "ссылканакартинку",
+    }
 
-    # Глобальные запреты
-    if "<available>" in xml:
-        errors.append("Найден тег <available> (должен быть только available=\"true/false\" в <offer>).")
-
-    # Shuko не должно встречаться вообще
-    if re.search(r"\bShuko\b", xml, flags=re.I):
-        errors.append("Найдено слово 'Shuko' (нужно 'Schuko').")
-
-    # Служебные параметры не должны просачиваться
-    drop_names = PARAM_DROP_DEFAULT_CF
-
-    # Прогон по офферам
-    in_offer = False
-    offer_id = ""
-    has_picture = False
-    vendor_code = ""
-    keywords = ""
-    price_ok = True
-    ids_seen: set[str] = set()
-    hash_like_ids: list[str] = []
-    _RE_HASH_OID = re.compile(r"^(AC|AS|CL|NP|VT)H[0-9A-F]{10}$")
-
-    bad_no_pic: list[str] = []
-    bad_vendorcode: list[str] = []
-    bad_keywords: list[str] = []
-    bad_params: list[str] = []
-    bad_price: list[str] = []
-    dup_ids: list[str] = []
-
-    # Для keywords может быть много текста — берём по строке (рендер у нас одно-строчный)
-    for line in xml.splitlines():
-        s = line.strip()
-
-        if s.startswith("<offer ") and 'id="' in s:
-            in_offer = True
-            has_picture = False
-            vendor_code = ""
-            keywords = ""
-            price_ok = True
-
-            m = re.search(r'id="([^"]+)"', s)
-            offer_id = m.group(1) if m else ""
-            if offer_id:
-                if offer_id in ids_seen:
-                    dup_ids.append(offer_id)
-                ids_seen.add(offer_id)
-                if _RE_HASH_OID.match(offer_id):
-                    hash_like_ids.append(offer_id)
+    for ch in _iter_children(item):
+        k = _local(ch.tag).strip()
+        cf = k.casefold()
+        v = _get_text(ch)
+        if not v:
             continue
-
-        if not in_offer:
+        if cf in skip_keys:
             continue
+        if cf in DROP_PARAM_NAMES_CF:
+            continue
+        if cf in ("вес", "высота", "длина", "ширина", "ресурс") and v.strip() in ("0", "0.0", "0,0", "0,00", "0.00"):
+            continue
+        if cf == "гарантия" and v.strip().casefold() in ("0", "0 мес", "0 месяцев", "0мес"):
+            continue
+        k = _rename_param_key_nvprint(k)
+        v = _cleanup_param_value_nvprint(k.replace(" ", ""), v) if k in ("Тип печати","Цвет печати","Совместимость с моделями") else _cleanup_param_value_nvprint(k, v)
+        out.append((k, v))
 
-        if "<picture>" in s:
-            has_picture = True
+    return out
 
-        if s.startswith("<vendorCode>"):
-            vendor_code = re.sub(r"</?vendorCode>", "", s).strip()
 
-        if s.startswith("<keywords>"):
-            kw = re.sub(r"</?keywords>", "", s).strip()
-            keywords = kw
+def _native_desc(item: ET.Element) -> str:
+    d = _pick_first_text(item, ("description", "Описание"))
+    if not d:
+        return ""
+    if RE_DESC_HAS_CS.search(d):
+        return ""
+    return d
 
-        if s.startswith("<price>"):
-            pr = re.sub(r"</?price>", "", s).strip()
-            pi = safe_int(pr)
-            if pi is None or pi < 100:
-                price_ok = False
 
-        # param проверки
-        if s.startswith("<param ") and 'name="' in s:
-            mname = re.search(r'name="([^"]+)"', s)
-            pname = mname.group(1) if mname else ""
-            pname_n = norm_ws(pname)
-            pname_key = pname_n.casefold()
 
-            # служебные/запрещённые
-            if pname_key in drop_names:
-                bad_params.append(f"{offer_id}: запрещённый param '{pname_n}'")
 
-            # Bт не должно быть
-            if re.search(r"Bт", pname_n):
-                bad_params.append(f"{offer_id}: param содержит 'Bт' -> '{pname_n}'")
 
-            # значение
-            # <param name="X">VALUE</param>
-            mv = re.search(r'">(.+)</param>$', s)
-            pval = mv.group(1) if mv else ""
-            pval_n = norm_ws(pval)
-            vv_compact = pval_n.replace(" ", "")
-            if re.fullmatch(r"[-–—.]+", vv_compact) or vv_compact in {"..", "..."}:
-                bad_params.append(f"{offer_id}: пустышка в param '{pname_n}'='{pval_n}'")
-            if "..." in vv_compact and not re.search(r"\d+\s*\.\.\.\s*\d+", vv_compact):
-                if vv_compact.endswith("...") or re.search(r"[A-Za-zА-Яа-яЁё]\.\.\.", vv_compact):
-                    bad_params.append(f"{offer_id}: обрезанное значение param '{pname_n}'='{pval_n}'")
+_CYR2LAT = {
+    # кириллица -> латиница (конфузаблы), только внутри латинских/цифровых токенов
+    "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X", "У": "Y",
+    "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t", "х": "x", "у": "y",
+}
 
-        if s == "</offer>":
-            # проверка на картинку
-            if not has_picture:
-                bad_no_pic.append(offer_id)
+_RE_TOKEN = re.compile(r"[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-._/]+")
+_RE_DBL_SLASH = re.compile(r"//+")
+_RE_NV_SPACE = re.compile(r"\bNV-\s+")
+_RE_WS = re.compile(r"\s+")
+_RE_SPACE_BEFORE_RP = re.compile(r"\s+\)")
 
-            # vendorCode должен совпадать с id
-            if offer_id and vendor_code and vendor_code != offer_id:
-                bad_vendorcode.append(offer_id)
+_RE_SLASH_BEFORE_LETTER = re.compile(r"/(?!\s)(?=[A-Za-zА-Яа-я])")
+_RE_SHT_MISSING_SPACE = re.compile(r"\((\d+)шт\)", re.I)
+_RE_NUM_SHT_WORD = re.compile(r"\b(\d+)шт\b", re.I)
+_RE_WORKCENTRE = re.compile(r"\bWorkcentr(e)?\b", re.I)
 
-            # keywords: должны быть через запятые
-            if keywords:
-                if "," not in keywords:
-                    bad_keywords.append(offer_id)
+
+_STOP_BRAND_CF = {
+    "лазерных", "струйных", "принтеров", "мфу", "копиров", "копировальных", "плоттеров",
+    "принтера", "устройств", "устройства", "печати", "всех",
+}
+
+def _fix_confusables_to_latin_in_latin_tokens(s: str) -> str:
+    # 1) сначала правим "латиница внутри кириллицы" (Cервисный -> Сервисный) уже делает _fix_mixed_ru
+    # 2) потом правим "кириллица внутри латиницы" (СE390X -> CE390X, Kyoсera -> Kyocera)
+    if not s:
+        return ""
+    out = []
+    last = 0
+    for m in _RE_TOKEN.finditer(s):
+        out.append(s[last:m.start()])
+        tok = m.group(0)
+        has_lat = any(("A" <= ch <= "Z") or ("a" <= ch <= "z") for ch in tok)
+        if has_lat:
+            tok = "".join(_CYR2LAT.get(ch, ch) for ch in tok)
+        out.append(tok)
+        last = m.end()
+    out.append(s[last:])
+    return "".join(out)
+
+def _drop_unmatched_rparens(s: str) -> str:
+    if not s:
+        return ""
+    out = []
+    bal = 0
+    for ch in s:
+        if ch == "(":
+            bal += 1
+            out.append(ch)
+        elif ch == ")":
+            if bal > 0:
+                bal -= 1
+                out.append(ch)
             else:
-                bad_keywords.append(offer_id)
+                # лишняя ')'
+                continue
+        else:
+            out.append(ch)
+    return "".join(out)
 
-            if not price_ok:
-                bad_price.append(offer_id)
+def _cleanup_name_nvprint(name: str) -> str:
+    s = (name or "").strip()
+    if not s:
+        return ""
+    s = _fix_mixed_ru(s)  # латиница -> кириллица в русских словах
+    s = _fix_confusables_to_latin_in_latin_tokens(s)  # кириллица -> латиница в кодах/брендах
+    s = _RE_NV_SPACE.sub("NV-", s)                    # NV- 0617B025 -> NV-0617B025
+    s = _RE_DBL_SLASH.sub("/", s)                     # // -> /
+    s = _RE_SPACE_BEFORE_RP.sub(")", s)               # " )" -> ")"
+    s = _RE_SHT_MISSING_SPACE.sub(r"(\1 шт)", s)  # (2шт) -> (2 шт)
+    s = _RE_NUM_SHT_WORD.sub(r"\1 шт", s)         # 2шт -> 2 шт
+    s = _RE_SLASH_BEFORE_LETTER.sub("/ ", s)       # 3020/WorkCentre -> 3020/ WorkCentre
+    s = _RE_WORKCENTRE.sub("WorkCentre", s)   # Workcentre/Workcentr -> WorkCentre
+    s = _drop_unmatched_rparens(s)                    # убрать лишние ')'
+    s = norm_ws(s)
+    s = _normalize_name_prefix(s)
+    # дублирующая страховка префиксов
+    s = re.sub(r"^Тонер\s+картридж\b", "Тонер-картридж", s, flags=re.I)
+    s = _RE_WS.sub(" ", s).strip()
+    return s
 
-            in_offer = False
-            offer_id = ""
+_COLOR_MAP = {
+    "пурпурный": "Magenta",
+    "магента": "Magenta",
+    "черный": "Black",
+    "чёрный": "Black",
+    "желтый": "Yellow",
+    "жёлтый": "Yellow",
+    "голубой": "Cyan",
+    "циан": "Cyan",
+    "цветной": "Color",
+    "color": "Color",
+    "black": "Black",
+    "cyan": "Cyan",
+    "magenta": "Magenta",
+    "yellow": "Yellow",
+    "red": "Red",
+}
+
+
+_PARAM_KEY_MAP_NVPRINT = {
+    "ТипПечати": "Тип печати",
+    "ЦветПечати": "Цвет печати",
+    "СовместимостьСМоделями": "Совместимость с моделями",
+}
+
+def _rename_param_key_nvprint(k: str) -> str:
+    k = (k or "").strip()
+    if not k:
+        return ""
+    return _PARAM_KEY_MAP_NVPRINT.get(k, k)
+
+def _cleanup_param_value_nvprint(k: str, v: str) -> str:
+    kk = (k or "").strip()
+    vv = (v or "").strip()
+    if not kk or not vv:
+        return vv
+    cf = kk.casefold()
+    if cf in ("цветпечати", "цвет печати"):
+        vv_cf = vv.casefold().strip()
+        return _COLOR_MAP.get(vv_cf, vv.strip())
+    if cf in ("совместимостьсмоделями", "совместимость с моделями", "модель"):
+        vv = _fix_confusables_to_latin_in_latin_tokens(_fix_mixed_ru(vv))
+        vv = _RE_DBL_SLASH.sub("/", vv)
+        vv = _RE_SLASH_BEFORE_LETTER.sub("/ ", vv)
+        vv = _RE_SPACE_BEFORE_RP.sub(")", vv)
+        vv = _RE_WORKCENTRE.sub("WorkCentre", vv)
+        vv = _drop_unmatched_rparens(vv)
+        vv = _RE_WS.sub(" ", vv).strip()
+        return vv
+    return vv
+
+def _cleanup_vendor_nvprint(vendor: str, name: str) -> str:
+    v = _normalize_vendor(vendor or "")
+    # убираем мусорные "категории" как бренд
+    if v.casefold() in {"остальное", "прочее", "прочие", "другое", "другие", "other"}:
+        v = ""
+    if not v:
+        v = _derive_vendor_from_name(name)  # бренд принтера из "… для Kyocera …"
+    if v and v.casefold() in _STOP_BRAND_CF:
+        v = ""
+    if not v and "nvp" in (name or "").casefold():
+        v = "NVP"
+    return v.strip()
+def _normalize_name_prefix(name: str) -> str:
+    s = (name or "").strip()
+    if not s:
+        return ""
+    # единообразие префиксов
+    if s.casefold().startswith("тонер картридж"):
+        s = "Тонер-картридж" + s[len("Тонер картридж"):]
+    if s.casefold().startswith("тонер туба"):
+        s = "Тонер-туба" + s[len("Тонер туба"):]
+    return s
+
+def _normalize_vendor(v: str) -> str:
+    v = (v or "").strip()
+    if not v:
+        return ""
+    # Если есть смесь латиницы и кириллицы (часто "Kyoсera" с кириллической 'с') — приводим похожие буквы к латинице.
+    has_lat = any(("A" <= ch <= "Z") or ("a" <= ch <= "z") for ch in v)
+    has_cyr = any(("А" <= ch <= "я") or (ch in "Ёё") for ch in v)
+    if has_lat and has_cyr:
+        table = str.maketrans({
+            "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H", "О": "O", "Р": "P", "С": "C", "Т": "T", "Х": "X", "У": "Y",
+            "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t", "х": "x", "у": "y",
+        })
+        v = v.translate(table)
+    return v.strip()
+
+
+_RE_BRAND_AFTER_DLYA = re.compile(r"\bдля\s+([A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9\-._]{1,40})", re.I)
+_RE_BRAND_AFTER_FOR = re.compile(r"\bfor\s+([A-Za-z0-9][A-Za-z0-9\-._]{1,40})", re.I)
+
+
+def _derive_vendor_from_name(name: str) -> str:
+    # Берём бренд принтера из "… для Kyocera …" или "… for HP …"
+    s = (name or "").strip()
+    if not s:
+        return ""
+    m = _RE_BRAND_AFTER_DLYA.search(s)
+    if m:
+        return _normalize_vendor(m.group(1))
+    m = _RE_BRAND_AFTER_FOR.search(s)
+    if m:
+        return _normalize_vendor(m.group(1))
+    return ""
+
+def main() -> int:
+    url = (os.environ.get("NVPRINT_XML_URL") or "").strip()
+    if not url:
+        raise RuntimeError("NVPRINT_XML_URL пустой. Укажи URL в workflow env.")
+
+    auth = _get_auth()
+
+    now = now_almaty()
+    try:
+        hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "4") or "4").strip())
+    except Exception:
+        hour = 4
+    next_run = next_run_at_hour(now, hour)
+    strict = (os.environ.get("NVPRINT_STRICT") or "").strip().lower() in ("1", "true", "yes")
+    try:
+        xml_bytes = _download_xml(url, auth)
+    except Exception as e:
+        if strict:
+            raise
+        print(f"NVPrint: не удалось скачать XML ({e}). Мягкий выход без падения.\n"
+              "Подсказка: чтобы падало жёстко, поставь NVPRINT_STRICT=1", file=sys.stderr)
+        return 0
+
+
+    try:
+        root = ET.fromstring(xml_bytes)
+    except Exception as e:
+        raise RuntimeError(f"NVPrint XML не парсится: {e}\nПревью:\n{_xml_head(xml_bytes)}")
+
+    items = _find_items(root)
+    if not items:
+        raise RuntimeError("Не нашёл товары в NVPrint XML.\nПревью:\n" + _xml_head(xml_bytes))
+
+    out_offers: list[OfferOut] = []
+    filtered_out = 0
+    in_true = 0
+    in_false = 0
+
+    for item in items:
+        name = _get_text(item.find("Номенклатура")) or _get_text(item.find("НоменклатураКратко")) or _pick_first_text(item, ("name", "title", "Наименование"))
+        name = _cleanup_name_nvprint(name)
+
+        if not name:
             continue
 
-    # Сводка ошибок
-    if dup_ids:
-        errors.append(f"Дубликаты offer id: {', '.join(dup_ids[:10])}" + ("..." if len(dup_ids) > 10 else ""))
-    if hash_like_ids:
-        errors.append(
-            "Найдены hash-похожие offer id (похоже на stable_id/md5). Это запрещено: "
-            + ", ".join(hash_like_ids[:10])
-            + ("..." if len(hash_like_ids) > 10 else "")
+        # Фильтр по ключевым словам (ассортимент)
+        if not _include_by_name(name):
+            filtered_out += 1
+            continue
+
+        oid = _make_oid(item, name)
+        if not oid:
+            continue
+        # По требованию: всегда считаем товар в наличии
+        available = True
+        in_true += 1
+        pin = _extract_price(item)
+        price = compute_price(pin)
+
+        pics = _collect_pictures(item)
+        vendor = _pick_first_text(item, ("vendor", "brand", "Brand", "Производитель"))
+        if not vendor:
+            vendor = _pick_first_text(item, ("РазделМодели",))
+        if not vendor:
+            vendor = _pick_first_text(item, ("РазделПрайса",))
+        vendor = _cleanup_vendor_nvprint(vendor, name)
+
+
+
+        params = _collect_params(item)
+        desc = _native_desc(item)
+
+        out_offers.append(
+            OfferOut(
+                oid=oid,
+                name=name,
+                price=price,
+                available=available,
+                pictures=pics,
+                vendor=vendor,
+                params=params,
+                native_desc=desc,
+            )
         )
 
+    out_offers.sort(key=lambda o: o.oid)
 
-    if bad_no_pic:
-        errors.append(f"Есть offer без <picture>: {', '.join(bad_no_pic[:10])}" + ("..." if len(bad_no_pic) > 10 else ""))
+    header = make_header(now, encoding=OUTPUT_ENCODING)
+    feed_meta = make_feed_meta(
+        "NVPrint",
+        url,
+        now,
+        next_run,
+        before=len(items),
+        after=len(out_offers),
+        in_true=in_true,
+        in_false=in_false,
+    )
 
-    if bad_vendorcode:
-        errors.append(f"vendorCode != offer/@id: {', '.join(bad_vendorcode[:10])}" + ("..." if len(bad_vendorcode) > 10 else ""))
+    offers_xml = "\n\n".join(o.to_xml(public_vendor="CS") for o in out_offers)
+    full = header + "\n" + feed_meta + "\n\n" + offers_xml + "\n" + make_footer()
+    full = ensure_footer_spacing(full)
 
-    if bad_keywords:
-        errors.append(f"keywords без запятых/пустые: {', '.join(bad_keywords[:10])}" + ("..." if len(bad_keywords) > 10 else ""))
+    validate_cs_yml(full)
 
-    if bad_price:
-        errors.append(f"price < 100 или невалидный: {', '.join(bad_price[:10])}" + ("..." if len(bad_price) > 10 else ""))
+    changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
+    print(f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | filtered_out={filtered_out} | in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={OUT_FILE}")
+    return 0
 
-    if bad_params:
-        # показываем первые 15 строк, чтобы лог был читаемый
-        head = "\n".join(bad_params[:15])
-        tail = "..." if len(bad_params) > 15 else ""
-        errors.append("Проблемные params:\n" + head + ("\n" + tail if tail else ""))
 
-    if errors:
-        raise ValueError("CS-валидация не пройдена:\n- " + "\n- ".join(errors))
+if __name__ == "__main__":
+    raise SystemExit(main())
