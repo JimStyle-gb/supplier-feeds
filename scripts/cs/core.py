@@ -37,7 +37,7 @@ _RE_TRASH_PARAM_NAME_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
 CS_FIX_KEYWORDS_DECIMAL_COMMA = (os.getenv("CS_FIX_KEYWORDS_DECIMAL_COMMA", "0") or "0").strip() == "1"
 CS_DROP_TRASH_PARAM_NAMES = (os.getenv("CS_DROP_TRASH_PARAM_NAMES", "0") or "0").strip() == "1"
 CS_FIX_KEYWORDS_MULTI_COMMA = (os.getenv("CS_FIX_KEYWORDS_MULTI_COMMA", "0") or "0").strip() == "1"
-CS_DESC_ADD_BRIEF = (os.getenv("CS_DESC_ADD_BRIEF", "0") or "0").strip() == "1"
+CS_DESC_ADD_BRIEF = (os.getenv("CS_DESC_ADD_BRIEF", "1") or "1").strip() == "1"
 CS_DESC_BRIEF_MIN_FIELDS = int((os.getenv("CS_DESC_BRIEF_MIN_FIELDS", "2") or "2").strip() or "2")
 # Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
@@ -402,6 +402,9 @@ def clean_params(
         "для": "Совместимость",
         "ресурс, стр": "Ресурс",
         "цвет печати": "Цвет",
+        "состав поставки": "Комплектация",
+        "комплектация": "Комплектация",
+        "комплект поставки": "Комплектация",
     }
 
     def _normalize_color(v: str) -> str:
@@ -762,8 +765,32 @@ def _build_specs_html_from_text(d: str) -> str:
 
     return "".join(out)
 
-_RE_SPECS_HDR_LINE = re.compile(r"^[^A-Za-zА-Яа-яЁё]*\\s*(?:Технические характеристики|Основные характеристики|Характеристики)\\b", re.IGNORECASE)
-_RE_SPECS_HDR_ANY = re.compile(r"\\b(Технические характеристики|Основные характеристики|Характеристики)\\b", re.IGNORECASE)
+_RE_SPECS_HDR_LINE = re.compile(r"^[^A-Za-zА-Яа-яЁё]*\s*(?:Технические характеристики|Основные характеристики|Характеристики)\b", re.IGNORECASE)
+_RE_SPECS_HDR_ANY = re.compile(r"\b(Технические характеристики|Основные характеристики|Характеристики)\b", re.IGNORECASE)
+
+
+
+
+def _htmlish_to_text(s: str) -> str:
+    """Превращает HTML-подобный текст (с <br>, <p>, списками) в текст с \n.
+    Нужно, чтобы корректно вытащить тех/осн характеристики из CopyLine и похожих источников.
+    """
+    raw = s or ""
+    if not raw:
+        return ""
+    # основные разрывы строк
+    raw = re.sub(r"(?i)<br\s*/?>", "\n", raw)
+    raw = re.sub(r"(?i)</?(?:p|div|li|ul|ol|tr|td|th|table|h[1-6])[^>]*>", "\n", raw)
+    # вычищаем остальные теги
+    raw = re.sub(r"<[^>]+>", " ", raw)
+    # html entities
+    try:
+        import html as _html
+        raw = _html.unescape(raw)
+    except Exception:
+        pass
+    raw = raw.replace("\xa0", " ")
+    return raw
 
 
 def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str]]]:
@@ -771,13 +798,20 @@ def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str
     - вырезаем блоки тех/осн характеристик из нативного описания
     - превращаем их в пары (k, v), чтобы затем вывести ОДИН CS-блок <h3>Характеристики</h3>
 
+    Важно: если пары не удалось распарсить, НЕ режем описание (чтобы не потерять данные).
+
     Возвращает: (description_without_specs, extracted_pairs)
     """
-    d = fix_text(d)
-    if not d:
+    raw = d or ""
+    # если прилетел HTML — переводим в текст для устойчивого парсинга
+    if "<" in raw and ">" in raw:
+        raw = _htmlish_to_text(raw)
+
+    raw = fix_text(raw)
+    if not raw:
         return "", []
 
-    lines_raw = d.split("\n")
+    lines_raw = raw.split("\n")
 
     idx = None
     for i, ln in enumerate(lines_raw):
@@ -787,24 +821,37 @@ def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str
 
     if idx is None:
         # fallback: если заголовок встретился внутри строки — вставим перенос и попробуем снова
-        if _RE_SPECS_HDR_ANY.search(d):
-            d2 = _RE_SPECS_HDR_ANY.sub(lambda m: "\n" + m.group(0), d, count=1)
-            if d2 != d:
+        if _RE_SPECS_HDR_ANY.search(raw):
+            d2 = _RE_SPECS_HDR_ANY.sub(lambda m: "\n" + m.group(0), raw, count=1)
+            if d2 != raw:
                 return extract_specs_pairs_and_strip_desc(d2)
         # если табы — почти всегда таблица характеристик
-        if "\t" in d:
+        if "\t" in raw:
             idx = 0
         else:
-            return d, []
+            return raw, []
 
     pre = "\n".join(lines_raw[:idx]).strip()
     rest = "\n".join(lines_raw[idx:]).strip()
+
     pairs = _parse_specs_pairs_from_text(rest)
+
+    # страховка: если вообще ничего не распарсили — не трогаем описание
+    if not pairs:
+        return raw, []
+
     return pre, pairs
 
 
 def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
-    # Парсит блок характеристик в пары key/value.
+    """Парсит блок характеристик в пары key/value.
+
+    Поддерживает:
+    - табличный формат (\t)
+    - "Ключ: значение"
+    - CopyLine-формат: чередование строк "Ключ" / "Значение" после заголовка
+    - секции типа "Состав поставки" -> Комплектация
+    """
     lines = [ln.strip() for ln in (text or "").split("\n")]
     lines = [ln for ln in lines if ln]
 
@@ -815,6 +862,7 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
 
     section = ""
     section_items: list[str] = []
+    section_is_list = False
 
     def flush_pending() -> None:
         nonlocal pending_key, pending_vals, out
@@ -827,34 +875,76 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
         pending_vals = []
 
     def flush_section() -> None:
-        nonlocal section, section_items, out
+        nonlocal section, section_items, out, section_is_list
         if section and section_items:
             v = ", ".join([x for x in section_items if x]).strip()
             if v:
-                # мягко ограничим длину, чтобы не было гигантских значений
                 if len(v) > 350:
                     v = v[:350].rstrip(" ,")
                 out.append((section, v))
         section = ""
         section_items = []
+        section_is_list = False
 
-    for ln in lines:
+    def _is_kv_key(s: str) -> bool:
+        if not s:
+            return False
+        ss = s.strip()
+        if len(ss) < 2 or len(ss) > 80:
+            return False
+        if ss.casefold() in {"да", "нет"}:
+            return False
+        if ss.endswith(":"):
+            return True
+        # должно быть хоть одно слово/буква
+        if not re.search(r"[A-Za-zА-Яа-яЁё]", ss):
+            return False
+        # избегаем списка вида "USB-кабель" как ключа (обычно это item в Комплектации)
+        return True
+
+    def _is_kv_val(s: str) -> bool:
+        if not s:
+            return False
+        ss = s.strip()
+        if len(ss) < 1 or len(ss) > 250:
+            return False
+        # значение может быть "Да/Нет/4800x4800" и т.п.
+        return True
+
+    i = 0
+    while i < len(lines):
+        ln = lines[i]
+
+        # заголовки тех/осн характеристик
         if _RE_SPECS_HDR_LINE.search(ln):
             flush_pending()
             flush_section()
+            i += 1
             continue
 
-        if _looks_like_section_header(ln) and ("\t" not in ln):
-            flush_pending()
-            flush_section()
-            section = ln.strip()
-            continue
+        # заголовок секции
+        # ВАЖНО: не путать ключи ("Цвет печати") с секциями.
+        # Считаем секцией только если:
+        #  - это "Состав поставки/Комплектация" (ожидаем список), или
+        #  - следующая строка выглядит как табличная (с \t)
+        if ("\t" not in ln) and _looks_like_section_header(ln):
+            nxt = lines[i + 1] if (i + 1 < len(lines)) else ""
+            is_list_hdr = bool(re.search(r"(?i)состав\s+поставки|комплектац", ln))
+            if is_list_hdr or ("\t" in (nxt or "")):
+                flush_pending()
+                flush_section()
+                section = ln.strip()
+                section_is_list = is_list_hdr
+                i += 1
+                continue
 
+        # табличный формат
         if "\t" in ln:
             flush_pending()
-            # ВАЖНО: сохраняем пустые столбцы, чтобы поймать кейс "Ключ\t" + значения ниже
             parts_raw = [p.strip() for p in ln.split("\t")]
+            parts_raw = [p for p in parts_raw if p != ""]
             if not parts_raw:
+                i += 1
                 continue
             key = parts_raw[0] if parts_raw else ""
             vals = [x for x in parts_raw[1:] if x]
@@ -862,31 +952,69 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
 
             if key and val:
                 out.append((key, val))
+                i += 1
                 continue
             if key and not val:
                 pending_key = key
                 pending_vals = []
+                i += 1
                 continue
 
-            # если ключа нет — это обычно пункт списка
-            only = " ".join([x for x in parts_raw if x]).strip()
+            only = " ".join(parts_raw).strip()
             if only and section:
                 section_items.append(only)
+            i += 1
             continue
 
+        # формат "Ключ: значение"
+        m = re.match(r"^([^:]{1,80}):\s*(.{1,250})$", ln)
+        if m:
+            flush_pending()
+            flush_section()
+            out.append((m.group(1).strip(), m.group(2).strip()))
+            i += 1
+            continue
+
+        # если ожидаем список (Комплектация) — не пытаемся делать пары
+        if section and section_is_list:
+            section_items.append(ln)
+            i += 1
+            continue
+
+        # CopyLine-формат: чередование строк ключ/значение
+        if i + 1 < len(lines):
+            nxt = lines[i + 1]
+            # не мешаемся, если следующая строка — заголовок или табличная
+            if ("\t" not in ln) and ("\t" not in nxt) and (not _RE_SPECS_HDR_LINE.search(nxt)) and (not re.search(r"(?i)состав\s+поставки|комплектац", nxt)):
+                k_cf = ln.strip().casefold()
+                keyish = (
+                    bool(re.search(r"\s", ln))
+                    or bool(re.search(r"\d", ln))
+                    or bool(re.search(r"[()/%×x]", ln))
+                    or k_cf in {"тип", "вид", "цвет", "бренд", "марка", "модель", "разрешение", "интерфейс", "скорость", "формат", "размер", "вес", "объем", "объём", "емкость", "ёмкость", "ресурс", "гарантия", "питание"}
+                    or len(ln) >= 15
+                )
+                if keyish and _is_kv_val(nxt):
+                    # избегаем склейки простых списков в пары: пропускаем только если ключ = 1 слово
+                    wcount = len(re.findall(r"[A-Za-zА-Яа-яЁё]+", ln))
+                    if len(ln) <= 12 and len(nxt) <= 12 and (not re.search(r"\d", ln + nxt)) and wcount <= 1:
+                        pass
+                    else:
+                        flush_pending()
+                        flush_section()
+                        out.append((ln.rstrip(":").strip(), nxt.strip()))
+                        i += 2
+                        continue
+        # режим "ключ без значения" (редко, но бывает)
         if pending_key:
             pending_vals.append(ln)
+            i += 1
             continue
 
-        # строки без табов: попробуем формат "Ключ: значение"
-        m = re.match(r"^([^:]{1,80}):\\s*(.{1,250})$", ln)
-        if m:
-            out.append((m.group(1).strip(), m.group(2).strip()))
-            continue
-
-        # просто пункты — складываем в текущую секцию (например, Комплектация)
+        # по умолчанию: кладём как пункт секции (если секция есть)
         if section:
             section_items.append(ln)
+        i += 1
 
     flush_pending()
     flush_section()
