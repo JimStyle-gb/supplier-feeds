@@ -858,6 +858,9 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
     out: list[tuple[str, str]] = []
 
     pending_key = ""
+
+    misc_items: list[str] = []
+
     pending_vals: list[str] = []
 
     section = ""
@@ -914,6 +917,16 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
     i = 0
     while i < len(lines):
         ln = lines[i]
+
+        # bullet/list items (AlStyle often uses '- ...' after 'Основные характеристики:')
+        orig_ln = ln
+        is_bullet = False
+        if ln and ln[0] in '-•—*':
+            is_bullet = True
+            ln = ln.lstrip('-•—*').strip()
+            if not ln:
+                i += 1
+                continue
 
         # заголовки тех/осн характеристик
         if _RE_SPECS_HDR_LINE.search(ln):
@@ -1011,6 +1024,12 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
             i += 1
             continue
 
+        # по умолчанию: если это bullet-строка без явной структуры и секции нет — копим в общий список
+        if is_bullet and (not section) and ln:
+            misc_items.append(ln)
+            i += 1
+            continue
+
         # по умолчанию: кладём как пункт секции (если секция есть)
         if section:
             section_items.append(ln)
@@ -1018,6 +1037,14 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
 
     flush_pending()
     flush_section()
+
+    # если остались буллеты без пар — не теряем: кладём одним параметром
+    if misc_items:
+        v = ', '.join([x for x in misc_items if x]).strip()
+        if v:
+            if len(v) > 350:
+                v = v[:350].rstrip(' ,')
+            out.append(('Основные характеристики', v))
 
     return out
 
