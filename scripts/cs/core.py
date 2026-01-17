@@ -37,6 +37,8 @@ _RE_TRASH_PARAM_NAME_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
 CS_FIX_KEYWORDS_DECIMAL_COMMA = (os.getenv("CS_FIX_KEYWORDS_DECIMAL_COMMA", "0") or "0").strip() == "1"
 CS_DROP_TRASH_PARAM_NAMES = (os.getenv("CS_DROP_TRASH_PARAM_NAMES", "0") or "0").strip() == "1"
 CS_FIX_KEYWORDS_MULTI_COMMA = (os.getenv("CS_FIX_KEYWORDS_MULTI_COMMA", "0") or "0").strip() == "1"
+CS_DESC_ADD_BRIEF = (os.getenv("CS_DESC_ADD_BRIEF", "0") or "0").strip() == "1"
+CS_DESC_BRIEF_MIN_FIELDS = int((os.getenv("CS_DESC_BRIEF_MIN_FIELDS", "2") or "2").strip() or "2")
 # Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
@@ -213,9 +215,16 @@ def fix_mixed_cyr_lat(s: str) -> str:
 
     def _sub(m: re.Match[str]) -> str:
         w = m.group(0)
-        # если есть цифры — это чаще всего модель/артикул, не трогаем
-        if re.search(r"\d", w):
+        # Для кодов/моделей (есть цифры) часто бывает 1-2 кириллических "двойника" в латинском коде: CB540А -> CB540A
+        if re.search(r"\d", w) and re.search(r"[A-Za-z]", w) and re.search(r"[А-Яа-яЁё]", w):
+            cyr = len(re.findall(r"[А-Яа-яЁё]", w))
+            lat = len(re.findall(r"[A-Za-z]", w))
+            if lat >= 2 and cyr <= 2:
+                return w.translate(_CYR_TO_LAT)
+            if cyr >= 2 and lat <= 2:
+                return w.translate(_LAT_TO_CYR)
             return w
+        # Иначе — аккуратно чиним смешанные последовательности букв
         return _RE_LETTER_SEQ.sub(lambda mm: _fix_letters(mm.group(0)), w)
 
     return _RE_WORDLIKE.sub(_sub, t)
@@ -383,14 +392,72 @@ def clean_params(
     drop: set[str] | None = None,
 ) -> list[tuple[str, str]]:
     drop_set = (PARAM_DROP_DEFAULT_CF if drop is None else {norm_ws(x).casefold() for x in drop})
-    out: list[tuple[str, str]] = []
-    seen: set[str] = set()
+
+    # Нормализация/переименования ключей (унификация между поставщиками)
+    rename_map = {
+        "наименование производителя": "Модель",
+        "модель производителя": "Модель",
+        "совместимость с моделями": "Совместимость",
+        "совместимые модели": "Совместимость",
+        "для": "Совместимость",
+        "ресурс, стр": "Ресурс",
+        "цвет печати": "Цвет",
+    }
+
+    def _normalize_color(v: str) -> str:
+        s = (v or "").strip()
+        if not s:
+            return s
+        s_cf = s.casefold().replace("ё", "е")
+        # простые каноны
+        if "black" in s_cf or s_cf.startswith("черн"):
+            return "черный"
+        if "cyan" in s_cf or "голуб" in s_cf:
+            return "голубой"
+        if "magenta" in s_cf or "пурпур" in s_cf:
+            return "пурпурный"
+        if "yellow" in s_cf or "желт" in s_cf:
+            return "желтый"
+        if "blue" in s_cf or ("син" in s_cf and "голуб" not in s_cf):
+            return "синий"
+        return s.replace("ё", "е")
+
+    def _norm_key(k: str) -> str:
+        kk = norm_ws(k)
+        if not kk:
+            return ""
+        # Срезаем мусорные ведущие символы (например, невидимые emoji/вариации)
+        kk = re.sub(r"^[^0-9A-Za-zА-Яа-яЁё]+", "", kk)
+        # Убираем zero-width символы внутри имени параметра
+        kk = re.sub(r"[​‌‍﻿⁠]", "", kk)
+        # Типовые опечатки/кодировки
+        kk = re.sub(r"\(\s*B\s*т\s*\)", "(Вт)", kk)
+        kk = kk.replace("(Bт)", "(Вт)").replace("Bт", "Вт")
+        kk = fix_mixed_cyr_lat(kk)
+        base = kk.casefold()
+        kk = rename_map.get(base, kk)
+        return kk
+
+    def _norm_val(key: str, v: str) -> str:
+        vv = norm_ws(v)
+        if not vv:
+            return ""
+        vv = fix_mixed_cyr_lat(vv)
+        if key.casefold() == "цвет":
+            vv = _normalize_color(vv)
+        return vv
+
+    # Сбор значений по ключам (для совместимости допускаем объединение)
+    buckets: dict[str, list[str]] = {}
+    display: dict[str, str] = {}
+    order: list[str] = []
 
     for k, v in params or []:
-        kk = norm_ws(k)
-        vv = norm_ws(v)
+        kk = _norm_key(k)
+        vv = _norm_val(kk, v)
         if not kk or not vv:
             continue
+
         # Мусорные имена параметров: цифры/числа/Normal (включается env, чтобы не ломать AlStyle)
         if CS_DROP_TRASH_PARAM_NAMES:
             if _RE_TRASH_PARAM_NAME_NUM.match(kk) or kk.casefold() == "normal":
@@ -405,18 +472,6 @@ def clean_params(
             if vv_compact.endswith("...") or re.search(r"[A-Za-zА-Яа-яЁё]\.\.\.", vv_compact):
                 continue
 
-        # Срезаем мусорные ведущие символы (например, невидимые emoji/вариации)
-        kk = re.sub(r"^[^0-9A-Za-zА-Яа-яЁё]+", "", kk)
-
-        # Убираем zero-width символы внутри имени параметра
-        kk = re.sub(r"[\u200b\u200c\u200d\ufeff\u2060]", "", kk)
-
-        # Типовые опечатки/кодировки
-        kk = re.sub(r"\(\s*B\s*т\s*\)", "(Вт)", kk)
-        kk = kk.replace("(Bт)", "(Вт)").replace("Bт", "Вт")
-
-        if not kk:
-            continue
         if kk.casefold() in drop_set:
             continue
 
@@ -428,12 +483,44 @@ def clean_params(
         if _looks_like_dims(kk) and not _is_sane_dims(vv):
             continue
 
-        key_norm = kk.casefold()
-        if key_norm in seen:
-            continue
-        seen.add(key_norm)
+        key_cf = kk.casefold()
+        if key_cf not in buckets:
+            buckets[key_cf] = []
+            display[key_cf] = kk
+            order.append(key_cf)
 
-        out.append((kk, vv))
+        # Совместимость — объединяем, остальное — берём первое значение
+        if key_cf == "совместимость":
+            # уникализация по lower
+            have = {x.casefold() for x in buckets[key_cf]}
+            if vv.casefold() not in have:
+                buckets[key_cf].append(vv)
+        else:
+            if not buckets[key_cf]:
+                buckets[key_cf].append(vv)
+
+    # Пост-правила: AkCent часто даёт "Вид" == "Тип" — убираем дубль
+    if "тип" in buckets and "вид" in buckets:
+        tval = (buckets["тип"][0] if buckets["тип"] else "").casefold()
+        vval = (buckets["вид"][0] if buckets["вид"] else "").casefold()
+        if tval and vval and (tval == vval or tval in vval or vval in tval):
+            buckets.pop("вид", None)
+            display.pop("вид", None)
+            order = [k for k in order if k != "вид"]
+
+    out: list[tuple[str, str]] = []
+    for kcf in order:
+        vals = buckets.get(kcf) or []
+        if not vals:
+            continue
+        name = display.get(kcf, kcf)
+        if kcf == "совместимость":
+            v = ", ".join(vals)
+            if len(v) > 260:
+                v = v[:260].rstrip(" ,")
+            out.append((name, v))
+        else:
+            out.append((name, vals[0]))
 
     return out
 
@@ -918,6 +1005,30 @@ def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
     return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
 
 
+
+
+# Формирует короткую строку "Кратко" из ключевых характеристик
+def build_brief_line(params_sorted: Sequence[tuple[str, str]]) -> str:
+    if not CS_DESC_ADD_BRIEF:
+        return ""
+    want = ["Тип", "Совместимость", "Ресурс", "Цвет", "Гарантия"]
+    m = {norm_ws(k): norm_ws(v) for k, v in (params_sorted or []) if norm_ws(k) and norm_ws(v)}
+    parts = []
+    for k in want:
+        v = m.get(k)
+        if not v:
+            continue
+        # компактнее
+        if len(v) > 70:
+            v = v[:70].rstrip(" ,")
+        parts.append(f"{k}: {xml_escape_text(v)}")
+    if len(parts) < int(CS_DESC_BRIEF_MIN_FIELDS):
+        return ""
+    txt = "; ".join(parts)
+    if len(txt) > 240:
+        txt = txt[:240].rstrip(" ;")
+    return f"<p><strong>Кратко:</strong> {txt}</p>"
+
 # Собирает description (WhatsApp + HR + Описание + Характеристики + Оплата/Доставка)
 def build_description(
     name: str,
@@ -934,6 +1045,9 @@ def build_description(
     # Родное описание (без встроенных секций характеристик — они вынесены в единый CS-блок ниже)
     desc_part = _build_desc_part(n, d)
 
+    # Краткое резюме по ключевым характеристикам (SEO + удобство клиенту)
+    brief = build_brief_line(params_sorted)
+
     # Единый CS-блок характеристик всегда одного вида
     chars = build_chars_block(params_sorted)
 
@@ -942,6 +1056,8 @@ def build_description(
     parts.append(hr_2px)
     parts.append("<!-- Описание -->")
     parts.append(desc_part)
+    if brief:
+        parts.append(brief)
     parts.append(chars)
     parts.append(pay_block)
 
