@@ -863,6 +863,27 @@ def _htmlish_to_text(s: str) -> str:
     raw = raw.replace("\xa0", " ")
     return raw
 
+# Разбивает инлайновые списки тех/осн характеристик (AlStyle/часть AkCent).
+# Пример: "Основные характеристики: - Диапазон ...- Скорость ..." -> строки "- ...".
+def _split_inline_specs_bullets(rest: str) -> str:
+    t = rest or ""
+    if not t:
+        return ""
+    # "...характеристики:" -> заголовок на отдельной строке
+    t = re.sub(
+        r"(?i)\b(Технические характеристики|Основные характеристики|Характеристики)\s*:\s*",
+        lambda m: m.group(1) + "\n",
+        t,
+    )
+    # ".- Скорость" / "мкм.-Скорость" -> новая строка с буллетом
+    t = re.sub(r"\.-\s*(?=[A-Za-zА-Яа-яЁё])", ".\n- ", t)
+    # " ... - Время" -> новая строка с буллетом (не трогаем диапазоны 3-5)
+    t = re.sub(r"\s+-\s+(?=[A-Za-zА-Яа-яЁё])", "\n- ", t)
+    # нормализуем пустые строки
+    t = re.sub(r"\n{3,}", "\n\n", t)
+    return t
+
+
 
 def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str]]]:
     """Единый CS-подход:
@@ -904,6 +925,7 @@ def extract_specs_pairs_and_strip_desc(d: str) -> tuple[str, list[tuple[str, str
 
     pre = "\n".join(lines_raw[:idx]).strip()
     rest = "\n".join(lines_raw[idx:]).strip()
+    rest = _split_inline_specs_bullets(rest)
 
     pairs = _parse_specs_pairs_from_text(rest)
 
