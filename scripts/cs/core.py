@@ -386,6 +386,33 @@ def _is_sane_dims(v: str) -> bool:
         return True
     return False
 
+
+
+# Эвристика: похоже ли значение "Совместимость" на список моделей/серий (а не на общее назначение "для дома")
+def _looks_like_model_compat(v: str) -> bool:
+    s = (v or '').strip()
+    if not s:
+        return False
+    scf = s.casefold()
+    # явные разделители списков/моделей
+    if any(ch in s for ch in [',', ';', '/', '\\', '|']):
+        return True
+    # цифры/серии почти всегда означают модели
+    if re.search(r"\d", s):
+        return True
+    # бренды и линейки (частые для расходников)
+    if re.search(r"\b(hp|canon|epson|brother|samsung|xerox|kyocera|ricoh|lexmark|oki|panasonic|konica|minolta|pantum|dell)\b", scf):
+        return True
+    if re.search(r"\b(laserjet|deskjet|officejet|pixma|ecotank|workforce|bizhub)\b", scf):
+        return True
+    # короткие коды моделей (типа Q2612A, TN-1075, 12A)
+    if re.search(r"\b[A-Z]{1,4}[- ]?\d{2,6}[A-Z]{0,2}\b", s):
+        return True
+    # если это явно "для дома/офиса" и т.п. — это НЕ совместимость
+    if re.search(r"(?i)\bдля\s+(дома|офиса|защиты|работы|печати|обучения|школы|склада|магазина)\b", s):
+        return False
+    # по умолчанию: если строка длинная и без признаков моделей — считаем назначением
+    return False
 def clean_params(
     params: Sequence[tuple[str, str]],
     *,
@@ -397,11 +424,24 @@ def clean_params(
     rename_map = {
         "наименование производителя": "Модель",
         "модель производителя": "Модель",
+
+        # Совместимость
+        "совместимость": "Совместимость",
         "совместимость с моделями": "Совместимость",
+        "совместимость с устройствами": "Совместимость",
+        "совместимость с принтерами": "Совместимость",
         "совместимые модели": "Совместимость",
-        "для": "Совместимость",
+        "совместимость моделей": "Совместимость",
+
+        # Применение/назначение (не путать с совместимостью)
+        "для": "Применение",
+        "применение": "Применение",
+        "назначение": "Применение",
+        "область применения": "Применение",
+
         "ресурс, стр": "Ресурс",
         "цвет печати": "Цвет",
+
         "состав поставки": "Комплектация",
         "комплектация": "Комплектация",
         "комплект поставки": "Комплектация",
@@ -456,6 +496,22 @@ def clean_params(
     order: list[str] = []
 
     for k, v in params or []:
+        # colon-in-key: иногда поставщик пишет так: "Совместимость: HP ..." (значение попало в имя)
+        raw_k = norm_ws(k)
+        raw_v = norm_ws(v)
+        if ":" in raw_k:
+            base, tail = raw_k.split(":", 1)
+            base_cf = base.strip().casefold()
+            tail = tail.strip()
+            if base_cf.startswith("совместимость") and tail:
+                if not raw_v:
+                    raw_v = tail
+                elif tail.casefold() not in raw_v.casefold():
+                    raw_v = (raw_v + " " + tail).strip()
+                raw_k = base.strip()
+        k = raw_k
+        v = raw_v
+
         kk = _norm_key(k)
         vv = _norm_val(kk, v)
         if not kk or not vv:
@@ -510,6 +566,21 @@ def clean_params(
             buckets.pop("вид", None)
             display.pop("вид", None)
             order = [k for k in order if k != "вид"]
+
+
+    # Пост-правило: если "Совместимость" выглядит как общее назначение ("для дома/офиса"), переносим в "Применение"
+    if "совместимость" in buckets:
+        compat_join = ", ".join(buckets.get("совместимость") or []).strip()
+        if compat_join and (not _looks_like_model_compat(compat_join)):
+            # удаляем совместимость
+            buckets.pop("совместимость", None)
+            display.pop("совместимость", None)
+            order = [k for k in order if k != "совместимость"]
+            # если применения нет — добавим
+            if "применение" not in buckets:
+                buckets["применение"] = [compat_join]
+                display["применение"] = "Применение"
+                order.append("применение")
 
     out: list[tuple[str, str]] = []
     for kcf in order:
@@ -928,6 +999,19 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
                 i += 1
                 continue
 
+
+        # dash-separated пары внутри буллета: "Ключ — Значение" / "Ключ - Значение"
+        md = re.match(r"^([^:]{1,80}?)\s*[–—-]\s*(.{1,250})$", ln)
+        if md:
+            k2 = md.group(1).strip().rstrip(':')
+            v2 = md.group(2).strip()
+            if k2 and v2 and _is_kv_key(k2) and _is_kv_val(v2):
+                flush_pending()
+                flush_section()
+                out.append((k2, v2))
+                i += 1
+                continue
+
         # заголовки тех/осн характеристик
         if _RE_SPECS_HDR_LINE.search(ln):
             flush_pending()
@@ -1166,19 +1250,30 @@ def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
 def build_brief_line(params_sorted: Sequence[tuple[str, str]]) -> str:
     if not CS_DESC_ADD_BRIEF:
         return ""
-    want = ["Тип", "Совместимость", "Ресурс", "Цвет", "Гарантия"]
+
+    # Берём нужные поля. "Совместимость" показываем только если похоже на модели/серии.
+    want = ["Тип", "Совместимость", "Применение", "Ресурс", "Цвет", "Гарантия"]
     m = {norm_ws(k): norm_ws(v) for k, v in (params_sorted or []) if norm_ws(k) and norm_ws(v)}
-    parts = []
+
+    compat = m.get("Совместимость", "")
+    if compat and (not _looks_like_model_compat(compat)):
+        compat = ""  # не светим в кратко
+
+    parts: list[str] = []
     for k in want:
-        v = m.get(k)
+        v = m.get(k, "")
+        if k == "Совместимость":
+            v = compat
         if not v:
             continue
         # компактнее
         if len(v) > 70:
             v = v[:70].rstrip(" ,")
         parts.append(f"{k}: {xml_escape_text(v)}")
+
     if len(parts) < int(CS_DESC_BRIEF_MIN_FIELDS):
         return ""
+
     txt = "; ".join(parts)
     if len(txt) > 240:
         txt = txt[:240].rstrip(" ;")
