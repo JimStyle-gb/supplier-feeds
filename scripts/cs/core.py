@@ -420,6 +420,8 @@ def clean_params(
 ) -> list[tuple[str, str]]:
     drop_set = (PARAM_DROP_DEFAULT_CF if drop is None else {norm_ws(x).casefold() for x in drop})
 
+    tech_model_candidates: list[str] = []  # из ключей вида 'Технические характеристики ...'
+
     # Нормализация/переименования ключей (унификация между поставщиками)
     rename_map = {
         "наименование производителя": "Модель",
