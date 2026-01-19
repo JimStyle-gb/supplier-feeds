@@ -610,9 +610,9 @@ def clean_params(
     if ('модель' not in buckets) and tech_model_candidates:
         cand = tech_model_candidates[0]
         # если есть производитель — добавим его в начало (если ещё не указан)
-        prod = (buckets.get('производитель',[\"\"])[0] if buckets.get('производитель') else \"\").strip()
+        prod = (buckets.get('производитель',[""])[0] if buckets.get('производитель') else "").strip()
         if prod and (prod.casefold() not in cand.casefold()):
-            cand = f\"{prod} {cand}\".strip()
+            cand = f"{prod} {cand}".strip()
         buckets['модель'] = [cand]
         display['модель'] = 'Модель'
         order.insert(0, 'модель')
@@ -1067,9 +1067,9 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
                 flush_pending()
                 flush_section()
                 if _RE_SPECS_HDR_ANY.search(k2):
-                i += 1
-                continue
-            out.append((k2, v2))
+                    i += 1
+                    continue
+                out.append((k2, v2))
                 i += 1
                 continue
 
