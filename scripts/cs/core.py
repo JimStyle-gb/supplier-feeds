@@ -478,7 +478,11 @@ def clean_params(
         kk = kk.replace("(Bт)", "(Вт)").replace("Bт", "Вт")
         kk = fix_mixed_cyr_lat(kk)
         base = kk.casefold()
-        kk = rename_map.get(base, kk)
+        # Общая эвристика: любые ключи с "совместим..." сводим к "Совместимость" (чтобы не плодить дубли)
+        if "совместим" in base:
+            kk = "Совместимость"
+        else:
+            kk = rename_map.get(base, kk)
         return kk
 
     def _norm_val(key: str, v: str) -> str:
@@ -1156,12 +1160,30 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
 
 
 def _build_desc_part(name: str, native_desc: str) -> str:
-    n_esc = xml_escape_text(norm_ws(name))
+    n_esc = xml_escape_text(name)
+
     d = fix_text(native_desc)
     if not d:
         return f"<h3>{n_esc}</h3>"
 
-    # Единый вид: нативное описание выводим как текст, без встроенных блоков характеристик.
+    # Если в нативном описании есть технические/основные характеристики или табличные данные,
+    # не дублируем это в описании (единый CS-блок характеристик будет ниже).
+    if _native_has_specs_text(d):
+        ls = d.split("\n")
+        cut = None
+        for i, ln in enumerate(ls):
+            if "\t" in ln:
+                cut = i
+                break
+            if re.search(r"(?i)\b(технические\s+характеристики|основные\s+характеристики|характеристики)\b", ln):
+                cut = i
+                break
+        if cut is not None:
+            d = "\n".join(ls[:cut]).strip()
+
+    if not d:
+        return f"<h3>{n_esc}</h3>"
+
     d2 = xml_escape_text(d).replace("\n", "<br>")
     return f"<h3>{n_esc}</h3><p>{d2}</p>"
 
