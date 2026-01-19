@@ -429,6 +429,11 @@ def clean_params(
         "совместимость": "Совместимость",
         "совместимость с моделями": "Совместимость",
         "совместимость с устройствами": "Совместимость",
+
+        # заголовки из тех.спека — не должны становиться названием параметра
+        "основные характеристики": "Особенности",
+        "технические характеристики": "Особенности",
+        "системные характеристики": "Система",
         "совместимость с принтерами": "Совместимость",
         "совместимые модели": "Совместимость",
         "совместимость моделей": "Совместимость",
@@ -518,6 +523,16 @@ def clean_params(
 
         kk = _norm_key(k)
         vv = _norm_val(kk, v)
+        # перехват заголовков вида 'Технические характеристики ...' — в параметры не кладём,
+        # но значение попробуем использовать как 'Модель' если её нет
+        k_cf_raw = norm_ws(k).casefold()
+        if k_cf_raw.startswith('технические характеристики'):
+            if vv:
+                tech_model_candidates.append(vv)
+            continue
+        # мусорный артефакт парсинга: 'Основные свойства' = 'Применение'
+        if k_cf_raw == 'основные свойства' and (vv.casefold() in {'применение', 'назначение', 'тип'} or len(vv) <= 20):
+            continue
         if not kk or not vv:
             continue
 
@@ -545,6 +560,11 @@ def clean_params(
             continue
         if _looks_like_dims(kk) and not _is_sane_dims(vv):
             continue
+
+        # Системные характеристики: 'CPU: ...' лучше вынести как отдельный параметр CPU
+        if kk.casefold() == 'система' and vv.lower().startswith('cpu:'):
+            kk = 'CPU'
+            vv = norm_ws(vv.split(':', 1)[1])
 
         key_cf = kk.casefold()
         if key_cf not in buckets:
@@ -585,6 +605,18 @@ def clean_params(
                 buckets["применение"] = [compat_join]
                 display["применение"] = "Применение"
                 order.append("применение")
+
+    # Если модели нет, но были заголовки 'Технические характеристики ...' с коротким кодом — используем как Модель
+    if ('модель' not in buckets) and tech_model_candidates:
+        cand = tech_model_candidates[0]
+        # если есть производитель — добавим его в начало (если ещё не указан)
+        prod = (buckets.get('производитель',[\"\"])[0] if buckets.get('производитель') else \"\").strip()
+        if prod and (prod.casefold() not in cand.casefold()):
+            cand = f\"{prod} {cand}\".strip()
+        buckets['модель'] = [cand]
+        display['модель'] = 'Модель'
+        order.insert(0, 'модель')
+
 
     out: list[tuple[str, str]] = []
     for kcf in order:
@@ -1034,7 +1066,10 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
             if k2 and v2 and _is_kv_key(k2) and _is_kv_val(v2):
                 flush_pending()
                 flush_section()
-                out.append((k2, v2))
+                if _RE_SPECS_HDR_ANY.search(k2):
+                i += 1
+                continue
+            out.append((k2, v2))
                 i += 1
                 continue
 
@@ -1070,6 +1105,10 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
                 i += 1
                 continue
             key = parts_raw[0] if parts_raw else ""
+            # если это заголовок секции — пропускаем
+            if _RE_SPECS_HDR_ANY.search(key):
+                i += 1
+                continue
             vals = [x for x in parts_raw[1:] if x]
             val = " ".join(vals).strip()
 
@@ -1094,7 +1133,19 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
         if m:
             flush_pending()
             flush_section()
-            out.append((m.group(1).strip(), m.group(2).strip()))
+            key = m.group(1).strip()
+
+            val = m.group(2).strip()
+
+            # не тащим заголовки тех/осн характеристик как параметр
+
+            if _RE_SPECS_HDR_ANY.search(key):
+
+                i += 1
+
+                continue
+
+            out.append((key, val))
             i += 1
             continue
 
@@ -1154,7 +1205,7 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
         if v:
             if len(v) > 350:
                 v = v[:350].rstrip(' ,')
-            out.append(('Основные характеристики', v))
+            out.append(('Особенности', v))
 
     return out
 
