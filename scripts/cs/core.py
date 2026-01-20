@@ -1323,6 +1323,122 @@ def build_keywords(
 
     return ", ".join(out)
 
+_RE_PARAM_SENTENCEY = re.compile(
+    r"(?i)\b(внимание|обратите|пожалуйста|важно|маркир|подлинност|original|оригинал|упаковк|предупрежден|рекомендуем|гаранти)\b"
+)
+
+def _is_sentence_like_param_name(k: str) -> bool:
+    kk = norm_ws(k)
+    if not kk:
+        return False
+    # слишком длинный "ключ-фраза"
+    if len(kk) >= 75:
+        return True
+    words = kk.split()
+    if len(words) >= 9:
+        return True
+    if kk.endswith((".", "!", "?", ";")):
+        return True
+    if _RE_PARAM_SENTENCEY.search(kk):
+        return True
+    if (kk.count(",") >= 2) and len(kk) >= 55:
+        return True
+    return False
+
+
+def split_params_for_chars(
+    params_sorted: Sequence[tuple[str, str]],
+) -> tuple[list[tuple[str, str]], list[str]]:
+    """Отделяет 'параметры-фразы' (дисклеймеры/примечания) от реальных характеристик."""
+    kept: list[tuple[str, str]] = []
+    notes_raw: list[str] = []
+
+    for k, v in (params_sorted or []):
+        kk = norm_ws(k)
+        vv = norm_ws(v)
+        if not kk or not vv:
+            continue
+        if _is_sentence_like_param_name(kk):
+            # переносим в примечание, чтобы не портить блок характеристик
+            text = kk
+            if vv and (vv.casefold() not in kk.casefold()):
+                text = f"{kk}: {vv}"
+            notes_raw.append(text)
+            continue
+        kept.append((kk, vv))
+
+    # uniq + limit
+    notes: list[str] = []
+    seen: set[str] = set()
+    for x in notes_raw:
+        x2 = norm_ws(x)
+        if not x2:
+            continue
+        cf = x2.casefold()
+        if cf in seen:
+            continue
+        seen.add(cf)
+        notes.append(x2)
+
+    return kept, notes[:2]
+
+
+def ensure_min_chars_params(
+    params_sorted: Sequence[tuple[str, str]],
+    oid: str,
+    *,
+    min_items: int = 3,
+    priority: Sequence[str] | None = None,
+) -> list[tuple[str, str]]:
+    """Если характеристик слишком мало — добавляем безопасный пункт 'Артикул' (vendorCode == oid)."""
+    ps = list(params_sorted or [])
+    if len(ps) >= int(min_items):
+        return ps
+    if not any(norm_ws(k).casefold() == "артикул" for k, _ in ps):
+        ps.append(("Артикул", norm_ws(oid)))
+    return sort_params(ps, priority=list(priority or []))
+
+
+def build_auto_desc_from_params(params_sorted: Sequence[tuple[str, str]]) -> str:
+    """Если нативного описания почти нет — собираем 1-2 предложения из реальных параметров (без фантазий)."""
+    m = {norm_ws(k): norm_ws(v) for k, v in (params_sorted or []) if norm_ws(k) and norm_ws(v)}
+    typ = m.get("Тип", "")
+    appl = m.get("Применение", "")
+    compat = m.get("Совместимость", "")
+    if compat and (not _looks_like_model_compat(compat)):
+        compat = ""
+    res = m.get("Ресурс", "")
+    color = m.get("Цвет", "")
+
+    fields: list[tuple[str, str]] = []
+    if typ:
+        fields.append(("Тип", typ))
+    if appl:
+        fields.append(("Применение", appl))
+    if compat:
+        fields.append(("Совместимость", compat))
+    if res:
+        fields.append(("Ресурс", res))
+    if color:
+        fields.append(("Цвет", color))
+
+    if not fields:
+        return ""
+
+    parts: list[str] = []
+    for k, v in fields[:3]:
+        vv = v
+        if len(vv) > 140:
+            vv = vv[:140].rstrip(" ,")
+        parts.append(f"{xml_escape_text(k)} — {xml_escape_text(vv)}")
+
+    txt = ". ".join(parts)
+    if not txt.endswith("."):
+        txt += "."
+    if len(txt) > 260:
+        txt = txt[:260].rstrip(" .") + "."
+    return f"<p>{txt}</p>"
+
 # Формирует блок "Характеристики" (HTML)
 def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
     # Всегда один и тот же CS-блок характеристик у всех товаров.
@@ -1382,7 +1498,8 @@ def build_description(
     native_desc: str,
     params_sorted: Sequence[tuple[str, str]],
     *,
-    wa_block: str = CS_WA_BLOCK,
+    notes: Sequence[str] | None = None,
+        wa_block: str = CS_WA_BLOCK,
     hr_2px: str = CS_HR_2PX,
     pay_block: str = CS_PAY_BLOCK,
 ) -> str:
@@ -1403,6 +1520,25 @@ def build_description(
     parts.append(hr_2px)
     parts.append("<!-- Описание -->")
     parts.append(desc_part)
+
+    # Примечания (вынесены из "параметров-фраз", чтобы не засорять характеристики)
+    if notes:
+        nn: list[str] = []
+        for x in (notes or [])[:2]:
+            t = xml_escape_text(norm_ws(x))
+            if t:
+                if len(t) > 180:
+                    t = t[:180].rstrip(" ,.;") + "…"
+                nn.append(t)
+        if nn:
+            parts.append(f"<p><strong>Примечание:</strong> " + "<br>".join(nn) + "</p>")
+
+    # Если родного описания почти нет, а 'Кратко' не собралось — добавим 1-2 предложения из params
+    if ("<p>" not in desc_part) and (not brief):
+        auto_desc = build_auto_desc_from_params(params_sorted)
+        if auto_desc:
+            parts.append(auto_desc)
+
     if brief:
         parts.append(brief)
     parts.append(chars)
@@ -1559,7 +1695,16 @@ class OfferOut:
         params = clean_params(params)
         params_sorted = sort_params(params, priority=list(param_priority or []))
 
-        desc_cdata = build_description(name, native_desc, params_sorted)
+                # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
+        params_sorted, notes = split_params_for_chars(params_sorted)
+        # если характеристик мало — добавим безопасный пункт 'Артикул'
+        params_sorted = ensure_min_chars_params(
+            params_sorted,
+            self.oid,
+            priority=list(param_priority or []),
+        )
+
+        desc_cdata = build_description(name, native_desc, params_sorted, notes=notes)
         keywords = build_keywords(vendor, name, city_tail=city_tail)
 
         pics_xml = ""
