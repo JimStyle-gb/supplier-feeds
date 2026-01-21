@@ -1397,6 +1397,15 @@ def split_params_for_chars(
         if not kk or not vv:
             continue
 
+        # кривые обрывки значений типа '...:' — это не характеристика
+        if vv.endswith(":"):
+            vv2 = vv.rstrip(": ")
+            txt = f"{kk}: {vv2}" if vv2 else kk
+            txt = norm_ws(txt)
+            if len(txt) >= 18:
+                notes_raw.append(txt)
+            continue
+
         if _is_sentence_like_param_name(kk):
             # обрывки/инструкции -> примечание, но слишком короткие куски выкидываем
             text = kk
@@ -1409,6 +1418,7 @@ def split_params_for_chars(
             continue
 
         kept.append((kk, vv))
+
 
 
     # uniq + limit
@@ -1580,6 +1590,12 @@ def build_description(
         for x in (notes or [])[:2]:
             t = xml_escape_text(norm_ws(x))
             if t:
+                # косметика: город и пунктуация
+                t = t.replace("Нур: Султан", "Нур-Султан").replace("Нур : Султан", "Нур-Султан")
+                t = re.sub(r"\s*:\s*", ": ", t)
+                t = re.sub(r"(?:,\s*){2,}", ", ", t)
+                t = re.sub(r":\s*:", ": ", t)
+                t = re.sub(r"\s{2,}", " ", t).strip()
                 if len(t) > 180:
                     t = t[:180].rstrip(" ,.;") + "…"
                 nn.append(t)
