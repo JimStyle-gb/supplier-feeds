@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-21 11:43">
+<yml_catalog date="2026-01-21 22:04">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-21 11:43:13
+Время сборки (Алматы)                      | 2026-01-21 22:04:24
 Ближайшая сборка (Алматы)                  | 2026-01-22 02:00:00
-Сколько товаров у поставщика до фильтра    | 1718
-Сколько товаров у поставщика после фильтра | 171
-Сколько товаров есть в наличии (true)      | 171
+Сколько товаров у поставщика до фильтра    | 1714
+Сколько товаров у поставщика после фильтра | 170
+Сколько товаров есть в наличии (true)      | 170
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -823,54 +823,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Формат">A4</param>
 <param name="Цветность">4 цвета</param>
 <keywords>Epson, Принтер Epson L132 фабрика печати, Принтер, L132, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC11CG27405" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CG27405</vendorCode>
-<name>МФУ Epson M2140 (CIS) фабрика печати</name>
-<price>213900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/e0d/bn6m3i1h06u0cgpwpcpc2tuwxbptwnip.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>МФУ Epson M2140 (CIS) фабрика печати</h3><p>Компактное монохромное МФУ для малого офиса<br>Компактное МФУ для сверхэкономичной печати черно-белых документов<br>Принтер, сканер, копир. Формат А4<br>Рекордно низкая себестоимость печати благодаря использованию контейнеров с чернилами вместо картриджей<br>Пигментные чернила<br>Скорость печати до 39 стр./мин<br>Автоматическая двусторонняя печать документов<br><br>Ресурс стартового комплекта чернил – 11 000 отпечатков<br>Сменная емкость для отработанных чернил<br>Фронтальные ёмкости и система “Ink lock”<br>Интерфейс подключения - Hi-Speed USB - compatible with USB 2.0 specification.</p>
-<p><strong>Кратко:</strong> Тип: МФУ Дом; Совместимость: C13T04D100,C13T01L14A,C13T03P14A; Применение: Для дома; Ресурс: 39; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson M2140</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Совместимость:</strong> C13T04D100,C13T01L14A,C13T03P14A</li><li><strong>Цвет:</strong> черный</li><li><strong>Интерфейс:</strong> USB</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> да</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Кабель питания:</strong> 2 контейнера по 120 мл. в комплекте. Ресурс стартового комплекта чернил – 11 000 отпечатков</li><li><strong>Компакт:</strong> диск с программным обеспечением и драйверами</li><li><strong>Комплектация:</strong> МФУ, Руководство по установке, Гарантийный талон</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 90</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 39</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Применение:</strong> Для дома</li><li><strong>Разрешение печати,dpi:</strong> 5760x1440</li><li><strong>Разрешение сканера,dpi:</strong> 1200x2400</li><li><strong>Ресурс:</strong> 39</li><li><strong>Серия устройств:</strong> Фабрика печати Epson</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип устройства:</strong> МФУ</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A4</li><li><strong>Цветность:</strong> 1 цвет</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson M2140</param>
-<param name="Тип">МФУ Дом</param>
-<param name="Совместимость">C13T04D100,C13T01L14A,C13T03P14A</param>
-<param name="Цвет">черный</param>
-<param name="Интерфейс">USB</param>
-<param name="Автоподатчик">нет</param>
-<param name="Двусторонняя печать">да</param>
-<param name="ЖК дисплей">да</param>
-<param name="Кабель питания">2 контейнера по 120 мл. в комплекте. Ресурс стартового комплекта чернил – 11 000 отпечатков</param>
-<param name="Компакт">диск с программным обеспечением и драйверами</param>
-<param name="Комплектация">МФУ, Руководство по установке, Гарантийный талон</param>
-<param name="Максимальная плотность бумаги, г/м2">90</param>
-<param name="Максимальная скорость печати А4 стр/мин">39</param>
-<param name="Минимальная плотность бумаги, г/м2">64</param>
-<param name="Применение">Для дома</param>
-<param name="Разрешение печати,dpi">5760x1440</param>
-<param name="Разрешение сканера,dpi">1200x2400</param>
-<param name="Ресурс">39</param>
-<param name="Серия устройств">Фабрика печати Epson</param>
-<param name="Страна происхождения">Филиппины</param>
-<param name="Технология печати">Струйная</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип расходных материалов">чернила</param>
-<param name="Тип устройства">МФУ</param>
-<param name="Тип чернил">пигментные</param>
-<param name="Формат">A4</param>
-<param name="Цветность">1 цвет</param>
-<keywords>Epson, МФУ Epson M2140 (CIS) фабрика печати, МФУ, M2140, CIS, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC11CG95405" available="true">
@@ -3279,35 +3231,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T66414A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 черный, Чернила, C13T66414A, L100, 110, 120, 1300, 132, 200, 210, 222, 300, 312, 350, 355, 362, 366, 456, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T66424A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T66424A</vendorCode>
-<name>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</name>
-<price>7900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/fde/q87nc9md3muxkkrsvwdjxlpg62utdxph.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой</h3><p>Контейнер с голубыми чернилами для:<br>Epson L100<br>Epson L200<br>Epson L110<br>Epson L210<br>Epson L300<br>Epson L355<br>Epson L550</p>
-<p><strong>Кратко:</strong> Тип: Фабрика печати (чернила EPSON); Ресурс: 5700 – 6500 страниц формата A4*; Цвет: голубой</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L100 голубые 70ml</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Объем:</strong> 0,001</li><li><strong>Ресурс:</strong> 5700 – 6500 страниц формата A4*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Чернила L100 голубые 70ml</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Цвет">голубой</param>
-<param name="Для бренда">Epson</param>
-<param name="Объем">0,001</param>
-<param name="Ресурс">5700 – 6500 страниц формата A4*</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Чернила Epson C13T66424A L100/110/120/1300/132/200/210/222/300/312/350/355/362/366/456/550/555/566 голубой, Чернила, C13T66424A, L100, 110, 120, 1300, 132, 200, 210, 222, 300, 312, 350, 355, 362, 366, 456, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T66434A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T66434A</vendorCode>
@@ -3405,7 +3328,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Чернила Epson C13T67314A L800/1800/810/850 черный</h3><p>Контейнер с черными чернилами для:<br>Epson L800</p>
+<h3>Чернила Epson C13T67314A L800/1800/810/850 черный</h3><p>Контейнер с черными чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
 <p><strong>Кратко:</strong> Тип: Фабрика печати (чернила EPSON); Ресурс: 1500 – 1800 фотографий формата 10х15*; Цвет: черный</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 черные 70ml</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
@@ -3433,7 +3356,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Чернила Epson C13T67324A L800/1800/810/850 голубой</h3><p>Контейнер с голубыми чернилами для:<br>Epson L800</p>
+<h3>Чернила Epson C13T67324A L800/1800/810/850 голубой</h3><p>Контейнер с голубыми чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
 <p><strong>Кратко:</strong> Тип: Фабрика печати (чернила EPSON); Ресурс: 1500 – 1800 фотографий формата 10х15*; Цвет: голубой</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 голубые 70ml</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
@@ -3461,7 +3384,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Чернила Epson C13T67334A L800/1800/810/850 пурпурный</h3><p>Контейнер с пурпурными чернилами для:<br>Epson L800</p>
+<h3>Чернила Epson C13T67334A L800/1800/810/850 пурпурный</h3><p>Контейнер с пурпурными чернилами для:<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
 <p><strong>Кратко:</strong> Тип: Фабрика печати (чернила EPSON); Ресурс: 1500 – 1800 фотографий формата 10х15*; Цвет: пурпурный</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 пурпурные 70ml</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
@@ -3489,7 +3412,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Чернила Epson C13T67344A L800/1800/810/850 желтый</h3><p>Контейнер с желтыми чернилами для:<br>Epson L800</p>
+<h3>Чернила Epson C13T67344A L800/1800/810/850 желтый</h3><p>Контейнер с желтыми чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
 <p><strong>Кратко:</strong> Тип: Фабрика печати (чернила EPSON); Ресурс: 1500 – 1800 фотографий формата 10х15*; Цвет: желтый</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 желтые 70ml</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
@@ -3517,7 +3440,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Чернила Epson C13T67354A L800/1800/810/850 светло-голубой</h3><p>Контейнер со светло-голубыми чернилами для:<br>Epson L800</p>
+<h3>Чернила Epson C13T67354A L800/1800/810/850 светло-голубой</h3><p>Контейнер со светло-голубыми чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
 <p><strong>Кратко:</strong> Тип: Фабрика печати (чернила EPSON); Ресурс: 1500 – 1800 фотографий формата 10х15*; Цвет: голубой</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 светоло-голубые 70ml</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
@@ -3545,7 +3468,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный</h3><p>Контейнер со светло-пурпурными чернилами для:<br>Epson L800</p>
+<h3>Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный</h3><p>Контейнер со светло-пурпурными чернилами для:<br>Epson L800<br>Высококачественная фотопечать<br>Контейнер объемом 70 мл обеспечивает большой запас чернил, позволяя вам печатать много фотографий, не беспокоясь о затратах или нехватке чернил.<br>Раскройте свой творческий потенциал<br>Эта серия чернил позволит вам печатать фотографии, не заботясь о стоимости. Стартовый объем чернил в принтере EcoTank позволит напечатать до 1900 фотографий (10х15 см)1.<br>Оригинальные расходные материалы<br>Наслаждайтесь простой и качественной печатью с оригинальными чернилами Epson. Мы инвестируем в серьезные исследования, высокотехнологичное производство и строгое тестирование, чтобы обеспечить идеальное качество наших продуктов.</p>
 <p><strong>Кратко:</strong> Тип: Фабрика печати (чернила EPSON); Ресурс: 1500 – 1800 фотографий формата 10х15*; Цвет: пурпурный</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила L800 светло-пурпурные 70ml</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 1500 – 1800 фотографий формата 10х15*</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
@@ -3947,6 +3870,51 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Толщина пленки, мкм">75/80</param>
 <param name="Холодное ламинирование">нет</param>
 <keywords>Fellowes, Ламинатор Fellowes Arc A4, 75/80 мкм, 30 см/мин, AutoShutOff, механизм освобожд., старт.набор пленок, Ламинатор, Arc, A4, 75, 80, мкм, 30, см, мин, AutoShutOff, механизм, освобожд, старт, набор, пленок, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="ACFS-46801_2A" available="true">
+<categoryId></categoryId>
+<vendorCode>ACFS-46801_2A</vendorCode>
+<name>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</name>
+<price>211900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Fellowes</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</h3>
+<p><strong>Примечание:</strong> Гарантия 2 года на устройство и 5 лет на ножи: Возможности уничтожения<br>Количество фрагментов при резке листа А4, шт.: 410</p>
+<p>Тип — шредеры офисные.</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>100% Jam:</strong> Proof Технология нет</li><li><strong>P-4 уровень секретности:</strong> Удобная выдвижная корзина 32 литра ≈ 200 листов А4</li><li><strong>Артикул fs:</strong> 46801*</li><li><strong>Другие технологии предотвращения заторов:</strong> Автореверс</li><li><strong>Емкость корзины, литров:</strong> 32 л</li><li><strong>Загрузка лотка до 150 листов:</strong> Перекрестная резка - 4х38 мм</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Производительность уничтожителя:</strong> 150 (8 вручную)</li><li><strong>Производительность, листов (A4, 70 гр./м²):</strong> 150 (8 вручную)</li><li><strong>Рабочий цикл, мин:</strong> 12 / 25</li><li><strong>Размер резки, мм:</strong> 4 x 38</li><li><strong>Скорость резки, м/мин:</strong> 3</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> перекрестная</li><li><strong>Уничтожение:</strong> Листы бумаги, скрепленные скобами и скрепками; Глянцевую бумагу и документы с двусторонней печатью;</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) да</li><li><strong>Уничтожение кредитных карт:</strong> да (ручная загрузка)</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности:</strong> P-4</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер с автоподачей AutoMax™ 150C:</strong> Компактный уничтожитель с автоподачей и инновационной технологией accufeed</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Fellowes</param>
+<param name="Тип">шредеры офисные</param>
+<param name="100% Jam">Proof Технология нет</param>
+<param name="P-4 уровень секретности">Удобная выдвижная корзина 32 литра ≈ 200 листов А4</param>
+<param name="Артикул fs">46801*</param>
+<param name="Другие технологии предотвращения заторов">Автореверс</param>
+<param name="Емкость корзины, литров">32 л</param>
+<param name="Загрузка лотка до 150 листов">Перекрестная резка - 4х38 мм</param>
+<param name="Количество пользователей 1">3 Пользователя</param>
+<param name="Производительность уничтожителя">150 (8 вручную)</param>
+<param name="Производительность, листов (A4, 70 гр./м²)">150 (8 вручную)</param>
+<param name="Рабочий цикл, мин">12 / 25</param>
+<param name="Размер резки, мм">4 x 38</param>
+<param name="Скорость резки, м/мин">3</param>
+<param name="Страна происхождения">Китай</param>
+<param name="Тип резки">перекрестная</param>
+<param name="Уничтожение">Листы бумаги, скрепленные скобами и скрепками; Глянцевую бумагу и документы с двусторонней печатью;</param>
+<param name="Уничтожение CD или Blu">Ray DVD (1,2 слоя) да</param>
+<param name="Уничтожение кредитных карт">да (ручная загрузка)</param>
+<param name="Уничтожение скрепок">да</param>
+<param name="Уничтожение степлерных скоб">да</param>
+<param name="Уровень секретности">P-4</param>
+<param name="Уровень секретности, DIN 66399 P">4</param>
+<param name="Шредер с автоподачей AutoMax™ 150C">Компактный уничтожитель с автоподачей и инновационной технологией accufeed</param>
+<keywords>Fellowes, Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев, Шредер, AutoMax, 150C, автоподача, DIN, P-4, 4х38мм, 150лст, авто, 8, ручн, 32, лтр, авторев, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACFS-53061" available="true">
