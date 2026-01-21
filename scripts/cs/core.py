@@ -1331,18 +1331,56 @@ def _is_sentence_like_param_name(k: str) -> bool:
     kk = norm_ws(k)
     if not kk:
         return False
-    # слишком длинный "ключ-фраза"
-    if len(kk) >= 75:
+
+    cf = kk.casefold()
+
+    # 1) Явные фразы/инструкции/маркетинг — не характеристики
+    if any(x in cf for x in (
+        "вы можете купить",
+        "в городах",
+        "доставка",
+        "оплата",
+        "рекомендуем",
+        "важно",
+        "внимание",
+        "обратите",
+        "пожалуйста",
+        "не обновля",
+        "не обновлять",
+        "маркир",
+        "подлинност",
+        "original",
+        "оригинал",
+        "упаковк",
+        "предупрежден",
+        "гаранти",
+        "качества используемой бумаги",
+        "заполняемость выводимых",
+    )):
+        return True
+
+    # 2) Ключ со строчной буквы (обрывок/продолжение) — не характеристика
+    first = kk[0]
+    if first.isalpha() and first.islower():
+        return True
+
+    # 3) Слишком длинный "ключ-фраза"
+    if len(kk) >= 65:
         return True
     words = kk.split()
-    if len(words) >= 9:
+    if len(words) >= 8:
         return True
+
+    # 4) Похоже на предложение / обрывок
     if kk.endswith((".", "!", "?", ";")):
+        return True
+    if kk.endswith((",", ":")):
+        return True
+    if (kk.count(",") >= 1) and len(kk) >= 45:
         return True
     if _RE_PARAM_SENTENCEY.search(kk):
         return True
-    if (kk.count(",") >= 2) and len(kk) >= 55:
-        return True
+
     return False
 
 
@@ -1358,14 +1396,20 @@ def split_params_for_chars(
         vv = norm_ws(v)
         if not kk or not vv:
             continue
+
         if _is_sentence_like_param_name(kk):
-            # переносим в примечание, чтобы не портить блок характеристик
+            # обрывки/инструкции -> примечание, но слишком короткие куски выкидываем
             text = kk
             if vv and (vv.casefold() not in kk.casefold()):
                 text = f"{kk}: {vv}"
+            text = norm_ws(text)
+            if len(text) < 18:
+                continue
             notes_raw.append(text)
             continue
+
         kept.append((kk, vv))
+
 
     # uniq + limit
     notes: list[str] = []
@@ -1390,12 +1434,21 @@ def ensure_min_chars_params(
     min_items: int = 3,
     priority: Sequence[str] | None = None,
 ) -> list[tuple[str, str]]:
-    """Если характеристик слишком мало — добавляем безопасный пункт 'Артикул' (vendorCode == oid)."""
+    """Если характеристик слишком мало — добавляем безопасные пункты (без выдумывания фактов)."""
     ps = list(params_sorted or [])
-    if len(ps) >= int(min_items):
-        return ps
-    if not any(norm_ws(k).casefold() == "артикул" for k, _ in ps):
-        ps.append(("Артикул", norm_ws(oid)))
+
+    def _has_key(key: str) -> bool:
+        kcf = key.casefold()
+        return any(norm_ws(k).casefold() == kcf for k, _ in ps)
+
+    if len(ps) < int(min_items):
+        if not _has_key("Артикул"):
+            ps.append(("Артикул", norm_ws(oid)))
+
+    if len(ps) < int(min_items):
+        if not _has_key("Код товара"):
+            ps.append(("Код товара", norm_ws(oid)))
+
     return sort_params(ps, priority=list(priority or []))
 
 
