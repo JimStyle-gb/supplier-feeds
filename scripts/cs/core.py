@@ -1333,6 +1333,10 @@ def _is_sentence_like_param_name(k: str) -> bool:
         return False
 
     cf = kk.casefold()
+    # исключение: это нормальные характеристики (оставляем в блоке "Характеристики")
+    if (("рекомендуемая" in cf) or ("рекомендуемое" in cf)) and (("нагрузк" in cf) or ("количеств" in cf)):
+        return False
+
 
     # 1) Явные фразы/инструкции/маркетинг — не характеристики
     if any(x in cf for x in (
@@ -1409,11 +1413,8 @@ def split_params_for_chars(
         # пустые/неинформативные значения (UX/SEO мусор)
         vv_cf = vv.casefold()
         if (len(vv) <= 28) and any(x in vv_cf for x in ("поэтому рекомендуем", "рекомендуем", "советуем", "рекоменд")):
-            # не трогаем, если там есть цифры/единицы
+            # если нет цифр/единиц — выбрасываем (не переносим даже в примечание)
             if not re.search(r"\d", vv):
-                txt = norm_ws(f"{kk}: {vv}")
-                if len(txt) >= 18:
-                    notes_raw.append(txt)
                 continue
 
         if _is_sentence_like_param_name(kk):
@@ -1607,6 +1608,10 @@ def build_description(
                 t = re.sub(r"(?:,\s*){2,}", ", ", t)
                 t = re.sub(r":\s*:", ": ", t)
                 t = re.sub(r"\s{2,}", " ", t).strip()
+                # пробел после точки/воскл/вопрос/многоточия перед заглавной буквой
+                t = re.sub(r"([.!?…])([A-ZА-ЯЁ])", r"\1 \2", t)
+                # пробел между цифрой и кириллицей (>=1299Рекомендуемое -> >=1299 Рекомендуемое)
+                t = re.sub(r"(\d)([А-Яа-яЁё])", r"\1 \2", t)
                 if len(t) > 180:
                     t = t[:180].rstrip(" ,.;") + "…"
                 nn.append(t)
