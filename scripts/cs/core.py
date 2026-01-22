@@ -1406,6 +1406,16 @@ def split_params_for_chars(
                 notes_raw.append(txt)
             continue
 
+        # пустые/неинформативные значения (UX/SEO мусор)
+        vv_cf = vv.casefold()
+        if (len(vv) <= 28) and any(x in vv_cf for x in ("поэтому рекомендуем", "рекомендуем", "советуем", "рекоменд")):
+            # не трогаем, если там есть цифры/единицы
+            if not re.search(r"\d", vv):
+                txt = norm_ws(f"{kk}: {vv}")
+                if len(txt) >= 18:
+                    notes_raw.append(txt)
+                continue
+
         if _is_sentence_like_param_name(kk):
             # обрывки/инструкции -> примечание, но слишком короткие куски выкидываем
             text = kk
@@ -1418,6 +1428,7 @@ def split_params_for_chars(
             continue
 
         kept.append((kk, vv))
+
 
 
 
