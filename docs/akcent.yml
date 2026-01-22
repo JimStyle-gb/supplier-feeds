@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-22 11:12">
+<yml_catalog date="2026-01-22 23:37">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-22 11:12:25
+Время сборки (Алматы)                      | 2026-01-22 23:37:38
 Ближайшая сборка (Алматы)                  | 2026-01-23 02:00:00
-Сколько товаров у поставщика до фильтра    | 1714
-Сколько товаров у поставщика после фильтра | 169
-Сколько товаров есть в наличии (true)      | 169
+Сколько товаров у поставщика до фильтра    | 1690
+Сколько товаров у поставщика после фильтра | 163
+Сколько товаров есть в наличии (true)      | 163
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -72,9 +72,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Шредер Fellowes® Powershred® LX41, DIN P-4, 4х12мм, 8 лст., 17 лтр., уничт.: скрепки,скобы,карты</h3>
-<p><strong>Примечание:</strong> Количество фрагментов при резке листа А4, шт.: ≥1299<br>Рекомендуемое количество CD дисков в день: нет</p>
+<p><strong>Примечание:</strong> Количество фрагментов при резке листа А4, шт.: ≥1299<br>Уровень секретности для кредитных карт, DIN 66399 T: 4</p>
 <p>Тип — шредеры офисные.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>100% Jam:</strong> Proof Технология предотвращения заторов нет</li><li><strong>Артикул fs:</strong> 43007</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, скрепки</li><li><strong>Другие технологии предотвращения заторов:</strong> Реверс</li><li><strong>Емкость корзины, литров:</strong> 17 л</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 8</li><li><strong>Количество пользователей:</strong> 1 пользователь</li><li><strong>Корзина 17 литров ≈ 300 листов А4:</strong> Гарантия 2 года на устройство и 3 года на ножи</li><li><strong>Перекрестная резка:</strong> 4 х 12 мм, измельчает 1 лист А4 на 1300 фрагментов</li><li><strong>Производительность уничтожителя:</strong> 50</li><li><strong>Рабочий цикл, мин:</strong> 5 / 30</li><li><strong>Размер резки, мм:</strong> 4 x 12</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> Перекрестная резка - 4 х 12 мм, измельчает 1 лист А4 на 1300 фрагментов</li><li><strong>Уничтожение:</strong> скобы, карты, скрепки</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности:</strong> P-4</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® LX41:</strong> Повышенная секретность по доступной цене</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>100% Jam:</strong> Proof Технология предотвращения заторов нет</li><li><strong>Артикул fs:</strong> 43007</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, скрепки</li><li><strong>Другие технологии предотвращения заторов:</strong> Реверс</li><li><strong>Емкость корзины, литров:</strong> 17 л</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 8</li><li><strong>Количество пользователей:</strong> 1 пользователь</li><li><strong>Корзина 17 литров ≈ 300 листов А4:</strong> Гарантия 2 года на устройство и 3 года на ножи</li><li><strong>Перекрестная резка:</strong> 4 х 12 мм, измельчает 1 лист А4 на 1300 фрагментов</li><li><strong>Производительность уничтожителя:</strong> 50</li><li><strong>Рабочий цикл, мин:</strong> 5 / 30</li><li><strong>Размер резки, мм:</strong> 4 x 12</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 5</li><li><strong>Рекомендуемое количество листов в день:</strong> 50</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> Перекрестная резка - 4 х 12 мм, измельчает 1 лист А4 на 1300 фрагментов</li><li><strong>Уничтожение:</strong> скобы, карты, скрепки</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности:</strong> P-4</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® LX41:</strong> Повышенная секретность по доступной цене</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Fellowes</param>
@@ -91,6 +91,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Производительность уничтожителя">50</param>
 <param name="Рабочий цикл, мин">5 / 30</param>
 <param name="Размер резки, мм">4 x 12</param>
+<param name="Рекомендуемое количество CD дисков в день">нет</param>
+<param name="Рекомендуемое количество кредитных карт в день">5</param>
+<param name="Рекомендуемое количество листов в день">50</param>
 <param name="Скорость резки, м/мин">2</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Тип резки">Перекрестная резка - 4 х 12 мм, измельчает 1 лист А4 на 1300 фрагментов</param>
@@ -120,7 +123,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <h3>Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU</h3>
 <p><strong>Примечание:</strong> Вес розничной упаковки, кг: 4,9<br>Вес транспортной упаковки, кг: 10,5</p>
 <p>Тип — шредеры офисные.</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>100% Jam:</strong> Proof Технология предотвращения заторов нет</li><li><strong>Auto:</strong> Oil™ нет</li><li><strong>Energy Savings System:</strong> нет</li><li><strong>P-4 уровень секретности:</strong> Корзина 17 литров ≈ 250 листов А4</li><li><strong>SafeSense® Технология:</strong> нет</li><li><strong>Safety Lock:</strong> да</li><li><strong>SilentShred®:</strong> нет</li><li><strong>Sleep Mode (автоотключение):</strong> нет</li><li><strong>Автоматическая защита от перегрева:</strong> да</li><li><strong>Автоотключение при снятой корзине:</strong> да</li><li><strong>Автостоп при заполнении корзины:</strong> нет</li><li><strong>Артикул fs:</strong> 44005</li><li><strong>Вес, кг:</strong> 4,2</li><li><strong>Габаритные размеры, мм (ВхШхГ):</strong> 401 x 310 x 220</li><li><strong>Датчик пуска при подаче бумаги:</strong> механический</li><li><strong>Другие технологии предотвращения заторов:</strong> Реверс</li><li><strong>Емкость корзины в листах А4, приближенно:</strong> 254</li><li><strong>Емкость корзины, л:</strong> 17</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 8</li><li><strong>Индикатор возникновения затора:</strong> нет</li><li><strong>Индикатор наполнения корзины:</strong> нет</li><li><strong>Индикатор открытой дверцы:</strong> нет</li><li><strong>Индикатор перегрева:</strong> да</li><li><strong>Кабель питания:</strong> несъемный</li><li><strong>Количество пользователей:</strong> 1 пользователь</li><li><strong>Мощность, Вт:</strong> 230</li><li><strong>Наличие колес для перемещения:</strong> нет</li><li><strong>Рабочий цикл, мин:</strong> 6 / 20</li><li><strong>Размер резки, мм:</strong> 4 x 37</li><li><strong>Селектор количества листов:</strong> нет</li><li><strong>Сила тока, А:</strong> 1</li><li><strong>Скорость резки, м/мин:</strong> 4</li><li><strong>Тип корзины:</strong> стандартная (съемный режущий блок)</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Тип электродвигателя:</strong> универсальный</li><li><strong>Уничтожает до 8 листов одновременно:</strong> Перекрестная резка - 4 х 37 мм</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Уровень шума без загрузки, дБ:</strong> 70</li><li><strong>Уровень шума под нагрузкой, дБ:</strong> 70</li><li><strong>Шредер Powershred® LX45:</strong> Самый доступный уничтожитель Fellowes с увеличенной гарантией 2 года</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>100% Jam:</strong> Proof Технология предотвращения заторов нет</li><li><strong>Auto:</strong> Oil™ нет</li><li><strong>Energy Savings System:</strong> нет</li><li><strong>P-4 уровень секретности:</strong> Корзина 17 литров ≈ 250 листов А4</li><li><strong>SafeSense® Технология:</strong> нет</li><li><strong>Safety Lock:</strong> да</li><li><strong>SilentShred®:</strong> нет</li><li><strong>Sleep Mode (автоотключение):</strong> нет</li><li><strong>Автоматическая защита от перегрева:</strong> да</li><li><strong>Автоотключение при снятой корзине:</strong> да</li><li><strong>Автостоп при заполнении корзины:</strong> нет</li><li><strong>Артикул fs:</strong> 44005</li><li><strong>Вес, кг:</strong> 4,2</li><li><strong>Габаритные размеры, мм (ВхШхГ):</strong> 401 x 310 x 220</li><li><strong>Датчик пуска при подаче бумаги:</strong> механический</li><li><strong>Другие технологии предотвращения заторов:</strong> Реверс</li><li><strong>Емкость корзины в листах А4, приближенно:</strong> 254</li><li><strong>Емкость корзины, л:</strong> 17</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 8</li><li><strong>Индикатор возникновения затора:</strong> нет</li><li><strong>Индикатор наполнения корзины:</strong> нет</li><li><strong>Индикатор открытой дверцы:</strong> нет</li><li><strong>Индикатор перегрева:</strong> да</li><li><strong>Кабель питания:</strong> несъемный</li><li><strong>Количество пользователей:</strong> 1 пользователь</li><li><strong>Мощность, Вт:</strong> 230</li><li><strong>Наличие колес для перемещения:</strong> нет</li><li><strong>Рабочий цикл, мин:</strong> 6 / 20</li><li><strong>Размер резки, мм:</strong> 4 x 37</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 5</li><li><strong>Рекомендуемое количество листов в день:</strong> 60</li><li><strong>Селектор количества листов:</strong> нет</li><li><strong>Сила тока, А:</strong> 1</li><li><strong>Скорость резки, м/мин:</strong> 4</li><li><strong>Тип корзины:</strong> стандартная (съемный режущий блок)</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Тип электродвигателя:</strong> универсальный</li><li><strong>Уничтожает до 8 листов одновременно:</strong> Перекрестная резка - 4 х 37 мм</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Уровень шума без загрузки, дБ:</strong> 70</li><li><strong>Уровень шума под нагрузкой, дБ:</strong> 70</li><li><strong>Шредер Powershred® LX45:</strong> Самый доступный уничтожитель Fellowes с увеличенной гарантией 2 года</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">шредеры офисные</param>
@@ -153,6 +156,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Наличие колес для перемещения">нет</param>
 <param name="Рабочий цикл, мин">6 / 20</param>
 <param name="Размер резки, мм">4 x 37</param>
+<param name="Рекомендуемое количество CD дисков в день">нет</param>
+<param name="Рекомендуемое количество кредитных карт в день">5</param>
+<param name="Рекомендуемое количество листов в день">60</param>
 <param name="Селектор количества листов">нет</param>
 <param name="Сила тока, А">1</param>
 <param name="Скорость резки, м/мин">4</param>
@@ -186,7 +192,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <h3>Ламинатор Fellowes Ion A4, 75-125 мкм, 30 см/мин, AutoShutOff, механизм освобождения, стар</h3>
 <p><strong>Примечание:</strong> Вес розничной упаковки, кг: 1,5<br>Вес транспортной упаковки, кг: 6,7</p>
 <p><strong>Кратко:</strong> Тип: Ламинатор А4; Цвет: Белый</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Ламинатор А4</li><li><strong>Цвет:</strong> Белый</li><li><strong>Auto Shut Off (Автоотключение):</strong> да (30 мин после включения)</li><li><strong>AutoSense:</strong> нет</li><li><strong>Easi:</strong> Access механизм нет</li><li><strong>HeatGuard™:</strong> нет</li><li><strong>InstaHeat:</strong> нет</li><li><strong>Артикул fs:</strong> 45600</li><li><strong>Вес, кг:</strong> 1</li><li><strong>Время нагрева, мин:</strong> 4</li><li><strong>Выходной лоток:</strong> нет</li><li><strong>Габаритные размеры, мм (ВхШхГ):</strong> 62 x 359 x 113</li><li><strong>Кол:</strong> во валов 2</li><li><strong>Ламинатор Ion А4:</strong> Диапазон плёнок 75 – 125 мкм</li><li><strong>Макс. скорость, см/мин:</strong> 30</li><li><strong>Макс. формат:</strong> A4</li><li><strong>Освобождение:</strong> да</li><li><strong>Персональные настройки:</strong> нет</li><li><strong>Реверс:</strong> нет</li><li><strong>Регулировка скорости:</strong> нет</li><li><strong>Регулировка температуры:</strong> нет</li><li><strong>Сигнал готовности:</strong> свет</li><li><strong>Система нагрева:</strong> нагреваемые валы</li><li><strong>Стартовый набор для 10 документов:</strong> да</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Съемный сетевой кабель:</strong> нет</li><li><strong>Толщина пленки, мкм:</strong> 75/80, 100, 125</li><li><strong>Холодное ламинирование:</strong> нет</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Ламинатор А4</li><li><strong>Цвет:</strong> Белый</li><li><strong>Auto Shut Off (Автоотключение):</strong> да (30 мин после включения)</li><li><strong>AutoSense:</strong> нет</li><li><strong>Easi:</strong> Access механизм нет</li><li><strong>HeatGuard™:</strong> нет</li><li><strong>InstaHeat:</strong> нет</li><li><strong>Артикул fs:</strong> 45600</li><li><strong>Вес, кг:</strong> 1</li><li><strong>Время нагрева, мин:</strong> 4</li><li><strong>Выходной лоток:</strong> нет</li><li><strong>Габаритные размеры, мм (ВхШхГ):</strong> 62 x 359 x 113</li><li><strong>Кол:</strong> во валов 2</li><li><strong>Ламинатор Ion А4:</strong> Диапазон плёнок 75 – 125 мкм</li><li><strong>Макс. скорость, см/мин:</strong> 30</li><li><strong>Макс. формат:</strong> A4</li><li><strong>Освобождение:</strong> да</li><li><strong>Персональные настройки:</strong> нет</li><li><strong>Реверс:</strong> нет</li><li><strong>Регулировка скорости:</strong> нет</li><li><strong>Регулировка температуры:</strong> нет</li><li><strong>Рекомендуемое количество ламинирований в день:</strong> 25 листов, неинтенсивное использование</li><li><strong>Сигнал готовности:</strong> свет</li><li><strong>Система нагрева:</strong> нагреваемые валы</li><li><strong>Стартовый набор для 10 документов:</strong> да</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Съемный сетевой кабель:</strong> нет</li><li><strong>Толщина пленки, мкм:</strong> 75/80, 100, 125</li><li><strong>Холодное ламинирование:</strong> нет</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Fellowes</param>
@@ -211,6 +217,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Реверс">нет</param>
 <param name="Регулировка скорости">нет</param>
 <param name="Регулировка температуры">нет</param>
+<param name="Рекомендуемое количество ламинирований в день">25 листов, неинтенсивное использование</param>
 <param name="Сигнал готовности">свет</param>
 <param name="Система нагрева">нагреваемые валы</param>
 <param name="Стартовый набор для 10 документов">да</param>
@@ -261,9 +268,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Шредер Fellowes® Powershred® P-25S, DIN P-1, 7 мм, 5лст, 11 лтр.,</h3><p>Fellowes P-25S - Шредер предназначен для персонального использования и уничтожения общих несекретных документов. Модель P-25S приходит на замену шредера P-20. <br><br>Новый уничтожитель получил современный корпус, время рабочего цикла было увеличено на 50 %. При этом была сохранена непревзойденная скорость резки для компактных моделей – 5 м/мин. Производительность шредера – 5 листов. Лист формата A4 разрезается на продольные полосы шириной 7 мм. Процесс уничтожения запускается автоматически при подаче бумаги в слот. Функция реверса может ликвидировать образование бумажных заторов. Режущий блок легко снимается и позволяет быстро удалять отходы из корзины.</p>
-<p><strong>Примечание:</strong> 1.05 Дата ввода в ассортимент 3 квартал 2015: 1.06 Дата вывода из ассортимента<br>2.08 Рекомендуемое количество листов в день 20: 2.09 Рекомендуемое количество кредитных карт в день -</p>
+<p><strong>Примечание:</strong> 1.05 Дата ввода в ассортимент 3 квартал 2015: 1.06 Дата вывода из ассортимента<br>2.24 Гарантия на ножи (г.) 1: 3. Логистика</p>
 <p><strong>Кратко:</strong> Тип: шредеры офисные; Совместимость: персонального использования и уничтожения общих несекретных документов</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Совместимость:</strong> персонального использования и уничтожения общих несекретных документов. Модель P-25S приходит на замену шредера P-20.</li><li><strong>1. Общие:</strong> 1.01 Английское название Shredder P-25S Strip Cut</li><li><strong>1.02 Страна:</strong> - изготовитель Китай</li><li><strong>1.03 Retail BarCode (EU) 43859690695:</strong> 1.04 CRC (EU) 47010</li><li><strong>1.07 Наличие модели:</strong> заменителя</li><li><strong>2.01 Тип резки продольная:</strong> 2.02 Размер резки (мм) 7</li><li><strong>2.03 Уровень секретности (DIN 32757) 1:</strong> 2.04 Ширина входного отверстия (мм) 220</li><li><strong>2.05 Уровень секретности (DIN 66399) P:</strong> 1</li><li><strong>2.06 Тип корзины стандартная:</strong> 2.07 Производительность (А4/70гр/кв.м.) 5</li><li><strong>2.12 Объем корзины (лтр/лист) 11:</strong> 2.13 Средняя скорость (м/мин) 5</li><li><strong>2.14 Рабочий цикл (мин) 3 / 25:</strong> 2.15 Уровень шума (дБ) 70</li><li><strong>2.16 Авто Старт/Стоп +:</strong> 2.17 Реверс +</li><li><strong>2.18 Легкоснимающийся режущий блок +:</strong> 2.19 Технология SafeSense™ -</li><li><strong>2.20 Автостоп при изъятой корзине -:</strong> 2.21 Возможности уничтожения бумага</li><li><strong>2.22 Мощность мотора (Вт) 138:</strong> 2.23 Гарантия (г.) 1</li><li><strong>3.05 Кол:</strong> во в транспортной упаковке (шт) 4</li><li><strong>Емкость корзины, литров:</strong> 11 л</li><li><strong>Производительность уничтожителя:</strong> 5</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> продольная</li><li><strong>Уничтожение:</strong> бумага</li><li><strong>Уровень секретности:</strong> P-1</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Совместимость:</strong> персонального использования и уничтожения общих несекретных документов. Модель P-25S приходит на замену шредера P-20.</li><li><strong>1. Общие:</strong> 1.01 Английское название Shredder P-25S Strip Cut</li><li><strong>1.02 Страна:</strong> - изготовитель Китай</li><li><strong>1.03 Retail BarCode (EU) 43859690695:</strong> 1.04 CRC (EU) 47010</li><li><strong>1.07 Наличие модели:</strong> заменителя</li><li><strong>2.01 Тип резки продольная:</strong> 2.02 Размер резки (мм) 7</li><li><strong>2.03 Уровень секретности (DIN 32757) 1:</strong> 2.04 Ширина входного отверстия (мм) 220</li><li><strong>2.05 Уровень секретности (DIN 66399) P:</strong> 1</li><li><strong>2.06 Тип корзины стандартная:</strong> 2.07 Производительность (А4/70гр/кв.м.) 5</li><li><strong>2.08 Рекомендуемое количество листов в день 20:</strong> 2.09 Рекомендуемое количество кредитных карт в день -</li><li><strong>2.10 Рекомендуемое количество CD дисков в день -:</strong> 2.11 Механизм Safety Lock (блокировка) -</li><li><strong>2.12 Объем корзины (лтр/лист) 11:</strong> 2.13 Средняя скорость (м/мин) 5</li><li><strong>2.14 Рабочий цикл (мин) 3 / 25:</strong> 2.15 Уровень шума (дБ) 70</li><li><strong>2.16 Авто Старт/Стоп +:</strong> 2.17 Реверс +</li><li><strong>2.18 Легкоснимающийся режущий блок +:</strong> 2.19 Технология SafeSense™ -</li><li><strong>2.20 Автостоп при изъятой корзине -:</strong> 2.21 Возможности уничтожения бумага</li><li><strong>2.22 Мощность мотора (Вт) 138:</strong> 2.23 Гарантия (г.) 1</li><li><strong>3.05 Кол:</strong> во в транспортной упаковке (шт) 4</li><li><strong>Емкость корзины, литров:</strong> 11 л</li><li><strong>Производительность уничтожителя:</strong> 5</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> продольная</li><li><strong>Уничтожение:</strong> бумага</li><li><strong>Уровень секретности:</strong> P-1</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Fellowes</param>
@@ -277,6 +284,8 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="2.03 Уровень секретности (DIN 32757) 1">2.04 Ширина входного отверстия (мм) 220</param>
 <param name="2.05 Уровень секретности (DIN 66399) P">1</param>
 <param name="2.06 Тип корзины стандартная">2.07 Производительность (А4/70гр/кв.м.) 5</param>
+<param name="2.08 Рекомендуемое количество листов в день 20">2.09 Рекомендуемое количество кредитных карт в день -</param>
+<param name="2.10 Рекомендуемое количество CD дисков в день -">2.11 Механизм Safety Lock (блокировка) -</param>
 <param name="2.12 Объем корзины (лтр/лист) 11">2.13 Средняя скорость (м/мин) 5</param>
 <param name="2.14 Рабочий цикл (мин) 3 / 25">2.15 Уровень шума (дБ) 70</param>
 <param name="2.16 Авто Старт/Стоп +">2.17 Реверс +</param>
@@ -331,7 +340,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <h3>Шредер Fellowes Powershred LX201 белый</h3>
 <p><strong>Примечание:</strong> P-5 уровень секретности, резка листа А4 на 2200+ фрагментов: Уничтожает до 12 листов одновременно<br>Вместительная корзина 22 литров ≈ 350 листов А4: Гарантия 2 года на устройство и 5 лет на ножи</p>
 <p>Тип — шредеры офисные.</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Артикул fs:</strong> 50500</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, диски, скрепки</li><li><strong>Загрузка, листов (A4, 70 гр./м²):</strong> 12</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Перекрестная резка:</strong> 2х12 мм</li><li><strong>Рабочий цикл, мин:</strong> 10 / 15</li><li><strong>Размер резки, мм:</strong> 2 x 12</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 5</li><li><strong>Шредер Powershred® LX201 белый:</strong> Шредер нового поколения с непревзойденным удобством и эффективностью</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Артикул fs:</strong> 50500</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, диски, скрепки</li><li><strong>Загрузка, листов (A4, 70 гр./м²):</strong> 12</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Перекрестная резка:</strong> 2х12 мм</li><li><strong>Рабочий цикл, мин:</strong> 10 / 15</li><li><strong>Размер резки, мм:</strong> 2 x 12</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 25</li><li><strong>Рекомендуемое количество листов в день:</strong> 1000</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 5</li><li><strong>Шредер Powershred® LX201 белый:</strong> Шредер нового поколения с непревзойденным удобством и эффективностью</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">шредеры офисные</param>
@@ -342,6 +351,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Перекрестная резка">2х12 мм</param>
 <param name="Рабочий цикл, мин">10 / 15</param>
 <param name="Размер резки, мм">2 x 12</param>
+<param name="Рекомендуемое количество CD дисков в день">нет</param>
+<param name="Рекомендуемое количество кредитных карт в день">25</param>
+<param name="Рекомендуемое количество листов в день">1000</param>
 <param name="Скорость резки, м/мин">2</param>
 <param name="Тип Резки">Перекрест.</param>
 <param name="Уничтожение кредитных карт">да</param>
@@ -392,7 +404,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <h3>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</h3>
 <p><strong>Примечание:</strong> Вместительная корзина 22 литра ≈ 350 листов А4: Гарантия 2 года на устройство и 5 лет на ножи<br>Количество фрагментов при резке листа А4, шт.: ≥1300</p>
 <p><strong>Кратко:</strong> Тип: шредеры офисные; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Цвет:</strong> черный</li><li><strong>Артикул fs:</strong> 55022</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, скрепки</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 12</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Рабочий цикл, мин:</strong> 10 / 15</li><li><strong>Размер резки, мм:</strong> 4 x 12</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Уничтожает до 12 листов одновременно:</strong> Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® LX200:</strong> Шредер нового поколения с непревзойденным удобством и эффективностью</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Цвет:</strong> черный</li><li><strong>Артикул fs:</strong> 55022</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, скрепки</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 12</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Рабочий цикл, мин:</strong> 10 / 15</li><li><strong>Размер резки, мм:</strong> 4 x 12</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 25</li><li><strong>Рекомендуемое количество листов в день:</strong> 1000</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Уничтожает до 12 листов одновременно:</strong> Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® LX200:</strong> Шредер нового поколения с непревзойденным удобством и эффективностью</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">шредеры офисные</param>
@@ -403,6 +415,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Количество пользователей 1">3 Пользователя</param>
 <param name="Рабочий цикл, мин">10 / 15</param>
 <param name="Размер резки, мм">4 x 12</param>
+<param name="Рекомендуемое количество CD дисков в день">нет</param>
+<param name="Рекомендуемое количество кредитных карт в день">25</param>
+<param name="Рекомендуемое количество листов в день">1000</param>
 <param name="Скорость резки, м/мин">2</param>
 <param name="Тип Резки">Перекрест.</param>
 <param name="Уничтожает до 12 листов одновременно">Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов</param>
@@ -431,7 +446,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <h3>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</h3>
 <p><strong>Примечание:</strong> Вес розничной упаковки, кг: 14,1<br>Вес транспортной упаковки, кг: 15,2</p>
 <p><strong>Кратко:</strong> Тип: шредеры офисные; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Цвет:</strong> черный</li><li><strong>100% Jam:</strong> Proof Технология предотвращения заторов да</li><li><strong>SafeSense® Технология:</strong> да</li><li><strong>Sleep Mode (автоотключение):</strong> да</li><li><strong>Автоматическая защита от перегрева:</strong> да</li><li><strong>Автоотключение при снятой корзине:</strong> да</li><li><strong>Автостоп при заполнении корзины:</strong> да</li><li><strong>Артикул fs:</strong> 55025</li><li><strong>Вес, кг:</strong> 12,2</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, скрепки</li><li><strong>Габаритные размеры, мм (ВхШхГ):</strong> 535 x 358 x 297</li><li><strong>Датчик пуска при подаче бумаги:</strong> электронный</li><li><strong>Емкость корзины в листах А4, приближенно:</strong> 425</li><li><strong>Емкость корзины, л:</strong> 23</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 16</li><li><strong>Индикатор возникновения затора:</strong> да</li><li><strong>Индикатор наполнения корзины:</strong> да</li><li><strong>Индикатор открытой дверцы:</strong> да</li><li><strong>Индикатор перегрева:</strong> да</li><li><strong>Кабель питания:</strong> несъемный</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Мощность, Вт:</strong> 650</li><li><strong>Наличие колес для перемещения:</strong> да</li><li><strong>Рабочий цикл, мин:</strong> 20 / 15</li><li><strong>Размер резки, мм:</strong> 4 x 12</li><li><strong>Сила тока, А:</strong> 3</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Тип корзины:</strong> выдвижная</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Тип электродвигателя:</strong> постоянного тока</li><li><strong>Уничтожает до 16 листов одновременно:</strong> Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Уровень шума без загрузки, дБ:</strong> 65</li><li><strong>Уровень шума под нагрузкой, дБ:</strong> 70</li><li><strong>Шредер Powershred® LX210:</strong> Шредер нового поколения с непревзойденным удобством и эффективностью</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Цвет:</strong> черный</li><li><strong>100% Jam:</strong> Proof Технология предотвращения заторов да</li><li><strong>SafeSense® Технология:</strong> да</li><li><strong>Sleep Mode (автоотключение):</strong> да</li><li><strong>Автоматическая защита от перегрева:</strong> да</li><li><strong>Автоотключение при снятой корзине:</strong> да</li><li><strong>Автостоп при заполнении корзины:</strong> да</li><li><strong>Артикул fs:</strong> 55025</li><li><strong>Вес, кг:</strong> 12,2</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, скрепки</li><li><strong>Габаритные размеры, мм (ВхШхГ):</strong> 535 x 358 x 297</li><li><strong>Датчик пуска при подаче бумаги:</strong> электронный</li><li><strong>Емкость корзины в листах А4, приближенно:</strong> 425</li><li><strong>Емкость корзины, л:</strong> 23</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 16</li><li><strong>Индикатор возникновения затора:</strong> да</li><li><strong>Индикатор наполнения корзины:</strong> да</li><li><strong>Индикатор открытой дверцы:</strong> да</li><li><strong>Индикатор перегрева:</strong> да</li><li><strong>Кабель питания:</strong> несъемный</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Мощность, Вт:</strong> 650</li><li><strong>Наличие колес для перемещения:</strong> да</li><li><strong>Рабочий цикл, мин:</strong> 20 / 15</li><li><strong>Размер резки, мм:</strong> 4 x 12</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 25</li><li><strong>Рекомендуемое количество листов в день:</strong> 1000</li><li><strong>Сила тока, А:</strong> 3</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Тип корзины:</strong> выдвижная</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Тип электродвигателя:</strong> постоянного тока</li><li><strong>Уничтожает до 16 листов одновременно:</strong> Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Уровень шума без загрузки, дБ:</strong> 65</li><li><strong>Уровень шума под нагрузкой, дБ:</strong> 70</li><li><strong>Шредер Powershred® LX210:</strong> Шредер нового поколения с непревзойденным удобством и эффективностью</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">шредеры офисные</param>
@@ -460,6 +475,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Наличие колес для перемещения">да</param>
 <param name="Рабочий цикл, мин">20 / 15</param>
 <param name="Размер резки, мм">4 x 12</param>
+<param name="Рекомендуемое количество CD дисков в день">нет</param>
+<param name="Рекомендуемое количество кредитных карт в день">25</param>
+<param name="Рекомендуемое количество листов в день">1000</param>
 <param name="Сила тока, А">3</param>
 <param name="Скорость резки, м/мин">2</param>
 <param name="Тип корзины">выдвижная</param>
@@ -549,7 +567,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <h3>Шредер Fellowes® Powershred®P-30C, DIN P-4, 4х34 мм, 6 лст., 15 лтр.,</h3>
 <p><strong>Примечание:</strong> Гарантия: 12 месяцев<br>Гарантия 1 год на устройство и 3 года на ножи: Возможности уничтожения</p>
 <p>Тип — Шредер.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Шредер</li><li><strong>P-4 уровень секретности:</strong> Корзина 15 литров</li><li><strong>Артикул fs:</strong> 60081</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 6</li><li><strong>Количество пользователей:</strong> 1 пользователь</li><li><strong>Отдельная корзина для фрагментов CD:</strong> н</li><li><strong>Отдельный слот для CD:</strong> нет</li><li><strong>Перекрестная резка:</strong> 4x34 мм</li><li><strong>Рабочий цикл, мин:</strong> 3/40</li><li><strong>Размер резки, мм:</strong> 4x34</li><li><strong>Скорость резки, м/мин:</strong> 3</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® P:</strong> 30C</li><li><strong>Эксклюзивная модель для М.Видео:</strong> Уничтожает до 6 листов одновременно</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Шредер</li><li><strong>P-4 уровень секретности:</strong> Корзина 15 литров</li><li><strong>Артикул fs:</strong> 60081</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 6</li><li><strong>Количество пользователей:</strong> 1 пользователь</li><li><strong>Отдельная корзина для фрагментов CD:</strong> н</li><li><strong>Отдельный слот для CD:</strong> нет</li><li><strong>Перекрестная резка:</strong> 4x34 мм</li><li><strong>Рабочий цикл, мин:</strong> 3/40</li><li><strong>Размер резки, мм:</strong> 4x34</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 5</li><li><strong>Рекомендуемое количество листов в день:</strong> 30</li><li><strong>Скорость резки, м/мин:</strong> 3</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® P:</strong> 30C</li><li><strong>Эксклюзивная модель для М.Видео:</strong> Уничтожает до 6 листов одновременно</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Fellowes</param>
@@ -563,6 +581,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Перекрестная резка">4x34 мм</param>
 <param name="Рабочий цикл, мин">3/40</param>
 <param name="Размер резки, мм">4x34</param>
+<param name="Рекомендуемое количество CD дисков в день">нет</param>
+<param name="Рекомендуемое количество кредитных карт в день">5</param>
+<param name="Рекомендуемое количество листов в день">30</param>
 <param name="Скорость резки, м/мин">3</param>
 <param name="Тип Резки">Перекрест.</param>
 <param name="Уничтожение CD или Blu">Ray DVD (1,2 слоя) нет</param>
@@ -829,7 +850,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CG95405</vendorCode>
 <name>Принтер Epson M1100 фабрика печати</name>
-<price>133900</price>
+<price>132900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/0e2/6olpz4ot8cok9ssapqrwg6nfffzfewvg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -868,7 +889,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CG96405</vendorCode>
 <name>Принтер Epson M1120 фабрика печати</name>
-<price>144900</price>
+<price>143900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/faa/9m04s3eu9bkfgl3vgvwfa5p0meqgg17f.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -907,7 +928,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CH38402</vendorCode>
 <name>Принтер Epson SureColor SC-P700</name>
-<price>685900</price>
+<price>643900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/90a/0swudkvmn3wdhde1s5a7d1v5cpx0p3a2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -935,7 +956,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CH72404</vendorCode>
 <name>МФУ Epson L15150 фабрика печати</name>
-<price>895900</price>
+<price>890900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/850/htr5v7efov1369os0yacsrphvrryff1u.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -972,48 +993,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, МФУ Epson L15150 фабрика печати, МФУ, L15150, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC11CH81301A0" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CH81301A0</vendorCode>
-<name>Плоттер Epson SureColor SC-T5700D</name>
-<price>3630900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/be2/3zy4x8e2uw887u2lx5f2btrcpmn2atuq.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Плоттер Epson SureColor SC-T5700D</h3><p>Высокопроизводительный принтер формата А0 для инженерных задач и печати рекламных материалов<br>Скорость печати до 28 сек на отпечаток А1<br>Печатающая головка нового поколения Epson PrecisionCore TFP<br>Картриджи емкостью 110,350 или 700 мл<br>Пигментные чернила Epson UltraChrome XD<br>Печать на листовых и рулонных носителях шириной печати 36 дюймов (914 мм.)<br>Опциональный сканер формата 36”<br>Поддержка PostScript 3<br>Опциональный жесткий диск емкостью 320 Гб<br>Компактный дизайн, полностью фронтальное управление<br>Качественные, яркие отпечатки, устойчивые к смазыванию и попаданию воды</p>
-<p><strong>Кратко:</strong> Тип: CAD; Совместимость: C13T692100,C13T692200,C13T692300,C13T692400,C13T692500,C13T693100,C13T; Применение: CAD; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson SureColor SC-T5200</li><li><strong>Тип:</strong> CAD</li><li><strong>Совместимость:</strong> C13T692100,C13T692200,C13T692300,C13T692400,C13T692500,C13T693100,C13T693200,C13T693300,C13T693400,C</li><li><strong>Цвет:</strong> черный</li><li><strong>Интерфейс:</strong> USB*Ethernet/Fast Ethernet</li><li><strong>Количество слотов для картриджей:</strong> 5</li><li><strong>Комплектация:</strong> Принтер, Подставка, Руководство пользователя, CD диск с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей, Гарантийный талон, Адаптеры для рулона, Основные свойства Устройство Широкоформатный принтер, Применение •Для ГИС, Для КАД, Для презентационных материалов, Для точек продаж</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 210</li><li><strong>Применение:</strong> CAD</li><li><strong>Разрешение печати,dpi:</strong> 2880x1440</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> Картриджи</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A0</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson SureColor SC-T5200</param>
-<param name="Тип">CAD</param>
-<param name="Совместимость">C13T692100,C13T692200,C13T692300,C13T692400,C13T692500,C13T693100,C13T693200,C13T693300,C13T693400,C</param>
-<param name="Цвет">черный</param>
-<param name="Интерфейс">USB*Ethernet/Fast Ethernet</param>
-<param name="Количество слотов для картриджей">5</param>
-<param name="Комплектация">Принтер, Подставка, Руководство пользователя, CD диск с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей, Гарантийный талон, Адаптеры для рулона, Основные свойства Устройство Широкоформатный принтер, Применение •Для ГИС, Для КАД, Для презентационных материалов, Для точек продаж</param>
-<param name="Минимальная плотность бумаги, г/м2">210</param>
-<param name="Применение">CAD</param>
-<param name="Разрешение печати,dpi">2880x1440</param>
-<param name="Страна происхождения">Китай</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип расходных материалов">Картриджи</param>
-<param name="Тип чернил">пигментные</param>
-<param name="Формат">A0</param>
-<param name="Цветность">4 цвета</param>
-<keywords>Epson, Плоттер Epson SureColor SC-T5700D, Плоттер, SureColor, SC-T5700D, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC11CH96404" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC11CH96404</vendorCode>
 <name>МФУ Epson L14150 фабрика печати</name>
-<price>497900</price>
+<price>494900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e01/i7xpt3gv7ue9szoaw0zmrh90in3ra05i.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1055,7 +1039,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ18404</vendorCode>
 <name>МФУ Epson M2120 (CIS) фабрика печати</name>
-<price>190900</price>
+<price>189900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/42b/ob6rpfjga5cstvwup25j9w3de4h3vggw.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1105,7 +1089,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ19401</vendorCode>
 <name>МФУ Epson M2110 (CIS) фабрика печати</name>
-<price>190900</price>
+<price>189900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/bce/nsiwjgaxqbtmblm2bhcqvufp5dfxfuy0.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1153,7 +1137,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ20404</vendorCode>
 <name>МФУ Epson L8160 фабрика печати, Wi-Fi</name>
-<price>443900</price>
+<price>440900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/71e/1lvtjnpio24k9gexred15oskgxsuimzk.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1193,7 +1177,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ21403</vendorCode>
 <name>МФУ Epson L8180 фабрика печати</name>
-<price>505900</price>
+<price>501900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/620/lt3dvkdj5lpeuxyceyp1mzs58sfjcurb.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1236,7 +1220,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ30404</vendorCode>
 <name>МФУ Epson L6550 фабрика печати, факс,Wi-Fi</name>
-<price>704900</price>
+<price>723900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/823/024m2e9pty8h6vstlbjkfub363hrjfps.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1282,7 +1266,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ36301A0</vendorCode>
 <name>Плоттер Epson SureColor SC-T3100M-MFP</name>
-<price>1290900</price>
+<price>1295900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/d79/facehy2u28gu0xowlfx5kn5sqpotat2z.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1315,7 +1299,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ62404</vendorCode>
 <name>МФУ Epson L6260 фабрика печати, Wi-Fi</name>
-<price>100</price>
+<price>349900</price>
 <picture>https://placehold.co/800x800/png?text=No+Photo</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1341,7 +1325,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ63413</vendorCode>
 <name>МФУ Epson L4267 фабрика печати</name>
-<price>221900</price>
+<price>232900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/eaf/blpcjxsslf682mxvmii4454d4v03fm2g.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1365,7 +1349,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ65407</vendorCode>
 <name>МФУ Epson L5290 фабрика печати, факс,Wi-Fi</name>
-<price>299900</price>
+<price>274900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ca7/nf3rr4pa3rockbljc48gyy3o0zv4dku9.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1466,85 +1450,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, МФУ Epson L3266 фабрика печати, Wi-Fi, МФУ, L3266, фабрика, печати, Wi-Fi, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC11CJ67413" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CJ67413</vendorCode>
-<name>МФУ Epson L3251 фабрика печати</name>
-<price>112900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/b98/slzwbmxp3vczcv316l4rtjlp5sfze0qw.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>МФУ Epson L3251 фабрика печати</h3><p>Домашний струйный принтер<br>Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct<br>Печать, сканирование и копирование<br>Wi-Fi Direct<br>Черный с синей панелью<br>Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct и эксклюзивной синей панелью подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту¹ вы с легкостью сможете выполнять различные задачи.<br>Попрощайтесь с дорогостоящими картриджами<br>EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета.<br>Постоянная экономия<br>Этот принтер EcoTank, поставляемый с чернилами на срок до 3 лет², обеспечивает значительную экономию средств при печати. Сменный набор чернильных флаконов может использоваться для печати до 4500 страниц в черном цвете и до 7500 страниц в цвете³.<br>Приложение Epson Smart Panel<br>Приложение позволяет управлять принтером с мобильного устройства⁴. Вы можете быстро и легко настроить Wi-Fi, распечатать документы и фотографии, контролировать и устранять неисправности принтера.<br>Гибкость, отвечающая современным требованиям<br>Благодаря компактному дизайну, возможностям подключения Wi-Fi и Wi-Fi Direct этот принтер можно легко интегрировать в существующую домашнюю систему для печати с мобильных устройств, планшетов и ноутбуков⁴.<br>Метод печати<br>Epson Micro Piezo™ print head<br>Конфигурация сопла<br>180 Сопла (черный), 59 Сопла (цвет)<br>Минимальный размер капли<br>3 капли(ей), Технология капель с переменным размером<br>Технология чернил<br>Чернила на красителях<br>Разрешение при печати<br>5.760 x 1.440 DPI (точек на дюйм)<br>Выработка<br>Для дома, Для домашнего офиса<br>Многофункциональный<br>Печать, сканирование, Копия<br>Количество цветов<br>4 colour<br>Скорость печати ISO/IEC 24734<br>10 Стр./мин. Монохромная печать, 5 Стр./мин. Colour<br>Максимальная скорость печати<br>33 Стр./мин. Монохромная печать (plain paper 75 g/m²), 15 Стр./мин. Colour (plain paper 75 g/m²), 69 секунд per 10 x 15 cm photo (Epson Premium Glossy Photo Paper)<br>Цвета<br>Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]<br>Скорость одностороннего сканирования (A4, черный)<br>200 DPI (точек на дюйм); , 11 sec. with flatbed scan<br>Single-sided scan speed (A4 colour)<br>200 DPI (точек на дюйм); , 28 sec. with flatbed scan<br>Разрешение сканирования<br>1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный)<br>Формат выводимых данных<br>BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG<br>Тип сканера<br>Контактный датчик изображения (CIS)<br>Optical Resolution<br>1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный)<br>Количество бумажных ящиков<br>1<br>Формат бумаги<br>A4 (21,0x29,7 см) , A6 (10,5x14,8 см)  , A5 (14,8x21,0 см)  , B5  , 10 x 15 см  , 13 x 18 см  , 16:9  , DL (Конверт), No. 10 (Конверт)  , C6 (Конверт)  , Letter  , Выбрать формат, Legal<br>Дуплекс<br>Вручную<br>Емкость отделения подачи бумаги<br>30 Листы<br>Paper Tray Capacity<br>100 Листы Стандарт, 20 Листы фотобумаги<br>Подходящий вес бумаги<br>64 - 300г/м2<br>Обработка мультимедиа<br>Печать без полей<br>Энергопотребление<br>12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,7 Ватт (sleep mode), 4,5 Ватт Готов, 0,2 Ватт (выключать), TEC 0,15 kWh/week<br>Напряжение питания<br>AC 100 V - 240 V, 50 Hz - 60 Hz<br>Габариты<br>375 x 347 x 179 мм (Ширина x Глубина x Высота)<br>Вес<br>3,9 кг<br>Совместимые операционные системы<br>Mac OS X 10.6.8 or later, Windows 10, Windows 7, Windows 8, Windows 8.1, Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 (64bit), Windows Server 2012 R2, Windows Server 2016, Windows Vista, Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later<br>Интерфейсы<br>USB, WiFi, Wi-Fi Direct<br>Услуги мобильной и облачной печати<br>Epson Smart Panel App<br>Комплект поставки<br>4 x 65ml individual ink bottles (Bk, C,Y,M), Драйвер и вспомогательная программа (CD), Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы<br>Цвет<br>Black</p>
-<p><strong>Кратко:</strong> Тип: МФУ Дом; Совместимость: цветной печати формата A4 с Wi-Fi Direct; Ресурс: 10; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Совместимость:</strong> цветной печати формата A4 с Wi-Fi Direct</li><li><strong>Цвет:</strong> черный</li><li><strong>Ресурс:</strong> 10</li><li><strong>Страна происхождения:</strong> Филипины</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Тип">МФУ Дом</param>
-<param name="Совместимость">цветной печати формата A4 с Wi-Fi Direct</param>
-<param name="Цвет">черный</param>
-<param name="Ресурс">10</param>
-<param name="Страна происхождения">Филипины</param>
-<keywords>Epson, МФУ Epson L3251 фабрика печати, МФУ, L3251, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC11CJ67414" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CJ67414</vendorCode>
-<name>МФУ Epson L3256 фабрика печати</name>
-<price>112900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/4bc/gh0td0cmbyb0cbirjvip4a1lf54816hr.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>МФУ Epson L3256 фабрика печати</h3>
-<p><strong>Примечание:</strong> Гарантия, мес: 12 мес или 30000 отпечатков<br>Скорость печати ISO/IEC 24734 (цветн. А4), стр/мин: 5</p>
-<p><strong>Кратко:</strong> Тип: МФУ Дом; Применение: Для дома</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L3256</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Интерфейс:</strong> USB* тип B</li><li><strong>L3256:</strong> Стильное белое МФУ с фронтальными чернильными емкостями, возможностью печати и сканирования по Wi-Fi</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Беспроводная печать и сканирование с функцией Wi:</strong> Fi Direct</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Количество цветов:</strong> 4</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 256</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 33</li><li><strong>Максимальное разрешение копира:</strong> 1200х2</li><li><strong>Максимальное разрешение, dpi:</strong> 5760x1440</li><li><strong>Максимальный формат:</strong> A4</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Минимальный объем капли, пл:</strong> 3</li><li><strong>Печать без полей:</strong> да</li><li><strong>Печать фотографий:</strong> да</li><li><strong>Применение:</strong> Для дома</li><li><strong>Разрешение печати,dpi:</strong> 5760x1440</li><li><strong>Разрешение сканера,dpi:</strong> 600x1200</li><li><strong>Скорость печати 10x15 см (цветн.), фото/сек:</strong> 69</li><li><strong>Скорость печати до 33 стр./мин:</strong> Комплект чернил рассчитан на печать до 7500 цветных и 4500 Ч/Б документов А4</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная, пьезоэлектрическая</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> водорастворимые</li><li><strong>Устройство:</strong> МФУ</li><li><strong>Формат:</strong> A4</li><li><strong>Цвет корпуса:</strong> Белый</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson L3256</param>
-<param name="Тип">МФУ Дом</param>
-<param name="Интерфейс">USB* тип B</param>
-<param name="L3256">Стильное белое МФУ с фронтальными чернильными емкостями, возможностью печати и сканирования по Wi-Fi</param>
-<param name="Автоподатчик">нет</param>
-<param name="Беспроводная печать и сканирование с функцией Wi">Fi Direct</param>
-<param name="Двусторонняя печать">нет</param>
-<param name="ЖК дисплей">нет</param>
-<param name="Количество цветов">4</param>
-<param name="Максимальная плотность бумаги, г/м2">256</param>
-<param name="Максимальная скорость печати А4 стр/мин">33</param>
-<param name="Максимальное разрешение копира">1200х2</param>
-<param name="Максимальное разрешение, dpi">5760x1440</param>
-<param name="Максимальный формат">A4</param>
-<param name="Минимальная плотность бумаги, г/м2">64</param>
-<param name="Минимальный объем капли, пл">3</param>
-<param name="Печать без полей">да</param>
-<param name="Печать фотографий">да</param>
-<param name="Применение">Для дома</param>
-<param name="Разрешение печати,dpi">5760x1440</param>
-<param name="Разрешение сканера,dpi">600x1200</param>
-<param name="Скорость печати 10x15 см (цветн.), фото/сек">69</param>
-<param name="Скорость печати до 33 стр./мин">Комплект чернил рассчитан на печать до 7500 цветных и 4500 Ч/Б документов А4</param>
-<param name="Страна происхождения">Филиппины</param>
-<param name="Технология печати">Струйная, пьезоэлектрическая</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип расходных материалов">чернила</param>
-<param name="Тип чернил">водорастворимые</param>
-<param name="Устройство">МФУ</param>
-<param name="Формат">A4</param>
-<param name="Цвет корпуса">Белый</param>
-<param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L3256 фабрика печати, МФУ, L3256, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC11CJ69401" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC11CJ69401</vendorCode>
@@ -1574,7 +1479,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CJ71404</vendorCode>
 <name>Принтер Epson L1250 фабрика печати</name>
-<price>108900</price>
+<price>127900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/8fc/f1wwdw30h5h0ky3xo322k18s5p04nus3.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1594,53 +1499,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Принтер Epson L1250 фабрика печати, Принтер, L1250, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC11CK57404" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CK57404</vendorCode>
-<name>МФУ Epson L5590 фабрика печати, факс,Wi-Fi</name>
-<price>267900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/996/03cusesuvy8kxq5sz3rez4pvidhkrbuo.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>МФУ Epson L5590 фабрика печати, факс,Wi-Fi</h3><p>Высокопроизводительное МФУ формата A4 с технологией RIPS<br>Наше новейшее устройство формата A4 с технологией Replaceable Ink Pack System (RIPS) обеспечивает высокую скорость печати, копирования и сканирования, имеет небольшие размеры, невысокую общую стоимост<br>Повышайте производительность работы с минимальным обслуживанием, быстрой печатью первой страницы, четкими правилами печати и рабочим процессом, и при этом экономьте электроэнергию и сократите негативное воздействие на окружающую среду. Печать 50 000 черно-белых страниц и 20 000 цветных страниц, высокая скорость двустороннего сканирования и множество вариантов применения делают эту модель идеальной для бизнеса.<br>Невысокая стоимость владения<br>Большая емкость чернил позволяет реже заправлять устройство, а также позволяет прогнозировать затраты на печать и снижает общую стоимость владения. Кроме того, благодаря струйной технологии печати устройство реже требует ремонта, что уменьшает скрытые расходы и сокращает время простоев.<br>Высокая производительность<br>Быстрая печать первой страницы (4,8 секунды для монохромной и 5,3 секунды для цветной печати) при включенном устройстве, скорость печати до 24 страниц в минуту в цветном и черно-белом режиме (скорость по ISO), а также высокая скорость двустороннего сканирования до 60 изображений в минуту позволяют добиться высокой производительности. Высокая надежность (до 240 тысяч страниц) позволяет печатать больше и дольше. Максимальная емкость лотков для бумаги до 1330 листов позволяет реже заправлять устройство.<br>Уменьшение вреда для окружающей среды<br>Помимо увеличения скорости печати, не требующая прогрева струйная технология также уменьшает влияние на окружающую среду в процессе печати и позволяет сократить энергопотребление и количество необходимых расходных материалов. Большая емкость чернил сокращает количество мусора от расходных материалов. Вы можете не переживать за попадает в атмосферу тонера и выбросы озона.<br>Создано для бизнеса<br>Устройство совместимо с различными решениями. Повышайте эффективность и контролируйте печать с помощью серверного решения Epson Print Admin; контролируйте, анализируйте и управляйте парком устройств с Epson Device Admin; используйте дополнительные функции удаленного сканирования с Document Capture Pro. Используйте преимущества решений партнеров, таких как Nuance, PaperCut и Y Soft, которые помогают решать специализированные задачи.<br>Техника<br>Метод печати<br>PrecisionCore™ Print Head<br>Конфигурация сопла<br>400 Сопла (черный), 128 Сопла (цвет)<br>Минимальный размер капли<br>3,3 капли(ей), Технология капель с переменным размером<br>Технология чернил<br>Чернила на красителях<br>Разрешение при печати<br>4.800 x 1.200 DPI (точек на дюйм)<br>Многофункциональный<br>Печать, сканирование, Копия, Факс<br>Печать<br>Количество цветов<br>4 colour<br>Скорость печати ISO/IEC 24734<br>15 Стр./мин. Монохромная печать, 8 Стр./мин. Colour<br>Максимальная скорость печати<br>33 Стр./мин. Монохромная печать (plain paper 75 g/m²), 20 Стр./мин. Colour (plain paper 75 g/m²)<br>Время до первой страницы<br>Монохромная печать 9 секунд, Colour 15 секунд<br>Цвета<br>Black [Dye], Cyan [Dye], Yellow [Dye], Magenta [Dye]<br>Colours Capacity<br>Black [65ml], Cyan [65ml], Yellow [65ml], Magenta [65ml]<br>Для получения подробной информации о скоростях печати посетите http://www.epson.eu/testing.<br>сканирование<br>Скорость одностороннего сканирования (A4, черный)<br>11 sec. with flatbed scan<br>Single-sided scan speed (A4 colour)<br>28 sec. with flatbed scan<br>Разрешение сканирования<br>1.200 DPI (точек на дюйм) x 2.400 DPI (точек на дюйм) (горизонтальный x вертикальный)<br>Формат выводимых данных<br>BMP, Сканирование для JPEG, PICT, Сканирование для TIFF, Сканирование для multi-TIFF, Сканирование для PDF, PNG, PDF multi<br>Тип сканера<br>Контактный датчик изображения (CIS)<br>Спецификации бумаги и датчики<br>Количество бумажных ящиков<br>1<br>Формат бумаги<br>A4 (21,0x29,7 см) , A5 (14,8x21,0 см)  , A6 (10,5x14,8 см)  , B5  , B6, C6 (Конверт)  , DL (Конверт), No. 10 (Конверт)  , 100 x 148 мм  , 10 x 15 см  , 13 x 18 см  , 9 x 13 см, 16:9  <br>Дуплекс<br>Вручную<br>Автоматический сбор документов<br>30 Страницы<br>Емкость отделения подачи бумаги<br>30 Листы<br>Paper Tray Capacity<br>100 Листы Стандарт<br>Подходящий вес бумаги<br>64 - 300г/м2<br>Обработка мультимедиа<br>Печать без полей<br>Общее<br>Recommended number of users<br>From: 1 To: 2<br>Энергопотребление<br>12 Ватт (standalone copying, ISO/IEC 24712 pattern), 0,8 Ватт (sleep mode), 5,4 Ватт Готов, 0,2 Ватт (выключать), TEC 0,19 kWh/week<br>Напряжение питания<br>AC 100 V - 240 V, 50 Hz - 60 Hz<br>Габариты<br>375 x 347 x 179 мм (Ширина x Глубина x Высота)<br>Вес<br>4,1 кг<br>Уровень шума<br>5,1 B (A) with Epson Premium Glossy Photo Paper / Photo RPM mode - 41 dB (A) with Epson Premium Glossy Photo Paper / Photo RPM mode<br>Совместимые операционные системы<br>Mac OS X 10.9.5 or later, Windows 10 (32/64 bit), Windows 11 or later, Windows 7 (32/64 bit), Windows 8 (32/64 bit), Windows 8.1 (32/64 bit), Windows Server 2008 (32/64bit), Windows Server 2008 R2, Windows Server 2012 R2, Windows Server 2016, Windows Vista (32/64 bit), Windows XP Professional x64 Edition SP2 or later, Windows XP SP3 or later (32-bit), Windows Server 2003 R2, Windows Server 2003 SP2 or later, macOS 11 or later<br>Интерфейсы<br>USB, WiFi, Ethernet, Wi-Fi Direct<br>Безопасность WLAN<br>WEP 64 Bit, WEP 128 Bit, WPA PSK (TKIP), WPA2 PSK (AES), WPA3-SAE(AES)<br>Услуги мобильной и облачной печати<br>Apple AirPrint, Epson Smart Panel App, Epson Connect (Email Print, Remote Print Driver)<br>Энергоснабжение<br>220V, 240V<br>Комплект поставки<br>4 x 65ml individual ink bottles (Bk,C,Y,M) + 1 extra black ink bottle, Ведущее устройство, Токоподводящий кабель, Руководство по установке, Гарантийные документы<br>Другие функции<br>ЖК-дисплей<br>Тип: Цветной режим, Диагональ: 3,7 см<br>Другие<br>Гарантия<br>12 месяца(ев) Мобильная (гарантия), 50.000 Страницы</p>
-<p><strong>Кратко:</strong> Тип: МФУ Офис; Применение: Для офиса; Ресурс: 24; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L5190</li><li><strong>Тип:</strong> МФУ Офис</li><li><strong>Цвет:</strong> черный</li><li><strong>Интерфейс:</strong> USB*Ethernet</li><li><strong>Автоподатчик:</strong> да</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> да</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 300</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 33</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Применение:</strong> Для офиса</li><li><strong>Разрешение печати,dpi:</strong> 4800x1200</li><li><strong>Разрешение сканера,dpi:</strong> 1200x2400</li><li><strong>Ресурс:</strong> 24</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> водорастворимые</li><li><strong>Факс:</strong> да</li><li><strong>Формат:</strong> A4</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson L5190</param>
-<param name="Тип">МФУ Офис</param>
-<param name="Цвет">черный</param>
-<param name="Интерфейс">USB*Ethernet</param>
-<param name="Автоподатчик">да</param>
-<param name="Двусторонняя печать">нет</param>
-<param name="ЖК дисплей">да</param>
-<param name="Максимальная плотность бумаги, г/м2">300</param>
-<param name="Максимальная скорость печати А4 стр/мин">33</param>
-<param name="Минимальная плотность бумаги, г/м2">64</param>
-<param name="Применение">Для офиса</param>
-<param name="Разрешение печати,dpi">4800x1200</param>
-<param name="Разрешение сканера,dpi">1200x2400</param>
-<param name="Ресурс">24</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип расходных материалов">чернила</param>
-<param name="Тип чернил">водорастворимые</param>
-<param name="Факс">да</param>
-<param name="Формат">A4</param>
-<param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L5590 фабрика печати, факс,Wi-Fi, МФУ, L5590, фабрика, печати, факс, Wi-Fi, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC11CK58404" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC11CK58404</vendorCode>
 <name>МФУ Epson L3560 фабрика печати, Wi-Fi</name>
-<price>163900</price>
+<price>192900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f92/jp1ij8afqnepd9b1p4tznri910b1q7ud.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1664,7 +1527,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CK59404</vendorCode>
 <name>МФУ Epson L3550 фабрика печати, Wi-Fi</name>
-<price>147900</price>
+<price>172900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/24a/ld050ydki0a613jowxpb1el01o144r43.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1688,7 +1551,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC11CK94401</vendorCode>
 <name>МФУ Epson L8100 фабрика печати</name>
-<price>353900</price>
+<price>350900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/815/gwksx955vglncgtfd9kf25cnkw54cggz.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -1730,7 +1593,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC12C890191</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</name>
-<price>26900</price>
+<price>35900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/919/85yjnllew485nzkamy182l7o60q2k5od.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2376,35 +2239,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T06C44A для L15150 жёлтый, Чернила, C13T06C44A, для, L15150, жёлтый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T07D14A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T07D14A</vendorCode>
-<name>Чернила Epson C13T07D14A для L8160/L8180 водорастворимые фото черный</name>
-<price>14900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/44a/nkssx7fia3coxvqwu7pjr66b5z2bzqbg.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Чернила Epson C13T07D14A для L8160/L8180 водорастворимые фото черный</h3><p>Оригинальные водорастворимые фото-черные чернила Epson 115 емкостью 70 мл для струйных МФУ Epson L8160/L8180</p>
-<p><strong>Кратко:</strong> Тип: Фабрика печати (чернила EPSON); Совместимость: L8160/L8180 водорастворимые фото черный; Цвет: черный</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила C13T07C14A для L8160/L8180</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Совместимость:</strong> L8160/L8180 водорастворимые фото черный</li><li><strong>Цвет:</strong> черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Объем:</strong> 0,001</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Чернила C13T07C14A для L8160/L8180</param>
-<param name="Тип">Фабрика печати (чернила EPSON)</param>
-<param name="Совместимость">L8160/L8180 водорастворимые фото черный</param>
-<param name="Цвет">черный</param>
-<param name="Для бренда">Epson</param>
-<param name="Объем">0,001</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Чернила Epson C13T07D14A для L8160/L8180 водорастворимые фото черный, Чернила, C13T07D14A, для, L8160, L8180, водорастворимые, фото, черный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T07D24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T07D24A</vendorCode>
@@ -2523,7 +2357,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T26704010</vendorCode>
 <name>Картридж Epson C13T26704010 Tri-colour Ink for WorkForce WF-100W</name>
-<price>15900</price>
+<price>16900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/d17/61ur7ef45o23cxywmiut8mauostfvc2d.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2551,7 +2385,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T27914022</vendorCode>
 <name>Картридж Epson C13T27914022 для WF-7620DTWF черный new</name>
-<price>35900</price>
+<price>37900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/33a/zrin66p4e0ph45k5j2s4zpt0ob35a7ez.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2580,7 +2414,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T40D140</vendorCode>
 <name>Картридж Epson C13T40D140 UltraChrome XD2 Black T40D140(80ml)</name>
-<price>64900</price>
+<price>69900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/1be/kbmgx69ifrh2v8f9bx486rkzp5tki8h7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2609,7 +2443,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T40D240</vendorCode>
 <name>Картридж Epson C13T40D240 UltraChrome XD2 Cyan T40D240(50ml)</name>
-<price>45900</price>
+<price>48900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/0ce/w9qa3jwmjsck3c54ehu1ony9bsm8luz0.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2636,7 +2470,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T40D34N</vendorCode>
 <name>Картридж Epson C13T40D34N UltraChrome XD2 Magenta T40D340(50ml)</name>
-<price>45900</price>
+<price>48900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/3a0/6c7sl4blrwmypfoa1v0uglqixutj7xe8.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2664,7 +2498,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T40D440</vendorCode>
 <name>Картридж Epson C13T40D440 UltraChrome XD2 Yellow T40D440(50ml)</name>
-<price>45900</price>
+<price>48900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/134/gj92y6ngwgx4a2mk8vguo42xjl555jea.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2693,7 +2527,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T41E240</vendorCode>
 <name>Картридж Epson C13T41E240 UltraChrome 700 ml голубой</name>
-<price>212900</price>
+<price>243900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/3be/eqmxmwqqut7bv5j5uat08z502tnppesl.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2721,7 +2555,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T41E34N</vendorCode>
 <name>Картридж Epson C13T41E34N UltraChrome XD2 T41E340 M 350 ml пурпурный</name>
-<price>212900</price>
+<price>243900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/a56/r1l7rddd3f2yu1o0u59iktli58gsz95u.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2749,7 +2583,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T41E440</vendorCode>
 <name>Картридж Epson C13T41E440 700ml жёлтый</name>
-<price>212900</price>
+<price>243900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/090/8pzl0rutpft80x0541lu4bkvqv8u30ne.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2777,7 +2611,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T41E540</vendorCode>
 <name>Картридж Epson C13T41E540 UltraChrome 700ml черный</name>
-<price>212900</price>
+<price>243900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/2ec/9192747v2u3iploo72fnxpslcdmadbqs.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2806,7 +2640,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T41F34N</vendorCode>
 <name>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</name>
-<price>122900</price>
+<price>136900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b61/j10usrtlnososf3cs1iwk6oygb9ajto2.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2833,7 +2667,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T41F440</vendorCode>
 <name>Картридж Epson C13T41F440 UltraChrome XD2 T41F440 Y 350ml жёлтый</name>
-<price>111900</price>
+<price>136900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/036/0muav07pep31608slkpjvyqved8ch8i7.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2860,7 +2694,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T55KD00</vendorCode>
 <name>C13T55KD00 Singlepack (Фиолетовый) T55KD00UltraChrome HDX/HD 700ml</name>
-<price>129900</price>
+<price>194900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/923/0p8oyvwd4ts90r6c77nk7geyql2ycozc.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2883,7 +2717,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T606100</vendorCode>
 <name>Картридж Epson C13T606100 SP-4880 фото черный</name>
-<price>92900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/69f/3i7dwmk3xbjrvnu94z0ymh4nv6qwn4b2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2911,7 +2745,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T606300</vendorCode>
 <name>Картридж Epson C13T606300 SP-4880 пурпурный</name>
-<price>92900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/2a9/obq7iqbhbtrl8vdhdre1hpnr7kgyqyfh.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2939,7 +2773,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T606400</vendorCode>
 <name>Картридж Epson C13T606400 SP-4880 желтый</name>
-<price>95900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/d50/w5rp3l5v37a58pgjho709245w3z4nxly.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2966,7 +2800,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T606700</vendorCode>
 <name>Картридж Epson C13T606700 SP-4880 серый</name>
-<price>92900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/74a/v8bmazprvgb21olw0cwmfy1cws2y3atq.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -2993,7 +2827,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T606B00</vendorCode>
 <name>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</name>
-<price>92900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/260/xp8miwjmy3is3raal65fy1dc5of3ehna.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3016,7 +2850,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T606C00</vendorCode>
 <name>Картридж Epson C13T606C00 SP-4800 пурпурный светлый</name>
-<price>92900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/796/e43ip49agzm0hqhclwg33fyafw11bx7p.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3043,7 +2877,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T614200</vendorCode>
 <name>Картридж Epson C13T614200 SP-4450 голубой</name>
-<price>92900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/0a3/c6b6nj5lk6o83vmwqi63h3ly86la319c.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3071,7 +2905,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T614300</vendorCode>
 <name>Картридж Epson C13T614300 SP-4450 пурпурный</name>
-<price>95900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/92e/6lre3y03wilvfhahf72ikw7wbntrw074.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3099,7 +2933,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T614400</vendorCode>
 <name>Картридж Epson C13T614400 SP-4450 желтый</name>
-<price>92900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/ce9/elde0uyltfwb6ya6a32fpy08hpejfcjy.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3126,7 +2960,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T61480N</vendorCode>
 <name>Картридж Epson C13T61480N SP-4450 220ml черный матовый</name>
-<price>92900</price>
+<price>103900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/47b/jh69vmx5on79kujy67xqii7xa756lneh.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3178,7 +3012,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T619300</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200</name>
-<price>59900</price>
+<price>64900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/998/8rq8oj23l7fep0amvc3cn6nvz6owlmmk.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3292,7 +3126,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T671400</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C13T671400 WorkForce Pro WF-C869R Maintenance Box (80K)</name>
-<price>41900</price>
+<price>62900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/94b/23nc7h0t6dsigfnw39h01wamhjk05rkj.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3488,7 +3322,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T692100</vendorCode>
 <name>Картридж Epson C13T692100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
-<price>49900</price>
+<price>59900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f3e/s3gcxq4vbvyay96nmx1la4hichwzh5y9.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3516,7 +3350,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T69220N</vendorCode>
 <name>Картридж Epson Singlepack UltraChrome XD CyanT69220N (110ml)</name>
-<price>49900</price>
+<price>59900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/b9a/ph1ogqk715elc7530uftr9edi3fk1mjq.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3545,7 +3379,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T69230N</vendorCode>
 <name>Картридж Epson C13T69230N T3000/5000/7000, Т3200/5200/7200 пурпурный</name>
-<price>49900</price>
+<price>59900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/74c/vi3hweiwqodw02f1yqf9n6ax0ixt2w1h.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3573,7 +3407,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T69240N</vendorCode>
 <name>Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый</name>
-<price>49900</price>
+<price>59900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/de9/36c2zgvz4emnvyp6pwm4otykefl7m33a.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3601,7 +3435,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T692500</vendorCode>
 <name>Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
-<price>49900</price>
+<price>59900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f32/d6kc9861zmzsv9tdipqapk7yhso4p8qz.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3629,7 +3463,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T694100</vendorCode>
 <name>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
-<price>204900</price>
+<price>243900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/f6b/tc1jcv3quat1vv5xtm2vl3z0vkhx4ju1.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3657,7 +3491,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T69430N</vendorCode>
 <name>Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный</name>
-<price>194900</price>
+<price>243900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/376/ekuy4ocvzyl60ruii4q0p0cvmew7688i.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3685,7 +3519,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T699700</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</name>
-<price>31900</price>
+<price>29900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/30f/g1i10ltyntmx0oyac7qfmc4hijadomyg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3713,7 +3547,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC13T965140</vendorCode>
 <name>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</name>
-<price>176900</price>
+<price>181900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/1ac/kr6fe4punp45pkikbfalsadt0zd68ytf.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3742,7 +3576,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <categoryId></categoryId>
 <vendorCode>ACC33S021601</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box</name>
-<price>24900</price>
+<price>25900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/027/pwwdhgo191fql52drffna5cdre89q7jg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
@@ -3838,7 +3672,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <h3>Ламинатор Fellowes Arc A4, 75/80 мкм, 30 см/мин, AutoShutOff, механизм освобожд., старт.набор пленок</h3>
 <p><strong>Примечание:</strong> Вес розничной упаковки, кг: 1,5<br>Вес транспортной упаковки, кг: 6,7</p>
 <p>Тип — Ламинатор А4.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Ламинатор А4</li><li><strong>Auto Shut Off (Автоотключение):</strong> да (после 30 минут простоя)</li><li><strong>AutoSense:</strong> нет</li><li><strong>Easi:</strong> Access механизм нет</li><li><strong>HeatGuard™:</strong> нет</li><li><strong>InstaHeat:</strong> нет</li><li><strong>Артикул fs:</strong> 45700</li><li><strong>Вес, кг:</strong> 1</li><li><strong>Время нагрева, мин:</strong> 4</li><li><strong>Выходной лоток:</strong> нет</li><li><strong>Габаритные размеры, мм (ВхШхГ):</strong> 62 x 359 x 113</li><li><strong>Кол:</strong> во валов 2</li><li><strong>Ламинатор Arc А4:</strong> Диапазон плёнок 75 – 80 мкм</li><li><strong>Макс. скорость, см/мин:</strong> 30</li><li><strong>Макс. формат:</strong> A4</li><li><strong>Освобождение:</strong> да</li><li><strong>Персональные настройки:</strong> нет</li><li><strong>Реверс:</strong> нет</li><li><strong>Регулировка скорости:</strong> нет</li><li><strong>Регулировка температуры:</strong> нет</li><li><strong>Сигнал готовности:</strong> свет</li><li><strong>Система нагрева:</strong> нагреваемые валы</li><li><strong>Стартовый набор для 10 документов:</strong> да</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Съемный сетевой кабель:</strong> нет</li><li><strong>Толщина пленки, мкм:</strong> 75/80</li><li><strong>Холодное ламинирование:</strong> нет</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> Ламинатор А4</li><li><strong>Auto Shut Off (Автоотключение):</strong> да (после 30 минут простоя)</li><li><strong>AutoSense:</strong> нет</li><li><strong>Easi:</strong> Access механизм нет</li><li><strong>HeatGuard™:</strong> нет</li><li><strong>InstaHeat:</strong> нет</li><li><strong>Артикул fs:</strong> 45700</li><li><strong>Вес, кг:</strong> 1</li><li><strong>Время нагрева, мин:</strong> 4</li><li><strong>Выходной лоток:</strong> нет</li><li><strong>Габаритные размеры, мм (ВхШхГ):</strong> 62 x 359 x 113</li><li><strong>Кол:</strong> во валов 2</li><li><strong>Ламинатор Arc А4:</strong> Диапазон плёнок 75 – 80 мкм</li><li><strong>Макс. скорость, см/мин:</strong> 30</li><li><strong>Макс. формат:</strong> A4</li><li><strong>Освобождение:</strong> да</li><li><strong>Персональные настройки:</strong> нет</li><li><strong>Реверс:</strong> нет</li><li><strong>Регулировка скорости:</strong> нет</li><li><strong>Регулировка температуры:</strong> нет</li><li><strong>Рекомендуемое количество ламинирований в день:</strong> 25 листов, неинтенсивное использование</li><li><strong>Сигнал готовности:</strong> свет</li><li><strong>Система нагрева:</strong> нагреваемые валы</li><li><strong>Стартовый набор для 10 документов:</strong> да</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Съемный сетевой кабель:</strong> нет</li><li><strong>Толщина пленки, мкм:</strong> 75/80</li><li><strong>Холодное ламинирование:</strong> нет</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Fellowes</param>
@@ -3862,6 +3696,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Реверс">нет</param>
 <param name="Регулировка скорости">нет</param>
 <param name="Регулировка температуры">нет</param>
+<param name="Рекомендуемое количество ламинирований в день">25 листов, неинтенсивное использование</param>
 <param name="Сигнал готовности">свет</param>
 <param name="Система нагрева">нагреваемые валы</param>
 <param name="Стартовый набор для 10 документов">да</param>
@@ -3917,7 +3752,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <h3>Шредер Fellowes® Powershred® 12C, DIN P-4, 4х40мм, 12лст., 18лтр., Safety Lock</h3>
 <p><strong>Примечание:</strong> Гарантия 2 года на устройство и 5 лет на ножи: Возможности уничтожения<br>Количество фрагментов при резке листа А4, шт.: ≥380</p>
 <p>Тип — шредеры офисные.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>100% Jam:</strong> Proof Технология предотвращения заторов нет</li><li><strong>P-4 уровень секретности:</strong> Удобная выдвижная корзина 18 литров ≈ 220 листов А4</li><li><strong>Артикул fs:</strong> 71201</li><li><strong>Емкость корзины, литров:</strong> 18 л</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 12</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Производительность уничтожителя:</strong> до 12 листов одновременно</li><li><strong>Рабочий цикл, мин:</strong> 20 / 30</li><li><strong>Размер резки, мм:</strong> 4 x 40</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> перекрестная</li><li><strong>Уничтожает до 12 листов одновременно:</strong> Перекрестная резка - 4х40 мм</li><li><strong>Уничтожение:</strong> скобы, скрепки, карты</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности:</strong> P-4</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® 12C:</strong> Высокая производительность и увеличенный рабочий цикл 20 мин</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>100% Jam:</strong> Proof Технология предотвращения заторов нет</li><li><strong>P-4 уровень секретности:</strong> Удобная выдвижная корзина 18 литров ≈ 220 листов А4</li><li><strong>Артикул fs:</strong> 71201</li><li><strong>Емкость корзины, литров:</strong> 18 л</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 12</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Производительность уничтожителя:</strong> до 12 листов одновременно</li><li><strong>Рабочий цикл, мин:</strong> 20 / 30</li><li><strong>Размер резки, мм:</strong> 4 x 40</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 25</li><li><strong>Рекомендуемое количество листов в день:</strong> 500</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> перекрестная</li><li><strong>Уничтожает до 12 листов одновременно:</strong> Перекрестная резка - 4х40 мм</li><li><strong>Уничтожение:</strong> скобы, скрепки, карты</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) нет</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности:</strong> P-4</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® 12C:</strong> Высокая производительность и увеличенный рабочий цикл 20 мин</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Fellowes</param>
@@ -3931,6 +3766,9 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Производительность уничтожителя">до 12 листов одновременно</param>
 <param name="Рабочий цикл, мин">20 / 30</param>
 <param name="Размер резки, мм">4 x 40</param>
+<param name="Рекомендуемое количество CD дисков в день">нет</param>
+<param name="Рекомендуемое количество кредитных карт в день">25</param>
+<param name="Рекомендуемое количество листов в день">500</param>
 <param name="Скорость резки, м/мин">2</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Тип резки">перекрестная</param>
@@ -4727,7 +4565,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Интерактивная доска Mr.Pixel S102 BLACK</h3><p>Общие</p>
-<p><strong>Примечание:</strong> Минимальный предмет касания должен быть не менее 5мм: Температура Эксплуатации: От -20°C До 70°C<br>Питания от USB, мощность пульсации max.200mV rms: Мощность 2 Вт, рабочий ток 200mA</p>
+<p><strong>Примечание:</strong> Минимальный предмет касания должен быть не менее 5 мм: Температура Эксплуатации: От -20°C До 70°C<br>Питания от USB, мощность пульсации max.200mV rms: Мощность 2 Вт, рабочий ток 200mA</p>
 <p><strong>Кратко:</strong> Тип: Интерактивная доска; Совместимость: Windows 7/8/10; Цвет: черный</p>
 <h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Совместимость:</strong> Windows 7/8/10</li><li><strong>Цвет:</strong> черный</li><li><strong>10 Точек касания:</strong> Интерфейс USB 2.0 и USB 3.0</li><li><strong>Активная область:</strong> 95 дюймов 2120 (мм) х 1150 (мм)</li><li><strong>Время отклика 8 мс:</strong> Скорость отклика 20 мс</li><li><strong>Время эксплуатации не менее 7 лет:</strong> Напряжение тока: +DC 5V, +4.75V to +5.25V</li><li><strong>Диагональ:</strong> 102</li><li><strong>Интерфейс подключения:</strong> USB</li><li><strong>Метод ввода:</strong> палец, маркер или не прозрачные предметы</li><li><strong>Относительная Влажность:</strong> Рабочая: 90% (без конденсации при максимальной температуре 40°C)</li><li><strong>Рамка выполнена из алюминия, цвет серый:</strong> Внешний Размер: (мм) 2252 х 1280 х 44 (мм)</li><li><strong>Сертификаты:</strong> CE, FCC Class B, RoHS</li><li><strong>Соотношение сторон:</strong> 16:9</li><li><strong>Технология:</strong> ИК сенсорная</li><li><strong>Тип управления:</strong> Сенсорное</li><li><strong>Хранение:</strong> 90% (без конденсации при максимальной температуре 40°C)</li><li><strong>Хранения:</strong> -40°C ~ 85°С</li></ul>
 <!-- Оплата и доставка -->
@@ -4878,56 +4716,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Энергопотребление">124 Вт (0.5 Вт в режиме ожидания)</param>
 <param name="Яркость (maximum)">≥ 400 cd/m²</param>
 <keywords>CS, Интерактивная панель SBID-QX275-P, Интерактивная, панель, SBID-QX275-P, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACV11H974040" available="true">
-<categoryId></categoryId>
-<vendorCode>ACV11H974040</vendorCode>
-<name>Проектор универсальный Epson EB-FH06</name>
-<price>656900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/812/umwoa4esz22oek1qax3hjbdsnfnc67v9.png</picture>
-<vendor>Epson Proj</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Проектор универсальный Epson EB-FH06</h3><p>Проектор универсальный Epson EB-FH06.<br><br>Технология: LCD: 3 × 0.61" P-Si TFT<br>Разрешение: 1080p (1920×1080)<br>Яркость: 3500 ANSI lm<br>Цветовая яркость: 3500 ANSI lm<br>Контрастность: 16000:1<br>Зум 1,2× (оптический)<br>Передача изображения по беспроводной сети Wi-fi (опционально)<br>Автоматическая коррекция вертикальных трапецеидальных искажений<br>Быстрая коррекция горизонтальных трапецеидальных искажений ручкой-слайдером<br>Функция Quick Corner<br>Возможность просмотра изображений напрямую с USB носителей<br>USB Display 3-в-1 – передача изображения, звука и сигналов управления по USB кабелю<br>Функция Split Screen<br>Встроенный динамик 2 Вт<br>Фронтальный вывод тепла<br>Моментальное выключение<br>Вес: 2,7 кг</p>
-<p><strong>Примечание:</strong> Оригинальное разрешение<br>Срок службы лампы (норм./ эконом.) ч.: 6000/12000</p>
-<p><strong>Кратко:</strong> Тип: Проектор универсальный; Совместимость: V12H005A01,V12H757040,V12H758040,V13H010L97,V13H134A32,V12H003B23,V12H; Цвет: Белый</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson Proj</li><li><strong>Модель:</strong> Epson EB-FH06</li><li><strong>Тип:</strong> Проектор универсальный</li><li><strong>Совместимость:</strong> V12H005A01,V12H757040,V12H758040,V13H010L97,V13H134A32,V12H003B23,V12H003P13,V12H003P14</li><li><strong>Цвет:</strong> Белый</li><li><strong>Разрешение:</strong> FullHD (1920x1080)</li><li><strong>3D:</strong> Нет</li><li><strong>Ethernet (RJ-45):</strong> Нет</li><li><strong>USB:</strong> Тип A и B</li><li><strong>Wi-Fi:</strong> Опция</li><li><strong>Видео вход DisplayPort:</strong> Нет</li><li><strong>Видео вход DVI-D:</strong> Нет</li><li><strong>Видео вход HDMI:</strong> Есть</li><li><strong>Видео вход S-video:</strong> Нет</li><li><strong>Видео вход VGA:</strong> 1</li><li><strong>Для офиса и мобильных презентаций:</strong> Для образования</li><li><strong>Интерактивный:</strong> Нет</li><li><strong>Интерфейс HDBaseT/DIGITAL LINK:</strong> Нет</li><li><strong>Источник света:</strong> Лампа</li><li><strong>Кабель для подключения к ПК с 15:</strong> контактным разъемом D-Sub (n/n) 1,8м</li><li><strong>Комплектация:</strong> Проектор, Кабель питания 1,8 м</li><li><strong>Контрастность:</strong> 16 000 : 1</li><li><strong>Проекционный коэффицент (Throw ratio):</strong> 1 - 1.2</li><li><strong>Пульт ДУ:</strong> Руководство пользователя</li><li><strong>Страна происхождения:</strong> Китай, Филиппины</li><li><strong>Технология:</strong> 3LCD</li><li><strong>Тип источника света:</strong> Ламповый источник света</li><li><strong>Уровень шума (норм./эконом.) Дб:</strong> 28</li><li><strong>Яркость (ANSI) лмн:</strong> 3500</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson Proj</param>
-<param name="Модель">Epson EB-FH06</param>
-<param name="Тип">Проектор универсальный</param>
-<param name="Совместимость">V12H005A01,V12H757040,V12H758040,V13H010L97,V13H134A32,V12H003B23,V12H003P13,V12H003P14</param>
-<param name="Цвет">Белый</param>
-<param name="Разрешение">FullHD (1920x1080)</param>
-<param name="3D">Нет</param>
-<param name="Ethernet (RJ-45)">Нет</param>
-<param name="USB">Тип A и B</param>
-<param name="Wi-Fi">Опция</param>
-<param name="Видео вход DisplayPort">Нет</param>
-<param name="Видео вход DVI-D">Нет</param>
-<param name="Видео вход HDMI">Есть</param>
-<param name="Видео вход S-video">Нет</param>
-<param name="Видео вход VGA">1</param>
-<param name="Для офиса и мобильных презентаций">Для образования</param>
-<param name="Интерактивный">Нет</param>
-<param name="Интерфейс HDBaseT/DIGITAL LINK">Нет</param>
-<param name="Источник света">Лампа</param>
-<param name="Кабель для подключения к ПК с 15">контактным разъемом D-Sub (n/n) 1,8м</param>
-<param name="Комплектация">Проектор, Кабель питания 1,8 м</param>
-<param name="Контрастность">16 000 : 1</param>
-<param name="Проекционный коэффицент (Throw ratio)">1 - 1.2</param>
-<param name="Пульт ДУ">Руководство пользователя</param>
-<param name="Страна происхождения">Китай, Филиппины</param>
-<param name="Технология">3LCD</param>
-<param name="Тип источника света">Ламповый источник света</param>
-<param name="Уровень шума (норм./эконом.) Дб">28</param>
-<param name="Яркость (ANSI) лмн">3500</param>
-<keywords>Epson Proj, Проектор универсальный Epson EB-FH06, Проектор, универсальный, Epson, EB-FH06, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACV11H977040" available="true">
