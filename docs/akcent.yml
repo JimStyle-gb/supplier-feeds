@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-22 02:20">
+<yml_catalog date="2026-01-22 11:12">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-22 02:20:26
+Время сборки (Алматы)                      | 2026-01-22 11:12:25
 Ближайшая сборка (Алматы)                  | 2026-01-23 02:00:00
 Сколько товаров у поставщика до фильтра    | 1714
-Сколько товаров у поставщика после фильтра | 170
-Сколько товаров есть в наличии (true)      | 170
+Сколько товаров у поставщика после фильтра | 169
+Сколько товаров есть в наличии (true)      | 169
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -18,7 +18,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC3G631A</vendorCode>
 <name>МФУ лазерное HP LaserJet Pro 3103fdn белый</name>
 <price>183900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/61d/b3idqiu2yur4hd5w9s9ft85o3hic3qah.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/04c/ff44u70idpp9whkyvvr3uuf6sbx5wgwx.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -1599,7 +1599,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CK57404</vendorCode>
 <name>МФУ Epson L5590 фабрика печати, факс,Wi-Fi</name>
 <price>267900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/486/uklykefe3j3o652gwwmvfsajvsf26ud9.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/996/03cusesuvy8kxq5sz3rez4pvidhkrbuo.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3870,51 +3870,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Толщина пленки, мкм">75/80</param>
 <param name="Холодное ламинирование">нет</param>
 <keywords>Fellowes, Ламинатор Fellowes Arc A4, 75/80 мкм, 30 см/мин, AutoShutOff, механизм освобожд., старт.набор пленок, Ламинатор, Arc, A4, 75, 80, мкм, 30, см, мин, AutoShutOff, механизм, освобожд, старт, набор, пленок, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACFS-46801_2A" available="true">
-<categoryId></categoryId>
-<vendorCode>ACFS-46801_2A</vendorCode>
-<name>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</name>
-<price>211900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
-<vendor>Fellowes</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев</h3>
-<p><strong>Примечание:</strong> Гарантия 2 года на устройство и 5 лет на ножи: Возможности уничтожения<br>Количество фрагментов при резке листа А4, шт.: 410</p>
-<p>Тип — шредеры офисные.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Fellowes</li><li><strong>Тип:</strong> шредеры офисные</li><li><strong>100% Jam:</strong> Proof Технология нет</li><li><strong>P-4 уровень секретности:</strong> Удобная выдвижная корзина 32 литра ≈ 200 листов А4</li><li><strong>Артикул fs:</strong> 46801*</li><li><strong>Другие технологии предотвращения заторов:</strong> Автореверс</li><li><strong>Емкость корзины, литров:</strong> 32 л</li><li><strong>Загрузка лотка до 150 листов:</strong> Перекрестная резка - 4х38 мм</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Производительность уничтожителя:</strong> 150 (8 вручную)</li><li><strong>Производительность, листов (A4, 70 гр./м²):</strong> 150 (8 вручную)</li><li><strong>Рабочий цикл, мин:</strong> 12 / 25</li><li><strong>Размер резки, мм:</strong> 4 x 38</li><li><strong>Скорость резки, м/мин:</strong> 3</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип резки:</strong> перекрестная</li><li><strong>Уничтожение:</strong> Листы бумаги, скрепленные скобами и скрепками; Глянцевую бумагу и документы с двусторонней печатью;</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,2 слоя) да</li><li><strong>Уничтожение кредитных карт:</strong> да (ручная загрузка)</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности:</strong> P-4</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер с автоподачей AutoMax™ 150C:</strong> Компактный уничтожитель с автоподачей и инновационной технологией accufeed</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Fellowes</param>
-<param name="Тип">шредеры офисные</param>
-<param name="100% Jam">Proof Технология нет</param>
-<param name="P-4 уровень секретности">Удобная выдвижная корзина 32 литра ≈ 200 листов А4</param>
-<param name="Артикул fs">46801*</param>
-<param name="Другие технологии предотвращения заторов">Автореверс</param>
-<param name="Емкость корзины, литров">32 л</param>
-<param name="Загрузка лотка до 150 листов">Перекрестная резка - 4х38 мм</param>
-<param name="Количество пользователей 1">3 Пользователя</param>
-<param name="Производительность уничтожителя">150 (8 вручную)</param>
-<param name="Производительность, листов (A4, 70 гр./м²)">150 (8 вручную)</param>
-<param name="Рабочий цикл, мин">12 / 25</param>
-<param name="Размер резки, мм">4 x 38</param>
-<param name="Скорость резки, м/мин">3</param>
-<param name="Страна происхождения">Китай</param>
-<param name="Тип резки">перекрестная</param>
-<param name="Уничтожение">Листы бумаги, скрепленные скобами и скрепками; Глянцевую бумагу и документы с двусторонней печатью;</param>
-<param name="Уничтожение CD или Blu">Ray DVD (1,2 слоя) да</param>
-<param name="Уничтожение кредитных карт">да (ручная загрузка)</param>
-<param name="Уничтожение скрепок">да</param>
-<param name="Уничтожение степлерных скоб">да</param>
-<param name="Уровень секретности">P-4</param>
-<param name="Уровень секретности, DIN 66399 P">4</param>
-<param name="Шредер с автоподачей AutoMax™ 150C">Компактный уничтожитель с автоподачей и инновационной технологией accufeed</param>
-<keywords>Fellowes, Шредер Fellowes® AutoMax® 150C, автоподача, DIN P-4, 4х38мм, 150лст. авто, 8 ручн., 32 лтр., авторев, Шредер, AutoMax, 150C, автоподача, DIN, P-4, 4х38мм, 150лст, авто, 8, ручн, 32, лтр, авторев, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACFS-53061" available="true">
