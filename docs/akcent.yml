@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-24 02:12">
+<yml_catalog date="2026-01-25 02:10">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-24 02:12:35
-Ближайшая сборка (Алматы)                  | 2026-01-25 02:00:00
-Сколько товаров у поставщика до фильтра    | 1687
+Время сборки (Алматы)                      | 2026-01-25 02:10:28
+Ближайшая сборка (Алматы)                  | 2026-01-26 02:00:00
+Сколько товаров у поставщика до фильтра    | 1683
 Сколько товаров у поставщика после фильтра | 164
 Сколько товаров есть в наличии (true)      | 164
 Сколько товаров нет в наличии (false)      | 0
@@ -774,7 +774,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CD76414</vendorCode>
 <name>Принтер Epson L121 фабрика печати</name>
 <price>79900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/e89/tirkdanptvtl2o8yscgldp30sdg2bhjp.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/dfa/tu6v1opf5p05j5gkytn1vhqnjhsrlv7j.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3463,7 +3463,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T69420N</vendorCode>
 <name>Картридж Epson C13T69420N T3000/5000/7000, Т3200/5200/7200 голубой</name>
 <price>243900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/973/wk2ec2t3cmr9rlnkibu81efn1i9syhg5.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3491,7 +3491,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T69440N</vendorCode>
 <name>Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый</name>
 <price>243900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/425/s87ply3o1mrfsaztv4enkhrxmbes9jtj.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3519,7 +3519,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T694500</vendorCode>
 <name>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
 <price>243900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/860/sprl22huykjcd4jt6m78i3su9rqt9ddg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
@@ -3842,7 +3842,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACG3430</vendorCode>
 <name>МФУ струйное Canon Pixma G3430 Wi-Fi черный</name>
 <price>130900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/6d3/6bkg09uuutwivf6bbrpv95yo9yrmyexs.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/6aa/4danjgw11503abyhpcz6d6bl1y10ew3s.png</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[<!-- WhatsApp -->
