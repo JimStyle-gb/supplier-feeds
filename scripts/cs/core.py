@@ -37,8 +37,8 @@ _RE_TRASH_PARAM_NAME_NUM = re.compile(r"^[0-9][0-9\s\.,]*$")
 CS_FIX_KEYWORDS_DECIMAL_COMMA = (os.getenv("CS_FIX_KEYWORDS_DECIMAL_COMMA", "0") or "0").strip() == "1"
 CS_DROP_TRASH_PARAM_NAMES = (os.getenv("CS_DROP_TRASH_PARAM_NAMES", "0") or "0").strip() == "1"
 CS_FIX_KEYWORDS_MULTI_COMMA = (os.getenv("CS_FIX_KEYWORDS_MULTI_COMMA", "0") or "0").strip() == "1"
-CS_DESC_ADD_BRIEF = (os.getenv("CS_DESC_ADD_BRIEF", "1") or "1").strip() == "1"
-CS_DESC_BRIEF_MIN_FIELDS = int((os.getenv("CS_DESC_BRIEF_MIN_FIELDS", "2") or "2").strip() or "2")
+CS_DESC_ADD_BRIEF = False  # CS: не генерируем "Кратко"
+CS_DESC_BRIEF_MIN_FIELDS = 0  # CS: не используется
 # Дефолты (используются адаптерами)
 OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
@@ -440,12 +440,6 @@ def clean_params(
         "совместимые модели": "Совместимость",
         "совместимость моделей": "Совместимость",
 
-        # Применение/назначение (не путать с совместимостью)
-        "для": "Применение",
-        "применение": "Применение",
-        "назначение": "Применение",
-        "область применения": "Применение",
-
         "ресурс, стр": "Ресурс",
         "цвет печати": "Цвет",
 
@@ -569,6 +563,9 @@ def clean_params(
             vv = norm_ws(vv.split(':', 1)[1])
 
         key_cf = kk.casefold()
+        # CS: не плодим мусорные булевые параметры
+        if key_cf in {"применение", "безопасность"} and vv.casefold() in {"да", "есть", "true", "yes"}:
+            continue
         if key_cf not in buckets:
             buckets[key_cf] = []
             display[key_cf] = kk
@@ -592,21 +589,6 @@ def clean_params(
             buckets.pop("вид", None)
             display.pop("вид", None)
             order = [k for k in order if k != "вид"]
-
-
-    # Пост-правило: если "Совместимость" выглядит как общее назначение ("для дома/офиса"), переносим в "Применение"
-    if "совместимость" in buckets:
-        compat_join = ", ".join(buckets.get("совместимость") or []).strip()
-        if compat_join and (not _looks_like_model_compat(compat_join)):
-            # удаляем совместимость
-            buckets.pop("совместимость", None)
-            display.pop("совместимость", None)
-            order = [k for k in order if k != "совместимость"]
-            # если применения нет — добавим
-            if "применение" not in buckets:
-                buckets["применение"] = [compat_join]
-                display["применение"] = "Применение"
-                order.append("применение")
 
     # Если модели нет, но были заголовки 'Технические характеристики ...' с коротким кодом — используем как Модель
     if ('модель' not in buckets) and tech_model_candidates:
@@ -1474,98 +1456,6 @@ def ensure_min_chars_params(
     return sort_params(ps, priority=list(priority or []))
 
 
-def build_auto_desc_from_params(params_sorted: Sequence[tuple[str, str]]) -> str:
-    """Если нативного описания почти нет — собираем 1-2 предложения из реальных параметров (без фантазий)."""
-    m = {norm_ws(k): norm_ws(v) for k, v in (params_sorted or []) if norm_ws(k) and norm_ws(v)}
-    typ = m.get("Тип", "")
-    appl = m.get("Применение", "")
-    compat = m.get("Совместимость", "")
-    if compat and (not _looks_like_model_compat(compat)):
-        compat = ""
-    res = m.get("Ресурс", "")
-    color = m.get("Цвет", "")
-
-    fields: list[tuple[str, str]] = []
-    if typ:
-        fields.append(("Тип", typ))
-    if appl:
-        fields.append(("Применение", appl))
-    if compat:
-        fields.append(("Совместимость", compat))
-    if res:
-        fields.append(("Ресурс", res))
-    if color:
-        fields.append(("Цвет", color))
-
-    if not fields:
-        return ""
-
-    parts: list[str] = []
-    for k, v in fields[:3]:
-        vv = v
-        if len(vv) > 140:
-            vv = vv[:140].rstrip(" ,")
-        parts.append(f"{xml_escape_text(k)} — {xml_escape_text(vv)}")
-
-    txt = ". ".join(parts)
-    if not txt.endswith("."):
-        txt += "."
-    if len(txt) > 260:
-        txt = txt[:260].rstrip(" .") + "."
-    return f"<p>{txt}</p>"
-
-# Формирует блок "Характеристики" (HTML)
-def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
-    # Всегда один и тот же CS-блок характеристик у всех товаров.
-    # Если характеристик нет — оставляем аккуратный placeholder.
-    items: list[str] = []
-    for k, v in (params_sorted or []):
-        kk = xml_escape_text(norm_ws(k))
-        vv = xml_escape_text(norm_ws(v))
-        if not kk or not vv:
-            continue
-        items.append(f"<li><strong>{kk}:</strong> {vv}</li>")
-
-    if not items:
-        items.append("<li><strong>Характеристики:</strong> уточняйте у менеджера</li>")
-
-    return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
-
-
-
-
-# Формирует короткую строку "Кратко" из ключевых характеристик
-def build_brief_line(params_sorted: Sequence[tuple[str, str]]) -> str:
-    if not CS_DESC_ADD_BRIEF:
-        return ""
-
-    # Берём нужные поля. "Совместимость" показываем только если похоже на модели/серии.
-    want = ["Тип", "Совместимость", "Применение", "Ресурс", "Цвет", "Гарантия"]
-    m = {norm_ws(k): norm_ws(v) for k, v in (params_sorted or []) if norm_ws(k) and norm_ws(v)}
-
-    compat = m.get("Совместимость", "")
-    if compat and (not _looks_like_model_compat(compat)):
-        compat = ""  # не светим в кратко
-
-    parts: list[str] = []
-    for k in want:
-        v = m.get(k, "")
-        if k == "Совместимость":
-            v = compat
-        if not v:
-            continue
-        # компактнее
-        if len(v) > 70:
-            v = v[:70].rstrip(" ,")
-        parts.append(f"{k}: {xml_escape_text(v)}")
-
-    if len(parts) < int(CS_DESC_BRIEF_MIN_FIELDS):
-        return ""
-
-    txt = "; ".join(parts)
-    if len(txt) > 240:
-        txt = txt[:240].rstrip(" ;")
-    return f"<p><strong>Кратко:</strong> {txt}</p>"
 
 # Собирает description (WhatsApp + HR + Описание + Характеристики + Оплата/Доставка)
 def build_description(
@@ -1583,9 +1473,6 @@ def build_description(
 
     # Родное описание (без встроенных секций характеристик — они вынесены в единый CS-блок ниже)
     desc_part = _build_desc_part(n, d)
-
-    # Краткое резюме по ключевым характеристикам (SEO + удобство клиенту)
-    brief = build_brief_line(params_sorted)
 
     # Единый CS-блок характеристик всегда одного вида
     chars = build_chars_block(params_sorted)
@@ -1617,15 +1504,6 @@ def build_description(
                 nn.append(t)
         if nn:
             parts.append(f"<p><strong>Примечание:</strong> " + "<br>".join(nn) + "</p>")
-
-    # Если родного описания почти нет, а 'Кратко' не собралось — добавим 1-2 предложения из params
-    if ("<p>" not in desc_part) and (not brief):
-        auto_desc = build_auto_desc_from_params(params_sorted)
-        if auto_desc:
-            parts.append(auto_desc)
-
-    if brief:
-        parts.append(brief)
     parts.append(chars)
     parts.append(pay_block)
 
