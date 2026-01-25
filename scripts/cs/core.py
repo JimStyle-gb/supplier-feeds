@@ -1458,6 +1458,20 @@ def ensure_min_chars_params(
 
 
 # Собирает description (WhatsApp + HR + Описание + Характеристики + Оплата/Доставка)
+# Единый CS-блок "Характеристики" (одного вида для всех поставщиков)
+def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
+    items: list[str] = []
+    for k, v in params_sorted or []:
+        kk = xml_escape_text(norm_ws(k))
+        vv = xml_escape_text(norm_ws(v))
+        if not kk or not vv:
+            continue
+        items.append(f"<li><strong>{kk}:</strong> {vv}</li>")
+    if not items:
+        return "<h3>Характеристики</h3><ul></ul>"
+    return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
+
+
 def build_description(
     name: str,
     native_desc: str,
