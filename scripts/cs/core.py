@@ -1484,6 +1484,14 @@ def _strip_native_tech_table(html: str) -> str:
     if not html:
         return html
     low = html.casefold()
+
+    br_cnt = low.count("<br")
+    tab_cnt = html.count("\t") + html.count("	")
+
+    # режем только "простыню"
+    if (len(html) < 1200) or (br_cnt < 18 and tab_cnt < 6):
+        return html
+
     markers = [
         "технические характеристики",
         "основные характеристики",
@@ -1497,21 +1505,32 @@ def _strip_native_tech_table(html: str) -> str:
         "комплектация",
     ]
     idxs = [low.find(m) for m in markers if low.find(m) != -1]
-    if not idxs:
-        return html
-    idx = min(idxs)
+    cut_idx = min(idxs) if idxs else None
 
-    br_cnt = low.count("<br")
-    tab_cnt = html.count("\t") + html.count("	")
-    if (len(html) < 1200) or (br_cnt < 18 and tab_cnt < 4):
-        return html
-    if idx < 200:
+    # Частый кейс: Epson-стиль 'Параметр\tЗначение' без слов-маркеров
+    if cut_idx is None and tab_cnt >= 8:
+        ti = html.find("\t")
+        if ti == -1:
+            ti = html.find("	")
+        if ti != -1:
+            cut_idx = ti
+
+    if cut_idx is None:
         return html
 
-    cut = html[:idx]
+    # Стараемся отрезать с начала строки/блока
+    line_start = max(html.rfind("<br", 0, cut_idx), html.rfind("</p>", 0, cut_idx))
+    if line_start != -1 and line_start > 200:
+        cut = html[:line_start]
+    else:
+        cut = html[:cut_idx]
+
+    # Если срез получился слишком короткий, не ломаем
+    if len(cut) < 200:
+        return html
+
     cut = re.sub(r"(?:<br\s*/?>\s*){2,}$", "<br>", cut, flags=re.I)
     return cut.strip()
-
 
 def build_description(
     name: str,
@@ -1525,8 +1544,7 @@ def build_description(
 ) -> str:
     n = norm_ws(name)
     d = fix_text(native_desc)
-    native_desc = _strip_native_tech_table(native_desc)
-
+    d = _strip_native_tech_table(d)
     # Родное описание (без встроенных секций характеристик — они вынесены в единый CS-блок ниже)
     desc_part = _build_desc_part(n, d)
 
