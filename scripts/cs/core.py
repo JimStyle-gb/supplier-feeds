@@ -12,6 +12,11 @@ CS Core — общее ядро для всех поставщиков.
 
 from __future__ import annotations
 
+
+def _cs_norm_url(u: str) -> str:
+    # CS: нормализуем URL картинок (пробелы ломают загрузку)
+    return (u or "").replace(" ", "%20").replace("\t", "%20")
+
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -1472,6 +1477,42 @@ def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
     return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
 
 
+
+def _strip_native_tech_table(html: str) -> str:
+    # CS: если "родное" описание похоже на длинную тех-таблицу, вырезаем техничку,
+    # чтобы не дублировать наш блок "Характеристики".
+    if not html:
+        return html
+    low = html.casefold()
+    markers = [
+        "технические характеристики",
+        "основные характеристики",
+        "интерфейсы",
+        "характеристики устройства",
+        "качество сканирования",
+        "скорость сканирования",
+        "дополнительная информация",
+        "параметры питания",
+        "состав поставки",
+        "комплектация",
+    ]
+    idxs = [low.find(m) for m in markers if low.find(m) != -1]
+    if not idxs:
+        return html
+    idx = min(idxs)
+
+    br_cnt = low.count("<br")
+    tab_cnt = html.count("\t") + html.count("	")
+    if (len(html) < 1200) or (br_cnt < 18 and tab_cnt < 4):
+        return html
+    if idx < 200:
+        return html
+
+    cut = html[:idx]
+    cut = re.sub(r"(?:<br\s*/?>\s*){2,}$", "<br>", cut, flags=re.I)
+    return cut.strip()
+
+
 def build_description(
     name: str,
     native_desc: str,
@@ -1484,6 +1525,7 @@ def build_description(
 ) -> str:
     n = norm_ws(name)
     d = fix_text(native_desc)
+    native_desc = _strip_native_tech_table(native_desc)
 
     # Родное описание (без встроенных секций характеристик — они вынесены в единый CS-блок ниже)
     desc_part = _build_desc_part(n, d)
@@ -1689,7 +1731,7 @@ class OfferOut:
         if not pics and CS_PICTURE_PLACEHOLDER_URL:
             pics = [CS_PICTURE_PLACEHOLDER_URL]
         for pp in pics:
-            pics_xml += f"\n<picture>{xml_escape_text(pp)}</picture>"
+            pics_xml += f"\n<picture>{xml_escape_text(_cs_norm_url(pp))}</picture>"
 
         params_xml = ""
         for k, v in params_sorted:
