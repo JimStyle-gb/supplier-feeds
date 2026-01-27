@@ -1199,6 +1199,84 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
     return out
 
 
+
+
+def _dedupe_desc_leading_name(desc: str, name: str) -> str:
+    # CS: часто поставщики начинают описание с повторения названия товара.
+    # Убираем только если после названия есть нормальный текст (не ломаем короткие описания).
+    d = (desc or "").strip()
+    n = norm_ws(name)
+    if not d or not n:
+        return d
+
+    lines = d.splitlines()
+    idx = None
+    for i, ln in enumerate(lines):
+        if ln.strip():
+            idx = i
+            break
+    if idx is None:
+        return d
+
+    first = lines[idx].lstrip()
+    first_norm = norm_ws(first).casefold()
+    n_norm = n.casefold()
+
+    if first_norm.startswith(n_norm):
+        rest = first[len(n):]
+        rest = rest.lstrip(" \t-–—:|·•")
+        rest = rest.lstrip()
+        if len(rest) >= 40:
+            lines[idx] = rest
+            out = "\n".join(lines).strip()
+            if len(out) >= 80:
+                return out
+    return d
+
+
+def _clip_desc_plain(desc: str, *, max_chars: int = 1200) -> str:
+    # CS: обрезание слишком длинного текста описания (маркетинговые простыни),
+    # чтобы карточка была читабельной и не дублировала характеристики.
+    s = (desc or "").strip()
+    if not s:
+        return s
+    max_chars = int(max_chars)
+    if len(s) <= max_chars:
+        return s
+
+    min_cut = 260
+
+    # 1) режем по абзацам/строкам
+    cut = s.rfind("\n\n", 0, max_chars)
+    if cut >= min_cut:
+        out = s[:cut].strip()
+    else:
+        cut = s.rfind("\n", 0, max_chars)
+        if cut >= min_cut:
+            out = s[:cut].strip()
+        else:
+            out = ""
+
+    # 2) если разрывов нет — режем по знакам препинания/разделителям
+    if not out:
+        seps = [". ", "! ", "? ", "… ", "; ", ": ", ", "]
+        best = -1
+        for sep in seps:
+            pos = s.rfind(sep, 0, max_chars)
+            if pos > best:
+                best = pos
+        if best >= min_cut:
+            out = s[: best + 1].strip()
+        else:
+            out = s[:max_chars].strip()
+
+    out = out.rstrip(" ,.;:-")
+    if len(s) - len(out) >= 80 and not out.endswith("…"):
+        out = out + "…"
+    return out
+
+
+
 def _build_desc_part(name: str, native_desc: str) -> str:
     n_esc = xml_escape_text(name)
 
@@ -1220,6 +1298,10 @@ def _build_desc_part(name: str, native_desc: str) -> str:
                 break
         if cut is not None:
             d = "\n".join(ls[:cut]).strip()
+
+    # CS: убираем повтор названия в начале и режем длинные простыни
+    d = _dedupe_desc_leading_name(d, name)
+    d = _clip_desc_plain(d, max_chars=int(os.getenv("CS_NATIVE_DESC_MAX_CHARS", "1200")))
 
     if not d:
         return f"<h3>{n_esc}</h3>"
@@ -1603,11 +1685,8 @@ def build_description(
     pay_block: str = CS_PAY_BLOCK,
 ) -> str:
     n = norm_ws(name)
-    d = fix_text(native_desc)
-    d = _strip_native_tech_table(d)
-    d = _clip_long_native_desc(d)
-    # Родное описание (без встроенных секций характеристик — они вынесены в единый CS-блок ниже)
-    desc_part = _build_desc_part(n, d)
+    # Родное описание (обрезание/дедуп/удаление технички — внутри _build_desc_part)
+    desc_part = _build_desc_part(n, native_desc)
 
     # Единый CS-блок характеристик всегда одного вида
     chars = build_chars_block(params_sorted)
