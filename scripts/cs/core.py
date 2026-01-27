@@ -1503,6 +1503,10 @@ def _strip_native_tech_table(html: str) -> str:
         "параметры питания",
         "состав поставки",
         "комплектация",
+        "модель<br"
+        "model<br"
+        "характеристики<br"
+
     ]
     idxs = [low.find(m) for m in markers if low.find(m) != -1]
     cut_idx = min(idxs) if idxs else None
@@ -1532,6 +1536,45 @@ def _strip_native_tech_table(html: str) -> str:
     cut = re.sub(r"(?:<br\s*/?>\s*){2,}$", "<br>", cut, flags=re.I)
     return cut.strip()
 
+def _clip_long_native_desc(html: str, *, max_plain: int = 1200, max_br: int = 60) -> str:
+    # CS: если "родное" описание слишком длинное (обычно маркетинговая простыня),
+    # обрезаем по <br>/абзацам, чтобы было читабельно и не дублировало характеристики.
+    if not html:
+        return html
+
+    plain = re.sub(r"<[^>]+>", " ", html)
+    plain = re.sub(r"\s+", " ", plain).strip()
+    if len(plain) <= max_plain:
+        return html
+
+    chunks = re.split(r"(?i)(<br\s*/?>)", html)
+    out: list[str] = []
+    acc = 0
+    brs = 0
+
+    for ch in chunks:
+        if re.match(r"(?i)^<br\s*/?>$", ch.strip()):
+            brs += 1
+            out.append(ch)
+            if brs >= max_br and acc >= 500:
+                break
+            continue
+
+        add_plain = re.sub(r"<[^>]+>", " ", ch)
+        add_plain = re.sub(r"\s+", " ", add_plain).strip()
+        if add_plain:
+            if acc + len(add_plain) > max_plain and acc >= 250:
+                break
+            acc += len(add_plain)
+        out.append(ch)
+
+        if acc >= max_plain:
+            break
+
+    cut = "".join(out).strip()
+    cut = re.sub(r"(?:<br\s*/?>\s*){2,}$", "<br>", cut, flags=re.I)
+    return cut.strip()
+
 def build_description(
     name: str,
     native_desc: str,
@@ -1545,6 +1588,7 @@ def build_description(
     n = norm_ws(name)
     d = fix_text(native_desc)
     d = _strip_native_tech_table(d)
+    d = _clip_long_native_desc(d)
     # Родное описание (без встроенных секций характеристик — они вынесены в единый CS-блок ниже)
     desc_part = _build_desc_part(n, d)
 
@@ -1776,7 +1820,7 @@ class OfferOut:
             f"{pics_xml}\n"
             f"<vendor>{xml_escape_text(vendor)}</vendor>\n"
             f"<currencyId>{xml_escape_text(currency_id)}</currencyId>\n"
-            f"<description><![CDATA[{desc_cdata}]]></description>"
+            f"<description><![CDATA[\n{desc_cdata}]]></description>"
             f"{params_xml}\n"
             f"<keywords>{xml_escape_text(keywords)}</keywords>\n"
             f"</offer>"
