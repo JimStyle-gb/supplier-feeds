@@ -1537,8 +1537,10 @@ def _strip_native_tech_table(html: str) -> str:
     return cut.strip()
 
 def _clip_long_native_desc(html: str, *, max_plain: int = 1200, max_br: int = 60) -> str:
-    # CS: если "родное" описание слишком длинное (обычно маркетинговая простыня),
-    # обрезаем по <br>/абзацам, чтобы было читабельно и не дублировало характеристики.
+    # CS: если "родное" описание слишком длинное (обычно маркетинговая простыня
+    # или скопированная таблица характеристик), делаем читабельный обрез:
+    # - режем по границам <br>, </p>, </li>, </hX>
+    # - если это одна длинная "плита" без разрывов — берём первые max_plain символов текста.
     if not html:
         return html
 
@@ -1547,15 +1549,21 @@ def _clip_long_native_desc(html: str, *, max_plain: int = 1200, max_br: int = 60
     if len(plain) <= max_plain:
         return html
 
-    chunks = re.split(r"(?i)(<br\s*/?>)", html)
+    # Разбивка по безопасным границам (не режем "внутри" тегов)
+    chunks = re.split(r"(?i)(<br\s*/?>|</p\s*>|</li\s*>|</h[1-6]\s*>)", html)
+
     out: list[str] = []
     acc = 0
     brs = 0
 
     for ch in chunks:
-        if re.match(r"(?i)^<br\s*/?>$", ch.strip()):
+        if not ch:
+            continue
+
+        if re.match(r"(?i)^(<br\s*/?>|</p\s*>|</li\s*>|</h[1-6]\s*>)$", ch.strip()):
             brs += 1
             out.append(ch)
+            # Не даём раздуваться простынеством даже если текст "ползёт"
             if brs >= max_br and acc >= 500:
                 break
             continue
@@ -1566,12 +1574,21 @@ def _clip_long_native_desc(html: str, *, max_plain: int = 1200, max_br: int = 60
             if acc + len(add_plain) > max_plain and acc >= 250:
                 break
             acc += len(add_plain)
+
         out.append(ch)
 
         if acc >= max_plain:
             break
 
     cut = "".join(out).strip()
+
+    # Если разрывов не было (или мы не набрали ничего полезного) — fallback: режем по тексту
+    if not cut or re.sub(r"<[^>]+>", " ", cut).strip() == "":
+        t = plain[:max_plain].strip()
+        t = t.rstrip(" ,.;:-")
+        t = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        return f"<p>{t}</p>"
+
     cut = re.sub(r"(?:<br\s*/?>\s*){2,}$", "<br>", cut, flags=re.I)
     return cut.strip()
 
