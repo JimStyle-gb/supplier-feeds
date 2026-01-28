@@ -1201,12 +1201,27 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
 
 
 
+def _cmp_name_like_text(s: str) -> str:
+    # Для сравнения "похоже ли это на название" (используем только в дедупе описаний).
+    t = (s or "")
+    # срезаем простые HTML-теги и HTML-энтити (иногда поставщик кладёт <p>Название</p>)
+    t = re.sub(r"<[^>]+>", " ", t)
+    t = re.sub(r"&[a-zA-Z]+;|&#\d+;|&#x[0-9a-fA-F]+;", " ", t)
+    t = norm_ws(t)
+    t = t.strip(" \t\r\n\"'«»„“”‘’`")
+    t = re.sub(r"[\s\-–—:|·•,\.]+$", "", t).strip()
+    t = re.sub(r"^[\s\-–—:|·•,\.]+", "", t).strip()
+    return t.casefold()
+
+
 def _dedupe_desc_leading_name(desc: str, name: str) -> str:
     # CS: убираем повтор названия в начале "родного" описания (заголовок <h3> выводим сами).
     d = (desc or "").strip()
     n = norm_ws(name).strip()
     if not d or not n:
         return d
+
+    n_cmp = _cmp_name_like_text(n)
 
     lines = d.splitlines()
     idx = None
@@ -1218,15 +1233,19 @@ def _dedupe_desc_leading_name(desc: str, name: str) -> str:
         return d
 
     first = lines[idx].lstrip()
-    first_norm = norm_ws(first).casefold()
-    n_norm = n.casefold()
+    first_cmp = _cmp_name_like_text(first)
 
     # Случай: первая строка = "Название" (или "Название:" и т.п.) — убираем строку целиком.
-    tail_cut = re.sub(r"[\s\-–—:|·•,\.]+$", "", first_norm).strip()
-    if tail_cut == n_norm:
+    tail_cut = re.sub(r"[\s\-–—:|·•,\.]+$", "", first_cmp).strip()
+    if tail_cut == n_cmp:
         lines[idx] = ""
         out = "\n".join(ln for ln in lines if ln.strip()).strip()
-        return out or d
+        if not out:
+            # если было только название — описание оставляем пустым (останется <h3>).
+            if _cmp_name_like_text(d) == n_cmp:
+                return ""
+            return d
+        return out
 
     # Regex: название с гибкими пробелами + разделители (решает проблему разных пробелов в исходнике)
     tokens = [re.escape(t) for t in n.split()]
@@ -1234,7 +1253,7 @@ def _dedupe_desc_leading_name(desc: str, name: str) -> str:
         return d
     name_pat = r"\s+".join(tokens)
     rx = re.compile(
-        rf"^\s*[«\"'„“”‘’`]*{name_pat}[»\"'”’`]*\s*(?:[\-–—:|·•,\.]|\s)+",
+        rf"^\s*[«\"\'„“”‘’`]*{name_pat}[»\"\'”’`]*\s*(?:[\-–—:|·•,\.]|\s)+",
         re.IGNORECASE,
     )
     m = rx.search(first)
@@ -1249,10 +1268,17 @@ def _dedupe_desc_leading_name(desc: str, name: str) -> str:
 
     out = "\n".join(ln for ln in lines if ln.strip()).strip()
 
-    # Safety: не превращаем описание в пустоту, если текста по сути не было.
+    # Если после вырезания осталось пусто — это был только дубль названия.
     if not out:
+        if _cmp_name_like_text(d) == n_cmp:
+            return ""
         return d
+
+    # Safety: не превращаем описание в пустоту, если текста по сути не было.
     if len(out) < 20 and len(d) <= len(n) + 15:
+        # Исключение: если d был по сути только названием — разрешаем "пусто" (или очень короткий остаток).
+        if _cmp_name_like_text(d) == n_cmp:
+            return out
         return d
     return out
 
@@ -1325,6 +1351,9 @@ def _build_desc_part(name: str, native_desc: str) -> str:
     # CS: убираем повтор названия в начале и режем длинные простыни
     d = _dedupe_desc_leading_name(d, name)
     d = _clip_desc_plain(d, max_chars=int(os.getenv("CS_NATIVE_DESC_MAX_CHARS", "1200")))
+    # Если после чистки осталось только название — не выводим пустой <p> с дублем.
+    if _cmp_name_like_text(d) == _cmp_name_like_text(name):
+        d = ""
 
     if not d:
         return f"<h3>{n_esc}</h3>"
