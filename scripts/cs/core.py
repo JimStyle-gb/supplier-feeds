@@ -1726,6 +1726,65 @@ def _clip_long_native_desc(html: str, *, max_plain: int = 1200, max_br: int = 60
     cut = re.sub(r"(?:<br\s*/?>\s*){2,}$", "<br>", cut, flags=re.I)
     return cut.strip()
 
+
+
+def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
+    """
+    Короткая фраза из существующих param, если родного описания нет.
+    Ничего не выдумываем, берем только реальные значения.
+    """
+    # приоритетные поля (без габаритов/объемов и прочего шумного)
+    pri = [
+        "тип", "вид", "тип товара",
+        "производитель", "бренд", "марка",
+        "модель",
+        "совместимость",
+        "цвет",
+        "ресурс",
+        "формат",
+        "интерфейс",
+    ]
+    blacklist = {
+        "артикул", "штрихкод", "ean", "sku", "код",
+        "вес", "габариты", "габариты (шхгхв)", "ширина", "высота", "длина", "объём", "объем",
+    }
+    # собираем последние значения по ключу
+    buckets: dict[str, tuple[str, str]] = {}
+    for k, v in params_sorted or []:
+        kk = norm_ws(k).lower()
+        vv = norm_ws(v)
+        if not kk or not vv:
+            continue
+        if kk in blacklist:
+            continue
+        # отсекаем "да/нет/есть" — в кратком абзаце это мусор
+        vv_l = vv.strip().lower()
+        if vv_l in {"да", "нет", "есть", "имеется", "-", "—"}:
+            continue
+        if len(vv) > 140:
+            continue
+        buckets[kk] = (k.strip(), vv.strip())
+
+    picked: list[tuple[str, str]] = []
+    for want in pri:
+        if want in buckets:
+            picked.append(buckets[want])
+        if len(picked) >= 3:
+            break
+
+    # fallback: первые 2 адекватных
+    if not picked:
+        for _, (k, v) in buckets.items():
+            picked.append((k, v))
+            if len(picked) >= 2:
+                break
+
+    if not picked:
+        return ""
+
+    # "Тип: ...; Модель: ...; ..."
+    return "; ".join(f"{k}: {v}" for k, v in picked).strip()
+
 def build_description(
     name: str,
     native_desc: str,
@@ -1740,6 +1799,14 @@ def build_description(
     # Родное описание (обрезание/дедуп/удаление технички — внутри _build_desc_part)
     desc_part = _build_desc_part(n, native_desc)
 
+
+    # Если родного описания нет (только <h3>...</h3>), делаем 1 короткий абзац из param
+    # (без "Кратко:", без "Применение", без выдумок).
+    if "<p>" not in desc_part:
+        sm = _build_param_summary(params_sorted)
+        if sm:
+            n_esc = xml_escape_text(n)
+            desc_part = f"<h3>{n_esc}</h3><p>{xml_escape_text(sm)}</p>"
     # Единый CS-блок характеристик всегда одного вида
     chars = build_chars_block(params_sorted)
 
