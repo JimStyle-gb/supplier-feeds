@@ -1202,10 +1202,9 @@ def _parse_specs_pairs_from_text(text: str) -> list[tuple[str, str]]:
 
 
 def _dedupe_desc_leading_name(desc: str, name: str) -> str:
-    # CS: часто поставщики начинают описание с повторения названия товара.
-    # Убираем только если после названия есть нормальный текст (не ломаем короткие описания).
+    # CS: убираем повтор названия в начале "родного" описания (заголовок <h3> выводим сами).
     d = (desc or "").strip()
-    n = norm_ws(name)
+    n = norm_ws(name).strip()
     if not d or not n:
         return d
 
@@ -1222,16 +1221,40 @@ def _dedupe_desc_leading_name(desc: str, name: str) -> str:
     first_norm = norm_ws(first).casefold()
     n_norm = n.casefold()
 
-    if first_norm.startswith(n_norm):
-        rest = first[len(n):]
-        rest = rest.lstrip(" \t-–—:|·•")
-        rest = rest.lstrip()
-        if len(rest) >= 40:
-            lines[idx] = rest
-            out = "\n".join(lines).strip()
-            if len(out) >= 80:
-                return out
-    return d
+    # Случай: первая строка = "Название" (или "Название:" и т.п.) — убираем строку целиком.
+    tail_cut = re.sub(r"[\s\-–—:|·•,\.]+$", "", first_norm).strip()
+    if tail_cut == n_norm:
+        lines[idx] = ""
+        out = "\n".join(ln for ln in lines if ln.strip()).strip()
+        return out or d
+
+    # Regex: название с гибкими пробелами + разделители (решает проблему разных пробелов в исходнике)
+    tokens = [re.escape(t) for t in n.split()]
+    if not tokens:
+        return d
+    name_pat = r"\s+".join(tokens)
+    rx = re.compile(
+        rf"^\s*[«\"'„“”‘’`]*{name_pat}[»\"'”’`]*\s*(?:[\-–—:|·•,\.]|\s)+",
+        re.IGNORECASE,
+    )
+    m = rx.search(first)
+    if not m:
+        return d
+
+    rest = first[m.end():].lstrip(" \t-–—:|·•,.")
+    if not rest:
+        lines[idx] = ""
+    else:
+        lines[idx] = rest
+
+    out = "\n".join(ln for ln in lines if ln.strip()).strip()
+
+    # Safety: не превращаем описание в пустоту, если текста по сути не было.
+    if not out:
+        return d
+    if len(out) < 20 and len(d) <= len(n) + 15:
+        return d
+    return out
 
 
 def _clip_desc_plain(desc: str, *, max_chars: int = 1200) -> str:
