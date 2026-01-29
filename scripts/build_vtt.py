@@ -3,21 +3,23 @@
 """
 CS adapter: VTT (b2b.vtt.ru)
 
-Цель: вытащить товары у VTT, а дальше отдать их в CS Core, чтобы:
-- описание/характеристики/keywords/WhatsApp/цены/формат были едины для всех поставщиков
-- OID был стабильным (чтобы в будущих коммитах НЕ создавались новые товары)
+Правило CS: адаптер только собирает данные (name/price/pictures/params/native_desc) и отдаёт в cs.core.
+Всё остальное (описание/WhatsApp/Характеристики/keywords/цены/формат) делает core.
 
-Окружение (GitHub Actions secrets/env):
-- VTT_LOGIN, VTT_PASSWORD   (логин/пароль b2b.vtt.ru)
+ENV (GitHub Actions secrets/env):
+- VTT_LOGIN, VTT_PASSWORD
+
 Опционально:
-- VTT_BASE_URL              (по умолчанию https://b2b.vtt.ru)
-- VTT_START_URL             (по умолчанию https://b2b.vtt.ru/catalog/)
-- VTT_MAX_PAGES             (лимит страниц внутри категории, по умолчанию 200)
-- VTT_MAX_WORKERS           (параллельные запросы карточек, по умолчанию 10)
-- VTT_MAX_CRAWL_MINUTES     (тайм‑лимит на обход, по умолчанию 18)
-- VTT_REQUEST_DELAY_MS      (пауза между запросами, по умолчанию 80)
-- VTT_SSL_VERIFY            (1/0; по умолчанию 1)
-- VTT_CA_BUNDLE             (путь к CA bundle; если задан, используется как verify)
+- VTT_BASE_URL              (default https://b2b.vtt.ru)
+- VTT_START_URL             (default https://b2b.vtt.ru/catalog/)
+- VTT_CATEGORIES            (csv of category urls; if empty uses встроенный список)
+- VTT_MAX_PAGES             (default 200)
+- VTT_MAX_WORKERS           (default 10)
+- VTT_MAX_CRAWL_MINUTES     (default 18)
+- VTT_REQUEST_DELAY_MS      (default 80)
+- VTT_SSL_VERIFY            (1/0; default 1)
+- VTT_CA_BUNDLE             (path to CA bundle; if set uses as verify)
+- VTT_SOFTFAIL              (1/0; default 1)  # при 503/таймаутах не портим docs/vtt.yml, завершаем job успешно
 """
 
 from __future__ import annotations
@@ -27,37 +29,34 @@ import re
 import sys
 import time
 import random
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urlencode, urlparse, parse_qs, urlunparse
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 import requests
-import urllib3
 from bs4 import BeautifulSoup
 
 from cs.core import (
     OfferOut,
     compute_price,
     clean_params,
-    now_almaty,
-    next_run_at_hour,
-    make_header,
-    make_footer,
-    make_feed_meta,
     ensure_footer_spacing,
-    norm_ws,
+    make_feed_meta,
+    make_footer,
+    make_header,
+    now_almaty,
     safe_int,
+    norm_ws,
     write_if_changed,
+    validate_cs_yml,
 )
 
 SUPPLIER = "VTT"
+OID_PREFIX = "VT"
 OUT_FILE = "docs/vtt.yml"
 
-BASE_URL = (os.getenv("VTT_BASE_URL", "https://b2b.vtt.ru") or "").strip().rstrip("/")
-START_URL = (os.getenv("VTT_START_URL", f"{BASE_URL}/catalog/") or "").strip()
-
-# Ссылки категорий (взято из последнего рабочего скрипта)
-CATEGORIES: list[str] = [
+_DEFAULT_CATEGORIES: list[str] = [
     "https://b2b.vtt.ru/catalog/?category=CARTINJ_COMPAT",
     "https://b2b.vtt.ru/catalog/?category=CARTINJ_ORIG",
     "https://b2b.vtt.ru/catalog/?category=CARTINJ_PRNTHD",
@@ -71,194 +70,254 @@ CATEGORIES: list[str] = [
     "https://b2b.vtt.ru/catalog/?category=DRM_CRT",
     "https://b2b.vtt.ru/catalog/?category=DRM_UNIT",
     "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERBLC",
-    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT"
+    "https://b2b.vtt.ru/catalog/?category=PARTSPRINT_THERELT",
 ]
 
-LOGIN = (os.getenv("VTT_LOGIN", "") or "").strip()
-PASSWORD = (os.getenv("VTT_PASSWORD", "") or "").strip()
-
-MAX_PAGES = int(os.getenv("VTT_MAX_PAGES", "200"))
-MAX_WORKERS = int(os.getenv("VTT_MAX_WORKERS", "10"))
-MAX_CRAWL_MINUTES = float(os.getenv("VTT_MAX_CRAWL_MINUTES", "18"))
-REQUEST_DELAY_MS = int(os.getenv("VTT_REQUEST_DELAY_MS", "80"))
-
-SSL_VERIFY = (os.getenv("VTT_SSL_VERIFY", "0") or "0").strip().lower() not in ("0", "false", "no")
-CA_BUNDLE = (os.getenv("VTT_CA_BUNDLE", "") or "").strip()
-
-UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
-
-# Стабильный префикс OID для VTT
-OID_PREFIX = "VT"
+_PRODUCT_HREF_RE = re.compile(r"^/catalog/[^?]+/?$")
 
 
-def log(msg: str, *, flush: bool = True) -> None:
-    print(msg, file=sys.stderr, flush=flush)
+def _log(msg: str) -> None:
+    print(msg, flush=True)
 
 
-def _verify_value():
-    if CA_BUNDLE:
-        return CA_BUNDLE
-    return SSL_VERIFY
+def _env_bool(name: str, default: bool) -> bool:
+    v = (os.getenv(name, "") or "").strip().lower()
+    if not v:
+        return default
+    return v in ("1", "true", "yes", "y", "on")
 
 
-def jitter_sleep(ms: int) -> None:
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int((os.getenv(name, "") or "").strip() or str(default))
+    except Exception:
+        return default
+
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float((os.getenv(name, "") or "").strip() or str(default))
+    except Exception:
+        return default
+
+
+
+def _next_run_dom(now: datetime, hour: int, doms: list[int]) -> datetime:
+    # Следующий запуск по дням месяца (в Алматы), например [1,10,20] в 05:00
+    allowed = sorted({int(d) for d in doms if 1 <= int(d) <= 31})
+    y, m = now.year, now.month
+    for _ in range(0, 24):  # до 2 лет вперёд — более чем достаточно
+        for d in allowed:
+            try:
+                cand = datetime(y, m, d, hour, 0, 0)
+            except ValueError:
+                continue
+            if cand > now:
+                return cand
+        # следующий месяц
+        m += 1
+        if m == 13:
+            m = 1
+            y += 1
+    return now + timedelta(days=31)
+
+@dataclass(frozen=True)
+class _Cfg:
+    base_url: str
+    start_url: str
+    categories: list[str]
+    login: str
+    password: str
+    max_pages: int
+    max_workers: int
+    max_crawl_minutes: float
+    delay_ms: int
+    verify: object  # bool|str (requests)
+    softfail: bool
+
+
+def _cfg() -> _Cfg:
+    base = (os.getenv("VTT_BASE_URL", "https://b2b.vtt.ru") or "").strip().rstrip("/")
+    start = (os.getenv("VTT_START_URL", f"{base}/catalog/") or "").strip()
+    cats_raw = (os.getenv("VTT_CATEGORIES", "") or "").strip()
+    cats = [c.strip() for c in cats_raw.split(",") if c.strip()] if cats_raw else list(_DEFAULT_CATEGORIES)
+
+    login = (os.getenv("VTT_LOGIN", "") or "").strip()
+    password = (os.getenv("VTT_PASSWORD", "") or "").strip()
+
+    ssl_verify = _env_bool("VTT_SSL_VERIFY", True)
+    ca_bundle = (os.getenv("VTT_CA_BUNDLE", "") or "").strip()
+    verify: object = ca_bundle if ca_bundle else ssl_verify
+
+    return _Cfg(
+        base_url=base,
+        start_url=start,
+        categories=cats,
+        login=login,
+        password=password,
+        max_pages=_env_int("VTT_MAX_PAGES", 200),
+        max_workers=_env_int("VTT_MAX_WORKERS", 10),
+        max_crawl_minutes=_env_float("VTT_MAX_CRAWL_MINUTES", 18.0),
+        delay_ms=_env_int("VTT_REQUEST_DELAY_MS", 80),
+        verify=verify,
+        softfail=_env_bool("VTT_SOFTFAIL", True),
+    )
+
+
+def _sleep_ms(ms: int) -> None:
     if ms <= 0:
         return
-    base = ms / 1000.0
-    time.sleep(base + random.uniform(0, base * 0.35))
+    time.sleep((ms / 1000.0) * random.uniform(0.75, 1.35))
 
 
-def _http_request_with_retry(session: requests.Session, method: str, url: str, **kwargs):
-    """HTTP запрос с ретраями на 429/5xx и сетевых ошибках."""
-    max_tries = int(os.getenv("VTT_HTTP_RETRIES", "6"))
-    base_sleep = float(os.getenv("VTT_HTTP_RETRY_SLEEP", "1.5"))
-    timeout = kwargs.pop("timeout", (10, 45))
-    last_exc: Exception | None = None
-    for attempt in range(1, max_tries + 1):
-        try:
-            r = session.request(method, url, timeout=timeout, **kwargs)
-            if r.status_code in (429, 500, 502, 503, 504) and attempt < max_tries:
-                sleep_s = base_sleep * (1.6 ** (attempt - 1)) + random.random() * 0.3
-                time.sleep(min(20.0, sleep_s))
-                continue
-            return r
-        except Exception as e:
-            last_exc = e
-            if attempt < max_tries:
-                sleep_s = base_sleep * (1.6 ** (attempt - 1)) + random.random() * 0.3
-                time.sleep(min(20.0, sleep_s))
-                continue
-            raise
-    raise last_exc or RuntimeError("HTTP: неизвестная ошибка")
-
-def make_session() -> requests.Session:
+def _make_session(cfg: _Cfg) -> requests.Session:
     s = requests.Session()
-
-    # SSL: у b2b.vtt.ru бывает кривая цепочка сертификата на GitHub Runner.
-    # По умолчанию VTT_SSL_VERIFY=0, чтобы сборка не падала.
-    vv = _verify_value()
-    if vv is False:
-        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-    s.headers.update({
-        "User-Agent": UA,
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.8",
-        "Connection": "keep-alive",
-    })
+    s.headers.update(
+        {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+            "Accept-Language": "ru,en;q=0.8",
+        }
+    )
+    # requests verify передадим на каждый запрос, чтобы было прозрачно
     return s
-def abs_url(u: str) -> str:
-    u = (u or "").strip()
+
+
+def _request(
+    s: requests.Session,
+    cfg: _Cfg,
+    method: str,
+    url: str,
+    *,
+    timeout: int = 25,
+    data: dict | None = None,
+    headers: dict | None = None,
+) -> requests.Response | None:
+    # шаблонный retry/backoff (5xx/таймауты)
+    tries = 7
+    for i in range(tries):
+        try:
+            r = s.request(
+                method=method,
+                url=url,
+                data=data,
+                headers=headers,
+                timeout=timeout,
+                verify=cfg.verify,
+                allow_redirects=True,
+            )
+            if r.status_code in (500, 502, 503, 504):
+                raise requests.HTTPError(f"{r.status_code}")
+            return r
+        except (requests.Timeout, requests.ConnectionError, requests.HTTPError) as e:
+            last = (i == tries - 1)
+            _log(f"[http] {method} {url} fail: {e}{' (last)' if last else ''}")
+            if last:
+                return None
+            time.sleep(min(12.0, 0.6 * (2**i)) + random.uniform(0.0, 0.6))
+    return None
+
+
+def _get_bytes(s: requests.Session, cfg: _Cfg, url: str, *, timeout: int = 25) -> bytes | None:
+    r = _request(s, cfg, "GET", url, timeout=timeout)
+    if not r or r.status_code != 200:
+        return None
+    _sleep_ms(cfg.delay_ms)
+    return r.content
+
+
+def _post_ok(
+    s: requests.Session,
+    cfg: _Cfg,
+    url: str,
+    *,
+    data: dict,
+    headers: dict | None = None,
+    timeout: int = 25,
+) -> bool:
+    r = _request(s, cfg, "POST", url, timeout=timeout, data=data, headers=headers)
+    ok = bool(r and r.status_code in (200, 204))
+    _sleep_ms(cfg.delay_ms)
+    return ok
+
+
+def _abs_url(cfg: _Cfg, href: str) -> str:
+    u = (href or "").strip()
     if not u:
         return ""
     if u.startswith("http://") or u.startswith("https://"):
         return u
-    if u.startswith("//"):
-        return "https:" + u
     if not u.startswith("/"):
         u = "/" + u
-    return BASE_URL + u
+    return cfg.base_url + u
 
 
-def set_query_param(url: str, key: str, value: str) -> str:
-    pr = urlparse(url)
-    q = parse_qs(pr.query, keep_blank_values=True)
+def _set_q(url: str, key: str, value: str) -> str:
+    pu = urlparse(url)
+    q = parse_qs(pu.query)
     q[key] = [value]
-    return urlunparse((pr.scheme, pr.netloc, pr.path, pr.params, urlencode(q, doseq=True), pr.fragment))
+    return urlunparse(pu._replace(query=urlencode(q, doseq=True)))
 
 
-def soup_of(html_bytes: bytes) -> BeautifulSoup:
-    return BeautifulSoup(html_bytes or b"", "html.parser")
+def _soup(html_bytes: bytes) -> BeautifulSoup:
+    return BeautifulSoup(html_bytes, "html.parser")
 
 
-def http_get(s: requests.Session, url: str) -> bytes | None:
-    last_err: Exception | None = None
-    for _ in range(3):
-        try:
-            r = _http_request_with_retry(s, 'GET', url, timeout=25, verify=_verify_value())
-            if r.status_code in (429, 500, 502, 503, 504):
-                last_err = RuntimeError(f"HTTP {r.status_code}")
-                jitter_sleep(800)
-                continue
-            r.raise_for_status()
-            return r.content
-        except Exception as e:
-            last_err = e
-            jitter_sleep(800)
-    log(f"[http] GET fail: {url} | {last_err}")
-    return None
+def _extract_csrf_token(html_bytes: bytes) -> str:
+    sp = _soup(html_bytes)
+    m = sp.find("meta", attrs={"name": "csrf-token"})
+    return ((m.get("content") if m else "") or "").strip()
 
 
-def http_post(s: requests.Session, url: str, data: dict[str, str], headers: dict[str, str]) -> bool:
-    last_err: Exception | None = None
-    for _ in range(3):
-        try:
-            r = _http_request_with_retry(s, 'POST', url, data=data, headers=headers, timeout=25, verify=_verify_value())
-            if r.status_code in (429, 500, 502, 503, 504):
-                last_err = RuntimeError(f"HTTP {r.status_code}")
-                jitter_sleep(800)
-                continue
-            r.raise_for_status()
-            return True
-        except Exception as e:
-            last_err = e
-            jitter_sleep(800)
-    log(f"[http] POST fail: {url} | {last_err}")
-    return False
-
-
-def extract_csrf_token(html_bytes: bytes) -> str:
-    soup = soup_of(html_bytes)
-    m = soup.find("meta", attrs={"name": "csrf-token"})
-    v = m.get("content") if m else ""
-    return (v or "").strip()
-
-
-def log_in(s: requests.Session) -> bool:
-    if not LOGIN or not PASSWORD:
-        log("[WARN] VTT_LOGIN/VTT_PASSWORD пустые")
+def _login(s: requests.Session, cfg: _Cfg) -> bool:
+    if not cfg.login or not cfg.password:
+        _log("[WARN] VTT_LOGIN/VTT_PASSWORD пустые")
         return False
 
-    home = http_get(s, BASE_URL + "/")
+    home = _get_bytes(s, cfg, cfg.base_url + "/")
     if not home:
         return False
 
-    csrf = extract_csrf_token(home)
-    headers = {"Referer": BASE_URL + "/"}
+    csrf = _extract_csrf_token(home)
+    headers = {"Referer": cfg.base_url + "/"}
     if csrf:
         headers["X-CSRF-TOKEN"] = csrf
 
-    ok = http_post(
+    ok = _post_ok(
         s,
-        BASE_URL + "/validateLogin",
-        data={"login": LOGIN, "password": PASSWORD},
+        cfg,
+        cfg.base_url + "/validateLogin",
+        data={"login": cfg.login, "password": cfg.password},
         headers=headers,
     )
     if not ok:
         return False
 
-    cat = http_get(s, START_URL)
+    cat = _get_bytes(s, cfg, cfg.start_url)
     return bool(cat)
 
 
-_PRODUCT_HREF_RE = re.compile(r"^/catalog/[^?]+/?$")
+def _category_code(category_url: str) -> str:
+    q = parse_qs(urlparse(category_url).query)
+    return (q.get("category", [""]) or [""])[0].strip()
 
 
-def collect_product_links(s: requests.Session, category_url: str, deadline: datetime) -> list[str]:
+def _collect_links_in_category(s: requests.Session, cfg: _Cfg, category_url: str, deadline_utc: datetime) -> list[str]:
     found: list[str] = []
     seen: set[str] = set()
 
-    for page in range(1, MAX_PAGES + 1):
-        if datetime.utcnow() >= deadline:
+    for page in range(1, max(1, cfg.max_pages) + 1):
+        if datetime.utcnow() >= deadline_utc:
             break
-        page_url = set_query_param(category_url, "page", str(page))
-        b = http_get(s, page_url)
+
+        page_url = _set_q(category_url, "page", str(page))
+        b = _get_bytes(s, cfg, page_url)
         if not b:
             break
-        soup = soup_of(b)
 
+        sp = _soup(b)
         links: list[str] = []
-        for a in soup.find_all("a", href=True):
+
+        for a in sp.find_all("a", href=True):
             cls = a.get("class") or []
             if isinstance(cls, list) and "btn_pic" in cls:
                 continue
@@ -266,16 +325,16 @@ def collect_product_links(s: requests.Session, category_url: str, deadline: date
             href = str(a["href"]).strip()
             if not href or href.startswith("#"):
                 continue
+
             if href.startswith("http://") or href.startswith("https://"):
-                if BASE_URL not in href:
+                if cfg.base_url not in href:
                     continue
-                pu = urlparse(href)
-                href = pu.path
+                href = urlparse(href).path
 
             if not _PRODUCT_HREF_RE.match(href):
                 continue
 
-            u = abs_url(href)
+            u = _abs_url(cfg, href)
             if u in seen:
                 continue
             seen.add(u)
@@ -285,44 +344,38 @@ def collect_product_links(s: requests.Session, category_url: str, deadline: date
             break
 
         found.extend(links)
-        jitter_sleep(REQUEST_DELAY_MS)
 
     return found
 
 
-def _category_code(category_url: str) -> str:
-    q = parse_qs(urlparse(category_url).query)
-    return (q.get("category", [""]) or [""])[0].strip()
-
-
-def collect_all_products_links(s: requests.Session, deadline: datetime) -> list[tuple[str, str]]:
-    all_links: list[tuple[str, str]] = []
-    for cu in CATEGORIES:
-        if datetime.utcnow() >= deadline:
+def _collect_all_links(s: requests.Session, cfg: _Cfg, deadline_utc: datetime) -> list[tuple[str, str]]:
+    out: list[tuple[str, str]] = []
+    for cu in cfg.categories:
+        if datetime.utcnow() >= deadline_utc:
             break
         code = _category_code(cu)
-        links = collect_product_links(s, cu, deadline)
+        links = _collect_links_in_category(s, cfg, cu, deadline_utc)
+        _log(f"[site] category={code or '?'} links={len(links)}")
         for u in links:
-            all_links.append((u, code))
-        log(f"[site] category={code or '?'} links={len(links)}")
-    return all_links
+            out.append((u, code))
+    return out
 
 
-def parse_int_from_text(s: str) -> int | None:
+def _parse_int(text: str) -> int | None:
+    if not text:
+        return None
+    s = re.sub(r"[^0-9]+", "", text)
     if not s:
         return None
-    s2 = re.sub(r"[^0-9]+", "", s)
-    if not s2:
-        return None
     try:
-        return int(s2)
+        return int(s)
     except Exception:
         return None
 
 
-def parse_pairs(soup: BeautifulSoup) -> dict[str, str]:
+def _extract_pairs(sp: BeautifulSoup) -> dict[str, str]:
     out: dict[str, str] = {}
-    box = soup.select_one("div.description.catalog_item_descr")
+    box = sp.select_one("div.description.catalog_item_descr")
     if not box:
         return out
     dts = box.find_all("dt")
@@ -335,87 +388,97 @@ def parse_pairs(soup: BeautifulSoup) -> dict[str, str]:
     return out
 
 
-def parse_supplier_price(soup: BeautifulSoup) -> int | None:
-    b = soup.select_one("span.price_main b")
-    if not b:
-        return None
-    return parse_int_from_text(b.get_text(" ", strip=True))
+def _extract_price(sp: BeautifulSoup) -> int | None:
+    b = sp.select_one("span.price_main b")
+    return _parse_int(b.get_text(" ", strip=True) if b else "")
 
 
-def get_title(soup: BeautifulSoup) -> str:
-    el = soup.select_one(".page_title") or soup.title or soup.find("h1")
+def _extract_title(sp: BeautifulSoup) -> str:
+    el = sp.select_one(".page_title") or sp.title or sp.find("h1")
     txt = el.get_text(" ", strip=True) if el else ""
     return (txt or "").strip()
 
 
-def get_meta_description(soup: BeautifulSoup) -> str:
-    meta = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
+def _extract_meta_desc(sp: BeautifulSoup) -> str:
+    meta = sp.find("meta", attrs={"name": "description"}) or sp.find("meta", attrs={"property": "og:description"})
     out = (meta.get("content") if meta else "") or ""
     return re.sub(r"\s+", " ", out).strip()
 
 
-def get_body_text(soup: BeautifulSoup) -> str:
-    # Пробуем взять текст карточки товара; если селекторы не совпали — вернём пусто
-    for sel in ("div.catalog_item_descr", "div.description", "div.catalog_item", "article"):
-        el = soup.select_one(sel)
+def _extract_body_text(sp: BeautifulSoup) -> str:
+    # пробуем взять человеческий текст карточки (не таблицу dt/dd)
+    for sel in ("div.catalog_item_descr > div", "div.catalog_item_descr", "div.catalog_item", "article"):
+        el = sp.select_one(sel)
         if not el:
             continue
         txt = el.get_text(" ", strip=True)
         txt = re.sub(r"\s+", " ", txt).strip()
-        if txt and len(txt) >= 40:
+        if txt and len(txt) >= 60:
             return txt
     return ""
 
 
-def collect_pictures(soup: BeautifulSoup, limit: int = 8) -> list[str]:
+def _extract_pictures(cfg: _Cfg, sp: BeautifulSoup, limit: int = 8) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
 
-    # og:image в приоритете
-    og = soup.find("meta", attrs={"property": "og:image"})
+    og = sp.find("meta", attrs={"property": "og:image"})
     if og and og.get("content"):
-        u = abs_url(str(og["content"]))
+        u = _abs_url(cfg, str(og["content"]))
         if u and u not in seen:
             seen.add(u)
             out.append(u)
 
-    # любые похожие на картинки ссылки/атрибуты
-    for tag in soup.find_all(True):
-        for attr in ("src", "data-src", "href", "data-img", "content", "data-large"):
-            v = tag.get(attr)
-            if not v or not isinstance(v, str):
-                continue
-            vl = v.lower()
-            if (".jpg" in vl or ".jpeg" in vl or ".png" in vl or ".webp" in vl) and ("/images/" in vl or "/upload/" in vl):
-                u = abs_url(v)
-                if u and u not in seen:
-                    seen.add(u)
-                    out.append(u)
-                    if len(out) >= limit:
-                        return out
+    # любые img c нормальными ссылками
+    for img in sp.find_all("img", src=True):
+        src = str(img.get("src") or "").strip()
+        if not src:
+            continue
+        if src.startswith("data:"):
+            continue
+        u = _abs_url(cfg, src)
+        if not u or u in seen:
+            continue
+        seen.add(u)
+        out.append(u)
+        if len(out) >= limit:
+            break
+
     return out
 
 
-# Мини‑транслит, чтобы OID был стабилен, даже если артикул внезапно в кириллице
-_CYR_TO_LAT = {
-    "А":"A","Б":"B","В":"B","Г":"G","Д":"D","Е":"E","Ё":"E","Ж":"ZH","З":"Z","И":"I","Й":"Y","К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F","Х":"H","Ц":"TS","Ч":"CH","Ш":"SH","Щ":"SCH","Ъ":"","Ы":"Y","Ь":"","Э":"E","Ю":"YU","Я":"YA",
-    "а":"a","б":"b","в":"b","г":"g","д":"d","е":"e","ё":"e","ж":"zh","з":"z","и":"i","й":"y","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"ts","ч":"ch","ш":"sh","щ":"sch","ъ":"","ы":"y","ь":"","э":"e","ю":"yu","я":"ya",
-}
-
-
 def _ru_to_lat_ascii(s: str) -> str:
-    if not s:
-        return ""
-    return "".join(_CYR_TO_LAT.get(ch, ch) for ch in s)
+    # минимально: русские "Х" иногда попадают в артикулах -> сделаем стабильнее
+    table = str.maketrans(
+        {
+            "А": "A",
+            "В": "B",
+            "Е": "E",
+            "К": "K",
+            "М": "M",
+            "Н": "H",
+            "О": "O",
+            "Р": "P",
+            "С": "C",
+            "Т": "T",
+            "Х": "X",
+            "а": "a",
+            "е": "e",
+            "о": "o",
+            "р": "p",
+            "с": "c",
+            "х": "x",
+        }
+    )
+    return (s or "").translate(table)
 
 
-def clean_article(article: str) -> str:
-    s = (article or "").strip()
-    s = _ru_to_lat_ascii(s)
+def _clean_article(article: str) -> str:
+    s = _ru_to_lat_ascii((article or "").strip())
     return re.sub(r"[^A-Za-z0-9_-]+", "", s)
 
 
-def normalize_vendor(v: str) -> str:
+def _normalize_vendor(v: str) -> str:
     v = (v or "").strip()
     if not v:
         return ""
@@ -423,68 +486,74 @@ def normalize_vendor(v: str) -> str:
     alias = {
         "hewlettpackard": "HP",
         "hp": "HP",
-        "kyoсera": "Kyocera",
         "kyocera": "Kyocera",
         "canon": "Canon",
         "xerox": "Xerox",
         "brother": "Brother",
         "samsung": "Samsung",
-        "samsungbyhp": "Samsung",
         "epson": "Epson",
         "ricoh": "Ricoh",
         "konica": "Konica Minolta",
-        "minolta": "Konica Minolta",
     }
     return alias.get(key, v)
 
 
-def parse_product(s: requests.Session, url: str, cat_code: str) -> OfferOut | None:
-    b = http_get(s, url)
+def _clone_session_with_cookies(src: requests.Session, cfg: _Cfg) -> requests.Session:
+    s2 = _make_session(cfg)
+    try:
+        s2.cookies.update(src.cookies)
+    except Exception:
+        pass
+    return s2
+
+
+def _parse_product(s: requests.Session, cfg: _Cfg, url: str, cat_code: str) -> OfferOut | None:
+    b = _get_bytes(s, cfg, url)
     if not b:
         return None
-    soup = soup_of(b)
+    sp = _soup(b)
 
-    name = norm_ws(get_title(soup))
+    name = norm_ws(_extract_title(sp))
     if not name:
         return None
 
-    pairs = parse_pairs(soup)
+    pairs = _extract_pairs(sp)
     article = (pairs.get("Артикул") or pairs.get("Партс-номер") or "").strip()
     if not article:
         return None
 
-    vendor = normalize_vendor((pairs.get("Вендор") or "").strip())
-
-    supplier_price = parse_supplier_price(soup)
-    price = compute_price(safe_int(supplier_price))
-
-    pics = collect_pictures(soup)
-
-    article_clean = clean_article(article)
+    article_clean = _clean_article(article)
     if not article_clean:
         return None
 
     oid = OID_PREFIX + article_clean
 
-    # params: оставляем полезное, убираем служебное
-    drop_keys = {"артикул", "партс-номер", "вендор", "цена", "стоимость"}
+    vendor = _normalize_vendor((pairs.get("Вендор") or "").strip())
+
+    supplier_price = _extract_price(sp)
+    price = compute_price(safe_int(supplier_price))
+
+    pics = _extract_pictures(cfg, sp)
+
+    # params: служебное выкидываем, остальное отдаём core
+    drop = {"артикул", "партс-номер", "вендор", "цена", "стоимость"}
     params: list[tuple[str, str]] = []
     for k, v in pairs.items():
         kk = norm_ws(k)
         vv = norm_ws(v)
         if not kk or not vv:
             continue
-        if kk.casefold() in drop_keys:
+        if kk.casefold() in drop:
             continue
         params.append((kk, vv))
 
     params = clean_params(params)
 
-    # native_desc: максимум источников (core сам нормализует/обогащает)
-    meta_desc = get_meta_description(soup)
-    body_txt = get_body_text(soup)
+    # native_desc: максимум источников (core сам доведёт под CS-шаблон)
+    meta_desc = _extract_meta_desc(sp)
+    body_txt = _extract_body_text(sp)
     native_desc = meta_desc
-    if body_txt and body_txt not in native_desc:
+    if body_txt and body_txt not in (native_desc or ""):
         native_desc = (native_desc + "\n" + body_txt).strip() if native_desc else body_txt
 
     return OfferOut(
@@ -496,81 +565,72 @@ def parse_product(s: requests.Session, url: str, cat_code: str) -> OfferOut | No
         vendor=vendor,
         params=params,
         native_desc=native_desc,
+        # categoryId добавишь позже в master yml; здесь оставляем пусто/как в core
     )
 
 
-def _copy_cookies(src: requests.Session) -> requests.Session:
-    s2 = make_session()
-    try:
-        s2.cookies.update(src.cookies)
-    except Exception:
-        pass
-    return s2
-
-
-def next_run_dom(now_local: datetime, hour: int, allowed_dom: list[int]) -> datetime:
-    # ближайшая дата из allowed_dom в 05:00 (Алматы)
-    candidates: list[datetime] = []
-    for add_months in (0, 1, 2):
-        y = now_local.year
-        m = now_local.month + add_months
-        while m > 12:
-            y += 1
-            m -= 12
-        for d in allowed_dom:
-            try:
-                dt = datetime(y, m, d, hour, 0, 0)
-            except Exception:
-                continue
-            if dt >= now_local:
-                candidates.append(dt)
-        if candidates:
-            break
-    return min(candidates) if candidates else next_run_at_hour(now_local, hour)
-
-
-def main() -> int:
-    now = now_almaty()
-    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
-
-    s = make_session()
-    if not log_in(s):
-        raise RuntimeError("VTT: авторизация не прошла (проверь VTT_LOGIN/VTT_PASSWORD). Если выше были ошибки HTTP 503/5xx — проблема на стороне сайта.")
-
-    links = collect_all_products_links(s, deadline)
-    log(f"[site] urls={len(links)} workers={MAX_WORKERS}")
+def _build_offers(s: requests.Session, cfg: _Cfg, deadline_utc: datetime) -> tuple[list[OfferOut], int]:
+    links = _collect_all_links(s, cfg, deadline_utc)
+    _log(f"[site] urls={len(links)} workers={cfg.max_workers}")
 
     offers: list[OfferOut] = []
     seen: set[str] = set()
     dup = 0
 
-    if links:
-        with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex:
-            futs = []
-            for url, code in links:
-                if datetime.utcnow() >= deadline:
-                    break
-                # отдельная session на поток (с теми же cookies)
-                sess = _copy_cookies(s)
-                futs.append(ex.submit(parse_product, sess, url, code))
-            for fut in as_completed(futs):
-                o = fut.result()
-                if not o:
-                    continue
-                if o.oid in seen:
-                    dup += 1
-                    continue
-                seen.add(o.oid)
-                offers.append(o)
+    if not links:
+        return offers, dup
+
+    with ThreadPoolExecutor(max_workers=max(1, cfg.max_workers)) as ex:
+        futs = []
+        for url, code in links:
+            if datetime.utcnow() >= deadline_utc:
+                break
+            sess = _clone_session_with_cookies(s, cfg)
+            futs.append(ex.submit(_parse_product, sess, cfg, url, code))
+
+        for fut in as_completed(futs):
+            o = fut.result()
+            if not o:
+                continue
+            if o.oid in seen:
+                dup += 1
+                continue
+            seen.add(o.oid)
+            offers.append(o)
 
     offers.sort(key=lambda x: x.oid)
+    return offers, dup
 
-    # next run (VTT по расписанию 1/10/20 в 05:00 Алматы)
-    next_run = next_run_dom(now, 5, [1, 10, 20])
+
+def main() -> int:
+    cfg = _cfg()
+    now = now_almaty()
+    deadline = datetime.utcnow() + timedelta(minutes=cfg.max_crawl_minutes)
+
+    s = _make_session(cfg)
+
+    if not _login(s, cfg):
+        msg = "VTT: авторизация не прошла (проверь VTT_LOGIN/VTT_PASSWORD). Если в логах 503/5xx — проблема на стороне сайта."
+        if cfg.softfail:
+            _log("[SOFTFAIL] " + msg)
+            return 0
+        raise RuntimeError(msg)
+
+    offers, dup = _build_offers(s, cfg, deadline)
+
+    if not offers:
+        msg = "VTT: 0 offers (скорее всего сайт недоступен/503 или изменили верстку)."
+        if cfg.softfail:
+            _log("[SOFTFAIL] " + msg)
+            return 0
+        raise RuntimeError(msg)
+
+    # VTT по расписанию 1/10/20 (05:00 Алматы).
+    next_run = _next_run_dom(now, 5, [1, 10, 20])
 
     feed_meta = make_feed_meta(
         supplier=SUPPLIER,
-        supplier_url=START_URL,
+        supplier_url=cfg.start_url,
         build_time=now,
         next_run=next_run,
         before=len(offers),
@@ -582,12 +642,15 @@ def main() -> int:
     header = make_header(now, encoding="utf-8")
     footer = make_footer()
 
-    offers_xml = "\n\n".join([o.to_xml() for o in offers])
+    offers_xml = "\n\n".join(o.to_xml(currency_id="KZT", public_vendor="CS") for o in offers)
     full = header + feed_meta + "\n" + offers_xml + ("\n" if offers_xml else "") + footer
     full = ensure_footer_spacing(full)
 
+    # CS-валидация (не пишем мусор)
+    validate_cs_yml(full)
+
     changed = write_if_changed(OUT_FILE, full, encoding="utf-8")
-    log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
+    _log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
     return 0
 
 
