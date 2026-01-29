@@ -25,6 +25,7 @@ from zoneinfo import ZoneInfo
 import os
 import hashlib
 import re
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 
 
@@ -418,6 +419,30 @@ def _looks_like_model_compat(v: str) -> bool:
         return False
     # по умолчанию: если строка длинная и без признаков моделей — считаем назначением
     return False
+
+def _cs_trim_float(v: str, max_decimals: int = 4) -> str:
+    # CS: аккуратно укорачиваем длинные дроби (объём/вес/габариты) для читаемости
+    s = (v or "").strip()
+    if not s:
+        return s
+    if not re.fullmatch(r"-?\d+(?:\.\d+)?", s):
+        return s
+    if "." not in s:
+        return s
+    intp, frac = s.split(".", 1)
+    if len(frac) <= max_decimals:
+        return s
+    try:
+        d = Decimal(s)
+        q = Decimal("1." + ("0" * max_decimals))
+        d2 = d.quantize(q, rounding=ROUND_HALF_UP)
+        out = format(d2, "f")
+        # убираем хвостовые нули и точку
+        out = out.rstrip("0").rstrip(".")
+        return out
+    except (InvalidOperation, ValueError):
+        return s
+
 def clean_params(
     params: Sequence[tuple[str, str]],
     *,
@@ -561,6 +586,9 @@ def clean_params(
             continue
         if _looks_like_dims(kk) and not _is_sane_dims(vv):
             continue
+
+        if _looks_like_weight(kk) or _looks_like_volume(kk) or _looks_like_dims(kk):
+            vv = _cs_trim_float(vv, max_decimals=4)
 
         # Системные характеристики: 'CPU: ...' лучше вынести как отдельный параметр CPU
         if kk.casefold() == 'система' and vv.lower().startswith('cpu:'):
@@ -1929,6 +1957,28 @@ CS_BRANDS_MAP = {
     "xiaomi": "Xiaomi",
 }
 
+
+def normalize_vendor(v: str) -> str:
+    # CS: нормализация vendor (убираем дубль 'Hewlett-Packard' -> 'HP' и т.п.)
+    if not v:
+        return ""
+    v = str(v).strip()
+    if not v:
+        return ""
+    # нормализуем слэш-списки (HP/Canon)
+    parts = [p.strip() for p in re.split(r"\s*/\s*", v) if p.strip()]
+    norm_parts: list[str] = []
+    for p in parts:
+        low = p.lower().replace("‑", "-").replace("–", "-")
+        if re.search(r"hewlett\s*-?\s*packard", low):
+            norm_parts.append("HP")
+        else:
+            norm_parts.append(p)
+    # склеиваем обратно
+    out = "/".join(norm_parts)
+    out = re.sub(r"\s{2,}", " ", out).strip()
+    return out
+
 # Пытается определить бренд (vendor) по vendor_src / name / params / description (если пусто — public_vendor)
 def pick_vendor(
     vendor_src: str,
@@ -1940,7 +1990,7 @@ def pick_vendor(
 ) -> str:
     v = norm_ws(vendor_src)
     if v:
-        return v
+        return normalize_vendor(v)
 
     hay = " ".join(
         [name or "", desc_html or ""]
