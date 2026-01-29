@@ -29,6 +29,7 @@ import re
 import sys
 import time
 import random
+import json
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -373,6 +374,51 @@ def _parse_int(text: str) -> int | None:
         return None
 
 
+def _parse_price_int(text: str) -> int | None:
+    """Парс цены: понимает '2 449.22', '2 449,22', '2449', '2 449'. Возвращает целую часть."""
+    if not text:
+        return None
+    s = str(text).replace("\u00a0", " ").replace("&nbsp;", " ")
+    s = s.strip()
+    # оставляем цифры, разделители и пробелы
+    s = re.sub(r"[^0-9.,\s]+", "", s)
+    s = re.sub(r"\s+", "", s)
+    if not s:
+        return None
+
+    # нормализуем: если есть и '.' и ',', считаем последнюю как десятичную
+    if "." in s and "," in s:
+        # десятичный разделитель — тот, что ближе к концу
+        if s.rfind(".") > s.rfind(","):
+            s = s.replace(",", "")
+        else:
+            s = s.replace(".", "")
+            s = s.replace(",", ".")
+    else:
+        # только запятая
+        if "," in s and "." not in s:
+            # если 1 запятая и после неё ровно 2 цифры — это десятичные
+            if s.count(",") == 1 and len(s.split(",")[1]) == 2:
+                s = s.replace(",", ".")
+            else:
+                s = s.replace(",", "")
+        # только точка
+        if "." in s and "," not in s:
+            if s.count(".") == 1 and len(s.split(".")[1]) == 2:
+                pass
+            else:
+                s = s.replace(".", "")
+
+    try:
+        # берём целую часть
+        if "." in s:
+            s = s.split(".", 1)[0]
+        s = s.lstrip("0") or "0"
+        return int(s)
+    except Exception:
+        return None
+
+
 def _extract_pairs(sp: BeautifulSoup) -> dict[str, str]:
     out: dict[str, str] = {}
     box = sp.select_one("div.description.catalog_item_descr")
@@ -389,9 +435,72 @@ def _extract_pairs(sp: BeautifulSoup) -> dict[str, str]:
 
 
 def _extract_price(sp: BeautifulSoup) -> int | None:
-    b = sp.select_one("span.price_main b")
-    return _parse_int(b.get_text(" ", strip=True) if b else "")
+    # основной селектор
+    for sel in (
+        "span.price_main b",
+        "span.price_main",
+        "span.price_value",
+        "div.price b",
+        "div.price",
+        "[itemprop=price]",
+    ):
+        el = sp.select_one(sel)
+        if el and el.get_text(strip=True):
+            p = _parse_price_int(el.get_text(" ", strip=True))
+            if p:
+                return p
 
+    # мета-цена (если есть)
+    for meta_sel in (
+        ("meta", {"property": "product:price:amount"}),
+        ("meta", {"itemprop": "price"}),
+        ("meta", {"name": "price"}),
+    ):
+        meta = sp.find(meta_sel[0], attrs=meta_sel[1])
+        if meta and meta.get("content"):
+            p = _parse_price_int(str(meta.get("content")))
+            if p:
+                return p
+
+    # json-ld
+    for script in sp.find_all("script", attrs={"type": "application/ld+json"}):
+        try:
+            data = json.loads(script.get_text(strip=True) or "{}")
+        except Exception:
+            continue
+
+        def _walk(x):
+            if isinstance(x, dict):
+                if "offers" in x and isinstance(x["offers"], dict):
+                    price = x["offers"].get("price") or x["offers"].get("lowPrice")
+                    if price:
+                        return _parse_int(str(price))
+                if "price" in x:
+                    return _parse_int(str(x["price"]))
+                for v in x.values():
+                    r = _walk(v)
+                    if r:
+                        return r
+            elif isinstance(x, list):
+                for v in x:
+                    r = _walk(v)
+                    if r:
+                        return r
+            return None
+
+        p = _walk(data)
+        if p:
+            return p
+
+    # мягкий fallback по тексту рядом со словом "Цена"
+    txt = sp.get_text(" ", strip=True)
+    m = re.search(r"\bЦена\b[^\d]{0,20}([0-9][0-9\s]{2,})\s*(?:тг|₸)?", txt, flags=re.I)
+    if m:
+        p = _parse_price_int(m.group(1))
+        if p:
+            return p
+
+    return None
 
 def _extract_title(sp: BeautifulSoup) -> str:
     el = sp.select_one(".page_title") or sp.title or sp.find("h1")
@@ -419,33 +528,95 @@ def _extract_body_text(sp: BeautifulSoup) -> str:
 
 
 def _extract_pictures(cfg: _Cfg, sp: BeautifulSoup, limit: int = 8) -> list[str]:
+    # реальные картинки, без пикселей/счётчиков (yandex metrika и т.п.)
+    BAD_HOST_SNIPS = (
+        "mc.yandex.ru",
+        "metrika.yandex",
+        "google-analytics.com",
+        "googletagmanager.com",
+        "doubleclick.net",
+    )
+    BAD_PATH_SNIPS = (
+        "/watch/",
+        "pixel",
+        "counter",
+        "collect",
+        "favicon",
+    )
+    IMG_EXT_RE = re.compile(r"\.(jpg|jpeg|png|webp|gif|bmp|tif|tiff)(\?|#|$)", re.I)
+    ALLOWED_PATH_SNIPS = (
+        "/upload/",
+        "/images/",
+        "/img/",
+        "/image/",
+        "/files/",
+        "/components/",
+    )
+
+    def _is_good_img(u: str) -> bool:
+        lu = (u or "").strip().lower()
+        if not lu:
+            return False
+        if lu.startswith("data:"):
+            return False
+        if any(x in lu for x in BAD_HOST_SNIPS):
+            return False
+        if any(x in lu for x in BAD_PATH_SNIPS):
+            return False
+        if IMG_EXT_RE.search(lu):
+            # берём только из типичных папок (чтобы не ловить favicon/пиксели)
+            if any(x in lu for x in ALLOWED_PATH_SNIPS):
+                return True
+            return False
+        # иногда без расширения, но в типичных папках
+        if any(x in lu for x in ALLOWED_PATH_SNIPS):
+            return True
+        return False
+
+    def _push(out: list[str], url: str):
+        url = (url or "").strip()
+        if not url:
+            return
+        abs_url = _abs_url(cfg.base_url, url)
+        if _is_good_img(abs_url) and abs_url not in out:
+            out.append(abs_url)
+
     out: list[str] = []
-    seen: set[str] = set()
 
-    og = sp.find("meta", attrs={"property": "og:image"})
-    if og and og.get("content"):
-        u = _abs_url(cfg, str(og["content"]))
-        if u and u not in seen:
-            seen.add(u)
-            out.append(u)
-
-    # любые img c нормальными ссылками
-    for img in sp.find_all("img", src=True):
-        src = str(img.get("src") or "").strip()
-        if not src:
-            continue
-        if src.startswith("data:"):
-            continue
-        u = _abs_url(cfg, src)
-        if not u or u in seen:
-            continue
-        seen.add(u)
-        out.append(u)
+    # галерея товара (самый точный источник)
+    for a in sp.select("div.catalog_item_pic a.glightbox[href], div.carousel-item a.glightbox[href], a.glightbox[data-gallery][href]"):
+        href = a.get("href") or ""
+        _push(out, href)
         if len(out) >= limit:
-            break
+            return out
 
-    return out
+    # og:image
+    meta = sp.find("meta", attrs={"property": "og:image"})
+    if meta and meta.get("content"):
+        _push(out, meta.get("content"))
 
+    # img src / lazy attrs
+    for img in sp.find_all("img"):
+        for attr in ("src", "data-src", "data-lazy", "data-original", "srcset", "data-srcset"):
+            val = img.get(attr)
+            if not val:
+                continue
+            if "srcset" in attr:
+                first = str(val).split(",")[0].strip().split(" ")[0].strip()
+                _push(out, first)
+            else:
+                _push(out, str(val))
+
+    # <a href="...jpg">
+    for a in sp.find_all("a"):
+        href = a.get("href")
+        if href and IMG_EXT_RE.search(str(href).lower()):
+            _push(out, str(href))
+
+    if not out:
+        out = ["https://placehold.co/800x800/png?text=No+Photo"]
+
+    return out[:limit]
 
 def _ru_to_lat_ascii(s: str) -> str:
     # минимально: русские "Х" иногда попадают в артикулах -> сделаем стабильнее
@@ -536,7 +707,7 @@ def _parse_product(s: requests.Session, cfg: _Cfg, url: str, cat_code: str) -> O
     pics = _extract_pictures(cfg, sp)
 
     # params: служебное выкидываем, остальное отдаём core
-    drop = {"артикул", "партс-номер", "вендор", "цена", "стоимость"}
+    drop = {"артикул", "партс-номер", "вендор", "цена", "стоимость", "категория", "подкатегория", "штрих-код", "штрихкод", "ean", "barcode"}
     params: list[tuple[str, str]] = []
     for k, v in pairs.items():
         kk = norm_ws(k)
