@@ -577,7 +577,7 @@ def _extract_pictures(cfg: _Cfg, sp: BeautifulSoup, limit: int = 8) -> list[str]
         url = (url or "").strip()
         if not url:
             return
-        abs_url = _abs_url(cfg.base_url, url)
+        abs_url = _abs_url(cfg, url)
         if _is_good_img(abs_url) and abs_url not in out:
             out.append(abs_url)
 
