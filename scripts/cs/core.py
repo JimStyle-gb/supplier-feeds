@@ -2116,7 +2116,7 @@ def validate_cs_yml(xml: str) -> None:
     price_ok = True
     ids_seen: set[str] = set()
     hash_like_ids: list[str] = []
-    _RE_HASH_OID = re.compile(r"^(AC|AS|CL|NP|VT)H[0-9A-F]{10}$")
+    _RE_HASH_OID = re.compile(r"^(AC|AS|CL|NP)H[0-9A-F]{10}$")  # VT может иметь OEM-коды вида VTH... — не считаем это hash-id
 
     bad_no_pic: list[str] = []
     bad_vendorcode: list[str] = []
