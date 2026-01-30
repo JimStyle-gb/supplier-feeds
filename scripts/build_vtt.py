@@ -814,7 +814,7 @@ def main() -> int:
     footer = make_footer()
 
     offers_xml = "\n\n".join(o.to_xml(currency_id="KZT", public_vendor="CS") for o in offers)
-    full = header + feed_meta + "\n" + offers_xml + ("\n" if offers_xml else "") + footer
+    full = header + feed_meta + "\n\n" + offers_xml + ("\n" if offers_xml else "") + footer
     full = ensure_footer_spacing(full)
 
     # CS-валидация (не пишем мусор)
