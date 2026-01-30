@@ -104,6 +104,17 @@ PARAM_DROP_DEFAULT = {
     "Код ТН ВЭД",
 }
 # Кеш: служебные параметры в casefold (для clean_params/валидации)
+# Нормализация ключей param для фильтров/blacklist (убираем латинские похожие буквы)
+_LAT_LOOKALIKE_TO_CYR = str.maketrans({
+    'A': 'А', 'B': 'В', 'E': 'Е', 'K': 'К', 'M': 'М', 'H': 'Н', 'O': 'О', 'P': 'Р', 'C': 'С', 'T': 'Т', 'X': 'Х', 'Y': 'У',
+    'a': 'а', 'e': 'е', 'o': 'о', 'p': 'р', 'c': 'с', 't': 'т', 'x': 'х', 'y': 'у',
+})
+
+def norm_param_key_for_drop(s: str) -> str:
+    s2 = (s or '').replace('\u00a0', ' ').translate(_LAT_LOOKALIKE_TO_CYR)
+    s2 = re.sub(r"\s+", ' ', s2).strip()
+    return s2.casefold()
+
 PARAM_DROP_DEFAULT_CF = {norm_param_key_for_drop(str(x)) for x in PARAM_DROP_DEFAULT}
 
 
@@ -135,16 +146,6 @@ def norm_ws(s: str) -> str:
     return s2.strip()
 
 
-# Нормализация ключей param для фильтров/blacklist (убираем латинские похожие буквы)
-_LAT_LOOKALIKE_TO_CYR = str.maketrans({
-    'A': 'А', 'B': 'В', 'E': 'Е', 'K': 'К', 'M': 'М', 'H': 'Н', 'O': 'О', 'P': 'Р', 'C': 'С', 'T': 'Т', 'X': 'Х', 'Y': 'У',
-    'a': 'а', 'e': 'е', 'o': 'о', 'p': 'р', 'c': 'с', 't': 'т', 'x': 'х', 'y': 'у',
-})
-
-def norm_param_key_for_drop(s: str) -> str:
-    s2 = (s or '').replace('\u00a0', ' ').translate(_LAT_LOOKALIKE_TO_CYR)
-    s2 = re.sub(r"\s+", ' ', s2).strip()
-    return s2.casefold()
 
 
 
