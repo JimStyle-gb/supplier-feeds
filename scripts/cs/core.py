@@ -2096,6 +2096,8 @@ class OfferOut:
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
         params_sorted, notes = split_params_for_chars(params_sorted)
+        # CS: финальная страховка — удалить служебные params (на случай попадания после разборов)
+        params_sorted = [(k, v) for (k, v) in params_sorted if norm_ws(k).casefold() not in PARAM_DROP_DEFAULT_CF]
         # если характеристик мало — добавим безопасный пункт 'Артикул'
         params_sorted = ensure_min_chars_params(
             params_sorted,
