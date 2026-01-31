@@ -149,7 +149,11 @@ MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
 
 
 
-PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or "").strip()  # не светим имя поставщика в YML
+# PUBLIC_VENDOR: только "публичный" бренд, НЕ имя поставщика (даже если задано env).
+_public_vendor = (os.getenv("PUBLIC_VENDOR") or "").strip()
+if _public_vendor and SUPPLIER_NAME and (SUPPLIER_NAME.casefold() in _public_vendor.casefold()):
+    _public_vendor = ""
+PUBLIC_VENDOR = _public_vendor
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "60"))
