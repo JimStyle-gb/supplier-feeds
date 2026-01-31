@@ -149,7 +149,7 @@ MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
 
 
 
-PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or SUPPLIER_NAME).strip() or SUPPLIER_NAME
+PUBLIC_VENDOR = (os.getenv("PUBLIC_VENDOR") or os.getenv("CS_PUBLIC_VENDOR") or "").strip()
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "60"))
@@ -1302,7 +1302,7 @@ def main() -> int:
                     name=name,
                     price=price,
                     pictures=_copyline_full_only(pictures),
-                    vendor="",  # бренд будет выбран ядром; если не найдётся — упадём на PUBLIC_VENDOR
+                    vendor="",  # бренд выбирает ядро по name/params/desc; fallback = PUBLIC_VENDOR (по умолчанию пусто)
                     params=params,
                     native_desc=native_desc,
                 )
