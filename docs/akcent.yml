@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-30 02:18">
+<yml_catalog date="2026-01-31 10:24">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-30 02:18:10
-Ближайшая сборка (Алматы)                  | 2026-01-31 02:00:00
-Сколько товаров у поставщика до фильтра    | 1635
+Время сборки (Алматы)                      | 2026-01-31 10:24:38
+Ближайшая сборка (Алматы)                  | 2026-02-01 02:00:00
+Сколько товаров у поставщика до фильтра    | 1629
 Сколько товаров у поставщика после фильтра | 156
 Сколько товаров есть в наличии (true)      | 156
 Сколько товаров нет в наличии (false)      | 0
@@ -18,7 +18,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC3G631A</vendorCode>
 <name>МФУ лазерное HP LaserJet Pro 3103fdn белый</name>
 <price>181900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/157/ihp5jk75bj2kgootg2utpy5f2xvr0xq7.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/3c4/s09u8plbn7jhm0tz6xhj8x8ftsjivrhx.png</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -41,7 +41,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC3G632A</vendorCode>
 <name>МФУ лазерное HP LaserJet Pro 3103fdw белый</name>
 <price>187900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/cf1/y7jygrj7k005rq23dhhmwnze4wgkptmz.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/863/tyai1fd9zm0pkf5wiz881vtwifesvwg5.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -182,7 +182,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC4653101</vendorCode>
 <name>Шредер Fellowes® Powershred® 53C, DIN P-4</name>
 <price>53900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/618/7t7jnbtp1bmdnss4dhqxax9topdlin18.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a83/zlha6fw1iil06qymug51zta4343172ix.png</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -256,7 +256,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC5050001</vendorCode>
 <name>Шредер Fellowes Powershred LX201 черный</name>
 <price>183900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/74e/basqyzhh96v3ulq4i5wptnqm6n2lrzxl.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/5c7/t55rnrsdyseuh0mmnagt9klhfwxdituv.png</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -279,7 +279,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC5050101</vendorCode>
 <name>Шредер Fellowes Powershred LX201 белый</name>
 <price>205900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/694/ulaqvw30hra19mjbv4qc2x6pfr6dv1dt.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/4f6/ltixdz5t1ulkxbfkdfoioscj3r28adei.jpg</picture>
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -343,7 +343,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC5502201</vendorCode>
 <name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</name>
 <price>175900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/651/nzcwquv526d2e4m6stg21y2fisrqrebq.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/225/fzitqi60y3vxe9mpun8mjm3bwbt0xkbw.jpg</picture>
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -450,7 +450,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC5716701</vendorCode>
 <name>Ламинатор Fellowes Lunar A3, 2х80 мкм, 30 см/мин</name>
 <price>36900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/4cc/qzwf91rylzmsafvu8xae2jvgrdv2gex5.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/318/rpnwzu28murwk5rnqhq8x32vrznemy15.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -480,7 +480,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC5742801</vendorCode>
 <name>Ламинатор Fellowes Lunar+ A4, Blue, 75/80,125 мкм, 30 см/мин</name>
 <price>34900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/d52/pddi18o39ve9j1n4dl74asubqtu1jnem.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/404/2othd3zvpduo757lduz9s8tgqyn3xu5w.jpg</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -576,7 +576,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC7MD68A</vendorCode>
 <name>Принтер лазерный HP LaserJet M111w белый</name>
 <price>76900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/2f5/nor0ehgdu1dz788oanuotmm845o2h273.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/320/w2xw4g1pii41hsh974q02zuq62lw8byb.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -599,7 +599,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC7MD74A</vendorCode>
 <name>МФУ лазерное HP LaserJet M141w белый</name>
 <price>97900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/589/2gkqvdktmu0eqealljbotv5f1atumx20.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/206/gw7cr2xh5smdjdnc1hy70dkruk2hgn5l.jpg</picture>
 <vendor>HP</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -622,7 +622,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACAWP201_2F10</vendorCode>
 <name>Картридж для фильтра Philips AWP201/10</name>
 <price>8900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/517/3gexgpwao7c8zbjgktvbgqtaqcr6z9ci.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/99b/2pytv9wi2jtqi81u2fzqq7ux2d6igkvh.jpg</picture>
 <vendor>Philips</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -653,7 +653,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACAWP286_2F10</vendorCode>
 <name>Картридж для бутылки Philips AWP286/10</name>
 <price>4900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/2e2/4o12hfb4rb14s8mlkeoe9c2z9blene3a.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/698/yyxc2u7sa74fmaq97nzv4d3pug9u4od2.jpg</picture>
 <vendor>Philips</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -724,7 +724,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CD76414</vendorCode>
 <name>Принтер Epson L121 фабрика печати</name>
 <price>79900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/dfa/tu6v1opf5p05j5gkytn1vhqnjhsrlv7j.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a92/l3hi0bwfbeco8e72g2lkp8jg3liyp8ly.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -889,7 +889,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CG96405</vendorCode>
 <name>Принтер Epson M1120 фабрика печати</name>
 <price>142900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a74/l5oiuuwr4q5dhrphim23nsbd9l523qgq.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/5ba/dozml8fov9krbu2s4qu72ojtikh0y45g.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -993,6 +993,43 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, МФУ Epson L15150 фабрика печати, МФУ, L15150, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
+<offer id="ACC11CH81301A0" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC11CH81301A0</vendorCode>
+<name>Плоттер Epson SureColor SC-T5700D</name>
+<price>3731900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/516/561s4kd54qbk6gdkooz2o47ijp4dvvdh.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Плоттер Epson SureColor SC-T5700D</h3><p>Высокопроизводительный принтер формата А0 для инженерных задач и печати рекламных материалов<br>Скорость печати до 28 сек на отпечаток А1<br>Печатающая головка нового поколения Epson PrecisionCore TFP<br>Картриджи емкостью 110,350 или 700 мл<br>Пигментные чернила Epson UltraChrome XD<br>Печать на листовых и рулонных носителях шириной печати 36 дюймов (914 мм.)<br>Опциональный сканер формата 36”<br>Поддержка PostScript 3<br>Опциональный жесткий диск емкостью 320 Гб<br>Компактный дизайн, полностью фронтальное управление<br>Качественные, яркие отпечатки, устойчивые к смазыванию и попаданию воды</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson SureColor SC-T5200</li><li><strong>Тип:</strong> CAD</li><li><strong>Совместимость:</strong> C13T692100,C13T692200,C13T692300,C13T692400,C13T692500,C13T693100,C13T693200,C13T693300,C13T693400,C</li><li><strong>Цвет:</strong> черный</li><li><strong>Интерфейс:</strong> USB*Ethernet/Fast Ethernet</li><li><strong>Количество слотов для картриджей:</strong> 5</li><li><strong>Комплектация:</strong> Принтер, Подставка, Руководство пользователя, CD диск с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей, Гарантийный талон, Адаптеры для рулона, Основные свойства Устройство Широкоформатный принтер, Применение •Для ГИС, Для КАД, Для презентационных материалов, Для точек продаж</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 210</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати,dpi:</strong> 2880x1440</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> Картриджи</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A0</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson</param>
+<param name="Модель">Epson SureColor SC-T5200</param>
+<param name="Тип">CAD</param>
+<param name="Совместимость">C13T692100,C13T692200,C13T692300,C13T692400,C13T692500,C13T693100,C13T693200,C13T693300,C13T693400,C</param>
+<param name="Цвет">черный</param>
+<param name="Интерфейс">USB*Ethernet/Fast Ethernet</param>
+<param name="Количество слотов для картриджей">5</param>
+<param name="Комплектация">Принтер, Подставка, Руководство пользователя, CD диск с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей, Гарантийный талон, Адаптеры для рулона, Основные свойства Устройство Широкоформатный принтер, Применение •Для ГИС, Для КАД, Для презентационных материалов, Для точек продаж</param>
+<param name="Минимальная плотность бумаги, г/м2">210</param>
+<param name="Область применения">CAD</param>
+<param name="Разрешение печати,dpi">2880x1440</param>
+<param name="Страна происхождения">Китай</param>
+<param name="Тип печати">струйная</param>
+<param name="Тип расходных материалов">Картриджи</param>
+<param name="Тип чернил">пигментные</param>
+<param name="Формат">A0</param>
+<param name="Цветность">4 цвета</param>
+<keywords>Epson, Плоттер Epson SureColor SC-T5700D, Плоттер, SureColor, SC-T5700D, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
 <offer id="ACC11CH96404" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC11CH96404</vendorCode>
@@ -1040,7 +1077,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ18404</vendorCode>
 <name>МФУ Epson M2120 (CIS) фабрика печати</name>
 <price>187900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/ff7/g9q9xf8fr5m7819x91o3kbrrr1tu23u0.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/0e8/1qhdm9wah6l9l9w1f21mvk2cox5iy1va.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1090,7 +1127,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ19401</vendorCode>
 <name>МФУ Epson M2110 (CIS) фабрика печати</name>
 <price>187900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/8d7/th05owbwzsh7v63ndep8qbrniprg59b1.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/482/rhhgeislpeybons6bn5jct1myqv7xa5r.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1139,7 +1176,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ20404</vendorCode>
 <name>МФУ Epson L8160 фабрика печати, Wi-Fi</name>
 <price>436900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/cc4/yqfwgqxicqszlkjvfsuhx8ooqjh9l6z3.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a6f/3dtfpd9vivzh8r9l9fr1s803e7wylrfj.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1222,7 +1259,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ30404</vendorCode>
 <name>МФУ Epson L6550 фабрика печати, факс,Wi-Fi</name>
 <price>716900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/24f/iocrsols2929y06064fnl5xvkk75546a.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/977/2gbyxkrezxhlfe5408fz12p5x985t64f.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1268,7 +1305,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ36301A0</vendorCode>
 <name>Плоттер Epson SureColor SC-T3100M-MFP</name>
 <price>1283900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/085/q755dtzgj9zwuiccmpen9yt0299673fs.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/cfc/j93p6ouqrrfhvz58d7t2h8nwgrfdadiu.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1295,6 +1332,30 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Формат">A1+</param>
 <param name="Цветность">4 цвета</param>
 <keywords>Epson, Плоттер Epson SureColor SC-T3100M-MFP, Плоттер, SureColor, SC-T3100M-MFP, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="ACC11CJ61405" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC11CJ61405</vendorCode>
+<name>МФУ Epson L6270 фабрика печати, Wi-Fi</name>
+<price>370900</price>
+<picture>https://b2b.ak-cent.kz/upload/iblock/fa0/44ylv2r0a4fre7t6n35qef8sop2nfaw4.jpg</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>МФУ Epson L6270 фабрика печати, Wi-Fi</h3><p>Офисный струйный принтер<br>Двустороннее многофункциональное устройство 3-в-1 для цветной печати формата A4 с автоподатчиком, Wi-Fi Direct и Ethernet<br>Печать, копирование и сканирование<br>Wi-Fi Direct и Ethernet<br>ЖК-экран, автоподатчик и двусторонн<br>Благодаря отсутствию необходимости в замене картриджей это двустороннее многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct, Ethernet и ЖК-экраном подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. Благодаря 30-страничному автоподатчику документов (ADF), 250-листовому переднему лотку для бумаги, высококачественной лазерной печати документов черными пигментными чернилами и скорости печати до 15,5 страницы в минуту¹ вы можете с легкостью выполнять различные задачи.<br>Попрощайтесь с дорогостоящими картриджами<br>EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета.<br>Постоянная экономия…</p>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Совместимость:</strong> цветной печати формата A4 с автоподатчиком</li><li><strong>Цвет:</strong> черный</li><li><strong>Ресурс:</strong> 000</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Тип">МФУ Дом</param>
+<param name="Совместимость">цветной печати формата A4 с автоподатчиком</param>
+<param name="Цвет">черный</param>
+<param name="Ресурс">000</param>
+<keywords>Epson, МФУ Epson L6270 фабрика печати, Wi-Fi, МФУ, L6270, фабрика, печати, Wi-Fi, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC11CJ62404" available="true">
@@ -1328,7 +1389,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ63413</vendorCode>
 <name>МФУ Epson L4267 фабрика печати</name>
 <price>230900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/0e5/4nwbxaama7l80bs4ow1d29dinnxj3kqn.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/b7c/el4e7j24bqvfq7f1ewq78gytsai9x6fd.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1390,7 +1451,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ66409</vendorCode>
 <name>МФУ Epson L3260 фабрика печати, Wi-Fi</name>
 <price>138900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/faf/ebc9214t6u5u1houyes73p9gydk0mfk0.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/6e1/et8sl113398v83iyi32fg1hh11bi4xgt.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1429,7 +1490,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ66411</vendorCode>
 <name>МФУ Epson L3266 фабрика печати, Wi-Fi</name>
 <price>138900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/387/28bls9xn5vazqq2bqh8ammuyk2dr5kab.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/ec9/o8i48hmijck8t12v4qz6tac1fmnlty2l.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1450,60 +1511,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Ресурс">10</param>
 <param name="Страна происхождения">Филипины</param>
 <keywords>Epson, МФУ Epson L3266 фабрика печати, Wi-Fi, МФУ, L3266, фабрика, печати, Wi-Fi, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC11CJ67414" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CJ67414</vendorCode>
-<name>МФУ Epson L3256 фабрика печати</name>
-<price>111900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/4bc/gh0td0cmbyb0cbirjvip4a1lf54816hr.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>МФУ Epson L3256 фабрика печати</h3><p>Тип: МФУ Дом; Производитель: Epson; Модель: Epson L3256</p>
-<p><strong>Примечание:</strong> Гарантия, мес: 12 мес или 30000 отпечатков<br>Скорость печати ISO/IEC 24734 (цветн. А4), стр/мин: 5</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L3256</li><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Интерфейс:</strong> USB* тип B</li><li><strong>L3256:</strong> Стильное белое МФУ с фронтальными чернильными емкостями, возможностью печати и сканирования по Wi-Fi</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Беспроводная печать и сканирование с функцией Wi:</strong> Fi Direct</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Количество цветов:</strong> 4</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 256</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 33</li><li><strong>Максимальное разрешение копира:</strong> 1200х2</li><li><strong>Максимальное разрешение, dpi:</strong> 5760x1440</li><li><strong>Максимальный формат:</strong> A4</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 64</li><li><strong>Минимальный объем капли, пл:</strong> 3</li><li><strong>Область применения:</strong> Для дома</li><li><strong>Печать без полей:</strong> да</li><li><strong>Печать фотографий:</strong> да</li><li><strong>Разрешение печати,dpi:</strong> 5760x1440</li><li><strong>Разрешение сканера,dpi:</strong> 600x1200</li><li><strong>Скорость печати 10x15 см (цветн.), фото/сек:</strong> 69</li><li><strong>Скорость печати до 33 стр./мин:</strong> Комплект чернил рассчитан на печать до 7500 цветных и 4500 Ч/Б документов А4</li><li><strong>Страна происхождения:</strong> Филиппины</li><li><strong>Технология печати:</strong> Струйная, пьезоэлектрическая</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> водорастворимые</li><li><strong>Устройство:</strong> МФУ</li><li><strong>Формат:</strong> A4</li><li><strong>Цвет корпуса:</strong> Белый</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson L3256</param>
-<param name="Тип">МФУ Дом</param>
-<param name="Интерфейс">USB* тип B</param>
-<param name="L3256">Стильное белое МФУ с фронтальными чернильными емкостями, возможностью печати и сканирования по Wi-Fi</param>
-<param name="Автоподатчик">нет</param>
-<param name="Беспроводная печать и сканирование с функцией Wi">Fi Direct</param>
-<param name="Двусторонняя печать">нет</param>
-<param name="ЖК дисплей">нет</param>
-<param name="Количество цветов">4</param>
-<param name="Максимальная плотность бумаги, г/м2">256</param>
-<param name="Максимальная скорость печати А4 стр/мин">33</param>
-<param name="Максимальное разрешение копира">1200х2</param>
-<param name="Максимальное разрешение, dpi">5760x1440</param>
-<param name="Максимальный формат">A4</param>
-<param name="Минимальная плотность бумаги, г/м2">64</param>
-<param name="Минимальный объем капли, пл">3</param>
-<param name="Область применения">Для дома</param>
-<param name="Печать без полей">да</param>
-<param name="Печать фотографий">да</param>
-<param name="Разрешение печати,dpi">5760x1440</param>
-<param name="Разрешение сканера,dpi">600x1200</param>
-<param name="Скорость печати 10x15 см (цветн.), фото/сек">69</param>
-<param name="Скорость печати до 33 стр./мин">Комплект чернил рассчитан на печать до 7500 цветных и 4500 Ч/Б документов А4</param>
-<param name="Страна происхождения">Филиппины</param>
-<param name="Технология печати">Струйная, пьезоэлектрическая</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип расходных материалов">чернила</param>
-<param name="Тип чернил">водорастворимые</param>
-<param name="Устройство">МФУ</param>
-<param name="Формат">A4</param>
-<param name="Цвет корпуса">Белый</param>
-<param name="Цветность">4 цвета</param>
-<keywords>Epson, МФУ Epson L3256 фабрика печати, МФУ, L3256, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC11CJ69401" available="true">
@@ -1536,7 +1543,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ71404</vendorCode>
 <name>Принтер Epson L1250 фабрика печати</name>
 <price>125900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/3a0/9lpxgaxj1sxfyli2amiv6hmgljewl50e.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/74e/ncd3ldo6clbz8vznkvzvylaa5oijhxsb.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1560,7 +1567,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CK58404</vendorCode>
 <name>МФУ Epson L3560 фабрика печати, Wi-Fi</name>
 <price>190900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/fb3/h7g7kggvk34xnizrno6glprdvy2d6p40.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/df3/wl2sjkoi43apno7dmpdu6755xr3j1xig.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1627,7 +1634,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC12C890191</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</name>
 <price>35900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/bb7/2cphwdn007pkvm1m1hmm1vorhmjwjzhe.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/8de/tmti8fnriusk181u3fe7rjfodni8smv2.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2528,7 +2535,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T41F34N</vendorCode>
 <name>Картридж Epson C13T41F34N UltraChrome XD2 T41F340 M 350 ml пурпурный</name>
 <price>134900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/56f/08fu006h56m3on479i56utktqo7ops4y.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/910/j2a6cabaylgfekxil28buv4uttjlesj3.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2633,7 +2640,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T606300</vendorCode>
 <name>Картридж Epson C13T606300 SP-4880 пурпурный</name>
 <price>102900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/a82/l0d31gtaz4p46zgm06eljiizk8wiplnw.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/759/v06a7bxpn364pyvsdo6202ss7opk0mqs.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2715,7 +2722,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T606B00</vendorCode>
 <name>Картридж Epson C13T606B00 SP-4800 220ml пурпурный new</name>
 <price>102900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/d13/egdsymbmsiphjr3q5anv9fan5b3jbb1g.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/587/54dhrb0w4nds7u32tw9hby11evc0qs69.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2738,7 +2745,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T606C00</vendorCode>
 <name>Картридж Epson C13T606C00 SP-4800 пурпурный светлый</name>
 <price>102900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/798/t6rwgpu3u656amz6os3jxnqz5o7wh3il.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/e87/3gzewotumvza1d2mbrqqk8h2byhg89sx.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -2876,7 +2883,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T619000</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN</name>
 <price>26900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/72c/60r2qnjqu2zk334qog1ha2d6pymwnfl3.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/e31/rzhotutnlo25yoqsa3555c97ukzk1m55.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3290,34 +3297,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T69230N T3000/5000/7000, Т3200/5200/7200 пурпурный, Картридж, C13T69230N, T3000, 5000, 7000, Т3200, 5200, 7200, пурпурный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T69240N" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T69240N</vendorCode>
-<name>Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый</name>
-<price>59900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/de9/36c2zgvz4emnvyp6pwm4otykefl7m33a.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый</h3><p>Желтый картридж 110ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T692400 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 110 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Картридж C13T692400 для T3000/5000/7000, Т3200/5200/7200</param>
-<param name="Тип">Картридж EPSON</param>
-<param name="Цвет">желтый</param>
-<param name="Для бренда">Epson</param>
-<param name="Ресурс">110 мл</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Картридж Epson C13T69240N T3000/5000/7000, Т3200/5200/7200 желтый, Картридж, C13T69240N, T3000, 5000, 7000, Т3200, 5200, 7200, желтый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T692500" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T692500</vendorCode>
@@ -3435,7 +3414,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T965140</vendorCode>
 <name>Картридж Epson C13T965140 WF-M52xx/57xx Series Ink Cartridge XL Bl.</name>
 <price>179900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/f93/uxa3ne5xyxao71f3b1gdx4cv629u5hlx.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/d0e/t9r51b7ye7muk0uuwinytks3mgb9en5d.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3464,7 +3443,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC33S021601</vendorCode>
 <name>Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box</name>
 <price>24900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/4a9/f997nwcend4kn9ltrt9vq1mgtg9euzie.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/04a/j6p5myxpm3ezzda4q1kldftpdlfb1501.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3537,7 +3516,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACFS-53061</vendorCode>
 <name>Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт.</name>
 <price>7900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/d54/ccgxnonu9q724cqcp9d7hgbq1qb26o1b.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/2c6/dv2dugkdu1rsjq6c7zxnuekczvyqqgvn.jpg</picture>
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3567,7 +3546,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACG3410</vendorCode>
 <name>МФУ струйное Canon Pixma G3410 Wi-Fi черный</name>
 <price>119900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/8cb/bgmiwp12j13u0zbwm3yvr2zxxbi6e9t0.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/0c5/44akxjvnt83ctlab7ziftrladrinmj4e.png</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3593,7 +3572,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACG3430</vendorCode>
 <name>МФУ струйное Canon Pixma G3430 Wi-Fi черный</name>
 <price>129900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/6aa/4danjgw11503abyhpcz6d6bl1y10ew3s.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/f93/7m3ocheo7b1bs6p9yzux29ktrvdldquo.png</picture>
 <vendor>Canon</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3617,7 +3596,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACLI4278-TRBU0100ZER</vendorCode>
 <name>Сканер штрих-кода Zebra LI4278 чёрный</name>
 <price>111900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/b95/vpipik3rrw793ybnvhrjr7uqjh2zlmq9.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/8bc/hu55mxneyjaliwdptojuzptsb9fgffjv.jpg</picture>
 <vendor>Zebra</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3641,7 +3620,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACLS500WH</vendorCode>
 <name>Проектор для дом. кино ViewSonic LS500WH</name>
 <price>371900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/895/5awga2282hy5arj1w8b1so80sw0fwl1i.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/5e6/s1eivm5hlgy91vwrxvibx54r3ef8xgb2.jpg</picture>
 <vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3684,7 +3663,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACLS550WH</vendorCode>
 <name>Проектор ViewSonic LS550WH</name>
 <price>371900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/4bd/mo1s4ag4bc5cy8fg7596333omx3jqbyf.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/273/a909adi7e43b6lraf98py01kdwnv3gwf.jpg</picture>
 <vendor>ViewSonic proj</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3707,7 +3686,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACM2</vendorCode>
 <name>Проектор короткофокусный ViewSonic M2</name>
 <price>480900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/890/js35cpubv9c4jic1lmo29809kh4qp80m.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/34b/mvfh7klg96r89rn71j5bauktpc1uvyfx.jpg</picture>
 <vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4284,7 +4263,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACPX701-4K</vendorCode>
 <name>Проектор для дом. кино ViewSonic PX701-4K</name>
 <price>528900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/73a/wyyn8otyyaj4v53sbu5b0b6ox63g9ekx.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/e2d/csr3ey63zq14xg6uk6z5oxkdv9b8sn3m.jpg</picture>
 <vendor>ViewSonic proj</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4375,7 +4354,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACS82ABK43</vendorCode>
 <name>Интерактивная доска Mr.Pixel S82 BLACK</name>
 <price>120900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/598/x8uwz2eqoue1v38goazpgre8nxsa2d3r.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/138/iayu4g145yb0gt1hfnhuo0gbndbjythj.jpg</picture>
 <vendor>Mr.Pixel</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4455,7 +4434,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACSBID-QX275-P</vendorCode>
 <name>Интерактивная панель SBID-QX275-P</name>
 <price>3212900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/4b7/g2uedbde0n1y7px0huh64bog5n168fmu.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/a2c/ih3bt96renrtcwia911lnzqfcam7wmy8.jpg</picture>
 <vendor>CS</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4631,7 +4610,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACV11HA86340</vendorCode>
 <name>Проектор универсальный Epson CO-WX02</name>
 <price>254900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/f8e/rg6silws78fdmgxem41pcaf598lem8ci.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/229/i1hhulyg03256gswojwza7gsg36gjvub.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4722,7 +4701,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACV11HB57042</vendorCode>
 <name>Проектор универсальный Epson EB-W53 белый</name>
 <price>409900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/134/dk1zbq8wp2fmveq9nplihvya650ybqx8.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/225/i22h5qbdnafz801zpmpj3c3v1e4h0qpi.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4745,7 +4724,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACV11HB58042</vendorCode>
 <name>Проектор универсальный Epson EB-W55 белый</name>
 <price>396900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/b7e/0k9jj67qousr3t93xhpoep7eoojbweuj.png</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/f8a/pliiy7e1bz8x9ss5jqlf5mh3mvb46253.png</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4768,7 +4747,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACV11HB59042</vendorCode>
 <name>Проектор универсальный Epson EB-FH54 белый</name>
 <price>618900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/07f/f5lre5l65e83kfbkgrhrzjz90zq64pf1.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/2b5/b2yojj023cjzbzsbmvotxax5mmw6cyw8.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4814,7 +4793,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACZD4A042-30EE00EZ</vendorCode>
 <name>Принтер этикеток Zebra ZD421-30EE чёрный</name>
 <price>309900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/925/nybo23vbr27cvdpe62jwqyiz43ge4pg8.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/ce7/69teb1upyk29r9dnt29qtec726212ews.jpg</picture>
 <vendor>Zebra</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -4862,7 +4841,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACZD4A042-D0EE00EZ</vendorCode>
 <name>Принтер этикеток Zebra ZD421-D0EE чёрный</name>
 <price>281900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/bf2/f9l1djbetj8hfpifufehup2ha7xz1out.jpg</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/27f/xw51refdep3w27jzlkltrduyn3affuqq.jpg</picture>
 <vendor>Zebra</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
