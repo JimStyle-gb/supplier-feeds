@@ -100,22 +100,11 @@ PARAM_DROP_DEFAULT = {
     "Снижена цена",
     "Благотворительность",
     "Код товара Kaspi",
-    "Код товара",
     "Код ТН ВЭД",
+    "Назначение",
 }
 # Кеш: служебные параметры в casefold (для clean_params/валидации)
-# Нормализация ключей param для фильтров/blacklist (убираем латинские похожие буквы)
-_LAT_LOOKALIKE_TO_CYR = str.maketrans({
-    'A': 'А', 'B': 'В', 'E': 'Е', 'K': 'К', 'M': 'М', 'H': 'Н', 'O': 'О', 'P': 'Р', 'C': 'С', 'T': 'Т', 'X': 'Х', 'Y': 'У',
-    'a': 'а', 'e': 'е', 'o': 'о', 'p': 'р', 'c': 'с', 't': 'т', 'x': 'х', 'y': 'у',
-})
-
-def norm_param_key_for_drop(s: str) -> str:
-    s2 = (s or '').replace('\u00a0', ' ').translate(_LAT_LOOKALIKE_TO_CYR)
-    s2 = re.sub(r"\s+", ' ', s2).strip()
-    return s2.casefold()
-
-PARAM_DROP_DEFAULT_CF = {norm_param_key_for_drop(str(x)) for x in PARAM_DROP_DEFAULT}
+PARAM_DROP_DEFAULT_CF = {str(x).strip().casefold() for x in PARAM_DROP_DEFAULT}
 
 
 # Возвращает текущее время в Алматы
@@ -144,8 +133,6 @@ def norm_ws(s: str) -> str:
     s2 = re.sub(r"\s+", " ", s2)
     s2 = fix_mixed_cyr_lat(s2)
     return s2.strip()
-
-
 
 
 
@@ -589,7 +576,7 @@ def clean_params(
             if vv_compact.endswith("...") or re.search(r"[A-Za-zА-Яа-яЁё]\.\.\.", vv_compact):
                 continue
 
-        if norm_param_key_for_drop(kk) in drop_set:
+        if kk.casefold() in drop_set:
             continue
 
         # Мягкая валидация вес/габариты/объем
@@ -627,27 +614,7 @@ def clean_params(
             if not buckets[key_cf]:
                 buckets[key_cf].append(vv)
 
-    
-    def _compat_should_be_purpose(v: str) -> bool:
-        s = norm_ws(v)
-        if not s:
-            return False
-        s_cf = s.casefold().replace("ё", "е")
-        # если есть цифры — это почти всегда список моделей/серий
-        if re.search(r"\d", s):
-            return False
-        # если есть латиница — скорее бренд/серия; без цифр тоже оставляем как совместимость
-        if re.search(r"[A-Za-z]", s):
-            return False
-        # типовые слова "назначения" / текстовые описания
-        if re.search(r"\b(предназнач|назнач|использ|подход|обеспеч|защит|позвол|питани|заряд|подключ|для\s)\b", s_cf):
-            return True
-        # короткая кириллическая фраза без цифр/латиницы — тоже ближе к "назначению"
-        if len(s) <= 80:
-            return True
-        return False
-
-# Пост-правила: AkCent часто даёт "Вид" == "Тип" — убираем дубль
+    # Пост-правила: AkCent часто даёт "Вид" == "Тип" — убираем дубль
     if "тип" in buckets and "вид" in buckets:
         tval = (buckets["тип"][0] if buckets["тип"] else "").casefold()
         vval = (buckets["вид"][0] if buckets["вид"] else "").casefold()
@@ -655,39 +622,6 @@ def clean_params(
             buckets.pop("вид", None)
             display.pop("вид", None)
             order = [k for k in order if k != "вид"]
-
-    # Если "Совместимость" заполнена не моделями, а текстом (назначение/применение),
-    # то переносим это в параметр "Назначение" (и не показываем "Совместимость").
-    if "совместимость" in buckets:
-        comp_vals = buckets.get("совместимость") or []
-        comp_text = ", ".join([x for x in comp_vals if x])
-        if _compat_should_be_purpose(comp_text):
-            # Добавим/объединим в Назначение
-            n_cf = "назначение"
-            if n_cf not in buckets:
-                buckets[n_cf] = [comp_text]
-                display[n_cf] = "Назначение"
-                # ставим рядом с бывшей совместимостью (по месту в order)
-                try:
-                    i = order.index("совместимость")
-                    order.insert(i, n_cf)
-                except ValueError:
-                    order.insert(0, n_cf)
-            else:
-                have = {x.casefold() for x in buckets[n_cf]}
-                if comp_text and comp_text.casefold() not in have:
-                    # не раздуваем слишком сильно
-                    joined = (buckets[n_cf][0] if buckets[n_cf] else "")
-                    if joined and comp_text.casefold() not in joined.casefold():
-                        merged = (joined + "; " + comp_text).strip("; ").strip()
-                        buckets[n_cf] = [merged[:260].rstrip(" ;,")]
-                    elif not joined:
-                        buckets[n_cf] = [comp_text]
-            # удаляем совместимость
-            buckets.pop("совместимость", None)
-            display.pop("совместимость", None)
-            order = [k for k in order if k != "совместимость"]
-
 
     # Если модели нет, но были заголовки 'Технические характеристики ...' с коротким кодом — используем как Модель
     if ('модель' not in buckets) and tech_model_candidates:
@@ -2109,8 +2043,6 @@ class OfferOut:
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
         params_sorted, notes = split_params_for_chars(params_sorted)
-        # CS: финальная страховка — удалить служебные params (на случай попадания после разборов)
-        params_sorted = [(k, v) for (k, v) in params_sorted if norm_param_key_for_drop(norm_ws(k)) not in PARAM_DROP_DEFAULT_CF]
         # если характеристик мало — добавим безопасный пункт 'Артикул'
         params_sorted = ensure_min_chars_params(
             params_sorted,
