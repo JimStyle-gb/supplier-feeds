@@ -142,18 +142,7 @@ def _include_by_name(name: str) -> bool:
     for p in prefixes:
         if p and cf.startswith(p):
             return True
-
-    extra = (os.environ.get("NVPRINT_INCLUDE_WORDS") or "").strip()
-    terms = list(NVPRINT_INCLUDE_PREFIXES_CF)
-    if extra:
-        for x in extra.split(","):
-            x = x.strip().casefold()
-            if x and x not in terms:
-                terms.append(x)
-
-    for t in terms:
-        if t and t in cf:
-            return True
+    # NOTE: Только префиксная фильтрация (см. комментарий выше). Режим 'слова внутри' отключён.
     return False
 
 
