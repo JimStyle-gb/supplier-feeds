@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-01-31 10:41">
+<yml_catalog date="2026-01-31 16:00">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-01-31 10:41:23
+Время сборки (Алматы)                      | 2026-01-31 16:00:47
 Ближайшая сборка (Алматы)                  | 2026-02-01 02:00:00
 Сколько товаров у поставщика до фильтра    | 1629
 Сколько товаров у поставщика после фильтра | 156
@@ -114,7 +114,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU</name>
 <price>54900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/8de/jvif2fk2yekaywpn95c8bj6d1k7yn188.jpg</picture>
-<vendor>CS</vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -174,7 +174,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уровень шума без загрузки, дБ">70</param>
 <param name="Уровень шума под нагрузкой, дБ">70</param>
 <param name="Шредер Powershred® LX45">Самый доступный уничтожитель Fellowes с увеличенной гарантией 2 года</param>
-<keywords>CS, Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU, Шредер, Fellowes, Powershred, LX45, SHREDDER, CROSS, CUT, 230V, EU, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred®LX45 SHREDDER (CROSS CUT) 230V EU, Шредер, Powershred, LX45, SHREDDER, CROSS, CUT, 230V, EU, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="AC4653101" available="true">
@@ -280,7 +280,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Шредер Fellowes Powershred LX201 белый</name>
 <price>205900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/4f6/ltixdz5t1ulkxbfkdfoioscj3r28adei.jpg</picture>
-<vendor>CS</vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -311,7 +311,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уровень секретности для CD дисков, DIN 66399">нет</param>
 <param name="Уровень секретности, DIN 66399 P">5</param>
 <param name="Шредер Powershred® LX201 белый">Шредер нового поколения с непревзойденным удобством и эффективностью</param>
-<keywords>CS, Шредер Fellowes Powershred LX201 белый, Шредер, Fellowes, Powershred, LX201, белый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>Fellowes, Шредер Fellowes Powershred LX201 белый, Шредер, Powershred, LX201, белый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="AC5050201" available="true">
@@ -344,7 +344,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™,</name>
 <price>175900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/225/fzitqi60y3vxe9mpun8mjm3bwbt0xkbw.jpg</picture>
-<vendor>CS</vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -377,7 +377,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уровень секретности для CD дисков, DIN 66399">нет</param>
 <param name="Уровень секретности, DIN 66399 P">4</param>
 <param name="Шредер Powershred® LX200">Шредер нового поколения с непревзойденным удобством и эффективностью</param>
-<keywords>CS, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, Шредер, Fellowes, Powershred, LX200, черный, DIN, P-4, 4х12, мм, 12, лст, 22, лтр, Jam, Proof, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™, Шредер, Powershred, LX200, черный, DIN, P-4, 4х12, мм, 12, лст, 22, лтр, Jam, Proof, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="AC5502501" available="true">
@@ -386,7 +386,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK</name>
 <price>180900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/281/1a1og9zpxrw1qbsutii9i9elydc1jk82.jpg</picture>
-<vendor>CS</vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -442,7 +442,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уровень шума без загрузки, дБ">65</param>
 <param name="Уровень шума под нагрузкой, дБ">70</param>
 <param name="Шредер Powershred® LX210">Шредер нового поколения с непревзойденным удобством и эффективностью</param>
-<keywords>CS, Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK, Шредер, Fellowes, Powershred, LX210, BLACK, SHREDDER, EU, UK, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>Fellowes, Шредер Fellowes® Powershred® LX210 BLACK SHREDDER EU/UK, Шредер, Powershred, LX210, BLACK, SHREDDER, EU, UK, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="AC5716701" available="true">
@@ -3517,7 +3517,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт.</name>
 <price>7900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/2c6/dv2dugkdu1rsjq6c7zxnuekczvyqqgvn.jpg</picture>
-<vendor>CS</vendor>
+<vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -3538,7 +3538,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Толщина (мкм)">80</param>
 <param name="Формат">А4</param>
 <param name="Формат А4 (216х303мм)">Количество в упаковке 100 шт</param>
-<keywords>CS, Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт., Пленка, для, ламинирования, А4, Fellowes, 80мкм, 100, шт, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>Fellowes, Пленка для ламинирования А4 Fellowes, 80мкм, 100 шт., Пленка, для, ламинирования, А4, 80мкм, 100, шт, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACG3410" available="true">
