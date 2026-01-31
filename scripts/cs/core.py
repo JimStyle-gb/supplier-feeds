@@ -1955,6 +1955,29 @@ CS_BRANDS_MAP = {
     "dell": "Dell",
     "logitech": "Logitech",
     "xiaomi": "Xiaomi",
+
+    "xerox": "Xerox",
+    "kyocera": "Kyocera",
+    "ricoh": "Ricoh",
+    "pantum": "Pantum",
+    "oki": "OKI",
+    "lexmark": "Lexmark",
+    "konica": "Konica Minolta",
+    "minolta": "Konica Minolta",
+    "fujifilm": "FUJIFILM",
+    "huawei": "Huawei",
+    "deli": "Deli",
+    "olivetti": "Olivetti",
+    "panasonic": "Panasonic",
+    "riso": "Riso",
+    "avision": "Avision",
+    "fellowes": "Fellowes",
+    "viewsonic": "ViewSonic",
+    "philips": "Philips",
+    "zebra": "Zebra",
+    "euro print": "Euro Print",
+    "designjet": "HP",
+    "mr.pixel": "Mr.Pixel",
 }
 
 
@@ -2001,7 +2024,7 @@ def pick_vendor(
         if re.search(rf"\b{re.escape(key)}\b", hay):
             return canon
 
-    return norm_ws(public_vendor) or "CS"
+    return norm_ws(public_vendor)
 
 
 @dataclass
