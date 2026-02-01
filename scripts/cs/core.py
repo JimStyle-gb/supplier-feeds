@@ -677,6 +677,43 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
             params.append((k, v))
 
 # Лёгкое обогащение характеристик из name/description (когда у поставщика params бедные)
+
+def _extract_color_from_name(name: str) -> str:
+    """Вынимает цвет из НАЗВАНИЯ (name). Возвращает каноническое значение на русском или ''."""
+    s = norm_ws(name)
+    if not s:
+        return ""
+
+    # Многоцветный
+    if re.search(r"(?i)\b(cmyk|цветн\w*)\b", s):
+        return "Цветной"
+
+    # Чёрный
+    if re.search(r"(?i)\b(black|черн\w*)\b", s):
+        return "Черный"
+
+    # Голубой (Cyan)
+    if re.search(r"(?i)\b(cyan|голуб\w*)\b", s):
+        return "Голубой"
+
+    # Пурпурный (Magenta)
+    if re.search(r"(?i)\b(magenta|маджент\w*|пурпур\w*)\b", s):
+        return "Пурпурный"
+
+    # Жёлтый (Yellow)
+    if re.search(r"(?i)\b(yellow|ж[её]лт\w*)\b", s):
+        return "Желтый"
+
+    # Серый (Gray/Grey)
+    if re.search(r"(?i)\b(gray|grey|сер\w*)\b", s):
+        return "Серый"
+
+    # Синий (если явно написано)
+    if re.search(r"(?i)\bсин(ий|яя|ее|ее)\b", s):
+        return "Синий"
+
+    return ""
+
 def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, desc_text: str) -> None:
     name = name or ""
     desc_text = desc_text or ""
@@ -711,13 +748,28 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
         if m:
             params.append(("Ресурс", m.group(1)))
             keys_cf.add("ресурс")
-
     # Цвет
-    if not _has("Цвет"):
-        m = re.search(r"(?i)\b(черн\w*|black|cyan|magenta|yellow|синий|голуб\w*|пурпур\w*|ж[её]лт\w*)\b", hay)
-        if m:
-            params.append(("Цвет", norm_ws(m.group(1))))
-            keys_cf.add("цвет")
+    # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
+    color_from_name = _extract_color_from_name(name)
+    if color_from_name:
+        # обновляем существующий "Цвет" (если был) или добавляем
+        updated = False
+        for i, (k, v) in enumerate(list(params)):
+            if norm_ws(k).casefold() == "цвет":
+                if norm_ws(v).casefold() != norm_ws(color_from_name).casefold():
+                    params[i] = ("Цвет", color_from_name)
+                updated = True
+                break
+        if not updated:
+            params.append(("Цвет", color_from_name))
+        keys_cf.add("цвет")
+    else:
+        # Если цвета в названии нет — можно попробовать вытащить из имени+описания
+        if not _has("Цвет"):
+            m = re.search(r"(?i)\b(черн\w*|black|cyan|magenta|yellow|синий|голуб\w*|пурпур\w*|ж[её]лт\w*|сер\w*|gray|grey)\b", hay)
+            if m:
+                params.append(("Цвет", norm_ws(m.group(1))))
+                keys_cf.add("цвет")
 
 
 # Делает текст описания "без странностей" (убираем лишние пробелы)
@@ -732,6 +784,9 @@ def fix_text(s: str) -> str:
             return False
         # типичные ключи паспорта/склада
         if re.search(r"(?i)^(CRC|Retail\s*Bar\s*Code|Retail\s*Barcode|Bar\s*Code|Barcode|EAN|GTIN|SKU)\b", s2):
+            return (":" in s2) or ("\t" in s2)
+        # русские служебные строки (VTT часто так пишет)
+        if re.search(r"(?i)^(Артикул|Каталожн\w*\s*номер|Кат\.\s*номер|OEM(?:-номер)?|ОЕМ(?:-номер)?|Код\s*производител\w*|Код\s*товара|Штрих[-\s]?код)\b", s2):
             return (":" in s2) or ("\t" in s2)
         if re.search(r"(?i)^Дата\s*(ввода|вывода|введения|обновления)\b", s2):
             return (":" in s2) or ("\t" in s2)
