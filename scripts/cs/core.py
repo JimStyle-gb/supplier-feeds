@@ -2126,6 +2126,10 @@ CS_BRANDS_MAP = {
     "svc": "SVC",
     "apc": "APC",
     "schneider": "Schneider Electric",
+    "cyberpower": "CyberPower",
+    "cyber-power": "CyberPower",
+    "cyber power": "CyberPower",
+    "smart": "SMART",
     "asus": "ASUS",
     "lenovo": "Lenovo",
     "acer": "Acer",
@@ -2224,6 +2228,10 @@ def pick_vendor(
     v = norm_ws(vendor_src)
     if v:
         return normalize_vendor(v)
+
+    # CS: спец-правило для SMART интерактивных панелей (модельный префикс SBID-)
+    if name and re.search(r"\bSBID-", name, flags=re.IGNORECASE):
+        return "SMART"
 
     def _find_in(text: str) -> str:
         if not text:
