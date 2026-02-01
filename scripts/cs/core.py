@@ -135,6 +135,99 @@ def norm_ws(s: str) -> str:
     s2 = fix_mixed_cyr_lat(s2)
     return s2.strip()
 
+def normalize_offer_name(name: str) -> str:
+    # CS: лёгкая типографика имени (без изменения смысла)
+    s = norm_ws(name)
+    if not s:
+        return ""
+    # "дляPantum" -> "для Pantum"
+    s = re.sub(r"\bдля(?=[A-ZА-Я])", "для ", s)
+    # убрать пробелы перед знаками
+    s = re.sub(r"\s+([,.;:!?])", r"\1", s)
+    # убрать лишние пробелы внутри скобок
+    s = re.sub(r"\(\s+", "(", s)
+    s = re.sub(r"\s+\)", ")", s)
+    # хвостовая запятая
+    s = re.sub(r",\s*$", "", s)
+    s = re.sub(r"\s{2,}", " ", s).strip()
+    return s
+
+
+_RE_COLOR_TOKENS = [
+    ("Голубой", re.compile(r"\bcyan\b", re.IGNORECASE)),
+    ("Пурпурный", re.compile(r"\bmagenta\b", re.IGNORECASE)),
+    ("Желтый", re.compile(r"\byellow\b", re.IGNORECASE)),
+    ("Черный", re.compile(r"\bblack\b", re.IGNORECASE)),
+    ("Серый", re.compile(r"\bgr(?:a|e)y\b", re.IGNORECASE)),
+    # RU
+    ("Голубой", re.compile(r"\bголуб(?:ой|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
+    ("Пурпурный", re.compile(r"\bпурпурн(?:ый|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
+    ("Пурпурный", re.compile(r"\bмаджент(?:а|овый|овая|овое|овые)\b", re.IGNORECASE)),
+    ("Желтый", re.compile(r"\bжелт(?:ый|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
+    ("Черный", re.compile(r"\bчерн(?:ый|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
+    ("Серый", re.compile(r"\bсер(?:ый|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
+]
+
+_RE_HI_BLACK = re.compile(r"\bhi[-\s]?black\b", re.IGNORECASE)
+
+
+def extract_color_from_name(name: str) -> str:
+    # CS: цвет берём строго из имени (без ложных совпадений на бренд Hi-Black)
+    s = normalize_offer_name(name)
+    if not s:
+        return ""
+    s = _RE_HI_BLACK.sub(" ", s)
+    found: list[str] = []
+    for color, rx in _RE_COLOR_TOKENS:
+        if rx.search(s):
+            if color not in found:
+                found.append(color)
+    if not found:
+        return ""
+    if len(found) > 1:
+        return "Цветной"
+    return found[0]
+
+
+def apply_color_from_name(params: Sequence[tuple[str, str]], name: str) -> list[tuple[str, str]]:
+    # CS: если в имени явно указан цвет — перезаписываем param "Цвет"
+    color = extract_color_from_name(name)
+    if not color:
+        return list(params or [])
+    out: list[tuple[str, str]] = []
+    for k, v in params or []:
+        kk = norm_ws(k)
+        vv = norm_ws(v)
+        if kk.casefold().replace("ё", "е") == "цвет":
+            out.append(("Цвет", color))
+        else:
+            out.append((kk, vv))
+    return out
+
+
+_RE_SERVICE_KV = re.compile(
+    r"^(?:артикул|каталожный номер|oem\s*-?номер|oem\s*номер|ш?трих\s*-?код|штрихкод|код товара|код производителя|аналоги|аналог)\s*[:\-].*$",
+    re.IGNORECASE,
+)
+
+
+def strip_service_kv_lines(text: str) -> str:
+    # CS: удаляем служебные строки "Ключ: значение" из текста описания
+    raw = fix_text(text or "")
+    if not raw:
+        return ""
+    lines = [ln.strip() for ln in raw.split("\n")]
+    keep: list[str] = []
+    for ln in lines:
+        if not ln:
+            continue
+        if _RE_SERVICE_KV.match(ln):
+            continue
+        keep.append(ln)
+    return "\n".join(keep).strip()
+
+
+
 
 
 # Нормализация "смешанная кириллица/латиница" внутри слов.
@@ -2065,6 +2158,19 @@ CS_BRANDS_MAP = {
     "euro print": "Euro Print",
     "designjet": "HP",
     "mr.pixel": "Mr.Pixel",
+    "hyperx": "HyperX",
+    "aoc": "AOC",
+    "benq": "BenQ",
+    "lg": "LG",
+    "msi": "MSI",
+    "gigabyte": "GIGABYTE",
+    "tp-link": "TP-Link",
+    "tplink": "TP-Link",
+    "mikrotik": "MikroTik",
+    "ubiquiti": "Ubiquiti",
+    "d-link": "D-Link",
+    "europrint": "Euro Print",
+    "brothe": "Brother",
 }
 
 
@@ -2075,6 +2181,17 @@ def normalize_vendor(v: str) -> str:
     v = str(v).strip()
     if not v:
         return ""
+    v_cf = v.casefold().replace("ё", "е")
+    # частые алиасы/опечатки
+    if v_cf.startswith("epson proj"):
+        v = "Epson"
+    elif v_cf.startswith("brothe"):
+        v = "Brother"
+    elif v_cf.startswith("europrint"):
+        v = "Euro Print"
+    # унификация Konica Minolta
+    if "konica" in v_cf and "minolta" in v_cf:
+        v = "Konica Minolta"
     # нормализуем слэш-списки (HP/Canon)
     parts = [p.strip() for p in re.split(r"\s*/\s*", v) if p.strip()]
     norm_parts: list[str] = []
@@ -2161,10 +2278,11 @@ class OfferOut:
         public_vendor: str = "CS",
         param_priority: Sequence[str] | None = None,
     ) -> str:
-        name = norm_ws(self.name)
+        name = normalize_offer_name(self.name)
         native_desc = fix_text(self.native_desc)
         # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
         native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
+        native_desc = strip_service_kv_lines(native_desc)
         vendor = pick_vendor(self.vendor, name, self.params, native_desc, public_vendor=public_vendor)
 
         # тройное обогащение: params + из описания
@@ -2177,6 +2295,7 @@ class OfferOut:
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
         params = apply_supplier_param_rules(params, self.oid, name)
+        params = apply_color_from_name(params, name)
         params_sorted = sort_params(params, priority=list(param_priority or []))
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
