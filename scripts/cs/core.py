@@ -96,6 +96,7 @@ CS_PAY_BLOCK = (
 # Параметры, которые нужно выкидывать из <param> и из "Характеристик"
 PARAM_DROP_DEFAULT = {
     "Штрихкод",
+    "Артикул",
     "Новинка",
     "Снижена цена",
     "Благотворительность",
@@ -651,6 +652,38 @@ def clean_params(
 
     return out
 
+def apply_supplier_param_rules(params: Sequence[tuple[str, str]], oid: str, name: str) -> list[tuple[str, str]]:
+    """Точечные правила по поставщикам/категориям для <param> и блока характеристик.
+    - Удаляем служебные params (Артикул добавляется/может приходить извне)
+    - VTT: удаляем Каталожный номер/Штрих-код/Аналоги, OEM-номер -> Партномер
+    - CopyLine: для 'Кабель сетевой' удаляем 'Совместимость'
+    """
+    oid_u = (oid or "").upper()
+    name_cf = (name or "").strip().casefold()
+    is_vtt = oid_u.startswith("VT")
+    is_copyline = oid_u.startswith("CL")
+    out: list[tuple[str, str]] = []
+    for k, v in params or []:
+        kk = norm_ws(k)
+        vv = norm_ws(v)
+        if not kk or not vv:
+            continue
+        k_cf = kk.casefold().replace("ё", "е")
+        # глобально: не выводим служебный 'Артикул' как характеристику
+        if k_cf == "артикул":
+            continue
+        if is_vtt:
+            # VTT: чистим служебные параметры
+            if k_cf in {"каталожный номер", "аналоги", "аналог", "штрихкод", "штрих-код", "штрих код"}:
+                continue
+            # VTT: OEM-номер -> Партномер
+            if k_cf in {"oem-номер", "oem номер", "oem", "oem номер детали", "oem номер/part number"}:
+                kk = "Партномер"
+        if is_copyline and name_cf.startswith("кабель сетевой") and (k_cf == "совместимость"):
+            continue
+        out.append((kk, vv))
+    return out
+
 # Сортирует параметры: сначала приоритетные, затем по алфавиту
 def sort_params(params: Sequence[tuple[str, str]], priority: Sequence[str] | None = None) -> list[tuple[str, str]]:
     pr = [norm_ws(x) for x in (priority or []) if norm_ws(x)]
@@ -731,16 +764,23 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
             params.append(("Тип", first))
             keys_cf.add("тип")
 
-    # Совместимость (простая эвристика по "для ...")
-    if not (_has("Совместимость") or _has("Совместимые модели") or _has("Для") or _has("Применение")):
-        m = re.search(r"(?i)\bдля\s+([^\n\r,;]{3,120})", hay)
-        if m:
-            val = norm_ws(m.group(1))
-            if len(val) > 140:
-                val = val[:140].rstrip(" ,")
-            if val:
-                params.append(("Совместимость", val))
-                keys_cf.add("совместимость")
+
+    # Для сетевых кабелей 'Совместимость' как правило бессмысленна — не добавляем автоматически
+    if re.match(r"(?i)^кабель\s+сетевой\b", name.strip()):
+        pass
+    else:
+
+        # Совместимость (простая эвристика по "для ...")
+        if not (_has("Совместимость") or _has("Совместимые модели") or _has("Для") or _has("Применение")):
+            m = re.search(r"(?i)\bдля\s+([^\n\r,;]{3,120})", hay)
+            if m:
+                val = norm_ws(m.group(1))
+                if len(val) > 140:
+                    val = val[:140].rstrip(" ,")
+                if val:
+                    params.append(("Совместимость", val))
+                    keys_cf.add("совместимость")
+
 
     # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
@@ -1662,20 +1702,9 @@ def ensure_min_chars_params(
 ) -> list[tuple[str, str]]:
     """Если характеристик слишком мало — добавляем безопасные пункты (без выдумывания фактов)."""
     ps = list(params_sorted or [])
-
-    def _has_key(key: str) -> bool:
-        kcf = key.casefold()
-        return any(norm_ws(k).casefold() == kcf for k, _ in ps)
-
-    if len(ps) < int(min_items):
-        if not _has_key("Артикул"):
-            ps.append(("Артикул", norm_ws(oid)))
-
-    if len(ps) < int(min_items):
-        if not _has_key("Код товара"):
-            ps.append(("Код товара", norm_ws(oid)))
-
     return sort_params(ps, priority=list(priority or []))
+
+
 
 
 
@@ -2147,6 +2176,7 @@ class OfferOut:
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
+        params = apply_supplier_param_rules(params, self.oid, name)
         params_sorted = sort_params(params, priority=list(param_priority or []))
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
