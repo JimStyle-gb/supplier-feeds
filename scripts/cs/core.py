@@ -1956,9 +1956,12 @@ CS_BRANDS_MAP = {
     "logitech": "Logitech",
     "xiaomi": "Xiaomi",
 
+    "ripo": "RIPO",
     "xerox": "Xerox",
     "kyocera": "Kyocera",
     "ricoh": "Ricoh",
+    "toshiba": "Toshiba",
+    "integral": "INTEGRAL",
     "pantum": "Pantum",
     "oki": "OKI",
     "lexmark": "Lexmark",
@@ -2011,22 +2014,49 @@ def pick_vendor(
     *,
     public_vendor: str = "CS",
 ) -> str:
+    # CS: vendor выбираем единообразно для всех поставщиков:
+    # 1) если vendor_src задан адаптером — используем его,
+    # 2) иначе ищем бренд по имени товара,
+    # 3) затем по описанию,
+    # 4) затем по параметрам,
+    # 5) иначе fallback (public_vendor), который НЕ должен быть названием поставщика.
     v = norm_ws(vendor_src)
     if v:
         return normalize_vendor(v)
 
-    hay = " ".join(
-        [name or "", desc_html or ""]
-        + [f"{k} {val}" for k, val in (params or [])]
-    ).lower()
+    def _find_in(text: str) -> str:
+        if not text:
+            return ""
+        hay = text.lower()
+        best_canon = ""
+        best_pos = 10**9
+        for key, canon in CS_BRANDS_MAP.items():
+            m = re.search(rf"\b{re.escape(key)}\b", hay)
+            if m:
+                pos = m.start()
+                if pos < best_pos:
+                    best_pos = pos
+                    best_canon = canon
+        return best_canon
 
-    for key, canon in CS_BRANDS_MAP.items():
-        if re.search(rf"\b{re.escape(key)}\b", hay):
-            return canon
+    # 1) name
+    cand = _find_in(name or "")
+    if cand:
+        return cand
+
+    # 2) description (HTML)
+    cand = _find_in(desc_html or "")
+    if cand:
+        return cand
+
+    # 3) params
+    if params:
+        joined = " ".join([f"{k} {val}" for k, val in params])
+        cand = _find_in(joined)
+        if cand:
+            return cand
 
     return norm_ws(public_vendor)
-
-
 @dataclass
 class OfferOut:
     oid: str
