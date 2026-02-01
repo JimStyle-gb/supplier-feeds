@@ -177,6 +177,12 @@ def extract_color_from_name(name: str) -> str:
     if not s:
         return ""
     s = _RE_HI_BLACK.sub(" ", s)
+    # CS: нормализуем 'ё' → 'е', чтобы ловить 'чёрный/жёлтый'
+    s = s.replace("ё", "е").replace("Ё", "Е")
+    # CS: если явно указан составной цвет (черный+цвет / black+color) → Цветной
+    if re.search(r"\b(черн\w*|black)\b\s*\+\s*\b(цвет(?:н\w*)?|colou?r)\b", s, re.IGNORECASE) or \
+       re.search(r"\b(цвет(?:н\w*)?|colou?r)\b\s*\+\s*\b(черн\w*|black)\b", s, re.IGNORECASE):
+        return "Цветной"
     found: list[str] = []
     for color, rx in _RE_COLOR_TOKENS:
         if rx.search(s):
