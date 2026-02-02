@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-02 14:43">
+<yml_catalog date="2026-02-02 18:13">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-02 14:43:33
+Время сборки (Алматы)                      | 2026-02-02 18:13:33
 Ближайшая сборка (Алматы)                  | 2026-02-03 02:00:00
-Сколько товаров у поставщика до фильтра    | 1627
-Сколько товаров у поставщика после фильтра | 156
-Сколько товаров есть в наличии (true)      | 156
+Сколько товаров у поставщика до фильтра    | 1637
+Сколько товаров у поставщика после фильтра | 155
+Сколько товаров есть в наличии (true)      | 155
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -3304,34 +3304,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный, Картридж, C13T692500, T3000, 5000, 7000, Т3200, 5200, 7200, матовый, черный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T694100" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T694100</vendorCode>
-<name>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
-<price>241900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/f6b/tc1jcv3quat1vv5xtm2vl3z0vkhx4ju1.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный</h3><p>Фото черный картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson C13T694100 для T3000/5000/7000, Т3200/5200/7200</param>
-<param name="Тип">Картридж EPSON</param>
-<param name="Цвет">Черный</param>
-<param name="Для бренда">Epson</param>
-<param name="Ресурс">700 мл</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Картридж Epson C13T694100 T3000/5000/7000, Т3200/5200/7200 фото черный, Картридж, C13T694100, T3000, 5000, 7000, Т3200, 5200, 7200, фото, черный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T69430N" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T69430N</vendorCode>
@@ -3640,7 +3612,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Проектор ViewSonic LS550WH</name>
 <price>371900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/273/a909adi7e43b6lraf98py01kdwnv3gwf.jpg</picture>
-<vendor>ViewSonic proj</vendor>
+<vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -3655,7 +3627,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Тип">Проектор</param>
 <param name="Совместимость">бизнеса и образования. Используя ведущую в отрасли светодиодную технологию 3-го поколения</param>
 <param name="Цвет">Белый</param>
-<keywords>ViewSonic proj, Проектор ViewSonic LS550WH, Проектор, ViewSonic, LS550WH, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>ViewSonic, Проектор ViewSonic LS550WH, Проектор, LS550WH, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACM2" available="true">
@@ -4249,7 +4221,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <name>Проектор для дом. кино ViewSonic PX701-4K</name>
 <price>528900</price>
 <picture>https://b2b.ak-cent.kz/upload/iblock/e2d/csr3ey63zq14xg6uk6z5oxkdv9b8sn3m.jpg</picture>
-<vendor>ViewSonic proj</vendor>
+<vendor>ViewSonic</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
 <!-- WhatsApp -->
@@ -4291,7 +4263,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Уровень шума (норм./эконом.) Дб">27</param>
 <param name="Яркость">3200 ANSI люменов, что позволяет использовать проектор даже в условиях с ярким освещением.</param>
 <param name="Яркость (ANSI) лмн">3200</param>
-<keywords>ViewSonic proj, Проектор для дом. кино ViewSonic PX701-4K, Проектор, для, дом, кино, ViewSonic, PX701-4K, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+<keywords>ViewSonic, Проектор для дом. кино ViewSonic PX701-4K, Проектор, для, дом, кино, PX701-4K, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACS102ABK43" available="true">
