@@ -192,6 +192,9 @@ def extract_color_from_name(name: str) -> str:
     # CS: если "Color" стоит В КОНЦЕ (вариант картриджа), а не в середине (Color LaserJet)
     if re.search(r"(?i)\bcolor\b\s*(?:\)|\]|\}|$)", s):
         return "Цветной"
+    # CS: если "Color" идёт перед "для/for" (вариант картриджа), считаем цветной
+    if re.search(r"(?i)\bcolor\b\s*(?:для|for)\b", s):
+        return "Цветной"
     # CS: если явно указан составной цвет (черный+цвет / black+color) → Цветной
     if re.search(r"\b(черн\w*|black)\b\s*\+\s*\b(цвет(?:н\w*)?|colou?r)\b", s, re.IGNORECASE) or \
        re.search(r"\b(цвет(?:н\w*)?|colou?r)\b\s*\+\s*\b(черн\w*|black)\b", s, re.IGNORECASE):
@@ -209,19 +212,25 @@ def extract_color_from_name(name: str) -> str:
 
 
 def apply_color_from_name(params: Sequence[tuple[str, str]], name: str) -> list[tuple[str, str]]:
-    # CS: если в имени явно указан цвет — перезаписываем param "Цвет"
+    # CS: если в имени явно указан цвет — перезаписываем param "Цвет"; если param отсутствует — добавляем
     color = extract_color_from_name(name)
+    base_params = list(params or [])
     if not color:
-        return list(params or [])
+        return base_params
     out: list[tuple[str, str]] = []
-    for k, v in params or []:
+    found = False
+    for k, v in base_params:
         kk = norm_ws(k)
         vv = norm_ws(v)
         if kk.casefold().replace("ё", "е") == "цвет":
             out.append(("Цвет", color))
+            found = True
         else:
             out.append((kk, vv))
+    if not found:
+        out.append(("Цвет", color))
     return out
+
 
 
 def normalize_color_value(raw: str) -> str:
@@ -2310,6 +2319,8 @@ def normalize_vendor(v: str) -> str:
     # частые алиасы/опечатки
     if v_cf.startswith("epson proj"):
         v = "Epson"
+    elif v_cf.startswith("viewsonic proj"):
+        v = "ViewSonic"
     elif v_cf.startswith("brothe"):
         v = "Brother"
     elif v_cf.startswith("europrint"):
