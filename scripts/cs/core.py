@@ -142,6 +142,12 @@ def normalize_offer_name(name: str) -> str:
         return ""
     # "дляPantum" -> "для Pantum"
     s = re.sub(r"\bдля(?=[A-ZА-Я])", "для ", s)
+    # "(аналогDL-5120)" -> "(аналог DL-5120)" (только если далее заглавная/цифра)
+    s = re.sub(r"(?i)\bаналог(?=[A-ZА-Я0-9])", "аналог ", s)
+    # двойной слэш в моделях
+    s = s.replace("//", "/")
+    # ",Color" -> ", Color"
+    s = re.sub(r"(?i),\s*color\b", ", Color", s)
     # убрать пробелы перед знаками
     s = re.sub(r"\s+([,.;:!?])", r"\1", s)
     # убрать лишние пробелы внутри скобок
@@ -163,6 +169,7 @@ _RE_COLOR_TOKENS = [
     ("Голубой", re.compile(r"\bголуб(?:ой|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
     ("Пурпурный", re.compile(r"\bпурпурн(?:ый|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
     ("Пурпурный", re.compile(r"\bмаджент(?:а|овый|овая|овое|овые)\b", re.IGNORECASE)),
+    ("Пурпурный", re.compile(r"\bмалин(?:овый|овая|овое|овые|ого|ому|ым|ых)\b", re.IGNORECASE)),
     ("Желтый", re.compile(r"\bжелт(?:ый|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
     ("Черный", re.compile(r"\bчерн(?:ый|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
     ("Серый", re.compile(r"\bсер(?:ый|ая|ое|ые|ого|ому|ым|ых)\b", re.IGNORECASE)),
@@ -179,6 +186,12 @@ def extract_color_from_name(name: str) -> str:
     s = _RE_HI_BLACK.sub(" ", s)
     # CS: нормализуем 'ё' → 'е', чтобы ловить 'чёрный/жёлтый'
     s = s.replace("ё", "е").replace("Ё", "Е")
+    # CS: явные маркеры "цветной"
+    if re.search(r"(?i)\b(cmyk|cmy)\b", s) or re.search(r"(?i)\bцветн\w*\b", s):
+        return "Цветной"
+    # CS: если "Color" стоит В КОНЦЕ (вариант картриджа), а не в середине (Color LaserJet)
+    if re.search(r"(?i)\bcolor\b\s*(?:\)|\]|\}|$)", s):
+        return "Цветной"
     # CS: если явно указан составной цвет (черный+цвет / black+color) → Цветной
     if re.search(r"\b(черн\w*|black)\b\s*\+\s*\b(цвет(?:н\w*)?|colou?r)\b", s, re.IGNORECASE) or \
        re.search(r"\b(цвет(?:н\w*)?|colou?r)\b\s*\+\s*\b(черн\w*|black)\b", s, re.IGNORECASE):
@@ -811,40 +824,10 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
 # Лёгкое обогащение характеристик из name/description (когда у поставщика params бедные)
 
 def _extract_color_from_name(name: str) -> str:
-    """Вынимает цвет из НАЗВАНИЯ (name). Возвращает каноническое значение на русском или ''."""
-    s = norm_ws(name)
-    if not s:
-        return ""
+    """CS: совместимость со старым именем функции (цвет из name)."""
+    return extract_color_from_name(name)
 
-    # Многоцветный
-    if re.search(r"(?i)\b(cmyk|цветн\w*)\b", s):
-        return "Цветной"
 
-    # Чёрный
-    if re.search(r"(?i)\b(black|черн\w*)\b", s):
-        return "Черный"
-
-    # Голубой (Cyan)
-    if re.search(r"(?i)\b(cyan|голуб\w*)\b", s):
-        return "Голубой"
-
-    # Пурпурный (Magenta)
-    if re.search(r"(?i)\b(magenta|маджент\w*|пурпур\w*)\b", s):
-        return "Пурпурный"
-
-    # Жёлтый (Yellow)
-    if re.search(r"(?i)\b(yellow|ж[её]лт\w*)\b", s):
-        return "Желтый"
-
-    # Серый (Gray/Grey)
-    if re.search(r"(?i)\b(gray|grey|сер\w*)\b", s):
-        return "Серый"
-
-    # Синий (если явно написано)
-    if re.search(r"(?i)\bсин(ий|яя|ее|ее)\b", s):
-        return "Синий"
-
-    return ""
 
 def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, desc_text: str) -> None:
     name = name or ""
@@ -889,6 +872,16 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
             keys_cf.add("ресурс")
     # Цвет
     # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
+    # CS: убираем мусорные значения цвета (чтобы не блокировать автодетект по name)
+    _bad_colors = {"сердцевина"}
+    for i in range(len(params) - 1, -1, -1):
+        k, v = params[i]
+        if norm_ws(k).casefold() == "цвет":
+            vv = norm_ws(v).casefold()
+            if vv in _bad_colors:
+                del params[i]
+                keys_cf.discard("цвет")
+
     color_from_name = _extract_color_from_name(name)
     if color_from_name:
         # обновляем существующий "Цвет" (если был) или добавляем
