@@ -224,6 +224,98 @@ def apply_color_from_name(params: Sequence[tuple[str, str]], name: str) -> list[
     return out
 
 
+def normalize_color_value(raw: str) -> str:
+    # CS: нормализация значения цвета (из params/описания) → каноническая форма
+    s = norm_ws(raw)
+    if not s:
+        return ""
+    s2 = s.replace("ё", "е").replace("Ё", "Е").strip()
+    low = s2.casefold()
+
+    # CS: составные маркеры (цветной)
+    if re.search(r"\b(cmyk|cmy)\b", low):
+        return "Цветной"
+    if re.search(r"\bcmy\s*\+\s*bk\b|\bbk\s*\+\s*cmy\b", low):
+        return "Цветной"
+    if re.search(r"\bbk[,/ ]*c[,/ ]*m[,/ ]*y\b|\bc[,/ ]*m[,/ ]*y[,/ ]*bk\b", low):
+        return "Цветной"
+    if re.search(r"\b(?:4|6)\s*color\b", low):
+        return "Цветной"
+
+    # CS: английские/аббревиатуры
+    if low in {"black", "bk"}:
+        return "Черный"
+    if low in {"cyan"}:
+        return "Голубой"
+    if low in {"magenta"}:
+        return "Пурпурный"
+    if low in {"yellow"}:
+        return "Желтый"
+    if low in {"gray", "grey"}:
+        return "Серый"
+    if low in {"red"}:
+        return "Красный"
+    if low in {"light grey", "light gray", "lgy"}:
+        return "Серый"
+    if low in {"chroma optimize", "chroma optimizer", "chroma optimise", "chroma optimiser"}:
+        return "Прозрачный"
+
+    # CS: русские базовые
+    mapping = {
+        "черный": "Черный",
+        "серый": "Серый",
+        "желтый": "Желтый",
+        "голубой": "Голубой",
+        "пурпурный": "Пурпурный",
+        "маджента": "Пурпурный",
+        "цветной": "Цветной",
+        "серебряный": "Серебряный",
+        "белый": "Белый",
+        "синий": "Синий",
+        "красный": "Красный",
+        "зеленый": "Зеленый",
+        "прозрачный": "Прозрачный",
+        "фиолетовый": "Фиолетовый",
+        "золотой": "Золотой",
+    }
+    if low in mapping:
+        return mapping[low]
+
+    # CS: если пришло уже в правильном виде
+    if s2 in {"Черный", "Серый", "Желтый", "Голубой", "Пурпурный", "Цветной", "Серебряный", "Белый", "Синий", "Красный", "Зеленый", "Прозрачный", "Фиолетовый", "Золотой"}:
+        return s2
+
+    # CS: если внутри есть явное слово цвета (без стемов вроде 'сер\w*')
+    if re.search(r"\bчерн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Черный"
+    if re.search(r"\bсер(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Серый"
+    if re.search(r"\bж[её]лт(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Желтый"
+    if re.search(r"\bголуб(?:ой|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Голубой"
+    if re.search(r"\bпурпур(?:ный|ная|ное|ные|ного|ному|ным|ными|ных)\b", low):
+        return "Пурпурный"
+    if re.search(r"\bкрасн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Красный"
+    if re.search(r"\bсин(?:ий|яя|ее|ие|его|ему|им|ими|их)\b", low):
+        return "Синий"
+    if re.search(r"\bзел[её]н(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Зеленый"
+    if re.search(r"\bбел(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Белый"
+    if re.search(r"\bсеребрян(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Серебряный"
+    if re.search(r"\bпрозрачн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Прозрачный"
+    if re.search(r"\bфиолетов(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Фиолетовый"
+    if re.search(r"\bзолот(?:ой|ая|ое|ые|ого|ому|ым|ыми|ых)\b", low):
+        return "Золотой"
+
+    return ""
+
+
 _RE_SERVICE_KV = re.compile(
     r"^(?:артикул|каталожный номер|oem\s*-?номер|oem\s*номер|ш?трих\s*-?код|штрихкод|код товара|код производителя|аналоги|аналог)\s*[:\-].*$",
     re.IGNORECASE,
@@ -872,13 +964,22 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
             keys_cf.add("ресурс")
     # Цвет
     # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
-    # CS: убираем мусорные значения цвета (чтобы не блокировать автодетект по name)
-    _bad_colors = {"сердцевина"}
+    # CS: чистим мусорные значения ("сервисам", "сертифицированном", "серии" и т.п.) и нормализуем допустимые.
+    _bad_color_re = re.compile(r"(?i)\b(сервис\w*|сертифиц\w*|сертификац\w*|сер(?:ии|ий|ия))\b")
     for i in range(len(params) - 1, -1, -1):
         k, v = params[i]
         if norm_ws(k).casefold() == "цвет":
-            vv = norm_ws(v).casefold()
-            if vv in _bad_colors:
+            vv_raw = norm_ws(v)
+            vv_cf = vv_raw.casefold().replace("ё", "е")
+            if vv_cf in {"сердцевина", "по одному на каждый цвет", "комбинированный"} or _bad_color_re.search(vv_raw):
+                del params[i]
+                keys_cf.discard("цвет")
+                continue
+            vv_norm = normalize_color_value(vv_raw)
+            if vv_norm:
+                params[i] = ("Цвет", vv_norm)
+            elif len(vv_raw) > 24 and " " in vv_raw:
+                # CS: длинные фразы обычно не цвет
                 del params[i]
                 keys_cf.discard("цвет")
 
@@ -898,10 +999,31 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
     else:
         # Если цвета в названии нет — можно попробовать вытащить из имени+описания
         if not _has("Цвет"):
-            m = re.search(r"(?i)\b(черн\w*|black|cyan|magenta|yellow|синий|голуб\w*|пурпур\w*|ж[её]лт\w*|сер\w*|gray|grey)\b", hay)
+            m = re.search(
+                r"(?i)\b("
+                r"cmyk|cmy|cmy\s*\+\s*bk|bk\s*\+\s*cmy|bk[,/ ]*c[,/ ]*m[,/ ]*y|c[,/ ]*m[,/ ]*y[,/ ]*bk|"
+                r"black|bk|cyan|magenta|yellow|gray|grey|red|light\s*grey|light\s*gray|lgy|chroma\s*optim(?:ize|iser|izer)|"
+                r"черн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"сер(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"ж[её]лт(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"голуб(?:ой|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"пурпур(?:ный|ная|ное|ные|ного|ному|ным|ными|ных)|"
+                r"син(?:ий|яя|ее|ие|его|ему|им|ими|их)|"
+                r"красн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"зел[её]н(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"бел(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"серебрян(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"прозрачн(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"фиолетов(?:ый|ая|ое|ые|ого|ому|ым|ыми|ых)|"
+                r"золот(?:ой|ая|ое|ые|ого|ому|ым|ыми|ых)"
+                r")\b",
+                hay,
+            )
             if m:
-                params.append(("Цвет", norm_ws(m.group(1))))
-                keys_cf.add("цвет")
+                canon = normalize_color_value(m.group(0))
+                if canon:
+                    params.append(("Цвет", canon))
+                    keys_cf.add("цвет")
 
 
 # Делает текст описания "без странностей" (убираем лишние пробелы)
