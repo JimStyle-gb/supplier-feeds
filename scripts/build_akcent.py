@@ -62,6 +62,9 @@ AKCENT_NAME_PREFIXES_CF = tuple((p or "").casefold() for p in AKCENT_NAME_PREFIX
 # Параметры AkCent, которые не являются характеристиками (только для этого поставщика)
 AKCENT_PARAM_DROP = {"Сопутствующие товары"}
 
+# CS: исключаем "картриджи для фильтра/бутылки" Philips AWP (не наша категория)
+AKCENT_DROP_ARTICLES = {"AWP201/10", "AWP286/10"}
+
 # Иногда поставщик кладёт страну в vendor/Производитель — такие значения лучше не использовать как бренд
 COUNTRY_VENDOR_BLACKLIST_CF = {
     "китай", "china",
@@ -298,6 +301,14 @@ def main() -> int:
     for offer in offers_in:
         name = _get_text(offer.find("name"))
         if not name or not _passes_name_prefixes(name):
+            continue
+
+        # CS: выкидываем "картриджи для фильтра/бутылки" (Philips AWP) из ассортимента
+        art_raw = (offer.get("article") or "").strip()
+        if art_raw in AKCENT_DROP_ARTICLES:
+            continue
+        ncf = (name or "").casefold()
+        if ("картридж" in ncf or "cartridge" in ncf) and ("фильтр" in ncf or "filter" in ncf or "бутылк" in ncf or "bottle" in ncf) and ("philips" in ncf or "awp" in ncf):
             continue
 
         oid = _make_oid(offer, name)
