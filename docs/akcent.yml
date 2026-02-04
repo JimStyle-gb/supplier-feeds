@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-04 02:24">
+<yml_catalog date="2026-02-05 02:24">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-04 02:24:53
-Ближайшая сборка (Алматы)                  | 2026-02-05 02:00:00
-Сколько товаров у поставщика до фильтра    | 1629
+Время сборки (Алматы)                      | 2026-02-05 02:24:10
+Ближайшая сборка (Алматы)                  | 2026-02-06 02:00:00
+Сколько товаров у поставщика до фильтра    | 1624
 Сколько товаров у поставщика после фильтра | 152
 Сколько товаров есть в наличии (true)      | 152
 Сколько товаров нет в наличии (false)      | 0
@@ -3106,91 +3106,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T67364A L800/1800/810/850 светло-пурпурный, Чернила, C13T67364A, L800, 1800, 810, 850, светло-пурпурный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T692100" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T692100</vendorCode>
-<name>Картридж Epson C13T692100 T3000/5000/7000, Т3200/5200/7200 фото черный</name>
-<price>59900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/f3e/s3gcxq4vbvyay96nmx1la4hichwzh5y9.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж Epson C13T692100 T3000/5000/7000, Т3200/5200/7200 фото черный</h3><p>Фото черный картридж 110ml, для:<br>Epson SureColor T-3000,<br>Epson SureColor T-5000,<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T692100 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 110 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Картридж C13T692100 для T3000/5000/7000, Т3200/5200/7200</param>
-<param name="Тип">Картридж EPSON</param>
-<param name="Цвет">Черный</param>
-<param name="Для бренда">Epson</param>
-<param name="Ресурс">110 мл</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Картридж Epson C13T692100 T3000/5000/7000, Т3200/5200/7200 фото черный, Картридж, C13T692100, T3000, 5000, 7000, Т3200, 5200, 7200, фото, черный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC13T69220N" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T69220N</vendorCode>
-<name>Картридж Epson Singlepack UltraChrome XD CyanT69220N (110ml)</name>
-<price>59900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/b9a/ph1ogqk715elc7530uftr9edi3fk1mjq.png</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж Epson Singlepack UltraChrome XD CyanT69220N (110ml)</h3><p>Картридж струйный Epson голубой C13T69220N для принтеров  SC-T3000/5000/7000 110ml<br>Модели ниже совместимы с одним или несколькими товарами в этом диапазоне. Для получения более подробной информации, пожалуйста, обратитесь к ссылкам ниже или к руководству по вашему продукту.<br>SureColor SC-T7200D (двойной рулон)<br>SureColor SC-T7200D (комплект для двухрулонной печати Post Script)<br>SureColor SC-T7200 PostScript и HDD<br>SureColor SC-T7200 (с подставкой)<br>SureColor SC-T5200PS - (модуль Adobe PostScript)<br>SureColor SC-T5200D-PS (модуль Adobe PostScript)<br>МФУ SureColor SC-T5200D PS<br>SureColor SC-T5200D (двойной рулон)<br>МФУ SureColor SC-T5200 PS<br>МФУ SureColor SC-T5200<br>SureColor SC-T5200<br>SureColor SC-T3200N - (Без подставки)<br>SureColor SC-T3200-PS (с модулем Adobe Postscript)<br>Серия SureColor SC-T3200<br>SureColor SC-T3200 (с подставкой)<br>SureColor SC-T3000 (без подставки)<br>Epson SureColor SC-T7000 POS<br>Epson SureColor SC-T7000<br>Epson SureColor SC-T5000 POS<br>Epson SureColor SC-T5000<br>Epson SureColor SC-T3000 POS<br>Epson SureColor SC-T3000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T08054011 для P50/PX660</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Совместимость:</strong> принтеров SC-T3000/5000/7000 110ml</li><li><strong>Цвет:</strong> голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 330 стр.</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Картридж C13T08054011 для P50/PX660</param>
-<param name="Тип">Картридж EPSON</param>
-<param name="Совместимость">принтеров SC-T3000/5000/7000 110ml</param>
-<param name="Цвет">голубой</param>
-<param name="Для бренда">Epson</param>
-<param name="Ресурс">330 стр.</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Картридж Epson Singlepack UltraChrome XD CyanT69220N (110ml), Картридж, Singlepack, UltraChrome, XD, CyanT69220N, 110ml, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC13T69230N" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T69230N</vendorCode>
-<name>Картридж Epson C13T69230N T3000/5000/7000, Т3200/5200/7200 пурпурный</name>
-<price>59900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/74c/vi3hweiwqodw02f1yqf9n6ax0ixt2w1h.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж Epson C13T69230N T3000/5000/7000, Т3200/5200/7200 пурпурный</h3><p>Пурпурный картридж 110ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T692300 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Пурпурный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 110 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Картридж C13T692300 для T3000/5000/7000, Т3200/5200/7200</param>
-<param name="Тип">Картридж EPSON</param>
-<param name="Цвет">Пурпурный</param>
-<param name="Для бренда">Epson</param>
-<param name="Ресурс">110 мл</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Картридж Epson C13T69230N T3000/5000/7000, Т3200/5200/7200 пурпурный, Картридж, C13T69230N, T3000, 5000, 7000, Т3200, 5200, 7200, пурпурный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T692500" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T692500</vendorCode>
@@ -3219,6 +3134,34 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T692500 T3000/5000/7000, Т3200/5200/7200 матовый черный, Картридж, C13T692500, T3000, 5000, 7000, Т3200, 5200, 7200, матовый, черный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
+<offer id="ACC13T69420N" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T69420N</vendorCode>
+<name>Картридж Epson C13T69420N T3000/5000/7000, Т3200/5200/7200 голубой</name>
+<price>241900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Картридж Epson C13T69420N T3000/5000/7000, Т3200/5200/7200 голубой</h3><p>Голубой картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694200 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Голубой</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson</param>
+<param name="Модель">Epson Картридж C13T694200 для T3000/5000/7000, Т3200/5200/7200</param>
+<param name="Тип">Картридж EPSON</param>
+<param name="Цвет">Голубой</param>
+<param name="Для бренда">Epson</param>
+<param name="Ресурс">700 мл</param>
+<param name="Страна происхождения">Индонезия</param>
+<param name="Тип печати">струйная</param>
+<keywords>Epson, Картридж Epson C13T69420N T3000/5000/7000, Т3200/5200/7200 голубой, Картридж, C13T69420N, T3000, 5000, 7000, Т3200, 5200, 7200, голубой, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
 <offer id="ACC13T69430N" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T69430N</vendorCode>
@@ -3245,6 +3188,62 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Индонезия</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Картридж Epson C13T69430N T3000/5000/7000, Т3200/5200/7200 пурпурный, Картридж, C13T69430N, T3000, 5000, 7000, Т3200, 5200, 7200, пурпурный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="ACC13T69440N" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T69440N</vendorCode>
+<name>Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый</name>
+<price>241900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый</h3><p>Желтый картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694400 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Желтый</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson</param>
+<param name="Модель">Epson Картридж C13T694400 для T3000/5000/7000, Т3200/5200/7200</param>
+<param name="Тип">Картридж EPSON</param>
+<param name="Цвет">Желтый</param>
+<param name="Для бренда">Epson</param>
+<param name="Ресурс">700 мл</param>
+<param name="Страна происхождения">Индонезия</param>
+<param name="Тип печати">струйная</param>
+<keywords>Epson, Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый, Картридж, C13T69440N, T3000, 5000, 7000, Т3200, 5200, 7200, желтый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="ACC13T694500" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T694500</vendorCode>
+<name>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
+<price>241900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</h3><p>Матовый черный картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694500 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson</param>
+<param name="Модель">Epson Картридж C13T694500 для T3000/5000/7000, Т3200/5200/7200</param>
+<param name="Тип">Картридж EPSON</param>
+<param name="Цвет">Черный</param>
+<param name="Для бренда">Epson</param>
+<param name="Ресурс">700 мл</param>
+<param name="Страна происхождения">Индонезия</param>
+<param name="Тип печати">струйная</param>
+<keywords>Epson, Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный, Картридж, C13T694500, T3000, 5000, 7000, Т3200, 5200, 7200, матовый, черный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC13T699700" available="true">
