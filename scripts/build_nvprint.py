@@ -37,8 +37,6 @@ from cs.core import (
 OUT_FILE = "docs/nvprint.yml"
 OUTPUT_ENCODING = "utf-8"
 
-# Заглушка фото (если у товара нет фото/карточки)
-PLACEHOLDER_PIC = "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
 
 # Если описание уже похоже на CS — не берём native_desc (иначе будет дубль секций)
 RE_DESC_HAS_CS = re.compile(r"<!--\s*WhatsApp\s*-->|<!--\s*Описание\s*-->|<h3>\s*Характеристики\s*</h3>", re.I)
@@ -449,7 +447,7 @@ def _collect_pictures(item: ET.Element) -> list[str]:
             pics = [u]
 
     if not pics:
-        return [PLACEHOLDER_PIC]
+        return []
 
     # уникализация
     seen = set()
@@ -827,3 +825,6 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+#!/usr/bin/env python3
