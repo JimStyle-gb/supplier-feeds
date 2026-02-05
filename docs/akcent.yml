@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-05 22:12">
+<yml_catalog date="2026-02-05 23:02">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-05 22:12:38
+Время сборки (Алматы)                      | 2026-02-05 23:02:21
 Ближайшая сборка (Алматы)                  | 2026-02-06 02:00:00
 Сколько товаров у поставщика до фильтра    | 1637
 Сколько товаров у поставщика после фильтра | 152
@@ -315,7 +315,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>AC5050201</vendorCode>
 <name>Шредер Fellowes® POWERSHRED LX211 BLACK SHREDDER(MICRO CUT) 230V EU/UK</name>
 <price>204900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1</picture>
 <vendor>Fellowes</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1290,7 +1290,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC11CJ62404</vendorCode>
 <name>МФУ Epson L6260 фабрика печати, Wi-Fi</name>
 <price>344900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -1851,7 +1851,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T03P14A</vendorCode>
 <name>Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL</name>
 <price>13900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
