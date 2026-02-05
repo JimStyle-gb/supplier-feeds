@@ -19,7 +19,7 @@ def _pick_copyline_best_picture(pictures: list[str]) -> list[str]:
     Берём только картинки из img_products, чистим мусор, сохраняем порядок (full_* сначала).
     """
     if not pictures:
-        return [PLACEHOLDER_PIC]
+        return []
 
     cleaned: list[str] = []
     seen: set[str] = set()
@@ -44,7 +44,7 @@ def _pick_copyline_best_picture(pictures: list[str]) -> list[str]:
         cleaned.append(p)
 
     if not cleaned:
-        return [PLACEHOLDER_PIC]
+        return []
 
     def is_full(u: str) -> bool:
         base = u.split("/")[-1]
@@ -54,7 +54,7 @@ def _pick_copyline_best_picture(pictures: list[str]) -> list[str]:
     normals = [u for u in cleaned if not is_full(u)]
 
     # если на странице есть только обычное фото — его и оставим
-    return (fulls + normals) if (fulls + normals) else [PLACEHOLDER_PIC]
+    return (fulls + normals) if (fulls + normals) else []
 def _pick_copyline_picture(pics: list[str]) -> list[str]:
     """# CopyLine: одна картинка на товар — full_ если есть, иначе обычная. Только img_products."""
     if not pics:
@@ -837,7 +837,7 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
 
     # все фото (только img_products, full_* приоритет)
     pics = _pick_copyline_best_picture(pics)
-    pic = (pics[0] if pics else PLACEHOLDER_PIC)
+    pic = (pics[0] if pics else CS_PICTURE_PLACEHOLDER_URL)
 
 
 
@@ -944,8 +944,7 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
         "desc": desc_txt.strip(),
         "pics": pics,
         "pic": pic,
-        "pics": pics,
-        "params": [(k, v) for (k, v) in params2 if not re.fullmatch(r"\d{1,4}", k.strip())],
+                "params": [(k, v) for (k, v) in params2 if not re.fullmatch(r"\d{1,4}", k.strip())],
         "url": url,
         "price_raw": int(price_raw or 0),
         "available": bool(available),
