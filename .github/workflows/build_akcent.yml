@@ -31,6 +31,7 @@ jobs:
     env:
       TZ: "Asia/Almaty"
       OUTPUT_ENCODING: "utf-8"
+      CS_PICTURE_PLACEHOLDER_URL: "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
       PYTHONUTF8: "1"
       PIP_PACKAGES: "requests"
       SCHEDULE_DOM: "*"
