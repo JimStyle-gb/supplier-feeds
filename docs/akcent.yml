@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-05 02:24">
+<yml_catalog date="2026-02-05 11:15">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-05 02:24:10
+Время сборки (Алматы)                      | 2026-02-05 11:15:43
 Ближайшая сборка (Алматы)                  | 2026-02-06 02:00:00
-Сколько товаров у поставщика до фильтра    | 1624
-Сколько товаров у поставщика после фильтра | 152
-Сколько товаров есть в наличии (true)      | 152
+Сколько товаров у поставщика до фильтра    | 1632
+Сколько товаров у поставщика после фильтра | 153
+Сколько товаров есть в наличии (true)      | 153
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1859,6 +1859,36 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Чернила Epson C13T01L14A EcoTank MX1XX Series Black Bottle L 40 ml, Чернила, C13T01L14A, EcoTank, MX1XX, Series, Black, Bottle, L, 40, ml, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
+<offer id="ACC13T03P14A" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC13T03P14A</vendorCode>
+<name>Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL</name>
+<price>13900</price>
+<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL</h3><p>Тип: Фабрика печати (чернила EPSON); Производитель: Epson; Модель: Epson Чернила EcoTank MX1XX Series Black Bottle XL</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Чернила EcoTank MX1XX Series Black Bottle XL</li><li><strong>Тип:</strong> Фабрика печати (чернила EPSON)</li><li><strong>Цвет:</strong> Черный</li><li><strong>Epson M1100:</strong> C11CG95405</li><li><strong>Epson M1120:</strong> C11CG96405</li><li><strong>Epson M2140:</strong> C11CG27405</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Индонезия. Филиппин/Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson</param>
+<param name="Модель">Epson Чернила EcoTank MX1XX Series Black Bottle XL</param>
+<param name="Тип">Фабрика печати (чернила EPSON)</param>
+<param name="Цвет">Черный</param>
+<param name="Epson M1100">C11CG95405</param>
+<param name="Epson M1120">C11CG96405</param>
+<param name="Epson M2140">C11CG27405</param>
+<param name="Для бренда">Epson</param>
+<param name="Страна происхождения">Индонезия. Филиппин/Филиппины</param>
+<param name="Тип печати">струйная</param>
+<keywords>Epson, Чернила Epson C13T03P14A EcoTank MX1XX Series Black Bottle XL, Чернила, C13T03P14A, EcoTank, MX1XX, Series, Black, Bottle, XL, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
 <offer id="ACC13T03V24A" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T03V24A</vendorCode>
@@ -3139,7 +3169,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T69420N</vendorCode>
 <name>Картридж Epson C13T69420N T3000/5000/7000, Т3200/5200/7200 голубой</name>
 <price>241900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/973/wk2ec2t3cmr9rlnkibu81efn1i9syhg5.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3195,7 +3225,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T69440N</vendorCode>
 <name>Картридж Epson C13T69440N T3000/5000/7000, Т3200/5200/7200 желтый</name>
 <price>241900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/425/s87ply3o1mrfsaztv4enkhrxmbes9jtj.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
@@ -3223,7 +3253,7 @@ URL поставщика                             | https://ak-cent.kz/export
 <vendorCode>ACC13T694500</vendorCode>
 <name>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
 <price>241900</price>
-<picture>https://placehold.co/800x800/png?text=No+Photo</picture>
+<picture>https://b2b.ak-cent.kz/upload/iblock/860/sprl22huykjcd4jt6m78i3su9rqt9ddg.jpg</picture>
 <vendor>Epson</vendor>
 <currencyId>KZT</currencyId>
 <description><![CDATA[
