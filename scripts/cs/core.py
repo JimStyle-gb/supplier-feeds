@@ -765,6 +765,9 @@ def clean_params(
 
     def _norm_key(k: str) -> str:
         kk = norm_ws(k)
+        # ':' в имени параметра — обычно разделитель вида 'ключ : единица'. Убираем.
+        if ':' in kk:
+            kk = norm_ws(re.sub(r"\s*:\s*", " ", kk))
         if not kk:
             return ""
         # Срезаем мусорные ведущие символы (например, невидимые emoji/вариации)
@@ -813,6 +816,27 @@ def clean_params(
                 raw_k = base.strip()
         k = raw_k
         v = raw_v
+
+        # Артефакт парсинга: ключ "Кол" + значение "во ..." (разбитое "Кол-во ...")
+        if norm_ws(k).casefold() == "кол" and v.startswith("во "):
+            tail = norm_ws(v)[2:].strip()
+            if ":" in tail:
+                subk, subv = tail.split(":", 1)
+                subk = norm_ws(subk)
+                subv = norm_ws(subv)
+                k = (f"Кол-во {subk}" if subk else "Кол-во")
+                v = subv
+            else:
+                m2 = re.match(r"(.+?)\s+(\d+(?:[.,]\d+)?)\s*(.*)$", tail)
+                if m2:
+                    subj = norm_ws(m2.group(1))
+                    num = m2.group(2)
+                    rest = norm_ws(m2.group(3))
+                    k = (f"Кол-во {subj}" if subj else "Кол-во")
+                    v = (num + (" " + rest if rest else "")).strip()
+                else:
+                    k = "Кол-во"
+                    v = tail
 
         kk = _norm_key(k)
         vv = _norm_val(kk, v)
