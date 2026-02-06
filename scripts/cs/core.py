@@ -101,7 +101,6 @@ PARAM_DROP_DEFAULT = {
     "Снижена цена",
     "Благотворительность",
     "Код товара Kaspi",
-    "Код товара",
     "Код ТН ВЭД",
     "Назначение",
 }
@@ -611,39 +610,82 @@ def _is_sane_dims(v: str) -> bool:
 
 # Эвристика: похоже ли значение "Совместимость" на список моделей/серий (а не на общее назначение "для дома")
 def _looks_like_model_compat(v: str) -> bool:
-    s = (v or '').strip()
+    s = norm_ws(v)
     if not s:
         return False
     scf = s.casefold()
 
-    # быстрый негатив: явное назначение/маркетинг чаще всего НЕ совместимость
-    if re.search(r"(?i)\bдля\s+(дома|офиса|защиты|работы|печати|обучения|школы|склада|магазина)\b", s):
+    # CS: ссылки/маркетинг в "Совместимость" — мусор
+    if "http://" in scf or "https://" in scf or "www." in scf:
+        return False
+    if ("™" in s or "®" in s) and len(s) > 40:
         return False
 
-    # короткие коды моделей (типа Q2612A, TN-1075, 12A)
-    if re.search(r"\b[A-Z]{1,4}[- ]?\d{2,6}[A-Z]{0,2}\b", s):
+    has_sep = bool(re.search(r"[,;/\\|]", s))
+    tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9\-]+", s)
+    word_count = len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", s))
+
+    # ! ? … — всегда предложение; точка — только если после буквы (не "1.0" и не "1010.")
+    has_sentence = bool(re.search(r"[!?…]", s)) or bool(re.search(r"(?<=[A-Za-zА-Яа-яЁё])\.(?:\s|$)", s))
+
+    # бренды/линейки (часто встречающиеся в совместимости)
+    brands = r"(xerox|hp|canon|epson|brother|samsung|kyocera|ricoh|konica|minolta|lexmark|oki|pantum|dell|sharp|olivetti|toshiba|triumph|adler|panasonic)"
+
+    # токены моделей (буквы+цифры)
+    model_tokens = 0
+    for t in tokens:
+        if re.search(r"\d", t) and re.search(r"[A-Za-zА-Яа-яЁё]", t):
+            model_tokens += 1
+        elif re.match(r"^[A-Z]{1,4}\d{2,6}[A-Z]{0,3}$", t):
+            model_tokens += 1
+
+    cyr_words = [t for t in tokens if re.search(r"[а-яё]", t.casefold())]
+    series_hits = sum(
+        1 for t in tokens
+        if t.casefold() in {
+            "laserjet", "deskjet", "officejet", "pixma", "ecotank", "workforce",
+            "workcentre", "versalink", "taskalfa", "ecosys", "bizhub", "i-sensys", "lbp", "mfp", "phaser"
+        }
+    )
+
+    # 1) Списки (коммы/слэши/точки с запятой) и цифры — почти всегда модели
+    if has_sep and re.search(r"\d", s):
         return True
 
-    # цифры/серии почти всегда означают модели
-    if re.search(r"\d", s):
+    # 2) Типовая форма "для принтеров ..."
+    if scf.startswith("для ") and re.search(r"\d", s):
         return True
 
-    # бренды и линейки (частые для расходников/принтеров)
-    if re.search(r"\b(hp|canon|epson|brother|samsung|xerox|kyocera|ricoh|lexmark|oki|panasonic|konica|minolta|pantum|dell|sharp|olivetti|toshiba)\b", scf):
-        return True
-    if re.search(r"\b(laserjet|deskjet|officejet|pixma|ecotank|workforce|bizhub|taskalfa|workcentre|versalink|ecosys)\b", scf):
+    # 3) Короткие коды/серии (без предложений) — ok
+    if (not has_sentence) and len(s) <= 40 and re.search(r"\d", s) and word_count <= 10:
         return True
 
-    # разделители сами по себе не гарантируют совместимость (абзацы тоже содержат запятые)
-    if any(ch in s for ch in [',', ';', '/', '\\', '|']):
-        parts = [p.strip() for p in re.split(r"\s*[,;/\\|]\s*", s) if p.strip()]
-        if len(parts) >= 2 and all(len(p) <= 60 for p in parts):
-            # если хотя бы в одном фрагменте есть модельный код/цифры — считаем совместимостью
-            if any(re.search(r"\b[A-Z]{1,4}[- ]?\d{2,6}[A-Z]{0,2}\b", p) or re.search(r"\d", p) for p in parts):
-                return True
+    # 4) Много моделей — ok
+    if model_tokens >= 2:
+        return True
 
-    # по умолчанию: если без признаков моделей — это НЕ совместимость
+    # 5) Коротко + бренд — ok (Sharp C-CUBE, Olivetti PR II, Xerox ...)
+    if len(tokens) <= 6 and re.search(rf"\b{brands}\b", scf):
+        return True
+
+    # 6) Маркетинг/предложения: длинный русскоязычный текст без списков и с точкой после слова
+    if has_sentence and (not has_sep) and word_count >= 7 and len(cyr_words) >= 3 and model_tokens <= 2:
+        stop = {
+            "и","в","во","на","с","со","к","по","при","для","от","это","даже","если","чтобы",
+            "как","но","или","то","же","также","еще","уже","благодаря","обеспечивает","используя",
+            "работы","дома","офиса","победы","плавного","максимальной","четкости","детализации"
+        }
+        stop_hits = sum(1 for t in cyr_words if t.casefold() in stop)
+        ratio = stop_hits / max(1, len(cyr_words))
+        if len(s) > 45 or ratio >= 0.2:
+            return False
+
+    # 7) 1 модель + бренд/линейка — ok
+    if model_tokens >= 1 and (series_hits >= 1 or re.search(rf"\b{brands}\b", scf)):
+        return True
+
     return False
+
 
 def _cs_trim_float(v: str, max_decimals: int = 4) -> str:
     # CS: аккуратно укорачиваем длинные дроби (объём/вес/габариты) для читаемости
@@ -769,23 +811,6 @@ def clean_params(
                 elif tail.casefold() not in raw_v.casefold():
                     raw_v = (raw_v + " " + tail).strip()
                 raw_k = base.strip()
-
-        # артефакт: "Кол: во ..." -> "Кол-во ..."
-        if raw_k.strip().casefold() == "кол" and raw_v.strip().casefold().startswith("во"):
-            rv = raw_v.strip()
-            rv = re.sub(r"(?i)^во\s+", "", rv).strip()
-            if rv:
-                if ":" in rv:
-                    subk, subv = rv.split(":", 1)
-                    raw_k = ("Кол-во " + subk.strip()).strip()
-                    raw_v = subv.strip()
-                else:
-                    # "во X 4" или "во X=4"
-                    m2 = re.match(r"(.+?)\s+([0-9].*)$", rv)
-                    if m2:
-                        raw_k = ("Кол-во " + m2.group(1).strip()).strip()
-                        raw_v = m2.group(2).strip()
-
         k = raw_k
         v = raw_v
 
@@ -846,7 +871,7 @@ def clean_params(
             display[key_cf] = kk
             order.append(key_cf)
 
-        # Совместимость — объединяем (но только если это похоже на модели/серии), остальное — берём первое значение
+        # Совместимость — объединяем, но пропускаем мусор (маркетинг/предложения)
         if key_cf == "совместимость":
             if not _looks_like_model_compat(vv):
                 continue
@@ -997,15 +1022,10 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
     # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        # CS: ловим числа с разделителями тысяч (70 000 / 70,000 / 70.000) и нормализуем -> 70000
-        m = re.search(r"(?i)\b(\d[\d\s\u00a0.,]{0,10}\d)\s*(?:стр\.?|страниц\w*|pages?)\b", hay)
+        m = re.search(r"(?i)\b(\d{2,5})\s*(?:стр|страниц\w*|pages?)\b", hay)
         if m:
-            raw = m.group(1)
-            digits = re.sub(r"[^0-9]", "", raw)
-            # защита от артефакта "000"
-            if digits and not re.fullmatch(r"0+", digits):
-                params.append(("Ресурс", digits))
-                keys_cf.add("ресурс")
+            params.append(("Ресурс", m.group(1)))
+            keys_cf.add("ресурс")
     # Цвет
     # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
     # CS: чистим мусорные значения ("сервисам", "сертифицированном", "серии" и т.п.) и нормализуем допустимые.
@@ -1095,35 +1115,6 @@ def fix_text(s: str) -> str:
 
     if t:
         t = "\n".join([ln for ln in t.split("\n") if not _is_service_line(ln)])
-
-    # Склеиваем строки вида "Ключ:" + перенос + "значение" -> "Ключ: значение"
-    if t:
-        lines = t.split("\n")
-        out_lines: list[str] = []
-        i = 0
-        while i < len(lines):
-            ln = lines[i]
-            if ln.rstrip().endswith(":") and (i + 1) < len(lines):
-                nxt = (lines[i + 1] or "").strip()
-                if nxt and (len(ln.strip()) <= 60) and (len(nxt) <= 160):
-                    out_lines.append(ln.rstrip() + " " + nxt)
-                    i += 2
-                    continue
-            out_lines.append(ln)
-            i += 1
-
-        # удаляем одиночные заголовки-обрубки
-        cleaned2: list[str] = []
-        junk_heads = {"ключевые", "общие"}
-        for j, ln in enumerate(out_lines):
-            s2 = (ln or "").strip()
-            if s2 and s2.casefold() in junk_heads:
-                prev_blank = (j == 0) or (out_lines[j - 1].strip() == "")
-                next_blank = (j == len(out_lines) - 1) or (out_lines[j + 1].strip() == "")
-                if prev_blank and next_blank:
-                    continue
-            cleaned2.append(ln)
-        t = "\n".join(cleaned2)
 
     # строки, которые состоят только из пробелов/табов, считаем пустыми
     if t:
