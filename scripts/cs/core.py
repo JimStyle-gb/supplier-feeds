@@ -975,7 +975,22 @@ def enrich_params_from_desc(params: list[tuple[str, str]], desc_html: str) -> No
         k = norm_ws(m.group(1))
         v = norm_ws(m.group(2))
         if k and v:
+            # CS: артефакт парсинга вида 'Кол: во ...' -> 'Кол-во ...'
+            if k.casefold() == "кол" and v.lower().startswith("во"):
+                m2 = re.match(r"(?i)^во\s+(.+)$", v)
+                rest = norm_ws(m2.group(1)) if m2 else ""
+                if rest:
+                    if ":" in rest:
+                        k2, v2 = rest.split(":", 1)
+                        k2 = norm_ws(k2)
+                        v2 = norm_ws(v2)
+                        if k2 and v2:
+                            params.append((f"Кол-во {k2}", v2))
+                            continue
+                    params.append(("Кол-во", rest))
+                    continue
             params.append((k, v))
+
 
 # Лёгкое обогащение характеристик из name/description (когда у поставщика params бедные)
 
@@ -1022,10 +1037,12 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
 
     # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
-        m = re.search(r"(?i)\b(\d{2,5})\s*(?:стр|страниц\w*|pages?)\b", hay)
+        m = re.search(r"(?i)\b(\d[\d\s\.,]{0,10}\d|\d{2,7})\s*(?:стр|страниц\w*|pages?)\b", hay)
         if m:
-            params.append(("Ресурс", m.group(1)))
-            keys_cf.add("ресурс")
+            num = re.sub(r"[^\d]", "", m.group(1))
+            if len(num) >= 2 and not re.fullmatch(r"0+", num):
+                params.append(("Ресурс", num))
+                keys_cf.add("ресурс")
     # Цвет
     # ВАЖНО: если цвет явно указан в НАЗВАНИИ — он приоритетнее параметров (исправляем конфликт).
     # CS: чистим мусорные значения ("сервисам", "сертифицированном", "серии" и т.п.) и нормализуем допустимые.
