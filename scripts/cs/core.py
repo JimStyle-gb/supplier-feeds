@@ -615,6 +615,10 @@ def _looks_like_model_compat(v: str) -> bool:
         return False
     scf = s.casefold()
 
+    # CS: "увеличения/использования ..." — это описание назначения, а не список моделей
+    if scf.startswith(("увеличения ", "использования ")):
+        return False
+
     # CS: ссылки/маркетинг в "Совместимость" — мусор
     if "http://" in scf or "https://" in scf or "www." in scf:
         return False
