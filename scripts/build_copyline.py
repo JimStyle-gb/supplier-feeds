@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 CopyLine adapter — сборщик по шаблону CS (использует scripts/cs/core.py).
 Задача адаптера: забрать данные поставщика (sitemap + сайт) и отдать в CS ядро список OfferOut.
@@ -55,6 +54,38 @@ def _pick_copyline_best_picture(pictures: list[str]) -> list[str]:
 
     # если на странице есть только обычное фото — его и оставим
     return (fulls + normals) if (fulls + normals) else []
+def _pick_copyline_picture(pics: list[str]) -> list[str]:
+    """# CopyLine: одна картинка на товар — full_ если есть, иначе обычная. Только img_products."""
+    if not pics:
+        return []
+
+    def norm(u: str) -> str:
+        u = (u or "").strip()
+        u = u.split("#", 1)[0]
+        return u
+
+    candidates: list[str] = []
+    for u in pics:
+        u = norm(u)
+        if not u:
+            continue
+        if "components/com_jshopping/files/img_products/" not in u:
+            continue
+        if "/img_products/thumb_" in u:
+            continue
+        candidates.append(u)
+
+    if not candidates:
+        return []
+
+    # full_ приоритет
+    for u in candidates:
+        base = u.rsplit("/", 1)[-1]
+        if base.startswith("full_"):
+            return [u]
+
+    return [candidates[0]]
+
 VERBOSE = os.environ.get("VERBOSE", "0") in ("1","true","True","yes","YES")
 
 def log(*args, **kwargs) -> None:
@@ -1321,3 +1352,4 @@ if __name__ == "__main__":
     raise SystemExit(main())
 
 
+# -*- coding: utf-8 -*-
