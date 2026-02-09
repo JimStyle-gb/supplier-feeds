@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-09 13:05">
+<yml_catalog date="2026-02-09 16:16">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-09 13:05:59
+Время сборки (Алматы)                      | 2026-02-09 16:16:22
 Ближайшая сборка (Алматы)                  | 2026-02-10 02:00:00
-Сколько товаров у поставщика до фильтра    | 1654
-Сколько товаров у поставщика после фильтра | 162
-Сколько товаров есть в наличии (true)      | 162
+Сколько товаров у поставщика до фильтра    | 1648
+Сколько товаров у поставщика после фильтра | 160
+Сколько товаров есть в наличии (true)      | 160
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -923,42 +923,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, МФУ Epson L15150 фабрика печати, МФУ, L15150, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC11CH81301A0" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CH81301A0</vendorCode>
-<name>Плоттер Epson SureColor SC-T5700D</name>
-<price>3680900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/516/561s4kd54qbk6gdkooz2o47ijp4dvvdh.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Плоттер Epson SureColor SC-T5700D</h3><p>Высокопроизводительный принтер формата А0 для инженерных задач и печати рекламных материалов<br>Скорость печати до 28 сек на отпечаток А1<br>Печатающая головка нового поколения Epson PrecisionCore TFP<br>Картриджи емкостью 110,350 или 700 мл<br>Пигментные чернила Epson UltraChrome XD<br>Печать на листовых и рулонных носителях шириной печати 36 дюймов (914 мм.)<br>Опциональный сканер формата 36”<br>Поддержка PostScript 3<br>Опциональный жесткий диск емкостью 320 Гб<br>Компактный дизайн, полностью фронтальное управление<br>Качественные, яркие отпечатки, устойчивые к смазыванию и попаданию воды</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson SureColor SC-T5200</li><li><strong>Тип:</strong> CAD</li><li><strong>Совместимость:</strong> C13T692100,C13T692200,C13T692300,C13T692400,C13T692500,C13T693100,C13T693200,C13T693300,C13T693400,C</li><li><strong>Интерфейс:</strong> USB*Ethernet/Fast Ethernet</li><li><strong>Количество слотов для картриджей:</strong> 5</li><li><strong>Комплектация:</strong> Принтер, Подставка, Руководство пользователя, CD диск с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей, Гарантийный талон, Адаптеры для рулона, Основные свойства Устройство Широкоформатный принтер, Применение •Для ГИС, Для КАД, Для презентационных материалов, Для точек продаж</li><li><strong>Минимальная плотность бумаги, г/м2:</strong> 210</li><li><strong>Область применения:</strong> CAD</li><li><strong>Разрешение печати,dpi:</strong> 2880x1440</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> Картриджи</li><li><strong>Тип чернил:</strong> пигментные</li><li><strong>Формат:</strong> A0</li><li><strong>Цветность:</strong> 4 цвета</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson SureColor SC-T5200</param>
-<param name="Тип">CAD</param>
-<param name="Совместимость">C13T692100,C13T692200,C13T692300,C13T692400,C13T692500,C13T693100,C13T693200,C13T693300,C13T693400,C</param>
-<param name="Интерфейс">USB*Ethernet/Fast Ethernet</param>
-<param name="Количество слотов для картриджей">5</param>
-<param name="Комплектация">Принтер, Подставка, Руководство пользователя, CD диск с программным обеспечением и драйверами, Сетевой кабель, Набор чернильных картриджей, Гарантийный талон, Адаптеры для рулона, Основные свойства Устройство Широкоформатный принтер, Применение •Для ГИС, Для КАД, Для презентационных материалов, Для точек продаж</param>
-<param name="Минимальная плотность бумаги, г/м2">210</param>
-<param name="Область применения">CAD</param>
-<param name="Разрешение печати,dpi">2880x1440</param>
-<param name="Страна происхождения">Китай</param>
-<param name="Тип печати">струйная</param>
-<param name="Тип расходных материалов">Картриджи</param>
-<param name="Тип чернил">пигментные</param>
-<param name="Формат">A0</param>
-<param name="Цветность">4 цвета</param>
-<keywords>Epson, Плоттер Epson SureColor SC-T5700D, Плоттер, SureColor, SC-T5700D, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC11CH96404" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC11CH96404</vendorCode>
@@ -1690,32 +1654,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Китай</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600, Ёмкость, для, отработанных, чернил, C12C890191, SP7600, SP9600, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="ACC12C934591" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC12C934591</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX</name>
-<price>21900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/245/g5dm2vx8ypcll0npk4ae89s9od8448oo.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX</h3><p>Емкость для отработанных чернил<br>L15150</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Ёмкость для отработанных чернил C12C934591 для WF-78XX/ET-166XX MAINTENANCE BOX</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> C11CJ04404,C11CH72404,C11CH71404,C11CJ30404,C11CJ41404,C11CJ28404,C11CJ20404,C11CJ21403</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Ёмкость для отработанных чернил C12C934591 для WF-78XX/ET-166XX MAINTENANCE BOX</param>
-<param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">C11CJ04404,C11CH72404,C11CH71404,C11CJ30404,C11CJ41404,C11CJ28404,C11CJ20404,C11CJ21403</param>
-<param name="Для бренда">Epson</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX, Ёмкость, для, отработанных, чернил, C12C934591, WF-78XX, ET-166XX, MAINTENANCE, BOX, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC13T00Q140" available="true">
