@@ -29,8 +29,8 @@ jobs:
     env:
       TZ: "Asia/Almaty"
       OUTPUT_ENCODING: "utf-8"
-      CS_PICTURE_PLACEHOLDER_URL: "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
       PYTHONUTF8: "1"
+      CS_PICTURE_PLACEHOLDER_URL: "https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1"
       PIP_PACKAGES: "requests beautifulsoup4 lxml"
       SCHEDULE_DOM: "1,10,20"
       SCHEDULE_HOUR_ALMATY: "3"
@@ -51,14 +51,14 @@ jobs:
           import os
           from datetime import datetime
           from zoneinfo import ZoneInfo
-          
+
           event = (os.getenv('GITHUB_EVENT_NAME','') or '').strip()
           dom = (os.getenv('SCHEDULE_DOM','') or '').strip()
           hour = (os.getenv('SCHEDULE_HOUR_ALMATY','') or '').strip()
-          
+
           now_alm = datetime.now(ZoneInfo('Asia/Almaty'))
           almaty_now = now_alm.strftime('%Y-%m-%d %H:%M:%S')
-          
+
           run = 'yes'
           day_ok = True
           allowed = dom or '*'
@@ -67,9 +67,9 @@ jobs:
               allowed = ','.join(str(x) for x in sorted(allowed_set)) if allowed_set else '(empty)'
               day_ok = (now_alm.day in allowed_set) if allowed_set else False
               run = 'yes' if day_ok else 'no'
-          
+
           print(f'::notice::Event={event}; Almaty now: {almaty_now}; allowed_dom={allowed}; hour={hour or "-"}; day_ok={day_ok}; should_run={run}')
-          
+
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as f:
               f.write(f'run={run}\n')
           with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as f:
@@ -82,7 +82,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install deps
+      - name: Install dependencies
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         shell: bash
         run: |
@@ -95,7 +95,7 @@ jobs:
             pip install $PIP_PACKAGES
           fi
 
-      - name: Sync -> build
+      - name: Pull + build
         if: ${{ github.event_name != 'schedule' || steps.gate.outputs.run == 'yes' }}
         shell: bash
         run: |
