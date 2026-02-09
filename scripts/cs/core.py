@@ -50,6 +50,12 @@ OUTPUT_ENCODING_DEFAULT = "utf-8"
 CURRENCY_ID_DEFAULT = "KZT"
 ALMATY_TZ = "Asia/Almaty"
 
+# Лимиты (по умолчанию):
+# - <name> держим коротким и читаемым (150 по решению пользователя)
+# - <keywords> по правилам YML обычно <= 1024
+CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or "150")
+CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "1024") or "1024").strip() or "1024")
+
 
 
 # Заглушка картинки, если у оффера нет фото (можно переопределить env CS_PICTURE_PLACEHOLDER_URL)
@@ -176,6 +182,125 @@ _RE_COLOR_TOKENS = [
 ]
 
 _RE_HI_BLACK = re.compile(r"\bhi[-\s]?black\b", re.IGNORECASE)
+
+
+def _truncate_text(s: str, max_len: int, *, suffix: str = "") -> str:
+    # CS: безопасно режем строку по границе слова/запятой
+    s = norm_ws(s)
+    if max_len <= 0:
+        return ""
+    if len(s) <= max_len:
+        return s
+
+    cut_len = max_len - len(suffix)
+    if cut_len <= 0:
+        return suffix[:max_len]
+
+    chunk = s[:cut_len].rstrip()
+    # режем по последней "хорошей" границе
+    for sep in (",", " ", "/", ";"):
+        j = chunk.rfind(sep)
+        if j >= max(0, cut_len - 40):  # не уходим слишком далеко назад
+            chunk = chunk[:j].rstrip(" ,/;")
+            break
+
+    chunk = chunk.rstrip(" ,/;")
+    if suffix:
+        return (chunk + suffix)[:max_len]
+    return chunk
+
+
+def _compat_fragments(s: str) -> list[str]:
+    # CS: разбиваем строку совместимости на фрагменты (стабильно)
+    s = norm_ws(s)
+    if not s:
+        return []
+    # унифицируем разделители
+    s = s.replace(";", ",").replace("|", ",")
+    # дробим по запятым, внутри оставляем слэши/дефисы как есть
+    parts = [norm_ws(p) for p in s.split(",")]
+    out: list[str] = []
+    seen: set[str] = set()
+    for p in parts:
+        if not p:
+            continue
+        key = p.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(p)
+    return out
+
+
+def _get_param_value(params: list[tuple[str, str]], key_name: str) -> str:
+    kn = key_name.casefold()
+    for k, v in params:
+        if norm_ws(k).casefold() == kn:
+            return norm_ws(v)
+    return ""
+
+
+def _shorten_nvprint_name(name: str, params: list[tuple[str, str]], max_len: int) -> str:
+    # CS: NVPrint — делаем короткое имя без потери кода/смысла.
+    # Полная совместимость остаётся в param "Совместимость".
+    name = norm_ws(name)
+    if len(name) <= max_len:
+        return name
+
+    compat_full = _get_param_value(params, "Совместимость")
+    frags = _compat_fragments(compat_full)
+
+    # Пытаемся выделить "префикс" до "для ..."
+    low = name.casefold()
+    pfx = name
+    tail_sep = ""
+    if " для " in low:
+        i = low.find(" для ")
+        pfx = norm_ws(name[:i])
+        tail_sep = " для "
+    elif "для " in low:
+        # на случай если без пробелов
+        i = low.find("для ")
+        pfx = norm_ws(name[:i].rstrip())
+        tail_sep = " для "
+
+    # Если нет compat в params — берём хвост из name после "для"
+    if not frags and tail_sep:
+        tail = norm_ws(name[len(pfx) + len(tail_sep):])
+        frags = _compat_fragments(tail)
+
+    # Собираем короткую совместимость: уменьшаем число фрагментов, пока не влезет
+    # Начинаем с 6, дальше 5..1
+    max_items = 6
+    while max_items >= 1:
+        short = ", ".join(frags[:max_items]) if frags else ""
+        if short:
+            cand = f"{pfx}{tail_sep}{short} и др."
+        else:
+            cand = f"{pfx}"
+        if len(cand) <= max_len:
+            return cand
+        max_items -= 1
+
+    # Фоллбэк: просто режем по границе и добавляем "…"
+    return _truncate_text(name, max_len, suffix="…")
+
+
+def enforce_name_policy(oid: str, name: str, params: list[tuple[str, str]]) -> str:
+    # CS: глобальная политика имени (общая), но "умно" только для NVPrint.
+    name = norm_ws(name)
+    if not name:
+        return ""
+    if len(name) <= CS_NAME_MAX_LEN:
+        return name
+
+    oid_u = (oid or "").upper()
+    if oid_u.startswith("NP"):
+        return _shorten_nvprint_name(name, params, CS_NAME_MAX_LEN)
+
+    # Остальные — мягко режем по границе
+    return _truncate_text(name, CS_NAME_MAX_LEN, suffix="…")
+
 
 
 def extract_color_from_name(name: str) -> str:
@@ -2547,8 +2672,14 @@ class OfferOut:
             priority=list(param_priority or []),
         )
 
+        # CS: лимитируем <name> (умно для NVPrint)
+        name = enforce_name_policy(self.oid, name, params_sorted)
+        # CS: лимитируем <name> (умно для NVPrint)
+        name = enforce_name_policy(self.oid, name, params_sorted)
+
         desc_cdata = build_description(name, native_desc, params_sorted, notes=notes)
         keywords = build_keywords(vendor, name, city_tail=city_tail)
+        keywords = _truncate_text(keywords, CS_KEYWORDS_MAX_LEN)
 
         pics_xml = ""
         pics = normalize_pictures(self.pictures or [])
