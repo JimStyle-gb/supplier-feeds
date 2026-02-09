@@ -13,6 +13,16 @@ import time
 import random
 from datetime import datetime, timedelta
 
+def _env_flag(name: str, default: str = "0") -> bool:
+    """Вернуть True/False из переменной окружения (1/true/yes/on)."""
+    v = os.getenv(name, default)
+    v = (v or "").strip().lower()
+    return v in ("1", "true", "yes", "y", "on")
+
+
+# Логи (можно выключить: VERBOSE=0). Также поддерживаем CS_VERBOSE=1.
+VERBOSE = _env_flag("VERBOSE", "0") or _env_flag("CS_VERBOSE", "0")
+
 # Логи (можно выключить: VERBOSE=0)
 def _pick_copyline_best_picture(pictures: list[str]) -> list[str]:
     """CopyLine: оставить только реальные фото товара.
