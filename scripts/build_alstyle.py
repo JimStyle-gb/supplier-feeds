@@ -5,8 +5,9 @@ AlStyle adapter — сборщик по шаблону CS (использует 
 """
 
 from __future__ import annotations
+
 import os
-from xml.etree import ElementTree as ET
+import xml.etree.ElementTree as ET
 
 import requests
 
@@ -178,8 +179,6 @@ def main() -> int:
             price_in = safe_int(_t(o.find("price")))
 
         price = compute_price(price_in)
-
-
 
         # vendor: не раскрываем имя поставщика; если vendor_src совпал с поставщиком — считаем пустым
         vendor_src_norm = norm_ws(vendor_src)
