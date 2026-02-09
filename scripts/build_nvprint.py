@@ -15,7 +15,7 @@ import random
 import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-import xml.etree.ElementTree as ET
+from xml.etree import ElementTree as ET
 
 import requests
 
@@ -322,89 +322,6 @@ def _extract_price(item: ET.Element) -> int | None:
         return None
 
     return min(found)
-
-
-def _extract_available(item: ET.Element) -> bool:
-    # 1) yml-атрибут available
-    av_raw = (item.get("available") or "").strip().lower()
-    if av_raw in ("true", "1", "yes", "y"):
-        return True
-    if av_raw in ("false", "0", "no", "n"):
-        return False
-
-    # 2) 1C-формат NVPrint: <УсловияПродаж>/<Договор>/<Наличие Количество="..."/>
-    # Если теги "Наличие" есть, считаем empty/"0" как 0; >0 значит в наличии.
-    found_any = False
-    total_qty = 0.0
-    for el in item.iter():
-        if _local(el.tag).casefold() != "наличие":
-            continue
-        found_any = True
-        q = (el.get("Количество") or el.get("количество") or "").strip()
-        if not q:
-            continue
-        q = q.replace(",", ".")
-        try:
-            total_qty += float(q)
-        except Exception:
-            continue
-    if found_any:
-        return total_qty > 0
-
-    # 3) Фолбэк: иногда остаток/количество могут быть отдельными тегами
-    for el in item.iter():
-        tag_cf = _local(el.tag).casefold()
-        if ("остат" in tag_cf) or ("колич" in tag_cf):
-            n = _parse_num(_get_text(el))
-            if n is not None:
-                return n > 0
-
-    # 4) fallback: иногда есть тег available/Наличие как текст
-    av_tag = _pick_first_text(item, ("available", "Available", "Наличие"))
-    if av_tag:
-        return av_tag.strip().lower() in ("true", "1", "yes", "y", "есть", "да")
-
-    # по умолчанию: считаем, что доступно (иначе можно "убить" ассортимент)
-    return True
-
-    if av_raw in ("false", "0", "no", "n"):
-        return False
-
-    # 2) 1C: пытаемся найти любые поля, связанные с остатком/количеством.
-    qty_kz: float = 0.0
-    qty_any: float = 0.0
-    has_any = False
-
-    for el in item.iter():
-        tag = _local(el.tag).casefold()
-
-        # Берём только теги, где явно фигурирует остаток/количество.
-        if ("остат" not in tag) and ("колич" not in tag) and (tag not in ("qty", "quantity")):
-            continue
-
-        n = _parse_num(_get_text(el))
-        if n is None:
-            continue
-
-        has_any = True
-        qty_any += n
-
-        # Казахстан — пытаемся определить по атрибутам/тексту рядом
-        attrs = " ".join([str(v) for v in el.attrib.values()]).casefold()
-        if "казахстан" in attrs:
-            qty_kz += n
-
-    if has_any:
-        use = qty_kz if qty_kz > 0 else qty_any
-        return use > 0
-
-    # 3) fallback: иногда есть отдельное поле "Наличие"
-    av_tag = _pick_first_text(item, ("available", "Available", "Наличие"))
-    if av_tag:
-        return av_tag.strip().lower() in ("true", "1", "yes", "y", "есть", "да")
-
-    # По умолчанию не гасим ассортимент.
-    return True
 
 
 def _collect_pictures(item: ET.Element) -> list[str]:
