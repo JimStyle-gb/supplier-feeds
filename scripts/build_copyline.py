@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 CopyLine adapter — сборщик по шаблону CS (использует scripts/cs/core.py).
 Задача адаптера: забрать данные поставщика (sitemap + сайт) и отдать в CS ядро список OfferOut.
@@ -54,40 +55,6 @@ def _pick_copyline_best_picture(pictures: list[str]) -> list[str]:
 
     # если на странице есть только обычное фото — его и оставим
     return (fulls + normals) if (fulls + normals) else []
-def _pick_copyline_picture(pics: list[str]) -> list[str]:
-    """# CopyLine: одна картинка на товар — full_ если есть, иначе обычная. Только img_products."""
-    if not pics:
-        return []
-
-    def norm(u: str) -> str:
-        u = (u or "").strip()
-        u = u.split("#", 1)[0]
-        return u
-
-    candidates: list[str] = []
-    for u in pics:
-        u = norm(u)
-        if not u:
-            continue
-        if "components/com_jshopping/files/img_products/" not in u:
-            continue
-        if "/img_products/thumb_" in u:
-            continue
-        candidates.append(u)
-
-    if not candidates:
-        return []
-
-    # full_ приоритет
-    for u in candidates:
-        base = u.rsplit("/", 1)[-1]
-        if base.startswith("full_"):
-            return [u]
-
-    return [candidates[0]]
-
-VERBOSE = os.environ.get("VERBOSE", "0") in ("1","true","True","yes","YES")
-
 def log(*args, **kwargs) -> None:
     # Печать логов (в Actions удобно оставлять краткие метки)
     # Поддерживаем kwargs типа flush/end/sep, чтобы не ловить TypeError.
@@ -369,12 +336,6 @@ def _norm_sku_variants(raw: str) -> set[str]:
         variants.add("C" + r)
     return {norm_ascii(v) for v in variants if v}
 
-def _sku_matches(raw_v: str, page_sku: str) -> bool:
-    """# CopyLine: страница товара подходит только если sku совпадает с vendorCode_raw"""
-    want = _norm_sku_variants(raw_v)
-    have = _norm_sku_variants(page_sku)
-    return bool(want and have and (want & have))
-
 def parse_price_tenge(text: str) -> int:
     """Парсинг цены в тг из текста: '7 051 тг.' -> 7051."""
     if not text:
@@ -564,100 +525,6 @@ def _merge_params(existing: List[Tuple[str, str]], add: List[Tuple[str, str]]) -
 
     return out
 
-
-def parse_xlsx_items(xlsx_bytes: bytes) -> Tuple[int, List[Dict[str, Any]]]:
-    if load_workbook is None:
-
-        raise RuntimeError("CopyLine: openpyxl не установлен (XLSX-режим недоступен). Используй sitemap-режим.")
-
-    wb = load_workbook(io.BytesIO(xlsx_bytes), read_only=True, data_only=True)
-    sheet = max(wb.sheetnames, key=lambda n: wb[n].max_row * max(1, wb[n].max_column))
-    ws = wb[sheet]
-    rows = [[c for c in r] for r in ws.iter_rows(values_only=True)]
-    log(f"[xls] sheet={sheet} rows={len(rows)}")
-
-    row0, row1, idx = detect_header_two_row(rows)
-    if row0 < 0:
-        raise RuntimeError("Не удалось распознать шапку в XLSX.")
-
-    data_start = row1 + 1
-    name_col, vendor_col, price_col = idx["name"], idx["vendor_code"], idx["price"]
-    stock_col = idx.get("stock")
-    unit_col = idx.get("unit")
-    kws = COPYLINE_INCLUDE_PREFIXES
-    start_patterns = compile_startswith_patterns(kws)
-    source_rows = sum(1 for r in rows[data_start:] if any(v is not None and str(v).strip() for v in r))
-
-    out: List[Dict[str, Any]] = []
-    for r in rows[data_start:]:
-        name_raw = r[name_col]
-        if not name_raw:
-            continue
-        title = title_clean(safe_str(name_raw))
-        if not title_startswith_strict(title, start_patterns):
-            continue
-
-        dealer = to_number(r[price_col])
-        if dealer is None or dealer <= 0:
-            continue
-
-        v_raw = r[vendor_col]
-        vcode = safe_str(v_raw)
-        if not vcode:
-            # иногда артикул спрятан в названии
-            m = re.search(r"[A-ZА-Я0-9]{2,}(?:[-/–][A-ZА-Я0-9]{2,})?", title.upper())
-            if m:
-                vcode = m.group(0).replace("–", "-").replace("/", "-")
-        if not vcode:
-            continue
-
-        available = True
-        if stock_col is not None and stock_col < len(r):
-            available = parse_stock_to_bool(r[stock_col])
-
-        out.append(
-            {
-                "title": title,
-                "vendorCode_raw": vcode,
-                "dealer_price": int(round(float(dealer))),
-                "available": bool(available),
-                "stock_raw": safe_str(r[stock_col]).strip() if (stock_col is not None and stock_col < len(r)) else "",
-                "unit_raw": safe_str(r[unit_col]).strip() if (unit_col is not None and unit_col < len(r)) else "",
-            }
-        )
-
-    log(f"[xls] source_rows={source_rows} filtered={len(out)}")
-    return source_rows, out
-
-
-# -----------------------------
-# Сайт: индексация карточек (картинки + описание + характеристики)
-# -----------------------------
-def normalize_url(url: Optional[str]) -> Optional[str]:
-    """Нормализация URL картинки (CopyLine).
-    Важно: не превращаем автоматически в full_ (иначе получаем несуществующие ссылки).
-    Делаем только: absolute + убираем #/? + режем srcset хвост."""
-    if not url:
-        return None
-    u = safe_str(url).strip()
-    if not u:
-        return None
-    # srcset может прийти как "url 2x"
-    if " " in u and (u.startswith("http") or u.startswith("/") or u.startswith("//")):
-        u = u.split(" ", 1)[0].strip()
-    if "#" in u:
-        u = u.split("#", 1)[0]
-    if "?" in u:
-        u = u.split("?", 1)[0]
-    if not u:
-        return None
-    if u.startswith("//"):
-        u = "https:" + u
-    elif u.startswith("/"):
-        u = BASE_URL + u
-    elif u.startswith("http://"):
-        u = "https://" + u[len("http://"):]
-    return u
 
 def extract_kv_pairs_from_text(text: str) -> List[Tuple[str, str]]:
     # очень мягкий парсер "Ключ: значение" в тексте
@@ -950,52 +817,6 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     }
 
 
-def discover_relevant_category_urls() -> List[str]:
-    # Берём ссылки из /goods.html и главной, фильтруем по словам в тексте ссылки или в URL.
-    seeds = [f"{BASE_URL}/", f"{BASE_URL}/goods.html"]
-    pages: List[Tuple[str, BeautifulSoup]] = []
-    for u in seeds:
-        b = http_get(u, tries=3)
-        if b:
-            pages.append((u, soup_of(b)))
-    if not pages:
-        return []
-
-    kws = [k.strip() for k in COPYLINE_INCLUDE_PREFIXES if k.strip()]
-    urls: List[str] = []
-    seen = set()
-
-    for base, s in pages:
-        for a in s.find_all("a", href=True):
-            txt = safe_str(a.get_text(" ", strip=True) or "")
-            absu = requests.compat.urljoin(base, safe_str(a["href"]))
-            if "copyline.kz" not in absu:
-                continue
-            if "/goods/" not in absu and not absu.endswith("/goods.html"):
-                continue
-
-            ok = False
-            for kw in kws:
-                if re.search(r"(?i)(?<!\w)" + re.escape(kw).replace(r"\ ", " ") + r"(?!\w)", txt):
-                    ok = True
-                    break
-
-            if not ok:
-                slug = absu.lower()
-                if any(h in slug for h in [
-                    "drum", "developer", "fuser", "toner", "cartridge",
-                    "драм", "девелопер", "фьюзер", "термоблок", "термоэлемент", "cartridg",
-                    "кабель", "cable",
-                ]):
-                    ok = True
-
-            if ok and absu not in seen:
-                seen.add(absu)
-                urls.append(absu)
-
-    return list(dict.fromkeys(urls))
-
-
 def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
     ln = s.find("link", attrs={"rel": "next"})
     if ln and ln.get("href"):
@@ -1009,119 +830,6 @@ def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
             return requests.compat.urljoin(page_url, safe_str(a["href"]))
     return None
 
-
-def collect_product_urls(category_url: str, limit_pages: int) -> List[str]:
-    # Собирает ссылки на товары внутри категории, проходя пагинацию.
-    urls: List[str] = []
-    seen_pages = set()
-    page = category_url
-    pages_done = 0
-
-    while page and pages_done < limit_pages:
-        if page in seen_pages:
-            break
-        seen_pages.add(page)
-
-        _sleep_jitter(REQUEST_DELAY_MS)
-        b = http_get(page, tries=3)
-        if not b:
-            break
-        s = soup_of(b)
-
-        for a in s.find_all("a", href=True):
-            absu = requests.compat.urljoin(page, safe_str(a["href"]))
-            if PRODUCT_RE.search(absu):
-                urls.append(absu)
-
-        page = _category_next_url(s, page)
-        pages_done += 1
-
-    return list(dict.fromkeys(urls))
-
-
-def build_site_index(want_keys: Optional[Set[str]] = None) -> tuple[Dict[str, Dict[str, Any]], Dict[str, Dict[str, Any]]]:
-    """CopyLine site index.
-    Вместо парсинга категорий используем поиск по артикулу:
-    https://copyline.kz/product-search/result.html (POST, поле search).
-    Так стабильнее и совпадает с vendorCode_raw из XLSX."""
-    if NO_CRAWL:
-        log("[site] NO_CRAWL=1 -> skip site parsing")
-        return {}, {}
-    if not want_keys:
-        log("[site] want_keys empty -> skip site parsing")
-        return {}, {}
-
-    deadline = datetime.utcnow() + timedelta(minutes=MAX_CRAWL_MINUTES)
-    sku_index: Dict[str, Dict[str, Any]] = {}
-    title_index: Dict[str, Dict[str, Any]] = {}
-
-    def variants_for(raw: str) -> Set[str]:
-        raw = safe_str(raw).strip()
-        out: Set[str] = set()
-        if not raw:
-            return out
-        out.add(norm_ascii(raw))
-        out.add(norm_ascii(raw.replace("-", "")))
-        z0 = raw.lstrip("0")
-        if z0 and z0 != raw:
-            out.add(norm_ascii(z0))
-            out.add(norm_ascii(z0.replace("-", "")))
-        if re.fullmatch(r"[Cc]\d+", raw):
-            out.add(norm_ascii(raw[1:]))
-        if re.fullmatch(r"\d+", raw):
-            out.add(norm_ascii("C" + raw))
-        return out
-
-    from concurrent.futures import ThreadPoolExecutor, as_completed
-    want_list = list(dict.fromkeys([safe_str(x).strip() for x in want_keys if safe_str(x).strip()]))
-
-    log(f"[site] search-mode keys={len(want_list)} workers={MAX_WORKERS} minutes={MAX_CRAWL_MINUTES}")
-
-    def job(sku: str) -> Optional[Dict[str, Any]]:
-        if datetime.utcnow() > deadline:
-            return None
-        try:
-            return _search_copyline_for_sku(sku)
-        except Exception:
-            return None
-
-    with ThreadPoolExecutor(max_workers=max(1, MAX_WORKERS)) as ex:
-        futures = {ex.submit(job, sku): sku for sku in want_list}
-        for fut in as_completed(futures):
-            if datetime.utcnow() > deadline:
-                break
-            sku = futures[fut]
-            out = None
-            try:
-                out = fut.result()
-            except Exception:
-                out = None
-            if not out:
-                continue
-
-            best_pic = _pick_best_copyline_pic(list(out.get("pics") or []) + ([safe_str(out.get("pic"))] if out.get("pic") else []))
-            if best_pic:
-                out["pic"] = best_pic
-                out["pics"] = [best_pic]
-            else:
-                out["pic"] = ""
-                out["pics"] = []
-
-            for k in variants_for(sku):
-                if k and k not in sku_index:
-                    sku_index[k] = out
-
-            t = safe_str(out.get("title") or "")
-            if t:
-                tk = norm_ascii(title_clean(t))
-                if tk and tk not in title_index:
-                    title_index[tk] = out
-                tk30 = norm_ascii(title_clean(t[:30]))
-                if tk30 and tk30 not in title_index:
-                    title_index[tk30] = out
-
-    log(f"[site] indexed={len(sku_index)} title_index={len(title_index)}")
-    return sku_index, title_index
 
 def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
     # now_local — наивный datetime в Алматы
@@ -1350,6 +1058,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
-# -*- coding: utf-8 -*-
