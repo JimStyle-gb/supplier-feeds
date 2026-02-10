@@ -240,9 +240,100 @@ def _get_param_value(params: list[tuple[str, str]], key_name: str) -> str:
     return ""
 
 
-def _shorten_nvprint_name(name: str, params: list[tuple[str, str]], max_len: int) -> str:
-    # CS: NVPrint — делаем короткое имя без потери кода/смысла.
-    # Полная совместимость остаётся в param "Совместимость".
+# CS: ключи, где может жить совместимость (в разных поставщиках)
+_COMPAT_KEYS = ("Совместимость", "Совместимые модели", "Для", "Применение")
+
+
+def _collect_compat_fragments_from_text(hay: str) -> list[str]:
+    """Достаём совместимость из текста (name+desc) через безопасные эвристики."""
+    hay = (hay or "").strip()
+    if not hay:
+        return []
+    frags: list[str] = []
+
+    # Совместимость: ...
+    for rx in (
+        r"(?i)\bсовместим\w*\s*[:\-]\s*([^\n\r]{3,300})",
+        r"(?i)\bcompatible\s*with\s*[:\-]?\s*([^\n\r]{3,300})",
+        r"(?i)\bподходит\s+для\s+([^\n\r]{3,300})",
+        r"(?i)\bдля\s+([^\n\r]{3,300})",
+    ):
+        m = re.search(rx, hay)
+        if not m:
+            continue
+        chunk = norm_ws(m.group(1))
+        # режем по явным "служебным" разделителям
+        chunk = re.split(r"(?i)\b(цена|ресурс|цвет|характеристик|описан|параметр)\b", chunk)[0]
+        chunk = chunk.strip(" .;:,-")
+        if chunk:
+            frags.extend(_compat_fragments(chunk))
+
+    return frags
+
+
+def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_text: str) -> list[tuple[str, str]]:
+    """
+    Универсально обогащает param 'Совместимость' взаимно из:
+    - существующих params (Совместимость/Для/Применение/Совместимые модели)
+    - текста name + desc
+    Делает это детерминированно (чтобы не "прыгало").
+    """
+    name = (name or "").strip()
+    if re.match(r"(?i)^кабель\s+сетевой\b", name):
+        return list(params or [])
+
+    base = list(params or [])
+    # Собираем фрагменты из params
+    frags: list[str] = []
+    for k in _COMPAT_KEYS:
+        frags.extend(_compat_fragments(_get_param_value(base, k)))
+
+    # Из текста
+    hay = f"{name}\n{desc_text or ''}"
+    frags.extend(_collect_compat_fragments_from_text(hay))
+
+    # Дедуп + стабильный порядок
+    seen = {}
+    for f in frags:
+        ff = norm_ws(f)
+        if not ff:
+            continue
+        key = ff.casefold()
+        if key not in seen:
+            seen[key] = ff
+
+    if not seen:
+        return base
+
+    # Стабильная сортировка (не зависит от порядка источников)
+    merged = [seen[k] for k in sorted(seen.keys())]
+    merged_val = ", ".join(merged)
+
+    # Если 'Совместимость' уже есть и по сути такая же — ничего не трогаем
+    cur = _get_param_value(base, "Совместимость")
+    if cur:
+        cur_keys = sorted({norm_ws(x).casefold() for x in _compat_fragments(cur) if x})
+        new_keys = sorted(seen.keys())
+        if cur_keys == new_keys:
+            return base
+
+    # Обновляем/добавляем 'Совместимость'
+    out: list[tuple[str, str]] = []
+    updated = False
+    for k, v in base:
+        if norm_ws(k).casefold() == "совместимость":
+            out.append((k, merged_val))
+            updated = True
+        else:
+            out.append((k, v))
+    if not updated:
+        out.append(("Совместимость", merged_val))
+    return out
+
+
+def _shorten_smart_name(name: str, params: list[tuple[str, str]], max_len: int) -> str:
+    # CS: Универсально — делаем короткое имя без потери кода/смысла.
+    # Полная совместимость остаётся в param "Совместимость" (обогащённая из name/desc/params).
     name = norm_ws(name)
     if len(name) <= max_len:
         return name
@@ -287,19 +378,15 @@ def _shorten_nvprint_name(name: str, params: list[tuple[str, str]], max_len: int
 
 
 def enforce_name_policy(oid: str, name: str, params: list[tuple[str, str]]) -> str:
-    # CS: глобальная политика имени (общая), но "умно" только для NVPrint.
+    # CS: глобальная политика имени — одинаково для всех поставщиков
     name = norm_ws(name)
     if not name:
         return ""
     if len(name) <= CS_NAME_MAX_LEN:
         return name
 
-    oid_u = (oid or "").upper()
-    if oid_u.startswith("NP"):
-        return _shorten_nvprint_name(name, params, CS_NAME_MAX_LEN)
-
-    # Остальные — мягко режем по границе
-    return _truncate_text(name, CS_NAME_MAX_LEN, suffix="…")
+    # Универсальное "умное" укорочение
+    return _shorten_smart_name(name, params, CS_NAME_MAX_LEN)
 
 
 
@@ -2643,24 +2730,27 @@ class OfferOut:
         public_vendor: str = "CS",
         param_priority: Sequence[str] | None = None,
     ) -> str:
-        name = normalize_offer_name(self.name)
+        name_full = normalize_offer_name(self.name)
         native_desc = fix_text(self.native_desc)
         # Вытаскиваем тех/осн характеристики из нативного описания в params, чтобы не было дублей
         native_desc, _spec_pairs = extract_specs_pairs_and_strip_desc(native_desc)
         native_desc = strip_service_kv_lines(native_desc)
-        vendor = pick_vendor(self.vendor, name, self.params, native_desc, public_vendor=public_vendor)
+        vendor = pick_vendor(self.vendor, name_full, self.params, native_desc, public_vendor=public_vendor)
 
         # тройное обогащение: params + из описания
         params = list(self.params)
         if _spec_pairs:
             params.extend(_spec_pairs)
         enrich_params_from_desc(params, native_desc)
-        enrich_params_from_name_and_desc(params, name, native_desc)
+        enrich_params_from_name_and_desc(params, name_full, native_desc)
+
+        # CS: взаимно обогащаем совместимость (params + name + desc)
+        params = ensure_compatibility_union(params, name_full, native_desc)
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
-        params = apply_supplier_param_rules(params, self.oid, name)
-        params = apply_color_from_name(params, name)
+        params = apply_supplier_param_rules(params, self.oid, name_full)
+        params = apply_color_from_name(params, name_full)
         params_sorted = sort_params(params, priority=list(param_priority or []))
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
@@ -2673,12 +2763,14 @@ class OfferOut:
         )
 
         # CS: лимитируем <name> (умно для NVPrint)
-        name = enforce_name_policy(self.oid, name, params_sorted)
-        # CS: лимитируем <name> (умно для NVPrint)
-        name = enforce_name_policy(self.oid, name, params_sorted)
+        name_short = enforce_name_policy(self.oid, name_full, params_sorted)
 
-        desc_cdata = build_description(name, native_desc, params_sorted, notes=notes)
-        keywords = build_keywords(vendor, name, city_tail=city_tail)
+        # CS: В описании сохраняем полное наименование (если оно было укорочено).
+        # Если <name> был укорочен — в описании сохраняем полное наименование.
+        name_for_desc = name_full if (name_short != name_full) else name_short
+
+        desc_cdata = build_description(name_for_desc, native_desc, params_sorted, notes=notes)
+        keywords = build_keywords(vendor, name_short, city_tail=city_tail)
         keywords = _truncate_text(keywords, CS_KEYWORDS_MAX_LEN)
 
         pics_xml = ""
@@ -2708,7 +2800,7 @@ class OfferOut:
             f"<offer id=\"{xml_escape_attr(self.oid)}\" available=\"{bool_to_xml(bool(avail_effective))}\">\n"
             f"<categoryId></categoryId>\n"
             f"<vendorCode>{xml_escape_text(self.oid)}</vendorCode>\n"
-            f"<name>{xml_escape_text(name)}</name>\n"
+            f"<name>{xml_escape_text(name_short)}</name>\n"
             f"<price>{int(self.price)}</price>"
             f"{pics_xml}\n"
             f"<vendor>{xml_escape_text(vendor)}</vendor>\n"
