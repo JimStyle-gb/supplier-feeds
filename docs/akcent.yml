@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-10 02:30">
+<yml_catalog date="2026-02-10 11:05">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-10 02:30:17
+Время сборки (Алматы)                      | 2026-02-10 11:05:11
 Ближайшая сборка (Алматы)                  | 2026-02-11 02:00:00
-Сколько товаров у поставщика до фильтра    | 1646
-Сколько товаров у поставщика после фильтра | 160
-Сколько товаров есть в наличии (true)      | 160
+Сколько товаров у поставщика до фильтра    | 1647
+Сколько товаров у поставщика после фильтра | 161
+Сколько товаров есть в наличии (true)      | 161
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1654,6 +1654,32 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Страна происхождения">Китай</param>
 <param name="Тип печати">струйная</param>
 <keywords>Epson, Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600, Ёмкость, для, отработанных, чернил, C12C890191, SP7600, SP9600, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
+</offer>
+
+<offer id="ACC12C934591" available="true">
+<categoryId></categoryId>
+<vendorCode>ACC12C934591</vendorCode>
+<name>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX</name>
+<price>21900</price>
+<picture>https://images.satu.kz/227774166_w1280_h1280_cid41038_pid120085106-4f006b4f.jpg?fresh=1</picture>
+<vendor>Epson</vendor>
+<currencyId>KZT</currencyId>
+<description><![CDATA[
+<!-- WhatsApp -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
+<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
+<!-- Описание -->
+<h3>Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX</h3><p>Емкость для отработанных чернил<br>L15150</p>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Ёмкость для отработанных чернил C12C934591 для WF-78XX/ET-166XX MAINTENANCE BOX</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> C11CJ04404,C11CH72404,C11CH71404,C11CJ30404,C11CJ41404,C11CJ28404,C11CJ20404,C11CJ21403</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<!-- Оплата и доставка -->
+<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
+<param name="Производитель">Epson</param>
+<param name="Модель">Epson Ёмкость для отработанных чернил C12C934591 для WF-78XX/ET-166XX MAINTENANCE BOX</param>
+<param name="Тип">Ёмкость для отработанных чернил</param>
+<param name="Совместимость">C11CJ04404,C11CH72404,C11CH71404,C11CJ30404,C11CJ41404,C11CJ28404,C11CJ20404,C11CJ21403</param>
+<param name="Для бренда">Epson</param>
+<param name="Тип печати">струйная</param>
+<keywords>Epson, Ёмкость для отработанных чернил Epson C12C934591 WF-78XX/ET-166XX MAINTENANCE BOX, Ёмкость, для, отработанных, чернил, C12C934591, WF-78XX, ET-166XX, MAINTENANCE, BOX, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="ACC13T00Q140" available="true">
