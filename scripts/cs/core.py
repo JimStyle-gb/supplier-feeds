@@ -355,59 +355,40 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
 
     # 1) Берём существующую "Совместимость" (как эталон порядка)
     cur = _get_param_value(base, "Совместимость")
+
+    # Если есть текущая "Совместимость" — очищаем её так же, как и новую,
+    # чтобы убрать мл/ml/служебные слова даже когда набор моделей "по сути" тот же.
     cur_frags = [_clean_compat_fragment(x) for x in _compat_fragments(cur)]
     cur_frags = [x for x in cur_frags if _is_valid_compat_fragment(x)]
-    cur_frags = _dedup_keep_order(cur_frags)
-    seen = {x.casefold() for x in cur_frags}
+    cur_norm = ", ".join(sorted({x.casefold(): x for x in cur_frags}.values(), key=lambda s: s.casefold()))
 
-    # 2) Дополняем из других param-ключей (обычно поставщики кладут туда часть совместимости)
-    other_frags: list[str] = []
-    for k in _COMPAT_KEYS:
-        if k.casefold() == "совместимость":
-            continue
-        other_frags.extend(_compat_fragments(_get_param_value(base, k)))
+    new_frags = [_clean_compat_fragment(x) for x in _compat_fragments(merged_val)]
+    new_frags = [x for x in new_frags if _is_valid_compat_fragment(x)]
+    new_norm = ", ".join(sorted({x.casefold(): x for x in new_frags}.values(), key=lambda s: s.casefold()))
 
-    # 3) Дополняем из текста (name + desc) безопасными эвристиками
-    hay = f"{name}\n{desc_text or ''}"
-    text_frags = _collect_compat_fragments_from_text(hay)
+    # Если после чистки ничего не осталось — удаляем параметр "Совместимость", чтобы не хранить мусор.
+    if not new_norm:
+        out: list[tuple[str, str]] = []
+        for k, v in base:
+            if norm_ws(k).casefold() != "совместимость":
+                out.append((k, v))
+        return out
 
-    # чистим + фильтруем
-    add_pool = []
-    for raw in (other_frags + text_frags):
-        f = _clean_compat_fragment(raw)
-        if not _is_valid_compat_fragment(f):
-            continue
-        if f.casefold() in seen:
-            continue
-        add_pool.append(f)
-
-    if not cur_frags and not add_pool:
+    # Если строка реально не меняется — возвращаем как есть
+    if cur_norm and cur_norm == new_norm:
         return base
 
-    # новые добавления сортируем, чтобы было детерминированно (и не "прыгало")
-    add_pool = sorted(_dedup_keep_order(add_pool), key=lambda x: x.casefold())
-
-    merged = cur_frags + add_pool
-    merged_val = ", ".join(merged).strip()
-
-    # Если по сути не изменилось — не трогаем
-    if cur:
-        cur_keys = [x.casefold() for x in cur_frags]
-        new_keys = [x.casefold() for x in merged]
-        if cur_keys == new_keys:
-            return base
-
-    # Обновляем/добавляем 'Совместимость'
+    # Обновляем/добавляем 'Совместимость' очищенной строкой
     out: list[tuple[str, str]] = []
     updated = False
     for k, v in base:
         if norm_ws(k).casefold() == "совместимость":
-            out.append((k, merged_val))
+            out.append((k, new_norm))
             updated = True
         else:
             out.append((k, v))
     if not updated:
-        out.append(("Совместимость", merged_val))
+        out.append(("Совместимость", new_norm))
     return out
 def _shorten_smart_name(name: str, params: list[tuple[str, str]], max_len: int) -> str:
     # CS: Универсально — делаем короткое имя без потери кода/смысла.
