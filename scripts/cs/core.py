@@ -243,6 +243,62 @@ def _get_param_value(params: list[tuple[str, str]], key_name: str) -> str:
 # CS: ключи, где может жить совместимость (в разных поставщиках)
 _COMPAT_KEYS = ("Совместимость", "Совместимые модели", "Для", "Применение")
 
+# CS: фильтрация мусора в совместимости (цвет/объём/служебные слова)
+_COMPAT_UNIT_RE = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\b", re.I)
+_COMPAT_PARENS_UNIT_RE = re.compile(r"\(\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\s*\)", re.I)
+_COMPAT_COLOR_ONLY_RE = re.compile(
+    r"^\s*(?:cyan|magenta|yellow|black|grey|gray|matt\s*black|photo\s*black|photoblack|light\s*cyan|light\s*magenta|"
+    r"ч[её]рн(?:ый|ая|ое|ые)?|син(?:ий|яя|ее|ие)?|голуб(?:ой|ая|ое|ые)?|желт(?:ый|ая|ое|ые)?|"
+    r"пурпур(?:ный|ная|ное|ные)?|магент(?:а|ы)?|сер(?:ый|ая|ое|ые)?)\s*$",
+    re.I,
+)
+_COMPAT_SKIP_WORD_RE = re.compile(r"^\s*(?:совместим\w*|compatible|original|оригинал)\s*$", re.I)
+_COMPAT_NUM_ONLY_RE = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*$")
+_COMPAT_NO_CODE_RE = re.compile(r"^\s*(?:№|#)\s*\d{2,}\s*$")
+
+
+def _clean_compat_fragment(f: str) -> str:
+    f = norm_ws(f)
+    if not f:
+        return ""
+    # убираем скобки с объёмом/весом, чтобы не тащить это в "Совместимость"
+    f = _COMPAT_PARENS_UNIT_RE.sub("", f)
+    f = norm_ws(f).strip(" .;:,-")
+    return f
+
+
+def _is_valid_compat_fragment(f: str) -> bool:
+    if not f:
+        return False
+    if _COMPAT_SKIP_WORD_RE.match(f):
+        return False
+    if _COMPAT_COLOR_ONLY_RE.match(f):
+        return False
+    if _COMPAT_UNIT_RE.match(f):
+        return False
+    if _COMPAT_NUM_ONLY_RE.match(f):
+        return False
+    # В совместимости должны быть модели/коды: буквы+цифры, либо "№123"
+    has_letter = bool(re.search(r"[A-Za-zА-Яа-я]", f))
+    has_digit = bool(re.search(r"\d", f))
+    if has_letter and has_digit:
+        return True
+    if _COMPAT_NO_CODE_RE.match(f):
+        return True
+    return False
+
+
+def _dedup_keep_order(frags: list[str]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for f in frags:
+        k = f.casefold()
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(f)
+    return out
+
 
 def _collect_compat_fragments_from_text(hay: str) -> list[str]:
     """Достаём совместимость из текста (name+desc) через безопасные эвристики."""
@@ -276,44 +332,55 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
     Универсально обогащает param 'Совместимость' взаимно из:
     - существующих params (Совместимость/Для/Применение/Совместимые модели)
     - текста name + desc
-    Делает это детерминированно (чтобы не "прыгало").
+    Приоритет: сохраняем порядок уже существующей 'Совместимости', а новые добавляем аккуратно.
     """
     name = (name or "").strip()
     if re.match(r"(?i)^кабель\s+сетевой\b", name):
         return list(params or [])
 
     base = list(params or [])
-    # Собираем фрагменты из params
-    frags: list[str] = []
+
+    # 1) Берём существующую "Совместимость" (как эталон порядка)
+    cur = _get_param_value(base, "Совместимость")
+    cur_frags = [_clean_compat_fragment(x) for x in _compat_fragments(cur)]
+    cur_frags = [x for x in cur_frags if _is_valid_compat_fragment(x)]
+    cur_frags = _dedup_keep_order(cur_frags)
+    seen = {x.casefold() for x in cur_frags}
+
+    # 2) Дополняем из других param-ключей (обычно поставщики кладут туда часть совместимости)
+    other_frags: list[str] = []
     for k in _COMPAT_KEYS:
-        frags.extend(_compat_fragments(_get_param_value(base, k)))
-
-    # Из текста
-    hay = f"{name}\n{desc_text or ''}"
-    frags.extend(_collect_compat_fragments_from_text(hay))
-
-    # Дедуп + стабильный порядок
-    seen = {}
-    for f in frags:
-        ff = norm_ws(f)
-        if not ff:
+        if k.casefold() == "совместимость":
             continue
-        key = ff.casefold()
-        if key not in seen:
-            seen[key] = ff
+        other_frags.extend(_compat_fragments(_get_param_value(base, k)))
 
-    if not seen:
+    # 3) Дополняем из текста (name + desc) безопасными эвристиками
+    hay = f"{name}\n{desc_text or ''}"
+    text_frags = _collect_compat_fragments_from_text(hay)
+
+    # чистим + фильтруем
+    add_pool = []
+    for raw in (other_frags + text_frags):
+        f = _clean_compat_fragment(raw)
+        if not _is_valid_compat_fragment(f):
+            continue
+        if f.casefold() in seen:
+            continue
+        add_pool.append(f)
+
+    if not cur_frags and not add_pool:
         return base
 
-    # Стабильная сортировка (не зависит от порядка источников)
-    merged = [seen[k] for k in sorted(seen.keys())]
-    merged_val = ", ".join(merged)
+    # новые добавления сортируем, чтобы было детерминированно (и не "прыгало")
+    add_pool = sorted(_dedup_keep_order(add_pool), key=lambda x: x.casefold())
 
-    # Если 'Совместимость' уже есть и по сути такая же — ничего не трогаем
-    cur = _get_param_value(base, "Совместимость")
+    merged = cur_frags + add_pool
+    merged_val = ", ".join(merged).strip()
+
+    # Если по сути не изменилось — не трогаем
     if cur:
-        cur_keys = sorted({norm_ws(x).casefold() for x in _compat_fragments(cur) if x})
-        new_keys = sorted(seen.keys())
+        cur_keys = [x.casefold() for x in cur_frags]
+        new_keys = [x.casefold() for x in merged]
         if cur_keys == new_keys:
             return base
 
@@ -329,8 +396,6 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
     if not updated:
         out.append(("Совместимость", merged_val))
     return out
-
-
 def _shorten_smart_name(name: str, params: list[tuple[str, str]], max_len: int) -> str:
     # CS: Универсально — делаем короткое имя без потери кода/смысла.
     # Полная совместимость остаётся в param "Совместимость" (обогащённая из name/desc/params).
