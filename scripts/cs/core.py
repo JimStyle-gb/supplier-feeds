@@ -244,8 +244,12 @@ def _get_param_value(params: list[tuple[str, str]], key_name: str) -> str:
 _COMPAT_KEYS = ("Совместимость", "Совместимые модели", "Для", "Применение")
 
 # CS: фильтрация мусора в совместимости (цвет/объём/служебные слова)
-_COMPAT_UNIT_RE = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\b", re.I)
-_COMPAT_PARENS_UNIT_RE = re.compile(r"\(\s*\d+(?:[.,]\d+)?\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\s*\)", re.I)
+_COMPAT_UNIT_RE = re.compile(r"^\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\b", re.I)
+_COMPAT_PARENS_UNIT_RE = re.compile(r"\(\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\s*\)", re.I)
+# CS: вычищаем единицы/объём и служебные слова внутри фрагмента (если они встречаются вместе с моделью)
+_COMPAT_UNIT_ANY_RE = re.compile(r"(?i)\b(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\b")
+_COMPAT_SKIP_ANY_RE = re.compile(r"(?i)\b(?:совместим\w*|compatible|original|оригинал)\b")
+
 _COMPAT_COLOR_ONLY_RE = re.compile(
     r"^\s*(?:cyan|magenta|yellow|black|grey|gray|matt\s*black|photo\s*black|photoblack|light\s*cyan|light\s*magenta|"
     r"ч[её]рн(?:ый|ая|ое|ые)?|син(?:ий|яя|ее|ие)?|голуб(?:ой|ая|ое|ые)?|желт(?:ый|ая|ое|ые)?|"
@@ -261,10 +265,19 @@ def _clean_compat_fragment(f: str) -> str:
     f = norm_ws(f)
     if not f:
         return ""
-    # убираем скобки с объёмом/весом, чтобы не тащить это в "Совместимость"
+    # убираем скобки с объёмом/весом
     f = _COMPAT_PARENS_UNIT_RE.sub("", f)
+
+    # вычищаем явные единицы/объёмы даже если они идут вместе с моделью
+    f = _COMPAT_UNIT_ANY_RE.sub("", f)
+
+    # убираем служебные слова (совместимый/compatible/original) если они влезли внутрь
+    f = _COMPAT_SKIP_ANY_RE.sub("", f)
+
+    # чистим хвостовую пунктуацию
     f = norm_ws(f).strip(" .;:,-")
     return f
+
 
 
 def _is_valid_compat_fragment(f: str) -> bool:
