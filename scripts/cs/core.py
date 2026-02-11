@@ -343,6 +343,85 @@ def _clean_compat_fragment(f: str) -> str:
     return f
 
 
+
+
+
+def _is_valid_compat_fragment(f: str) -> bool:
+    """CS: проверка, что фрагмент похож на совместимость (модель/список моделей), а не мусор."""
+    f = norm_ws(f)
+    if not f:
+        return False
+
+    # чисто единицы/объём — мусор
+    if _COMPAT_UNIT_RE.match(f):
+        return False
+
+    # должна быть цифра (модели почти всегда с цифрами)
+    if not re.search(r"\d", f):
+        return False
+
+    # и буква (чтобы не ловить голые числа)
+    if not re.search(r"[A-Za-zА-Яа-я]", f):
+        return False
+
+    # слишком коротко — почти наверняка мусор
+    if len(f) < 4:
+        return False
+
+    return True
+
+
+_COMPAT_MODEL_TOKEN_RE = re.compile(r"(?i)\b[A-ZА-Я]{1,6}\s*\d{2,5}[A-ZА-Я]?\b")
+_COMPAT_TEXT_SPLIT_RE = re.compile(r"[\n\r\.\!\?]+")
+_COMPAT_HTML_TAG_RE = re.compile(r"<[^>]+>")
+
+
+def _collect_compat_fragments_from_text(text: str) -> list[str]:
+    """CS: извлекаем кандидаты совместимости из name/description (очень осторожно)."""
+    text = text or ""
+    if not text:
+        return []
+
+    # убираем html-теги (если вдруг прилетели), нормализуем пробелы
+    t = _COMPAT_HTML_TAG_RE.sub(" ", text)
+    t = norm_ws(t)
+    if not t:
+        return []
+
+    out: list[str] = []
+    for chunk in _COMPAT_TEXT_SPLIT_RE.split(t):
+        c = norm_ws(chunk).strip(" ,;/:-")
+        if not c:
+            continue
+
+        # безопасный фильтр: берём только куски, где явно есть перечисление моделей
+        # (обычно через / или через много токенов-моделей)
+        has_slash = "/" in c
+        model_tokens = _COMPAT_MODEL_TOKEN_RE.findall(c)
+        if (not has_slash) and (len(model_tokens) < 2):
+            continue
+
+        # ограничиваем длину, чтобы не тащить целые абзацы
+        if len(c) > 320:
+            # режем вокруг первого и последнего "похожего на модель" токена
+            m1 = _COMPAT_MODEL_TOKEN_RE.search(c)
+            m_last = None
+            for mm in _COMPAT_MODEL_TOKEN_RE.finditer(c):
+                m_last = mm
+            if m1 and m_last:
+                start = max(0, m1.start() - 40)
+                end = min(len(c), m_last.end() + 40)
+                c = c[start:end].strip(" ,;/:-")
+            else:
+                c = c[:320].strip(" ,;/:-")
+
+        if c:
+            out.append(c)
+
+    return out
+
+
+
 def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_text: str) -> list[tuple[str, str]]:
     """
     Универсально обогащает param 'Совместимость' взаимно из:
