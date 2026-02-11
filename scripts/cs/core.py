@@ -56,6 +56,8 @@ ALMATY_TZ = "Asia/Almaty"
 CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or "150")
 CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "1024") or "1024").strip() or "1024")
 
+CS_COMPAT_CLEAN_YIELD_PACK = (os.getenv("CS_COMPAT_CLEAN_YIELD_PACK", "1") or "1").strip().lower() not in ("0", "false", "no")
+
 
 
 # Заглушка картинки, если у оффера нет фото (можно переопределить env CS_PICTURE_PLACEHOLDER_URL)
@@ -217,11 +219,16 @@ def _compat_fragments(s: str) -> list[str]:
         return []
     # унифицируем разделители
     s = s.replace(";", ",").replace("|", ",")
-    # дробим по запятым, внутри оставляем слэши/дефисы как есть
     parts = [norm_ws(p) for p in s.split(",")]
     out: list[str] = []
     seen: set[str] = set()
     for p in parts:
+        if not p:
+            continue
+        # нормализуем пробелы вокруг слэшей, чтобы одинаковые списки схлопывались
+        p = _COMPAT_SLASH_SPACES_RE.sub("/", p)
+        p = _COMPAT_MULTI_SLASH_RE.sub("/", p)
+        p = norm_ws(p).strip(" ,;/:-")
         if not p:
             continue
         key = p.casefold()
@@ -244,11 +251,19 @@ def _get_param_value(params: list[tuple[str, str]], key_name: str) -> str:
 _COMPAT_KEYS = ("Совместимость", "Совместимые модели", "Для", "Применение")
 
 # CS: фильтрация мусора в совместимости (цвет/объём/служебные слова)
-_COMPAT_UNIT_RE = re.compile(r"^\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\b", re.I)
-_COMPAT_PARENS_UNIT_RE = re.compile(r"\(\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\s*\)", re.I)
+_COMPAT_UNIT_RE = re.compile(r"^\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml)\b", re.I)
+_COMPAT_PARENS_UNIT_RE = re.compile(r"\(\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml)\s*\)", re.I)
 # CS: вычищаем единицы/объём и служебные слова внутри фрагмента (если они встречаются вместе с моделью)
-_COMPAT_UNIT_ANY_RE = re.compile(r"(?i)\b(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml|л|l|г|гр|kg|кг|мг|mg)\b")
+_COMPAT_UNIT_ANY_RE = re.compile(r"(?i)\b(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml)\b")
 _COMPAT_SKIP_ANY_RE = re.compile(r"(?i)\b(?:совместим\w*|compatible|original|оригинал)\b")
+
+# CS: мусор в скобках (ресурс/комплект/обрезанные хвосты)
+_COMPAT_PARENS_YIELD_PACK_RE = re.compile(r"(?i)\([^)]*(?:\b\d+\s*[kк]\b|\b\d+\s*шт\b|pcs|pieces|yield|страниц|стр\.?|ресурс|увелич)[^)]*\)")
+_COMPAT_YIELD_ANY_RE = re.compile(r"(?i)\b\d+\s*[kк]\b")
+_COMPAT_PACK_ANY_RE = re.compile(r"(?i)\b\d+\s*шт\b|\b\d+\s*pcs\b|\b\d+\s*pieces\b")
+_COMPAT_SLASH_SPACES_RE = re.compile(r"\s*/\s*")
+_COMPAT_MULTI_SLASH_RE = re.compile(r"/{2,}")
+_COMPAT_HYPHEN_MODEL_RE = re.compile(r"(?<=\D)-(?=\d)")
 
 _COMPAT_COLOR_ONLY_RE = re.compile(
     r"^\s*(?:cyan|magenta|yellow|black|grey|gray|matt\s*black|photo\s*black|photoblack|light\s*cyan|light\s*magenta|"
@@ -262,82 +277,55 @@ _COMPAT_NO_CODE_RE = re.compile(r"^\s*(?:№|#)\s*\d{2,}\s*$")
 
 
 def _clean_compat_fragment(f: str) -> str:
+    # CS: чистим один фрагмент совместимости (безопасно)
     f = norm_ws(f)
     if not f:
         return ""
-    # убираем скобки с объёмом/весом
+
+    # нормализуем слэши + модельные дефисы (KM-1620 -> KM 1620)
+    f = _COMPAT_SLASH_SPACES_RE.sub("/", f)
+    f = _COMPAT_MULTI_SLASH_RE.sub("/", f)
+    f = _COMPAT_HYPHEN_MODEL_RE.sub(" ", f)
+
+    # выкидываем цвет/объём/служебные слова
     f = _COMPAT_PARENS_UNIT_RE.sub("", f)
-
-    # вычищаем явные единицы/объёмы даже если они идут вместе с моделью
     f = _COMPAT_UNIT_ANY_RE.sub("", f)
-
-    # убираем служебные слова (совместимый/compatible/original) если они влезли внутрь
     f = _COMPAT_SKIP_ANY_RE.sub("", f)
 
-    # чистим хвостовую пунктуацию
-    f = norm_ws(f).strip(" .;:,-")
+    # дополнительно: ресурс/комплект в совместимости — мусор
+    if CS_COMPAT_CLEAN_YIELD_PACK:
+        f = _COMPAT_PARENS_YIELD_PACK_RE.sub("", f)
+        f = _COMPAT_YIELD_ANY_RE.sub("", f)
+        f = _COMPAT_PACK_ANY_RE.sub("", f)
+
+    # если скобки сломаны (обрезан хвост) — режем с последней '('
+    if f.count("(") != f.count(")"):
+        last = f.rfind("(")
+        if last != -1:
+            f = f[:last]
+        f = f.replace(")", "")
+
+    f = norm_ws(f).strip(" ,;/:-")
+
+    # в совместимости скобки не нужны — убираем остатки, чтобы не было "битых" хвостов
+    if "(" in f or ")" in f:
+        f = f.replace("(", " ").replace(")", " ")
+        f = norm_ws(f).strip(" ,;/:-")
+
+    # убираем дубли внутри "A/B/C" (частая грязь у поставщиков)
+    if "/" in f:
+        parts = [norm_ws(x) for x in f.split("/") if norm_ws(x)]
+        out: list[str] = []
+        seen: set[str] = set()
+        for x in parts:
+            k = x.casefold()
+            if k in seen:
+                continue
+            seen.add(k)
+            out.append(x)
+        f = "/".join(out)
+
     return f
-
-
-
-def _is_valid_compat_fragment(f: str) -> bool:
-    if not f:
-        return False
-    if _COMPAT_SKIP_WORD_RE.match(f):
-        return False
-    if _COMPAT_COLOR_ONLY_RE.match(f):
-        return False
-    if _COMPAT_UNIT_RE.match(f):
-        return False
-    if _COMPAT_NUM_ONLY_RE.match(f):
-        return False
-    # В совместимости должны быть модели/коды: буквы+цифры, либо "№123"
-    has_letter = bool(re.search(r"[A-Za-zА-Яа-я]", f))
-    has_digit = bool(re.search(r"\d", f))
-    if has_letter and has_digit:
-        return True
-    if _COMPAT_NO_CODE_RE.match(f):
-        return True
-    return False
-
-
-def _dedup_keep_order(frags: list[str]) -> list[str]:
-    out: list[str] = []
-    seen: set[str] = set()
-    for f in frags:
-        k = f.casefold()
-        if k in seen:
-            continue
-        seen.add(k)
-        out.append(f)
-    return out
-
-
-def _collect_compat_fragments_from_text(hay: str) -> list[str]:
-    """Достаём совместимость из текста (name+desc) через безопасные эвристики."""
-    hay = (hay or "").strip()
-    if not hay:
-        return []
-    frags: list[str] = []
-
-    # Совместимость: ...
-    for rx in (
-        r"(?i)\bсовместим\w*\s*[:\-]\s*([^\n\r]{3,300})",
-        r"(?i)\bcompatible\s*with\s*[:\-]?\s*([^\n\r]{3,300})",
-        r"(?i)\bподходит\s+для\s+([^\n\r]{3,300})",
-        r"(?i)\bдля\s+([^\n\r]{3,300})",
-    ):
-        m = re.search(rx, hay)
-        if not m:
-            continue
-        chunk = norm_ws(m.group(1))
-        # режем по явным "служебным" разделителям
-        chunk = re.split(r"(?i)\b(цена|ресурс|цвет|характеристик|описан|параметр)\b", chunk)[0]
-        chunk = chunk.strip(" .;:,-")
-        if chunk:
-            frags.extend(_compat_fragments(chunk))
-
-    return frags
 
 
 def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_text: str) -> list[tuple[str, str]]:
@@ -395,6 +383,84 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
     add_pool = sorted(_dedup_keep_order(add_pool), key=lambda x: x.casefold())
 
     merged = cur_frags + add_pool
+
+    # CS: если один фрагмент — подмножество другого (KM-1620 vs KM 1620 и т.п.), выбрасываем меньший
+    def _frag_token_set(x: str) -> set[str]:
+        x = _COMPAT_HYPHEN_MODEL_RE.sub(" ", norm_ws(x))
+        x = _COMPAT_SLASH_SPACES_RE.sub("/", x)
+        x = _COMPAT_MULTI_SLASH_RE.sub("/", x)
+        parts = [norm_ws(p) for p in x.split("/") if norm_ws(p)]
+        return {p.casefold() for p in parts}
+
+    merged_keep: list[str] = []
+    merged_sets = [_frag_token_set(x) for x in merged]
+    for i, x in enumerate(merged):
+        si = merged_sets[i]
+        drop = False
+        if si:
+            for j, sj in enumerate(merged_sets):
+                if i == j:
+                    continue
+                if sj and len(sj) > len(si) and si.issubset(sj):
+                    drop = True
+                    break
+        if not drop:
+            merged_keep.append(x)
+    merged = merged_keep
+
+    # CS: если фрагменты сильно пересекаются по моделям, склеиваем (убираем повторяющиеся P3015 и т.п.)
+    def _frag_tokens_list(x: str) -> list[str]:
+        x = _COMPAT_HYPHEN_MODEL_RE.sub(" ", norm_ws(x))
+        x = _COMPAT_SLASH_SPACES_RE.sub("/", x)
+        x = _COMPAT_MULTI_SLASH_RE.sub("/", x)
+        x = x.replace("(", " ").replace(")", " ")
+        x = norm_ws(x).strip(" ,;/:-")
+        return [norm_ws(p) for p in x.split("/") if norm_ws(p)]
+
+    def _merge_frags(a: str, b: str) -> str:
+        at = _frag_tokens_list(a)
+        bt = _frag_tokens_list(b)
+        if not at:
+            return b
+        if not bt:
+            return a
+        seen: set[str] = set()
+        out: list[str] = []
+        for t in at:
+            k = t.casefold()
+            if k in seen:
+                continue
+            seen.add(k)
+            out.append(t)
+        for t in bt:
+            k = t.casefold()
+            if k in seen:
+                continue
+            seen.add(k)
+            out.append(t)
+        return "/".join(out)
+
+    changed = True
+    while changed and len(merged) > 1:
+        changed = False
+        i = 0
+        while i < len(merged) and not changed:
+            j = i + 1
+            while j < len(merged) and not changed:
+                ti = {t.casefold() for t in _frag_tokens_list(merged[i])}
+                tj = {t.casefold() for t in _frag_tokens_list(merged[j])}
+                inter = len(ti.intersection(tj))
+                # минимум 3 совпадающих модели — считаем, что это один и тот же список, просто "в другом виде"
+                if inter >= 3:
+                    # берём за основу более длинный
+                    if len(tj) > len(ti):
+                        merged[i], merged[j] = merged[j], merged[i]
+                    merged[i] = _merge_frags(merged[i], merged[j])
+                    del merged[j]
+                    changed = True
+                    break
+                j += 1
+            i += 1
     merged_val = ", ".join(merged).strip()
 
     # Если после сборки ничего не осталось — удаляем параметр "Совместимость"
@@ -2150,11 +2216,17 @@ def build_keywords(
     vendor = norm_ws(vendor)
     name = norm_ws(name)
 
+    def _kw_safe(s: str) -> str:
+        # CS: чтобы <keywords> не "ломались" из-за запятых внутри имени
+        s = str(s or "")
+        s = s.replace(",", " ").replace(";", " ").replace("|", " ")
+        return norm_ws(s).strip(" ,")
+
     parts: list[str] = []
     if vendor:
-        parts.append(vendor)
+        parts.append(_kw_safe(vendor))
     if name:
-        parts.append(name)
+        parts.append(_kw_safe(name))
 
     # Разбор имени на слова (цифры/буквы, с дефисами)
     tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+(?:-[A-Za-zА-Яа-яЁё0-9]+)*", name)
@@ -2167,7 +2239,7 @@ def build_keywords(
         for x in extra:
             xx = norm_ws(str(x))
             if xx:
-                parts.append(xx)
+                parts.append(_kw_safe(xx))
 
     # Города добавляем единым хвостом (уже с запятыми). Если не передали — берём дефолт.
     ct = norm_ws(city_tail or CS_CITY_TAIL)
