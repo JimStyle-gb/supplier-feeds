@@ -13,6 +13,21 @@ CS Core — общее ядро для всех поставщиков.
 from __future__ import annotations
 
 
+def _dedup_keep_order(items: list[str]) -> list[str]:
+    """CS: дедупликация со стабильным порядком (без сортировки)."""
+    seen: set[str] = set()
+    out: list[str] = []
+    for x in items:
+        if not x:
+            continue
+        k = x.casefold()
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(x)
+    return out
+
+
 def _cs_norm_url(u: str) -> str:
     # CS: нормализуем URL картинок (пробелы ломают загрузку)
     return (u or "").replace(" ", "%20").replace("\t", "%20")
