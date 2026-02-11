@@ -243,7 +243,7 @@ def _compat_fragments(s: str) -> list[str]:
         # нормализуем пробелы вокруг слэшей, чтобы одинаковые списки схлопывались
         p = _COMPAT_SLASH_SPACES_RE.sub("/", p)
         p = _COMPAT_MULTI_SLASH_RE.sub("/", p)
-        p = norm_ws(p).strip(" ,;/:-.")
+        p = norm_ws(p).strip(" ,;/:-")
         if not p:
             continue
         key = p.casefold()
@@ -320,12 +320,12 @@ def _clean_compat_fragment(f: str) -> str:
             f = f[:last]
         f = f.replace(")", "")
 
-    f = norm_ws(f).strip(" ,;/:-.")
+    f = norm_ws(f).strip(" ,;/:-")
 
     # в совместимости скобки не нужны — убираем остатки, чтобы не было "битых" хвостов
     if "(" in f or ")" in f:
         f = f.replace("(", " ").replace(")", " ")
-        f = norm_ws(f).strip(" ,;/:-.")
+        f = norm_ws(f).strip(" ,;/:-")
 
     # убираем дубли внутри "A/B/C" (частая грязь у поставщиков)
     if "/" in f:
@@ -377,33 +377,50 @@ _COMPAT_HTML_TAG_RE = re.compile(r"<[^>]+>")
 
 
 def _collect_compat_fragments_from_text(text: str) -> list[str]:
-    """CS: извлекаем кандидаты совместимости из name/description (очень осторожно)."""
+    """CS: извлекаем кандидаты совместимости из name/description (строго, чтобы не тащить мусор).
+    Правила:
+    - работаем только по "принтерным" маркерам (принтер/МФУ/копир/совместим/подходит) ИЛИ по брендам принтеров
+    - игнорируем слэши типа 220/230 (электрика) — берём слэш только если рядом есть модели/бренд
+    - режем длину, чтобы не тащить абзацы
+    """
     text = text or ""
     if not text:
         return []
 
-    # убираем html-теги (если вдруг прилетели), нормализуем пробелы
     t = _COMPAT_HTML_TAG_RE.sub(" ", text)
     t = norm_ws(t)
     if not t:
         return []
 
+    # маркеры и бренды (достаточно широкие, но безопасные)
+    marker_re = re.compile(r"(?i)\b(принтер|мфу|копир|совместим|подходит|используетс[яь]|применя[её]тс[яь]|compatible|works\s+with)\b")
+    brand_re = re.compile(r"(?i)\b(HP|Hewlett\s*Packard|Canon|Xerox|Brother|Samsung|Kyocera|Ricoh|Konica\s*Minolta|Minolta|Pantum|Lexmark|OKI|Epson|Sharp|Toshiba|Panasonic|Develop|Gestetner|Lanier|Savin)\b")
+
+    if not marker_re.search(t) and not brand_re.search(t):
+        return []
+
     out: list[str] = []
     for chunk in _COMPAT_TEXT_SPLIT_RE.split(t):
-        c = norm_ws(chunk).strip(" ,;/:-.")
+        c = norm_ws(chunk).strip(" ,;/:-")
         if not c:
             continue
 
-        # безопасный фильтр: берём только куски, где явно есть перечисление моделей
-        # (обычно через / или через много токенов-моделей)
-        has_slash = "/" in c
-        model_tokens = _COMPAT_MODEL_TOKEN_RE.findall(c)
-        if (not has_slash) and (len(model_tokens) < 2):
+        # фильтр: кусок должен быть "принтерный"
+        if not marker_re.search(c) and not brand_re.search(c):
             continue
 
-        # ограничиваем длину, чтобы не тащить целые абзацы
+        # модели (типа ML 2160, SCX 3405F, P3015, KM 1620 и т.п.)
+        model_tokens = _COMPAT_MODEL_TOKEN_RE.findall(c)
+
+        # слэш считаем признаком перечисления только если есть бренд или >=2 моделей
+        has_slash = "/" in c
+        if (not has_slash) and (len(model_tokens) < 2):
+            continue
+        if has_slash and (len(model_tokens) < 1) and (not brand_re.search(c)):
+            continue
+
+        # ограничиваем длину
         if len(c) > 320:
-            # режем вокруг первого и последнего "похожего на модель" токена
             m1 = _COMPAT_MODEL_TOKEN_RE.search(c)
             m_last = None
             for mm in _COMPAT_MODEL_TOKEN_RE.finditer(c):
@@ -411,9 +428,9 @@ def _collect_compat_fragments_from_text(text: str) -> list[str]:
             if m1 and m_last:
                 start = max(0, m1.start() - 40)
                 end = min(len(c), m_last.end() + 40)
-                c = c[start:end].strip(" ,;/:-.")
+                c = c[start:end].strip(" ,;/:-")
             else:
-                c = c[:320].strip(" ,;/:-.")
+                c = c[:320].strip(" ,;/:-")
 
         if c:
             out.append(c)
@@ -438,23 +455,44 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
 
     base = list(params or [])
 
-    # 1) Берём существующую "Совместимость" (эталон порядка)
+    # CS: чтобы не тащить мусор из описаний (ИБП/экраны/кабели и т.п.),
+    # создаём/обогащаем "Совместимость" только для расходников.
+    is_consumable = bool(re.search(r"(?i)\b(картридж|тонер|чернила|драм|фотобарабан|drum|cartridge|toner|ink)\b", name)
+                         or re.search(r"(?i)\b(картридж|тонер|чернила|драм|фотобарабан|drum|cartridge|toner|ink)\b", (desc_text or "")))
+
     cur = _get_param_value(base, "Совместимость")
+
+    # Если это не расходник и совместимости нет — вообще не лезем.
+    if (not is_consumable) and (not cur):
+        return base
+
+    # Если это не расходник, но "Совместимость" уже есть — оставляем только если это реально похоже на список моделей.
+    if (not is_consumable) and cur:
+        looks_like_list = ("/" in cur) or ("," in cur) or (len(_COMPAT_MODEL_TOKEN_RE.findall(cur)) >= 2)
+        if not looks_like_list:
+            out = [(k, v) for (k, v) in base if norm_ws(k).casefold() != "совместимость"]
+            return out
+
+    # 1) Берём существующую "Совместимость" (эталон порядка)
+    # cur уже вычислен выше
     cur_frags = [_clean_compat_fragment(x) for x in _compat_fragments(cur)]
     cur_frags = [x for x in cur_frags if _is_valid_compat_fragment(x)]
     cur_frags = _dedup_keep_order(cur_frags)
     seen = {x.casefold() for x in cur_frags}
 
     # 2) Дополняем из других param-ключей (поставщики часто кладут туда часть совместимости)
+    # Только для расходников — иначе может утащить мусор из "Применение/Для" у не-расходников.
     other_frags: list[str] = []
-    for k in _COMPAT_KEYS:
-        if k.casefold() == "совместимость":
-            continue
-        other_frags.extend(_compat_fragments(_get_param_value(base, k)))
+    if is_consumable:
+        for k in _COMPAT_KEYS:
+            if k.casefold() == "совместимость":
+                continue
+            other_frags.extend(_compat_fragments(_get_param_value(base, k)))
 
     # 3) Дополняем из текста (name + desc) безопасными эвристиками
+    # Только для расходников, иначе нередко тащит "220/230" и прочую технику в совместимость.
     hay = f"{name}\n{desc_text or ''}"
-    text_frags = _collect_compat_fragments_from_text(hay)
+    text_frags = _collect_compat_fragments_from_text(hay) if is_consumable else []
 
     # чистим + фильтруем
     add_pool = []
@@ -508,7 +546,7 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
         x = _COMPAT_SLASH_SPACES_RE.sub("/", x)
         x = _COMPAT_MULTI_SLASH_RE.sub("/", x)
         x = x.replace("(", " ").replace(")", " ")
-        x = norm_ws(x).strip(" ,;/:-.")
+        x = norm_ws(x).strip(" ,;/:-")
         return [norm_ws(p) for p in x.split("/") if norm_ws(p)]
 
     def _merge_frags(a: str, b: str) -> str:
@@ -555,12 +593,7 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
                     break
                 j += 1
             i += 1
-    # CS: финальная чистка + дедуп после всех объединений (может появиться хвостовая пунктуация)
-    merged = [_clean_compat_fragment(x) for x in merged]
-    merged = [x for x in merged if _is_valid_compat_fragment(x)]
-    merged = _dedup_keep_order(merged)
-
-    merged_val = ", ".join(merged).strip(" ,;/:-.")
+    merged_val = ", ".join(merged).strip()
 
     # Если после сборки ничего не осталось — удаляем параметр "Совместимость"
     if not merged_val:
