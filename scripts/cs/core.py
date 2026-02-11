@@ -243,7 +243,7 @@ def _compat_fragments(s: str) -> list[str]:
         # нормализуем пробелы вокруг слэшей, чтобы одинаковые списки схлопывались
         p = _COMPAT_SLASH_SPACES_RE.sub("/", p)
         p = _COMPAT_MULTI_SLASH_RE.sub("/", p)
-        p = norm_ws(p).strip(" ,;/:-")
+        p = norm_ws(p).strip(" ,;/:-.")
         if not p:
             continue
         key = p.casefold()
@@ -320,12 +320,12 @@ def _clean_compat_fragment(f: str) -> str:
             f = f[:last]
         f = f.replace(")", "")
 
-    f = norm_ws(f).strip(" ,;/:-")
+    f = norm_ws(f).strip(" ,;/:-.")
 
     # в совместимости скобки не нужны — убираем остатки, чтобы не было "битых" хвостов
     if "(" in f or ")" in f:
         f = f.replace("(", " ").replace(")", " ")
-        f = norm_ws(f).strip(" ,;/:-")
+        f = norm_ws(f).strip(" ,;/:-.")
 
     # убираем дубли внутри "A/B/C" (частая грязь у поставщиков)
     if "/" in f:
@@ -390,7 +390,7 @@ def _collect_compat_fragments_from_text(text: str) -> list[str]:
 
     out: list[str] = []
     for chunk in _COMPAT_TEXT_SPLIT_RE.split(t):
-        c = norm_ws(chunk).strip(" ,;/:-")
+        c = norm_ws(chunk).strip(" ,;/:-.")
         if not c:
             continue
 
@@ -411,9 +411,9 @@ def _collect_compat_fragments_from_text(text: str) -> list[str]:
             if m1 and m_last:
                 start = max(0, m1.start() - 40)
                 end = min(len(c), m_last.end() + 40)
-                c = c[start:end].strip(" ,;/:-")
+                c = c[start:end].strip(" ,;/:-.")
             else:
-                c = c[:320].strip(" ,;/:-")
+                c = c[:320].strip(" ,;/:-.")
 
         if c:
             out.append(c)
@@ -508,7 +508,7 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
         x = _COMPAT_SLASH_SPACES_RE.sub("/", x)
         x = _COMPAT_MULTI_SLASH_RE.sub("/", x)
         x = x.replace("(", " ").replace(")", " ")
-        x = norm_ws(x).strip(" ,;/:-")
+        x = norm_ws(x).strip(" ,;/:-.")
         return [norm_ws(p) for p in x.split("/") if norm_ws(p)]
 
     def _merge_frags(a: str, b: str) -> str:
@@ -555,7 +555,12 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
                     break
                 j += 1
             i += 1
-    merged_val = ", ".join(merged).strip()
+    # CS: финальная чистка + дедуп после всех объединений (может появиться хвостовая пунктуация)
+    merged = [_clean_compat_fragment(x) for x in merged]
+    merged = [x for x in merged if _is_valid_compat_fragment(x)]
+    merged = _dedup_keep_order(merged)
+
+    merged_val = ", ".join(merged).strip(" ,;/:-.")
 
     # Если после сборки ничего не осталось — удаляем параметр "Совместимость"
     if not merged_val:
