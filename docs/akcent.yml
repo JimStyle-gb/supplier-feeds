@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-12 02:26">
+<yml_catalog date="2026-02-12 15:08">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-12 02:26:07
+Время сборки (Алматы)                      | 2026-02-12 15:08:57
 Ближайшая сборка (Алматы)                  | 2026-02-13 02:00:00
-Сколько товаров у поставщика до фильтра    | 1684
-Сколько товаров у поставщика после фильтра | 159
-Сколько товаров есть в наличии (true)      | 159
+Сколько товаров у поставщика до фильтра    | 1694
+Сколько товаров у поставщика после фильтра | 155
+Сколько товаров есть в наличии (true)      | 155
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -333,47 +333,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Fellowes, Шредер Fellowes® POWERSHRED LX211 BLACK SHREDDER(MICRO CUT) 230V EU/UK, Шредер, POWERSHRED, LX211, BLACK, SHREDDER, MICRO, CUT, 230V, EU, UK, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="AC5502201" available="true">
-<categoryId></categoryId>
-<vendorCode>AC5502201</vendorCode>
-<name>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™</name>
-<price>171900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/225/fzitqi60y3vxe9mpun8mjm3bwbt0xkbw.jpg</picture>
-<vendor>Fellowes</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Шредер Fellowes® Powershred® LX200, черный, DIN P-4, 4х12 мм, 12 лст., 22 лтр., Jam Proof™</h3><p>Тип: шредеры офисные; Цвет: Черный</p>
-<p><strong>Примечание:</strong> Вместительная корзина 22 литра ≈ 350 листов А4: Гарантия 2 года на устройство и 5 лет на ножи<br>Количество фрагментов при резке листа А4, шт.: ≥1300</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> шредеры офисные</li><li><strong>Цвет:</strong> Черный</li><li><strong>Возможности уничтожения:</strong> - скобы, карты, скрепки</li><li><strong>Загрузка, листов (A4, 70гр/м²):</strong> 12</li><li><strong>Количество пользователей 1:</strong> 3 Пользователя</li><li><strong>Рабочий цикл, мин:</strong> 10 / 15</li><li><strong>Размер резки, мм:</strong> 4 x 12</li><li><strong>Рекомендуемое количество CD дисков в день:</strong> нет</li><li><strong>Рекомендуемое количество кредитных карт в день:</strong> 25</li><li><strong>Рекомендуемое количество листов в день:</strong> 1000</li><li><strong>Скорость резки, м/мин:</strong> 2</li><li><strong>Тип Резки:</strong> Перекрест.</li><li><strong>Уничтожает до 12 листов одновременно:</strong> Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов</li><li><strong>Уничтожение CD или Blu:</strong> Ray DVD (1,</li><li><strong>Уничтожение кредитных карт:</strong> да</li><li><strong>Уничтожение скрепок:</strong> да</li><li><strong>Уничтожение степлерных скоб:</strong> да</li><li><strong>Уровень секретности для CD дисков, DIN 66399:</strong> нет</li><li><strong>Уровень секретности, DIN 66399 P:</strong> 4</li><li><strong>Шредер Powershred® LX200:</strong> Шредер нового поколения с непревзойденным удобством и эффективностью</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Тип">шредеры офисные</param>
-<param name="Цвет">Черный</param>
-<param name="Возможности уничтожения">- скобы, карты, скрепки</param>
-<param name="Загрузка, листов (A4, 70гр/м²)">12</param>
-<param name="Количество пользователей 1">3 Пользователя</param>
-<param name="Рабочий цикл, мин">10 / 15</param>
-<param name="Размер резки, мм">4 x 12</param>
-<param name="Рекомендуемое количество CD дисков в день">нет</param>
-<param name="Рекомендуемое количество кредитных карт в день">25</param>
-<param name="Рекомендуемое количество листов в день">1000</param>
-<param name="Скорость резки, м/мин">2</param>
-<param name="Тип Резки">Перекрест.</param>
-<param name="Уничтожает до 12 листов одновременно">Перекрестная резка - 4х12 мм, уничтожение листа А4 на 1300 фрагментов</param>
-<param name="Уничтожение CD или Blu">Ray DVD (1,</param>
-<param name="Уничтожение кредитных карт">да</param>
-<param name="Уничтожение скрепок">да</param>
-<param name="Уничтожение степлерных скоб">да</param>
-<param name="Уровень секретности для CD дисков, DIN 66399">нет</param>
-<param name="Уровень секретности, DIN 66399 P">4</param>
-<param name="Шредер Powershred® LX200">Шредер нового поколения с непревзойденным удобством и эффективностью</param>
-<keywords>Fellowes, Шредер Fellowes® Powershred® LX200 черный DIN P-4 4х12 мм 12 лст. 22 лтр. Jam Proof™, Шредер, Powershred, LX200, черный, DIN, P-4, 4х12, мм, 12, лст, 22, лтр, Jam, Proof, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="AC5502501" available="true">
 <categoryId></categoryId>
 <vendorCode>AC5502501</vendorCode>
@@ -534,30 +493,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <param name="Шредер Powershred® P">30C</param>
 <param name="Эксклюзивная модель для М.Видео">Уничтожает до 6 листов одновременно</param>
 <keywords>Fellowes, Шредер Fellowes® Powershred®P-30C DIN P-4 4х34 мм 6 лст. 15 лтр., Шредер, Powershred, P-30C, DIN, P-4, 4х34, мм, 6, лст, 15, лтр, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
-<offer id="AC64V69AA_23ABB" available="true">
-<categoryId></categoryId>
-<vendorCode>AC64V69AA_23ABB</vendorCode>
-<name>Монитор Hyperx MNTR HX Armada 27 QHD Gaming</name>
-<price>247900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/ba6/gjwt933m48lr8s6preq8yzmwxnxui78t.jpg</picture>
-<vendor>HyperX</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Монитор Hyperx MNTR HX Armada 27 QHD Gaming</h3><p>Игровые мониторы HyperX Armada — это первые игровые мониторы, в комплект которых входит монитор и эргономичный кронштейн. Вы избавите себя от хлопот, связанных с поиском совместимого настольного крепления, а вместо этого потратите время, наслаждаясь изысканными визуальными эффектами QHD Armada 27 с DisplayHDR™ . Говоря о времени, частота обновления 165 Гц и время отклика 1 мс могут помочь вам выиграть драгоценные доли секунды, которые могут иметь решающее значение для победы. Улучшите свои игровые возможности с помощью технологии AMD FreeSync™ Premium3, которая устраняет разрывы экрана и минимизирует компенсацию кадров и задержку. Воспользуйтесь преимуществами и универсальностью игрового монитора HyperX Armada 27 и эргономичного кронштейна.<br>Преимущества:<br>27-дюймовый экран, настольное крепление и кронштейн в комплекте.<br>Частота обновления 165 Гц, время отклика 1 мс G-Sync.<br>Quad HD (1440p) VESA DisplayHDR™ 400.<br>Оптимизируйте рабочее пространство с эргономичным кронштейном.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Китай</li><li><strong>Тип:</strong> Монитор</li><li><strong>VESA:</strong> 100x100</li><li><strong>Страна происхождения:</strong> Китай</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Китай</param>
-<param name="Тип">Монитор</param>
-<param name="VESA">100x100</param>
-<param name="Страна происхождения">Китай</param>
-<keywords>HyperX, Монитор Hyperx MNTR HX Armada 27 QHD Gaming, Монитор, MNTR, HX, Armada, 27, QHD, Gaming, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
 <offer id="AC7MD68A" available="true">
@@ -1396,31 +1331,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, МФУ Epson L3266 фабрика печати Wi-Fi, МФУ, L3266, фабрика, печати, Wi-Fi, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC11CJ67413" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC11CJ67413</vendorCode>
-<name>МФУ Epson L3251 фабрика печати</name>
-<price>109900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/b98/slzwbmxp3vczcv316l4rtjlp5sfze0qw.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>МФУ Epson L3251 фабрика печати</h3><p>Домашний струйный принтер<br>Многофункциональное устройство 3-в-1 для цветной печати формата A4 с Wi-Fi Direct<br>Печать, сканирование и копирование<br>Wi-Fi Direct<br>Черный с синей панелью<br>Благодаря отсутствию необходимости в замене картриджей это многофункциональное устройство (печать, сканирование, копирование) с Wi-Fi Direct и эксклюзивной синей панелью подходит для тех, кто ищет высококачественные принтеры по невероятно низкой цене за страницу. С помощью 100-листового заднего лотка для бумаги, печати фотографий без полей (до 10 x 15 см) и скорости печати до 10 страниц в минуту¹ вы с легкостью сможете выполнять различные задачи.<br>Попрощайтесь с дорогостоящими картриджами<br>EcoTank обеспечивает удобную и недорогую печать в домашних условиях: чернильные контейнеры сверхвысокой емкости позволяют перезаправлять картриджи без лишних усилий, а бутылки с замком-защелкой разработаны таким образом, что вставить можно только чернила нужного цвета.<br>Постоянная экономия…</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> МФУ Дом</li><li><strong>Совместимость:</strong> цветной печати формата A4 с Wi-Fi Direct</li><li><strong>Цвет:</strong> черный</li><li><strong>Ресурс:</strong> 10</li><li><strong>Страна происхождения:</strong> Филипины</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Тип">МФУ Дом</param>
-<param name="Совместимость">цветной печати формата A4 с Wi-Fi Direct</param>
-<param name="Цвет">черный</param>
-<param name="Ресурс">10</param>
-<param name="Страна происхождения">Филипины</param>
-<keywords>Epson, МФУ Epson L3251 фабрика печати, МФУ, L3251, фабрика, печати, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC11CJ67414" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC11CJ67414</vendorCode>
@@ -1536,13 +1446,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Принтер Epson L18050 фабрика печати</h3><p>Фотопринтер формата A3+<br>Шестицветный фотопринтер формата A3+ обеспечивает быструю печать больших объемов фотографий с рекордно низкой себестоимостью.<br>Рекордно низкая себестоимость печати фотографий<br>Быстрая печать фотографий<br>Печать до формата A3+<br>Благодаря сверхнизкой себестоимости печати фотографий и возможности печати с мобильных устройств этот высокоскоростной бескартриджный струйный принтер идеально подходит для печати больших объемов фотографий в формате до A3+. Компактный L18050 с фронтальными чернильными емкостями позволяет легко отслеживать уровень чернил и оснащен усовершенствованной системой заправки чернил InkLock, минимизирующей риск протечек, а также системой KeyLock, не дающей перепутать цвета. Принтер печатает на различных носителях, в том числе ID-карточках из ПВХ, CD и DVD-дисках.<br>Печать без картриджей<br>Встроенные емкости для чернил большого объема с фронтальным расположением позволяют печатать фотографии с минимальными затратами. Емкости для чернил и контейнеры с чернилами объемом 70 мл обеспечивают печать до 2 100 фотографий размером 10 х 15 см с одного комплекта контейнеров с чернилами¹. Простая заправка благодаря контейнерам с защитой от проливания…</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L18050</li><li><strong>Тип:</strong> Принтер для цветной печати</li><li><strong>Совместимость:</strong> печати больших объемов фотографий в формате до A3+. Компактный L18050 с фронтальными чернильными емкостями позволяет лег</li><li><strong>Цвет:</strong> черный</li><li><strong>Интерфейс:</strong> USB</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 255</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 15</li><li><strong>Область применения:</strong> Фотопечать</li><li><strong>Печать фото:</strong> да</li><li><strong>Разрешение печати,dpi:</strong> 5760x1440</li><li><strong>Ресурс:</strong> 50000</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> водорастворимые</li><li><strong>Формат:</strong> A3</li><li><strong>Цветность:</strong> 6 цветов</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson L18050</li><li><strong>Тип:</strong> Принтер для цветной печати</li><li><strong>Совместимость:</strong> печати больших объемов фотографий в формате до A3+. Компактный L18050 с фронтальными емкостями позволяет лег</li><li><strong>Цвет:</strong> черный</li><li><strong>Интерфейс:</strong> USB</li><li><strong>Автоподатчик:</strong> нет</li><li><strong>Двусторонняя печать:</strong> нет</li><li><strong>ЖК дисплей:</strong> нет</li><li><strong>Максимальная плотность бумаги, г/м2:</strong> 255</li><li><strong>Максимальная скорость печати А4 стр/мин:</strong> 15</li><li><strong>Область применения:</strong> Фотопечать</li><li><strong>Печать фото:</strong> да</li><li><strong>Разрешение печати,dpi:</strong> 5760x1440</li><li><strong>Ресурс:</strong> 50000</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li><li><strong>Тип расходных материалов:</strong> чернила</li><li><strong>Тип чернил:</strong> водорастворимые</li><li><strong>Формат:</strong> A3</li><li><strong>Цветность:</strong> 6 цветов</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson L18050</param>
 <param name="Тип">Принтер для цветной печати</param>
-<param name="Совместимость">печати больших объемов фотографий в формате до A3+. Компактный L18050 с фронтальными чернильными емкостями позволяет лег</param>
+<param name="Совместимость">печати больших объемов фотографий в формате до A3+. Компактный L18050 с фронтальными емкостями позволяет лег</param>
 <param name="Цвет">черный</param>
 <param name="Интерфейс">USB</param>
 <param name="Автоподатчик">нет</param>
@@ -1641,14 +1551,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</h3><p>Тип: Ёмкость для отработанных чернил; Производитель: Epson; Совместимость: отработанных чернил Epson C12C890191 SP7600/SP9600</p>
+<h3>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</h3><p>Тип: Ёмкость для отработанных чернил; Производитель: Epson; Совместимость: Epson C12C890191 SP7600/SP9600</p>
 <p><strong>Примечание:</strong> Сменная емкость для отработанных чернил.: Информация о необходимости замены появится на панели управление принтера.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> отработанных чернил Epson C12C890191 SP7600/SP9600</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson C12C890191 SP7600/SP9600</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">отработанных чернил Epson C12C890191 SP7600/SP9600</param>
+<param name="Совместимость">Epson C12C890191 SP7600/SP9600</param>
 <param name="Для бренда">Epson</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Тип печати">струйная</param>
@@ -2089,13 +1999,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Ёмкость для отработанных чернил Epson C13T04D000 EcoTank Maintenance Box (5clr)</h3><p>Емкость для отработанных чернил</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Ёмкость для отработанных чернил Epson C13T04D000</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> отработанных чернил Epson C13T04D000 EcoTank Maintenance Box 5clr</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Япония,Индонезия,Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Ёмкость для отработанных чернил Epson C13T04D000</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson C13T04D000 EcoTank Maintenance Box 5clr</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Япония,Индонезия,Филиппины</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Epson Ёмкость для отработанных чернил Epson C13T04D000</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">отработанных чернил Epson C13T04D000 EcoTank Maintenance Box 5clr</param>
+<param name="Совместимость">Epson C13T04D000 EcoTank Maintenance Box 5clr</param>
 <param name="Для бренда">Epson</param>
 <param name="Страна происхождения">Япония,Индонезия,Филиппины</param>
 <param name="Тип печати">струйная</param>
@@ -2933,29 +2843,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T61480N SP-4450 220ml черный матовый, Картридж, C13T61480N, SP-4450, 220ml, черный, матовый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T619000" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T619000</vendorCode>
-<name>Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN</name>
-<price>25900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/e31/rzhotutnlo25yoqsa3555c97ukzk1m55.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN</h3><p>Емкость для отработанных чернил для:<br>Epson Stylus Pro 4900 Designer Edition<br>Epson Stylus Pro 4900<br>Epson B-300<br>Epson B-310N<br>Epson B-510DN<br>Epson WorkForce Pro WP-4025DW<br>Epson WorkForce Pro WP-4535DWF</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> отработанных чернил Epson C13T619000 для B300/B500DN</li><li><strong>Для бренда:</strong> Epson</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">отработанных чернил Epson C13T619000 для B300/B500DN</param>
-<param name="Для бренда">Epson</param>
-<keywords>Epson, Ёмкость для отработанных чернил Epson C13T619000 для B300/B500DN, Ёмкость, для, отработанных, чернил, C13T619000, B300, B500DN, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T619300" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T619300</vendorCode>
@@ -2970,13 +2857,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200</h3><p>Емкость для отработанных чернил для:<br>SureColor SC-T3000<br>Surecolor T3000 w/o stand<br>SureColor SC-T5000<br>SureColor SC-T7000<br>SureColor SC-F6000<br>SureColor SCF7000<br>SC-B6000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Ёмкость для отработанных чернил для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> отработанных чернил Epson C13T619300 T3000/5000/7000</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Ёмкость для отработанных чернил для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson C13T619300 T3000/5000/7000</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Ёмкость для отработанных чернил для T3000/5000/7000, Т3200/5200/7200</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">отработанных чернил Epson C13T619300 T3000/5000/7000</param>
+<param name="Совместимость">Epson C13T619300 T3000/5000/7000</param>
 <param name="Для бренда">Epson</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Тип печати">струйная</param>
@@ -3440,12 +3327,12 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</h3><p>Основные преимущества:<br>Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управление принтера.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Объем:</strong> 0,003</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson C13T699700 SC-P6000/7000/8000/9000</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Объем:</strong> 0,003</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</param>
+<param name="Совместимость">Epson C13T699700 SC-P6000/7000/8000/9000</param>
 <param name="Для бренда">Epson</param>
 <param name="Объем">0,003</param>
 <param name="Страна происхождения">Китай</param>
@@ -3496,11 +3383,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box</h3><p>Ёмкость для отработанных чернил Epson C33S021601SJMB4000 C4000e Maintenance box</p>
-<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson C33S021601 SJMB4000 C4000e Maintenance box</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box</param>
+<param name="Совместимость">Epson C33S021601 SJMB4000 C4000e Maintenance box</param>
 <keywords>Epson, Ёмкость для отработанных чернил Epson C33S021601 SJMB4000 C4000e Maintenance box, Ёмкость, для, отработанных, чернил, C33S021601, SJMB4000, C4000e, Maintenance, box, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
@@ -4433,12 +4320,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <!-- Описание -->
 <h3>Интерактивная доска Mr.Pixel S102 BLACK</h3><p>Общие</p>
 <p><strong>Примечание:</strong> Минимальный предмет касания должен быть не менее 5 мм: Температура Эксплуатации: От -20°C До 70°C<br>Питания от USB, мощность пульсации max.200mV rms: Мощность 2 Вт, рабочий ток 200mA</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Совместимость:</strong> Windows 7/8/10</li><li><strong>Цвет:</strong> Черный</li><li><strong>10 Точек касания:</strong> Интерфейс USB 2.0 и USB 3.0</li><li><strong>Активная область:</strong> 95 дюймов 2120 (мм) х 1150 (мм)</li><li><strong>Время отклика 8 мс:</strong> Скорость отклика 20 мс</li><li><strong>Время эксплуатации не менее 7 лет:</strong> Напряжение тока: +DC 5V, +4.75V to +5.25V</li><li><strong>Диагональ:</strong> 102</li><li><strong>Интерфейс подключения:</strong> USB</li><li><strong>Метод ввода:</strong> палец, маркер или не прозрачные предметы</li><li><strong>Относительная Влажность:</strong> Рабочая: 90% (без конденсации при максимальной температуре 40°C)</li><li><strong>Рамка выполнена из алюминия, цвет серый:</strong> Внешний Размер: (мм) 2252 х 1280 х 44 (мм)</li><li><strong>Сертификаты:</strong> CE, FCC Class B, RoHS</li><li><strong>Соотношение сторон:</strong> 16:9</li><li><strong>Технология:</strong> ИК сенсорная</li><li><strong>Тип управления:</strong> Сенсорное</li><li><strong>Хранение:</strong> 90% (без конденсации при максимальной температуре 40°C)</li><li><strong>Хранения:</strong> -40°C ~ 85°С</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Цвет:</strong> Черный</li><li><strong>10 Точек касания:</strong> Интерфейс USB 2.0 и USB 3.0</li><li><strong>Активная область:</strong> 95 дюймов 2120 (мм) х 1150 (мм)</li><li><strong>Время отклика 8 мс:</strong> Скорость отклика 20 мс</li><li><strong>Время эксплуатации не менее 7 лет:</strong> Напряжение тока: +DC 5V, +4.75V to +5.25V</li><li><strong>Диагональ:</strong> 102</li><li><strong>Интерфейс подключения:</strong> USB</li><li><strong>Метод ввода:</strong> палец, маркер или не прозрачные предметы</li><li><strong>Относительная Влажность:</strong> Рабочая: 90% (без конденсации при максимальной температуре 40°C)</li><li><strong>Рамка выполнена из алюминия, цвет серый:</strong> Внешний Размер: (мм) 2252 х 1280 х 44 (мм)</li><li><strong>Сертификаты:</strong> CE, FCC Class B, RoHS</li><li><strong>Соотношение сторон:</strong> 16:9</li><li><strong>Технология:</strong> ИК сенсорная</li><li><strong>Тип управления:</strong> Сенсорное</li><li><strong>Хранение:</strong> 90% (без конденсации при максимальной температуре 40°C)</li><li><strong>Хранения:</strong> -40°C ~ 85°С</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Mr.Pixel</param>
 <param name="Тип">Интерактивная доска</param>
-<param name="Совместимость">Windows 7/8/10</param>
 <param name="Цвет">Черный</param>
 <param name="10 Точек касания">Интерфейс USB 2.0 и USB 3.0</param>
 <param name="Активная область">95 дюймов 2120 (мм) х 1150 (мм)</param>
@@ -4472,12 +4358,11 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Интерактивная доска Mr.Pixel S82 BLACK</h3><p>Общие характерстики:<br>Внешний материал рамки выполнен из Алюминия, цвет черный<br>Соотношение сторон: 4:3<br>Технология: ИК-Сенсорная<br>10 точек касания<br>Интерфейс USB 2.0 и USB 3.0<br>Внешние Размеры: 1688*1208*32<br>Активная область: 77 дюймов  1610 (мм) х 1130 (мм)<br>Размер упаковки: 178*130*70мм<br>Вес нетто: 16.5 кг<br>Вес брутто: 25kg<br>Разрешение (Интерполяция): 32767*32767<br>Время отклика: 8мс<br>Скорость отклика: 20мс<br>Метод ввода: палец, маркер или не прозрачные предметы<br>Время прикосновения маркера к доске: неограниченно<br>Минимальный предмет касания к доске: не менее 5 мм<br>Температура в окружающей среде:<br>Эксплуатации: От -20°C До 70°C<br>Хранения: -40°C ~ 85°С<br>В относительной влажности:<br>Рабочая: 90% (без конденсации при максимальной температуре 40°C)<br>Хранение: 90% (без конденсации при максимальной температуре 40°C)<br>Срок службы: не менее 7 лет<br>Рабочее напряжение: + DC 5V, + 4.75V до + 5.25V<br>Источник питания от USB, мощность max. 200mV rms<br>Мощность 2 Вт, рабочий ток 200 мА<br>Сертификаты: CE, FCC, RoHS<br>ОС Windows XP, Win7, Win8, Win10, не совместим с операционной системой Mac OC<br>Комплектация:<br>Настенные крепежи - 8 штук<br>Руководство по установке<br>Удлинительный кабель USB 7,5 м<br>Маркеры - 3 штуки</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Совместимость:</strong> Windows 7/8/10</li><li><strong>Цвет:</strong> Черный</li><li><strong>Диагональ:</strong> 82</li><li><strong>Интерфейс подключения:</strong> USB</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип управления:</strong> Сенсорное</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Mr.Pixel</li><li><strong>Тип:</strong> Интерактивная доска</li><li><strong>Цвет:</strong> Черный</li><li><strong>Диагональ:</strong> 82</li><li><strong>Интерфейс подключения:</strong> USB</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип управления:</strong> Сенсорное</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Mr.Pixel</param>
 <param name="Тип">Интерактивная доска</param>
-<param name="Совместимость">Windows 7/8/10</param>
 <param name="Цвет">Черный</param>
 <param name="Диагональ">82</param>
 <param name="Интерфейс подключения">USB</param>
