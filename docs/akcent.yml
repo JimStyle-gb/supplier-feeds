@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<yml_catalog date="2026-02-12 15:08">
+<yml_catalog date="2026-02-12 18:59">
 <shop><offers>
 
 <!--FEED_META
 Поставщик                                  | AkCent
 URL поставщика                             | https://ak-cent.kz/export/Exchange/article_nw2/Ware02224.xml
-Время сборки (Алматы)                      | 2026-02-12 15:08:57
+Время сборки (Алматы)                      | 2026-02-12 18:59:05
 Ближайшая сборка (Алматы)                  | 2026-02-13 02:00:00
-Сколько товаров у поставщика до фильтра    | 1694
-Сколько товаров у поставщика после фильтра | 155
-Сколько товаров есть в наличии (true)      | 155
+Сколько товаров у поставщика до фильтра    | 1686
+Сколько товаров у поставщика после фильтра | 154
+Сколько товаров есть в наличии (true)      | 154
 Сколько товаров нет в наличии (false)      | 0
 -->
 
@@ -1551,14 +1551,14 @@ URL поставщика                             | https://ak-cent.kz/export
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
-<h3>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</h3><p>Тип: Ёмкость для отработанных чернил; Производитель: Epson; Совместимость: Epson C12C890191 SP7600/SP9600</p>
+<h3>Ёмкость для отработанных чернил Epson C12C890191 SP7600/SP9600</h3><p>Тип: Ёмкость для отработанных чернил; Производитель: Epson; Совместимость: Epson SP9600</p>
 <p><strong>Примечание:</strong> Сменная емкость для отработанных чернил.: Информация о необходимости замены появится на панели управление принтера.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson C12C890191 SP7600/SP9600</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson SP9600</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">Epson C12C890191 SP7600/SP9600</param>
+<param name="Совместимость">Epson SP9600</param>
 <param name="Для бренда">Epson</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Тип печати">струйная</param>
@@ -2857,13 +2857,13 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Ёмкость для отработанных чернил Epson C13T619300 T3000/5000/7000, Т3200/5200/7200</h3><p>Емкость для отработанных чернил для:<br>SureColor SC-T3000<br>Surecolor T3000 w/o stand<br>SureColor SC-T5000<br>SureColor SC-T7000<br>SureColor SC-F6000<br>SureColor SCF7000<br>SC-B6000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Ёмкость для отработанных чернил для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson C13T619300 T3000/5000/7000</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Ёмкость для отработанных чернил для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson 5000/7000</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Модель">Ёмкость для отработанных чернил для T3000/5000/7000, Т3200/5200/7200</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">Epson C13T619300 T3000/5000/7000</param>
+<param name="Совместимость">Epson 5000/7000</param>
 <param name="Для бренда">Epson</param>
 <param name="Страна происхождения">Китай</param>
 <param name="Тип печати">струйная</param>
@@ -3285,34 +3285,6 @@ URL поставщика                             | https://ak-cent.kz/export
 <keywords>Epson, Картридж Epson C13T69440N T3000/5000/7000 Т3200/5200/7200 желтый, Картридж, C13T69440N, T3000, 5000, 7000, Т3200, 5200, 7200, желтый, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
 </offer>
 
-<offer id="ACC13T694500" available="true">
-<categoryId></categoryId>
-<vendorCode>ACC13T694500</vendorCode>
-<name>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</name>
-<price>236900</price>
-<picture>https://b2b.ak-cent.kz/upload/iblock/860/sprl22huykjcd4jt6m78i3su9rqt9ddg.jpg</picture>
-<vendor>Epson</vendor>
-<currencyId>KZT</currencyId>
-<description><![CDATA[
-<!-- WhatsApp -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><p style="text-align:center; margin:0 0 12px;"><a href="https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0" style="display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);">&#128172; Написать в WhatsApp</a></p></div>
-<hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
-<!-- Описание -->
-<h3>Картридж Epson C13T694500 T3000/5000/7000, Т3200/5200/7200 матовый черный</h3><p>Матовый черный картридж 700 ml, для:<br>Epson SureColor T-3000<br>Epson SureColor T-5000<br>Epson SureColor T-7000</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Модель:</strong> Epson Картридж C13T694500 для T3000/5000/7000, Т3200/5200/7200</li><li><strong>Тип:</strong> Картридж EPSON</li><li><strong>Цвет:</strong> Черный</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Ресурс:</strong> 700 мл</li><li><strong>Страна происхождения:</strong> Индонезия</li><li><strong>Тип печати:</strong> струйная</li></ul>
-<!-- Оплата и доставка -->
-<div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
-<param name="Производитель">Epson</param>
-<param name="Модель">Epson Картридж C13T694500 для T3000/5000/7000, Т3200/5200/7200</param>
-<param name="Тип">Картридж EPSON</param>
-<param name="Цвет">Черный</param>
-<param name="Для бренда">Epson</param>
-<param name="Ресурс">700 мл</param>
-<param name="Страна происхождения">Индонезия</param>
-<param name="Тип печати">струйная</param>
-<keywords>Epson, Картридж Epson C13T694500 T3000/5000/7000 Т3200/5200/7200 матовый черный, Картридж, C13T694500, T3000, 5000, 7000, Т3200, 5200, 7200, матовый, черный, Казахстан, Алматы, Нур-Султан, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Усть Каменогорск, Оскемен, Семей, Уральск, Орал, Темиртау, Костанай, Кызылорда, Атырау, Актау, Кокшетау, Петропавловск, Талдыкорган, Туркестан</keywords>
-</offer>
-
 <offer id="ACC13T699700" available="true">
 <categoryId></categoryId>
 <vendorCode>ACC13T699700</vendorCode>
@@ -3327,12 +3299,12 @@ URL поставщика                             | https://ak-cent.kz/export
 <hr style="border:none; border-top:2px solid #E7D6B7; margin:12px 0;" />
 <!-- Описание -->
 <h3>Ёмкость для отработанных чернил Epson C13T699700 SC-P6000/7000/8000/9000</h3><p>Основные преимущества:<br>Сменная емкость для отработанных чернил. Информация о необходимости замены появится на панели управление принтера.</p>
-<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson C13T699700 SC-P6000/7000/8000/9000</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Объем:</strong> 0,003</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
+<h3>Характеристики</h3><ul><li><strong>Производитель:</strong> Epson</li><li><strong>Тип:</strong> Ёмкость для отработанных чернил</li><li><strong>Совместимость:</strong> Epson 7000/8000/9000</li><li><strong>Для бренда:</strong> Epson</li><li><strong>Объем:</strong> 0,003</li><li><strong>Страна происхождения:</strong> Китай</li><li><strong>Тип печати:</strong> струйная</li></ul>
 <!-- Оплата и доставка -->
 <div style="font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;"><div style="background:#FFF6E5; border:1px solid #F1E2C6; padding:12px 14px; border-radius:0; text-align:left;"><h3 style="margin:0 0 8px; font-size:17px;">Оплата</h3><ul style="margin:0; padding-left:18px;"><li><strong>Безналичный</strong> расчёт для <u>юридических лиц</u></li><li><strong>Удалённая оплата</strong> по <span style="color:#8b0000;"><strong>KASPI</strong></span> счёту для <u>физических лиц</u></li></ul><hr style="border:none; border-top:1px solid #E7D6B7; margin:12px 0;" /><h3 style="margin:0 0 8px; font-size:17px;">Доставка по Алматы и Казахстану</h3><ul style="margin:0; padding-left:18px;"><li><em><strong>ДОСТАВКА</strong> в «квадрате» г. Алматы — БЕСПЛАТНО!</em></li><li><em><strong>ДОСТАВКА</strong> по Казахстану до 5 кг — 5 000 тг. | 3–7 рабочих дней</em></li><li><em><strong>ОТПРАВИМ</strong> товар любой курьерской компанией!</em></li><li><em><strong>ОТПРАВИМ</strong> товар автобусом через автовокзал «САЙРАН»</em></li></ul></div></div>]]></description>
 <param name="Производитель">Epson</param>
 <param name="Тип">Ёмкость для отработанных чернил</param>
-<param name="Совместимость">Epson C13T699700 SC-P6000/7000/8000/9000</param>
+<param name="Совместимость">Epson 7000/8000/9000</param>
 <param name="Для бренда">Epson</param>
 <param name="Объем">0,003</param>
 <param name="Страна происхождения">Китай</param>
