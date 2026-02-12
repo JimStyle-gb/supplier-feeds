@@ -641,6 +641,142 @@ def ensure_compatibility_union(params: list[tuple[str, str]], name: str, desc_te
                 j += 1
             i += 1
 
+
+
+    # --- merge бренда + моделей в одном фрагменте (чтобы не было "Kyocera ... , Kyocera ..." и т.п.)
+    _BRAND_PATTERNS = [
+        (re.compile(r"(?i)^\s*konica\s+minolta\b"), "Konica Minolta"),
+        (re.compile(r"(?i)^\s*kyocera\b"), "Kyocera"),
+        (re.compile(r"(?i)^\s*xerox\b"), "Xerox"),
+        (re.compile(r"(?i)^\s*samsung\b"), "Samsung"),
+        (re.compile(r"(?i)^\s*hp\b"), "HP"),
+        (re.compile(r"(?i)^\s*canon\b"), "Canon"),
+        (re.compile(r"(?i)^\s*brother\b"), "Brother"),
+        (re.compile(r"(?i)^\s*ricoh\b"), "Ricoh"),
+        (re.compile(r"(?i)^\s*oki\b"), "OKI"),
+        (re.compile(r"(?i)^\s*lexmark\b"), "Lexmark"),
+        (re.compile(r"(?i)^\s*panasonic\b"), "Panasonic"),
+        (re.compile(r"(?i)^\s*sharp\b"), "Sharp"),
+        (re.compile(r"(?i)^\s*epson\b"), "Epson"),
+    ]
+
+    _MODEL_SPLIT_RE = re.compile(r"[\/,;]+")
+    _MODEL_TOKEN_RE = re.compile(r"(?i)^[A-Z]{1,6}[- ]?\d{2,5}[A-Z]{0,6}\+?$|^\d{2,5}[A-Z]{0,6}\+?$")
+
+    def _detect_brand(frag: str) -> tuple[str, str]:
+        s = (frag or "").strip()
+        if not s:
+            return "", ""
+        for rx, canon in _BRAND_PATTERNS:
+            m = rx.match(s)
+            if m:
+                tail = s[m.end():].strip()
+                return canon, tail
+        return "", s
+
+    def _normalize_model_token(tok: str, last_prefix: str) -> tuple[str, str]:
+        t = (tok or "").strip()
+        if not t:
+            return "", last_prefix
+        # привести "FS 1000+" -> "FS-1000+"
+        t = re.sub(r"(?i)\b([A-Z]{1,6})\s+(\d{2,5}[A-Z]{0,6}\+?)\b", r"\1-\2", t)
+        # привести разные тире
+        t = t.replace("—", "-").replace("–", "-")
+        t = re.sub(r"\s+", " ", t).strip()
+
+        # убрать лишние слова внутри токена
+        t = re.sub(r"(?i)\b(совместим(?:ый|ые)?|оригинал|original|compatible)\b", "", t).strip()
+        t = t.strip(" .:;-")
+
+        if not t:
+            return "", last_prefix
+
+        # если токен "1118MFP" (без букв префикса) — дополняем прошлым префиксом
+        if re.fullmatch(r"(?i)^\d{2,5}[A-Z]{0,6}\+?$", t) and last_prefix:
+            t = f"{last_prefix}{t}"
+
+        # обновить префикс (например FS-)
+        m = re.match(r"(?i)^([A-Z]{1,6})-", t)
+        if m:
+            last_prefix = m.group(1).upper() + "-"
+
+        # финальная валидация
+        if not _MODEL_TOKEN_RE.fullmatch(t):
+            return "", last_prefix
+
+        return t.upper(), last_prefix
+
+    def _extract_models_from_tail(tail: str) -> list[str]:
+        s = (tail or "").strip()
+        if not s:
+            return []
+        # выкинуть скобки (ресурс и пр.)
+        s = re.sub(r"\([^)]*\)", " ", s)
+        s = s.replace("—", "-").replace("–", "-")
+        s = re.sub(r"\s+", " ", s).strip()
+
+        parts = [p.strip() for p in _MODEL_SPLIT_RE.split(s) if p.strip()]
+        out: list[str] = []
+        seen: set[str] = set()
+        last_prefix = ""
+        for p in parts:
+            # убрать повтор бренда внутри хвоста (например "Kyocera FS-..." второй раз)
+            _, p2 = _detect_brand(p)
+            tok, last_prefix = _normalize_model_token(p2, last_prefix)
+            if tok and tok not in seen:
+                seen.add(tok)
+                out.append(tok)
+        return out
+
+    def _model_sort_key(t: str):
+        # FS-1000+ / SCX-3405FW / ML-2165W / ...
+        m = re.match(r"^([A-Z]{1,6})-(\d{2,5})([A-Z0-9\+]{0,6})$", t)
+        if not m:
+            return ("ZZZ", 10**9, t)
+        pref = m.group(1)
+        num = int(m.group(2))
+        suf = m.group(3) or ""
+        return (pref, num, suf)
+
+    def _merge_brand_model_frags(frags: list[str]) -> list[str]:
+        # собираем модели по брендам, сохраняя порядок первого появления бренда
+        brand_models: dict[str, list[str]] = {}
+        brand_seen: dict[str, set[str]] = {}
+        brand_first_idx: dict[str, int] = {}
+
+        # сначала соберём модели
+        for i, f in enumerate(frags):
+            b, tail = _detect_brand(f)
+            if not b:
+                continue
+            models = _extract_models_from_tail(tail)
+            if not models:
+                continue
+            if b not in brand_models:
+                brand_models[b] = []
+                brand_seen[b] = set()
+                brand_first_idx[b] = i
+            for t in models:
+                if t not in brand_seen[b]:
+                    brand_seen[b].add(t)
+                    brand_models[b].append(t)
+
+        # теперь соберём итоговые фрагменты в исходном порядке
+        out: list[str] = []
+        emitted: set[str] = set()
+        for f in frags:
+            b, _ = _detect_brand(f)
+            if b and b in brand_models:
+                if b in emitted:
+                    continue
+                models = sorted(brand_models[b], key=_model_sort_key)
+                out.append(b + " " + "/".join(models))
+                emitted.add(b)
+            else:
+                out.append(f)
+        return out
+    merged = _merge_brand_model_frags(merged)
+
     merged_val = ", ".join(merged).strip()
 
     if not merged_val:
