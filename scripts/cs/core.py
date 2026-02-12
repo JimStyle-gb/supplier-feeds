@@ -72,6 +72,10 @@ CS_NAME_MAX_LEN = int((os.getenv("CS_NAME_MAX_LEN", "150") or "150").strip() or 
 CS_KEYWORDS_MAX_LEN = int((os.getenv("CS_KEYWORDS_MAX_LEN", "1024") or "1024").strip() or "1024")
 
 CS_COMPAT_CLEAN_YIELD_PACK = (os.getenv("CS_COMPAT_CLEAN_YIELD_PACK", "1") or "1").strip().lower() not in ("0", "false", "no")
+CS_COMPAT_CLEAN_PAPER_OS_DIM = (os.getenv("CS_COMPAT_CLEAN_PAPER_OS_DIM", "1") or "1").strip().lower() not in ("0", "false", "no")
+CS_COMPAT_CLEAN_NOISE_WORDS = (os.getenv("CS_COMPAT_CLEAN_NOISE_WORDS", "1") or "1").strip().lower() not in ("0", "false", "no")
+CS_COMPAT_CLEAN_REPEAT_BLOCKS = (os.getenv("CS_COMPAT_CLEAN_REPEAT_BLOCKS", "1") or "1").strip().lower() not in ("0", "false", "no")
+
 
 
 
@@ -271,6 +275,19 @@ _COMPAT_PARENS_UNIT_RE = re.compile(r"\(\s*(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\
 # CS: вычищаем единицы/объём и служебные слова внутри фрагмента (если они встречаются вместе с моделью)
 _COMPAT_UNIT_ANY_RE = re.compile(r"(?i)\b(?:\d+\s*(?:[*xх]\s*)\d+|\d+(?:[.,]\d+)?)\s*(?:мл|ml)\b")
 _COMPAT_SKIP_ANY_RE = re.compile(r"(?i)\b(?:совместим\w*|compatible|original|оригинал)\b")
+# CS: слова/форматы/ОС, которые не должны попадать в "Совместимость" (часто прилетают из ТТХ)
+_COMPAT_PAPER_OS_WORD_RE = re.compile(
+    r"(?i)\b(?:letter|legal|a[4-6]|b5|c6|dl|no\.\s*10|windows(?:\s*\d+)?|mac\s*os|linux|android|ios|"
+    r"конверт\w*|дуплекс|формат|выбрать\s*формат|paper\s*tray\s*capacity)\b"
+)
+# CS: размеры/соотношения сторон — тоже мусор для совместимости
+_COMPAT_DIM_TOKEN_RE = re.compile(r"(?i)\b\d+\s*[xх]\s*\d+\b|\b\d+\s*см\b|\b16:9\b")
+# CS: шумовые слова, которые иногда попадают в совместимость (цвета/маркетинг/описания)
+_COMPAT_NOISE_IN_COMPAT_RE = re.compile(
+    r"(?i)\b(?:euro\s*print|отработанн\w*|чернил\w*|ink|pigment|dye|"
+    r"cyan|magenta|yellow|black|grey|gray|matt\s*black|photo\s*black|photoblack|light\s*cyan|light\s*magenta)\b"
+)
+
 
 # CS: мусор в скобках (ресурс/комплект/обрезанные хвосты)
 _COMPAT_PARENS_YIELD_PACK_RE = re.compile(r"(?i)\([^)]*(?:\b\d+\s*[kк]\b|\b\d+\s*шт\b|pcs|pieces|yield|страниц|стр\.?|ресурс|увелич)[^)]*\)")
@@ -313,6 +330,15 @@ def _clean_compat_fragment(f: str) -> str:
         f = _COMPAT_YIELD_ANY_RE.sub("", f)
         f = _COMPAT_PACK_ANY_RE.sub("", f)
 
+    # CS: форматы бумаги / ОС / размеры — не должны жить в "Совместимость"
+    if CS_COMPAT_CLEAN_PAPER_OS_DIM:
+        f = _COMPAT_PAPER_OS_WORD_RE.sub("", f)
+        f = _COMPAT_DIM_TOKEN_RE.sub("", f)
+
+    # CS: шумовые слова (цвета/маркетинг/описания) — тоже режем
+    if CS_COMPAT_CLEAN_NOISE_WORDS:
+        f = _COMPAT_NOISE_IN_COMPAT_RE.sub("", f)
+
     # если скобки сломаны (обрезан хвост) — режем с последней '('
     if f.count("(") != f.count(")"):
         last = f.rfind("(")
@@ -327,12 +353,30 @@ def _clean_compat_fragment(f: str) -> str:
         f = f.replace("(", " ").replace(")", " ")
         f = norm_ws(f).strip(" ,;/:-")
 
+    # CS: иногда поставщик повторяет целый список дважды — режем повтор (часто у NVPrint)
+    if CS_COMPAT_CLEAN_REPEAT_BLOCKS and len(f) >= 80:
+        f_low = f.casefold()
+        pfx = norm_ws(f[:60]).casefold()
+        if len(pfx) >= 24:
+            pos = f_low.find(pfx, len(pfx))
+            if pos != -1:
+                f = f[:pos]
+                f = norm_ws(f).strip(" ,;/:-")
+
     # убираем дубли внутри "A/B/C" (частая грязь у поставщиков)
     if "/" in f:
         parts = [norm_ws(x) for x in f.split("/") if norm_ws(x)]
         out: list[str] = []
         seen: set[str] = set()
         for x in parts:
+            if CS_COMPAT_CLEAN_PAPER_OS_DIM:
+                x = _COMPAT_PAPER_OS_WORD_RE.sub("", x)
+                x = _COMPAT_DIM_TOKEN_RE.sub("", x)
+            if CS_COMPAT_CLEAN_NOISE_WORDS:
+                x = _COMPAT_NOISE_IN_COMPAT_RE.sub("", x)
+            x = norm_ws(x).strip(" ,;/:-")
+            if not x:
+                continue
             k = x.casefold()
             if k in seen:
                 continue
@@ -342,19 +386,28 @@ def _clean_compat_fragment(f: str) -> str:
 
     return f
 
-
-
-
-
 def _is_valid_compat_fragment(f: str) -> bool:
     """CS: проверка, что фрагмент похож на совместимость (модель/список моделей), а не мусор."""
     f = norm_ws(f)
     if not f:
         return False
 
-    # чисто единицы/объём — мусор
+    # чисто цвет/служебные слова —
+    if _COMPAT_COLOR_ONLY_RE.match(f) or _COMPAT_SKIP_WORD_RE.match(f):
+        return False
+
+    # чисто единицы/объём —
     if _COMPAT_UNIT_RE.match(f):
         return False
+
+    # голые числа/номера —
+    if _COMPAT_NUM_ONLY_RE.match(f) or _COMPAT_NO_CODE_RE.match(f):
+        return False
+
+    # форматы бумаги / ОС / размеры — не совместимость принтеров
+    if CS_COMPAT_CLEAN_PAPER_OS_DIM:
+        if _COMPAT_PAPER_OS_WORD_RE.search(f) or _COMPAT_DIM_TOKEN_RE.search(f):
+            return False
 
     # должна быть цифра (модели почти всегда с цифрами)
     if not re.search(r"\d", f):
@@ -369,7 +422,6 @@ def _is_valid_compat_fragment(f: str) -> bool:
         return False
 
     return True
-
 
 _COMPAT_MODEL_TOKEN_RE = re.compile(r"(?i)\b[A-ZА-Я]{1,6}\s*\d{2,5}[A-ZА-Я]?\b")
 _COMPAT_TEXT_SPLIT_RE = re.compile(r"[\n\r\.\!\?]+")
