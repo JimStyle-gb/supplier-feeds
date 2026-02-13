@@ -1723,24 +1723,8 @@ def enrich_params_from_name_and_desc(params: list[tuple[str, str]], name: str, d
         if first and len(first) <= 32 and not re.search(r"\d", first):
             params.append(("Тип", first))
             keys_cf.add("тип")
-
-
-    # Для сетевых кабелей 'Совместимость' как правило бессмысленна — не добавляем автоматически
-    if re.match(r"(?i)^кабель\s+сетевой\b", name.strip()):
-        pass
-    else:
-
-        # Совместимость (простая эвристика по "для ...")
-        if not (_has("Совместимость") or _has("Совместимые модели") or _has("Для") or _has("Применение")):
-            m = re.search(r"(?i)\bдля\s+([^\n\r,;]{3,120})", hay)
-            if m:
-                val = norm_ws(m.group(1))
-                if len(val) > 140:
-                    val = val[:140].rstrip(" ,")
-                if val:
-                    params.append(("Совместимость", val))
-                    keys_cf.add("совместимость")
-
+    # CS: Совместимость НЕ создаём и НЕ обогащаем автоматически.
+    # Если поставщик не дал параметр совместимости — оставляем пусто (по просьбе пользователя).
 
     # Ресурс
     if not (_has("Ресурс") or _has("Ресурс, стр")):
@@ -3216,9 +3200,7 @@ class OfferOut:
             params.extend(_spec_pairs)
         enrich_params_from_desc(params, native_desc)
         enrich_params_from_name_and_desc(params, name_full, native_desc)
-
-        # CS: взаимно обогащаем совместимость (params + name + desc)
-        params = ensure_compatibility_union(params, name_full, native_desc)
+        # CS: Совместимость не обогащаем и не создаём автоматически (по просьбе пользователя).
 
         # чистим и сортируем (ВАЖНО: чистить всегда)
         params = clean_params(params)
