@@ -364,7 +364,7 @@ changed = write_cs_feed(
 
 print(f"[akcent] before={before} after={after} price_missing={price_missing} changed={changed}")
 
-return 0
+    return 0
 
 if __name__ == "__main__":
     raise SystemExit(main())
