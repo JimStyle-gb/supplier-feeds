@@ -733,7 +733,7 @@ print(
     f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | filtered_out={filtered_out} | "
     f"in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={OUT_FILE}"
 )
-return 0
+    return 0
 
 
 if __name__ == "__main__":
