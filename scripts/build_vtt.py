@@ -40,17 +40,14 @@ from bs4 import BeautifulSoup
 
 from cs.core import (
     OfferOut,
-    compute_price,
     clean_params,
-    ensure_footer_spacing,
-    make_feed_meta,
-    make_footer,
-    make_header,
+    compute_price,
+    get_public_vendor,
+    next_run_dom_at_hour,
     now_almaty,
-    safe_int,
     norm_ws,
-    write_if_changed,
-    validate_cs_yml,
+    safe_int,
+    write_cs_feed,
 )
 
 SUPPLIER = "VTT"
@@ -102,39 +99,6 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
-
-def _next_run_dom(now: datetime, hour: int, doms: list[int]) -> datetime:
-    # Следующий запуск по дням месяца (в Алматы), например [1,10,20] в 05:00
-    allowed = sorted({int(d) for d in doms if 1 <= int(d) <= 31})
-    y, m = now.year, now.month
-    for _ in range(0, 24):  # до 2 лет вперёд — более чем достаточно
-        for d in allowed:
-            try:
-                cand = datetime(y, m, d, hour, 0, 0)
-            except ValueError:
-                continue
-            if cand > now:
-                return cand
-        # следующий месяц
-        m += 1
-        if m == 13:
-            m = 1
-            y += 1
-    return now + timedelta(days=31)
-
-@dataclass(frozen=True)
-class _Cfg:
-    base_url: str
-    start_url: str
-    categories: list[str]
-    login: str
-    password: str
-    max_pages: int
-    max_workers: int
-    max_crawl_minutes: float
-    delay_ms: int
-    verify: object  # bool|str (requests)
-    softfail: bool
 
 
 def _cfg() -> _Cfg:
@@ -797,32 +761,26 @@ def main() -> int:
         raise RuntimeError(msg)
 
     # VTT по расписанию 1/10/20 (05:00 Алматы).
-    next_run = _next_run_dom(now, 5, [1, 10, 20])
+    next_run = next_run_dom_at_hour(now, 5, (1, 10, 20))
 
-    feed_meta = make_feed_meta(
-        supplier=SUPPLIER,
-        supplier_url=cfg.start_url,
-        build_time=now,
-        next_run=next_run,
-        before=len(offers),
-        after=len(offers),
-        in_true=len(offers),
-        in_false=0,
-    )
+public_vendor = get_public_vendor(SUPPLIER)
 
-    header = make_header(now, encoding="utf-8")
-    footer = make_footer()
+changed = write_cs_feed(
+    offers,
+    supplier=SUPPLIER,
+    supplier_url=cfg.start_url,
+    out_file=OUT_FILE,
+    build_time=now,
+    next_run=next_run,
+    before=len(offers),
+    encoding="utf-8",
+    public_vendor=public_vendor,
+    currency_id="KZT",
+    param_priority=None,
+)
 
-    offers_xml = "\n\n".join(o.to_xml(currency_id="KZT", public_vendor="CS") for o in offers)
-    full = header + feed_meta + "\n\n" + offers_xml + ("\n" if offers_xml else "") + footer
-    full = ensure_footer_spacing(full)
-
-    # CS-валидация (не пишем мусор)
-    validate_cs_yml(full)
-
-    changed = write_if_changed(OUT_FILE, full, encoding="utf-8")
-    _log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
-    return 0
+_log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
+return 0
 
 
 if __name__ == "__main__":
