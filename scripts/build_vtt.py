@@ -780,7 +780,7 @@ changed = write_cs_feed(
 )
 
 _log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
-return 0
+    return 0
 
 
 if __name__ == "__main__":
