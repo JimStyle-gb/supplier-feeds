@@ -22,15 +22,11 @@ import requests
 from cs.core import (
     OfferOut,
     compute_price,
-    ensure_footer_spacing,
-    make_feed_meta,
-    make_footer,
-    make_header,
-    next_run_at_hour,
+    get_public_vendor,
+    next_run_dom_at_hour,
     now_almaty,
     norm_ws,
-    validate_cs_yml,
-    write_if_changed,
+    write_cs_feed,
 )
 
 
@@ -642,7 +638,7 @@ def main() -> int:
         hour = int((os.environ.get("SCHEDULE_HOUR_ALMATY", "4") or "4").strip())
     except Exception:
         hour = 4
-    next_run = next_run_at_hour(now, hour)
+    next_run = next_run_dom_at_hour(now, hour, (1, 10, 20))
     strict = (os.environ.get("NVPRINT_STRICT") or "").strip().lower() in ("1", "true", "yes")
     try:
         xml_bytes = _download_xml(url, auth)
@@ -717,31 +713,28 @@ def main() -> int:
 
     out_offers.sort(key=lambda o: o.oid)
 
-    header = make_header(now, encoding=OUTPUT_ENCODING)
-    feed_meta = make_feed_meta(
-        "NVPrint",
-        url,
-        now,
-        next_run,
-        before=len(items),
-        after=len(out_offers),
-        in_true=in_true,
-        in_false=in_false,
-    )
+public_vendor = get_public_vendor("NVPrint")
 
-    offers_xml = "\n\n".join(o.to_xml(public_vendor="CS") for o in out_offers)
-    full = header + "\n" + feed_meta + "\n\n" + offers_xml + "\n" + make_footer()
-    full = ensure_footer_spacing(full)
+changed = write_cs_feed(
+    out_offers,
+    supplier="NVPrint",
+    supplier_url=url,
+    out_file=OUT_FILE,
+    build_time=now,
+    next_run=next_run,
+    before=len(items),
+    encoding=OUTPUT_ENCODING,
+    public_vendor=public_vendor,
+    currency_id="KZT",
+    param_priority=None,
+)
 
-    validate_cs_yml(full)
-
-    changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
-    print(f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | filtered_out={filtered_out} | in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={OUT_FILE}")
-    return 0
+print(
+    f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | filtered_out={filtered_out} | "
+    f"in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={OUT_FILE}"
+)
+return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
-#!/usr/bin/env python3
