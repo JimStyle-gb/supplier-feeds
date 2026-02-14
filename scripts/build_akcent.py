@@ -343,26 +343,26 @@ def main() -> int:
     in_true = sum(1 for o in out_offers if o.available)
     in_false = after - in_true
 
-public_vendor = get_public_vendor()
+    public_vendor = get_public_vendor()
 
-# Стабильный порядок офферов (меньше лишних диффов между коммитами)
-out_offers.sort(key=lambda x: x.oid)
+    # Стабильный порядок офферов (меньше лишних диффов между коммитами)
+    out_offers.sort(key=lambda x: x.oid)
 
-changed = write_cs_feed(
-    out_offers,
-    supplier=SUPPLIER_NAME,
-    supplier_url=SUPPLIER_URL,
-    out_file=OUT_FILE,
-    build_time=build_time,
-    next_run=next_run,
-    before=before,
-    encoding=OUTPUT_ENCODING,
-    public_vendor=public_vendor,
-    currency_id="KZT",
-    param_priority=AKCENT_PARAM_PRIORITY,
-)
+    changed = write_cs_feed(
+        out_offers,
+        supplier=SUPPLIER_NAME,
+        supplier_url=SUPPLIER_URL,
+        out_file=OUT_FILE,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding=OUTPUT_ENCODING,
+        public_vendor=public_vendor,
+        currency_id="KZT",
+        param_priority=AKCENT_PARAM_PRIORITY,
+    )
 
-print(f"[akcent] before={before} after={after} price_missing={price_missing} changed={changed}")
+    print(f"[akcent] before={before} after={after} price_missing={price_missing} changed={changed}")
 
     return 0
 
