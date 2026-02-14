@@ -12,21 +12,16 @@ import xml.etree.ElementTree as ET
 import requests
 
 from cs.core import (
-    CURRENCY_ID_DEFAULT,
     OUTPUT_ENCODING_DEFAULT,
     OfferOut,
     compute_price,
-    ensure_footer_spacing,
-    make_feed_meta,
-    make_footer,
-    make_header,
-    now_almaty,
+    get_public_vendor,
     next_run_at_hour,
+    now_almaty,
     norm_ws,
     parse_id_set,
     safe_int,
-    write_if_changed,
-    validate_cs_yml
+    write_cs_feed,
 )
 
 # Конфиг поставщика AlStyle
@@ -199,37 +194,30 @@ def main() -> int:
 
     after = len(out_offers)
 
-    feed_meta = make_feed_meta(
-        ALSTYLE_SUPPLIER,
-        url,
-        build_time,
-        next_run,
-        before=before,
-        after=after,
-        in_true=in_true,
-        in_false=in_false,
-    )
+public_vendor = get_public_vendor()
 
-    header = make_header(build_time, encoding=encoding)
-    footer = make_footer()
+# Стабильный порядок офферов
+out_offers.sort(key=lambda o: o.oid)
 
-    offers_xml = "\n\n".join(
-        [off.to_xml(currency_id=CURRENCY_ID_DEFAULT, public_vendor=public_vendor, param_priority=ALSTYLE_PARAM_PRIORITY) for off in out_offers]
-    )
+changed = write_cs_feed(
+    out_offers,
+    supplier=ALSTYLE_SUPPLIER,
+    supplier_url=url,
+    out_file=out_file,
+    build_time=build_time,
+    next_run=next_run,
+    before=before,
+    encoding=encoding,
+    public_vendor=public_vendor,
+    currency_id="KZT",
+    param_priority=ALSTYLE_PARAM_PRIORITY,
+)
 
-    full = header + "\n" + feed_meta + "\n\n" + offers_xml + "\n" + footer
-    full = ensure_footer_spacing(full)
-
-    # Страховочная валидация (если что-то сломалось — падаем сборкой)
-    validate_cs_yml(full)
-
-    changed = write_if_changed(out_file, full, encoding=encoding)
-
-    print(
-        f"[build_alstyle] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
-        f"changed={'yes' if changed else 'no'} | file={out_file}"
-    )
-    return 0
+print(
+    f"[build_alstyle] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
+    f"changed={'yes' if changed else 'no'} | file={out_file}"
+)
+return 0
 
 
 if __name__ == "__main__":
