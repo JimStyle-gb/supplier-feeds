@@ -26,7 +26,6 @@ from __future__ import annotations
 import os
 import re
 import sys
-import sys
 import time
 import random
 import json
@@ -99,6 +98,21 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
+
+
+@dataclass(frozen=True)
+class _Cfg:
+    base_url: str
+    start_url: str
+    categories: list[str]
+    login: str
+    password: str
+    max_pages: int
+    max_workers: int
+    max_crawl_minutes: float
+    delay_ms: int
+    verify: object  # bool | path to CA bundle
+    softfail: bool
 
 
 def _cfg() -> _Cfg:
