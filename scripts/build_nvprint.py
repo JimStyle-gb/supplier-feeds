@@ -713,26 +713,26 @@ def main() -> int:
 
     out_offers.sort(key=lambda o: o.oid)
 
-public_vendor = get_public_vendor("NVPrint")
+    public_vendor = get_public_vendor("NVPrint")
 
-changed = write_cs_feed(
-    out_offers,
-    supplier="NVPrint",
-    supplier_url=url,
-    out_file=OUT_FILE,
-    build_time=now,
-    next_run=next_run,
-    before=len(items),
-    encoding=OUTPUT_ENCODING,
-    public_vendor=public_vendor,
-    currency_id="KZT",
-    param_priority=None,
-)
+    changed = write_cs_feed(
+        out_offers,
+        supplier="NVPrint",
+        supplier_url=url,
+        out_file=OUT_FILE,
+        build_time=now,
+        next_run=next_run,
+        before=len(items),
+        encoding=OUTPUT_ENCODING,
+        public_vendor=public_vendor,
+        currency_id="KZT",
+        param_priority=None,
+    )
 
-print(
-    f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | filtered_out={filtered_out} | "
-    f"in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={OUT_FILE}"
-)
+    print(
+        f"[build_nvprint] OK | offers_in={len(items)} | offers_out={len(out_offers)} | filtered_out={filtered_out} | "
+        f"in_true={in_true} | in_false={in_false} | changed={'yes' if changed else 'no'} | file={OUT_FILE}"
+    )
     return 0
 
 
