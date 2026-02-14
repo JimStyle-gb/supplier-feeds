@@ -2732,8 +2732,6 @@ def ensure_min_chars_params(
     if ps:
         return sort_params(ps, priority=list(priority or []))
 
-    if oid:
-        ps.append(("Артикул", str(oid)))
 
     return sort_params(ps, priority=list(priority or []))
 
@@ -3403,19 +3401,6 @@ class OfferOut:
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
         params_sorted, notes = split_params_for_chars(params_sorted)
-        # CS: если нет ни одного param — добавим безопасные пункты для SEO (не выдумывая фактов)
-        if not params_sorted:
-            t = infer_product_type_from_name(name_full)
-            if t:
-                params_sorted = [("Тип товара", t)]
-            # Артикул всегда безопасен
-            params_sorted.append(("Артикул", str(self.oid)))
-        # если характеристик мало — добавим безопасный пункт 'Артикул'
-        params_sorted = ensure_min_chars_params(
-            params_sorted,
-            self.oid,
-            priority=list(param_priority or []),
-        )
 
         # CS: лимитируем <name> (умно для NVPrint)
         name_short = enforce_name_policy(self.oid, name_full, params_sorted)
