@@ -154,6 +154,50 @@ def next_run_at_hour(now_local: datetime, hour: int) -> datetime:
         candidate = candidate + timedelta(days=1)
     return candidate
 
+# Следующий запуск по дням месяца (например 1/10/20) в указанное время (Алматы)
+def next_run_dom_at_hour(now_local: datetime, hour: int, days: Sequence[int] = (1, 10, 20)) -> datetime:
+    # now_local — наивный datetime в Алматы
+    hour = int(hour)
+    days_u = sorted({int(d) for d in (days or []) if int(d) >= 1 and int(d) <= 31})
+    if not days_u:
+        # fallback: как ежедневный
+        return next_run_at_hour(now_local, hour)
+
+    y = now_local.year
+    m = now_local.month
+
+    def _cands(yy: int, mm: int) -> list[datetime]:
+        out: list[datetime] = []
+        for d in days_u:
+            try:
+                out.append(datetime(yy, mm, d, hour, 0, 0))
+            except ValueError:
+                # например 31 для месяца с 30 днями
+                continue
+        return out
+
+    cands = [dt for dt in _cands(y, m) if dt > now_local]
+    if cands:
+        return min(cands)
+
+    # следующий месяц
+    if m == 12:
+        y2, m2 = y + 1, 1
+    else:
+        y2, m2 = y, m + 1
+    c2 = _cands(y2, m2)
+    return min(c2) if c2 else next_run_at_hour(now_local, hour)
+
+
+# Публичный vendor для фида (по умолчанию "CS")
+def get_public_vendor(supplier: str | None = None) -> str:
+    v = (os.getenv("PUBLIC_VENDOR") or os.getenv("CS_PUBLIC_VENDOR") or "CS").strip()
+    if supplier and v and (supplier.strip().casefold() in v.casefold()):
+        # Не раскрываем имя поставщика в публичном vendor
+        return "CS"
+    return v or "CS"
+
+
 
 # Нормализует пробелы/переводы строк в строке
 def norm_ws(s: str) -> str:
@@ -3012,6 +3056,81 @@ def write_if_changed(path: str, data: str, *, encoding: str = OUTPUT_ENCODING_DE
     tmp.replace(p)
     return True
 
+
+
+# Собирает полный CS-YML (header + feed_meta + offers + footer) и валидирует
+def build_cs_feed_xml(
+    offers: Sequence[OfferOut],
+    *,
+    supplier: str,
+    supplier_url: str,
+    build_time: datetime,
+    next_run: datetime,
+    before: int | None = None,
+    encoding: str = OUTPUT_ENCODING_DEFAULT,
+    public_vendor: str | None = None,
+    currency_id: str = CURRENCY_ID_DEFAULT,
+    param_priority: Sequence[str] | None = None,
+) -> str:
+    offers_list = list(offers)
+    after = len(offers_list)
+    in_true = sum(1 for o in offers_list if getattr(o, "available", False))
+    in_false = after - in_true
+    if before is None:
+        before = after
+
+    pv = (public_vendor or get_public_vendor()).strip() or "CS"
+
+    header = make_header(build_time, encoding=encoding)
+    feed_meta = make_feed_meta(
+        supplier=supplier,
+        supplier_url=supplier_url,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        after=after,
+        in_true=in_true,
+        in_false=in_false,
+    )
+
+    offers_xml = "\n\n".join(
+        o.to_xml(currency_id=currency_id, public_vendor=pv, param_priority=param_priority) for o in offers_list
+    )
+
+    full = header + "\n" + feed_meta + "\n\n" + offers_xml + ("\n" if offers_xml else "") + make_footer()
+    full = ensure_footer_spacing(full)
+    validate_cs_yml(full)
+    return full
+
+
+# Пишет CS-YML в файл только если изменился (внутри — валидирует)
+def write_cs_feed(
+    offers: Sequence[OfferOut],
+    *,
+    supplier: str,
+    supplier_url: str,
+    out_file: str,
+    build_time: datetime,
+    next_run: datetime,
+    before: int | None = None,
+    encoding: str = OUTPUT_ENCODING_DEFAULT,
+    public_vendor: str | None = None,
+    currency_id: str = CURRENCY_ID_DEFAULT,
+    param_priority: Sequence[str] | None = None,
+) -> bool:
+    xml = build_cs_feed_xml(
+        offers,
+        supplier=supplier,
+        supplier_url=supplier_url,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding=encoding,
+        public_vendor=public_vendor,
+        currency_id=currency_id,
+        param_priority=param_priority,
+    )
+    return write_if_changed(out_file, xml, encoding=encoding)
 
 # Словарь брендов для pick_vendor (упорядочен, расширяем при необходимости)
 CS_BRANDS_MAP = {
