@@ -81,16 +81,12 @@ except Exception:
     load_workbook = None  # sitemap-режим работает без openpyxl
 
 from cs.core import (
-    CURRENCY_ID_DEFAULT,
     OfferOut,
     compute_price,
-    ensure_footer_spacing,
-    make_feed_meta,
-    make_footer,
-    make_header,
+    get_public_vendor,
+    next_run_dom_at_hour,
     now_almaty,
-    validate_cs_yml,
-    write_if_changed,
+    write_cs_feed,
 )
 
 # -----------------------------
@@ -125,11 +121,6 @@ MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
 
 
 
-# PUBLIC_VENDOR: только "публичный" бренд, НЕ имя поставщика (даже если задано env).
-_public_vendor = (os.getenv("PUBLIC_VENDOR") or "").strip()
-if _public_vendor and SUPPLIER_NAME and (SUPPLIER_NAME.casefold() in _public_vendor.casefold()):
-    _public_vendor = ""
-PUBLIC_VENDOR = _public_vendor
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
 REQUEST_DELAY_MS = int(os.getenv("REQUEST_DELAY_MS", "60"))
@@ -841,25 +832,6 @@ def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
     return None
 
 
-def next_run_dom_1_10_20_at_hour(now_local: datetime, hour: int) -> datetime:
-    # now_local — наивный datetime в Алматы
-    y = now_local.year
-    m = now_local.month
-
-    def candidates_for_month(yy: int, mm: int) -> List[datetime]:
-        return [datetime(yy, mm, d, hour, 0, 0) for d in (1, 10, 20)]
-
-    cands = [dt for dt in candidates_for_month(y, m) if dt > now_local]
-    if cands:
-        return min(cands)
-
-    # следующий месяц
-    if m == 12:
-        y2, m2 = y + 1, 1
-    else:
-        y2, m2 = y, m + 1
-    return min(candidates_for_month(y2, m2))
-
 
 # -----------------------------
 # Main
@@ -929,7 +901,7 @@ def parse_sitemap_products(html_bytes: bytes) -> List[Dict[str, str]]:
 
 def main() -> int:
     build_time = now_almaty()
-    next_run = next_run_dom_1_10_20_at_hour(build_time, 3)
+    next_run = next_run_dom_at_hour(build_time, 3, (1, 10, 20))
 
     if NO_CRAWL:
         raise RuntimeError("NO_CRAWL=1: crawl отключён, а режим CopyLine теперь sitemap.")
@@ -1035,35 +1007,28 @@ def main() -> int:
     in_true = sum(1 for o in out_offers if o.available)
     in_false = after - in_true
 
-    feed_meta = make_feed_meta(
-        supplier=SUPPLIER_NAME,
-        supplier_url=os.getenv("SUPPLIER_URL", SUPPLIER_URL_DEFAULT),
-        build_time=build_time,
-        next_run=next_run,
-        before=before,
-        after=after,
-        in_true=in_true,
-        in_false=in_false,
-    )
+public_vendor = get_public_vendor(SUPPLIER_NAME)
 
-    header = make_header(build_time, encoding=OUTPUT_ENCODING)
-    footer = make_footer()
+changed = write_cs_feed(
+    out_offers,
+    supplier=SUPPLIER_NAME,
+    supplier_url=os.getenv("SUPPLIER_URL", SUPPLIER_URL_DEFAULT),
+    out_file=OUT_FILE,
+    build_time=build_time,
+    next_run=next_run,
+    before=before,
+    encoding=OUTPUT_ENCODING,
+    public_vendor=public_vendor,
+    currency_id="KZT",
+    param_priority=None,
+)
 
-    offers_xml = "\n\n".join(
-        [o.to_xml(currency_id=CURRENCY_ID_DEFAULT, public_vendor=PUBLIC_VENDOR) for o in out_offers]
-    )
-
-    full = header + "\n" + feed_meta + "\n\n" + offers_xml + "\n" + footer
-    full = ensure_footer_spacing(full)
-    validate_cs_yml(full)
-    changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
-
-    log(
-        f"[build_copyline] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
-        f"crawl={'no' if NO_CRAWL else 'yes'} | changed={'yes' if changed else 'no'} | file={OUT_FILE}",
-        flush=True,
-    )
-    return 0
+log(
+    f"[build_copyline] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
+    f"crawl={'no' if NO_CRAWL else 'yes'} | changed={'yes' if changed else 'no'} | file={OUT_FILE}",
+    flush=True,
+)
+return 0
 
 
 if __name__ == "__main__":
