@@ -217,7 +217,7 @@ print(
     f"[build_alstyle] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
     f"changed={'yes' if changed else 'no'} | file={out_file}"
 )
-return 0
+    return 0
 
 
 if __name__ == "__main__":
