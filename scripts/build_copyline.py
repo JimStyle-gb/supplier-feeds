@@ -1028,7 +1028,7 @@ log(
     f"crawl={'no' if NO_CRAWL else 'yes'} | changed={'yes' if changed else 'no'} | file={OUT_FILE}",
     flush=True,
 )
-return 0
+    return 0
 
 
 if __name__ == "__main__":
