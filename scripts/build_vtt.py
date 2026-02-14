@@ -763,23 +763,23 @@ def main() -> int:
     # VTT по расписанию 1/10/20 (05:00 Алматы).
     next_run = next_run_dom_at_hour(now, 5, (1, 10, 20))
 
-public_vendor = get_public_vendor(SUPPLIER)
+    public_vendor = get_public_vendor(SUPPLIER)
 
-changed = write_cs_feed(
-    offers,
-    supplier=SUPPLIER,
-    supplier_url=cfg.start_url,
-    out_file=OUT_FILE,
-    build_time=now,
-    next_run=next_run,
-    before=len(offers),
-    encoding="utf-8",
-    public_vendor=public_vendor,
-    currency_id="KZT",
-    param_priority=None,
-)
+    changed = write_cs_feed(
+        offers,
+        supplier=SUPPLIER,
+        supplier_url=cfg.start_url,
+        out_file=OUT_FILE,
+        build_time=now,
+        next_run=next_run,
+        before=len(offers),
+        encoding="utf-8",
+        public_vendor=public_vendor,
+        currency_id="KZT",
+        param_priority=None,
+    )
 
-_log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
+    _log(f"[done] offers={len(offers)} dup_skipped={dup} changed={changed} out={OUT_FILE}")
     return 0
 
 
