@@ -3038,6 +3038,142 @@ def ensure_footer_spacing(xml: str) -> str:
     return xml
 
 
+# CS: публичный vendor (нельзя светить названия поставщиков)
+def get_public_vendor(supplier: str | None = None) -> str:
+    raw = (os.getenv("CS_PUBLIC_VENDOR", "") or os.getenv("PUBLIC_VENDOR", "") or "CS").strip()
+    raw = norm_ws(raw) or "CS"
+    # страховка: не допускаем, чтобы public_vendor был названием поставщика
+    bad = {"alstyle", "akcent", "copyline", "nvprint", "vtt"}
+    if supplier and supplier.strip():
+        bad.add(supplier.strip().casefold())
+    if raw.casefold() in bad:
+        return "CS"
+    if any(b in raw.casefold() for b in bad):
+        # если кто-то случайно подсунул строку с названием поставщика
+        return "CS"
+    return raw
+
+
+# CS: вычисляет next_run для расписания "в дни месяца" (например 1/10/20) в заданный час (Алматы)
+def next_run_dom_at_hour(now: datetime, hour: int, doms: Sequence[int]) -> datetime:
+    hour = int(hour)
+    doms_sorted = sorted({int(d) for d in doms if int(d) >= 1 and int(d) <= 31})
+    if not doms_sorted:
+        # fallback: завтра в тот же час
+        base = (now + timedelta(days=1)).replace(minute=0, second=0, microsecond=0)
+        return base.replace(hour=hour)
+
+    def _last_day_of_month(y: int, m: int) -> int:
+        # 28-е + 4 дня гарантированно перейдёт в следующий месяц
+        first_next = datetime(y, m, 28) + timedelta(days=4)
+        first_next = datetime(first_next.year, first_next.month, 1)
+        return (first_next - timedelta(days=1)).day
+
+    def _pick_in_month(y: int, m: int, after_dt: datetime | None) -> datetime | None:
+        last = _last_day_of_month(y, m)
+        for d in doms_sorted:
+            if d > last:
+                continue
+            cand = datetime(y, m, d, hour, 0, 0)
+            if after_dt is None or cand > after_dt:
+                return cand
+        return None
+
+    # 1) в текущем месяце — следующий подходящий день
+    cand = _pick_in_month(now.year, now.month, now)
+    if cand:
+        return cand
+
+    # 2) в следующем месяце — самый ранний подходящий день
+    y2, m2 = now.year, now.month + 1
+    if m2 == 13:
+        m2 = 1
+        y2 += 1
+    cand2 = _pick_in_month(y2, m2, None)
+    if cand2:
+        return cand2
+
+    # 3) fallback: 1-е число следующего месяца
+    return datetime(y2, m2, 1, hour, 0, 0)
+
+
+# CS: собирает полный XML фида (header + FEED_META + offers + footer)
+def build_cs_feed_xml(
+    offers: Sequence["OfferOut"],
+    *,
+    supplier: str,
+    supplier_url: str,
+    build_time: datetime,
+    next_run: datetime,
+    before: int,
+    encoding: str = OUTPUT_ENCODING_DEFAULT,
+    public_vendor: str = "CS",
+    currency_id: str = CURRENCY_ID_DEFAULT,
+    param_priority: Sequence[str] | None = None,
+) -> str:
+    after = len(offers)
+    in_true = sum(1 for o in offers if getattr(o, "available", False))
+    in_false = after - in_true
+    meta = make_feed_meta(
+        supplier=supplier,
+        supplier_url=supplier_url,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        after=after,
+        in_true=in_true,
+        in_false=in_false,
+    )
+
+    offers_xml = ""
+    if offers:
+        offers_xml = "\n\n".join(
+            [
+                o.to_xml(
+                    currency_id=currency_id,
+                    public_vendor=public_vendor,
+                    param_priority=param_priority,
+                )
+                for o in offers
+            ]
+        )
+
+    xml = make_header(build_time, encoding=encoding) + "\n" + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
+    return ensure_footer_spacing(xml)
+
+
+# CS: пишет фид в файл (validate + write_if_changed)
+def write_cs_feed(
+    offers: Sequence["OfferOut"],
+    *,
+    supplier: str,
+    supplier_url: str,
+    out_file: str,
+    build_time: datetime,
+    next_run: datetime,
+    before: int,
+    encoding: str = OUTPUT_ENCODING_DEFAULT,
+    public_vendor: str = "CS",
+    currency_id: str = CURRENCY_ID_DEFAULT,
+    param_priority: Sequence[str] | None = None,
+) -> bool:
+    full = build_cs_feed_xml(
+        offers,
+        supplier=supplier,
+        supplier_url=supplier_url,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding=encoding,
+        public_vendor=public_vendor,
+        currency_id=currency_id,
+        param_priority=param_priority,
+    )
+    validate_cs_yml(full)
+    return write_if_changed(out_file, full, encoding=encoding)
+
+
+
 # Пишет файл только если изменился (атомарно)
 def write_if_changed(path: str, data: str, *, encoding: str = OUTPUT_ENCODING_DEFAULT) -> bool:
     p = Path(path)
