@@ -194,29 +194,29 @@ def main() -> int:
 
     after = len(out_offers)
 
-public_vendor = get_public_vendor()
+    public_vendor = get_public_vendor()
 
-# Стабильный порядок офферов
-out_offers.sort(key=lambda o: o.oid)
+    # Стабильный порядок офферов
+    out_offers.sort(key=lambda o: o.oid)
 
-changed = write_cs_feed(
-    out_offers,
-    supplier=ALSTYLE_SUPPLIER,
-    supplier_url=url,
-    out_file=out_file,
-    build_time=build_time,
-    next_run=next_run,
-    before=before,
-    encoding=encoding,
-    public_vendor=public_vendor,
-    currency_id="KZT",
-    param_priority=ALSTYLE_PARAM_PRIORITY,
-)
+    changed = write_cs_feed(
+        out_offers,
+        supplier=ALSTYLE_SUPPLIER,
+        supplier_url=url,
+        out_file=out_file,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding=encoding,
+        public_vendor=public_vendor,
+        currency_id="KZT",
+        param_priority=ALSTYLE_PARAM_PRIORITY,
+    )
 
-print(
-    f"[build_alstyle] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
-    f"changed={'yes' if changed else 'no'} | file={out_file}"
-)
+    print(
+        f"[build_alstyle] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
+        f"changed={'yes' if changed else 'no'} | file={out_file}"
+    )
     return 0
 
 
