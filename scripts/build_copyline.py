@@ -1007,27 +1007,27 @@ def main() -> int:
     in_true = sum(1 for o in out_offers if o.available)
     in_false = after - in_true
 
-public_vendor = get_public_vendor(SUPPLIER_NAME)
+    public_vendor = get_public_vendor(SUPPLIER_NAME)
 
-changed = write_cs_feed(
-    out_offers,
-    supplier=SUPPLIER_NAME,
-    supplier_url=os.getenv("SUPPLIER_URL", SUPPLIER_URL_DEFAULT),
-    out_file=OUT_FILE,
-    build_time=build_time,
-    next_run=next_run,
-    before=before,
-    encoding=OUTPUT_ENCODING,
-    public_vendor=public_vendor,
-    currency_id="KZT",
-    param_priority=None,
-)
+    changed = write_cs_feed(
+        out_offers,
+        supplier=SUPPLIER_NAME,
+        supplier_url=os.getenv("SUPPLIER_URL", SUPPLIER_URL_DEFAULT),
+        out_file=OUT_FILE,
+        build_time=build_time,
+        next_run=next_run,
+        before=before,
+        encoding=OUTPUT_ENCODING,
+        public_vendor=public_vendor,
+        currency_id="KZT",
+        param_priority=None,
+    )
 
-log(
-    f"[build_copyline] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
-    f"crawl={'no' if NO_CRAWL else 'yes'} | changed={'yes' if changed else 'no'} | file={OUT_FILE}",
-    flush=True,
-)
+    log(
+        f"[build_copyline] OK | offers_in={before} | offers_out={after} | in_true={in_true} | in_false={in_false} | "
+        f"crawl={'no' if NO_CRAWL else 'yes'} | changed={'yes' if changed else 'no'} | file={OUT_FILE}",
+        flush=True,
+    )
     return 0
 
 
