@@ -154,50 +154,6 @@ def next_run_at_hour(now_local: datetime, hour: int) -> datetime:
         candidate = candidate + timedelta(days=1)
     return candidate
 
-# Следующий запуск по дням месяца (например 1/10/20) в указанное время (Алматы)
-def next_run_dom_at_hour(now_local: datetime, hour: int, days: Sequence[int] = (1, 10, 20)) -> datetime:
-    # now_local — наивный datetime в Алматы
-    hour = int(hour)
-    days_u = sorted({int(d) for d in (days or []) if int(d) >= 1 and int(d) <= 31})
-    if not days_u:
-        # fallback: как ежедневный
-        return next_run_at_hour(now_local, hour)
-
-    y = now_local.year
-    m = now_local.month
-
-    def _cands(yy: int, mm: int) -> list[datetime]:
-        out: list[datetime] = []
-        for d in days_u:
-            try:
-                out.append(datetime(yy, mm, d, hour, 0, 0))
-            except ValueError:
-                # например 31 для месяца с 30 днями
-                continue
-        return out
-
-    cands = [dt for dt in _cands(y, m) if dt > now_local]
-    if cands:
-        return min(cands)
-
-    # следующий месяц
-    if m == 12:
-        y2, m2 = y + 1, 1
-    else:
-        y2, m2 = y, m + 1
-    c2 = _cands(y2, m2)
-    return min(c2) if c2 else next_run_at_hour(now_local, hour)
-
-
-# Публичный vendor для фида (по умолчанию "CS")
-def get_public_vendor(supplier: str | None = None) -> str:
-    v = (os.getenv("PUBLIC_VENDOR") or os.getenv("CS_PUBLIC_VENDOR") or "CS").strip()
-    if supplier and v and (supplier.strip().casefold() in v.casefold()):
-        # Не раскрываем имя поставщика в публичном vendor
-        return "CS"
-    return v or "CS"
-
-
 
 # Нормализует пробелы/переводы строк в строке
 def norm_ws(s: str) -> str:
@@ -2729,6 +2685,31 @@ def split_params_for_chars(
     return kept, notes[:2]
 
 
+def infer_product_type_from_name(name: str) -> str:
+    """Пытаемся безопасно вывести тип товара из названия (без выдумывания фактов)."""
+    n = (name or "").casefold().replace("ё", "е")
+    if not n:
+        return ""
+    # порядок важен: более специфичное выше
+    if "девелопер" in n or "developer" in n or "носител" in n:
+        return "Девелопер"
+    if "фотобарабан" in n or "фото барабан" in n or "драм" in n or "drum" in n:
+        return "Драм-юнит"
+    if "тонер-картридж" in n or "тонер картридж" in n:
+        return "Тонер-картридж"
+    if "картридж" in n:
+        return "Картридж"
+    if "тонер" in n:
+        return "Тонер"
+    if "чернил" in n or "ink" in n:
+        return "Чернила"
+    if "чип" in n:
+        return "Чип"
+    if "профилактический комплект" in n or "maintenance kit" in n:
+        return "Комплект обслуживания"
+    return ""
+
+
 def ensure_min_chars_params(
     params_sorted: Sequence[tuple[str, str]],
     oid: str,
@@ -2736,9 +2717,26 @@ def ensure_min_chars_params(
     min_items: int = 3,
     priority: Sequence[str] | None = None,
 ) -> list[tuple[str, str]]:
-    """Если характеристик слишком мало — добавляем безопасные пункты (без выдумывания фактов)."""
+    """Если характеристик слишком мало — добавляем безопасные пункты (без выдумывания фактов).
+
+    ВАЖНО: мы НЕ создаём 'Совместимость' и не выдумываем модели.
+    Добавляем только то, что можно вывести из данных оффера:
+    - 'Артикул' = oid (vendorCode)
+
+    Поведение делаем максимально щадящим:
+    добавляем только если params пустые (чтобы не менять массово фиды).
+    """
     ps = list(params_sorted or [])
+
+    # если уже есть хоть что-то — не трогаем (не меняем массово фиды)
+    if ps:
+        return sort_params(ps, priority=list(priority or []))
+
+    if oid:
+        ps.append(("Артикул", str(oid)))
+
     return sort_params(ps, priority=list(priority or []))
+
 
 
 
@@ -3057,81 +3055,6 @@ def write_if_changed(path: str, data: str, *, encoding: str = OUTPUT_ENCODING_DE
     return True
 
 
-
-# Собирает полный CS-YML (header + feed_meta + offers + footer) и валидирует
-def build_cs_feed_xml(
-    offers: Sequence[OfferOut],
-    *,
-    supplier: str,
-    supplier_url: str,
-    build_time: datetime,
-    next_run: datetime,
-    before: int | None = None,
-    encoding: str = OUTPUT_ENCODING_DEFAULT,
-    public_vendor: str | None = None,
-    currency_id: str = CURRENCY_ID_DEFAULT,
-    param_priority: Sequence[str] | None = None,
-) -> str:
-    offers_list = list(offers)
-    after = len(offers_list)
-    in_true = sum(1 for o in offers_list if getattr(o, "available", False))
-    in_false = after - in_true
-    if before is None:
-        before = after
-
-    pv = (public_vendor or get_public_vendor()).strip() or "CS"
-
-    header = make_header(build_time, encoding=encoding)
-    feed_meta = make_feed_meta(
-        supplier=supplier,
-        supplier_url=supplier_url,
-        build_time=build_time,
-        next_run=next_run,
-        before=before,
-        after=after,
-        in_true=in_true,
-        in_false=in_false,
-    )
-
-    offers_xml = "\n\n".join(
-        o.to_xml(currency_id=currency_id, public_vendor=pv, param_priority=param_priority) for o in offers_list
-    )
-
-    full = header + "\n" + feed_meta + "\n\n" + offers_xml + ("\n" if offers_xml else "") + make_footer()
-    full = ensure_footer_spacing(full)
-    validate_cs_yml(full)
-    return full
-
-
-# Пишет CS-YML в файл только если изменился (внутри — валидирует)
-def write_cs_feed(
-    offers: Sequence[OfferOut],
-    *,
-    supplier: str,
-    supplier_url: str,
-    out_file: str,
-    build_time: datetime,
-    next_run: datetime,
-    before: int | None = None,
-    encoding: str = OUTPUT_ENCODING_DEFAULT,
-    public_vendor: str | None = None,
-    currency_id: str = CURRENCY_ID_DEFAULT,
-    param_priority: Sequence[str] | None = None,
-) -> bool:
-    xml = build_cs_feed_xml(
-        offers,
-        supplier=supplier,
-        supplier_url=supplier_url,
-        build_time=build_time,
-        next_run=next_run,
-        before=before,
-        encoding=encoding,
-        public_vendor=public_vendor,
-        currency_id=currency_id,
-        param_priority=param_priority,
-    )
-    return write_if_changed(out_file, xml, encoding=encoding)
-
 # Словарь брендов для pick_vendor (упорядочен, расширяем при необходимости)
 CS_BRANDS_MAP = {
     "hp": "HP",
@@ -3148,6 +3071,9 @@ CS_BRANDS_MAP = {
     "cyber-power": "CyberPower",
     "cyber power": "CyberPower",
     "smart": "SMART",
+    "idprt": "IDPRT",
+    "id-prt": "IDPRT",
+    "id prt": "IDPRT",
     "asus": "ASUS",
     "lenovo": "Lenovo",
     "acer": "Acer",
@@ -3204,6 +3130,10 @@ def normalize_vendor(v: str) -> str:
     if not v:
         return ""
     v_cf = v.casefold().replace("ё", "е")
+    # унификация SMART
+    if v_cf == "smart":
+        v = "SMART"
+        v_cf = "smart"
     # частые алиасы/опечатки
     if v_cf.startswith("epson proj"):
         v = "Epson"
@@ -3228,6 +3158,14 @@ def normalize_vendor(v: str) -> str:
     # склеиваем обратно
     out = "/".join(norm_parts)
     out = re.sub(r"\s{2,}", " ", out).strip()
+    # CS: не смешиваем бренды через '/' (HP/Canon -> HP) — для vendor нужен один бренд
+    if "/" in out:
+        parts2 = [p.strip() for p in out.split("/") if p.strip()]
+        if len(parts2) >= 2:
+            # берём первый бренд, если список состоит из известных брендов
+            canon_set = set(CS_BRANDS_MAP.values())
+            if all(p in canon_set for p in parts2):
+                out = parts2[0]
     return out
 
 # Пытается определить бренд (vendor) по vendor_src / name / params / description (если пусто — public_vendor)
@@ -3329,6 +3267,13 @@ class OfferOut:
 
                 # выносим "параметры-фразы" в примечания и оставляем чистые характеристики
         params_sorted, notes = split_params_for_chars(params_sorted)
+        # CS: если нет ни одного param — добавим безопасные пункты для SEO (не выдумывая фактов)
+        if not params_sorted:
+            t = infer_product_type_from_name(name_full)
+            if t:
+                params_sorted = [("Тип товара", t)]
+            # Артикул всегда безопасен
+            params_sorted.append(("Артикул", str(self.oid)))
         # если характеристик мало — добавим безопасный пункт 'Артикул'
         params_sorted = ensure_min_chars_params(
             params_sorted,
