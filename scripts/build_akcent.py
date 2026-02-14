@@ -17,15 +17,11 @@ from cs.core import (
     OfferOut,
     clean_params,
     compute_price,
-    ensure_footer_spacing,
-    make_feed_meta,
-    make_footer,
-    make_header,
+    get_public_vendor,
     next_run_at_hour,
     now_almaty,
     safe_int,
-    write_if_changed,
-    validate_cs_yml,
+    write_cs_feed,
 )
 
 SUPPLIER_NAME = "AkCent"
@@ -347,35 +343,28 @@ def main() -> int:
     in_true = sum(1 for o in out_offers if o.available)
     in_false = after - in_true
 
-    header = make_header(build_time, encoding=OUTPUT_ENCODING)
-    meta = make_feed_meta(
-        supplier=SUPPLIER_NAME,
-        supplier_url=SUPPLIER_URL,
-        build_time=build_time,
-        next_run=next_run,
-        before=before,
-        after=after,
-        in_true=in_true,
-        in_false=in_false,
-    )
+public_vendor = get_public_vendor()
 
-    public_vendor = (os.getenv("PUBLIC_VENDOR") or os.getenv("CS_PUBLIC_VENDOR") or "CS").strip() or "CS"
+# Стабильный порядок офферов (меньше лишних диффов между коммитами)
+out_offers.sort(key=lambda x: x.oid)
 
-    # Стабильный порядок офферов (меньше лишних диффов между коммитами)
-    out_offers.sort(key=lambda x: x.oid)
+changed = write_cs_feed(
+    out_offers,
+    supplier=SUPPLIER_NAME,
+    supplier_url=SUPPLIER_URL,
+    out_file=OUT_FILE,
+    build_time=build_time,
+    next_run=next_run,
+    before=before,
+    encoding=OUTPUT_ENCODING,
+    public_vendor=public_vendor,
+    currency_id="KZT",
+    param_priority=AKCENT_PARAM_PRIORITY,
+)
 
-    offers_xml = "\n\n".join(
-        o.to_xml(currency_id="KZT", public_vendor=public_vendor, param_priority=AKCENT_PARAM_PRIORITY) for o in out_offers
-    )
+print(f"[akcent] before={before} after={after} price_missing={price_missing} changed={changed}")
 
-    full = header + meta + "\n\n" + offers_xml + "\n\n" + make_footer()
-    full = ensure_footer_spacing(full)
-    validate_cs_yml(full)
-
-    changed = write_if_changed(OUT_FILE, full, encoding=OUTPUT_ENCODING)
-    print(f"[akcent] before={before} after={after} price_missing={price_missing} changed={changed}")
-
-    return 0
+return 0
 
 if __name__ == "__main__":
     raise SystemExit(main())
