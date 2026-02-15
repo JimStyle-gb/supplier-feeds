@@ -17,7 +17,7 @@ jobs:
     env:
       NVPRINT_LOGIN: ${{ secrets.NVPRINT_LOGIN }}
       NVPRINT_PASSWORD: ${{ secrets.NVPRINT_PASSWORD }}
-      NVPRINT_XML_URL: "PASTE_NVPRINT_XML_URL_HERE"
+      NVPRINT_XML_URL: "https://api.nvprint.ru/api/hs/getprice/398/881105302369/none/?format=xml&getallinfo=true"
 
     steps:
       - name: Checkout
@@ -45,6 +45,14 @@ jobs:
       - name: Smoke test (py_compile)
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_*.py
+
+      - name: Check NVPRINT_XML_URL is set
+        run: |
+          if [ -z "${NVPRINT_XML_URL}" ]; then
+            echo "NVPRINT_XML_URL is empty."
+            exit 1
+          fi
+          echo "NVPRINT_XML_URL is set."
 
       - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
         id: gate
