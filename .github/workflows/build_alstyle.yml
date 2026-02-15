@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 19 * * *'
+
 permissions:
   contents: write
-
 jobs:
   build_alstyle:
     runs-on: ubuntu-latest
@@ -43,20 +43,20 @@ jobs:
       - name: Smoke test (py_compile)
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_*.py
+      - name: Check required env
+        run: |
+          if [ -z "${ALSTYLE_LOGIN}" ]; then echo "ALSTYLE_LOGIN is empty. Set repository secret ALSTYLE_LOGIN."; exit 1; fi
+          if [ -z "${ALSTYLE_PASSWORD}" ]; then echo "ALSTYLE_PASSWORD is empty. Set repository secret ALSTYLE_PASSWORD."; exit 1; fi
 
       - name: Build feed (alstyle)
         run: |
           python scripts/build_alstyle.py
 
-      - name: Commit & push docs (if changed)
+      - name: Commit & push docs/alstyle.yml (if changed)
         run: |
-          if git diff --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git add docs/*.yml || true
+          git add docs/alstyle.yml
           if git diff --cached --quiet; then
-            echo "Nothing staged."
+            echo "No changes to commit."
             exit 0
           fi
           git commit -m "build: alstyle feed"
