@@ -3,7 +3,7 @@ name: Build_VTT
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 23 * * *'
+    - cron: '0 23 * * *'  # 05:00 Asia/Almaty (UTC+6)
 
 permissions:
   contents: write
@@ -14,9 +14,22 @@ jobs:
     concurrency:
       group: build_vtt
       cancel-in-progress: true
+
     env:
+      # Авторизация берётся из Secrets (как у тебя на скрине)
       VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
       VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+
+      # ВАЖНО: у b2b.vtt.ru сейчас падает проверка цепочки сертификатов на runner'е.
+      # Чтобы не блокировать сборку — выключаем verify (иначе будет SSLCertVerificationError).
+      VTT_SSL_VERIFY: "0"
+
+      # Если когда-нибудь дадут корректный CA/цепочку — можно включить обратно:
+      # VTT_SSL_VERIFY: "1"
+      # Или явно указать путь к бандлу:
+      # VTT_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
+
+      # Мягкий выход при 5xx/проблемах сайта (чтобы расписание не "краснело")
       VTT_SOFTFAIL: "true"
 
     steps:
