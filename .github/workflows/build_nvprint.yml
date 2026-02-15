@@ -11,6 +11,9 @@ permissions:
 jobs:
   build_nvprint:
     runs-on: ubuntu-latest
+    env:
+      # URL источника NVPrint (добавь в GitHub → Settings → Secrets and variables → Actions)
+      NVPRINT_XML_URL: ${{ secrets.NVPRINT_XML_URL }}
     concurrency:
       group: build_nvprint
       cancel-in-progress: true
