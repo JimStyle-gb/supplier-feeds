@@ -11,12 +11,14 @@ permissions:
 jobs:
   build_nvprint:
     runs-on: ubuntu-latest
-    env:
-      # URL источника NVPrint (добавь в GitHub → Settings → Secrets and variables → Actions)
-      NVPRINT_XML_URL: ${{ secrets.NVPRINT_XML_URL }}
     concurrency:
       group: build_nvprint
       cancel-in-progress: true
+
+    # URL задаём прямо тут (как было раньше). Просто вставь свой URL вместо PASTE_NVPRINT_XML_URL_HERE
+    env:
+      NVPRINT_XML_URL: "PASTE_NVPRINT_XML_URL_HERE"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,6 +45,14 @@ jobs:
       - name: Smoke test (py_compile)
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_*.py
+
+      - name: Check NVPRINT_XML_URL is set
+        run: |
+          if [ -z "${NVPRINT_XML_URL}" ] || [ "${NVPRINT_XML_URL}" = "PASTE_NVPRINT_XML_URL_HERE" ]; then
+            echo "NVPRINT_XML_URL is empty. Set it in workflow env (NVPRINT_XML_URL)."
+            exit 1
+          fi
+          echo "NVPRINT_XML_URL is set."
 
       - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
         id: gate
