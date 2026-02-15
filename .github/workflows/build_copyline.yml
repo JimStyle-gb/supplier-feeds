@@ -41,20 +41,18 @@ jobs:
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_*.py
 
-      - name: Gate by day-of-month (Asia/Almaty: 1/10/20)
+      - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
         id: gate
         if: github.event_name == 'schedule'
         run: |
-          python - <<'PY'
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-          import os
-          day = datetime.now(ZoneInfo("Asia/Almaty")).day
-          run = day in (1, 10, 20)
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
-              f.write(f"run={'true' if run else 'false'}\n")
-          print(f"Almaty day={day} -> run={run}")
-          PY
+          day=$(TZ=Asia/Almaty date +%d)
+          if [ "$day" = "01" ] || [ "$day" = "10" ] || [ "$day" = "20" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Almaty day=$day -> run=true"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Almaty day=$day -> run=false"
+          fi
 
       - name: Build feed (copyline)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
