@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 20 * * *'
+
 permissions:
   contents: write
-
 jobs:
   build_akcent:
     runs-on: ubuntu-latest
@@ -39,20 +39,15 @@ jobs:
       - name: Smoke test (py_compile)
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_*.py
-
       - name: Build feed (akcent)
         run: |
           python scripts/build_akcent.py
 
-      - name: Commit & push docs (if changed)
+      - name: Commit & push docs/akcent.yml (if changed)
         run: |
-          if git diff --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git add docs/*.yml || true
+          git add docs/akcent.yml
           if git diff --cached --quiet; then
-            echo "Nothing staged."
+            echo "No changes to commit."
             exit 0
           fi
           git commit -m "build: akcent feed"
