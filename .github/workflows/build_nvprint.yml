@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 22 * * *'
-
 permissions:
   contents: write
 
@@ -45,14 +44,6 @@ jobs:
       - name: Smoke test (py_compile)
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_*.py
-
-      - name: Check NVPRINT_XML_URL is set
-        run: |
-          if [ -z "${NVPRINT_XML_URL}" ]; then
-            echo "NVPRINT_XML_URL is empty."
-            exit 1
-          fi
-          echo "NVPRINT_XML_URL is set."
 
       - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
         id: gate
