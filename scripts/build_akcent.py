@@ -7,7 +7,6 @@ AkCent adapter — сборщик по шаблону CS (использует s
 
 from __future__ import annotations
 
-import os
 import re
 from xml.etree import ElementTree as ET
 
