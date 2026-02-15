@@ -14,6 +14,11 @@ jobs:
     concurrency:
       group: build_vtt
       cancel-in-progress: true
+    env:
+      VTT_LOGIN: ${{ secrets.VTT_LOGIN }}
+      VTT_PASSWORD: ${{ secrets.VTT_PASSWORD }}
+      VTT_SOFTFAIL: "true"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
