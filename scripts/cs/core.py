@@ -96,6 +96,16 @@ CS_WA_BLOCK = (
     "&#128172; Написать в WhatsApp</a></p></div>"
 )
 
+# WhatsApp div (без комментария, чтобы комментарии строились шаблоном)
+CS_WA_DIV = (
+    "<div style=\"font-family: Cambria, 'Times New Roman', serif; line-height:1.5; color:#222; font-size:15px;\">"
+    "<p style=\"text-align:center; margin:0 0 12px;\">"
+    "<a href=\"https://api.whatsapp.com/send/?phone=77073270501&amp;text&amp;type=phone_number&amp;app_absent=0\" "
+    "style=\"display:inline-block; background:#27ae60; color:#ffffff; text-decoration:none; padding:11px 18px; "
+    "border-radius:12px; font-weight:700; box-shadow:0 2px 0 rgba(0,0,0,0.08);\">"
+    "&#128172; Написать в WhatsApp</a></p></div>"
+)
+
 # Горизонтальная линия (2px)
 CS_HR_2PX = "<hr style=\"border:none; border-top:2px solid #E7D6B7; margin:12px 0;\" />"
 
@@ -2060,11 +2070,10 @@ def _clip_desc_plain(desc: str, *, max_chars: int = 1200) -> str:
 
 
 def _build_desc_part(name: str, native_desc: str) -> str:
-    n_esc = xml_escape_text(name)
-
+    # CS: возвращает ТОЛЬКО тело описания (<p>...</p>), без <h3> (заголовок строится выше шаблоном)
     d = fix_text(native_desc)
     if not d:
-        return f"<h3>{n_esc}</h3>"
+        return ""
 
     # Если в нативном описании есть технические/основные характеристики или табличные данные,
     # не дублируем это в описании (единый CS-блок характеристик будет ниже).
@@ -2084,18 +2093,17 @@ def _build_desc_part(name: str, native_desc: str) -> str:
     # CS: убираем повтор названия в начале и режем длинные простыни
     d = _dedupe_desc_leading_name(d, name)
     d = _clip_desc_plain(d, max_chars=int(os.getenv("CS_NATIVE_DESC_MAX_CHARS", "1200")))
+
     # Если после чистки осталось только название — не выводим пустой <p> с дублем.
     if _cmp_name_like_text(d) == _cmp_name_like_text(name):
         d = ""
 
     if not d:
-        return f"<h3>{n_esc}</h3>"
+        return ""
 
     d2 = xml_escape_text(d).replace("\n", "<br>")
-    return f"<h3>{n_esc}</h3><p>{d2}</p>"
+    return f"<p>{d2}</p>"
 
-
-# Делает аккуратный HTML внутри CDATA (добавляет \n в начале/конце)
 def normalize_cdata_inner(inner: str) -> str:
     # Убираем мусорные пробелы/пустые строки внутри CDATA, без лишних ведущих/хвостовых переводов строк
     inner = (inner or "").strip()
@@ -2126,8 +2134,6 @@ def normalize_pictures(pictures: Sequence[str]) -> list[str]:
 
 
 # Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
-# Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
-# Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
 def build_keywords(
     vendor: str,
     name: str,
@@ -2139,55 +2145,80 @@ def build_keywords(
     vendor = norm_ws(vendor)
     name = norm_ws(name)
 
-    # CS: стоп-слова для keywords (чистим мусор, не трогаем смысл)
-    STOP = {
-        "и", "в", "во", "на", "по", "с", "со", "к", "ко", "от", "до", "для", "без", "под", "над", "у", "за", "из", "при",
-        "the", "a", "an", "and", "or", "of", "to", "for", "with", "in", "on",
-        "шт", "pcs", "pc",
-    }
-
     def _kw_safe(s: str) -> str:
         # CS: чтобы <keywords> не "ломались" из-за запятых внутри имени
         s = str(s or "")
         s = s.replace(",", " ").replace(";", " ").replace("|", " ")
         return norm_ws(s).strip(" ,")
 
-    def _tok_ok(t: str) -> str:
-        tt = norm_ws(t)
-        if not tt:
+    # CS: лёгкая канонизация vendor для SEO/фильтров (без изменения name)
+    def _canon_vendor(v: str) -> str:
+        vv = norm_ws(v)
+        if not vv:
             return ""
-        cf = tt.casefold()
-        if cf in STOP:
-            return ""
-        # одиночные буквы/цифры — мусор (VTT: O/C/M/Y/K и т.п.)
-        if len(cf) == 1:
-            if cf.isdigit():
-                return ""
-            if cf.isalpha():
-                return ""
-        return tt
+        vv_cf = vv.casefold().replace("ё", "е")
+        vv_cf2 = vv_cf.replace(" ", "").replace("-", "")
+        if vv_cf2 == "kyoceramita":
+            return "Kyocera"
+        return vv
+
+    # Стоп-слова (мусорные токены)
+    stop = {
+        "и", "в", "на", "для", "с", "по", "от", "до", "к", "из", "при", "без",
+        "шт", "pcs", "pc", "dr", "др",
+    }
+
+    # Маппинг одиночных букв (VTT/тонер/цвета)
+    one_map = {
+        "C": "голубой",
+        "M": "пурпурный",
+        "Y": "желтый",
+        "K": "черный",
+        "O": "оригинальный",
+    }
 
     parts: list[str] = []
-    if vendor:
-        parts.append(_kw_safe(vendor))
+    v2 = _canon_vendor(vendor)
+    if v2:
+        parts.append(_kw_safe(v2))
     if name:
         parts.append(_kw_safe(name))
 
     # Разбор имени на слова (цифры/буквы, с дефисами)
-    tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+(?:-[A-Za-zА-Яа-яЁё0-9]+)*", name)
-    limit = max(0, int(max_tokens))
-    added = 0
-    for t in tokens:
-        if limit and added >= limit:
+    raw_tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+(?:-[A-Za-zА-Яа-яЁё0-9]+)*", name)
+    used = 0
+    for t in raw_tokens:
+        if used >= max(0, int(max_tokens)):
             break
-        tt = _tok_ok(t)
-        if tt:
-            parts.append(tt)
-            added += 1
+        tt = norm_ws(t)
+        if not tt:
+            continue
+
+        low = tt.casefold().replace("ё", "е")
+
+        # стоп-слова
+        if low in stop:
+            continue
+
+        # одиночные символы: либо маппим, либо выбрасываем
+        if len(tt) == 1:
+            key = tt.upper()
+            if key in one_map:
+                tt = one_map[key]
+                low = tt.casefold().replace("ё", "е")
+            else:
+                continue
+
+        # одиночные цифры — мусор (2, 3), но нормальные числа (например 3020) оставляем
+        if tt.isdigit() and len(tt) == 1:
+            continue
+
+        parts.append(tt)
+        used += 1
 
     if extra:
         for x in extra:
-            xx = _tok_ok(str(x))
+            xx = norm_ws(str(x))
             if xx:
                 parts.append(_kw_safe(xx))
 
@@ -2211,10 +2242,6 @@ def build_keywords(
         out.append(p)
 
     return ", ".join(out)
-
-_RE_PARAM_SENTENCEY = re.compile(
-    r"(?i)\b(внимание|обратите|пожалуйста|важно|маркир|подлинност|original|оригинал|упаковк|предупрежден|рекомендуем|гаранти)\b"
-)
 
 def _is_sentence_like_param_name(k: str) -> bool:
     kk = norm_ws(k)
@@ -2347,10 +2374,9 @@ def build_chars_block(params_sorted: Sequence[tuple[str, str]]) -> str:
             continue
         items.append(f"<li><strong>{kk}:</strong> {vv}</li>")
     if not items:
-        return "<h3>Характеристики</h3><ul></ul>"
+        # CS: если характеристик нет — не выводим пустой блок
+        return ""
     return "<h3>Характеристики</h3><ul>" + "".join(items) + "</ul>"
-
-
 
 def _build_param_summary(params_sorted: Sequence[tuple[str, str]]) -> str:
     """
@@ -2415,47 +2441,46 @@ def build_description(
     params_sorted: Sequence[tuple[str, str]],
     *,
     notes: Sequence[str] | None = None,
-    wa_block: str = CS_WA_BLOCK,
+    wa_block: str = CS_WA_DIV,
     hr_2px: str = CS_HR_2PX,
     pay_block: str = CS_PAY_BLOCK,
 ) -> str:
     n = norm_ws(name)
-    # Родное описание (обрезание/дедуп/удаление технички — внутри _build_desc_part)
-    desc_part = _build_desc_part(n, native_desc)
+    n_esc = xml_escape_text(n)
 
-    # Если родного описания нет (только <h3>...</h3>), делаем 1 короткий абзац из param
-    # (без "Кратко:", без "Применение", без выдумок).
-    if "<p>" not in desc_part:
+    # Тело родного описания (без <h3>)
+    desc_body = _build_desc_part(n, native_desc)
+
+    # Если родного описания нет — берём короткий summary из параметров,
+    # иначе (если и параметров нет) — короткий нейтральный фолбэк.
+    if not desc_body:
         sm = _build_param_summary(params_sorted)
         if sm:
-            n_esc = xml_escape_text(n)
-            desc_part = f"<h3>{n_esc}</h3><p>{xml_escape_text(sm)}</p>"
+            desc_body = f"<p>{xml_escape_text(sm)}</p>"
+        else:
+            desc_body = "<p>Подробности уточняйте в WhatsApp.</p>"
 
-    # Единый CS-блок характеристик всегда одного вида
+    # Характеристики (если пусто — блок не выводим)
     chars = build_chars_block(params_sorted)
 
-    # Важно для SEO+конверсии:
-    # - первым идёт <h3>{name}</h3> (уникальный верх),
-    # - затем линия + кнопка WhatsApp + линия (кнопка всегда "вверху"),
-    # - затем текст описания (если он есть).
-    title_h3 = ""
-    body_html = desc_part or ""
-    m = re.match(r"\s*(<h3>.*?</h3>)(.*)$", body_html, flags=re.DOTALL)
-    if m:
-        title_h3 = m.group(1).strip()
-        body_html = (m.group(2) or "").lstrip()
-    else:
-        title_h3 = f"<h3>{xml_escape_text(n)}</h3>"
-        body_html = body_html.strip()
+    # WA: страховка, если кто-то передал старый CS_WA_BLOCK с комментарием
+    w = (wa_block or "").lstrip()
+    if w.startswith("<!--"):
+        w = re.sub(r"^<!--.*?-->\s*\n?", "", w, flags=re.S).strip()
+    if not w:
+        w = CS_WA_DIV
 
     parts: list[str] = []
+    parts.append("<!-- Наименование товара -->")
+    parts.append(f"<h3>{n_esc}</h3>")
+
+    parts.append("<!-- WhatsApp -->")
+    parts.append(hr_2px)
+    parts.append(w)
+    parts.append(hr_2px)
+
     parts.append("<!-- Описание -->")
-    parts.append(title_h3)
-    parts.append(hr_2px)
-    parts.append(wa_block)
-    parts.append(hr_2px)
-    if body_html:
-        parts.append(body_html)
+    parts.append(desc_body)
 
     # Примечания (вынесены из "параметров-фраз", чтобы не засорять характеристики)
     if notes:
@@ -2479,14 +2504,13 @@ def build_description(
         if nn:
             parts.append(f"<p><strong>Примечание:</strong> " + "<br>".join(nn) + "</p>")
 
-    parts.append(chars)
+    if chars:
+        parts.append(chars)
     parts.append(pay_block)
 
-    inner = "\n".join(parts)
+    inner = "\n".join([p for p in parts if p is not None and str(p).strip() != ""])
     return normalize_cdata_inner(inner)
 
-
-# Делает FEED_META (фиксированный вид)
 def make_feed_meta(
     supplier: str,
     supplier_url: str,
@@ -2762,12 +2786,6 @@ def normalize_vendor(v: str) -> str:
     if not v:
         return ""
     v_cf = v.casefold().replace("ё", "е")
-
-    # Kyocera-Mita -> Kyocera (для единых фильтров/SEO)
-    if "kyocera" in v_cf and "mita" in v_cf:
-        v = "Kyocera"
-        v_cf = "kyocera"
-
     # унификация SMART
     if v_cf == "smart":
         v = "SMART"
@@ -2805,7 +2823,6 @@ def normalize_vendor(v: str) -> str:
             if all(p in canon_set for p in parts2):
                 out = parts2[0]
     return out
-
 
 # Пытается определить бренд (vendor) по vendor_src / name / params / description (если пусто — public_vendor)
 def pick_vendor(
