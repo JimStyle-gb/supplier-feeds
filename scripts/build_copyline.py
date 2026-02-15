@@ -6,7 +6,6 @@ CopyLine adapter — сборщик по шаблону CS (использует
 
 from __future__ import annotations
 
-import io
 import os
 import re
 import time
@@ -75,10 +74,6 @@ def log(*args, **kwargs) -> None:
 
 import requests
 from bs4 import BeautifulSoup
-try:
-    from openpyxl import load_workbook
-except Exception:
-    load_workbook = None  # sitemap-режим работает без openpyxl
 
 from cs.core import (
     OfferOut,
@@ -106,7 +101,6 @@ XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 COPYLINE_INCLUDE_PREFIXES = ['Drum', 'Девелопер', 'Драм-картридж', 'Драм-юниты', 'Кабель сетевой', 'Картридж', 'Картриджи', 'Термоблок', 'Тонер-картридж', 'Чернила']
 
 
-
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
@@ -117,9 +111,6 @@ PRODUCT_RE = re.compile(r"/goods/[^/]+\.html(?:[?#].*)?$", flags=re.I)
 
 # Параллелизм обхода сайта
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
-
-
-
 
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
@@ -134,7 +125,6 @@ UA = {
     "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.7,en;q=0.5",
     "Connection": "keep-alive",
 }
-
 
 
 def _sleep_jitter(ms: int) -> None:
@@ -159,7 +149,6 @@ def http_get(url: str, tries: int = 3, min_bytes: int = 0) -> Optional[bytes]:
     return None
 
 
-
 def http_post(url: str, data: Dict[str, Any], tries: int = 3, min_bytes: int = 0) -> Optional[bytes]:
     delay = max(0.1, REQUEST_DELAY_MS / 1000.0)
     last = None
@@ -178,7 +167,6 @@ def http_post(url: str, data: Dict[str, Any], tries: int = 3, min_bytes: int = 0
 
 def soup_of(b: bytes) -> BeautifulSoup:
     return BeautifulSoup(b, "html.parser")
-
 
 
 def _pick_best_copyline_pic(urls: List[str]) -> Optional[str]:
@@ -277,43 +265,6 @@ def _choose_best_search_hit(hits: List[Dict[str, Any]], sku: str) -> Optional[Di
 
     return max(hits, key=hit_score)
 
-
-def _search_copyline_for_sku(sku: str) -> Optional[Dict[str, Any]]:
-    """Ищем товар по артикулу (колонка B в XLSX) через официальный поиск CopyLine.
-    Сначала пытаемся взять фото прямо из выдачи, если не получилось — открываем карточку товара."""
-    b = http_post("https://copyline.kz/product-search/result.html", data={"search": sku}, tries=3)
-    if not b:
-        return None
-
-    hits = _parse_search_results(b)
-    best = _choose_best_search_hit(hits, sku)
-    if not best:
-        return None
-
-    # фото из выдачи
-    pic = _pick_best_copyline_pic(best.get("imgs") or [])
-    out: Dict[str, Any] = {
-        "sku": sku,
-        "title": safe_str(best.get("title") or ""),
-        "desc": "",
-        "pic": pic or "",
-        "pics": [pic] if pic else [],
-        "params": [],
-        "url": safe_str(best.get("url") or ""),
-    }
-
-    # если фото не нашли — лезем в карточку
-    if (not pic) and out["url"]:
-        p = parse_product_page(out["url"])
-        if p:
-            p["sku"] = sku  # принудительно из XLSX
-            best_pic = _pick_best_copyline_pic(list(p.get("pics") or []) + ([safe_str(p.get("pic"))] if p.get("pic") else []))
-            if best_pic:
-                p["pic"] = best_pic
-                p["pics"] = [best_pic]
-            return p
-
-    return out
 
 def norm_ascii(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
@@ -478,7 +429,6 @@ def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60) -> Tuple[i
                 return i, i + 1, idx
 
     return -1, -1, {}
-
 
 
 def _derive_kind(title: str) -> str:
@@ -707,7 +657,6 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     pic = (pics[0] if pics else "")
 
 
-
     # Description + params
     desc_txt = ""
     params: List[Tuple[str, str]] = []
@@ -832,11 +781,9 @@ def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
     return None
 
 
-
 # -----------------------------
 # Main
 # -----------------------------
-
 
 
 def parse_sitemap_xml_urls(xml_bytes: bytes) -> List[Dict[str, str]]:
