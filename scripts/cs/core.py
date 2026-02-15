@@ -13,6 +13,19 @@ CS Core — общее ядро для всех поставщиков.
 from __future__ import annotations
 
 
+def _dedup_keep_order(items: list[str]) -> list[str]:
+    """CS: дедупликация со стабильным порядком (без сортировки)."""
+    seen: set[str] = set()
+    out: list[str] = []
+    for x in items:
+        if not x:
+            continue
+        k = x.casefold()
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(x)
+    return out
 
 
 def _cs_norm_url(u: str) -> str:
@@ -25,6 +38,7 @@ from pathlib import Path
 from typing import Iterable, Sequence
 from zoneinfo import ZoneInfo
 import os
+import hashlib
 import re
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
@@ -294,7 +308,120 @@ _COMPAT_NUM_ONLY_RE = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*$")
 _COMPAT_NO_CODE_RE = re.compile(r"^\s*(?:№|#)\s*\d{2,}\s*$")
 
 
+def _clean_compat_fragment(f: str) -> str:
+    # CS: чистим один фрагмент совместимости (безопасно)
+    f = norm_ws(f)
+    if not f:
+        return ""
 
+    # нормализуем слэши + модельные дефисы (KM-1620 -> KM 1620)
+    f = _COMPAT_SLASH_SPACES_RE.sub("/", f)
+    f = _COMPAT_MULTI_SLASH_RE.sub("/", f)
+    f = _COMPAT_HYPHEN_MODEL_RE.sub(" ", f)
+
+    # выкидываем цвет/объём/служебные слова
+    f = _COMPAT_PARENS_UNIT_RE.sub("", f)
+    f = _COMPAT_UNIT_ANY_RE.sub("", f)
+    f = _COMPAT_SKIP_ANY_RE.sub("", f)
+
+    # дополнительно: ресурс/комплект в совместимости — мусор
+    if CS_COMPAT_CLEAN_YIELD_PACK:
+        f = _COMPAT_PARENS_YIELD_PACK_RE.sub("", f)
+        f = _COMPAT_YIELD_ANY_RE.sub("", f)
+        f = _COMPAT_PACK_ANY_RE.sub("", f)
+
+    # CS: форматы бумаги / ОС / размеры — не должны жить в "Совместимость"
+    if CS_COMPAT_CLEAN_PAPER_OS_DIM:
+        f = _COMPAT_PAPER_OS_WORD_RE.sub("", f)
+        f = _COMPAT_DIM_TOKEN_RE.sub("", f)
+
+    # CS: шумовые слова (цвета/маркетинг/описания) — тоже режем
+    if CS_COMPAT_CLEAN_NOISE_WORDS:
+        f = _COMPAT_NOISE_IN_COMPAT_RE.sub("", f)
+
+    # если скобки сломаны (обрезан хвост) — режем с последней '('
+    if f.count("(") != f.count(")"):
+        last = f.rfind("(")
+        if last != -1:
+            f = f[:last]
+        f = f.replace(")", "")
+
+    f = norm_ws(f).strip(" ,;/:-")
+
+    # в совместимости скобки не нужны — убираем остатки, чтобы не было "битых" хвостов
+    if "(" in f or ")" in f:
+        f = f.replace("(", " ").replace(")", " ")
+        f = norm_ws(f).strip(" ,;/:-")
+
+    # CS: иногда поставщик повторяет целый список дважды — режем повтор (часто у NVPrint)
+    if CS_COMPAT_CLEAN_REPEAT_BLOCKS and len(f) >= 80:
+        f_low = f.casefold()
+        pfx = norm_ws(f[:60]).casefold()
+        if len(pfx) >= 24:
+            pos = f_low.find(pfx, len(pfx))
+            if pos != -1:
+                f = f[:pos]
+                f = norm_ws(f).strip(" ,;/:-")
+
+    # убираем дубли внутри "A/B/C" (частая грязь у поставщиков)
+    if "/" in f:
+        parts = [norm_ws(x) for x in f.split("/") if norm_ws(x)]
+        out: list[str] = []
+        seen: set[str] = set()
+        for x in parts:
+            if CS_COMPAT_CLEAN_PAPER_OS_DIM:
+                x = _COMPAT_PAPER_OS_WORD_RE.sub("", x)
+                x = _COMPAT_DIM_TOKEN_RE.sub("", x)
+            if CS_COMPAT_CLEAN_NOISE_WORDS:
+                x = _COMPAT_NOISE_IN_COMPAT_RE.sub("", x)
+            x = norm_ws(x).strip(" ,;/:-")
+            if not x:
+                continue
+            k = x.casefold()
+            if k in seen:
+                continue
+            seen.add(k)
+            out.append(x)
+        f = "/".join(out)
+
+    return f
+
+def _is_valid_compat_fragment(f: str) -> bool:
+    """CS: проверка, что фрагмент похож на совместимость (модель/список моделей), а не мусор."""
+    f = norm_ws(f)
+    if not f:
+        return False
+
+    # чисто цвет/служебные слова —
+    if _COMPAT_COLOR_ONLY_RE.match(f) or _COMPAT_SKIP_WORD_RE.match(f):
+        return False
+
+    # чисто единицы/объём —
+    if _COMPAT_UNIT_RE.match(f):
+        return False
+
+    # голые числа/номера —
+    if _COMPAT_NUM_ONLY_RE.match(f) or _COMPAT_NO_CODE_RE.match(f):
+        return False
+
+    # форматы бумаги / ОС / размеры — не совместимость принтеров
+    if CS_COMPAT_CLEAN_PAPER_OS_DIM:
+        if _COMPAT_PAPER_OS_WORD_RE.search(f) or _COMPAT_DIM_TOKEN_RE.search(f):
+            return False
+
+    # должна быть цифра (модели почти всегда с цифрами)
+    if not re.search(r"\d", f):
+        return False
+
+    # и буква (чтобы не ловить голые числа)
+    if not re.search(r"[A-Za-zА-Яа-я]", f):
+        return False
+
+    # слишком коротко — почти наверняка мусор
+    if len(f) < 4:
+        return False
+
+    return True
 
 _COMPAT_MODEL_TOKEN_RE = re.compile(r"(?i)\b[A-ZА-Я]{1,6}\s*\d{2,5}[A-ZА-Я]?\b")
 _COMPAT_TEXT_SPLIT_RE = re.compile(r"[\n\r\.\!\?]+")
@@ -1999,6 +2126,8 @@ def normalize_pictures(pictures: Sequence[str]) -> list[str]:
 
 
 # Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
+# Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
+# Собирает keywords: бренд + полное имя + разбор имени на слова + города (в конце)
 def build_keywords(
     vendor: str,
     name: str,
@@ -2010,11 +2139,33 @@ def build_keywords(
     vendor = norm_ws(vendor)
     name = norm_ws(name)
 
+    # CS: стоп-слова для keywords (чистим мусор, не трогаем смысл)
+    STOP = {
+        "и", "в", "во", "на", "по", "с", "со", "к", "ко", "от", "до", "для", "без", "под", "над", "у", "за", "из", "при",
+        "the", "a", "an", "and", "or", "of", "to", "for", "with", "in", "on",
+        "шт", "pcs", "pc",
+    }
+
     def _kw_safe(s: str) -> str:
         # CS: чтобы <keywords> не "ломались" из-за запятых внутри имени
         s = str(s or "")
         s = s.replace(",", " ").replace(";", " ").replace("|", " ")
         return norm_ws(s).strip(" ,")
+
+    def _tok_ok(t: str) -> str:
+        tt = norm_ws(t)
+        if not tt:
+            return ""
+        cf = tt.casefold()
+        if cf in STOP:
+            return ""
+        # одиночные буквы/цифры — мусор (VTT: O/C/M/Y/K и т.п.)
+        if len(cf) == 1:
+            if cf.isdigit():
+                return ""
+            if cf.isalpha():
+                return ""
+        return tt
 
     parts: list[str] = []
     if vendor:
@@ -2024,14 +2175,19 @@ def build_keywords(
 
     # Разбор имени на слова (цифры/буквы, с дефисами)
     tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+(?:-[A-Za-zА-Яа-яЁё0-9]+)*", name)
-    for t in tokens[: max(0, int(max_tokens))]:
-        tt = norm_ws(t)
+    limit = max(0, int(max_tokens))
+    added = 0
+    for t in tokens:
+        if limit and added >= limit:
+            break
+        tt = _tok_ok(t)
         if tt:
             parts.append(tt)
+            added += 1
 
     if extra:
         for x in extra:
-            xx = norm_ws(str(x))
+            xx = _tok_ok(str(x))
             if xx:
                 parts.append(_kw_safe(xx))
 
@@ -2259,14 +2415,13 @@ def build_description(
     params_sorted: Sequence[tuple[str, str]],
     *,
     notes: Sequence[str] | None = None,
-        wa_block: str = CS_WA_BLOCK,
+    wa_block: str = CS_WA_BLOCK,
     hr_2px: str = CS_HR_2PX,
     pay_block: str = CS_PAY_BLOCK,
 ) -> str:
     n = norm_ws(name)
     # Родное описание (обрезание/дедуп/удаление технички — внутри _build_desc_part)
     desc_part = _build_desc_part(n, native_desc)
-
 
     # Если родного описания нет (только <h3>...</h3>), делаем 1 короткий абзац из param
     # (без "Кратко:", без "Применение", без выдумок).
@@ -2275,14 +2430,32 @@ def build_description(
         if sm:
             n_esc = xml_escape_text(n)
             desc_part = f"<h3>{n_esc}</h3><p>{xml_escape_text(sm)}</p>"
+
     # Единый CS-блок характеристик всегда одного вида
     chars = build_chars_block(params_sorted)
 
+    # Важно для SEO+конверсии:
+    # - первым идёт <h3>{name}</h3> (уникальный верх),
+    # - затем линия + кнопка WhatsApp + линия (кнопка всегда "вверху"),
+    # - затем текст описания (если он есть).
+    title_h3 = ""
+    body_html = desc_part or ""
+    m = re.match(r"\s*(<h3>.*?</h3>)(.*)$", body_html, flags=re.DOTALL)
+    if m:
+        title_h3 = m.group(1).strip()
+        body_html = (m.group(2) or "").lstrip()
+    else:
+        title_h3 = f"<h3>{xml_escape_text(n)}</h3>"
+        body_html = body_html.strip()
+
     parts: list[str] = []
+    parts.append("<!-- Описание -->")
+    parts.append(title_h3)
+    parts.append(hr_2px)
     parts.append(wa_block)
     parts.append(hr_2px)
-    parts.append("<!-- Описание -->")
-    parts.append(desc_part)
+    if body_html:
+        parts.append(body_html)
 
     # Примечания (вынесены из "параметров-фраз", чтобы не засорять характеристики)
     if notes:
@@ -2305,6 +2478,7 @@ def build_description(
                 nn.append(t)
         if nn:
             parts.append(f"<p><strong>Примечание:</strong> " + "<br>".join(nn) + "</p>")
+
     parts.append(chars)
     parts.append(pay_block)
 
@@ -2588,6 +2762,12 @@ def normalize_vendor(v: str) -> str:
     if not v:
         return ""
     v_cf = v.casefold().replace("ё", "е")
+
+    # Kyocera-Mita -> Kyocera (для единых фильтров/SEO)
+    if "kyocera" in v_cf and "mita" in v_cf:
+        v = "Kyocera"
+        v_cf = "kyocera"
+
     # унификация SMART
     if v_cf == "smart":
         v = "SMART"
@@ -2625,6 +2805,7 @@ def normalize_vendor(v: str) -> str:
             if all(p in canon_set for p in parts2):
                 out = parts2[0]
     return out
+
 
 # Пытается определить бренд (vendor) по vendor_src / name / params / description (если пусто — public_vendor)
 def pick_vendor(
