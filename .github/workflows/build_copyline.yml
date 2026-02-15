@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 21 * * *'
+
 permissions:
   contents: write
-
 jobs:
   build_copyline:
     runs-on: ubuntu-latest
@@ -39,7 +39,6 @@ jobs:
       - name: Smoke test (py_compile)
         run: |
           python -m py_compile scripts/cs/core.py scripts/build_*.py
-
       - name: "Gate by day-of-month (Asia/Almaty: 1/10/20)"
         id: gate
         if: github.event_name == 'schedule'
@@ -58,16 +57,12 @@ jobs:
         run: |
           python scripts/build_copyline.py
 
-      - name: Commit & push docs (if changed)
+      - name: Commit & push docs/copyline.yml (if changed)
         if: github.event_name != 'schedule' || steps.gate.outputs.run == 'true'
         run: |
-          if git diff --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git add docs/*.yml || true
+          git add docs/copyline.yml
           if git diff --cached --quiet; then
-            echo "Nothing staged."
+            echo "No changes to commit."
             exit 0
           fi
           git commit -m "build: copyline feed"
