@@ -74,6 +74,10 @@ def log(*args, **kwargs) -> None:
 
 import requests
 from bs4 import BeautifulSoup
+try:
+    from openpyxl import load_workbook
+except Exception:
+    load_workbook = None  # sitemap-режим работает без openpyxl
 
 from cs.core import (
     OfferOut,
@@ -101,6 +105,7 @@ XLSX_URL = os.getenv("XLSX_URL", f"{BASE_URL}/files/price-CLA.xlsx")
 COPYLINE_INCLUDE_PREFIXES = ['Drum', 'Девелопер', 'Драм-картридж', 'Драм-юниты', 'Кабель сетевой', 'Картридж', 'Картриджи', 'Термоблок', 'Тонер-картридж', 'Чернила']
 
 
+
 OUT_FILE = os.getenv("OUT_FILE", "docs/copyline.yml")
 OUTPUT_ENCODING = (os.getenv("OUTPUT_ENCODING", "utf-8") or "utf-8").strip() or "utf-8"
 NO_CRAWL = (os.getenv("NO_CRAWL", "0") or "0").strip().lower() in ("1", "true", "yes", "y", "on")
@@ -111,6 +116,9 @@ PRODUCT_RE = re.compile(r"/goods/[^/]+\.html(?:[?#].*)?$", flags=re.I)
 
 # Параллелизм обхода сайта
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "6") or "6")
+
+
+
 
 
 HTTP_TIMEOUT = float(os.getenv("HTTP_TIMEOUT", "30"))
@@ -125,6 +133,7 @@ UA = {
     "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.7,en;q=0.5",
     "Connection": "keep-alive",
 }
+
 
 
 def _sleep_jitter(ms: int) -> None:
@@ -149,6 +158,7 @@ def http_get(url: str, tries: int = 3, min_bytes: int = 0) -> Optional[bytes]:
     return None
 
 
+
 def http_post(url: str, data: Dict[str, Any], tries: int = 3, min_bytes: int = 0) -> Optional[bytes]:
     delay = max(0.1, REQUEST_DELAY_MS / 1000.0)
     last = None
@@ -167,6 +177,7 @@ def http_post(url: str, data: Dict[str, Any], tries: int = 3, min_bytes: int = 0
 
 def soup_of(b: bytes) -> BeautifulSoup:
     return BeautifulSoup(b, "html.parser")
+
 
 
 def _pick_best_copyline_pic(urls: List[str]) -> Optional[str]:
@@ -266,27 +277,11 @@ def _choose_best_search_hit(hits: List[Dict[str, Any]], sku: str) -> Optional[Di
     return max(hits, key=hit_score)
 
 
+
 def norm_ascii(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
 
 
-def _norm_sku_variants(raw: str) -> set[str]:
-    """# CopyLine: нормализация артикула/sku для сравнения (детерминированно)"""
-    r = (raw or "").strip()
-    if not r:
-        return set()
-    r = r.replace(" ", "")
-    variants = {r, r.replace("-", ""), r.replace("_", "")}
-    r0 = r.lstrip("0")
-    if r0 and r0 != r:
-        variants.add(r0)
-        variants.add(r0.replace("-", ""))
-        variants.add(r0.replace("_", ""))
-    if re.fullmatch(r"[Cc]\d+", r):
-        variants.add(r[1:])
-    if re.fullmatch(r"\d+", r):
-        variants.add("C" + r)
-    return {norm_ascii(v) for v in variants if v}
 
 def parse_price_tenge(text: str) -> int:
     """Парсинг цены в тг из текста: '7 051 тг.' -> 7051."""
@@ -429,6 +424,7 @@ def detect_header_two_row(rows: List[List[Any]], scan_rows: int = 60) -> Tuple[i
                 return i, i + 1, idx
 
     return -1, -1, {}
+
 
 
 def _derive_kind(title: str) -> str:
@@ -657,6 +653,7 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     pic = (pics[0] if pics else "")
 
 
+
     # Description + params
     desc_txt = ""
     params: List[Tuple[str, str]] = []
@@ -767,23 +764,13 @@ def parse_product_page(url: str) -> Optional[Dict[str, Any]]:
     }
 
 
-def _category_next_url(s: BeautifulSoup, page_url: str) -> Optional[str]:
-    ln = s.find("link", attrs={"rel": "next"})
-    if ln and ln.get("href"):
-        return requests.compat.urljoin(page_url, safe_str(ln["href"]))
-    a = s.find("a", class_=lambda c: c and "next" in safe_str(c).lower())
-    if a and a.get("href"):
-        return requests.compat.urljoin(page_url, safe_str(a["href"]))
-    for a in s.find_all("a", href=True):
-        txt = safe_str(a.get_text(" ", strip=True) or "").lower()
-        if txt in ("следующая", "вперед", "вперёд", "next", ">"):
-            return requests.compat.urljoin(page_url, safe_str(a["href"]))
-    return None
+
 
 
 # -----------------------------
 # Main
 # -----------------------------
+
 
 
 def parse_sitemap_xml_urls(xml_bytes: bytes) -> List[Dict[str, str]]:
