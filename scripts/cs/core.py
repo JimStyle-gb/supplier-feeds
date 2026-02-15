@@ -2243,6 +2243,10 @@ def build_keywords(
 
     return ", ".join(out)
 
+_RE_PARAM_SENTENCEY = re.compile(
+    r"(?i)\b(внимание|обратите|пожалуйста|важно|маркир|подлинност|original|оригинал|упаковк|предупрежден|рекомендуем|гаранти)\b"
+)
+
 def _is_sentence_like_param_name(k: str) -> bool:
     kk = norm_ws(k)
     if not kk:
